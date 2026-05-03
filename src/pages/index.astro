@@ -1,0 +1,152 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+
+const stackItems = [
+  { name: 'Astro', role: 'Static site framework', desc: 'Fast pages, clean HTML, minimal JavaScript' },
+  { name: 'Tailwind CSS', role: 'Styling', desc: 'Direct control, no page builder bloat' },
+  { name: 'Cloudflare', role: 'Edge delivery', desc: 'DNS, caching, security, global speed' },
+  { name: 'GitHub', role: 'Version control', desc: 'Every change tracked and reviewable' },
+  { name: 'Payload CMS', role: 'Content layer', desc: 'CMS control without WordPress bloat' },
+  { name: 'Coolify', role: 'Self-hosting', desc: 'Run tools internally, keep costs low' },
+  { name: 'Claude + GPT', role: 'AI coding', desc: 'Structured coding, debugging, review' },
+  { name: 'Hermes', role: 'Agent OS', desc: 'Connects agents, tools, and decisions' },
+];
+
+const oldProblems = [
+  'WordPress + Elementor drag-and-drop friction',
+  'Plugin updates breaking things constantly',
+  'Slow page loads from bloated theme code',
+  'No version control — changes lost in the admin panel',
+  'Theme limits blocking custom designs',
+];
+
+const newResults = [
+  'Faster loading with static generation',
+  'Cleaner code, fewer dependencies',
+  'Lower running costs',
+  'Easier SEO improvements',
+  'Better Core Web Vitals',
+  'Less maintenance overhead',
+];
+---
+
+<Layout>
+  <!-- Navigation -->
+  <nav class="border-b border-slate-100">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="font-bold text-lg tracking-tight">WebJuice</div>
+      <div class="text-sm text-slate-500">AI-Controlled Stack MVP</div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 pt-20 pb-16">
+    <div class="max-w-3xl">
+      <p class="text-sm font-medium text-slate-500 uppercase tracking-wide mb-4">Case Study / Stack Architecture</p>
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-6">
+        Why We Replaced WordPress With an AI-Controlled Website Stack
+      </h1>
+      <p class="text-lg text-slate-600 leading-relaxed mb-8">
+        After 15 years working with WordPress, we moved our agency website away from it. 
+        Not because WordPress is bad — because the old stack had become too slow, too bloated, too manual.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <span class="px-3 py-1.5 bg-slate-900 text-white text-sm font-medium rounded-full">Astro</span>
+        <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-sm font-medium rounded-full">Tailwind</span>
+        <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-sm font-medium rounded-full">Cloudflare</span>
+        <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-sm font-medium rounded-full">AI Agents</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Problem -->
+  <section class="bg-slate-50 py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-12 items-start">
+        <div>
+          <h2 class="text-2xl font-bold mb-4">The Old Setup</h2>
+          <p class="text-slate-600 mb-6">What used to be normal. It no longer matches how modern agencies want to work.</p>
+          <ul class="space-y-3">
+            {oldProblems.map(item => (
+              <li class="flex items-start gap-3 text-slate-700">
+                <span class="text-red-400 mt-1">×</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold mb-4">What We Wanted</h2>
+          <p class="text-slate-600 mb-6">A website that is faster, cleaner, cheaper to run, and easier to control with AI.</p>
+          <div class="bg-white border border-slate-200 rounded-lg p-6">
+            <p class="text-sm font-medium text-slate-500 mb-3">The goal:</p>
+            <p class="text-slate-800 leading-relaxed">
+              Keep content manageable, but keep the frontend fast and clean. 
+              The website is no longer just a CMS. It is proper software.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Stack -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <h2 class="text-2xl font-bold mb-2">The New Stack</h2>
+    <p class="text-slate-600 mb-10">Twelve components. Fewer moving parts. Better systems.</p>
+    
+    <div class="grid sm:grid-cols-2 gap-4">
+      {stackItems.map((item, i) => (
+        <div class="border border-slate-200 rounded-lg p-5 hover:border-slate-300 transition-colors">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-xs font-mono text-slate-400">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="font-semibold">{item.name}</h3>
+          </div>
+          <p class="text-sm text-slate-500 mb-1">{item.role}</p>
+          <p class="text-sm text-slate-700">{item.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="bg-slate-900 text-white py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-2xl font-bold mb-8">The Result</h2>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {newResults.map(item => (
+          <div class="bg-slate-800 rounded-lg p-4">
+            <span class="text-emerald-400 mr-2">✓</span>
+            <span class="text-sm">{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why It Matters -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <div class="max-w-3xl">
+      <h2 class="text-2xl font-bold mb-4">Why This Matters</h2>
+      <p class="text-slate-600 leading-relaxed mb-6">
+        This is not the right stack for every business. But for us, it makes much more sense than WordPress.
+      </p>
+      <p class="text-slate-600 leading-relaxed mb-6">
+        Most websites do not need more plugins. They need fewer moving parts. They need cleaner architecture. 
+        They need systems that can be improved every week without breaking.
+      </p>
+      <p class="text-slate-800 font-medium">
+        The future is not more plugins. It is fewer moving parts and better systems.
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-100 py-8">
+    <div class="max-w-5xl mx-auto px-6 flex items-center justify-between">
+      <p class="text-sm text-slate-500">MVP based on webjuice.ie stack architecture</p>
+      <p class="text-sm text-slate-400">Built with Astro + Tailwind + Cloudflare</p>
+    </div>
+  </footer>
+</Layout>
