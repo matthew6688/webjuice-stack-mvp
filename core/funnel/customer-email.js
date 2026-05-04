@@ -58,6 +58,26 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
   });
 }
 
+export function buildLivePublishedEmail({ caseFile, publishResult, deployResult = null, liveUrl = '' }) {
+  const email = caseFile?.customer?.email;
+  if (!email || email === 'N/A') return null;
+  const resolvedLiveUrl = liveUrl || publishResult?.liveUrl || caseFile.customer?.domain || caseFile.previewUrl || '';
+  const lines = [
+    `Order ID: ${caseFile.order?.id || 'N/A'}`,
+    `Live site: ${resolvedLiveUrl || 'N/A'}`,
+    `Published commit: ${publishResult?.commit || 'N/A'}`,
+    `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
+    `Preview utility page: ${caseFile.previewUrl || 'N/A'}`,
+  ];
+  return simpleEmail({
+    to: email,
+    subject: `${caseFile.customer?.company || 'Your website'} is live`,
+    intro: 'Your approved website has been published to the live site.',
+    lines,
+    outro: 'You can keep using the preview utility page for future revision requests and order support.',
+  });
+}
+
 function saleEmail(order, entitlement) {
   const revisionUrl = order.previewUrl
     ? `${order.previewUrl}/revise?order_id=${encodeURIComponent(order.orderId)}&email=${encodeURIComponent(order.email)}`

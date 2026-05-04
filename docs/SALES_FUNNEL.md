@@ -306,6 +306,20 @@ npm run agent:complete-task -- \
   --send-email true
 ```
 
+After customer approval, publish the reviewed dev tree to live:
+
+```bash
+npm run agent:publish-approved -- \
+  --task data/agent-tasks/<client>/<task>.json \
+  --repo-dir /tmp/profitslocal-repos/<client> \
+  --execute true \
+  --push true \
+  --check-deploy true \
+  --send-email true
+```
+
+This does not merge `dev` into `main`. Some generated client repos have separate `dev` and `main` histories, so the publisher creates a new `main` commit whose tree matches approved `dev`, preserving main history without force-pushing.
+
 ## Revision Entitlements
 
 Paid orders create an entitlement record under:
@@ -341,6 +355,7 @@ Email nodes:
 - Revision denied: send the reason and a `$100` extra revision checkout link. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
 - Agent dev preview ready: send dev review link after build/QA passes. Implemented in `npm run agent:complete-task` when `--send-email true`.
 - Domain/live launch ready: send DNS/live-domain instructions. Not built.
+- Live published: send live site link after approved `dev` tree is published to `main`. Implemented in `npm run agent:publish-approved` when `--send-email true`.
 
 The customer-facing pages can remain available on our preview/domain even when the customer points their own domain at the live site. They should be treated as account/order utility pages, not restaurant content pages.
 

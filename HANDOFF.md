@@ -167,6 +167,7 @@ Current production sales path:
 - Per-order case memory is written under `data/cases/<clientSlug>/<orderId>/`; routed tasks include `case.contextPath`, source-of-truth files, allowed file scope, and Huashu design protocol so agents do not rely on short-term prompt memory.
 - `npm run agent:run-task` now loads that case context, validates source-of-truth files, applies restaurant artifacts, runs build, and appends `agent-runs.jsonl`/timeline records. Use `--checkout true --push true` only when ready to update the dev review branch.
 - `npm run agent:complete-task` wraps task run, optional dev deploy check, and optional customer review email. Use it for the paid/revision handoff after the task is ready.
+- `npm run agent:publish-approved` publishes approved dev to main/live by creating a new main commit from the dev tree, avoiding unrelated-history merges and force-pushes.
 
 Tally remains as a fallback/provider boundary, but live payment-block creation failed Tally API schema validation during testing.
 
