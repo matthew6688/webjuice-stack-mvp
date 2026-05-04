@@ -21,45 +21,31 @@ Verified live state:
 - Main repo workflow notification secrets are configured for Discord + Resend; dry-run workflow dispatch with notification flags passes.
 - `AGENT_GITHUB_TOKEN` is configured on 5 Brisbane dev/live Pages projects plus `webjuice-restaurant` dev/live, and `wrangler pages secret list` verifies the secret exists.
 - Funnel routing now writes per-order case memory under `data/cases/<clientSlug>/<orderId>/` and agent tasks include case/context/design protocol fields.
+- Agent execution/completion/publish runners can load case context, push reviewed work to `dev`, send review email, and publish approved `dev` trees to `main/live`.
+- 5 generated restaurant repos plus the `webjuice-restaurant` template include `/approve` and `/api/approval-request/` for customer approval.
+- `webjuice-restaurant` and the 5 generated restaurant repos include `/api/order-status/`; `/revise` can show trusted revision quota state after `orderId + checkout email` match.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
 
-### 1. Agent Dev-Branch Execution Loop
+### 1. Discord Thread Workspace
 
-Goal: accepted paid/revision tasks should produce a dev branch update and a customer review link.
+Goal: every paid order and revision should have a durable internal Discord workspace so the agent can post the right preview/review/live links without losing context.
 
 Tasks:
 
-- Finalize task schema for `sale`, `revision`, `domain`, and `publish`.
-- Teach runner to execute against `/tmp/profitslocal-repos/<client>`.
-- Load `task.case.contextPath`, `case.json`, and recent `timeline.jsonl` before planning edits.
-- Load source-of-truth files from `task.requiredContext` before changing website code.
-- Current runner can apply artifacts, build, write agent run logs, and optionally push `dev`.
-- Completion runner can optionally check dev deploy and send review email.
-- Publish runner can publish an approved dev tree to main/live without merging unrelated histories.
-- Customer approval page can dispatch `publish-approved.yml` from the client preview site.
-- For activation with no launch notes: run QA only and mark activation ready.
-- For revision tasks: apply bounded content/design/artifact changes, not arbitrary edits.
-- Push only to `dev`.
-- Wait for dev deploy.
-- Send internal Discord update and customer review email.
+- Persist Discord channel/thread IDs in `case.json.discord`.
+- Create or reuse one sales thread per `orderId`.
+- Create or reuse revision discussion threads linked to the same case.
+- Include links to case path, task path, dev preview, approval page, and live URL in Discord messages.
+- Append every outbound Discord message URL to `timeline.jsonl`.
+- Add agent prompt context that tells Hermes/OpenClaw where the Discord thread lives and what customer messages have already been handled.
 
 Validation:
 
 ```bash
-npm run agent:validate-task -- --task <task.json>
-npm run agent:run-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true
-npm run agent:run-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true --checkout true --push true
-npm run agent:complete-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true --checkout true --push true --check-deploy true --send-email true
-npm run agent:publish-approved -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true --push true --check-deploy true --send-email true
-gh workflow run publish-approved.yml --repo matthew6688/webjuice-stack-mvp \
-  -f client_slug=<client> \
-  -f order_id=<order> \
-  -f email=<checkout-email> \
-  -f dry_run=true
-npm run check:deploys -- --client longwang-restaurant-restaurant --branch dev
-npm run check:links -- --client longwang-restaurant-restaurant --internal-links false
+npm run discord:case-thread -- --case data/cases/<client>/<order>/case.json --dry-run true
+npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --send-discord true --dry-run true
 ```
 
 ### 2. Central Automation Runner Hardening
@@ -103,19 +89,24 @@ gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp \
 
 Goal: `/revise` and future account utility pages should show trusted backend state, not guessed frontend state.
 
-Tasks:
+Working now:
 
-- Add `/api/order-status/`.
-- Require `orderId + email`.
-- Return:
+- Added `/api/order-status/` to the template and 5 generated restaurant repos.
+- Requires `orderId + checkout email + clientSlug`.
+- Reads the main automation repo through `AGENT_GITHUB_TOKEN`.
+- Returns:
   - tier
   - revision limit
   - revisions used
   - remaining revisions
   - next monthly reset date for yearly plan
   - extra revision checkout URL
-- Render that status on `/revise`.
+- Renders status on `/revise`.
+
+Remaining hardening:
+
 - Keep these utility pages available on preview/our domain even after customer live domain is connected.
+- Add a read-only `/account` or `/order` page if customers need one place for revise/approve/domain links.
 
 Validation:
 
@@ -216,18 +207,17 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Agent dev-branch execution loop with case-context loading.
-2. `/api/order-status/` and revision-count display on `/revise`.
-3. Discord thread workspace with order/thread id mapping.
-4. Discord thread workspace with order/thread id mapping.
-5. Domain attach/polling for `profitslocal.com`.
-6. Menu PDF/image OCR.
-7. More cities: Sydney/Melbourne restaurants.
-8. Next niche pilot: roofing/plumbing/dental.
+1. Discord thread workspace with order/thread id mapping.
+2. Domain attach/polling for `profitslocal.com`.
+3. Cost ledger wiring for Resend, image generation, and agent execution time.
+4. Menu PDF/image OCR.
+5. Cold outreach email test with screenshot/video proof.
+6. More cities: Sydney/Melbourne restaurants.
+7. Next niche pilot: roofing/plumbing/dental.
 
 ## Blocking Inputs
 
 - Decision on where central automation should persist production state long term:
   - Git repo JSON files for MVP
   - Cloudflare D1 / Supabase / Neon for production
-- Confirm whether extra revision purchases should add `+1` to the original entitlement or create a separate one-revision entitlement.
+- Confirm whether extra revision purchases should add `+1` to the original entitlement or create a separate one-revision entitlement. Current checkout can sell `$100` extra revisions; entitlement increment wiring still needs a final policy choice.

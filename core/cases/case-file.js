@@ -206,7 +206,7 @@ export function recordAgentRun(casePaths, runResult, { dryRun = false } = {}) {
 
   const timelineEvent = {
     id: `case_evt_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
-    type: runResult.ok ? 'agent_run_completed' : 'agent_run_failed',
+    type: timelineTypeForAgentRun(runResult),
     ok: Boolean(runResult.ok),
     taskId: runResult.taskId || '',
     repo: runResult.repo || caseFile.repo || '',
@@ -220,9 +220,7 @@ export function recordAgentRun(casePaths, runResult, { dryRun = false } = {}) {
 
   const updatedCase = {
     ...caseFile,
-    status: runResult.ok
-      ? (runResult.pushed ? 'dev_pushed_needs_review' : 'agent_run_ready_for_review')
-      : 'agent_run_failed',
+    status: statusForAgentRun(runResult),
     latestAgentRun: runEvent,
     updatedAt: now,
   };
@@ -245,6 +243,17 @@ export function recordAgentRun(casePaths, runResult, { dryRun = false } = {}) {
     timelineEvent,
     contextPacket,
   };
+}
+
+function timelineTypeForAgentRun(runResult) {
+  if (runResult.mode === 'publish') return runResult.ok ? 'live_publish_completed' : 'live_publish_failed';
+  return runResult.ok ? 'agent_run_completed' : 'agent_run_failed';
+}
+
+function statusForAgentRun(runResult) {
+  if (!runResult.ok) return runResult.mode === 'publish' ? 'live_publish_failed' : 'agent_run_failed';
+  if (runResult.mode === 'publish') return runResult.pushed ? 'live_published' : 'live_publish_ready';
+  return runResult.pushed ? 'dev_pushed_needs_review' : 'agent_run_ready_for_review';
 }
 
 export function sourceOfTruthPaths(clientSlug) {

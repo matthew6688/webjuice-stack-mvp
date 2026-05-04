@@ -47,6 +47,7 @@
 | Agent completion runner | Working MVP | `npm run agent:complete-task` wraps run/build, optional dev deploy check, and optional Resend review email so paid/revision work can reach customer review. |
 | Approval publish runner | Working MVP | `npm run agent:publish-approved` publishes an approved dev tree to main without merging unrelated histories, can push live, wait for live deploy, send live email, and update case timeline. |
 | First-party approval flow | Working MVP | Template/client sites have `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` with mandatory `orderId + checkout email` matching. |
+| Order status utility | Working MVP | Template/client sites have `/api/order-status/`; `/revise` displays trusted revision quota only after `orderId + checkout email` matches the central entitlement record. |
 | Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` supports Cloudflare Pages attach/dry-run. |
 | Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
 
@@ -58,7 +59,7 @@
 | Restaurant template renderer | Working MVP | `matthew6688/webjuice-restaurant` now reads `content.restaurant.json` and `design.restaurant.json`; generated repos still need migration to the new renderer flow. |
 | Client artifact sync | Working MVP | `npm run clients:sync-artifacts` applies content/design/checkout artifacts and optional images to an artifact-ready client repo, then can run build. |
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
-| Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, and Tally revenue can write events; Resend and image generation still need direct wiring. |
+| Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, Tally revenue, and Stripe revenue can write events; Resend, image generation, and agent runtime still need direct wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
 | Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; main repo notification secrets are configured, and Pages secrets are present on current dev/live client projects. |
@@ -77,14 +78,12 @@
 
 ## Immediate Next Build Order
 
-1. Agent dev-branch execution loop that loads case context before editing.
-2. `/api/order-status/` plus revision-count display on `/revise`.
-3. Discord thread workspace with order/thread id mapping.
-4. Discord thread workspace with order/thread id mapping.
-5. Domain attach/polling for `profitslocal.com`.
-6. Menu PDF extractor and image OCR pipeline.
-7. Resend cold outreach dry-run and live test.
-8. Add next city or niche pilot after the restaurant loop closes.
+1. Discord thread workspace with order/thread id mapping.
+2. Domain attach/polling for `profitslocal.com`.
+3. Cost ledger wiring for Resend, image generation, and agent runtime.
+4. Menu PDF extractor and image OCR pipeline.
+5. Resend cold outreach dry-run and live test.
+6. Add next city or niche pilot after the restaurant loop closes.
 
 ## Verification Rules
 
