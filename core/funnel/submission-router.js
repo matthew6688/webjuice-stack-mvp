@@ -3,6 +3,7 @@ import path from 'path';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
 import { artifactTimestamp } from '../time.js';
 import { buildDiscordMessage, sendDiscordWebhook } from './discord.js';
+import { consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
 import { normalizeTallySubmission, tallyRevenueLedgerInput } from './tally.js';
 
@@ -19,7 +20,6 @@ export async function routeFunnelSubmission(payload, options = {}) {
   const kind = options.kind || classifyFunnelSubmission(order);
   const clientSlug = order.clientSlug || 'unknown-client';
   const submissionId = safeId(order.orderId || order.rawSubmissionId || Date.now());
-  const task = buildAgentTask({ kind, order, submissionId });
   const taskPath = options.taskPath || path.join(
     options.tasksDir || 'data/agent-tasks',
     clientSlug,
@@ -30,6 +30,50 @@ export async function routeFunnelSubmission(payload, options = {}) {
     clientSlug,
     `${kind}-${submissionId}.json`,
   );
+  let entitlement = null;
+  if (kind === 'revision') {
+    entitlement = consumeRevisionEntitlement(order, {
+      entitlementsDir: options.entitlementsDir,
+      dryRun: options.dryRun,
+    });
+    if (!entitlement.ok && !options.allowOverLimit) {
+      if (!options.dryRun) {
+        writeJson(submissionPath, {
+          schemaVersion: 1,
+          kind: 'revision_denied',
+          receivedAt: artifactTimestamp(),
+          order,
+          entitlement,
+          payload,
+        });
+      }
+      return {
+        ok: false,
+        provider,
+        kind,
+        order,
+        entitlement,
+        task: null,
+        taskPath: null,
+        submissionPath,
+        ledgerEvent: null,
+        discord: { ok: false, skipped: true },
+        discordPayload: buildDiscordMessage({ kind, order, task: null }),
+      };
+    }
+  }
+  if (kind === 'sale') {
+    entitlement = {
+      ok: true,
+      reason: 'entitlement_created',
+      entitlement: createEntitlementFromOrder(order, {
+        entitlementsDir: options.entitlementsDir,
+        dryRun: options.dryRun,
+      }),
+    };
+  }
+
+  const task = buildAgentTask({ kind, order, submissionId, entitlement });
 
   if (!options.dryRun) {
     writeJson(taskPath, task);
@@ -43,11 +87,13 @@ export async function routeFunnelSubmission(payload, options = {}) {
   }
 
   let ledgerEvent = null;
-  if (kind === 'sale' && !options.dryRun) {
-    ledgerEvent = appendLedgerEvent(
-      provider === 'stripe' ? stripeRevenueLedgerInput(order) : tallyRevenueLedgerInput(order),
-      options.ledgerPath || DEFAULT_LEDGER_PATH,
-    );
+  if (kind === 'sale') {
+    if (!options.dryRun) {
+      ledgerEvent = appendLedgerEvent(
+        provider === 'stripe' ? stripeRevenueLedgerInput(order) : tallyRevenueLedgerInput(order),
+        options.ledgerPath || DEFAULT_LEDGER_PATH,
+      );
+    }
   }
 
   const discordPayload = buildDiscordMessage({
@@ -71,6 +117,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     task,
     taskPath,
     submissionPath,
+    entitlement,
     ledgerEvent,
     discord,
     discordPayload,
@@ -84,7 +131,7 @@ function detectProvider(payload) {
   return 'tally';
 }
 
-export function buildAgentTask({ kind, order, submissionId }) {
+export function buildAgentTask({ kind, order, submissionId, entitlement = null }) {
   const isSale = kind === 'sale';
   return {
     schemaVersion: 1,
@@ -109,6 +156,13 @@ export function buildAgentTask({ kind, order, submissionId }) {
       currency: order.currency,
     },
     requestedChanges: order.feedback || '',
+    entitlement: entitlement?.entitlement ? {
+      orderId: entitlement.entitlement.orderId,
+      tier: entitlement.entitlement.tier,
+      revisionPolicy: entitlement.entitlement.revisionPolicy,
+      revisionUsed: entitlement.entitlement.revisionUsed,
+      revisionStatus: entitlement.reason,
+    } : null,
     referenceUrl: order.referenceUrl || '',
     files: order.files || [],
     instructions: isSale ? saleInstructions(order) : revisionInstructions(order),

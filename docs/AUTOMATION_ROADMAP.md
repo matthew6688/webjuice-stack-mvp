@@ -492,6 +492,11 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
   - normalize paid checkout into order
   - record revenue event
   - create agent activation task
+- [x] Add revision entitlement control:
+  - create order entitlement after sale
+  - enforce 3 lifetime revisions for one-time purchases
+  - enforce monthly maintenance request window for yearly purchases
+  - record over-limit revision attempts without creating agent tasks
 - [ ] Keep Tally feedback form or replace with first-party feedback form.
 
 ## Phase 8: Agent Loop

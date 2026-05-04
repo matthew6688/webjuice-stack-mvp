@@ -30,6 +30,7 @@ const result = await routeFunnelSubmission(payload, {
   sendDiscord: args['send-discord'] === 'true' || args.sendDiscord === 'true',
   tasksDir: args['tasks-dir'] || args.tasksDir,
   submissionsDir: args['submissions-dir'] || args.submissionsDir,
+  entitlementsDir: args['entitlements-dir'] || args.entitlementsDir,
   ledgerPath: args.ledger,
 });
 
@@ -39,6 +40,7 @@ console.log(JSON.stringify({
   order: result.order,
   taskPath: result.taskPath,
   submissionPath: result.submissionPath,
+  entitlement: result.entitlement,
   ledgerEvent: result.ledgerEvent,
   discord: result.discord,
 }, null, 2));

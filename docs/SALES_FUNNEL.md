@@ -22,6 +22,7 @@
 9. Router writes:
    - normalized submission JSON
    - Stripe revenue ledger event
+   - order entitlement with revision quota
    - agent task JSON with target repo and `dev` branch
 
 Tally remains supported as a provider, but live API creation of the payment block was blocked by Tally's opaque block schema during verification. Keep the provider boundary so Tally can be used manually/MCP later without changing the downstream order/task contracts.
@@ -165,3 +166,30 @@ The generated task always targets:
 ```
 
 The agent must push only to `dev` for customer review. Final live deployment happens only after approval.
+
+## Revision Entitlements
+
+Paid orders create an entitlement record under:
+
+```text
+data/funnel/orders/<clientSlug>/<orderId>.json
+```
+
+Current policy:
+
+- `one_time`: 3 lifetime revision requests after purchase.
+- `yearly_maintenance`: 1 maintenance request per monthly period.
+- Checkout launch notes are activation scope and do not consume a revision.
+- A revision request must match an active entitlement by order/session id when available, otherwise by `client_slug`, `repo`, and customer email.
+
+When a revision request arrives:
+
+1. Router finds the matching active entitlement.
+2. If quota remains, it increments `revisionUsed`, appends a `revisionEvents[]` audit entry, and creates a `revision` agent task.
+3. If quota is exhausted, it writes a `revision_denied` submission record and does not create an agent task.
+
+Verification command:
+
+```bash
+npm run funnel:route-tally -- --input /tmp/revision.json --entitlements-dir /tmp/orders --dry-run true
+```
