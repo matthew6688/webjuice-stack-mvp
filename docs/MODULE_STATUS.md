@@ -77,7 +77,7 @@
 | Multi-niche framework | Half built |
 | Reservation/contact extractors | Not started |
 | Live Tally form creation | Blocked on Tally payment block API schema; first-party Stripe checkout is the current production path |
-| Resend cold email test | Dry-run working | `npm run outreach:send-cold-email -- --client <slug> --dry true` writes a proof email artifact from the outreach pack. Opa dry-run proof is saved under `clients/opa-bar-mezze-restaurant/outreach/email/`. Live send should target an owner-controlled inbox first. |
+| Resend cold email test | Dry-run working | `npm run outreach:send-cold-email -- --client <slug> --dry true` writes a proof email artifact from the outreach pack. All 5 Brisbane restaurant dry-run proofs are saved under each client `outreach/email/` folder. Live send should target an owner-controlled inbox first. |
 
 ## Immediate Next Build Order
 

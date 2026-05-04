@@ -31,6 +31,7 @@ Verified live state:
 - Local Ollama restaurant audit is available as `npm run audit:restaurant-local-llm`; all 5 Brisbane restaurants passed with `qwen3.5:9b`, score 100, zero findings. Use this as a local AI quality gate before outreach.
 - Opa outreach pack was regenerated from the refreshed remote preview; desktop/mobile screenshots and `demo.mp4` validate successfully.
 - Cold outreach dry-run is working from outreach packs: `clients/opa-bar-mezze-restaurant/outreach/email/01-opa-bar-mezze.json` includes preview link, official menu source, local AI audit result, and screenshot/video proof.
+- All 5 Brisbane restaurant outreach packs now have refreshed screenshots, demo videos, local AI audits, and dry-run cold email artifacts.
 - Sale routing smoke test wrote a temporary case/task/entitlement/ledger under `/tmp/webjuice-smoke`; Discord case-thread dry-run generated the expected sale thread payload.
 - Agent runner execute smoke passed against the temporary Opa sale task: case context loaded, source-of-truth artifacts applied, build passed, and case run record was updated.
 - Approval publish runner dry-run smoke passed against the same task, covering preflight, dev build, target checkout, tree copy, and live commit plan.

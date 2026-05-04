@@ -211,7 +211,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Local AI audit | MVP 已完成 | `npm run audit:restaurant-local-llm` 使用本地 Ollama + deterministic checks 审计餐厅 content/menu；5 个 Brisbane restaurant 全部用 `qwen3.5:9b` 通过，score 100，0 findings |
 | OCR local runtime | 已配置并验证 | MarkItDown、Poppler、OCRmyPDF/Tesseract/Ghostscript、PaddleOCR/PaddlePaddle 已在本机跑通；详见 `docs/OCR_MENU_PIPELINE.md` |
 | Resend customer emails | MVP 已完成 | `fengtalk.ai` verified；payment/revision receipt 和 router accepted/denied 邮件路径已实现 |
-| Cold email | Dry-run 已完成 | `npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --dry true` 已生成 proof email artifact；live 发送只应发 owner-controlled inbox |
+| Cold email | Dry-run 已完成 | `npm run outreach:send-cold-email -- --client <slug> --dry true` 已为 5 个 Brisbane restaurant 生成 proof email artifact；live 发送只应发 owner-controlled inbox |
 | Ops dashboard | 已规划/暂缓实现 | 先完成 restaurant 闭环；dashboard 只记录方案，详见 `docs/OPS_DASHBOARD_PLAN.md` |
 
 ---
@@ -232,7 +232,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 给 `profitslocal.com` 添加 CNAME 到 `profitslocal-live.pages.dev`
 - [x] 轮询 `profitslocal.com` Pages custom-domain 状态直到 active
 - [ ] `profitslocal.com` 页面由 owner 后续处理，当前不进入执行队列
-- [x] 完成 cold email dry-run proof：Opa outreach email artifact 已生成，包含 preview、真实菜单 source、AI audit、截图/video proof
+- [x] 完成 cold email dry-run proof：5 个 Brisbane restaurant outreach email artifacts 已生成，包含 preview、真实菜单 source、AI audit、截图/video proof
 - [ ] 完成 cold email live 测试（Resend 已配置；live 只发 owner-controlled inbox）
 - [x] 手动修复并验证 5 个 restaurant repo 的 GitHub Secrets / Actions
 - [x] 确认 5 个 preview 站构建成功并可访问
@@ -251,6 +251,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 给 `extract:menu-document` 加 Firecrawl Parse optional fallback，并完成 dry-run smoke test
 - [x] 用真实菜单 evidence 重新生成一个餐厅 preview，并做截图/视觉 QA：Opa Bar + Mezze dev preview 已 push/deploy success，`/menu` mobile/desktop 均 200，52 menu items，无 console error / overflow
 - [x] 重新生成 Opa outreach screenshots/demo video，让 cold email proof 使用最新真实菜单 preview
+- [x] 重新生成 5 个 Brisbane restaurant 的 outreach screenshots/demo video，并全部 validate pass
 - [x] 加入本地 Ollama AI audit 质量闸门，并用 Opa 真实菜单 artifact 验证通过
 - [x] 将本地 Ollama AI audit 跑完 5 个 Brisbane restaurant，全部 pass/100/0 findings
 - [x] 跑 sale → case/task/entitlement/ledger 本地 smoke，并生成 Discord case-thread dry-run payload
