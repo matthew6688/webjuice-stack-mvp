@@ -57,6 +57,11 @@ export async function extractMenuDocument({
       manifest.attempts.push(afterOcr);
       if (afterOcr.ok && afterOcr.itemCount >= MIN_MENU_ITEMS) selected = afterOcr;
     }
+    if (!selected) {
+      const pdfImage = runPdfPaddleAttempt(inputPath, path.join(resolvedOutputDir, 'pdf-images'), { dryRun });
+      manifest.attempts.push(pdfImage);
+      if (pdfImage.ok && pdfImage.itemCount >= MIN_MENU_ITEMS) selected = pdfImage;
+    }
   }
 
   if (!selected && isImage(inputPath)) {
@@ -80,15 +85,20 @@ export async function extractMenuDocument({
 
   if (selected?.ok && selected.textPath && !dryRun) {
     const confidence = confidenceForAttempt(selected);
-    const pack = writeMenuEvidenceFromText(fs.readFileSync(selected.textPath, 'utf8'), {
-      clientSlug,
-      businessName,
-      sourceUrl: sourceUrl || inputPath,
-      sourceType: selected.sourceType || manifest.sourceType,
-      outputPath: evidencePath,
-      confidence,
-    });
-    manifest.evidenceSummary = summarizeEvidence(pack);
+    try {
+      const pack = writeMenuEvidenceFromText(fs.readFileSync(selected.textPath, 'utf8'), {
+        clientSlug,
+        businessName,
+        sourceUrl: sourceUrl || inputPath,
+        sourceType: selected.sourceType || manifest.sourceType,
+        outputPath: evidencePath,
+        confidence,
+      });
+      manifest.evidenceSummary = summarizeEvidence(pack);
+    } catch (error) {
+      selected.evidenceError = error.message;
+      manifest.evidenceSummary = null;
+    }
   }
 
   const manifestPath = path.join(resolvedOutputDir, 'manifest.json');
@@ -143,6 +153,28 @@ function runPaddleAttempt(inputPath, outputPath, { dryRun }) {
     return textAttempt(provider, textPath, { sourceType: 'image_ocr' });
   } catch (error) {
     return failedAttempt(provider, error.message);
+  }
+}
+
+function runPdfPaddleAttempt(inputPath, outputDir, { dryRun }) {
+  const provider = 'pdf_render+paddleocr';
+  if (dryRun) return dryAttempt(provider, outputDir);
+  const pdftoppm = findBinary('pdftoppm');
+  if (!pdftoppm) return failedAttempt(provider, 'pdftoppm_not_installed');
+  try {
+    fs.mkdirSync(outputDir, { recursive: true });
+    const prefix = path.join(outputDir, 'page');
+    execFileSync(pdftoppm, ['-f', '1', '-singlefile', '-r', '120', '-png', inputPath, prefix], { stdio: ['ignore', 'pipe', 'pipe'] });
+    const imagePath = `${prefix}.png`;
+    const paddle = runPaddleAttempt(imagePath, path.join(outputDir, 'paddleocr'), { dryRun });
+    return {
+      ...paddle,
+      provider,
+      renderedImagePath: imagePath,
+      sourceType: 'image_ocr',
+    };
+  } catch (error) {
+    return failedAttempt(provider, outputFromError(error));
   }
 }
 
@@ -223,6 +255,8 @@ function isImage(inputPath) {
 }
 
 function findBinary(name) {
+  const localVenv = path.resolve(process.cwd(), '.venv-markitdown', 'bin', name);
+  if (fs.existsSync(localVenv)) return localVenv;
   const paths = (process.env.PATH || '').split(path.delimiter);
   for (const dir of paths) {
     const candidate = path.join(dir, name);

@@ -196,8 +196,8 @@ Working now:
 
 Remaining:
 
-- Install/configure MarkItDown in the runtime used for production extraction.
-- Run a real scanned PDF and a real Google Maps menu photo through the pipeline.
+- MarkItDown, OCRmyPDF, Poppler, Tesseract/Ghostscript, PaddleOCR, and PaddlePaddle are installed locally.
+- Text PDF, image menu, and scanned PDF flows have been verified locally.
 - Add Firecrawl Parse as an optional live fallback inside the unified command.
 
 Validation:
@@ -231,7 +231,7 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Install/configure MarkItDown and run `extract:menu-document` on a real scanned PDF/menu photo.
+1. Add Firecrawl Parse as optional fallback inside `extract:menu-document`.
 2. Cold outreach email test with screenshot/video proof.
 3. More cities: Sydney/Melbourne restaurants.
 4. Next niche pilot: roofing/plumbing/dental.

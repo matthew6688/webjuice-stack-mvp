@@ -39,9 +39,30 @@ export function readOcrTextOutput(outputPath) {
       .filter((name) => /\.(md|txt|json)$/i.test(name))
       .map((name) => path.join(outputPath, name));
     if (!candidates.length) throw new Error(`No .md, .txt, or .json OCR output found in ${outputPath}`);
-    return fs.readFileSync(candidates[0], 'utf8');
+    return readOcrTextFile(candidates[0]);
   }
-  return fs.readFileSync(outputPath, 'utf8');
+  return readOcrTextFile(outputPath);
+}
+
+function readOcrTextFile(filePath) {
+  const text = fs.readFileSync(filePath, 'utf8');
+  if (!/\.json$/i.test(filePath)) return text;
+  try {
+    const parsed = JSON.parse(text);
+    const lines = extractRecTexts(parsed);
+    if (lines.length) return lines.join('\n');
+  } catch {
+    // Return the raw text below.
+  }
+  return text;
+}
+
+function extractRecTexts(value) {
+  if (!value || typeof value !== 'object') return [];
+  if (Array.isArray(value.rec_texts)) return value.rec_texts.map(String).filter(Boolean);
+  if (value.res) return extractRecTexts(value.res);
+  if (Array.isArray(value)) return value.flatMap(extractRecTexts);
+  return [];
 }
 
 function hasPythonModule(moduleName) {
