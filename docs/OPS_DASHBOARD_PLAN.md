@@ -1,0 +1,53 @@
+# Ops Dashboard Plan
+
+Updated: 2026-05-05
+
+Status: deferred until the restaurant closed loop is stable.
+
+## Positioning
+
+The dashboard should be an operations command center, not a CMS. It should show system health, revenue/cost, client preview status, order/revision state, agent queue, third-party dependencies, and core settings.
+
+## Priority
+
+Do not implement this before the restaurant loop is complete:
+
+1. Real menu evidence → preview.
+2. Local AI audit.
+3. Outreach screenshot/video proof.
+4. Cold email dry-run/live test.
+5. Paid order → agent task → dev preview → approval → live publish.
+
+## P0 Read-Only Dashboard
+
+- Overview: revenue, costs, ROI, online previews, paid orders, pending revisions, failed deploys.
+- Clients: repo, preview URL, menu evidence, screenshots/video, deploy status, QA status.
+- Orders/Revisions: order ID, masked email, tier, revisions used/remaining, task, case, Discord thread.
+- Agent Queue: pending/running/completed/failed, source-of-truth files, allowed file scope, case context.
+- ROI: campaign/client/provider revenue and cost summary.
+- Integrations: GitHub, Cloudflare, Stripe, Resend, Discord, Google Places, Firecrawl, OpenAI/Ollama health.
+- Settings: non-secret pricing, revision limits, provider unit costs, default niche, prompt/design protocol version.
+
+## Security
+
+Use Cloudflare Access for `/admin`. Do not build custom password auth for MVP. Never display API keys; only show configured/missing/failing.
+
+## Data Sources
+
+- `clients/*`
+- `data/cases/*`
+- `data/funnel/orders/*`
+- `data/finance/ledger.jsonl`
+- deploy/domain/link/outreach/audit artifacts
+- third-party health checks through server-side functions
+
+## Later Actions
+
+Only after read-only status is trustworthy:
+
+- rerun deploy check
+- regenerate outreach assets
+- rebuild client artifacts
+- create agent task
+- send review email
+- publish approved dev to live

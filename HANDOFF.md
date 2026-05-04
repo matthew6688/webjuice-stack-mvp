@@ -207,10 +207,12 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Revision 次数显示 | MVP 已完成 | `/api/order-status/` 从主自动化仓库读取 entitlement；`/revise` 显示已用/剩余/套餐 |
 | Discord case workspace | MVP 已完成 | webhook `wait=true` 返回 message/channel；forum/media channel 可自动 thread；配置 `DISCORD_BOT_TOKEN` 后普通 text channel 也可从 webhook message 创建 true thread |
 | ROI / cost ledger | MVP 已完成 | Stripe/Tally revenue、Places/Firecrawl/OpenAI、Resend、image generation、agent runtime 都可写 ledger；Resend/runtime 为可配置估算成本 |
-| Menu document extraction | MVP 已完成 | `extract:menu-document` 统一调度 MarkItDown、direct text、OCRmyPDF、PaddleOCR、Firecrawl Parse fallback，并写 manifest + menu evidence；已用 Opa Bar + Mezze 真实官网菜单验证出 10 sections / 73 items |
+| Menu document extraction | MVP 已完成 | `extract:menu-document` 统一调度 MarkItDown、direct text、OCRmyPDF、PaddleOCR、Firecrawl Parse fallback，并写 manifest + menu evidence；已用 Opa Bar + Mezze 真实官网菜单验证，并推送远程 dev preview，最终清洗为 7 sections / 52 items |
+| Local AI audit | MVP 已完成 | `npm run audit:restaurant-local-llm` 使用本地 Ollama + deterministic checks 审计餐厅 content/menu；Opa 用 `qwen3.5:9b` 通过，score 100，0 findings |
 | OCR local runtime | 已配置并验证 | MarkItDown、Poppler、OCRmyPDF/Tesseract/Ghostscript、PaddleOCR/PaddlePaddle 已在本机跑通；详见 `docs/OCR_MENU_PIPELINE.md` |
 | Resend customer emails | MVP 已完成 | `fengtalk.ai` verified；payment/revision receipt 和 router accepted/denied 邮件路径已实现 |
-| Cold email | 待验证 | Resend 已配置；还需 cold outreach 模板、截图/video proof、发送测试 |
+| Cold email | Dry-run 已完成 | `npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --dry true` 已生成 proof email artifact；live 发送只应发 owner-controlled inbox |
+| Ops dashboard | 已规划/暂缓实现 | 先完成 restaurant 闭环；dashboard 只记录方案，详见 `docs/OPS_DASHBOARD_PLAN.md` |
 
 ---
 
@@ -229,8 +231,9 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 绑定 `profitslocal.com` 到 `profitslocal-live` Pages project
 - [x] 给 `profitslocal.com` 添加 CNAME 到 `profitslocal-live.pages.dev`
 - [x] 轮询 `profitslocal.com` Pages custom-domain 状态直到 active
-- [ ] 替换 `profitslocal.com` 当前 placeholder 页面为真实 sales/order utility 体验
-- [ ] 完成 cold email 发送测试（Resend 已配置，需发送 dry-run/live proof）
+- [ ] `profitslocal.com` 页面由 owner 后续处理，当前不进入执行队列
+- [x] 完成 cold email dry-run proof：Opa outreach email artifact 已生成，包含 preview、真实菜单 source、AI audit、截图/video proof
+- [ ] 完成 cold email live 测试（Resend 已配置；live 只发 owner-controlled inbox）
 - [x] 手动修复并验证 5 个 restaurant repo 的 GitHub Secrets / Actions
 - [x] 确认 5 个 preview 站构建成功并可访问
 - [x] 创建 first-party Stripe checkout/revision forms，并配置 webhook/secrets
@@ -246,8 +249,12 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 安装配置 MarkItDown/OCRmyPDF/PaddleOCR，并用 PDF、图片菜单、扫描 PDF 跑 live 验证
 - [x] 用真实 business 官网菜单验证 document extraction：Opa Bar + Mezze official menu → MarkItDown → 10 sections / 73 items
 - [x] 给 `extract:menu-document` 加 Firecrawl Parse optional fallback，并完成 dry-run smoke test
-- [x] 用真实菜单 evidence 重新生成一个餐厅 preview，并做截图/视觉 QA：Opa Bar + Mezze 本地 preview build 通过，`/menu` mobile/desktop 均 200，52 menu items，无 console error / overflow
+- [x] 用真实菜单 evidence 重新生成一个餐厅 preview，并做截图/视觉 QA：Opa Bar + Mezze dev preview 已 push/deploy success，`/menu` mobile/desktop 均 200，52 menu items，无 console error / overflow
+- [x] 重新生成 Opa outreach screenshots/demo video，让 cold email proof 使用最新真实菜单 preview
+- [x] 加入本地 Ollama AI audit 质量闸门，并用 Opa 真实菜单 artifact 验证通过
+- [x] 跑 sale → case/task/entitlement/ledger 本地 smoke，并生成 Discord case-thread dry-run payload
+- [ ] 跑一次真实 Discord thread live test（当前本地 env 未配置 webhook/bot；可通过 `.env.local` 或 GitHub Actions secrets 执行）
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
-- [ ] 更多城市测试（如 Sydney, Melbourne）
-- [ ] 添加更多 niche 模板（如 plumbing, dental）
+- [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做
+- [ ] 其他 niche 暂缓；当前只聚焦 restaurant 闭环
 - [x] 验证 Stripe test 收款流程和 extra revision checkout

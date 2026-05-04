@@ -40,6 +40,7 @@
 | Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
 | Niche registry | Working MVP | `npm run niches:list` exposes registered niches; pipeline now routes through `core/niches/registry.js` instead of hardcoding restaurant logic. |
 | Outreach pack MVP | Working MVP | `npm run outreach:build-pack` creates outreach pack JSON with QA status, proof points, screenshot targets, and demo video target; `npm run outreach:validate-pack` verifies pack usability. |
+| Local restaurant AI audit | Working MVP | `npm run audit:restaurant-local-llm` combines deterministic menu/content rules with local Ollama audit. Default model is `qwen3.5:9b` for stable JSON; Opa passed with score 100. |
 | Legacy restaurant migration | Working MVP | `npm run migrate:legacy-restaurant` converts current generated restaurant repos into standard evidence packs. |
 | Tally checkout form automation | Blocked | Payment form payloads and MCP prompts can be generated, but live Tally API payment-block creation failed schema validation during testing. Use first-party Stripe checkout until Tally MCP/manual creation is proven. |
 | Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |
@@ -76,14 +77,14 @@
 | Multi-niche framework | Half built |
 | Reservation/contact extractors | Not started |
 | Live Tally form creation | Blocked on Tally payment block API schema; first-party Stripe checkout is the current production path |
-| Resend cold email test | Ready to test; Resend domain `fengtalk.ai` is verified and Pages secrets are configured |
+| Resend cold email test | Dry-run working | `npm run outreach:send-cold-email -- --client <slug> --dry true` writes a proof email artifact from the outreach pack. Opa dry-run proof is saved under `clients/opa-bar-mezze-restaurant/outreach/email/`. Live send should target an owner-controlled inbox first. |
 
 ## Immediate Next Build Order
 
-1. Replace the placeholder `profitslocal.com` marketing shell with the real sales/order utility experience.
-2. Use the real-menu evidence flow to regenerate one restaurant preview end-to-end and visually QA it.
-3. Resend cold outreach dry-run and live test.
-4. Add next city or niche pilot after the restaurant loop closes.
+1. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
+2. Run full paid → agent → dev preview → approval → live publish dry-run/live-sim.
+3. Migrate the remaining Brisbane restaurants through the real-menu/artifact/audit/outreach flow.
+4. Add next restaurant city only after the restaurant loop closes.
 
 ## Verification Rules
 

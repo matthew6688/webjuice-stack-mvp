@@ -58,9 +58,11 @@
     "outreach:build-pack": "node scripts/outreach/build-pack.js",
     "outreach:validate-pack": "node scripts/outreach/validate-pack.js",
     "outreach:capture-assets": "node scripts/outreach/capture-assets.js",
+    "outreach:send-cold-email": "node scripts/send-cold-email.js",
     "migrate:legacy-restaurant": "node scripts/migrations/legacy-restaurant-data.js",
     "ocr:paddle": "node scripts/ocr/paddleocr.js",
-    "ocr:pdf": "node scripts/ocr/ocrmypdf.js"
+    "ocr:pdf": "node scripts/ocr/ocrmypdf.js",
+    "audit:restaurant-local-llm": "node scripts/audit/restaurant-local-llm.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",

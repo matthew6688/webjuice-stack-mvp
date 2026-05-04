@@ -1,5 +1,8 @@
 import fs from 'fs';
+import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import { buildDiscordMessage, sendDiscordWebhook } from '../../core/funnel/discord.js';
+
+loadLocalEnv();
 
 const args = parseArgs(process.argv.slice(2));
 if (!args.case) {

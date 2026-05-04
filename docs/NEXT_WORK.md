@@ -27,7 +27,11 @@ Verified live state:
 - Funnel Discord sends now request webhook responses, try `thread_name`, can use `DISCORD_BOT_TOKEN` to create true threads from webhook messages in text channels, and persist returned channel/thread/message IDs into case memory.
 - Menu document extraction now handles MarkItDown, direct text/Markdown, OCRmyPDF, PDF render + PaddleOCR, image PaddleOCR, and optional Firecrawl Parse fallback.
 - Real business menu verification completed with Opa Bar + Mezze official menu: MarkItDown selected and generated 10 sections / 73 menu items from the live official menu page.
-- Opa Bar + Mezze was regenerated from real-menu evidence into the artifact renderer and locally screenshot-QA'd: `/` and `/menu` return 200 on desktop/mobile; menu renders 52 cleaned items across 7 sections; no console errors or horizontal overflow.
+- Opa Bar + Mezze was regenerated from real-menu evidence into the artifact renderer, pushed to the client `dev` branch, deployed successfully, and screenshot-QA'd locally/remotely: `/` and `/menu` return 200 on desktop/mobile; menu renders 52 cleaned items across 7 sections; no console errors or horizontal overflow.
+- Local Ollama restaurant audit is available as `npm run audit:restaurant-local-llm`; Opa passed with `qwen3.5:9b`, score 100, zero findings. Use this as a local AI quality gate before outreach.
+- Opa outreach pack was regenerated from the refreshed remote preview; desktop/mobile screenshots and `demo.mp4` validate successfully.
+- Cold outreach dry-run is working from outreach packs: `clients/opa-bar-mezze-restaurant/outreach/email/01-opa-bar-mezze.json` includes preview link, official menu source, local AI audit result, and screenshot/video proof.
+- Sale routing smoke test wrote a temporary case/task/entitlement/ledger under `/tmp/webjuice-smoke`; Discord case-thread dry-run generated the expected sale thread payload.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -53,8 +57,7 @@ Working now:
 
 Remaining:
 
-- Replace the current placeholder `profitslocal.com` marketing shell with the real sales/order utility experience.
-- Fix placeholder content links like `/blog/undefined` and `/cases/undefined`.
+- Deferred by owner: `profitslocal.com` page/design work will be handled later.
 
 Validation:
 
@@ -148,7 +151,7 @@ Working now:
 
 Remaining hardening:
 
-- Configure `DISCORD_BOT_TOKEN` as a GitHub Actions secret and keep it out of docs/code.
+- Live local Discord test requires webhook/bot values in `.env.local`, or use the already-configured GitHub Actions secrets. Do not put raw Discord tokens in commands/docs.
 - Add follow-up message helpers for agent-complete and live-published events.
 
 Validation:
@@ -167,6 +170,7 @@ Already working:
 - Payment receipt email path in client webhook.
 - Revision received email path in client revision endpoint.
 - Router-level accepted/denied email path when `--send-email true` is used.
+- Cold outreach dry-run proof generation from outreach pack.
 
 Still needed:
 
@@ -174,13 +178,14 @@ Still needed:
 - Domain/live launch ready email.
 - Extra revision purchase completed email.
 - Email delivery/cost ledger events.
-- Cold outreach email test with screenshot/video proof.
+- Cold outreach live test to owner-controlled inbox with screenshot/video proof.
 
 Validation:
 
 ```bash
 npm run funnel:route-stripe -- --input /tmp/stripe-event.json --send-email true --dry-run true
 npm run finance:report -- --campaign brisbane-restaurants
+npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --to <owner-email> --dry true
 ```
 
 ### 6. Menu PDF And Image OCR
@@ -202,7 +207,6 @@ Working now:
 
 Remaining:
 
-- Push the regenerated Opa dev branch if we want the remote preview to reflect the real-menu extraction exercise.
 - Add a stricter confidence/QA report for complex banquet/share menus before outreach.
 
 Validation:
@@ -234,12 +238,34 @@ npm run clients:sync-artifacts -- --client <slug> --repo-dir <local-client-repo>
 npm run outreach:capture-assets -- --client <slug>
 ```
 
+### 8. Local AI Audit
+
+Goal: use local Ollama models as a cheap scale QA pass before outreach.
+
+Working now:
+
+- `npm run audit:restaurant-local-llm -- --client <slug>` reads `content.restaurant.json` and evidence.
+- Deterministic checks catch missing phone/address/source chains, menu noise, duplicate item-price pairs, oversized sections, and generated menu items.
+- Ollama checks the compressed content/menu against restaurant principles:
+  - website and menu are different products
+  - menu facts must be evidence-backed
+  - phone/map/reservation should be mobile actionable
+  - obvious CMS/OCR noise should be flagged
+- Default model is `qwen3.5:9b` because it returns stable JSON locally. `qwen3.6:27b` can be used manually for deeper review, but its thinking mode may break strict JSON.
+
+Validation:
+
+```bash
+npm run audit:restaurant-local-llm -- --client opa-bar-mezze-restaurant --fail-on high
+```
+
 ## Suggested Build Order
 
-1. Push the regenerated Opa dev preview or repeat the same real-menu flow for another restaurant.
-2. Cold outreach email test with screenshot/video proof.
-3. More cities: Sydney/Melbourne restaurants.
-4. Next niche pilot: roofing/plumbing/dental.
+1. Cold outreach live test to owner-controlled inbox using the regenerated Opa proof assets.
+2. Full paid → agent → dev preview → approval → live publish dry-run/live-sim.
+3. Migrate the remaining restaurant repos through the real-menu/artifact/audit/outreach flow.
+4. More restaurant cities only after the Brisbane restaurant loop is stable.
+5. Dashboard implementation only after the core restaurant loop is done; see `docs/OPS_DASHBOARD_PLAN.md`.
 
 ## Blocking Inputs
 
