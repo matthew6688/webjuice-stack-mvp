@@ -461,10 +461,15 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
   - menu/content changes
   - domain info
   - launch approval
+- [x] Add first-party checkout fallback when Tally payment-block automation is blocked:
+  - client `/checkout` page
+  - Cloudflare Pages Function for Stripe Checkout Session creation
+  - success redirect to `/thank-you`
+  - fixed footer links stay outside customer content
 
 ### Validation
 
-- Create test Tally form in sandbox/test mode if available.
+- Create test Tally form in sandbox/test mode if available. Current live API payment-block creation is blocked by Tally block schema errors.
 - Submit local test purchase payload.
 - Webhook creates:
   - `clients/{clientSlug}/funnel/submission.json`
@@ -475,8 +480,8 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
 ### Stripe Alternative
 
 - [ ] Create `core/payments/order.js` shared normalized order contract.
-- [ ] Add first-party checkout form endpoint.
-- [ ] Create Stripe Checkout Session with hidden metadata:
+- [x] Add first-party checkout form endpoint.
+- [x] Create Stripe Checkout Session with hidden metadata:
   - `clientSlug`
   - `previewUrl`
   - `repo`

@@ -70,7 +70,7 @@ function tierDescription(id) {
 export function validateCheckoutArtifact(artifact) {
   const errors = [];
   if (!artifact.clientSlug) errors.push('clientSlug is required');
-  if (!['tally', 'stripe'].includes(artifact.provider)) errors.push('provider must be tally or stripe');
+  if (!['tally', 'stripe', 'self_stripe'].includes(artifact.provider)) errors.push('provider must be tally, stripe, or self_stripe');
   if (!Array.isArray(artifact.tiers) || !artifact.tiers.length) errors.push('tiers must not be empty');
   for (const tier of artifact.tiers || []) {
     if (!tier.id) errors.push('tier.id is required');

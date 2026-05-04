@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "clientSlug": "joey-s-restaurant",
   "generatedAt": "2026-05-04T07:38:25.827Z",
-  "provider": "tally",
+  "provider": "self_stripe",
   "currency": "USD",
   "tiers": [
     {
@@ -10,17 +10,17 @@
       "amount": 399,
       "label": "One-time website",
       "description": "One-time website build with 3 revisions.",
-      "purchaseUrl": "https://tally.so/r/webjuice-order?client_slug=joey-s-restaurant&repo=matthew6688%2Fjoey-s-restaurant&template=webjuice-restaurant&preview_url=https%3A%2F%2Fjoey-s-restaurant-dev.pages.dev&currency=USD&tier=one_time&amount=399"
+      "purchaseUrl": "https://joey-s-restaurant-dev.pages.dev/checkout?client_slug=joey-s-restaurant&repo=matthew6688%2Fjoey-s-restaurant&template=webjuice-restaurant&preview_url=https%3A%2F%2Fjoey-s-restaurant-dev.pages.dev&currency=USD&tier=one_time&amount=399"
     },
     {
       "id": "yearly_maintenance",
       "amount": 799,
       "label": "Yearly maintenance",
       "description": "Website build plus monthly maintenance for one year.",
-      "purchaseUrl": "https://tally.so/r/webjuice-order?client_slug=joey-s-restaurant&repo=matthew6688%2Fjoey-s-restaurant&template=webjuice-restaurant&preview_url=https%3A%2F%2Fjoey-s-restaurant-dev.pages.dev&currency=USD&tier=yearly_maintenance&amount=799"
+      "purchaseUrl": "https://joey-s-restaurant-dev.pages.dev/checkout?client_slug=joey-s-restaurant&repo=matthew6688%2Fjoey-s-restaurant&template=webjuice-restaurant&preview_url=https%3A%2F%2Fjoey-s-restaurant-dev.pages.dev&currency=USD&tier=yearly_maintenance&amount=799"
     }
   ],
-  "feedbackUrl": "https://tally.so/r/webjuice-feedback?client_slug=joey-s-restaurant&repo=matthew6688%2Fjoey-s-restaurant&template=webjuice-restaurant&preview_url=https%3A%2F%2Fjoey-s-restaurant-dev.pages.dev&currency=USD",
+  "feedbackUrl": "https://joey-s-restaurant-dev.pages.dev/thank-you?client_slug=joey-s-restaurant&repo=matthew6688%2Fjoey-s-restaurant&template=webjuice-restaurant&preview_url=https%3A%2F%2Fjoey-s-restaurant-dev.pages.dev&currency=USD",
   "hiddenFields": {
     "client_slug": "joey-s-restaurant",
     "repo": "matthew6688/joey-s-restaurant",

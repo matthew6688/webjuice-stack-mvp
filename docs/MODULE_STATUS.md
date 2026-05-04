@@ -23,6 +23,7 @@
 | Menu text parser MVP | Working MVP | `npm run extract:menu` parses text/markdown menu artifacts into `menu.sections`; PDF requires local `pdftotext` or prior text extraction. |
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
+| First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Needs Stripe price IDs/secrets before live payment. |
 | Tally payment form builder | Working MVP | `npm run funnel:create-tally-payment-forms` builds stable Tally payment form payloads, MCP prompts, or live forms/webhooks when `TALLY_API_KEY` is set in `.env.local` or runtime env. Current product tiers: $399 one-time website with 3 revisions; $799 yearly website with monthly maintenance. |
 | Tally feedback form builder | Working MVP | `npm run funnel:create-tally-feedback-form` builds a feedback form payload/MCP prompt that submits revision requests into the same webhook. |
 | Checkout URL updater | Working MVP | `npm run funnel:update-checkout-urls` rewrites client checkout artifacts with real Tally form URLs while preserving hidden fields. |
@@ -33,7 +34,7 @@
 | Niche registry | Working MVP | `npm run niches:list` exposes registered niches; pipeline now routes through `core/niches/registry.js` instead of hardcoding restaurant logic. |
 | Outreach pack MVP | Working MVP | `npm run outreach:build-pack` creates outreach pack JSON with QA status, proof points, screenshot targets, and demo video target; `npm run outreach:validate-pack` verifies pack usability. |
 | Legacy restaurant migration | Working MVP | `npm run migrate:legacy-restaurant` converts current generated restaurant repos into standard evidence packs. |
-| Tally checkout form automation | Working MVP | Payment form payloads and MCP prompts can be generated; live API creation is available when `TALLY_API_KEY` is configured. |
+| Tally checkout form automation | Blocked | Payment form payloads and MCP prompts can be generated, but live Tally API payment-block creation failed schema validation during testing. Use first-party Stripe checkout until Tally MCP/manual creation is proven. |
 | Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |
 | Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents. |
 | Agent execution runner | Working MVP | `npm run agent:run-task` reads a pending task, applies artifacts to an artifact-ready repo, and runs build; dry-run is default. |
@@ -51,6 +52,7 @@
 | Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, and Tally revenue can write events; Resend and image generation still need direct wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | Feedback form payloads exist and feedback submissions normalize into `revise` agent tasks; dev-branch execution runner is artifact-oriented MVP. |
+| Stripe paid activation webhook | Not started | Need signed Stripe webhook verification, normalized order mapping, ROI revenue event, and agent task creation after `checkout.session.completed`. |
 
 ## Not Started
 
@@ -61,7 +63,7 @@
 | OCRmyPDF provider | Working wrapper |
 | Multi-niche framework | Half built |
 | Reservation/contact extractors | Not started |
-| Live Tally form creation | Blocked on local `TALLY_API_KEY` and payment workspace verification |
+| Live Tally form creation | Blocked on Tally payment block API schema; fallback Stripe checkout is in progress |
 | Resend cold email test | Blocked on configured `RESEND_API_KEY` and sender/domain setup |
 
 ## Immediate Next Build Order

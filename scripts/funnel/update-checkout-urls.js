@@ -21,7 +21,7 @@ function parseArgs() {
 const args = parseArgs();
 
 if (!args.client && !args.all) {
-  console.error('Usage: node scripts/funnel/update-checkout-urls.js --client slug --one-time-url https://tally.so/r/... --yearly-url https://tally.so/r/... [--feedback-url https://tally.so/r/...]');
+  console.error('Usage: node scripts/funnel/update-checkout-urls.js --client slug --one-time-url https://tally.so/r/... --yearly-url https://tally.so/r/... [--feedback-url https://tally.so/r/...] [--provider tally|stripe|self_stripe]');
   console.error('   or: node scripts/funnel/update-checkout-urls.js --all clients --one-time-url ... --yearly-url ...');
   process.exit(1);
 }
@@ -39,6 +39,7 @@ const clientSlugs = args.all
 for (const clientSlug of clientSlugs) {
   const checkoutPath = path.join('clients', clientSlug, 'funnel', 'checkout.json');
   const artifact = JSON.parse(fs.readFileSync(checkoutPath, 'utf8'));
+  if (args.provider) artifact.provider = args.provider;
   const updated = applyCheckoutFormUrls(artifact, {
     tierUrls,
     feedbackUrl: args['feedback-url'] || args.feedbackUrl || '',
