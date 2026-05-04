@@ -152,8 +152,8 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 | 问题 | 状态 | 解决方案 |
 |------|------|---------|
 | 旧 `matthewatuchat/*` repo 对当前账号不可写 | 已绕过 | 主模板已迁到 `matthew6688/webjuice-stack-mvp`，后续新 repo 默认创建到 `matthew6688` |
-| 5 个餐厅站 Actions 构建失败 | 已定位，本地已修复 | 原因是 workflow 使用 Node 20，但 Astro 6 需要 Node >=22.12；同时内容集合配置需迁移到 `src/content.config.ts` |
-| `longwang-restaurant-restaurant` 的 CLOUDFLARE_API_TOKEN Secret 设置失败 | 未解决 | 手动在 GitHub Settings → Secrets 中添加 |
+| 5 个餐厅站 Actions 构建失败 | 已修复 | Node 22、Astro 6 content config、以及构建期 Payload fetch 均已修复；当前失败点已进入 Cloudflare deploy secret |
+| 5 个 `matthew6688/*-restaurant` repo 缺少 `CLOUDFLARE_API_TOKEN` Secret | 未解决 | 手动在 GitHub Settings → Secrets 中添加，或本机配置 `CF_API_TOKEN` 后用脚本批量设置 |
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |
 | Google Places API 需要开启 + 绑定信用卡 | 已配置 | - |
@@ -164,6 +164,8 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 
 - [x] 将主模板迁到 `matthew6688/webjuice-stack-mvp`
 - [x] 将 `/tmp/webjuice-client-fix/*` 中 5 个客户 repo 的 `fix: update Astro 6 build config` commits push 到 `main` 和 `dev`
+- [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `PAGES_PROJECT_NAME` variable
+- [ ] 给 5 个 `matthew6688/*-restaurant` repo 设置 `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` secrets 后重新跑 Actions
 - [ ] 完成 cold email 发送测试（等 RESEND_API_KEY 配置）
 - [ ] 手动修复 `longwang-restaurant-restaurant` 的 GitHub Secrets
 - [ ] 确认 5 个 preview 站构建成功
