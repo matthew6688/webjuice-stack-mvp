@@ -10,7 +10,8 @@ As of 2026-05-04:
 - Evidence, restaurant adapter, design brief, checkout artifacts, outreach packs, screenshots/videos, agent task creation, domain inspection, and ROI ledger are working MVPs.
 - 5 Brisbane restaurant preview sites return HTTP 200.
 - 5 generated restaurant repos have latest GitHub Actions `completed/success`.
-- Tally live form creation is implemented but blocked until `TALLY_API_KEY` is present in `.env.local` and the Tally workspace payment settings are verified.
+- Tally live payment form creation is blocked by Tally payment-block schema issues; the current production path is first-party `/checkout` + Stripe Checkout + signed Stripe webhooks.
+- First-party `/revise`, revision entitlements, `$100` extra revision checkout, and Resend customer emails are working MVPs.
 - The highest-impact unfinished work is listed in `docs/NEXT_WORK.md`.
 
 ## North Star
@@ -24,10 +25,10 @@ The system should run this loop with minimal manual work:
 5. Render a high-quality preview site.
 6. Generate screenshots, a short demo video, and an outreach pack.
 7. Send or prepare outreach.
-8. Let the customer purchase through Tally.
+8. Let the customer purchase through first-party Stripe checkout.
 9. Convert the purchase into an AI agent task.
 10. Let the customer submit feedback.
-11. Agent revises the dev branch.
+11. Agent revises the dev branch after entitlement checks.
 12. Customer approves.
 13. Connect domain, deploy live, and record revenue/costs for ROI.
 
@@ -422,13 +423,13 @@ type BrandSystem = {
 - Video file exists and duration is 20-45 seconds.
 - Screenshots are attached to outreach pack.
 
-## Phase 7: Tally Sales Funnel
+## Phase 7: Sales Funnel
 
 ### Purpose
 
 Preview site should convert directly.
 
-Implementation note: Tally is the fastest MVP checkout/feedback provider, but the system should treat it as one payments/forms provider, not as core architecture. If Tally limits block automation, replace it with a first-party form plus Stripe Checkout and Stripe webhooks while keeping the same normalized order, revenue event, and agent task contracts.
+Implementation note: Tally is retained as a provider boundary, but live API creation of payment blocks failed schema validation during testing. The current production path is first-party forms plus Stripe Checkout and signed Stripe webhooks, while keeping the same normalized order, revenue event, entitlement, and agent task contracts.
 
 ### Tasks
 
@@ -469,7 +470,7 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
 
 ### Validation
 
-- Create test Tally form in sandbox/test mode if available. Current live API payment-block creation is blocked by Tally block schema errors.
+- Stripe test checkout and webhook routes are the primary validation path. Current live Tally API payment-block creation is blocked by Tally block schema errors.
 - Submit local test purchase payload.
 - Webhook creates:
   - `clients/{clientSlug}/funnel/submission.json`
@@ -503,7 +504,7 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
   - revision quota accepted/denied
   - extra revision purchase CTA
 - [x] Add `$100` extra revision Stripe price and checkout tier.
-- [ ] Keep Tally feedback form or replace with first-party feedback form.
+- [x] Replace Tally feedback form with first-party `/revise` form requiring `orderId + checkout email`.
 
 ## Phase 8: Agent Loop
 
@@ -546,7 +547,7 @@ type AgentTask = {
 
 ### Validation
 
-- Tally test submission creates an agent task.
+- Stripe checkout/revision event creates an agent task.
 - Agent task can be run manually.
 - Result push triggers dev deploy.
 - QA script verifies dev preview.
@@ -556,7 +557,7 @@ type AgentTask = {
 ### Tasks
 
 - [ ] Create `core/domain/schema.ts`.
-- [ ] Add domain fields to Tally purchase/feedback forms.
+- [x] Add domain fields to first-party checkout/revision forms.
 - [x] Implement DNS detection:
   - nameservers
   - A/AAAA
@@ -636,6 +637,7 @@ type LedgerEvent = {
   - [ ] Resend emails
   - [ ] domain purchases
   - [x] Tally revenue events
+  - [x] Stripe revenue events
 - [x] Add `scripts/finance/report.js`.
 - [ ] Report:
   - cost per lead
@@ -710,7 +712,7 @@ type LedgerEvent = {
 4. Phase 3: Restaurant adapter.
 5. Phase 10: Finance ledger minimum viable report.
 6. Phase 6: QA screenshots and video.
-7. Phase 7: Tally funnel.
+7. Phase 7: Stripe-first sales funnel.
 8. Phase 8: Agent tasks.
 9. Phase 9: Domain onboarding.
 10. Phase 11: Outreach automation.
@@ -725,9 +727,10 @@ type LedgerEvent = {
 - Preview site deploys.
 - Desktop/mobile screenshots are generated.
 - Demo video is generated.
-- Tally checkout is linked and carries hidden client fields.
-- Paid Tally submission creates an agent task.
-- Feedback submission creates a revision task.
+- Stripe checkout is linked and carries hidden client fields.
+- Paid Stripe checkout creates an entitlement and agent task.
+- First-party revision form requires `orderId + checkout email`.
+- Revision quota is enforced before task creation.
 - Agent pushes dev branch.
 - QA validates dev preview.
 - Customer approval triggers live deploy.

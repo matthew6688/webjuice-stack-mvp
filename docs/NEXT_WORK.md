@@ -4,49 +4,148 @@ Updated: 2026-05-04
 
 ## Current State
 
-The Brisbane restaurant MVP is no longer an empty-site prototype. The system now has evidence packs, restaurant content artifacts, Huashu-ready design briefs, checkout artifacts, outreach screenshots/videos, deployment checks, and ROI ledger plumbing.
+The Brisbane restaurant MVP now has a first-party sales funnel instead of a Tally-dependent checkout.
 
 Verified live state:
 
 - 5 generated restaurant previews return HTTP 200.
-- 5 generated restaurant repos have latest GitHub Actions `completed/success`.
-- Tally payment/feedback payloads are stable across dry-runs.
-- Google Places photo extraction has dry-run validation, media manifests, evidence append support, and cost ledger logging.
+- 5 generated restaurant repos have latest dev GitHub Actions `completed/success`.
+- Fixed footer sales bar is preview-only and links to first-party `/checkout` and `/revise` utility pages.
+- Stripe test checkout works for `$399`, `$799/year`, and `$100` extra revision.
+- Stripe test payment for Longwang completed and redirected to `/thank-you`.
+- Stripe webhook signature verification is implemented.
+- Resend domain `fengtalk.ai` is verified and dev Pages projects have Resend secrets configured.
+- Revision requests require mandatory `orderId + checkout email` matching before quota is consumed.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
 
-### 1. Live Tally Checkout
+### 1. Central Automation Runner
 
-Goal: customer can pay `$399` or `$799` from a preview site.
+Goal: Stripe and revision webhooks should trigger the main automation repo without manual file export.
 
-Tasks:
+Current gap:
 
-- Put `TALLY_API_KEY` into local `.env.local`.
-- Verify Tally workspace payment provider settings.
-- Run live Tally payment form creation for one client.
-- Create/update feedback form.
-- Update checkout URLs in all client artifacts.
-- Keep checkout as a preview-only fixed footer banner, not restaurant website or menu content.
-- Keep website and menu as separate product routes: website = formal brand site; menu = minimal mobile utility.
-- Sync checkout artifacts into generated repos.
-- Verify a test/sandbox purchase payload creates:
-  - revenue ledger event
-  - `activate` agent task
-  - correct hidden fields
+- Client Pages Functions can send Discord and optional `AGENT_WEBHOOK_URL`.
+- Main repo can route Stripe/Tally payloads into ledger, entitlement, and agent task files.
+- The missing piece is a central endpoint or GitHub Actions trigger that receives webhook payloads and runs the router.
+
+Recommended MVP:
+
+- Add a GitHub Actions `workflow_dispatch` workflow in `webjuice-stack-mvp`.
+- Let client Pages Functions call GitHub API with a narrowly scoped token.
+- Workflow writes:
+  - `data/funnel/submissions/...`
+  - `data/funnel/orders/...`
+  - `data/agent-tasks/...`
+  - `data/finance/ledger.jsonl`
+- Workflow commits those records back to `main`.
 
 Validation:
 
 ```bash
-npm run check:env -- --workflow funnel
-npm run funnel:create-tally-payment-forms -- --client longwang-restaurant-restaurant --publish true
-npm run funnel:create-tally-feedback-form -- --client longwang-restaurant-restaurant --publish true
-npm run funnel:create-tally-client-forms -- --client longwang-restaurant-restaurant --publish true
-npm run funnel:record-tally -- --input <fixture-or-webhook-payload>
-npm run agent:create-task -- --tally <fixture-or-webhook-payload>
+npm run funnel:route-stripe -- --input /tmp/stripe-event.json --dry-run true
+npm run funnel:route-tally -- --input /tmp/revision.json --dry-run true
+gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp
 ```
 
-### 2. Menu PDF And Image OCR
+### 2. Agent Dev-Branch Execution Loop
+
+Goal: accepted paid/revision tasks should produce a dev branch update and a customer review link.
+
+Tasks:
+
+- Finalize task schema for `sale`, `revision`, `domain`, and `publish`.
+- Teach runner to execute against `/tmp/profitslocal-repos/<client>`.
+- For activation with no launch notes: run QA only and mark activation ready.
+- For revision tasks: apply bounded content/design/artifact changes, not arbitrary edits.
+- Push only to `dev`.
+- Wait for dev deploy.
+- Send internal Discord update and customer review email.
+
+Validation:
+
+```bash
+npm run agent:validate-task -- --task <task.json>
+npm run agent:run-task -- --task <task.json> --execute
+npm run check:deploys -- --client longwang-restaurant-restaurant --branch dev
+npm run check:links -- --client longwang-restaurant-restaurant --internal-links false
+```
+
+### 3. Customer Utility / Status Pages
+
+Goal: `/revise` and future account utility pages should show trusted backend state, not guessed frontend state.
+
+Tasks:
+
+- Add `/api/order-status/`.
+- Require `orderId + email`.
+- Return:
+  - tier
+  - revision limit
+  - revisions used
+  - remaining revisions
+  - next monthly reset date for yearly plan
+  - extra revision checkout URL
+- Render that status on `/revise`.
+- Keep these utility pages available on preview/our domain even after customer live domain is connected.
+
+Validation:
+
+```bash
+curl -X POST https://<client>-dev.pages.dev/api/order-status/ \
+  -H 'Content-Type: application/json' \
+  --data '{"order_id":"cs_test_...","email":"owner@example.com"}'
+```
+
+### 4. Domain Onboarding For `profitslocal.com`
+
+Goal: customers can keep utility pages while their own domain/subdomain points to live production.
+
+Tasks:
+
+- Confirm `profitslocal.com` is in the same Cloudflare account as the API token.
+- Decide route:
+  - customer root domain -> live website
+  - customer subdomain like `preview.customer.com` or our preview URL -> utility/revision flow
+- Attach domain to Pages project.
+- Generate DNS instructions for apex/subdomain.
+- Poll DNS and SSL status.
+- Write `clients/<slug>/domain.json` or global domain status.
+
+Validation:
+
+```bash
+npm run domain:inspect -- profitslocal.com --project profitslocal-live
+npm run domain:attach-pages -- --domain profitslocal.com --project profitslocal-live --dry-run
+```
+
+### 5. Email Completion Nodes
+
+Goal: every key customer-facing state change sends a clear email.
+
+Already working:
+
+- Payment receipt email path in client webhook.
+- Revision received email path in client revision endpoint.
+- Router-level accepted/denied email path when `--send-email true` is used.
+
+Still needed:
+
+- Agent dev preview ready email.
+- Domain/live launch ready email.
+- Extra revision purchase completed email.
+- Email delivery/cost ledger events.
+- Cold outreach email test with screenshot/video proof.
+
+Validation:
+
+```bash
+npm run funnel:route-stripe -- --input /tmp/stripe-event.json --send-email true --dry-run true
+npm run finance:report -- --campaign brisbane-restaurants
+```
+
+### 6. Menu PDF And Image OCR
 
 Goal: handle restaurants whose menu is a PDF, scanned document, or Google Maps photo.
 
@@ -68,105 +167,41 @@ npm run extract:menu -- --input <text-or-markdown> --client <slug> --write-evide
 npm run evidence:validate -- --client <slug>
 ```
 
-### 3. Renderer Integration
+### 7. Renderer / Design Quality Pass
 
-Goal: generated client repos consume artifacts consistently instead of hand-edited pages.
+Goal: every generated repo stays artifact-driven while the output looks like a real official website, not a data dump.
 
 Tasks:
 
-- Make `webjuice-restaurant` the canonical renderer for:
-  - `content.restaurant.json`
-  - `design.restaurant.json`
-  - `checkout.json`
-  - synced images
-- Migrate all 5 generated repos to the renderer flow.
-- Add build verification after sync.
-- Add screenshot QA after each sync.
+- Keep website route and menu route separate:
+  - website = formal, brand/design-heavy official site
+  - menu = minimal mobile menu utility
+- Keep Huashu/open-design design briefs in the generation loop.
+- Add screenshot-based design QA before outreach.
+- Add visual regression artifacts to outreach pack.
 
 Validation:
 
 ```bash
-npm run clients:sync-artifacts -- --client <slug> --repo <local-client-repo> --build
-npm run check:links -- --client <slug>
-npm run check:deploys -- --client <slug>
+npm run clients:sync-artifacts -- --client <slug> --repo-dir <local-client-repo> --build
+npm run outreach:capture-assets -- --client <slug>
 ```
-
-### 4. Agent Loop End-To-End
-
-Goal: a paid customer or feedback form automatically creates bounded work for Hermes/OpenClaw.
-
-Tasks:
-
-- Finalize task schema documentation.
-- Add `validate-task-result`.
-- Ensure runner can update dev branch artifacts safely.
-- Run one local execute test against a generated repo.
-- Push dev branch and verify preview.
-
-Validation:
-
-```bash
-npm run agent:create-task -- --tally <payload>
-npm run agent:validate-task -- --task <task.json>
-npm run agent:run-task -- --task <task.json> --execute
-npm run check:deploys -- --client <slug>
-npm run check:links -- --client <slug>
-```
-
-### 5. Domain Onboarding For `profitslocal.com`
-
-Goal: user-owned domain can point to the production site.
-
-Tasks:
-
-- Confirm `profitslocal.com` is in the same Cloudflare account as the API token.
-- Attach domain to Pages project.
-- Generate customer DNS instructions for apex/subdomain.
-- Poll DNS and SSL status.
-- Write `clients/<slug>/domain.json` or global domain status.
-
-Validation:
-
-```bash
-npm run domain:inspect -- profitslocal.com --project profitslocal-live
-npm run domain:attach-pages -- --domain profitslocal.com --project profitslocal-live --dry-run
-```
-
-### 6. Outreach Automation
-
-Goal: email contains proof, screenshot, demo video, and purchase CTA.
-
-Tasks:
-
-- Configure Resend sender/domain.
-- Generate HTML email variants for:
-  - bad existing website
-  - no website / Google Maps only
-  - menu/booking improvement
-- Attach screenshot and video links.
-- Log email cost/delivery events.
-
-Validation:
-
-```bash
-npm run check:env -- --workflow outreach
-node scripts/send-cold-email.js --dry true
-npm run finance:report -- --campaign brisbane-restaurants
-```
-
-## Blocking Inputs
-
-- Local `.env.local` with real keys. Do not commit it.
-- Tally workspace payment settings verified.
-- Cloudflare token/account that can see `profitslocal.com`.
-- Resend sender/domain configuration for live outreach.
 
 ## Suggested Build Order
 
-1. Live Tally checkout for one client.
-2. Menu PDF/image OCR.
-3. Renderer migration for all 5 restaurant repos.
-4. Agent loop execute test.
-5. Domain attach and polling.
-6. Resend outreach test.
-7. Add next niche.
+1. Central automation runner for Stripe/revision payloads.
+2. Agent dev-branch execution loop with one Longwang paid activation test.
+3. `/api/order-status/` and revision-count display on `/revise`.
+4. Agent preview-ready and domain-ready customer emails.
+5. Domain attach/polling for `profitslocal.com`.
+6. Menu PDF/image OCR.
+7. More cities: Sydney/Melbourne restaurants.
+8. Next niche pilot: roofing/plumbing/dental.
+
+## Blocking Inputs
+
+- A GitHub token or GitHub App path for workflow dispatch from Pages Functions.
+- Decision on where central automation should persist production state long term:
+  - Git repo JSON files for MVP
+  - Cloudflare D1 / Supabase / Neon for production
+- Confirm whether extra revision purchases should add `+1` to the original entitlement or create a separate one-revision entitlement.

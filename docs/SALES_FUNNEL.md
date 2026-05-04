@@ -108,9 +108,12 @@ The webhook endpoint is:
 Validation status:
 
 - Template build passes with `/checkout` and `/thank-you`.
-- All five Brisbane client repos build with `/checkout`.
+- All five Brisbane client repos build with `/checkout` and `/revise`.
+- 5 dev Pages deploys verified `completed/success`.
+- Longwang live test created Stripe Checkout Sessions for `$399` and `$100 extra_revision`.
+- Longwang `$399` test payment completed and redirected to `/thank-you`.
 - Stripe event routing writes a revenue ledger entry and agent task in dry-run and fixture tests.
-- Live paid activation needs Stripe env vars configured in Cloudflare Pages.
+- Stripe/Resend runtime secrets are configured on the 5 dev Pages projects.
 
 ## Create Tally Forms
 
@@ -154,13 +157,44 @@ Send Discord too:
 npm run funnel:route-tally -- --input /tmp/tally-submission.json --send-discord true
 ```
 
+## First-Party Revision Form
+
+The current revision path is not Tally. The fixed footer `Request changes` link points to:
+
+```text
+https://<client>-dev.pages.dev/revise?client_slug=...&repo=...
+```
+
+The `/revise` page posts to:
+
+```text
+/api/revision-request/
+```
+
+Mandatory customer fields:
+
+- `order_id`: Stripe Checkout Session ID from `/thank-you`
+- `email`: same email used at checkout
+- `requested_changes`
+
+Context fields:
+
+- `client_slug`
+- `repo`
+- `template`
+- `preview_url`
+- optional `reference_url`
+
+The client endpoint sends a receipt email and Discord notification, then can forward to `AGENT_WEBHOOK_URL` once the central automation runner exists.
+
 ## Revision Repo Lookup
 
-The feedback form and payment form both carry hidden fields. The router uses this order:
+The first-party revision form carries hidden context fields, but these are not proof of ownership. The backend match requires:
 
-1. `repo`
-2. `client_slug`
-3. `preview_url`
+1. `orderId`
+2. checkout `email`
+
+After that match succeeds, `repo`, `client_slug`, and `preview_url` determine the work target.
 
 The generated task always targets:
 
@@ -202,12 +236,12 @@ Use Resend for customer-facing state changes. Do not rely only on Discord.
 
 Email nodes:
 
-- Payment completed: send order ID, package, preview link, and revision form link.
-- Revision form received: send receipt of submission and explain that order ID + email will be matched.
-- Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID.
-- Revision denied: send the reason and a `$100` extra revision checkout link.
-- Agent dev preview ready: send dev review link after build/QA passes.
-- Domain/live launch ready: send DNS/live-domain instructions.
+- Payment completed: send order ID, package, preview link, and revision form link. Implemented in `/api/stripe-webhook`.
+- Revision form received: send receipt of submission and explain that order ID + email will be matched. Implemented in `/api/revision-request/`.
+- Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID. Implemented in router when `--send-email true`; central runner still needed.
+- Revision denied: send the reason and a `$100` extra revision checkout link. Implemented in router when `--send-email true`; central runner still needed.
+- Agent dev preview ready: send dev review link after build/QA passes. Not built.
+- Domain/live launch ready: send DNS/live-domain instructions. Not built.
 
 The customer-facing pages can remain available on our preview/domain even when the customer points their own domain at the live site. They should be treated as account/order utility pages, not restaurant content pages.
 

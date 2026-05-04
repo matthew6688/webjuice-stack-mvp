@@ -23,7 +23,7 @@
 | Menu text parser MVP | Working MVP | `npm run extract:menu` parses text/markdown menu artifacts into `menu.sections`; PDF requires local `pdftotext` or prior text extraction. |
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
-| First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs have been created; Pages runtime secrets still need to be configured per project. |
+| First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs and Pages runtime secrets are configured on the 5 dev projects. |
 | Stripe paid activation webhook | Working MVP | `webjuice-restaurant` has `/api/stripe-webhook` with signature verification; `npm run funnel:route-stripe` normalizes `checkout.session.completed` into revenue ledger and agent task outputs. |
 | Revision entitlement ledger | Working MVP | Paid sales create `data/funnel/orders/<client>/<order>.json`; revision requests consume quota before agent task creation and denied over-limit attempts are recorded without creating tasks. |
 | Customer email notifications | Working MVP | Client Pages Functions and automation router can send Resend customer emails for payment receipt, revision receipt, accepted quota usage, and denied/extra-revision paths when `RESEND_API_KEY` is configured. |
@@ -55,8 +55,8 @@
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
 | Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, and Tally revenue can write events; Resend and image generation still need direct wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
-| Customer feedback to revision task | Working MVP | Feedback form payloads exist and feedback submissions normalize into `revise` agent tasks; dev-branch execution runner is artifact-oriented MVP. |
-| Stripe paid activation webhook | Working MVP | Needs live paid checkout smoke test after Cloudflare Pages secrets and Stripe webhook endpoints are configured. |
+| Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
+| Central automation trigger | Not started | Client Pages Functions can forward to `AGENT_WEBHOOK_URL`, but there is no deployed central endpoint/GitHub workflow yet to persist live webhook payloads into the main automation repo. |
 
 ## Not Started
 
@@ -67,19 +67,18 @@
 | OCRmyPDF provider | Working wrapper |
 | Multi-niche framework | Half built |
 | Reservation/contact extractors | Not started |
-| Live Tally form creation | Blocked on Tally payment block API schema; fallback Stripe checkout is in progress |
-| Resend cold email test | Blocked on configured `RESEND_API_KEY` and sender/domain setup |
+| Live Tally form creation | Blocked on Tally payment block API schema; first-party Stripe checkout is the current production path |
+| Resend cold email test | Ready to test; Resend domain `fengtalk.ai` is verified and Pages secrets are configured |
 
 ## Immediate Next Build Order
 
-1. Menu PDF extractor and image OCR pipeline.
-2. Reservation/contact extractors.
-3. Renderer integration with `webjuice-restaurant` as the canonical artifact renderer.
-4. Live Tally form creation and webhook smoke test.
-5. First full paid-loop simulation: Tally revenue -> agent task -> dev update -> preview QA.
-6. Domain attach/polling for `profitslocal.com`.
-7. Resend cold email dry-run and live test.
-8. Add next niche pilot after restaurant loop closes.
+1. Central automation trigger for Stripe/revision webhooks.
+2. Agent dev-branch execution loop with one paid activation test.
+3. `/api/order-status/` plus revision-count display on `/revise`.
+4. Domain attach/polling for `profitslocal.com`.
+5. Menu PDF extractor and image OCR pipeline.
+6. Resend cold outreach dry-run and live test.
+7. Add next city or niche pilot after the restaurant loop closes.
 
 ## Verification Rules
 
