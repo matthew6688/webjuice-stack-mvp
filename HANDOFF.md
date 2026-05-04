@@ -153,7 +153,7 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 |------|------|---------|
 | 旧 `matthewatuchat/*` repo 对当前账号不可写 | 已绕过 | 主模板已迁到 `matthew6688/webjuice-stack-mvp`，后续新 repo 默认创建到 `matthew6688` |
 | 5 个餐厅站 Actions 构建失败 | 已修复 | Node 22、Astro 6 content config、构建期 Payload fetch、Joey's apostrophe、Cloudflare secrets 均已修复 |
-| 5 个餐厅站内容像空壳 | 已修复 | 已增加餐厅首页、菜单页 `/menu`、评分地址电话 CTA；注意菜单目前是 preview sample，需要正式发送前替换真实菜单 |
+| 5 个餐厅站内容像空壳 | 已修复 | 已按 Huashu Design 思路重做餐厅首页和 `/menu`；菜单项来自公开官网/PDF/菜单页，并在页面标注 source URL |
 | `profitslocal.com` 自定义域名绑定失败 | 未解决 | DNS 使用 Cloudflare nameservers，但当前 API token/account 查不到 `profitslocal.com` zone；需要切到拥有该 zone 的 Cloudflare account/token，或把 zone 加进当前 account |
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |
@@ -167,7 +167,7 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 - [x] 将 `/tmp/webjuice-client-fix/*` 中 5 个客户 repo 的 `fix: update Astro 6 build config` commits push 到 `main` 和 `dev`
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `PAGES_PROJECT_NAME` variable
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` secrets 后重新跑 Actions
-- [x] 给 5 个餐厅站补餐厅首页和 `/menu` 菜单页
+- [x] 给 5 个餐厅站补基于真实公开菜单数据的餐厅首页和 `/menu` 菜单页
 - [ ] 绑定 `profitslocal.com` 到 `profitslocal-live` Pages project（需要 domain 所在 Cloudflare account 的 token）
 - [ ] 完成 cold email 发送测试（等 RESEND_API_KEY 配置）
 - [ ] 手动修复 `longwang-restaurant-restaurant` 的 GitHub Secrets
