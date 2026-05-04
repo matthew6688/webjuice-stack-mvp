@@ -24,31 +24,31 @@
 | Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
 | Outreach pack MVP | Working MVP | `npm run outreach:build-pack` creates outreach pack JSON with QA status, proof points, screenshot targets, and demo video target; `npm run outreach:validate-pack` verifies pack usability. |
 | Legacy restaurant migration | Working MVP | `npm run migrate:legacy-restaurant` converts current generated restaurant repos into standard evidence packs. |
+| Tally checkout form automation | Working MVP | Payment form payloads and MCP prompts can be generated; live API creation is available when `TALLY_API_KEY` is configured. |
+| Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |
+| Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents. |
+| Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` supports Cloudflare Pages attach/dry-run. |
 
 ## Half Built
 
 | Module | Status | Gap |
 |---|---|---|
 | Evidence engine | Working MVP | `core/evidence/evidence.js` defines source types, merge rules, restaurant validation, and `npm run evidence:*` CLIs. |
-| Restaurant niche adapter | Working MVP | JS adapter/schema exist; still needs real 5-client migration and renderer integration. |
-| Design engine | Half built | Huashu-ready restaurant design brief exists; renderer integration and visual scoring still need work. |
+| Restaurant template renderer | Working MVP | `matthew6688/webjuice-restaurant` now reads `content.restaurant.json` and `design.restaurant.json`; generated repos still need migration to the new renderer flow. |
+| Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
 | Cost tracking | Half built | Ledger/report exist; Google Places, Firecrawl, and Tally revenue write events; OpenAI still needs wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
+| Customer feedback to revision task | Half built | Tally normalizer can infer feedback tasks, but a dedicated feedback form artifact and dev-branch revision runner are not implemented yet. |
 
 ## Not Started
 
 | Module | Status |
 |---|---|
-| Tally checkout form automation | Working MVP |
-| Tally webhook to agent task | Working MVP |
-| Customer feedback form to dev branch revision | Not started |
-| Hermes/OpenClaw task queue | Working MVP |
-| Domain onboarding / DNS verifier | Working MVP |
 | PDF extraction / image OCR pipeline | Half built |
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
-| Demo video generator | Not started |
-| ROI report | Not started |
+| Agent execution runner | Not started |
+| OpenAI usage cost logger | Not started |
 | Multi-niche framework | Not started |
 
 ## Immediate Next Build Order
