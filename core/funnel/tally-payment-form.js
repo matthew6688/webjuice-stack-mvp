@@ -101,7 +101,7 @@ function formTitleBlock(uuid, title, description) {
     uuid: uuid(`title-${title}`),
     type: 'FORM_TITLE',
     groupUuid: uuid(`title-group-${title}`),
-    groupType: 'TEXT',
+    groupType: 'FORM_TITLE',
     payload: {
       html: `<h1>${escapeHtml(title)}</h1><p>${escapeHtml(description || '')}</p>`,
       title,
@@ -123,15 +123,15 @@ function textBlock(uuid, html) {
 
 function inputBlock(uuid, type, title, payload = {}) {
   const groupUuid = uuid(`group-${type}-${title}`);
+  const payloadWithName = type === 'TITLE'
+    ? { title, ...payload }
+    : { title, name: payload.name || fieldName(title), ...payload };
   return {
     uuid: uuid(`block-${type}-${title}`),
     type,
     groupUuid,
     groupType: 'QUESTION',
-    payload: {
-      title,
-      ...payload,
-    },
+    payload: payloadWithName,
   };
 }
 
@@ -153,6 +153,14 @@ function paymentBlock({ uuid, name, amount, currency }) {
 
 function titleCase(value) {
   return String(value || '').replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+function fieldName(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
 }
 
 function packageLabel(tier) {

@@ -27,6 +27,7 @@ Tasks:
 - Run live Tally payment form creation for one client.
 - Create/update feedback form.
 - Update checkout URLs in all client artifacts.
+- Keep checkout as a preview-only fixed footer banner, not restaurant page content.
 - Sync checkout artifacts into generated repos.
 - Verify a test/sandbox purchase payload creates:
   - revenue ledger event
@@ -39,6 +40,7 @@ Validation:
 npm run check:env -- --workflow funnel
 npm run funnel:create-tally-payment-forms -- --client longwang-restaurant-restaurant --publish true
 npm run funnel:create-tally-feedback-form -- --client longwang-restaurant-restaurant --publish true
+npm run funnel:create-tally-client-forms -- --client longwang-restaurant-restaurant --publish true
 npm run funnel:record-tally -- --input <fixture-or-webhook-payload>
 npm run agent:create-task -- --tally <fixture-or-webhook-payload>
 ```

@@ -3,10 +3,12 @@
 import fs from 'fs';
 import path from 'path';
 import { loadLocalEnv } from '../../core/env/load-local-env.js';
+import { buildTallyWebhookPayload, TallyApiClient } from '../../core/funnel/tally-api.js';
 import {
   buildTallyFeedbackFormPayload,
   buildTallyFeedbackMcpPrompt,
 } from '../../core/funnel/tally-feedback-form.js';
+import { validateTallyFormPayload } from '../../core/funnel/tally-validation.js';
 
 loadLocalEnv();
 
@@ -49,6 +51,8 @@ const payload = buildTallyFeedbackFormPayload({
   redirectUrl: thankYouUrl,
   status: args.publish === 'true' ? 'PUBLISHED' : 'DRAFT',
 });
+const validation = validateTallyFormPayload(payload);
+if (!validation.ok) throw new Error(`Invalid Tally feedback payload: ${validation.errors.join('; ')}`);
 
 if (args['dry-run'] === 'true' || args.dryRun === 'true' || !apiKey) {
   const outputPath = args.output || path.join('clients', clientSlug, 'funnel', 'tally-feedback-form-payload.json');
@@ -59,38 +63,12 @@ if (args['dry-run'] === 'true' || args.dryRun === 'true' || !apiKey) {
   process.exit(0);
 }
 
-const form = await createTallyForm(apiKey, payload);
-if (webhookUrl) await createTallyWebhook(apiKey, form.id, webhookUrl);
+const client = new TallyApiClient({ apiKey });
+const form = await client.createForm(payload);
+if (webhookUrl) await client.createWebhook(buildTallyWebhookPayload({
+  formId: form.id,
+  url: webhookUrl,
+  signingSecret: process.env.TALLY_WEBHOOK_SIGNING_SECRET || '',
+}));
 
 console.log(`Tally feedback form created: https://tally.so/r/${form.id}`);
-
-async function createTallyForm(token, formPayload) {
-  const response = await fetch('https://api.tally.so/forms', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formPayload),
-  });
-  if (!response.ok) throw new Error(`Tally form create failed: ${response.status} ${await response.text()}`);
-  return response.json();
-}
-
-async function createTallyWebhook(token, formId, url) {
-  const response = await fetch('https://api.tally.so/webhooks', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      formId,
-      url,
-      eventTypes: ['FORM_RESPONSE'],
-      externalSubscriber: 'webjuice',
-    }),
-  });
-  if (!response.ok) throw new Error(`Tally webhook create failed: ${response.status} ${await response.text()}`);
-  return response.json();
-}

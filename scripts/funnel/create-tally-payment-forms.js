@@ -3,11 +3,13 @@
 import fs from 'fs';
 import path from 'path';
 import { loadLocalEnv } from '../../core/env/load-local-env.js';
+import { buildTallyWebhookPayload, TallyApiClient } from '../../core/funnel/tally-api.js';
 import { buildCheckoutArtifact, parseTierPrices, saveCheckoutArtifact } from '../../core/funnel/checkout.js';
 import {
   buildTallyMcpPrompt,
   buildTallyPaymentFormPayload,
 } from '../../core/funnel/tally-payment-form.js';
+import { validateTallyFormPayload } from '../../core/funnel/tally-validation.js';
 
 loadLocalEnv();
 
@@ -52,6 +54,8 @@ for (const [tier, amount] of Object.entries(tiers)) {
     redirectUrl: thankYouUrl,
     status: args.publish === 'true' ? 'PUBLISHED' : 'DRAFT',
   });
+  const validation = validateTallyFormPayload(payload, { requirePayment: true });
+  if (!validation.ok) throw new Error(`Invalid Tally payment payload for ${tier}: ${validation.errors.join('; ')}`);
   payloads.push({ tier, amount, payload });
 }
 
@@ -75,8 +79,13 @@ if (args['dry-run'] === 'true' || args.dryRun === 'true' || !apiKey) {
 }
 
 for (const { tier, amount, payload } of payloads) {
-  const form = await createTallyForm(apiKey, payload);
-  if (webhookUrl) await createTallyWebhook(apiKey, form.id, webhookUrl);
+  const client = new TallyApiClient({ apiKey });
+  const form = await client.createForm(payload);
+  if (webhookUrl) await client.createWebhook(buildTallyWebhookPayload({
+    formId: form.id,
+    url: webhookUrl,
+    signingSecret: process.env.TALLY_WEBHOOK_SIGNING_SECRET || '',
+  }));
   tierResults.push({
     id: tier,
     amount: Number(amount),
@@ -110,37 +119,6 @@ artifact.tiers = artifact.tiers.map((tier) => {
 saveCheckoutArtifact(artifact, outputPath);
 console.log(`Tally payment forms created: ${outputPath}`);
 for (const tier of artifact.tiers) console.log(`- ${tier.id}: ${tier.purchaseUrl}`);
-
-async function createTallyForm(token, payload) {
-  const response = await fetch('https://api.tally.so/forms', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-  if (!response.ok) throw new Error(`Tally form create failed: ${response.status} ${await response.text()}`);
-  return response.json();
-}
-
-async function createTallyWebhook(token, formId, url) {
-  const response = await fetch('https://api.tally.so/webhooks', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      formId,
-      url,
-      eventTypes: ['FORM_RESPONSE'],
-      externalSubscriber: 'webjuice',
-    }),
-  });
-  if (!response.ok) throw new Error(`Tally webhook create failed: ${response.status} ${await response.text()}`);
-  return response.json();
-}
 
 function readPreviewUrl(slug) {
   const outreachPath = path.join('clients', slug, 'outreach', 'outreach-pack.json');

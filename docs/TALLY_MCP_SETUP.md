@@ -114,6 +114,24 @@ npm run funnel:create-tally-payment-forms -- \
   --thank-you-url https://profitslocal.com/thank-you
 ```
 
+To create payment and feedback forms together for one or all clients:
+
+```bash
+npm run funnel:create-tally-client-forms -- \
+  --client longwang-restaurant-restaurant \
+  --publish true \
+  --webhook-url https://profitslocal.com/api/tally-webhook \
+  --thank-you-url https://profitslocal.com/thank-you
+
+npm run funnel:create-tally-client-forms -- \
+  --all clients \
+  --publish true \
+  --webhook-url https://profitslocal.com/api/tally-webhook \
+  --thank-you-url https://profitslocal.com/thank-you
+```
+
+If `TALLY_API_KEY` is missing, the batch script stays in dry-run mode and writes payloads plus `tally-forms-manifest.json` without calling Tally.
+
 Notes:
 
 - Tally API can create the form and webhook.

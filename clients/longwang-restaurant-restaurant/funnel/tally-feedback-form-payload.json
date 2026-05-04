@@ -7,7 +7,7 @@
         "uuid": "5cac86ce-d50b-48db-8303-7e47a9a562ab",
         "type": "FORM_TITLE",
         "groupUuid": "c85765a4-6e02-47a7-8619-e43e3943f83e",
-        "groupType": "TEXT",
+        "groupType": "FORM_TITLE",
         "payload": {
           "html": "<h1>Feedback for longwang-restaurant-restaurant</h1><p>Tell us what to revise before launch.</p>",
           "title": "Feedback for longwang-restaurant-restaurant"
@@ -20,6 +20,7 @@
         "groupType": "QUESTION",
         "payload": {
           "title": "Business name",
+          "name": "business_name",
           "isRequired": true
         }
       },
@@ -30,6 +31,7 @@
         "groupType": "QUESTION",
         "payload": {
           "title": "Email",
+          "name": "email",
           "isRequired": true
         }
       },
@@ -40,6 +42,7 @@
         "groupType": "QUESTION",
         "payload": {
           "title": "Requested changes",
+          "name": "requested_changes",
           "isRequired": true,
           "alias": "feedback"
         }
@@ -51,6 +54,7 @@
         "groupType": "QUESTION",
         "payload": {
           "title": "Reference URL",
+          "name": "reference_url",
           "isRequired": false,
           "alias": "reference_url"
         }
@@ -62,6 +66,7 @@
         "groupType": "QUESTION",
         "payload": {
           "title": "Screenshots or brand assets",
+          "name": "screenshots_or_brand_assets",
           "isRequired": false
         }
       },
@@ -101,7 +106,7 @@
       }
     ],
     "settings": {
-      "redirectOnCompletion": "",
+      "redirectOnCompletion": "https://profitslocal.com/thank-you",
       "hasProgressBar": true
     }
   }

@@ -11,7 +11,7 @@
             "uuid": "0179674f-9e95-4230-8b25-72d3ca0ffd7a",
             "type": "FORM_TITLE",
             "groupUuid": "d82aa837-7f33-4b49-8aaa-fc02353ce15b",
-            "groupType": "TEXT",
+            "groupType": "FORM_TITLE",
             "payload": {
               "html": "<h1>Launch longwang-restaurant-restaurant</h1><p>Secure your preview site and send launch notes.</p>",
               "title": "Launch longwang-restaurant-restaurant"
@@ -42,6 +42,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Business name",
+              "name": "business_name",
               "isRequired": true
             }
           },
@@ -52,6 +53,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Email",
+              "name": "email",
               "isRequired": true
             }
           },
@@ -62,6 +64,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Phone",
+              "name": "phone",
               "isRequired": false
             }
           },
@@ -72,6 +75,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Preferred domain",
+              "name": "preferred_domain",
               "isRequired": false
             }
           },
@@ -82,6 +86,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Launch notes or requested changes",
+              "name": "launch_notes_or_requested_changes",
               "isRequired": false
             }
           },
@@ -141,7 +146,7 @@
           }
         ],
         "settings": {
-          "redirectOnCompletion": "",
+          "redirectOnCompletion": "https://profitslocal.com/thank-you",
           "hasProgressBar": true
         }
       }
@@ -157,7 +162,7 @@
             "uuid": "a85f7d9e-0739-459a-8735-7da52875f1cb",
             "type": "FORM_TITLE",
             "groupUuid": "ff36d2dd-5eda-4ceb-83b9-e359338de59c",
-            "groupType": "TEXT",
+            "groupType": "FORM_TITLE",
             "payload": {
               "html": "<h1>Launch longwang-restaurant-restaurant</h1><p>Secure your preview site and send launch notes.</p>",
               "title": "Launch longwang-restaurant-restaurant"
@@ -188,6 +193,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Business name",
+              "name": "business_name",
               "isRequired": true
             }
           },
@@ -198,6 +204,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Email",
+              "name": "email",
               "isRequired": true
             }
           },
@@ -208,6 +215,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Phone",
+              "name": "phone",
               "isRequired": false
             }
           },
@@ -218,6 +226,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Preferred domain",
+              "name": "preferred_domain",
               "isRequired": false
             }
           },
@@ -228,6 +237,7 @@
             "groupType": "QUESTION",
             "payload": {
               "title": "Launch notes or requested changes",
+              "name": "launch_notes_or_requested_changes",
               "isRequired": false
             }
           },
@@ -287,7 +297,7 @@
           }
         ],
         "settings": {
-          "redirectOnCompletion": "",
+          "redirectOnCompletion": "https://profitslocal.com/thank-you",
           "hasProgressBar": true
         }
       }
