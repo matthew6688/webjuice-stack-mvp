@@ -40,7 +40,7 @@
 | Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
 | Niche registry | Working MVP | `npm run niches:list` exposes registered niches; pipeline now routes through `core/niches/registry.js` instead of hardcoding restaurant logic. |
 | Outreach pack MVP | Working MVP | `npm run outreach:build-pack` creates outreach pack JSON with QA status, proof points, screenshot targets, and demo video target; `npm run outreach:validate-pack` verifies pack usability. |
-| Local restaurant AI audit | Working MVP | `npm run audit:restaurant-local-llm` combines deterministic menu/content rules with local Ollama audit. Default model is `qwen3.5:9b` for stable JSON; Opa passed with score 100. |
+| Local restaurant AI audit | Working MVP | `npm run audit:restaurant-local-llm` combines deterministic menu/content rules with local Ollama audit. Default model is `qwen3.5:9b` for stable JSON; all 5 Brisbane restaurants passed with score 100 and zero findings. |
 | Legacy restaurant migration | Working MVP | `npm run migrate:legacy-restaurant` converts current generated restaurant repos into standard evidence packs. |
 | Tally checkout form automation | Blocked | Payment form payloads and MCP prompts can be generated, but live Tally API payment-block creation failed schema validation during testing. Use first-party Stripe checkout until Tally MCP/manual creation is proven. |
 | Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-04T15:14:52.211Z",
+  "model": "qwen3.5:9b",
+  "ollamaUrl": "http://127.0.0.1:11434",
+  "contentPath": "clients/longwang-restaurant-restaurant/content.restaurant.json",
+  "evidencePath": "clients/longwang-restaurant-restaurant/evidence/evidence.json",
+  "business": {
+    "name": "Longwang Restaurant",
+    "menuSections": 3,
+    "menuItems": 12,
+    "menuSourceUrl": "https://www.longwang.com.au/menu",
+    "contactPhone": "+61 7 3211 8880",
+    "contactAddress": "144 Edward St, Brisbane City QLD 4000, Australia"
+  },
+  "ok": true,
+  "score": 100,
+  "verdict": "pass",
+  "summary": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "total": 0
+  },
+  "deterministicFindings": [],
+  "llmFindings": [],
+  "findings": [],
+  "principles": {
+    "realDataOnly": "Menu/contact/booking facts should come from official site, Google Places, OCR, or explicit manual evidence.",
+    "websiteMenuSeparation": "Website pages should feel like a formal official site; menu pages should be compact mobile utilities.",
+    "mobileActions": "Phone, map, reservation, and source actions should work on mobile.",
+    "noObviousMenuNoise": "Navigation labels, addresses, phone numbers, and CMS/footer text should not appear as menu items."
+  },
+  "rawLlm": {}
+}

@@ -208,7 +208,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Discord case workspace | MVP 已完成 | webhook `wait=true` 返回 message/channel；forum/media channel 可自动 thread；配置 `DISCORD_BOT_TOKEN` 后普通 text channel 也可从 webhook message 创建 true thread |
 | ROI / cost ledger | MVP 已完成 | Stripe/Tally revenue、Places/Firecrawl/OpenAI、Resend、image generation、agent runtime 都可写 ledger；Resend/runtime 为可配置估算成本 |
 | Menu document extraction | MVP 已完成 | `extract:menu-document` 统一调度 MarkItDown、direct text、OCRmyPDF、PaddleOCR、Firecrawl Parse fallback，并写 manifest + menu evidence；已用 Opa Bar + Mezze 真实官网菜单验证，并推送远程 dev preview，最终清洗为 7 sections / 52 items |
-| Local AI audit | MVP 已完成 | `npm run audit:restaurant-local-llm` 使用本地 Ollama + deterministic checks 审计餐厅 content/menu；Opa 用 `qwen3.5:9b` 通过，score 100，0 findings |
+| Local AI audit | MVP 已完成 | `npm run audit:restaurant-local-llm` 使用本地 Ollama + deterministic checks 审计餐厅 content/menu；5 个 Brisbane restaurant 全部用 `qwen3.5:9b` 通过，score 100，0 findings |
 | OCR local runtime | 已配置并验证 | MarkItDown、Poppler、OCRmyPDF/Tesseract/Ghostscript、PaddleOCR/PaddlePaddle 已在本机跑通；详见 `docs/OCR_MENU_PIPELINE.md` |
 | Resend customer emails | MVP 已完成 | `fengtalk.ai` verified；payment/revision receipt 和 router accepted/denied 邮件路径已实现 |
 | Cold email | Dry-run 已完成 | `npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --dry true` 已生成 proof email artifact；live 发送只应发 owner-controlled inbox |
@@ -252,7 +252,9 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 用真实菜单 evidence 重新生成一个餐厅 preview，并做截图/视觉 QA：Opa Bar + Mezze dev preview 已 push/deploy success，`/menu` mobile/desktop 均 200，52 menu items，无 console error / overflow
 - [x] 重新生成 Opa outreach screenshots/demo video，让 cold email proof 使用最新真实菜单 preview
 - [x] 加入本地 Ollama AI audit 质量闸门，并用 Opa 真实菜单 artifact 验证通过
+- [x] 将本地 Ollama AI audit 跑完 5 个 Brisbane restaurant，全部 pass/100/0 findings
 - [x] 跑 sale → case/task/entitlement/ledger 本地 smoke，并生成 Discord case-thread dry-run payload
+- [x] 跑 agent runner execute smoke：读取 case context/source-of-truth，apply artifacts，build，通过并写回 case run record
 - [ ] 跑一次真实 Discord thread live test（当前本地 env 未配置 webhook/bot；可通过 `.env.local` 或 GitHub Actions secrets 执行）
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做

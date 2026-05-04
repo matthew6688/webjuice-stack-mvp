@@ -28,10 +28,11 @@ Verified live state:
 - Menu document extraction now handles MarkItDown, direct text/Markdown, OCRmyPDF, PDF render + PaddleOCR, image PaddleOCR, and optional Firecrawl Parse fallback.
 - Real business menu verification completed with Opa Bar + Mezze official menu: MarkItDown selected and generated 10 sections / 73 menu items from the live official menu page.
 - Opa Bar + Mezze was regenerated from real-menu evidence into the artifact renderer, pushed to the client `dev` branch, deployed successfully, and screenshot-QA'd locally/remotely: `/` and `/menu` return 200 on desktop/mobile; menu renders 52 cleaned items across 7 sections; no console errors or horizontal overflow.
-- Local Ollama restaurant audit is available as `npm run audit:restaurant-local-llm`; Opa passed with `qwen3.5:9b`, score 100, zero findings. Use this as a local AI quality gate before outreach.
+- Local Ollama restaurant audit is available as `npm run audit:restaurant-local-llm`; all 5 Brisbane restaurants passed with `qwen3.5:9b`, score 100, zero findings. Use this as a local AI quality gate before outreach.
 - Opa outreach pack was regenerated from the refreshed remote preview; desktop/mobile screenshots and `demo.mp4` validate successfully.
 - Cold outreach dry-run is working from outreach packs: `clients/opa-bar-mezze-restaurant/outreach/email/01-opa-bar-mezze.json` includes preview link, official menu source, local AI audit result, and screenshot/video proof.
 - Sale routing smoke test wrote a temporary case/task/entitlement/ledger under `/tmp/webjuice-smoke`; Discord case-thread dry-run generated the expected sale thread payload.
+- Agent runner execute smoke passed against the temporary Opa sale task: case context loaded, source-of-truth artifacts applied, build passed, and case run record was updated.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
