@@ -120,3 +120,17 @@ Expected result:
 
 - Revenue event is recorded in the finance ledger.
 - A standard agent task is created in `pending`.
+
+## Update Checkout Artifacts With Real Tally URLs
+
+After MCP/API returns the public form URLs, update the client checkout artifacts:
+
+```bash
+npm run funnel:update-checkout-urls -- \
+  --all clients \
+  --one-time-url https://tally.so/r/<one-time-form> \
+  --yearly-url https://tally.so/r/<yearly-form> \
+  --feedback-url https://tally.so/r/<feedback-form>
+```
+
+The script preserves each preview site's hidden fields, so every URL still carries `client_slug`, `repo`, `preview_url`, `tier`, `amount`, and `currency`.

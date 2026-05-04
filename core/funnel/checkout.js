@@ -90,6 +90,29 @@ export function saveCheckoutArtifact(artifact, outputPath) {
   return artifact;
 }
 
+export function applyCheckoutFormUrls(artifact, {
+  tierUrls = {},
+  feedbackUrl = '',
+}) {
+  const next = JSON.parse(JSON.stringify(artifact));
+  next.tiers = (next.tiers || []).map((tier) => {
+    const baseUrl = tierUrls[tier.id];
+    if (!baseUrl) return tier;
+    return {
+      ...tier,
+      purchaseUrl: buildProviderUrl(next.provider, baseUrl, {
+        ...next.hiddenFields,
+        tier: tier.id,
+        amount: tier.amount,
+      }),
+    };
+  });
+  if (feedbackUrl) {
+    next.feedbackUrl = buildProviderUrl(next.provider, feedbackUrl, next.hiddenFields);
+  }
+  return next;
+}
+
 export function parseTierPrices(raw) {
   if (!raw) return DEFAULT_TIERS;
   try {
