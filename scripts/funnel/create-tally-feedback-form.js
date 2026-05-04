@@ -2,10 +2,13 @@
 
 import fs from 'fs';
 import path from 'path';
+import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import {
   buildTallyFeedbackFormPayload,
   buildTallyFeedbackMcpPrompt,
 } from '../../core/funnel/tally-feedback-form.js';
+
+loadLocalEnv();
 
 function parseArgs() {
   const args = process.argv.slice(2);

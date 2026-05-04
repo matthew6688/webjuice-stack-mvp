@@ -81,8 +81,8 @@ clients/
 
 ### Tasks
 
-- [ ] Move secret/API keys out of chat/manual usage into `.env.local` and GitHub/Cloudflare secrets.
-- [ ] Add `.env.example` entries for:
+- [x] Move secret/API keys out of chat/manual usage into `.env.local` and GitHub/Cloudflare secrets.
+- [x] Add `.env.example` entries for:
   - `GOOGLE_PLACES_API_KEY`
   - `FIRECRAWL_API_KEY`
   - `TALLY_API_KEY`
@@ -90,10 +90,10 @@ clients/
   - `CF_API_TOKEN`
   - `CF_ACCOUNT_ID`
   - `RESEND_API_KEY`
-- [ ] Add `scripts/check-env.js`.
+- [x] Add `scripts/check-env.js`.
 - [ ] Add `scripts/check-links.js` for deployed previews.
 - [ ] Add `scripts/check-deploys.js` for GitHub Actions status.
-- [ ] Add a `docs/SECURITY.md` key handling policy.
+- [x] Add a `docs/SECURITY.md` key handling policy.
 
 ### Validation
 

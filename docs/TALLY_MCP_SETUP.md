@@ -84,10 +84,28 @@ Use this to inspect the exact Tally `PAYMENT` and `HIDDEN_FIELDS` blocks before 
 
 ## Live API Creation
 
-When ready:
+When ready, put the key in local env first:
 
 ```bash
-export TALLY_API_KEY="tly_..."
+cp .env.example .env.local
+```
+
+Then edit `.env.local`:
+
+```text
+TALLY_API_KEY=tly-...
+TALLY_WEBHOOK_URL=https://profitslocal.com/api/tally-webhook
+TALLY_THANK_YOU_URL=https://profitslocal.com/thank-you
+TALLY_TIER_PRICES={"one_time":399,"yearly_maintenance":799}
+```
+
+Validate the funnel env:
+
+```bash
+npm run check:env -- --workflow funnel
+```
+
+Create live forms:
 
 npm run funnel:create-tally-payment-forms -- \
   --client longwang-restaurant-restaurant \
@@ -100,7 +118,7 @@ Notes:
 
 - Tally API can create the form and webhook.
 - Payment collection still requires the Tally workspace payment settings to be correctly configured.
-- Do not commit `TALLY_API_KEY`.
+- Do not commit `.env.local` or `TALLY_API_KEY`.
 
 ## Verification
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+import { loadLocalEnv } from '../core/env/load-local-env.js';
+
+loadLocalEnv();
+
 const workflows = {
   deploy: ['CF_API_TOKEN', 'CF_ACCOUNT_ID', 'GH_PAT'],
   scrape: ['GOOGLE_PLACES_API_KEY', 'FIRECRAWL_API_KEY'],

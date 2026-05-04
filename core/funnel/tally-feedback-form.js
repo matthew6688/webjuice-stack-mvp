@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import { createStableUuidFactory } from './stable-uuid.js';
 
 const DEFAULT_HIDDEN_FIELDS = [
   'client_slug',
@@ -18,23 +18,25 @@ export function buildTallyFeedbackFormPayload({
 }) {
   if (!title) throw new Error('title is required');
 
+  const uuid = createStableUuidFactory(['feedback', title].join('|'));
+
   return {
     status,
     name: `${title} - feedback`,
     blocks: [
-      formTitleBlock(title, description || 'Send requested changes for your preview site.'),
-      inputBlock('INPUT_TEXT', 'Business name', { isRequired: true }),
-      inputBlock('INPUT_EMAIL', 'Email', { isRequired: true }),
-      inputBlock('TEXTAREA', 'Requested changes', { isRequired: true, alias: 'feedback' }),
-      inputBlock('INPUT_LINK', 'Reference URL', { isRequired: false, alias: 'reference_url' }),
-      inputBlock('FILE_UPLOAD', 'Screenshots or brand assets', { isRequired: false }),
+      formTitleBlock(uuid, title, description || 'Send requested changes for your preview site.'),
+      inputBlock(uuid, 'INPUT_TEXT', 'Business name', { isRequired: true }),
+      inputBlock(uuid, 'INPUT_EMAIL', 'Email', { isRequired: true }),
+      inputBlock(uuid, 'TEXTAREA', 'Requested changes', { isRequired: true, alias: 'feedback' }),
+      inputBlock(uuid, 'INPUT_LINK', 'Reference URL', { isRequired: false, alias: 'reference_url' }),
+      inputBlock(uuid, 'FILE_UPLOAD', 'Screenshots or brand assets', { isRequired: false }),
       {
-        uuid: uuid(),
+        uuid: uuid('hidden-fields'),
         type: 'HIDDEN_FIELDS',
-        groupUuid: uuid(),
+        groupUuid: uuid('hidden-group'),
         groupType: 'HIDDEN_FIELDS',
         payload: {
-          hiddenFields: hiddenFieldNames.map((name) => ({ uuid: uuid(), name })),
+          hiddenFields: hiddenFieldNames.map((name) => ({ uuid: uuid(`hidden-${name}`), name })),
         },
       },
     ],
@@ -70,11 +72,11 @@ export function buildTallyFeedbackMcpPrompt({
   ].join('\n');
 }
 
-function formTitleBlock(title, description) {
+function formTitleBlock(uuid, title, description) {
   return {
-    uuid: uuid(),
+    uuid: uuid(`title-${title}`),
     type: 'FORM_TITLE',
-    groupUuid: uuid(),
+    groupUuid: uuid(`title-group-${title}`),
     groupType: 'TEXT',
     payload: {
       html: `<h1>${escapeHtml(title)}</h1><p>${escapeHtml(description || '')}</p>`,
@@ -83,10 +85,10 @@ function formTitleBlock(title, description) {
   };
 }
 
-function inputBlock(type, title, payload = {}) {
-  const groupUuid = uuid();
+function inputBlock(uuid, type, title, payload = {}) {
+  const groupUuid = uuid(`group-${type}-${title}`);
   return {
-    uuid: uuid(),
+    uuid: uuid(`block-${type}-${title}`),
     type,
     groupUuid,
     groupType: 'QUESTION',
@@ -95,10 +97,6 @@ function inputBlock(type, title, payload = {}) {
       ...payload,
     },
   };
-}
-
-function uuid() {
-  return crypto.randomUUID();
 }
 
 function escapeHtml(value) {

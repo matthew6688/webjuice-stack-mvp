@@ -2,11 +2,14 @@
 
 import fs from 'fs';
 import path from 'path';
+import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import { buildCheckoutArtifact, parseTierPrices, saveCheckoutArtifact } from '../../core/funnel/checkout.js';
 import {
   buildTallyMcpPrompt,
   buildTallyPaymentFormPayload,
 } from '../../core/funnel/tally-payment-form.js';
+
+loadLocalEnv();
 
 function parseArgs() {
   const args = process.argv.slice(2);

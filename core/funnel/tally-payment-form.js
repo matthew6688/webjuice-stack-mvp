@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import { createStableUuidFactory } from './stable-uuid.js';
 
 const DEFAULT_HIDDEN_FIELDS = [
   'client_slug',
@@ -25,28 +25,30 @@ export function buildTallyPaymentFormPayload({
   if (!tier) throw new Error('tier is required');
   if (!amount) throw new Error('amount is required');
 
-  const hiddenGroupUuid = uuid();
-  const hiddenFields = hiddenFieldNames.map((name) => ({ uuid: uuid(), name }));
+  const uuid = createStableUuidFactory(['payment', title, tier, amount, currency].join('|'));
+  const hiddenGroupUuid = uuid('hidden-group');
+  const hiddenFields = hiddenFieldNames.map((name) => ({ uuid: uuid(`hidden-${name}`), name }));
 
   return {
     status,
     name: `${title} - ${tier}`,
     blocks: [
-      formTitleBlock(title, description),
-      textBlock(`Package: ${packageLabel(tier)} - ${currency} ${amount}`),
-      inputBlock('TITLE', 'Your details'),
-      inputBlock('INPUT_TEXT', 'Business name', { isRequired: true }),
-      inputBlock('INPUT_EMAIL', 'Email', { isRequired: true }),
-      inputBlock('INPUT_PHONE_NUMBER', 'Phone', { isRequired: false }),
-      inputBlock('INPUT_LINK', 'Preferred domain', { isRequired: false }),
-      inputBlock('TEXTAREA', 'Launch notes or requested changes', { isRequired: false }),
+      formTitleBlock(uuid, title, description),
+      textBlock(uuid, `Package: ${packageLabel(tier)} - ${currency} ${amount}`),
+      inputBlock(uuid, 'TITLE', 'Your details'),
+      inputBlock(uuid, 'INPUT_TEXT', 'Business name', { isRequired: true }),
+      inputBlock(uuid, 'INPUT_EMAIL', 'Email', { isRequired: true }),
+      inputBlock(uuid, 'INPUT_PHONE_NUMBER', 'Phone', { isRequired: false }),
+      inputBlock(uuid, 'INPUT_LINK', 'Preferred domain', { isRequired: false }),
+      inputBlock(uuid, 'TEXTAREA', 'Launch notes or requested changes', { isRequired: false }),
       paymentBlock({
+        uuid,
         name: `${packageLabel(tier)} package`,
         amount,
         currency,
       }),
       {
-        uuid: uuid(),
+        uuid: uuid('hidden-fields'),
         type: 'HIDDEN_FIELDS',
         groupUuid: hiddenGroupUuid,
         groupType: 'HIDDEN_FIELDS',
@@ -94,11 +96,11 @@ export function buildTallyMcpPrompt({
   ].join('\n');
 }
 
-function formTitleBlock(title, description) {
+function formTitleBlock(uuid, title, description) {
   return {
-    uuid: uuid(),
+    uuid: uuid(`title-${title}`),
     type: 'FORM_TITLE',
-    groupUuid: uuid(),
+    groupUuid: uuid(`title-group-${title}`),
     groupType: 'TEXT',
     payload: {
       html: `<h1>${escapeHtml(title)}</h1><p>${escapeHtml(description || '')}</p>`,
@@ -107,11 +109,11 @@ function formTitleBlock(title, description) {
   };
 }
 
-function textBlock(html) {
+function textBlock(uuid, html) {
   return {
-    uuid: uuid(),
+    uuid: uuid(`text-${html}`),
     type: 'TEXT',
-    groupUuid: uuid(),
+    groupUuid: uuid(`text-group-${html}`),
     groupType: 'TEXT',
     payload: {
       html: escapeHtml(html),
@@ -119,10 +121,10 @@ function textBlock(html) {
   };
 }
 
-function inputBlock(type, title, payload = {}) {
-  const groupUuid = uuid();
+function inputBlock(uuid, type, title, payload = {}) {
+  const groupUuid = uuid(`group-${type}-${title}`);
   return {
-    uuid: uuid(),
+    uuid: uuid(`block-${type}-${title}`),
     type,
     groupUuid,
     groupType: 'QUESTION',
@@ -133,8 +135,8 @@ function inputBlock(type, title, payload = {}) {
   };
 }
 
-function paymentBlock({ name, amount, currency }) {
-  const id = uuid();
+function paymentBlock({ uuid, name, amount, currency }) {
+  const id = uuid(`payment-${name}-${amount}-${currency}`);
   return {
     uuid: id,
     type: 'PAYMENT',
@@ -147,10 +149,6 @@ function paymentBlock({ name, amount, currency }) {
       name,
     },
   };
-}
-
-function uuid() {
-  return crypto.randomUUID();
 }
 
 function titleCase(value) {
