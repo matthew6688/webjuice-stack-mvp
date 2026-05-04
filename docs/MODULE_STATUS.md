@@ -19,6 +19,7 @@
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 | Restaurant design brief MVP | Working MVP | `npm run design:restaurant-brief` creates Huashu-ready `design.restaurant.json` and `brand-spec.md` from validated restaurant content. |
+| Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, and brand spec from validated evidence. |
 
 ## Half Built
 
@@ -69,6 +70,7 @@ node scripts/evidence/validate.js --client longwang
 node scripts/finance/report.js --campaign brisbane-restaurants
 node scripts/qa/preview.js --client longwang
 node scripts/outreach/generate-demo.js --client longwang
+npm run pipeline:build-client -- --client longwang
 ```
 
 If a module cannot be validated with a command or screenshot artifact, it is not done.

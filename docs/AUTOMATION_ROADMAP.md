@@ -58,6 +58,15 @@ clients/
     outreach/
 ```
 
+## Current Build Pipeline
+
+- [x] `npm run pipeline:build-client -- --client <slug>`
+  - validates evidence
+  - writes `content.restaurant.json`
+  - writes `design.restaurant.json`
+  - writes `brand-spec.md`
+  - exits non-zero when required facts or menu sections are missing
+
 ## Phase 0: Baseline Hardening
 
 ### Tasks
