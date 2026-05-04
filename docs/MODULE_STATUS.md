@@ -28,6 +28,7 @@
 | Tally checkout form automation | Working MVP | Payment form payloads and MCP prompts can be generated; live API creation is available when `TALLY_API_KEY` is configured. |
 | Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |
 | Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents. |
+| Agent execution runner | Working MVP | `npm run agent:run-task` reads a pending task, applies artifacts to an artifact-ready repo, and runs build; dry-run is default. |
 | Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` supports Cloudflare Pages attach/dry-run. |
 
 ## Half Built
@@ -48,7 +49,6 @@
 | PDF extraction / image OCR pipeline | Half built |
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
-| Agent execution runner | Not started |
 | OpenAI usage cost logger | Not started |
 | Multi-niche framework | Not started |
 
