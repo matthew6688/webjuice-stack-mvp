@@ -9,7 +9,7 @@
 | Firecrawl official-site scrape | Working manually | Used successfully for official sites/menu pages, not yet standardized into evidence packs. |
 | Restaurant preview renderer | Working manually | Real menu pages deployed with logo/photos/CTA, but renderer is still embedded in generated repos. |
 | Link QA | Working MVP | `npm run qa:links` validates `tel:`, Google Maps, menu source, reservation, email, and menu item source chains from content artifacts. |
-| Screenshot QA | Partial | Desktop/mobile screenshots generated manually with Playwright. |
+| Screenshot QA | Working MVP | `npm run outreach:capture-assets` captures desktop/mobile screenshots and a scroll demo video from an outreach pack preview URL. |
 | Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
 | Finance ledger MVP | Working | `npm run finance:add` and `npm run finance:report` support local ROI tracking. |
 | Google Places extractor MVP | Working | `npm run extract:google-places` can extract leads/details, write evidence, and log cost events with configurable SKU costs. |
@@ -31,7 +31,7 @@
 | Restaurant niche adapter | Working MVP | JS adapter/schema exist; still needs real 5-client migration and renderer integration. |
 | Design engine | Half built | Huashu-ready restaurant design brief exists; renderer integration and visual scoring still need work. |
 | Cost tracking | Half built | Ledger/report exist; Google Places, Firecrawl, and Tally revenue write events; OpenAI still needs wiring. |
-| Outreach pack | Half built | Pack JSON exists; screenshot/video capture still needs implementation. |
+| Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 
 ## Not Started
 

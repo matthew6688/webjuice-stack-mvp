@@ -27,6 +27,7 @@
     "qa:links": "node scripts/qa/links.js",
     "outreach:build-pack": "node scripts/outreach/build-pack.js",
     "outreach:validate-pack": "node scripts/outreach/validate-pack.js",
+    "outreach:capture-assets": "node scripts/outreach/capture-assets.js",
     "migrate:legacy-restaurant": "node scripts/migrations/legacy-restaurant-data.js",
     "ocr:paddle": "node scripts/ocr/paddleocr.js",
     "ocr:pdf": "node scripts/ocr/ocrmypdf.js"
@@ -36,5 +37,8 @@
     "astro": "^6.2.1",
     "libsodium-wrappers": "^0.8.4",
     "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
   }
 }
