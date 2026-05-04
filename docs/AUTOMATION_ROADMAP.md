@@ -487,7 +487,7 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
   - `repo`
   - `campaignId`
   - `niche`
-- [ ] Add Stripe webhook:
+- [x] Add Stripe webhook:
   - verify signature
   - normalize paid checkout into order
   - record revenue event

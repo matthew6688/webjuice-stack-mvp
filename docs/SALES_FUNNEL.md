@@ -15,7 +15,14 @@
    - hidden `client_slug`, `repo`, `template`, `preview_url`, `tier`, `amount`, `currency`
 4. Stripe success redirects to the client preview site's `/thank-you` page with context in the URL.
 5. The checkout endpoint can send a checkout-started notification to Discord.
-6. The paid Stripe webhook is still the missing activation step: it must verify the Stripe signature, normalize the paid order, record revenue, and create the agent task.
+6. Stripe sends `checkout.session.completed` to `/api/stripe-webhook`.
+7. The client webhook verifies the Stripe signature and sends a sales Discord notification.
+8. The automation repo routes the same Stripe event with:
+   - `npm run funnel:route-stripe -- --input stripe-event.json`
+9. Router writes:
+   - normalized submission JSON
+   - Stripe revenue ledger event
+   - agent task JSON with target repo and `dev` branch
 
 Tally remains supported as a provider, but live API creation of the payment block was blocked by Tally's opaque block schema during verification. Keep the provider boundary so Tally can be used manually/MCP later without changing the downstream order/task contracts.
 
@@ -52,6 +59,7 @@ Do not commit these values.
 - `STRIPE_SECRET_KEY`
 - `STRIPE_PRICE_ONE_TIME`
 - `STRIPE_PRICE_YEARLY`
+- `STRIPE_WEBHOOK_SECRET`
 - `SALES_DISCORD_WEBHOOK_URL`
 - `REVISE_DISCORD_WEBHOOK_URL`
 
@@ -60,6 +68,7 @@ Each generated client Pages project also needs:
 - `STRIPE_SECRET_KEY`
 - `STRIPE_PRICE_ONE_TIME`
 - `STRIPE_PRICE_YEARLY`
+- `STRIPE_WEBHOOK_SECRET`
 - `SALES_DISCORD_WEBHOOK_URL`
 - `REVISE_DISCORD_WEBHOOK_URL`
 
@@ -83,11 +92,18 @@ That Cloudflare Pages Function creates a Stripe Checkout Session and redirects s
 /thank-you?session_id={CHECKOUT_SESSION_ID}&client_slug=...
 ```
 
+The webhook endpoint is:
+
+```text
+/api/stripe-webhook
+```
+
 Validation status:
 
 - Template build passes with `/checkout` and `/thank-you`.
 - All five Brisbane client repos build with `/checkout`.
-- Full live paid activation still needs Stripe env vars plus a signed Stripe webhook endpoint.
+- Stripe event routing writes a revenue ledger entry and agent task in dry-run and fixture tests.
+- Live paid activation needs Stripe env vars configured in Cloudflare Pages.
 
 ## Create Tally Forms
 

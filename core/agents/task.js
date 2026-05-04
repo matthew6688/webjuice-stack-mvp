@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 const VALID_TYPES = new Set(['activate', 'revise', 'publish', 'domain', 'qa-fix']);
-const VALID_CREATED_FROM = new Set(['tally_payment', 'tally_feedback', 'manual']);
+const VALID_CREATED_FROM = new Set(['tally_payment', 'tally_feedback', 'stripe_payment', 'manual']);
 
 export function createAgentTask({
   clientSlug,

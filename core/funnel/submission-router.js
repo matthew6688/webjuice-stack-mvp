@@ -3,6 +3,7 @@ import path from 'path';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
 import { artifactTimestamp } from '../time.js';
 import { buildDiscordMessage, sendDiscordWebhook } from './discord.js';
+import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
 import { normalizeTallySubmission, tallyRevenueLedgerInput } from './tally.js';
 
 export function classifyFunnelSubmission(order) {
@@ -11,10 +12,10 @@ export function classifyFunnelSubmission(order) {
 }
 
 export async function routeFunnelSubmission(payload, options = {}) {
-  const order = normalizeTallySubmission(payload, {
-    ...process.env,
-    ...(options.env || {}),
-  });
+  const provider = options.provider || detectProvider(payload);
+  const order = provider === 'stripe'
+    ? normalizeStripeCheckoutEvent(payload, { ...process.env, ...(options.env || {}) })
+    : normalizeTallySubmission(payload, { ...process.env, ...(options.env || {}) });
   const kind = options.kind || classifyFunnelSubmission(order);
   const clientSlug = order.clientSlug || 'unknown-client';
   const submissionId = safeId(order.orderId || order.rawSubmissionId || Date.now());
@@ -44,7 +45,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
   let ledgerEvent = null;
   if (kind === 'sale' && !options.dryRun) {
     ledgerEvent = appendLedgerEvent(
-      tallyRevenueLedgerInput(order),
+      provider === 'stripe' ? stripeRevenueLedgerInput(order) : tallyRevenueLedgerInput(order),
       options.ledgerPath || DEFAULT_LEDGER_PATH,
     );
   }
@@ -64,6 +65,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
 
   return {
     ok: true,
+    provider,
     kind,
     order,
     task,
@@ -73,6 +75,13 @@ export async function routeFunnelSubmission(payload, options = {}) {
     discord,
     discordPayload,
   };
+}
+
+function detectProvider(payload) {
+  if (payload?.type?.startsWith?.('checkout.') || payload?.object === 'event' || payload?.data?.object?.object === 'checkout.session') {
+    return 'stripe';
+  }
+  return 'tally';
 }
 
 export function buildAgentTask({ kind, order, submissionId }) {
