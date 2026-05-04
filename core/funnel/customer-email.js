@@ -28,6 +28,36 @@ export function buildFunnelCustomerEmail({ kind, order, entitlement, extraRevisi
   return revisionDeniedEmail(order, entitlement, extraRevisionUrl);
 }
 
+export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null, extraRevisionUrl = '' }) {
+  const email = caseFile?.customer?.email;
+  if (!email || email === 'N/A') return null;
+  const revision = caseFile.revision || {};
+  const previewUrl = runResult?.previewUrl || caseFile.previewUrl || '';
+  const revisionUrl = previewUrl && caseFile.order?.id
+    ? `${previewUrl}/revise?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
+    : '';
+  const changedFiles = (runResult?.changedFiles || []).slice(0, 8);
+  const usage = revision.policy
+    ? `${revision.used || 0}/${revision.policy.limit || 0}`
+    : 'N/A';
+  const lines = [
+    `Order ID: ${caseFile.order?.id || 'N/A'}`,
+    `Review preview: ${previewUrl || 'N/A'}`,
+    `Revision usage: ${usage}`,
+    `Revision form: ${revisionUrl || 'N/A'}`,
+    `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
+    `Changed files: ${changedFiles.length ? changedFiles.join(', ') : 'No code diff; build/QA completed'}`,
+    `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
+  ];
+  return simpleEmail({
+    to: email,
+    subject: `Your ${caseFile.customer?.company || 'website'} dev preview is ready`,
+    intro: 'Your dev preview is ready for review.',
+    lines,
+    outro: 'Please review the preview link. If it looks good, reply with approval; if you need changes, use the revision form with your Order ID and checkout email.',
+  });
+}
+
 function saleEmail(order, entitlement) {
   const revisionUrl = order.previewUrl
     ? `${order.previewUrl}/revise?order_id=${encodeURIComponent(order.orderId)}&email=${encodeURIComponent(order.email)}`

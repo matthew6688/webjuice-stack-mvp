@@ -44,6 +44,7 @@
 | Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |
 | Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents; routed funnel tasks include case/context paths, source-of-truth files, allowed files, and Huashu design protocol. |
 | Agent execution runner | Working MVP | `npm run agent:run-task` loads case context/source-of-truth files, applies artifacts to an artifact-ready repo, runs build, and appends agent run/timeline records to the case. Push to `dev` is explicit with `--push true`. |
+| Agent completion runner | Working MVP | `npm run agent:complete-task` wraps run/build, optional dev deploy check, and optional Resend review email so paid/revision work can reach customer review. |
 | Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` supports Cloudflare Pages attach/dry-run. |
 | Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
 
@@ -77,7 +78,7 @@
 1. Agent dev-branch execution loop that loads case context before editing.
 2. `/api/order-status/` plus revision-count display on `/revise`.
 3. Discord thread workspace with order/thread id mapping.
-4. Agent preview-ready/domain-ready customer emails.
+4. Customer approval to live publish.
 5. Domain attach/polling for `profitslocal.com`.
 6. Menu PDF extractor and image OCR pipeline.
 7. Resend cold outreach dry-run and live test.

@@ -36,6 +36,7 @@ Tasks:
 - Load `task.case.contextPath`, `case.json`, and recent `timeline.jsonl` before planning edits.
 - Load source-of-truth files from `task.requiredContext` before changing website code.
 - Current runner can apply artifacts, build, write agent run logs, and optionally push `dev`.
+- Completion runner can optionally check dev deploy and send review email.
 - For activation with no launch notes: run QA only and mark activation ready.
 - For revision tasks: apply bounded content/design/artifact changes, not arbitrary edits.
 - Push only to `dev`.
@@ -48,6 +49,7 @@ Validation:
 npm run agent:validate-task -- --task <task.json>
 npm run agent:run-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true
 npm run agent:run-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true --checkout true --push true
+npm run agent:complete-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true --checkout true --push true --check-deploy true --send-email true
 npm run check:deploys -- --client longwang-restaurant-restaurant --branch dev
 npm run check:links -- --client longwang-restaurant-restaurant --internal-links false
 ```
@@ -209,7 +211,7 @@ npm run outreach:capture-assets -- --client <slug>
 1. Agent dev-branch execution loop with case-context loading.
 2. `/api/order-status/` and revision-count display on `/revise`.
 3. Discord thread workspace with order/thread id mapping.
-4. Agent preview-ready and domain-ready customer emails.
+4. Customer approval to live publish.
 5. Domain attach/polling for `profitslocal.com`.
 6. Menu PDF/image OCR.
 7. More cities: Sydney/Melbourne restaurants.
