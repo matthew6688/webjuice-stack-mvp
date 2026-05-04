@@ -6,6 +6,9 @@
  * Requires: RESEND_API_KEY env var
  */
 
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 const fs = require('fs');
 
 const RESEND_KEY = process.env.RESEND_API_KEY;

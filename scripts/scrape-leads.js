@@ -7,6 +7,9 @@
  * Get key: https://console.cloud.google.com/apis/credentials
  */
 
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 const API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 if (!API_KEY) {
   console.error('Error: GOOGLE_PLACES_API_KEY not set');

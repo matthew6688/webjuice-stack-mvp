@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Set GitHub Actions secrets using tweetnacl (no Python needed)
+ * Set GitHub Actions secrets using libsodium (no Python needed)
  * Usage: node scripts/setup-github-secrets.js <repo-full-name> <secret-name> <secret-value>
  *
- * Requires: npm install tweetnacl
+ * Requires: npm install libsodium-wrappers
  */
 
-const nacl = require('tweetnacl');
+import sodium from 'libsodium-wrappers';
 
 const GH_PAT = process.env.GH_PAT;
 if (!GH_PAT) {
@@ -31,16 +31,17 @@ async function githubRequest(path, opts = {}) {
   return data;
 }
 
-function encryptSecret(publicKey, secretValue) {
-  const pk = Buffer.from(publicKey, 'base64');
-  const message = Buffer.from(secretValue);
-  const encrypted = nacl.sealedbox.seal(message, pk);
-  return Buffer.from(encrypted).toString('base64');
+async function encryptSecret(publicKey, secretValue) {
+  await sodium.ready;
+  const publicKeyBytes = sodium.from_base64(publicKey, sodium.base64_variants.ORIGINAL);
+  const secretBytes = sodium.from_string(secretValue);
+  const encrypted = sodium.crypto_box_seal(secretBytes, publicKeyBytes);
+  return sodium.to_base64(encrypted, sodium.base64_variants.ORIGINAL);
 }
 
 async function setSecret(repo, secretName, secretValue) {
   const keyData = await githubRequest(`/repos/${repo}/actions/secrets/public-key`);
-  const encryptedValue = encryptSecret(keyData.key, secretValue);
+  const encryptedValue = await encryptSecret(keyData.key, secretValue);
   await githubRequest(`/repos/${repo}/actions/secrets/${secretName}`, {
     method: 'PUT',
     body: JSON.stringify({

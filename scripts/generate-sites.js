@@ -10,9 +10,14 @@
  *   4. Outputs preview URLs for cold outreach
  */
 
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const GH_PAT = process.env.GH_PAT;
 const CF_TOKEN = process.env.CF_API_TOKEN;

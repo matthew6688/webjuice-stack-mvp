@@ -151,6 +151,8 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 
 | 问题 | 状态 | 解决方案 |
 |------|------|---------|
+| GitHub 当前登录账号 `matthew6688` 无法 push 到 `matthewatuchat/*` repo | 未解决 | 切换到有写权限的 GitHub 账号/token 后 push 本地修复 |
+| 5 个餐厅站 Actions 构建失败 | 已定位，本地已修复 | 原因是 workflow 使用 Node 20，但 Astro 6 需要 Node >=22.12；同时内容集合配置需迁移到 `src/content.config.ts` |
 | `longwang-restaurant-restaurant` 的 CLOUDFLARE_API_TOKEN Secret 设置失败 | 未解决 | 手动在 GitHub Settings → Secrets 中添加 |
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |
@@ -160,6 +162,8 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 
 ## 7. 下一步 TODO
 
+- [ ] 切换到有 `matthewatuchat/*` 写权限的 GitHub 凭据，然后 push 本地 commit `b21d5b4`
+- [ ] 将 `/tmp/webjuice-client-fix/*` 中 5 个客户 repo 的 `fix: update Astro 6 build config` commits push 到 `main` 和 `dev`
 - [ ] 完成 cold email 发送测试（等 RESEND_API_KEY 配置）
 - [ ] 手动修复 `longwang-restaurant-restaurant` 的 GitHub Secrets
 - [ ] 确认 5 个 preview 站构建成功

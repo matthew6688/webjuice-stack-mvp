@@ -8,6 +8,11 @@
  * - Env vars: GH_PAT, CF_API_TOKEN, CF_ACCOUNT_ID
  */
 
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
+const __dirname = require('path').dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_OWNER = 'matthewatuchat';
 const TEMPLATE_REPO = 'webjuice-stack-mvp';
 
