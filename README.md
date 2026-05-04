@@ -17,6 +17,34 @@ B2B 公司官网批量生产模板。Astro + Cloudflare，无数据库、无 Wor
 
 ---
 
+
+
+## Outbound Workflow
+
+```bash
+# 1. Scrape leads from Google Maps
+export GOOGLE_PLACES_API_KEY=your_key
+node scripts/scrape-leads.js --niche restaurant --city "Miami, FL" --count 20
+# Output: leads-restaurant-miami.json
+
+# 2. Generate websites for each lead
+node scripts/generate-sites.js --leads leads-restaurant-miami.json --template matthewatuchat/webjuice-restaurant
+# Output: leads-restaurant-miami-outreach.json (with preview URLs)
+
+# 3. Review previews, then send cold emails
+export RESEND_API_KEY=re_xxx
+node scripts/send-cold-email.js --leads leads-restaurant-miami-outreach.json --dry false
+```
+
+## Client Response Handling
+
+When a client replies:
+1. Their feedback goes to your inbox (or Discord via webhook)
+2. Hermes reads the feedback thread
+3. Modifies the `dev` branch of their repo
+4. Auto-deploys to preview URL
+5. Client confirms → merge `dev` → `main` → live site goes up
+
 ## 设计规范（强制）
 
 所有 WebJuice 网站设计必须遵循 **webjuice-design** skill，基于 huashu-design + open-design。
