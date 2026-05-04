@@ -255,6 +255,16 @@ type RestaurantContent = {
 
 ### Purpose
 
+Turn validated content and assets into a Huashu/open-design-ready brief before any renderer writes UI.
+
+### Tasks
+
+- [x] Create restaurant design brief builder.
+- [x] Create `brand-spec.md` export following Huashu core asset protocol.
+- [x] Include 3 distinct design directions.
+- [ ] Add renderer integration.
+- [ ] Add visual scoring and screenshot review.
+
 Design quality is the core moat. Renderer should consume a design brief, not improvise.
 
 ### Inputs
