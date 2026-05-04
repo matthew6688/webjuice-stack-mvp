@@ -33,6 +33,7 @@ Verified live state:
 - Cold outreach dry-run is working from outreach packs: `clients/opa-bar-mezze-restaurant/outreach/email/01-opa-bar-mezze.json` includes preview link, official menu source, local AI audit result, and screenshot/video proof.
 - Sale routing smoke test wrote a temporary case/task/entitlement/ledger under `/tmp/webjuice-smoke`; Discord case-thread dry-run generated the expected sale thread payload.
 - Agent runner execute smoke passed against the temporary Opa sale task: case context loaded, source-of-truth artifacts applied, build passed, and case run record was updated.
+- Approval publish runner dry-run smoke passed against the same task, covering preflight, dev build, target checkout, tree copy, and live commit plan.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work

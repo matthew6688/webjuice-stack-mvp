@@ -255,6 +255,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 将本地 Ollama AI audit 跑完 5 个 Brisbane restaurant，全部 pass/100/0 findings
 - [x] 跑 sale → case/task/entitlement/ledger 本地 smoke，并生成 Discord case-thread dry-run payload
 - [x] 跑 agent runner execute smoke：读取 case context/source-of-truth，apply artifacts，build，通过并写回 case run record
+- [x] 跑 approval publish dry-run smoke：验证 dev → main publish runner 步骤链可生成计划并通过
 - [ ] 跑一次真实 Discord thread live test（当前本地 env 未配置 webhook/bot；可通过 `.env.local` 或 GitHub Actions secrets 执行）
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做
