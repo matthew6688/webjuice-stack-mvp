@@ -110,11 +110,11 @@ node scripts/generate-sites.js   --leads leads-restaurant-brisbane-australia.jso
 
 | 客户 | Repo | Preview |
 |------|------|---------|
-| Longwang Restaurant | [repo](https://github.com/matthewatuchat/longwang-restaurant-restaurant) | [preview](https://longwang-restaurant-restaurant-dev.pages.dev) |
-| Babylon Brisbane | [repo](https://github.com/matthewatuchat/babylon-brisbane-restaurant) | [preview](https://babylon-brisbane-restaurant-dev.pages.dev) |
-| Opa Bar & Mezze | [repo](https://github.com/matthewatuchat/opa-bar-mezze-restaurant) | [preview](https://opa-bar-mezze-restaurant-dev.pages.dev) |
-| Joey's | [repo](https://github.com/matthewatuchat/joey-s-restaurant) | [preview](https://joey-s-restaurant-dev.pages.dev) |
-| Chu The Phat | [repo](https://github.com/matthewatuchat/chu-the-phat-restaurant) | [preview](https://chu-the-phat-restaurant-dev.pages.dev) |
+| Longwang Restaurant | [repo](https://github.com/matthew6688/longwang-restaurant-restaurant) | [preview](https://longwang-restaurant-restaurant-dev.pages.dev) |
+| Babylon Brisbane | [repo](https://github.com/matthew6688/babylon-brisbane-restaurant) | [preview](https://babylon-brisbane-restaurant-dev.pages.dev) |
+| Opa Bar & Mezze | [repo](https://github.com/matthew6688/opa-bar-mezze-restaurant) | [preview](https://opa-bar-mezze-restaurant-dev.pages.dev) |
+| Joey's | [repo](https://github.com/matthew6688/joey-s-restaurant) | [preview](https://joey-s-restaurant-dev.pages.dev) |
+| Chu The Phat | [repo](https://github.com/matthew6688/chu-the-phat-restaurant) | [preview](https://chu-the-phat-restaurant-dev.pages.dev) |
 
 ### 4.3 发送冷邮件
 
@@ -163,7 +163,7 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 ## 7. 下一步 TODO
 
 - [x] 将主模板迁到 `matthew6688/webjuice-stack-mvp`
-- [ ] 将 `/tmp/webjuice-client-fix/*` 中 5 个客户 repo 的 `fix: update Astro 6 build config` commits push 到 `main` 和 `dev`
+- [x] 将 `/tmp/webjuice-client-fix/*` 中 5 个客户 repo 的 `fix: update Astro 6 build config` commits push 到 `main` 和 `dev`
 - [ ] 完成 cold email 发送测试（等 RESEND_API_KEY 配置）
 - [ ] 手动修复 `longwang-restaurant-restaurant` 的 GitHub Secrets
 - [ ] 确认 5 个 preview 站构建成功
