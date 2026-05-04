@@ -1,0 +1,130 @@
+name: Publish Approved Site
+
+on:
+  workflow_dispatch:
+    inputs:
+      client_slug:
+        description: Client slug.
+        required: true
+        type: string
+      order_id:
+        description: Stripe Checkout Session / order ID.
+        required: true
+        type: string
+      email:
+        description: Checkout email for mandatory approval match.
+        required: true
+        type: string
+      task_path:
+        description: Optional repo-relative task path. Defaults to case latestTask.path.
+        required: false
+        type: string
+      push:
+        description: Push main to trigger live deploy.
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      check_deploy:
+        description: Wait for live deploy result.
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      send_email:
+        description: Send live published email.
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      dry_run:
+        description: Validate without committing/pushing or emailing.
+        required: true
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out automation repo
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve approved task
+        env:
+          TASK_PATH_INPUT: ${{ inputs.task_path }}
+        run: |
+          args=(
+            --client "${{ inputs.client_slug }}"
+            --order "${{ inputs.order_id }}"
+            --email "${{ inputs.email }}"
+            --output /tmp/approval.json
+          )
+          if [ -n "$TASK_PATH_INPUT" ]; then
+            args+=(--task "$TASK_PATH_INPUT")
+          fi
+          node scripts/agent/resolve-approved-task.js \
+            "${args[@]}"
+
+      - name: Clone client repo
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          node -e "const fs=require('fs'); const a=JSON.parse(fs.readFileSync('/tmp/approval.json','utf8')); fs.appendFileSync(process.env.GITHUB_ENV, `CLIENT_REPO=${a.repo}\nLIVE_URL=${a.liveUrl}\nTASK_PATH=${a.taskPath}\n`);"
+          gh auth setup-git
+          gh repo clone "$(node -e "const fs=require('fs'); console.log(JSON.parse(fs.readFileSync('/tmp/approval.json','utf8')).repo)")" /tmp/client-repo
+
+      - name: Publish approved dev tree
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
+        run: |
+          args=(
+            --task "$TASK_PATH"
+            --repo-dir /tmp/client-repo
+            --repo-root "$GITHUB_WORKSPACE"
+            --live-url "$LIVE_URL"
+            --push "${{ inputs.push }}"
+            --check-deploy "${{ inputs.check_deploy }}"
+            --send-email "${{ inputs.send_email }}"
+            --output /tmp/publish-result.json
+          )
+          if [ "${{ inputs.dry_run }}" != "true" ]; then
+            args+=(--execute true)
+          fi
+          npm run agent:publish-approved -- "${args[@]}"
+
+      - name: Commit updated case state
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "webjuice-agent"
+          git config user.email "webjuice-agent@users.noreply.github.com"
+          git add data/cases data/agent-runs || true
+          if git diff --cached --quiet; then
+            echo "No case state changes to commit."
+          else
+            git commit -m "chore: record approved publish"
+            git push
+          fi

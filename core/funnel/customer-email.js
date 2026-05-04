@@ -36,6 +36,9 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
   const revisionUrl = previewUrl && caseFile.order?.id
     ? `${previewUrl}/revise?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
     : '';
+  const approvalUrl = previewUrl && caseFile.order?.id
+    ? `${previewUrl}/approve?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
+    : '';
   const changedFiles = (runResult?.changedFiles || []).slice(0, 8);
   const usage = revision.policy
     ? `${revision.used || 0}/${revision.policy.limit || 0}`
@@ -43,6 +46,7 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
   const lines = [
     `Order ID: ${caseFile.order?.id || 'N/A'}`,
     `Review preview: ${previewUrl || 'N/A'}`,
+    `Approve for live publishing: ${approvalUrl || 'N/A'}`,
     `Revision usage: ${usage}`,
     `Revision form: ${revisionUrl || 'N/A'}`,
     `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,

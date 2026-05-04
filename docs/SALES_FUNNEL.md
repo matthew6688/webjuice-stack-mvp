@@ -320,6 +320,14 @@ npm run agent:publish-approved -- \
 
 This does not merge `dev` into `main`. Some generated client repos have separate `dev` and `main` histories, so the publisher creates a new `main` commit whose tree matches approved `dev`, preserving main history without force-pushing.
 
+The customer-facing approval page is:
+
+```text
+https://<client>-dev.pages.dev/approve?order_id=cs_...&email=owner@example.com
+```
+
+It posts to `/api/approval-request/`, which dispatches the main repo `publish-approved.yml` workflow. The workflow resolves the case by `client_slug + order_id`, verifies the submitted checkout email, then publishes the latest task recorded on that case.
+
 ## Revision Entitlements
 
 Paid orders create an entitlement record under:
