@@ -40,7 +40,7 @@ export function consumeRevisionEntitlement(order, options = {}) {
     return {
       ok: false,
       reason: 'entitlement_not_found',
-      message: `No active entitlement found for ${order.clientSlug || order.repo || 'unknown client'}.`,
+      message: 'No active entitlement matched both order ID and customer email.',
       entitlement: null,
     };
   }
@@ -80,25 +80,17 @@ export function consumeRevisionEntitlement(order, options = {}) {
 export function findEntitlementForOrder(order, entitlementsDir = DEFAULT_ENTITLEMENTS_DIR) {
   const orderId = order.orderId || order.stripeSessionId || '';
   const clientSlug = order.clientSlug || '';
-  if (orderId) {
-    const exact = readEntitlement(path.join(entitlementsDir, clientSlug || '_unknown', `${safeId(orderId)}.json`));
-    if (exact) return exact;
-  }
+  const email = normalizeEmail(order.email);
+  if (!orderId) return null;
+  if (!email) return null;
 
-  const clientDir = path.join(entitlementsDir, clientSlug || '_unknown');
-  if (!fs.existsSync(clientDir)) return null;
-  const candidates = fs.readdirSync(clientDir)
-    .filter((name) => name.endsWith('.json'))
-    .map((name) => readEntitlement(path.join(clientDir, name)))
-    .filter(Boolean)
-    .filter((entitlement) => entitlement.status === 'active')
-    .filter((entitlement) => {
-      if (order.repo && entitlement.repo !== order.repo) return false;
-      if (order.email && entitlement.customer?.email && entitlement.customer.email !== order.email) return false;
-      return true;
-    })
-    .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
-  return candidates[0] || null;
+  const exact = readEntitlement(path.join(entitlementsDir, clientSlug || '_unknown', `${safeId(orderId)}.json`))
+    || findEntitlementByOrderId(entitlementsDir, orderId);
+  if (!exact) return null;
+  if (exact.status !== 'active') return null;
+  if (normalizeEmail(exact.customer?.email) !== email) return null;
+  if (order.repo && exact.repo !== order.repo) return null;
+  return exact;
 }
 
 export function entitlementPath(entitlement, entitlementsDir = DEFAULT_ENTITLEMENTS_DIR) {
@@ -121,6 +113,16 @@ function readEntitlement(filePath) {
   const entitlement = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   validateEntitlement(entitlement);
   return entitlement;
+}
+
+function findEntitlementByOrderId(entitlementsDir, orderId) {
+  if (!fs.existsSync(entitlementsDir)) return null;
+  const fileName = `${safeId(orderId)}.json`;
+  for (const clientSlug of fs.readdirSync(entitlementsDir)) {
+    const candidate = readEntitlement(path.join(entitlementsDir, clientSlug, fileName));
+    if (candidate) return candidate;
+  }
+  return null;
 }
 
 function revisionPolicyForTier(tier, now) {
@@ -193,4 +195,8 @@ function safeId(value) {
     .replace(/[^a-zA-Z0-9_-]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 120) || 'unknown';
+}
+
+function normalizeEmail(value) {
+  return String(value || '').trim().toLowerCase();
 }

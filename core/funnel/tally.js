@@ -3,7 +3,13 @@ export function normalizeTallySubmission(payload, env = {}) {
   const answers = payload?.data?.answers || payload?.answers || {};
   const combined = { ...fields, ...answers };
 
-  const orderId = extractField(combined, 'tally_order_id') || payload?.id || payload?.data?.submissionId || 'unknown';
+  const orderId = extractField(combined, 'stripe_session_id')
+    || extractField(combined, 'order_id')
+    || extractField(combined, 'orderId')
+    || extractField(combined, 'tally_order_id')
+    || payload?.id
+    || payload?.data?.submissionId
+    || 'unknown';
   const repo = extractField(combined, 'repo') || 'unknown';
   const previewUrl = extractField(combined, 'preview_url') || extractField(combined, 'preview') || '';
   const clientSlug = extractField(combined, 'client_slug') || slugFromRepo(repo);
