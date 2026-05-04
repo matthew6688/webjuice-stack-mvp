@@ -190,8 +190,8 @@ Make restaurant a formal plugin, not custom hand work.
 
 ### Tasks
 
-- [ ] Create `niches/restaurant/schema.ts`.
-- [ ] Create `RestaurantContent`:
+- [x] Create `niches/restaurant/schema.js`.
+- [x] Create `RestaurantContent`:
 
 ```ts
 type RestaurantContent = {
@@ -219,13 +219,13 @@ type RestaurantContent = {
 };
 ```
 
-- [ ] Implement `niches/restaurant/adapter.ts`.
-- [ ] Implement fallback levels:
+- [x] Implement `niches/restaurant/adapter.js`.
+- [x] Implement fallback levels:
   - Level A: official website menu + official photos + logo.
   - Level B: PDF menu + Google photos + logo.
   - Level C: Google Places only + photo OCR if menu photos exist.
   - Level D: starter site, no menu claims.
-- [ ] Add restaurant validators:
+- [x] Add restaurant validators:
   - Menu page cannot render sample menu if menu source is missing.
   - Call CTA must be `tel:`.
   - Map CTA must be Google Maps URL.

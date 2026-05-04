@@ -15,13 +15,14 @@
 | Google Places extractor MVP | Working | `npm run extract:google-places` can extract leads/details, write evidence, and log cost events with configurable SKU costs. |
 | Firecrawl extractor MVP | Working | `npm run extract:firecrawl` can scrape official pages, save raw artifacts, detect menu/reservation/contact evidence, and log cost events. |
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
+| Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 
 ## Half Built
 
 | Module | Status | Gap |
 |---|---|---|
 | Evidence engine | Working MVP | `core/evidence/evidence.js` defines source types, merge rules, restaurant validation, and `npm run evidence:*` CLIs. |
-| Restaurant niche adapter | Half built | Restaurant evidence validation exists, but no formal `niches/restaurant/adapter.ts`. |
+| Restaurant niche adapter | Working MVP | JS adapter/schema exist; still needs real 5-client migration and renderer integration. |
 | Design engine | Half built | Brand colors/logos/photos used, but no Huashu/open-design decision engine or scoring. |
 | Cost tracking | Half built | Ledger/report exist; Google Places, Firecrawl, and Tally revenue write events; OpenAI still needs wiring. |
 | Outreach pack | Not yet wired | Need screenshots, video, email, source summary, audit summary in one artifact. |
