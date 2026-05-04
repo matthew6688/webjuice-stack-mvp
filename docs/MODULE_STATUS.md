@@ -5,21 +5,24 @@
 | Module | Status | Notes |
 |---|---|---|
 | GitHub/Cloudflare deploy | Working | Main/dev deploys work for current restaurant repos. |
-| Google Places manual extraction | Working manually | Used successfully for 5 Brisbane restaurants, not yet a reusable extractor module. |
-| Firecrawl official-site scrape | Working manually | Used successfully for official sites/menu pages, not yet standardized into evidence packs. |
-| Restaurant preview renderer | Working manually | Real menu pages deployed with logo/photos/CTA, but renderer is still embedded in generated repos. |
+| Google Places extraction | Working MVP | `npm run extract:google-places` supports text search, details, evidence writing, and cost logging. |
+| Firecrawl official-site scrape | Working MVP | `npm run extract:firecrawl` standardizes official-site scrape artifacts into evidence packs and cost events. |
+| Restaurant preview renderer | Working MVP | `webjuice-restaurant` can render from content/design/checkout artifacts; generated repos still need full migration to this flow. |
 | Link QA | Working MVP | `npm run qa:links` validates `tel:`, Google Maps, menu source, reservation, email, and menu item source chains from content artifacts. |
 | Screenshot QA | Working MVP | `npm run outreach:capture-assets` captures desktop/mobile screenshots and a scroll demo video from an outreach pack preview URL. |
 | Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
+| Deployed preview link checker | Working | `npm run check:links -- --all clients --internal-links false` verified all 5 Brisbane preview URLs return HTTP 200. |
+| GitHub Actions deploy checker | Working | `npm run check:deploys -- --all clients` verified the latest Actions run for all 5 generated restaurant repos is `completed/success`. |
 | Finance ledger MVP | Working | `npm run finance:add` and `npm run finance:report` support local ROI tracking. |
 | OpenAI usage cost logger | Working MVP | `npm run finance:add-openai-usage` records OpenAI token costs into the ledger using caller-provided pricing rates. |
 | Google Places extractor MVP | Working | `npm run extract:google-places` can extract leads/details, write evidence, and log cost events with configurable SKU costs. |
+| Google Places photo extractor MVP | Working | `npm run extract:google-places-photos` downloads Place photos or dry-run fixtures, writes media manifests, can append `media.photos` evidence, and logs per-photo cost events. |
 | Firecrawl extractor MVP | Working | `npm run extract:firecrawl` can scrape official pages, save raw artifacts, detect menu/reservation/contact evidence, and log cost events. |
 | Firecrawl Parse provider | Working MVP | `npm run extract:firecrawl-parse` uploads local/private documents, captures parse output, writes menu evidence, and logs Firecrawl parse costs. |
 | Menu text parser MVP | Working MVP | `npm run extract:menu` parses text/markdown menu artifacts into `menu.sections`; PDF requires local `pdftotext` or prior text extraction. |
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
-| Tally payment form builder | Working MVP | `npm run funnel:create-tally-payment-forms` builds Tally payment form payloads, MCP prompts, or live forms/webhooks when `TALLY_API_KEY` is set. Current product tiers: $399 one-time website with 3 revisions; $799 yearly website with monthly maintenance. |
+| Tally payment form builder | Working MVP | `npm run funnel:create-tally-payment-forms` builds stable Tally payment form payloads, MCP prompts, or live forms/webhooks when `TALLY_API_KEY` is set in `.env.local` or runtime env. Current product tiers: $399 one-time website with 3 revisions; $799 yearly website with monthly maintenance. |
 | Tally feedback form builder | Working MVP | `npm run funnel:create-tally-feedback-form` builds a feedback form payload/MCP prompt that submits revision requests into the same webhook. |
 | Checkout URL updater | Working MVP | `npm run funnel:update-checkout-urls` rewrites client checkout artifacts with real Tally form URLs while preserving hidden fields. |
 | Tally MCP setup docs | Working MVP | `docs/TALLY_MCP_SETUP.md` explains remote MCP setup, current runtime limitation, payment form shape, API fallback, and verification commands. |
@@ -34,6 +37,7 @@
 | Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents. |
 | Agent execution runner | Working MVP | `npm run agent:run-task` reads a pending task, applies artifacts to an artifact-ready repo, and runs build; dry-run is default. |
 | Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` supports Cloudflare Pages attach/dry-run. |
+| Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
 
 ## Half Built
 
@@ -43,7 +47,7 @@
 | Restaurant template renderer | Working MVP | `matthew6688/webjuice-restaurant` now reads `content.restaurant.json` and `design.restaurant.json`; generated repos still need migration to the new renderer flow. |
 | Client artifact sync | Working MVP | `npm run clients:sync-artifacts` applies content/design/checkout artifacts and optional images to an artifact-ready client repo, then can run build. |
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
-| Cost tracking | Half built | Ledger/report exist; Google Places, Firecrawl, and Tally revenue write events; OpenAI still needs wiring. |
+| Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, and Tally revenue can write events; Resend and image generation still need direct wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | Feedback form payloads exist and feedback submissions normalize into `revise` agent tasks; dev-branch execution runner is artifact-oriented MVP. |
 
@@ -55,19 +59,22 @@
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
 | Multi-niche framework | Half built |
+| Brand asset extractor | Not started |
+| Reservation/contact extractors | Not started |
+| Live Tally form creation | Blocked on local `TALLY_API_KEY` and payment workspace verification |
+| Resend cold email test | Blocked on configured `RESEND_API_KEY` and sender/domain setup |
 
 ## Immediate Next Build Order
 
-1. Baseline environment and security hardening.
-2. Finance ledger MVP.
-3. Evidence schema and validators.
-4. Google Places extractor with cost logging.
-5. Firecrawl extractor with cost logging.
-6. Restaurant adapter from evidence to content.
-7. Playwright QA screenshots and demo video.
-8. Tally checkout + webhook.
-9. Agent task queue.
-10. Domain onboarding.
+1. Menu PDF extractor and image OCR pipeline.
+2. Brand asset extractor: logo, palette, official photos, font hints.
+3. Reservation/contact extractors.
+4. Renderer integration with `webjuice-restaurant` as the canonical artifact renderer.
+5. Live Tally form creation and webhook smoke test.
+6. First full paid-loop simulation: Tally revenue -> agent task -> dev update -> preview QA.
+7. Domain attach/polling for `profitslocal.com`.
+8. Resend cold email dry-run and live test.
+9. Add next niche pilot after restaurant loop closes.
 
 ## Verification Rules
 

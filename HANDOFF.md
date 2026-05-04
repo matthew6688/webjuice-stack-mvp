@@ -1,23 +1,27 @@
 # WebJuice Stack · Handoff Document
 
 > 创建日期: 2026-05-04
-> 状态: Brisbane 测试完成，5 个餐厅站已生成
+> 状态: Brisbane 测试完成，5 个餐厅 preview 已上线并通过部署巡检
 > 运行环境: Mac Mini (macOS) + Cloudflare + GitHub + Resend
 
 ---
 
 ## 1. 项目概述
 
-WebJuice 是一个 AI 驱动的 B2B 网站 agency 工具链。
+WebJuice / Profits Local 是一个 AI 驱动的 B2B 本地商家网站 agency 工具链。
 
 **商业模式**: Outbound 冷启动
 1. 从 Google Maps 抓取当地商家信息
 2. AI 根据抓取数据自动生成网站
 3. 部署 preview 站
-4. 发送 cold email 给目标客户
-5. 客户回复意见 → AI agent 修改 → 上线
+4. 生成截图、demo video、outreach pack
+5. 客户通过 Tally 购买或提交反馈
+6. Tally webhook → ROI ledger + AI agent task
+7. Agent 修改 dev branch → preview QA → 客户确认 → live/domain 上线
 
-**月费**: $0（Cloudflare Pages + Resend 免费额度内）
+**当前定价**:
+- `$399` 一次性网站，包含 3 次 revisions
+- `$799/year` 网站 + monthly maintenance
 
 ---
 
@@ -62,49 +66,51 @@ webjuice-stack-mvp/          # 母板模板
 
 ## 3. 环境变量
 
-在 `~/.zshrc` 或 `~/.bash_profile` 中添加：
+本地开发使用 `.env.local`，不要把 API key 写进文档、commit、shell history 或生成物。
 
 ```bash
-# GitHub
-export GH_PAT="github_pat_xxx"
-
-# Cloudflare
-export CF_API_TOKEN="xxx"
-export CF_ACCOUNT_ID="2b67d2288df946ac22f408b60a9bcc11"
-export CF_EMAIL="matthew6688@gmail.com"
-
-# Google Places
-export GOOGLE_PLACES_API_KEY="AIza..."
-
-# Resend
-export RESEND_API_KEY="re_xxx"
+cp .env.example .env.local
+npm run check:env -- --workflow funnel
+npm run check:env -- --workflow scrape
+npm run check:env -- --workflow deploy
 ```
+
+安全规则见 `docs/SECURITY.md`。
 
 ---
 
 ## 4. 完整工作流
 
-### 4.1 抓取客户线索
+### 4.1 抓取客户线索 / 建 evidence
 
 ```bash
-node scripts/scrape-leads.js --niche restaurant --city "Brisbane, Australia" --count 20
+npm run extract:google-places -- \
+  --query "restaurant Brisbane Australia" \
+  --niche restaurant \
+  --city Brisbane \
+  --count 20 \
+  --campaign brisbane-restaurants
 ```
 
-输出: `leads-restaurant-brisbane-australia.json`
+Google Places Details、Firecrawl、Firecrawl Parse、Menu parser、OCR wrappers 都应把结果写入 evidence pack，而不是让 renderer 直接读 raw scrape。
 
-### 4.2 生成网站
+### 4.2 生成 client artifacts
 
 ```bash
-node scripts/generate-sites.js   --leads leads-restaurant-brisbane-australia.json   --template matthew6688/webjuice-restaurant
+npm run pipeline:build-client -- --client longwang-restaurant-restaurant
+npm run outreach:build-pack -- --client longwang-restaurant-restaurant
+npm run outreach:capture-assets -- --client longwang-restaurant-restaurant
 ```
 
-会自动：
-- 从模板生成新 repo（如 `longwang-restaurant-restaurant`）
-- 替换 `site.ts` 为客户品牌信息
-- 创建 dev branch
-- 创建 Cloudflare Pages 项目（live + dev）
-- 设置 GitHub Secrets（需要 `libsodium-wrappers`支持）
-- 输出 `outreach.json`
+输出包括：
+- `content.restaurant.json`
+- `design.restaurant.json`
+- `brand-spec.md`
+- `artifact-manifest.json`
+- `funnel/checkout.json`
+- `outreach/outreach-pack.json`
+- desktop/mobile screenshots
+- `outreach/demo.mp4`
 
 **已测试完成的 5 个 Brisbane 餐厅站**：
 
@@ -116,21 +122,37 @@ node scripts/generate-sites.js   --leads leads-restaurant-brisbane-australia.jso
 | Joey's | [repo](https://github.com/matthew6688/joey-s-restaurant) | [preview](https://joey-s-restaurant-dev.pages.dev) |
 | Chu The Phat | [repo](https://github.com/matthew6688/chu-the-phat-restaurant) | [preview](https://chu-the-phat-restaurant-dev.pages.dev) |
 
-### 4.3 发送冷邮件
+### 4.3 同步到 restaurant renderer repo
 
 ```bash
-node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-outreach.json   --dry false
+npm run clients:sync-artifacts -- \
+  --client longwang-restaurant-restaurant \
+  --repo /path/to/longwang-restaurant-restaurant \
+  --build
 ```
 
-默认 `--dry true`，先跑一次确认内容没问题再发送。
+### 4.4 部署巡检
 
-### 4.4 客户反馈 → AI 修改
+```bash
+npm run check:links -- --all clients --internal-links false
+npm run check:deploys -- --all clients
+```
 
-1. 客户回复邮件给修改意见
-2. 转发到 Discord thread（每客户一个线程）
-3. Hermes 读取线程 → 修改 dev branch
-4. GitHub Actions 自动部署到 preview
-5. 客户确认 → merge dev → main → live 上线
+2026-05-04 验证结果：
+- 5 个 preview 均 HTTP 200
+- 5 个 repo 最新 GitHub Actions 均 `completed/success`
+
+### 4.5 Tally purchase / feedback → AI 修改
+
+```bash
+npm run funnel:create-tally-payment-forms -- --client longwang-restaurant-restaurant --dry-run true
+npm run funnel:create-tally-feedback-form -- --client longwang-restaurant-restaurant --dry-run true
+npm run funnel:record-tally -- --input /tmp/tally-payment-submission.json
+npm run agent:create-task -- --tally /tmp/tally-payment-submission.json
+npm run agent:run-task -- --task /path/to/task.json --execute
+```
+
+Live Tally form creation requires `TALLY_API_KEY` in `.env.local` and payment settings configured in Tally workspace.
 
 ---
 
@@ -152,12 +174,14 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 | 问题 | 状态 | 解决方案 |
 |------|------|---------|
 | 旧 `matthewatuchat/*` repo 对当前账号不可写 | 已绕过 | 主模板已迁到 `matthew6688/webjuice-stack-mvp`，后续新 repo 默认创建到 `matthew6688` |
-| 5 个餐厅站 Actions 构建失败 | 已修复 | Node 22、Astro 6 content config、构建期 Payload fetch、Joey's apostrophe、Cloudflare secrets 均已修复 |
+| 5 个餐厅站 Actions 构建失败 | 已修复并验证 | `npm run check:deploys -- --all clients` 全部 success |
 | 5 个餐厅站内容像空壳 | 已修复 | 已按 Huashu Design 思路重做餐厅首页和 `/menu`；菜单项来自公开官网/PDF/菜单页，并在页面标注 source URL |
-| `profitslocal.com` 自定义域名绑定失败 | 未解决 | DNS 使用 Cloudflare nameservers，但当前 API token/account 查不到 `profitslocal.com` zone；需要切到拥有该 zone 的 Cloudflare account/token，或把 zone 加进当前 account |
+| `profitslocal.com` 自定义域名绑定 | 未闭环 | `domain:inspect` 可检测 DNS；还需要确认 API token/account 能看到该 zone，然后 attach Pages 并轮询 SSL/HTTPS |
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |
-| Google Places API 需要开启 + 绑定信用卡 | 已配置 | - |
+| Google Places photos | MVP 已完成 | `npm run extract:google-places-photos` 支持 dry-run/live、manifest、evidence append、ledger cost |
+| Live Tally payment form | 待验证 | 脚本已完成；需要 `.env.local` 中的 `TALLY_API_KEY` 和 Tally workspace payment 设置 |
+| Cold email | 待验证 | 需要 `RESEND_API_KEY` 和 sender/domain 配置 |
 
 ---
 
@@ -173,12 +197,15 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `PAGES_PROJECT_NAME` variable
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` secrets 后重新跑 Actions
 - [x] 给 5 个餐厅站补基于真实公开菜单数据的餐厅首页和 `/menu` 菜单页
-- [ ] 绑定 `profitslocal.com` 到 `profitslocal-live` Pages project（需要 domain 所在 Cloudflare account 的 token）
+- [ ] 绑定 `profitslocal.com` 到 `profitslocal-live` Pages project（需要 domain 所在 Cloudflare account 的 token/zone 权限）
 - [ ] 完成 cold email 发送测试（等 RESEND_API_KEY 配置）
-- [ ] 手动修复 `longwang-restaurant-restaurant` 的 GitHub Secrets
-- [ ] 确认 5 个 preview 站构建成功
-- [ ] 设置 Tally 表单 webhook（如需要客户主动填写）
-- [ ] 确认 Hermes 能够读取 Discord thread 并修改 dev branch
+- [x] 手动修复并验证 5 个 restaurant repo 的 GitHub Secrets / Actions
+- [x] 确认 5 个 preview 站构建成功并可访问
+- [ ] 创建 live Tally payment/feedback forms，并配置 webhook
+- [ ] 确认 Hermes/OpenClaw 能读取 agent task 并修改 dev branch
+- [ ] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
+- [ ] 完成 MenuPdfExtractor / MenuImageOCRExtractor
+- [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多城市测试（如 Sydney, Melbourne）
 - [ ] 添加更多 niche 模板（如 plumbing, dental）
-- [ ] 验证收款流程（Stripe/Tally 整合）
+- [ ] 验证收款流程（Tally live；必要时 Stripe alternative）

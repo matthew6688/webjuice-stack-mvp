@@ -2,6 +2,17 @@
 
 > Goal: turn the current restaurant preview prototype into an automated, evidence-backed, design-led local business sales and fulfillment system.
 
+## Current Snapshot
+
+As of 2026-05-04:
+
+- Phase 0 baseline hardening is complete.
+- Evidence, restaurant adapter, design brief, checkout artifacts, outreach packs, screenshots/videos, agent task creation, domain inspection, and ROI ledger are working MVPs.
+- 5 Brisbane restaurant preview sites return HTTP 200.
+- 5 generated restaurant repos have latest GitHub Actions `completed/success`.
+- Tally live form creation is implemented but blocked until `TALLY_API_KEY` is present in `.env.local` and the Tally workspace payment settings are verified.
+- The highest-impact unfinished work is listed in `docs/NEXT_WORK.md`.
+
 ## North Star
 
 The system should run this loop with minimal manual work:
@@ -422,8 +433,8 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
 ### Tasks
 
 - [x] Create `core/funnel/tally.js`.
-- [ ] Store Tally API key only as environment variable.
-- [ ] Define purchase form fields:
+- [x] Store Tally API key only as environment variable.
+- [x] Define purchase form fields:
   - package
   - business name
   - contact name
@@ -431,7 +442,7 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
   - phone
   - domain status
   - feedback/comments
-- [ ] Define hidden fields:
+- [x] Define hidden fields:
   - `previewId`
   - `clientSlug`
   - `repo`
@@ -439,13 +450,13 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
   - `previewUrl`
   - `package`
   - `price`
-- [ ] Add checkout CTA to preview site.
+- [x] Add checkout CTA to preview site.
 - [x] Add Tally webhook endpoint:
   - receive paid submission
   - verify payload
   - create `AgentTask`
   - record revenue event
-- [ ] Add feedback form:
+- [x] Add feedback form:
   - design changes
   - menu/content changes
   - domain info
@@ -486,7 +497,7 @@ Hermes/OpenClaw should modify bounded data/models, not randomly edit repo files.
 
 ### Tasks
 
-- [ ] Create `core/agents/schema.ts`.
+- [x] Create `core/agents/task.js` task contract helpers.
 - [ ] Define task types:
   - `activate`
   - `revise`
@@ -510,11 +521,11 @@ type AgentTask = {
 };
 ```
 
-- [ ] Add task queue directory:
+- [x] Add task queue directory:
   - `agent-tasks/pending`
   - `agent-tasks/running`
   - `agent-tasks/done`
-- [ ] Add `scripts/agent/create-task.js`.
+- [x] Add `scripts/agent/create-task.js`.
 - [ ] Add `scripts/agent/validate-task-result.js`.
 
 ### Validation
@@ -530,13 +541,13 @@ type AgentTask = {
 
 - [ ] Create `core/domain/schema.ts`.
 - [ ] Add domain fields to Tally purchase/feedback forms.
-- [ ] Implement DNS detection:
+- [x] Implement DNS detection:
   - nameservers
   - A/AAAA
   - CNAME
   - current website
-- [ ] Implement Cloudflare Pages domain attach.
-- [ ] Implement DNS instruction generator:
+- [x] Implement Cloudflare Pages domain attach.
+- [x] Implement DNS instruction generator:
   - Cloudflare
   - GoDaddy
   - Namecheap
@@ -597,17 +608,19 @@ type LedgerEvent = {
 
 ### Tasks
 
-- [ ] Add `core/finance/ledger.ts`.
-- [ ] Add `data/finance/ledger.jsonl`.
+- [x] Add `core/finance/ledger.js`.
+- [x] Add `data/finance/.gitkeep`; runtime ledger path is caller-configurable JSONL.
 - [ ] Add cost logging to:
-  - Google Places calls
-  - Firecrawl calls
-  - OpenAI calls
-  - image generation
-  - Resend emails
-  - domain purchases
-  - Tally revenue events
-- [ ] Add `scripts/finance/report.js`.
+  - [x] Google Places calls
+  - [x] Google Places photo calls
+  - [x] Firecrawl calls
+  - [x] Firecrawl Parse calls
+  - [x] OpenAI usage calls when usage data is supplied
+  - [ ] image generation
+  - [ ] Resend emails
+  - [ ] domain purchases
+  - [x] Tally revenue events
+- [x] Add `scripts/finance/report.js`.
 - [ ] Report:
   - cost per lead
   - cost per preview
@@ -633,8 +646,8 @@ type LedgerEvent = {
 
 - [ ] Generate `outreach/source-summary.md`.
 - [ ] Generate `outreach/audit-summary.md`.
-- [ ] Generate screenshots.
-- [ ] Generate demo video.
+- [x] Generate screenshots.
+- [x] Generate demo video.
 - [ ] Generate email variants:
   - existing bad website
   - no website / Google Maps only
