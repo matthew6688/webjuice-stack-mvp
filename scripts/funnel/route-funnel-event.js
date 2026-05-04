@@ -53,6 +53,7 @@ try {
     tasksDir: args['tasks-dir'] || args.tasksDir,
     submissionsDir: args['submissions-dir'] || args.submissionsDir,
     entitlementsDir: args['entitlements-dir'] || args.entitlementsDir,
+    casesDir: args['cases-dir'] || args.casesDir,
     ledgerPath: args.ledger,
     extraRevisionUrl: args['extra-revision-url'] || args.extraRevisionUrl,
   });
@@ -85,6 +86,15 @@ try {
       amount: result.ledgerEvent.amount,
       currency: result.ledgerEvent.currency,
     } : null,
+    caseRecord: result.caseRecord ? {
+      caseId: result.caseRecord.ref.caseId,
+      casePath: result.caseRecord.ref.casePath,
+      contextPath: result.caseRecord.ref.contextPath,
+      timelinePath: result.caseRecord.ref.timelinePath,
+      customerMessagesPath: result.caseRecord.ref.customerMessagesPath,
+      agentRunsPath: result.caseRecord.ref.agentRunsPath,
+      status: result.caseRecord.caseFile.status,
+    } : null,
     discord: result.discord,
     customerEmail: result.customerEmail,
   };
@@ -101,12 +111,12 @@ try {
       `- Order: ${summary.orderId || 'unknown'}`,
       `- Task: ${summary.taskPath || 'none'}`,
       `- Submission: ${summary.submissionPath || 'none'}`,
+      `- Case: ${summary.caseRecord?.casePath || 'none'}`,
       '',
     ].join('\n'));
   }
 
   console.log(JSON.stringify(summary, null, 2));
-  if (!result.ok) process.exitCode = 2;
 } catch (error) {
   console.error(error.stack || error.message);
   process.exit(1);

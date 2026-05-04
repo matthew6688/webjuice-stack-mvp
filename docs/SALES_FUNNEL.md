@@ -25,6 +25,7 @@
    - Stripe revenue ledger event
    - order entitlement with revision quota
    - agent task JSON with target repo and `dev` branch
+   - case memory under `data/cases/<clientSlug>/<orderId>/`
 
 Tally remains supported as a provider, but live API creation of the payment block was blocked by Tally's opaque block schema during verification. Keep the provider boundary so Tally can be used manually/MCP later without changing the downstream order/task contracts.
 
@@ -134,6 +135,7 @@ Validation status:
 - Central runner local verification wrote sale entitlement, sale task, revision task, and ledger records under `/tmp/central-runner-state`.
 - Main repo GitHub Actions secrets are configured for sales Discord, revision Discord, and Resend; dry-run workflow dispatch passes with notification flags enabled.
 - `AGENT_GITHUB_TOKEN` is configured and verified on the 5 Brisbane dev/live Pages projects and template dev/live Pages projects.
+- Case memory verification wrote sale/revision/denied cases, timeline events, customer messages, context packets, and task case/design protocol fields under `/tmp/case-memory-test`.
 
 ## Create Tally Forms
 
@@ -239,6 +241,37 @@ The generated task always targets:
 ```
 
 The agent must push only to `dev` for customer review. Final live deployment happens only after approval.
+
+## Case Memory
+
+Every routed sale, accepted revision, and denied revision maintains a private case folder in the main automation repo:
+
+```text
+data/cases/<clientSlug>/<orderId>/
+  case.json
+  context-packet.json
+  timeline.jsonl
+  decisions.jsonl
+  customer-messages.jsonl
+  agent-runs.jsonl
+  artifacts/
+```
+
+`case.json` is the current state. `timeline.jsonl` is the audit trail. `customer-messages.jsonl` preserves customer wording from checkout/revision forms. `decisions.jsonl` is reserved for human approvals and locked decisions. `agent-runs.jsonl` is where execution agents should append what they read, changed, verified, and pushed.
+
+Routed agent tasks include:
+
+- `case.contextPath`
+- `requiredContext` for evidence/content/design/brand/checkout files
+- `designProtocol.requiredSkill = huashu-design`
+- `allowedFiles`
+- constraints that prevent unverified menu/address/phone/hour changes
+
+Regenerate or inspect an agent context packet:
+
+```bash
+npm run case:context -- --case data/cases/<client>/<order>/case.json
+```
 
 ## Revision Entitlements
 

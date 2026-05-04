@@ -32,6 +32,7 @@ const result = await routeFunnelSubmission(payload, {
   tasksDir: args['tasks-dir'] || args.tasksDir,
   submissionsDir: args['submissions-dir'] || args.submissionsDir,
   entitlementsDir: args['entitlements-dir'] || args.entitlementsDir,
+  casesDir: args['cases-dir'] || args.casesDir,
   ledgerPath: args.ledger,
 });
 
@@ -43,6 +44,11 @@ console.log(JSON.stringify({
   submissionPath: result.submissionPath,
   entitlement: result.entitlement,
   ledgerEvent: result.ledgerEvent,
+  caseRecord: result.caseRecord ? {
+    casePath: result.caseRecord.ref.casePath,
+    contextPath: result.caseRecord.ref.contextPath,
+    status: result.caseRecord.caseFile.status,
+  } : null,
   discord: result.discord,
   customerEmail: result.customerEmail,
 }, null, 2));

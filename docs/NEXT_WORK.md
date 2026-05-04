@@ -20,6 +20,7 @@ Verified live state:
 - `webjuice-restaurant` Pages Functions can dispatch Stripe/revision payloads to the main automation workflow with `AGENT_GITHUB_TOKEN`.
 - Main repo workflow notification secrets are configured for Discord + Resend; dry-run workflow dispatch with notification flags passes.
 - `AGENT_GITHUB_TOKEN` is configured on 5 Brisbane dev/live Pages projects plus `webjuice-restaurant` dev/live, and `wrangler pages secret list` verifies the secret exists.
+- Funnel routing now writes per-order case memory under `data/cases/<clientSlug>/<orderId>/` and agent tasks include case/context/design protocol fields.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -32,6 +33,8 @@ Tasks:
 
 - Finalize task schema for `sale`, `revision`, `domain`, and `publish`.
 - Teach runner to execute against `/tmp/profitslocal-repos/<client>`.
+- Load `task.case.contextPath`, `case.json`, and recent `timeline.jsonl` before planning edits.
+- Load source-of-truth files from `task.requiredContext` before changing website code.
 - For activation with no launch notes: run QA only and mark activation ready.
 - For revision tasks: apply bounded content/design/artifact changes, not arbitrary edits.
 - Push only to `dev`.
@@ -59,6 +62,7 @@ Working now:
   - `data/funnel/submissions/...`
   - `data/funnel/orders/...`
   - `data/agent-tasks/...`
+  - `data/cases/...`
   - `data/finance/ledger.jsonl`
 - `webjuice-restaurant` has `functions/api/_agent-dispatch.ts`.
 - Stripe webhook dispatches raw Stripe events.
@@ -74,6 +78,7 @@ Validation:
 ```bash
 npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --dry-run true
 npm run funnel:route-event -- --input /tmp/revision.json --provider auto --dry-run true
+npm run case:context -- --case data/cases/<client>/<order>/case.json
 gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp \
   -f provider=auto \
   -f payload="$(cat /tmp/stripe-event.json)" \
@@ -199,9 +204,9 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Agent dev-branch execution loop with one Longwang paid activation/revision test.
+1. Agent dev-branch execution loop with case-context loading.
 2. `/api/order-status/` and revision-count display on `/revise`.
-3. Agent preview-ready and domain-ready customer emails.
+3. Discord thread workspace with order/thread id mapping.
 4. Agent preview-ready and domain-ready customer emails.
 5. Domain attach/polling for `profitslocal.com`.
 6. Menu PDF/image OCR.

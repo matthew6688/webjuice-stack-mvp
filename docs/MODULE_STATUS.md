@@ -26,6 +26,7 @@
 | First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs and Pages runtime secrets are configured on the 5 dev projects. |
 | Stripe paid activation webhook | Working MVP | `webjuice-restaurant` has `/api/stripe-webhook` with signature verification; `npm run funnel:route-stripe` normalizes `checkout.session.completed` into revenue ledger and agent task outputs. |
 | Central automation runner | Working MVP | `npm run funnel:route-event` routes Stripe/Tally/first-party revision payloads; `.github/workflows/route-funnel-event.yml` can persist generated funnel state and commit it back to main. |
+| Case file memory | Working MVP | Funnel routing maintains `data/cases/<client>/<order>/case.json`, timeline, customer messages, context packet, decisions log, and agent run log so agents do not lose order/thread context. |
 | Revision entitlement ledger | Working MVP | Paid sales create `data/funnel/orders/<client>/<order>.json`; revision requests consume quota before agent task creation and denied over-limit attempts are recorded without creating tasks. |
 | Customer email notifications | Working MVP | Client Pages Functions and automation router can send Resend customer emails for payment receipt, revision receipt, accepted quota usage, and denied/extra-revision paths when `RESEND_API_KEY` is configured. |
 | Extra revision checkout | Working MVP | Stripe test price exists for `$100` extra revisions; checkout supports `extra_revision` and revision pages link to purchase more. |
@@ -41,7 +42,7 @@
 | Legacy restaurant migration | Working MVP | `npm run migrate:legacy-restaurant` converts current generated restaurant repos into standard evidence packs. |
 | Tally checkout form automation | Blocked | Payment form payloads and MCP prompts can be generated, but live Tally API payment-block creation failed schema validation during testing. Use first-party Stripe checkout until Tally MCP/manual creation is proven. |
 | Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |
-| Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents. |
+| Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents; routed funnel tasks include case/context paths, source-of-truth files, allowed files, and Huashu design protocol. |
 | Agent execution runner | Working MVP | `npm run agent:run-task` reads a pending task, applies artifacts to an artifact-ready repo, and runs build; dry-run is default. |
 | Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` supports Cloudflare Pages attach/dry-run. |
 | Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
@@ -73,13 +74,14 @@
 
 ## Immediate Next Build Order
 
-1. Agent dev-branch execution loop with one paid activation/revision test.
+1. Agent dev-branch execution loop that loads case context before editing.
 2. `/api/order-status/` plus revision-count display on `/revise`.
-3. Agent preview-ready/domain-ready customer emails.
-4. Domain attach/polling for `profitslocal.com`.
-5. Menu PDF extractor and image OCR pipeline.
-6. Resend cold outreach dry-run and live test.
-7. Add next city or niche pilot after the restaurant loop closes.
+3. Discord thread workspace with order/thread id mapping.
+4. Agent preview-ready/domain-ready customer emails.
+5. Domain attach/polling for `profitslocal.com`.
+6. Menu PDF extractor and image OCR pipeline.
+7. Resend cold outreach dry-run and live test.
+8. Add next city or niche pilot after the restaurant loop closes.
 
 ## Verification Rules
 
