@@ -137,11 +137,13 @@ type EvidenceItem<T> = {
 
 ### Extractors
 
-- [ ] `GooglePlacesExtractor`
+- [x] `GooglePlacesExtractor`
   - Text Search
   - Details
-  - Photos download
   - Cost logging per API call
+- [ ] `GooglePlacesPhotoExtractor`
+  - Photos download
+  - Cost logging per photo call
 - [ ] `FirecrawlExtractor`
   - Official website scrape
   - Links

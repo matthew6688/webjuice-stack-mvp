@@ -12,6 +12,7 @@
 | Screenshot QA | Partial | Desktop/mobile screenshots generated manually with Playwright. |
 | Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
 | Finance ledger MVP | Working | `npm run finance:add` and `npm run finance:report` support local ROI tracking. |
+| Google Places extractor MVP | Working | `npm run extract:google-places` can extract leads/details, write evidence, and log cost events with configurable SKU costs. |
 
 ## Half Built
 
@@ -20,7 +21,7 @@
 | Evidence engine | Working MVP | `core/evidence/evidence.js` defines source types, merge rules, restaurant validation, and `npm run evidence:*` CLIs. |
 | Restaurant niche adapter | Half built | Restaurant evidence validation exists, but no formal `niches/restaurant/adapter.ts`. |
 | Design engine | Half built | Brand colors/logos/photos used, but no Huashu/open-design decision engine or scoring. |
-| Cost tracking | Half built | Ledger/report exist, but extractors and Tally webhooks do not write events yet. |
+| Cost tracking | Half built | Ledger/report exist and Google Places writes events; Firecrawl/OpenAI/Tally still need wiring. |
 | Outreach pack | Not yet wired | Need screenshots, video, email, source summary, audit summary in one artifact. |
 
 ## Not Started

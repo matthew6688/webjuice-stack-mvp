@@ -14,7 +14,8 @@
     "finance:report": "node scripts/finance/report.js",
     "finance:add": "node scripts/finance/add-event.js",
     "evidence:build": "node scripts/evidence/build.js",
-    "evidence:validate": "node scripts/evidence/validate.js"
+    "evidence:validate": "node scripts/evidence/validate.js",
+    "extract:google-places": "node scripts/extractors/google-places.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
