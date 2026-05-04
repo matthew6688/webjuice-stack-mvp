@@ -20,6 +20,7 @@
 | Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 | Restaurant design brief MVP | Working MVP | `npm run design:restaurant-brief` creates Huashu-ready `design.restaurant.json` and `brand-spec.md` from validated restaurant content. |
 | Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
+| Outreach pack MVP | Working MVP | `npm run outreach:build-pack` creates outreach pack JSON with QA status, proof points, screenshot targets, and demo video target. |
 
 ## Half Built
 
@@ -29,7 +30,7 @@
 | Restaurant niche adapter | Working MVP | JS adapter/schema exist; still needs real 5-client migration and renderer integration. |
 | Design engine | Half built | Huashu-ready restaurant design brief exists; renderer integration and visual scoring still need work. |
 | Cost tracking | Half built | Ledger/report exist; Google Places, Firecrawl, and Tally revenue write events; OpenAI still needs wiring. |
-| Outreach pack | Not yet wired | Need screenshots, video, email, source summary, audit summary in one artifact. |
+| Outreach pack | Half built | Pack JSON exists; screenshot/video capture still needs implementation. |
 
 ## Not Started
 

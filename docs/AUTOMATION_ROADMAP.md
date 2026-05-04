@@ -72,6 +72,10 @@ clients/
   - validates Google Maps URL
   - validates menu source and item source chains
   - warns on optional email/reservation gaps
+- [x] `npm run outreach:build-pack -- --client <slug>`
+  - writes outreach proof points
+  - embeds link QA status
+  - declares screenshot and demo video artifact targets
 
 ## Phase 0: Baseline Hardening
 
