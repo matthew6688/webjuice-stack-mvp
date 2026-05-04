@@ -8,15 +8,21 @@
       "maya.ns.cloudflare.com."
     ],
     "cname": [],
-    "a": [],
-    "aaaa": []
+    "a": [
+      "172.66.44.159",
+      "172.66.47.97"
+    ],
+    "aaaa": [
+      "2606:4700:310c::ac42:2c9f",
+      "2606:4700:310c::ac42:2f61"
+    ]
   },
   "status": {
     "hasNameservers": true,
     "hasCname": false,
     "cnameMatchesPages": false,
-    "hasA": false,
-    "hasAAAA": false,
+    "hasA": true,
+    "hasAAAA": true,
     "readyForPagesAttach": true
   },
   "instructions": {
@@ -41,5 +47,5 @@
     ],
     "customerMessage": "Point profitslocal.com to the preview/live site.\nIf DNS is on Cloudflare, add CNAME profitslocal.com -> profitslocal-live.pages.dev. Cloudflare will flatten the root CNAME.\nIf DNS is not on Cloudflare, use www.profitslocal.com CNAME profitslocal-live.pages.dev, then redirect the root domain to www.profitslocal.com.\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
   },
-  "checkedAt": "2026-05-04T13:24:02.593Z"
+  "checkedAt": "2026-05-04T13:36:46.082Z"
 }

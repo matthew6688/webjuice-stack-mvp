@@ -37,6 +37,9 @@ Working now:
 
 - `profitslocal.com` nameservers resolve to Cloudflare.
 - `profitslocal.com` is attached to Cloudflare Pages project `profitslocal-live`.
+- DNS CNAME is set to `profitslocal-live.pages.dev`.
+- Pages custom-domain verification and validation are active.
+- `https://profitslocal.com/` returns HTTP 200.
 - `data/domain/profitslocal.com.json` stores DNS inspection output.
 - `data/domain/profitslocal.com.pages-status.json` stores Pages custom-domain status.
 - `npm run domain:pages-status` can poll custom-domain verification/certificate state.
@@ -44,9 +47,8 @@ Working now:
 
 Remaining:
 
-- Add DNS CNAME `profitslocal.com -> profitslocal-live.pages.dev`.
-- Current Pages/account token can attach Pages domains but cannot edit zone DNS records; Cloudflare returned authentication error on DNS record lookup.
-- After CNAME is present, poll until Pages status becomes active.
+- Replace the current placeholder `profitslocal.com` marketing shell with the real sales/order utility experience.
+- Fix placeholder content links like `/blog/undefined` and `/cases/undefined`.
 
 Validation:
 
@@ -219,7 +221,7 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Add/verify DNS CNAME for `profitslocal.com` with Zone DNS Edit permission, then poll Pages status to active.
+1. Replace the placeholder `profitslocal.com` marketing shell with the real sales/order utility experience.
 2. Cost ledger wiring for Resend, image generation, and agent execution time.
 3. Menu PDF/image OCR.
 4. Cold outreach email test with screenshot/video proof.
