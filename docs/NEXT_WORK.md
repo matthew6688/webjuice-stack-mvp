@@ -147,14 +147,15 @@ Working now:
 
 - Funnel Discord sends use `wait=true`.
 - Discord payloads include order ID, task path, and case path.
-- Webhook sends try `thread_name`; if Discord rejects thread creation, the sender falls back to normal webhook posting.
-- When `DISCORD_BOT_TOKEN` is configured, fallback messages create a true Discord thread from the webhook message.
+- When `DISCORD_BOT_TOKEN` is configured, new case messages are posted as normal webhook messages and the bot explicitly creates a true thread from that message. This avoids false positives where Discord accepts `thread_name` but does not create a thread in a normal text channel.
+- Without `DISCORD_BOT_TOKEN`, webhook sends still try `thread_name`; if Discord rejects thread creation, the sender falls back to normal webhook posting.
 - Returned channel/thread/message IDs are persisted in `case.json.discord`.
 - Timeline events include Discord channel/thread/message metadata.
 - `npm run discord:case-thread` can dry-run payloads from an existing case file.
 - GitHub Actions live smoke with Discord notifications succeeded; the generated smoke order/case/ledger state was removed after verification.
 - Agent completion and live publish scripts can now post standardized follow-up messages back into the saved Discord case thread when `--send-discord true` is used.
 - `publish-approved.yml` exposes `send_discord` and passes Discord webhook/bot secrets to the publish runner.
+- `route-funnel-event.yml` now defaults `auto_run_agent` to true: after routing a paid/revision task, it clones the client repo, installs dependencies, runs `agent:complete-task`, pushes dev, waits for deploy, and sends review email/Discord follow-up.
 
 Remaining hardening:
 

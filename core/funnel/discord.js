@@ -87,6 +87,33 @@ export async function sendDiscordWebhook(url, payload, {
   botToken = '',
 } = {}) {
   if (!url) throw new Error('Discord webhook URL is required');
+  if (threadName && botToken && !threadId) {
+    const message = await fetchDiscordWebhook(url, payload, { fetchImpl, wait: true, threadId: '', threadName: '' });
+    if (message.ok) {
+      const normalized = normalizeDiscordResponse(message);
+      if (normalized.channelId && normalized.messageId) {
+        const thread = await createThreadFromMessage({
+          fetchImpl,
+          botToken,
+          channelId: normalized.channelId,
+          messageId: normalized.messageId,
+          threadName,
+        });
+        if (thread.ok) {
+          return {
+            ...normalized,
+            threadId: thread.threadId,
+            threadName,
+            threadCreatedByBot: true,
+            threadUrl: thread.threadUrl,
+          };
+        }
+        return { ...normalized, threadCreateError: thread.error || 'thread_create_failed' };
+      }
+      return normalized;
+    }
+  }
+
   const response = await fetchDiscordWebhook(url, payload, { fetchImpl, wait: true, threadId, threadName });
   if (response.ok) return normalizeDiscordResponse(response);
 

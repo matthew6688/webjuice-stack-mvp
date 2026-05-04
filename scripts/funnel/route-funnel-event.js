@@ -116,6 +116,9 @@ try {
     ].join('\n'));
   }
 
+  if (args.output) {
+    fs.writeFileSync(args.output, `${JSON.stringify(summary, null, 2)}\n`);
+  }
   console.log(JSON.stringify(summary, null, 2));
 } catch (error) {
   console.error(error.stack || error.message);
