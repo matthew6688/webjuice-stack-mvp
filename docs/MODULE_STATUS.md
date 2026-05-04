@@ -25,6 +25,7 @@
 | Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 | Restaurant design brief MVP | Working MVP | `npm run design:restaurant-brief` creates Huashu-ready `design.restaurant.json` and `brand-spec.md` from validated restaurant content. |
 | Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
+| Niche registry | Working MVP | `npm run niches:list` exposes registered niches; pipeline now routes through `core/niches/registry.js` instead of hardcoding restaurant logic. |
 | Outreach pack MVP | Working MVP | `npm run outreach:build-pack` creates outreach pack JSON with QA status, proof points, screenshot targets, and demo video target; `npm run outreach:validate-pack` verifies pack usability. |
 | Legacy restaurant migration | Working MVP | `npm run migrate:legacy-restaurant` converts current generated restaurant repos into standard evidence packs. |
 | Tally checkout form automation | Working MVP | Payment form payloads and MCP prompts can be generated; live API creation is available when `TALLY_API_KEY` is configured. |
@@ -51,7 +52,7 @@
 | PDF extraction / image OCR pipeline | Half built |
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
-| Multi-niche framework | Not started |
+| Multi-niche framework | Half built |
 
 ## Immediate Next Build Order
 

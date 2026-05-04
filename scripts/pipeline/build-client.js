@@ -2,13 +2,7 @@
 
 import path from 'path';
 import { defaultEvidencePath } from '../../core/evidence/evidence.js';
-import { buildRestaurantContentFile } from '../../niches/restaurant/adapter.js';
-import {
-  buildRestaurantDesignBrief,
-  saveRestaurantDesignBrief,
-  validateRestaurantDesignBrief,
-  writeBrandSpecMarkdown,
-} from '../../core/design/restaurant-brief.js';
+import { buildClientArtifactsForNiche, listNiches } from '../../core/niches/registry.js';
 import {
   buildArtifactManifest,
   saveArtifactManifest,
@@ -32,58 +26,58 @@ if (!args.client && !evidencePath) {
   console.error('Usage: node scripts/pipeline/build-client.js --client slug [--niche restaurant] [--evidence evidence.json] [--out-dir clients/slug]');
   process.exit(1);
 }
-if (niche !== 'restaurant') {
-  console.error(`Unsupported niche "${niche}". Currently supported: restaurant`);
-  process.exit(1);
-}
 
 const clientSlug = args.client || clientSlugFromEvidencePath(evidencePath);
 const outDir = args['out-dir'] || args.outDir || path.join('clients', clientSlug);
-const contentPath = path.join(outDir, 'content.restaurant.json');
-const designPath = path.join(outDir, 'design.restaurant.json');
-const brandSpecPath = path.join(outDir, 'brand-spec.md');
 const manifestPath = path.join(outDir, 'artifact-manifest.json');
 
-const restaurantResult = buildRestaurantContentFile({
-  evidencePath,
-  outputPath: contentPath,
-});
-const designBrief = buildRestaurantDesignBrief(restaurantResult.content, { sourceContentPath: contentPath });
-const designValidation = validateRestaurantDesignBrief(designBrief);
+let artifacts;
+try {
+  artifacts = buildClientArtifactsForNiche({
+    nicheId: niche,
+    evidencePath,
+    outDir,
+    clientSlug,
+  });
+} catch (error) {
+  console.error(error.message);
+  console.error(`Supported niches: ${listNiches().join(', ')}`);
+  process.exit(1);
+}
 
-saveRestaurantDesignBrief(designBrief, designPath);
-writeBrandSpecMarkdown(designBrief, brandSpecPath);
 saveArtifactManifest(buildArtifactManifest({
   clientSlug,
   niche,
   evidencePath,
-  contentPath,
-  designPath,
-  brandSpecPath,
+  contentPath: artifacts.contentPath,
+  designPath: artifacts.designPath,
+  brandSpecPath: artifacts.brandSpecPath,
   validations: {
-    evidence: restaurantResult.evidenceValidation.ok ? 'ok' : 'failed',
-    content: restaurantResult.contentValidation.ok ? 'ok' : 'failed',
-    design: designValidation.ok ? 'ok' : 'failed',
+    evidence: artifacts.contentResult.evidenceValidation.ok ? 'ok' : 'failed',
+    content: artifacts.contentResult.contentValidation.ok ? 'ok' : 'failed',
+    design: artifacts.designValidation.ok ? 'ok' : 'failed',
   },
-  warnings: designValidation.warnings,
+  warnings: artifacts.designValidation.warnings,
 }), manifestPath);
 
-const ok = restaurantResult.evidenceValidation.ok
-  && restaurantResult.contentValidation.ok
-  && designValidation.ok;
+const ok = artifacts.contentResult.evidenceValidation.ok
+  && artifacts.contentResult.contentValidation.ok
+  && artifacts.designValidation.ok;
 
 console.log(`Client pipeline: ${clientSlug}`);
 console.log(`Evidence: ${evidencePath}`);
-console.log(`Content:  ${contentPath}`);
-console.log(`Design:   ${designPath}`);
-console.log(`Brand:    ${brandSpecPath}`);
+console.log(`Niche:    ${artifacts.niche.id}`);
+console.log(`Template: ${artifacts.niche.templateRepo}`);
+console.log(`Content:  ${artifacts.contentPath}`);
+console.log(`Design:   ${artifacts.designPath}`);
+console.log(`Brand:    ${artifacts.brandSpecPath}`);
 console.log(`Manifest: ${manifestPath}`);
 console.log(`Status:   ${ok ? 'ok' : 'failed'}`);
 
-printIssues('Evidence errors', restaurantResult.evidenceValidation.errors);
-printIssues('Content errors', restaurantResult.contentValidation.errors);
-printIssues('Design errors', designValidation.errors);
-printIssues('Design warnings', designValidation.warnings);
+printIssues('Evidence errors', artifacts.contentResult.evidenceValidation.errors);
+printIssues('Content errors', artifacts.contentResult.contentValidation.errors);
+printIssues('Design errors', artifacts.designValidation.errors);
+printIssues('Design warnings', artifacts.designValidation.warnings);
 
 process.exit(ok ? 0 : 1);
 
