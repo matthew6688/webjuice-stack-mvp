@@ -59,7 +59,7 @@
 | Restaurant template renderer | Working MVP | `matthew6688/webjuice-restaurant` now reads `content.restaurant.json` and `design.restaurant.json`; generated repos still need migration to the new renderer flow. |
 | Client artifact sync | Working MVP | `npm run clients:sync-artifacts` applies content/design/checkout artifacts and optional images to an artifact-ready client repo, then can run build. |
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
-| Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, Tally revenue, and Stripe revenue can write events; Resend, image generation, and agent runtime still need direct wiring. |
+| Cost tracking | Working MVP | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, Tally revenue, Stripe revenue, Resend emails, image generation, and agent runtime can write events. Resend/runtime costs are configurable estimates. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
 | Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; main repo notification secrets are configured, and Pages secrets are present on current dev/live client projects. |
@@ -80,10 +80,9 @@
 ## Immediate Next Build Order
 
 1. Replace the placeholder `profitslocal.com` marketing shell with the real sales/order utility experience.
-2. Cost ledger wiring for Resend, image generation, and agent runtime.
-3. Menu PDF extractor and image OCR pipeline.
-4. Resend cold outreach dry-run and live test.
-5. Add next city or niche pilot after the restaurant loop closes.
+2. Menu PDF extractor and image OCR pipeline.
+3. Resend cold outreach dry-run and live test.
+4. Add next city or niche pilot after the restaurant loop closes.
 
 ## Verification Rules
 

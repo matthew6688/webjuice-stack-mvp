@@ -6,6 +6,7 @@ import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import { publishApprovedTask, savePublishResult } from '../../core/agents/publisher.js';
 import { getLatestGithubActionsRun } from '../../core/deploy/github-actions.js';
 import { buildLivePublishedEmail, sendCustomerEmail } from '../../core/funnel/customer-email.js';
+import { DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 
 loadLocalEnv();
 
@@ -66,7 +67,12 @@ if (boolArg(args, 'send-email') && publishResult.ok && !publishResult.dryRun && 
     deployResult,
     liveUrl: args['live-url'] || args.liveUrl || '',
   });
-  if (message) customerEmail = await sendCustomerEmail(process.env, message);
+  if (message) customerEmail = await sendCustomerEmail(process.env, message, {
+    ledgerPath: args.ledger || DEFAULT_LEDGER_PATH,
+    clientSlug: task.clientSlug || publishResult.clientSlug || null,
+    campaignId: args.campaign || task.campaignId || null,
+    emailMetadata: { taskId: task.id, kind: 'live_published' },
+  });
 }
 
 const result = { ...publishResult, deployResult, customerEmail };

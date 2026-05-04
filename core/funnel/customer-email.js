@@ -1,4 +1,8 @@
-export async function sendCustomerEmail(env, message, { fetchImpl = fetch } = {}) {
+import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
+import { resendEmailLedgerInput } from '../finance/service-costs.js';
+
+export async function sendCustomerEmail(env, message, options = {}) {
+  const { fetchImpl = fetch } = options;
   if (!env?.RESEND_API_KEY || !message?.to) return { ok: false, skipped: true };
   const response = await fetchImpl('https://api.resend.com/emails', {
     method: 'POST',
@@ -18,7 +22,25 @@ export async function sendCustomerEmail(env, message, { fetchImpl = fetch } = {}
     const body = await response.text().catch(() => '');
     throw new Error(`Resend email failed: ${response.status} ${body}`.trim());
   }
-  return { ok: true, status: response.status };
+  const data = await response.json().catch(() => ({}));
+  const ledgerEvent = recordResendCost(env, message, options, data);
+  return { ok: true, status: response.status, id: data?.id || '', ledgerEvent };
+}
+
+function recordResendCost(env, message, options = {}, data = {}) {
+  const rawUnitCost = options.resendUnitCost ?? options['resend-unit-cost'] ?? env.RESEND_EMAIL_UNIT_COST;
+  if (rawUnitCost === undefined || rawUnitCost === '') return null;
+  const unitCost = Number(rawUnitCost);
+  if (!Number.isFinite(unitCost)) return null;
+  return appendLedgerEvent(resendEmailLedgerInput({
+    clientSlug: options.clientSlug || null,
+    campaignId: options.campaignId || null,
+    to: message.to,
+    subject: message.subject,
+    providerId: data?.id || '',
+    unitCost,
+    metadata: options.emailMetadata || {},
+  }), options.ledgerPath || options.ledger || DEFAULT_LEDGER_PATH);
 }
 
 export function buildFunnelCustomerEmail({ kind, order, entitlement, extraRevisionUrl = '' }) {

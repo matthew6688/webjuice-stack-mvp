@@ -44,6 +44,9 @@ Working now:
 - `data/domain/profitslocal.com.pages-status.json` stores Pages custom-domain status.
 - `npm run domain:pages-status` can poll custom-domain verification/certificate state.
 - `npm run domain:upsert-cname` can create/update the CNAME when the token has Zone DNS Edit.
+- ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
+- Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
+- Image generation costs can be recorded with `npm run finance:add-image-generation`.
 
 Remaining:
 
@@ -221,12 +224,10 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Replace the placeholder `profitslocal.com` marketing shell with the real sales/order utility experience.
-2. Cost ledger wiring for Resend, image generation, and agent execution time.
-3. Menu PDF/image OCR.
-4. Cold outreach email test with screenshot/video proof.
-5. More cities: Sydney/Melbourne restaurants.
-6. Next niche pilot: roofing/plumbing/dental.
+1. Menu PDF/image OCR.
+2. Cold outreach email test with screenshot/video proof.
+3. More cities: Sydney/Melbourne restaurants.
+4. Next niche pilot: roofing/plumbing/dental.
 
 ## Blocking Inputs
 

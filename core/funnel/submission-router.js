@@ -48,7 +48,12 @@ export async function routeFunnelSubmission(payload, options = {}) {
       });
       let customerEmail = { ok: false, skipped: true };
       if (options.sendEmail && emailMessage && !options.dryRun) {
-        customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, options);
+        customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, {
+          ...options,
+          clientSlug: order.clientSlug,
+          campaignId: order.campaignId || options.campaignId || null,
+          emailMetadata: { kind, orderId: order.orderId || '', outcome: 'revision_denied' },
+        });
       }
       if (!options.dryRun) {
         writeJson(submissionPath, {
@@ -148,7 +153,12 @@ export async function routeFunnelSubmission(payload, options = {}) {
     extraRevisionUrl: options.extraRevisionUrl || options.env?.EXTRA_REVISION_CHECKOUT_URL || process.env.EXTRA_REVISION_CHECKOUT_URL || '',
   });
   if (options.sendEmail && emailMessage && !options.dryRun) {
-    customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, options);
+    customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, {
+      ...options,
+      clientSlug: order.clientSlug,
+      campaignId: order.campaignId || options.campaignId || null,
+      emailMetadata: { kind, orderId: order.orderId || '', outcome: entitlement?.reason || '' },
+    });
   }
 
   const caseRecord = recordFunnelCaseEvent({
