@@ -11,6 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check:env": "node scripts/check-env.js",
+    "check:links": "node scripts/check-links.js",
+    "check:deploys": "node scripts/check-deploys.js",
     "finance:report": "node scripts/finance/report.js",
     "finance:add": "node scripts/finance/add-event.js",
     "finance:add-openai-usage": "node scripts/finance/add-openai-usage.js",

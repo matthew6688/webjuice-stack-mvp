@@ -91,13 +91,15 @@ clients/
   - `CF_ACCOUNT_ID`
   - `RESEND_API_KEY`
 - [x] Add `scripts/check-env.js`.
-- [ ] Add `scripts/check-links.js` for deployed previews.
-- [ ] Add `scripts/check-deploys.js` for GitHub Actions status.
+- [x] Add `scripts/check-links.js` for deployed previews.
+- [x] Add `scripts/check-deploys.js` for GitHub Actions status.
 - [x] Add a `docs/SECURITY.md` key handling policy.
 
 ### Validation
 
 - `node scripts/check-env.js` reports required/missing variables by workflow.
+- `npm run check:links -- --client <slug>` reports deployed preview HTTP and CTA checks.
+- `npm run check:deploys -- --client <slug>` reports the latest GitHub Actions run.
 - No API keys are committed.
 - `npm run build` passes.
 - `git status` clean after generated files are intentionally ignored.
