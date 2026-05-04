@@ -54,6 +54,7 @@ Working now:
 - `data/domain/profitslocal.com.pages-status.json` stores Pages custom-domain status.
 - `npm run domain:pages-status` can poll custom-domain verification/certificate state.
 - `npm run domain:upsert-cname` can create/update the CNAME when the token has Zone DNS Edit.
+- Local secrets should be configured with `npm run setup:local-env`, then verified with `npm run check:env -- --workflow funnel`, `scrape`, `deploy`, and `localAudit`.
 - ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
 - Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
 - Image generation costs can be recorded with `npm run finance:add-image-generation`.
@@ -151,10 +152,10 @@ Working now:
 - Returned channel/thread/message IDs are persisted in `case.json.discord`.
 - Timeline events include Discord channel/thread/message metadata.
 - `npm run discord:case-thread` can dry-run payloads from an existing case file.
+- GitHub Actions live smoke with Discord notifications succeeded; the generated smoke order/case/ledger state was removed after verification.
 
 Remaining hardening:
 
-- Live local Discord test requires webhook/bot values in `.env.local`, or use the already-configured GitHub Actions secrets. Do not put raw Discord tokens in commands/docs.
 - Add follow-up message helpers for agent-complete and live-published events.
 
 Validation:

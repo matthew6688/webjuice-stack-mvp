@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "setup:local-env": "node scripts/setup-local-env.js",
     "check:env": "node scripts/check-env.js",
     "check:links": "node scripts/check-links.js",
     "check:deploys": "node scripts/check-deploys.js",

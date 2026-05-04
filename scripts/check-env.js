@@ -8,9 +8,21 @@ const workflows = {
   deploy: ['CF_API_TOKEN', 'CF_ACCOUNT_ID', 'GH_PAT'],
   scrape: ['GOOGLE_PLACES_API_KEY', 'FIRECRAWL_API_KEY'],
   design: ['OPENAI_API_KEY'],
-  funnel: ['TALLY_API_KEY'],
+  funnel: [
+    'STRIPE_SECRET_KEY',
+    'STRIPE_PUBLISHABLE_KEY',
+    'RESEND_API_KEY',
+    'FROM_EMAIL',
+    'SALES_DISCORD_WEBHOOK_URL',
+    'REVISE_DISCORD_WEBHOOK_URL',
+    'GH_PAT',
+  ],
+  tally: ['TALLY_API_KEY'],
+  stripe: ['STRIPE_SECRET_KEY', 'STRIPE_PUBLISHABLE_KEY'],
+  discord: ['SALES_DISCORD_WEBHOOK_URL', 'REVISE_DISCORD_WEBHOOK_URL'],
   outreach: ['RESEND_API_KEY'],
   emailDomainUpgrade: ['RESEND_MASTER_KEY'],
+  localAudit: ['OLLAMA_MODEL', 'OLLAMA_URL'],
 };
 
 const args = process.argv.slice(2);

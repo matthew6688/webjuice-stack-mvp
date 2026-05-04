@@ -73,10 +73,11 @@ webjuice-stack-mvp/          # 母板模板
 本地开发使用 `.env.local`，不要把 API key 写进文档、commit、shell history 或生成物。
 
 ```bash
-cp .env.example .env.local
+npm run setup:local-env
 npm run check:env -- --workflow funnel
 npm run check:env -- --workflow scrape
 npm run check:env -- --workflow deploy
+npm run check:env -- --workflow localAudit
 ```
 
 安全规则见 `docs/SECURITY.md`。
@@ -242,7 +243,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 添加 approval publish workflow，客户批准后发布 dev 到 live/main
 - [x] 添加 `/api/order-status/` 和 `/revise` revision 次数显示
 - [x] 建 Discord thread workspace，把 order/thread/message URL 写回 case memory
-- [ ] 跑一次真实 Discord thread live test（`DISCORD_BOT_TOKEN` 已配成 GitHub Actions secret）
+- [x] 跑一次真实 Discord thread live test（GitHub Actions dispatch 成功发送 Discord；测试订单 state 已清理，避免污染 ROI/customer data）
 - [x] 接入 ROI/cost ledger：Resend、image generation、agent runtime
 - [x] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
 - [x] 完成 Menu document extractor MVP：MarkItDown/direct text/OCRmyPDF/PaddleOCR 编排
@@ -257,7 +258,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 跑 sale → case/task/entitlement/ledger 本地 smoke，并生成 Discord case-thread dry-run payload
 - [x] 跑 agent runner execute smoke：读取 case context/source-of-truth，apply artifacts，build，通过并写回 case run record
 - [x] 跑 approval publish dry-run smoke：验证 dev → main publish runner 步骤链可生成计划并通过
-- [ ] 跑一次真实 Discord thread live test（当前本地 env 未配置 webhook/bot；可通过 `.env.local` 或 GitHub Actions secrets 执行）
+- [x] 跑一次真实 Discord thread live test（通过 GitHub Actions secrets 执行，run 成功；测试订单 state 已清理）
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做
 - [ ] 其他 niche 暂缓；当前只聚焦 restaurant 闭环

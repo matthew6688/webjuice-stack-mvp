@@ -5,10 +5,11 @@
 Put live API keys in `.env.local`. This file is ignored by git and is loaded by local automation scripts before they read `process.env`.
 
 ```bash
-cp .env.example .env.local
+npm run setup:local-env
+npm run check:env -- --workflow funnel
 ```
 
-Then replace only the values needed for the workflow you are running.
+Then replace only the values needed for the workflow you are running. Do not paste raw tokens into shell commands, docs, GitHub commits, screenshots, or generated artifacts. The setup script prompts locally and writes `.env.local` with file mode `0600`.
 
 ## Rules
 
