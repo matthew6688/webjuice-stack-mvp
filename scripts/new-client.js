@@ -73,8 +73,33 @@ async function generateRepo(slug) {
   return data;
 }
 
+async function createDevBranch(repoFullName) {
+  console.log(`[2/6] Creating dev branch...`);
+  // Get main branch SHA
+  const mainRef = await githubRequest(`/repos/${repoFullName}/git/ref/heads/main`);
+  const mainSha = mainRef.object.sha;
+  
+  // Create dev branch
+  try {
+    await githubRequest(`/repos/${repoFullName}/git/refs`, {
+      method: 'POST',
+      body: JSON.stringify({
+        ref: 'refs/heads/dev',
+        sha: mainSha,
+      }),
+    });
+    console.log(`  ✓ Dev branch created`);
+  } catch (e) {
+    if (e.message.includes('already exists')) {
+      console.log(`  ⚠️  Dev branch already exists`);
+    } else {
+      throw e;
+    }
+  }
+}
+
 async function updateSiteConfig(repoFullName, config) {
-  console.log(`[2/6] Updating site config...`);
+  console.log(`[3/7] Updating site config...`);
 
   // Get current file sha
   let sha;
@@ -130,7 +155,7 @@ export const siteConfig: SiteConfig = {
 }
 
 async function createPagesProject(slug) {
-  console.log(`[3/6] Creating Cloudflare Pages project...`);
+  console.log(`[4/7] Creating Cloudflare Pages project...`);
   try {
     await cfRequest(`/accounts/${CF_ACCOUNT}/pages/projects`, {
       method: 'POST',
@@ -147,7 +172,7 @@ async function createPagesProject(slug) {
 }
 
 async function addPagesDomain(slug, domain) {
-  console.log(`[4/6] Adding custom domain...`);
+  console.log(`[5/7] Adding custom domain...`);
   try {
     await cfRequest(`/accounts/${CF_ACCOUNT}/pages/projects/${slug}/domains`, {
       method: 'POST',
@@ -164,7 +189,7 @@ async function addPagesDomain(slug, domain) {
 }
 
 async function updateRepoVars(repoFullName, slug, domain) {
-  console.log(`[5/6] Setting repository variables...`);
+  console.log(`[6/7] Setting repository variables...`);
 
   // Set Pages project name as a variable
   try {
@@ -182,9 +207,10 @@ async function updateRepoVars(repoFullName, slug, domain) {
 }
 
 function printNextSteps(repoUrl, slug, domain) {
-  console.log(`\n[6/6] Done!\n`);
+  console.log(`\n[7/7] Done!\n`);
   console.log(`Repository: ${repoUrl}`);
-  console.log(`Pages URL:  https://${slug}.pages.dev`);
+  console.log(`Live URL:   https://${slug}.pages.dev`);
+  console.log(`Dev URL:    https://${slug}-dev.pages.dev`);
   console.log(`Custom Domain: ${domain}`);
   console.log(`\n⚠️  Manual steps required:`);
   console.log(`  1. Go to ${repoUrl}/settings/secrets/actions`);
@@ -218,6 +244,7 @@ async function main() {
 
   try {
     const repo = await generateRepo(args.slug);
+    await createDevBranch(repoFullName);
     await updateSiteConfig(repoFullName, args);
     await createPagesProject(args.slug);
     await addPagesDomain(args.slug, args.domain);
