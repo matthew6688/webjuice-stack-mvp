@@ -162,7 +162,7 @@ type EvidenceItem<T> = {
   - Text Search
   - Details
   - Cost logging per API call
-- [ ] `GooglePlacesPhotoExtractor`
+- [x] `GooglePlacesPhotoExtractor`
   - Photos download
   - Cost logging per photo call
 - [x] `FirecrawlExtractor`
