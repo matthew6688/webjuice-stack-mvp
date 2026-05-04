@@ -133,6 +133,7 @@ Validation status:
 - Stripe/Resend runtime secrets are configured on the 5 dev Pages projects.
 - Central runner local verification wrote sale entitlement, sale task, revision task, and ledger records under `/tmp/central-runner-state`.
 - Main repo GitHub Actions secrets are configured for sales Discord, revision Discord, and Resend; dry-run workflow dispatch passes with notification flags enabled.
+- `AGENT_GITHUB_TOKEN` is configured and verified on the 5 Brisbane dev/live Pages projects and template dev/live Pages projects.
 
 ## Create Tally Forms
 

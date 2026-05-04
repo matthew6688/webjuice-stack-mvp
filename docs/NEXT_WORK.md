@@ -19,6 +19,7 @@ Verified live state:
 - Central funnel runner exists: `npm run funnel:route-event` plus GitHub Actions `route-funnel-event.yml`.
 - `webjuice-restaurant` Pages Functions can dispatch Stripe/revision payloads to the main automation workflow with `AGENT_GITHUB_TOKEN`.
 - Main repo workflow notification secrets are configured for Discord + Resend; dry-run workflow dispatch with notification flags passes.
+- `AGENT_GITHUB_TOKEN` is configured on 5 Brisbane dev/live Pages projects plus `webjuice-restaurant` dev/live, and `wrangler pages secret list` verifies the secret exists.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -65,8 +66,8 @@ Working now:
 
 Remaining hardening:
 
-- Configure each Pages project with a narrowly scoped `AGENT_GITHUB_TOKEN`.
 - Optional: add `EXTRA_REVISION_CHECKOUT_URL` repo variable once the global extra-revision purchase URL is decided.
+- Optional: replace the temporary PAT with a narrower GitHub App token if we want stricter production hardening.
 
 Validation:
 
@@ -199,8 +200,8 @@ npm run outreach:capture-assets -- --client <slug>
 ## Suggested Build Order
 
 1. Agent dev-branch execution loop with one Longwang paid activation/revision test.
-2. Configure live Pages `AGENT_GITHUB_TOKEN`.
-3. `/api/order-status/` and revision-count display on `/revise`.
+2. `/api/order-status/` and revision-count display on `/revise`.
+3. Agent preview-ready and domain-ready customer emails.
 4. Agent preview-ready and domain-ready customer emails.
 5. Domain attach/polling for `profitslocal.com`.
 6. Menu PDF/image OCR.
@@ -209,7 +210,6 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Blocking Inputs
 
-- A narrowly scoped GitHub token or GitHub App path for workflow dispatch from Pages Functions. Do not use the local broad `gh auth token` unless deliberately accepted as a temporary shortcut.
 - Decision on where central automation should persist production state long term:
   - Git repo JSON files for MVP
   - Cloudflare D1 / Supabase / Neon for production
