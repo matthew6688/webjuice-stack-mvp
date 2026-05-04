@@ -161,10 +161,14 @@ type EvidenceItem<T> = {
   - Google Maps photo OCR
   - Website image OCR
   - Confidence scoring
-- [ ] `PaddleOcrProvider`
+- [x] `PaddleOcrProvider`
   - Use PaddleOCR for local PDF/image-to-Markdown/JSON extraction when installed.
   - Prefer PP-Structure/PaddleOCR-VL output for menu layout/table preservation.
   - Record OCR runtime cost as local compute/labor estimate unless an external hosted API is used.
+- [x] `OcrmypdfProvider`
+  - Use OCRmyPDF for scanned PDFs that need a searchable text layer.
+  - Follow with `pdftotext` or `MenuTextParser`.
+  - Prefer this before visual VLM parsing for ordinary scanned PDF menus.
 - [ ] `BrandAssetExtractor`
   - Logo candidates
   - Official photos

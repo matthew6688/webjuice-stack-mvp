@@ -38,7 +38,8 @@
 | Hermes/OpenClaw task queue | Not started |
 | Domain onboarding / DNS verifier | Not started |
 | PDF extraction / image OCR pipeline | Half built |
-| PaddleOCR provider | Planned |
+| PaddleOCR provider | Working wrapper |
+| OCRmyPDF provider | Working wrapper |
 | Demo video generator | Not started |
 | ROI report | Not started |
 | Multi-niche framework | Not started |
