@@ -8,7 +8,7 @@
 | Google Places manual extraction | Working manually | Used successfully for 5 Brisbane restaurants, not yet a reusable extractor module. |
 | Firecrawl official-site scrape | Working manually | Used successfully for official sites/menu pages, not yet standardized into evidence packs. |
 | Restaurant preview renderer | Working manually | Real menu pages deployed with logo/photos/CTA, but renderer is still embedded in generated repos. |
-| Link QA | Partial | `tel:`, reservation, source, and Google Maps links were checked manually/scripts ad hoc. |
+| Link QA | Working MVP | `npm run qa:links` validates `tel:`, Google Maps, menu source, reservation, email, and menu item source chains from content artifacts. |
 | Screenshot QA | Partial | Desktop/mobile screenshots generated manually with Playwright. |
 | Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
 | Finance ledger MVP | Working | `npm run finance:add` and `npm run finance:report` support local ROI tracking. |
@@ -19,7 +19,7 @@
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 | Restaurant design brief MVP | Working MVP | `npm run design:restaurant-brief` creates Huashu-ready `design.restaurant.json` and `brand-spec.md` from validated restaurant content. |
-| Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, and brand spec from validated evidence. |
+| Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
 
 ## Half Built
 

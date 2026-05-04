@@ -65,7 +65,13 @@ clients/
   - writes `content.restaurant.json`
   - writes `design.restaurant.json`
   - writes `brand-spec.md`
+  - writes `artifact-manifest.json`
   - exits non-zero when required facts or menu sections are missing
+- [x] `npm run qa:links -- --content <content.restaurant.json>`
+  - validates `tel:`
+  - validates Google Maps URL
+  - validates menu source and item source chains
+  - warns on optional email/reservation gaps
 
 ## Phase 0: Baseline Hardening
 

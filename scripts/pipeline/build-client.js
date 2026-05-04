@@ -9,6 +9,10 @@ import {
   validateRestaurantDesignBrief,
   writeBrandSpecMarkdown,
 } from '../../core/design/restaurant-brief.js';
+import {
+  buildArtifactManifest,
+  saveArtifactManifest,
+} from '../../core/pipeline/manifest.js';
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -38,6 +42,7 @@ const outDir = args['out-dir'] || args.outDir || path.join('clients', clientSlug
 const contentPath = path.join(outDir, 'content.restaurant.json');
 const designPath = path.join(outDir, 'design.restaurant.json');
 const brandSpecPath = path.join(outDir, 'brand-spec.md');
+const manifestPath = path.join(outDir, 'artifact-manifest.json');
 
 const restaurantResult = buildRestaurantContentFile({
   evidencePath,
@@ -48,6 +53,20 @@ const designValidation = validateRestaurantDesignBrief(designBrief);
 
 saveRestaurantDesignBrief(designBrief, designPath);
 writeBrandSpecMarkdown(designBrief, brandSpecPath);
+saveArtifactManifest(buildArtifactManifest({
+  clientSlug,
+  niche,
+  evidencePath,
+  contentPath,
+  designPath,
+  brandSpecPath,
+  validations: {
+    evidence: restaurantResult.evidenceValidation.ok ? 'ok' : 'failed',
+    content: restaurantResult.contentValidation.ok ? 'ok' : 'failed',
+    design: designValidation.ok ? 'ok' : 'failed',
+  },
+  warnings: designValidation.warnings,
+}), manifestPath);
 
 const ok = restaurantResult.evidenceValidation.ok
   && restaurantResult.contentValidation.ok
@@ -58,6 +77,7 @@ console.log(`Evidence: ${evidencePath}`);
 console.log(`Content:  ${contentPath}`);
 console.log(`Design:   ${designPath}`);
 console.log(`Brand:    ${brandSpecPath}`);
+console.log(`Manifest: ${manifestPath}`);
 console.log(`Status:   ${ok ? 'ok' : 'failed'}`);
 
 printIssues('Evidence errors', restaurantResult.evidenceValidation.errors);
