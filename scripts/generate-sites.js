@@ -146,7 +146,7 @@ export const siteConfig: SiteConfig = {
   review_count: ${config.review_count || 0},
   navLinks: [
     { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
+    { label: 'Menu', href: '/menu' },
     { label: 'Contact', href: '/contact' },
   ],
   footer: {

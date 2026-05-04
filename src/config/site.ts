@@ -12,12 +12,12 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'WebJuice',
-  tagline: 'Fast Websites for B2B Companies',
-  description: 'Astro + Cloudflare stack. No WordPress. Just fast, secure, automated websites.',
+  name: 'Profits Local',
+  tagline: 'Preview Websites for Local Businesses',
+  description: 'Fast restaurant and local business preview sites for outreach, review, and launch.',
   email: 'hello@fengtalk.ai',
-  domain: 'fengtalk.ai',
-  fromName: 'WebJuice',
+  domain: 'profitslocal.com',
+  fromName: 'Profits Local',
   navLinks: [
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },
