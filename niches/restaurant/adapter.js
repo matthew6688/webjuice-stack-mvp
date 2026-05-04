@@ -61,6 +61,7 @@ export function buildRestaurantContentFromEvidence(pack, { sourceEvidencePath } 
   content.brand = {
     logo: valueOf(resolved, 'brand.logo') || '',
     colors: valueOf(resolved, 'brand.colors') || [],
+    fonts: valueOf(resolved, 'brand.fonts') || [],
     ogImage: valueOf(resolved, 'brand.ogImage') || '',
   };
   content.evidenceSummary = summarizeEvidence(pack.items || []);

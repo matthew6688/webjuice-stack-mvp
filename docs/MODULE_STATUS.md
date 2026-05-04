@@ -17,6 +17,7 @@
 | OpenAI usage cost logger | Working MVP | `npm run finance:add-openai-usage` records OpenAI token costs into the ledger using caller-provided pricing rates. |
 | Google Places extractor MVP | Working | `npm run extract:google-places` can extract leads/details, write evidence, and log cost events with configurable SKU costs. |
 | Google Places photo extractor MVP | Working | `npm run extract:google-places-photos` downloads Place photos or dry-run fixtures, writes media manifests, can append `media.photos` evidence, and logs per-photo cost events. |
+| Brand asset extractor MVP | Working | `npm run extract:brand-assets` extracts logo candidates, official image candidates, palette colors, and font hints from official-site HTML/URL, writes a manifest, and can append brand evidence. |
 | Firecrawl extractor MVP | Working | `npm run extract:firecrawl` can scrape official pages, save raw artifacts, detect menu/reservation/contact evidence, and log cost events. |
 | Firecrawl Parse provider | Working MVP | `npm run extract:firecrawl-parse` uploads local/private documents, captures parse output, writes menu evidence, and logs Firecrawl parse costs. |
 | Menu text parser MVP | Working MVP | `npm run extract:menu` parses text/markdown menu artifacts into `menu.sections`; PDF requires local `pdftotext` or prior text extraction. |
@@ -59,7 +60,6 @@
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
 | Multi-niche framework | Half built |
-| Brand asset extractor | Not started |
 | Reservation/contact extractors | Not started |
 | Live Tally form creation | Blocked on local `TALLY_API_KEY` and payment workspace verification |
 | Resend cold email test | Blocked on configured `RESEND_API_KEY` and sender/domain setup |
@@ -67,14 +67,13 @@
 ## Immediate Next Build Order
 
 1. Menu PDF extractor and image OCR pipeline.
-2. Brand asset extractor: logo, palette, official photos, font hints.
-3. Reservation/contact extractors.
-4. Renderer integration with `webjuice-restaurant` as the canonical artifact renderer.
-5. Live Tally form creation and webhook smoke test.
-6. First full paid-loop simulation: Tally revenue -> agent task -> dev update -> preview QA.
-7. Domain attach/polling for `profitslocal.com`.
-8. Resend cold email dry-run and live test.
-9. Add next niche pilot after restaurant loop closes.
+2. Reservation/contact extractors.
+3. Renderer integration with `webjuice-restaurant` as the canonical artifact renderer.
+4. Live Tally form creation and webhook smoke test.
+5. First full paid-loop simulation: Tally revenue -> agent task -> dev update -> preview QA.
+6. Domain attach/polling for `profitslocal.com`.
+7. Resend cold email dry-run and live test.
+8. Add next niche pilot after restaurant loop closes.
 
 ## Verification Rules
 

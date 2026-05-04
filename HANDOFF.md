@@ -180,6 +180,7 @@ Live Tally form creation requires `TALLY_API_KEY` in `.env.local` and payment se
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |
 | Google Places photos | MVP 已完成 | `npm run extract:google-places-photos` 支持 dry-run/live、manifest、evidence append、ledger cost |
+| Brand assets | MVP 已完成 | `npm run extract:brand-assets` 支持从官网 HTML/URL 抽 logo、官方图片、颜色和 font hints，并可写入 evidence |
 | Live Tally payment form | 待验证 | 脚本已完成；需要 `.env.local` 中的 `TALLY_API_KEY` 和 Tally workspace payment 设置 |
 | Cold email | 待验证 | 需要 `RESEND_API_KEY` 和 sender/domain 配置 |
 
@@ -203,7 +204,7 @@ Live Tally form creation requires `TALLY_API_KEY` in `.env.local` and payment se
 - [x] 确认 5 个 preview 站构建成功并可访问
 - [ ] 创建 live Tally payment/feedback forms，并配置 webhook
 - [ ] 确认 Hermes/OpenClaw 能读取 agent task 并修改 dev branch
-- [ ] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
+- [x] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
 - [ ] 完成 MenuPdfExtractor / MenuImageOCRExtractor
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多城市测试（如 Sydney, Melbourne）

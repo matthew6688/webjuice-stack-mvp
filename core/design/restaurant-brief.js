@@ -7,6 +7,7 @@ export function buildRestaurantDesignBrief(content, { sourceContentPath = null }
   const brandColors = Array.isArray(content.brand?.colors) && content.brand.colors.length
     ? content.brand.colors
     : inferredPalette.colors;
+  const typography = chooseTypography(content.brand?.fonts || []);
   const warnings = [];
 
   const assets = [
@@ -56,8 +57,8 @@ export function buildRestaurantDesignBrief(content, { sourceContentPath = null }
         muted: brandColors[4],
       },
       typography: {
-        heading: 'Editorial serif or brand heading font when extracted',
-        body: 'Humanist sans-serif for mobile menu readability',
+        heading: typography.heading,
+        body: typography.body,
         numeric: 'Tabular figures for prices',
       },
       radius: {
@@ -201,6 +202,16 @@ function assetStatus(id, value, note) {
 function firstGalleryUrl(content) {
   const first = content.gallery?.[0];
   return first?.url || first?.reference || content.brand?.ogImage || '';
+}
+
+function chooseTypography(fonts = []) {
+  const uniqueFonts = [...new Set(fonts.filter(Boolean))];
+  const heading = uniqueFonts.find((font) => /display|playfair|serif|garamond|bodoni|canela|recoleta|freight/i.test(font))
+    || uniqueFonts[0]
+    || 'Editorial serif or brand heading font when extracted';
+  const body = uniqueFonts.find((font) => font !== heading)
+    || 'Humanist sans-serif for mobile menu readability';
+  return { heading, body };
 }
 
 function inferPalette(content) {

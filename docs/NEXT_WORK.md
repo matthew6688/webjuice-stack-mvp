@@ -43,28 +43,7 @@ npm run funnel:record-tally -- --input <fixture-or-webhook-payload>
 npm run agent:create-task -- --tally <fixture-or-webhook-payload>
 ```
 
-### 2. Brand Asset Extractor
-
-Goal: every preview uses real logo/photos/colors when available.
-
-Tasks:
-
-- Extract logo candidates from official website HTML.
-- Extract image candidates from official website and Google Places photos.
-- Detect palette from official website/logo/image assets.
-- Store assets under `clients/<slug>/evidence/media`.
-- Append `brand.logo`, `brand.colors`, and `media.photos` evidence.
-- Make design brief prefer official assets over generated assets.
-
-Validation:
-
-```bash
-npm run extract:google-places-photos -- --client <slug> --dry-run
-npm run evidence:validate -- --client <slug>
-npm run design:restaurant-brief -- --client <slug>
-```
-
-### 3. Menu PDF And Image OCR
+### 2. Menu PDF And Image OCR
 
 Goal: handle restaurants whose menu is a PDF, scanned document, or Google Maps photo.
 
@@ -86,7 +65,7 @@ npm run extract:menu -- --input <text-or-markdown> --client <slug> --write-evide
 npm run evidence:validate -- --client <slug>
 ```
 
-### 4. Renderer Integration
+### 3. Renderer Integration
 
 Goal: generated client repos consume artifacts consistently instead of hand-edited pages.
 
@@ -109,7 +88,7 @@ npm run check:links -- --client <slug>
 npm run check:deploys -- --client <slug>
 ```
 
-### 5. Agent Loop End-To-End
+### 4. Agent Loop End-To-End
 
 Goal: a paid customer or feedback form automatically creates bounded work for Hermes/OpenClaw.
 
@@ -131,7 +110,7 @@ npm run check:deploys -- --client <slug>
 npm run check:links -- --client <slug>
 ```
 
-### 6. Domain Onboarding For `profitslocal.com`
+### 5. Domain Onboarding For `profitslocal.com`
 
 Goal: user-owned domain can point to the production site.
 
@@ -150,7 +129,7 @@ npm run domain:inspect -- profitslocal.com --project profitslocal-live
 npm run domain:attach-pages -- --domain profitslocal.com --project profitslocal-live --dry-run
 ```
 
-### 7. Outreach Automation
+### 6. Outreach Automation
 
 Goal: email contains proof, screenshot, demo video, and purchase CTA.
 
@@ -182,10 +161,9 @@ npm run finance:report -- --campaign brisbane-restaurants
 ## Suggested Build Order
 
 1. Live Tally checkout for one client.
-2. Brand asset extractor.
-3. Menu PDF/image OCR.
-4. Renderer migration for all 5 restaurant repos.
-5. Agent loop execute test.
-6. Domain attach and polling.
-7. Resend outreach test.
-8. Add next niche.
+2. Menu PDF/image OCR.
+3. Renderer migration for all 5 restaurant repos.
+4. Agent loop execute test.
+5. Domain attach and polling.
+6. Resend outreach test.
+7. Add next niche.

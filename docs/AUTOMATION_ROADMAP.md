@@ -205,7 +205,7 @@ type EvidenceItem<T> = {
   - Use OCRmyPDF for scanned PDFs that need a searchable text layer.
   - Follow with `pdftotext` or `MenuTextParser`.
   - Prefer this before visual VLM parsing for ordinary scanned PDF menus.
-- [ ] `BrandAssetExtractor`
+- [x] `BrandAssetExtractor`
   - Logo candidates
   - Official photos
   - Website palette
