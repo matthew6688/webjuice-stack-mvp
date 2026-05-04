@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { artifactTimestamp } from '../time.js';
 
 export function buildRestaurantDesignBrief(content, { sourceContentPath = null } = {}) {
   const inferredPalette = inferPalette(content);
@@ -25,7 +26,7 @@ export function buildRestaurantDesignBrief(content, { sourceContentPath = null }
     designSkill: 'huashu-design',
     clientSlug: content.clientSlug,
     sourceContentPath,
-    generatedAt: new Date().toISOString(),
+    generatedAt: artifactTimestamp(),
     business: {
       name: content.hero?.name || '',
       cuisine: content.hero?.cuisine || '',

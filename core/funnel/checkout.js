@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { artifactTimestamp } from '../time.js';
 
 const DEFAULT_TIERS = {
   one_time: 399,
@@ -34,7 +35,7 @@ export function buildCheckoutArtifact({
   return {
     schemaVersion: 1,
     clientSlug,
-    generatedAt: new Date().toISOString(),
+    generatedAt: artifactTimestamp(),
     provider,
     currency,
     tiers: Object.entries(tiers).map(([id, amount]) => ({

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { validateRestaurantLinks } from '../qa/links.js';
+import { artifactTimestamp } from '../time.js';
 
 export function buildOutreachPack({
   clientSlug,
@@ -18,7 +19,7 @@ export function buildOutreachPack({
   return {
     schemaVersion: 1,
     clientSlug,
-    generatedAt: new Date().toISOString(),
+    generatedAt: artifactTimestamp(),
     previewUrl: previewUrl || '',
     sourceArtifacts: {
       manifest: manifest ? 'artifact-manifest.json' : '',

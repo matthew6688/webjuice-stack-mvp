@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { artifactTimestamp } from '../time.js';
 
 export function buildArtifactManifest({
   clientSlug,
@@ -15,7 +16,7 @@ export function buildArtifactManifest({
     schemaVersion: 1,
     clientSlug,
     niche,
-    generatedAt: new Date().toISOString(),
+    generatedAt: artifactTimestamp(),
     rendererContract: {
       allowedInputs: {
         evidence: evidencePath,

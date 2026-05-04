@@ -1,3 +1,5 @@
+import { artifactTimestamp } from '../../core/time.js';
+
 export const RESTAURANT_FALLBACK_LEVELS = {
   A: 'official_site_menu',
   B: 'pdf_menu',
@@ -22,7 +24,7 @@ export function createEmptyRestaurantContent({ clientSlug, sourceEvidencePath })
     niche: 'restaurant',
     clientSlug,
     sourceEvidencePath,
-    generatedAt: new Date().toISOString(),
+    generatedAt: artifactTimestamp(),
     fallbackLevel: null,
     hero: {
       name: '',
