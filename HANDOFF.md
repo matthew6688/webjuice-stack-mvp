@@ -163,6 +163,11 @@ node scripts/send-cold-email.js   --leads leads-restaurant-brisbane-australia-ou
 
 ## 7. 下一步 TODO
 
+详细模块化计划见：
+
+- `docs/AUTOMATION_ROADMAP.md`
+- `docs/MODULE_STATUS.md`
+
 - [x] 将主模板迁到 `matthew6688/webjuice-stack-mvp`
 - [x] 将 `/tmp/webjuice-client-fix/*` 中 5 个客户 repo 的 `fix: update Astro 6 build config` commits push 到 `main` 和 `dev`
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `PAGES_PROJECT_NAME` variable
