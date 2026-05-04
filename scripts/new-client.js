@@ -115,6 +115,7 @@ async function updateSiteConfig(repoFullName, config) {
     // File might not exist, create new
   }
 
+  const jsString = (value) => JSON.stringify(value ?? '');
   const newConfig = `export interface SiteConfig {
   name: string;
   tagline: string;
@@ -127,12 +128,12 @@ async function updateSiteConfig(repoFullName, config) {
 }
 
 export const siteConfig: SiteConfig = {
-  name: '${config.name}',
+  name: ${jsString(config.name)},
   tagline: 'Fast Websites for B2B Companies',
-  description: '${config.name} - Professional B2B website built with Astro + Cloudflare.',
-  email: '${config.email}',
-  domain: '${config.domain}',
-  fromName: '${config.name}',
+  description: ${jsString(`${config.name} - Professional B2B website built with Astro + Cloudflare.`)},
+  email: ${jsString(config.email)},
+  domain: ${jsString(config.domain)},
+  fromName: ${jsString(config.name)},
   navLinks: [
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },

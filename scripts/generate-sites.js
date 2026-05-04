@@ -74,6 +74,10 @@ function slugify(name) {
     .slice(0, 30);
 }
 
+function jsString(value) {
+  return JSON.stringify(value ?? '');
+}
+
 function generateSiteConfig(lead) {
   const slug = slugify(lead.name);
   return {
@@ -130,14 +134,14 @@ async function createClientSite(lead, templateRepo) {
 }
 
 export const siteConfig: SiteConfig = {
-  name: '${config.name.replace(/'/g, "\'")}',
-  tagline: '${config.tagline.replace(/'/g, "\'")}',
-  description: '${config.description.replace(/'/g, "\'")}',
-  email: '${config.email}',
-  domain: '${config.domain}',
-  fromName: '${config.fromName.replace(/'/g, "\'")}',
-  address: '${(config.address || '').replace(/'/g, "\'")}',
-  phone: '${config.phone || ''}',
+  name: ${jsString(config.name)},
+  tagline: ${jsString(config.tagline)},
+  description: ${jsString(config.description)},
+  email: ${jsString(config.email)},
+  domain: ${jsString(config.domain)},
+  fromName: ${jsString(config.fromName)},
+  address: ${jsString(config.address || '')},
+  phone: ${jsString(config.phone || '')},
   rating: ${config.rating || 'null'},
   review_count: ${config.review_count || 0},
   navLinks: [
@@ -146,7 +150,7 @@ export const siteConfig: SiteConfig = {
     { label: 'Contact', href: '/contact' },
   ],
   footer: {
-    text: '${config.name.replace(/'/g, "\'")} - ${config.address ? config.address.split(',')[0] : lead.city}',
+    text: ${jsString(`${config.name} - ${config.address ? config.address.split(',')[0] : lead.city}`)},
   },
 };
 `;
