@@ -1,4 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
+import { taskFromTallyOrder } from '../../core/agents/task.js';
 import { normalizeTallySubmission, tallyRevenueLedgerInput } from '../../core/funnel/tally.js';
 
 interface Env {
@@ -26,6 +27,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const order = normalizeTallySubmission(payload, context.env);
     const revenueEvent = tallyRevenueLedgerInput(order);
+    const agentTask = taskFromTallyOrder(order);
 
     // Build Discord message
     const discordPayload = {
@@ -72,15 +74,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          createdFrom: 'tally_payment',
-          order,
+          task: agentTask,
           revenueEvent,
           nextAction: 'prepare_customer_activation',
         }),
       });
     }
 
-    return new Response(JSON.stringify({ success: true, order, revenueEvent }), {
+    return new Response(JSON.stringify({ success: true, order, revenueEvent, agentTask }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
