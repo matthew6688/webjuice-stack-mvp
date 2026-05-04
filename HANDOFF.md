@@ -259,6 +259,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 跑 agent runner execute smoke：读取 case context/source-of-truth，apply artifacts，build，通过并写回 case run record
 - [x] 跑 approval publish dry-run smoke：验证 dev → main publish runner 步骤链可生成计划并通过
 - [x] 跑一次真实 Discord thread live test（通过 GitHub Actions secrets 执行，run 成功；测试订单 state 已清理）
+- [x] 添加 agent-complete / live-published Discord follow-up：可回发到 case memory 里保存的 thread，并已用 Opa smoke case dry-run 验证 payload/thread_id
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做
 - [ ] 其他 niche 暂缓；当前只聚焦 restaurant 闭环

@@ -65,7 +65,7 @@
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
 | Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; main repo notification secrets are configured, and Pages secrets are present on current dev/live client projects. |
-| Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, try `thread_name`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. With `DISCORD_BOT_TOKEN`, ordinary text-channel fallback messages can create true threads from the webhook message. |
+| Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, try `thread_name`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. With `DISCORD_BOT_TOKEN`, ordinary text-channel fallback messages can create true threads from the webhook message. Agent completion and live publish scripts can post follow-up messages into the saved case thread. |
 
 ## Not Started
 

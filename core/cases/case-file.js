@@ -269,6 +269,49 @@ export function recordAgentRun(casePaths, runResult, { dryRun = false } = {}) {
   };
 }
 
+export function recordCaseNotification(casePaths, notification, { dryRun = false } = {}) {
+  if (!casePaths?.casePath) return { ok: false, skipped: true, reason: 'missing_case_path' };
+  const caseFile = readJsonIfExists(casePaths.casePath);
+  if (!caseFile) return { ok: false, skipped: true, reason: 'case_not_found' };
+
+  const now = artifactTimestamp();
+  const timelineEvent = {
+    id: `case_evt_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+    type: notification.type || 'notification_sent',
+    ok: notification.ok !== false,
+    channel: notification.channel || 'discord',
+    reason: notification.reason || '',
+    discordChannelId: notification.discord?.channelId || '',
+    discordThreadId: notification.discord?.threadId || '',
+    discordMessageId: notification.discord?.messageId || '',
+    discordMessageUrl: notification.discord?.messageUrl || '',
+    createdAt: now,
+  };
+
+  const updatedCase = {
+    ...caseFile,
+    discord: mergeDiscordWorkspace(caseFile.discord, notification.discord, notification.kind || ''),
+    updatedAt: now,
+  };
+  const contextPacket = buildCaseContextPacket(updatedCase, {
+    recentTimeline: appendPreview(casePaths.timelinePath || updatedCase.paths?.timelinePath, timelineEvent),
+  });
+
+  if (!dryRun) {
+    writeJson(casePaths.casePath, updatedCase);
+    writeJson(casePaths.contextPath || updatedCase.paths?.contextPath, contextPacket);
+    appendJsonl(casePaths.timelinePath || updatedCase.paths?.timelinePath, timelineEvent);
+  }
+
+  return {
+    ok: true,
+    dryRun,
+    caseFile: updatedCase,
+    timelineEvent,
+    contextPacket,
+  };
+}
+
 function timelineTypeForAgentRun(runResult) {
   if (runResult.mode === 'publish') return runResult.ok ? 'live_publish_completed' : 'live_publish_failed';
   return runResult.ok ? 'agent_run_completed' : 'agent_run_failed';

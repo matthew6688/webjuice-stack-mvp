@@ -31,6 +31,55 @@ export function buildDiscordMessage({ kind, order, task = null }) {
   };
 }
 
+export function buildAgentReviewDiscordMessage({ caseFile, runResult, deployResult = null }) {
+  const deployLabel = deployResult
+    ? `${deployResult.status || 'unknown'}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}`
+    : 'not checked';
+  return {
+    username: 'ProfitsLocal Agent',
+    embeds: [{
+      title: `Dev preview ready: ${caseFile.customer?.company || caseFile.clientSlug}`,
+      color: runResult.ok ? 0x3498db : 0xe74c3c,
+      fields: compactFields([
+        field('Client', caseFile.clientSlug, true),
+        field('Repo', caseFile.repo, true),
+        field('Order ID', caseFile.order?.id, false),
+        field('Task', runResult.taskId, false),
+        field('Status', runResult.ok ? 'ready for customer review' : 'agent run failed', true),
+        field('Deploy', deployLabel, true),
+        field('Preview', runResult.previewUrl || caseFile.previewUrl, false),
+        field('Commit', runResult.commit, false),
+        field('Changed files', (runResult.changedFiles || []).join('\n'), false, 950),
+      ]),
+      timestamp: runResult.finishedAt || new Date().toISOString(),
+    }],
+  };
+}
+
+export function buildLivePublishedDiscordMessage({ caseFile, publishResult, deployResult = null, liveUrl = '' }) {
+  const deployLabel = deployResult
+    ? `${deployResult.status || 'unknown'}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}`
+    : 'not checked';
+  return {
+    username: 'ProfitsLocal Publisher',
+    embeds: [{
+      title: `Live site published: ${caseFile.customer?.company || caseFile.clientSlug}`,
+      color: publishResult.ok ? 0x2ecc71 : 0xe74c3c,
+      fields: compactFields([
+        field('Client', caseFile.clientSlug, true),
+        field('Repo', caseFile.repo, true),
+        field('Order ID', caseFile.order?.id, false),
+        field('Status', publishResult.ok ? 'published to live' : 'publish failed', true),
+        field('Deploy', deployLabel, true),
+        field('Live URL', liveUrl || publishResult.liveUrl, false),
+        field('Commit', publishResult.commit, false),
+        field('Dev commit', publishResult.devCommit, false),
+      ]),
+      timestamp: publishResult.finishedAt || new Date().toISOString(),
+    }],
+  };
+}
+
 export async function sendDiscordWebhook(url, payload, {
   fetchImpl = fetch,
   threadId = '',

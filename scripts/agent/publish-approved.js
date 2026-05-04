@@ -6,6 +6,8 @@ import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import { publishApprovedTask, savePublishResult } from '../../core/agents/publisher.js';
 import { getLatestGithubActionsRun } from '../../core/deploy/github-actions.js';
 import { buildLivePublishedEmail, sendCustomerEmail } from '../../core/funnel/customer-email.js';
+import { buildLivePublishedDiscordMessage, sendDiscordWebhook } from '../../core/funnel/discord.js';
+import { recordCaseNotification } from '../../core/cases/case-file.js';
 import { DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 
 loadLocalEnv();
@@ -75,7 +77,15 @@ if (boolArg(args, 'send-email') && publishResult.ok && !publishResult.dryRun && 
   });
 }
 
-const result = { ...publishResult, deployResult, customerEmail };
+const discordNotification = await sendLivePublishedDiscord({
+  args,
+  task,
+  caseFile,
+  publishResult,
+  deployResult,
+});
+
+const result = { ...publishResult, deployResult, customerEmail, discordNotification };
 const outputPath = args.output || path.join('data/agent-runs', `${task.id}.publish.json`);
 savePublishResult(result, outputPath);
 
@@ -85,8 +95,44 @@ console.log(`Dry run: ${result.dryRun ? 'yes' : 'no'}`);
 console.log(`Pushed: ${result.pushed ? 'yes' : 'no'}`);
 console.log(`Deploy: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'not checked'}`);
 console.log(`Email: ${customerEmail.ok ? 'sent' : (customerEmail.skipped ? 'skipped' : 'failed')}`);
+console.log(`Discord: ${discordNotification.ok ? (discordNotification.dryRun ? 'dry-run' : 'sent') : (discordNotification.skipped ? 'skipped' : 'failed')}`);
 for (const step of result.steps) {
   console.log(`- ${step.id}: ${step.ok ? 'ok' : 'failed'} (${step.command})`);
 }
 
 process.exit(result.ok && (!deployResult || deployResult.ok) ? 0 : 1);
+
+async function sendLivePublishedDiscord({ args, task, caseFile, publishResult, deployResult }) {
+  if (!boolArg(args, 'send-discord')) return { ok: false, skipped: true };
+  if (!caseFile) return { ok: false, skipped: true, reason: 'missing_case_file' };
+  const kind = task.kind === 'revision' ? 'revision' : 'sale';
+  const webhookUrl = kind === 'revision'
+    ? process.env.REVISE_DISCORD_WEBHOOK_URL
+    : process.env.SALES_DISCORD_WEBHOOK_URL;
+  const threadId = discordThreadId(caseFile, kind);
+  const liveUrl = args['live-url'] || args.liveUrl || '';
+  const payload = buildLivePublishedDiscordMessage({ caseFile, publishResult, deployResult, liveUrl });
+  if (!threadId) return { ok: false, skipped: true, reason: 'missing_discord_thread_id', payload };
+  if (publishResult.dryRun || boolArg(args, 'dry-discord')) {
+    return { ok: true, dryRun: true, threadId, payload };
+  }
+  if (!webhookUrl) return { ok: false, skipped: true, reason: 'missing_webhook_url', threadId, payload };
+  const discord = await sendDiscordWebhook(webhookUrl, payload, {
+    threadId,
+    botToken: process.env.DISCORD_BOT_TOKEN || '',
+  });
+  const record = recordCaseNotification(caseFile.paths, {
+    type: 'live_publish_discord_sent',
+    kind,
+    ok: true,
+    discord,
+  });
+  return { ok: true, threadId, payload, discord, caseRecord: record };
+}
+
+function discordThreadId(caseFile, kind) {
+  const discord = caseFile.discord || {};
+  return kind === 'revision'
+    ? discord.revisionThreadId || discord.salesThreadId || discord.lastChannelId || ''
+    : discord.salesThreadId || discord.lastChannelId || '';
+}
