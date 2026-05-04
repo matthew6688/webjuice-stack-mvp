@@ -30,6 +30,7 @@ const SECTION_HINTS = [
   'cocktails',
   'beer',
   'banquet',
+  'banquets',
   'set menu',
   'special',
   'specials',
@@ -93,6 +94,7 @@ export function parseMenuItemLine(line, { sourceUrl = '', sourceKey = 'menu.sect
   if (Number(normalizePrice(price)) <= 0) return null;
   const beforePrice = normalized.slice(0, normalized.length - price.length).replace(/[-.*\s]+$/g, '').trim();
   if (!beforePrice || beforePrice.length < 3) return null;
+  if (beforePrice.length > 90) return null;
   if (/^\d/.test(beforePrice)) return null;
   if (/^(ph\.?|phone|tel\.?)\b/i.test(beforePrice)) return null;
   if (/\b[a-z]{2,}\s+q\s*\d+$/i.test(beforePrice)) return null;
@@ -171,11 +173,14 @@ function normalizeText(text) {
 function parseStackedPriceItem(lines, index, { sourceUrl = '', sourceKey = 'menu.sections' } = {}) {
   const price = parsePriceOnly(lines[index]);
   if (!price) return null;
+  if (previousMeaningfulLine(lines, index) === '/') return null;
 
   const nameIndex = findNextMeaningfulLine(lines, index + 1);
   if (nameIndex < 0) return null;
+  if (/^\s*[-*]\s+/.test(String(lines[nameIndex] || ''))) return null;
   const name = cleanMenuText(lines[nameIndex]);
   if (!isLikelyItemName(name)) return null;
+  if (isLikelySectionHeading(name)) return null;
 
   const descriptionIndex = findNextMeaningfulLine(lines, nameIndex + 1);
   let description = '';
@@ -231,6 +236,13 @@ function findNextMeaningfulLine(lines, start) {
   return -1;
 }
 
+function previousMeaningfulLine(lines, start) {
+  for (let i = start - 1; i >= 0; i -= 1) {
+    if (!isNavigationNoise(lines[i])) return cleanMenuText(lines[i]);
+  }
+  return '';
+}
+
 function cleanMenuText(line) {
   return String(line || '')
     .replace(/\[[^\]]+\]\([^)]+\)/g, '$1')
@@ -263,6 +275,7 @@ function priceAtEndRegex() {
 }
 
 function isLikelySectionHeading(line) {
+  if (/^\s*[-*]\s+/.test(String(line || ''))) return false;
   const cleaned = cleanHeading(line).toLowerCase();
   if (cleaned.length > 40) return false;
   if (cleaned.includes(',') || /[.!?]$/.test(cleaned)) return false;

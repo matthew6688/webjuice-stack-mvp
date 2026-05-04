@@ -207,7 +207,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Revision 次数显示 | MVP 已完成 | `/api/order-status/` 从主自动化仓库读取 entitlement；`/revise` 显示已用/剩余/套餐 |
 | Discord case workspace | MVP 已完成 | webhook `wait=true` 返回 message/channel；forum/media channel 可自动 thread；配置 `DISCORD_BOT_TOKEN` 后普通 text channel 也可从 webhook message 创建 true thread |
 | ROI / cost ledger | MVP 已完成 | Stripe/Tally revenue、Places/Firecrawl/OpenAI、Resend、image generation、agent runtime 都可写 ledger；Resend/runtime 为可配置估算成本 |
-| Menu document extraction | MVP 已完成 | `extract:menu-document` 统一调度 MarkItDown、direct text、OCRmyPDF、PaddleOCR，并写 manifest + menu evidence |
+| Menu document extraction | MVP 已完成 | `extract:menu-document` 统一调度 MarkItDown、direct text、OCRmyPDF、PaddleOCR、Firecrawl Parse fallback，并写 manifest + menu evidence；已用 Opa Bar + Mezze 真实官网菜单验证出 10 sections / 73 items |
 | OCR local runtime | 已配置并验证 | MarkItDown、Poppler、OCRmyPDF/Tesseract/Ghostscript、PaddleOCR/PaddlePaddle 已在本机跑通；详见 `docs/OCR_MENU_PIPELINE.md` |
 | Resend customer emails | MVP 已完成 | `fengtalk.ai` verified；payment/revision receipt 和 router accepted/denied 邮件路径已实现 |
 | Cold email | 待验证 | Resend 已配置；还需 cold outreach 模板、截图/video proof、发送测试 |
@@ -244,6 +244,9 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
 - [x] 完成 Menu document extractor MVP：MarkItDown/direct text/OCRmyPDF/PaddleOCR 编排
 - [x] 安装配置 MarkItDown/OCRmyPDF/PaddleOCR，并用 PDF、图片菜单、扫描 PDF 跑 live 验证
+- [x] 用真实 business 官网菜单验证 document extraction：Opa Bar + Mezze official menu → MarkItDown → 10 sections / 73 items
+- [x] 给 `extract:menu-document` 加 Firecrawl Parse optional fallback，并完成 dry-run smoke test
+- [x] 用真实菜单 evidence 重新生成一个餐厅 preview，并做截图/视觉 QA：Opa Bar + Mezze 本地 preview build 通过，`/menu` mobile/desktop 均 200，52 menu items，无 console error / overflow
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多城市测试（如 Sydney, Melbourne）
 - [ ] 添加更多 niche 模板（如 plumbing, dental）

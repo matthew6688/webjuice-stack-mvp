@@ -1,5 +1,5 @@
 # Opa Bar & Mezze Brand Spec
-> Generated: 2026-05-04T07:22:53.672Z
+> Generated: 2026-05-04T14:26:33.395Z
 > Source: clients/opa-bar-mezze-restaurant/content.restaurant.json
 > Asset completeness: complete
 

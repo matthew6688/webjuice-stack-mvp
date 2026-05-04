@@ -18,6 +18,7 @@ export async function extractMenuDocument({
   dryRun = false,
   useFirecrawlFallback = false,
   firecrawlParse = null,
+  evidenceConfidence = null,
 } = {}) {
   if (!inputPath) throw new Error('inputPath is required');
   if (!clientSlug) throw new Error('clientSlug is required');
@@ -84,7 +85,7 @@ export async function extractMenuDocument({
   manifest.selectedAttempt = selected ? selected.provider : null;
 
   if (selected?.ok && selected.textPath && !dryRun) {
-    const confidence = confidenceForAttempt(selected);
+    const confidence = evidenceConfidence ?? confidenceForAttempt(selected);
     try {
       const pack = writeMenuEvidenceFromText(fs.readFileSync(selected.textPath, 'utf8'), {
         clientSlug,

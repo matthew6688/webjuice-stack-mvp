@@ -1,6 +1,6 @@
 # Next Work
 
-Updated: 2026-05-04
+Updated: 2026-05-05
 
 ## Current State
 
@@ -25,6 +25,9 @@ Verified live state:
 - 5 generated restaurant repos plus the `webjuice-restaurant` template include `/approve` and `/api/approval-request/` for customer approval.
 - `webjuice-restaurant` and the 5 generated restaurant repos include `/api/order-status/`; `/revise` can show trusted revision quota state after `orderId + checkout email` match.
 - Funnel Discord sends now request webhook responses, try `thread_name`, can use `DISCORD_BOT_TOKEN` to create true threads from webhook messages in text channels, and persist returned channel/thread/message IDs into case memory.
+- Menu document extraction now handles MarkItDown, direct text/Markdown, OCRmyPDF, PDF render + PaddleOCR, image PaddleOCR, and optional Firecrawl Parse fallback.
+- Real business menu verification completed with Opa Bar + Mezze official menu: MarkItDown selected and generated 10 sections / 73 menu items from the live official menu page.
+- Opa Bar + Mezze was regenerated from real-menu evidence into the artifact renderer and locally screenshot-QA'd: `/` and `/menu` return 200 on desktop/mobile; menu renders 52 cleaned items across 7 sections; no console errors or horizontal overflow.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -191,14 +194,16 @@ Working now:
 - Falls back to direct `.txt/.md` parsing for already-extracted menu text.
 - Falls back to OCRmyPDF for PDFs.
 - Falls back to PaddleOCR for image inputs when configured.
+- Can use Firecrawl Parse as an optional fallback with `--firecrawl true`.
 - Writes `manifest.json` with every attempt and the selected provider.
 - Converts selected text into `menu.sections` evidence with source chains.
+- MarkItDown, OCRmyPDF, Poppler, Tesseract/Ghostscript, PaddleOCR, and PaddlePaddle are installed locally.
+- Text PDF, image menu, scanned PDF, Firecrawl fallback dry-run, and Opa Bar + Mezze real official menu flows have been verified locally.
 
 Remaining:
 
-- MarkItDown, OCRmyPDF, Poppler, Tesseract/Ghostscript, PaddleOCR, and PaddlePaddle are installed locally.
-- Text PDF, image menu, and scanned PDF flows have been verified locally.
-- Add Firecrawl Parse as an optional live fallback inside the unified command.
+- Push the regenerated Opa dev branch if we want the remote preview to reflect the real-menu extraction exercise.
+- Add a stricter confidence/QA report for complex banquet/share menus before outreach.
 
 Validation:
 
@@ -231,7 +236,7 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Add Firecrawl Parse as optional fallback inside `extract:menu-document`.
+1. Push the regenerated Opa dev preview or repeat the same real-menu flow for another restaurant.
 2. Cold outreach email test with screenshot/video proof.
 3. More cities: Sydney/Melbourne restaurants.
 4. Next niche pilot: roofing/plumbing/dental.

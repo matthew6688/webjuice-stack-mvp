@@ -22,6 +22,7 @@ const result = await extractMenuDocument({
   dryRun: args['dry-run'] === 'true' || args.dryRun === 'true',
   useFirecrawlFallback: args.firecrawl === 'true' || args['firecrawl-fallback'] === 'true',
   firecrawlParse: buildFirecrawlFallback(args),
+  evidenceConfidence: args.confidence ? Number(args.confidence) : null,
 });
 
 console.log(JSON.stringify({
