@@ -25,6 +25,7 @@
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
 | First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs and Pages runtime secrets are configured on the 5 dev projects. |
 | Stripe paid activation webhook | Working MVP | `webjuice-restaurant` has `/api/stripe-webhook` with signature verification; `npm run funnel:route-stripe` normalizes `checkout.session.completed` into revenue ledger and agent task outputs. |
+| Central automation runner | Working MVP | `npm run funnel:route-event` routes Stripe/Tally/first-party revision payloads; `.github/workflows/route-funnel-event.yml` can persist generated funnel state and commit it back to main. |
 | Revision entitlement ledger | Working MVP | Paid sales create `data/funnel/orders/<client>/<order>.json`; revision requests consume quota before agent task creation and denied over-limit attempts are recorded without creating tasks. |
 | Customer email notifications | Working MVP | Client Pages Functions and automation router can send Resend customer emails for payment receipt, revision receipt, accepted quota usage, and denied/extra-revision paths when `RESEND_API_KEY` is configured. |
 | Extra revision checkout | Working MVP | Stripe test price exists for `$100` extra revisions; checkout supports `extra_revision` and revision pages link to purchase more. |
@@ -56,7 +57,7 @@
 | Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, and Tally revenue can write events; Resend and image generation still need direct wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
-| Central automation trigger | Not started | Client Pages Functions can forward to `AGENT_WEBHOOK_URL`, but there is no deployed central endpoint/GitHub workflow yet to persist live webhook payloads into the main automation repo. |
+| Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; live Pages projects still need that token configured. |
 
 ## Not Started
 
@@ -72,8 +73,8 @@
 
 ## Immediate Next Build Order
 
-1. Central automation trigger for Stripe/revision webhooks.
-2. Agent dev-branch execution loop with one paid activation test.
+1. Agent dev-branch execution loop with one paid activation/revision test.
+2. Configure Pages `AGENT_GITHUB_TOKEN` and GitHub workflow secrets for live central dispatch.
 3. `/api/order-status/` plus revision-count display on `/revise`.
 4. Domain attach/polling for `profitslocal.com`.
 5. Menu PDF extractor and image OCR pipeline.

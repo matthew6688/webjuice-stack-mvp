@@ -151,6 +151,7 @@ npm run check:deploys -- --all clients
 ```bash
 npm run funnel:route-stripe -- --input /tmp/stripe-checkout-session-completed.json --dry-run true
 npm run funnel:route-tally -- --input /tmp/first-party-revision.json --dry-run true
+npm run funnel:route-event -- --input /tmp/stripe-checkout-session-completed.json --provider auto --dry-run true
 npm run agent:run-task -- --task /path/to/task.json --execute
 ```
 
@@ -161,6 +162,8 @@ Current production sales path:
 - `/revise` requires `orderId + checkout email`.
 - `/api/revision-request/` sends revision receipt email and Discord notification.
 - Main automation router enforces entitlement quota before creating revision tasks.
+- Central runner exists: `route-funnel-event.yml` runs `npm run funnel:route-event`, writes entitlement/submission/task/ledger state, and can commit generated state back to `main`.
+- Client Pages Functions can dispatch directly to that workflow with `AGENT_GITHUB_TOKEN`, or to `AGENT_WEBHOOK_URL` if a central HTTP endpoint is introduced later.
 
 Tally remains as a fallback/provider boundary, but live payment-block creation failed Tally API schema validation during testing.
 

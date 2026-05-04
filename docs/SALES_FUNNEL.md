@@ -17,9 +17,10 @@
 5. The checkout endpoint can send a checkout-started notification to Discord.
 6. Stripe sends `checkout.session.completed` to `/api/stripe-webhook`.
 7. The client webhook verifies the Stripe signature and sends a sales Discord notification.
-8. The automation repo routes the same Stripe event with:
-   - `npm run funnel:route-stripe -- --input stripe-event.json`
-9. Router writes:
+8. The client webhook dispatches the raw Stripe event to the main repo automation runner when `AGENT_GITHUB_TOKEN` is configured.
+9. The automation repo routes the same Stripe event with:
+   - `npm run funnel:route-event -- --input stripe-event.json --provider auto`
+10. Router writes:
    - normalized submission JSON
    - Stripe revenue ledger event
    - order entitlement with revision quota
@@ -66,6 +67,10 @@ Do not commit these values.
 - `FROM_EMAIL`
 - `SALES_DISCORD_WEBHOOK_URL`
 - `REVISE_DISCORD_WEBHOOK_URL`
+- `AGENT_GITHUB_TOKEN`
+- `AGENT_REPO`
+- `AGENT_WORKFLOW_ID`
+- `AGENT_REF`
 
 Each generated client Pages project also needs:
 
@@ -78,6 +83,18 @@ Each generated client Pages project also needs:
 - `FROM_EMAIL`
 - `SALES_DISCORD_WEBHOOK_URL`
 - `REVISE_DISCORD_WEBHOOK_URL`
+- `AGENT_GITHUB_TOKEN`
+- `AGENT_REPO`
+- `AGENT_WORKFLOW_ID`
+- `AGENT_REF`
+
+`AGENT_GITHUB_TOKEN` should be a narrowly scoped token that can dispatch Actions workflows on `matthew6688/webjuice-stack-mvp`. The defaults are:
+
+```text
+AGENT_REPO=matthew6688/webjuice-stack-mvp
+AGENT_WORKFLOW_ID=route-funnel-event.yml
+AGENT_REF=main
+```
 
 ## First-Party Stripe Checkout
 
@@ -114,6 +131,7 @@ Validation status:
 - Longwang `$399` test payment completed and redirected to `/thank-you`.
 - Stripe event routing writes a revenue ledger entry and agent task in dry-run and fixture tests.
 - Stripe/Resend runtime secrets are configured on the 5 dev Pages projects.
+- Central runner local verification wrote sale entitlement, sale task, revision task, and ledger records under `/tmp/central-runner-state`.
 
 ## Create Tally Forms
 
@@ -142,6 +160,8 @@ with query params for `client_slug`, `repo`, `preview_url`, `tier`, and `amount`
 Dry-run sale/revision classification:
 
 ```bash
+npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --dry-run true
+npm run funnel:route-event -- --input /tmp/revision.json --provider auto --dry-run true
 npm run funnel:route-tally -- --input /tmp/tally-submission.json --dry-run true
 ```
 
@@ -155,6 +175,17 @@ Send Discord too:
 
 ```bash
 npm run funnel:route-tally -- --input /tmp/tally-submission.json --send-discord true
+```
+
+GitHub Actions dispatch:
+
+```bash
+gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp \
+  -f provider=auto \
+  -f payload="$(cat /tmp/stripe-event.json)" \
+  -f send_discord=false \
+  -f send_email=false \
+  -f dry_run=true
 ```
 
 ## First-Party Revision Form
@@ -185,7 +216,7 @@ Context fields:
 - `preview_url`
 - optional `reference_url`
 
-The client endpoint sends a receipt email and Discord notification, then can forward to `AGENT_WEBHOOK_URL` once the central automation runner exists.
+The client endpoint sends a receipt email and Discord notification, then dispatches to the central automation runner when `AGENT_GITHUB_TOKEN` is configured. It still supports `AGENT_WEBHOOK_URL` as a fallback for a future central HTTP endpoint.
 
 ## Revision Repo Lookup
 
@@ -238,8 +269,8 @@ Email nodes:
 
 - Payment completed: send order ID, package, preview link, and revision form link. Implemented in `/api/stripe-webhook`.
 - Revision form received: send receipt of submission and explain that order ID + email will be matched. Implemented in `/api/revision-request/`.
-- Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID. Implemented in router when `--send-email true`; central runner still needed.
-- Revision denied: send the reason and a `$100` extra revision checkout link. Implemented in router when `--send-email true`; central runner still needed.
+- Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
+- Revision denied: send the reason and a `$100` extra revision checkout link. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
 - Agent dev preview ready: send dev review link after build/QA passes. Not built.
 - Domain/live launch ready: send DNS/live-domain instructions. Not built.
 

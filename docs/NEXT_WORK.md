@@ -16,40 +16,13 @@ Verified live state:
 - Stripe webhook signature verification is implemented.
 - Resend domain `fengtalk.ai` is verified and dev Pages projects have Resend secrets configured.
 - Revision requests require mandatory `orderId + checkout email` matching before quota is consumed.
+- Central funnel runner exists: `npm run funnel:route-event` plus GitHub Actions `route-funnel-event.yml`.
+- `webjuice-restaurant` Pages Functions can dispatch Stripe/revision payloads to the main automation workflow with `AGENT_GITHUB_TOKEN`.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
 
-### 1. Central Automation Runner
-
-Goal: Stripe and revision webhooks should trigger the main automation repo without manual file export.
-
-Current gap:
-
-- Client Pages Functions can send Discord and optional `AGENT_WEBHOOK_URL`.
-- Main repo can route Stripe/Tally payloads into ledger, entitlement, and agent task files.
-- The missing piece is a central endpoint or GitHub Actions trigger that receives webhook payloads and runs the router.
-
-Recommended MVP:
-
-- Add a GitHub Actions `workflow_dispatch` workflow in `webjuice-stack-mvp`.
-- Let client Pages Functions call GitHub API with a narrowly scoped token.
-- Workflow writes:
-  - `data/funnel/submissions/...`
-  - `data/funnel/orders/...`
-  - `data/agent-tasks/...`
-  - `data/finance/ledger.jsonl`
-- Workflow commits those records back to `main`.
-
-Validation:
-
-```bash
-npm run funnel:route-stripe -- --input /tmp/stripe-event.json --dry-run true
-npm run funnel:route-tally -- --input /tmp/revision.json --dry-run true
-gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp
-```
-
-### 2. Agent Dev-Branch Execution Loop
+### 1. Agent Dev-Branch Execution Loop
 
 Goal: accepted paid/revision tasks should produce a dev branch update and a customer review link.
 
@@ -70,6 +43,47 @@ npm run agent:validate-task -- --task <task.json>
 npm run agent:run-task -- --task <task.json> --execute
 npm run check:deploys -- --client longwang-restaurant-restaurant --branch dev
 npm run check:links -- --client longwang-restaurant-restaurant --internal-links false
+```
+
+### 2. Central Automation Runner Hardening
+
+Goal: Stripe and revision webhooks should trigger the main automation repo without manual file export.
+
+Working now:
+
+- Main repo has `npm run funnel:route-event`, a provider-agnostic router entrypoint.
+- Main repo has `.github/workflows/route-funnel-event.yml` for `workflow_dispatch`.
+- Workflow can write:
+  - `data/funnel/submissions/...`
+  - `data/funnel/orders/...`
+  - `data/agent-tasks/...`
+  - `data/finance/ledger.jsonl`
+- `webjuice-restaurant` has `functions/api/_agent-dispatch.ts`.
+- Stripe webhook dispatches raw Stripe events.
+- First-party revision form dispatches normalized revision payloads.
+
+Remaining hardening:
+
+- Configure each Pages project with a narrowly scoped `AGENT_GITHUB_TOKEN`.
+- Add repository secrets for workflow notifications:
+  - `SALES_DISCORD_WEBHOOK_URL`
+  - `REVISE_DISCORD_WEBHOOK_URL`
+  - `RESEND_API_KEY`
+- Add repository vars:
+  - `FROM_EMAIL`
+  - `EXTRA_REVISION_CHECKOUT_URL`
+
+Validation:
+
+```bash
+npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --dry-run true
+npm run funnel:route-event -- --input /tmp/revision.json --provider auto --dry-run true
+gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp \
+  -f provider=auto \
+  -f payload="$(cat /tmp/stripe-event.json)" \
+  -f send_discord=false \
+  -f send_email=false \
+  -f dry_run=true
 ```
 
 ### 3. Customer Utility / Status Pages
@@ -189,8 +203,8 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Central automation runner for Stripe/revision payloads.
-2. Agent dev-branch execution loop with one Longwang paid activation test.
+1. Agent dev-branch execution loop with one Longwang paid activation/revision test.
+2. Configure live Pages `AGENT_GITHUB_TOKEN` and GitHub workflow secrets.
 3. `/api/order-status/` and revision-count display on `/revise`.
 4. Agent preview-ready and domain-ready customer emails.
 5. Domain attach/polling for `profitslocal.com`.
@@ -200,7 +214,7 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Blocking Inputs
 
-- A GitHub token or GitHub App path for workflow dispatch from Pages Functions.
+- A narrowly scoped GitHub token or GitHub App path for workflow dispatch from Pages Functions.
 - Decision on where central automation should persist production state long term:
   - Git repo JSON files for MVP
   - Cloudflare D1 / Supabase / Neon for production
