@@ -57,7 +57,7 @@
 | Cost tracking | Half built | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, and Tally revenue can write events; Resend and image generation still need direct wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
-| Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; live Pages projects still need that token configured. |
+| Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; main repo notification secrets are configured, and live Pages projects still need a narrow dispatch token configured. |
 
 ## Not Started
 
@@ -74,7 +74,7 @@
 ## Immediate Next Build Order
 
 1. Agent dev-branch execution loop with one paid activation/revision test.
-2. Configure Pages `AGENT_GITHUB_TOKEN` and GitHub workflow secrets for live central dispatch.
+2. Configure Pages `AGENT_GITHUB_TOKEN` for live central dispatch.
 3. `/api/order-status/` plus revision-count display on `/revise`.
 4. Domain attach/polling for `profitslocal.com`.
 5. Menu PDF extractor and image OCR pipeline.

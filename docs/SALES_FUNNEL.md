@@ -132,6 +132,7 @@ Validation status:
 - Stripe event routing writes a revenue ledger entry and agent task in dry-run and fixture tests.
 - Stripe/Resend runtime secrets are configured on the 5 dev Pages projects.
 - Central runner local verification wrote sale entitlement, sale task, revision task, and ledger records under `/tmp/central-runner-state`.
+- Main repo GitHub Actions secrets are configured for sales Discord, revision Discord, and Resend; dry-run workflow dispatch passes with notification flags enabled.
 
 ## Create Tally Forms
 
