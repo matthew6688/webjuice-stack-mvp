@@ -155,7 +155,11 @@ function buildGallery(resolved) {
   const gallery = [];
   const ogImage = valueOf(resolved, 'brand.ogImage');
   const photoReference = valueOf(resolved, 'google.photoReference');
+  const galleryImages = valueOf(resolved, 'gallery.images') || [];
   if (ogImage) gallery.push({ type: 'image', url: ogImage, source: 'official_site' });
+  for (const image of galleryImages) {
+    gallery.push({ type: 'image', url: image, source: 'legacy_restaurant_data' });
+  }
   if (photoReference) gallery.push({ type: 'google_photo_reference', reference: photoReference, source: 'google_places' });
   return gallery;
 }

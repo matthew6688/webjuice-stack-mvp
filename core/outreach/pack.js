@@ -64,3 +64,24 @@ export function saveOutreachPack(pack, outputPath) {
   fs.writeFileSync(outputPath, `${JSON.stringify(pack, null, 2)}\n`);
   return pack;
 }
+
+export function validateOutreachPack(pack) {
+  const errors = [];
+  const warnings = [];
+
+  if (!pack.clientSlug) errors.push('clientSlug is required');
+  if (!pack.business?.name) errors.push('business.name is required');
+  if (!pack.previewUrl) warnings.push('previewUrl is missing');
+  if (!pack.qa?.links) errors.push('qa.links is required');
+  if (pack.qa?.links && pack.qa.links.ok !== true) errors.push('qa.links must be ok');
+  if (!pack.assets?.screenshots?.desktop) errors.push('assets.screenshots.desktop is required');
+  if (!pack.assets?.screenshots?.mobile) errors.push('assets.screenshots.mobile is required');
+  if (!pack.assets?.video) errors.push('assets.video is required');
+  if (!Array.isArray(pack.emailBrief?.proofPoints) || !pack.emailBrief.proofPoints.length) {
+    errors.push('emailBrief.proofPoints must not be empty');
+  }
+  if (!pack.sourceArtifacts?.content) errors.push('sourceArtifacts.content is required');
+  if (!pack.sourceArtifacts?.design) errors.push('sourceArtifacts.design is required');
+
+  return { ok: errors.length === 0, errors, warnings };
+}

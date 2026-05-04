@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "designSkill": "huashu-design",
+  "clientSlug": "joey-s-restaurant",
+  "sourceContentPath": "clients/joey-s-restaurant/content.restaurant.json",
+  "generatedAt": "2026-05-04T07:22:54.269Z",
+  "business": {
+    "name": "Joey's",
+    "cuisine": "restaurant",
+    "rating": 4.4,
+    "reviewCount": 2479,
+    "fallbackLevel": "official_site_menu"
+  },
+  "assetProtocol": {
+    "requiredAssets": [
+      {
+        "id": "logo",
+        "status": "present",
+        "value": "/images/logo.png",
+        "note": "Logo is required for strong brand recognition."
+      },
+      {
+        "id": "heroFoodPhoto",
+        "status": "present",
+        "value": "/images/official-1.jpg",
+        "note": "Use official or Google Places food/interior photos before generated imagery."
+      },
+      {
+        "id": "menuSource",
+        "status": "present",
+        "value": "https://www.joeys.com.au/menus",
+        "note": "Menu source is required for factual menu design."
+      },
+      {
+        "id": "reservationUrl",
+        "status": "present",
+        "value": "https://www.joeys.com.au/reservations",
+        "note": "Reservation CTA is optional but valuable when available."
+      },
+      {
+        "id": "brandColors",
+        "status": "present",
+        "value": "#133d4a, #f4efe4, #0f2d33, #e98448, #f1c96d, #597177",
+        "note": "Use official colors when extracted."
+      }
+    ],
+    "warnings": [],
+    "rules": [
+      "Use real logo as an image asset; do not redraw it as SVG/CSS.",
+      "Use real restaurant/menu/food photos first.",
+      "Generated imagery must be marked as generated in evidence.",
+      "Do not render sample menu items.",
+      "Menu item text must come from menu.sections evidence."
+    ]
+  },
+  "tokens": {
+    "colorSource": "scraped",
+    "colors": [
+      "#133d4a",
+      "#f4efe4",
+      "#0f2d33",
+      "#e98448",
+      "#f1c96d",
+      "#597177"
+    ],
+    "palette": {
+      "background": "#133d4a",
+      "surface": "#f4efe4",
+      "ink": "#0f2d33",
+      "accent": "#e98448",
+      "muted": "#f1c96d"
+    },
+    "typography": {
+      "heading": "Editorial serif or brand heading font when extracted",
+      "body": "Humanist sans-serif for mobile menu readability",
+      "numeric": "Tabular figures for prices"
+    },
+    "radius": {
+      "cards": "8px",
+      "buttons": "999px"
+    }
+  },
+  "directions": [
+    {
+      "id": "editorial-menu",
+      "name": "Editorial Menu System",
+      "philosophy": "Pentagram-style information architecture",
+      "bestFor": "Restaurants with rich menus where clarity and trust matter most.",
+      "visualTraits": [
+        "tight typographic hierarchy",
+        "clear price alignment",
+        "low ornament",
+        "strong source labeling"
+      ],
+      "menuTreatment": "restaurant sections become the main visual rhythm."
+    },
+    {
+      "id": "photo-led-hospitality",
+      "name": "Photo-Led Hospitality",
+      "philosophy": "Field.io motion warmth adapted for food photography",
+      "bestFor": "Restaurants with strong official or Google Places photos.",
+      "visualTraits": [
+        "large real imagery",
+        "soft motion",
+        "warm contrast",
+        "sticky mobile actions"
+      ],
+      "menuTreatment": "Photos introduce sections, but text remains scannable."
+    },
+    {
+      "id": "quiet-premium",
+      "name": "Quiet Premium",
+      "philosophy": "Kenya Hara-inspired restraint",
+      "bestFor": "Higher-ticket venues or brands with limited assets that need taste, not noise.",
+      "visualTraits": [
+        "generous whitespace",
+        "controlled accent color",
+        "small details",
+        "paper-like menu surface"
+      ],
+      "menuTreatment": "Menu reads like a refined printed object on mobile."
+    }
+  ],
+  "layoutRules": [
+    "Mobile-first menu: section tabs, sticky call/map/reserve actions, readable prices.",
+    "Desktop menu: two-column rhythm only when item text remains readable.",
+    "Address links open Google Maps; phone links use tel:.",
+    "Reservation CTA appears only when official provider URL exists.",
+    "No nested decorative cards; menu sections are content, not marketing panels."
+  ],
+  "conversionRules": {
+    "primaryCta": "reserve",
+    "secondaryCtas": [
+      "map",
+      "call"
+    ],
+    "funnel": {
+      "purchaseProvider": "tally_or_stripe",
+      "requiredHiddenFields": [
+        "clientSlug",
+        "previewUrl",
+        "repo",
+        "campaignId",
+        "niche",
+        "package",
+        "price"
+      ]
+    }
+  }
+}

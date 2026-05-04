@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "designSkill": "huashu-design",
+  "clientSlug": "babylon-brisbane-restaurant",
+  "sourceContentPath": "clients/babylon-brisbane-restaurant/content.restaurant.json",
+  "generatedAt": "2026-05-04T07:22:53.071Z",
+  "business": {
+    "name": "Babylon Brisbane",
+    "cuisine": "restaurant",
+    "rating": 4.2,
+    "reviewCount": 1381,
+    "fallbackLevel": "pdf_menu"
+  },
+  "assetProtocol": {
+    "requiredAssets": [
+      {
+        "id": "logo",
+        "status": "present",
+        "value": "/images/logo.png",
+        "note": "Logo is required for strong brand recognition."
+      },
+      {
+        "id": "heroFoodPhoto",
+        "status": "present",
+        "value": "/images/official-1.jpg",
+        "note": "Use official or Google Places food/interior photos before generated imagery."
+      },
+      {
+        "id": "menuSource",
+        "status": "present",
+        "value": "https://babylonbrisbane.com.au/wp-content/uploads/2026/01/BABB_0625_Restaurant-Menu-1.pdf",
+        "note": "Menu source is required for factual menu design."
+      },
+      {
+        "id": "reservationUrl",
+        "status": "present",
+        "value": "https://www.sevenrooms.com/explore/babylonbrisbane/reservations/create/search?tracking=babylon-brisbane-widget&venues=babylonbrisbane%2Cfridaysbrisbane%2Cregattahotel%2Ctheboatshed%2Cdeathandcobris%2Ctheboundaryhotelaus%2Cportoffice%2Cjimmysonthemall%2Cpignwhistleriverside%2Criverlandbrisbane",
+        "note": "Reservation CTA is optional but valuable when available."
+      },
+      {
+        "id": "brandColors",
+        "status": "present",
+        "value": "#1a1710, #f1e4cf, #21190f, #9d7044, #d6a85f, #806f55",
+        "note": "Use official colors when extracted."
+      }
+    ],
+    "warnings": [],
+    "rules": [
+      "Use real logo as an image asset; do not redraw it as SVG/CSS.",
+      "Use real restaurant/menu/food photos first.",
+      "Generated imagery must be marked as generated in evidence.",
+      "Do not render sample menu items.",
+      "Menu item text must come from menu.sections evidence."
+    ]
+  },
+  "tokens": {
+    "colorSource": "scraped",
+    "colors": [
+      "#1a1710",
+      "#f1e4cf",
+      "#21190f",
+      "#9d7044",
+      "#d6a85f",
+      "#806f55"
+    ],
+    "palette": {
+      "background": "#1a1710",
+      "surface": "#f1e4cf",
+      "ink": "#21190f",
+      "accent": "#9d7044",
+      "muted": "#d6a85f"
+    },
+    "typography": {
+      "heading": "Editorial serif or brand heading font when extracted",
+      "body": "Humanist sans-serif for mobile menu readability",
+      "numeric": "Tabular figures for prices"
+    },
+    "radius": {
+      "cards": "8px",
+      "buttons": "999px"
+    }
+  },
+  "directions": [
+    {
+      "id": "editorial-menu",
+      "name": "Editorial Menu System",
+      "philosophy": "Pentagram-style information architecture",
+      "bestFor": "Restaurants with rich menus where clarity and trust matter most.",
+      "visualTraits": [
+        "tight typographic hierarchy",
+        "clear price alignment",
+        "low ornament",
+        "strong source labeling"
+      ],
+      "menuTreatment": "restaurant sections become the main visual rhythm."
+    },
+    {
+      "id": "photo-led-hospitality",
+      "name": "Photo-Led Hospitality",
+      "philosophy": "Field.io motion warmth adapted for food photography",
+      "bestFor": "Restaurants with strong official or Google Places photos.",
+      "visualTraits": [
+        "large real imagery",
+        "soft motion",
+        "warm contrast",
+        "sticky mobile actions"
+      ],
+      "menuTreatment": "Photos introduce sections, but text remains scannable."
+    },
+    {
+      "id": "quiet-premium",
+      "name": "Quiet Premium",
+      "philosophy": "Kenya Hara-inspired restraint",
+      "bestFor": "Higher-ticket venues or brands with limited assets that need taste, not noise.",
+      "visualTraits": [
+        "generous whitespace",
+        "controlled accent color",
+        "small details",
+        "paper-like menu surface"
+      ],
+      "menuTreatment": "Menu reads like a refined printed object on mobile."
+    }
+  ],
+  "layoutRules": [
+    "Mobile-first menu: section tabs, sticky call/map/reserve actions, readable prices.",
+    "Desktop menu: two-column rhythm only when item text remains readable.",
+    "Address links open Google Maps; phone links use tel:.",
+    "Reservation CTA appears only when official provider URL exists.",
+    "No nested decorative cards; menu sections are content, not marketing panels."
+  ],
+  "conversionRules": {
+    "primaryCta": "reserve",
+    "secondaryCtas": [
+      "map",
+      "call"
+    ],
+    "funnel": {
+      "purchaseProvider": "tally_or_stripe",
+      "requiredHiddenFields": [
+        "clientSlug",
+        "previewUrl",
+        "repo",
+        "campaignId",
+        "niche",
+        "package",
+        "price"
+      ]
+    }
+  }
+}

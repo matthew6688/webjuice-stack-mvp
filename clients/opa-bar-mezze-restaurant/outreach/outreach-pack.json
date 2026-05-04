@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "generatedAt": "2026-05-04T07:22:53.969Z",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev",
+  "sourceArtifacts": {
+    "manifest": "artifact-manifest.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md"
+  },
+  "business": {
+    "name": "Opa Bar & Mezze",
+    "cuisine": "restaurant",
+    "rating": 4.8,
+    "reviewCount": 3848,
+    "address": "123 Eagle St, Brisbane City QLD 4000, Australia"
+  },
+  "qa": {
+    "links": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "email missing; email CTA should be omitted"
+      ],
+      "checked": [
+        {
+          "label": "call",
+          "value": "tel:+61721115155"
+        },
+        {
+          "label": "map",
+          "value": "https://www.google.com/maps/search/?api=1&query=Opa%20Bar%20%26%20Mezze%20123%20Eagle%20St%2C%20Brisbane%20City%20QLD%204000%2C%20Australia"
+        },
+        {
+          "label": "menuSource",
+          "value": "https://www.opabar.com.au/menu"
+        },
+        {
+          "label": "reserve",
+          "value": "https://www.sevenrooms.com/explore/opabarmezze/reservations/create/search?venues=opabarmezze,pompetteau,darkshepherd,yamasgreekdrink,stilts,richandrarerestaurant,fatcowrestaurant,longwangchopstickhouse,massimorestaurantandbar,foshbarrestaurant"
+        }
+      ]
+    }
+  },
+  "assets": {
+    "screenshots": {
+      "desktop": "clients/opa-bar-mezze-restaurant/outreach/screenshots/desktop.png",
+      "mobile": "clients/opa-bar-mezze-restaurant/outreach/screenshots/mobile.png"
+    },
+    "video": "clients/opa-bar-mezze-restaurant/outreach/demo.mp4"
+  },
+  "emailBrief": {
+    "subject": "Opa Bar & Mezze menu preview",
+    "proofPoints": [
+      "Menu source: https://www.opabar.com.au/menu",
+      "Address and map CTA verified",
+      "Mobile call CTA verified"
+    ],
+    "cta": "https://opa-bar-mezze-restaurant-dev.pages.dev"
+  },
+  "designSummary": {
+    "selectedDirections": [
+      "Editorial Menu System",
+      "Photo-Led Hospitality",
+      "Quiet Premium"
+    ],
+    "warnings": []
+  }
+}

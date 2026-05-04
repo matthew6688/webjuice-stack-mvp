@@ -1,0 +1,352 @@
+{
+  "schemaVersion": 1,
+  "niche": "restaurant",
+  "clientSlug": "chu-the-phat-restaurant",
+  "sourceEvidencePath": "/Users/matthew/Developer/google-map-website/clients/chu-the-phat-restaurant/evidence/evidence.json",
+  "generatedAt": "2026-05-04T07:22:54.866Z",
+  "fallbackLevel": "official_site_menu",
+  "hero": {
+    "name": "Chu The Phat",
+    "cuisine": "restaurant",
+    "rating": 4.5,
+    "reviewCount": 3253,
+    "tagline": "Restaurant in Brisbane"
+  },
+  "contact": {
+    "phone": "+61 7 3255 2075",
+    "email": "",
+    "address": "111 Melbourne St, South Brisbane QLD 4101, Australia",
+    "website": "https://chuthephat.com.au/",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Chu%20The%20Phat%20111%20Melbourne%20St%2C%20South%20Brisbane%20QLD%204101%2C%20Australia"
+  },
+  "cta": {
+    "callUrl": "tel:+61732552075",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Chu%20The%20Phat%20111%20Melbourne%20St%2C%20South%20Brisbane%20QLD%204101%2C%20Australia",
+    "reserveUrl": "https://bookings.nowbookit.com/?accountid=5af2cf3a-c5c9-4e3c-8db6-85d7f5ad37e5&venueid=1509&theme=light&colors=hex,000000,dd191d"
+  },
+  "booking": {
+    "provider": "NowBookIt",
+    "url": "https://bookings.nowbookit.com/?accountid=5af2cf3a-c5c9-4e3c-8db6-85d7f5ad37e5&venueid=1509&theme=light&colors=hex,000000,dd191d"
+  },
+  "menu": {
+    "sourceUrl": "https://chuthephat.com.au/menus/",
+    "sections": [
+      {
+        "name": "Snacks",
+        "description": "Dumplings, buns and bar snacks.",
+        "items": [
+          {
+            "name": "Boiled Pork Dumplings",
+            "description": "Tomato relish",
+            "price": "4pc $12",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Smoked Trout Dumplings",
+            "description": "Fragrant broth",
+            "price": "4pc $14",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Steamed Duck Bun",
+            "description": "Steamed bun from the snacks menu",
+            "price": "3pc $12",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Pork & Kimchi Spring Rolls",
+            "description": "Anchovy mayo",
+            "price": "3pc $15",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          }
+        ]
+      },
+      {
+        "name": "Starters & Vegetables",
+        "description": "Fresh, spicy and shareable.",
+        "items": [
+          {
+            "name": "Poached Chicken",
+            "description": "Watercress, cucumber, chilli and sesame",
+            "price": "$17",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Mung Bean Pancake",
+            "description": "Kim chi caramel, soy pickled onions",
+            "price": "$12",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Aromatic Prawn & Avocado Salad",
+            "description": "Hot and sour dressing",
+            "price": "$22",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Steamed Green Beans",
+            "description": "XO sauce",
+            "price": "$12",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          }
+        ]
+      },
+      {
+        "name": "Main Fare",
+        "description": "Street-food energy, larger plates.",
+        "items": [
+          {
+            "name": "Nanna Annas Chilli Chicken",
+            "description": "Main fare menu item",
+            "price": "$27",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Black Onyx Beef Stir Fried",
+            "description": "With asparagus",
+            "price": "$26",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Tea Smoked Duck Legs",
+            "description": "Grilled pineapple, candied garlic and ginger",
+            "price": "$35",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Beef 'Kalbi'",
+            "description": "Shiso leaf, ssamjang, assorted kimchi",
+            "price": "$38",
+            "sourceUrl": "https://chuthephat.com.au/menus/",
+            "sourceKey": "menu.sections",
+            "generated": false
+          }
+        ]
+      }
+    ],
+    "sourceChain": [
+      {
+        "key": "menu.source",
+        "sourceType": "official_site",
+        "sourceUrl": "https://chuthephat.com.au/",
+        "confidence": 0.9,
+        "extractor": "legacy_restaurant_data_migration"
+      },
+      {
+        "key": "menu.sections",
+        "sourceType": "official_site",
+        "sourceUrl": "https://chuthephat.com.au/",
+        "confidence": 0.9,
+        "extractor": "legacy_restaurant_data_migration"
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "type": "image",
+      "url": "/images/official-1.jpg",
+      "source": "official_site"
+    },
+    {
+      "type": "image",
+      "url": "/images/official-1.jpg",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "image",
+      "url": "/images/official-2.jpg",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "image",
+      "url": "/images/google-1.jpg",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "image",
+      "url": "/images/google-2.jpg",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "image",
+      "url": "/images/google-3.jpg",
+      "source": "legacy_restaurant_data"
+    }
+  ],
+  "brand": {
+    "logo": "/images/logo.png",
+    "colors": [
+      "#110d0c",
+      "#fff5e6",
+      "#1d1614",
+      "#d8191d",
+      "#f4b43f",
+      "#765d55"
+    ],
+    "ogImage": "/images/official-1.jpg"
+  },
+  "evidenceSummary": [
+    {
+      "key": "identity.name",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.95,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "business.niche",
+      "sourceType": "manual",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.9,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "business.city",
+      "sourceType": "manual",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.85,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "business.types",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.75,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "contact.address",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.95,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "contact.phone",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.95,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "contact.website",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.9,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "cta.call",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.95,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "cta.map",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.95,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "cta.reserve",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.85,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "reviews.rating",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.9,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "reviews.count",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.9,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "hours.weekdayText",
+      "sourceType": "google_places",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.85,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "menu.source",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.9,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "menu.sections",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.9,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "brand.logo",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.85,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "brand.colors",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.75,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "brand.ogImage",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.8,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "gallery.images",
+      "sourceType": "official_site",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 0.8,
+      "extractor": "legacy_restaurant_data_migration"
+    },
+    {
+      "key": "legacy.sourceRepo",
+      "sourceType": "manual",
+      "sourceUrl": "https://chuthephat.com.au/",
+      "confidence": 1,
+      "extractor": "legacy_restaurant_data_migration"
+    }
+  ]
+}

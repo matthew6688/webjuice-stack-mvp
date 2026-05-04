@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "chu-the-phat-restaurant",
+  "generatedAt": "2026-05-04T07:22:55.172Z",
+  "previewUrl": "https://chu-the-phat-restaurant-dev.pages.dev",
+  "sourceArtifacts": {
+    "manifest": "artifact-manifest.json",
+    "content": "clients/chu-the-phat-restaurant/content.restaurant.json",
+    "design": "clients/chu-the-phat-restaurant/design.restaurant.json",
+    "brandSpec": "clients/chu-the-phat-restaurant/brand-spec.md"
+  },
+  "business": {
+    "name": "Chu The Phat",
+    "cuisine": "restaurant",
+    "rating": 4.5,
+    "reviewCount": 3253,
+    "address": "111 Melbourne St, South Brisbane QLD 4101, Australia"
+  },
+  "qa": {
+    "links": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "email missing; email CTA should be omitted"
+      ],
+      "checked": [
+        {
+          "label": "call",
+          "value": "tel:+61732552075"
+        },
+        {
+          "label": "map",
+          "value": "https://www.google.com/maps/search/?api=1&query=Chu%20The%20Phat%20111%20Melbourne%20St%2C%20South%20Brisbane%20QLD%204101%2C%20Australia"
+        },
+        {
+          "label": "menuSource",
+          "value": "https://chuthephat.com.au/menus/"
+        },
+        {
+          "label": "reserve",
+          "value": "https://bookings.nowbookit.com/?accountid=5af2cf3a-c5c9-4e3c-8db6-85d7f5ad37e5&venueid=1509&theme=light&colors=hex,000000,dd191d"
+        }
+      ]
+    }
+  },
+  "assets": {
+    "screenshots": {
+      "desktop": "clients/chu-the-phat-restaurant/outreach/screenshots/desktop.png",
+      "mobile": "clients/chu-the-phat-restaurant/outreach/screenshots/mobile.png"
+    },
+    "video": "clients/chu-the-phat-restaurant/outreach/demo.mp4"
+  },
+  "emailBrief": {
+    "subject": "Chu The Phat menu preview",
+    "proofPoints": [
+      "Menu source: https://chuthephat.com.au/menus/",
+      "Address and map CTA verified",
+      "Mobile call CTA verified"
+    ],
+    "cta": "https://chu-the-phat-restaurant-dev.pages.dev"
+  },
+  "designSummary": {
+    "selectedDirections": [
+      "Editorial Menu System",
+      "Photo-Led Hospitality",
+      "Quiet Premium"
+    ],
+    "warnings": []
+  }
+}
