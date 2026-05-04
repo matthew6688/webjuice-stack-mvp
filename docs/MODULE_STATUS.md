@@ -10,6 +10,8 @@
 | Restaurant preview renderer | Working manually | Real menu pages deployed with logo/photos/CTA, but renderer is still embedded in generated repos. |
 | Link QA | Partial | `tel:`, reservation, source, and Google Maps links were checked manually/scripts ad hoc. |
 | Screenshot QA | Partial | Desktop/mobile screenshots generated manually with Playwright. |
+| Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
+| Finance ledger MVP | Working | `npm run finance:add` and `npm run finance:report` support local ROI tracking. |
 
 ## Half Built
 
@@ -18,7 +20,7 @@
 | Evidence engine | Half built | Data exists, but no normalized `evidence.json`, source confidence, or validators. |
 | Restaurant niche adapter | Half built | Restaurant logic exists in practice, but no `niches/restaurant/adapter.ts`. |
 | Design engine | Half built | Brand colors/logos/photos used, but no Huashu/open-design decision engine or scoring. |
-| Cost tracking | Not yet wired | Need ledger events around every paid API call and every revenue event. |
+| Cost tracking | Half built | Ledger/report exist, but extractors and Tally webhooks do not write events yet. |
 | Outreach pack | Not yet wired | Need screenshots, video, email, source summary, audit summary in one artifact. |
 
 ## Not Started

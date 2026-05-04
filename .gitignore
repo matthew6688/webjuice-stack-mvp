@@ -15,7 +15,11 @@ pnpm-debug.log*
 
 # environment variables
 .env
+.env.local
 .env.production
+
+# local finance ledger may contain campaign revenue/cost data
+data/finance/ledger.jsonl
 
 # macOS-specific files
 .DS_Store
