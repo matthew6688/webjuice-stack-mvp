@@ -31,6 +31,7 @@ export function recordFunnelCaseEvent({
   submissionPath = null,
   ledgerEvent = null,
   payload = null,
+  discord = null,
   ok = true,
   reason = '',
   casesDir,
@@ -73,11 +74,7 @@ export function recordFunnelCaseEvent({
       remaining: revisionPolicy ? Math.max(Number(revisionPolicy.limit || 0) - Number(revisionUsed || 0), 0) : null,
       lastReason: entitlement?.reason || reason || existing?.revision?.lastReason || '',
     },
-    discord: existing?.discord || {
-      salesThreadId: '',
-      revisionThreadId: '',
-      lastMessageUrl: '',
-    },
+    discord: mergeDiscordWorkspace(existing?.discord, discord, kind),
     sourceOfTruth: sourceOfTruthPaths(order.clientSlug),
     activeConstraints: activeConstraints(),
     lockedDecisions: existing?.lockedDecisions || [],
@@ -114,6 +111,10 @@ export function recordFunnelCaseEvent({
     taskPath: taskPath || '',
     submissionPath: submissionPath || '',
     ledgerEventId: ledgerEvent?.id || '',
+    discordChannelId: discord?.channelId || '',
+    discordThreadId: discord?.threadId || '',
+    discordMessageId: discord?.messageId || '',
+    discordMessageUrl: discord?.messageUrl || '',
     revisionUsed,
     revisionLimit: revisionPolicy?.limit ?? null,
     createdAt: now,
@@ -141,6 +142,27 @@ export function recordFunnelCaseEvent({
     contextPacket,
     timelineEvent,
     customerMessage,
+  };
+}
+
+function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
+  const next = existing || {};
+  if (!discord?.ok) {
+    return {
+      salesThreadId: next.salesThreadId || '',
+      revisionThreadId: next.revisionThreadId || '',
+      lastChannelId: next.lastChannelId || '',
+      lastMessageId: next.lastMessageId || '',
+      lastMessageUrl: next.lastMessageUrl || '',
+    };
+  }
+  const threadId = discord.threadId || discord.channelId || '';
+  return {
+    salesThreadId: kind === 'sale' && threadId ? threadId : next.salesThreadId || '',
+    revisionThreadId: kind === 'revision' && threadId ? threadId : next.revisionThreadId || '',
+    lastChannelId: discord.channelId || next.lastChannelId || '',
+    lastMessageId: discord.messageId || next.lastMessageId || '',
+    lastMessageUrl: discord.messageUrl || next.lastMessageUrl || '',
   };
 }
 

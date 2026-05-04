@@ -24,28 +24,31 @@ Verified live state:
 - Agent execution/completion/publish runners can load case context, push reviewed work to `dev`, send review email, and publish approved `dev` trees to `main/live`.
 - 5 generated restaurant repos plus the `webjuice-restaurant` template include `/approve` and `/api/approval-request/` for customer approval.
 - `webjuice-restaurant` and the 5 generated restaurant repos include `/api/order-status/`; `/revise` can show trusted revision quota state after `orderId + checkout email` match.
+- Funnel Discord sends now request webhook responses, try `thread_name`, and persist returned channel/thread/message IDs into case memory.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
 
-### 1. Discord Thread Workspace
+### 1. Domain Onboarding For `profitslocal.com`
 
-Goal: every paid order and revision should have a durable internal Discord workspace so the agent can post the right preview/review/live links without losing context.
+Goal: customers can keep utility pages while their own domain/subdomain points to live production.
 
 Tasks:
 
-- Persist Discord channel/thread IDs in `case.json.discord`.
-- Create or reuse one sales thread per `orderId`.
-- Create or reuse revision discussion threads linked to the same case.
-- Include links to case path, task path, dev preview, approval page, and live URL in Discord messages.
-- Append every outbound Discord message URL to `timeline.jsonl`.
-- Add agent prompt context that tells Hermes/OpenClaw where the Discord thread lives and what customer messages have already been handled.
+- Confirm `profitslocal.com` is in the same Cloudflare account as the API token.
+- Decide route:
+  - customer root domain -> live website
+  - customer subdomain like `preview.customer.com` or our preview URL -> utility/revision flow
+- Attach domain to Pages project.
+- Generate DNS instructions for apex/subdomain.
+- Poll DNS and SSL status.
+- Write `clients/<slug>/domain.json` or global domain status.
 
 Validation:
 
 ```bash
-npm run discord:case-thread -- --case data/cases/<client>/<order>/case.json --dry-run true
-npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --send-discord true --dry-run true
+npm run domain:inspect -- profitslocal.com --project profitslocal-live
+npm run domain:attach-pages -- --domain profitslocal.com --project profitslocal-live --dry-run
 ```
 
 ### 2. Central Automation Runner Hardening
@@ -116,26 +119,29 @@ curl -X POST https://<client>-dev.pages.dev/api/order-status/ \
   --data '{"order_id":"cs_test_...","email":"owner@example.com"}'
 ```
 
-### 4. Domain Onboarding For `profitslocal.com`
+### 4. Discord Thread Workspace
 
-Goal: customers can keep utility pages while their own domain/subdomain points to live production.
+Goal: every paid order and revision should have a durable internal Discord workspace so the agent can post the right preview/review/live links without losing context.
 
-Tasks:
+Working now:
 
-- Confirm `profitslocal.com` is in the same Cloudflare account as the API token.
-- Decide route:
-  - customer root domain -> live website
-  - customer subdomain like `preview.customer.com` or our preview URL -> utility/revision flow
-- Attach domain to Pages project.
-- Generate DNS instructions for apex/subdomain.
-- Poll DNS and SSL status.
-- Write `clients/<slug>/domain.json` or global domain status.
+- Funnel Discord sends use `wait=true`.
+- Discord payloads include order ID, task path, and case path.
+- Webhook sends try `thread_name`; if Discord rejects thread creation, the sender falls back to normal webhook posting.
+- Returned channel/thread/message IDs are persisted in `case.json.discord`.
+- Timeline events include Discord channel/thread/message metadata.
+- `npm run discord:case-thread` can dry-run payloads from an existing case file.
+
+Remaining hardening:
+
+- If true threads are required in ordinary text channels, add a Discord bot token and create threads via Discord REST API.
+- Add follow-up message helpers for agent-complete and live-published events.
 
 Validation:
 
 ```bash
-npm run domain:inspect -- profitslocal.com --project profitslocal-live
-npm run domain:attach-pages -- --domain profitslocal.com --project profitslocal-live --dry-run
+npm run discord:case-thread -- --case data/cases/<client>/<order>/case.json --dry-run true
+npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --send-discord true --dry-run true
 ```
 
 ### 5. Email Completion Nodes
@@ -207,13 +213,12 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Discord thread workspace with order/thread id mapping.
-2. Domain attach/polling for `profitslocal.com`.
-3. Cost ledger wiring for Resend, image generation, and agent execution time.
-4. Menu PDF/image OCR.
-5. Cold outreach email test with screenshot/video proof.
-6. More cities: Sydney/Melbourne restaurants.
-7. Next niche pilot: roofing/plumbing/dental.
+1. Domain attach/polling for `profitslocal.com`.
+2. Cost ledger wiring for Resend, image generation, and agent execution time.
+3. Menu PDF/image OCR.
+4. Cold outreach email test with screenshot/video proof.
+5. More cities: Sydney/Melbourne restaurants.
+6. Next niche pilot: roofing/plumbing/dental.
 
 ## Blocking Inputs
 

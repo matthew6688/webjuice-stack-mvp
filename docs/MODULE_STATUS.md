@@ -63,6 +63,7 @@
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
 | Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; main repo notification secrets are configured, and Pages secrets are present on current dev/live client projects. |
+| Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, try `thread_name`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. True thread creation depends on the webhook channel type; text channels degrade to message/channel tracking. |
 
 ## Not Started
 
@@ -78,12 +79,11 @@
 
 ## Immediate Next Build Order
 
-1. Discord thread workspace with order/thread id mapping.
-2. Domain attach/polling for `profitslocal.com`.
-3. Cost ledger wiring for Resend, image generation, and agent runtime.
-4. Menu PDF extractor and image OCR pipeline.
-5. Resend cold outreach dry-run and live test.
-6. Add next city or niche pilot after the restaurant loop closes.
+1. Domain attach/polling for `profitslocal.com`.
+2. Cost ledger wiring for Resend, image generation, and agent runtime.
+3. Menu PDF extractor and image OCR pipeline.
+4. Resend cold outreach dry-run and live test.
+5. Add next city or niche pilot after the restaurant loop closes.
 
 ## Verification Rules
 

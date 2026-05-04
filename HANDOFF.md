@@ -170,6 +170,7 @@ Current production sales path:
 - `npm run agent:publish-approved` publishes approved dev to main/live by creating a new main commit from the dev tree, avoiding unrelated-history merges and force-pushes.
 - Template/client sites include `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` in the main automation repo using `AGENT_GITHUB_TOKEN`.
 - Template/client sites include `/api/order-status/`; `/revise` can show trusted revision quota after matching `orderId + checkout email` against the central entitlement JSON.
+- Funnel Discord messages now request webhook responses, try `thread_name`, and write returned channel/thread/message IDs into `case.json.discord` plus timeline metadata.
 
 Tally remains as a fallback/provider boundary, but live payment-block creation failed Tally API schema validation during testing.
 
@@ -204,6 +205,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Stripe checkout / paid loop | MVP 已验证 | Longwang `$399` test payment 成功 redirect `/thank-you`；`$100` extra revision checkout session smoke 成功 |
 | Revision 次数控制 | MVP 已完成 | `orderId + checkout email` 强制匹配；`one_time` 3 次，`yearly` 每月 1 次，超限不创建 task |
 | Revision 次数显示 | MVP 已完成 | `/api/order-status/` 从主自动化仓库读取 entitlement；`/revise` 显示已用/剩余/套餐 |
+| Discord case workspace | MVP 已完成 | webhook `wait=true` 返回 message/channel；forum/media channel 可自动 thread，普通 text channel 降级为 message/channel tracking |
 | Resend customer emails | MVP 已完成 | `fengtalk.ai` verified；payment/revision receipt 和 router accepted/denied 邮件路径已实现 |
 | Cold email | 待验证 | Resend 已配置；还需 cold outreach 模板、截图/video proof、发送测试 |
 
@@ -230,7 +232,8 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 确认 agent runner 能读取 case context/source-of-truth 并修改 dev branch
 - [x] 添加 approval publish workflow，客户批准后发布 dev 到 live/main
 - [x] 添加 `/api/order-status/` 和 `/revise` revision 次数显示
-- [ ] 建 Discord thread workspace，把 order/thread/message URL 写回 case memory
+- [x] 建 Discord thread workspace，把 order/thread/message URL 写回 case memory
+- [ ] 如果普通 Discord text channel 必须创建 true thread，补 Discord bot token + REST thread creation
 - [x] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
 - [ ] 完成 MenuPdfExtractor / MenuImageOCRExtractor
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow

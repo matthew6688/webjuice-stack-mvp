@@ -133,7 +133,10 @@ export async function routeFunnelSubmission(payload, options = {}) {
     ? options.salesWebhookUrl || options.env?.SALES_DISCORD_WEBHOOK_URL || process.env.SALES_DISCORD_WEBHOOK_URL
     : options.reviseWebhookUrl || options.env?.REVISE_DISCORD_WEBHOOK_URL || process.env.REVISE_DISCORD_WEBHOOK_URL;
   if (options.sendDiscord && webhookUrl && !options.dryRun) {
-    discord = await sendDiscordWebhook(webhookUrl, discordPayload, options);
+    discord = await sendDiscordWebhook(webhookUrl, discordPayload, {
+      ...options,
+      threadName: discordThreadName(kind, order),
+    });
   }
 
   let customerEmail = { ok: false, skipped: true };
@@ -156,6 +159,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     taskPath,
     submissionPath,
     ledgerEvent,
+    discord,
     payload,
     ok: true,
     casesDir: options.casesDir,
@@ -177,6 +181,16 @@ export async function routeFunnelSubmission(payload, options = {}) {
     discordPayload,
     caseRecord,
   };
+}
+
+function discordThreadName(kind, order) {
+  const label = kind === 'sale' ? 'sale' : 'revision';
+  const client = order.clientSlug || order.company || 'client';
+  const orderId = order.orderId || order.rawSubmissionId || '';
+  return `${label}-${client}-${orderId}`
+    .replace(/[^a-zA-Z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 90);
 }
 
 function detectProvider(payload) {
