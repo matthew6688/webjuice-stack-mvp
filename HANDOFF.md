@@ -196,7 +196,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | 旧 `matthewatuchat/*` repo 对当前账号不可写 | 已绕过 | 主模板已迁到 `matthew6688/webjuice-stack-mvp`，后续新 repo 默认创建到 `matthew6688` |
 | 5 个餐厅站 Actions 构建失败 | 已修复并验证 | `npm run check:deploys -- --all clients` 全部 success |
 | 5 个餐厅站内容像空壳 | 已修复 | 已按 Huashu Design 思路重做餐厅首页和 `/menu`；菜单项来自公开官网/PDF/菜单页，并在页面标注 source URL |
-| `profitslocal.com` 自定义域名绑定 | 未闭环 | `domain:inspect` 可检测 DNS；还需要确认 API token/account 能看到该 zone，然后 attach Pages 并轮询 SSL/HTTPS |
+| `profitslocal.com` 自定义域名绑定 | 部分完成 | 已 attach 到 `profitslocal-live`；Pages 状态 initializing/pending；还缺 CNAME，当前 token 无 Zone DNS Edit 权限 |
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |
 | Google Places photos | MVP 已完成 | `npm run extract:google-places-photos` 支持 dry-run/live、manifest、evidence append、ledger cost |
@@ -223,7 +223,9 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `PAGES_PROJECT_NAME` variable
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` secrets 后重新跑 Actions
 - [x] 给 5 个餐厅站补基于真实公开菜单数据的餐厅首页和 `/menu` 菜单页
-- [ ] 绑定 `profitslocal.com` 到 `profitslocal-live` Pages project（需要 domain 所在 Cloudflare account 的 token/zone 权限）
+- [x] 绑定 `profitslocal.com` 到 `profitslocal-live` Pages project
+- [ ] 给 `profitslocal.com` 添加 CNAME 到 `profitslocal-live.pages.dev`（需要 Zone DNS Edit token 或 Cloudflare 面板手动添加）
+- [ ] 轮询 `profitslocal.com` Pages custom-domain 状态直到 active
 - [ ] 完成 cold email 发送测试（Resend 已配置，需发送 dry-run/live proof）
 - [x] 手动修复并验证 5 个 restaurant repo 的 GitHub Secrets / Actions
 - [x] 确认 5 个 preview 站构建成功并可访问

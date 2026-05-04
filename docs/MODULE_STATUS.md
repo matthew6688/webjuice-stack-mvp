@@ -48,7 +48,7 @@
 | Approval publish runner | Working MVP | `npm run agent:publish-approved` publishes an approved dev tree to main without merging unrelated histories, can push live, wait for live deploy, send live email, and update case timeline. |
 | First-party approval flow | Working MVP | Template/client sites have `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` with mandatory `orderId + checkout email` matching. |
 | Order status utility | Working MVP | Template/client sites have `/api/order-status/`; `/revise` displays trusted revision quota only after `orderId + checkout email` matches the central entitlement record. |
-| Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` supports Cloudflare Pages attach/dry-run. |
+| Domain onboarding / DNS verifier | Working MVP | `npm run domain:inspect` checks NS/CNAME/A/AAAA and prints customer DNS instructions; `domain:attach-pages` attached `profitslocal.com` to `profitslocal-live`; `domain:pages-status` records Cloudflare custom-domain status; `domain:upsert-cname` is ready but needs a token with Zone DNS Edit. |
 | Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
 
 ## Half Built
@@ -79,7 +79,7 @@
 
 ## Immediate Next Build Order
 
-1. Domain attach/polling for `profitslocal.com`.
+1. Add/verify DNS CNAME for `profitslocal.com` with Zone DNS Edit permission, then poll Pages status to active.
 2. Cost ledger wiring for Resend, image generation, and agent runtime.
 3. Menu PDF extractor and image OCR pipeline.
 4. Resend cold outreach dry-run and live test.

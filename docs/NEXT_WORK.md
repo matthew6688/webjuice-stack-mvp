@@ -33,22 +33,27 @@ Verified live state:
 
 Goal: customers can keep utility pages while their own domain/subdomain points to live production.
 
-Tasks:
+Working now:
 
-- Confirm `profitslocal.com` is in the same Cloudflare account as the API token.
-- Decide route:
-  - customer root domain -> live website
-  - customer subdomain like `preview.customer.com` or our preview URL -> utility/revision flow
-- Attach domain to Pages project.
-- Generate DNS instructions for apex/subdomain.
-- Poll DNS and SSL status.
-- Write `clients/<slug>/domain.json` or global domain status.
+- `profitslocal.com` nameservers resolve to Cloudflare.
+- `profitslocal.com` is attached to Cloudflare Pages project `profitslocal-live`.
+- `data/domain/profitslocal.com.json` stores DNS inspection output.
+- `data/domain/profitslocal.com.pages-status.json` stores Pages custom-domain status.
+- `npm run domain:pages-status` can poll custom-domain verification/certificate state.
+- `npm run domain:upsert-cname` can create/update the CNAME when the token has Zone DNS Edit.
+
+Remaining:
+
+- Add DNS CNAME `profitslocal.com -> profitslocal-live.pages.dev`.
+- Current Pages/account token can attach Pages domains but cannot edit zone DNS records; Cloudflare returned authentication error on DNS record lookup.
+- After CNAME is present, poll until Pages status becomes active.
 
 Validation:
 
 ```bash
 npm run domain:inspect -- profitslocal.com --project profitslocal-live
-npm run domain:attach-pages -- --domain profitslocal.com --project profitslocal-live --dry-run
+npm run domain:pages-status -- --project profitslocal-live --domain profitslocal.com
+npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
 ```
 
 ### 2. Central Automation Runner Hardening
@@ -214,7 +219,7 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Domain attach/polling for `profitslocal.com`.
+1. Add/verify DNS CNAME for `profitslocal.com` with Zone DNS Edit permission, then poll Pages status to active.
 2. Cost ledger wiring for Resend, image generation, and agent execution time.
 3. Menu PDF/image OCR.
 4. Cold outreach email test with screenshot/video proof.
