@@ -303,7 +303,8 @@ npm run agent:complete-task -- \
   --checkout true \
   --push true \
   --check-deploy true \
-  --send-email true
+  --send-email true \
+  --send-discord true
 ```
 
 After customer approval, publish the reviewed dev tree to live:
@@ -315,7 +316,8 @@ npm run agent:publish-approved -- \
   --execute true \
   --push true \
   --check-deploy true \
-  --send-email true
+  --send-email true \
+  --send-discord true
 ```
 
 This does not merge `dev` into `main`. Some generated client repos have separate `dev` and `main` histories, so the publisher creates a new `main` commit whose tree matches approved `dev`, preserving main history without force-pushing.
@@ -361,9 +363,9 @@ Email nodes:
 - Revision form received: send receipt of submission and explain that order ID + email will be matched. Implemented in `/api/revision-request/`.
 - Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
 - Revision denied: send the reason and a `$100` extra revision checkout link. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
-- Agent dev preview ready: send dev review link after build/QA passes. Implemented in `npm run agent:complete-task` when `--send-email true`.
+- Agent dev preview ready: send dev review link after build/QA passes. Implemented in `npm run agent:complete-task` when `--send-email true`; Discord follow-up is available with `--send-discord true`.
 - Domain/live launch ready: send DNS/live-domain instructions. Not built.
-- Live published: send live site link after approved `dev` tree is published to `main`. Implemented in `npm run agent:publish-approved` when `--send-email true`.
+- Live published: send live site link after approved `dev` tree is published to `main`. Implemented in `npm run agent:publish-approved` when `--send-email true`; Discord follow-up is available with `--send-discord true`.
 
 The customer-facing pages can remain available on our preview/domain even when the customer points their own domain at the live site. They should be treated as account/order utility pages, not restaurant content pages.
 
