@@ -23,9 +23,7 @@ if (args.tally) {
     ...process.env,
     DEFAULT_CAMPAIGN_ID: args.campaign || process.env.DEFAULT_CAMPAIGN_ID,
   });
-  task = taskFromTallyOrder(order, {
-    type: args.type || undefined,
-  });
+  task = taskFromTallyOrder(order, args.type ? { type: args.type } : {});
 } else {
   if (!args.client || !args.repo) {
     console.error('Usage: node scripts/agent/create-task.js --client slug --repo owner/repo [--type activate]');

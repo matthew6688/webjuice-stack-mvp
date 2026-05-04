@@ -1,0 +1,108 @@
+{
+  "payload": {
+    "status": "DRAFT",
+    "name": "Feedback for longwang-restaurant-restaurant - feedback",
+    "blocks": [
+      {
+        "uuid": "7d03c2fe-77f6-49fe-acdd-bbbc328eb6d7",
+        "type": "FORM_TITLE",
+        "groupUuid": "5243941f-10e2-41a7-88be-e89f2c9d511c",
+        "groupType": "TEXT",
+        "payload": {
+          "html": "<h1>Feedback for longwang-restaurant-restaurant</h1><p>Tell us what to revise before launch.</p>",
+          "title": "Feedback for longwang-restaurant-restaurant"
+        }
+      },
+      {
+        "uuid": "60eb5212-33c7-45f7-a6b6-da6b79eae70b",
+        "type": "INPUT_TEXT",
+        "groupUuid": "ce526365-84ec-4dd1-87ee-e3c4871a3be1",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Business name",
+          "isRequired": true
+        }
+      },
+      {
+        "uuid": "f69c6062-722f-40ff-b9e4-40dbe2a3e891",
+        "type": "INPUT_EMAIL",
+        "groupUuid": "5d87b5d6-8a23-4bd8-ab8e-8e7f8dd5a2be",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Email",
+          "isRequired": true
+        }
+      },
+      {
+        "uuid": "883709cb-1f76-4cbc-b754-48165339bd77",
+        "type": "TEXTAREA",
+        "groupUuid": "e605e497-4904-45d2-b2cd-805f8e35871c",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Requested changes",
+          "isRequired": true,
+          "alias": "feedback"
+        }
+      },
+      {
+        "uuid": "3186204f-5707-4c4e-a8ec-c8ce1b4d286b",
+        "type": "INPUT_LINK",
+        "groupUuid": "3ef41b76-7254-476e-9667-0058b235a9d5",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Reference URL",
+          "isRequired": false,
+          "alias": "reference_url"
+        }
+      },
+      {
+        "uuid": "3d824c28-5fb5-443b-85ac-1093b59d4fb5",
+        "type": "FILE_UPLOAD",
+        "groupUuid": "96c1b7a3-e5a8-4b7f-9517-6fdcdd9004fa",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Screenshots or brand assets",
+          "isRequired": false
+        }
+      },
+      {
+        "uuid": "4fd68c4c-95c1-432b-b4ca-46e773b3220e",
+        "type": "HIDDEN_FIELDS",
+        "groupUuid": "81ceaaff-4e26-47d1-993c-c579bc2787e2",
+        "groupType": "HIDDEN_FIELDS",
+        "payload": {
+          "hiddenFields": [
+            {
+              "uuid": "05dbf920-81bf-4e4f-8f13-0a2f40b76475",
+              "name": "client_slug"
+            },
+            {
+              "uuid": "4a2b3767-646a-4247-969f-b5de749d8ddd",
+              "name": "repo"
+            },
+            {
+              "uuid": "78a5a232-6467-4766-8e12-b6b11980d15d",
+              "name": "template"
+            },
+            {
+              "uuid": "a24429d2-2f92-46e5-92f6-4e1d0bc3509d",
+              "name": "preview_url"
+            },
+            {
+              "uuid": "9b7ffcd3-f272-40bf-bb34-93036e26cba0",
+              "name": "campaign_id"
+            },
+            {
+              "uuid": "e8a5bb03-409b-4f75-826b-065116578bc1",
+              "name": "currency"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "redirectOnCompletion": "",
+      "hasProgressBar": true
+    }
+  }
+}

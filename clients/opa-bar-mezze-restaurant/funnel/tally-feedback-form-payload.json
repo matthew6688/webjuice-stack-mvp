@@ -1,0 +1,108 @@
+{
+  "payload": {
+    "status": "DRAFT",
+    "name": "Feedback for opa-bar-mezze-restaurant - feedback",
+    "blocks": [
+      {
+        "uuid": "017bf992-cb09-47f6-953c-885817a48934",
+        "type": "FORM_TITLE",
+        "groupUuid": "c53110d1-f278-4d38-a68a-dfd604a9d884",
+        "groupType": "TEXT",
+        "payload": {
+          "html": "<h1>Feedback for opa-bar-mezze-restaurant</h1><p>Tell us what to revise before launch.</p>",
+          "title": "Feedback for opa-bar-mezze-restaurant"
+        }
+      },
+      {
+        "uuid": "6b516ff7-0b6a-4696-9c6d-1a66907798dd",
+        "type": "INPUT_TEXT",
+        "groupUuid": "4364d65b-67b1-49f1-b60c-c931a519ee90",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Business name",
+          "isRequired": true
+        }
+      },
+      {
+        "uuid": "ebc52e46-965f-46ea-8082-426a89993bce",
+        "type": "INPUT_EMAIL",
+        "groupUuid": "6ec9e126-01ec-4d76-849b-793e7265a61d",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Email",
+          "isRequired": true
+        }
+      },
+      {
+        "uuid": "efc003ca-d4ac-4469-9a73-59bcfb3af0ff",
+        "type": "TEXTAREA",
+        "groupUuid": "3ca8e2af-b832-427f-a51c-a54c401a2813",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Requested changes",
+          "isRequired": true,
+          "alias": "feedback"
+        }
+      },
+      {
+        "uuid": "adc1eb8f-0839-4f17-8104-04068866e232",
+        "type": "INPUT_LINK",
+        "groupUuid": "f01a1615-9992-4565-b69f-6b8daaa4e746",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Reference URL",
+          "isRequired": false,
+          "alias": "reference_url"
+        }
+      },
+      {
+        "uuid": "477813cf-bb80-43cb-936d-2fcf3d7500da",
+        "type": "FILE_UPLOAD",
+        "groupUuid": "ad87b7c2-bdb5-4989-b3a5-d47927a8bd73",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Screenshots or brand assets",
+          "isRequired": false
+        }
+      },
+      {
+        "uuid": "a4b093e1-402c-4a68-bc20-7e642cef6f5d",
+        "type": "HIDDEN_FIELDS",
+        "groupUuid": "eff65360-36cd-43c3-8906-a83f624e75ff",
+        "groupType": "HIDDEN_FIELDS",
+        "payload": {
+          "hiddenFields": [
+            {
+              "uuid": "9675db1d-1238-4384-95d3-1bad37e76e64",
+              "name": "client_slug"
+            },
+            {
+              "uuid": "1754e2bf-e292-4687-b15f-d4c8d91f42fb",
+              "name": "repo"
+            },
+            {
+              "uuid": "bd78ed3c-9444-4f2a-9233-6f9ca5e583e1",
+              "name": "template"
+            },
+            {
+              "uuid": "dcaed0d2-cefb-4a6a-b338-2dd4ec74f386",
+              "name": "preview_url"
+            },
+            {
+              "uuid": "398d91a9-5253-46a5-9237-36f82d1b6730",
+              "name": "campaign_id"
+            },
+            {
+              "uuid": "fda89123-1cd2-4c1f-af26-4a8783d5a6f6",
+              "name": "currency"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "redirectOnCompletion": "",
+      "hasProgressBar": true
+    }
+  }
+}

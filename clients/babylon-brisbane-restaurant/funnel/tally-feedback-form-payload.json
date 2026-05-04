@@ -1,0 +1,108 @@
+{
+  "payload": {
+    "status": "DRAFT",
+    "name": "Feedback for babylon-brisbane-restaurant - feedback",
+    "blocks": [
+      {
+        "uuid": "c88209f9-91dc-42ed-856f-82b01debad8c",
+        "type": "FORM_TITLE",
+        "groupUuid": "2a255789-e047-4b07-9899-0f5ab158c4a7",
+        "groupType": "TEXT",
+        "payload": {
+          "html": "<h1>Feedback for babylon-brisbane-restaurant</h1><p>Tell us what to revise before launch.</p>",
+          "title": "Feedback for babylon-brisbane-restaurant"
+        }
+      },
+      {
+        "uuid": "638bb7e7-2135-4e0d-80db-638a969d3189",
+        "type": "INPUT_TEXT",
+        "groupUuid": "f4b8834e-7629-4a8d-9ffa-8ac7bac8fd74",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Business name",
+          "isRequired": true
+        }
+      },
+      {
+        "uuid": "a7270703-7c0a-4a68-a309-e40488838d03",
+        "type": "INPUT_EMAIL",
+        "groupUuid": "e658f085-39fe-4e6d-ae8b-209c52d63b2b",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Email",
+          "isRequired": true
+        }
+      },
+      {
+        "uuid": "3eb3d951-3bbd-4bc0-b2c0-ea8dff671c69",
+        "type": "TEXTAREA",
+        "groupUuid": "5ba4a270-d2b8-4065-b7de-c9e30f628604",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Requested changes",
+          "isRequired": true,
+          "alias": "feedback"
+        }
+      },
+      {
+        "uuid": "e57e0202-8478-4f32-98b7-33b8fa3eec90",
+        "type": "INPUT_LINK",
+        "groupUuid": "9fb1641f-e4ce-4286-adf9-5eaac2a5804a",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Reference URL",
+          "isRequired": false,
+          "alias": "reference_url"
+        }
+      },
+      {
+        "uuid": "e42fbf43-a514-4ac2-91f5-27fcb27fe19e",
+        "type": "FILE_UPLOAD",
+        "groupUuid": "98e7ebfa-fd45-4fda-af28-2161bf571b93",
+        "groupType": "QUESTION",
+        "payload": {
+          "title": "Screenshots or brand assets",
+          "isRequired": false
+        }
+      },
+      {
+        "uuid": "85cb7af1-d630-4b99-80bd-9bba2017b980",
+        "type": "HIDDEN_FIELDS",
+        "groupUuid": "ce35c703-538f-4a80-b82c-86f0e64733e7",
+        "groupType": "HIDDEN_FIELDS",
+        "payload": {
+          "hiddenFields": [
+            {
+              "uuid": "9081b717-5759-403d-898f-cd2843fff2d1",
+              "name": "client_slug"
+            },
+            {
+              "uuid": "700f0ef2-b7b0-471d-830e-455afacafc14",
+              "name": "repo"
+            },
+            {
+              "uuid": "7c55d2a5-b6d1-483e-9d0e-fe9c0ca2a101",
+              "name": "template"
+            },
+            {
+              "uuid": "b2cb14ac-860d-4c8e-9c60-7e5f7fd0ecdb",
+              "name": "preview_url"
+            },
+            {
+              "uuid": "005c1c0a-c34f-4f96-9d3e-b24639de3b61",
+              "name": "campaign_id"
+            },
+            {
+              "uuid": "b17b2980-0219-4f31-aad8-62d43e956325",
+              "name": "currency"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "redirectOnCompletion": "",
+      "hasProgressBar": true
+    }
+  }
+}

@@ -20,6 +20,7 @@
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
 | Tally payment form builder | Working MVP | `npm run funnel:create-tally-payment-forms` builds Tally payment form payloads, MCP prompts, or live forms/webhooks when `TALLY_API_KEY` is set. Current product tiers: $399 one-time website with 3 revisions; $799 yearly website with monthly maintenance. |
+| Tally feedback form builder | Working MVP | `npm run funnel:create-tally-feedback-form` builds a feedback form payload/MCP prompt that submits revision requests into the same webhook. |
 | Tally MCP setup docs | Working MVP | `docs/TALLY_MCP_SETUP.md` explains remote MCP setup, current runtime limitation, payment form shape, API fallback, and verification commands. |
 | Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 | Restaurant design brief MVP | Working MVP | `npm run design:restaurant-brief` creates Huashu-ready `design.restaurant.json` and `brand-spec.md` from validated restaurant content. |
@@ -41,7 +42,7 @@
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
 | Cost tracking | Half built | Ledger/report exist; Google Places, Firecrawl, and Tally revenue write events; OpenAI still needs wiring. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
-| Customer feedback to revision task | Half built | Tally normalizer can infer feedback tasks, but a dedicated feedback form artifact and dev-branch revision runner are not implemented yet. |
+| Customer feedback to revision task | Working MVP | Feedback form payloads exist and feedback submissions normalize into `revise` agent tasks; dev-branch execution runner is artifact-oriented MVP. |
 
 ## Not Started
 
