@@ -17,8 +17,8 @@
 
 | Module | Status | Gap |
 |---|---|---|
-| Evidence engine | Half built | Data exists, but no normalized `evidence.json`, source confidence, or validators. |
-| Restaurant niche adapter | Half built | Restaurant logic exists in practice, but no `niches/restaurant/adapter.ts`. |
+| Evidence engine | Working MVP | `core/evidence/evidence.js` defines source types, merge rules, restaurant validation, and `npm run evidence:*` CLIs. |
+| Restaurant niche adapter | Half built | Restaurant evidence validation exists, but no formal `niches/restaurant/adapter.ts`. |
 | Design engine | Half built | Brand colors/logos/photos used, but no Huashu/open-design decision engine or scoring. |
 | Cost tracking | Half built | Ledger/report exist, but extractors and Tally webhooks do not write events yet. |
 | Outreach pack | Not yet wired | Need screenshots, video, email, source summary, audit summary in one artifact. |

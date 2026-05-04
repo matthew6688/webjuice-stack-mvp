@@ -91,9 +91,9 @@ Create one source of truth for every factual claim used on a preview site.
 
 ### Tasks
 
-- [ ] Create `core/evidence/schema.ts`.
-- [ ] Create `clients/{clientSlug}/evidence/evidence.json` format.
-- [ ] Implement `EvidenceItem`:
+- [x] Create `core/evidence/evidence.js`.
+- [x] Create `clients/{clientSlug}/evidence/evidence.json` format.
+- [x] Implement `EvidenceItem`:
 
 ```ts
 type EvidenceItem<T> = {
@@ -114,12 +114,12 @@ type EvidenceItem<T> = {
 };
 ```
 
-- [ ] Implement merge rules:
+- [x] Implement merge rules:
   - Official website beats directory sites for menu/brand.
   - Google Places beats website for current phone/address/rating unless website is clearly newer.
   - PDF/HTML menu beats image OCR.
   - Generated content must be explicitly marked `generated`.
-- [ ] Create evidence validators:
+- [x] Create evidence validators:
   - Address present.
   - Phone present.
   - At least one CTA: call/reserve/map.
