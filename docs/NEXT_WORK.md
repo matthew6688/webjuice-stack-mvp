@@ -154,6 +154,7 @@ Working now:
 - `npm run discord:case-thread` can dry-run payloads from an existing case file.
 - GitHub Actions live smoke with Discord notifications succeeded; the generated smoke order/case/ledger state was removed after verification.
 - Agent completion and live publish scripts can now post standardized follow-up messages back into the saved Discord case thread when `--send-discord true` is used.
+- `publish-approved.yml` exposes `send_discord` and passes Discord webhook/bot secrets to the publish runner.
 
 Remaining hardening:
 

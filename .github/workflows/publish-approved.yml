@@ -43,6 +43,14 @@ on:
         options:
           - 'true'
           - 'false'
+      send_discord:
+        description: Send live published Discord follow-up.
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
       dry_run:
         description: Validate without committing/pushing or emailing.
         required: true
@@ -99,6 +107,9 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SALES_DISCORD_WEBHOOK_URL: ${{ secrets.SALES_DISCORD_WEBHOOK_URL }}
+          REVISE_DISCORD_WEBHOOK_URL: ${{ secrets.REVISE_DISCORD_WEBHOOK_URL }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
         run: |
           args=(
@@ -109,6 +120,7 @@ jobs:
             --push "${{ inputs.push }}"
             --check-deploy "${{ inputs.check_deploy }}"
             --send-email "${{ inputs.send_email }}"
+            --send-discord "${{ inputs.send_discord }}"
             --output /tmp/publish-result.json
           )
           if [ "${{ inputs.dry_run }}" != "true" ]; then
