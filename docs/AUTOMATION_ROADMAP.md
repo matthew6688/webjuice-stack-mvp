@@ -150,6 +150,10 @@ type EvidenceItem<T> = {
   - HTML
   - Markdown
   - Cost logging per scrape
+- [x] `FirecrawlParseExtractor`
+  - Upload local/private files to `/v2/parse`
+  - Convert parsed Markdown into menu evidence
+  - Cost logging per parse call
 - [x] `MenuTextParser`
   - Parse sections/items/prices from extracted text or markdown
   - Write `menu.sections` evidence with item source URLs
