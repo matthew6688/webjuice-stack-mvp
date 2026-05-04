@@ -21,6 +21,7 @@
 | Firecrawl extractor MVP | Working | `npm run extract:firecrawl` can scrape official pages, save raw artifacts, detect menu/reservation/contact evidence, and log cost events. |
 | Firecrawl Parse provider | Working MVP | `npm run extract:firecrawl-parse` uploads local/private documents, captures parse output, writes menu evidence, and logs Firecrawl parse costs. |
 | Menu text parser MVP | Working MVP | `npm run extract:menu` parses text/markdown menu artifacts into `menu.sections`; PDF requires local `pdftotext` or prior text extraction. |
+| Menu document extraction | Working MVP | `npm run extract:menu-document` orchestrates MarkItDown, direct text/Markdown, OCRmyPDF, and PaddleOCR attempts, writes an artifact manifest, and feeds selected text into menu evidence. MarkItDown/PaddleOCR/OCRmyPDF run only when installed/configured. |
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
 | First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs and Pages runtime secrets are configured on the 5 dev projects. |
@@ -69,7 +70,7 @@
 
 | Module | Status |
 |---|---|
-| PDF extraction / image OCR pipeline | Half built |
+| PDF extraction / image OCR pipeline | Working MVP |
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
 | Multi-niche framework | Half built |

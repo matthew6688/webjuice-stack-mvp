@@ -184,21 +184,28 @@ npm run finance:report -- --campaign brisbane-restaurants
 
 Goal: handle restaurants whose menu is a PDF, scanned document, or Google Maps photo.
 
-Tasks:
+Working now:
 
-- Implement `MenuPdfExtractor`.
-- Download and store original PDF evidence documents.
-- Try text extraction first.
-- Fall back to OCRmyPDF for scanned PDFs.
-- Fall back to PaddleOCR/image OCR for image menus.
-- Convert extracted text into `menu.sections` with source chains.
-- Mark OCR confidence clearly.
+- `npm run extract:menu-document` is the unified document menu entrypoint.
+- Attempts MarkItDown first when available.
+- Falls back to direct `.txt/.md` parsing for already-extracted menu text.
+- Falls back to OCRmyPDF for PDFs.
+- Falls back to PaddleOCR for image inputs when configured.
+- Writes `manifest.json` with every attempt and the selected provider.
+- Converts selected text into `menu.sections` evidence with source chains.
+
+Remaining:
+
+- Install/configure MarkItDown in the runtime used for production extraction.
+- Run a real scanned PDF and a real Google Maps menu photo through the pipeline.
+- Add Firecrawl Parse as an optional live fallback inside the unified command.
 
 Validation:
 
 ```bash
 npm run ocr:pdf -- --input <menu.pdf> --output <searchable.pdf>
 npm run extract:menu -- --input <text-or-markdown> --client <slug> --write-evidence
+npm run extract:menu-document -- --input <menu.pdf> --client <slug> --source-url <url>
 npm run evidence:validate -- --client <slug>
 ```
 
@@ -224,7 +231,7 @@ npm run outreach:capture-assets -- --client <slug>
 
 ## Suggested Build Order
 
-1. Menu PDF/image OCR.
+1. Install/configure MarkItDown and run `extract:menu-document` on a real scanned PDF/menu photo.
 2. Cold outreach email test with screenshot/video proof.
 3. More cities: Sydney/Melbourne restaurants.
 4. Next niche pilot: roofing/plumbing/dental.
