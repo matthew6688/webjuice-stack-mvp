@@ -150,15 +150,21 @@ type EvidenceItem<T> = {
   - HTML
   - Markdown
   - Cost logging per scrape
+- [x] `MenuTextParser`
+  - Parse sections/items/prices from extracted text or markdown
+  - Write `menu.sections` evidence with item source URLs
 - [ ] `MenuPdfExtractor`
   - Download PDFs
-  - Extract text
-  - Parse sections/items/prices
+  - Extract text with poppler/OCR fallback
   - Store original PDF in evidence documents
 - [ ] `MenuImageOCRExtractor`
   - Google Maps photo OCR
   - Website image OCR
   - Confidence scoring
+- [ ] `PaddleOcrProvider`
+  - Use PaddleOCR for local PDF/image-to-Markdown/JSON extraction when installed.
+  - Prefer PP-Structure/PaddleOCR-VL output for menu layout/table preservation.
+  - Record OCR runtime cost as local compute/labor estimate unless an external hosted API is used.
 - [ ] `BrandAssetExtractor`
   - Logo candidates
   - Official photos

@@ -124,8 +124,10 @@ export function validateRestaurantContent(content) {
 
 export function inferFallbackLevel(resolved, menuSections = []) {
   const menuSourceMeta = metaOf(resolved, 'menu.source');
-  const hasOfficialMenu = menuSourceMeta?.sourceType === 'official_site' && menuSections.length > 0;
-  const hasPdfMenu = menuSourceMeta?.sourceType === 'pdf' && menuSections.length > 0;
+  const menuSectionsMeta = metaOf(resolved, 'menu.sections');
+  const menuSourceType = menuSectionsMeta?.sourceType || menuSourceMeta?.sourceType;
+  const hasOfficialMenu = menuSourceType === 'official_site' && menuSections.length > 0;
+  const hasPdfMenu = menuSourceType === 'pdf' && menuSections.length > 0;
   const hasCandidates = Boolean(firstValue(resolved, 'links.menuCandidates') || valueOf(resolved, 'google.photoReference'));
   if (hasOfficialMenu) return RESTAURANT_FALLBACK_LEVELS.A;
   if (hasPdfMenu) return RESTAURANT_FALLBACK_LEVELS.B;
