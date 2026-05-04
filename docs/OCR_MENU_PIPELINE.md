@@ -51,6 +51,7 @@ Attempt order:
 3. OCRmyPDF for scanned PDFs.
 4. PDF render to PNG plus PaddleOCR when OCRmyPDF text extraction is weak.
 5. PaddleOCR for image menu files.
+6. Optional Firecrawl Parse fallback with `--firecrawl true` for local/private documents when local parsing is weak.
 
 Each run writes `manifest.json` with every attempt and selected provider. The selected text is parsed into `menu.sections` evidence with source chains.
 
@@ -59,9 +60,12 @@ Each run writes `manifest.json` with every attempt and selected provider. The se
 - Text PDF: MarkItDown selected, 3 sections / 7 items.
 - Image menu PNG: PaddleOCR selected, 2 sections / 5 items.
 - Scanned PDF: OCRmyPDF ran, then `pdf_render+paddleocr` selected, 2 sections / 4 items.
+- Real business official menu HTML: Opa Bar + Mezze official menu (`https://www.opabar.com.au/menu`) selected MarkItDown and parsed 10 sections / 73 items after adding support for stacked price/name/description menu layouts.
+- Firecrawl fallback smoke test: `--firecrawl true --dry-run true` selected `firecrawl_parse` after dry-run local attempts produced no items.
 
 Notes:
 
 - OCRmyPDF can create a searchable PDF but may produce weaker line grouping for menu photos.
 - PaddleOCR can split visual rows into separate tokens on high-resolution renders; the pipeline uses lower-DPI PDF rendering to keep rows together.
 - Tesseract language data currently includes English only. Install `tesseract-lang` if we need Chinese/Japanese/Korean menus.
+- Real restaurant CMS pages often render menu rows as `price -> item name -> description -> repeated price`. The parser now supports this stacked layout and filters obvious navigation/footer noise, but banquet/share menus still need human QA before outreach.

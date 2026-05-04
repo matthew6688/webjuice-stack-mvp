@@ -21,7 +21,7 @@
 | Firecrawl extractor MVP | Working | `npm run extract:firecrawl` can scrape official pages, save raw artifacts, detect menu/reservation/contact evidence, and log cost events. |
 | Firecrawl Parse provider | Working MVP | `npm run extract:firecrawl-parse` uploads local/private documents, captures parse output, writes menu evidence, and logs Firecrawl parse costs. |
 | Menu text parser MVP | Working MVP | `npm run extract:menu` parses text/markdown menu artifacts into `menu.sections`; PDF requires local `pdftotext` or prior text extraction. |
-| Menu document extraction | Working MVP | `npm run extract:menu-document` orchestrates MarkItDown, direct text/Markdown, OCRmyPDF, PDF-render+PaddleOCR, and image PaddleOCR attempts, writes an artifact manifest, and feeds selected text into menu evidence. Local runtime is installed and verified. |
+| Menu document extraction | Working MVP | `npm run extract:menu-document` orchestrates MarkItDown, direct text/Markdown, OCRmyPDF, PDF-render+PaddleOCR, image PaddleOCR, and optional Firecrawl Parse fallback attempts, writes an artifact manifest, and feeds selected text into menu evidence. Local runtime is installed and verified against synthetic PDF/image/scanned PDF plus a real Opa Bar + Mezze official menu page. |
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
 | First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs and Pages runtime secrets are configured on the 5 dev projects. |
@@ -81,7 +81,7 @@
 ## Immediate Next Build Order
 
 1. Replace the placeholder `profitslocal.com` marketing shell with the real sales/order utility experience.
-2. Menu PDF extractor and image OCR pipeline.
+2. Use the real-menu evidence flow to regenerate one restaurant preview end-to-end and visually QA it.
 3. Resend cold outreach dry-run and live test.
 4. Add next city or niche pilot after the restaurant loop closes.
 

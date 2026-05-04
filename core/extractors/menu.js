@@ -11,6 +11,8 @@ import {
 
 const SECTION_HINTS = [
   'breakfast',
+  'snack',
+  'snacks',
   'lunch',
   'dinner',
   'entree',
@@ -31,6 +33,19 @@ const SECTION_HINTS = [
   'set menu',
   'special',
   'specials',
+  'oyster',
+  'oysters',
+  'raw',
+  'salata',
+  'salad',
+  'salads',
+  'side',
+  'sides',
+  'mezze',
+  'seafood',
+  'land',
+  'sweets',
+  'sweet',
 ];
 
 export function parseMenuText(text, { sourceUrl = '', sourceKey = 'menu.sections' } = {}) {
@@ -38,10 +53,20 @@ export function parseMenuText(text, { sourceUrl = '', sourceKey = 'menu.sections
   const sections = [];
   let current = createSection('Menu');
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (isNavigationNoise(line)) continue;
+
     if (isLikelySectionHeading(line)) {
       if (current.items.length) sections.push(current);
       current = createSection(cleanHeading(line));
+      continue;
+    }
+
+    const stackedItem = parseStackedPriceItem(lines, i, { sourceUrl, sourceKey });
+    if (stackedItem) {
+      current.items.push(stackedItem.item);
+      i = stackedItem.nextIndex;
       continue;
     }
 
@@ -61,13 +86,16 @@ export function parseMenuItemLine(line, { sourceUrl = '', sourceKey = 'menu.sect
   if (!normalized || normalized.length < 4) return null;
   if (/^(menu|food|drinks?|wine|price|item)$/i.test(normalized)) return null;
 
-  const priceMatch = normalized.match(/(?:A?\$?\s*)?(\d{1,3}(?:\.\d{1,2})?)(?:\s*(?:\/|\|)\s*(?:A?\$?\s*)?\d{1,3}(?:\.\d{1,2})?)*\s*$/);
+  const priceMatch = normalized.match(priceAtEndRegex());
   if (!priceMatch) return null;
 
   const price = priceMatch[0].trim();
+  if (Number(normalizePrice(price)) <= 0) return null;
   const beforePrice = normalized.slice(0, normalized.length - price.length).replace(/[-.*\s]+$/g, '').trim();
   if (!beforePrice || beforePrice.length < 3) return null;
   if (/^\d/.test(beforePrice)) return null;
+  if (/^(ph\.?|phone|tel\.?)\b/i.test(beforePrice)) return null;
+  if (/\b[a-z]{2,}\s+q\s*\d+$/i.test(beforePrice)) return null;
 
   const { name, description } = splitNameDescription(beforePrice);
   return {
@@ -140,15 +168,116 @@ function normalizeText(text) {
     .filter(Boolean);
 }
 
+function parseStackedPriceItem(lines, index, { sourceUrl = '', sourceKey = 'menu.sections' } = {}) {
+  const price = parsePriceOnly(lines[index]);
+  if (!price) return null;
+
+  const nameIndex = findNextMeaningfulLine(lines, index + 1);
+  if (nameIndex < 0) return null;
+  const name = cleanMenuText(lines[nameIndex]);
+  if (!isLikelyItemName(name)) return null;
+
+  const descriptionIndex = findNextMeaningfulLine(lines, nameIndex + 1);
+  let description = '';
+  let nextIndex = nameIndex;
+  if (descriptionIndex >= 0) {
+    const maybeDescription = cleanMenuText(lines[descriptionIndex]);
+    const repeatedPrice = parsePriceOnly(maybeDescription);
+    const afterDescriptionIndex = findNextMeaningfulLine(lines, descriptionIndex + 1);
+    const nextAfterDescriptionIsPrice = afterDescriptionIndex >= 0 && parsePriceOnly(lines[afterDescriptionIndex]);
+    const looksLikeNextBareItem = isLikelyItemName(maybeDescription) && !/[,.]/.test(maybeDescription);
+    if (
+      !repeatedPrice
+      && !isLikelySectionHeading(maybeDescription)
+      && !(looksLikeNextBareItem && nextAfterDescriptionIsPrice)
+    ) {
+      description = maybeDescription;
+      nextIndex = descriptionIndex;
+    }
+  }
+
+  const duplicatePriceIndex = findNextMeaningfulLine(lines, nextIndex + 1);
+  if (duplicatePriceIndex >= 0 && normalizePrice(parsePriceOnly(lines[duplicatePriceIndex])) === normalizePrice(price)) {
+    nextIndex = duplicatePriceIndex;
+  }
+
+  return {
+    nextIndex,
+    item: {
+      name,
+      description,
+      price,
+      sourceUrl,
+      sourceKey,
+    },
+  };
+}
+
+function parsePriceOnly(line) {
+  const normalized = String(line || '').replace(/\s+/g, ' ').trim();
+  const match = normalized.match(/^A?\$?\s*(\d{1,3}(?:\.\d{1,2})?)(?:\s*(?:ea|pp|per person))?$/i);
+  if (!match) return '';
+  return Number(normalizePrice(normalized)) > 0 ? normalized : '';
+}
+
+function normalizePrice(price) {
+  return String(price || '').replace(/[^0-9.]/g, '');
+}
+
+function findNextMeaningfulLine(lines, start) {
+  for (let i = start; i < lines.length; i += 1) {
+    if (!isNavigationNoise(lines[i])) return i;
+  }
+  return -1;
+}
+
+function cleanMenuText(line) {
+  return String(line || '')
+    .replace(/\[[^\]]+\]\([^)]+\)/g, '$1')
+    .replace(/^[-\s]+|[-\s]+$/g, '')
+    .trim();
+}
+
+function isLikelyItemName(line) {
+  const cleaned = cleanMenuText(line);
+  if (cleaned.length < 3 || cleaned.length > 80) return false;
+  if (parsePriceOnly(cleaned)) return false;
+  if (isNavigationNoise(cleaned)) return false;
+  if (/^(open menu|close menu|book now|skip to content|contact|gallery|careers|functions)$/i.test(cleaned)) return false;
+  if (/^https?:\/\//i.test(cleaned)) return false;
+  if (/[.!?]$/.test(cleaned)) return false;
+  return /[A-Za-z]/.test(cleaned);
+}
+
+function isNavigationNoise(line) {
+  const cleaned = cleanMenuText(line).toLowerCase();
+  if (!cleaned) return true;
+  if (/^\[\d+\]/.test(cleaned)) return true;
+  if (cleaned === 'book now' || cleaned === 'open menu' || cleaned === 'close menu') return true;
+  if (cleaned === 'skip to content' || cleaned === 'back' || cleaned.startsWith('folder:')) return true;
+  return false;
+}
+
+function priceAtEndRegex() {
+  return /(?:A?\$?\s*)?(\d{1,3}(?:\.\d{1,2})?)(?:\s*(?:ea|pp|per person))?(?:\s*(?:\/|\|)\s*(?:A?\$?\s*)?\d{1,3}(?:\.\d{1,2})?(?:\s*(?:ea|pp|per person))?)*\s*$/i;
+}
+
 function isLikelySectionHeading(line) {
   const cleaned = cleanHeading(line).toLowerCase();
   if (cleaned.length > 40) return false;
+  if (cleaned.includes(',') || /[.!?]$/.test(cleaned)) return false;
+  if (/^\[.+\]\(.+\)$/.test(String(line || '').trim())) return false;
   if (parseMenuItemLine(line)) return false;
-  return SECTION_HINTS.some((hint) => cleaned === hint || cleaned.includes(hint));
+  return SECTION_HINTS.some((hint) => {
+    if (cleaned === hint) return true;
+    if (cleaned.endsWith(` ${hint}`)) return true;
+    if (cleaned.startsWith(`${hint} `)) return true;
+    return false;
+  });
 }
 
 function cleanHeading(line) {
-  return line.replace(/^[-\s]+|[-\s]+$/g, '').trim();
+  return cleanMenuText(line).replace(/^[-\s]+|[-\s]+$/g, '').trim();
 }
 
 function createSection(name) {
