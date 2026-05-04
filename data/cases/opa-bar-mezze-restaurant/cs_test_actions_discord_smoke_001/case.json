@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "caseId": "opa-bar-mezze-restaurant_cs_test_actions_discord_smoke_001",
+  "status": "paid_task_queued",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev",
+  "template": "webjuice-restaurant",
+  "order": {
+    "id": "cs_test_actions_discord_smoke_001",
+    "provider": "stripe",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "paymentStatus": "paid"
+  },
+  "customer": {
+    "company": "Opa Bar & Mezze",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": "discord-smoke.example"
+  },
+  "revision": {
+    "policy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "used": 0,
+    "remaining": 3,
+    "lastReason": "entitlement_created"
+  },
+  "discord": {
+    "salesThreadId": "1493926003255410718",
+    "revisionThreadId": "",
+    "lastChannelId": "1493926003255410718",
+    "lastMessageId": "1500978933640859800",
+    "lastMessageUrl": "",
+    "lastThreadUrl": "",
+    "threadCreatedByBot": false
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+    "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "latestTask": {
+    "id": "sale_opa-bar-mezze-restaurant_cs_test_actions_discord_smoke_001",
+    "kind": "sale",
+    "status": "queued",
+    "path": "data/agent-tasks/opa-bar-mezze-restaurant/sale-cs_test_actions_discord_smoke_001.json",
+    "createdAt": "2026-05-04T21:54:24.512Z"
+  },
+  "paths": {
+    "casePath": "data/cases/opa-bar-mezze-restaurant/cs_test_actions_discord_smoke_001/case.json",
+    "contextPath": "data/cases/opa-bar-mezze-restaurant/cs_test_actions_discord_smoke_001/context-packet.json",
+    "timelinePath": "data/cases/opa-bar-mezze-restaurant/cs_test_actions_discord_smoke_001/timeline.jsonl",
+    "decisionsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_actions_discord_smoke_001/decisions.jsonl",
+    "customerMessagesPath": "data/cases/opa-bar-mezze-restaurant/cs_test_actions_discord_smoke_001/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_actions_discord_smoke_001/agent-runs.jsonl",
+    "artifactsDir": "data/cases/opa-bar-mezze-restaurant/cs_test_actions_discord_smoke_001/artifacts"
+  },
+  "createdAt": "2026-05-04T21:54:24.859Z",
+  "updatedAt": "2026-05-04T21:54:24.859Z"
+}
