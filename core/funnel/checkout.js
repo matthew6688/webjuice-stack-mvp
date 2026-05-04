@@ -37,6 +37,7 @@ export function buildCheckoutArtifact({
     clientSlug,
     generatedAt: artifactTimestamp(),
     provider,
+    surface: 'fixed_footer',
     currency,
     tiers: Object.entries(tiers).map(([id, amount]) => ({
       id,

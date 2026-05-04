@@ -27,7 +27,8 @@ Tasks:
 - Run live Tally payment form creation for one client.
 - Create/update feedback form.
 - Update checkout URLs in all client artifacts.
-- Keep checkout as a preview-only fixed footer banner, not restaurant page content.
+- Keep checkout as a preview-only fixed footer banner, not restaurant website or menu content.
+- Keep website and menu as separate product routes: website = formal brand site; menu = minimal mobile utility.
 - Sync checkout artifacts into generated repos.
 - Verify a test/sandbox purchase payload creates:
   - revenue ledger event

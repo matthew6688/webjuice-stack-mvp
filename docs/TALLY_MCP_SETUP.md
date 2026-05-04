@@ -54,6 +54,8 @@ The webhook endpoint should be:
 https://<your-pages-domain>/api/tally-webhook
 ```
 
+Preview rendering rule: Tally checkout links must render only in a fixed preview footer/banner. They must not be inserted into the customer's restaurant website content or mobile menu content.
+
 ## Generate The MCP Prompt
 
 ```bash
