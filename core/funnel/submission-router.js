@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
 import { artifactTimestamp } from '../time.js';
+import { buildFunnelCustomerEmail, sendCustomerEmail } from './customer-email.js';
 import { buildDiscordMessage, sendDiscordWebhook } from './discord.js';
 import { consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
@@ -37,6 +38,16 @@ export async function routeFunnelSubmission(payload, options = {}) {
       dryRun: options.dryRun,
     });
     if (!entitlement.ok && !options.allowOverLimit) {
+      const emailMessage = buildFunnelCustomerEmail({
+        kind,
+        order,
+        entitlement,
+        extraRevisionUrl: options.extraRevisionUrl || options.env?.EXTRA_REVISION_CHECKOUT_URL || process.env.EXTRA_REVISION_CHECKOUT_URL || '',
+      });
+      let customerEmail = { ok: false, skipped: true };
+      if (options.sendEmail && emailMessage && !options.dryRun) {
+        customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, options);
+      }
       if (!options.dryRun) {
         writeJson(submissionPath, {
           schemaVersion: 1,
@@ -58,6 +69,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
         submissionPath,
         ledgerEvent: null,
         discord: { ok: false, skipped: true },
+        customerEmail,
         discordPayload: buildDiscordMessage({ kind, order, task: null }),
       };
     }
@@ -109,6 +121,17 @@ export async function routeFunnelSubmission(payload, options = {}) {
     discord = await sendDiscordWebhook(webhookUrl, discordPayload, options);
   }
 
+  let customerEmail = { ok: false, skipped: true };
+  const emailMessage = buildFunnelCustomerEmail({
+    kind,
+    order,
+    entitlement,
+    extraRevisionUrl: options.extraRevisionUrl || options.env?.EXTRA_REVISION_CHECKOUT_URL || process.env.EXTRA_REVISION_CHECKOUT_URL || '',
+  });
+  if (options.sendEmail && emailMessage && !options.dryRun) {
+    customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, options);
+  }
+
   return {
     ok: true,
     provider,
@@ -120,6 +143,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     entitlement,
     ledgerEvent,
     discord,
+    customerEmail,
     discordPayload,
   };
 }

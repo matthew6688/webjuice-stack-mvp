@@ -60,7 +60,10 @@ Do not commit these values.
 - `STRIPE_SECRET_KEY`
 - `STRIPE_PRICE_ONE_TIME`
 - `STRIPE_PRICE_YEARLY`
+- `STRIPE_PRICE_EXTRA_REVISION`
 - `STRIPE_WEBHOOK_SECRET`
+- `RESEND_API_KEY`
+- `FROM_EMAIL`
 - `SALES_DISCORD_WEBHOOK_URL`
 - `REVISE_DISCORD_WEBHOOK_URL`
 
@@ -69,7 +72,10 @@ Each generated client Pages project also needs:
 - `STRIPE_SECRET_KEY`
 - `STRIPE_PRICE_ONE_TIME`
 - `STRIPE_PRICE_YEARLY`
+- `STRIPE_PRICE_EXTRA_REVISION`
 - `STRIPE_WEBHOOK_SECRET`
+- `RESEND_API_KEY`
+- `FROM_EMAIL`
 - `SALES_DISCORD_WEBHOOK_URL`
 - `REVISE_DISCORD_WEBHOOK_URL`
 
@@ -179,14 +185,31 @@ Current policy:
 
 - `one_time`: 3 lifetime revision requests after purchase.
 - `yearly_maintenance`: 1 maintenance request per monthly period.
+- Extra revision: `$100` per additional revision request.
 - Checkout launch notes are activation scope and do not consume a revision.
-- A revision request must match an active entitlement by order/session id when available, otherwise by `client_slug`, `repo`, and customer email.
+- A revision request must match an active entitlement with both `orderId` and checkout `email`; `client_slug` and `repo` are context, not proof.
 
 When a revision request arrives:
 
-1. Router finds the matching active entitlement.
-2. If quota remains, it increments `revisionUsed`, appends a `revisionEvents[]` audit entry, and creates a `revision` agent task.
-3. If quota is exhausted, it writes a `revision_denied` submission record and does not create an agent task.
+1. Router requires both `orderId` and checkout `email`.
+2. Router finds the matching active entitlement.
+3. If quota remains, it increments `revisionUsed`, appends a `revisionEvents[]` audit entry, and creates a `revision` agent task.
+4. If quota is exhausted, it writes a `revision_denied` submission record and does not create an agent task.
+
+## Customer Email Notifications
+
+Use Resend for customer-facing state changes. Do not rely only on Discord.
+
+Email nodes:
+
+- Payment completed: send order ID, package, preview link, and revision form link.
+- Revision form received: send receipt of submission and explain that order ID + email will be matched.
+- Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID.
+- Revision denied: send the reason and a `$100` extra revision checkout link.
+- Agent dev preview ready: send dev review link after build/QA passes.
+- Domain/live launch ready: send DNS/live-domain instructions.
+
+The customer-facing pages can remain available on our preview/domain even when the customer points their own domain at the live site. They should be treated as account/order utility pages, not restaurant content pages.
 
 Verification command:
 

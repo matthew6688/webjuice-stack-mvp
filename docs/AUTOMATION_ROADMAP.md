@@ -497,6 +497,12 @@ Implementation note: Tally is the fastest MVP checkout/feedback provider, but th
   - enforce 3 lifetime revisions for one-time purchases
   - enforce monthly maintenance request window for yearly purchases
   - record over-limit revision attempts without creating agent tasks
+- [x] Add customer email notification path:
+  - payment receipt
+  - revision form received
+  - revision quota accepted/denied
+  - extra revision purchase CTA
+- [x] Add `$100` extra revision Stripe price and checkout tier.
 - [ ] Keep Tally feedback form or replace with first-party feedback form.
 
 ## Phase 8: Agent Loop

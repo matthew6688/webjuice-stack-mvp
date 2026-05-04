@@ -29,6 +29,7 @@ const result = await routeFunnelSubmission(payload, {
   kind: args.kind,
   dryRun: args['dry-run'] === 'true' || args.dryRun === 'true',
   sendDiscord: args['send-discord'] === 'true' || args.sendDiscord === 'true',
+  sendEmail: args['send-email'] === 'true' || args.sendEmail === 'true',
   tasksDir: args['tasks-dir'] || args.tasksDir,
   submissionsDir: args['submissions-dir'] || args.submissionsDir,
   entitlementsDir: args['entitlements-dir'] || args.entitlementsDir,
@@ -45,4 +46,5 @@ console.log(JSON.stringify({
   entitlement: result.entitlement,
   ledgerEvent: result.ledgerEvent,
   discord: result.discord,
+  customerEmail: result.customerEmail,
 }, null, 2));
