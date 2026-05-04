@@ -144,7 +144,7 @@ type EvidenceItem<T> = {
 - [ ] `GooglePlacesPhotoExtractor`
   - Photos download
   - Cost logging per photo call
-- [ ] `FirecrawlExtractor`
+- [x] `FirecrawlExtractor`
   - Official website scrape
   - Links
   - HTML

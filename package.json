@@ -15,7 +15,8 @@
     "finance:add": "node scripts/finance/add-event.js",
     "evidence:build": "node scripts/evidence/build.js",
     "evidence:validate": "node scripts/evidence/validate.js",
-    "extract:google-places": "node scripts/extractors/google-places.js"
+    "extract:google-places": "node scripts/extractors/google-places.js",
+    "extract:firecrawl": "node scripts/extractors/firecrawl.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
