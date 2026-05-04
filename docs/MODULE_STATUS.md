@@ -43,7 +43,7 @@
 | Tally webhook to agent task | Working MVP |
 | Customer feedback form to dev branch revision | Not started |
 | Hermes/OpenClaw task queue | Working MVP |
-| Domain onboarding / DNS verifier | Not started |
+| Domain onboarding / DNS verifier | Working MVP |
 | PDF extraction / image OCR pipeline | Half built |
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
