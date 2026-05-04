@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 
 const require = createRequire(import.meta.url);
 const __dirname = require('path').dirname(fileURLToPath(import.meta.url));
-const TEMPLATE_OWNER = 'matthewatuchat';
+const TEMPLATE_OWNER = process.env.GH_OWNER || 'matthew6688';
 const TEMPLATE_REPO = 'webjuice-stack-mvp';
 
 const GH_PAT = process.env.GH_PAT;

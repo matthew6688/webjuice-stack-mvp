@@ -28,7 +28,7 @@ node scripts/scrape-leads.js --niche restaurant --city "Miami, FL" --count 20
 # Output: leads-restaurant-miami.json
 
 # 2. Generate websites for each lead
-node scripts/generate-sites.js --leads leads-restaurant-miami.json --template matthewatuchat/webjuice-restaurant
+node scripts/generate-sites.js --leads leads-restaurant-miami.json --template matthew6688/webjuice-restaurant
 # Output: leads-restaurant-miami-outreach.json (with preview URLs)
 
 # 3. Review previews, then send cold emails
@@ -81,7 +81,7 @@ When a client replies:
 ### 1. 克隆模板
 
 ```bash
-git clone https://github.com/matthewatuchat/webjuice-stack-mvp.git
+git clone https://github.com/matthew6688/webjuice-stack-mvp.git
 cd webjuice-stack-mvp
 npm install
 npm run dev
@@ -110,7 +110,7 @@ RESEND_MASTER_KEY=re_xxx
 
 ### 3. 把此 repo 设为 GitHub Template
 
-进入 [repo Settings](https://github.com/matthewatuchat/webjuice-stack-mvp/settings) → General → 勾选 **Template repository**。
+进入 [repo Settings](https://github.com/matthew6688/webjuice-stack-mvp/settings) → General → 勾选 **Template repository**。
 
 这是一次性设置，之后所有新客户站都从这个模板生成。
 
@@ -138,12 +138,12 @@ node scripts/new-client.js \
 ### 输出示例
 
 ```
-Repository: https://github.com/matthewatuchat/acme-website
+Repository: https://github.com/matthew6688/acme-website
 Pages URL:  https://acme-website.pages.dev
 Custom Domain: acme.com
 
 ⚠️  Manual steps required:
-  1. Go to https://github.com/matthewatuchat/acme-website/settings/secrets/actions
+  1. Go to https://github.com/matthew6688/acme-website/settings/secrets/actions
      - Add CLOUDFLARE_API_TOKEN
      - Add CLOUDFLARE_ACCOUNT_ID
   2. Tell client to set this DNS record:

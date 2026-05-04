@@ -22,6 +22,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GH_PAT = process.env.GH_PAT;
 const CF_TOKEN = process.env.CF_API_TOKEN;
 const CF_ACCOUNT = process.env.CF_ACCOUNT_ID;
+const GH_OWNER = process.env.GH_OWNER || 'matthew6688';
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -94,7 +95,7 @@ function generateSiteConfig(lead) {
 async function createClientSite(lead, templateRepo) {
   const config = generateSiteConfig(lead);
   const slug = slugify(lead.name) + '-' + lead.niche;
-  const repoFullName = `matthewatuchat/${slug}`;
+  const repoFullName = `${GH_OWNER}/${slug}`;
   
   console.log(`\n[${lead.name}]`);
   
@@ -104,7 +105,7 @@ async function createClientSite(lead, templateRepo) {
     const repo = await githubRequest(`/repos/${templateRepo}/generate`, {
       method: 'POST',
       body: JSON.stringify({
-        owner: 'matthewatuchat',
+        owner: GH_OWNER,
         name: slug,
         description: `Website for ${lead.name}`,
         private: false,
@@ -221,10 +222,10 @@ export const siteConfig: SiteConfig = {
 
 async function main() {
   const args = parseArgs();
-  const { leads: leadsFile, template = 'matthewatuchat/webjuice-restaurant' } = args;
+  const { leads: leadsFile, template = 'matthew6688/webjuice-restaurant' } = args;
   
   if (!leadsFile) {
-    console.error('Usage: node scripts/generate-sites.js --leads leads-restaurant-miami.json [--template matthewatuchat/webjuice-restaurant]');
+    console.error('Usage: node scripts/generate-sites.js --leads leads-restaurant-miami.json [--template matthew6688/webjuice-restaurant]');
     process.exit(1);
   }
   
