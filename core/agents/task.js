@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const VALID_TYPES = new Set(['activate', 'revise', 'publish', 'domain', 'qa-fix']);
+const VALID_TYPES = new Set(['activate', 'revise', 'publish', 'domain', 'qa-fix', 'sale', 'revision']);
 const VALID_CREATED_FROM = new Set(['tally_payment', 'tally_feedback', 'stripe_payment', 'manual']);
 
 export function createAgentTask({
@@ -41,18 +41,21 @@ export function createAgentTask({
 
 export function validateAgentTask(task) {
   const errors = [];
+  const taskType = task.type || task.kind;
+  const contentPath = task.contentPath || task.requiredContext?.content;
+  const designPath = task.designPath || task.requiredContext?.design;
   if (!task.id) errors.push('id is required');
   if (!task.clientSlug) errors.push('clientSlug is required');
-  if (!VALID_TYPES.has(task.type)) errors.push(`type must be one of: ${Array.from(VALID_TYPES).join(', ')}`);
+  if (!VALID_TYPES.has(taskType)) errors.push(`type/kind must be one of: ${Array.from(VALID_TYPES).join(', ')}`);
   if (!task.repo) errors.push('repo is required');
   if (!['dev', 'main'].includes(task.branch)) errors.push('branch must be dev or main');
-  if (!task.evidencePath) errors.push('evidencePath is required');
-  if (!task.contentPath) errors.push('contentPath is required');
-  if (!task.designPath) errors.push('designPath is required');
-  if (!VALID_CREATED_FROM.has(task.createdFrom)) {
+  if (!task.evidencePath && !task.requiredContext?.evidence) errors.push('evidencePath or requiredContext.evidence is required');
+  if (!contentPath) errors.push('contentPath or requiredContext.content is required');
+  if (!designPath) errors.push('designPath or requiredContext.design is required');
+  if (task.createdFrom && !VALID_CREATED_FROM.has(task.createdFrom)) {
     errors.push(`createdFrom must be one of: ${Array.from(VALID_CREATED_FROM).join(', ')}`);
   }
-  if (!Array.isArray(task.acceptanceCriteria) || !task.acceptanceCriteria.length) {
+  if (task.acceptanceCriteria && (!Array.isArray(task.acceptanceCriteria) || !task.acceptanceCriteria.length)) {
     errors.push('acceptanceCriteria must not be empty');
   }
   return { ok: errors.length === 0, errors };

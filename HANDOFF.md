@@ -165,6 +165,7 @@ Current production sales path:
 - Central runner exists: `route-funnel-event.yml` runs `npm run funnel:route-event`, writes entitlement/submission/task/ledger state, and can commit generated state back to `main`.
 - Client Pages Functions can dispatch directly to that workflow with `AGENT_GITHUB_TOKEN`, or to `AGENT_WEBHOOK_URL` if a central HTTP endpoint is introduced later.
 - Per-order case memory is written under `data/cases/<clientSlug>/<orderId>/`; routed tasks include `case.contextPath`, source-of-truth files, allowed file scope, and Huashu design protocol so agents do not rely on short-term prompt memory.
+- `npm run agent:run-task` now loads that case context, validates source-of-truth files, applies restaurant artifacts, runs build, and appends `agent-runs.jsonl`/timeline records. Use `--checkout true --push true` only when ready to update the dev review branch.
 
 Tally remains as a fallback/provider boundary, but live payment-block creation failed Tally API schema validation during testing.
 

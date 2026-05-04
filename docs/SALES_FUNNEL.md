@@ -273,6 +273,26 @@ Regenerate or inspect an agent context packet:
 npm run case:context -- --case data/cases/<client>/<order>/case.json
 ```
 
+Run a queued task against a local client repo:
+
+```bash
+npm run agent:run-task -- \
+  --task data/agent-tasks/<client>/<task>.json \
+  --repo-dir /tmp/profitslocal-repos/<client> \
+  --execute true
+```
+
+Push to the customer review branch only when ready:
+
+```bash
+npm run agent:run-task -- \
+  --task data/agent-tasks/<client>/<task>.json \
+  --repo-dir /tmp/profitslocal-repos/<client> \
+  --execute true \
+  --checkout true \
+  --push true
+```
+
 ## Revision Entitlements
 
 Paid orders create an entitlement record under:

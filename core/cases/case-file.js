@@ -175,6 +175,78 @@ export function buildCaseContextPacket(caseFile, { recentTimeline = [] } = {}) {
   };
 }
 
+export function recordAgentRun(casePaths, runResult, { dryRun = false } = {}) {
+  if (!casePaths?.casePath) return { ok: false, skipped: true, reason: 'missing_case_path' };
+  const caseFile = readJsonIfExists(casePaths.casePath);
+  if (!caseFile) return { ok: false, skipped: true, reason: 'case_not_found' };
+
+  const now = artifactTimestamp();
+  const runEvent = {
+    id: `agent_run_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+    taskId: runResult.taskId || '',
+    ok: Boolean(runResult.ok),
+    dryRun: Boolean(runResult.dryRun),
+    mode: runResult.mode || '',
+    repo: runResult.repo || caseFile.repo || '',
+    branch: runResult.branch || caseFile.branch || '',
+    repoDir: runResult.repoDir || '',
+    changedFiles: runResult.changedFiles || [],
+    pushed: Boolean(runResult.pushed),
+    commit: runResult.commit || '',
+    previewUrl: runResult.previewUrl || caseFile.previewUrl || '',
+    steps: (runResult.steps || []).map((step) => ({
+      id: step.id,
+      ok: step.ok,
+      command: step.command,
+    })),
+    startedAt: runResult.startedAt || now,
+    finishedAt: runResult.finishedAt || now,
+    createdAt: now,
+  };
+
+  const timelineEvent = {
+    id: `case_evt_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+    type: runResult.ok ? 'agent_run_completed' : 'agent_run_failed',
+    ok: Boolean(runResult.ok),
+    taskId: runResult.taskId || '',
+    repo: runResult.repo || caseFile.repo || '',
+    branch: runResult.branch || caseFile.branch || '',
+    runId: runEvent.id,
+    changedFiles: runEvent.changedFiles,
+    pushed: runEvent.pushed,
+    commit: runEvent.commit,
+    createdAt: now,
+  };
+
+  const updatedCase = {
+    ...caseFile,
+    status: runResult.ok
+      ? (runResult.pushed ? 'dev_pushed_needs_review' : 'agent_run_ready_for_review')
+      : 'agent_run_failed',
+    latestAgentRun: runEvent,
+    updatedAt: now,
+  };
+  const contextPacket = buildCaseContextPacket(updatedCase, {
+    recentTimeline: appendPreview(casePaths.timelinePath || updatedCase.paths?.timelinePath, timelineEvent),
+  });
+
+  if (!dryRun) {
+    writeJson(casePaths.casePath, updatedCase);
+    writeJson(casePaths.contextPath || updatedCase.paths?.contextPath, contextPacket);
+    appendJsonl(casePaths.agentRunsPath || updatedCase.paths?.agentRunsPath, runEvent);
+    appendJsonl(casePaths.timelinePath || updatedCase.paths?.timelinePath, timelineEvent);
+  }
+
+  return {
+    ok: true,
+    dryRun,
+    caseFile: updatedCase,
+    runEvent,
+    timelineEvent,
+    contextPacket,
+  };
+}
+
 export function sourceOfTruthPaths(clientSlug) {
   const prefix = clientSlug ? `clients/${clientSlug}` : 'clients/<clientSlug>';
   return {

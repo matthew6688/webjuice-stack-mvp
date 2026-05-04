@@ -35,6 +35,7 @@ Tasks:
 - Teach runner to execute against `/tmp/profitslocal-repos/<client>`.
 - Load `task.case.contextPath`, `case.json`, and recent `timeline.jsonl` before planning edits.
 - Load source-of-truth files from `task.requiredContext` before changing website code.
+- Current runner can apply artifacts, build, write agent run logs, and optionally push `dev`.
 - For activation with no launch notes: run QA only and mark activation ready.
 - For revision tasks: apply bounded content/design/artifact changes, not arbitrary edits.
 - Push only to `dev`.
@@ -45,7 +46,8 @@ Validation:
 
 ```bash
 npm run agent:validate-task -- --task <task.json>
-npm run agent:run-task -- --task <task.json> --execute
+npm run agent:run-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true
+npm run agent:run-task -- --task <task.json> --repo-dir /tmp/profitslocal-repos/<client> --execute true --checkout true --push true
 npm run check:deploys -- --client longwang-restaurant-restaurant --branch dev
 npm run check:links -- --client longwang-restaurant-restaurant --internal-links false
 ```
