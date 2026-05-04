@@ -1,0 +1,296 @@
+{
+  "payloads": [
+    {
+      "tier": "one_time",
+      "amount": 399,
+      "payload": {
+        "status": "DRAFT",
+        "name": "Launch joey-s-restaurant - one_time",
+        "blocks": [
+          {
+            "uuid": "f8a69412-867c-44d1-9520-8006ad31f751",
+            "type": "FORM_TITLE",
+            "groupUuid": "57aaf07a-4e45-4714-9f10-4ee37595a705",
+            "groupType": "TEXT",
+            "payload": {
+              "html": "<h1>Launch joey-s-restaurant</h1><p>Secure your preview site and send launch notes.</p>",
+              "title": "Launch joey-s-restaurant"
+            }
+          },
+          {
+            "uuid": "49587d9e-41c8-4995-b606-96d634901b48",
+            "type": "TEXT",
+            "groupUuid": "9feb9424-5c17-4358-bdb3-af5a921c6de4",
+            "groupType": "TEXT",
+            "payload": {
+              "html": "Package: One-Time Website With 3 Revisions - USD 399"
+            }
+          },
+          {
+            "uuid": "ee656e43-359c-420d-aece-ad58d4ae91c0",
+            "type": "TITLE",
+            "groupUuid": "a0f08334-a22d-4004-a9d9-8cc407a6362b",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Your details"
+            }
+          },
+          {
+            "uuid": "de93bb66-5ea6-48b3-ba69-0ee7106bb71b",
+            "type": "INPUT_TEXT",
+            "groupUuid": "f8ecfd3e-e73b-4a6a-ab47-9ed5e0f67b3d",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Business name",
+              "isRequired": true
+            }
+          },
+          {
+            "uuid": "eb7a8361-ffa4-4a7e-8dc2-388b9f920892",
+            "type": "INPUT_EMAIL",
+            "groupUuid": "5d886df5-ebae-45e9-a9a9-c0d1025984d5",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Email",
+              "isRequired": true
+            }
+          },
+          {
+            "uuid": "070fc004-8e35-4332-b9b9-010cf90eaac4",
+            "type": "INPUT_PHONE_NUMBER",
+            "groupUuid": "e14650c1-b338-4903-b016-d75048c7882e",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Phone",
+              "isRequired": false
+            }
+          },
+          {
+            "uuid": "31e50083-38e3-4275-a10a-56880e401549",
+            "type": "INPUT_LINK",
+            "groupUuid": "fc9edce9-75b9-4834-98d5-42cb714b3062",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Preferred domain",
+              "isRequired": false
+            }
+          },
+          {
+            "uuid": "17acfb2c-8792-48ea-912b-a57a343c35de",
+            "type": "TEXTAREA",
+            "groupUuid": "9dd4e56d-f4ee-4b91-ada3-a9148366202b",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Launch notes or requested changes",
+              "isRequired": false
+            }
+          },
+          {
+            "uuid": "57015b7c-a8e2-41d2-9ed7-facf7e21f653",
+            "type": "PAYMENT",
+            "groupUuid": "57015b7c-a8e2-41d2-9ed7-facf7e21f653",
+            "groupType": "QUESTION",
+            "payload": {
+              "isRequired": true,
+              "amount": 399,
+              "currency": "USD",
+              "name": "One-Time Website With 3 Revisions package"
+            }
+          },
+          {
+            "uuid": "2a4a0dd4-7b73-491b-9d1c-a1cbff2f4d3c",
+            "type": "HIDDEN_FIELDS",
+            "groupUuid": "7411d414-91fb-46a3-b9c0-9e728380e087",
+            "groupType": "HIDDEN_FIELDS",
+            "payload": {
+              "hiddenFields": [
+                {
+                  "uuid": "c62fc5fc-1951-499a-ad3a-2428dbe974c4",
+                  "name": "client_slug"
+                },
+                {
+                  "uuid": "e594bd50-3637-4fc0-abb3-863864e4941f",
+                  "name": "repo"
+                },
+                {
+                  "uuid": "e9983aa3-4f33-4e1b-adea-0a662a305b09",
+                  "name": "template"
+                },
+                {
+                  "uuid": "936db5dc-b707-4ade-9a50-ac37d579ac38",
+                  "name": "preview_url"
+                },
+                {
+                  "uuid": "ee4c4e85-d3e1-49ab-86b5-72223c912b24",
+                  "name": "campaign_id"
+                },
+                {
+                  "uuid": "7ce0a975-4d63-4ca2-8ada-d89053d61017",
+                  "name": "tier"
+                },
+                {
+                  "uuid": "b3117961-b5ef-4b47-84b7-675ec0c78fab",
+                  "name": "amount"
+                },
+                {
+                  "uuid": "2f2087ae-ce12-4db3-aeeb-2b0a1faf220d",
+                  "name": "currency"
+                }
+              ]
+            }
+          }
+        ],
+        "settings": {
+          "redirectOnCompletion": "",
+          "hasProgressBar": true
+        }
+      }
+    },
+    {
+      "tier": "yearly_maintenance",
+      "amount": 799,
+      "payload": {
+        "status": "DRAFT",
+        "name": "Launch joey-s-restaurant - yearly_maintenance",
+        "blocks": [
+          {
+            "uuid": "529c0bac-4412-4ed9-8de1-173ab4e0d20c",
+            "type": "FORM_TITLE",
+            "groupUuid": "b1e34a0f-96e4-429b-b889-5d3f8540470f",
+            "groupType": "TEXT",
+            "payload": {
+              "html": "<h1>Launch joey-s-restaurant</h1><p>Secure your preview site and send launch notes.</p>",
+              "title": "Launch joey-s-restaurant"
+            }
+          },
+          {
+            "uuid": "da1c3101-0cfe-4e16-8105-71a5b4ace979",
+            "type": "TEXT",
+            "groupUuid": "2cabfa50-5351-413a-aed6-1c053152cab9",
+            "groupType": "TEXT",
+            "payload": {
+              "html": "Package: Yearly Website With Monthly Maintenance - USD 799"
+            }
+          },
+          {
+            "uuid": "4b942294-1c0c-426c-ba7a-bba2612deda1",
+            "type": "TITLE",
+            "groupUuid": "38437a78-4042-4d8b-911a-ff391a0fff09",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Your details"
+            }
+          },
+          {
+            "uuid": "6e60dc1b-2c52-47e4-a5c0-740e649689b2",
+            "type": "INPUT_TEXT",
+            "groupUuid": "49417783-b872-4728-a14c-5fbb14b0a271",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Business name",
+              "isRequired": true
+            }
+          },
+          {
+            "uuid": "f824f3dc-333d-461d-9f28-f1b183a48942",
+            "type": "INPUT_EMAIL",
+            "groupUuid": "dfc70401-09a3-49ac-9c1b-437a137fe149",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Email",
+              "isRequired": true
+            }
+          },
+          {
+            "uuid": "57701819-aa58-4b95-8731-6a10bb4dc432",
+            "type": "INPUT_PHONE_NUMBER",
+            "groupUuid": "ea326416-31d7-4d94-9370-d3af3a87c53e",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Phone",
+              "isRequired": false
+            }
+          },
+          {
+            "uuid": "7b7fe427-5c49-452b-800a-c3482c3ce859",
+            "type": "INPUT_LINK",
+            "groupUuid": "dfcb28cc-e98b-4e2a-8ebb-c3d9577bf7d1",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Preferred domain",
+              "isRequired": false
+            }
+          },
+          {
+            "uuid": "9c51f78a-e909-4e47-8454-98a057d2be83",
+            "type": "TEXTAREA",
+            "groupUuid": "3a7dea27-58ff-4ca4-b496-006bfc00de19",
+            "groupType": "QUESTION",
+            "payload": {
+              "title": "Launch notes or requested changes",
+              "isRequired": false
+            }
+          },
+          {
+            "uuid": "e26c073b-d4a2-4f06-828c-560df3a294b7",
+            "type": "PAYMENT",
+            "groupUuid": "e26c073b-d4a2-4f06-828c-560df3a294b7",
+            "groupType": "QUESTION",
+            "payload": {
+              "isRequired": true,
+              "amount": 799,
+              "currency": "USD",
+              "name": "Yearly Website With Monthly Maintenance package"
+            }
+          },
+          {
+            "uuid": "1139c967-7bf0-496b-a03f-c1ce6ad7669d",
+            "type": "HIDDEN_FIELDS",
+            "groupUuid": "ed23bc4d-7d5a-47d8-8d86-aef6d6e69933",
+            "groupType": "HIDDEN_FIELDS",
+            "payload": {
+              "hiddenFields": [
+                {
+                  "uuid": "8949f3d0-68ca-444b-87ed-98b763f3b0fb",
+                  "name": "client_slug"
+                },
+                {
+                  "uuid": "670b4fa1-9758-4b51-85a5-fb99a037eed5",
+                  "name": "repo"
+                },
+                {
+                  "uuid": "c4f3cb12-8de4-4e1d-97bb-d28164cbda33",
+                  "name": "template"
+                },
+                {
+                  "uuid": "4ddf7069-e2aa-493b-a4c2-272d24987df8",
+                  "name": "preview_url"
+                },
+                {
+                  "uuid": "4d641bc3-32d5-4d9c-916e-2e04596cadeb",
+                  "name": "campaign_id"
+                },
+                {
+                  "uuid": "e497f4e2-423c-4487-9f7a-d320fdc26880",
+                  "name": "tier"
+                },
+                {
+                  "uuid": "f8c4d8e4-fdd8-4904-9d6b-c1a0993e149c",
+                  "name": "amount"
+                },
+                {
+                  "uuid": "2c585c92-1f67-4a41-b7b2-bdd7e578349d",
+                  "name": "currency"
+                }
+              ]
+            }
+          }
+        ],
+        "settings": {
+          "redirectOnCompletion": "",
+          "hasProgressBar": true
+        }
+      }
+    }
+  ]
+}

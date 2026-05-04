@@ -17,6 +17,8 @@
 | Firecrawl Parse provider | Working MVP | `npm run extract:firecrawl-parse` uploads local/private documents, captures parse output, writes menu evidence, and logs Firecrawl parse costs. |
 | Menu text parser MVP | Working MVP | `npm run extract:menu` parses text/markdown menu artifacts into `menu.sections`; PDF requires local `pdftotext` or prior text extraction. |
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
+| Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
+| Tally payment form builder | Working MVP | `npm run funnel:create-tally-payment-forms` builds Tally payment form payloads, MCP prompts, or live forms/webhooks when `TALLY_API_KEY` is set. Current product tiers: $399 one-time website with 3 revisions; $799 yearly website with monthly maintenance. |
 | Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 | Restaurant design brief MVP | Working MVP | `npm run design:restaurant-brief` creates Huashu-ready `design.restaurant.json` and `brand-spec.md` from validated restaurant content. |
 | Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
@@ -37,7 +39,7 @@
 
 | Module | Status |
 |---|---|
-| Tally checkout form automation | Not started |
+| Tally checkout form automation | Working MVP |
 | Tally webhook to agent task | Half built |
 | Customer feedback form to dev branch revision | Not started |
 | Hermes/OpenClaw task queue | Not started |
