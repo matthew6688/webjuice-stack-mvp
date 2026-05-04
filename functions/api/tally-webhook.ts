@@ -1,7 +1,13 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
+import { normalizeTallySubmission, tallyRevenueLedgerInput } from '../../core/funnel/tally.js';
 
 interface Env {
   DISCORD_WEBHOOK_URL?: string;
+  AGENT_WEBHOOK_URL?: string;
+  ROI_WEBHOOK_URL?: string;
+  DEFAULT_CAMPAIGN_ID?: string;
+  ROI_CURRENCY?: string;
+  TALLY_TIER_PRICES?: string;
 }
 
 /**
@@ -9,51 +15,36 @@ interface Env {
  * Receives form submissions and forwards to Discord
  *
  * Tally webhook setup:
- * 1. Go to your Tally form → Integrations → Webhooks
+ * 1. Go to your Tally form > Integrations > Webhooks
  * 2. Add endpoint: https://your-site.com/api/tally-webhook
- * 3. Form must include hidden fields: repo, template, tally_order_id
+ * 3. Form should include hidden fields: repo, template, tally_order_id, campaign_id, preview_url, client_slug
  */
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const payload = await context.request.json();
 
-    // Extract key fields from Tally payload
-    const fields = payload.data?.fields || payload.fields || {};
-    const answers = payload.data?.answers || payload.answers || {};
-
-    // Hidden fields (passed via URL params)
-    const repo = extractField(answers, 'repo') || extractField(fields, 'repo') || 'unknown';
-    const template = extractField(answers, 'template') || extractField(fields, 'template') || 'unknown';
-    const orderId = extractField(answers, 'tally_order_id') || payload.id || 'unknown';
-
-    // Customer info
-    const company = extractField(answers, 'company_name') || extractField(answers, 'company') || 'N/A';
-    const email = extractField(answers, 'email') || 'N/A';
-    const tier = extractField(answers, 'tier') || extractField(answers, 'package') || 'N/A';
-    const color = extractField(answers, 'brand_color') || 'N/A';
-    const feedback = extractField(answers, 'feedback') || extractField(answers, 'modifications') || '';
-    const referenceUrl = extractField(answers, 'reference_url') || '';
-
-    // File uploads (Tally provides URLs)
-    const files = extractFiles(answers);
+    const order = normalizeTallySubmission(payload, context.env);
+    const revenueEvent = tallyRevenueLedgerInput(order);
 
     // Build Discord message
     const discordPayload = {
       username: 'WebJuice Orders',
       embeds: [{
-        title: `🚀 New Order: ${company}`,
+        title: `New Order: ${order.company}`,
         color: 0x00ff00,
         fields: [
-          { name: 'Repo', value: repo, inline: true },
-          { name: 'Template', value: template, inline: true },
-          { name: 'Order ID', value: orderId, inline: true },
-          { name: 'Tier', value: tier, inline: true },
-          { name: 'Email', value: email, inline: true },
-          { name: 'Brand Color', value: color, inline: true },
-          { name: 'Reference', value: referenceUrl || 'None', inline: false },
-          { name: 'Feedback', value: feedback.slice(0, 1000) || 'None', inline: false },
-          { name: 'Files', value: files.length > 0 ? files.join('\n') : 'None', inline: false },
+          { name: 'Repo', value: order.repo, inline: true },
+          { name: 'Template', value: order.template, inline: true },
+          { name: 'Order ID', value: order.orderId, inline: true },
+          { name: 'Tier', value: order.tier, inline: true },
+          { name: 'Amount', value: `${order.currency} ${order.amount}`, inline: true },
+          { name: 'Email', value: order.email, inline: true },
+          { name: 'Preview', value: order.previewUrl || 'None', inline: false },
+          { name: 'Domain', value: order.domain || 'None', inline: false },
+          { name: 'Reference', value: order.referenceUrl || 'None', inline: false },
+          { name: 'Feedback', value: order.feedback.slice(0, 1000) || 'None', inline: false },
+          { name: 'Files', value: order.files.length > 0 ? order.files.join('\n') : 'None', inline: false },
         ],
         timestamp: new Date().toISOString(),
       }],
@@ -68,7 +59,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
-    return new Response(JSON.stringify({ success: true, repo, orderId }), {
+    if (context.env.ROI_WEBHOOK_URL) {
+      await fetch(context.env.ROI_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order, revenueEvent }),
+      });
+    }
+
+    if (context.env.AGENT_WEBHOOK_URL) {
+      await fetch(context.env.AGENT_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          createdFrom: 'tally_payment',
+          order,
+          revenueEvent,
+          nextAction: 'prepare_customer_activation',
+        }),
+      });
+    }
+
+    return new Response(JSON.stringify({ success: true, order, revenueEvent }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -80,40 +92,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
   }
 };
-
-function extractField(answers: any, fieldId: string): string {
-  if (!answers) return '';
-  // Tally fields can be referenced by ID or label
-  for (const key of Object.keys(answers)) {
-    if (key.toLowerCase().includes(fieldId.toLowerCase())) {
-      const val = answers[key];
-      if (typeof val === 'string') return val;
-      if (val?.value) return String(val.value);
-      if (val?.text) return String(val.text);
-    }
-  }
-  return '';
-}
-
-function extractFiles(answers: any): string[] {
-  const files: string[] = [];
-  if (!answers) return files;
-
-  for (const key of Object.keys(answers)) {
-    const val = answers[key];
-    if (val && typeof val === 'object') {
-      // Tally file upload format varies
-      if (val.url) files.push(val.url);
-      if (val.value && val.value.url) files.push(val.value.url);
-      if (Array.isArray(val)) {
-        val.forEach((f: any) => {
-          if (f.url) files.push(f.url);
-        });
-      }
-    }
-  }
-  return files;
-}
 
 export const onRequest: PagesFunction = async (context) => {
   if (context.request.method !== 'POST') {

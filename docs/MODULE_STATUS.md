@@ -14,6 +14,7 @@
 | Finance ledger MVP | Working | `npm run finance:add` and `npm run finance:report` support local ROI tracking. |
 | Google Places extractor MVP | Working | `npm run extract:google-places` can extract leads/details, write evidence, and log cost events with configurable SKU costs. |
 | Firecrawl extractor MVP | Working | `npm run extract:firecrawl` can scrape official pages, save raw artifacts, detect menu/reservation/contact evidence, and log cost events. |
+| Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 
 ## Half Built
 
@@ -22,7 +23,7 @@
 | Evidence engine | Working MVP | `core/evidence/evidence.js` defines source types, merge rules, restaurant validation, and `npm run evidence:*` CLIs. |
 | Restaurant niche adapter | Half built | Restaurant evidence validation exists, but no formal `niches/restaurant/adapter.ts`. |
 | Design engine | Half built | Brand colors/logos/photos used, but no Huashu/open-design decision engine or scoring. |
-| Cost tracking | Half built | Ledger/report exist; Google Places and Firecrawl write events; OpenAI/Tally still need wiring. |
+| Cost tracking | Half built | Ledger/report exist; Google Places, Firecrawl, and Tally revenue write events; OpenAI still needs wiring. |
 | Outreach pack | Not yet wired | Need screenshots, video, email, source summary, audit summary in one artifact. |
 
 ## Not Started
@@ -30,7 +31,7 @@
 | Module | Status |
 |---|---|
 | Tally checkout form automation | Not started |
-| Tally webhook to agent task | Not started |
+| Tally webhook to agent task | Half built |
 | Customer feedback form to dev branch revision | Not started |
 | Hermes/OpenClaw task queue | Not started |
 | Domain onboarding / DNS verifier | Not started |

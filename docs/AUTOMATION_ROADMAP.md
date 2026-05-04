@@ -372,9 +372,11 @@ type BrandSystem = {
 
 Preview site should convert directly.
 
+Implementation note: Tally is the fastest MVP checkout/feedback provider, but the system should treat it as one payments/forms provider, not as core architecture. If Tally limits block automation, replace it with a first-party form plus Stripe Checkout and Stripe webhooks while keeping the same normalized order, revenue event, and agent task contracts.
+
 ### Tasks
 
-- [ ] Create `core/funnel/tally.ts`.
+- [x] Create `core/funnel/tally.js`.
 - [ ] Store Tally API key only as environment variable.
 - [ ] Define purchase form fields:
   - package
@@ -393,7 +395,7 @@ Preview site should convert directly.
   - `package`
   - `price`
 - [ ] Add checkout CTA to preview site.
-- [ ] Add Tally webhook endpoint:
+- [x] Add Tally webhook endpoint:
   - receive paid submission
   - verify payload
   - create `AgentTask`
@@ -407,12 +409,29 @@ Preview site should convert directly.
 ### Validation
 
 - Create test Tally form in sandbox/test mode if available.
-- Submit test purchase.
+- Submit local test purchase payload.
 - Webhook creates:
   - `clients/{clientSlug}/funnel/submission.json`
   - revenue event
   - agent task
 - Preview page hidden fields map to correct client.
+
+### Stripe Alternative
+
+- [ ] Create `core/payments/order.js` shared normalized order contract.
+- [ ] Add first-party checkout form endpoint.
+- [ ] Create Stripe Checkout Session with hidden metadata:
+  - `clientSlug`
+  - `previewUrl`
+  - `repo`
+  - `campaignId`
+  - `niche`
+- [ ] Add Stripe webhook:
+  - verify signature
+  - normalize paid checkout into order
+  - record revenue event
+  - create agent activation task
+- [ ] Keep Tally feedback form or replace with first-party feedback form.
 
 ## Phase 8: Agent Loop
 

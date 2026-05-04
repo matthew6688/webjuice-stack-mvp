@@ -16,7 +16,8 @@
     "evidence:build": "node scripts/evidence/build.js",
     "evidence:validate": "node scripts/evidence/validate.js",
     "extract:google-places": "node scripts/extractors/google-places.js",
-    "extract:firecrawl": "node scripts/extractors/firecrawl.js"
+    "extract:firecrawl": "node scripts/extractors/firecrawl.js",
+    "funnel:record-tally": "node scripts/funnel/record-tally-event.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
