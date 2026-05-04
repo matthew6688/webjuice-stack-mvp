@@ -12,6 +12,7 @@
 | Screenshot QA | Working MVP | `npm run outreach:capture-assets` captures desktop/mobile screenshots and a scroll demo video from an outreach pack preview URL. |
 | Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
 | Finance ledger MVP | Working | `npm run finance:add` and `npm run finance:report` support local ROI tracking. |
+| OpenAI usage cost logger | Working MVP | `npm run finance:add-openai-usage` records OpenAI token costs into the ledger using caller-provided pricing rates. |
 | Google Places extractor MVP | Working | `npm run extract:google-places` can extract leads/details, write evidence, and log cost events with configurable SKU costs. |
 | Firecrawl extractor MVP | Working | `npm run extract:firecrawl` can scrape official pages, save raw artifacts, detect menu/reservation/contact evidence, and log cost events. |
 | Firecrawl Parse provider | Working MVP | `npm run extract:firecrawl-parse` uploads local/private documents, captures parse output, writes menu evidence, and logs Firecrawl parse costs. |
@@ -49,7 +50,6 @@
 | PDF extraction / image OCR pipeline | Half built |
 | PaddleOCR provider | Working wrapper |
 | OCRmyPDF provider | Working wrapper |
-| OpenAI usage cost logger | Not started |
 | Multi-niche framework | Not started |
 
 ## Immediate Next Build Order
