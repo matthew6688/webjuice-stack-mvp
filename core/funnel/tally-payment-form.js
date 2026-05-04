@@ -39,7 +39,7 @@ export function buildTallyPaymentFormPayload({
       inputBlock(uuid, 'INPUT_TEXT', 'Business name', { isRequired: true }),
       inputBlock(uuid, 'INPUT_EMAIL', 'Email', { isRequired: true }),
       inputBlock(uuid, 'INPUT_PHONE_NUMBER', 'Phone', { isRequired: false }),
-      inputBlock(uuid, 'INPUT_LINK', 'Preferred domain', { isRequired: false }),
+      inputBlock(uuid, 'INPUT_TEXT', 'Preferred domain or subdomain', { isRequired: false, name: 'preferred_domain' }),
       inputBlock(uuid, 'TEXTAREA', 'Launch notes or requested changes', { isRequired: false }),
       paymentBlock({
         uuid,

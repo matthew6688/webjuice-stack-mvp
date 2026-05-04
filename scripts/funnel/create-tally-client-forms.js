@@ -59,9 +59,17 @@ async function createFormsForClient(clientSlug) {
   const tiers = parseTierPrices(args.tiers || process.env.CHECKOUT_TIER_PRICES || process.env.TALLY_TIER_PRICES);
   const currency = args.currency || process.env.ROI_CURRENCY || checkout?.currency || 'USD';
   const webhookUrl = args['webhook-url'] || args.webhookUrl || process.env.TALLY_WEBHOOK_URL || '';
-  const thankYouUrl = args['thank-you-url'] || args.thankYouUrl || process.env.TALLY_THANK_YOU_URL || '';
+  const thankYouBaseUrl = args['thank-you-url'] || args.thankYouUrl || process.env.TALLY_THANK_YOU_URL || buildClientThankYouUrl(previewUrl);
   const publish = args.publish === 'true';
   const forms = [];
+  const hiddenFields = {
+    client_slug: clientSlug,
+    repo: checkout?.hiddenFields?.repo || args.repo || `matthew6688/${clientSlug}`,
+    template: checkout?.hiddenFields?.template || args.template || 'webjuice-restaurant',
+    preview_url: previewUrl,
+    campaign_id: checkout?.hiddenFields?.campaign_id || args.campaign || process.env.DEFAULT_CAMPAIGN_ID || '',
+    currency,
+  };
   const paymentPayloads = Object.entries(tiers).map(([tier, amount]) => {
     const payload = buildTallyPaymentFormPayload({
       title: args.title || `Launch ${clientSlug}`,
@@ -69,7 +77,7 @@ async function createFormsForClient(clientSlug) {
       tier,
       amount,
       currency,
-      redirectUrl: thankYouUrl,
+      redirectUrl: buildThankYouRedirect(thankYouBaseUrl, { ...hiddenFields, tier, amount }),
       status: publish ? 'PUBLISHED' : 'DRAFT',
     });
     assertPayload(payload, { requirePayment: true });
@@ -78,7 +86,7 @@ async function createFormsForClient(clientSlug) {
   const feedbackPayload = buildTallyFeedbackFormPayload({
     title: args.feedbackTitle || `Feedback for ${clientSlug}`,
     description: args.feedbackDescription || 'Tell us what to revise before launch.',
-    redirectUrl: thankYouUrl,
+    redirectUrl: buildThankYouRedirect(thankYouBaseUrl, { ...hiddenFields, mode: 'revision' }),
     status: publish ? 'PUBLISHED' : 'DRAFT',
   });
   assertPayload(feedbackPayload);
@@ -92,7 +100,7 @@ async function createFormsForClient(clientSlug) {
     fs.writeFileSync(feedbackPath, `${JSON.stringify({ payload: feedbackPayload }, null, 2)}\n`);
     forms.push({ kind: 'payment_payloads', payloadPath: paymentPath });
     forms.push({ kind: 'feedback_payload', payloadPath: feedbackPath });
-    writeManifest(clientSlug, { status: 'dry_run', forms, webhookUrl, thankYouUrl, previewUrl });
+    writeManifest(clientSlug, { status: 'dry_run', forms, webhookUrl, thankYouUrl: thankYouBaseUrl, previewUrl });
     return { clientSlug, ok: true, status: 'dry_run', forms };
   }
 
@@ -120,10 +128,10 @@ async function createFormsForClient(clientSlug) {
 
   const artifact = buildCheckoutArtifact({
     clientSlug,
-    repo: checkout?.hiddenFields?.repo || args.repo || `matthew6688/${clientSlug}`,
-    template: checkout?.hiddenFields?.template || args.template || 'webjuice-restaurant',
+    repo: hiddenFields.repo,
+    template: hiddenFields.template,
     previewUrl,
-    campaignId: checkout?.hiddenFields?.campaign_id || args.campaign || process.env.DEFAULT_CAMPAIGN_ID || '',
+    campaignId: hiddenFields.campaign_id,
     provider: 'tally',
     purchaseBaseUrl: tierResults[0].purchaseBaseUrl,
     feedbackBaseUrl,
@@ -135,7 +143,7 @@ async function createFormsForClient(clientSlug) {
     return { ...tier, formId: form.formId, purchaseUrl: addHiddenFields(form.purchaseBaseUrl, artifact.hiddenFields, tier) };
   });
   saveCheckoutArtifact(artifact, checkoutPath);
-  writeManifest(clientSlug, { status: 'live', forms, webhookUrl, thankYouUrl, previewUrl, checkoutPath });
+  writeManifest(clientSlug, { status: 'live', forms, webhookUrl, thankYouUrl: thankYouBaseUrl, previewUrl, checkoutPath });
   return { clientSlug, ok: true, status: 'live', forms };
 }
 
@@ -168,6 +176,21 @@ function readPreviewUrl(slug) {
 function addHiddenFields(baseUrl, hiddenFields, tier) {
   const url = new URL(baseUrl);
   for (const [key, value] of Object.entries({ ...hiddenFields, tier: tier.id, amount: tier.amount })) {
+    if (value === undefined || value === null || value === '') continue;
+    url.searchParams.set(key, String(value));
+  }
+  return url.toString();
+}
+
+function buildClientThankYouUrl(previewUrl) {
+  if (!previewUrl) return '';
+  return new URL('/thank-you', previewUrl).toString();
+}
+
+function buildThankYouRedirect(baseUrl, params) {
+  if (!baseUrl) return '';
+  const url = new URL(baseUrl);
+  for (const [key, value] of Object.entries(params)) {
     if (value === undefined || value === null || value === '') continue;
     url.searchParams.set(key, String(value));
   }

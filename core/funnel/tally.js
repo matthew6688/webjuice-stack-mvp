@@ -18,15 +18,19 @@ export function normalizeTallySubmission(payload, env = {}) {
     previewUrl,
     clientSlug,
     campaignId,
-    company: extractField(combined, 'company_name') || extractField(combined, 'company') || 'N/A',
+    company: extractField(combined, 'business_name') || extractField(combined, 'company_name') || extractField(combined, 'company') || 'N/A',
     email: extractField(combined, 'email') || 'N/A',
     tier,
     amount,
     currency: extractField(combined, 'currency') || env.ROI_CURRENCY || 'USD',
     brandColor: extractField(combined, 'brand_color') || '',
-    feedback: extractField(combined, 'feedback') || extractField(combined, 'modifications') || '',
+    feedback: extractField(combined, 'feedback')
+      || extractField(combined, 'requested_changes')
+      || extractField(combined, 'launch_notes')
+      || extractField(combined, 'modifications')
+      || '',
     referenceUrl: extractField(combined, 'reference_url') || '',
-    domain: extractField(combined, 'domain') || extractField(combined, 'custom_domain') || '',
+    domain: extractField(combined, 'preferred_domain') || extractField(combined, 'domain') || extractField(combined, 'custom_domain') || '',
     files: extractFiles(combined),
     rawSubmissionId: payload?.id || payload?.data?.submissionId || null,
     receivedAt: new Date().toISOString(),
