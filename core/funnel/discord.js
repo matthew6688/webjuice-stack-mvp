@@ -31,17 +31,47 @@ export function buildDiscordMessage({ kind, order, task = null }) {
   };
 }
 
-export async function sendDiscordWebhook(url, payload, { fetchImpl = fetch, threadId = '', threadName = '' } = {}) {
+export async function sendDiscordWebhook(url, payload, {
+  fetchImpl = fetch,
+  threadId = '',
+  threadName = '',
+  botToken = '',
+} = {}) {
   if (!url) throw new Error('Discord webhook URL is required');
   const response = await fetchDiscordWebhook(url, payload, { fetchImpl, wait: true, threadId, threadName });
-  if (!response.ok && threadName) {
-    return sendDiscordWebhook(url, { ...payload, threadName: '' }, { fetchImpl });
+  if (response.ok) return normalizeDiscordResponse(response);
+
+  if (threadName) {
+    const fallback = await fetchDiscordWebhook(url, payload, { fetchImpl, wait: true, threadId: '', threadName: '' });
+    if (!fallback.ok) {
+      const body = fallback.bodyText || response.bodyText || '';
+      throw new Error(`Discord webhook failed: ${fallback.status} ${body}`.trim());
+    }
+    const normalized = normalizeDiscordResponse(fallback);
+    if (botToken && normalized.channelId && normalized.messageId) {
+      const thread = await createThreadFromMessage({
+        fetchImpl,
+        botToken,
+        channelId: normalized.channelId,
+        messageId: normalized.messageId,
+        threadName,
+      });
+      if (thread.ok) {
+        return {
+          ...normalized,
+          threadId: thread.threadId,
+          threadName,
+          threadCreatedByBot: true,
+          threadUrl: thread.threadUrl,
+        };
+      }
+      return { ...normalized, threadCreateError: thread.error || 'thread_create_failed' };
+    }
+    return normalized;
   }
-  if (!response.ok) {
-    const body = response.bodyText || '';
-    throw new Error(`Discord webhook failed: ${response.status} ${body}`.trim());
-  }
-  return normalizeDiscordResponse(response);
+
+  const body = response.bodyText || '';
+  throw new Error(`Discord webhook failed: ${response.status} ${body}`.trim());
 }
 
 async function fetchDiscordWebhook(url, payload, { fetchImpl, wait, threadId = '', threadName = '' }) {
@@ -84,6 +114,39 @@ function normalizeDiscordResponse(response) {
     messageId,
     messageUrl,
     usedThreadName: response.usedThreadName,
+  };
+}
+
+async function createThreadFromMessage({ fetchImpl, botToken, channelId, messageId, threadName }) {
+  const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}/messages/${messageId}/threads`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bot ${botToken}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-discord-workspace',
+    },
+    body: JSON.stringify({
+      name: threadName,
+      auto_archive_duration: 10080,
+    }),
+  });
+  const text = await response.text().catch(() => '');
+  let data = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+  if (!response.ok) return { ok: false, status: response.status, error: text };
+  const guildId = data?.guild_id || '';
+  const threadId = data?.id || '';
+  return {
+    ok: true,
+    status: response.status,
+    threadId,
+    threadUrl: guildId && threadId ? `https://discord.com/channels/${guildId}/${threadId}` : '',
   };
 }
 

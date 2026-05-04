@@ -46,7 +46,10 @@ if (!webhookUrl) {
   process.exit(1);
 }
 
-const result = await sendDiscordWebhook(webhookUrl, payload, { threadName });
+const result = await sendDiscordWebhook(webhookUrl, payload, {
+  threadName,
+  botToken: process.env.DISCORD_BOT_TOKEN || '',
+});
 console.log(JSON.stringify({ ok: true, threadName, result }, null, 2));
 
 function discordThreadName(kind, order) {

@@ -135,6 +135,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
   if (options.sendDiscord && webhookUrl && !options.dryRun) {
     discord = await sendDiscordWebhook(webhookUrl, discordPayload, {
       ...options,
+      botToken: options.discordBotToken || options.env?.DISCORD_BOT_TOKEN || process.env.DISCORD_BOT_TOKEN || '',
       threadName: discordThreadName(kind, order),
     });
   }

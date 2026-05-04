@@ -163,6 +163,8 @@ function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
     lastChannelId: discord.channelId || next.lastChannelId || '',
     lastMessageId: discord.messageId || next.lastMessageId || '',
     lastMessageUrl: discord.messageUrl || next.lastMessageUrl || '',
+    lastThreadUrl: discord.threadUrl || next.lastThreadUrl || '',
+    threadCreatedByBot: Boolean(discord.threadCreatedByBot || next.threadCreatedByBot),
   };
 }
 

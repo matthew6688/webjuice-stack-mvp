@@ -1,0 +1,45 @@
+{
+  "domain": "profitslocal.com",
+  "projectName": "profitslocal-live",
+  "target": "profitslocal-live.pages.dev",
+  "records": {
+    "ns": [
+      "elliot.ns.cloudflare.com.",
+      "maya.ns.cloudflare.com."
+    ],
+    "cname": [],
+    "a": [],
+    "aaaa": []
+  },
+  "status": {
+    "hasNameservers": true,
+    "hasCname": false,
+    "cnameMatchesPages": false,
+    "hasA": false,
+    "hasAAAA": false,
+    "readyForPagesAttach": true
+  },
+  "instructions": {
+    "domain": "profitslocal.com",
+    "projectName": "profitslocal-live",
+    "target": "profitslocal-live.pages.dev",
+    "records": [
+      {
+        "type": "CNAME",
+        "name": "profitslocal.com",
+        "value": "profitslocal-live.pages.dev",
+        "proxied": false,
+        "note": "Use this for subdomains such as www.example.com or menu.example.com."
+      },
+      {
+        "type": "CNAME",
+        "name": "www.profitslocal.com",
+        "value": "profitslocal-live.pages.dev",
+        "proxied": false,
+        "note": "Use this when the customer wants www on the root brand domain."
+      }
+    ],
+    "customerMessage": "Point profitslocal.com to the preview/live site.\nIf DNS is on Cloudflare, add CNAME profitslocal.com -> profitslocal-live.pages.dev. Cloudflare will flatten the root CNAME.\nIf DNS is not on Cloudflare, use www.profitslocal.com CNAME profitslocal-live.pages.dev, then redirect the root domain to www.profitslocal.com.\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+  },
+  "checkedAt": "2026-05-04T13:24:02.593Z"
+}

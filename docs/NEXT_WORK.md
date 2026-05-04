@@ -24,7 +24,7 @@ Verified live state:
 - Agent execution/completion/publish runners can load case context, push reviewed work to `dev`, send review email, and publish approved `dev` trees to `main/live`.
 - 5 generated restaurant repos plus the `webjuice-restaurant` template include `/approve` and `/api/approval-request/` for customer approval.
 - `webjuice-restaurant` and the 5 generated restaurant repos include `/api/order-status/`; `/revise` can show trusted revision quota state after `orderId + checkout email` match.
-- Funnel Discord sends now request webhook responses, try `thread_name`, and persist returned channel/thread/message IDs into case memory.
+- Funnel Discord sends now request webhook responses, try `thread_name`, can use `DISCORD_BOT_TOKEN` to create true threads from webhook messages in text channels, and persist returned channel/thread/message IDs into case memory.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -128,13 +128,14 @@ Working now:
 - Funnel Discord sends use `wait=true`.
 - Discord payloads include order ID, task path, and case path.
 - Webhook sends try `thread_name`; if Discord rejects thread creation, the sender falls back to normal webhook posting.
+- When `DISCORD_BOT_TOKEN` is configured, fallback messages create a true Discord thread from the webhook message.
 - Returned channel/thread/message IDs are persisted in `case.json.discord`.
 - Timeline events include Discord channel/thread/message metadata.
 - `npm run discord:case-thread` can dry-run payloads from an existing case file.
 
 Remaining hardening:
 
-- If true threads are required in ordinary text channels, add a Discord bot token and create threads via Discord REST API.
+- Configure `DISCORD_BOT_TOKEN` as a GitHub Actions secret and keep it out of docs/code.
 - Add follow-up message helpers for agent-complete and live-published events.
 
 Validation:
