@@ -116,6 +116,7 @@ console.log(`Discord: ${discordNotification.ok ? (discordNotification.dryRun ? '
 console.log(`Runtime cost: ${agentRuntimeCost ? agentRuntimeCost.amount : 'not recorded'}`);
 for (const step of completeResult.steps) {
   console.log(`- ${step.id}: ${step.ok ? 'ok' : 'failed'} (${step.command})`);
+  if (!step.ok && step.output) console.log(indent(step.output));
 }
 
 async function sendAgentReviewDiscord({ args, task, caseFile, runResult, deployResult }) {
@@ -174,4 +175,11 @@ function recordAgentRuntimeCost(result, args) {
       pushed: result.pushed,
     },
   }), args.ledger || DEFAULT_LEDGER_PATH);
+}
+
+function indent(text) {
+  return String(text)
+    .split('\n')
+    .map((line) => `  ${line}`)
+    .join('\n');
 }

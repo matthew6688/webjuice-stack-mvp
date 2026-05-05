@@ -124,6 +124,7 @@ jobs:
         if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && env.RUN_AGENT == 'true' }}
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           SALES_DISCORD_WEBHOOK_URL: ${{ secrets.SALES_DISCORD_WEBHOOK_URL }}
           REVISE_DISCORD_WEBHOOK_URL: ${{ secrets.REVISE_DISCORD_WEBHOOK_URL }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
