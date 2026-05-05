@@ -571,11 +571,16 @@ type AgentTask = {
   - Squarespace
   - Wix
   - generic
-- [ ] Implement polling:
+- [x] Implement request workflow:
+  - customer-facing `/domain-setup`
+  - `/api/domain-request/`
+  - `/api/domain-status/`
+  - central `domain-request.yml`
+- [x] Implement polling/state:
   - DNS record detected
   - Cloudflare custom domain active
   - SSL active
-- [ ] Record domain status in `domain.json`.
+- [x] Record domain request status in `data/domain/requests/<client>/<requestId>.json`.
 
 ### Validation
 

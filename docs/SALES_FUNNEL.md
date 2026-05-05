@@ -89,10 +89,19 @@ Example verified on 2026-05-05:
 
 Keep the dev preview utility pages available after launch so the customer can still approve, request revisions, and buy extra revisions without mixing those controls into the public restaurant site.
 
+Customer-facing automation:
+
+- `/thank-you` links to `/domain-setup` with the order, email, requested domain, and client slug already filled from checkout context.
+- `/domain-setup` lets the customer choose free ProfitsLocal subdomain, their own subdomain, or their root domain.
+- `/api/domain-request/` dispatches the central `domain-request.yml` workflow.
+- `/api/domain-status/` reads central request state from `data/domain/requests/<client>/<requestId>.json`.
+- For our free subdomain route, the workflow can create/update DNS and attach Cloudflare Pages automatically. For customer subdomains, it shows the exact CNAME target and waits until DNS is correct. For root domains, it requires manual audit before launch.
+
 Validation:
 
 ```bash
 npm run domain:test-launch-route
+npm run domain:test-request
 npm run domain:inspect -- --domain profitslocal.com --project profitslocal-live
 npm run domain:pages-status -- --project profitslocal-live --domain profitslocal.com
 npm run domain:upsert-cname -- --zone <zone-id> --name <client>.profitslocal.com --target <client>-live.pages.dev --proxied true

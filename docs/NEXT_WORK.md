@@ -79,6 +79,10 @@ Working now:
   - Pages domain status is `active`.
   - Public DNS resolves to Cloudflare edge IPs; forced-resolution HTTPS check returns 200.
 - Template and generated `/domain-help` pages now show the current requested domain, live Pages target, dev preview, exact CNAME rules, root-domain caveats, and a warning that `profitslocal.com/<client>` is not the active production launch route yet.
+- Template and generated sites now include `/domain-setup`, `/api/domain-request/`, and `/api/domain-status/`.
+- `/thank-you` links directly into `/domain-setup` with `client_slug`, `order_id`, `email`, and requested domain context.
+- Main repo workflow `domain-request.yml` handles the request and writes central state under `data/domain/requests/<client>/<requestId>.json`.
+- ProfitsLocal-owned subdomains can be provisioned automatically: create/update the Cloudflare CNAME, attach the Pages custom domain, then poll Pages status. Customer-owned subdomains wait until the customer CNAME resolves to the Pages target. Customer root domains stop for manual DNS/email audit.
 - Local secrets should be configured with `npm run setup:local-env`, then verified with `npm run check:env -- --workflow funnel`, `scrape`, `deploy`, and `localAudit`.
 - ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
 - Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
@@ -87,7 +91,7 @@ Working now:
 Remaining:
 
 - Deferred by owner: `profitslocal.com` page/design work will be handled later.
-- Optional hardening: add automatic provisioning from approved `*.profitslocal.com` orders so the CNAME + Pages custom domain attach happens without manual commands.
+- Optional hardening: add email notifications for domain-request status changes and a stronger customer-facing status history.
 
 Validation:
 
@@ -97,6 +101,8 @@ npm run domain:pages-status -- --project profitslocal-live --domain profitslocal
 npm run domain:inspect -- --domain opa-controlled.profitslocal.com --project opa-bar-mezze-restaurant-live
 npm run domain:pages-status -- --project opa-bar-mezze-restaurant-live --domain opa-controlled.profitslocal.com
 npm run domain:test-launch-route
+npm run domain:test-request
+npm run domain:request -- --client opa-bar-mezze-restaurant --order cs_test_domain_dry_001 --email matthew6688@gmail.com --domain opa-controlled.profitslocal.com --execute false --write false
 npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
 ```
 

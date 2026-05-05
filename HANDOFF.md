@@ -200,6 +200,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | 5 个餐厅站内容像空壳 | 已修复 | 已按 Huashu Design 思路重做餐厅首页和 `/menu`；菜单项来自公开官网/PDF/菜单页，并在页面标注 source URL |
 | `profitslocal.com` 自定义域名绑定 | 已完成 | 已 attach 到 `profitslocal-live`；CNAME 已设置；Pages verification/validation active；`https://profitslocal.com/` HTTP 200 |
 | Opa 免费托管子域名 | 已完成 | `opa-controlled.profitslocal.com` 已在 `profitslocal.com` zone 创建 CNAME，已 attach 到 `opa-bar-mezze-restaurant-live`，Pages custom domain 状态 active |
+| Domain setup automation | MVP 已完成 | 客户 `/thank-you` 可进入 `/domain-setup`；template + 5 个 generated repos 已有 `/api/domain-request/` 和 `/api/domain-status/`；主仓库 `domain-request.yml` 可自动处理 ProfitsLocal 子域名 DNS CNAME + Pages attach，客户自有 subdomain 会等待 CNAME，root domain 进入人工 DNS/email audit |
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |
 | Google Places photos | MVP 已完成 | `npm run extract:google-places-photos` 支持 dry-run/live、manifest、evidence append、ledger cost |
@@ -239,6 +240,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] Strict pre-review gate：如果 agent run 没有 `contextRead`、`designProtocolUsed`、截图/视觉 QA、dev deploy URL，就不能发 customer review email
 - [x] Opa Bar + Mezze full-loop live-sim：用 test order 跑 paid → agent dev preview → customer approve → publish live，全程不污染真实 ROI/customer data
 - [x] Domain handoff email/page：客户指定 domain/subdomain 后，thank-you/review/live email 需要给清晰 DNS 指引；utility preview pages 保留作为 revise/approve/account 页面
+- [x] Domain setup automation：`/domain-setup` 收集客户想用的域名路线，dispatch 主仓库 `domain-request.yml`，并通过 `/api/domain-status/` 轮询 central state；已同步 template + 5 个 generated repos
 - [x] Extra revision policy finalization：确认 `$100` extra revision 是给原 entitlement `+1`，还是创建单独 one-revision entitlement，并完成 wiring
 
 ### 7.2 Backlog / not launch blockers
@@ -253,6 +255,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 轮询 `profitslocal.com` Pages custom-domain 状态直到 active
 - [x] 跑通 Opa 免费子域名路线：`opa-controlled.profitslocal.com` → `opa-bar-mezze-restaurant-live.pages.dev`，Pages custom domain active
 - [x] 重写 `/domain-help`：明确免费 ProfitsLocal subdomain、客户 subdomain、客户 root domain、未来 subpage/router 的差异和 DNS 步骤，并同步到 5 个 generated repos
+- [x] 建 `domain-request.yml` 自动化：ProfitsLocal 子域名可自动 upsert CNAME + attach Pages；客户 subdomain/root domain 先做 DNS 状态判断和安全提示
 - [ ] `profitslocal.com` 页面由 owner 后续处理，当前不进入执行队列
 - [x] 完成 cold email dry-run proof：5 个 Brisbane restaurant outreach email artifacts 已生成，包含 preview、真实菜单 source、AI audit、截图/video proof
 - [x] 完成 cold email live 测试（Opa owner-inbox Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce`）

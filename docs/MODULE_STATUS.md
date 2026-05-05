@@ -51,7 +51,7 @@
 | First-party approval flow | Working MVP | Template/client sites have `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` with mandatory `orderId + checkout email` matching. |
 | Order status utility | Working MVP | Template/client sites have `/api/order-status/`; `/revise` displays trusted revision quota only after `orderId + checkout email` matches the central entitlement record. |
 | Revision attachment storage | Working MVP | Template/client sites have `/api/upload-attachment/` for server-side Cloudinary uploads with signed or unsigned-preset Cloudinary mode; local smoke passes in template/generated repos, Pages runtime secrets are configured on template plus 5 generated dev/live projects, and deployed Opa returned a real Cloudinary URL from `/api/upload-attachment/`. |
-| Domain onboarding / DNS verifier | Working MVP | `profitslocal.com` is attached to `profitslocal-live`; DNS and Pages custom-domain status are active; `domain:test-launch-route`, `domain:inspect`, `domain:pages-status`, and `domain:upsert-cname` record/poll the flow. |
+| Domain onboarding / DNS verifier | Working MVP | `profitslocal.com` is attached to `profitslocal-live`; DNS and Pages custom-domain status are active; template/generated sites include `/domain-setup`, `/api/domain-request/`, and `/api/domain-status/`; central `domain-request.yml` can provision ProfitsLocal subdomains or wait on customer DNS. Validated with `domain:test-launch-route`, `domain:test-request`, template smoke, and 5 generated repo builds. |
 | Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
 
 ## Half Built
