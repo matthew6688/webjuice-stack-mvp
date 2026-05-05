@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "id": "opa-bar-mezze-restaurant__cs_test_domain_live_smoke_002__opa-live-smoke-2.profitslocal.com",
+  "status": "pages_pending",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "orderId": "cs_test_domain_live_smoke_002",
+  "email": "matthew6688@gmail.com",
+  "requestedDomain": "opa-live-smoke-2.profitslocal.com",
+  "domain": "opa-live-smoke-2.profitslocal.com",
+  "projectName": "opa-bar-mezze-restaurant-live",
+  "target": "opa-bar-mezze-restaurant-live.pages.dev",
+  "route": {
+    "route": "profitslocal_subdomain",
+    "domain": "opa-live-smoke-2.profitslocal.com",
+    "requiresCustomerDns": false,
+    "requiresCloudflareAttach": true,
+    "utilityPagesStayOnPreview": true,
+    "reason": "customer_requested_profitslocal_subdomain",
+    "nextStep": "Attach opa-live-smoke-2.profitslocal.com to the approved Pages project."
+  },
+  "dns": {
+    "instructions": {
+      "domain": "opa-live-smoke-2.profitslocal.com",
+      "projectName": "opa-bar-mezze-restaurant-live",
+      "target": "opa-bar-mezze-restaurant-live.pages.dev",
+      "records": [
+        {
+          "type": "CNAME",
+          "name": "opa-live-smoke-2.profitslocal.com",
+          "value": "opa-bar-mezze-restaurant-live.pages.dev",
+          "proxied": false,
+          "note": "Use this for subdomains such as www.example.com or menu.example.com."
+        },
+        {
+          "type": "CNAME",
+          "name": "www.profitslocal.com",
+          "value": "opa-bar-mezze-restaurant-live.pages.dev",
+          "proxied": false,
+          "note": "Use this when the customer wants www on the root brand domain."
+        }
+      ],
+      "customerMessage": "Point opa-live-smoke-2.profitslocal.com to the preview/live site by adding a CNAME record:\nopa-live-smoke-2.profitslocal.com CNAME opa-bar-mezze-restaurant-live.pages.dev\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+    },
+    "inspection": null
+  },
+  "pages": {
+    "domains": [
+      {
+        "id": "441a8d2c-f37d-4292-bb04-49c97fd3a714",
+        "domain_id": "441a8d2c-f37d-4292-bb04-49c97fd3a714",
+        "name": "menu.feng-talk.com",
+        "status": "active",
+        "verification_data": {
+          "status": "active"
+        },
+        "validation_data": {
+          "status": "active",
+          "method": "http"
+        },
+        "certificate_authority": "google",
+        "zone_tag": "1d3cf649d29c551bd994419e660f8dfd",
+        "created_on": "2026-05-05T13:30:43.320738Z"
+      },
+      {
+        "id": "2bfaacad-da67-446d-862e-29a74eb64907",
+        "domain_id": "2bfaacad-da67-446d-862e-29a74eb64907",
+        "name": "opa-controlled.profitslocal.com",
+        "status": "active",
+        "verification_data": {
+          "status": "active"
+        },
+        "validation_data": {
+          "status": "active",
+          "method": "http"
+        },
+        "certificate_authority": "google",
+        "zone_tag": "3d8a2ec43e00f78e65047c99aafe29fb",
+        "created_on": "2026-05-05T13:16:35.5231Z"
+      },
+      {
+        "id": "0def3921-b2ce-466e-a137-c5adebfbb070",
+        "domain_id": "0def3921-b2ce-466e-a137-c5adebfbb070",
+        "name": "opa-live-smoke-2.profitslocal.com",
+        "status": "pending",
+        "verification_data": {
+          "status": "active"
+        },
+        "validation_data": {
+          "status": "pending",
+          "method": "http"
+        },
+        "certificate_authority": "google",
+        "zone_tag": "3d8a2ec43e00f78e65047c99aafe29fb",
+        "created_on": "2026-05-05T13:56:01.421076Z"
+      },
+      {
+        "id": "4f32a1f9-048a-4461-808e-7eea334a29dd",
+        "domain_id": "4f32a1f9-048a-4461-808e-7eea334a29dd",
+        "name": "opa-live-smoke.profitslocal.com",
+        "status": "active",
+        "verification_data": {
+          "status": "active"
+        },
+        "validation_data": {
+          "status": "active",
+          "method": "http"
+        },
+        "certificate_authority": "google",
+        "zone_tag": "3d8a2ec43e00f78e65047c99aafe29fb",
+        "created_on": "2026-05-05T13:52:46.742456Z"
+      }
+    ],
+    "active": false
+  },
+  "steps": [
+    {
+      "id": "upsert-profitslocal-cname",
+      "ok": true,
+      "message": "Created or updated ProfitsLocal DNS CNAME.",
+      "data": {
+        "action": "created",
+        "name": "opa-live-smoke-2.profitslocal.com",
+        "target": "opa-bar-mezze-restaurant-live.pages.dev",
+        "proxied": true
+      },
+      "at": "2026-05-05T13:56:00.193Z"
+    },
+    {
+      "id": "attach-pages-domain",
+      "ok": true,
+      "message": "Cloudflare Pages custom domain is attached.",
+      "data": {
+        "active": false,
+        "domain": "opa-live-smoke-2.profitslocal.com"
+      },
+      "at": "2026-05-05T13:58:11.084Z"
+    }
+  ],
+  "createdAt": "2026-05-05T13:55:59.368Z",
+  "updatedAt": "2026-05-05T13:58:11.084Z"
+}
