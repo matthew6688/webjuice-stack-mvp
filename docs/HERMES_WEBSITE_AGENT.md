@@ -46,6 +46,10 @@ The sales webhook may still create the initial true thread, but the task handoff
 `~/.hermes/profiles/website-agent/config.yaml` should include:
 
 ```yaml
+model:
+  provider: openai-codex
+  default: gpt-5.4-mini
+
 terminal:
   backend: local
   cwd: /Users/matthew/Developer/google-map-website
@@ -82,11 +86,17 @@ The profile needs its own bot token unless the old profile using that token is s
 
 ```env
 DISCORD_BOT_TOKEN=...
-DISCORD_ALLOWED_USERS=...
+DISCORD_ALLOWED_USERS=
 DISCORD_HOME_CHANNEL=WEBSITE_TASKS_CHANNEL_ID
+GATEWAY_ALLOW_ALL_USERS=true
+DISCORD_ALLOW_BOTS=mentions
 ```
 
 For a clean production setup, create a separate Discord application/bot named `ProfitsLocal Website Agent`, invite it to the server, and give it access only to `#website-tasks`, `#sandbox`, and any needed threads.
+
+Why `DISCORD_ALLOW_BOTS=mentions`: sales/revision automation can hand work to `website-agent` by posting a task packet that explicitly mentions the bot. Generic bot/webhook notifications remain ignored, which prevents noisy loops.
+
+Why `GATEWAY_ALLOW_ALL_USERS=true`: this channel is dedicated to website execution and should accept customer-order handoffs without requiring every webhook/bot author ID to be pre-registered. Keep the bot scoped to `#website-tasks` and `#sandbox`.
 
 ## SOUL Requirements
 
@@ -126,3 +136,15 @@ Expected behavior:
 - it reads the case/task paths;
 - it does not use old enrichment memory;
 - it suggests or runs the website task flow, not import/export enrichment.
+
+## Current Validation
+
+Verified locally on 2026-05-05:
+
+- `ai.hermes.gateway-website-agent` LaunchAgent starts and stays running.
+- The dedicated bot can see `#website-tasks` (`1501072883001065614`).
+- A bot/webhook-style message from another Discord app only triggers when it mentions `website-agent`.
+- Hermes creates a dedicated Discord thread for the handoff message.
+- `website-agent` completes a model smoke test in that thread with `openai-codex / gpt-5.4-mini`.
+
+Known non-blocking warning: Discord slash command registration is over the server limit, so a few slash commands are skipped. Normal message/thread pickup works.
