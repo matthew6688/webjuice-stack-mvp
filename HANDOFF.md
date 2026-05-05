@@ -283,6 +283,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 用真实菜单 evidence 重新生成一个餐厅 preview，并做截图/视觉 QA：Opa Bar + Mezze dev preview 已 push/deploy success，`/menu` mobile/desktop 均 200，52 menu items，无 console error / overflow
 - [x] 重新生成 Opa outreach screenshots/demo video，让 cold email proof 使用最新真实菜单 preview
 - [x] 重新生成 5 个 Brisbane restaurant 的 outreach screenshots/demo video，并全部 validate pass
+
 - [x] 加入本地 Ollama AI audit 质量闸门，并用 Opa 真实菜单 artifact 验证通过
 - [x] 将本地 Ollama AI audit 跑完 5 个 Brisbane restaurant，全部 pass/100/0 findings
 - [x] 跑 sale → case/task/entitlement/ledger 本地 smoke，并生成 Discord case-thread dry-run payload
@@ -298,3 +299,15 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做
 - [ ] 其他 niche 暂缓；当前只聚焦 restaurant 闭环
 - [x] 验证 Stripe test 收款流程和 extra revision checkout
+
+### 7.3 Current priority queue
+
+现在 restaurant 闭环已经接近可上线状态。下一批任务按优先级执行：
+
+1. 自动 QA screenshot → customer review email：把 dev deploy 后的截图捕获接到 `agent:complete-task`，让 pre-review gate 可以真实通过并自动发客户 review 邮件。
+2. 正式 sender bot：创建/配置 `ProfitsLocal Handoff` Discord sender，用于给 `#website-tasks` 发任务，避免 website-agent 自己给自己派活。
+3. 第一个生产客户演练：用 Opa 或一个新餐厅跑一次非 dry-run 的 paid → agent dev update → review email → approval → live publish → domain setup，并记录 ROI。
+4. Domain status email：当 `/domain-setup` 进入 `active` / `waiting_for_customer_dns` / `needs_root_domain_review` 时，用 Resend 给客户发明确下一步。
+5. Cleanup hygiene：每次 domain smoke 后跑 `npm run domain:cleanup`，避免 Cloudflare Pages/DNS 留测试域名。
+6. Node/GitHub Actions hardening：处理 Actions 的 Node 20 deprecation warning，减少后面 CI 风险。
+7. Dashboard 暂缓：等 restaurant 核心闭环稳定后，再做本地 ops dashboard。

@@ -57,6 +57,16 @@ Verified live state:
 
 ## Highest Priority Remaining Work
 
+## Current Priority Queue
+
+1. Wire automatic QA screenshot capture after dev deploy and before `agent:complete-task --send-email true`.
+2. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
+3. Run one production-like customer loop with ROI evidence: paid order, agent dev update, review email, approval, live publish, and domain setup.
+4. Add Resend notifications for domain setup status changes: active, waiting for customer DNS, and root-domain review.
+5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
+6. Update GitHub Actions for Node 24 compatibility before GitHub's Node 20 action runtime removal affects deploys.
+7. Defer dashboard implementation until the restaurant loop stays stable.
+
 ### 1. Domain Onboarding For `profitslocal.com`
 
 Goal: customers can keep utility pages while their own domain/subdomain points to live production.
