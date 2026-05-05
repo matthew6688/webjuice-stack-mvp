@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "caseId": "opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+  "status": "dev_pushed_needs_review",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+  "template": "webjuice-restaurant",
+  "order": {
+    "id": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "provider": "stripe",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "paymentStatus": "paid"
+  },
+  "customer": {
+    "company": "Opa Bar & Mezze",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": "opa-controlled.profitslocal.com"
+  },
+  "revision": {
+    "policy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "used": 0,
+    "remaining": 3,
+    "lastReason": "entitlement_created"
+  },
+  "discord": {
+    "salesThreadId": "1501197066758783017",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "1501197070319616011",
+    "lastChannelId": "1501197070319616011",
+    "lastMessageId": "1501197116515815519",
+    "lastMessageUrl": "",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501197066758783017",
+    "threadCreatedByBot": true
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+    "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "latestTask": {
+    "id": "sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "kind": "sale",
+    "status": "queued",
+    "path": "data/agent-tasks/opa-bar-mezze-restaurant/sale-cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7.json",
+    "createdAt": "2026-05-05T12:21:11.372Z"
+  },
+  "paths": {
+    "casePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/case.json",
+    "contextPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/context-packet.json",
+    "timelinePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/timeline.jsonl",
+    "decisionsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/decisions.jsonl",
+    "customerMessagesPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/agent-runs.jsonl",
+    "artifactsDir": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts"
+  },
+  "createdAt": "2026-05-05T12:21:12.339Z",
+  "updatedAt": "2026-05-05T12:21:23.683Z",
+  "latestAgentRun": {
+    "id": "agent_run_1777983682963_ojbvxkv5",
+    "taskId": "sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "ok": true,
+    "dryRun": false,
+    "mode": "sale",
+    "repo": "matthew6688/opa-bar-mezze-restaurant",
+    "branch": "dev",
+    "repoDir": "/tmp/client-repo",
+    "changedFiles": [],
+    "pushed": true,
+    "commit": "",
+    "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+    "audit": {
+      "contextRead": {
+        "case": true,
+        "caseContext": true,
+        "evidence": true,
+        "content": true,
+        "design": true,
+        "brandSpec": true,
+        "checkout": true
+      },
+      "designProtocolUsed": {
+        "requiredSkill": "huashu-design",
+        "openDesignSkills": [
+          "web-prototype",
+          "saas-landing",
+          "design-brief",
+          "critique",
+          "tweaks"
+        ],
+        "mode": ""
+      },
+      "qaScreenshots": [],
+      "devDeployUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+      "customerEmailId": ""
+    },
+    "steps": [
+      {
+        "id": "checkout-branch",
+        "ok": true,
+        "command": "git checkout dev"
+      },
+      {
+        "id": "apply-artifacts",
+        "ok": true,
+        "command": "npm run apply:restaurant-artifacts -- --content /home/runner/work/webjuice-stack-mvp/webjuice-stack-mvp/clients/opa-bar-mezze-restaurant/content.restaurant.json --design /home/runner/work/webjuice-stack-mvp/webjuice-stack-mvp/clients/opa-bar-mezze-restaurant/design.restaurant.json"
+      },
+      {
+        "id": "build",
+        "ok": true,
+        "command": "npm run build"
+      },
+      {
+        "id": "stage-changes",
+        "ok": true,
+        "command": "git add -A"
+      },
+      {
+        "id": "commit-dev",
+        "ok": true,
+        "command": "git commit -m chore: run sale task sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7"
+      },
+      {
+        "id": "push-dev",
+        "ok": true,
+        "command": "git push origin dev"
+      }
+    ],
+    "startedAt": "2026-05-05T12:21:19.105Z",
+    "finishedAt": "2026-05-05T12:21:22.959Z",
+    "createdAt": "2026-05-05T12:21:22.963Z"
+  }
+}

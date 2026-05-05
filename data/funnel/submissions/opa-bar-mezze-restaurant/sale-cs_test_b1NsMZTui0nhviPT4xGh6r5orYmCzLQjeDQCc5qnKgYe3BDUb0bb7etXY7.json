@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "kind": "sale",
+  "receivedAt": "2026-05-05T12:21:11.372Z",
+  "order": {
+    "orderId": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "paymentStatus": "paid",
+    "repo": "matthew6688/opa-bar-mezze-restaurant",
+    "template": "webjuice-restaurant",
+    "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+    "clientSlug": "opa-bar-mezze-restaurant",
+    "campaignId": null,
+    "company": "Opa Bar & Mezze",
+    "email": "matthew6688@gmail.com",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "feedback": "Deployed Opa checkout smoke test from Codex. This is a Stripe test-mode order.",
+    "referenceUrl": "",
+    "domain": "opa-controlled.profitslocal.com",
+    "parentOrderId": "",
+    "files": [],
+    "provider": "stripe",
+    "rawSubmissionId": "evt_1TThy6FLdh3w6unt3RJoa1MG",
+    "receivedAt": "2026-05-05T12:21:11.371Z"
+  },
+  "payload": {
+    "id": "evt_1TThy6FLdh3w6unt3RJoa1MG",
+    "object": "event",
+    "api_version": "2020-08-27",
+    "created": 1777983653,
+    "data": {
+      "object": {
+        "id": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+        "object": "checkout.session",
+        "adaptive_pricing": {
+          "enabled": true
+        },
+        "after_expiration": null,
+        "allow_promotion_codes": true,
+        "amount_subtotal": 39900,
+        "amount_total": 39900,
+        "automatic_tax": {
+          "enabled": false,
+          "liability": null,
+          "provider": null,
+          "status": null
+        },
+        "billing_address_collection": null,
+        "branding_settings": {
+          "background_color": "#ffffff",
+          "border_style": "rounded",
+          "button_color": "#ffbb3b",
+          "display_name": "Matthew Miao",
+          "font_family": "default",
+          "icon": {
+            "file": "file_1Mp8B7FLdh3w6untzdBQ9Mrk",
+            "type": "file"
+          },
+          "logo": {
+            "file": "file_1Mp8B2FLdh3w6unt26ZchxRd",
+            "type": "file"
+          }
+        },
+        "cancel_url": "https://opa-bar-mezze-restaurant-dev.pages.dev/checkout?tier=one_time&client_slug=opa-bar-mezze-restaurant&repo=matthew6688%2Fopa-bar-mezze-restaurant&preview_url=https%3A%2F%2Fopa-bar-mezze-restaurant-dev.pages.dev%2F",
+        "client_reference_id": "opa-bar-mezze-restaurant",
+        "client_secret": null,
+        "collected_information": {
+          "business_name": null,
+          "individual_name": null,
+          "shipping_details": null
+        },
+        "consent": null,
+        "consent_collection": null,
+        "created": 1777983616,
+        "currency": "usd",
+        "currency_conversion": null,
+        "custom_fields": [],
+        "custom_text": {
+          "after_submit": null,
+          "shipping_address": null,
+          "submit": null,
+          "terms_of_service_acceptance": null
+        },
+        "customer": "cus_USdEEfIiMtIEP6",
+        "customer_account": null,
+        "customer_creation": "always",
+        "customer_details": {
+          "address": {
+            "city": null,
+            "country": "AU",
+            "line1": null,
+            "line2": null,
+            "postal_code": null,
+            "state": null
+          },
+          "business_name": null,
+          "email": "matthew6688@gmail.com",
+          "individual_name": null,
+          "name": "Matthew Miao",
+          "phone": null,
+          "tax_exempt": "none",
+          "tax_ids": []
+        },
+        "customer_email": "matthew6688@gmail.com",
+        "discounts": [],
+        "expires_at": 1778070016,
+        "integration_identifier": null,
+        "invoice": null,
+        "invoice_creation": {
+          "enabled": false,
+          "invoice_data": {
+            "account_tax_ids": null,
+            "custom_fields": null,
+            "description": null,
+            "footer": null,
+            "issuer": null,
+            "metadata": {},
+            "rendering_options": null
+          }
+        },
+        "livemode": false,
+        "locale": null,
+        "managed_payments": {
+          "enabled": false
+        },
+        "metadata": {
+          "tier": "one_time",
+          "template": "webjuice-restaurant",
+          "business_name": "Opa Bar & Mezze",
+          "client_slug": "opa-bar-mezze-restaurant",
+          "repo": "matthew6688/opa-bar-mezze-restaurant",
+          "email": "matthew6688@gmail.com",
+          "preferred_domain": "opa-controlled.profitslocal.com",
+          "launch_notes": "Deployed Opa checkout smoke test from Codex. This is a Stripe test-mode order.",
+          "preview_url": "https://opa-bar-mezze-restaurant-dev.pages.dev/"
+        },
+        "mode": "payment",
+        "origin_context": null,
+        "payment_intent": "pi_3TThxUFLdh3w6unt1AUD57We",
+        "payment_link": null,
+        "payment_method_collection": "always",
+        "payment_method_configuration_details": {
+          "id": "pmc_1Pj8OjFLdh3w6untunBwpyyF",
+          "parent": null
+        },
+        "payment_method_options": {
+          "card": {
+            "request_three_d_secure": "automatic"
+          }
+        },
+        "payment_method_types": [
+          "card"
+        ],
+        "payment_status": "paid",
+        "permissions": null,
+        "phone_number_collection": {
+          "enabled": false
+        },
+        "recovered_from": null,
+        "saved_payment_method_options": {
+          "allow_redisplay_filters": [
+            "always"
+          ],
+          "payment_method_remove": "disabled",
+          "payment_method_save": null
+        },
+        "setup_intent": null,
+        "shipping": null,
+        "shipping_address_collection": null,
+        "shipping_options": [],
+        "shipping_rate": null,
+        "status": "complete",
+        "submit_type": null,
+        "subscription": null,
+        "success_url": "https://opa-bar-mezze-restaurant-dev.pages.dev/thank-you?session_id={CHECKOUT_SESSION_ID}&client_slug=opa-bar-mezze-restaurant&repo=matthew6688%2Fopa-bar-mezze-restaurant&preview_url=https%3A%2F%2Fopa-bar-mezze-restaurant-dev.pages.dev%2F&tier=one_time&domain=opa-controlled.profitslocal.com&email=matthew6688%40gmail.com",
+        "total_details": {
+          "amount_discount": 0,
+          "amount_shipping": 0,
+          "amount_tax": 0
+        },
+        "ui_mode": "hosted",
+        "url": null,
+        "wallet_options": null
+      }
+    },
+    "livemode": false,
+    "pending_webhooks": 7,
+    "request": {
+      "id": null,
+      "idempotency_key": null
+    },
+    "type": "checkout.session.completed"
+  }
+}
