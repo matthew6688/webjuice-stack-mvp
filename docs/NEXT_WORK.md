@@ -156,6 +156,7 @@ Working now:
 - Agent completion and live publish scripts can now post standardized follow-up messages back into the saved Discord case thread when `--send-discord true` is used.
 - `publish-approved.yml` exposes `send_discord` and passes Discord webhook/bot secrets to the publish runner.
 - `route-funnel-event.yml` now defaults `auto_run_agent` to true: after routing a paid/revision task, it clones the client repo, installs dependencies, runs `agent:complete-task`, pushes dev, waits for deploy, and sends review email/Discord follow-up.
+- Live smoke `25354611737` verified the route → true Discord thread → auto agent run → dev deploy check → Discord review follow-up path. The smoke order/case/ledger state was removed after verification.
 
 Remaining hardening:
 
