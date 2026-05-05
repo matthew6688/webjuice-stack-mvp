@@ -198,8 +198,8 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Paid route local smoke | Confirm sale creates case/task/ledger | Existing MVP |
 | Paid route + website thread | Confirm payment creates/reuses website thread, including delayed Discord auto-thread lookup | Passing via `npm run hermes:test-website-agent-closure` |
 | Revision route same thread | Confirm feedback goes to existing thread | Passing via `npm run hermes:test-website-agent-closure` |
-| Agent complete dev push | Confirm dev branch + preview + Discord + email | Existing MVP, needs website-thread assertion |
-| Approval live publish | Confirm live publish + same thread update | Existing MVP, needs website-thread assertion |
+| Agent complete dev review | Confirm dev preview Discord notification and review email stay tied to the website thread | Passing via `npm run hermes:test-website-agent-closure` |
+| Approval live publish | Confirm live publish Discord notification and live email stay tied to the website thread | Passing via `npm run hermes:test-website-agent-closure` |
 | Memory continuation | Confirm later thread message can recover from case files | Pending |
 | Design protocol audit | Confirm run record proves Huashu/open-design usage | Pending |
 
@@ -207,13 +207,8 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
 2. Add agent run checklist fields: `contextRead`, `designProtocolUsed`, `qaScreenshots`, `devDeployUrl`, `customerEmailId`.
-3. Extend the end-to-end fixture script beyond routing to simulate:
-   - paid order
-   - revision feedback
-   - dev completion
-   - approval publish
-   - assertions that all Discord updates used one thread.
-4. Run the fixture against Opa Bar + Mezze using test order IDs only.
+3. Run the fixture against Opa Bar + Mezze using test order IDs only.
+4. Add a live, no-code approval smoke that posts the dev-ready and live-published notifications to a disposable website thread.
 
 ## Required Secrets And Variables
 

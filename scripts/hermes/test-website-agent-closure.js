@@ -4,6 +4,16 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { routeFunnelSubmission } from '../../core/funnel/submission-router.js';
+import { recordCaseNotification } from '../../core/cases/case-file.js';
+import {
+  buildAgentReviewDiscordMessage,
+  buildLivePublishedDiscordMessage,
+  sendDiscordChannelMessage,
+} from '../../core/funnel/discord.js';
+import {
+  buildAgentReviewEmail,
+  buildLivePublishedEmail,
+} from '../../core/funnel/customer-email.js';
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'website-agent-closure-'));
 let seq = 0;
@@ -111,7 +121,90 @@ const revisionThread = revision.caseRecord.caseFile.discord.websiteTaskThreadId;
 const saleCasePaths = sale.caseRecord.caseFile.paths;
 const revisionCasePaths = revision.caseRecord.caseFile.paths;
 const casePath = saleCasePaths.casePath;
-const caseFile = JSON.parse(fs.readFileSync(casePath, 'utf8'));
+let caseFile = JSON.parse(fs.readFileSync(casePath, 'utf8'));
+
+const runResult = {
+  ok: true,
+  taskId: revision.task.id,
+  mode: 'revision',
+  repo: session.metadata.repo,
+  branch: 'dev',
+  dryRun: false,
+  pushed: true,
+  commit: 'devcommit123',
+  previewUrl: session.metadata.preview_url,
+  changedFiles: ['src/app/page.tsx', 'src/components/Menu.tsx'],
+  startedAt: new Date().toISOString(),
+  finishedAt: new Date().toISOString(),
+};
+const reviewDiscord = await sendDiscordChannelMessage({
+  channelId: saleThread,
+  botToken: env.WEBSITE_TASKS_DISCORD_BOT_TOKEN,
+  payload: buildAgentReviewDiscordMessage({
+    caseFile,
+    runResult,
+    deployResult: { status: 'completed', conclusion: 'success' },
+  }),
+  fetchImpl: fakeFetch,
+});
+reviewDiscord.threadId = saleThread;
+reviewDiscord.threadReused = true;
+const reviewRecord = recordCaseNotification(caseFile.paths, {
+  type: 'agent_review_discord_sent',
+  kind: 'website_task',
+  ok: true,
+  discord: reviewDiscord,
+});
+caseFile = reviewRecord.caseFile;
+const reviewEmail = buildAgentReviewEmail({
+  caseFile,
+  runResult,
+  deployResult: { status: 'completed', conclusion: 'success' },
+  extraRevisionUrl: 'https://profitslocal.com/revision',
+});
+
+const publishResult = {
+  ok: true,
+  taskId: revision.task.id,
+  mode: 'publish',
+  repo: session.metadata.repo,
+  sourceBranch: 'dev',
+  targetBranch: 'main',
+  dryRun: false,
+  pushed: true,
+  commit: 'livecommit123',
+  devCommit: 'devcommit123',
+  liveUrl: 'https://opa.example.com',
+  startedAt: new Date().toISOString(),
+  finishedAt: new Date().toISOString(),
+};
+const publishDiscord = await sendDiscordChannelMessage({
+  channelId: saleThread,
+  botToken: env.WEBSITE_TASKS_DISCORD_BOT_TOKEN,
+  payload: buildLivePublishedDiscordMessage({
+    caseFile,
+    publishResult,
+    deployResult: { status: 'completed', conclusion: 'success' },
+    liveUrl: publishResult.liveUrl,
+  }),
+  fetchImpl: fakeFetch,
+});
+publishDiscord.threadId = saleThread;
+publishDiscord.threadReused = true;
+const publishRecord = recordCaseNotification(caseFile.paths, {
+  type: 'live_publish_discord_sent',
+  kind: 'website_task',
+  ok: true,
+  discord: publishDiscord,
+});
+caseFile = publishRecord.caseFile;
+const liveEmail = buildLivePublishedEmail({
+  caseFile,
+  publishResult,
+  deployResult: { status: 'completed', conclusion: 'success' },
+  liveUrl: publishResult.liveUrl,
+});
+
 const assertions = {
   saleOk: sale.ok,
   revisionOk: revision.ok,
@@ -129,6 +222,19 @@ const assertions = {
   taskHasHuashu: sale.task.designProtocol?.requiredSkill === 'huashu-design',
   taskHasOpenDesign: sale.task.designProtocol?.openDesignSkills?.includes('web-prototype'),
   caseTracksRevisionUsage: caseFile.revision?.used === 1,
+  reviewPostedToSameWebsiteThread: reviewDiscord.threadId === saleThread && reviewDiscord.threadReused === true,
+  publishPostedToSameWebsiteThread: publishDiscord.threadId === saleThread && publishDiscord.threadReused === true,
+  reviewEmailHasApprovalAndRevisionLinks: Boolean(
+    reviewEmail?.text?.includes('/approve?')
+    && reviewEmail?.text?.includes('/revise?')
+    && reviewEmail?.text?.includes(session.id)
+  ),
+  liveEmailHasLiveUrlAndOrderId: Boolean(
+    liveEmail?.text?.includes(publishResult.liveUrl)
+    && liveEmail?.text?.includes(session.id)
+  ),
+  caseMemoryTracksReviewAndPublishNotifications: caseFile.discord?.websiteTaskThreadId === saleThread
+    && caseFile.status === 'revision_task_queued',
 };
 
 const failed = Object.entries(assertions)
