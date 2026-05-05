@@ -1,7 +1,7 @@
 # WebJuice Stack · Handoff Document
 
 > 创建日期: 2026-05-04
-> 状态: Brisbane 测试完成，5 个餐厅 preview 已上线并通过部署巡检
+> 状态: Brisbane 测试完成，5 个餐厅 preview 已上线；Opa 已跑通 paid → revision → review email → approval publish → live domain 闭环
 > 运行环境: Mac Mini (macOS) + Cloudflare + GitHub + Resend
 
 ---
@@ -169,6 +169,12 @@ Current production sales path:
 - `npm run agent:run-task` now loads that case context, validates source-of-truth files, applies restaurant artifacts, runs build, and appends `agent-runs.jsonl`/timeline records. Use `--checkout true --push true` only when ready to update the dev review branch.
 - `npm run agent:complete-task` wraps task run, optional dev deploy check, and optional customer review email. Use it for the paid/revision handoff after the task is ready.
 - `npm run agent:publish-approved` publishes approved dev to main/live by creating a new main commit from the dev tree, avoiding unrelated-history merges and force-pushes.
+- 2026-05-06 production-like Opa rehearsal passed with real QA screenshots, customer review email, live publish, Deploy Live success, live email, and active custom domain:
+  - review email Resend id: `73281496-4628-449a-8ff1-89cb6f81a5fd`
+  - live publish commit: `418519767e480bf0bd0b8948e515851528f658d9`
+  - Deploy Live run: `25382781613`, `completed/success`
+  - live email Resend id: `7f832951-4d8b-4ed8-8d25-627f5d0a2129`
+  - live URLs: `https://opa-controlled.profitslocal.com/` and `/menu/` both HTTP 200
 - Template/client sites include `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` in the main automation repo using `AGENT_GITHUB_TOKEN`.
 - Template/client sites include `/api/order-status/`; `/revise` can show trusted revision quota after matching `orderId + checkout email` against the central entitlement JSON.
 - Funnel Discord messages now request webhook responses, try `thread_name`, can use `DISCORD_BOT_TOKEN` to create true text-channel threads, and write returned channel/thread/message IDs into `case.json.discord` plus timeline metadata.
@@ -200,6 +206,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | 5 个餐厅站内容像空壳 | 已修复 | 已按 Huashu Design 思路重做餐厅首页和 `/menu`；菜单项来自公开官网/PDF/菜单页，并在页面标注 source URL |
 | `profitslocal.com` 自定义域名绑定 | 已完成 | 已 attach 到 `profitslocal-live`；CNAME 已设置；Pages verification/validation active；`https://profitslocal.com/` HTTP 200 |
 | Opa 免费托管子域名 | 已完成 | `opa-controlled.profitslocal.com` 已在 `profitslocal.com` zone 创建 CNAME，已 attach 到 `opa-bar-mezze-restaurant-live`，Pages custom domain 状态 active |
+| Opa paid/revision/review/live 闭环 | 已完成 | Stripe test order `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7` 已完成 revision、QA screenshots、customer review email、live publish、live email 和 live domain 200 验证 |
 | Domain setup automation | MVP 已完成 | 客户 `/thank-you` 可进入 `/domain-setup`；template + 5 个 generated repos 已有 `/api/domain-request/` 和 `/api/domain-status/`；主仓库 `domain-request.yml` 可自动处理 ProfitsLocal 子域名 DNS CNAME + Pages attach，客户自有 subdomain 会等待 CNAME，root domain 进入人工 DNS/email audit |
 | pynacl 安装失败 | 已绕过 | 改用 `libsodium-wrappers` (npm) |
 | 模板复制需要等待 | 已解决 | generate-sites.js 已加 5s 等待 + 5 次重试 |

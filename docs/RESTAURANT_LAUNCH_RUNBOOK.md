@@ -29,6 +29,7 @@ Scope: restaurant website/menu loop only.
 | Opa free hosted domain | Done | `opa-controlled.profitslocal.com` CNAME created and attached to `opa-bar-mezze-restaurant-live`; Pages custom domain status `active`; forced-resolution HTTPS returns 200 |
 | Domain smoke cleanup | Done | `npm run domain:cleanup` dry-run guard rejects non-smoke domains; `opa-live-smoke*.profitslocal.com` Pages custom domains and DNS CNAMEs were deleted; `opa-controlled.profitslocal.com` and `menu.feng-talk.com` still return HTTP 200 |
 | Opa mobile menu polish | Done | Opa `dev` commit `8501ac1`; `Deploy Dev` success; deployed `/menu/` and `/revise/` return HTTP 200 |
+| Production-like Opa review and live publish | Done | QA screenshots attached; review email Resend id `73281496-4628-449a-8ff1-89cb6f81a5fd`; live commit `418519767e480bf0bd0b8948e515851528f658d9`; Deploy Live run `25382781613` success; live email Resend id `7f832951-4d8b-4ed8-8d25-627f5d0a2129`; live `/` and `/menu/` HTTP 200 |
 
 ## Standard Verification Sequence
 
@@ -183,9 +184,27 @@ Date: 2026-05-05.
 - Approval resolution: `orderId + checkout email` resolved to the same case, latest revision task, website thread, `sourceBranch: dev`, and `targetBranch: main`.
 - Approval publish dry run: `data/agent-runs/opa-approval-publish-dry-run.json`, `dryRun: true`, `pushed: false`, all publish planning steps ok.
 
+## Latest Production-Like Review/Live Publish
+
+Date: 2026-05-06 Brisbane time.
+
+- Client: Opa Bar & Mezze.
+- Test email: `matthew6688@gmail.com`.
+- Order: `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`.
+- Revision task: `data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json`.
+- QA screenshots: `data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts/review-desktop.png` and `review-mobile.png`.
+- Review email run: `data/agent-runs/opa-review-email-live-smoke.json`; pre-review gate `ok: true`; Resend id `73281496-4628-449a-8ff1-89cb6f81a5fd`.
+- Live publish run: `data/agent-runs/opa-live-publish-smoke.json`; pushed `main` commit `418519767e480bf0bd0b8948e515851528f658d9`.
+- Deploy Live: GitHub Actions run `25382781613`, `completed/success`.
+- Live email Resend id: `7f832951-4d8b-4ed8-8d25-627f5d0a2129`.
+- Live URL checks: `https://opa-controlled.profitslocal.com/` HTTP 200 and `https://opa-controlled.profitslocal.com/menu/` HTTP 200.
+- Domain status: `npm run domain:pages-status -- --project opa-bar-mezze-restaurant-live --domain opa-controlled.profitslocal.com` returns `active`.
+- Cost note: these two Resend sends returned `ledgerEvent: null` because `RESEND_EMAIL_UNIT_COST` was not configured for this run. Configure email/runtime cost estimates before the next ROI run.
+
 ## Remaining Backlog
 
 - Add dedicated `ProfitsLocal Handoff` sender Discord app/token later so `WEBSITE_TASKS_DISCORD_BOT_TOKEN` is not the website-agent bot itself.
-- Add QA screenshot capture into the real agent completion path so customer review emails can pass the pre-review gate automatically.
+- Add QA screenshot capture into the real auto-agent completion path so customer review emails can pass the pre-review gate without manually passing screenshot paths.
+- Configure Resend/runtime cost estimates before the next ROI smoke.
 - Add next restaurant city only after the Brisbane/Opa loop remains stable.
 - Dashboard planning can resume after restaurant loop stability.

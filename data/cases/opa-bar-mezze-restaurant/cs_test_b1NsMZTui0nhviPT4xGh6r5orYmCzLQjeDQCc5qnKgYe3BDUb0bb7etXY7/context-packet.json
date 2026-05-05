@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "caseId": "opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
-  "status": "dev_pushed_needs_review",
+  "status": "live_published",
   "clientSlug": "opa-bar-mezze-restaurant",
   "repo": "matthew6688/opa-bar-mezze-restaurant",
   "branch": "dev",
@@ -180,6 +180,32 @@
       "discordMessageId": "1501205900592021636",
       "discordMessageUrl": "",
       "createdAt": "2026-05-05T12:56:17.942Z"
+    },
+    {
+      "id": "case_evt_1777991538154_2cv1ww8o",
+      "type": "agent_run_completed",
+      "ok": true,
+      "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "branch": "dev",
+      "runId": "agent_run_1777991538154_nih262pc",
+      "changedFiles": [],
+      "pushed": false,
+      "commit": "",
+      "createdAt": "2026-05-05T14:32:18.154Z"
+    },
+    {
+      "id": "case_evt_1777991606227_t0x0414j",
+      "type": "live_publish_completed",
+      "ok": true,
+      "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "branch": "main",
+      "runId": "agent_run_1777991606227_igdlwotv",
+      "changedFiles": [],
+      "pushed": true,
+      "commit": "418519767e480bf0bd0b8948e515851528f658d9",
+      "createdAt": "2026-05-05T14:33:26.227Z"
     }
   ],
   "agentStartProtocol": [

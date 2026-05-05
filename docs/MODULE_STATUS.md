@@ -29,7 +29,7 @@
 | Central automation runner | Working MVP | `npm run funnel:route-event` routes Stripe/Tally/first-party revision payloads; `.github/workflows/route-funnel-event.yml` can persist generated funnel state, commit it back to main, auto-run the agent, and skip duplicate webhook payloads by idempotency key/submission path. |
 | Case file memory | Working MVP | Funnel routing maintains `data/cases/<client>/<order>/case.json`, timeline, customer messages, context packet, decisions log, and agent run log so agents do not lose order/thread context. |
 | Revision entitlement ledger | Working MVP | Paid sales create `data/funnel/orders/<client>/<order>.json`; revision requests consume quota before agent task creation and denied over-limit attempts are recorded without creating tasks. |
-| Customer email notifications | Working MVP | Client Pages Functions and automation router can send Resend customer emails for payment receipt, revision receipt, accepted quota usage, and denied/extra-revision paths when `RESEND_API_KEY` is configured. |
+| Customer email notifications | Working MVP | Client Pages Functions and automation router can send Resend customer emails for payment receipt, revision receipt, accepted quota usage, denied/extra-revision paths, review ready, and live publish. Opa production-like review email and live email sent successfully to `matthew6688@gmail.com`. |
 | Extra revision checkout | Working MVP | Stripe test price exists for `$100` extra revisions; checkout supports `extra_revision` and revision pages link to purchase more. |
 | Tally payment form builder | Working MVP | `npm run funnel:create-tally-payment-forms` builds stable Tally payment form payloads, MCP prompts, or live forms/webhooks when `TALLY_API_KEY` is set in `.env.local` or runtime env. Current product tiers: $399 one-time website with 3 revisions; $799 yearly website with monthly maintenance. |
 | Tally feedback form builder | Working MVP | `npm run funnel:create-tally-feedback-form` builds a feedback form payload/MCP prompt that submits revision requests into the same webhook. |
@@ -46,8 +46,8 @@
 | Tally webhook to agent task | Working MVP | Tally orders normalize into revenue events and standard agent tasks. |
 | Hermes/OpenClaw task queue | Working MVP | `npm run agent:create-task` and `npm run agent:validate-task` create pending task JSON for external agents; routed funnel tasks include case/context paths, source-of-truth files, allowed files, and Huashu design protocol. |
 | Agent execution runner | Working MVP | `npm run agent:run-task` loads case context/source-of-truth files, applies artifacts to an artifact-ready repo, runs build, and appends agent run/timeline records to the case. Push to `dev` is explicit with `--push true`. |
-| Agent completion runner | Working MVP | `npm run agent:complete-task` wraps run/build, optional dev deploy check, and optional Resend review email so paid/revision work can reach customer review. |
-| Approval publish runner | Working MVP | `npm run agent:publish-approved` publishes an approved dev tree to main without merging unrelated histories, can push live, wait for live deploy, send live email/Discord follow-up, and update case timeline. |
+| Agent completion runner | Working MVP | `npm run agent:complete-task` wraps run/build, optional dev deploy check, and optional Resend review email so paid/revision work can reach customer review. Opa passed the pre-review gate with real QA screenshots and sent review email `73281496-4628-449a-8ff1-89cb6f81a5fd`. |
+| Approval publish runner | Working MVP | `npm run agent:publish-approved` publishes an approved dev tree to main without merging unrelated histories, can push live, wait for live deploy, send live email/Discord follow-up, and update case timeline. Opa pushed main commit `418519767e480bf0bd0b8948e515851528f658d9`, Deploy Live run `25382781613` succeeded, and live email `7f832951-4d8b-4ed8-8d25-627f5d0a2129` was sent. |
 | First-party approval flow | Working MVP | Template/client sites have `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` with mandatory `orderId + checkout email` matching. |
 | Order status utility | Working MVP | Template/client sites have `/api/order-status/`; `/revise` displays trusted revision quota only after `orderId + checkout email` matches the central entitlement record. |
 | Revision attachment storage | Working MVP | Template/client sites have `/api/upload-attachment/` for server-side Cloudinary uploads with signed or unsigned-preset Cloudinary mode; local smoke passes in template/generated repos, Pages runtime secrets are configured on template plus 5 generated dev/live projects, and deployed Opa returned a real Cloudinary URL from `/api/upload-attachment/`. |
@@ -65,7 +65,7 @@
 | Cost tracking | Working MVP | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, Tally revenue, Stripe revenue, Resend emails, image generation, and agent runtime can write events. Resend/runtime costs are configurable estimates. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; review links lock order/email as read-only, show trusted plan/quota after match, upload attachments to Cloudinary when configured, and carry attachment URLs into Discord/email/agent routing. Backend router enforces entitlement quota before creating a `revision` task. |
-| Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; route workflow can auto-run the generated agent task, push dev, wait for deploy, notify review channels, and skip duplicate webhook retries. Verified live by GitHub Actions smoke `25354611737` and Opa deployed checkout `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`. |
+| Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; route workflow can auto-run the generated agent task, push dev, wait for deploy, notify review channels, and skip duplicate webhook retries. Verified live by GitHub Actions smoke `25354611737`, Opa deployed checkout `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`, and the Opa production-like review/live publish rehearsal. |
 | Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. Website task handoffs post the full task packet into `#website-tasks` and prefer Hermes auto-threading for the same text-channel thread display used by human-started Hermes tasks; explicit message-thread creation remains as fallback. Later revisions/review/publish reuse `case.json.discord.websiteTaskThreadId`. Live Opa smoke verified thread creation, same-thread revision reuse, website-agent pickup, and Huashu/open-design skill loading. |
 
 ## Not Started
@@ -82,10 +82,11 @@
 
 ## Immediate Next Build Order
 
-1. Add QA screenshot capture to the real agent completion path so customer review emails can pass the pre-review gate automatically.
+1. Add QA screenshot capture to the real auto-agent completion path so customer review emails can pass the pre-review gate automatically.
 2. Add the dedicated `ProfitsLocal Handoff` sender bot/token when the owner creates it, then switch `WEBSITE_TASKS_DISCORD_BOT_TOKEN` away from the website-agent bot.
-3. Add next restaurant city only after the Brisbane/Opa loop closes cleanly with a non-smoke customer review email.
-4. Plan dashboard after restaurant loop remains stable.
+3. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` or pass per-run runtime cost so ROI reports include email and agent labor estimates.
+4. Add next restaurant city only after the Brisbane/Opa loop closes cleanly with automatic screenshots.
+5. Plan dashboard after restaurant loop remains stable.
 
 ## Verification Rules
 

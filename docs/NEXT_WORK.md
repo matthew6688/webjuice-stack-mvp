@@ -1,6 +1,6 @@
 # Next Work
 
-Updated: 2026-05-05
+Updated: 2026-05-06
 
 ## Current State
 
@@ -53,15 +53,16 @@ Verified live state:
 - Opa cold outreach live test to owner inbox succeeded: Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce`; the validated pack includes preview, desktop/mobile screenshots, demo video, official source proof, and local AI audit summary.
 - Approval publish live-safe dry run succeeded for the same Opa order/task: `data/agent-runs/opa-approval-publish-dry-run.json` records `dryRun: true`, `pushed: false`, source `dev`, target `main`, and all publish planning steps ok.
 - Default domain route resolver is implemented: blank domain defaults to `<client>.profitslocal.com`; customer-owned domains require DNS handoff; ProfitsLocal subpages are allowed but wait for the future root-site router.
+- Production-like Opa customer loop completed against real central state and the real generated repo: QA screenshots were attached, the pre-review gate passed, customer review email was sent, approved dev tree was published to `main`, `Deploy Live` completed success, live email was sent, `https://opa-controlled.profitslocal.com/` and `/menu/` return HTTP 200, and Pages custom domain status is `active`.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
 
 ## Current Priority Queue
 
-1. Wire automatic QA screenshot capture after dev deploy and before `agent:complete-task --send-email true`.
+1. Wire automatic QA screenshot capture directly into the real auto-agent path after dev deploy and before `agent:complete-task --send-email true`; the manual screenshot-assisted path is verified.
 2. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
-3. Run one production-like customer loop with ROI evidence: paid order, agent dev update, review email, approval, live publish, and domain setup.
+3. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
 4. Add Resend notifications for domain setup status changes: active, waiting for customer DNS, and root-domain review.
 5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
 6. Update GitHub Actions for Node 24 compatibility before GitHub's Node 20 action runtime removal affects deploys.
@@ -366,9 +367,28 @@ npm run audit:restaurant-local-llm -- --client opa-bar-mezze-restaurant --fail-o
 
 ## Suggested Build Order
 
-1. Add automatic post-deploy screenshot capture into agent completion so the review email gate can pass without manual screenshot paths.
+### Latest Production-Like Review/Live Publish
+
+Date: 2026-05-06 Brisbane time.
+
+- Client: Opa Bar & Mezze.
+- Test email: `matthew6688@gmail.com`.
+- Order: `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`.
+- Revision task: `data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json`.
+- QA screenshots:
+  - `data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts/review-desktop.png`
+  - `data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts/review-mobile.png`
+- Review email run: `data/agent-runs/opa-review-email-live-smoke.json`; pre-review gate `ok: true`; Resend id `73281496-4628-449a-8ff1-89cb6f81a5fd`.
+- Live publish run: `data/agent-runs/opa-live-publish-smoke.json`; pushed `main` commit `418519767e480bf0bd0b8948e515851528f658d9`.
+- Deploy Live: GitHub Actions run `25382781613`, `completed/success`.
+- Live email Resend id: `7f832951-4d8b-4ed8-8d25-627f5d0a2129`.
+- Live URL checks: `https://opa-controlled.profitslocal.com/` HTTP 200 and `https://opa-controlled.profitslocal.com/menu/` HTTP 200.
+- Cloudflare Pages domain status: `opa-controlled.profitslocal.com` is `active`.
+- Cost note: these two Resend sends returned `ledgerEvent: null` because `RESEND_EMAIL_UNIT_COST` was not configured for this run. Configure estimated email/runtime costs before the next ROI run.
+
+1. Add automatic post-deploy screenshot capture into the real auto-agent completion path so the review email gate can pass without manual screenshot paths.
 2. Add the dedicated `ProfitsLocal Handoff` sender bot/token when available, then update env/docs to separate sender bot from website-agent.
-3. Run one non-smoke Opa customer-review email path with screenshots and confirm Resend id.
+3. Configure Resend/runtime cost estimates before the next ROI smoke.
 4. More restaurant cities only after the Brisbane restaurant loop is stable.
 5. Dashboard implementation only after the core restaurant loop is done; see `docs/OPS_DASHBOARD_PLAN.md`.
 
