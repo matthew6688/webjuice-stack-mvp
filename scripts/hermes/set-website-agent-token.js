@@ -7,7 +7,7 @@ import { stdin as input, stdout as output } from 'process';
 
 const args = parseArgs(process.argv.slice(2));
 const profile = args.profile || 'website-agent';
-const channel = args.channel || args['channel-id'] || '1501072883001065614';
+const channel = args.channel || args['channel-id'] || '1501187038706401290';
 const hermesRoot = args['hermes-root'] || path.join(process.env.HOME || '', '.hermes');
 const envPath = path.join(hermesRoot, 'profiles', profile, '.env');
 
@@ -123,4 +123,3 @@ function parseArgs(argv) {
   }
   return parsed;
 }
-

@@ -215,6 +215,16 @@ export async function sendDiscordThreadedMessage({
   fetchImpl = fetch,
 }) {
   if (!threadName) throw new Error('Discord thread name is required');
+  const channel = await getDiscordChannel({ channelId, botToken, fetchImpl });
+  if (channel?.type === 15 || channel?.type === 16) {
+    return createForumThread({
+      fetchImpl,
+      botToken,
+      channelId,
+      threadName,
+      payload,
+    });
+  }
   const anchorPayload = parentPayload || {
     content: `Website task: ${threadName}`,
     allowed_mentions: { parse: [] },
@@ -253,6 +263,72 @@ export async function sendDiscordThreadedMessage({
     threadCreatedByBot: true,
     threadMessageId: threadMessage.messageId,
     threadMessageUrl: threadMessage.messageUrl,
+  };
+}
+
+async function getDiscordChannel({ channelId, botToken, fetchImpl }) {
+  const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}`, {
+    headers: {
+      Authorization: `Bot ${botToken}`,
+      'User-Agent': 'profitslocal-discord-handoff',
+    },
+  });
+  if (!response.ok) return null;
+  const text = await response.text().catch(() => '');
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
+
+async function createForumThread({ fetchImpl, botToken, channelId, threadName, payload }) {
+  const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}/threads`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bot ${botToken}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-discord-handoff',
+    },
+    body: JSON.stringify({
+      name: threadName,
+      auto_archive_duration: 10080,
+      message: payload,
+    }),
+  });
+  const text = await response.text().catch(() => '');
+  let data = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+  if (!response.ok) {
+    throw new Error(`Discord forum thread creation failed: ${response.status} ${text}`.trim());
+  }
+  const guildId = data?.guild_id || '';
+  const threadId = data?.id || '';
+  const messageId = data?.last_message_id || '';
+  return {
+    ok: true,
+    status: response.status,
+    channelId,
+    messageId,
+    messageUrl: guildId && threadId && messageId
+      ? `https://discord.com/channels/${guildId}/${threadId}/${messageId}`
+      : '',
+    threadId,
+    threadUrl: guildId && threadId ? `https://discord.com/channels/${guildId}/${threadId}` : '',
+    threadName,
+    threadCreatedByBot: true,
+    threadStyle: 'forum_post',
+    threadMessageId: messageId,
+    threadMessageUrl: guildId && threadId && messageId
+      ? `https://discord.com/channels/${guildId}/${threadId}/${messageId}`
+      : '',
   };
 }
 

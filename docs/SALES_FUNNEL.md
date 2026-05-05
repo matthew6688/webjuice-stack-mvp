@@ -75,9 +75,9 @@ Keep the dev preview utility pages available after launch so the customer can st
 
 ## Discord Website Threads
 
-`#website-tasks` is an inbox. Each executable website task creates a true Discord thread named from the business and order, for example `Opa-Bar-Mezze-sale-cs_test_...`.
+`#websites` is a Forum channel. Each executable website task creates a forum post/thread named from the business and order, for example `Opa-Bar-Mezze-sale-cs_test_...`.
 
-Discord still shows the thread preview inline in the channel timeline; that is normal. Click the preview card or the thread entry under the channel to open the dedicated thread. The actual task packet and agent replies live inside that thread, and later revisions reuse `case.json.discord.websiteTaskThreadId`.
+This is different from a normal text channel. Text channels can support message threads and auto-thread behavior, but they still display thread cards inline in the message stream. Forum channels show tasks as a cleaner post/thread list, which is better for avoiding missed website work. The actual task packet and agent replies live inside the forum thread, and later revisions reuse `case.json.discord.websiteTaskThreadId`.
 
 ## Resend For Cold Outreach
 

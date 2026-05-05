@@ -61,7 +61,7 @@ npm run qa:preview-sales-bar -- --dist-dir /Users/matthew/Developer/webjuice-res
 1. Customer pays on preview `/checkout`.
 2. Stripe webhook routes paid order to central automation.
 3. Central automation creates entitlement, case memory, agent task, Discord website thread, and revenue ledger event.
-4. Website task handoff is written to a dedicated `#website-tasks` thread named from the business name and order ID.
+4. Website task handoff is written to a dedicated `#websites` thread named from the business name and order ID.
 5. Revision/approval/publish updates reuse that same website task thread.
 6. Agent works only on `dev`.
 7. Customer reviews the dev preview.
@@ -83,7 +83,7 @@ Date: 2026-05-05.
 - Revision result: same `orderId + email` consumed quota to `1/3`, sent Resend revision email, and reused the same website task thread.
 - Agent pickup: `website-agent` replied in-thread, read case/task files, and loaded Huashu/open-design skills.
 - Isolation: state was written under `/tmp/profitslocal-opa-controlled`, not production `data/`.
-- Discord UI note: task threads appear as inline thread cards in `#website-tasks`; click the card/thread entry to open the dedicated thread.
+- Discord UI note: `#websites` is a Forum channel, so task threads appear as clean post/thread entries. If the target is a normal text channel, Discord will instead show inline thread cards in the message stream.
 
 ## Latest Generated Repo Sync
 

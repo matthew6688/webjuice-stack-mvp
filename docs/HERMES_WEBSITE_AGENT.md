@@ -6,7 +6,7 @@ The existing `enricher` profile is not the right owner for website tasks. Its SO
 
 ## Target Shape
 
-- Discord channel: `#website-tasks`
+- Discord channel: `#websites`
 - Hermes profile: `website-agent`
 - Launch service: `ai.hermes.gateway-website-agent`
 - Working directory: `/Users/matthew/Developer/google-map-website`
@@ -35,20 +35,20 @@ Recommended channel split:
 | Channel | Owner | Purpose |
 |---|---|---|
 | `#sales` or current sales channel | Sales webhook | New payment/order notification |
-| `#website-tasks` | `website-agent` | Website/revision execution thread and memory |
+| `#websites` | `website-agent` | Website/revision execution thread and memory |
 | `#revise` | Revision webhook | Customer revision intake notification |
 | `#bot-logs` | none | Logs only, all bots ignore |
 | `#sandbox` | all bots | Test only |
 
-The sales webhook may still create an ops notification thread in the sales channel. The executable website task must always be mirrored into `#website-tasks` as its own true Discord thread with the case path, task path, repo, preview URL, order ID, and customer email. `website-agent` should be the only free-response Hermes profile for `#website-tasks`.
+The sales webhook may still create an ops notification thread in the sales channel. The executable website task must always be mirrored into `#websites` as its own true Discord thread with the case path, task path, repo, preview URL, order ID, and customer email. `website-agent` should be the only free-response Hermes profile for `#websites`.
 
 Current routing contract:
 
-- `#website-tasks` is only the inbox/anchor channel.
-- Each new paid website task creates one dedicated thread.
+- `#websites` is a Discord Forum channel (`type: 15`) and should stay that way.
+- Each new paid website task creates one dedicated forum post/thread.
 - The thread name starts with the business name and includes the task kind plus order ID, for example `Opa-Bar-Mezze-sale-cs_test_...`.
-- The parent channel message is only an anchor and does not mention `website-agent`.
-- The full task packet is posted inside the created thread and mentions `website-agent`.
+- For Forum channels, the full task packet is the first post inside the forum thread and mentions `website-agent`.
+- For ordinary text channels, the automation falls back to creating a message thread from an anchor message.
 - Later revisions, approval updates, dev preview notifications, and live publish notifications reuse `case.json.discord.websiteTaskThreadId`.
 - Do not rely on Discord/Hermes auto-threading for task creation; the automation explicitly creates the thread first.
 
@@ -107,16 +107,16 @@ DISCORD_ALLOW_BOTS=mentions
 
 Do not set legacy model overrides such as `LLM_MODEL=kimi-for-coding` in this profile unless the matching provider key is configured. On 2026-05-05 this stale override caused `website-agent` to fail before pickup even though `config.yaml` pointed to `openai-codex`. The profile now leaves model selection to `config.yaml`.
 
-For a clean production setup, create a separate Discord application/bot named `ProfitsLocal Website Agent`, invite it to the server, and give it access only to `#website-tasks`, `#sandbox`, and any needed threads.
+For a clean production setup, create a separate Discord application/bot named `ProfitsLocal Website Agent`, invite it to the server, and give it access only to `#websites`, `#sandbox`, and any needed threads.
 
 Why `DISCORD_ALLOW_BOTS=mentions`: sales/revision automation can hand work to `website-agent` by posting a task packet that explicitly mentions the bot. Generic bot/webhook notifications remain ignored, which prevents noisy loops.
 
-Why `GATEWAY_ALLOW_ALL_USERS=true`: this channel is dedicated to website execution and should accept customer-order handoffs without requiring every webhook/bot author ID to be pre-registered. Keep the bot scoped to `#website-tasks` and `#sandbox`.
+Why `GATEWAY_ALLOW_ALL_USERS=true`: this channel is dedicated to website execution and should accept customer-order handoffs without requiring every webhook/bot author ID to be pre-registered. Keep the bot scoped to `#websites` and `#sandbox`.
 
 GitHub Actions can hand a paid order or revision to this agent by setting:
 
 ```env
-WEBSITE_TASKS_DISCORD_CHANNEL_ID=1501072883001065614
+WEBSITE_TASKS_DISCORD_CHANNEL_ID=1501187038706401290
 WEBSITE_AGENT_MENTION=<@1501073096696664184>
 WEBSITE_TASKS_DISCORD_BOT_TOKEN=...
 ```
@@ -155,7 +155,7 @@ launchctl print gui/$(id -u)/ai.hermes.gateway-website-agent
 
 If you want to clone local model auth from an existing Hermes profile, run with `--clone-auth true`. Do not clone or reuse the Discord bot token from another running profile.
 
-Then post in `#website-tasks`:
+Then post in `#websites`:
 
 ```text
 case: data/cases/opa-bar-mezze-restaurant/<order-id>/case.json
@@ -197,11 +197,11 @@ The smoke script refuses to send if `WEBSITE_TASKS_DISCORD_BOT_TOKEN` resolves t
 Verified locally on 2026-05-05:
 
 - `ai.hermes.gateway-website-agent` LaunchAgent starts and stays running.
-- The dedicated bot can see `#website-tasks` (`1501072883001065614`).
+- The dedicated bot can see `#websites` (`1501187038706401290`).
 - A bot/webhook-style message from another Discord app only triggers when it mentions `website-agent`.
 - Hermes creates a dedicated Discord thread for the handoff message.
 - `website-agent` completes a model smoke test in that thread with `openai-codex / gpt-5.4-mini`.
-- `route-funnel-event` supports an optional website-agent handoff message to `#website-tasks`.
+- `route-funnel-event` supports an optional website-agent handoff message to `#websites`.
 - 2026-05-05 live smoke verified explicit thread creation, business-name thread naming, in-thread task packet posting, website-agent pickup, and Huashu/open-design skill loading.
 - The handoff message includes pointers to case, context, task, evidence, content, design, and brand spec files.
 
