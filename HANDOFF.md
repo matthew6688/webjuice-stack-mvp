@@ -227,6 +227,18 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - `docs/MODULE_STATUS.md`
 - `docs/WEBSITE_AGENT_CLOSURE_PLAN.md`
 
+### 7.1 Restaurant core loop: launch blockers
+
+- [ ] Customer approval endpoint smoke：从 dev preview `/approve?order_id=...&email=...` 提交，必须匹配同一个 central case/thread，并 dispatch `publish-approved.yml`
+- [ ] Preview fixed footer/banner QA：dev preview 上固定 footer 只作为销售/账户操作入口，包含 `Approve site`、`Request revision`、revision usage、`Buy extra revision`，不能污染餐厅正式内容
+- [ ] `/revise` full smoke：用 `orderId + checkout email` 提交 feedback，验证 entitlement 扣次数、同一个 case、同一个 `websiteTaskThreadId`
+- [ ] Strict pre-review gate：如果 agent run 没有 `contextRead`、`designProtocolUsed`、截图/视觉 QA、dev deploy URL，就不能发 customer review email
+- [ ] Opa Bar + Mezze full-loop live-sim：用 test order 跑 paid → agent dev preview → customer approve → publish live，全程不污染真实 ROI/customer data
+- [ ] Domain handoff email/page：客户指定 domain/subdomain 后，thank-you/review/live email 需要给清晰 DNS 指引；utility preview pages 保留作为 revise/approve/account 页面
+- [ ] Extra revision policy finalization：确认 `$100` extra revision 是给原 entitlement `+1`，还是创建单独 one-revision entitlement，并完成 wiring
+
+### 7.2 Backlog / not launch blockers
+
 - [x] 将主模板迁到 `matthew6688/webjuice-stack-mvp`
 - [x] 将 `/tmp/webjuice-client-fix/*` 中 5 个客户 repo 的 `fix: update Astro 6 build config` commits push 到 `main` 和 `dev`
 - [x] 给 5 个 `matthew6688/*-restaurant` repo 设置 `PAGES_PROJECT_NAME` variable

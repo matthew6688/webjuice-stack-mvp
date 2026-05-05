@@ -26,8 +26,37 @@
    - order entitlement with revision quota
    - agent task JSON with target repo and `dev` branch
    - case memory under `data/cases/<clientSlug>/<orderId>/`
+11. Agent works on `dev`, not `main/live`.
+12. Customer reviews the dev preview URL and clicks either `Approve site` or `Request revision`.
+13. Approval publishes the reviewed `dev` tree to `main/live`; revision creates a new dev task if quota remains.
 
 Tally remains supported as a provider, but live API creation of the payment block was blocked by Tally's opaque block schema during verification. Keep the provider boundary so Tally can be used manually/MCP later without changing the downstream order/task contracts.
+
+## Customer Review Surface
+
+The customer-facing review surface is the generated `dev` preview site, not Discord and not an internal dashboard.
+
+Example:
+
+```text
+https://<client>-dev.pages.dev/
+```
+
+The preview site must keep sales/account controls in a fixed footer/banner. Do not insert checkout, approval, revision, or internal workflow controls into the restaurant's official content, menu, hero, gallery, or brand copy.
+
+Fixed footer/banner buttons:
+
+- `Approve site` -> `/approve?order_id=<orderId>&email=<checkoutEmail>`
+- `Request revision` -> `/revise?order_id=<orderId>&email=<checkoutEmail>`
+- `Buy extra revision` -> `$100` Stripe extra revision checkout when needed
+
+Utility pages:
+
+- `/approve` requires `orderId + checkout email`, then posts to `/api/approval-request/`.
+- `/revise` requires `orderId + checkout email`, then posts to `/api/revision-request/`.
+- `/api/order-status/` returns trusted revision usage only after the same match.
+
+The customer may reach these pages from either the review email or the fixed footer/banner on the dev preview.
 
 Legacy Tally shape:
 
@@ -330,6 +359,8 @@ https://<client>-dev.pages.dev/approve?order_id=cs_...&email=owner@example.com
 
 It posts to `/api/approval-request/`, which dispatches the main repo `publish-approved.yml` workflow. The workflow resolves the case by `client_slug + order_id`, verifies the submitted checkout email, then publishes the latest task recorded on that case.
 
+Approval must always resolve back to the same central case and website task thread. If the order cannot be matched by both `orderId + checkout email`, the approval request must fail closed and not publish.
+
 ## Revision Entitlements
 
 Paid orders create an entitlement record under:
@@ -364,6 +395,7 @@ Email nodes:
 - Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
 - Revision denied: send the reason and a `$100` extra revision checkout link. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
 - Agent dev preview ready: send dev review link after build/QA passes. Implemented in `npm run agent:complete-task` when `--send-email true`; Discord follow-up is available with `--send-discord true`.
+- Customer approve/revise links: email should point to the dev preview utility pages, not to Discord or an internal operator page.
 - Domain/live launch ready: send DNS/live-domain instructions. Not built.
 - Live published: send live site link after approved `dev` tree is published to `main`. Implemented in `npm run agent:publish-approved` when `--send-email true`; Discord follow-up is available with `--send-discord true`.
 

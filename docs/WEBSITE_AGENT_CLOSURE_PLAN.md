@@ -25,12 +25,40 @@ Stripe/Tally/Revision event
   -> data/cases/<client>/<order>/context-packet.json
   -> one website-task Discord thread
   -> dev branch implementation
+  -> dev preview utility footer/banner
   -> customer review email
   -> approval
   -> live publish
 ```
 
 The Discord thread is the human-visible workspace. The case folder is the source of truth. If they disagree, the case folder wins and the thread should be repaired.
+
+## Customer Click Path
+
+The customer does not click in Discord or in our internal dashboard. The customer acts from the dev preview site and from email.
+
+During review, the customer sees the `dev` preview URL, for example:
+
+```text
+https://<client>-dev.pages.dev/
+```
+
+The preview site must keep restaurant content clean. Sales/account controls live only in a fixed footer/banner and utility pages, not inside the restaurant's menu, hero copy, or brand content.
+
+Required dev preview customer controls:
+
+- `Approve site` -> `/approve?order_id=<orderId>&email=<checkoutEmail>`
+- `Request revision` -> `/revise?order_id=<orderId>&email=<checkoutEmail>`
+- `Revision usage` -> read from `/api/order-status/` after `orderId + checkout email` match
+- `Buy extra revision` -> Stripe `$100` extra revision checkout when quota is exhausted or customer wants more
+
+Required email links:
+
+- `Review preview` -> dev preview URL
+- `Approve for live publishing` -> dev preview `/approve`
+- `Request changes` -> dev preview `/revise`
+
+Approval must require `orderId + checkout email`. Hidden `client_slug` and `repo` are context only; they are not proof of ownership.
 
 ## Required Behaviors
 
@@ -176,6 +204,24 @@ Expected:
 - same Discord thread receives live URL.
 - case status becomes `live_published`.
 
+### 7. Preview Utility Footer Is The Customer Control Surface
+
+The dev preview must expose the operational controls without polluting the client's restaurant site content.
+
+Required behavior:
+
+- Fixed footer/banner appears on generated preview sites.
+- It links to `/approve` and `/revise` with the current order context when available.
+- It shows trusted revision count only after `/api/order-status/` validates `orderId + checkout email`.
+- It remains available on the preview/utility domain after the customer domain points to live production.
+- It can be hidden or omitted from final live customer domain pages if the customer only wants the official restaurant site there.
+
+Validation:
+
+- Playwright/mobile screenshot confirms the footer does not cover menu content.
+- `/approve` dispatch smoke confirms approval maps to the same case/thread.
+- `/revise` smoke confirms revision maps to the same entitlement/case/thread.
+
 ## Commands To Standardize
 
 These should be the canonical operator commands:
@@ -205,13 +251,16 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Memory continuation | Confirm later thread message can recover from case files | Pending |
 | Design protocol audit | Confirm run record proves Huashu/open-design usage | Passing via `npm run hermes:test-website-agent-closure` |
 | Website thread approval-loop smoke | Confirm dev-ready and live-published notifications post to one live Discord thread without file edits/deploy | Passing via `npm run hermes:smoke-website-agent-approval-loop -- --send true` |
+| Customer approval endpoint smoke | Confirm `/approve` with `orderId + email` resolves same case/thread and dispatches publish | Pending |
+| Preview utility footer QA | Confirm approve/revise links are visible, mobile-safe, and outside restaurant content | Pending |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Run the fixture against Opa Bar + Mezze using test order IDs only.
-3. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
-4. Add customer-facing approval endpoint smoke that confirms approved order metadata maps to the same case/thread.
+2. Add customer-facing approval endpoint smoke that confirms approved order metadata maps to the same case/thread.
+3. QA and harden the fixed preview footer/banner: approve, revise, revision usage, extra revision purchase.
+4. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
+5. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
 
 ## Required Secrets And Variables
 
