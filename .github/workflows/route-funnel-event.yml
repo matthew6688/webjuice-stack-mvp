@@ -116,6 +116,8 @@ jobs:
           fi
           gh auth setup-git
           gh repo clone "$CLIENT_REPO" /tmp/client-repo
+          git -C /tmp/client-repo config user.name "webjuice-agent"
+          git -C /tmp/client-repo config user.email "webjuice-agent@users.noreply.github.com"
           npm ci --prefix /tmp/client-repo
 
       - name: Run generated agent task
