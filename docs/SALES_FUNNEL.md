@@ -108,7 +108,14 @@ npm run domain:inspect -- --domain profitslocal.com --project profitslocal-live
 npm run domain:pages-status -- --project profitslocal-live --domain profitslocal.com
 npm run domain:upsert-cname -- --zone <zone-id> --name <client>.profitslocal.com --target <client>-live.pages.dev --proxied true
 npm run domain:attach-pages -- --project <client>-live --domain <client>.profitslocal.com
+npm run domain:cleanup -- --domain <smoke-domain>.profitslocal.com --project <client>-live
 ```
+
+Smoke cleanup:
+
+- Use `npm run domain:cleanup -- --domain <smoke-domain>.profitslocal.com --project <client>-live` for dry-run.
+- Add `--execute true` only after the plan shows the expected Pages custom domain and DNS CNAME.
+- The script refuses non-smoke domains by default; keep that guard for customer production domains.
 
 ## Discord Website Threads
 

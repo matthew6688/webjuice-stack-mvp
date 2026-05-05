@@ -85,6 +85,7 @@ Working now:
 - ProfitsLocal-owned subdomains can be provisioned automatically: create/update the Cloudflare CNAME, attach the Pages custom domain, then poll Pages status. Customer-owned subdomains wait until the customer CNAME resolves to the Pages target. Customer root domains stop for manual DNS/email audit.
 - Live Opa smoke on 2026-05-05 proved the deployed customer page can POST `/api/domain-request/`, dispatch `domain-request.yml`, create `opa-live-smoke.profitslocal.com`, attach it to `opa-bar-mezze-restaurant-live`, commit central state, and let deployed `/api/domain-status/` read that same request back.
 - A second live smoke proved pending status recovery: `/api/domain-status/` returned `refreshing:true`, dispatched another `domain-request.yml` run, and updated `opa-live-smoke-2.profitslocal.com` from `pages_pending` to `active` in central state.
+- `npm run domain:cleanup` removes smoke-only custom domains from both Cloudflare Pages and DNS with a dry-run default and a non-smoke guard. The `opa-live-smoke*.profitslocal.com` test domains were cleaned up; `opa-controlled.profitslocal.com` and `menu.feng-talk.com` remained HTTP 200.
 - Local secrets should be configured with `npm run setup:local-env`, then verified with `npm run check:env -- --workflow funnel`, `scrape`, `deploy`, and `localAudit`.
 - ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
 - Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
@@ -94,7 +95,7 @@ Remaining:
 
 - Deferred by owner: `profitslocal.com` page/design work will be handled later.
 - Optional hardening: add email notifications for domain-request status changes and a stronger customer-facing status history.
-- Optional cleanup: remove smoke-only Pages custom domains and DNS records after enough production-like tests are recorded.
+- Optional cleanup: remove future smoke-only Pages custom domains and DNS records with `npm run domain:cleanup`.
 
 Validation:
 
@@ -107,6 +108,7 @@ npm run domain:test-launch-route
 npm run domain:test-request
 npm run domain:request -- --client opa-bar-mezze-restaurant --order cs_test_domain_dry_001 --email matthew6688@gmail.com --domain opa-controlled.profitslocal.com --execute false --write false
 npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
+npm run domain:cleanup -- --domain <smoke-domain>.profitslocal.com --project <client>-live
 ```
 
 ### 2. Agent Review Email QA Gate

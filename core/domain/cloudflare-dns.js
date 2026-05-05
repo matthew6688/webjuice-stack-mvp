@@ -36,13 +36,35 @@ export async function upsertCnameRecord({ token, zoneId, name, target, proxied =
   };
 }
 
+export async function deleteDnsRecordByName({ token, zoneId, name, types = ['CNAME'] }) {
+  if (!token) throw new Error('token is required');
+  if (!zoneId) throw new Error('zoneId is required');
+  if (!name) throw new Error('name is required');
+  const records = await findRecordsByName({ token, zoneId, name });
+  const deletable = records.filter((record) => types.includes(record.type));
+  const deleted = [];
+  for (const record of deletable) {
+    deleted.push(await deleteDnsRecord({ token, zoneId, recordId: record.id }));
+  }
+  return {
+    action: deleted.length ? 'deleted' : 'not_found',
+    name,
+    deleted,
+  };
+}
+
 async function findAddressRecord({ token, zoneId, name }) {
+  const records = await findRecordsByName({ token, zoneId, name });
+  return records.find((record) => ['CNAME', 'A', 'AAAA'].includes(record.type)) || null;
+}
+
+async function findRecordsByName({ token, zoneId, name }) {
   const url = new URL(`https://api.cloudflare.com/client/v4/zones/${zoneId}/dns_records`);
   url.searchParams.set('name', name);
   const response = await fetch(url, { headers: authHeaders(token) });
   const data = await response.json();
   if (!data.success) throw new Error(`Cloudflare DNS lookup failed: ${JSON.stringify(data.errors)}`);
-  return (data.result || []).find((record) => ['CNAME', 'A', 'AAAA'].includes(record.type)) || null;
+  return data.result || [];
 }
 
 async function createDnsRecord({ token, zoneId, body }) {
@@ -64,6 +86,16 @@ async function updateDnsRecord({ token, zoneId, recordId, body }) {
   });
   const data = await response.json();
   if (!data.success) throw new Error(`Cloudflare DNS update failed: ${JSON.stringify(data.errors)}`);
+  return data.result;
+}
+
+async function deleteDnsRecord({ token, zoneId, recordId }) {
+  const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/dns_records/${recordId}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  });
+  const data = await response.json();
+  if (!data.success) throw new Error(`Cloudflare DNS delete failed: ${JSON.stringify(data.errors)}`);
   return data.result;
 }
 

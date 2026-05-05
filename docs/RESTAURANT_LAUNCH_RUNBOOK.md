@@ -27,6 +27,7 @@ Scope: restaurant website/menu loop only.
 | Funnel route idempotency | Done | `npm run funnel:test-route-idempotency`; duplicate Opa workflow run `25376342058` returned `duplicate: true` and skipped task/email/Discord/ledger |
 | ProfitsLocal launch route resolver | Done | `npm run domain:test-launch-route`, `npm run domain:inspect`, `npm run domain:pages-status`, and `https://profitslocal.com/` HTTP 200 |
 | Opa free hosted domain | Done | `opa-controlled.profitslocal.com` CNAME created and attached to `opa-bar-mezze-restaurant-live`; Pages custom domain status `active`; forced-resolution HTTPS returns 200 |
+| Domain smoke cleanup | Done | `npm run domain:cleanup` dry-run guard rejects non-smoke domains; `opa-live-smoke*.profitslocal.com` Pages custom domains and DNS CNAMEs were deleted; `opa-controlled.profitslocal.com` and `menu.feng-talk.com` still return HTTP 200 |
 | Opa mobile menu polish | Done | Opa `dev` commit `8501ac1`; `Deploy Dev` success; deployed `/menu/` and `/revise/` return HTTP 200 |
 
 ## Standard Verification Sequence
@@ -40,9 +41,38 @@ npm run funnel:test-domain-email-guidance
 npm run funnel:test-extra-revision-entitlement
 npm run funnel:test-route-idempotency
 npm run domain:test-launch-route
+npm run domain:test-request
 npm run hermes:test-website-agent-closure
 npm run qa:opa-full-loop-live-sim
 ```
+
+## Domain Launch Paths
+
+Use these paths in this order unless the customer explicitly needs something else:
+
+1. Free ProfitsLocal subdomain, such as `<client>.profitslocal.com`.
+   This is the fastest path because we control DNS. `/domain-setup` dispatches `domain-request.yml`; the workflow upserts the CNAME, attaches the Pages custom domain, polls Pages status, and writes central state.
+2. Customer subdomain, such as `menu.customer.com`.
+   The customer adds one CNAME to `<client>-live.pages.dev`. Our status flow waits until DNS points at the Pages target, then attaches Cloudflare Pages.
+3. Customer root domain, such as `customer.com`.
+   Do not auto-change this. Root domains can affect existing websites and email. Run DNS/email audit first, then choose flattened CNAME/ALIAS/ANAME, `www`, or another provider-specific path.
+4. `profitslocal.com/<client>` subpage.
+   Future router only. Do not sell this as a production launch URL until the root ProfitsLocal router exists.
+
+Useful commands:
+
+```bash
+npm run domain:request -- --client <client> --order <order> --email <email> --domain <domain> --project <client>-live --execute false --write false
+npm run domain:pages-status -- --project <client>-live --domain <domain>
+npm run domain:cleanup -- --domain <smoke-domain> --project <client>-live
+npm run domain:cleanup -- --domain <smoke-domain> --project <client>-live --execute true
+```
+
+Cleanup safety:
+
+- `domain:cleanup` defaults to dry-run.
+- It refuses to clean domains that do not include `smoke` unless `--allowNonSmoke true` is supplied.
+- Always verify a real production domain after cleanup with `domain:pages-status` and an HTTP `200` check.
 
 Run from `/Users/matthew/Developer/webjuice-restaurant`:
 
