@@ -64,7 +64,8 @@
     "ocr:paddle": "node scripts/ocr/paddleocr.js",
     "ocr:pdf": "node scripts/ocr/ocrmypdf.js",
     "audit:restaurant-local-llm": "node scripts/audit/restaurant-local-llm.js",
-    "hermes:setup-website-agent": "node scripts/hermes/setup-website-agent-profile.js"
+    "hermes:setup-website-agent": "node scripts/hermes/setup-website-agent-profile.js",
+    "hermes:set-website-agent-token": "node scripts/hermes/set-website-agent-token.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",

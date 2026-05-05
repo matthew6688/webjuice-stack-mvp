@@ -105,6 +105,7 @@ After creating the channel and setting the profile token:
 
 ```bash
 npm run hermes:setup-website-agent -- --channel WEBSITE_TASKS_CHANNEL_ID
+npm run hermes:set-website-agent-token -- --channel WEBSITE_TASKS_CHANNEL_ID
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ai.hermes.gateway-website-agent.plist
 launchctl print gui/$(id -u)/ai.hermes.gateway-website-agent
 ```
