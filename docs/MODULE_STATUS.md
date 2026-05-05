@@ -81,10 +81,10 @@
 
 ## Immediate Next Build Order
 
-1. Add `/revise` full smoke: feedback must consume entitlement, create a revision task, and reuse the same website task thread.
-2. Add strict pre-review gate: no customer review email unless context/design audit, visual QA screenshot, and dev deploy URL are recorded.
-3. Run full Opa Bar + Mezze paid → agent → dev preview → approval → live publish live-sim without polluting real customer/ROI data.
-4. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
+1. Add strict pre-review gate: no customer review email unless context/design audit, visual QA screenshot, and dev deploy URL are recorded.
+2. Run full Opa Bar + Mezze paid → agent → dev preview → approval → live publish live-sim without polluting real customer/ROI data.
+3. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
+4. Finalize `$100` extra revision entitlement increment behavior.
 5. Add next restaurant city only after the restaurant loop closes.
 
 ## Verification Rules

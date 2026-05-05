@@ -253,14 +253,15 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Website thread approval-loop smoke | Confirm dev-ready and live-published notifications post to one live Discord thread without file edits/deploy | Passing via `npm run hermes:smoke-website-agent-approval-loop -- --send true` |
 | Customer approval endpoint smoke | Confirm `/approve` with `orderId + email` resolves same case/thread and dry-dispatches publish | Passing via `npm run agent:test-approval-resolution` and `npm run smoke:approval-request` in `webjuice-restaurant` |
 | Preview utility footer QA | Confirm approve/revise links are visible, mobile-safe, and outside restaurant content | Passing via `npm run qa:preview-sales-bar` |
+| Revision endpoint full smoke | Confirm `/revise` carries order/email/feedback, sends receipt, dry-dispatches route workflow, and central router consumes quota/reuses thread | Passing via `npm run smoke:revision-request` in `webjuice-restaurant` plus `npm run hermes:test-website-agent-closure` |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Add `/revise` full smoke for entitlement consumption and same-thread reuse.
-3. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
-4. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
-5. Finalize extra revision entitlement increment behavior.
+2. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
+3. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
+4. Finalize extra revision entitlement increment behavior.
+5. Complete cold outreach live send to owner-controlled inbox.
 
 ## Required Secrets And Variables
 
