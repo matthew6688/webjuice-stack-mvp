@@ -30,6 +30,9 @@ Scope: restaurant website/menu loop only.
 | Domain smoke cleanup | Done | `npm run domain:cleanup` dry-run guard rejects non-smoke domains; `opa-live-smoke*.profitslocal.com` Pages custom domains and DNS CNAMEs were deleted; `opa-controlled.profitslocal.com` and `menu.feng-talk.com` still return HTTP 200 |
 | Opa mobile menu polish | Done | Opa `dev` commit `8501ac1`; `Deploy Dev` success; deployed `/menu/` and `/revise/` return HTTP 200 |
 | Production-like Opa review and live publish | Done | QA screenshots attached; review email Resend id `73281496-4628-449a-8ff1-89cb6f81a5fd`; live commit `418519767e480bf0bd0b8948e515851528f658d9`; Deploy Live run `25382781613` success; live email Resend id `7f832951-4d8b-4ed8-8d25-627f5d0a2129`; live `/` and `/menu/` HTTP 200 |
+| Automatic review screenshots | Done | Temp Opa auto-QA smoke ran `agent:complete-task --send-email true` without `--qa-screenshots`; captured 2 screenshots, 0 console errors, and pre-review gate passed |
+| Domain status emails | Done | `npm run domain:test-request` asserts active, waiting DNS, and root-domain-review email text; `domain-request.yml` passes Resend env and can send status emails |
+| Main repo Node 24 workflow hardening | Done | No remaining `actions/checkout@v4`, `actions/setup-node@v4`, or `node-version: 22` in `.github/workflows` |
 
 ## Standard Verification Sequence
 
@@ -74,6 +77,7 @@ Cleanup safety:
 - `domain:cleanup` defaults to dry-run.
 - It refuses to clean domains that do not include `smoke` unless `--allowNonSmoke true` is supplied.
 - Always verify a real production domain after cleanup with `domain:pages-status` and an HTTP `200` check.
+- `domain-request.yml` can send customer status emails when `send_email` is true and `RESEND_API_KEY` is configured. The email covers `active`, `waiting_for_customer_dns`, and `needs_root_domain_review`.
 
 Run from `/Users/matthew/Developer/webjuice-restaurant`:
 
@@ -201,10 +205,19 @@ Date: 2026-05-06 Brisbane time.
 - Domain status: `npm run domain:pages-status -- --project opa-bar-mezze-restaurant-live --domain opa-controlled.profitslocal.com` returns `active`.
 - Cost note: these two Resend sends returned `ledgerEvent: null` because `RESEND_EMAIL_UNIT_COST` was not configured for this run. Configure email/runtime cost estimates before the next ROI run.
 
+## Latest Auto-QA Screenshot Smoke
+
+Date: 2026-05-06 Brisbane time.
+
+- Ran `agent:complete-task --send-email true` against a temporary copy of the Opa repo and temporary case root.
+- Did not pass `--qa-screenshots`.
+- Set `RESEND_API_KEY=` for the smoke so no real customer email was sent.
+- Result: task build `ok`, automatic QA capture `ok`, 2 screenshots generated, 0 console errors, and pre-review gate passed with no missing fields.
+
 ## Remaining Backlog
 
 - Add dedicated `ProfitsLocal Handoff` sender Discord app/token later so `WEBSITE_TASKS_DISCORD_BOT_TOKEN` is not the website-agent bot itself.
-- Add QA screenshot capture into the real auto-agent completion path so customer review emails can pass the pre-review gate without manually passing screenshot paths.
 - Configure Resend/runtime cost estimates before the next ROI smoke.
+- Sync Node 24 workflow hardening into generated restaurant repos during the next template refresh.
 - Add next restaurant city only after the Brisbane/Opa loop remains stable.
 - Dashboard planning can resume after restaurant loop stability.

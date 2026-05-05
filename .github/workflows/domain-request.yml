@@ -39,6 +39,14 @@ on:
         options:
           - 'false'
           - 'true'
+      send_email:
+        description: Send customer domain status email.
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 permissions:
   contents: write
@@ -70,6 +78,9 @@ jobs:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID }}
           CF_ZONE_ID: ${{ secrets.PROFITSLOCAL_CF_ZONE_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
+          RESEND_EMAIL_UNIT_COST: ${{ vars.RESEND_EMAIL_UNIT_COST }}
         run: |
           npm run domain:request -- \
             --client "${{ inputs.client_slug }}" \
@@ -78,13 +89,15 @@ jobs:
             --domain "${{ inputs.domain }}" \
             --project "${{ inputs.project }}" \
             --execute "${{ inputs.execute }}" \
-            --allowRoot "${{ inputs.allow_root }}"
+            --allowRoot "${{ inputs.allow_root }}" \
+            --send-email "${{ inputs.send_email }}"
 
       - name: Commit domain state
         run: |
           git config user.name "webjuice-agent"
           git config user.email "webjuice-agent@users.noreply.github.com"
           git add data/domain/requests data/domain/*.json || true
+          git add -f data/finance/ledger.jsonl || true
           if git diff --cached --quiet; then
             echo "No domain state to commit."
           else

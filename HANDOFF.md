@@ -301,7 +301,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 跑 Opa approval publish live-safe dry-run：验证同 order/email/case/thread/latest task 可进入 dev→main publish plan，未 push live
 - [x] 跑一次真实 Discord thread live test（通过 GitHub Actions secrets 执行，run 成功；测试订单 state 已清理）
 - [x] 添加 agent-complete / live-published Discord follow-up：可回发到 case memory 里保存的 thread，并已用 Opa smoke case dry-run 验证 payload/thread_id
-- [ ] 自动把 dev deploy QA screenshots 接到 `agent:complete-task --send-email true`，让 customer review email gate 自动通过
+- [x] 自动把 dev deploy QA screenshots 接到 `agent:complete-task --send-email true`，让 customer review email gate 自动通过；临时 Opa auto-QA smoke 已验证 `qaCapture.ok=true`、2 张截图、pre-review gate passed
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做
 - [ ] 其他 niche 暂缓；当前只聚焦 restaurant 闭环
@@ -311,10 +311,10 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 
 现在 restaurant 闭环已经接近可上线状态。下一批任务按优先级执行：
 
-1. 自动 QA screenshot → customer review email：把 dev deploy 后的截图捕获接到 `agent:complete-task`，让 pre-review gate 可以真实通过并自动发客户 review 邮件。
+1. 自动 QA screenshot → customer review email：已接到 `agent:complete-task`；GitHub auto-agent path 会安装 Playwright Chromium，未手动传 `--qa-screenshots` 时自动生成 desktop/mobile 截图。
 2. 正式 sender bot：创建/配置 `ProfitsLocal Handoff` Discord sender，用于给 `#website-tasks` 发任务，避免 website-agent 自己给自己派活。
 3. 第一个生产客户演练：用 Opa 或一个新餐厅跑一次非 dry-run 的 paid → agent dev update → review email → approval → live publish → domain setup，并记录 ROI。
-4. Domain status email：当 `/domain-setup` 进入 `active` / `waiting_for_customer_dns` / `needs_root_domain_review` 时，用 Resend 给客户发明确下一步。
+4. Domain status email：已接到 `domain-request.yml` 和 `npm run domain:request -- --send-email true`；`active` / `waiting_for_customer_dns` / `needs_root_domain_review` 都会生成明确下一步。
 5. Cleanup hygiene：每次 domain smoke 后跑 `npm run domain:cleanup`，避免 Cloudflare Pages/DNS 留测试域名。
-6. Node/GitHub Actions hardening：处理 Actions 的 Node 20 deprecation warning，减少后面 CI 风险。
+6. Node/GitHub Actions hardening：主仓库 workflows 已切 `checkout@v6` / `setup-node@v6` / Node 24，并设置 `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true`。
 7. Dashboard 暂缓：等 restaurant 核心闭环稳定后，再做本地 ops dashboard。

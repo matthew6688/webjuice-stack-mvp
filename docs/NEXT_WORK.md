@@ -60,12 +60,12 @@ Verified live state:
 
 ## Current Priority Queue
 
-1. Wire automatic QA screenshot capture directly into the real auto-agent path after dev deploy and before `agent:complete-task --send-email true`; the manual screenshot-assisted path is verified.
+1. Automatic QA screenshot capture is now wired into `agent:complete-task`: when `--send-email true` is used and no `--qa-screenshots` are provided, it captures desktop/mobile screenshots into the case artifacts before running the pre-review gate.
 2. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
 3. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
-4. Add Resend notifications for domain setup status changes: active, waiting for customer DNS, and root-domain review.
+4. Domain setup status emails are now wired into `domain-request.yml` / `npm run domain:request -- --send-email true` for `active`, `waiting_for_customer_dns`, and `needs_root_domain_review`.
 5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
-6. Update GitHub Actions for Node 24 compatibility before GitHub's Node 20 action runtime removal affects deploys.
+6. GitHub Actions Node 24 hardening is applied in this repo: deploy/dev/AI workflows use `actions/checkout@v6`, `actions/setup-node@v6`, Node 24, and `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true`.
 7. Defer dashboard implementation until the restaurant loop stays stable.
 
 ### 1. Domain Onboarding For `profitslocal.com`
@@ -101,11 +101,12 @@ Working now:
 - ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
 - Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
 - Image generation costs can be recorded with `npm run finance:add-image-generation`.
+- Domain request status emails are available when `RESEND_API_KEY` is configured. `active`, `waiting_for_customer_dns`, and `needs_root_domain_review` emails include the requested domain, Pages target, and next action.
 
 Remaining:
 
 - Deferred by owner: `profitslocal.com` page/design work will be handled later.
-- Optional hardening: add email notifications for domain-request status changes and a stronger customer-facing status history.
+- Optional hardening: add a stronger customer-facing status history.
 - Optional cleanup: remove future smoke-only Pages custom domains and DNS records with `npm run domain:cleanup`.
 
 Validation:
@@ -129,19 +130,18 @@ Goal: real customer review emails should be sent only after the agent has fresh 
 Working now:
 
 - `agent:complete-task` already blocks review emails unless required context, design protocol, deploy URL, and QA screenshots are present.
+- `agent:complete-task` now auto-captures desktop/mobile QA screenshots with Playwright when `--send-email true` is used and screenshot paths were not provided.
 - The deployed Opa revision smoke proved the gate works: Discord/dev updates happened, but the review email was skipped because `qaScreenshots` was empty.
 
 Remaining:
 
-- Add or wire an automated screenshot capture step after dev deploy and before `agent:complete-task --send-email true`.
-- Store screenshot paths in the agent result so the pre-review gate can pass.
-- Re-run a non-visual smoke that still includes screenshots, then verify customer review email is sent.
+- Keep monitoring the GitHub auto-run path now that `route-funnel-event.yml` installs Playwright Chromium before running the generated agent task.
 
 Validation:
 
 ```bash
 npm run agent:test-pre-review-gate
-npm run agent:complete-task -- --task <task.json> --repo-dir <client-repo> --execute true --checkout true --push true --check-deploy true --send-email true --qa-screenshots <paths>
+npm run agent:complete-task -- --task <task.json> --repo-dir <client-repo> --execute true --checkout true --push true --check-deploy true --send-email true
 ```
 
 ### 3. Generated Restaurant Repo Promotion
@@ -386,11 +386,12 @@ Date: 2026-05-06 Brisbane time.
 - Cloudflare Pages domain status: `opa-controlled.profitslocal.com` is `active`.
 - Cost note: these two Resend sends returned `ledgerEvent: null` because `RESEND_EMAIL_UNIT_COST` was not configured for this run. Configure estimated email/runtime costs before the next ROI run.
 
-1. Add automatic post-deploy screenshot capture into the real auto-agent completion path so the review email gate can pass without manual screenshot paths.
+1. Monitor automatic post-deploy screenshot capture in the next live route workflow run.
 2. Add the dedicated `ProfitsLocal Handoff` sender bot/token when available, then update env/docs to separate sender bot from website-agent.
 3. Configure Resend/runtime cost estimates before the next ROI smoke.
-4. More restaurant cities only after the Brisbane restaurant loop is stable.
-5. Dashboard implementation only after the core restaurant loop is done; see `docs/OPS_DASHBOARD_PLAN.md`.
+4. Sync the Node 24 workflow hardening into generated restaurant repos when their templates are next refreshed.
+5. More restaurant cities only after the Brisbane restaurant loop is stable.
+6. Dashboard implementation only after the core restaurant loop is done; see `docs/OPS_DASHBOARD_PLAN.md`.
 
 ## Blocking Inputs
 

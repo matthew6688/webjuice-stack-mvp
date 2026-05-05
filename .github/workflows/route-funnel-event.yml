@@ -95,6 +95,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
           EXTRA_REVISION_CHECKOUT_URL: ${{ vars.EXTRA_REVISION_CHECKOUT_URL }}
+          RESEND_EMAIL_UNIT_COST: ${{ vars.RESEND_EMAIL_UNIT_COST }}
           FUNNEL_DEDUPE_KEY: ${{ inputs.dedupe_key }}
         run: |
           npm run funnel:route-event -- \
@@ -135,6 +136,10 @@ jobs:
           git -C /tmp/client-repo config user.email "webjuice-agent@users.noreply.github.com"
           npm ci --prefix /tmp/client-repo
 
+      - name: Install Playwright Chromium
+        if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && env.RUN_AGENT == 'true' }}
+        run: npx playwright install --with-deps chromium
+
       - name: Run generated agent task
         if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && env.RUN_AGENT == 'true' }}
         env:
@@ -146,6 +151,8 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
           EXTRA_REVISION_CHECKOUT_URL: ${{ vars.EXTRA_REVISION_CHECKOUT_URL }}
+          RESEND_EMAIL_UNIT_COST: ${{ vars.RESEND_EMAIL_UNIT_COST }}
+          AGENT_RUNTIME_COST_PER_MINUTE: ${{ vars.AGENT_RUNTIME_COST_PER_MINUTE }}
         run: |
           npm run agent:complete-task -- \
             --task "$TASK_PATH" \

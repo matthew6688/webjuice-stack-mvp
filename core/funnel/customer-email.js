@@ -107,6 +107,63 @@ export function buildLivePublishedEmail({ caseFile, publishResult, deployResult 
   });
 }
 
+export function buildDomainStatusEmail({ domainRequest }) {
+  const email = domainRequest?.email;
+  if (!email || email === 'N/A') return null;
+  const status = domainRequest.status || 'created';
+  const subjectStatus = domainStatusLabel(status);
+  const instructions = domainRequest.dns?.instructions || {};
+  const lines = [
+    `Order ID: ${domainRequest.orderId || 'N/A'}`,
+    `Requested domain: ${domainRequest.domain || domainRequest.requestedDomain || 'N/A'}`,
+    `Launch type: ${domainRequest.route?.route || 'N/A'}`,
+    `Status: ${subjectStatus}`,
+    `Pages target: ${domainRequest.target || instructions.target || 'N/A'}`,
+    `Next step: ${domainNextStep(domainRequest)}`,
+  ];
+  if (status === 'waiting_for_customer_dns') {
+    lines.push(`DNS record: CNAME ${domainRequest.domain} -> ${domainRequest.target}`);
+  }
+  if (status === 'needs_root_domain_review') {
+    lines.push('Root domain note: do not change root DNS until we confirm the existing website and email setup.');
+  }
+  return simpleEmail({
+    to: email,
+    subject: `Domain setup update: ${subjectStatus}`,
+    intro: 'Here is the latest status for your website domain setup.',
+    lines,
+    outro: domainOutro(domainRequest),
+  });
+}
+
+function domainStatusLabel(status) {
+  return {
+    active: 'active',
+    pages_pending: 'waiting for Cloudflare Pages certificate',
+    waiting_for_customer_dns: 'waiting for your DNS record',
+    needs_root_domain_review: 'root domain needs manual review',
+    needs_router: 'ProfitsLocal subpage router pending',
+    dry_run_ready: 'ready to configure',
+  }[status] || status;
+}
+
+function domainNextStep(domainRequest) {
+  const status = domainRequest?.status || '';
+  if (status === 'active') return 'Your domain is connected. Open the live URL and check the site.';
+  if (status === 'waiting_for_customer_dns') return `Add the CNAME record at your DNS provider, then refresh the domain status page.`;
+  if (status === 'needs_root_domain_review') return 'Reply with your DNS provider and whether email currently runs on this root domain.';
+  if (status === 'pages_pending') return 'No customer action is needed yet; Cloudflare is validating the custom domain.';
+  if (status === 'needs_router') return 'Use the free subdomain route until the ProfitsLocal root-site router is ready.';
+  return domainRequest?.route?.nextStep || 'We will continue checking the domain setup.';
+}
+
+function domainOutro(domainRequest) {
+  if (domainRequest?.status === 'active') {
+    return 'Your utility pages for revisions and support remain available from the preview/review links.';
+  }
+  return 'You can reply to this email with DNS screenshots if you want us to verify the setup before changing anything live.';
+}
+
 function saleEmail(order, entitlement) {
   const revisionUrl = order.previewUrl
     ? `${trimTrailingSlash(order.previewUrl)}/revise?order_id=${encodeURIComponent(order.orderId)}&email=${encodeURIComponent(order.email)}`

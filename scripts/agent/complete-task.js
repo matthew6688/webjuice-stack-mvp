@@ -11,6 +11,7 @@ import { buildAgentReviewDiscordMessage, sendDiscordChannelMessage, sendDiscordW
 import { recordCaseNotification } from '../../core/cases/case-file.js';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 import { agentRuntimeLedgerInput } from '../../core/finance/service-costs.js';
+import { captureReviewScreenshots } from '../../core/qa/review-screenshots.js';
 
 loadLocalEnv();
 
@@ -66,7 +67,6 @@ const result = runAgentTask(task, {
   dryRun: args.execute !== 'true',
 });
 const agentRuntimeCost = recordAgentRuntimeCost(result, args);
-const preReviewGate = validatePreReviewGate(result);
 
 let deployResult = null;
 if (boolArg(args, 'check-deploy') && result.pushed && !result.dryRun) {
@@ -76,9 +76,19 @@ if (boolArg(args, 'check-deploy') && result.pushed && !result.dryRun) {
   });
 }
 
+const qaCapture = await maybeCaptureQaScreenshots({ args, task, result, deployResult });
+const preReviewGate = validatePreReviewGate(result);
+
 let customerEmail = { ok: false, skipped: true };
 const caseFile = result.caseRecord?.caseFile || null;
-if (boolArg(args, 'send-email') && result.ok && !result.dryRun && caseFile && !preReviewGate.ok) {
+if (boolArg(args, 'send-email') && result.ok && !result.dryRun && caseFile && deployResult && !deployResult.ok) {
+  customerEmail = {
+    ok: false,
+    skipped: true,
+    reason: 'deploy_check_failed',
+    deployResult,
+  };
+} else if (boolArg(args, 'send-email') && result.ok && !result.dryRun && caseFile && !preReviewGate.ok) {
   customerEmail = {
     ok: false,
     skipped: true,
@@ -112,10 +122,11 @@ const completeResult = {
   ...result,
   audit: {
     ...(result.audit || {}),
-    devDeployUrl: args['dev-deploy-url'] || args.devDeployUrl || result.previewUrl || task.previewUrl || '',
+    devDeployUrl: result.audit?.devDeployUrl || args['dev-deploy-url'] || args.devDeployUrl || result.previewUrl || task.previewUrl || '',
     customerEmailId: customerEmail.id || '',
   },
   deployResult,
+  qaCapture,
   customerEmail,
   discordNotification,
   agentRuntimeCost,
@@ -128,6 +139,7 @@ console.log(`Agent completion result written: ${outputPath}`);
 console.log(`Status: ${completeResult.ok ? 'ok' : 'failed'}`);
 console.log(`Dry run: ${completeResult.dryRun ? 'yes' : 'no'}`);
 console.log(`Deploy: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'not checked'}`);
+console.log(`QA screenshots: ${qaCapture?.ok ? qaCapture.screenshots.join(', ') : (qaCapture?.skipped ? `skipped (${qaCapture.reason})` : (qaCapture?.ok === false ? `failed (${qaCapture.error})` : 'not captured'))}`);
 console.log(`Email: ${customerEmail.ok ? 'sent' : (customerEmail.skipped ? 'skipped' : 'failed')}`);
 if (!preReviewGate.ok) console.log(`Pre-review gate: failed (${preReviewGate.missing.join(', ')})`);
 else console.log('Pre-review gate: passed');
@@ -181,6 +193,48 @@ async function sendAgentReviewDiscord({ args, task, caseFile, runResult, deployR
     discord,
   });
   return { ok: true, threadId, payload, discord, caseRecord: record };
+}
+
+async function maybeCaptureQaScreenshots({ args, task, result, deployResult }) {
+  const existing = result.audit?.qaScreenshots || [];
+  if (existing.length) return { ok: true, skipped: true, reason: 'provided', screenshots: existing };
+  if (!boolArg(args, 'send-email')) return { ok: false, skipped: true, reason: 'send_email_disabled' };
+  if (!boolArg(args, 'auto-qa-screenshots', true)) return { ok: false, skipped: true, reason: 'auto_qa_disabled' };
+  if (!result.ok || result.dryRun) return { ok: false, skipped: true, reason: 'not_executable_success' };
+  if (deployResult && !deployResult.ok) return { ok: false, skipped: true, reason: 'deploy_check_failed' };
+  const repoRoot = args['repo-root'] || args.repoRoot || process.cwd();
+  const url = args['qa-url'] || args.qaUrl || args['dev-deploy-url'] || args.devDeployUrl || result.previewUrl || task.previewUrl || '';
+  if (!url) return { ok: false, skipped: true, reason: 'missing_url' };
+  const outputDir = args['qa-output-dir'] || args.qaOutputDir || defaultQaOutputDir(task, repoRoot);
+  try {
+    const capture = await captureReviewScreenshots({
+      url,
+      outputDir: path.isAbsolute(outputDir) ? outputDir : path.resolve(repoRoot, outputDir),
+      repoRoot,
+      prefix: args['qa-prefix'] || args.qaPrefix || 'review',
+      timeoutMs: Number(args['qa-timeout'] || args.qaTimeout || 45000),
+    });
+    result.audit = {
+      ...(result.audit || {}),
+      qaScreenshots: capture.screenshots,
+      devDeployUrl: url,
+    };
+    return capture;
+  } catch (error) {
+    return { ok: false, error: error.message || String(error), url };
+  }
+}
+
+function defaultQaOutputDir(task, repoRoot) {
+  if (task.case?.dir) return path.resolve(repoRoot, task.case.dir, 'artifacts');
+  return path.resolve(repoRoot, 'data/agent-runs/screenshots', safePathPart(task.id || 'task'));
+}
+
+function safePathPart(value) {
+  return String(value || '')
+    .replace(/[^a-zA-Z0-9_.-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 120) || 'task';
 }
 
 function discordThreadId(caseFile, kind) {

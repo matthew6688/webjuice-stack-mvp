@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import { handleDomainRequest } from '../../core/domain/domain-request.js';
 import { loadLocalEnv } from '../../core/env/load-local-env.js';
+import { buildDomainStatusEmail, sendCustomerEmail } from '../../core/funnel/customer-email.js';
+import { DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 
 loadLocalEnv();
 
@@ -31,6 +33,24 @@ const result = await handleDomainRequest({
   allowRootAutoAttach: args.allowRoot === 'true',
 });
 
+let customerEmail = { ok: false, skipped: true };
+if (boolArg(args, 'send-email') && args.execute === 'true') {
+  const message = buildDomainStatusEmail({ domainRequest: result });
+  if (message) {
+    customerEmail = await sendCustomerEmail(process.env, message, {
+      ledgerPath: args.ledger || DEFAULT_LEDGER_PATH,
+      clientSlug: result.clientSlug || null,
+      campaignId: args.campaign || null,
+      emailMetadata: {
+        kind: 'domain_status',
+        requestId: result.id,
+        status: result.status,
+        domain: result.domain,
+      },
+    });
+  }
+}
+
 if (args.output) {
   fs.mkdirSync(path.dirname(args.output), { recursive: true });
   fs.writeFileSync(args.output, `${JSON.stringify(result, null, 2)}\n`);
@@ -44,6 +64,7 @@ console.log(JSON.stringify({
   domain: result.domain,
   target: result.target,
   pagesActive: result.pages.active,
+  customerEmail,
   steps: result.steps.map((item) => ({ id: item.id, ok: item.ok, message: item.message })),
 }, null, 2));
 
@@ -55,4 +76,9 @@ function parseArgs() {
     parsed[argv[i].slice(2)] = argv[i + 1]?.startsWith('--') ? true : (argv[i + 1] || true);
   }
   return parsed;
+}
+
+function boolArg(args, key, defaultValue = false) {
+  if (args[key] === undefined) return defaultValue;
+  return args[key] === true || String(args[key]).toLowerCase() === 'true';
 }

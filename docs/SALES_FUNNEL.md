@@ -483,9 +483,9 @@ Email nodes:
 - Revision form received: send receipt of submission and explain that order ID + email will be matched. Implemented in `/api/revision-request/`.
 - Revision accepted by backend: send `revisionUsed/revisionLimit`, dev-preview expectation, and order ID. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
 - Revision denied: send the reason and a `$100` extra revision checkout link. Implemented in router when `--send-email true`; central runner can execute it when workflow secrets are configured.
-- Agent dev preview ready: send dev review link after build/QA passes. Implemented in `npm run agent:complete-task` when `--send-email true`; Discord follow-up is available with `--send-discord true`.
+- Agent dev preview ready: send dev review link after build/QA passes. Implemented in `npm run agent:complete-task` when `--send-email true`; if screenshot paths are not provided, the runner captures desktop/mobile QA screenshots before the pre-review gate. Discord follow-up is available with `--send-discord true`.
 - Customer approve/revise links: email should point to the dev preview utility pages, not to Discord or an internal operator page.
-- Domain/live launch ready: send DNS/live-domain instructions. Not built.
+- Domain setup status: send `active`, `waiting_for_customer_dns`, or `needs_root_domain_review` instructions from `npm run domain:request -- --send-email true`; `domain-request.yml` can send this after central domain state updates.
 - Live published: send live site link after approved `dev` tree is published to `main`. Implemented in `npm run agent:publish-approved` when `--send-email true`; Discord follow-up is available with `--send-discord true`.
 
 The customer-facing pages can remain available on our preview/domain even when the customer points their own domain at the live site. They should be treated as account/order utility pages, not restaurant content pages.
