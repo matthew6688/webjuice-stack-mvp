@@ -1,0 +1,45 @@
+{
+  "domain": "opa-controlled.profitslocal.com",
+  "projectName": "opa-bar-mezze-restaurant-live",
+  "target": "opa-bar-mezze-restaurant-live.pages.dev",
+  "records": {
+    "ns": [],
+    "cname": [],
+    "a": [
+      "172.67.223.35",
+      "104.21.46.35"
+    ],
+    "aaaa": []
+  },
+  "status": {
+    "hasNameservers": false,
+    "hasCname": false,
+    "cnameMatchesPages": false,
+    "hasA": true,
+    "hasAAAA": false,
+    "readyForPagesAttach": false
+  },
+  "instructions": {
+    "domain": "opa-controlled.profitslocal.com",
+    "projectName": "opa-bar-mezze-restaurant-live",
+    "target": "opa-bar-mezze-restaurant-live.pages.dev",
+    "records": [
+      {
+        "type": "CNAME",
+        "name": "opa-controlled.profitslocal.com",
+        "value": "opa-bar-mezze-restaurant-live.pages.dev",
+        "proxied": false,
+        "note": "Use this for subdomains such as www.example.com or menu.example.com."
+      },
+      {
+        "type": "CNAME",
+        "name": "www.profitslocal.com",
+        "value": "opa-bar-mezze-restaurant-live.pages.dev",
+        "proxied": false,
+        "note": "Use this when the customer wants www on the root brand domain."
+      }
+    ],
+    "customerMessage": "Point opa-controlled.profitslocal.com to the preview/live site by adding a CNAME record:\nopa-controlled.profitslocal.com CNAME opa-bar-mezze-restaurant-live.pages.dev\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+  },
+  "checkedAt": "2026-05-05T13:22:51.981Z"
+}

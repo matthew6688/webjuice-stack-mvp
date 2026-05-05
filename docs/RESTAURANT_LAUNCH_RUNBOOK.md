@@ -26,6 +26,7 @@ Scope: restaurant website/menu loop only.
 | Approval publish live-safe dry run | Done | `npm run agent:test-approval-resolution`; `npm run agent:publish-approved -- --task data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json ... --execute false --push false` wrote `data/agent-runs/opa-approval-publish-dry-run.json` |
 | Funnel route idempotency | Done | `npm run funnel:test-route-idempotency`; duplicate Opa workflow run `25376342058` returned `duplicate: true` and skipped task/email/Discord/ledger |
 | ProfitsLocal launch route resolver | Done | `npm run domain:test-launch-route`, `npm run domain:inspect`, `npm run domain:pages-status`, and `https://profitslocal.com/` HTTP 200 |
+| Opa free hosted domain | Done | `opa-controlled.profitslocal.com` CNAME created and attached to `opa-bar-mezze-restaurant-live`; Pages custom domain status `active`; forced-resolution HTTPS returns 200 |
 | Opa mobile menu polish | Done | Opa `dev` commit `8501ac1`; `Deploy Dev` success; deployed `/menu/` and `/revise/` return HTTP 200 |
 
 ## Standard Verification Sequence
@@ -131,6 +132,7 @@ Verification:
 - Deployed `/revise/` and `/domain-help/` pages return HTTP 200 on all 5 dev previews.
 - Opa deployed `/menu/` returns HTTP 200 after mobile menu navigation polish.
 - Cloudinary runtime secrets are present on template dev/live and all 5 generated dev/live Pages projects: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_UPLOAD_PRESET`, `CLOUDINARY_UPLOAD_FOLDER`, and `CLOUDINARY_UPLOAD_MAX_BYTES`.
+- `/domain-help` is now explicit about the four address routes: free ProfitsLocal subdomain, customer subdomain, customer root domain, and future ProfitsLocal subpage/router. It displays current requested domain/query params and exact Pages target when launched from thank-you/review links.
 
 ## Latest Live Attachment/Revision/Outreach Smoke
 

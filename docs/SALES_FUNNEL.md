@@ -66,17 +66,26 @@ The customer may reach these pages from either the review email or the fixed foo
 
 Default strategy:
 
-- If the customer leaves the domain blank, use `<client>.profitslocal.com`.
-- If the customer asks for `*.profitslocal.com`, use that subdomain.
-- If the customer asks for `profitslocal.com/<client>`, accept it as a future ProfitsLocal router/subpage option, but do not block the restaurant loop on the public ProfitsLocal page.
-- If the customer asks for their own domain/subdomain, send DNS instructions and attach it in Cloudflare Pages after DNS resolves.
+- If the customer leaves the domain blank, use `<client>.profitslocal.com` as the default free hosted domain.
+- If the customer asks for `*.profitslocal.com`, use that requested ProfitsLocal subdomain. We create DNS and attach the custom domain; the customer does not touch DNS.
+- If the customer asks for their own subdomain, such as `menu.customer.com`, send one CNAME record and attach it in Cloudflare Pages after DNS resolves.
+- If the customer asks for their root domain, such as `customer.com`, inspect existing DNS/email first. Use Cloudflare flattened CNAME, ALIAS/ANAME, or `www` fallback depending on their provider.
+- If the customer asks for `profitslocal.com/<client>`, treat it as a future directory/router option, not the current production launch path.
 
 Fastest to slowest:
 
-1. `profitslocal.com/<client>` subpage: easiest because the customer makes no DNS change. Best for quick proof, demos, or temporary launch.
-2. `<client>.profitslocal.com` subdomain: still controlled by us, cleaner for QR/menu/outreach links, and usually the best default if the customer wants us to handle launch.
-3. Customer subdomain such as `menu.customer.com`: good when they already have a website and want a menu/campaign page. Requires customer DNS access.
-4. Customer root domain such as `customer.com`: most official, but slowest because it requires DNS and final launch coordination.
+1. `<client>.profitslocal.com` subdomain: fastest production path because we control DNS.
+2. Customer subdomain such as `menu.customer.com`: good when they already have a website and want a menu/campaign page. Requires customer DNS access.
+3. Customer root domain such as `customer.com`: most official, but slowest because it can affect the existing website and email setup.
+4. `profitslocal.com/<client>` subpage: future directory/router path only. Do not present it as an active production launch URL until the root-site router exists.
+
+Example verified on 2026-05-05:
+
+- Requested domain: `opa-controlled.profitslocal.com`.
+- DNS: CNAME in the `profitslocal.com` Cloudflare zone to `opa-bar-mezze-restaurant-live.pages.dev`.
+- Cloudflare Pages project: `opa-bar-mezze-restaurant-live`.
+- Pages custom domain status: `active`.
+- Public DNS resolves to Cloudflare edge IPs and forced-resolution HTTP check returns 200.
 
 Keep the dev preview utility pages available after launch so the customer can still approve, request revisions, and buy extra revisions without mixing those controls into the public restaurant site.
 
@@ -86,6 +95,8 @@ Validation:
 npm run domain:test-launch-route
 npm run domain:inspect -- --domain profitslocal.com --project profitslocal-live
 npm run domain:pages-status -- --project profitslocal-live --domain profitslocal.com
+npm run domain:upsert-cname -- --zone <zone-id> --name <client>.profitslocal.com --target <client>-live.pages.dev --proxied true
+npm run domain:attach-pages -- --project <client>-live --domain <client>.profitslocal.com
 ```
 
 ## Discord Website Threads

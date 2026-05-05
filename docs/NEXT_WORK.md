@@ -73,6 +73,12 @@ Working now:
 - `npm run domain:pages-status` can poll custom-domain verification/certificate state.
 - `npm run domain:upsert-cname` can create/update the CNAME when the token has Zone DNS Edit.
 - `npm run domain:test-launch-route` verifies default launch route selection.
+- Opa requested free hosted domain `opa-controlled.profitslocal.com` is configured:
+  - DNS CNAME created in the `profitslocal.com` Cloudflare zone.
+  - Cloudflare Pages custom domain attached to `opa-bar-mezze-restaurant-live`.
+  - Pages domain status is `active`.
+  - Public DNS resolves to Cloudflare edge IPs; forced-resolution HTTPS check returns 200.
+- Template and generated `/domain-help` pages now show the current requested domain, live Pages target, dev preview, exact CNAME rules, root-domain caveats, and a warning that `profitslocal.com/<client>` is not the active production launch route yet.
 - Local secrets should be configured with `npm run setup:local-env`, then verified with `npm run check:env -- --workflow funnel`, `scrape`, `deploy`, and `localAudit`.
 - ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
 - Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
@@ -81,12 +87,15 @@ Working now:
 Remaining:
 
 - Deferred by owner: `profitslocal.com` page/design work will be handled later.
+- Optional hardening: add automatic provisioning from approved `*.profitslocal.com` orders so the CNAME + Pages custom domain attach happens without manual commands.
 
 Validation:
 
 ```bash
 npm run domain:inspect -- profitslocal.com --project profitslocal-live
 npm run domain:pages-status -- --project profitslocal-live --domain profitslocal.com
+npm run domain:inspect -- --domain opa-controlled.profitslocal.com --project opa-bar-mezze-restaurant-live
+npm run domain:pages-status -- --project opa-bar-mezze-restaurant-live --domain opa-controlled.profitslocal.com
 npm run domain:test-launch-route
 npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
 ```
