@@ -71,6 +71,7 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
     `Approve for live publishing: ${approvalUrl || 'N/A'}`,
     `Revision usage: ${usage}`,
     `Revision form: ${revisionUrl || 'N/A'}`,
+    `Domain setup guide: ${previewUrl ? `${previewUrl}/domain-help` : 'N/A'}`,
     `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
     `Changed files: ${changedFiles.length ? changedFiles.join(', ') : 'No code diff; build/QA completed'}`,
     `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
@@ -94,6 +95,7 @@ export function buildLivePublishedEmail({ caseFile, publishResult, deployResult 
     `Published commit: ${publishResult?.commit || 'N/A'}`,
     `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
     `Preview utility page: ${caseFile.previewUrl || 'N/A'}`,
+    `Domain/subdomain support: keep using the preview utility page for revisions, or send DNS questions by replying to this email.`,
   ];
   return simpleEmail({
     to: email,
@@ -114,6 +116,8 @@ function saleEmail(order, entitlement) {
     `Package: ${order.tier}`,
     `Amount: ${order.currency || 'USD'} ${order.amount}`,
     `Preview: ${order.previewUrl || 'N/A'}`,
+    `Preferred domain/subdomain: ${order.domain || 'N/A'}`,
+    `Domain setup guide: ${order.previewUrl ? `${order.previewUrl}/domain-help` : 'N/A'}`,
     `Revision quota: ${policy ? `0/${policy.limit} (${policy.description})` : 'N/A'}`,
     `Revision form: ${revisionUrl || 'N/A'}`,
   ];

@@ -255,14 +255,16 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Preview utility footer QA | Confirm approve/revise links are visible, mobile-safe, and outside restaurant content | Passing via `npm run qa:preview-sales-bar` |
 | Revision endpoint full smoke | Confirm `/revise` carries order/email/feedback, sends receipt, dry-dispatches route workflow, and central router consumes quota/reuses thread | Passing via `npm run smoke:revision-request` in `webjuice-restaurant` plus `npm run hermes:test-website-agent-closure` |
 | Strict pre-review gate | Confirm customer review email is blocked unless context/design audit, QA screenshot, and dev deploy URL are recorded | Passing via `npm run agent:test-pre-review-gate` |
+| Opa full-loop live-sim | Confirm paid/revision/dev review/approval/live publish/preview utility controls as one smoke without real customer or ROI writes | Passing via `npm run qa:opa-full-loop-live-sim` |
+| Domain handoff guidance | Confirm thank-you page and customer emails include root-domain/subdomain/DNS utility guidance | Passing via `npm run funnel:test-domain-email-guidance` and `webjuice-restaurant` build |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
-3. Finalize extra revision entitlement increment behavior.
-4. Complete cold outreach live send to owner-controlled inbox.
-5. Add customer domain/subdomain handoff page and email instructions.
+2. Finalize extra revision entitlement increment behavior.
+3. Complete cold outreach live send to owner-controlled inbox.
+4. Promote template changes through generated restaurant repos.
+5. Add next restaurant city only after restaurant loop stays stable.
 
 ## Required Secrets And Variables
 

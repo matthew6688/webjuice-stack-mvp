@@ -81,11 +81,10 @@
 
 ## Immediate Next Build Order
 
-1. Run full Opa Bar + Mezze paid → agent → dev preview → approval → live publish live-sim without polluting real customer/ROI data.
+1. Finalize `$100` extra revision entitlement increment behavior.
 2. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
-3. Finalize `$100` extra revision entitlement increment behavior.
-4. Add customer domain/subdomain handoff page and email instructions.
-5. Add next restaurant city only after the restaurant loop closes.
+3. Promote template changes through generated restaurant repos.
+4. Add next restaurant city only after the restaurant loop closes.
 
 ## Verification Rules
 
