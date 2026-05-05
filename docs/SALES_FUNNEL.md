@@ -96,6 +96,7 @@ Customer-facing automation:
 - `/api/domain-request/` dispatches the central `domain-request.yml` workflow.
 - `/api/domain-status/` reads central request state from `data/domain/requests/<client>/<requestId>.json`.
 - For our free subdomain route, the workflow can create/update DNS and attach Cloudflare Pages automatically. For customer subdomains, it shows the exact CNAME target and waits until DNS is correct. For root domains, it requires manual audit before launch.
+- The workflow polls Cloudflare Pages after attach before writing state, so the customer status page is less likely to stay stuck on a stale `pages_pending` result.
 
 Validation:
 

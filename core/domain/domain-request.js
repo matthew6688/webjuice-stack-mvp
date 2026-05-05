@@ -119,6 +119,8 @@ export async function provisionDomainRequest(request, options = {}) {
       token: options.cfToken,
       projectName: request.projectName,
       domain: request.domain,
+      pollAttempts: options.pagesPollAttempts,
+      pollIntervalMs: options.pagesPollIntervalMs,
     });
     pagesActive = pagesDomains.some((item) => item.name === request.domain && item.status === 'active');
     steps.push(step('attach-pages-domain', true, 'Cloudflare Pages custom domain is attached.', {
@@ -149,12 +151,25 @@ export function domainRequestPath(request, root = process.cwd()) {
   return path.join(root, 'data/domain/requests', safeId(request.clientSlug), `${safeId(request.id)}.json`);
 }
 
-async function ensurePagesDomain({ accountId, token, projectName, domain }) {
+async function ensurePagesDomain({ accountId, token, projectName, domain, pollAttempts = 12, pollIntervalMs = 10000 }) {
   const before = await listPagesDomains({ accountId, token, projectName });
   if (!before.some((item) => item.name === domain)) {
     await attachPagesDomain({ accountId, token, projectName, domain });
   }
-  return listPagesDomains({ accountId, token, projectName });
+  let domains = await listPagesDomains({ accountId, token, projectName });
+  for (let attempt = 1; attempt < pollAttempts && !isPagesDomainActive(domains, domain); attempt += 1) {
+    await sleep(pollIntervalMs);
+    domains = await listPagesDomains({ accountId, token, projectName });
+  }
+  return domains;
+}
+
+function isPagesDomainActive(domains, domain) {
+  return domains.some((item) => item.name === domain && item.status === 'active');
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function resolveZoneId({ token, rootDomain }) {
