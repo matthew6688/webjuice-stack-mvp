@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "caseId": "opa-bar-mezze-restaurant_cs_test_auto_thread_agent_1777948064007",
+  "status": "dev_pushed_needs_review",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev",
+  "order": {
+    "id": "cs_test_auto_thread_agent_1777948064007",
+    "provider": "stripe",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "paymentStatus": "paid"
+  },
+  "customer": {
+    "company": "Opa Bar & Mezze",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": "opabar.example"
+  },
+  "revision": {
+    "policy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "used": 0,
+    "remaining": 3,
+    "lastReason": "entitlement_created"
+  },
+  "discord": {
+    "salesThreadId": "1501047787830116472",
+    "revisionThreadId": "",
+    "lastChannelId": "1501047787830116472",
+    "lastMessageId": "1501047827487264899",
+    "lastMessageUrl": "",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501047787830116472",
+    "threadCreatedByBot": true
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+    "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "latestTask": {
+    "id": "sale_opa-bar-mezze-restaurant_cs_test_auto_thread_agent_1777948064007",
+    "kind": "sale",
+    "status": "queued",
+    "path": "data/agent-tasks/opa-bar-mezze-restaurant/sale-cs_test_auto_thread_agent_1777948064007.json",
+    "createdAt": "2026-05-05T02:28:00.516Z"
+  },
+  "recentTimeline": [
+    {
+      "id": "case_evt_1777948081080_ffeamoey",
+      "type": "payment_routed",
+      "ok": true,
+      "reason": "entitlement_created",
+      "provider": "stripe",
+      "orderId": "cs_test_auto_thread_agent_1777948064007",
+      "clientSlug": "opa-bar-mezze-restaurant",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "taskId": "sale_opa-bar-mezze-restaurant_cs_test_auto_thread_agent_1777948064007",
+      "taskPath": "data/agent-tasks/opa-bar-mezze-restaurant/sale-cs_test_auto_thread_agent_1777948064007.json",
+      "submissionPath": "data/funnel/submissions/opa-bar-mezze-restaurant/sale-cs_test_auto_thread_agent_1777948064007.json",
+      "ledgerEventId": "evt_1777948080516_04kv6vsx",
+      "discordChannelId": "1493926003255410718",
+      "discordThreadId": "1501047787830116472",
+      "discordMessageId": "1501047787830116472",
+      "discordMessageUrl": "",
+      "revisionUsed": 0,
+      "revisionLimit": 3,
+      "createdAt": "2026-05-05T02:28:01.079Z"
+    },
+    {
+      "id": "case_evt_1777948089438_crz35nju",
+      "type": "agent_run_completed",
+      "ok": true,
+      "taskId": "sale_opa-bar-mezze-restaurant_cs_test_auto_thread_agent_1777948064007",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "branch": "dev",
+      "runId": "agent_run_1777948089438_hjpsmz6o",
+      "changedFiles": [],
+      "pushed": true,
+      "commit": "",
+      "createdAt": "2026-05-05T02:28:09.438Z"
+    },
+    {
+      "id": "case_evt_1777948090286_nkg33lnf",
+      "type": "agent_review_discord_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "",
+      "discordChannelId": "1501047787830116472",
+      "discordThreadId": "1501047787830116472",
+      "discordMessageId": "1501047827487264899",
+      "discordMessageUrl": "",
+      "createdAt": "2026-05-05T02:28:10.286Z"
+    }
+  ],
+  "agentStartProtocol": [
+    "Read this context packet before changing files.",
+    "Read case.json and timeline.jsonl for the full memory trail.",
+    "Read evidence/content/design/brand files before planning any edit.",
+    "Classify the request as website, menu, domain, or account utility before patching.",
+    "Do not override locked decisions.",
+    "Do not treat unverified customer text as source of truth for menu prices, hours, address, phone, or reservation links.",
+    "If evidence conflicts with the customer request, stop and write needs_human_decision instead of guessing.",
+    "After work, append an agent run summary and timeline event."
+  ]
+}

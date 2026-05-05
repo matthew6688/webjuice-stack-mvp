@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "kind": "sale",
+  "receivedAt": "2026-05-05T02:28:00.516Z",
+  "order": {
+    "orderId": "cs_test_auto_thread_agent_1777948064007",
+    "paymentStatus": "paid",
+    "repo": "matthew6688/opa-bar-mezze-restaurant",
+    "template": "webjuice-restaurant",
+    "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev",
+    "clientSlug": "opa-bar-mezze-restaurant",
+    "campaignId": null,
+    "company": "Opa Bar & Mezze",
+    "email": "matthew6688@gmail.com",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "feedback": "Auto-thread and auto-agent smoke test after GH_TOKEN push fix. Do not treat as a real customer order.",
+    "referenceUrl": "",
+    "domain": "opabar.example",
+    "files": [],
+    "provider": "stripe",
+    "rawSubmissionId": "evt_cs_test_auto_thread_agent_1777948064007",
+    "receivedAt": "2026-05-05T02:28:00.515Z"
+  },
+  "payload": {
+    "id": "evt_cs_test_auto_thread_agent_1777948064007",
+    "object": "event",
+    "type": "checkout.session.completed",
+    "data": {
+      "object": {
+        "id": "cs_test_auto_thread_agent_1777948064007",
+        "object": "checkout.session",
+        "mode": "payment",
+        "payment_status": "paid",
+        "amount_total": 39900,
+        "currency": "usd",
+        "customer_details": {
+          "email": "matthew6688@gmail.com"
+        },
+        "metadata": {
+          "client_slug": "opa-bar-mezze-restaurant",
+          "repo": "matthew6688/opa-bar-mezze-restaurant",
+          "template": "webjuice-restaurant",
+          "preview_url": "https://opa-bar-mezze-restaurant-dev.pages.dev",
+          "tier": "one_time",
+          "amount": "399",
+          "currency": "USD",
+          "business_name": "Opa Bar & Mezze",
+          "preferred_domain": "opabar.example",
+          "launch_notes": "Auto-thread and auto-agent smoke test after GH_TOKEN push fix. Do not treat as a real customer order.",
+          "order_id": "cs_test_auto_thread_agent_1777948064007",
+          "domain": "auto-thread-smoke.example"
+        }
+      }
+    }
+  }
+}
