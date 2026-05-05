@@ -4,7 +4,7 @@
 
 | Module | Status | Notes |
 |---|---|---|
-| GitHub/Cloudflare deploy | Working | Main/dev deploys work for current restaurant repos. |
+| GitHub/Cloudflare deploy | Working | Main/dev deploys work for current restaurant repos. Main repo and all 5 generated restaurant repos now use Node 24-hardened deploy workflows, and the latest generated dev/live deploys completed success. |
 | Google Places extraction | Working MVP | `npm run extract:google-places` supports text search, details, evidence writing, and cost logging. |
 | Firecrawl official-site scrape | Working MVP | `npm run extract:firecrawl` standardizes official-site scrape artifacts into evidence packs and cost events. |
 | Restaurant preview renderer | Working MVP | `webjuice-restaurant` renders from content/design/checkout artifacts; all 5 Brisbane generated dev branches are synced to the current artifact renderer and passed build after sync. Opa also has a deployed mobile menu polish on `dev`. |
@@ -84,9 +84,8 @@
 
 1. Add the dedicated `ProfitsLocal Handoff` sender bot/token when the owner creates it, then switch `WEBSITE_TASKS_DISCORD_BOT_TOKEN` away from the website-agent bot.
 2. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` or pass per-run runtime cost so ROI reports include email and agent labor estimates.
-3. Sync Node 24 workflow hardening into generated restaurant repos during the next template refresh.
-4. Add next restaurant city only after the Brisbane/Opa loop closes cleanly with automatic screenshots.
-5. Plan dashboard after restaurant loop remains stable.
+3. Add next restaurant city only after the Brisbane/Opa loop closes cleanly with automatic screenshots.
+4. Plan dashboard after restaurant loop remains stable.
 
 ## Verification Rules
 

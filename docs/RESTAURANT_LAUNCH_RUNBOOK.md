@@ -33,6 +33,8 @@ Scope: restaurant website/menu loop only.
 | Automatic review screenshots | Done | Temp Opa auto-QA smoke ran `agent:complete-task --send-email true` without `--qa-screenshots`; captured 2 screenshots, 0 console errors, and pre-review gate passed |
 | Domain status emails | Done | `npm run domain:test-request` asserts active, waiting DNS, and root-domain-review email text; `domain-request.yml` passes Resend env and can send status emails |
 | Main repo Node 24 workflow hardening | Done | No remaining `actions/checkout@v4`, `actions/setup-node@v4`, or `node-version: 22` in `.github/workflows` |
+| Generated repo Node 24 workflow hardening | Done | 5 generated restaurant repos updated on `dev` and `main`; all 10 `Deploy Dev` / `Deploy Live` runs completed success |
+| Two-restaurant repeat verification | Done | Babylon Brisbane and Chu The Phat dev/live `/`, `/menu/`, `/revise/`, `/domain-help/` return HTTP 200; outreach packs validate; Playwright screenshots captured with 0 console errors; local Ollama audits pass score 100 |
 
 ## Standard Verification Sequence
 
@@ -214,10 +216,57 @@ Date: 2026-05-06 Brisbane time.
 - Set `RESEND_API_KEY=` for the smoke so no real customer email was sent.
 - Result: task build `ok`, automatic QA capture `ok`, 2 screenshots generated, 0 console errors, and pre-review gate passed with no missing fields.
 
+## Latest Generated Repo Node 24 Hardening
+
+Date: 2026-05-06 Brisbane time.
+
+Updated these generated repos on both `dev` and `main`:
+
+- Babylon Brisbane: dev `92f5ec6`, main `dc5ad00`
+- Chu The Phat: dev `3e59275`, main `4ae786b`
+- Joey's: dev `0d172f1`, main `3850547`
+- Longwang Restaurant: dev `d724122`, main `3605311`
+- Opa Bar & Mezze: dev `232f380`, main `1f38991`
+
+Verification:
+
+- No generated repo workflow still references `actions/checkout@v4`, `actions/setup-node@v4`, `node-version: 22`, or `cloudflare/wrangler-action`.
+- All 5 repos passed local `npm run build`.
+- All 5 `Deploy Dev` runs completed success:
+  - Babylon `25384915647`
+  - Chu `25384918127`
+  - Joey's `25384923325`
+  - Longwang `25384926883`
+  - Opa `25384930832`
+- All 5 `Deploy Live` runs completed success:
+  - Babylon `25384915591`
+  - Chu `25384920204`
+  - Joey's `25384923485`
+  - Longwang `25384928412`
+  - Opa `25384931904`
+
+## Latest Two-Restaurant Repeat Verification
+
+Date: 2026-05-06 Brisbane time.
+
+Restaurants:
+
+- Babylon Brisbane
+- Chu The Phat
+
+Verification:
+
+- Dev and live URLs for `/`, `/menu/`, `/revise/`, and `/domain-help/` all returned HTTP 200.
+- `npm run outreach:validate-pack -- --client babylon-brisbane-restaurant` returned `Status: ok`.
+- `npm run outreach:validate-pack -- --client chu-the-phat-restaurant` returned `Status: ok`.
+- Playwright desktop/mobile screenshot capture passed for both restaurants with 2 screenshots each and 0 console errors.
+- Local Ollama audit passed for both:
+  - Babylon: `qwen3.5:9b`, score 100, 0 findings, 3 sections / 11 items.
+  - Chu: `qwen3.5:9b`, score 100, 0 findings, 3 sections / 12 items.
+
 ## Remaining Backlog
 
 - Add dedicated `ProfitsLocal Handoff` sender Discord app/token later so `WEBSITE_TASKS_DISCORD_BOT_TOKEN` is not the website-agent bot itself.
 - Configure Resend/runtime cost estimates before the next ROI smoke.
-- Sync Node 24 workflow hardening into generated restaurant repos during the next template refresh.
 - Add next restaurant city only after the Brisbane/Opa loop remains stable.
 - Dashboard planning can resume after restaurant loop stability.

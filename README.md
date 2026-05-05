@@ -27,7 +27,6 @@ What remains is mostly production hardening, not core-loop invention:
 
 - use a dedicated `ProfitsLocal Handoff` Discord sender bot instead of the website-agent token;
 - configure estimated Resend/runtime costs for cleaner ROI reports;
-- sync the latest Node 24 workflow hardening into generated restaurant repos during the next template refresh;
 - decide when to add an ops dashboard.
 
 ## Pricing
@@ -490,6 +489,20 @@ Latest main repo deploy after Node 24 hardening:
 - Commit: `a6bd288`
 - Deploy Live run: `25383883066`, `completed/success`
 
+Generated restaurant repo Node 24 hardening:
+
+- 5 generated restaurant repos updated on both `dev` and `main`.
+- All 5 latest `Deploy Dev` runs completed success.
+- All 5 latest `Deploy Live` runs completed success.
+- No generated repo workflow still references `actions/checkout@v4`, `actions/setup-node@v4`, `node-version: 22`, or `cloudflare/wrangler-action`.
+
+Repeat verification beyond Opa:
+
+- Babylon Brisbane and Chu The Phat dev/live utility pages returned HTTP 200.
+- Both outreach packs validated.
+- Both desktop/mobile screenshot captures passed with 0 console errors.
+- Both local Ollama audits passed with score 100 and 0 findings.
+
 ## Important Docs
 
 - `HANDOFF.md`: operational state and latest handoff.
@@ -504,6 +517,5 @@ Latest main repo deploy after Node 24 hardening:
 
 1. Add the dedicated `ProfitsLocal Handoff` sender bot and switch website task dispatch to it.
 2. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` for ROI reporting.
-3. Sync Node 24 workflow hardening into generated restaurant repos during the next template refresh.
-4. Run the next restaurant only after the Brisbane/Opa loop remains stable with automatic screenshots.
-5. Defer dashboard implementation until the restaurant loop is stable in repeated runs.
+3. Run the next restaurant only after the Brisbane/Opa loop remains stable with automatic screenshots.
+4. Defer dashboard implementation until the restaurant loop is stable in repeated runs.
