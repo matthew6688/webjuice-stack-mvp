@@ -107,7 +107,7 @@ WEBSITE_AGENT_MENTION=<@1501073096696664184>
 WEBSITE_TASKS_DISCORD_BOT_TOKEN=...
 ```
 
-Important: `WEBSITE_TASKS_DISCORD_BOT_TOKEN` should belong to a different Discord app than `website-agent`; Discord bots do not reliably receive their own messages. If this is omitted, the workflow falls back to `DISCORD_BOT_TOKEN`.
+Important: `WEBSITE_TASKS_DISCORD_BOT_TOKEN` should belong to a different Discord app than `website-agent`; Discord bots do not reliably receive their own messages. Think of `website-agent` as the worker/receiver, and `WEBSITE_TASKS_DISCORD_BOT_TOKEN` as the dispatcher/sender. If this is omitted, the workflow falls back to `DISCORD_BOT_TOKEN`.
 
 The setup script also copies the required design skills into the profile-local skills directory:
 
@@ -175,6 +175,8 @@ npm run hermes:smoke-website-agent-handoff -- --send true --intent full
 ```
 
 This requires `WEBSITE_TASKS_DISCORD_CHANNEL_ID`, `WEBSITE_AGENT_MENTION`, and `WEBSITE_TASKS_DISCORD_BOT_TOKEN` in `.env.local`. The handoff bot token should not be the `website-agent` bot token, because bots do not reliably receive their own messages.
+
+The smoke script refuses to send if `WEBSITE_TASKS_DISCORD_BOT_TOKEN` resolves to the same bot ID as `WEBSITE_AGENT_MENTION`. Use a separate app such as `ProfitsLocal Handoff` for dispatch.
 
 ## Current Validation
 

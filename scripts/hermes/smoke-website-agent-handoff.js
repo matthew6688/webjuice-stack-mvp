@@ -64,6 +64,15 @@ if (!send) {
 if (!channelId) throw new Error('Missing WEBSITE_TASKS_DISCORD_CHANNEL_ID or --channel');
 if (!botToken) throw new Error('Missing WEBSITE_TASKS_DISCORD_BOT_TOKEN/DISCORD_BOT_TOKEN or --token');
 
+const sender = await discordGet('/users/@me', botToken);
+const mentionedIds = mentionUserIds(mention);
+if (mentionedIds.includes(sender.id) && !boolArg(args, 'allow-self-sender', false)) {
+  throw new Error([
+    `Refusing to send handoff from the same bot that is mentioned (${sender.username}).`,
+    'Use a separate handoff/sales bot token for WEBSITE_TASKS_DISCORD_BOT_TOKEN, or pass --allow-self-sender true only for manual debugging.',
+  ].join(' '));
+}
+
 const sent = await sendDiscordChannelMessage({ channelId, botToken, payload });
 let thread = sent.threadId ? { id: sent.threadId, url: sent.threadUrl } : null;
 let reply = null;
@@ -150,4 +159,8 @@ function parseArgs(argv) {
 function boolArg(values, key, defaultValue = false) {
   if (values[key] === undefined) return defaultValue;
   return values[key] === true || String(values[key]).toLowerCase() === 'true';
+}
+
+function mentionUserIds(value) {
+  return [...String(value || '').matchAll(/<@!?(\d+)>/g)].map((match) => match[1]);
 }
