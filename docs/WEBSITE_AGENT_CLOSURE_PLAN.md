@@ -251,16 +251,16 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Memory continuation | Confirm later thread message can recover from case files | Pending |
 | Design protocol audit | Confirm run record proves Huashu/open-design usage | Passing via `npm run hermes:test-website-agent-closure` |
 | Website thread approval-loop smoke | Confirm dev-ready and live-published notifications post to one live Discord thread without file edits/deploy | Passing via `npm run hermes:smoke-website-agent-approval-loop -- --send true` |
-| Customer approval endpoint smoke | Confirm `/approve` with `orderId + email` resolves same case/thread and dispatches publish | Pending |
-| Preview utility footer QA | Confirm approve/revise links are visible, mobile-safe, and outside restaurant content | Pending |
+| Customer approval endpoint smoke | Confirm `/approve` with `orderId + email` resolves same case/thread and dry-dispatches publish | Passing via `npm run agent:test-approval-resolution` and `npm run smoke:approval-request` in `webjuice-restaurant` |
+| Preview utility footer QA | Confirm approve/revise links are visible, mobile-safe, and outside restaurant content | Passing via `npm run qa:preview-sales-bar` |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Add customer-facing approval endpoint smoke that confirms approved order metadata maps to the same case/thread.
-3. QA and harden the fixed preview footer/banner: approve, revise, revision usage, extra revision purchase.
-4. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
-5. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
+2. Add `/revise` full smoke for entitlement consumption and same-thread reuse.
+3. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
+4. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
+5. Finalize extra revision entitlement increment behavior.
 
 ## Required Secrets And Variables
 

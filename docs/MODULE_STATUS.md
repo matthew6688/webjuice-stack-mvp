@@ -81,13 +81,11 @@
 
 ## Immediate Next Build Order
 
-1. Add customer approval endpoint smoke: dev preview `/approve` must match `orderId + checkout email`, resolve the same central case/thread, and dispatch publish.
-2. QA/harden the dev preview fixed footer/banner: `Approve site`, `Request revision`, revision usage, and `$100` extra revision links must be mobile-safe and outside restaurant content.
-3. Add `/revise` full smoke: feedback must consume entitlement, create a revision task, and reuse the same website task thread.
-4. Add strict pre-review gate: no customer review email unless context/design audit, visual QA screenshot, and dev deploy URL are recorded.
-5. Run full Opa Bar + Mezze paid → agent → dev preview → approval → live publish live-sim without polluting real customer/ROI data.
-6. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
-7. Add next restaurant city only after the restaurant loop closes.
+1. Add `/revise` full smoke: feedback must consume entitlement, create a revision task, and reuse the same website task thread.
+2. Add strict pre-review gate: no customer review email unless context/design audit, visual QA screenshot, and dev deploy URL are recorded.
+3. Run full Opa Bar + Mezze paid → agent → dev preview → approval → live publish live-sim without polluting real customer/ROI data.
+4. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
+5. Add next restaurant city only after the restaurant loop closes.
 
 ## Verification Rules
 

@@ -52,6 +52,11 @@ const result = {
   repo: caseFile.repo,
   orderId: caseFile.order?.id || args.order,
   email: expectedEmail,
+  discord: {
+    websiteTaskThreadId: caseFile.discord?.websiteTaskThreadId || '',
+    salesThreadId: caseFile.discord?.salesThreadId || '',
+    revisionThreadId: caseFile.discord?.revisionThreadId || '',
+  },
   sourceBranch: task.branch || caseFile.branch || 'dev',
   targetBranch: 'main',
   liveUrl: args['live-url'] || args.liveUrl || `https://${caseFile.clientSlug}-live.pages.dev`,

@@ -229,8 +229,8 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 
 ### 7.1 Restaurant core loop: launch blockers
 
-- [ ] Customer approval endpoint smoke：从 dev preview `/approve?order_id=...&email=...` 提交，必须匹配同一个 central case/thread，并 dispatch `publish-approved.yml`
-- [ ] Preview fixed footer/banner QA：dev preview 上固定 footer 只作为销售/账户操作入口，包含 `Approve site`、`Request revision`、revision usage、`Buy extra revision`，不能污染餐厅正式内容
+- [x] Customer approval endpoint smoke：从 dev preview `/approve?order_id=...&email=...` 提交，必须匹配同一个 central case/thread，并 dispatch `publish-approved.yml`
+- [x] Preview fixed footer/banner QA：dev preview 上固定 footer 只作为销售/账户操作入口，包含 `Approve site`、`Request revision`、revision usage、`Buy extra revision`，不能污染餐厅正式内容
 - [ ] `/revise` full smoke：用 `orderId + checkout email` 提交 feedback，验证 entitlement 扣次数、同一个 case、同一个 `websiteTaskThreadId`
 - [ ] Strict pre-review gate：如果 agent run 没有 `contextRead`、`designProtocolUsed`、截图/视觉 QA、dev deploy URL，就不能发 customer review email
 - [ ] Opa Bar + Mezze full-loop live-sim：用 test order 跑 paid → agent dev preview → customer approve → publish live，全程不污染真实 ROI/customer data
