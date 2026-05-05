@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "opa-bar-mezze-restaurant__cs_test_domain_live_smoke_002__opa-live-smoke-2.profitslocal.com",
-  "status": "pages_pending",
+  "status": "active",
   "clientSlug": "opa-bar-mezze-restaurant",
   "orderId": "cs_test_domain_live_smoke_002",
   "email": "matthew6688@gmail.com",
@@ -81,12 +81,12 @@
         "id": "0def3921-b2ce-466e-a137-c5adebfbb070",
         "domain_id": "0def3921-b2ce-466e-a137-c5adebfbb070",
         "name": "opa-live-smoke-2.profitslocal.com",
-        "status": "pending",
+        "status": "active",
         "verification_data": {
           "status": "active"
         },
         "validation_data": {
-          "status": "pending",
+          "status": "active",
           "method": "http"
         },
         "certificate_authority": "google",
@@ -110,7 +110,7 @@
         "created_on": "2026-05-05T13:52:46.742456Z"
       }
     ],
-    "active": false
+    "active": true
   },
   "steps": [
     {
@@ -118,24 +118,24 @@
       "ok": true,
       "message": "Created or updated ProfitsLocal DNS CNAME.",
       "data": {
-        "action": "created",
+        "action": "updated",
         "name": "opa-live-smoke-2.profitslocal.com",
         "target": "opa-bar-mezze-restaurant-live.pages.dev",
         "proxied": true
       },
-      "at": "2026-05-05T13:56:00.193Z"
+      "at": "2026-05-05T14:02:09.234Z"
     },
     {
       "id": "attach-pages-domain",
       "ok": true,
       "message": "Cloudflare Pages custom domain is attached.",
       "data": {
-        "active": false,
+        "active": true,
         "domain": "opa-live-smoke-2.profitslocal.com"
       },
-      "at": "2026-05-05T13:58:11.084Z"
+      "at": "2026-05-05T14:02:13.094Z"
     }
   ],
-  "createdAt": "2026-05-05T13:55:59.368Z",
-  "updatedAt": "2026-05-05T13:58:11.084Z"
+  "createdAt": "2026-05-05T14:02:08.190Z",
+  "updatedAt": "2026-05-05T14:02:13.094Z"
 }
