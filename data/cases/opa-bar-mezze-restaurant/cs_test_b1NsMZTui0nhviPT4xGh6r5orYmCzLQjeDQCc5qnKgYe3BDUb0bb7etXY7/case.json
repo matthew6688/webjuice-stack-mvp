@@ -29,18 +29,18 @@
       "periodEnd": null,
       "description": "Three lifetime revision requests after purchase."
     },
-    "used": 0,
-    "remaining": 3,
-    "lastReason": "entitlement_created"
+    "used": 1,
+    "remaining": 2,
+    "lastReason": "revision_allowed"
   },
   "discord": {
     "salesThreadId": "1501197066758783017",
-    "revisionThreadId": "",
+    "revisionThreadId": "1501205859118878882",
     "websiteTaskThreadId": "1501197070319616011",
     "lastChannelId": "1501197070319616011",
-    "lastMessageId": "1501197116515815519",
+    "lastMessageId": "1501205900592021636",
     "lastMessageUrl": "",
-    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501197066758783017",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501205859118878882",
     "threadCreatedByBot": true
   },
   "sourceOfTruth": {
@@ -59,11 +59,11 @@
   ],
   "lockedDecisions": [],
   "latestTask": {
-    "id": "sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
-    "kind": "sale",
+    "id": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+    "kind": "revision",
     "status": "queued",
-    "path": "data/agent-tasks/opa-bar-mezze-restaurant/sale-cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7.json",
-    "createdAt": "2026-05-05T12:21:11.372Z"
+    "path": "data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json",
+    "createdAt": "2026-05-05T12:56:07.519Z"
   },
   "paths": {
     "casePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/case.json",
@@ -75,13 +75,13 @@
     "artifactsDir": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts"
   },
   "createdAt": "2026-05-05T12:21:12.339Z",
-  "updatedAt": "2026-05-05T12:21:23.683Z",
+  "updatedAt": "2026-05-05T12:56:17.942Z",
   "latestAgentRun": {
-    "id": "agent_run_1777983682963_ojbvxkv5",
-    "taskId": "sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "id": "agent_run_1777985777343_lxxccgeq",
+    "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
     "ok": true,
     "dryRun": false,
-    "mode": "sale",
+    "mode": "revision",
     "repo": "matthew6688/opa-bar-mezze-restaurant",
     "branch": "dev",
     "repoDir": "/tmp/client-repo",
@@ -138,7 +138,7 @@
       {
         "id": "commit-dev",
         "ok": true,
-        "command": "git commit -m chore: run sale task sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7"
+        "command": "git commit -m chore: run revision task revision_opa-bar-mezze-restaurant_rev_1777985753467"
       },
       {
         "id": "push-dev",
@@ -146,8 +146,8 @@
         "command": "git push origin dev"
       }
     ],
-    "startedAt": "2026-05-05T12:21:19.105Z",
-    "finishedAt": "2026-05-05T12:21:22.959Z",
-    "createdAt": "2026-05-05T12:21:22.963Z"
+    "startedAt": "2026-05-05T12:56:13.649Z",
+    "finishedAt": "2026-05-05T12:56:17.339Z",
+    "createdAt": "2026-05-05T12:56:17.343Z"
   }
 }
