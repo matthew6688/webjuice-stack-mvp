@@ -84,6 +84,7 @@ Working now:
 - Main repo workflow `domain-request.yml` handles the request and writes central state under `data/domain/requests/<client>/<requestId>.json`.
 - ProfitsLocal-owned subdomains can be provisioned automatically: create/update the Cloudflare CNAME, attach the Pages custom domain, then poll Pages status. Customer-owned subdomains wait until the customer CNAME resolves to the Pages target. Customer root domains stop for manual DNS/email audit.
 - Live Opa smoke on 2026-05-05 proved the deployed customer page can POST `/api/domain-request/`, dispatch `domain-request.yml`, create `opa-live-smoke.profitslocal.com`, attach it to `opa-bar-mezze-restaurant-live`, commit central state, and let deployed `/api/domain-status/` read that same request back.
+- A second live smoke proved pending status recovery: `/api/domain-status/` returned `refreshing:true`, dispatched another `domain-request.yml` run, and updated `opa-live-smoke-2.profitslocal.com` from `pages_pending` to `active` in central state.
 - Local secrets should be configured with `npm run setup:local-env`, then verified with `npm run check:env -- --workflow funnel`, `scrape`, `deploy`, and `localAudit`.
 - ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
 - Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
