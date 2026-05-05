@@ -20,6 +20,11 @@ const workflows = {
   tally: ['TALLY_API_KEY'],
   stripe: ['STRIPE_SECRET_KEY', 'STRIPE_PUBLISHABLE_KEY'],
   discord: ['SALES_DISCORD_WEBHOOK_URL', 'REVISE_DISCORD_WEBHOOK_URL'],
+  websiteAgent: [
+    'WEBSITE_TASKS_DISCORD_CHANNEL_ID',
+    'WEBSITE_AGENT_MENTION',
+    'WEBSITE_TASKS_DISCORD_BOT_TOKEN',
+  ],
   outreach: ['RESEND_API_KEY'],
   emailDomainUpgrade: ['RESEND_MASTER_KEY'],
   localAudit: ['OLLAMA_MODEL', 'OLLAMA_URL'],

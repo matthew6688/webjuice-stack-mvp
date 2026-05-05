@@ -25,6 +25,9 @@ const KEYS = [
   ['SALES_DISCORD_WEBHOOK_URL', 'Discord sales webhook URL'],
   ['REVISE_DISCORD_WEBHOOK_URL', 'Discord revision webhook URL'],
   ['DISCORD_BOT_TOKEN', 'Discord bot token for creating true threads'],
+  ['WEBSITE_TASKS_DISCORD_CHANNEL_ID', 'Discord #website-tasks channel ID'],
+  ['WEBSITE_AGENT_MENTION', 'Website agent mention, e.g. <@1501073096696664184>'],
+  ['WEBSITE_TASKS_DISCORD_BOT_TOKEN', 'Discord bot token used to hand tasks to website-agent'],
   ['OLLAMA_MODEL', 'Local audit model, default qwen3.5:9b'],
   ['OLLAMA_URL', 'Local Ollama URL, default http://127.0.0.1:11434'],
 ];

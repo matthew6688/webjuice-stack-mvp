@@ -86,6 +86,7 @@ export function buildWebsiteAgentHandoffMessage({
   task,
   caseRecord,
   mention = '',
+  action = '',
 }) {
   const casePath = caseRecord?.ref?.casePath || task?.case?.casePath || '';
   const contextPath = caseRecord?.ref?.contextPath || task?.case?.contextPath || '';
@@ -105,7 +106,7 @@ export function buildWebsiteAgentHandoffMessage({
     `design: ${task?.requiredContext?.design || ''}`,
     `brand: ${task?.requiredContext?.brandSpec || ''}`,
     '',
-    'Action: read the case/context/task files first. Load huashu-design and open-design web-prototype/saas-landing/critique skills when making visual changes. Preserve website vs menu separation, use verified evidence/design/brand files, and push customer-facing edits to dev only.',
+    `Action: ${action || 'read the case/context/task files first. Load huashu-design and open-design web-prototype/saas-landing/critique skills when making visual changes. Preserve website vs menu separation, use verified evidence/design/brand files, and push customer-facing edits to dev only.'}`,
   ].filter((line) => line !== null && line !== undefined);
 
   return {

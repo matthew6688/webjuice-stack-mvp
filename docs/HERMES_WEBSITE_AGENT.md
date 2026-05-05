@@ -156,6 +156,26 @@ Expected behavior:
 - it does not use old enrichment memory;
 - it suggests or runs the website task flow, not import/export enrichment.
 
+You can also run the repeatable smoke test:
+
+```bash
+npm run hermes:smoke-website-agent-handoff
+```
+
+Default mode is dry-run and prints the exact handoff payload. The smoke script uses `--intent validate` by default, so the agent only confirms pickup and does not read fake files. To post a live smoke to Discord and wait for the auto-created thread/reply:
+
+```bash
+npm run hermes:smoke-website-agent-handoff -- --send true
+```
+
+To test the full production-style handoff text, use:
+
+```bash
+npm run hermes:smoke-website-agent-handoff -- --send true --intent full
+```
+
+This requires `WEBSITE_TASKS_DISCORD_CHANNEL_ID`, `WEBSITE_AGENT_MENTION`, and `WEBSITE_TASKS_DISCORD_BOT_TOKEN` in `.env.local`. The handoff bot token should not be the `website-agent` bot token, because bots do not reliably receive their own messages.
+
 ## Current Validation
 
 Verified locally on 2026-05-05:
