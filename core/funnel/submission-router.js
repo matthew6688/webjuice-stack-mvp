@@ -227,7 +227,18 @@ async function sendWebsiteAgentHandoff({ kind, order, task, caseRecord, options 
     };
   }
   const payload = buildWebsiteAgentHandoffMessage({ kind, order, task, caseRecord, mention });
-  const discord = await sendDiscordChannelMessage({ channelId, botToken, payload, fetchImpl: options.fetchImpl || fetch });
+  const existingThreadId = caseRecord?.caseFile?.discord?.websiteTaskThreadId || '';
+  const discord = await sendDiscordChannelMessage({
+    channelId: existingThreadId || channelId,
+    botToken,
+    payload,
+    fetchImpl: options.fetchImpl || fetch,
+    waitForThread: !existingThreadId,
+  });
+  if (existingThreadId) {
+    discord.threadId = existingThreadId;
+    discord.threadReused = true;
+  }
   return { ok: true, discord, payload };
 }
 

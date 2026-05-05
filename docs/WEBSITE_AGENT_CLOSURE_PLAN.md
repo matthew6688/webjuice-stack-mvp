@@ -196,8 +196,8 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Handoff validate smoke | Confirm Discord pickup/thread without fake file reads | Passing |
 | Full handoff dry-run | Confirm payload contains all paths and design protocol | Passing |
 | Paid route local smoke | Confirm sale creates case/task/ledger | Existing MVP |
-| Paid route + website thread | Confirm payment creates/reuses website thread | Pending |
-| Revision route same thread | Confirm feedback goes to existing thread | Pending |
+| Paid route + website thread | Confirm payment creates/reuses website thread, including delayed Discord auto-thread lookup | Passing via `npm run hermes:test-website-agent-closure` |
+| Revision route same thread | Confirm feedback goes to existing thread | Passing via `npm run hermes:test-website-agent-closure` |
 | Agent complete dev push | Confirm dev branch + preview + Discord + email | Existing MVP, needs website-thread assertion |
 | Approval live publish | Confirm live publish + same thread update | Existing MVP, needs website-thread assertion |
 | Memory continuation | Confirm later thread message can recover from case files | Pending |
@@ -206,16 +206,14 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Update Discord routing to prefer existing `case.json.discord.websiteTaskThreadId` before creating a new website task thread.
-3. Add `websiteTaskThreadId` to revision handoff routing so feedback returns to the same thread.
-4. Add agent run checklist fields: `contextRead`, `designProtocolUsed`, `qaScreenshots`, `devDeployUrl`, `customerEmailId`.
-5. Add an end-to-end fixture script that simulates:
+2. Add agent run checklist fields: `contextRead`, `designProtocolUsed`, `qaScreenshots`, `devDeployUrl`, `customerEmailId`.
+3. Extend the end-to-end fixture script beyond routing to simulate:
    - paid order
    - revision feedback
    - dev completion
    - approval publish
    - assertions that all Discord updates used one thread.
-6. Run the fixture against Opa Bar + Mezze using test order IDs only.
+4. Run the fixture against Opa Bar + Mezze using test order IDs only.
 
 ## Required Secrets And Variables
 

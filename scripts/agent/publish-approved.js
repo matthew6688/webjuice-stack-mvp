@@ -6,7 +6,7 @@ import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import { publishApprovedTask, savePublishResult } from '../../core/agents/publisher.js';
 import { getLatestGithubActionsRun } from '../../core/deploy/github-actions.js';
 import { buildLivePublishedEmail, sendCustomerEmail } from '../../core/funnel/customer-email.js';
-import { buildLivePublishedDiscordMessage, sendDiscordWebhook } from '../../core/funnel/discord.js';
+import { buildLivePublishedDiscordMessage, sendDiscordChannelMessage, sendDiscordWebhook } from '../../core/funnel/discord.js';
 import { recordCaseNotification } from '../../core/cases/case-file.js';
 import { DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 
@@ -116,6 +116,24 @@ async function sendLivePublishedDiscord({ args, task, caseFile, publishResult, d
   if (publishResult.dryRun || boolArg(args, 'dry-discord')) {
     return { ok: true, dryRun: true, threadId, payload };
   }
+  if (caseFile.discord?.websiteTaskThreadId) {
+    const botToken = process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || process.env.DISCORD_BOT_TOKEN || '';
+    if (!botToken) return { ok: false, skipped: true, reason: 'missing_website_task_bot_token', threadId, payload };
+    const discord = await sendDiscordChannelMessage({
+      channelId: threadId,
+      botToken,
+      payload,
+    });
+    discord.threadId = threadId;
+    discord.threadReused = true;
+    const record = recordCaseNotification(caseFile.paths, {
+      type: 'live_publish_discord_sent',
+      kind: 'website_task',
+      ok: true,
+      discord,
+    });
+    return { ok: true, threadId, payload, discord, caseRecord: record };
+  }
   if (!webhookUrl) return { ok: false, skipped: true, reason: 'missing_webhook_url', threadId, payload };
   const discord = await sendDiscordWebhook(webhookUrl, payload, {
     threadId,
@@ -132,6 +150,7 @@ async function sendLivePublishedDiscord({ args, task, caseFile, publishResult, d
 
 function discordThreadId(caseFile, kind) {
   const discord = caseFile.discord || {};
+  if (discord.websiteTaskThreadId) return discord.websiteTaskThreadId;
   return kind === 'revision'
     ? discord.revisionThreadId || discord.salesThreadId || discord.lastChannelId || ''
     : discord.salesThreadId || discord.lastChannelId || '';

@@ -117,7 +117,15 @@ export function buildWebsiteAgentHandoffMessage({
   };
 }
 
-export async function sendDiscordChannelMessage({ channelId, botToken, payload, fetchImpl = fetch }) {
+export async function sendDiscordChannelMessage({
+  channelId,
+  botToken,
+  payload,
+  fetchImpl = fetch,
+  waitForThread = false,
+  threadWaitAttempts = 12,
+  threadWaitMs = 2500,
+}) {
   if (!channelId) throw new Error('Discord channel ID is required');
   if (!botToken) throw new Error('Discord bot token is required');
   const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}/messages`, {
@@ -142,6 +150,20 @@ export async function sendDiscordChannelMessage({ channelId, botToken, payload, 
   const guildId = data?.guild_id || '';
   const channel = data?.channel_id || channelId;
   const messageId = data?.id || '';
+  let threadId = data?.thread?.id || '';
+  let threadUrl = threadId && guildId ? `https://discord.com/channels/${guildId}/${threadId}` : '';
+  if (!threadId && waitForThread && messageId) {
+    const thread = await waitForDiscordMessageThread({
+      channelId: channel,
+      messageId,
+      botToken,
+      fetchImpl,
+      attempts: threadWaitAttempts,
+      intervalMs: threadWaitMs,
+    });
+    threadId = thread.threadId || '';
+    threadUrl = thread.threadUrl || '';
+  }
   return {
     ok: true,
     status: response.status,
@@ -150,9 +172,47 @@ export async function sendDiscordChannelMessage({ channelId, botToken, payload, 
     messageUrl: guildId && channel && messageId
       ? `https://discord.com/channels/${guildId}/${channel}/${messageId}`
       : '',
-    threadId: data?.thread?.id || '',
-    threadUrl: data?.thread?.id && guildId ? `https://discord.com/channels/${guildId}/${data.thread.id}` : '',
+    threadId,
+    threadUrl,
   };
+}
+
+async function waitForDiscordMessageThread({
+  channelId,
+  messageId,
+  botToken,
+  fetchImpl,
+  attempts,
+  intervalMs,
+}) {
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    if (attempt > 0) await sleep(intervalMs);
+    const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}/messages/${messageId}`, {
+      headers: {
+        Authorization: `Bot ${botToken}`,
+        'User-Agent': 'profitslocal-discord-handoff',
+      },
+    });
+    const bodyText = await response.text().catch(() => '');
+    if (!response.ok) continue;
+    let message = null;
+    if (bodyText) {
+      try {
+        message = JSON.parse(bodyText);
+      } catch {
+        message = null;
+      }
+    }
+    const threadId = message?.thread?.id || '';
+    const guildId = message?.guild_id || '';
+    if (threadId) {
+      return {
+        threadId,
+        threadUrl: guildId ? `https://discord.com/channels/${guildId}/${threadId}` : '',
+      };
+    }
+  }
+  return { threadId: '', threadUrl: '' };
 }
 
 export async function sendDiscordWebhook(url, payload, {
@@ -317,4 +377,10 @@ function compactFields(fields) {
 
 function mentionUserIds(mention) {
   return [...String(mention || '').matchAll(/<@!?(\d+)>/g)].map((match) => match[1]);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
