@@ -214,7 +214,9 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Local AI audit | MVP 已完成 | `npm run audit:restaurant-local-llm` 使用本地 Ollama + deterministic checks 审计餐厅 content/menu；5 个 Brisbane restaurant 全部用 `qwen3.5:9b` 通过，score 100，0 findings |
 | OCR local runtime | 已配置并验证 | MarkItDown、Poppler、OCRmyPDF/Tesseract/Ghostscript、PaddleOCR/PaddlePaddle 已在本机跑通；详见 `docs/OCR_MENU_PIPELINE.md` |
 | Resend customer emails | MVP 已完成 | `fengtalk.ai` verified；payment/revision receipt 和 router accepted/denied 邮件路径已实现 |
-| Cold email | Dry-run 已完成 | `npm run outreach:send-cold-email -- --client <slug> --dry true` 已为 5 个 Brisbane restaurant 生成 proof email artifact；live 发送只应发 owner-controlled inbox |
+| Cold email | Owner-inbox live smoke 已完成 | Opa validated outreach pack 已 live 发送到 `matthew6688@gmail.com`，Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce`；真实冷邮件仍建议用独立 outreach sender/domain |
+| Cloudinary revision attachments | MVP 已完成 | template + 5 generated dev/live Pages secrets 已配置；Opa deployed upload 返回真实 Cloudinary URL；revision task 已携带 attachment URL |
+| Approval publish dry/live-safe | MVP 已完成 | Opa paid order + email 解析到同 case/latest task/thread；`data/agent-runs/opa-approval-publish-dry-run.json` 记录 dev→main dry plan，`pushed:false` |
 | Ops dashboard | 已规划/暂缓实现 | 先完成 restaurant 闭环；dashboard 只记录方案，详见 `docs/OPS_DASHBOARD_PLAN.md` |
 
 ---
@@ -250,7 +252,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 轮询 `profitslocal.com` Pages custom-domain 状态直到 active
 - [ ] `profitslocal.com` 页面由 owner 后续处理，当前不进入执行队列
 - [x] 完成 cold email dry-run proof：5 个 Brisbane restaurant outreach email artifacts 已生成，包含 preview、真实菜单 source、AI audit、截图/video proof
-- [ ] 完成 cold email live 测试（Resend 已配置；live 只发 owner-controlled inbox）
+- [x] 完成 cold email live 测试（Opa owner-inbox Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce`）
 - [x] 手动修复并验证 5 个 restaurant repo 的 GitHub Secrets / Actions
 - [x] 确认 5 个 preview 站构建成功并可访问
 - [x] 创建 first-party Stripe checkout/revision forms，并配置 webhook/secrets
@@ -280,8 +282,12 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 跑 sale → case/task/entitlement/ledger 本地 smoke，并生成 Discord case-thread dry-run payload
 - [x] 跑 agent runner execute smoke：读取 case context/source-of-truth，apply artifacts，build，通过并写回 case run record
 - [x] 跑 approval publish dry-run smoke：验证 dev → main publish runner 步骤链可生成计划并通过
+- [x] 配置 Cloudinary runtime secrets 到 template + 5 generated dev/live Pages projects，并跑 Opa deployed upload smoke 成功
+- [x] 跑 Opa deployed revision smoke：quota `0/3 → 1/3`，创建 revision task，复用 website thread，发送 customer route email
+- [x] 跑 Opa approval publish live-safe dry-run：验证同 order/email/case/thread/latest task 可进入 dev→main publish plan，未 push live
 - [x] 跑一次真实 Discord thread live test（通过 GitHub Actions secrets 执行，run 成功；测试订单 state 已清理）
 - [x] 添加 agent-complete / live-published Discord follow-up：可回发到 case memory 里保存的 thread，并已用 Opa smoke case dry-run 验证 payload/thread_id
+- [ ] 自动把 dev deploy QA screenshots 接到 `agent:complete-task --send-email true`，让 customer review email gate 自动通过
 - [ ] 将 5 个 restaurant repo 完全迁到 artifact renderer flow
 - [ ] 更多 restaurant 城市测试（如 Sydney, Melbourne），但必须等 Brisbane restaurant 闭环稳定后再做
 - [ ] 其他 niche 暂缓；当前只聚焦 restaurant 闭环

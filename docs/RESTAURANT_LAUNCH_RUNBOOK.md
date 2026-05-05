@@ -21,6 +21,9 @@ Scope: restaurant website/menu loop only.
 | Generated Brisbane repos synced from latest template | Done | All 5 generated repos passed `npm run smoke:revision-request`, `npm run smoke:approval-request`, and `npm run build` locally; all 5 `Deploy Dev` GitHub Actions completed success |
 | Cloudinary revision attachment upload path | Done | `npm run smoke:upload-attachment` in template/generated repos; deployed endpoints return safe 503 until Cloudinary secrets are configured |
 | Deployed Opa Stripe checkout and thank-you handoff | Done | Stripe test session `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7` paid/succeeded and redirected to `/thank-you` |
+| Deployed Opa attachment + revision route | Done | Opa deployed `/api/upload-attachment/` returned a Cloudinary URL; revision request consumed quota to `1/3`, routed to website thread `1501197070319616011`, and sent Resend email `1ca45453-2d6e-4184-9ca8-8a62dd112531` |
+| Cold outreach owner-inbox live send | Done | `npm run outreach:validate-pack -- --client opa-bar-mezze-restaurant`; `npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --to matthew6688@gmail.com --dry false` returned Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce` |
+| Approval publish live-safe dry run | Done | `npm run agent:test-approval-resolution`; `npm run agent:publish-approved -- --task data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json ... --execute false --push false` wrote `data/agent-runs/opa-approval-publish-dry-run.json` |
 | Funnel route idempotency | Done | `npm run funnel:test-route-idempotency`; duplicate Opa workflow run `25376342058` returned `duplicate: true` and skipped task/email/Discord/ledger |
 | ProfitsLocal launch route resolver | Done | `npm run domain:test-launch-route`, `npm run domain:inspect`, `npm run domain:pages-status`, and `https://profitslocal.com/` HTTP 200 |
 | Opa mobile menu polish | Done | Opa `dev` commit `8501ac1`; `Deploy Dev` success; deployed `/menu/` and `/revise/` return HTTP 200 |
@@ -109,13 +112,14 @@ Date: 2026-05-05.
 
 Date: 2026-05-05.
 
-Synced `webjuice-restaurant` revision/domain/funnel/attachment UX to generated dev branches:
+Synced `webjuice-restaurant` revision/domain/funnel/attachment UX and Cloudinary unsigned-upload support to generated dev branches:
 
-- Babylon Brisbane: `36b8929`
-- Chu The Phat: `0820f85`
-- Joey's: `d91ec88`
-- Longwang Restaurant: `f11055a`
-- Opa Bar & Mezze: `8501ac1`
+- Template `webjuice-restaurant`: `26a81a5`
+- Babylon Brisbane: `12f9952`
+- Chu The Phat: `e3295bc`
+- Joey's: `97a54f3`
+- Longwang Restaurant: `ba59139`
+- Opa Bar & Mezze: `67e9d0f`
 
 Verification:
 
@@ -126,10 +130,30 @@ Verification:
 - Each repo's `Deploy Dev` workflow completed with `success`.
 - Deployed `/revise/` and `/domain-help/` pages return HTTP 200 on all 5 dev previews.
 - Opa deployed `/menu/` returns HTTP 200 after mobile menu navigation polish.
+- Cloudinary runtime secrets are present on template dev/live and all 5 generated dev/live Pages projects: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_UPLOAD_PRESET`, `CLOUDINARY_UPLOAD_FOLDER`, and `CLOUDINARY_UPLOAD_MAX_BYTES`.
+
+## Latest Live Attachment/Revision/Outreach Smoke
+
+Date: 2026-05-05.
+
+- Opa deployed upload endpoint: `https://opa-bar-mezze-restaurant-dev.pages.dev/api/upload-attachment/`.
+- Upload result: HTTP 200 with Cloudinary raw asset URL under `profitslocal/revision-attachments/opa-bar-mezze-restaurant/<order>/`.
+- Order used: `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`.
+- Order status before revision: `used: 0`, `limit: 3`, `remaining: 3`.
+- Revision result: accepted, `used: 1`, `limit: 3`, `remaining: 2`.
+- Revision task: `data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json`.
+- Website task thread reused: `1501197070319616011`.
+- Revision route workflow: GitHub Actions run `25377652995`, `completed/success`.
+- Customer route email: Resend id `1ca45453-2d6e-4184-9ca8-8a62dd112531`.
+- Agent completion: pushed dev and notified Discord; review email was intentionally skipped by the pre-review gate because the smoke task had no QA screenshots.
+- Cold outreach pack validation: `Status: ok`, desktop screenshot, mobile screenshot, and `outreach/demo.mp4` present.
+- Cold outreach owner-inbox live send: Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce`.
+- Approval resolution: `orderId + checkout email` resolved to the same case, latest revision task, website thread, `sourceBranch: dev`, and `targetBranch: main`.
+- Approval publish dry run: `data/agent-runs/opa-approval-publish-dry-run.json`, `dryRun: true`, `pushed: false`, all publish planning steps ok.
 
 ## Remaining Backlog
 
-- Configure Cloudinary runtime secrets on the template and 5 generated Cloudflare Pages projects, then run one deployed `/api/upload-attachment/` live upload smoke.
-- Complete cold outreach live test to owner-controlled inbox.
+- Add dedicated `ProfitsLocal Handoff` sender Discord app/token later so `WEBSITE_TASKS_DISCORD_BOT_TOKEN` is not the website-agent bot itself.
+- Add QA screenshot capture into the real agent completion path so customer review emails can pass the pre-review gate automatically.
 - Add next restaurant city only after the Brisbane/Opa loop remains stable.
 - Dashboard planning can resume after restaurant loop stability.

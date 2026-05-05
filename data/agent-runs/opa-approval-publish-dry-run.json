@@ -1,0 +1,632 @@
+{
+  "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+  "mode": "publish",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "sourceBranch": "dev",
+  "targetBranch": "main",
+  "repoDir": "/Users/matthew/Developer/webjuice-generated/opa-bar-mezze-restaurant",
+  "dryRun": true,
+  "startedAt": "2026-05-05T13:00:38.075Z",
+  "finishedAt": "2026-05-05T13:00:38.075Z",
+  "steps": [
+    {
+      "id": "preflight-clean",
+      "command": "git status --porcelain",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "fetch",
+      "command": "git fetch origin dev main",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "checkout-source",
+      "command": "git checkout dev",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "pull-source",
+      "command": "git pull --ff-only origin dev",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "build-source",
+      "command": "npm run build",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "checkout-target",
+      "command": "git checkout main",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "pull-target",
+      "command": "git pull --ff-only origin main",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "copy-source-tree",
+      "command": "git read-tree --reset -u dev",
+      "ok": true,
+      "output": "dry-run"
+    },
+    {
+      "id": "commit-live",
+      "command": "git commit -m publish: opa-bar-mezze-restaurant from dev",
+      "ok": true,
+      "output": "dry-run"
+    }
+  ],
+  "changedFiles": [],
+  "audit": {
+    "contextRead": {
+      "case": true,
+      "caseContext": true,
+      "evidence": true,
+      "content": true,
+      "design": true,
+      "brandSpec": true,
+      "checkout": true
+    },
+    "designProtocolUsed": {
+      "requiredSkill": "huashu-design",
+      "openDesignSkills": [
+        "web-prototype",
+        "saas-landing",
+        "design-brief",
+        "critique",
+        "tweaks"
+      ],
+      "mode": ""
+    },
+    "qaScreenshots": [],
+    "devDeployUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+    "customerEmailId": ""
+  },
+  "pushed": false,
+  "commit": "",
+  "devCommit": "",
+  "ok": true,
+  "caseRecord": {
+    "ok": true,
+    "dryRun": true,
+    "caseFile": {
+      "schemaVersion": 1,
+      "caseId": "opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+      "status": "live_publish_ready",
+      "clientSlug": "opa-bar-mezze-restaurant",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "branch": "dev",
+      "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+      "template": "webjuice-restaurant",
+      "order": {
+        "id": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+        "provider": "stripe",
+        "tier": "one_time",
+        "amount": 399,
+        "currency": "USD",
+        "paymentStatus": "paid"
+      },
+      "customer": {
+        "company": "Opa Bar & Mezze",
+        "email": "matthew6688@gmail.com",
+        "phone": "",
+        "domain": "opa-controlled.profitslocal.com"
+      },
+      "revision": {
+        "policy": {
+          "type": "lifetime",
+          "limit": 3,
+          "periodStart": null,
+          "periodEnd": null,
+          "description": "Three lifetime revision requests after purchase."
+        },
+        "used": 1,
+        "remaining": 2,
+        "lastReason": "revision_allowed"
+      },
+      "discord": {
+        "salesThreadId": "1501197066758783017",
+        "revisionThreadId": "1501205859118878882",
+        "websiteTaskThreadId": "1501197070319616011",
+        "lastChannelId": "1501197070319616011",
+        "lastMessageId": "1501205900592021636",
+        "lastMessageUrl": "",
+        "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501205859118878882",
+        "threadCreatedByBot": true
+      },
+      "sourceOfTruth": {
+        "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+        "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+        "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+        "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+        "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json"
+      },
+      "activeConstraints": [
+        "Website route and menu route are separate products; do not mix their information architecture.",
+        "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+        "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+        "Push customer-facing implementation changes only to dev until explicit approval.",
+        "Keep customer/order/payment/internal decision data out of client website repos."
+      ],
+      "lockedDecisions": [],
+      "latestTask": {
+        "id": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+        "kind": "revision",
+        "status": "queued",
+        "path": "data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json",
+        "createdAt": "2026-05-05T12:56:07.519Z"
+      },
+      "paths": {
+        "casePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/case.json",
+        "contextPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/context-packet.json",
+        "timelinePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/timeline.jsonl",
+        "decisionsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/decisions.jsonl",
+        "customerMessagesPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/customer-messages.jsonl",
+        "agentRunsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/agent-runs.jsonl",
+        "artifactsDir": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts"
+      },
+      "createdAt": "2026-05-05T12:21:12.339Z",
+      "updatedAt": "2026-05-05T13:00:38.075Z",
+      "latestAgentRun": {
+        "id": "agent_run_1777986038075_540vfvgv",
+        "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+        "ok": true,
+        "dryRun": true,
+        "mode": "publish",
+        "repo": "matthew6688/opa-bar-mezze-restaurant",
+        "branch": "main",
+        "repoDir": "/Users/matthew/Developer/webjuice-generated/opa-bar-mezze-restaurant",
+        "changedFiles": [],
+        "pushed": false,
+        "commit": "",
+        "previewUrl": "https://opa-bar-mezze-restaurant-live.pages.dev",
+        "audit": {
+          "contextRead": {
+            "case": true,
+            "caseContext": true,
+            "evidence": true,
+            "content": true,
+            "design": true,
+            "brandSpec": true,
+            "checkout": true
+          },
+          "designProtocolUsed": {
+            "requiredSkill": "huashu-design",
+            "openDesignSkills": [
+              "web-prototype",
+              "saas-landing",
+              "design-brief",
+              "critique",
+              "tweaks"
+            ],
+            "mode": ""
+          },
+          "qaScreenshots": [],
+          "devDeployUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+          "customerEmailId": ""
+        },
+        "steps": [
+          {
+            "id": "preflight-clean",
+            "ok": true,
+            "command": "git status --porcelain"
+          },
+          {
+            "id": "fetch",
+            "ok": true,
+            "command": "git fetch origin dev main"
+          },
+          {
+            "id": "checkout-source",
+            "ok": true,
+            "command": "git checkout dev"
+          },
+          {
+            "id": "pull-source",
+            "ok": true,
+            "command": "git pull --ff-only origin dev"
+          },
+          {
+            "id": "build-source",
+            "ok": true,
+            "command": "npm run build"
+          },
+          {
+            "id": "checkout-target",
+            "ok": true,
+            "command": "git checkout main"
+          },
+          {
+            "id": "pull-target",
+            "ok": true,
+            "command": "git pull --ff-only origin main"
+          },
+          {
+            "id": "copy-source-tree",
+            "ok": true,
+            "command": "git read-tree --reset -u dev"
+          },
+          {
+            "id": "commit-live",
+            "ok": true,
+            "command": "git commit -m publish: opa-bar-mezze-restaurant from dev"
+          }
+        ],
+        "startedAt": "2026-05-05T13:00:38.075Z",
+        "finishedAt": "2026-05-05T13:00:38.075Z",
+        "createdAt": "2026-05-05T13:00:38.075Z"
+      }
+    },
+    "runEvent": {
+      "id": "agent_run_1777986038075_540vfvgv",
+      "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+      "ok": true,
+      "dryRun": true,
+      "mode": "publish",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "branch": "main",
+      "repoDir": "/Users/matthew/Developer/webjuice-generated/opa-bar-mezze-restaurant",
+      "changedFiles": [],
+      "pushed": false,
+      "commit": "",
+      "previewUrl": "https://opa-bar-mezze-restaurant-live.pages.dev",
+      "audit": {
+        "contextRead": {
+          "case": true,
+          "caseContext": true,
+          "evidence": true,
+          "content": true,
+          "design": true,
+          "brandSpec": true,
+          "checkout": true
+        },
+        "designProtocolUsed": {
+          "requiredSkill": "huashu-design",
+          "openDesignSkills": [
+            "web-prototype",
+            "saas-landing",
+            "design-brief",
+            "critique",
+            "tweaks"
+          ],
+          "mode": ""
+        },
+        "qaScreenshots": [],
+        "devDeployUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+        "customerEmailId": ""
+      },
+      "steps": [
+        {
+          "id": "preflight-clean",
+          "ok": true,
+          "command": "git status --porcelain"
+        },
+        {
+          "id": "fetch",
+          "ok": true,
+          "command": "git fetch origin dev main"
+        },
+        {
+          "id": "checkout-source",
+          "ok": true,
+          "command": "git checkout dev"
+        },
+        {
+          "id": "pull-source",
+          "ok": true,
+          "command": "git pull --ff-only origin dev"
+        },
+        {
+          "id": "build-source",
+          "ok": true,
+          "command": "npm run build"
+        },
+        {
+          "id": "checkout-target",
+          "ok": true,
+          "command": "git checkout main"
+        },
+        {
+          "id": "pull-target",
+          "ok": true,
+          "command": "git pull --ff-only origin main"
+        },
+        {
+          "id": "copy-source-tree",
+          "ok": true,
+          "command": "git read-tree --reset -u dev"
+        },
+        {
+          "id": "commit-live",
+          "ok": true,
+          "command": "git commit -m publish: opa-bar-mezze-restaurant from dev"
+        }
+      ],
+      "startedAt": "2026-05-05T13:00:38.075Z",
+      "finishedAt": "2026-05-05T13:00:38.075Z",
+      "createdAt": "2026-05-05T13:00:38.075Z"
+    },
+    "timelineEvent": {
+      "id": "case_evt_1777986038075_o1qur5s5",
+      "type": "live_publish_completed",
+      "ok": true,
+      "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "branch": "main",
+      "runId": "agent_run_1777986038075_540vfvgv",
+      "changedFiles": [],
+      "pushed": false,
+      "commit": "",
+      "createdAt": "2026-05-05T13:00:38.075Z"
+    },
+    "contextPacket": {
+      "schemaVersion": 1,
+      "caseId": "opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+      "status": "live_publish_ready",
+      "clientSlug": "opa-bar-mezze-restaurant",
+      "repo": "matthew6688/opa-bar-mezze-restaurant",
+      "branch": "dev",
+      "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+      "order": {
+        "id": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+        "provider": "stripe",
+        "tier": "one_time",
+        "amount": 399,
+        "currency": "USD",
+        "paymentStatus": "paid"
+      },
+      "customer": {
+        "company": "Opa Bar & Mezze",
+        "email": "matthew6688@gmail.com",
+        "phone": "",
+        "domain": "opa-controlled.profitslocal.com"
+      },
+      "revision": {
+        "policy": {
+          "type": "lifetime",
+          "limit": 3,
+          "periodStart": null,
+          "periodEnd": null,
+          "description": "Three lifetime revision requests after purchase."
+        },
+        "used": 1,
+        "remaining": 2,
+        "lastReason": "revision_allowed"
+      },
+      "discord": {
+        "salesThreadId": "1501197066758783017",
+        "revisionThreadId": "1501205859118878882",
+        "websiteTaskThreadId": "1501197070319616011",
+        "lastChannelId": "1501197070319616011",
+        "lastMessageId": "1501205900592021636",
+        "lastMessageUrl": "",
+        "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501205859118878882",
+        "threadCreatedByBot": true
+      },
+      "sourceOfTruth": {
+        "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+        "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+        "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+        "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+        "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json"
+      },
+      "activeConstraints": [
+        "Website route and menu route are separate products; do not mix their information architecture.",
+        "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+        "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+        "Push customer-facing implementation changes only to dev until explicit approval.",
+        "Keep customer/order/payment/internal decision data out of client website repos."
+      ],
+      "lockedDecisions": [],
+      "latestTask": {
+        "id": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+        "kind": "revision",
+        "status": "queued",
+        "path": "data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json",
+        "createdAt": "2026-05-05T12:56:07.519Z"
+      },
+      "recentTimeline": [
+        {
+          "id": "case_evt_1777983672339_3hxuhdjk",
+          "type": "payment_routed",
+          "ok": true,
+          "reason": "entitlement_created",
+          "provider": "stripe",
+          "orderId": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+          "clientSlug": "opa-bar-mezze-restaurant",
+          "repo": "matthew6688/opa-bar-mezze-restaurant",
+          "taskId": "sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+          "taskPath": "data/agent-tasks/opa-bar-mezze-restaurant/sale-cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7.json",
+          "submissionPath": "data/funnel/submissions/opa-bar-mezze-restaurant/sale-cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7.json",
+          "ledgerEventId": "evt_1777983671373_xqy19gac",
+          "discordChannelId": "1493926003255410718",
+          "discordThreadId": "1501197066758783017",
+          "discordMessageId": "1501197066758783017",
+          "discordMessageUrl": "",
+          "revisionUsed": 0,
+          "revisionLimit": 3,
+          "createdAt": "2026-05-05T12:21:12.339Z"
+        },
+        {
+          "id": "case_evt_1777983674435_v8zo0dy4",
+          "type": "website_agent_handoff_sent",
+          "ok": true,
+          "channel": "discord",
+          "reason": "sale_handoff",
+          "discordChannelId": "1501072883001065614",
+          "discordThreadId": "1501197070319616011",
+          "discordMessageId": "1501197070319616011",
+          "discordMessageUrl": "",
+          "createdAt": "2026-05-05T12:21:14.435Z"
+        },
+        {
+          "id": "case_evt_1777983682963_7ds27qyg",
+          "type": "agent_run_completed",
+          "ok": true,
+          "taskId": "sale_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+          "repo": "matthew6688/opa-bar-mezze-restaurant",
+          "branch": "dev",
+          "runId": "agent_run_1777983682963_ojbvxkv5",
+          "changedFiles": [],
+          "pushed": true,
+          "commit": "",
+          "createdAt": "2026-05-05T12:21:22.963Z"
+        },
+        {
+          "id": "case_evt_1777983683683_pvpfj0pu",
+          "type": "agent_review_discord_sent",
+          "ok": true,
+          "channel": "discord",
+          "reason": "",
+          "discordChannelId": "1501197070319616011",
+          "discordThreadId": "1501197070319616011",
+          "discordMessageId": "1501197116515815519",
+          "discordMessageUrl": "",
+          "createdAt": "2026-05-05T12:21:23.683Z"
+        },
+        {
+          "id": "case_evt_1777985769003_53h73441",
+          "type": "revision_routed",
+          "ok": true,
+          "reason": "revision_allowed",
+          "provider": "tally",
+          "orderId": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+          "clientSlug": "opa-bar-mezze-restaurant",
+          "repo": "matthew6688/opa-bar-mezze-restaurant",
+          "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+          "taskPath": "data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json",
+          "submissionPath": "data/funnel/submissions/opa-bar-mezze-restaurant/revision-rev_1777985753467.json",
+          "ledgerEventId": "",
+          "discordChannelId": "1493926003255410718",
+          "discordThreadId": "1501205859118878882",
+          "discordMessageId": "1501205859118878882",
+          "discordMessageUrl": "",
+          "revisionUsed": 1,
+          "revisionLimit": 3,
+          "createdAt": "2026-05-05T12:56:09.003Z"
+        },
+        {
+          "id": "case_evt_1777985769377_7w30vugw",
+          "type": "website_agent_handoff_sent",
+          "ok": true,
+          "channel": "discord",
+          "reason": "revision_handoff",
+          "discordChannelId": "1501197070319616011",
+          "discordThreadId": "1501197070319616011",
+          "discordMessageId": "1501205864768471172",
+          "discordMessageUrl": "",
+          "createdAt": "2026-05-05T12:56:09.377Z"
+        },
+        {
+          "id": "case_evt_1777985777343_g7q6kr7w",
+          "type": "agent_run_completed",
+          "ok": true,
+          "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+          "repo": "matthew6688/opa-bar-mezze-restaurant",
+          "branch": "dev",
+          "runId": "agent_run_1777985777343_lxxccgeq",
+          "changedFiles": [],
+          "pushed": true,
+          "commit": "",
+          "createdAt": "2026-05-05T12:56:17.343Z"
+        },
+        {
+          "id": "case_evt_1777985777942_towxid89",
+          "type": "agent_review_discord_sent",
+          "ok": true,
+          "channel": "discord",
+          "reason": "",
+          "discordChannelId": "1501197070319616011",
+          "discordThreadId": "1501197070319616011",
+          "discordMessageId": "1501205900592021636",
+          "discordMessageUrl": "",
+          "createdAt": "2026-05-05T12:56:17.942Z"
+        },
+        {
+          "id": "case_evt_1777986038075_o1qur5s5",
+          "type": "live_publish_completed",
+          "ok": true,
+          "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+          "repo": "matthew6688/opa-bar-mezze-restaurant",
+          "branch": "main",
+          "runId": "agent_run_1777986038075_540vfvgv",
+          "changedFiles": [],
+          "pushed": false,
+          "commit": "",
+          "createdAt": "2026-05-05T13:00:38.075Z"
+        }
+      ],
+      "agentStartProtocol": [
+        "Read this context packet before changing files.",
+        "Read case.json and timeline.jsonl for the full memory trail.",
+        "Read evidence/content/design/brand files before planning any edit.",
+        "Classify the request as website, menu, domain, or account utility before patching.",
+        "Do not override locked decisions.",
+        "Do not treat unverified customer text as source of truth for menu prices, hours, address, phone, or reservation links.",
+        "If evidence conflicts with the customer request, stop and write needs_human_decision instead of guessing.",
+        "After work, append an agent run summary and timeline event."
+      ]
+    }
+  },
+  "deployResult": null,
+  "customerEmail": {
+    "ok": false,
+    "skipped": true
+  },
+  "discordNotification": {
+    "ok": true,
+    "dryRun": true,
+    "threadId": "1501197070319616011",
+    "payload": {
+      "username": "ProfitsLocal Publisher",
+      "embeds": [
+        {
+          "title": "Live site published: Opa Bar & Mezze",
+          "color": 3066993,
+          "fields": [
+            {
+              "name": "Client",
+              "value": "opa-bar-mezze-restaurant",
+              "inline": true
+            },
+            {
+              "name": "Repo",
+              "value": "matthew6688/opa-bar-mezze-restaurant",
+              "inline": true
+            },
+            {
+              "name": "Order ID",
+              "value": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+              "inline": false
+            },
+            {
+              "name": "Status",
+              "value": "published to live",
+              "inline": true
+            },
+            {
+              "name": "Deploy",
+              "value": "not checked",
+              "inline": true
+            },
+            {
+              "name": "Live URL",
+              "value": "https://opa-bar-mezze-restaurant-live.pages.dev",
+              "inline": false
+            }
+          ],
+          "timestamp": "2026-05-05T13:00:38.075Z"
+        }
+      ]
+    }
+  }
+}

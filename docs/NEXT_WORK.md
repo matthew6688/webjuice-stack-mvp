@@ -46,6 +46,12 @@ Verified live state:
 - Opa Bar & Mezze `dev` has an additional mobile menu polish commit with sticky action chrome and section jump pills; `Deploy Dev` completed success and deployed `/menu/` plus `/revise/` return HTTP 200.
 - Deployed Opa `$399` Stripe test checkout succeeded with session `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`, redirected to `/thank-you`, and wrote production case/order/task/ledger state.
 - Duplicate workflow run `25376342058` verified idempotency: duplicate sale returned `duplicate: true` and skipped task/email/Discord/ledger.
+- Cloudinary unsigned upload support is synced to `webjuice-restaurant` and all 5 generated repos; Pages runtime secrets are present on template dev/live plus all 5 generated dev/live projects.
+- Deployed Opa attachment upload returned HTTP 200 and a Cloudinary raw URL under `profitslocal/revision-attachments/opa-bar-mezze-restaurant/<order>/`.
+- Deployed Opa revision request against Stripe order `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7` consumed quota from `0/3` to `1/3`, created `data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json`, reused website thread `1501197070319616011`, and sent customer route email `1ca45453-2d6e-4184-9ca8-8a62dd112531`.
+- The agent completion run pushed dev and sent Discord follow-up, but the customer review email was intentionally skipped by the pre-review gate because no QA screenshots were attached to the smoke run.
+- Opa cold outreach live test to owner inbox succeeded: Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce`; the validated pack includes preview, desktop/mobile screenshots, demo video, official source proof, and local AI audit summary.
+- Approval publish live-safe dry run succeeded for the same Opa order/task: `data/agent-runs/opa-approval-publish-dry-run.json` records `dryRun: true`, `pushed: false`, source `dev`, target `main`, and all publish planning steps ok.
 - Default domain route resolver is implemented: blank domain defaults to `<client>.profitslocal.com`; customer-owned domains require DNS handoff; ProfitsLocal subpages are allowed but wait for the future root-site router.
 - No known API keys are committed.
 
@@ -85,27 +91,26 @@ npm run domain:test-launch-route
 npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
 ```
 
-### 2. Cloudinary Attachment Runtime Secrets
+### 2. Agent Review Email QA Gate
 
-Goal: customer revision attachments upload real files, not only summaries.
+Goal: real customer review emails should be sent only after the agent has fresh visual QA proof.
 
 Working now:
 
-- Template and generated repos include `/api/upload-attachment/`.
-- Upload endpoint signs Cloudinary uploads server-side and scopes files under `profitslocal/revision-attachments/<client>/<order>/`.
-- Local smoke verifies signed upload payload, Cloudinary folder, URL return, and revision payload forwarding.
-- Cloudinary MCP account smoke upload/delete passed.
+- `agent:complete-task` already blocks review emails unless required context, design protocol, deploy URL, and QA screenshots are present.
+- The deployed Opa revision smoke proved the gate works: Discord/dev updates happened, but the review email was skipped because `qaScreenshots` was empty.
 
 Remaining:
 
-- Add `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `CLOUDINARY_UPLOAD_FOLDER`, and `CLOUDINARY_UPLOAD_MAX_BYTES` to Cloudflare Pages env for template and 5 generated repos.
-- Run deployed live upload smoke on Opa `/api/upload-attachment/`.
+- Add or wire an automated screenshot capture step after dev deploy and before `agent:complete-task --send-email true`.
+- Store screenshot paths in the agent result so the pre-review gate can pass.
+- Re-run a non-visual smoke that still includes screenshots, then verify customer review email is sent.
 
 Validation:
 
 ```bash
-npm run smoke:upload-attachment
-node -e "/* POST FormData to https://opa-bar-mezze-restaurant-dev.pages.dev/api/upload-attachment/ after secrets are configured */"
+npm run agent:test-pre-review-gate
+npm run agent:complete-task -- --task <task.json> --repo-dir <client-repo> --execute true --checkout true --push true --check-deploy true --send-email true --qa-screenshots <paths>
 ```
 
 ### 3. Generated Restaurant Repo Promotion
@@ -331,9 +336,9 @@ npm run audit:restaurant-local-llm -- --client opa-bar-mezze-restaurant --fail-o
 
 ## Suggested Build Order
 
-1. Cold outreach live test to owner-controlled inbox using the regenerated Opa proof assets.
-2. Full paid → agent → dev preview → approval → live publish dry-run/live-sim.
-3. Migrate the remaining restaurant repos through the real-menu/artifact/audit/outreach flow.
+1. Add automatic post-deploy screenshot capture into agent completion so the review email gate can pass without manual screenshot paths.
+2. Add the dedicated `ProfitsLocal Handoff` sender bot/token when available, then update env/docs to separate sender bot from website-agent.
+3. Run one non-smoke Opa customer-review email path with screenshots and confirm Resend id.
 4. More restaurant cities only after the Brisbane restaurant loop is stable.
 5. Dashboard implementation only after the core restaurant loop is done; see `docs/OPS_DASHBOARD_PLAN.md`.
 
@@ -342,4 +347,4 @@ npm run audit:restaurant-local-llm -- --client opa-bar-mezze-restaurant --fail-o
 - Decision on where central automation should persist production state long term:
   - Git repo JSON files for MVP
   - Cloudflare D1 / Supabase / Neon for production
-- Confirm whether extra revision purchases should add `+1` to the original entitlement or create a separate one-revision entitlement. Current checkout can sell `$100` extra revisions; entitlement increment wiring still needs a final policy choice.
+- Dedicated `ProfitsLocal Handoff` sender bot/token for website task dispatch, so the dispatch bot is not the website-agent bot itself.

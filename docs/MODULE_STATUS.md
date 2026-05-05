@@ -50,7 +50,7 @@
 | Approval publish runner | Working MVP | `npm run agent:publish-approved` publishes an approved dev tree to main without merging unrelated histories, can push live, wait for live deploy, send live email/Discord follow-up, and update case timeline. |
 | First-party approval flow | Working MVP | Template/client sites have `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` with mandatory `orderId + checkout email` matching. |
 | Order status utility | Working MVP | Template/client sites have `/api/order-status/`; `/revise` displays trusted revision quota only after `orderId + checkout email` matches the central entitlement record. |
-| Revision attachment storage | Working MVP | Template/client sites have `/api/upload-attachment/` for server-side Cloudinary uploads; local smoke verifies signed Cloudinary upload shape and `/revise` forwards returned URLs to Discord/email/agent routing. Pages projects still need Cloudinary runtime secrets before real customer upload is active. |
+| Revision attachment storage | Working MVP | Template/client sites have `/api/upload-attachment/` for server-side Cloudinary uploads with signed or unsigned-preset Cloudinary mode; local smoke passes in template/generated repos, Pages runtime secrets are configured on template plus 5 generated dev/live projects, and deployed Opa returned a real Cloudinary URL from `/api/upload-attachment/`. |
 | Domain onboarding / DNS verifier | Working MVP | `profitslocal.com` is attached to `profitslocal-live`; DNS and Pages custom-domain status are active; `domain:test-launch-route`, `domain:inspect`, `domain:pages-status`, and `domain:upsert-cname` record/poll the flow. |
 | Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
 
@@ -70,21 +70,21 @@
 
 ## Not Started
 
-| Module | Status |
-|---|---|
-| PDF extraction / image OCR pipeline | Working MVP |
-| PaddleOCR provider | Working wrapper |
-| OCRmyPDF provider | Working wrapper |
-| Multi-niche framework | Half built |
-| Reservation/contact extractors | Not started |
-| Live Tally form creation | Blocked on Tally payment block API schema; first-party Stripe checkout is the current production path |
-| Resend cold email test | Dry-run working | `npm run outreach:send-cold-email -- --client <slug> --dry true` writes a proof email artifact from the outreach pack. Resend is solid for transactional email; cold outreach should use a separate outreach sender/domain or subdomain to protect transactional reputation. Live send should target an owner-controlled inbox first. |
+| Module | Status | Notes |
+|---|---|---|
+| PDF extraction / image OCR pipeline | Working MVP | See `docs/OCR_MENU_PIPELINE.md`. |
+| PaddleOCR provider | Working wrapper | Local runtime verified. |
+| OCRmyPDF provider | Working wrapper | Local runtime verified. |
+| Multi-niche framework | Half built | Deferred; current focus is restaurant only. |
+| Reservation/contact extractors | Not started | Still needed for richer restaurant evidence. |
+| Live Tally form creation | Blocked | Tally payment-block API schema is unstable; first-party Stripe checkout is the production path. |
+| Resend cold email test | Owner-inbox live smoke done | `npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --to matthew6688@gmail.com --dry false` returned Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce` from a validated outreach pack with desktop/mobile screenshots and `demo.mp4`. Use a separate outreach sender/domain before sending to real prospects. |
 
 ## Immediate Next Build Order
 
-1. Configure Cloudinary runtime secrets on template/client Pages projects and run a deployed revision attachment upload smoke.
-2. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
-3. Add next restaurant city only after the restaurant loop closes.
+1. Add QA screenshot capture to the real agent completion path so customer review emails can pass the pre-review gate automatically.
+2. Add the dedicated `ProfitsLocal Handoff` sender bot/token when the owner creates it, then switch `WEBSITE_TASKS_DISCORD_BOT_TOKEN` away from the website-agent bot.
+3. Add next restaurant city only after the Brisbane/Opa loop closes cleanly with a non-smoke customer review email.
 4. Plan dashboard after restaurant loop remains stable.
 
 ## Verification Rules
