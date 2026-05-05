@@ -56,13 +56,20 @@ Utility pages:
 - `/revise` requires `orderId + checkout email`, then posts to `/api/revision-request/`.
   - When opened from a review email or preview footer, `orderId` and checkout email are prefilled and locked as read-only fields.
   - The page shows trusted plan/revision usage after the backend matches the order.
-  - The form accepts multiple attachment selections and forwards an attachment summary to Discord/email/agent routing. Large binary storage should move to R2/S3 or customer Drive links before production scale.
+  - The form accepts multiple attachment selections, uploads them server-side to Cloudinary when Cloudinary env is configured, and forwards Cloudinary URLs to Discord/email/agent routing.
 - `/api/order-status/` returns trusted revision usage only after the same match.
 - `/domain-help` explains fast ProfitsLocal-hosted launch options plus customer-owned DNS steps.
 
 The customer may reach these pages from either the review email or the fixed footer/banner on the dev preview.
 
 ## Domain Options
+
+Default strategy:
+
+- If the customer leaves the domain blank, use `<client>.profitslocal.com`.
+- If the customer asks for `*.profitslocal.com`, use that subdomain.
+- If the customer asks for `profitslocal.com/<client>`, accept it as a future ProfitsLocal router/subpage option, but do not block the restaurant loop on the public ProfitsLocal page.
+- If the customer asks for their own domain/subdomain, send DNS instructions and attach it in Cloudflare Pages after DNS resolves.
 
 Fastest to slowest:
 
@@ -72,6 +79,14 @@ Fastest to slowest:
 4. Customer root domain such as `customer.com`: most official, but slowest because it requires DNS and final launch coordination.
 
 Keep the dev preview utility pages available after launch so the customer can still approve, request revisions, and buy extra revisions without mixing those controls into the public restaurant site.
+
+Validation:
+
+```bash
+npm run domain:test-launch-route
+npm run domain:inspect -- --domain profitslocal.com --project profitslocal-live
+npm run domain:pages-status -- --project profitslocal-live --domain profitslocal.com
+```
 
 ## Discord Website Threads
 
@@ -134,6 +149,11 @@ Do not commit these values.
 - `AGENT_REPO`
 - `AGENT_WORKFLOW_ID`
 - `AGENT_REF`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+- `CLOUDINARY_UPLOAD_FOLDER`
+- `CLOUDINARY_UPLOAD_MAX_BYTES`
 
 Each generated client Pages project also needs:
 
@@ -150,6 +170,11 @@ Each generated client Pages project also needs:
 - `AGENT_REPO`
 - `AGENT_WORKFLOW_ID`
 - `AGENT_REF`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+- `CLOUDINARY_UPLOAD_FOLDER`
+- `CLOUDINARY_UPLOAD_MAX_BYTES`
 
 `AGENT_GITHUB_TOKEN` should be a narrowly scoped token that can dispatch Actions workflows on `matthew6688/webjuice-stack-mvp`. The defaults are:
 
@@ -192,7 +217,9 @@ Validation status:
 - 5 dev Pages deploys verified `completed/success`.
 - Longwang live test created Stripe Checkout Sessions for `$399` and `$100 extra_revision`.
 - Longwang `$399` test payment completed and redirected to `/thank-you`.
+- Opa deployed preview `$399` Stripe test payment completed and redirected to `/thank-you` with order, email, preview, domain, approve, and revision context.
 - Stripe event routing writes a revenue ledger entry and agent task in dry-run and fixture tests.
+- Route workflow is idempotent by dedupe key and submission path; duplicate Opa Stripe payload verification returned `duplicate: true`, skipped agent task/email/Discord/ledger, and committed no new state.
 - Stripe/Resend runtime secrets are configured on the 5 dev Pages projects.
 - Central runner local verification wrote sale entitlement, sale task, revision task, and ledger records under `/tmp/central-runner-state`.
 - Main repo GitHub Actions secrets are configured for sales Discord, revision Discord, and Resend; dry-run workflow dispatch passes with notification flags enabled.

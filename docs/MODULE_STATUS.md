@@ -26,7 +26,7 @@
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
 | First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs and Pages runtime secrets are configured on the 5 dev projects. |
 | Stripe paid activation webhook | Working MVP | `webjuice-restaurant` has `/api/stripe-webhook` with signature verification; `npm run funnel:route-stripe` normalizes `checkout.session.completed` into revenue ledger and agent task outputs. |
-| Central automation runner | Working MVP | `npm run funnel:route-event` routes Stripe/Tally/first-party revision payloads; `.github/workflows/route-funnel-event.yml` can persist generated funnel state and commit it back to main. |
+| Central automation runner | Working MVP | `npm run funnel:route-event` routes Stripe/Tally/first-party revision payloads; `.github/workflows/route-funnel-event.yml` can persist generated funnel state, commit it back to main, auto-run the agent, and skip duplicate webhook payloads by idempotency key/submission path. |
 | Case file memory | Working MVP | Funnel routing maintains `data/cases/<client>/<order>/case.json`, timeline, customer messages, context packet, decisions log, and agent run log so agents do not lose order/thread context. |
 | Revision entitlement ledger | Working MVP | Paid sales create `data/funnel/orders/<client>/<order>.json`; revision requests consume quota before agent task creation and denied over-limit attempts are recorded without creating tasks. |
 | Customer email notifications | Working MVP | Client Pages Functions and automation router can send Resend customer emails for payment receipt, revision receipt, accepted quota usage, and denied/extra-revision paths when `RESEND_API_KEY` is configured. |
@@ -50,7 +50,8 @@
 | Approval publish runner | Working MVP | `npm run agent:publish-approved` publishes an approved dev tree to main without merging unrelated histories, can push live, wait for live deploy, send live email/Discord follow-up, and update case timeline. |
 | First-party approval flow | Working MVP | Template/client sites have `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` with mandatory `orderId + checkout email` matching. |
 | Order status utility | Working MVP | Template/client sites have `/api/order-status/`; `/revise` displays trusted revision quota only after `orderId + checkout email` matches the central entitlement record. |
-| Domain onboarding / DNS verifier | Working MVP | `profitslocal.com` is attached to `profitslocal-live`; DNS CNAME is set; Pages custom-domain verification/validation are active; `domain:inspect`, `domain:pages-status`, and `domain:upsert-cname` record/poll the flow. |
+| Revision attachment storage | Working MVP | Template/client sites have `/api/upload-attachment/` for server-side Cloudinary uploads; local smoke verifies signed Cloudinary upload shape and `/revise` forwards returned URLs to Discord/email/agent routing. Pages projects still need Cloudinary runtime secrets before real customer upload is active. |
+| Domain onboarding / DNS verifier | Working MVP | `profitslocal.com` is attached to `profitslocal-live`; DNS and Pages custom-domain status are active; `domain:test-launch-route`, `domain:inspect`, `domain:pages-status`, and `domain:upsert-cname` record/poll the flow. |
 | Security/key handling | Working | `docs/SECURITY.md` documents local `.env.local`, GitHub/Cloudflare secrets, paid workflow checks, and secret scanning before commit. |
 
 ## Half Built
@@ -63,8 +64,8 @@
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
 | Cost tracking | Working MVP | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, Tally revenue, Stripe revenue, Resend emails, image generation, and agent runtime can write events. Resend/runtime costs are configurable estimates. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
-| Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; review links lock order/email as read-only, show trusted plan/quota after match, and carry attachment summaries into Discord/email/agent routing. Backend router enforces entitlement quota before creating a `revision` task. |
-| Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; route workflow can auto-run the generated agent task, push dev, wait for deploy, and notify review channels. Verified live by GitHub Actions smoke `25354611737`. |
+| Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; review links lock order/email as read-only, show trusted plan/quota after match, upload attachments to Cloudinary when configured, and carry attachment URLs into Discord/email/agent routing. Backend router enforces entitlement quota before creating a `revision` task. |
+| Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; route workflow can auto-run the generated agent task, push dev, wait for deploy, notify review channels, and skip duplicate webhook retries. Verified live by GitHub Actions smoke `25354611737` and Opa deployed checkout `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`. |
 | Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. Website task handoffs post the full task packet into `#website-tasks` and prefer Hermes auto-threading for the same text-channel thread display used by human-started Hermes tasks; explicit message-thread creation remains as fallback. Later revisions/review/publish reuse `case.json.discord.websiteTaskThreadId`. Live Opa smoke verified thread creation, same-thread revision reuse, website-agent pickup, and Huashu/open-design skill loading. |
 
 ## Not Started
@@ -81,7 +82,7 @@
 
 ## Immediate Next Build Order
 
-1. Run one real Stripe test order through the deployed Opa preview, not just the central router.
+1. Configure Cloudinary runtime secrets on template/client Pages projects and run a deployed revision attachment upload smoke.
 2. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
 3. Add next restaurant city only after the restaurant loop closes.
 4. Plan dashboard after restaurant loop remains stable.

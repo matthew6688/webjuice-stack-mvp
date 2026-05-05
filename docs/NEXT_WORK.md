@@ -18,6 +18,7 @@ Verified live state:
 - Revision requests require mandatory `orderId + checkout email` matching before quota is consumed.
 - Central funnel runner exists: `npm run funnel:route-event` plus GitHub Actions `route-funnel-event.yml`.
 - `webjuice-restaurant` Pages Functions can dispatch Stripe/revision payloads to the main automation workflow with `AGENT_GITHUB_TOKEN`.
+- Funnel dispatch now carries a dedupe key; the main workflow serializes same-key events, refreshes `main`, and the router skips duplicate submission paths.
 - Main repo workflow notification secrets are configured for Discord + Resend; dry-run workflow dispatch with notification flags passes.
 - `AGENT_GITHUB_TOKEN` is configured on 5 Brisbane dev/live Pages projects plus `webjuice-restaurant` dev/live, and `wrangler pages secret list` verifies the secret exists.
 - Funnel routing now writes per-order case memory under `data/cases/<clientSlug>/<orderId>/` and agent tasks include case/context/design protocol fields.
@@ -40,7 +41,11 @@ Verified live state:
 - Email URL helpers now trim trailing preview slashes so links render as `/domain-help`, `/revise`, and `/approve` without accidental double slashes.
 - `/domain-help` now explains four launch options: ProfitsLocal subpage, ProfitsLocal subdomain, customer root domain, and customer subdomain.
 - `/revise` now locks prefilled order ID/email, keeps trusted plan/quota display, and carries selected attachment summaries to Discord/email/agent routing.
-- The 5 generated Brisbane repos were synced from the latest `webjuice-restaurant` template, pushed to `dev`, passed revision smoke, approval smoke, local build, deployed successfully, and serve `/revise/` plus `/domain-help/` on dev.
+- `/revise` now uploads selected files through `/api/upload-attachment/` to Cloudinary when runtime secrets are configured; returned Cloudinary URLs are forwarded to Discord/email/agent routing.
+- The 5 generated Brisbane repos were synced from the latest `webjuice-restaurant` template, pushed to `dev`, passed upload/revision/approval smoke, local build, deployed successfully, and serve `/revise/` plus `/domain-help/` on dev.
+- Deployed Opa `$399` Stripe test checkout succeeded with session `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`, redirected to `/thank-you`, and wrote production case/order/task/ledger state.
+- Duplicate workflow run `25376342058` verified idempotency: duplicate sale returned `duplicate: true` and skipped task/email/Discord/ledger.
+- Default domain route resolver is implemented: blank domain defaults to `<client>.profitslocal.com`; customer-owned domains require DNS handoff; ProfitsLocal subpages are allowed but wait for the future root-site router.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -60,6 +65,7 @@ Working now:
 - `data/domain/profitslocal.com.pages-status.json` stores Pages custom-domain status.
 - `npm run domain:pages-status` can poll custom-domain verification/certificate state.
 - `npm run domain:upsert-cname` can create/update the CNAME when the token has Zone DNS Edit.
+- `npm run domain:test-launch-route` verifies default launch route selection.
 - Local secrets should be configured with `npm run setup:local-env`, then verified with `npm run check:env -- --workflow funnel`, `scrape`, `deploy`, and `localAudit`.
 - ROI ledger now records Resend email costs when `RESEND_EMAIL_UNIT_COST` is configured.
 - Agent completion can record runtime estimates when `AGENT_RUNTIME_COST_PER_MINUTE` or `--runtime-cost-per-minute` is set.
@@ -74,10 +80,34 @@ Validation:
 ```bash
 npm run domain:inspect -- profitslocal.com --project profitslocal-live
 npm run domain:pages-status -- --project profitslocal-live --domain profitslocal.com
+npm run domain:test-launch-route
 npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
 ```
 
-### 2. Generated Restaurant Repo Promotion
+### 2. Cloudinary Attachment Runtime Secrets
+
+Goal: customer revision attachments upload real files, not only summaries.
+
+Working now:
+
+- Template and generated repos include `/api/upload-attachment/`.
+- Upload endpoint signs Cloudinary uploads server-side and scopes files under `profitslocal/revision-attachments/<client>/<order>/`.
+- Local smoke verifies signed upload payload, Cloudinary folder, URL return, and revision payload forwarding.
+- Cloudinary MCP account smoke upload/delete passed.
+
+Remaining:
+
+- Add `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `CLOUDINARY_UPLOAD_FOLDER`, and `CLOUDINARY_UPLOAD_MAX_BYTES` to Cloudflare Pages env for template and 5 generated repos.
+- Run deployed live upload smoke on Opa `/api/upload-attachment/`.
+
+Validation:
+
+```bash
+npm run smoke:upload-attachment
+node -e "/* POST FormData to https://opa-bar-mezze-restaurant-dev.pages.dev/api/upload-attachment/ after secrets are configured */"
+```
+
+### 3. Generated Restaurant Repo Promotion
 
 Goal: push the latest proven template funnel/thread/domain behavior into the 5 generated Brisbane restaurant repos.
 
@@ -88,8 +118,8 @@ Working now:
 
 Remaining:
 
-- Run one deployed Opa preview Stripe test order end to end.
-- Verify post-payment email links, revision lock state, extra revision link, and same-thread website-agent pickup from the deployed preview.
+- Keep generated repos synced whenever the template funnel changes.
+- After Cloudinary runtime secrets are added, run one deployed Opa revision upload and request.
 
 Validation:
 
@@ -99,7 +129,7 @@ npm run qa:preview-sales-bar -- --dist-dir /path/to/generated/repo/dist
 npm run check:deploys -- --all clients
 ```
 
-### 3. Central Automation Runner Hardening
+### 4. Central Automation Runner Hardening
 
 Goal: Stripe and revision webhooks should trigger the main automation repo without manual file export.
 
@@ -116,6 +146,7 @@ Working now:
 - `webjuice-restaurant` has `functions/api/_agent-dispatch.ts`.
 - Stripe webhook dispatches raw Stripe events.
 - First-party revision form dispatches normalized revision payloads.
+- Route workflow accepts `dedupe_key`, serializes duplicate event handling, and skips already-routed submissions.
 
 Remaining hardening:
 
@@ -127,6 +158,7 @@ Validation:
 ```bash
 npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --dry-run true
 npm run funnel:route-event -- --input /tmp/revision.json --provider auto --dry-run true
+npm run funnel:test-route-idempotency
 npm run case:context -- --case data/cases/<client>/<order>/case.json
 gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp \
   -f provider=auto \
@@ -136,7 +168,7 @@ gh workflow run route-funnel-event.yml --repo matthew6688/webjuice-stack-mvp \
   -f dry_run=true
 ```
 
-### 3. Customer Utility / Status Pages
+### 5. Customer Utility / Status Pages
 
 Goal: `/revise` and future account utility pages should show trusted backend state, not guessed frontend state.
 
@@ -167,7 +199,7 @@ curl -X POST https://<client>-dev.pages.dev/api/order-status/ \
   --data '{"order_id":"cs_test_...","email":"owner@example.com"}'
 ```
 
-### 4. Discord Thread Workspace
+### 6. Discord Thread Workspace
 
 Goal: every paid order and revision should have a durable internal Discord workspace so the agent can post the right preview/review/live links without losing context.
 
@@ -197,7 +229,7 @@ npm run discord:case-thread -- --case data/cases/<client>/<order>/case.json --dr
 npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --send-discord true --dry-run true
 ```
 
-### 5. Email Completion Nodes
+### 7. Email Completion Nodes
 
 Goal: every key customer-facing state change sends a clear email.
 

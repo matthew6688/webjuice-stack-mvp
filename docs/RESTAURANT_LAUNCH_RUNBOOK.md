@@ -19,6 +19,10 @@ Scope: restaurant website/menu loop only.
 | Controlled Opa paid/revision route with Resend + Discord | Done | Temp run using `matthew6688@gmail.com`, `/tmp/profitslocal-opa-controlled`, and Stripe test order `cs_test_controlled_opa_1777978600` |
 | Revision UX locks order/email and carries attachment summary | Done | `npm run smoke:revision-request`, template build, and Opa revise page QA screenshot |
 | Generated Brisbane repos synced from latest template | Done | All 5 generated repos passed `npm run smoke:revision-request`, `npm run smoke:approval-request`, and `npm run build` locally; all 5 `Deploy Dev` GitHub Actions completed success |
+| Cloudinary revision attachment upload path | Done | `npm run smoke:upload-attachment` in template/generated repos; deployed endpoints return safe 503 until Cloudinary secrets are configured |
+| Deployed Opa Stripe checkout and thank-you handoff | Done | Stripe test session `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7` paid/succeeded and redirected to `/thank-you` |
+| Funnel route idempotency | Done | `npm run funnel:test-route-idempotency`; duplicate Opa workflow run `25376342058` returned `duplicate: true` and skipped task/email/Discord/ledger |
+| ProfitsLocal launch route resolver | Done | `npm run domain:test-launch-route`, `npm run domain:inspect`, `npm run domain:pages-status`, and `https://profitslocal.com/` HTTP 200 |
 
 ## Standard Verification Sequence
 
@@ -29,6 +33,8 @@ npm run agent:test-approval-resolution
 npm run agent:test-pre-review-gate
 npm run funnel:test-domain-email-guidance
 npm run funnel:test-extra-revision-entitlement
+npm run funnel:test-route-idempotency
+npm run domain:test-launch-route
 npm run hermes:test-website-agent-closure
 npm run qa:opa-full-loop-live-sim
 ```
@@ -38,6 +44,7 @@ Run from `/Users/matthew/Developer/webjuice-restaurant`:
 ```bash
 npm run smoke:approval-request
 npm run smoke:revision-request
+npm run smoke:upload-attachment
 npm run build
 ```
 
@@ -85,20 +92,33 @@ Date: 2026-05-05.
 - Isolation: state was written under `/tmp/profitslocal-opa-controlled`, not production `data/`.
 - Discord UI note: `#website-tasks` is a text channel. Website automation now lets Hermes auto-create threads from the parent task message, matching the thread display used by the other Hermes text channels.
 
+## Latest Deployed Checkout Smoke
+
+Date: 2026-05-05.
+
+- Client: Opa Bar & Mezze.
+- Test email: `matthew6688@gmail.com`.
+- Paid order: `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`.
+- Stripe status: `paid`, payment intent `succeeded`, amount `$399`.
+- Redirect: `https://opa-bar-mezze-restaurant-dev.pages.dev/thank-you/` with order, email, domain, preview, approve, and revision context.
+- Central workflow wrote production case/order/task/ledger state to `main`.
+- Duplicate workflow verification: run `25376342058` returned `duplicate: true`, did not create a second task, did not append a second ledger event, and did not send email/Discord.
+
 ## Latest Generated Repo Sync
 
 Date: 2026-05-05.
 
-Synced `webjuice-restaurant` revision/domain/funnel UX to generated dev branches:
+Synced `webjuice-restaurant` revision/domain/funnel/attachment UX to generated dev branches:
 
-- Babylon Brisbane: `66191fd`
-- Chu The Phat: `7fffc83`
-- Joey's: `82ac954`
-- Longwang Restaurant: `723b4e1`
-- Opa Bar & Mezze: `15da964`
+- Babylon Brisbane: `36b8929`
+- Chu The Phat: `0820f85`
+- Joey's: `d91ec88`
+- Longwang Restaurant: `f11055a`
+- Opa Bar & Mezze: `60043f7`
 
 Verification:
 
+- Each repo passed `npm run smoke:upload-attachment`.
 - Each repo passed `npm run smoke:revision-request`.
 - Each repo passed `npm run smoke:approval-request`.
 - Each repo passed `npm run build`.
@@ -107,7 +127,7 @@ Verification:
 
 ## Remaining Backlog
 
-- Run one real Stripe test order through the deployed Opa preview after template promotion.
+- Configure Cloudinary runtime secrets on the template and 5 generated Cloudflare Pages projects, then run one deployed `/api/upload-attachment/` live upload smoke.
 - Complete cold outreach live test to owner-controlled inbox.
 - Add next restaurant city only after the Brisbane/Opa loop remains stable.
 - Dashboard planning can resume after restaurant loop stability.

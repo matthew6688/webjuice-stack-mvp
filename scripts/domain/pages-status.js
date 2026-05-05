@@ -3,6 +3,9 @@
 import fs from 'fs';
 import path from 'path';
 import { listPagesDomains } from '../../core/domain/cloudflare-pages.js';
+import { loadLocalEnv } from '../../core/env/load-local-env.js';
+
+loadLocalEnv();
 
 const args = parseArgs();
 if (!args.project) {

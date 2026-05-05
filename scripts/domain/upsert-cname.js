@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+import { loadLocalEnv } from '../../core/env/load-local-env.js';
+
+loadLocalEnv();
+
 const args = parseArgs();
 if (!args.zone || !args.name || !args.target) {
   console.error('Usage: node scripts/domain/upsert-cname.js --zone zone-id --name example.com --target project.pages.dev [--proxied true]');

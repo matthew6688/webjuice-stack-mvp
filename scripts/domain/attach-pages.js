@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 import { attachPagesDomain } from '../../core/domain/cloudflare-pages.js';
+import { loadLocalEnv } from '../../core/env/load-local-env.js';
+
+loadLocalEnv();
 
 function parseArgs() {
   const args = process.argv.slice(2);
