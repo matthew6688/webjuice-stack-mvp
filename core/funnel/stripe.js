@@ -23,6 +23,7 @@ export function normalizeStripeCheckoutEvent(payload, env = {}) {
     feedback: metadata.launch_notes || metadata.feedback || '',
     referenceUrl: metadata.reference_url || '',
     domain: metadata.preferred_domain || metadata.domain || '',
+    parentOrderId: metadata.parent_order_id || metadata.parentOrderId || '',
     files: [],
     provider: 'stripe',
     rawSubmissionId: event.id || session.id || null,

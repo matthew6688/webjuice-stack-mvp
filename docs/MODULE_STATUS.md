@@ -81,10 +81,10 @@
 
 ## Immediate Next Build Order
 
-1. Finalize `$100` extra revision entitlement increment behavior.
-2. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
-3. Promote template changes through generated restaurant repos.
-4. Add next restaurant city only after the restaurant loop closes.
+1. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
+2. Promote template changes through generated restaurant repos.
+3. Add next restaurant city only after the restaurant loop closes.
+4. Plan dashboard after restaurant loop remains stable.
 
 ## Verification Rules
 

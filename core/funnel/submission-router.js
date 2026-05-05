@@ -10,11 +10,12 @@ import {
   sendDiscordChannelMessage,
   sendDiscordWebhook,
 } from './discord.js';
-import { consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
+import { addExtraRevisionEntitlement, consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
 import { normalizeTallySubmission, tallyRevenueLedgerInput } from './tally.js';
 
 export function classifyFunnelSubmission(order) {
+  if (order.tier === 'extra_revision') return 'extra_revision';
   const hasRevenue = Number(order.amount || 0) > 0 || ['one_time', 'yearly_maintenance'].includes(order.tier);
   return hasRevenue ? 'sale' : 'revision';
 }
@@ -25,6 +26,9 @@ export async function routeFunnelSubmission(payload, options = {}) {
     ? normalizeStripeCheckoutEvent(payload, { ...process.env, ...(options.env || {}) })
     : normalizeTallySubmission(payload, { ...process.env, ...(options.env || {}) });
   const kind = options.kind || classifyFunnelSubmission(order);
+  const caseOrder = kind === 'extra_revision' && order.parentOrderId
+    ? { ...order, orderId: order.parentOrderId }
+    : order;
   const clientSlug = order.clientSlug || 'unknown-client';
   const submissionId = safeId(order.orderId || order.rawSubmissionId || Date.now());
   const taskPath = options.taskPath || path.join(
@@ -37,7 +41,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     clientSlug,
     `${kind}-${submissionId}.json`,
   );
-  const caseRef = buildCaseReference(order, { casesDir: options.casesDir });
+  const caseRef = buildCaseReference(caseOrder, { casesDir: options.casesDir });
   let entitlement = null;
   if (kind === 'revision') {
     entitlement = consumeRevisionEntitlement(order, {
@@ -107,6 +111,67 @@ export async function routeFunnelSubmission(payload, options = {}) {
         entitlementsDir: options.entitlementsDir,
         dryRun: options.dryRun,
       }),
+    };
+  }
+  if (kind === 'extra_revision') {
+    entitlement = addExtraRevisionEntitlement(order, {
+      entitlementsDir: options.entitlementsDir,
+      dryRun: options.dryRun,
+    });
+    if (!options.dryRun) {
+      writeJson(submissionPath, {
+        schemaVersion: 1,
+        kind,
+        receivedAt: artifactTimestamp(),
+        order,
+        entitlement,
+        payload,
+      });
+    }
+    const ledgerEvent = !options.dryRun
+      ? appendLedgerEvent(
+        provider === 'stripe' ? stripeRevenueLedgerInput(order) : tallyRevenueLedgerInput(order),
+        options.ledgerPath || DEFAULT_LEDGER_PATH,
+      )
+      : null;
+    let customerEmail = { ok: false, skipped: true };
+    const emailMessage = buildFunnelCustomerEmail({ kind, order, entitlement });
+    if (options.sendEmail && emailMessage && !options.dryRun) {
+      customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, {
+        ...options,
+        clientSlug: order.clientSlug,
+        campaignId: order.campaignId || options.campaignId || null,
+        emailMetadata: { kind, orderId: order.orderId || '', outcome: entitlement?.reason || '' },
+      });
+    }
+    const caseRecord = recordFunnelCaseEvent({
+      kind,
+      provider,
+      order: caseOrder,
+      entitlement,
+      submissionPath,
+      ledgerEvent,
+      payload,
+      ok: entitlement.ok,
+      reason: entitlement.reason,
+      casesDir: options.casesDir,
+      dryRun: options.dryRun,
+    });
+    return {
+      ok: entitlement.ok,
+      provider,
+      kind,
+      order,
+      task: null,
+      taskPath: null,
+      submissionPath,
+      entitlement,
+      ledgerEvent,
+      discord: { ok: false, skipped: true },
+      websiteAgentHandoff: { ok: false, skipped: true, reason: 'extra_revision_no_agent_task' },
+      customerEmail,
+      discordPayload: buildDiscordMessage({ kind, order, task: null }),
+      caseRecord,
     };
   }
 

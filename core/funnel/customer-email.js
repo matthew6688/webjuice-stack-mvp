@@ -46,6 +46,7 @@ function recordResendCost(env, message, options = {}, data = {}) {
 export function buildFunnelCustomerEmail({ kind, order, entitlement, extraRevisionUrl = '' }) {
   if (!order?.email || order.email === 'N/A') return null;
   if (kind === 'sale') return saleEmail(order, entitlement);
+  if (kind === 'extra_revision') return extraRevisionEmail(order, entitlement);
   if (entitlement?.ok) return revisionAcceptedEmail(order, entitlement, extraRevisionUrl);
   return revisionDeniedEmail(order, entitlement, extraRevisionUrl);
 }
@@ -159,6 +160,27 @@ function revisionDeniedEmail(order, entitlement, extraRevisionUrl) {
       `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
     ],
     outro: 'If this looks wrong, reply with your Stripe receipt and checkout email.',
+  });
+}
+
+function extraRevisionEmail(order, entitlement) {
+  const limit = entitlement?.entitlement?.revisionPolicy?.limit ?? 'N/A';
+  const used = entitlement?.entitlement?.revisionUsed ?? 'N/A';
+  return simpleEmail({
+    to: order.email,
+    subject: 'Extra revision added',
+    intro: entitlement?.ok
+      ? 'Your extra revision purchase was matched to your original order.'
+      : entitlement?.message || 'Your extra revision purchase could not be matched automatically.',
+    lines: [
+      `Original Order ID: ${order.parentOrderId || 'N/A'}`,
+      `Extra revision payment ID: ${order.orderId || 'N/A'}`,
+      `Revision usage: ${used}/${limit}`,
+      `Preview: ${order.previewUrl || 'N/A'}`,
+    ],
+    outro: entitlement?.ok
+      ? 'Use your original Order ID and checkout email when submitting the next revision request.'
+      : 'Reply with your Stripe receipt and original Order ID so we can attach the extra revision manually.',
   });
 }
 

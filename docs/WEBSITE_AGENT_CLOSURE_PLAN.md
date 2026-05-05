@@ -257,14 +257,15 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Strict pre-review gate | Confirm customer review email is blocked unless context/design audit, QA screenshot, and dev deploy URL are recorded | Passing via `npm run agent:test-pre-review-gate` |
 | Opa full-loop live-sim | Confirm paid/revision/dev review/approval/live publish/preview utility controls as one smoke without real customer or ROI writes | Passing via `npm run qa:opa-full-loop-live-sim` |
 | Domain handoff guidance | Confirm thank-you page and customer emails include root-domain/subdomain/DNS utility guidance | Passing via `npm run funnel:test-domain-email-guidance` and `webjuice-restaurant` build |
+| Extra revision entitlement | Confirm `$100` extra revision increments original order limit by 1, does not create an agent task, and allows one more revision | Passing via `npm run funnel:test-extra-revision-entitlement` |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Finalize extra revision entitlement increment behavior.
-3. Complete cold outreach live send to owner-controlled inbox.
-4. Promote template changes through generated restaurant repos.
-5. Add next restaurant city only after restaurant loop stays stable.
+2. Complete cold outreach live send to owner-controlled inbox.
+3. Promote template changes through generated restaurant repos.
+4. Add next restaurant city only after restaurant loop stays stable.
+5. Plan dashboard after restaurant loop remains stable.
 
 ## Required Secrets And Variables
 

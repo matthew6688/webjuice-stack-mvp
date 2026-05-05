@@ -77,6 +77,53 @@ export function consumeRevisionEntitlement(order, options = {}) {
   };
 }
 
+export function addExtraRevisionEntitlement(order, options = {}) {
+  const parentOrderId = order.parentOrderId || order.parent_order_id || '';
+  if (!parentOrderId) {
+    return {
+      ok: false,
+      reason: 'missing_parent_order_id',
+      message: 'Extra revision purchase must include the original Order ID.',
+      entitlement: null,
+    };
+  }
+  const entitlement = findEntitlementForOrder({
+    ...order,
+    orderId: parentOrderId,
+  }, options.entitlementsDir);
+  if (!entitlement) {
+    return {
+      ok: false,
+      reason: 'parent_entitlement_not_found',
+      message: 'No active original order matched both parent Order ID and checkout email.',
+      entitlement: null,
+    };
+  }
+  const currentLimit = Number(entitlement.revisionPolicy?.limit || 0);
+  const event = {
+    id: `extra_rev_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+    extraOrderId: order.orderId || '',
+    parentOrderId,
+    purchasedAt: artifactTimestamp(),
+    email: order.email || '',
+    limitBefore: currentLimit,
+    limitAfter: currentLimit + 1,
+    amount: Number(order.amount || 0),
+    currency: order.currency || 'USD',
+  };
+  entitlement.revisionPolicy.limit = event.limitAfter;
+  entitlement.revisionPolicy.description = `${event.limitAfter} total revision request${event.limitAfter === 1 ? '' : 's'} after extra revision purchase.`;
+  entitlement.extraRevisionEvents = [...(entitlement.extraRevisionEvents || []), event];
+  entitlement.updatedAt = artifactTimestamp();
+  if (!options.dryRun) saveEntitlement(entitlement, options.entitlementsDir);
+  return {
+    ok: true,
+    reason: 'extra_revision_added',
+    entitlement,
+    extraRevisionEvent: event,
+  };
+}
+
 export function findEntitlementForOrder(order, entitlementsDir = DEFAULT_ENTITLEMENTS_DIR) {
   const orderId = order.orderId || order.stripeSessionId || '';
   const clientSlug = order.clientSlug || '';

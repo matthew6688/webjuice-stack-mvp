@@ -226,6 +226,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - `docs/AUTOMATION_ROADMAP.md`
 - `docs/MODULE_STATUS.md`
 - `docs/WEBSITE_AGENT_CLOSURE_PLAN.md`
+- `docs/RESTAURANT_LAUNCH_RUNBOOK.md`
 
 ### 7.1 Restaurant core loop: launch blockers
 
@@ -235,7 +236,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] Strict pre-review gate：如果 agent run 没有 `contextRead`、`designProtocolUsed`、截图/视觉 QA、dev deploy URL，就不能发 customer review email
 - [x] Opa Bar + Mezze full-loop live-sim：用 test order 跑 paid → agent dev preview → customer approve → publish live，全程不污染真实 ROI/customer data
 - [x] Domain handoff email/page：客户指定 domain/subdomain 后，thank-you/review/live email 需要给清晰 DNS 指引；utility preview pages 保留作为 revise/approve/account 页面
-- [ ] Extra revision policy finalization：确认 `$100` extra revision 是给原 entitlement `+1`，还是创建单独 one-revision entitlement，并完成 wiring
+- [x] Extra revision policy finalization：确认 `$100` extra revision 是给原 entitlement `+1`，还是创建单独 one-revision entitlement，并完成 wiring
 
 ### 7.2 Backlog / not launch blockers
 

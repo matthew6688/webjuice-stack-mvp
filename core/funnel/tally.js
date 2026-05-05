@@ -37,6 +37,7 @@ export function normalizeTallySubmission(payload, env = {}) {
       || '',
     referenceUrl: extractField(combined, 'reference_url') || '',
     domain: extractField(combined, 'preferred_domain') || extractField(combined, 'domain') || extractField(combined, 'custom_domain') || '',
+    parentOrderId: extractField(combined, 'parent_order_id') || extractField(combined, 'parentOrderId') || '',
     files: extractFiles(combined),
     rawSubmissionId: payload?.id || payload?.data?.submissionId || null,
     receivedAt: new Date().toISOString(),
