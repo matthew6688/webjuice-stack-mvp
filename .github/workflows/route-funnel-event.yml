@@ -96,7 +96,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          node -e "const fs=require('fs'); const s=JSON.parse(fs.readFileSync('/tmp/funnel-route-summary.json','utf8')); const run=Boolean(s.ok && s.taskPath && s.repo); fs.writeFileSync('/tmp/run-agent.env', `RUN_AGENT=${run ? 'true' : 'false'}\nCLIENT_REPO=${s.repo || ''}\nTASK_PATH=${s.taskPath || ''}\nCLIENT_SLUG=${s.clientSlug || ''}\n`);"
+          node <<'NODE'
+          const fs = require('fs');
+          const s = JSON.parse(fs.readFileSync('/tmp/funnel-route-summary.json', 'utf8'));
+          const run = Boolean(s.ok && s.taskPath && s.repo);
+          fs.writeFileSync('/tmp/run-agent.env', [
+            `RUN_AGENT=${run ? 'true' : 'false'}`,
+            `CLIENT_REPO=${s.repo || ''}`,
+            `TASK_PATH=${s.taskPath || ''}`,
+            `CLIENT_SLUG=${s.clientSlug || ''}`,
+            '',
+          ].join('\n'));
+          NODE
           cat /tmp/run-agent.env >> "$GITHUB_ENV"
           . /tmp/run-agent.env
           if [ "$RUN_AGENT" != "true" ]; then
