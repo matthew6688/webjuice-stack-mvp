@@ -1,256 +1,509 @@
-# WebJuice Stack MVP
+# ProfitsLocal / WebJuice Restaurant Automation
 
-B2B 公司官网批量生产模板。Astro + Cloudflare，无数据库、无 WordPress、一键创建新客户站。
+AI-assisted local business website system for the restaurant niche.
 
----
+This repository is the central automation brain. It turns real restaurant evidence into preview websites, sales funnels, paid orders, revision tasks, customer review emails, live publishing, domain setup, and ROI records.
 
-## 核心特性
+Current focus: **restaurants only**. Other niches are intentionally deferred until this loop is stable.
 
-- **批量复制**：一键生成新客户的独立 repo + Pages 项目 + 域名绑定
-- **品牌配置化**：所有客户信息集中在 `src/config/site.ts`，一键替换
-- **零月费**：Cloudflare Pages + Resend 免费额度完全够用
-- **全自动部署**：GitHub Actions + Wrangler，无需 Dashboard 点击
+## Business Loop Status
 
----
+The restaurant MVP loop is functionally complete.
 
+Verified with Opa Bar & Mezze:
 
+- Stripe test purchase completed.
+- Central automation created entitlement, case memory, task, Discord thread, and revenue ledger state.
+- Revision request matched `orderId + checkout email`, consumed quota, uploaded attachment to Cloudinary, and reused the same case/thread.
+- Agent task applied real restaurant artifacts to `dev`.
+- Automated QA screenshots can be captured before customer review email.
+- Customer review email was sent.
+- Approval publish moved approved `dev` tree to `main`.
+- Cloudflare Pages live deploy succeeded.
+- Live email was sent.
+- `opa-controlled.profitslocal.com` is active and returns HTTP 200 for `/` and `/menu/`.
 
----
+What remains is mostly production hardening, not core-loop invention:
 
+- use a dedicated `ProfitsLocal Handoff` Discord sender bot instead of the website-agent token;
+- configure estimated Resend/runtime costs for cleaner ROI reports;
+- sync the latest Node 24 workflow hardening into generated restaurant repos during the next template refresh;
+- decide when to add an ops dashboard.
 
+## Pricing
 
-## Outbound Workflow
+- `$399` one-time website, includes 3 revisions.
+- `$799/year` website plus monthly maintenance.
+- `$100` per extra revision.
+
+## Architecture
+
+```mermaid
+flowchart TD
+  A["Google Places / official site / menu PDF / photos"] --> B["Evidence pack"]
+  B --> C["Restaurant content artifact"]
+  B --> D["Restaurant design artifact"]
+  C --> E["Generated restaurant repo"]
+  D --> E
+  E --> F["Cloudflare Pages dev preview"]
+  F --> G["Outreach pack: screenshots + demo video + email"]
+  F --> H["Fixed preview footer: Checkout / Revise / Approve"]
+  H --> I["Stripe Checkout"]
+  I --> J["Stripe webhook"]
+  J --> K["Central funnel router"]
+  K --> L["Order entitlement + finance ledger"]
+  K --> M["Case memory"]
+  K --> N["Discord website task thread"]
+  K --> O["Agent task JSON"]
+  O --> P["Agent completion runner"]
+  P --> Q["Dev branch update"]
+  Q --> R["Dev deploy check"]
+  R --> S["Automated QA screenshots"]
+  S --> T["Customer review email"]
+  T --> U["Customer approve or revise"]
+  U --> V["Publish approved dev to main"]
+  V --> W["Cloudflare Pages live"]
+  W --> X["Domain setup / live email"]
+```
+
+## Core Data Flow
+
+The system passes information through durable files instead of relying on chat memory.
+
+| Stage | Main output | Why it matters |
+|---|---|---|
+| Evidence extraction | `clients/<client>/evidence/evidence.json` | Source of truth for address, phone, menu, photos, official links, and scrape provenance. |
+| Content build | `clients/<client>/content.restaurant.json` | Clean restaurant website/menu content used by renderer. |
+| Design brief | `clients/<client>/design.restaurant.json`, `brand-spec.md` | Huashu/open-design guidance: palette, typography, layout, brand tone. |
+| Checkout config | `clients/<client>/funnel/checkout.json` | Price/product metadata and preview utility links. |
+| Outreach proof | `clients/<client>/outreach/*` | Screenshots, demo video, validated email material. |
+| Paid order | `data/funnel/orders/<client>/<order>.json` | Entitlement, tier, revision policy, customer email. |
+| Case memory | `data/cases/<client>/<order>/` | Long-lived memory for agent, Discord thread ids, timeline, customer messages, runs. |
+| Agent task | `data/agent-tasks/<client>/*.json` | Exact task packet for Hermes/OpenClaw/Codex-style agents. |
+| Agent result | `data/agent-runs/*.json`, `agent-runs.jsonl` | Audit trail: context read, design protocol, screenshots, deploy, email. |
+| Finance ledger | `data/finance/ledger.jsonl` | Revenue/cost events for ROI reporting. |
+| Domain state | `data/domain/requests/<client>/*.json` | DNS route, Pages attach status, customer next step. |
+
+## Main Modules
+
+### Evidence Engine
+
+Builds a reliable evidence pack before any page is rendered.
+
+Inputs:
+
+- Google Places details and photos.
+- Official restaurant websites.
+- Menu pages, PDFs, images, and scanned documents.
+- Firecrawl / Firecrawl Parse output.
+- OCR output from MarkItDown, OCRmyPDF, and PaddleOCR.
+
+Useful commands:
 
 ```bash
-# 1. Scrape leads from Google Maps
-export GOOGLE_PLACES_API_KEY=your_key
-node scripts/scrape-leads.js --niche restaurant --city "Miami, FL" --count 20
-# Output: leads-restaurant-miami.json
-
-# 2. Generate websites for each lead
-node scripts/generate-sites.js --leads leads-restaurant-miami.json --template matthew6688/webjuice-restaurant
-# Output: leads-restaurant-miami-outreach.json (with preview URLs)
-
-# 3. Review previews, then send cold emails
-export RESEND_API_KEY=re_xxx
-node scripts/send-cold-email.js --leads leads-restaurant-miami-outreach.json --dry false
+npm run extract:google-places -- --query "restaurant Brisbane Australia" --niche restaurant --city Brisbane --count 20
+npm run extract:google-places-photos -- --client opa-bar-mezze-restaurant
+npm run extract:brand-assets -- --client opa-bar-mezze-restaurant
+npm run extract:menu-document -- --input <menu.pdf-or-url> --client opa-bar-mezze-restaurant
+npm run evidence:validate -- --client opa-bar-mezze-restaurant
 ```
 
-## Client Response Handling
+### Restaurant Artifact Pipeline
 
-When a client replies:
-1. Their feedback goes to your inbox (or Discord via webhook)
-2. Hermes reads the feedback thread
-3. Modifies the `dev` branch of their repo
-4. Auto-deploys to preview URL
-5. Client confirms → merge `dev` → `main` → live site goes up
-
-## 设计规范（强制）
-
-所有 WebJuice 网站设计必须遵循 **webjuice-design** skill，基于 huashu-design + open-design。
-
-核心要求：
-- 事实验证先于假设（涉及具体品牌/产品时必须 WebSearch）
-- 品牌资产协议：Logo > 产品图 > UI 截图 > 色值 > 字体
-- 反 AI slop：禁止紫色渐变、Emoji 图标、SVG 手画代替真实产品图
-- Junior Designer 模式：先展示假设，等确认后再执行
-
-详见：
-- huashu-design: https://github.com/alchaincyf/huashu-design/blob/main/SKILL.md
-- open-design: https://github.com/nexu-io/open-design/tree/main/skills
-
----
-## 技术架构
-
-| 层级 | 技术 | 用途 | 费用 |
-|------|------|------|------|
-| 前端 | Astro + Tailwind | 静态站点 | $0 |
-| 内容 | Content Collections | Markdown 博客/案例 | $0 |
-| 托管 | Cloudflare Pages | 构建+部署+CDN | $0 |
-| 表单 | Pages Functions | 联系表单 | $0 |
-| 邮件发送 | Resend | 表单通知 | $0 (3000封/月) |
-| 邮件接收 | Cloudflare Email Routing | 转发 | $0 |
-| CI/CD | GitHub Actions + Wrangler | 自动部署 | $0 |
-
-**总月费：$0**
-
----
-
-## 快速开始
-
-### 1. 克隆模板
+Turns evidence into renderer-ready artifacts.
 
 ```bash
-git clone https://github.com/matthew6688/webjuice-stack-mvp.git
-cd webjuice-stack-mvp
-npm install
-npm run dev
+npm run pipeline:build-client -- --client opa-bar-mezze-restaurant
+npm run restaurant:build-content -- --client opa-bar-mezze-restaurant
+npm run design:restaurant-brief -- --client opa-bar-mezze-restaurant
 ```
 
-浏览器打开 `http://localhost:4321`。
+The website route and menu route are treated as different products:
 
-### 2. 配置环境变量
+- website = official, brand-led, formal, conversion-oriented;
+- menu = mobile-first, minimal, factual, fast to scan.
 
-复制 `.env.example` 为 `.env`，填入你的 token：
+### Design System
+
+Design quality is a core differentiator.
+
+Required design principles:
+
+- use real restaurant evidence before inventing content;
+- prefer official logo, restaurant photos, menu photos, and real brand colors;
+- use `huashu-design` and open-design thinking for the website design brief;
+- avoid generic AI-looking pages;
+- keep preview sales controls outside the restaurant content.
+
+Important files:
+
+- `DESIGN.md`
+- `clients/<client>/design.restaurant.json`
+- `clients/<client>/brand-spec.md`
+
+### Generated Restaurant Repos
+
+The central repo stores data and automation. Generated repos render the customer site.
+
+Current Brisbane generated repos:
+
+- `matthew6688/longwang-restaurant-restaurant`
+- `matthew6688/babylon-brisbane-restaurant`
+- `matthew6688/opa-bar-mezze-restaurant`
+- `matthew6688/joey-s-restaurant`
+- `matthew6688/chu-the-phat-restaurant`
+
+Sync artifacts into a generated repo:
 
 ```bash
-# GitHub Personal Access Token (需要 repo 和 workflow 权限)
-GH_PAT=github_pat_xxx
-
-# Python dependency for secrets encryption
-# pip3 install pynacl
-
-# Cloudflare API Token (需要 Account:Read, Pages:Edit, DNS:Edit)
-CF_API_TOKEN=xxx
-CF_ACCOUNT_ID=2b67d2288df946ac22f408b60a9bcc11
-
-# Resend (用于客户邮件域名升级，可选)
-RESEND_MASTER_KEY=re_xxx
+npm run clients:sync-artifacts -- \
+  --client opa-bar-mezze-restaurant \
+  --repo-dir /Users/matthew/Developer/webjuice-generated/opa-bar-mezze-restaurant \
+  --build
 ```
 
-### 3. 把此 repo 设为 GitHub Template
+### Outreach Pack
 
-进入 [repo Settings](https://github.com/matthew6688/webjuice-stack-mvp/settings) → General → 勾选 **Template repository**。
-
-这是一次性设置，之后所有新客户站都从这个模板生成。
-
----
-
-## 一键创建新客户站
+Creates proof material for sales.
 
 ```bash
-node scripts/new-client.js \
-  --name "Acme Corp" \
-  --slug acme-website \
-  --domain acme.com \
-  --email hello@acme.com
+npm run outreach:build-pack -- --client opa-bar-mezze-restaurant
+npm run outreach:capture-assets -- --client opa-bar-mezze-restaurant
+npm run outreach:validate-pack -- --client opa-bar-mezze-restaurant
+npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --to matthew6688@gmail.com --dry true
 ```
 
-脚本会自动完成：
-1. 从模板生成新 GitHub repo
-2. 替换 `src/config/site.ts` 中的品牌信息
-3. 创建 Cloudflare Pages 项目
-4. 添加客户自定义域名
-5. 设置 GitHub Actions 变量
+Output includes:
 
-**完全自动化**：Secrets 会由 `new-client.js` 自动配置（需要 `pip3 install pynacl`）。
+- preview URL;
+- desktop/mobile screenshots;
+- scroll demo video;
+- real menu/source proof;
+- local AI audit result;
+- cold email JSON.
 
-### 输出示例
+### Sales Funnel
 
-```
-Repository: https://github.com/matthew6688/acme-website
-Pages URL:  https://acme-website.pages.dev
-Custom Domain: acme.com
+The production path is first-party Stripe, not Tally.
 
-⚠️  Manual steps required:
-  1. Go to https://github.com/matthew6688/acme-website/settings/secrets/actions
-     - Add CLOUDFLARE_API_TOKEN
-     - Add CLOUDFLARE_ACCOUNT_ID
-  2. Tell client to set this DNS record:
-     acme.com  CNAME  acme-website.pages.dev
-  3. Push any change to main branch to trigger first deploy
-```
+Client pages:
 
-push 后 GitHub Actions 自动构建并部署到 Cloudflare Pages。
+- `/checkout`
+- `/thank-you`
+- `/revise`
+- `/approve`
+- `/domain-setup`
+- `/domain-help`
 
----
+Client APIs:
 
-## 邮件架构
+- `/api/create-checkout-session/`
+- `/api/stripe-webhook/`
+- `/api/revision-request/`
+- `/api/approval-request/`
+- `/api/order-status/`
+- `/api/domain-request/`
+- `/api/domain-status/`
+- `/api/upload-attachment/`
 
-### Phase 1 — 默认上线（零配置）
-
-所有客户站默认用你的域名发件：
-
-```
-发件人：WebJuice <hello@fengtalk.ai>
-收件人：客户指定的通知邮箱
-reply_to：网站访客填写的邮箱
-```
-
-### Phase 2 — 客户品牌升级
-
-客户想用自己域名发件：
+Central router:
 
 ```bash
-node scripts/upgrade-client-email.js client.com
+npm run funnel:route-event -- --input /tmp/stripe-event.json --provider auto --dry-run true
+npm run funnel:route-stripe -- --input /tmp/stripe-event.json --dry-run true
+npm run funnel:route-tally -- --input /tmp/revision.json --dry-run true
 ```
 
-自动完成：Resend 添加域名 → Cloudflare DNS 设置 → 创建 scoped API Key → 输出新配置。
+### Order Entitlements
 
----
+Revision control is mandatory and identity-safe.
 
-## 目录结构
+Rules:
 
+- every revision must match both `orderId` and checkout `email`;
+- one-time `$399` includes 3 revisions;
+- yearly `$799/year` includes monthly maintenance policy;
+- extra revision purchase adds `+1` to the original entitlement;
+- denied revisions do not create agent tasks.
+
+Status is exposed through `/api/order-status/` and shown on `/revise`.
+
+### Case Memory
+
+Every paid order gets a durable case folder:
+
+```text
+data/cases/<clientSlug>/<orderId>/
+├── case.json
+├── context-packet.json
+├── timeline.jsonl
+├── customer-messages.jsonl
+├── decisions.jsonl
+├── agent-runs.jsonl
+└── artifacts/
 ```
-/
-├── .github/workflows/
-│   └── deploy.yml           # GitHub Actions + Wrangler 自动部署
-├── functions/api/
-│   └── contact.ts           # 表单处理 (Resend)
-├── scripts/
-│   ├── new-client.js        # 一键创建新客户站
-│   ├── add-domain.js        # 域名上线
-│   └── upgrade-client-email.js # 邮件域名升级
-├── src/
-│   ├── config/
-│   │   └── site.ts          # 品牌配置（一键替换）
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── .env.example
-├── astro.config.mjs
-├── package.json
-├── wrangler.toml
-└── tsconfig.json
-```
 
----
+This is what prevents the agent from forgetting:
 
-## 开发命令
+- current order;
+- customer email;
+- repo and branch;
+- source-of-truth files;
+- requested changes;
+- Discord thread ids;
+- previous decisions;
+- revision quota;
+- review screenshots;
+- publish history.
+
+### Agent Task Runner
+
+Creates and executes website work.
 
 ```bash
-npm install
-npm run dev      # localhost:4321
-npm run build    # 输出到 dist/
-npm run preview
+npm run agent:create-task -- --client opa-bar-mezze-restaurant
+npm run agent:validate-task -- --task data/agent-tasks/<client>/<task>.json
+npm run agent:run-task -- --task <task.json> --repo-dir <client-repo> --execute true
+npm run agent:complete-task -- --task <task.json> --repo-dir <client-repo> --execute true --checkout true --push true --check-deploy true --send-email true
 ```
 
----
+`agent:complete-task` now:
 
-## 完整工作流
+1. checks out the dev branch;
+2. applies restaurant artifacts;
+3. builds the site;
+4. optionally pushes dev;
+5. waits for dev deploy;
+6. captures desktop/mobile QA screenshots if none were supplied;
+7. enforces the pre-review gate;
+8. sends the customer review email;
+9. posts Discord follow-up when enabled;
+10. writes case memory and run output.
 
-```
-你的模板 repo (webjuice-stack-mvp)
-           |
-           v
-node scripts/new-client.js --name "Acme" --slug acme --domain acme.com
-           |
-           v
-    +------+------+
-    |             |
-    v             v
-GitHub repo   Pages 项目
-(acme-website)  (acme-website)
-    |             |
-    v             v
-更改推送     自动部署
-    |             |
-    +------+------+
-           |
-           v
-    https://acme-website.pages.dev
-           |
-           v
-    客户设 CNAME → https://acme.com
+### Approval Publish
+
+Customer approval uses `orderId + checkout email`, resolves the same case, then publishes approved `dev` to `main`.
+
+```bash
+npm run agent:resolve-approved-task -- --order <orderId> --email <email>
+npm run agent:publish-approved -- --task <task.json> --repo-dir <client-repo> --execute true --push true --check-deploy true --send-email true
 ```
 
----
+The publisher avoids unrelated-history merges by creating a main commit from the approved dev tree.
 
-## 待完成
+### Discord Website Task Workspace
 
-- [ ] 在 GitHub 设置中勾选 "Template repository"
-- [ ] 本地测试 `npm run dev`
-- [ ] 创建第一个测试客户站验证流程
-- [ ] 添加 `@tailwindcss/typography` 优化文章排版
-- [ ] 添加 SEO 组件（sitemap、robots、meta tags）
-- [ ] 接入 AI agent 内容生成
+The internal workroom is Discord `#website-tasks`.
+
+Each sale/revision should become one durable thread named from the business and order/task. Later agent completion, revision, approval, and publish messages reuse the same thread from `case.json.discord`.
+
+Hermes / website-agent receives:
+
+- client slug;
+- repo;
+- task path;
+- case path;
+- context packet;
+- design protocol;
+- source-of-truth files;
+- customer request;
+- allowed scope.
+
+Remaining production polish: use a dedicated `ProfitsLocal Handoff` sender bot, so the website-agent is not also the task sender.
+
+### Customer Emails
+
+Resend handles transactional customer emails.
+
+Implemented email nodes:
+
+- payment receipt;
+- revision received;
+- revision accepted;
+- revision denied / buy extra revision;
+- dev preview ready;
+- live published;
+- domain setup status.
+
+Cold outreach can be tested through Resend, but production cold email should use a separate sender/domain or a cold email platform.
+
+### Domain Setup
+
+Supported launch paths:
+
+1. Free ProfitsLocal subdomain, such as `<client>.profitslocal.com`.
+2. Customer subdomain, such as `menu.customer.com`.
+3. Customer root domain, such as `customer.com`, after DNS/email audit.
+4. Future ProfitsLocal subpage route, such as `profitslocal.com/<client>`, not currently sold as production route.
+
+Commands:
+
+```bash
+npm run domain:test-launch-route
+npm run domain:test-request
+npm run domain:request -- --client opa-bar-mezze-restaurant --order <order> --email <email> --domain opa-controlled.profitslocal.com --execute true --send-email true
+npm run domain:pages-status -- --project opa-bar-mezze-restaurant-live --domain opa-controlled.profitslocal.com
+npm run domain:cleanup -- --domain <smoke-domain>.profitslocal.com --project <client>-live --execute true
+```
+
+`domain-request.yml` can:
+
+- create/update ProfitsLocal subdomain DNS;
+- attach the custom domain to Cloudflare Pages;
+- wait for customer DNS on customer subdomains;
+- stop root domains for manual review;
+- email the customer with the next step.
+
+### Finance / ROI
+
+The finance ledger records revenue and costs.
+
+Supported events:
+
+- Stripe revenue;
+- Tally fallback revenue;
+- Google Places costs;
+- Firecrawl / Firecrawl Parse costs;
+- OpenAI usage;
+- Resend email cost;
+- image generation cost;
+- agent runtime estimate.
+
+Commands:
+
+```bash
+npm run finance:add
+npm run finance:add-openai-usage
+npm run finance:add-image-generation
+npm run finance:add-agent-runtime
+npm run finance:report
+```
+
+For cleaner ROI reports, configure:
+
+- `RESEND_EMAIL_UNIT_COST`
+- `AGENT_RUNTIME_COST_PER_MINUTE`
+
+### Local AI Audit
+
+Ollama can provide a cheap local quality gate before outreach.
+
+```bash
+npm run audit:restaurant-local-llm -- --client opa-bar-mezze-restaurant --fail-on high
+```
+
+The audit checks:
+
+- menu facts are evidence-backed;
+- phone/map/reservation links are mobile actionable;
+- website and menu are not confused;
+- OCR/CMS noise is flagged;
+- core restaurant principles are followed.
+
+### Cloudinary Attachments
+
+Revision forms can upload attachments through the customer site.
+
+Files are uploaded to Cloudinary and forwarded into:
+
+- customer email;
+- Discord task thread;
+- agent task payload;
+- case memory.
+
+## GitHub Actions
+
+Central workflows:
+
+- `.github/workflows/deploy.yml`: main branch to live Pages.
+- `.github/workflows/deploy-dev.yml`: dev branch to dev Pages.
+- `.github/workflows/route-funnel-event.yml`: Stripe/revision event to central state, task, agent auto-run.
+- `.github/workflows/publish-approved.yml`: approved dev tree to main/live.
+- `.github/workflows/domain-request.yml`: DNS/Page custom domain workflow.
+
+The main repo workflows are hardened for Node 24. Deploys use direct `npx wrangler@4 pages deploy`.
+
+## Environment
+
+Use local `.env.local` for development. Do not commit secrets.
+
+```bash
+npm run setup:local-env
+npm run check:env -- --workflow funnel
+npm run check:env -- --workflow scrape
+npm run check:env -- --workflow deploy
+npm run check:env -- --workflow localAudit
+```
+
+Important services:
+
+- GitHub PAT / Actions secrets
+- Cloudflare API token and account ID
+- Stripe keys and webhook secret
+- Resend API key
+- Google Places API key
+- Firecrawl API key
+- Cloudinary config
+- Discord webhooks / bot tokens
+- Ollama local model
+
+See `docs/SECURITY.md` for key handling.
+
+## Standard Verification
+
+Run from this repo:
+
+```bash
+npm run agent:test-approval-resolution
+npm run agent:test-pre-review-gate
+npm run funnel:test-domain-email-guidance
+npm run funnel:test-extra-revision-entitlement
+npm run funnel:test-route-idempotency
+npm run domain:test-launch-route
+npm run domain:test-request
+npm run hermes:test-website-agent-closure
+npm run qa:opa-full-loop-live-sim
+```
+
+Deploy checks:
+
+```bash
+npm run check:links -- --all clients --internal-links false
+npm run check:deploys -- --all clients
+```
+
+## Evidence From Latest End-to-End Test
+
+Opa Bar & Mezze production-like rehearsal:
+
+- Order: `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`
+- Review email Resend id: `73281496-4628-449a-8ff1-89cb6f81a5fd`
+- Live publish commit: `418519767e480bf0bd0b8948e515851528f658d9`
+- Deploy Live run: `25382781613`, `completed/success`
+- Live email Resend id: `7f832951-4d8b-4ed8-8d25-627f5d0a2129`
+- Live URL: `https://opa-controlled.profitslocal.com/`
+- Menu URL: `https://opa-controlled.profitslocal.com/menu/`
+- Domain status: Cloudflare Pages custom domain `active`
+
+Latest main repo deploy after Node 24 hardening:
+
+- Commit: `a6bd288`
+- Deploy Live run: `25383883066`, `completed/success`
+
+## Important Docs
+
+- `HANDOFF.md`: operational state and latest handoff.
+- `docs/MODULE_STATUS.md`: module-by-module status.
+- `docs/RESTAURANT_LAUNCH_RUNBOOK.md`: launch checklist and evidence.
+- `docs/SALES_FUNNEL.md`: checkout/revision/approval/customer email details.
+- `docs/OCR_MENU_PIPELINE.md`: menu extraction and OCR.
+- `docs/OPS_DASHBOARD_PLAN.md`: deferred dashboard plan.
+- `docs/SECURITY.md`: secret handling.
+
+## Current Next Work
+
+1. Add the dedicated `ProfitsLocal Handoff` sender bot and switch website task dispatch to it.
+2. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` for ROI reporting.
+3. Sync Node 24 workflow hardening into generated restaurant repos during the next template refresh.
+4. Run the next restaurant only after the Brisbane/Opa loop remains stable with automatic screenshots.
+5. Defer dashboard implementation until the restaurant loop is stable in repeated runs.
