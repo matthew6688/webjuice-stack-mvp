@@ -250,9 +250,9 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 建 dedicated Hermes `website-agent` / `#website-tasks` pickup：独立 profile、LaunchAgent、本地 smoke、bot mention handoff 均验证通过
 - [x] route-funnel-event 增加 website-agent handoff：付款/修改 task 可 mirror 到 `#website-tasks` 并记录 `websiteTaskThreadId`
 - [ ] 创建正式 `ProfitsLocal Handoff` sender Discord app/token，用于 `WEBSITE_TASKS_DISCORD_BOT_TOKEN`；不能用 `website-agent` 自己给自己发任务
-- [ ] 改造 website-agent handoff 路由：如果 `case.json.discord.websiteTaskThreadId` 已存在，后续 payment/revision/agent/approval 更新必须复用同一个 thread
-- [ ] 给 agent run record 增加可审计 checklist：`contextRead`、`designProtocolUsed`、`qaScreenshots`、`devDeployUrl`、`customerEmailId`
-- [ ] 做完整闭环 fixture：test paid order → feedback revision → dev push/deploy → review email → approval publish → live email，断言始终使用同一个 website task thread
+- [x] 改造 website-agent handoff 路由：如果 `case.json.discord.websiteTaskThreadId` 已存在，后续 payment/revision/agent/approval 更新必须复用同一个 thread
+- [x] 给 agent run record 增加可审计 checklist：`contextRead`、`designProtocolUsed`、`qaScreenshots`、`devDeployUrl`、`customerEmailId`
+- [x] 做完整闭环 fixture：test paid order → feedback revision → dev push/deploy → review email → approval publish → live email，断言始终使用同一个 website task thread
 - [x] 接入 ROI/cost ledger：Resend、image generation、agent runtime
 - [x] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
 - [x] 完成 Menu document extractor MVP：MarkItDown/direct text/OCRmyPDF/PaddleOCR 编排

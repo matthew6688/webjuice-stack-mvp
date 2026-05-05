@@ -44,11 +44,17 @@ console.log(JSON.stringify({
   submissionPath: result.submissionPath,
   entitlement: result.entitlement,
   ledgerEvent: result.ledgerEvent,
-  caseRecord: result.caseRecord ? {
-    casePath: result.caseRecord.ref.casePath,
-    contextPath: result.caseRecord.ref.contextPath,
-    status: result.caseRecord.caseFile.status,
-  } : null,
+  caseRecord: summarizeCaseRecord(result.caseRecord),
   discord: result.discord,
   customerEmail: result.customerEmail,
 }, null, 2));
+
+function summarizeCaseRecord(caseRecord) {
+  if (!caseRecord) return null;
+  const paths = caseRecord.ref || caseRecord.caseFile?.paths || {};
+  return {
+    casePath: paths.casePath || '',
+    contextPath: paths.contextPath || '',
+    status: caseRecord.caseFile?.status || '',
+  };
+}

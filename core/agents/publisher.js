@@ -23,6 +23,25 @@ export function publishApprovedTask(task, options = {}) {
     finishedAt: '',
     steps: [],
     changedFiles: [],
+    audit: {
+      contextRead: {
+        case: Boolean(task.case?.casePath),
+        caseContext: Boolean(task.case?.contextPath),
+        evidence: Boolean(task.requiredContext?.evidence || task.evidencePath),
+        content: Boolean(task.requiredContext?.content || task.contentPath),
+        design: Boolean(task.requiredContext?.design || task.designPath),
+        brandSpec: Boolean(task.requiredContext?.brandSpec || task.brandSpecPath),
+        checkout: Boolean(task.requiredContext?.checkout || task.checkoutPath),
+      },
+      designProtocolUsed: {
+        requiredSkill: task.designProtocol?.requiredSkill || '',
+        openDesignSkills: task.designProtocol?.openDesignSkills || [],
+        mode: task.designProtocol?.mode || '',
+      },
+      qaScreenshots: normalizeList(options.qaScreenshots),
+      devDeployUrl: task.previewUrl || '',
+      customerEmailId: options.customerEmailId || '',
+    },
     pushed: false,
     commit: '',
     devCommit: '',
@@ -131,6 +150,15 @@ function commitMessage(task, sourceBranch) {
 function resolvePath(filePath, repoRoot) {
   if (!filePath) return '';
   return path.isAbsolute(filePath) ? filePath : path.resolve(repoRoot, filePath);
+}
+
+function normalizeList(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value.filter(Boolean);
+  return String(value)
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 export function savePublishResult(result, outputPath) {

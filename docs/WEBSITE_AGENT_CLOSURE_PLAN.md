@@ -201,14 +201,14 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Agent complete dev review | Confirm dev preview Discord notification and review email stay tied to the website thread | Passing via `npm run hermes:test-website-agent-closure` |
 | Approval live publish | Confirm live publish Discord notification and live email stay tied to the website thread | Passing via `npm run hermes:test-website-agent-closure` |
 | Memory continuation | Confirm later thread message can recover from case files | Pending |
-| Design protocol audit | Confirm run record proves Huashu/open-design usage | Pending |
+| Design protocol audit | Confirm run record proves Huashu/open-design usage | Passing via `npm run hermes:test-website-agent-closure` |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Add agent run checklist fields: `contextRead`, `designProtocolUsed`, `qaScreenshots`, `devDeployUrl`, `customerEmailId`.
-3. Run the fixture against Opa Bar + Mezze using test order IDs only.
-4. Add a live, no-code approval smoke that posts the dev-ready and live-published notifications to a disposable website thread.
+2. Run the fixture against Opa Bar + Mezze using test order IDs only.
+3. Add a live, no-code approval smoke that posts the dev-ready and live-published notifications to a disposable website thread.
+4. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
 
 ## Required Secrets And Variables
 

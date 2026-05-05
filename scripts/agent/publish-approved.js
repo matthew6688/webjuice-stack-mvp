@@ -51,6 +51,7 @@ const publishResult = publishApprovedTask(task, {
   sourceBranch: args.source || args.sourceBranch || task.branch || 'dev',
   targetBranch: args.target || args.targetBranch || 'main',
   liveUrl: args['live-url'] || args.liveUrl || '',
+  qaScreenshots: args['qa-screenshots'] || args.qaScreenshots || '',
   push: boolArg(args, 'push'),
   dryRun: args.execute !== 'true',
 });
@@ -85,7 +86,17 @@ const discordNotification = await sendLivePublishedDiscord({
   deployResult,
 });
 
-const result = { ...publishResult, deployResult, customerEmail, discordNotification };
+const result = {
+  ...publishResult,
+  audit: {
+    ...(publishResult.audit || {}),
+    devDeployUrl: task.previewUrl || '',
+    customerEmailId: customerEmail.id || '',
+  },
+  deployResult,
+  customerEmail,
+  discordNotification,
+};
 const outputPath = args.output || path.join('data/agent-runs', `${task.id}.publish.json`);
 savePublishResult(result, outputPath);
 

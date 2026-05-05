@@ -86,15 +86,7 @@ try {
       amount: result.ledgerEvent.amount,
       currency: result.ledgerEvent.currency,
     } : null,
-    caseRecord: result.caseRecord ? {
-      caseId: result.caseRecord.ref.caseId,
-      casePath: result.caseRecord.ref.casePath,
-      contextPath: result.caseRecord.ref.contextPath,
-      timelinePath: result.caseRecord.ref.timelinePath,
-      customerMessagesPath: result.caseRecord.ref.customerMessagesPath,
-      agentRunsPath: result.caseRecord.ref.agentRunsPath,
-      status: result.caseRecord.caseFile.status,
-    } : null,
+    caseRecord: summarizeCaseRecord(result.caseRecord),
     discord: result.discord,
     websiteAgentHandoff: result.websiteAgentHandoff,
     customerEmail: result.customerEmail,
@@ -124,4 +116,18 @@ try {
 } catch (error) {
   console.error(error.stack || error.message);
   process.exit(1);
+}
+
+function summarizeCaseRecord(caseRecord) {
+  if (!caseRecord) return null;
+  const paths = caseRecord.ref || caseRecord.caseFile?.paths || {};
+  return {
+    caseId: caseRecord.ref?.caseId || caseRecord.caseFile?.caseId || '',
+    casePath: paths.casePath || '',
+    contextPath: paths.contextPath || '',
+    timelinePath: paths.timelinePath || '',
+    customerMessagesPath: paths.customerMessagesPath || '',
+    agentRunsPath: paths.agentRunsPath || '',
+    status: caseRecord.caseFile?.status || '',
+  };
 }

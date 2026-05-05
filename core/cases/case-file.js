@@ -220,6 +220,13 @@ export function recordAgentRun(casePaths, runResult, { dryRun = false } = {}) {
     pushed: Boolean(runResult.pushed),
     commit: runResult.commit || '',
     previewUrl: runResult.previewUrl || caseFile.previewUrl || '',
+    audit: {
+      contextRead: runResult.audit?.contextRead || {},
+      designProtocolUsed: runResult.audit?.designProtocolUsed || {},
+      qaScreenshots: runResult.audit?.qaScreenshots || [],
+      devDeployUrl: runResult.audit?.devDeployUrl || runResult.previewUrl || caseFile.previewUrl || '',
+      customerEmailId: runResult.audit?.customerEmailId || '',
+    },
     steps: (runResult.steps || []).map((step) => ({
       id: step.id,
       ok: step.ok,

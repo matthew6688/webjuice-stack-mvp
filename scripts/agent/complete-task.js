@@ -60,6 +60,8 @@ const result = runAgentTask(task, {
   repoRoot: args['repo-root'] || args.repoRoot || process.cwd(),
   checkout: boolArg(args, 'checkout'),
   push: boolArg(args, 'push'),
+  qaScreenshots: args['qa-screenshots'] || args.qaScreenshots || '',
+  devDeployUrl: args['dev-deploy-url'] || args.devDeployUrl || task.previewUrl || '',
   dryRun: args.execute !== 'true',
 });
 const agentRuntimeCost = recordAgentRuntimeCost(result, args);
@@ -99,6 +101,11 @@ const discordNotification = await sendAgentReviewDiscord({
 
 const completeResult = {
   ...result,
+  audit: {
+    ...(result.audit || {}),
+    devDeployUrl: args['dev-deploy-url'] || args.devDeployUrl || result.previewUrl || task.previewUrl || '',
+    customerEmailId: customerEmail.id || '',
+  },
   deployResult,
   customerEmail,
   discordNotification,

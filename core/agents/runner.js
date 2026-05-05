@@ -94,6 +94,7 @@ export function runAgentTask(task, options = {}) {
     finishedAt: '',
     steps: [],
     context: summarizeContext(plan.context),
+    audit: buildAgentRunAudit(task, plan.context, options),
     changedFiles: [],
     pushed: false,
     commit: '',
@@ -210,6 +211,37 @@ function resolveRepoPath(filePath, repoRoot, required = true) {
 function readJsonIfExists(filePath) {
   if (!filePath || !fs.existsSync(filePath)) return null;
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function buildAgentRunAudit(task, context, options = {}) {
+  return {
+    contextRead: {
+      case: Boolean(context.caseFile),
+      caseContext: Boolean(context.caseContext),
+      evidence: Boolean(context.required?.evidence),
+      content: Boolean(context.required?.content),
+      design: Boolean(context.required?.design),
+      brandSpec: Boolean(context.required?.brandSpec),
+      checkout: Boolean(context.required?.checkout),
+    },
+    designProtocolUsed: {
+      requiredSkill: task.designProtocol?.requiredSkill || '',
+      openDesignSkills: task.designProtocol?.openDesignSkills || [],
+      mode: task.designProtocol?.mode || '',
+    },
+    qaScreenshots: normalizeList(options.qaScreenshots),
+    devDeployUrl: options.devDeployUrl || task.previewUrl || '',
+    customerEmailId: options.customerEmailId || '',
+  };
+}
+
+function normalizeList(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value.filter(Boolean);
+  return String(value)
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 function writeAgentBrief(task, context, options) {

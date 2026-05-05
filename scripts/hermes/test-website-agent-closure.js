@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { routeFunnelSubmission } from '../../core/funnel/submission-router.js';
-import { recordCaseNotification } from '../../core/cases/case-file.js';
+import { recordAgentRun, recordCaseNotification } from '../../core/cases/case-file.js';
 import {
   buildAgentReviewDiscordMessage,
   buildLivePublishedDiscordMessage,
@@ -134,9 +134,26 @@ const runResult = {
   commit: 'devcommit123',
   previewUrl: session.metadata.preview_url,
   changedFiles: ['src/app/page.tsx', 'src/components/Menu.tsx'],
+  audit: {
+    contextRead: {
+      case: true,
+      caseContext: true,
+      evidence: true,
+      content: true,
+      design: true,
+      brandSpec: true,
+      checkout: false,
+    },
+    designProtocolUsed: sale.task.designProtocol,
+    qaScreenshots: ['artifacts/mobile-home.png', 'artifacts/desktop-home.png'],
+    devDeployUrl: session.metadata.preview_url,
+    customerEmailId: '',
+  },
   startedAt: new Date().toISOString(),
   finishedAt: new Date().toISOString(),
 };
+const runRecord = recordAgentRun(caseFile.paths, runResult);
+caseFile = runRecord.caseFile;
 const reviewDiscord = await sendDiscordChannelMessage({
   channelId: saleThread,
   botToken: env.WEBSITE_TASKS_DISCORD_BOT_TOKEN,
@@ -175,9 +192,22 @@ const publishResult = {
   commit: 'livecommit123',
   devCommit: 'devcommit123',
   liveUrl: 'https://opa.example.com',
+  audit: {
+    contextRead: runResult.audit.contextRead,
+    designProtocolUsed: sale.task.designProtocol,
+    qaScreenshots: ['artifacts/live-desktop.png'],
+    devDeployUrl: session.metadata.preview_url,
+    customerEmailId: '',
+  },
   startedAt: new Date().toISOString(),
   finishedAt: new Date().toISOString(),
 };
+const publishRunRecord = recordAgentRun(caseFile.paths, {
+  ...publishResult,
+  branch: publishResult.targetBranch,
+  previewUrl: publishResult.liveUrl,
+});
+caseFile = publishRunRecord.caseFile;
 const publishDiscord = await sendDiscordChannelMessage({
   channelId: saleThread,
   botToken: env.WEBSITE_TASKS_DISCORD_BOT_TOKEN,
@@ -233,8 +263,18 @@ const assertions = {
     liveEmail?.text?.includes(publishResult.liveUrl)
     && liveEmail?.text?.includes(session.id)
   ),
+  agentRunAuditRecorded: Boolean(
+    runRecord.runEvent?.audit?.contextRead?.case
+    && runRecord.runEvent?.audit?.designProtocolUsed?.requiredSkill === 'huashu-design'
+    && runRecord.runEvent?.audit?.qaScreenshots?.length === 2
+    && runRecord.runEvent?.audit?.devDeployUrl === session.metadata.preview_url
+  ),
+  publishRunAuditRecorded: Boolean(
+    publishRunRecord.runEvent?.audit?.designProtocolUsed?.requiredSkill === 'huashu-design'
+    && publishRunRecord.runEvent?.audit?.qaScreenshots?.length === 1
+  ),
   caseMemoryTracksReviewAndPublishNotifications: caseFile.discord?.websiteTaskThreadId === saleThread
-    && caseFile.status === 'revision_task_queued',
+    && caseFile.status === 'live_published',
 };
 
 const failed = Object.entries(assertions)
