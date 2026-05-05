@@ -1,10 +1,15 @@
 import fs from 'fs';
 import path from 'path';
-import { buildCaseReference, recordFunnelCaseEvent } from '../cases/case-file.js';
+import { buildCaseReference, recordCaseNotification, recordFunnelCaseEvent } from '../cases/case-file.js';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
 import { artifactTimestamp } from '../time.js';
 import { buildFunnelCustomerEmail, sendCustomerEmail } from './customer-email.js';
-import { buildDiscordMessage, sendDiscordWebhook } from './discord.js';
+import {
+  buildDiscordMessage,
+  buildWebsiteAgentHandoffMessage,
+  sendDiscordChannelMessage,
+  sendDiscordWebhook,
+} from './discord.js';
 import { consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
 import { normalizeTallySubmission, tallyRevenueLedgerInput } from './tally.js';
@@ -161,7 +166,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     });
   }
 
-  const caseRecord = recordFunnelCaseEvent({
+  let caseRecord = recordFunnelCaseEvent({
     kind,
     provider,
     order,
@@ -176,6 +181,16 @@ export async function routeFunnelSubmission(payload, options = {}) {
     casesDir: options.casesDir,
     dryRun: options.dryRun,
   });
+  const websiteAgentHandoff = await sendWebsiteAgentHandoff({
+    kind,
+    order,
+    task: { ...task, taskPath },
+    caseRecord,
+    options,
+  });
+  if (websiteAgentHandoff.ok && !options.dryRun) {
+    caseRecord = recordCaseWebsiteHandoff(caseRecord, websiteAgentHandoff, kind, options);
+  }
 
   return {
     ok: true,
@@ -188,10 +203,47 @@ export async function routeFunnelSubmission(payload, options = {}) {
     entitlement,
     ledgerEvent,
     discord,
+    websiteAgentHandoff,
     customerEmail,
     discordPayload,
     caseRecord,
   };
+}
+
+async function sendWebsiteAgentHandoff({ kind, order, task, caseRecord, options }) {
+  const env = { ...process.env, ...(options.env || {}) };
+  const channelId = options.websiteTasksChannelId || env.WEBSITE_TASKS_DISCORD_CHANNEL_ID || '';
+  const botToken = options.websiteTasksBotToken || env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || '';
+  const mention = options.websiteAgentMention || env.WEBSITE_AGENT_MENTION || '';
+  if (!options.sendDiscord || options.dryRun) {
+    return { ok: false, skipped: true, reason: options.dryRun ? 'dry_run' : 'send_discord_disabled' };
+  }
+  if (!channelId || !botToken || !mention) {
+    return {
+      ok: false,
+      skipped: true,
+      reason: 'missing_website_agent_handoff_config',
+      needs: ['WEBSITE_TASKS_DISCORD_CHANNEL_ID', 'WEBSITE_TASKS_DISCORD_BOT_TOKEN', 'WEBSITE_AGENT_MENTION'],
+    };
+  }
+  const payload = buildWebsiteAgentHandoffMessage({ kind, order, task, caseRecord, mention });
+  const discord = await sendDiscordChannelMessage({ channelId, botToken, payload, fetchImpl: options.fetchImpl || fetch });
+  return { ok: true, discord, payload };
+}
+
+function recordCaseWebsiteHandoff(caseRecord, handoff, kind, options) {
+  const paths = caseRecord?.caseFile?.paths || caseRecord?.ref || {};
+  const record = recordCaseNotification(paths, {
+    type: 'website_agent_handoff_sent',
+    kind: 'website_task',
+    ok: true,
+    channel: 'discord',
+    reason: `${kind || 'task'}_handoff`,
+    discord: handoff.discord,
+  }, {
+    dryRun: options.dryRun,
+  });
+  return record.ok ? record : caseRecord;
 }
 
 function discordThreadName(kind, order) {

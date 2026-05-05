@@ -172,6 +172,7 @@ Current production sales path:
 - Template/client sites include `/approve` and `/api/approval-request/`; approval dispatches `publish-approved.yml` in the main automation repo using `AGENT_GITHUB_TOKEN`.
 - Template/client sites include `/api/order-status/`; `/revise` can show trusted revision quota after matching `orderId + checkout email` against the central entitlement JSON.
 - Funnel Discord messages now request webhook responses, try `thread_name`, can use `DISCORD_BOT_TOKEN` to create true text-channel threads, and write returned channel/thread/message IDs into `case.json.discord` plus timeline metadata.
+- Dedicated Hermes `website-agent` is configured for `#website-tasks`; route-funnel-event can mirror paid/revision task handoffs there with `WEBSITE_TASKS_DISCORD_CHANNEL_ID`, `WEBSITE_AGENT_MENTION`, and `WEBSITE_TASKS_DISCORD_BOT_TOKEN`.
 
 Tally remains as a fallback/provider boundary, but live payment-block creation failed Tally API schema validation during testing.
 
@@ -207,6 +208,7 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Revision 次数控制 | MVP 已完成 | `orderId + checkout email` 强制匹配；`one_time` 3 次，`yearly` 每月 1 次，超限不创建 task |
 | Revision 次数显示 | MVP 已完成 | `/api/order-status/` 从主自动化仓库读取 entitlement；`/revise` 显示已用/剩余/套餐 |
 | Discord case workspace | MVP 已完成 | webhook `wait=true` 返回 message/channel；forum/media channel 可自动 thread；配置 `DISCORD_BOT_TOKEN` 后普通 text channel 也可从 webhook message 创建 true thread |
+| Hermes website-agent pickup | MVP 已完成 | 本机 `ai.hermes.gateway-website-agent` 已启动；`#website-tasks` @mention smoke 触发 true thread 并完成 `openai-codex / gpt-5.4-mini` 回复；route-funnel-event 可发送 task/case handoff |
 | ROI / cost ledger | MVP 已完成 | Stripe/Tally revenue、Places/Firecrawl/OpenAI、Resend、image generation、agent runtime 都可写 ledger；Resend/runtime 为可配置估算成本 |
 | Menu document extraction | MVP 已完成 | `extract:menu-document` 统一调度 MarkItDown、direct text、OCRmyPDF、PaddleOCR、Firecrawl Parse fallback，并写 manifest + menu evidence；已用 Opa Bar + Mezze 真实官网菜单验证，并推送远程 dev preview，最终清洗为 7 sections / 52 items |
 | Local AI audit | MVP 已完成 | `npm run audit:restaurant-local-llm` 使用本地 Ollama + deterministic checks 审计餐厅 content/menu；5 个 Brisbane restaurant 全部用 `qwen3.5:9b` 通过，score 100，0 findings |
@@ -244,6 +246,8 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 - [x] 添加 `/api/order-status/` 和 `/revise` revision 次数显示
 - [x] 建 Discord thread workspace，把 order/thread/message URL 写回 case memory
 - [x] 跑一次真实 Discord thread live test（GitHub Actions dispatch 成功发送 Discord；测试订单 state 已清理，避免污染 ROI/customer data）
+- [x] 建 dedicated Hermes `website-agent` / `#website-tasks` pickup：独立 profile、LaunchAgent、本地 smoke、bot mention handoff 均验证通过
+- [x] route-funnel-event 增加 website-agent handoff：付款/修改 task 可 mirror 到 `#website-tasks` 并记录 `websiteTaskThreadId`
 - [x] 接入 ROI/cost ledger：Resend、image generation、agent runtime
 - [x] 完成 BrandAssetExtractor：logo、palette、official photos、font hints
 - [x] 完成 Menu document extractor MVP：MarkItDown/direct text/OCRmyPDF/PaddleOCR 编排

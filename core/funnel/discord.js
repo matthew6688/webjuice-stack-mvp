@@ -80,6 +80,76 @@ export function buildLivePublishedDiscordMessage({ caseFile, publishResult, depl
   };
 }
 
+export function buildWebsiteAgentHandoffMessage({
+  kind,
+  order,
+  task,
+  caseRecord,
+  mention = '',
+}) {
+  const casePath = caseRecord?.ref?.casePath || task?.case?.casePath || '';
+  const contextPath = caseRecord?.ref?.contextPath || task?.case?.contextPath || '';
+  const taskPath = task?.taskPath || '';
+  const lines = [
+    `${mention} ProfitsLocal website task handoff`,
+    `kind: ${kind || task?.kind || ''}`,
+    `client: ${order?.clientSlug || task?.clientSlug || ''}`,
+    `repo: ${order?.repo || task?.repo || ''}`,
+    `order: ${order?.orderId || task?.order?.id || ''}`,
+    `preview: ${order?.previewUrl || task?.previewUrl || ''}`,
+    `case: ${casePath}`,
+    `context: ${contextPath}`,
+    `task: ${taskPath}`,
+    '',
+    'Action: read the case/context/task files, preserve website vs menu separation, use verified evidence/design files, and push customer-facing edits to dev only.',
+  ].filter((line) => line !== null && line !== undefined);
+
+  return {
+    content: lines.join('\n').slice(0, 1900),
+    allowed_mentions: mentionUserIds(mention).length
+      ? { users: mentionUserIds(mention) }
+      : { parse: [] },
+  };
+}
+
+export async function sendDiscordChannelMessage({ channelId, botToken, payload, fetchImpl = fetch }) {
+  if (!channelId) throw new Error('Discord channel ID is required');
+  if (!botToken) throw new Error('Discord bot token is required');
+  const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}/messages`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bot ${botToken}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-discord-handoff',
+    },
+    body: JSON.stringify(payload),
+  });
+  const bodyText = await response.text().catch(() => '');
+  let data = null;
+  if (bodyText) {
+    try {
+      data = JSON.parse(bodyText);
+    } catch {
+      data = null;
+    }
+  }
+  if (!response.ok) throw new Error(`Discord channel message failed: ${response.status} ${bodyText}`.trim());
+  const guildId = data?.guild_id || '';
+  const channel = data?.channel_id || channelId;
+  const messageId = data?.id || '';
+  return {
+    ok: true,
+    status: response.status,
+    channelId: channel,
+    messageId,
+    messageUrl: guildId && channel && messageId
+      ? `https://discord.com/channels/${guildId}/${channel}/${messageId}`
+      : '',
+    threadId: data?.thread?.id || '',
+    threadUrl: data?.thread?.id && guildId ? `https://discord.com/channels/${guildId}/${data.thread.id}` : '',
+  };
+}
+
 export async function sendDiscordWebhook(url, payload, {
   fetchImpl = fetch,
   threadId = '',
@@ -238,4 +308,8 @@ function field(name, value, inline = false, limit = 250) {
 
 function compactFields(fields) {
   return fields.filter(Boolean).slice(0, 25);
+}
+
+function mentionUserIds(mention) {
+  return [...String(mention || '').matchAll(/<@!?(\d+)>/g)].map((match) => match[1]);
 }

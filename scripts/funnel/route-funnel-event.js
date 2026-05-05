@@ -96,6 +96,7 @@ try {
       status: result.caseRecord.caseFile.status,
     } : null,
     discord: result.discord,
+    websiteAgentHandoff: result.websiteAgentHandoff,
     customerEmail: result.customerEmail,
   };
 

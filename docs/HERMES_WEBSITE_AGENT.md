@@ -98,6 +98,16 @@ Why `DISCORD_ALLOW_BOTS=mentions`: sales/revision automation can hand work to `w
 
 Why `GATEWAY_ALLOW_ALL_USERS=true`: this channel is dedicated to website execution and should accept customer-order handoffs without requiring every webhook/bot author ID to be pre-registered. Keep the bot scoped to `#website-tasks` and `#sandbox`.
 
+GitHub Actions can hand a paid order or revision to this agent by setting:
+
+```env
+WEBSITE_TASKS_DISCORD_CHANNEL_ID=1501072883001065614
+WEBSITE_AGENT_MENTION=<@1501073096696664184>
+WEBSITE_TASKS_DISCORD_BOT_TOKEN=...
+```
+
+Important: `WEBSITE_TASKS_DISCORD_BOT_TOKEN` should belong to a different Discord app than `website-agent`; Discord bots do not reliably receive their own messages. If this is omitted, the workflow falls back to `DISCORD_BOT_TOKEN`.
+
 ## SOUL Requirements
 
 Use `scripts/hermes/setup-website-agent-profile.js` to write the recommended `SOUL.md`. The key behavioral contract is:
@@ -146,5 +156,6 @@ Verified locally on 2026-05-05:
 - A bot/webhook-style message from another Discord app only triggers when it mentions `website-agent`.
 - Hermes creates a dedicated Discord thread for the handoff message.
 - `website-agent` completes a model smoke test in that thread with `openai-codex / gpt-5.4-mini`.
+- `route-funnel-event` supports an optional website-agent handoff message to `#website-tasks`.
 
 Known non-blocking warning: Discord slash command registration is over the server limit, so a few slash commands are skipped. Normal message/thread pickup works.

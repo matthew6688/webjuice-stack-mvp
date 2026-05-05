@@ -151,6 +151,7 @@ function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
     return {
       salesThreadId: next.salesThreadId || '',
       revisionThreadId: next.revisionThreadId || '',
+      websiteTaskThreadId: next.websiteTaskThreadId || '',
       lastChannelId: next.lastChannelId || '',
       lastMessageId: next.lastMessageId || '',
       lastMessageUrl: next.lastMessageUrl || '',
@@ -160,6 +161,7 @@ function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
   return {
     salesThreadId: kind === 'sale' && threadId ? threadId : next.salesThreadId || '',
     revisionThreadId: kind === 'revision' && threadId ? threadId : next.revisionThreadId || '',
+    websiteTaskThreadId: kind === 'website_task' && threadId ? threadId : next.websiteTaskThreadId || '',
     lastChannelId: discord.channelId || next.lastChannelId || '',
     lastMessageId: discord.messageId || next.lastMessageId || '',
     lastMessageUrl: discord.messageUrl || next.lastMessageUrl || '',
