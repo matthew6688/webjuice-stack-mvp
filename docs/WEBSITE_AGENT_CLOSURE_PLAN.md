@@ -184,6 +184,8 @@ These should be the canonical operator commands:
 npm run check:env -- --workflow websiteAgent
 npm run hermes:smoke-website-agent-handoff
 npm run hermes:smoke-website-agent-handoff -- --send true
+npm run hermes:smoke-website-agent-approval-loop
+npm run hermes:smoke-website-agent-approval-loop -- --send true
 npm run funnel:route-event -- --input <payload.json> --provider stripe --send-discord true --send-email true
 npm run agent:complete-task -- --task <task.json> --repo-dir <client repo> --execute true --checkout true --push true --check-deploy true --send-email true --send-discord true
 npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --execute true --push true --check-deploy true --send-email true --send-discord true
@@ -202,13 +204,14 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Approval live publish | Confirm live publish Discord notification and live email stay tied to the website thread | Passing via `npm run hermes:test-website-agent-closure` |
 | Memory continuation | Confirm later thread message can recover from case files | Pending |
 | Design protocol audit | Confirm run record proves Huashu/open-design usage | Passing via `npm run hermes:test-website-agent-closure` |
+| Website thread approval-loop smoke | Confirm dev-ready and live-published notifications post to one live Discord thread without file edits/deploy | Passing via `npm run hermes:smoke-website-agent-approval-loop -- --send true` |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
 2. Run the fixture against Opa Bar + Mezze using test order IDs only.
-3. Add a live, no-code approval smoke that posts the dev-ready and live-published notifications to a disposable website thread.
-4. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
+3. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
+4. Add customer-facing approval endpoint smoke that confirms approved order metadata maps to the same case/thread.
 
 ## Required Secrets And Variables
 
