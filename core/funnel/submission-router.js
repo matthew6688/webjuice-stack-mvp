@@ -31,7 +31,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     ? { ...order, orderId: order.parentOrderId }
     : order;
   const clientSlug = order.clientSlug || 'unknown-client';
-  const submissionId = safeId(order.orderId || order.rawSubmissionId || Date.now());
+  const submissionId = safeId(submissionKey(kind, order));
   const taskPath = options.taskPath || path.join(
     options.tasksDir || 'data/agent-tasks',
     clientSlug,
@@ -42,6 +42,27 @@ export async function routeFunnelSubmission(payload, options = {}) {
     clientSlug,
     `${kind}-${submissionId}.json`,
   );
+  if (!options.dryRun && fs.existsSync(submissionPath)) {
+    const existing = readJson(submissionPath);
+    return {
+      ok: true,
+      duplicate: true,
+      provider,
+      kind,
+      order,
+      task: null,
+      taskPath: null,
+      submissionPath,
+      entitlement: null,
+      ledgerEvent: null,
+      discord: { ok: false, skipped: true, reason: 'duplicate_submission' },
+      websiteAgentHandoff: { ok: false, skipped: true, reason: 'duplicate_submission' },
+      customerEmail: { ok: false, skipped: true, reason: 'duplicate_submission' },
+      discordPayload: null,
+      caseRecord: null,
+      existing,
+    };
+  }
   const caseRef = buildCaseReference(caseOrder, { casesDir: options.casesDir });
   let entitlement = null;
   if (kind === 'revision') {
@@ -475,9 +496,20 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
 }
 
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
 function safeId(value) {
   return String(value || 'unknown')
     .replace(/[^a-zA-Z0-9_-]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 80) || 'unknown';
+}
+
+function submissionKey(kind, order) {
+  if (kind === 'revision') {
+    return order.rawSubmissionId || `${order.orderId || 'revision'}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+  return order.orderId || order.rawSubmissionId || Date.now();
 }
