@@ -1,25 +1,23 @@
 ---
-title: "Welcome to WebJuice Stack"
-description: "How we build B2B company websites that are fast, secure, and fully automated."
+title: "What a local homepage needs to answer first"
+description: "A good first screen helps nearby customers understand what you do, whether they can trust you, and what to do next."
 pubDate: 2025-05-01
-author: "WebJuice Team"
-tags: ["astro", "cloudflare", "b2b"]
-coverImage: "/images/hero.jpg"
+author: "profitslocal"
+tags: ["Website strategy", "Local business"]
 ---
 
-## Why we moved away from WordPress
+## The homepage test
 
-WordPress served its purpose for a decade. But for B2B company websites, it's overkill. We don't need a database for a site that updates once a week. We don't need plugin updates breaking our forms at 2 AM.
+A local-business homepage has to answer the questions a real customer is asking in the moment:
 
-## The new stack
+- What do you sell?
+- Are you nearby?
+- Are you open, bookable, or easy to contact?
+- Do you look trustworthy enough to choose?
+- What should I do next?
 
-- **Astro** for static site generation
-- **Tailwind CSS** for styling
-- **Cloudflare Pages** for global hosting
-- **Content Collections** for blog posts and case studies
-- **Cloudflare Workers** for form handling
-- **Email Service** for notifications
+Many local sites look like templates before they sound like the business. The first draft should start with the offer, neighborhood, competitors, and customer path.
 
-## What's next
+## Preview before payment
 
-This post is a placeholder. Replace it with your first real article.
+That is why profitslocal builds a first preview before payment. The owner can judge the page instead of buying from a promise.

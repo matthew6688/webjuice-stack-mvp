@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<Layout title={`Paid intake - ${siteConfig.name}`} description="Submit structured business details and assets for your paid ProfitsLocal intake.">
+  <section class="poster-section">
+    <div class="contact-frame intake-frame">
+      <div class="contact-intro">
+        <p class="eyebrow">Paid intake</p>
+        <h1>Complete your paid intake.</h1>
+        <p class="lede">Send the details we need to build the preview. Your answers stay tied to the order and sync into our delivery repo.</p>
+        <p class="micro" style="margin-top: 22px;">Attach logo files, product photos, menu PDFs, service lists, screenshots, or reference sites. If the project needs live consulting instead of structured async intake, we will quote that separately.</p>
+      </div>
+      <form class="contact-form" id="intake-form" novalidate>
+        <div class="field">
+          <label for="order_id">Order ID <span class="req">Required</span></label>
+          <input id="order_id" name="order_id" placeholder="cs_live_..." required />
+        </div>
+        <div class="field">
+          <label for="email">Checkout email <span class="req">Required</span></label>
+          <input id="email" name="email" type="email" placeholder="jane@business.com" required />
+        </div>
+        <div class="field">
+          <label for="client_slug">Project slug</label>
+          <input id="client_slug" name="client_slug" placeholder="your-business" />
+        </div>
+        <div class="field">
+          <label for="business_name">Business name</label>
+          <input id="business_name" name="business_name" placeholder="Your local business" />
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" placeholder="+1 555 0123" />
+        </div>
+        <div class="field">
+          <label for="preferred_domain">Preferred domain</label>
+          <input id="preferred_domain" name="preferred_domain" placeholder="example.com" />
+        </div>
+        <div class="field full">
+          <label for="address">Address / service area</label>
+          <textarea id="address" name="address" placeholder="Business address, suburbs served, or delivery/service area."></textarea>
+        </div>
+        <div class="field full">
+          <label for="services">Menu, services, products, or offers <span class="req">Important</span></label>
+          <textarea id="services" name="services" placeholder="Paste the menu, service list, main offers, packages, prices, or product categories."></textarea>
+        </div>
+        <div class="field">
+          <label for="primary_action">Primary customer action</label>
+          <select id="primary_action" name="primary_action">
+            <option value="">Choose one</option>
+            <option>Call</option>
+            <option>Book online</option>
+            <option>Request a quote</option>
+            <option>Order online</option>
+            <option>Visit location</option>
+            <option>Email</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="business_type">Business type</label>
+          <input id="business_type" name="business_type" placeholder="Restaurant, dental, trades, retail..." />
+        </div>
+        <div class="field full">
+          <label for="references">References / competitors / sites to avoid</label>
+          <textarea id="references" name="references" placeholder="Paste websites you like, local competitors, Google Business links, or things to avoid."></textarea>
+        </div>
+        <div class="field full">
+          <label for="notes">Anything else we should know?</label>
+          <textarea id="notes" name="notes" placeholder="Brand tone, special offers, timing, launch priorities, or missing details."></textarea>
+        </div>
+        <div class="field full file-field">
+          <label for="files">Upload assets</label>
+          <input id="files" name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.zip" />
+          <p class="field-hint">Optional, up to 8 files.</p>
+        </div>
+        <div class="form-actions">
+          <button class="submit-button" type="submit">Submit intake</button>
+          <p id="intake-status" class="form-status">We will sync this intake to the project record.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const form = document.getElementById('intake-form');
+    const status = document.getElementById('intake-status');
+    for (const key of ['order_id', 'email', 'client_slug']) {
+      const field = form?.elements.namedItem(key);
+      if (field instanceof HTMLInputElement && params.get(key)) field.value = params.get(key);
+    }
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const invalid = Array.from(form.querySelectorAll('input, textarea, select')).find((control) => !control.checkValidity());
+      if (invalid) {
+        invalid.focus();
+        if (status) {
+          status.textContent = 'Please complete the required fields.';
+          status.className = 'form-status error';
+        }
+        return;
+      }
+      if (status) {
+        status.textContent = 'Submitting intake...';
+        status.className = 'form-status';
+      }
+      try {
+        const response = await fetch('/api/intake-submit', { method: 'POST', body: new FormData(form) });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Unable to submit intake.');
+        window.location.href = '/thank-you';
+      } catch (error) {
+        if (status) {
+          status.textContent = error instanceof Error ? error.message : 'Unable to submit intake.';
+          status.className = 'form-status error';
+        }
+      }
+    });
+  </script>
+</Layout>

@@ -1,9 +1,12 @@
 export function buildDiscordMessage({ kind, order, task = null }) {
   const isSale = kind === 'sale';
+  const isPaidIntake = kind === 'paid_intake';
   const title = isSale
     ? `New website sale: ${order.company || order.clientSlug}`
+    : isPaidIntake
+      ? `Paid intake: ${order.company || order.clientSlug}`
     : `Revision request: ${order.company || order.clientSlug}`;
-  const color = isSale ? 0x2ecc71 : 0xf1c40f;
+  const color = isSale ? 0x2ecc71 : isPaidIntake ? 0x3498db : 0xf1c40f;
   const fields = compactFields([
     field('Client', order.clientSlug, true),
     field('Repo', order.repo, true),
@@ -21,7 +24,7 @@ export function buildDiscordMessage({ kind, order, task = null }) {
   ]);
 
   return {
-    username: isSale ? 'ProfitsLocal Sales' : 'ProfitsLocal Revisions',
+    username: isSale || isPaidIntake ? 'ProfitsLocal Sales' : 'ProfitsLocal Revisions',
     embeds: [{
       title,
       color,

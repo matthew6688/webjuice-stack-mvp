@@ -16,28 +16,60 @@ const { title, description = siteConfig.description } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
+  <link rel="icon" href="/brand/logo-mark.svg" type="image/svg+xml" />
   <title>{title}</title>
 </head>
-<body class="bg-white text-gray-900 antialiased">
-  <nav class="border-b border-gray-100">
-    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="text-xl font-bold tracking-tight">{siteConfig.name}</a>
-      <div class="flex gap-6 text-sm font-medium">
-        {siteConfig.navLinks.map(link => (
-          <a href={link.href} class="hover:text-gray-600">{link.label}</a>
-        ))}
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="profitslocal home">
+          <img src="/brand/logo-horizontal.svg" alt="profitslocal" />
+        </a>
+        <div class="nav-links">
+          {siteConfig.navLinks.map(link => (
+            <a href={link.href}>{link.label}</a>
+          ))}
+        </div>
+        <a class="nav-cta" href="/#contact">Send a brief</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="/brand/logo-horizontal.svg" alt="profitslocal" />
+          <h2>Local websites, built before you buy.</h2>
+          <p class="lede">{siteConfig.footer.text}</p>
+          <p class="micro">&copy; {new Date().getFullYear()} {siteConfig.name}. {siteConfig.domain}</p>
+        </div>
+        <div class="footer-list">
+          <h3>Site</h3>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/#contact">Contact</a>
+          <a href="/brand-assets">Brand assets</a>
+          <a href="/blog">Blog</a>
+          <a href="/cases">Cases</a>
+        </div>
+        <div class="footer-list">
+          <h3>Support</h3>
+          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          <a href="/#contact">Request a free pre-build</a>
+          <a href="/#faq">Domain setup</a>
+        </div>
+        <div class="footer-list footer-social">
+          <h3>Social</h3>
+          {siteConfig.socialLinks.map(link => (
+            <a href={link.href} target={link.href.startsWith('http') ? '_blank' : undefined} rel={link.href.startsWith('http') ? 'noreferrer' : undefined}>{link.label}</a>
+          ))}
+        </div>
       </div>
-    </div>
-  </nav>
-  
-  <main class="max-w-4xl mx-auto px-6 py-12">
-    <slot />
-  </main>
-  
-  <footer class="border-t border-gray-100 mt-20">
-    <div class="max-w-4xl mx-auto px-6 py-8 text-sm text-gray-500">
-      &copy; {new Date().getFullYear()} {siteConfig.name}. {siteConfig.footer.text}
-    </div>
-  </footer>
+    </footer>
+  </div>
 </body>
 </html>

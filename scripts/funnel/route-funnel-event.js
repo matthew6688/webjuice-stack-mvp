@@ -40,13 +40,21 @@ function normalizeProvider(provider) {
   return provider;
 }
 
+function normalizeKind(kind) {
+  if (!kind || kind === 'auto') return undefined;
+  if (!['sale', 'paid_intake', 'revision', 'extra_revision'].includes(kind)) {
+    throw new Error(`Unsupported kind "${kind}". Use auto, sale, paid_intake, revision, or extra_revision.`);
+  }
+  return kind;
+}
+
 const args = parseArgs();
 
 try {
   const payload = readPayload(args);
   const result = await routeFunnelSubmission(payload, {
     provider: normalizeProvider(args.provider),
-    kind: args.kind,
+    kind: normalizeKind(args.kind),
     dryRun: boolArg(args, 'dry-run', 'dryRun'),
     sendDiscord: boolArg(args, 'send-discord', 'sendDiscord', true),
     sendEmail: boolArg(args, 'send-email', 'sendEmail', true),
@@ -71,6 +79,7 @@ try {
     amount: result.order?.amount,
     currency: result.order?.currency,
     taskPath: result.taskPath,
+    paidIntakePath: result.paidIntakePath,
     submissionPath: result.submissionPath,
     entitlement: result.entitlement ? {
       ok: result.entitlement.ok,

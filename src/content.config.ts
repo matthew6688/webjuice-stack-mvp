@@ -8,7 +8,7 @@ const blogCollection = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    author: z.string().default('WebJuice Team'),
+    author: z.string().default('profitslocal'),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     coverImage: z.string().optional(),

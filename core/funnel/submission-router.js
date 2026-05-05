@@ -14,8 +14,10 @@ import {
 import { addExtraRevisionEntitlement, consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
 import { normalizeTallySubmission, tallyRevenueLedgerInput } from './tally.js';
+import { assessPaidIntakeReadiness } from './paid-intake-readiness.js';
 
 export function classifyFunnelSubmission(order) {
+  if (order.orderKind === 'paid_intake') return 'paid_intake';
   if (order.tier === 'extra_revision') return 'extra_revision';
   const hasRevenue = Number(order.amount || 0) > 0 || ['one_time', 'yearly_maintenance'].includes(order.tier);
   return hasRevenue ? 'sale' : 'revision';
@@ -133,6 +135,81 @@ export async function routeFunnelSubmission(payload, options = {}) {
         entitlementsDir: options.entitlementsDir,
         dryRun: options.dryRun,
       }),
+    };
+  }
+  if (kind === 'paid_intake') {
+    if (!options.dryRun) {
+      writeJson(submissionPath, {
+        schemaVersion: 1,
+        kind,
+        receivedAt: artifactTimestamp(),
+        order,
+        payload,
+      });
+    }
+    const ledgerEvent = !options.dryRun
+      ? appendLedgerEvent(
+        provider === 'stripe' ? stripeRevenueLedgerInput(order) : tallyRevenueLedgerInput(order),
+        options.ledgerPath || DEFAULT_LEDGER_PATH,
+      )
+      : null;
+    const paidIntake = buildPaidIntakeRecord({ order, provider, submissionPath, ledgerEvent });
+    const paidIntakePath = path.join(
+      options.paidIntakesDir || 'data/paid-intakes',
+      clientSlug,
+      `${submissionId}.json`,
+    );
+    if (!options.dryRun) {
+      writeJson(paidIntakePath, paidIntake);
+    }
+    const caseRecord = recordFunnelCaseEvent({
+      kind,
+      provider,
+      order,
+      submissionPath,
+      ledgerEvent,
+      payload,
+      ok: true,
+      casesDir: options.casesDir,
+      dryRun: options.dryRun,
+    });
+    const discordPayload = buildDiscordMessage({ kind, order, task: null });
+    let discord = { ok: false, skipped: true };
+    const webhookUrl = options.salesWebhookUrl || options.env?.SALES_DISCORD_WEBHOOK_URL || process.env.SALES_DISCORD_WEBHOOK_URL;
+    if (options.sendDiscord && webhookUrl && !options.dryRun) {
+      discord = await sendDiscordWebhook(webhookUrl, discordPayload, {
+        ...options,
+        botToken: options.discordBotToken || options.env?.DISCORD_BOT_TOKEN || process.env.DISCORD_BOT_TOKEN || '',
+        threadName: discordThreadName(kind, order),
+      });
+    }
+    let customerEmail = { ok: false, skipped: true };
+    const emailMessage = buildFunnelCustomerEmail({ kind, order, entitlement: null });
+    if (options.sendEmail && emailMessage && !options.dryRun) {
+      customerEmail = await sendCustomerEmail({ ...process.env, ...(options.env || {}) }, emailMessage, {
+        ...options,
+        clientSlug: order.clientSlug,
+        campaignId: order.campaignId || options.campaignId || null,
+        emailMetadata: { kind, orderId: order.orderId || '', outcome: 'paid_intake_created' },
+      });
+    }
+    return {
+      ok: true,
+      provider,
+      kind,
+      order,
+      task: null,
+      taskPath: null,
+      paidIntake,
+      paidIntakePath,
+      submissionPath,
+      entitlement: null,
+      ledgerEvent,
+      discord,
+      websiteAgentHandoff: { ok: false, skipped: true, reason: 'paid_intake_needs_structured_intake' },
+      customerEmail,
+      discordPayload,
+      caseRecord,
     };
   }
   if (kind === 'extra_revision') {
@@ -294,6 +371,48 @@ export async function routeFunnelSubmission(payload, options = {}) {
     customerEmail,
     discordPayload,
     caseRecord,
+  };
+}
+
+function buildPaidIntakeRecord({ order, provider, submissionPath, ledgerEvent }) {
+  const now = artifactTimestamp();
+  const record = {
+    schemaVersion: 1,
+    status: 'paid_intake_pending_preview',
+    order: {
+      id: order.orderId,
+      provider,
+      tier: order.tier,
+      amount: order.amount,
+      currency: order.currency,
+      paymentStatus: order.paymentStatus,
+    },
+    clientSlug: order.clientSlug,
+    repo: order.repo,
+    template: order.template,
+    previewUrl: order.previewUrl,
+    customer: {
+      company: order.company,
+      email: order.email,
+      phone: order.phone || '',
+      domain: order.domain || '',
+    },
+    intake: {
+      launchNotes: order.feedback || '',
+      referenceUrl: order.referenceUrl || '',
+      files: order.files || [],
+      source: 'direct_checkout',
+    },
+    paths: {
+      submissionPath,
+    },
+    ledgerEventId: ledgerEvent?.id || '',
+    createdAt: now,
+    updatedAt: now,
+  };
+  return {
+    ...record,
+    readiness: assessPaidIntakeReadiness(record),
   };
 }
 

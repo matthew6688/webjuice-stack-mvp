@@ -1,23 +1,19 @@
 ---
-title: "How We Helped a SaaS Company Increase Leads by 300%"
-client: "TechFlow Inc"
-industry: "SaaS"
-description: "A complete website redesign and content strategy that transformed their online presence."
+title: "Opa Bar + Mezze preview workflow"
+client: "Opa Bar + Mezze"
+industry: "Restaurant"
+description: "A restaurant website preview workflow using public business details, menu evidence, revision handling, and launch approval."
 pubDate: 2025-04-15
 results:
-  - "300% increase in qualified leads"
-  - "50% reduction in page load time"
-  - "Top 3 Google rankings for 12 target keywords"
+  - "Research and menu context prepared before website generation"
+  - "Preview, revision, approval, and domain handoff steps validated"
+  - "Designed around restaurant search intent and local trust cues"
 ---
 
-## The Challenge
+## The workflow
 
-TechFlow had a dated website that wasn't converting visitors into leads. Their blog hadn't been updated in months, and their contact form was buried three pages deep.
+profitslocal researches the business, builds the first preview, and ties purchase and revision steps to the customer order.
 
-## Our Approach
+## Why it matters
 
-We rebuilt their site with Astro and Cloudflare, focusing on speed, SEO, and clear conversion paths.
-
-## Results
-
-Replace this with actual case study content.
+The customer reviews a real website preview before deciding whether to keep, revise, or launch it.

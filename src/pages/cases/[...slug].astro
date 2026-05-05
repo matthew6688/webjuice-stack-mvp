@@ -1,43 +1,43 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { siteConfig } from '../../config/site';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
   return cases.map(c => ({
-    params: { slug: c.slug },
+    params: { slug: c.id.replace(/\.md$/, '') },
     props: { caseStudy: c },
   }));
 }
 
 const { caseStudy } = Astro.props;
-const { Content } = await caseStudy.render();
+const { Content } = await render(caseStudy);
 ---
 
-<Layout title={`${caseStudy.data.title} - WebJuice`} description={caseStudy.data.description}>
-  <article class="max-w-2xl mx-auto">
-    <header class="mb-10">
-      <span class="text-sm text-gray-500">{caseStudy.data.client} &middot; {caseStudy.data.industry}</span>
-      <h1 class="text-4xl font-bold mt-2 mb-4">{caseStudy.data.title}</h1>
-      <p class="text-xl text-gray-600">{caseStudy.data.description}</p>
-    </header>
-    
-    {caseStudy.data.results.length > 0 && (
-      <div class="bg-gray-50 rounded-lg p-6 mb-10">
-        <h3 class="font-semibold mb-4">Key Results</h3>
-        <ul class="space-y-2">
-          {caseStudy.data.results.map(r => (
-            <li class="flex items-start gap-2">
-              <span class="text-green-600 mt-1">&check;</span>
-              <span>{r}</span>
-            </li>
+<Layout title={`${caseStudy.data.title} - ${siteConfig.name}`} description={caseStudy.data.description}>
+  <section class="poster-section">
+    <article class="article-frame">
+      <header>
+        <p class="eyebrow">{caseStudy.data.client} · {caseStudy.data.industry}</p>
+        <h1>{caseStudy.data.title}</h1>
+        <p class="lede">{caseStudy.data.description}</p>
+      </header>
+
+      {caseStudy.data.results.length > 0 && (
+        <div class="next-grid">
+          {caseStudy.data.results.map(result => (
+            <div class="next-step">
+              <h3>Proof point</h3>
+              <p>{result}</p>
+            </div>
           ))}
-        </ul>
+        </div>
+      )}
+
+      <div class="content-body">
+        <Content />
       </div>
-    )}
-    
-    <div class="prose prose-gray max-w-none">
-      <Content />
-    </div>
-  </article>
+    </article>
+  </section>
 </Layout>

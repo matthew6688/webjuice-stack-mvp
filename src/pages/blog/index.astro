@@ -1,28 +1,30 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const sorted = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const entrySlug = (id: string) => id.replace(/\.md$/, '');
 ---
 
-<Layout title="Blog - WebJuice">
-  <h1 class="text-4xl font-bold mb-4">Blog</h1>
-  <p class="text-gray-600 mb-12">Thoughts on B2B marketing, web performance, and our stack.</p>
-  
-  <div class="space-y-10">
-    {sorted.map(post => (
-      <article class="border-b border-gray-100 pb-10">
-        <a href={`/blog/${post.slug}`} class="group block">
-          <h2 class="text-2xl font-semibold group-hover:text-gray-600 mb-2">{post.data.title}</h2>
-          <p class="text-gray-600 mb-3">{post.data.description}</p>
-          <div class="flex items-center gap-3 text-sm text-gray-400">
-            <span>{post.data.author}</span>
-            <span>&middot;</span>
-            <span>{post.data.pubDate.toLocaleDateString()}</span>
-          </div>
-        </a>
-      </article>
-    ))}
-  </div>
+<Layout title={`Blog - ${siteConfig.name}`} description="Plain notes for local businesses reviewing or improving a website.">
+  <section class="poster-section">
+    <div class="listing-frame">
+      <p class="eyebrow">Blog</p>
+      <h1>Notes for local businesses reviewing a website.</h1>
+      <p class="lede">Short guides on what a local homepage needs, what to check before paying, and how to make a site easier for customers to trust.</p>
+
+      <div class="listing-grid">
+        {sorted.map(post => (
+          <a href={`/blog/${entrySlug(post.id)}`} class="listing-card">
+            <p class="eyebrow">{post.data.tags[0] || 'Website strategy'}</p>
+            <h3>{post.data.title}</h3>
+            <p>{post.data.description}</p>
+            <p class="micro">{post.data.author} · {post.data.pubDate.toLocaleDateString()}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 </Layout>

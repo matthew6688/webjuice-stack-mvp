@@ -1,40 +1,35 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { siteConfig } from '../../config/site';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map(post => ({
-    params: { slug: post.slug },
+    params: { slug: post.id.replace(/\.md$/, '') },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
-<Layout title={`${post.data.title} - WebJuice`} description={post.data.description}>
-  <article class="max-w-2xl mx-auto">
-    <header class="mb-10">
-      <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
-        <span>{post.data.author}</span>
-        <span>&middot;</span>
-        <span>{post.data.pubDate.toLocaleDateString()}</span>
+<Layout title={`${post.data.title} - ${siteConfig.name}`} description={post.data.description}>
+  <section class="poster-section">
+    <article class="article-frame">
+      <header>
+        <p class="eyebrow">{post.data.author} · {post.data.pubDate.toLocaleDateString()}</p>
+        <h1>{post.data.title}</h1>
+        <p class="lede">{post.data.description}</p>
+        {post.data.tags?.length > 0 && (
+          <p class="micro" style="margin-top: 20px;">{post.data.tags.join(' / ')}</p>
+        )}
+      </header>
+
+      <div class="content-body">
+        <Content />
       </div>
-      <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
-      <p class="text-xl text-gray-600">{post.data.description}</p>
-      {post.data.tags?.length > 0 && (
-        <div class="flex gap-2 mt-4">
-          {post.data.tags.map(tag => (
-            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">{tag}</span>
-          ))}
-        </div>
-      )}
-    </header>
-    
-    <div class="prose prose-gray max-w-none">
-      <Content />
-    </div>
-  </article>
+    </article>
+  </section>
 </Layout>

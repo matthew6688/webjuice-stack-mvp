@@ -24,7 +24,10 @@ export function normalizeStripeCheckoutEvent(payload, env = {}) {
     referenceUrl: metadata.reference_url || '',
     domain: metadata.preferred_domain || metadata.domain || '',
     parentOrderId: metadata.parent_order_id || metadata.parentOrderId || '',
-    files: [],
+    orderKind: metadata.order_kind || '',
+    files: metadata.attachment_summary
+      ? String(metadata.attachment_summary).split(/\n+/).map((value) => value.trim()).filter(Boolean)
+      : [],
     provider: 'stripe',
     rawSubmissionId: event.id || session.id || null,
     receivedAt: new Date().toISOString(),

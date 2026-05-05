@@ -45,10 +45,33 @@ function recordResendCost(env, message, options = {}, data = {}) {
 
 export function buildFunnelCustomerEmail({ kind, order, entitlement, extraRevisionUrl = '' }) {
   if (!order?.email || order.email === 'N/A') return null;
+  if (kind === 'paid_intake') return paidIntakeEmail(order);
   if (kind === 'sale') return saleEmail(order, entitlement);
   if (kind === 'extra_revision') return extraRevisionEmail(order, entitlement);
   if (entitlement?.ok) return revisionAcceptedEmail(order, entitlement, extraRevisionUrl);
   return revisionDeniedEmail(order, entitlement, extraRevisionUrl);
+}
+
+function paidIntakeEmail(order) {
+  const intakeUrl = `https://profitslocal.com/intake?order_id=${encodeURIComponent(order.orderId || '')}&email=${encodeURIComponent(order.email || '')}&client_slug=${encodeURIComponent(order.clientSlug || '')}`;
+  const lines = [
+    `Order ID: ${order.orderId}`,
+    `Package: ${order.tier}`,
+    `Amount: ${order.currency || 'USD'} ${order.amount}`,
+    `Business: ${order.company || order.clientSlug || 'N/A'}`,
+    `Preferred domain/subdomain: ${order.domain || 'N/A'}`,
+    `Intake form: ${intakeUrl}`,
+  ];
+  if (order.files?.length) {
+    lines.push(`Files received: ${order.files.join(', ')}`);
+  }
+  return simpleEmail({
+    to: order.email,
+    subject: `Next step for ${order.company || 'your ProfitsLocal website'}`,
+    intro: 'Thanks for your payment. Before we build the preview, please complete the structured intake so we have the right business details, assets, and launch preferences.',
+    lines,
+    outro: 'This package uses structured async intake so we can keep pricing fixed and turnaround fast. Please use the intake form instead of sending scattered notes.',
+  });
 }
 
 export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null, extraRevisionUrl = '' }) {

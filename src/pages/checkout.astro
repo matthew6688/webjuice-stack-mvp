@@ -1,0 +1,248 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getPricing } from '../config/pricing';
+import { siteConfig } from '../config/site';
+
+const pricing = getPricing('restaurant');
+const tierData = pricing.tiers.map((tier) => ({
+  id: tier.id,
+  name: tier.name,
+  summaryName: tier.id === 'yearly_maintenance' ? 'Yearly maintenance' : tier.name,
+  price: tier.price,
+  suffix: tier.id === 'yearly_maintenance' ? '/year' : '',
+  eyebrow: tier.id === 'one_time' ? 'Most direct' : tier.id === 'yearly_maintenance' ? 'Maintenance plan' : 'Add-on',
+  description: tier.description,
+  features: tier.features,
+}));
+---
+
+<Layout title={`Checkout - ${siteConfig.name}`} description="Choose a profitslocal package and pay securely through Stripe.">
+  <section class="poster-section checkout-page">
+    <div class="checkout-frame">
+      <div class="checkout-hero">
+        <div>
+          <p class="eyebrow">Secure Stripe checkout</p>
+          <h1>Select your next step.</h1>
+          <p class="lede">Choose a package, confirm the business details, and continue to Stripe. If you came from a preview link, the order will stay tied to that preview.</p>
+        </div>
+        <div class="checkout-context" id="checkout-context">
+          <p class="eyebrow">Preview status</p>
+          <p class="context-copy" id="context-copy">No preview link detected yet. We will record the order and follow up before launch work starts.</p>
+          <a class="context-link hidden" id="context-preview" href="#" target="_blank" rel="noreferrer">Open preview</a>
+        </div>
+      </div>
+
+      <div class="checkout-tier-grid" aria-label="Package options">
+        {pricing.tiers.map((tier) => (
+          <button
+            class="checkout-tier"
+            type="button"
+            data-tier={tier.id}
+            aria-pressed="false"
+          >
+            <span class="tier-eyebrow">{tier.id === 'one_time' ? 'Most direct' : tier.id === 'yearly_maintenance' ? 'Maintenance plan' : 'Add-on'}</span>
+            <strong>{tier.name}</strong>
+            <b>${tier.price}{tier.id === 'yearly_maintenance' ? '/year' : ''}</b>
+            <small>{tier.id === 'one_time' ? '3 revisions included' : tier.id === 'yearly_maintenance' ? '12 updates per year' : 'For existing orders'}</small>
+          </button>
+        ))}
+      </div>
+
+      <div class="checkout-workspace">
+        <aside class="selected-package" aria-live="polite">
+          <p class="eyebrow">Selected package</p>
+          <h2 id="selected-name">One-time website</h2>
+          <div class="price" id="selected-price">$399</div>
+          <p id="selected-description">For businesses that want to launch the preview site and make a few changes first.</p>
+          <ul id="selected-features"></ul>
+        </aside>
+
+        <form class="checkout-form" id="checkout-form" novalidate>
+          <input type="hidden" name="tier" value="one_time" />
+          <input type="hidden" name="client_slug" value="" />
+          <input type="hidden" name="repo" value="" />
+          <input type="hidden" name="template" value="webjuice-restaurant" />
+          <input type="hidden" name="preview_url" value="" />
+          <input type="hidden" name="campaign_id" value="profitslocal-main" />
+          <input type="hidden" name="brief_id" value="" />
+          <input type="hidden" name="auto_run_agent" value="false" />
+
+          <div class="field">
+            <label for="business_name">Business name <span class="req">Required</span></label>
+            <input id="business_name" name="business_name" autocomplete="organization" placeholder="Your local business" required />
+          </div>
+          <div class="field">
+            <label for="email">Email address <span class="req">Required</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com" required />
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" autocomplete="tel" placeholder="+1 555 0123" />
+          </div>
+          <div class="field">
+            <label for="preferred_domain">Preferred domain</label>
+            <input id="preferred_domain" name="preferred_domain" placeholder="example.com or example.profitslocal.com" />
+          </div>
+          <div class="field full hidden" id="parent-order-field">
+            <label for="parent_order_id">Original order ID <span class="req">Required</span></label>
+            <input id="parent_order_id" name="parent_order_id" placeholder="cs_live_..." />
+          </div>
+          <div class="field full">
+            <label for="launch_notes">Launch notes or requested changes</label>
+            <textarea id="launch_notes" name="launch_notes" placeholder="Tell us what should happen after payment. Include changes, launch timing, domain notes, or anything we should preserve."></textarea>
+          </div>
+          <div class="field full file-field">
+            <label for="checkout-files">Upload logo, photos, PDF, or reference files</label>
+            <input id="checkout-files" name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.zip" />
+            <p class="field-hint">Optional, up to 8 files. Attach the assets we should use after payment: logo, product photos, menu PDF, service list, screenshots, or visual references.</p>
+          </div>
+          <div class="form-actions">
+            <button class="submit-button" type="submit">Continue to Stripe</button>
+            <p id="checkout-status" class="form-status">Secure payment opens on Stripe.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ tiers: tierData }}>
+    const params = new URLSearchParams(window.location.search);
+    const form = document.getElementById('checkout-form');
+    const status = document.getElementById('checkout-status');
+    const tierButtons = Array.from(document.querySelectorAll('.checkout-tier'));
+    const selectedName = document.getElementById('selected-name');
+    const selectedPrice = document.getElementById('selected-price');
+    const selectedDescription = document.getElementById('selected-description');
+    const selectedFeatures = document.getElementById('selected-features');
+    const parentOrderField = document.getElementById('parent-order-field');
+    const parentOrderInput = document.getElementById('parent_order_id');
+    const contextCopy = document.getElementById('context-copy');
+    const contextPreview = document.getElementById('context-preview');
+    const validTierIds = new Set(tiers.map((tier) => tier.id));
+
+    hydrateFromUrl();
+    selectTier(validTierIds.has(params.get('tier')) ? params.get('tier') : 'one_time', false);
+
+    tierButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        selectTier(button.dataset.tier || 'one_time', true);
+      });
+    });
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const controls = Array.from(form.querySelectorAll('input, textarea'));
+      const invalid = controls.find((control) => control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement ? !control.checkValidity() : false);
+
+      if (invalid) {
+        invalid.focus();
+        if (status) {
+          status.textContent = 'Please complete the required fields before opening Stripe.';
+          status.className = 'form-status error';
+        }
+        return;
+      }
+
+      if (status) {
+        status.textContent = 'Opening Stripe Checkout...';
+        status.className = 'form-status';
+      }
+
+      try {
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const result = await response.json();
+        if (!response.ok || !result.url) throw new Error(result.error || 'Checkout failed');
+        window.location.href = result.url;
+      } catch (error) {
+        if (status) {
+          status.textContent = error instanceof Error ? error.message : 'Checkout failed. Please try again.';
+          status.className = 'form-status error';
+        }
+      }
+    });
+
+    function hydrateFromUrl() {
+      const mappings = {
+        client_slug: 'client_slug',
+        repo: 'repo',
+        template: 'template',
+        preview_url: 'preview_url',
+        campaign_id: 'campaign_id',
+        brief_id: 'brief_id',
+        business_name: 'business_name',
+        email: 'email',
+        phone: 'phone',
+        domain: 'preferred_domain',
+        launch_notes: 'launch_notes',
+        parent_order_id: 'parent_order_id',
+      };
+
+      for (const [paramName, fieldName] of Object.entries(mappings)) {
+        const value = params.get(paramName);
+        const field = form?.elements.namedItem(fieldName);
+        if (value && (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) {
+          field.value = value || field.value;
+        }
+      }
+
+      const previewUrl = params.get('preview_url');
+      const hasPreviewContext = Boolean(params.get('client_slug') && params.get('repo') && previewUrl);
+      const autoRunField = form?.elements.namedItem('auto_run_agent');
+      if (autoRunField instanceof HTMLInputElement) autoRunField.value = hasPreviewContext ? 'true' : 'false';
+
+      if (previewUrl && contextPreview instanceof HTMLAnchorElement) {
+        contextPreview.href = previewUrl;
+        contextPreview.classList.remove('hidden');
+      }
+      if (contextCopy) {
+        contextCopy.textContent = hasPreviewContext
+          ? 'Preview link detected. Your checkout will stay tied to this project and route into the delivery workflow.'
+          : 'No preview link detected yet. We will record the order and follow up before launch work starts.';
+      }
+    }
+
+    function selectTier(tierId, updateUrl) {
+      const tier = tiers.find((item) => item.id === tierId) || tiers[0];
+      const tierField = form?.elements.namedItem('tier');
+      if (tierField instanceof HTMLInputElement) tierField.value = tier.id;
+
+      tierButtons.forEach((button) => {
+        const active = button.dataset.tier === tier.id;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+
+      if (selectedName) selectedName.textContent = tier.summaryName || tier.name;
+      if (selectedPrice) selectedPrice.textContent = `$${tier.price}${tier.suffix}`;
+      if (selectedDescription) selectedDescription.textContent = tier.description;
+      if (selectedFeatures) {
+        selectedFeatures.innerHTML = tier.features.map((feature) => `<li>${escapeHtml(feature)}</li>`).join('');
+      }
+
+      const isExtraRevision = tier.id === 'extra_revision';
+      parentOrderField?.classList.toggle('hidden', !isExtraRevision);
+      if (parentOrderInput instanceof HTMLInputElement) {
+        parentOrderInput.required = isExtraRevision;
+      }
+
+      if (updateUrl) {
+        const next = new URL(window.location.href);
+        next.searchParams.set('tier', tier.id);
+        window.history.replaceState({}, '', next);
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+      }[char]));
+    }
+  </script>
+</Layout>

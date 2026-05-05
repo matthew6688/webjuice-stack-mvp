@@ -1,31 +1,34 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
 import { getCollection } from 'astro:content';
 
 const cases = await getCollection('cases', ({ data }) => !data.draft);
 const sorted = cases.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const entrySlug = (id: string) => id.replace(/\.md$/, '');
 ---
 
-<Layout title="Case Studies - WebJuice">
-  <h1 class="text-4xl font-bold mb-4">Case Studies</h1>
-  <p class="text-gray-600 mb-12">Results we've delivered for B2B clients.</p>
-  
-  <div class="grid gap-8 md:grid-cols-2">
-    {sorted.map(c => (
-      <a href={`/cases/${c.slug}`} class="group block border border-gray-100 rounded-lg p-6 hover:border-gray-300">
-        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">{c.data.industry}</span>
-        <h2 class="text-xl font-semibold group-hover:text-gray-600 mt-2 mb-2">{c.data.title}</h2>
-        <p class="text-gray-600 text-sm mb-4">{c.data.description}</p>
-        {c.data.results.length > 0 && (
-          <ul class="space-y-1">
-            {c.data.results.map(r => (
-              <li class="text-sm text-gray-700 flex items-center gap-2">
-                <span class="text-green-600">&check;</span> {r}
-              </li>
-            ))}
-          </ul>
-        )}
-      </a>
-    ))}
-  </div>
+<Layout title={`Cases - ${siteConfig.name}`} description="Example local-business website previews and launch workflows.">
+  <section class="poster-section">
+    <div class="listing-frame">
+      <p class="eyebrow">Cases</p>
+      <h1>Website previews built from real business details.</h1>
+      <p class="lede">Examples of the research, preview, revision, launch, and domain handoff workflow behind profitslocal projects.</p>
+
+      <div class="listing-grid">
+        {sorted.map(c => (
+          <a href={`/cases/${entrySlug(c.id)}`} class="listing-card">
+            <p class="eyebrow">{c.data.industry}</p>
+            <h3>{c.data.title}</h3>
+            <p>{c.data.description}</p>
+            {c.data.results.length > 0 && (
+              <ul>
+                {c.data.results.map(r => <li>{r}</li>)}
+              </ul>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 </Layout>

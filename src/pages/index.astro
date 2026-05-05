@@ -1,52 +1,374 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
-import { getCollection } from 'astro:content';
+import { getPricing } from '../config/pricing';
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
-const cases = await getCollection('cases', ({ data }) => !data.draft);
-const latestPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
-const latestCases = cases.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
+const pricing = getPricing('restaurant');
+
+const processSteps = [
+  ['Send the business details', 'Share your Google Business link, current website, photos, menu, services, and the action you want customers to take.'],
+  ['We build a free preview', 'We research the business and create a first website preview before asking you to buy anything.'],
+  ['You decide after seeing it', 'Pay only if you want to keep the site, request changes, or prepare it for launch.'],
+  ['Request changes privately', 'After purchase, your revision link is tied to your order ID and checkout email.'],
+  ['Approve the site', 'When the page looks right, we prepare the launch and confirm the handoff steps.'],
+  ['Use your domain, or ours', 'Launch on a free profitslocal subdomain, or connect your own domain with our DNS instructions.'],
+];
+
+const researchTiles = [
+  ['Search intent', 'What customers look for before they call, book, order, or visit.', '/brand/images/section-02-research.png'],
+  ['Competitor gaps', 'Where nearby websites feel outdated, thin, or hard to trust.', '/brand/images/section-02-research.png'],
+  ['Local trust', 'Hours, location, photos, reviews, and details that make the business feel real.', '/brand/images/section-06-performance-seo.png'],
+  ['Buying path', 'The buttons, sections, and page order that help a customer take the next step.', '/brand/images/section-07-process.png'],
+];
+
+const faqs = [
+  ['Is hosting included?', 'Yes. We host the site for you. You can use a free profitslocal subdomain, or we can help you connect your own domain after purchase.'],
+  ['Do I pay for the first preview?', 'No. You can review the first website preview free. If it is not useful, you do not have to buy it.'],
+  ['What counts as a revision?', 'A revision is one change request. You can include several edits in that request, such as text changes, new photos, section edits, or design adjustments.'],
+  ['How do revisions and domains work after purchase?', 'Your confirmation email includes the next steps. Revision requests must match your order ID and checkout email. Domain setup instructions are included when you are ready to launch.'],
+];
 ---
 
-<Layout title={`${siteConfig.name} - ${siteConfig.tagline}`}>
-  <section class="py-16 text-center">
-    <h1 class="text-5xl font-bold tracking-tight mb-6">{siteConfig.tagline}</h1>
-    <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-      {siteConfig.description}
-    </p>
-    <div class="flex justify-center gap-4">
-      <a href="/contact" class="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800">Get in Touch</a>
-      <a href="/cases" class="border border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50">View Cases</a>
+<Layout title={`${siteConfig.name} - See the site, then pay`} description={siteConfig.description}>
+  <section id="hero" class="poster-section">
+    <div class="poster-frame split">
+      <div class="copy-panel">
+        <div>
+          <p class="eyebrow">Websites for local businesses</p>
+          <h1><em>Free</em> website preview.</h1>
+          <p class="lede">Send your business details. We build a first website preview, and you pay only if you want to keep it, change it, or launch it.</p>
+        </div>
+        <div class="proof-list" style="margin-top: 28px;">
+          <div class="proof"><b>See it first</b>Review the page before checkout.</div>
+          <div class="proof"><b>Built for local</b>Menus, hours, location, search, and trust cues.</div>
+        </div>
+        <div style="margin-top: 28px;">
+          <a class="button" href="#contact">Request a free preview</a>
+        </div>
+        <span class="number">01</span>
+      </div>
+      <div class="visual-panel" aria-label="Local business website collage">
+        <div class="shot one"><img src="/brand/images/section-01-hero.png" alt="Local business website preview collage" /></div>
+        <div class="shot two"><img src="/brand/images/section-04-preview-gallery.png" alt="Gallery of local website previews" loading="lazy" /></div>
+        <div class="shot three"><img src="/brand/images/section-08-final-cta.png" alt="Final local website call to action preview" loading="lazy" /></div>
+        <div class="stamp">No pay before preview</div>
+      </div>
+      <div class="ribbon" aria-label="profitslocal workflow summary">
+        <div>Send the details.</div>
+        <div>Review the preview.</div>
+        <div>Pay only if it fits.</div>
+      </div>
     </div>
   </section>
 
-  <section class="py-16 border-t border-gray-100">
-    <h2 class="text-2xl font-bold mb-8">Latest Posts</h2>
-    <div class="grid gap-8 md:grid-cols-3">
-      {latestPosts.map(post => (
-        <a href={`/blog/${post.slug}`} class="group block">
-          <h3 class="font-semibold text-lg group-hover:text-gray-600 mb-2">{post.data.title}</h3>
-          <p class="text-gray-600 text-sm line-clamp-2">{post.data.description}</p>
-          <span class="text-xs text-gray-400 mt-2 block">{post.data.pubDate.toLocaleDateString()}</span>
-        </a>
-      ))}
-    </div>
-    <div class="mt-8">
-      <a href="/blog" class="text-sm font-medium underline underline-offset-4">View all posts &rarr;</a>
+  <section id="process" class="poster-section">
+    <div class="works-frame">
+      <div class="works-intro">
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>Send the details. See the site first.</h2>
+          <p class="lede">Start with a free website preview. Buy only when you want to keep it, change it, or launch it.</p>
+        </div>
+        <a class="button secondary" href="#pricing">See pricing</a>
+        <span class="number">02</span>
+      </div>
+      <div class="works-list">
+        {processSteps.map((step, index) => (
+          <article class="works-step">
+            <b>{index + 1}</b>
+            <h3>{step[0]}</h3>
+            <p>{step[1]}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="py-16 border-t border-gray-100">
-    <h2 class="text-2xl font-bold mb-8">Recent Cases</h2>
-    <div class="grid gap-8 md:grid-cols-2">
-      {latestCases.map(c => (
-        <a href={`/cases/${c.slug}`} class="group block p-6 border border-gray-100 rounded-lg hover:border-gray-300">
-          <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">{c.data.industry}</span>
-          <h3 class="text-xl font-semibold group-hover:text-gray-600 mt-2 mb-2">{c.data.title}</h3>
-          <p class="text-gray-600 text-sm">{c.data.description}</p>
-        </a>
-      ))}
+  <section id="research" class="poster-section">
+    <div class="poster-frame split reverse">
+      <div class="visual-panel mint">
+        <div class="tile-grid" style="padding: clamp(24px, 4vw, 54px);">
+          {researchTiles.map(tile => (
+            <article class="tile">
+              <h3>{tile[0]}</h3>
+              <p class="micro">{tile[1]}</p>
+              <div class="mini-shot"><img src={tile[2]} alt="" loading="lazy" /></div>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div class="copy-panel">
+        <p class="eyebrow">Local research first</p>
+        <h2>We look at the business before we design.</h2>
+        <p class="lede">Your preview starts with the offer, the neighborhood, nearby competitors, and what customers search for.</p>
+        <p class="micro" style="margin-top: 24px;">That means the page is written around the business, not a template with the name swapped in.</p>
+        <span class="number">03</span>
+      </div>
     </div>
   </section>
+
+  <section id="taste" class="poster-section">
+    <div class="poster-frame split">
+      <div class="copy-panel">
+        <p class="eyebrow">Taste strategy</p>
+        <h2>Make local feel <em>worth choosing.</em></h2>
+        <p class="lede">A good local website helps people trust the business quickly: clear words, strong photos, useful details, and a page that feels current.</p>
+        <div class="proof-list" style="margin-top: 30px;">
+          <div class="proof"><b>Useful sections</b>The page answers what customers need before they choose.</div>
+          <div class="proof"><b>No guessing</b>You judge the work on a real preview.</div>
+        </div>
+        <span class="number">04</span>
+      </div>
+      <div class="visual-panel peach">
+        <div class="shot one"><img src="/brand/images/section-03-taste-strategy.png" alt="Taste strategy for local website design" loading="lazy" /></div>
+        <div class="shot two"><img src="/brand/images/section-04-preview-gallery.png" alt="Website preview gallery" loading="lazy" /></div>
+        <div class="shot three"><img src="/brand/images/section-05-transparent-pricing.png" alt="Transparent pricing preview" loading="lazy" /></div>
+        <div class="stamp">Built with taste</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="preview" class="poster-section">
+    <div class="poster-frame split reverse">
+      <div class="visual-panel coral">
+        <div class="shot one"><img src="/brand/images/section-04-preview-gallery.png" alt="Pre-built website examples" loading="lazy" /></div>
+        <div class="shot two"><img src="/brand/images/section-08-final-cta.png" alt="Local business final CTA preview" loading="lazy" /></div>
+        <div class="shot three"><img src="/brand/images/section-01-hero.png" alt="Hero website preview crop" loading="lazy" /></div>
+      </div>
+      <div class="copy-panel">
+        <p class="eyebrow">Preview before payment</p>
+        <h2>Judge the work before you pay.</h2>
+        <p class="lede">Look at the first preview, decide what you would change, then choose the plan that matches how you want to use the site.</p>
+        <p class="micro" style="margin-top: 24px;">Some businesses need a one-time launch. Others need updates for menus, hours, events, and offers.</p>
+        <span class="number">05</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="poster-section">
+    <div class="pricing-frame">
+      <div class="pricing-head">
+        <div>
+          <p class="eyebrow">Fixed pricing</p>
+          <h2>Pay when you want to move forward.</h2>
+        </div>
+        <div>
+          <p class="lede">Choose a package after you have seen the preview and want us to revise, launch, or maintain the site.</p>
+          <p class="micro" style="margin-top: 16px;">Checkout runs through Stripe. Your confirmation email includes the revision link and launch steps.</p>
+        </div>
+      </div>
+      <div class="price-grid">
+        {pricing.tiers.map((tier, index) => (
+          <article class:list={['price-card', index === 1 && 'featured']}>
+            <p class="eyebrow">{index === 0 ? 'Most direct' : index === 1 ? 'Best for changing businesses' : 'Add-on'}</p>
+            <h3>{tier.name}</h3>
+            <div class="price">${tier.price}{tier.id === 'yearly_maintenance' && <span>/year</span>}</div>
+            <p>{tier.description}</p>
+            <ul>
+              {tier.features.map(feature => <li>{feature}</li>)}
+            </ul>
+            <a class="button secondary" href={tier.id === 'extra_revision' ? '/checkout?tier=extra_revision' : '#contact'}>{tier.id === 'extra_revision' ? 'Buy extra revision' : 'Start with a free preview'}</a>
+          </article>
+        ))}
+      </div>
+      <div class="pricing-note">
+        The first preview is free. You pay only when you want us to keep working on it.
+      </div>
+    </div>
+  </section>
+
+  <section id="performance" class="poster-section">
+    <div class="poster-frame split">
+      <div class="copy-panel">
+        <p class="eyebrow">Performance and local SEO</p>
+        <h2>Built for customers who search first.</h2>
+        <p class="lede">We structure the page for mobile visitors, local search, clear contact details, and fast loading.</p>
+        <div class="proof-list" style="margin-top: 30px;">
+          <div class="proof"><b>Search</b>Services, location, hours, and trust details are easy to find.</div>
+          <div class="proof"><b>Speed</b>Static pages load quickly on phones.</div>
+        </div>
+        <span class="number">06</span>
+      </div>
+      <div class="visual-panel mint">
+        <div class="shot one"><img src="/brand/images/section-06-performance-seo.png" alt="Performance and SEO website preview cards" loading="lazy" /></div>
+        <div class="shot two"><img src="/brand/images/section-02-research.png" alt="Search research notes" loading="lazy" /></div>
+        <div class="shot three"><img src="/brand/images/section-07-process.png" alt="Website process preview" loading="lazy" /></div>
+        <div class="stamp">Local SEO ready</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="poster-section">
+    <div class="faq-frame">
+      <div class="faq-intro">
+        <p class="eyebrow">FAQ</p>
+        <h2>Questions before checkout.</h2>
+        <p class="lede">You can review the first preview free. Hosting is included, and revision limits are clear before you pay.</p>
+        <span class="number">07</span>
+      </div>
+      <div class="faq-list">
+        {faqs.map((faq, index) => (
+          <article class="faq-item">
+            <span class="faq-num">{index + 1}</span>
+            <h3>{faq[0]}</h3>
+            <p>{faq[1]}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="poster-section">
+    <div class="contact-frame">
+      <div class="contact-intro">
+        <p class="eyebrow">Send a brief</p>
+        <h2>Get a free website preview.</h2>
+        <p class="lede">Send enough detail for us to understand the business. We will reply after reviewing the brief.</p>
+        <p class="micro" style="margin-top: 22px;">A Google Business link, photos, menu, service list, logo, or current website helps us make the preview stronger.</p>
+        <span class="number">08</span>
+      </div>
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="field">
+          <label for="name">Your name <span class="req">Required</span></label>
+          <input id="name" name="name" autocomplete="name" placeholder="Jane Smith" required />
+        </div>
+        <div class="field">
+          <label for="email">Email address <span class="req">Required</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com" required />
+        </div>
+        <div class="field">
+          <label for="company">Business name</label>
+          <input id="company" name="company" autocomplete="organization" placeholder="Your local business" />
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" autocomplete="tel" placeholder="+1 555 0123" />
+        </div>
+        <div class="field">
+          <label for="website">Current website</label>
+          <input id="website" name="website" type="url" placeholder="https://example.com" />
+        </div>
+        <div class="field">
+          <label for="googleBusiness">Google Business link</label>
+          <input id="googleBusiness" name="googleBusiness" type="url" placeholder="Google Maps or Business Profile URL" />
+        </div>
+        <div class="field">
+          <label for="businessType">Business type</label>
+          <select id="businessType" name="businessType">
+            <option value="">Choose one</option>
+            <option>Restaurant / cafe / bar</option>
+            <option>Beauty / wellness</option>
+            <option>Medical / dental</option>
+            <option>Trades / home services</option>
+            <option>Retail / local shop</option>
+            <option>Other local business</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="domainPreference">Domain preference</label>
+          <select id="domainPreference" name="domainPreference">
+            <option value="">Choose one</option>
+            <option>Use a free profitslocal subdomain</option>
+            <option>Connect my own domain</option>
+            <option>I need help deciding</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="message">What should the page say? <span class="req">Required</span></label>
+          <textarea id="message" name="message" placeholder="Tell us what you sell, what customers ask for, your best menu items or services, pages you need, offers to highlight, competitors, websites you like, and anything to avoid." required></textarea>
+        </div>
+        <div class="field full file-field">
+          <label for="files">Upload logo, photos, menu PDF, or reference files</label>
+          <input id="files" name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.zip" />
+          <p class="field-hint">Optional, up to 8 files. Send anything that helps us understand the business: logo, product photos, menu, service list, screenshots, or brand references.</p>
+        </div>
+        <div class="form-actions">
+          <button class="submit-button" type="submit">Request a free preview</button>
+          <p id="form-status" class="form-status">Required fields are marked. We will review the brief and reply with next steps.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="final" class="poster-section">
+    <div class="poster-frame split">
+      <div class="copy-panel">
+        <p class="eyebrow">Start with proof</p>
+        <h2>See the site. <em>Decide after.</em></h2>
+        <p class="lede">Send the details, review the preview, and pay only when you want to move forward.</p>
+        <div style="margin-top: 28px;">
+          <a class="button" href="#contact">Send a brief</a>
+        </div>
+      </div>
+      <div class="visual-panel">
+        <div class="shot one"><img src="/brand/images/section-08-final-cta.png" alt="Final local website call to action crop" loading="lazy" /></div>
+        <div class="shot two"><img src="/brand/images/section-03-taste-strategy.png" alt="Local website concept crop" loading="lazy" /></div>
+        <div class="shot three"><img src="/brand/images/section-01-hero.png" alt="Hero concept crop" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="checkout-bar" aria-label="Checkout options">
+    <a class="checkout-brand" href="#hero" aria-label="profitslocal home">
+      <img src="/brand/logo-horizontal.svg" alt="profitslocal" />
+    </a>
+    <div class="checkout-options">
+      <a class="checkout-option is-selected" href="/checkout?tier=one_time">
+        <b>$399 one-time</b>
+        <span>3 revisions + hosting + subdomain</span>
+      </a>
+      <a class="checkout-option" href="/checkout?tier=yearly_maintenance">
+        <b>$799/year</b>
+        <span>12 revisions + maintenance + SEO</span>
+      </a>
+      <a class="checkout-option" href="/checkout?tier=extra_revision">
+        <b>$100 extra revision</b>
+        <span>Only after quota is used</span>
+      </a>
+    </div>
+    <a class="checkout-cta" href="/checkout?tier=one_time">Checkout</a>
+  </aside>
+
+  <script>
+    document.body.classList.add('has-checkout-bar');
+
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const controls = Array.from(form.querySelectorAll('input, select, textarea'));
+      const invalid = controls.find((control) => control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement ? !control.checkValidity() : false);
+
+      if (invalid) {
+        invalid.focus();
+        if (status) {
+          status.textContent = 'Please complete the required fields so we can build the preview.';
+          status.className = 'form-status error';
+        }
+        return;
+      }
+
+      if (status) {
+        status.textContent = 'Sending your brief...';
+        status.className = 'form-status';
+      }
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+
+        if (!response.ok) throw new Error('Failed to send');
+
+        window.location.href = '/thank-you';
+      } catch {
+        if (status) {
+          status.textContent = 'Something went wrong. Please email support@profitslocal.com or try again.';
+          status.className = 'form-status error';
+        }
+      }
+    });
+  </script>
 </Layout>
