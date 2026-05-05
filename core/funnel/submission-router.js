@@ -342,7 +342,8 @@ function requiredContext(clientSlug) {
 function designProtocol(kind) {
   return {
     requiredSkill: 'huashu-design',
-    supportingSkills: ['design', 'frontend-design', 'design-review'],
+    supportingSkills: ['web-prototype', 'saas-landing', 'design', 'frontend-design', 'design-review', 'critique'],
+    openDesignSkills: ['web-prototype', 'saas-landing', 'design-brief', 'critique', 'tweaks'],
     routeType: kind === 'revision' ? 'classify_from_customer_request' : 'website',
     rules: [
       'Official website work must look like a real formal website with brand hierarchy, not a data dump.',

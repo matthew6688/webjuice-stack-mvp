@@ -25,6 +25,7 @@ writeEnvTemplate(path.join(profileDir, '.env'));
 
 fs.writeFileSync(path.join(profileDir, 'SOUL.md'), `${buildSoul()}\n`);
 fs.writeFileSync(path.join(profileDir, 'config.yaml'), `${buildConfig(channelId)}\n`);
+installWebsiteDesignSkills(profileDir);
 fs.mkdirSync(path.dirname(launchAgentPath(profileName)), { recursive: true });
 fs.writeFileSync(
   launchAgentPath(profileName),
@@ -39,6 +40,33 @@ console.log('Next: set a dedicated DISCORD_BOT_TOKEN in the profile .env, add mo
 function copyIfMissing(from, to) {
   if (fs.existsSync(to)) return;
   if (fs.existsSync(from)) fs.copyFileSync(from, to);
+}
+
+function copyDirectoryIfMissing(from, to) {
+  if (fs.existsSync(to) || !fs.existsSync(from)) return false;
+  fs.mkdirSync(path.dirname(to), { recursive: true });
+  fs.cpSync(from, to, { recursive: true });
+  return true;
+}
+
+function installWebsiteDesignSkills(targetProfileDir) {
+  const skillsDir = path.join(targetProfileDir, 'skills');
+  const home = process.env.HOME || '';
+  const installs = [
+    ['huashu-design', path.join(home, '.agents/skills/huashu-design')],
+    ['design', path.join(home, '.agents/skills/design')],
+    ['frontend-design', path.join(home, '.agents/skills/frontend-design')],
+    ['design-review', path.join(home, '.agents/skills/gstack/design-review')],
+    ['web-prototype', path.join(home, 'Developer/open-design/skills/web-prototype')],
+    ['saas-landing', path.join(home, 'Developer/open-design/skills/saas-landing')],
+    ['design-brief', path.join(home, 'Developer/open-design/skills/design-brief')],
+    ['critique', path.join(home, 'Developer/open-design/skills/critique')],
+    ['tweaks', path.join(home, 'Developer/open-design/skills/tweaks')],
+  ];
+  const copied = installs
+    .filter(([name, source]) => copyDirectoryIfMissing(source, path.join(skillsDir, name)))
+    .map(([name]) => name);
+  if (copied.length) console.log(`Installed website design skills: ${copied.join(', ')}`);
 }
 
 function writeEnvTemplate(filePath) {
@@ -162,7 +190,8 @@ Rules:
 - Menu work must stay minimal, mobile-first, and focused on core menu/contact actions.
 - Do not invent menu items, prices, address, phone, hours, emails, reservation links, or photos.
 - Use verified evidence and brand files before changing customer-facing content.
-- Use Huashu Design/open-design protocol for visual website changes.
+- Before visual website changes, load and follow local skills when available: huashu-design, web-prototype, saas-landing, design, frontend-design, design-review, critique.
+- Use Huashu Design/open-design protocol for visual website changes: evidence-first, real brand assets, anti-AI-slop checks, mobile/desktop QA.
 - Push implementation changes only to dev until explicit approval.
 - Publish live only after order ID and checkout email match.
 - If evidence conflicts with customer feedback, write the conflict clearly and ask for human decision.

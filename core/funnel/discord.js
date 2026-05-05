@@ -100,8 +100,12 @@ export function buildWebsiteAgentHandoffMessage({
     `case: ${casePath}`,
     `context: ${contextPath}`,
     `task: ${taskPath}`,
+    `evidence: ${task?.requiredContext?.evidence || ''}`,
+    `content: ${task?.requiredContext?.content || ''}`,
+    `design: ${task?.requiredContext?.design || ''}`,
+    `brand: ${task?.requiredContext?.brandSpec || ''}`,
     '',
-    'Action: read the case/context/task files, preserve website vs menu separation, use verified evidence/design files, and push customer-facing edits to dev only.',
+    'Action: read the case/context/task files first. Load huashu-design and open-design web-prototype/saas-landing/critique skills when making visual changes. Preserve website vs menu separation, use verified evidence/design/brand files, and push customer-facing edits to dev only.',
   ].filter((line) => line !== null && line !== undefined);
 
   return {

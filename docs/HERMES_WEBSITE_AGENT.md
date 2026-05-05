@@ -24,6 +24,7 @@ The existing `enricher` profile is not the right owner for website tasks. Its SO
 - use `clients/<client>/evidence`, `content.restaurant.json`, `design.restaurant.json`, and `brand-spec.md` as source of truth;
 - preserve the distinction between official website pages and minimal mobile menu pages;
 - use Huashu Design/open-design protocol for website UI changes;
+- load local design skills before visual edits: `huashu-design`, Open Design `web-prototype`/`saas-landing`/`critique`, plus `design`, `frontend-design`, and `design-review` when available;
 - trigger or guide the existing automation rather than manually editing random files;
 - post dev preview links for review and only publish live after explicit approval.
 
@@ -108,6 +109,14 @@ WEBSITE_TASKS_DISCORD_BOT_TOKEN=...
 
 Important: `WEBSITE_TASKS_DISCORD_BOT_TOKEN` should belong to a different Discord app than `website-agent`; Discord bots do not reliably receive their own messages. If this is omitted, the workflow falls back to `DISCORD_BOT_TOKEN`.
 
+The setup script also copies the required design skills into the profile-local skills directory:
+
+- `huashu-design`
+- `design`
+- `frontend-design`
+- `design-review`
+- Open Design: `web-prototype`, `saas-landing`, `design-brief`, `critique`, `tweaks`
+
 ## SOUL Requirements
 
 Use `scripts/hermes/setup-website-agent-profile.js` to write the recommended `SOUL.md`. The key behavioral contract is:
@@ -157,5 +166,6 @@ Verified locally on 2026-05-05:
 - Hermes creates a dedicated Discord thread for the handoff message.
 - `website-agent` completes a model smoke test in that thread with `openai-codex / gpt-5.4-mini`.
 - `route-funnel-event` supports an optional website-agent handoff message to `#website-tasks`.
+- The handoff message includes pointers to case, context, task, evidence, content, design, and brand spec files.
 
 Known non-blocking warning: Discord slash command registration is over the server limit, so a few slash commands are skipped. Normal message/thread pickup works.
