@@ -79,7 +79,7 @@ function writeEnvTemplate(filePath) {
     `DISCORD_HOME_CHANNEL=${channelId}`,
     '',
     '# Dedicated private task channel mode.',
-    '# Humans can trigger the agent in #websites; bot/webhook handoffs must @mention website-agent.',
+    '# Humans can trigger the agent in #website-tasks; bot/webhook handoffs must @mention website-agent.',
     'GATEWAY_ALLOW_ALL_USERS=true',
     'DISCORD_ALLOW_BOTS=mentions',
     '',

@@ -35,7 +35,7 @@ Verified live state:
 - Sale routing smoke test wrote a temporary case/task/entitlement/ledger under `/tmp/webjuice-smoke`; Discord case-thread dry-run generated the expected sale thread payload.
 - Agent runner execute smoke passed against the temporary Opa sale task: case context loaded, source-of-truth artifacts applied, build passed, and case run record was updated.
 - Approval publish runner dry-run smoke passed against the same task, covering preflight, dev build, target checkout, tree copy, and live commit plan.
-- `#websites` is now the website agent Forum channel. Each executable website task is a dedicated forum post/thread. New handoffs explicitly create a business-name thread and put the full task packet in that first post with `@website-agent`.
+- `#website-tasks` is now the website agent text channel. Each executable website task is posted as a parent message with the full task packet and `@website-agent`; Hermes auto-creates the thread, with explicit Discord message-thread creation as fallback.
 - Live Opa controlled smoke on 2026-05-05 verified: Resend receipt to `matthew6688@gmail.com`, temp `$399` Stripe revenue ledger, dedicated `Opa-Bar-Mezze-sale-...` website task thread, revision quota `1/3`, same-thread revision reuse, website-agent pickup, and Huashu/open-design skill loading.
 - Email URL helpers now trim trailing preview slashes so links render as `/domain-help`, `/revise`, and `/approve` without accidental double slashes.
 - `/domain-help` now explains four launch options: ProfitsLocal subpage, ProfitsLocal subdomain, customer root domain, and customer subdomain.

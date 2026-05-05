@@ -75,9 +75,9 @@ Keep the dev preview utility pages available after launch so the customer can st
 
 ## Discord Website Threads
 
-`#websites` is a Forum channel. Each executable website task creates a forum post/thread named from the business and order, for example `Opa-Bar-Mezze-sale-cs_test_...`.
+`#website-tasks` is a text channel. Each executable website task is posted as a parent message that mentions `website-agent`; Hermes then auto-creates a thread from that message.
 
-This is different from a normal text channel. Text channels can support message threads and auto-thread behavior, but they still display thread cards inline in the message stream. Forum channels show tasks as a cleaner post/thread list, which is better for avoiding missed website work. The actual task packet and agent replies live inside the forum thread, and later revisions reuse `case.json.discord.websiteTaskThreadId`.
+This matches the display behavior of the other Hermes text channels: the thread is visible under the channel, while the task packet stays tied to the parent message. If Hermes auto-threading does not create a thread within the wait window, automation falls back to explicit Discord message-thread creation. Later revisions reuse `case.json.discord.websiteTaskThreadId`.
 
 ## Resend For Cold Outreach
 

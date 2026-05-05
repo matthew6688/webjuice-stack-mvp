@@ -225,6 +225,24 @@ export async function sendDiscordThreadedMessage({
       payload,
     });
   }
+  const autoThread = await sendDiscordChannelMessage({
+    channelId,
+    botToken,
+    payload,
+    fetchImpl,
+    waitForThread: true,
+    threadWaitAttempts: 20,
+    threadWaitMs: 1500,
+  });
+  if (autoThread.threadId) {
+    return {
+      ...autoThread,
+      threadName,
+      threadStyle: 'hermes_auto_thread',
+      threadMessageId: autoThread.messageId,
+      threadMessageUrl: autoThread.messageUrl,
+    };
+  }
   const anchorPayload = parentPayload || {
     content: `Website task: ${threadName}`,
     allowed_mentions: { parse: [] },

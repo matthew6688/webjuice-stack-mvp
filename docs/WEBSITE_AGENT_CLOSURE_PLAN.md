@@ -7,8 +7,8 @@
 
 The Discord integration is now technically working:
 
-- `website-agent` is online and can read `#websites`.
-- `#websites` pickup works when a separate sender bot mentions `website-agent`.
+- `website-agent` is online and can read `#website-tasks`.
+- `#website-tasks` pickup works when a separate sender bot mentions `website-agent`.
 - The handoff message includes pointers to case, context, task, evidence, content, design, and brand spec files.
 - The `website-agent` profile has local design skills installed, including `huashu-design`, `design`, `frontend-design`, `design-review`, and Open Design skills.
 - Repeatable smoke test exists: `npm run hermes:smoke-website-agent-handoff`.
@@ -68,7 +68,7 @@ When a paid order is routed:
 
 - Create/update `data/cases/<client>/<order>/case.json`.
 - Create/update `data/agent-tasks/<client>/<task>.json`.
-- Send one handoff to `#websites`.
+- Send one handoff to `#website-tasks`.
 - Persist returned `websiteTaskThreadId` and `websiteTaskMessageId` into `case.json.discord`.
 - If the order already has `websiteTaskThreadId`, send the new message into that existing thread, not a new thread.
 
@@ -271,7 +271,7 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 
 | Name | Purpose |
 |---|---|
-| `WEBSITE_TASKS_DISCORD_CHANNEL_ID` | Target `#websites` channel |
+| `WEBSITE_TASKS_DISCORD_CHANNEL_ID` | Target `#website-tasks` channel |
 | `WEBSITE_AGENT_MENTION` | Mention that triggers `website-agent` |
 | `WEBSITE_TASKS_DISCORD_BOT_TOKEN` | Separate sender/dispatcher bot, not `website-agent` |
 | `DISCORD_BOT_TOKEN` | Sales/revision true-thread creation if separate |
