@@ -23,6 +23,7 @@ Scope: restaurant website/menu loop only.
 | Deployed Opa Stripe checkout and thank-you handoff | Done | Stripe test session `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7` paid/succeeded and redirected to `/thank-you` |
 | Funnel route idempotency | Done | `npm run funnel:test-route-idempotency`; duplicate Opa workflow run `25376342058` returned `duplicate: true` and skipped task/email/Discord/ledger |
 | ProfitsLocal launch route resolver | Done | `npm run domain:test-launch-route`, `npm run domain:inspect`, `npm run domain:pages-status`, and `https://profitslocal.com/` HTTP 200 |
+| Opa mobile menu polish | Done | Opa `dev` commit `8501ac1`; `Deploy Dev` success; deployed `/menu/` and `/revise/` return HTTP 200 |
 
 ## Standard Verification Sequence
 
@@ -114,7 +115,7 @@ Synced `webjuice-restaurant` revision/domain/funnel/attachment UX to generated d
 - Chu The Phat: `0820f85`
 - Joey's: `d91ec88`
 - Longwang Restaurant: `f11055a`
-- Opa Bar & Mezze: `60043f7`
+- Opa Bar & Mezze: `8501ac1`
 
 Verification:
 
@@ -124,6 +125,7 @@ Verification:
 - Each repo passed `npm run build`.
 - Each repo's `Deploy Dev` workflow completed with `success`.
 - Deployed `/revise/` and `/domain-help/` pages return HTTP 200 on all 5 dev previews.
+- Opa deployed `/menu/` returns HTTP 200 after mobile menu navigation polish.
 
 ## Remaining Backlog
 

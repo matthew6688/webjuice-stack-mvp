@@ -43,6 +43,7 @@ Verified live state:
 - `/revise` now locks prefilled order ID/email, keeps trusted plan/quota display, and carries selected attachment summaries to Discord/email/agent routing.
 - `/revise` now uploads selected files through `/api/upload-attachment/` to Cloudinary when runtime secrets are configured; returned Cloudinary URLs are forwarded to Discord/email/agent routing.
 - The 5 generated Brisbane repos were synced from the latest `webjuice-restaurant` template, pushed to `dev`, passed upload/revision/approval smoke, local build, deployed successfully, and serve `/revise/` plus `/domain-help/` on dev.
+- Opa Bar & Mezze `dev` has an additional mobile menu polish commit with sticky action chrome and section jump pills; `Deploy Dev` completed success and deployed `/menu/` plus `/revise/` return HTTP 200.
 - Deployed Opa `$399` Stripe test checkout succeeded with session `cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7`, redirected to `/thank-you`, and wrote production case/order/task/ledger state.
 - Duplicate workflow run `25376342058` verified idempotency: duplicate sale returned `duplicate: true` and skipped task/email/Discord/ledger.
 - Default domain route resolver is implemented: blank domain defaults to `<client>.profitslocal.com`; customer-owned domains require DNS handoff; ProfitsLocal subpages are allowed but wait for the future root-site router.
@@ -115,6 +116,7 @@ Working now:
 
 - `webjuice-restaurant` has the updated fixed footer, `/approve`, `/revise`, `/domain-help`, approval/revision API dry-run smokes, and thread-safe central dispatch.
 - Central router live smoke is passing with Opa in temp state.
+- Opa menu polish is synced to `dev` as `8501ac1`.
 
 Remaining:
 

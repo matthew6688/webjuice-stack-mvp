@@ -7,7 +7,7 @@
 | GitHub/Cloudflare deploy | Working | Main/dev deploys work for current restaurant repos. |
 | Google Places extraction | Working MVP | `npm run extract:google-places` supports text search, details, evidence writing, and cost logging. |
 | Firecrawl official-site scrape | Working MVP | `npm run extract:firecrawl` standardizes official-site scrape artifacts into evidence packs and cost events. |
-| Restaurant preview renderer | Working MVP | `webjuice-restaurant` renders from content/design/checkout artifacts; all 5 Brisbane generated dev branches are synced to the current artifact renderer and passed build after sync. |
+| Restaurant preview renderer | Working MVP | `webjuice-restaurant` renders from content/design/checkout artifacts; all 5 Brisbane generated dev branches are synced to the current artifact renderer and passed build after sync. Opa also has a deployed mobile menu polish on `dev`. |
 | Link QA | Working MVP | `npm run qa:links` validates `tel:`, Google Maps, menu source, reservation, email, and menu item source chains from content artifacts. |
 | Screenshot QA | Working MVP | `npm run outreach:capture-assets` captures desktop/mobile screenshots and a scroll demo video from an outreach pack preview URL. |
 | Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
