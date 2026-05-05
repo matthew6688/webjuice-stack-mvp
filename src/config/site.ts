@@ -6,25 +6,34 @@ export interface SiteConfig {
   domain: string;
   fromName: string;
   navLinks: { label: string; href: string }[];
+  socialLinks: { label: string; href: string }[];
   footer: {
     text: string;
   };
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'Profits Local',
-  tagline: 'Preview Websites for Local Businesses',
-  description: 'Fast restaurant and local business preview sites for outreach, review, and launch.',
-  email: 'hello@fengtalk.ai',
+  name: 'profitslocal',
+  tagline: 'See your local-business website before you pay',
+  description: 'profitslocal builds a free website preview for local businesses. Review the page first, then pay only if you want revisions, launch help, or ongoing updates.',
+  email: 'support@profitslocal.com',
   domain: 'profitslocal.com',
-  fromName: 'Profits Local',
+  fromName: 'profitslocal',
   navLinks: [
-    { label: 'Home', href: '/' },
+    { label: 'How it works', href: '/#process' },
+    { label: 'Pricing', href: '/#pricing' },
+    { label: 'FAQ', href: '/#faq' },
     { label: 'Blog', href: '/blog' },
-    { label: 'Cases', href: '/cases' },
-    { label: 'Contact', href: '/contact' },
+    { label: 'Contact', href: '/#contact' },
+  ],
+  socialLinks: [
+    { label: 'YouTube', href: 'https://www.youtube.com/@profitslocal' },
+    { label: 'X', href: 'https://x.com/profitslocal' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/company/profitslocal' },
+    { label: 'Facebook', href: 'https://www.facebook.com/profitslocal' },
+    { label: 'Instagram', href: 'https://www.instagram.com/profitslocal' },
   ],
   footer: {
-    text: 'Built with Astro + Cloudflare.',
+    text: 'Free website previews for local businesses.',
   },
 };

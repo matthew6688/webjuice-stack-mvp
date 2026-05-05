@@ -355,6 +355,7 @@ export function activeConstraints() {
 
 function statusFor(kind, ok, task) {
   if (!ok) return 'needs_human_or_extra_revision';
+  if (kind === 'paid_intake') return 'paid_intake_pending_preview';
   if (kind === 'sale') return task ? 'paid_task_queued' : 'paid';
   if (kind === 'revision') return task ? 'revision_task_queued' : 'revision_received';
   return 'active';
@@ -362,6 +363,7 @@ function statusFor(kind, ok, task) {
 
 function timelineType(kind, ok) {
   if (!ok) return 'revision_denied';
+  if (kind === 'paid_intake') return 'paid_intake_created';
   if (kind === 'sale') return 'payment_routed';
   if (kind === 'revision') return 'revision_routed';
   return `${kind || 'event'}_routed`;

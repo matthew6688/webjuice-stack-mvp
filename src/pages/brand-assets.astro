@@ -1,0 +1,135 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+
+const colors = [
+  ['Cream', '#FFF6EC', 'Main warm background'],
+  ['Paper', '#FFFCF7', 'Cards, notes, panels'],
+  ['Charcoal', '#17191C', 'Main text and rules'],
+  ['Muted', '#5E6268', 'Body copy'],
+  ['Coral', '#FF5A3D', 'CTA, logo mark, accents'],
+  ['Coral soft', '#FFB39F', 'Soft highlights'],
+  ['Peach', '#FFE1CE', 'Warm section surfaces'],
+  ['Citrus', '#FFD45A', 'Growth and optimism'],
+  ['Mint', '#CDECCF', 'Trust and success cues'],
+  ['Green', '#47B86A', 'Positive metrics'],
+  ['Sky', '#8BD3F7', 'Motion and annotations'],
+  ['Blue', '#327BEA', 'Search and data cards'],
+  ['Lilac soft', '#EADCFB', 'Creative accent'],
+];
+
+const references = [
+  ['Hero', '/brand/images/section-01-hero.png'],
+  ['Research', '/brand/images/section-02-research.png'],
+  ['Taste strategy', '/brand/images/section-03-taste-strategy.png'],
+  ['Preview gallery', '/brand/images/section-04-preview-gallery.png'],
+  ['Pricing', '/brand/images/section-05-transparent-pricing.png'],
+  ['Performance', '/brand/images/section-06-performance-seo.png'],
+  ['Process', '/brand/images/section-07-process.png'],
+  ['Final CTA', '/brand/images/section-08-final-cta.png'],
+];
+
+const downloads = [
+  ['Logo mark', '/brand/logo-mark.svg'],
+  ['Horizontal logo', '/brand/logo-horizontal.svg'],
+  ['Color palette SVG', '/brand/color-palette.svg'],
+  ['Brand tokens JSON', '/brand/brand-tokens.json'],
+  ['Design tokens CSS', '/brand/design-tokens.css'],
+  ['Original design MD', '/brand/profitslocal-design.md'],
+];
+---
+
+<Layout title={`Brand assets - ${siteConfig.name}`} description="profitslocal logo, color, typography, and design reference assets.">
+  <section class="poster-section brand-assets-page">
+    <div class="brand-assets-hero">
+      <div>
+        <p class="eyebrow">Brand reference</p>
+        <h1>profitslocal brand assets.</h1>
+        <p class="lede">The original design reference page for the profitslocal identity: logo direction, Local Intelligence Collage, color system, type, and generated website-section references.</p>
+      </div>
+      <div class="brand-assets-logo-card">
+        <img src="/brand/logo-horizontal.svg" alt="profitslocal horizontal logo" />
+        <p>Research first. Design with taste. Preview before payment.</p>
+      </div>
+    </div>
+
+    <div class="brand-assets-grid">
+      <section class="brand-assets-panel logo-panel">
+        <p class="eyebrow">Logo</p>
+        <div class="logo-lockups">
+          <div>
+            <img src="/brand/logo-mark.svg" alt="profitslocal logo mark" />
+            <span>Mark</span>
+          </div>
+          <div>
+            <img src="/brand/logo-horizontal.svg" alt="profitslocal horizontal logo" />
+            <span>Horizontal</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="brand-assets-panel">
+        <p class="eyebrow">Brand essence</p>
+        <h2>Beautiful, research-backed local-business websites, pre-built before you pay.</h2>
+        <p class="micro">profitslocal should feel like a creative research lab for local-business websites: warm, fast, trustworthy, artistic, and practical.</p>
+      </section>
+
+      <section class="brand-assets-panel wide">
+        <p class="eyebrow">Color system</p>
+        <div class="color-grid">
+          {colors.map(([name, hex, usage]) => (
+            <article class="color-chip">
+              <span style={`background: ${hex}`}></span>
+              <b>{name}</b>
+              <code>{hex}</code>
+              <p>{usage}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="brand-assets-panel type-panel">
+        <p class="eyebrow">Typography</p>
+        <div>
+          <h2>Editorial serif headlines.</h2>
+          <p>Clean sans body copy for forms, buttons, labels, and product surfaces.</p>
+        </div>
+        <div>
+          <h3>Display</h3>
+          <p>Playfair Display, Libre Baskerville, Cormorant Garamond, Georgia</p>
+        </div>
+        <div>
+          <h3>UI / body</h3>
+          <p>Inter, Manrope, Plus Jakarta Sans, system-ui</p>
+        </div>
+      </section>
+
+      <section class="brand-assets-panel">
+        <p class="eyebrow">Design language</p>
+        <h2>Local Intelligence Collage.</h2>
+        <p class="micro">Warm cream surfaces, coral CTA energy, maps, storefront worlds, browser previews, research notes, annotation marks, and optimistic growth cues.</p>
+      </section>
+
+      <section class="brand-assets-panel wide">
+        <p class="eyebrow">Reference images</p>
+        <div class="reference-grid">
+          {references.map(([label, src]) => (
+            <a href={src} target="_blank" rel="noreferrer">
+              <img src={src} alt={`${label} brand reference`} loading="lazy" />
+              <span>{label}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="brand-assets-panel wide downloads-panel">
+        <p class="eyebrow">Files</p>
+        <div class="download-grid">
+          {downloads.map(([label, href]) => (
+            <a href={href} target="_blank" rel="noreferrer">{label}</a>
+          ))}
+        </div>
+      </section>
+    </div>
+  </section>
+</Layout>

@@ -1,6 +1,6 @@
 # Ops Dashboard Plan
 
-Updated: 2026-05-05
+Updated: 2026-05-06
 
 Status: deferred until the restaurant closed loop is stable.
 
@@ -23,10 +23,12 @@ Do not implement this before the restaurant loop is complete:
 - Overview: revenue, costs, ROI, online previews, paid orders, pending revisions, failed deploys.
 - Clients: repo, preview URL, menu evidence, screenshots/video, deploy status, QA status.
 - Orders/Revisions: order ID, masked email, tier, revisions used/remaining, task, case, Discord thread.
+- Paid Intake: submitted structured intake, missing information, file summary, latest customer update, case link, and whether the build is ready for an agent task.
 - Agent Queue: pending/running/completed/failed, source-of-truth files, allowed file scope, case context.
 - ROI: campaign/client/provider revenue and cost summary.
 - Integrations: GitHub, Cloudflare, Stripe, Resend, Discord, Google Places, Firecrawl, OpenAI/Ollama health.
 - Settings: non-secret pricing, revision limits, provider unit costs, default niche, prompt/design protocol version.
+- Pricing Controls: dashboard-editable package prices, enabled/disabled tiers, revision allowances, Stripe price/session mapping, and an audit trail for price changes.
 
 ## Security
 
@@ -37,6 +39,7 @@ Use Cloudflare Access for `/admin`. Do not build custom password auth for MVP. N
 - `clients/*`
 - `data/cases/*`
 - `data/funnel/orders/*`
+- `data/paid-intakes/*`
 - `data/finance/ledger.jsonl`
 - deploy/domain/link/outreach/audit artifacts
 - third-party health checks through server-side functions
@@ -49,5 +52,7 @@ Only after read-only status is trustworthy:
 - regenerate outreach assets
 - rebuild client artifacts
 - create agent task
+- request more structured intake details
+- adjust non-secret package pricing and revision allowances
 - send review email
 - publish approved dev to live

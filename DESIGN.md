@@ -1,99 +1,67 @@
-# DESIGN.md · WebJuice Design System
+# DESIGN.md - profitslocal Design System
 
-> 生成任何页面前必须读取此文件。所有颜色、字体、布局均来自此 tokens。
-> 设计规范遵循 webjuice-design skill：https://github.com/alchaincyf/huashu-design/blob/main/SKILL.md
+> Source of truth for `profitslocal.com`. The main site uses a warm, poster-like local-business visual system: cream paper, coral action, bold black rules, editorial serif type, and layered local website preview imagery.
 
----
+## Brand Sentence
 
-## Color Palette
+Beautiful, research-backed local-business websites, pre-built before the customer pays.
+
+## Visual Direction
+
+**Local Intelligence Collage**
+
+- Warm light-mode only: cream and paper surfaces carry the page.
+- Coral is reserved for primary CTAs, logo mark, stamps, and headline emphasis.
+- Black 2px rules, simple shadows, and paper-like panels make the site feel tangible.
+- Large editorial serif headlines do the emotional work.
+- Real/generated preview imagery should show local-business websites, storefronts, maps, search notes, or launch workflows.
+- Avoid dark AI dashboards, generic SaaS card grids, purple gradients, sterile stock photography, and vague abstract decoration.
+
+## Tokens
 
 | Token | Value | Usage |
-|-------|-------|-------|
-| `--bg-primary` | `#FFFFFF` | 页面主背景 |
-| `--bg-secondary` | `#F8F9FA` | 次级背景、section 分隔 |
-| `--bg-accent` | `#F3F4F6` | card 背景、微强对比 |
-| `--text-primary` | `#111827` | 标题、重要文本 |
-| `--text-secondary` | `#6B7280` | 正文、描述 |
-| `--text-muted` | `#9CA3AF` | 辅助文本、日期 |
-| `--accent` | `#000000` | CTA、链接、重点标记。**每屏最多用两次** |
-| `--accent-hover` | `#374151` | accent hover 状态 |
-| `--border` | `#E5E7EB` | 边框、分隔线 |
-| `--success` | `#10B981` | 成功状态 |
-| `--error` | `#EF4444` | 错误状态 |
+| --- | --- | --- |
+| `--pl-cream` | `#FFF6EC` | Main warm background |
+| `--pl-paper` | `#FFFCF7` | Cards, form panels, section frames |
+| `--pl-ink` | `#17191C` | Text, borders, shadows |
+| `--pl-muted` | `#5E6268` | Body copy and secondary text |
+| `--pl-coral` | `#FF5A3D` | Primary CTA, logo, emphasis |
+| `--pl-coral-soft` | `#FFB39F` | Footer/accent text |
+| `--pl-peach` | `#FFE1CE` | Warm visual panels |
+| `--pl-citrus` | `#FFD45A` | Pricing note, growth cues |
+| `--pl-mint` | `#CDECCF` | Trust/process panels |
+| `--pl-green` | `#47B86A` | Positive checks |
+| `--pl-sky` | `#8BD3F7` | Preview collage panels |
+| `--pl-blue` | `#327BEA` | Search/SEO accent only |
 
 ## Typography
 
-| Role | Font | Weight | Usage |
-|------|------|--------|-------|
-| Display | `Newsreader, Georgia, serif` | 400-700 | Hero headline, section titles |
-| Body | `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif` | 400 | 正文、描述 |
-| Mono | `"SF Mono", Monaco, monospace` | 400 | 数据、标注、caption |
-
-### Scale
-
-| Level | Size | Line-height | Usage |
-|-------|------|-------------|-------|
-| H1 | `clamp(2.5rem, 5vw, 4rem)` | 1.1 | Hero headline |
-| H2 | `clamp(1.75rem, 3vw, 2.5rem)` | 1.2 | Section titles |
-| H3 | `1.25rem` | 1.3 | Card titles |
-| Body | `1rem` | 1.6 | Paragraphs |
-| Small | `0.875rem` | 1.5 | Captions, metadata |
-| Tiny | `0.75rem` | 1.4 | Labels, tags |
+- Display: `Georgia, Times New Roman, serif`
+- Body/UI: system sans
+- H1/H2 should be very large, serif, tight line-height, and use italic coral emphasis sparingly.
+- UI labels are uppercase, compact, and heavy.
+- Letter spacing stays at `0` except small uppercase labels.
 
 ## Layout
 
-### Grid
-- Max-width: `1200px`
-- Padding: `24px` mobile / `48px` tablet / `64px` desktop
-- Section spacing: `96px` vertical
-
-### Responsive Breakpoints
-- Desktop: ≥1200px
-- Tablet: 768px – 1199px
-- Mobile: <768px
-
-### Spacing Scale
-- `xs`: `4px`
-- `sm`: `8px`
-- `md`: `16px`
-- `lg`: `24px`
-- `xl`: `32px`
-- `2xl`: `48px`
-- `3xl`: `64px`
-- `4xl`: `96px`
+- Sections use full-width `poster-section` bands.
+- Primary content is framed with 2px black borders.
+- Desktop sections often split into copy and visual panels.
+- Mobile stacks sections into one column, preserving the framed poster character.
+- Cards are used for repeated items only: steps, pricing tiers, FAQ items, listing cards, and form fields.
 
 ## Components
 
-### Button
-```
-Primary: bg-accent + text-white + px-6 py-3 + rounded-lg + hover:bg-accent-hover
-Secondary: border + border-border + bg-transparent + hover:bg-bg-secondary
-Ghost: text-accent + underline-offset-4 + hover:underline
-```
+- Primary button: coral background, white text, 2px black border, black offset shadow.
+- Secondary button: paper background, black text, same border/shadow.
+- Pricing cards: three clear tiers, with the yearly plan highlighted in mint.
+- Brief form: dense but legible, built around actual business intake fields.
 
-### Card
-```
-bg-bg-secondary + border + border-border + rounded-xl + p-6
-No shadow by default. Shadow only on hover if interactive.
-```
+## QA Checklist
 
-### Input
-```
-border + border-border + rounded-lg + px-4 py-2 + focus:ring-2 focus:ring-accent
-```
-
-## Depth & Elevation
-
-- **Minimal by default**。大多数组件无阴影。
-- 只有弹窗、dropdown 等覆盖层使用 `box-shadow: 0 4px 20px rgba(0,0,0,0.08)`
-
-## Anti-Slop Checklist
-
-生成每个页面前自检：
-- [ ] 没有紫色渐变
-- [ ] 没有 Emoji 作图标
-- [ ] 没有圆角卡片 + 左彩色 border accent
-- [ ] 没有 SVG 手画代替真实产品图
-- [ ] Display font 是衬线，不是 Inter/Roboto
-- [ ] Accent 色每屏 ≤2 次
-- [ ] 文案有意义，不是 lorem ipsum
+- First viewport must show the brand, offer, and CTA without waiting for JavaScript.
+- No overlapping text on mobile.
+- No nested cards or generic SaaS feature-card sprawl.
+- No emoji-as-icon UI.
+- Images must render and be relevant to local-business website previews.
+- Build must pass with Astro.

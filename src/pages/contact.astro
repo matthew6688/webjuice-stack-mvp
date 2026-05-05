@@ -3,69 +3,95 @@ import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
 ---
 
-<Layout title={`Contact - ${siteConfig.name}`} description={`Get in touch with ${siteConfig.name}.`}>
-  <h1 class="text-4xl font-bold mb-4">Contact Us</h1>
-  <p class="text-gray-600 mb-12">Fill out the form below and we will get back to you within 24 hours.</p>
-  
-  <form id="contact-form" class="max-w-lg space-y-6">
-    <div>
-      <label for="name" class="block text-sm font-medium mb-1">Name</label>
-      <input type="text" id="name" name="name" required
-        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900" />
+<Layout title={`Send a brief - ${siteConfig.name}`} description="Send profitslocal your business details and request a free website preview.">
+  <section class="poster-section">
+    <div class="contact-frame">
+      <div class="contact-intro">
+        <p class="eyebrow">Send a brief</p>
+        <h1>Get a free website <em>preview.</em></h1>
+        <p class="lede">Send the business details, and we will build a first preview before asking you to pay.</p>
+        <p class="micro" style="margin-top: 22px;">You do not need a polished brief. A Google Business link, current website, menu, service list, or a few reference sites are enough to start.</p>
+      </div>
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="field">
+          <label for="name">Your name <span class="req">Required</span></label>
+          <input id="name" name="name" autocomplete="name" placeholder="Jane Smith" required />
+        </div>
+        <div class="field">
+          <label for="email">Email address <span class="req">Required</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com" required />
+        </div>
+        <div class="field">
+          <label for="company">Business name</label>
+          <input id="company" name="company" autocomplete="organization" placeholder="Your local business" />
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" autocomplete="tel" placeholder="+1 555 0123" />
+        </div>
+        <div class="field">
+          <label for="website">Current website</label>
+          <input id="website" name="website" type="url" placeholder="https://example.com" />
+        </div>
+        <div class="field">
+          <label for="googleBusiness">Google Business link</label>
+          <input id="googleBusiness" name="googleBusiness" type="url" placeholder="Google Maps or Business Profile URL" />
+        </div>
+        <div class="field full">
+          <label for="message">What should the page say? <span class="req">Required</span></label>
+          <textarea id="message" name="message" placeholder="Tell us what you sell, what customers ask for, your best menu items or services, pages you need, offers to highlight, competitors, websites you like, and anything to avoid." required></textarea>
+        </div>
+        <div class="field full file-field">
+          <label for="files">Upload logo, photos, menu PDF, or reference files</label>
+          <input id="files" name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.zip" />
+          <p class="field-hint">Optional, up to 8 files. Send logo files, product photos, menus, service PDFs, screenshots, or visual references.</p>
+        </div>
+        <div class="form-actions">
+          <button class="submit-button" type="submit">Request a free preview</button>
+          <p id="form-status" class="form-status">We will review the details and reply with next steps.</p>
+        </div>
+      </form>
     </div>
-    
-    <div>
-      <label for="email" class="block text-sm font-medium mb-1">Email</label>
-      <input type="email" id="email" name="email" required
-        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900" />
-    </div>
-    
-    <div>
-      <label for="company" class="block text-sm font-medium mb-1">Company</label>
-      <input type="text" id="company" name="company"
-        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900" />
-    </div>
-    
-    <div>
-      <label for="message" class="block text-sm font-medium mb-1">Message</label>
-      <textarea id="message" name="message" rows="5" required
-        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"></textarea>
-    </div>
-    
-    <button type="submit" class="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800">
-      Send Message
-    </button>
-    
-    <p id="form-status" class="text-sm hidden"></p>
-  </form>
-  
+  </section>
+
   <script>
+    const supportEmail = 'support@profitslocal.com';
     const form = document.getElementById('contact-form');
     const status = document.getElementById('form-status');
-    
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form));
-      
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        
-        if (res.ok) {
-          status.textContent = 'Message sent! We will reply within 24 hours.';
-          status.className = 'text-sm text-green-600';
-          form.reset();
-        } else {
-          throw new Error('Failed to send');
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const controls = Array.from(form.querySelectorAll('input, textarea'));
+      const invalid = controls.find((control) => !control.checkValidity());
+
+      if (invalid) {
+        invalid.focus();
+        if (status) {
+          status.textContent = 'Please complete the required fields so we can review the business.';
+          status.className = 'form-status error';
         }
-      } catch (err) {
-        status.textContent = 'Something went wrong. Please try again.';
-        status.className = 'text-sm text-red-600';
+        return;
       }
-      status.classList.remove('hidden');
+
+      if (status) {
+        status.textContent = 'Sending your brief...';
+        status.className = 'form-status';
+      }
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+
+        if (!response.ok) throw new Error('Failed to send');
+        window.location.href = '/thank-you';
+      } catch {
+        if (status) {
+          status.textContent = `Something went wrong. Please email ${supportEmail} or try again.`;
+          status.className = 'form-status error';
+        }
+      }
     });
   </script>
 </Layout>
