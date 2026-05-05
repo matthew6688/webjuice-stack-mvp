@@ -15,6 +15,8 @@ Scope: restaurant website/menu loop only.
 | Opa full-loop live simulation | Done | `npm run qa:opa-full-loop-live-sim` |
 | Domain/subdomain guidance in page and emails | Done | `npm run funnel:test-domain-email-guidance` and template build |
 | `$100` extra revision increments original entitlement | Done | `npm run funnel:test-extra-revision-entitlement` |
+| Live Discord website task thread pickup | Done | `npm run hermes:smoke-website-agent-handoff -- --send true --client opa-bar-mezze-restaurant --repo matthew6688/opa-bar-mezze-restaurant --company "Opa Bar & Mezze"` |
+| Controlled Opa paid/revision route with Resend + Discord | Done | Temp run using `matthew6688@gmail.com`, `/tmp/profitslocal-opa-controlled`, and Stripe test order `cs_test_controlled_opa_1777978600` |
 
 ## Standard Verification Sequence
 
@@ -57,13 +59,28 @@ npm run qa:preview-sales-bar -- --dist-dir /Users/matthew/Developer/webjuice-res
 1. Customer pays on preview `/checkout`.
 2. Stripe webhook routes paid order to central automation.
 3. Central automation creates entitlement, case memory, agent task, Discord website thread, and revenue ledger event.
-4. Agent works only on `dev`.
-5. Customer reviews the dev preview.
-6. Fixed footer shows `Approve site`, `Request revision`, revision usage, and `Buy extra revision`.
-7. `/approve` uses `orderId + checkout email` and dispatches `publish-approved.yml`.
-8. `/revise` uses `orderId + checkout email`, consumes entitlement, and creates a revision task.
-9. `$100` extra revision purchase uses `parent_order_id` and adds `+1` to the original entitlement.
-10. Live publish happens only after approval.
+4. Website task handoff is written to a dedicated `#website-tasks` thread named from the business name and order ID.
+5. Revision/approval/publish updates reuse that same website task thread.
+6. Agent works only on `dev`.
+7. Customer reviews the dev preview.
+8. Fixed footer shows `Approve site`, `Request revision`, revision usage, and `Buy extra revision`.
+9. `/approve` uses `orderId + checkout email` and dispatches `publish-approved.yml`.
+10. `/revise` uses `orderId + checkout email`, consumes entitlement, and creates a revision task.
+11. `$100` extra revision purchase uses `parent_order_id` and adds `+1` to the original entitlement.
+12. Live publish happens only after approval.
+
+## Latest Controlled Smoke
+
+Date: 2026-05-05.
+
+- Client: Opa Bar & Mezze.
+- Test email: `matthew6688@gmail.com`.
+- Paid order: `cs_test_controlled_opa_1777978600`.
+- Website task thread: `Opa-Bar-Mezze-sale-cs_test_controlled_opa_1777978600`.
+- Result: payment route created entitlement `0/3`, temp revenue ledger `$399`, case memory, Resend receipt, and a dedicated website task thread.
+- Revision result: same `orderId + email` consumed quota to `1/3`, sent Resend revision email, and reused the same website task thread.
+- Agent pickup: `website-agent` replied in-thread, read case/task files, and loaded Huashu/open-design skills.
+- Isolation: state was written under `/tmp/profitslocal-opa-controlled`, not production `data/`.
 
 ## Remaining Backlog
 

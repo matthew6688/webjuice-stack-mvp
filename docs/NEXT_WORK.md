@@ -35,6 +35,8 @@ Verified live state:
 - Sale routing smoke test wrote a temporary case/task/entitlement/ledger under `/tmp/webjuice-smoke`; Discord case-thread dry-run generated the expected sale thread payload.
 - Agent runner execute smoke passed against the temporary Opa sale task: case context loaded, source-of-truth artifacts applied, build passed, and case run record was updated.
 - Approval publish runner dry-run smoke passed against the same task, covering preflight, dev build, target checkout, tree copy, and live commit plan.
+- `#website-tasks` now works as an inbox where each executable website task is a dedicated Discord thread. New handoffs explicitly create a business-name thread, then post the full task packet inside that thread with `@website-agent`.
+- Live Opa controlled smoke on 2026-05-05 verified: Resend receipt to `matthew6688@gmail.com`, temp `$399` Stripe revenue ledger, dedicated `Opa-Bar-Mezze-sale-...` website task thread, revision quota `1/3`, same-thread revision reuse, website-agent pickup, and Huashu/open-design skill loading.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -71,7 +73,31 @@ npm run domain:pages-status -- --project profitslocal-live --domain profitslocal
 npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
 ```
 
-### 2. Central Automation Runner Hardening
+### 2. Generated Restaurant Repo Promotion
+
+Goal: push the latest proven template funnel/thread/domain behavior into the 5 generated Brisbane restaurant repos.
+
+Working now:
+
+- `webjuice-restaurant` has the updated fixed footer, `/approve`, `/revise`, `/domain-help`, approval/revision API dry-run smokes, and thread-safe central dispatch.
+- Central router live smoke is passing with Opa in temp state.
+
+Remaining:
+
+- Sync template changes into the 5 generated restaurant repos.
+- Rebuild/push `dev` for each repo.
+- Verify each preview has footer controls, domain help, approval/revision API endpoints, and Pages secrets.
+- Then run one deployed Opa preview Stripe test order end to end.
+
+Validation:
+
+```bash
+npm run clients:sync-artifacts -- --client opa-bar-mezze-restaurant --repo-dir /path/to/generated/repo
+npm run qa:preview-sales-bar -- --dist-dir /path/to/generated/repo/dist
+npm run check:deploys -- --all clients
+```
+
+### 3. Central Automation Runner Hardening
 
 Goal: Stripe and revision webhooks should trigger the main automation repo without manual file export.
 

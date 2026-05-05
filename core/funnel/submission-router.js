@@ -8,6 +8,7 @@ import {
   buildDiscordMessage,
   buildWebsiteAgentHandoffMessage,
   sendDiscordChannelMessage,
+  sendDiscordThreadedMessage,
   sendDiscordWebhook,
 } from './discord.js';
 import { addExtraRevisionEntitlement, consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
@@ -293,13 +294,20 @@ async function sendWebsiteAgentHandoff({ kind, order, task, caseRecord, options 
   }
   const payload = buildWebsiteAgentHandoffMessage({ kind, order, task, caseRecord, mention });
   const existingThreadId = caseRecord?.caseFile?.discord?.websiteTaskThreadId || '';
-  const discord = await sendDiscordChannelMessage({
-    channelId: existingThreadId || channelId,
-    botToken,
-    payload,
-    fetchImpl: options.fetchImpl || fetch,
-    waitForThread: !existingThreadId,
-  });
+  const discord = existingThreadId
+    ? await sendDiscordChannelMessage({
+      channelId: existingThreadId,
+      botToken,
+      payload,
+      fetchImpl: options.fetchImpl || fetch,
+    })
+    : await sendDiscordThreadedMessage({
+      channelId,
+      botToken,
+      payload,
+      threadName: discordThreadName(kind, order),
+      fetchImpl: options.fetchImpl || fetch,
+    });
   if (existingThreadId) {
     discord.threadId = existingThreadId;
     discord.threadReused = true;
@@ -324,9 +332,9 @@ function recordCaseWebsiteHandoff(caseRecord, handoff, kind, options) {
 
 function discordThreadName(kind, order) {
   const label = kind === 'sale' ? 'sale' : 'revision';
-  const client = order.clientSlug || order.company || 'client';
+  const client = order.company || order.businessName || order.clientSlug || 'client';
   const orderId = order.orderId || order.rawSubmissionId || '';
-  return `${label}-${client}-${orderId}`
+  return `${client}-${label}-${orderId}`
     .replace(/[^a-zA-Z0-9_-]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 90);

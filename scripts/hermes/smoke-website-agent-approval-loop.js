@@ -7,6 +7,7 @@ import {
   buildLivePublishedDiscordMessage,
   buildWebsiteAgentHandoffMessage,
   sendDiscordChannelMessage,
+  sendDiscordThreadedMessage,
 } from '../../core/funnel/discord.js';
 
 loadLocalEnv();
@@ -110,16 +111,17 @@ if (mentionedIds.includes(sender.id) && !boolArg(args, 'allow-self-sender', fals
   throw new Error(`Refusing to send from the same bot that is mentioned (${sender.username}).`);
 }
 
-const handoff = await sendDiscordChannelMessage({
+const handoff = await sendDiscordThreadedMessage({
   channelId,
   botToken,
   payload: handoffPayload,
-  waitForThread: true,
+  threadName: `${caseFile.customer.company}-approval-${orderId}`
+    .replace(/[^a-zA-Z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 90),
 });
-const thread = handoff.threadId
-  ? { id: handoff.threadId, url: handoff.threadUrl }
-  : await waitForThread({ channelId: handoff.channelId, messageId: handoff.messageId, botToken });
-if (!thread?.id) throw new Error('Discord auto thread was not created for approval-loop smoke.');
+const thread = { id: handoff.threadId, url: handoff.threadUrl };
+if (!thread?.id) throw new Error('Discord task thread was not created for approval-loop smoke.');
 
 const agentReply = await waitForWebsiteAgentReply({ threadId: thread.id, botToken });
 const review = await sendDiscordChannelMessage({ channelId: thread.id, botToken, payload: reviewPayload });

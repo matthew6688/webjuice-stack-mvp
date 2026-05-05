@@ -123,6 +123,8 @@ export async function sendDiscordChannelMessage({
   payload,
   fetchImpl = fetch,
   waitForThread = false,
+  threadName = '',
+  requireThread = false,
   threadWaitAttempts = 12,
   threadWaitMs = 2500,
 }) {
@@ -152,6 +154,27 @@ export async function sendDiscordChannelMessage({
   const messageId = data?.id || '';
   let threadId = data?.thread?.id || '';
   let threadUrl = threadId && guildId ? `https://discord.com/channels/${guildId}/${threadId}` : '';
+  let threadCreatedByBot = false;
+  let threadCreateError = '';
+  if (!threadId && threadName && messageId) {
+    const thread = await createThreadFromMessage({
+      fetchImpl,
+      botToken,
+      channelId: channel,
+      messageId,
+      threadName,
+    });
+    if (thread.ok) {
+      threadId = thread.threadId || '';
+      threadUrl = thread.threadUrl || '';
+      threadCreatedByBot = true;
+    } else {
+      threadCreateError = thread.error || 'thread_create_failed';
+      if (requireThread) {
+        throw new Error(`Discord thread creation failed: ${thread.status || ''} ${threadCreateError}`.trim());
+      }
+    }
+  }
   if (!threadId && waitForThread && messageId) {
     const thread = await waitForDiscordMessageThread({
       channelId: channel,
@@ -164,6 +187,9 @@ export async function sendDiscordChannelMessage({
     threadId = thread.threadId || '';
     threadUrl = thread.threadUrl || '';
   }
+  if (!threadId && requireThread) {
+    throw new Error(`Discord thread was required but not created for message ${messageId || '(unknown)'}`);
+  }
   return {
     ok: true,
     status: response.status,
@@ -174,6 +200,59 @@ export async function sendDiscordChannelMessage({
       : '',
     threadId,
     threadUrl,
+    threadName,
+    threadCreatedByBot,
+    threadCreateError,
+  };
+}
+
+export async function sendDiscordThreadedMessage({
+  channelId,
+  botToken,
+  payload,
+  threadName,
+  parentPayload = null,
+  fetchImpl = fetch,
+}) {
+  if (!threadName) throw new Error('Discord thread name is required');
+  const anchorPayload = parentPayload || {
+    content: `Website task: ${threadName}`,
+    allowed_mentions: { parse: [] },
+  };
+  const anchor = await sendDiscordChannelMessage({
+    channelId,
+    botToken,
+    payload: anchorPayload,
+    fetchImpl,
+  });
+  const thread = await createThreadFromMessage({
+    fetchImpl,
+    botToken,
+    channelId: anchor.channelId,
+    messageId: anchor.messageId,
+    threadName,
+  });
+  if (!thread.ok) {
+    throw new Error(`Discord thread creation failed: ${thread.status || ''} ${thread.error || 'thread_create_failed'}`.trim());
+  }
+  const threadMessage = await sendDiscordChannelMessage({
+    channelId: thread.threadId,
+    botToken,
+    payload,
+    fetchImpl,
+  });
+  return {
+    ok: true,
+    status: anchor.status,
+    channelId: anchor.channelId,
+    messageId: anchor.messageId,
+    messageUrl: anchor.messageUrl,
+    threadId: thread.threadId,
+    threadUrl: thread.threadUrl,
+    threadName,
+    threadCreatedByBot: true,
+    threadMessageId: threadMessage.messageId,
+    threadMessageUrl: threadMessage.messageUrl,
   };
 }
 

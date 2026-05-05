@@ -65,7 +65,7 @@
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
 | Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; route workflow can auto-run the generated agent task, push dev, wait for deploy, and notify review channels. Verified live by GitHub Actions smoke `25354611737`. |
-| Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. With `DISCORD_BOT_TOKEN`, new case messages explicitly create true threads from the webhook message. Agent completion and live publish scripts can post follow-up messages into the saved case thread. Verified true thread creation in live smoke. |
+| Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. Website task handoffs now create an explicit `#website-tasks` thread named from the business/order, post the full task packet inside that thread, and reuse `case.json.discord.websiteTaskThreadId` for revisions/review/publish. Live Opa smoke verified thread creation, same-thread revision reuse, website-agent pickup, and Huashu/open-design skill loading. |
 
 ## Not Started
 
@@ -81,10 +81,11 @@
 
 ## Immediate Next Build Order
 
-1. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
-2. Promote template changes through generated restaurant repos.
-3. Add next restaurant city only after the restaurant loop closes.
-4. Plan dashboard after restaurant loop remains stable.
+1. Promote latest `webjuice-restaurant` approval/revision/footer/domain/thread changes through generated restaurant repos.
+2. Run one real Stripe test order through the deployed Opa preview, not just the central router.
+3. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
+4. Add next restaurant city only after the restaurant loop closes.
+5. Plan dashboard after restaurant loop remains stable.
 
 ## Verification Rules
 

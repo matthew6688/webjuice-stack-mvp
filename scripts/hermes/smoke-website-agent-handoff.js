@@ -2,7 +2,7 @@
 
 import { setTimeout as sleep } from 'timers/promises';
 import { loadLocalEnv } from '../../core/env/load-local-env.js';
-import { buildWebsiteAgentHandoffMessage, sendDiscordChannelMessage } from '../../core/funnel/discord.js';
+import { buildWebsiteAgentHandoffMessage, sendDiscordThreadedMessage } from '../../core/funnel/discord.js';
 
 loadLocalEnv();
 
@@ -73,7 +73,15 @@ if (mentionedIds.includes(sender.id) && !boolArg(args, 'allow-self-sender', fals
   ].join(' '));
 }
 
-const sent = await sendDiscordChannelMessage({ channelId, botToken, payload });
+const sent = await sendDiscordThreadedMessage({
+  channelId,
+  botToken,
+  payload,
+  threadName: `${args.company || 'Opa Bar Mezze'}-smoke-${order.orderId}`
+    .replace(/[^a-zA-Z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 90),
+});
 let thread = sent.threadId ? { id: sent.threadId, url: sent.threadUrl } : null;
 let reply = null;
 if (wait) {

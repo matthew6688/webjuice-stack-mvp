@@ -40,7 +40,17 @@ Recommended channel split:
 | `#bot-logs` | none | Logs only, all bots ignore |
 | `#sandbox` | all bots | Test only |
 
-The sales webhook may still create the initial true thread, but the task handoff should be posted into `#website-tasks` or mirrored there with the case path, task path, repo, preview URL, order ID, and customer email. `website-agent` should be the only free-response Hermes profile for `#website-tasks`.
+The sales webhook may still create an ops notification thread in the sales channel. The executable website task must always be mirrored into `#website-tasks` as its own true Discord thread with the case path, task path, repo, preview URL, order ID, and customer email. `website-agent` should be the only free-response Hermes profile for `#website-tasks`.
+
+Current routing contract:
+
+- `#website-tasks` is only the inbox/anchor channel.
+- Each new paid website task creates one dedicated thread.
+- The thread name starts with the business name and includes the task kind plus order ID, for example `Opa-Bar-Mezze-sale-cs_test_...`.
+- The parent channel message is only an anchor and does not mention `website-agent`.
+- The full task packet is posted inside the created thread and mentions `website-agent`.
+- Later revisions, approval updates, dev preview notifications, and live publish notifications reuse `case.json.discord.websiteTaskThreadId`.
+- Do not rely on Discord/Hermes auto-threading for task creation; the automation explicitly creates the thread first.
 
 ## Required Profile Config
 
@@ -81,6 +91,8 @@ security:
 
 Why `group_sessions_per_user: false`: website work should be grouped by Discord thread/case, not by the human user across unrelated clients.
 
+Note: the automation now creates task threads explicitly before posting the task packet. Hermes `auto_thread` can stay enabled for manual human messages, but bot-driven order handoffs should not depend on it.
+
 ## Required Env
 
 The profile needs its own bot token unless the old profile using that token is stopped. Hermes has token locks; two running profiles should not share one Discord bot token.
@@ -92,6 +104,8 @@ DISCORD_HOME_CHANNEL=WEBSITE_TASKS_CHANNEL_ID
 GATEWAY_ALLOW_ALL_USERS=true
 DISCORD_ALLOW_BOTS=mentions
 ```
+
+Do not set legacy model overrides such as `LLM_MODEL=kimi-for-coding` in this profile unless the matching provider key is configured. On 2026-05-05 this stale override caused `website-agent` to fail before pickup even though `config.yaml` pointed to `openai-codex`. The profile now leaves model selection to `config.yaml`.
 
 For a clean production setup, create a separate Discord application/bot named `ProfitsLocal Website Agent`, invite it to the server, and give it access only to `#website-tasks`, `#sandbox`, and any needed threads.
 
@@ -188,6 +202,7 @@ Verified locally on 2026-05-05:
 - Hermes creates a dedicated Discord thread for the handoff message.
 - `website-agent` completes a model smoke test in that thread with `openai-codex / gpt-5.4-mini`.
 - `route-funnel-event` supports an optional website-agent handoff message to `#website-tasks`.
+- 2026-05-05 live smoke verified explicit thread creation, business-name thread naming, in-thread task packet posting, website-agent pickup, and Huashu/open-design skill loading.
 - The handoff message includes pointers to case, context, task, evidence, content, design, and brand spec files.
 
 Known non-blocking warning: Discord slash command registration is over the server limit, so a few slash commands are skipped. Normal message/thread pickup works.
