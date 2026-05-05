@@ -83,15 +83,21 @@ export function extractField(answers, fieldId) {
 export function extractFiles(answers) {
   const files = [];
   if (!answers) return files;
+  const attachmentSummary = extractField(answers, 'attachment_summary')
+    || extractField(answers, 'attachments');
+  if (attachmentSummary) files.push(attachmentSummary);
 
   for (const key of Object.keys(answers)) {
     const val = answers[key];
     if (val && typeof val === 'object') {
       if (val.url) files.push(val.url);
+      if (val.name) files.push(`${val.name}${val.type ? ` (${val.type})` : ''}`);
       if (val.value?.url) files.push(val.value.url);
+      if (val.value?.name) files.push(`${val.value.name}${val.value.type ? ` (${val.value.type})` : ''}`);
       if (Array.isArray(val)) {
         val.forEach((file) => {
           if (file?.url) files.push(file.url);
+          if (file?.name) files.push(`${file.name}${file.type ? ` (${file.type})` : ''}`);
         });
       }
     }

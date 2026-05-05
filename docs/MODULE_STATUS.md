@@ -63,7 +63,7 @@
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
 | Cost tracking | Working MVP | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, Tally revenue, Stripe revenue, Resend emails, image generation, and agent runtime can write events. Resend/runtime costs are configurable estimates. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
-| Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; backend router enforces entitlement quota before creating a `revision` task. |
+| Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; review links lock order/email as read-only, show trusted plan/quota after match, and carry attachment summaries into Discord/email/agent routing. Backend router enforces entitlement quota before creating a `revision` task. |
 | Central automation trigger | Working MVP | Client Pages Functions can dispatch to the main repo GitHub Actions workflow via `AGENT_GITHUB_TOKEN`; route workflow can auto-run the generated agent task, push dev, wait for deploy, and notify review channels. Verified live by GitHub Actions smoke `25354611737`. |
 | Discord case workspace | Working MVP | Funnel Discord sends use `wait=true`, capture message/channel/thread IDs, and persist them to `case.json.discord` plus timeline fields. Website task handoffs now create an explicit `#website-tasks` thread named from the business/order, post the full task packet inside that thread, and reuse `case.json.discord.websiteTaskThreadId` for revisions/review/publish. Live Opa smoke verified thread creation, same-thread revision reuse, website-agent pickup, and Huashu/open-design skill loading. |
 
@@ -77,11 +77,11 @@
 | Multi-niche framework | Half built |
 | Reservation/contact extractors | Not started |
 | Live Tally form creation | Blocked on Tally payment block API schema; first-party Stripe checkout is the current production path |
-| Resend cold email test | Dry-run working | `npm run outreach:send-cold-email -- --client <slug> --dry true` writes a proof email artifact from the outreach pack. All 5 Brisbane restaurant dry-run proofs are saved under each client `outreach/email/` folder. Live send should target an owner-controlled inbox first. |
+| Resend cold email test | Dry-run working | `npm run outreach:send-cold-email -- --client <slug> --dry true` writes a proof email artifact from the outreach pack. Resend is solid for transactional email; cold outreach should use a separate outreach sender/domain or subdomain to protect transactional reputation. Live send should target an owner-controlled inbox first. |
 
 ## Immediate Next Build Order
 
-1. Promote latest `webjuice-restaurant` approval/revision/footer/domain/thread changes through generated restaurant repos.
+1. Commit/push synced generated restaurant repos and wait for dev deploys.
 2. Run one real Stripe test order through the deployed Opa preview, not just the central router.
 3. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
 4. Add next restaurant city only after the restaurant loop closes.

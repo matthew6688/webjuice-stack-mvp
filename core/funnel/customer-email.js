@@ -57,10 +57,10 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
   const revision = caseFile.revision || {};
   const previewUrl = runResult?.previewUrl || caseFile.previewUrl || '';
   const revisionUrl = previewUrl && caseFile.order?.id
-    ? `${previewUrl}/revise?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
+    ? `${trimTrailingSlash(previewUrl)}/revise?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
     : '';
   const approvalUrl = previewUrl && caseFile.order?.id
-    ? `${previewUrl}/approve?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
+    ? `${trimTrailingSlash(previewUrl)}/approve?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
     : '';
   const changedFiles = (runResult?.changedFiles || []).slice(0, 8);
   const usage = revision.policy
@@ -72,7 +72,7 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
     `Approve for live publishing: ${approvalUrl || 'N/A'}`,
     `Revision usage: ${usage}`,
     `Revision form: ${revisionUrl || 'N/A'}`,
-    `Domain setup guide: ${previewUrl ? `${previewUrl}/domain-help` : 'N/A'}`,
+    `Domain setup guide: ${previewUrl ? `${trimTrailingSlash(previewUrl)}/domain-help` : 'N/A'}`,
     `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
     `Changed files: ${changedFiles.length ? changedFiles.join(', ') : 'No code diff; build/QA completed'}`,
     `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
@@ -109,7 +109,7 @@ export function buildLivePublishedEmail({ caseFile, publishResult, deployResult 
 
 function saleEmail(order, entitlement) {
   const revisionUrl = order.previewUrl
-    ? `${order.previewUrl}/revise?order_id=${encodeURIComponent(order.orderId)}&email=${encodeURIComponent(order.email)}`
+    ? `${trimTrailingSlash(order.previewUrl)}/revise?order_id=${encodeURIComponent(order.orderId)}&email=${encodeURIComponent(order.email)}`
     : '';
   const policy = entitlement?.entitlement?.revisionPolicy;
   const lines = [
@@ -118,7 +118,7 @@ function saleEmail(order, entitlement) {
     `Amount: ${order.currency || 'USD'} ${order.amount}`,
     `Preview: ${order.previewUrl || 'N/A'}`,
     `Preferred domain/subdomain: ${order.domain || 'N/A'}`,
-    `Domain setup guide: ${order.previewUrl ? `${order.previewUrl}/domain-help` : 'N/A'}`,
+    `Domain setup guide: ${order.previewUrl ? `${trimTrailingSlash(order.previewUrl)}/domain-help` : 'N/A'}`,
     `Revision quota: ${policy ? `0/${policy.limit} (${policy.description})` : 'N/A'}`,
     `Revision form: ${revisionUrl || 'N/A'}`,
   ];
@@ -191,6 +191,10 @@ function simpleEmail({ to, subject, intro, lines, outro }) {
     text: [intro, '', ...lines, '', outro].join('\n'),
     html: `<p>${escapeHtml(intro)}</p><ul>${lines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul><p>${escapeHtml(outro)}</p>`,
   };
+}
+
+function trimTrailingSlash(value) {
+  return String(value || '').replace(/\/+$/, '');
 }
 
 function escapeHtml(value) {

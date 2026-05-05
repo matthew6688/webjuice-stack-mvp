@@ -17,6 +17,8 @@ Scope: restaurant website/menu loop only.
 | `$100` extra revision increments original entitlement | Done | `npm run funnel:test-extra-revision-entitlement` |
 | Live Discord website task thread pickup | Done | `npm run hermes:smoke-website-agent-handoff -- --send true --client opa-bar-mezze-restaurant --repo matthew6688/opa-bar-mezze-restaurant --company "Opa Bar & Mezze"` |
 | Controlled Opa paid/revision route with Resend + Discord | Done | Temp run using `matthew6688@gmail.com`, `/tmp/profitslocal-opa-controlled`, and Stripe test order `cs_test_controlled_opa_1777978600` |
+| Revision UX locks order/email and carries attachment summary | Done | `npm run smoke:revision-request`, template build, and Opa revise page QA screenshot |
+| Generated Brisbane repos synced from latest template | Done | All 5 generated repos passed `npm run smoke:revision-request`, `npm run smoke:approval-request`, and `npm run build` locally |
 
 ## Standard Verification Sequence
 
@@ -65,7 +67,7 @@ npm run qa:preview-sales-bar -- --dist-dir /Users/matthew/Developer/webjuice-res
 7. Customer reviews the dev preview.
 8. Fixed footer shows `Approve site`, `Request revision`, revision usage, and `Buy extra revision`.
 9. `/approve` uses `orderId + checkout email` and dispatches `publish-approved.yml`.
-10. `/revise` uses `orderId + checkout email`, consumes entitlement, and creates a revision task.
+10. `/revise` uses read-only prefilled `orderId + checkout email`, consumes entitlement, carries attachment summaries, and creates a revision task.
 11. `$100` extra revision purchase uses `parent_order_id` and adds `+1` to the original entitlement.
 12. Live publish happens only after approval.
 
@@ -81,11 +83,12 @@ Date: 2026-05-05.
 - Revision result: same `orderId + email` consumed quota to `1/3`, sent Resend revision email, and reused the same website task thread.
 - Agent pickup: `website-agent` replied in-thread, read case/task files, and loaded Huashu/open-design skills.
 - Isolation: state was written under `/tmp/profitslocal-opa-controlled`, not production `data/`.
+- Discord UI note: task threads appear as inline thread cards in `#website-tasks`; click the card/thread entry to open the dedicated thread.
 
 ## Remaining Backlog
 
-- Complete cold outreach live test to owner-controlled inbox.
-- Promote latest `webjuice-restaurant` template changes through generated restaurant repos.
+- Commit/push synced generated restaurant repos and wait for dev deploys.
 - Run one real Stripe test order through the deployed Opa preview after template promotion.
+- Complete cold outreach live test to owner-controlled inbox.
 - Add next restaurant city only after the Brisbane/Opa loop remains stable.
 - Dashboard planning can resume after restaurant loop stability.

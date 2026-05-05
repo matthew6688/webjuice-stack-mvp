@@ -54,9 +54,42 @@ Utility pages:
 
 - `/approve` requires `orderId + checkout email`, then posts to `/api/approval-request/`.
 - `/revise` requires `orderId + checkout email`, then posts to `/api/revision-request/`.
+  - When opened from a review email or preview footer, `orderId` and checkout email are prefilled and locked as read-only fields.
+  - The page shows trusted plan/revision usage after the backend matches the order.
+  - The form accepts multiple attachment selections and forwards an attachment summary to Discord/email/agent routing. Large binary storage should move to R2/S3 or customer Drive links before production scale.
 - `/api/order-status/` returns trusted revision usage only after the same match.
+- `/domain-help` explains fast ProfitsLocal-hosted launch options plus customer-owned DNS steps.
 
 The customer may reach these pages from either the review email or the fixed footer/banner on the dev preview.
+
+## Domain Options
+
+Fastest to slowest:
+
+1. `profitslocal.com/<client>` subpage: easiest because the customer makes no DNS change. Best for quick proof, demos, or temporary launch.
+2. `<client>.profitslocal.com` subdomain: still controlled by us, cleaner for QR/menu/outreach links, and usually the best default if the customer wants us to handle launch.
+3. Customer subdomain such as `menu.customer.com`: good when they already have a website and want a menu/campaign page. Requires customer DNS access.
+4. Customer root domain such as `customer.com`: most official, but slowest because it requires DNS and final launch coordination.
+
+Keep the dev preview utility pages available after launch so the customer can still approve, request revisions, and buy extra revisions without mixing those controls into the public restaurant site.
+
+## Discord Website Threads
+
+`#website-tasks` is an inbox. Each executable website task creates a true Discord thread named from the business and order, for example `Opa-Bar-Mezze-sale-cs_test_...`.
+
+Discord still shows the thread preview inline in the channel timeline; that is normal. Click the preview card or the thread entry under the channel to open the dedicated thread. The actual task packet and agent replies live inside that thread, and later revisions reuse `case.json.discord.websiteTaskThreadId`.
+
+## Resend For Cold Outreach
+
+Resend is suitable for transactional customer emails after payment/revision/approval. For cold outreach, it can work technically, but deliverability risk is higher.
+
+Recommendation:
+
+- Keep transactional mail on a trusted domain such as `fengtalk.ai`.
+- Use a separate outreach domain/subdomain and sender identity for cold email so experiments do not hurt transactional reputation.
+- Warm up volume gradually and send first live tests only to owner-controlled inboxes.
+- Include proof assets: screenshot, short demo video, preview link, and a clear opt-out line.
+- Track costs and replies separately in the ROI ledger.
 
 Legacy Tally shape:
 

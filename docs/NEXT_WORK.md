@@ -37,6 +37,10 @@ Verified live state:
 - Approval publish runner dry-run smoke passed against the same task, covering preflight, dev build, target checkout, tree copy, and live commit plan.
 - `#website-tasks` now works as an inbox where each executable website task is a dedicated Discord thread. New handoffs explicitly create a business-name thread, then post the full task packet inside that thread with `@website-agent`.
 - Live Opa controlled smoke on 2026-05-05 verified: Resend receipt to `matthew6688@gmail.com`, temp `$399` Stripe revenue ledger, dedicated `Opa-Bar-Mezze-sale-...` website task thread, revision quota `1/3`, same-thread revision reuse, website-agent pickup, and Huashu/open-design skill loading.
+- Email URL helpers now trim trailing preview slashes so links render as `/domain-help`, `/revise`, and `/approve` without accidental double slashes.
+- `/domain-help` now explains four launch options: ProfitsLocal subpage, ProfitsLocal subdomain, customer root domain, and customer subdomain.
+- `/revise` now locks prefilled order ID/email, keeps trusted plan/quota display, and carries selected attachment summaries to Discord/email/agent routing.
+- The 5 generated Brisbane repos were locally synced from the latest `webjuice-restaurant` template and passed revision smoke, approval smoke, and build.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -84,8 +88,8 @@ Working now:
 
 Remaining:
 
-- Sync template changes into the 5 generated restaurant repos.
-- Rebuild/push `dev` for each repo.
+- Commit/push the locally synced generated repos.
+- Wait for each `dev` deploy.
 - Verify each preview has footer controls, domain help, approval/revision API endpoints, and Pages secrets.
 - Then run one deployed Opa preview Stripe test order end to end.
 
