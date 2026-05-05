@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import { runAgentTask, saveRunResult } from '../../core/agents/runner.js';
+import { validatePreReviewGate } from '../../core/agents/review-gate.js';
 import { getLatestGithubActionsRun } from '../../core/deploy/github-actions.js';
 import { buildAgentReviewEmail, sendCustomerEmail } from '../../core/funnel/customer-email.js';
 import { buildAgentReviewDiscordMessage, sendDiscordChannelMessage, sendDiscordWebhook } from '../../core/funnel/discord.js';
@@ -65,6 +66,7 @@ const result = runAgentTask(task, {
   dryRun: args.execute !== 'true',
 });
 const agentRuntimeCost = recordAgentRuntimeCost(result, args);
+const preReviewGate = validatePreReviewGate(result);
 
 let deployResult = null;
 if (boolArg(args, 'check-deploy') && result.pushed && !result.dryRun) {
@@ -76,7 +78,14 @@ if (boolArg(args, 'check-deploy') && result.pushed && !result.dryRun) {
 
 let customerEmail = { ok: false, skipped: true };
 const caseFile = result.caseRecord?.caseFile || null;
-if (boolArg(args, 'send-email') && result.ok && !result.dryRun && caseFile) {
+if (boolArg(args, 'send-email') && result.ok && !result.dryRun && caseFile && !preReviewGate.ok) {
+  customerEmail = {
+    ok: false,
+    skipped: true,
+    reason: 'pre_review_gate_failed',
+    missing: preReviewGate.missing,
+  };
+} else if (boolArg(args, 'send-email') && result.ok && !result.dryRun && caseFile) {
   const message = buildAgentReviewEmail({
     caseFile,
     runResult: result,
@@ -110,6 +119,7 @@ const completeResult = {
   customerEmail,
   discordNotification,
   agentRuntimeCost,
+  preReviewGate,
 };
 const outputPath = args.output || path.join('data/agent-runs', `${task.id}.complete.json`);
 saveRunResult(completeResult, outputPath);
@@ -119,6 +129,8 @@ console.log(`Status: ${completeResult.ok ? 'ok' : 'failed'}`);
 console.log(`Dry run: ${completeResult.dryRun ? 'yes' : 'no'}`);
 console.log(`Deploy: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'not checked'}`);
 console.log(`Email: ${customerEmail.ok ? 'sent' : (customerEmail.skipped ? 'skipped' : 'failed')}`);
+if (!preReviewGate.ok) console.log(`Pre-review gate: failed (${preReviewGate.missing.join(', ')})`);
+else console.log('Pre-review gate: passed');
 console.log(`Discord: ${discordNotification.ok ? (discordNotification.dryRun ? 'dry-run' : 'sent') : (discordNotification.skipped ? 'skipped' : 'failed')}`);
 console.log(`Runtime cost: ${agentRuntimeCost ? agentRuntimeCost.amount : 'not recorded'}`);
 for (const step of completeResult.steps) {

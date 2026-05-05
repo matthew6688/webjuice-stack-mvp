@@ -254,14 +254,15 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client repo> --
 | Customer approval endpoint smoke | Confirm `/approve` with `orderId + email` resolves same case/thread and dry-dispatches publish | Passing via `npm run agent:test-approval-resolution` and `npm run smoke:approval-request` in `webjuice-restaurant` |
 | Preview utility footer QA | Confirm approve/revise links are visible, mobile-safe, and outside restaurant content | Passing via `npm run qa:preview-sales-bar` |
 | Revision endpoint full smoke | Confirm `/revise` carries order/email/feedback, sends receipt, dry-dispatches route workflow, and central router consumes quota/reuses thread | Passing via `npm run smoke:revision-request` in `webjuice-restaurant` plus `npm run hermes:test-website-agent-closure` |
+| Strict pre-review gate | Confirm customer review email is blocked unless context/design audit, QA screenshot, and dev deploy URL are recorded | Passing via `npm run agent:test-pre-review-gate` |
 
 ## Immediate Implementation Order
 
 1. Add dedicated `ProfitsLocal Handoff` sender bot to TODO and configure later.
-2. Add strict failure behavior for missing `contextRead` or missing design protocol evidence before customer review.
-3. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
-4. Finalize extra revision entitlement increment behavior.
-5. Complete cold outreach live send to owner-controlled inbox.
+2. Run one full Opa Bar + Mezze paid-order simulation against the real dev preview utility pages.
+3. Finalize extra revision entitlement increment behavior.
+4. Complete cold outreach live send to owner-controlled inbox.
+5. Add customer domain/subdomain handoff page and email instructions.
 
 ## Required Secrets And Variables
 
