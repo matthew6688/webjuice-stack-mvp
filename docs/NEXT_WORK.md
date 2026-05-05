@@ -40,7 +40,7 @@ Verified live state:
 - Email URL helpers now trim trailing preview slashes so links render as `/domain-help`, `/revise`, and `/approve` without accidental double slashes.
 - `/domain-help` now explains four launch options: ProfitsLocal subpage, ProfitsLocal subdomain, customer root domain, and customer subdomain.
 - `/revise` now locks prefilled order ID/email, keeps trusted plan/quota display, and carries selected attachment summaries to Discord/email/agent routing.
-- The 5 generated Brisbane repos were locally synced from the latest `webjuice-restaurant` template and passed revision smoke, approval smoke, and build.
+- The 5 generated Brisbane repos were synced from the latest `webjuice-restaurant` template, pushed to `dev`, passed revision smoke, approval smoke, local build, deployed successfully, and serve `/revise/` plus `/domain-help/` on dev.
 - No known API keys are committed.
 
 ## Highest Priority Remaining Work
@@ -88,10 +88,8 @@ Working now:
 
 Remaining:
 
-- Commit/push the locally synced generated repos.
-- Wait for each `dev` deploy.
-- Verify each preview has footer controls, domain help, approval/revision API endpoints, and Pages secrets.
-- Then run one deployed Opa preview Stripe test order end to end.
+- Run one deployed Opa preview Stripe test order end to end.
+- Verify post-payment email links, revision lock state, extra revision link, and same-thread website-agent pickup from the deployed preview.
 
 Validation:
 

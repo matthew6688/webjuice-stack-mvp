@@ -7,7 +7,7 @@
 | GitHub/Cloudflare deploy | Working | Main/dev deploys work for current restaurant repos. |
 | Google Places extraction | Working MVP | `npm run extract:google-places` supports text search, details, evidence writing, and cost logging. |
 | Firecrawl official-site scrape | Working MVP | `npm run extract:firecrawl` standardizes official-site scrape artifacts into evidence packs and cost events. |
-| Restaurant preview renderer | Working MVP | `webjuice-restaurant` can render from content/design/checkout artifacts; generated repos still need full migration to this flow. |
+| Restaurant preview renderer | Working MVP | `webjuice-restaurant` renders from content/design/checkout artifacts; all 5 Brisbane generated dev branches are synced to the current artifact renderer and passed build after sync. |
 | Link QA | Working MVP | `npm run qa:links` validates `tel:`, Google Maps, menu source, reservation, email, and menu item source chains from content artifacts. |
 | Screenshot QA | Working MVP | `npm run outreach:capture-assets` captures desktop/mobile screenshots and a scroll demo video from an outreach pack preview URL. |
 | Environment checker | Working | `npm run check:env` reports missing workflow secrets. |
@@ -81,11 +81,10 @@
 
 ## Immediate Next Build Order
 
-1. Commit/push synced generated restaurant repos and wait for dev deploys.
-2. Run one real Stripe test order through the deployed Opa preview, not just the central router.
-3. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
-4. Add next restaurant city only after the restaurant loop closes.
-5. Plan dashboard after restaurant loop remains stable.
+1. Run one real Stripe test order through the deployed Opa preview, not just the central router.
+2. Complete cold outreach live test to owner-controlled inbox with Opa proof assets.
+3. Add next restaurant city only after the restaurant loop closes.
+4. Plan dashboard after restaurant loop remains stable.
 
 ## Verification Rules
 

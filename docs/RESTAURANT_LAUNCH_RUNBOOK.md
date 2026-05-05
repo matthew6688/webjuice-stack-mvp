@@ -18,7 +18,7 @@ Scope: restaurant website/menu loop only.
 | Live Discord website task thread pickup | Done | `npm run hermes:smoke-website-agent-handoff -- --send true --client opa-bar-mezze-restaurant --repo matthew6688/opa-bar-mezze-restaurant --company "Opa Bar & Mezze"` |
 | Controlled Opa paid/revision route with Resend + Discord | Done | Temp run using `matthew6688@gmail.com`, `/tmp/profitslocal-opa-controlled`, and Stripe test order `cs_test_controlled_opa_1777978600` |
 | Revision UX locks order/email and carries attachment summary | Done | `npm run smoke:revision-request`, template build, and Opa revise page QA screenshot |
-| Generated Brisbane repos synced from latest template | Done | All 5 generated repos passed `npm run smoke:revision-request`, `npm run smoke:approval-request`, and `npm run build` locally |
+| Generated Brisbane repos synced from latest template | Done | All 5 generated repos passed `npm run smoke:revision-request`, `npm run smoke:approval-request`, and `npm run build` locally; all 5 `Deploy Dev` GitHub Actions completed success |
 
 ## Standard Verification Sequence
 
@@ -85,9 +85,28 @@ Date: 2026-05-05.
 - Isolation: state was written under `/tmp/profitslocal-opa-controlled`, not production `data/`.
 - Discord UI note: task threads appear as inline thread cards in `#website-tasks`; click the card/thread entry to open the dedicated thread.
 
+## Latest Generated Repo Sync
+
+Date: 2026-05-05.
+
+Synced `webjuice-restaurant` revision/domain/funnel UX to generated dev branches:
+
+- Babylon Brisbane: `66191fd`
+- Chu The Phat: `7fffc83`
+- Joey's: `82ac954`
+- Longwang Restaurant: `723b4e1`
+- Opa Bar & Mezze: `15da964`
+
+Verification:
+
+- Each repo passed `npm run smoke:revision-request`.
+- Each repo passed `npm run smoke:approval-request`.
+- Each repo passed `npm run build`.
+- Each repo's `Deploy Dev` workflow completed with `success`.
+- Deployed `/revise/` and `/domain-help/` pages return HTTP 200 on all 5 dev previews.
+
 ## Remaining Backlog
 
-- Commit/push synced generated restaurant repos and wait for dev deploys.
 - Run one real Stripe test order through the deployed Opa preview after template promotion.
 - Complete cold outreach live test to owner-controlled inbox.
 - Add next restaurant city only after the Brisbane/Opa loop remains stable.
