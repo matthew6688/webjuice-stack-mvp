@@ -55,18 +55,31 @@ Verified live state:
 - Default domain route resolver is implemented: blank domain defaults to `<client>.profitslocal.com`; customer-owned domains require DNS handoff; ProfitsLocal subpages are allowed but wait for the future root-site router.
 - Production-like Opa customer loop completed against real central state and the real generated repo: QA screenshots were attached, the pre-review gate passed, customer review email was sent, approved dev tree was published to `main`, `Deploy Live` completed success, live email was sent, `https://opa-controlled.profitslocal.com/` and `/menu/` return HTTP 200, and Pages custom domain status is `active`.
 - No known API keys are committed.
+- ProfitsLocal paid intake/admin dashboard v1 is deployed on Cloudflare Pages: `/admin/intakes` and `/admin/intakes/<client>/<order>` are protected by `ADMIN_ACCESS_TOKEN`, show paid intake state from `data/paid-intakes`, and expose `/admin/action` operator actions that dispatch GitHub Actions and write back to repo state/timeline.
 
 ## Highest Priority Remaining Work
 
 ## Current Priority Queue
 
-1. Automatic QA screenshot capture is now wired into `agent:complete-task`: when `--send-email true` is used and no `--qa-screenshots` are provided, it captures desktop/mobile screenshots into the case artifacts before running the pre-review gate.
-2. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
-3. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
-4. Domain setup status emails are now wired into `domain-request.yml` / `npm run domain:request -- --send-email true` for `active`, `waiting_for_customer_dns`, and `needs_root_domain_review`.
-5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
-6. GitHub Actions Node 24 hardening is applied in this repo: deploy/dev/AI workflows use `actions/checkout@v6`, `actions/setup-node@v6`, Node 24, and `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true`.
-7. Defer dashboard implementation until the restaurant loop stays stable.
+1. Implement the website survey normalizer so scraped leads and paid intakes both produce `clients/<client>/intake/website-survey.json`.
+2. Add `websiteSurveyPath` and `readinessPath` to agent task packets, case context, and Discord handoff messages.
+3. Create the high-level `profitslocal-local-business-design` skill that wraps Open Design discovery, Huashu review, ProfitsLocal evidence rules, and the active niche adapter.
+4. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
+5. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
+6. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
+7. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
+8. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+
+## Architecture Direction
+
+The platform is now documented as four separate layers in `docs/MODULE_BOUNDARIES.md`:
+
+- Client Website Core: the real customer site, usually a lead-generation site with contact form.
+- Agent Handoff / Project Capsule: portable project memory for Discord/Hermes, Codex, Claude Code, OpenCode, or Open Design.
+- Internal Sales + Fulfillment Ops: ProfitsLocal preview footer, checkout, revision, approval, domain, Discord, email, and ROI workflow.
+- Niche Adapters: restaurant first, roofing second.
+
+This means checkout/revision/approval/domain pages are ProfitsLocal workflow capabilities, not assumptions inside every customer website. Restaurant's menu route is also niche-specific, not a platform-wide default.
 
 ### 1. Domain Onboarding For `profitslocal.com`
 

@@ -1,10 +1,10 @@
-# ProfitsLocal / WebJuice Restaurant Automation
+# ProfitsLocal / WebJuice Local Website Automation
 
-AI-assisted local business website system for the restaurant niche.
+AI-assisted local business website system for local service and hospitality businesses.
 
-This repository is the central automation brain. It turns real restaurant evidence into preview websites, sales funnels, paid orders, revision tasks, customer review emails, live publishing, domain setup, and ROI records.
+This repository is the central automation brain. It turns real business evidence into customer website artifacts, preview websites, sales/fulfillment tasks, customer review emails, live publishing, domain setup, and ROI records.
 
-Current focus: **restaurants only**. Other niches are intentionally deferred until this loop is stable.
+Current focus: **restaurant as the first niche**. Roofing is the planned second niche, but should reuse the website core and project capsule rather than inheriting restaurant-only menu behavior.
 
 ## Business Loop Status
 
@@ -27,7 +27,7 @@ What remains is mostly production hardening, not core-loop invention:
 
 - use a dedicated `ProfitsLocal Handoff` Discord sender bot instead of the website-agent token;
 - configure estimated Resend/runtime costs for cleaner ROI reports;
-- decide when to add an ops dashboard.
+- harden the ProfitsLocal admin dashboard from repo-backed v1 into faster operator workflows.
 
 ## Pricing
 
@@ -36,6 +36,15 @@ What remains is mostly production hardening, not core-loop invention:
 - `$100` per extra revision.
 
 ## Architecture
+
+The platform has four separate layers:
+
+- **Client Website Core**: the actual customer website, usually a lead-generation site with a contact form.
+- **Agent Handoff / Project Capsule**: portable project memory so Discord/Hermes, Codex, Claude Code, OpenCode, or Open Design can continue the same project.
+- **Internal Sales + Fulfillment Ops**: ProfitsLocal preview footer, checkout, revision, approval, domain, email, Discord, and finance workflow.
+- **Niche Adapters**: restaurant now, roofing next.
+
+See `docs/MODULE_BOUNDARIES.md` for the full boundary rules.
 
 ```mermaid
 flowchart TD
@@ -72,11 +81,13 @@ The system passes information through durable files instead of relying on chat m
 | Stage | Main output | Why it matters |
 |---|---|---|
 | Evidence extraction | `clients/<client>/evidence/evidence.json` | Source of truth for address, phone, menu, photos, official links, and scrape provenance. |
+| Website intake survey | `clients/<client>/intake/website-survey.json` (planned), `docs/WEBSITE_INTAKE_SURVEY.md` | Unified Open Design-style survey contract before website/menu generation. |
 | Content build | `clients/<client>/content.restaurant.json` | Clean restaurant website/menu content used by renderer. |
 | Design brief | `clients/<client>/design.restaurant.json`, `brand-spec.md` | Huashu/open-design guidance: palette, typography, layout, brand tone. |
 | Checkout config | `clients/<client>/funnel/checkout.json` | Price/product metadata and preview utility links. |
 | Outreach proof | `clients/<client>/outreach/*` | Screenshots, demo video, validated email material. |
 | Paid order | `data/funnel/orders/<client>/<order>.json` | Entitlement, tier, revision policy, customer email. |
+| Paid intake / admin ops | `data/paid-intakes/<client>/<order>.json`, `/admin/intakes` | Structured customer intake, Cloudinary references, lead recipient, revision state, and operator actions. |
 | Case memory | `data/cases/<client>/<order>/` | Long-lived memory for agent, Discord thread ids, timeline, customer messages, runs. |
 | Agent task | `data/agent-tasks/<client>/*.json` | Exact task packet for Hermes/OpenClaw/Codex-style agents. |
 | Agent result | `data/agent-runs/*.json`, `agent-runs.jsonl` | Audit trail: context read, design protocol, screenshots, deploy, email. |
@@ -121,6 +132,10 @@ The website route and menu route are treated as different products:
 
 - website = official, brand-led, formal, conversion-oriented;
 - menu = mobile-first, minimal, factual, fast to scan.
+
+The shared survey standard is documented in `docs/WEBSITE_INTAKE_SURVEY.md`. It maps Open Design's first discovery form into ProfitsLocal fields so scraped leads, paid intakes, and Discord agent tasks all start from the same website-ready package.
+
+Restaurant is a niche adapter, not the whole platform. Its mobile menu route is special to restaurants. Other niches, starting with roofing, should default to a formal lead-generation website with a contact/estimate form.
 
 ### Design System
 
@@ -510,12 +525,14 @@ Repeat verification beyond Opa:
 - `docs/RESTAURANT_LAUNCH_RUNBOOK.md`: launch checklist and evidence.
 - `docs/SALES_FUNNEL.md`: checkout/revision/approval/customer email details.
 - `docs/OCR_MENU_PIPELINE.md`: menu extraction and OCR.
-- `docs/OPS_DASHBOARD_PLAN.md`: deferred dashboard plan.
+- `docs/PAID_INTAKE_FLOW.md`: paid intake, admin dashboard, revision, and Cloudinary flow.
+- `docs/MODULE_BOUNDARIES.md`: customer website core, sales ops, project capsule, and niche adapter boundaries.
+- `docs/WEBSITE_INTAKE_SURVEY.md`: Open Design-style survey contract for website-ready project capsules.
 - `docs/SECURITY.md`: secret handling.
 
 ## Current Next Work
 
-1. Add the dedicated `ProfitsLocal Handoff` sender bot and switch website task dispatch to it.
-2. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` for ROI reporting.
-3. Run the next restaurant only after the Brisbane/Opa loop remains stable with automatic screenshots.
-4. Defer dashboard implementation until the restaurant loop is stable in repeated runs.
+1. Implement the website survey normalizer and write `clients/<client>/intake/website-survey.json`.
+2. Add `websiteSurveyPath` and `readinessPath` to agent task packets, case context, and Discord handoffs.
+3. Add the dedicated `ProfitsLocal Handoff` sender bot and switch website task dispatch to it.
+4. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.

@@ -35,8 +35,11 @@
 | Tally feedback form builder | Working MVP | `npm run funnel:create-tally-feedback-form` builds a feedback form payload/MCP prompt that submits revision requests into the same webhook. |
 | Checkout URL updater | Working MVP | `npm run funnel:update-checkout-urls` rewrites client checkout artifacts with real Tally form URLs while preserving hidden fields. |
 | Tally MCP setup docs | Working MVP | `docs/TALLY_MCP_SETUP.md` explains remote MCP setup, current runtime limitation, payment form shape, API fallback, and verification commands. |
+| ProfitsLocal paid intake dashboard | Working MVP | Protected `/admin/intakes` and `/admin/intakes/<client>/<order>` are deployed on Cloudflare Pages with `ADMIN_ACCESS_TOKEN`; `/admin/action` dispatches GitHub Actions to record request-more-info, V1 started/delivered, completion, revision approval/rejection, and custom quote actions back into `data/paid-intakes`. |
 | Restaurant niche adapter MVP | Working MVP | `npm run restaurant:build-content` converts evidence into `content.restaurant.json`; validator blocks menu rendering without real menu sections. |
 | Restaurant design brief MVP | Working MVP | `npm run design:restaurant-brief` creates Huashu-ready `design.restaurant.json` and `brand-spec.md` from validated restaurant content. |
+| Website intake survey standard | Documented | `docs/WEBSITE_INTAKE_SURVEY.md` maps Open Design discovery fields into ProfitsLocal's restaurant evidence, paid intake, design, domain, and agent handoff fields. Runtime normalizer is the next implementation step. |
+| Module boundary standard | Documented | `docs/MODULE_BOUNDARIES.md` separates customer website core, ProfitsLocal sales/fulfillment ops, portable project capsule, and niche adapters so restaurant-only behavior does not leak into other niches. |
 | Client artifact pipeline | Working MVP | `npm run pipeline:build-client` builds content, design brief, brand spec, and artifact manifest from validated evidence. |
 | Niche registry | Working MVP | `npm run niches:list` exposes registered niches; pipeline now routes through `core/niches/registry.js` instead of hardcoding restaurant logic. |
 | Outreach pack MVP | Working MVP | `npm run outreach:build-pack` creates outreach pack JSON with QA status, proof points, screenshot targets, and demo video target; `npm run outreach:validate-pack` verifies pack usability. |
@@ -62,6 +65,7 @@
 | Restaurant template renderer | Working MVP | `matthew6688/webjuice-restaurant` now reads `content.restaurant.json` and `design.restaurant.json`; generated repos still need migration to the new renderer flow. |
 | Client artifact sync | Working MVP | `npm run clients:sync-artifacts` applies content/design/checkout artifacts and optional images to an artifact-ready client repo, then can run build. |
 | Design engine | Half built | Huashu-ready restaurant design brief exists; visual scoring still needs work. |
+| Website intake normalizer | Not started | Implement `core/intake/website-survey.js`, output `clients/<client>/intake/website-survey.json`, and add `websiteSurveyPath` to agent tasks. |
 | Cost tracking | Working MVP | Ledger/report exist; Google Places, Google Places photos, Firecrawl, Firecrawl Parse, OpenAI usage, Tally revenue, Stripe revenue, Resend emails, image generation, and agent runtime can write events. Resend/runtime costs are configurable estimates. |
 | Outreach pack | Working MVP | Pack JSON plus `outreach:capture-assets` can generate screenshot/video assets for email proof. |
 | Customer feedback to revision task | Working MVP | First-party `/revise` submits `orderId + checkout email + requested changes`; review links lock order/email as read-only, show trusted plan/quota after match, upload attachments to Cloudinary when configured, and carry attachment URLs into Discord/email/agent routing. Backend router enforces entitlement quota before creating a `revision` task. |
@@ -75,17 +79,18 @@
 | PDF extraction / image OCR pipeline | Working MVP | See `docs/OCR_MENU_PIPELINE.md`. |
 | PaddleOCR provider | Working wrapper | Local runtime verified. |
 | OCRmyPDF provider | Working wrapper | Local runtime verified. |
-| Multi-niche framework | Half built | Deferred; current focus is restaurant only. |
+| Roofing niche adapter | Not started | Planned second niche. Should reuse the customer website core and project capsule, with service-area/contact-form/estimate-form rules instead of restaurant menu routes. |
 | Reservation/contact extractors | Not started | Still needed for richer restaurant evidence. |
 | Live Tally form creation | Blocked | Tally payment-block API schema is unstable; first-party Stripe checkout is the production path. |
 | Resend cold email test | Owner-inbox live smoke done | `npm run outreach:send-cold-email -- --client opa-bar-mezze-restaurant --to matthew6688@gmail.com --dry false` returned Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce` from a validated outreach pack with desktop/mobile screenshots and `demo.mp4`. Use a separate outreach sender/domain before sending to real prospects. |
 
 ## Immediate Next Build Order
 
-1. Add the dedicated `ProfitsLocal Handoff` sender bot/token when the owner creates it, then switch `WEBSITE_TASKS_DISCORD_BOT_TOKEN` away from the website-agent bot.
-2. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` or pass per-run runtime cost so ROI reports include email and agent labor estimates.
-3. Add next restaurant city only after the Brisbane/Opa loop closes cleanly with automatic screenshots.
-4. Plan dashboard after restaurant loop remains stable.
+1. Implement the website survey normalizer so scraped leads and paid intakes both produce `clients/<client>/intake/website-survey.json`.
+2. Add `websiteSurveyPath` and `readinessPath` to agent task packets, case context, and Discord handoff messages.
+3. Add the dedicated `ProfitsLocal Handoff` sender bot/token when the owner creates it, then switch `WEBSITE_TASKS_DISCORD_BOT_TOKEN` away from the website-agent bot.
+4. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` or pass per-run runtime cost so ROI reports include email and agent labor estimates.
+5. Harden the admin dashboard with automatic rebuild after actions, operator audit filters, and email drafting/sending.
 
 ## Verification Rules
 
