@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "id": "rich-and-rare-restaurant__smoke_rich_rare_publish_001__rich-and-rare.profitslocal.com",
+  "status": "active",
+  "clientSlug": "rich-and-rare-restaurant",
+  "orderId": "smoke_rich_rare_publish_001",
+  "email": "matthew6688@gmail.com",
+  "requestedDomain": "rich-and-rare.profitslocal.com",
+  "domain": "rich-and-rare.profitslocal.com",
+  "projectName": "rich-and-rare-restaurant-live",
+  "target": "rich-and-rare-restaurant-live.pages.dev",
+  "route": {
+    "route": "profitslocal_subdomain",
+    "domain": "rich-and-rare.profitslocal.com",
+    "requiresCustomerDns": false,
+    "requiresCloudflareAttach": true,
+    "utilityPagesStayOnPreview": true,
+    "reason": "customer_requested_profitslocal_subdomain",
+    "nextStep": "Attach rich-and-rare.profitslocal.com to the approved Pages project."
+  },
+  "dns": {
+    "instructions": {
+      "domain": "rich-and-rare.profitslocal.com",
+      "projectName": "rich-and-rare-restaurant-live",
+      "target": "rich-and-rare-restaurant-live.pages.dev",
+      "records": [
+        {
+          "type": "CNAME",
+          "name": "rich-and-rare.profitslocal.com",
+          "value": "rich-and-rare-restaurant-live.pages.dev",
+          "proxied": false,
+          "note": "Use this for subdomains such as www.example.com or menu.example.com."
+        },
+        {
+          "type": "CNAME",
+          "name": "www.profitslocal.com",
+          "value": "rich-and-rare-restaurant-live.pages.dev",
+          "proxied": false,
+          "note": "Use this when the customer wants www on the root brand domain."
+        }
+      ],
+      "customerMessage": "Point rich-and-rare.profitslocal.com to the preview/live site by adding a CNAME record:\nrich-and-rare.profitslocal.com CNAME rich-and-rare-restaurant-live.pages.dev\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+    },
+    "inspection": null
+  },
+  "pages": {
+    "domains": [
+      {
+        "id": "6f94ed6f-d4c4-4e96-bf98-12415afdb3d4",
+        "domain_id": "6f94ed6f-d4c4-4e96-bf98-12415afdb3d4",
+        "name": "rich-and-rare.profitslocal.com",
+        "status": "active",
+        "verification_data": {
+          "status": "active"
+        },
+        "validation_data": {
+          "status": "active",
+          "method": "http"
+        },
+        "certificate_authority": "google",
+        "zone_tag": "3d8a2ec43e00f78e65047c99aafe29fb",
+        "created_on": "2026-05-06T07:26:21.442821Z"
+      }
+    ],
+    "active": true
+  },
+  "steps": [
+    {
+      "id": "upsert-profitslocal-cname",
+      "ok": true,
+      "message": "Created or updated ProfitsLocal DNS CNAME.",
+      "data": {
+        "action": "created",
+        "name": "rich-and-rare.profitslocal.com",
+        "target": "rich-and-rare-restaurant-live.pages.dev",
+        "proxied": true
+      },
+      "at": "2026-05-06T07:26:20.824Z"
+    },
+    {
+      "id": "attach-pages-domain",
+      "ok": true,
+      "message": "Cloudflare Pages custom domain is attached.",
+      "data": {
+        "active": true,
+        "domain": "rich-and-rare.profitslocal.com"
+      },
+      "at": "2026-05-06T07:27:05.531Z"
+    }
+  ],
+  "createdAt": "2026-05-06T07:26:20.095Z",
+  "updatedAt": "2026-05-06T07:27:05.531Z"
+}

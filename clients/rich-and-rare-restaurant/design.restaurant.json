@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "designSkill": "huashu-design",
+  "clientSlug": "rich-and-rare-restaurant",
+  "sourceContentPath": "clients/rich-and-rare-restaurant/content.restaurant.json",
+  "generatedAt": "2026-05-06T07:20:00.000Z",
+  "business": {
+    "name": "Rich & Rare Restaurant",
+    "cuisine": "steak and seafood",
+    "rating": 4.8,
+    "reviewCount": 3194,
+    "fallbackLevel": "official_site_menu"
+  },
+  "assetProtocol": {
+    "requiredAssets": [
+      {
+        "id": "logo",
+        "status": "present",
+        "value": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/cc41bc60-4e56-4535-97b8-ba1ee763d87a/Rich+and+Rare_Type+Logo_CMYK_White.png?format=1500w",
+        "note": "Use the official white wordmark on dark surfaces."
+      },
+      {
+        "id": "heroFoodPhoto",
+        "status": "present",
+        "value": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/2314692f-be6e-4368-afe0-c3d90817fef7/Rich+%26+Rare+-+Markus+Ravik+-+124.jpg",
+        "note": "Use official restaurant photography before generated imagery."
+      },
+      {
+        "id": "menuSource",
+        "status": "present",
+        "value": "https://www.richandrare.com.au/menus",
+        "note": "Menu facts must come from official menu source."
+      },
+      {
+        "id": "reservationUrl",
+        "status": "present",
+        "value": "https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant",
+        "note": "Primary conversion is booking."
+      }
+    ],
+    "warnings": [
+      "Official menu extraction was cleaned before build; prices are shown only when source confidence is clear."
+    ],
+    "rules": [
+      "Website route first: sell the restaurant experience, not just the menu.",
+      "Use real logo and real restaurant photos.",
+      "Use dark steakhouse atmosphere with ivory/brass contrast.",
+      "Keep phone, map, and booking links mobile-clickable.",
+      "Menu route can exist, but homepage must read as a formal official website."
+    ]
+  },
+  "tokens": {
+    "colorSource": "official_site_plus_design_interpretation",
+    "colors": [
+      "#0d1722",
+      "#112233",
+      "#b7904d",
+      "#f7efe1",
+      "#fffaf1"
+    ],
+    "palette": {
+      "background": "#0d1722",
+      "surface": "#112233",
+      "ink": "#15120d",
+      "accent": "#b7904d",
+      "muted": "#6f6659"
+    },
+    "typography": {
+      "heading": "Montserrat",
+      "body": "System humanist sans-serif",
+      "numeric": "Tabular figures for ratings and prices"
+    },
+    "radius": {
+      "cards": "4px",
+      "buttons": "2px"
+    }
+  },
+  "directions": [
+    {
+      "id": "premium-steakhouse-editorial",
+      "name": "Premium Steakhouse Editorial",
+      "philosophy": "Swiss editorial structure with warm steakhouse materiality",
+      "bestFor": "A steak and seafood restaurant that already has strong official photography and wants a more composed, premium digital presence.",
+      "visualTraits": [
+        "large real photography",
+        "dark cellar-blue field",
+        "brass accent lines",
+        "ivory menu paper",
+        "asymmetric editorial layout"
+      ],
+      "menuTreatment": "Homepage shows selected official menu proof; full menu remains a secondary mobile-friendly route."
+    }
+  ],
+  "layoutRules": [
+    "First viewport must show logo, steak/seafood positioning, rating proof, and booking CTA.",
+    "Use one immersive hero photo and one editorial image panel; avoid generic cards.",
+    "Functions/private dining gets a dedicated section because the official site emphasizes it.",
+    "Desktop layout may be asymmetrical; mobile must become a clear single-column booking path.",
+    "Sticky mobile actions should make Reserve, Map, and Call immediately available."
+  ],
+  "conversionRules": {
+    "primaryCta": "reserve",
+    "secondaryCtas": [
+      "map",
+      "call",
+      "menu"
+    ],
+    "funnel": {
+      "purchaseProvider": "stripe",
+      "requiredHiddenFields": [
+        "clientSlug",
+        "previewUrl",
+        "repo",
+        "campaignId",
+        "niche",
+        "package",
+        "price"
+      ]
+    }
+  }
+}

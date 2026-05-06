@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "niche": "restaurant",
+  "clientSlug": "rich-and-rare-restaurant",
+  "sourceEvidencePath": "data/collect-smoke/rich-and-rare/evidence.json",
+  "generatedAt": "2026-05-06T07:20:00.000Z",
+  "fallbackLevel": "official_site_menu",
+  "hero": {
+    "name": "Rich & Rare Restaurant",
+    "cuisine": "steak and seafood",
+    "rating": 4.8,
+    "reviewCount": 3194,
+    "tagline": "Rich flavours. Rare cuts. Real service."
+  },
+  "contact": {
+    "phone": "(07) 3638 8888",
+    "email": "",
+    "address": "97 Boundary St, West End QLD 4101, Australia",
+    "website": "https://www.richandrare.com.au/",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=97%20Boundary%20St%2C%20West%20End%20QLD%204101%2C%20Australia"
+  },
+  "cta": {
+    "callUrl": "tel:0736388888",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=97%20Boundary%20St%2C%20West%20End%20QLD%204101%2C%20Australia",
+    "reserveUrl": "https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant"
+  },
+  "booking": {
+    "provider": "SevenRooms",
+    "url": "https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant"
+  },
+  "menu": {
+    "sourceUrl": "https://www.richandrare.com.au/menus",
+    "sections": [
+      {
+        "name": "Banquets",
+        "description": "Whole table only, minimum two people.",
+        "items": [
+          {
+            "name": "Drover's Delight",
+            "description": "Artisan sourdough ciabatta, Jamon Iberico, raw salmon, wagyu bites, Black Angus sirloin, sides, and dessert.",
+            "price": "88pp",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.banquets",
+            "generated": false
+          },
+          {
+            "name": "Wave & Wagyu",
+            "description": "A seafood and steak banquet with king prawns, market fish, Tajima wagyu striploin, sides, and chocolate dessert.",
+            "price": "132pp",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.banquets",
+            "generated": false
+          },
+          {
+            "name": "R&R Experience",
+            "description": "Wagyu tataki, king prawns, wagyu tartare, scotch fillet, Tajima striploin, A5 Japanese wagyu, sides, and cheesecake.",
+            "price": "220pp",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.banquets",
+            "generated": false
+          }
+        ]
+      },
+      {
+        "name": "Menu Signatures",
+        "description": "Highlights from the lunch and dinner menu. Prices appear where confirmed.",
+        "items": [
+          {
+            "name": "Raw Salmon",
+            "description": "Ceviche, crispy sweet potato, salmon roe, green oil.",
+            "price": "",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.lunch_dinner",
+            "generated": false
+          },
+          {
+            "name": "Wagyu Bites & Kiss Pepper Jam",
+            "description": "MB9+ chuck eye roll, panko crumbed.",
+            "price": "",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.lunch_dinner",
+            "generated": false
+          },
+          {
+            "name": "Westholme Wagyu Tartare",
+            "description": "Yolk, fresh horseradish, homemade potato crisps.",
+            "price": "",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.lunch_dinner",
+            "generated": false
+          },
+          {
+            "name": "Tajima Wagyu Striploin MB6-7",
+            "description": "Wagyu from Tajima bloodline cattle, raised in Australia.",
+            "price": "",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.lunch_dinner",
+            "generated": false
+          }
+        ]
+      },
+      {
+        "name": "Venue",
+        "description": "Private and group dining at West Village.",
+        "items": [
+          {
+            "name": "Private Room",
+            "description": "An exclusive 10-seater private room for business or pleasure.",
+            "price": "",
+            "sourceUrl": "https://www.richandrare.com.au/",
+            "sourceKey": "official_site.functions",
+            "generated": false
+          },
+          {
+            "name": "Whole Venue Functions",
+            "description": "The dining spaces can be configured around larger guest needs.",
+            "price": "",
+            "sourceUrl": "https://www.richandrare.com.au/",
+            "sourceKey": "official_site.functions",
+            "generated": false
+          }
+        ]
+      }
+    ],
+    "sourceChain": [
+      {
+        "key": "menu.sections",
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/menus",
+        "confidence": 0.78,
+        "extractor": "firecrawl_scrape_plus_human_cleaning"
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/2314692f-be6e-4368-afe0-c3d90817fef7/Rich+%26+Rare+-+Markus+Ravik+-+124.jpg",
+      "source": "official_site"
+    },
+    {
+      "type": "image",
+      "url": "https://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w",
+      "source": "official_site"
+    },
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/20d6f35c-7cc1-41ac-8bd7-a8b545435a0a/DSC02585.JPG",
+      "source": "official_site"
+    },
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/a0fba70f-ea90-45c7-ad8c-cba7128b6dc7/Rich-and-Rare_Web-Page-design_V2.jpg",
+      "source": "official_site"
+    },
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/19f3cb37-cf2c-46fe-bcc7-e309fcf78111/R%26R_Winner.png",
+      "source": "official_site"
+    },
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/43db72df-198f-49ae-9f24-bbaa214cfe7b/bronze-award.png",
+      "source": "official_site"
+    }
+  ],
+  "brand": {
+    "logo": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/cc41bc60-4e56-4535-97b8-ba1ee763d87a/Rich+and+Rare_Type+Logo_CMYK_White.png?format=1500w",
+    "colors": [
+      "#112233",
+      "#112255",
+      "#b7904d",
+      "#f7efe1"
+    ],
+    "fonts": [
+      "Montserrat"
+    ],
+    "ogImage": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/2314692f-be6e-4368-afe0-c3d90817fef7/Rich+%26+Rare+-+Markus+Ravik+-+124.jpg"
+  },
+  "evidenceSummary": [
+    {
+      "key": "identity.name",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.95,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "official_site.positioning",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.9,
+      "extractor": "official_site_scrape"
+    },
+    {
+      "key": "menu.sections",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.78,
+      "extractor": "firecrawl_scrape_plus_human_cleaning"
+    }
+  ],
+  "qaContract": {
+    "mustUseFacts": [
+      "Rich & Rare Restaurant",
+      "97 Boundary St, West End QLD 4101, Australia",
+      "(07) 3638 8888",
+      "SevenRooms reservation URL",
+      "4.8 rating and 3194 Google reviews"
+    ],
+    "mustNotDo": [
+      "Do not invent unavailable menu prices.",
+      "Do not present the homepage as only a menu.",
+      "Do not use generated imagery while official photography exists."
+    ]
+  }
+}

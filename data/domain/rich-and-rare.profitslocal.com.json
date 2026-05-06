@@ -1,0 +1,61 @@
+{
+  "domain": "rich-and-rare.profitslocal.com",
+  "projectName": "rich-and-rare-restaurant-live",
+  "target": "rich-and-rare-restaurant-live.pages.dev",
+  "records": {
+    "ns": [],
+    "cname": [],
+    "a": [
+      "172.67.223.35",
+      "104.21.46.35"
+    ],
+    "aaaa": [
+      "2606:4700:3035::6815:2e23",
+      "2606:4700:3035::ac43:df23"
+    ]
+  },
+  "status": {
+    "hasNameservers": false,
+    "hasCname": false,
+    "cnameMatchesPages": false,
+    "hasA": true,
+    "hasAAAA": true,
+    "readyForPagesAttach": true,
+    "cloudflareCnameMatchesPages": true
+  },
+  "instructions": {
+    "domain": "rich-and-rare.profitslocal.com",
+    "projectName": "rich-and-rare-restaurant-live",
+    "target": "rich-and-rare-restaurant-live.pages.dev",
+    "records": [
+      {
+        "type": "CNAME",
+        "name": "rich-and-rare.profitslocal.com",
+        "value": "rich-and-rare-restaurant-live.pages.dev",
+        "proxied": false,
+        "note": "Use this for subdomains such as www.example.com or menu.example.com."
+      },
+      {
+        "type": "CNAME",
+        "name": "www.profitslocal.com",
+        "value": "rich-and-rare-restaurant-live.pages.dev",
+        "proxied": false,
+        "note": "Use this when the customer wants www on the root brand domain."
+      }
+    ],
+    "customerMessage": "Point rich-and-rare.profitslocal.com to the preview/live site by adding a CNAME record:\nrich-and-rare.profitslocal.com CNAME rich-and-rare-restaurant-live.pages.dev\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+  },
+  "checkedAt": "2026-05-06T07:43:51.163Z",
+  "cloudflare": {
+    "zoneId": "3d8a2ec43e00f78e65047c99aafe29fb",
+    "records": [
+      {
+        "id": "4ffce6f03039824b8c195727df4ab5e8",
+        "type": "CNAME",
+        "name": "rich-and-rare.profitslocal.com",
+        "content": "rich-and-rare-restaurant-live.pages.dev",
+        "proxied": true
+      }
+    ]
+  }
+}

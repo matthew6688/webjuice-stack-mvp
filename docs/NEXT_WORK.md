@@ -56,19 +56,29 @@ Verified live state:
 - Production-like Opa customer loop completed against real central state and the real generated repo: QA screenshots were attached, the pre-review gate passed, customer review email was sent, approved dev tree was published to `main`, `Deploy Live` completed success, live email was sent, `https://opa-controlled.profitslocal.com/` and `/menu/` return HTTP 200, and Pages custom domain status is `active`.
 - No known API keys are committed.
 - ProfitsLocal paid intake/admin dashboard v1 is deployed on Cloudflare Pages: `/admin/intakes` and `/admin/intakes/<client>/<order>` are protected by `ADMIN_ACCESS_TOKEN`, show paid intake state from `data/paid-intakes`, and expose `/admin/action` operator actions that dispatch GitHub Actions and write back to repo state/timeline.
+- Website-ready engine v1 is implemented: `npm run intake:build-website-ready` writes `clients/<client>/intake/website-survey.json` and a case `build-packet.md`; Opa Bar & Mezze generated `website_ready_to_build` from real evidence and the packet explicitly preserves the Astro/Cloudflare Pages/webjuice restaurant framework and Discord/Hermes handoff path.
+- P0 closure is wired: admin can confirm website-ready from paid intake, the action writes survey/build-packet artifacts and stores readiness back on the paid-intake record, dashboard detail pages expose project/capsule/utility links, and Discord handoff messages include `buildPacket` plus `websiteSurvey` paths.
+- Lead Qualification Engine v1 is implemented: `npm run leads:qualify` classifies leads before collection/build as `no_website`, `bad_website`, `good_website`, or `unknown`, scores contactability/business value/website opportunity/assets/build feasibility, and recommends whether to build, collect more, outreach only, manually review, or skip.
+- Real Google Places qualification smoke ran against Rich & Rare Restaurant. The engine correctly protected build time: strong business data, but existing website assessed as good, so `recommendedAction: skip` instead of automatic redesign.
+- Rich & Rare manual redesign challenge completed the repo-backed publish path: generated site, GitHub repo `matthew6688/rich-and-rare-restaurant`, Cloudflare Pages dev/live projects, GitHub Actions dev/live success, and production subdomain `https://rich-and-rare.profitslocal.com/` with `/menu/` returning HTTP 200.
+- Domain tooling now supports Cloudflare-aware inspection for proxied ProfitsLocal CNAME records via `CF_ZONE_ID`, avoiding false negatives when public DNS only shows Cloudflare A/AAAA records.
+- Environment checks now include `npm run check:env -- --workflow domain` for `CF_API_TOKEN`, `CF_ACCOUNT_ID`, and `CF_ZONE_ID`.
+- The restaurant template and Rich & Rare generated repo now include `pages_build_output_dir = "dist"` and `--commit-dirty=true` in Pages deploy workflows, removing two avoidable Wrangler deploy warnings.
 
 ## Highest Priority Remaining Work
 
 ## Current Priority Queue
 
-1. Implement the website survey normalizer so scraped leads and paid intakes both produce `clients/<client>/intake/website-survey.json`.
-2. Add `websiteSurveyPath` and `readinessPath` to agent task packets, case context, and Discord handoff messages.
-3. Create the high-level `profitslocal-local-business-design` skill that wraps Open Design discovery, Huashu review, ProfitsLocal evidence rules, and the active niche adapter.
-4. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
-5. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
-6. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
-7. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
-8. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+1. Create the high-level `profitslocal-local-business-design` skill that wraps Open Design discovery, Huashu review, ProfitsLocal evidence rules, and the active niche adapter.
+2. Add a lead search runner that loops through Google Places results, runs `leads:qualify`, and only sends A/B leads to collection.
+3. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
+4. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
+5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
+6. Add a repo bootstrap script for new customer sites: create GitHub repo, set repo variables/secrets, create Cloudflare Pages dev/live projects, push `main`/`dev`, wait for Actions, then provision the chosen domain.
+7. Add an asset URL validator/normalizer that blocks `http://` images before deploy and rewrites safe official CDN assets to HTTPS.
+8. Update generated repo workflow actions for GitHub's Node 20 deprecation warning.
+9. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+10. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
 
 ## Architecture Direction
 
@@ -80,6 +90,8 @@ The platform is now documented as four separate layers in `docs/MODULE_BOUNDARIE
 - Niche Adapters: restaurant first, roofing second.
 
 This means checkout/revision/approval/domain pages are ProfitsLocal workflow capabilities, not assumptions inside every customer website. Restaurant's menu route is also niche-specific, not a platform-wide default.
+
+Local Hermes/Discord operations are documented in `docs/HERMES_LOCAL_DISCORD_SOP.md`. The intended workflow is local-first and Discord-first: each customer project has one thread for operator + AI collaboration, while the admin dashboard acts as an index and variable/quick-link surface. VPS Hermes is deferred until local runs are stable.
 
 ### 1. Domain Onboarding For `profitslocal.com`
 

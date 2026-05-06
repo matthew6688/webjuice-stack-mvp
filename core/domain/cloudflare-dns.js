@@ -36,6 +36,10 @@ export async function upsertCnameRecord({ token, zoneId, name, target, proxied =
   };
 }
 
+export async function listDnsRecordsByName({ token, zoneId, name }) {
+  return findRecordsByName({ token, zoneId, name });
+}
+
 export async function deleteDnsRecordByName({ token, zoneId, name, types = ['CNAME'] }) {
   if (!token) throw new Error('token is required');
   if (!zoneId) throw new Error('zoneId is required');
