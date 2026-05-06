@@ -172,3 +172,9 @@ The redesign did successfully pass our hosted subdomain route, but the run expos
 - Add `--commit-dirty=true` to generated/template Pages deploy workflows so build output does not create noisy dirty-worktree deploy warnings. This was applied to the template and Rich & Rare repo.
 - Direct Wrangler deploy is a useful emergency smoke, but the durable process must be repo-backed `main`/`dev` so Hermes/Discord revisions have a stable project to modify and redeploy.
 - GitHub Actions now warns that Node 20 based actions will be deprecated. This is not blocking today, but the template workflow should move to Node 24-compatible actions before GitHub enforcement dates.
+
+Follow-up fixes landed after this smoke:
+
+- `npm run deploy:bootstrap-client-repo` now encodes the correct repo bootstrap order and has a dry-run test.
+- `npm run assets:validate-urls` plus restaurant content validation now blocks `http://` asset URLs before deploy.
+- ProfitsLocal-owned domain provisioning now requires `CF_ZONE_ID` when `--execute true`.

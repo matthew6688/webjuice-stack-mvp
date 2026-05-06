@@ -10,6 +10,7 @@ import {
   RESTAURANT_REQUIRED_KEYS,
   createEmptyRestaurantContent,
 } from './schema.js';
+import { auditAssetUrls } from '../../core/assets/url-policy.js';
 
 export function buildRestaurantContentFromEvidence(pack, { sourceEvidencePath } = {}) {
   const evidenceResult = validateEvidencePack(pack, { niche: 'restaurant' });
@@ -85,6 +86,7 @@ export function buildRestaurantContentFile({ evidencePath, outputPath }) {
 export function validateRestaurantContent(content) {
   const errors = [];
   const warnings = [];
+  const assetUrlAudit = auditAssetUrls(content);
 
   for (const key of RESTAURANT_REQUIRED_KEYS) {
     const value = getPath(content, key);
@@ -101,6 +103,12 @@ export function validateRestaurantContent(content) {
   }
   if (content.booking && !content.booking.url) {
     errors.push('booking.url is required when booking is present');
+  }
+  for (const issue of assetUrlAudit.errors) {
+    errors.push(`${issue.path}: ${issue.message}`);
+  }
+  for (const issue of assetUrlAudit.warnings) {
+    warnings.push(`${issue.path}: ${issue.message}`);
   }
 
   for (const [sectionIndex, section] of (content.menu?.sections || []).entries()) {

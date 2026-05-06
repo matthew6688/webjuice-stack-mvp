@@ -64,6 +64,9 @@ Verified live state:
 - Domain tooling now supports Cloudflare-aware inspection for proxied ProfitsLocal CNAME records via `CF_ZONE_ID`, avoiding false negatives when public DNS only shows Cloudflare A/AAAA records.
 - Environment checks now include `npm run check:env -- --workflow domain` for `CF_API_TOKEN`, `CF_ACCOUNT_ID`, and `CF_ZONE_ID`.
 - The restaurant template and Rich & Rare generated repo now include `pages_build_output_dir = "dist"` and `--commit-dirty=true` in Pages deploy workflows, removing two avoidable Wrangler deploy warnings.
+- New customer repo bootstrap is now codified as `npm run deploy:bootstrap-client-repo`: create GitHub repo, set `PAGES_PROJECT_NAME`, set Cloudflare secrets, create Pages dev/live projects, push `main`, push `dev`, then wait for Actions. The dry-run test proves secrets/variables are set before the first push.
+- Asset URL policy is now enforced by `npm run assets:validate-urls` and restaurant content validation. Any `http://` asset URL fails validation before deploy; known safe CDN URLs can be rewritten with `--fix true`.
+- Automatic ProfitsLocal-owned domain provisioning now requires `CF_ZONE_ID` instead of falling back to Cloudflare zone lookup by name.
 
 ## Highest Priority Remaining Work
 
@@ -74,8 +77,8 @@ Verified live state:
 3. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
 4. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
 5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
-6. Add a repo bootstrap script for new customer sites: create GitHub repo, set repo variables/secrets, create Cloudflare Pages dev/live projects, push `main`/`dev`, wait for Actions, then provision the chosen domain.
-7. Add an asset URL validator/normalizer that blocks `http://` images before deploy and rewrites safe official CDN assets to HTTPS.
+6. Wire `deploy:bootstrap-client-repo --execute true` into the website-ready/agent handoff path so new customer projects no longer need manual repo setup.
+7. Add menu extraction confidence scoring to the restaurant adapter so low-confidence menus become verified highlights instead of full menu pages.
 8. Update generated repo workflow actions for GitHub's Node 20 deprecation warning.
 9. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
 10. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
@@ -146,6 +149,8 @@ npm run domain:test-request
 npm run domain:request -- --client opa-bar-mezze-restaurant --order cs_test_domain_dry_001 --email matthew6688@gmail.com --domain opa-controlled.profitslocal.com --execute false --write false
 npm run domain:upsert-cname -- --zone <zone-id> --name profitslocal.com --target profitslocal-live.pages.dev --proxied true
 npm run domain:cleanup -- --domain <smoke-domain>.profitslocal.com --project <client>-live
+npm run deploy:bootstrap-client-repo -- --repo owner/client-repo --repo-dir /path/to/generated/repo --pages-project-name client-repo --wait true
+npm run assets:validate-urls -- --file clients/<client>/content.restaurant.json
 ```
 
 ### 2. Agent Review Email QA Gate

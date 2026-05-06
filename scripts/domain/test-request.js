@@ -38,6 +38,23 @@ const rootDomain = await handleDomainRequest({
   execute: false,
 });
 
+let missingZoneError = '';
+try {
+  await handleDomainRequest({
+    clientSlug: 'opa-bar-mezze-restaurant',
+    orderId: 'cs_test_domain_004',
+    email: 'owner@example.com',
+    domain: 'opa-controlled.profitslocal.com',
+  }, {
+    root,
+    execute: true,
+    cfToken: 'test-token',
+    cfAccountId: 'test-account',
+  });
+} catch (error) {
+  missingZoneError = error.message;
+}
+
 const assertions = {
   freeDryRunReady: free.status === 'dry_run_ready',
   freeCreatesCnameStep: free.steps.some((item) => item.id === 'upsert-profitslocal-cname'),
@@ -48,6 +65,7 @@ const assertions = {
   customerSubdomainEmailHasCname: buildDomainStatusEmail({ domainRequest: customerSubdomain })?.text.includes('CNAME menu.opabar.example -> opa-bar-mezze-restaurant-live.pages.dev'),
   rootRequiresReview: rootDomain.status === 'needs_root_domain_review',
   rootEmailWarnsBeforeDnsChange: buildDomainStatusEmail({ domainRequest: rootDomain })?.text.includes('do not change root DNS'),
+  executeProfitsLocalRequiresZoneId: missingZoneError.includes('CF_ZONE_ID is required'),
 };
 const failed = Object.entries(assertions).filter(([, ok]) => !ok).map(([key]) => key);
 console.log(JSON.stringify({

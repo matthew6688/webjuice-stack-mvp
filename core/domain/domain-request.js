@@ -3,7 +3,7 @@ import path from 'path';
 import { resolveLaunchRoute } from './launch-route.js';
 import { buildDnsInstructions, inspectDns, normalizeDomain, pagesTarget } from './dns.js';
 import { attachPagesDomain, listPagesDomains } from './cloudflare-pages.js';
-import { findZoneByName, upsertCnameRecord } from './cloudflare-dns.js';
+import { upsertCnameRecord } from './cloudflare-dns.js';
 
 const DEFAULT_ROOT_DOMAIN = 'profitslocal.com';
 
@@ -80,9 +80,11 @@ export async function provisionDomainRequest(request, options = {}) {
   }
 
   if (request.route.route === 'profitslocal_subdomain' || request.route.route === 'profitslocal_root') {
-    const rootDomain = options.rootDomain || DEFAULT_ROOT_DOMAIN;
     if (execute) {
-      const zoneId = options.zoneId || await resolveZoneId({ token: options.cfToken, rootDomain });
+      const zoneId = options.zoneId;
+      if (!zoneId) {
+        throw new Error('CF_ZONE_ID is required for automatic ProfitsLocal-owned domain provisioning.');
+      }
       const dnsResult = await upsertCnameRecord({
         token: options.cfToken,
         zoneId,
@@ -170,12 +172,6 @@ function isPagesDomainActive(domains, domain) {
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function resolveZoneId({ token, rootDomain }) {
-  const zone = await findZoneByName({ token, name: rootDomain });
-  if (!zone?.id) throw new Error(`Cloudflare zone not found for ${rootDomain}`);
-  return zone.id;
 }
 
 function finalizeStatus({ request, status, steps, dnsInspection, pagesDomains, pagesActive }) {
