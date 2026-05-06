@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "revision_requested",
+  "status": "revision_approved",
   "clientSlug": "profitslocal-cloudinary-ready-smoke-1778036558865",
   "orderId": "cloudinary-intake-ready-smoke-1778036558865",
   "customer": {
@@ -50,7 +50,7 @@
     "refundPolicyAccepted": true,
     "generationAccepted": true
   },
-  "updatedAt": "2026-05-06T03:20:07.354Z",
+  "updatedAt": "2026-05-06T03:47:12.745Z",
   "createdAt": "2026-05-06T03:02:54.989Z",
   "readiness": {
     "status": "ready_for_agent_task",
@@ -67,7 +67,7 @@
       "id": "rev_1778037607355",
       "revisionNumber": 1,
       "accepted": true,
-      "status": "revision_submitted",
+      "status": "revision_approved",
       "requestedChanges": "Live revision smoke 1778037585048: update the hero CTA text only. Please ignore.",
       "scopeAcknowledged": true,
       "email": "revision-smoke-1778037585048@example.com",
@@ -88,7 +88,22 @@
           "createdAt": "2026-05-06T03:19:46Z"
         }
       ],
-      "submittedAt": "2026-05-06T03:20:07.354Z"
+      "submittedAt": "2026-05-06T03:20:07.354Z",
+      "reviewedAt": "2026-05-06T03:47:12.745Z",
+      "reviewedBy": "codex-live-smoke",
+      "reviewNote": "Live admin action smoke: approve the latest revision."
+    }
+  ],
+  "adminActions": [
+    {
+      "id": "admin_1778039232745_1qbz905z",
+      "type": "admin_approved_latest_revision",
+      "action": "approve_latest_revision",
+      "actor": "codex-live-smoke",
+      "note": "Live admin action smoke: approve the latest revision.",
+      "clientSlug": "profitslocal-cloudinary-ready-smoke-1778036558865",
+      "orderId": "cloudinary-intake-ready-smoke-1778036558865",
+      "createdAt": "2026-05-06T03:47:12.745Z"
     }
   ]
 }
