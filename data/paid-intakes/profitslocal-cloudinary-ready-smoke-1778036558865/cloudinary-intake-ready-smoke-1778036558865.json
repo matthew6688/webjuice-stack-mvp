@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "intake_ready_for_review",
+  "status": "revision_requested",
   "clientSlug": "profitslocal-cloudinary-ready-smoke-1778036558865",
   "orderId": "cloudinary-intake-ready-smoke-1778036558865",
   "customer": {
@@ -50,11 +50,45 @@
     "refundPolicyAccepted": true,
     "generationAccepted": true
   },
-  "updatedAt": "2026-05-06T03:02:54.989Z",
+  "updatedAt": "2026-05-06T03:20:07.354Z",
   "createdAt": "2026-05-06T03:02:54.989Z",
   "readiness": {
     "status": "ready_for_agent_task",
     "missing": [],
     "checkedAt": "2026-05-06T03:02:54.990Z"
-  }
+  },
+  "revisionPolicy": {
+    "includedRevisions": 3,
+    "usedRevisions": 1,
+    "remainingRevisions": 2
+  },
+  "revisions": [
+    {
+      "id": "rev_1778037607355",
+      "revisionNumber": 1,
+      "accepted": true,
+      "status": "revision_submitted",
+      "requestedChanges": "Live revision smoke 1778037585048: update the hero CTA text only. Please ignore.",
+      "scopeAcknowledged": true,
+      "email": "revision-smoke-1778037585048@example.com",
+      "files": [
+        "revision-cloudinary-smoke.txt (raw, 41 B) https://res.cloudinary.com/dm1hroqlg/raw/upload/v1778037586/profitslocal/main-site/clients/profitslocal-cloudinary-ready-smoke-1778036558865/revision/cloudinary-intake-ready-smoke-1778036558865/revision-cloudinary-smoke-1778037585187-ojjwot"
+      ],
+      "assets": [
+        {
+          "filename": "revision-cloudinary-smoke.txt",
+          "originalFilename": "revision-cloudinary-smoke.txt",
+          "publicId": "profitslocal/main-site/clients/profitslocal-cloudinary-ready-smoke-1778036558865/revision/cloudinary-intake-ready-smoke-1778036558865/revision-cloudinary-smoke-1778037585187-ojjwot",
+          "resourceType": "raw",
+          "type": "upload",
+          "format": "",
+          "bytes": 41,
+          "secureUrl": "https://res.cloudinary.com/dm1hroqlg/raw/upload/v1778037586/profitslocal/main-site/clients/profitslocal-cloudinary-ready-smoke-1778036558865/revision/cloudinary-intake-ready-smoke-1778036558865/revision-cloudinary-smoke-1778037585187-ojjwot",
+          "url": "http://res.cloudinary.com/dm1hroqlg/raw/upload/v1778037586/profitslocal/main-site/clients/profitslocal-cloudinary-ready-smoke-1778036558865/revision/cloudinary-intake-ready-smoke-1778036558865/revision-cloudinary-smoke-1778037585187-ojjwot",
+          "createdAt": "2026-05-06T03:19:46Z"
+        }
+      ],
+      "submittedAt": "2026-05-06T03:20:07.354Z"
+    }
+  ]
 }
