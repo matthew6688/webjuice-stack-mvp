@@ -68,6 +68,7 @@ Verified live state:
 - Asset URL policy is now enforced by `npm run assets:validate-urls` and restaurant content validation. Any `http://` asset URL fails validation before deploy; known safe CDN URLs can be rewritten with `--fix true`.
 - Automatic ProfitsLocal-owned domain provisioning now requires `CF_ZONE_ID` instead of falling back to Cloudflare zone lookup by name.
 - Dokobot local browser workflow is installed and verified for Codex/Hermes: CLI `2.10.10`, local bridge detected, `npm run dokobot:smoke` reads real Chrome pages, and `docs/DOKOBOT_REDESIGN_WORKFLOW.md` documents how to use it for redesign preservation intake.
+- Generic `website-redesign-preservation` skill v1 is implemented. `npm run redesign:build-preservation-packet` writes `clients/<client>/redesign/preservation-packet.json` and `.md`; Rich & Rare smoke produced a preservation packet with 7 current pages, 3 proposed pages, 3 internal 301 redirects, preserved external SevenRooms CTA, SEO requirements, and a favicon confirmation warning.
 
 ## Highest Priority Remaining Work
 
@@ -80,10 +81,11 @@ Verified live state:
 5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
 6. Wire `deploy:bootstrap-client-repo --execute true` into the website-ready/agent handoff path so new customer projects no longer need manual repo setup.
 7. Add menu extraction confidence scoring to the restaurant adapter so low-confidence menus become verified highlights instead of full menu pages.
-8. Create the generic `website-redesign-preservation` skill using Dokobot/browser crawl inputs plus niche adapters.
-9. Update generated repo workflow actions for GitHub's Node 20 deprecation warning.
-10. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
-11. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
+8. Wire Firecrawl multi-page crawl output into `redesign:build-preservation-packet` so current sitemap is crawl-backed instead of mainly Dokobot/search-backed.
+9. Add local LLM old-vs-new preservation audit against the packet after a redesign build.
+10. Update generated repo workflow actions for GitHub's Node 20 deprecation warning.
+11. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+12. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
 
 ## Architecture Direction
 
