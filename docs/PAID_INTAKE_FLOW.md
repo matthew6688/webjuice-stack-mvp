@@ -48,7 +48,35 @@ It is generated from `data/paid-intakes` at build time and shows:
 
 The repo JSON remains the source of truth. The admin page is an operator view, not a separate database.
 
-Production `/admin/*` is guarded by `functions/admin/[[path]].ts` and requires `ADMIN_ACCESS_TOKEN`. Operators can open `/admin/intakes?token=<ADMIN_ACCESS_TOKEN>` once to set the secure admin cookie.
+Production `/admin/*` is guarded by `functions/admin/_middleware.ts` and requires `ADMIN_ACCESS_TOKEN`. Operators can open `/admin/intakes?token=<ADMIN_ACCESS_TOKEN>` once to set the secure admin cookie.
+
+## Admin Actions
+
+Each paid intake has a detail page:
+
+```text
+/admin/intakes/<client_slug>/<order_id>
+```
+
+Supported v1 actions:
+
+- request more info
+- mark V1 started
+- mark V1 delivered
+- mark completed
+- approve latest revision
+- reject latest revision
+- mark custom quote needed
+
+The browser posts actions to:
+
+```text
+/admin/action
+```
+
+Cloudflare Pages dispatches `record-paid-intake-action.yml`. The workflow runs `scripts/funnel/record-paid-intake-action.js`, updates the matching paid intake JSON, and appends a timeline event.
+
+Important limitation: the dashboard is generated from repo data at build time. After an action writes to GitHub, the visible dashboard state updates on the next deploy/build. This is acceptable for v1 because GitHub remains the source of truth.
 
 ## Readiness Rules
 
@@ -98,6 +126,8 @@ If Cloudinary is not configured, the current fallback is internal Resend email a
 5. Confirm webhook creates paid intake.
 6. Confirm intake form submission updates `data/paid-intakes`.
 7. Confirm Discord/email notifications are received.
+8. Confirm `/admin/intakes` and `/admin/intakes/<client>/<order>` are protected by `ADMIN_ACCESS_TOKEN`.
+9. Confirm `/admin/action` dispatches `record-paid-intake-action.yml` and writes a timeline event.
 
 ## Deferred Dashboard Work
 

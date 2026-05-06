@@ -29,6 +29,29 @@ export function loadPaidIntakeIndex({ root = 'data/paid-intakes' } = {}) {
   return { records, counts: statusCounts(records), updatedAt: new Date().toISOString() };
 }
 
+export function loadPaidIntakeRecord({ root = 'data/paid-intakes', clientSlug, orderId } = {}) {
+  const filePath = path.join(root, clientSlug || '', `${orderId || ''}.json`);
+  const timelinePath = path.join(root, clientSlug || '', `${orderId || ''}-timeline.jsonl`);
+  if (!fs.existsSync(filePath)) return null;
+  const record = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const timeline = fs.existsSync(timelinePath)
+    ? fs.readFileSync(timelinePath, 'utf8').split(/\n+/).filter(Boolean).map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return { type: 'invalid_timeline_line', raw: line };
+      }
+    })
+    : [];
+  return {
+    record,
+    summary: summarizePaidIntakeRecord(record, filePath),
+    filePath,
+    timelinePath,
+    timeline,
+  };
+}
+
 export function summarizePaidIntakeRecord(record, filePath = '') {
   const revisions = Array.isArray(record.revisions) ? record.revisions : [];
   const acceptedRevisions = revisions.filter((revision) => revision.accepted !== false);

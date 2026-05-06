@@ -15,7 +15,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const provided = queryToken || cookieToken || authToken;
   if (provided !== token) return text('Unauthorized.', 401, { 'WWW-Authenticate': 'Bearer realm="ProfitsLocal Admin"' });
 
-  if (queryToken) {
+  if (queryToken && context.request.method === 'GET') {
     url.searchParams.delete('token');
     const headers = new Headers({
       Location: `${url.pathname}${url.search}${url.hash}`,
