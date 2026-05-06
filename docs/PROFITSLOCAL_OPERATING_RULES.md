@@ -99,8 +99,10 @@ Required dashboard fields:
 Current implementation:
 
 - `/admin/intakes` is a build-time internal index generated from `data/paid-intakes`.
+- `/admin/intakes/<client_slug>/<order_id>` is a build-time detail page with intake content, assets, latest revision, timeline, and operator actions.
 - It shows status counts, readiness, missing fields, Cloudinary asset count, lead recipient, revision count, and record path.
-- Detail/action pages are still intentionally kept in the repo/Discord workflow until the operator actions are finalized.
+- `/admin/action` dispatches `record-paid-intake-action.yml`, which records operator actions back into the paid intake JSON and timeline.
+- The dashboard is protected by `ADMIN_ACCESS_TOKEN`.
 
 ## Repo And Discord Thread Timing
 

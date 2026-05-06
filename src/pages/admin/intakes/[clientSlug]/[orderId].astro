@@ -1,0 +1,130 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import { siteConfig } from '../../../../config/site';
+import { loadPaidIntakeIndex, loadPaidIntakeRecord } from '../../../../../core/funnel/paid-intake-index.js';
+import { allowedAdminActions, adminActionDefinition } from '../../../../../core/funnel/paid-intake-actions.js';
+
+export function getStaticPaths() {
+  const index = loadPaidIntakeIndex();
+  return index.records.map((record) => ({
+    params: { clientSlug: record.clientSlug, orderId: record.orderId },
+  }));
+}
+
+const { clientSlug, orderId } = Astro.params;
+const loaded = loadPaidIntakeRecord({ clientSlug, orderId });
+if (!loaded) return Astro.redirect('/admin/intakes');
+const { record, summary, timeline, filePath, timelinePath } = loaded;
+const actions = allowedAdminActions(record).map((action) => ({ action, definition: adminActionDefinition(action) })).filter((item) => item.definition);
+const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1) : null;
+---
+
+<Layout title={`${summary.customer.company || summary.clientSlug} admin - ${siteConfig.name}`} description="Paid intake detail and operations.">
+  <section class="poster-section admin-section">
+    <div class="admin-shell admin-detail-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow"><a href="/admin/intakes">Internal ops</a> / paid intake</p>
+          <h1>{summary.customer.company || summary.clientSlug}</h1>
+          <p class="lede">{summary.clientSlug} / {summary.orderId}</p>
+        </div>
+        <div class="admin-count">
+          <strong>{summary.revisionCount}</strong>
+          <span>Used revisions of {summary.revisionLimit}</span>
+        </div>
+      </div>
+
+      {Astro.url.searchParams.get('action') === 'queued' && (
+        <div class="admin-notice">Action queued. GitHub Actions will update this record, then the dashboard refreshes after the next deploy.</div>
+      )}
+
+      <div class="admin-detail-grid">
+        <section class="admin-panel">
+          <h2>Status</h2>
+          <mark class={`status-pill status-${summary.status}`}>{summary.status.replaceAll('_', ' ')}</mark>
+          <dl>
+            <div><dt>Readiness</dt><dd>{summary.readinessStatus || 'not checked'}</dd></div>
+            <div><dt>Missing</dt><dd>{summary.missing.length ? summary.missing.join(', ') : 'Ready'}</dd></div>
+            <div><dt>First version confirmed</dt><dd>{summary.firstVersionConfirmed ? 'Yes' : 'No'}</dd></div>
+            <div><dt>Updated</dt><dd>{summary.updatedAt}</dd></div>
+          </dl>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Customer</h2>
+          <dl>
+            <div><dt>Email</dt><dd>{summary.customer.email}</dd></div>
+            <div><dt>Phone</dt><dd>{summary.customer.phone || 'N/A'}</dd></div>
+            <div><dt>Domain</dt><dd>{summary.customer.domain || 'N/A'}</dd></div>
+            <div><dt>Lead recipient</dt><dd>{summary.leadRecipientEmail || summary.customer.email || 'missing'}</dd></div>
+          </dl>
+        </section>
+
+        <section class="admin-panel admin-actions-panel">
+          <h2>Actions</h2>
+          {actions.map(({ action, definition }) => (
+            <form method="post" action="/admin/action" class="admin-action-form">
+              <input type="hidden" name="client_slug" value={summary.clientSlug} />
+              <input type="hidden" name="order_id" value={summary.orderId} />
+              <input type="hidden" name="action" value={action} />
+              <input type="hidden" name="actor" value="profitslocal-admin" />
+              {definition.needsNote && <textarea name="note" placeholder="Required note for customer/internal context" required></textarea>}
+              {!definition.needsNote && <input name="note" placeholder="Optional note" />}
+              <button class="button" type="submit">{definition.label}</button>
+            </form>
+          ))}
+        </section>
+      </div>
+
+      <div class="admin-detail-grid lower">
+        <section class="admin-panel">
+          <h2>Intake Content</h2>
+          <dl>
+            <div><dt>Services</dt><dd>{record.intake?.services || record.intake?.launchNotes || 'N/A'}</dd></div>
+            <div><dt>Primary action</dt><dd>{record.intake?.primaryAction || 'N/A'}</dd></div>
+            <div><dt>Address/service area</dt><dd>{record.intake?.address || summary.customer.domain || 'N/A'}</dd></div>
+            <div><dt>References</dt><dd>{record.intake?.references || record.intake?.referenceUrl || 'N/A'}</dd></div>
+            <div><dt>Notes</dt><dd>{record.intake?.notes || 'N/A'}</dd></div>
+          </dl>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Assets</h2>
+          <ul class="admin-list">
+            {(record.intake?.assets || []).map((asset) => (
+              <li><a href={asset.secureUrl || asset.url} target="_blank" rel="noreferrer">{asset.filename || asset.publicId}</a><span>{asset.resourceType || 'asset'} / {asset.bytes || 0} bytes</span></li>
+            ))}
+            {!(record.intake?.assets || []).length && <li>No Cloudinary assets on this record.</li>}
+          </ul>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Latest Revision</h2>
+          {latestRevision ? (
+            <dl>
+              <div><dt>Status</dt><dd>{latestRevision.status}</dd></div>
+              <div><dt>Revision</dt><dd>{latestRevision.revisionNumber} / {summary.revisionLimit}</dd></div>
+              <div><dt>Changes</dt><dd>{latestRevision.requestedChanges}</dd></div>
+              <div><dt>Assets</dt><dd>{latestRevision.assets?.length || 0}</dd></div>
+            </dl>
+          ) : <p class="micro">No revisions yet.</p>}
+        </section>
+      </div>
+
+      <section class="admin-panel admin-timeline">
+        <h2>Timeline</h2>
+        <ol>
+          {timeline.slice().reverse().slice(0, 12).map((event) => (
+            <li>
+              <strong>{event.type || event.action || 'event'}</strong>
+              <span>{event.createdAt || event.submittedAt || ''}</span>
+              {event.note && <p>{event.note}</p>}
+            </li>
+          ))}
+        </ol>
+        <p class="micro">Record: <code>{filePath}</code></p>
+        <p class="micro">Timeline: <code>{timelinePath}</code></p>
+      </section>
+    </div>
+  </section>
+</Layout>

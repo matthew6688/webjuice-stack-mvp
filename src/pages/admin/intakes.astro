@@ -56,7 +56,9 @@ const counts = statusOrder
             {index.records.map((record) => (
               <tr>
                 <td>
-                  <strong>{record.customer.company || record.clientSlug}</strong>
+                  <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                    <strong>{record.customer.company || record.clientSlug}</strong>
+                  </a>
                   <span>{record.clientSlug}</span>
                   <span>{record.orderId}</span>
                 </td>
