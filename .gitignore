@@ -23,6 +23,9 @@ pnpm-debug.log*
 # local finance ledger may contain campaign revenue/cost data
 data/finance/ledger.jsonl
 
+# large crawler raw dumps; commit summarized evidence/packets instead
+data/redesign/**/firecrawl/
+
 # macOS-specific files
 .DS_Store
 
