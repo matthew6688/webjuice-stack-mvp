@@ -1,0 +1,53 @@
+{
+  "url": "https://www.richandrare.com.au/lunch-dinner",
+  "generatedAt": "2026-05-06T09:00:35.390Z",
+  "verdict": "TinyFish Fetch and Playwright browser extraction captured the complete menu content; Firecrawl markdown missed most pre-banquet menu items and desserts for this page.",
+  "probes": [
+    "Artisan Sourdough Ciabatta",
+    "Woodfired Bone Marrow",
+    "Caviar - 30g Kaviari Oscietra",
+    "Westholme Wagyu Tartare",
+    "Market Fish",
+    "Japanese A5 Wagyu",
+    "Australian Wagyu",
+    "Stone Axe Board",
+    "Wagyu Tomahawk MB5+",
+    "R&R Jacket Potato",
+    "DESSERTS",
+    "Vanilla Crème Brulée"
+  ],
+  "extractors": [
+    {
+      "name": "firecrawl_markdown",
+      "chars": 4122,
+      "probeHits": 4,
+      "missingProbes": [
+        "Woodfired Bone Marrow",
+        "Caviar - 30g Kaviari Oscietra",
+        "Japanese A5 Wagyu",
+        "Australian Wagyu",
+        "Wagyu Tomahawk MB5+",
+        "R&R Jacket Potato",
+        "DESSERTS",
+        "Vanilla Crème Brulée"
+      ]
+    },
+    {
+      "name": "tinyfish_fetch",
+      "chars": 13544,
+      "probeHits": 12,
+      "missingProbes": []
+    },
+    {
+      "name": "playwright_browser_innerText",
+      "chars": 12926,
+      "probeHits": 12,
+      "missingProbes": []
+    }
+  ],
+  "policyUpdate": [
+    "For restaurant menu pages, do not accept section headings without item bodies as complete extraction.",
+    "If Firecrawl output has empty menu sections, retry with TinyFish Fetch or browser innerText before building.",
+    "Menu page must render the complete official menu unless explicitly scoped as highlights only."
+  ]
+}

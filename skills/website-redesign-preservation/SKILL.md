@@ -25,6 +25,19 @@ Accept any mix of:
 - customer notes or Discord discussion;
 - current repo artifacts, if a preview already exists.
 
+## Non-Negotiable Rule
+
+For pages that are themselves the customer-facing content product, preservation means full content, not highlights.
+
+Examples:
+
+- a restaurant menu page must preserve the complete official menu;
+- a salon service/pricing page must preserve the full service list and prices;
+- a roofing services page must preserve all listed services and service-area claims;
+- a catalog/product page must preserve all products or explicitly mark missing products as blocked.
+
+Do not turn a complete page into "selected highlights" unless the user explicitly asks for a teaser or summary page.
+
 ## Tool Strategy
 
 Use the tools in this order:
@@ -35,16 +48,20 @@ Use the tools in this order:
 2. **Dokobot as browser truth check**
    - use for JS-heavy sites, Google search/business panels, social/logged-in pages, pages Firecrawl extracts poorly, and dynamic booking/menu pages.
 
-3. **Brand asset extractor**
+3. **TinyFish Fetch as extraction fallback / comparator**
+   - use when Firecrawl returns section headings without item bodies, short/truncated content, or misses dynamic page text.
+   - compare probe terms against Firecrawl; if TinyFish captures more complete content, prefer TinyFish as the content source.
+
+4. **Brand asset extractor**
    - use for logo, favicon candidates, colors, fonts, hero/gallery images, and OG image.
 
-4. **OCR/document extractors**
+5. **OCR/document extractors**
    - use only when critical content lives in PDFs, image menus, catalogs, or screenshots.
 
-5. **Playwright**
+6. **Playwright**
    - use for final visual QA, screenshots, link checks, mobile overflow, and browser console errors.
 
-6. **Local LLM/Ollama**
+7. **Local LLM/Ollama**
    - use as a critic/auditor, not source of truth. Ask it what disappeared, what conflicts, and what looks risky.
 
 ## Required Output
@@ -168,6 +185,8 @@ Do not redesign if:
 - logo/favicon cannot be identified or intentionally replaced;
 - important pages cannot be read;
 - service/menu/product/pricing data is unclear;
+- a menu/service/product page has section headings but missing item bodies;
+- extracted content fails obvious probe terms from the official rendered page;
 - current site and Google Places conflict on address, phone, hours, or booking;
 - sitemap/URL preservation plan is missing;
 - the proposed sitemap drops important pages without a reason.
@@ -187,7 +206,7 @@ Every niche can add:
 
 Examples:
 
-- restaurant: menu, reservation, delivery/order, private dining, opening hours, `Restaurant` schema.
+- restaurant: complete official menu, reservation, delivery/order, private dining, opening hours, `Restaurant` schema.
 - roofing: services, service areas, license/insurance/warranty claims, quote CTA, emergency service claims, `LocalBusiness` schema.
 - clinic: practitioners, booking, services, compliance language, insurance/payment notes.
 - salon: service menu, pricing, booking, staff, gallery.
