@@ -1,9 +1,16 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
+import { uploadAttachmentsToCloudinary, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
 
 interface Env {
   RESEND_API_KEY: string;
   NOTIFICATION_EMAIL?: string;
   FROM_EMAIL?: string;
+  CLOUDINARY_CLOUD_NAME?: string;
+  CLOUDINARY_API_KEY?: string;
+  CLOUDINARY_API_SECRET?: string;
+  CLOUDINARY_UPLOAD_PRESET?: string;
+  CLOUDINARY_UPLOAD_FOLDER?: string;
+  CLOUDINARY_UPLOAD_MAX_BYTES?: string;
 }
 
 interface ContactForm {
@@ -53,11 +60,21 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
+    const cloudinary = await uploadAttachmentsToCloudinary(context.env, attachments.files, {
+      clientSlug: slugify(company || name || 'brief'),
+      orderId: `brief-${Date.now()}`,
+      submissionType: 'brief',
+    });
+    if (!cloudinary.ok && cloudinary.configured) {
+      return json({ error: cloudinary.error || 'Unable to upload attachments.' }, 502);
+    }
     const notificationEmail = context.env.NOTIFICATION_EMAIL || 'hello@fengtalk.ai';
     const fromEmail = context.env.FROM_EMAIL || 'profitslocal <hello@fengtalk.ai>';
-    const fileSummary = attachments.files.length
-      ? attachments.files.map((file) => `- ${file.filename} (${file.content_type || 'unknown'}, ${formatBytes(file.size)})`).join('\n')
-      : 'None';
+    const fileSummary = cloudinary.ok && cloudinary.assets?.length
+      ? summarizeCloudinaryAssets(cloudinary.assets).split('\n').map((line) => `- ${line}`).join('\n')
+      : attachments.files.length
+        ? attachments.files.map((file) => `- ${file.filename} (${file.content_type || 'unknown'}, ${formatBytes(file.size)})`).join('\n')
+        : 'None';
 
     const resendRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -83,7 +100,7 @@ ${fileSummary}
 Message:
 ${message}`,
         reply_to: email,
-        attachments: attachments.files.map((file) => ({
+        attachments: cloudinary.ok && cloudinary.assets?.length ? [] : attachments.files.map((file) => ({
           filename: file.filename,
           content: file.content,
           content_type: file.content_type,
@@ -94,22 +111,13 @@ ${message}`,
     if (!resendRes.ok) {
       const err = await resendRes.text();
       console.error('Resend error:', err);
-      return new Response(JSON.stringify({ error: 'Failed to send notification' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return json({ error: 'Failed to send notification' }, 500);
     }
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ success: true, cloudinary: cloudinary.ok && Boolean(cloudinary.assets?.length) });
   } catch (err) {
     console.error('Contact form error:', err);
-    return new Response(JSON.stringify({ error: 'Internal error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ error: 'Internal error' }, 500);
   }
 };
 
@@ -164,6 +172,10 @@ function stringField(formData: FormData, name: string) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function json(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
+}
+
 function safeFileName(value: string) {
   return value
     .replace(/[^\w.\- ()]+/g, '_')
@@ -179,6 +191,15 @@ function arrayBufferToBase64(buffer: ArrayBuffer) {
     binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
   }
   return btoa(binary);
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60) || 'brief';
 }
 
 function formatBytes(bytes: number) {

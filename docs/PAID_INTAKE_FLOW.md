@@ -19,7 +19,7 @@ This keeps the $399/$799 packages scalable: customers submit information through
    - `data/paid-intakes/<client>/<order>.json`
 4. Customer receives an email with `/intake?order_id=...&email=...&client_slug=...`.
 5. Customer submits structured intake and optional files.
-6. `/api/intake-submit` sends file attachments by email, then dispatches `record-paid-intake.yml`.
+6. `/api/intake-submit` uploads file attachments to Cloudinary when configured, sends an internal notification with asset references, then dispatches `record-paid-intake.yml`.
 7. `record-paid-intake.yml` updates the same paid intake JSON and appends a timeline event.
 8. Readiness is recalculated:
    - `intake_needs_more_info`
@@ -43,9 +43,11 @@ Missing items are stored in `readiness.missing` so the dashboard can request spe
 
 ## File Handling
 
-Customer file bytes are not committed to the repository. The site sends uploads through Resend as internal email attachments, and the repo stores only summaries such as:
+Customer file bytes are not committed to the repository. The site uploads files to Cloudinary when configured. The repo stores summaries and Cloudinary references such as:
 
 `logo.png (image/png, 42 KB)`
+
+If Cloudinary is not configured, the current fallback is internal Resend email attachments so the customer submission is not lost. Production should keep `CLOUDINARY_*` secrets configured so GitHub records can reference uploaded assets.
 
 ## Deploy Order
 

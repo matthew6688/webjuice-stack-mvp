@@ -35,6 +35,28 @@ const complete = await recordPaidIntakeUpdate({
     address: '123 Main St, Austin TX',
     services: 'Coffee, brunch, catering, and private events.',
     primary_action: 'Book online',
+    lead_recipient_email: 'leads@example.com',
+    references: 'https://example.com',
+    files: ['logo.png (image/png, 42 KB)'],
+    asset_refs: JSON.stringify([{ filename: 'logo.png', publicId: 'profitslocal/test/logo', secureUrl: 'https://res.cloudinary.com/demo/image/upload/logo.png' }]),
+    confirm_generate_v1: 'on',
+    confirm_one_page_scope: 'on',
+    confirm_refund_policy: 'on',
+  },
+  outputDir: root,
+  silent: true,
+});
+
+const contentReadyNeedsConfirmation = await recordPaidIntakeUpdate({
+  payload: {
+    order_id: 'cs_test_paid_intake_needs_confirmation',
+    email: 'owner@example.com',
+    client_slug: 'paid-intake-needs-confirmation',
+    business_name: 'Needs Confirmation Business',
+    address: '123 Main St, Austin TX',
+    services: 'Coffee, brunch, catering, and private events.',
+    primary_action: 'Book online',
+    lead_recipient_email: 'leads@example.com',
     references: 'https://example.com',
     files: ['logo.png (image/png, 42 KB)'],
   },
@@ -47,7 +69,12 @@ const assertions = {
   paidCheckoutCreatesPaidIntake: paidRoute.paidIntake?.status === 'paid_intake_pending_preview',
   paidCheckoutListsMissingDetails: paidRoute.paidIntake?.readiness?.missing?.includes('menu, services, products, or offers'),
   incompleteNeedsMoreInfo: incomplete.readiness.status === 'needs_more_info' && incomplete.status === 'intake_needs_more_info',
+  contentReadyNeedsGenerationConfirmation: contentReadyNeedsConfirmation.readiness.status === 'needs_generation_confirmation'
+    && contentReadyNeedsConfirmation.status === 'intake_needs_generation_confirmation',
   completeReadyForAgentTask: complete.readiness.status === 'ready_for_agent_task' && complete.status === 'intake_ready_for_review',
+  completeStoresLeadRecipient: complete.leadDelivery?.recipientEmail === 'leads@example.com',
+  completeStoresGenerationConfirmation: complete.firstVersionConfirmation?.confirmed === true,
+  completeStoresCloudinaryAssets: complete.assets?.[0]?.publicId === 'profitslocal/test/logo',
 };
 const failed = Object.entries(assertions).filter(([, ok]) => !ok).map(([name]) => name);
 
@@ -68,6 +95,13 @@ const result = {
   complete: {
     status: complete.status,
     missing: complete.readiness.missing,
+    leadRecipientEmail: complete.leadDelivery?.recipientEmail,
+    firstVersionConfirmed: complete.firstVersionConfirmation?.confirmed,
+    assets: complete.assets,
+  },
+  contentReadyNeedsConfirmation: {
+    status: contentReadyNeedsConfirmation.status,
+    missing: contentReadyNeedsConfirmation.readiness.missing,
   },
 };
 
