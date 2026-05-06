@@ -3,7 +3,7 @@
   "clientSlug": "rich-and-rare-restaurant",
   "niche": "restaurant",
   "sourceWebsiteUrl": "https://www.richandrare.com.au",
-  "generatedAt": "2026-05-06T08:33:47.746Z",
+  "generatedAt": "2026-05-06T08:44:03.896Z",
   "toolStrategy": {
     "primaryCrawler": "firecrawl",
     "browserTruthCheck": "dokobot",
@@ -20,43 +20,43 @@
       "status": "read"
     },
     {
-      "url": "https://www.richandrare.com.au/lunch-dinner",
-      "title": "Lunch & Dinner Menu",
+      "url": "https://www.richandrare.com.au/menus",
+      "title": "Lunch & Dinner Menu — Rich & Rare Restaurant Brisbane",
       "pageType": "menu",
       "importance": "must_keep",
-      "source": "dokobot_google_search",
+      "source": "firecrawl",
+      "status": "read"
+    },
+    {
+      "url": "https://www.richandrare.com.au/lunch-dinner",
+      "title": "Lunch & Dinner Menu — Rich & Rare Restaurant Brisbane",
+      "pageType": "menu",
+      "importance": "must_keep",
+      "source": "firecrawl",
       "status": "read"
     },
     {
       "url": "https://www.richandrare.com.au/lunch-specials",
-      "title": "Lunch Specials",
+      "title": "Lunch Specials — Rich & Rare Restaurant Brisbane",
       "pageType": "menu",
       "importance": "must_keep",
-      "source": "dokobot_google_search",
-      "status": "read"
-    },
-    {
-      "url": "https://www.richandrare.com.au/contact",
-      "title": "Contact",
-      "pageType": "contact",
-      "importance": "must_keep",
-      "source": "dokobot_google_search",
+      "source": "firecrawl",
       "status": "read"
     },
     {
       "url": "https://www.richandrare.com.au/the-experience",
-      "title": "The R&R Experience",
-      "pageType": "about",
+      "title": "The Rich & Rare Experience — Rich & Rare Restaurant Brisbane",
+      "pageType": "experience",
       "importance": "should_keep",
-      "source": "dokobot_google_search",
+      "source": "firecrawl",
       "status": "read"
     },
     {
-      "url": "https://www.richandrare.com.au/menus",
-      "title": "Menu",
-      "pageType": "menu",
+      "url": "https://www.richandrare.com.au/contact",
+      "title": "Contact | Book Your Table Now — Rich & Rare Restaurant Brisbane",
+      "pageType": "contact",
       "importance": "must_keep",
-      "source": "content_artifact",
+      "source": "firecrawl",
       "status": "read"
     },
     {
@@ -83,9 +83,9 @@
       "title": "Menu",
       "pageType": "menu",
       "sourceOldUrls": [
+        "https://www.richandrare.com.au/menus",
         "https://www.richandrare.com.au/lunch-dinner",
-        "https://www.richandrare.com.au/lunch-specials",
-        "https://www.richandrare.com.au/menus"
+        "https://www.richandrare.com.au/lunch-specials"
       ],
       "action": "keep"
     },
@@ -107,15 +107,15 @@
     ],
     "redirects301": [
       {
+        "from": "https://www.richandrare.com.au/menus",
+        "to": "/menu/"
+      },
+      {
         "from": "https://www.richandrare.com.au/lunch-dinner",
         "to": "/menu/"
       },
       {
         "from": "https://www.richandrare.com.au/lunch-specials",
-        "to": "/menu/"
-      },
-      {
-        "from": "https://www.richandrare.com.au/menus",
         "to": "/menu/"
       }
     ],
@@ -154,7 +154,7 @@
   },
   "brandAssets": {
     "logo": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/cc41bc60-4e56-4535-97b8-ba1ee763d87a/Rich+and+Rare_Type+Logo_CMYK_White.png?format=1500w",
-    "favicon": "",
+    "favicon": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/629177b2-75d2-4bd1-8de2-0ebafaf97f79/favicon.ico?format=100w",
     "colors": [
       "#112233",
       "#112255",
@@ -171,11 +171,21 @@
       "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/a0fba70f-ea90-45c7-ad8c-cba7128b6dc7/Rich-and-Rare_Web-Page-design_V2.jpg",
       "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/19f3cb37-cf2c-46fe-bcc7-e309fcf78111/R%26R_Winner.png",
       "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/43db72df-198f-49ae-9f24-bbaa214cfe7b/bronze-award.png",
-      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/2314692f-be6e-4368-afe0-c3d90817fef7/Rich+%26+Rare+-+Markus+Ravik+-+124.jpg"
+      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/2314692f-be6e-4368-afe0-c3d90817fef7/Rich+%26+Rare+-+Markus+Ravik+-+124.jpg",
+      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/99f9891a-49a4-443a-9cc4-d63233ba5bc0/Rich+%26+Rare+-+Markus+Ravik+106.jpg",
+      "https://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w",
+      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/2314692f-be6e-4368-afe0-c3d90817fef7/Rich+%26+Rare+-+Markus+Ravik+-+124.jpg",
+      "https://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/69b100f33b0f40403323b0da/1695353808046/Rich-%26-Rare---Markus-Ravik-065.jpg?format=1500w",
+      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/2314692f-be6e-4368-afe0-c3d90817fef7/Rich+%26+Rare+-+Markus+Ravik+-+124.jpg",
+      "https://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/69b100f33b0f40403323b0da/1695353808046/Rich-%26-Rare---Markus-Ravik-065.jpg?format=1500w",
+      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/fc8cb8c3-b3d2-41f4-a07f-814ef77b9f69/RAR82_Hero+image+resized.png",
+      "https://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w",
+      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/1708054198737-GHC5EN35RMGYPFGEL3JC/Rich+%26+Rare+-+Markus+Ravik+-+183.jpg",
+      "https://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/69b1077b3b0f404033245b2b/1708053726585/Rich+%26+Rare+-+Markus+Ravik+-+190.jpg?format=1500w",
+      "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/08e3020c-9b98-40b7-9703-7cc0917dec6b/Rich+And+Rare+West+End",
+      "https://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w"
     ],
-    "needsConfirmation": [
-      "favicon"
-    ]
+    "needsConfirmation": []
   },
   "contentPreservationMap": [
     {
@@ -183,6 +193,13 @@
       "importance": "must_keep",
       "destinationUrl": "/",
       "treatment": "rewrite",
+      "risk": ""
+    },
+    {
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "importance": "must_keep",
+      "destinationUrl": "/menu/",
+      "treatment": "keep",
       "risk": ""
     },
     {
@@ -200,13 +217,6 @@
       "risk": ""
     },
     {
-      "sourceUrl": "https://www.richandrare.com.au/contact",
-      "importance": "must_keep",
-      "destinationUrl": "/contact/",
-      "treatment": "keep",
-      "risk": ""
-    },
-    {
       "sourceUrl": "https://www.richandrare.com.au/the-experience",
       "importance": "should_keep",
       "destinationUrl": "",
@@ -214,9 +224,9 @@
       "risk": "No proposed destination."
     },
     {
-      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "sourceUrl": "https://www.richandrare.com.au/contact",
       "importance": "must_keep",
-      "destinationUrl": "/menu/",
+      "destinationUrl": "/contact/",
       "treatment": "keep",
       "risk": ""
     },
@@ -302,29 +312,24 @@
         "pageType": "home"
       },
       {
-        "title": "Lunch & Dinner Menu",
+        "title": "Lunch & Dinner Menu — Rich & Rare Restaurant Brisbane",
+        "url": "https://www.richandrare.com.au/menus",
+        "pageType": "menu"
+      },
+      {
+        "title": "Lunch & Dinner Menu — Rich & Rare Restaurant Brisbane",
         "url": "https://www.richandrare.com.au/lunch-dinner",
         "pageType": "menu"
       },
       {
-        "title": "Lunch Specials",
+        "title": "Lunch Specials — Rich & Rare Restaurant Brisbane",
         "url": "https://www.richandrare.com.au/lunch-specials",
         "pageType": "menu"
       },
       {
-        "title": "Contact",
+        "title": "Contact | Book Your Table Now — Rich & Rare Restaurant Brisbane",
         "url": "https://www.richandrare.com.au/contact",
         "pageType": "contact"
-      },
-      {
-        "title": "The R&R Experience",
-        "url": "https://www.richandrare.com.au/the-experience",
-        "pageType": "about"
-      },
-      {
-        "title": "Menu",
-        "url": "https://www.richandrare.com.au/menus",
-        "pageType": "menu"
       }
     ],
     "requiredHeaderLinks": [
@@ -361,10 +366,8 @@
     "warnings": []
   },
   "readiness": {
-    "status": "needs_customer_confirmation",
+    "status": "ready_for_redesign",
     "blockers": [],
-    "warnings": [
-      "favicon missing or unconfirmed"
-    ]
+    "warnings": []
   }
 }

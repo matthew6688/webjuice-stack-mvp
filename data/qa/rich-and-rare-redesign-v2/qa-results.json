@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "desktop-home",
+      "url": "http://127.0.0.1:4333/",
+      "status": 200,
+      "hasBrand": true,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLunchSpecials": true,
+      "hasExperience": true,
+      "errors": []
+    },
+    {
+      "name": "mobile-home",
+      "url": "http://127.0.0.1:4333/",
+      "status": 200,
+      "hasBrand": true,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLunchSpecials": true,
+      "hasExperience": true,
+      "errors": []
+    },
+    {
+      "name": "mobile-menu",
+      "url": "http://127.0.0.1:4333/menu/",
+      "status": 200,
+      "hasBrand": true,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLunchSpecials": true,
+      "hasExperience": true,
+      "errors": []
+    },
+    {
+      "name": "desktop-contact",
+      "url": "http://127.0.0.1:4333/contact/",
+      "status": 200,
+      "hasBrand": true,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLunchSpecials": false,
+      "hasExperience": false,
+      "errors": []
+    },
+    {
+      "name": "seo-files",
+      "sitemapHasMenu": true,
+      "robotsHasSitemap": true,
+      "redirectsLunchDinner": true
+    }
+  ]
+}

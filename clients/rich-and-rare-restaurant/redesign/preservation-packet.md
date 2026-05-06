@@ -1,9 +1,9 @@
 # Redesign Preservation Packet: Rich & Rare Restaurant
 
-Generated: 2026-05-06T08:33:47.746Z
+Generated: 2026-05-06T08:44:03.896Z
 Niche: restaurant
 Source website: https://www.richandrare.com.au
-Readiness: needs_customer_confirmation
+Readiness: ready_for_redesign
 
 ## Core Business Facts
 - Name: Rich & Rare Restaurant
@@ -15,25 +15,25 @@ Readiness: needs_customer_confirmation
 
 ## Current Sitemap
 - must_keep: https://www.richandrare.com.au (home) - Home
-- must_keep: https://www.richandrare.com.au/lunch-dinner (menu) - Lunch & Dinner Menu
-- must_keep: https://www.richandrare.com.au/lunch-specials (menu) - Lunch Specials
-- must_keep: https://www.richandrare.com.au/contact (contact) - Contact
-- should_keep: https://www.richandrare.com.au/the-experience (about) - The R&R Experience
-- must_keep: https://www.richandrare.com.au/menus (menu) - Menu
+- must_keep: https://www.richandrare.com.au/menus (menu) - Lunch & Dinner Menu — Rich & Rare Restaurant Brisbane
+- must_keep: https://www.richandrare.com.au/lunch-dinner (menu) - Lunch & Dinner Menu — Rich & Rare Restaurant Brisbane
+- must_keep: https://www.richandrare.com.au/lunch-specials (menu) - Lunch Specials — Rich & Rare Restaurant Brisbane
+- should_keep: https://www.richandrare.com.au/the-experience (experience) - The Rich & Rare Experience — Rich & Rare Restaurant Brisbane
+- must_keep: https://www.richandrare.com.au/contact (contact) - Contact | Book Your Table Now — Rich & Rare Restaurant Brisbane
 - must_keep: https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant (external_cta) - Reservation
 
 ## Proposed Sitemap
 - rewrite: / <= https://www.richandrare.com.au (home)
-- keep: /menu/ <= https://www.richandrare.com.au/lunch-dinner, https://www.richandrare.com.au/lunch-specials, https://www.richandrare.com.au/menus (menu)
+- keep: /menu/ <= https://www.richandrare.com.au/menus, https://www.richandrare.com.au/lunch-dinner, https://www.richandrare.com.au/lunch-specials (menu)
 - keep: /contact/ <= https://www.richandrare.com.au/contact (contact)
 
 ## URL Preservation
 - keep: https://www.richandrare.com.au
 - keep: https://www.richandrare.com.au/contact
 - keep: https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant
+- 301: https://www.richandrare.com.au/menus -> /menu/
 - 301: https://www.richandrare.com.au/lunch-dinner -> /menu/
 - 301: https://www.richandrare.com.au/lunch-specials -> /menu/
-- 301: https://www.richandrare.com.au/menus -> /menu/
 
 ## SEO Plan
 - Preserve old URLs where possible.
@@ -50,4 +50,3 @@ Readiness: needs_customer_confirmation
 
 ## Risks / Missing
 - No blockers detected.
-- warning: favicon missing or unconfirmed

@@ -16,7 +16,7 @@ export function buildRedesignPreservationPacket({
   const currentSitemap = buildCurrentSitemap({ websiteUrl, content, pages, googleSearchText });
   const proposedSitemap = buildProposedSitemap({ currentSitemap, niche, content });
   const urlPreservation = buildUrlPreservation({ currentSitemap, proposedSitemap });
-  const brandAssets = buildBrandAssets({ content, design });
+  const brandAssets = buildBrandAssets({ content, design, pages });
   const contentPreservationMap = buildContentPreservationMap({ currentSitemap, proposedSitemap, facts, content });
   const seoPlan = buildSeoPlan({ websiteUrl, currentSitemap, proposedSitemap, niche, facts });
   const headerFooterNavigation = buildHeaderFooterNavigation({ currentSitemap, content });
@@ -188,19 +188,21 @@ function buildUrlPreservation({ currentSitemap, proposedSitemap }) {
   return { keepSameUrl, redirects301, needsManualRedirectReview, droppedUrls };
 }
 
-function buildBrandAssets({ content, design }) {
+function buildBrandAssets({ content, design, pages = [] }) {
+  const favicon = content.brand?.favicon || pages.find((item) => item.favicon)?.favicon || '';
   return {
     logo: content.brand?.logo || '',
-    favicon: '',
+    favicon,
     colors: content.brand?.colors || design.tokens?.colors || [],
     fonts: content.brand?.fonts || design.tokens?.fonts || [],
     primaryImages: [
       ...(content.gallery || []).map((item) => item.url).filter(Boolean),
       content.brand?.ogImage,
+      ...pages.flatMap((item) => [item.primaryImage, item.ogImage]).filter(Boolean),
     ].filter(Boolean),
     needsConfirmation: [
       ...(!content.brand?.logo ? ['logo'] : []),
-      'favicon',
+      ...(!favicon ? ['favicon'] : []),
     ],
   };
 }

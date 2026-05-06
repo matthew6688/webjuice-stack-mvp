@@ -2,6 +2,9 @@
 
 import path from 'path';
 import { FirecrawlExtractor } from '../../core/extractors/firecrawl.js';
+import { loadLocalEnv } from '../../core/env/load-local-env.js';
+
+loadLocalEnv();
 
 function parseArgs() {
   const args = process.argv.slice(2);

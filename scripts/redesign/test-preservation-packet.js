@@ -17,7 +17,7 @@ Phone:(07) 3638 8888
 Reservations: sevenrooms.com
 `;
 
-const packet = buildRedesignPreservationPacket({
+const baseInput = {
   clientSlug: 'rich-and-rare-restaurant',
   niche: 'restaurant',
   websiteUrl: 'https://www.richandrare.com.au',
@@ -43,6 +43,21 @@ const packet = buildRedesignPreservationPacket({
       sections: [{ name: 'Menu', items: [{ name: 'Steak', sourceUrl: 'https://www.richandrare.com.au/menu' }] }],
     },
   },
+};
+
+const packet = buildRedesignPreservationPacket(baseInput);
+const packetWithFirecrawlFavicon = buildRedesignPreservationPacket({
+  ...baseInput,
+  pages: [
+    {
+      url: 'https://www.richandrare.com.au/lunch-dinner',
+      title: 'Lunch & Dinner Menu',
+      pageType: 'menu',
+      importance: 'must_keep',
+      source: 'firecrawl',
+      favicon: 'https://images.squarespace-cdn.com/favicon.ico?format=100w',
+    },
+  ],
 });
 
 assert.equal(packet.coreBusinessFacts.businessName, 'Rich & Rare Restaurant');
@@ -54,6 +69,9 @@ assert.ok(packet.urlPreservation.redirects301.some((item) => item.from.includes(
 assert.ok(!packet.urlPreservation.redirects301.some((item) => item.from.includes('sevenrooms.com')));
 assert.equal(packet.readiness.status, 'needs_customer_confirmation');
 assert.ok(packet.readiness.warnings.includes('favicon missing or unconfirmed'));
+assert.equal(packetWithFirecrawlFavicon.readiness.status, 'ready_for_redesign');
+assert.equal(packetWithFirecrawlFavicon.brandAssets.favicon, 'https://images.squarespace-cdn.com/favicon.ico?format=100w');
+assert.ok(!packetWithFirecrawlFavicon.readiness.warnings.includes('favicon missing or unconfirmed'));
 
 console.log(JSON.stringify({
   ok: true,
@@ -65,6 +83,8 @@ console.log(JSON.stringify({
     internalRedirectsPlanned: true,
     externalBookingNotRedirected: true,
     faviconWarningBlocksBlindBuild: true,
+    firecrawlFaviconClearsReadinessWarning: true,
   },
-  status: packet.readiness.status,
+  statusWithoutFavicon: packet.readiness.status,
+  statusWithFirecrawlFavicon: packetWithFirecrawlFavicon.readiness.status,
 }, null, 2));
