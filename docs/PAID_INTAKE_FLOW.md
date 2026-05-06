@@ -21,11 +21,34 @@ This keeps the $399/$799 packages scalable: customers submit information through
 5. Customer submits structured intake and optional files.
 6. `/api/intake-submit` uploads file attachments to Cloudinary when configured, sends an internal notification with asset references, then dispatches `record-paid-intake.yml`.
 7. `record-paid-intake.yml` updates the same paid intake JSON and appends a timeline event.
-8. Readiness is recalculated:
+8. `/api/intake-submit` posts a Discord ops notification when `SALES_DISCORD_WEBHOOK_URL` or `PAID_INTAKE_DISCORD_WEBHOOK_URL` is configured.
+9. Readiness is recalculated:
    - `intake_needs_more_info`
+   - `intake_needs_generation_confirmation`
    - `intake_ready_for_review`
 
 No website agent task is created automatically during paid intake. That handoff should happen only after the intake is reviewed or the future dashboard marks it ready.
+
+## Internal Visibility
+
+The current internal queue is:
+
+```text
+/admin/intakes
+```
+
+It is generated from `data/paid-intakes` at build time and shows:
+
+- status counts
+- customer and lead delivery email
+- missing readiness fields
+- Cloudinary asset/file counts
+- revision count against the package allowance
+- repo record path
+
+The repo JSON remains the source of truth. The admin page is an operator view, not a separate database.
+
+Production `/admin/*` is guarded by `functions/admin/[[path]].ts` and requires `ADMIN_ACCESS_TOKEN`. Operators can open `/admin/intakes?token=<ADMIN_ACCESS_TOKEN>` once to set the secure admin cookie.
 
 ## Readiness Rules
 
@@ -40,6 +63,23 @@ An intake is ready when these are present:
 - at least one file, reference website, or preview URL
 
 Missing items are stored in `readiness.missing` so the dashboard can request specific follow-up details.
+
+## Revision Flow
+
+After V1 exists, customers use:
+
+```text
+/revision?order_id=<order>&email=<checkout_email>&client_slug=<client>
+```
+
+`/api/revision-submit` uploads files to Cloudinary, dispatches `record-paid-revision.yml`, and posts a Discord ops notification. The workflow appends a revision entry to the matching paid intake JSON.
+
+Default limits:
+
+- one-time website: 3 included revisions
+- yearly maintenance: 12 included revision requests per year
+
+Accepted in-scope revisions increment the used count. Requests over the included allowance are recorded with `revision_needs_extra_payment` so the operator can route the customer to an extra revision checkout or custom quote.
 
 ## File Handling
 

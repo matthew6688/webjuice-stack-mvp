@@ -84,8 +84,7 @@ data/paid-intakes/<client_slug>/<order_id>-timeline.jsonl
 The dashboard should expose this as:
 
 ```text
-/admin/paid-intakes
-/admin/paid-intakes/<client_slug>/<order_id>
+/admin/intakes
 ```
 
 Required dashboard fields:
@@ -96,6 +95,12 @@ Required dashboard fields:
 - latest timeline entries
 - linked case and Discord thread
 - actions: request more info, draft customer email, send customer email, mark ready, generate first version
+
+Current implementation:
+
+- `/admin/intakes` is a build-time internal index generated from `data/paid-intakes`.
+- It shows status counts, readiness, missing fields, Cloudinary asset count, lead recipient, revision count, and record path.
+- Detail/action pages are still intentionally kept in the repo/Discord workflow until the operator actions are finalized.
 
 ## Repo And Discord Thread Timing
 
@@ -197,6 +202,15 @@ customer submits revision form
 ```
 
 The revision form must make the boundary clear and require the customer to confirm that the request uses one revision if accepted.
+
+Current implementation:
+
+- Customer revision entrypoint: `/revision`.
+- API: `/api/revision-submit`.
+- Recording workflow: `.github/workflows/record-paid-revision.yml`.
+- Repo script: `scripts/funnel/record-paid-revision-update.js`.
+- Revision records are appended to the existing paid intake JSON under `revisions`.
+- Default included revision limits are 3 for `one_time` and 12 for `yearly_maintenance`.
 
 ## Refund Policy
 

@@ -1,6 +1,6 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
 import { uploadAttachmentsToCloudinary, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
-import { buildPaidIntakeOpsMessage, sendOpsDiscordMessage } from '../../core/funnel/paid-intake-ops.js';
+import { buildRevisionOpsMessage, sendOpsDiscordMessage } from '../../core/funnel/paid-intake-ops.js';
 
 interface Env {
   AGENT_GITHUB_TOKEN?: string;
@@ -27,12 +27,18 @@ const MAX_FILE_COUNT = 8;
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const { body, attachments } = await readMultipart(context.request);
-    if (!body.order_id || !body.email) return json({ error: 'Order ID and email are required.' }, 400);
+    if (!body.order_id || !body.email || !body.requested_changes) {
+      return json({ error: 'Order ID, email, and requested changes are required.' }, 400);
+    }
+    if (body.confirm_revision_scope !== 'on') {
+      return json({ error: 'Please confirm the revision scope before submitting.' }, 400);
+    }
     if (attachments.totalBytes > MAX_ATTACHMENT_BYTES) return json({ error: 'Attachments are too large.' }, 413);
+
     const cloudinary = await uploadAttachmentsToCloudinary(context.env, attachments.files, {
-      clientSlug: body.client_slug || body.business_name || 'paid-intake',
+      clientSlug: body.client_slug || body.business_name || 'paid-revision',
       orderId: body.order_id,
-      submissionType: 'intake',
+      submissionType: 'revision',
     });
     if (!cloudinary.ok && cloudinary.configured) {
       return json({ error: cloudinary.error || 'Unable to upload attachments.' }, 502);
@@ -49,17 +55,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     };
 
     if (attachments.files.length) {
-      const sent = await sendAttachmentEmail(context.env, payload, cloudinary.ok && cloudinary.assets?.length ? [] : attachments.files);
-      if (!sent.ok) return json({ error: sent.error || 'Unable to send attachments.' }, 502);
+      const sent = await sendRevisionEmail(context.env, payload, cloudinary.ok && cloudinary.assets?.length ? [] : attachments.files);
+      if (!sent.ok) return json({ error: sent.error || 'Unable to send revision assets.' }, 502);
     }
 
     const dispatched = await dispatchRecordWorkflow(context.env, payload);
-    if (!dispatched.ok) return json({ error: dispatched.error || 'Unable to record intake.' }, 502);
-    const discordPayload = buildPaidIntakeOpsMessage({
-      eventType: payload.confirm_generate_v1 ? 'intake_ready_for_review' : 'intake_submitted',
+    if (!dispatched.ok) return json({ error: dispatched.error || 'Unable to record revision.' }, 502);
+
+    const discordPayload = buildRevisionOpsMessage({
       payload,
       summary: {
-        status: payload.confirm_generate_v1 ? 'intake_submitted_with_generation_confirmation' : 'intake_submitted',
+        clientSlug: payload.client_slug,
+        orderId: payload.order_id,
+        status: 'revision_submitted',
         files: payload.files,
         assets: cloudinary.ok ? cloudinary.assets : [],
       },
@@ -68,7 +76,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const discord = await sendOpsDiscordMessage(context.env, discordPayload);
     return json({ success: true, dispatched: true, cloudinary: cloudinary.ok && Boolean(cloudinary.assets?.length), discord });
   } catch (error) {
-    console.error('Intake submit error:', error);
+    console.error('Revision submit error:', error);
     return json({ error: 'Internal error.' }, 500);
   }
 };
@@ -83,13 +91,13 @@ async function dispatchRecordWorkflow(env: Env, payload: Record<string, string |
   if (!token) return { ok: false, error: 'Missing AGENT_GITHUB_TOKEN or GH_PAT.' };
   const repo = env.AGENT_REPO || 'matthew6688/webjuice-stack-mvp';
   const ref = env.AGENT_REF || 'main';
-  const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/record-paid-intake.yml/dispatches`, {
+  const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/record-paid-revision.yml/dispatches`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/vnd.github+json',
       'Content-Type': 'application/json',
-      'User-Agent': 'profitslocal-paid-intake',
+      'User-Agent': 'profitslocal-paid-revision',
       'X-GitHub-Api-Version': '2022-11-28',
     },
     body: JSON.stringify({
@@ -104,7 +112,7 @@ async function dispatchRecordWorkflow(env: Env, payload: Record<string, string |
   return { ok: false, error: await response.text() };
 }
 
-async function sendAttachmentEmail(env: Env, payload: Record<string, string | string[]>, files: Array<{ filename: string; content: string; content_type: string; size: number }>) {
+async function sendRevisionEmail(env: Env, payload: Record<string, string | string[]>, files: Array<{ filename: string; content: string; content_type: string; size: number }>) {
   if (!env.RESEND_API_KEY) return { ok: false, error: 'Resend is not configured.' };
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -115,7 +123,7 @@ async function sendAttachmentEmail(env: Env, payload: Record<string, string | st
     body: JSON.stringify({
       from: env.FROM_EMAIL || 'profitslocal <hello@fengtalk.ai>',
       to: env.NOTIFICATION_EMAIL || 'hello@fengtalk.ai',
-      subject: `Paid intake assets: ${payload.business_name || payload.client_slug || payload.order_id}`,
+      subject: `Paid revision assets: ${payload.business_name || payload.client_slug || payload.order_id}`,
       text: Object.entries(payload).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`).join('\n'),
       reply_to: String(payload.email || ''),
       attachments: files.map((file) => ({
