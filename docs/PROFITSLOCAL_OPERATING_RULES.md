@@ -44,6 +44,13 @@ GitHub should not store:
 
 Cloudinary is the v1 asset store. If Cloudinary becomes expensive or insufficient, migrate asset storage to Cloudflare R2 or S3 while keeping GitHub records as references.
 
+Current implementation:
+
+- `/api/contact`, `/api/create-checkout-session`, and `/api/intake-submit` upload attachments to Cloudinary when `CLOUDINARY_*` runtime secrets are configured.
+- Checkout uploads also create a Cloudinary raw JSON manifest, then store `asset_manifest_url` and `asset_manifest_public_id` in Stripe metadata so the paid intake can recover asset references after payment.
+- `/api/intake-submit` sends Cloudinary asset references through `record-paid-intake.yml`, and `data/paid-intakes/*` stores them under `intake.assets`.
+- If Cloudinary is not configured, the site falls back to internal Resend attachments so submissions are not lost. Production should configure Cloudinary to avoid relying on email as file storage.
+
 Recommended Cloudinary folder shape:
 
 ```text
@@ -271,7 +278,7 @@ Later, the dashboard or intake form can expose a ProfitsLocal template library o
 1. Public copy and FAQ: scope, refund, revision boundary, custom build pricing.
 2. Intake form: lead recipient email and first-version confirmation fields.
 3. Paid intake records: persist `leadDelivery` and confirmation fields.
-4. Cloudinary upload path: replace email-only asset handling with Cloudinary references.
+4. Cloudinary upload path: implemented for contact, checkout, and paid intake with Resend fallback when Cloudinary is not configured.
 5. Discord thread summary for paid intake.
 6. Customer email HTML templates for all key lifecycle events.
 7. Resend webhook to Discord thread.

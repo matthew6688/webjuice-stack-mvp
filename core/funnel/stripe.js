@@ -25,6 +25,8 @@ export function normalizeStripeCheckoutEvent(payload, env = {}) {
     domain: metadata.preferred_domain || metadata.domain || '',
     parentOrderId: metadata.parent_order_id || metadata.parentOrderId || '',
     orderKind: metadata.order_kind || '',
+    assetManifestUrl: metadata.asset_manifest_url || '',
+    assetManifestPublicId: metadata.asset_manifest_public_id || '',
     files: metadata.attachment_summary
       ? String(metadata.attachment_summary).split(/\n+/).map((value) => value.trim()).filter(Boolean)
       : [],

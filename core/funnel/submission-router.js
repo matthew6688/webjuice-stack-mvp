@@ -401,6 +401,9 @@ function buildPaidIntakeRecord({ order, provider, submissionPath, ledgerEvent })
       launchNotes: order.feedback || '',
       referenceUrl: order.referenceUrl || '',
       files: order.files || [],
+      assets: [],
+      assetManifestUrl: order.assetManifestUrl || '',
+      assetManifestPublicId: order.assetManifestPublicId || '',
       source: 'direct_checkout',
     },
     paths: {

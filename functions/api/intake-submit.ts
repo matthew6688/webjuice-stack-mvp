@@ -1,4 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
+import { uploadAttachmentsToCloudinary, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
 
 interface Env {
   AGENT_GITHUB_TOKEN?: string;
@@ -8,6 +9,12 @@ interface Env {
   RESEND_API_KEY?: string;
   NOTIFICATION_EMAIL?: string;
   FROM_EMAIL?: string;
+  CLOUDINARY_CLOUD_NAME?: string;
+  CLOUDINARY_API_KEY?: string;
+  CLOUDINARY_API_SECRET?: string;
+  CLOUDINARY_UPLOAD_PRESET?: string;
+  CLOUDINARY_UPLOAD_FOLDER?: string;
+  CLOUDINARY_UPLOAD_MAX_BYTES?: string;
 }
 
 const MAX_ATTACHMENT_BYTES = 12 * 1024 * 1024;
@@ -18,16 +25,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { body, attachments } = await readMultipart(context.request);
     if (!body.order_id || !body.email) return json({ error: 'Order ID and email are required.' }, 400);
     if (attachments.totalBytes > MAX_ATTACHMENT_BYTES) return json({ error: 'Attachments are too large.' }, 413);
-    const fileSummary = attachments.files.map((file) => `${file.filename} (${file.content_type}, ${formatBytes(file.size)})`).join('\n');
+    const cloudinary = await uploadAttachmentsToCloudinary(context.env, attachments.files, {
+      clientSlug: body.client_slug || body.business_name || 'paid-intake',
+      orderId: body.order_id,
+      submissionType: 'intake',
+    });
+    if (!cloudinary.ok && cloudinary.configured) {
+      return json({ error: cloudinary.error || 'Unable to upload attachments.' }, 502);
+    }
+    const fileSummary = cloudinary.ok && cloudinary.assets?.length
+      ? summarizeCloudinaryAssets(cloudinary.assets)
+      : attachments.files.map((file) => `${file.filename} (${file.content_type}, ${formatBytes(file.size)})`).join('\n');
     const payload = {
       ...body,
       attachment_summary: fileSummary,
-      files: attachments.files.map((file) => `${file.filename} (${file.content_type}, ${formatBytes(file.size)})`),
+      files: fileSummary ? fileSummary.split(/\n+/).filter(Boolean) : [],
+      asset_refs: cloudinary.ok && cloudinary.assets?.length ? JSON.stringify(cloudinary.assets) : '',
       submitted_at: new Date().toISOString(),
     };
 
     if (attachments.files.length) {
-      const sent = await sendAttachmentEmail(context.env, payload, attachments.files);
+      const sent = await sendAttachmentEmail(context.env, payload, cloudinary.ok && cloudinary.assets?.length ? [] : attachments.files);
       if (!sent.ok) return json({ error: sent.error || 'Unable to send attachments.' }, 502);
     }
 

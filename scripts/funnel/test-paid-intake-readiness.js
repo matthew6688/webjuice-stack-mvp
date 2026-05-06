@@ -38,6 +38,7 @@ const complete = await recordPaidIntakeUpdate({
     lead_recipient_email: 'leads@example.com',
     references: 'https://example.com',
     files: ['logo.png (image/png, 42 KB)'],
+    asset_refs: JSON.stringify([{ filename: 'logo.png', publicId: 'profitslocal/test/logo', secureUrl: 'https://res.cloudinary.com/demo/image/upload/logo.png' }]),
     confirm_generate_v1: 'on',
     confirm_one_page_scope: 'on',
     confirm_refund_policy: 'on',
@@ -73,6 +74,7 @@ const assertions = {
   completeReadyForAgentTask: complete.readiness.status === 'ready_for_agent_task' && complete.status === 'intake_ready_for_review',
   completeStoresLeadRecipient: complete.leadDelivery?.recipientEmail === 'leads@example.com',
   completeStoresGenerationConfirmation: complete.firstVersionConfirmation?.confirmed === true,
+  completeStoresCloudinaryAssets: complete.assets?.[0]?.publicId === 'profitslocal/test/logo',
 };
 const failed = Object.entries(assertions).filter(([, ok]) => !ok).map(([name]) => name);
 
@@ -95,6 +97,7 @@ const result = {
     missing: complete.readiness.missing,
     leadRecipientEmail: complete.leadDelivery?.recipientEmail,
     firstVersionConfirmed: complete.firstVersionConfirmation?.confirmed,
+    assets: complete.assets,
   },
   contentReadyNeedsConfirmation: {
     status: contentReadyNeedsConfirmation.status,

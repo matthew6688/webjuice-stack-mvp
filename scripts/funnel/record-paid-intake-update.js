@@ -44,6 +44,7 @@ export function main({ args = {}, payload: providedPayload = null, outputDir = n
       references: payload.references || '',
       notes: payload.notes || '',
       files: normalizeFiles(payload.files || payload.attachment_summary || payload.attachments || []),
+      assets: normalizeAssets(payload.asset_refs || payload.assetRefs || existing?.intake?.assets || []),
       lastSubmissionSource: 'structured_intake_form',
     },
     leadDelivery: {
@@ -89,6 +90,7 @@ export function main({ args = {}, payload: providedPayload = null, outputDir = n
     readiness: next.readiness,
     leadDelivery: next.leadDelivery,
     firstVersionConfirmation: next.firstVersionConfirmation,
+    assets: next.intake.assets,
     files: next.intake.files.length,
   };
   if (args.output) fs.writeFileSync(args.output, `${JSON.stringify(summary, null, 2)}\n`);
@@ -123,6 +125,17 @@ function readJsonIfExists(filePath) {
 function normalizeFiles(value) {
   if (Array.isArray(value)) return value.map(String).filter(Boolean);
   return String(value || '').split(/\n+/).map((item) => item.trim()).filter(Boolean);
+}
+
+function normalizeAssets(value) {
+  if (Array.isArray(value)) return value;
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(String(value));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }
 
 function buildFirstVersionConfirmation(payload, existing) {

@@ -1,4 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
+import { uploadAttachmentsToCloudinary, uploadCloudinaryManifest, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
 
 interface Env {
   STRIPE_SECRET_KEY: string;
@@ -6,6 +7,12 @@ interface Env {
   RESEND_API_KEY?: string;
   NOTIFICATION_EMAIL?: string;
   FROM_EMAIL?: string;
+  CLOUDINARY_CLOUD_NAME?: string;
+  CLOUDINARY_API_KEY?: string;
+  CLOUDINARY_API_SECRET?: string;
+  CLOUDINARY_UPLOAD_PRESET?: string;
+  CLOUDINARY_UPLOAD_FOLDER?: string;
+  CLOUDINARY_UPLOAD_MAX_BYTES?: string;
 }
 
 type TierId = 'one_time' | 'yearly_maintenance' | 'extra_revision';
@@ -90,9 +97,26 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const autoRunAgent = requestedAutoRun ?? Boolean(clean(body.repo) && clientSlug && previewUrl);
     const orderKind = autoRunAgent ? 'sale' : 'paid_intake';
     const origin = new URL(context.request.url).origin;
-    const attachmentSummary = attachments.files
-      .map((file) => `${file.filename} (${file.content_type || 'unknown'}, ${formatBytes(file.size)})`)
-      .join('\n');
+    const cloudinary = await uploadAttachmentsToCloudinary(context.env, attachments.files, {
+      clientSlug,
+      orderId: `checkout-${Date.now()}`,
+      submissionType: 'checkout',
+    });
+    if (!cloudinary.ok && cloudinary.configured) {
+      return json({ error: cloudinary.error || 'Unable to upload checkout attachments.' }, 502);
+    }
+    const manifest: any = cloudinary.ok && cloudinary.assets?.length
+      ? await uploadCloudinaryManifest(context.env, cloudinary.assets, {
+        clientSlug,
+        orderId: `checkout-${Date.now()}`,
+        submissionType: 'checkout-manifest',
+      })
+      : { ok: false };
+    const attachmentSummary = cloudinary.ok && cloudinary.assets?.length
+      ? summarizeCloudinaryAssets(cloudinary.assets)
+      : attachments.files
+        .map((file) => `${file.filename} (${file.content_type || 'unknown'}, ${formatBytes(file.size)})`)
+        .join('\n');
 
     const metadata: Record<string, string> = compactMetadata({
       tier: tierId,
@@ -112,6 +136,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       domain: clean(body.preferred_domain),
       launch_notes: clean(body.launch_notes),
       attachment_summary: attachmentSummary,
+      asset_manifest_url: manifest.ok ? manifest.asset.secureUrl : '',
+      asset_manifest_public_id: manifest.ok ? manifest.asset.publicId : '',
       parent_order_id: clean(body.parent_order_id),
       auto_run_agent: autoRunAgent ? 'true' : 'false',
       order_kind: orderKind,
@@ -128,7 +154,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         clientSlug,
         previewUrl,
         attachmentSummary,
-        attachments: attachments.files,
+        cloudinaryAssets: cloudinary.ok ? cloudinary.assets : [],
+        attachments: cloudinary.ok && cloudinary.assets?.length ? [] : attachments.files,
       });
       if (!notification.ok) {
         return json({ error: notification.error || 'Unable to send checkout attachments.' }, 502);
@@ -286,6 +313,7 @@ async function sendCheckoutAttachmentNotification(env: Env, details: {
   clientSlug: string;
   previewUrl: string;
   attachmentSummary: string;
+  cloudinaryAssets?: Array<{ filename?: string; publicId?: string; secureUrl?: string; resourceType?: string; bytes?: number }>;
   attachments: Array<{ filename: string; content: string; content_type: string; size: number }>;
 }) {
   if (!env.RESEND_API_KEY) return { ok: false, error: 'Resend is not configured for attachments.' };
@@ -311,6 +339,9 @@ Preferred domain: ${details.preferredDomain || 'N/A'}
 
 Files:
 ${details.attachmentSummary || 'None'}
+
+Cloudinary assets:
+${details.cloudinaryAssets?.length ? details.cloudinaryAssets.map((asset) => `- ${asset.filename || asset.publicId}: ${asset.secureUrl || asset.publicId}`).join('\n') : 'None'}
 
 Launch notes:
 ${details.launchNotes || 'N/A'}`,
