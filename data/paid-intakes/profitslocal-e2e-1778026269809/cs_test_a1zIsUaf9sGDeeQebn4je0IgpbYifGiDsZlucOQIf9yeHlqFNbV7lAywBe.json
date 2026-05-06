@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "intake_ready_for_review",
+  "status": "custom_quote_needed",
   "order": {
     "id": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
     "provider": "stripe",
@@ -41,11 +41,23 @@
   },
   "ledgerEventId": "evt_1778026328472_s7hs3ot3",
   "createdAt": "2026-05-06T00:12:08.472Z",
-  "updatedAt": "2026-05-06T00:12:59.225Z",
+  "updatedAt": "2026-05-06T04:03:26.934Z",
   "readiness": {
     "status": "ready_for_agent_task",
     "missing": [],
     "checkedAt": "2026-05-06T00:12:59.225Z"
   },
-  "orderId": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe"
+  "orderId": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+  "adminActions": [
+    {
+      "id": "admin_1778040206934_t2s5lfm1",
+      "type": "admin_marked_custom_quote_needed",
+      "action": "quote_custom",
+      "actor": "profitslocal-admin",
+      "note": "的恶臭",
+      "clientSlug": "profitslocal-e2e-1778026269809",
+      "orderId": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+      "createdAt": "2026-05-06T04:03:26.934Z"
+    }
+  ]
 }
