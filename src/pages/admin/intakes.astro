@@ -23,12 +23,12 @@ const counts = statusOrder
       <div class="admin-header">
         <div>
           <p class="eyebrow">Internal ops</p>
-          <h1>Paid intake queue</h1>
-          <p class="lede">Repo-backed view of paid orders, readiness, assets, lead delivery, and revision pressure.</p>
+          <h1>Intake queue</h1>
+          <p class="lede">Repo-backed status, missing info, assets, and revision pressure.</p>
         </div>
         <div class="admin-count">
           <strong>{index.counts.total}</strong>
-          <span>Total records</span>
+          <span>Records</span>
         </div>
       </div>
       <div class="admin-stat-grid">
@@ -45,11 +45,10 @@ const counts = statusOrder
             <tr>
               <th>Client</th>
               <th>Status</th>
-              <th>Contact</th>
-              <th>Assets</th>
-              <th>Revisions</th>
+              <th>Ops</th>
+              <th>Usage</th>
               <th>Missing</th>
-              <th>Record</th>
+              <th>Open</th>
             </tr>
           </thead>
           <tbody>
@@ -60,7 +59,7 @@ const counts = statusOrder
                     <strong>{record.customer.company || record.clientSlug}</strong>
                   </a>
                   <span>{record.clientSlug}</span>
-                  <span>{record.orderId}</span>
+                  <span class="admin-mono">{record.orderId}</span>
                 </td>
                 <td>
                   <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
@@ -71,10 +70,13 @@ const counts = statusOrder
                   <span>Leads: {record.leadRecipientEmail || record.customer.email || 'missing'}</span>
                   <span>{record.customer.domain}</span>
                 </td>
-                <td>{record.assetCount} assets / {record.fileCount} files</td>
-                <td>{record.revisionCount} / {record.revisionLimit}</td>
-                <td>{record.missing.length ? record.missing.join(', ') : 'Ready'}</td>
-                <td><code>{record.filePath}</code></td>
+                <td>
+                  <span>{record.assetCount} assets</span>
+                  <span>{record.fileCount} files</span>
+                  <span>{record.revisionCount} / {record.revisionLimit} rev</span>
+                </td>
+                <td class={record.missing.length ? 'admin-missing' : 'admin-ready'}>{record.missing.length ? record.missing.join(', ') : 'Ready'}</td>
+                <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>Open</a></td>
               </tr>
             ))}
           </tbody>
