@@ -12,6 +12,7 @@
     "astro": "astro",
     "setup:local-env": "node scripts/setup-local-env.js",
     "check:env": "node scripts/check-env.js",
+    "dokobot:smoke": "node scripts/dokobot/smoke.js",
     "check:links": "node scripts/check-links.js",
     "check:deploys": "node scripts/check-deploys.js",
     "assets:validate-urls": "node scripts/assets/validate-urls.js",

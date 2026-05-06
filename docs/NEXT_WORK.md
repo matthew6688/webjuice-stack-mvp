@@ -67,6 +67,7 @@ Verified live state:
 - New customer repo bootstrap is now codified as `npm run deploy:bootstrap-client-repo`: create GitHub repo, set `PAGES_PROJECT_NAME`, set Cloudflare secrets, create Pages dev/live projects, push `main`, push `dev`, then wait for Actions. The dry-run test proves secrets/variables are set before the first push.
 - Asset URL policy is now enforced by `npm run assets:validate-urls` and restaurant content validation. Any `http://` asset URL fails validation before deploy; known safe CDN URLs can be rewritten with `--fix true`.
 - Automatic ProfitsLocal-owned domain provisioning now requires `CF_ZONE_ID` instead of falling back to Cloudflare zone lookup by name.
+- Dokobot local browser workflow is installed and verified for Codex/Hermes: CLI `2.10.10`, local bridge detected, `npm run dokobot:smoke` reads real Chrome pages, and `docs/DOKOBOT_REDESIGN_WORKFLOW.md` documents how to use it for redesign preservation intake.
 
 ## Highest Priority Remaining Work
 
@@ -79,9 +80,10 @@ Verified live state:
 5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
 6. Wire `deploy:bootstrap-client-repo --execute true` into the website-ready/agent handoff path so new customer projects no longer need manual repo setup.
 7. Add menu extraction confidence scoring to the restaurant adapter so low-confidence menus become verified highlights instead of full menu pages.
-8. Update generated repo workflow actions for GitHub's Node 20 deprecation warning.
-9. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
-10. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
+8. Create the generic `website-redesign-preservation` skill using Dokobot/browser crawl inputs plus niche adapters.
+9. Update generated repo workflow actions for GitHub's Node 20 deprecation warning.
+10. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+11. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
 
 ## Architecture Direction
 
