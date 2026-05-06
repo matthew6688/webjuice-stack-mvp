@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<Layout title={`Revision request - ${siteConfig.name}`} description="Submit a bounded ProfitsLocal revision request.">
+  <section class="poster-section">
+    <div class="contact-frame intake-frame revision-frame">
+      <div class="contact-intro">
+        <p class="eyebrow">Revision request</p>
+        <h1>Submit one clear revision.</h1>
+        <p class="lede">Use this after the first version exists. A revision should be one complete, in-scope set of edits to the current one-page website.</p>
+        <p class="micro" style="margin-top: 22px;">Major redesigns, new design directions, multi-page work, apps, dashboards, or open-ended consulting are custom quotes and do not fit this form.</p>
+      </div>
+      <form class="contact-form" id="revision-form" novalidate>
+        <div class="field">
+          <label for="order_id">Order ID <span class="req">Required</span></label>
+          <input id="order_id" name="order_id" placeholder="cs_live_..." required />
+        </div>
+        <div class="field">
+          <label for="email">Checkout email <span class="req">Required</span></label>
+          <input id="email" name="email" type="email" placeholder="jane@business.com" required />
+        </div>
+        <div class="field">
+          <label for="client_slug">Project slug</label>
+          <input id="client_slug" name="client_slug" placeholder="your-business" />
+        </div>
+        <div class="field">
+          <label for="business_name">Business name</label>
+          <input id="business_name" name="business_name" placeholder="Your local business" />
+        </div>
+        <div class="field full">
+          <label for="requested_changes">Requested changes <span class="req">Required</span></label>
+          <textarea id="requested_changes" name="requested_changes" placeholder="List all edits for this revision in one complete message. Be specific: section, current text, desired text, asset/file to use, and anything we should preserve." required></textarea>
+        </div>
+        <div class="field full file-field">
+          <label for="files">Upload replacement assets or notes</label>
+          <input id="files" name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.zip" />
+          <p class="field-hint">Optional, up to 8 files. Attach replacement photos, updated menus, PDFs, or marked-up screenshots.</p>
+        </div>
+        <div class="field full policy-field">
+          <label>Revision boundary</label>
+          <p class="field-hint">If accepted, this submission consumes one included revision. Unclear or out-of-scope requests may be sent back for resubmission or quoted separately.</p>
+          <label class="check-row" for="confirm_revision_scope">
+            <input id="confirm_revision_scope" name="confirm_revision_scope" type="checkbox" required />
+            I understand this is one bounded revision to the current one-page website, not a new design direction or custom build.
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="submit-button" type="submit">Submit revision</button>
+          <p id="revision-status" class="form-status">We will attach this request to your paid intake record.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const form = document.getElementById('revision-form');
+    const status = document.getElementById('revision-status');
+    for (const key of ['order_id', 'email', 'client_slug']) {
+      const field = form?.elements.namedItem(key);
+      if (field instanceof HTMLInputElement && params.get(key)) field.value = params.get(key);
+    }
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const invalid = Array.from(form.querySelectorAll('input, textarea')).find((control) => !control.checkValidity());
+      if (invalid) {
+        invalid.focus();
+        if (status) {
+          status.textContent = 'Please complete the required fields and scope confirmation.';
+          status.className = 'form-status error';
+        }
+        return;
+      }
+      if (status) {
+        status.textContent = 'Submitting revision...';
+        status.className = 'form-status';
+      }
+      try {
+        const response = await fetch('/api/revision-submit', { method: 'POST', body: new FormData(form) });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Unable to submit revision.');
+        window.location.href = '/thank-you';
+      } catch (error) {
+        if (status) {
+          status.textContent = error instanceof Error ? error.message : 'Unable to submit revision.';
+          status.className = 'form-status error';
+        }
+      }
+    });
+  </script>
+</Layout>

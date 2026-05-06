@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import { loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
+
+const index = loadPaidIntakeIndex();
+const statusOrder = [
+  'intake_ready_for_review',
+  'intake_needs_more_info',
+  'intake_needs_generation_confirmation',
+  'paid_intake_pending_preview',
+  'revision_requested',
+  'revision_over_limit',
+];
+const counts = statusOrder
+  .filter((status) => index.counts[status])
+  .map((status) => ({ status, count: index.counts[status] }));
+---
+
+<Layout title={`Paid intake admin - ${siteConfig.name}`} description="Internal paid intake operations index.">
+  <section class="poster-section admin-section">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">Internal ops</p>
+          <h1>Paid intake queue</h1>
+          <p class="lede">Repo-backed view of paid orders, readiness, assets, lead delivery, and revision pressure.</p>
+        </div>
+        <div class="admin-count">
+          <strong>{index.counts.total}</strong>
+          <span>Total records</span>
+        </div>
+      </div>
+      <div class="admin-stat-grid">
+        {counts.map((item) => (
+          <div class="admin-stat">
+            <span>{item.status.replaceAll('_', ' ')}</span>
+            <strong>{item.count}</strong>
+          </div>
+        ))}
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Status</th>
+              <th>Contact</th>
+              <th>Assets</th>
+              <th>Revisions</th>
+              <th>Missing</th>
+              <th>Record</th>
+            </tr>
+          </thead>
+          <tbody>
+            {index.records.map((record) => (
+              <tr>
+                <td>
+                  <strong>{record.customer.company || record.clientSlug}</strong>
+                  <span>{record.clientSlug}</span>
+                  <span>{record.orderId}</span>
+                </td>
+                <td>
+                  <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
+                  <span>{record.readinessStatus.replaceAll('_', ' ')}</span>
+                </td>
+                <td>
+                  <span>{record.customer.email}</span>
+                  <span>Leads: {record.leadRecipientEmail || record.customer.email || 'missing'}</span>
+                  <span>{record.customer.domain}</span>
+                </td>
+                <td>{record.assetCount} assets / {record.fileCount} files</td>
+                <td>{record.revisionCount} / {record.revisionLimit}</td>
+                <td>{record.missing.length ? record.missing.join(', ') : 'Ready'}</td>
+                <td><code>{record.filePath}</code></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="micro">Generated at build time from <code>data/paid-intakes</code>. Use the repo JSON as the source of truth.</p>
+    </div>
+  </section>
+</Layout>
