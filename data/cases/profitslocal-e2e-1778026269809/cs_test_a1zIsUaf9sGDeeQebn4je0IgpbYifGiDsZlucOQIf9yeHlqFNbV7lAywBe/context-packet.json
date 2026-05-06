@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "caseId": "profitslocal-e2e-1778026269809_cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+  "status": "paid_intake_pending_preview",
+  "clientSlug": "profitslocal-e2e-1778026269809",
+  "repo": "matthew6688/profitslocal-e2e-1778026269809",
+  "branch": "dev",
+  "previewUrl": "",
+  "order": {
+    "id": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+    "provider": "stripe",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "paymentStatus": "paid"
+  },
+  "customer": {
+    "company": "ProfitsLocal E2E 1778026269809",
+    "email": "matthew6688+profitslocal-e2e-1778026269809@gmail.com",
+    "phone": "",
+    "domain": "profitslocal-e2e-1778026269809.example.com"
+  },
+  "revision": {
+    "policy": null,
+    "used": 0,
+    "remaining": null,
+    "lastReason": ""
+  },
+  "discord": {
+    "salesThreadId": "",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "",
+    "lastChannelId": "",
+    "lastMessageId": "",
+    "lastMessageUrl": ""
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/profitslocal-e2e-1778026269809/evidence/evidence.json",
+    "content": "clients/profitslocal-e2e-1778026269809/content.restaurant.json",
+    "design": "clients/profitslocal-e2e-1778026269809/design.restaurant.json",
+    "brandSpec": "clients/profitslocal-e2e-1778026269809/brand-spec.md",
+    "checkout": "clients/profitslocal-e2e-1778026269809/funnel/checkout.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "latestTask": null,
+  "recentTimeline": [
+    {
+      "id": "case_evt_1778026328473_zzen3my5",
+      "type": "paid_intake_created",
+      "ok": true,
+      "reason": "",
+      "provider": "stripe",
+      "orderId": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+      "clientSlug": "profitslocal-e2e-1778026269809",
+      "repo": "matthew6688/profitslocal-e2e-1778026269809",
+      "taskId": "",
+      "taskPath": "",
+      "submissionPath": "data/funnel/submissions/profitslocal-e2e-1778026269809/paid_intake-cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe.json",
+      "ledgerEventId": "evt_1778026328472_s7hs3ot3",
+      "discordChannelId": "",
+      "discordThreadId": "",
+      "discordMessageId": "",
+      "discordMessageUrl": "",
+      "revisionUsed": 0,
+      "revisionLimit": null,
+      "createdAt": "2026-05-06T00:12:08.472Z"
+    }
+  ],
+  "agentStartProtocol": [
+    "Read this context packet before changing files.",
+    "Read case.json and timeline.jsonl for the full memory trail.",
+    "Read evidence/content/design/brand files before planning any edit.",
+    "Classify the request as website, menu, domain, or account utility before patching.",
+    "Do not override locked decisions.",
+    "Do not treat unverified customer text as source of truth for menu prices, hours, address, phone, or reservation links.",
+    "If evidence conflicts with the customer request, stop and write needs_human_decision instead of guessing.",
+    "After work, append an agent run summary and timeline event."
+  ]
+}

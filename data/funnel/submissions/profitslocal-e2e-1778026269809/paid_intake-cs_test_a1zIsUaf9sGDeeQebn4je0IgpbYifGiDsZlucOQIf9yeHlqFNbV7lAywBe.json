@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "kind": "paid_intake",
+  "receivedAt": "2026-05-06T00:12:08.471Z",
+  "order": {
+    "orderId": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+    "paymentStatus": "paid",
+    "repo": "matthew6688/profitslocal-e2e-1778026269809",
+    "template": "webjuice-restaurant",
+    "previewUrl": "",
+    "clientSlug": "profitslocal-e2e-1778026269809",
+    "campaignId": "profitslocal-main",
+    "company": "ProfitsLocal E2E 1778026269809",
+    "email": "matthew6688+profitslocal-e2e-1778026269809@gmail.com",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "feedback": "E2E test order created by Codex.",
+    "referenceUrl": "",
+    "domain": "profitslocal-e2e-1778026269809.example.com",
+    "parentOrderId": "",
+    "orderKind": "paid_intake",
+    "files": [],
+    "provider": "stripe",
+    "rawSubmissionId": "evt_1TTt3uFLdh3w6unt0IClOt0k",
+    "receivedAt": "2026-05-06T00:12:08.467Z"
+  },
+  "payload": {
+    "id": "evt_1TTt3uFLdh3w6unt0IClOt0k",
+    "object": "event",
+    "api_version": "2020-08-27",
+    "created": 1778026298,
+    "data": {
+      "object": {
+        "id": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+        "object": "checkout.session",
+        "adaptive_pricing": {
+          "enabled": true
+        },
+        "after_expiration": null,
+        "allow_promotion_codes": null,
+        "amount_subtotal": 39900,
+        "amount_total": 39900,
+        "automatic_tax": {
+          "enabled": false,
+          "liability": null,
+          "provider": null,
+          "status": null
+        },
+        "billing_address_collection": null,
+        "branding_settings": {
+          "background_color": "#ffffff",
+          "border_style": "rounded",
+          "button_color": "#ffbb3b",
+          "display_name": "Matthew Miao",
+          "font_family": "default",
+          "icon": {
+            "file": "file_1Mp8B7FLdh3w6untzdBQ9Mrk",
+            "type": "file"
+          },
+          "logo": {
+            "file": "file_1Mp8B2FLdh3w6unt26ZchxRd",
+            "type": "file"
+          }
+        },
+        "cancel_url": "https://profitslocal.com/checkout?tier=one_time&client_slug=profitslocal-e2e-1778026269809",
+        "client_reference_id": null,
+        "client_secret": null,
+        "collected_information": {
+          "business_name": null,
+          "individual_name": null,
+          "shipping_details": null
+        },
+        "consent": null,
+        "consent_collection": null,
+        "created": 1778026270,
+        "currency": "usd",
+        "currency_conversion": null,
+        "custom_fields": [],
+        "custom_text": {
+          "after_submit": null,
+          "shipping_address": null,
+          "submit": null,
+          "terms_of_service_acceptance": null
+        },
+        "customer": "cus_USohII7dv91cIZ",
+        "customer_account": null,
+        "customer_creation": "always",
+        "customer_details": {
+          "address": {
+            "city": null,
+            "country": "AU",
+            "line1": null,
+            "line2": null,
+            "postal_code": null,
+            "state": null
+          },
+          "business_name": null,
+          "email": "matthew6688+profitslocal-e2e-1778026269809@gmail.com",
+          "individual_name": null,
+          "name": "ProfitsLocal E2E",
+          "phone": null,
+          "tax_exempt": "none",
+          "tax_ids": []
+        },
+        "customer_email": "matthew6688+profitslocal-e2e-1778026269809@gmail.com",
+        "discounts": [],
+        "expires_at": 1778112670,
+        "integration_identifier": null,
+        "invoice": null,
+        "invoice_creation": {
+          "enabled": false,
+          "invoice_data": {
+            "account_tax_ids": null,
+            "custom_fields": null,
+            "description": null,
+            "footer": null,
+            "issuer": null,
+            "metadata": {},
+            "rendering_options": null
+          }
+        },
+        "livemode": false,
+        "locale": null,
+        "managed_payments": {
+          "enabled": false
+        },
+        "metadata": {
+          "campaign_id": "profitslocal-main",
+          "template": "webjuice-restaurant",
+          "repo": "matthew6688/profitslocal-e2e-1778026269809",
+          "preferred_domain": "profitslocal-e2e-1778026269809.example.com",
+          "order_kind": "paid_intake",
+          "amount": "399",
+          "tier": "one_time",
+          "company": "ProfitsLocal E2E 1778026269809",
+          "phone": "+1 555 0199",
+          "currency": "USD",
+          "business_name": "ProfitsLocal E2E 1778026269809",
+          "auto_run_agent": "false",
+          "client_slug": "profitslocal-e2e-1778026269809",
+          "email": "matthew6688+profitslocal-e2e-1778026269809@gmail.com",
+          "launch_notes": "E2E test order created by Codex.",
+          "domain": "profitslocal-e2e-1778026269809.example.com"
+        },
+        "mode": "payment",
+        "origin_context": null,
+        "payment_intent": "pi_3TTt3SFLdh3w6unt0ZSJzRBX",
+        "payment_link": null,
+        "payment_method_collection": "always",
+        "payment_method_configuration_details": {
+          "id": "pmc_1Pj8OjFLdh3w6untunBwpyyF",
+          "parent": null
+        },
+        "payment_method_options": {
+          "card": {
+            "request_three_d_secure": "automatic"
+          }
+        },
+        "payment_method_types": [
+          "card"
+        ],
+        "payment_status": "paid",
+        "permissions": null,
+        "phone_number_collection": {
+          "enabled": false
+        },
+        "recovered_from": null,
+        "saved_payment_method_options": {
+          "allow_redisplay_filters": [
+            "always"
+          ],
+          "payment_method_remove": "disabled",
+          "payment_method_save": null
+        },
+        "setup_intent": null,
+        "shipping": null,
+        "shipping_address_collection": null,
+        "shipping_options": [],
+        "shipping_rate": null,
+        "status": "complete",
+        "submit_type": null,
+        "subscription": null,
+        "success_url": "https://profitslocal.com/thank-you?session_id={CHECKOUT_SESSION_ID}&client_slug=profitslocal-e2e-1778026269809&tier=one_time",
+        "total_details": {
+          "amount_discount": 0,
+          "amount_shipping": 0,
+          "amount_tax": 0
+        },
+        "ui_mode": "hosted",
+        "url": null,
+        "wallet_options": null
+      }
+    },
+    "livemode": false,
+    "pending_webhooks": 2,
+    "request": {
+      "id": null,
+      "idempotency_key": null
+    },
+    "type": "checkout.session.completed"
+  }
+}

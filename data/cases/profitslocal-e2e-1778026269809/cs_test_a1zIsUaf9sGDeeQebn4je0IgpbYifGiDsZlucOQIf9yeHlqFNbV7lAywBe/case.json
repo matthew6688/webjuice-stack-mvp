@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "caseId": "profitslocal-e2e-1778026269809_cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+  "status": "paid_intake_pending_preview",
+  "clientSlug": "profitslocal-e2e-1778026269809",
+  "repo": "matthew6688/profitslocal-e2e-1778026269809",
+  "branch": "dev",
+  "previewUrl": "",
+  "template": "webjuice-restaurant",
+  "order": {
+    "id": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
+    "provider": "stripe",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "paymentStatus": "paid"
+  },
+  "customer": {
+    "company": "ProfitsLocal E2E 1778026269809",
+    "email": "matthew6688+profitslocal-e2e-1778026269809@gmail.com",
+    "phone": "",
+    "domain": "profitslocal-e2e-1778026269809.example.com"
+  },
+  "revision": {
+    "policy": null,
+    "used": 0,
+    "remaining": null,
+    "lastReason": ""
+  },
+  "discord": {
+    "salesThreadId": "",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "",
+    "lastChannelId": "",
+    "lastMessageId": "",
+    "lastMessageUrl": ""
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/profitslocal-e2e-1778026269809/evidence/evidence.json",
+    "content": "clients/profitslocal-e2e-1778026269809/content.restaurant.json",
+    "design": "clients/profitslocal-e2e-1778026269809/design.restaurant.json",
+    "brandSpec": "clients/profitslocal-e2e-1778026269809/brand-spec.md",
+    "checkout": "clients/profitslocal-e2e-1778026269809/funnel/checkout.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "latestTask": null,
+  "paths": {
+    "casePath": "data/cases/profitslocal-e2e-1778026269809/cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe/case.json",
+    "contextPath": "data/cases/profitslocal-e2e-1778026269809/cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe/context-packet.json",
+    "timelinePath": "data/cases/profitslocal-e2e-1778026269809/cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe/timeline.jsonl",
+    "decisionsPath": "data/cases/profitslocal-e2e-1778026269809/cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe/decisions.jsonl",
+    "customerMessagesPath": "data/cases/profitslocal-e2e-1778026269809/cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/profitslocal-e2e-1778026269809/cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe/agent-runs.jsonl",
+    "artifactsDir": "data/cases/profitslocal-e2e-1778026269809/cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe/artifacts"
+  },
+  "createdAt": "2026-05-06T00:12:08.472Z",
+  "updatedAt": "2026-05-06T00:12:08.472Z"
+}
