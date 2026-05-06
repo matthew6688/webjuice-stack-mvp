@@ -46,6 +46,13 @@ export function main({ args = {}, payload: providedPayload = null, outputDir = n
       files: normalizeFiles(payload.files || payload.attachment_summary || payload.attachments || []),
       lastSubmissionSource: 'structured_intake_form',
     },
+    leadDelivery: {
+      ...(existing?.leadDelivery || {}),
+      recipientEmail: payload.lead_recipient_email || payload.leadRecipientEmail || existing?.leadDelivery?.recipientEmail || payload.email || '',
+      fallbackEmail: payload.email || existing?.leadDelivery?.fallbackEmail || '',
+      senderMode: existing?.leadDelivery?.senderMode || 'profitslocal_default',
+    },
+    firstVersionConfirmation: buildFirstVersionConfirmation(payload, existing),
     updatedAt: now,
     createdAt: existing?.createdAt || now,
   };
@@ -53,7 +60,7 @@ export function main({ args = {}, payload: providedPayload = null, outputDir = n
   const readiness = assessPaidIntakeReadiness(nextBase);
   const next = {
     ...nextBase,
-    status: readiness.status === 'ready_for_agent_task' ? 'intake_ready_for_review' : 'intake_needs_more_info',
+    status: statusForReadiness(readiness.status),
     readiness,
   };
 
@@ -80,6 +87,8 @@ export function main({ args = {}, payload: providedPayload = null, outputDir = n
     orderId,
     status: next.status,
     readiness: next.readiness,
+    leadDelivery: next.leadDelivery,
+    firstVersionConfirmation: next.firstVersionConfirmation,
     files: next.intake.files.length,
   };
   if (args.output) fs.writeFileSync(args.output, `${JSON.stringify(summary, null, 2)}\n`);
@@ -114,6 +123,30 @@ function readJsonIfExists(filePath) {
 function normalizeFiles(value) {
   if (Array.isArray(value)) return value.map(String).filter(Boolean);
   return String(value || '').split(/\n+/).map((item) => item.trim()).filter(Boolean);
+}
+
+function buildFirstVersionConfirmation(payload, existing) {
+  const previous = existing?.firstVersionConfirmation || {};
+  const confirmed = bool(payload.confirm_generate_v1) && bool(payload.confirm_one_page_scope) && bool(payload.confirm_refund_policy);
+  if (!confirmed && previous.confirmed) return previous;
+  return {
+    confirmed,
+    confirmedAt: confirmed ? new Date().toISOString() : '',
+    confirmedByEmail: confirmed ? payload.email || previous.confirmedByEmail || '' : '',
+    onePageScopeAccepted: bool(payload.confirm_one_page_scope),
+    refundPolicyAccepted: bool(payload.confirm_refund_policy),
+    generationAccepted: bool(payload.confirm_generate_v1),
+  };
+}
+
+function statusForReadiness(status) {
+  if (status === 'ready_for_agent_task') return 'intake_ready_for_review';
+  if (status === 'needs_generation_confirmation') return 'intake_needs_generation_confirmation';
+  return 'intake_needs_more_info';
+}
+
+function bool(value) {
+  return value === true || value === 'true' || value === 'on' || value === 'yes' || value === '1';
 }
 
 function safeId(value) {

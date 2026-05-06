@@ -23,11 +23,11 @@ const tierData = pricing.tiers.map((tier) => ({
         <div>
           <p class="eyebrow">Secure Stripe checkout</p>
           <h1>Select your next step.</h1>
-          <p class="lede">Choose a package, confirm the business details, and continue to Stripe. If you came from a preview link, the order will stay tied to that preview.</p>
+          <p class="lede">Choose a package, confirm the business details, and continue to Stripe. Fixed pricing covers one-page local business websites with structured async intake.</p>
         </div>
         <div class="checkout-context" id="checkout-context">
           <p class="eyebrow">Preview status</p>
-          <p class="context-copy" id="context-copy">No preview link detected yet. We will record the order and follow up before launch work starts.</p>
+          <p class="context-copy" id="context-copy">No preview link detected yet. We will record the order as a paid intake and ask for the details needed before first-version work starts.</p>
           <a class="context-link hidden" id="context-preview" href="#" target="_blank" rel="noreferrer">Open preview</a>
         </div>
       </div>
@@ -43,7 +43,7 @@ const tierData = pricing.tiers.map((tier) => ({
             <span class="tier-eyebrow">{tier.id === 'one_time' ? 'Most direct' : tier.id === 'yearly_maintenance' ? 'Maintenance plan' : 'Add-on'}</span>
             <strong>{tier.name}</strong>
             <b>${tier.price}{tier.id === 'yearly_maintenance' ? '/year' : ''}</b>
-            <small>{tier.id === 'one_time' ? '3 revisions included' : tier.id === 'yearly_maintenance' ? '12 updates per year' : 'For existing orders'}</small>
+            <small>{tier.id === 'one_time' ? 'One-page + 3 revisions' : tier.id === 'yearly_maintenance' ? 'One-page + 12 updates/year' : 'For in-scope edits'}</small>
           </button>
         ))}
       </div>
@@ -89,7 +89,11 @@ const tierData = pricing.tiers.map((tier) => ({
           </div>
           <div class="field full">
             <label for="launch_notes">Launch notes or requested changes</label>
-            <textarea id="launch_notes" name="launch_notes" placeholder="Tell us what should happen after payment. Include changes, launch timing, domain notes, or anything we should preserve."></textarea>
+            <textarea id="launch_notes" name="launch_notes" placeholder="Tell us what should happen after payment. Include launch timing, domain notes, or anything we should preserve. Multi-page/custom builds are quoted separately."></textarea>
+          </div>
+          <div class="field full policy-field">
+            <label>Package boundary</label>
+            <p class="field-hint">This checkout is for a one-page local business website. Revisions are changes to the current version, not a full redesign or new project. Before first-version generation starts, the order is refundable; after the first version is generated, it is non-refundable.</p>
           </div>
           <div class="field full file-field">
             <label for="checkout-files">Upload logo, photos, PDF, or reference files</label>
@@ -200,7 +204,7 @@ const tierData = pricing.tiers.map((tier) => ({
       if (contextCopy) {
         contextCopy.textContent = hasPreviewContext
           ? 'Preview link detected. Your checkout will stay tied to this project and route into the delivery workflow.'
-          : 'No preview link detected yet. We will record the order and follow up before launch work starts.';
+          : 'No preview link detected yet. We will record the order as a paid intake and ask for the details needed before first-version work starts.';
       }
     }
 

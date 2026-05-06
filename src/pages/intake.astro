@@ -9,8 +9,8 @@ import { siteConfig } from '../config/site';
       <div class="contact-intro">
         <p class="eyebrow">Paid intake</p>
         <h1>Complete your paid intake.</h1>
-        <p class="lede">Send the details we need to build the preview. Your answers stay tied to the order and sync into our delivery repo.</p>
-        <p class="micro" style="margin-top: 22px;">Attach logo files, product photos, menu PDFs, service lists, screenshots, or reference sites. If the project needs live consulting instead of structured async intake, we will quote that separately.</p>
+        <p class="lede">Send the details we need to build the first one-page version. Your answers stay tied to the order and sync into our delivery repo.</p>
+        <p class="micro" style="margin-top: 22px;">You can submit this form more than once before first-version generation. Once you confirm generation and we create the first version, the order is no longer refundable and later revisions must stay within the current one-page scope.</p>
       </div>
       <form class="contact-form" id="intake-form" novalidate>
         <div class="field">
@@ -36,6 +36,11 @@ import { siteConfig } from '../config/site';
         <div class="field">
           <label for="preferred_domain">Preferred domain</label>
           <input id="preferred_domain" name="preferred_domain" placeholder="example.com" />
+        </div>
+        <div class="field full">
+          <label for="lead_recipient_email">Where should contact form leads go?</label>
+          <input id="lead_recipient_email" name="lead_recipient_email" type="email" placeholder="leads@yourbusiness.com" />
+          <p class="field-hint">We will send website contact form submissions to this email. If left blank, we use the checkout email.</p>
         </div>
         <div class="field full">
           <label for="address">Address / service area</label>
@@ -73,6 +78,26 @@ import { siteConfig } from '../config/site';
           <label for="files">Upload assets</label>
           <input id="files" name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.zip" />
           <p class="field-hint">Optional, up to 8 files.</p>
+        </div>
+        <div class="field full policy-field">
+          <label>Important scope notes</label>
+          <p class="field-hint">Fixed-price ProfitsLocal packages are for one-page local business websites. Multi-page sites, custom features, live consulting, and major redesigns after first version are custom quotes. Custom builds usually start at $1000+.</p>
+        </div>
+        <div class="field full policy-field">
+          <label>Ready to generate the first version?</label>
+          <p class="field-hint">Leave these unchecked if you are only adding more details. Check them when this intake has the information you want us to use for the first version.</p>
+          <label class="check-row" for="confirm_generate_v1">
+            <input id="confirm_generate_v1" name="confirm_generate_v1" type="checkbox" />
+            I confirm this intake is ready to generate the first version.
+          </label>
+          <label class="check-row" for="confirm_one_page_scope">
+            <input id="confirm_one_page_scope" name="confirm_one_page_scope" type="checkbox" />
+            I understand this package is for a one-page local business website.
+          </label>
+          <label class="check-row" for="confirm_refund_policy">
+            <input id="confirm_refund_policy" name="confirm_refund_policy" type="checkbox" />
+            I understand the order is refundable before first-version generation starts, and non-refundable after the first version is generated.
+          </label>
         </div>
         <div class="form-actions">
           <button class="submit-button" type="submit">Submit intake</button>
