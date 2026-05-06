@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "url": "https://rich-and-rare-restaurant-dev.pages.dev/",
+  "checks": [
+    {
+      "name": "dev-desktop-home",
+      "status": 200,
+      "needle": "11am-3pm, every day.",
+      "found": true,
+      "errors": []
+    },
+    {
+      "name": "dev-mobile-menu",
+      "status": 200,
+      "needle": "Lunch Specials",
+      "found": true,
+      "errors": []
+    },
+    {
+      "name": "dev-desktop-contact",
+      "status": 200,
+      "needle": "Book your table at West Village.",
+      "found": true,
+      "errors": []
+    },
+    {
+      "name": "dev-redirect-lunch-dinner",
+      "status": 301,
+      "location": "/menu/",
+      "ok": true
+    },
+    {
+      "name": "dev-seo-files",
+      "robotsHasSitemap": true,
+      "sitemapHasMenu": true
+    }
+  ]
+}
