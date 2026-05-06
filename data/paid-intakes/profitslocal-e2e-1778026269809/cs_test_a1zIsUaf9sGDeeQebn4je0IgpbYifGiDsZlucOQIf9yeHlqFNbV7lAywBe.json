@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "paid_intake_pending_preview",
+  "status": "intake_ready_for_review",
   "order": {
     "id": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe",
     "provider": "stripe",
@@ -16,27 +16,36 @@
   "customer": {
     "company": "ProfitsLocal E2E 1778026269809",
     "email": "matthew6688+profitslocal-e2e-1778026269809@gmail.com",
-    "phone": "",
+    "phone": "+1 555 0199",
     "domain": "profitslocal-e2e-1778026269809.example.com"
   },
   "intake": {
     "launchNotes": "E2E test order created by Codex.",
     "referenceUrl": "",
-    "files": [],
-    "source": "direct_checkout"
+    "files": [
+      "profitslocal-e2e-menu.txt (text/plain, 58 B)"
+    ],
+    "source": "direct_checkout",
+    "businessType": "Restaurant / cafe",
+    "address": "123 Test Street, Austin TX. Serves downtown and nearby suburbs.",
+    "hours": "",
+    "services": "Coffee, brunch, catering, private events, and seasonal local specials.",
+    "primaryAction": "Book online",
+    "visualDirection": "",
+    "references": "https://profitslocal.com",
+    "notes": "E2E structured intake submission from Codex.",
+    "lastSubmissionSource": "structured_intake_form"
   },
   "paths": {
     "submissionPath": "data/funnel/submissions/profitslocal-e2e-1778026269809/paid_intake-cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe.json"
   },
   "ledgerEventId": "evt_1778026328472_s7hs3ot3",
   "createdAt": "2026-05-06T00:12:08.472Z",
-  "updatedAt": "2026-05-06T00:12:08.472Z",
+  "updatedAt": "2026-05-06T00:12:59.225Z",
   "readiness": {
-    "status": "needs_more_info",
-    "missing": [
-      "primary customer action",
-      "logo, photos, menu PDF, screenshots, or reference website"
-    ],
-    "checkedAt": "2026-05-06T00:12:08.472Z"
-  }
+    "status": "ready_for_agent_task",
+    "missing": [],
+    "checkedAt": "2026-05-06T00:12:59.225Z"
+  },
+  "orderId": "cs_test_a1zIsUaf9sGDeeQebn4je0IgpbYifGiDsZlucOQIf9yeHlqFNbV7lAywBe"
 }
