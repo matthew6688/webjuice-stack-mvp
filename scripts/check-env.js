@@ -7,7 +7,8 @@ loadLocalEnv();
 const workflows = {
   deploy: ['CF_API_TOKEN', 'CF_ACCOUNT_ID', 'GH_PAT'],
   domain: ['CF_API_TOKEN', 'CF_ACCOUNT_ID', 'CF_ZONE_ID'],
-  scrape: ['GOOGLE_PLACES_API_KEY', 'FIRECRAWL_API_KEY'],
+  scrape: ['GOOGLE_PLACES_API_KEY', 'TINYFISH_API_KEY'],
+  crawlDiscovery: ['FIRECRAWL_API_KEY'],
   design: ['OPENAI_API_KEY'],
   funnel: [
     'STRIPE_SECRET_KEY',

@@ -42,26 +42,31 @@ Do not turn a complete page into "selected highlights" unless the user explicitl
 
 Use the tools in this order:
 
-1. **Firecrawl as primary crawler**
-   - best for scalable crawl, sitemap/page discovery, markdown, links, and repeatable automation.
+1. **Firecrawl as discovery crawler**
+   - best for scalable crawl, sitemap/page discovery, metadata, links, favicon, OG image, and repeatable automation.
+   - do not treat Firecrawl markdown as final truth for restaurant menu/service/pricing pages unless completeness checks pass.
 
-2. **Dokobot as browser truth check**
+2. **TinyFish Fetch as primary critical-content extractor**
+   - use first for restaurant menu pages, service/pricing pages, product/catalog pages, Squarespace/Wix/Webflow pages, and other pages whose body content must be complete.
+   - TinyFish search/fetch currently has free usage within rate limits, so prefer it over paid crawlers for page content extraction.
+
+3. **Dokobot as browser truth check**
    - use for JS-heavy sites, Google search/business panels, social/logged-in pages, pages Firecrawl extracts poorly, and dynamic booking/menu pages.
 
-3. **TinyFish Fetch as extraction fallback / comparator**
+4. **TinyFish vs Firecrawl comparator**
    - use when Firecrawl returns section headings without item bodies, short/truncated content, or misses dynamic page text.
    - compare probe terms against Firecrawl; if TinyFish captures more complete content, prefer TinyFish as the content source.
 
-4. **Brand asset extractor**
+5. **Brand asset extractor**
    - use for logo, favicon candidates, colors, fonts, hero/gallery images, and OG image.
 
-5. **OCR/document extractors**
+6. **OCR/document extractors**
    - use only when critical content lives in PDFs, image menus, catalogs, or screenshots.
 
-6. **Playwright**
+7. **Playwright**
    - use for final visual QA, screenshots, link checks, mobile overflow, and browser console errors.
 
-7. **Local LLM/Ollama**
+8. **Local LLM/Ollama**
    - use as a critic/auditor, not source of truth. Ask it what disappeared, what conflicts, and what looks risky.
 
 ## Required Output
