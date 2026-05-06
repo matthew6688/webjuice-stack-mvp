@@ -78,7 +78,7 @@ const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1)
 
       <div class="admin-detail-grid lower">
         <section class="admin-panel">
-          <h2>Intake Content</h2>
+          <h2>Intake</h2>
           <dl>
             <div><dt>Services</dt><dd>{record.intake?.services || record.intake?.launchNotes || 'N/A'}</dd></div>
             <div><dt>Primary action</dt><dd>{record.intake?.primaryAction || 'N/A'}</dd></div>
@@ -99,7 +99,7 @@ const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1)
         </section>
 
         <section class="admin-panel">
-          <h2>Latest Revision</h2>
+          <h2>Revision</h2>
           {latestRevision ? (
             <dl>
               <div><dt>Status</dt><dd>{latestRevision.status}</dd></div>
