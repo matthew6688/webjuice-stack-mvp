@@ -6,7 +6,7 @@ Updated: 2026-05-06
 
 This document records how ProfitsLocal can call Open Design through its native daemon/API instead of manually operating the desktop app every time.
 
-The goal is not to fork Open Design. The goal is to use Open Design as a design engine and then bring its concept output back into the ProfitsLocal production workflow.
+The goal is still to use Open Design as the upstream design engine and then bring its concept output back into the ProfitsLocal production workflow. We now maintain a small ProfitsLocal fork so business-critical patches can land safely without waiting for the upstream release cadence.
 
 ## Current Finding
 
