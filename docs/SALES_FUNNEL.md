@@ -261,6 +261,19 @@ Validation status:
 - `AGENT_GITHUB_TOKEN` is configured and verified on the 5 Brisbane dev/live Pages projects and template dev/live Pages projects.
 - Case memory verification wrote sale/revision/denied cases, timeline events, customer messages, context packets, and task case/design protocol fields under `/tmp/case-memory-test`.
 - Rich & Rare real demo proof on 2026-05-07: `npm run build` passed after adding `FunnelLayout`, `/demo-faq`, and checkout artifact; commit `00bf29b Add ProfitsLocal funnel pages` pushed to `dev`; GitHub Actions run `25470867095` completed success; live dev URLs `/`, `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` returned HTTP 200; live content checks found ProfitsLocal, `$399`, `$799/yr`, revision, approval, domain guidance, and `hello@fengtalk.ai`, with no Bistro/template footer leakage.
+- Funnel QA is now repeatable with `npm run qa:funnel-pages`. It checks the homepage sales footer, ProfitsLocal utility-page chrome, pricing, after-payment copy, revision/order identity matching, attachment input, approval CTA, domain guidance, support email, template leakage, and live HTTP 200 when a base URL is provided. Rich & Rare live dev passed 59/59 checks after commit `9b72b48 Show funnel footer on demo home` and GitHub Actions run `25472537209`.
+
+Funnel QA commands:
+
+```bash
+npm run qa:funnel-pages -- \
+  --dist-dir /Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant/dist \
+  --client "Rich & Rare Restaurant"
+
+npm run qa:funnel-pages -- \
+  --base-url https://rich-and-rare-restaurant-dev.pages.dev \
+  --client "Rich & Rare Restaurant"
+```
 
 ## Create Tally Forms
 

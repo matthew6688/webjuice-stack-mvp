@@ -33,6 +33,7 @@ Additional 2026-05-07 proof:
 - Dedicated `ProfitsLocal Handoff` Discord sender bot posts website task packets and `website-agent` pickup was verified in `#website-tasks`.
 - Rich & Rare dev preview now has the ProfitsLocal branded fixed-footer offer, `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`.
 - Rich & Rare dev deploy commit `00bf29b` completed GitHub Actions run `25470867095`; all funnel URLs returned HTTP 200 and content checks found ProfitsLocal, `$399`, `$799/yr`, revision, approval, and domain guidance.
+- `npm run qa:funnel-pages` now turns those checks into a repeatable gate. It caught and fixed a missing Rich & Rare home-page footer; commit `9b72b48` deployed in run `25472537209` and live dev passed 59/59 funnel checks.
 
 ## Pricing
 
@@ -538,6 +539,6 @@ Repeat verification beyond Opa:
 ## Current Next Work
 
 1. Configure estimated Resend/runtime/provider costs so ROI reports are useful at scale.
-2. Add a delivery QA pass for the ProfitsLocal branded funnel pages before every outreach/demo push.
+2. Sync the branded funnel pages into the five Brisbane restaurant repos and run `qa:funnel-pages` on each dev URL.
 3. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
 4. Keep generated client repos synced whenever the template funnel changes.
