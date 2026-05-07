@@ -115,6 +115,11 @@ npm run open-design:sync-from-app -- --client <client>
 6. 跑 build 和 QA。
 7. 把 preview 和 QA result 发回同一个 Discord thread。
 
+验证补充：
+
+- Open Design app 首页 `Recent` 现在应当在几秒内自动出现外部 daemon/API 新建的 project；切回窗口或重新聚焦也会刷新。
+- 如果 app 里看到的是另一个 project，不要继续改。先核对 `projectId` 和 `.profitslocal-sync.json`。
+
 验证标准：
 
 - Open Design project 里的 `.profitslocal-sync.json` 指向同一个 client slug。
@@ -155,6 +160,28 @@ npm run open-design:sync-from-app -- --client <client>
 ```
 
 冲突解决前，不要给客户发 review email。
+
+### Open Design / Discord 灵活切换规则
+
+这是已经实测过的一条硬规则：
+
+1. Open Design/source 侧修改：
+   - 修改发生在 `.od/projects/<projectId>/...`
+   - 用 `npm run open-design:sync-from-app -- --client <client>` 同步回 `clients/<client>/concept/open-design/`
+   - `projectId` 不变
+
+2. Discord/agent 侧修改：
+   - 必须用 `npm run open-design:continue-concept -- --client <client> --prompt \"...\"`
+   - continuation 必须复用同一个 `projectId`
+   - `lastRunId` 会更新，但 `projectId` 不变
+   - 如果 run 正常结束最好；如果 run 挂住但真实概念文件已经写入 project 目录，则允许 `artifact_quiet_fallback`
+
+3. 两边切换后：
+   - 重新生成 `production-handoff`
+   - 再 `port-production-handoff`
+   - customer repo `dev` 仍应可以正常 build
+
+只要这 3 条都满足，就说明“切换入口但项目记忆不丢失”。
 
 ## 阶段总览
 

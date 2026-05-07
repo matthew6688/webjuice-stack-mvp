@@ -507,6 +507,7 @@ function isMain() {
 }
 
 export {
+  streamRun,
   exportProjectFilesFromDisk,
   listFilesRecursive,
   scanArtifactQuietSnapshot,
