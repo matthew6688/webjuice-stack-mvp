@@ -37,6 +37,8 @@ upstream = https://github.com/nexu-io/open-design.git
 - 本地工作分支：`main`
 - fork：`matthew6688/open-design`
 - 官方上游：`nexu-io/open-design`
+- 2026-05-08 最新上游 `upstream/main`：`2bb029c` `release: Open Design 0.5.0 (#820)`
+- 2026-05-08 当前 fork `origin/main`：`d0431a1`
 
 这意味着：
 
@@ -156,9 +158,10 @@ cd /Users/matthew/Developer/google-map-website
 npm run open-design:upgrade-smoke
 ```
 
-默认是 dry-run。它会告诉你：
+默认是 dry-run。它现在默认比较的是 `upstream/main`，不是我们的 fork。它会告诉你：
 
 - 当前 Open Design HEAD；
+- `origin/main` 和 `upstream/main` 分别是谁；
 - 目标上游 HEAD；
 - 本地是否 dirty；
 - 使用的 Node；
@@ -179,6 +182,19 @@ npm run open-design:upgrade-smoke -- --execute true
 4. build Open Design daemon；
 5. 跑 ProfitsLocal 的 `run-concept` smoke；
 6. 保持当前活跃 checkout 不被污染。
+
+如果 smoke 通过，并且你确认要把这次上游更新真正吃进 fork：
+
+```bash
+npm run open-design:upgrade-smoke -- --execute true --apply true
+```
+
+`--apply true` 会额外执行：
+
+1. 确认活跃 checkout 在 `main`；
+2. 先把本地 `main` 快进到 `origin/main`；
+3. 再把已验证的 `upstream/main` merge 进本地 `main`；
+4. 最后 push 回 `origin/main`。
 
 ## 合并上游到 fork
 
@@ -216,7 +232,22 @@ git push origin main
 - 删除临时 worktree；
 - 保持当前已验证版本继续工作。
 
-如果 fork `main` 合并后发现问题：
+如果 fork `main` 合并后发现问题，现在有一条单独命令：
+
+```bash
+cd /Users/matthew/Developer/google-map-website
+npm run open-design:rollback -- --commit <已验证 commit> --execute true
+```
+
+它会：
+
+1. 拒绝 dirty 的 Open Design checkout；
+2. 把活跃 checkout 切到目标 commit 的 detached HEAD；
+3. 重新安装依赖；
+4. `rebuild better-sqlite3`；
+5. 重建 `@open-design/daemon`。
+
+如果你要手工回滚，也可以用旧方式：
 
 ```bash
 cd /Users/matthew/Developer/open-design
@@ -277,6 +308,7 @@ npm run open-design:run-concept -- --client <smoke> --open-design-root /Users/ma
 在 `google-map-website` 仓库执行：
 
 ```bash
+npm run open-design:test-upgrade-workflow
 npm run open-design:test-artifact-fallback
 npm run build
 ```
