@@ -756,3 +756,69 @@ lead/intake
 - finance ledger entries。
 
 缺一个，就不能算完整 operational。
+
+## Operator 一键 Dry-run
+
+当我们想知道一个项目离“可以发给客户 review”还差什么时，先跑 dry-run，不要凭感觉判断。
+
+命令：
+
+```bash
+npm run ops:project-dry-run -- \
+  --client <client-slug> \
+  --business-name "<Business Name>" \
+  --source-url <official-website-or-source-url> \
+  --repo matthew6688/<client-repo> \
+  --repo-dir /path/to/local/customer/repo \
+  --email <test-or-customer-email>
+```
+
+它会做这些事：
+
+- 创建 `data/cases/<client>/<dryrun-id>/case.json`。
+- 写 `context-packet.json`，让 agent 后面知道这个 dry-run 的上下文。
+- 验证 evidence。
+- 生成或刷新 website-ready packet。
+- 检查 Open Design project 是否已经绑定。
+- 检查 production handoff 是否存在。
+- 如果提供 `--repo-dir`，构建 customer repo 并验证 preview banner 是否指向官方 `profitslocal.com`。
+- 生成 `agent-task-draft.json`。
+- 如果提供 email，生成 `customer-review-email-draft.json`，但不会发送。
+- 写出 `ops-checklist.json` 和 `ops-checklist.md`。
+
+输出位置：
+
+```text
+data/cases/<client>/<dryrun-id>/ops-checklist.json
+data/cases/<client>/<dryrun-id>/ops-checklist.md
+```
+
+判断方式：
+
+- `status=ready_for_customer_review`：核心阶段都通过，可以进入人工 review 或正式 customer review。
+- `status=blocked`：至少一个关键阶段缺失，先看 `nextActions`。
+
+这次 Opa dry-run 的 hard evidence：
+
+```bash
+npm run ops:project-dry-run -- \
+  --client opa-bar-mezze-restaurant \
+  --business-name "Opa Bar & Mezze" \
+  --source-url https://www.opabar.com.au/ \
+  --repo matthew6688/opa-bar-mezze-restaurant \
+  --repo-dir /Users/matthew/Developer/webjuice-restaurant \
+  --email matthew6688@gmail.com
+```
+
+结果：
+
+- evidence validation：通过。
+- website-ready packet：通过。
+- customer repo build：通过。
+- preview banner / official funnel links：通过。
+- agent task draft：通过。
+- review email draft：通过。
+- blocker：缺 Open Design project binding。
+- blocker：缺 production handoff。
+
+这说明 Opa 这类老项目在当前 SOP 下不能直接算完整 ready。下一步必须先创建或绑定 Open Design project，然后生成 production handoff。

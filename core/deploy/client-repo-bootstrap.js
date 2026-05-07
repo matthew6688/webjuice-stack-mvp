@@ -47,6 +47,39 @@ export function validateBootstrapEnvironment(env = process.env) {
   };
 }
 
+export function buildClientRepoBootstrapReference({
+  repo,
+  repoDir,
+  pagesProjectName,
+  defaultBranch = 'main',
+  devBranch = 'dev',
+  waitForActions = true,
+} = {}) {
+  const project = pagesProjectName || repo?.split('/')?.[1] || '';
+  const resolvedRepoDir = repoDir || `/Users/matthew/Developer/webjuice-generated/${project || '<client-repo>'}`;
+  const command = [
+    'npm run deploy:bootstrap-client-repo --',
+    `--repo ${shellToken(repo || '<owner/client-repo>')}`,
+    `--repo-dir ${shellToken(resolvedRepoDir)}`,
+    project ? `--pages-project-name ${shellToken(project)}` : '',
+    `--main ${shellToken(defaultBranch)}`,
+    `--dev ${shellToken(devBranch)}`,
+    waitForActions ? '--wait true' : '--wait false',
+    '--execute true',
+  ].filter(Boolean).join(' ');
+  return {
+    status: repo ? 'ready' : 'needs_repo',
+    repo: repo || '',
+    repoDir: resolvedRepoDir,
+    pagesProjectName: project,
+    defaultBranch,
+    devBranch,
+    waitForActions,
+    command,
+    rule: 'Run this once before agent completion when the customer repo or Pages projects do not exist yet.',
+  };
+}
+
 export function executeClientRepoBootstrapPlan(plan, {
   env = process.env,
   dryRun = true,
@@ -80,4 +113,10 @@ function commandCwd(step, plan) {
 
 function redactCommand(command = []) {
   return command.map((part) => String(part).includes('TOKEN') ? '<secret>' : part);
+}
+
+function shellToken(value) {
+  const raw = String(value || '');
+  if (/^[a-zA-Z0-9._:/@-]+$/.test(raw)) return raw;
+  return JSON.stringify(raw);
 }

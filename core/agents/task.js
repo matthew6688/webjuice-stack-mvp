@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import { buildClientRepoBootstrapReference } from '../deploy/client-repo-bootstrap.js';
+import { buildOpenDesignWorkspace } from '../open-design/workspace.js';
 
 const VALID_TYPES = new Set(['activate', 'revise', 'publish', 'domain', 'qa-fix', 'sale', 'revision']);
 const VALID_CREATED_FROM = new Set(['tally_payment', 'tally_feedback', 'stripe_payment', 'manual']);
@@ -13,6 +15,12 @@ export function createAgentTask({
   contentPath,
   designPath,
   checkoutPath,
+  brandSpecPath,
+  websiteSurveyPath,
+  buildPacketPath,
+  openDesign,
+  productionHandoffPath,
+  repoBootstrap,
   order,
   createdFrom = 'manual',
   acceptanceCriteria,
@@ -28,6 +36,15 @@ export function createAgentTask({
     contentPath: contentPath || defaultClientPath(clientSlug, 'content.restaurant.json'),
     designPath: designPath || defaultClientPath(clientSlug, 'design.restaurant.json'),
     checkoutPath: checkoutPath || defaultClientPath(clientSlug, 'funnel/checkout.json'),
+    brandSpecPath: brandSpecPath || defaultClientPath(clientSlug, 'brand-spec.md'),
+    websiteSurveyPath: websiteSurveyPath || defaultClientPath(clientSlug, 'intake/website-survey.json'),
+    buildPacketPath: buildPacketPath || '',
+    openDesign: openDesign || defaultOpenDesign(clientSlug),
+    productionHandoffPath: productionHandoffPath || defaultClientPath(clientSlug, 'concept/open-design/production-handoff.json'),
+    repoBootstrap: repoBootstrap || buildClientRepoBootstrapReference({
+      repo: repo || order?.repo || '',
+      pagesProjectName: repoName(repo || order?.repo || clientSlug),
+    }),
     createdFrom,
     createdAt: new Date().toISOString(),
     order: order || null,
@@ -58,6 +75,17 @@ export function validateAgentTask(task) {
   if (task.acceptanceCriteria && (!Array.isArray(task.acceptanceCriteria) || !task.acceptanceCriteria.length)) {
     errors.push('acceptanceCriteria must not be empty');
   }
+  if (task.openDesign) {
+    const requiresBoundProject = task.openDesign.status !== 'not_created';
+    if (requiresBoundProject && !task.openDesign.projectId) errors.push('openDesign.projectId is required when openDesign is bound');
+    if (!task.openDesign.dataDir) errors.push('openDesign.dataDir is required when openDesign is present');
+    if (!task.openDesign.conceptPath) errors.push('openDesign.conceptPath is required when openDesign is present');
+    if (!task.openDesign.manifestPath) errors.push('openDesign.manifestPath is required when openDesign is present');
+  }
+  if (task.repoBootstrap) {
+    if (!task.repoBootstrap.command) errors.push('repoBootstrap.command is required when repoBootstrap is present');
+    if (!task.repoBootstrap.status) errors.push('repoBootstrap.status is required when repoBootstrap is present');
+  }
   return { ok: errors.length === 0, errors };
 }
 
@@ -83,6 +111,16 @@ export function taskFromTallyOrder(order, options = {}) {
 
 function defaultClientPath(clientSlug, filePath) {
   return clientSlug ? `clients/${clientSlug}/${filePath}` : '';
+}
+
+function repoName(repoOrSlug = '') {
+  return String(repoOrSlug || '').includes('/')
+    ? String(repoOrSlug).split('/').pop()
+    : String(repoOrSlug || '');
+}
+
+function defaultOpenDesign(clientSlug) {
+  return buildOpenDesignWorkspace(clientSlug);
 }
 
 function defaultAcceptanceCriteria(type) {
