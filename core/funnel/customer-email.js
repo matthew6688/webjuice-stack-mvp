@@ -1,5 +1,6 @@
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
 import { resendEmailLedgerInput } from '../finance/service-costs.js';
+import { renderProfitsLocalEmail } from './email-template.js';
 
 export async function sendCustomerEmail(env, message, options = {}) {
   const { fetchImpl = fetch } = options;
@@ -11,7 +12,7 @@ export async function sendCustomerEmail(env, message, options = {}) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: env.FROM_EMAIL || 'ProfitsLocal <hello@profitslocal.com>',
+      from: env.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>',
       to: message.to,
       subject: message.subject,
       html: message.html,
@@ -55,22 +56,24 @@ export function buildFunnelCustomerEmail({ kind, order, entitlement, extraRevisi
 function paidIntakeEmail(order) {
   const intakeUrl = `https://profitslocal.com/intake?order_id=${encodeURIComponent(order.orderId || '')}&email=${encodeURIComponent(order.email || '')}&client_slug=${encodeURIComponent(order.clientSlug || '')}`;
   const lines = [
+    `Project: ${order.company || order.clientSlug || 'N/A'}`,
     `Order ID: ${order.orderId}`,
     `Package: ${order.tier}`,
-    `Amount: ${order.currency || 'USD'} ${order.amount}`,
-    `Business: ${order.company || order.clientSlug || 'N/A'}`,
-    `Preferred domain/subdomain: ${order.domain || 'N/A'}`,
-    `Intake form: ${intakeUrl}`,
+    `Amount received: ${order.currency || 'USD'} ${order.amount}`,
+    `Preferred domain: ${order.domain || 'N/A'}`,
   ];
   if (order.files?.length) {
     lines.push(`Files received: ${order.files.join(', ')}`);
   }
   return simpleEmail({
     to: order.email,
-    subject: `Next step for ${order.company || 'your ProfitsLocal website'}`,
-    intro: 'Thanks for your payment. Before we build the preview, please complete the structured intake so we have the right business details, assets, and launch preferences.',
+    eyebrow: 'Payment received',
+    subject: "Payment is in. Let's finish the intake.",
+    intro: 'Thanks for choosing ProfitsLocal. Please complete the short intake so we can lock the business details, assets, and launch preferences before buildout.',
     lines,
-    outro: 'This package uses structured async intake so we can keep pricing fixed and turnaround fast. Please use the intake form instead of sending scattered notes.',
+    cta: { label: 'Complete intake', url: intakeUrl },
+    outro: 'If you already sent those details, you can ignore this and we will keep moving.',
+    footerNote: `Sent by ProfitsLocal from hi@profitslocal.com. You are receiving this because ${order.company || 'your business'} started a ProfitsLocal project.`,
   });
 }
 
@@ -88,25 +91,22 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
   });
   const revisionUrl = customerLinks.revisionUrl;
   const approvalUrl = customerLinks.approveUrl;
-  const changedFiles = (runResult?.changedFiles || []).slice(0, 8);
   const usage = revision.policy
     ? `${revision.used || 0}/${revision.policy.limit || 0}`
     : 'N/A';
   const lines = [
+    `Project: ${caseFile.customer?.company || caseFile.clientSlug || 'N/A'}`,
     `Order ID: ${caseFile.order?.id || 'N/A'}`,
-    `Review preview: ${previewUrl || 'N/A'}`,
-    `Approve for live publishing: ${approvalUrl || 'N/A'}`,
     `Revision usage: ${usage}`,
-    `Revision form: ${revisionUrl || 'N/A'}`,
-    `Domain setup: ${customerLinks.domainSetupUrl || 'N/A'}`,
-    `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
-    `Changed files: ${changedFiles.length ? changedFiles.join(', ') : 'No code diff; build/QA completed'}`,
-    `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
+    `Preview status: ${deployResult?.conclusion === 'failure' ? 'Needs one more internal check' : 'Ready for review'}`,
+    `Review focus: Design direction, business details, and launch readiness`,
   ];
+  if (extraRevisionUrl) lines.push(`Extra revision: ${extraRevisionUrl}`);
   return simpleEmail({
     to: email,
-    subject: `Your ${caseFile.customer?.company || 'website'} dev preview is ready`,
-    intro: 'Your dev preview is ready for review.',
+    eyebrow: 'Preview ready',
+    subject: `Your ${caseFile.customer?.company || 'site'} preview is ready`,
+    intro: 'We have staged the latest version. Open the preview, then choose the action that matches where you are: approve, request a revision, or start domain setup.',
     lines,
     cta: previewUrl ? { label: 'Review dev preview', url: previewUrl } : null,
     secondaryLinks: [
@@ -114,7 +114,8 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
       { label: 'Request revision', url: revisionUrl },
       { label: 'Set up domain', url: customerLinks.domainSetupUrl },
     ],
-    outro: 'Please review the preview link. If it looks good, reply with approval; if you need changes, use the revision form with your Order ID and checkout email.',
+    outro: 'Approving means the design direction is ready for final launch prep. Revisions are welcome if something practical is off.',
+    footerNote: 'Small note from ProfitsLocal: reply to this email if you want us to check anything before publishing.',
   });
 }
 
@@ -123,26 +124,28 @@ export function buildLivePublishedEmail({ caseFile, publishResult, deployResult 
   if (!email || email === 'N/A') return null;
   const resolvedLiveUrl = liveUrl || publishResult?.liveUrl || caseFile.customer?.domain || caseFile.previewUrl || '';
   const lines = [
+    `Project: ${caseFile.customer?.company || caseFile.clientSlug || 'N/A'}`,
     `Order ID: ${caseFile.order?.id || 'N/A'}`,
     `Live site: ${resolvedLiveUrl || 'N/A'}`,
-    `Published commit: ${publishResult?.commit || 'N/A'}`,
-    `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
-    `Revision/support page: ${buildCustomerActionLinks({
-      orderId: caseFile.order?.id || '',
-      email,
-      clientSlug: caseFile.clientSlug || '',
-      repo: caseFile.repo || '',
-      previewUrl: caseFile.previewUrl || '',
-    }).revisionUrl || 'N/A'}`,
-    `Domain/subdomain support: use the official ProfitsLocal links from your review email, or reply with DNS questions.`,
+    `Published status: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Live'}`,
   ];
+  const revisionUrl = buildCustomerActionLinks({
+    orderId: caseFile.order?.id || '',
+    email,
+    clientSlug: caseFile.clientSlug || '',
+    repo: caseFile.repo || '',
+    previewUrl: caseFile.previewUrl || '',
+  }).revisionUrl;
   return simpleEmail({
     to: email,
-    subject: `${caseFile.customer?.company || 'Your website'} is live`,
-    intro: 'Your approved website has been published to the live site.',
+    eyebrow: 'Published',
+    subject: 'Your new site is live.',
+    intro: 'Your approved website has been published and connected to the live destination.',
     lines,
     cta: resolvedLiveUrl ? { label: 'Open live site', url: resolvedLiveUrl } : null,
-    outro: 'Use the official ProfitsLocal revision link for future revision requests and order support.',
+    secondaryLinks: [{ label: 'Request support', url: revisionUrl }],
+    outro: 'Open the site and give the important pages one last pass. Reply here if anything practical needs attention.',
+    footerNote: 'Built by ProfitsLocal. Research first, design with taste, preview before payment.',
   });
 }
 
@@ -154,10 +157,8 @@ export function buildDomainStatusEmail({ domainRequest }) {
   const instructions = domainRequest.dns?.instructions || {};
   const lines = [
     `Order ID: ${domainRequest.orderId || 'N/A'}`,
-    `Requested domain: ${domainRequest.domain || domainRequest.requestedDomain || 'N/A'}`,
-    `Launch type: ${domainRequest.route?.route || 'N/A'}`,
-    `Status: ${subjectStatus}`,
-    `Pages target: ${domainRequest.target || instructions.target || 'N/A'}`,
+    `Domain: ${domainRequest.domain || domainRequest.requestedDomain || 'N/A'}`,
+    `Current step: ${subjectStatus}`,
     `Next step: ${domainNextStep(domainRequest)}`,
   ];
   if (status === 'waiting_for_customer_dns') {
@@ -168,10 +169,12 @@ export function buildDomainStatusEmail({ domainRequest }) {
   }
   return simpleEmail({
     to: email,
-    subject: `Domain setup update: ${subjectStatus}`,
-    intro: 'Here is the latest status for your website domain setup.',
+    eyebrow: 'Domain status',
+    subject: 'Domain setup is moving through the checks.',
+    intro: 'Here is the current status in plain English. DNS changes can take time to settle, but we will keep checking until the live site is ready.',
     lines,
     outro: domainOutro(domainRequest),
+    footerNote: 'No action is needed unless we ask for a specific change from your domain provider.',
   });
 }
 
@@ -213,19 +216,19 @@ function saleEmail(order, entitlement) {
   });
   const policy = entitlement?.entitlement?.revisionPolicy;
   const lines = [
+    `Project: ${order.company || order.clientSlug || 'N/A'}`,
     `Order ID: ${order.orderId}`,
     `Package: ${order.tier}`,
-    `Amount: ${order.currency || 'USD'} ${order.amount}`,
+    `Amount received: ${order.currency || 'USD'} ${order.amount}`,
     `Preview: ${order.previewUrl || 'N/A'}`,
-    `Preferred domain/subdomain: ${order.domain || 'N/A'}`,
-    `Domain setup: ${customerLinks.domainSetupUrl || 'N/A'}`,
+    `Preferred domain: ${order.domain || 'N/A'}`,
     `Revision quota: ${policy ? `0/${policy.limit} (${policy.description})` : 'N/A'}`,
-    `Revision form: ${customerLinks.revisionUrl || 'N/A'}`,
   ];
   return simpleEmail({
     to: order.email,
+    eyebrow: 'Payment received',
     subject: `Payment received for ${order.company || order.clientSlug}`,
-    intro: 'Thanks for your payment. Your website order is active.',
+    intro: 'Your website order is active. Review the preview when you are ready, then use the action links for revisions or domain setup.',
     lines,
     cta: order.previewUrl ? { label: 'Review preview', url: order.previewUrl } : null,
     secondaryLinks: [
@@ -233,6 +236,7 @@ function saleEmail(order, entitlement) {
       { label: 'Set up domain', url: customerLinks.domainSetupUrl },
     ],
     outro: 'Keep your Order ID. Future revision requests must match this Order ID and the checkout email.',
+    footerNote: `Sent by ProfitsLocal from hi@profitslocal.com. You are receiving this because ${order.company || 'your business'} started a ProfitsLocal project.`,
   });
 }
 
@@ -241,6 +245,7 @@ function revisionAcceptedEmail(order, entitlement, extraRevisionUrl) {
   const limit = entitlement.entitlement?.revisionPolicy?.limit ?? 0;
   return simpleEmail({
     to: order.email,
+    eyebrow: 'Revision accepted',
     subject: `Revision accepted (${current}/${limit})`,
     intro: 'Your revision request matched your order and has been accepted.',
     lines: [
@@ -248,23 +253,27 @@ function revisionAcceptedEmail(order, entitlement, extraRevisionUrl) {
       `Revision usage: ${current}/${limit}`,
       `Preview: ${order.previewUrl || 'N/A'}`,
       `Requested changes: ${order.feedback || 'N/A'}`,
-      `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
     ],
-    outro: 'We will work on the dev preview first and send the review link before anything goes live.',
+    cta: order.previewUrl ? { label: 'Open preview', url: order.previewUrl } : null,
+    secondaryLinks: extraRevisionUrl ? [{ label: 'Buy extra revision', url: extraRevisionUrl }] : [],
+    outro: 'We will update the dev preview first and send a review link before anything goes live.',
+    footerNote: 'Reply to this email if the request summary looks wrong.',
   });
 }
 
 function revisionDeniedEmail(order, entitlement, extraRevisionUrl) {
   return simpleEmail({
     to: order.email,
+    eyebrow: 'Revision issue',
     subject: 'Revision request could not be created',
     intro: entitlement?.message || 'Your revision request could not be matched to an active order.',
     lines: [
       `Order ID submitted: ${order.orderId || 'N/A'}`,
       `Email submitted: ${order.email || 'N/A'}`,
-      `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
     ],
+    cta: extraRevisionUrl ? { label: 'Buy extra revision', url: extraRevisionUrl } : null,
     outro: 'If this looks wrong, reply with your Stripe receipt and checkout email.',
+    footerNote: 'We only attach revisions to the matching checkout email and Order ID.',
   });
 }
 
@@ -273,6 +282,7 @@ function extraRevisionEmail(order, entitlement) {
   const used = entitlement?.entitlement?.revisionUsed ?? 'N/A';
   return simpleEmail({
     to: order.email,
+    eyebrow: 'Extra revision',
     subject: 'Extra revision added',
     intro: entitlement?.ok
       ? 'Your extra revision purchase was matched to your original order.'
@@ -283,25 +293,33 @@ function extraRevisionEmail(order, entitlement) {
       `Revision usage: ${used}/${limit}`,
       `Preview: ${order.previewUrl || 'N/A'}`,
     ],
+    cta: order.previewUrl ? { label: 'Open preview', url: order.previewUrl } : null,
     outro: entitlement?.ok
       ? 'Use your original Order ID and checkout email when submitting the next revision request.'
       : 'Reply with your Stripe receipt and original Order ID so we can attach the extra revision manually.',
+    footerNote: 'Thanks for keeping the revision request tied to the original project.',
   });
 }
 
-function simpleEmail({ to, subject, intro, lines, outro, cta = null, secondaryLinks = [] }) {
+function simpleEmail({ to, subject, intro, lines, outro, cta = null, secondaryLinks = [], eyebrow = 'Project update', footerNote = 'ProfitsLocal transactional email. Reply to this email if anything looks wrong.' }) {
   const cleanLinks = secondaryLinks.filter((link) => link?.url);
   return {
     to,
     subject,
     text: [intro, '', ...lines, '', outro].join('\n'),
-    html: brandedHtmlEmail({
+    html: renderProfitsLocalEmail({
+      eyebrow,
       subject,
       intro,
-      lines,
-      outro,
+      details: lines.map((line) => {
+        const [label, ...rest] = String(line).split(':');
+        return { label: label || 'Detail', value: rest.join(':').trim() || line };
+      }),
+      closing: outro,
       cta,
       secondaryLinks: cleanLinks,
+      footerNote,
+      preheader: intro,
     }),
   };
 }
@@ -330,81 +348,4 @@ function officialFunnelUrl(path, params = {}) {
     }
   }
   return url.toString();
-}
-
-function brandedHtmlEmail({ subject, intro, lines, outro, cta = null, secondaryLinks = [] }) {
-  const details = lines.map((line) => {
-    const [label, ...rest] = String(line).split(':');
-    const value = rest.join(':').trim();
-    return `<tr><th>${escapeHtml(label || 'Detail')}</th><td>${linkify(value || line)}</td></tr>`;
-  }).join('');
-  const secondary = secondaryLinks.length
-    ? `<div class="secondary-links">${secondaryLinks.map((link) => `<a href="${escapeAttribute(link.url)}">${escapeHtml(link.label)}</a>`).join('')}</div>`
-    : '';
-  const ctaHtml = cta?.url
-    ? `<a class="button" href="${escapeAttribute(cta.url)}">${escapeHtml(cta.label || 'Open link')}</a>`
-    : '';
-  return `<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${escapeHtml(subject)}</title>
-    <style>
-      body { margin: 0; padding: 0; background: #fff8ee; color: #17191c; font-family: Inter, Arial, sans-serif; }
-      .wrap { max-width: 680px; margin: 0 auto; padding: 32px 18px; }
-      .card { background: #fffcf7; border: 2px solid #17191c; box-shadow: 8px 8px 0 #17191c; padding: 28px; }
-      .brand { display: inline-block; font-weight: 900; letter-spacing: -0.01em; margin-bottom: 22px; }
-      h1 { font-size: 28px; line-height: 1.08; margin: 0 0 14px; }
-      p { font-size: 15px; line-height: 1.6; }
-      table { width: 100%; border-collapse: collapse; margin: 22px 0; }
-      th, td { border-top: 1px solid #17191c; padding: 12px 0; text-align: left; vertical-align: top; font-size: 14px; }
-      th { width: 34%; font-weight: 800; }
-      a { color: #17191c; }
-      .button { display: inline-block; margin: 10px 0 16px; background: #ff513f; color: #fff !important; border: 2px solid #17191c; box-shadow: 5px 5px 0 #17191c; padding: 13px 18px; text-decoration: none; font-weight: 900; }
-      .secondary-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 18px; }
-      .secondary-links a { background: #d0f0d2; border: 1px solid #17191c; padding: 8px 10px; text-decoration: none; font-weight: 800; font-size: 13px; }
-      .footer { font-size: 12px; color: #5f5b54; margin-top: 22px; }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <div class="card">
-        <div class="brand">profitslocal</div>
-        <h1>${escapeHtml(subject)}</h1>
-        <p>${escapeHtml(intro)}</p>
-        <table>${details}</table>
-        ${ctaHtml}
-        ${secondary}
-        <p>${escapeHtml(outro)}</p>
-      </div>
-      <p class="footer">ProfitsLocal transactional email. Reply to this email if anything looks wrong.</p>
-    </div>
-  </body>
-</html>`;
-}
-
-function linkify(value) {
-  return String(value)
-    .split(/(https?:\/\/[^\s<]+)/g)
-    .map((part) => (
-      /^https?:\/\//.test(part)
-        ? `<a href="${escapeAttribute(part)}">${escapeHtml(part)}</a>`
-        : escapeHtml(part)
-    ))
-    .join('');
-}
-
-function escapeHtml(value) {
-  return String(value || '').replace(/[&<>"']/g, (char) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  }[char] || char));
-}
-
-function escapeAttribute(value) {
-  return escapeHtml(value).replace(/`/g, '&#96;');
 }

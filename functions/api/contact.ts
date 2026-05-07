@@ -1,5 +1,6 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
 import { uploadAttachmentsToCloudinary, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
+import { renderProfitsLocalEmail } from '../../core/funnel/email-template.js';
 
 interface Env {
   RESEND_API_KEY: string;
@@ -95,25 +96,26 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!cloudinary.ok && cloudinary.configured) {
       return json({ error: cloudinary.error || 'Unable to upload attachments.' }, 502);
     }
-    const notificationEmail = context.env.NOTIFICATION_EMAIL || 'hello@fengtalk.ai';
-    const fromEmail = context.env.FROM_EMAIL || 'profitslocal <hello@fengtalk.ai>';
+    const notificationEmail = context.env.NOTIFICATION_EMAIL || 'hi@profitslocal.com';
+    const fromEmail = context.env.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>';
     const fileSummary = cloudinary.ok && cloudinary.assets?.length
       ? summarizeCloudinaryAssets(cloudinary.assets).split('\n').map((line) => `- ${line}`).join('\n')
       : attachments.files.length
         ? attachments.files.map((file) => `- ${file.filename} (${file.content_type || 'unknown'}, ${formatBytes(file.size)})`).join('\n')
         : 'None';
 
-    const resendRes = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${context.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: fromEmail,
-        to: notificationEmail,
-        subject: `New profitslocal brief: ${company || name}`,
-        text: `Name: ${name}
+    const details = [
+      { label: 'Name', value: name },
+      { label: 'Email', value: email },
+      { label: 'Company', value: company || 'N/A' },
+      { label: 'Phone', value: phone || 'N/A' },
+      { label: 'Current website', value: website || 'N/A' },
+      { label: 'Google Business', value: googleBusiness || 'N/A' },
+      { label: 'Business type', value: businessType || 'N/A' },
+      { label: 'Domain preference', value: domainPreference || 'N/A' },
+      { label: 'Files', value: fileSummary },
+    ];
+    const text = `Name: ${name}
 Email: ${email}
 Company: ${company || 'N/A'}
 Phone: ${phone || 'N/A'}
@@ -128,7 +130,32 @@ Files:
 ${fileSummary}
 
 Message:
-${message}`,
+${message}`;
+
+    const resendRes = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${context.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: fromEmail,
+        to: notificationEmail,
+        subject: `New ProfitsLocal brief: ${company || name}`,
+        text,
+        html: renderProfitsLocalEmail({
+          eyebrow: 'New lead',
+          subject: `New brief: ${company || name}`,
+          intro: 'A new website brief was submitted from the ProfitsLocal contact form.',
+          details,
+          sections: [
+            { title: 'Message', body: message },
+            { title: 'Preview context', body: formatContext(body) || 'No funnel context captured.' },
+          ],
+          closing: 'Review the brief, check any uploaded assets, then reply from hi@profitslocal.com if the lead is worth following up.',
+          footerNote: 'Internal ProfitsLocal notification. Reply goes to the visitor email.',
+          preheader: `${company || name} submitted a free preview brief.`,
+        }),
         reply_to: email,
         attachments: cloudinary.ok && cloudinary.assets?.length ? [] : attachments.files.map((file) => ({
           filename: file.filename,

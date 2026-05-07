@@ -1,6 +1,7 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
 import { uploadAttachmentsToCloudinary, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
 import { buildPaidIntakeOpsMessage, sendOpsDiscordMessage } from '../../core/funnel/paid-intake-ops.js';
+import { detailsFromObject, keyValueText, renderProfitsLocalEmail } from '../../core/funnel/email-template.js';
 
 interface Env {
   AGENT_GITHUB_TOKEN?: string;
@@ -106,6 +107,8 @@ async function dispatchRecordWorkflow(env: Env, payload: Record<string, string |
 
 async function sendAttachmentEmail(env: Env, payload: Record<string, string | string[]>, files: Array<{ filename: string; content: string; content_type: string; size: number }>) {
   if (!env.RESEND_API_KEY) return { ok: false, error: 'Resend is not configured.' };
+  const details = detailsFromObject(payload);
+  const text = keyValueText(details);
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -113,10 +116,19 @@ async function sendAttachmentEmail(env: Env, payload: Record<string, string | st
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: env.FROM_EMAIL || 'profitslocal <hello@fengtalk.ai>',
-      to: env.NOTIFICATION_EMAIL || 'hello@fengtalk.ai',
-      subject: `Paid intake assets: ${payload.business_name || payload.client_slug || payload.order_id}`,
-      text: Object.entries(payload).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`).join('\n'),
+      from: env.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>',
+      to: env.NOTIFICATION_EMAIL || 'hi@profitslocal.com',
+      subject: `New paid intake: ${payload.business_name || payload.client_slug || payload.order_id}`,
+      text,
+      html: renderProfitsLocalEmail({
+        eyebrow: 'Paid intake',
+        subject: `New paid intake: ${payload.business_name || payload.client_slug || payload.order_id}`,
+        intro: 'A paid customer submitted intake details and project assets.',
+        details,
+        closing: 'Review the intake, confirm the assets are usable, then move the project into build preparation.',
+        footerNote: 'Internal ProfitsLocal notification. Reply goes to the checkout email.',
+        preheader: `Paid intake submitted for ${payload.business_name || payload.client_slug || payload.order_id}.`,
+      }),
       reply_to: String(payload.email || ''),
       attachments: files.map((file) => ({
         filename: file.filename,

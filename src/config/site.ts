@@ -16,7 +16,7 @@ export const siteConfig: SiteConfig = {
   name: 'profitslocal',
   tagline: 'See your local-business website before you pay',
   description: 'profitslocal builds a free website preview for local businesses. Review the page first, then pay only if you want revisions, launch help, or ongoing updates.',
-  email: 'support@profitslocal.com',
+  email: 'hi@profitslocal.com',
   domain: 'profitslocal.com',
   fromName: 'profitslocal',
   navLinks: [

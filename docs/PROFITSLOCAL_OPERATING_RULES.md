@@ -133,6 +133,21 @@ paid intake created
 
 This keeps customer communication asynchronous and structured without forcing the operator into scattered inbox work.
 
+Transactional email policy:
+
+- Resend sends all transactional and workflow emails.
+- Agentic Inbox receives conversational email at `hi@profitslocal.com`.
+- Agentic Inbox may draft replies, but operators send manually until an explicit auto-send risk framework is implemented.
+- Future Agentic auto-replies must be limited to low-risk categories first and logged to the relevant case/thread.
+
+Email template and copy policy:
+
+- All customer lifecycle emails must use the shared ProfitsLocal renderer in `core/funnel/email-template.js`.
+- The renderer must use the real ProfitsLocal logo source file, not a CSS-drawn or generated substitute.
+- Customer-visible copy should have one clear next action and must not show naked long URLs.
+- Customer-visible copy must not expose internal execution details such as commits, file paths, workflow status, deploy checks, GitHub Actions, or Discord.
+- Internal notifications can include operational metadata, but they should still use the shared renderer, concise subject lines, and a closing sentence that tells the operator what to do next.
+
 Required future pieces:
 
 - email-draft workflow from a paid intake/case
@@ -243,9 +258,9 @@ If the customer does not provide a lead recipient email, use checkout email as f
 Default lead email delivery:
 
 ```text
-from: ProfitsLocal Leads <leads@profitslocal.com>
+from: ProfitsLocal <hi@profitslocal.com>
 reply-to: visitor email
-to: customer's lead recipient email
+to: customer's lead recipient email, or hi@profitslocal.com for ProfitsLocal-owned lead/contact forms
 ```
 
 Spam protection v1:

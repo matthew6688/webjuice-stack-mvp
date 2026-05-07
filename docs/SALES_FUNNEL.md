@@ -159,11 +159,84 @@ Resend is suitable for transactional customer emails after payment/revision/appr
 
 Recommendation:
 
-- Keep transactional mail on a trusted domain such as `fengtalk.ai`.
+- Keep transactional mail on the verified ProfitsLocal Resend sender, `ProfitsLocal <hi@profitslocal.com>`.
 - Use a separate outreach domain/subdomain and sender identity for cold email so experiments do not hurt transactional reputation.
 - Warm up volume gradually and send first live tests only to owner-controlled inboxes.
 - Include proof assets: screenshot, short demo video, preview link, and a clear opt-out line.
 - Track costs and replies separately in the ROI ledger.
+
+## Transactional Email Policy
+
+All ProfitsLocal transactional and workflow email must be sent through Resend.
+
+This includes:
+
+- payment and checkout follow-up;
+- revision received, accepted, and denied messages;
+- dev preview review links;
+- domain setup and domain status updates;
+- live publish notifications;
+- internal lead, contact, checkout asset, paid-intake, and revision asset notifications.
+
+The default sender is:
+
+```text
+ProfitsLocal <hi@profitslocal.com>
+```
+
+The default internal notification recipient is:
+
+```text
+hi@profitslocal.com
+```
+
+Agentic Inbox is not the transactional sender. It is the human/business inbox for conversational email and AI-assisted drafting.
+
+Transactional emails use the shared ProfitsLocal HTML renderer in `core/funnel/email-template.js`. Resend also supports hosted templates in the dashboard; if non-engineers need to edit copy/layout, export this renderer's HTML into Resend Templates and send by `template.id + variables`.
+
+Email HTML must not show naked long URLs in the visible body. Customer actions should appear as branded CTA buttons or compact action chips such as `Review dev preview`, `Approve site`, `Request revision`, `Set up domain`, or `Open asset`; the full URL belongs only in the link `href`.
+
+Customer-facing transactional copy must use plain language and one clear next action. Do not expose internal build/deploy wording such as commits, file paths, workflow status, or deploy checks. Internal notification emails may include operational details, but should still use the same ProfitsLocal template, concise subjects, and a short closing that names the operator's next step.
+
+### ProfitsLocal Email Template System
+
+Source files:
+
+- Shared renderer: `core/funnel/email-template.js`
+- Customer lifecycle copy: `core/funnel/customer-email.js`
+- Contact form notification: `functions/api/contact.ts`
+- Checkout asset notification: `functions/api/create-checkout-session.ts`
+- Paid intake notification: `functions/api/intake-submit.ts`
+- Revision notification: `functions/api/revision-submit.ts`
+- Local preview artifact when generated for QA: `data/qa/email-template-preview/index.html`
+
+Brand rules:
+
+- Use the real ProfitsLocal logo asset from `https://profitslocal.com/brand/logo-horizontal.svg`.
+- Do not redraw the logo with CSS, generated SVG, or plain text unless the real image fails and the fallback is intentional.
+- Use the ProfitsLocal email-safe palette: cream background, paper panel, charcoal rules, coral primary CTA, peach detail labels, and mint/sky/citrus action accents.
+- Use Georgia/Times for customer-facing headlines and Arial/Helvetica for body, labels, tables, and buttons.
+
+HTML rules:
+
+- Keep the renderer email-client safe: table layout, inline-friendly CSS, no JavaScript, no required external fonts.
+- Customer actions should use one primary CTA and optional secondary action chips.
+- Full URLs belong in `href` or `src` attributes only; the visible body should use short labels.
+- The renderer may show a compact host label such as `profitslocal.com`, but it must not show query strings or long storage URLs.
+
+Customer copy rules:
+
+- One email, one job.
+- Write in plain language, with one obvious next step.
+- Use customer-readable labels: `Project`, `Order ID`, `Package`, `Amount received`, `Preferred domain`, `Revision usage`, `Preview status`, and `Review focus`.
+- Avoid internal terms: commit, branch, workflow, GitHub Action, deploy check, file path, changed files, build packet, agent task, or Discord.
+
+Internal notification rules:
+
+- Internal emails still use the same ProfitsLocal renderer.
+- Subject lines should be operational and concise: `New ProfitsLocal brief`, `New paid intake`, `New revision request`, `Checkout assets received`.
+- Closing copy must state the operator's next step.
+- It is acceptable for internal emails to include Cloudinary asset references, form context, and lead metadata, but visible long URLs should still collapse into action chips.
 
 Legacy Tally shape:
 
@@ -202,6 +275,7 @@ Do not commit these values.
 - `STRIPE_WEBHOOK_SECRET`
 - `RESEND_API_KEY`
 - `FROM_EMAIL`
+- `NOTIFICATION_EMAIL`
 - `SALES_DISCORD_WEBHOOK_URL`
 - `REVISE_DISCORD_WEBHOOK_URL`
 - `AGENT_GITHUB_TOKEN`
@@ -521,7 +595,7 @@ When a revision request arrives:
 
 ## Customer Email Notifications
 
-Use Resend for customer-facing state changes. Do not rely only on Discord.
+Use Resend for customer-facing state changes. Do not rely only on Discord, and do not send these workflow emails from Agentic Inbox.
 
 Email nodes:
 

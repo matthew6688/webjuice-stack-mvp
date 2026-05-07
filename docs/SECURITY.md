@@ -28,3 +28,15 @@ Current paid/revenue workflows:
 - Tally payment collection
 - Cloudflare deployment
 - Resend outreach
+
+## Agentic Inbox
+
+The ProfitsLocal inbox is documented in `docs/AGENTIC_INBOX.md`.
+
+Access is controlled by Cloudflare Access, not by per-mailbox authorization inside the app. Anyone in the Access allow policy can access the current mailbox and MCP endpoint.
+
+Do not commit Cloudflare API tokens used for setup or maintenance. The deployed Worker only needs Cloudflare Worker secrets such as `POLICY_AUD` and `TEAM_DOMAIN`.
+
+Resend API keys are runtime secrets. Keep `RESEND_API_KEY` in Cloudflare Pages secrets and GitHub Actions secrets only. The default sender is `ProfitsLocal <hi@profitslocal.com>`, and operational notifications should go to `hi@profitslocal.com`.
+
+Transactional email must be sent through Resend. Agentic Inbox is allowed to draft conversational replies, but automatic sending from Agentic Inbox requires a separate review, allowlist, audit log, and kill switch before enabling.

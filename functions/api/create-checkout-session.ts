@@ -1,5 +1,6 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
 import { uploadAttachmentsToCloudinary, uploadCloudinaryManifest, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
+import { renderProfitsLocalEmail } from '../../core/funnel/email-template.js';
 
 interface Env {
   STRIPE_SECRET_KEY: string;
@@ -385,19 +386,25 @@ async function sendCheckoutAttachmentNotification(env: Env, details: {
   attachments: Array<{ filename: string; content: string; content_type: string; size: number }>;
 }) {
   if (!env.RESEND_API_KEY) return { ok: false, error: 'Resend is not configured for attachments.' };
-  const notificationEmail = env.NOTIFICATION_EMAIL || 'hello@fengtalk.ai';
-  const fromEmail = env.FROM_EMAIL || 'profitslocal <hello@fengtalk.ai>';
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
+  const notificationEmail = env.NOTIFICATION_EMAIL || 'hi@profitslocal.com';
+  const fromEmail = env.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>';
+  const detailRows = [
+    { label: 'Business', value: details.businessName },
+    { label: 'Email', value: details.email },
+    { label: 'Phone', value: details.phone || 'N/A' },
+    { label: 'Tier', value: details.tierId },
+    { label: 'Client slug', value: details.clientSlug },
+    { label: 'Preview', value: details.previewUrl || 'N/A' },
+    { label: 'Preferred domain', value: details.preferredDomain || 'N/A' },
+    { label: 'Files', value: details.attachmentSummary || 'None' },
+    {
+      label: 'Cloudinary assets',
+      value: details.cloudinaryAssets?.length
+        ? details.cloudinaryAssets.map((asset) => `${asset.filename || asset.publicId}: ${asset.secureUrl || asset.publicId}`).join('\n')
+        : 'None',
     },
-    body: JSON.stringify({
-      from: fromEmail,
-      to: notificationEmail,
-      subject: `Checkout assets: ${details.businessName}`,
-      text: `Business: ${details.businessName}
+  ];
+  const text = `Business: ${details.businessName}
 Email: ${details.email}
 Phone: ${details.phone || 'N/A'}
 Tier: ${details.tierId}
@@ -412,7 +419,29 @@ Cloudinary assets:
 ${details.cloudinaryAssets?.length ? details.cloudinaryAssets.map((asset) => `- ${asset.filename || asset.publicId}: ${asset.secureUrl || asset.publicId}`).join('\n') : 'None'}
 
 Launch notes:
-${details.launchNotes || 'N/A'}`,
+${details.launchNotes || 'N/A'}`;
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: fromEmail,
+      to: notificationEmail,
+      subject: `Checkout assets received: ${details.businessName}`,
+      text,
+      html: renderProfitsLocalEmail({
+        eyebrow: 'Checkout assets',
+        subject: `Checkout assets received: ${details.businessName}`,
+        intro: 'A checkout submission included files or launch notes for internal review.',
+        details: detailRows,
+        sections: [{ title: 'Launch notes', body: details.launchNotes || 'N/A' }],
+        closing: 'Review the assets before the build starts. If anything is missing, reply to the checkout email.',
+        footerNote: 'Internal ProfitsLocal notification. Reply goes to the checkout email.',
+        preheader: `Checkout assets received for ${details.businessName}.`,
+      }),
       reply_to: details.email,
       attachments: details.attachments.map((file) => ({
         filename: file.filename,

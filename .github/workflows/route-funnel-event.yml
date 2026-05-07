@@ -104,7 +104,7 @@ jobs:
           WEBSITE_AGENT_MENTION: ${{ vars.WEBSITE_AGENT_MENTION || '<@1501073096696664184>' }}
           WEBSITE_TASKS_DISCORD_BOT_TOKEN: ${{ secrets.WEBSITE_TASKS_DISCORD_BOT_TOKEN || secrets.DISCORD_BOT_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>' }}
           EXTRA_REVISION_CHECKOUT_URL: ${{ vars.EXTRA_REVISION_CHECKOUT_URL }}
           RESEND_EMAIL_UNIT_COST: ${{ vars.RESEND_EMAIL_UNIT_COST }}
           FUNNEL_DEDUPE_KEY: ${{ inputs.dedupe_key }}
@@ -161,7 +161,7 @@ jobs:
           REVISE_DISCORD_WEBHOOK_URL: ${{ secrets.REVISE_DISCORD_WEBHOOK_URL }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>' }}
           EXTRA_REVISION_CHECKOUT_URL: ${{ vars.EXTRA_REVISION_CHECKOUT_URL }}
           RESEND_EMAIL_UNIT_COST: ${{ vars.RESEND_EMAIL_UNIT_COST }}
           AGENT_RUNTIME_COST_PER_MINUTE: ${{ vars.AGENT_RUNTIME_COST_PER_MINUTE }}

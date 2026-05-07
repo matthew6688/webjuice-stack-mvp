@@ -85,7 +85,7 @@ function buildClientMessage(clientSlug, options) {
   return {
     provider: 'resend',
     to,
-    from: options.from || process.env.FROM_EMAIL || 'Profits Local <hello@fengtalk.ai>',
+    from: options.from || process.env.FROM_EMAIL || 'Profits Local <hi@profitslocal.com>',
     replyTo: options.replyTo || options['reply-to'] || process.env.REPLY_TO_EMAIL || '',
     businessName,
     clientSlug,
@@ -108,7 +108,7 @@ function buildLeadMessages(leadsPath) {
     return {
       provider: 'resend',
       to: lead.email || '',
-      from: process.env.FROM_EMAIL || 'Profits Local <hello@fengtalk.ai>',
+      from: process.env.FROM_EMAIL || 'Profits Local <hi@profitslocal.com>',
       replyTo: process.env.REPLY_TO_EMAIL || '',
       businessName,
       clientSlug: lead.slug || '',

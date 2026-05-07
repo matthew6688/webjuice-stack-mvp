@@ -20,7 +20,8 @@ const KEYS = [
   ['STRIPE_WEBHOOK_SECRET', 'Stripe webhook signing secret'],
   ['AGENT_GITHUB_TOKEN', 'GitHub token used by preview sites to dispatch the central workflow'],
   ['RESEND_API_KEY', 'Resend API key'],
-  ['FROM_EMAIL', 'Customer-facing sender, e.g. Profits Local <hello@fengtalk.ai>'],
+  ['NOTIFICATION_EMAIL', 'Internal lead/intake notification inbox, e.g. hi@profitslocal.com'],
+  ['FROM_EMAIL', 'Customer-facing sender, e.g. Profits Local <hi@profitslocal.com>'],
   ['REPLY_TO_EMAIL', 'Optional customer reply-to email'],
   ['SALES_DISCORD_WEBHOOK_URL', 'Discord sales webhook URL'],
   ['REVISE_DISCORD_WEBHOOK_URL', 'Discord revision webhook URL'],
@@ -57,7 +58,8 @@ next.PADDLEOCR_COMMAND ||= '.venv-paddleocr/bin/paddleocr ocr -i {input} --save_
 next.OCRMYPDF_LANG ||= 'eng';
 next.OLLAMA_MODEL ||= 'qwen3.5:9b';
 next.OLLAMA_URL ||= 'http://127.0.0.1:11434';
-next.FROM_EMAIL ||= 'Profits Local <hello@fengtalk.ai>';
+next.NOTIFICATION_EMAIL ||= 'hi@profitslocal.com';
+next.FROM_EMAIL ||= 'Profits Local <hi@profitslocal.com>';
 
 fs.writeFileSync(ENV_PATH, `${formatEnv(next)}\n`, { mode: 0o600 });
 rl?.close();

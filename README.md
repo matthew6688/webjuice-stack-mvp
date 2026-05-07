@@ -52,6 +52,7 @@ The platform has four separate layers:
 See `docs/MODULE_BOUNDARIES.md` for the full boundary rules.
 See `docs/CORE_BUSINESS_FLOW_SOP.md` for the step-by-step operating SOP.
 See `docs/OPEN_DESIGN_PROJECT_SYNC.md` for the Discord/Open Design/customer repo sync SOP.
+See `docs/AGENTIC_INBOX.md` for the ProfitsLocal `hi@profitslocal.com` Agentic Inbox setup.
 
 ```mermaid
 flowchart TD

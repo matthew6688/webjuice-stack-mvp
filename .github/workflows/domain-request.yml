@@ -79,7 +79,7 @@ jobs:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID }}
           CF_ZONE_ID: ${{ secrets.PROFITSLOCAL_CF_ZONE_ID }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>' }}
           RESEND_EMAIL_UNIT_COST: ${{ vars.RESEND_EMAIL_UNIT_COST }}
         run: |
           npm run domain:request -- \
