@@ -1,6 +1,6 @@
 # ProfitsLocal 核心业务流程 SOP
 
-更新日期：2026-05-07
+更新日期：2026-05-08
 
 这份文档是 ProfitsLocal 做网站业务的日常操作手册。它要回答四个问题：
 
@@ -237,11 +237,38 @@ npm run discord:update-forum-workspace -- \
 1. Agent 先读 task packet 和 case memory。
 2. Agent 确认现有 Open Design project ID。
 3. 如果是视觉改动，用同一个 Open Design project 做 continuation，不要新建 project。
-4. 把 Open Design 更新导出到 `clients/<client>/concept/open-design/`。
-5. 重新生成 `production-handoff.json` 和 `production-handoff.md`。
-6. 把认可的设计 port 到 customer repo `dev` branch。
-7. 跑 build 和 QA。
-8. 回到同一个 Discord thread 汇报：
+4. 运行 continuation：
+
+```bash
+npm run open-design:continue-concept -- \
+  --client <client> \
+  --prompt "具体修改要求"
+```
+
+5. 检查 `clients/<client>/concept/open-design/run-status.json`：
+   - 如果 `status=succeeded` 且 `completionMode` 为空或不是 fallback，说明这次是 native clean finish；
+   - 如果 `status=succeeded` 且 `completionMode=artifact_quiet_fallback`，说明真实概念文件已经写出来，但 run 没有自然优雅结束，这一轮仍可继续；
+   - 如果没有 visible html 或者命令 timeout/fail，这一轮不能继续 port，必须先处理 run 失败。
+6. 把 Open Design 更新导出到 `clients/<client>/concept/open-design/`。
+7. 重新生成 `production-handoff.json` 和 `production-handoff.md`：
+
+```bash
+npm run open-design:build-production-handoff -- \
+  --client <client> \
+  --target-repo /绝对路径/客户repo
+```
+
+8. 把认可的设计 port 到 customer repo `dev` branch：
+
+```bash
+npm run open-design:port-production-handoff -- \
+  --client <client> \
+  --target-repo /绝对路径/客户repo \
+  --execute true
+```
+
+9. 在 customer repo 跑 build 和 QA。
+10. 回到同一个 Discord thread 汇报：
    - 改了什么；
    - Open Design project/run ID；
    - repo branch 和 commit/diff 摘要；
@@ -265,16 +292,33 @@ npm run discord:update-forum-workspace -- \
 
 1. 确认 Open Design app 里的 project 名字对应当前 business。
 2. 在 Open Design app 里完成修改。
-3. 运行：
+3. 先在 project 文件夹里确认 `.profitslocal-sync.json` 还指向同一个 client。
+4. 运行：
 
 ```bash
 npm run open-design:sync-from-app -- --client <client>
 ```
 
-4. 重新生成 production handoff。
-5. 在同一个 Discord thread 里让 `website-agent` 把 handoff port 到 customer repo `dev`。
-6. 跑 build 和 QA。
-7. 把 preview 和 QA result 发回同一个 Discord thread。
+5. 检查 `concept-manifest.json` 是否仍然是同一个 `projectId`。
+6. 重新生成 production handoff：
+
+```bash
+npm run open-design:build-production-handoff -- \
+  --client <client> \
+  --target-repo /绝对路径/客户repo
+```
+
+7. 在同一个 Discord thread 里让 `website-agent` 把 handoff port 到 customer repo `dev`，或者本地自己执行：
+
+```bash
+npm run open-design:port-production-handoff -- \
+  --client <client> \
+  --target-repo /绝对路径/客户repo \
+  --execute true
+```
+
+8. 跑 build 和 QA。
+9. 把 preview 和 QA result 发回同一个 Discord thread。
 
 验证补充：
 
@@ -343,6 +387,61 @@ npm run open-design:sync-from-app -- --client <client>
    - customer repo `dev` 仍应可以正常 build
 
 只要这 3 条都满足，就说明“切换入口但项目记忆不丢失”。
+
+### Open Design headless run 故障分型
+
+这是 2026-05-08 之后必须遵守的判断规则，不要把不同问题混成一个。
+
+#### 类型 A：真实 artifact 已经存在，但没有自然结束
+
+特征：
+
+- `run-events.sse` 没有 `event: end`
+- `run-status.json` 是 `status=succeeded`
+- `completionMode=artifact_quiet_fallback`
+- project/workspace 里已经有 visible html，例如：
+  - `index.html`
+  - `menu.html`
+  - `functions.html`
+  - `contact.html`
+
+处理：
+
+- 这是可以接受的工作状态；
+- 不要新建第二个 Open Design project；
+- 直接继续：
+  - `sync-from-app`（如果是 app 手动改）
+  - 或者用现有导出的 concept 文件
+  - `build-production-handoff`
+  - `port-production-handoff`
+  - repo build / QA
+
+#### 类型 B：连第一个 visible html 都没有
+
+特征：
+
+- project 目录里可能只有图片或中间文件；
+- `scanArtifactQuietSnapshot` 仍然属于 `required_artifacts_missing`；
+- 命令最终 timeout 或 fail；
+- 这不是 fallback success。
+
+处理：
+
+- 这次 run 直接算失败；
+- 不要继续 build handoff；
+- 不要继续 port 到 repo；
+- 保留同一个 project，但重新发更清楚的 continuation prompt，或者人工在 Open Design app 里接着做，再 `sync-from-app`。
+
+#### 当前已验证结论
+
+- `artifact_quiet_fallback` 不是“Open Design 没工作”，而是“真实文件已经写出来了，但 daemon 没等到 child close 后的 `event:end`”；
+- 关闭 `OD_CODEX_DISABLE_PLUGINS=1` 在 2026-05-08 的 isolated smoke 里**没有单独解决问题**；
+- 所以目前最稳的 SOP 不是“强行等待 100% native clean finish”，而是：
+  - 同一个 `projectId`
+  - 有真实 visible html
+  - handoff 重建
+  - port 到 repo
+  - build/QA 验证
 
 ## 阶段总览
 

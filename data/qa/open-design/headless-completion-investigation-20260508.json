@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-08T06:25:00+10:00",
+  "topic": "open_design_headless_completion_investigation",
+  "summary": {
+    "rootFinding": "Open Design daemon only emits SSE event:end after the spawned agent child process closes. In fallback cases the project may already contain real HTML artifacts, but the Codex child has not naturally closed, so the ProfitsLocal runner never sees event:end and must recover from disk.",
+    "secondaryFinding": "There is a separate earlier failure mode where the run never produces a first visible HTML file. In that case quiet fallback must not fire and the run should fail or time out.",
+    "pluginHypothesis": "Disabling Codex plugins did not eliminate the hang by itself in the reproduced isolated smoke."
+  },
+  "evidence": [
+    {
+      "kind": "native_then_fallback",
+      "clientSlug": "od-fallback-proof-3",
+      "runId": "8691a4c6-35bd-4f0a-9e7f-a1202ca794d2",
+      "eventsPath": "/Users/matthew/Developer/google-map-website/clients/od-fallback-proof-3/concept/open-design/run-events.sse",
+      "statusPath": "/Users/matthew/Developer/google-map-website/clients/od-fallback-proof-3/concept/open-design/run-status.json",
+      "observations": [
+        "run-events.sse contains no 'event: end' frame",
+        "run-events.sse contains no terminal succeeded status payload",
+        "real project files were written, including index.html/menu.html/functions.html/contact.html",
+        "final status was recorded as completionMode=artifact_quiet_fallback"
+      ]
+    },
+    {
+      "kind": "timeout_before_first_html_default",
+      "clientSlug": "od-clean-finish-smoke-default",
+      "runId": "dc300fa9-6072-4c9f-9f64-2cd1b2f1c3b1",
+      "eventsPath": "/Users/matthew/Developer/google-map-website/clients/od-clean-finish-smoke-default/concept/open-design/run-events.sse",
+      "projectDir": "/tmp/profitslocal-open-design-od-clean-finish-smoke-default/projects/od-clean-finish-smoke-default-open-design-1778184727020",
+      "observations": [
+        "assets were downloaded into the project folder",
+        "no visible .html artifact was created before timeout",
+        "quiet fallback could not trigger because required_artifacts_missing remained true",
+        "runner exited with timeout after 180000ms"
+      ]
+    },
+    {
+      "kind": "timeout_before_first_html_plugins_disabled",
+      "clientSlug": "od-clean-finish-smoke-noplugins",
+      "runId": "3b1575c9-f259-49b4-863a-f74418c26610",
+      "eventsPath": "/Users/matthew/Developer/google-map-website/clients/od-clean-finish-smoke-noplugins/concept/open-design/run-events.sse",
+      "projectDir": "/tmp/profitslocal-open-design-od-clean-finish-smoke-noplugins/projects/od-clean-finish-smoke-noplugins-open-design-1778184946752",
+      "observations": [
+        "daemon started with OD_CODEX_DISABLE_PLUGINS=1",
+        "the run still timed out before creating a first visible .html artifact",
+        "disabling plugins did not by itself restore native clean finish in this reproduction"
+      ]
+    }
+  ],
+  "operatingConclusion": {
+    "safeToProceedWhen": [
+      "the same Open Design projectId is preserved",
+      "visible concept artifacts exist",
+      "sync-from-app or artifact recovery exports the real files",
+      "production-handoff is rebuilt before porting to the repo"
+    ],
+    "mustFailWhen": [
+      "no visible .html file exists in the project workspace",
+      "run-status is missing or not succeeded",
+      "projectId or client binding no longer matches case memory"
+    ]
+  }
+}

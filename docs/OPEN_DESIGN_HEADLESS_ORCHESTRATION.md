@@ -62,6 +62,80 @@ Latest verified evidence:
 
 This means the remaining problem is no longer "can Open Design create visible projects?" The proven path now is: **create project in app-visible mode, let the headless run work until artifacts exist, then recover the real concept files from the same shared project workspace if the run hangs.**
 
+## 2026-05-08 Deeper Finding
+
+After tracing both ProfitsLocal's runner and Open Design daemon internals, the failure is now much more precise:
+
+1. **Open Design daemon only emits `event: end` after the spawned child process actually closes.**
+   - `apps/daemon/src/runs.ts` emits the terminal `end` SSE frame inside `finish(...)`.
+   - `apps/daemon/src/server.ts` calls `design.runs.finish(...)` from the child `close` handler.
+   - Therefore, if the Codex child has written real files but has not naturally exited yet, the daemon will not emit `event: end`.
+
+2. **ProfitsLocal's fallback is not replacing native generation. It is only replacing native completion detection.**
+   - The project, files, and design work are still produced inside the real Open Design project workspace.
+   - The fallback only says: "there is already a real concept on disk, but no terminal event arrived."
+
+3. **There are two different failure modes and they must not be mixed together.**
+
+### Mode A: artifacts exist, but there is no clean terminal end
+
+This is the current `artifact_quiet_fallback` case.
+
+Observed evidence:
+
+- `clients/od-fallback-proof-3/concept/open-design/run-events.sse`
+  - no `event: end`
+  - no terminal `status: succeeded` payload
+- `clients/od-fallback-proof-3/concept/open-design/run-status.json`
+  - `completionMode: artifact_quiet_fallback`
+- real files already existed:
+  - `index.html`
+  - `menu.html`
+  - `functions.html`
+  - `contact.html`
+  - `brand-spec.md`
+
+Meaning:
+
+- native Open Design project creation worked;
+- native Open Design run work happened;
+- the remaining missing part was only the terminal completion event.
+
+### Mode B: no visible HTML artifact ever appears
+
+This is **not** a fallback-success case. It is an actual failed or hung run.
+
+2026-05-08 isolated smoke evidence:
+
+- default run:
+  - client: `od-clean-finish-smoke-default`
+  - run: `dc300fa9-6072-4c9f-9f64-2cd1b2f1c3b1`
+  - result: timeout
+  - project folder had downloaded assets but no visible `.html` artifact
+- plugins-disabled run:
+  - client: `od-clean-finish-smoke-noplugins`
+  - run: `3b1575c9-f259-49b4-863a-f74418c26610`
+  - result: timeout
+  - disabling plugins did **not** by itself restore native clean finish or even first-html completion in this reproduction
+
+Meaning:
+
+- if there is no first visible HTML page, quiet fallback must not declare success;
+- this case should be treated as a run failure / timeout and investigated separately.
+
+### Practical conclusion
+
+The current best operating model is:
+
+- **trust the shared Open Design project as the design workspace;**
+- **treat `artifact_quiet_fallback` as acceptable only when real visible artifacts already exist;**
+- **treat "no visible HTML" as a hard failure;**
+- **do not claim native clean finish unless `run-events.sse` actually contains `event: end` or the run status endpoint reaches terminal success before fallback.**
+
+Reference summary:
+
+- `data/qa/open-design/headless-completion-investigation-20260508.json`
+
 ## Runtime Requirement
 
 Open Design currently declares Node `~24`. On this machine, the default `node` is `v25.6.1`, which failed to start the daemon because `better-sqlite3` was compiled against the Node 24 ABI.
