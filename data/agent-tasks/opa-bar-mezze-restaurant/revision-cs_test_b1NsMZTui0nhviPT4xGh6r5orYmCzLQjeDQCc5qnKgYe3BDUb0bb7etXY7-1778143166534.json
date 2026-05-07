@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "id": "revision_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7-1778143166534",
+  "kind": "revision",
+  "status": "queued",
+  "createdAt": "2026-05-07T08:39:26.535Z",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+  "customer": {
+    "company": "N/A",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "order": {
+    "id": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "tier": "unknown",
+    "amount": 0,
+    "currency": "USD"
+  },
+  "requestedChanges": "官方 live smoke：请保持站点内容不变，只验证 revision 能回到同一个 case / website thread，并生成新的 dev 任务。时间：2026-05-07T08:38:57.198Z",
+  "case": {
+    "id": "opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "dir": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "casePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/case.json",
+    "contextPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/context-packet.json",
+    "timelinePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/timeline.jsonl",
+    "decisionsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/decisions.jsonl",
+    "customerMessagesPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/agent-runs.jsonl"
+  },
+  "requiredContext": {
+    "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+    "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json"
+  },
+  "designProtocol": {
+    "requiredSkill": "huashu-design",
+    "supportingSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design",
+      "frontend-design",
+      "design-review",
+      "critique"
+    ],
+    "openDesignSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design-brief",
+      "critique",
+      "tweaks"
+    ],
+    "routeType": "classify_from_customer_request",
+    "rules": [
+      "Official website work must look like a real formal website with brand hierarchy, not a data dump.",
+      "Menu work must stay minimal, mobile-first, and content-focused.",
+      "Preserve the existing design language unless the task explicitly asks for redesign.",
+      "Use real restaurant photos and verified brand assets whenever available."
+    ]
+  },
+  "allowedFiles": [
+    "src/**",
+    "public/**",
+    "content.restaurant.json",
+    "design.restaurant.json",
+    "brand-spec.md"
+  ],
+  "activeConstraints": [
+    "Read the case context packet before planning edits.",
+    "Website and menu are separate products; classify the request before editing.",
+    "Use evidence/content/design/brand files as source of truth.",
+    "Do not invent or overwrite menu prices, hours, address, phone, reservation links, or photos without evidence.",
+    "Do not overwrite locked decisions from the case file.",
+    "Push only to dev until customer approval."
+  ],
+  "entitlement": {
+    "orderId": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
+    "tier": "one_time",
+    "revisionPolicy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "revisionUsed": 3,
+    "revisionStatus": "revision_allowed"
+  },
+  "referenceUrl": "",
+  "files": [
+    "profitslocal-live-smoke-1778143098765.txt (raw, 141 B) https://res.cloudinary.com/dm1hroqlg/raw/upload/v1778143138/profitslocal/main-site/clients/opa-bar-mezze-restaurant/revision/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/profitslocal-live-smoke-1778143098765-1778143137269-v2vh2t"
+  ],
+  "instructions": [
+    "Customer requested revisions for opa-bar-mezze-restaurant.",
+    "Find the target repository from the hidden repo field.",
+    "Apply requested changes on the dev branch only.",
+    "Run build and preview QA before pushing.",
+    "After dev deploy succeeds, post the updated preview link in the revision Discord thread and prepare a customer review email."
+  ],
+  "completion": {
+    "deployBranch": "dev",
+    "notifyDiscord": true,
+    "sendCustomerReviewEmail": true,
+    "customerReviewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/"
+  }
+}
