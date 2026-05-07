@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "dark-shepherd-restaurant__fresh_dark_shepherd_dryrun_001__dark-shepherd-fresh.profitslocal.com",
-  "status": "pages_pending",
+  "status": "active",
   "clientSlug": "dark-shepherd-restaurant",
   "orderId": "fresh_dark_shepherd_dryrun_001",
   "email": "matthew6688@gmail.com",
@@ -49,12 +49,12 @@
         "id": "ce731c54-8de3-4a6d-82cf-ef5ccf38f6f9",
         "domain_id": "ce731c54-8de3-4a6d-82cf-ef5ccf38f6f9",
         "name": "dark-shepherd-fresh.profitslocal.com",
-        "status": "pending",
+        "status": "active",
         "verification_data": {
           "status": "active"
         },
         "validation_data": {
-          "status": "pending",
+          "status": "active",
           "method": "http"
         },
         "certificate_authority": "google",
@@ -62,7 +62,7 @@
         "created_on": "2026-05-07T23:18:26.652991Z"
       }
     ],
-    "active": false
+    "active": true
   },
   "steps": [
     {
@@ -70,24 +70,24 @@
       "ok": true,
       "message": "Created or updated ProfitsLocal DNS CNAME.",
       "data": {
-        "action": "created",
+        "action": "updated",
         "name": "dark-shepherd-fresh.profitslocal.com",
         "target": "dark-shepherd-restaurant-live.pages.dev",
         "proxied": true
       },
-      "at": "2026-05-07T23:18:25.457Z"
+      "at": "2026-05-07T23:28:18.076Z"
     },
     {
       "id": "attach-pages-domain",
       "ok": true,
       "message": "Cloudflare Pages custom domain is attached.",
       "data": {
-        "active": false,
+        "active": true,
         "domain": "dark-shepherd-fresh.profitslocal.com"
       },
-      "at": "2026-05-07T23:20:27.801Z"
+      "at": "2026-05-07T23:28:19.179Z"
     }
   ],
-  "createdAt": "2026-05-07T23:18:24.681Z",
-  "updatedAt": "2026-05-07T23:20:27.801Z"
+  "createdAt": "2026-05-07T23:28:17.389Z",
+  "updatedAt": "2026-05-07T23:28:19.179Z"
 }
