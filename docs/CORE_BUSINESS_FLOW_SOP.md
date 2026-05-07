@@ -11,6 +11,10 @@
 
 目标是让 Matthew、Discord/Hermes agent、Codex、Open Design、其他 IDE 都能围绕同一个项目继续工作，不靠聊天记忆，也不把项目做乱。
 
+当前待办、缺口、文档审计、admin 面板后续项，统一记录在：
+
+- `docs/P0_P1_TODO.md`
+
 ## 一句话流程
 
 ```text
