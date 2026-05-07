@@ -37,6 +37,29 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
         ))}
       </div>
 
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">Net position</span>
+          <strong>{formatMoney(summary.profit || 0)}</strong>
+          <p>{summary.profit > 0 ? 'The pipeline is currently profit positive.' : 'Margin needs attention before scaling spend.'}</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Revenue events</span>
+          <strong>{summary.revenueEventCount || 0}</strong>
+          <p>Booked sales or revenue records currently tracked in the ledger.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Cost events</span>
+          <strong>{summary.costEventCount || 0}</strong>
+          <p>Spend lines across providers, tooling, and manual operating cost.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Dominant client</span>
+          <strong>{byClient[0]?.[0] || 'N/A'}</strong>
+          <p>{byClient[0] ? `${formatMoney(byClient[0][1])} contribution` : 'No client finance data yet.'}</p>
+        </article>
+      </div>
+
       <div class="admin-finance-grid">
         <section class="admin-finance-panel">
           <div class="admin-finance-head">

@@ -60,6 +60,21 @@ const queueGroups = [
         ))}
       </div>
 
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">Queue mode</span>
+          <strong>Triage</strong>
+          <p>Use this surface when you want to move the next project without scanning the full intake table.</p>
+        </article>
+        {queueGroups.map((group) => (
+          <article class="admin-summary-tile">
+            <span class="admin-summary-label">{group.label}</span>
+            <strong>{group.records.length}</strong>
+            <p>{group.records[0]?.nextActionSummary?.label || 'No active item in this bucket right now.'}</p>
+          </article>
+        ))}
+      </div>
+
       <div class="admin-queue-grid">
         {queueGroups.map((group) => (
           <section class="admin-queue-column">

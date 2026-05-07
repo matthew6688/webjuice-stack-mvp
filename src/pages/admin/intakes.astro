@@ -119,6 +119,28 @@ const navLinks = [
           <a href={href} class:list={{ 'is-active': href === '/admin/intakes' }}>{label}</a>
         ))}
       </div>
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">Queue stance</span>
+          <strong>{dashboardSummary.reviewReady > 0 ? 'Move' : 'Build'}</strong>
+          <p>{dashboardSummary.reviewReady} ready for review, {dashboardSummary.revisionsPending} with pending customer change requests.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Open Design</span>
+          <strong>{index.records.filter((record) => record.artifactSummary?.openDesignBound).length}</strong>
+          <p>{index.records.filter((record) => !record.artifactSummary?.openDesignBound).length} project(s) still missing a bound concept source.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Delivery QA</span>
+          <strong>{index.records.filter((record) => record.artifactSummary?.deliveryQaReady).length}</strong>
+          <p>{index.records.filter((record) => !record.artifactSummary?.deliveryQaReady).length} project(s) still blocked before customer review.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Financial posture</span>
+          <strong>{formatMoney(financeOverview.profit || 0)}</strong>
+          <p>Net pipeline contribution across {financeOverview.eventCount || 0} recorded ledger events.</p>
+        </article>
+      </div>
       <div class="admin-finance-grid">
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
@@ -221,17 +243,55 @@ const navLinks = [
           </section>
         ))}
       </div>
+      <div class="admin-mobile-records">
+        {index.records.map((record) => (
+          <article
+            class="admin-mobile-record"
+            data-client={record.clientSlug}
+            data-company={record.customer.company || ''}
+            data-order-id={record.orderId}
+            data-domain={record.customer.domain || ''}
+            data-status={record.status}
+            data-stage={record.stageSummary?.key || ''}
+            data-view-review-ready={record.stageSummary?.key === 'review_ready' ? 'true' : 'false'}
+            data-view-revision-pending={record.status === 'revision_requested' ? 'true' : 'false'}
+            data-view-waiting-dns={record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 'true' : 'false'}
+            data-view-missing-open-design={record.artifactSummary?.openDesignBound ? 'false' : 'true'}
+            data-view-qa-blocked={record.artifactSummary?.deliveryQaReady ? 'false' : 'true'}
+          >
+            <div class="admin-mobile-record-head">
+              <div>
+                <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                  <strong>{record.customer.company || record.clientSlug}</strong>
+                </a>
+                <span class="admin-mono">{record.orderId}</span>
+              </div>
+              <a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>Open</a>
+            </div>
+            <div class="admin-health-pills">
+              <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || 'Unknown'}</mark>
+              <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
+            </div>
+            <p class="micro">{record.nextActionSummary?.label || 'Review'} · {record.nextActionSummary?.reason || 'No recommendation recorded.'}</p>
+            <div class="admin-mobile-record-grid">
+              <div><span class="admin-toolbar-label">Health</span><p>OD {record.artifactSummary?.openDesignBound ? 'ready' : 'missing'} · QA {record.artifactSummary?.deliveryQaReady ? 'pass' : 'pending'} · Domain {record.artifactSummary?.domainStatus || 'none'}</p></div>
+              <div><span class="admin-toolbar-label">Commercial</span><p>{record.customer.email || 'no email'} · {record.customer.domain || 'no domain'}</p></div>
+              <div><span class="admin-toolbar-label">Usage</span><p>{record.assetCount} assets · {record.revisionCount}/{record.revisionLimit} rev · {formatMoney(record.artifactSummary?.financeSummary?.profit ?? 0, record.currency || 'USD')}</p></div>
+              <div><span class="admin-toolbar-label">Risk</span><p>{record.blockerSummary?.primary || (record.missing.length ? record.missing.join(', ') : 'No active blocker')}</p></div>
+            </div>
+          </article>
+        ))}
+      </div>
       <div class="admin-table-wrap">
         <table class="admin-table">
           <thead>
             <tr>
               <th>Client</th>
-              <th>Status</th>
-              <th>Stage</th>
+              <th>Flow</th>
               <th>Health</th>
-              <th>Ops</th>
+              <th>Commercial</th>
               <th>Usage</th>
-              <th>Missing</th>
+              <th>Risk</th>
               <th>Next action</th>
               <th>Open</th>
             </tr>
@@ -259,31 +319,41 @@ const navLinks = [
                   <span class="admin-mono">{record.orderId}</span>
                 </td>
                 <td>
-                  <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
-                  <span>{record.readinessStatus.replaceAll('_', ' ')}</span>
-                </td>
-                <td>
                   <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || 'Unknown'}</mark>
+                  <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
+                  <span>{record.readinessStatus.replaceAll('_', ' ') || 'readiness not recorded'}</span>
                   <span>{record.artifactSummary?.latestTimeline?.type || 'no recent event'}</span>
                 </td>
                 <td>
-                  <span>OD: {record.artifactSummary?.openDesignBound ? 'ready' : 'missing'}</span>
-                  <span>QA: {record.artifactSummary?.deliveryQaReady ? 'pass' : 'pending'}</span>
-                  <span>Outreach: {record.artifactSummary?.outreachAssetsReady ? 'ready' : 'pending'}</span>
-                  <span>Domain: {record.artifactSummary?.domainStatus || 'none'}</span>
+                  <div class="admin-health-pills">
+                    <mark class={`status-pill ${record.artifactSummary?.openDesignBound ? 'status-ready' : 'status-alert'}`}>OD {record.artifactSummary?.openDesignBound ? 'ready' : 'missing'}</mark>
+                    <mark class={`status-pill ${record.artifactSummary?.deliveryQaReady ? 'status-ready' : 'status-warn'}`}>QA {record.artifactSummary?.deliveryQaReady ? 'pass' : 'pending'}</mark>
+                    <mark class={`status-pill ${record.artifactSummary?.outreachAssetsReady ? 'status-ready' : 'status-warn'}`}>Outreach {record.artifactSummary?.outreachAssetsReady ? 'ready' : 'pending'}</mark>
+                    <mark class="status-pill status-info">Domain {record.artifactSummary?.domainStatus || 'none'}</mark>
+                  </div>
                 </td>
                 <td>
-                  <span>{record.customer.email}</span>
-                  <span>Leads: {record.leadRecipientEmail || record.customer.email || 'missing'}</span>
-                  <span>{record.customer.domain}</span>
+                  <span>{record.customer.email || 'no email'}</span>
+                  <span>Lead route: {record.leadRecipientEmail || record.customer.email || 'missing'}</span>
+                  <span>{record.customer.domain || 'no domain'}</span>
                 </td>
                 <td>
                   <span>{record.assetCount} assets</span>
                   <span>{record.fileCount} files</span>
                   <span>{record.revisionCount} / {record.revisionLimit} rev</span>
-                  <span>ROI: {record.artifactSummary?.financeSummary?.profit ?? 0} {record.currency || 'USD'}</span>
+                  <span>ROI: {formatMoney(record.artifactSummary?.financeSummary?.profit ?? 0, record.currency || 'USD')}</span>
                 </td>
-                <td class={record.missing.length ? 'admin-missing' : 'admin-ready'}>{record.missing.length ? record.missing.join(', ') : 'Ready'}</td>
+                <td>
+                  {record.blockerSummary?.count ? (
+                    <div class="admin-risk-stack">
+                      <strong>{record.blockerSummary.primary}</strong>
+                      <span>{record.blockerSummary.count} blocker(s)</span>
+                    </div>
+                  ) : (
+                    <span class="admin-ready">No active blocker</span>
+                  )}
+                  {record.missing.length ? <span class="admin-missing">{record.missing.join(', ')}</span> : null}
+                </td>
                 <td>
                   <strong>{record.nextActionSummary?.label || 'Review'}</strong>
                   <span>{record.nextActionSummary?.reason || ''}</span>
@@ -302,7 +372,9 @@ const navLinks = [
 <script>
   const toolbar = document.querySelector('[data-admin-toolbar]');
   if (toolbar) {
-    const rows = Array.from(document.querySelectorAll('tbody tr'));
+    const tableRows = Array.from(document.querySelectorAll('tbody tr'));
+    const mobileCards = Array.from(document.querySelectorAll('.admin-mobile-record'));
+    const records = [...tableRows, ...mobileCards];
     const pills = Array.from(toolbar.querySelectorAll('[data-admin-view]'));
     const search = toolbar.querySelector('[data-admin-search]');
     const visibleCount = toolbar.querySelector('[data-admin-visible-count]');
@@ -318,20 +390,23 @@ const navLinks = [
 
     const applyFilters = () => {
       const query = (search?.value || '').trim().toLowerCase();
-      let visible = 0;
-      rows.forEach((row) => {
+      let visibleRows = 0;
+      let visibleCards = 0;
+      records.forEach((record) => {
         const key = viewDatasetKey[activeView];
-        const viewMatch = !key || row.dataset[key] === 'true';
-        const haystack = [row.dataset.client, row.dataset.company, row.dataset.orderId, row.dataset.domain, row.dataset.status, row.dataset.stage]
+        const viewMatch = !key || record.dataset[key] === 'true';
+        const haystack = [record.dataset.client, record.dataset.company, record.dataset.orderId, record.dataset.domain, record.dataset.status, record.dataset.stage]
           .filter(Boolean)
           .join(' ')
           .toLowerCase();
         const searchMatch = !query || haystack.includes(query);
         const show = viewMatch && searchMatch;
-        row.hidden = !show;
-        if (show) visible += 1;
+        record.hidden = !show;
+        if (show && tableRows.includes(record)) visibleRows += 1;
+        if (show && mobileCards.includes(record)) visibleCards += 1;
       });
-      if (visibleCount) visibleCount.textContent = `${visible} visible`;
+      const normalizedVisible = window.innerWidth <= 760 ? visibleCards : visibleRows;
+      if (visibleCount) visibleCount.textContent = `${normalizedVisible} visible`;
     };
 
     pills.forEach((pill) => {

@@ -53,11 +53,34 @@ const navLinks = [
         ))}
       </div>
 
+      <div class="admin-summary-strip">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">Pipeline health</span>
+          <strong>{index.counts.total}</strong>
+          <p>{urgentQueue.length} project(s) need attention now. {reviewReady.length} are closest to customer review.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Review ready</span>
+          <strong>{stageCounts.review_ready || 0}</strong>
+          <p>Projects that are structurally closest to sending review links.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Waiting DNS</span>
+          <strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong>
+          <p>Customer-owned domain work that can stall launch if it is not nudged.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Margin pulse</span>
+          <strong>{financeOverview.profit > 0 ? 'Positive' : 'Watch'}</strong>
+          <p>{formatMoney(financeOverview.profit || 0)} net after {financeOverview.eventCount || 0} recorded finance events.</p>
+        </article>
+      </div>
+
       <div class="admin-overview-hero">
         <section class="admin-overview-card admin-overview-primary">
-          <span class="eyebrow">Business Pulse</span>
-          <h2>Keep the queue moving without losing the money story.</h2>
-          <p class="micro">This view is for the first 30 seconds: what is blocked, what is ready, and whether the pipeline is making money.</p>
+          <span class="eyebrow">Business pulse</span>
+          <h2>Run the website pipeline from one calm surface.</h2>
+          <p class="micro">This page is the first scan: revenue context, urgent work, and which projects can move forward without more digging.</p>
           <div class="admin-finance-metrics">
             <div><span>Revenue</span><strong>{formatMoney(financeOverview.revenue || 0)}</strong></div>
             <div><span>Cost</span><strong>{formatMoney(financeOverview.cost || 0)}</strong></div>
@@ -67,7 +90,7 @@ const navLinks = [
         </section>
 
         <section class="admin-overview-card">
-          <span class="eyebrow">Pipeline</span>
+          <span class="eyebrow">Pipeline mix</span>
           <div class="admin-overview-kpis">
             <div><span>Review ready</span><strong>{stageCounts.review_ready || 0}</strong></div>
             <div><span>Revisions</span><strong>{stageCounts.revision || 0}</strong></div>
@@ -77,11 +100,14 @@ const navLinks = [
         </section>
 
         <section class="admin-overview-card">
-          <span class="eyebrow">Shortcuts</span>
+          <span class="eyebrow">Operator links</span>
           <div class="admin-link-grid">
             <a class="button secondary" href="/admin/intakes">Open intake board</a>
             <a class="button secondary" href="/admin/finance">Open finance view</a>
             <a class="button secondary" href="/admin/queue">Open action queue</a>
+          </div>
+          <div class="admin-note-stack">
+            <p class="micro">Use <strong>Intakes</strong> to audit one project, <strong>Queue</strong> to push the next action, and <strong>Finance</strong> to check whether the funnel is still healthy.</p>
           </div>
         </section>
       </div>
