@@ -50,6 +50,8 @@ The platform has four separate layers:
 - **Niche Adapters**: restaurant now, roofing next.
 
 See `docs/MODULE_BOUNDARIES.md` for the full boundary rules.
+See `docs/CORE_BUSINESS_FLOW_SOP.md` for the step-by-step operating SOP.
+See `docs/OPEN_DESIGN_PROJECT_SYNC.md` for the Discord/Open Design/customer repo sync SOP.
 
 ```mermaid
 flowchart TD
@@ -89,6 +91,7 @@ The system passes information through durable files instead of relying on chat m
 | Website intake survey | `clients/<client>/intake/website-survey.json` (planned), `docs/WEBSITE_INTAKE_SURVEY.md` | Unified Open Design-style survey contract before website/menu generation. |
 | Content build | `clients/<client>/content.restaurant.json` | Clean restaurant website/menu content used by renderer. |
 | Design brief | `clients/<client>/design.restaurant.json`, `brand-spec.md` | Huashu/open-design guidance: palette, typography, layout, brand tone. |
+| Open Design project | `clients/<client>/concept/open-design/concept-manifest.json`, `production-handoff.json` | Mandatory visual concept workspace for every website project. Keeps Discord, Open Design desktop app, and repo work tied to the same project. |
 | Checkout config | `clients/<client>/funnel/checkout.json` | Price/product metadata and preview utility links. |
 | Outreach proof | `clients/<client>/outreach/*` | Screenshots, demo video, validated email material. |
 | Paid order | `data/funnel/orders/<client>/<order>.json` | Entitlement, tier, revision policy, customer email. |

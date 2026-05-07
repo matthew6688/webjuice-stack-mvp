@@ -98,12 +98,12 @@ Recommended capsule shape:
 data/cases/<client>/<order>/
 ├── case.json
 ├── context-packet.json
-├── context.md
 ├── timeline.jsonl
-├── decisions.md
+├── decisions.jsonl
 ├── customer-messages.jsonl
 ├── agent-runs.jsonl
-└── approvals.jsonl
+├── build-packet.md
+└── artifacts/
 
 clients/<client>/
 ├── intake/website-survey.json
@@ -127,6 +127,22 @@ The capsule should preserve:
 - agent run logs;
 - decisions, approvals, and launch status.
 
+Open Design rule:
+
+```text
+Every website project must have an Open Design project.
+```
+
+The Open Design project is the visual concept memory. It lets Matthew continue visually in the desktop app and lets Discord/Hermes continue the same design conversation later. Even if the production site is simple, the project should still have an Open Design binding and production handoff.
+
+Sync rule:
+
+```text
+Discord thread, Open Design project, case folder, and customer repo dev branch must point to the same client before work continues.
+```
+
+If Matthew edits visually in Open Design, the project must be synced back to the concept folder, rebuilt into a production handoff, and then ported into the customer repo `dev` branch. If Discord/Hermes edits visually, it must continue the existing Open Design project, export the handoff, and then port to `dev`. Direct repo edits are allowed only for small implementation fixes and must be posted back to the Discord timeline.
+
 Agent handoff rule:
 
 ```text
@@ -134,6 +150,22 @@ Read capsule first, then edit.
 ```
 
 The task packet should say where the source-of-truth files are and what branch to modify. For customer-facing changes, agents should push to `dev` until approval.
+
+Website-ready rule:
+
+- Before first-version work, run `npm run intake:build-website-ready`.
+- Agents should read `build-packet.md` and `clients/<client>/intake/website-survey.json` before choosing a build approach.
+- If another tool does the design/build work, it must still preserve the packet's framework contract and push repo changes back to `dev`.
+
+Local Hermes/Discord rule:
+
+- Discord is the main internal workspace for each customer project.
+- The admin dashboard is an index and quick-link surface, not the main chat UI.
+- Local Hermes `website-agent` must read the project capsule before acting.
+- VPS Hermes is deferred until the local flow is stable.
+
+See `docs/HERMES_LOCAL_DISCORD_SOP.md`.
+See `docs/CORE_BUSINESS_FLOW_SOP.md` for the full business-stage SOP.
 
 ## 4. Niche Adapters
 
@@ -200,23 +232,34 @@ Roofing-specific rules:
 
 ## Design Skill Layer
 
-There should eventually be one high-level ProfitsLocal design skill exposed to agents:
+Open Design should be treated as the upstream design engine, not as a small
+library we rewrite locally. Its native loop already covers discovery forms,
+brand/reference-site extraction, design systems, skills, agent adapters,
+artifact workspaces, and self-critique.
+
+There should eventually be one high-level ProfitsLocal design wrapper exposed to agents:
 
 ```text
 profitslocal-local-business-design
-  = Open Design discovery and design-brief flow
-  + Huashu Design taste/review protocol
-  + ProfitsLocal evidence and lead-generation rules
+  = call/use Open Design for concept generation
+  + preserve ProfitsLocal evidence and lead-generation rules
   + niche adapter requirements
+  + production Webjuice/Astro framework contract
+  + QA/deploy/customer communication rules
 ```
 
-Agents should not need to remember five separate design instructions. The high-level skill should tell them when to use Open Design conventions, when to use Huashu review, and which niche adapter applies.
+Agents should not need to remember five separate design instructions. The
+high-level wrapper should tell them when to use native Open Design, where to
+save/import the concept output, which niche adapter applies, and which facts
+must be preserved before the work can reach a customer.
+
+See `docs/OPEN_DESIGN_INTEGRATION.md`.
 
 ## Next Architecture Work
 
-1. Implement `core/intake/website-survey.js` as the normalized survey/capsule entrypoint.
-2. Add `clients/<client>/intake/website-survey.json` to the restaurant pipeline.
-3. Add `websiteSurveyPath` to agent task packets and Discord handoff messages.
-4. Create a local `profitslocal-local-business-design` skill document.
-5. Keep restaurant as the reference adapter.
-6. Add roofing as the second adapter only after the restaurant core remains stable.
+1. Finish the Open Design concept-to-production import path.
+2. Add Open Design concept fields to agent task packets and Discord handoff messages.
+3. Enforce Delivery QA before customer review emails.
+4. Keep restaurant as the reference adapter.
+5. Add roofing as the second adapter only after the restaurant core remains stable.
+6. Keep old experiments listed in `docs/LEGACY_ARCHIVE.md` instead of letting them become implicit architecture.

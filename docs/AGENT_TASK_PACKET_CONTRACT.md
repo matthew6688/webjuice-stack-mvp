@@ -17,7 +17,9 @@ The task packet must make those tools work on the same project without losing me
 
 ## One Project, One Thread, One Open Design Binding
 
-Each paid project should have one durable website thread.
+Each website project must have one durable website thread and one Open Design project.
+
+This is mandatory even for simple one-page sites. Open Design is how we keep design quality, visual memory, and manual desktop-app continuation available.
 
 ```text
 data/cases/<client>/<order>/case.json
@@ -28,6 +30,10 @@ data/cases/<client>/<order>/case.json
 ```
 
 Later revisions, approval updates, domain updates, email drafts, and Open Design continuation requests reuse the same thread and case folder.
+
+If a task packet has `openDesign.status = "not_created"`, the first task is not a production build. The first task is to create or import the Open Design project, save the concept manifest, and rebuild the production handoff.
+
+The task packet is also the anti-confusion contract. When Discord, Open Design, and the repo disagree, the agent must stop and report a sync conflict instead of continuing from memory.
 
 ## Required Task Packet Fields
 
@@ -71,6 +77,14 @@ Every executable website task should include:
     "syncCommand": "npm run open-design:sync-from-app -- --client <client>",
     "buildHandoffCommand": "npm run open-design:build-production-handoff -- --client <client> ..."
   },
+  "syncState": {
+    "currentWorkSurface": "discord|open_design|repo",
+    "lastKnownOpenDesignProjectId": "open-design-project-id",
+    "lastKnownRepoBranch": "dev",
+    "lastKnownPreviewUrl": "https://...",
+    "lastSyncedAt": "2026-05-07T00:00:00.000Z",
+    "lastSyncedBy": "website-agent|operator|codex"
+  },
   "customerLinks": {
     "checkoutUrl": "https://profitslocal.com/checkout?...",
     "revisionUrl": "https://profitslocal.com/revision?...",
@@ -106,13 +120,35 @@ If Discord/Hermes changes the concept:
 Then export, rebuild production handoff, port to dev, and run QA.
 ```
 
+Before a visual task, the agent should say which path it is using:
+
+```text
+Work path: Discord -> Open Design continuation -> production handoff -> repo dev -> QA.
+```
+
+If Matthew changed the project in Open Design app:
+
+```text
+Work path: Open Design app -> sync-from-app -> production handoff -> repo dev -> QA.
+```
+
+If the task is a small implementation fix:
+
+```text
+Work path: repo dev only -> QA -> Discord timeline note.
+```
+
+Customer emails are allowed only after the work path has produced a fresh QA result.
+
 ## Non-Negotiable Rules
 
 - Do not use Discord as customer support. Discord is internal only.
 - Do not send customer emails from freeform agent text. Use fixed email intents and variables.
 - Do not deploy Open Design HTML directly. Translate it into the customer Astro/Webjuice repo.
 - Do not overwrite business facts from Open Design. Evidence/content/survey files win.
-- Do not create a new Open Design project if the task packet already has one.
+- Do not skip Open Design for a website project.
+- Do not create a second Open Design project if the task packet already has one.
+- Do not continue if the case, task packet, Open Design manifest, and repo identify different clients or projects. Report a sync conflict in Discord first.
 - Do not work on `main` for customer changes. Work on `dev`; publish only after approval.
 - Do not add ProfitsLocal checkout/revision/domain pages back into customer repos. Customer repos keep the preview banner and customer website pages only.
 
@@ -126,4 +162,3 @@ When an email is discussed in Discord:
 4. Email is sent through Resend.
 5. Resend ID and the rendered customer-facing links are posted back to the thread.
 6. Case timeline records the email intent, recipient, Resend ID, and links.
-
