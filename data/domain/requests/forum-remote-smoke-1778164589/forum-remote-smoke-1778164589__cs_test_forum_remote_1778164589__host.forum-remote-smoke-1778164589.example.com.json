@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "id": "forum-remote-smoke-1778164589__cs_test_forum_remote_1778164589__host.forum-remote-smoke-1778164589.example.com",
+  "status": "waiting_for_customer_dns",
+  "clientSlug": "forum-remote-smoke-1778164589",
+  "orderId": "cs_test_forum_remote_1778164589",
+  "email": "matthew6688@gmail.com",
+  "requestedDomain": "host.forum-remote-smoke-1778164589.example.com",
+  "domain": "host.forum-remote-smoke-1778164589.example.com",
+  "projectName": "forum-remote-smoke-1778164589-live",
+  "target": "forum-remote-smoke-1778164589-live.pages.dev",
+  "route": {
+    "route": "customer_subdomain",
+    "domain": "host.forum-remote-smoke-1778164589.example.com",
+    "requiresCustomerDns": true,
+    "requiresCloudflareAttach": true,
+    "utilityPagesStayOnPreview": true,
+    "reason": "customer_requested_subdomain",
+    "nextStep": "Send CNAME instructions: host.forum-remote-smoke-1778164589.example.com -> <client-pages-project>.pages.dev."
+  },
+  "dns": {
+    "instructions": {
+      "domain": "host.forum-remote-smoke-1778164589.example.com",
+      "projectName": "forum-remote-smoke-1778164589-live",
+      "target": "forum-remote-smoke-1778164589-live.pages.dev",
+      "records": [
+        {
+          "type": "CNAME",
+          "name": "host.forum-remote-smoke-1778164589.example.com",
+          "value": "forum-remote-smoke-1778164589-live.pages.dev",
+          "proxied": false,
+          "note": "Use this for subdomains such as www.example.com or menu.example.com."
+        },
+        {
+          "type": "CNAME",
+          "name": "www.example.com",
+          "value": "forum-remote-smoke-1778164589-live.pages.dev",
+          "proxied": false,
+          "note": "Use this when the customer wants www on the root brand domain."
+        }
+      ],
+      "customerMessage": "Point host.forum-remote-smoke-1778164589.example.com to the preview/live site by adding a CNAME record:\nhost.forum-remote-smoke-1778164589.example.com CNAME forum-remote-smoke-1778164589-live.pages.dev\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+    },
+    "inspection": {
+      "domain": "host.forum-remote-smoke-1778164589.example.com",
+      "projectName": "forum-remote-smoke-1778164589-live",
+      "target": "forum-remote-smoke-1778164589-live.pages.dev",
+      "records": {
+        "ns": [],
+        "cname": [],
+        "a": [],
+        "aaaa": []
+      },
+      "status": {
+        "hasNameservers": false,
+        "hasCname": false,
+        "cnameMatchesPages": false,
+        "hasA": false,
+        "hasAAAA": false,
+        "readyForPagesAttach": false
+      },
+      "instructions": {
+        "domain": "host.forum-remote-smoke-1778164589.example.com",
+        "projectName": "forum-remote-smoke-1778164589-live",
+        "target": "forum-remote-smoke-1778164589-live.pages.dev",
+        "records": [
+          {
+            "type": "CNAME",
+            "name": "host.forum-remote-smoke-1778164589.example.com",
+            "value": "forum-remote-smoke-1778164589-live.pages.dev",
+            "proxied": false,
+            "note": "Use this for subdomains such as www.example.com or menu.example.com."
+          },
+          {
+            "type": "CNAME",
+            "name": "www.example.com",
+            "value": "forum-remote-smoke-1778164589-live.pages.dev",
+            "proxied": false,
+            "note": "Use this when the customer wants www on the root brand domain."
+          }
+        ],
+        "customerMessage": "Point host.forum-remote-smoke-1778164589.example.com to the preview/live site by adding a CNAME record:\nhost.forum-remote-smoke-1778164589.example.com CNAME forum-remote-smoke-1778164589-live.pages.dev\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+      },
+      "checkedAt": "2026-05-07T15:00:29.821Z"
+    }
+  },
+  "pages": {
+    "domains": [],
+    "active": false
+  },
+  "steps": [
+    {
+      "id": "customer-dns-check",
+      "ok": false,
+      "message": "Waiting for customer to add the CNAME record.",
+      "data": {
+        "cname": [],
+        "target": "forum-remote-smoke-1778164589-live.pages.dev"
+      },
+      "at": "2026-05-07T15:00:29.821Z"
+    }
+  ],
+  "createdAt": "2026-05-07T15:00:29.673Z",
+  "updatedAt": "2026-05-07T15:00:29.822Z"
+}
