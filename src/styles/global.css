@@ -76,6 +76,10 @@ textarea {
   min-height: 100vh;
 }
 
+.admin-page-shell {
+  background: var(--pl-cream);
+}
+
 .topbar {
   position: sticky;
   z-index: 50;
@@ -83,6 +87,58 @@ textarea {
   border-bottom: 2px solid var(--pl-line);
   background: color-mix(in srgb, var(--pl-paper) 94%, transparent);
   backdrop-filter: blur(12px);
+}
+
+.admin-topbar {
+  border-bottom-width: 2px;
+  background: color-mix(in srgb, var(--pl-paper) 92%, white);
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: min(100%, var(--pl-container-wide));
+  min-height: 62px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3vw, 28px);
+}
+
+.admin-brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: max-content;
+}
+
+.admin-brand img {
+  height: 34px;
+  width: auto;
+}
+
+.admin-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-nav-links a {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid var(--pl-line);
+  background: white;
+  padding: 0 12px;
+  box-shadow: 3px 3px 0 var(--pl-line);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.admin-nav-links a.is-active {
+  background: var(--pl-ink);
+  color: var(--pl-paper);
 }
 
 .nav {
@@ -245,33 +301,6 @@ textarea {
   font-size: 10px;
   font-weight: 950;
   text-transform: uppercase;
-}
-
-.admin-page-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 14px 16px;
-  border-bottom: 2px solid var(--pl-line);
-  background: color-mix(in srgb, var(--pl-paper) 80%, white);
-}
-
-.admin-page-nav a {
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-  border: 2px solid var(--pl-line);
-  background: white;
-  padding: 0 12px;
-  box-shadow: 3px 3px 0 var(--pl-line);
-  font-size: 11px;
-  font-weight: 950;
-  text-transform: uppercase;
-}
-
-.admin-page-nav a.is-active {
-  background: var(--pl-ink);
-  color: var(--pl-paper);
 }
 
 .admin-summary-strip {
@@ -2547,6 +2576,17 @@ h2 em {
 
   .nav-links {
     display: none;
+  }
+
+  .admin-nav {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .admin-nav-links {
+    justify-content: flex-start;
   }
 
   .poster-frame.split,

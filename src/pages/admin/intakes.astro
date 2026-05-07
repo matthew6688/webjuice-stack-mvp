@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../config/site';
 import { ADMIN_VIEWS, loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
 import { formatMoney, readLedger, summarizeLedger } from '../../../core/finance/ledger.js';
@@ -66,15 +66,9 @@ const savedViews = [
   ['missing_open_design', ADMIN_VIEWS.missing_open_design.label],
   ['qa_blocked', ADMIN_VIEWS.qa_blocked.label],
 ];
-const navLinks = [
-  ['/admin', 'Overview'],
-  ['/admin/intakes', 'Intakes'],
-  ['/admin/finance', 'Finance'],
-  ['/admin/queue', 'Queue'],
-];
 ---
 
-<Layout title={`Paid intake admin - ${siteConfig.name}`} description="Internal paid intake operations index.">
+<Layout title={`Paid intake admin - ${siteConfig.name}`} description="Internal paid intake operations index." active="intakes">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
@@ -113,11 +107,6 @@ const navLinks = [
           <span>Profitable projects</span>
           <strong>{dashboardSummary.profitableProjects}</strong>
         </div>
-      </div>
-      <div class="admin-page-nav">
-        {navLinks.map(([href, label]) => (
-          <a href={href} class:list={{ 'is-active': href === '/admin/intakes' }}>{label}</a>
-        ))}
       </div>
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">

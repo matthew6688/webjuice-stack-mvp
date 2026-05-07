@@ -1,0 +1,55 @@
+---
+import '../styles/global.css';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: 'overview' | 'intakes' | 'finance' | 'queue';
+}
+
+const {
+  title,
+  description = 'Internal admin dashboard for ProfitsLocal ops.',
+  active = 'overview',
+} = Astro.props;
+
+const adminNav = [
+  { key: 'overview', label: 'Overview', href: '/admin' },
+  { key: 'intakes', label: 'Intakes', href: '/admin/intakes' },
+  { key: 'finance', label: 'Finance', href: '/admin/finance' },
+  { key: 'queue', label: 'Queue', href: '/admin/queue' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <link rel="icon" href="/brand/logo-mark.svg" type="image/svg+xml" />
+  <title>{title}</title>
+  <script src="/funnel-context.js" defer></script>
+</head>
+<body>
+  <div class="page-shell admin-page-shell">
+    <header class="topbar admin-topbar">
+      <nav class="admin-nav" aria-label="Admin navigation">
+        <a class="admin-brand" href="/admin" aria-label={`${siteConfig.name} admin`}>
+          <img src="/brand/logo-horizontal.svg" alt="profitslocal" />
+        </a>
+        <div class="admin-nav-links">
+          {adminNav.map((link) => (
+            <a href={link.href} class:list={{ 'is-active': link.key === active }}>{link.label}</a>
+          ))}
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+  </div>
+</body>
+</html>

@@ -1,22 +1,16 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../config/site';
 import { formatMoney, readLedger, summarizeLedger } from '../../../core/finance/ledger.js';
 
 const events = readLedger();
 const summary = summarizeLedger(events);
-const navLinks = [
-  ['/admin', 'Overview'],
-  ['/admin/intakes', 'Intakes'],
-  ['/admin/finance', 'Finance'],
-  ['/admin/queue', 'Queue'],
-];
 const byClient = Object.entries(summary.byClient || {}).sort((a, b) => b[1] - a[1]);
 const byProvider = Object.entries(summary.byProvider || {}).sort((a, b) => a[1] - b[1]);
 const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] - b[1]);
 ---
 
-<Layout title={`Admin finance - ${siteConfig.name}`} description="Finance and ROI view for ProfitsLocal ops.">
+<Layout title={`Admin finance - ${siteConfig.name}`} description="Finance and ROI view for ProfitsLocal ops." active="finance">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
@@ -29,12 +23,6 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
           <strong>{summary.eventCount}</strong>
           <span>Ledger events</span>
         </div>
-      </div>
-
-      <div class="admin-page-nav">
-        {navLinks.map(([href, label]) => (
-          <a href={href} class:list={{ 'is-active': href === '/admin/finance' }}>{label}</a>
-        ))}
       </div>
 
       <div class="admin-summary-strip admin-summary-strip-compact">

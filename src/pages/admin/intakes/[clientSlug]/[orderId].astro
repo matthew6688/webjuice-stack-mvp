@@ -1,5 +1,5 @@
 ---
-import Layout from '../../../../layouts/Layout.astro';
+import Layout from '../../../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../../../config/site';
 import { loadPaidIntakeIndex, loadPaidIntakeRecord } from '../../../../../core/funnel/paid-intake-index.js';
 import { allowedAdminActions, adminActionDefinition } from '../../../../../core/funnel/paid-intake-actions.js';
@@ -84,15 +84,9 @@ const healthItems = [
     tone: summary.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 'warn' : 'info',
   },
 ];
-const navLinks = [
-  ['/admin', 'Overview'],
-  ['/admin/intakes', 'Intakes'],
-  ['/admin/finance', 'Finance'],
-  ['/admin/queue', 'Queue'],
-];
 ---
 
-<Layout title={`${summary.customer.company || summary.clientSlug} admin - ${siteConfig.name}`} description="Paid intake detail and operations.">
+<Layout title={`${summary.customer.company || summary.clientSlug} admin - ${siteConfig.name}`} description="Paid intake detail and operations." active="intakes">
   <section class="poster-section admin-section">
     <div class="admin-shell admin-detail-shell">
       <div class="admin-header">
@@ -105,12 +99,6 @@ const navLinks = [
           <strong>{summary.revisionCount}</strong>
           <span>Used revisions of {summary.revisionLimit}</span>
         </div>
-      </div>
-
-      <div class="admin-page-nav">
-        {navLinks.map(([href, label]) => (
-          <a href={href} class:list={{ 'is-active': href === '/admin/intakes' }}>{label}</a>
-        ))}
       </div>
 
       {Astro.url.searchParams.get('action') === 'queued' && (
