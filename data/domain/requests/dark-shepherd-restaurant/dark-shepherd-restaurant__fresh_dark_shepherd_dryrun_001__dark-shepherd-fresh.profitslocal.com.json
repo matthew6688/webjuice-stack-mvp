@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "id": "dark-shepherd-restaurant__fresh_dark_shepherd_dryrun_001__dark-shepherd-fresh.profitslocal.com",
+  "status": "pages_pending",
+  "clientSlug": "dark-shepherd-restaurant",
+  "orderId": "fresh_dark_shepherd_dryrun_001",
+  "email": "matthew6688@gmail.com",
+  "requestedDomain": "dark-shepherd-fresh.profitslocal.com",
+  "domain": "dark-shepherd-fresh.profitslocal.com",
+  "projectName": "dark-shepherd-restaurant-live",
+  "target": "dark-shepherd-restaurant-live.pages.dev",
+  "route": {
+    "route": "profitslocal_subdomain",
+    "domain": "dark-shepherd-fresh.profitslocal.com",
+    "requiresCustomerDns": false,
+    "requiresCloudflareAttach": true,
+    "utilityPagesStayOnPreview": true,
+    "reason": "customer_requested_profitslocal_subdomain",
+    "nextStep": "Attach dark-shepherd-fresh.profitslocal.com to the approved Pages project."
+  },
+  "dns": {
+    "instructions": {
+      "domain": "dark-shepherd-fresh.profitslocal.com",
+      "projectName": "dark-shepherd-restaurant-live",
+      "target": "dark-shepherd-restaurant-live.pages.dev",
+      "records": [
+        {
+          "type": "CNAME",
+          "name": "dark-shepherd-fresh.profitslocal.com",
+          "value": "dark-shepherd-restaurant-live.pages.dev",
+          "proxied": false,
+          "note": "Use this for subdomains such as www.example.com or menu.example.com."
+        },
+        {
+          "type": "CNAME",
+          "name": "www.profitslocal.com",
+          "value": "dark-shepherd-restaurant-live.pages.dev",
+          "proxied": false,
+          "note": "Use this when the customer wants www on the root brand domain."
+        }
+      ],
+      "customerMessage": "Point dark-shepherd-fresh.profitslocal.com to the preview/live site by adding a CNAME record:\ndark-shepherd-fresh.profitslocal.com CNAME dark-shepherd-restaurant-live.pages.dev\nAfter DNS propagates, WebJuice can attach the custom domain in Cloudflare Pages."
+    },
+    "inspection": null
+  },
+  "pages": {
+    "domains": [
+      {
+        "id": "ce731c54-8de3-4a6d-82cf-ef5ccf38f6f9",
+        "domain_id": "ce731c54-8de3-4a6d-82cf-ef5ccf38f6f9",
+        "name": "dark-shepherd-fresh.profitslocal.com",
+        "status": "pending",
+        "verification_data": {
+          "status": "active"
+        },
+        "validation_data": {
+          "status": "pending",
+          "method": "http"
+        },
+        "certificate_authority": "google",
+        "zone_tag": "3d8a2ec43e00f78e65047c99aafe29fb",
+        "created_on": "2026-05-07T23:18:26.652991Z"
+      }
+    ],
+    "active": false
+  },
+  "steps": [
+    {
+      "id": "upsert-profitslocal-cname",
+      "ok": true,
+      "message": "Created or updated ProfitsLocal DNS CNAME.",
+      "data": {
+        "action": "created",
+        "name": "dark-shepherd-fresh.profitslocal.com",
+        "target": "dark-shepherd-restaurant-live.pages.dev",
+        "proxied": true
+      },
+      "at": "2026-05-07T23:18:25.457Z"
+    },
+    {
+      "id": "attach-pages-domain",
+      "ok": true,
+      "message": "Cloudflare Pages custom domain is attached.",
+      "data": {
+        "active": false,
+        "domain": "dark-shepherd-fresh.profitslocal.com"
+      },
+      "at": "2026-05-07T23:20:27.801Z"
+    }
+  ],
+  "createdAt": "2026-05-07T23:18:24.681Z",
+  "updatedAt": "2026-05-07T23:20:27.801Z"
+}
