@@ -106,10 +106,7 @@ async function dispatchRevisionWorkflow(env: Env, payload: Record<string, string
     },
     body: JSON.stringify({
       ref,
-      inputs: {
-        payload: JSON.stringify(payload),
-        dedupe_key: `${payload.order_id || 'order'}-${Date.now()}`,
-      },
+      inputs: request.inputs,
     }),
   });
   if (response.status === 204) return { ok: true };
@@ -118,6 +115,8 @@ async function dispatchRevisionWorkflow(env: Env, payload: Record<string, string
 
 async function sendRevisionEmail(env: Env, payload: Record<string, string | string[]>, files: Array<{ filename: string; content: string; content_type: string; size: number }>) {
   if (!env.RESEND_API_KEY) return { ok: false, error: 'Resend is not configured.' };
+  const details = detailsFromObject(payload);
+  const text = keyValueText(details);
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -125,10 +124,18 @@ async function sendRevisionEmail(env: Env, payload: Record<string, string | stri
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: env.FROM_EMAIL || 'profitslocal <hello@fengtalk.ai>',
-      to: env.NOTIFICATION_EMAIL || 'hello@fengtalk.ai',
+      from: env.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>',
+      to: env.NOTIFICATION_EMAIL || 'hi@profitslocal.com',
       subject: `Paid revision assets: ${payload.business_name || payload.client_slug || payload.order_id}`,
-      text: Object.entries(payload).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`).join('\n'),
+      text,
+      html: renderProfitsLocalEmail({
+        eyebrow: 'Revision request',
+        subject: `Paid revision assets: ${payload.business_name || payload.client_slug || payload.order_id}`,
+        intro: 'A paid revision request was submitted with assets or detailed change notes.',
+        details,
+        footerNote: 'Internal revision notification. Reply goes to the checkout email.',
+        preheader: `Revision submitted for ${payload.business_name || payload.client_slug || payload.order_id}.`,
+      }),
       reply_to: String(payload.email || ''),
       attachments: files.map((file) => ({
         filename: file.filename,
