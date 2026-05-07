@@ -953,6 +953,7 @@ npm run ops:project-dry-run -- \
 | `npm run ops:test-workflow-dispatch` | approval/revision 两个入口的 workflow dispatch contract | 通过 |
 | `npm run ops:test-revision-thread-reuse` | revision form payload 进入 funnel 后，复用原 case 和原 website thread | 通过 |
 | `npm run ops:test-customer-actions-rehearsal` | sale -> revision -> approval 三段动作围绕同一个项目记忆演练 | 通过 |
+| `npm run ops:test-customer-entrypoints` | 官方 approval/revision 页面入口是否把请求送到正确 workflow | 通过 |
 
 这两个步骤加上原有验证：
 

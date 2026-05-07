@@ -1,5 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { dispatchWorkflow } from './_agent-dispatch';
+import { dispatchWorkflow } from './_agent-dispatch.ts';
 import { buildApprovalWorkflowDispatch } from '../../core/ops/workflow-dispatch.js';
 
 interface Env {
