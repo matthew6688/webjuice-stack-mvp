@@ -12,6 +12,7 @@ const pages = [
   '/demo-faq',
   '/checkout',
   '/thank-you',
+  '/contact-us',
   '/revise',
   '/approve',
   '/domain-setup',
@@ -103,6 +104,8 @@ function validatePage({ mode, pagePath, source, status, html, error = '', expect
   if (pagePath === '/') {
     check(checks, 'sales_footer_how_it_works', html.includes('How it works'), 'missing fixed footer FAQ link');
     check(checks, 'sales_footer_faq', html.includes('FAQ'), 'missing FAQ link');
+    check(checks, 'sales_footer_contact', html.includes('Contact'), 'missing contact link');
+    check(checks, 'sales_footer_logo_official', html.includes('https://profitslocal.com/') && html.includes('logo-horizontal.svg'), 'banner logo does not link to official ProfitsLocal site');
     check(checks, 'sales_footer_claim_399', html.includes('Claim $399') || html.includes('Claim &#36;399') || html.includes('$399 one-time'), 'missing $399 claim CTA');
     check(checks, 'sales_footer_799', html.includes('$799/yr') || html.includes('&#36;799/yr') || html.includes('$799/year'), 'missing yearly CTA');
     check(checks, 'sales_footer_checkout', html.includes('Checkout') || html.includes('CHECKOUT'), 'missing checkout CTA');
@@ -128,6 +131,13 @@ function validatePage({ mode, pagePath, source, status, html, error = '', expect
   if (pagePath === '/checkout') {
     check(checks, 'checkout_fields', containsAll(text, ['Package', 'Business name', 'Email', 'Preferred domain']), 'checkout form missing key fields');
     check(checks, 'checkout_secure_payment', text.includes('Continue to secure payment'), 'missing payment CTA');
+    check(checks, 'checkout_preview_context', html.includes('data-preview-context') && containsAll(html, ['name="client_slug"', 'name="repo"', 'name="preview_url"']), 'checkout does not preserve preview/source context');
+  }
+
+  if (pagePath === '/contact-us') {
+    check(checks, 'contact_page_routes', containsAll(text, ['Questions before checkout', 'Email ProfitsLocal', 'Request a callback']), 'contact page missing customer support paths');
+    check(checks, 'contact_support_email', html.includes('hello@fengtalk.ai'), 'contact page missing support email');
+    check(checks, 'contact_preview_context', html.includes('data-preview-context') && containsAll(html, ['name="client_slug"', 'name="repo"', 'name="preview_url"']), 'contact page does not preserve preview/source context');
   }
 
   if (pagePath === '/thank-you') {

@@ -47,16 +47,24 @@ The preview site must keep sales/account controls in a fixed footer/banner. Do n
 Fixed footer/banner buttons:
 
 - `How it works` -> `/demo-faq?client_slug=<client>&repo=<repo>&preview_url=<preview>`
-- `Claim $399` -> `/checkout?...tier=one_time&amount=399`
+- `FAQ` -> `/demo-faq?client_slug=<client>&repo=<repo>&preview_url=<preview>#questions`
+- `Contact` -> `/contact-us?client_slug=<client>&repo=<repo>&preview_url=<preview>`
+- ProfitsLocal logo -> `https://profitslocal.com/` in a new tab
+- `$399 one-time` -> `/checkout?...tier=one_time&amount=399`
 - `$799/yr` -> `/checkout?...tier=yearly_maintenance&amount=799`
-- `Approve site` -> `/approve?order_id=<orderId>&email=<checkoutEmail>`
-- `Request revision` -> `/revise?order_id=<orderId>&email=<checkoutEmail>`
-- `Buy extra revision` -> `$100` Stripe extra revision checkout when needed
+- `Checkout` -> the one-time checkout URL by default, preserving `client_slug`, `repo`, `template`, `preview_url`, `tier`, `amount`, and `currency`
+- After payment only: `Approve site` -> `/approve?order_id=<orderId>&email=<checkoutEmail>`
+- After payment only: `Request revision` -> `/revise?order_id=<orderId>&email=<checkoutEmail>`
+- After payment only: `Buy extra revision` -> `$100` Stripe extra revision checkout when needed
+
+Pre-purchase preview banners must not show `$100 extra revision` or `Request changes`. Those are customer account/review actions and only become visible after the preview URL has a matched `orderId + checkout email`.
 
 Utility pages:
 
 - `/demo-faq` is the ProfitsLocal offer/FAQ page that explains pricing, what happens after payment, revision allowance, and domain routes.
-- `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` use ProfitsLocal branded chrome. They must not show customer-site/template footer text or the fixed preview sales bar inside the utility page itself.
+- `/checkout`, `/contact-us`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` use ProfitsLocal branded chrome: official logo, cream/paper/coral/mint palette, hard black borders, and the shared ProfitsLocal header/footer. They must not show customer-site/template footer text or the fixed preview sales bar inside the utility page itself.
+- `/checkout` preserves preview source context through hidden fields and URL params, so a paid order maps back to the correct demo, repo, and client project.
+- `/contact-us` lets the customer email ProfitsLocal, request a callback by email, or submit a mailto-backed question while preserving the same preview context.
 - `/approve` requires `orderId + checkout email`, then posts to `/api/approval-request/`.
 - `/revise` requires `orderId + checkout email`, then posts to `/api/revision-request/`.
   - When opened from a review email or preview footer, `orderId` and checkout email are prefilled and locked as read-only fields.
