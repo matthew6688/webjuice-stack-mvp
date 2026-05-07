@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "caseId": "opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
-  "status": "live_published",
+  "status": "dev_pushed_needs_review",
   "clientSlug": "opa-bar-mezze-restaurant",
   "repo": "matthew6688/opa-bar-mezze-restaurant",
   "branch": "dev",
   "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
-  "template": "webjuice-restaurant",
+  "template": "unknown",
   "order": {
     "id": "cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7",
     "provider": "stripe",
@@ -29,18 +29,18 @@
       "periodEnd": null,
       "description": "Three lifetime revision requests after purchase."
     },
-    "used": 1,
-    "remaining": 2,
+    "used": 2,
+    "remaining": 1,
     "lastReason": "revision_allowed"
   },
   "discord": {
     "salesThreadId": "1501197066758783017",
-    "revisionThreadId": "1501205859118878882",
+    "revisionThreadId": "1501861490918031412",
     "websiteTaskThreadId": "1501197070319616011",
     "lastChannelId": "1501197070319616011",
-    "lastMessageId": "1501205900592021636",
+    "lastMessageId": "1501861649819111475",
     "lastMessageUrl": "",
-    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501205859118878882",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501861490918031412",
     "threadCreatedByBot": true
   },
   "sourceOfTruth": {
@@ -59,11 +59,11 @@
   ],
   "lockedDecisions": [],
   "latestTask": {
-    "id": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+    "id": "revision_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7-1778142082568",
     "kind": "revision",
     "status": "queued",
-    "path": "data/agent-tasks/opa-bar-mezze-restaurant/revision-rev_1777985753467.json",
-    "createdAt": "2026-05-05T12:56:07.519Z"
+    "path": "data/agent-tasks/opa-bar-mezze-restaurant/revision-cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7-1778142082568.json",
+    "createdAt": "2026-05-07T08:21:22.569Z"
   },
   "paths": {
     "casePath": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/case.json",
@@ -75,20 +75,20 @@
     "artifactsDir": "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts"
   },
   "createdAt": "2026-05-05T12:21:12.339Z",
-  "updatedAt": "2026-05-05T14:33:26.227Z",
+  "updatedAt": "2026-05-07T08:22:00.621Z",
   "latestAgentRun": {
-    "id": "agent_run_1777991606227_igdlwotv",
-    "taskId": "revision_opa-bar-mezze-restaurant_rev_1777985753467",
+    "id": "agent_run_1778142117201_kl64nkvp",
+    "taskId": "revision_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7-1778142082568",
     "ok": true,
     "dryRun": false,
-    "mode": "publish",
+    "mode": "revision",
     "repo": "matthew6688/opa-bar-mezze-restaurant",
-    "branch": "main",
-    "repoDir": "/Users/matthew/Developer/webjuice-generated/opa-bar-mezze-restaurant",
+    "branch": "dev",
+    "repoDir": "/tmp/client-repo",
     "changedFiles": [],
     "pushed": true,
-    "commit": "418519767e480bf0bd0b8948e515851528f658d9",
-    "previewUrl": "https://opa-controlled.profitslocal.com/",
+    "commit": "",
+    "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
     "audit": {
       "contextRead": {
         "case": true,
@@ -110,67 +110,44 @@
         ],
         "mode": ""
       },
-      "qaScreenshots": [
-        "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts/review-desktop.png",
-        "data/cases/opa-bar-mezze-restaurant/cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7/artifacts/review-mobile.png"
-      ],
+      "qaScreenshots": [],
       "devDeployUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
       "customerEmailId": ""
     },
     "steps": [
       {
-        "id": "preflight-clean",
-        "ok": true,
-        "command": "git status --porcelain"
-      },
-      {
-        "id": "fetch",
-        "ok": true,
-        "command": "git fetch origin dev main"
-      },
-      {
-        "id": "checkout-source",
+        "id": "checkout-branch",
         "ok": true,
         "command": "git checkout dev"
       },
       {
-        "id": "pull-source",
+        "id": "apply-artifacts",
         "ok": true,
-        "command": "git pull --ff-only origin dev"
+        "command": "npm run apply:restaurant-artifacts -- --content /home/runner/work/webjuice-stack-mvp/webjuice-stack-mvp/clients/opa-bar-mezze-restaurant/content.restaurant.json --design /home/runner/work/webjuice-stack-mvp/webjuice-stack-mvp/clients/opa-bar-mezze-restaurant/design.restaurant.json"
       },
       {
-        "id": "build-source",
+        "id": "build",
         "ok": true,
         "command": "npm run build"
       },
       {
-        "id": "checkout-target",
+        "id": "stage-changes",
         "ok": true,
-        "command": "git checkout main"
+        "command": "git add -A"
       },
       {
-        "id": "pull-target",
+        "id": "commit-dev",
         "ok": true,
-        "command": "git pull --ff-only origin main"
+        "command": "git commit -m chore: run revision task revision_opa-bar-mezze-restaurant_cs_test_b1NsMZTui0nhviPT4xGh6r5orYmCzLQjeDQCc5qnKgYe3BDUb0bb7etXY7-1778142082568"
       },
       {
-        "id": "copy-source-tree",
+        "id": "push-dev",
         "ok": true,
-        "command": "git read-tree --reset -u dev"
-      },
-      {
-        "id": "commit-live",
-        "ok": true,
-        "command": "git commit -m publish: opa-bar-mezze-restaurant from dev"
-      },
-      {
-        "id": "push-live",
-        "ok": true,
-        "command": "git push origin main"
+        "command": "git push origin dev"
       }
     ],
-    "startedAt": "2026-05-05T14:33:21.354Z",
-    "finishedAt": "2026-05-05T14:33:26.226Z",
-    "createdAt": "2026-05-05T14:33:26.227Z"
+    "startedAt": "2026-05-07T08:21:53.710Z",
+    "finishedAt": "2026-05-07T08:21:57.197Z",
+    "createdAt": "2026-05-07T08:21:57.201Z"
   }
 }
