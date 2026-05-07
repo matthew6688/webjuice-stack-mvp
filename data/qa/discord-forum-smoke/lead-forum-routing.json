@@ -1,0 +1,203 @@
+{
+  "ok": true,
+  "root": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-forum-routing-oU63qa",
+  "assertions": {
+    "paidIntakeLeadWorkspaceOk": true,
+    "saleLeadWorkspaceOk": true,
+    "paidIntakeSalesThreadStored": true,
+    "saleSalesThreadStored": true,
+    "createdForumPosts": true
+  },
+  "failed": [],
+  "paidIntake": {
+    "leadWorkspace": {
+      "ok": true,
+      "discord": {
+        "ok": true,
+        "status": 201,
+        "channelId": "forum-leads",
+        "messageId": "thread-4",
+        "messageUrl": "https://discord.com/channels/guild-1/thread-4/thread-4",
+        "threadId": "thread-4",
+        "threadUrl": "https://discord.com/channels/guild-1/thread-4",
+        "threadName": "[Paid] Lead Forum Paid Intake",
+        "threadCreatedByBot": true,
+        "threadStyle": "forum_post",
+        "appliedTagIds": [
+          "tag-1",
+          "tag-7"
+        ],
+        "threadMessageId": "thread-4",
+        "threadMessageUrl": "https://discord.com/channels/guild-1/thread-4/thread-4"
+      },
+      "payload": {
+        "username": "ProfitsLocal Sales",
+        "embeds": [
+          {
+            "title": "Paid intake: Lead Forum Paid Intake",
+            "color": 3447003,
+            "fields": [
+              {
+                "name": "Client",
+                "value": "lead-forum-paid-intake",
+                "inline": true
+              },
+              {
+                "name": "Order ID",
+                "value": "cs_test_paid_intake_lead_forum",
+                "inline": false
+              },
+              {
+                "name": "Tier",
+                "value": "one_time",
+                "inline": true
+              },
+              {
+                "name": "Amount",
+                "value": "USD 399",
+                "inline": true
+              },
+              {
+                "name": "Email",
+                "value": "owner@example.com",
+                "inline": true
+              }
+            ],
+            "timestamp": "2026-05-07T14:26:50.074Z"
+          }
+        ]
+      }
+    },
+    "discord": {
+      "salesThreadId": "thread-4",
+      "revisionThreadId": "",
+      "websiteTaskThreadId": "",
+      "salesWorkspaceChannelId": "forum-leads",
+      "salesWorkspaceType": "forum_post",
+      "salesWorkspaceName": "[Paid] Lead Forum Paid Intake",
+      "salesWorkspaceTagIds": [
+        "tag-1",
+        "tag-7"
+      ],
+      "revisionWorkspaceChannelId": "",
+      "revisionWorkspaceType": "",
+      "revisionWorkspaceName": "",
+      "revisionWorkspaceTagIds": [],
+      "websiteWorkspaceChannelId": "",
+      "websiteWorkspaceType": "",
+      "websiteWorkspaceName": "",
+      "websiteWorkspaceTagIds": [],
+      "lastChannelId": "forum-leads",
+      "lastMessageId": "thread-4",
+      "lastMessageUrl": "https://discord.com/channels/guild-1/thread-4/thread-4",
+      "lastThreadUrl": "https://discord.com/channels/guild-1/thread-4",
+      "threadCreatedByBot": true
+    }
+  },
+  "sale": {
+    "leadWorkspace": {
+      "ok": true,
+      "discord": {
+        "ok": true,
+        "status": 201,
+        "channelId": "forum-leads",
+        "messageId": "thread-8",
+        "messageUrl": "https://discord.com/channels/guild-1/thread-8/thread-8",
+        "threadId": "thread-8",
+        "threadUrl": "https://discord.com/channels/guild-1/thread-8",
+        "threadName": "[Qualified] Lead Forum Sale",
+        "threadCreatedByBot": true,
+        "threadStyle": "forum_post",
+        "appliedTagIds": [
+          "tag-1",
+          "tag-3"
+        ],
+        "threadMessageId": "thread-8",
+        "threadMessageUrl": "https://discord.com/channels/guild-1/thread-8/thread-8"
+      },
+      "payload": {
+        "username": "ProfitsLocal Sales",
+        "embeds": [
+          {
+            "title": "New website sale: Lead Forum Sale",
+            "color": 3066993,
+            "fields": [
+              {
+                "name": "Client",
+                "value": "lead-forum-sale",
+                "inline": true
+              },
+              {
+                "name": "Repo",
+                "value": "matthew6688/lead-forum-sale",
+                "inline": true
+              },
+              {
+                "name": "Order ID",
+                "value": "cs_test_sale_lead_forum",
+                "inline": false
+              },
+              {
+                "name": "Tier",
+                "value": "one_time",
+                "inline": true
+              },
+              {
+                "name": "Amount",
+                "value": "USD 399",
+                "inline": true
+              },
+              {
+                "name": "Email",
+                "value": "owner@example.com",
+                "inline": true
+              },
+              {
+                "name": "Preview",
+                "value": "https://lead-forum-sale-dev.pages.dev/",
+                "inline": false
+              },
+              {
+                "name": "Task",
+                "value": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-forum-routing-oU63qa/tasks/lead-forum-sale/sale-cs_test_sale_lead_forum.json",
+                "inline": false
+              },
+              {
+                "name": "Case",
+                "value": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-forum-routing-oU63qa/cases/lead-forum-sale/cs_test_sale_lead_forum/case.json",
+                "inline": false
+              }
+            ],
+            "timestamp": "2026-05-07T14:26:50.106Z"
+          }
+        ]
+      }
+    },
+    "discord": {
+      "salesThreadId": "thread-8",
+      "revisionThreadId": "",
+      "websiteTaskThreadId": "",
+      "salesWorkspaceChannelId": "forum-leads",
+      "salesWorkspaceType": "forum_post",
+      "salesWorkspaceName": "[Qualified] Lead Forum Sale",
+      "salesWorkspaceTagIds": [
+        "tag-1",
+        "tag-3"
+      ],
+      "revisionWorkspaceChannelId": "",
+      "revisionWorkspaceType": "",
+      "revisionWorkspaceName": "",
+      "revisionWorkspaceTagIds": [],
+      "websiteWorkspaceChannelId": "",
+      "websiteWorkspaceType": "",
+      "websiteWorkspaceName": "",
+      "websiteWorkspaceTagIds": [],
+      "lastChannelId": "forum-leads",
+      "lastMessageId": "thread-8",
+      "lastMessageUrl": "https://discord.com/channels/guild-1/thread-8/thread-8",
+      "lastThreadUrl": "https://discord.com/channels/guild-1/thread-8",
+      "threadCreatedByBot": true
+    }
+  },
+  "callCount": 8
+}

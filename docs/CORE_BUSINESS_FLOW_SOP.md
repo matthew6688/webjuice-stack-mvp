@@ -119,6 +119,9 @@
 ```bash
 npm run discord:sync-forums -- --leads 1501187038706401290 --projects 1501945763650080899
 npm run discord:test-forum-workspace -- --leads 1501187038706401290 --projects 1501945763650080899
+npm run discord:test-lead-forum-routing
+npm run discord:test-project-workspace-stages
+npm run discord:update-forum-workspace -- --help
 ```
 
 证据位置：
@@ -127,6 +130,58 @@ npm run discord:test-forum-workspace -- --leads 1501187038706401290 --projects 1
 - `data/qa/discord-forum-smoke/forum-workspace-smoke.json`
 - `data/qa/discord-forum-smoke/forum-channels.json`
 - `data/qa/discord-forum-smoke/website-handoff-forum.json`
+- `data/qa/discord-forum-smoke/lead-forum-routing.json`
+- `data/qa/discord-forum-smoke/project-workspace-stages.json`
+
+### Forum 自动流转规则
+
+当前已经接上的自动规则：
+
+#### `website-leads`
+
+- `paid_intake`：自动创建或复用一个 lead forum post，标题会类似：
+  - `[Paid] Business Name`
+- `sale`：自动创建或复用 lead forum post，标题会类似：
+  - `[Qualified] Business Name`
+- 这一步会把 forum post 信息回写到 `case.json.discord`：
+  - `salesThreadId`
+  - `salesWorkspaceChannelId`
+  - `salesWorkspaceType`
+  - `salesWorkspaceName`
+  - `salesWorkspaceTagIds`
+
+#### `website-projects`
+
+- `ready_for_customer_review` handoff：自动创建或复用项目 forum post，标题类似：
+  - `[Review] Business Name`
+- `agent:complete-task` 完成后：会继续复用同一个项目 post，并保持 `review` 或 `revision` 阶段 tag。
+- `agent:publish-approved`：
+  - 先把项目 post 改到 `[Approved]`
+  - 发 live published 消息
+  - 再改到 `[Live]`
+- `domain:request --execute true --send-discord true`：
+  - 如果客户还没完成 DNS，会在同一个项目 post 里发 domain status update
+  - 并补上 `domain-blocked` / `waiting-customer` 语义
+
+### 手动校正规则
+
+如果某个项目需要人工修正 forum 标题或 tag，不要直接在 Discord 里手改。优先使用：
+
+```bash
+npm run discord:update-forum-workspace -- \
+  --workspace projects \
+  --thread <threadId> \
+  --kind live \
+  --client opa-bar-mezze-restaurant \
+  --company "Opa Bar & Mezze" \
+  --status waiting_for_customer_dns
+```
+
+这样做的好处：
+
+- 标题和 tag 一起更新；
+- 更新逻辑和自动流程一致；
+- 不会把 case memory 和 Discord workspace 状态改乱。
 
 ### 如果修改从 Discord 开始
 

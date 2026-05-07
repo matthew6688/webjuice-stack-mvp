@@ -323,6 +323,23 @@ Current preferred structure:
 
 For active projects, each business should map to one durable forum post. Later agent completion, revision, approval, and publish messages should reuse that same Discord workspace from `case.json.discord`.
 
+Automation currently wired:
+
+- `paid_intake` / `sale` -> create or reuse a `website-leads` forum post
+- `ready_for_customer_review` handoff -> create or reuse a `website-projects` forum post
+- `agent:complete-task` -> keep the same project workspace and update review/revision stage
+- `agent:publish-approved` -> move the same project workspace through `approved` then `live`
+- `domain:request --execute true --send-discord true` -> post DNS status back into the same project workspace
+
+Useful commands:
+
+```bash
+npm run discord:sync-forums -- --leads 1501187038706401290 --projects 1501945763650080899
+npm run discord:test-lead-forum-routing
+npm run discord:test-project-workspace-stages
+npm run discord:update-forum-workspace -- --help
+```
+
 Hermes / website-agent receives:
 
 - client slug;

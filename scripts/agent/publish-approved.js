@@ -7,6 +7,7 @@ import { publishApprovedTask, savePublishResult } from '../../core/agents/publis
 import { getLatestGithubActionsRun } from '../../core/deploy/github-actions.js';
 import { buildLivePublishedEmail, sendCustomerEmail } from '../../core/funnel/customer-email.js';
 import { buildLivePublishedDiscordMessage, sendDiscordChannelMessage, sendDiscordWebhook } from '../../core/funnel/discord.js';
+import { updateForumWorkspaceStage } from '../../core/funnel/discord-workspace.js';
 import { recordCaseNotification } from '../../core/cases/case-file.js';
 import { DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 
@@ -130,6 +131,26 @@ async function sendLivePublishedDiscord({ args, task, caseFile, publishResult, d
   if (caseFile.discord?.websiteTaskThreadId) {
     const botToken = process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || process.env.DISCORD_BOT_TOKEN || '';
     if (!botToken) return { ok: false, skipped: true, reason: 'missing_website_task_bot_token', threadId, payload };
+    let approvedWorkspace = null;
+    let liveWorkspace = null;
+    try {
+      approvedWorkspace = await updateForumWorkspaceStage({
+        workspace: 'projects',
+        threadId,
+        channelId: caseFile.discord?.websiteWorkspaceChannelId || '',
+        botToken,
+        kind: 'approved',
+        order: {
+          clientSlug: caseFile.clientSlug,
+          company: caseFile.customer?.company || '',
+          template: caseFile.template || '',
+        },
+        caseFile,
+        revision: caseFile.revision || null,
+      });
+    } catch (error) {
+      approvedWorkspace = { ok: false, error: error.message || String(error) };
+    }
     const discord = await sendDiscordChannelMessage({
       channelId: threadId,
       botToken,
@@ -137,6 +158,25 @@ async function sendLivePublishedDiscord({ args, task, caseFile, publishResult, d
     });
     discord.threadId = threadId;
     discord.threadReused = true;
+    try {
+      liveWorkspace = await updateForumWorkspaceStage({
+        workspace: 'projects',
+        threadId,
+        channelId: caseFile.discord?.websiteWorkspaceChannelId || '',
+        botToken,
+        kind: 'live',
+        order: {
+          clientSlug: caseFile.clientSlug,
+          company: caseFile.customer?.company || '',
+          template: caseFile.template || '',
+        },
+        caseFile,
+        revision: caseFile.revision || null,
+      });
+    } catch (error) {
+      liveWorkspace = { ok: false, error: error.message || String(error) };
+    }
+    discord.workspaceUpdate = { approvedWorkspace, liveWorkspace };
     const record = recordCaseNotification(caseFile.paths, {
       type: 'live_publish_discord_sent',
       kind: 'website_task',

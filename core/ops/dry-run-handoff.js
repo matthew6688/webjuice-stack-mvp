@@ -1,15 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import {
-  buildForumThreadName,
   buildWebsiteAgentHandoffMessage,
-  defaultDiscordForumBlueprints,
-  desiredForumTagNames,
-  sendDiscordChannelMessage,
-  sendDiscordThreadedMessage,
-  syncDiscordForumTags,
-  updateDiscordThread,
 } from '../funnel/discord.js';
+import { createOrUpdateForumWorkspace } from '../funnel/discord-workspace.js';
 import { recordCaseNotification } from '../cases/case-file.js';
 
 export async function dispatchDryRunHandoff(options = {}) {
@@ -112,8 +106,12 @@ export async function dispatchDryRunHandoff(options = {}) {
     }
 
     const existingThreadId = caseFile.discord?.websiteTaskThreadId || '';
-    const threadName = buildForumThreadName({
+    const dispatch = await createOrUpdateForumWorkspace({
       workspace: 'projects',
+      channelId,
+      botToken,
+      payload,
+      existingThreadId,
       kind: task.kind || task.type || 'sale',
       order: {
         ...task.order,
@@ -124,40 +122,9 @@ export async function dispatchDryRunHandoff(options = {}) {
       },
       caseFile,
       revision: caseFile.revision || null,
-    });
-    const forumTags = await resolveForumTagIds({
-      channelId,
-      botToken,
+      parentPayload: output.parentPayload,
       fetchImpl,
-      workspace: 'projects',
-      kind: task.kind || task.type || 'sale',
-      order: {
-        ...task.order,
-        ...caseFile.customer,
-        clientSlug: caseFile.clientSlug,
-        company: caseFile.customer?.company || handoff.businessName || '',
-        template: caseFile.template || '',
-      },
-      caseFile,
     });
-    const dispatch = existingThreadId
-      ? await sendExistingWorkspaceMessage({
-        existingThreadId,
-        botToken,
-        payload,
-        threadName,
-        forumTags,
-        fetchImpl,
-      })
-      : await sendDiscordThreadedMessage({
-        channelId,
-        botToken,
-        payload,
-        threadName,
-        forumTagIds: forumTags,
-        parentPayload: output.parentPayload,
-        fetchImpl,
-      });
 
     if (existingThreadId) {
       dispatch.threadId = existingThreadId;
@@ -189,59 +156,6 @@ export async function dispatchDryRunHandoff(options = {}) {
 
   writeJson(paths.outputPath, output);
   return output;
-}
-
-async function sendExistingWorkspaceMessage({
-  existingThreadId,
-  botToken,
-  payload,
-  threadName,
-  forumTags,
-  fetchImpl,
-}) {
-  const dispatch = await sendDiscordChannelMessage({
-    channelId: existingThreadId,
-    botToken,
-    payload,
-    fetchImpl,
-  });
-  try {
-    await updateDiscordThread({
-      threadId: existingThreadId,
-      botToken,
-      name: threadName,
-      appliedTagIds: forumTags,
-      fetchImpl,
-    });
-  } catch (error) {
-    dispatch.metadataUpdateError = error.message || String(error);
-  }
-  dispatch.threadName = threadName;
-  dispatch.appliedTagIds = forumTags;
-  return dispatch;
-}
-
-async function resolveForumTagIds({
-  channelId,
-  botToken,
-  fetchImpl,
-  workspace,
-  kind,
-  order,
-  caseFile,
-}) {
-  try {
-    const blueprints = defaultDiscordForumBlueprints();
-    const config = await syncDiscordForumTags({
-      channelId,
-      botToken,
-      tags: blueprints[workspace] || [],
-      fetchImpl,
-    });
-    return desiredForumTagNames({ workspace, kind, order, caseFile }).map((name) => config.tagsByName[name]).filter(Boolean);
-  } catch {
-    return [];
-  }
 }
 
 function readJson(filePath, errorMessage) {

@@ -8,6 +8,7 @@ import { validatePreReviewGate } from '../../core/agents/review-gate.js';
 import { getLatestGithubActionsRun } from '../../core/deploy/github-actions.js';
 import { buildAgentReviewEmail, sendCustomerEmail } from '../../core/funnel/customer-email.js';
 import { buildAgentReviewDiscordMessage, sendDiscordChannelMessage, sendDiscordWebhook } from '../../core/funnel/discord.js';
+import { updateForumWorkspaceStage } from '../../core/funnel/discord-workspace.js';
 import { recordCaseNotification } from '../../core/cases/case-file.js';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 import { agentRuntimeLedgerInput } from '../../core/finance/service-costs.js';
@@ -172,6 +173,25 @@ async function sendAgentReviewDiscord({ args, task, caseFile, runResult, deployR
   if (caseFile.discord?.websiteTaskThreadId) {
     const botToken = process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || process.env.DISCORD_BOT_TOKEN || '';
     if (!botToken) return { ok: false, skipped: true, reason: 'missing_website_task_bot_token', threadId, payload };
+    let workspaceUpdate = null;
+    try {
+      workspaceUpdate = await updateForumWorkspaceStage({
+        workspace: 'projects',
+        threadId,
+        channelId: caseFile.discord?.websiteWorkspaceChannelId || '',
+        botToken,
+        kind: task.kind === 'revision' ? 'revision' : 'sale',
+        order: {
+          clientSlug: caseFile.clientSlug,
+          company: caseFile.customer?.company || '',
+          template: caseFile.template || '',
+        },
+        caseFile,
+        revision: caseFile.revision || null,
+      });
+    } catch (error) {
+      workspaceUpdate = { ok: false, error: error.message || String(error) };
+    }
     const discord = await sendDiscordChannelMessage({
       channelId: threadId,
       botToken,
@@ -179,6 +199,7 @@ async function sendAgentReviewDiscord({ args, task, caseFile, runResult, deployR
     });
     discord.threadId = threadId;
     discord.threadReused = true;
+    if (workspaceUpdate) discord.workspaceUpdate = workspaceUpdate;
     const record = recordCaseNotification(caseFile.paths, {
       type: 'agent_review_discord_sent',
       kind: 'website_task',

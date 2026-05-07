@@ -78,6 +78,8 @@ jobs:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID }}
           CF_ZONE_ID: ${{ secrets.PROFITSLOCAL_CF_ZONE_ID }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          WEBSITE_TASKS_DISCORD_BOT_TOKEN: ${{ secrets.WEBSITE_TASKS_DISCORD_BOT_TOKEN || secrets.DISCORD_BOT_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>' }}
           RESEND_EMAIL_UNIT_COST: ${{ vars.RESEND_EMAIL_UNIT_COST }}

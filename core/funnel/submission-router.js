@@ -5,17 +5,13 @@ import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
 import { artifactTimestamp } from '../time.js';
 import { buildOpenDesignWorkspace } from '../open-design/workspace.js';
 import { buildFunnelCustomerEmail, sendCustomerEmail } from './customer-email.js';
+import { createOrUpdateForumWorkspace } from './discord-workspace.js';
 import {
-  buildForumThreadName,
   buildDiscordMessage,
   buildWebsiteAgentHandoffMessage,
-  defaultDiscordForumBlueprints,
-  desiredForumTagNames,
   sendDiscordChannelMessage,
   sendDiscordThreadedMessage,
   sendDiscordWebhook,
-  syncDiscordForumTags,
-  updateDiscordThread,
 } from './discord.js';
 import { addExtraRevisionEntitlement, consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
@@ -168,7 +164,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     if (!options.dryRun) {
       writeJson(paidIntakePath, paidIntake);
     }
-    const caseRecord = recordFunnelCaseEvent({
+    let caseRecord = recordFunnelCaseEvent({
       kind,
       provider,
       order,
@@ -199,6 +195,19 @@ export async function routeFunnelSubmission(payload, options = {}) {
         emailMetadata: { kind, orderId: order.orderId || '', outcome: 'paid_intake_created' },
       });
     }
+    let leadWorkspace = { ok: false, skipped: true };
+    if (!options.dryRun) {
+      leadWorkspace = await sendLeadWorkspaceUpdate({
+        kind,
+        order,
+        payload: discordPayload,
+        caseRecord,
+        options,
+      });
+    }
+    if (leadWorkspace.ok) {
+      caseRecord = recordCaseLeadWorkspace(caseRecord, leadWorkspace, options);
+    }
     return {
       ok: true,
       provider,
@@ -212,6 +221,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
       entitlement: null,
       ledgerEvent,
       discord,
+      leadWorkspace,
       websiteAgentHandoff: { ok: false, skipped: true, reason: 'paid_intake_needs_structured_intake' },
       customerEmail,
       discordPayload,
@@ -351,6 +361,19 @@ export async function routeFunnelSubmission(payload, options = {}) {
     casesDir: options.casesDir,
     dryRun: options.dryRun,
   });
+  let leadWorkspace = { ok: false, skipped: true };
+  if (kind === 'sale' && !options.dryRun) {
+    leadWorkspace = await sendLeadWorkspaceUpdate({
+      kind,
+      order,
+      payload: discordPayload,
+      caseRecord,
+      options,
+    });
+    if (leadWorkspace.ok) {
+      caseRecord = recordCaseLeadWorkspace(caseRecord, leadWorkspace, options);
+    }
+  }
   const websiteAgentHandoff = await sendWebsiteAgentHandoff({
     kind,
     order,
@@ -373,6 +396,7 @@ export async function routeFunnelSubmission(payload, options = {}) {
     entitlement,
     ledgerEvent,
     discord,
+    leadWorkspace,
     websiteAgentHandoff,
     customerEmail,
     discordPayload,
@@ -447,97 +471,23 @@ async function sendWebsiteAgentHandoff({ kind, order, task, caseRecord, options 
   }
   const payload = buildWebsiteAgentHandoffMessage({ kind, order, task, caseRecord, mention });
   const existingThreadId = caseRecord?.caseFile?.discord?.websiteTaskThreadId || '';
-  const forumTagIds = await resolveForumTagIds({
+  const discord = await createOrUpdateForumWorkspace({
+    workspace: 'projects',
     channelId,
     botToken,
-    fetchImpl: options.fetchImpl || fetch,
-    workspace: 'projects',
-    kind,
-    order,
-    caseFile: caseRecord?.caseFile || null,
-  });
-  const threadName = buildForumThreadName({
-    workspace: 'projects',
+    payload,
+    existingThreadId,
     kind,
     order,
     caseFile: caseRecord?.caseFile || null,
     revision: caseRecord?.caseFile?.revision || null,
+    fetchImpl: options.fetchImpl || fetch,
   });
-  const discord = existingThreadId
-    ? await sendDiscordWorkspaceReply({
-      existingThreadId,
-      botToken,
-      payload,
-      threadName,
-      forumTagIds,
-      fetchImpl: options.fetchImpl || fetch,
-    })
-    : await sendDiscordThreadedMessage({
-      channelId,
-      botToken,
-      payload,
-      threadName,
-      forumTagIds,
-      fetchImpl: options.fetchImpl || fetch,
-    });
   if (existingThreadId) {
     discord.threadId = existingThreadId;
     discord.threadReused = true;
   }
   return { ok: true, discord, payload };
-}
-
-async function sendDiscordWorkspaceReply({
-  existingThreadId,
-  botToken,
-  payload,
-  threadName,
-  forumTagIds,
-  fetchImpl,
-}) {
-  const updated = await sendDiscordChannelMessage({
-    channelId: existingThreadId,
-    botToken,
-    payload,
-    fetchImpl,
-  });
-  try {
-    await updateDiscordThread({
-      threadId: existingThreadId,
-      botToken,
-      name: threadName,
-      appliedTagIds: forumTagIds,
-      fetchImpl,
-    });
-  } catch (error) {
-    updated.metadataUpdateError = error.message || String(error);
-  }
-  updated.threadName = threadName;
-  updated.appliedTagIds = forumTagIds;
-  return updated;
-}
-
-async function resolveForumTagIds({
-  channelId,
-  botToken,
-  fetchImpl,
-  workspace,
-  kind,
-  order,
-  caseFile,
-}) {
-  try {
-    const blueprints = defaultDiscordForumBlueprints();
-    const config = await syncDiscordForumTags({
-      channelId,
-      botToken,
-      tags: blueprints[workspace] || [],
-      fetchImpl,
-    });
-    return desiredForumTagNames({ workspace, kind, order, caseFile }).map((name) => config.tagsByName[name]).filter(Boolean);
-  } catch {
-    return [];
-  }
 }
 
 function recordCaseWebsiteHandoff(caseRecord, handoff, kind, options) {
@@ -549,6 +499,47 @@ function recordCaseWebsiteHandoff(caseRecord, handoff, kind, options) {
     channel: 'discord',
     reason: `${kind || 'task'}_handoff`,
     discord: handoff.discord,
+  }, {
+    dryRun: options.dryRun,
+  });
+  return record.ok ? record : caseRecord;
+}
+
+async function sendLeadWorkspaceUpdate({ kind, order, payload, caseRecord, options }) {
+  const env = { ...process.env, ...(options.env || {}) };
+  const channelId = options.websiteLeadsChannelId || env.WEBSITE_LEADS_DISCORD_CHANNEL_ID || '';
+  const botToken = options.websiteTasksBotToken || env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || env.DISCORD_BOT_TOKEN || '';
+  if (!options.sendDiscord || options.dryRun) return { ok: false, skipped: true, reason: options.dryRun ? 'dry_run' : 'send_discord_disabled' };
+  if (!channelId || !botToken) return { ok: false, skipped: true, reason: 'missing_website_leads_config' };
+  const existingThreadId = caseRecord?.caseFile?.discord?.salesThreadId || '';
+  const parentPayload = {
+    content: `Lead workspace: ${order.company || order.clientSlug}\nkind: ${kind}\nemail: ${order.email || 'N/A'}`,
+    allowed_mentions: { parse: [] },
+  };
+  const discord = await createOrUpdateForumWorkspace({
+    workspace: 'leads',
+    channelId,
+    botToken,
+    payload,
+    existingThreadId,
+    kind,
+    order,
+    caseFile: caseRecord?.caseFile || null,
+    fetchImpl: options.fetchImpl || fetch,
+    parentPayload,
+  });
+  return { ok: true, discord, payload };
+}
+
+function recordCaseLeadWorkspace(caseRecord, leadWorkspace, options) {
+  const paths = caseRecord?.caseFile?.paths || caseRecord?.ref || {};
+  const record = recordCaseNotification(paths, {
+    type: 'lead_workspace_discord_sent',
+    kind: 'sale',
+    ok: true,
+    channel: 'discord',
+    reason: 'lead_workspace',
+    discord: leadWorkspace.discord,
   }, {
     dryRun: options.dryRun,
   });
