@@ -99,7 +99,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          node -e "const fs=require('fs'); const a=JSON.parse(fs.readFileSync('/tmp/approval.json','utf8')); fs.appendFileSync(process.env.GITHUB_ENV, `CLIENT_REPO=${a.repo}\nLIVE_URL=${a.liveUrl}\nTASK_PATH=${a.taskPath}\n`);"
+          node <<'NODE'
+          const fs = require('fs');
+          const a = JSON.parse(fs.readFileSync('/tmp/approval.json', 'utf8'));
+          fs.appendFileSync(process.env.GITHUB_ENV, [
+            `CLIENT_REPO=${a.repo || ''}`,
+            `LIVE_URL=${a.liveUrl || ''}`,
+            `TASK_PATH=${a.taskPath || ''}`,
+            '',
+          ].join('\n'));
+          NODE
           gh auth setup-git
           gh repo clone "$(node -e "const fs=require('fs'); console.log(JSON.parse(fs.readFileSync('/tmp/approval.json','utf8')).repo)")" /tmp/client-repo
 
@@ -110,7 +119,7 @@ jobs:
           SALES_DISCORD_WEBHOOK_URL: ${{ secrets.SALES_DISCORD_WEBHOOK_URL }}
           REVISE_DISCORD_WEBHOOK_URL: ${{ secrets.REVISE_DISCORD_WEBHOOK_URL }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hello@fengtalk.ai>' }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>' }}
         run: |
           args=(
             --task "$TASK_PATH"

@@ -1,7 +1,8 @@
 export function normalizeTallySubmission(payload, env = {}) {
   const fields = payload?.data?.fields || payload?.fields || {};
   const answers = payload?.data?.answers || payload?.answers || {};
-  const combined = { ...fields, ...answers };
+  const topLevel = flattenTopLevelPayload(payload);
+  const combined = { ...topLevel, ...fields, ...answers };
 
   const orderId = extractField(combined, 'stripe_session_id')
     || extractField(combined, 'order_id')
@@ -42,6 +43,18 @@ export function normalizeTallySubmission(payload, env = {}) {
     rawSubmissionId: payload?.id || payload?.data?.submissionId || null,
     receivedAt: new Date().toISOString(),
   };
+}
+
+function flattenTopLevelPayload(payload) {
+  if (!payload || typeof payload !== 'object') return {};
+  const flattened = {};
+  for (const [key, value] of Object.entries(payload)) {
+    if (value === null || value === undefined) continue;
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      flattened[key] = String(value);
+    }
+  }
+  return flattened;
 }
 
 export function tallyRevenueLedgerInput(order) {
