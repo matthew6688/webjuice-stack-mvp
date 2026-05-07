@@ -200,7 +200,13 @@ npm run discord:update-forum-workspace -- --help
 - 当时 workflow 有一个缺口：`domain-request.yml` 只提交了 `data/domain/*`，没有把被写过的 `data/cases/*` 一起提交。
 - 这次已经补上：
   - `git add data/cases || true`
-- 这个修复代码已经写好，但如果要把“远端 workflow 也把 case timeline 提交回 repo”算作新 hard evidence，需要在这次代码上线后再跑一遍 domain workflow。
+- 修复后的二次验证：
+  - run: `25503866820`
+  - domain: `host.forum-remote-smoke-1778164589.example.com`
+  - 结果：repo 里的 `timeline.jsonl` 现在真实写入了 `domain_status_discord_sent`
+  - 证据：
+    - `data/qa/discord-forum-smoke/remote-domain-run-fixed.json`
+    - `data/qa/discord-forum-smoke/remote-forum-workflow-summary.json`
 
 ### 手动校正规则
 

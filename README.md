@@ -343,7 +343,7 @@ npm run discord:update-forum-workspace -- --help
 Latest hard evidence:
 
 - remote GitHub `route-funnel-event.yml` created real `website-leads` + `website-projects` forum posts and wrote both workspace ids into `case.json`
-- remote GitHub `domain-request.yml` updated the same project post with a DNS status message and `live + domain-blocked` tags
+- remote GitHub `domain-request.yml` updated the same project post with a DNS status message and `live + domain-blocked` tags, and the fixed workflow now also commits the matching `data/cases/*` timeline event back into the repo
 - fresh remote bootstrap now has a retry path for `dev` deploy trigger, so both `*-live.pages.dev` and `*-dev.pages.dev` can reach `HTTP 200`
 
 Hermes / website-agent receives:
