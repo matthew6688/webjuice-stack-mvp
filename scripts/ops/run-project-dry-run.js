@@ -37,6 +37,8 @@ const paths = {
   checklistMarkdownPath: path.join(caseDir, 'ops-checklist.md'),
   taskDraftPath: path.join(caseDir, 'agent-task-draft.json'),
   reviewEmailPath: path.join(caseDir, 'customer-review-email-draft.json'),
+  handoffPath: path.join(caseDir, 'website-handoff.json'),
+  handoffMarkdownPath: path.join(caseDir, 'website-handoff.md'),
 };
 
 fs.mkdirSync(caseDir, { recursive: true });
@@ -280,10 +282,17 @@ await stage('stage_5b_preview_funnel_qa', {
         nextAction: '先在 customer repo 运行 npm run build。',
       };
     }
-    return runCommand('npm', ['run', 'qa:funnel-pages', '--', '--dist-dir', distDir, '--client', businessName], {
+    const result = runCommand('npm', ['run', 'qa:funnel-pages', '--', '--dist-dir', distDir, '--client', businessName], {
       evidence: [distDir],
       successNextAction: '继续创建 agent task draft。',
     });
+    if (result.status !== 'pass') {
+      const output = String(result.output || '');
+      if (output.includes('local_funnel_route_removed_or_redirected') || output.includes('still exists') || output.includes('still serves ProfitsLocal funnel chrome')) {
+        result.nextAction = '这个 customer repo 还残留旧版本地 funnel 页面。先同步到最新模板规则，移除本地 /checkout /approve /revise /domain-help 等页面，再重新运行 dry-run。';
+      }
+    }
+    return result;
   },
 });
 
@@ -532,6 +541,7 @@ function finalizeChecklist() {
     : 'ready_for_customer_review';
   checklist.updatedAt = new Date().toISOString();
   writeMarkdownSummary();
+  writeHandoffSummary();
 }
 
 function saveChecklist() {
@@ -559,6 +569,81 @@ function writeMarkdownSummary() {
     '',
   ];
   fs.writeFileSync(paths.checklistMarkdownPath, `${lines.join('\n')}\n`);
+}
+
+function writeHandoffSummary() {
+  const currentOpenDesign = buildOpenDesignWorkspace(clientSlug);
+  const summary = {
+    schemaVersion: 1,
+    clientSlug,
+    businessName,
+    repo,
+    repoDir,
+    previewUrl,
+    orderId,
+    status: checklist.status,
+    sourceUrl,
+    websiteSurveyPath: path.join('clients', clientSlug, 'intake', 'website-survey.json'),
+    buildPacketPath: paths.buildPacketPath,
+    openDesign: {
+      status: currentOpenDesign.status,
+      projectId: currentOpenDesign.projectId || '',
+      manifestPath: currentOpenDesign.manifestPath || '',
+      productionHandoffPath: currentOpenDesign.productionHandoffPath || '',
+      continueCommand: currentOpenDesign.continueCommand || '',
+      syncCommand: currentOpenDesign.syncCommand || '',
+    },
+    taskDraftPath: fs.existsSync(paths.taskDraftPath) ? paths.taskDraftPath : '',
+    reviewEmailDraftPath: fs.existsSync(paths.reviewEmailPath) ? paths.reviewEmailPath : '',
+    checklistPath: paths.checklistPath,
+    checklistMarkdownPath: paths.checklistMarkdownPath,
+    nextActions: checklist.nextActions,
+    summaryText: checklist.status === 'ready_for_customer_review'
+      ? '这个新 repo 已经达到可以进入客户 review 的标准状态。'
+      : '这个项目还没有达到客户 review 标准，请先处理 blockers。',
+  };
+
+  writeJson(paths.handoffPath, summary);
+
+  const lines = [
+    `# Website Handoff: ${businessName}`,
+    '',
+    `状态：${checklist.status}`,
+    `项目：${clientSlug}`,
+    `Repo：${repo}`,
+    `本地目录：${repoDir || '未提供'}`,
+    `Preview：${previewUrl}`,
+    `Dry-run：${orderId}`,
+    '',
+    '## 当前结论',
+    '',
+    summary.summaryText,
+    '',
+    '## 核心入口',
+    '',
+    `- Website survey：${summary.websiteSurveyPath}`,
+    `- Build packet：${summary.buildPacketPath}`,
+    `- Ops checklist：${summary.checklistMarkdownPath}`,
+    `- Agent task draft：${summary.taskDraftPath || '未生成'}`,
+    `- Customer review email draft：${summary.reviewEmailDraftPath || '未生成'}`,
+    '',
+    '## Open Design',
+    '',
+    `- 状态：${summary.openDesign.status}`,
+    `- Project ID：${summary.openDesign.projectId || '未绑定'}`,
+    `- Manifest：${summary.openDesign.manifestPath || '未生成'}`,
+    `- Production handoff：${summary.openDesign.productionHandoffPath || '未生成'}`,
+    `- Continue command：${summary.openDesign.continueCommand || '无'}`,
+    `- Sync command：${summary.openDesign.syncCommand || '无'}`,
+    '',
+    '## 下一步',
+    '',
+    ...(summary.nextActions.length
+      ? summary.nextActions.map((item, index) => `${index + 1}. ${item.action}`)
+      : ['1. 可以把这份 handoff 发到 Discord website thread，进入人工 review 或客户 review。']),
+    '',
+  ];
+  fs.writeFileSync(paths.handoffMarkdownPath, `${lines.join('\n')}\n`);
 }
 
 function writeJson(filePath, value) {

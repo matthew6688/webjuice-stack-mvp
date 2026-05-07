@@ -757,6 +757,66 @@ lead/intake
 
 缺一个，就不能算完整 operational。
 
+## 新 repo 标准入口
+
+以后我们只要求新 repo 按新 SOP 跑顺。老 repo 不再作为当前闭环标准。
+
+新项目的标准入口只有一条：
+
+```text
+evidence
+-> website-ready packet
+-> Open Design project
+-> production handoff
+-> customer repo dev build
+-> preview funnel QA
+-> agent task draft
+-> customer review email draft
+-> ready_for_customer_review
+```
+
+### 新 repo 启动命令
+
+```bash
+npm run ops:project-dry-run -- \
+  --client <client-slug> \
+  --business-name "<Business Name>" \
+  --source-url <official-website-or-source-url> \
+  --repo matthew6688/<client-repo> \
+  --repo-dir /path/to/local/customer/repo \
+  --email <test-or-customer-email> \
+  --run-open-design true \
+  --build-handoff true
+```
+
+### 新 repo 成功标准
+
+只要 dry-run 最终返回：
+
+```text
+status=ready_for_customer_review
+```
+
+就说明这个新 repo 已经达到当前业务闭环要求。
+
+必须同时产出这些文件：
+
+- `ops-checklist.json`
+- `ops-checklist.md`
+- `website-handoff.json`
+- `website-handoff.md`
+- `agent-task-draft.json`
+- `customer-review-email-draft.json`
+
+### 新 repo 交接入口
+
+成功的 dry-run 会额外生成：
+
+- `data/cases/<client>/<dryrun-id>/website-handoff.json`
+- `data/cases/<client>/<dryrun-id>/website-handoff.md`
+
+这两份就是后续发到 Discord thread、人工 review、或者交给其他 agent 的标准中文交接材料。
+
 ## Operator 一键 Dry-run
 
 当我们想知道一个项目离“可以发给客户 review”还差什么时，先跑 dry-run，不要凭感觉判断。
@@ -822,3 +882,119 @@ npm run ops:project-dry-run -- \
 - blocker：缺 production handoff。
 
 这说明 Opa 这类老项目在当前 SOP 下不能直接算完整 ready。下一步必须先创建或绑定 Open Design project，然后生成 production handoff。
+
+## 老项目升级路径
+
+这部分专门给早期已经做过、但还没完全进入新闭环的项目用。
+
+典型特征：
+
+- 有 `content.restaurant.json`、`design.restaurant.json`、`evidence/evidence.json`。
+- 但没有 `concept/open-design/concept-manifest.json`。
+- 或者没有 `production-handoff.json`。
+- 或者 customer repo 里还残留旧版本地 funnel 页面，例如 `/domain-help`、`/approve`、`/revise`。
+
+### 升级目标
+
+把老项目补齐成现在的标准状态：
+
+```text
+evidence
+-> website-ready packet
+-> Open Design project
+-> production handoff
+-> customer repo dev build
+-> preview funnel QA
+-> agent task draft
+-> customer review email draft
+```
+
+### 一键升级命令
+
+```bash
+npm run ops:project-dry-run -- \
+  --client <client-slug> \
+  --business-name "<Business Name>" \
+  --source-url <official-website-url> \
+  --repo matthew6688/<client-repo> \
+  --repo-dir /path/to/local/customer/repo \
+  --email <test-or-customer-email> \
+  --order dryrun_upgrade_001 \
+  --run-open-design true \
+  --build-handoff true
+```
+
+### 升级结果怎么判断
+
+1. 如果卡在 `检查 Open Design project`：
+   说明还没有 concept project，需要先让脚本创建。
+
+2. 如果卡在 `检查 production handoff`：
+   说明 concept 已经有了，但还没有被翻译成给生产 repo 用的 handoff。
+
+3. 如果卡在 `验证 preview banner 和官方 funnel links`：
+   说明老 customer repo 还没有升级到新模板规范，通常是还残留本地 funnel 页面。
+
+### 2026-05-07 升级演练
+
+#### Opa Bar & Mezze
+
+先手动补齐：
+
+- 创建 Open Design project。
+- 生成 production handoff。
+
+然后重新跑：
+
+```bash
+npm run ops:project-dry-run -- \
+  --client opa-bar-mezze-restaurant \
+  --business-name "Opa Bar & Mezze" \
+  --source-url https://www.opabar.com.au/ \
+  --repo matthew6688/opa-bar-mezze-restaurant \
+  --repo-dir /Users/matthew/Developer/webjuice-restaurant \
+  --email matthew6688@gmail.com \
+  --order dryrun_open_design_upgrade_001
+```
+
+结果：
+
+- `status=ready_for_customer_review`
+- 说明 Opa 现在已经被升级到新闭环标准。
+
+证据：
+
+- [ops-checklist.md](/Users/matthew/Developer/google-map-website/data/cases/opa-bar-mezze-restaurant/dryrun_open_design_upgrade_001/ops-checklist.md)
+- [production-handoff.md](/Users/matthew/Developer/google-map-website/clients/opa-bar-mezze-restaurant/concept/open-design/production-handoff.md)
+
+#### Babylon Brisbane
+
+直接跑自动升级：
+
+```bash
+npm run ops:project-dry-run -- \
+  --client babylon-brisbane-restaurant \
+  --business-name "Babylon Brisbane" \
+  --source-url https://babylonbrisbane.com.au/ \
+  --repo matthew6688/babylon-brisbane-restaurant \
+  --repo-dir /Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant \
+  --email matthew6688@gmail.com \
+  --order dryrun_auto_upgrade_001 \
+  --run-open-design true \
+  --build-handoff true
+```
+
+结果：
+
+- Open Design project：自动创建成功。
+- production handoff：自动生成成功。
+- 最终 blocker：customer repo 还残留旧版 `/domain-help` 本地 funnel 页面。
+
+这说明：
+
+- 自动补齐 Open Design 和 handoff 的逻辑已经通了。
+- 下一类要处理的是老 customer repo 的模板同步/本地 funnel 清理。
+
+证据：
+
+- [ops-checklist.md](/Users/matthew/Developer/google-map-website/data/cases/babylon-brisbane-restaurant/dryrun_auto_upgrade_001/ops-checklist.md)
