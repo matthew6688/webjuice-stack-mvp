@@ -1,6 +1,8 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
 import { uploadAttachmentsToCloudinary, summarizeCloudinaryAssets } from '../../core/cloudinary/attachments.js';
 import { buildRevisionOpsMessage, sendOpsDiscordMessage } from '../../core/funnel/paid-intake-ops.js';
+import { detailsFromObject, keyValueText, renderProfitsLocalEmail } from '../../core/funnel/email-template.js';
+import { buildRevisionWorkflowDispatch } from '../../core/ops/workflow-dispatch.js';
 
 interface Env {
   AGENT_GITHUB_TOKEN?: string;
@@ -59,7 +61,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       if (!sent.ok) return json({ error: sent.error || 'Unable to send revision assets.' }, 502);
     }
 
-    const dispatched = await dispatchRecordWorkflow(context.env, payload);
+    const dispatched = await dispatchRevisionWorkflow(context.env, payload);
     if (!dispatched.ok) return json({ error: dispatched.error || 'Unable to record revision.' }, 502);
 
     const discordPayload = buildRevisionOpsMessage({
@@ -86,12 +88,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   return onRequestPost(context);
 };
 
-async function dispatchRecordWorkflow(env: Env, payload: Record<string, string | string[]>) {
+async function dispatchRevisionWorkflow(env: Env, payload: Record<string, string | string[]>) {
   const token = env.AGENT_GITHUB_TOKEN || env.GH_PAT || '';
   if (!token) return { ok: false, error: 'Missing AGENT_GITHUB_TOKEN or GH_PAT.' };
   const repo = env.AGENT_REPO || 'matthew6688/webjuice-stack-mvp';
   const ref = env.AGENT_REF || 'main';
-  const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/record-paid-revision.yml/dispatches`, {
+  const request = buildRevisionWorkflowDispatch(payload);
+  if (!request.ok) return { ok: false, error: `Missing required revision fields: ${request.missing.join(', ')}` };
+  const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/route-funnel-event.yml/dispatches`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,

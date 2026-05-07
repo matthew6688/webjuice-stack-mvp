@@ -950,6 +950,8 @@ npm run ops:project-dry-run -- \
 |---|---|---|
 | `npm run ops:test-dry-run-handoff` | ready 项目才能发 handoff；创建/复用 website thread；case 记录 thread；生成 dispatch evidence | 通过 |
 | `npm run ops:test-review-email-gate` | ready 项目才能发 review email；blocked 项目被拒绝；发送后写 timeline 和 evidence | 通过 |
+| `npm run ops:test-workflow-dispatch` | approval/revision 两个入口的 workflow dispatch contract | 通过 |
+| `npm run ops:test-revision-thread-reuse` | revision form payload 进入 funnel 后，复用原 case 和原 website thread | 通过 |
 
 这两个步骤加上原有验证：
 
@@ -968,6 +970,17 @@ ops:project-dry-run
 -> approval dev->main
 -> live publish
 ```
+
+这里要特别注意：
+
+- `approval` 的线上入口应该走 `publish-approved.yml`
+- `revision-submit` 的线上入口必须走 `route-funnel-event.yml`，并且 `kind=revision`
+
+原因是：
+
+- `publish-approved.yml` 负责用 `order ID + email` 去找正确 case，再把 `dev -> main`
+- `route-funnel-event.yml` 才会真正进入 `case / task / website thread` 体系
+- 旧的 `record-paid-revision.yml` 只会更新 `data/paid-intakes`，不足以完成当前新闭环
 
 ## 老项目升级路径
 
