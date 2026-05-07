@@ -243,20 +243,24 @@ const assertions = {
   revisionReusedThread: revision.websiteAgentHandoff?.discord?.threadReused === true,
   revisionPostedToExistingThread: calls.some((call) => call.url.includes(`/channels/${saleThread}/messages`)),
   taskHasCaseContext: Boolean(sale.task.case?.casePath && sale.task.case?.contextPath),
+  taskHasBuildPacket: Boolean(sale.task.case?.buildPacketPath),
   taskHasEvidencePointers: Boolean(
     sale.task.requiredContext?.evidence
     && sale.task.requiredContext?.content
     && sale.task.requiredContext?.design
     && sale.task.requiredContext?.brandSpec
+    && sale.task.requiredContext?.websiteSurvey
   ),
+  handoffIncludesReadyPacket: calls.some((call) => String(call.body?.content || '').includes('buildPacket:')
+    && String(call.body?.content || '').includes('websiteSurvey:')),
   taskHasHuashu: sale.task.designProtocol?.requiredSkill === 'huashu-design',
   taskHasOpenDesign: sale.task.designProtocol?.openDesignSkills?.includes('web-prototype'),
   caseTracksRevisionUsage: caseFile.revision?.used === 1,
   reviewPostedToSameWebsiteThread: reviewDiscord.threadId === saleThread && reviewDiscord.threadReused === true,
   publishPostedToSameWebsiteThread: publishDiscord.threadId === saleThread && publishDiscord.threadReused === true,
   reviewEmailHasApprovalAndRevisionLinks: Boolean(
-    reviewEmail?.text?.includes('/approve?')
-    && reviewEmail?.text?.includes('/revise?')
+    reviewEmail?.text?.includes('https://profitslocal.com/approve?')
+    && reviewEmail?.text?.includes('https://profitslocal.com/revision?')
     && reviewEmail?.text?.includes(session.id)
   ),
   liveEmailHasLiveUrlAndOrderId: Boolean(

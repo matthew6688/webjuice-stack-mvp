@@ -79,12 +79,15 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
   if (!email || email === 'N/A') return null;
   const revision = caseFile.revision || {};
   const previewUrl = runResult?.previewUrl || caseFile.previewUrl || '';
-  const revisionUrl = previewUrl && caseFile.order?.id
-    ? `${trimTrailingSlash(previewUrl)}/revise?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
-    : '';
-  const approvalUrl = previewUrl && caseFile.order?.id
-    ? `${trimTrailingSlash(previewUrl)}/approve?order_id=${encodeURIComponent(caseFile.order.id)}&email=${encodeURIComponent(email)}`
-    : '';
+  const customerLinks = buildCustomerActionLinks({
+    orderId: caseFile.order?.id || '',
+    email,
+    clientSlug: caseFile.clientSlug || '',
+    repo: caseFile.repo || '',
+    previewUrl,
+  });
+  const revisionUrl = customerLinks.revisionUrl;
+  const approvalUrl = customerLinks.approveUrl;
   const changedFiles = (runResult?.changedFiles || []).slice(0, 8);
   const usage = revision.policy
     ? `${revision.used || 0}/${revision.policy.limit || 0}`
@@ -95,7 +98,7 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
     `Approve for live publishing: ${approvalUrl || 'N/A'}`,
     `Revision usage: ${usage}`,
     `Revision form: ${revisionUrl || 'N/A'}`,
-    `Domain setup guide: ${previewUrl ? `${trimTrailingSlash(previewUrl)}/domain-help` : 'N/A'}`,
+    `Domain setup: ${customerLinks.domainSetupUrl || 'N/A'}`,
     `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
     `Changed files: ${changedFiles.length ? changedFiles.join(', ') : 'No code diff; build/QA completed'}`,
     `Buy extra revision: ${extraRevisionUrl || 'N/A'}`,
@@ -105,6 +108,12 @@ export function buildAgentReviewEmail({ caseFile, runResult, deployResult = null
     subject: `Your ${caseFile.customer?.company || 'website'} dev preview is ready`,
     intro: 'Your dev preview is ready for review.',
     lines,
+    cta: previewUrl ? { label: 'Review dev preview', url: previewUrl } : null,
+    secondaryLinks: [
+      { label: 'Approve site', url: approvalUrl },
+      { label: 'Request revision', url: revisionUrl },
+      { label: 'Set up domain', url: customerLinks.domainSetupUrl },
+    ],
     outro: 'Please review the preview link. If it looks good, reply with approval; if you need changes, use the revision form with your Order ID and checkout email.',
   });
 }
@@ -118,15 +127,22 @@ export function buildLivePublishedEmail({ caseFile, publishResult, deployResult 
     `Live site: ${resolvedLiveUrl || 'N/A'}`,
     `Published commit: ${publishResult?.commit || 'N/A'}`,
     `Deploy check: ${deployResult ? `${deployResult.status}${deployResult.conclusion ? `/${deployResult.conclusion}` : ''}` : 'Not checked'}`,
-    `Preview utility page: ${caseFile.previewUrl || 'N/A'}`,
-    `Domain/subdomain support: keep using the preview utility page for revisions, or send DNS questions by replying to this email.`,
+    `Revision/support page: ${buildCustomerActionLinks({
+      orderId: caseFile.order?.id || '',
+      email,
+      clientSlug: caseFile.clientSlug || '',
+      repo: caseFile.repo || '',
+      previewUrl: caseFile.previewUrl || '',
+    }).revisionUrl || 'N/A'}`,
+    `Domain/subdomain support: use the official ProfitsLocal links from your review email, or reply with DNS questions.`,
   ];
   return simpleEmail({
     to: email,
     subject: `${caseFile.customer?.company || 'Your website'} is live`,
     intro: 'Your approved website has been published to the live site.',
     lines,
-    outro: 'You can keep using the preview utility page for future revision requests and order support.',
+    cta: resolvedLiveUrl ? { label: 'Open live site', url: resolvedLiveUrl } : null,
+    outro: 'Use the official ProfitsLocal revision link for future revision requests and order support.',
   });
 }
 
@@ -182,15 +198,19 @@ function domainNextStep(domainRequest) {
 
 function domainOutro(domainRequest) {
   if (domainRequest?.status === 'active') {
-    return 'Your utility pages for revisions and support remain available from the preview/review links.';
+    return 'Your official ProfitsLocal revision and support links remain available from the review email.';
   }
   return 'You can reply to this email with DNS screenshots if you want us to verify the setup before changing anything live.';
 }
 
 function saleEmail(order, entitlement) {
-  const revisionUrl = order.previewUrl
-    ? `${trimTrailingSlash(order.previewUrl)}/revise?order_id=${encodeURIComponent(order.orderId)}&email=${encodeURIComponent(order.email)}`
-    : '';
+  const customerLinks = buildCustomerActionLinks({
+    orderId: order.orderId,
+    email: order.email,
+    clientSlug: order.clientSlug,
+    repo: order.repo,
+    previewUrl: order.previewUrl,
+  });
   const policy = entitlement?.entitlement?.revisionPolicy;
   const lines = [
     `Order ID: ${order.orderId}`,
@@ -198,15 +218,20 @@ function saleEmail(order, entitlement) {
     `Amount: ${order.currency || 'USD'} ${order.amount}`,
     `Preview: ${order.previewUrl || 'N/A'}`,
     `Preferred domain/subdomain: ${order.domain || 'N/A'}`,
-    `Domain setup guide: ${order.previewUrl ? `${trimTrailingSlash(order.previewUrl)}/domain-help` : 'N/A'}`,
+    `Domain setup: ${customerLinks.domainSetupUrl || 'N/A'}`,
     `Revision quota: ${policy ? `0/${policy.limit} (${policy.description})` : 'N/A'}`,
-    `Revision form: ${revisionUrl || 'N/A'}`,
+    `Revision form: ${customerLinks.revisionUrl || 'N/A'}`,
   ];
   return simpleEmail({
     to: order.email,
     subject: `Payment received for ${order.company || order.clientSlug}`,
     intro: 'Thanks for your payment. Your website order is active.',
     lines,
+    cta: order.previewUrl ? { label: 'Review preview', url: order.previewUrl } : null,
+    secondaryLinks: [
+      { label: 'Request revision', url: customerLinks.revisionUrl },
+      { label: 'Set up domain', url: customerLinks.domainSetupUrl },
+    ],
     outro: 'Keep your Order ID. Future revision requests must match this Order ID and the checkout email.',
   });
 }
@@ -264,17 +289,110 @@ function extraRevisionEmail(order, entitlement) {
   });
 }
 
-function simpleEmail({ to, subject, intro, lines, outro }) {
+function simpleEmail({ to, subject, intro, lines, outro, cta = null, secondaryLinks = [] }) {
+  const cleanLinks = secondaryLinks.filter((link) => link?.url);
   return {
     to,
     subject,
     text: [intro, '', ...lines, '', outro].join('\n'),
-    html: `<p>${escapeHtml(intro)}</p><ul>${lines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul><p>${escapeHtml(outro)}</p>`,
+    html: brandedHtmlEmail({
+      subject,
+      intro,
+      lines,
+      outro,
+      cta,
+      secondaryLinks: cleanLinks,
+    }),
   };
 }
 
-function trimTrailingSlash(value) {
-  return String(value || '').replace(/\/+$/, '');
+function buildCustomerActionLinks({ orderId = '', email = '', clientSlug = '', repo = '', previewUrl = '' }) {
+  const params = {
+    order_id: orderId,
+    email,
+    client_slug: clientSlug,
+    repo,
+    preview_url: previewUrl,
+  };
+  return {
+    approveUrl: officialFunnelUrl('/approve', params),
+    revisionUrl: officialFunnelUrl('/revision', params),
+    domainSetupUrl: officialFunnelUrl('/domain-setup', params),
+    extraRevisionUrl: officialFunnelUrl('/checkout', { ...params, tier: 'extra_revision' }),
+  };
+}
+
+function officialFunnelUrl(path, params = {}) {
+  const url = new URL(path, 'https://profitslocal.com');
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null && String(value) !== '') {
+      url.searchParams.set(key, String(value));
+    }
+  }
+  return url.toString();
+}
+
+function brandedHtmlEmail({ subject, intro, lines, outro, cta = null, secondaryLinks = [] }) {
+  const details = lines.map((line) => {
+    const [label, ...rest] = String(line).split(':');
+    const value = rest.join(':').trim();
+    return `<tr><th>${escapeHtml(label || 'Detail')}</th><td>${linkify(value || line)}</td></tr>`;
+  }).join('');
+  const secondary = secondaryLinks.length
+    ? `<div class="secondary-links">${secondaryLinks.map((link) => `<a href="${escapeAttribute(link.url)}">${escapeHtml(link.label)}</a>`).join('')}</div>`
+    : '';
+  const ctaHtml = cta?.url
+    ? `<a class="button" href="${escapeAttribute(cta.url)}">${escapeHtml(cta.label || 'Open link')}</a>`
+    : '';
+  return `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${escapeHtml(subject)}</title>
+    <style>
+      body { margin: 0; padding: 0; background: #fff8ee; color: #17191c; font-family: Inter, Arial, sans-serif; }
+      .wrap { max-width: 680px; margin: 0 auto; padding: 32px 18px; }
+      .card { background: #fffcf7; border: 2px solid #17191c; box-shadow: 8px 8px 0 #17191c; padding: 28px; }
+      .brand { display: inline-block; font-weight: 900; letter-spacing: -0.01em; margin-bottom: 22px; }
+      h1 { font-size: 28px; line-height: 1.08; margin: 0 0 14px; }
+      p { font-size: 15px; line-height: 1.6; }
+      table { width: 100%; border-collapse: collapse; margin: 22px 0; }
+      th, td { border-top: 1px solid #17191c; padding: 12px 0; text-align: left; vertical-align: top; font-size: 14px; }
+      th { width: 34%; font-weight: 800; }
+      a { color: #17191c; }
+      .button { display: inline-block; margin: 10px 0 16px; background: #ff513f; color: #fff !important; border: 2px solid #17191c; box-shadow: 5px 5px 0 #17191c; padding: 13px 18px; text-decoration: none; font-weight: 900; }
+      .secondary-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 18px; }
+      .secondary-links a { background: #d0f0d2; border: 1px solid #17191c; padding: 8px 10px; text-decoration: none; font-weight: 800; font-size: 13px; }
+      .footer { font-size: 12px; color: #5f5b54; margin-top: 22px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="brand">profitslocal</div>
+        <h1>${escapeHtml(subject)}</h1>
+        <p>${escapeHtml(intro)}</p>
+        <table>${details}</table>
+        ${ctaHtml}
+        ${secondary}
+        <p>${escapeHtml(outro)}</p>
+      </div>
+      <p class="footer">ProfitsLocal transactional email. Reply to this email if anything looks wrong.</p>
+    </div>
+  </body>
+</html>`;
+}
+
+function linkify(value) {
+  return String(value)
+    .split(/(https?:\/\/[^\s<]+)/g)
+    .map((part) => (
+      /^https?:\/\//.test(part)
+        ? `<a href="${escapeAttribute(part)}">${escapeHtml(part)}</a>`
+        : escapeHtml(part)
+    ))
+    .join('');
 }
 
 function escapeHtml(value) {
@@ -285,4 +403,8 @@ function escapeHtml(value) {
     '"': '&quot;',
     "'": '&#39;',
   }[char] || char));
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replace(/`/g, '&#96;');
 }

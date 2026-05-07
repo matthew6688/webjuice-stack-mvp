@@ -53,9 +53,13 @@ const live = buildLivePublishedEmail({
 
 const assertions = {
   saleIncludesPreferredDomain: sale?.text?.includes(order.domain),
-  saleIncludesDomainGuide: sale?.text?.includes('/domain-help'),
-  reviewIncludesDomainGuide: review?.text?.includes('/domain-help'),
-  liveIncludesUtilityPage: live?.text?.includes('Preview utility page'),
+  saleIncludesOfficialDomainSetup: sale?.text?.includes('https://profitslocal.com/domain-setup?'),
+  reviewIncludesOfficialDomainSetup: review?.text?.includes('https://profitslocal.com/domain-setup?'),
+  reviewIncludesOfficialApproval: review?.text?.includes('https://profitslocal.com/approve?'),
+  reviewIncludesOfficialRevision: review?.text?.includes('https://profitslocal.com/revision?'),
+  noCustomerDomainHelp: !`${sale?.text}\n${review?.text}\n${live?.text}`.includes('/domain-help'),
+  noCustomerRevise: !`${sale?.text}\n${review?.text}\n${live?.text}`.includes('pages.dev/revise'),
+  liveIncludesOfficialRevisionSupport: live?.text?.includes('https://profitslocal.com/revision?'),
   liveIncludesDomainSupport: live?.text?.includes('Domain/subdomain support'),
 };
 const failed = Object.entries(assertions)
