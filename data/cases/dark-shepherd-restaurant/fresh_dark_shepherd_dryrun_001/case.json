@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "caseId": "dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001",
+  "status": "ready_for_customer_review",
+  "clientSlug": "dark-shepherd-restaurant",
+  "repo": "matthew6688/dark-shepherd-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "order": {
+    "id": "fresh_dark_shepherd_dryrun_001",
+    "provider": "dry_run",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD",
+    "paymentStatus": "not_paid"
+  },
+  "customer": {
+    "company": "Dark Shepherd",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "discord": {
+    "salesThreadId": "",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "1502085064148647989",
+    "salesWorkspaceChannelId": "",
+    "salesWorkspaceType": "",
+    "salesWorkspaceName": "",
+    "salesWorkspaceTagIds": [],
+    "revisionWorkspaceChannelId": "",
+    "revisionWorkspaceType": "",
+    "revisionWorkspaceName": "",
+    "revisionWorkspaceTagIds": [],
+    "websiteWorkspaceChannelId": "1501945763650080899",
+    "websiteWorkspaceType": "forum_post",
+    "websiteWorkspaceName": "[Review] Dark Shepherd",
+    "websiteWorkspaceTagIds": [
+      "1501948304479748148",
+      "1501948304479748152",
+      "1501948304488140850"
+    ],
+    "lastChannelId": "1501945763650080899",
+    "lastMessageId": "1502085064148647989",
+    "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989"
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/dark-shepherd-restaurant/evidence/evidence.json",
+    "content": "clients/dark-shepherd-restaurant/content.restaurant.json",
+    "design": "clients/dark-shepherd-restaurant/design.restaurant.json",
+    "brandSpec": "clients/dark-shepherd-restaurant/brand-spec.md",
+    "checkout": "clients/dark-shepherd-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/dark-shepherd-restaurant/intake/website-survey.json"
+  },
+  "paths": {
+    "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+    "contextPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json",
+    "timelinePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/timeline.jsonl",
+    "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
+    "artifactsDir": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts"
+  },
+  "createdAt": "2026-05-07T12:01:25.175Z",
+  "updatedAt": "2026-05-07T23:11:11.519Z",
+  "latestTask": {
+    "id": "task_1778155287276_8phnzh5o",
+    "path": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/publish-task.json",
+    "kind": "sale",
+    "branch": "dev",
+    "createdAt": "2026-05-07T23:11:11.518Z"
+  }
+}

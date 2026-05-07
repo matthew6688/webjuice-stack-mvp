@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "dark-shepherd-restaurant",
+  "orderId": "fresh_dark_shepherd_dryrun_001",
+  "generatedAt": "2026-05-07T12:01:15.790Z",
+  "reviewer": "operator",
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "niche": "restaurant",
+  "qaContractPath": "references/qa/delivery-qa-contract.md",
+  "checks": {
+    "businessData": {
+      "status": "pass",
+      "blockers": [],
+      "verified": [
+        "business.name",
+        "business.addressOrServiceArea",
+        "business.phone",
+        "business.website",
+        "content.primaryCtaUrl"
+      ]
+    },
+    "nicheCompleteness": {
+      "status": "pass",
+      "blockers": [],
+      "notes": [
+        "Restaurant reservation/contact CTA present.",
+        "Menu route only kept when real menu evidence exists or customer requested it."
+      ]
+    },
+    "design": {
+      "status": "pass",
+      "score": 8,
+      "blockers": [],
+      "warnings": [],
+      "notes": [
+        "Looks like a formal official website for the chosen route.",
+        "Preview sales banner/footer is separate from customer content."
+      ]
+    },
+    "copywriting": {
+      "status": "pass",
+      "blockers": [],
+      "warnings": [],
+      "notes": [
+        "Copy is specific and aligned with verified evidence."
+      ]
+    },
+    "technical": {
+      "status": "pass",
+      "blockers": [],
+      "commands": [
+        {
+          "command": "npm run build",
+          "ok": true
+        }
+      ],
+      "links": {
+        "tel": "pass",
+        "mailto": "pass",
+        "maps": "pass",
+        "reservation": "pass",
+        "approve": "pass",
+        "revise": "pass",
+        "domainSetup": "pass"
+      }
+    },
+    "customerCommunication": {
+      "status": "pass",
+      "blockers": [],
+      "reviewEmailIntent": "dev_preview_ready",
+      "requiredLinks": {
+        "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+        "approveUrl": "https://profitslocal.com/approve?order_id=fresh_dark_shepherd_dryrun_001&email=matthew6688%40gmail.com&client_slug=dark-shepherd-restaurant&repo=matthew6688%2Fdark-shepherd-restaurant&preview_url=https%3A%2F%2Fdark-shepherd-restaurant-dev.pages.dev%2F",
+        "reviseUrl": "https://profitslocal.com/revision?order_id=fresh_dark_shepherd_dryrun_001&email=matthew6688%40gmail.com&client_slug=dark-shepherd-restaurant&repo=matthew6688%2Fdark-shepherd-restaurant&preview_url=https%3A%2F%2Fdark-shepherd-restaurant-dev.pages.dev%2F",
+        "domainSetupUrl": "https://profitslocal.com/domain-setup?order_id=fresh_dark_shepherd_dryrun_001&email=matthew6688%40gmail.com&client_slug=dark-shepherd-restaurant&repo=matthew6688%2Fdark-shepherd-restaurant&preview_url=https%3A%2F%2Fdark-shepherd-restaurant-dev.pages.dev%2F"
+      }
+    }
+  },
+  "blockingIssues": [],
+  "warnings": [],
+  "readyForCustomerReview": true
+}

@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "send": true,
+  "ready": true,
+  "clientSlug": "dark-shepherd-restaurant",
+  "orderId": "fresh_dark_shepherd_dryrun_001",
+  "repo": "matthew6688/dark-shepherd-restaurant",
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+  "checklistPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/ops-checklist.json",
+  "handoffPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/website-handoff.json",
+  "taskDraftPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/agent-task-draft.json",
+  "status": "ready_for_customer_review",
+  "threadName": "Dark Shepherd",
+  "message": "Discord website handoff 已发送，并且 case 已记录 thread。",
+  "dispatch": {
+    "ok": true,
+    "status": 201,
+    "channelId": "1501945763650080899",
+    "messageId": "1502085064148647989",
+    "messageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989",
+    "threadId": "1502085064148647989",
+    "threadUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989",
+    "threadName": "[Review] Dark Shepherd",
+    "threadCreatedByBot": true,
+    "threadStyle": "forum_post",
+    "appliedTagIds": [
+      "1501948304479748148",
+      "1501948304479748152",
+      "1501948304488140850"
+    ],
+    "threadMessageId": "1502085064148647989",
+    "threadMessageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989"
+  },
+  "payload": {
+    "content": "<@1501073096696664184> ProfitsLocal 网站任务交接\nkind: sale\nclient: dark-shepherd-restaurant\nrepo: matthew6688/dark-shepherd-restaurant\norder: fresh_dark_shepherd_dryrun_001\npreview: https://dark-shepherd-restaurant-dev.pages.dev/\ncase: data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json\ncontext: data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json\nbuildPacket: data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md\ntask: data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/agent-task-draft.json\nwebsiteSurvey: clients/dark-shepherd-restaurant/intake/website-survey.json\nevidence: clients/dark-shepherd-restaurant/evidence/evidence.json\ncontent: clients/dark-shepherd-restaurant/content.restaurant.json\ndesign: clients/dark-shepherd-restaurant/design.restaurant.json\nbrand: clients/dark-shepherd-restaurant/brand-spec.md\nopenDesignStatus: bound\nopenDesignProject: dark-shepherd-restaurant-open-design-1778154549135\nopenDesignDataDir: /Users/matthew/Developer/open-design/.od\nopenDesignConcept: clients/dark-shepherd-restaurant/concept/open-design\nopenDesignManifest: clients/dark-shepherd-restaurant/concept/open-design/concept-manifest.json\nproductionHandoff: clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json\nopenDesignContinue: npm run open-design:continue-concept -- --client dark-shepherd-restaurant --prompt \"<change request>\"\nopenDesignSync: npm run open-design:sync-from-app -- --client dark-shepherd-restaurant\nrepoBootstrap: npm run deploy:bootstrap-client-repo -- --repo matthew6688/dark-shepherd-restaurant --repo-dir /Users/matthew/Developer/webjuice-generated/dark-shepherd-restaurant --pages-project-name dark-shepherd-restaurant --main main --dev dev --wait true --execute true\n\nAction: 请先阅读 case/context/build packet/website survey，再继续当前项目。这个项目已经达到客户 review",
+    "allowed_mentions": {
+      "users": [
+        "1501073096696664184"
+      ]
+    }
+  },
+  "parentPayload": {
+    "content": "Website task: Dark Shepherd\n状态：ready_for_customer_review\nPreview：https://dark-shepherd-restaurant-dev.pages.dev/",
+    "allowed_mentions": {
+      "parse": []
+    }
+  },
+  "caseRecord": {
+    "ok": true,
+    "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+    "websiteTaskThreadId": "1502085064148647989",
+    "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989"
+  }
+}

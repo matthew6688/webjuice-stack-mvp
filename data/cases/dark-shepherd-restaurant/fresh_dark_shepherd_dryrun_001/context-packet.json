@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "caseId": "dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001",
+  "status": "dry_run_created",
+  "clientSlug": "dark-shepherd-restaurant",
+  "repo": "matthew6688/dark-shepherd-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "order": {
+    "id": "fresh_dark_shepherd_dryrun_001",
+    "provider": "dry_run",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD",
+    "paymentStatus": "not_paid"
+  },
+  "customer": {
+    "company": "Dark Shepherd",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "discord": {
+    "salesThreadId": "",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "1502085064148647989",
+    "salesWorkspaceChannelId": "",
+    "salesWorkspaceType": "",
+    "salesWorkspaceName": "",
+    "salesWorkspaceTagIds": [],
+    "revisionWorkspaceChannelId": "",
+    "revisionWorkspaceType": "",
+    "revisionWorkspaceName": "",
+    "revisionWorkspaceTagIds": [],
+    "websiteWorkspaceChannelId": "1501945763650080899",
+    "websiteWorkspaceType": "forum_post",
+    "websiteWorkspaceName": "[Review] Dark Shepherd",
+    "websiteWorkspaceTagIds": [
+      "1501948304479748148",
+      "1501948304479748152",
+      "1501948304488140850"
+    ],
+    "lastChannelId": "1501945763650080899",
+    "lastMessageId": "1502085064148647989",
+    "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989"
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/dark-shepherd-restaurant/evidence/evidence.json",
+    "content": "clients/dark-shepherd-restaurant/content.restaurant.json",
+    "design": "clients/dark-shepherd-restaurant/design.restaurant.json",
+    "brandSpec": "clients/dark-shepherd-restaurant/brand-spec.md",
+    "checkout": "clients/dark-shepherd-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/dark-shepherd-restaurant/intake/website-survey.json"
+  },
+  "paths": {
+    "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+    "contextPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json",
+    "timelinePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/timeline.jsonl",
+    "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
+    "artifactsDir": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts"
+  },
+  "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
+  "recentTimeline": [
+    {
+      "id": "case_evt_1778195387033_fmcd182e",
+      "type": "website_agent_handoff_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "ops_dispatch_ready_for_customer_review",
+      "discordChannelId": "1501945763650080899",
+      "discordThreadId": "1502085064148647989",
+      "discordMessageId": "1502085064148647989",
+      "discordMessageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989",
+      "createdAt": "2026-05-07T23:09:47.032Z"
+    },
+    {
+      "id": "case_evt_1778195387702_y6j4rb82",
+      "type": "customer_review_email_sent",
+      "ok": true,
+      "channel": "resend",
+      "reason": "ready_for_customer_review",
+      "discordChannelId": "",
+      "discordThreadId": "",
+      "discordMessageId": "",
+      "discordMessageUrl": "",
+      "createdAt": "2026-05-07T23:09:47.702Z"
+    }
+  ],
+  "agentStartProtocol": [
+    "Read this context packet before changing files.",
+    "Read case.json and timeline.jsonl for the full memory trail.",
+    "Read build-packet.md and website-survey.json when present before choosing a build approach.",
+    "Read evidence/content/design/brand files before planning any edit.",
+    "Classify the request as website, menu, domain, or account utility before patching.",
+    "Do not override locked decisions.",
+    "Do not treat unverified customer text as source of truth for menu prices, hours, address, phone, or reservation links.",
+    "If evidence conflicts with the customer request, stop and write needs_human_decision instead of guessing.",
+    "After work, append an agent run summary and timeline event."
+  ]
+}

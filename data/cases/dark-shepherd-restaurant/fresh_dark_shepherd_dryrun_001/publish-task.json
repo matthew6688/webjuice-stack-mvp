@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "task_1778155287276_8phnzh5o",
+  "clientSlug": "dark-shepherd-restaurant",
+  "type": "sale",
+  "repo": "matthew6688/dark-shepherd-restaurant",
+  "branch": "dev",
+  "evidencePath": "clients/dark-shepherd-restaurant/evidence/evidence.json",
+  "contentPath": "clients/dark-shepherd-restaurant/content.restaurant.json",
+  "designPath": "clients/dark-shepherd-restaurant/design.restaurant.json",
+  "checkoutPath": "clients/dark-shepherd-restaurant/funnel/checkout.json",
+  "brandSpecPath": "clients/dark-shepherd-restaurant/brand-spec.md",
+  "websiteSurveyPath": "clients/dark-shepherd-restaurant/intake/website-survey.json",
+  "requiredContext": {
+    "evidence": "clients/dark-shepherd-restaurant/evidence/evidence.json",
+    "content": "clients/dark-shepherd-restaurant/content.restaurant.json",
+    "design": "clients/dark-shepherd-restaurant/design.restaurant.json",
+    "brandSpec": "clients/dark-shepherd-restaurant/brand-spec.md",
+    "checkout": "clients/dark-shepherd-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/dark-shepherd-restaurant/intake/website-survey.json"
+  },
+  "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
+  "openDesign": {
+    "status": "bound",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "dark-shepherd-restaurant-open-design-1778154549135",
+    "runId": "4e37751c-8336-4849-9bff-1883e6e4359c",
+    "conceptPath": "clients/dark-shepherd-restaurant/concept/open-design",
+    "manifestPath": "clients/dark-shepherd-restaurant/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+    "createCommand": "",
+    "continueCommand": "npm run open-design:continue-concept -- --client dark-shepherd-restaurant --prompt \"<change request>\"",
+    "syncCommand": "npm run open-design:sync-from-app -- --client dark-shepherd-restaurant",
+    "rule": "Use this exact local Open Design project for design concept changes. Do not start a separate Open Design project unless the operator explicitly asks."
+  },
+  "productionHandoffPath": "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+  "repoBootstrap": {
+    "status": "ready",
+    "repo": "matthew6688/dark-shepherd-restaurant",
+    "repoDir": "/Users/matthew/Developer/webjuice-generated/dark-shepherd-restaurant",
+    "pagesProjectName": "dark-shepherd-restaurant",
+    "defaultBranch": "main",
+    "devBranch": "dev",
+    "waitForActions": true,
+    "command": "npm run deploy:bootstrap-client-repo -- --repo matthew6688/dark-shepherd-restaurant --repo-dir /Users/matthew/Developer/webjuice-generated/dark-shepherd-restaurant --pages-project-name dark-shepherd-restaurant --main main --dev dev --wait true --execute true",
+    "rule": "Run this once before agent completion when the customer repo or Pages projects do not exist yet."
+  },
+  "createdFrom": "manual",
+  "createdAt": "2026-05-07T12:01:27.276Z",
+  "order": {
+    "orderId": "fresh_dark_shepherd_dryrun_001",
+    "clientSlug": "dark-shepherd-restaurant",
+    "repo": "matthew6688/dark-shepherd-restaurant",
+    "email": "matthew6688@gmail.com",
+    "company": "Dark Shepherd",
+    "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD"
+  },
+  "acceptanceCriteria": [
+    "Complete the requested task.",
+    "Run the relevant validation command.",
+    "Record outcome and next action."
+  ],
+  "kind": "sale",
+  "case": {
+    "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+    "contextPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json",
+    "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
+    "agentRunsPath": "data/agent-runs/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001.jsonl"
+  },
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "liveUrl": "https://dark-shepherd-restaurant-live.pages.dev/"
+}

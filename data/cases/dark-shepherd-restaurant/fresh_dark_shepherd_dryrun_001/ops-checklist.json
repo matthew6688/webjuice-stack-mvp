@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "mode": "project_dry_run",
+  "clientSlug": "dark-shepherd-restaurant",
+  "businessName": "Dark Shepherd",
+  "niche": "restaurant",
+  "route": "website",
+  "repo": "matthew6688/dark-shepherd-restaurant",
+  "repoDir": "/Users/matthew/Developer/dark-shepherd-restaurant",
+  "sourceUrl": "https://www.darkshepherd.com.au/",
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "orderId": "fresh_dark_shepherd_dryrun_001",
+  "customerEmail": "matthew6688@gmail.com",
+  "status": "ready_for_customer_review",
+  "createdAt": "2026-05-07T12:01:25.175Z",
+  "updatedAt": "2026-05-07T12:01:27.277Z",
+  "stages": [
+    {
+      "id": "stage_0_case_created",
+      "name": "创建 dry-run case",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Dry-run case created.",
+      "evidence": [
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json"
+      ],
+      "nextAction": "继续验证 evidence 和 website-ready packet。",
+      "startedAt": "2026-05-07T12:01:25.176Z",
+      "finishedAt": "2026-05-07T12:01:25.176Z"
+    },
+    {
+      "id": "stage_1_evidence_validate",
+      "name": "验证 evidence",
+      "critical": true,
+      "status": "pass",
+      "command": "npm run evidence:validate -- --client dark-shepherd-restaurant --niche restaurant",
+      "output": "> webjuice-mvp@0.0.1 evidence:validate\n> node scripts/evidence/validate.js --client dark-shepherd-restaurant --niche restaurant\nEvidence validation: /Users/matthew/Developer/google-map-website/clients/dark-shepherd-restaurant/evidence/evidence.json\nStatus: ok\nNo issues found.",
+      "evidence": [
+        "clients/dark-shepherd-restaurant/evidence/evidence.json"
+      ],
+      "nextAction": "继续生成 website-ready packet。",
+      "startedAt": "2026-05-07T12:01:25.176Z",
+      "finishedAt": "2026-05-07T12:01:25.387Z"
+    },
+    {
+      "id": "stage_2_website_ready_packet",
+      "name": "生成 website-ready packet",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Readiness: website_ready_to_build; readyToBuild=true",
+      "evidence": [
+        "clients/dark-shepherd-restaurant/intake/website-survey.json",
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md"
+      ],
+      "data": {
+        "readiness": "website_ready_to_build",
+        "readyToBuild": true,
+        "missing": [],
+        "nextAction": "Create or continue the website task thread and build on dev."
+      },
+      "nextAction": "创建或继续 Discord website task thread，然后在 dev 上构建。",
+      "startedAt": "2026-05-07T12:01:25.387Z",
+      "finishedAt": "2026-05-07T12:01:25.390Z"
+    },
+    {
+      "id": "stage_3_open_design_binding",
+      "name": "检查 Open Design project",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Open Design project bound: dark-shepherd-restaurant-open-design-1778154549135",
+      "evidence": [
+        "clients/dark-shepherd-restaurant/concept/open-design/concept-manifest.json",
+        "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json"
+      ],
+      "data": {
+        "status": "bound",
+        "mode": "app-visible",
+        "dataDir": "/Users/matthew/Developer/open-design/.od",
+        "projectId": "dark-shepherd-restaurant-open-design-1778154549135",
+        "runId": "4e37751c-8336-4849-9bff-1883e6e4359c",
+        "conceptPath": "clients/dark-shepherd-restaurant/concept/open-design",
+        "manifestPath": "clients/dark-shepherd-restaurant/concept/open-design/concept-manifest.json",
+        "productionHandoffPath": "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+        "createCommand": "",
+        "continueCommand": "npm run open-design:continue-concept -- --client dark-shepherd-restaurant --prompt \"<change request>\"",
+        "syncCommand": "npm run open-design:sync-from-app -- --client dark-shepherd-restaurant",
+        "rule": "Use this exact local Open Design project for design concept changes. Do not start a separate Open Design project unless the operator explicitly asks."
+      },
+      "nextAction": "继续确认 production handoff。",
+      "startedAt": "2026-05-07T12:01:25.390Z",
+      "finishedAt": "2026-05-07T12:01:25.391Z"
+    },
+    {
+      "id": "stage_4_production_handoff",
+      "name": "检查 production handoff",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Production handoff exists: clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+      "evidence": [
+        "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json"
+      ],
+      "nextAction": "继续 port/build customer repo dev preview。",
+      "startedAt": "2026-05-07T12:01:25.391Z",
+      "finishedAt": "2026-05-07T12:01:25.391Z"
+    },
+    {
+      "id": "stage_5_customer_repo_build",
+      "name": "构建 customer repo dev preview",
+      "critical": true,
+      "status": "pass",
+      "command": "cd /Users/matthew/Developer/dark-shepherd-restaurant && npm run build",
+      "output": "22:01:26 [build] Collecting build info...\n22:01:26 [build] ✓ Completed in 250ms.\n22:01:26 [build] Building static entrypoints...\n22:01:27 [vite] ✓ built in 453ms\n22:01:27 [vite] ✓ built in 6ms\n22:01:27 [build] Rearranging server assets...\n generating static routes \n22:01:27 [WARN] [build] Could not render `/blog` from route `/blog/[...slug]` as it conflicts with higher priority route `/blog`.\n22:01:27 [WARN] [build] Could not render `/cases` from route `/cases/[...slug]` as it conflicts with higher priority route `/cases`.\n22:01:27   ├─ /blog/index.html (+5ms) \n22:01:27   ├─ /cases/index.html (+2ms) \n22:01:27   ├─ /contact/index.html (+1ms) \n22:01:27   ├─ /menu/index.html (+1ms) \n22:01:27   ├─ /index.html (+2ms) \n22:01:27 ✓ Completed in 24ms.\n22:01:27 [build] ✓ Completed in 512ms.\n22:01:27 [build] 5 page(s) built in 763ms\n22:01:27 [build] Complete!",
+      "evidence": [
+        "/Users/matthew/Developer/dark-shepherd-restaurant/dist"
+      ],
+      "nextAction": "继续验证 customer repo preview banner。",
+      "startedAt": "2026-05-07T12:01:25.391Z",
+      "finishedAt": "2026-05-07T12:01:27.103Z"
+    },
+    {
+      "id": "stage_5b_preview_funnel_qa",
+      "name": "验证 preview banner 和官方 funnel links",
+      "critical": true,
+      "status": "pass",
+      "command": "npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/dark-shepherd-restaurant/dist --client Dark Shepherd",
+      "output": "      \"source\": \"/Users/matthew/Developer/dark-shepherd-restaurant/dist/domain-help/index.html\",\n      \"status\": 404,\n      \"ok\": true,\n      \"checks\": [\n        {\n          \"name\": \"local_funnel_route_removed_or_redirected\",\n          \"ok\": true,\n          \"detail\": \"\"\n        },\n        {\n          \"name\": \"removed_route_not_serving_funnel\",\n          \"ok\": true,\n          \"detail\": \"\"\n        }\n      ]\n    }\n  ]\n}",
+      "evidence": [
+        "/Users/matthew/Developer/dark-shepherd-restaurant/dist"
+      ],
+      "nextAction": "继续创建 agent task draft。",
+      "startedAt": "2026-05-07T12:01:27.103Z",
+      "finishedAt": "2026-05-07T12:01:27.275Z"
+    },
+    {
+      "id": "stage_6_delivery_qa",
+      "name": "验证 delivery QA 报告",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Delivery QA passed: data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/delivery-qa.json",
+      "evidence": [
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/delivery-qa.json"
+      ],
+      "data": {
+        "readyForCustomerReview": true,
+        "reviewer": "operator"
+      },
+      "nextAction": "继续创建 agent task draft 和客户 review 邮件草稿。",
+      "startedAt": "2026-05-07T12:01:27.275Z",
+      "finishedAt": "2026-05-07T12:01:27.276Z"
+    },
+    {
+      "id": "stage_8_agent_task_draft",
+      "name": "创建 agent task draft",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Task draft valid: task_1778155287276_8phnzh5o",
+      "evidence": [
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/agent-task-draft.json"
+      ],
+      "data": {
+        "taskId": "task_1778155287276_8phnzh5o",
+        "validation": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "nextAction": "人工确认后可把 task dispatch 到 Discord website thread。",
+      "startedAt": "2026-05-07T12:01:27.276Z",
+      "finishedAt": "2026-05-07T12:01:27.276Z"
+    },
+    {
+      "id": "stage_9_customer_review_email_draft",
+      "name": "生成 customer review email draft",
+      "critical": false,
+      "status": "pass",
+      "command": "",
+      "output": "Review email draft written for matthew6688@gmail.com",
+      "evidence": [
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/customer-review-email-draft.json"
+      ],
+      "nextAction": "customer email 只能在 delivery QA 通过后通过 Resend 正式发送。",
+      "startedAt": "2026-05-07T12:01:27.276Z",
+      "finishedAt": "2026-05-07T12:01:27.277Z"
+    }
+  ],
+  "nextActions": []
+}
