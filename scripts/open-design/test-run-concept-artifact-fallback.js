@@ -5,7 +5,12 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { isSourceCaptureHtml, listFilesRecursive, scanArtifactQuietSnapshot } from './run-concept.js';
+import {
+  isSourceCaptureHtml,
+  listFilesRecursive,
+  normalizeOpenDesignTimeoutMs,
+  scanArtifactQuietSnapshot,
+} from './run-concept.js';
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'od-artifact-fallback-'));
 
@@ -50,6 +55,26 @@ try {
   assert.equal(snapshot.generatedHtmlCount, 1);
   assert.equal(snapshot.fileCount, 3);
 
+  const clamped = normalizeOpenDesignTimeoutMs({
+    agentId: 'codex',
+    skillId: 'web-prototype',
+    mode: 'app-visible',
+    requestedTimeoutMs: 180000,
+    allowShortTimeout: false,
+  });
+  assert.equal(clamped.timeoutMs, 600000);
+  assert.equal(clamped.clamped, true);
+
+  const unclamped = normalizeOpenDesignTimeoutMs({
+    agentId: 'codex',
+    skillId: 'web-prototype',
+    mode: 'app-visible',
+    requestedTimeoutMs: 180000,
+    allowShortTimeout: true,
+  });
+  assert.equal(unclamped.timeoutMs, 180000);
+  assert.equal(unclamped.clamped, false);
+
   const files = listFilesRecursive(root).map((file) => path.relative(root, file).split(path.sep).join('/')).sort();
   assert.deepEqual(files, ['assets/hero.jpg', 'index.html', 'source-homepage.html']);
 
@@ -58,6 +83,7 @@ try {
     ignoresDotDirectories: true,
     requiresGeneratedHtmlArtifacts: true,
     ignoresSourceCaptureHtml: true,
+    shortTimeoutClampForCodexWebPrototype: clamped,
     visibleFiles: files,
     snapshot,
   }, null, 2));

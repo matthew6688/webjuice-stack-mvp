@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
-import { exportProjectFilesFromDisk, streamRun } from './run-concept.js';
+import { exportProjectFilesFromDisk, normalizeOpenDesignTimeoutMs, streamRun } from './run-concept.js';
 
 const DEFAULT_OPEN_DESIGN_ROOT = '/Users/matthew/Developer/open-design';
 const DEFAULT_NODE24 = '/Users/matthew/.local/share/mise/installs/node/24.15.0/bin/node';
@@ -24,8 +24,9 @@ const port = Number(args.port || process.env.OPEN_DESIGN_PORT || 7466);
 const daemonUrl = (args['daemon-url'] || manifest.daemonUrl || `http://127.0.0.1:${port}`).replace(/\/$/, '');
 const dataDir = path.resolve(args['data-dir'] || manifest.dataDir || process.env.OPEN_DESIGN_DATA_DIR || path.join('/tmp', `profitslocal-open-design-${clientSlug}`));
 const outDir = path.resolve(args.out || manifest.outDir || path.dirname(manifestPath));
-const timeoutMs = Number(args['timeout-ms'] || args.timeout || 12 * 60 * 1000);
+const requestedTimeoutMs = Number(args['timeout-ms'] || args.timeout || 12 * 60 * 1000);
 const artifactQuietMs = Number(args['artifact-quiet-ms'] || 20_000);
+const allowShortTimeout = Boolean(args['allow-short-timeout']);
 const keepDaemon = Boolean(args['keep-daemon'] || args['daemon-url']);
 const dryRun = Boolean(args['dry-run']);
 
@@ -34,6 +35,13 @@ let daemonProcess = null;
 try {
   assertOpenDesignReady(openDesignRoot, nodeBin);
   if (dryRun) {
+    const timeoutPolicy = normalizeOpenDesignTimeoutMs({
+      agentId: args.agent || manifest.agentId || 'codex',
+      skillId: args.skill || manifest.skillId || 'web-prototype',
+      mode: manifest.mode || 'app-visible',
+      requestedTimeoutMs,
+      allowShortTimeout,
+    });
     console.log(JSON.stringify({
       ok: true,
       dryRun: true,
@@ -46,6 +54,7 @@ try {
       projectId: manifest.projectId,
       conversationId: manifest.conversationId || null,
       prompt: buildContinuationPrompt(args.prompt),
+      timeoutPolicy,
       artifactQuietMs,
     }, null, 2));
     process.exit(0);
@@ -59,6 +68,14 @@ try {
 
   const conversationId = manifest.conversationId || project.conversationId;
   if (!conversationId) throw new Error('Missing conversationId; cannot continue the Open Design project.');
+  const timeoutPolicy = normalizeOpenDesignTimeoutMs({
+    agentId: args.agent || manifest.agentId || 'codex',
+    skillId: args.skill || manifest.skillId || 'web-prototype',
+    mode: manifest.mode || 'app-visible',
+    requestedTimeoutMs,
+    allowShortTimeout,
+  });
+  const timeoutMs = timeoutPolicy.timeoutMs;
 
   const run = await postJson(`${daemonUrl}/api/runs`, {
     agentId: args.agent || manifest.agentId || 'codex',
@@ -96,6 +113,7 @@ try {
     updatedAt: new Date().toISOString(),
     lastRunId: run.runId,
     previousRunId: manifest.lastRunId || manifest.runId,
+    timeoutPolicy,
     status: finalStatus,
     files,
     continuationRuns: [

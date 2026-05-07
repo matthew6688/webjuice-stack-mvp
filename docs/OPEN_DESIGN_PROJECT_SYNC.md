@@ -330,7 +330,7 @@ npm run open-design:run-concept -- \
   --client mac-app-visible-smoke \
   --mode app-visible \
   --prompt "Skip questions. Mac app visibility smoke only. Do not fetch the web. Create index.html with heading 'Mac App Visible Smoke'." \
-  --timeout-ms 240000
+  --timeout-ms 600000
 ```
 
 Result:
@@ -367,7 +367,7 @@ Run on 2026-05-07 against the same app-visible project:
 npm run open-design:continue-concept -- \
   --client mac-app-visible-smoke \
   --prompt "Smoke update only. Keep the existing page, add a visible section with exact text 'Open Design Discord Update Smoke', and do not fetch the web." \
-  --timeout-ms 240000
+  --timeout-ms 600000
 ```
 
 Result:

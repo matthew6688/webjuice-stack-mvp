@@ -36,7 +36,9 @@ The daemon handles:
 Two different concerns must stay separate:
 
 1. **Project creation / app visibility**: this already works in `app-visible` mode. New ProfitsLocal projects do appear in the Mac Open Design app because they are created inside the shared `.od/projects/<projectId>` workspace.
-2. **Headless completion / artifact capture**: this was the real blocker. Some long Codex runs created a valid project and real concept files but never emitted a clean terminal `end` event before timeout.
+2. **Headless completion / artifact capture**: this looked like the blocker, but the root cause turned out to be more specific:
+   - we had a false-positive fallback bug in ProfitsLocal;
+   - and several “native failures” were actually short-timeout false negatives.
 
 Current ProfitsLocal runner behavior:
 
@@ -44,7 +46,7 @@ Current ProfitsLocal runner behavior:
 - watch the real Open Design project directory under `.od/projects/<projectId>`;
 - ignore dot-directories such as `.od-skills`;
 - require at least one real visible `.html` page before declaring success;
-- if the project has gone quiet for the configured window, cancel the hanging run and export files directly from disk with `completionMode: artifact_quiet_fallback`.
+- if the project has gone quiet for the configured window, cancel the run and export files directly from disk with `completionMode: artifact_quiet_fallback`.
 
 Latest verified evidence:
 
@@ -160,6 +162,29 @@ Additional evidence after fixing the false-positive scanner:
 - no generated `index.html` / `menu.html` / `contact.html` existed
 - the event stream showed the agent planning to write HTML next, then only keepalives
 
+### Mode C: short-timeout false failure
+
+This is the main 2026-05-08 business root cause.
+
+What happened:
+
+- investigation runs were being launched with `--timeout-ms 120000` or `--timeout-ms 180000`;
+- those values are too short for `codex + web-prototype` to reliably finish a real restaurant redesign flow;
+- that made ordinary long Codex runs look like native Open Design failures.
+
+Hard evidence:
+
+- `od-rootcause-appvisible` timed out at `180000ms` before a visible generated html page appeared;
+- `od-rootcause-appvisible-long` used the same source site with `600000ms` timeout and succeeded;
+- `od-rootcause-appvisible-nofallback` used `600000ms` timeout plus `artifact-quiet-ms=3600000`, then reached:
+  - generated `brand-spec.md`
+  - generated `index.html/menu.html/functions.html/drinks-menu.html/contact.html`
+  - final artifact payload
+  - usage payload
+  - terminal `event: end`
+
+This proves the earlier short-timeout samples were not valid evidence that native clean finish was broken.
+
 ### Practical conclusion
 
 The current best operating model is:
@@ -167,6 +192,7 @@ The current best operating model is:
 - **trust the shared Open Design project as the design workspace;**
 - **treat `artifact_quiet_fallback` as acceptable only when real visible artifacts already exist;**
 - **treat "no visible HTML" as a hard failure;**
+- **for `codex + web-prototype`, do not use a timeout below `600000ms` unless you are deliberately running a failure experiment;**
 - **do not claim native clean finish unless `run-events.sse` actually contains `event: end` or the run status endpoint reaches terminal success before fallback.**
 
 Reference summary:
@@ -395,7 +421,7 @@ npm run open-design:run-concept -- \
   --business-type "restaurant" \
   --tone "clean smoke test" \
   --prompt "Skip questions. Headless ProfitsLocal integration smoke. Do not fetch the web. Use Open Design web-prototype skill context. Create a tiny standalone index.html saying 'ProfitsLocal Open Design runner ok'. Keep it under 80 lines. Emit the artifact." \
-  --timeout-ms 240000
+  --timeout-ms 600000
 ```
 
 Verified output:

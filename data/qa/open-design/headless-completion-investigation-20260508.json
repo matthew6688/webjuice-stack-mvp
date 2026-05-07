@@ -1,12 +1,14 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-08T06:25:00+10:00",
+  "generatedAt": "2026-05-08T07:30:00+10:00",
   "topic": "open_design_headless_completion_investigation",
   "summary": {
-    "rootFinding": "There are two distinct root causes. First, Open Design daemon only emits SSE event:end after the spawned agent child process closes. In genuine fallback cases the project may already contain real generated HTML artifacts, but the Codex child has not naturally closed, so the ProfitsLocal runner never sees event:end and must recover from disk.",
+    "rootFinding": "The main business-impacting issue was not a permanently broken Open Design native finish. It was a layered ProfitsLocal runner problem: first a false-positive fallback bug that treated source-*.html captures as generated concept pages, and second an investigation pattern that used 120000-180000ms timeouts that are shorter than real Codex web-prototype completion windows. With the false-positive fixed and a 600000ms timeout, app-visible Codex runs can reach a native SSE event:end clean finish.",
     "primaryBugFixed": "The ProfitsLocal fallback scanner previously counted captured source pages like source-*.html as generated concept HTML. That let the runner cancel a live run early and record a false success even when Open Design had not produced index.html or any real concept page yet.",
-    "secondaryFinding": "There is a separate earlier failure mode where the run never produces a first visible HTML file. In that case quiet fallback must not fire and the run should fail or time out.",
-    "pluginHypothesis": "Disabling Codex plugins did not eliminate the hang by itself in the reproduced isolated smoke."
+    "secondaryFinding": "Short 120000-180000ms investigation timeouts created false failure conclusions. In reproduced app-visible runs, Codex did not even reach file-writing by 180000ms, but the same scenario with 600000ms timeout wrote real pages and either completed via artifact_quiet_fallback or reached a native end event.",
+    "pluginHypothesis": "Disabling Codex plugins did not eliminate the hang by itself in the reproduced isolated smoke.",
+    "nativeFinishFinding": "A no-fallback app-visible reproduction (`od-rootcause-appvisible-nofallback`) proved that Codex can naturally emit the final artifact, usage, and SSE event:end when the timeout is long enough.",
+    "streamDisconnectFinding": "The `stream disconnected - retrying sampling request` warning is real Codex-native stderr, but it is not the primary root cause of the business issue because a successful native clean-finish reproduction completed without that warning."
   },
   "evidence": [
     {
@@ -72,6 +74,33 @@
         "after excluding source-*.html from readiness detection, the same style of run no longer produced a false success",
         "the project accumulated downloaded assets only and still never created a generated html page before timeout",
         "the tail of run-events shows the agent planning to write brand-spec and HTML files, then going idle with keepalives only"
+      ]
+    },
+    {
+      "kind": "app_visible_long_timeout_then_fallback_success",
+      "clientSlug": "od-rootcause-appvisible-long",
+      "runId": "9baafa1d-1f6e-4894-b0e5-75a484fa265b",
+      "eventsPath": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-appvisible-long/concept/open-design/run-events.sse",
+      "statusPath": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-appvisible-long/concept/open-design/run-status.json",
+      "observations": [
+        "same Dark Shepherd app-visible scenario that previously timed out at 180000ms succeeded when rerun with timeout-ms=600000",
+        "the run wrote brand-spec.md and index.html, then later completed as completionMode=artifact_quiet_fallback",
+        "the event log for this successful rerun does not contain the stream disconnected retry warning",
+        "this proved the earlier 180000ms failure was not enough evidence for a native runner defect"
+      ]
+    },
+    {
+      "kind": "app_visible_native_clean_finish_without_fallback",
+      "clientSlug": "od-rootcause-appvisible-nofallback",
+      "runId": "fcfe14f0-2049-48ca-a6e3-b7e253b50305",
+      "eventsPath": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-appvisible-nofallback/concept/open-design/run-events.sse",
+      "statusPath": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-appvisible-nofallback/concept/open-design/run-status.json",
+      "observations": [
+        "run used timeout-ms=600000 and artifact-quiet-ms=3600000, effectively removing ProfitsLocal fallback as the completion path",
+        "the project wrote brand-spec.md, index.html, menu.html, functions.html, drinks-menu.html, and contact.html",
+        "the todo list reached Emit single artifact = completed",
+        "the run then emitted a final artifact payload, usage payload, and SSE event:end with status=succeeded/code=0",
+        "this proves native clean finish exists for the same business and same Open Design workflow when the timeout window is realistic"
       ]
     }
   ],

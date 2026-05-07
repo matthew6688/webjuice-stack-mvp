@@ -40,8 +40,17 @@ async function main() {
   const projectName = args.name || `${clientSlug} Open Design concept`;
   const dryRun = Boolean(argValue(args, 'dryRun', 'dry-run'));
   const keepDaemon = Boolean(argValue(args, 'keepDaemon', 'keep-daemon') || argValue(args, 'daemonUrl', 'daemon-url'));
-  const timeoutMs = Number(argValue(args, 'timeoutMs', 'timeout-ms') || args.timeout || 12 * 60 * 1000);
+  const requestedTimeoutMs = Number(argValue(args, 'timeoutMs', 'timeout-ms') || args.timeout || 12 * 60 * 1000);
   const artifactQuietMs = Number(argValue(args, 'artifactQuietMs', 'artifact-quiet-ms') || 20_000);
+  const allowShortTimeout = Boolean(argValue(args, 'allowShortTimeout', 'allow-short-timeout'));
+  const timeoutPolicy = normalizeOpenDesignTimeoutMs({
+    agentId,
+    skillId,
+    mode,
+    requestedTimeoutMs,
+    allowShortTimeout,
+  });
+  const timeoutMs = timeoutPolicy.timeoutMs;
 
   const prompt = args.prompt || buildPrompt({ sourceUrl, businessType, tone, scope, clientSlug });
 
@@ -68,8 +77,9 @@ async function main() {
         reasoning,
         projectId,
         projectName,
-        prompt,
-      };
+      prompt,
+      timeoutPolicy,
+    };
       console.log(JSON.stringify(preview, null, 2));
       process.exit(0);
     }
@@ -161,6 +171,7 @@ async function main() {
       mode,
       dataDir,
       outDir,
+      timeoutPolicy,
       status: finalStatus,
       files,
     };
@@ -220,6 +231,29 @@ function defaultDataDir({ mode, openDesignRoot, clientSlug }) {
     return path.join('/tmp', `profitslocal-open-design-${clientSlug}`);
   }
   throw new Error(`Unknown Open Design mode "${mode}". Use isolated or app-visible.`);
+}
+
+function normalizeOpenDesignTimeoutMs({
+  agentId,
+  skillId,
+  mode,
+  requestedTimeoutMs,
+  allowShortTimeout = false,
+}) {
+  const timeoutMs = Number(requestedTimeoutMs);
+  const isCodexWebPrototype = agentId === 'codex' && skillId === 'web-prototype';
+  const minimumTimeoutMs = isCodexWebPrototype ? 10 * 60 * 1000 : 0;
+  const shouldClamp = !allowShortTimeout && minimumTimeoutMs > 0 && timeoutMs < minimumTimeoutMs;
+  return {
+    requestedTimeoutMs: timeoutMs,
+    timeoutMs: shouldClamp ? minimumTimeoutMs : timeoutMs,
+    clamped: shouldClamp,
+    reason: shouldClamp
+      ? `Codex web-prototype runs in ${mode} mode routinely exceed short timeouts before emitting the final artifact/end event.`
+      : null,
+    minimumTimeoutMs: minimumTimeoutMs || null,
+    allowShortTimeout,
+  };
 }
 
 async function ensureDaemon({ openDesignRoot, nodeBin, port, dataDir, daemonUrl }) {
@@ -524,4 +558,5 @@ export {
   listFilesRecursive,
   isSourceCaptureHtml,
   scanArtifactQuietSnapshot,
+  normalizeOpenDesignTimeoutMs,
 };
