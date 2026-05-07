@@ -6,11 +6,16 @@ import { artifactTimestamp } from '../time.js';
 import { buildOpenDesignWorkspace } from '../open-design/workspace.js';
 import { buildFunnelCustomerEmail, sendCustomerEmail } from './customer-email.js';
 import {
+  buildForumThreadName,
   buildDiscordMessage,
   buildWebsiteAgentHandoffMessage,
+  defaultDiscordForumBlueprints,
+  desiredForumTagNames,
   sendDiscordChannelMessage,
   sendDiscordThreadedMessage,
   sendDiscordWebhook,
+  syncDiscordForumTags,
+  updateDiscordThread,
 } from './discord.js';
 import { addExtraRevisionEntitlement, consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
@@ -422,7 +427,11 @@ function buildPaidIntakeRecord({ order, provider, submissionPath, ledgerEvent })
 
 async function sendWebsiteAgentHandoff({ kind, order, task, caseRecord, options }) {
   const env = { ...process.env, ...(options.env || {}) };
-  const channelId = options.websiteTasksChannelId || env.WEBSITE_TASKS_DISCORD_CHANNEL_ID || '';
+  const channelId = options.websiteProjectsChannelId
+    || env.WEBSITE_PROJECTS_DISCORD_CHANNEL_ID
+    || options.websiteTasksChannelId
+    || env.WEBSITE_TASKS_DISCORD_CHANNEL_ID
+    || '';
   const botToken = options.websiteTasksBotToken || env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || '';
   const mention = options.websiteAgentMention || env.WEBSITE_AGENT_MENTION || '';
   if (!options.sendDiscord || options.dryRun) {
@@ -433,23 +442,42 @@ async function sendWebsiteAgentHandoff({ kind, order, task, caseRecord, options 
       ok: false,
       skipped: true,
       reason: 'missing_website_agent_handoff_config',
-      needs: ['WEBSITE_TASKS_DISCORD_CHANNEL_ID', 'WEBSITE_TASKS_DISCORD_BOT_TOKEN', 'WEBSITE_AGENT_MENTION'],
+      needs: ['WEBSITE_PROJECTS_DISCORD_CHANNEL_ID or WEBSITE_TASKS_DISCORD_CHANNEL_ID', 'WEBSITE_TASKS_DISCORD_BOT_TOKEN', 'WEBSITE_AGENT_MENTION'],
     };
   }
   const payload = buildWebsiteAgentHandoffMessage({ kind, order, task, caseRecord, mention });
   const existingThreadId = caseRecord?.caseFile?.discord?.websiteTaskThreadId || '';
+  const forumTagIds = await resolveForumTagIds({
+    channelId,
+    botToken,
+    fetchImpl: options.fetchImpl || fetch,
+    workspace: 'projects',
+    kind,
+    order,
+    caseFile: caseRecord?.caseFile || null,
+  });
+  const threadName = buildForumThreadName({
+    workspace: 'projects',
+    kind,
+    order,
+    caseFile: caseRecord?.caseFile || null,
+    revision: caseRecord?.caseFile?.revision || null,
+  });
   const discord = existingThreadId
-    ? await sendDiscordChannelMessage({
-      channelId: existingThreadId,
+    ? await sendDiscordWorkspaceReply({
+      existingThreadId,
       botToken,
       payload,
+      threadName,
+      forumTagIds,
       fetchImpl: options.fetchImpl || fetch,
     })
     : await sendDiscordThreadedMessage({
       channelId,
       botToken,
       payload,
-      threadName: discordThreadName(kind, order),
+      threadName,
+      forumTagIds,
       fetchImpl: options.fetchImpl || fetch,
     });
   if (existingThreadId) {
@@ -457,6 +485,59 @@ async function sendWebsiteAgentHandoff({ kind, order, task, caseRecord, options 
     discord.threadReused = true;
   }
   return { ok: true, discord, payload };
+}
+
+async function sendDiscordWorkspaceReply({
+  existingThreadId,
+  botToken,
+  payload,
+  threadName,
+  forumTagIds,
+  fetchImpl,
+}) {
+  const updated = await sendDiscordChannelMessage({
+    channelId: existingThreadId,
+    botToken,
+    payload,
+    fetchImpl,
+  });
+  try {
+    await updateDiscordThread({
+      threadId: existingThreadId,
+      botToken,
+      name: threadName,
+      appliedTagIds: forumTagIds,
+      fetchImpl,
+    });
+  } catch (error) {
+    updated.metadataUpdateError = error.message || String(error);
+  }
+  updated.threadName = threadName;
+  updated.appliedTagIds = forumTagIds;
+  return updated;
+}
+
+async function resolveForumTagIds({
+  channelId,
+  botToken,
+  fetchImpl,
+  workspace,
+  kind,
+  order,
+  caseFile,
+}) {
+  try {
+    const blueprints = defaultDiscordForumBlueprints();
+    const config = await syncDiscordForumTags({
+      channelId,
+      botToken,
+      tags: blueprints[workspace] || [],
+      fetchImpl,
+    });
+    return desiredForumTagNames({ workspace, kind, order, caseFile }).map((name) => config.tagsByName[name]).filter(Boolean);
+  } catch {
+    return [];
+  }
 }
 
 function recordCaseWebsiteHandoff(caseRecord, handoff, kind, options) {

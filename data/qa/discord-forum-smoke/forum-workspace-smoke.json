@@ -1,0 +1,91 @@
+
+> webjuice-mvp@0.0.1 discord:test-forum-workspace
+> node scripts/discord/test-forum-workspace.js --leads 1501187038706401290 --projects 1501945763650080899 --client forum-smoke-20260507b --company Forum Smoke Restaurant B
+
+{
+  "ok": true,
+  "leads": {
+    "channelId": "1501187038706401290",
+    "tagsByName": {
+      "restaurant": "1501948301614776409",
+      "roofing": "1501948301614776410",
+      "qualified": "1501948301627625472",
+      "demo-ready": "1501948301627625473",
+      "cold-outreach": "1501948301627625474",
+      "replied": "1501948301627625475",
+      "paid": "1501948301627625476",
+      "not-fit": "1501948301627625477"
+    },
+    "post": {
+      "ok": true,
+      "status": 201,
+      "channelId": "1501187038706401290",
+      "messageId": "1501948472721674270",
+      "messageUrl": "https://discord.com/channels/1493925728570310756/1501948472721674270/1501948472721674270",
+      "threadId": "1501948472721674270",
+      "threadUrl": "https://discord.com/channels/1493925728570310756/1501948472721674270",
+      "threadName": "[Qualified] Forum Smoke Restaurant B",
+      "threadCreatedByBot": true,
+      "threadStyle": "forum_post",
+      "appliedTagIds": [
+        "1501948301614776409",
+        "1501948301627625472"
+      ],
+      "threadMessageId": "1501948472721674270",
+      "threadMessageUrl": "https://discord.com/channels/1493925728570310756/1501948472721674270/1501948472721674270"
+    }
+  },
+  "projects": {
+    "channelId": "1501945763650080899",
+    "tagsByName": {
+      "restaurant": "1501948304479748148",
+      "roofing": "1501948304479748149",
+      "open-design": "1501948304479748150",
+      "dev-preview": "1501948304479748151",
+      "review": "1501948304479748152",
+      "revision": "1501948304479748153",
+      "approved": "1501948304479748154",
+      "live": "1501948304479748155",
+      "domain-blocked": "1501948304479748156",
+      "waiting-customer": "1501948304488140850",
+      "waiting-us": "1501948304488140851"
+    },
+    "post": {
+      "ok": true,
+      "status": 201,
+      "channelId": "1501945763650080899",
+      "messageId": "1501948476131508274",
+      "messageUrl": "https://discord.com/channels/1493925728570310756/1501948476131508274/1501948476131508274",
+      "threadId": "1501948476131508274",
+      "threadUrl": "https://discord.com/channels/1493925728570310756/1501948476131508274",
+      "threadName": "[Review] Forum Smoke Restaurant B",
+      "threadCreatedByBot": true,
+      "threadStyle": "forum_post",
+      "appliedTagIds": [
+        "1501948304479748148",
+        "1501948304479748152",
+        "1501948304488140850"
+      ],
+      "threadMessageId": "1501948476131508274",
+      "threadMessageUrl": "https://discord.com/channels/1493925728570310756/1501948476131508274/1501948476131508274"
+    },
+    "renamedTo": "[Revision 1/3] Forum Smoke Restaurant B",
+    "appliedTagIds": [
+      "1501948304479748148",
+      "1501948304479748153",
+      "1501948304488140851"
+    ],
+    "revisionReply": {
+      "ok": true,
+      "status": 200,
+      "channelId": "1501948476131508274",
+      "messageId": "1501948480338530338",
+      "messageUrl": "",
+      "threadId": "",
+      "threadUrl": "",
+      "threadName": "",
+      "threadCreatedByBot": false,
+      "threadCreateError": ""
+    }
+  }
+}

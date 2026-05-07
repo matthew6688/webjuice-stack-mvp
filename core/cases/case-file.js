@@ -154,9 +154,16 @@ function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
       salesThreadId: next.salesThreadId || '',
       revisionThreadId: next.revisionThreadId || '',
       websiteTaskThreadId: next.websiteTaskThreadId || '',
+      salesWorkspaceChannelId: next.salesWorkspaceChannelId || '',
+      revisionWorkspaceChannelId: next.revisionWorkspaceChannelId || '',
+      websiteWorkspaceChannelId: next.websiteWorkspaceChannelId || '',
+      websiteWorkspaceType: next.websiteWorkspaceType || '',
+      websiteWorkspaceName: next.websiteWorkspaceName || '',
+      websiteWorkspaceTagIds: next.websiteWorkspaceTagIds || [],
       lastChannelId: next.lastChannelId || '',
       lastMessageId: next.lastMessageId || '',
       lastMessageUrl: next.lastMessageUrl || '',
+      lastThreadUrl: next.lastThreadUrl || '',
     };
   }
   const threadId = discord.threadId || discord.channelId || '';
@@ -164,6 +171,14 @@ function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
     salesThreadId: kind === 'sale' && threadId ? threadId : next.salesThreadId || '',
     revisionThreadId: kind === 'revision' && threadId ? threadId : next.revisionThreadId || '',
     websiteTaskThreadId: kind === 'website_task' && threadId ? threadId : next.websiteTaskThreadId || '',
+    salesWorkspaceChannelId: kind === 'sale' ? (discord.channelId || next.salesWorkspaceChannelId || '') : next.salesWorkspaceChannelId || '',
+    revisionWorkspaceChannelId: kind === 'revision' ? (discord.channelId || next.revisionWorkspaceChannelId || '') : next.revisionWorkspaceChannelId || '',
+    websiteWorkspaceChannelId: kind === 'website_task' ? (discord.channelId || next.websiteWorkspaceChannelId || '') : next.websiteWorkspaceChannelId || '',
+    websiteWorkspaceType: kind === 'website_task' ? (discord.threadStyle || next.websiteWorkspaceType || '') : next.websiteWorkspaceType || '',
+    websiteWorkspaceName: kind === 'website_task' ? (discord.threadName || next.websiteWorkspaceName || '') : next.websiteWorkspaceName || '',
+    websiteWorkspaceTagIds: kind === 'website_task'
+      ? (discord.appliedTagIds || next.websiteWorkspaceTagIds || [])
+      : next.websiteWorkspaceTagIds || [],
     lastChannelId: discord.channelId || next.lastChannelId || '',
     lastMessageId: discord.messageId || next.lastMessageId || '',
     lastMessageUrl: discord.messageUrl || next.lastMessageUrl || '',

@@ -314,11 +314,14 @@ npm run agent:publish-approved -- --task <task.json> --repo-dir <client-repo> --
 
 The publisher avoids unrelated-history merges by creating a main commit from the approved dev tree.
 
-### Discord Website Task Workspace
+### Discord Website Workspace
 
-The internal workroom is Discord `#website-tasks`.
+Current preferred structure:
 
-Each sale/revision should become one durable thread named from the business and order/task. Later agent completion, revision, approval, and publish messages reuse the same thread from `case.json.discord`.
+- `website-leads` forum for pre-sale / outreach / qualified leads
+- `website-projects` forum for active build / review / revision / live projects
+
+For active projects, each business should map to one durable forum post. Later agent completion, revision, approval, and publish messages should reuse that same Discord workspace from `case.json.discord`.
 
 Hermes / website-agent receives:
 

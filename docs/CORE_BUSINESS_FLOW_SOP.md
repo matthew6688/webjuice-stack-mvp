@@ -33,7 +33,7 @@
 ## 硬规则
 
 - 每一个 website project 都必须有一个 Open Design project。
-- 每一个 website project 都必须有一个 Discord website task thread。
+- 每一个 website project 都必须有一个 Discord website workspace。当前优先形态是 `website-projects` forum 里的单个 post，不再优先依赖普通 text-channel thread。
 - 每一个 website project 都必须有 repo-backed memory，不能只靠聊天记忆。
 - 一个项目只能有一个当前 project capsule、一个当前 Open Design binding、一个当前 customer repo `dev` branch。如果三者对不上，先停下来同步。
 - 客户网站 repo 只放客户网站和 preview banner。ProfitsLocal 的 checkout、revision、approval、domain 页面必须在 `https://profitslocal.com`。
@@ -53,19 +53,80 @@
 | Business facts | `evidence`、`survey`、`content` | 名字、电话、地址、菜单、服务、booking、contact、sitemap。 |
 | 视觉概念 | Open Design project | 视觉方向、layout、字体、层级、艺术方向、设计探索。 |
 | 可部署网站 | customer repo `dev` branch | 真正能部署到 Cloudflare Pages 的 Astro/Webjuice 实现。 |
-| 内部沟通和决策 | Discord website task thread + case timeline | 任务讨论、客户反馈、agent 运行记录、approval/revision 记录。 |
+| 内部沟通和决策 | Discord website workspace + case timeline | 任务讨论、客户反馈、agent 运行记录、approval/revision 记录。当前推荐是 forum post。 |
 | 客户付款和售后页面 | `profitslocal.com` | Checkout、revision、approval、domain setup、contact、FAQ。 |
 
 ### 每次开工前先做 6 个检查
 
 1. 找到 client slug。
 2. 找到 case folder。
-3. 打开同一个 Discord website task thread。
+3. 打开同一个 Discord website workspace（优先是 `website-projects` forum post）。
 4. 检查 `clients/<client>/concept/open-design/concept-manifest.json`。
 5. 检查 customer repo 和当前 branch。
 6. 判断这次改动属于哪一类：视觉设计、生产实现、business fact 修正。
 
-如果 case、Discord thread、Open Design manifest、repo 指向不同客户或不同项目，不要继续做。先修 binding。
+如果 case、Discord workspace、Open Design manifest、repo 指向不同客户或不同项目，不要继续做。先修 binding。
+
+### Discord workspace 结构
+
+当前建议结构：
+
+- `website-leads` forum：售前 lead / outreach / qualified / paid intake
+- `website-projects` forum：已进入 build / review / revision / live 的正式项目
+
+这两个 forum 已验证可用：
+
+- `website-leads`: `1501187038706401290`
+- `website-projects`: `1501945763650080899`
+
+为什么这样做：
+
+- 普通 text channel thread 在大量项目下不直观，容易被藏起来。
+- forum post 可以直接看到项目列表。
+- forum tag 可以做阶段过滤。
+- title 可以按阶段更新，例如：
+  - `[Qualified] Dark Shepherd`
+  - `[Review] Opa Bar & Mezze`
+  - `[Revision 1/3] Rich & Rare`
+  - `[Live] Babylon Brisbane`
+
+当前已实测的 forum tags：
+
+- `website-leads`:
+  - `restaurant`
+  - `roofing`
+  - `qualified`
+  - `demo-ready`
+  - `cold-outreach`
+  - `replied`
+  - `paid`
+  - `not-fit`
+- `website-projects`:
+  - `restaurant`
+  - `roofing`
+  - `open-design`
+  - `dev-preview`
+  - `review`
+  - `revision`
+  - `approved`
+  - `live`
+  - `domain-blocked`
+  - `waiting-customer`
+  - `waiting-us`
+
+推荐命令：
+
+```bash
+npm run discord:sync-forums -- --leads 1501187038706401290 --projects 1501945763650080899
+npm run discord:test-forum-workspace -- --leads 1501187038706401290 --projects 1501945763650080899
+```
+
+证据位置：
+
+- `data/qa/discord-forum-smoke/sync-forums.json`
+- `data/qa/discord-forum-smoke/forum-workspace-smoke.json`
+- `data/qa/discord-forum-smoke/forum-channels.json`
+- `data/qa/discord-forum-smoke/website-handoff-forum.json`
 
 ### 如果修改从 Discord 开始
 

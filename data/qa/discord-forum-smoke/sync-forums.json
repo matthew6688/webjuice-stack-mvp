@@ -1,0 +1,177 @@
+
+> webjuice-mvp@0.0.1 discord:sync-forums
+> node scripts/discord/sync-forum-setup.js --leads 1501187038706401290 --projects 1501945763650080899
+
+{
+  "ok": true,
+  "results": {
+    "leads": {
+      "ok": true,
+      "channelId": "1501187038706401290",
+      "availableTags": [
+        {
+          "id": "1501948301614776409",
+          "name": "restaurant",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948301614776410",
+          "name": "roofing",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948301627625472",
+          "name": "qualified",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948301627625473",
+          "name": "demo-ready",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948301627625474",
+          "name": "cold-outreach",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948301627625475",
+          "name": "replied",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948301627625476",
+          "name": "paid",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948301627625477",
+          "name": "not-fit",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        }
+      ],
+      "tagsByName": {
+        "restaurant": "1501948301614776409",
+        "roofing": "1501948301614776410",
+        "qualified": "1501948301627625472",
+        "demo-ready": "1501948301627625473",
+        "cold-outreach": "1501948301627625474",
+        "replied": "1501948301627625475",
+        "paid": "1501948301627625476",
+        "not-fit": "1501948301627625477"
+      }
+    },
+    "projects": {
+      "ok": true,
+      "channelId": "1501945763650080899",
+      "availableTags": [
+        {
+          "id": "1501948304479748148",
+          "name": "restaurant",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748149",
+          "name": "roofing",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748150",
+          "name": "open-design",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748151",
+          "name": "dev-preview",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748152",
+          "name": "review",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748153",
+          "name": "revision",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748154",
+          "name": "approved",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748155",
+          "name": "live",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304479748156",
+          "name": "domain-blocked",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304488140850",
+          "name": "waiting-customer",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        },
+        {
+          "id": "1501948304488140851",
+          "name": "waiting-us",
+          "moderated": false,
+          "emoji_id": null,
+          "emoji_name": null
+        }
+      ],
+      "tagsByName": {
+        "restaurant": "1501948304479748148",
+        "roofing": "1501948304479748149",
+        "open-design": "1501948304479748150",
+        "dev-preview": "1501948304479748151",
+        "review": "1501948304479748152",
+        "revision": "1501948304479748153",
+        "approved": "1501948304479748154",
+        "live": "1501948304479748155",
+        "domain-blocked": "1501948304479748156",
+        "waiting-customer": "1501948304488140850",
+        "waiting-us": "1501948304488140851"
+      }
+    }
+  }
+}

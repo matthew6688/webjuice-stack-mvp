@@ -133,6 +133,70 @@ export function buildWebsiteAgentHandoffMessage({
   };
 }
 
+export function buildForumThreadName({ workspace = 'projects', kind = '', order = {}, caseFile = null, revision = null } = {}) {
+  const company = order.company || order.businessName || caseFile?.customer?.company || order.clientSlug || caseFile?.clientSlug || 'Project';
+  const prefix = workspace === 'leads'
+    ? forumLeadPrefix(kind, order)
+    : forumProjectPrefix(kind, revision, caseFile);
+  return `${prefix} ${company}`.slice(0, 100);
+}
+
+export function desiredForumTagNames({ workspace = 'projects', kind = '', order = {}, caseFile = null, revision = null } = {}) {
+  const niche = String(order.template || caseFile?.template || '').includes('roof')
+    ? 'roofing'
+    : 'restaurant';
+  if (workspace === 'leads') {
+    const tags = [niche];
+    if (kind === 'paid_intake') tags.push('paid');
+    else if (kind === 'sale') tags.push('qualified');
+    else tags.push('cold-outreach');
+    return tags;
+  }
+
+  const tags = [niche];
+  if (kind === 'sale') tags.push('review');
+  else if (kind === 'revision') tags.push('revision');
+  else if (kind === 'approved') tags.push('approved');
+  else if (kind === 'live') tags.push('live');
+  else tags.push('dev-preview');
+
+  const waitingTag = caseFile?.status === 'waiting_for_customer_dns'
+    ? 'domain-blocked'
+    : '';
+  if (waitingTag) tags.push(waitingTag);
+  if (kind === 'revision') tags.push('waiting-us');
+  if (kind === 'sale') tags.push('waiting-customer');
+  return [...new Set(tags)];
+}
+
+export function defaultDiscordForumBlueprints() {
+  return {
+    leads: [
+      { name: 'restaurant' },
+      { name: 'roofing' },
+      { name: 'qualified' },
+      { name: 'demo-ready' },
+      { name: 'cold-outreach' },
+      { name: 'replied' },
+      { name: 'paid' },
+      { name: 'not-fit' },
+    ],
+    projects: [
+      { name: 'restaurant' },
+      { name: 'roofing' },
+      { name: 'open-design' },
+      { name: 'dev-preview' },
+      { name: 'review' },
+      { name: 'revision' },
+      { name: 'approved' },
+      { name: 'live' },
+      { name: 'domain-blocked' },
+      { name: 'waiting-customer' },
+      { name: 'waiting-us' },
+    ],
+  };
+}
+
 export async function sendDiscordChannelMessage({
   channelId,
   botToken,
@@ -227,6 +291,7 @@ export async function sendDiscordThreadedMessage({
   botToken,
   payload,
   threadName,
+  forumTagIds = [],
   parentPayload = null,
   fetchImpl = fetch,
 }) {
@@ -239,6 +304,7 @@ export async function sendDiscordThreadedMessage({
       channelId,
       threadName,
       payload,
+      forumTagIds,
     });
   }
   const autoThread = await sendDiscordChannelMessage({
@@ -317,7 +383,7 @@ async function getDiscordChannel({ channelId, botToken, fetchImpl }) {
   }
 }
 
-async function createForumThread({ fetchImpl, botToken, channelId, threadName, payload }) {
+async function createForumThread({ fetchImpl, botToken, channelId, threadName, payload, forumTagIds = [] }) {
   const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}/threads`, {
     method: 'POST',
     headers: {
@@ -328,6 +394,7 @@ async function createForumThread({ fetchImpl, botToken, channelId, threadName, p
     body: JSON.stringify({
       name: threadName,
       auto_archive_duration: 10080,
+      applied_tags: forumTagIds,
       message: payload,
     }),
   });
@@ -359,10 +426,107 @@ async function createForumThread({ fetchImpl, botToken, channelId, threadName, p
     threadName,
     threadCreatedByBot: true,
     threadStyle: 'forum_post',
+    appliedTagIds: forumTagIds,
     threadMessageId: messageId,
     threadMessageUrl: guildId && threadId && messageId
       ? `https://discord.com/channels/${guildId}/${threadId}/${messageId}`
       : '',
+  };
+}
+
+export async function updateDiscordThread({
+  threadId,
+  botToken,
+  name = '',
+  appliedTagIds = null,
+  fetchImpl = fetch,
+}) {
+  if (!threadId) throw new Error('Discord thread ID is required');
+  if (!botToken) throw new Error('Discord bot token is required');
+  const body = {};
+  if (name) body.name = name;
+  if (Array.isArray(appliedTagIds)) body.applied_tags = appliedTagIds;
+  const response = await fetchImpl(`https://discord.com/api/v10/channels/${threadId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bot ${botToken}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-discord-handoff',
+    },
+    body: JSON.stringify(body),
+  });
+  const text = await response.text().catch(() => '');
+  let data = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+  if (!response.ok) {
+    throw new Error(`Discord thread update failed: ${response.status} ${text}`.trim());
+  }
+  return { ok: true, status: response.status, data };
+}
+
+export async function syncDiscordForumTags({
+  channelId,
+  botToken,
+  tags = [],
+  fetchImpl = fetch,
+}) {
+  const channel = await getDiscordChannel({ channelId, botToken, fetchImpl });
+  if (!channel) throw new Error(`Unable to read Discord channel ${channelId}`);
+  if (channel.type !== 15 && channel.type !== 16) {
+    throw new Error(`Channel ${channelId} is not a forum/media channel`);
+  }
+  const existing = Array.isArray(channel.available_tags) ? channel.available_tags : [];
+  const merged = tags.map((desired) => {
+    const found = existing.find((tag) => tag.name === desired.name);
+    if (found) {
+      return {
+        id: found.id,
+        name: found.name,
+        moderated: Boolean(found.moderated),
+        emoji_id: found.emoji_id || null,
+        emoji_name: found.emoji_name || null,
+      };
+    }
+    return {
+      name: desired.name,
+      moderated: Boolean(desired.moderated),
+      emoji_id: desired.emoji_id || null,
+      emoji_name: desired.emoji_name || null,
+    };
+  });
+  const response = await fetchImpl(`https://discord.com/api/v10/channels/${channelId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bot ${botToken}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-discord-handoff',
+    },
+    body: JSON.stringify({ available_tags: merged }),
+  });
+  const text = await response.text().catch(() => '');
+  let data = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+  if (!response.ok) {
+    throw new Error(`Discord forum tag sync failed: ${response.status} ${text}`.trim());
+  }
+  const tagsByName = Object.fromEntries((data?.available_tags || []).map((tag) => [tag.name, tag.id]));
+  return {
+    ok: true,
+    channelId,
+    availableTags: data?.available_tags || [],
+    tagsByName,
   };
 }
 
@@ -572,4 +736,24 @@ function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+function forumLeadPrefix(kind, order) {
+  if (kind === 'paid_intake') return '[Paid]';
+  if (kind === 'sale') return '[Qualified]';
+  if (order.paymentStatus === 'paid') return '[Paid]';
+  return '[Lead]';
+}
+
+function forumProjectPrefix(kind, revision, caseFile) {
+  if (kind === 'revision') {
+    const used = revision?.used ?? caseFile?.revision?.used;
+    const limit = revision?.limit ?? caseFile?.revision?.policy?.limit;
+    if (Number.isFinite(used) && Number.isFinite(limit)) return `[Revision ${used}/${limit}]`;
+    return '[Revision]';
+  }
+  if (kind === 'approved') return '[Approved]';
+  if (kind === 'live') return '[Live]';
+  if (kind === 'sale') return '[Review]';
+  return '[Build]';
 }
