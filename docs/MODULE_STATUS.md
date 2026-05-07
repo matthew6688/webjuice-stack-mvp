@@ -25,7 +25,7 @@
 | Tally order normalization | Working MVP | Tally webhook emits normalized order/revenue events; `npm run funnel:record-tally` writes payloads into the finance ledger. |
 | Checkout artifact builder | Working MVP | `npm run funnel:build-checkout` creates provider-agnostic Tally/Stripe checkout links with hidden client fields for $399 one-time or $799 yearly-maintenance tiers. |
 | First-party Stripe checkout | Working MVP | `webjuice-restaurant` has `/checkout` plus `/api/create-checkout-session`; generated client artifacts now point fixed footer purchase buttons to the client preview checkout page. Stripe test price IDs and Pages runtime secrets are configured on the 5 dev projects. |
-| ProfitsLocal demo funnel chrome | Working MVP | `webjuice-restaurant` and Rich & Rare dev use a dedicated `FunnelLayout` for `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`, keeping ProfitsLocal sales/support pages separate from customer website content. `npm run qa:funnel-pages` now validates homepage sales footer, utility chrome, pricing, after-payment copy, revision/approval/domain controls, support email, no template leakage, and live HTTP 200. Rich & Rare dev passed 59/59 live checks after commit `9b72b48` and GitHub Actions run `25472537209`. |
+| ProfitsLocal demo funnel chrome | Working MVP | `webjuice-restaurant`, Rich & Rare dev, and the five Brisbane restaurant dev repos use a dedicated `FunnelLayout` for `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`, keeping ProfitsLocal sales/support pages separate from customer website content. `npm run qa:funnel-pages` validates homepage sales footer, utility chrome, pricing, after-payment copy, revision/approval/domain controls, support email, no template leakage, and live HTTP 200. Rich & Rare plus Longwang, Babylon, Opa, Joey's, and Chu all passed live 59/59 checks. |
 | Stripe paid activation webhook | Working MVP | `webjuice-restaurant` has `/api/stripe-webhook` with signature verification; `npm run funnel:route-stripe` normalizes `checkout.session.completed` into revenue ledger and agent task outputs. |
 | Central automation runner | Working MVP | `npm run funnel:route-event` routes Stripe/Tally/first-party revision payloads; `.github/workflows/route-funnel-event.yml` can persist generated funnel state, commit it back to main, auto-run the agent, and skip duplicate webhook payloads by idempotency key/submission path. |
 | Case file memory | Working MVP | Funnel routing maintains `data/cases/<client>/<order>/case.json`, timeline, customer messages, context packet, decisions log, and agent run log so agents do not lose order/thread context. |
@@ -94,7 +94,7 @@
 ## Immediate Next Build Order
 
 1. Configure `RESEND_EMAIL_UNIT_COST` and `AGENT_RUNTIME_COST_PER_MINUTE` or pass per-run runtime cost so ROI reports include email and agent labor estimates.
-2. Sync the branded funnel pages from `webjuice-restaurant` into the five Brisbane restaurant repos, then run `qa:funnel-pages` on each dev URL.
+2. Configure `qa:funnel-pages` into generated repo deploy workflows or the central post-deploy checker so future funnel regressions fail automatically.
 3. Harden the admin dashboard with automatic rebuild after actions, operator audit filters, and email drafting/sending.
 4. Start the roofing adapter only after the restaurant capsule path stays stable.
 
