@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "kind": "sale",
+  "receivedAt": "2026-05-07T14:37:04.071Z",
+  "order": {
+    "orderId": "cs_test_forum_remote_1778164589",
+    "paymentStatus": "paid",
+    "repo": "matthew6688/forum-remote-smoke-1778164589",
+    "template": "webjuice-restaurant",
+    "previewUrl": "https://forum-remote-smoke-1778164589-dev.pages.dev/",
+    "clientSlug": "forum-remote-smoke-1778164589",
+    "campaignId": null,
+    "company": "Forum Remote Smoke 1778164589",
+    "email": "matthew6688@gmail.com",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "feedback": "",
+    "referenceUrl": "",
+    "domain": "",
+    "parentOrderId": "",
+    "orderKind": "",
+    "assetManifestUrl": "",
+    "assetManifestPublicId": "",
+    "files": [],
+    "provider": "stripe",
+    "rawSubmissionId": "evt_test_forum_remote_1778164589",
+    "receivedAt": "2026-05-07T14:37:04.070Z"
+  },
+  "payload": {
+    "id": "evt_test_forum_remote_1778164589",
+    "type": "checkout.session.completed",
+    "data": {
+      "object": {
+        "id": "cs_test_forum_remote_1778164589",
+        "payment_status": "paid",
+        "amount_total": 39900,
+        "currency": "usd",
+        "customer_details": {
+          "email": "matthew6688@gmail.com"
+        },
+        "metadata": {
+          "tier": "one_time",
+          "client_slug": "forum-remote-smoke-1778164589",
+          "business_name": "Forum Remote Smoke 1778164589",
+          "template": "webjuice-restaurant",
+          "repo": "matthew6688/forum-remote-smoke-1778164589",
+          "preview_url": "https://forum-remote-smoke-1778164589-dev.pages.dev/"
+        }
+      }
+    }
+  }
+}

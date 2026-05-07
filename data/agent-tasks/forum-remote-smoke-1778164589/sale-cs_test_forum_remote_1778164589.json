@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "id": "sale_forum-remote-smoke-1778164589_cs_test_forum_remote_1778164589",
+  "kind": "sale",
+  "status": "queued",
+  "createdAt": "2026-05-07T14:37:04.071Z",
+  "clientSlug": "forum-remote-smoke-1778164589",
+  "repo": "matthew6688/forum-remote-smoke-1778164589",
+  "branch": "dev",
+  "previewUrl": "https://forum-remote-smoke-1778164589-dev.pages.dev/",
+  "customer": {
+    "company": "Forum Remote Smoke 1778164589",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "order": {
+    "id": "cs_test_forum_remote_1778164589",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD"
+  },
+  "requestedChanges": "",
+  "case": {
+    "id": "forum-remote-smoke-1778164589_cs_test_forum_remote_1778164589",
+    "dir": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589",
+    "casePath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/case.json",
+    "contextPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/context-packet.json",
+    "timelinePath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/timeline.jsonl",
+    "decisionsPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/decisions.jsonl",
+    "customerMessagesPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/agent-runs.jsonl",
+    "buildPacketPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/build-packet.md"
+  },
+  "requiredContext": {
+    "evidence": "clients/forum-remote-smoke-1778164589/evidence/evidence.json",
+    "content": "clients/forum-remote-smoke-1778164589/content.restaurant.json",
+    "design": "clients/forum-remote-smoke-1778164589/design.restaurant.json",
+    "brandSpec": "clients/forum-remote-smoke-1778164589/brand-spec.md",
+    "checkout": "clients/forum-remote-smoke-1778164589/funnel/checkout.json",
+    "websiteSurvey": "clients/forum-remote-smoke-1778164589/intake/website-survey.json"
+  },
+  "designProtocol": {
+    "requiredSkill": "huashu-design",
+    "supportingSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design",
+      "frontend-design",
+      "design-review",
+      "critique"
+    ],
+    "openDesignSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design-brief",
+      "critique",
+      "tweaks"
+    ],
+    "routeType": "website",
+    "rules": [
+      "Official website work must look like a real formal website with brand hierarchy, not a data dump.",
+      "Menu work must stay minimal, mobile-first, and content-focused.",
+      "Preserve the existing design language unless the task explicitly asks for redesign.",
+      "Use real restaurant photos and verified brand assets whenever available."
+    ]
+  },
+  "openDesign": {
+    "status": "not_created",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "",
+    "runId": "",
+    "conceptPath": "clients/forum-remote-smoke-1778164589/concept/open-design",
+    "manifestPath": "clients/forum-remote-smoke-1778164589/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/forum-remote-smoke-1778164589/concept/open-design/production-handoff.json",
+    "createCommand": "npm run open-design:run-concept -- --client forum-remote-smoke-1778164589 --mode app-visible --source-url <official-site-url>",
+    "continueCommand": "",
+    "syncCommand": "",
+    "rule": "Create or bind one local Open Design project before doing high-fidelity design changes."
+  },
+  "productionHandoffPath": "clients/forum-remote-smoke-1778164589/concept/open-design/production-handoff.json",
+  "allowedFiles": [
+    "src/**",
+    "public/**",
+    "content.restaurant.json",
+    "design.restaurant.json",
+    "brand-spec.md",
+    "src/data/**",
+    "README.md"
+  ],
+  "activeConstraints": [
+    "Read the case context packet before planning edits.",
+    "Website and menu are separate products; classify the request before editing.",
+    "Use evidence/content/design/brand files as source of truth.",
+    "Do not invent or overwrite menu prices, hours, address, phone, reservation links, or photos without evidence.",
+    "Do not overwrite locked decisions from the case file.",
+    "Push only to dev until customer approval."
+  ],
+  "entitlement": {
+    "orderId": "cs_test_forum_remote_1778164589",
+    "tier": "one_time",
+    "revisionPolicy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "revisionUsed": 0,
+    "revisionStatus": "entitlement_created"
+  },
+  "referenceUrl": "",
+  "files": [],
+  "instructions": [
+    "Customer purchased one_time for forum-remote-smoke-1778164589.",
+    "Verify the checkout submission and hidden repo fields.",
+    "If launch notes include content changes, apply them on the dev branch first.",
+    "Prepare domain onboarding instructions based on the preferred domain field.",
+    "After dev deploy succeeds, post the review link in the sales Discord thread and prepare a customer email."
+  ],
+  "completion": {
+    "deployBranch": "dev",
+    "notifyDiscord": true,
+    "sendCustomerReviewEmail": true,
+    "customerReviewUrl": "https://forum-remote-smoke-1778164589-dev.pages.dev/"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "caseId": "forum-remote-smoke-1778164589_cs_test_forum_remote_1778164589",
+  "status": "paid_task_queued",
+  "clientSlug": "forum-remote-smoke-1778164589",
+  "repo": "matthew6688/forum-remote-smoke-1778164589",
+  "branch": "dev",
+  "previewUrl": "https://forum-remote-smoke-1778164589-dev.pages.dev/",
+  "template": "webjuice-restaurant",
+  "order": {
+    "id": "cs_test_forum_remote_1778164589",
+    "provider": "stripe",
+    "tier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "paymentStatus": "paid"
+  },
+  "customer": {
+    "company": "Forum Remote Smoke 1778164589",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "revision": {
+    "policy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "used": 0,
+    "remaining": 3,
+    "lastReason": "entitlement_created"
+  },
+  "discord": {
+    "salesThreadId": "1501956037371105480",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "1501956048393601076",
+    "salesWorkspaceChannelId": "1501956037371105480",
+    "salesWorkspaceType": "forum_post",
+    "salesWorkspaceName": "[Qualified] Forum Remote Smoke 1778164589",
+    "salesWorkspaceTagIds": [
+      "1501948301614776409",
+      "1501948301627625472"
+    ],
+    "revisionWorkspaceChannelId": "",
+    "revisionWorkspaceType": "",
+    "revisionWorkspaceName": "",
+    "revisionWorkspaceTagIds": [],
+    "websiteWorkspaceChannelId": "1501945763650080899",
+    "websiteWorkspaceType": "forum_post",
+    "websiteWorkspaceName": "[Review] Forum Remote Smoke 1778164589",
+    "websiteWorkspaceTagIds": [
+      "1501948304479748148",
+      "1501948304479748152",
+      "1501948304488140850"
+    ],
+    "lastChannelId": "1501945763650080899",
+    "lastMessageId": "1501956048393601076",
+    "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1501956048393601076/1501956048393601076",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501956048393601076",
+    "threadCreatedByBot": true
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/forum-remote-smoke-1778164589/evidence/evidence.json",
+    "content": "clients/forum-remote-smoke-1778164589/content.restaurant.json",
+    "design": "clients/forum-remote-smoke-1778164589/design.restaurant.json",
+    "brandSpec": "clients/forum-remote-smoke-1778164589/brand-spec.md",
+    "checkout": "clients/forum-remote-smoke-1778164589/funnel/checkout.json",
+    "websiteSurvey": "clients/forum-remote-smoke-1778164589/intake/website-survey.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "latestTask": {
+    "id": "sale_forum-remote-smoke-1778164589_cs_test_forum_remote_1778164589",
+    "kind": "sale",
+    "status": "queued",
+    "path": "data/agent-tasks/forum-remote-smoke-1778164589/sale-cs_test_forum_remote_1778164589.json",
+    "createdAt": "2026-05-07T14:37:04.071Z"
+  },
+  "paths": {
+    "casePath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/case.json",
+    "contextPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/context-packet.json",
+    "timelinePath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/timeline.jsonl",
+    "decisionsPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/decisions.jsonl",
+    "customerMessagesPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/agent-runs.jsonl",
+    "buildPacketPath": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/build-packet.md",
+    "artifactsDir": "data/cases/forum-remote-smoke-1778164589/cs_test_forum_remote_1778164589/artifacts"
+  },
+  "createdAt": "2026-05-07T14:37:04.775Z",
+  "updatedAt": "2026-05-07T14:37:07.944Z"
+}
