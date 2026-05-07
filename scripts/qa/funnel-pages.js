@@ -102,9 +102,11 @@ function validatePage({ mode, pagePath, source, status, html, error = '', expect
 
   if (pagePath === '/') {
     check(checks, 'sales_footer_how_it_works', html.includes('How it works'), 'missing fixed footer FAQ link');
+    check(checks, 'sales_footer_faq', html.includes('FAQ'), 'missing FAQ link');
     check(checks, 'sales_footer_claim_399', html.includes('Claim $399') || html.includes('Claim &#36;399') || html.includes('$399 one-time'), 'missing $399 claim CTA');
     check(checks, 'sales_footer_799', html.includes('$799/yr') || html.includes('&#36;799/yr') || html.includes('$799/year'), 'missing yearly CTA');
-    check(checks, 'sales_footer_request_changes', html.includes('Request changes') || html.includes('Request revision'), 'missing change/revision CTA');
+    check(checks, 'sales_footer_checkout', html.includes('Checkout') || html.includes('CHECKOUT'), 'missing checkout CTA');
+    check(checks, 'sales_footer_no_pre_purchase_revision', !html.includes('$100 extra revision') && !html.includes('Request changes'), 'pre-purchase banner contains support/revision actions');
   }
 
   if (isUtility) {
