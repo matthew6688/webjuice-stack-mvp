@@ -147,5 +147,6 @@ jobs:
             echo "No case state changes to commit."
           else
             git commit -m "chore: record approved publish"
+            git pull --rebase origin main
             git push
           fi

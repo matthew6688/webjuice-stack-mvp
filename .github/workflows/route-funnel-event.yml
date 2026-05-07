@@ -190,5 +190,6 @@ jobs:
             echo "No generated funnel state to commit."
           else
             git commit -m "chore: route funnel event"
+            git pull --rebase origin main
             git push
           fi
