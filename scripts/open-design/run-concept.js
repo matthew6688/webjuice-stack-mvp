@@ -199,7 +199,7 @@ async function main() {
         runStatus: 'succeeded',
         startedAt: Date.now(),
         endedAt: Date.now(),
-        producedFiles: files.map((file) => file.path),
+        producedFiles: normalizeProducedFilesForOpenDesign(files),
       });
     } catch (error) {
       await upsertAutomationMessage({
@@ -309,6 +309,52 @@ function appendAutomationResult(baseContent, result) {
   if (typeof result.fileCount === 'number') lines.push(`- files: ${result.fileCount}`);
   if (result.error) lines.push(`- error: ${result.error}`);
   return lines.join('\n');
+}
+
+function normalizeProducedFilesForOpenDesign(files) {
+  return (Array.isArray(files) ? files : [])
+    .filter((file) => file && typeof file.path === 'string' && file.path.length > 0)
+    .map((file) => ({
+      name: path.basename(file.path),
+      path: file.path,
+      size: typeof file.size === 'number' ? file.size : 0,
+      mtime: Date.now(),
+      kind: file.kind || inferProjectFileKind(file.path),
+      mime: file.mime || inferProjectFileMime(file.path),
+      ...(file.artifactKind ? { artifactKind: file.artifactKind } : {}),
+    }));
+}
+
+function inferProjectFileKind(filePath) {
+  const lower = String(filePath).toLowerCase();
+  if (lower.endsWith('.html')) return 'html';
+  if (/\.(png|jpe?g|gif|webp|svg|avif|bmp)$/i.test(lower)) return 'image';
+  if (/\.(mp4|mov|webm|mkv)$/i.test(lower)) return 'video';
+  if (/\.(mp3|wav|m4a|aac|ogg)$/i.test(lower)) return 'audio';
+  if (lower.endsWith('.pdf')) return 'pdf';
+  if (/\.(doc|docx)$/i.test(lower)) return 'document';
+  if (/\.(ppt|pptx)$/i.test(lower)) return 'presentation';
+  if (/\.(xls|xlsx|csv)$/i.test(lower)) return 'spreadsheet';
+  if (/\.(txt|md)$/i.test(lower)) return 'text';
+  if (/\.(js|ts|tsx|jsx|json|css|scss|less|astro|py|rb|go|rs|java|php)$/i.test(lower)) return 'code';
+  return 'binary';
+}
+
+function inferProjectFileMime(filePath) {
+  const lower = String(filePath).toLowerCase();
+  if (lower.endsWith('.html')) return 'text/html';
+  if (lower.endsWith('.css')) return 'text/css';
+  if (lower.endsWith('.js')) return 'application/javascript';
+  if (lower.endsWith('.json')) return 'application/json';
+  if (lower.endsWith('.md')) return 'text/markdown';
+  if (lower.endsWith('.txt')) return 'text/plain';
+  if (lower.endsWith('.svg')) return 'image/svg+xml';
+  if (lower.endsWith('.png')) return 'image/png';
+  if (/\.(jpg|jpeg)$/i.test(lower)) return 'image/jpeg';
+  if (lower.endsWith('.webp')) return 'image/webp';
+  if (lower.endsWith('.gif')) return 'image/gif';
+  if (lower.endsWith('.pdf')) return 'application/pdf';
+  return 'application/octet-stream';
 }
 
 function assertOpenDesignReady(root, node) {
@@ -699,5 +745,6 @@ export {
   normalizeOpenDesignTimeoutMs,
   buildAutomationMessage,
   appendAutomationResult,
+  normalizeProducedFilesForOpenDesign,
   upsertAutomationMessage,
 };

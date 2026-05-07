@@ -8,6 +8,7 @@ import {
   buildAutomationMessage,
   exportProjectFilesFromDisk,
   normalizeOpenDesignTimeoutMs,
+  normalizeProducedFilesForOpenDesign,
   streamRun,
   upsertAutomationMessage,
 } from './run-concept.js';
@@ -167,7 +168,7 @@ try {
       runStatus: 'succeeded',
       startedAt: Date.now(),
       endedAt: Date.now(),
-      producedFiles: files.map((file) => file.path),
+      producedFiles: normalizeProducedFilesForOpenDesign(files),
     });
   } catch (error) {
     await upsertAutomationMessage({
