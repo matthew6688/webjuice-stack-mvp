@@ -51,7 +51,7 @@ lead / intake
 
 ## A1. 新 fresh 项目从 0 到 dev preview 再完整跑一条
 
-- 状态：`PENDING`
+- 状态：`DONE`
 - 目标：
   - 用一个全新的 restaurant 项目，再跑一次：
   - `collect -> website-ready -> Open Design -> remote repo bootstrap -> dev preview -> QA -> review package`
@@ -69,10 +69,16 @@ lead / intake
   - preview URL
   - QA result
   - review package
+- 已完成样本：
+  - `dark-shepherd-restaurant`
+- 关键证据：
+  - `data/qa/fresh-remote-dark-shepherd/summary.json`
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/ops-checklist.md`
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/website-handoff.md`
 
 ## A2. 付款后到 live 上线，再完整跑一条 fresh 项目
 
-- 状态：`PENDING`
+- 状态：`DONE`
 - 目标：
   - 用 fresh 项目验证：
   - `review -> approval -> publish live -> domain onboarding`
@@ -89,10 +95,18 @@ lead / intake
   - Resend id
   - case timeline
   - domain request/status 文件
+- 已完成样本：
+  - `dark-shepherd-restaurant`
+- 关键证据：
+  - `data/qa/fresh-dark-shepherd-live/approval-workflow-rerun-2.json`
+  - `data/qa/fresh-dark-shepherd-live/domain-request.json`
+  - `data/qa/fresh-dark-shepherd-live/domain-status-active.json`
+  - live URL: `https://dark-shepherd-restaurant-live.pages.dev/`
+  - custom domain: `https://dark-shepherd-fresh.profitslocal.com/`
 
 ## A3. 真实 revision 闭环再跑一条
 
-- 状态：`PENDING`
+- 状态：`IN PROGRESS`
 - 目标：
   - 用真项目验证：
   - `customer revision -> same forum workspace -> Open Design/repo update -> new preview -> review -> approval`
@@ -414,9 +428,9 @@ lead / intake
 
 ## 现在最该做
 
-1. `A1` 新 fresh 项目从 0 到 dev preview
-2. `A2` fresh 项目从 review 到 live + domain
-3. `A3` 真实 revision 闭环再跑一条
+1. `A3` 真实 revision 闭环再跑一条
+2. `B4` Open Design pipeline 状态映射到我们的项目状态
+3. `C2` 售前 lead -> paid 的 forum 流转继续补齐
 
 ## 然后做
 

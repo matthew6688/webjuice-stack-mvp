@@ -1345,6 +1345,72 @@ lead/intake
 
 这些问题修掉后，这条 fresh project 才真正到达 `ready_for_customer_review`。
 
+## 2026-05-08 Fresh Project 演练续跑：Dark Shepherd 从 Review 到 Live + Domain
+
+在 `2026-05-07` 的 fresh project 基础上，我们又把同一个 `dark-shepherd-restaurant` case 从：
+
+```text
+ready_for_customer_review
+-> Discord/forum handoff
+-> customer review email
+-> official approval
+-> publish live
+-> custom domain active
+```
+
+真正跑通了一次。
+
+### 这次真实跑通的步骤
+
+1. `npm run ops:send-dry-run-handoff -- --client dark-shepherd-restaurant --order fresh_dark_shepherd_dryrun_001 --send true`
+   - 结果：forum post 标题变成 `[Review] Dark Shepherd`
+2. `npm run ops:send-review-email -- --client dark-shepherd-restaurant --order fresh_dark_shepherd_dryrun_001 --send true`
+   - 结果：真实 review email 发出
+3. 通过官方 `POST https://profitslocal.com/api/approval-request` 触发 approval
+4. 修复 `publish-approved.yml` 后再次触发 approval
+5. `publish-approved.yml` 最终成功
+   - live 站点变成 `200`
+   - remote case 状态写成 `live_published`
+6. `npm run domain:request -- --client dark-shepherd-restaurant --order fresh_dark_shepherd_dryrun_001 --email matthew6688@gmail.com --domain dark-shepherd-fresh.profitslocal.com --project dark-shepherd-restaurant-live --execute true --send-email true --send-discord true`
+7. 通过官方 `POST https://profitslocal.com/api/domain-status` 触发 refresh
+8. `domain-request.yml` 成功后，官方 domain status 返回 `active`
+
+### 这次续跑暴露并修掉的问题
+
+1. `publish-approved` 在 GitHub Actions 里只 clone customer repo，但没有安装依赖
+   - 结果：`npm run build` 失败，报 `astro: command not found`
+   - 修复：发布前先执行 `npm ci` 或 `npm install`
+
+2. `publish-approved` workflow 在 Actions 环境里没有稳定的 git auth / git identity
+   - 结果：提交 `main` 分支时不稳定
+   - 修复：在 workflow 里显式配置 `GH_PAT`、`gh auth setup-git`、`git user.name`、`git user.email`
+
+3. `domain-request.yml` 代码虽然支持 `CF_ZONE_ID`，但 GitHub repo 真正没配 secret
+   - 结果：官方 `/api/domain-status` refresh 会失败
+   - 修复：
+     - workflow 允许从 `secrets.PROFITSLOCAL_CF_ZONE_ID || secrets.CF_ZONE_ID || vars.PROFITSLOCAL_CF_ZONE_ID || vars.CF_ZONE_ID` 读取
+     - repo 里真实补上 `CF_ZONE_ID` 和 `PROFITSLOCAL_CF_ZONE_ID`
+
+### 这次续跑的硬证据
+
+- review email:
+  - Resend id: `134d5b4e-f3b3-47e6-801d-2a6b99bbae6c`
+- approval workflow 成功：
+  - run id: `25527314331`
+  - 证据：`data/qa/fresh-dark-shepherd-live/approval-workflow-rerun-2.json`
+- live site:
+  - `https://dark-shepherd-restaurant-live.pages.dev/` -> `200`
+- custom domain:
+  - `https://dark-shepherd-fresh.profitslocal.com/` -> `200`
+- domain workflow 成功：
+  - run id: `25527686136`
+  - 证据：`data/qa/fresh-dark-shepherd-live/domain-status-active.json`
+- 官方 status endpoint：
+  - `POST https://profitslocal.com/api/domain-status`
+  - 返回：`status=active`
+
+这条链打通后，`A2` 已经可以视为真实完成。下一条最该继续压的是 `A3`：真实 revision 闭环。
+
 ## 项目健康状态判断
 
 一个健康的网站项目应该同时具备：
