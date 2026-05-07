@@ -1054,37 +1054,69 @@ revision 这一条的真实结果已经闭环：
 
 也就是说，**官方 revision 页面 -> official API -> route-funnel-event -> case/task/thread 复用** 这一条现在是真正打通的。
 
-### approval 真实 smoke 当前结论
+### 2026-05-07 最终修复与通过结果
 
-approval 这次没有通过“成功发布”的断言，但原因已经明确，不是入口没通：
+在上面两轮失败之后，又做了两项修复：
 
-- 官方 approval 页面能打开；
-- 官方 approval API 会接受请求；
-- 它确实会 dispatch 到 `publish-approved.yml`；
-- 但生产环境当前没有打开 `APPROVAL_ALLOW_DRY_RUN=true`；
-- 所以即使请求里带了 `dry_run=true`，线上 workflow 仍然会按真实发布模式执行。
-
-这意味着：
-
-- **当前可以确认 approval 入口和 dispatch 是通的；**
-- **但不能把它当成一个“安全可重复”的 live smoke。**
-
-如果要让 approval 也变成可重复的官方真实 smoke，必须额外满足下面至少一个条件：
-
-1. 在官方 `profitslocal.com` Pages 环境里设置：
+1. 官方 Cloudflare Pages 项目 `profitslocal-live` 增加生产环境变量：
    - `APPROVAL_ALLOW_DRY_RUN=true`
-2. 或者准备一个专门的 approval smoke case：
-   - 远端 case 已存在；
-   - `dev` 分支 build 一定通过；
-   - `dev -> main` 有可发布差异；
-   - 不会影响真实客户站。
+2. workflow 写回 `main` 的最后一步加固：
+   - `publish-approved.yml`：`git commit` 后先 `git pull --rebase origin main` 再 `git push`
+   - `route-funnel-event.yml`：`git commit` 后先 `git pull --rebase origin main` 再 `git push`
+
+这样做的原因：
+
+- approval live smoke 需要一个真正安全的 `dry_run`
+- revision live smoke 在真实并发下，不能因为 `main` 快进就直接失败
+
+### 最终通过的真实官方 smoke
+
+最终通过的证据目录：
+
+- `data/ops-smoke/customer-live-2026-05-07T08-38-18-764Z/`
+
+最终通过结果：
+
+- approval run：
+  - workflow: `publish-approved.yml`
+  - run id: `25485280285`
+  - result: `success`
+- revision run：
+  - workflow: `route-funnel-event.yml`
+  - run id: `25485308302`
+  - result: `success`
+
+最终断言全部通过：
+
+- `approvalPageOk`
+- `revisionPageOk`
+- `approvalRequestAccepted`
+- `approvalWorkflowCompleted`
+- `approvalWorkflowSucceeded`
+- `revisionRequestAccepted`
+- `revisionWorkflowCompleted`
+- `revisionWorkflowSucceeded`
+- `revisionCaseStillSameThread`
+- `revisionUsedIncremented`
+- `revisionRemainingDecremented`
+- `orderRevisionUsedIncremented`
+- `revisionLatestTaskUpdated`
+- `revisionLatestTaskKindIsRevision`
+- `localReferenceThreadKnown`
+
+也就是说，围绕新 repo 核心闭环，现在这两条真实官方路径都已经打通：
+
+- **official `/approve` -> official API -> `publish-approved.yml`**
+- **official `/revision` -> official API -> `route-funnel-event.yml` -> same case / same website thread**
 
 ### 当前 SOP 判断
 
 到 2026-05-07 这一步，围绕新 repo 核心闭环：
 
 - `revision` 的真实官方路径：**已闭环**
-- `approval` 的真实官方路径：**入口与 dispatch 已验证，安全 dry-run 仍缺生产环境开关**
+- `approval` 的真实官方路径：**已闭环**
+- `approval` 的安全 dry-run：**已闭环**
+- 官方生产 smoke：**可重复执行**
 
 ## 老项目升级路径
 
