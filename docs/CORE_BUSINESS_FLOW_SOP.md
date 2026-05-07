@@ -311,6 +311,7 @@ npm run open-design:sync-from-app -- --client <client>
 - port 到 Astro 前，必须有 production handoff。
 - `concept-manifest.json` 和 `.profitslocal-sync.json` 指向同一个 client slug。
 - Discord task packet 指向这个 Open Design project ID。
+- 如果 headless Open Design run 卡住，不要新开第二个 project。保留同一个 project ID，在同一个 project 目录里补齐 concept 文件，再用 `open-design:sync-from-app` 同步回客户 capsule。
 
 常用命令：
 
@@ -702,8 +703,18 @@ npm run ops:send-review-email -- \
 - 客户 subdomain：给客户明确 CNAME target，等待客户 DNS。
 - 客户 root domain：必须人工 review，不自动改 DNS。
 - 官方 `/api/domain-request` 必须正确把三种 route dispatch 到 `domain-request.yml`。
+- `/domain-setup` 页面必须明确写出三种 route、示例域名、提交后会发生什么。
+- `/domain-help` 页面必须明确写出 subdomain CNAME 示例和 root domain 风险提醒。
 - active domain HTTP 200。
 - Cloudflare proxied CNAME 可能在 public DNS 看起来像 A/AAAA，所以检查时要用 Cloudflare-aware inspect，不要只看 `dig CNAME`。
+
+常用命令：
+
+```bash
+npm run domain:test-entrypoint
+npm run domain:test-request
+npm run domain:test-pages
+```
 
 查看位置：
 
@@ -868,6 +879,43 @@ lead/intake
 - 真实 cold outreach 的大规模发送不在 Resend 主流程里，后面可接 Gmail/Instantly/Smartlead。
 - Open Design app 里人工编辑后的视觉质量，需要 Matthew 或 design QA 最后确认。
 - 成本 ledger 目前有框架，provider 的真实单价和免费额度还要逐步填全。
+
+## 2026-05-07 Fresh Project 演练：Dark Shepherd
+
+这次不是旧 fixture，而是新建了一条真实 restaurant pipeline 验证单：
+
+- client slug: `dark-shepherd-restaurant`
+- official site: `https://www.darkshepherd.com.au/`
+- local repo dir: `/Users/matthew/Developer/dark-shepherd-restaurant`
+- dry-run order: `fresh_dark_shepherd_dryrun_001`
+
+### 这次真实跑通的步骤
+
+1. `npm run ops:init-project -- --client dark-shepherd-restaurant ...`
+2. Google Places 写入 evidence。
+3. 官网品牌资产写入 evidence。
+4. TinyFish 抓 homepage + `/menu`，再把菜单文本解析成 `menu.sections`。
+5. `npm run intake:build-website-ready -- --client dark-shepherd-restaurant --source manual`
+   - 结果：`website_ready_to_build`
+6. Open Design headless run 确实创建了 project，但 run 卡在 `running`。
+7. 保留同一个 Open Design project ID，在同一个 project 目录里补齐 concept 文件，再执行：
+   - `npm run open-design:sync-from-app -- --client dark-shepherd-restaurant`
+8. `npm run open-design:build-production-handoff ...`
+9. `npm run open-design:port-production-handoff -- --client dark-shepherd-restaurant --target-repo /Users/matthew/Developer/dark-shepherd-restaurant --execute true`
+10. customer repo 本地安装依赖并 `npm run build`
+11. `npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/dark-shepherd-restaurant/dist --client "Dark Shepherd"`
+12. `npm run qa:write-delivery-qa -- --client dark-shepherd-restaurant --order fresh_dark_shepherd_dryrun_001 ...`
+13. `npm run ops:project-dry-run -- --client dark-shepherd-restaurant ... --order fresh_dark_shepherd_dryrun_001`
+   - 最终结果：`ready_for_customer_review`
+
+### 这次 fresh project 暴露并修掉的问题
+
+1. Admin 首次登录 `?token=` 会 302 回自己，形成循环。
+2. Google Places evidence 会让 `maps.google.com/?cid=` 压过标准 `google.com/maps/search`。
+3. 品牌资产 extractor 会保留 `http://` 图片链接，导致 `website-ready` 卡在资产校验。
+4. `open-design:sync-from-app` 的资产路径需要保留 `assets/...` 相对路径，不能压扁成裸文件名。
+
+这些问题修掉后，这条 fresh project 才真正到达 `ready_for_customer_review`。
 
 ## 项目健康状态判断
 

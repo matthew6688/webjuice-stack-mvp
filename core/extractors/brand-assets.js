@@ -157,7 +157,9 @@ function candidate(rawUrl, baseUrl, kind, score) {
 
 function absolutize(rawUrl, baseUrl) {
   try {
-    return new URL(rawUrl, baseUrl).toString();
+    const url = new URL(rawUrl, baseUrl);
+    if (url.protocol === 'http:') url.protocol = 'https:';
+    return url.toString();
   } catch {
     return rawUrl;
   }

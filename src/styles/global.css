@@ -1869,6 +1869,79 @@ h2 em {
   color: #b12b1c;
 }
 
+.domain-route-grid,
+.domain-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.domain-guide-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.domain-route-card,
+.domain-guide-card {
+  border: 1px solid var(--pl-line);
+  background: rgba(255, 255, 255, 0.64);
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.domain-route-card span,
+.domain-guide-card span {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pl-muted);
+}
+
+.domain-route-card h2,
+.domain-guide-card h2 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.05;
+}
+
+.domain-route-card p,
+.domain-guide-card p {
+  margin: 0;
+  color: var(--pl-muted);
+  line-height: 1.6;
+}
+
+.domain-route-card ul,
+.domain-next-steps ol,
+.domain-bullet-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--pl-muted);
+  line-height: 1.7;
+}
+
+.domain-next-steps {
+  margin-top: 20px;
+  border-top: 1px solid var(--pl-line);
+  padding-top: 22px;
+}
+
+.domain-next-steps h2 {
+  margin: 0 0 12px;
+  font-size: 26px;
+}
+
+.domain-guide-card code {
+  display: block;
+  width: fit-content;
+  padding: 10px 12px;
+  background: rgba(19, 17, 16, 0.06);
+  border: 1px solid var(--pl-line);
+  font-family: "SFMono-Regular", ui-monospace, monospace;
+  font-size: 13px;
+}
+
 .site-footer {
   padding: clamp(28px, 4.6vw, 64px) clamp(16px, 3vw, 34px);
   background:
@@ -2622,6 +2695,8 @@ h2 em {
   }
 
   .price-grid,
+  .domain-route-grid,
+  .domain-guide-grid,
   .checkout-tier-grid,
   .checkout-faq-list,
   .color-grid,

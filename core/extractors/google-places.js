@@ -96,12 +96,13 @@ export class GooglePlacesExtractor {
   writeEvidenceForLead(lead, { clientSlug, niche = lead.niche, outputPath } = {}) {
     if (!clientSlug) throw new Error('clientSlug is required to write evidence');
     const pack = evidenceItemsFromLead(lead, { clientSlug, niche });
-    if (lead.google_maps_url) {
+    const normalizedMapsUrl = normalizeGoogleMapsUrl(lead.google_maps_url, lead.address);
+    if (normalizedMapsUrl) {
       pack.items.push({
         key: 'cta.map',
-        value: lead.google_maps_url,
+        value: normalizedMapsUrl,
         sourceType: 'google_places',
-        sourceUrl: lead.google_maps_url,
+        sourceUrl: lead.google_maps_url || normalizedMapsUrl,
         confidence: 0.95,
         scrapedAt: lead.scraped_at || new Date().toISOString(),
         extractor: 'google_places_details',
@@ -219,4 +220,17 @@ function dryRunPlaceDetails(placeId, niche, city) {
     city,
     scraped_at: new Date().toISOString(),
   };
+}
+
+function normalizeGoogleMapsUrl(rawUrl, address) {
+  const fallback = address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}` : '';
+  if (!rawUrl) return fallback;
+  try {
+    const url = new URL(rawUrl);
+    if (url.hostname.includes('google.com') && url.pathname.includes('/maps')) return url.toString();
+    if (url.hostname === 'maps.google.com') return fallback || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(rawUrl)}`;
+    return fallback || rawUrl;
+  } catch {
+    return fallback || rawUrl;
+  }
 }

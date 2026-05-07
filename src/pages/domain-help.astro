@@ -12,7 +12,7 @@ import { siteConfig } from '../config/site';
           <h1>Pick the least risky launch address.</h1>
         </div>
         <div>
-          <p class="lede">Fast launch and safe DNS are not always the same thing. Use a ProfitsLocal subdomain when speed matters; use your own domain when you are ready for official replacement.</p>
+          <p class="lede">Fast launch and safe DNS are not always the same thing. Use a ProfitsLocal subdomain when speed matters; use your own domain only when you know which public address should carry the new site.</p>
           <a class="button" href="/domain-setup">Start domain setup</a>
         </div>
       </div>
@@ -22,16 +22,59 @@ import { siteConfig } from '../config/site';
           <span>Fastest</span>
           <h2>Free ProfitsLocal subdomain</h2>
           <p>No customer DNS. We create the record and attach Cloudflare Pages.</p>
+          <ul class="domain-bullet-list">
+            <li>Best when you want the site public now</li>
+            <li>Example: <strong>dark-shepherd.profitslocal.com</strong></li>
+            <li>Good for review, launch, and ads before final domain cutover</li>
+          </ul>
         </article>
         <article class="price-card">
           <span>Safest with existing site</span>
           <h2>Your subdomain</h2>
           <p>Example: menu.yourbusiness.com. Add one CNAME to the Pages target.</p>
+          <ul class="domain-bullet-list">
+            <li>Keeps your current root domain and email setup untouched</li>
+            <li>You add one CNAME record</li>
+            <li>Usually the safest path for restaurants with an existing website</li>
+          </ul>
         </article>
         <article class="price-card">
           <span>Official replacement</span>
           <h2>Your root domain</h2>
           <p>Example: yourbusiness.com. We inspect DNS and email before changing root records.</p>
+          <ul class="domain-bullet-list">
+            <li>Use only when the new site should replace the current homepage</li>
+            <li>We review email/DNS dependencies first</li>
+            <li>Safer after a short operator check than a blind record swap</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="domain-guide-grid">
+        <article class="domain-guide-card">
+          <span class="eyebrow">What you send us</span>
+          <h2>One form, three matching fields.</h2>
+          <p>Use the order ID, checkout email, and client slug from your project record. We match all three before we touch any public domain.</p>
+        </article>
+        <article class="domain-guide-card">
+          <span class="eyebrow">What we send back</span>
+          <h2>Exact next step, not vague DNS advice.</h2>
+          <p>For customer domains, we reply with the exact host and target to use. For root domains, we first confirm whether email or legacy records need protection.</p>
+        </article>
+      </div>
+
+      <div class="domain-guide-grid">
+        <article class="domain-guide-card">
+          <span class="eyebrow">Subdomain example</span>
+          <h2>One CNAME record.</h2>
+          <code>Host: menu</code>
+          <code>Target: your-pages-project.pages.dev</code>
+          <p>This leaves <strong>yourbusiness.com</strong> alone while making <strong>menu.yourbusiness.com</strong> public.</p>
+        </article>
+        <article class="domain-guide-card">
+          <span class="eyebrow">Root domain caution</span>
+          <h2>Check old site and business email first.</h2>
+          <p>If the root domain already powers email, booking, or a legacy site, we review those dependencies before any live cutover. This is why root domains are intentionally slower than subdomains.</p>
         </article>
       </div>
     </div>
