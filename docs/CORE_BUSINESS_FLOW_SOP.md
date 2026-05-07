@@ -954,6 +954,7 @@ npm run ops:project-dry-run -- \
 | `npm run ops:test-revision-thread-reuse` | revision form payload 进入 funnel 后，复用原 case 和原 website thread | 通过 |
 | `npm run ops:test-customer-actions-rehearsal` | sale -> revision -> approval 三段动作围绕同一个项目记忆演练 | 通过 |
 | `npm run ops:test-customer-entrypoints` | 官方 approval/revision 页面入口是否把请求送到正确 workflow | 通过 |
+| `npm run ops:test-first-party-revision-routing` | first-party revision payload 经过 `revision-submit -> route-funnel-event` 后，不再掉进 `unknown-client`，而是保持正确 `client_slug/repo/case/thread` | 通过 |
 
 这两个步骤加上原有验证：
 
@@ -983,6 +984,107 @@ ops:project-dry-run
 - `publish-approved.yml` 负责用 `order ID + email` 去找正确 case，再把 `dev -> main`
 - `route-funnel-event.yml` 才会真正进入 `case / task / website thread` 体系
 - 旧的 `record-paid-revision.yml` 只会更新 `data/paid-intakes`，不足以完成当前新闭环
+
+## 2026-05-07 官方线上入口真实 smoke
+
+这一步不是本地 mock，也不是只测 function handler。
+
+它直接走：
+
+1. `https://profitslocal.com/approve`
+2. `https://profitslocal.com/revision`
+3. 官方 Pages Function API
+4. GitHub Actions workflow
+5. 远端 `data/cases` / `data/funnel/orders`
+
+### 真实 smoke 命令
+
+```bash
+npm run ops:test-customer-live-smoke
+```
+
+### 这次真实 smoke 修掉的两个线上 bug
+
+1. **first-party revision 被错误当成 tally webhook 普通 payload**
+   - 现象：workflow 成功，但 routed 到 `unknown-client`，没有回到真实 case / thread。
+   - 原因：`normalizeTallySubmission()` 只读 `payload.fields/answers`，不读 first-party 顶层字段。
+   - 修复：顶层标量字段也并入 normalizer。
+   - 对应验证：`npm run ops:test-first-party-revision-routing`
+
+2. **`publish-approved.yml` 在 clone client repo 前写 `GITHUB_ENV` 的 shell/node 混合写法有问题**
+   - 现象：approval workflow 在 `Clone client repo` 步骤报错。
+   - 原因：bash 对内嵌模板字符串发生错误展开。
+   - 修复：改成 heredoc Node block，显式逐行写入 `GITHUB_ENV`。
+
+### 真实 smoke 结果
+
+第一轮真实 smoke 证据目录：
+
+- `data/ops-smoke/customer-live-2026-05-07T08-14-47-168Z/`
+
+它暴露了两个问题：
+
+- approval workflow 被真正执行，但失败；
+- revision workflow 成功，却落到了 `unknown-client`。
+
+修复后，第二轮真实 smoke 证据目录：
+
+- `data/ops-smoke/customer-live-2026-05-07T08-20-23-585Z/`
+
+关键结果：
+
+- 官方 `/approve` 页面：HTTP 200，表单存在；
+- 官方 `/revision` 页面：HTTP 200，表单存在；
+- approval 请求被官方入口接受，并真实 dispatch 到：
+  - `Publish Approved Site`
+  - run: `25484470761`
+  - URL: `https://github.com/matthew6688/webjuice-stack-mvp/actions/runs/25484470761`
+- revision 请求被官方入口接受，并真实 dispatch 到：
+  - `Route Funnel Event`
+  - run: `25484499440`
+  - URL: `https://github.com/matthew6688/webjuice-stack-mvp/actions/runs/25484499440`
+
+revision 这一条的真实结果已经闭环：
+
+- `websiteTaskThreadId` 保持不变：`1501197070319616011`
+- 远端 case `revision.used`：`1 -> 2`
+- 远端 case `revision.remaining`：`2 -> 1`
+- 远端 order `revisionUsed`：`1 -> 2`
+- 远端 `latestTask` 更新为新的 revision task
+
+也就是说，**官方 revision 页面 -> official API -> route-funnel-event -> case/task/thread 复用** 这一条现在是真正打通的。
+
+### approval 真实 smoke 当前结论
+
+approval 这次没有通过“成功发布”的断言，但原因已经明确，不是入口没通：
+
+- 官方 approval 页面能打开；
+- 官方 approval API 会接受请求；
+- 它确实会 dispatch 到 `publish-approved.yml`；
+- 但生产环境当前没有打开 `APPROVAL_ALLOW_DRY_RUN=true`；
+- 所以即使请求里带了 `dry_run=true`，线上 workflow 仍然会按真实发布模式执行。
+
+这意味着：
+
+- **当前可以确认 approval 入口和 dispatch 是通的；**
+- **但不能把它当成一个“安全可重复”的 live smoke。**
+
+如果要让 approval 也变成可重复的官方真实 smoke，必须额外满足下面至少一个条件：
+
+1. 在官方 `profitslocal.com` Pages 环境里设置：
+   - `APPROVAL_ALLOW_DRY_RUN=true`
+2. 或者准备一个专门的 approval smoke case：
+   - 远端 case 已存在；
+   - `dev` 分支 build 一定通过；
+   - `dev -> main` 有可发布差异；
+   - 不会影响真实客户站。
+
+### 当前 SOP 判断
+
+到 2026-05-07 这一步，围绕新 repo 核心闭环：
+
+- `revision` 的真实官方路径：**已闭环**
+- `approval` 的真实官方路径：**入口与 dispatch 已验证，安全 dry-run 仍缺生产环境开关**
 
 ## 老项目升级路径
 
