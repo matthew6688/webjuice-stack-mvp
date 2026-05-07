@@ -115,12 +115,16 @@ jobs:
       - name: Publish approved dev tree
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           SALES_DISCORD_WEBHOOK_URL: ${{ secrets.SALES_DISCORD_WEBHOOK_URL }}
           REVISE_DISCORD_WEBHOOK_URL: ${{ secrets.REVISE_DISCORD_WEBHOOK_URL }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           FROM_EMAIL: ${{ vars.FROM_EMAIL || 'ProfitsLocal <hi@profitslocal.com>' }}
         run: |
+          gh auth setup-git
+          git -C /tmp/client-repo config user.name "webjuice-agent"
+          git -C /tmp/client-repo config user.email "webjuice-agent@users.noreply.github.com"
           args=(
             --task "$TASK_PATH"
             --repo-dir /tmp/client-repo
@@ -135,7 +139,13 @@ jobs:
           if [ "${{ inputs.dry_run }}" != "true" ]; then
             args+=(--execute true)
           fi
+          set +e
           npm run agent:publish-approved -- "${args[@]}"
+          status=$?
+          if [ -f /tmp/publish-result.json ]; then
+            cat /tmp/publish-result.json
+          fi
+          exit $status
 
       - name: Commit updated case state
         if: ${{ inputs.dry_run != 'true' }}

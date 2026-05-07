@@ -77,6 +77,7 @@ export function publishApprovedTask(task, options = {}) {
   runStep(result, { id: 'checkout-target', command: 'git', args: ['checkout', targetBranch], cwd: repoDir }, dryRun);
   runStep(result, { id: 'pull-target', command: 'git', args: ['pull', '--ff-only', 'origin', targetBranch], cwd: repoDir }, dryRun);
   runStep(result, { id: 'copy-source-tree', command: 'git', args: ['read-tree', '--reset', '-u', sourceBranch], cwd: repoDir }, dryRun);
+  if (!dryRun) ensureGitIdentity(repoDir);
   runStep(result, { id: 'commit-live', command: 'git', args: ['commit', '-m', commitMessage(task, sourceBranch)], cwd: repoDir, allowNoChanges: true }, dryRun);
   if (!dryRun && result.steps.every((step) => step.ok)) {
     result.commit = gitOutput(repoDir, ['rev-parse', targetBranch]);
@@ -178,6 +179,35 @@ function installCommand(repoDir) {
     return { command: 'npm', args: ['ci'] };
   }
   return { command: 'npm', args: ['install'] };
+}
+
+function ensureGitIdentity(repoDir) {
+  const name = safeGitConfig(repoDir, ['config', '--get', 'user.name']);
+  const email = safeGitConfig(repoDir, ['config', '--get', 'user.email']);
+  if (!name) {
+    execFileSync('git', ['config', 'user.name', 'webjuice-agent'], {
+      cwd: repoDir,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  }
+  if (!email) {
+    execFileSync('git', ['config', 'user.email', 'webjuice-agent@users.noreply.github.com'], {
+      cwd: repoDir,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  }
+}
+
+function safeGitConfig(repoDir, args) {
+  try {
+    return execFileSync('git', args, {
+      cwd: repoDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch {
+    return '';
+  }
 }
 
 export function savePublishResult(result, outputPath) {
