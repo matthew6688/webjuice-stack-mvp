@@ -31,18 +31,6 @@ const steps = [
     args: ['run', 'agent:test-pre-review-gate'],
   },
   {
-    id: 'template-revision-endpoint',
-    cwd: templateDir,
-    command: 'npm',
-    args: ['run', 'smoke:revision-request'],
-  },
-  {
-    id: 'template-approval-endpoint',
-    cwd: templateDir,
-    command: 'npm',
-    args: ['run', 'smoke:approval-request'],
-  },
-  {
     id: 'template-build-opa-artifacts',
     cwd: templateDir,
     command: 'npm',
@@ -50,7 +38,13 @@ const steps = [
     env: opaEnv,
   },
   {
-    id: 'preview-footer-qa',
+    id: 'template-prepurchase-funnel-qa',
+    cwd: root,
+    command: 'npm',
+    args: ['run', 'qa:funnel-pages', '--', '--dist-dir', `${templateDir}/dist`, '--client', 'Opa Bar & Mezze'],
+  },
+  {
+    id: 'template-postpurchase-footer-qa',
     cwd: root,
     command: 'npm',
     args: ['run', 'qa:preview-sales-bar', '--', '--dist-dir', `${templateDir}/dist`],

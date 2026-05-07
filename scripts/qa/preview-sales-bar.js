@@ -52,7 +52,6 @@ try {
       const body = document.body;
       const barRect = bar?.getBoundingClientRect();
       const mainRect = document.querySelector('main')?.getBoundingClientRect();
-      const visibleText = document.body.innerText;
       return {
         hasBar: Boolean(bar),
         approveVisible: Boolean(approve && getComputedStyle(approve).display !== 'none'),
@@ -61,7 +60,6 @@ try {
         approveHref: approve?.getAttribute('href') || '',
         reviseHref: revise?.getAttribute('href') || '',
         extraHref: extra?.getAttribute('href') || '',
-        usageVisible: visibleText.includes('1/3 used'),
         noHorizontalOverflow: body.scrollWidth <= window.innerWidth + 1,
         barWithinViewport: Boolean(barRect && barRect.left >= 0 && barRect.right <= window.innerWidth + 1 && barRect.bottom <= window.innerHeight + 1),
         contentHasBottomRoom: Boolean(mainRect && barRect && mainRect.bottom <= barRect.top + body.scrollHeight),
@@ -81,10 +79,12 @@ const assertions = {
   approveVisible: results.every((result) => result.approveVisible),
   reviseVisible: results.every((result) => result.reviseVisible),
   extraVisible: results.every((result) => result.extraVisible),
+  approveUsesOfficialFunnel: results.every((result) => result.approveHref.startsWith('https://profitslocal.com/approve?')),
+  reviseUsesOfficialFunnel: results.every((result) => result.reviseHref.startsWith('https://profitslocal.com/revision?')),
+  extraUsesOfficialFunnel: results.every((result) => result.extraHref.startsWith('https://profitslocal.com/checkout?')),
   approveCarriesOrderAndEmail: results.every((result) => result.approveHref.includes(orderId) && result.approveHref.includes(encodeURIComponent(email))),
   reviseCarriesOrderAndEmail: results.every((result) => result.reviseHref.includes(orderId) && result.reviseHref.includes(encodeURIComponent(email))),
   extraCarriesTierAndOrder: results.every((result) => result.extraHref.includes('tier=extra_revision') && result.extraHref.includes(orderId)),
-  usageVisible: results.every((result) => result.usageVisible),
   noHorizontalOverflow: results.every((result) => result.noHorizontalOverflow),
   barWithinViewport: results.every((result) => result.barWithinViewport),
 };

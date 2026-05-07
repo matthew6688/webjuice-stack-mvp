@@ -1,228 +1,242 @@
-# Core Business Flow SOP
+# ProfitsLocal 核心业务流程 SOP
 
-Updated: 2026-05-07
+更新日期：2026-05-07
 
-## Purpose
+这份文档是 ProfitsLocal 做网站业务的日常操作手册。它要回答四个问题：
 
-This is the plain-English operating manual for the ProfitsLocal website business loop.
+- 现在项目在哪个阶段？
+- 这一步要做什么？
+- 需要什么输入，产出什么文件或结果？
+- 怎么验证，去哪里看证据？
 
-The goal is simple:
+目标是让 Matthew、Discord/Hermes agent、Codex、Open Design、其他 IDE 都能围绕同一个项目继续工作，不靠聊天记忆，也不把项目做乱。
 
-```text
-Find or receive a business lead
-  -> collect enough real information
-  -> create an Open Design project
-  -> build a real dev preview
-  -> show proof to the customer
-  -> get paid
-  -> revise or approve
-  -> publish live
-  -> set up domain
-  -> record revenue, cost, and project history
-```
-
-This SOP is the source of truth for stage names, required inputs, outputs, validation, and where to check status.
-
-## Hard Rules
-
-- Every website project must have an Open Design project.
-- Every website project must have a Discord website task thread.
-- Every website project must have repo-backed memory. Do not rely on chat memory.
-- Every website project must have one current project capsule, one current Open Design binding, and one current customer repo `dev` branch. If these disagree, stop and sync before doing new work.
-- Customer website repos only contain the customer website and preview banner. ProfitsLocal checkout/revision/domain pages live on `profitslocal.com`.
-- Business facts come from evidence, survey, and content files. Open Design can improve presentation, but it cannot invent core business facts.
-- Customer-facing email links must point to official `https://profitslocal.com` funnel pages.
-- Work happens on the customer repo `dev` branch until customer approval.
-- Publish to `main/live` only after approval.
-
-## Project Sync Protocol
-
-This is the rule that prevents Discord, Open Design, and the customer repo from drifting apart.
-
-### Source Of Truth By Topic
-
-| Topic | Source Of Truth | Notes |
-|---|---|---|
-| Customer/business facts | Evidence, survey, content files | Name, phone, address, menu/services, booking, contact, sitemap facts. |
-| Visual concept | Open Design project | Layout direction, visual hierarchy, art direction, typography exploration, first design intent. |
-| Production website | Customer repo `dev` branch | The real deployable Astro/Webjuice implementation. |
-| Project conversation and decisions | Discord website task thread + case timeline | Internal discussion, approvals, revision notes, customer communication records. |
-| Customer-facing funnel | `profitslocal.com` | Checkout, approval, revision, domain setup, contact, FAQ. |
-
-### Before Any Work Starts
-
-1. Find the client slug and case folder.
-2. Open the Discord website task thread.
-3. Check `clients/<client>/concept/open-design/concept-manifest.json`.
-4. Check the customer repo and current branch.
-5. Check the latest case timeline/agent run.
-6. Decide whether the work is a visual concept change, a production implementation change, or a business-fact correction.
-
-If the Open Design manifest, Discord thread, and repo point to different clients or different projects, do not continue. Fix the binding first.
-
-### If The Change Starts In Discord
-
-Use this when Matthew or an agent gives instructions in the project thread.
-
-1. Agent reads the task packet and case memory.
-2. Agent confirms the existing Open Design project ID from the task packet.
-3. If the request changes visual design, run Open Design continuation on the existing project. Do not create a new Open Design project.
-4. Export/sync the updated concept back into `clients/<client>/concept/open-design/`.
-5. Rebuild `production-handoff.json` and `production-handoff.md`.
-6. Port the accepted changes into the customer repo `dev` branch.
-7. Run build and QA.
-8. Post back to the same Discord thread with:
-   - what changed;
-   - Open Design run/project ID;
-   - repo branch and commit/diff summary;
-   - preview URL;
-   - QA result path;
-   - whether customer email is ready.
-
-Validation before marking done:
-
-- Same Discord thread ID is reused.
-- Same Open Design project ID is reused.
-- Customer repo is on `dev`.
-- Production handoff timestamp is newer than the Discord request.
-- QA result exists after the repo change.
-
-### If The Change Starts In Open Design Desktop App
-
-Use this when Matthew visually edits the project in Open Design.
-
-1. Make sure the Open Design app project name matches the client/business.
-2. Save or finish the Open Design change.
-3. Run `npm run open-design:sync-from-app -- --client <client>`.
-4. Rebuild production handoff.
-5. Ask `website-agent` in the same Discord thread to port the synced handoff into the customer repo `dev` branch.
-6. Run build and QA.
-7. Post the updated preview and QA result in the same Discord thread.
-
-Validation before marking done:
-
-- `.profitslocal-sync.json` in the Open Design project points to the same client slug.
-- `concept-manifest.json` has the same Open Design project ID Matthew edited.
-- `production-handoff.json` exists and is newer than the manual edit.
-- Customer repo `dev` contains the ported implementation.
-- Preview URL shows the new design, not only the concept folder.
-
-### If The Change Starts Directly In The Repo
-
-Use this only for small production fixes, for example a typo, broken link, build issue, or banner bug.
-
-1. Confirm the change does not alter the main visual direction.
-2. Edit the customer repo `dev` branch.
-3. Run build and QA.
-4. Post the repo change back to Discord.
-5. If the change affects reusable design direction, also update Open Design notes or production handoff so the concept memory does not become stale.
-
-### Conflict Rule
-
-If two tools changed the project at the same time, choose this order:
-
-1. Business facts from evidence/survey/content win.
-2. Customer-approved decisions in case timeline win.
-3. Latest accepted Open Design production handoff wins for visual direction.
-4. Customer repo `dev` wins for what is currently deployed.
-
-When uncertain, stop and write a short Discord summary:
+## 一句话流程
 
 ```text
-Sync conflict found:
-- Open Design says: ...
-- Repo dev says: ...
-- Case/customer decision says: ...
-Recommended source to keep: ...
+找到或收到一个 business lead
+  -> 收集真实资料
+  -> 判断是否 ready to build
+  -> 创建 Open Design project
+  -> 做 dev preview
+  -> QA 检查
+  -> 准备 outreach/demo 材料
+  -> 客户付款
+  -> Discord/agent 继续修改
+  -> 发客户 review email
+  -> 客户 revision 或 approval
+  -> 发布 live
+  -> 设置域名
+  -> 记录收入、成本、项目历史
 ```
 
-Do not email the customer until the conflict is resolved.
+## 硬规则
 
-## Stage Overview
+- 每一个 website project 都必须有一个 Open Design project。
+- 每一个 website project 都必须有一个 Discord website task thread。
+- 每一个 website project 都必须有 repo-backed memory，不能只靠聊天记忆。
+- 一个项目只能有一个当前 project capsule、一个当前 Open Design binding、一个当前 customer repo `dev` branch。如果三者对不上，先停下来同步。
+- 客户网站 repo 只放客户网站和 preview banner。ProfitsLocal 的 checkout、revision、approval、domain 页面必须在 `https://profitslocal.com`。
+- 真实 business 信息以 evidence、survey、content 文件为准。Open Design 可以优化视觉表达，但不能发明核心 business facts。
+- 所有给客户的 email 链接必须指向 `https://profitslocal.com` 官方 funnel 页面。
+- 客户修改一律先做在 customer repo 的 `dev` branch。
+- 只有客户 approval 之后，才能把 `dev` 发布到 `main/live`。
 
-| Stage | Name | What This Stage Proves |
+## 项目同步协议
+
+这是防止 Discord、Open Design、customer repo 三个地方互相打架的规则。
+
+### 不同内容的真相源
+
+| 内容 | 真相源 | 说明 |
 |---|---|---|
-| 0 | Lead / Customer Intake | We know who the business is and why it may need a site. |
-| 1 | Evidence Collection | We have real facts, links, photos, menu/services, and contact paths. |
-| 2 | Website Ready Packet | The project is ready to build without guessing. |
-| 3 | Open Design Project | A visual concept workspace exists for this exact business. |
-| 4 | Production Dev Build | The concept and facts are ported into the customer Astro repo. |
-| 5 | Dev Preview QA | The preview is real, mobile-friendly, factual, and sellable. |
-| 6 | Outreach / Demo Proof | We have screenshots, demo video, and email material. |
-| 7 | Checkout / Payment | Customer can claim the preview and payment maps to the right project. |
-| 8 | Agent Task / Discord Work | Hermes/Open Design/Codex can continue work from one task packet. |
-| 9 | Customer Review Email | Customer receives branded email with preview, approve, revision, and domain links. |
-| 10 | Revision Loop | Revisions match order ID + email and consume quota correctly. |
-| 11 | Approval / Publish Live | Approved dev version goes live safely. |
-| 12 | Domain Setup | Free ProfitsLocal subdomain or customer domain is connected. |
-| 13 | Finance / ROI Log | Revenue, provider usage, and customer state are recorded. |
+| Business facts | `evidence`、`survey`、`content` | 名字、电话、地址、菜单、服务、booking、contact、sitemap。 |
+| 视觉概念 | Open Design project | 视觉方向、layout、字体、层级、艺术方向、设计探索。 |
+| 可部署网站 | customer repo `dev` branch | 真正能部署到 Cloudflare Pages 的 Astro/Webjuice 实现。 |
+| 内部沟通和决策 | Discord website task thread + case timeline | 任务讨论、客户反馈、agent 运行记录、approval/revision 记录。 |
+| 客户付款和售后页面 | `profitslocal.com` | Checkout、revision、approval、domain setup、contact、FAQ。 |
+
+### 每次开工前先做 6 个检查
+
+1. 找到 client slug。
+2. 找到 case folder。
+3. 打开同一个 Discord website task thread。
+4. 检查 `clients/<client>/concept/open-design/concept-manifest.json`。
+5. 检查 customer repo 和当前 branch。
+6. 判断这次改动属于哪一类：视觉设计、生产实现、business fact 修正。
+
+如果 case、Discord thread、Open Design manifest、repo 指向不同客户或不同项目，不要继续做。先修 binding。
+
+### 如果修改从 Discord 开始
+
+适用场景：Matthew 在项目 thread 里说“帮我改首页 hero”“让 menu 更高级”“客户要求改电话”等。
+
+操作步骤：
+
+1. Agent 先读 task packet 和 case memory。
+2. Agent 确认现有 Open Design project ID。
+3. 如果是视觉改动，用同一个 Open Design project 做 continuation，不要新建 project。
+4. 把 Open Design 更新导出到 `clients/<client>/concept/open-design/`。
+5. 重新生成 `production-handoff.json` 和 `production-handoff.md`。
+6. 把认可的设计 port 到 customer repo `dev` branch。
+7. 跑 build 和 QA。
+8. 回到同一个 Discord thread 汇报：
+   - 改了什么；
+   - Open Design project/run ID；
+   - repo branch 和 commit/diff 摘要；
+   - preview URL；
+   - QA result path；
+   - 是否可以发 customer email。
+
+验证标准：
+
+- Discord thread ID 没变。
+- Open Design project ID 没变。
+- customer repo 在 `dev` branch。
+- `production-handoff` 时间晚于这次 Discord 请求。
+- repo 改完之后有新的 QA result。
+
+### 如果修改从 Open Design 桌面 App 开始
+
+适用场景：Matthew 在 Open Design app 里手动改了视觉设计。
+
+操作步骤：
+
+1. 确认 Open Design app 里的 project 名字对应当前 business。
+2. 在 Open Design app 里完成修改。
+3. 运行：
+
+```bash
+npm run open-design:sync-from-app -- --client <client>
+```
+
+4. 重新生成 production handoff。
+5. 在同一个 Discord thread 里让 `website-agent` 把 handoff port 到 customer repo `dev`。
+6. 跑 build 和 QA。
+7. 把 preview 和 QA result 发回同一个 Discord thread。
+
+验证标准：
+
+- Open Design project 里的 `.profitslocal-sync.json` 指向同一个 client slug。
+- `concept-manifest.json` 里的 project ID 是 Matthew 刚刚编辑的那个。
+- `production-handoff.json` 比手动修改时间更新。
+- customer repo `dev` 包含 port 后的实现。
+- preview URL 显示的是新设计，不只是 concept folder 里变了。
+
+### 如果修改直接从 repo 开始
+
+只适合小修，例如 typo、链接、build bug、banner bug、SEO、sitemap、redirect。
+
+操作步骤：
+
+1. 确认不改变主要视觉方向。
+2. 改 customer repo `dev` branch。
+3. 跑 build 和 QA。
+4. 把改动回写到 Discord thread。
+5. 如果这次小修影响设计结构，也要更新 Open Design notes 或 production handoff，避免视觉记忆过期。
+
+### 冲突处理
+
+如果两个地方同时改了项目，按这个顺序判断：
+
+1. Business facts 以 evidence/survey/content 为准。
+2. 已经客户确认的 case timeline decision 优先。
+3. 最新被接受的 Open Design production handoff 决定视觉方向。
+4. customer repo `dev` 决定当前 preview 实际显示什么。
+
+不确定时，先在 Discord 写清楚：
+
+```text
+发现同步冲突：
+- Open Design 当前是：...
+- repo dev 当前是：...
+- case/customer decision 当前是：...
+- 建议保留：...
+```
+
+冲突解决前，不要给客户发 review email。
+
+## 阶段总览
+
+| 阶段 | 名称 | 这一阶段证明什么 |
+|---|---|---|
+| 0 | Lead / Customer Intake | 我们知道这个 business 是谁，为什么值得做。 |
+| 1 | Evidence Collection | 我们有真实信息、链接、照片、菜单/服务和联系路径。 |
+| 2 | Website Ready Packet | 信息已经整理好，可以开始建站，不需要乱猜。 |
+| 3 | Open Design Project | 每个网站都有自己的视觉设计工作区。 |
+| 4 | Production Dev Build | 设计和真实内容已经进入 customer repo `dev`。 |
+| 5 | Dev Preview QA | preview 足够真实、好看、移动端可用，可以给客户看。 |
+| 6 | Outreach / Demo Proof | 有截图、视频、邮件素材，可以主动联系客户。 |
+| 7 | Checkout / Payment | 客户能付款，订单能映射到正确项目。 |
+| 8 | Agent Task / Discord Work | Agent 能基于同一个 task packet 继续工作。 |
+| 9 | Customer Review Email | 客户收到品牌化 email 和正确链接。 |
+| 10 | Revision Loop | 修改请求能按 order ID + email 匹配，并控制次数。 |
+| 11 | Approval / Publish Live | 客户确认后，`dev` 安全发布到 live。 |
+| 12 | Domain Setup | 我们的免费子域名或客户域名可以接上。 |
+| 13 | Finance / ROI Log | 收入、成本和使用量有记录。 |
 
 ## Stage 0: Lead / Customer Intake
 
-### Goal
+目标：判断这个 business 值不值得继续收集和建 preview。
 
-Decide whether this business is worth collecting and building.
+输入：
 
-### Inputs
+- Google Places 结果、手动 lead、客户表单、官方 website URL。
+- Business name。
+- 城市或区域。
+- Niche，目前先聚焦 restaurant。
+- Existing website，如果有的话。
+- 联系路径：电话、email、contact form、booking page、social。
 
-- Google Places result, manual lead, official website URL, or customer form.
-- Business name.
-- Location or city.
-- Niche, currently restaurant first.
-- Existing website, if any.
-- Contact path: phone, email, website contact form, booking page, or social.
+输出：
 
-### Outputs
+- Lead record。
+- Client slug。
+- Qualification score 或 decision。
+- 下一步：继续收集、做 preview、或者 skip。
 
-- Lead record.
-- Initial client slug.
-- Qualification score or decision.
-- Next action: collect more info, build preview, or skip.
+验证：
 
-### Validation
+- Business name 不为空。
+- 至少有一个联系路径。
+- Business 看起来真实可联系。
+- 如果已有网站，我们能合理判断是否有 redesign 机会。
 
-- Business name is not blank.
-- At least one contact path exists.
-- Business appears real and reachable.
-- If the business has an existing website, we can plausibly redesign it better.
-
-### Where To Check
+查看位置：
 
 - `clients/<client>/`
-- lead/evidence docs under `docs/LEAD_QUALIFICATION_ENGINE.md`
-- Discord thread if manually discussed.
+- `docs/LEAD_QUALIFICATION_ENGINE.md`
+- Discord thread，如果是人工讨论的 lead。
 
 ## Stage 1: Evidence Collection
 
-### Goal
+目标：设计和文案之前，先收集真实、可追溯的信息。
 
-Collect real, source-backed information before design or copywriting starts.
+输入：
 
-### Inputs
+- Google Places API。
+- Google Maps photos。
+- 官方网站页面。
+- Menu/service 页面。
+- PDF、图片、扫描菜单、产品或服务文件。
+- 客户上传文件。
 
-- Google Places API data.
-- Google Maps photos.
-- Official website pages.
-- Menu/service pages.
-- PDFs, images, scanned menus, product/service documents.
-- Business-provided files.
-
-### Outputs
+输出：
 
 - `clients/<client>/evidence/evidence.json`
-- raw scrape/extraction artifacts when available.
-- source URLs for facts and media.
-- list of missing critical facts.
+- 原始 scrape/extraction 文件。
+- 重要 facts 的 source URL。
+- 缺失信息列表。
 
-### Validation
+验证：
 
-- Business name, address, phone, website, maps link are captured when available.
-- For restaurants, menu evidence is captured if menu work is needed.
-- Photos are real business or venue/product photos when available.
-- Source URLs or extraction notes exist for important facts.
-- If evidence is incomplete, missing items are listed instead of guessed.
+- Business name、address、phone、website、maps link 尽量都有。
+- Restaurant 如果要做 menu，必须有 menu evidence。
+- 图片优先用真实 business/venue/product 图片。
+- 重要 facts 必须有 source URL 或 extraction note。
+- 信息不完整时，写 missing，不要硬编。
 
-### Where To Check
+查看位置：
 
 - `clients/<client>/evidence/evidence.json`
 - `clients/<client>/evidence/`
@@ -231,19 +245,17 @@ Collect real, source-backed information before design or copywriting starts.
 
 ## Stage 2: Website Ready Packet
 
-### Goal
+目标：把杂乱资料整理成任何 agent/tool 都能使用的 ready-to-build packet。
 
-Turn messy information into a build-ready packet that any tool can use.
+输入：
 
-### Inputs
+- Evidence file。
+- Website intake survey。
+- Content artifact。
+- Design/brand artifact。
+- 客户备注，如果是已付款客户。
 
-- Evidence file.
-- Website intake survey.
-- Content artifact.
-- Design/brand artifact.
-- Customer notes, if this is a paid inbound customer.
-
-### Outputs
+输出：
 
 - `clients/<client>/intake/website-survey.json`
 - `clients/<client>/content.<niche>.json`
@@ -251,15 +263,15 @@ Turn messy information into a build-ready packet that any tool can use.
 - `clients/<client>/brand-spec.md`
 - `data/cases/<client>/<order>/build-packet.md`
 
-### Validation
+验证：
 
-- Required facts are present or explicitly marked missing.
-- The build packet says what type of site we are building.
-- The packet says what pages/routes are expected.
-- The packet says what must not change.
-- The packet includes contact, CTA, and source-of-truth paths.
+- 关键 facts 存在，或明确标记 missing。
+- build packet 说明这是哪种网站：starter、redesign、menu、multi-page 等。
+- 写清楚需要哪些 routes/pages。
+- 写清楚什么不能改，例如 logo、电话、地址、菜单价格、booking link。
+- 包含 CTA、contact、source-of-truth paths。
 
-### Where To Check
+查看位置：
 
 - `docs/WEBSITE_INTAKE_SURVEY.md`
 - `docs/WEBSITE_READY_ENGINE.md`
@@ -267,50 +279,40 @@ Turn messy information into a build-ready packet that any tool can use.
 
 ## Stage 3: Open Design Project
 
-### Goal
+目标：为这个 website project 创建视觉设计工作区。
 
-Create the visual concept workspace for this website project.
+每个 website project 必须到达这一阶段。即使只是简单一页网站，也要有 Open Design binding，因为这是视觉记忆和后续可视化修改的基础。
 
-Every website project must reach this stage before production design/build work is considered complete.
+输入：
 
-### Inputs
+- 官方 website URL 或 build-ready packet。
+- Business type。
+- Target audience。
+- Visual tone。
+- Brand context。
+- Scope，例如 homepage only 或 3-4 key pages。
+- Non-negotiables：logo、contact、booking/order links、sitemap、menu/services。
 
-- Official website URL or build-ready packet.
-- Business type.
-- Target audience.
-- Visual tone.
-- Brand context.
-- Desired scope, such as homepage only or 3-4 key pages.
-- Non-negotiables: logo, contact details, booking/order links, sitemap intent, menu/services.
-
-### Outputs
+输出：
 
 - `clients/<client>/concept/open-design/concept-manifest.json`
 - `clients/<client>/concept/open-design/brand-spec.md`
 - `clients/<client>/concept/open-design/production-handoff.json`
-- Open Design project ID.
-- Open Design data directory.
-- Sync metadata, usually `.profitslocal-sync.json`.
+- Open Design project ID。
+- Open Design data directory。
+- `.profitslocal-sync.json`。
 
-### Validation
+验证：
 
-- Open Design project exists.
-- Project is visible in the intended Open Design data directory.
-- Concept has brand/design direction for the exact business.
-- Brand facts are not generic placeholders.
-- Production handoff exists before porting to Astro.
-- `concept-manifest.json` and `.profitslocal-sync.json` point to the same client slug.
-- Discord task packet points to this Open Design project ID.
-- If Matthew can see/edit the project in the desktop app, the app project and manifest use the same project ID or data directory.
+- Open Design project 存在。
+- project 在预期 Open Design data directory 里可见。
+- concept 是针对这个 business 的，不是通用模板。
+- 没有 generic placeholder。
+- port 到 Astro 前，必须有 production handoff。
+- `concept-manifest.json` 和 `.profitslocal-sync.json` 指向同一个 client slug。
+- Discord task packet 指向这个 Open Design project ID。
 
-### Where To Check
-
-- `clients/<client>/concept/open-design/`
-- `docs/OPEN_DESIGN_PROJECT_SYNC.md`
-- `docs/OPEN_DESIGN_INTEGRATION.md`
-- Open Design desktop/source app project list.
-
-### Common Commands
+常用命令：
 
 ```bash
 npm run open-design:run-concept -- --client <client> --mode app-visible --source-url <official-url>
@@ -319,182 +321,181 @@ npm run open-design:sync-from-app -- --client <client>
 npm run open-design:build-production-handoff -- --client <client> ...
 ```
 
+查看位置：
+
+- `clients/<client>/concept/open-design/`
+- `docs/OPEN_DESIGN_PROJECT_SYNC.md`
+- `docs/OPEN_DESIGN_INTEGRATION.md`
+- Open Design desktop/source app project list。
+
 ## Stage 4: Production Dev Build
 
-### Goal
+目标：把认可的 Open Design concept 和真实内容 port 到 customer Astro/Webjuice repo。
 
-Port the accepted concept and source-backed content into the customer Astro/Webjuice repo.
+输入：
 
-### Inputs
+- Open Design production handoff。
+- Content artifact。
+- Design artifact。
+- Evidence file。
+- Customer repo。
+- `dev` branch。
 
-- Open Design production handoff.
-- Customer content artifact.
-- Design artifact.
-- Evidence file.
-- Customer repo.
-- Dev branch.
+输出：
 
-### Outputs
+- customer repo `dev` 更新。
+- 可工作的 routes。
+- 指向官方 ProfitsLocal 页面 的 preview banner。
+- build output。
 
-- Updated customer repo on `dev`.
-- Working routes.
-- Preview banner with official ProfitsLocal links.
-- Build output.
+验证：
 
-### Validation
+- customer repo `npm run build` 通过。
+- 预期 routes 存在。
+- redesign 项目要保留旧 URL，或用 permanent redirect。
+- customer repo 不能再有本地 ProfitsLocal checkout/revision/domain 页面。
+- preview banner 链接必须指向 `https://profitslocal.com`，并携带 `client_slug`、`repo`、`preview_url`、UTM/source 参数。
 
-- `npm run build` passes in customer repo.
-- Expected routes exist.
-- Old source URLs are preserved or redirected when redesigning an existing site.
-- Customer repo does not contain local ProfitsLocal checkout/revision/domain pages.
-- Preview banner points to official `profitslocal.com`.
+查看位置：
 
-### Where To Check
-
-- customer repo, usually `/Users/matthew/Developer/webjuice-generated/<client>`
+- customer repo，例如 `/Users/matthew/Developer/webjuice-generated/<client>`
 - GitHub repo `matthew6688/<client>`
-- Cloudflare Pages dev project.
+- Cloudflare Pages dev project。
 
 ## Stage 5: Dev Preview QA
 
-### Goal
+目标：确认 preview 足够好，可以发给客户。
 
-Make sure the preview is good enough to show a customer.
+输入：
 
-### Inputs
+- Dev preview URL。
+- Build output。
+- Evidence/content/design 文件。
+- Open Design handoff。
 
-- Dev preview URL.
-- Build output.
-- Evidence/content/design files.
-- Open Design handoff.
+输出：
 
-### Outputs
+- Delivery QA report。
+- Desktop screenshot。
+- Mobile screenshot。
+- 问题列表，或 ready for customer review。
 
-- QA result JSON.
-- Desktop screenshot.
-- Mobile screenshot.
-- List of issues or approval to send customer review email.
+验证：
 
-### Validation
+- Dev preview HTTP 200。
+- Desktop/mobile 截图正常。
+- Business name、phone、address、map、booking/contact links 正确。
+- 没有 placeholder copy。
+- 没有遗漏关键 menu/service 信息。
+- customer repo 没有本地 funnel routes。
+- banner 链接指向官方 `profitslocal.com`。
+- pre-review gate 通过后，才能发 customer review email。
 
-- Dev preview returns HTTP 200.
-- Mobile and desktop screenshots render correctly.
-- Business name, phone, address, map, booking/contact links are accurate.
-- No obvious placeholder copy.
-- No missing critical menu/service information.
-- No broken local funnel pages.
-- Banner links go to official `profitslocal.com`.
-
-### Where To Check
+查看位置：
 
 - `data/qa/<client>/`
+- `data/cases/<client>/<order>/delivery-qa.json`
 - `npm run qa:funnel-pages`
-- delivery QA docs/samples.
+- `npm run agent:test-pre-review-gate`
 
 ## Stage 6: Outreach / Demo Proof
 
-### Goal
+目标：准备主动销售材料，让客户快速看懂我们做了什么。
 
-Prepare proof material so the business can quickly understand what we made.
+输入：
 
-### Inputs
+- Dev preview URL。
+- Screenshots。
+- Demo video。
+- 针对 business 的改进点。
+- 客户联系方式。
 
-- Dev preview URL.
-- Screenshots.
-- Short demo video.
-- Business-specific improvement notes.
-- Contact email or phone.
+输出：
 
-### Outputs
+- Screenshot assets。
+- Demo video。
+- Outreach email draft。
+- Evidence-backed talking points。
 
-- Screenshot assets.
-- Demo video.
-- Outreach email draft.
-- Evidence-backed talking points.
+验证：
 
-### Validation
+- screenshot 是真实 preview，不是空页面。
+- email 有 preview link 和明确 offer。
+- 如果是 outbound，不要写得像客户主动委托。
+- 联系路径有效。
 
-- Screenshot shows the actual business preview.
-- Email includes preview link and clear offer.
-- Email does not pretend the business requested the site if it is outbound.
-- Contact path is valid.
-
-### Where To Check
+查看位置：
 
 - `clients/<client>/outreach/`
-- cold email artifacts.
-- Discord project thread.
+- cold email artifacts。
+- Discord project thread。
 
 ## Stage 7: Checkout / Payment
 
-### Goal
+目标：客户可以 claim preview，付款后订单能映射到正确项目。
 
-Let the customer claim the preview and create a paid order tied to the correct project.
+输入：
 
-### Inputs
+- Preview banner link。
+- 官方 `https://profitslocal.com/checkout`。
+- Project context：client slug、repo、preview URL、tier、amount、UTM/source 参数。
+- Stripe checkout。
 
-- Preview banner link.
-- Official `profitslocal.com/checkout`.
-- Project context: client slug, repo, preview URL, tier, amount, UTM/source params.
-- Stripe checkout.
+输出：
 
-### Outputs
+- Stripe checkout session。
+- Paid order event。
+- Entitlement/revision quota。
+- Revenue ledger event。
+- Case memory update。
 
-- Stripe checkout session.
-- Paid order event.
-- Entitlement/revision quota.
-- Revenue ledger event.
-- Case memory update.
+验证：
 
-### Validation
+- Stripe test/live payment 成功。
+- 成功后跳转到官方 ProfitsLocal thank-you。
+- order 映射到正确的 `client_slug`、`repo`、`preview_url`。
+- revenue 写入 finance ledger。
+- 客户收到 Resend email。
 
-- Payment succeeds in Stripe test/live mode.
-- Success redirects to official ProfitsLocal thank-you.
-- Order maps to correct `client_slug`, `repo`, and `preview_url`.
-- Revenue appears in finance ledger.
-- Customer email is sent through Resend.
+查看位置：
 
-### Where To Check
-
-- Stripe dashboard.
+- Stripe dashboard。
 - `data/funnel/orders/<client>/<order>.json`
 - `data/finance/ledger.jsonl`
 - `data/cases/<client>/<order>/`
-- Discord website task thread.
+- Discord website task thread。
 
 ## Stage 8: Agent Task / Discord Work
 
-### Goal
+目标：创建一个长期可复用的内部工作区，让 agent 能接着做。
 
-Create one durable internal workroom where operator and AI can continue the project.
+输入：
 
-### Inputs
+- Paid order。
+- Case memory。
+- Build packet。
+- Open Design project binding。
+- Customer repo 和 `dev` branch。
 
-- Paid order.
-- Case memory.
-- Build packet.
-- Open Design project binding.
-- Customer repo and dev branch.
-
-### Outputs
+输出：
 
 - `data/agent-tasks/<client>/<task>.json`
-- Discord `#website-tasks` thread.
-- Website-agent handoff message.
-- Case timeline event.
+- Discord `#website-tasks` thread。
+- website-agent handoff message。
+- Case timeline event。
 
-### Validation
+验证：
 
-- Task packet matches `docs/AGENT_TASK_PACKET_CONTRACT.md`.
-- Discord thread ID is saved in case memory.
-- Task packet includes Open Design project ID and commands.
-- Agent reads case/task before editing.
-- Later revisions reuse same thread.
-- Any visual change records whether it came from Discord continuation, Open Design desktop sync, or direct repo work.
-- If Open Design was used, the same project ID is reused and the production handoff is rebuilt.
-- If a customer email is suggested, it references the latest dev preview and latest QA result.
+- task packet 符合 `docs/AGENT_TASK_PACKET_CONTRACT.md`。
+- Discord thread ID 保存到 case memory。
+- task packet 包含 Open Design project ID 和相关命令。
+- agent 修改前必须读 case/task。
+- 后续 revisions 复用同一个 thread。
+- 视觉改动必须记录来源：Discord continuation、Open Design app sync、还是 repo direct fix。
+- 如果用了 Open Design，必须复用同一个 project ID，并重新生成 production handoff。
+- 如果建议发客户 email，必须引用最新 dev preview 和最新 QA result。
 
-### Where To Check
+查看位置：
 
 - `docs/AGENT_TASK_PACKET_CONTRACT.md`
 - `data/agent-tasks/<client>/`
@@ -503,207 +504,255 @@ Create one durable internal workroom where operator and AI can continue the proj
 
 ## Stage 9: Customer Review Email
 
-### Goal
+目标：给客户发品牌化 email，让客户 review、approve、revision、domain setup。
 
-Send the customer a branded email with the correct next actions.
+输入：
 
-### Inputs
+- QA 通过的 dev preview。
+- Order ID。
+- Checkout email。
+- 官方 approve/revision/domain links。
+- Resend API。
 
-- QA-passed dev preview.
-- Order ID.
-- Checkout email.
-- Official approve/revision/domain links.
-- Resend API.
+输出：
 
-### Outputs
+- Branded HTML email。
+- Resend email ID。
+- Case timeline update。
+- Discord thread update。
 
-- Branded HTML email.
-- Resend email ID.
-- Case timeline update.
-- Discord thread update.
+验证：
 
-### Validation
+- email 使用固定 intent，不靠 agent 自由发挥。
+- 链接指向官方 `profitslocal.com`，不是 customer preview domain。
+- email 包含 order ID 和 preview URL。
+- Resend ID 被记录。
 
-- Email uses fixed intent from `docs/CUSTOMER_COMMUNICATION_CONTRACT.md`.
-- Links point to official `profitslocal.com`, not customer preview domain.
-- Email includes order ID and preview URL.
-- Resend ID is recorded.
-
-### Where To Check
+查看位置：
 
 - `docs/CUSTOMER_COMMUNICATION_CONTRACT.md`
 - `core/funnel/customer-email.js`
-- Resend dashboard.
-- case timeline.
-- Discord thread.
+- Resend dashboard。
+- case timeline。
+- Discord thread。
 
 ## Stage 10: Revision Loop
 
-### Goal
+目标：客户可以提交修改，但必须匹配订单，且次数可控。
 
-Let customers request bounded changes without losing order identity.
+输入：
 
-### Inputs
+- 官方 revision form。
+- Order ID。
+- Checkout email。
+- Requested changes。
+- Optional attachments。
 
-- Official revision form.
-- Order ID.
-- Checkout email.
-- Requested changes.
-- Optional attachments.
+输出：
 
-### Outputs
+- Revision accepted 或 denied。
+- Quota usage update。
+- Accepted revision agent task。
+- Customer email。
+- Discord thread update。
 
-- Revision accepted or denied.
-- Quota usage update.
-- Agent task if accepted.
-- Customer email.
-- Discord thread update.
+验证：
 
-### Validation
+- Order ID 和 checkout email 必须匹配。
+- 创建任务前先检查 quota。
+- accepted revision 增加 used count。
+- 超过额度不创建 agent task，而是给 extra revision checkout link。
+- extra revision 付款只增加额度，不直接创建网站修改任务。
+- 同一个 Discord thread 被复用。
+- 附件上传到 Cloudinary 或记录为外部 asset link。
 
-- Order ID and checkout email match.
-- Quota is checked before creating task.
-- Accepted revision increments usage.
-- Over-limit revision does not create task and sends extra revision checkout link.
-- Same Discord thread is reused.
-
-### Where To Check
+查看位置：
 
 - `data/funnel/orders/<client>/<order>.json`
 - `data/cases/<client>/<order>/`
 - `data/agent-tasks/<client>/`
-- Discord thread.
+- Discord thread。
 
 ## Stage 11: Approval / Publish Live
 
-### Goal
+目标：客户确认后，把 approved dev version 发布到 live。
 
-Publish the approved dev version to live safely.
+输入：
 
-### Inputs
+- 官方 approval form。
+- Order ID。
+- Checkout email。
+- Customer repo `dev`。
+- 最新 QA result。
 
-- Official approval form.
-- Order ID.
-- Checkout email.
-- Customer repo `dev`.
-- Latest QA result.
+输出：
 
-### Outputs
+- `main/live` branch update。
+- Cloudflare Pages live deploy。
+- Live URL。
+- Customer live email。
+- Case timeline update。
 
-- Main/live branch update.
-- Cloudflare Pages live deploy.
-- Live URL.
-- Customer live email.
-- Case timeline update.
+验证：
 
-### Validation
+- Order ID + email 匹配。
+- source branch 是 `dev`，target branch 是 `main`。
+- publish workflow 成功。
+- live URL HTTP 200。
+- live email 包含 order ID 和 live URL。
+- Discord thread 记录 publish result。
 
-- Order ID + email match.
-- Publish workflow succeeds.
-- Live URL returns HTTP 200.
-- Live email includes order ID and live URL.
-- Discord thread records the publish result.
+查看位置：
 
-### Where To Check
-
-- GitHub Actions.
-- Cloudflare Pages.
-- customer repo `main`.
-- case timeline.
-- Resend dashboard.
+- GitHub Actions。
+- Cloudflare Pages。
+- customer repo `main`。
+- case timeline。
+- Resend dashboard。
 
 ## Stage 12: Domain Setup
 
-### Goal
+目标：设置最终公开访问域名。
 
-Connect the public domain route.
+输入：
 
-### Inputs
+- 官方 domain setup form。
+- Order ID。
+- Checkout email。
+- Requested route：
+  - 免费 ProfitsLocal subdomain；
+  - 客户自己的 subdomain；
+  - 客户自己的 root/apex domain。
 
-- Official domain setup form.
-- Order ID.
-- Checkout email.
-- Requested route:
-  - free ProfitsLocal subdomain;
-  - customer subdomain;
-  - customer root domain.
+输出：
 
-### Outputs
+- Domain request record。
+- Cloudflare DNS/Pages attach state。
+- 客户操作说明或已连接确认。
+- Domain status email。
 
-- Domain request record.
-- Cloudflare DNS/Pages attach state.
-- Customer instructions or active confirmation.
-- Domain status email.
+验证：
 
-### Validation
+- 免费 ProfitsLocal subdomain：创建 CNAME，并 attach Pages custom domain。
+- 客户 subdomain：给客户明确 CNAME target，等待客户 DNS。
+- 客户 root domain：必须人工 review，不自动改 DNS。
+- active domain HTTP 200。
+- Cloudflare proxied CNAME 可能在 public DNS 看起来像 A/AAAA，所以检查时要用 Cloudflare-aware inspect，不要只看 `dig CNAME`。
 
-- Free ProfitsLocal subdomain creates DNS CNAME and attaches Pages custom domain.
-- Customer subdomain gives exact CNAME target and waits for DNS.
-- Root domain stops for manual DNS/email audit.
-- Active domain returns HTTP 200.
-
-### Where To Check
+查看位置：
 
 - `data/domain/requests/<client>/`
-- Cloudflare DNS.
-- Cloudflare Pages custom domains.
-- customer email.
+- Cloudflare DNS。
+- Cloudflare Pages custom domains。
+- customer email。
 
 ## Stage 13: Finance / ROI Log
 
-### Goal
+目标：记录足够的收入和成本，后面能看 ROI。
 
-Track enough cost and revenue to judge ROI.
+输入：
 
-### Inputs
+- Stripe revenue。
+- Resend email count。
+- Google Places/Maps usage。
+- Firecrawl/TinyFish usage。
+- OpenAI/image generation usage。
+- Cloudinary upload/storage events。
+- Agent runtime estimate。
 
-- Stripe revenue.
-- Resend email count.
-- Google Places/Maps usage.
-- Firecrawl/TinyFish usage.
-- OpenAI/image generation usage.
-- Cloudinary upload/storage events.
-- Agent runtime estimate.
-
-### Outputs
+输出：
 
 - `data/finance/ledger.jsonl`
-- customer/project ROI view.
+- customer/project ROI view。
 
-### Validation
+验证：
 
-- Every payment writes revenue.
-- Provider usage writes count/cost when available.
-- Email send writes Resend event when cost config exists.
-- Agent runtime can be estimated.
+- 每笔 payment 写 revenue。
+- provider usage 能写 count/cost 就写。
+- email send 在配置成本后写 Resend event。
+- agent runtime 可以估算。
 
-### Where To Check
+查看位置：
 
 - `data/finance/ledger.jsonl`
-- admin dashboard, later.
+- admin dashboard，后续完善。
 
-## Current Priority Order
+## 2026-05-07 全流程演练记录
 
-1. Run a real Stripe test payment from Rich & Rare preview banner through official checkout.
-2. Verify paid order creates case, entitlement, ledger, Discord thread, and task packet.
-3. Verify task packet has mandatory Open Design project binding.
-4. Verify customer review email uses branded HTML and official links.
-5. Verify approval publishes live and sends live email.
-6. Verify free ProfitsLocal subdomain route.
+这次用 Opa/Rich & Rare 现有 fixtures 和 test-mode 跑了一遍核心闭环。演练不写真实客户数据，也不写真实 ROI ledger。
 
-## How To Know A Project Is Healthy
+### 通过的验证
 
-A healthy website project has:
+| 验证命令 | 覆盖内容 | 结果 |
+|---|---|---|
+| `npm run contracts:validate-core` | survey、delivery QA、collect skill、ready-to-build contract | 通过 |
+| `npm run leads:test-qualification` | no website、bad website、good website 三类 lead 判断 | 通过 |
+| `npm run intake:test-website-ready` | website-ready packet | 通过 |
+| `npm run open-design:test-workspace-binding` | Open Design bound/missing 两种状态 | 通过 |
+| `npm run open-design:test-port-production-handoff` | Open Design handoff port 到生产 repo 结构 | 通过 |
+| `npm run hermes:test-website-agent-closure` | sale、revision、same Discord thread、agent run、review/live email | 通过 |
+| `npm run agent:test-approval-resolution` | approval 用 order ID + email 匹配，`dev -> main` | 通过 |
+| `npm run agent:test-pre-review-gate` | customer email 前必须有 context、design protocol、screenshots、delivery QA | 通过 |
+| `npm run funnel:test-paid-revision-flow` | 3 次 included revisions、Cloudinary attachment、超额拒绝 | 通过 |
+| `npm run funnel:test-extra-revision-entitlement` | $100 extra revision 增加额度，不直接创建 agent task | 通过 |
+| `npm run funnel:test-cloudinary-attachments` | Cloudinary attachment upload/manifest | 通过 |
+| `npm run domain:test-request` | 免费子域名、客户 subdomain、root domain review | 通过 |
+| `npm run funnel:test-domain-email-guidance` | customer emails 使用官方 ProfitsLocal links | 通过 |
+| `npm run qa:test-delivery-qa` | delivery QA pass/blocker/missing 三种状态 | 通过 |
+| `npm run qa:opa-full-loop-live-sim` | 中心闭环 + template build + pre-purchase banner + order-mode footer | 通过 |
+| `npm run build` | ProfitsLocal 官方站 build | 通过 |
 
-- evidence file;
-- website-ready packet;
-- Open Design project;
-- customer repo dev preview;
-- Discord website thread;
-- task packet;
-- QA screenshots/results;
-- branded customer emails;
-- order/revision/domain records when paid;
-- finance ledger entries.
+### 演练中发现并修掉的问题
 
-If one of these is missing, the project is not fully operational yet.
+1. `qa:opa-full-loop-live-sim` 还在调用旧的 customer repo 本地脚本 `smoke:revision-request` 和 `smoke:approval-request`。
+   - 这是旧架构假设。
+   - 现在正确架构是：customer repo 不放本地 revision/approval pages；这些都在 `profitslocal.com`。
+   - 已改成验证 template build、官方 funnel links、removed local funnel routes、post-purchase order-mode links。
+
+2. `qa:preview-sales-bar` 还要求 customer repo banner 显示 `1/3 used`。
+   - 这是旧架构假设。
+   - 现在 revision quota 由官方 ProfitsLocal 页面和 email 管理，customer repo 不应该依赖本地 `/api/order-status`。
+   - 已改成验证 official approve/revision/extra-revision links、order/email/context 参数、mobile/desktop 不溢出。
+
+### 当前闭环判断
+
+核心业务闭环已经可跑：
+
+```text
+lead/intake
+  -> website-ready
+  -> Open Design binding
+  -> production handoff
+  -> dev preview QA
+  -> checkout/payment routing
+  -> Discord website task
+  -> revision quota + Cloudinary attachment
+  -> customer review email
+  -> approval dev->main
+  -> domain setup routing
+  -> finance/ROI ledger
+```
+
+还没有完全自动化但已有 SOP/测试覆盖的部分：
+
+- 真实 cold outreach 的大规模发送不在 Resend 主流程里，后面可接 Gmail/Instantly/Smartlead。
+- Open Design app 里人工编辑后的视觉质量，需要 Matthew 或 design QA 最后确认。
+- 成本 ledger 目前有框架，provider 的真实单价和免费额度还要逐步填全。
+
+## 项目健康状态判断
+
+一个健康的网站项目应该同时具备：
+
+- evidence file；
+- website-ready packet；
+- Open Design project；
+- production handoff；
+- customer repo dev preview；
+- Discord website thread；
+- agent task packet；
+- delivery QA screenshots/results；
+- branded customer emails；
+- paid order/revision/domain records，如果已付款；
+- finance ledger entries。
+
+缺一个，就不能算完整 operational。
