@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "caseId": "unknown-client_unknown",
+  "status": "needs_human_or_extra_revision",
+  "clientSlug": "",
+  "repo": "unknown",
+  "branch": "dev",
+  "previewUrl": "",
+  "template": "unknown",
+  "order": {
+    "id": "",
+    "provider": "tally",
+    "tier": "",
+    "amount": 0,
+    "currency": "USD",
+    "paymentStatus": ""
+  },
+  "customer": {
+    "company": "",
+    "email": "",
+    "phone": "",
+    "domain": ""
+  },
+  "revision": {
+    "policy": null,
+    "used": 0,
+    "remaining": null,
+    "lastReason": "entitlement_not_found"
+  },
+  "discord": {
+    "salesThreadId": "",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "",
+    "lastChannelId": "",
+    "lastMessageId": "",
+    "lastMessageUrl": ""
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/<clientSlug>/evidence/evidence.json",
+    "content": "clients/<clientSlug>/content.restaurant.json",
+    "design": "clients/<clientSlug>/design.restaurant.json",
+    "brandSpec": "clients/<clientSlug>/brand-spec.md",
+    "checkout": "clients/<clientSlug>/funnel/checkout.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "latestTask": null,
+  "paths": {
+    "casePath": "data/cases/unknown-client/unknown/case.json",
+    "contextPath": "data/cases/unknown-client/unknown/context-packet.json",
+    "timelinePath": "data/cases/unknown-client/unknown/timeline.jsonl",
+    "decisionsPath": "data/cases/unknown-client/unknown/decisions.jsonl",
+    "customerMessagesPath": "data/cases/unknown-client/unknown/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/unknown-client/unknown/agent-runs.jsonl",
+    "artifactsDir": "data/cases/unknown-client/unknown/artifacts"
+  },
+  "createdAt": "2026-05-07T08:15:52.238Z",
+  "updatedAt": "2026-05-07T08:15:52.238Z"
+}
