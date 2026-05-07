@@ -380,6 +380,17 @@ npm run open-design:build-production-handoff -- --client <client> ...
 - Mobile screenshot。
 - 问题列表，或 ready for customer review。
 
+标准报告命令：
+
+```bash
+npm run qa:write-delivery-qa -- \
+  --client <client-slug> \
+  --order <order-or-dry-run-id> \
+  --preview-url https://<client>-dev.pages.dev/ \
+  --email <checkout-email> \
+  --repo matthew6688/<client-repo>
+```
+
 验证：
 
 - Dev preview HTTP 200。
@@ -389,6 +400,7 @@ npm run open-design:build-production-handoff -- --client <client> ...
 - 没有遗漏关键 menu/service 信息。
 - customer repo 没有本地 funnel routes。
 - banner 链接指向官方 `profitslocal.com`。
+- `delivery-qa.json` 里的 approve / revision / domain setup 链接必须指向官方 `https://profitslocal.com/...` 页面。
 - pre-review gate 通过后，才能发 customer review email。
 
 查看位置：
@@ -396,6 +408,7 @@ npm run open-design:build-production-handoff -- --client <client> ...
 - `data/qa/<client>/`
 - `data/cases/<client>/<order>/delivery-qa.json`
 - `npm run qa:funnel-pages`
+- `npm run qa:write-delivery-qa`
 - `npm run agent:test-pre-review-gate`
 
 ## Stage 6: Outreach / Demo Proof
@@ -416,6 +429,16 @@ npm run open-design:build-production-handoff -- --client <client> ...
 - Demo video。
 - Outreach email draft。
 - Evidence-backed talking points。
+- `outreach-pack.json`
+- `outreach-pack.md`
+
+标准命令：
+
+```bash
+npm run outreach:build-pack -- --client <client-slug> --preview-url https://<client>-dev.pages.dev/
+npm run outreach:validate-pack -- --client <client-slug> --require-assets true
+npm run outreach:send-cold-email -- --client <client-slug> --to <owner-email> --dry true
+```
 
 验证：
 
@@ -423,6 +446,10 @@ npm run open-design:build-production-handoff -- --client <client> ...
 - email 有 preview link 和明确 offer。
 - 如果是 outbound，不要写得像客户主动委托。
 - 联系路径有效。
+- 有 desktop screenshot、mobile screenshot、demo video。
+- `outreach-pack.md` 可以给人工销售直接阅读。
+- 如果有 local AI audit，outreach pack 应该带上 audit verdict 和分数。
+- cold outreach artifact 要同时包含 `text` 和品牌化 `html`。
 
 查看位置：
 
@@ -674,6 +701,7 @@ npm run ops:send-review-email -- \
 - 免费 ProfitsLocal subdomain：创建 CNAME，并 attach Pages custom domain。
 - 客户 subdomain：给客户明确 CNAME target，等待客户 DNS。
 - 客户 root domain：必须人工 review，不自动改 DNS。
+- 官方 `/api/domain-request` 必须正确把三种 route dispatch 到 `domain-request.yml`。
 - active domain HTTP 200。
 - Cloudflare proxied CNAME 可能在 public DNS 看起来像 A/AAAA，所以检查时要用 Cloudflare-aware inspect，不要只看 `dig CNAME`。
 
@@ -703,17 +731,70 @@ npm run ops:send-review-email -- \
 - `data/finance/ledger.jsonl`
 - customer/project ROI view。
 
+标准命令：
+
+```bash
+npm run finance:report -- --client <client-slug>
+npm run finance:report -- --client <client-slug> --json true
+npm run finance:report -- --client <client-slug> --output data/finance/<client>-summary.json
+```
+
 验证：
 
 - 每笔 payment 写 revenue。
 - provider usage 能写 count/cost 就写。
 - email send 在配置成本后写 Resend event。
 - agent runtime 可以估算。
+- report 要能同时给人看（CLI）和给系统读（JSON）。
+- summary 至少包含 revenue / cost / profit / ROI / event counts / byProvider / byClient。
 
 查看位置：
 
 - `data/finance/ledger.jsonl`
 - admin dashboard，后续完善。
+- `data/finance/<client>-summary.json`
+
+当前 dashboard/ops 使用方式：
+
+- `/admin` 总览页现在会显示：
+  - business snapshot；
+  - needs-action-now；
+  - ready-to-review 候选；
+  - stage mix；
+  - 到 intakes / finance / queue 的入口。
+- `/admin/finance` 现在会显示：
+  - revenue / cost / profit / ROI；
+  - byClient；
+  - byProvider；
+  - byCategory。
+- `/admin/queue` 现在会显示：
+  - revision now；
+  - send customer review；
+  - waiting DNS；
+  - missing Open Design；
+  - QA blocked。
+- `/admin/intakes` 列表页现在会显示：
+  - finance overview（总 revenue / cost / profit / ROI / ledger counts）；
+  - needs-action-now 队列；
+  - top clients / provider spend 摘要；
+  - 总览 cards（ready for review / revisions pending / waiting DNS / profitable projects）；
+  - pipeline board（按 stage 分栏查看项目）；
+  - project stage；
+  - health pills（Open Design / QA / Outreach / Domain）；
+  - 推荐 next action；
+  - 当前 ROI profit。
+  - 浏览器端 saved views/filter（review ready / revision pending / waiting DNS / missing Open Design / QA blocked）。
+- `/admin/intakes/<client>/<order>` 详情页现在会显示：
+  - project stage；
+  - recommended next action；
+  - blockers 列表；
+  - workflow / latest task status；
+  - latest workflow run URL / run ID / smoke evidence path；
+  - operator console（Discord / repo / preview / live / artifacts）；
+  - outreach proof 摘要；
+  - delivery QA 状态；
+  - ROI snapshot；
+  - 对应的 repo 路径。
 
 ## 2026-05-07 全流程演练记录
 
@@ -734,9 +815,15 @@ npm run ops:send-review-email -- \
 | `npm run funnel:test-paid-revision-flow` | 3 次 included revisions、Cloudinary attachment、超额拒绝 | 通过 |
 | `npm run funnel:test-extra-revision-entitlement` | $100 extra revision 增加额度，不直接创建 agent task | 通过 |
 | `npm run funnel:test-cloudinary-attachments` | Cloudinary attachment upload/manifest | 通过 |
+| `npm run ops:test-init-project` | 新项目初始化、Open Design 必选、标准 milestone | 通过 |
 | `npm run domain:test-request` | 免费子域名、客户 subdomain、root domain review | 通过 |
+| `npm run domain:test-entrypoint` | 官方 `/api/domain-request` route 分类和 workflow dispatch | 通过 |
 | `npm run funnel:test-domain-email-guidance` | customer emails 使用官方 ProfitsLocal links | 通过 |
 | `npm run qa:test-delivery-qa` | delivery QA pass/blocker/missing 三种状态 | 通过 |
+| `npm run outreach:test-pack` | outreach pack JSON/Markdown 产物、audit/proof points | 通过 |
+| `npm run outreach:test-email` | cold outreach dry-run artifact 包含品牌化 HTML | 通过 |
+| `npm run funnel:test-paid-intake-index` | admin summary 吃到 outreach / QA / ROI / blocker / workflow 摘要 | 通过 |
+| `npm run finance:test-report` | ROI CLI/JSON summary、byClient/event counts | 通过 |
 | `npm run qa:opa-full-loop-live-sim` | 中心闭环 + template build + pre-purchase banner + order-mode footer | 通过 |
 | `npm run build` | ProfitsLocal 官方站 build | 通过 |
 

@@ -1,0 +1,144 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import { loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
+import { formatMoney, readLedger, summarizeLedger } from '../../../core/finance/ledger.js';
+
+const index = loadPaidIntakeIndex();
+const financeOverview = summarizeLedger(readLedger());
+const stageCounts = index.records.reduce((acc, record) => {
+  const key = record.stageSummary?.key || 'unknown';
+  acc[key] = (acc[key] || 0) + 1;
+  return acc;
+}, {});
+const urgentQueue = index.records
+  .filter((record) => record.blockerSummary?.blocking || record.status === 'revision_requested' || record.artifactSummary?.domainStatus === 'waiting_for_customer_dns')
+  .map((record) => ({
+    ...record,
+    urgencyScore:
+      (record.status === 'revision_requested' ? 100 : 0)
+      + (record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 80 : 0)
+      + ((record.blockerSummary?.count || 0) * 10)
+      + (record.stageSummary?.key === 'review_ready' ? 15 : 0),
+  }))
+  .sort((a, b) => b.urgencyScore - a.urgencyScore)
+  .slice(0, 5);
+const reviewReady = index.records.filter((record) => record.stageSummary?.key === 'review_ready').slice(0, 5);
+const navLinks = [
+  ['/admin', 'Overview'],
+  ['/admin/intakes', 'Intakes'],
+  ['/admin/finance', 'Finance'],
+  ['/admin/queue', 'Queue'],
+];
+---
+
+<Layout title={`Admin overview - ${siteConfig.name}`} description="Internal admin overview for ProfitsLocal ops.">
+  <section class="poster-section admin-section">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">Internal ops</p>
+          <h1>Admin overview</h1>
+          <p class="lede">One place to scan delivery, money, blockers, and the next move across active website projects.</p>
+        </div>
+        <div class="admin-count">
+          <strong>{index.counts.total}</strong>
+          <span>Projects</span>
+        </div>
+      </div>
+
+      <div class="admin-page-nav">
+        {navLinks.map(([href, label]) => (
+          <a href={href} class:list={{ 'is-active': href === '/admin' }}>{label}</a>
+        ))}
+      </div>
+
+      <div class="admin-overview-hero">
+        <section class="admin-overview-card admin-overview-primary">
+          <span class="eyebrow">Business Pulse</span>
+          <h2>Keep the queue moving without losing the money story.</h2>
+          <p class="micro">This view is for the first 30 seconds: what is blocked, what is ready, and whether the pipeline is making money.</p>
+          <div class="admin-finance-metrics">
+            <div><span>Revenue</span><strong>{formatMoney(financeOverview.revenue || 0)}</strong></div>
+            <div><span>Cost</span><strong>{formatMoney(financeOverview.cost || 0)}</strong></div>
+            <div><span>Profit</span><strong>{formatMoney(financeOverview.profit || 0)}</strong></div>
+            <div><span>ROI</span><strong>{financeOverview.roi == null ? 'N/A' : `${(financeOverview.roi * 100).toFixed(1)}%`}</strong></div>
+          </div>
+        </section>
+
+        <section class="admin-overview-card">
+          <span class="eyebrow">Pipeline</span>
+          <div class="admin-overview-kpis">
+            <div><span>Review ready</span><strong>{stageCounts.review_ready || 0}</strong></div>
+            <div><span>Revisions</span><strong>{stageCounts.revision || 0}</strong></div>
+            <div><span>Live</span><strong>{stageCounts.live || 0}</strong></div>
+            <div><span>Waiting DNS</span><strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong></div>
+          </div>
+        </section>
+
+        <section class="admin-overview-card">
+          <span class="eyebrow">Shortcuts</span>
+          <div class="admin-link-grid">
+            <a class="button secondary" href="/admin/intakes">Open intake board</a>
+            <a class="button secondary" href="/admin/finance">Open finance view</a>
+            <a class="button secondary" href="/admin/queue">Open action queue</a>
+          </div>
+        </section>
+      </div>
+
+      <div class="admin-finance-grid">
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Needs Action</span>
+              <h2>Now</h2>
+            </div>
+          </div>
+          <div class="admin-urgent-list">
+            {urgentQueue.length ? urgentQueue.map((record) => (
+              <a class="admin-urgent-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                <strong>{record.customer.company || record.clientSlug}</strong>
+                <span>{record.nextActionSummary?.label || 'Review project'}</span>
+                <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.status}</code>
+              </a>
+            )) : <p class="micro">No urgent project right now.</p>}
+          </div>
+        </section>
+
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Ready To Review</span>
+              <h2>Next Customer Sends</h2>
+            </div>
+          </div>
+          <ul class="admin-list">
+            {reviewReady.length ? reviewReady.map((record) => (
+              <li>
+                <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                  <strong>{record.customer.company || record.clientSlug}</strong>
+                </a>
+                <span>{record.nextActionSummary?.label || 'Send customer review'}</span>
+                <span>{record.previewUrl || record.artifactSummary?.outreachPreviewUrl || 'No preview recorded'}</span>
+              </li>
+            )) : <li>No project is review-ready yet.</li>}
+          </ul>
+        </section>
+
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Stage Mix</span>
+              <h2>Where Work Sits</h2>
+            </div>
+          </div>
+          <ul class="admin-list">
+            {Object.entries(stageCounts).sort((a, b) => b[1] - a[1]).map(([stage, count]) => (
+              <li><strong>{stage.replaceAll('_', ' ')}</strong><span>{count} project(s)</span></li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+</Layout>

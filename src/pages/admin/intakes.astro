@@ -1,9 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { siteConfig } from '../../config/site';
-import { loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
+import { ADMIN_VIEWS, loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
+import { formatMoney, readLedger, summarizeLedger } from '../../../core/finance/ledger.js';
 
 const index = loadPaidIntakeIndex();
+const financeOverview = summarizeLedger(readLedger());
 const statusOrder = [
   'intake_ready_for_review',
   'intake_needs_more_info',
@@ -15,6 +17,61 @@ const statusOrder = [
 const counts = statusOrder
   .filter((status) => index.counts[status])
   .map((status) => ({ status, count: index.counts[status] }));
+const dashboardSummary = {
+  reviewReady: index.records.filter((record) => record.stageSummary?.key === 'review_ready').length,
+  revisionsPending: index.records.filter((record) => record.status === 'revision_requested').length,
+  waitingDns: index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length,
+  profitableProjects: index.records.filter((record) => (record.artifactSummary?.financeSummary?.profit ?? 0) > 0).length,
+};
+const pipelineStages = [
+  ['intake', 'Intake'],
+  ['website_ready', 'Website Ready'],
+  ['open_design', 'Open Design'],
+  ['port_to_dev', 'Port To Dev'],
+  ['building', 'Building'],
+  ['review_ready', 'Review Ready'],
+  ['revision', 'Revision'],
+  ['launch_ready', 'Launch Ready'],
+  ['live', 'Live'],
+];
+const pipelineColumns = pipelineStages.map(([key, label]) => ({
+  key,
+  label,
+  records: index.records.filter((record) => record.stageSummary?.key === key).slice(0, 4),
+  total: index.records.filter((record) => record.stageSummary?.key === key).length,
+}));
+const urgentQueue = index.records
+  .filter((record) => record.blockerSummary?.blocking || record.status === 'revision_requested' || record.artifactSummary?.domainStatus === 'waiting_for_customer_dns')
+  .map((record) => ({
+    ...record,
+    urgencyScore:
+      (record.status === 'revision_requested' ? 100 : 0)
+      + (record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 80 : 0)
+      + ((record.blockerSummary?.count || 0) * 10)
+      + (record.stageSummary?.key === 'review_ready' ? 15 : 0),
+  }))
+  .sort((a, b) => b.urgencyScore - a.urgencyScore)
+  .slice(0, 6);
+const topClientsByProfit = Object.entries(financeOverview.byClient || {})
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 5);
+const topProvidersBySpend = Object.entries(financeOverview.byProvider || {})
+  .sort((a, b) => a[1] - b[1])
+  .slice(0, 5);
+const savedViews = [
+  ['all', ADMIN_VIEWS.all.label],
+  ['review_ready', ADMIN_VIEWS.review_ready.label],
+  ['revision_pending', ADMIN_VIEWS.revision_pending.label],
+  ['waiting_dns', ADMIN_VIEWS.waiting_dns.label],
+  ['missing_open_design', ADMIN_VIEWS.missing_open_design.label],
+  ['qa_blocked', ADMIN_VIEWS.qa_blocked.label],
+];
+const navLinks = [
+  ['/admin', 'Overview'],
+  ['/admin/intakes', 'Intakes'],
+  ['/admin/finance', 'Finance'],
+  ['/admin/queue', 'Queue'],
+];
 ---
 
 <Layout title={`Paid intake admin - ${siteConfig.name}`} description="Internal paid intake operations index.">
@@ -39,21 +96,161 @@ const counts = statusOrder
           </div>
         ))}
       </div>
+      <div class="admin-stat-grid">
+        <div class="admin-stat">
+          <span>Ready for review</span>
+          <strong>{dashboardSummary.reviewReady}</strong>
+        </div>
+        <div class="admin-stat">
+          <span>Revisions pending</span>
+          <strong>{dashboardSummary.revisionsPending}</strong>
+        </div>
+        <div class="admin-stat">
+          <span>Waiting DNS</span>
+          <strong>{dashboardSummary.waitingDns}</strong>
+        </div>
+        <div class="admin-stat">
+          <span>Profitable projects</span>
+          <strong>{dashboardSummary.profitableProjects}</strong>
+        </div>
+      </div>
+      <div class="admin-page-nav">
+        {navLinks.map(([href, label]) => (
+          <a href={href} class:list={{ 'is-active': href === '/admin/intakes' }}>{label}</a>
+        ))}
+      </div>
+      <div class="admin-finance-grid">
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Finance Overview</span>
+              <h2>Business Snapshot</h2>
+            </div>
+          </div>
+          <div class="admin-finance-metrics">
+            <div><span>Revenue</span><strong>{formatMoney(financeOverview.revenue || 0)}</strong></div>
+            <div><span>Cost</span><strong>{formatMoney(financeOverview.cost || 0)}</strong></div>
+            <div><span>Profit</span><strong>{formatMoney(financeOverview.profit || 0)}</strong></div>
+            <div><span>ROI</span><strong>{financeOverview.roi == null ? 'N/A' : `${(financeOverview.roi * 100).toFixed(1)}%`}</strong></div>
+          </div>
+          <div class="admin-finance-meta">
+            <span>{financeOverview.eventCount || 0} ledger events</span>
+            <span>{financeOverview.revenueEventCount || 0} revenue</span>
+            <span>{financeOverview.costEventCount || 0} cost</span>
+          </div>
+        </section>
+
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Needs Action</span>
+              <h2>Now</h2>
+            </div>
+          </div>
+          <div class="admin-urgent-list">
+            {urgentQueue.length ? urgentQueue.map((record) => (
+              <a class="admin-urgent-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                <strong>{record.customer.company || record.clientSlug}</strong>
+                <span>{record.nextActionSummary?.label || 'Review project'}</span>
+                <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.status}</code>
+              </a>
+            )) : <p class="micro">No urgent project right now.</p>}
+          </div>
+        </section>
+
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Leaders</span>
+              <h2>Profit / Spend</h2>
+            </div>
+          </div>
+          <div class="admin-split-lists">
+            <div>
+              <span class="admin-toolbar-label">Top clients</span>
+              <ul class="admin-list">
+                {topClientsByProfit.length ? topClientsByProfit.map(([client, amount]) => (
+                  <li><strong>{client}</strong><span>{formatMoney(amount)}</span></li>
+                )) : <li>No finance data.</li>}
+              </ul>
+            </div>
+            <div>
+              <span class="admin-toolbar-label">Highest spend providers</span>
+              <ul class="admin-list">
+                {topProvidersBySpend.length ? topProvidersBySpend.map(([provider, amount]) => (
+                  <li><strong>{provider}</strong><span>{formatMoney(amount)}</span></li>
+                )) : <li>No provider data.</li>}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="admin-toolbar" data-admin-toolbar>
+        <div class="admin-toolbar-group">
+          <span class="admin-toolbar-label">Saved views</span>
+          <div class="admin-view-pills">
+            {savedViews.map(([key, label], index) => (
+              <button type="button" class={`admin-view-pill ${index === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
+            ))}
+          </div>
+        </div>
+        <div class="admin-toolbar-group admin-toolbar-right">
+          <label class="admin-search">
+            <span class="admin-toolbar-label">Search</span>
+            <input type="search" placeholder="Client, order ID, domain" data-admin-search />
+          </label>
+          <p class="micro" data-admin-visible-count>{index.records.length} visible</p>
+        </div>
+      </div>
+      <div class="admin-pipeline" data-admin-pipeline>
+        {pipelineColumns.map((column) => (
+          <section class="admin-pipeline-column" data-stage-column={column.key}>
+            <header>
+              <span>{column.label}</span>
+              <strong>{column.total}</strong>
+            </header>
+            <div class="admin-pipeline-list">
+              {column.records.length ? column.records.map((record) => (
+                <a class="admin-pipeline-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                  <strong>{record.customer.company || record.clientSlug}</strong>
+                  <span>{record.nextActionSummary?.label || 'Review project'}</span>
+                  <code>{record.orderId}</code>
+                </a>
+              )) : <p class="micro">No projects</p>}
+            </div>
+          </section>
+        ))}
+      </div>
       <div class="admin-table-wrap">
         <table class="admin-table">
           <thead>
             <tr>
               <th>Client</th>
               <th>Status</th>
+              <th>Stage</th>
+              <th>Health</th>
               <th>Ops</th>
               <th>Usage</th>
               <th>Missing</th>
+              <th>Next action</th>
               <th>Open</th>
             </tr>
           </thead>
           <tbody>
             {index.records.map((record) => (
-              <tr>
+              <tr
+                data-client={record.clientSlug}
+                data-company={record.customer.company || ''}
+                data-order-id={record.orderId}
+                data-domain={record.customer.domain || ''}
+                data-status={record.status}
+                data-stage={record.stageSummary?.key || ''}
+                data-view-review-ready={record.stageSummary?.key === 'review_ready' ? 'true' : 'false'}
+                data-view-revision-pending={record.status === 'revision_requested' ? 'true' : 'false'}
+                data-view-waiting-dns={record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 'true' : 'false'}
+                data-view-missing-open-design={record.artifactSummary?.openDesignBound ? 'false' : 'true'}
+                data-view-qa-blocked={record.artifactSummary?.deliveryQaReady ? 'false' : 'true'}
+              >
                 <td>
                   <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
                     <strong>{record.customer.company || record.clientSlug}</strong>
@@ -66,6 +263,16 @@ const counts = statusOrder
                   <span>{record.readinessStatus.replaceAll('_', ' ')}</span>
                 </td>
                 <td>
+                  <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || 'Unknown'}</mark>
+                  <span>{record.artifactSummary?.latestTimeline?.type || 'no recent event'}</span>
+                </td>
+                <td>
+                  <span>OD: {record.artifactSummary?.openDesignBound ? 'ready' : 'missing'}</span>
+                  <span>QA: {record.artifactSummary?.deliveryQaReady ? 'pass' : 'pending'}</span>
+                  <span>Outreach: {record.artifactSummary?.outreachAssetsReady ? 'ready' : 'pending'}</span>
+                  <span>Domain: {record.artifactSummary?.domainStatus || 'none'}</span>
+                </td>
+                <td>
                   <span>{record.customer.email}</span>
                   <span>Leads: {record.leadRecipientEmail || record.customer.email || 'missing'}</span>
                   <span>{record.customer.domain}</span>
@@ -74,8 +281,13 @@ const counts = statusOrder
                   <span>{record.assetCount} assets</span>
                   <span>{record.fileCount} files</span>
                   <span>{record.revisionCount} / {record.revisionLimit} rev</span>
+                  <span>ROI: {record.artifactSummary?.financeSummary?.profit ?? 0} {record.currency || 'USD'}</span>
                 </td>
                 <td class={record.missing.length ? 'admin-missing' : 'admin-ready'}>{record.missing.length ? record.missing.join(', ') : 'Ready'}</td>
+                <td>
+                  <strong>{record.nextActionSummary?.label || 'Review'}</strong>
+                  <span>{record.nextActionSummary?.reason || ''}</span>
+                </td>
                 <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>Open</a></td>
               </tr>
             ))}
@@ -86,3 +298,50 @@ const counts = statusOrder
     </div>
   </section>
 </Layout>
+
+<script>
+  const toolbar = document.querySelector('[data-admin-toolbar]');
+  if (toolbar) {
+    const rows = Array.from(document.querySelectorAll('tbody tr'));
+    const pills = Array.from(toolbar.querySelectorAll('[data-admin-view]'));
+    const search = toolbar.querySelector('[data-admin-search]');
+    const visibleCount = toolbar.querySelector('[data-admin-visible-count]');
+    let activeView = 'all';
+    const viewDatasetKey = {
+      all: null,
+      review_ready: 'viewReviewReady',
+      revision_pending: 'viewRevisionPending',
+      waiting_dns: 'viewWaitingDns',
+      missing_open_design: 'viewMissingOpenDesign',
+      qa_blocked: 'viewQaBlocked',
+    };
+
+    const applyFilters = () => {
+      const query = (search?.value || '').trim().toLowerCase();
+      let visible = 0;
+      rows.forEach((row) => {
+        const key = viewDatasetKey[activeView];
+        const viewMatch = !key || row.dataset[key] === 'true';
+        const haystack = [row.dataset.client, row.dataset.company, row.dataset.orderId, row.dataset.domain, row.dataset.status, row.dataset.stage]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        const searchMatch = !query || haystack.includes(query);
+        const show = viewMatch && searchMatch;
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (visibleCount) visibleCount.textContent = `${visible} visible`;
+    };
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        activeView = pill.dataset.adminView || 'all';
+        pills.forEach((candidate) => candidate.classList.toggle('is-active', candidate === pill));
+        applyFilters();
+      });
+    });
+    search?.addEventListener('input', applyFilters);
+    applyFilters();
+  }
+</script>

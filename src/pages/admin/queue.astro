@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import { loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
+
+const index = loadPaidIntakeIndex();
+const navLinks = [
+  ['/admin', 'Overview'],
+  ['/admin/intakes', 'Intakes'],
+  ['/admin/finance', 'Finance'],
+  ['/admin/queue', 'Queue'],
+];
+const queueGroups = [
+  {
+    key: 'revision_requested',
+    label: 'Revision now',
+    records: index.records.filter((record) => record.status === 'revision_requested'),
+  },
+  {
+    key: 'review_ready',
+    label: 'Send customer review',
+    records: index.records.filter((record) => record.stageSummary?.key === 'review_ready'),
+  },
+  {
+    key: 'waiting_dns',
+    label: 'Waiting DNS',
+    records: index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns'),
+  },
+  {
+    key: 'missing_open_design',
+    label: 'Missing Open Design',
+    records: index.records.filter((record) => !record.artifactSummary?.openDesignBound),
+  },
+  {
+    key: 'qa_blocked',
+    label: 'QA blocked',
+    records: index.records.filter((record) => !record.artifactSummary?.deliveryQaReady),
+  },
+];
+---
+
+<Layout title={`Admin queue - ${siteConfig.name}`} description="Action queue for ProfitsLocal ops.">
+  <section class="poster-section admin-section">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">Internal ops</p>
+          <h1>Action queue</h1>
+          <p class="lede">This page is for triage. Open it when you want the next action grouped by urgency rather than by client.</p>
+        </div>
+        <div class="admin-count">
+          <strong>{queueGroups.reduce((sum, group) => sum + group.records.length, 0)}</strong>
+          <span>Action items</span>
+        </div>
+      </div>
+
+      <div class="admin-page-nav">
+        {navLinks.map(([href, label]) => (
+          <a href={href} class:list={{ 'is-active': href === '/admin/queue' }}>{label}</a>
+        ))}
+      </div>
+
+      <div class="admin-queue-grid">
+        {queueGroups.map((group) => (
+          <section class="admin-queue-column">
+            <header>
+              <span>{group.label}</span>
+              <strong>{group.records.length}</strong>
+            </header>
+            <div class="admin-pipeline-list">
+              {group.records.length ? group.records.slice(0, 12).map((record) => (
+                <a class="admin-pipeline-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                  <strong>{record.customer.company || record.clientSlug}</strong>
+                  <span>{record.nextActionSummary?.label || record.status}</span>
+                  <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.orderId}</code>
+                </a>
+              )) : <p class="micro">No project in this bucket.</p>}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

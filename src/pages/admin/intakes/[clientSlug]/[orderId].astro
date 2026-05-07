@@ -4,6 +4,10 @@ import { siteConfig } from '../../../../config/site';
 import { loadPaidIntakeIndex, loadPaidIntakeRecord } from '../../../../../core/funnel/paid-intake-index.js';
 import { allowedAdminActions, adminActionDefinition } from '../../../../../core/funnel/paid-intake-actions.js';
 
+function discordThreadUrl(threadId) {
+  return threadId ? `https://discord.com/channels/@me/${threadId}` : '';
+}
+
 export function getStaticPaths() {
   const index = loadPaidIntakeIndex();
   return index.records.map((record) => ({
@@ -17,6 +21,53 @@ if (!loaded) return Astro.redirect('/admin/intakes');
 const { record, summary, timeline, filePath, timelinePath } = loaded;
 const actions = allowedAdminActions(record).map((action) => ({ action, definition: adminActionDefinition(action) })).filter((item) => item.definition);
 const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1) : null;
+const officialFunnel = 'https://profitslocal.com';
+const funnelParams = new URLSearchParams({
+  order_id: summary.orderId,
+  email: summary.customer.email || '',
+  client_slug: summary.clientSlug,
+  repo: summary.repo || '',
+  preview_url: summary.previewUrl || '',
+});
+const projectLinks = [
+  { label: 'Repo', href: summary.repo ? `https://github.com/${summary.repo}` : '' },
+  { label: 'Dev preview', href: summary.previewUrl },
+  { label: 'Live site', href: summary.liveUrl || (summary.customer.domain ? `https://${summary.customer.domain}` : '') },
+  { label: 'Revise', href: `${officialFunnel}/revision?${funnelParams.toString()}` },
+  { label: 'Approve', href: `${officialFunnel}/approve?${funnelParams.toString()}` },
+  { label: 'Domain setup', href: `${officialFunnel}/domain-setup?${funnelParams.toString()}` },
+  { label: 'Discord thread', href: summary.discordThreadUrl || discordThreadUrl(summary.discordThreadId) },
+].filter((link) => link.href);
+const capsulePaths = [
+  ['Paid intake', filePath],
+  ['Timeline', timelinePath],
+  ['Case', summary.casePath],
+  ['Website survey', summary.websiteSurveyPath],
+  ['Build packet', summary.buildPacketPath],
+].filter(([, value]) => value);
+const operatorLinks = [
+  ['Discord thread', summary.discordThreadUrl || discordThreadUrl(summary.discordThreadId)],
+  ['Repo', summary.repo ? `https://github.com/${summary.repo}` : ''],
+  ['Dev preview', summary.previewUrl || ''],
+  ['Live site', summary.liveUrl || (summary.customer.domain ? `https://${summary.customer.domain}` : '')],
+  ['Latest workflow', summary.workflowSummary?.latestWorkflowUrl || ''],
+].filter(([, href]) => href);
+const operatorArtifacts = [
+  ['Open Design manifest', summary.artifactSummary?.conceptManifestPath || ''],
+  ['Production handoff', summary.artifactSummary?.productionHandoffPath || ''],
+  ['Outreach pack', summary.artifactSummary?.outreachPackPath || ''],
+  ['Outreach email dir', summary.artifactSummary?.outreachEmailDir || ''],
+  ['Delivery QA', summary.artifactSummary?.deliveryQaPath || ''],
+  ['Finance summary', summary.artifactSummary?.financeSummaryPath || ''],
+  ['Domain request', summary.artifactSummary?.domainRequestPath || ''],
+  ['Ops smoke evidence', summary.workflowSummary?.latestSmokePath || ''],
+].filter(([, value]) => value);
+const navLinks = [
+  ['/admin', 'Overview'],
+  ['/admin/intakes', 'Intakes'],
+  ['/admin/finance', 'Finance'],
+  ['/admin/queue', 'Queue'],
+];
 ---
 
 <Layout title={`${summary.customer.company || summary.clientSlug} admin - ${siteConfig.name}`} description="Paid intake detail and operations.">
@@ -34,6 +85,12 @@ const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1)
         </div>
       </div>
 
+      <div class="admin-page-nav">
+        {navLinks.map(([href, label]) => (
+          <a href={href}>{label}</a>
+        ))}
+      </div>
+
       {Astro.url.searchParams.get('action') === 'queued' && (
         <div class="admin-notice">Action queued. GitHub Actions will update this record, then the dashboard refreshes after the next deploy.</div>
       )}
@@ -43,6 +100,7 @@ const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1)
           <h2>Status</h2>
           <mark class={`status-pill status-${summary.status}`}>{summary.status.replaceAll('_', ' ')}</mark>
           <dl>
+            <div><dt>Project stage</dt><dd>{summary.stageSummary?.label || 'Unknown'}</dd></div>
             <div><dt>Readiness</dt><dd>{summary.readinessStatus || 'not checked'}</dd></div>
             <div><dt>Missing</dt><dd>{summary.missing.length ? summary.missing.join(', ') : 'Ready'}</dd></div>
             <div><dt>First version confirmed</dt><dd>{summary.firstVersionConfirmed ? 'Yes' : 'No'}</dd></div>
@@ -73,6 +131,95 @@ const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1)
               <button class="button" type="submit">{definition.label}</button>
             </form>
           ))}
+        </section>
+      </div>
+
+      <div class="admin-detail-grid">
+        <section class="admin-panel">
+          <h2>Next Action</h2>
+          <dl>
+            <div><dt>Recommended</dt><dd>{summary.nextActionSummary?.label || 'Review project state'}</dd></div>
+            <div><dt>Why</dt><dd>{summary.nextActionSummary?.reason || 'No recommendation recorded.'}</dd></div>
+            <div><dt>Command / route</dt><dd><code>{summary.nextActionSummary?.command || 'Open Discord thread and preview.'}</code></dd></div>
+          </dl>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Blockers</h2>
+          {summary.blockerSummary?.count ? (
+            <ul class="admin-list">
+              {summary.blockerSummary.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p class="micro">No blocking issue recorded. This project can keep moving.</p>
+          )}
+        </section>
+
+        <section class="admin-panel">
+          <h2>Workflow / Job Status</h2>
+          <dl>
+            <div><dt>Latest timeline event</dt><dd>{summary.artifactSummary?.latestTimeline?.type || 'N/A'}</dd></div>
+            <div><dt>Event time</dt><dd>{summary.artifactSummary?.latestTimeline?.at || 'N/A'}</dd></div>
+            <div><dt>Case status</dt><dd>{summary.artifactSummary?.caseStatus || 'N/A'}</dd></div>
+            <div><dt>Latest task</dt><dd>{summary.artifactSummary?.latestTask?.id || 'N/A'}</dd></div>
+            <div><dt>Task kind</dt><dd>{summary.artifactSummary?.latestTask?.kind || 'N/A'}</dd></div>
+            <div><dt>Task status</dt><dd>{summary.artifactSummary?.latestTask?.status || 'N/A'}</dd></div>
+            <div><dt>Latest agent run</dt><dd>{summary.workflowSummary?.latestAgentRunId || 'N/A'}</dd></div>
+            <div><dt>Agent run state</dt><dd>{summary.workflowSummary?.latestAgentRunState || 'N/A'}</dd></div>
+            <div><dt>Latest workflow kind</dt><dd>{summary.workflowSummary?.latestWorkflowKind || 'N/A'}</dd></div>
+            <div><dt>Workflow run ID</dt><dd>{summary.workflowSummary?.latestWorkflowRunId || 'N/A'}</dd></div>
+            <div><dt>Workflow URL</dt><dd>{summary.workflowSummary?.latestWorkflowUrl ? <a href={summary.workflowSummary.latestWorkflowUrl} target="_blank" rel="noreferrer">Open run</a> : 'N/A'}</dd></div>
+            <div><dt>Workflow evidence</dt><dd><code>{summary.workflowSummary?.latestSmokePath || 'N/A'}</code></dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <section class="admin-panel">
+        <h2>Project Links</h2>
+        <div class="admin-link-grid">
+          {projectLinks.map((link) => (
+            <a class="button secondary" href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+          ))}
+          {!projectLinks.length && <p class="micro">No project links recorded yet.</p>}
+        </div>
+        <dl class="admin-path-list">
+          {capsulePaths.map(([label, value]) => (
+            <div><dt>{label}</dt><dd><code>{value}</code></dd></div>
+          ))}
+        </dl>
+      </section>
+
+      <div class="admin-detail-grid lower">
+        <section class="admin-panel">
+          <h2>Operator Console</h2>
+          <dl>
+            <div><dt>Client slug</dt><dd>{summary.clientSlug}</dd></div>
+            <div><dt>Order ID</dt><dd><code>{summary.orderId}</code></dd></div>
+            <div><dt>Repo branch</dt><dd>{record.branch || 'dev'}</dd></div>
+            <div><dt>Template</dt><dd>{record.template || 'unknown'}</dd></div>
+            <div><dt>Website thread</dt><dd>{record.discord?.websiteTaskThreadId || 'N/A'}</dd></div>
+            <div><dt>Revision policy</dt><dd>{record.revision?.policy?.description || `${summary.revisionLimit} included revisions`}</dd></div>
+          </dl>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Operator Links</h2>
+          <div class="admin-link-grid">
+            {operatorLinks.map(([label, href]) => (
+              <a class="button secondary" href={href} target="_blank" rel="noreferrer">{label}</a>
+            ))}
+          </div>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Operator Artifacts</h2>
+          <dl class="admin-path-list">
+            {operatorArtifacts.map(([label, value]) => (
+              <div><dt>{label}</dt><dd><code>{value}</code></dd></div>
+            ))}
+          </dl>
         </section>
       </div>
 
@@ -111,6 +258,38 @@ const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1)
         </section>
       </div>
 
+      <div class="admin-detail-grid lower">
+        <section class="admin-panel">
+          <h2>Outreach</h2>
+          <dl>
+            <div><dt>Preview in pack</dt><dd>{summary.artifactSummary?.outreachPreviewUrl || 'N/A'}</dd></div>
+            <div><dt>Proof points</dt><dd>{summary.artifactSummary?.outreachProofPoints ?? 0}</dd></div>
+            <div><dt>Assets ready</dt><dd>{summary.artifactSummary?.outreachAssetsReady ? 'Yes' : 'No'}</dd></div>
+            <div><dt>Pack JSON path</dt><dd><code>{summary.artifactSummary?.outreachPackPath || 'N/A'}</code></dd></div>
+            <div><dt>Pack MD path</dt><dd><code>{summary.artifactSummary?.outreachMarkdownPath || 'N/A'}</code></dd></div>
+          </dl>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Delivery QA</h2>
+          <dl>
+            <div><dt>Ready for review</dt><dd>{summary.artifactSummary?.deliveryQaReady ? 'Yes' : 'No'}</dd></div>
+            <div><dt>QA report</dt><dd>{summary.artifactSummary?.deliveryQaPath || 'N/A'}</dd></div>
+          </dl>
+        </section>
+
+        <section class="admin-panel">
+          <h2>ROI Snapshot</h2>
+          <dl>
+            <div><dt>Revenue</dt><dd>{summary.currency} {summary.artifactSummary?.financeSummary?.revenue ?? 0}</dd></div>
+            <div><dt>Cost</dt><dd>{summary.currency} {summary.artifactSummary?.financeSummary?.cost ?? 0}</dd></div>
+            <div><dt>Profit</dt><dd>{summary.currency} {summary.artifactSummary?.financeSummary?.profit ?? 0}</dd></div>
+            <div><dt>Events</dt><dd>{summary.artifactSummary?.financeSummary?.eventCount ?? 0}</dd></div>
+            <div><dt>Summary path</dt><dd><code>{summary.artifactSummary?.financeSummaryPath || 'N/A'}</code></dd></div>
+          </dl>
+        </section>
+      </div>
+
       <section class="admin-panel admin-timeline">
         <h2>Timeline</h2>
         <ol>
@@ -122,8 +301,6 @@ const latestRevision = Array.isArray(record.revisions) ? record.revisions.at(-1)
             </li>
           ))}
         </ol>
-        <p class="micro">Record: <code>{filePath}</code></p>
-        <p class="micro">Timeline: <code>{timelinePath}</code></p>
       </section>
     </div>
   </section>
