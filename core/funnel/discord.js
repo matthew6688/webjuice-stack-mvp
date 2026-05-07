@@ -93,9 +93,11 @@ export function buildWebsiteAgentHandoffMessage({
 }) {
   const casePath = caseRecord?.ref?.casePath || task?.case?.casePath || '';
   const contextPath = caseRecord?.ref?.contextPath || task?.case?.contextPath || '';
+  const buildPacketPath = caseRecord?.ref?.buildPacketPath || task?.case?.buildPacketPath || task?.buildPacketPath || '';
   const taskPath = task?.taskPath || '';
+  const openDesign = task?.openDesign || {};
   const lines = [
-    `${mention} ProfitsLocal website task handoff`,
+    `${mention} ProfitsLocal 网站任务交接`,
     `kind: ${kind || task?.kind || ''}`,
     `client: ${order?.clientSlug || task?.clientSlug || ''}`,
     `repo: ${order?.repo || task?.repo || ''}`,
@@ -103,13 +105,24 @@ export function buildWebsiteAgentHandoffMessage({
     `preview: ${order?.previewUrl || task?.previewUrl || ''}`,
     `case: ${casePath}`,
     `context: ${contextPath}`,
+    `buildPacket: ${buildPacketPath}`,
     `task: ${taskPath}`,
-    `evidence: ${task?.requiredContext?.evidence || ''}`,
-    `content: ${task?.requiredContext?.content || ''}`,
-    `design: ${task?.requiredContext?.design || ''}`,
-    `brand: ${task?.requiredContext?.brandSpec || ''}`,
+    `websiteSurvey: ${task?.requiredContext?.websiteSurvey || task?.websiteSurveyPath || ''}`,
+    `evidence: ${task?.requiredContext?.evidence || task?.evidencePath || ''}`,
+    `content: ${task?.requiredContext?.content || task?.contentPath || ''}`,
+    `design: ${task?.requiredContext?.design || task?.designPath || ''}`,
+    `brand: ${task?.requiredContext?.brandSpec || task?.brandSpecPath || ''}`,
+    `openDesignStatus: ${openDesign.status || (openDesign.projectId ? 'bound' : 'not_created')}`,
+    `openDesignProject: ${openDesign.projectId || ''}`,
+    `openDesignDataDir: ${openDesign.dataDir || ''}`,
+    `openDesignConcept: ${openDesign.conceptPath || ''}`,
+    `openDesignManifest: ${openDesign.manifestPath || ''}`,
+    `productionHandoff: ${task?.productionHandoffPath || openDesign.productionHandoffPath || ''}`,
+    `openDesignContinue: ${openDesign.continueCommand || openDesign.createCommand || ''}`,
+    `openDesignSync: ${openDesign.syncCommand || ''}`,
+    `repoBootstrap: ${task?.repoBootstrap?.command || ''}`,
     '',
-    `Action: ${action || 'read the case/context/task files first. Load huashu-design and open-design web-prototype/saas-landing/critique skills when making visual changes. Preserve website vs menu separation, use verified evidence/design/brand files, and push customer-facing edits to dev only.'}`,
+    `Action: ${action || '先阅读 build packet、website survey、case/context/task 文件，再决定如何开工。涉及视觉方案时，必须复用上面这个本地 Open Design project/dataDir，不要擅自新开一个项目。Open Design 有更新后，先 sync/build production handoff，再 port 到 Webjuice/Astro repo 的 dev。保持 website 和 menu 分离，只使用已验证的 evidence/design/brand 文件，所有面向客户的改动都只推到 dev。'}`,
   ].filter((line) => line !== null && line !== undefined);
 
   return {

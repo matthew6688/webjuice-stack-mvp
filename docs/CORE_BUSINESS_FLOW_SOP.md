@@ -495,6 +495,25 @@ npm run open-design:build-production-handoff -- --client <client> ...
 - 如果用了 Open Design，必须复用同一个 project ID，并重新生成 production handoff。
 - 如果建议发客户 email，必须引用最新 dev preview 和最新 QA result。
 
+标准命令：
+
+```bash
+npm run ops:send-dry-run-handoff -- \
+  --client <client-slug> \
+  --order <dryrun-id> \
+  --send true
+```
+
+说明：
+
+- 只有 `ops-checklist.status=ready_for_customer_review` 才允许正式 dispatch。
+- 会优先复用现有 `websiteTaskThreadId`。
+- 如果 thread 还不存在，会在 `#website-tasks` 下创建一个以 business name 为主的 thread。
+- 发送后会写：
+  - `website-handoff-dispatch.json`
+  - case timeline event：`website_agent_handoff_sent`
+  - case memory 中的 `discord.websiteTaskThreadId`
+
 查看位置：
 
 - `docs/AGENT_TASK_PACKET_CONTRACT.md`
@@ -527,6 +546,25 @@ npm run open-design:build-production-handoff -- --client <client> ...
 - 链接指向官方 `profitslocal.com`，不是 customer preview domain。
 - email 包含 order ID 和 preview URL。
 - Resend ID 被记录。
+- 只有 `ops-checklist.status=ready_for_customer_review` 才允许正式发送。
+- 如果 case 已经有 `latestAgentRun.audit`，还必须通过 pre-review gate。
+
+标准命令：
+
+```bash
+npm run ops:send-review-email -- \
+  --client <client-slug> \
+  --order <dryrun-id-or-order-id> \
+  --send true
+```
+
+说明：
+
+- 这个命令会读取 `customer-review-email-draft.json`。
+- 如果只是想检查门禁，不真的发，去掉 `--send true`。
+- 正式发送后会写：
+  - `customer-review-email-send.json`
+  - case timeline event：`customer_review_email_sent`
 
 查看位置：
 
@@ -817,6 +855,22 @@ status=ready_for_customer_review
 
 这两份就是后续发到 Discord thread、人工 review、或者交给其他 agent 的标准中文交接材料。
 
+当 dry-run 成功后，下一步标准动作是：
+
+```text
+ready_for_customer_review
+-> 发送 Discord website handoff
+-> 发送或预演 customer review email
+-> 等客户 revision 或 approval
+```
+
+对应命令：
+
+```bash
+npm run ops:send-dry-run-handoff -- --client <client-slug> --order <dryrun-id> --send true
+npm run ops:send-review-email -- --client <client-slug> --order <dryrun-id> --send true
+```
+
 ## Operator 一键 Dry-run
 
 当我们想知道一个项目离“可以发给客户 review”还差什么时，先跑 dry-run，不要凭感觉判断。
@@ -882,6 +936,38 @@ npm run ops:project-dry-run -- \
 - blocker：缺 production handoff。
 
 这说明 Opa 这类老项目在当前 SOP 下不能直接算完整 ready。下一步必须先创建或绑定 Open Design project，然后生成 production handoff。
+
+## 2026-05-07 新 repo 闭环追加验证
+
+这次新增验证的是 dry-run 之后的两个操作门：
+
+1. `ready_for_customer_review -> Discord website handoff`
+2. `ready_for_customer_review -> customer review email`
+
+通过的验证：
+
+| 验证命令 | 覆盖内容 | 结果 |
+|---|---|---|
+| `npm run ops:test-dry-run-handoff` | ready 项目才能发 handoff；创建/复用 website thread；case 记录 thread；生成 dispatch evidence | 通过 |
+| `npm run ops:test-review-email-gate` | ready 项目才能发 review email；blocked 项目被拒绝；发送后写 timeline 和 evidence | 通过 |
+
+这两个步骤加上原有验证：
+
+- `npm run hermes:test-website-agent-closure`
+- `npm run agent:test-approval-resolution`
+- `npm run funnel:test-paid-revision-flow`
+
+就形成了当前新 repo 的核心业务闭环：
+
+```text
+ops:project-dry-run
+-> ops:send-dry-run-handoff
+-> ops:send-review-email
+-> customer revision or approval
+-> revision thread reuse / dev update
+-> approval dev->main
+-> live publish
+```
 
 ## 老项目升级路径
 
