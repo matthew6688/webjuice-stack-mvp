@@ -135,7 +135,7 @@ function validatePage({ mode, pagePath, source, status, html, error = '', expect
   }
 
   if (pagePath === '/contact-us') {
-    check(checks, 'contact_page_routes', containsAll(text, ['Questions before checkout', 'Email ProfitsLocal', 'Request a callback']), 'contact page missing customer support paths');
+    check(checks, 'contact_page_routes', containsAll(text, ['Ask before you claim this preview', 'Prepare email', 'Request a callback']), 'contact page missing customer support paths');
     check(checks, 'contact_support_email', html.includes('hello@fengtalk.ai'), 'contact page missing support email');
     check(checks, 'contact_preview_context', html.includes('data-preview-context') && containsAll(html, ['name="client_slug"', 'name="repo"', 'name="preview_url"']), 'contact page does not preserve preview/source context');
   }
