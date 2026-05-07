@@ -62,6 +62,14 @@ export function publishApprovedTask(task, options = {}) {
   runStep(result, { id: 'fetch', command: 'git', args: ['fetch', 'origin', sourceBranch, targetBranch], cwd: repoDir }, dryRun);
   runStep(result, { id: 'checkout-source', command: 'git', args: ['checkout', sourceBranch], cwd: repoDir }, dryRun);
   runStep(result, { id: 'pull-source', command: 'git', args: ['pull', '--ff-only', 'origin', sourceBranch], cwd: repoDir }, dryRun);
+  if (shouldInstallDependencies(repoDir)) {
+    runStep(result, {
+      id: 'install-deps',
+      command: installCommand(repoDir).command,
+      args: installCommand(repoDir).args,
+      cwd: repoDir,
+    }, dryRun);
+  }
   runStep(result, { id: 'build-source', command: 'npm', args: ['run', 'build'], cwd: repoDir }, dryRun);
   if (!dryRun && result.steps.every((step) => step.ok)) {
     result.devCommit = gitOutput(repoDir, ['rev-parse', sourceBranch]);
@@ -159,6 +167,17 @@ function normalizeList(value) {
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+function shouldInstallDependencies(repoDir) {
+  return fs.existsSync(path.join(repoDir, 'package.json'));
+}
+
+function installCommand(repoDir) {
+  if (fs.existsSync(path.join(repoDir, 'package-lock.json'))) {
+    return { command: 'npm', args: ['ci'] };
+  }
+  return { command: 'npm', args: ['install'] };
 }
 
 export function savePublishResult(result, outputPath) {
