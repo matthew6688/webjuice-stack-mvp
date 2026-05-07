@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<Layout title={`Domain setup - ${siteConfig.name}`} description="Choose and start a ProfitsLocal launch domain route.">
+  <section class="poster-section">
+    <div class="contact-frame intake-frame revision-frame">
+      <div class="contact-intro">
+        <p class="eyebrow">Domain launch</p>
+        <h1>Choose the public address.</h1>
+        <p class="lede">ProfitsLocal subdomains are fastest because we handle DNS. Customer-owned domains need one DNS change, and root domains need a quick safety check.</p>
+        <p class="micro" style="margin-top: 22px;"><a href="/domain-help">Read the domain guide</a> before choosing if you already have a live website or business email.</p>
+      </div>
+      <form class="contact-form" id="domain-form" data-funnel-context-form novalidate>
+        <input type="hidden" name="project" value="" />
+        <div class="field">
+          <label for="order_id">Order ID <span class="req">Required</span></label>
+          <input id="order_id" name="order_id" required autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="email">Checkout email <span class="req">Required</span></label>
+          <input id="email" name="email" required type="email" autocomplete="email" />
+        </div>
+        <div class="field full">
+          <label for="client_slug">Project slug <span class="req">Required</span></label>
+          <input id="client_slug" name="client_slug" required />
+        </div>
+        <div class="field full">
+          <label for="domain">Domain or subdomain</label>
+          <input id="domain" name="domain" autocomplete="off" />
+          <p class="field-hint">Leave blank to use the fastest free ProfitsLocal subdomain.</p>
+        </div>
+        <div class="field full policy-field">
+          <label>Launch route</label>
+          <label class="check-row"><input type="radio" name="route" value="profitslocal" checked /> Free ProfitsLocal subdomain</label>
+          <label class="check-row"><input type="radio" name="route" value="subdomain" /> My own subdomain</label>
+          <label class="check-row"><input type="radio" name="route" value="root" /> My root domain</label>
+        </div>
+        <div class="form-actions">
+          <button class="submit-button" type="submit">Start domain setup</button>
+          <p id="domain-status" class="form-status">We will attach this request to your order.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const form = document.getElementById('domain-form');
+    const status = document.getElementById('domain-status');
+    window.ProfitsLocalFunnel?.fillForm(form);
+    for (const key of ['order_id', 'session_id', 'email', 'client_slug', 'domain', 'preferred_domain']) {
+      const value = params.get(key);
+      const fieldName = key === 'session_id' ? 'order_id' : key === 'preferred_domain' ? 'domain' : key;
+      const field = form?.elements.namedItem(fieldName);
+      if (value && field instanceof HTMLInputElement) field.value = value;
+    }
+    const clientField = form?.elements.namedItem('client_slug');
+    const projectField = form?.elements.namedItem('project');
+    if (clientField instanceof HTMLInputElement && projectField instanceof HTMLInputElement && clientField.value) {
+      projectField.value = `${clientField.value}-live`;
+    }
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const invalid = Array.from(form.querySelectorAll('input')).find((control) => !control.checkValidity());
+      if (invalid) {
+        invalid.focus();
+        if (status) {
+          status.textContent = 'Please enter the order ID, email, and project slug.';
+          status.className = 'form-status error';
+        }
+        return;
+      }
+      if (status) {
+        status.textContent = 'Starting domain setup...';
+        status.className = 'form-status';
+      }
+      const payload = Object.fromEntries(new FormData(form).entries());
+      if (!payload.project && payload.client_slug) payload.project = `${payload.client_slug}-live`;
+      try {
+        const response = await fetch('/api/domain-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (!response.ok || !result.success) throw new Error(result.error || 'Domain setup failed.');
+        status.textContent = result.route?.message || 'Domain request queued. We will email status updates.';
+        status.className = 'form-status success';
+      } catch (error) {
+        if (status) {
+          status.textContent = error instanceof Error ? error.message : 'Domain setup failed.';
+          status.className = 'form-status error';
+        }
+      }
+    });
+  </script>
+</Layout>

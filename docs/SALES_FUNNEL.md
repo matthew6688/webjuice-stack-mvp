@@ -6,29 +6,31 @@
 2. Buyer chooses:
    - `$399` one-time website with 3 revisions
    - `$799/year` website with monthly maintenance
-3. Current production fallback uses the preview site's own `/checkout` page and Stripe Checkout. The form collects:
+3. The preview sales bar sends all buyer actions to the official ProfitsLocal funnel on `https://profitslocal.com`. The customer demo site should not host our checkout, FAQ, approval, revision, or domain funnel pages except as temporary legacy fallback routes.
+4. The official `/checkout` page creates the Stripe Checkout Session. The form collects:
    - package
    - business name
    - email
    - preferred domain or subdomain
    - launch notes or requested changes
    - hidden `client_slug`, `repo`, `template`, `preview_url`, `tier`, `amount`, `currency`
-4. Stripe success redirects to the client preview site's `/thank-you` page with context in the URL.
-5. The checkout endpoint can send a checkout-started notification to Discord.
-6. Stripe sends `checkout.session.completed` to `/api/stripe-webhook`.
-7. The client webhook verifies the Stripe signature and sends a sales Discord notification.
-8. The client webhook dispatches the raw Stripe event to the main repo automation runner when `AGENT_GITHUB_TOKEN` is configured.
-9. The automation repo routes the same Stripe event with:
+   - hidden attribution fields such as `utm_source`, `utm_medium`, `utm_campaign`, `gclid`, `fbclid`, `msclkid`, `ttclid`, `twclid`, `li_fat_id`, `gbraid`, and `wbraid`
+5. Stripe success redirects to the official `/thank-you` page with context in the URL.
+6. The checkout endpoint can send a checkout-started notification to Discord.
+7. Stripe sends `checkout.session.completed` to `/api/stripe-webhook`.
+8. The official webhook verifies the Stripe signature and sends a sales Discord notification.
+9. The official webhook dispatches the raw Stripe event to the main repo automation runner when `AGENT_GITHUB_TOKEN` is configured.
+10. The automation repo routes the same Stripe event with:
    - `npm run funnel:route-event -- --input stripe-event.json --provider auto`
-10. Router writes:
+11. Router writes:
    - normalized submission JSON
    - Stripe revenue ledger event
    - order entitlement with revision quota
    - agent task JSON with target repo and `dev` branch
    - case memory under `data/cases/<clientSlug>/<orderId>/`
-11. Agent works on `dev`, not `main/live`.
-12. Customer reviews the dev preview URL and clicks either `Approve site` or `Request revision`.
-13. Approval publishes the reviewed `dev` tree to `main/live`; revision creates a new dev task if quota remains.
+12. Agent works on `dev`, not `main/live`.
+13. Customer reviews the dev preview URL and clicks either `Approve site` or `Request revision`. Those post-payment controls also point to official `profitslocal.com` pages.
+14. Approval publishes the reviewed `dev` tree to `main/live`; revision creates a new dev task if quota remains.
 
 Tally remains supported as a provider, but live API creation of the payment block was blocked by Tally's opaque block schema during verification. Keep the provider boundary so Tally can be used manually/MCP later without changing the downstream order/task contracts.
 
@@ -46,32 +48,39 @@ The preview site must keep sales/account controls in a fixed footer/banner. Do n
 
 Fixed footer/banner buttons:
 
-- `How it works` -> `/demo-faq?client_slug=<client>&repo=<repo>&preview_url=<preview>`
-- `FAQ` -> `/demo-faq?client_slug=<client>&repo=<repo>&preview_url=<preview>#questions`
-- `Contact` -> `/contact-us?client_slug=<client>&repo=<repo>&preview_url=<preview>`
+- `How it works` -> `https://profitslocal.com/checkout?client_slug=<client>&repo=<repo>&preview_url=<preview>#pricing`
+- `FAQ` -> `https://profitslocal.com/checkout?client_slug=<client>&repo=<repo>&preview_url=<preview>#faq`
+- `Contact` -> `https://profitslocal.com/contact?client_slug=<client>&repo=<repo>&preview_url=<preview>`
 - ProfitsLocal logo -> `https://profitslocal.com/` in a new tab
-- `$399 one-time` -> `/checkout?...tier=one_time&amount=399`
-- `$799/yr` -> `/checkout?...tier=yearly_maintenance&amount=799`
-- `Checkout` -> the one-time checkout URL by default, preserving `client_slug`, `repo`, `template`, `preview_url`, `tier`, `amount`, and `currency`
-- After payment only: `Approve site` -> `/approve?order_id=<orderId>&email=<checkoutEmail>`
-- After payment only: `Request revision` -> `/revise?order_id=<orderId>&email=<checkoutEmail>`
-- After payment only: `Buy extra revision` -> `$100` Stripe extra revision checkout when needed
+- `$399 one-time` -> `https://profitslocal.com/checkout?...tier=one_time&amount=399`
+- `$799/yr` -> `https://profitslocal.com/checkout?...tier=yearly_maintenance&amount=799`
+- `Checkout` -> the one-time official checkout URL by default, preserving `client_slug`, `repo`, `template`, `preview_url`, `tier`, `amount`, `currency`, and traffic attribution params.
+- After payment only: `Approve site` -> `https://profitslocal.com/approve?order_id=<orderId>&email=<checkoutEmail>&client_slug=<client>&repo=<repo>&preview_url=<preview>`
+- After payment only: `Request revision` -> `https://profitslocal.com/revision?order_id=<orderId>&email=<checkoutEmail>&client_slug=<client>&repo=<repo>&preview_url=<preview>`
+- After payment only: `Buy extra revision` -> official `$100` Stripe extra revision checkout when needed.
 
 Pre-purchase preview banners must not show `$100 extra revision` or `Request changes`. Those are customer account/review actions and only become visible after the preview URL has a matched `orderId + checkout email`.
 
 Utility pages:
 
-- `/demo-faq` is the ProfitsLocal offer/FAQ page that explains pricing, what happens after payment, revision allowance, and domain routes.
-- `/checkout`, `/contact-us`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` use ProfitsLocal branded chrome: official logo, cream/paper/coral/mint palette, hard black borders, and the shared ProfitsLocal header/footer. They must not show customer-site/template footer text or the fixed preview sales bar inside the utility page itself.
-- `/checkout` preserves preview source context through hidden fields and URL params, so a paid order maps back to the correct demo, repo, and client project.
-- `/contact-us` lets the customer email ProfitsLocal, request a callback by email, or submit a mailto-backed question while preserving the same preview context.
+- Official `profitslocal.com` pages use ProfitsLocal branded chrome: official logo, cream/paper/coral/mint palette, hard black borders, and the shared ProfitsLocal header/footer.
+- `/checkout` is both the offer/FAQ/pricing page and the Stripe entry. It preserves preview source context through URL params, cookie/localStorage, and hidden fields, so a paid order maps back to the correct demo, repo, and client project.
+- `/contact` lets the customer ask a question while preserving the same preview context and attribution.
 - `/approve` requires `orderId + checkout email`, then posts to `/api/approval-request/`.
-- `/revise` requires `orderId + checkout email`, then posts to `/api/revision-request/`.
+- `/revision` requires `orderId + checkout email`, then posts to `/api/revision-submit`.
+  - `/revise` is an official redirect alias for compatibility.
   - When opened from a review email or preview footer, `orderId` and checkout email are prefilled and locked as read-only fields.
   - The page shows trusted plan/revision usage after the backend matches the order.
   - The form accepts multiple attachment selections, uploads them server-side to Cloudinary when Cloudinary env is configured, and forwards Cloudinary URLs to Discord/email/agent routing.
 - `/api/order-status/` returns trusted revision usage only after the same match.
 - `/domain-help` explains fast ProfitsLocal-hosted launch options plus customer-owned DNS steps.
+
+Context handoff rules:
+
+- The demo preview must append project params to every official funnel link: `client_slug`, `repo`, `preview_url`, `template`, `campaign_id`, `tier`, `amount`, and `currency` when available.
+- The demo preview should also preserve traffic source params: `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`, `gclid`, `fbclid`, `msclkid`, `ttclid`, `twclid`, `li_fat_id`, `gbraid`, `wbraid`, `source`, and `ref`.
+- The official site stores those values in `pl_funnel_context` plus localStorage, then writes them into hidden fields on checkout/contact/revision/approval/domain forms.
+- Stripe metadata and contact notifications include the same context so the sale can be traced back to the exact preview, campaign, repo, and lead source.
 
 The customer may reach these pages from either the review email or the fixed footer/banner on the dev preview.
 

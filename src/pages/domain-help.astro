@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<Layout title={`Domain guide - ${siteConfig.name}`} description="ProfitsLocal domain and subdomain setup guide.">
+  <section class="poster-section">
+    <div class="pricing-frame">
+      <div class="pricing-head">
+        <div>
+          <p class="eyebrow">Domain guide</p>
+          <h1>Pick the least risky launch address.</h1>
+        </div>
+        <div>
+          <p class="lede">Fast launch and safe DNS are not always the same thing. Use a ProfitsLocal subdomain when speed matters; use your own domain when you are ready for official replacement.</p>
+          <a class="button" href="/domain-setup">Start domain setup</a>
+        </div>
+      </div>
+
+      <div class="price-grid">
+        <article class="price-card featured">
+          <span>Fastest</span>
+          <h2>Free ProfitsLocal subdomain</h2>
+          <p>No customer DNS. We create the record and attach Cloudflare Pages.</p>
+        </article>
+        <article class="price-card">
+          <span>Safest with existing site</span>
+          <h2>Your subdomain</h2>
+          <p>Example: menu.yourbusiness.com. Add one CNAME to the Pages target.</p>
+        </article>
+        <article class="price-card">
+          <span>Official replacement</span>
+          <h2>Your root domain</h2>
+          <p>Example: yourbusiness.com. We inspect DNS and email before changing root records.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>

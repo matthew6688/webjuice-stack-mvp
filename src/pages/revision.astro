@@ -12,7 +12,9 @@ import { siteConfig } from '../config/site';
         <p class="lede">Use this after the first version exists. A revision should be one complete, in-scope set of edits to the current one-page website.</p>
         <p class="micro" style="margin-top: 22px;">Major redesigns, new design directions, multi-page work, apps, dashboards, or open-ended consulting are custom quotes and do not fit this form.</p>
       </div>
-      <form class="contact-form" id="revision-form" novalidate>
+      <form class="contact-form" id="revision-form" data-funnel-context-form novalidate>
+        <input type="hidden" name="repo" value="" />
+        <input type="hidden" name="preview_url" value="" />
         <div class="field">
           <label for="order_id">Order ID <span class="req">Required</span></label>
           <input id="order_id" name="order_id" placeholder="cs_live_..." required />
@@ -57,9 +59,11 @@ import { siteConfig } from '../config/site';
     const params = new URLSearchParams(window.location.search);
     const form = document.getElementById('revision-form');
     const status = document.getElementById('revision-status');
-    for (const key of ['order_id', 'email', 'client_slug']) {
-      const field = form?.elements.namedItem(key);
-      if (field instanceof HTMLInputElement && params.get(key)) field.value = params.get(key);
+    window.ProfitsLocalFunnel?.fillForm(form);
+    for (const key of ['order_id', 'session_id', 'email', 'client_slug', 'repo', 'preview_url']) {
+      const fieldName = key === 'session_id' ? 'order_id' : key;
+      const mapped = form?.elements.namedItem(fieldName);
+      if (mapped instanceof HTMLInputElement && params.get(key)) mapped.value = params.get(key);
     }
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();

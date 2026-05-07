@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<Layout title={`Approve preview - ${siteConfig.name}`} description="Approve a ProfitsLocal dev preview for live publishing.">
+  <section class="poster-section">
+    <div class="contact-frame intake-frame revision-frame">
+      <div class="contact-intro">
+        <p class="eyebrow">Launch approval</p>
+        <h1>Approve the preview for live launch.</h1>
+        <p class="lede">Use the same Stripe order ID and checkout email. We match both before publishing the reviewed dev version live.</p>
+        <p class="micro" style="margin-top: 22px;">If anything still feels off, submit a revision instead. Approval means the current dev preview is ready to become the public site.</p>
+      </div>
+      <form class="contact-form" id="approval-form" data-funnel-context-form novalidate>
+        <input type="hidden" name="repo" value="" />
+        <input type="hidden" name="preview_url" value="" />
+        <div class="field">
+          <label for="order_id">Order ID <span class="req">Required</span></label>
+          <input id="order_id" name="order_id" placeholder="cs_live_..." required />
+        </div>
+        <div class="field">
+          <label for="email">Checkout email <span class="req">Required</span></label>
+          <input id="email" name="email" type="email" placeholder="owner@example.com" required />
+        </div>
+        <div class="field full">
+          <label for="client_slug">Project slug <span class="req">Required</span></label>
+          <input id="client_slug" name="client_slug" placeholder="your-business" required />
+        </div>
+        <div class="field full policy-field">
+          <label class="check-row" for="confirm">
+            <input id="confirm" name="confirm" type="checkbox" required value="yes" />
+            I approve this dev preview for live publishing.
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="submit-button" type="submit">Approve and publish live</button>
+          <p id="approval-status" class="form-status">We will verify the order before publishing.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const form = document.getElementById('approval-form');
+    const status = document.getElementById('approval-status');
+    window.ProfitsLocalFunnel?.fillForm(form);
+    for (const key of ['order_id', 'session_id', 'email', 'client_slug', 'repo', 'preview_url']) {
+      const value = params.get(key);
+      const fieldName = key === 'session_id' ? 'order_id' : key;
+      const field = form?.elements.namedItem(fieldName);
+      if (value && field instanceof HTMLInputElement) field.value = value;
+    }
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const invalid = Array.from(form.querySelectorAll('input')).find((control) => !control.checkValidity());
+      if (invalid) {
+        invalid.focus();
+        if (status) {
+          status.textContent = 'Please complete the order, email, project, and approval confirmation.';
+          status.className = 'form-status error';
+        }
+        return;
+      }
+      if (status) {
+        status.textContent = 'Submitting approval...';
+        status.className = 'form-status';
+      }
+      try {
+        const payload = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch('/api/approval-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Approval failed.');
+        status.textContent = 'Approval received. We will publish the live site and email the final link.';
+        status.className = 'form-status success';
+      } catch (error) {
+        if (status) {
+          status.textContent = error instanceof Error ? error.message : 'Approval failed.';
+          status.className = 'form-status error';
+        }
+      }
+    });
+  </script>
+</Layout>
