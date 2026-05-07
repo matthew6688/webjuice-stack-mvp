@@ -455,6 +455,18 @@ textarea {
   line-height: 1.3;
 }
 
+.admin-link-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.admin-path-list {
+  border-top: 2px solid var(--pl-line);
+  padding-top: 12px;
+}
+
 .admin-action-form {
   display: grid;
   gap: 7px;
@@ -1590,6 +1602,26 @@ h2 em {
   text-underline-offset: 4px;
 }
 
+.checkout-jump-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.checkout-jump-row a {
+  border: 2px solid var(--pl-line);
+  background: var(--pl-paper);
+  color: var(--pl-ink);
+  box-shadow: 4px 4px 0 var(--pl-line);
+  padding: 10px 13px;
+  font-size: 12px;
+  font-weight: 950;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .checkout-tier-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1671,6 +1703,49 @@ h2 em {
   color: var(--pl-muted);
   font-size: 14px;
   font-weight: 900;
+}
+
+.checkout-faq {
+  display: grid;
+  grid-template-columns: minmax(230px, 320px) minmax(0, 1fr);
+  border-bottom: 2px solid var(--pl-line);
+}
+
+.checkout-faq > div:first-child {
+  padding: clamp(24px, 3vw, 38px);
+  border-right: 2px solid var(--pl-line);
+  background: var(--pl-paper);
+}
+
+.checkout-faq h2 {
+  margin-top: 12px;
+  font-size: clamp(32px, 3vw, 48px);
+  line-height: 0.98;
+}
+
+.checkout-faq-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: var(--pl-line);
+  gap: 1px;
+}
+
+.checkout-faq-list article {
+  background: var(--pl-paper);
+  padding: clamp(20px, 2.4vw, 30px);
+}
+
+.checkout-faq-list h3 {
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.checkout-faq-list p {
+  margin-top: 12px;
+  color: var(--pl-muted);
+  font-size: 14px;
+  font-weight: 820;
+  line-height: 1.42;
 }
 
 .checkout-workspace {
@@ -1831,6 +1906,7 @@ h2 em {
   .contact-frame,
   .checkout-frame,
   .checkout-hero,
+  .checkout-faq,
   .checkout-workspace,
   .brand-assets-hero,
   .footer-inner {
@@ -1843,6 +1919,7 @@ h2 em {
   .pricing-head > div + div,
   .faq-intro,
   .contact-intro,
+  .checkout-faq > div:first-child,
   .selected-package {
     border-right: 0;
     border-left: 0;
@@ -1855,6 +1932,7 @@ h2 em {
 
   .price-grid,
   .checkout-tier-grid,
+  .checkout-faq-list,
   .color-grid,
   .reference-grid,
   .download-grid,

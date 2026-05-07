@@ -23,6 +23,33 @@ interface ContactForm {
   businessType?: string;
   domainPreference?: string;
   message: string;
+  client_slug?: string;
+  repo?: string;
+  template?: string;
+  preview_url?: string;
+  campaign_id?: string;
+  brief_id?: string;
+  first_landing_url?: string;
+  last_landing_url?: string;
+  referrer?: string;
+  last_referrer?: string;
+  first_seen_at?: string;
+  last_seen_at?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  gclid?: string;
+  fbclid?: string;
+  msclkid?: string;
+  ttclid?: string;
+  twclid?: string;
+  li_fat_id?: string;
+  gbraid?: string;
+  wbraid?: string;
+  source?: string;
+  ref?: string;
 }
 
 const MAX_ATTACHMENT_BYTES = 12 * 1024 * 1024;
@@ -94,6 +121,9 @@ Current website: ${website || 'N/A'}
 Google Business: ${googleBusiness || 'N/A'}
 Business type: ${businessType || 'N/A'}
 Domain preference: ${domainPreference || 'N/A'}
+Preview context:
+${formatContext(body)}
+
 Files:
 ${fileSummary}
 
@@ -143,6 +173,33 @@ async function readMultipartContact(request: Request) {
     businessType: stringField(formData, 'businessType'),
     domainPreference: stringField(formData, 'domainPreference'),
     message: stringField(formData, 'message'),
+    client_slug: stringField(formData, 'client_slug'),
+    repo: stringField(formData, 'repo'),
+    template: stringField(formData, 'template'),
+    preview_url: stringField(formData, 'preview_url'),
+    campaign_id: stringField(formData, 'campaign_id'),
+    brief_id: stringField(formData, 'brief_id'),
+    first_landing_url: stringField(formData, 'first_landing_url'),
+    last_landing_url: stringField(formData, 'last_landing_url'),
+    referrer: stringField(formData, 'referrer'),
+    last_referrer: stringField(formData, 'last_referrer'),
+    first_seen_at: stringField(formData, 'first_seen_at'),
+    last_seen_at: stringField(formData, 'last_seen_at'),
+    utm_source: stringField(formData, 'utm_source'),
+    utm_medium: stringField(formData, 'utm_medium'),
+    utm_campaign: stringField(formData, 'utm_campaign'),
+    utm_term: stringField(formData, 'utm_term'),
+    utm_content: stringField(formData, 'utm_content'),
+    gclid: stringField(formData, 'gclid'),
+    fbclid: stringField(formData, 'fbclid'),
+    msclkid: stringField(formData, 'msclkid'),
+    ttclid: stringField(formData, 'ttclid'),
+    twclid: stringField(formData, 'twclid'),
+    li_fat_id: stringField(formData, 'li_fat_id'),
+    gbraid: stringField(formData, 'gbraid'),
+    wbraid: stringField(formData, 'wbraid'),
+    source: stringField(formData, 'source'),
+    ref: stringField(formData, 'ref'),
   };
 
   const rawFiles = formData
@@ -206,4 +263,40 @@ function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function formatContext(body: ContactForm) {
+  const rows = [
+    ['Client slug', body.client_slug],
+    ['Repo', body.repo],
+    ['Template', body.template],
+    ['Preview URL', body.preview_url],
+    ['Campaign ID', body.campaign_id],
+    ['Brief ID', body.brief_id],
+    ['UTM source', body.utm_source],
+    ['UTM medium', body.utm_medium],
+    ['UTM campaign', body.utm_campaign],
+    ['UTM term', body.utm_term],
+    ['UTM content', body.utm_content],
+    ['GCLID', body.gclid],
+    ['FBCLID', body.fbclid],
+    ['MSCLKID', body.msclkid],
+    ['TTCLID', body.ttclid],
+    ['TWCLID', body.twclid],
+    ['LinkedIn click ID', body.li_fat_id],
+    ['GBRAID', body.gbraid],
+    ['WBRAID', body.wbraid],
+    ['Source', body.source],
+    ['Ref', body.ref],
+    ['First landing URL', body.first_landing_url],
+    ['Last landing URL', body.last_landing_url],
+    ['Referrer', body.referrer],
+    ['Last referrer', body.last_referrer],
+    ['First seen at', body.first_seen_at],
+    ['Last seen at', body.last_seen_at],
+  ].filter(([, value]) => value);
+
+  return rows.length
+    ? rows.map(([label, value]) => `${label}: ${value}`).join('\n')
+    : 'N/A';
 }

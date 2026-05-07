@@ -106,6 +106,21 @@ function validatePage({ mode, pagePath, source, status, html, error = '', expect
     check(checks, 'sales_footer_faq', html.includes('FAQ'), 'missing FAQ link');
     check(checks, 'sales_footer_contact', html.includes('Contact'), 'missing contact link');
     check(checks, 'sales_footer_logo_official', html.includes('https://profitslocal.com/') && html.includes('logo-horizontal.svg'), 'banner logo does not link to official ProfitsLocal site');
+    check(checks, 'sales_footer_official_funnel_links', containsAll(html, [
+      'https://profitslocal.com/checkout?',
+      'https://profitslocal.com/contact?',
+      'client_slug=',
+      'repo=',
+      'preview_url=',
+      'utm_',
+    ]) || containsAll(html, [
+      'https://profitslocal.com/checkout?',
+      'https://profitslocal.com/contact?',
+      'client_slug=',
+      'repo=',
+      'preview_url=',
+      'campaign_id=',
+    ]), 'pre-purchase banner does not point to official ProfitsLocal funnel with preview context');
     check(checks, 'sales_footer_claim_399', html.includes('Claim $399') || html.includes('Claim &#36;399') || html.includes('$399 one-time'), 'missing $399 claim CTA');
     check(checks, 'sales_footer_799', html.includes('$799/yr') || html.includes('&#36;799/yr') || html.includes('$799/year'), 'missing yearly CTA');
     check(checks, 'sales_footer_checkout', html.includes('Checkout') || html.includes('CHECKOUT'), 'missing checkout CTA');

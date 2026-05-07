@@ -32,6 +32,29 @@ interface CheckoutRequest {
   launch_notes?: string;
   parent_order_id?: string;
   auto_run_agent?: string | boolean;
+  amount?: string;
+  currency?: string;
+  first_landing_url?: string;
+  last_landing_url?: string;
+  referrer?: string;
+  last_referrer?: string;
+  first_seen_at?: string;
+  last_seen_at?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  gclid?: string;
+  fbclid?: string;
+  msclkid?: string;
+  ttclid?: string;
+  twclid?: string;
+  li_fat_id?: string;
+  gbraid?: string;
+  wbraid?: string;
+  source?: string;
+  ref?: string;
 }
 
 const MAX_ATTACHMENT_BYTES = 12 * 1024 * 1024;
@@ -121,7 +144,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const metadata: Record<string, string> = compactMetadata({
       tier: tierId,
       amount: String(tier.amount / 100),
-      currency: 'USD',
+      checkout_amount_param: clean(body.amount),
+      currency: clean(body.currency) || 'USD',
       client_slug: clientSlug,
       repo,
       template: clean(body.template) || 'webjuice-restaurant',
@@ -141,6 +165,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       parent_order_id: clean(body.parent_order_id),
       auto_run_agent: autoRunAgent ? 'true' : 'false',
       order_kind: orderKind,
+      first_landing_url: clean(body.first_landing_url),
+      last_landing_url: clean(body.last_landing_url),
+      referrer: clean(body.referrer),
+      last_referrer: clean(body.last_referrer),
+      first_seen_at: clean(body.first_seen_at),
+      last_seen_at: clean(body.last_seen_at),
+      utm_source: clean(body.utm_source),
+      utm_medium: clean(body.utm_medium),
+      utm_campaign: clean(body.utm_campaign),
+      utm_term: clean(body.utm_term),
+      utm_content: clean(body.utm_content),
+      gclid: clean(body.gclid),
+      fbclid: clean(body.fbclid),
+      msclkid: clean(body.msclkid),
+      ttclid: clean(body.ttclid),
+      twclid: clean(body.twclid),
+      li_fat_id: clean(body.li_fat_id),
+      gbraid: clean(body.gbraid),
+      wbraid: clean(body.wbraid),
+      source: clean(body.source),
+      ref: clean(body.ref),
     });
 
     if (attachments.files.length) {
@@ -279,6 +324,29 @@ async function readMultipartCheckout(request: Request) {
     launch_notes: stringField(formData, 'launch_notes'),
     parent_order_id: stringField(formData, 'parent_order_id'),
     auto_run_agent: stringField(formData, 'auto_run_agent'),
+    amount: stringField(formData, 'amount'),
+    currency: stringField(formData, 'currency'),
+    first_landing_url: stringField(formData, 'first_landing_url'),
+    last_landing_url: stringField(formData, 'last_landing_url'),
+    referrer: stringField(formData, 'referrer'),
+    last_referrer: stringField(formData, 'last_referrer'),
+    first_seen_at: stringField(formData, 'first_seen_at'),
+    last_seen_at: stringField(formData, 'last_seen_at'),
+    utm_source: stringField(formData, 'utm_source'),
+    utm_medium: stringField(formData, 'utm_medium'),
+    utm_campaign: stringField(formData, 'utm_campaign'),
+    utm_term: stringField(formData, 'utm_term'),
+    utm_content: stringField(formData, 'utm_content'),
+    gclid: stringField(formData, 'gclid'),
+    fbclid: stringField(formData, 'fbclid'),
+    msclkid: stringField(formData, 'msclkid'),
+    ttclid: stringField(formData, 'ttclid'),
+    twclid: stringField(formData, 'twclid'),
+    li_fat_id: stringField(formData, 'li_fat_id'),
+    gbraid: stringField(formData, 'gbraid'),
+    wbraid: stringField(formData, 'wbraid'),
+    source: stringField(formData, 'source'),
+    ref: stringField(formData, 'ref'),
   };
 
   const rawFiles = formData

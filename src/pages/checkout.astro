@@ -24,6 +24,11 @@ const tierData = pricing.tiers.map((tier) => ({
           <p class="eyebrow">Secure Stripe checkout</p>
           <h1>Select your next step.</h1>
           <p class="lede">Choose a package, confirm the business details, and continue to Stripe. Fixed pricing covers one-page local business websites with structured async intake.</p>
+          <div class="checkout-jump-row">
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="/contact">Ask first</a>
+          </div>
         </div>
         <div class="checkout-context" id="checkout-context">
           <p class="eyebrow">Preview status</p>
@@ -32,7 +37,7 @@ const tierData = pricing.tiers.map((tier) => ({
         </div>
       </div>
 
-      <div class="checkout-tier-grid" aria-label="Package options">
+      <div class="checkout-tier-grid" id="pricing" aria-label="Package options">
         {pricing.tiers.map((tier) => (
           <button
             class="checkout-tier"
@@ -48,6 +53,27 @@ const tierData = pricing.tiers.map((tier) => ({
         ))}
       </div>
 
+      <section class="checkout-faq" id="faq" aria-labelledby="checkout-faq-title">
+        <div>
+          <p class="eyebrow">Quick answers</p>
+          <h2 id="checkout-faq-title">What happens after you claim it?</h2>
+        </div>
+        <div class="checkout-faq-list">
+          <article>
+            <h3>Is this tied to my preview?</h3>
+            <p>Yes. Preview links carry the client slug, repo, template, campaign, and preview URL into this checkout and into Stripe metadata.</p>
+          </article>
+          <article>
+            <h3>Can I ask for changes?</h3>
+            <p>The one-time package includes 3 revision rounds. Extra in-scope revision rounds are $100 after the included quota is used.</p>
+          </article>
+          <article>
+            <h3>What domain can I use?</h3>
+            <p>You can use a free ProfitsLocal subdomain, your own subdomain, or your root domain after DNS review.</p>
+          </article>
+        </div>
+      </section>
+
       <div class="checkout-workspace">
         <aside class="selected-package" aria-live="polite">
           <p class="eyebrow">Selected package</p>
@@ -57,7 +83,7 @@ const tierData = pricing.tiers.map((tier) => ({
           <ul id="selected-features"></ul>
         </aside>
 
-        <form class="checkout-form" id="checkout-form" novalidate>
+        <form class="checkout-form" id="checkout-form" data-funnel-context-form novalidate>
           <input type="hidden" name="tier" value="one_time" />
           <input type="hidden" name="client_slug" value="" />
           <input type="hidden" name="repo" value="" />
@@ -66,6 +92,29 @@ const tierData = pricing.tiers.map((tier) => ({
           <input type="hidden" name="campaign_id" value="profitslocal-main" />
           <input type="hidden" name="brief_id" value="" />
           <input type="hidden" name="auto_run_agent" value="false" />
+          <input type="hidden" name="amount" value="" />
+          <input type="hidden" name="currency" value="USD" />
+          <input type="hidden" name="first_landing_url" value="" />
+          <input type="hidden" name="last_landing_url" value="" />
+          <input type="hidden" name="referrer" value="" />
+          <input type="hidden" name="last_referrer" value="" />
+          <input type="hidden" name="first_seen_at" value="" />
+          <input type="hidden" name="last_seen_at" value="" />
+          <input type="hidden" name="utm_source" value="" />
+          <input type="hidden" name="utm_medium" value="" />
+          <input type="hidden" name="utm_campaign" value="" />
+          <input type="hidden" name="utm_term" value="" />
+          <input type="hidden" name="utm_content" value="" />
+          <input type="hidden" name="gclid" value="" />
+          <input type="hidden" name="fbclid" value="" />
+          <input type="hidden" name="msclkid" value="" />
+          <input type="hidden" name="ttclid" value="" />
+          <input type="hidden" name="twclid" value="" />
+          <input type="hidden" name="li_fat_id" value="" />
+          <input type="hidden" name="gbraid" value="" />
+          <input type="hidden" name="wbraid" value="" />
+          <input type="hidden" name="source" value="" />
+          <input type="hidden" name="ref" value="" />
 
           <div class="field">
             <label for="business_name">Business name <span class="req">Required</span></label>
@@ -123,8 +172,45 @@ const tierData = pricing.tiers.map((tier) => ({
     const contextCopy = document.getElementById('context-copy');
     const contextPreview = document.getElementById('context-preview');
     const validTierIds = new Set(tiers.map((tier) => tier.id));
+    const contextKeys = [
+      'client_slug',
+      'repo',
+      'template',
+      'preview_url',
+      'campaign_id',
+      'brief_id',
+      'business_name',
+      'amount',
+      'currency',
+      'email',
+      'phone',
+      'preferred_domain',
+      'parent_order_id',
+      'first_landing_url',
+      'last_landing_url',
+      'referrer',
+      'last_referrer',
+      'first_seen_at',
+      'last_seen_at',
+      'utm_source',
+      'utm_medium',
+      'utm_campaign',
+      'utm_term',
+      'utm_content',
+      'gclid',
+      'fbclid',
+      'msclkid',
+      'ttclid',
+      'twclid',
+      'li_fat_id',
+      'gbraid',
+      'wbraid',
+      'source',
+      'ref',
+    ];
 
     hydrateFromUrl();
+    const storedContext = window.ProfitsLocalFunnel?.fillForm(form) || {};
     selectTier(validTierIds.has(params.get('tier')) ? params.get('tier') : 'one_time', false);
 
     tierButtons.forEach((button) => {
@@ -183,6 +269,9 @@ const tierData = pricing.tiers.map((tier) => ({
         launch_notes: 'launch_notes',
         parent_order_id: 'parent_order_id',
       };
+      contextKeys.forEach((key) => {
+        if (!mappings[key]) mappings[key] = key;
+      });
 
       for (const [paramName, fieldName] of Object.entries(mappings)) {
         const value = params.get(paramName);
@@ -192,8 +281,10 @@ const tierData = pricing.tiers.map((tier) => ({
         }
       }
 
-      const previewUrl = params.get('preview_url');
-      const hasPreviewContext = Boolean(params.get('client_slug') && params.get('repo') && previewUrl);
+      const previewUrl = params.get('preview_url') || storedContext.preview_url || '';
+      const clientSlug = params.get('client_slug') || storedContext.client_slug || '';
+      const repo = params.get('repo') || storedContext.repo || '';
+      const hasPreviewContext = Boolean(clientSlug && repo && previewUrl);
       const autoRunField = form?.elements.namedItem('auto_run_agent');
       if (autoRunField instanceof HTMLInputElement) autoRunField.value = hasPreviewContext ? 'true' : 'false';
 

@@ -12,7 +12,34 @@ import { siteConfig } from '../config/site';
         <p class="lede">Send the business details, and we will build a first preview before asking you to pay.</p>
         <p class="micro" style="margin-top: 22px;">You do not need a polished brief. A Google Business link, current website, menu, service list, or a few reference sites are enough to start.</p>
       </div>
-      <form class="contact-form" id="contact-form" novalidate>
+      <form class="contact-form" id="contact-form" data-funnel-context-form novalidate>
+        <input type="hidden" name="client_slug" value="" />
+        <input type="hidden" name="repo" value="" />
+        <input type="hidden" name="template" value="" />
+        <input type="hidden" name="preview_url" value="" />
+        <input type="hidden" name="campaign_id" value="" />
+        <input type="hidden" name="brief_id" value="" />
+        <input type="hidden" name="first_landing_url" value="" />
+        <input type="hidden" name="last_landing_url" value="" />
+        <input type="hidden" name="referrer" value="" />
+        <input type="hidden" name="last_referrer" value="" />
+        <input type="hidden" name="first_seen_at" value="" />
+        <input type="hidden" name="last_seen_at" value="" />
+        <input type="hidden" name="utm_source" value="" />
+        <input type="hidden" name="utm_medium" value="" />
+        <input type="hidden" name="utm_campaign" value="" />
+        <input type="hidden" name="utm_term" value="" />
+        <input type="hidden" name="utm_content" value="" />
+        <input type="hidden" name="gclid" value="" />
+        <input type="hidden" name="fbclid" value="" />
+        <input type="hidden" name="msclkid" value="" />
+        <input type="hidden" name="ttclid" value="" />
+        <input type="hidden" name="twclid" value="" />
+        <input type="hidden" name="li_fat_id" value="" />
+        <input type="hidden" name="gbraid" value="" />
+        <input type="hidden" name="wbraid" value="" />
+        <input type="hidden" name="source" value="" />
+        <input type="hidden" name="ref" value="" />
         <div class="field">
           <label for="name">Your name <span class="req">Required</span></label>
           <input id="name" name="name" autocomplete="name" placeholder="Jane Smith" required />
@@ -58,6 +85,7 @@ import { siteConfig } from '../config/site';
     const supportEmail = 'support@profitslocal.com';
     const form = document.getElementById('contact-form');
     const status = document.getElementById('form-status');
+    window.ProfitsLocalFunnel?.fillForm(form);
 
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();
