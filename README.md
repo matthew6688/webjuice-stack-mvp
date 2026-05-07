@@ -25,9 +25,14 @@ Verified with Opa Bar & Mezze:
 
 What remains is mostly production hardening, not core-loop invention:
 
-- use a dedicated `ProfitsLocal Handoff` Discord sender bot instead of the website-agent token;
 - configure estimated Resend/runtime costs for cleaner ROI reports;
 - harden the ProfitsLocal admin dashboard from repo-backed v1 into faster operator workflows.
+
+Additional 2026-05-07 proof:
+
+- Dedicated `ProfitsLocal Handoff` Discord sender bot posts website task packets and `website-agent` pickup was verified in `#website-tasks`.
+- Rich & Rare dev preview now has the ProfitsLocal branded fixed-footer offer, `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`.
+- Rich & Rare dev deploy commit `00bf29b` completed GitHub Actions run `25470867095`; all funnel URLs returned HTTP 200 and content checks found ProfitsLocal, `$399`, `$799/yr`, revision, approval, and domain guidance.
 
 ## Pricing
 
@@ -532,7 +537,7 @@ Repeat verification beyond Opa:
 
 ## Current Next Work
 
-1. Implement the website survey normalizer and write `clients/<client>/intake/website-survey.json`.
-2. Add `websiteSurveyPath` and `readinessPath` to agent task packets, case context, and Discord handoffs.
-3. Add the dedicated `ProfitsLocal Handoff` sender bot and switch website task dispatch to it.
-4. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+1. Configure estimated Resend/runtime/provider costs so ROI reports are useful at scale.
+2. Add a delivery QA pass for the ProfitsLocal branded funnel pages before every outreach/demo push.
+3. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+4. Keep generated client repos synced whenever the template funnel changes.

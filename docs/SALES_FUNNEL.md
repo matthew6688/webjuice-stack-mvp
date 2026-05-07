@@ -46,12 +46,17 @@ The preview site must keep sales/account controls in a fixed footer/banner. Do n
 
 Fixed footer/banner buttons:
 
+- `How it works` -> `/demo-faq?client_slug=<client>&repo=<repo>&preview_url=<preview>`
+- `Claim $399` -> `/checkout?...tier=one_time&amount=399`
+- `$799/yr` -> `/checkout?...tier=yearly_maintenance&amount=799`
 - `Approve site` -> `/approve?order_id=<orderId>&email=<checkoutEmail>`
 - `Request revision` -> `/revise?order_id=<orderId>&email=<checkoutEmail>`
 - `Buy extra revision` -> `$100` Stripe extra revision checkout when needed
 
 Utility pages:
 
+- `/demo-faq` is the ProfitsLocal offer/FAQ page that explains pricing, what happens after payment, revision allowance, and domain routes.
+- `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` use ProfitsLocal branded chrome. They must not show customer-site/template footer text or the fixed preview sales bar inside the utility page itself.
 - `/approve` requires `orderId + checkout email`, then posts to `/api/approval-request/`.
 - `/revise` requires `orderId + checkout email`, then posts to `/api/revision-request/`.
   - When opened from a review email or preview footer, `orderId` and checkout email are prefilled and locked as read-only fields.
@@ -242,6 +247,7 @@ The webhook endpoint is:
 Validation status:
 
 - Template build passes with `/checkout` and `/thank-you`.
+- Template ProfitsLocal funnel build passes with `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`; static checks found no `hello@bistro.template`, `Built with WebJuice Stack`, or `PreviewSalesBar` leakage inside those utility pages.
 - All five Brisbane client repos build with `/checkout` and `/revise`.
 - 5 dev Pages deploys verified `completed/success`.
 - Longwang live test created Stripe Checkout Sessions for `$399` and `$100 extra_revision`.
@@ -254,6 +260,7 @@ Validation status:
 - Main repo GitHub Actions secrets are configured for sales Discord, revision Discord, and Resend; dry-run workflow dispatch passes with notification flags enabled.
 - `AGENT_GITHUB_TOKEN` is configured and verified on the 5 Brisbane dev/live Pages projects and template dev/live Pages projects.
 - Case memory verification wrote sale/revision/denied cases, timeline events, customer messages, context packets, and task case/design protocol fields under `/tmp/case-memory-test`.
+- Rich & Rare real demo proof on 2026-05-07: `npm run build` passed after adding `FunnelLayout`, `/demo-faq`, and checkout artifact; commit `00bf29b Add ProfitsLocal funnel pages` pushed to `dev`; GitHub Actions run `25470867095` completed success; live dev URLs `/`, `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` returned HTTP 200; live content checks found ProfitsLocal, `$399`, `$799/yr`, revision, approval, domain guidance, and `hello@fengtalk.ai`, with no Bistro/template footer leakage.
 
 ## Create Tally Forms
 

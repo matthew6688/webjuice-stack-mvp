@@ -1,6 +1,6 @@
 # Next Work
 
-Updated: 2026-05-06
+Updated: 2026-05-07
 
 ## Current State
 
@@ -74,18 +74,27 @@ Verified live state:
 
 ## Current Priority Queue
 
-1. Create the high-level `profitslocal-local-business-design` skill that wraps Open Design discovery, Huashu review, ProfitsLocal evidence rules, and the active niche adapter.
-2. Add a lead search runner that loops through Google Places results, runs `leads:qualify`, and only sends A/B leads to collection.
-3. Configure a dedicated `ProfitsLocal Handoff` sender bot for website task handoffs.
-4. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
-5. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
-6. Wire `deploy:bootstrap-client-repo --execute true` into the website-ready/agent handoff path so new customer projects no longer need manual repo setup.
-7. Add menu extraction confidence scoring to the restaurant adapter so low-confidence menus become verified highlights instead of full menu pages.
-8. Wire Firecrawl multi-page crawl output into `redesign:build-preservation-packet` so current sitemap is crawl-backed instead of mainly Dokobot/search-backed.
-9. Add local LLM old-vs-new preservation audit against the packet after a redesign build.
-10. Update generated repo workflow actions for GitHub's Node 20 deprecation warning.
-11. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
-12. Start the roofing adapter only after the survey/capsule path is stable for restaurant.
+1. Configure estimated cost env for ROI reports: `RESEND_EMAIL_UNIT_COST` and either `AGENT_RUNTIME_COST_PER_MINUTE` or per-run `--runtime-cost-per-minute`.
+2. Keep smoke cleanup mandatory after domain tests with `npm run domain:cleanup`.
+3. Add menu extraction confidence scoring to the restaurant adapter so low-confidence menus become verified highlights instead of full menu pages.
+4. Wire Firecrawl/TinyFish multi-page crawl output into `redesign:build-preservation-packet` so current sitemap is crawl-backed instead of mainly Dokobot/search-backed.
+5. Add local LLM old-vs-new preservation audit against the packet after a redesign build.
+6. Harden admin dashboard v1 with automatic rebuild after actions, operator filters, and email draft/send actions.
+7. Start the roofing adapter only after the restaurant capsule path stays stable.
+
+Recently completed:
+
+- Open Design concept-to-production handoff generator.
+- App-visible Open Design project mode.
+- Open Design upgrade smoke and Node 24 rebuild guard.
+- Discord/Hermes task payloads now include the shared local Open Design project binding when available.
+- Delivery QA is enforced before customer review emails and verified with `qa:test-delivery-qa`, `agent:test-pre-review-gate`, `contracts:validate-core`, and `hermes:test-website-agent-closure`.
+- Lead search runner is implemented: `npm run leads:search-runner` can use a Google Places query or lead JSON, run qualification, and emit a collection queue containing only A/B build/collect leads with a contact path.
+- Agent tasks and Discord website handoffs now include a guarded `repoBootstrap` command for new customer repo/Pages setup. It is visible to Hermes/operators but still requires explicit execution.
+- Dedicated `ProfitsLocal Handoff` sender bot is configured locally and as GitHub secret. Real smoke posted to `website-tasks`, auto-created thread `1501743599585460284`, and `website-agent` replied `website-agent handoff smoke ok`.
+- Open Design continuation smoke passed on `mac-app-visible-smoke`: same project `mac-app-visible-smoke-open-design-1778108761460`, new run `234582dc-9618-45b2-819e-341fb41fa52e`, sync-from-app passed, and validator found `Open Design Discord Update Smoke`.
+- Production port smoke passed: `npm run open-design:port-production-handoff -- --client rich-and-rare-restaurant --target-repo /Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant --execute true` wrote structured handoff data/tokens/assets into the customer Astro repo without copying standalone HTML, local build passed, commit `22ad957` pushed to `dev`, GitHub Actions `25469570815` completed success, and the dev URL plus copied asset URL returned HTTP 200.
+- ProfitsLocal branded demo funnel pages are now live on Rich & Rare dev. The template and Rich & Rare repo use a dedicated `FunnelLayout` for `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`, separate from customer website content. Rich & Rare commit `00bf29b` pushed to `dev`; GitHub Actions run `25470867095` completed success; all seven utility pages plus `/` returned HTTP 200; content checks found ProfitsLocal, `$399`, `$799/yr`, revision, approval, domain guidance, and `hello@fengtalk.ai`, with no `hello@bistro.template`, `Built with WebJuice Stack`, `PreviewSalesBar`, or `Bistro Template` leakage in the utility pages.
 
 ## Architecture Direction
 
@@ -165,16 +174,22 @@ Working now:
 
 - `agent:complete-task` already blocks review emails unless required context, design protocol, deploy URL, and QA screenshots are present.
 - `agent:complete-task` now auto-captures desktop/mobile QA screenshots with Playwright when `--send-email true` is used and screenshot paths were not provided.
+- `agent:complete-task` now requires a passing `delivery-qa.json` before a customer review email can be sent.
+- `delivery-qa.json` must pass business data, niche completeness, design, copywriting, technical, and customer communication link checks.
 - The deployed Opa revision smoke proved the gate works: Discord/dev updates happened, but the review email was skipped because `qaScreenshots` was empty.
 
 Remaining:
 
 - Keep monitoring the GitHub auto-run path now that `route-funnel-event.yml` installs Playwright Chromium before running the generated agent task.
+- Add a richer per-niche `qa:delivery` generator so the report can be produced automatically from deployed pages instead of manually supplied in early runs.
 
 Validation:
 
 ```bash
+npm run qa:test-delivery-qa
 npm run agent:test-pre-review-gate
+npm run contracts:validate-core
+npm run hermes:test-website-agent-closure
 npm run agent:complete-task -- --task <task.json> --repo-dir <client-repo> --execute true --checkout true --push true --check-deploy true --send-email true
 ```
 
