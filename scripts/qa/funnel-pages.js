@@ -7,8 +7,8 @@ const args = parseArgs(process.argv.slice(2));
 const distDir = args['dist-dir'] ? path.resolve(args['dist-dir']) : '';
 const baseUrl = args['base-url'] || '';
 const expectedClient = args.client || args['client-name'] || '';
-const pages = [
-  '/',
+const pages = ['/'];
+const removedUtilityPages = [
   '/demo-faq',
   '/checkout',
   '/thank-you',
@@ -18,7 +18,6 @@ const pages = [
   '/domain-setup',
   '/domain-help',
 ];
-const utilityPages = pages.filter((page) => page !== '/');
 
 if (!distDir && !baseUrl) {
   throw new Error('Usage: npm run qa:funnel-pages -- --dist-dir /path/to/dist OR --base-url https://client-dev.pages.dev');
@@ -39,6 +38,17 @@ if (distDir) {
       status: filePath ? 200 : 404,
       html,
       expectedClient,
+    }));
+  }
+  for (const pagePath of removedUtilityPages) {
+    const filePath = resolveStaticHtml(distDir, pagePath);
+    const exists = Boolean(filePath && fs.existsSync(filePath));
+    pageResults.push(validateRemovedUtilityPage({
+      mode: 'dist',
+      pagePath,
+      source: filePath || '',
+      status: exists ? 200 : 404,
+      html: exists ? fs.readFileSync(filePath, 'utf8') : '',
     }));
   }
 }
@@ -69,6 +79,29 @@ if (baseUrl) {
       expectedClient,
     }));
   }
+  for (const pagePath of removedUtilityPages) {
+    const url = `${normalizedBase}${pagePath}`;
+    let status = 0;
+    let html = '';
+    let finalUrl = url;
+    let error = '';
+    try {
+      const response = await fetch(url, { redirect: 'manual' });
+      status = response.status;
+      finalUrl = response.url;
+      html = await response.text();
+    } catch (fetchError) {
+      error = fetchError.message;
+    }
+    pageResults.push(validateRemovedUtilityPage({
+      mode: 'live',
+      pagePath,
+      source: finalUrl,
+      status,
+      html,
+      error,
+    }));
+  }
 }
 
 for (const result of pageResults) {
@@ -95,8 +128,6 @@ if (failed.length) process.exit(1);
 
 function validatePage({ mode, pagePath, source, status, html, error = '', expectedClient = '' }) {
   const checks = [];
-  const isUtility = utilityPages.includes(pagePath);
-  const text = stripTags(html);
 
   check(checks, 'http_200_or_file_exists', status === 200, error || `status=${status}`);
   check(checks, 'has_html', html.trim().length > 0, 'page body is empty');
@@ -125,64 +156,31 @@ function validatePage({ mode, pagePath, source, status, html, error = '', expect
     check(checks, 'sales_footer_799', html.includes('$799/yr') || html.includes('&#36;799/yr') || html.includes('$799/year'), 'missing yearly CTA');
     check(checks, 'sales_footer_checkout', html.includes('Checkout') || html.includes('CHECKOUT'), 'missing checkout CTA');
     check(checks, 'sales_footer_no_pre_purchase_revision', !html.includes('$100 extra revision') && !html.includes('Request changes'), 'pre-purchase banner contains support/revision actions');
+    check(checks, 'sales_footer_no_local_funnel_routes', !containsAny(html, [
+      'href="/checkout',
+      'href="/demo-faq',
+      'href="/contact-us',
+      'href="/thank-you',
+      'href="/revise',
+      'href="/approve',
+      'href="/domain-setup',
+      'href="/domain-help',
+      "fetch('/api/order-status/",
+      'fetch("/api/order-status/',
+    ]), 'customer preview still links to local ProfitsLocal funnel routes or order-status API');
   }
 
-  if (isUtility) {
-    check(checks, 'profitslocal_chrome', html.includes('profitslocal-funnel') && html.includes('ProfitsLocal'), 'utility page is not using ProfitsLocal chrome');
-    check(checks, 'no_customer_sales_bar_inside_utility', !html.includes('data-preview-sales-bar'), 'utility page contains fixed preview sales bar');
-    check(checks, 'no_template_footer_leak', !containsAny(html, [
-      'Built with WebJuice Stack',
-      'hello@bistro.template',
-      'Bistro Template. Built',
-    ]), 'utility page leaks template footer or support identity');
-  }
+  return { mode, pagePath, source, status, ok: checks.every((check) => check.ok), checks };
+}
 
-  if (pagePath === '/demo-faq') {
-    check(checks, 'demo_faq_pricing', containsAll(text, ['$399', '$799/yr']), 'missing offer prices');
-    check(checks, 'demo_faq_after_payment', text.includes('What happens after payment?'), 'missing after-payment objection handling');
-    check(checks, 'demo_faq_domain', text.includes('ProfitsLocal subdomain') && text.includes('root domain'), 'missing domain route explanation');
+function validateRemovedUtilityPage({ mode, pagePath, source, status, html, error = '' }) {
+  const checks = [];
+  if (mode === 'dist') {
+    check(checks, 'local_funnel_route_removed', status === 404, `${pagePath} still exists at ${source}`);
+  } else {
+    check(checks, 'local_funnel_route_removed', status === 404 || status === 410, error || `${pagePath} returned status=${status}`);
   }
-
-  if (pagePath === '/checkout') {
-    check(checks, 'checkout_fields', containsAll(text, ['Package', 'Business name', 'Email', 'Preferred domain']), 'checkout form missing key fields');
-    check(checks, 'checkout_secure_payment', text.includes('Continue to secure payment'), 'missing payment CTA');
-    check(checks, 'checkout_preview_context', html.includes('data-preview-context') && containsAll(html, ['name="client_slug"', 'name="repo"', 'name="preview_url"']), 'checkout does not preserve preview/source context');
-  }
-
-  if (pagePath === '/contact-us') {
-    check(checks, 'contact_page_routes', containsAll(text, ['Ask before you claim this preview', 'Prepare email', 'Request a callback']), 'contact page missing customer support paths');
-    check(checks, 'contact_support_email', html.includes('hello@fengtalk.ai'), 'contact page missing support email');
-    check(checks, 'contact_preview_context', html.includes('data-preview-context') && containsAll(html, ['name="client_slug"', 'name="repo"', 'name="preview_url"']), 'contact page does not preserve preview/source context');
-  }
-
-  if (pagePath === '/thank-you') {
-    check(checks, 'thank_you_next_steps', containsAll(text, ['Payment received', 'Start domain setup', 'Submit revision request', 'Approve the dev preview']), 'thank-you page missing next steps');
-    check(checks, 'thank_you_support_email', html.includes('hello@fengtalk.ai'), 'missing ProfitsLocal support email');
-  }
-
-  if (pagePath === '/revise') {
-    check(checks, 'revision_identity_match', containsAll(text, ['Order ID', 'Checkout email', 'Check remaining revisions']), 'revision page missing order/email quota match');
-    check(checks, 'revision_extra_purchase', text.includes('Buy extra revision'), 'missing extra revision purchase link');
-    check(checks, 'revision_uploads', html.includes('type="file"') && html.includes('multiple'), 'missing multi-file upload input');
-  }
-
-  if (pagePath === '/approve') {
-    check(checks, 'approval_identity_match', containsAll(text, ['Order ID', 'Checkout email', 'Approve and publish live']), 'approval page missing identity check or CTA');
-  }
-
-  if (pagePath === '/domain-setup') {
-    check(checks, 'domain_setup_routes', containsAll(text, ['Free ProfitsLocal subdomain', 'My own subdomain', 'My root domain']), 'domain setup form missing launch routes');
-  }
-
-  if (pagePath === '/domain-help') {
-    check(checks, 'domain_help_guidance', containsAll(text, ['Free ProfitsLocal subdomain', 'Your subdomain', 'Your root domain', 'ProfitsLocal subpage']), 'domain help missing route guidance');
-    check(checks, 'domain_help_support_email', html.includes('hello@fengtalk.ai'), 'domain help missing support email');
-  }
-
-  if (expectedClient && ['/demo-faq', '/checkout', '/revise', '/approve'].includes(pagePath)) {
-    check(checks, 'expected_client_visible', html.includes(escapeHtml(expectedClient)) || text.includes(expectedClient), `missing expected client name: ${expectedClient}`);
-  }
-
+  check(checks, 'removed_route_not_serving_funnel', !html.includes('profitslocal-funnel') && !html.includes('data-preview-sales-bar'), `${pagePath} still serves ProfitsLocal funnel chrome`);
   return { mode, pagePath, source, status, ok: checks.every((check) => check.ok), checks };
 }
 
@@ -202,28 +200,6 @@ function containsAny(value, needles) {
 
 function containsAll(value, needles) {
   return needles.every((needle) => value.includes(needle));
-}
-
-function stripTags(html) {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&#38;/g, '&')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function escapeHtml(value) {
-  return String(value || '').replace(/[&<>"']/g, (char) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  }[char] || char));
 }
 
 function parseArgs(argv) {

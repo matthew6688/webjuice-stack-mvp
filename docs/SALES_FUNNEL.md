@@ -6,7 +6,7 @@
 2. Buyer chooses:
    - `$399` one-time website with 3 revisions
    - `$799/year` website with monthly maintenance
-3. The preview sales bar sends all buyer actions to the official ProfitsLocal funnel on `https://profitslocal.com`. The customer demo site should not host our checkout, FAQ, approval, revision, or domain funnel pages except as temporary legacy fallback routes.
+3. The preview sales bar sends all buyer actions to the official ProfitsLocal funnel on `https://profitslocal.com`. The customer demo site does not host our checkout, FAQ, approval, revision, or domain funnel pages.
 4. The official `/checkout` page creates the Stripe Checkout Session. The form collects:
    - package
    - business name
@@ -74,6 +74,13 @@ Utility pages:
   - The form accepts multiple attachment selections, uploads them server-side to Cloudinary when Cloudinary env is configured, and forwards Cloudinary URLs to Discord/email/agent routing.
 - `/api/order-status/` returns trusted revision usage only after the same match.
 - `/domain-help` explains fast ProfitsLocal-hosted launch options plus customer-owned DNS steps.
+
+Customer repo cleanup rule:
+
+- Generated customer repos should only contain the customer website routes, niche routes such as restaurant `/menu`, customer lead forms such as `/contact`, and the fixed preview banner.
+- Generated customer repos should not contain ProfitsLocal sales/support routes: `/demo-faq`, `/checkout`, `/thank-you`, `/contact-us`, `/revise`, `/approve`, `/domain-setup`, or `/domain-help`.
+- Generated customer repos should not contain Stripe, approval, revision, domain, order-status, Tally, or Cloudinary attachment Pages Functions. Those belong to the official ProfitsLocal site and central automation repo.
+- `npm run qa:funnel-pages` checks that the customer preview root has the official banner links and that the removed local funnel routes are not served.
 
 Context handoff rules:
 
@@ -167,9 +174,9 @@ Legacy Tally shape:
    - launch notes or requested changes
    - payment
    - hidden `client_slug`, `repo`, `template`, `preview_url`, `tier`, `amount`, `currency`
-2. Tally redirects to the client preview site's `/thank-you` page with hidden context in the URL.
-3. Tally webhook posts to `/api/tally-webhook`.
-4. Client site webhook sends a Discord notification:
+2. Tally redirects to the official `https://profitslocal.com/thank-you` page with hidden context in the URL.
+3. Tally webhook posts to the official ProfitsLocal webhook endpoint.
+4. ProfitsLocal webhook sends a Discord notification:
    - sale submissions -> `SALES_DISCORD_WEBHOOK_URL`
    - revision submissions -> `REVISE_DISCORD_WEBHOOK_URL`
 5. Automation repo routes the same payload with:
@@ -263,9 +270,10 @@ The webhook endpoint is:
 
 Validation status:
 
-- Template build passes with `/checkout` and `/thank-you`.
-- Template ProfitsLocal funnel build passes with `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`; static checks found no `hello@bistro.template`, `Built with WebJuice Stack`, or `PreviewSalesBar` leakage inside those utility pages.
-- All five Brisbane client repos build with `/checkout` and `/revise`.
+- Template build passes with customer pages only; ProfitsLocal utility pages are not present in the customer template.
+- Customer preview banner points to official `profitslocal.com` checkout/contact/FAQ/approval/revision/domain pages.
+- Customer demo QA verifies the removed local routes `/demo-faq`, `/checkout`, `/thank-you`, `/contact-us`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` are not served.
+- All five Brisbane client repos previously built with the legacy local utility pages; new generated repos should follow the official-funnel-only cleanup rule.
 - 5 dev Pages deploys verified `completed/success`.
 - Longwang live test created Stripe Checkout Sessions for `$399` and `$100 extra_revision`.
 - Longwang `$399` test payment completed and redirected to `/thank-you`.
@@ -277,9 +285,8 @@ Validation status:
 - Main repo GitHub Actions secrets are configured for sales Discord, revision Discord, and Resend; dry-run workflow dispatch passes with notification flags enabled.
 - `AGENT_GITHUB_TOKEN` is configured and verified on the 5 Brisbane dev/live Pages projects and template dev/live Pages projects.
 - Case memory verification wrote sale/revision/denied cases, timeline events, customer messages, context packets, and task case/design protocol fields under `/tmp/case-memory-test`.
-- Rich & Rare real demo proof on 2026-05-07: `npm run build` passed after adding `FunnelLayout`, `/demo-faq`, and checkout artifact; commit `00bf29b Add ProfitsLocal funnel pages` pushed to `dev`; GitHub Actions run `25470867095` completed success; live dev URLs `/`, `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help` returned HTTP 200; live content checks found ProfitsLocal, `$399`, `$799/yr`, revision, approval, domain guidance, and `hello@fengtalk.ai`, with no Bistro/template footer leakage.
-- Funnel QA is now repeatable with `npm run qa:funnel-pages`. It checks the homepage sales footer, ProfitsLocal utility-page chrome, pricing, after-payment copy, revision/order identity matching, attachment input, approval CTA, domain guidance, support email, template leakage, and live HTTP 200 when a base URL is provided. Rich & Rare live dev passed 59/59 checks after commit `9b72b48 Show funnel footer on demo home` and GitHub Actions run `25472537209`.
-- The same branded funnel was synced to Longwang, Babylon, Opa, Joey's, and Chu The Phat. Each deployed dev URL returned 8/8 funnel pages and passed 59/59 live `qa:funnel-pages` checks.
+- Rich & Rare real demo proof on 2026-05-07: the customer repo now keeps the banner only; local ProfitsLocal utility routes were removed and official `profitslocal.com` receives the funnel traffic with context.
+- Funnel QA is now repeatable with `npm run qa:funnel-pages`. It checks the homepage sales footer, official ProfitsLocal links, context params, no local order-status dependency, no pre-purchase revision actions, and removed local funnel routes.
 
 Funnel QA commands:
 
@@ -310,7 +317,7 @@ npm run funnel:create-tally-client-forms -- --client longwang-restaurant-restaur
 The script defaults each form's redirect URL to:
 
 ```text
-https://<client>-dev.pages.dev/thank-you
+https://profitslocal.com/thank-you
 ```
 
 with query params for `client_slug`, `repo`, `preview_url`, `tier`, and `amount`.

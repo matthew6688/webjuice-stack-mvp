@@ -31,9 +31,8 @@ What remains is mostly production hardening, not core-loop invention:
 Additional 2026-05-07 proof:
 
 - Dedicated `ProfitsLocal Handoff` Discord sender bot posts website task packets and `website-agent` pickup was verified in `#website-tasks`.
-- Rich & Rare dev preview now has the ProfitsLocal branded fixed-footer offer, `/demo-faq`, `/checkout`, `/thank-you`, `/revise`, `/approve`, `/domain-setup`, and `/domain-help`.
-- Rich & Rare dev deploy commit `00bf29b` completed GitHub Actions run `25470867095`; all funnel URLs returned HTTP 200 and content checks found ProfitsLocal, `$399`, `$799/yr`, revision, approval, and domain guidance.
-- `npm run qa:funnel-pages` now turns those checks into a repeatable gate. It caught and fixed a missing Rich & Rare home-page footer; commit `9b72b48` deployed in run `25472537209` and live dev passed 59/59 funnel checks.
+- Rich & Rare dev preview now keeps only the ProfitsLocal branded fixed-footer offer on the customer site. Checkout, contact, FAQ, approval, revision, and domain actions go to official `profitslocal.com` pages with client/repo/preview/UTM context.
+- `npm run qa:funnel-pages` now turns those checks into a repeatable gate. It validates the banner and verifies the removed local ProfitsLocal utility routes are not served by customer repos.
 
 ## Pricing
 
