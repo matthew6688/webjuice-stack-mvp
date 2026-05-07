@@ -340,6 +340,12 @@ npm run discord:test-project-workspace-stages
 npm run discord:update-forum-workspace -- --help
 ```
 
+Latest hard evidence:
+
+- remote GitHub `route-funnel-event.yml` created real `website-leads` + `website-projects` forum posts and wrote both workspace ids into `case.json`
+- remote GitHub `domain-request.yml` updated the same project post with a DNS status message and `live + domain-blocked` tags
+- fresh remote bootstrap now has a retry path for `dev` deploy trigger, so both `*-live.pages.dev` and `*-dev.pages.dev` can reach `HTTP 200`
+
 Hermes / website-agent receives:
 
 - client slug;

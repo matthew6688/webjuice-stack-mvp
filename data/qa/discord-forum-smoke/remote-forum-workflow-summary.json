@@ -1,0 +1,89 @@
+{
+  "ok": true,
+  "clientSlug": "forum-remote-smoke-1778164589",
+  "orderId": "cs_test_forum_remote_1778164589",
+  "routeRun": {
+    "conclusion": "success",
+    "createdAt": "2026-05-07T14:36:31Z",
+    "databaseId": 25502553992,
+    "displayTitle": "Route Funnel Event",
+    "status": "completed",
+    "updatedAt": "2026-05-07T14:37:13Z",
+    "url": "https://github.com/matthew6688/webjuice-stack-mvp/actions/runs/25502553992",
+    "workflowName": "Route Funnel Event"
+  },
+  "domainRun": {
+    "conclusion": "success",
+    "createdAt": "2026-05-07T14:38:03Z",
+    "databaseId": 25502637533,
+    "displayTitle": "Domain Request",
+    "status": "completed",
+    "updatedAt": "2026-05-07T14:38:44Z",
+    "url": "https://github.com/matthew6688/webjuice-stack-mvp/actions/runs/25502637533",
+    "workflowName": "Domain Request"
+  },
+  "caseDiscord": {
+    "salesThreadId": "1501956037371105480",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "1501956048393601076",
+    "salesWorkspaceChannelId": "1501956037371105480",
+    "salesWorkspaceType": "forum_post",
+    "salesWorkspaceName": "[Qualified] Forum Remote Smoke 1778164589",
+    "salesWorkspaceTagIds": [
+      "1501948301614776409",
+      "1501948301627625472"
+    ],
+    "revisionWorkspaceChannelId": "",
+    "revisionWorkspaceType": "",
+    "revisionWorkspaceName": "",
+    "revisionWorkspaceTagIds": [],
+    "websiteWorkspaceChannelId": "1501945763650080899",
+    "websiteWorkspaceType": "forum_post",
+    "websiteWorkspaceName": "[Review] Forum Remote Smoke 1778164589",
+    "websiteWorkspaceTagIds": [
+      "1501948304479748148",
+      "1501948304479748152",
+      "1501948304488140850"
+    ],
+    "lastChannelId": "1501945763650080899",
+    "lastMessageId": "1501956048393601076",
+    "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1501956048393601076/1501956048393601076",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1501956048393601076",
+    "threadCreatedByBot": true
+  },
+  "domainRequest": {
+    "id": "forum-remote-smoke-1778164589__cs_test_forum_remote_1778164589__menu.forum-remote-smoke-1778164589.example.com",
+    "status": "waiting_for_customer_dns",
+    "route": "customer_subdomain",
+    "domain": "menu.forum-remote-smoke-1778164589.example.com",
+    "target": "forum-remote-smoke-1778164589-live.pages.dev"
+  },
+  "liveDiscordState": {
+    "status": 200,
+    "threadId": "1501956048393601076",
+    "name": "[Live] Forum Remote Smoke 1778164589",
+    "appliedTags": [
+      "1501948304479748155",
+      "1501948304479748148",
+      "1501948304479748156"
+    ],
+    "lastMessageId": "1501956720149401812",
+    "latestMessages": [
+      {
+        "id": "1501956720149401812",
+        "content": "已先核查了你要求的几类文件，结论如下：\n\n- 订单/提交信息可读，已确认：\n  - `orderId = cs_test_forum_remote_1778164589`\n  - `clientSlug = forum-remote-smoke-1778164589`\n  - `repo = matthew6688/forum-remote-smoke-1778164589`\n  - `preview = https://forum-r",
+        "timestamp": "2026-05-07T14:39:47.090000+00:00"
+      },
+      {
+        "id": "1501956432239656981",
+        "content": "Domain update: Forum Remote Smoke 1778164589\nstatus: waiting_for_customer_dns\ndomain: menu.forum-remote-smoke-1778164589.example.com\nroute: customer_subdomain\ntarget: forum-remote-smoke-1778164589-live.pages.dev",
+        "timestamp": "2026-05-07T14:38:38.447000+00:00"
+      },
+      {
+        "id": "1501956430855409825",
+        "content": "[Live] Forum Remote Smoke 1778164589",
+        "timestamp": "2026-05-07T14:38:38.117000+00:00"
+      }
+    ]
+  }
+}

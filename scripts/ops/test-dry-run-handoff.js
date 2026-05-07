@@ -8,30 +8,41 @@ import { dispatchDryRunHandoff } from '../../core/ops/dry-run-handoff.js';
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ops-dry-run-handoff-'));
 const caseDir = path.join(root, 'data', 'cases', 'rich-rare-restaurant', 'dryrun_handoff_test_001');
 const calls = [];
-const autoThreads = new Map();
 let seq = 0;
+const state = { tags: [] };
 
 const fetchImpl = async (url, options = {}) => {
+  const method = options.method || 'GET';
   const body = options.body ? JSON.parse(options.body) : null;
-  calls.push({ url, body });
-  const isThreadPoll = /\/channels\/website-channel\/messages\/handoff-message-\d+$/.test(String(url));
-  const isParentMessage = /\/channels\/website-channel\/messages$/.test(String(url));
-  const isThreadMessage = /\/channels\/website-thread-\d+\/messages$/.test(String(url));
+  calls.push({ url, method, body });
+  const isForumCreate = /\/channels\/website-channel\/threads$/.test(String(url)) && method === 'POST';
+  const isThreadMessage = /\/channels\/website-thread-\d+\/messages$/.test(String(url)) && method === 'POST';
   const isChannelInspect = /\/channels\/website-channel$/.test(String(url));
+  const isChannelPatch = /\/channels\/website-channel$/.test(String(url)) && method === 'PATCH';
   let data = {};
   if (isChannelInspect) {
-    data = { id: 'website-channel', type: 0 };
-  } else if (isParentMessage) {
-    const messageId = `handoff-message-${++seq}`;
-    autoThreads.set(messageId, `website-thread-${seq}`);
-    data = { id: messageId, channel_id: 'website-channel', guild_id: 'guild-1' };
-  } else if (isThreadPoll) {
-    const messageId = String(url).split('/').pop();
-    data = { id: messageId, channel_id: 'website-channel', guild_id: 'guild-1', thread: { id: autoThreads.get(messageId) } };
+    data = { id: 'website-channel', type: 15, available_tags: state.tags };
+  } else if (isChannelPatch) {
+    state.tags = (body.available_tags || []).map((tag, index) => ({
+      id: tag.id || `tag-${index + 1}`,
+      name: tag.name,
+      moderated: Boolean(tag.moderated),
+      emoji_id: null,
+      emoji_name: null,
+    }));
+    data = { id: 'website-channel', type: 15, available_tags: state.tags };
+  } else if (isForumCreate) {
+    const threadId = `website-thread-${++seq}`;
+    data = { id: threadId, channel_id: 'website-channel', guild_id: 'guild-1', name: body.name };
   } else if (isThreadMessage) {
-    data = { id: `thread-message-${++seq}`, channel_id: String(url).match(/\/channels\/(website-thread-\d+)\/messages$/)?.[1] || '', guild_id: 'guild-1' };
+    data = {
+      id: `thread-message-${++seq}`,
+      channel_id: String(url).match(/\/channels\/(website-thread-\d+)\/messages$/)?.[1] || '',
+      guild_id: 'guild-1',
+    };
   }
-  return { ok: true, status: 200, text: async () => JSON.stringify(data) };
+  const status = isForumCreate ? 201 : 200;
+  return { ok: true, status, text: async () => JSON.stringify(data) };
 };
 
 seedCase(caseDir);

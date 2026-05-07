@@ -132,6 +132,9 @@ npm run discord:update-forum-workspace -- --help
 - `data/qa/discord-forum-smoke/website-handoff-forum.json`
 - `data/qa/discord-forum-smoke/lead-forum-routing.json`
 - `data/qa/discord-forum-smoke/project-workspace-stages.json`
+- `data/qa/discord-forum-smoke/remote-route-run.json`
+- `data/qa/discord-forum-smoke/remote-domain-run.json`
+- `data/qa/discord-forum-smoke/remote-forum-workflow-summary.json`
 
 ### Forum 自动流转规则
 
@@ -162,6 +165,42 @@ npm run discord:update-forum-workspace -- --help
 - `domain:request --execute true --send-discord true`：
   - 如果客户还没完成 DNS，会在同一个项目 post 里发 domain status update
   - 并补上 `domain-blocked` / `waiting-customer` 语义
+
+### 远端 workflow 实测结果
+
+2026-05-08 这轮已经不是只跑本地脚本，而是实测了 GitHub Actions：
+
+#### `route-funnel-event.yml`
+
+- run: `25502553992`
+- URL:
+  - `https://github.com/matthew6688/webjuice-stack-mvp/actions/runs/25502553992`
+- 真实结果：
+  - 创建了 `website-leads` forum post；
+  - 创建了 `website-projects` forum post；
+  - `case.json.discord` 记录了：
+    - `salesThreadId`
+    - `websiteTaskThreadId`
+    - leads/projects workspace 名称和 tag IDs。
+
+#### `domain-request.yml`
+
+- run: `25502637533`
+- URL:
+  - `https://github.com/matthew6688/webjuice-stack-mvp/actions/runs/25502637533`
+- 真实结果：
+  - customer subdomain 请求写入 `data/domain/requests/...json`；
+  - 同一个项目 forum post 被更新到：
+    - 标题：`[Live] Forum Remote Smoke 1778164589`
+    - tags 包含 `live + domain-blocked`
+  - 同一个 post 里有 domain status message。
+
+注意：
+
+- 当时 workflow 有一个缺口：`domain-request.yml` 只提交了 `data/domain/*`，没有把被写过的 `data/cases/*` 一起提交。
+- 这次已经补上：
+  - `git add data/cases || true`
+- 这个修复代码已经写好，但如果要把“远端 workflow 也把 case timeline 提交回 repo”算作新 hard evidence，需要在这次代码上线后再跑一遍 domain workflow。
 
 ### 手动校正规则
 
@@ -1219,6 +1258,32 @@ npm run ops:project-dry-run -- \
 
 这说明 Opa 这类老项目在当前 SOP 下不能直接算完整 ready。下一步必须先创建或绑定 Open Design project，然后生成 production handoff。
 
+## 2026-05-08 Open Design / repo 切换追加验证
+
+这轮又用 `dark-shepherd-restaurant` 补跑了一次：
+
+```bash
+npm run open-design:sync-from-app -- --client dark-shepherd-restaurant
+npm run open-design:build-production-handoff -- --client dark-shepherd-restaurant
+npm run open-design:port-production-handoff -- --client dark-shepherd-restaurant --target-repo /Users/matthew/Developer/dark-shepherd-restaurant --execute true
+npm --prefix /Users/matthew/Developer/dark-shepherd-restaurant run build
+```
+
+结果：
+
+- `projectId` 仍然是：
+  - `dark-shepherd-restaurant-open-design-1778154549135`
+- `lastRunId` 仍然挂在同一个 project 上；
+- `production-handoff.json` 可继续生成；
+- port 到 customer repo 后，repo build 通过。
+
+证据：
+
+- `data/qa/open-design/dark-shepherd-sync-cycle-summary.json`
+- `clients/dark-shepherd-restaurant/concept/open-design/concept-manifest.json`
+- `clients/dark-shepherd-restaurant/concept/open-design/run-status.json`
+- `clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json`
+
 ## 2026-05-07 新 repo 闭环追加验证
 
 这次新增验证的是 dry-run 之后的两个操作门：
@@ -1266,6 +1331,64 @@ ops:project-dry-run
 - `publish-approved.yml` 负责用 `order ID + email` 去找正确 case，再把 `dev -> main`
 - `route-funnel-event.yml` 才会真正进入 `case / task / website thread` 体系
 - 旧的 `record-paid-revision.yml` 只会更新 `data/paid-intakes`，不足以完成当前新闭环
+
+## 2026-05-08 fresh remote bootstrap 追加验证
+
+这轮补的是“不是本地 dry-run，而是真正创建 GitHub repo + Cloudflare Pages project + 自动部署”。
+
+### 发现的真实问题
+
+第一次真实 smoke 证明了：
+
+- `main` push 会立刻触发 `Deploy Live`；
+- 但 `dev` branch 在 bootstrap 的第一次 push 上，GitHub 不一定会立刻触发 `Deploy Dev`；
+- 结果会出现：
+  - `live.pages.dev = 200`
+  - `dev.pages.dev = 522`
+
+这不是 Pages 配置错，而是 bootstrap 太快时，GitHub 还没把新 repo 的 `deploy-dev.yml` 索引好。
+
+### 修复
+
+bootstrap 现在新增两步：
+
+1. `create-dev-bootstrap-commit`
+   - 在第一次 `push-dev` 前先造一个空 commit；
+2. `ensure-dev-action-trigger`
+   - 如果第一次 `push-dev` 后 still no dev workflow run；
+   - 自动再补一个空 commit；
+   - 直到 GitHub 真正出现 `Deploy Dev` run。
+
+本地验证命令：
+
+```bash
+npm run deploy:test-bootstrap-client-repo
+```
+
+### 真实 smoke 结果
+
+第三个 smoke repo：
+
+- repo:
+  - `matthew6688/bootstrap-remote-smoke-c-1778165513`
+- live run:
+  - `25503433403`
+- dev run:
+  - `25503511777`
+- URLs:
+  - `https://bootstrap-remote-smoke-c-1778165513-live.pages.dev`
+  - `https://bootstrap-remote-smoke-c-1778165513-dev.pages.dev`
+
+最终结果：
+
+- live: `HTTP 200`
+- dev: `HTTP 200`
+
+证据：
+
+- `data/qa/fresh-remote-bootstrap/bootstrap-remote-summary-c.json`
+- `data/qa/fresh-remote-bootstrap/ensure-dev-trigger-c.json`
+- `data/qa/fresh-remote-bootstrap/bootstrap-runs-c-dev-final.json`
 
 ## 2026-05-07 官方线上入口真实 smoke
 

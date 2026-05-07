@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "repo": "matthew6688/bootstrap-remote-smoke-c-1778165513",
+  "project": "bootstrap-remote-smoke-c-1778165513",
+  "liveRun": {
+    "conclusion": "success",
+    "createdAt": "2026-05-07T14:52:22Z",
+    "databaseId": 25503433403,
+    "displayTitle": "Redirect legacy funnel paths to official site",
+    "headBranch": "main",
+    "status": "completed",
+    "url": "https://github.com/matthew6688/bootstrap-remote-smoke-c-1778165513/actions/runs/25503433403",
+    "workflowName": "Deploy Live"
+  },
+  "devTrigger": {
+    "ok": true,
+    "repo": "matthew6688/bootstrap-remote-smoke-c-1778165513",
+    "branch": "dev",
+    "strategy": "retriggered_with_empty_commit",
+    "run": {
+      "repo": "matthew6688/bootstrap-remote-smoke-c-1778165513",
+      "branch": "dev",
+      "ok": false,
+      "found": true,
+      "status": "in_progress",
+      "conclusion": null,
+      "name": "Deploy Dev",
+      "url": "https://github.com/matthew6688/bootstrap-remote-smoke-c-1778165513/actions/runs/25503511777",
+      "createdAt": "2026-05-07T14:53:47Z",
+      "updatedAt": "2026-05-07T14:53:55Z"
+    }
+  },
+  "devRun": {
+    "conclusion": "success",
+    "createdAt": "2026-05-07T14:53:47Z",
+    "databaseId": 25503511777,
+    "displayTitle": "chore: retrigger dev deploy after bootstrap",
+    "status": "completed",
+    "updatedAt": "2026-05-07T14:54:30Z",
+    "url": "https://github.com/matthew6688/bootstrap-remote-smoke-c-1778165513/actions/runs/25503511777",
+    "workflowName": "Deploy Dev"
+  },
+  "urls": {
+    "live": "https://bootstrap-remote-smoke-c-1778165513-live.pages.dev",
+    "dev": "https://bootstrap-remote-smoke-c-1778165513-dev.pages.dev"
+  },
+  "notes": [
+    "Initial bootstrap main push triggered Deploy Live.",
+    "Initial bootstrap dev push still needed retrigger logic.",
+    "ensure-dev-action-trigger created a follow-up empty commit and GitHub started Deploy Dev.",
+    "Both live and dev URLs returned HTTP 200 after the dev retrigger run completed."
+  ]
+}

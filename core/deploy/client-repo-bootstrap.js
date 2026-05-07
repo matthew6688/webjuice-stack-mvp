@@ -1,4 +1,6 @@
 import { execFileSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 export function buildClientRepoBootstrapPlan({
   repo,
@@ -30,7 +32,9 @@ export function buildClientRepoBootstrapPlan({
       { id: 'ensure-origin', command: ['git', 'remote', 'add', 'origin', `https://github.com/${repo}.git`], allowFailure: true },
       { id: 'push-main', command: ['git', 'push', '-u', 'origin', defaultBranch] },
       { id: 'ensure-dev-branch', command: ['git', 'checkout', '-B', devBranch] },
+      { id: 'create-dev-bootstrap-commit', command: ['git', 'commit', '--allow-empty', '-m', 'chore: bootstrap dev deployment'] },
       { id: 'push-dev', command: ['git', 'push', '-u', 'origin', devBranch] },
+      { id: 'ensure-dev-action-trigger', command: ['node', 'scripts/deploy/ensure-dev-action-trigger.js', '--repo', repo, '--repo-dir', repoDir, '--branch', devBranch] },
       ...(waitForActions ? [
         { id: 'wait-live-action', command: ['node', 'scripts/deploy/wait-github-action.js', '--repo', repo, '--branch', defaultBranch] },
         { id: 'wait-dev-action', command: ['node', 'scripts/deploy/wait-github-action.js', '--repo', repo, '--branch', devBranch] },
@@ -90,6 +94,10 @@ export function executeClientRepoBootstrapPlan(plan, {
     executed.push({ id: step.id, command: redactCommand(step.command), dryRun });
     if (dryRun) continue;
     try {
+      if (step.id === 'ensure-origin') {
+        ensureOriginRemote(plan.repoDir, `https://github.com/${plan.repo}.git`, env, stdio);
+        continue;
+      }
       const input = step.secret ? env[step.secret] : undefined;
       execFileSync(step.command[0], step.command.slice(1), {
         cwd: commandCwd(step, plan),
@@ -106,9 +114,14 @@ export function executeClientRepoBootstrapPlan(plan, {
 }
 
 function commandCwd(step, plan) {
-  return step.id.startsWith('push-') || step.id.startsWith('ensure-')
-    ? plan.repoDir
-    : process.cwd();
+  const repoScoped = new Set([
+    'ensure-origin',
+    'ensure-dev-branch',
+    'create-dev-bootstrap-commit',
+    'push-main',
+    'push-dev',
+  ]);
+  return repoScoped.has(step.id) ? plan.repoDir : process.cwd();
 }
 
 function redactCommand(command = []) {
@@ -119,4 +132,39 @@ function shellToken(value) {
   const raw = String(value || '');
   if (/^[a-zA-Z0-9._:/@-]+$/.test(raw)) return raw;
   return JSON.stringify(raw);
+}
+
+function ensureOriginRemote(repoDir, remoteUrl, env, stdio) {
+  const gitDir = path.join(repoDir, '.git');
+  if (!fs.existsSync(gitDir)) {
+    throw new Error(`repoDir is not a git repository: ${repoDir}`);
+  }
+  let currentUrl = '';
+  try {
+    currentUrl = execFileSync('git', ['remote', 'get-url', 'origin'], {
+      cwd: repoDir,
+      env,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', stdio],
+    }).trim();
+  } catch {
+    currentUrl = '';
+  }
+
+  if (!currentUrl) {
+    execFileSync('git', ['remote', 'add', 'origin', remoteUrl], {
+      cwd: repoDir,
+      env,
+      stdio,
+    });
+    return;
+  }
+
+  if (currentUrl === remoteUrl) return;
+
+  execFileSync('git', ['remote', 'set-url', 'origin', remoteUrl], {
+    cwd: repoDir,
+    env,
+    stdio,
+  });
 }
