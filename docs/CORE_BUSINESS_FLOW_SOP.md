@@ -897,15 +897,13 @@ lead/intake
 4. TinyFish 抓 homepage + `/menu`，再把菜单文本解析成 `menu.sections`。
 5. `npm run intake:build-website-ready -- --client dark-shepherd-restaurant --source manual`
    - 结果：`website_ready_to_build`
-6. Open Design headless run 确实创建了 project，但 run 卡在 `running`。
-7. 保留同一个 Open Design project ID，在同一个 project 目录里补齐 concept 文件，再执行：
-   - `npm run open-design:sync-from-app -- --client dark-shepherd-restaurant`
-8. `npm run open-design:build-production-handoff ...`
-9. `npm run open-design:port-production-handoff -- --client dark-shepherd-restaurant --target-repo /Users/matthew/Developer/dark-shepherd-restaurant --execute true`
-10. customer repo 本地安装依赖并 `npm run build`
-11. `npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/dark-shepherd-restaurant/dist --client "Dark Shepherd"`
-12. `npm run qa:write-delivery-qa -- --client dark-shepherd-restaurant --order fresh_dark_shepherd_dryrun_001 ...`
-13. `npm run ops:project-dry-run -- --client dark-shepherd-restaurant ... --order fresh_dark_shepherd_dryrun_001`
+6. Open Design headless run 现在可以在 `app-visible` 模式下创建同一个 project，并通过 `artifact_quiet_fallback` 从真实 project 目录回收 `index.html/menu.html/functions.html/contact.html/brand-spec.md`。
+7. `npm run open-design:build-production-handoff ...`
+8. `npm run open-design:port-production-handoff -- --client dark-shepherd-restaurant --target-repo /Users/matthew/Developer/dark-shepherd-restaurant --execute true`
+9. customer repo 本地安装依赖并 `npm run build`
+10. `npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/dark-shepherd-restaurant/dist --client "Dark Shepherd"`
+11. `npm run qa:write-delivery-qa -- --client dark-shepherd-restaurant --order fresh_dark_shepherd_dryrun_001 ...`
+12. `npm run ops:project-dry-run -- --client dark-shepherd-restaurant ... --order fresh_dark_shepherd_dryrun_001`
    - 最终结果：`ready_for_customer_review`
 
 ### 这次 fresh project 暴露并修掉的问题
@@ -914,6 +912,7 @@ lead/intake
 2. Google Places evidence 会让 `maps.google.com/?cid=` 压过标准 `google.com/maps/search`。
 3. 品牌资产 extractor 会保留 `http://` 图片链接，导致 `website-ready` 卡在资产校验。
 4. `open-design:sync-from-app` 的资产路径需要保留 `assets/...` 相对路径，不能压扁成裸文件名。
+5. Open Design headless fallback 不能把 `.od-skills` 当成真实产物，必须忽略 dot 目录，并至少看到真实 `html` 页面才允许 quiet fallback 成功。
 
 这些问题修掉后，这条 fresh project 才真正到达 `ready_for_customer_review`。
 
