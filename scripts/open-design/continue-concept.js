@@ -3,7 +3,14 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
-import { exportProjectFilesFromDisk, normalizeOpenDesignTimeoutMs, streamRun } from './run-concept.js';
+import {
+  appendAutomationResult,
+  buildAutomationMessage,
+  exportProjectFilesFromDisk,
+  normalizeOpenDesignTimeoutMs,
+  streamRun,
+  upsertAutomationMessage,
+} from './run-concept.js';
 
 const DEFAULT_OPEN_DESIGN_ROOT = '/Users/matthew/Developer/open-design';
 const DEFAULT_NODE24 = '/Users/matthew/.local/share/mise/installs/node/24.15.0/bin/node';
@@ -76,12 +83,31 @@ try {
     allowShortTimeout,
   });
   const timeoutMs = timeoutPolicy.timeoutMs;
-
+  const assistantMessageId = `assistant-${Date.now()}`;
+  const assistantMessageContent = buildAutomationMessage({
+    mode: 'continue-concept',
+    sourceUrl: manifest.sourceUrl || null,
+    businessType: manifest.businessType || 'unknown',
+    tone: manifest.tone || 'inherit existing concept',
+    scope: manifest.scope || 'existing concept',
+    prompt: buildContinuationPrompt(args.prompt),
+  });
+  await upsertAutomationMessage({
+    daemonUrl,
+    projectId: manifest.projectId,
+    conversationId,
+    messageId: assistantMessageId,
+    role: 'assistant',
+    content: assistantMessageContent,
+    agentId: args.agent || manifest.agentId || 'codex',
+    agentName: args.agent || manifest.agentName || manifest.agentId || 'codex',
+    runStatus: 'queued',
+  });
   const run = await postJson(`${daemonUrl}/api/runs`, {
     agentId: args.agent || manifest.agentId || 'codex',
     projectId: manifest.projectId,
     conversationId,
-    assistantMessageId: `assistant-${Date.now()}`,
+    assistantMessageId,
     clientRequestId: `client-${Date.now()}`,
     skillId: args.skill || manifest.skillId || 'web-prototype',
     designSystemId: args['design-system'] || manifest.designSystemId || null,
@@ -89,25 +115,80 @@ try {
     reasoning: args.reasoning || manifest.reasoning || null,
     message: buildContinuationPrompt(args.prompt),
   });
+  await upsertAutomationMessage({
+    daemonUrl,
+    projectId: manifest.projectId,
+    conversationId,
+    messageId: assistantMessageId,
+    role: 'assistant',
+    content: assistantMessageContent,
+    agentId: args.agent || manifest.agentId || 'codex',
+    agentName: args.agent || manifest.agentName || manifest.agentId || 'codex',
+    runId: run.runId,
+    runStatus: 'running',
+    startedAt: Date.now(),
+  });
 
   const eventsPath = path.join(outDir, `run-events-${run.runId}.sse`);
-  const finalStatus = await streamRun({
-    daemonUrl,
-    runId: run.runId,
-    eventsPath,
-    timeoutMs,
-    artifactWatch: {
-      projectDir: path.join(dataDir, 'projects', manifest.projectId),
-      quietMs: artifactQuietMs,
-    },
-  });
-  if (finalStatus.status !== 'succeeded') {
-    throw new Error(`Open Design continuation failed: ${JSON.stringify(finalStatus)}`);
-  }
+  let finalStatus = null;
+  let files = [];
+  try {
+    finalStatus = await streamRun({
+      daemonUrl,
+      runId: run.runId,
+      eventsPath,
+      timeoutMs,
+      artifactWatch: {
+        projectDir: path.join(dataDir, 'projects', manifest.projectId),
+        quietMs: artifactQuietMs,
+      },
+    });
+    if (finalStatus.status !== 'succeeded') {
+      throw new Error(`Open Design continuation failed: ${JSON.stringify(finalStatus)}`);
+    }
 
-  const files = finalStatus.completionMode === 'artifact_quiet_fallback'
-    ? exportProjectFilesFromDisk({ projectDir: path.join(dataDir, 'projects', manifest.projectId), outDir })
-    : await exportProjectFiles({ daemonUrl, projectId: manifest.projectId, outDir });
+    files = finalStatus.completionMode === 'artifact_quiet_fallback'
+      ? exportProjectFilesFromDisk({ projectDir: path.join(dataDir, 'projects', manifest.projectId), outDir })
+      : await exportProjectFiles({ daemonUrl, projectId: manifest.projectId, outDir });
+    await upsertAutomationMessage({
+      daemonUrl,
+      projectId: manifest.projectId,
+      conversationId,
+      messageId: assistantMessageId,
+      role: 'assistant',
+      content: appendAutomationResult(assistantMessageContent, {
+        status: 'succeeded',
+        completionMode: finalStatus.completionMode || 'native',
+        fileCount: files.length,
+      }),
+      agentId: args.agent || manifest.agentId || 'codex',
+      agentName: args.agent || manifest.agentName || manifest.agentId || 'codex',
+      runId: run.runId,
+      runStatus: 'succeeded',
+      startedAt: Date.now(),
+      endedAt: Date.now(),
+      producedFiles: files.map((file) => file.path),
+    });
+  } catch (error) {
+    await upsertAutomationMessage({
+      daemonUrl,
+      projectId: manifest.projectId,
+      conversationId,
+      messageId: assistantMessageId,
+      role: 'assistant',
+      content: appendAutomationResult(assistantMessageContent, {
+        status: 'failed',
+        error: error?.message || String(error),
+      }),
+      agentId: args.agent || manifest.agentId || 'codex',
+      agentName: args.agent || manifest.agentName || manifest.agentId || 'codex',
+      runId: run.runId,
+      runStatus: 'failed',
+      startedAt: Date.now(),
+      endedAt: Date.now(),
+    }).catch(() => {});
+    throw error;
+  }
   const updatedManifest = {
     ...manifest,
     updatedAt: new Date().toISOString(),

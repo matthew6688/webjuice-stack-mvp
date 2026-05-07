@@ -310,6 +310,9 @@ npm run open-design:sync-from-app -- --client <client>
 3. Rebuild production handoff.
 4. Port to customer repo `dev`.
 5. QA before customer review.
+6. Verify the Open Design app project is no longer `Not started`:
+   - external ProfitsLocal runs now write an assistant message with `run_id/run_status`;
+   - Pipeline/Kanban should show `Running` while active and `Succeeded/Failed` after completion instead of silently falling back to `Not started`.
 
 ## Current Limitation
 

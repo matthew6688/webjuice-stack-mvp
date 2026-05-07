@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-08T08:01:00+10:00",
+  "topic": "open_design_pipeline_status_sync",
+  "summary": {
+    "rootFinding": "Open Design Pipeline/Kanban was not wrong. ProfitsLocal external runs were bypassing the chat persistence layer, so successful `/api/runs` executions left no `messages.run_id/run_status` rows for the app to classify. The UI therefore fell back to `not_started` even when the concept files were generated correctly.",
+    "fixApplied": "ProfitsLocal `run-concept` and `continue-concept` now create/update an assistant message tied to the Open Design conversation and persist `run_id`, `run_status`, timestamps, and produced files.",
+    "verifiedOutcome": "A fresh app-visible project and a continuation run now both resolve to `status.value = succeeded` when the Open Design status composition logic is run against the shared `.od` database."
+  },
+  "evidence": [
+    {
+      "kind": "fresh_project_smoke",
+      "clientSlug": "od-pipeline-status-smoke",
+      "projectId": "od-pipeline-status-smoke-open-design-1778190126754",
+      "runId": "94bff442-4254-4835-b8c4-71961b64e72a",
+      "runStatusPath": "/Users/matthew/Developer/google-map-website/clients/od-pipeline-status-smoke/concept/open-design/run-status.json",
+      "dbObservation": {
+        "messageId": "assistant-1778190128753",
+        "runStatus": "succeeded"
+      },
+      "computedProjectStatus": {
+        "value": "succeeded",
+        "runId": "94bff442-4254-4835-b8c4-71961b64e72a"
+      }
+    },
+    {
+      "kind": "continuation_smoke",
+      "clientSlug": "od-pipeline-status-smoke",
+      "projectId": "od-pipeline-status-smoke-open-design-1778190126754",
+      "runId": "6e4adc29-29c7-4d42-8552-993bc5096eb9",
+      "dbObservation": {
+        "messageId": "assistant-1778190358231",
+        "runStatus": "succeeded",
+        "messageCountForProject": 2
+      },
+      "computedProjectStatus": {
+        "value": "succeeded",
+        "runId": "6e4adc29-29c7-4d42-8552-993bc5096eb9"
+      }
+    }
+  ]
+}

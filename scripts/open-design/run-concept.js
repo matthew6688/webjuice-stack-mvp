@@ -115,6 +115,25 @@ async function main() {
 
     const assistantMessageId = `assistant-${Date.now()}`;
     const clientRequestId = `client-${Date.now()}`;
+    const assistantMessageContent = buildAutomationMessage({
+      mode: 'run-concept',
+      sourceUrl,
+      businessType,
+      tone,
+      scope,
+      prompt,
+    });
+    await upsertAutomationMessage({
+      daemonUrl,
+      projectId,
+      conversationId: created.conversationId,
+      messageId: assistantMessageId,
+      role: 'assistant',
+      content: assistantMessageContent,
+      agentId,
+      agentName: agent.name || agentId,
+      runStatus: 'queued',
+    });
     const run = await postJson(`${daemonUrl}/api/runs`, {
       agentId,
       projectId,
@@ -127,26 +146,82 @@ async function main() {
       reasoning,
       message: prompt,
     });
-
-    const eventsPath = path.join(outDir, 'run-events.sse');
-    const finalStatus = await streamRun({
+    await upsertAutomationMessage({
       daemonUrl,
+      projectId,
+      conversationId: created.conversationId,
+      messageId: assistantMessageId,
+      role: 'assistant',
+      content: assistantMessageContent,
+      agentId,
+      agentName: agent.name || agentId,
       runId: run.runId,
-      eventsPath,
-      timeoutMs,
-      artifactWatch: {
-        projectDir: path.join(dataDir, 'projects', projectId),
-        quietMs: artifactQuietMs,
-      },
+      runStatus: 'running',
+      startedAt: Date.now(),
     });
 
-    if (finalStatus.status !== 'succeeded') {
-      throw new Error(`Open Design run failed: ${JSON.stringify(finalStatus)}`);
+    const eventsPath = path.join(outDir, 'run-events.sse');
+    let finalStatus = null;
+    let files = [];
+    try {
+      finalStatus = await streamRun({
+        daemonUrl,
+        runId: run.runId,
+        eventsPath,
+        timeoutMs,
+        artifactWatch: {
+          projectDir: path.join(dataDir, 'projects', projectId),
+          quietMs: artifactQuietMs,
+        },
+      });
+
+      if (finalStatus.status !== 'succeeded') {
+        throw new Error(`Open Design run failed: ${JSON.stringify(finalStatus)}`);
+      }
+
+      files = finalStatus.completionMode === 'artifact_quiet_fallback'
+        ? exportProjectFilesFromDisk({ projectDir: path.join(dataDir, 'projects', projectId), outDir })
+        : await exportProjectFiles({ daemonUrl, projectId, outDir });
+      await upsertAutomationMessage({
+        daemonUrl,
+        projectId,
+        conversationId: created.conversationId,
+        messageId: assistantMessageId,
+        role: 'assistant',
+        content: appendAutomationResult(assistantMessageContent, {
+          status: 'succeeded',
+          completionMode: finalStatus.completionMode || 'native',
+          fileCount: files.length,
+        }),
+        agentId,
+        agentName: agent.name || agentId,
+        runId: run.runId,
+        runStatus: 'succeeded',
+        startedAt: Date.now(),
+        endedAt: Date.now(),
+        producedFiles: files.map((file) => file.path),
+      });
+    } catch (error) {
+      await upsertAutomationMessage({
+        daemonUrl,
+        projectId,
+        conversationId: created.conversationId,
+        messageId: assistantMessageId,
+        role: 'assistant',
+        content: appendAutomationResult(assistantMessageContent, {
+          status: 'failed',
+          error: error?.message || String(error),
+        }),
+        agentId,
+        agentName: agent.name || agentId,
+        runId: run.runId,
+        runStatus: 'failed',
+        startedAt: Date.now(),
+        endedAt: Date.now(),
+      }).catch(() => {});
+      throw error;
     }
 
-    const files = finalStatus.completionMode === 'artifact_quiet_fallback'
-      ? exportProjectFilesFromDisk({ projectDir: path.join(dataDir, 'projects', projectId), outDir })
-      : await exportProjectFiles({ daemonUrl, projectId, outDir });
     const manifest = {
       version: 1,
       generatedAt: new Date().toISOString(),
@@ -212,6 +287,28 @@ function buildPrompt({ sourceUrl, businessType, tone, scope, clientSlug }) {
     'Create concept files in the project folder. Prefer index.html plus local assets and brand-spec.md when brand information is available.',
     'Do not deploy. Do not edit any ProfitsLocal production repo. This is concept generation only.',
   ].join('\n');
+}
+
+function buildAutomationMessage({ mode, sourceUrl, businessType, tone, scope, prompt }) {
+  return [
+    `ProfitsLocal automation: ${mode}`,
+    sourceUrl ? `Source website: ${sourceUrl}` : 'Source website: none',
+    `Business type: ${businessType}`,
+    `Tone: ${tone}`,
+    `Scope: ${scope}`,
+    '',
+    'Prompt:',
+    prompt,
+  ].join('\n');
+}
+
+function appendAutomationResult(baseContent, result) {
+  const lines = [baseContent, '', 'Run result:'];
+  lines.push(`- status: ${result.status}`);
+  if (result.completionMode) lines.push(`- completionMode: ${result.completionMode}`);
+  if (typeof result.fileCount === 'number') lines.push(`- files: ${result.fileCount}`);
+  if (result.error) lines.push(`- error: ${result.error}`);
+  return lines.join('\n');
 }
 
 function assertOpenDesignReady(root, node) {
@@ -420,6 +517,47 @@ async function postJson(url, body) {
   return response.json();
 }
 
+async function putJson(url, body) {
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) throw new Error(`PUT ${url} failed: ${response.status} ${await response.text()}`);
+  return response.json();
+}
+
+async function upsertAutomationMessage({
+  daemonUrl,
+  projectId,
+  conversationId,
+  messageId,
+  role,
+  content,
+  agentId,
+  agentName,
+  runId,
+  runStatus,
+  startedAt,
+  endedAt,
+  producedFiles,
+}) {
+  const url = `${daemonUrl}/api/projects/${encodeURIComponent(projectId)}/conversations/${encodeURIComponent(conversationId)}/messages/${encodeURIComponent(messageId)}`;
+  const body = {
+    id: messageId,
+    role,
+    content,
+    agentId,
+    agentName,
+    runId: runId ?? null,
+    runStatus: runStatus ?? null,
+    startedAt: startedAt ?? null,
+    endedAt: endedAt ?? null,
+    producedFiles: Array.isArray(producedFiles) ? producedFiles : null,
+  };
+  return putJson(url, body);
+}
+
 function writeJson(filePath, value) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
@@ -559,4 +697,7 @@ export {
   isSourceCaptureHtml,
   scanArtifactQuietSnapshot,
   normalizeOpenDesignTimeoutMs,
+  buildAutomationMessage,
+  appendAutomationResult,
+  upsertAutomationMessage,
 };

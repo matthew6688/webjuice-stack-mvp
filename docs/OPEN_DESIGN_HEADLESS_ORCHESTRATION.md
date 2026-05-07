@@ -193,6 +193,7 @@ The current best operating model is:
 - **treat `artifact_quiet_fallback` as acceptable only when real visible artifacts already exist;**
 - **treat "no visible HTML" as a hard failure;**
 - **for `codex + web-prototype`, do not use a timeout below `600000ms` unless you are deliberately running a failure experiment;**
+- **when ProfitsLocal triggers `/api/runs` directly, also persist an assistant message with `run_id/run_status`, otherwise Open Design's Pipeline/Kanban will keep showing the project as `Not started`;**
 - **do not claim native clean finish unless `run-events.sse` actually contains `event: end` or the run status endpoint reaches terminal success before fallback.**
 
 Reference summary:

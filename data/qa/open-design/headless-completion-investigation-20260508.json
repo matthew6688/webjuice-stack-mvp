@@ -8,6 +8,7 @@
     "secondaryFinding": "Short 120000-180000ms investigation timeouts created false failure conclusions. In reproduced app-visible runs, Codex did not even reach file-writing by 180000ms, but the same scenario with 600000ms timeout wrote real pages and either completed via artifact_quiet_fallback or reached a native end event.",
     "pluginHypothesis": "Disabling Codex plugins did not eliminate the hang by itself in the reproduced isolated smoke.",
     "nativeFinishFinding": "A no-fallback app-visible reproduction (`od-rootcause-appvisible-nofallback`) proved that Codex can naturally emit the final artifact, usage, and SSE event:end when the timeout is long enough.",
+    "pipelineStatusFinding": "A separate but related issue was that ProfitsLocal external `/api/runs` calls were not persisting assistant messages with `run_id/run_status`, so the Open Design app's Pipeline/Kanban kept classifying finished projects as `not_started`.",
     "streamDisconnectFinding": "The `stream disconnected - retrying sampling request` warning is real Codex-native stderr, but it is not the primary root cause of the business issue because a successful native clean-finish reproduction completed without that warning."
   },
   "evidence": [
