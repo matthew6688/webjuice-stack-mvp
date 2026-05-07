@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0",
+  "kind": "revision",
+  "status": "queued",
+  "createdAt": "2026-05-07T23:40:45.022Z",
+  "clientSlug": "dark-shepherd-restaurant",
+  "repo": "matthew6688/dark-shepherd-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "customer": {
+    "company": "Dark Shepherd",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "order": {
+    "id": "fresh_dark_shepherd_dryrun_001",
+    "tier": "unknown",
+    "amount": 0,
+    "currency": "USD"
+  },
+  "requestedChanges": "Please update the hero supporting copy to emphasize steakhouse dining and late-night reservations, and add a short private dining note near the reservation CTA. This is a real revision smoke for the Dark Shepherd fresh project.",
+  "case": {
+    "id": "dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001",
+    "dir": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001",
+    "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+    "contextPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json",
+    "timelinePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/timeline.jsonl",
+    "decisionsPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/decisions.jsonl",
+    "customerMessagesPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/agent-runs.jsonl",
+    "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md"
+  },
+  "requiredContext": {
+    "evidence": "clients/dark-shepherd-restaurant/evidence/evidence.json",
+    "content": "clients/dark-shepherd-restaurant/content.restaurant.json",
+    "design": "clients/dark-shepherd-restaurant/design.restaurant.json",
+    "brandSpec": "clients/dark-shepherd-restaurant/brand-spec.md",
+    "checkout": "clients/dark-shepherd-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/dark-shepherd-restaurant/intake/website-survey.json"
+  },
+  "designProtocol": {
+    "requiredSkill": "huashu-design",
+    "supportingSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design",
+      "frontend-design",
+      "design-review",
+      "critique"
+    ],
+    "openDesignSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design-brief",
+      "critique",
+      "tweaks"
+    ],
+    "routeType": "classify_from_customer_request",
+    "rules": [
+      "Official website work must look like a real formal website with brand hierarchy, not a data dump.",
+      "Menu work must stay minimal, mobile-first, and content-focused.",
+      "Preserve the existing design language unless the task explicitly asks for redesign.",
+      "Use real restaurant photos and verified brand assets whenever available."
+    ]
+  },
+  "openDesign": {
+    "status": "bound",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "dark-shepherd-restaurant-open-design-1778154549135",
+    "runId": "f9275289-50aa-4c54-b9bf-a897336a5a79",
+    "conceptPath": "clients/dark-shepherd-restaurant/concept/open-design",
+    "manifestPath": "clients/dark-shepherd-restaurant/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+    "createCommand": "",
+    "continueCommand": "npm run open-design:continue-concept -- --client dark-shepherd-restaurant --prompt \"<change request>\"",
+    "syncCommand": "npm run open-design:sync-from-app -- --client dark-shepherd-restaurant",
+    "rule": "Use this exact local Open Design project for design concept changes. Do not start a separate Open Design project unless the operator explicitly asks."
+  },
+  "productionHandoffPath": "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+  "allowedFiles": [
+    "src/**",
+    "public/**",
+    "content.restaurant.json",
+    "design.restaurant.json",
+    "brand-spec.md"
+  ],
+  "activeConstraints": [
+    "Read the case context packet before planning edits.",
+    "Website and menu are separate products; classify the request before editing.",
+    "Use evidence/content/design/brand files as source of truth.",
+    "Do not invent or overwrite menu prices, hours, address, phone, reservation links, or photos without evidence.",
+    "Do not overwrite locked decisions from the case file.",
+    "Push only to dev until customer approval."
+  ],
+  "entitlement": {
+    "orderId": "fresh_dark_shepherd_dryrun_001",
+    "tier": "one_time",
+    "revisionPolicy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "revisionUsed": 1,
+    "revisionStatus": "revision_allowed"
+  },
+  "referenceUrl": "",
+  "files": [],
+  "instructions": [
+    "Customer requested revisions for dark-shepherd-restaurant.",
+    "Find the target repository from the hidden repo field.",
+    "Apply requested changes on the dev branch only.",
+    "Run build and preview QA before pushing.",
+    "After dev deploy succeeds, post the updated preview link in the revision Discord thread and prepare a customer review email."
+  ],
+  "completion": {
+    "deployBranch": "dev",
+    "notifyDiscord": true,
+    "sendCustomerReviewEmail": true,
+    "customerReviewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "caseId": "dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001",
-  "status": "live_published",
+  "status": "dev_pushed_needs_review",
   "clientSlug": "dark-shepherd-restaurant",
   "repo": "matthew6688/dark-shepherd-restaurant",
   "branch": "dev",
@@ -20,31 +20,43 @@
     "phone": "",
     "domain": ""
   },
+  "revision": {
+    "policy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "used": 1,
+    "remaining": 2,
+    "lastReason": "revision_allowed"
+  },
   "discord": {
     "salesThreadId": "",
-    "revisionThreadId": "",
+    "revisionThreadId": "1502092858671366249",
     "websiteTaskThreadId": "1502085064148647989",
     "salesWorkspaceChannelId": "",
     "salesWorkspaceType": "",
     "salesWorkspaceName": "",
     "salesWorkspaceTagIds": [],
-    "revisionWorkspaceChannelId": "",
+    "revisionWorkspaceChannelId": "1493926003255410718",
     "revisionWorkspaceType": "",
-    "revisionWorkspaceName": "",
+    "revisionWorkspaceName": "Dark-Shepherd-revision-fresh_dark_shepherd_dryrun_001",
     "revisionWorkspaceTagIds": [],
     "websiteWorkspaceChannelId": "1502085064148647989",
     "websiteWorkspaceType": "forum_post",
-    "websiteWorkspaceName": "[Review] Dark Shepherd",
+    "websiteWorkspaceName": "[Revision 1/3] Dark Shepherd",
     "websiteWorkspaceTagIds": [
       "1501948304479748148",
-      "1501948304479748152",
-      "1501948304488140850"
+      "1501948304479748153",
+      "1501948304488140851"
     ],
     "lastChannelId": "1502085064148647989",
-    "lastMessageId": "1502089732761452706",
+    "lastMessageId": "1502093014426980413",
     "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989",
-    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989",
-    "threadCreatedByBot": false
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1502092858671366249",
+    "threadCreatedByBot": true
   },
   "sourceOfTruth": {
     "evidence": "clients/dark-shepherd-restaurant/evidence/evidence.json",
@@ -54,20 +66,31 @@
     "checkout": "clients/dark-shepherd-restaurant/funnel/checkout.json",
     "websiteSurvey": "clients/dark-shepherd-restaurant/intake/website-survey.json"
   },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
   "paths": {
     "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
     "contextPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json",
     "timelinePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/timeline.jsonl",
+    "decisionsPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/decisions.jsonl",
+    "customerMessagesPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/agent-runs.jsonl",
     "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
     "artifactsDir": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts"
   },
   "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
   "latestTask": {
-    "id": "task_1778155287276_8phnzh5o",
-    "path": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/publish-task.json",
-    "kind": "sale",
-    "branch": "dev",
-    "createdAt": "2026-05-07T23:11:11.518Z"
+    "id": "revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0",
+    "kind": "revision",
+    "status": "queued",
+    "path": "data/agent-tasks/dark-shepherd-restaurant/revision-fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0.json",
+    "createdAt": "2026-05-07T23:40:45.022Z"
   },
   "recentTimeline": [
     {
@@ -130,6 +153,64 @@
       "discordMessageId": "1502089732761452706",
       "discordMessageUrl": "",
       "createdAt": "2026-05-07T23:28:19.897Z"
+    },
+    {
+      "id": "case_evt_1778197246103_ljlt5xhx",
+      "type": "revision_routed",
+      "ok": true,
+      "reason": "revision_allowed",
+      "provider": "tally",
+      "orderId": "fresh_dark_shepherd_dryrun_001",
+      "clientSlug": "dark-shepherd-restaurant",
+      "repo": "matthew6688/dark-shepherd-restaurant",
+      "taskId": "revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0",
+      "taskPath": "data/agent-tasks/dark-shepherd-restaurant/revision-fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0.json",
+      "submissionPath": "data/funnel/submissions/dark-shepherd-restaurant/revision-fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0.json",
+      "ledgerEventId": "",
+      "discordChannelId": "1493926003255410718",
+      "discordThreadId": "1502092858671366249",
+      "discordMessageId": "1502092858671366249",
+      "discordMessageUrl": "",
+      "revisionUsed": 1,
+      "revisionLimit": 3,
+      "createdAt": "2026-05-07T23:40:46.102Z"
+    },
+    {
+      "id": "case_evt_1778197246779_a0pa0lj4",
+      "type": "website_agent_handoff_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "revision_handoff",
+      "discordChannelId": "1502085064148647989",
+      "discordThreadId": "1502085064148647989",
+      "discordMessageId": "1502092864971346003",
+      "discordMessageUrl": "",
+      "createdAt": "2026-05-07T23:40:46.779Z"
+    },
+    {
+      "id": "case_evt_1778197277836_3fr1aljg",
+      "type": "agent_run_completed",
+      "ok": true,
+      "taskId": "revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0",
+      "repo": "matthew6688/dark-shepherd-restaurant",
+      "branch": "dev",
+      "runId": "agent_run_1778197277835_t51kwrbx",
+      "changedFiles": [],
+      "pushed": true,
+      "commit": "",
+      "createdAt": "2026-05-07T23:41:17.835Z"
+    },
+    {
+      "id": "case_evt_1778197282216_nl9u3eq6",
+      "type": "agent_review_discord_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "",
+      "discordChannelId": "1502085064148647989",
+      "discordThreadId": "1502085064148647989",
+      "discordMessageId": "1502093014426980413",
+      "discordMessageUrl": "",
+      "createdAt": "2026-05-07T23:41:22.216Z"
     }
   ],
   "agentStartProtocol": [
