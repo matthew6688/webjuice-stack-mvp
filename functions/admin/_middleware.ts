@@ -63,7 +63,9 @@ async function readRedirectTarget(request: Request, url: URL) {
     }
   }
 
-  return `${url.pathname}${url.search}${url.hash}`;
+  const sanitized = new URL(url.toString());
+  sanitized.searchParams.delete('token');
+  return `${sanitized.pathname}${sanitized.search}${sanitized.hash}`;
 }
 
 function isSafeAdminPath(value: string) {

@@ -8,6 +8,7 @@ const env = {
 async function run() {
   await testHtmlUnauthorized();
   await testFormSignIn();
+  await testQueryTokenSignIn();
   console.log('admin auth middleware ok');
 }
 
@@ -41,6 +42,16 @@ async function testFormSignIn() {
 
   assert.equal(response.status, 302);
   assert.equal(response.headers.get('Location'), '/admin/finance');
+  assert.match(response.headers.get('Set-Cookie') || '', /pl_admin_token=test-admin-token/);
+}
+
+async function testQueryTokenSignIn() {
+  const response = await onRequest(makeContext(new Request('https://profitslocal.com/admin?token=test-admin-token', {
+    headers: { Accept: 'text/html' },
+  })));
+
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get('Location'), '/admin');
   assert.match(response.headers.get('Set-Cookie') || '', /pl_admin_token=test-admin-token/);
 }
 
