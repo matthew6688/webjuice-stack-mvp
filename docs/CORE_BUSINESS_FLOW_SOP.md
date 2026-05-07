@@ -392,6 +392,25 @@ npm run open-design:port-production-handoff -- \
 
 这是 2026-05-08 之后必须遵守的判断规则，不要把不同问题混成一个。
 
+#### 先说一个已经确认并修复的根因
+
+ProfitsLocal 旧版 fallback 检测曾经把 `source-*.html` 这种**源站抓取页面**也算进“概念页已经生成”。
+
+这会造成一种假成功：
+
+1. run 先把官网抓成 `source-*.html`
+2. 再下载几张图片
+3. 目录安静一段时间
+4. 我们自己的 runner 就提前 cancel run
+5. 最终被误记成 `completionMode=artifact_quiet_fallback`
+
+但实际上 Open Design 可能还没有写出 `index.html`、`menu.html` 之类真正的概念页。
+
+现在这条已经修掉了：
+
+- `source-*.html` **不再算** fallback readiness；
+- 必须至少出现一个**非 source 的 html 概念页**，quiet fallback 才允许成功。
+
 #### 类型 A：真实 artifact 已经存在，但没有自然结束
 
 特征：
@@ -416,12 +435,12 @@ npm run open-design:port-production-handoff -- \
   - `port-production-handoff`
   - repo build / QA
 
-#### 类型 B：连第一个 visible html 都没有
+#### 类型 B：连第一个“生成的概念 html”都没有
 
 特征：
 
 - project 目录里可能只有图片或中间文件；
-- `scanArtifactQuietSnapshot` 仍然属于 `required_artifacts_missing`；
+- `scanArtifactQuietSnapshot` 仍然属于 `required_artifacts_missing` 或 `generated_artifacts_missing`；
 - 命令最终 timeout 或 fail；
 - 这不是 fallback success。
 
@@ -435,6 +454,7 @@ npm run open-design:port-production-handoff -- \
 #### 当前已验证结论
 
 - `artifact_quiet_fallback` 不是“Open Design 没工作”，而是“真实文件已经写出来了，但 daemon 没等到 child close 后的 `event:end`”；
+- 2026-05-08 已确认：旧版 runner 还会被 `source-*.html` 误导，造成 false-positive fallback；这一条已经修复；
 - 关闭 `OD_CODEX_DISABLE_PLUGINS=1` 在 2026-05-08 的 isolated smoke 里**没有单独解决问题**；
 - 所以目前最稳的 SOP 不是“强行等待 100% native clean finish”，而是：
   - 同一个 `projectId`

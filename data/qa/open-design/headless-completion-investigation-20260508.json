@@ -3,7 +3,8 @@
   "generatedAt": "2026-05-08T06:25:00+10:00",
   "topic": "open_design_headless_completion_investigation",
   "summary": {
-    "rootFinding": "Open Design daemon only emits SSE event:end after the spawned agent child process closes. In fallback cases the project may already contain real HTML artifacts, but the Codex child has not naturally closed, so the ProfitsLocal runner never sees event:end and must recover from disk.",
+    "rootFinding": "There are two distinct root causes. First, Open Design daemon only emits SSE event:end after the spawned agent child process closes. In genuine fallback cases the project may already contain real generated HTML artifacts, but the Codex child has not naturally closed, so the ProfitsLocal runner never sees event:end and must recover from disk.",
+    "primaryBugFixed": "The ProfitsLocal fallback scanner previously counted captured source pages like source-*.html as generated concept HTML. That let the runner cancel a live run early and record a false success even when Open Design had not produced index.html or any real concept page yet.",
     "secondaryFinding": "There is a separate earlier failure mode where the run never produces a first visible HTML file. In that case quiet fallback must not fire and the run should fail or time out.",
     "pluginHypothesis": "Disabling Codex plugins did not eliminate the hang by itself in the reproduced isolated smoke."
   },
@@ -19,6 +20,21 @@
         "run-events.sse contains no terminal succeeded status payload",
         "real project files were written, including index.html/menu.html/functions.html/contact.html",
         "final status was recorded as completionMode=artifact_quiet_fallback"
+      ]
+    },
+    {
+      "kind": "false_positive_fallback_due_to_source_capture_html",
+      "clientSlug": "od-rootcause-smoke",
+      "runId": "a38c36ca-6f50-4ef2-a877-201756bec187",
+      "eventsPath": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-smoke/concept/open-design/run-events.sse",
+      "statusPath": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-smoke/concept/open-design/run-status.json",
+      "projectDir": "/tmp/profitslocal-open-design-od-rootcause-smoke/projects/od-rootcause-smoke-open-design-1778186959647",
+      "observations": [
+        "run-status reported completionMode=artifact_quiet_fallback",
+        "the only exported html file was source-darkshepherd.html",
+        "no generated concept page such as index.html existed in the project directory",
+        "events show the agent still saying it would write the brand spec and HTML files shortly before the fallback window elapsed",
+        "this proved the old scanner could cancel a live run prematurely and mark a false success"
       ]
     },
     {
@@ -44,6 +60,18 @@
         "daemon started with OD_CODEX_DISABLE_PLUGINS=1",
         "the run still timed out before creating a first visible .html artifact",
         "disabling plugins did not by itself restore native clean finish in this reproduction"
+      ]
+    },
+    {
+      "kind": "timeout_after_fixing_source_capture_false_positive",
+      "clientSlug": "od-rootcause-smoke-fixed",
+      "runId": "8cefc208-e04b-4f4f-8487-00983e7b3687",
+      "eventsPath": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-smoke-fixed/concept/open-design/run-events.sse",
+      "projectDir": "/tmp/profitslocal-open-design-od-rootcause-smoke-fixed/projects/od-rootcause-smoke-fixed-open-design-1778187249235",
+      "observations": [
+        "after excluding source-*.html from readiness detection, the same style of run no longer produced a false success",
+        "the project accumulated downloaded assets only and still never created a generated html page before timeout",
+        "the tail of run-events shows the agent planning to write brand-spec and HTML files, then going idle with keepalives only"
       ]
     }
   ],

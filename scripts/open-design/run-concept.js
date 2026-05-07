@@ -441,11 +441,22 @@ function listFilesRecursive(rootDir) {
   return out;
 }
 
+function isSourceCaptureHtml(filePath) {
+  const normalized = String(filePath).split(path.sep).join('/');
+  return /(^|\/)source-[^/]+\.html$/i.test(normalized);
+}
+
 function scanArtifactQuietSnapshot(projectDir, quietMs) {
   const files = listFilesRecursive(projectDir);
   const html = files.filter((file) => file.endsWith('.html'));
-  if (html.length === 0) {
-    return { ready: false, reason: 'required_artifacts_missing' };
+  const generatedHtml = html.filter((file) => !isSourceCaptureHtml(file));
+  if (generatedHtml.length === 0) {
+    return {
+      ready: false,
+      reason: html.length ? 'generated_artifacts_missing' : 'required_artifacts_missing',
+      htmlCount: html.length,
+      generatedHtmlCount: generatedHtml.length,
+    };
   }
   let latestMtimeMs = 0;
   for (const file of files) {
@@ -459,6 +470,7 @@ function scanArtifactQuietSnapshot(projectDir, quietMs) {
   return {
     ready: true,
     htmlCount: html.length,
+    generatedHtmlCount: generatedHtml.length,
     cssCount: files.filter((file) => file.endsWith('.css')).length,
     fileCount: files.length,
     quietForMs,
@@ -510,5 +522,6 @@ export {
   streamRun,
   exportProjectFilesFromDisk,
   listFilesRecursive,
+  isSourceCaptureHtml,
   scanArtifactQuietSnapshot,
 };

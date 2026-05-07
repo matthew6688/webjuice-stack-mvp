@@ -77,6 +77,34 @@ After tracing both ProfitsLocal's runner and Open Design daemon internals, the f
 
 3. **There are two different failure modes and they must not be mixed together.**
 
+### Mode 0: false-positive fallback because `source-*.html` was miscounted
+
+This was a **ProfitsLocal runner bug**, not an Open Design success.
+
+Before the fix, our quiet-artifact scanner accepted any visible `.html` file. That accidentally included captured
+source pages such as `source-darkshepherd.html`.
+
+That allowed this bad sequence:
+
+- the run captures a source page;
+- assets are downloaded;
+- the directory goes quiet for the configured window;
+- ProfitsLocal cancels the still-live run;
+- the run is recorded as `completionMode: artifact_quiet_fallback`;
+- but no generated `index.html` or other concept page ever existed.
+
+Reproduced evidence:
+
+- client: `od-rootcause-smoke`
+- run: `a38c36ca-6f50-4ef2-a877-201756bec187`
+- exported files: only `source-darkshepherd.html` plus metadata
+- `run-events.sse` still showed the agent saying it would write the brand spec and HTML files next
+
+This is now fixed:
+
+- `source-*.html` no longer counts toward fallback readiness;
+- a project must contain at least one **non-source** html artifact before quiet fallback may fire.
+
 ### Mode A: artifacts exist, but there is no clean terminal end
 
 This is the current `artifact_quiet_fallback` case.
@@ -101,7 +129,7 @@ Meaning:
 - native Open Design run work happened;
 - the remaining missing part was only the terminal completion event.
 
-### Mode B: no visible HTML artifact ever appears
+### Mode B: no generated HTML artifact ever appears
 
 This is **not** a fallback-success case. It is an actual failed or hung run.
 
@@ -122,6 +150,15 @@ Meaning:
 
 - if there is no first visible HTML page, quiet fallback must not declare success;
 - this case should be treated as a run failure / timeout and investigated separately.
+
+Additional evidence after fixing the false-positive scanner:
+
+- client: `od-rootcause-smoke-fixed`
+- run: `8cefc208-e04b-4f4f-8487-00983e7b3687`
+- result: timeout
+- project folder contained only downloaded assets
+- no generated `index.html` / `menu.html` / `contact.html` existed
+- the event stream showed the agent planning to write HTML next, then only keepalives
 
 ### Practical conclusion
 
