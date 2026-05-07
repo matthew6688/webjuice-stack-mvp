@@ -18,6 +18,10 @@ const passing = validatePreReviewGate({
     },
     qaScreenshots: ['artifacts/mobile.png'],
     devDeployUrl: 'https://opa-bar-mezze-restaurant-dev.pages.dev/',
+    deliveryQa: {
+      ok: true,
+      path: 'data/cases/opa/order/delivery-qa.json',
+    },
   },
 });
 const missingScreenshots = validatePreReviewGate({
@@ -36,6 +40,32 @@ const missingScreenshots = validatePreReviewGate({
     },
     qaScreenshots: [],
     devDeployUrl: 'https://opa-bar-mezze-restaurant-dev.pages.dev/',
+    deliveryQa: {
+      ok: true,
+      path: 'data/cases/opa/order/delivery-qa.json',
+    },
+  },
+});
+const missingDeliveryQa = validatePreReviewGate({
+  audit: {
+    contextRead: {
+      case: true,
+      caseContext: true,
+      evidence: true,
+      content: true,
+      design: true,
+      brandSpec: true,
+    },
+    designProtocolUsed: {
+      requiredSkill: 'huashu-design',
+      openDesignSkills: ['web-prototype'],
+    },
+    qaScreenshots: ['artifacts/mobile.png'],
+    devDeployUrl: 'https://opa-bar-mezze-restaurant-dev.pages.dev/',
+    deliveryQa: {
+      ok: false,
+      path: '',
+    },
   },
 });
 const missingContextAndDesign = validatePreReviewGate({
@@ -43,12 +73,19 @@ const missingContextAndDesign = validatePreReviewGate({
     contextRead: { case: true },
     designProtocolUsed: {},
     qaScreenshots: ['artifacts/mobile.png'],
+    deliveryQa: {
+      ok: true,
+      path: 'data/cases/opa/order/delivery-qa.json',
+    },
   },
 });
 
 const assertions = {
   passingOk: passing.ok === true && passing.missing.length === 0,
   missingScreenshotsFails: missingScreenshots.ok === false && missingScreenshots.missing.includes('qaScreenshots'),
+  missingDeliveryQaFails: missingDeliveryQa.ok === false
+    && missingDeliveryQa.missing.includes('deliveryQa.path')
+    && missingDeliveryQa.missing.includes('deliveryQa.ok'),
   missingContextFails: missingContextAndDesign.ok === false
     && missingContextAndDesign.missing.includes('contextRead.caseContext')
     && missingContextAndDesign.missing.includes('contextRead.evidence')
@@ -66,6 +103,7 @@ console.log(JSON.stringify({
   examples: {
     passing,
     missingScreenshots,
+    missingDeliveryQa,
     missingContextAndDesign,
   },
 }, null, 2));

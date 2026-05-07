@@ -5,6 +5,7 @@ import path from 'path';
 import { execFileSync } from 'child_process';
 import { buildWebsiteReady, saveWebsiteReadyOutputs } from '../../core/intake/website-ready.js';
 import { buildOpenDesignWorkspace } from '../../core/open-design/workspace.js';
+import { readDeliveryQaReport } from '../../core/qa/delivery-qa.js';
 import { createAgentTask, validateAgentTask } from '../../core/agents/task.js';
 import { buildAgentReviewEmail } from '../../core/funnel/customer-email.js';
 
@@ -39,6 +40,7 @@ const paths = {
   reviewEmailPath: path.join(caseDir, 'customer-review-email-draft.json'),
   handoffPath: path.join(caseDir, 'website-handoff.json'),
   handoffMarkdownPath: path.join(caseDir, 'website-handoff.md'),
+  deliveryQaPath: path.join(caseDir, 'delivery-qa.json'),
 };
 
 fs.mkdirSync(caseDir, { recursive: true });
@@ -293,6 +295,44 @@ await stage('stage_5b_preview_funnel_qa', {
       }
     }
     return result;
+  },
+});
+
+await stage('stage_6_delivery_qa', {
+  name: '验证 delivery QA 报告',
+  critical: Boolean(repoDir),
+  run: () => {
+    if (!repoDir) {
+      return {
+        status: 'skipped',
+        output: 'No --repo-dir provided.',
+        evidence: [],
+        nextAction: '提供 --repo-dir，并在 build/preview 检查后写入 delivery-qa.json。',
+      };
+    }
+    const result = readDeliveryQaReport(paths.deliveryQaPath);
+    if (result.ok) {
+      return {
+        status: 'pass',
+        output: `Delivery QA passed: ${paths.deliveryQaPath}`,
+        evidence: [paths.deliveryQaPath],
+        data: {
+          readyForCustomerReview: result.report?.readyForCustomerReview === true,
+          reviewer: result.report?.reviewer || '',
+        },
+        nextAction: '继续创建 agent task draft 和客户 review 邮件草稿。',
+      };
+    }
+    return {
+      status: 'blocker',
+      output: [...result.errors, ...result.missing.map((item) => `missing: ${item}`)].join('; ') || 'delivery QA report is missing or invalid',
+      evidence: result.path ? [result.path] : [],
+      data: {
+        missing: result.missing,
+        errors: result.errors,
+      },
+      nextAction: `先运行 npm run qa:write-delivery-qa -- --client ${clientSlug} --order ${orderId} --preview-url ${previewUrl} --email ${email || '<checkout-email>'}${repo ? ` --repo ${repo}` : ''}，人工确认后重新运行 dry-run。`,
+    };
   },
 });
 

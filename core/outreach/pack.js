@@ -10,6 +10,7 @@ export function buildOutreachPack({
   design,
   previewUrl,
   outputDir,
+  audit = null,
 }) {
   const linkQa = validateRestaurantLinks(content);
   const packDir = outputDir || path.join('clients', clientSlug, 'outreach');
@@ -57,6 +58,13 @@ export function buildOutreachPack({
       selectedDirections: (design?.directions || []).map((direction) => direction.name),
       warnings: design?.assetProtocol?.warnings || [],
     },
+    audit: audit ? {
+      ok: Boolean(audit.ok),
+      verdict: audit.verdict || '',
+      score: audit.score ?? null,
+      summary: audit.summary || null,
+      path: audit.path || '',
+    } : null,
   };
 }
 
@@ -85,4 +93,64 @@ export function validateOutreachPack(pack) {
   if (!pack.sourceArtifacts?.design) errors.push('sourceArtifacts.design is required');
 
   return { ok: errors.length === 0, errors, warnings };
+}
+
+export function buildOutreachPackMarkdown(pack) {
+  const proofPoints = Array.isArray(pack.emailBrief?.proofPoints) ? pack.emailBrief.proofPoints : [];
+  const directions = Array.isArray(pack.designSummary?.selectedDirections) ? pack.designSummary.selectedDirections : [];
+  const warnings = Array.isArray(pack.designSummary?.warnings) ? pack.designSummary.warnings : [];
+  const lines = [
+    `# Outreach Pack: ${pack.business?.name || pack.clientSlug}`,
+    '',
+    `Client slug: ${pack.clientSlug || '-'}`,
+    `Generated at: ${pack.generatedAt || '-'}`,
+    `Preview URL: ${pack.previewUrl || '-'}`,
+    '',
+    '## Business Snapshot',
+    '',
+    `- Name: ${pack.business?.name || '-'}`,
+    `- Cuisine: ${pack.business?.cuisine || '-'}`,
+    `- Rating: ${pack.business?.rating ?? '-'}`,
+    `- Review count: ${pack.business?.reviewCount ?? '-'}`,
+    `- Address: ${pack.business?.address || '-'}`,
+    '',
+    '## Proof Points',
+    '',
+    ...(proofPoints.length ? proofPoints.map((item) => `- ${item}`) : ['- No proof points recorded']),
+    '',
+    '## Design Summary',
+    '',
+    `- Selected directions: ${directions.length ? directions.join(', ') : '-'}`,
+    ...(warnings.length ? warnings.map((item) => `- Warning: ${item}`) : ['- No design warnings recorded']),
+    '',
+    '## QA',
+    '',
+    `- Link QA: ${pack.qa?.links?.ok === true ? 'pass' : 'fail'}`,
+    `- Link errors: ${(pack.qa?.links?.errors || []).length}`,
+    `- Link warnings: ${(pack.qa?.links?.warnings || []).length}`,
+    '',
+    '## Assets',
+    '',
+    `- Desktop screenshot: ${pack.assets?.screenshots?.desktop || '-'}`,
+    `- Mobile screenshot: ${pack.assets?.screenshots?.mobile || '-'}`,
+    `- Demo video: ${pack.assets?.video || '-'}`,
+    '',
+    '## Email Brief',
+    '',
+    `- Subject: ${pack.emailBrief?.subject || '-'}`,
+    `- CTA: ${pack.emailBrief?.cta || '-'}`,
+  ];
+
+  if (pack.audit) {
+    lines.push('', '## Local AI Audit', '', `- Verdict: ${pack.audit.verdict || '-'}`, `- Score: ${pack.audit.score ?? '-'}`, `- Path: ${pack.audit.path || '-'}`);
+    if (pack.audit.summary) {
+      lines.push(`- Findings: total ${pack.audit.summary.total ?? 0}, critical ${pack.audit.summary.critical ?? 0}, high ${pack.audit.summary.high ?? 0}`);
+    }
+  }
+
+  if (pack.sourceArtifacts) {
+    lines.push('', '## Source Artifacts', '', `- Manifest: ${pack.sourceArtifacts.manifest || '-'}`, `- Content: ${pack.sourceArtifacts.content || '-'}`, `- Design: ${pack.sourceArtifacts.design || '-'}`, `- Brand spec: ${pack.sourceArtifacts.brandSpec || '-'}`);
+  }
+
+  return `${lines.join('\n')}\n`;
 }

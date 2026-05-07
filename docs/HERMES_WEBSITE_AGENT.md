@@ -12,7 +12,10 @@ The existing `enricher` profile is not the right owner for website tasks. Its SO
 - Working directory: `/Users/matthew/Developer/google-map-website`
 - Memory source of truth: repo case files under `data/cases/<client>/<order>/`
 - Execution source of truth: `data/agent-tasks/<client>/<task>.json`
+- Website-ready source of truth: `clients/<client>/intake/website-survey.json` and case `build-packet.md`
 - Customer-facing automation: GitHub Actions workflows, Resend email, Cloudflare Pages deploys
+
+Local setup SOP: `docs/HERMES_LOCAL_DISCORD_SOP.md`.
 
 ## Responsibilities
 
@@ -21,7 +24,7 @@ The existing `enricher` profile is not the right owner for website tasks. Its SO
 - read the current Discord thread and the saved case memory before answering;
 - classify requests as `website`, `menu`, `domain`, `revision`, `approval`, or `account`;
 - never invent restaurant facts, prices, hours, contact info, reservation links, or photos;
-- use `clients/<client>/evidence`, `content.restaurant.json`, `design.restaurant.json`, and `brand-spec.md` as source of truth;
+- use `build-packet.md`, `clients/<client>/intake/website-survey.json`, `clients/<client>/evidence`, `content.restaurant.json`, `design.restaurant.json`, and `brand-spec.md` as source of truth;
 - preserve the distinction between official website pages and minimal mobile menu pages;
 - use Huashu Design/open-design protocol for website UI changes;
 - load local design skills before visual edits: `huashu-design`, Open Design `web-prototype`/`saas-landing`/`critique`, plus `design`, `frontend-design`, and `design-review` when available;
@@ -47,7 +50,7 @@ Current routing contract:
 - `#website-tasks` is a Discord text channel (`type: 0`).
 - Each new paid website task is first posted as a normal parent-channel message that mentions `website-agent`.
 - Hermes `auto_thread: true` then creates the thread from that parent message, producing the same clean text-channel thread display used by the other Hermes channels.
-- The parent message contains the full task packet: case path, task path, repo, preview URL, order ID, customer email, and design/evidence pointers.
+- The parent message contains the full task packet: case path, build packet path, task path, repo, preview URL, order ID, customer email, and design/evidence pointers.
 - If Hermes does not create the thread in time, automation falls back to explicit Discord message-thread creation so the order is not lost.
 - Later revisions, approval updates, dev preview notifications, and live publish notifications reuse `case.json.discord.websiteTaskThreadId`.
 
@@ -135,7 +138,7 @@ The setup script also copies the required design skills into the profile-local s
 Use `scripts/hermes/setup-website-agent-profile.js` to write the recommended `SOUL.md`. The key behavioral contract is:
 
 - one case/thread equals one durable customer workstream;
-- read `case.json`, `context-packet.json`, `timeline.jsonl`, and `customer-messages.jsonl` before deciding;
+- read `build-packet.md`, `website-survey.json`, `case.json`, `context-packet.json`, `timeline.jsonl`, and `customer-messages.jsonl` before deciding;
 - use existing workflows for `route-funnel-event`, `agent:complete-task`, and `publish-approved`;
 - push customer-facing site changes only to `dev`;
 - publish `dev` to `main/live` only after explicit approval with matching order ID and checkout email;
@@ -202,6 +205,6 @@ Verified locally on 2026-05-05:
 - `website-agent` completes a model smoke test in that thread with `openai-codex / gpt-5.4-mini`.
 - `route-funnel-event` supports an optional website-agent handoff message to `#website-tasks`.
 - 2026-05-05 live smoke verified explicit thread creation, business-name thread naming, in-thread task packet posting, website-agent pickup, and Huashu/open-design skill loading.
-- The handoff message includes pointers to case, context, task, evidence, content, design, and brand spec files.
+- The handoff message includes pointers to case, context, task, website survey, build packet, evidence, content, design, and brand spec files.
 
 Known non-blocking warning: Discord slash command registration is over the server limit, so a few slash commands are skipped. Normal message/thread pickup works.

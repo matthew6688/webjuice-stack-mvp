@@ -756,6 +756,10 @@ npm run finance:report -- --client <client-slug> --output data/finance/<client>-
 
 当前 dashboard/ops 使用方式：
 
+- `/admin` 和其他 `/admin/*` 路径现在都受 `ADMIN_ACCESS_TOKEN` 保护：
+  - 可以第一次用 `/admin?token=<ADMIN_ACCESS_TOKEN>` 进入；
+  - 也可以直接打开 `/admin`，在品牌化 sign-in 页面里粘贴 token；
+  - 成功后会写 `pl_admin_token` cookie，7 天内复用。
 - `/admin` 总览页现在会显示：
   - business snapshot；
   - needs-action-now；
@@ -824,6 +828,7 @@ npm run finance:report -- --client <client-slug> --output data/finance/<client>-
 | `npm run outreach:test-email` | cold outreach dry-run artifact 包含品牌化 HTML | 通过 |
 | `npm run funnel:test-paid-intake-index` | admin summary 吃到 outreach / QA / ROI / blocker / workflow 摘要 | 通过 |
 | `npm run finance:test-report` | ROI CLI/JSON summary、byClient/event counts | 通过 |
+| `npm run admin:test-auth-middleware` | admin sign-in screen、form sign-in、cookie redirect | 通过 |
 | `npm run qa:opa-full-loop-live-sim` | 中心闭环 + template build + pre-purchase banner + order-mode footer | 通过 |
 | `npm run build` | ProfitsLocal 官方站 build | 通过 |
 

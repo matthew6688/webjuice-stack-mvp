@@ -48,7 +48,12 @@ It is generated from `data/paid-intakes` at build time and shows:
 
 The repo JSON remains the source of truth. The admin page is an operator view, not a separate database.
 
-Production `/admin/*` is guarded by `functions/admin/_middleware.ts` and requires `ADMIN_ACCESS_TOKEN`. Operators can open `/admin/intakes?token=<ADMIN_ACCESS_TOKEN>` once to set the secure admin cookie.
+Production `/admin/*` is guarded by `functions/admin/_middleware.ts` and requires `ADMIN_ACCESS_TOKEN`. Operators can either:
+
+1. open `/admin?token=<ADMIN_ACCESS_TOKEN>` once, or
+2. open `/admin` and paste the token into the branded sign-in screen.
+
+Either path sets the secure `pl_admin_token` cookie for the `/admin` routes.
 
 ## Admin Actions
 

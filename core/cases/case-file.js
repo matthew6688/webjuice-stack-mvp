@@ -17,6 +17,7 @@ export function buildCaseReference(order, options = {}) {
     decisionsPath: path.join(dir, 'decisions.jsonl'),
     customerMessagesPath: path.join(dir, 'customer-messages.jsonl'),
     agentRunsPath: path.join(dir, 'agent-runs.jsonl'),
+    buildPacketPath: path.join(dir, 'build-packet.md'),
     artifactsDir: path.join(dir, 'artifacts'),
   };
 }
@@ -92,6 +93,7 @@ export function recordFunnelCaseEvent({
       decisionsPath: ref.decisionsPath,
       customerMessagesPath: ref.customerMessagesPath,
       agentRunsPath: ref.agentRunsPath,
+      buildPacketPath: ref.buildPacketPath,
       artifactsDir: ref.artifactsDir,
     },
     createdAt: existing?.createdAt || now,
@@ -186,11 +188,14 @@ export function buildCaseContextPacket(caseFile, { recentTimeline = [] } = {}) {
     sourceOfTruth: caseFile.sourceOfTruth,
     activeConstraints: caseFile.activeConstraints,
     lockedDecisions: caseFile.lockedDecisions,
+    paths: caseFile.paths,
+    buildPacketPath: caseFile.paths?.buildPacketPath || '',
     latestTask: caseFile.latestTask,
     recentTimeline: recentTimeline.slice(-20),
     agentStartProtocol: [
       'Read this context packet before changing files.',
       'Read case.json and timeline.jsonl for the full memory trail.',
+      'Read build-packet.md and website-survey.json when present before choosing a build approach.',
       'Read evidence/content/design/brand files before planning any edit.',
       'Classify the request as website, menu, domain, or account utility before patching.',
       'Do not override locked decisions.',
@@ -340,6 +345,7 @@ export function sourceOfTruthPaths(clientSlug) {
     design: `${prefix}/design.restaurant.json`,
     brandSpec: `${prefix}/brand-spec.md`,
     checkout: `${prefix}/funnel/checkout.json`,
+    websiteSurvey: `${prefix}/intake/website-survey.json`,
   };
 }
 

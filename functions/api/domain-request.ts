@@ -1,5 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { dispatchWorkflow } from './_agent-dispatch';
+import { dispatchWorkflow } from './_agent-dispatch.ts';
 
 interface Env {
   AGENT_GITHUB_TOKEN?: string;

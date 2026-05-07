@@ -29,6 +29,12 @@ For ProfitsLocal, the same principle becomes:
 - do not render menu items, phone numbers, addresses, or CTAs without evidence;
 - do not create a first paid version until the intake is content-ready and the customer confirms generation.
 
+Important boundary: the survey is a readiness and guardrail layer, not a
+replacement for Open Design's own brand extraction. For redesign work, pass the
+official URL and minimal constraints into Open Design, let Open Design inspect
+the current site and produce `brand-spec.md`/concept assets, then run
+ProfitsLocal evidence and QA checks after the concept exists.
+
 ## Relationship To Existing Modules
 
 The unified survey sits between evidence gathering and website generation.
@@ -356,5 +362,6 @@ The agent run record should continue recording `designProtocolUsed`, and should 
 - Open Design discovery prompt: `apps/daemon/src/prompts/discovery.ts`
 - Open Design design brief skill: `skills/design-brief/SKILL.md`
 - Open Design web prototype skill: `skills/web-prototype/SKILL.md`
+- ProfitsLocal Open Design integration decision: `docs/OPEN_DESIGN_INTEGRATION.md`
 - ProfitsLocal paid intake rules: `docs/PROFITSLOCAL_OPERATING_RULES.md`
 - ProfitsLocal Hermes website-agent protocol: `docs/HERMES_WEBSITE_AGENT.md`

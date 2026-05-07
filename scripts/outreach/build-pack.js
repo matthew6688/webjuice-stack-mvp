@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { buildOutreachPack, saveOutreachPack } from '../../core/outreach/pack.js';
+import { buildOutreachPack, buildOutreachPackMarkdown, saveOutreachPack } from '../../core/outreach/pack.js';
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -28,8 +28,13 @@ const contentPath = manifest.rendererContract.allowedInputs.content;
 const designPath = manifest.rendererContract.allowedInputs.design;
 const content = JSON.parse(fs.readFileSync(contentPath, 'utf8'));
 const design = JSON.parse(fs.readFileSync(designPath, 'utf8'));
+const auditPath = args.audit || path.join('clients', clientSlug, 'audit', 'local-llm-audit.json');
+const audit = fs.existsSync(auditPath)
+  ? { ...JSON.parse(fs.readFileSync(auditPath, 'utf8')), path: auditPath }
+  : null;
 const outDir = args['out-dir'] || args.outDir || path.join('clients', clientSlug, 'outreach');
 const outputPath = path.join(outDir, 'outreach-pack.json');
+const markdownPath = path.join(outDir, 'outreach-pack.md');
 const pack = buildOutreachPack({
   clientSlug,
   manifest,
@@ -37,11 +42,15 @@ const pack = buildOutreachPack({
   design,
   previewUrl: args['preview-url'] || args.previewUrl || '',
   outputDir: outDir,
+  audit,
 });
 
 saveOutreachPack(pack, outputPath);
+fs.mkdirSync(outDir, { recursive: true });
+fs.writeFileSync(markdownPath, buildOutreachPackMarkdown(pack));
 
 console.log(`Outreach pack written: ${outputPath}`);
+console.log(`Outreach summary: ${markdownPath}`);
 console.log(`Link QA: ${pack.qa.links.ok ? 'ok' : 'failed'}`);
 console.log(`Desktop screenshot target: ${pack.assets.screenshots.desktop}`);
 console.log(`Mobile screenshot target: ${pack.assets.screenshots.mobile}`);

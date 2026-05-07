@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 import { setTimeout as sleep } from 'timers/promises';
+import { buildClientRepoBootstrapReference } from '../../core/deploy/client-repo-bootstrap.js';
 import { loadLocalEnv } from '../../core/env/load-local-env.js';
 import { buildWebsiteAgentHandoffMessage, sendDiscordThreadedMessage } from '../../core/funnel/discord.js';
+import { buildOpenDesignWorkspace } from '../../core/open-design/workspace.js';
 
 loadLocalEnv();
 
@@ -37,6 +39,12 @@ const task = {
     design: `clients/${order.clientSlug}/design.restaurant.json`,
     brandSpec: `clients/${order.clientSlug}/brand-spec.md`,
   },
+  openDesign: openDesignWorkspace(order.clientSlug),
+  productionHandoffPath: `clients/${order.clientSlug}/concept/open-design/production-handoff.json`,
+  repoBootstrap: buildClientRepoBootstrapReference({
+    repo: order.repo,
+    pagesProjectName: order.repo.split('/').pop(),
+  }),
 };
 const payload = buildWebsiteAgentHandoffMessage({
   kind: task.kind,
@@ -171,4 +179,8 @@ function boolArg(values, key, defaultValue = false) {
 
 function mentionUserIds(value) {
   return [...String(value || '').matchAll(/<@!?(\d+)>/g)].map((match) => match[1]);
+}
+
+function openDesignWorkspace(clientSlug) {
+  return buildOpenDesignWorkspace(clientSlug);
 }

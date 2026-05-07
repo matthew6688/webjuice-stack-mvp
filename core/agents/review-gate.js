@@ -14,8 +14,14 @@ export function validatePreReviewGate(runResult = {}) {
     missing.push('qaScreenshots');
   }
   if (!audit.devDeployUrl) missing.push('devDeployUrl');
+  const deliveryQa = audit.deliveryQa || {};
+  if (!deliveryQa.path) missing.push('deliveryQa.path');
+  if (deliveryQa.ok !== true) {
+    missing.push('deliveryQa.ok');
+  }
   return {
     ok: missing.length === 0,
     missing,
+    deliveryQa,
   };
 }

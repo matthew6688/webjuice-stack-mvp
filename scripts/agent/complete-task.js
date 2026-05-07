@@ -12,6 +12,7 @@ import { recordCaseNotification } from '../../core/cases/case-file.js';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../../core/finance/ledger.js';
 import { agentRuntimeLedgerInput } from '../../core/finance/service-costs.js';
 import { captureReviewScreenshots } from '../../core/qa/review-screenshots.js';
+import { readDeliveryQaReport } from '../../core/qa/delivery-qa.js';
 
 loadLocalEnv();
 
@@ -77,6 +78,11 @@ if (boolArg(args, 'check-deploy') && result.pushed && !result.dryRun) {
 }
 
 const qaCapture = await maybeCaptureQaScreenshots({ args, task, result, deployResult });
+const deliveryQa = loadDeliveryQa({ args, task, result });
+result.audit = {
+  ...(result.audit || {}),
+  deliveryQa,
+};
 const preReviewGate = validatePreReviewGate(result);
 
 let customerEmail = { ok: false, skipped: true };
@@ -228,6 +234,26 @@ async function maybeCaptureQaScreenshots({ args, task, result, deployResult }) {
 function defaultQaOutputDir(task, repoRoot) {
   if (task.case?.dir) return path.resolve(repoRoot, task.case.dir, 'artifacts');
   return path.resolve(repoRoot, 'data/agent-runs/screenshots', safePathPart(task.id || 'task'));
+}
+
+function loadDeliveryQa({ args, task, result }) {
+  const repoRoot = args['repo-root'] || args.repoRoot || process.cwd();
+  const filePath = args['delivery-qa'] || args.deliveryQa || defaultDeliveryQaPath(task, repoRoot);
+  const qa = readDeliveryQaReport(path.isAbsolute(filePath) ? filePath : path.resolve(repoRoot, filePath));
+  return {
+    ok: qa.ok,
+    path: qa.path,
+    missing: qa.missing,
+    errors: qa.errors,
+    readyForCustomerReview: qa.report?.readyForCustomerReview === true,
+    clientSlug: qa.report?.clientSlug || result.clientSlug || task.clientSlug || '',
+    orderId: qa.report?.orderId || task.order?.id || '',
+  };
+}
+
+function defaultDeliveryQaPath(task, repoRoot) {
+  if (task.case?.dir) return path.resolve(repoRoot, task.case.dir, 'delivery-qa.json');
+  return path.resolve(repoRoot, 'data/agent-runs', `${safePathPart(task.id || 'task')}.delivery-qa.json`);
 }
 
 function safePathPart(value) {

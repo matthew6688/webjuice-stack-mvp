@@ -5,6 +5,12 @@ export const ADMIN_ACTIONS = {
     eventType: 'admin_requested_more_info',
     needsNote: true,
   },
+  confirm_website_ready: {
+    label: 'Confirm Website Ready',
+    status: 'intake_ready_for_review',
+    eventType: 'admin_confirmed_website_ready',
+    sets: { firstVersionConfirmed: true, websiteReady: true },
+  },
   mark_v1_started: {
     label: 'Mark V1 Started',
     status: 'v1_generation_started',
@@ -51,7 +57,7 @@ export function allowedAdminActions(record = {}) {
   const status = record.status || '';
   const actions = [];
   if (['intake_needs_more_info', 'intake_needs_generation_confirmation', 'paid_intake_pending_preview'].includes(status)) {
-    actions.push('request_more_info');
+    actions.push('confirm_website_ready', 'request_more_info');
   }
   if (status === 'intake_ready_for_review') {
     actions.push('mark_v1_started', 'request_more_info', 'quote_custom');

@@ -181,18 +181,32 @@ function loadTaskContext(task, { repoRoot }) {
     design: resolveRepoPath(task.designPath || task.requiredContext?.design, repoRoot),
     brandSpec: resolveRepoPath(task.brandSpecPath || task.requiredContext?.brandSpec, repoRoot, false),
     checkout: resolveRepoPath(task.checkoutPath || task.requiredContext?.checkout, repoRoot, false),
+    websiteSurvey: resolveRepoPath(task.websiteSurveyPath || task.requiredContext?.websiteSurvey, repoRoot, false),
+    openDesignManifest: resolveRepoPath(task.openDesign?.manifestPath, repoRoot, false),
+    openDesignProductionHandoff: resolveRepoPath(task.productionHandoffPath || task.openDesign?.productionHandoffPath, repoRoot, false),
   };
   for (const [key, filePath] of Object.entries(required)) {
-    if (['brandSpec', 'checkout'].includes(key) && !filePath) continue;
+    if (['brandSpec', 'checkout', 'websiteSurvey'].includes(key) && (!filePath || !fs.existsSync(filePath))) continue;
     if (!filePath || !fs.existsSync(filePath)) throw new Error(`Missing required context ${key}: ${filePath || '(unset)'}`);
   }
   const caseContextPath = task.case?.contextPath ? resolveRepoPath(task.case.contextPath, repoRoot, false) : '';
   const casePath = task.case?.casePath ? resolveRepoPath(task.case.casePath, repoRoot, false) : '';
+  const buildPacketPath = (task.buildPacketPath || task.case?.buildPacketPath)
+    ? resolveRepoPath(task.buildPacketPath || task.case.buildPacketPath, repoRoot, false)
+    : '';
   return {
     caseContextPath,
     casePath,
+    buildPacketPath,
     caseContext: readJsonIfExists(caseContextPath),
     caseFile: readJsonIfExists(casePath),
+    buildPacket: readTextIfExists(buildPacketPath),
+    websiteSurvey: readJsonIfExists(required.websiteSurvey),
+    openDesign: {
+      ...(task.openDesign || {}),
+      manifest: readJsonIfExists(required.openDesignManifest),
+      productionHandoff: readJsonIfExists(required.openDesignProductionHandoff),
+    },
     required,
     designProtocol: task.designProtocol || {},
     allowedFiles: task.allowedFiles || [],
@@ -213,6 +227,11 @@ function readJsonIfExists(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+function readTextIfExists(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return '';
+  return fs.readFileSync(filePath, 'utf8');
+}
+
 function buildAgentRunAudit(task, context, options = {}) {
   return {
     contextRead: {
@@ -223,6 +242,10 @@ function buildAgentRunAudit(task, context, options = {}) {
       design: Boolean(context.required?.design),
       brandSpec: Boolean(context.required?.brandSpec),
       checkout: Boolean(context.required?.checkout),
+      websiteSurvey: Boolean(context.websiteSurvey),
+      buildPacket: Boolean(context.buildPacket),
+      openDesignManifest: Boolean(context.openDesign?.manifest),
+      openDesignProductionHandoff: Boolean(context.openDesign?.productionHandoff),
     },
     designProtocolUsed: {
       requiredSkill: task.designProtocol?.requiredSkill || '',
@@ -261,10 +284,14 @@ function writeAgentBrief(task, context, options) {
     '',
     `1. ${task.case?.contextPath || 'case context packet'}`,
     `2. ${task.case?.timelinePath || 'timeline.jsonl'}`,
-    `3. ${task.requiredContext?.evidence || task.evidencePath || 'evidence'}`,
-    `4. ${task.requiredContext?.content || task.contentPath || 'content'}`,
-    `5. ${task.requiredContext?.design || task.designPath || 'design'}`,
-    `6. ${task.requiredContext?.brandSpec || 'brand spec'}`,
+    `3. ${task.case?.buildPacketPath || task.buildPacketPath || 'build packet when present'}`,
+    `4. ${task.requiredContext?.websiteSurvey || task.websiteSurveyPath || 'website survey when present'}`,
+    `5. ${task.requiredContext?.evidence || task.evidencePath || 'evidence'}`,
+    `6. ${task.requiredContext?.content || task.contentPath || 'content'}`,
+    `7. ${task.requiredContext?.design || task.designPath || 'design'}`,
+    `8. ${task.requiredContext?.brandSpec || 'brand spec'}`,
+    `9. ${task.openDesign?.manifestPath || 'Open Design manifest when present'}`,
+    `10. ${task.productionHandoffPath || task.openDesign?.productionHandoffPath || 'Open Design production handoff when present'}`,
     '',
     '## Customer Request',
     '',
@@ -273,6 +300,11 @@ function writeAgentBrief(task, context, options) {
     '## Design Protocol',
     '',
     `Required skill: ${context.designProtocol.requiredSkill || 'huashu-design'}`,
+    `Open Design project: ${task.openDesign?.projectId || '(not bound)'}`,
+    `Open Design dataDir: ${task.openDesign?.dataDir || '(not bound)'}`,
+    `Open Design rule: ${task.openDesign?.rule || 'Use Open Design for visual concept only; port accepted work to Webjuice/Astro dev.'}`,
+    `Continue command: ${task.openDesign?.continueCommand || task.openDesign?.createCommand || '(not set)'}`,
+    `Sync command: ${task.openDesign?.syncCommand || '(not set)'}`,
     ...(context.designProtocol.rules || []).map((rule) => `- ${rule}`),
     '',
     '## Constraints',
@@ -296,6 +328,10 @@ function summarizeContext(context) {
   return {
     hasCaseContext: Boolean(context.caseContext),
     hasCaseFile: Boolean(context.caseFile),
+    hasWebsiteSurvey: Boolean(context.websiteSurvey),
+    hasBuildPacket: Boolean(context.buildPacket),
+    hasOpenDesignManifest: Boolean(context.openDesign?.manifest),
+    hasOpenDesignProductionHandoff: Boolean(context.openDesign?.productionHandoff),
     required: context.required,
     designSkill: context.designProtocol.requiredSkill || '',
     allowedFiles: context.allowedFiles,

@@ -99,16 +99,23 @@ export function summarizeLedger(events, filters = {}) {
     revenue: 0,
     profit: 0,
     roi: null,
+    costEventCount: 0,
+    revenueEventCount: 0,
     eventCount: filtered.length,
     byCategory: {},
     byProvider: {},
+    byClient: {},
   };
 
   for (const event of filtered) {
     totals[event.type] += event.amount;
+    if (event.type === 'cost') totals.costEventCount += 1;
+    if (event.type === 'revenue') totals.revenueEventCount += 1;
     const signed = event.type === 'revenue' ? event.amount : -event.amount;
     totals.byCategory[event.category] = (totals.byCategory[event.category] || 0) + signed;
     totals.byProvider[event.provider] = (totals.byProvider[event.provider] || 0) + signed;
+    const clientKey = event.clientSlug || 'unassigned';
+    totals.byClient[clientKey] = (totals.byClient[clientKey] || 0) + signed;
   }
 
   totals.profit = totals.revenue - totals.cost;

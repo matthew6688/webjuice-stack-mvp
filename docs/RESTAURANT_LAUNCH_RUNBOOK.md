@@ -11,7 +11,7 @@ Scope: restaurant website/menu loop only.
 | Preview footer shows approve/revise/extra revision controls | Done | `npm run qa:preview-sales-bar -- --dist-dir /Users/matthew/Developer/webjuice-restaurant/dist` |
 | Template `/api/revision-request/` dry-dispatches route workflow | Done | `npm run smoke:revision-request` in `webjuice-restaurant` |
 | Central revision routing consumes quota and reuses website thread | Done | `npm run hermes:test-website-agent-closure` |
-| Customer review email gate requires context/design/QA/dev URL | Done | `npm run agent:test-pre-review-gate` |
+| Customer review email gate requires context/design/QA/dev URL/delivery QA | Done | `npm run agent:test-pre-review-gate` and `npm run qa:test-delivery-qa` |
 | Opa full-loop live simulation | Done | `npm run qa:opa-full-loop-live-sim` |
 | Domain/subdomain guidance in page and emails | Done | `npm run funnel:test-domain-email-guidance` and template build |
 | `$100` extra revision increments original entitlement | Done | `npm run funnel:test-extra-revision-entitlement` |

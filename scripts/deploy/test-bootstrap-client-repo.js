@@ -2,6 +2,7 @@
 
 import assert from 'assert/strict';
 import {
+  buildClientRepoBootstrapReference,
   buildClientRepoBootstrapPlan,
   executeClientRepoBootstrapPlan,
 } from '../../core/deploy/client-repo-bootstrap.js';
@@ -33,6 +34,15 @@ const dry = executeClientRepoBootstrapPlan(plan, { dryRun: true });
 assert.equal(dry.ok, true);
 assert.equal(dry.executed.length, plan.steps.length);
 
+const reference = buildClientRepoBootstrapReference({
+  repo: 'matthew6688/test-client',
+  pagesProjectName: 'test-client',
+});
+assert.equal(reference.status, 'ready');
+assert.ok(reference.command.includes('deploy:bootstrap-client-repo'));
+assert.ok(reference.command.includes('--repo matthew6688/test-client'));
+assert.ok(reference.command.includes('--execute true'));
+
 console.log(JSON.stringify({
   ok: true,
   assertions: {
@@ -40,6 +50,11 @@ console.log(JSON.stringify({
     pagesProjectsBeforeFirstPush: true,
     devPushAfterMainPush: true,
     dryRunDoesNotExecuteExternalCommands: true,
+    handoffReferenceIncludesExecuteCommand: true,
   },
   stepOrder: order,
+  reference: {
+    status: reference.status,
+    command: reference.command,
+  },
 }, null, 2));

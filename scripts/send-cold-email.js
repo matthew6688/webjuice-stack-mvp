@@ -3,6 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { loadLocalEnv } from '../core/env/load-local-env.js';
+import { renderProfitsLocalEmail } from '../core/funnel/email-template.js';
 
 loadLocalEnv();
 
@@ -81,6 +82,18 @@ function buildClientMessage(clientSlug, options) {
     'Profits Local',
   ].filter((line) => line !== null);
   const body = lines.join('\n');
+  const html = buildOutreachHtml({
+    businessName,
+    previewUrl,
+    proofPoints: [
+      `Official menu source: ${content.menu?.sourceUrl || 'verified source'}`,
+      `${menuItemCount} cleaned menu items across ${(content.menu?.sections || []).length} sections`,
+      'Mobile actions for call, maps, and reservation are wired',
+      audit ? `Local AI audit: ${audit.verdict}, score ${audit.score}, ${audit.summary.total} finding(s)` : '',
+    ].filter(Boolean),
+    assets: pack.assets,
+    audit,
+  });
 
   return {
     provider: 'resend',
@@ -91,6 +104,7 @@ function buildClientMessage(clientSlug, options) {
     clientSlug,
     subject,
     text: body,
+    html,
     previewUrl,
     proofAssets: pack.assets,
     audit: audit ? {
@@ -125,6 +139,13 @@ function buildLeadMessages(leadsPath) {
         'Matthew',
         'Profits Local',
       ].join('\n'),
+      html: buildOutreachHtml({
+        businessName,
+        previewUrl,
+        proofPoints: ['Working preview prepared for review', 'Mobile-friendly core contact path is included'],
+        assets: {},
+        audit: null,
+      }),
       previewUrl,
       proofAssets: {},
       audit: null,
@@ -139,6 +160,7 @@ async function sendResendEmail(message) {
     to: message.to,
     subject: message.subject,
     text: message.text,
+    html: message.html,
   };
   if (message.replyTo) payload.reply_to = message.replyTo;
   const res = await fetch('https://api.resend.com/emails', {
@@ -178,4 +200,37 @@ function firstWord(value) {
 
 function slugify(value) {
   return String(value || 'email').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80) || 'email';
+}
+
+function buildOutreachHtml({ businessName, previewUrl, proofPoints = [], assets = {}, audit = null }) {
+  return renderProfitsLocalEmail({
+    eyebrow: 'Preview prepared',
+    subject: `${businessName}: website preview`,
+    intro: `I put together a live preview for ${businessName}. This is meant to make the decision easy: you can review the actual direction first, then decide if you want us to launch or refine it.`,
+    details: [
+      { label: 'Business', value: businessName },
+      { label: 'Preview', value: previewUrl, url: previewUrl },
+      { label: 'Desktop screenshot', value: assets?.screenshots?.desktop || '', url: assets?.screenshots?.desktop || '' },
+      { label: 'Mobile screenshot', value: assets?.screenshots?.mobile || '', url: assets?.screenshots?.mobile || '' },
+      { label: 'Demo video', value: assets?.video || '', url: assets?.video || '' },
+    ].filter((item) => item.value),
+    sections: [
+      {
+        title: 'What was checked',
+        items: proofPoints,
+      },
+      audit ? {
+        title: 'Local AI audit',
+        items: [
+          `Verdict: ${audit.verdict}`,
+          `Score: ${audit.score}`,
+          `Findings: ${audit.summary?.total ?? 0}`,
+        ],
+      } : null,
+    ].filter(Boolean),
+    cta: previewUrl ? { label: 'Open live preview', url: previewUrl } : null,
+    closing: 'If the direction feels right, we can launch it as-is or make a few practical revisions before it goes live.',
+    footerNote: 'ProfitsLocal outreach preview. Reply if you want us to stop, revise, or scope a full launch.',
+    preheader: `Website preview ready for ${businessName}`,
+  });
 }

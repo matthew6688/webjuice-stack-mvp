@@ -3,6 +3,7 @@ import path from 'path';
 import { buildCaseReference, recordCaseNotification, recordFunnelCaseEvent } from '../cases/case-file.js';
 import { appendLedgerEvent, DEFAULT_LEDGER_PATH } from '../finance/ledger.js';
 import { artifactTimestamp } from '../time.js';
+import { buildOpenDesignWorkspace } from '../open-design/workspace.js';
 import { buildFunnelCustomerEmail, sendCustomerEmail } from './customer-email.js';
 import {
   buildDiscordMessage,
@@ -524,9 +525,12 @@ export function buildAgentTask({ kind, order, submissionId, entitlement = null, 
       decisionsPath: caseRef.decisionsPath,
       customerMessagesPath: caseRef.customerMessagesPath,
       agentRunsPath: caseRef.agentRunsPath,
+      buildPacketPath: caseRef.buildPacketPath,
     } : null,
     requiredContext: requiredContext(order.clientSlug),
     designProtocol: designProtocol(kind),
+    openDesign: openDesignWorkspace(order.clientSlug),
+    productionHandoffPath: `clients/${order.clientSlug}/concept/open-design/production-handoff.json`,
     allowedFiles: allowedFilesFor(kind),
     activeConstraints: [
       'Read the case context packet before planning edits.',
@@ -555,6 +559,10 @@ export function buildAgentTask({ kind, order, submissionId, entitlement = null, 
   };
 }
 
+function openDesignWorkspace(clientSlug) {
+  return buildOpenDesignWorkspace(clientSlug);
+}
+
 function requiredContext(clientSlug) {
   const prefix = clientSlug ? `clients/${clientSlug}` : 'clients/<clientSlug>';
   return {
@@ -563,6 +571,7 @@ function requiredContext(clientSlug) {
     design: `${prefix}/design.restaurant.json`,
     brandSpec: `${prefix}/brand-spec.md`,
     checkout: `${prefix}/funnel/checkout.json`,
+    websiteSurvey: `${prefix}/intake/website-survey.json`,
   };
 }
 

@@ -4,9 +4,7 @@ import { artifactTimestamp } from '../time.js';
 
 export function buildRestaurantDesignBrief(content, { sourceContentPath = null } = {}) {
   const inferredPalette = inferPalette(content);
-  const brandColors = Array.isArray(content.brand?.colors) && content.brand.colors.length
-    ? content.brand.colors
-    : inferredPalette.colors;
+  const brandColors = normalizePalette(content.brand?.colors, inferredPalette.colors);
   const typography = chooseTypography(content.brand?.fonts || []);
   const warnings = [];
 
@@ -83,6 +81,12 @@ export function buildRestaurantDesignBrief(content, { sourceContentPath = null }
       },
     },
   };
+}
+
+function normalizePalette(colors = [], fallback = []) {
+  const scraped = Array.isArray(colors) ? colors.filter(Boolean) : [];
+  const inferred = Array.isArray(fallback) ? fallback.filter(Boolean) : [];
+  return [...scraped, ...inferred.filter((color) => !scraped.includes(color))].slice(0, 5);
 }
 
 export function validateRestaurantDesignBrief(brief) {
