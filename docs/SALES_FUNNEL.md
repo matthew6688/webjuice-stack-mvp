@@ -79,8 +79,9 @@ Customer repo cleanup rule:
 
 - Generated customer repos should only contain the customer website routes, niche routes such as restaurant `/menu`, customer lead forms such as `/contact`, and the fixed preview banner.
 - Generated customer repos should not contain ProfitsLocal sales/support routes: `/demo-faq`, `/checkout`, `/thank-you`, `/contact-us`, `/revise`, `/approve`, `/domain-setup`, or `/domain-help`.
+- If old links are already circulating, customer repos may include `_redirects` entries that send those paths to official `profitslocal.com` pages. They should not serve local ProfitsLocal funnel HTML.
 - Generated customer repos should not contain Stripe, approval, revision, domain, order-status, Tally, or Cloudinary attachment Pages Functions. Those belong to the official ProfitsLocal site and central automation repo.
-- `npm run qa:funnel-pages` checks that the customer preview root has the official banner links and that the removed local funnel routes are not served.
+- `npm run qa:funnel-pages` checks that the customer preview root has the official banner links and that removed local funnel routes are either absent or redirected to official ProfitsLocal pages.
 
 Context handoff rules:
 

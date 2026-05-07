@@ -49,6 +49,7 @@ if (distDir) {
       source: filePath || '',
       status: exists ? 200 : 404,
       html: exists ? fs.readFileSync(filePath, 'utf8') : '',
+      redirects: readRedirects(distDir),
     }));
   }
 }
@@ -85,10 +86,12 @@ if (baseUrl) {
     let html = '';
     let finalUrl = url;
     let error = '';
+    let location = '';
     try {
       const response = await fetch(url, { redirect: 'manual' });
       status = response.status;
       finalUrl = response.url;
+      location = response.headers.get('location') || '';
       html = await response.text();
     } catch (fetchError) {
       error = fetchError.message;
@@ -100,6 +103,7 @@ if (baseUrl) {
       status,
       html,
       error,
+      location,
     }));
   }
 }
@@ -173,12 +177,12 @@ function validatePage({ mode, pagePath, source, status, html, error = '', expect
   return { mode, pagePath, source, status, ok: checks.every((check) => check.ok), checks };
 }
 
-function validateRemovedUtilityPage({ mode, pagePath, source, status, html, error = '' }) {
+function validateRemovedUtilityPage({ mode, pagePath, source, status, html, error = '', redirects = '', location = '' }) {
   const checks = [];
   if (mode === 'dist') {
-    check(checks, 'local_funnel_route_removed', status === 404, `${pagePath} still exists at ${source}`);
+    check(checks, 'local_funnel_route_removed_or_redirected', status === 404 || redirectsToOfficial(redirects, pagePath), `${pagePath} still exists at ${source} and no official redirect was found`);
   } else {
-    check(checks, 'local_funnel_route_removed', status === 404 || status === 410, error || `${pagePath} returned status=${status}`);
+    check(checks, 'local_funnel_route_removed_or_redirected', status === 404 || status === 410 || ([301, 302, 303, 307, 308].includes(status) && location.startsWith('https://profitslocal.com/')), error || `${pagePath} returned status=${status} location=${location}`);
   }
   check(checks, 'removed_route_not_serving_funnel', !html.includes('profitslocal-funnel') && !html.includes('data-preview-sales-bar'), `${pagePath} still serves ProfitsLocal funnel chrome`);
   return { mode, pagePath, source, status, ok: checks.every((check) => check.ok), checks };
@@ -192,6 +196,18 @@ function resolveStaticHtml(root, pagePath) {
   const clean = pagePath.replace(/^\/+/, '');
   if (!clean) return path.join(root, 'index.html');
   return path.join(root, clean, 'index.html');
+}
+
+function readRedirects(root) {
+  const filePath = path.join(root, '_redirects');
+  return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
+}
+
+function redirectsToOfficial(redirects, pagePath) {
+  return redirects
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .some((line) => line.startsWith(`${pagePath} `) && line.includes(' https://profitslocal.com/'));
 }
 
 function containsAny(value, needles) {
