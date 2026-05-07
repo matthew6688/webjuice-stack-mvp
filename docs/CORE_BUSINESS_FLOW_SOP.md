@@ -258,6 +258,116 @@ npm run open-design:build-production-handoff -- \
   --target-repo /绝对路径/客户repo
 ```
 
+## Open Design 升级后的三条核心验证
+
+2026-05-08 这轮已经把升级后的 Open Design 按最关键的三条链重新验证了一遍。
+
+### 1. 真实项目链：Open Design -> handoff -> repo -> build/QA
+
+验证项目：
+
+- `dark-shepherd-restaurant`
+
+真实结果：
+
+- 使用升级后的 Open Design fork 做 continuation；
+- 同一个 project 继续生成概念；
+- 重新生成 `production-handoff`；
+- 再 port 到 customer repo；
+- customer repo `build` 通过；
+- funnel QA 通过。
+
+证据：
+
+- `data/qa/open-design/dark-shepherd-upgrade-chain-summary.json`
+- `data/qa/open-design/dark-shepherd-upgrade-chain-qa.json`
+- `data/qa/open-design/dark-shepherd-upgrade-delivery-qa.json`
+
+注意：
+
+- 这轮链路是通的；
+- 但“某条很细的字面指令是否 100% 被模型执行”仍应单独看，不要和链路连通性混为一谈。
+
+### 2. 双向切换：Open Design app/source 改 + Discord continuation 改
+
+验证项目：
+
+- `dark-shepherd-restaurant`
+
+验证方式：
+
+1. 在 Open Design project 目录里直接加入 `sync-proof-app.md`；
+2. 运行 `open-design:sync-from-app`；
+3. 重新 handoff / port / build；
+4. 再用 Discord/continuation 风格 prompt 让同一个 project 生成 `sync-proof-discord-2.md`；
+5. 再次 handoff / port / build。
+
+验证结论：
+
+- `projectId` 保持不变；
+- app/source 侧修改能同步回 concept export；
+- Discord continuation 侧修改也能同步回 concept export；
+- 两次修改后 customer repo 仍可继续 build。
+
+证据：
+
+- `data/qa/open-design/dark-shepherd-app-sync-summary.json`
+- `data/qa/open-design/dark-shepherd-switch-cycle-summary.json`
+- `data/qa/open-design/dark-shepherd-discord-sync-qa.json`
+
+### 3. 固定真实餐厅 redesign smoke
+
+当前固定样本：
+
+- `Rich & Rare`
+
+为什么要固定一个长期样本：
+
+- 不只是验证“Open Design 会生成一个 html”；
+- 而是验证真实 redesign 能保留 source pages、品牌、菜单、功能页和 canonical concept entry。
+
+这轮最终稳定通过的策略：
+
+1. 先准备本地 source seed；
+2. 把官方页面种到 Open Design project 的 `source/`；
+3. prompt 里明确要求优先使用本地 source seed；
+4. 只有同时产出 `index.html + brand-spec.md + source/* + assets`，才算通过。
+
+通过样本：
+
+- client: `rich-and-rare-longterm-smoke-v4`
+- project: `rich-and-rare-longterm-smoke-v4-open-design-1778193842482`
+- run: `faad21c0-1f3a-465b-a90a-1d789d01df7d`
+
+验证结果：
+
+- `status: succeeded`
+- `completionMode: artifact_quiet_fallback`
+- `index.html` 存在
+- `brand-spec.md` 存在
+- `sourcePages: 5`
+- `imageAssets: 3`
+- `validate-concept` 全绿
+
+证据：
+
+- `data/qa/open-design/rich-and-rare-longterm-smoke-v4-summary.json`
+
+推荐命令：
+
+```bash
+npm run open-design:restaurant-redesign-smoke -- --client rich-and-rare-longterm-smoke-v4 --execute true
+```
+
+这条 smoke 的业务意义：
+
+- 它验证的是更接近真实 ProfitsLocal 生产线的链：
+  - `survey/evidence`
+  - `Open Design redesign`
+  - `canonical concept output`
+
+而不是单纯的 “headless 生成了一个示例页面”。
+
 8. 把认可的设计 port 到 customer repo `dev` branch：
 
 ```bash

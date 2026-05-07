@@ -200,6 +200,71 @@ Reference summary:
 
 - `data/qa/open-design/headless-completion-investigation-20260508.json`
 
+## 2026-05-08 Additional Finding: nested source pages must not count as generated artifacts
+
+One more false-success path was identified during the long-term restaurant redesign smoke:
+
+- the project contained only seeded source pages under `source/home.html`, `source/menu.html`, etc.;
+- ProfitsLocal's quiet-artifact scanner was already fixed to ignore `source-*.html`;
+- but it still treated nested `source/<page>.html` files as generated HTML.
+
+That caused another premature `artifact_quiet_fallback` success even when the concept had not yet produced a canonical `index.html`.
+
+This is now fixed:
+
+- `isSourceCaptureHtml(...)` ignores both:
+  - `source-*.html`
+  - `source/<page>.html`
+- `validate-concept` accepts both source-page layouts when checking redesign preservation output.
+
+Result:
+
+- source capture pages are still preserved and exported;
+- but they can no longer masquerade as a finished concept entry page.
+
+## 2026-05-08 Stable Pattern For Real Restaurant Redesign Smoke
+
+For real redesign verification, the most stable path is now:
+
+1. pre-capture the official source pages ourselves;
+2. seed them into the Open Design project under `source/`;
+3. ask Open Design to design from the local source captures first;
+4. require a canonical `index.html` and `brand-spec.md` before the smoke passes.
+
+Why this is better:
+
+- it matches the real ProfitsLocal business flow: `survey/evidence -> design`;
+- it reduces fragile live recrawling during the design run;
+- it still preserves official source pages for redesign auditability.
+
+Verified example:
+
+- client: `rich-and-rare-longterm-smoke-v4`
+- project: `rich-and-rare-longterm-smoke-v4-open-design-1778193842482`
+- run: `faad21c0-1f3a-465b-a90a-1d789d01df7d`
+- result:
+  - `status: succeeded`
+  - `completionMode: artifact_quiet_fallback`
+  - exported:
+    - `index.html`
+    - `brand-spec.md`
+    - `source/home.html`
+    - `source/menu.html`
+    - `source/functions.html`
+    - `source/contact.html`
+    - `source/bookings.html`
+    - local official assets
+- validation:
+  - `files: 11`
+  - `htmlFiles: 6`
+  - `sourcePages: 5`
+  - `imageAssets: 3`
+  - `errors: []`
+
+Evidence:
+
+- `data/qa/open-design/rich-and-rare-longterm-smoke-v4-summary.json`
+
 ## Runtime Requirement
 
 Open Design currently declares Node `~24`. On this machine, the default `node` is `v25.6.1`, which failed to start the daemon because `better-sqlite3` was compiled against the Node 24 ABI.

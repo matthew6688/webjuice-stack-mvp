@@ -25,13 +25,18 @@ try {
 
   const sourceCapturePath = path.join(root, 'source-homepage.html');
   fs.writeFileSync(sourceCapturePath, '<!doctype html><title>Captured source</title>');
+  const nestedSourceDir = path.join(root, 'source');
+  fs.mkdirSync(nestedSourceDir, { recursive: true });
+  const nestedSourcePath = path.join(nestedSourceDir, 'home.html');
+  fs.writeFileSync(nestedSourcePath, '<!doctype html><title>Nested captured source</title>');
 
   snapshot = scanArtifactQuietSnapshot(root, 1);
   assert.equal(snapshot.ready, false);
   assert.equal(snapshot.reason, 'generated_artifacts_missing');
-  assert.equal(snapshot.htmlCount, 1);
+  assert.equal(snapshot.htmlCount, 2);
   assert.equal(snapshot.generatedHtmlCount, 0);
   assert.equal(isSourceCaptureHtml(sourceCapturePath), true);
+  assert.equal(isSourceCaptureHtml(nestedSourcePath), true);
 
   const visibleAssetDir = path.join(root, 'assets');
   fs.mkdirSync(visibleAssetDir, { recursive: true });
@@ -48,12 +53,17 @@ try {
   fs.utimesSync(heroPath, oldTime, oldTime);
   fs.utimesSync(indexPath, oldTime, oldTime);
   fs.utimesSync(sourceCapturePath, oldTime, oldTime);
+  fs.utimesSync(nestedSourcePath, oldTime, oldTime);
 
   snapshot = scanArtifactQuietSnapshot(root, 1);
   assert.equal(snapshot.ready, true);
-  assert.equal(snapshot.htmlCount, 2);
+  assert.equal(snapshot.htmlCount, 3);
   assert.equal(snapshot.generatedHtmlCount, 1);
-  assert.equal(snapshot.fileCount, 3);
+  assert.equal(snapshot.fileCount, 4);
+
+  snapshot = scanArtifactQuietSnapshot(root, 1, { minArtifactMtimeMs: Date.now() });
+  assert.equal(snapshot.ready, false);
+  assert.equal(snapshot.reason, 'stale_artifacts');
 
   const clamped = normalizeOpenDesignTimeoutMs({
     agentId: 'codex',
@@ -76,16 +86,17 @@ try {
   assert.equal(unclamped.clamped, false);
 
   const files = listFilesRecursive(root).map((file) => path.relative(root, file).split(path.sep).join('/')).sort();
-  assert.deepEqual(files, ['assets/hero.jpg', 'index.html', 'source-homepage.html']);
+  assert.deepEqual(files, ['assets/hero.jpg', 'index.html', 'source-homepage.html', 'source/home.html']);
 
   console.log(JSON.stringify({
     ok: true,
     ignoresDotDirectories: true,
     requiresGeneratedHtmlArtifacts: true,
     ignoresSourceCaptureHtml: true,
+    rejectsStaleArtifactsForContinuation: true,
     shortTimeoutClampForCodexWebPrototype: clamped,
     visibleFiles: files,
-    snapshot,
+    freshSnapshot: scanArtifactQuietSnapshot(root, 1),
   }, null, 2));
 } finally {
   fs.rmSync(root, { recursive: true, force: true });

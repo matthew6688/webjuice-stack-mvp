@@ -1,0 +1,239 @@
+
+> webjuice-mvp@0.0.1 qa:funnel-pages
+> node scripts/qa/funnel-pages.js --dist-dir /Users/matthew/Developer/dark-shepherd-restaurant/dist --client Dark Shepherd
+
+{
+  "ok": true,
+  "distDir": "/Users/matthew/Developer/dark-shepherd-restaurant/dist",
+  "baseUrl": null,
+  "expectedClient": "Dark Shepherd",
+  "totals": {
+    "pages": 9,
+    "checks": 28,
+    "failed": 0
+  },
+  "failed": [],
+  "pages": [
+    {
+      "mode": "dist",
+      "pagePath": "/",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/index.html",
+      "status": 200,
+      "ok": true,
+      "checks": [
+        {
+          "name": "http_200_or_file_exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has_html",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_how_it_works",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_faq",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_contact",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_logo_official",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_official_funnel_links",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_claim_399",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_799",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_checkout",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_no_pre_purchase_revision",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "sales_footer_no_local_funnel_routes",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/demo-faq",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/demo-faq/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/checkout",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/checkout/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/thank-you",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/thank-you/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/contact-us",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/contact-us/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/revise",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/revise/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/approve",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/approve/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/domain-setup",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/domain-setup/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "mode": "dist",
+      "pagePath": "/domain-help",
+      "source": "/Users/matthew/Developer/dark-shepherd-restaurant/dist/domain-help/index.html",
+      "status": 404,
+      "ok": true,
+      "checks": [
+        {
+          "name": "local_funnel_route_removed_or_redirected",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "removed_route_not_serving_funnel",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    }
+  ]
+}

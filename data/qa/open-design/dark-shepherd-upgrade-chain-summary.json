@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "clientSlug": "dark-shepherd-restaurant",
+  "verifiedAt": "2026-05-08T08:25:00+10:00",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "projectId": "dark-shepherd-restaurant-open-design-1778154549135",
+  "lastRunId": "def48729-1db0-4212-b72b-9938155cb787",
+  "completionMode": "artifact_quiet_fallback",
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 600000,
+    "timeoutMs": 600000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": false
+  },
+  "handoffPath": "/Users/matthew/Developer/google-map-website/clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+  "targetRepo": "/Users/matthew/Developer/dark-shepherd-restaurant",
+  "repoBuild": {
+    "ok": true,
+    "command": "npm run build"
+  },
+  "funnelQaPath": "/Users/matthew/Developer/google-map-website/data/qa/open-design/dark-shepherd-upgrade-chain-qa.json",
+  "deliveryQaPath": "/Users/matthew/Developer/google-map-website/data/qa/open-design/dark-shepherd-upgrade-delivery-qa.json",
+  "notes": [
+    "Open Design continuation returned succeeded on the upgraded fork checkout.",
+    "Concept marker instruction was not reflected in brand-spec.md; treat this as an instruction-following issue, not a production-chain break.",
+    "Production handoff rebuilt successfully and ported into the Astro repo.",
+    "Repo build and funnel QA both passed."
+  ]
+}

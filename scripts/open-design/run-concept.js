@@ -27,6 +27,9 @@ async function main() {
   const mode = argValue(args, 'mode') || process.env.PROFITSLOCAL_OPEN_DESIGN_MODE || 'isolated';
   const dataDir = path.resolve(argValue(args, 'dataDir', 'data-dir') || process.env.OPEN_DESIGN_DATA_DIR || defaultDataDir({ mode, openDesignRoot, clientSlug }));
   const outDir = path.resolve(args.out || path.join('clients', clientSlug, 'concept', 'open-design'));
+  const seedDir = argValue(args, 'seedDir', 'seed-dir')
+    ? path.resolve(argValue(args, 'seedDir', 'seed-dir'))
+    : null;
   const agentId = args.agent || 'codex';
   const skillId = args.skill || 'web-prototype';
   const designSystemId = argValue(args, 'designSystem', 'design-system') || null;
@@ -70,6 +73,7 @@ async function main() {
         dataDir,
         mode,
         outDir,
+        seedDir,
         agentId,
         skillId,
         designSystemId,
@@ -112,6 +116,10 @@ async function main() {
         },
       },
     });
+    if (seedDir) {
+      const projectDir = path.join(dataDir, 'projects', projectId);
+      seedProjectFiles({ seedDir, projectDir });
+    }
 
     const assistantMessageId = `assistant-${Date.now()}`;
     const clientRequestId = `client-${Date.now()}`;
@@ -246,6 +254,7 @@ async function main() {
       mode,
       dataDir,
       outDir,
+      seedDir,
       timeoutPolicy,
       status: finalStatus,
       files,
@@ -456,7 +465,9 @@ async function streamRun({ daemonUrl, runId, eventsPath, timeoutMs, artifactWatc
   if (artifactWatch?.projectDir) {
     artifactTimer = setInterval(async () => {
       if (fallbackStatus || finalStatus) return;
-      const snapshot = scanArtifactQuietSnapshot(artifactWatch.projectDir, artifactWatch.quietMs);
+      const snapshot = scanArtifactQuietSnapshot(artifactWatch.projectDir, artifactWatch.quietMs, {
+        minArtifactMtimeMs: startedAt,
+      });
       if (!snapshot.ready) return;
       fallbackStatus = {
         status: 'succeeded',
@@ -644,6 +655,18 @@ function exportProjectFilesFromDisk({ projectDir, outDir }) {
   return exported;
 }
 
+function seedProjectFiles({ seedDir, projectDir }) {
+  if (!seedDir || !fs.existsSync(seedDir)) {
+    throw new Error(`Seed dir not found: ${seedDir}`);
+  }
+  for (const source of listFilesRecursive(seedDir)) {
+    const rel = path.relative(seedDir, source);
+    const target = path.join(projectDir, rel);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.copyFileSync(source, target);
+  }
+}
+
 function listFilesRecursive(rootDir) {
   if (!fs.existsSync(rootDir)) return [];
   const out = [];
@@ -661,13 +684,15 @@ function listFilesRecursive(rootDir) {
 
 function isSourceCaptureHtml(filePath) {
   const normalized = String(filePath).split(path.sep).join('/');
-  return /(^|\/)source-[^/]+\.html$/i.test(normalized);
+  return /(^|\/)source-[^/]+\.html$/i.test(normalized)
+    || /(^|\/)source\/[^/]+\.html$/i.test(normalized);
 }
 
-function scanArtifactQuietSnapshot(projectDir, quietMs) {
+function scanArtifactQuietSnapshot(projectDir, quietMs, options = {}) {
   const files = listFilesRecursive(projectDir);
   const html = files.filter((file) => file.endsWith('.html'));
   const generatedHtml = html.filter((file) => !isSourceCaptureHtml(file));
+  const minArtifactMtimeMs = Number(options.minArtifactMtimeMs || 0);
   if (generatedHtml.length === 0) {
     return {
       ready: false,
@@ -680,6 +705,16 @@ function scanArtifactQuietSnapshot(projectDir, quietMs) {
   for (const file of files) {
     const stats = fs.statSync(file);
     latestMtimeMs = Math.max(latestMtimeMs, stats.mtimeMs);
+  }
+  if (minArtifactMtimeMs && latestMtimeMs < minArtifactMtimeMs) {
+    return {
+      ready: false,
+      reason: 'stale_artifacts',
+      htmlCount: html.length,
+      generatedHtmlCount: generatedHtml.length,
+      latestMtimeMs,
+      minArtifactMtimeMs,
+    };
   }
   const quietForMs = Date.now() - latestMtimeMs;
   if (quietForMs < quietMs) {
@@ -739,6 +774,7 @@ function isMain() {
 export {
   streamRun,
   exportProjectFilesFromDisk,
+  seedProjectFiles,
   listFilesRecursive,
   isSourceCaptureHtml,
   scanArtifactQuietSnapshot,
