@@ -5,6 +5,7 @@ export const LEAD_ADMIN_VIEWS = {
   all: { label: '全部 leads' },
   demo_ready: { label: 'Demo ready' },
   draft_ready: { label: 'Draft ready' },
+  outreach_sent: { label: 'Outreach sent' },
   paid: { label: 'Paid' },
   missing_assets: { label: 'Missing assets' },
   missing_email: { label: 'Missing outreach draft' },
@@ -38,6 +39,8 @@ export function matchesLeadView(record, view = 'all') {
       return Boolean(record.previewUrl && record.assetsReady);
     case 'draft_ready':
       return record.emailDraftReady;
+    case 'outreach_sent':
+      return record.outreachSent === true;
     case 'paid':
       return record.paymentStatus === 'paid';
     case 'missing_assets':
@@ -76,6 +79,9 @@ function ingestOutreachArtifacts(records, clientsRoot) {
     record.emailDraftReady = emailArtifacts.length > 0;
     record.emailArtifacts = emailArtifacts;
     record.latestEmailArtifact = emailArtifacts[0] || null;
+    record.outreachSent = emailArtifacts.some((artifact) => artifact.sendResult?.status === 'sent');
+    record.outreachSentAt = emailArtifacts.find((artifact) => artifact.sendResult?.status === 'sent')?.sendResult?.sentAt || '';
+    record.outreachSendId = emailArtifacts.find((artifact) => artifact.sendResult?.status === 'sent')?.sendResult?.id || '';
     record.updatedAt = maxDate(record.updatedAt, pack.generatedAt, emailArtifacts[0]?.generatedAt);
   }
 }
@@ -159,6 +165,8 @@ function finalizeLeadRecord(input) {
 
 function deriveStageKey(record) {
   if (record.paymentStatus === 'paid') return 'paid';
+  if (record.replyState === 'replied') return 'replied';
+  if (record.outreachSent) return 'outreach_sent';
   if (record.emailDraftReady && record.assetsReady && record.previewUrl) return 'draft_ready';
   if (record.assetsReady && record.previewUrl) return 'demo_ready';
   if (record.outreachPackPath) return 'building_demo';
@@ -168,6 +176,8 @@ function deriveStageKey(record) {
 function deriveStageLabel(stageKey) {
   return {
     paid: 'Paid',
+    replied: 'Replied',
+    outreach_sent: 'Outreach Sent',
     draft_ready: 'Draft Ready',
     demo_ready: 'Demo Ready',
     building_demo: 'Building Demo',
@@ -178,6 +188,8 @@ function deriveStageLabel(stageKey) {
 function deriveStageTone(stageKey) {
   return {
     paid: 'ready',
+    replied: 'ready',
+    outreach_sent: 'working',
     draft_ready: 'working',
     demo_ready: 'ready',
     building_demo: 'working',
@@ -190,6 +202,20 @@ function deriveNextAction(record) {
     return {
       label: '转正式项目执行',
       reason: '客户已经付款，下一步应该在 website-projects 里推进 build/review/live。',
+    };
+  }
+  if (record.replyState === 'replied') {
+    return {
+      label: '处理 prospect 回复',
+      reason: '已经收到回复，下一步应该把回复结果落回 case / forum，并决定是否推进成交。',
+    };
+  }
+  if (record.outreachSent) {
+    return {
+      label: '等待或安排 follow-up',
+      reason: record.nextFollowUpDue
+        ? `已发送 cold outreach，下一次建议跟进时间：${record.nextFollowUpDue}。`
+        : '已发送 cold outreach，下一步应该在外部邮箱系统或 agentic inbox 里查看回复。',
     };
   }
   if (!record.outreachPackPath) {
@@ -218,6 +244,8 @@ function deriveNextAction(record) {
 
 function deriveBlocker(record) {
   if (record.paymentStatus === 'paid') return '';
+  if (record.replyState === 'replied') return '';
+  if (record.outreachSent) return '';
   if (!record.outreachPackPath) return '缺少 outreach pack';
   if (!record.assetsReady) return '缺少 outreach proof 资产';
   if (!record.emailDraftReady) return '缺少 cold outreach draft';
@@ -246,6 +274,11 @@ function ensureRecord(records, clientSlug) {
       emailDraftReady: false,
       emailArtifacts: [],
       latestEmailArtifact: null,
+      outreachSent: false,
+      outreachSentAt: '',
+      outreachSendId: '',
+      replyState: '',
+      nextFollowUpDue: '',
       outreachPackPath: '',
       outreachMarkdownPath: '',
       outreachEmailDir: '',
@@ -281,6 +314,7 @@ function readEmailArtifacts(emailDir) {
         subject: json.subject || '',
         generatedAt: json.generatedAt || '',
         dryRun: json.dryRun !== false,
+        sendResult: json.sendResult || null,
       };
     })
     .sort((a, b) => String(b.generatedAt || '').localeCompare(String(a.generatedAt || '')));
@@ -293,6 +327,7 @@ function buildCounts(records) {
     if (record.previewUrl && record.assetsReady) acc.demoReady += 1;
     if (record.assetsReady) acc.assetsReady += 1;
     if (record.emailDraftReady) acc.emailDraftReady += 1;
+    if (record.outreachSent) acc.outreachSent += 1;
     if (record.paymentStatus === 'paid') acc.paid += 1;
     if (record.blocker) acc.blocked += 1;
     return acc;
@@ -301,6 +336,7 @@ function buildCounts(records) {
     demoReady: 0,
     assetsReady: 0,
     emailDraftReady: 0,
+    outreachSent: 0,
     paid: 0,
     blocked: 0,
   });

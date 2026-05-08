@@ -8,6 +8,7 @@ const savedViews = [
   ['all', LEAD_ADMIN_VIEWS.all.label],
   ['demo_ready', LEAD_ADMIN_VIEWS.demo_ready.label],
   ['draft_ready', LEAD_ADMIN_VIEWS.draft_ready.label],
+  ['outreach_sent', LEAD_ADMIN_VIEWS.outreach_sent.label],
   ['paid', LEAD_ADMIN_VIEWS.paid.label],
   ['missing_assets', LEAD_ADMIN_VIEWS.missing_assets.label],
   ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
@@ -42,6 +43,11 @@ const urgent = index.records
           <span class="admin-summary-label">Draft ready</span>
           <strong>{index.counts.draft_ready || 0}</strong>
           <p>Cold outreach draft exists. We can send manually or through the future agentic inbox flow.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Outreach sent</span>
+          <strong>{index.counts.outreachSent || 0}</strong>
+          <p>Live send has been recorded on the outreach artifact. Replies and follow-up are the next truth layer.</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Paid</span>
@@ -83,7 +89,7 @@ const urgent = index.records
           </div>
           <ul class="admin-list">
             <li><strong>Transactional email</strong><span>Stays on Resend. Not shown here as cold outreach send truth.</span></li>
-            <li><strong>Cold outreach</strong><span>Current truth source is demo pack + draft artifact. Large-scale sending will come from a separate system.</span></li>
+            <li><strong>Cold outreach</strong><span>Current truth source is demo pack + draft artifact + live send metadata written back to outreach email artifacts.</span></li>
             <li><strong>Forum visibility</strong><span>`website-leads` remains the Discord container; this page is the admin summary.</span></li>
           </ul>
         </section>
@@ -130,6 +136,7 @@ const urgent = index.records
                 data-stage={record.stageKey}
                 data-view-demo-ready={record.stageKey === 'demo_ready' ? 'true' : 'false'}
                 data-view-draft-ready={record.emailDraftReady ? 'true' : 'false'}
+                data-view-outreach-sent={record.outreachSent ? 'true' : 'false'}
                 data-view-paid={record.paymentStatus === 'paid' ? 'true' : 'false'}
                 data-view-missing-assets={record.assetsReady ? 'false' : 'true'}
                 data-view-missing-email={record.emailDraftReady ? 'false' : 'true'}
@@ -141,6 +148,7 @@ const urgent = index.records
                 </td>
                 <td>
                   <mark class={`status-pill status-${record.stageTone}`}>{record.stageLabel}</mark>
+                  {record.outreachSent ? <mark class="status-pill status-ready">Sent</mark> : null}
                   {record.paymentStatus === 'paid' ? <mark class="status-pill status-ready">Paid</mark> : null}
                   <span>{record.caseStatus || record.paidIntakeStatus || 'lead only'}</span>
                 </td>
@@ -157,6 +165,7 @@ const urgent = index.records
                   <span>{record.customerEmail || record.leadRecipientEmail || 'no email recorded'}</span>
                   <span>{record.domain || 'no domain recorded'}</span>
                   <span>{record.latestEmailArtifact?.subject || 'no outreach draft subject'}</span>
+                  <span>{record.outreachSentAt ? `sent ${record.outreachSentAt}` : 'send not recorded'}</span>
                 </td>
                 <td>
                   <span>{record.salesWorkspaceName || 'website-leads forum not recorded'}</span>

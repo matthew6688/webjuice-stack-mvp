@@ -99,6 +99,7 @@
   - 当前负责说真话的售前状态：
     - `demo ready`
     - `draft ready`
+    - `outreach sent`
     - `paid`
     - `missing assets`
     - `missing outreach draft`
@@ -107,8 +108,10 @@
     - `clients/<client>/outreach/email/*.json`
     - `data/cases/*/*/case.json`
     - `data/paid-intakes/*/*.json`
+  - 其中 `outreach sent` 的当前真相源：
+    - `clients/<client>/outreach/email/*.json` 里的 `sendResult.status === "sent"`
+    - 当前只表示“已发出”，还**不表示**已回复或已安排 follow-up
   - 当前**还没有**接上的状态：
-    - `outreach sent`
     - `replied`
     - `next follow-up due`
     - external cold email platform reply state

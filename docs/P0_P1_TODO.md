@@ -244,11 +244,11 @@ lead / intake
   - 目前可以从真实数据看到：
     - `demo ready`
     - `draft ready`
+    - `outreach sent`（当 live send 已回写到 email artifact）
     - `paid`
     - `missing assets`
     - `missing outreach draft`
 - 还缺：
-  - `outreach-sent`
   - `replied`
   - `next follow-up due`
   - external cold email platform / agentic inbox reply state
@@ -369,15 +369,15 @@ lead / intake
   - 已新增：
     - `/admin/leads`
   - 当前页面已经能显示：
-    - demo-ready / draft-ready / paid / missing assets / missing email
+    - demo-ready / draft-ready / outreach-sent / paid / missing assets / missing email
     - outreach pack / preview / proof assets / draft artifact
+    - live send metadata（如果 artifact 已回写 `sendResult`）
     - `website-leads` 相关 workspace 名称与 thread id（如果 case 已记录）
     - 推荐下一步
 - 当前边界：
   - 这页现在说真话的范围是：
-    - `demo/outreach draft/paid`
+    - `demo/outreach draft/outreach sent/paid`
   - 还**没有**真实接上的范围：
-    - `outreach sent`
     - `replied`
     - `next follow-up due`
     - future agentic inbox reply state

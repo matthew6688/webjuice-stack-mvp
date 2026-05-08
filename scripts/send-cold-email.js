@@ -24,11 +24,18 @@ console.log(`${dryRun ? '[DRY RUN]' : '[LIVE]'} Prepared ${messages.length} cold
 
 for (const [index, message] of messages.entries()) {
   const artifactPath = path.join(outDir, `${String(index + 1).padStart(2, '0')}-${slugify(message.businessName || 'lead')}.json`);
-  fs.writeFileSync(artifactPath, `${JSON.stringify({
+  const artifact = {
     ...message,
     dryRun,
     generatedAt: new Date().toISOString(),
-  }, null, 2)}\n`);
+    sendResult: dryRun ? {
+      status: 'draft',
+      provider: message.provider,
+      sentAt: '',
+      id: '',
+    } : null,
+  };
+  fs.writeFileSync(artifactPath, `${JSON.stringify(artifact, null, 2)}\n`);
 
   console.log(`To: ${message.to || '(missing)'}`);
   console.log(`Subject: ${message.subject}`);
@@ -39,6 +46,13 @@ for (const [index, message] of messages.entries()) {
   if (!dryRun) {
     if (!message.to) throw new Error(`Missing recipient for ${message.businessName}`);
     const result = await sendResendEmail(message);
+    artifact.sendResult = {
+      status: 'sent',
+      provider: message.provider,
+      sentAt: new Date().toISOString(),
+      id: result.id || '',
+    };
+    fs.writeFileSync(artifactPath, `${JSON.stringify(artifact, null, 2)}\n`);
     console.log(`Sent: ${result.id || JSON.stringify(result)}`);
   }
 }
