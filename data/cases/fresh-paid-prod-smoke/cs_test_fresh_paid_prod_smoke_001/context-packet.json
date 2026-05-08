@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "caseId": "fresh-paid-prod-smoke_cs_test_fresh_paid_prod_smoke_001",
+  "status": "paid_task_queued",
+  "clientSlug": "fresh-paid-prod-smoke",
+  "repo": "unknown",
+  "branch": "dev",
+  "previewUrl": "https://fresh-paid-prod-smoke-dev.pages.dev/",
+  "order": {
+    "id": "cs_test_fresh_paid_prod_smoke_001",
+    "provider": "stripe",
+    "tier": "",
+    "amount": 399,
+    "currency": "USD",
+    "paymentStatus": "paid"
+  },
+  "customer": {
+    "company": "Fresh Paid Prod Smoke",
+    "email": "hello@freshpaidsmoke.example",
+    "phone": "",
+    "domain": ""
+  },
+  "revision": {
+    "policy": {
+      "type": "lifetime",
+      "limit": 0,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "used": 0,
+    "remaining": 0,
+    "lastReason": "entitlement_created"
+  },
+  "discord": {
+    "salesThreadId": "1502155603689079045",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "1502155611368980540",
+    "salesWorkspaceChannelId": "1501187038706401290",
+    "salesWorkspaceType": "forum_post",
+    "salesWorkspaceName": "[Qualified] Fresh Paid Prod Smoke",
+    "salesWorkspaceTagIds": [
+      "1501948301614776409",
+      "1501948301627625476"
+    ],
+    "revisionWorkspaceChannelId": "",
+    "revisionWorkspaceType": "",
+    "revisionWorkspaceName": "",
+    "revisionWorkspaceTagIds": [],
+    "websiteWorkspaceChannelId": "1501945763650080899",
+    "websiteWorkspaceType": "forum_post",
+    "websiteWorkspaceName": "[Review] Fresh Paid Prod Smoke",
+    "websiteWorkspaceTagIds": [
+      "1501948304479748148",
+      "1501948304479748152",
+      "1501948304488140850"
+    ],
+    "lastChannelId": "1501945763650080899",
+    "lastMessageId": "1502155611368980540",
+    "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1502155611368980540/1502155611368980540",
+    "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1502155611368980540",
+    "threadCreatedByBot": true
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/fresh-paid-prod-smoke/evidence/evidence.json",
+    "content": "clients/fresh-paid-prod-smoke/content.restaurant.json",
+    "design": "clients/fresh-paid-prod-smoke/design.restaurant.json",
+    "brandSpec": "clients/fresh-paid-prod-smoke/brand-spec.md",
+    "checkout": "clients/fresh-paid-prod-smoke/funnel/checkout.json",
+    "websiteSurvey": "clients/fresh-paid-prod-smoke/intake/website-survey.json"
+  },
+  "activeConstraints": [
+    "Website route and menu route are separate products; do not mix their information architecture.",
+    "Use Huashu Design/open-design protocol for website-quality visual decisions.",
+    "Preserve real evidence source chains for menu, address, phone, hours, reservation, and images.",
+    "Push customer-facing implementation changes only to dev until explicit approval.",
+    "Keep customer/order/payment/internal decision data out of client website repos."
+  ],
+  "lockedDecisions": [],
+  "paths": {
+    "casePath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/case.json",
+    "contextPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/context-packet.json",
+    "timelinePath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/timeline.jsonl",
+    "decisionsPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/decisions.jsonl",
+    "customerMessagesPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/agent-runs.jsonl",
+    "buildPacketPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/build-packet.md",
+    "artifactsDir": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/artifacts"
+  },
+  "buildPacketPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/build-packet.md",
+  "latestTask": {
+    "id": "sale_fresh-paid-prod-smoke_cs_test_fresh_paid_prod_smoke_001",
+    "kind": "sale",
+    "status": "queued",
+    "path": "data/agent-tasks/fresh-paid-prod-smoke/sale-cs_test_fresh_paid_prod_smoke_001.json",
+    "createdAt": "2026-05-08T03:50:04.222Z"
+  },
+  "recentTimeline": [
+    {
+      "id": "case_evt_1778212205127_bi2197bw",
+      "type": "payment_routed",
+      "ok": true,
+      "reason": "entitlement_created",
+      "provider": "stripe",
+      "orderId": "cs_test_fresh_paid_prod_smoke_001",
+      "clientSlug": "fresh-paid-prod-smoke",
+      "repo": "unknown",
+      "taskId": "sale_fresh-paid-prod-smoke_cs_test_fresh_paid_prod_smoke_001",
+      "taskPath": "data/agent-tasks/fresh-paid-prod-smoke/sale-cs_test_fresh_paid_prod_smoke_001.json",
+      "submissionPath": "data/funnel/submissions/fresh-paid-prod-smoke/sale-cs_test_fresh_paid_prod_smoke_001.json",
+      "ledgerEventId": "evt_1778212204223_xqcuxyok",
+      "discordChannelId": "1493926003255410718",
+      "discordThreadId": "1502155603689079045",
+      "discordMessageId": "1502155603689079045",
+      "discordMessageUrl": "",
+      "revisionUsed": 0,
+      "revisionLimit": 0,
+      "createdAt": "2026-05-08T03:50:05.127Z"
+    },
+    {
+      "id": "case_evt_1778212205861_kz12hcsd",
+      "type": "lead_workspace_discord_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "lead_workspace",
+      "note": "",
+      "discordChannelId": "1502155603689079045",
+      "discordThreadId": "1502155603689079045",
+      "discordMessageId": "1502155607564746814",
+      "discordMessageUrl": "",
+      "createdAt": "2026-05-08T03:50:05.861Z"
+    },
+    {
+      "id": "case_evt_1778212206621_jb1v8k3r",
+      "type": "website_agent_handoff_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "sale_handoff",
+      "note": "",
+      "discordChannelId": "1501945763650080899",
+      "discordThreadId": "1502155611368980540",
+      "discordMessageId": "1502155611368980540",
+      "discordMessageUrl": "https://discord.com/channels/1493925728570310756/1502155611368980540/1502155611368980540",
+      "createdAt": "2026-05-08T03:50:06.621Z"
+    }
+  ],
+  "agentStartProtocol": [
+    "Read this context packet before changing files.",
+    "Read case.json and timeline.jsonl for the full memory trail.",
+    "Read build-packet.md and website-survey.json when present before choosing a build approach.",
+    "Read evidence/content/design/brand files before planning any edit.",
+    "Classify the request as website, menu, domain, or account utility before patching.",
+    "Do not override locked decisions.",
+    "Do not treat unverified customer text as source of truth for menu prices, hours, address, phone, or reservation links.",
+    "If evidence conflicts with the customer request, stop and write needs_human_decision instead of guessing.",
+    "After work, append an agent run summary and timeline event."
+  ]
+}

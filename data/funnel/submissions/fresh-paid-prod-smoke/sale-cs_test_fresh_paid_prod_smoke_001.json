@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "sale",
+  "receivedAt": "2026-05-08T03:50:04.223Z",
+  "order": {
+    "orderId": "cs_test_fresh_paid_prod_smoke_001",
+    "paymentStatus": "paid",
+    "repo": "unknown",
+    "template": "webjuice-restaurant",
+    "previewUrl": "https://fresh-paid-prod-smoke-dev.pages.dev/",
+    "clientSlug": "fresh-paid-prod-smoke",
+    "campaignId": null,
+    "company": "Fresh Paid Prod Smoke",
+    "email": "hello@freshpaidsmoke.example",
+    "tier": "unknown",
+    "amount": 399,
+    "currency": "USD",
+    "feedback": "",
+    "referenceUrl": "",
+    "domain": "",
+    "parentOrderId": "",
+    "orderKind": "sale",
+    "assetManifestUrl": "",
+    "assetManifestPublicId": "",
+    "files": [],
+    "provider": "stripe",
+    "rawSubmissionId": "evt_test_fresh_paid_prod_smoke_001",
+    "receivedAt": "2026-05-08T03:50:04.205Z",
+    "leadMatch": {
+      "reason": "unique_match",
+      "clientSlug": "fresh-paid-prod-smoke",
+      "leadId": "fresh-paid-prod-smoke:hello@freshpaidsmoke.example",
+      "email": "hello@freshpaidsmoke.example"
+    }
+  },
+  "payload": {
+    "id": "evt_test_fresh_paid_prod_smoke_001",
+    "type": "checkout.session.completed",
+    "data": {
+      "object": {
+        "id": "cs_test_fresh_paid_prod_smoke_001",
+        "payment_status": "paid",
+        "amount_total": 39900,
+        "currency": "usd",
+        "customer_details": {
+          "email": "hello@freshpaidsmoke.example"
+        },
+        "metadata": {
+          "order_kind": "sale",
+          "auto_run_agent": "false",
+          "business_name": "Fresh Paid Prod Smoke",
+          "template": "webjuice-restaurant",
+          "repo": "",
+          "preview_url": ""
+        }
+      }
+    }
+  }
+}

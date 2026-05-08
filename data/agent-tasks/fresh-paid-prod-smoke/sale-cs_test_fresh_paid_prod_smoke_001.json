@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "id": "sale_fresh-paid-prod-smoke_cs_test_fresh_paid_prod_smoke_001",
+  "kind": "sale",
+  "status": "queued",
+  "executionMode": "remote_artifact_runner",
+  "createdAt": "2026-05-08T03:50:04.222Z",
+  "clientSlug": "fresh-paid-prod-smoke",
+  "repo": "unknown",
+  "branch": "dev",
+  "previewUrl": "https://fresh-paid-prod-smoke-dev.pages.dev/",
+  "customer": {
+    "company": "Fresh Paid Prod Smoke",
+    "email": "hello@freshpaidsmoke.example",
+    "phone": "",
+    "domain": ""
+  },
+  "order": {
+    "id": "cs_test_fresh_paid_prod_smoke_001",
+    "tier": "unknown",
+    "amount": 399,
+    "currency": "USD"
+  },
+  "requestedChanges": "",
+  "case": {
+    "id": "fresh-paid-prod-smoke_cs_test_fresh_paid_prod_smoke_001",
+    "dir": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001",
+    "casePath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/case.json",
+    "contextPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/context-packet.json",
+    "timelinePath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/timeline.jsonl",
+    "decisionsPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/decisions.jsonl",
+    "customerMessagesPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/agent-runs.jsonl",
+    "buildPacketPath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/build-packet.md"
+  },
+  "requiredContext": {
+    "evidence": "clients/fresh-paid-prod-smoke/evidence/evidence.json",
+    "content": "clients/fresh-paid-prod-smoke/content.restaurant.json",
+    "design": "clients/fresh-paid-prod-smoke/design.restaurant.json",
+    "brandSpec": "clients/fresh-paid-prod-smoke/brand-spec.md",
+    "checkout": "clients/fresh-paid-prod-smoke/funnel/checkout.json",
+    "websiteSurvey": "clients/fresh-paid-prod-smoke/intake/website-survey.json"
+  },
+  "designProtocol": {
+    "requiredSkill": "huashu-design",
+    "supportingSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design",
+      "frontend-design",
+      "design-review",
+      "critique"
+    ],
+    "openDesignSkills": [
+      "web-prototype",
+      "saas-landing",
+      "design-brief",
+      "critique",
+      "tweaks"
+    ],
+    "routeType": "website",
+    "rules": [
+      "Official website work must look like a real formal website with brand hierarchy, not a data dump.",
+      "Menu work must stay minimal, mobile-first, and content-focused.",
+      "Preserve the existing design language unless the task explicitly asks for redesign.",
+      "Use real restaurant photos and verified brand assets whenever available."
+    ]
+  },
+  "openDesign": {
+    "status": "not_created",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "",
+    "runId": "",
+    "conceptPath": "clients/fresh-paid-prod-smoke/concept/open-design",
+    "manifestPath": "clients/fresh-paid-prod-smoke/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/fresh-paid-prod-smoke/concept/open-design/production-handoff.json",
+    "createCommand": "npm run open-design:run-concept -- --client fresh-paid-prod-smoke --mode app-visible --source-url <official-site-url>",
+    "continueCommand": "",
+    "syncCommand": "",
+    "rule": "Create or bind one local Open Design project before doing high-fidelity design changes."
+  },
+  "productionHandoffPath": "clients/fresh-paid-prod-smoke/concept/open-design/production-handoff.json",
+  "allowedFiles": [
+    "src/**",
+    "public/**",
+    "content.restaurant.json",
+    "design.restaurant.json",
+    "brand-spec.md",
+    "src/data/**",
+    "README.md"
+  ],
+  "activeConstraints": [
+    "Read the case context packet before planning edits.",
+    "Website and menu are separate products; classify the request before editing.",
+    "Use evidence/content/design/brand files as source of truth.",
+    "Do not invent or overwrite menu prices, hours, address, phone, reservation links, or photos without evidence.",
+    "Do not overwrite locked decisions from the case file.",
+    "Push only to dev until customer approval."
+  ],
+  "entitlement": {
+    "orderId": "cs_test_fresh_paid_prod_smoke_001",
+    "tier": "unknown",
+    "revisionPolicy": {
+      "type": "lifetime",
+      "limit": 0,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "revisionUsed": 0,
+    "revisionStatus": "entitlement_created"
+  },
+  "referenceUrl": "",
+  "files": [],
+  "instructions": [
+    "Customer purchased unknown for fresh-paid-prod-smoke.",
+    "Verify the checkout submission and hidden repo fields.",
+    "If launch notes include content changes, apply them on the dev branch first.",
+    "Prepare domain onboarding instructions based on the preferred domain field.",
+    "After dev deploy succeeds, post the review link in the sales Discord thread and prepare a customer email."
+  ],
+  "completion": {
+    "deployBranch": "dev",
+    "notifyDiscord": true,
+    "sendCustomerReviewEmail": true,
+    "customerReviewUrl": "https://fresh-paid-prod-smoke-dev.pages.dev/"
+  }
+}
