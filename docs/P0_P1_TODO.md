@@ -27,6 +27,7 @@
 - `A1` fresh 项目从 0 到 dev preview
 - `A2` fresh 项目从 review 到 live + domain
 - `A3` 真实 revision 闭环
+- `A4` fresh lead 从 outreach 到 paid/project handoff 生产演练
 - `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
 - fresh lead 从 outreach 到 paid 真闭环
 
@@ -307,9 +308,19 @@ lead / intake
     - `paid`
     - `missing assets`
     - `missing outreach draft`
+  - 2026-05-08 production sale 演练已验证：
+    - workflow: `25535613785`
+    - lead: `fresh-paid-prod-smoke`
+    - 自动创建：
+      - `website-leads` forum post：`[Qualified] Fresh Paid Prod Smoke`
+      - `website-projects` forum post：`[Review] Fresh Paid Prod Smoke`
+    - 自动写回：
+      - `data/funnel/orders/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001.json`
+      - `data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/case.json`
+      - `data/agent-tasks/fresh-paid-prod-smoke/sale-cs_test_fresh_paid_prod_smoke_001.json`
 - 还缺：
   - external cold email platform live webhook ingest
-  - 真正 fresh paid customer 的生产演练
+  - 真正客户付款单的生产演练（当前 smoke 已验证链路，但不是客户真实付款）
 - 为什么重要：
   - 这决定后面大量项目时 Discord 是否仍然清晰可管
 - 是否需要显示到 admin：
@@ -526,6 +537,8 @@ lead / intake
   - live send metadata（如果 artifact 已回写 `sendResult`）
   - `website-leads` 相关 workspace 名称与 thread id（如果 case 已记录）
   - 推荐下一步
+  - `follow-up overdue`
+  - `replied needs review`
   - `Paid handoff pending`
   - `replied`
   - `follow-up due`

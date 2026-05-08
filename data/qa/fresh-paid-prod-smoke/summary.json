@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-05-08T00:00:00.000Z",
+  "workflowRunId": 25535613785,
+  "kind": "sale",
+  "dedupeKey": "evt_test_fresh_paid_prod_smoke_001",
+  "clientSlug": "fresh-paid-prod-smoke",
+  "orderId": "cs_test_fresh_paid_prod_smoke_001",
+  "result": {
+    "status": "paid_task_queued",
+    "customerEmail": "hello@freshpaidsmoke.example",
+    "previewUrl": "https://fresh-paid-prod-smoke-dev.pages.dev/",
+    "leadWorkspaceName": "[Qualified] Fresh Paid Prod Smoke",
+    "leadThreadId": "1502155603689079045",
+    "projectWorkspaceName": "[Review] Fresh Paid Prod Smoke",
+    "projectThreadId": "1502155611368980540",
+    "taskPath": "data/agent-tasks/fresh-paid-prod-smoke/sale-cs_test_fresh_paid_prod_smoke_001.json",
+    "casePath": "data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/case.json",
+    "funnelOrderPath": "data/funnel/orders/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001.json"
+  },
+  "conclusion": "A fresh production sale event can now match a seeded lead, create both Discord forum workspaces, create the case and queued website task, and persist the paid order truth source on main without sending customer email."
+}

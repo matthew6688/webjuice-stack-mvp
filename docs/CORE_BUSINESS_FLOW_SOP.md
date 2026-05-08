@@ -170,6 +170,15 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
       - 系统就会把 sale 重新挂回同一个 `clientSlug`，并继续创建 `website-leads` / `website-projects` workspace
       - 最新 smoke 证据：
         - `data/qa/lead-closure-smoke/lead-to-paid-handoff.json`
+      - 最新 production 演练：
+        - workflow: `25535613785`
+        - lead: `fresh-paid-prod-smoke`
+        - 结果：
+          - `[Qualified] Fresh Paid Prod Smoke`
+          - `[Review] Fresh Paid Prod Smoke`
+          - case / task / funnel order 已写回 main
+        - 证据：
+          - `data/qa/fresh-paid-prod-smoke/summary.json`
   - 后续方向：
     - 现在 `/admin/leads` 已经切到 Phase 1 lead truth source
     - 后面继续补：
