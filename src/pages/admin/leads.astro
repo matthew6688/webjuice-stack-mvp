@@ -35,7 +35,7 @@ function urgencyScore(record) {
 }
 ---
 
-<Layout title={`线索后台 - ${siteConfig.name}`} description="ProfitsLocal 售前线索与冷启动触达面板。" active="leads">
+<Layout title={`线索与触达 - ${siteConfig.name}`} description="ProfitsLocal 售前线索与冷启动触达面板。" active="leads">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
@@ -134,8 +134,8 @@ function urgencyScore(record) {
           <ul class="admin-list">
             <li><strong>事务邮件</strong><span>继续走 Resend，不在这里当作 cold outreach 的发送真相源。</span></li>
             <li><strong>冷启动触达</strong><span>当前真相源是 demo pack、邮件草稿，以及回写到 outreach artifact 的 provider metadata。</span></li>
-            <li><strong>当前 live 路线</strong><span>Agentic Inbox 现在是 live operator path。Instantly / Smartlead 先保持 planned，等 webhook ingest 真接上。</span></li>
-            <li><strong>Provider 模型</strong><span>Resend 只做 transactional。cold outreach 后面换 provider，不需要推翻 admin 真相模型。</span></li>
+            <li><strong>当前使用路线</strong><span>Agentic Inbox 现在是我们正在使用的冷启动触达入口。Instantly / Smartlead 先保持 planned，等 webhook ingest 真接上。</span></li>
+            <li><strong>发送平台模型</strong><span>Resend 只做事务邮件。cold outreach 后面换 provider，不需要推翻 admin 真相模型。</span></li>
             <li><strong>线索备注</strong><span>可以直接记录人工跟进 note 和下一次 follow-up 日期，后面如果成交，也能继续进项目 timeline。</span></li>
             <li><strong>Discord 可见性</strong><span>`website-leads` forum 继续作为线索容器，这里是管理后台摘要。</span></li>
             <li><strong>系统配置</strong><span>去 <a href="/admin/settings/">/admin/settings/</a> 看哪些 provider 已经 live，哪些还只是 planned。</span></li>
@@ -247,7 +247,7 @@ function urgencyScore(record) {
                   <span>{record.discordThreadUrl ? <a class="admin-inline-link" href={record.discordThreadUrl} target="_blank" rel="noreferrer">打开 Discord 线程</a> : (record.salesThreadId || '还没有 Discord 线程')}</span>
                   <span>{record.projectAdminUrl && record.orderId ? <a class="admin-inline-link" href={record.projectAdminUrl}>打开项目详情</a> : '还没有正式项目详情'}</span>
                   <span>{record.repoUrl ? <a class="admin-inline-link" href={record.repoUrl} target="_blank" rel="noreferrer">打开 Repo</a> : '还没有 Repo'}</span>
-                  <span>{record.openDesignProjectId ? `Open Design：${record.openDesignProjectId}` : '还没有 Open Design 项目 ID'}</span>
+                  <span>{record.openDesignProjectId ? `Open Design 项目：${record.openDesignProjectId}` : '还没有 Open Design 项目 ID'}</span>
                 </td>
                 <td>
                   <strong>{record.nextAction.label}</strong>

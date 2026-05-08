@@ -1,7 +1,7 @@
 import { loadLeadRegistry } from './lead-registry.js';
 
 export const LEAD_ADMIN_VIEWS = {
-  all: { label: '全部 leads' },
+  all: { label: '全部线索' },
   demo_ready: { label: 'Demo 就绪' },
   draft_ready: { label: '草稿就绪' },
   outreach_sent: { label: '已发送触达' },
@@ -11,7 +11,7 @@ export const LEAD_ADMIN_VIEWS = {
   replied_unprocessed: { label: '已回复待处理' },
   bounced: { label: '退信' },
   paid: { label: '已付款' },
-  paid_handoff_pending: { label: '付款待交接' },
+  paid_handoff_pending: { label: '已付款待交接' },
   missing_assets: { label: '缺少素材' },
   missing_email: { label: '缺少 outreach 草稿' },
 };
@@ -92,7 +92,7 @@ function deriveStageKey(record) {
 
 function deriveStageLabel(stageKey) {
   return {
-    paid: 'Paid',
+    paid: '已付款',
     replied: '已回复',
     bounced: '退信',
     follow_up_overdue: '跟进已过期',

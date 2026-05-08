@@ -68,7 +68,7 @@ const savedViews = [
 ];
 ---
 
-<Layout title={`项目后台 - ${siteConfig.name}`} description="ProfitsLocal 已付款项目与交付状态面板。" active="intakes">
+<Layout title={`项目工作台 - ${siteConfig.name}`} description="ProfitsLocal 已付款项目与交付状态面板。" active="intakes">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
@@ -162,7 +162,7 @@ const savedViews = [
             {urgentQueue.length ? urgentQueue.map((record) => (
               <a class="admin-urgent-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
                 <strong>{record.customer.company || record.clientSlug}</strong>
-                <span>{record.nextActionSummary?.label || '查看项目'}</span>
+                <span>{record.nextActionSummary?.label || '打开项目'}</span>
                 <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.status}</code>
               </a>
             )) : <p class="micro">当前没有特别紧急的项目。</p>}
@@ -224,7 +224,7 @@ const savedViews = [
               {column.records.length ? column.records.map((record) => (
                 <a class="admin-pipeline-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
                   <strong>{record.customer.company || record.clientSlug}</strong>
-                  <span>{record.nextActionSummary?.label || '查看项目'}</span>
+                  <span>{record.nextActionSummary?.label || '打开项目'}</span>
                   <code>{record.orderId}</code>
                 </a>
               )) : <p class="micro">这一列暂时没有项目。</p>}

@@ -44,6 +44,19 @@ const leadUrgentQueue = leadIndex.records
   }))
   .sort((a, b) => b.urgencyScore - a.urgencyScore)
   .slice(0, 5);
+
+const stageLabels = {
+  intake: '收单',
+  intake_blocked: '收单阻塞',
+  website_ready: '网站资料就绪',
+  open_design: 'Open Design 进行中',
+  port_to_dev: '已同步到开发分支',
+  building: '构建中',
+  review_ready: '待发 review',
+  revision: '修订中',
+  launch_ready: '待上线',
+  live: '已上线',
+};
 ---
 
 <Layout title={`后台总览 - ${siteConfig.name}`} description="ProfitsLocal 内部运营总览。" active="overview">
@@ -213,7 +226,7 @@ const leadUrgentQueue = leadIndex.records
           </div>
           <ul class="admin-list">
             {Object.entries(stageCounts).sort((a, b) => b[1] - a[1]).map(([stage, count]) => (
-              <li><strong>{stage.replaceAll('_', ' ')}</strong><span>{count} 个项目</span></li>
+              <li><strong>{stageLabels[stage] || stage.replaceAll('_', ' ')}</strong><span>{count} 个项目</span></li>
             ))}
           </ul>
         </section>

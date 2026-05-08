@@ -246,7 +246,7 @@ function buildNextActionSummary(record, artifactSummary) {
   if (record.status === 'completed') {
     return action('推进 live / domain', '客户站已完成，检查 live 和 domain。', '检查 publish 结果、live URL、domain request。');
   }
-  return action('查看项目 thread', '继续推进当前项目。', '打开 Discord thread、preview 和最新 QA。');
+  return action('查看项目工作区', '继续推进当前项目。', '打开 Discord thread、preview 和最新 QA。');
 }
 
 function buildMilestoneSummary(record, artifactSummary) {
