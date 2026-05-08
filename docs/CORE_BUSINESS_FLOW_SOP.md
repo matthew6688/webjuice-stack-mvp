@@ -113,6 +113,31 @@
     - `next follow-up due`
     - external cold email platform reply state
 
+- `/admin/intakes`
+  - 当前已经能显示：
+    - `Project stage`
+    - 当前 milestone 文案
+    - milestone 完成进度
+    - Open Design / QA / outreach / domain health
+  - 详情页已经能显示：
+    - milestone timeline
+    - 当前 milestone
+    - workflow/job status
+  - `/admin/queue`
+    - 已增加 milestone 聚合统计
+
+当前 milestone 真相源：
+
+- `data/paid-intakes/*/*.json`
+- `data/cases/*/*/case.json`
+- `data/cases/*/*/timeline.jsonl`
+- `clients/<client>/concept/open-design/concept-manifest.json`
+- `clients/<client>/concept/open-design/production-handoff.json`
+- `data/cases/*/*/delivery-qa.json`
+- `data/domain/requests/*/*.json`
+
+当前 milestone 仍是 **repo/case/artifact 推导值**，还没有和 Open Design app 的 pipeline 原生状态完全统一。
+
 为什么这样做：
 
 - 普通 text channel thread 在大量项目下不直观，容易被藏起来。

@@ -85,6 +85,8 @@ try {
     includesDeliveryQaSummary: record.artifactSummary.deliveryQaReady === true,
     includesFinanceSummary: record.artifactSummary.financeSummary.profit === 374,
     includesStageSummary: record.stageSummary.label === 'Review Ready',
+    includesMilestoneSummary: record.milestoneSummary.currentKey === 'domain_waiting_customer',
+    includesMilestoneCount: record.milestoneSummary.completedCount >= 3,
     includesBlockerSummary: record.blockerSummary.primary === '还没有绑定 Open Design project',
     includesNextActionSummary: record.nextActionSummary.label === '创建/绑定 Open Design',
     includesWorkflowSummary: record.artifactSummary.latestTask?.id === 'task_alpha_001',

@@ -31,6 +31,19 @@ const queueGroups = [
     records: index.records.filter((record) => !record.artifactSummary?.deliveryQaReady),
   },
 ];
+const milestoneGroups = [
+  ['website_ready', 'Website ready'],
+  ['open_design_succeeded', 'Open Design succeeded'],
+  ['review_sent', 'Review sent'],
+  ['revision_requested', 'Revision requested'],
+  ['live', 'Live'],
+  ['domain_waiting_customer', 'Waiting customer DNS'],
+  ['domain_connected', 'Domain connected'],
+].map(([key, label]) => ({
+  key,
+  label,
+  count: index.records.filter((record) => record.milestoneSummary?.currentKey === key).length,
+}));
 ---
 
 <Layout title={`Admin queue - ${siteConfig.name}`} description="Action queue for ProfitsLocal ops." active="queue">
@@ -60,6 +73,15 @@ const queueGroups = [
             <strong>{group.records.length}</strong>
             <p>{group.records[0]?.nextActionSummary?.label || 'No active item in this bucket right now.'}</p>
           </article>
+        ))}
+      </div>
+
+      <div class="admin-stat-grid">
+        {milestoneGroups.map((group) => (
+          <div class="admin-stat">
+            <span>{group.label}</span>
+            <strong>{group.count}</strong>
+          </div>
         ))}
       </div>
 

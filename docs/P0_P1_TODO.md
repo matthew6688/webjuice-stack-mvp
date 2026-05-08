@@ -260,7 +260,7 @@ lead / intake
 
 ## C3. 项目 milestone 是否需要进 admin
 
-- 状态：`PENDING`
+- 状态：`IN PROGRESS`
 - 结论：
   - **需要**
 - 建议 milestone：
@@ -281,6 +281,19 @@ lead / intake
   - `/admin/intakes`
   - `/admin/intakes/<client>/<order>`
   - `/admin/queue`
+- 当前已完成：
+  - `/admin/intakes`
+    - 已显示当前 milestone 文案
+    - 已显示完成进度 `x / 13`
+  - `/admin/intakes/<client>/<order>`
+    - 已显示 milestone timeline
+    - 已显示当前 milestone
+  - `/admin/queue`
+    - 已增加 milestone 聚合统计
+- 当前边界：
+  - milestone 还主要根据 repo/case/artifact/timeline 推导
+  - 还没有和 Open Design pipeline 原生状态完全对齐
+  - 还没有进入 `/admin/leads`
 
 ---
 
@@ -384,13 +397,21 @@ lead / intake
 
 ## E3. Milestone / pipeline 状态进 admin
 
-- 状态：`PENDING`
+- 状态：`IN PROGRESS`
 - 目标：
   - admin 不只是看 intake，要看到真正的项目阶段
 - 建议先做：
   - 列表页 project milestone pill
   - 详情页 milestone timeline
   - queue 页按 milestone 聚合
+- 当前已完成：
+  - `/admin/intakes` 列表页
+  - `/admin/intakes/<client>/<order>` 详情页
+  - `/admin/queue` milestone 聚合
+- 当前还缺：
+  - `/admin` overview 总览级 milestone 聚合
+  - `/admin/leads` 与正式项目 milestone 的衔接
+  - Open Design pipeline 状态映射后的统一状态语言
 
 ## E4. Open Design 状态进 admin
 

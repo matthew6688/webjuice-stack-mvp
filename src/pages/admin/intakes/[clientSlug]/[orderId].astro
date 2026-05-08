@@ -112,6 +112,11 @@ const healthItems = [
           <p>{summary.nextActionSummary?.reason || 'Review the latest workflow and unblock the next step.'}</p>
         </article>
         <article class="admin-summary-tile">
+          <span class="admin-summary-label">Milestone</span>
+          <strong>{summary.milestoneSummary?.currentLabel || 'Lead collected'}</strong>
+          <p>{summary.milestoneSummary?.completedCount || 0} / {summary.milestoneSummary?.total || 0} complete</p>
+        </article>
+        <article class="admin-summary-tile">
           <span class="admin-summary-label">Status</span>
           <strong>{summary.status.replaceAll('_', ' ')}</strong>
           <p>{summary.readinessStatus || 'readiness not checked'} · updated {summary.updatedAt || 'N/A'}</p>
@@ -196,10 +201,30 @@ const healthItems = [
 
       <div class="admin-detail-grid">
         <section class="admin-panel">
+          <h2>Milestone Timeline</h2>
+          <ol class="admin-milestone-list">
+            {(summary.milestoneSummary?.milestones || []).map((item) => (
+              <li class={`admin-milestone-item ${item.complete ? 'is-complete' : ''} ${item.key === summary.milestoneSummary?.currentKey ? 'is-current' : ''}`}>
+                <div class="admin-milestone-marker" aria-hidden="true"></div>
+                <div>
+                  <strong>{item.label}</strong>
+                  <span>{item.key}</span>
+                </div>
+                <div>
+                  <span>{item.complete ? 'done' : 'pending'}</span>
+                  <span>{item.at || 'no timestamp yet'}</span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section class="admin-panel">
           <h2>Status</h2>
           <mark class={`status-pill status-${summary.status}`}>{summary.status.replaceAll('_', ' ')}</mark>
           <dl>
             <div><dt>Project stage</dt><dd>{summary.stageSummary?.label || 'Unknown'}</dd></div>
+            <div><dt>Current milestone</dt><dd>{summary.milestoneSummary?.currentLabel || 'Lead collected'}</dd></div>
             <div><dt>Readiness</dt><dd>{summary.readinessStatus || 'not checked'}</dd></div>
             <div><dt>Missing</dt><dd>{summary.missing.length ? summary.missing.join(', ') : 'Ready'}</dd></div>
             <div><dt>First version confirmed</dt><dd>{summary.firstVersionConfirmed ? 'Yes' : 'No'}</dd></div>

@@ -261,6 +261,7 @@ const savedViews = [
               <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || 'Unknown'}</mark>
               <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
             </div>
+            <p class="micro">Milestone: {record.milestoneSummary?.currentLabel || 'Lead collected'} · {record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</p>
             <p class="micro">{record.nextActionSummary?.label || 'Review'} · {record.nextActionSummary?.reason || 'No recommendation recorded.'}</p>
             <div class="admin-mobile-record-grid">
               <div><span class="admin-toolbar-label">Health</span><p>OD {record.artifactSummary?.openDesignBound ? 'ready' : 'missing'} · QA {record.artifactSummary?.deliveryQaReady ? 'pass' : 'pending'} · Domain {record.artifactSummary?.domainStatus || 'none'}</p></div>
@@ -310,6 +311,8 @@ const savedViews = [
                 <td>
                   <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || 'Unknown'}</mark>
                   <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
+                  <span><strong>Milestone:</strong> {record.milestoneSummary?.currentLabel || 'Lead collected'}</span>
+                  <span>{record.milestoneSummary?.completedCount || 0} / {record.milestoneSummary?.total || 0} complete</span>
                   <span>{record.readinessStatus.replaceAll('_', ' ') || 'readiness not recorded'}</span>
                   <span>{record.artifactSummary?.latestTimeline?.type || 'no recent event'}</span>
                 </td>
@@ -346,6 +349,7 @@ const savedViews = [
                 <td>
                   <strong>{record.nextActionSummary?.label || 'Review'}</strong>
                   <span>{record.nextActionSummary?.reason || ''}</span>
+                  <span class="micro">{record.milestoneSummary?.currentKey || 'lead_collected'}</span>
                 </td>
                 <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>Open</a></td>
               </tr>

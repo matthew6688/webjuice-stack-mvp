@@ -67,6 +67,7 @@ export function summarizePaidIntakeRecord(record, filePath = '') {
   const acceptedRevisions = revisions.filter((revision) => revision.accepted !== false);
   const artifactSummary = buildArtifactSummary(record, filePath);
   const stageSummary = buildStageSummary(record, artifactSummary);
+  const milestoneSummary = buildMilestoneSummary(record, artifactSummary);
   const blockerSummary = buildBlockerSummary(record, artifactSummary);
   const nextActionSummary = buildNextActionSummary(record, artifactSummary);
   const workflowSummary = buildWorkflowSummary(record, artifactSummary);
@@ -103,6 +104,7 @@ export function summarizePaidIntakeRecord(record, filePath = '') {
     firstVersionConfirmed: record.firstVersionConfirmation?.confirmed === true,
     artifactSummary,
     stageSummary,
+    milestoneSummary,
     blockerSummary,
     nextActionSummary,
     workflowSummary,
@@ -163,6 +165,7 @@ function buildArtifactSummary(record, filePath = '') {
   const caseFile = readJsonIfExists(casePath);
   const latestDomainRequest = readLatestDomainRequest(clientSlug);
   const latestTimeline = readLatestTimelineEvent(record, { casePath, filePath });
+  const timelineEntries = readTimelineEntries(record, { casePath, filePath });
   const latestSmoke = readLatestOpsSmoke(orderId);
   return {
     conceptManifestPath: existsOrEmpty(conceptManifestPath),
@@ -183,10 +186,13 @@ function buildArtifactSummary(record, filePath = '') {
     latestTask: caseFile?.latestTask || null,
     latestAgentRun: caseFile?.latestAgentRun || null,
     latestTimeline,
+    timelineEntries,
     latestSmoke,
     domainRequestPath: latestDomainRequest?.path || '',
     domainStatus: latestDomainRequest?.status || '',
     domainName: latestDomainRequest?.domain || '',
+    openDesignStatus: conceptManifest?.status?.status || '',
+    openDesignCompletionMode: conceptManifest?.status?.completionMode || '',
   };
 }
 
@@ -230,6 +236,37 @@ function buildNextActionSummary(record, artifactSummary) {
     return action('推进 live / domain', '客户站已完成，检查 live 和 domain。', '检查 publish 结果、live URL、domain request。');
   }
   return action('查看项目 thread', '继续推进当前项目。', '打开 Discord thread、preview 和最新 QA。');
+}
+
+function buildMilestoneSummary(record, artifactSummary) {
+  const timelineEntries = Array.isArray(artifactSummary.timelineEntries) ? artifactSummary.timelineEntries : [];
+  const currentKey = deriveCurrentMilestoneKey(record, artifactSummary);
+  const milestones = [
+    milestone('lead_collected', 'Lead collected', true, eventAt(timelineEntries, [] ) || record.createdAt || record.updatedAt || ''),
+    milestone('website_ready', 'Website ready', isWebsiteReady(record, artifactSummary), eventAt(timelineEntries, ['confirm_website_ready', 'readiness_confirmed']) || ''),
+    milestone('open_design_started', 'Open Design started', Boolean(artifactSummary.openDesignBound), eventAt(timelineEntries, ['open_design_started']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('open_design_succeeded', 'Open Design succeeded', artifactSummary.openDesignStatus === 'succeeded', eventAt(timelineEntries, ['open_design_succeeded']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('ported_to_repo_dev', 'Ported to repo dev', Boolean(artifactSummary.productionHandoffReady), eventAt(timelineEntries, ['agent_run_completed']) || fileUpdatedAt(artifactSummary.productionHandoffPath)),
+    milestone('dev_preview_ready', 'Dev preview ready', Boolean(record.previewUrl), eventAt(timelineEntries, ['mark_v1_delivered', 'admin_marked_v1_delivered']) || ''),
+    milestone('delivery_qa_passed', 'Delivery QA passed', Boolean(artifactSummary.deliveryQaReady), eventAt(timelineEntries, ['delivery_qa_passed']) || fileUpdatedAt(artifactSummary.deliveryQaPath)),
+    milestone('review_sent', 'Review sent', hasEvent(timelineEntries, ['customer_review_email_sent']), eventAt(timelineEntries, ['customer_review_email_sent'])),
+    milestone('revision_requested', 'Revision requested', (record.status || '') === 'revision_requested' || hasEvent(timelineEntries, ['revision_routed']), eventAt(timelineEntries, ['revision_routed'])),
+    milestone('approved_for_publish', 'Approved for publish', hasEvent(timelineEntries, ['approve_latest_revision', 'approval_request_received']), eventAt(timelineEntries, ['approve_latest_revision', 'approval_request_received'])),
+    milestone('live', 'Live', (artifactSummary.domainStatus === 'active') || hasEvent(timelineEntries, ['live_publish_completed']), eventAt(timelineEntries, ['live_publish_completed'])),
+    milestone('domain_waiting_customer', 'Domain waiting customer', artifactSummary.domainStatus === 'waiting_for_customer_dns', eventAt(timelineEntries, ['domain_status_discord_sent'])),
+    milestone('domain_connected', 'Domain connected', artifactSummary.domainStatus === 'active', eventAt(timelineEntries, ['domain_status_discord_sent'])),
+  ];
+
+  const currentIndex = Math.max(0, milestones.findIndex((item) => item.key === currentKey));
+  const completedCount = milestones.filter((item) => item.complete).length;
+  return {
+    currentKey,
+    currentLabel: milestones[currentIndex]?.label || 'Lead collected',
+    currentIndex,
+    completedCount,
+    total: milestones.length,
+    milestones,
+  };
 }
 
 function buildBlockerSummary(record, artifactSummary) {
@@ -290,6 +327,48 @@ function action(label, reason, command = '') {
   return { label, reason, command };
 }
 
+function milestone(key, label, complete, at = '') {
+  return { key, label, complete, at };
+}
+
+function deriveCurrentMilestoneKey(record, artifactSummary) {
+  if (artifactSummary.domainStatus === 'active') return 'domain_connected';
+  if (artifactSummary.domainStatus === 'waiting_for_customer_dns') return 'domain_waiting_customer';
+  if (hasEvent(artifactSummary.timelineEntries || [], ['live_publish_completed'])) return 'live';
+  if ((record.status || '') === 'completed') return 'approved_for_publish';
+  if ((record.status || '') === 'revision_requested') return 'revision_requested';
+  if (hasEvent(artifactSummary.timelineEntries || [], ['customer_review_email_sent'])) return 'review_sent';
+  if (artifactSummary.deliveryQaReady) return 'delivery_qa_passed';
+  if (record.previewUrl) return 'dev_preview_ready';
+  if (artifactSummary.productionHandoffReady) return 'ported_to_repo_dev';
+  if (artifactSummary.openDesignStatus === 'succeeded') return 'open_design_succeeded';
+  if (artifactSummary.openDesignBound) return 'open_design_started';
+  if (isWebsiteReady(record, artifactSummary)) return 'website_ready';
+  return 'lead_collected';
+}
+
+function isWebsiteReady(record, artifactSummary) {
+  return (record.readiness?.status || '') === 'intake_ready_for_review'
+    || artifactSummary.openDesignBound
+    || artifactSummary.productionHandoffReady
+    || Boolean(record.previewUrl);
+}
+
+function hasEvent(entries, eventTypes) {
+  return entries.some((entry) => eventTypes.includes(entry.type || entry.action || ''));
+}
+
+function eventAt(entries, eventTypes) {
+  if (!eventTypes.length) return entries.at(0)?.createdAt || entries.at(0)?.submittedAt || '';
+  const match = entries.find((entry) => eventTypes.includes(entry.type || entry.action || ''));
+  return match?.createdAt || match?.submittedAt || '';
+}
+
+function fileUpdatedAt(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return '';
+  return fs.statSync(filePath).mtime.toISOString();
+}
+
 function readFinanceSummary(clientSlug, financeSummaryPath) {
   const persisted = readJsonIfExists(financeSummaryPath);
   if (persisted?.summary) {
@@ -332,26 +411,37 @@ function readFinanceSummary(clientSlug, financeSummaryPath) {
 }
 
 function readLatestTimelineEvent(record, { casePath = '', filePath = '' } = {}) {
+  const timeline = readTimelineEntries(record, { casePath, filePath });
+  if (!timeline.length) return null;
+  const event = timeline.at(-1);
+  return {
+    path: event.path || '',
+    type: event.type || event.action || '',
+    at: event.createdAt || event.submittedAt || '',
+    note: event.note || '',
+  };
+}
+
+function readTimelineEntries(record, { casePath = '', filePath = '' } = {}) {
   const siblingPaidTimelinePath = filePath ? filePath.replace(/\.json$/, '-timeline.jsonl') : '';
   const paidTimelinePath = fs.existsSync(siblingPaidTimelinePath)
     ? siblingPaidTimelinePath
     : (record.clientSlug && record.orderId ? path.join('data', 'paid-intakes', record.clientSlug, `${record.orderId}-timeline.jsonl`) : '');
   const caseTimelinePath = casePath ? path.join(path.dirname(casePath), 'timeline.jsonl') : '';
-  const timelinePath = fs.existsSync(paidTimelinePath) ? paidTimelinePath : (fs.existsSync(caseTimelinePath) ? caseTimelinePath : '');
-  if (!timelinePath) return null;
-  const lines = fs.readFileSync(timelinePath, 'utf8').split(/\n+/).filter(Boolean);
-  if (!lines.length) return null;
-  try {
-    const event = JSON.parse(lines.at(-1));
-    return {
-      path: timelinePath,
-      type: event.type || event.action || '',
-      at: event.createdAt || event.submittedAt || '',
-      note: event.note || '',
-    };
-  } catch {
-    return null;
+  const entries = [];
+  for (const timelinePath of [paidTimelinePath, caseTimelinePath]) {
+    if (!timelinePath || !fs.existsSync(timelinePath)) continue;
+    const lines = fs.readFileSync(timelinePath, 'utf8').split(/\n+/).filter(Boolean);
+    for (const line of lines) {
+      try {
+        const event = JSON.parse(line);
+        entries.push({ ...event, path: timelinePath });
+      } catch {
+        // ignore malformed line
+      }
+    }
   }
+  return entries.sort((a, b) => String(a.createdAt || a.submittedAt || '').localeCompare(String(b.createdAt || b.submittedAt || '')));
 }
 
 function readLatestDomainRequest(clientSlug) {
