@@ -105,6 +105,8 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 - 默认中文界面；
 - `/admin/leads` 只看售前线索；
 - `/admin/intakes` 只看已成交后的正式项目；
+- 财务只留在 `/admin/finance`；
+- `/admin`、`/admin/leads`、`/admin/intakes`、`/admin/queue`、项目详情页都不再混入 ROI、利润、收入、成本这类财务信息；
 - 这样线索和项目不会混在同一张后台表里。
 - 以上 admin 风格与中英文统一，已经做过 production 页面命中验证。
 

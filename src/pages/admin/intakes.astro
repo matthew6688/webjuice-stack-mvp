@@ -2,10 +2,8 @@
 import Layout from '../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../config/site';
 import { ADMIN_VIEWS, loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
-import { formatMoney, readLedger, summarizeLedger } from '../../../core/finance/ledger.js';
 
 const index = loadPaidIntakeIndex();
-const financeOverview = summarizeLedger(readLedger());
 const statusOrder = [
   'intake_ready_for_review',
   'intake_needs_more_info',
@@ -21,7 +19,6 @@ const dashboardSummary = {
   reviewReady: index.records.filter((record) => record.stageSummary?.key === 'review_ready').length,
   revisionsPending: index.records.filter((record) => record.status === 'revision_requested').length,
   waitingDns: index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length,
-  profitableProjects: index.records.filter((record) => (record.artifactSummary?.financeSummary?.profit ?? 0) > 0).length,
 };
 const pipelineStages = [
   ['intake', '收单'],
@@ -52,12 +49,6 @@ const urgentQueue = index.records
   }))
   .sort((a, b) => b.urgencyScore - a.urgencyScore)
   .slice(0, 6);
-const topClientsByProfit = Object.entries(financeOverview.byClient || {})
-  .sort((a, b) => b[1] - a[1])
-  .slice(0, 5);
-const topProvidersBySpend = Object.entries(financeOverview.byProvider || {})
-  .sort((a, b) => a[1] - b[1])
-  .slice(0, 5);
 const savedViews = [
   ['all', ADMIN_VIEWS.all.label],
   ['review_ready', ADMIN_VIEWS.review_ready.label],
@@ -75,7 +66,7 @@ const savedViews = [
         <div>
           <p class="eyebrow">内部运营</p>
           <h1>项目队列</h1>
-          <p class="lede">这里看正式项目：缺了什么、卡在哪、是否能发 review、修订压力和 DNS 阻塞。</p>
+          <p class="lede">这里只看正式项目：当前阶段、阻塞项、review、修订、DNS 和 Open Design 进度。</p>
         </div>
         <div class="admin-count">
           <strong>{index.counts.total}</strong>
@@ -103,10 +94,6 @@ const savedViews = [
           <span>等待 DNS</span>
           <strong>{dashboardSummary.waitingDns}</strong>
         </div>
-        <div class="admin-stat">
-          <span>利润为正</span>
-          <strong>{dashboardSummary.profitableProjects}</strong>
-        </div>
       </div>
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">
@@ -124,33 +111,8 @@ const savedViews = [
           <strong>{index.records.filter((record) => record.artifactSummary?.deliveryQaReady).length}</strong>
           <p>还有 {index.records.filter((record) => !record.artifactSummary?.deliveryQaReady).length} 个项目在发客户 review 前仍被 QA 卡住。</p>
         </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">财务脉搏</span>
-          <strong>{formatMoney(financeOverview.profit || 0)}</strong>
-          <p>当前净额来自 {financeOverview.eventCount || 0} 条财务事件，先用它判断这条业务线是否健康。</p>
-        </article>
       </div>
       <div class="admin-finance-grid">
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">财务总览</span>
-              <h2>经营快照</h2>
-            </div>
-          </div>
-          <div class="admin-finance-metrics">
-            <div><span>收入</span><strong>{formatMoney(financeOverview.revenue || 0)}</strong></div>
-            <div><span>成本</span><strong>{formatMoney(financeOverview.cost || 0)}</strong></div>
-            <div><span>利润</span><strong>{formatMoney(financeOverview.profit || 0)}</strong></div>
-            <div><span>ROI</span><strong>{financeOverview.roi == null ? 'N/A' : `${(financeOverview.roi * 100).toFixed(1)}%`}</strong></div>
-          </div>
-          <div class="admin-finance-meta">
-            <span>{financeOverview.eventCount || 0} 条财务事件</span>
-            <span>{financeOverview.revenueEventCount || 0} 条收入</span>
-            <span>{financeOverview.costEventCount || 0} 条成本</span>
-          </div>
-        </section>
-
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
@@ -169,32 +131,6 @@ const savedViews = [
           </div>
         </section>
 
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">贡献排行</span>
-              <h2>利润 / 花费</h2>
-            </div>
-          </div>
-          <div class="admin-split-lists">
-            <div>
-              <span class="admin-toolbar-label">利润最高客户</span>
-              <ul class="admin-list">
-                {topClientsByProfit.length ? topClientsByProfit.map(([client, amount]) => (
-                  <li><strong>{client}</strong><span>{formatMoney(amount)}</span></li>
-                )) : <li>还没有财务数据。</li>}
-              </ul>
-            </div>
-            <div>
-              <span class="admin-toolbar-label">花费最高供应商</span>
-              <ul class="admin-list">
-                {topProvidersBySpend.length ? topProvidersBySpend.map(([provider, amount]) => (
-                  <li><strong>{provider}</strong><span>{formatMoney(amount)}</span></li>
-                )) : <li>还没有供应商数据。</li>}
-              </ul>
-            </div>
-          </div>
-        </section>
       </div>
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
@@ -266,7 +202,7 @@ const savedViews = [
             <div class="admin-mobile-record-grid">
               <div><span class="admin-toolbar-label">健康度</span><p>OD {record.artifactSummary?.openDesignBound ? '已就绪' : '缺失'} · QA {record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'} · 域名 {record.artifactSummary?.domainStatus || '无'}</p></div>
               <div><span class="admin-toolbar-label">商务</span><p>{record.customer.email || '没有邮箱'} · {record.customer.domain || '没有域名'}</p></div>
-              <div><span class="admin-toolbar-label">使用量</span><p>{record.assetCount} 资产 · {record.revisionCount}/{record.revisionLimit} 次修订 · {formatMoney(record.artifactSummary?.financeSummary?.profit ?? 0, record.currency || 'USD')}</p></div>
+              <div><span class="admin-toolbar-label">使用量</span><p>{record.assetCount} 资产 · {record.revisionCount}/{record.revisionLimit} 次修订</p></div>
               <div><span class="admin-toolbar-label">风险</span><p>{record.blockerSummary?.primary || (record.missing.length ? record.missing.join(', ') : '当前没有明显阻塞')}</p></div>
             </div>
           </article>
@@ -354,7 +290,7 @@ const savedViews = [
                   <span>{record.assetCount} 个资产</span>
                   <span>{record.fileCount} 个文件</span>
                   <span>{record.revisionCount} / {record.revisionLimit} 次修订</span>
-                  <span>ROI: {formatMoney(record.artifactSummary?.financeSummary?.profit ?? 0, record.currency || 'USD')}</span>
+                  <span>{record.assetCount} 资产 · {record.revisionCount}/{record.revisionLimit} 次修订</span>
                 </td>
                 <td>
                   {record.blockerSummary?.count ? (

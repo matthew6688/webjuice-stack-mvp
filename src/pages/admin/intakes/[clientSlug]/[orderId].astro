@@ -58,7 +58,6 @@ const operatorArtifacts = [
   ['Outreach pack', summary.artifactSummary?.outreachPackPath || ''],
   ['Outreach email dir', summary.artifactSummary?.outreachEmailDir || ''],
   ['Delivery QA', summary.artifactSummary?.deliveryQaPath || ''],
-  ['Finance summary', summary.artifactSummary?.financeSummaryPath || ''],
   ['Domain request', summary.artifactSummary?.domainRequestPath || ''],
   ['Ops smoke evidence', summary.workflowSummary?.latestSmokePath || ''],
 ].filter(([, value]) => value);
@@ -368,16 +367,6 @@ const healthItems = [
           </dl>
         </section>
 
-        <section class="admin-panel">
-          <h2>ROI 快照</h2>
-          <dl>
-            <div><dt>收入</dt><dd>{summary.currency} {summary.artifactSummary?.financeSummary?.revenue ?? 0}</dd></div>
-            <div><dt>成本</dt><dd>{summary.currency} {summary.artifactSummary?.financeSummary?.cost ?? 0}</dd></div>
-            <div><dt>利润</dt><dd>{summary.currency} {summary.artifactSummary?.financeSummary?.profit ?? 0}</dd></div>
-            <div><dt>事件数</dt><dd>{summary.artifactSummary?.financeSummary?.eventCount ?? 0}</dd></div>
-            <div><dt>摘要路径</dt><dd><code>{summary.artifactSummary?.financeSummaryPath || 'N/A'}</code></dd></div>
-          </dl>
-        </section>
       </div>
 
       <section class="admin-panel admin-timeline">

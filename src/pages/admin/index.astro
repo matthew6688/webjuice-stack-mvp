@@ -3,11 +3,9 @@ import Layout from '../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../config/site';
 import { loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
 import { loadLeadOutreachIndex } from '../../../core/funnel/lead-outreach-index.js';
-import { formatMoney, readLedger, summarizeLedger } from '../../../core/finance/ledger.js';
 
 const index = loadPaidIntakeIndex();
 const leadIndex = loadLeadOutreachIndex();
-const financeOverview = summarizeLedger(readLedger());
 const stageCounts = index.records.reduce((acc, record) => {
   const key = record.stageSummary?.key || 'unknown';
   acc[key] = (acc[key] || 0) + 1;
@@ -66,7 +64,7 @@ const stageLabels = {
         <div>
           <p class="eyebrow">内部运营</p>
           <h1>后台总览</h1>
-          <p class="lede">在一个页面里同时看售前线索、项目推进、资金情况和当前阻塞，先知道今天该做什么。</p>
+          <p class="lede">先看今天该推进哪些线索、哪些项目卡住了，再决定先处理哪一条线。</p>
         </div>
         <div class="admin-count">
           <strong>{index.counts.total}</strong>
@@ -100,24 +98,13 @@ const stageLabels = {
           <strong>{leadIndex.counts.followUpOverdue || 0}</strong>
           <p>还有 {leadIndex.counts.repliedNeedsReview || 0} 条已回复线索等待人工处理。</p>
         </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">利润脉搏</span>
-          <strong>{financeOverview.profit > 0 ? '健康' : '留意'}</strong>
-          <p>当前净额 {formatMoney(financeOverview.profit || 0)}，共记录 {financeOverview.eventCount || 0} 条财务事件。</p>
-        </article>
       </div>
 
       <div class="admin-overview-hero">
         <section class="admin-overview-card admin-overview-primary">
-          <span class="eyebrow">业务脉搏</span>
+          <span class="eyebrow">今日视角</span>
           <h2>先看全局，再决定先推哪一条线。</h2>
-          <p class="micro">这个页面先回答三件事：钱的状态如何、哪些项目卡住了、哪些线索最值得今天先跟进。</p>
-          <div class="admin-finance-metrics">
-            <div><span>收入</span><strong>{formatMoney(financeOverview.revenue || 0)}</strong></div>
-            <div><span>成本</span><strong>{formatMoney(financeOverview.cost || 0)}</strong></div>
-            <div><span>利润</span><strong>{formatMoney(financeOverview.profit || 0)}</strong></div>
-            <div><span>ROI</span><strong>{financeOverview.roi == null ? 'N/A' : `${(financeOverview.roi * 100).toFixed(1)}%`}</strong></div>
-          </div>
+          <p class="micro">这个页面只回答三件事：今天先跟进哪些线索、哪些项目需要人工推进、哪些设计或 DNS 阻塞需要排队处理。</p>
         </section>
 
         <section class="admin-overview-card">
@@ -154,7 +141,7 @@ const stageLabels = {
             <a class="button secondary" href="/admin/settings">打开系统设置</a>
           </div>
           <div class="admin-note-stack">
-            <p class="micro">用 <strong>线索</strong> 看 demo / outreach，用 <strong>项目</strong> 盯正式交付，用 <strong>队列</strong> 决定先做什么，用 <strong>财务</strong> 判断这条业务线是否健康。</p>
+            <p class="micro">用 <strong>线索</strong> 看 demo / outreach，用 <strong>项目</strong> 盯正式交付，用 <strong>队列</strong> 决定先做什么；财务单独留在财务页看。</p>
           </div>
         </section>
       </div>

@@ -31,6 +31,7 @@
 - `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
 - fresh lead 从 outreach 到 paid 真闭环
 - admin 后台改成中文暖纸工作台，`/admin/leads` 只看售前线索，已成交客户统一去 `/admin/intakes`，并已完成 production 页面命中验证
+- admin 财务信息已经彻底收口到 `/admin/finance`，其他 tab 不再混入 ROI / 利润 / 收入 / 成本
 
 ### IN PROGRESS
 
