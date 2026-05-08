@@ -66,10 +66,20 @@ export function buildRevisionWorkflowDispatch(payload = {}) {
 
 export function buildOutreachProviderWorkflowDispatch(payload = {}) {
   const provider = String(payload.provider || '').trim().toLowerCase();
-  const clientSlug = String(payload.client_slug || payload.clientSlug || '').trim();
   const missing = [];
   if (!provider) missing.push('provider');
-  if (!clientSlug) missing.push('client_slug');
+  const clientSlug = String(payload.client_slug || payload.clientSlug || '').trim();
+  const leadEmail = String(
+    payload.lead_email
+    || payload.leadEmail
+    || payload.email
+    || payload.event?.leadEmail
+    || payload.event?.lead_email
+    || payload.event?.sender
+    || payload.event?.from
+    || '',
+  ).trim().toLowerCase();
+  if (!clientSlug && !leadEmail) missing.push('client_slug_or_lead_email');
 
   return {
     ok: missing.length === 0,
@@ -80,7 +90,7 @@ export function buildOutreachProviderWorkflowDispatch(payload = {}) {
       client_slug: clientSlug,
       send_discord: 'true',
       dry_run: String(String(payload.dry_run || '').toLowerCase() === 'true'),
-      dedupe_key: String(payload.dedupe_key || `${provider}-${clientSlug}-${payload.event?.timestamp || payload.event?.lastEventAt || Date.now()}`),
+      dedupe_key: String(payload.dedupe_key || `${provider}-${clientSlug || leadEmail || 'unknown'}-${payload.event?.timestamp || payload.event?.lastEventAt || Date.now()}`),
       payload: JSON.stringify(payload),
     },
   };

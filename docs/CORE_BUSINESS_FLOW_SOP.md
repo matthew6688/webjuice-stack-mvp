@@ -148,8 +148,7 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
       - `provider / sourceSystem / externalCampaignId / externalLeadId / externalMessageId / externalThreadUrl`
   - 当前**还没有完全接好的状态**：
     - external provider live webhook ingest（Instantly / Smartlead）
-    - Agentic Inbox 侧真正自动 POST 到 provider event 入口
-    - lead-level notes（人工 follow-up 备注、通话结论、客户要求、下一次跟进约定）
+    - `opened / clicked / unsubscribed / spam complaint`
   - 当前已支持的人工售前记忆：
     - `/admin/leads` 可提交 lead note
     - 可选填写 `next follow-up due`
@@ -160,11 +159,14 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
   - 自动状态切换说明：
     - `follow-up due` 在收到 `replied / bounced / paid` 之后会自动让位给更高优先级状态
     - 如果人工在外部邮箱完成跟进，但没有 provider event 回流，admin 不会自动知道，仍需手动补 note 或 event
+    - Agentic Inbox 现在的自动回流目标是：
+      - 收到 inbound reply -> `replied`
+      - operator/new outbound send -> `sent` + `nextFollowUpDue`
+      - provider 事件通过 unique lead email 自动匹配 `clientSlug`
   - 后续方向：
     - 现在 `/admin/leads` 已经切到 Phase 1 lead truth source
     - 后面继续补：
       - social/contact person 字段
-      - provider webhook 自动回流
       - reply matching / paid handoff 更强约束
     - 具体 schema 和 Phase 1/2/3 见：
       - `docs/LEAD_PROFILE_SCHEMA.md`
@@ -220,6 +222,15 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
       - `clients/<client>/outreach/email/*.json`
       - `data/cases/*/*/timeline.jsonl`（如存在 case）
       - `website-leads` forum（如存在 workspace）
+  - Agentic Inbox 运行配置：
+    - worker: `agentic-inbox-profitslocal`
+    - `PROFITSLOCAL_OUTREACH_WEBHOOK_URL=https://profitslocal.com/api/outreach-provider-event`
+    - `PROFITSLOCAL_OUTREACH_FOLLOW_UP_DAYS=3`
+    - `PROFITSLOCAL_AGENTIC_INBOX_URL=https://mail.profitslocal.com`
+    - `PROFITSLOCAL_OUTREACH_WEBHOOK_SECRET` 作为独立 worker secret
+  - 当前 deploy 证据：
+    - version: `d40fd7ca-5a8d-4a04-b050-7271ce0ae8ed`
+    - 记录文件：`data/qa/agentic-inbox-webhook-deploy-summary.json`
 
 当前 milestone 真相源：
 

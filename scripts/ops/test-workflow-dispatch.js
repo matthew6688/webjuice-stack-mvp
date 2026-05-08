@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { buildApprovalWorkflowDispatch, buildRevisionWorkflowDispatch } from '../../core/ops/workflow-dispatch.js';
+import { buildApprovalWorkflowDispatch, buildRevisionWorkflowDispatch, buildOutreachProviderWorkflowDispatch } from '../../core/ops/workflow-dispatch.js';
 
 const approval = buildApprovalWorkflowDispatch({
   order_id: 'cs_test_approval_001',
@@ -24,6 +24,15 @@ const revision = buildRevisionWorkflowDispatch({
   submitted_at: '2026-05-07T18:00:00.000Z',
 });
 
+const outreach = buildOutreachProviderWorkflowDispatch({
+  provider: 'agentic-email',
+  lead_email: 'owner@example.com',
+  event: {
+    status: 'replied',
+    timestamp: '2026-05-08T19:00:00.000Z',
+  },
+});
+
 const assertions = {
   approvalOk: approval.ok === true,
   approvalWorkflowCorrect: approval.workflow === 'publish-approved.yml',
@@ -37,6 +46,10 @@ const assertions = {
   revisionAutoRunAgentDisabled: revision.inputs.auto_run_agent === 'false',
   revisionPayloadPreserved: JSON.parse(revision.inputs.payload).requested_changes.includes('hero'),
   revisionDedupeKeyIncludesOrder: revision.inputs.dedupe_key.startsWith('cs_test_revision_001-'),
+  outreachOk: outreach.ok === true,
+  outreachWorkflowCorrect: outreach.workflow === 'sync-outreach-provider-event.yml',
+  outreachNoClientSlugRequired: outreach.missing.length === 0,
+  outreachDedupeUsesLeadEmail: outreach.inputs.dedupe_key.includes('owner@example.com'),
 };
 
 const failed = Object.entries(assertions).filter(([, value]) => value !== true).map(([key]) => key);
@@ -47,6 +60,7 @@ console.log(JSON.stringify({
   failed,
   approval,
   revision,
+  outreach,
 }, null, 2));
 
 if (failed.length) process.exit(1);

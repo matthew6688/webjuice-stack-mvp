@@ -18,7 +18,7 @@ const request = new Request('https://profitslocal.com/api/outreach-provider-even
   },
   body: JSON.stringify({
     provider: 'agentic-email',
-    client_slug: 'entrypoint-smoke',
+    lead_email: 'entrypoint@example.com',
     event: {
       status: 'replied',
       timestamp: '2026-05-08T14:30:00.000Z',

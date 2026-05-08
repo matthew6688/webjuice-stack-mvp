@@ -1,0 +1,52 @@
+{
+  "date": "2026-05-08",
+  "worker": "agentic-inbox-profitslocal",
+  "deploy": {
+    "status": "success",
+    "versionId": "d40fd7ca-5a8d-4a04-b050-7271ce0ae8ed",
+    "message": "Enable ProfitsLocal outreach webhook callbacks"
+  },
+  "runtimeConfig": {
+    "domains": "profitslocal.com",
+    "emailAddresses": [
+      "hi@profitslocal.com"
+    ],
+    "webhookUrl": "https://profitslocal.com/api/outreach-provider-event",
+    "followUpDays": "3",
+    "agenticInboxUrl": "https://mail.profitslocal.com"
+  },
+  "secrets": [
+    "POLICY_AUD",
+    "TEAM_DOMAIN",
+    "PROFITSLOCAL_OUTREACH_WEBHOOK_SECRET"
+  ],
+  "verification": {
+    "local": [
+      "npm run typecheck",
+      "npm run build",
+      "npm run ops:test-workflow-dispatch",
+      "npm run funnel:test-outreach-provider-event",
+      "npm run ops:test-outreach-provider-entrypoint",
+      "npm run build"
+    ],
+    "production": [
+      "wrangler secret put PROFITSLOCAL_OUTREACH_WEBHOOK_SECRET --name agentic-inbox-profitslocal",
+      "wrangler deploy --name agentic-inbox-profitslocal --keep-vars true --message \"Enable ProfitsLocal outreach webhook callbacks\"",
+      "wrangler deployments list --name agentic-inbox-profitslocal --json",
+      "wrangler secret list --name agentic-inbox-profitslocal",
+      "curl -I https://mail.profitslocal.com"
+    ]
+  },
+  "boundary": {
+    "verified": [
+      "production worker now includes automatic provider callback code",
+      "production worker has webhook secret configured",
+      "mail.profitslocal.com still sits behind Cloudflare Access",
+      "main profitslocal endpoint and workflow can accept no-slug provider events keyed by lead email"
+    ],
+    "notYetVerified": [
+      "a real inbound or operator-send event originating from the production Agentic Inbox UI",
+      "end-to-end writeback from the live inbox into admin/forum without manual simulation"
+    ]
+  }
+}

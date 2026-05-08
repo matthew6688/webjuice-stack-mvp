@@ -3,23 +3,56 @@ import path from 'path';
 import { artifactTimestamp } from '../time.js';
 import { normalizeOutreachArtifactState } from './outreach-provider-state.js';
 import { buildCaseReference, recordCaseNotification } from '../cases/case-file.js';
+import { loadLeadRegistry, resolveLeadByEmail } from './lead-registry.js';
 import { updateForumWorkspaceStage } from './discord-workspace.js';
 import { buildDiscordMessage, sendDiscordChannelMessage } from './discord.js';
 
 export async function syncOutreachProviderEvent(payload, options = {}) {
   const provider = String(payload.provider || 'agentic-email').toLowerCase();
-  const clientSlug = String(payload.client_slug || payload.clientSlug || '').trim();
+  const explicitClientSlug = String(payload.client_slug || payload.clientSlug || '').trim();
+  const event = payload.event && typeof payload.event === 'object' ? payload.event : payload;
+  const leadEmail = String(
+    payload.lead_email
+    || payload.leadEmail
+    || payload.email
+    || event.leadEmail
+    || event.lead_email
+    || event.sender
+    || event.from
+    || '',
+  ).trim().toLowerCase();
+
+  let clientSlug = explicitClientSlug;
+  let leadMatch = { ok: false, reason: explicitClientSlug ? 'explicit_client_slug' : 'missing_lookup', match: null, candidates: [] };
+  if (!clientSlug && leadEmail) {
+    const registry = loadLeadRegistry({
+      clientsRoot: options.clientsRoot || 'clients',
+      casesRoot: options.casesDir || 'data/cases',
+      paidIntakesRoot: options.paidIntakesRoot || 'data/paid-intakes',
+    });
+    leadMatch = resolveLeadByEmail(registry, leadEmail);
+    if (leadMatch.ok && leadMatch.match?.clientSlug) {
+      clientSlug = leadMatch.match.clientSlug;
+    }
+  }
+
   if (!clientSlug) {
-    return { ok: false, error: 'client_slug is required' };
+    return {
+      ok: true,
+      skipped: true,
+      reason: leadMatch.reason || 'client_not_resolved',
+      provider,
+      leadEmail,
+      candidates: leadMatch.candidates?.map((candidate) => candidate.clientSlug) || [],
+    };
   }
 
   const artifactPath = resolveArtifactPath(clientSlug, payload, options);
   if (!artifactPath) {
-    return { ok: false, error: `No outreach email artifact found for ${clientSlug}` };
+    return { ok: true, skipped: true, reason: 'artifact_not_found', provider, clientSlug, leadEmail };
   }
 
   const artifact = readJson(artifactPath);
-  const event = payload.event && typeof payload.event === 'object' ? payload.event : payload;
   const leadWorkspace = normalizeLeadWorkspace(payload.lead_workspace || payload.leadWorkspace || artifact.leadWorkspace || null);
   const nextSendResult = buildUpdatedSendResult({ artifact, provider, event });
   const nextArtifact = {
@@ -116,9 +149,11 @@ export async function syncOutreachProviderEvent(payload, options = {}) {
     ok: true,
     provider,
     clientSlug,
+    leadEmail,
     artifactPath,
     outreachState,
     leadWorkspace,
+    leadMatch,
     caseSync,
     forumSync,
   };
@@ -126,6 +161,14 @@ export async function syncOutreachProviderEvent(payload, options = {}) {
 
 function buildUpdatedSendResult({ artifact, provider, event }) {
   const current = artifact.sendResult && typeof artifact.sendResult === 'object' ? artifact.sendResult : {};
+  const hasReplyState = Object.prototype.hasOwnProperty.call(event, 'replyState') || Object.prototype.hasOwnProperty.call(event, 'reply_state');
+  const hasBounceState = Object.prototype.hasOwnProperty.call(event, 'bounceState') || Object.prototype.hasOwnProperty.call(event, 'bounce_state');
+  const nextReplyState = hasReplyState
+    ? (event.replyState || event.reply_state || '')
+    : (event.clearReplyState ? '' : (current.replyState || ''));
+  const nextBounceState = hasBounceState
+    ? (event.bounceState || event.bounce_state || '')
+    : (event.clearBounceState ? '' : (current.bounceState || ''));
   return {
     ...current,
     provider,
@@ -137,9 +180,9 @@ function buildUpdatedSendResult({ artifact, provider, event }) {
     externalLeadId: event.externalLeadId || event.leadId || event.leadEmail || current.externalLeadId || current.leadId || '',
     externalMessageId: event.externalMessageId || event.messageId || current.externalMessageId || current.messageId || '',
     externalThreadUrl: event.externalThreadUrl || event.threadUrl || event.inboxUrl || event.mailboxUrl || current.externalThreadUrl || current.threadUrl || '',
-    replyState: event.replyState || event.reply_state || current.replyState || '',
+    replyState: nextReplyState,
     nextFollowUpDue: event.nextFollowUpDue || event.next_follow_up_due || current.nextFollowUpDue || '',
-    bounceState: event.bounceState || event.bounce_state || current.bounceState || '',
+    bounceState: nextBounceState,
     lastEventType: event.eventType || event.event_type || event.status || current.lastEventType || '',
     lastEventAt: event.lastEventAt || event.last_event_at || event.timestamp || current.lastEventAt || '',
     replySnippet: event.replySnippet || event.reply_snippet || current.replySnippet || '',

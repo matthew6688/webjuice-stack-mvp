@@ -55,7 +55,6 @@ try {
 
   const result = await syncOutreachProviderEvent({
     provider: 'agentic-email',
-    client_slug: 'agentic-reply-client',
     order_id: 'order-123',
     company: 'Agentic Reply Client',
     event: {
@@ -74,6 +73,8 @@ try {
   });
 
   assert.equal(result.ok, true);
+  assert.equal(result.clientSlug, 'agentic-reply-client');
+  assert.equal(result.leadMatch.ok, true);
   assert.equal(result.outreachState.replyState, 'replied');
   assert.equal(result.forumSync.ok, true);
   assert.equal(result.forumSync.stage.threadName, '[Replied] Agentic Reply Client');
@@ -92,6 +93,7 @@ try {
     ok: true,
     assertions: {
       replyState: result.outreachState.replyState,
+      clientSlug: result.clientSlug,
       forumThreadName: result.forumSync.stage.threadName,
       forumTags: result.forumSync.stage.appliedTagIds,
       timelineTypes: timeline.map((entry) => entry.type),

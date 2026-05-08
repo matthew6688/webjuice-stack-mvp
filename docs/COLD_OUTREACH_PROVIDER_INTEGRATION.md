@@ -134,6 +134,11 @@
   - 现在已经有 inbound provider event 入口：
     - `/api/outreach-provider-event`
     - workflow: `sync-outreach-provider-event.yml`
+  - 现在主站也支持：
+    - 仅靠 unique `lead_email` 自动匹配 `clientSlug`
+    - inbound reply 自动记成 `replied`
+    - operator / outbound send 自动记成 `sent`
+    - `nextFollowUpDue` 由 provider event 一起带回
   - 当前支持把 `replied / bounced / follow-up due` 类事件写回：
     - `clients/<client>/outreach/email/*.json`
     - `data/cases/*/*/timeline.jsonl`（如果已有 case）
@@ -210,7 +215,8 @@
 
 5. `agentic-email` inbound 自动来源
    - 现在已经有入口和 repo 回写链
-   - 但还缺 Agentic Inbox 侧真正自动 POST / webhook 触发配置
+   - Agentic Inbox worker 侧也已经补了自动 POST 代码
+   - 剩余工作是 production deploy 和真实回流 evidence
 
 ---
 

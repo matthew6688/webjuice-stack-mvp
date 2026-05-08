@@ -8,8 +8,8 @@ on:
         required: true
         type: string
       client_slug:
-        description: Target client slug
-        required: true
+        description: Target client slug (optional if payload includes a unique lead email)
+        required: false
         type: string
       payload:
         description: Raw provider payload JSON
@@ -82,7 +82,7 @@ jobs:
         run: |
           git config user.name "webjuice-agent"
           git config user.email "webjuice-agent@users.noreply.github.com"
-          git add "clients/${{ inputs.client_slug }}/outreach/email" || true
+          git add clients || true
           git add data/cases || true
           if git diff --cached --quiet; then
             echo "No outreach state changes to commit."

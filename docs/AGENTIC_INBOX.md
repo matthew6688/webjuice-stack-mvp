@@ -1,6 +1,6 @@
 # ProfitsLocal Agentic Inbox
 
-Updated: 2026-05-07
+Updated: 2026-05-08
 
 This document records the ProfitsLocal email inbox running on Cloudflare Agentic Inbox.
 
@@ -28,6 +28,46 @@ ProfitsLocal 的客户可见发件身份应保持统一专业。
 相关字段设计见：
 
 - `docs/LEAD_PROFILE_SCHEMA.md`
+
+## Provider Event 回流
+
+Agentic Inbox 现在承担两类 cold outreach provider event：
+
+1. `replied`
+   - 入口：收到新的 inbound 邮件
+   - 行为：自动 POST 到 `https://profitslocal.com/api/outreach-provider-event`
+   - 目标：把 lead 状态提升成 `replied`，并把 thread URL / message id / snippet 回写到：
+     - `clients/<client>/outreach/email/*.json`
+     - `data/cases/*/*/timeline.jsonl`（如已有 case）
+     - `website-leads` forum（如已有 workspace）
+     - `/admin/leads`
+
+2. `sent`
+   - 入口：
+     - operator 在 Agentic Inbox 里发送新的 cold outreach 邮件
+     - operator 在线程里真正点了 reply
+   - 行为：自动 POST 到同一个 provider event 入口
+   - 目标：把 lead 状态切到 `outreach sent`，并写入：
+     - `externalThreadUrl`
+     - `externalMessageId`
+     - `nextFollowUpDue`
+
+### 当前 follow-up 规则
+
+- 默认 follow-up due：发送后 `3` 天
+- 当前 runtime 配置：
+  - `PROFITSLOCAL_OUTREACH_WEBHOOK_URL=https://profitslocal.com/api/outreach-provider-event`
+  - `PROFITSLOCAL_OUTREACH_FOLLOW_UP_DAYS=3`
+  - `PROFITSLOCAL_AGENTIC_INBOX_URL=https://mail.profitslocal.com`
+- 密钥：
+  - `PROFITSLOCAL_OUTREACH_WEBHOOK_SECRET`（Cloudflare Worker secret）
+
+### 当前边界
+
+- `replied`：已支持自动回流
+- `sent`：已支持自动回流
+- `follow-up due`：由我们自己的业务层根据 `nextFollowUpDue` 计算
+- `bounced / opened / clicked / unsubscribed / spam complaint`：暂未由 Agentic Inbox 原生回流，已记入 TODO
 
 ## Production Setup
 

@@ -34,10 +34,10 @@
 - `B4` Open Design pipeline 状态映射到我们的项目状态
 - `C2` 售前 lead / outreach / forum 流转继续补齐
 - `C3` lead truth source / lead profile schema（Phase 1 已落地，后续字段与自动回流继续补）
+- `D2.2` Agentic Inbox 自动 provider event 回流上线验证
 
 ### PENDING
 
-- Agentic Inbox 侧真正自动 POST / webhook 配置
 - fresh lead 从 outreach 到 paid 真闭环
 - `/admin/leads` replied / follow-up due / paid handoff 再细化
 
@@ -631,7 +631,6 @@ lead / intake
   - `send-cold-email --provider agentic-email` 会产出 provider-aware artifact，并落 `externalThreadUrl`
   - `/api/outreach-provider-event` + `sync-outreach-provider-event.yml` 已能把 `agentic-email` reply 事件回写到 artifact / case / forum / admin
 - 仍未完成：
-  - Agentic Inbox 侧真正自动 webhook/POST 配置
   - `follow-up due` 的 saved views / queue 细化
   - `opened / clicked / unsubscribed / spam complaint` 事件来源与回流
 - 已补齐：
@@ -639,6 +638,30 @@ lead / intake
   - notes 回写到 `/admin/leads`
   - notes 回写到 `website-leads` forum（若 workspace 已存在）
   - notes 回写到 paid case timeline（若 case 已存在）
+
+## D2.2 Agentic Inbox 自动 provider event 回流上线验证
+
+- 状态：`IN PROGRESS`
+- 目标：
+  - 把 Agentic Inbox 的真实 operator / inbound 行为自动回流到：
+    - `/api/outreach-provider-event`
+    - `sync-outreach-provider-event.yml`
+    - `/admin/leads`
+    - `website-leads` forum
+- 已完成：
+  - worker 代码已支持：
+    - inbound reply -> `replied`
+    - new outbound send -> `sent`
+    - operator reply -> `sent` + `nextFollowUpDue`
+  - 主站 provider event 入口已支持：
+    - 仅靠 unique lead email 自动匹配 `clientSlug`
+    - 没有 slug 时不再直接 hard fail
+  - production worker 已部署：
+    - worker: `agentic-inbox-profitslocal`
+    - version: `d40fd7ca-5a8d-4a04-b050-7271ce0ae8ed`
+    - secret: `PROFITSLOCAL_OUTREACH_WEBHOOK_SECRET`
+- 剩余 hard evidence：
+  - 至少一条真实回流事件被主站接收并写回 artifact / case / admin / forum
 
 ---
 
