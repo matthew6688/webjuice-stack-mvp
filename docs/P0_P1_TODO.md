@@ -552,6 +552,16 @@ lead / intake
 6. `E3 + E4` milestone / Open Design 状态接进 admin
 7. `D3` agentic email 如何回流 case / forum / admin
 
+## D2.1 Agentic Inbox 先作为第一类 cold outreach provider 接入
+
+- 状态：`DONE`
+- 已完成：
+  - `/admin/settings` 明确标注 `Agentic Inbox = current live operator path`
+  - `/admin/leads` 明确标注当前 live path
+  - `send-cold-email --provider agentic-email` 会产出 provider-aware artifact，并落 `externalThreadUrl`
+- 仍未完成：
+  - inbound reply / follow-up / bounced 的自动 webhook 回流
+
 ---
 
 # 当前一句话判断

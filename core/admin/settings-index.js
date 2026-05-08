@@ -127,23 +127,35 @@ function buildTransactionalEmailSection(env) {
 
 function buildColdOutreachSection(env) {
   return makeSection('Cold outreach', 'Provider-agnostic outreach layer; text-first, webhook-friendly.', [
+    makeItem('Current live outreach path', 'agentic-email-manual', {
+      required: false,
+      display: 'Agentic Inbox (manual send / operator-reviewed)',
+      status: 'configured',
+      reason: 'Current recommended path for cold outreach operations before Instantly or Smartlead are wired live.',
+    }),
+    makeItem('Agentic inbox URL', env.AGENTIC_INBOX_URL || 'https://mail.profitslocal.com', {
+      required: false,
+      display: env.AGENTIC_INBOX_URL || 'https://mail.profitslocal.com',
+      status: 'configured',
+      reason: 'Operator inbox for conversational email, drafts, and manual cold outreach sends.',
+    }),
     makeItem('Agentic email / outreach sender', env.AGENTIC_EMAIL_API_KEY || env.AGENTIC_EMAIL_TOKEN || '', {
       required: false,
       display: maskSecret(env.AGENTIC_EMAIL_API_KEY || env.AGENTIC_EMAIL_TOKEN || ''),
-      status: env.AGENTIC_EMAIL_API_KEY || env.AGENTIC_EMAIL_TOKEN ? 'configured' : 'optional',
-      reason: 'Future conversational or cold outreach sender.',
+      status: env.AGENTIC_EMAIL_API_KEY || env.AGENTIC_EMAIL_TOKEN ? 'configured' : 'partial',
+      reason: 'Cloudflare Agentic Inbox / future API-backed outreach sender credential.',
     }),
     makeItem('Instantly API token', env.INSTANTLY_API_KEY || env.INSTANTLY_TOKEN || '', {
       required: false,
       display: maskSecret(env.INSTANTLY_API_KEY || env.INSTANTLY_TOKEN || ''),
-      status: env.INSTANTLY_API_KEY || env.INSTANTLY_TOKEN ? 'configured' : 'optional',
-      reason: 'Future cold outreach sender + webhook provider.',
+      status: env.INSTANTLY_API_KEY || env.INSTANTLY_TOKEN ? 'partial' : 'optional',
+      reason: 'Planned professional cold outreach sender + webhook provider.',
     }),
     makeItem('Smartlead API key', env.SMARTLEAD_API_KEY || '', {
       required: false,
       display: maskSecret(env.SMARTLEAD_API_KEY || ''),
-      status: env.SMARTLEAD_API_KEY ? 'configured' : 'optional',
-      reason: 'Future cold outreach sender + inbox workflow provider.',
+      status: env.SMARTLEAD_API_KEY ? 'partial' : 'optional',
+      reason: 'Planned professional cold outreach sender + inbox workflow provider.',
     }),
   ]);
 }

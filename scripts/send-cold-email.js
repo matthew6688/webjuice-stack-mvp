@@ -11,8 +11,8 @@ const args = parseArgs();
 const provider = String(args.provider || 'resend').toLowerCase();
 
 if (!args.client && !args.leads) {
-  console.error('Usage: node scripts/send-cold-email.js --client slug [--to you@example.com] [--provider resend|instantly|smartlead] [--dry true]');
-  console.error('   or: node scripts/send-cold-email.js --leads leads.json [--provider resend|instantly|smartlead] [--dry true]');
+  console.error('Usage: node scripts/send-cold-email.js --client slug [--to you@example.com] [--provider resend|agentic-email|instantly|smartlead] [--dry true]');
+  console.error('   or: node scripts/send-cold-email.js --leads leads.json [--provider resend|agentic-email|instantly|smartlead] [--dry true]');
   process.exit(1);
 }
 
@@ -54,6 +54,26 @@ for (const [index, message] of messages.entries()) {
 
   if (!dryRun) {
     if (!message.to) throw new Error(`Missing recipient for ${message.businessName}`);
+    if (message.provider === 'agentic-email') {
+      artifact.sendResult = {
+        status: 'draft',
+        provider: message.provider,
+        sourceSystem: 'agentic-email',
+        sentAt: '',
+        id: '',
+        externalCampaignId: '',
+        externalLeadId: '',
+        externalMessageId: '',
+        externalThreadUrl: process.env.AGENTIC_INBOX_URL || 'https://mail.profitslocal.com',
+        nextFollowUpDue: '',
+        replyState: '',
+        bounceState: '',
+        note: 'Prepared for operator review in Agentic Inbox/manual cold outreach flow. No automatic send was attempted.',
+      };
+      fs.writeFileSync(artifactPath, `${JSON.stringify(artifact, null, 2)}\n`);
+      console.log(`Prepared for Agentic Inbox/manual send: ${process.env.AGENTIC_INBOX_URL || 'https://mail.profitslocal.com'}`);
+      continue;
+    }
     if (message.provider !== 'resend') {
       throw new Error(`Live send for provider "${message.provider}" is not implemented yet. Use --dry true and hand off to the provider integration layer.`);
     }

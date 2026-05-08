@@ -49,6 +49,14 @@ export function normalizeOutreachArtifactState(artifact = {}) {
 
 export function detectProviderFromEvent(event = {}) {
   if (!event || typeof event !== 'object') return '';
+  if (
+    event.provider === 'agentic-email'
+    || event.sourceSystem === 'agentic-email'
+    || event.agenticInbox === true
+    || event.mailboxUrl
+    || event.threadUrl
+    || event.inboxUrl
+  ) return 'agentic-email';
   if (event.event_type || event.workspace || event.unibox_url) return 'instantly';
   if (event.event || event.email_campaign_id || event.email_account_id) return 'smartlead';
   return '';
@@ -94,6 +102,25 @@ function normalizeProviderEvent(provider, event) {
       externalLeadId: event.lead_id || event.lead?.email || '',
       externalMessageId: event.email?.message_id || event.reply?.message_id || '',
       externalThreadUrl: '',
+    };
+  }
+
+  if (provider === 'agentic-email') {
+    const rawStatus = String(event.status || event.eventType || event.event_type || '').toLowerCase();
+    return {
+      status: normalizeStatus(rawStatus),
+      sentAt: event.sentAt || event.sent_at || event.timestamp || '',
+      replyState: normalizeReplyState(event.replyState || event.reply_state || ''),
+      nextFollowUpDue: event.nextFollowUpDue || event.next_follow_up_due || '',
+      bounceState: normalizeBounceState(event.bounceState || event.bounce_state || ''),
+      unsubscribeState: event.unsubscribeState || event.unsubscribe_state || '',
+      lastEventType: rawStatus || String(event.eventType || event.event_type || ''),
+      lastEventAt: event.lastEventAt || event.last_event_at || event.timestamp || '',
+      replySnippet: event.replySnippet || event.reply_snippet || event.preview || '',
+      externalCampaignId: event.externalCampaignId || event.campaignId || '',
+      externalLeadId: event.externalLeadId || event.leadId || event.leadEmail || '',
+      externalMessageId: event.externalMessageId || event.messageId || '',
+      externalThreadUrl: event.externalThreadUrl || event.threadUrl || event.inboxUrl || event.mailboxUrl || '',
     };
   }
 

@@ -13,6 +13,7 @@ process.chdir(root);
 try {
   seedInstantlyRepliedClient();
   seedSmartleadBouncedClient();
+  seedAgenticEmailClient();
 
   const index = loadLeadOutreachIndex({
     clientsRoot: path.join(root, 'clients'),
@@ -22,6 +23,7 @@ try {
 
   const instantly = index.records.find((item) => item.clientSlug === 'instantly-smoke');
   const smartlead = index.records.find((item) => item.clientSlug === 'smartlead-smoke');
+  const agentic = index.records.find((item) => item.clientSlug === 'agentic-email-smoke');
 
   assert.ok(instantly, 'expected instantly record');
   assert.equal(instantly.stageKey, 'replied');
@@ -38,6 +40,12 @@ try {
   assert.equal(smartlead.outreachCampaignId, 987);
   assert.equal(smartlead.outreachLeadId, 'smartlead@example.com');
 
+  assert.ok(agentic, 'expected agentic email record');
+  assert.equal(agentic.stageKey, 'replied');
+  assert.equal(agentic.outreachProvider, 'agentic-email');
+  assert.equal(agentic.replyState, 'replied');
+  assert.equal(agentic.outreachThreadUrl, 'https://mail.profitslocal.com/thread/agentic-123');
+
   console.log(JSON.stringify({
     ok: true,
     assertions: {
@@ -52,6 +60,12 @@ try {
         provider: smartlead.outreachProvider,
         bounceState: smartlead.bounceState,
         campaignId: smartlead.outreachCampaignId,
+      },
+      agentic: {
+        stageKey: agentic.stageKey,
+        provider: agentic.outreachProvider,
+        replyState: agentic.replyState,
+        threadUrl: agentic.outreachThreadUrl,
       },
     },
   }, null, 2));
@@ -126,6 +140,42 @@ function seedSmartleadBouncedClient() {
       lead_id: 'smartlead@example.com',
       email: { message_id: 'sl-msg-001' },
       lead: { email: 'smartlead@example.com' },
+    },
+  }), 'utf8');
+}
+
+function seedAgenticEmailClient() {
+  const clientSlug = 'agentic-email-smoke';
+  const outreachDir = path.join('clients', clientSlug, 'outreach');
+  const emailDir = path.join(outreachDir, 'email');
+  fs.mkdirSync(emailDir, { recursive: true });
+  fs.writeFileSync(path.join(outreachDir, 'outreach-pack.json'), JSON.stringify({
+    clientSlug,
+    business: { name: 'Agentic Inbox Smoke' },
+    previewUrl: 'https://agentic-email-smoke-dev.pages.dev/',
+    assets: { screenshots: { desktop: 'desktop.png', mobile: 'mobile.png' }, video: 'demo.mp4' },
+    generatedAt: '2026-05-08T12:00:00.000Z',
+  }), 'utf8');
+  fs.writeFileSync(path.join(emailDir, '01-agentic.json'), JSON.stringify({
+    subject: 'Agentic Inbox Smoke: preview',
+    to: 'agentic@example.com',
+    generatedAt: '2026-05-08T12:05:00.000Z',
+    dryRun: false,
+    sendResult: {
+      status: 'sent',
+      provider: 'agentic-email',
+      sourceSystem: 'agentic-email',
+      sentAt: '2026-05-08T12:06:00.000Z',
+      id: 'agentic-send-001',
+      externalThreadUrl: 'https://mail.profitslocal.com/thread/agentic-123',
+    },
+    providerEvent: {
+      provider: 'agentic-email',
+      status: 'replied',
+      timestamp: '2026-05-08T13:15:00.000Z',
+      threadUrl: 'https://mail.profitslocal.com/thread/agentic-123',
+      replySnippet: 'Looks good, tell me pricing.',
+      leadEmail: 'agentic@example.com',
     },
   }), 'utf8');
 }

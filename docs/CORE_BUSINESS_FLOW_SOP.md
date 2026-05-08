@@ -151,6 +151,10 @@
     - secret 只显示脱敏值
     - 只显示“是否已配置、属于哪类依赖、会影响哪段业务”
     - 不把项目级内容和系统级配置混在一起
+  - 当前 cold outreach 策略：
+    - `Agentic Inbox = current live operator path`
+    - `Instantly / Smartlead = planned`
+    - `Resend = transactional only`
 
 当前 milestone 真相源：
 

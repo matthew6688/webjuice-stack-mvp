@@ -72,7 +72,8 @@ const settings = loadAdminSettingsIndex();
           </div>
           <ul class="admin-list">
             <li><strong>Secrets are masked</strong><span>We only show enough to confirm presence and identify which credential is in play.</span></li>
-            <li><strong>Transactional vs outreach</strong><span>Resend stays transactional. Cold outreach can later swap to Instantly, Smartlead, or agentic inbox without changing the admin truth model.</span></li>
+            <li><strong>Transactional vs outreach</strong><span>Resend stays transactional. Cold outreach currently runs through Agentic Inbox as a manual/operator-reviewed path.</span></li>
+            <li><strong>Future switch path</strong><span>Instantly and Smartlead stay planned until webhook ingest and reply-state sync are live.</span></li>
             <li><strong>Operator truth source</strong><span>This page is for runtime settings, not customer content. Project-specific state still lives in cases, forums, and artifacts.</span></li>
           </ul>
         </section>

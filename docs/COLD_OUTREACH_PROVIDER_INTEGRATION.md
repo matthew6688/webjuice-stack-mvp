@@ -34,7 +34,8 @@
   - 跟进 prospect 回复
 - 当前状态：
   - 发送 artifact、admin 状态、forum 流转已经存在
-  - live send 目前只真正实现了 `Resend`
+  - 当前推荐 live 路径是 `Agentic Inbox` 的人工发送 / operator review
+  - `Resend` 只用于 transactional，不作为常规 cold outreach 真相源
   - 但内部状态已经开始按 provider-agnostic 结构归一
 - 推荐风格：
   - plain text / 简洁文本为主
@@ -124,6 +125,21 @@
   - 有没有 replied
   - 有没有 bounced
   - 有没有 provider thread / campaign / lead id
+
+当前建议的 provider 策略：
+
+- `agentic-email`
+  - 当前 live operator 路径
+  - 负责 conversational inbox、AI draft、人工发送 cold outreach
+- `instantly`
+  - planned
+  - 等 webhook ingest、reply-state 回流、campaign/lead 自动建档
+- `smartlead`
+  - planned
+  - 等 webhook ingest、reply-state 回流、campaign/lead 自动建档
+- `resend`
+  - transactional only
+  - 不作为常规 cold outreach 发送真相源
 
 ---
 
