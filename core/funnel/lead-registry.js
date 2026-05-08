@@ -70,6 +70,7 @@ function ingestClientArtifacts(records, clientsRoot) {
     const survey = readJsonIfExists(path.join(clientDir, 'intake', 'website-survey.json')) || {};
     const evidence = readJsonIfExists(path.join(clientDir, 'evidence', 'evidence.json')) || {};
     const content = readJsonIfExists(path.join(clientDir, 'content.restaurant.json')) || {};
+    const conceptManifest = readJsonIfExists(path.join(clientDir, 'concept', 'open-design', 'concept-manifest.json')) || {};
 
     const emailDir = path.join(clientDir, 'outreach', 'email');
     const emailArtifacts = readEmailArtifacts(emailDir);
@@ -109,6 +110,9 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.outreachPackPath = fs.existsSync(path.join(clientDir, 'outreach', 'outreach-pack.json')) ? path.join(clientDir, 'outreach', 'outreach-pack.json') : '';
     record.outreachMarkdownPath = fs.existsSync(path.join(clientDir, 'outreach', 'outreach-pack.md')) ? path.join(clientDir, 'outreach', 'outreach-pack.md') : '';
     record.outreachEmailDir = fs.existsSync(emailDir) ? emailDir : '';
+    record.openDesignProjectId = firstNonEmpty(record.openDesignProjectId, conceptManifest.projectId);
+    record.openDesignLastRunId = firstNonEmpty(record.openDesignLastRunId, conceptManifest.lastRunId);
+    record.openDesignStatus = firstNonEmpty(record.openDesignStatus, conceptManifest.status);
     record.proofPoints = Array.isArray(outreachPack?.emailBrief?.proofPoints) ? outreachPack.emailBrief.proofPoints.length : record.proofPoints || 0;
     record.assetsReady = Boolean(outreachPack?.assets?.screenshots?.desktop && outreachPack?.assets?.screenshots?.mobile && outreachPack?.assets?.video);
     record.auditVerdict = firstNonEmpty(record.auditVerdict, outreachPack.audit?.verdict);
@@ -155,6 +159,7 @@ function ingestCaseFiles(records, casesRoot) {
         record.paymentStatus = firstNonEmpty(record.paymentStatus, caseFile.order?.paymentStatus);
         record.orderId = firstNonEmpty(record.orderId, caseFile.order?.id);
         record.orderTier = firstNonEmpty(record.orderTier, caseFile.order?.tier);
+        record.repo = firstNonEmpty(record.repo, caseFile.repo);
         record.amount = caseFile.order?.amount ?? record.amount ?? null;
         record.currency = firstNonEmpty(record.currency, caseFile.order?.currency, 'USD');
         record.salesThreadId = firstNonEmpty(record.salesThreadId, caseFile.discord?.salesThreadId);
@@ -162,6 +167,7 @@ function ingestCaseFiles(records, casesRoot) {
         record.salesWorkspaceName = firstNonEmpty(record.salesWorkspaceName, caseFile.discord?.salesWorkspaceName);
         record.salesWorkspaceTagIds = caseFile.discord?.salesWorkspaceTagIds || record.salesWorkspaceTagIds || [];
         record.websiteTaskThreadId = firstNonEmpty(record.websiteTaskThreadId, caseFile.discord?.websiteTaskThreadId);
+        record.discordThreadUrl = firstNonEmpty(record.discordThreadUrl, caseFile.discord?.lastThreadUrl, caseFile.discord?.lastMessageUrl);
         record.previewUrl = firstNonEmpty(record.previewUrl, caseFile.previewUrl);
         record.projectCaseId = firstNonEmpty(record.projectCaseId, caseFile.caseId);
       }
@@ -226,6 +232,8 @@ function finalizeLeadRecord(input) {
   record.followUpDue = firstNonEmpty(record.followUpDue, record.nextFollowUpDue);
   record.provider = firstNonEmpty(record.provider, record.outreachProvider);
   record.externalThreadUrl = firstNonEmpty(record.externalThreadUrl, record.outreachThreadUrl);
+  record.repoUrl = record.repo && record.repo !== 'unknown' ? `https://github.com/${record.repo}` : '';
+  record.projectAdminUrl = record.orderId ? `/admin/intakes/${record.clientSlug}/${record.orderId}` : '';
   record.status = deriveLeadStatus(record);
   return record;
 }
@@ -308,6 +316,10 @@ function ensureRecord(records, clientSlug) {
       niche: '',
       status: '',
       previewUrl: '',
+      repo: '',
+      repoUrl: '',
+      projectAdminUrl: '',
+      discordThreadUrl: '',
       address: '',
       phone: '',
       email: '',
@@ -365,6 +377,9 @@ function ensureRecord(records, clientSlug) {
       outreachEmailDir: '',
       websiteSurveyPath: '',
       contentPath: '',
+      openDesignProjectId: '',
+      openDesignLastRunId: '',
+      openDesignStatus: '',
       casePath: '',
       caseStatus: '',
       paidIntakePath: '',

@@ -7,50 +7,50 @@ const index = loadPaidIntakeIndex();
 const queueGroups = [
   {
     key: 'revision_requested',
-    label: 'Revision now',
+    label: '先处理修订',
     records: index.records.filter((record) => record.status === 'revision_requested'),
   },
   {
     key: 'review_ready',
-    label: 'Send customer review',
+    label: '发客户 review',
     records: index.records.filter((record) => record.stageSummary?.key === 'review_ready'),
   },
   {
     key: 'waiting_dns',
-    label: 'Waiting DNS',
+    label: '等待 DNS',
     records: index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns'),
   },
   {
     key: 'missing_open_design',
-    label: 'Missing Open Design',
+    label: '缺少 Open Design',
     records: index.records.filter((record) => !record.artifactSummary?.openDesignBound),
   },
   {
     key: 'od_needs_input',
-    label: 'OD needs input',
+    label: 'OD 需要输入',
     records: index.records.filter((record) => record.artifactSummary?.openDesignPipelineState === 'needs_input'),
   },
   {
     key: 'od_failed',
-    label: 'OD failed',
+    label: 'OD 失败',
     records: index.records.filter((record) => record.artifactSummary?.openDesignPipelineState === 'failed'),
   },
   {
     key: 'qa_blocked',
-    label: 'QA blocked',
+    label: 'QA 阻塞',
     records: index.records.filter((record) => !record.artifactSummary?.deliveryQaReady),
   },
 ];
 const milestoneGroups = [
-  ['website_ready', 'Website ready'],
-  ['open_design_succeeded', 'Open Design succeeded'],
-  ['open_design_needs_input', 'OD needs input'],
-  ['open_design_failed', 'OD failed'],
-  ['review_sent', 'Review sent'],
-  ['revision_requested', 'Revision requested'],
-  ['live', 'Live'],
-  ['domain_waiting_customer', 'Waiting customer DNS'],
-  ['domain_connected', 'Domain connected'],
+  ['website_ready', '网站资料就绪'],
+  ['open_design_succeeded', 'Open Design 成功'],
+  ['open_design_needs_input', 'OD 需要输入'],
+  ['open_design_failed', 'OD 失败'],
+  ['review_sent', '已发 review'],
+  ['revision_requested', '客户要求修订'],
+  ['live', '已上线'],
+  ['domain_waiting_customer', '等待客户 DNS'],
+  ['domain_connected', '域名已连接'],
 ].map(([key, label]) => ({
   key,
   label,
@@ -58,32 +58,32 @@ const milestoneGroups = [
 }));
 ---
 
-<Layout title={`Admin queue - ${siteConfig.name}`} description="Action queue for ProfitsLocal ops." active="queue">
+<Layout title={`行动队列 - ${siteConfig.name}`} description="ProfitsLocal 当前优先动作面板。" active="queue">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">Internal ops</p>
-          <h1>Action queue</h1>
-          <p class="lede">This page is for triage. Open it when you want the next action grouped by urgency rather than by client.</p>
+          <p class="eyebrow">内部运营</p>
+          <h1>行动队列</h1>
+          <p class="lede">当你想先决定“现在先做什么”而不是“先看哪个客户”时，就看这个页面。</p>
         </div>
         <div class="admin-count">
           <strong>{queueGroups.reduce((sum, group) => sum + group.records.length, 0)}</strong>
-          <span>Action items</span>
+          <span>待处理项</span>
         </div>
       </div>
 
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">Queue mode</span>
-          <strong>Triage</strong>
-          <p>Use this surface when you want to move the next project without scanning the full intake table.</p>
+          <span class="admin-summary-label">队列模式</span>
+          <strong>先分流再执行</strong>
+          <p>当你不想先翻完整项目表，而是只想知道“现在先做什么”，就看这个页面。</p>
         </article>
         {queueGroups.map((group) => (
           <article class="admin-summary-tile">
             <span class="admin-summary-label">{group.label}</span>
             <strong>{group.records.length}</strong>
-            <p>{group.records[0]?.nextActionSummary?.label || 'No active item in this bucket right now.'}</p>
+            <p>{group.records[0]?.nextActionSummary?.label || '这个分组目前没有活动项。'}</p>
           </article>
         ))}
       </div>
@@ -111,7 +111,7 @@ const milestoneGroups = [
                   <span>{record.nextActionSummary?.label || record.status}</span>
                   <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.orderId}</code>
                 </a>
-              )) : <p class="micro">No project in this bucket.</p>}
+              )) : <p class="micro">这个分组里暂时没有项目。</p>}
             </div>
           </section>
         ))}

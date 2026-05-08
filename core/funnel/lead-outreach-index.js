@@ -2,18 +2,18 @@ import { loadLeadRegistry } from './lead-registry.js';
 
 export const LEAD_ADMIN_VIEWS = {
   all: { label: '全部 leads' },
-  demo_ready: { label: 'Demo ready' },
-  draft_ready: { label: 'Draft ready' },
-  outreach_sent: { label: 'Outreach sent' },
-  follow_up_due: { label: 'Follow-up due' },
-  follow_up_overdue: { label: 'Follow-up overdue' },
-  replied: { label: 'Replied' },
-  replied_unprocessed: { label: 'Replied needs review' },
-  bounced: { label: 'Bounced' },
-  paid: { label: 'Paid' },
-  paid_handoff_pending: { label: 'Paid handoff pending' },
-  missing_assets: { label: 'Missing assets' },
-  missing_email: { label: 'Missing outreach draft' },
+  demo_ready: { label: 'Demo 就绪' },
+  draft_ready: { label: '草稿就绪' },
+  outreach_sent: { label: '已发送触达' },
+  follow_up_due: { label: '待跟进' },
+  follow_up_overdue: { label: '跟进已过期' },
+  replied: { label: '已回复' },
+  replied_unprocessed: { label: '已回复待处理' },
+  bounced: { label: '退信' },
+  paid: { label: '已付款' },
+  paid_handoff_pending: { label: '付款待交接' },
+  missing_assets: { label: '缺少素材' },
+  missing_email: { label: '缺少 outreach 草稿' },
 };
 
 export function loadLeadOutreachIndex(options = {}) {
@@ -21,10 +21,16 @@ export function loadLeadOutreachIndex(options = {}) {
   const list = registry.records
     .map((record) => finalizeLeadRecord(record))
     .sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
+  const prospectRecords = list.filter((record) => record.paymentStatus !== 'paid');
+  const customerRecords = list.filter((record) => record.paymentStatus === 'paid');
 
   return {
     records: list,
+    prospectRecords,
+    customerRecords,
     counts: buildCounts(list),
+    prospectCounts: buildCounts(prospectRecords),
+    customerCounts: buildCounts(customerRecords),
     updatedAt: registry.updatedAt,
   };
 }
@@ -87,16 +93,16 @@ function deriveStageKey(record) {
 function deriveStageLabel(stageKey) {
   return {
     paid: 'Paid',
-    replied: 'Replied',
-    bounced: 'Bounced',
-    follow_up_overdue: 'Follow-up Overdue',
-    follow_up_due: 'Follow-up Due',
-    outreach_sent: 'Outreach Sent',
-    draft_ready: 'Draft Ready',
-    demo_ready: 'Demo Ready',
-    building_demo: 'Building Demo',
-    lead: 'Lead',
-  }[stageKey] || 'Lead';
+    replied: '已回复',
+    bounced: '退信',
+    follow_up_overdue: '跟进已过期',
+    follow_up_due: '待跟进',
+    outreach_sent: '已发送触达',
+    draft_ready: '草稿就绪',
+    demo_ready: 'Demo 就绪',
+    building_demo: '生成 demo 中',
+    lead: '线索',
+  }[stageKey] || '线索';
 }
 
 function deriveStageTone(stageKey) {

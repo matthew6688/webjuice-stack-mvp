@@ -98,6 +98,15 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 - `/admin/queue`
 - `/admin/settings`
 
+当前 admin 的界面原则也已经固定：
+
+- 不再跟官网保持同一种 marketing 风格；
+- 用更适合长时间盯盘的浅色、低刺激、暖纸工作台风格；
+- 默认中文界面；
+- `/admin/leads` 只看售前线索；
+- `/admin/intakes` 只看已成交后的正式项目；
+- 这样线索和项目不会混在同一张后台表里。
+
 其中：
 
 - `/admin/leads`

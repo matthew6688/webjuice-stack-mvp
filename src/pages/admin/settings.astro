@@ -6,41 +6,41 @@ import { loadAdminSettingsIndex } from '../../../core/admin/settings-index.js';
 const settings = loadAdminSettingsIndex();
 ---
 
-<Layout title={`Settings admin - ${siteConfig.name}`} description="System settings and integration status for ProfitsLocal ops." active="settings">
+<Layout title={`系统设置 - ${siteConfig.name}`} description="ProfitsLocal 运行配置与集成状态面板。" active="settings">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">Internal ops</p>
-          <h1>Settings</h1>
-          <p class="lede">One place to audit third-party dependencies, channel wiring, and the important runtime settings behind the business.</p>
+          <p class="eyebrow">内部运营</p>
+          <h1>系统设置</h1>
+          <p class="lede">这里统一看第三方依赖、回调线路、密钥配置，以及业务运行真正依赖的那些开关。</p>
         </div>
         <div class="admin-count">
           <strong>{settings.counts.configured}</strong>
-          <span>Configured items</span>
+          <span>已配置项</span>
         </div>
       </div>
 
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">Coverage</span>
+          <span class="admin-summary-label">覆盖情况</span>
           <strong>{settings.counts.configured} / {settings.counts.total}</strong>
-          <p>{settings.counts.missing} required setting(s) are still missing. {settings.counts.optional} optional items are not set.</p>
+          <p>还有 {settings.counts.missing} 个必需配置缺失，{settings.counts.optional} 个可选项尚未设置。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Required missing</span>
+          <span class="admin-summary-label">必需缺失</span>
           <strong>{settings.counts.missing}</strong>
-          <p>Anything missing here can block payments, deploys, Discord routing, or customer email.</p>
+          <p>这里的缺项会直接影响支付、部署、Discord 路由或客户邮件。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Partial</span>
+          <span class="admin-summary-label">部分完成</span>
           <strong>{settings.counts.partial}</strong>
-          <p>Reserved for integrations where only part of the flow has been configured.</p>
+          <p>用来标记只配置了一半、还没有真正闭环的集成。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Optional</span>
+          <span class="admin-summary-label">可选项</span>
           <strong>{settings.counts.optional}</strong>
-          <p>Useful extras like alternate scrape providers or future outreach senders.</p>
+          <p>像备用抓取工具、后续 outreach provider 这种扩展都归在这里。</p>
         </article>
       </div>
 
@@ -48,8 +48,8 @@ const settings = loadAdminSettingsIndex();
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Blockers</span>
-              <h2>Needs config attention</h2>
+              <span class="eyebrow">阻塞</span>
+              <h2>需要优先补配置</h2>
             </div>
           </div>
           <div class="admin-urgent-list">
@@ -59,22 +59,22 @@ const settings = loadAdminSettingsIndex();
                 <span>{blocker.section}</span>
                 <code>{blocker.reason}</code>
               </article>
-            )) : <p class="micro">No required setting is missing right now.</p>}
+            )) : <p class="micro">当前没有必需配置缺失。</p>}
           </div>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Policy</span>
-              <h2>What this page is for</h2>
+              <span class="eyebrow">使用规则</span>
+              <h2>这个页面负责什么</h2>
             </div>
           </div>
           <ul class="admin-list">
-            <li><strong>Secrets are masked</strong><span>We only show enough to confirm presence and identify which credential is in play.</span></li>
-            <li><strong>Transactional vs outreach</strong><span>Resend stays transactional. Cold outreach currently runs through Agentic Inbox as a manual/operator-reviewed path.</span></li>
-            <li><strong>Future switch path</strong><span>Instantly and Smartlead stay planned until webhook ingest and reply-state sync are live.</span></li>
-            <li><strong>Operator truth source</strong><span>This page is for runtime settings, not customer content. Project-specific state still lives in cases, forums, and artifacts.</span></li>
+            <li><strong>密钥都做了脱敏</strong><span>这里只展示“有没有、是哪一套”，不会把真正的 secret 明文露出来。</span></li>
+            <li><strong>事务邮件 vs 冷启动触达</strong><span>Resend 继续只做事务邮件。Cold outreach 当前 live 路线还是 Agentic Inbox 的人工/半自动流程。</span></li>
+            <li><strong>后续切换路径</strong><span>Instantly 和 Smartlead 继续保持 planned，等 webhook ingest 和 reply-state sync 真正接上再启用。</span></li>
+            <li><strong>真相源边界</strong><span>这里负责运行配置，不负责客户内容。项目状态仍然以 cases、forums 和 artifacts 为准。</span></li>
           </ul>
         </section>
       </div>

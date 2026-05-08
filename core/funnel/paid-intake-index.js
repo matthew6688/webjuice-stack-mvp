@@ -4,11 +4,11 @@ import { readLedger, summarizeLedger } from '../finance/ledger.js';
 
 export const ADMIN_VIEWS = {
   all: { label: '全部项目' },
-  review_ready: { label: 'Ready for review' },
-  revision_pending: { label: 'Revisions pending' },
-  waiting_dns: { label: 'Waiting DNS' },
-  missing_open_design: { label: 'Missing Open Design' },
-  qa_blocked: { label: 'QA blocked' },
+  review_ready: { label: '待发 review' },
+  revision_pending: { label: '修订待处理' },
+  waiting_dns: { label: '等待 DNS' },
+  missing_open_design: { label: '缺少 Open Design' },
+  qa_blocked: { label: 'QA 阻塞' },
 };
 
 export function loadPaidIntakeIndex({ root = 'data/paid-intakes' } = {}) {
@@ -203,16 +203,16 @@ function buildArtifactSummary(record, filePath = '') {
 
 function buildStageSummary(record, artifactSummary) {
   const status = record.status || '';
-  if (artifactSummary.domainStatus === 'active') return stage('live', 'Live', 'ready');
-  if (status === 'completed') return stage('launch_ready', 'Launch Ready', 'ready');
-  if (status === 'revision_requested') return stage('revision', 'Revision', 'attention');
-  if (artifactSummary.deliveryQaReady || status === 'v1_delivered') return stage('review_ready', 'Review Ready', 'ready');
-  if (status === 'v1_generation_started' || artifactSummary.caseStatus === 'agent_completed') return stage('building', 'Building', 'working');
-  if (artifactSummary.productionHandoffReady) return stage('port_to_dev', 'Port To Dev', 'working');
-  if (artifactSummary.openDesignBound) return stage('open_design', `Open Design · ${artifactSummary.openDesignPipelineLabel || 'Running'}`, artifactSummary.openDesignPipelineTone || 'working');
-  if ((record.readiness?.status || '') === 'intake_ready_for_review') return stage('website_ready', 'Website Ready', 'working');
-  if (record.readiness?.missing?.length) return stage('intake_blocked', 'Intake Blocked', 'blocked');
-  return stage('intake', 'Intake', 'working');
+  if (artifactSummary.domainStatus === 'active') return stage('live', '已上线', 'ready');
+  if (status === 'completed') return stage('launch_ready', '待上线', 'ready');
+  if (status === 'revision_requested') return stage('revision', '修订中', 'attention');
+  if (artifactSummary.deliveryQaReady || status === 'v1_delivered') return stage('review_ready', '待发 review', 'ready');
+  if (status === 'v1_generation_started' || artifactSummary.caseStatus === 'agent_completed') return stage('building', '构建中', 'working');
+  if (artifactSummary.productionHandoffReady) return stage('port_to_dev', '同步到开发分支', 'working');
+  if (artifactSummary.openDesignBound) return stage('open_design', `Open Design · ${artifactSummary.openDesignPipelineLabel || '运行中'}`, artifactSummary.openDesignPipelineTone || 'working');
+  if ((record.readiness?.status || '') === 'intake_ready_for_review') return stage('website_ready', '网站资料就绪', 'working');
+  if (record.readiness?.missing?.length) return stage('intake_blocked', '收单阻塞', 'blocked');
+  return stage('intake', '收单', 'working');
 }
 
 function buildNextActionSummary(record, artifactSummary) {
@@ -253,28 +253,28 @@ function buildMilestoneSummary(record, artifactSummary) {
   const timelineEntries = Array.isArray(artifactSummary.timelineEntries) ? artifactSummary.timelineEntries : [];
   const currentKey = deriveCurrentMilestoneKey(record, artifactSummary);
   const milestones = [
-    milestone('lead_collected', 'Lead collected', true, eventAt(timelineEntries, [] ) || record.createdAt || record.updatedAt || ''),
-    milestone('website_ready', 'Website ready', isWebsiteReady(record, artifactSummary), eventAt(timelineEntries, ['confirm_website_ready', 'readiness_confirmed']) || ''),
-    milestone('open_design_started', 'Open Design started', Boolean(artifactSummary.openDesignBound), eventAt(timelineEntries, ['open_design_started']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
-    milestone('open_design_needs_input', 'Open Design needs input', artifactSummary.openDesignPipelineState === 'needs_input', eventAt(timelineEntries, ['open_design_needs_input']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
-    milestone('open_design_failed', 'Open Design failed', artifactSummary.openDesignPipelineState === 'failed', eventAt(timelineEntries, ['open_design_failed']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
-    milestone('open_design_succeeded', 'Open Design succeeded', artifactSummary.openDesignStatus === 'succeeded', eventAt(timelineEntries, ['open_design_succeeded']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
-    milestone('ported_to_repo_dev', 'Ported to repo dev', Boolean(artifactSummary.productionHandoffReady), eventAt(timelineEntries, ['agent_run_completed']) || fileUpdatedAt(artifactSummary.productionHandoffPath)),
-    milestone('dev_preview_ready', 'Dev preview ready', Boolean(record.previewUrl), eventAt(timelineEntries, ['mark_v1_delivered', 'admin_marked_v1_delivered']) || ''),
-    milestone('delivery_qa_passed', 'Delivery QA passed', Boolean(artifactSummary.deliveryQaReady), eventAt(timelineEntries, ['delivery_qa_passed']) || fileUpdatedAt(artifactSummary.deliveryQaPath)),
-    milestone('review_sent', 'Review sent', hasEvent(timelineEntries, ['customer_review_email_sent']), eventAt(timelineEntries, ['customer_review_email_sent'])),
-    milestone('revision_requested', 'Revision requested', (record.status || '') === 'revision_requested' || hasEvent(timelineEntries, ['revision_routed']), eventAt(timelineEntries, ['revision_routed'])),
-    milestone('approved_for_publish', 'Approved for publish', hasEvent(timelineEntries, ['approve_latest_revision', 'approval_request_received']), eventAt(timelineEntries, ['approve_latest_revision', 'approval_request_received'])),
-    milestone('live', 'Live', (artifactSummary.domainStatus === 'active') || hasEvent(timelineEntries, ['live_publish_completed']), eventAt(timelineEntries, ['live_publish_completed'])),
-    milestone('domain_waiting_customer', 'Domain waiting customer', artifactSummary.domainStatus === 'waiting_for_customer_dns', eventAt(timelineEntries, ['domain_status_discord_sent'])),
-    milestone('domain_connected', 'Domain connected', artifactSummary.domainStatus === 'active', eventAt(timelineEntries, ['domain_status_discord_sent'])),
+    milestone('lead_collected', '线索已收集', true, eventAt(timelineEntries, [] ) || record.createdAt || record.updatedAt || ''),
+    milestone('website_ready', '网站资料就绪', isWebsiteReady(record, artifactSummary), eventAt(timelineEntries, ['confirm_website_ready', 'readiness_confirmed']) || ''),
+    milestone('open_design_started', 'Open Design 已开始', Boolean(artifactSummary.openDesignBound), eventAt(timelineEntries, ['open_design_started']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('open_design_needs_input', 'Open Design 需要输入', artifactSummary.openDesignPipelineState === 'needs_input', eventAt(timelineEntries, ['open_design_needs_input']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('open_design_failed', 'Open Design 失败', artifactSummary.openDesignPipelineState === 'failed', eventAt(timelineEntries, ['open_design_failed']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('open_design_succeeded', 'Open Design 成功', artifactSummary.openDesignStatus === 'succeeded', eventAt(timelineEntries, ['open_design_succeeded']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('ported_to_repo_dev', '已同步到开发分支', Boolean(artifactSummary.productionHandoffReady), eventAt(timelineEntries, ['agent_run_completed']) || fileUpdatedAt(artifactSummary.productionHandoffPath)),
+    milestone('dev_preview_ready', '开发预览已就绪', Boolean(record.previewUrl), eventAt(timelineEntries, ['mark_v1_delivered', 'admin_marked_v1_delivered']) || ''),
+    milestone('delivery_qa_passed', 'Delivery QA 已通过', Boolean(artifactSummary.deliveryQaReady), eventAt(timelineEntries, ['delivery_qa_passed']) || fileUpdatedAt(artifactSummary.deliveryQaPath)),
+    milestone('review_sent', '已发 review', hasEvent(timelineEntries, ['customer_review_email_sent']), eventAt(timelineEntries, ['customer_review_email_sent'])),
+    milestone('revision_requested', '客户要求修订', (record.status || '') === 'revision_requested' || hasEvent(timelineEntries, ['revision_routed']), eventAt(timelineEntries, ['revision_routed'])),
+    milestone('approved_for_publish', '已批准上线', hasEvent(timelineEntries, ['approve_latest_revision', 'approval_request_received']), eventAt(timelineEntries, ['approve_latest_revision', 'approval_request_received'])),
+    milestone('live', '已上线', (artifactSummary.domainStatus === 'active') || hasEvent(timelineEntries, ['live_publish_completed']), eventAt(timelineEntries, ['live_publish_completed'])),
+    milestone('domain_waiting_customer', '等待客户 DNS', artifactSummary.domainStatus === 'waiting_for_customer_dns', eventAt(timelineEntries, ['domain_status_discord_sent'])),
+    milestone('domain_connected', '域名已连接', artifactSummary.domainStatus === 'active', eventAt(timelineEntries, ['domain_status_discord_sent'])),
   ];
 
   const currentIndex = Math.max(0, milestones.findIndex((item) => item.key === currentKey));
   const completedCount = milestones.filter((item) => item.complete).length;
   return {
     currentKey,
-    currentLabel: milestones[currentIndex]?.label || 'Lead collected',
+    currentLabel: milestones[currentIndex]?.label || '线索已收集',
     currentIndex,
     completedCount,
     total: milestones.length,

@@ -46,102 +46,102 @@ const leadUrgentQueue = leadIndex.records
   .slice(0, 5);
 ---
 
-<Layout title={`Admin overview - ${siteConfig.name}`} description="Internal admin overview for ProfitsLocal ops." active="overview">
+<Layout title={`后台总览 - ${siteConfig.name}`} description="ProfitsLocal 内部运营总览。" active="overview">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">Internal ops</p>
-          <h1>Admin overview</h1>
-          <p class="lede">One place to scan delivery, money, blockers, and the next move across active website projects.</p>
+          <p class="eyebrow">内部运营</p>
+          <h1>后台总览</h1>
+          <p class="lede">在一个页面里同时看售前线索、项目推进、资金情况和当前阻塞，先知道今天该做什么。</p>
         </div>
         <div class="admin-count">
           <strong>{index.counts.total}</strong>
-          <span>Projects</span>
+          <span>项目</span>
         </div>
       </div>
 
       <div class="admin-summary-strip">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">Pipeline health</span>
+          <span class="admin-summary-label">整体状态</span>
           <strong>{index.counts.total}</strong>
-          <p>{urgentQueue.length} project(s) need attention now. {reviewReady.length} are closest to customer review.</p>
+          <p>当前有 {urgentQueue.length} 个项目需要优先处理，{reviewReady.length} 个项目最接近发客户 review。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Review ready</span>
+          <span class="admin-summary-label">待发 review</span>
           <strong>{stageCounts.review_ready || 0}</strong>
-          <p>Projects that are structurally closest to sending review links.</p>
+          <p>结构上已经最接近发 review 链接的项目数量。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Waiting DNS</span>
+          <span class="admin-summary-label">等待 DNS</span>
           <strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong>
-          <p>Customer-owned domain work that can stall launch if it is not nudged.</p>
+          <p>客户域名相关动作如果不推进，会直接拖慢上线。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">OD needs input</span>
+          <span class="admin-summary-label">OD 需输入</span>
           <strong>{odCounts.needs_input || 0}</strong>
-          <p>{odCounts.failed || 0} project(s) are failed; {odCounts.running || 0} are still actively running.</p>
+          <p>{odCounts.failed || 0} 个项目失败，{odCounts.running || 0} 个项目仍在运行。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Lead follow-up</span>
+          <span class="admin-summary-label">线索跟进</span>
           <strong>{leadIndex.counts.followUpOverdue || 0}</strong>
-          <p>{leadIndex.counts.repliedNeedsReview || 0} replied lead(s) still need operator review.</p>
+          <p>还有 {leadIndex.counts.repliedNeedsReview || 0} 条已回复线索等待人工处理。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Margin pulse</span>
-          <strong>{financeOverview.profit > 0 ? 'Positive' : 'Watch'}</strong>
-          <p>{formatMoney(financeOverview.profit || 0)} net after {financeOverview.eventCount || 0} recorded finance events.</p>
+          <span class="admin-summary-label">利润脉搏</span>
+          <strong>{financeOverview.profit > 0 ? '健康' : '留意'}</strong>
+          <p>当前净额 {formatMoney(financeOverview.profit || 0)}，共记录 {financeOverview.eventCount || 0} 条财务事件。</p>
         </article>
       </div>
 
       <div class="admin-overview-hero">
         <section class="admin-overview-card admin-overview-primary">
-          <span class="eyebrow">Business pulse</span>
-          <h2>Run the website pipeline from one calm surface.</h2>
-          <p class="micro">This page is the first scan: revenue context, urgent work, and which projects can move forward without more digging.</p>
+          <span class="eyebrow">业务脉搏</span>
+          <h2>先看全局，再决定先推哪一条线。</h2>
+          <p class="micro">这个页面先回答三件事：钱的状态如何、哪些项目卡住了、哪些线索最值得今天先跟进。</p>
           <div class="admin-finance-metrics">
-            <div><span>Revenue</span><strong>{formatMoney(financeOverview.revenue || 0)}</strong></div>
-            <div><span>Cost</span><strong>{formatMoney(financeOverview.cost || 0)}</strong></div>
-            <div><span>Profit</span><strong>{formatMoney(financeOverview.profit || 0)}</strong></div>
+            <div><span>收入</span><strong>{formatMoney(financeOverview.revenue || 0)}</strong></div>
+            <div><span>成本</span><strong>{formatMoney(financeOverview.cost || 0)}</strong></div>
+            <div><span>利润</span><strong>{formatMoney(financeOverview.profit || 0)}</strong></div>
             <div><span>ROI</span><strong>{financeOverview.roi == null ? 'N/A' : `${(financeOverview.roi * 100).toFixed(1)}%`}</strong></div>
           </div>
         </section>
 
         <section class="admin-overview-card">
-          <span class="eyebrow">Pipeline mix</span>
+          <span class="eyebrow">项目分布</span>
           <div class="admin-overview-kpis">
-            <div><span>Review ready</span><strong>{stageCounts.review_ready || 0}</strong></div>
-            <div><span>Revisions</span><strong>{stageCounts.revision || 0}</strong></div>
-            <div><span>Live</span><strong>{stageCounts.live || 0}</strong></div>
-            <div><span>Waiting DNS</span><strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong></div>
-            <div><span>OD running</span><strong>{odCounts.running || 0}</strong></div>
-            <div><span>OD needs input</span><strong>{odCounts.needs_input || 0}</strong></div>
+            <div><span>待发 review</span><strong>{stageCounts.review_ready || 0}</strong></div>
+            <div><span>修订中</span><strong>{stageCounts.revision || 0}</strong></div>
+            <div><span>已上线</span><strong>{stageCounts.live || 0}</strong></div>
+            <div><span>等待 DNS</span><strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong></div>
+            <div><span>OD 运行中</span><strong>{odCounts.running || 0}</strong></div>
+            <div><span>OD 需输入</span><strong>{odCounts.needs_input || 0}</strong></div>
           </div>
         </section>
 
         <section class="admin-overview-card">
-          <span class="eyebrow">Lead pulse</span>
+          <span class="eyebrow">线索脉搏</span>
           <div class="admin-overview-kpis">
-            <div><span>Draft ready</span><strong>{leadIndex.counts.draft_ready || 0}</strong></div>
-            <div><span>Outreach sent</span><strong>{leadIndex.counts.outreachSent || 0}</strong></div>
-            <div><span>Reply review</span><strong>{leadIndex.counts.repliedNeedsReview || 0}</strong></div>
-            <div><span>Overdue</span><strong>{leadIndex.counts.followUpOverdue || 0}</strong></div>
-            <div><span>Paid handoff</span><strong>{leadIndex.counts.paidHandoffPending || 0}</strong></div>
-            <div><span>Blocked leads</span><strong>{leadIndex.counts.blocked || 0}</strong></div>
+            <div><span>草稿已就绪</span><strong>{leadIndex.counts.draft_ready || 0}</strong></div>
+            <div><span>已发送触达</span><strong>{leadIndex.counts.outreachSent || 0}</strong></div>
+            <div><span>已回复待看</span><strong>{leadIndex.counts.repliedNeedsReview || 0}</strong></div>
+            <div><span>跟进过期</span><strong>{leadIndex.counts.followUpOverdue || 0}</strong></div>
+            <div><span>付款待交接</span><strong>{leadIndex.counts.paidHandoffPending || 0}</strong></div>
+            <div><span>阻塞线索</span><strong>{leadIndex.counts.blocked || 0}</strong></div>
           </div>
         </section>
 
         <section class="admin-overview-card">
-          <span class="eyebrow">Operator links</span>
+          <span class="eyebrow">常用入口</span>
           <div class="admin-link-grid">
-            <a class="button secondary" href="/admin/leads">Open leads board</a>
-            <a class="button secondary" href="/admin/intakes">Open intake board</a>
-            <a class="button secondary" href="/admin/finance">Open finance view</a>
-            <a class="button secondary" href="/admin/queue">Open action queue</a>
-            <a class="button secondary" href="/admin/settings">Open settings</a>
+            <a class="button secondary" href="/admin/leads">打开线索面板</a>
+            <a class="button secondary" href="/admin/intakes">打开项目面板</a>
+            <a class="button secondary" href="/admin/finance">打开财务面板</a>
+            <a class="button secondary" href="/admin/queue">打开行动队列</a>
+            <a class="button secondary" href="/admin/settings">打开系统设置</a>
           </div>
           <div class="admin-note-stack">
-            <p class="micro">Use <strong>Leads</strong> for demo/outreach readiness, <strong>Intakes</strong> to audit paid projects, <strong>Queue</strong> to push the next action, and <strong>Finance</strong> to check whether the funnel is still healthy.</p>
+            <p class="micro">用 <strong>线索</strong> 看 demo / outreach，用 <strong>项目</strong> 盯正式交付，用 <strong>队列</strong> 决定先做什么，用 <strong>财务</strong> 判断这条业务线是否健康。</p>
           </div>
         </section>
       </div>
@@ -150,8 +150,8 @@ const leadUrgentQueue = leadIndex.records
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Lead action</span>
-              <h2>Inbox & follow-up</h2>
+              <span class="eyebrow">线索行动</span>
+              <h2>收件箱与跟进</h2>
             </div>
           </div>
           <div class="admin-urgent-list">
@@ -160,35 +160,35 @@ const leadUrgentQueue = leadIndex.records
                 <strong>{record.company || record.clientSlug}</strong>
                 <span>{record.nextAction.label}</span>
                 <code>{record.blocker || record.stageLabel}</code>
-                <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || 'no email recorded'}</span>
+                <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || '没有记录邮箱'}</span>
               </a>
-            )) : <p class="micro">No urgent lead right now.</p>}
+            )) : <p class="micro">当前没有特别紧急的线索。</p>}
           </div>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Needs Action</span>
-              <h2>Now</h2>
+              <span class="eyebrow">项目行动</span>
+              <h2>现在先做</h2>
             </div>
           </div>
           <div class="admin-urgent-list">
             {urgentQueue.length ? urgentQueue.map((record) => (
               <a class="admin-urgent-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
                 <strong>{record.customer.company || record.clientSlug}</strong>
-                <span>{record.nextActionSummary?.label || 'Review project'}</span>
+                <span>{record.nextActionSummary?.label || '查看项目'}</span>
                 <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.status}</code>
               </a>
-            )) : <p class="micro">No urgent project right now.</p>}
+            )) : <p class="micro">当前没有特别紧急的项目。</p>}
           </div>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Ready To Review</span>
-              <h2>Next Customer Sends</h2>
+              <span class="eyebrow">下一批可发</span>
+              <h2>准备发给客户</h2>
             </div>
           </div>
           <ul class="admin-list">
@@ -197,23 +197,23 @@ const leadUrgentQueue = leadIndex.records
                 <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
                   <strong>{record.customer.company || record.clientSlug}</strong>
                 </a>
-                <span>{record.nextActionSummary?.label || 'Send customer review'}</span>
-                <span>{record.previewUrl || record.artifactSummary?.outreachPreviewUrl || 'No preview recorded'}</span>
+                <span>{record.nextActionSummary?.label || '发送客户 review'}</span>
+                <span>{record.previewUrl || record.artifactSummary?.outreachPreviewUrl || '还没有记录 preview'}</span>
               </li>
-            )) : <li>No project is review-ready yet.</li>}
+            )) : <li>目前还没有已经准备好发 review 的项目。</li>}
           </ul>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Stage Mix</span>
-              <h2>Where Work Sits</h2>
+              <span class="eyebrow">阶段分布</span>
+              <h2>工作现在堆在哪</h2>
             </div>
           </div>
           <ul class="admin-list">
             {Object.entries(stageCounts).sort((a, b) => b[1] - a[1]).map(([stage, count]) => (
-              <li><strong>{stage.replaceAll('_', ' ')}</strong><span>{count} project(s)</span></li>
+              <li><strong>{stage.replaceAll('_', ' ')}</strong><span>{count} 个项目</span></li>
             ))}
           </ul>
         </section>

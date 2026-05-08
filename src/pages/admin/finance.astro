@@ -10,41 +10,41 @@ const byProvider = Object.entries(summary.byProvider || {}).sort((a, b) => a[1] 
 const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] - b[1]);
 ---
 
-<Layout title={`Admin finance - ${siteConfig.name}`} description="Finance and ROI view for ProfitsLocal ops." active="finance">
+<Layout title={`财务后台 - ${siteConfig.name}`} description="ProfitsLocal 收入、成本与 ROI 面板。" active="finance">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">Internal ops</p>
-          <h1>Finance</h1>
-          <p class="lede">Read the business side of the pipeline: revenue, cost pressure, provider spend, and which clients are carrying the margin.</p>
+          <p class="eyebrow">内部运营</p>
+          <h1>财务</h1>
+          <p class="lede">这里看业务的另一面：收入、成本、利润、供应商花费，以及哪些客户在支撑利润。</p>
         </div>
         <div class="admin-count">
           <strong>{summary.eventCount}</strong>
-          <span>Ledger events</span>
+          <span>财务事件</span>
         </div>
       </div>
 
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">Net position</span>
+          <span class="admin-summary-label">当前净额</span>
           <strong>{formatMoney(summary.profit || 0)}</strong>
-          <p>{summary.profit > 0 ? 'The pipeline is currently profit positive.' : 'Margin needs attention before scaling spend.'}</p>
+          <p>{summary.profit > 0 ? '当前这条业务线处在利润为正的状态。' : '在继续放大投入前，利润空间需要再盯紧一点。'}</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Revenue events</span>
+          <span class="admin-summary-label">收入事件</span>
           <strong>{summary.revenueEventCount || 0}</strong>
-          <p>Booked sales or revenue records currently tracked in the ledger.</p>
+          <p>当前账本里已经记录的成交或收入事件数量。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Cost events</span>
+          <span class="admin-summary-label">成本事件</span>
           <strong>{summary.costEventCount || 0}</strong>
-          <p>Spend lines across providers, tooling, and manual operating cost.</p>
+          <p>供应商、工具和人工运营花费都算在这里。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Dominant client</span>
+          <span class="admin-summary-label">主要客户</span>
           <strong>{byClient[0]?.[0] || 'N/A'}</strong>
-          <p>{byClient[0] ? `${formatMoney(byClient[0][1])} contribution` : 'No client finance data yet.'}</p>
+          <p>{byClient[0] ? `当前贡献 ${formatMoney(byClient[0][1])}` : '还没有客户级财务数据。'}</p>
         </article>
       </div>
 
@@ -52,47 +52,47 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Snapshot</span>
-              <h2>P&amp;L</h2>
+              <span class="eyebrow">快照</span>
+              <h2>损益总览</h2>
             </div>
           </div>
           <div class="admin-finance-metrics">
-            <div><span>Revenue</span><strong>{formatMoney(summary.revenue || 0)}</strong></div>
-            <div><span>Cost</span><strong>{formatMoney(summary.cost || 0)}</strong></div>
-            <div><span>Profit</span><strong>{formatMoney(summary.profit || 0)}</strong></div>
+            <div><span>收入</span><strong>{formatMoney(summary.revenue || 0)}</strong></div>
+            <div><span>成本</span><strong>{formatMoney(summary.cost || 0)}</strong></div>
+            <div><span>利润</span><strong>{formatMoney(summary.profit || 0)}</strong></div>
             <div><span>ROI</span><strong>{summary.roi == null ? 'N/A' : `${(summary.roi * 100).toFixed(1)}%`}</strong></div>
           </div>
           <div class="admin-finance-meta">
-            <span>{summary.revenueEventCount || 0} revenue events</span>
-            <span>{summary.costEventCount || 0} cost events</span>
+            <span>{summary.revenueEventCount || 0} 条收入事件</span>
+            <span>{summary.costEventCount || 0} 条成本事件</span>
           </div>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Clients</span>
-              <h2>Top Profit</h2>
+              <span class="eyebrow">客户贡献</span>
+              <h2>利润最高</h2>
             </div>
           </div>
           <ul class="admin-list">
             {byClient.length ? byClient.map(([client, amount]) => (
               <li><strong>{client}</strong><span>{formatMoney(amount)}</span></li>
-            )) : <li>No client finance data yet.</li>}
+            )) : <li>还没有客户级财务数据。</li>}
           </ul>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Providers</span>
-              <h2>Spend</h2>
+              <span class="eyebrow">供应商花费</span>
+              <h2>支出排行</h2>
             </div>
           </div>
           <ul class="admin-list">
             {byProvider.length ? byProvider.map(([provider, amount]) => (
               <li><strong>{provider}</strong><span>{formatMoney(amount)}</span></li>
-            )) : <li>No provider data yet.</li>}
+            )) : <li>还没有供应商数据。</li>}
           </ul>
         </section>
       </div>
@@ -101,29 +101,29 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Categories</span>
-              <h2>Cost Mix</h2>
+              <span class="eyebrow">成本分类</span>
+              <h2>花费结构</h2>
             </div>
           </div>
           <ul class="admin-list">
             {byCategory.length ? byCategory.map(([category, amount]) => (
               <li><strong>{category.replaceAll('_', ' ')}</strong><span>{formatMoney(amount)}</span></li>
-            )) : <li>No category data yet.</li>}
+            )) : <li>还没有分类数据。</li>}
           </ul>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Usage</span>
-              <h2>Read This First</h2>
+              <span class="eyebrow">读法提示</span>
+              <h2>先看这几项</h2>
             </div>
           </div>
           <ul class="admin-list">
-            <li><strong>Profit positive</strong><span>{summary.profit > 0 ? 'Yes' : 'No'}</span></li>
-            <li><strong>Dominant spend</strong><span>{byProvider[0]?.[0] || 'N/A'}</span></li>
-            <li><strong>Dominant client</strong><span>{byClient[0]?.[0] || 'N/A'}</span></li>
-            <li><strong>Ledger path</strong><span><code>data/finance/ledger.jsonl</code></span></li>
+            <li><strong>利润为正</strong><span>{summary.profit > 0 ? '是' : '否'}</span></li>
+            <li><strong>主要花费</strong><span>{byProvider[0]?.[0] || 'N/A'}</span></li>
+            <li><strong>主要客户</strong><span>{byClient[0]?.[0] || 'N/A'}</span></li>
+            <li><strong>账本路径</strong><span><code>data/finance/ledger.jsonl</code></span></li>
           </ul>
         </section>
       </div>

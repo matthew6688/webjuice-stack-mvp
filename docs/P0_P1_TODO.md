@@ -30,6 +30,7 @@
 - `A4` fresh lead 从 outreach 到 paid/project handoff 生产演练
 - `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
 - fresh lead 从 outreach 到 paid 真闭环
+- admin 后台改成中文暖纸工作台，`/admin/leads` 只看售前线索，已成交客户统一去 `/admin/intakes`
 
 ### IN PROGRESS
 

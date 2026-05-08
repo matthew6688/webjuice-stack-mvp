@@ -93,7 +93,7 @@ try {
     includesOutreachSummary: record.artifactSummary.outreachProofPoints === 2,
     includesDeliveryQaSummary: record.artifactSummary.deliveryQaReady === true,
     includesFinanceSummary: record.artifactSummary.financeSummary.profit === 374,
-    includesStageSummary: record.stageSummary.label === 'Review Ready',
+    includesStageSummary: record.stageSummary.label === '待发 review',
     includesMilestoneSummary: record.milestoneSummary.currentKey === 'domain_waiting_customer',
     includesMilestoneCount: record.milestoneSummary.completedCount >= 3,
     includesBlockerSummary: record.blockerSummary.primary === 'Open Design 需要补输入',
@@ -101,7 +101,7 @@ try {
     includesWorkflowSummary: record.artifactSummary.latestTask?.id === 'task_alpha_001',
     includesWorkflowRunSummary: record.workflowSummary.latestWorkflowRunId === 12346,
     includesOpenDesignPipelineLabel: record.artifactSummary.openDesignPipelineLabel === 'Needs input',
-    includesStageSummaryForNeedsInput: record.stageSummary.label === 'Review Ready' || record.stageSummary.label.startsWith('Open Design ·'),
+    includesStageSummaryForNeedsInput: record.stageSummary.label === '待发 review' || record.stageSummary.label.startsWith('Open Design ·'),
   };
   const failed = Object.entries(assertions).filter(([, ok]) => !ok).map(([name]) => name);
   const result = { ok: failed.length === 0, root, assertions, failed, record, counts: index.counts };

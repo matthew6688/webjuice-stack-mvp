@@ -4,6 +4,9 @@ import { siteConfig } from '../../config/site';
 import { LEAD_ADMIN_VIEWS, loadLeadOutreachIndex } from '../../../core/funnel/lead-outreach-index.js';
 
 const index = loadLeadOutreachIndex();
+const prospectRecords = index.prospectRecords;
+const prospectCounts = index.prospectCounts;
+const customerCount = index.customerRecords.length;
 const savedViews = [
   ['all', LEAD_ADMIN_VIEWS.all.label],
   ['demo_ready', LEAD_ADMIN_VIEWS.demo_ready.label],
@@ -14,93 +17,89 @@ const savedViews = [
   ['replied', LEAD_ADMIN_VIEWS.replied.label],
   ['replied_unprocessed', LEAD_ADMIN_VIEWS.replied_unprocessed.label],
   ['bounced', LEAD_ADMIN_VIEWS.bounced.label],
-  ['paid', LEAD_ADMIN_VIEWS.paid.label],
-  ['paid_handoff_pending', LEAD_ADMIN_VIEWS.paid_handoff_pending.label],
   ['missing_assets', LEAD_ADMIN_VIEWS.missing_assets.label],
   ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
 ];
-const urgent = index.records
-  .filter((record) => record.blocker || ['paid', 'follow_up_due', 'follow_up_overdue', 'replied'].includes(record.stageKey))
+const urgent = prospectRecords
+  .filter((record) => record.blocker || ['follow_up_due', 'follow_up_overdue', 'replied'].includes(record.stageKey))
   .sort((a, b) => urgencyScore(b) - urgencyScore(a))
   .slice(0, 8);
 
 function urgencyScore(record) {
   let score = 0;
-  if (record.stageKey === 'paid') score += 100;
   if (record.stageKey === 'follow_up_overdue') score += 90;
   if (record.stageKey === 'replied') score += 80;
   if (record.stageKey === 'follow_up_due') score += 60;
   if (record.blocker) score += 20;
-  if (record.paymentStatus === 'paid' && !record.websiteTaskThreadId) score += 30;
   return score;
 }
 ---
 
-<Layout title={`Lead admin - ${siteConfig.name}`} description="Lead and cold outreach operations for ProfitsLocal." active="leads">
+<Layout title={`线索后台 - ${siteConfig.name}`} description="ProfitsLocal 售前线索与冷启动触达面板。" active="leads">
   <section class="poster-section admin-section">
     <div class="admin-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">Internal ops</p>
-          <h1>Leads & outreach</h1>
-          <p class="lede">Track demo readiness, outreach drafts, and which prospects have already converted into paid projects.</p>
+          <p class="eyebrow">内部运营</p>
+          <h1>线索与触达</h1>
+          <p class="lede">这里只看售前线索：哪些值得推进、哪些已经回复、哪些需要继续跟进。已成交客户统一去项目面板继续推进。</p>
         </div>
         <div class="admin-count">
-          <strong>{index.counts.total}</strong>
-          <span>Lead records</span>
+          <strong>{prospectRecords.length}</strong>
+          <span>线索</span>
         </div>
       </div>
 
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">Demo ready</span>
-          <strong>{index.counts.demoReady || 0}</strong>
-          <p>Preview exists and proof assets are complete enough to start outreach.</p>
+          <span class="admin-summary-label">Demo 就绪</span>
+          <strong>{prospectCounts.demoReady || 0}</strong>
+          <p>已经有 preview 和 proof，适合进入冷启动触达。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Draft ready</span>
-          <strong>{index.counts.draft_ready || 0}</strong>
-          <p>Cold outreach draft exists. We can send manually or through the future agentic inbox flow.</p>
+          <span class="admin-summary-label">草稿就绪</span>
+          <strong>{prospectCounts.draft_ready || 0}</strong>
+          <p>冷启动邮件草稿已经齐，可以人工发，也可以后面接专业发送平台。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Outreach sent</span>
-          <strong>{index.counts.outreachSent || 0}</strong>
-          <p>Live send has been recorded on the outreach artifact. Provider-specific reply and follow-up state can layer on top.</p>
+          <span class="admin-summary-label">已发送触达</span>
+          <strong>{prospectCounts.outreachSent || 0}</strong>
+          <p>已经发出去，并且 provider 状态已经写回到线索真相源。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Follow-up due</span>
-          <strong>{index.counts.followUpDue || 0}</strong>
-          <p>These leads were sent already and still need a next-touch action recorded in the outreach workflow.</p>
+          <span class="admin-summary-label">待跟进</span>
+          <strong>{prospectCounts.followUpDue || 0}</strong>
+          <p>已经发过但还需要下一次触达动作的线索。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Follow-up overdue</span>
-          <strong>{index.counts.followUpOverdue || 0}</strong>
-          <p>These leads are past their recorded follow-up date and should be handled first.</p>
+          <span class="admin-summary-label">跟进已过期</span>
+          <strong>{prospectCounts.followUpOverdue || 0}</strong>
+          <p>已经超过记录的跟进日期，这批应该优先处理。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Replied / bounced</span>
-          <strong>{(index.counts.replied || 0) + (index.counts.bounced || 0)}</strong>
-          <p>Reply and bounce state now land on the same lead truth source. Future providers should plug into this model, not replace it.</p>
+          <span class="admin-summary-label">已回复 / 退信</span>
+          <strong>{(prospectCounts.replied || 0) + (prospectCounts.bounced || 0)}</strong>
+          <p>回复和退信都已经统一写回到同一套线索真相源里。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Replied needs review</span>
-          <strong>{index.counts.repliedNeedsReview || 0}</strong>
-          <p>Prospects replied, but they are not yet attached to a project workspace or paid flow.</p>
+          <span class="admin-summary-label">已回复待处理</span>
+          <strong>{prospectCounts.repliedNeedsReview || 0}</strong>
+          <p>客户已经回复，但我们还没处理下一步。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Paid</span>
-          <strong>{index.counts.paid || 0}</strong>
-          <p>These leads should move into website-projects execution, not stay stuck in outreach.</p>
+          <span class="admin-summary-label">已成交客户</span>
+          <strong>{customerCount}</strong>
+          <p>成交后的客户不再在这里处理，统一去项目面板推进 review / revision / live。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Paid handoff pending</span>
-          <strong>{index.counts.paidHandoffPending || 0}</strong>
-          <p>Customer has paid, but the project workspace handoff is still missing or incomplete.</p>
+          <span class="admin-summary-label">客户面板入口</span>
+          <strong><a href="/admin/intakes" class="admin-inline-link">打开项目面板</a></strong>
+          <p>已付款、DNS、Open Design、交付、上线都在项目面板里继续看。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Blocked</span>
-          <strong>{index.counts.blocked || 0}</strong>
-          <p>Lead is missing either outreach assets, draft email, or a clear contact path.</p>
+          <span class="admin-summary-label">阻塞</span>
+          <strong>{prospectCounts.blocked || 0}</strong>
+          <p>缺少素材、草稿或明确联系方式的线索。</p>
         </article>
       </div>
 
@@ -108,8 +107,8 @@ function urgencyScore(record) {
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Needs Action</span>
-              <h2>Lead queue</h2>
+              <span class="eyebrow">现在先处理</span>
+              <h2>线索队列</h2>
             </div>
           </div>
           <div class="admin-urgent-list">
@@ -118,35 +117,35 @@ function urgencyScore(record) {
                 <strong>{record.company || record.clientSlug}</strong>
                 <span>{record.nextAction.label}</span>
                 <code>{record.blocker || record.stageLabel}</code>
-                <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || 'no email'}</span>
-                <span class="micro">{record.latestProviderEventType ? `${record.latestProviderEventType} · ${record.latestProviderEventAt || 'no timestamp'}` : 'no provider event yet'}</span>
+                <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || '没有邮箱'}</span>
+                <span class="micro">{record.latestProviderEventType ? `${record.latestProviderEventType} · ${record.latestProviderEventAt || '没有时间戳'}` : '还没有 provider 事件'}</span>
               </article>
-            )) : <p class="micro">No urgent lead blocker right now.</p>}
+            )) : <p class="micro">目前没有特别紧急的线索阻塞。</p>}
           </div>
         </section>
 
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">Policy</span>
-              <h2>What this page tracks</h2>
+              <span class="eyebrow">使用规则</span>
+              <h2>这个页面现在管什么</h2>
             </div>
           </div>
           <ul class="admin-list">
-            <li><strong>Transactional email</strong><span>Stays on Resend. Not shown here as cold outreach send truth.</span></li>
-            <li><strong>Cold outreach</strong><span>Current truth source is demo pack + draft artifact + normalized provider metadata written back to outreach email artifacts.</span></li>
-            <li><strong>Current live path</strong><span>Agentic Inbox is the current cold outreach operator path. Instantly / Smartlead stay planned until webhook ingest is live.</span></li>
-            <li><strong>Provider model</strong><span>Resend remains transactional only. Cold outreach can swap providers later without changing the admin truth model.</span></li>
-            <li><strong>Lead notes</strong><span>Manual follow-up notes and next follow-up dates can be recorded here now, then reused when the lead becomes a paid project.</span></li>
-            <li><strong>Forum visibility</strong><span>`website-leads` remains the Discord container; this page is the admin summary.</span></li>
-            <li><strong>Settings source</strong><span>Use <a href="/admin/settings/">/admin/settings/</a> to see which outreach providers are configured, live, or still planned.</span></li>
+            <li><strong>事务邮件</strong><span>继续走 Resend，不在这里当作 cold outreach 的发送真相源。</span></li>
+            <li><strong>冷启动触达</strong><span>当前真相源是 demo pack、邮件草稿，以及回写到 outreach artifact 的 provider metadata。</span></li>
+            <li><strong>当前 live 路线</strong><span>Agentic Inbox 现在是 live operator path。Instantly / Smartlead 先保持 planned，等 webhook ingest 真接上。</span></li>
+            <li><strong>Provider 模型</strong><span>Resend 只做 transactional。cold outreach 后面换 provider，不需要推翻 admin 真相模型。</span></li>
+            <li><strong>线索备注</strong><span>可以直接记录人工跟进 note 和下一次 follow-up 日期，后面如果成交，也能继续进项目 timeline。</span></li>
+            <li><strong>Discord 可见性</strong><span>`website-leads` forum 继续作为线索容器，这里是管理后台摘要。</span></li>
+            <li><strong>系统配置</strong><span>去 <a href="/admin/settings/">/admin/settings/</a> 看哪些 provider 已经 live，哪些还只是 planned。</span></li>
           </ul>
         </section>
       </div>
 
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
-          <span class="admin-toolbar-label">Saved views</span>
+          <span class="admin-toolbar-label">快速筛选</span>
           <div class="admin-view-pills">
             {savedViews.map(([key, label], idx) => (
               <button type="button" class={`admin-view-pill ${idx === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
@@ -155,27 +154,43 @@ function urgencyScore(record) {
         </div>
         <div class="admin-toolbar-group admin-toolbar-right">
           <label class="admin-search">
-            <span class="admin-toolbar-label">Search</span>
-            <input type="search" placeholder="Client, email, domain" data-admin-search />
+            <span class="admin-toolbar-label">搜索</span>
+            <input type="search" placeholder="公司、邮箱、域名" data-admin-search />
           </label>
-          <p class="micro" data-admin-visible-count>{index.records.length} visible</p>
+          <p class="micro" data-admin-visible-count>{prospectRecords.length} 条可见</p>
         </div>
       </div>
 
       <div class="admin-table-wrap">
+        <div class="admin-table-guide admin-table-guide-leads" aria-hidden="true">
+          <span>线索</span>
+          <span>阶段</span>
+          <span>Demo / 证明</span>
+          <span>联系信息</span>
+          <span>链接 / 流程</span>
+          <span>下一步动作</span>
+        </div>
         <table class="admin-table">
+          <colgroup>
+            <col class="lead-col-company" />
+            <col class="lead-col-stage" />
+            <col class="lead-col-proof" />
+            <col class="lead-col-contact" />
+            <col class="lead-col-flow" />
+            <col class="lead-col-action" />
+          </colgroup>
           <thead>
             <tr>
-              <th>Lead</th>
-              <th>Stage</th>
-              <th>Demo proof</th>
-              <th>Contact</th>
-              <th>Discord / flow</th>
-              <th>Next action</th>
+              <th>线索</th>
+              <th>阶段</th>
+              <th>Demo / 证明</th>
+              <th>联系信息</th>
+              <th>链接 / 流程</th>
+              <th>下一步动作</th>
             </tr>
           </thead>
           <tbody>
-            {index.records.map((record) => (
+            {prospectRecords.map((record) => (
               <tr
                 data-client={record.clientSlug}
                 data-company={record.company || ''}
@@ -191,47 +206,48 @@ function urgencyScore(record) {
                 data-view-replied={record.stageKey === 'replied' ? 'true' : 'false'}
                 data-view-replied-unprocessed={record.stageKey === 'replied' && !record.websiteTaskThreadId && record.paymentStatus !== 'paid' ? 'true' : 'false'}
                 data-view-bounced={record.stageKey === 'bounced' ? 'true' : 'false'}
-                data-view-paid={record.paymentStatus === 'paid' ? 'true' : 'false'}
-                data-view-paid-handoff-pending={record.paymentStatus === 'paid' && !record.websiteTaskThreadId ? 'true' : 'false'}
+                data-view-paid="false"
+                data-view-paid-handoff-pending="false"
                 data-view-missing-assets={record.assetsReady ? 'false' : 'true'}
                 data-view-missing-email={record.emailDraftReady ? 'false' : 'true'}
               >
                 <td>
                   <strong>{record.company || record.clientSlug}</strong>
                   <span>{record.clientSlug}</span>
-                  <span class="admin-mono">{record.orderId || 'no order yet'}</span>
+                  <span class="admin-mono">{record.orderId || '还没有订单'}</span>
                 </td>
                 <td>
                   <mark class={`status-pill status-${record.stageTone}`}>{record.stageLabel}</mark>
-                  {record.outreachSent ? <mark class="status-pill status-ready">Sent</mark> : null}
-                  {record.paymentStatus === 'paid' ? <mark class="status-pill status-ready">Paid</mark> : null}
-                  <span>{record.caseStatus || record.paidIntakeStatus || 'lead only'}</span>
+                  {record.outreachSent ? <mark class="status-pill status-ready">已发送</mark> : null}
+                  <span>{record.caseStatus || record.paidIntakeStatus || '仅线索阶段'}</span>
                 </td>
                 <td>
                   <div class="admin-health-pills">
-                    <mark class={`status-pill ${record.previewUrl ? 'status-ready' : 'status-warn'}`}>Preview {record.previewUrl ? 'ready' : 'missing'}</mark>
-                    <mark class={`status-pill ${record.assetsReady ? 'status-ready' : 'status-alert'}`}>Assets {record.assetsReady ? 'ready' : 'missing'}</mark>
-                    <mark class={`status-pill ${record.emailDraftReady ? 'status-ready' : 'status-warn'}`}>Draft {record.emailDraftReady ? 'ready' : 'missing'}</mark>
+                    <mark class={`status-pill ${record.previewUrl ? 'status-ready' : 'status-warn'}`}>Demo {record.previewUrl ? '已就绪' : '缺失'}</mark>
+                    <mark class={`status-pill ${record.assetsReady ? 'status-ready' : 'status-alert'}`}>素材 {record.assetsReady ? '已齐' : '缺失'}</mark>
+                    <mark class={`status-pill ${record.emailDraftReady ? 'status-ready' : 'status-warn'}`}>草稿 {record.emailDraftReady ? '已写' : '缺失'}</mark>
                   </div>
-                  <span>{record.previewUrl || 'No preview recorded'}</span>
-                  <span>{record.proofPoints} proof point(s) · audit {record.auditVerdict || 'n/a'}{record.auditScore != null ? ` ${record.auditScore}` : ''}</span>
+                  <span>{record.previewUrl ? <a class="admin-inline-link" href={record.previewUrl} target="_blank" rel="noreferrer">打开 demo 预览</a> : '还没有记录 demo 预览'}</span>
+                  <span>{record.proofPoints} 条 proof · 审计 {record.auditVerdict || 'n/a'}{record.auditScore != null ? ` ${record.auditScore}` : ''}</span>
                 </td>
                 <td>
-                  <span>{record.email || record.customerEmail || record.leadRecipientEmail || 'no email recorded'}</span>
-                  <span>{record.phone || 'no phone recorded'}</span>
-                  <span>{record.domain || 'no domain recorded'}</span>
-                  <span>{record.websiteUrl || 'no website recorded'}</span>
-                  <span>{record.latestEmailArtifact?.subject || 'no outreach draft subject'}</span>
-                  <span>{record.outreachSentAt ? `sent ${record.outreachSentAt}` : 'send not recorded'}</span>
-                  <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · replied' : record.bounceState === 'bounced' ? ' · bounced' : ''}` : 'provider not recorded yet'}</span>
-                  <span>{record.nextFollowUpDue ? `next follow-up ${record.nextFollowUpDue}` : 'next follow-up not recorded'}</span>
-                  <span>{record.latestProviderEventType ? `latest event ${record.latestProviderEventType} at ${record.latestProviderEventAt || 'n/a'}` : 'latest provider event not recorded'}</span>
-                  <span>{record.latestLeadNote?.note ? `latest note: ${record.latestLeadNote.note}` : 'no lead note yet'}</span>
+                  <span>{record.email ? <a class="admin-inline-link" href={`mailto:${record.email}`}>{record.email}</a> : record.customerEmail ? <a class="admin-inline-link" href={`mailto:${record.customerEmail}`}>{record.customerEmail}</a> : '还没有记录邮箱'}</span>
+                  <span>{record.phone ? <a class="admin-inline-link" href={`tel:${record.phone}`}>{record.phone}</a> : '还没有记录电话'}</span>
+                  <span>{record.websiteUrl ? <a class="admin-inline-link" href={record.websiteUrl} target="_blank" rel="noreferrer">打开官网</a> : '还没有记录官网'}</span>
+                  <span>{record.contactPageUrl ? <a class="admin-inline-link" href={record.contactPageUrl} target="_blank" rel="noreferrer">联系页面</a> : '还没有联系页链接'}</span>
+                  <span>{record.latestEmailArtifact?.subject || '还没有 outreach 草稿标题'}</span>
+                  <span>{record.outreachSentAt ? `发送于 ${record.outreachSentAt}` : '还没有发送记录'}</span>
+                  <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · 已回复' : record.bounceState === 'bounced' ? ' · 退信' : ''}` : '还没有 provider 记录'}</span>
+                  <span>{record.nextFollowUpDue ? `下次跟进 ${record.nextFollowUpDue}` : '还没有下次跟进日期'}</span>
+                  <span>{record.latestProviderEventType ? `最近事件 ${record.latestProviderEventType} · ${record.latestProviderEventAt || '无时间戳'}` : '还没有 provider 事件'}</span>
+                  <span>{record.latestLeadNote?.note ? `最近备注：${record.latestLeadNote.note}` : '还没有线索备注'}</span>
                 </td>
                 <td>
-                  <span>{record.salesWorkspaceName || 'website-leads forum not recorded'}</span>
-                  <span>{record.salesThreadId || 'no lead thread id'}</span>
-                  <span>{record.websiteTaskThreadId ? 'project workspace exists' : 'not yet in website-projects'}</span>
+                  <span>{record.salesWorkspaceName || '还没有 website-leads workspace'}</span>
+                  <span>{record.discordThreadUrl ? <a class="admin-inline-link" href={record.discordThreadUrl} target="_blank" rel="noreferrer">打开 Discord 线程</a> : (record.salesThreadId || '还没有 Discord 线程')}</span>
+                  <span>{record.projectAdminUrl && record.orderId ? <a class="admin-inline-link" href={record.projectAdminUrl}>打开项目详情</a> : '还没有正式项目详情'}</span>
+                  <span>{record.repoUrl ? <a class="admin-inline-link" href={record.repoUrl} target="_blank" rel="noreferrer">打开 Repo</a> : '还没有 Repo'}</span>
+                  <span>{record.openDesignProjectId ? `Open Design：${record.openDesignProjectId}` : '还没有 Open Design 项目 ID'}</span>
                 </td>
                 <td>
                   <strong>{record.nextAction.label}</strong>
@@ -241,9 +257,9 @@ function urgencyScore(record) {
                     <input type="hidden" name="order_id" value={record.orderId || ''} />
                     <input type="hidden" name="company" value={record.company || ''} />
                     <input type="hidden" name="actor" value="profitslocal-admin" />
-                    <textarea name="note" rows="3" placeholder="Add follow-up note, call result, or special context." required></textarea>
+                    <textarea name="note" rows="3" placeholder="记录跟进备注、通话结果、特殊上下文。" required></textarea>
                     <input type="date" name="next_follow_up_due" value={record.nextFollowUpDue || ''} />
-                    <button class="button secondary" type="submit">Save lead note</button>
+                    <button class="button secondary" type="submit">保存线索备注</button>
                   </form>
                 </td>
               </tr>
@@ -280,7 +296,7 @@ function urgencyScore(record) {
         row.hidden = !visible;
         if (visible) shown += 1;
       });
-      if (visibleCount) visibleCount.textContent = `${shown} visible`;
+      if (visibleCount) visibleCount.textContent = `${shown} 条可见`;
     };
 
     viewButtons.forEach((button) => {
