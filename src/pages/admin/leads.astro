@@ -10,7 +10,9 @@ const savedViews = [
   ['draft_ready', LEAD_ADMIN_VIEWS.draft_ready.label],
   ['outreach_sent', LEAD_ADMIN_VIEWS.outreach_sent.label],
   ['follow_up_due', LEAD_ADMIN_VIEWS.follow_up_due.label],
+  ['follow_up_overdue', LEAD_ADMIN_VIEWS.follow_up_overdue.label],
   ['replied', LEAD_ADMIN_VIEWS.replied.label],
+  ['replied_unprocessed', LEAD_ADMIN_VIEWS.replied_unprocessed.label],
   ['bounced', LEAD_ADMIN_VIEWS.bounced.label],
   ['paid', LEAD_ADMIN_VIEWS.paid.label],
   ['paid_handoff_pending', LEAD_ADMIN_VIEWS.paid_handoff_pending.label],
@@ -18,8 +20,20 @@ const savedViews = [
   ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
 ];
 const urgent = index.records
-  .filter((record) => record.blocker || record.stageKey === 'paid' || record.stageKey === 'follow_up_due')
-  .slice(0, 6);
+  .filter((record) => record.blocker || ['paid', 'follow_up_due', 'follow_up_overdue', 'replied'].includes(record.stageKey))
+  .sort((a, b) => urgencyScore(b) - urgencyScore(a))
+  .slice(0, 8);
+
+function urgencyScore(record) {
+  let score = 0;
+  if (record.stageKey === 'paid') score += 100;
+  if (record.stageKey === 'follow_up_overdue') score += 90;
+  if (record.stageKey === 'replied') score += 80;
+  if (record.stageKey === 'follow_up_due') score += 60;
+  if (record.blocker) score += 20;
+  if (record.paymentStatus === 'paid' && !record.websiteTaskThreadId) score += 30;
+  return score;
+}
 ---
 
 <Layout title={`Lead admin - ${siteConfig.name}`} description="Lead and cold outreach operations for ProfitsLocal." active="leads">
@@ -59,9 +73,19 @@ const urgent = index.records
           <p>These leads were sent already and still need a next-touch action recorded in the outreach workflow.</p>
         </article>
         <article class="admin-summary-tile">
+          <span class="admin-summary-label">Follow-up overdue</span>
+          <strong>{index.counts.followUpOverdue || 0}</strong>
+          <p>These leads are past their recorded follow-up date and should be handled first.</p>
+        </article>
+        <article class="admin-summary-tile">
           <span class="admin-summary-label">Replied / bounced</span>
           <strong>{(index.counts.replied || 0) + (index.counts.bounced || 0)}</strong>
           <p>Reply and bounce state now land on the same lead truth source. Future providers should plug into this model, not replace it.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Replied needs review</span>
+          <strong>{index.counts.repliedNeedsReview || 0}</strong>
+          <p>Prospects replied, but they are not yet attached to a project workspace or paid flow.</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Paid</span>
@@ -95,6 +119,7 @@ const urgent = index.records
                 <span>{record.nextAction.label}</span>
                 <code>{record.blocker || record.stageLabel}</code>
                 <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || 'no email'}</span>
+                <span class="micro">{record.latestProviderEventType ? `${record.latestProviderEventType} · ${record.latestProviderEventAt || 'no timestamp'}` : 'no provider event yet'}</span>
               </article>
             )) : <p class="micro">No urgent lead blocker right now.</p>}
           </div>
@@ -162,7 +187,9 @@ const urgent = index.records
                 data-view-draft-ready={record.emailDraftReady ? 'true' : 'false'}
                 data-view-outreach-sent={record.outreachSent ? 'true' : 'false'}
                 data-view-follow-up-due={record.stageKey === 'follow_up_due' ? 'true' : 'false'}
+                data-view-follow-up-overdue={record.stageKey === 'follow_up_overdue' ? 'true' : 'false'}
                 data-view-replied={record.stageKey === 'replied' ? 'true' : 'false'}
+                data-view-replied-unprocessed={record.stageKey === 'replied' && !record.websiteTaskThreadId && record.paymentStatus !== 'paid' ? 'true' : 'false'}
                 data-view-bounced={record.stageKey === 'bounced' ? 'true' : 'false'}
                 data-view-paid={record.paymentStatus === 'paid' ? 'true' : 'false'}
                 data-view-paid-handoff-pending={record.paymentStatus === 'paid' && !record.websiteTaskThreadId ? 'true' : 'false'}
@@ -198,6 +225,7 @@ const urgent = index.records
                   <span>{record.outreachSentAt ? `sent ${record.outreachSentAt}` : 'send not recorded'}</span>
                   <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · replied' : record.bounceState === 'bounced' ? ' · bounced' : ''}` : 'provider not recorded yet'}</span>
                   <span>{record.nextFollowUpDue ? `next follow-up ${record.nextFollowUpDue}` : 'next follow-up not recorded'}</span>
+                  <span>{record.latestProviderEventType ? `latest event ${record.latestProviderEventType} at ${record.latestProviderEventAt || 'n/a'}` : 'latest provider event not recorded'}</span>
                   <span>{record.latestLeadNote?.note ? `latest note: ${record.latestLeadNote.note}` : 'no lead note yet'}</span>
                 </td>
                 <td>

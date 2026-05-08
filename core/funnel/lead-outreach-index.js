@@ -6,7 +6,9 @@ export const LEAD_ADMIN_VIEWS = {
   draft_ready: { label: 'Draft ready' },
   outreach_sent: { label: 'Outreach sent' },
   follow_up_due: { label: 'Follow-up due' },
+  follow_up_overdue: { label: 'Follow-up overdue' },
   replied: { label: 'Replied' },
+  replied_unprocessed: { label: 'Replied needs review' },
   bounced: { label: 'Bounced' },
   paid: { label: 'Paid' },
   paid_handoff_pending: { label: 'Paid handoff pending' },
@@ -37,8 +39,12 @@ export function matchesLeadView(record, view = 'all') {
       return record.outreachSent === true;
     case 'follow_up_due':
       return record.stageKey === 'follow_up_due';
+    case 'follow_up_overdue':
+      return record.stageKey === 'follow_up_overdue';
     case 'replied':
       return record.stageKey === 'replied';
+    case 'replied_unprocessed':
+      return record.stageKey === 'replied' && !record.websiteTaskThreadId && record.paymentStatus !== 'paid';
     case 'bounced':
       return record.stageKey === 'bounced';
     case 'paid':
@@ -69,6 +75,7 @@ function deriveStageKey(record) {
   if (record.paymentStatus === 'paid') return 'paid';
   if (record.replyState === 'replied') return 'replied';
   if (record.bounceState === 'bounced') return 'bounced';
+  if (isOverdue(record.nextFollowUpDue)) return 'follow_up_overdue';
   if (record.nextFollowUpDue) return 'follow_up_due';
   if (record.outreachSent) return 'outreach_sent';
   if (record.emailDraftReady && record.assetsReady && record.previewUrl) return 'draft_ready';
@@ -82,6 +89,7 @@ function deriveStageLabel(stageKey) {
     paid: 'Paid',
     replied: 'Replied',
     bounced: 'Bounced',
+    follow_up_overdue: 'Follow-up Overdue',
     follow_up_due: 'Follow-up Due',
     outreach_sent: 'Outreach Sent',
     draft_ready: 'Draft Ready',
@@ -96,6 +104,7 @@ function deriveStageTone(stageKey) {
     paid: 'ready',
     replied: 'ready',
     bounced: 'alert',
+    follow_up_overdue: 'alert',
     follow_up_due: 'warn',
     outreach_sent: 'working',
     draft_ready: 'working',
@@ -116,14 +125,22 @@ function deriveNextAction(record) {
   }
   if (record.replyState === 'replied') {
     return {
-      label: '处理 prospect 回复',
-      reason: '已经收到回复，下一步应该把回复结果落回 case / forum，并决定是否推进成交。',
+      label: record.websiteTaskThreadId ? '把回复推进到项目执行' : '处理回复并判断是否成交',
+      reason: record.websiteTaskThreadId
+        ? '这个 lead 已经进入项目 workspace，下一步应该把最新回复同步到项目执行和报价/付款判断。'
+        : '已经收到 prospect 回复，先记录 note、判断购买意向，再决定是否推进到 paid/project handoff。',
     };
   }
   if (record.bounceState === 'bounced') {
     return {
       label: '修正邮箱或替换发送通道',
       reason: 'cold outreach 已记录 bounce，下一步应该核对邮箱、名单质量，或换发送平台重新触达。',
+    };
+  }
+  if (isOverdue(record.nextFollowUpDue)) {
+    return {
+      label: '今天必须 follow-up',
+      reason: `跟进日期 ${record.nextFollowUpDue} 已经过期。优先联系并补一条新的 lead note 或 provider event。`,
     };
   }
   if (record.nextFollowUpDue) {
@@ -168,6 +185,7 @@ function deriveBlocker(record) {
   if (record.paymentStatus === 'paid') return '';
   if (record.replyState === 'replied') return '';
   if (record.bounceState === 'bounced') return '';
+  if (isOverdue(record.nextFollowUpDue)) return 'follow-up 已过期';
   if (record.outreachSent) return '';
   if (!record.outreachPackPath) return '缺少 outreach pack';
   if (!record.assetsReady) return '缺少 outreach proof 资产';
@@ -184,6 +202,8 @@ function buildCounts(records) {
     if (record.assetsReady) acc.assetsReady += 1;
     if (record.emailDraftReady) acc.emailDraftReady += 1;
     if (record.outreachSent) acc.outreachSent += 1;
+    if (record.stageKey === 'follow_up_overdue') acc.followUpOverdue += 1;
+    if (record.stageKey === 'replied' && !record.websiteTaskThreadId && record.paymentStatus !== 'paid') acc.repliedNeedsReview += 1;
     if (record.paymentStatus === 'paid' && !record.websiteTaskThreadId) acc.paidHandoffPending += 1;
     if (record.blocker) acc.blocked += 1;
     return acc;
@@ -193,7 +213,19 @@ function buildCounts(records) {
     assetsReady: 0,
     emailDraftReady: 0,
     outreachSent: 0,
+    followUpOverdue: 0,
+    repliedNeedsReview: 0,
     paidHandoffPending: 0,
     blocked: 0,
   });
+}
+
+function isOverdue(dateString) {
+  const value = String(dateString || '').trim();
+  if (!value) return false;
+  const due = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(due.getTime())) return false;
+  const today = new Date();
+  const utcToday = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+  return due < utcToday;
 }

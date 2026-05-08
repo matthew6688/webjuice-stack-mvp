@@ -26,6 +26,16 @@ const queueGroups = [
     records: index.records.filter((record) => !record.artifactSummary?.openDesignBound),
   },
   {
+    key: 'od_needs_input',
+    label: 'OD needs input',
+    records: index.records.filter((record) => record.artifactSummary?.openDesignPipelineState === 'needs_input'),
+  },
+  {
+    key: 'od_failed',
+    label: 'OD failed',
+    records: index.records.filter((record) => record.artifactSummary?.openDesignPipelineState === 'failed'),
+  },
+  {
     key: 'qa_blocked',
     label: 'QA blocked',
     records: index.records.filter((record) => !record.artifactSummary?.deliveryQaReady),
@@ -34,6 +44,8 @@ const queueGroups = [
 const milestoneGroups = [
   ['website_ready', 'Website ready'],
   ['open_design_succeeded', 'Open Design succeeded'],
+  ['open_design_needs_input', 'OD needs input'],
+  ['open_design_failed', 'OD failed'],
   ['review_sent', 'Review sent'],
   ['revision_requested', 'Revision requested'],
   ['live', 'Live'],

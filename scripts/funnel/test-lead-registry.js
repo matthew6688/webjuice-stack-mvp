@@ -33,6 +33,7 @@ try {
   assert.equal(alpha.outreachStatus, 'follow_up_due');
   assert.equal(alpha.provider, 'agentic-email');
   assert.equal(alpha.externalThreadUrl, 'https://mail.profitslocal.com/thread/alpha-1');
+  assert.equal(alpha.latestProviderEventType, '');
   assert.equal(alpha.notes.length, 1);
 
   const unique = resolveLeadByEmail(registry, 'owner@alpha.example');
@@ -55,6 +56,7 @@ try {
       total: registry.records.length,
       alphaLeadId: alpha.leadId,
       alphaOutreachStatus: alpha.outreachStatus,
+      alphaNextFollowUpDue: alpha.nextFollowUpDue,
       uniqueMatch: unique.match?.clientSlug,
       contentEmailMatch: delta.match?.clientSlug,
       ambiguousCount: ambiguous.candidates.length,

@@ -234,6 +234,7 @@ function mergeOutreachState(record, emailArtifacts) {
   const sentArtifact = emailArtifacts.find((artifact) => artifact.outreachState.status === 'sent');
   const repliedArtifact = emailArtifacts.find((artifact) => artifact.outreachState.replyState === 'replied' || artifact.outreachState.status === 'replied');
   const bouncedArtifact = emailArtifacts.find((artifact) => artifact.outreachState.bounceState === 'bounced' || artifact.outreachState.status === 'bounced');
+  const latestArtifact = emailArtifacts[0] || null;
   record.outreachSent = emailArtifacts.some((artifact) => artifact.outreachState.status === 'sent');
   record.outreachSentAt = firstNonEmpty(record.outreachSentAt, sentArtifact?.outreachState?.sentAt);
   record.outreachSendId = firstNonEmpty(record.outreachSendId, sentArtifact?.outreachState?.sendId);
@@ -247,6 +248,17 @@ function mergeOutreachState(record, emailArtifacts) {
   record.outreachLeadId = firstNonEmpty(record.outreachLeadId, sentArtifact?.outreachState?.externalLeadId, repliedArtifact?.outreachState?.externalLeadId, bouncedArtifact?.outreachState?.externalLeadId);
   record.outreachMessageId = firstNonEmpty(record.outreachMessageId, sentArtifact?.outreachState?.externalMessageId, repliedArtifact?.outreachState?.externalMessageId, bouncedArtifact?.outreachState?.externalMessageId);
   record.outreachThreadUrl = firstNonEmpty(record.outreachThreadUrl, repliedArtifact?.outreachState?.externalThreadUrl, sentArtifact?.outreachState?.externalThreadUrl);
+  record.latestProviderEventType = firstNonEmpty(
+    record.latestProviderEventType,
+    latestArtifact?.providerEvent?.eventType,
+    latestArtifact?.providerEvent?.status,
+  );
+  record.latestProviderEventAt = firstNonEmpty(
+    record.latestProviderEventAt,
+    latestArtifact?.providerEvent?.receivedAt,
+    latestArtifact?.providerEvent?.occurredAt,
+    latestArtifact?.generatedAt,
+  );
   const artifactWorkspace = emailArtifacts.find((artifact) => artifact.leadWorkspace?.threadId || artifact.leadWorkspace?.channelId)?.leadWorkspace || {};
   record.salesThreadId = firstNonEmpty(record.salesThreadId, artifactWorkspace.threadId);
   record.salesWorkspaceChannelId = firstNonEmpty(record.salesWorkspaceChannelId, artifactWorkspace.channelId);
@@ -342,6 +354,8 @@ function ensureRecord(records, clientSlug) {
       outreachLeadId: '',
       outreachMessageId: '',
       outreachThreadUrl: '',
+      latestProviderEventType: '',
+      latestProviderEventAt: '',
       replyState: '',
       replySnippet: '',
       nextFollowUpDue: '',
