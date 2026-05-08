@@ -105,13 +105,14 @@ function summarizeAction(record) {
         </div>
         <div class="admin-urgent-list">
           {urgent.length ? urgent.map((record) => (
-            <article class="admin-urgent-card">
+            <a class="admin-urgent-card" href={`#lead-${record.clientSlug}`}>
               <strong>{record.company || record.clientSlug}</strong>
-              <span>{record.nextAction.label}</span>
-              <code>{record.blocker || record.stageLabel}</code>
-              <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || '没有邮箱'}</span>
-              <span class="micro">{record.latestProviderEventType ? `${record.latestProviderEventType} · ${record.latestProviderEventAt || '无时间'}` : '还没有 provider 事件'}</span>
-            </article>
+              <span>{record.nextAction.label} · {record.blocker || record.stageLabel}</span>
+              <span class="micro">
+                {record.email || record.customerEmail || record.leadRecipientEmail || '没有邮箱'}
+                {record.latestProviderEventType ? ` · ${record.latestProviderEventType}` : ''}
+              </span>
+            </a>
           )) : <p class="micro">目前没有特别紧急的线索阻塞。</p>}
         </div>
       </section>
@@ -135,14 +136,6 @@ function summarizeAction(record) {
       </div>
 
       <div class="admin-table-wrap">
-        <div class="admin-table-guide admin-table-guide-leads" aria-hidden="true">
-          <span>线索</span>
-          <span>阶段</span>
-          <span>Demo / 证明</span>
-          <span>联系信息</span>
-          <span>链接 / 流程</span>
-          <span>下一步动作</span>
-        </div>
         <table class="admin-table">
           <colgroup>
             <col class="lead-col-company" />
@@ -165,6 +158,7 @@ function summarizeAction(record) {
           <tbody>
             {prospectRecords.map((record) => (
               <tr
+                id={`lead-${record.clientSlug}`}
                 data-client={record.clientSlug}
                 data-company={record.company || ''}
                 data-order-id={record.orderId || ''}
