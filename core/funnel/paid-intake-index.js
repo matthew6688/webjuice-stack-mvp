@@ -191,6 +191,8 @@ function buildArtifactSummary(record, filePath = '') {
     domainRequestPath: latestDomainRequest?.path || '',
     domainStatus: latestDomainRequest?.status || '',
     domainName: latestDomainRequest?.domain || '',
+    openDesignProjectId: conceptManifest?.projectId || '',
+    openDesignLastRunId: conceptManifest?.lastRunId || '',
     openDesignStatus: conceptManifest?.status?.status || '',
     openDesignCompletionMode: conceptManifest?.status?.completionMode || '',
   };

@@ -121,6 +121,7 @@
     - `Project stage`
     - 当前 milestone 文案
     - milestone 完成进度
+    - Open Design `status / runId / completion mode`
     - Open Design / QA / outreach / domain health
   - 详情页已经能显示：
     - milestone timeline

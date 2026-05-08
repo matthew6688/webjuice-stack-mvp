@@ -65,8 +65,10 @@ const operatorArtifacts = [
 const healthItems = [
   {
     label: 'Open Design',
-    value: summary.artifactSummary?.openDesignBound ? 'Ready' : 'Missing',
-    tone: summary.artifactSummary?.openDesignBound ? 'ready' : 'alert',
+    value: summary.artifactSummary?.openDesignStatus || (summary.artifactSummary?.openDesignBound ? 'Bound' : 'Missing'),
+    tone: summary.artifactSummary?.openDesignStatus === 'succeeded'
+      ? 'ready'
+      : (summary.artifactSummary?.openDesignBound ? 'working' : 'alert'),
   },
   {
     label: 'Delivery QA',
@@ -248,6 +250,10 @@ const healthItems = [
             <div><dt>Latest timeline event</dt><dd>{summary.artifactSummary?.latestTimeline?.type || 'N/A'}</dd></div>
             <div><dt>Event time</dt><dd>{summary.artifactSummary?.latestTimeline?.at || 'N/A'}</dd></div>
             <div><dt>Case status</dt><dd>{summary.artifactSummary?.caseStatus || 'N/A'}</dd></div>
+            <div><dt>Open Design project</dt><dd>{summary.artifactSummary?.openDesignProjectId || 'N/A'}</dd></div>
+            <div><dt>Open Design run</dt><dd>{summary.artifactSummary?.openDesignLastRunId || 'N/A'}</dd></div>
+            <div><dt>Open Design status</dt><dd>{summary.artifactSummary?.openDesignStatus || 'N/A'}</dd></div>
+            <div><dt>Completion mode</dt><dd>{summary.artifactSummary?.openDesignCompletionMode || 'N/A'}</dd></div>
             <div><dt>Latest task</dt><dd>{summary.artifactSummary?.latestTask?.id || 'N/A'}</dd></div>
             <div><dt>Task kind</dt><dd>{summary.artifactSummary?.latestTask?.kind || 'N/A'}</dd></div>
             <div><dt>Task status</dt><dd>{summary.artifactSummary?.latestTask?.status || 'N/A'}</dd></div>

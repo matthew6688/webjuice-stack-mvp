@@ -415,7 +415,7 @@ lead / intake
 
 ## E4. Open Design 状态进 admin
 
-- 状态：`PENDING`
+- 状态：`IN PROGRESS`
 - 目标：
   - 直接看到：
     - latest projectId
@@ -423,6 +423,17 @@ lead / intake
     - run status
     - completion mode
     - latest sync source（app / discord / repo）
+- 当前已完成：
+  - `/admin/intakes`
+    - 已显示 Open Design `status`
+    - 已显示 `lastRunId`
+    - 已显示 `completion mode`
+  - `/admin/intakes/<client>/<order>`
+    - 已显示 projectId / runId / status / completion mode
+- 当前还缺：
+  - latest sync source（app / discord / repo）
+  - `/admin/overview` 和 `/admin/queue` 的 Open Design 运行聚合
+  - 和 Open Design 原生 pipeline 状态语言完全统一
 
 ---
 
