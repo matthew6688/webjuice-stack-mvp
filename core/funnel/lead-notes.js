@@ -31,9 +31,11 @@ export async function recordLeadNote(payload, options = {}) {
   const createdAt = payload.created_at || payload.createdAt || artifactTimestamp();
   const nextFollowUpDue = String(payload.next_follow_up_due || payload.nextFollowUpDue || '').trim();
   const actor = String(payload.actor || 'profitslocal-admin').trim();
+  const action = String(payload.action || '').trim();
   const noteEntry = {
     id: `lead_note_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
-    type: 'lead_note',
+    type: action ? 'lead_decision' : 'lead_note',
+    action,
     actor,
     note,
     nextFollowUpDue,

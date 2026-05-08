@@ -1,0 +1,381 @@
+version: 2
+
+goal:
+  title: "Lead Ops Skill Pressure Test"
+  slug: "lead-ops-pressure-test"
+  kind: specific
+  tranche: "Exhaustively pressure test the lead-ops skill against source, niche, contactability, enrichment, redesign, ready-to-build, outreach, and handoff scenarios."
+  status: done
+  intake:
+    original_request: "Install GoalBuddy and set up a goal to pressure test all possible lead-ops skill scenarios."
+    interpreted_outcome: "A GoalBuddy board exists and drives exhaustive, verified pressure testing of the lead-ops skill."
+    input_shape: specific
+    audience: "ProfitsLocal operators and future agents"
+    authority: requested
+    proof_type: test
+    completion_proof: "Scenario matrix, tests, fixtures, loophole fixes, and final audit all exist and required verification commands pass."
+    likely_misfire: "Only testing current happy paths and missing low-info enrichment, image/OCR/PDF, search, cross-source, and cross-niche edge cases."
+    blind_spots_considered:
+      - "Live external search/scrape/OCR may need deterministic fixtures for repeatable tests."
+      - "No mathematical certainty; completion means no known loopholes after the defined matrix."
+      - "Pressure testing must not rewrite existing evidence/preservation/website-ready logic."
+    existing_plan_facts:
+      - "Existing modules include lead-intake, lead-research, redesign-check, build-ready, outreach-brief, and lead-ops."
+      - "Existing tests include leads:test-lead-ops-audit and leads:test-lead-ops-scenarios."
+      - "The user wants invented scenarios when real scenarios are missing."
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+active_task: null
+
+tasks:
+  - id: T001
+    type: scout
+    assignee: Scout
+    status: done
+    reasoning_hint: high
+    objective: "Map current lead-ops code, tests, existing skills, extractors, OCR/search/scrape tools, and all scenario dimensions that must be pressure tested."
+    inputs:
+      - "skills/lead-ops/SKILL.md"
+      - "core/leads"
+      - "core/funnel/lead-registry.js"
+      - "core/outreach/pack.js"
+      - "scripts/leads"
+      - "scripts/extractors"
+      - "scripts/outreach"
+      - "docs/LEAD_OPS_SYSTEM.md"
+      - "docs/P0_P1_TODO.md"
+    constraints:
+      - "Read-only."
+      - "Do not edit implementation files."
+      - "Prefer concrete file paths and commands over generic advice."
+      - "Include low-information, search, image/OCR/PDF, website scrape, and Google Maps style scenarios."
+    expected_output:
+      - "Current capability map"
+      - "Scenario dimensions"
+      - "Known test coverage"
+      - "Coverage gaps"
+      - "Recommended next Worker slices"
+    receipt:
+      result: done
+      summary: "Mapped the current lead-ops skill and repo implementation. The flow has lead-intake, lead-research, redesign-check, ready-to-build, outreach-brief, and lead-ops orchestration, plus Google Places, TinyFish, Firecrawl parse, menu document/OCR, evidence merge, search-runner, and redesign preservation helpers."
+      evidence:
+        - "skills/lead-ops/SKILL.md"
+        - "scripts/extractors/google-places.js"
+        - "scripts/extractors/tinyfish-fetch.js"
+        - "scripts/extractors/firecrawl-parse.js"
+        - "scripts/extractors/menu-document.js"
+        - "core/evidence/evidence.js"
+        - "core/leads/search-runner.js"
+        - "core/redesign/preservation.js"
+      capability_map:
+        - "skills/lead-ops/SKILL.md and /Users/matthew/.codex/skills/lead-ops/SKILL.md define the operator workflow."
+        - "scripts/extractors/google-places.js can produce google_places evidence."
+        - "scripts/extractors/tinyfish-fetch.js can write official_site evidence from website fetches."
+        - "scripts/extractors/firecrawl-parse.js and scripts/extractors/menu-document.js cover PDF/image/document OCR-style evidence."
+        - "core/evidence/evidence.js supports google_places, official_site, pdf, image_ocr, firecrawl, manual, and generated sources."
+        - "core/redesign/preservation.js can build redesign packets from website URL, pages, content, design, and Google/search text."
+      known_coverage:
+        - "leads:test-lead-ops-scenarios currently covers 7 source/niche/contactability scenarios."
+        - "Prior verification included lead module tests, funnel registry/outreach tests, outreach pack/email tests, and build."
+      gaps:
+        - "No deterministic low-info test yet proves search/website scrape/PDF/image OCR fixtures can move a sparse lead toward ready-to-build."
+        - "Generated evidence may still be promoted into verified contact facts unless research filters it."
+        - "No summary artifact yet records low-info pressure-test outcomes."
+      recommended_next:
+        - "Treat existing scenario matrix as T003 baseline coverage."
+        - "Run T004 next to add low-info deterministic fixtures and expose/fix generated-contact loopholes."
+
+  - id: T002
+    type: judge
+    assignee: Judge
+    status: done
+    reasoning_hint: high
+    objective: "Turn Scout findings into a bounded pressure-test matrix and select the first safe Worker slice."
+    inputs:
+      - "T001 receipt"
+    constraints:
+      - "Do not implement."
+      - "Reject vague coverage claims."
+      - "Require deterministic evidence where possible."
+    expected_output:
+      - "Approved matrix dimensions"
+      - "Required scenarios"
+      - "First Worker objective"
+      - "allowed_files"
+      - "verify"
+      - "stop_if"
+    receipt:
+      result: done
+      decision: "Proceed with deterministic low-info fixture tests before final verification."
+      approved_matrix_dimensions:
+        - "source type: google_places, manual, website_inbound, imported_list, provider_reply, official_site, pdf, image_ocr, generated"
+        - "info completeness: full contact, contact-only, website-only, social-only, business-name-only, generated-only"
+        - "niche family: field_service, clinic, professional_service, studio_or_visual, venue, generic"
+        - "enrichment path: Google Places fixture, search text, official-site scrape fixture, PDF fixture, image OCR fixture, generated placeholder fixture"
+        - "handoff: blocked_unreachable, outreach_only, ready_for_teaser, ready_for_preview, ready_for_redesign_preview, ready_for_open_design"
+      required_scenarios:
+        - "Google Places-only real-contact fixture"
+        - "Official website scrape/redesign fixture"
+        - "PDF/image OCR fixture"
+        - "Generated placeholder-only fixture that must not unlock contactability"
+        - "Manual business-name-only fixture that stays blocked"
+      first_worker_objective: "Add deterministic low-info completion tests and fix any loophole they expose."
+      allowed_files:
+        - "core/leads/** when a real loophole is exposed"
+        - "scripts/leads/**"
+        - "data/qa/lead-ops-low-info/**"
+        - "docs/LEAD_OPS_SYSTEM.md"
+        - "docs/P0_P1_TODO.md"
+        - "skills/lead-ops/SKILL.md"
+        - "package.json"
+      verify:
+        - "npm run leads:test-lead-ops-low-info"
+        - "npm run leads:test-lead-ops-scenarios"
+        - "npm run leads:test-lead-ops-audit"
+
+  - id: T003
+    type: worker
+    assignee: Worker
+    status: done
+    reasoning_hint: high
+    objective: "Implement the approved scenario matrix tests for lead-ops, including invented low-info, cross-source, cross-niche, and contactability edge cases."
+    allowed_files:
+      - "scripts/leads/test-lead-ops-scenarios.js"
+      - "scripts/leads/test-lead-ops-audit.js"
+      - "data/qa/lead-ops-scenarios/**"
+      - "docs/LEAD_OPS_SYSTEM.md"
+      - "docs/P0_P1_TODO.md"
+      - "package.json"
+    verify:
+      - "npm run leads:test-lead-ops-audit"
+      - "npm run leads:test-lead-ops-scenarios"
+    stop_if:
+      - "Need live credentials or paid APIs."
+      - "Need files outside allowed_files."
+      - "A scenario exposes a product decision that cannot be safely inferred."
+    receipt:
+      result: done
+      summary: "Baseline matrix already exists in scripts/leads/test-lead-ops-scenarios.js with 7 cross-source, cross-niche, contactability, redesign, and provider-reply scenarios."
+      changed_files: []
+      commands:
+        - command: "npm run leads:test-lead-ops-scenarios"
+          status: pass
+      hard_evidence:
+        - "data/qa/lead-ops-scenarios/summary.json is written by npm run leads:test-lead-ops-scenarios."
+      remaining_gap: "T003 does not yet cover deterministic low-info search/scrape/PDF/image OCR completion; T004 owns that gap."
+
+  - id: T004
+    type: worker
+    assignee: Worker
+    status: done
+    reasoning_hint: high
+    objective: "Add deterministic low-info completion tests that simulate search, website scrape, image/OCR/PDF, and manual minimal inputs using existing repo tools or fixtures."
+    allowed_files:
+      - "core/leads/**"
+      - "scripts/leads/**"
+      - "data/qa/lead-ops-low-info/**"
+      - "docs/LEAD_OPS_SYSTEM.md"
+      - "docs/P0_P1_TODO.md"
+      - "docs/CORE_BUSINESS_FLOW_SOP.md"
+      - "skills/lead-ops/SKILL.md"
+      - "package.json"
+    verify:
+      - "npm run leads:test-lead-ops-low-info"
+      - "npm run leads:test-lead-ops-scenarios"
+      - "npm run leads:test-lead-ops-audit"
+    stop_if:
+      - "Need live credentials or paid APIs."
+      - "Need to rewrite extractor architecture instead of adding a deterministic harness."
+      - "Verification fails twice for the same root cause."
+    receipt:
+      result: done
+      summary: "Added deterministic low-info pressure tests and fixed the generated-contact loophole in lead research."
+      changed_files:
+        - "core/leads/**"
+        - "scripts/leads/**"
+        - "data/qa/lead-ops-low-info/**"
+        - "docs/LEAD_OPS_SYSTEM.md"
+        - "docs/P0_P1_TODO.md"
+        - "docs/CORE_BUSINESS_FLOW_SOP.md"
+        - "skills/lead-ops/SKILL.md"
+        - "package.json"
+      commands:
+        - command: "npm run leads:test-lead-ops-low-info"
+          status: pass
+        - command: "npm run leads:test-lead-ops-scenarios"
+          status: pass
+        - command: "npm run leads:test-lead-ops-audit"
+          status: pass
+      scenarios_added:
+        - "google-places-only-dental"
+        - "official-site-redesign-roofer"
+        - "pdf-image-ocr-event-venue"
+        - "generated-placeholder-contact-blocked"
+        - "manual-name-only-blocked"
+      loophole_fixed: "research no longer treats generated contact evidence as verified contact facts for contactability."
+      hard_evidence:
+        - "npm run leads:test-lead-ops-low-info: PASS, 5 scenarios"
+        - "npm run leads:test-lead-ops-scenarios: PASS, 7 scenarios"
+        - "npm run leads:test-lead-ops-audit: PASS"
+        - "data/qa/lead-ops-low-info/summary.json"
+
+  - id: T005
+    type: worker
+    assignee: Worker
+    status: done
+    reasoning_hint: high
+    objective: "Fix any loopholes found by T003 or T004, then run the full lead-ops and downstream verification chain."
+    allowed_files:
+      - "core/leads/**"
+      - "core/niches/**"
+      - "core/funnel/lead-registry.js"
+      - "core/funnel/lead-outreach-index.js"
+      - "core/outreach/pack.js"
+      - "scripts/leads/**"
+      - "scripts/outreach/**"
+      - "skills/lead-ops/SKILL.md"
+      - "docs/LEAD_OPS_SYSTEM.md"
+      - "docs/CORE_BUSINESS_FLOW_SOP.md"
+      - "docs/P0_P1_TODO.md"
+      - "package.json"
+      - "data/qa/lead-ops-*/**"
+    verify:
+      - "npm run leads:test-intake"
+      - "npm run leads:test-research"
+      - "npm run leads:test-redesign-check"
+      - "npm run leads:test-build-ready"
+      - "npm run leads:test-outreach-brief"
+      - "npm run leads:test-lead-ops"
+      - "npm run leads:test-lead-ops-audit"
+      - "npm run leads:test-lead-ops-scenarios"
+      - "npm run leads:test-lead-ops-low-info"
+      - "npm run funnel:test-lead-registry"
+      - "npm run funnel:test-lead-outreach-index"
+      - "npm run outreach:test-pack-brief"
+      - "npm run outreach:test-email-brief"
+      - "npm run build"
+    stop_if:
+      - "Need live credentials or paid APIs."
+      - "A required fix would expand beyond lead-ops skill scope."
+      - "Verification fails twice for the same root cause."
+    receipt:
+      result: done
+      summary: "Fixed the preservation handoff fact-loss loophole and reran the full lead-ops/downstream verification chain."
+      changed_files:
+        - "core/leads/**"
+        - "scripts/leads/**"
+        - "skills/lead-ops/SKILL.md"
+        - "docs/LEAD_OPS_SYSTEM.md"
+        - "docs/CORE_BUSINESS_FLOW_SOP.md"
+        - "docs/P0_P1_TODO.md"
+        - "package.json"
+        - "data/qa/lead-ops-*/**"
+      commands:
+        - command: "npm run leads:test-intake"
+          status: pass
+        - command: "npm run leads:test-research"
+          status: pass
+        - command: "npm run leads:test-redesign-check"
+          status: pass
+        - command: "npm run leads:test-build-ready"
+          status: pass
+        - command: "npm run leads:test-outreach-brief"
+          status: pass
+        - command: "npm run leads:test-lead-ops"
+          status: pass
+        - command: "npm run leads:test-lead-ops-audit"
+          status: pass
+        - command: "npm run leads:test-lead-ops-scenarios"
+          status: pass
+        - command: "npm run leads:test-lead-ops-low-info"
+          status: pass
+        - command: "npm run funnel:test-lead-registry"
+          status: pass
+        - command: "npm run funnel:test-lead-outreach-index"
+          status: pass
+        - command: "npm run outreach:test-pack-brief"
+          status: pass
+        - command: "npm run outreach:test-email-brief"
+          status: pass
+        - command: "npm run build"
+          status: pass
+      fixes:
+        - "Generated contact facts are filtered out of verified contactability."
+        - "Redesign preservation now receives business/contact fallbacks from intake and trusted evidence, so low-info official-site redesigns do not lose core business facts."
+      hard_evidence:
+        - "npm run leads:test-intake: PASS"
+        - "npm run leads:test-research: PASS"
+        - "npm run leads:test-redesign-check: PASS"
+        - "npm run leads:test-build-ready: PASS"
+        - "npm run leads:test-outreach-brief: PASS"
+        - "npm run leads:test-lead-ops: PASS"
+        - "npm run leads:test-lead-ops-audit: PASS"
+        - "npm run leads:test-lead-ops-scenarios: PASS, 7 scenarios"
+        - "npm run leads:test-lead-ops-low-info: PASS, 5 scenarios"
+        - "npm run funnel:test-lead-registry: PASS"
+        - "npm run funnel:test-lead-outreach-index: PASS"
+        - "npm run outreach:test-pack-brief: PASS"
+        - "npm run outreach:test-email-brief: PASS"
+        - "npm run build: PASS, 24 pages built"
+      low_info_ready_evidence: "official-site-redesign-roofer now reaches ready_for_open_design with 3 current pages, 3 proposed pages, no preservation blockers, and only logo confirmation warning."
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    status: done
+    reasoning_hint: high
+    objective: "Audit whether lead-ops pressure testing satisfies the original user outcome and whether any known loopholes remain."
+    inputs:
+      - "All completed task receipts"
+      - "data/qa/lead-ops-scenarios/summary.json"
+      - "data/qa/lead-ops-low-info/summary.json"
+      - "Latest verification commands"
+      - "Current diff"
+    constraints:
+      - "Do not implement."
+      - "Reject completion if low-info search/scrape/OCR fixture coverage is missing."
+      - "Reject completion if any known loophole is neither fixed nor explicitly tracked."
+    expected_output:
+      - "complete | not_complete"
+      - "full_outcome_complete: true | false"
+      - "Remaining known loopholes"
+      - "Verification evidence"
+      - "Next task if not complete"
+    receipt:
+      result: done
+      decision: complete
+      full_outcome_complete: true
+      assessment: "The pressure-test goal is satisfied for deterministic local coverage. The skill now has baseline scenario coverage plus low-information enrichment coverage for Google Places, official-site/search text, PDF, image OCR, generated placeholders, and no-contact manual leads."
+      remaining_known_loopholes:
+        - "Live Google/TinyFish/Firecrawl/OCR credentials and network behavior are not exercised by this deterministic test; this is intentional for repeatable CI-style verification and should be covered by separate live smoke tests."
+        - "More niche-specific renderer adapters are still backlog work, but not a blocker for the lead-ops skill contract."
+      verification_evidence:
+        - "data/qa/lead-ops-low-info/summary.json: 5 scenarios, ok true"
+        - "data/qa/lead-ops-scenarios/summary.json: 7 scenarios, ok true"
+        - "Full verification chain passed through npm run build at 2026-05-08 19:27 Australia/Brisbane."
+      conclusion: "No known unresolved loophole remains inside the defined lead-ops skill pressure-test matrix."
+
+checks:
+  dirty_fingerprint: unknown
+  last_verification:
+    result: unknown
+    task: null
+    commands:
+      - "node /Users/matthew/.codex/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/lead-ops-pressure-test/state.yaml"

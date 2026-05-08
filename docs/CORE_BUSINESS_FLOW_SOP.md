@@ -19,6 +19,28 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 
 - `docs/LEAD_PROFILE_SCHEMA.md`
 
+lead 前半段的 skill 设计、gate、build mode、placeholder 规则、以及 Open Design handoff contract，统一记录在：
+
+- `docs/LEAD_OPS_SYSTEM.md`
+
+当前第一步已落地的入口命令：
+
+- `npm run leads:intake`
+- `npm run leads:test-intake`
+- `npm run leads:research`
+- `npm run leads:test-research`
+- `npm run leads:redesign-check`
+- `npm run leads:test-redesign-check`
+- `npm run leads:build-ready`
+- `npm run leads:test-build-ready`
+- `npm run leads:outreach-brief`
+- `npm run leads:test-outreach-brief`
+- `npm run leads:lead-ops`
+- `npm run leads:test-lead-ops`
+- `npm run leads:test-lead-ops-audit`
+- `npm run leads:test-lead-ops-scenarios`
+- `npm run leads:test-lead-ops-low-info`
+
 ## 一句话流程
 
 ```text
@@ -116,19 +138,64 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 其中：
 
 - `/admin/leads`
+  - 当前默认主视图是 cold outreach pipeline，不是表格。
   - 当前负责说真话的售前状态：
-    - `demo ready`
-    - `draft ready`
-    - `outreach sent`
-    - `follow-up due`
-    - `replied`
-    - `bounced`
-    - `paid`
-    - `missing assets`
-    - `missing outreach draft`
+    - `新线索`
+    - `研究中`
+    - `需人工`
+    - `可做 Mockup`
+    - `Mockup 制作中`
+    - `Mockup 就绪`
+    - `草稿就绪`
+    - `已发送`
+    - `待跟进`
+    - `已回复`
+    - `退信`
+    - `成交交接`
+    - `已跳过`
+  - `已跳过` 是正式状态：
+    - 新线索自动研究后，AI 有把握时只有两个早期结果：`可做 Mockup` 或 `已跳过`。
+    - 如果 AI 找不到明确突破口，继续研究也无法证明价值，应跳过。
+    - 跳过必须保留原因和做过的工作。
+    - 跳过不删除 lead，只是移出主动推进队列，可由人工按钮重新打开。
+  - `需人工` 只用于 AI 不确定的情况：
+    - operator 必须能看到证据、工具轨迹、AI 判断理由。
+    - operator 用按钮决定 `创建 Mockup` 或 `跳过`，必要时再点 `再研究`。
+  - 主视图不暴露内部流程名；skill / tool / browser/search/OCR 等工作，在 card detail 里以中文 action log / 工具轨迹展示给 operator。
+  - 对已有网站 redesign 类 lead，不能只靠一句诊断推进：
+    - 必须保存官网 URL、桌面截图、手机截图、HTML/text 原文和 audit 报告。
+    - 默认路径：
+      - `clients/<client>/audit/current-site-desktop.png`
+      - `clients/<client>/audit/current-site-mobile.png`
+      - `clients/<client>/audit/current-site.html`
+      - `clients/<client>/audit/current-site-text.txt`
+      - `clients/<client>/audit/current-site-audit.json`
+      - `clients/<client>/audit/current-site-audit.md`
+      - `public/admin-artifacts/<client>/current-site-desktop.png`
+      - `public/admin-artifacts/<client>/current-site-mobile.png`
+    - admin card 必须显性显示这些证据链接或截图缩略图，否则 operator 不应该信任“可做 Mockup”的判断。
+    - 如果 audit 分数较高、只发现很弱的问题，系统应进入 `需人工`，不能假装 AI 很有把握。
+    - `Mockup 方向` 是给 Open Design / design step 的输入，不是最终发给客户的文案。
+    - `触达草稿` 目前是模板级 draft，默认需要 LLM/人工复写后再发送。
+  - 需要人工决定的节点必须给按钮：
+    - `继续研究`
+    - `跳过`
+    - `创建 Mockup`
+    - `已跟进`
+    - `标记已回复`
+    - `进入成交交接`
+    - `重新打开`
+  - 按钮会写入同一份 lead note / decision truth source：
+    - `clients/<client>/outreach/lead-notes.jsonl`
   - 当前数据源：
     - `core/funnel/lead-registry.js` 聚合的 Phase 1 lead truth source
     - 真相源底层目前读取：
+      - `clients/<client>/lead/lead-intake.json`
+      - `clients/<client>/lead/lead-research.json`
+      - `clients/<client>/lead/redesign-check.json`
+      - `clients/<client>/lead/ready-to-build.json`
+      - `clients/<client>/lead/lead-ops.json`
+      - `clients/<client>/outreach/outreach-brief.json`
       - `clients/<client>/outreach/outreach-pack.json`
     - `clients/<client>/outreach/email/*.json`
     - `clients/<client>/outreach/lead-notes.jsonl`
@@ -137,6 +204,15 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
     - `clients/<client>/content.restaurant.json` 里的 `contact.email/phone/website`
     - `data/cases/*/*/case.json`
     - `data/paid-intakes/*/*.json`
+  - Google/search discovery 推进规则：
+    - 搜索结果如果只写在 `data/qa/...`，admin 不会显示。
+    - 要进入正式面板，必须提升到 `clients/<client>/lead/*` 和 `clients/<client>/outreach/*`。
+    - 当前可用命令：
+      - `npm run leads:promote-discovery-run -- --source-root data/qa/roofer-discovery --source-type google_search --campaign "Google search: Brisbane roofers"`
+    - 提升后 card 会进入 pipeline，并显示：
+      - 来源：`Google 搜索`
+      - 工作日志：建档、背景研究、网站检查、建站输入、触达策略、AI 结论
+      - 工具轨迹：lead-intake / lead-research / redesign-check / ready-to-build / lead-ops / outreach-brief / 官网链接
   - Phase 1 已落地字段：
     - `leadId`
     - `clientSlug`
@@ -167,6 +243,7 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
     - `opened / clicked / unsubscribed / spam complaint`
   - 当前已支持的人工售前记忆：
     - `/admin/leads` 可提交 lead note
+    - `/admin/leads` 可提交结构化 decision action
     - 可选填写 `next follow-up due`
     - note 会写回：
       - `clients/<client>/outreach/lead-notes.jsonl`

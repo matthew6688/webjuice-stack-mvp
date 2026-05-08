@@ -33,8 +33,16 @@ try {
   assert.equal(alpha.outreachStatus, 'follow_up_due');
   assert.equal(alpha.provider, 'agentic-email');
   assert.equal(alpha.externalThreadUrl, 'https://mail.profitslocal.com/thread/alpha-1');
-  assert.equal(alpha.latestProviderEventType, '');
+  assert.equal(alpha.leadSourceType, 'google_places');
+  assert.equal(alpha.leadBuildMode, 'starter');
+  assert.equal(alpha.leadGateStatus, 'ready_for_preview');
+  assert.equal(alpha.leadPreviewability, 'ready_for_preview');
+  assert.equal(alpha.leadProductionReadiness, 'ready_for_open_design');
   assert.equal(alpha.notes.length, 1);
+  assert.equal(alpha.outreachChannelRecommendation, 'email');
+  assert.equal(alpha.outreachPreviewMode, 'starter_preview');
+  assert.equal(alpha.outreachSubjectLine, 'Built something for Alpha Steakhouse');
+  assert.equal(alpha.outreachPrimaryProofPoint, 'Main improvement angle: mobile booking clarity');
 
   const unique = resolveLeadByEmail(registry, 'owner@alpha.example');
   assert.equal(unique.ok, true);
@@ -56,7 +64,6 @@ try {
       total: registry.records.length,
       alphaLeadId: alpha.leadId,
       alphaOutreachStatus: alpha.outreachStatus,
-      alphaNextFollowUpDue: alpha.nextFollowUpDue,
       uniqueMatch: unique.match?.clientSlug,
       contentEmailMatch: delta.match?.clientSlug,
       ambiguousCount: ambiguous.candidates.length,
@@ -75,6 +82,56 @@ function seedAlpha() {
   fs.mkdirSync(emailDir, { recursive: true });
   fs.mkdirSync(intakeDir, { recursive: true });
   fs.mkdirSync(evidenceDir, { recursive: true });
+  fs.mkdirSync(path.join('clients', clientSlug, 'lead'), { recursive: true });
+
+  fs.writeFileSync(path.join('clients', clientSlug, 'lead', 'lead-intake.json'), JSON.stringify({
+    schemaVersion: 1,
+    generatedAt: '2026-05-08T06:00:00.000Z',
+    sourceType: 'google_places',
+    buildMode: 'starter',
+    gateStatus: 'ready_for_preview',
+    project: {
+      businessName: 'Alpha Steakhouse',
+      industry: 'restaurant',
+      city: 'Brisbane',
+      country: 'Australia',
+      hasWebsite: false,
+      redesignSignal: 'none',
+    },
+    facts: {
+      verified: {
+        businessName: 'Alpha Steakhouse',
+        industry: 'restaurant',
+        googleMapsUrl: 'https://maps.google.com/?cid=1234567890',
+        emails: ['owner@alpha.example'],
+        phones: ['+61 7 3000 1111'],
+      },
+      inferred: {
+        heroAngle: 'A stronger first impression for a busy local restaurant.',
+      },
+      placeholderCandidates: {
+        about: 'Placeholder about copy.',
+      },
+      missingCritical: [],
+    },
+  }), 'utf8');
+
+  fs.writeFileSync(path.join('clients', clientSlug, 'lead', 'lead-research.json'), JSON.stringify({
+    schemaVersion: 1,
+    generatedAt: '2026-05-08T06:30:00.000Z',
+    clientSlug,
+    sourceType: 'google_places',
+    buildMode: 'starter',
+    gateStatus: 'ready_for_preview',
+    previewability: {
+      status: 'ready_for_preview',
+      reason: 'Enough public context exists for a starter preview.',
+    },
+    productionReadiness: {
+      status: 'ready_for_open_design',
+      reason: 'Evidence and structured content are ready.',
+    },
+  }), 'utf8');
 
   fs.writeFileSync(path.join(outreachDir, 'outreach-pack.json'), JSON.stringify({
     clientSlug,
@@ -99,6 +156,24 @@ function seedAlpha() {
     emailBrief: {
       proofPoints: ['menu checked', 'map checked'],
     },
+    outreachBrief: {
+      diagnosis: 'The current presence is good enough to start, but the next step still feels weaker than it should.',
+      channelRecommendation: 'email',
+      previewMode: 'starter_preview',
+      subjectLines: ['Built something for Alpha Steakhouse'],
+      proofPoints: ['Main improvement angle: mobile booking clarity'],
+    },
+  }), 'utf8');
+
+  fs.writeFileSync(path.join(outreachDir, 'outreach-brief.json'), JSON.stringify({
+    diagnosis: 'The current presence is good enough to start, but the next step still feels weaker than it should.',
+    siteBrief: 'Lead with booking clarity and a stronger first impression.',
+    coldMessage: 'Hey Alpha, I mocked up a version that makes booking clearer on mobile.',
+    followUps: ['Follow-up one', 'Follow-up two'],
+    channelRecommendation: 'email',
+    subjectLines: ['Built something for Alpha Steakhouse'],
+    proofPoints: ['Main improvement angle: mobile booking clarity'],
+    previewMode: 'starter_preview',
   }), 'utf8');
 
   fs.writeFileSync(path.join(intakeDir, 'website-survey.json'), JSON.stringify({

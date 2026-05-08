@@ -13,6 +13,7 @@ const payload = inputPath
       order_id: args.order || args.order_id || '',
       company: args.company || '',
       actor: args.actor || 'profitslocal-admin',
+      action: args.action || '',
       note: args.note || '',
       next_follow_up_due: args['next-follow-up-due'] || args.next_follow_up_due || '',
     };

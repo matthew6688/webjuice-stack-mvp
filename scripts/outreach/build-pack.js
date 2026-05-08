@@ -32,6 +32,10 @@ const auditPath = args.audit || path.join('clients', clientSlug, 'audit', 'local
 const audit = fs.existsSync(auditPath)
   ? { ...JSON.parse(fs.readFileSync(auditPath, 'utf8')), path: auditPath }
   : null;
+const outreachBriefPath = args['outreach-brief'] || args.outreachBrief || path.join('clients', clientSlug, 'outreach', 'outreach-brief.json');
+const outreachBrief = fs.existsSync(outreachBriefPath)
+  ? JSON.parse(fs.readFileSync(outreachBriefPath, 'utf8'))
+  : null;
 const outDir = args['out-dir'] || args.outDir || path.join('clients', clientSlug, 'outreach');
 const outputPath = path.join(outDir, 'outreach-pack.json');
 const markdownPath = path.join(outDir, 'outreach-pack.md');
@@ -43,6 +47,7 @@ const pack = buildOutreachPack({
   previewUrl: args['preview-url'] || args.previewUrl || '',
   outputDir: outDir,
   audit,
+  outreachBrief,
 });
 
 saveOutreachPack(pack, outputPath);

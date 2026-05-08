@@ -66,7 +66,14 @@ function ingestClientArtifacts(records, clientsRoot) {
     const record = ensureRecord(records, clientSlug);
     record.clientSlug = clientSlug;
 
+    const leadIntake = readJsonIfExists(path.join(clientDir, 'lead', 'lead-intake.json')) || {};
+    const leadResearch = readJsonIfExists(path.join(clientDir, 'lead', 'lead-research.json')) || {};
+    const redesignCheck = readJsonIfExists(path.join(clientDir, 'lead', 'redesign-check.json')) || {};
+    const readyToBuild = readJsonIfExists(path.join(clientDir, 'lead', 'ready-to-build.json')) || {};
+    const leadOps = readJsonIfExists(path.join(clientDir, 'lead', 'lead-ops.json')) || {};
+    const outreachBrief = readJsonIfExists(path.join(clientDir, 'outreach', 'outreach-brief.json')) || {};
     const outreachPack = readJsonIfExists(path.join(clientDir, 'outreach', 'outreach-pack.json')) || {};
+    const currentSiteAudit = readJsonIfExists(path.join(clientDir, 'audit', 'current-site-audit.json')) || {};
     const survey = readJsonIfExists(path.join(clientDir, 'intake', 'website-survey.json')) || {};
     const evidence = readJsonIfExists(path.join(clientDir, 'evidence', 'evidence.json')) || {};
     const content = readJsonIfExists(path.join(clientDir, 'content.restaurant.json')) || {};
@@ -78,21 +85,33 @@ function ingestClientArtifacts(records, clientsRoot) {
 
     record.businessName = firstNonEmpty(
       record.businessName,
+      leadIntake.project?.businessName,
       survey.businessName,
       outreachPack.business?.name,
       content.business?.name,
       titleFromSlug(clientSlug),
     );
     record.company = record.businessName;
-    record.niche = firstNonEmpty(record.niche, survey.niche, outreachPack.business?.cuisine, content.meta?.niche);
+    record.niche = firstNonEmpty(record.niche, leadIntake.project?.industry, survey.niche, outreachPack.business?.cuisine, content.meta?.niche);
+    record.city = firstNonEmpty(record.city, leadIntake.project?.city, survey.location?.city, outreachPack.business?.city);
+    record.country = firstNonEmpty(record.country, leadIntake.project?.country);
     record.previewUrl = firstNonEmpty(record.previewUrl, outreachPack.previewUrl);
-    record.address = firstNonEmpty(record.address, survey.contact?.address, content.contact?.address, outreachPack.business?.address);
-    record.phone = firstNonEmpty(record.phone, survey.contact?.phone, content.contact?.phone);
-    record.email = firstNonEmpty(record.email, survey.contact?.email, content.contact?.email, emailArtifacts[0]?.to);
-    record.websiteUrl = firstNonEmpty(record.websiteUrl, survey.contact?.website, content.contact?.website);
-    record.contactPageUrl = firstNonEmpty(record.contactPageUrl, content.cta?.contactPageUrl, survey.contact?.primaryCtaUrl);
+    record.address = firstNonEmpty(record.address, leadIntake.facts?.verified?.address, survey.contact?.address, content.contact?.address, outreachPack.business?.address);
+    record.phone = firstNonEmpty(record.phone, leadIntake.facts?.verified?.phones?.[0], survey.contact?.phone, content.contact?.phone);
+    record.email = firstNonEmpty(record.email, leadIntake.facts?.verified?.emails?.[0], survey.contact?.email, content.contact?.email, emailArtifacts[0]?.to);
+    record.websiteUrl = firstNonEmpty(record.websiteUrl, leadIntake.facts?.verified?.websiteUrl, survey.contact?.website, content.contact?.website);
+    record.contactPageUrl = firstNonEmpty(record.contactPageUrl, leadIntake.facts?.verified?.contactPageUrl, content.cta?.contactPageUrl, survey.contact?.primaryCtaUrl, currentSiteAudit.nextStepInput?.contactProfile?.contactPageUrl);
+    record.socialAccounts = uniqueSocialAccounts([
+      ...(record.socialAccounts || []),
+      ...(leadIntake.facts?.verified?.socialDm || []),
+      ...(leadResearch.facts?.verified?.socialDm || []),
+      ...(leadOps.contactability?.channels?.socialDm || []),
+      ...(currentSiteAudit.captured?.socialLinks || []),
+      ...(currentSiteAudit.nextStepInput?.contactProfile?.socialLinks || []),
+    ]);
     record.googleMapsUrl = firstNonEmpty(
       record.googleMapsUrl,
+      leadIntake.facts?.verified?.googleMapsUrl,
       findQaLink(outreachPack, 'map'),
       firstEvidenceUrl(evidence, 'google_places'),
     );
@@ -102,21 +121,76 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.logoUrl = firstNonEmpty(record.logoUrl, survey.assets?.logo, content.brand?.logo?.src);
     record.hasWebsite = Boolean(record.websiteUrl || survey.contact?.website);
     record.evidenceSources = Array.isArray(evidence.sources) ? evidence.sources : [];
-    record.qualificationStatus = deriveQualificationStatus(survey, evidence, outreachPack);
+    record.qualificationStatus = firstNonEmpty(record.qualificationStatus, leadIntake.qualification?.grade, deriveQualificationStatus(survey, evidence, outreachPack));
+    record.leadSourceType = firstNonEmpty(record.leadSourceType, leadIntake.sourceType);
+    record.leadBuildMode = firstNonEmpty(record.leadBuildMode, leadIntake.buildMode);
+    record.leadGateStatus = firstNonEmpty(record.leadGateStatus, leadIntake.gateStatus);
+    record.leadPreviewability = firstNonEmpty(record.leadPreviewability, leadResearch.previewability?.status);
+    record.leadProductionReadiness = firstNonEmpty(record.leadProductionReadiness, leadResearch.productionReadiness?.status);
+    record.leadFamilyId = firstNonEmpty(record.leadFamilyId, leadOps.summary?.familyId, leadIntake.strategy?.familyId, redesignCheck.familyId);
+    record.leadRedesignDecision = firstNonEmpty(record.leadRedesignDecision, leadOps.summary?.redesignDecision, redesignCheck.decision);
+    record.leadReadyToBuildStatus = firstNonEmpty(record.leadReadyToBuildStatus, leadOps.summary?.readyToBuildStatus, readyToBuild.status);
+    record.leadRecommendedAction = firstNonEmpty(record.leadRecommendedAction, leadResearch.strategy?.recommendedAction, readyToBuild.nextAction);
+    record.leadSpecificObservation = firstNonEmpty(
+      record.leadSpecificObservation,
+      leadIntake.outreach?.specificObservation,
+      leadIntake.facts?.placeholderCandidates?.observationEcho,
+      outreachBrief.specificObservation,
+    );
+    record.leadCoreServices = Array.isArray(leadIntake.strategy?.coreServices) && leadIntake.strategy.coreServices.length
+      ? leadIntake.strategy.coreServices
+      : Array.isArray(leadResearch.facts?.inferred?.coreServices) && leadResearch.facts.inferred.coreServices.length
+        ? leadResearch.facts.inferred.coreServices
+        : record.leadCoreServices || [];
+    record.leadHeroAngle = firstNonEmpty(record.leadHeroAngle, leadIntake.strategy?.heroAngle, leadResearch.facts?.inferred?.heroAngle);
+    record.leadPrimaryCta = firstNonEmpty(record.leadPrimaryCta, leadIntake.strategy?.primaryCTA, leadResearch.facts?.inferred?.primaryCTA);
     record.previewUrl = firstNonEmpty(record.previewUrl, survey.case?.previewUrl);
     record.readiness = firstNonEmpty(record.readiness, survey.readiness, survey.readyToBuild ? 'website_ready_to_build' : '');
+    record.leadIntakePath = fs.existsSync(path.join(clientDir, 'lead', 'lead-intake.json')) ? path.join(clientDir, 'lead', 'lead-intake.json') : '';
+    record.leadResearchPath = fs.existsSync(path.join(clientDir, 'lead', 'lead-research.json')) ? path.join(clientDir, 'lead', 'lead-research.json') : '';
+    record.leadOpsPath = fs.existsSync(path.join(clientDir, 'lead', 'lead-ops.json')) ? path.join(clientDir, 'lead', 'lead-ops.json') : '';
+    record.leadReadyToBuildPath = fs.existsSync(path.join(clientDir, 'lead', 'ready-to-build.json')) ? path.join(clientDir, 'lead', 'ready-to-build.json') : '';
+    record.redesignCheckPath = fs.existsSync(path.join(clientDir, 'lead', 'redesign-check.json')) ? path.join(clientDir, 'lead', 'redesign-check.json') : '';
     record.contentPath = fs.existsSync(path.join(clientDir, 'content.restaurant.json')) ? path.join(clientDir, 'content.restaurant.json') : '';
     record.websiteSurveyPath = fs.existsSync(path.join(clientDir, 'intake', 'website-survey.json')) ? path.join(clientDir, 'intake', 'website-survey.json') : '';
     record.outreachPackPath = fs.existsSync(path.join(clientDir, 'outreach', 'outreach-pack.json')) ? path.join(clientDir, 'outreach', 'outreach-pack.json') : '';
+    record.outreachBriefPath = fs.existsSync(path.join(clientDir, 'outreach', 'outreach-brief.json')) ? path.join(clientDir, 'outreach', 'outreach-brief.json') : '';
     record.outreachMarkdownPath = fs.existsSync(path.join(clientDir, 'outreach', 'outreach-pack.md')) ? path.join(clientDir, 'outreach', 'outreach-pack.md') : '';
     record.outreachEmailDir = fs.existsSync(emailDir) ? emailDir : '';
     record.openDesignProjectId = firstNonEmpty(record.openDesignProjectId, conceptManifest.projectId);
     record.openDesignLastRunId = firstNonEmpty(record.openDesignLastRunId, conceptManifest.lastRunId);
     record.openDesignStatus = firstNonEmpty(record.openDesignStatus, conceptManifest.status);
     record.proofPoints = Array.isArray(outreachPack?.emailBrief?.proofPoints) ? outreachPack.emailBrief.proofPoints.length : record.proofPoints || 0;
+    record.outreachDiagnosis = firstNonEmpty(record.outreachDiagnosis, outreachPack.outreachBrief?.diagnosis, outreachBrief.diagnosis);
+    record.outreachSiteBrief = firstNonEmpty(record.outreachSiteBrief, outreachPack.outreachBrief?.siteBrief, outreachBrief.siteBrief);
+    record.outreachColdMessage = firstNonEmpty(record.outreachColdMessage, outreachPack.outreachBrief?.coldMessage, outreachBrief.coldMessage);
+    record.outreachPreviewMode = firstNonEmpty(record.outreachPreviewMode, outreachPack.outreachBrief?.previewMode, outreachBrief.previewMode);
+    record.outreachChannelRecommendation = firstNonEmpty(record.outreachChannelRecommendation, outreachPack.outreachBrief?.channelRecommendation, outreachBrief.channelRecommendation);
+    record.outreachSubjectLine = firstNonEmpty(record.outreachSubjectLine, outreachPack.outreachBrief?.subjectLines?.[0], outreachBrief.subjectLines?.[0]);
+    record.outreachPrimaryProofPoint = firstNonEmpty(record.outreachPrimaryProofPoint, outreachPack.outreachBrief?.proofPoints?.[0], outreachBrief.proofPoints?.[0]);
+    record.outreachFollowUps = Array.isArray(outreachBrief.followUps)
+      ? outreachBrief.followUps
+      : Array.isArray(outreachPack.outreachBrief?.followUps)
+        ? outreachPack.outreachBrief.followUps
+        : record.outreachFollowUps || [];
     record.assetsReady = Boolean(outreachPack?.assets?.screenshots?.desktop && outreachPack?.assets?.screenshots?.mobile && outreachPack?.assets?.video);
     record.auditVerdict = firstNonEmpty(record.auditVerdict, outreachPack.audit?.verdict);
     record.auditScore = Number.isFinite(outreachPack?.audit?.score) ? outreachPack.audit.score : record.auditScore;
+    record.currentSiteAuditPath = fs.existsSync(path.join(clientDir, 'audit', 'current-site-audit.json')) ? path.join(clientDir, 'audit', 'current-site-audit.json') : '';
+    record.currentSiteAuditMdPath = fs.existsSync(path.join(clientDir, 'audit', 'current-site-audit.md')) ? path.join(clientDir, 'audit', 'current-site-audit.md') : '';
+    record.currentSiteScreenshotPath = fs.existsSync(path.join(clientDir, 'audit', 'current-site-desktop.png')) ? path.join(clientDir, 'audit', 'current-site-desktop.png') : '';
+    record.currentSiteMobileScreenshotPath = fs.existsSync(path.join(clientDir, 'audit', 'current-site-mobile.png')) ? path.join(clientDir, 'audit', 'current-site-mobile.png') : '';
+    record.currentSiteTextPath = fs.existsSync(path.join(clientDir, 'audit', 'current-site-text.txt')) ? path.join(clientDir, 'audit', 'current-site-text.txt') : '';
+    record.currentSitePublicScreenshotUrl = firstNonEmpty(record.currentSitePublicScreenshotUrl, currentSiteAudit.artifacts?.publicDesktopUrl);
+    record.currentSitePublicMobileScreenshotUrl = firstNonEmpty(record.currentSitePublicMobileScreenshotUrl, currentSiteAudit.artifacts?.publicMobileUrl);
+    record.currentSitePublicAuditUrl = firstNonEmpty(record.currentSitePublicAuditUrl, currentSiteAudit.artifacts?.publicAuditUrl);
+    record.currentSitePublicTextUrl = firstNonEmpty(record.currentSitePublicTextUrl, currentSiteAudit.artifacts?.publicTextUrl);
+    record.currentSitePublicHtmlUrl = firstNonEmpty(record.currentSitePublicHtmlUrl, currentSiteAudit.artifacts?.publicHtmlUrl);
+    record.currentSitePublicAuditJsonUrl = firstNonEmpty(record.currentSitePublicAuditJsonUrl, currentSiteAudit.artifacts?.publicAuditJsonUrl);
+    record.currentSiteAuditVerdict = firstNonEmpty(record.currentSiteAuditVerdict, currentSiteAudit.verdict);
+    record.currentSiteAuditScore = Number.isFinite(currentSiteAudit.score) ? currentSiteAudit.score : record.currentSiteAuditScore;
+    record.currentSiteAuditIssues = Array.isArray(currentSiteAudit.issues) ? currentSiteAudit.issues : record.currentSiteAuditIssues || [];
+    record.currentSiteImprovements = Array.isArray(currentSiteAudit.improvements) ? currentSiteAudit.improvements : record.currentSiteImprovements || [];
     record.emailDraftReady = emailArtifacts.length > 0;
     record.emailArtifacts = emailArtifacts;
     record.latestEmailArtifact = emailArtifacts[0] || null;
@@ -124,6 +198,8 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.latestLeadNote = leadNotes[0] || null;
     record.notes = leadNotes;
     record.contactEmails = uniqueValues([
+      leadIntake.facts?.verified?.emails?.[0],
+      ...(leadIntake.facts?.verified?.emails || []),
       survey.contact?.email,
       emailArtifacts[0]?.to,
     ]);
@@ -131,7 +207,7 @@ function ingestClientArtifacts(records, clientsRoot) {
     if (!record.nextFollowUpDue && leadNotes[0]?.nextFollowUpDue) {
       record.nextFollowUpDue = leadNotes[0].nextFollowUpDue;
     }
-    record.updatedAt = maxDate(record.updatedAt, outreachPack.generatedAt, survey.generatedAt, emailArtifacts[0]?.generatedAt);
+    record.updatedAt = maxDate(record.updatedAt, leadIntake.generatedAt, leadResearch.generatedAt, outreachPack.generatedAt, survey.generatedAt, emailArtifacts[0]?.generatedAt);
   }
 }
 
@@ -215,12 +291,15 @@ function ingestPaidIntakes(records, root) {
 
 function finalizeLeadRecord(input) {
   const record = { ...input };
+  record.officialWebsiteUrl = firstNonEmpty(record.officialWebsiteUrl, homepageUrl(record.websiteUrl), homepageUrl(record.contactPageUrl));
+  record.contactPageUrl = firstNonEmpty(record.contactPageUrl, looksLikeContactPage(record.websiteUrl) ? record.websiteUrl : '');
   record.contactEmails = uniqueValues([
     record.email,
     record.customerEmail,
     record.leadRecipientEmail,
     ...(record.contactEmails || []),
   ]);
+  record.socialAccounts = uniqueSocialAccounts(record.socialAccounts || []);
   record.leadId = firstNonEmpty(
     record.leadId,
     record.outreachLeadId && record.outreachProvider ? `${record.outreachProvider}:${record.outreachLeadId}` : '',
@@ -315,18 +394,50 @@ function ensureRecord(records, clientSlug) {
       company: '',
       niche: '',
       status: '',
+      leadSourceType: '',
+      leadBuildMode: '',
+      leadGateStatus: '',
+      leadPreviewability: '',
+      leadProductionReadiness: '',
+      leadFamilyId: '',
+      leadRedesignDecision: '',
+      leadReadyToBuildStatus: '',
+      leadRecommendedAction: '',
+      leadSpecificObservation: '',
+      leadCoreServices: [],
+      leadHeroAngle: '',
+      leadPrimaryCta: '',
+      currentSiteAuditPath: '',
+      currentSiteAuditMdPath: '',
+      currentSiteScreenshotPath: '',
+      currentSiteMobileScreenshotPath: '',
+      currentSiteTextPath: '',
+      currentSitePublicScreenshotUrl: '',
+      currentSitePublicMobileScreenshotUrl: '',
+      currentSitePublicAuditUrl: '',
+      currentSitePublicTextUrl: '',
+      currentSitePublicHtmlUrl: '',
+      currentSitePublicAuditJsonUrl: '',
+      currentSiteAuditVerdict: '',
+      currentSiteAuditScore: null,
+      currentSiteAuditIssues: [],
+      currentSiteImprovements: [],
       previewUrl: '',
       repo: '',
       repoUrl: '',
       projectAdminUrl: '',
       discordThreadUrl: '',
       address: '',
+      city: '',
+      country: '',
       phone: '',
       email: '',
       customerEmail: '',
       leadRecipientEmail: '',
       contactEmails: [],
+      socialAccounts: [],
       websiteUrl: '',
+      officialWebsiteUrl: '',
       contactPageUrl: '',
       googleMapsUrl: '',
       googlePlaceId: '',
@@ -373,6 +484,11 @@ function ensureRecord(records, clientSlug) {
       nextFollowUpDue: '',
       bounceState: '',
       outreachPackPath: '',
+      leadIntakePath: '',
+      leadResearchPath: '',
+      leadOpsPath: '',
+      leadReadyToBuildPath: '',
+      redesignCheckPath: '',
       outreachMarkdownPath: '',
       outreachEmailDir: '',
       websiteSurveyPath: '',
@@ -470,6 +586,66 @@ function firstNonEmpty(...values) {
 
 function uniqueValues(values) {
   return [...new Set(values.map((value) => String(value || '').trim()).filter(Boolean))];
+}
+
+function uniqueSocialAccounts(values) {
+  const normalized = values
+    .map((item) => {
+      const url = typeof item === 'string' ? item : item?.url || item?.href || '';
+      const label = typeof item === 'string' ? socialLabel(item) : item?.label || socialLabel(url);
+      return { label, url: String(url || '').trim() };
+    })
+    .filter((item) => item.url && isSocialUrl(item.url));
+  return normalized.filter((item, index, array) => array.findIndex((candidate) => candidate.url === item.url) === index);
+}
+
+function isSocialUrl(value) {
+  try {
+    const hostname = new URL(String(value || '')).hostname.replace(/^www\./, '').toLowerCase();
+    return [
+      'instagram.com',
+      'facebook.com',
+      'linkedin.com',
+      'tiktok.com',
+      'youtube.com',
+      'x.com',
+      'twitter.com',
+      'wa.me',
+      'whatsapp.com',
+    ].some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
+  } catch {
+    return false;
+  }
+}
+
+function socialLabel(value) {
+  const text = String(value || '').toLowerCase();
+  if (text.includes('instagram')) return 'Instagram';
+  if (text.includes('facebook')) return 'Facebook';
+  if (text.includes('linkedin')) return 'LinkedIn';
+  if (text.includes('tiktok')) return 'TikTok';
+  if (text.includes('youtube')) return 'YouTube';
+  if (text.includes('twitter') || text.includes('x.com')) return 'X';
+  if (text.includes('whatsapp') || text.includes('wa.me')) return 'WhatsApp';
+  return 'Social';
+}
+
+function homepageUrl(value) {
+  try {
+    const url = new URL(String(value || '').trim());
+    return `${url.origin}/`;
+  } catch {
+    return '';
+  }
+}
+
+function looksLikeContactPage(value) {
+  try {
+    const url = new URL(String(value || '').trim());
+    return /contact|enquiry|quote|get-in-touch/i.test(url.pathname);
+  } catch {
+    return false;
+  }
 }
 
 function normalizeEmail(value) {

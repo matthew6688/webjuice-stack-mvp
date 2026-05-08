@@ -110,18 +110,26 @@ function buildClientMessage(clientSlug, options, provider) {
   const businessName = content.hero?.name || pack.business?.name || clientSlug;
   const firstName = firstWord(businessName);
   const menuItemCount = countMenuItems(content);
-  const subject = options.subject || `${businessName}: mobile menu + website preview`;
+  const outreachBrief = pack.outreachBrief || null;
+  const subject = options.subject || outreachBrief?.subjectLines?.[0] || `${businessName}: mobile menu + website preview`;
   const previewUrl = options.previewUrl || options['preview-url'] || pack.previewUrl;
+  const briefMessage = sanitizeColdMessage(outreachBrief?.coldMessage, firstName);
   const lines = [
     `Hi ${firstName},`,
     '',
-    `I put together a live preview for ${businessName}:`,
-    previewUrl,
+    briefMessage || `I put together a live preview for ${businessName}:`,
+    briefMessage ? '' : null,
+    briefMessage ? previewUrl : `I put together a live preview for ${businessName}:`,
+    briefMessage ? '' : previewUrl,
+    briefMessage ? '' : '',
+    briefMessage ? `Preview: ${previewUrl}` : null,
+    outreachBrief?.diagnosis ? `What stood out: ${outreachBrief.diagnosis}` : null,
     '',
     'What I checked before sending this:',
     `- The menu is based on your official menu source: ${content.menu?.sourceUrl || pack.emailBrief?.proofPoints?.[0] || 'official source'}`,
     `- The mobile menu currently has ${menuItemCount} cleaned items across ${(content.menu?.sections || []).length} sections.`,
     `- Call, map, and reservation actions are set up for mobile visitors.`,
+    ...(outreachBrief?.proofPoints || []).slice(0, 2).map((item) => `- ${item}`),
     audit ? `- Local AI audit: ${audit.verdict}, score ${audit.score}, ${audit.summary.total} finding(s).` : null,
     '',
     'I also generated proof assets for review:',
@@ -140,6 +148,7 @@ function buildClientMessage(clientSlug, options, provider) {
     businessName,
     previewUrl,
     proofPoints: [
+      ...(outreachBrief?.proofPoints || []).slice(0, 3),
       `Official menu source: ${content.menu?.sourceUrl || 'verified source'}`,
       `${menuItemCount} cleaned menu items across ${(content.menu?.sections || []).length} sections`,
       'Mobile actions for call, maps, and reservation are wired',
@@ -173,6 +182,8 @@ function buildLeadMessages(leadsPath, provider) {
   return readJson(leadsPath).map((lead) => {
     const businessName = lead.name || lead.businessName || 'your restaurant';
     const previewUrl = lead.preview || lead.previewUrl || '';
+    const brief = lead.outreachBrief || null;
+    const firstName = firstWord(businessName);
     return {
       provider,
       to: lead.email || '',
@@ -180,12 +191,13 @@ function buildLeadMessages(leadsPath, provider) {
       replyTo: process.env.REPLY_TO_EMAIL || '',
       businessName,
       clientSlug: lead.slug || '',
-      subject: `${businessName}: website preview`,
+      subject: brief?.subjectLines?.[0] || `${businessName}: website preview`,
       text: [
-        `Hi ${firstWord(businessName)},`,
+        `Hi ${firstName},`,
         '',
-        `I put together a live preview for ${businessName}:`,
-        previewUrl,
+        sanitizeColdMessage(brief?.coldMessage, firstName) || `I put together a live preview for ${businessName}:`,
+        sanitizeColdMessage(brief?.coldMessage, firstName) ? `Preview: ${previewUrl}` : previewUrl,
+        ...(brief?.diagnosis ? ['', `What stood out: ${brief.diagnosis}`] : []),
         '',
         'It is a working preview, with mobile-friendly contact and menu links.',
         '',
@@ -196,7 +208,7 @@ function buildLeadMessages(leadsPath, provider) {
       html: buildOutreachHtml({
         businessName,
         previewUrl,
-        proofPoints: ['Working preview prepared for review', 'Mobile-friendly core contact path is included'],
+        proofPoints: [...(brief?.proofPoints || []), 'Working preview prepared for review', 'Mobile-friendly core contact path is included'].filter(Boolean),
         assets: {},
         audit: null,
       }),
@@ -250,6 +262,12 @@ function countMenuItems(content) {
 
 function firstWord(value) {
   return String(value || 'there').split(/\s+/)[0].replace(/[^A-Za-z0-9'&-]/g, '') || 'there';
+}
+
+function sanitizeColdMessage(message, firstName) {
+  const text = String(message || '').trim();
+  if (!text) return '';
+  return text.replace(new RegExp(`^Hey\\s+${firstName}[,\\s]*`, 'i'), '').trim();
 }
 
 function slugify(value) {

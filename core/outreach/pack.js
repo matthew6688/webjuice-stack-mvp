@@ -11,6 +11,7 @@ export function buildOutreachPack({
   previewUrl,
   outputDir,
   audit = null,
+  outreachBrief = null,
 }) {
   const linkQa = validateRestaurantLinks(content);
   const packDir = outputDir || path.join('clients', clientSlug, 'outreach');
@@ -46,14 +47,25 @@ export function buildOutreachPack({
       video: videoPath,
     },
     emailBrief: {
-      subject: `${content.hero?.name || 'Your restaurant'} menu preview`,
-      proofPoints: [
+      subject: outreachBrief?.subjectLines?.[0] || `${content.hero?.name || 'Your restaurant'} menu preview`,
+      proofPoints: uniqueStrings([
+        ...(Array.isArray(outreachBrief?.proofPoints) ? outreachBrief.proofPoints : []),
         content.menu?.sourceUrl ? `Menu source: ${content.menu.sourceUrl}` : '',
         content.contact?.googleMapsUrl ? 'Address and map CTA verified' : '',
         content.cta?.callUrl ? 'Mobile call CTA verified' : '',
-      ].filter(Boolean),
+      ].filter(Boolean)),
       cta: previewUrl || 'preview URL pending',
     },
+    outreachBrief: outreachBrief ? {
+      diagnosis: outreachBrief.diagnosis || '',
+      siteBrief: outreachBrief.siteBrief || '',
+      coldMessage: outreachBrief.coldMessage || '',
+      followUps: outreachBrief.followUps || [],
+      channelRecommendation: outreachBrief.channelRecommendation || '',
+      subjectLines: outreachBrief.subjectLines || [],
+      proofPoints: outreachBrief.proofPoints || [],
+      previewMode: outreachBrief.previewMode || '',
+    } : null,
     designSummary: {
       selectedDirections: (design?.directions || []).map((direction) => direction.name),
       warnings: design?.assetProtocol?.warnings || [],
@@ -152,5 +164,21 @@ export function buildOutreachPackMarkdown(pack) {
     lines.push('', '## Source Artifacts', '', `- Manifest: ${pack.sourceArtifacts.manifest || '-'}`, `- Content: ${pack.sourceArtifacts.content || '-'}`, `- Design: ${pack.sourceArtifacts.design || '-'}`, `- Brand spec: ${pack.sourceArtifacts.brandSpec || '-'}`);
   }
 
+  if (pack.outreachBrief) {
+    lines.push(
+      '',
+      '## Outreach Brief',
+      '',
+      `- Diagnosis: ${pack.outreachBrief.diagnosis || '-'}`,
+      `- Channel: ${pack.outreachBrief.channelRecommendation || '-'}`,
+      `- Preview mode: ${pack.outreachBrief.previewMode || '-'}`,
+      `- Cold message: ${pack.outreachBrief.coldMessage || '-'}`,
+    );
+  }
+
   return `${lines.join('\n')}\n`;
+}
+
+function uniqueStrings(values) {
+  return [...new Set((values || []).filter(Boolean))];
 }

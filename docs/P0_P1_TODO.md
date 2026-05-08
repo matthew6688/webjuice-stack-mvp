@@ -27,22 +27,16 @@
 - `A1` fresh 项目从 0 到 dev preview
 - `A2` fresh 项目从 review 到 live + domain
 - `A3` 真实 revision 闭环
-- `A4` fresh lead 从 outreach 到 paid/project handoff 生产演练
 - `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
 - fresh lead 从 outreach 到 paid 真闭环
-- admin 后台改成中文暖纸工作台，`/admin/leads` 只看售前线索，已成交客户统一去 `/admin/intakes`，并已完成 production 页面命中验证
-- admin 财务信息已经彻底收口到 `/admin/finance`，其他 tab 不再混入 ROI / 利润 / 收入 / 成本
-- admin 继续往 Kami 式纸面工作台收口：弱化 card，强化分隔线、表格、清单；`/admin/leads`、`/admin/intakes`、`/admin/queue` 已做第二轮去卡片化
 
 ### IN PROGRESS
 
+- `B4` Open Design pipeline 状态映射到我们的项目状态
 - `C2` 售前 lead / outreach / forum 流转继续补齐
 - `C3` lead truth source / lead profile schema（Phase 1 已落地，后续字段与自动回流继续补）
-
-### DONE
-
-- `B4` Open Design pipeline 状态映射到我们的项目状态
 - `D2.2` Agentic Inbox 自动 provider event 回流上线验证
+- `C4` lead-intake / lead-research / redesign-check / build-ready / outreach-brief / lead-ops contract 设计与 smoke 打磨（intake + research + redesign-check + build-ready + outreach-brief + lead-ops 已落地；outreach-brief 已接到 outreach-pack / cold email artifact；已接到 lead-registry truth source；field_service / professional_service redesign smoke 已过；低信息 Google Places / 官网 scrape / PDF / image OCR / generated-only fixtures 已加入压力测试；后续继续补多 niche renderer/contract） 
 
 ### PENDING
 
@@ -211,7 +205,7 @@ lead / intake
 
 ## B4. Open Design pipeline 状态映射到我们的项目状态
 
-- 状态：`DONE`
+- 状态：`PENDING`
 - 目标：
   - 把 Open Design 的：
     - `Not started`
@@ -230,25 +224,6 @@ lead / intake
 - 是否需要显示到 admin：
   - **需要**
   - 建议显示在项目详情页和列表 health pills
-- 当前已完成：
-  - `/admin`
-    - 已增加 `OD running`
-    - 已增加 `OD needs input`
-  - `/admin/intakes`
-    - 已显示 Open Design pipeline health pill
-    - 已显示 `Open Design run ... / completion mode`
-  - `/admin/intakes/<client>/<order>`
-    - 已显示 `Open Design pipeline`
-    - 已显示 `Open Design status`
-    - 已显示 `Completion mode`
-- hard evidence：
-  - 本地：
-    - `npm run funnel:test-paid-intake-index`
-    - `npm run build`
-  - 线上：
-    - `/admin` 命中 `OD needs input` / `OD running`
-    - `/admin/intakes` 命中 `OD Not started`
-    - 项目详情页命中 `Open Design pipeline`
 
 ## B5. Open Design 运行分型继续标准化
 
@@ -311,19 +286,9 @@ lead / intake
     - `paid`
     - `missing assets`
     - `missing outreach draft`
-  - 2026-05-08 production sale 演练已验证：
-    - workflow: `25535613785`
-    - lead: `fresh-paid-prod-smoke`
-    - 自动创建：
-      - `website-leads` forum post：`[Qualified] Fresh Paid Prod Smoke`
-      - `website-projects` forum post：`[Review] Fresh Paid Prod Smoke`
-    - 自动写回：
-      - `data/funnel/orders/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001.json`
-      - `data/cases/fresh-paid-prod-smoke/cs_test_fresh_paid_prod_smoke_001/case.json`
-      - `data/agent-tasks/fresh-paid-prod-smoke/sale-cs_test_fresh_paid_prod_smoke_001.json`
 - 还缺：
   - external cold email platform live webhook ingest
-  - 真正客户付款单的生产演练（当前 smoke 已验证链路，但不是客户真实付款）
+  - Agentic Inbox live UI 自己触发 event 的最终证据
 - 为什么重要：
   - 这决定后面大量项目时 Discord 是否仍然清晰可管
 - 是否需要显示到 admin：
@@ -461,25 +426,13 @@ lead / intake
 
 ## D3. Agentic email 如何接业务流程
 
-- 状态：`DONE`
+- 状态：`PENDING`
 - 当前原则：
   - Resend = transactional sender
   - Agentic email / Agentic Inbox = conversational inbox / draft / later cold outreach support
-- 当前已完成：
-  - production worker `agentic-inbox-profitslocal` 已部署回流逻辑
-  - production endpoint `/api/outreach-provider-event` 已可接收 `agentic-email`
-  - live Agentic Inbox UI 真实回复已触发 production workflow
-  - unique lead email 可自动匹配回 `clientSlug`
-  - artifact 已写回：
-    - `providerEvent`
-    - `externalLeadId`
-    - `externalMessageId`
-    - `externalThreadUrl`
-    - `nextFollowUpDue`
-- hard evidence：
-  - `data/qa/agentic-inbox-webhook-deploy-summary.json`
-  - `data/qa/agentic-inbox-production-routing-summary.json`
-  - `data/qa/agentic-inbox-live-ui-smoke/summary.json`
+- 后续要做：
+  - 明确 inbound email 怎么映射回 case / workspace
+  - 明确 cold outreach reply 怎么落回 admin / case / Discord/forum
 - 是否需要显示到 admin：
   - **需要**
   - 后面应该有：
@@ -534,25 +487,36 @@ lead / intake
 - 当前已完成：
   - 已新增：
     - `/admin/leads`
-- 当前页面已经能显示：
-  - demo-ready / draft-ready / outreach-sent / paid / missing assets / missing email
-  - outreach pack / preview / proof assets / draft artifact
-  - live send metadata（如果 artifact 已回写 `sendResult`）
-  - `website-leads` 相关 workspace 名称与 thread id（如果 case 已记录）
-  - 推荐下一步
-  - `follow-up overdue`
-  - `replied needs review`
-  - `Paid handoff pending`
-  - `replied`
-  - `follow-up due`
-  - `bounced`
+  - 当前页面已经能显示：
+    - cold outreach pipeline 主视图
+    - 新线索 / 研究中 / 需人工 / 可做 Mockup / Mockup 制作中 / Mockup 就绪 / 草稿就绪 / 已发送 / 待跟进 / 已回复 / 退信 / 成交交接 / 已跳过
+    - 早期自动判断只有两个确定结果：跳过，或可做 Mockup
+    - AI 不确定时进入 `需人工`，operator 看证据后点击创建 Mockup 或跳过
+    - 每张 card 的中文下一步动作、联系方式、证据状态、工作记录、工具轨迹、AI 判断理由
+    - 已有网站 redesign lead 的 current-site audit 证据：
+      - 官网链接
+      - 桌面/手机截图缩略图
+      - 保存到 repo 的 HTML/text
+      - `current-site-audit.json` 和 `current-site-audit.md`
+      - audit 结论、分数、问题、改进方向
+    - audit 机会弱时自动进入 `需人工`，不再把“很弱的 redesign 机会”硬推成高把握 `可做 Mockup`
+    - `Mockup 方向` 明确标记为给 Open Design 的输入
+    - `触达草稿` 明确标记为模板级，需要 LLM/人工复写
+    - `skip` 作为正式筛选结果：必须显示原因和做过的工作
+    - 需要人工决定的节点已经有按钮：开始/继续研究、跳过、创建 Mockup、已跟进、标记已回复、进入成交交接、重新打开
+    - outreach pack / preview / proof assets / draft artifact 的业务化状态
+    - live send metadata（如果 artifact 已回写 `sendResult`）
+    - `website-leads` 相关 workspace 名称与 thread id（如果 case 已记录）
+    - 推荐下一步
 - 当前边界：
   - 这页现在说真话的范围是：
-    - `demo/outreach draft/outreach sent/replied/bounced/paid`
+    - `discovery/evidence/mockup/draft/outreach sent/follow-up due/replied/bounced/paid handoff/skipped`
   - 还**没有完全接好的范围**：
-    - `next follow-up due`
-    - future agentic inbox reply state
-    - live external webhook ingest
+    - decision action 后续自动触发真实 Discord / Open Design job
+    - future agentic inbox 更完整 reply/thread state
+    - live external webhook ingest（Instantly / Smartlead）
+    - 更高质量的 cold outreach copywriter step：现在 admin 能显示草稿，但质量仍应由专门 LLM/copywriting 流程重写
+    - current-site audit 仍是启发式审计，还需要后续加入更深的网站截图/正文理解和竞争对比
 - 最低需求：
   - qualified leads
   - demo-ready leads
@@ -580,10 +544,8 @@ lead / intake
   - `/admin/intakes` 列表页
   - `/admin/intakes/<client>/<order>` 详情页
   - `/admin/queue` milestone 聚合
-  - `/admin` overview
-    - 已接入 lead pulse 汇总
-    - 已接入 lead urgency queue
 - 当前还缺：
+  - `/admin` overview 总览级 milestone 聚合
   - `/admin/leads` 与正式项目 milestone 的衔接
   - Open Design pipeline 状态映射后的统一状态语言
 
@@ -598,8 +560,6 @@ lead / intake
     - completion mode
     - latest sync source（app / discord / repo）
 - 当前已完成：
-  - `/admin`
-    - 已显示 `OD running / needs input`
   - `/admin/intakes`
     - 已显示 Open Design `status`
     - 已显示 `lastRunId`
@@ -608,7 +568,7 @@ lead / intake
     - 已显示 projectId / runId / status / completion mode
 - 当前还缺：
   - latest sync source（app / discord / repo）
-  - `/admin/queue` 的 Open Design 运行聚合
+  - `/admin/overview` 和 `/admin/queue` 的 Open Design 运行聚合
   - 和 Open Design 原生 pipeline 状态语言完全统一
 
 ---

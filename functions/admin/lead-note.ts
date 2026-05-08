@@ -71,6 +71,7 @@ function normalizePayload(body: Record<string, FormDataEntryValue | string>) {
     order_id: clean(body.order_id),
     company: clean(body.company),
     actor: clean(body.actor) || 'profitslocal-admin',
+    action: clean(body.action),
     note: clean(body.note),
     next_follow_up_due: clean(body.next_follow_up_due),
     created_at: new Date().toISOString(),

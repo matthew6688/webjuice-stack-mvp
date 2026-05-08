@@ -4,106 +4,144 @@ import { siteConfig } from '../../config/site';
 import { LEAD_ADMIN_VIEWS, loadLeadOutreachIndex } from '../../../core/funnel/lead-outreach-index.js';
 
 const index = loadLeadOutreachIndex();
-const prospectRecords = index.prospectRecords;
-const prospectCounts = index.prospectCounts;
-const customerCount = index.customerRecords.length;
+const recordsByStage = Object.fromEntries(index.pipelineStages.map((stage) => [
+  stage.key,
+  index.records.filter((record) => record.pipelineStage === stage.key),
+]));
+const priorityStages = ['needs_human', 'ready_for_mockup', 'researching', 'follow_up_due', 'replied', 'mockup_ready', 'draft_ready', 'new_lead'];
+const activeStageKey = priorityStages.find((key) => recordsByStage[key]?.length) || index.pipelineStages.find((stage) => recordsByStage[stage.key]?.length)?.key || 'new_lead';
 const savedViews = [
   ['all', LEAD_ADMIN_VIEWS.all.label],
-  ['demo_ready', LEAD_ADMIN_VIEWS.demo_ready.label],
+  ['researching', LEAD_ADMIN_VIEWS.researching.label],
+  ['needs_human', LEAD_ADMIN_VIEWS.needs_human.label],
+  ['ready_for_mockup', LEAD_ADMIN_VIEWS.ready_for_mockup.label],
+  ['mockup_ready', LEAD_ADMIN_VIEWS.mockup_ready.label],
   ['draft_ready', LEAD_ADMIN_VIEWS.draft_ready.label],
-  ['outreach_sent', LEAD_ADMIN_VIEWS.outreach_sent.label],
   ['follow_up_due', LEAD_ADMIN_VIEWS.follow_up_due.label],
-  ['follow_up_overdue', LEAD_ADMIN_VIEWS.follow_up_overdue.label],
   ['replied', LEAD_ADMIN_VIEWS.replied.label],
-  ['replied_unprocessed', LEAD_ADMIN_VIEWS.replied_unprocessed.label],
-  ['bounced', LEAD_ADMIN_VIEWS.bounced.label],
-  ['missing_assets', LEAD_ADMIN_VIEWS.missing_assets.label],
-  ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
+  ['skipped', LEAD_ADMIN_VIEWS.skipped.label],
 ];
-const urgent = prospectRecords
-  .filter((record) => record.blocker || ['follow_up_due', 'follow_up_overdue', 'replied'].includes(record.stageKey))
-  .sort((a, b) => urgencyScore(b) - urgencyScore(a))
-  .slice(0, 8);
 
-function urgencyScore(record) {
-  let score = 0;
-  if (record.stageKey === 'follow_up_overdue') score += 90;
-  if (record.stageKey === 'replied') score += 80;
-  if (record.stageKey === 'follow_up_due') score += 60;
-  if (record.blocker) score += 20;
-  return score;
-}
-
-function summarizeLeadSubstatus(record) {
-  if (record.replyState === 'replied') return '等人工判断';
-  if (record.nextFollowUpDue) return `跟进 ${record.nextFollowUpDue}`;
-  if (record.outreachSent) return '已发出';
-  if (record.emailDraftReady) return '可发送';
-  return '';
-}
-
-function summarizeFlow(record) {
-  return record.salesWorkspaceName || '未建线索工作区';
-}
-
-function summarizeAction(record) {
-  const label = record.nextAction.label;
-  if (label === '执行下一次 follow-up') return '按记录时间继续跟进';
-  if (label === '等待或安排 follow-up') return '等回复或补下一次跟进';
-  if (label === '发送或跟进 outreach') return 'demo、证明、草稿都齐';
-  if (label === '处理回复并判断是否成交') return '先判断购买意向，再决定是否转项目';
-  if (label === '生成 outreach pack') return '先补 demo、证明和草稿';
-  if (label === '补截图和视频') return '先补展示素材';
-  if (label === '生成 cold outreach draft') return '先补 outreach 草稿';
-  if (label === '修正邮箱或替换发送通道') return '先修邮箱或换通道';
-  return record.blocker || record.nextAction.reason;
-}
+const contactEmail = (record) => record.email || record.customerEmail || record.leadRecipientEmail || '';
+const contactLine = (record) => [record.niche || record.leadFamilyId || '行业待补', record.city || record.address || record.domain || '地区待补'].filter(Boolean).join(' / ');
+const locationLine = (record) => record.address || record.city || record.domain || '地区待补';
+const servicesLine = (record) => Array.isArray(record.leadCoreServices) && record.leadCoreServices.length
+  ? record.leadCoreServices.slice(0, 5).join('、')
+  : record.niche || record.leadFamilyId || '服务待补';
+const socialLine = (record) => Array.isArray(record.socialAccounts) && record.socialAccounts.length
+  ? record.socialAccounts.map((account) => account.label || account.url).join('、')
+  : '待补';
+const contactChips = (record) => [
+  contactEmail(record) ? { label: '邮箱', value: contactEmail(record), href: `mailto:${contactEmail(record)}` } : { label: '邮箱', value: '待补' },
+  record.phone ? { label: '电话', value: record.phone, href: `tel:${record.phone.replace(/[^+\d]/g, '')}` } : { label: '电话', value: '待补' },
+  (record.officialWebsiteUrl || record.websiteUrl) ? { label: '官网', value: '打开', href: record.officialWebsiteUrl || record.websiteUrl } : { label: '官网', value: '待补' },
+  record.contactPageUrl ? { label: '联系页', value: '打开', href: record.contactPageUrl } : { label: '联系页', value: '待补' },
+];
+const publicOrPath = (publicUrl, localPath) => publicUrl || localPath || '';
+const openDesignInputLines = (record) => {
+  const brief = record.openDesignBrief || {};
+  return [
+    ['业务', brief.business],
+    ['行业/地区', [brief.industry, brief.location].filter(Boolean).join(' · ')],
+    ['官网', brief.currentWebsite || record.officialWebsiteUrl || record.websiteUrl],
+    ['联系页', brief.contactPage || record.contactPageUrl],
+    ['社媒', brief.contactProfile?.socialAccounts?.length ? brief.contactProfile.socialAccounts.map((account) => `${account.label}: ${account.url}`).join('；') : '待补'],
+    ['服务', Array.isArray(brief.services) && brief.services.length ? brief.services.join('、') : servicesLine(record)],
+    ['Hero 角度', brief.heroAngle || record.outreachPrimaryProofPoint],
+    ['Audit 重点', Array.isArray(brief.auditFocus) && brief.auditFocus.length ? brief.auditFocus.join('；') : '暂无'],
+    ['改进方向', Array.isArray(brief.improvements) && brief.improvements.length ? brief.improvements.join('；') : '暂无'],
+    ['CTA', brief.primaryCta || record.leadPrimaryCta],
+  ].filter(([, value]) => Boolean(value));
+};
+const channelLabel = (value) => ({
+  sms_or_call: '短信/电话',
+  email: '邮件',
+  instagram_dm: 'Instagram DM',
+  linkedin: 'LinkedIn',
+  phone: '电话',
+}[value] || value || '渠道待补');
+const recordSearch = (record) => [
+  record.clientSlug,
+  record.company,
+  record.niche,
+  record.leadFamilyId,
+  contactEmail(record),
+  record.phone,
+  record.websiteUrl,
+  record.officialWebsiteUrl,
+  record.pipelineLabel,
+  record.nextAction?.label,
+].filter(Boolean).join(' ').toLowerCase();
+const artifactLabels = [
+  ['profile', '档案'],
+  ['research', '研究'],
+  ['evidence', '证据'],
+  ['currentSiteAudit', '现站审计'],
+  ['mockup', 'Mockup'],
+  ['proof', '素材'],
+  ['draft', '草稿'],
+  ['sent', '已发'],
+  ['reply', '回复'],
+  ['discord', 'Discord'],
+];
 ---
 
-<Layout title={`线索与触达 - ${siteConfig.name}`} description="ProfitsLocal 售前线索与冷启动触达面板。" active="leads">
+<Layout title={`线索触达 - ${siteConfig.name}`} description="Cold outreach lead pipeline." active="leads">
   <section class="poster-section admin-section">
-    <div class="admin-shell">
+    <div class="admin-shell lead-admin-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">内部运营</p>
-          <h1>线索与触达</h1>
-          <p class="lede">这里只看售前线索：哪些值得推进、哪些已经回复、哪些需要继续跟进。已成交客户统一去项目面板继续推进。</p>
+          <p class="eyebrow">线索触达</p>
+          <h1>线索触达 Pipeline</h1>
+          <p class="lede">新线索进来后自动研究。AI 有把握时只给两个结果：跳过，或可做 Mockup；不确定才进入需人工。每个判断都显示证据、工具轨迹和工作日志。</p>
         </div>
         <div class="admin-count">
-          <strong>{prospectRecords.length}</strong>
+          <strong>{index.counts.total}</strong>
           <span>线索</span>
         </div>
       </div>
 
-      <dl class="admin-meta-line">
-        <div><dt>可直接触达</dt><dd>{prospectCounts.demoReady || 0}</dd></div>
-        <div><dt>已回复待看</dt><dd>{prospectCounts.repliedNeedsReview || 0}</dd></div>
-        <div><dt>跟进过期</dt><dd>{prospectCounts.followUpOverdue || 0}</dd></div>
-        <div><dt>已成交</dt><dd><a href="/admin/intakes" class="admin-inline-link">{customerCount} 个项目</a></dd></div>
-      </dl>
-
-      <section class="admin-paper-section">
-        <div class="admin-paper-section-head">
-          <span class="eyebrow">今天先看</span>
-          <h2>待跟进线索</h2>
-        </div>
-        <div class="admin-urgent-list">
-          {urgent.length ? urgent.map((record) => (
-            <a class="admin-urgent-card" href={`#lead-${record.clientSlug}`}>
-              <strong>{record.company || record.clientSlug}</strong>
-              <span>{record.nextAction.label} · {record.blocker || record.stageLabel}</span>
-              <span class="micro">
-                {record.email || record.customerEmail || record.leadRecipientEmail || '没有邮箱'}
-                {record.latestProviderEventType ? ` · ${record.latestProviderEventType}` : ''}
-              </span>
-            </a>
-          )) : <p class="micro">目前没有特别紧急的线索阻塞。</p>}
-        </div>
-      </section>
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">研究中</span>
+          <strong>{index.counts.researching || 0}</strong>
+          <p>新线索已入库，等待自动搜索、官网、地图、截图或 OCR。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">需人工</span>
+          <strong>{index.counts.needsHuman || 0}</strong>
+          <p>AI 不确定，operator 看证据后点击创建 Mockup 或跳过。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">可做 Mockup</span>
+          <strong>{index.counts.ready_for_mockup || 0}</strong>
+          <p>已有联系方式和基本证据，等待人工确认是否创建 Mockup。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Mockup 就绪</span>
+          <strong>{index.counts.mockup_ready || 0}</strong>
+          <p>预览和证明素材已具备，下一步生成或确认触达草稿。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">待跟进</span>
+          <strong>{index.counts.followUpDue || 0}</strong>
+          <p>已发送且到了 follow-up 时间，优先处理。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">已回复</span>
+          <strong>{index.counts.replied || 0}</strong>
+          <p>需要人工判断是否进入成交交接。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">已跳过</span>
+          <strong>{index.counts.skipped || 0}</strong>
+          <p>没有明确突破口或不可触达的线索，保留原因和工作记录。</p>
+        </article>
+      </div>
 
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
-          <span class="admin-toolbar-label">快速筛选</span>
+          <span class="admin-toolbar-label">视图</span>
           <div class="admin-view-pills">
             {savedViews.map(([key, label], idx) => (
               <button type="button" class={`admin-view-pill ${idx === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
@@ -113,152 +151,301 @@ function summarizeAction(record) {
         <div class="admin-toolbar-group admin-toolbar-right">
           <label class="admin-search">
             <span class="admin-toolbar-label">搜索</span>
-            <input type="search" placeholder="公司、邮箱、域名" data-admin-search />
+            <input type="search" placeholder="客户、邮箱、行业、网站" data-admin-search />
           </label>
-          <p class="micro" data-admin-visible-count>{prospectRecords.length} 条可见</p>
+          <p class="micro" data-admin-visible-count>{index.records.length} 条可见</p>
         </div>
       </div>
 
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <colgroup>
-            <col class="lead-col-company" />
-            <col class="lead-col-stage" />
-            <col class="lead-col-proof" />
-            <col class="lead-col-contact" />
-            <col class="lead-col-flow" />
-            <col class="lead-col-action" />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>线索</th>
-              <th>当前情况</th>
-              <th>准备情况</th>
-              <th>联系信息</th>
-              <th>流程入口</th>
-              <th>下一步动作</th>
-            </tr>
-          </thead>
-          <tbody>
-            {prospectRecords.map((record) => (
-              <tr
-                id={`lead-${record.clientSlug}`}
-                data-client={record.clientSlug}
-                data-company={record.company || ''}
-                data-order-id={record.orderId || ''}
-                data-domain={record.domain || ''}
-                data-status={record.paymentStatus || ''}
-                data-stage={record.stageKey}
-                data-view-demo-ready={record.stageKey === 'demo_ready' ? 'true' : 'false'}
-                data-view-draft-ready={record.emailDraftReady ? 'true' : 'false'}
-                data-view-outreach-sent={record.outreachSent ? 'true' : 'false'}
-                data-view-follow-up-due={record.stageKey === 'follow_up_due' ? 'true' : 'false'}
-                data-view-follow-up-overdue={record.stageKey === 'follow_up_overdue' ? 'true' : 'false'}
-                data-view-replied={record.stageKey === 'replied' ? 'true' : 'false'}
-                data-view-replied-unprocessed={record.stageKey === 'replied' && !record.websiteTaskThreadId && record.paymentStatus !== 'paid' ? 'true' : 'false'}
-                data-view-bounced={record.stageKey === 'bounced' ? 'true' : 'false'}
-                data-view-paid="false"
-                data-view-paid-handoff-pending="false"
-                data-view-missing-assets={record.assetsReady ? 'false' : 'true'}
-                data-view-missing-email={record.emailDraftReady ? 'false' : 'true'}
-              >
-                <td>
-                  <strong>{record.company || record.clientSlug}</strong>
-                  <span>{record.clientSlug}</span>
-                  <span class="admin-mono">{record.orderId || '还没有订单'}</span>
-                </td>
-                <td>
-                  <mark class={`status-pill status-${record.stageTone}`}>{record.stageLabel}</mark>
-                  {record.outreachSent ? <mark class="status-pill status-ready">已发送</mark> : null}
-                  {summarizeLeadSubstatus(record) ? <span>{summarizeLeadSubstatus(record)}</span> : null}
-                  {record.latestProviderEventType ? <span>{record.latestProviderEventType}</span> : null}
-                </td>
-                <td>
-                  <div class="admin-health-pills">
-                    <mark class={`status-pill ${record.previewUrl ? 'status-ready' : 'status-warn'}`}>Demo {record.previewUrl ? '已就绪' : '缺失'}</mark>
-                    <mark class={`status-pill ${record.assetsReady ? 'status-ready' : 'status-alert'}`}>素材 {record.assetsReady ? '已齐' : '缺失'}</mark>
-                    <mark class={`status-pill ${record.emailDraftReady ? 'status-ready' : 'status-warn'}`}>草稿 {record.emailDraftReady ? '已写' : '缺失'}</mark>
+      <div class="lead-pipeline" data-lead-pipeline>
+        {index.pipelineStages.map((stage) => {
+          const records = recordsByStage[stage.key] || [];
+          const isActive = stage.key === activeStageKey;
+          return (
+            <section class={`lead-stage ${isActive ? 'is-active' : ''}`} data-stage-column={stage.key}>
+              <button class="lead-stage-rail" type="button" data-stage-toggle={stage.key} aria-expanded={isActive ? 'true' : 'false'}>
+                <span>{records.length}</span>
+                <strong>{stage.label}</strong>
+              </button>
+              <div class="lead-stage-panel">
+                <header class="lead-stage-head">
+                  <div>
+                    <span class="eyebrow">Pipeline</span>
+                    <h2>{stage.label}</h2>
                   </div>
-                  <span>{record.previewUrl ? <a class="admin-inline-link" href={record.previewUrl} target="_blank" rel="noreferrer">打开 demo</a> : '未建 demo'}</span>
-                  <span>{record.proofPoints} 条 proof · 审计 {record.auditVerdict || 'n/a'}{record.auditScore != null ? ` ${record.auditScore}` : ''}</span>
-                </td>
-                <td>
-                  <span>{record.email ? <a class="admin-inline-link" href={`mailto:${record.email}`}>{record.email}</a> : record.customerEmail ? <a class="admin-inline-link" href={`mailto:${record.customerEmail}`}>{record.customerEmail}</a> : '未记邮箱'}</span>
-                  {record.phone ? <span><a class="admin-inline-link" href={`tel:${record.phone}`}>{record.phone}</a></span> : null}
-                  {(record.websiteUrl || record.contactPageUrl) ? (
-                    <span>
-                      {record.websiteUrl ? <a class="admin-inline-link" href={record.websiteUrl} target="_blank" rel="noreferrer">官网</a> : null}
-                      {record.websiteUrl && record.contactPageUrl ? ' · ' : null}
-                      {record.contactPageUrl ? <a class="admin-inline-link" href={record.contactPageUrl} target="_blank" rel="noreferrer">联系页</a> : null}
-                    </span>
-                  ) : null}
-                  {record.outreachProvider ? <span>{`${record.outreachProvider}${record.replyState === 'replied' ? ' · 已回复' : record.bounceState === 'bounced' ? ' · 退信' : ''}`}</span> : null}
-                </td>
-                <td>
-                  <span>{summarizeFlow(record)}</span>
-                  {record.discordThreadUrl || (record.projectAdminUrl && record.orderId) || record.repoUrl ? (
-                    <span class="admin-link-row">
-                      {record.discordThreadUrl ? <a class="admin-inline-link" href={record.discordThreadUrl} target="_blank" rel="noreferrer">Discord</a> : null}
-                      {record.projectAdminUrl && record.orderId ? <a class="admin-inline-link" href={record.projectAdminUrl}>项目</a> : null}
-                      {record.repoUrl ? <a class="admin-inline-link" href={record.repoUrl} target="_blank" rel="noreferrer">Repo</a> : null}
-                    </span>
-                  ) : <span>还没接 Discord / 项目 / Repo</span>}
-                  {record.openDesignProjectId ? <span>{`OD：${record.openDesignProjectId}`}</span> : null}
-                </td>
-                <td>
-                  <strong>{record.nextAction.label}</strong>
-                  <span>{summarizeAction(record)}</span>
-                  {record.latestLeadNote?.note ? <span>{`备注：${record.latestLeadNote.note}`}</span> : null}
-                  <details class="admin-inline-form">
-                    <summary>记录备注</summary>
-                    <form method="post" action="/admin/lead-note" class="admin-action-form">
-                      <input type="hidden" name="client_slug" value={record.clientSlug} />
-                      <input type="hidden" name="order_id" value={record.orderId || ''} />
-                      <input type="hidden" name="company" value={record.company || ''} />
-                      <input type="hidden" name="actor" value="profitslocal-admin" />
-                      <textarea name="note" rows="3" placeholder="记录跟进、通话结果、客户偏好。" required></textarea>
-                      <input type="date" name="next_follow_up_due" value={record.nextFollowUpDue || ''} />
-                      <button class="button secondary" type="submit">保存线索备注</button>
-                    </form>
-                  </details>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <strong>{records.length}</strong>
+                </header>
+                <div class="lead-card-list">
+                  {records.length ? records.slice(0, 12).map((record, idx) => (
+                    <article
+                      class={`lead-card ${isActive && idx === 0 ? 'is-open' : ''}`}
+                      data-lead-card
+                      data-stage={record.pipelineStage}
+                      data-search={recordSearch(record)}
+                    >
+                      <button class="lead-card-main" type="button" data-card-toggle>
+                        <span class={`status-pill status-${record.pipelineTone}`}>{record.pipelineLabel}</span>
+                        <strong>{record.company || record.clientSlug}</strong>
+                        <span>{contactLine(record)}</span>
+                        <span class="lead-card-contact">
+                          {contactEmail(record) || '无邮箱'} · {record.phone || '无电话'} · {(record.officialWebsiteUrl || record.websiteUrl) ? '有网站' : '无网站'}
+                        </span>
+                        <em>{record.nextAction.label}</em>
+                      </button>
+
+                      <div class="lead-card-detail">
+                        <section class="lead-profile-panel">
+                          <div class="lead-contact-strip">
+                            {contactChips(record).map((item) => item.href
+                              ? <a href={item.href}><span>{item.label}</span><strong>{item.value}</strong></a>
+                              : <span><span>{item.label}</span><strong>{item.value}</strong></span>)}
+                          </div>
+                          <dl class="lead-profile-facts">
+                            <div><dt>服务</dt><dd>{servicesLine(record)}</dd></div>
+                            <div><dt>社媒</dt><dd>{Array.isArray(record.socialAccounts) && record.socialAccounts.length
+                              ? record.socialAccounts.map((account, accountIdx) => (
+                                <>{accountIdx ? '、' : ''}<a href={account.url}>{account.label || account.url}</a></>
+                              ))
+                              : '待补'}</dd></div>
+                            <div><dt>观察</dt><dd>{record.leadSpecificObservation || record.outreachPrimaryProofPoint || '还没有具体观察。需要继续研究。'}</dd></div>
+                          </dl>
+                        </section>
+
+                        <section class="lead-site-audit">
+                          <div class="lead-section-head">
+                            <h3>当前网站证据</h3>
+                            {record.currentSiteAuditScore ? <span>{record.currentSiteAuditScore}分</span> : null}
+                          </div>
+                          {record.currentSiteAuditPath ? (
+                            <>
+                              <div class="lead-audit-links">
+                                {(record.officialWebsiteUrl || record.websiteUrl) ? <a href={record.officialWebsiteUrl || record.websiteUrl}>打开官网</a> : null}
+                                {record.contactPageUrl ? <a href={record.contactPageUrl}>联系页</a> : null}
+                                {record.currentSitePublicScreenshotUrl ? <a href={record.currentSitePublicScreenshotUrl}>桌面截图</a> : null}
+                                {record.currentSitePublicMobileScreenshotUrl ? <a href={record.currentSitePublicMobileScreenshotUrl}>手机截图</a> : null}
+                                {record.currentSitePublicAuditUrl ? <a href={record.currentSitePublicAuditUrl}>审计报告</a> : null}
+                                {record.currentSitePublicTextUrl ? <a href={record.currentSitePublicTextUrl}>网站原文</a> : null}
+                                {record.currentSitePublicHtmlUrl ? <a href={record.currentSitePublicHtmlUrl}>HTML 快照</a> : null}
+                              </div>
+                              {(record.currentSitePublicScreenshotUrl || record.currentSitePublicMobileScreenshotUrl) ? (
+                                <div class="lead-audit-shots">
+                                  {record.currentSitePublicScreenshotUrl ? (
+                                    <a href={record.currentSitePublicScreenshotUrl} aria-label="打开桌面截图">
+                                      <img src={record.currentSitePublicScreenshotUrl} alt={`${record.company || record.clientSlug} 当前网站桌面截图`} loading="lazy" />
+                                      <span>桌面</span>
+                                    </a>
+                                  ) : null}
+                                  {record.currentSitePublicMobileScreenshotUrl ? (
+                                    <a href={record.currentSitePublicMobileScreenshotUrl} aria-label="打开手机截图">
+                                      <img src={record.currentSitePublicMobileScreenshotUrl} alt={`${record.company || record.clientSlug} 当前网站手机截图`} loading="lazy" />
+                                      <span>手机</span>
+                                    </a>
+                                  ) : null}
+                                </div>
+                              ) : null}
+                              <p><strong>{record.currentSiteAuditVerdict || '已生成审计'}</strong></p>
+                              <ul class="lead-compact-list">
+                                {(record.currentSiteAuditIssues || []).slice(0, 3).map((issue) => <li>{issue}</li>)}
+                              </ul>
+                              <p class="micro">
+                                报告：{publicOrPath(record.currentSitePublicAuditUrl, record.currentSiteAuditMdPath) ? <a href={publicOrPath(record.currentSitePublicAuditUrl, record.currentSiteAuditMdPath)}>{publicOrPath(record.currentSitePublicAuditUrl, record.currentSiteAuditMdPath)}</a> : '无'}
+                                {' · '}
+                                原文：{publicOrPath(record.currentSitePublicTextUrl, record.currentSiteTextPath) ? <a href={publicOrPath(record.currentSitePublicTextUrl, record.currentSiteTextPath)}>{publicOrPath(record.currentSitePublicTextUrl, record.currentSiteTextPath)}</a> : '无'}
+                              </p>
+                            </>
+                          ) : (
+                            <p class="lead-warning">还没有保存当前网站截图、HTML/text 和 audit 报告。这个 lead 的判断需要先补 audit 才更可信。</p>
+                          )}
+                        </section>
+
+                        <section class="lead-handoff-brief">
+                          <div class="lead-section-head">
+                            <h3>下一步判断</h3>
+                            <span>{record.aiAssessment.confidence}</span>
+                          </div>
+                          <div class="lead-decision-summary">
+                            <div>
+                              <strong>{record.aiAssessment.label}</strong>
+                              <p>{record.customerOpportunitySummary || record.aiAssessment.reason || '还没有足够诊断。'}</p>
+                            </div>
+                            <div>
+                              <strong>Open Design 方向</strong>
+                              <p>{record.outreachSiteBrief || record.leadHeroAngle || '下一步需要先生成 site brief。'}</p>
+                            </div>
+                            <div>
+                              <strong>可以改进的地方</strong>
+                              <p>{record.currentSiteImprovements?.length ? record.currentSiteImprovements.slice(0, 3).join('；') : '需要先完成 current-site audit。'}</p>
+                            </div>
+                            <div>
+                              <strong>触达方向</strong>
+                              <p>{record.leadPrimaryCta || 'CTA 待补'} · {channelLabel(record.outreachChannelRecommendation)} · 草稿需复写</p>
+                            </div>
+                          </div>
+                          <details class="lead-open-design-input">
+                            <summary>Open Design payload</summary>
+                            <dl>
+                              {openDesignInputLines(record).map(([label, value]) => (
+                                <div><dt>{label}</dt><dd>{value}</dd></div>
+                              ))}
+                            </dl>
+                          </details>
+                        </section>
+
+                        {record.blockingReason || record.pipelineStage === 'skipped' ? (
+                          <section class="lead-inline-warning">
+                            {record.pipelineStage === 'skipped'
+                              ? `跳过原因：${record.skipReason || record.blockingReason || '未记录原因'}`
+                              : record.blockingReason}
+                          </section>
+                        ) : null}
+
+                        <details class="lead-log-details">
+                          <summary>工作日志（{record.actionLog.length} 条）</summary>
+                          <ol class="lead-action-log">
+                            {record.actionLog.length ? record.actionLog.map((entry) => (
+                              <li>
+                                <strong>{entry.label}</strong>
+                                <span>{entry.detail || '已完成'}</span>
+                                {entry.at ? <time>{entry.at}</time> : null}
+                              </li>
+                            )) : (
+                              <li><strong>等待开始</strong><span>还没有可见的研究或触达记录。</span></li>
+                            )}
+                          </ol>
+                        </details>
+
+                        <details class="lead-tool-details">
+                          <summary>工具与证据（{record.workTrace.length} 条输出）</summary>
+                          <ol class="lead-tool-log">
+                            {record.workTrace.map((entry) => (
+                              <li>
+                                <strong>{entry.tool}</strong>
+                                <span>{entry.action}</span>
+                                {entry.evidence ? entry.evidence.startsWith('http')
+                                  ? <a href={entry.evidence}>{entry.evidence}</a>
+                                  : <code>{entry.evidence}</code>
+                                  : null}
+                              </li>
+                            ))}
+                          </ol>
+                        </details>
+
+                        <details class="lead-proof-details">
+                          <summary>状态证据：档案完整度 {record.profileCompleteness.percent}%{record.profileCompleteness.missing.length ? `，缺：${record.profileCompleteness.missing.join('、')}` : ''}</summary>
+                          <div class="lead-proof-grid">
+                            {artifactLabels.map(([key, label]) => (
+                              <span class={record.artifactStatus[key] ? 'is-ready' : ''}>{label}</span>
+                            ))}
+                          </div>
+                        </details>
+
+                        {record.decisionActions.length ? (
+                          <section>
+                            <h3>人工决定</h3>
+                            <div class="lead-decision-row">
+                              {record.decisionActions.map((action) => (
+                                <form method="post" action="/admin/lead-note">
+                                  <input type="hidden" name="client_slug" value={record.clientSlug} />
+                                  <input type="hidden" name="order_id" value={record.orderId || ''} />
+                                  <input type="hidden" name="company" value={record.company || ''} />
+                                  <input type="hidden" name="actor" value="profitslocal-admin" />
+                                  <input type="hidden" name="action" value={action.action} />
+                                  <input type="hidden" name="note" value={`${action.note}${record.blockingReason ? ` 原因：${record.blockingReason}` : ''}`} />
+                                  <button class={`button ${action.tone === 'primary' ? '' : 'secondary'}`} type="submit">{action.label}</button>
+                                </form>
+                              ))}
+                            </div>
+                          </section>
+                        ) : null}
+
+                        <form method="post" action="/admin/lead-note" class="lead-note-form">
+                          <input type="hidden" name="client_slug" value={record.clientSlug} />
+                          <input type="hidden" name="order_id" value={record.orderId || ''} />
+                          <input type="hidden" name="company" value={record.company || ''} />
+                          <input type="hidden" name="actor" value="profitslocal-admin" />
+                          <textarea name="note" rows="2" placeholder="补一条人工备注，比如电话结果、客户偏好、下一次联系角度" required></textarea>
+                          <input type="date" name="next_follow_up_due" value={record.nextFollowUpDue || ''} />
+                          <button class="button secondary" type="submit">保存备注</button>
+                        </form>
+                      </div>
+                    </article>
+                  )) : <p class="lead-empty">这一阶段暂时没有线索。</p>}
+                </div>
+              </div>
+            </section>
+          );
+        })}
       </div>
 
-      <p class="admin-section-note">这里只看售前。成交后统一去 <a href="/admin/intakes/" class="admin-inline-link">项目面板</a>；当前真相源是 demo pack、草稿、provider event 和人工备注。</p>
+      <details class="admin-audit-view">
+        <summary>打开审计表格</summary>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>线索</th>
+                <th>阶段</th>
+                <th>联系方式</th>
+                <th>下一步</th>
+                <th>最近工作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {index.records.map((record) => (
+                <tr>
+                  <td><strong>{record.company || record.clientSlug}</strong><span>{record.clientSlug}</span></td>
+                  <td><mark class={`status-pill status-${record.pipelineTone}`}>{record.pipelineLabel}</mark></td>
+                  <td>{contactEmail(record) || record.phone || record.officialWebsiteUrl || record.websiteUrl || '无联系方式'}</td>
+                  <td><strong>{record.nextAction.label}</strong><span>{record.blockingReason || record.nextAction.reason}</span></td>
+                  <td>{record.actionLog[0]?.label || '无记录'}<span>{record.actionLog[0]?.detail || ''}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </div>
   </section>
 
   <script>
     const toolbar = document.querySelector('[data-admin-toolbar]');
+    const pipeline = document.querySelector('[data-lead-pipeline]');
     const searchInput = toolbar?.querySelector('[data-admin-search]');
     const viewButtons = [...(toolbar?.querySelectorAll('[data-admin-view]') || [])];
-    const rows = [...document.querySelectorAll('tbody tr')];
+    const cards = [...document.querySelectorAll('[data-lead-card]')];
     const visibleCount = toolbar?.querySelector('[data-admin-visible-count]');
+
+    document.querySelectorAll('[data-stage-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-stage-column]').forEach((column) => {
+          const active = column.dataset.stageColumn === button.dataset.stageToggle;
+          column.classList.toggle('is-active', active);
+          column.querySelector('[data-stage-toggle]')?.setAttribute('aria-expanded', active ? 'true' : 'false');
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-card-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('[data-lead-card]');
+        const column = card?.closest('[data-stage-column]');
+        column?.querySelectorAll('[data-lead-card]').forEach((item) => item.classList.toggle('is-open', item === card && !item.classList.contains('is-open')));
+      });
+    });
 
     const applyFilters = () => {
       const query = (searchInput?.value || '').trim().toLowerCase();
       const activeView = viewButtons.find((button) => button.classList.contains('is-active'))?.dataset.adminView || 'all';
       let shown = 0;
-      rows.forEach((row) => {
-        const haystack = [
-          row.dataset.client,
-          row.dataset.company,
-          row.dataset.orderId,
-          row.dataset.domain,
-        ].join(' ').toLowerCase();
-        const matchesQuery = !query || haystack.includes(query);
-        const matchesView = activeView === 'all'
-          ? true
-          : row.dataset[`view${activeView.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('')}`] === 'true';
+      cards.forEach((card) => {
+        const matchesQuery = !query || (card.dataset.search || '').includes(query);
+        const matchesView = activeView === 'all' || card.dataset.stage === activeView;
         const visible = matchesQuery && matchesView;
-        row.hidden = !visible;
+        card.hidden = !visible;
         if (visible) shown += 1;
       });
       if (visibleCount) visibleCount.textContent = `${shown} 条可见`;
+      pipeline?.classList.toggle('is-filtering', activeView !== 'all' || Boolean(query));
     };
 
     viewButtons.forEach((button) => {
