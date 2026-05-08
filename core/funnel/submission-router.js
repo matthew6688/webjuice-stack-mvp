@@ -14,6 +14,7 @@ import {
   sendDiscordWebhook,
 } from './discord.js';
 import { addExtraRevisionEntitlement, consumeRevisionEntitlement, createEntitlementFromOrder } from './entitlements.js';
+import { loadLeadRegistry, resolveLeadByEmail } from './lead-registry.js';
 import { normalizeStripeCheckoutEvent, stripeRevenueLedgerInput } from './stripe.js';
 import { normalizeTallySubmission, tallyRevenueLedgerInput } from './tally.js';
 import { assessPaidIntakeReadiness } from './paid-intake-readiness.js';
@@ -27,9 +28,10 @@ export function classifyFunnelSubmission(order) {
 
 export async function routeFunnelSubmission(payload, options = {}) {
   const provider = options.provider || detectProvider(payload);
-  const order = provider === 'stripe'
+  let order = provider === 'stripe'
     ? normalizeStripeCheckoutEvent(payload, { ...process.env, ...(options.env || {}) })
     : normalizeTallySubmission(payload, { ...process.env, ...(options.env || {}) });
+  order = resolveOrderLeadContext(order, options);
   const kind = options.kind || classifyFunnelSubmission(order);
   const caseOrder = kind === 'extra_revision' && order.parentOrderId
     ? { ...order, orderId: order.parentOrderId }
@@ -695,6 +697,35 @@ function revisionInstructions(order) {
   ];
 }
 
+function resolveOrderLeadContext(order, options = {}) {
+  const maybeUnknownClient = !order?.clientSlug || order.clientSlug === 'unknown-client' || order.clientSlug === 'unknown';
+  const hasUsefulEmail = Boolean(order?.email && order.email !== 'N/A');
+  if (!maybeUnknownClient && !hasUsefulEmail) return order;
+
+  const registry = loadLeadRegistry({
+    clientsRoot: options.clientsRoot || 'clients',
+    casesRoot: options.casesRoot || 'data/cases',
+    paidIntakesRoot: options.paidIntakesRoot || 'data/paid-intakes',
+  });
+  const match = resolveLeadByEmail(registry, order.email);
+  if (!match.ok || !match.match?.clientSlug) return order;
+
+  const lead = match.match;
+  return {
+    ...order,
+    clientSlug: maybeUnknownClient ? lead.clientSlug : order.clientSlug,
+    company: firstNonEmpty(order.company, lead.businessName, lead.company),
+    domain: firstNonEmpty(order.domain, lead.domain),
+    previewUrl: firstNonEmpty(order.previewUrl, lead.previewUrl),
+    leadMatch: {
+      reason: match.reason,
+      clientSlug: lead.clientSlug,
+      leadId: lead.leadId || '',
+      email: lead.email || lead.customerEmail || lead.leadRecipientEmail || '',
+    },
+  };
+}
+
 function writeJson(filePath, data) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
@@ -716,4 +747,11 @@ function submissionKey(kind, order) {
     return order.rawSubmissionId || `${order.orderId || 'revision'}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   }
   return order.orderId || order.rawSubmissionId || Date.now();
+}
+
+function firstNonEmpty(...values) {
+  for (const value of values) {
+    if (typeof value === 'string' && value.trim()) return value.trim();
+  }
+  return '';
 }

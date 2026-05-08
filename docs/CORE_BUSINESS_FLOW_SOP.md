@@ -164,6 +164,12 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
       - 收到 inbound reply -> `replied`
       - operator/new outbound send -> `sent` + `nextFollowUpDue`
       - provider 事件通过 unique lead email 自动匹配 `clientSlug`
+    - sale / paid handoff 现在也支持：
+      - checkout 缺少 `client_slug` 时
+      - 只要 checkout email 能唯一命中现有 lead
+      - 系统就会把 sale 重新挂回同一个 `clientSlug`，并继续创建 `website-leads` / `website-projects` workspace
+      - 最新 smoke 证据：
+        - `data/qa/lead-closure-smoke/lead-to-paid-handoff.json`
   - 后续方向：
     - 现在 `/admin/leads` 已经切到 Phase 1 lead truth source
     - 后面继续补：

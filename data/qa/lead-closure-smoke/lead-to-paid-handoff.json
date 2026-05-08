@@ -1,0 +1,605 @@
+{
+  "ok": true,
+  "root": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI",
+  "assertions": {
+    "saleOk": true,
+    "resolvedClientSlug": true,
+    "resolvedByLeadEmail": true,
+    "previewInheritedFromLead": true,
+    "leadWorkspaceCreated": true,
+    "projectWorkspaceCreated": true,
+    "leadStagePaid": true,
+    "leadRetainsContactEmail": true,
+    "leadHasProjectWorkspace": true,
+    "leadHasLeadWorkspace": true,
+    "paidCountIncremented": true,
+    "bothForumsUsed": true
+  },
+  "failed": [],
+  "sale": {
+    "order": {
+      "orderId": "cs_test_lead_to_paid_handoff",
+      "paymentStatus": "paid",
+      "repo": "unknown",
+      "template": "webjuice-restaurant",
+      "previewUrl": "https://fresh-lead-restaurant-dev.pages.dev/",
+      "clientSlug": "fresh-lead-restaurant",
+      "campaignId": null,
+      "company": "Fresh Lead Restaurant",
+      "email": "hello@freshlead.example",
+      "tier": "one_time",
+      "amount": 399,
+      "currency": "USD",
+      "feedback": "",
+      "referenceUrl": "",
+      "domain": "",
+      "parentOrderId": "",
+      "orderKind": "",
+      "assetManifestUrl": "",
+      "assetManifestPublicId": "",
+      "files": [],
+      "provider": "stripe",
+      "rawSubmissionId": "evt_test_lead_to_paid_handoff",
+      "receivedAt": "2026-05-08T03:01:28.921Z",
+      "leadMatch": {
+        "reason": "unique_match",
+        "clientSlug": "fresh-lead-restaurant",
+        "leadId": "fresh-lead-restaurant:hello@freshlead.example",
+        "email": "hello@freshlead.example"
+      }
+    },
+    "caseDiscord": {
+      "salesThreadId": "forum-leads-thread-1",
+      "revisionThreadId": "",
+      "websiteTaskThreadId": "forum-projects-thread-2",
+      "salesWorkspaceChannelId": "forum-leads",
+      "salesWorkspaceType": "forum_post",
+      "salesWorkspaceName": "[Qualified] Fresh Lead Restaurant",
+      "salesWorkspaceTagIds": [
+        "forum-leads-tag-1",
+        "forum-leads-tag-9"
+      ],
+      "revisionWorkspaceChannelId": "",
+      "revisionWorkspaceType": "",
+      "revisionWorkspaceName": "",
+      "revisionWorkspaceTagIds": [],
+      "websiteWorkspaceChannelId": "forum-projects",
+      "websiteWorkspaceType": "forum_post",
+      "websiteWorkspaceName": "[Review] Fresh Lead Restaurant",
+      "websiteWorkspaceTagIds": [
+        "forum-projects-tag-1",
+        "forum-projects-tag-5",
+        "forum-projects-tag-10"
+      ],
+      "lastChannelId": "forum-projects",
+      "lastMessageId": "forum-projects-message-2",
+      "lastMessageUrl": "https://discord.com/channels/guild-1/forum-projects-thread-2/forum-projects-message-2",
+      "lastThreadUrl": "https://discord.com/channels/guild-1/forum-projects-thread-2",
+      "threadCreatedByBot": true
+    },
+    "leadWorkspace": {
+      "ok": true,
+      "discord": {
+        "ok": true,
+        "status": 201,
+        "channelId": "forum-leads",
+        "messageId": "forum-leads-message-1",
+        "messageUrl": "https://discord.com/channels/guild-1/forum-leads-thread-1/forum-leads-message-1",
+        "threadId": "forum-leads-thread-1",
+        "threadUrl": "https://discord.com/channels/guild-1/forum-leads-thread-1",
+        "threadName": "[Qualified] Fresh Lead Restaurant",
+        "threadCreatedByBot": true,
+        "threadStyle": "forum_post",
+        "appliedTagIds": [
+          "forum-leads-tag-1",
+          "forum-leads-tag-9"
+        ],
+        "threadMessageId": "forum-leads-message-1",
+        "threadMessageUrl": "https://discord.com/channels/guild-1/forum-leads-thread-1/forum-leads-message-1",
+        "workspaceChannelId": "forum-leads"
+      },
+      "payload": {
+        "username": "ProfitsLocal Sales",
+        "embeds": [
+          {
+            "title": "New website sale: Fresh Lead Restaurant",
+            "color": 3066993,
+            "fields": [
+              {
+                "name": "Client",
+                "value": "fresh-lead-restaurant",
+                "inline": true
+              },
+              {
+                "name": "Order ID",
+                "value": "cs_test_lead_to_paid_handoff",
+                "inline": false
+              },
+              {
+                "name": "Tier",
+                "value": "one_time",
+                "inline": true
+              },
+              {
+                "name": "Amount",
+                "value": "USD 399",
+                "inline": true
+              },
+              {
+                "name": "Email",
+                "value": "hello@freshlead.example",
+                "inline": true
+              },
+              {
+                "name": "Preview",
+                "value": "https://fresh-lead-restaurant-dev.pages.dev/",
+                "inline": false
+              },
+              {
+                "name": "Task",
+                "value": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/tasks/fresh-lead-restaurant/sale-cs_test_lead_to_paid_handoff.json",
+                "inline": false
+              },
+              {
+                "name": "Case",
+                "value": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/case.json",
+                "inline": false
+              }
+            ],
+            "timestamp": "2026-05-08T03:01:28.921Z"
+          }
+        ]
+      }
+    },
+    "websiteAgentHandoff": {
+      "ok": true,
+      "discord": {
+        "ok": true,
+        "status": 201,
+        "channelId": "forum-projects",
+        "messageId": "forum-projects-message-2",
+        "messageUrl": "https://discord.com/channels/guild-1/forum-projects-thread-2/forum-projects-message-2",
+        "threadId": "forum-projects-thread-2",
+        "threadUrl": "https://discord.com/channels/guild-1/forum-projects-thread-2",
+        "threadName": "[Review] Fresh Lead Restaurant",
+        "threadCreatedByBot": true,
+        "threadStyle": "forum_post",
+        "appliedTagIds": [
+          "forum-projects-tag-1",
+          "forum-projects-tag-5",
+          "forum-projects-tag-10"
+        ],
+        "threadMessageId": "forum-projects-message-2",
+        "threadMessageUrl": "https://discord.com/channels/guild-1/forum-projects-thread-2/forum-projects-message-2",
+        "workspaceChannelId": "forum-projects"
+      },
+      "payload": {
+        "content": "<@website-agent> ProfitsLocal 网站任务交接\nkind: sale\nclient: fresh-lead-restaurant\nrepo: unknown\norder: cs_test_lead_to_paid_handoff\npreview: https://fresh-lead-restaurant-dev.pages.dev/\ncase: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/case.json\ncontext: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/context-packet.json\nbuildPacket: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/build-packet.md\ntask: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/tasks/fresh-lead-restaurant/sale-cs_test_lead_to_paid_handoff.json\nwebsiteSurvey: clients/fresh-lead-restaurant/intake/website-survey.json\nevidence: clients/fresh-lead-restaurant/evidence/evidence.json\ncontent: clients/fresh-lead-restaurant/content.restaurant.json\ndesign: clients/fresh-lead-restaurant/design.restaurant.json\nbrand: clients/fresh-lead-restaurant/brand-spec.md\nopenDesignStatus: not_created\nopenDesignProject: \nopenDesignDataDir: /Users/matthew/Developer/open-design/.od\nopenDesignConcept: clients/fresh-lead-restaurant/concept/open-design\nopenDesignManifest: clients/fresh-lead-restaurant/concept/open-design/concept-manifest.json\nproductionHandoff: clients/fresh-lead-restaurant/concept/open-design/production-handoff.json\nopenDesignContinue: npm run open-design:run-concept -- --client fresh-lead-restaurant --mode app-visible --source-url <official-site-url>\nopenDesignSync: \nexecutionMode: remote_artifact_runner\nrepoBootstrap: \n\nAction: 先阅读 build packet、website survey、case/context/task 文件，再决定如何开工。涉及视觉方案时，必须复用上面这个本地 Open Design project/dataDir，不要擅自新开一个项目。Open Design 有更新后，先 sync/build production handoff，再 port 到 Web",
+        "allowed_mentions": {
+          "parse": []
+        }
+      }
+    }
+  },
+  "lead": {
+    "leadId": "fresh-lead-restaurant:hello@freshlead.example",
+    "clientSlug": "fresh-lead-restaurant",
+    "businessName": "Fresh Lead Restaurant",
+    "company": "Fresh Lead Restaurant",
+    "niche": "restaurant",
+    "status": "paid",
+    "previewUrl": "https://fresh-lead-restaurant-dev.pages.dev/",
+    "address": "123 Test Street, Brisbane QLD 4000",
+    "phone": "+61 7 3000 0000",
+    "email": "hello@freshlead.example",
+    "customerEmail": "hello@freshlead.example",
+    "leadRecipientEmail": "",
+    "contactEmails": [
+      "hello@freshlead.example"
+    ],
+    "websiteUrl": "https://freshlead.example",
+    "contactPageUrl": "",
+    "googleMapsUrl": "",
+    "googlePlaceId": "",
+    "menuUrl": "",
+    "reservationUrl": "",
+    "logoUrl": "",
+    "hasWebsite": true,
+    "evidenceSources": [],
+    "qualificationStatus": "qualified",
+    "outreachStatus": "paid",
+    "replyStatus": "",
+    "followUpDue": "2026-05-11",
+    "notes": [],
+    "provider": "agentic-email",
+    "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=fresh-lead-thread",
+    "domain": "",
+    "paymentStatus": "paid",
+    "orderId": "cs_test_lead_to_paid_handoff",
+    "orderTier": "one_time",
+    "amount": 399,
+    "currency": "USD",
+    "proofPoints": 3,
+    "assetsReady": true,
+    "auditVerdict": "",
+    "auditScore": null,
+    "emailDraftReady": true,
+    "emailArtifacts": [
+      {
+        "path": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/clients/fresh-lead-restaurant/outreach/email/01-fresh-lead.json",
+        "to": "hello@freshlead.example",
+        "subject": "Fresh Lead Restaurant preview",
+        "generatedAt": "2026-05-08T09:05:00.000Z",
+        "dryRun": true,
+        "sendResult": {
+          "status": "sent",
+          "sentAt": "2026-05-08T09:06:00.000Z",
+          "provider": "agentic-email",
+          "sourceSystem": "agentic-email",
+          "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=fresh-lead-thread",
+          "externalMessageId": "fresh-lead-message-001",
+          "nextFollowUpDue": "2026-05-11"
+        },
+        "providerEvent": null,
+        "leadWorkspace": null,
+        "outreachState": {
+          "provider": "agentic-email",
+          "sourceSystem": "agentic-email",
+          "status": "sent",
+          "sentAt": "2026-05-08T09:06:00.000Z",
+          "sendId": "",
+          "externalCampaignId": "",
+          "externalLeadId": "",
+          "externalMessageId": "fresh-lead-message-001",
+          "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=fresh-lead-thread",
+          "replyState": "",
+          "nextFollowUpDue": "2026-05-11",
+          "bounceState": "",
+          "unsubscribeState": "",
+          "lastEventType": "",
+          "lastEventAt": "",
+          "replySnippet": ""
+        }
+      }
+    ],
+    "leadNotes": [],
+    "latestLeadNote": null,
+    "latestEmailArtifact": {
+      "path": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/clients/fresh-lead-restaurant/outreach/email/01-fresh-lead.json",
+      "to": "hello@freshlead.example",
+      "subject": "Fresh Lead Restaurant preview",
+      "generatedAt": "2026-05-08T09:05:00.000Z",
+      "dryRun": true,
+      "sendResult": {
+        "status": "sent",
+        "sentAt": "2026-05-08T09:06:00.000Z",
+        "provider": "agentic-email",
+        "sourceSystem": "agentic-email",
+        "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=fresh-lead-thread",
+        "externalMessageId": "fresh-lead-message-001",
+        "nextFollowUpDue": "2026-05-11"
+      },
+      "providerEvent": null,
+      "leadWorkspace": null,
+      "outreachState": {
+        "provider": "agentic-email",
+        "sourceSystem": "agentic-email",
+        "status": "sent",
+        "sentAt": "2026-05-08T09:06:00.000Z",
+        "sendId": "",
+        "externalCampaignId": "",
+        "externalLeadId": "",
+        "externalMessageId": "fresh-lead-message-001",
+        "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=fresh-lead-thread",
+        "replyState": "",
+        "nextFollowUpDue": "2026-05-11",
+        "bounceState": "",
+        "unsubscribeState": "",
+        "lastEventType": "",
+        "lastEventAt": "",
+        "replySnippet": ""
+      }
+    },
+    "outreachSent": true,
+    "outreachSentAt": "2026-05-08T09:06:00.000Z",
+    "outreachSendId": "",
+    "outreachProvider": "agentic-email",
+    "outreachSourceSystem": "agentic-email",
+    "outreachCampaignId": "",
+    "outreachLeadId": "",
+    "outreachMessageId": "fresh-lead-message-001",
+    "outreachThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=fresh-lead-thread",
+    "replyState": "",
+    "replySnippet": "",
+    "nextFollowUpDue": "2026-05-11",
+    "bounceState": "",
+    "outreachPackPath": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/clients/fresh-lead-restaurant/outreach/outreach-pack.json",
+    "outreachMarkdownPath": "",
+    "outreachEmailDir": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/clients/fresh-lead-restaurant/outreach/email",
+    "websiteSurveyPath": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/clients/fresh-lead-restaurant/intake/website-survey.json",
+    "contentPath": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/clients/fresh-lead-restaurant/content.restaurant.json",
+    "casePath": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/case.json",
+    "caseStatus": "paid_task_queued",
+    "paidIntakePath": "",
+    "paidIntakeStatus": "",
+    "readinessStatus": "",
+    "readiness": "website_ready_to_build",
+    "missing": [],
+    "salesThreadId": "forum-leads-thread-1",
+    "salesWorkspaceChannelId": "forum-leads",
+    "salesWorkspaceName": "[Qualified] Fresh Lead Restaurant",
+    "salesWorkspaceTagIds": [
+      "forum-leads-tag-1",
+      "forum-leads-tag-9"
+    ],
+    "websiteTaskThreadId": "forum-projects-thread-2",
+    "projectCaseId": "fresh-lead-restaurant_cs_test_lead_to_paid_handoff",
+    "updatedAt": "2026-05-08T09:05:00.000Z",
+    "caseUpdatedAt": "2026-05-08T03:01:28.958Z",
+    "paidIntakeUpdatedAt": "",
+    "stageKey": "paid",
+    "stageLabel": "Paid",
+    "stageTone": "ready",
+    "nextAction": {
+      "label": "转正式项目执行",
+      "reason": "客户已经付款，下一步应该在 website-projects 里推进 build/review/live。"
+    },
+    "blocker": ""
+  },
+  "counts": {
+    "total": 1,
+    "demoReady": 1,
+    "assetsReady": 1,
+    "emailDraftReady": 1,
+    "outreachSent": 1,
+    "blocked": 0,
+    "paid": 1
+  },
+  "calls": [
+    {
+      "url": "https://discord.com/api/v10/channels/forum-leads",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "url": "https://discord.com/api/v10/channels/forum-leads",
+      "method": "PATCH",
+      "body": {
+        "available_tags": [
+          {
+            "name": "restaurant",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "roofing",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "qualified",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "demo-ready",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "cold-outreach",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "replied",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "bounced",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "follow-up-due",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "paid",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "not-fit",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://discord.com/api/v10/channels/forum-leads",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "url": "https://discord.com/api/v10/channels/forum-leads/threads",
+      "method": "POST",
+      "body": {
+        "name": "[Qualified] Fresh Lead Restaurant",
+        "auto_archive_duration": 10080,
+        "applied_tags": [
+          "forum-leads-tag-1",
+          "forum-leads-tag-9"
+        ],
+        "message": {
+          "username": "ProfitsLocal Sales",
+          "embeds": [
+            {
+              "title": "New website sale: Fresh Lead Restaurant",
+              "color": 3066993,
+              "fields": [
+                {
+                  "name": "Client",
+                  "value": "fresh-lead-restaurant",
+                  "inline": true
+                },
+                {
+                  "name": "Order ID",
+                  "value": "cs_test_lead_to_paid_handoff",
+                  "inline": false
+                },
+                {
+                  "name": "Tier",
+                  "value": "one_time",
+                  "inline": true
+                },
+                {
+                  "name": "Amount",
+                  "value": "USD 399",
+                  "inline": true
+                },
+                {
+                  "name": "Email",
+                  "value": "hello@freshlead.example",
+                  "inline": true
+                },
+                {
+                  "name": "Preview",
+                  "value": "https://fresh-lead-restaurant-dev.pages.dev/",
+                  "inline": false
+                },
+                {
+                  "name": "Task",
+                  "value": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/tasks/fresh-lead-restaurant/sale-cs_test_lead_to_paid_handoff.json",
+                  "inline": false
+                },
+                {
+                  "name": "Case",
+                  "value": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/case.json",
+                  "inline": false
+                }
+              ],
+              "timestamp": "2026-05-08T03:01:28.921Z"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "url": "https://discord.com/api/v10/channels/forum-projects",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "url": "https://discord.com/api/v10/channels/forum-projects",
+      "method": "PATCH",
+      "body": {
+        "available_tags": [
+          {
+            "name": "restaurant",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "roofing",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "open-design",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "dev-preview",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "review",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "revision",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "approved",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "live",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "domain-blocked",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "waiting-customer",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          },
+          {
+            "name": "waiting-us",
+            "moderated": false,
+            "emoji_id": null,
+            "emoji_name": null
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://discord.com/api/v10/channels/forum-projects",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "url": "https://discord.com/api/v10/channels/forum-projects/threads",
+      "method": "POST",
+      "body": {
+        "name": "[Review] Fresh Lead Restaurant",
+        "auto_archive_duration": 10080,
+        "applied_tags": [
+          "forum-projects-tag-1",
+          "forum-projects-tag-5",
+          "forum-projects-tag-10"
+        ],
+        "message": {
+          "content": "<@website-agent> ProfitsLocal 网站任务交接\nkind: sale\nclient: fresh-lead-restaurant\nrepo: unknown\norder: cs_test_lead_to_paid_handoff\npreview: https://fresh-lead-restaurant-dev.pages.dev/\ncase: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/case.json\ncontext: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/context-packet.json\nbuildPacket: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/cases/fresh-lead-restaurant/cs_test_lead_to_paid_handoff/build-packet.md\ntask: /var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/lead-to-paid-handoff-vzIbsI/data/tasks/fresh-lead-restaurant/sale-cs_test_lead_to_paid_handoff.json\nwebsiteSurvey: clients/fresh-lead-restaurant/intake/website-survey.json\nevidence: clients/fresh-lead-restaurant/evidence/evidence.json\ncontent: clients/fresh-lead-restaurant/content.restaurant.json\ndesign: clients/fresh-lead-restaurant/design.restaurant.json\nbrand: clients/fresh-lead-restaurant/brand-spec.md\nopenDesignStatus: not_created\nopenDesignProject: \nopenDesignDataDir: /Users/matthew/Developer/open-design/.od\nopenDesignConcept: clients/fresh-lead-restaurant/concept/open-design\nopenDesignManifest: clients/fresh-lead-restaurant/concept/open-design/concept-manifest.json\nproductionHandoff: clients/fresh-lead-restaurant/concept/open-design/production-handoff.json\nopenDesignContinue: npm run open-design:run-concept -- --client fresh-lead-restaurant --mode app-visible --source-url <official-site-url>\nopenDesignSync: \nexecutionMode: remote_artifact_runner\nrepoBootstrap: \n\nAction: 先阅读 build packet、website survey、case/context/task 文件，再决定如何开工。涉及视觉方案时，必须复用上面这个本地 Open Design project/dataDir，不要擅自新开一个项目。Open Design 有更新后，先 sync/build production handoff，再 port 到 Web",
+          "allowed_mentions": {
+            "parse": []
+          }
+        }
+      }
+    }
+  ]
+}

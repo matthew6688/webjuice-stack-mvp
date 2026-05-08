@@ -105,8 +105,10 @@ function deriveStageTone(stageKey) {
 function deriveNextAction(record) {
   if (record.paymentStatus === 'paid') {
     return {
-      label: '转正式项目执行',
-      reason: '客户已经付款，下一步应该在 website-projects 里推进 build/review/live。',
+      label: record.websiteTaskThreadId ? '转正式项目执行' : '补项目 workspace',
+      reason: record.websiteTaskThreadId
+        ? '客户已经付款，下一步应该在 website-projects 里推进 build/review/live。'
+        : '客户已经付款，但还没有 website-projects workspace。先补正式项目交接，再继续 build/review/live。',
     };
   }
   if (record.replyState === 'replied') {
@@ -179,10 +181,6 @@ function buildCounts(records) {
     if (record.assetsReady) acc.assetsReady += 1;
     if (record.emailDraftReady) acc.emailDraftReady += 1;
     if (record.outreachSent) acc.outreachSent += 1;
-    if (record.stageKey === 'follow_up_due') acc.followUpDue += 1;
-    if (record.stageKey === 'replied') acc.replied += 1;
-    if (record.stageKey === 'bounced') acc.bounced += 1;
-    if (record.paymentStatus === 'paid') acc.paid += 1;
     if (record.blocker) acc.blocked += 1;
     return acc;
   }, {
@@ -191,10 +189,6 @@ function buildCounts(records) {
     assetsReady: 0,
     emailDraftReady: 0,
     outreachSent: 0,
-    followUpDue: 0,
-    replied: 0,
-    bounced: 0,
-    paid: 0,
     blocked: 0,
   });
 }

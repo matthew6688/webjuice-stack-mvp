@@ -28,6 +28,7 @@
 - `A2` fresh 项目从 review 到 live + domain
 - `A3` 真实 revision 闭环
 - `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
+- fresh lead 从 outreach 到 paid 真闭环
 
 ### IN PROGRESS
 
@@ -38,7 +39,6 @@
 
 ### PENDING
 
-- fresh lead 从 outreach 到 paid 真闭环
 - `/admin/leads` replied / follow-up due / paid handoff 再细化
 
 ### BACKLOG
@@ -270,23 +270,30 @@ lead / intake
 - 当前已完成：
   - `website-leads` / `website-projects` forum 已接通
   - admin 已新增 `/admin/leads`
+  - fresh lead 可在 checkout 缺少 `client_slug` 时，仅靠 unique lead email 回到同一个 lead/client 轨道
+  - fresh lead 的 `sale` 事件已经能同时创建：
+    - `website-leads` workspace
+    - `website-projects` workspace
+    - paid lead truth source 记录
   - 目前可以从真实数据看到：
     - `demo ready`
     - `draft ready`
     - `outreach sent`（当 live send 已回写到 email artifact）
     - `replied`（当 provider metadata / webhook event 已写回 artifact）
     - `bounced`（当 provider metadata / webhook event 已写回 artifact）
+    - `follow-up due`（当 lead note 或 provider metadata 记录了下一次跟进时间）
     - `paid`
     - `missing assets`
     - `missing outreach draft`
 - 还缺：
-  - `next follow-up due`
   - external cold email platform live webhook ingest
-  - agentic inbox reply state
+  - Agentic Inbox live UI 自己触发 event 的最终证据
 - 为什么重要：
   - 这决定后面大量项目时 Discord 是否仍然清晰可管
 - 是否需要显示到 admin：
   - **需要**
+- 最新 hard evidence：
+  - `data/qa/lead-closure-smoke/lead-to-paid-handoff.json`
 
 ## C3. Lead truth source / lead profile schema
 
@@ -660,6 +667,12 @@ lead / intake
     - worker: `agentic-inbox-profitslocal`
     - version: `d40fd7ca-5a8d-4a04-b050-7271ce0ae8ed`
     - secret: `PROFITSLOCAL_OUTREACH_WEBHOOK_SECRET`
+  - production 主站已验证：
+    - unique lead email 可以自动 resolve 到正确 `clientSlug`
+    - provider event 可以真实写回 remote outreach artifact
+  - 关键证据：
+    - `data/qa/agentic-inbox-webhook-deploy-summary.json`
+    - `data/qa/agentic-inbox-production-routing-summary.json`
 - 剩余 hard evidence：
   - 至少一条事件真正由 live Agentic Inbox UI 触发，而不是直接 POST 到主站 endpoint
   - 如有 case/forum 绑定，再补一条 artifact / case / admin / forum 全写回证据
