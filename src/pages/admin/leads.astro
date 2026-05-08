@@ -1,0 +1,218 @@
+---
+import Layout from '../../layouts/AdminLayout.astro';
+import { siteConfig } from '../../config/site';
+import { LEAD_ADMIN_VIEWS, loadLeadOutreachIndex } from '../../../core/funnel/lead-outreach-index.js';
+
+const index = loadLeadOutreachIndex();
+const savedViews = [
+  ['all', LEAD_ADMIN_VIEWS.all.label],
+  ['demo_ready', LEAD_ADMIN_VIEWS.demo_ready.label],
+  ['draft_ready', LEAD_ADMIN_VIEWS.draft_ready.label],
+  ['paid', LEAD_ADMIN_VIEWS.paid.label],
+  ['missing_assets', LEAD_ADMIN_VIEWS.missing_assets.label],
+  ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
+];
+const urgent = index.records
+  .filter((record) => record.blocker || record.stageKey === 'paid')
+  .slice(0, 6);
+---
+
+<Layout title={`Lead admin - ${siteConfig.name}`} description="Lead and cold outreach operations for ProfitsLocal." active="leads">
+  <section class="poster-section admin-section">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">Internal ops</p>
+          <h1>Leads & outreach</h1>
+          <p class="lede">Track demo readiness, outreach drafts, and which prospects have already converted into paid projects.</p>
+        </div>
+        <div class="admin-count">
+          <strong>{index.counts.total}</strong>
+          <span>Lead records</span>
+        </div>
+      </div>
+
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">Demo ready</span>
+          <strong>{index.counts.demoReady || 0}</strong>
+          <p>Preview exists and proof assets are complete enough to start outreach.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Draft ready</span>
+          <strong>{index.counts.draft_ready || 0}</strong>
+          <p>Cold outreach draft exists. We can send manually or through the future agentic inbox flow.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Paid</span>
+          <strong>{index.counts.paid || 0}</strong>
+          <p>These leads should move into website-projects execution, not stay stuck in outreach.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Blocked</span>
+          <strong>{index.counts.blocked || 0}</strong>
+          <p>Lead is missing either outreach assets, draft email, or a clear contact path.</p>
+        </article>
+      </div>
+
+      <div class="admin-finance-grid">
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Needs Action</span>
+              <h2>Lead queue</h2>
+            </div>
+          </div>
+          <div class="admin-urgent-list">
+            {urgent.length ? urgent.map((record) => (
+              <article class="admin-urgent-card">
+                <strong>{record.company || record.clientSlug}</strong>
+                <span>{record.nextAction.label}</span>
+                <code>{record.blocker || record.stageLabel}</code>
+              </article>
+            )) : <p class="micro">No urgent lead blocker right now.</p>}
+          </div>
+        </section>
+
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Policy</span>
+              <h2>What this page tracks</h2>
+            </div>
+          </div>
+          <ul class="admin-list">
+            <li><strong>Transactional email</strong><span>Stays on Resend. Not shown here as cold outreach send truth.</span></li>
+            <li><strong>Cold outreach</strong><span>Current truth source is demo pack + draft artifact. Large-scale sending will come from a separate system.</span></li>
+            <li><strong>Forum visibility</strong><span>`website-leads` remains the Discord container; this page is the admin summary.</span></li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="admin-toolbar" data-admin-toolbar>
+        <div class="admin-toolbar-group">
+          <span class="admin-toolbar-label">Saved views</span>
+          <div class="admin-view-pills">
+            {savedViews.map(([key, label], idx) => (
+              <button type="button" class={`admin-view-pill ${idx === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
+            ))}
+          </div>
+        </div>
+        <div class="admin-toolbar-group admin-toolbar-right">
+          <label class="admin-search">
+            <span class="admin-toolbar-label">Search</span>
+            <input type="search" placeholder="Client, email, domain" data-admin-search />
+          </label>
+          <p class="micro" data-admin-visible-count>{index.records.length} visible</p>
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Lead</th>
+              <th>Stage</th>
+              <th>Demo proof</th>
+              <th>Contact</th>
+              <th>Discord / flow</th>
+              <th>Next action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {index.records.map((record) => (
+              <tr
+                data-client={record.clientSlug}
+                data-company={record.company || ''}
+                data-order-id={record.orderId || ''}
+                data-domain={record.domain || ''}
+                data-status={record.paymentStatus || ''}
+                data-stage={record.stageKey}
+                data-view-demo-ready={record.stageKey === 'demo_ready' ? 'true' : 'false'}
+                data-view-draft-ready={record.emailDraftReady ? 'true' : 'false'}
+                data-view-paid={record.paymentStatus === 'paid' ? 'true' : 'false'}
+                data-view-missing-assets={record.assetsReady ? 'false' : 'true'}
+                data-view-missing-email={record.emailDraftReady ? 'false' : 'true'}
+              >
+                <td>
+                  <strong>{record.company || record.clientSlug}</strong>
+                  <span>{record.clientSlug}</span>
+                  <span class="admin-mono">{record.orderId || 'no order yet'}</span>
+                </td>
+                <td>
+                  <mark class={`status-pill status-${record.stageTone}`}>{record.stageLabel}</mark>
+                  {record.paymentStatus === 'paid' ? <mark class="status-pill status-ready">Paid</mark> : null}
+                  <span>{record.caseStatus || record.paidIntakeStatus || 'lead only'}</span>
+                </td>
+                <td>
+                  <div class="admin-health-pills">
+                    <mark class={`status-pill ${record.previewUrl ? 'status-ready' : 'status-warn'}`}>Preview {record.previewUrl ? 'ready' : 'missing'}</mark>
+                    <mark class={`status-pill ${record.assetsReady ? 'status-ready' : 'status-alert'}`}>Assets {record.assetsReady ? 'ready' : 'missing'}</mark>
+                    <mark class={`status-pill ${record.emailDraftReady ? 'status-ready' : 'status-warn'}`}>Draft {record.emailDraftReady ? 'ready' : 'missing'}</mark>
+                  </div>
+                  <span>{record.previewUrl || 'No preview recorded'}</span>
+                  <span>{record.proofPoints} proof point(s) · audit {record.auditVerdict || 'n/a'}{record.auditScore != null ? ` ${record.auditScore}` : ''}</span>
+                </td>
+                <td>
+                  <span>{record.customerEmail || record.leadRecipientEmail || 'no email recorded'}</span>
+                  <span>{record.domain || 'no domain recorded'}</span>
+                  <span>{record.latestEmailArtifact?.subject || 'no outreach draft subject'}</span>
+                </td>
+                <td>
+                  <span>{record.salesWorkspaceName || 'website-leads forum not recorded'}</span>
+                  <span>{record.salesThreadId || 'no lead thread id'}</span>
+                  <span>{record.websiteTaskThreadId ? 'project workspace exists' : 'not yet in website-projects'}</span>
+                </td>
+                <td>
+                  <strong>{record.nextAction.label}</strong>
+                  <span>{record.nextAction.reason}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const toolbar = document.querySelector('[data-admin-toolbar]');
+    const searchInput = toolbar?.querySelector('[data-admin-search]');
+    const viewButtons = [...(toolbar?.querySelectorAll('[data-admin-view]') || [])];
+    const rows = [...document.querySelectorAll('tbody tr')];
+    const visibleCount = toolbar?.querySelector('[data-admin-visible-count]');
+
+    const applyFilters = () => {
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      const activeView = viewButtons.find((button) => button.classList.contains('is-active'))?.dataset.adminView || 'all';
+      let shown = 0;
+      rows.forEach((row) => {
+        const haystack = [
+          row.dataset.client,
+          row.dataset.company,
+          row.dataset.orderId,
+          row.dataset.domain,
+        ].join(' ').toLowerCase();
+        const matchesQuery = !query || haystack.includes(query);
+        const matchesView = activeView === 'all'
+          ? true
+          : row.dataset[`view${activeView.split('_').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('')}`] === 'true';
+        const visible = matchesQuery && matchesView;
+        row.hidden = !visible;
+        if (visible) shown += 1;
+      });
+      if (visibleCount) visibleCount.textContent = `${shown} visible`;
+    };
+
+    viewButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        viewButtons.forEach((item) => item.classList.remove('is-active'));
+        button.classList.add('is-active');
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener('input', applyFilters);
+    applyFilters();
+  </script>
+</Layout>

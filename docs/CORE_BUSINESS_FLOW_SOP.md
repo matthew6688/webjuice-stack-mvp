@@ -83,6 +83,36 @@
 - `website-leads`: `1501187038706401290`
 - `website-projects`: `1501945763650080899`
 
+### Admin 页面（当前）
+
+现在 admin 里已经有这几页：
+
+- `/admin`
+- `/admin/leads`
+- `/admin/intakes`
+- `/admin/finance`
+- `/admin/queue`
+
+其中：
+
+- `/admin/leads`
+  - 当前负责说真话的售前状态：
+    - `demo ready`
+    - `draft ready`
+    - `paid`
+    - `missing assets`
+    - `missing outreach draft`
+  - 当前数据源：
+    - `clients/<client>/outreach/outreach-pack.json`
+    - `clients/<client>/outreach/email/*.json`
+    - `data/cases/*/*/case.json`
+    - `data/paid-intakes/*/*.json`
+  - 当前**还没有**接上的状态：
+    - `outreach sent`
+    - `replied`
+    - `next follow-up due`
+    - external cold email platform reply state
+
 为什么这样做：
 
 - 普通 text channel thread 在大量项目下不直观，容易被藏起来。

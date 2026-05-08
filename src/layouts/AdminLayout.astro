@@ -5,7 +5,7 @@ import { siteConfig } from '../config/site';
 interface Props {
   title: string;
   description?: string;
-  active?: 'overview' | 'intakes' | 'finance' | 'queue';
+  active?: 'overview' | 'intakes' | 'finance' | 'queue' | 'leads';
 }
 
 const {
@@ -16,6 +16,7 @@ const {
 
 const adminNav = [
   { key: 'overview', label: 'Overview', href: '/admin' },
+  { key: 'leads', label: 'Leads', href: '/admin/leads' },
   { key: 'intakes', label: 'Intakes', href: '/admin/intakes' },
   { key: 'finance', label: 'Finance', href: '/admin/finance' },
   { key: 'queue', label: 'Queue', href: '/admin/queue' },
