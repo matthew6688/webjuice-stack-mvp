@@ -78,6 +78,14 @@ if (boolArg(args, 'send-email') && publishResult.ok && !publishResult.dryRun && 
     emailMetadata: { taskId: task.id, kind: 'live_published' },
   });
 }
+if (customerEmail.ok && caseFile && !publishResult.dryRun) {
+  recordCaseNotification(caseFile.paths, {
+    type: 'live_published_customer_email_sent',
+    ok: true,
+    channel: 'resend',
+    reason: 'live_published',
+  });
+}
 
 const discordNotification = await sendLivePublishedDiscord({
   args,
@@ -177,6 +185,9 @@ async function sendLivePublishedDiscord({ args, task, caseFile, publishResult, d
       liveWorkspace = { ok: false, error: error.message || String(error) };
     }
     discord.workspaceUpdate = { approvedWorkspace, liveWorkspace };
+    discord.workspaceChannelId = liveWorkspace?.workspaceChannelId || approvedWorkspace?.workspaceChannelId || caseFile.discord?.websiteWorkspaceChannelId || '';
+    discord.threadName = liveWorkspace?.threadName || approvedWorkspace?.threadName || caseFile.discord?.websiteWorkspaceName || '';
+    discord.appliedTagIds = liveWorkspace?.appliedTagIds || approvedWorkspace?.appliedTagIds || caseFile.discord?.websiteWorkspaceTagIds || [];
     const record = recordCaseNotification(caseFile.paths, {
       type: 'live_publish_discord_sent',
       kind: 'website_task',

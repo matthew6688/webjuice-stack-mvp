@@ -170,6 +170,7 @@ function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
       lastMessageId: next.lastMessageId || '',
       lastMessageUrl: next.lastMessageUrl || '',
       lastThreadUrl: next.lastThreadUrl || '',
+      threadCreatedByBot: Boolean(next.threadCreatedByBot),
     };
   }
   const threadId = discord.threadId || discord.channelId || '';

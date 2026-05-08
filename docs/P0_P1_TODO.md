@@ -98,6 +98,7 @@ lead / intake
 - 已完成样本：
   - `dark-shepherd-restaurant`
 - 关键证据：
+  - `data/qa/fresh-dark-shepherd-live/approval-live-domain-summary.json`
   - `data/qa/fresh-dark-shepherd-live/approval-workflow-rerun-2.json`
   - `data/qa/fresh-dark-shepherd-live/domain-request.json`
   - `data/qa/fresh-dark-shepherd-live/domain-status-active.json`

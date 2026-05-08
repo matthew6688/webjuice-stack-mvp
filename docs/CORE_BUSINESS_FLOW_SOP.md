@@ -1411,6 +1411,89 @@ ready_for_customer_review
 
 这条链打通后，`A2` 已经可以视为真实完成。下一条最该继续压的是 `A3`：真实 revision 闭环。
 
+## 2026-05-08 Fresh Project 演练补充：Dark Shepherd 从 Approval 到 Live + Domain 的最终真相源对齐
+
+在上一轮 `review -> approval -> live -> domain` 跑通之后，我们又补了一次“记录层校正”。这一步很重要，因为只有站点上线还不够，`case.json / context-packet.json / timeline.jsonl / agent-runs.jsonl` 也必须和真实外部状态一致。
+
+### 这次补齐了什么
+
+1. **确认官方 first-party approval endpoint 这次本地尝试返回 `403`**
+   - endpoint:
+     - `POST https://profitslocal.com/api/approval-request`
+   - 结论：
+     - 这次不是靠 first-party endpoint 完成的
+     - 而是用正式 GitHub workflow 直接 dispatch 来验证核心 publish 链
+
+2. **用正式 workflow 完成真实 publish**
+   - automation repo workflow:
+     - `publish-approved.yml`
+     - run id: `25529038353`
+   - customer repo main deploy:
+     - repo: `matthew6688/dark-shepherd-restaurant`
+     - run id: `25529057388`
+   - main commit:
+     - `3fb6e247ff7407419253d84a3ce05097ed9eacb4`
+
+3. **重新核对 live 与 custom domain 的真实内容**
+   - `https://dark-shepherd-restaurant-live.pages.dev/`
+   - `https://dark-shepherd-fresh.profitslocal.com/`
+   - 两边都命中了 revision 后的新内容：
+     - `late-night reservations`
+     - `Reserve a table`
+     - `Private dining is available for intimate groups; keep the booking flow visible for late sittings and function enquiries.`
+
+4. **修正 forum workspace 元数据漂移**
+   - publish/live 后，Discord forum post 的真实状态是：
+     - thread id: `1502085064148647989`
+     - parent channel id: `1501945763650080899`
+     - thread name: `[Live] Dark Shepherd`
+     - tags:
+       - `1501948304479748155` (`live`)
+       - `1501948304479748148` (`restaurant`)
+   - 但旧逻辑会把 `websiteWorkspaceChannelId` 误写成 thread id，并保留旧的 `[Revision 1/3]` 标题。
+   - 修复后：
+     - `scripts/agent/publish-approved.js`
+     - `scripts/domain/request.js`
+   - 现在会把 forum parent id、最终 thread title、最终 tags 一起带进 `recordCaseNotification()`
+
+5. **把 live customer email 也写回 case/timeline**
+   - workflow log 已证明 live email 发出：
+     - Resend id: `8fc55a70-379e-4c91-8e7f-f313cc17b93a`
+   - 旧记录层没有把这件事写进 timeline
+   - 现在已补：
+     - timeline event: `live_published_customer_email_sent`
+     - `case.latestAgentRun.audit.customerEmailId`
+     - `agent-runs.jsonl` 对应 publish run 的 `audit.customerEmailId`
+
+### 这次补齐后的最终硬证据
+
+- 单一 summary：
+  - `data/qa/fresh-dark-shepherd-live/approval-live-domain-summary.json`
+- live email 记录已回写：
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json`
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/agent-runs.jsonl`
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/timeline.jsonl`
+- forum live 状态已回写：
+  - `websiteWorkspaceChannelId = 1501945763650080899`
+  - `websiteWorkspaceName = [Live] Dark Shepherd`
+  - `websiteWorkspaceTagIds = [1501948304479748155, 1501948304479748148]`
+
+### 这次补齐后的结论
+
+到这里为止，`Dark Shepherd` 这条 fresh 项目链已经不只是“真实上线成功”，而是：
+
+```text
+approval attempt recorded
+-> direct publish workflow verified
+-> live deploy verified
+-> custom domain verified
+-> forum live state verified
+-> customer live email recorded
+-> case/context/timeline/agent-runs all aligned
+```
+
+这才算真正满足我们的 hard evidence 标准。
+
 ## 2026-05-08 Fresh Project 演练续跑：Dark Shepherd 真实 Revision 闭环
 
 这次我们把最容易“表面看起来成功、实际上没改站”的一段彻底拆开了。

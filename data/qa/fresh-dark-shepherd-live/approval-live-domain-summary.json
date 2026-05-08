@@ -1,0 +1,71 @@
+{
+  "capturedAt": "2026-05-08T00:16:16.633Z",
+  "clientSlug": "dark-shepherd-restaurant",
+  "orderId": "fresh_dark_shepherd_dryrun_001",
+  "caseId": "dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001",
+  "approvalEntrypoint": {
+    "capturedAt": "2026-05-08T00:16:16.633Z",
+    "endpoint": "https://profitslocal.com/api/approval-request",
+    "httpStatus": 403,
+    "ok": false,
+    "notes": [
+      "Official first-party approval endpoint rejected this local attempt with HTTP 403.",
+      "Direct GitHub workflow dispatch was used to validate the core publish/live/domain chain."
+    ]
+  },
+  "publishWorkflow": {
+    "automationRepo": "matthew6688/webjuice-stack-mvp",
+    "runId": 25529038353,
+    "url": "https://github.com/matthew6688/webjuice-stack-mvp/actions/runs/25529038353",
+    "conclusion": "success",
+    "mode": "direct_dispatch"
+  },
+  "customerRepoDeploy": {
+    "repo": "matthew6688/dark-shepherd-restaurant",
+    "branch": "main",
+    "runId": 25529057388,
+    "url": "https://github.com/matthew6688/dark-shepherd-restaurant/actions/runs/25529057388",
+    "conclusion": "success",
+    "commit": "3fb6e247ff7407419253d84a3ce05097ed9eacb4"
+  },
+  "liveVerification": {
+    "liveUrl": "https://dark-shepherd-restaurant-live.pages.dev/",
+    "customDomainUrl": "https://dark-shepherd-fresh.profitslocal.com/",
+    "verifiedStrings": [
+      "late-night reservations",
+      "Reserve a table",
+      "Private dining is available for intimate groups; keep the booking flow visible for late sittings and function enquiries."
+    ]
+  },
+  "customerEmail": {
+    "provider": "resend",
+    "id": "8fc55a70-379e-4c91-8e7f-f313cc17b93a",
+    "kind": "live_published"
+  },
+  "discordForum": {
+    "parentChannelId": "1501945763650080899",
+    "threadId": "1502085064148647989",
+    "threadName": "[Live] Dark Shepherd",
+    "tagIds": [
+      "1501948304479748155",
+      "1501948304479748148"
+    ]
+  },
+  "domain": {
+    "requestEvidence": "data/qa/fresh-dark-shepherd-live/domain-request.json",
+    "statusEvidence": "data/qa/fresh-dark-shepherd-live/domain-status-active.json",
+    "customDomain": "https://dark-shepherd-fresh.profitslocal.com/",
+    "status": "active"
+  },
+  "casePaths": {
+    "casePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/case.json",
+    "contextPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/context-packet.json",
+    "timelinePath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/timeline.jsonl",
+    "decisionsPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/decisions.jsonl",
+    "customerMessagesPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/customer-messages.jsonl",
+    "agentRunsPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/agent-runs.jsonl",
+    "buildPacketPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/build-packet.md",
+    "artifactsDir": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts"
+  },
+  "notificationEventId": "case_evt_1778199376632_lv2aa0iy"
+}

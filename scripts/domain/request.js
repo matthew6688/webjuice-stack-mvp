@@ -144,6 +144,9 @@ async function maybeSendDomainDiscord({ args, result }) {
   discord.threadId = threadId;
   discord.threadReused = true;
   discord.workspaceUpdate = workspaceUpdate;
+  discord.workspaceChannelId = workspaceUpdate?.workspaceChannelId || caseFile.discord?.websiteWorkspaceChannelId || '';
+  discord.threadName = workspaceUpdate?.threadName || caseFile.discord?.websiteWorkspaceName || '';
+  discord.appliedTagIds = workspaceUpdate?.appliedTagIds || caseFile.discord?.websiteWorkspaceTagIds || [];
   const record = recordCaseNotification(caseFile.paths, {
     type: 'domain_status_discord_sent',
     kind: 'website_task',
