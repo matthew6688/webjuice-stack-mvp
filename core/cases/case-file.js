@@ -329,6 +329,7 @@ export function recordCaseNotification(casePaths, notification, { dryRun = false
     ok: notification.ok !== false,
     channel: notification.channel || 'discord',
     reason: notification.reason || '',
+    note: notification.note || '',
     discordChannelId: notification.discord?.channelId || '',
     discordThreadId: notification.discord?.threadId || '',
     discordMessageId: notification.discord?.messageId || '',

@@ -1,0 +1,49 @@
+name: Record Lead Note
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        required: true
+        type: string
+      dedupe_key:
+        required: true
+        type: string
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Write payload
+        run: printf '%s' '${{ inputs.payload }}' > /tmp/lead-note.json
+
+      - name: Record lead note
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: npm run funnel:record-lead-note -- --input /tmp/lead-note.json --send-discord true
+
+      - name: Commit note updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          git add clients data/cases
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Record lead note (${{ inputs.dedupe_key }})"
+          git push origin HEAD:main

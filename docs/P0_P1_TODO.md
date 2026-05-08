@@ -563,6 +563,12 @@ lead / intake
 - 仍未完成：
   - Agentic Inbox 侧真正自动 webhook/POST 配置
   - `follow-up due` 的 saved views / queue 细化
+  - `opened / clicked / unsubscribed / spam complaint` 事件来源与回流
+- 已补齐：
+  - lead-level notes（人工 follow-up、电话结果、特殊背景、下一步承诺）
+  - notes 回写到 `/admin/leads`
+  - notes 回写到 `website-leads` forum（若 workspace 已存在）
+  - notes 回写到 paid case timeline（若 case 已存在）
 
 ---
 

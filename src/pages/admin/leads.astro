@@ -9,12 +9,13 @@ const savedViews = [
   ['demo_ready', LEAD_ADMIN_VIEWS.demo_ready.label],
   ['draft_ready', LEAD_ADMIN_VIEWS.draft_ready.label],
   ['outreach_sent', LEAD_ADMIN_VIEWS.outreach_sent.label],
+  ['follow_up_due', LEAD_ADMIN_VIEWS.follow_up_due.label],
   ['paid', LEAD_ADMIN_VIEWS.paid.label],
   ['missing_assets', LEAD_ADMIN_VIEWS.missing_assets.label],
   ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
 ];
 const urgent = index.records
-  .filter((record) => record.blocker || record.stageKey === 'paid')
+  .filter((record) => record.blocker || record.stageKey === 'paid' || record.stageKey === 'follow_up_due')
   .slice(0, 6);
 ---
 
@@ -48,6 +49,11 @@ const urgent = index.records
           <span class="admin-summary-label">Outreach sent</span>
           <strong>{index.counts.outreachSent || 0}</strong>
           <p>Live send has been recorded on the outreach artifact. Provider-specific reply and follow-up state can layer on top.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Follow-up due</span>
+          <strong>{index.counts.followUpDue || 0}</strong>
+          <p>These leads were sent already and still need a next-touch action recorded in the outreach workflow.</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Replied / bounced</span>
@@ -97,6 +103,7 @@ const urgent = index.records
             <li><strong>Cold outreach</strong><span>Current truth source is demo pack + draft artifact + normalized provider metadata written back to outreach email artifacts.</span></li>
             <li><strong>Current live path</strong><span>Agentic Inbox is the current cold outreach operator path. Instantly / Smartlead stay planned until webhook ingest is live.</span></li>
             <li><strong>Provider model</strong><span>Resend remains transactional only. Cold outreach can swap providers later without changing the admin truth model.</span></li>
+            <li><strong>Lead notes</strong><span>Manual follow-up notes and next follow-up dates can be recorded here now, then reused when the lead becomes a paid project.</span></li>
             <li><strong>Forum visibility</strong><span>`website-leads` remains the Discord container; this page is the admin summary.</span></li>
             <li><strong>Settings source</strong><span>Use <a href="/admin/settings/">/admin/settings/</a> to see which outreach providers are configured, live, or still planned.</span></li>
           </ul>
@@ -145,6 +152,7 @@ const urgent = index.records
                 data-view-demo-ready={record.stageKey === 'demo_ready' ? 'true' : 'false'}
                 data-view-draft-ready={record.emailDraftReady ? 'true' : 'false'}
                 data-view-outreach-sent={record.outreachSent ? 'true' : 'false'}
+                data-view-follow-up-due={record.stageKey === 'follow_up_due' ? 'true' : 'false'}
                 data-view-paid={record.paymentStatus === 'paid' ? 'true' : 'false'}
                 data-view-missing-assets={record.assetsReady ? 'false' : 'true'}
                 data-view-missing-email={record.emailDraftReady ? 'false' : 'true'}
@@ -175,6 +183,8 @@ const urgent = index.records
                   <span>{record.latestEmailArtifact?.subject || 'no outreach draft subject'}</span>
                   <span>{record.outreachSentAt ? `sent ${record.outreachSentAt}` : 'send not recorded'}</span>
                   <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · replied' : record.bounceState === 'bounced' ? ' · bounced' : ''}` : 'provider not recorded yet'}</span>
+                  <span>{record.nextFollowUpDue ? `next follow-up ${record.nextFollowUpDue}` : 'next follow-up not recorded'}</span>
+                  <span>{record.latestLeadNote?.note ? `latest note: ${record.latestLeadNote.note}` : 'no lead note yet'}</span>
                 </td>
                 <td>
                   <span>{record.salesWorkspaceName || 'website-leads forum not recorded'}</span>
@@ -184,6 +194,15 @@ const urgent = index.records
                 <td>
                   <strong>{record.nextAction.label}</strong>
                   <span>{record.nextAction.reason}</span>
+                  <form method="post" action="/admin/lead-note" class="admin-action-form">
+                    <input type="hidden" name="client_slug" value={record.clientSlug} />
+                    <input type="hidden" name="order_id" value={record.orderId || ''} />
+                    <input type="hidden" name="company" value={record.company || ''} />
+                    <input type="hidden" name="actor" value="profitslocal-admin" />
+                    <textarea name="note" rows="3" placeholder="Add follow-up note, call result, or special context." required></textarea>
+                    <input type="date" name="next_follow_up_due" value={record.nextFollowUpDue || ''} />
+                    <button class="button secondary" type="submit">Save lead note</button>
+                  </form>
                 </td>
               </tr>
             ))}

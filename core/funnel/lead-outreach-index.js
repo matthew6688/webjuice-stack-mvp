@@ -1,12 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import { normalizeOutreachArtifactState } from './outreach-provider-state.js';
+import { readLeadNotes } from './lead-notes.js';
 
 export const LEAD_ADMIN_VIEWS = {
   all: { label: '全部 leads' },
   demo_ready: { label: 'Demo ready' },
   draft_ready: { label: 'Draft ready' },
   outreach_sent: { label: 'Outreach sent' },
+  follow_up_due: { label: 'Follow-up due' },
   paid: { label: 'Paid' },
   missing_assets: { label: 'Missing assets' },
   missing_email: { label: 'Missing outreach draft' },
@@ -42,6 +44,8 @@ export function matchesLeadView(record, view = 'all') {
       return record.emailDraftReady;
     case 'outreach_sent':
       return record.outreachSent === true;
+    case 'follow_up_due':
+      return Boolean(record.nextFollowUpDue) && record.replyState !== 'replied' && record.bounceState !== 'bounced' && record.paymentStatus !== 'paid';
     case 'paid':
       return record.paymentStatus === 'paid';
     case 'missing_assets':
@@ -79,6 +83,9 @@ function ingestOutreachArtifacts(records, clientsRoot) {
     record.auditScore = Number.isFinite(pack?.audit?.score) ? pack.audit.score : (record.auditScore ?? null);
     record.emailDraftReady = emailArtifacts.length > 0;
     record.emailArtifacts = emailArtifacts;
+    const leadNotes = readLeadNotes(clientSlug, { clientsRoot });
+    record.leadNotes = leadNotes;
+    record.latestLeadNote = leadNotes[0] || null;
     record.latestEmailArtifact = emailArtifacts[0] || null;
     const sentArtifact = emailArtifacts.find((artifact) => artifact.outreachState.status === 'sent');
     const repliedArtifact = emailArtifacts.find((artifact) => artifact.outreachState.replyState === 'replied' || artifact.outreachState.status === 'replied');
@@ -90,7 +97,7 @@ function ingestOutreachArtifacts(records, clientsRoot) {
     record.outreachSourceSystem = sentArtifact?.outreachState?.sourceSystem || repliedArtifact?.outreachState?.sourceSystem || bouncedArtifact?.outreachState?.sourceSystem || '';
     record.replyState = repliedArtifact ? 'replied' : (record.replyState || '');
     record.replySnippet = repliedArtifact?.outreachState?.replySnippet || '';
-    record.nextFollowUpDue = repliedArtifact?.outreachState?.nextFollowUpDue || sentArtifact?.outreachState?.nextFollowUpDue || record.nextFollowUpDue || '';
+    record.nextFollowUpDue = repliedArtifact?.outreachState?.nextFollowUpDue || sentArtifact?.outreachState?.nextFollowUpDue || leadNotes[0]?.nextFollowUpDue || record.nextFollowUpDue || '';
     record.bounceState = bouncedArtifact?.outreachState?.bounceState || record.bounceState || '';
     record.outreachCampaignId = sentArtifact?.outreachState?.externalCampaignId || repliedArtifact?.outreachState?.externalCampaignId || bouncedArtifact?.outreachState?.externalCampaignId || '';
     record.outreachLeadId = sentArtifact?.outreachState?.externalLeadId || repliedArtifact?.outreachState?.externalLeadId || bouncedArtifact?.outreachState?.externalLeadId || '';
@@ -188,6 +195,7 @@ function deriveStageKey(record) {
   if (record.paymentStatus === 'paid') return 'paid';
   if (record.replyState === 'replied') return 'replied';
   if (record.bounceState === 'bounced') return 'bounced';
+  if (record.nextFollowUpDue) return 'follow_up_due';
   if (record.outreachSent) return 'outreach_sent';
   if (record.emailDraftReady && record.assetsReady && record.previewUrl) return 'draft_ready';
   if (record.assetsReady && record.previewUrl) return 'demo_ready';
@@ -200,6 +208,7 @@ function deriveStageLabel(stageKey) {
     paid: 'Paid',
     replied: 'Replied',
     bounced: 'Bounced',
+    follow_up_due: 'Follow-up Due',
     outreach_sent: 'Outreach Sent',
     draft_ready: 'Draft Ready',
     demo_ready: 'Demo Ready',
@@ -213,6 +222,7 @@ function deriveStageTone(stageKey) {
     paid: 'ready',
     replied: 'ready',
     bounced: 'alert',
+    follow_up_due: 'warn',
     outreach_sent: 'working',
     draft_ready: 'working',
     demo_ready: 'ready',
@@ -238,6 +248,12 @@ function deriveNextAction(record) {
     return {
       label: '修正邮箱或替换发送通道',
       reason: 'cold outreach 已记录 bounce，下一步应该核对邮箱、名单质量，或换发送平台重新触达。',
+    };
+  }
+  if (record.nextFollowUpDue) {
+    return {
+      label: '执行下一次 follow-up',
+      reason: `当前记录的下一次跟进时间是 ${record.nextFollowUpDue}。发送跟进后，记得补一条 lead note 或 provider event。`,
     };
   }
   if (record.outreachSent) {
@@ -304,6 +320,8 @@ function ensureRecord(records, clientSlug) {
       auditScore: null,
       emailDraftReady: false,
       emailArtifacts: [],
+      leadNotes: [],
+      latestLeadNote: null,
       latestEmailArtifact: null,
       outreachSent: false,
       outreachSentAt: '',
@@ -370,6 +388,7 @@ function buildCounts(records) {
     if (record.assetsReady) acc.assetsReady += 1;
     if (record.emailDraftReady) acc.emailDraftReady += 1;
     if (record.outreachSent) acc.outreachSent += 1;
+    if (record.nextFollowUpDue && record.replyState !== 'replied' && record.bounceState !== 'bounced' && record.paymentStatus !== 'paid') acc.followUpDue += 1;
     if (record.replyState === 'replied') acc.replied += 1;
     if (record.bounceState === 'bounced') acc.bounced += 1;
     if (record.paymentStatus === 'paid') acc.paid += 1;
@@ -381,6 +400,7 @@ function buildCounts(records) {
     assetsReady: 0,
     emailDraftReady: 0,
     outreachSent: 0,
+    followUpDue: 0,
     replied: 0,
     bounced: 0,
     paid: 0,

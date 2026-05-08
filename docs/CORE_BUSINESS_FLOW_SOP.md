@@ -101,6 +101,7 @@
     - `demo ready`
     - `draft ready`
     - `outreach sent`
+    - `follow-up due`
     - `replied`
     - `bounced`
     - `paid`
@@ -118,9 +119,19 @@
       - `providerEvent -> replied / bounced`
       - `provider / sourceSystem / externalCampaignId / externalLeadId / externalMessageId / externalThreadUrl`
   - 当前**还没有完全接好的状态**：
-    - `next follow-up due`
     - external provider live webhook ingest（Instantly / Smartlead）
     - Agentic Inbox 侧真正自动 POST 到 provider event 入口
+    - lead-level notes（人工 follow-up 备注、通话结论、客户要求、下一次跟进约定）
+  - 当前已支持的人工售前记忆：
+    - `/admin/leads` 可提交 lead note
+    - 可选填写 `next follow-up due`
+    - note 会写回：
+      - `clients/<client>/outreach/lead-notes.jsonl`
+      - 如果已有 case，则写入 case timeline
+      - 如果已有 `website-leads` forum workspace，则发一条同步消息
+  - 自动状态切换说明：
+    - `follow-up due` 在收到 `replied / bounced / paid` 之后会自动让位给更高优先级状态
+    - 如果人工在外部邮箱完成跟进，但没有 provider event 回流，admin 不会自动知道，仍需手动补 note 或 event
 
 - `/admin/intakes`
   - 当前已经能显示：
