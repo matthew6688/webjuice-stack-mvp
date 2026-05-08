@@ -106,6 +106,7 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 - `/admin/leads` 只看售前线索；
 - `/admin/intakes` 只看已成交后的正式项目；
 - 这样线索和项目不会混在同一张后台表里。
+- 以上 admin 风格与中英文统一，已经做过 production 页面命中验证。
 
 其中：
 
