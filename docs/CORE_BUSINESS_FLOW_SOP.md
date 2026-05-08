@@ -112,10 +112,34 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
     - `missing assets`
     - `missing outreach draft`
   - 当前数据源：
-    - `clients/<client>/outreach/outreach-pack.json`
-    - `clients/<client>/outreach/email/*.json`
-    - `data/cases/*/*/case.json`
-    - `data/paid-intakes/*/*.json`
+    - `core/funnel/lead-registry.js` 聚合的 Phase 1 lead truth source
+    - 真相源底层目前读取：
+      - `clients/<client>/outreach/outreach-pack.json`
+      - `clients/<client>/outreach/email/*.json`
+      - `clients/<client>/outreach/lead-notes.jsonl`
+      - `clients/<client>/intake/website-survey.json`
+      - `clients/<client>/evidence/evidence.json`
+      - `data/cases/*/*/case.json`
+      - `data/paid-intakes/*/*.json`
+  - Phase 1 已落地字段：
+    - `leadId`
+    - `clientSlug`
+    - `businessName`
+    - `address`
+    - `phone`
+    - `email`
+    - `websiteUrl`
+    - `contactPageUrl`
+    - `googleMapsUrl`
+    - `googlePlaceId`
+    - `menuUrl`
+    - `qualificationStatus`
+    - `outreachStatus`
+    - `replyStatus`
+    - `followUpDue`
+    - `notes`
+    - `provider`
+    - `externalThreadUrl`
   - 其中 `outreach sent` 的当前真相源：
     - `clients/<client>/outreach/email/*.json` 里的标准化 provider metadata
     - 当前已经可以从 artifact 推导：
@@ -137,8 +161,11 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
     - `follow-up due` 在收到 `replied / bounced / paid` 之后会自动让位给更高优先级状态
     - 如果人工在外部邮箱完成跟进，但没有 provider event 回流，admin 不会自动知道，仍需手动补 note 或 event
   - 后续方向：
-    - 现在 `/admin/leads` 仍主要从 outreach artifact 反推状态
-    - 后面要逐步演进成更明确的 lead truth source
+    - 现在 `/admin/leads` 已经切到 Phase 1 lead truth source
+    - 后面继续补：
+      - social/contact person 字段
+      - provider webhook 自动回流
+      - reply matching / paid handoff 更强约束
     - 具体 schema 和 Phase 1/2/3 见：
       - `docs/LEAD_PROFILE_SCHEMA.md`
 

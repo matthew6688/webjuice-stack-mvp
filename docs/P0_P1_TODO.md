@@ -20,6 +20,35 @@
 
 ---
 
+## 当前执行面板
+
+### DONE
+
+- `A1` fresh 项目从 0 到 dev preview
+- `A2` fresh 项目从 review 到 live + domain
+- `A3` 真实 revision 闭环
+- `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
+
+### IN PROGRESS
+
+- `B4` Open Design pipeline 状态映射到我们的项目状态
+- `C2` 售前 lead / outreach / forum 流转继续补齐
+- `C3` lead truth source / lead profile schema（Phase 1 已落地，后续字段与自动回流继续补）
+
+### PENDING
+
+- Agentic Inbox 侧真正自动 POST / webhook 配置
+- fresh lead 从 outreach 到 paid 真闭环
+- `/admin/leads` replied / follow-up due / paid handoff 再细化
+
+### BACKLOG
+
+- `opened / clicked / unsubscribed / spam complaint`
+- Instantly / Smartlead live integration
+- Open Design pipeline 视觉借鉴到 admin / task 分类
+
+---
+
 ## 当前总目标
 
 把 ProfitsLocal 的网站业务收成一个稳定闭环：
@@ -261,7 +290,7 @@ lead / intake
 
 ## C3. Lead truth source / lead profile schema
 
-- 状态：`PENDING`
+- 状态：`IN PROGRESS`
 - 目标：
   - 从“由 outreach artifact 反推状态”逐步演进成明确的 lead truth source
   - 先做 MVP core fields，再按阶段补强
@@ -288,6 +317,12 @@ lead / intake
   - `notes[]`
   - `provider`
   - `externalThreadUrl`
+- 当前已完成：
+  - `core/funnel/lead-registry.js` 已作为 Phase 1 lead truth source 落地
+  - `/admin/leads` 已从独立 lead truth source 读取，不再只在页面层拼接状态
+  - 已支持 `resolveLeadByEmail()`：
+    - 唯一邮箱 -> 唯一匹配
+    - 重复邮箱 -> 返回 `ambiguous_email`
 - 为什么重要：
   - 决定 reply matching、follow-up、paid handoff 能不能围绕同一个 lead 继续推进
 - 是否需要显示到 admin：
@@ -576,16 +611,16 @@ lead / intake
 
 ## 现在最该做
 
-1. `A3` 真实 revision 闭环再跑一条
-2. `B4` Open Design pipeline 状态映射到我们的项目状态
-3. `C2` 售前 lead -> paid 的 forum 流转继续补齐
+1. `C2` 售前 lead -> paid 的 forum 流转继续补齐
+2. Agentic Inbox 自动 webhook / POST 配置
+3. `B4` Open Design pipeline 状态映射到我们的项目状态
 
 ## 然后做
 
-4. `F1` 文档审计，把 forum / email / admin 的过期描述统一掉
-5. `E2` cold outreach admin 面板
-6. `E3 + E4` milestone / Open Design 状态接进 admin
-7. `D3` agentic email 如何回流 case / forum / admin
+4. fresh lead 从 outreach 到 paid 真闭环
+5. `F1` 文档审计，把 forum / email / admin 的过期描述统一掉
+6. `E2` cold outreach admin 面板
+7. `E3 + E4` milestone / Open Design 状态接进 admin
 
 ## D2.1 Agentic Inbox 先作为第一类 cold outreach provider 接入
 

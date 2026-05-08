@@ -10,6 +10,8 @@ const savedViews = [
   ['draft_ready', LEAD_ADMIN_VIEWS.draft_ready.label],
   ['outreach_sent', LEAD_ADMIN_VIEWS.outreach_sent.label],
   ['follow_up_due', LEAD_ADMIN_VIEWS.follow_up_due.label],
+  ['replied', LEAD_ADMIN_VIEWS.replied.label],
+  ['bounced', LEAD_ADMIN_VIEWS.bounced.label],
   ['paid', LEAD_ADMIN_VIEWS.paid.label],
   ['missing_assets', LEAD_ADMIN_VIEWS.missing_assets.label],
   ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
@@ -58,7 +60,7 @@ const urgent = index.records
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Replied / bounced</span>
           <strong>{(index.counts.replied || 0) + (index.counts.bounced || 0)}</strong>
-          <p>Future Instantly / Smartlead reply and bounce events should land here once their webhooks are wired in.</p>
+          <p>Reply and bounce state now land on the same lead truth source. Future providers should plug into this model, not replace it.</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Paid</span>
@@ -86,6 +88,7 @@ const urgent = index.records
                 <strong>{record.company || record.clientSlug}</strong>
                 <span>{record.nextAction.label}</span>
                 <code>{record.blocker || record.stageLabel}</code>
+                <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || 'no email'}</span>
               </article>
             )) : <p class="micro">No urgent lead blocker right now.</p>}
           </div>
@@ -153,6 +156,8 @@ const urgent = index.records
                 data-view-draft-ready={record.emailDraftReady ? 'true' : 'false'}
                 data-view-outreach-sent={record.outreachSent ? 'true' : 'false'}
                 data-view-follow-up-due={record.stageKey === 'follow_up_due' ? 'true' : 'false'}
+                data-view-replied={record.stageKey === 'replied' ? 'true' : 'false'}
+                data-view-bounced={record.stageKey === 'bounced' ? 'true' : 'false'}
                 data-view-paid={record.paymentStatus === 'paid' ? 'true' : 'false'}
                 data-view-missing-assets={record.assetsReady ? 'false' : 'true'}
                 data-view-missing-email={record.emailDraftReady ? 'false' : 'true'}
@@ -178,8 +183,10 @@ const urgent = index.records
                   <span>{record.proofPoints} proof point(s) · audit {record.auditVerdict || 'n/a'}{record.auditScore != null ? ` ${record.auditScore}` : ''}</span>
                 </td>
                 <td>
-                  <span>{record.customerEmail || record.leadRecipientEmail || 'no email recorded'}</span>
+                  <span>{record.email || record.customerEmail || record.leadRecipientEmail || 'no email recorded'}</span>
+                  <span>{record.phone || 'no phone recorded'}</span>
                   <span>{record.domain || 'no domain recorded'}</span>
+                  <span>{record.websiteUrl || 'no website recorded'}</span>
                   <span>{record.latestEmailArtifact?.subject || 'no outreach draft subject'}</span>
                   <span>{record.outreachSentAt ? `sent ${record.outreachSentAt}` : 'send not recorded'}</span>
                   <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · replied' : record.bounceState === 'bounced' ? ' · bounced' : ''}` : 'provider not recorded yet'}</span>
