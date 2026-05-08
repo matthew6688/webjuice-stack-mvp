@@ -36,6 +36,15 @@ try {
     assets: { screenshots: { desktop: 'a.png', mobile: 'b.png' }, video: 'c.mp4' },
   }), 'utf8');
   fs.writeFileSync(path.join('clients', 'alpha-bakery', 'outreach', 'outreach-pack.md'), '# Alpha outreach\n', 'utf8');
+  fs.mkdirSync(path.join('clients', 'alpha-bakery', 'concept', 'open-design'), { recursive: true });
+  fs.writeFileSync(path.join('clients', 'alpha-bakery', 'concept', 'open-design', 'concept-manifest.json'), JSON.stringify({
+    projectId: 'od_alpha_test',
+    lastRunId: 'run_alpha_test',
+    status: {
+      status: 'needs_input',
+      completionMode: 'native_pending',
+    },
+  }), 'utf8');
   fs.writeFileSync(path.join('data', 'cases', 'alpha-bakery', 'cs_test_alpha', 'delivery-qa.json'), JSON.stringify({
     readyForCustomerReview: true,
   }), 'utf8');
@@ -87,10 +96,12 @@ try {
     includesStageSummary: record.stageSummary.label === 'Review Ready',
     includesMilestoneSummary: record.milestoneSummary.currentKey === 'domain_waiting_customer',
     includesMilestoneCount: record.milestoneSummary.completedCount >= 3,
-    includesBlockerSummary: record.blockerSummary.primary === '还没有绑定 Open Design project',
-    includesNextActionSummary: record.nextActionSummary.label === '创建/绑定 Open Design',
+    includesBlockerSummary: record.blockerSummary.primary === 'Open Design 需要补输入',
+    includesNextActionSummary: record.nextActionSummary.label === '补 Open Design 输入',
     includesWorkflowSummary: record.artifactSummary.latestTask?.id === 'task_alpha_001',
     includesWorkflowRunSummary: record.workflowSummary.latestWorkflowRunId === 12346,
+    includesOpenDesignPipelineLabel: record.artifactSummary.openDesignPipelineLabel === 'Needs input',
+    includesStageSummaryForNeedsInput: record.stageSummary.label === 'Review Ready' || record.stageSummary.label.startsWith('Open Design ·'),
   };
   const failed = Object.entries(assertions).filter(([, ok]) => !ok).map(([name]) => name);
   const result = { ok: failed.length === 0, root, assertions, failed, record, counts: index.counts };

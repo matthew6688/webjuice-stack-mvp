@@ -195,6 +195,9 @@ function buildArtifactSummary(record, filePath = '') {
     openDesignLastRunId: conceptManifest?.lastRunId || '',
     openDesignStatus: conceptManifest?.status?.status || '',
     openDesignCompletionMode: conceptManifest?.status?.completionMode || '',
+    openDesignPipelineState: mapOpenDesignPipelineState(conceptManifest?.status?.status, Boolean(conceptManifest?.projectId)),
+    openDesignPipelineLabel: mapOpenDesignPipelineLabel(conceptManifest?.status?.status, Boolean(conceptManifest?.projectId)),
+    openDesignPipelineTone: mapOpenDesignPipelineTone(conceptManifest?.status?.status, Boolean(conceptManifest?.projectId)),
   };
 }
 
@@ -206,7 +209,7 @@ function buildStageSummary(record, artifactSummary) {
   if (artifactSummary.deliveryQaReady || status === 'v1_delivered') return stage('review_ready', 'Review Ready', 'ready');
   if (status === 'v1_generation_started' || artifactSummary.caseStatus === 'agent_completed') return stage('building', 'Building', 'working');
   if (artifactSummary.productionHandoffReady) return stage('port_to_dev', 'Port To Dev', 'working');
-  if (artifactSummary.openDesignBound) return stage('open_design', 'Open Design Ready', 'working');
+  if (artifactSummary.openDesignBound) return stage('open_design', `Open Design · ${artifactSummary.openDesignPipelineLabel || 'Running'}`, artifactSummary.openDesignPipelineTone || 'working');
   if ((record.readiness?.status || '') === 'intake_ready_for_review') return stage('website_ready', 'Website Ready', 'working');
   if (record.readiness?.missing?.length) return stage('intake_blocked', 'Intake Blocked', 'blocked');
   return stage('intake', 'Intake', 'working');
@@ -220,6 +223,12 @@ function buildNextActionSummary(record, artifactSummary) {
     return action('创建/绑定 Open Design', '还没有 Open Design project。', `npm run open-design:run-concept -- --client ${record.clientSlug} --mode app-visible --source-url <official-site-url>`);
   }
   if (!artifactSummary.productionHandoffReady) {
+    if (artifactSummary.openDesignPipelineState === 'needs_input') {
+      return action('补 Open Design 输入', 'Open Design 现在是 Needs input。', '回到 Open Design app 或 Discord continuation，把缺失信息补进去后再继续生成 production handoff。');
+    }
+    if (artifactSummary.openDesignPipelineState === 'failed') {
+      return action('重跑或接管 Open Design', 'Open Design run 处于 Failed。', `先检查 concept manifest / run-status，再决定是否重跑 ${record.clientSlug} 的 concept 或在 app 里手工接管。`);
+    }
     return action('生成 production handoff', '视觉概念还没有变成生产 handoff。', `npm run open-design:build-production-handoff -- --client ${record.clientSlug} --target-branch dev`);
   }
   if (!artifactSummary.deliveryQaReady) {
@@ -247,6 +256,8 @@ function buildMilestoneSummary(record, artifactSummary) {
     milestone('lead_collected', 'Lead collected', true, eventAt(timelineEntries, [] ) || record.createdAt || record.updatedAt || ''),
     milestone('website_ready', 'Website ready', isWebsiteReady(record, artifactSummary), eventAt(timelineEntries, ['confirm_website_ready', 'readiness_confirmed']) || ''),
     milestone('open_design_started', 'Open Design started', Boolean(artifactSummary.openDesignBound), eventAt(timelineEntries, ['open_design_started']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('open_design_needs_input', 'Open Design needs input', artifactSummary.openDesignPipelineState === 'needs_input', eventAt(timelineEntries, ['open_design_needs_input']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
+    milestone('open_design_failed', 'Open Design failed', artifactSummary.openDesignPipelineState === 'failed', eventAt(timelineEntries, ['open_design_failed']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
     milestone('open_design_succeeded', 'Open Design succeeded', artifactSummary.openDesignStatus === 'succeeded', eventAt(timelineEntries, ['open_design_succeeded']) || fileUpdatedAt(artifactSummary.conceptManifestPath)),
     milestone('ported_to_repo_dev', 'Ported to repo dev', Boolean(artifactSummary.productionHandoffReady), eventAt(timelineEntries, ['agent_run_completed']) || fileUpdatedAt(artifactSummary.productionHandoffPath)),
     milestone('dev_preview_ready', 'Dev preview ready', Boolean(record.previewUrl), eventAt(timelineEntries, ['mark_v1_delivered', 'admin_marked_v1_delivered']) || ''),
@@ -275,6 +286,8 @@ function buildBlockerSummary(record, artifactSummary) {
   const blockers = [];
   if (record.readiness?.missing?.length) blockers.push(`缺少 intake 信息：${record.readiness.missing.join(', ')}`);
   if (!artifactSummary.openDesignBound) blockers.push('还没有绑定 Open Design project');
+  if (artifactSummary.openDesignPipelineState === 'needs_input') blockers.push('Open Design 需要补输入');
+  if (artifactSummary.openDesignPipelineState === 'failed') blockers.push('Open Design run 失败');
   if (artifactSummary.openDesignBound && !artifactSummary.productionHandoffReady) blockers.push('还没有 production handoff');
   if (!artifactSummary.deliveryQaReady) blockers.push('还没有通过 delivery QA');
   if ((record.status || '') === 'revision_requested') blockers.push('客户 revision 待处理');
@@ -343,10 +356,42 @@ function deriveCurrentMilestoneKey(record, artifactSummary) {
   if (artifactSummary.deliveryQaReady) return 'delivery_qa_passed';
   if (record.previewUrl) return 'dev_preview_ready';
   if (artifactSummary.productionHandoffReady) return 'ported_to_repo_dev';
+  if (artifactSummary.openDesignPipelineState === 'needs_input') return 'open_design_needs_input';
+  if (artifactSummary.openDesignPipelineState === 'failed') return 'open_design_failed';
   if (artifactSummary.openDesignStatus === 'succeeded') return 'open_design_succeeded';
   if (artifactSummary.openDesignBound) return 'open_design_started';
   if (isWebsiteReady(record, artifactSummary)) return 'website_ready';
   return 'lead_collected';
+}
+
+function mapOpenDesignPipelineState(status, bound) {
+  const normalized = String(status || '').trim().toLowerCase();
+  if (!bound) return 'not_started';
+  if (['needs_input', 'need_input', 'awaiting_input', 'requires_input'].includes(normalized)) return 'needs_input';
+  if (['failed', 'error', 'cancelled', 'canceled', 'timed_out', 'timeout'].includes(normalized)) return 'failed';
+  if (normalized === 'succeeded') return 'succeeded';
+  if (['running', 'queued', 'started', 'in_progress'].includes(normalized)) return 'running';
+  return 'running';
+}
+
+function mapOpenDesignPipelineLabel(status, bound) {
+  return {
+    not_started: 'Not started',
+    running: 'Running',
+    needs_input: 'Needs input',
+    succeeded: 'Succeeded',
+    failed: 'Failed',
+  }[mapOpenDesignPipelineState(status, bound)] || 'Running';
+}
+
+function mapOpenDesignPipelineTone(status, bound) {
+  return {
+    not_started: 'info',
+    running: 'working',
+    needs_input: 'warn',
+    succeeded: 'ready',
+    failed: 'alert',
+  }[mapOpenDesignPipelineState(status, bound)] || 'working';
 }
 
 function isWebsiteReady(record, artifactSummary) {

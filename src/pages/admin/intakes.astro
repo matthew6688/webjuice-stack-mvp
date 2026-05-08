@@ -319,17 +319,21 @@ const savedViews = [
                 <td>
                   <div class="admin-health-pills">
                     <mark class={`status-pill ${
-                      record.artifactSummary?.openDesignStatus === 'succeeded'
+                      record.artifactSummary?.openDesignPipelineTone === 'ready'
                         ? 'status-ready'
-                        : (record.artifactSummary?.openDesignBound ? 'status-working' : 'status-alert')
+                        : record.artifactSummary?.openDesignPipelineTone === 'warn'
+                          ? 'status-warn'
+                          : record.artifactSummary?.openDesignPipelineTone === 'alert'
+                            ? 'status-alert'
+                            : (record.artifactSummary?.openDesignBound ? 'status-working' : 'status-alert')
                     }`}>
-                      OD {record.artifactSummary?.openDesignStatus || (record.artifactSummary?.openDesignBound ? 'bound' : 'missing')}
+                      OD {record.artifactSummary?.openDesignPipelineLabel || (record.artifactSummary?.openDesignBound ? 'Running' : 'Missing')}
                     </mark>
                     <mark class={`status-pill ${record.artifactSummary?.deliveryQaReady ? 'status-ready' : 'status-warn'}`}>QA {record.artifactSummary?.deliveryQaReady ? 'pass' : 'pending'}</mark>
                     <mark class={`status-pill ${record.artifactSummary?.outreachAssetsReady ? 'status-ready' : 'status-warn'}`}>Outreach {record.artifactSummary?.outreachAssetsReady ? 'ready' : 'pending'}</mark>
                     <mark class="status-pill status-info">Domain {record.artifactSummary?.domainStatus || 'none'}</mark>
                   </div>
-                  <span>OD run {record.artifactSummary?.openDesignLastRunId || 'n/a'} · {record.artifactSummary?.openDesignCompletionMode || 'native pending'}</span>
+                  <span>OD run {record.artifactSummary?.openDesignLastRunId || 'n/a'} · {record.artifactSummary?.openDesignStatus || 'not-started'} · {record.artifactSummary?.openDesignCompletionMode || 'native pending'}</span>
                 </td>
                 <td>
                   <span>{record.customer.email || 'no email'}</span>

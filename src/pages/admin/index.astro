@@ -11,6 +11,11 @@ const stageCounts = index.records.reduce((acc, record) => {
   acc[key] = (acc[key] || 0) + 1;
   return acc;
 }, {});
+const odCounts = index.records.reduce((acc, record) => {
+  const key = record.artifactSummary?.openDesignPipelineState || 'not_started';
+  acc[key] = (acc[key] || 0) + 1;
+  return acc;
+}, {});
 const urgentQueue = index.records
   .filter((record) => record.blockerSummary?.blocking || record.status === 'revision_requested' || record.artifactSummary?.domainStatus === 'waiting_for_customer_dns')
   .map((record) => ({
@@ -58,6 +63,11 @@ const reviewReady = index.records.filter((record) => record.stageSummary?.key ==
           <p>Customer-owned domain work that can stall launch if it is not nudged.</p>
         </article>
         <article class="admin-summary-tile">
+          <span class="admin-summary-label">OD needs input</span>
+          <strong>{odCounts.needs_input || 0}</strong>
+          <p>{odCounts.failed || 0} project(s) are failed; {odCounts.running || 0} are still actively running.</p>
+        </article>
+        <article class="admin-summary-tile">
           <span class="admin-summary-label">Margin pulse</span>
           <strong>{financeOverview.profit > 0 ? 'Positive' : 'Watch'}</strong>
           <p>{formatMoney(financeOverview.profit || 0)} net after {financeOverview.eventCount || 0} recorded finance events.</p>
@@ -84,6 +94,8 @@ const reviewReady = index.records.filter((record) => record.stageSummary?.key ==
             <div><span>Revisions</span><strong>{stageCounts.revision || 0}</strong></div>
             <div><span>Live</span><strong>{stageCounts.live || 0}</strong></div>
             <div><span>Waiting DNS</span><strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong></div>
+            <div><span>OD running</span><strong>{odCounts.running || 0}</strong></div>
+            <div><span>OD needs input</span><strong>{odCounts.needs_input || 0}</strong></div>
           </div>
         </section>
 
