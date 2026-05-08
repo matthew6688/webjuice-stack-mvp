@@ -57,7 +57,7 @@ export function buildRevisionWorkflowDispatch(payload = {}) {
       send_discord: 'true',
       send_email: 'true',
       dry_run: 'false',
-      auto_run_agent: 'true',
+      auto_run_agent: 'false',
       dedupe_key: `${orderId}-${payload.submitted_at || payload.submittedAt || 'revision'}`,
       payload: JSON.stringify(payload),
     },

@@ -96,6 +96,10 @@ export function buildWebsiteAgentHandoffMessage({
   const buildPacketPath = caseRecord?.ref?.buildPacketPath || task?.case?.buildPacketPath || task?.buildPacketPath || '';
   const taskPath = task?.taskPath || '';
   const openDesign = task?.openDesign || {};
+  const executionMode = task?.executionMode || (kind === 'revision' ? 'local_open_design' : 'remote_artifact_runner');
+  const defaultAction = executionMode === 'local_open_design'
+    ? '这是一条 revision 设计任务：先在本地 Open Design 里继续同一个 project，确认 concept 文件更新，再 sync/build production handoff，port 到 Webjuice/Astro repo 的 dev，最后 build、QA、发新的 review。不要让 GitHub Actions 假装自动完成设计修改。'
+    : '先阅读 build packet、website survey、case/context/task 文件，再决定如何开工。涉及视觉方案时，必须复用上面这个本地 Open Design project/dataDir，不要擅自新开一个项目。Open Design 有更新后，先 sync/build production handoff，再 port 到 Webjuice/Astro repo 的 dev。保持 website 和 menu 分离，只使用已验证的 evidence/design/brand 文件，所有面向客户的改动都只推到 dev。';
   const lines = [
     `${mention} ProfitsLocal 网站任务交接`,
     `kind: ${kind || task?.kind || ''}`,
@@ -120,9 +124,10 @@ export function buildWebsiteAgentHandoffMessage({
     `productionHandoff: ${task?.productionHandoffPath || openDesign.productionHandoffPath || ''}`,
     `openDesignContinue: ${openDesign.continueCommand || openDesign.createCommand || ''}`,
     `openDesignSync: ${openDesign.syncCommand || ''}`,
+    `executionMode: ${executionMode}`,
     `repoBootstrap: ${task?.repoBootstrap?.command || ''}`,
     '',
-    `Action: ${action || '先阅读 build packet、website survey、case/context/task 文件，再决定如何开工。涉及视觉方案时，必须复用上面这个本地 Open Design project/dataDir，不要擅自新开一个项目。Open Design 有更新后，先 sync/build production handoff，再 port 到 Webjuice/Astro repo 的 dev。保持 website 和 menu 分离，只使用已验证的 evidence/design/brand 文件，所有面向客户的改动都只推到 dev。'}`,
+    `Action: ${action || defaultAction}`,
   ].filter((line) => line !== null && line !== undefined);
 
   return {

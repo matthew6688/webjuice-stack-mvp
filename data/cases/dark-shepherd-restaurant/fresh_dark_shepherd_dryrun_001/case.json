@@ -45,7 +45,7 @@
     "revisionWorkspaceType": "",
     "revisionWorkspaceName": "Dark-Shepherd-revision-fresh_dark_shepherd_dryrun_001",
     "revisionWorkspaceTagIds": [],
-    "websiteWorkspaceChannelId": "1502085064148647989",
+    "websiteWorkspaceChannelId": "1501945763650080899",
     "websiteWorkspaceType": "forum_post",
     "websiteWorkspaceName": "[Revision 1/3] Dark Shepherd",
     "websiteWorkspaceTagIds": [
@@ -53,8 +53,8 @@
       "1501948304479748153",
       "1501948304488140851"
     ],
-    "lastChannelId": "1502085064148647989",
-    "lastMessageId": "1502093014426980413",
+    "lastChannelId": "1501945763650080899",
+    "lastMessageId": "1502097142679080970",
     "lastMessageUrl": "https://discord.com/channels/1493925728570310756/1502085064148647989/1502085064148647989",
     "lastThreadUrl": "https://discord.com/channels/1493925728570310756/1502092858671366249",
     "threadCreatedByBot": true
@@ -78,7 +78,7 @@
   "latestTask": {
     "id": "revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0",
     "kind": "revision",
-    "status": "queued",
+    "status": "completed",
     "path": "data/agent-tasks/dark-shepherd-restaurant/revision-fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0.json",
     "createdAt": "2026-05-07T23:40:45.022Z"
   },
@@ -93,19 +93,24 @@
     "artifactsDir": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts"
   },
   "createdAt": "2026-05-07T12:01:25.175Z",
-  "updatedAt": "2026-05-07T23:41:22.216Z",
+  "updatedAt": "2026-05-07T23:57:47.860Z",
   "latestAgentRun": {
-    "id": "agent_run_1778197277835_t51kwrbx",
+    "id": "agent_run_1778198224066_u1o6y7tk",
     "taskId": "revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0",
     "ok": true,
     "dryRun": false,
     "mode": "revision",
     "repo": "matthew6688/dark-shepherd-restaurant",
     "branch": "dev",
-    "repoDir": "/tmp/client-repo",
-    "changedFiles": [],
+    "repoDir": "/tmp/dark-shepherd-revision-smoke",
+    "changedFiles": [
+      "src/data/content.restaurant.json",
+      "src/data/open-design.production-handoff.json",
+      "src/pages/index.astro",
+      "src/styles/global.css"
+    ],
     "pushed": true,
-    "commit": "",
+    "commit": "3ec1e62500b7a85ee05164cf938f0ec90f7e9c5a",
     "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
     "audit": {
       "contextRead": {
@@ -130,22 +135,30 @@
           "critique",
           "tweaks"
         ],
-        "mode": ""
+        "mode": "local_open_design_continuation"
       },
-      "qaScreenshots": [],
+      "qaScreenshots": [
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-desktop.png",
+        "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-mobile.png"
+      ],
       "devDeployUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
       "customerEmailId": ""
     },
     "steps": [
       {
-        "id": "checkout-branch",
+        "id": "open-design-continue",
         "ok": true,
-        "command": "git checkout dev"
+        "command": "npm run open-design:continue-concept -- --client dark-shepherd-restaurant --prompt <revision>"
       },
       {
-        "id": "apply-artifacts",
+        "id": "build-production-handoff",
         "ok": true,
-        "command": "npm run apply:restaurant-artifacts -- --content /home/runner/work/webjuice-stack-mvp/webjuice-stack-mvp/clients/dark-shepherd-restaurant/content.restaurant.json --design /home/runner/work/webjuice-stack-mvp/webjuice-stack-mvp/clients/dark-shepherd-restaurant/design.restaurant.json"
+        "command": "npm run open-design:build-production-handoff -- --client dark-shepherd-restaurant"
+      },
+      {
+        "id": "port-production-handoff",
+        "ok": true,
+        "command": "npm run open-design:port-production-handoff -- --client dark-shepherd-restaurant --target-repo /tmp/dark-shepherd-revision-smoke --execute true"
       },
       {
         "id": "build",
@@ -153,23 +166,13 @@
         "command": "npm run build"
       },
       {
-        "id": "stage-changes",
-        "ok": true,
-        "command": "git add -A"
-      },
-      {
-        "id": "commit-dev",
-        "ok": true,
-        "command": "git commit -m chore: run revision task revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0"
-      },
-      {
         "id": "push-dev",
         "ok": true,
         "command": "git push origin dev"
       }
     ],
-    "startedAt": "2026-05-07T23:41:14.628Z",
-    "finishedAt": "2026-05-07T23:41:17.831Z",
-    "createdAt": "2026-05-07T23:41:17.835Z"
+    "startedAt": "2026-05-07T23:44:09.599Z",
+    "finishedAt": "2026-05-07T23:57:04.066Z",
+    "createdAt": "2026-05-07T23:57:04.066Z"
   }
 }

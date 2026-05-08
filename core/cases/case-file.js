@@ -177,15 +177,21 @@ function mergeDiscordWorkspace(existing = {}, discord = null, kind = '') {
     salesThreadId: kind === 'sale' && threadId ? threadId : next.salesThreadId || '',
     revisionThreadId: kind === 'revision' && threadId ? threadId : next.revisionThreadId || '',
     websiteTaskThreadId: kind === 'website_task' && threadId ? threadId : next.websiteTaskThreadId || '',
-    salesWorkspaceChannelId: kind === 'sale' ? (discord.channelId || next.salesWorkspaceChannelId || '') : next.salesWorkspaceChannelId || '',
+    salesWorkspaceChannelId: kind === 'sale'
+      ? (discord.workspaceChannelId || discord.channelId || next.salesWorkspaceChannelId || '')
+      : next.salesWorkspaceChannelId || '',
     salesWorkspaceType: kind === 'sale' ? (discord.threadStyle || next.salesWorkspaceType || '') : next.salesWorkspaceType || '',
     salesWorkspaceName: kind === 'sale' ? (discord.threadName || next.salesWorkspaceName || '') : next.salesWorkspaceName || '',
     salesWorkspaceTagIds: kind === 'sale' ? (discord.appliedTagIds || next.salesWorkspaceTagIds || []) : next.salesWorkspaceTagIds || [],
-    revisionWorkspaceChannelId: kind === 'revision' ? (discord.channelId || next.revisionWorkspaceChannelId || '') : next.revisionWorkspaceChannelId || '',
+    revisionWorkspaceChannelId: kind === 'revision'
+      ? (discord.workspaceChannelId || discord.channelId || next.revisionWorkspaceChannelId || '')
+      : next.revisionWorkspaceChannelId || '',
     revisionWorkspaceType: kind === 'revision' ? (discord.threadStyle || next.revisionWorkspaceType || '') : next.revisionWorkspaceType || '',
     revisionWorkspaceName: kind === 'revision' ? (discord.threadName || next.revisionWorkspaceName || '') : next.revisionWorkspaceName || '',
     revisionWorkspaceTagIds: kind === 'revision' ? (discord.appliedTagIds || next.revisionWorkspaceTagIds || []) : next.revisionWorkspaceTagIds || [],
-    websiteWorkspaceChannelId: kind === 'website_task' ? (discord.channelId || next.websiteWorkspaceChannelId || '') : next.websiteWorkspaceChannelId || '',
+    websiteWorkspaceChannelId: kind === 'website_task'
+      ? (discord.workspaceChannelId || discord.channelId || next.websiteWorkspaceChannelId || '')
+      : next.websiteWorkspaceChannelId || '',
     websiteWorkspaceType: kind === 'website_task' ? (discord.threadStyle || next.websiteWorkspaceType || '') : next.websiteWorkspaceType || '',
     websiteWorkspaceName: kind === 'website_task' ? (discord.threadName || next.websiteWorkspaceName || '') : next.websiteWorkspaceName || '',
     websiteWorkspaceTagIds: kind === 'website_task'

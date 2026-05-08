@@ -1411,6 +1411,118 @@ ready_for_customer_review
 
 这条链打通后，`A2` 已经可以视为真实完成。下一条最该继续压的是 `A3`：真实 revision 闭环。
 
+## 2026-05-08 Fresh Project 演练续跑：Dark Shepherd 真实 Revision 闭环
+
+这次我们把最容易“表面看起来成功、实际上没改站”的一段彻底拆开了。
+
+目标链路是：
+
+```text
+customer revision
+-> same case / same forum workspace
+-> local Open Design continuation
+-> production handoff
+-> port 到 customer repo dev
+-> dev preview 真的变更
+-> review Discord + review email
+```
+
+### 先暴露出来的真实架构问题
+
+官方 `revision-submit -> route-funnel-event.yml` 这一段虽然已经能：
+
+- 正确扣减 revision 次数；
+- 复用同一个 case；
+- 复用同一个 `website-projects` forum post；
+- 生成新的 revision task；
+
+但它原本还会默认触发 GitHub Actions 里的 `agent:complete-task`。
+
+这一步的真实问题是：
+
+- 远端 runner 只会执行 `apply:restaurant-artifacts`
+- 它会重放 `content.restaurant.json` / `design.restaurant.json`
+- **不会消费 `requestedChanges` 去做新的设计修改**
+
+所以那种“workflow 成功、case 更新了、dev push 了”的结果，**不能算真实 revision 完成**。
+
+### 这次对 revision 架构做的修正
+
+1. `buildRevisionWorkflowDispatch()` 现在默认：
+   - `auto_run_agent=false`
+2. `route-funnel-event.yml` 现在对 `kind=revision`：
+   - 不再默认 clone customer repo
+   - 不再默认让 GitHub Actions 假装完成设计修改
+3. revision task 明确标记：
+   - `executionMode=local_open_design`
+4. forum handoff 里明确写：
+   - revision 的真正执行路径是：
+   - **本地 Open Design / Hermes -> rebuild handoff -> port 到 dev**
+
+这一步的意义是：**系统先说真话，再自动化。**
+
+### Dark Shepherd 这次真实 revision 是怎么完成的
+
+1. 官方 revision form 仍然照常进入：
+   - 扣减次数
+   - 更新 case
+   - 更新 forum
+   - 生成 revision task
+2. 在同一个 Open Design project 上继续：
+   - `projectId = dark-shepherd-restaurant-open-design-1778154549135`
+   - `runId = 30bf721e-9aa8-41b2-b32b-dead73680002`
+3. 根据 continuation 的真实 concept 结果，把 canonical source-of-truth 更新为：
+   - hero supporting copy 强调 steakhouse dining + late-night reservations
+   - 官方 SevenRooms booking 链接
+   - reservation CTA 旁的 private dining note
+4. 重建 production handoff
+5. 在**干净的临时 clone** 里 port 到 customer repo `dev`
+   - 这次没有使用用户本地那个 dirty repo
+6. customer repo 本地 build 成功
+7. push 到 `dev`
+8. `Deploy Dev` workflow 成功
+9. 真实线上 dev preview 出现了新的文案和 note
+10. 发回同一个 forum post，并发出新的 review email
+
+### 这次验证到的硬证据
+
+- local Open Design continuation:
+  - `runId: 30bf721e-9aa8-41b2-b32b-dead73680002`
+- dev push commit:
+  - `3ec1e62500b7a85ee05164cf938f0ec90f7e9c5a`
+- dev deploy workflow:
+  - run id: `25528503496`
+  - URL: `https://github.com/matthew6688/dark-shepherd-restaurant/actions/runs/25528503496`
+- 真实 preview 命中：
+  - `Steakhouse dining built around live fire, late-night reservations...`
+  - `Reserve a table`
+  - `Private dining is available for intimate groups...`
+- QA 截图：
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-desktop.png`
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-mobile.png`
+- review email:
+  - Resend id: `2a7027d2-d272-427d-b20c-5188bb99f727`
+- 统一总结：
+  - `data/qa/fresh-dark-shepherd-live/revision-local-review-ready.json`
+
+### 这次顺手修掉的一个 Discord 细节
+
+forum workspace 之前会把：
+
+- forum 父频道 id
+- forum post thread id
+
+混成同一个值。
+
+结果是后续更新 tag 时，有机会把 thread 当成 forum channel 去调用 Discord API。
+
+现在已经修正为：
+
+- `workspaceChannelId = forum 父频道`
+- `threadId = 具体项目 post`
+
+这样以后 revision / approved / live / domain-blocked 的 stage 更新会更稳。
+
 ## 项目健康状态判断
 
 一个健康的网站项目应该同时具备：

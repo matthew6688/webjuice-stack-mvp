@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "clientSlug": "dark-shepherd-restaurant",
+  "orderId": "fresh_dark_shepherd_dryrun_001",
+  "revisionTaskId": "revision_dark-shepherd-restaurant_fresh_dark_shepherd_dryrun_001-1778197245021-4e84g0",
+  "localOpenDesignRunId": "30bf721e-9aa8-41b2-b32b-dead73680002",
+  "devCommit": "3ec1e62500b7a85ee05164cf938f0ec90f7e9c5a",
+  "devDeployRun": {
+    "id": 25528503496,
+    "url": "https://github.com/matthew6688/dark-shepherd-restaurant/actions/runs/25528503496",
+    "conclusion": "success"
+  },
+  "previewUrl": "https://dark-shepherd-restaurant-dev.pages.dev/",
+  "verifiedPreviewSignals": [
+    "Steakhouse dining built around live fire, late-night reservations, and the after-dark energy of The Terrace at The Star Brisbane.",
+    "Reserve a table",
+    "Private dining is available for intimate groups; keep the booking flow visible for late sittings and function enquiries."
+  ],
+  "screenshots": [
+    "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-desktop.png",
+    "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-mobile.png"
+  ],
+  "deliveryQaPath": "data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/delivery-qa.json",
+  "caseStatus": "dev_pushed_needs_review",
+  "revision": {
+    "policy": {
+      "type": "lifetime",
+      "limit": 3,
+      "periodStart": null,
+      "periodEnd": null,
+      "description": "Three lifetime revision requests after purchase."
+    },
+    "used": 1,
+    "remaining": 2,
+    "lastReason": "revision_allowed"
+  },
+  "forum": {
+    "threadId": "1502085064148647989",
+    "workspaceChannelId": "1501945763650080899",
+    "workspaceName": "[Revision 1/3] Dark Shepherd"
+  },
+  "latestAgentRunId": "agent_run_1778198224066_u1o6y7tk",
+  "latestAgentRunCommit": "3ec1e62500b7a85ee05164cf938f0ec90f7e9c5a",
+  "latestChangedFiles": [
+    "src/data/content.restaurant.json",
+    "src/data/open-design.production-handoff.json",
+    "src/pages/index.astro",
+    "src/styles/global.css"
+  ],
+  "latestReviewEmailEvent": "2a7027d2-d272-427d-b20c-5188bb99f727"
+}

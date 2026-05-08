@@ -34,7 +34,7 @@ const assertions = {
   revisionWorkflowCorrect: revision.workflow === 'route-funnel-event.yml',
   revisionKindCorrect: revision.inputs.kind === 'revision',
   revisionProviderCorrect: revision.inputs.provider === 'tally',
-  revisionAutoRunAgent: revision.inputs.auto_run_agent === 'true',
+  revisionAutoRunAgentDisabled: revision.inputs.auto_run_agent === 'false',
   revisionPayloadPreserved: JSON.parse(revision.inputs.payload).requested_changes.includes('hero'),
   revisionDedupeKeyIncludesOrder: revision.inputs.dedupe_key.startsWith('cs_test_revision_001-'),
 };

@@ -69,6 +69,7 @@ export async function createOrUpdateForumWorkspace({
   dispatch.threadName = threadName;
   dispatch.appliedTagIds = forumTagIds;
   dispatch.threadStyle = dispatch.threadStyle || 'forum_post';
+  dispatch.workspaceChannelId = channelId;
   return dispatch;
 }
 
@@ -110,6 +111,7 @@ export async function updateForumWorkspaceStage({
     threadId,
     threadName,
     appliedTagIds: forumTagIds,
+    workspaceChannelId: channelId,
     update: updated,
   };
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-07T22:29:53.771Z",
+  "generatedAt": "2026-05-07T23:51:31.609Z",
   "clientSlug": "dark-shepherd-restaurant",
   "purpose": "open_design_concept_to_webjuice_astro_handoff",
   "status": "ready_with_warnings",
@@ -20,12 +20,12 @@
       "total": 14,
       "sourcePages": [],
       "assets": [
-        "assets/dark-shepherd-lamb.jpg",
-        "assets/dark-shepherd-logo.png",
-        "assets/dark-shepherd-hero.jpg",
+        "assets/dark-shepherd-dining.jpg",
         "assets/dark-shepherd-embers.jpg",
         "assets/dark-shepherd-fire.jpg",
-        "assets/dark-shepherd-dining.jpg"
+        "assets/dark-shepherd-hero.jpg",
+        "assets/dark-shepherd-lamb.jpg",
+        "assets/dark-shepherd-logo.png"
       ]
     }
   },
@@ -37,7 +37,7 @@
     "rule": "Use evidence/content/design/survey for business facts. Use Open Design for visual direction, layout rhythm, tokens, and asset inspiration."
   },
   "target": {
-    "repo": "/Users/matthew/Developer/dark-shepherd-restaurant",
+    "repo": null,
     "branch": "dev",
     "framework": "Webjuice/Astro on Cloudflare Pages"
   },
@@ -59,8 +59,9 @@
         "#menu",
         "#functions",
         "#contact",
-        "tel:0721116869",
-        "https://www.google.com/maps/search/?api=1&query=The%20Star%20Brisbane%2C%20The%20Terrace%2C%20Level%204%2F33%20William%20St%2C%20Brisbane%20City%20QLD%204000%2C%20Australia"
+        "https://www.sevenrooms.com/explore/darkshepherd/reservations/create/search?venues=darkshepherd,pompetteau,yamasgreekdrink,stilts,richandrarerestaurant,fatcowrestaurant,longwangchopstickhouse,opabarmezze,massimorestaurantandbar,foshbarrestaurant",
+        "https://www.google.com/maps/search/?api=1&query=The%20Star%20Brisbane%2C%20The%20Terrace%2C%20Level%204%2F33%20William%20St%2C%20Brisbane%20City%20QLD%204000%2C%20Australia",
+        "tel:0721116869"
       ],
       "brandSpecHighlights": []
     },
@@ -72,7 +73,7 @@
       "website": "https://www.darkshepherd.com.au/",
       "callUrl": "tel:0721116869",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=The%20Star%20Brisbane%2C%20The%20Terrace%2C%20Level%204%2F33%20William%20St%2C%20Brisbane%20City%20QLD%204000%2C%20Australia",
-      "reserveUrl": null,
+      "reserveUrl": "https://www.sevenrooms.com/explore/darkshepherd/reservations/create/search?venues=darkshepherd,pompetteau,yamasgreekdrink,stilts,richandrarerestaurant,fatcowrestaurant,longwangchopstickhouse,opabarmezze,massimorestaurantandbar,foshbarrestaurant",
       "menuSourceUrl": "https://www.darkshepherd.com.au/menu",
       "menuSectionCount": 6,
       "galleryCount": 4
@@ -122,6 +123,7 @@
     "Push to the dev branch only until customer approval."
   ],
   "warnings": [
+    "targetRepo was not supplied; handoff is tool-agnostic and must be bound before implementation.",
     "No captured source pages found for source redesign."
   ]
 }

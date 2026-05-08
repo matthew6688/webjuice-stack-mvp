@@ -106,7 +106,7 @@ lead / intake
 
 ## A3. 真实 revision 闭环再跑一条
 
-- 状态：`IN PROGRESS`
+- 状态：`DONE`
 - 目标：
   - 用真项目验证：
   - `customer revision -> same forum workspace -> Open Design/repo update -> new preview -> review -> approval`
@@ -122,6 +122,15 @@ lead / intake
   - workspace reuse evidence
   - QA/review evidence
   - publish evidence
+- 已完成样本：
+  - `dark-shepherd-restaurant`
+- 关键证据：
+  - `data/qa/fresh-dark-shepherd-live/revision-local-review-ready.json`
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-desktop.png`
+  - `data/cases/dark-shepherd-restaurant/fresh_dark_shepherd_dryrun_001/artifacts/revision-2026-05-08-mobile.png`
+  - dev deploy run: `25528503496`
+  - review email id: `2a7027d2-d272-427d-b20c-5188bb99f727`
+  - forum workspace: `[Revision 1/3] Dark Shepherd`
 
 ---
 

@@ -122,7 +122,7 @@ jobs:
             --output /tmp/funnel-route-summary.json
 
       - name: Clone client repo for generated task
-        if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' }}
+        if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && inputs.kind != 'revision' }}
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
@@ -151,11 +151,11 @@ jobs:
           npm ci --prefix /tmp/client-repo
 
       - name: Install Playwright Chromium
-        if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && env.RUN_AGENT == 'true' }}
+        if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && inputs.kind != 'revision' && env.RUN_AGENT == 'true' }}
         run: npx playwright install --with-deps chromium
 
       - name: Run generated agent task
-        if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && env.RUN_AGENT == 'true' }}
+        if: ${{ inputs.dry_run != 'true' && inputs.auto_run_agent == 'true' && inputs.kind != 'revision' && env.RUN_AGENT == 'true' }}
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           GH_TOKEN: ${{ secrets.GH_PAT }}
