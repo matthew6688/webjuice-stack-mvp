@@ -29,7 +29,7 @@ const urgentQueue = index.records
   .sort((a, b) => b.urgencyScore - a.urgencyScore)
   .slice(0, 5);
 const reviewReady = index.records.filter((record) => record.stageSummary?.key === 'review_ready').slice(0, 5);
-const leadUrgentQueue = leadIndex.records
+const leadUrgentQueue = leadIndex.prospectRecords
   .filter((record) => ['follow_up_overdue', 'replied', 'paid'].includes(record.stageKey) || record.blocker)
   .map((record) => ({
     ...record,
@@ -74,75 +74,68 @@ const stageLabels = {
 
       <div class="admin-summary-strip">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">整体状态</span>
-          <strong>{index.counts.total}</strong>
-          <p>当前有 {urgentQueue.length} 个项目需要优先处理，{reviewReady.length} 个项目最接近发客户 review。</p>
+          <span class="admin-summary-label">今天先动</span>
+          <strong>{urgentQueue.length + leadUrgentQueue.length}</strong>
+          <p>{leadUrgentQueue.length} 条线索，{urgentQueue.length} 个项目。</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">待发 review</span>
           <strong>{stageCounts.review_ready || 0}</strong>
-          <p>结构上已经最接近发 review 链接的项目数量。</p>
+          <p>最接近发客户 review 的项目。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">等待 DNS</span>
-          <strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong>
-          <p>客户域名相关动作如果不推进，会直接拖慢上线。</p>
+          <span class="admin-summary-label">跟进过期</span>
+          <strong>{leadIndex.prospectCounts.followUpOverdue || 0}</strong>
+          <p>今天应该先补的外联动作。</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">OD 需输入</span>
           <strong>{odCounts.needs_input || 0}</strong>
-          <p>{odCounts.failed || 0} 个项目失败，{odCounts.running || 0} 个项目仍在运行。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">线索跟进</span>
-          <strong>{leadIndex.counts.followUpOverdue || 0}</strong>
-          <p>还有 {leadIndex.counts.repliedNeedsReview || 0} 条已回复线索等待人工处理。</p>
+          <p>{odCounts.failed || 0} 个失败，{odCounts.running || 0} 个仍在运行。</p>
         </article>
       </div>
 
-      <div class="admin-overview-hero">
+      <div class="admin-overview-hero admin-overview-paper">
         <section class="admin-overview-card admin-overview-primary">
-          <span class="eyebrow">今日视角</span>
-          <h2>先看全局，再决定先推哪一条线。</h2>
-          <p class="micro">这个页面只回答三件事：今天先跟进哪些线索、哪些项目需要人工推进、哪些设计或 DNS 阻塞需要排队处理。</p>
-        </section>
-
-        <section class="admin-overview-card">
-          <span class="eyebrow">项目分布</span>
-          <div class="admin-overview-kpis">
-            <div><span>待发 review</span><strong>{stageCounts.review_ready || 0}</strong></div>
-            <div><span>修订中</span><strong>{stageCounts.revision || 0}</strong></div>
-            <div><span>已上线</span><strong>{stageCounts.live || 0}</strong></div>
-            <div><span>等待 DNS</span><strong>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</strong></div>
-            <div><span>OD 运行中</span><strong>{odCounts.running || 0}</strong></div>
-            <div><span>OD 需输入</span><strong>{odCounts.needs_input || 0}</strong></div>
+          <span class="eyebrow">总览说明</span>
+          <h2>这里只做分流，不做细看。</h2>
+          <p class="micro">先决定今天该跟进线索、推进项目，还是去处理 Open Design / DNS 阻塞。细节再进入对应页面。</p>
+          <div class="admin-note-stack">
+            <p class="micro">线索、项目、财务、设置各管一类事，不在这里混在一起。</p>
           </div>
         </section>
 
         <section class="admin-overview-card">
-          <span class="eyebrow">线索脉搏</span>
-          <div class="admin-overview-kpis">
-            <div><span>草稿已就绪</span><strong>{leadIndex.counts.draft_ready || 0}</strong></div>
-            <div><span>已发送触达</span><strong>{leadIndex.counts.outreachSent || 0}</strong></div>
-            <div><span>已回复待看</span><strong>{leadIndex.counts.repliedNeedsReview || 0}</strong></div>
-            <div><span>跟进过期</span><strong>{leadIndex.counts.followUpOverdue || 0}</strong></div>
-            <div><span>付款待交接</span><strong>{leadIndex.counts.paidHandoffPending || 0}</strong></div>
-            <div><span>阻塞线索</span><strong>{leadIndex.counts.blocked || 0}</strong></div>
-          </div>
+          <span class="eyebrow">项目概况</span>
+          <ul class="admin-list admin-list-tight">
+            <li><strong>待发 review</strong><span>{stageCounts.review_ready || 0}</span></li>
+            <li><strong>修订中</strong><span>{stageCounts.revision || 0}</span></li>
+            <li><strong>等待 DNS</strong><span>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</span></li>
+            <li><strong>OD 运行中</strong><span>{odCounts.running || 0}</span></li>
+            <li><strong>OD 需输入</strong><span>{odCounts.needs_input || 0}</span></li>
+          </ul>
+        </section>
+
+        <section class="admin-overview-card">
+          <span class="eyebrow">线索概况</span>
+          <ul class="admin-list admin-list-tight">
+            <li><strong>草稿已就绪</strong><span>{leadIndex.prospectCounts.draft_ready || 0}</span></li>
+            <li><strong>已发送</strong><span>{leadIndex.prospectCounts.outreachSent || 0}</span></li>
+            <li><strong>已回复待看</strong><span>{leadIndex.prospectCounts.repliedNeedsReview || 0}</span></li>
+            <li><strong>跟进过期</strong><span>{leadIndex.prospectCounts.followUpOverdue || 0}</span></li>
+            <li><strong>付款待交接</strong><span>{leadIndex.customerCounts.paidHandoffPending || 0}</span></li>
+          </ul>
         </section>
 
         <section class="admin-overview-card">
           <span class="eyebrow">常用入口</span>
-          <div class="admin-link-grid">
-            <a class="button secondary" href="/admin/leads">打开线索面板</a>
-            <a class="button secondary" href="/admin/intakes">打开项目面板</a>
-            <a class="button secondary" href="/admin/finance">打开财务面板</a>
-            <a class="button secondary" href="/admin/queue">打开行动队列</a>
-            <a class="button secondary" href="/admin/settings">打开系统设置</a>
-          </div>
-          <div class="admin-note-stack">
-            <p class="micro">用 <strong>线索</strong> 看 demo / outreach，用 <strong>项目</strong> 盯正式交付，用 <strong>队列</strong> 决定先做什么；财务单独留在财务页看。</p>
-          </div>
+          <ul class="admin-list admin-list-links">
+            <li><a class="admin-inline-link" href="/admin/leads">打开线索面板</a><span>看 outreach / reply / follow-up</span></li>
+            <li><a class="admin-inline-link" href="/admin/intakes">打开项目面板</a><span>看 review / revision / DNS / OD</span></li>
+            <li><a class="admin-inline-link" href="/admin/finance">打开财务面板</a><span>单独看收入、成本、利润</span></li>
+            <li><a class="admin-inline-link" href="/admin/queue">打开行动队列</a><span>只看现在先做什么</span></li>
+            <li><a class="admin-inline-link" href="/admin/settings">打开系统设置</a><span>看集成和环境覆盖</span></li>
+          </ul>
         </section>
       </div>
 

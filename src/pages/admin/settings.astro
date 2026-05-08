@@ -23,24 +23,19 @@ const settings = loadAdminSettingsIndex();
 
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">覆盖情况</span>
+          <span class="admin-summary-label">配置覆盖</span>
           <strong>{settings.counts.configured} / {settings.counts.total}</strong>
-          <p>还有 {settings.counts.missing} 个必需配置缺失，{settings.counts.optional} 个可选项尚未设置。</p>
+          <p>{settings.counts.missing} 个必需项还没补，{settings.counts.partial} 个集成还没走完最后一段。</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">必需缺失</span>
           <strong>{settings.counts.missing}</strong>
-          <p>这里的缺项会直接影响支付、部署、Discord 路由或客户邮件。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">部分完成</span>
-          <strong>{settings.counts.partial}</strong>
-          <p>用来标记只配置了一半、还没有真正闭环的集成。</p>
+          <p>这些会直接影响支付、部署、Discord 或客户邮件。</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">可选项</span>
           <strong>{settings.counts.optional}</strong>
-          <p>像备用抓取工具、后续 outreach provider 这种扩展都归在这里。</p>
+          <p>备用抓取、后续 outreach provider 都留在这里。</p>
         </article>
       </div>
 
@@ -66,15 +61,15 @@ const settings = loadAdminSettingsIndex();
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
-              <span class="eyebrow">使用规则</span>
-              <h2>这个页面负责什么</h2>
+              <span class="eyebrow">页面边界</span>
+              <h2>这里只看系统配置</h2>
             </div>
           </div>
           <ul class="admin-list">
-            <li><strong>密钥都做了脱敏</strong><span>这里只展示“有没有、是哪一套”，不会把真正的 secret 明文露出来。</span></li>
-            <li><strong>事务邮件 vs 冷启动触达</strong><span>Resend 继续只做事务邮件。cold outreach 当前使用路线还是 Agentic Inbox 的人工/半自动流程。</span></li>
-            <li><strong>后续切换路径</strong><span>Instantly 和 Smartlead 继续保持 planned，等 webhook ingest 和 reply-state sync 真正接上再启用。</span></li>
-            <li><strong>真相源边界</strong><span>这里负责运行配置，不负责客户内容。项目状态仍然以 cases、forums 和 artifacts 为准。</span></li>
+            <li><strong>密钥脱敏</strong><span>这里只看有没有，不会展示真正的 secret。</span></li>
+            <li><strong>事务 vs 触达</strong><span>Resend 只做事务邮件；冷启动触达单独走 Agentic Inbox / 后续 provider。</span></li>
+            <li><strong>planned 集成</strong><span>Instantly / Smartlead 先记状态，不在这里假装已经 live。</span></li>
+            <li><strong>页面边界</strong><span>这里只看系统覆盖，不看客户内容和项目细节。</span></li>
           </ul>
         </section>
       </div>

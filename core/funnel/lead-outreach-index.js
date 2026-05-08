@@ -21,8 +21,8 @@ export function loadLeadOutreachIndex(options = {}) {
   const list = registry.records
     .map((record) => finalizeLeadRecord(record))
     .sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
-  const prospectRecords = list.filter((record) => record.paymentStatus !== 'paid');
-  const customerRecords = list.filter((record) => record.paymentStatus === 'paid');
+  const prospectRecords = list.filter((record) => !isCustomerSideRecord(record));
+  const customerRecords = list.filter((record) => isCustomerSideRecord(record));
 
   return {
     records: list,
@@ -33,6 +33,10 @@ export function loadLeadOutreachIndex(options = {}) {
     customerCounts: buildCounts(customerRecords),
     updatedAt: registry.updatedAt,
   };
+}
+
+function isCustomerSideRecord(record) {
+  return record.paymentStatus === 'paid' || Boolean(record.orderId);
 }
 
 export function matchesLeadView(record, view = 'all') {

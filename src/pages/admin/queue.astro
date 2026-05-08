@@ -41,21 +41,6 @@ const queueGroups = [
     records: index.records.filter((record) => !record.artifactSummary?.deliveryQaReady),
   },
 ];
-const milestoneGroups = [
-  ['website_ready', '网站资料就绪'],
-  ['open_design_succeeded', 'Open Design 成功'],
-  ['open_design_needs_input', 'OD 需要输入'],
-  ['open_design_failed', 'OD 失败'],
-  ['review_sent', '已发 review'],
-  ['revision_requested', '客户要求修订'],
-  ['live', '已上线'],
-  ['domain_waiting_customer', '等待客户 DNS'],
-  ['domain_connected', '域名已连接'],
-].map(([key, label]) => ({
-  key,
-  label,
-  count: index.records.filter((record) => record.milestoneSummary?.currentKey === key).length,
-}));
 ---
 
 <Layout title={`行动队列 - ${siteConfig.name}`} description="ProfitsLocal 当前优先动作面板。" active="queue">
@@ -73,40 +58,42 @@ const milestoneGroups = [
         </div>
       </div>
 
-      <div class="admin-summary-strip admin-summary-strip-compact">
+      <div class="admin-summary-strip">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">队列模式</span>
-          <strong>先分流再执行</strong>
-          <p>当你不想先翻完整项目表，而是只想知道“现在先做什么”，就看这个页面。</p>
+          <span class="admin-summary-label">页面用途</span>
+          <strong>先分流，再执行</strong>
+          <p>这里只回答一件事：现在先处理哪一类工作。</p>
         </article>
-        {queueGroups.map((group) => (
-          <article class="admin-summary-tile">
-            <span class="admin-summary-label">{group.label}</span>
-            <strong>{group.records.length}</strong>
-            <p>{group.records[0]?.nextActionSummary?.label || '这个分组目前没有活动项。'}</p>
-          </article>
-        ))}
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">修订</span>
+          <strong>{queueGroups.find((group) => group.key === 'revision_requested')?.records.length || 0}</strong>
+          <p>先处理客户已回来的改动。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">DNS</span>
+          <strong>{queueGroups.find((group) => group.key === 'waiting_dns')?.records.length || 0}</strong>
+          <p>上线前最容易拖住节奏的事项。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">OD 阻塞</span>
+          <strong>{(queueGroups.find((group) => group.key === 'od_needs_input')?.records.length || 0) + (queueGroups.find((group) => group.key === 'od_failed')?.records.length || 0)}</strong>
+          <p>需要回到设计流程处理的项目。</p>
+        </article>
       </div>
 
-      <div class="admin-stat-grid">
-        {milestoneGroups.map((group) => (
-          <div class="admin-stat">
-            <span>{group.label}</span>
-            <strong>{group.count}</strong>
-          </div>
-        ))}
-      </div>
-
-      <div class="admin-queue-grid">
+      <div class="admin-queue-list">
         {queueGroups.map((group) => (
-          <section class="admin-queue-column">
-            <header>
-              <span>{group.label}</span>
-              <strong>{group.records.length}</strong>
-            </header>
-            <div class="admin-pipeline-list">
+          <section class="admin-queue-section">
+            <div class="admin-paper-section-head admin-paper-section-head-inline">
+              <div>
+                <span class="eyebrow">分组</span>
+                <h2>{group.label}</h2>
+              </div>
+              <strong class="admin-section-count">{group.records.length}</strong>
+            </div>
+            <div class="admin-queue-rows">
               {group.records.length ? group.records.slice(0, 12).map((record) => (
-                <a class="admin-pipeline-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+                <a class="admin-queue-row" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
                   <strong>{record.customer.company || record.clientSlug}</strong>
                   <span>{record.nextActionSummary?.label || record.status}</span>
                   <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.orderId}</code>

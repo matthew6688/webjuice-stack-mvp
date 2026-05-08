@@ -50,98 +50,46 @@ function urgencyScore(record) {
         </div>
       </div>
 
-      <div class="admin-summary-strip admin-summary-strip-compact">
+      <div class="admin-summary-strip">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">Demo 就绪</span>
+          <span class="admin-summary-label">可直接触达</span>
           <strong>{prospectCounts.demoReady || 0}</strong>
-          <p>已经有 preview 和 proof，适合进入冷启动触达。</p>
+          <p>Demo、素材、草稿都齐。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">草稿就绪</span>
-          <strong>{prospectCounts.draft_ready || 0}</strong>
-          <p>冷启动邮件草稿已经齐，可以人工发，也可以后面接专业发送平台。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">已发送触达</span>
-          <strong>{prospectCounts.outreachSent || 0}</strong>
-          <p>已经发出去，并且 provider 状态已经写回到线索真相源。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">待跟进</span>
-          <strong>{prospectCounts.followUpDue || 0}</strong>
-          <p>已经发过但还需要下一次触达动作的线索。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">跟进已过期</span>
-          <strong>{prospectCounts.followUpOverdue || 0}</strong>
-          <p>已经超过记录的跟进日期，这批应该优先处理。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">已回复 / 退信</span>
-          <strong>{(prospectCounts.replied || 0) + (prospectCounts.bounced || 0)}</strong>
-          <p>回复和退信都已经统一写回到同一套线索真相源里。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">已回复待处理</span>
+          <span class="admin-summary-label">已回复待看</span>
           <strong>{prospectCounts.repliedNeedsReview || 0}</strong>
-          <p>客户已经回复，但我们还没处理下一步。</p>
+          <p>对方回了，还没处理。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">已成交客户</span>
+          <span class="admin-summary-label">跟进过期</span>
+          <strong>{prospectCounts.followUpOverdue || 0}</strong>
+          <p>这批今天先动。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">已成交</span>
           <strong>{customerCount}</strong>
-          <p>成交后的客户不再在这里处理，统一去项目面板推进 review / revision / live。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">客户面板入口</span>
-          <strong><a href="/admin/intakes" class="admin-inline-link">打开项目面板</a></strong>
-          <p>已付款、DNS、Open Design、交付、上线都在项目面板里继续看。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">阻塞</span>
-          <strong>{prospectCounts.blocked || 0}</strong>
-          <p>缺少素材、草稿或明确联系方式的线索。</p>
+          <p><a href="/admin/intakes" class="admin-inline-link">去项目面板继续推进</a></p>
         </article>
       </div>
 
-      <div class="admin-finance-grid">
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">现在先处理</span>
-              <h2>线索队列</h2>
-            </div>
-          </div>
-          <div class="admin-urgent-list">
-            {urgent.length ? urgent.map((record) => (
-              <article class="admin-urgent-card">
-                <strong>{record.company || record.clientSlug}</strong>
-                <span>{record.nextAction.label}</span>
-                <code>{record.blocker || record.stageLabel}</code>
-                <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || '没有邮箱'}</span>
-                <span class="micro">{record.latestProviderEventType ? `${record.latestProviderEventType} · ${record.latestProviderEventAt || '没有时间戳'}` : '还没有 provider 事件'}</span>
-              </article>
-            )) : <p class="micro">目前没有特别紧急的线索阻塞。</p>}
-          </div>
-        </section>
-
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">使用规则</span>
-              <h2>这个页面现在管什么</h2>
-            </div>
-          </div>
-          <ul class="admin-list">
-            <li><strong>事务邮件</strong><span>继续走 Resend，不在这里当作 cold outreach 的发送真相源。</span></li>
-            <li><strong>冷启动触达</strong><span>当前真相源是 demo pack、邮件草稿，以及回写到 outreach artifact 的 provider metadata。</span></li>
-            <li><strong>当前使用路线</strong><span>Agentic Inbox 现在是我们正在使用的冷启动触达入口。Instantly / Smartlead 先保持 planned，等 webhook ingest 真接上。</span></li>
-            <li><strong>发送平台模型</strong><span>Resend 只做事务邮件。cold outreach 后面换 provider，不需要推翻 admin 真相模型。</span></li>
-            <li><strong>线索备注</strong><span>可以直接记录人工跟进 note 和下一次 follow-up 日期，后面如果成交，也能继续进项目 timeline。</span></li>
-            <li><strong>Discord 可见性</strong><span>`website-leads` forum 继续作为线索容器，这里是管理后台摘要。</span></li>
-            <li><strong>系统配置</strong><span>去 <a href="/admin/settings/">/admin/settings/</a> 看哪些 provider 已经 live，哪些还只是 planned。</span></li>
-          </ul>
-        </section>
-      </div>
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <span class="eyebrow">今天先看</span>
+          <h2>待跟进线索</h2>
+        </div>
+        <div class="admin-urgent-list">
+          {urgent.length ? urgent.map((record) => (
+            <article class="admin-urgent-card">
+              <strong>{record.company || record.clientSlug}</strong>
+              <span>{record.nextAction.label}</span>
+              <code>{record.blocker || record.stageLabel}</code>
+              <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || '没有邮箱'}</span>
+              <span class="micro">{record.latestProviderEventType ? `${record.latestProviderEventType} · ${record.latestProviderEventAt || '无时间'}` : '还没有 provider 事件'}</span>
+            </article>
+          )) : <p class="micro">目前没有特别紧急的线索阻塞。</p>}
+        </div>
+      </section>
 
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
@@ -227,46 +175,49 @@ function urgencyScore(record) {
                     <mark class={`status-pill ${record.assetsReady ? 'status-ready' : 'status-alert'}`}>素材 {record.assetsReady ? '已齐' : '缺失'}</mark>
                     <mark class={`status-pill ${record.emailDraftReady ? 'status-ready' : 'status-warn'}`}>草稿 {record.emailDraftReady ? '已写' : '缺失'}</mark>
                   </div>
-                  <span>{record.previewUrl ? <a class="admin-inline-link" href={record.previewUrl} target="_blank" rel="noreferrer">打开 demo 预览</a> : '还没有记录 demo 预览'}</span>
+                  <span>{record.previewUrl ? <a class="admin-inline-link" href={record.previewUrl} target="_blank" rel="noreferrer">打开 demo</a> : '未建 demo'}</span>
                   <span>{record.proofPoints} 条 proof · 审计 {record.auditVerdict || 'n/a'}{record.auditScore != null ? ` ${record.auditScore}` : ''}</span>
                 </td>
                 <td>
-                  <span>{record.email ? <a class="admin-inline-link" href={`mailto:${record.email}`}>{record.email}</a> : record.customerEmail ? <a class="admin-inline-link" href={`mailto:${record.customerEmail}`}>{record.customerEmail}</a> : '还没有记录邮箱'}</span>
-                  <span>{record.phone ? <a class="admin-inline-link" href={`tel:${record.phone}`}>{record.phone}</a> : '还没有记录电话'}</span>
-                  <span>{record.websiteUrl ? <a class="admin-inline-link" href={record.websiteUrl} target="_blank" rel="noreferrer">打开官网</a> : '还没有记录官网'}</span>
-                  <span>{record.contactPageUrl ? <a class="admin-inline-link" href={record.contactPageUrl} target="_blank" rel="noreferrer">联系页面</a> : '还没有联系页链接'}</span>
-                  <span>{record.latestEmailArtifact?.subject || '还没有 outreach 草稿标题'}</span>
-                  <span>{record.outreachSentAt ? `发送于 ${record.outreachSentAt}` : '还没有发送记录'}</span>
-                  <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · 已回复' : record.bounceState === 'bounced' ? ' · 退信' : ''}` : '还没有 provider 记录'}</span>
-                  <span>{record.nextFollowUpDue ? `下次跟进 ${record.nextFollowUpDue}` : '还没有下次跟进日期'}</span>
-                  <span>{record.latestProviderEventType ? `最近事件 ${record.latestProviderEventType} · ${record.latestProviderEventAt || '无时间戳'}` : '还没有 provider 事件'}</span>
-                  <span>{record.latestLeadNote?.note ? `最近备注：${record.latestLeadNote.note}` : '还没有线索备注'}</span>
+                  <span>{record.email ? <a class="admin-inline-link" href={`mailto:${record.email}`}>{record.email}</a> : record.customerEmail ? <a class="admin-inline-link" href={`mailto:${record.customerEmail}`}>{record.customerEmail}</a> : '未记邮箱'}</span>
+                  <span>{record.phone ? <a class="admin-inline-link" href={`tel:${record.phone}`}>{record.phone}</a> : '未记电话'}</span>
+                  <span>{record.websiteUrl ? <a class="admin-inline-link" href={record.websiteUrl} target="_blank" rel="noreferrer">官网</a> : '未记官网'}{record.contactPageUrl ? ` · ` : ''}{record.contactPageUrl ? <a class="admin-inline-link" href={record.contactPageUrl} target="_blank" rel="noreferrer">联系页</a> : ''}</span>
+                  <span>{record.outreachSentAt ? `已发送 · ${record.outreachSentAt}` : '未发送'}{record.nextFollowUpDue ? ` · 跟进 ${record.nextFollowUpDue}` : ''}</span>
+                  <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · 已回复' : record.bounceState === 'bounced' ? ' · 退信' : ''}` : '未记 provider'}</span>
+                  <span>{record.latestLeadNote?.note ? `备注：${record.latestLeadNote.note}` : '无备注'}</span>
                 </td>
                 <td>
-                  <span>{record.salesWorkspaceName || '还没有 website-leads workspace'}</span>
-                  <span>{record.discordThreadUrl ? <a class="admin-inline-link" href={record.discordThreadUrl} target="_blank" rel="noreferrer">打开 Discord 线程</a> : (record.salesThreadId || '还没有 Discord 线程')}</span>
-                  <span>{record.projectAdminUrl && record.orderId ? <a class="admin-inline-link" href={record.projectAdminUrl}>打开项目详情</a> : '还没有正式项目详情'}</span>
-                  <span>{record.repoUrl ? <a class="admin-inline-link" href={record.repoUrl} target="_blank" rel="noreferrer">打开 Repo</a> : '还没有 Repo'}</span>
-                  <span>{record.openDesignProjectId ? `Open Design 项目：${record.openDesignProjectId}` : '还没有 Open Design 项目 ID'}</span>
+                  <span>{record.salesWorkspaceName || '未建 website-leads workspace'}</span>
+                  <span class="admin-link-row">
+                    {record.discordThreadUrl ? <a class="admin-inline-link" href={record.discordThreadUrl} target="_blank" rel="noreferrer">Discord</a> : <span>无 Discord</span>}
+                    {record.projectAdminUrl && record.orderId ? <a class="admin-inline-link" href={record.projectAdminUrl}>项目</a> : <span>无项目</span>}
+                    {record.repoUrl ? <a class="admin-inline-link" href={record.repoUrl} target="_blank" rel="noreferrer">Repo</a> : <span>无 Repo</span>}
+                  </span>
+                  <span>{record.openDesignProjectId ? `OD：${record.openDesignProjectId}` : '无 Open Design 项目'}</span>
                 </td>
                 <td>
                   <strong>{record.nextAction.label}</strong>
-                  <span>{record.nextAction.reason}</span>
-                  <form method="post" action="/admin/lead-note" class="admin-action-form">
-                    <input type="hidden" name="client_slug" value={record.clientSlug} />
-                    <input type="hidden" name="order_id" value={record.orderId || ''} />
-                    <input type="hidden" name="company" value={record.company || ''} />
-                    <input type="hidden" name="actor" value="profitslocal-admin" />
-                    <textarea name="note" rows="3" placeholder="记录跟进备注、通话结果、特殊上下文。" required></textarea>
-                    <input type="date" name="next_follow_up_due" value={record.nextFollowUpDue || ''} />
-                    <button class="button secondary" type="submit">保存线索备注</button>
-                  </form>
+                  <span>{record.blocker || record.nextAction.reason}</span>
+                  <details class="admin-inline-form">
+                    <summary>添加备注</summary>
+                    <form method="post" action="/admin/lead-note" class="admin-action-form">
+                      <input type="hidden" name="client_slug" value={record.clientSlug} />
+                      <input type="hidden" name="order_id" value={record.orderId || ''} />
+                      <input type="hidden" name="company" value={record.company || ''} />
+                      <input type="hidden" name="actor" value="profitslocal-admin" />
+                      <textarea name="note" rows="3" placeholder="记录跟进、通话结果、客户偏好。" required></textarea>
+                      <input type="date" name="next_follow_up_due" value={record.nextFollowUpDue || ''} />
+                      <button class="button secondary" type="submit">保存线索备注</button>
+                    </form>
+                  </details>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <p class="admin-section-note">这里只看售前。成交后统一去 <a href="/admin/intakes/" class="admin-inline-link">项目面板</a>；当前真相源是 demo pack、草稿、provider event 和人工备注。</p>
     </div>
   </section>
 

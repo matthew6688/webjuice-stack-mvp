@@ -32,6 +32,7 @@
 - fresh lead 从 outreach 到 paid 真闭环
 - admin 后台改成中文暖纸工作台，`/admin/leads` 只看售前线索，已成交客户统一去 `/admin/intakes`，并已完成 production 页面命中验证
 - admin 财务信息已经彻底收口到 `/admin/finance`，其他 tab 不再混入 ROI / 利润 / 收入 / 成本
+- admin 继续往 Kami 式纸面工作台收口：弱化 card，强化分隔线、表格、清单；`/admin/leads`、`/admin/intakes`、`/admin/queue` 已做第二轮去卡片化
 
 ### IN PROGRESS
 

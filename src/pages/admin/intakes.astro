@@ -4,39 +4,11 @@ import { siteConfig } from '../../config/site';
 import { ADMIN_VIEWS, loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
 
 const index = loadPaidIntakeIndex();
-const statusOrder = [
-  'intake_ready_for_review',
-  'intake_needs_more_info',
-  'intake_needs_generation_confirmation',
-  'paid_intake_pending_preview',
-  'revision_requested',
-  'revision_over_limit',
-];
-const counts = statusOrder
-  .filter((status) => index.counts[status])
-  .map((status) => ({ status, count: index.counts[status] }));
 const dashboardSummary = {
   reviewReady: index.records.filter((record) => record.stageSummary?.key === 'review_ready').length,
   revisionsPending: index.records.filter((record) => record.status === 'revision_requested').length,
   waitingDns: index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length,
 };
-const pipelineStages = [
-  ['intake', '收单'],
-  ['website_ready', '网站资料就绪'],
-  ['open_design', 'Open Design'],
-  ['port_to_dev', '同步到开发分支'],
-  ['building', '构建中'],
-  ['review_ready', '待发 review'],
-  ['revision', '修订中'],
-  ['launch_ready', '待上线'],
-  ['live', '已上线'],
-];
-const pipelineColumns = pipelineStages.map(([key, label]) => ({
-  key,
-  label,
-  records: index.records.filter((record) => record.stageSummary?.key === key).slice(0, 4),
-  total: index.records.filter((record) => record.stageSummary?.key === key).length,
-}));
 const urgentQueue = index.records
   .filter((record) => record.blockerSummary?.blocking || record.status === 'revision_requested' || record.artifactSummary?.domainStatus === 'waiting_for_customer_dns')
   .map((record) => ({
@@ -65,53 +37,38 @@ const savedViews = [
       <div class="admin-header">
         <div>
           <p class="eyebrow">内部运营</p>
-          <h1>项目队列</h1>
-          <p class="lede">这里只看正式项目：当前阶段、阻塞项、review、修订、DNS 和 Open Design 进度。</p>
+          <h1>项目工作台</h1>
+          <p class="lede">这里只看正式项目：当前阶段、阻塞项、review、修订、DNS 和 Open Design。</p>
         </div>
         <div class="admin-count">
           <strong>{index.counts.total}</strong>
           <span>项目</span>
         </div>
       </div>
-      <div class="admin-stat-grid">
-        {counts.map((item) => (
-          <div class="admin-stat">
-            <span>{item.status.replaceAll('_', ' ')}</span>
-            <strong>{item.count}</strong>
-          </div>
-        ))}
-      </div>
-      <div class="admin-stat-grid">
-        <div class="admin-stat">
-          <span>待发 review</span>
-          <strong>{dashboardSummary.reviewReady}</strong>
-        </div>
-        <div class="admin-stat">
-          <span>修订待处理</span>
-          <strong>{dashboardSummary.revisionsPending}</strong>
-        </div>
-        <div class="admin-stat">
-          <span>等待 DNS</span>
-          <strong>{dashboardSummary.waitingDns}</strong>
-        </div>
-      </div>
+
       <div class="admin-summary-strip admin-summary-strip-compact">
         <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">队列状态</span>
-          <strong>{dashboardSummary.reviewReady > 0 ? '可以推进' : '继续建设'}</strong>
-          <p>{dashboardSummary.reviewReady} 个项目已经接近发 review，另有 {dashboardSummary.revisionsPending} 个项目还在等修订处理。</p>
+          <span class="admin-summary-label">项目总数</span>
+          <strong>{index.counts.total}</strong>
+          <p>这里只看正式项目。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Open Design</span>
-          <strong>{index.records.filter((record) => record.artifactSummary?.openDesignBound).length}</strong>
-          <p>还有 {index.records.filter((record) => !record.artifactSummary?.openDesignBound).length} 个项目缺少绑定好的概念源。</p>
+          <span class="admin-summary-label">待发 review</span>
+          <strong>{dashboardSummary.reviewReady}</strong>
+          <p>最接近发客户 review。</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Delivery QA</span>
-          <strong>{index.records.filter((record) => record.artifactSummary?.deliveryQaReady).length}</strong>
-          <p>还有 {index.records.filter((record) => !record.artifactSummary?.deliveryQaReady).length} 个项目在发客户 review 前仍被 QA 卡住。</p>
+          <span class="admin-summary-label">修订待处理</span>
+          <strong>{dashboardSummary.revisionsPending}</strong>
+          <p>客户回来的改动。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">等待 DNS</span>
+          <strong>{dashboardSummary.waitingDns}</strong>
+          <p>上线后还卡在域名。</p>
         </article>
       </div>
+
       <div class="admin-finance-grid">
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
@@ -131,13 +88,27 @@ const savedViews = [
           </div>
         </section>
 
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">页面边界</span>
+              <h2>这里只看项目推进</h2>
+            </div>
+          </div>
+          <ul class="admin-list">
+            <li><strong>这里只看项目</strong><span>review、修订、DNS、OD、阻塞项。</span></li>
+            <li><strong>不看售前</strong><span>线索、触达、回复去 <a href="/admin/leads/">线索面板</a>。</span></li>
+            <li><strong>不看财务</strong><span>收入、成本、利润只在 <a href="/admin/finance/">财务面板</a>。</span></li>
+          </ul>
+        </section>
       </div>
+
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
           <span class="admin-toolbar-label">快速筛选</span>
           <div class="admin-view-pills">
-            {savedViews.map(([key, label], index) => (
-              <button type="button" class={`admin-view-pill ${index === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
+            {savedViews.map(([key, label], idx) => (
+              <button type="button" class={`admin-view-pill ${idx === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
             ))}
           </div>
         </div>
@@ -149,25 +120,7 @@ const savedViews = [
           <p class="micro" data-admin-visible-count>{index.records.length} 条可见</p>
         </div>
       </div>
-      <div class="admin-pipeline" data-admin-pipeline>
-        {pipelineColumns.map((column) => (
-          <section class="admin-pipeline-column" data-stage-column={column.key}>
-            <header>
-              <span>{column.label}</span>
-              <strong>{column.total}</strong>
-            </header>
-            <div class="admin-pipeline-list">
-              {column.records.length ? column.records.map((record) => (
-                <a class="admin-pipeline-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
-                  <strong>{record.customer.company || record.clientSlug}</strong>
-                  <span>{record.nextActionSummary?.label || '打开项目'}</span>
-                  <code>{record.orderId}</code>
-                </a>
-              )) : <p class="micro">这一列暂时没有项目。</p>}
-            </div>
-          </section>
-        ))}
-      </div>
+
       <div class="admin-mobile-records">
         {index.records.map((record) => (
           <article
@@ -191,33 +144,31 @@ const savedViews = [
                 </a>
                 <span class="admin-mono">{record.orderId}</span>
               </div>
-              <a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>查看</a>
+              <a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>详情</a>
             </div>
             <div class="admin-health-pills">
               <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || '未知'}</mark>
               <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
             </div>
-            <p class="micro">里程碑：{record.milestoneSummary?.currentLabel || '线索已收集'} · {record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</p>
+            <p class="micro">{record.milestoneSummary?.currentLabel || '线索已收集'} · {record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</p>
             <p class="micro">{record.nextActionSummary?.label || '查看'} · {record.nextActionSummary?.reason || '还没有记录推荐动作。'}</p>
             <div class="admin-mobile-record-grid">
-              <div><span class="admin-toolbar-label">健康度</span><p>OD {record.artifactSummary?.openDesignBound ? '已就绪' : '缺失'} · QA {record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'} · 域名 {record.artifactSummary?.domainStatus || '无'}</p></div>
-              <div><span class="admin-toolbar-label">商务</span><p>{record.customer.email || '没有邮箱'} · {record.customer.domain || '没有域名'}</p></div>
-              <div><span class="admin-toolbar-label">使用量</span><p>{record.assetCount} 资产 · {record.revisionCount}/{record.revisionLimit} 次修订</p></div>
-              <div><span class="admin-toolbar-label">风险</span><p>{record.blockerSummary?.primary || (record.missing.length ? record.missing.join(', ') : '当前没有明显阻塞')}</p></div>
+              <div><span class="admin-toolbar-label">健康度</span><p>OD {record.artifactSummary?.openDesignPipelineLabel || (record.artifactSummary?.openDesignBound ? '运行中' : '未绑定')} · QA {record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'} · 域名 {record.artifactSummary?.domainStatus || '无'}</p></div>
+              <div><span class="admin-toolbar-label">阻塞</span><p>{record.blockerSummary?.primary || (record.missing.length ? record.missing.join(', ') : '当前没有明显阻塞')}</p></div>
+              <div><span class="admin-toolbar-label">联系</span><p>{record.customer.email || '没有邮箱'} · {record.customer.domain || '没有域名'}</p></div>
             </div>
           </article>
         ))}
       </div>
+
       <div class="admin-table-wrap">
         <div class="admin-table-guide admin-table-guide-intakes" aria-hidden="true">
           <span>客户</span>
           <span>流程</span>
           <span>健康度</span>
-          <span>商务</span>
-          <span>使用量</span>
-          <span>风险</span>
+          <span>阻塞</span>
           <span>下一步动作</span>
-          <span>查看</span>
+          <span>入口</span>
         </div>
         <table class="admin-table">
           <thead>
@@ -225,11 +176,9 @@ const savedViews = [
               <th>客户</th>
               <th>流程</th>
               <th>健康度</th>
-              <th>商务</th>
-              <th>使用量</th>
-              <th>风险</th>
+              <th>阻塞</th>
               <th>下一步动作</th>
-              <th>查看</th>
+              <th>入口</th>
             </tr>
           </thead>
           <tbody>
@@ -257,9 +206,7 @@ const savedViews = [
                 <td>
                   <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || '未知'}</mark>
                   <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
-                  <span><strong>里程碑：</strong>{record.milestoneSummary?.currentLabel || '线索已收集'}</span>
-                  <span>{record.milestoneSummary?.completedCount || 0} / {record.milestoneSummary?.total || 0} 已完成</span>
-                  <span>{record.readinessStatus.replaceAll('_', ' ') || '还没有记录 readiness'}</span>
+                  <span>{record.milestoneSummary?.currentLabel || '线索已收集'} · {record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</span>
                   <span>{record.artifactSummary?.latestTimeline?.type || '还没有最近事件'}</span>
                 </td>
                 <td>
@@ -276,21 +223,9 @@ const savedViews = [
                       OD {record.artifactSummary?.openDesignPipelineLabel || (record.artifactSummary?.openDesignBound ? '运行中' : '缺失')}
                     </mark>
                     <mark class={`status-pill ${record.artifactSummary?.deliveryQaReady ? 'status-ready' : 'status-warn'}`}>QA {record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'}</mark>
-                    <mark class={`status-pill ${record.artifactSummary?.outreachAssetsReady ? 'status-ready' : 'status-warn'}`}>交付素材 {record.artifactSummary?.outreachAssetsReady ? '已齐' : '待补'}</mark>
                     <mark class="status-pill status-info">域名 {record.artifactSummary?.domainStatus || '无'}</mark>
                   </div>
-                  <span>OD run {record.artifactSummary?.openDesignLastRunId || 'n/a'} · {record.artifactSummary?.openDesignStatus || 'not-started'} · {record.artifactSummary?.openDesignCompletionMode || '等待 native 结束'}</span>
-                </td>
-                <td>
-                  <span>{record.customer.email || '没有邮箱'}</span>
-                  <span>线索路由：{record.leadRecipientEmail || record.customer.email || '缺失'}</span>
-                  <span>{record.customer.domain || '没有域名'}</span>
-                </td>
-                <td>
-                  <span>{record.assetCount} 个资产</span>
-                  <span>{record.fileCount} 个文件</span>
-                  <span>{record.revisionCount} / {record.revisionLimit} 次修订</span>
-                  <span>{record.assetCount} 资产 · {record.revisionCount}/{record.revisionLimit} 次修订</span>
+                  <span>{record.artifactSummary?.openDesignCompletionMode || '等待 native 结束'}</span>
                 </td>
                 <td>
                   {record.blockerSummary?.count ? (
@@ -301,20 +236,21 @@ const savedViews = [
                   ) : (
                     <span class="admin-ready">当前没有明显阻塞</span>
                   )}
-                  {record.missing.length ? <span class="admin-missing">{record.missing.join(', ')}</span> : null}
+                  <span>{record.customer.email || '没有邮箱'} · {record.customer.domain || '没有域名'}</span>
                 </td>
                 <td>
                   <strong>{record.nextActionSummary?.label || '查看'}</strong>
                   <span>{record.nextActionSummary?.reason || ''}</span>
-                  <span class="micro">{record.milestoneSummary?.currentKey || 'lead_collected'}</span>
+                  <span class="micro">修订 {record.revisionCount}/{record.revisionLimit}</span>
                 </td>
-                <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>查看</a></td>
+                <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>详情</a></td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="micro">页面在构建时从 <code>data/paid-intakes</code> 生成，repo 里的 JSON 仍然是最终真相源。</p>
+
+      <p class="micro">页面从 <code>data/paid-intakes</code> 生成；repo 里的 JSON 仍然是最终真相源。</p>
     </div>
   </section>
 </Layout>
@@ -340,32 +276,35 @@ const savedViews = [
 
     const applyFilters = () => {
       const query = (search?.value || '').trim().toLowerCase();
-      let visibleRows = 0;
-      let visibleCards = 0;
+      let shown = 0;
       records.forEach((record) => {
-        const key = viewDatasetKey[activeView];
-        const viewMatch = !key || record.dataset[key] === 'true';
-        const haystack = [record.dataset.client, record.dataset.company, record.dataset.orderId, record.dataset.domain, record.dataset.status, record.dataset.stage]
-          .filter(Boolean)
-          .join(' ')
-          .toLowerCase();
-        const searchMatch = !query || haystack.includes(query);
-        const show = viewMatch && searchMatch;
-        record.hidden = !show;
-        if (show && tableRows.includes(record)) visibleRows += 1;
-        if (show && mobileCards.includes(record)) visibleCards += 1;
+        const haystack = [
+          record.dataset.client,
+          record.dataset.company,
+          record.dataset.orderId,
+          record.dataset.domain,
+          record.dataset.status,
+          record.dataset.stage,
+        ].join(' ').toLowerCase();
+        const matchesQuery = !query || haystack.includes(query);
+        const datasetKey = viewDatasetKey[activeView];
+        const matchesView = !datasetKey ? true : record.dataset[datasetKey] === 'true';
+        const visible = matchesQuery && matchesView;
+        record.hidden = !visible;
+        if (visible) shown += 1;
       });
-      const normalizedVisible = window.innerWidth <= 760 ? visibleCards : visibleRows;
-      if (visibleCount) visibleCount.textContent = `${normalizedVisible} 条可见`;
+      if (visibleCount) visibleCount.textContent = `${shown} 条可见`;
     };
 
     pills.forEach((pill) => {
       pill.addEventListener('click', () => {
+        pills.forEach((item) => item.classList.remove('is-active'));
+        pill.classList.add('is-active');
         activeView = pill.dataset.adminView || 'all';
-        pills.forEach((candidate) => candidate.classList.toggle('is-active', candidate === pill));
         applyFilters();
       });
     });
+
     search?.addEventListener('input', applyFilters);
     applyFilters();
   }

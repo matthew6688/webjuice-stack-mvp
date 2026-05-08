@@ -102,6 +102,8 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 
 - 不再跟官网保持同一种 marketing 风格；
 - 用更适合长时间盯盘的浅色、低刺激、暖纸工作台风格；
+- 视觉语言更接近纸面和文档，不走大面积 card / KPI 面板；
+- 先列表、再动作、最后统计；尽量用分隔线、表格、清单，而不是一排排卡片；
 - 默认中文界面；
 - `/admin/leads` 只看售前线索；
 - `/admin/intakes` 只看已成交后的正式项目；
@@ -109,6 +111,7 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 - `/admin`、`/admin/leads`、`/admin/intakes`、`/admin/queue`、项目详情页都不再混入 ROI、利润、收入、成本这类财务信息；
 - 这样线索和项目不会混在同一张后台表里。
 - 以上 admin 风格与中英文统一，已经做过 production 页面命中验证。
+- 2026-05-08 这一轮又继续去卡片化：`/admin/leads`、`/admin/intakes`、`/admin/queue` 往更轻的纸面工作台收了一轮；本地 Chrome 已逐页复看，确认方向更接近 Kami 一类的文档式后台。
 
 其中：
 
