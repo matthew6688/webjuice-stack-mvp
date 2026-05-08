@@ -32,9 +32,12 @@
 
 ### IN PROGRESS
 
-- `B4` Open Design pipeline 状态映射到我们的项目状态
 - `C2` 售前 lead / outreach / forum 流转继续补齐
 - `C3` lead truth source / lead profile schema（Phase 1 已落地，后续字段与自动回流继续补）
+
+### DONE
+
+- `B4` Open Design pipeline 状态映射到我们的项目状态
 - `D2.2` Agentic Inbox 自动 provider event 回流上线验证
 
 ### PENDING
@@ -204,7 +207,7 @@ lead / intake
 
 ## B4. Open Design pipeline 状态映射到我们的项目状态
 
-- 状态：`PENDING`
+- 状态：`DONE`
 - 目标：
   - 把 Open Design 的：
     - `Not started`
@@ -223,6 +226,25 @@ lead / intake
 - 是否需要显示到 admin：
   - **需要**
   - 建议显示在项目详情页和列表 health pills
+- 当前已完成：
+  - `/admin`
+    - 已增加 `OD running`
+    - 已增加 `OD needs input`
+  - `/admin/intakes`
+    - 已显示 Open Design pipeline health pill
+    - 已显示 `Open Design run ... / completion mode`
+  - `/admin/intakes/<client>/<order>`
+    - 已显示 `Open Design pipeline`
+    - 已显示 `Open Design status`
+    - 已显示 `Completion mode`
+- hard evidence：
+  - 本地：
+    - `npm run funnel:test-paid-intake-index`
+    - `npm run build`
+  - 线上：
+    - `/admin` 命中 `OD needs input` / `OD running`
+    - `/admin/intakes` 命中 `OD Not started`
+    - 项目详情页命中 `Open Design pipeline`
 
 ## B5. Open Design 运行分型继续标准化
 
@@ -287,7 +309,7 @@ lead / intake
     - `missing outreach draft`
 - 还缺：
   - external cold email platform live webhook ingest
-  - Agentic Inbox live UI 自己触发 event 的最终证据
+  - 真正 fresh paid customer 的生产演练
 - 为什么重要：
   - 这决定后面大量项目时 Discord 是否仍然清晰可管
 - 是否需要显示到 admin：
@@ -425,13 +447,25 @@ lead / intake
 
 ## D3. Agentic email 如何接业务流程
 
-- 状态：`PENDING`
+- 状态：`DONE`
 - 当前原则：
   - Resend = transactional sender
   - Agentic email / Agentic Inbox = conversational inbox / draft / later cold outreach support
-- 后续要做：
-  - 明确 inbound email 怎么映射回 case / workspace
-  - 明确 cold outreach reply 怎么落回 admin / case / Discord/forum
+- 当前已完成：
+  - production worker `agentic-inbox-profitslocal` 已部署回流逻辑
+  - production endpoint `/api/outreach-provider-event` 已可接收 `agentic-email`
+  - live Agentic Inbox UI 真实回复已触发 production workflow
+  - unique lead email 可自动匹配回 `clientSlug`
+  - artifact 已写回：
+    - `providerEvent`
+    - `externalLeadId`
+    - `externalMessageId`
+    - `externalThreadUrl`
+    - `nextFollowUpDue`
+- hard evidence：
+  - `data/qa/agentic-inbox-webhook-deploy-summary.json`
+  - `data/qa/agentic-inbox-production-routing-summary.json`
+  - `data/qa/agentic-inbox-live-ui-smoke/summary.json`
 - 是否需要显示到 admin：
   - **需要**
   - 后面应该有：
@@ -486,12 +520,16 @@ lead / intake
 - 当前已完成：
   - 已新增：
     - `/admin/leads`
-  - 当前页面已经能显示：
-    - demo-ready / draft-ready / outreach-sent / paid / missing assets / missing email
-    - outreach pack / preview / proof assets / draft artifact
-    - live send metadata（如果 artifact 已回写 `sendResult`）
-    - `website-leads` 相关 workspace 名称与 thread id（如果 case 已记录）
-    - 推荐下一步
+- 当前页面已经能显示：
+  - demo-ready / draft-ready / outreach-sent / paid / missing assets / missing email
+  - outreach pack / preview / proof assets / draft artifact
+  - live send metadata（如果 artifact 已回写 `sendResult`）
+  - `website-leads` 相关 workspace 名称与 thread id（如果 case 已记录）
+  - 推荐下一步
+  - `Paid handoff pending`
+  - `replied`
+  - `follow-up due`
+  - `bounced`
 - 当前边界：
   - 这页现在说真话的范围是：
     - `demo/outreach draft/outreach sent/replied/bounced/paid`

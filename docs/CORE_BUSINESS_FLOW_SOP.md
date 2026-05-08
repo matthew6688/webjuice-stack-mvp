@@ -243,6 +243,26 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
     - workflow run: `25533771745`
     - unique lead match: `info@babylonbrisbane.com.au -> babylon-brisbane-restaurant`
     - 记录文件：`data/qa/agentic-inbox-production-routing-summary.json`
+  - 当前 live UI 回流证据：
+    - mailbox: `hi@profitslocal.com`
+    - 第 1 次真实 UI reply：
+      - workflow: `25534758411`
+      - 结果：`not_found`
+      - 原因：目标邮箱当时还没进入 lead registry
+    - 第 2 次真实 UI reply：
+      - workflow: `25535070123`
+      - 结果：`unique_match`
+      - matched client: `agentic-inbox-ui-smoke`
+      - artifact:
+        - `clients/agentic-inbox-ui-smoke/outreach/email/01-agentic-inbox-ui-smoke.json`
+      - 已写回：
+        - `providerEvent`
+        - `externalLeadId`
+        - `externalMessageId`
+        - `externalThreadUrl`
+        - `nextFollowUpDue`
+    - 记录文件：
+      - `data/qa/agentic-inbox-live-ui-smoke/summary.json`
 
 当前 milestone 真相源：
 
@@ -255,6 +275,21 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
 - `data/domain/requests/*/*.json`
 
 当前 milestone 仍是 **repo/case/artifact 推导值**，还没有和 Open Design app 的 pipeline 原生状态完全统一。
+
+补充：
+
+- 现在 `/admin` 已能显示：
+  - `OD running`
+  - `OD needs input`
+- 现在 `/admin/intakes` 已能显示：
+  - `OD Not started`
+  - `OD run <runId> · <status> · <completion mode>`
+- 现在项目 detail 已能显示：
+  - `Open Design pipeline`
+  - `Open Design status`
+  - `Completion mode`
+
+也就是说，admin 已经能把 Open Design pipeline 的关键状态直接说出来，不再只靠 case 旁敲侧击。
 
 ### Cold outreach provider 边界
 

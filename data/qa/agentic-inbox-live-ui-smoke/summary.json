@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-05-08T00:00:00.000Z",
+  "mailbox": "hi@profitslocal.com",
+  "targetLeadEmail": "matthewkiata@gmail.com",
+  "firstUiReply": {
+    "workflowRunId": 25534758411,
+    "result": "not_found",
+    "note": "Live UI reply reached production workflow before the lead email existed in the registry."
+  },
+  "secondUiReply": {
+    "workflowRunId": 25535070123,
+    "result": "unique_match",
+    "matchedClientSlug": "agentic-inbox-ui-smoke",
+    "artifactPath": "clients/agentic-inbox-ui-smoke/outreach/email/01-agentic-inbox-ui-smoke.json",
+    "externalLeadId": "matthewkiata@gmail.com",
+    "externalMessageId": "c9f5e192-49a6-4d02-afd7-8befdcb70f46@profitslocal.com",
+    "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi%40profitslocal.com/emails/inbox?thread=8270832f-ef5f-4814-85ca-115a8adbdf5f",
+    "nextFollowUpDue": "2026-05-11",
+    "caseSync": "case_not_found",
+    "forumSync": "missing_workspace_or_discord_config"
+  },
+  "conclusion": "A real Agentic Inbox UI reply can now hit production, uniquely match a lead by email, and write provider metadata back into the repo truth source."
+}
