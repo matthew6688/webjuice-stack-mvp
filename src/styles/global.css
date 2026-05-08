@@ -588,6 +588,31 @@ textarea {
   border-right: 0;
 }
 
+.admin-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 2px solid var(--pl-line);
+}
+
+.admin-settings-panel {
+  min-width: 0;
+  padding: 16px;
+  border-right: 2px solid var(--pl-line);
+  border-bottom: 2px solid var(--pl-line);
+  background: color-mix(in srgb, var(--pl-paper) 84%, white);
+}
+
+.admin-settings-panel:nth-child(2n) {
+  border-right: 0;
+}
+
+.admin-settings-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .admin-finance-head h2 {
   max-width: none;
   margin: 0;
@@ -2761,6 +2786,7 @@ h2 em {
   }
 
   .brand-assets-grid,
+  .admin-settings-grid,
   .logo-lockups {
     grid-template-columns: 1fr;
   }
@@ -2773,6 +2799,10 @@ h2 em {
 
   .checkout-tier:last-child {
     border-bottom: 0;
+  }
+
+  .admin-settings-panel {
+    border-right: 0;
   }
 
   .checkout-bar {

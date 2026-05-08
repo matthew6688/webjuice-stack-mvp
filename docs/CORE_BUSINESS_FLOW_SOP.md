@@ -92,6 +92,7 @@
 - `/admin/intakes`
 - `/admin/finance`
 - `/admin/queue`
+- `/admin/settings`
 
 其中：
 
@@ -134,6 +135,22 @@
     - workflow/job status
   - `/admin/queue`
     - 已增加 milestone 聚合统计
+
+- `/admin/settings`
+  - 当前负责说真话的系统层配置：
+    - Core ops
+    - Open Design
+    - Transactional email
+    - Cold outreach providers
+    - Checkout & billing
+    - Media & uploads
+    - Research & scrape
+    - Domain & deploy
+    - Local AI audit
+  - 页面原则：
+    - secret 只显示脱敏值
+    - 只显示“是否已配置、属于哪类依赖、会影响哪段业务”
+    - 不把项目级内容和系统级配置混在一起
 
 当前 milestone 真相源：
 

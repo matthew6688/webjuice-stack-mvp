@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/AdminLayout.astro';
+import { siteConfig } from '../../config/site';
+import { loadAdminSettingsIndex } from '../../../core/admin/settings-index.js';
+
+const settings = loadAdminSettingsIndex();
+---
+
+<Layout title={`Settings admin - ${siteConfig.name}`} description="System settings and integration status for ProfitsLocal ops." active="settings">
+  <section class="poster-section admin-section">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">Internal ops</p>
+          <h1>Settings</h1>
+          <p class="lede">One place to audit third-party dependencies, channel wiring, and the important runtime settings behind the business.</p>
+        </div>
+        <div class="admin-count">
+          <strong>{settings.counts.configured}</strong>
+          <span>Configured items</span>
+        </div>
+      </div>
+
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">Coverage</span>
+          <strong>{settings.counts.configured} / {settings.counts.total}</strong>
+          <p>{settings.counts.missing} required setting(s) are still missing. {settings.counts.optional} optional items are not set.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Required missing</span>
+          <strong>{settings.counts.missing}</strong>
+          <p>Anything missing here can block payments, deploys, Discord routing, or customer email.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Partial</span>
+          <strong>{settings.counts.partial}</strong>
+          <p>Reserved for integrations where only part of the flow has been configured.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Optional</span>
+          <strong>{settings.counts.optional}</strong>
+          <p>Useful extras like alternate scrape providers or future outreach senders.</p>
+        </article>
+      </div>
+
+      <div class="admin-finance-grid">
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Blockers</span>
+              <h2>Needs config attention</h2>
+            </div>
+          </div>
+          <div class="admin-urgent-list">
+            {settings.blockers.length ? settings.blockers.map((blocker) => (
+              <article class="admin-urgent-card">
+                <strong>{blocker.label}</strong>
+                <span>{blocker.section}</span>
+                <code>{blocker.reason}</code>
+              </article>
+            )) : <p class="micro">No required setting is missing right now.</p>}
+          </div>
+        </section>
+
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Policy</span>
+              <h2>What this page is for</h2>
+            </div>
+          </div>
+          <ul class="admin-list">
+            <li><strong>Secrets are masked</strong><span>We only show enough to confirm presence and identify which credential is in play.</span></li>
+            <li><strong>Transactional vs outreach</strong><span>Resend stays transactional. Cold outreach can later swap to Instantly, Smartlead, or agentic inbox without changing the admin truth model.</span></li>
+            <li><strong>Operator truth source</strong><span>This page is for runtime settings, not customer content. Project-specific state still lives in cases, forums, and artifacts.</span></li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="admin-settings-grid">
+        {settings.sections.map((section) => (
+          <section class="admin-settings-panel">
+            <div class="admin-finance-head">
+              <div>
+                <span class="eyebrow">{section.title}</span>
+                <h2>{section.description}</h2>
+              </div>
+            </div>
+            <ul class="admin-list">
+              {section.items.map((item) => (
+                <li>
+                  <div class="admin-settings-line">
+                    <strong>{item.label}</strong>
+                    <mark class={`status-pill status-${item.status === 'configured' ? 'ready' : item.status === 'optional' ? 'info' : item.status === 'partial' ? 'warn' : 'alert'}`}>{item.statusLabel}</mark>
+                  </div>
+                  <span class="admin-mono">{item.display}</span>
+                  <span>{item.reason}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

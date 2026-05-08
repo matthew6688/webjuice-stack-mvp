@@ -372,10 +372,34 @@ lead / intake
 - 状态：`DONE`
 - 已有页面：
   - `/admin`
+  - `/admin/settings`
   - `/admin/intakes`
   - `/admin/intakes/<client>/<order>`
   - `/admin/finance`
   - `/admin/queue`
+
+## E1.1 Settings 页面
+
+- 状态：`DONE`
+- 目标：
+  - 把第三方依赖、关键 channel/id、重要运行参数收口到一个系统页面
+- 当前已完成：
+  - 新增：
+    - `/admin/settings`
+  - 当前覆盖：
+    - Core ops
+    - Open Design
+    - Transactional email
+    - Cold outreach providers
+    - Checkout & billing
+    - Media & uploads
+    - Research & scrape
+    - Domain & deploy
+    - Local AI audit
+- 页面规则：
+  - secret 只显示脱敏值
+  - 项目状态不混到这里
+  - 只回答“系统有没有配好、缺什么、会影响哪段业务”
 
 ## E2. Cold outreach admin 面板
 
@@ -393,11 +417,11 @@ lead / intake
     - 推荐下一步
 - 当前边界：
   - 这页现在说真话的范围是：
-    - `demo/outreach draft/outreach sent/paid`
-  - 还**没有**真实接上的范围：
-    - `replied`
+    - `demo/outreach draft/outreach sent/replied/bounced/paid`
+  - 还**没有完全接好的范围**：
     - `next follow-up due`
     - future agentic inbox reply state
+    - live external webhook ingest
 - 最低需求：
   - qualified leads
   - demo-ready leads
