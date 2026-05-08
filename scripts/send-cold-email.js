@@ -8,15 +8,16 @@ import { renderProfitsLocalEmail } from '../core/funnel/email-template.js';
 loadLocalEnv();
 
 const args = parseArgs();
+const provider = String(args.provider || 'resend').toLowerCase();
 
 if (!args.client && !args.leads) {
-  console.error('Usage: node scripts/send-cold-email.js --client slug [--to you@example.com] [--dry true]');
-  console.error('   or: node scripts/send-cold-email.js --leads leads.json [--dry true]');
+  console.error('Usage: node scripts/send-cold-email.js --client slug [--to you@example.com] [--provider resend|instantly|smartlead] [--dry true]');
+  console.error('   or: node scripts/send-cold-email.js --leads leads.json [--provider resend|instantly|smartlead] [--dry true]');
   process.exit(1);
 }
 
 const dryRun = args.dry !== 'false';
-const messages = args.client ? [buildClientMessage(args.client, args)] : buildLeadMessages(args.leads);
+const messages = args.client ? [buildClientMessage(args.client, args, provider)] : buildLeadMessages(args.leads, provider);
 const outDir = args.outputDir || args['output-dir'] || (args.client ? path.join('clients', args.client, 'outreach', 'email') : 'outreach/email');
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -31,8 +32,16 @@ for (const [index, message] of messages.entries()) {
     sendResult: dryRun ? {
       status: 'draft',
       provider: message.provider,
+      sourceSystem: message.provider,
       sentAt: '',
       id: '',
+      externalCampaignId: '',
+      externalLeadId: '',
+      externalMessageId: '',
+      externalThreadUrl: '',
+      nextFollowUpDue: '',
+      replyState: '',
+      bounceState: '',
     } : null,
   };
   fs.writeFileSync(artifactPath, `${JSON.stringify(artifact, null, 2)}\n`);
@@ -45,12 +54,23 @@ for (const [index, message] of messages.entries()) {
 
   if (!dryRun) {
     if (!message.to) throw new Error(`Missing recipient for ${message.businessName}`);
+    if (message.provider !== 'resend') {
+      throw new Error(`Live send for provider "${message.provider}" is not implemented yet. Use --dry true and hand off to the provider integration layer.`);
+    }
     const result = await sendResendEmail(message);
     artifact.sendResult = {
       status: 'sent',
       provider: message.provider,
+      sourceSystem: message.provider,
       sentAt: new Date().toISOString(),
       id: result.id || '',
+      externalCampaignId: '',
+      externalLeadId: '',
+      externalMessageId: result.id || '',
+      externalThreadUrl: '',
+      nextFollowUpDue: '',
+      replyState: '',
+      bounceState: '',
     };
     fs.writeFileSync(artifactPath, `${JSON.stringify(artifact, null, 2)}\n`);
     console.log(`Sent: ${result.id || JSON.stringify(result)}`);
@@ -59,7 +79,7 @@ for (const [index, message] of messages.entries()) {
 
 if (dryRun) console.log('\nDry run complete. Use --dry false only for an intentional live send.');
 
-function buildClientMessage(clientSlug, options) {
+function buildClientMessage(clientSlug, options, provider) {
   const packPath = path.join('clients', clientSlug, 'outreach', 'outreach-pack.json');
   const contentPath = path.join('clients', clientSlug, 'content.restaurant.json');
   const auditPath = path.join('clients', clientSlug, 'audit', 'local-llm-audit.json');
@@ -110,7 +130,7 @@ function buildClientMessage(clientSlug, options) {
   });
 
   return {
-    provider: 'resend',
+    provider,
     to,
     from: options.from || process.env.FROM_EMAIL || 'Profits Local <hi@profitslocal.com>',
     replyTo: options.replyTo || options['reply-to'] || process.env.REPLY_TO_EMAIL || '',
@@ -129,12 +149,12 @@ function buildClientMessage(clientSlug, options) {
   };
 }
 
-function buildLeadMessages(leadsPath) {
+function buildLeadMessages(leadsPath, provider) {
   return readJson(leadsPath).map((lead) => {
     const businessName = lead.name || lead.businessName || 'your restaurant';
     const previewUrl = lead.preview || lead.previewUrl || '';
     return {
-      provider: 'resend',
+      provider,
       to: lead.email || '',
       from: process.env.FROM_EMAIL || 'Profits Local <hi@profitslocal.com>',
       replyTo: process.env.REPLY_TO_EMAIL || '',

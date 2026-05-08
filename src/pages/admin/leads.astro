@@ -47,7 +47,12 @@ const urgent = index.records
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Outreach sent</span>
           <strong>{index.counts.outreachSent || 0}</strong>
-          <p>Live send has been recorded on the outreach artifact. Replies and follow-up are the next truth layer.</p>
+          <p>Live send has been recorded on the outreach artifact. Provider-specific reply and follow-up state can layer on top.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Replied / bounced</span>
+          <strong>{(index.counts.replied || 0) + (index.counts.bounced || 0)}</strong>
+          <p>Future Instantly / Smartlead reply and bounce events should land here once their webhooks are wired in.</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Paid</span>
@@ -89,7 +94,8 @@ const urgent = index.records
           </div>
           <ul class="admin-list">
             <li><strong>Transactional email</strong><span>Stays on Resend. Not shown here as cold outreach send truth.</span></li>
-            <li><strong>Cold outreach</strong><span>Current truth source is demo pack + draft artifact + live send metadata written back to outreach email artifacts.</span></li>
+            <li><strong>Cold outreach</strong><span>Current truth source is demo pack + draft artifact + normalized provider metadata written back to outreach email artifacts.</span></li>
+            <li><strong>Provider model</strong><span>Resend remains transactional. Instantly / Smartlead can later become sending + webhook providers without changing the admin truth model.</span></li>
             <li><strong>Forum visibility</strong><span>`website-leads` remains the Discord container; this page is the admin summary.</span></li>
           </ul>
         </section>
@@ -166,6 +172,7 @@ const urgent = index.records
                   <span>{record.domain || 'no domain recorded'}</span>
                   <span>{record.latestEmailArtifact?.subject || 'no outreach draft subject'}</span>
                   <span>{record.outreachSentAt ? `sent ${record.outreachSentAt}` : 'send not recorded'}</span>
+                  <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · replied' : record.bounceState === 'bounced' ? ' · bounced' : ''}` : 'provider not recorded yet'}</span>
                 </td>
                 <td>
                   <span>{record.salesWorkspaceName || 'website-leads forum not recorded'}</span>

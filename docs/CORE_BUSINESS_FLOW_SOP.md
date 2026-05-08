@@ -100,6 +100,8 @@
     - `demo ready`
     - `draft ready`
     - `outreach sent`
+    - `replied`
+    - `bounced`
     - `paid`
     - `missing assets`
     - `missing outreach draft`
@@ -109,12 +111,15 @@
     - `data/cases/*/*/case.json`
     - `data/paid-intakes/*/*.json`
   - 其中 `outreach sent` 的当前真相源：
-    - `clients/<client>/outreach/email/*.json` 里的 `sendResult.status === "sent"`
-    - 当前只表示“已发出”，还**不表示**已回复或已安排 follow-up
-  - 当前**还没有**接上的状态：
-    - `replied`
+    - `clients/<client>/outreach/email/*.json` 里的标准化 provider metadata
+    - 当前已经可以从 artifact 推导：
+      - `sendResult.status === "sent"`
+      - `providerEvent -> replied / bounced`
+      - `provider / sourceSystem / externalCampaignId / externalLeadId / externalMessageId / externalThreadUrl`
+  - 当前**还没有完全接好的状态**：
     - `next follow-up due`
-    - external cold email platform reply state
+    - external provider live webhook ingest
+    - agentic inbox reply state
 
 - `/admin/intakes`
   - 当前已经能显示：
@@ -141,6 +146,16 @@
 - `data/domain/requests/*/*.json`
 
 当前 milestone 仍是 **repo/case/artifact 推导值**，还没有和 Open Design app 的 pipeline 原生状态完全统一。
+
+### Cold outreach provider 边界
+
+- `Resend`
+  - 继续只负责 transactional email
+  - cold outreach 目前也可做 live smoke，但不是长期主发送系统
+- cold outreach provider
+  - 后面可接 `Instantly`、`Smartlead`、`Gmail sender`、`agentic email`
+  - 我们内部已经开始按 provider-agnostic 字段归一，详见：
+    - `docs/COLD_OUTREACH_PROVIDER_INTEGRATION.md`
 
 为什么这样做：
 

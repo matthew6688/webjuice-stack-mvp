@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { normalizeOutreachArtifactState } from './outreach-provider-state.js';
 
 export const LEAD_ADMIN_VIEWS = {
   all: { label: '全部 leads' },
@@ -79,9 +80,22 @@ function ingestOutreachArtifacts(records, clientsRoot) {
     record.emailDraftReady = emailArtifacts.length > 0;
     record.emailArtifacts = emailArtifacts;
     record.latestEmailArtifact = emailArtifacts[0] || null;
-    record.outreachSent = emailArtifacts.some((artifact) => artifact.sendResult?.status === 'sent');
-    record.outreachSentAt = emailArtifacts.find((artifact) => artifact.sendResult?.status === 'sent')?.sendResult?.sentAt || '';
-    record.outreachSendId = emailArtifacts.find((artifact) => artifact.sendResult?.status === 'sent')?.sendResult?.id || '';
+    const sentArtifact = emailArtifacts.find((artifact) => artifact.outreachState.status === 'sent');
+    const repliedArtifact = emailArtifacts.find((artifact) => artifact.outreachState.replyState === 'replied' || artifact.outreachState.status === 'replied');
+    const bouncedArtifact = emailArtifacts.find((artifact) => artifact.outreachState.bounceState === 'bounced' || artifact.outreachState.status === 'bounced');
+    record.outreachSent = emailArtifacts.some((artifact) => artifact.outreachState.status === 'sent');
+    record.outreachSentAt = sentArtifact?.outreachState?.sentAt || '';
+    record.outreachSendId = sentArtifact?.outreachState?.sendId || '';
+    record.outreachProvider = sentArtifact?.outreachState?.provider || repliedArtifact?.outreachState?.provider || bouncedArtifact?.outreachState?.provider || '';
+    record.outreachSourceSystem = sentArtifact?.outreachState?.sourceSystem || repliedArtifact?.outreachState?.sourceSystem || bouncedArtifact?.outreachState?.sourceSystem || '';
+    record.replyState = repliedArtifact ? 'replied' : (record.replyState || '');
+    record.replySnippet = repliedArtifact?.outreachState?.replySnippet || '';
+    record.nextFollowUpDue = repliedArtifact?.outreachState?.nextFollowUpDue || sentArtifact?.outreachState?.nextFollowUpDue || record.nextFollowUpDue || '';
+    record.bounceState = bouncedArtifact?.outreachState?.bounceState || record.bounceState || '';
+    record.outreachCampaignId = sentArtifact?.outreachState?.externalCampaignId || repliedArtifact?.outreachState?.externalCampaignId || bouncedArtifact?.outreachState?.externalCampaignId || '';
+    record.outreachLeadId = sentArtifact?.outreachState?.externalLeadId || repliedArtifact?.outreachState?.externalLeadId || bouncedArtifact?.outreachState?.externalLeadId || '';
+    record.outreachMessageId = sentArtifact?.outreachState?.externalMessageId || repliedArtifact?.outreachState?.externalMessageId || bouncedArtifact?.outreachState?.externalMessageId || '';
+    record.outreachThreadUrl = repliedArtifact?.outreachState?.externalThreadUrl || sentArtifact?.outreachState?.externalThreadUrl || '';
     record.updatedAt = maxDate(record.updatedAt, pack.generatedAt, emailArtifacts[0]?.generatedAt);
   }
 }
@@ -166,6 +180,7 @@ function finalizeLeadRecord(input) {
 function deriveStageKey(record) {
   if (record.paymentStatus === 'paid') return 'paid';
   if (record.replyState === 'replied') return 'replied';
+  if (record.bounceState === 'bounced') return 'bounced';
   if (record.outreachSent) return 'outreach_sent';
   if (record.emailDraftReady && record.assetsReady && record.previewUrl) return 'draft_ready';
   if (record.assetsReady && record.previewUrl) return 'demo_ready';
@@ -177,6 +192,7 @@ function deriveStageLabel(stageKey) {
   return {
     paid: 'Paid',
     replied: 'Replied',
+    bounced: 'Bounced',
     outreach_sent: 'Outreach Sent',
     draft_ready: 'Draft Ready',
     demo_ready: 'Demo Ready',
@@ -189,6 +205,7 @@ function deriveStageTone(stageKey) {
   return {
     paid: 'ready',
     replied: 'ready',
+    bounced: 'alert',
     outreach_sent: 'working',
     draft_ready: 'working',
     demo_ready: 'ready',
@@ -208,6 +225,12 @@ function deriveNextAction(record) {
     return {
       label: '处理 prospect 回复',
       reason: '已经收到回复，下一步应该把回复结果落回 case / forum，并决定是否推进成交。',
+    };
+  }
+  if (record.bounceState === 'bounced') {
+    return {
+      label: '修正邮箱或替换发送通道',
+      reason: 'cold outreach 已记录 bounce，下一步应该核对邮箱、名单质量，或换发送平台重新触达。',
     };
   }
   if (record.outreachSent) {
@@ -245,6 +268,7 @@ function deriveNextAction(record) {
 function deriveBlocker(record) {
   if (record.paymentStatus === 'paid') return '';
   if (record.replyState === 'replied') return '';
+  if (record.bounceState === 'bounced') return '';
   if (record.outreachSent) return '';
   if (!record.outreachPackPath) return '缺少 outreach pack';
   if (!record.assetsReady) return '缺少 outreach proof 资产';
@@ -277,8 +301,16 @@ function ensureRecord(records, clientSlug) {
       outreachSent: false,
       outreachSentAt: '',
       outreachSendId: '',
+      outreachProvider: '',
+      outreachSourceSystem: '',
+      outreachCampaignId: '',
+      outreachLeadId: '',
+      outreachMessageId: '',
+      outreachThreadUrl: '',
       replyState: '',
+      replySnippet: '',
       nextFollowUpDue: '',
+      bounceState: '',
       outreachPackPath: '',
       outreachMarkdownPath: '',
       outreachEmailDir: '',
@@ -315,6 +347,8 @@ function readEmailArtifacts(emailDir) {
         generatedAt: json.generatedAt || '',
         dryRun: json.dryRun !== false,
         sendResult: json.sendResult || null,
+        providerEvent: json.providerEvent || null,
+        outreachState: normalizeOutreachArtifactState(json),
       };
     })
     .sort((a, b) => String(b.generatedAt || '').localeCompare(String(a.generatedAt || '')));
@@ -328,6 +362,8 @@ function buildCounts(records) {
     if (record.assetsReady) acc.assetsReady += 1;
     if (record.emailDraftReady) acc.emailDraftReady += 1;
     if (record.outreachSent) acc.outreachSent += 1;
+    if (record.replyState === 'replied') acc.replied += 1;
+    if (record.bounceState === 'bounced') acc.bounced += 1;
     if (record.paymentStatus === 'paid') acc.paid += 1;
     if (record.blocker) acc.blocked += 1;
     return acc;
@@ -337,6 +373,8 @@ function buildCounts(records) {
     assetsReady: 0,
     emailDraftReady: 0,
     outreachSent: 0,
+    replied: 0,
+    bounced: 0,
     paid: 0,
     blocked: 0,
   });

@@ -245,13 +245,15 @@ lead / intake
     - `demo ready`
     - `draft ready`
     - `outreach sent`（当 live send 已回写到 email artifact）
+    - `replied`（当 provider metadata / webhook event 已写回 artifact）
+    - `bounced`（当 provider metadata / webhook event 已写回 artifact）
     - `paid`
     - `missing assets`
     - `missing outreach draft`
 - 还缺：
-  - `replied`
   - `next follow-up due`
-  - external cold email platform / agentic inbox reply state
+  - external cold email platform live webhook ingest
+  - agentic inbox reply state
 - 为什么重要：
   - 这决定后面大量项目时 Discord 是否仍然清晰可管
 - 是否需要显示到 admin：
@@ -316,7 +318,7 @@ lead / intake
 
 ## D2. Cold outreach email 体系
 
-- 状态：`PENDING`
+- 状态：`IN PROGRESS`
 - 当前判断：
   - cold outreach 不需要花哨 HTML
   - **以 plain text / 简洁文本为主更合适**
@@ -328,6 +330,21 @@ lead / intake
   - cold outreach 的核心是：
     - evidence / demo / preview / CTA
     - 不需要 transactional 那一套花哨模板
+ - 当前已完成：
+   - `/admin/leads` 已能显示 provider-agnostic 的 send/reply/bounce 骨架
+   - `clients/<client>/outreach/email/*.json` 已开始支持：
+     - `provider`
+     - `sourceSystem`
+     - `externalCampaignId`
+     - `externalLeadId`
+     - `externalMessageId`
+     - `externalThreadUrl`
+     - `providerEvent`（原始 webhook payload）
+ - 还缺：
+   - Instantly live integration
+   - Smartlead live integration
+   - 统一 webhook ingest 入口
+   - `next follow-up due` 的真实来源
 
 ## D3. Agentic email 如何接业务流程
 
