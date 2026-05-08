@@ -23,6 +23,8 @@ const KEYS = [
   ['NOTIFICATION_EMAIL', 'Internal lead/intake notification inbox, e.g. hi@profitslocal.com'],
   ['FROM_EMAIL', 'Customer-facing sender, e.g. Profits Local <hi@profitslocal.com>'],
   ['REPLY_TO_EMAIL', 'Optional customer reply-to email'],
+  ['AGENTIC_INBOX_URL', 'Agentic Inbox URL, default https://mail.profitslocal.com'],
+  ['AGENTIC_EMAIL_WEBHOOK_SECRET', 'Webhook secret for inbound Agentic Inbox / outreach provider events'],
   ['SALES_DISCORD_WEBHOOK_URL', 'Discord sales webhook URL'],
   ['REVISE_DISCORD_WEBHOOK_URL', 'Discord revision webhook URL'],
   ['DISCORD_BOT_TOKEN', 'Discord bot token for creating true threads'],

@@ -559,8 +559,10 @@ lead / intake
   - `/admin/settings` 明确标注 `Agentic Inbox = current live operator path`
   - `/admin/leads` 明确标注当前 live path
   - `send-cold-email --provider agentic-email` 会产出 provider-aware artifact，并落 `externalThreadUrl`
+  - `/api/outreach-provider-event` + `sync-outreach-provider-event.yml` 已能把 `agentic-email` reply 事件回写到 artifact / case / forum / admin
 - 仍未完成：
-  - inbound reply / follow-up / bounced 的自动 webhook 回流
+  - Agentic Inbox 侧真正自动 webhook/POST 配置
+  - `follow-up due` 的 saved views / queue 细化
 
 ---
 

@@ -1,0 +1,93 @@
+name: Sync Outreach Provider Event
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: Provider key, e.g. agentic-email
+        required: true
+        type: string
+      client_slug:
+        description: Target client slug
+        required: true
+        type: string
+      payload:
+        description: Raw provider payload JSON
+        required: true
+        type: string
+      send_discord:
+        description: Send Discord forum updates
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      dry_run:
+        description: Process without writing repo state
+        required: true
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      dedupe_key:
+        description: Stable provider event id
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: outreach-provider-${{ inputs.dedupe_key || github.run_id }}
+      cancel-in-progress: false
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Refresh main
+        run: git pull --ff-only origin main
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Write payload file
+        env:
+          OUTREACH_PROVIDER_PAYLOAD: ${{ inputs.payload }}
+        run: |
+          node -e "const fs=require('fs'); JSON.parse(process.env.OUTREACH_PROVIDER_PAYLOAD); fs.writeFileSync('/tmp/outreach-provider-event.json', process.env.OUTREACH_PROVIDER_PAYLOAD);"
+
+      - name: Sync provider event
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: |
+          npm run funnel:sync-outreach-provider-event -- \
+            --input /tmp/outreach-provider-event.json \
+            --dry-run "${{ inputs.dry_run }}" \
+            --send-discord "${{ inputs.send_discord }}" \
+            --output /tmp/outreach-provider-event-summary.json
+
+      - name: Commit updated outreach state
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "webjuice-agent"
+          git config user.email "webjuice-agent@users.noreply.github.com"
+          git add "clients/${{ inputs.client_slug }}/outreach/email" || true
+          git add data/cases || true
+          if git diff --cached --quiet; then
+            echo "No outreach state changes to commit."
+          else
+            git commit -m "chore: sync outreach provider event"
+            git pull --rebase origin main
+            git push
+          fi

@@ -63,3 +63,25 @@ export function buildRevisionWorkflowDispatch(payload = {}) {
     },
   };
 }
+
+export function buildOutreachProviderWorkflowDispatch(payload = {}) {
+  const provider = String(payload.provider || '').trim().toLowerCase();
+  const clientSlug = String(payload.client_slug || payload.clientSlug || '').trim();
+  const missing = [];
+  if (!provider) missing.push('provider');
+  if (!clientSlug) missing.push('client_slug');
+
+  return {
+    ok: missing.length === 0,
+    missing,
+    workflow: 'sync-outreach-provider-event.yml',
+    inputs: {
+      provider,
+      client_slug: clientSlug,
+      send_discord: 'true',
+      dry_run: String(String(payload.dry_run || '').toLowerCase() === 'true'),
+      dedupe_key: String(payload.dedupe_key || `${provider}-${clientSlug}-${payload.event?.timestamp || payload.event?.lastEventAt || Date.now()}`),
+      payload: JSON.stringify(payload),
+    },
+  };
+}

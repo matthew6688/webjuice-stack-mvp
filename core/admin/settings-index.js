@@ -139,6 +139,12 @@ function buildColdOutreachSection(env) {
       status: 'configured',
       reason: 'Operator inbox for conversational email, drafts, and manual cold outreach sends.',
     }),
+    makeItem('Agentic inbox webhook secret', env.AGENTIC_EMAIL_WEBHOOK_SECRET || env.OUTREACH_PROVIDER_WEBHOOK_SECRET || '', {
+      required: false,
+      display: maskSecret(env.AGENTIC_EMAIL_WEBHOOK_SECRET || env.OUTREACH_PROVIDER_WEBHOOK_SECRET || ''),
+      status: env.AGENTIC_EMAIL_WEBHOOK_SECRET || env.OUTREACH_PROVIDER_WEBHOOK_SECRET ? 'configured' : 'partial',
+      reason: 'Authenticates inbound reply / bounce / follow-up events from Agentic Inbox or the outreach sync bridge.',
+    }),
     makeItem('Agentic email / outreach sender', env.AGENTIC_EMAIL_API_KEY || env.AGENTIC_EMAIL_TOKEN || '', {
       required: false,
       display: maskSecret(env.AGENTIC_EMAIL_API_KEY || env.AGENTIC_EMAIL_TOKEN || ''),

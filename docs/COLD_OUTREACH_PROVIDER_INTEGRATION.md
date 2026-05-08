@@ -131,6 +131,13 @@
 - `agentic-email`
   - 当前 live operator 路径
   - 负责 conversational inbox、AI draft、人工发送 cold outreach
+  - 现在已经有 inbound provider event 入口：
+    - `/api/outreach-provider-event`
+    - workflow: `sync-outreach-provider-event.yml`
+  - 当前支持把 `replied / bounced / follow-up due` 类事件写回：
+    - `clients/<client>/outreach/email/*.json`
+    - `data/cases/*/*/timeline.jsonl`（如果已有 case）
+    - `website-leads` forum（如果已有 workspace）
 - `instantly`
   - planned
   - 等 webhook ingest、reply-state 回流、campaign/lead 自动建档
@@ -198,8 +205,12 @@
    - 归一状态写回 artifact / case / forum
 
 4. `replied / follow-up due / bounced` 的 admin 视图增强
-   - 现在已经能显示 provider / reply / bounce 的骨架
-   - 但还没有完整的 saved views / queue
+  - 现在已经能显示 provider / reply / bounce 的骨架
+  - 但还没有完整的 saved views / queue
+
+5. `agentic-email` inbound 自动来源
+   - 现在已经有入口和 repo 回写链
+   - 但还缺 Agentic Inbox 侧真正自动 POST / webhook 触发配置
 
 ---
 
@@ -212,6 +223,7 @@
   - plain text
   - draft artifact
   - admin tracking
+  - Agentic Inbox operator send + provider event 回流
 
 ### 第二阶段
 

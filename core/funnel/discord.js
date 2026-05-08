@@ -152,7 +152,10 @@ export function desiredForumTagNames({ workspace = 'projects', kind = '', order 
     : 'restaurant';
   if (workspace === 'leads') {
     const tags = [niche];
-    if (kind === 'paid_intake') tags.push('paid');
+    if (kind === 'paid_intake' || order.paymentStatus === 'paid') tags.push('paid');
+    else if (order.replyState === 'replied') tags.push('replied');
+    else if (order.bounceState === 'bounced') tags.push('bounced');
+    else if (order.nextFollowUpDue) tags.push('follow-up-due');
     else if (kind === 'sale') tags.push('qualified');
     else tags.push('cold-outreach');
     return tags;
@@ -183,6 +186,8 @@ export function defaultDiscordForumBlueprints() {
       { name: 'demo-ready' },
       { name: 'cold-outreach' },
       { name: 'replied' },
+      { name: 'bounced' },
+      { name: 'follow-up-due' },
       { name: 'paid' },
       { name: 'not-fit' },
     ],
@@ -747,6 +752,9 @@ function forumLeadPrefix(kind, order) {
   if (kind === 'paid_intake') return '[Paid]';
   if (kind === 'sale') return '[Qualified]';
   if (order.paymentStatus === 'paid') return '[Paid]';
+  if (order.replyState === 'replied') return '[Replied]';
+  if (order.bounceState === 'bounced') return '[Bounced]';
+  if (order.nextFollowUpDue) return '[Follow-up]';
   return '[Lead]';
 }
 

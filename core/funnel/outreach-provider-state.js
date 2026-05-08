@@ -107,12 +107,14 @@ function normalizeProviderEvent(provider, event) {
 
   if (provider === 'agentic-email') {
     const rawStatus = String(event.status || event.eventType || event.event_type || '').toLowerCase();
+    const derivedReplyState = rawStatus === 'replied' ? 'replied' : '';
+    const derivedBounceState = rawStatus === 'bounced' ? 'bounced' : '';
     return {
       status: normalizeStatus(rawStatus),
       sentAt: event.sentAt || event.sent_at || event.timestamp || '',
-      replyState: normalizeReplyState(event.replyState || event.reply_state || ''),
+      replyState: normalizeReplyState(event.replyState || event.reply_state || derivedReplyState),
       nextFollowUpDue: event.nextFollowUpDue || event.next_follow_up_due || '',
-      bounceState: normalizeBounceState(event.bounceState || event.bounce_state || ''),
+      bounceState: normalizeBounceState(event.bounceState || event.bounce_state || derivedBounceState),
       unsubscribeState: event.unsubscribeState || event.unsubscribe_state || '',
       lastEventType: rawStatus || String(event.eventType || event.event_type || ''),
       lastEventAt: event.lastEventAt || event.last_event_at || event.timestamp || '',

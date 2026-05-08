@@ -96,6 +96,13 @@ function ingestOutreachArtifacts(records, clientsRoot) {
     record.outreachLeadId = sentArtifact?.outreachState?.externalLeadId || repliedArtifact?.outreachState?.externalLeadId || bouncedArtifact?.outreachState?.externalLeadId || '';
     record.outreachMessageId = sentArtifact?.outreachState?.externalMessageId || repliedArtifact?.outreachState?.externalMessageId || bouncedArtifact?.outreachState?.externalMessageId || '';
     record.outreachThreadUrl = repliedArtifact?.outreachState?.externalThreadUrl || sentArtifact?.outreachState?.externalThreadUrl || '';
+    const artifactWorkspace = emailArtifacts.find((artifact) => artifact.leadWorkspace?.threadId || artifact.leadWorkspace?.channelId)?.leadWorkspace || {};
+    record.salesThreadId = record.salesThreadId || artifactWorkspace.threadId || '';
+    record.salesWorkspaceChannelId = record.salesWorkspaceChannelId || artifactWorkspace.channelId || '';
+    record.salesWorkspaceName = record.salesWorkspaceName || artifactWorkspace.name || '';
+    record.salesWorkspaceTagIds = (record.salesWorkspaceTagIds && record.salesWorkspaceTagIds.length)
+      ? record.salesWorkspaceTagIds
+      : (artifactWorkspace.tagIds || []);
     record.updatedAt = maxDate(record.updatedAt, pack.generatedAt, emailArtifacts[0]?.generatedAt);
   }
 }
@@ -348,6 +355,7 @@ function readEmailArtifacts(emailDir) {
         dryRun: json.dryRun !== false,
         sendResult: json.sendResult || null,
         providerEvent: json.providerEvent || null,
+        leadWorkspace: json.leadWorkspace || null,
         outreachState: normalizeOutreachArtifactState(json),
       };
     })

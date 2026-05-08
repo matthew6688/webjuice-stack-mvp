@@ -119,8 +119,8 @@
       - `provider / sourceSystem / externalCampaignId / externalLeadId / externalMessageId / externalThreadUrl`
   - 当前**还没有完全接好的状态**：
     - `next follow-up due`
-    - external provider live webhook ingest
-    - agentic inbox reply state
+    - external provider live webhook ingest（Instantly / Smartlead）
+    - Agentic Inbox 侧真正自动 POST 到 provider event 入口
 
 - `/admin/intakes`
   - 当前已经能显示：
@@ -155,6 +155,14 @@
     - `Agentic Inbox = current live operator path`
     - `Instantly / Smartlead = planned`
     - `Resend = transactional only`
+  - 当前 inbound 事件入口：
+    - `/api/outreach-provider-event`
+    - 鉴权：`OUTREACH_PROVIDER_WEBHOOK_SECRET`，没有单独配置时临时回落到 `ADMIN_ACCESS_TOKEN`
+    - workflow：`sync-outreach-provider-event.yml`
+    - 回写目标：
+      - `clients/<client>/outreach/email/*.json`
+      - `data/cases/*/*/timeline.jsonl`（如存在 case）
+      - `website-leads` forum（如存在 workspace）
 
 当前 milestone 真相源：
 
