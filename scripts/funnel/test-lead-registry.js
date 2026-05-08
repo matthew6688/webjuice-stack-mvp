@@ -13,6 +13,7 @@ process.chdir(root);
 try {
   seedAlpha();
   seedBetaAmbiguous();
+  seedDeltaContentOnly();
 
   const registry = loadLeadRegistry({
     clientsRoot: path.join(root, 'clients'),
@@ -43,6 +44,11 @@ try {
   assert.equal(ambiguous.reason, 'ambiguous_email');
   assert.equal(ambiguous.candidates.length, 2);
 
+  const delta = resolveLeadByEmail(registry, 'contact@delta.example');
+  assert.equal(delta.ok, true);
+  assert.equal(delta.match?.clientSlug, 'delta-kitchen');
+  assert.equal(delta.match?.websiteUrl, 'https://delta.example/');
+
   console.log(JSON.stringify({
     ok: true,
     assertions: {
@@ -50,6 +56,7 @@ try {
       alphaLeadId: alpha.leadId,
       alphaOutreachStatus: alpha.outreachStatus,
       uniqueMatch: unique.match?.clientSlug,
+      contentEmailMatch: delta.match?.clientSlug,
       ambiguousCount: ambiguous.candidates.length,
     },
   }, null, 2));
@@ -169,4 +176,37 @@ function seedBetaAmbiguous() {
       dryRun: true,
     }), 'utf8');
   }
+}
+
+function seedDeltaContentOnly() {
+  const clientSlug = 'delta-kitchen';
+  const clientDir = path.join('clients', clientSlug);
+  const outreachDir = path.join(clientDir, 'outreach');
+  const emailDir = path.join(outreachDir, 'email');
+  fs.mkdirSync(emailDir, { recursive: true });
+
+  fs.writeFileSync(path.join(clientDir, 'content.restaurant.json'), JSON.stringify({
+    clientSlug,
+    business: { name: 'Delta Kitchen' },
+    contact: {
+      email: 'contact@delta.example',
+      phone: '+61 7 3222 3333',
+      address: '77 Queen St, Brisbane QLD 4000',
+      website: 'https://delta.example/',
+    },
+  }), 'utf8');
+
+  fs.writeFileSync(path.join(outreachDir, 'outreach-pack.json'), JSON.stringify({
+    clientSlug,
+    generatedAt: '2026-05-08T08:00:00.000Z',
+    previewUrl: 'https://delta.pages.dev/',
+    business: { name: 'Delta Kitchen' },
+  }), 'utf8');
+
+  fs.writeFileSync(path.join(emailDir, '01-delta.json'), JSON.stringify({
+    to: 'matthew6688@gmail.com',
+    subject: 'Delta preview',
+    generatedAt: '2026-05-08T08:30:00.000Z',
+    dryRun: true,
+  }), 'utf8');
 }

@@ -85,10 +85,10 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.company = record.businessName;
     record.niche = firstNonEmpty(record.niche, survey.niche, outreachPack.business?.cuisine, content.meta?.niche);
     record.previewUrl = firstNonEmpty(record.previewUrl, outreachPack.previewUrl);
-    record.address = firstNonEmpty(record.address, survey.contact?.address, outreachPack.business?.address);
-    record.phone = firstNonEmpty(record.phone, survey.contact?.phone);
-    record.email = firstNonEmpty(record.email, survey.contact?.email, emailArtifacts[0]?.to);
-    record.websiteUrl = firstNonEmpty(record.websiteUrl, survey.contact?.website);
+    record.address = firstNonEmpty(record.address, survey.contact?.address, content.contact?.address, outreachPack.business?.address);
+    record.phone = firstNonEmpty(record.phone, survey.contact?.phone, content.contact?.phone);
+    record.email = firstNonEmpty(record.email, survey.contact?.email, content.contact?.email, emailArtifacts[0]?.to);
+    record.websiteUrl = firstNonEmpty(record.websiteUrl, survey.contact?.website, content.contact?.website);
     record.contactPageUrl = firstNonEmpty(record.contactPageUrl, content.cta?.contactPageUrl, survey.contact?.primaryCtaUrl);
     record.googleMapsUrl = firstNonEmpty(
       record.googleMapsUrl,

@@ -115,12 +115,13 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
     - `core/funnel/lead-registry.js` 聚合的 Phase 1 lead truth source
     - 真相源底层目前读取：
       - `clients/<client>/outreach/outreach-pack.json`
-      - `clients/<client>/outreach/email/*.json`
-      - `clients/<client>/outreach/lead-notes.jsonl`
-      - `clients/<client>/intake/website-survey.json`
-      - `clients/<client>/evidence/evidence.json`
-      - `data/cases/*/*/case.json`
-      - `data/paid-intakes/*/*.json`
+    - `clients/<client>/outreach/email/*.json`
+    - `clients/<client>/outreach/lead-notes.jsonl`
+    - `clients/<client>/intake/website-survey.json`
+    - `clients/<client>/evidence/evidence.json`
+    - `clients/<client>/content.restaurant.json` 里的 `contact.email/phone/website`
+    - `data/cases/*/*/case.json`
+    - `data/paid-intakes/*/*.json`
   - Phase 1 已落地字段：
     - `leadId`
     - `clientSlug`
