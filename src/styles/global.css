@@ -758,6 +758,157 @@ textarea {
   border-right: 0;
 }
 
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-topbar {
+  border-bottom: 2px solid var(--pl-line);
+  background: color-mix(in srgb, var(--pl-paper) 94%, transparent);
+  box-shadow: none;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-nav-links {
+  gap: 8px;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-nav-links a {
+  min-height: 34px;
+  border: 2px solid var(--pl-line);
+  border-radius: 0;
+  background: var(--pl-paper);
+  box-shadow: 3px 3px 0 var(--pl-line);
+  padding: 0 14px;
+  color: var(--pl-ink);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-nav-links a.is-active {
+  background: var(--pl-ink);
+  color: var(--pl-paper);
+  border-color: var(--pl-line);
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .lead-admin-shell {
+  border: 2px solid var(--pl-line);
+  background: color-mix(in srgb, var(--pl-paper) 90%, white);
+  box-shadow: 5px 5px 0 var(--pl-line);
+  overflow: hidden;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .lead-admin-shell .admin-header {
+  min-height: 230px;
+  padding: 28px 30px 30px;
+  border-bottom: 2px solid var(--pl-line);
+  background: color-mix(in srgb, white 45%, var(--pl-paper));
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .lead-admin-shell .admin-header h1 {
+  max-width: 860px;
+  font-family: var(--pl-display);
+  font-size: clamp(58px, 8vw, 96px);
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .lead-admin-shell .lede {
+  max-width: 820px;
+  color: var(--pl-ink);
+  font-size: 17px;
+  font-weight: 950;
+  line-height: 1.25;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .lead-admin-shell .admin-count {
+  min-width: 118px;
+  border: 2px solid var(--pl-line);
+  background: var(--pl-citrus);
+  padding: 16px 12px;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .lead-admin-shell .admin-count strong {
+  font-family: var(--pl-display);
+  font-size: 44px;
+  font-weight: 950;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .lead-admin-shell .admin-count span {
+  color: var(--pl-ink);
+  font-weight: 950;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-bottom: 2px solid var(--pl-line);
+  background: color-mix(in srgb, white 42%, var(--pl-paper));
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-tile {
+  min-height: 128px;
+  border-right: 2px solid var(--pl-line);
+  padding: 16px 18px;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-tile:nth-child(5n),
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-tile:last-child {
+  border-right: 0;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-primary {
+  background: color-mix(in srgb, var(--pl-peach) 62%, var(--pl-paper));
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-label {
+  display: block;
+  color: var(--pl-muted);
+  font-size: 11px;
+  font-weight: 950;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-tile strong {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--pl-display);
+  font-size: 34px;
+  line-height: 1;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-summary-tile p {
+  max-width: 25ch;
+  margin: 8px 0 0;
+  color: var(--pl-muted);
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-toolbar {
+  top: 64px;
+  border-bottom: 2px solid var(--pl-line);
+  background: color-mix(in srgb, var(--pl-paper) 92%, white);
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-view-pill {
+  min-height: 34px;
+  border: 2px solid var(--pl-line);
+  border-radius: 0;
+  background: var(--pl-paper);
+  box-shadow: 3px 3px 0 var(--pl-line);
+  padding: 0 12px;
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-view-pill.is-active {
+  background: var(--pl-coral);
+  color: white;
+  border-color: var(--pl-line);
+}
+
+body:has([data-ui-version="local-style-2026-05-08"]) .admin-search input {
+  border: 2px solid var(--pl-line);
+  border-radius: 0;
+  background: var(--pl-paper);
+  box-shadow: none;
+}
+
 .lead-contact-strip span span,
 .lead-contact-strip a span {
   color: var(--pl-muted);
