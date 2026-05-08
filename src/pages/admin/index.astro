@@ -72,50 +72,29 @@ const stageLabels = {
         </div>
       </div>
 
-      <div class="admin-summary-strip">
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">今天先动</span>
-          <strong>{urgentQueue.length + leadUrgentQueue.length}</strong>
-          <p>{leadUrgentQueue.length} 条线索，{urgentQueue.length} 个项目。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">待发 review</span>
-          <strong>{stageCounts.review_ready || 0}</strong>
-          <p>最接近发客户 review 的项目。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">跟进过期</span>
-          <strong>{leadIndex.prospectCounts.followUpOverdue || 0}</strong>
-          <p>今天应该先补的外联动作。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">OD 需输入</span>
-          <strong>{odCounts.needs_input || 0}</strong>
-          <p>{odCounts.failed || 0} 个失败，{odCounts.running || 0} 个仍在运行。</p>
-        </article>
-      </div>
+      <dl class="admin-meta-line">
+        <div><dt>今天先动</dt><dd>{urgentQueue.length + leadUrgentQueue.length}</dd></div>
+        <div><dt>待发 review</dt><dd>{stageCounts.review_ready || 0}</dd></div>
+        <div><dt>跟进过期</dt><dd>{leadIndex.prospectCounts.followUpOverdue || 0}</dd></div>
+        <div><dt>OD 需输入</dt><dd>{odCounts.needs_input || 0}</dd></div>
+      </dl>
 
-      <div class="admin-overview-hero admin-overview-paper admin-overview-paper-slim">
-        <section class="admin-overview-card admin-overview-primary">
-          <span class="eyebrow">总览说明</span>
-          <h2>这里只做分流，不做细看。</h2>
-          <p class="micro">先决定今天该跟进线索、推进项目，还是去处理 Open Design / DNS 阻塞。细节再进入对应页面。</p>
-          <div class="admin-note-stack">
-            <p class="micro">线索、项目、财务、设置各管一类事，不在这里混在一起。</p>
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <span class="eyebrow">总览说明</span>
+            <h2>这里只做分流，不做细看。</h2>
           </div>
-        </section>
-
-        <section class="admin-overview-card">
-          <span class="eyebrow">常用入口</span>
-          <ul class="admin-list admin-list-links">
-            <li><a class="admin-inline-link" href="/admin/leads">打开线索面板</a><span>看 outreach / reply / follow-up</span></li>
-            <li><a class="admin-inline-link" href="/admin/intakes">打开项目面板</a><span>看 review / revision / DNS / OD</span></li>
-            <li><a class="admin-inline-link" href="/admin/finance">打开财务面板</a><span>单独看收入、成本、利润</span></li>
-            <li><a class="admin-inline-link" href="/admin/queue">打开行动队列</a><span>只看现在先做什么</span></li>
-            <li><a class="admin-inline-link" href="/admin/settings">打开系统设置</a><span>看集成和环境覆盖</span></li>
-          </ul>
-        </section>
-      </div>
+        </div>
+        <p class="micro admin-intro-copy">先决定今天该跟进线索、推进项目，还是去处理 Open Design / DNS 阻塞。细节再进入对应页面。线索、项目、财务、设置各管一类事，不在这里混在一起。</p>
+        <ul class="admin-list admin-list-links admin-link-directory">
+          <li><a class="admin-inline-link" href="/admin/leads">打开线索面板</a><span>看 outreach、reply、follow-up</span></li>
+          <li><a class="admin-inline-link" href="/admin/intakes">打开项目面板</a><span>看 review、revision、DNS、OD</span></li>
+          <li><a class="admin-inline-link" href="/admin/finance">打开财务面板</a><span>单独看收入、成本、利润</span></li>
+          <li><a class="admin-inline-link" href="/admin/queue">打开行动队列</a><span>只看现在先做什么</span></li>
+          <li><a class="admin-inline-link" href="/admin/settings">打开系统设置</a><span>看集成和环境覆盖</span></li>
+        </ul>
+      </section>
 
       <div class="admin-finance-grid">
         <section class="admin-finance-panel">

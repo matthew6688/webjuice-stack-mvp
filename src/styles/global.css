@@ -329,53 +329,42 @@ textarea {
   font-weight: 700;
 }
 
-.admin-summary-strip {
+.admin-meta-line {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0;
   border-top: 1px solid rgba(90, 72, 47, 0.1);
   border-bottom: 1px solid rgba(90, 72, 47, 0.1);
+  margin: 0;
 }
 
-.admin-summary-strip-compact {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+.admin-meta-line-wide {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
-.admin-summary-tile {
+.admin-meta-line div {
   min-width: 0;
   padding: 12px 14px;
-  border-right: 1px solid rgba(90, 72, 47, 0.1);
+  border-right: 1px solid rgba(90, 72, 47, 0.08);
 }
 
-.admin-summary-primary {
-  background: rgba(255, 247, 239, 0.4);
-}
-
-.admin-summary-tile:last-child {
+.admin-meta-line div:last-child {
   border-right: 0;
 }
 
-.admin-summary-label {
-  display: block;
+.admin-meta-line dt {
   color: var(--pl-muted);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.admin-summary-tile strong {
-  display: block;
-  margin-top: 6px;
-  font-family: var(--pl-body);
-  font-size: clamp(24px, 2.5vw, 34px);
-  line-height: 1.05;
-  font-weight: 800;
-}
-
-.admin-summary-tile p {
+.admin-meta-line dd {
   margin: 6px 0 0;
-  color: var(--pl-muted);
-  font-size: 12px;
-  line-height: 1.35;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
 }
 
 .admin-stat-grid {
@@ -538,44 +527,15 @@ textarea {
   padding: 0;
 }
 
-.admin-overview-hero {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr 0.8fr;
-  gap: 0;
-  padding: 0;
-}
-
-.admin-overview-paper {
-  grid-template-columns: 1.15fr 0.9fr 0.9fr 1fr;
-}
-
-.admin-overview-paper-slim {
-  grid-template-columns: 1.2fr 1fr;
-}
-
-.admin-overview-card {
-  min-width: 0;
-  padding: 16px 0 16px 18px;
-  border-top: 1px solid rgba(90, 72, 47, 0.1);
-  border-right: 1px solid rgba(90, 72, 47, 0.1);
-  background: transparent;
-}
-
-.admin-overview-primary {
-  background: transparent;
-}
-
-.admin-overview-card:last-child {
-  border-right: 0;
-}
-
-.admin-overview-card h2 {
-  max-width: 12ch;
+.admin-intro-copy {
+  max-width: 76ch;
   margin: 0;
-  font-family: var(--pl-body);
-  font-size: clamp(28px, 2.4vw, 40px);
-  font-weight: 800;
-  line-height: 1.1;
+  color: var(--pl-muted);
+  line-height: 1.6;
+}
+
+.admin-link-directory {
+  margin-top: 14px;
 }
 
 .admin-overview-kpis {
@@ -1448,14 +1408,13 @@ textarea {
     align-items: stretch;
   }
 
-  .admin-summary-strip {
+  .admin-meta-line {
     grid-template-columns: 1fr;
     gap: 0;
   }
 
   .admin-finance-grid,
   .admin-split-lists,
-  .admin-overview-hero,
   .admin-detail-lead {
     grid-template-columns: 1fr;
   }

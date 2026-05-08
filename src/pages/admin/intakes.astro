@@ -46,28 +46,12 @@ const savedViews = [
         </div>
       </div>
 
-      <div class="admin-summary-strip admin-summary-strip-compact">
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">项目总数</span>
-          <strong>{index.counts.total}</strong>
-          <p>这里只看正式项目。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">待发 review</span>
-          <strong>{dashboardSummary.reviewReady}</strong>
-          <p>最接近发客户 review。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">修订待处理</span>
-          <strong>{dashboardSummary.revisionsPending}</strong>
-          <p>客户回来的改动。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">等待 DNS</span>
-          <strong>{dashboardSummary.waitingDns}</strong>
-          <p>上线后还卡在域名。</p>
-        </article>
-      </div>
+      <dl class="admin-meta-line">
+        <div><dt>项目总数</dt><dd>{index.counts.total}</dd></div>
+        <div><dt>待发 review</dt><dd>{dashboardSummary.reviewReady}</dd></div>
+        <div><dt>修订待处理</dt><dd>{dashboardSummary.revisionsPending}</dd></div>
+        <div><dt>等待 DNS</dt><dd>{dashboardSummary.waitingDns}</dd></div>
+      </dl>
 
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
@@ -150,8 +134,8 @@ const savedViews = [
           <thead>
             <tr>
               <th>客户</th>
-              <th>流程</th>
-              <th>健康度</th>
+              <th>当前阶段</th>
+              <th>设计 / 交付</th>
               <th>阻塞</th>
               <th>下一步动作</th>
               <th>入口</th>
@@ -183,7 +167,7 @@ const savedViews = [
                   <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || '未知'}</mark>
                   <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
                   <span>{record.milestoneSummary?.currentLabel || '线索已收集'} · {record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</span>
-                  <span>{record.artifactSummary?.latestTimeline?.type || '还没有最近事件'}</span>
+                  {record.revisionCount ? <span>{`修订 ${record.revisionCount}/${record.revisionLimit}`}</span> : null}
                 </td>
                 <td>
                   <div class="admin-health-pills">
@@ -199,9 +183,10 @@ const savedViews = [
                       OD {record.artifactSummary?.openDesignPipelineLabel || (record.artifactSummary?.openDesignBound ? '运行中' : '缺失')}
                     </mark>
                     <mark class={`status-pill ${record.artifactSummary?.deliveryQaReady ? 'status-ready' : 'status-warn'}`}>QA {record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'}</mark>
-                    <mark class="status-pill status-info">域名 {record.artifactSummary?.domainStatus || '无'}</mark>
+                    {record.artifactSummary?.domainStatus ? <mark class="status-pill status-info">域名 {record.artifactSummary?.domainStatus}</mark> : null}
                   </div>
                   <span>{record.artifactSummary?.openDesignCompletionMode || '等待 native 结束'}</span>
+                  {record.artifactSummary?.latestTimeline?.type ? <span>{record.artifactSummary.latestTimeline.type}</span> : null}
                 </td>
                 <td>
                   {record.blockerSummary?.count ? (
@@ -217,7 +202,6 @@ const savedViews = [
                 <td>
                   <strong>{record.nextActionSummary?.label || '查看'}</strong>
                   <span>{record.nextActionSummary?.reason || ''}</span>
-                  <span class="micro">修订 {record.revisionCount}/{record.revisionLimit}</span>
                 </td>
                 <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>详情</a></td>
               </tr>

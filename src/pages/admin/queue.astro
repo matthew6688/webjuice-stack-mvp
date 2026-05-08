@@ -58,28 +58,12 @@ const queueGroups = [
         </div>
       </div>
 
-      <div class="admin-summary-strip">
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">页面用途</span>
-          <strong>先分流，再执行</strong>
-          <p>这里只回答一件事：现在先处理哪一类工作。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">修订</span>
-          <strong>{queueGroups.find((group) => group.key === 'revision_requested')?.records.length || 0}</strong>
-          <p>先处理客户已回来的改动。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">DNS</span>
-          <strong>{queueGroups.find((group) => group.key === 'waiting_dns')?.records.length || 0}</strong>
-          <p>上线前最容易拖住节奏的事项。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">OD 阻塞</span>
-          <strong>{(queueGroups.find((group) => group.key === 'od_needs_input')?.records.length || 0) + (queueGroups.find((group) => group.key === 'od_failed')?.records.length || 0)}</strong>
-          <p>需要回到设计流程处理的项目。</p>
-        </article>
-      </div>
+      <dl class="admin-meta-line">
+        <div><dt>修订</dt><dd>{queueGroups.find((group) => group.key === 'revision_requested')?.records.length || 0}</dd></div>
+        <div><dt>DNS</dt><dd>{queueGroups.find((group) => group.key === 'waiting_dns')?.records.length || 0}</dd></div>
+        <div><dt>OD 需输入</dt><dd>{queueGroups.find((group) => group.key === 'od_needs_input')?.records.length || 0}</dd></div>
+        <div><dt>OD 失败</dt><dd>{queueGroups.find((group) => group.key === 'od_failed')?.records.length || 0}</dd></div>
+      </dl>
 
       <div class="admin-queue-list">
         {queueGroups.map((group) => (

@@ -75,28 +75,12 @@ function summarizeAction(record) {
         </div>
       </div>
 
-      <div class="admin-summary-strip">
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">可直接触达</span>
-          <strong>{prospectCounts.demoReady || 0}</strong>
-          <p>Demo、素材、草稿都齐。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">已回复待看</span>
-          <strong>{prospectCounts.repliedNeedsReview || 0}</strong>
-          <p>对方回了，还没处理。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">跟进过期</span>
-          <strong>{prospectCounts.followUpOverdue || 0}</strong>
-          <p>这批今天先动。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">已成交</span>
-          <strong>{customerCount}</strong>
-          <p><a href="/admin/intakes" class="admin-inline-link">去项目面板继续推进</a></p>
-        </article>
-      </div>
+      <dl class="admin-meta-line">
+        <div><dt>可直接触达</dt><dd>{prospectCounts.demoReady || 0}</dd></div>
+        <div><dt>已回复待看</dt><dd>{prospectCounts.repliedNeedsReview || 0}</dd></div>
+        <div><dt>跟进过期</dt><dd>{prospectCounts.followUpOverdue || 0}</dd></div>
+        <div><dt>已成交</dt><dd><a href="/admin/intakes" class="admin-inline-link">{customerCount} 个项目</a></dd></div>
+      </dl>
 
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
@@ -148,10 +132,10 @@ function summarizeAction(record) {
           <thead>
             <tr>
               <th>线索</th>
-              <th>阶段</th>
-              <th>Demo / 证明</th>
+              <th>当前情况</th>
+              <th>准备情况</th>
               <th>联系信息</th>
-              <th>链接 / 流程</th>
+              <th>流程入口</th>
               <th>下一步动作</th>
             </tr>
           </thead>
@@ -187,6 +171,7 @@ function summarizeAction(record) {
                   <mark class={`status-pill status-${record.stageTone}`}>{record.stageLabel}</mark>
                   {record.outreachSent ? <mark class="status-pill status-ready">已发送</mark> : null}
                   {summarizeLeadSubstatus(record) ? <span>{summarizeLeadSubstatus(record)}</span> : null}
+                  {record.latestProviderEventType ? <span>{record.latestProviderEventType}</span> : null}
                 </td>
                 <td>
                   <div class="admin-health-pills">
@@ -207,9 +192,7 @@ function summarizeAction(record) {
                       {record.contactPageUrl ? <a class="admin-inline-link" href={record.contactPageUrl} target="_blank" rel="noreferrer">联系页</a> : null}
                     </span>
                   ) : null}
-                  <span>{record.outreachSentAt ? `已发送 · ${record.outreachSentAt}` : '未发送'}{record.nextFollowUpDue ? ` · 跟进 ${record.nextFollowUpDue}` : ''}</span>
                   {record.outreachProvider ? <span>{`${record.outreachProvider}${record.replyState === 'replied' ? ' · 已回复' : record.bounceState === 'bounced' ? ' · 退信' : ''}`}</span> : null}
-                  {record.latestLeadNote?.note ? <span>{`备注：${record.latestLeadNote.note}`}</span> : null}
                 </td>
                 <td>
                   <span>{summarizeFlow(record)}</span>
@@ -225,8 +208,9 @@ function summarizeAction(record) {
                 <td>
                   <strong>{record.nextAction.label}</strong>
                   <span>{summarizeAction(record)}</span>
+                  {record.latestLeadNote?.note ? <span>{`备注：${record.latestLeadNote.note}`}</span> : null}
                   <details class="admin-inline-form">
-                    <summary>添加备注</summary>
+                    <summary>记录备注</summary>
                     <form method="post" action="/admin/lead-note" class="admin-action-form">
                       <input type="hidden" name="client_slug" value={record.clientSlug} />
                       <input type="hidden" name="order_id" value={record.orderId || ''} />

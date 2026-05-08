@@ -21,23 +21,12 @@ const settings = loadAdminSettingsIndex();
         </div>
       </div>
 
-      <div class="admin-summary-strip admin-summary-strip-compact">
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">配置覆盖</span>
-          <strong>{settings.counts.configured} / {settings.counts.total}</strong>
-          <p>{settings.counts.missing} 个必需项还没补，{settings.counts.partial} 个集成还没走完最后一段。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">必需缺失</span>
-          <strong>{settings.counts.missing}</strong>
-          <p>这些会直接影响支付、部署、Discord 或客户邮件。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">可选项</span>
-          <strong>{settings.counts.optional}</strong>
-          <p>备用抓取、后续 outreach provider 都留在这里。</p>
-        </article>
-      </div>
+      <dl class="admin-meta-line admin-meta-line-wide">
+        <div><dt>配置覆盖</dt><dd>{settings.counts.configured} / {settings.counts.total}</dd></div>
+        <div><dt>必需缺失</dt><dd>{settings.counts.missing}</dd></div>
+        <div><dt>半完成</dt><dd>{settings.counts.partial}</dd></div>
+        <div><dt>可选项</dt><dd>{settings.counts.optional}</dd></div>
+      </dl>
 
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">

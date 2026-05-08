@@ -25,28 +25,12 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
         </div>
       </div>
 
-      <div class="admin-summary-strip admin-summary-strip-compact">
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">当前净额</span>
-          <strong>{formatMoney(summary.profit || 0)}</strong>
-          <p>{summary.profit > 0 ? '当前这条业务线处在利润为正的状态。' : '在继续放大投入前，利润空间需要再盯紧一点。'}</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">收入事件</span>
-          <strong>{summary.revenueEventCount || 0}</strong>
-          <p>当前账本里已经记录的成交或收入事件数量。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">成本事件</span>
-          <strong>{summary.costEventCount || 0}</strong>
-          <p>供应商、工具和人工运营花费都算在这里。</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">主要客户</span>
-          <strong>{byClient[0]?.[0] || 'N/A'}</strong>
-          <p>{byClient[0] ? `当前贡献 ${formatMoney(byClient[0][1])}` : '还没有客户级财务数据。'}</p>
-        </article>
-      </div>
+      <dl class="admin-meta-line admin-meta-line-wide">
+        <div><dt>当前净额</dt><dd>{formatMoney(summary.profit || 0)}</dd></div>
+        <div><dt>收入事件</dt><dd>{summary.revenueEventCount || 0}</dd></div>
+        <div><dt>成本事件</dt><dd>{summary.costEventCount || 0}</dd></div>
+        <div><dt>主要客户</dt><dd>{byClient[0]?.[0] || 'N/A'}</dd></div>
+      </dl>
 
       <div class="admin-finance-grid">
         <section class="admin-finance-panel">
