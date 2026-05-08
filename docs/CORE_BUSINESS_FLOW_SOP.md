@@ -187,6 +187,26 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
     - 具体 schema 和 Phase 1/2/3 见：
       - `docs/LEAD_PROFILE_SCHEMA.md`
 
+- `/admin`
+  - 现在除了项目和财务概览，也已经显示售前 lead 脉搏：
+    - `Lead follow-up`
+    - `Lead pulse`
+    - `Inbox & follow-up`
+  - 目的：
+    - 不点进 `/admin/leads` 也能先看到：
+      - `follow-up overdue`
+      - `replied needs review`
+      - `paid handoff pending`
+      - `blocked leads`
+    - 把售前、交付、Open Design 三条线放到一个总览面板里
+  - 当前真实验证方式：
+    - `npm run build`
+    - 生产 deploy 成功后，直接命中 `/admin/`
+    - 至少确认出现：
+      - `Lead follow-up`
+      - `Lead pulse`
+      - `Inbox & follow-up`
+
 - `/admin/intakes`
   - 当前已经能显示：
     - `Project stage`

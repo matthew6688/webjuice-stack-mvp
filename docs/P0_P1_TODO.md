@@ -577,8 +577,10 @@ lead / intake
   - `/admin/intakes` 列表页
   - `/admin/intakes/<client>/<order>` 详情页
   - `/admin/queue` milestone 聚合
+  - `/admin` overview
+    - 已接入 lead pulse 汇总
+    - 已接入 lead urgency queue
 - 当前还缺：
-  - `/admin` overview 总览级 milestone 聚合
   - `/admin/leads` 与正式项目 milestone 的衔接
   - Open Design pipeline 状态映射后的统一状态语言
 
@@ -593,6 +595,8 @@ lead / intake
     - completion mode
     - latest sync source（app / discord / repo）
 - 当前已完成：
+  - `/admin`
+    - 已显示 `OD running / needs input`
   - `/admin/intakes`
     - 已显示 Open Design `status`
     - 已显示 `lastRunId`
@@ -601,7 +605,7 @@ lead / intake
     - 已显示 projectId / runId / status / completion mode
 - 当前还缺：
   - latest sync source（app / discord / repo）
-  - `/admin/overview` 和 `/admin/queue` 的 Open Design 运行聚合
+  - `/admin/queue` 的 Open Design 运行聚合
   - 和 Open Design 原生 pipeline 状态语言完全统一
 
 ---

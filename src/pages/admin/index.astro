@@ -2,9 +2,11 @@
 import Layout from '../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../config/site';
 import { loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
+import { loadLeadOutreachIndex } from '../../../core/funnel/lead-outreach-index.js';
 import { formatMoney, readLedger, summarizeLedger } from '../../../core/finance/ledger.js';
 
 const index = loadPaidIntakeIndex();
+const leadIndex = loadLeadOutreachIndex();
 const financeOverview = summarizeLedger(readLedger());
 const stageCounts = index.records.reduce((acc, record) => {
   const key = record.stageSummary?.key || 'unknown';
@@ -29,6 +31,19 @@ const urgentQueue = index.records
   .sort((a, b) => b.urgencyScore - a.urgencyScore)
   .slice(0, 5);
 const reviewReady = index.records.filter((record) => record.stageSummary?.key === 'review_ready').slice(0, 5);
+const leadUrgentQueue = leadIndex.records
+  .filter((record) => ['follow_up_overdue', 'replied', 'paid'].includes(record.stageKey) || record.blocker)
+  .map((record) => ({
+    ...record,
+    urgencyScore:
+      (record.stageKey === 'paid' ? 100 : 0)
+      + (record.stageKey === 'follow_up_overdue' ? 90 : 0)
+      + (record.stageKey === 'replied' ? 80 : 0)
+      + (record.blocker ? 20 : 0)
+      + (record.paymentStatus === 'paid' && !record.websiteTaskThreadId ? 30 : 0),
+  }))
+  .sort((a, b) => b.urgencyScore - a.urgencyScore)
+  .slice(0, 5);
 ---
 
 <Layout title={`Admin overview - ${siteConfig.name}`} description="Internal admin overview for ProfitsLocal ops." active="overview">
@@ -68,6 +83,11 @@ const reviewReady = index.records.filter((record) => record.stageSummary?.key ==
           <p>{odCounts.failed || 0} project(s) are failed; {odCounts.running || 0} are still actively running.</p>
         </article>
         <article class="admin-summary-tile">
+          <span class="admin-summary-label">Lead follow-up</span>
+          <strong>{leadIndex.counts.followUpOverdue || 0}</strong>
+          <p>{leadIndex.counts.repliedNeedsReview || 0} replied lead(s) still need operator review.</p>
+        </article>
+        <article class="admin-summary-tile">
           <span class="admin-summary-label">Margin pulse</span>
           <strong>{financeOverview.profit > 0 ? 'Positive' : 'Watch'}</strong>
           <p>{formatMoney(financeOverview.profit || 0)} net after {financeOverview.eventCount || 0} recorded finance events.</p>
@@ -100,6 +120,18 @@ const reviewReady = index.records.filter((record) => record.stageSummary?.key ==
         </section>
 
         <section class="admin-overview-card">
+          <span class="eyebrow">Lead pulse</span>
+          <div class="admin-overview-kpis">
+            <div><span>Draft ready</span><strong>{leadIndex.counts.draft_ready || 0}</strong></div>
+            <div><span>Outreach sent</span><strong>{leadIndex.counts.outreachSent || 0}</strong></div>
+            <div><span>Reply review</span><strong>{leadIndex.counts.repliedNeedsReview || 0}</strong></div>
+            <div><span>Overdue</span><strong>{leadIndex.counts.followUpOverdue || 0}</strong></div>
+            <div><span>Paid handoff</span><strong>{leadIndex.counts.paidHandoffPending || 0}</strong></div>
+            <div><span>Blocked leads</span><strong>{leadIndex.counts.blocked || 0}</strong></div>
+          </div>
+        </section>
+
+        <section class="admin-overview-card">
           <span class="eyebrow">Operator links</span>
           <div class="admin-link-grid">
             <a class="button secondary" href="/admin/leads">Open leads board</a>
@@ -115,6 +147,25 @@ const reviewReady = index.records.filter((record) => record.stageSummary?.key ==
       </div>
 
       <div class="admin-finance-grid">
+        <section class="admin-finance-panel">
+          <div class="admin-finance-head">
+            <div>
+              <span class="eyebrow">Lead action</span>
+              <h2>Inbox & follow-up</h2>
+            </div>
+          </div>
+          <div class="admin-urgent-list">
+            {leadUrgentQueue.length ? leadUrgentQueue.map((record) => (
+              <a class="admin-urgent-card" href="/admin/leads">
+                <strong>{record.company || record.clientSlug}</strong>
+                <span>{record.nextAction.label}</span>
+                <code>{record.blocker || record.stageLabel}</code>
+                <span class="micro">{record.email || record.customerEmail || record.leadRecipientEmail || 'no email recorded'}</span>
+              </a>
+            )) : <p class="micro">No urgent lead right now.</p>}
+          </div>
+        </section>
+
         <section class="admin-finance-panel">
           <div class="admin-finance-head">
             <div>
