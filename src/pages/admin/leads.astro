@@ -13,6 +13,7 @@ const savedViews = [
   ['replied', LEAD_ADMIN_VIEWS.replied.label],
   ['bounced', LEAD_ADMIN_VIEWS.bounced.label],
   ['paid', LEAD_ADMIN_VIEWS.paid.label],
+  ['paid_handoff_pending', LEAD_ADMIN_VIEWS.paid_handoff_pending.label],
   ['missing_assets', LEAD_ADMIN_VIEWS.missing_assets.label],
   ['missing_email', LEAD_ADMIN_VIEWS.missing_email.label],
 ];
@@ -66,6 +67,11 @@ const urgent = index.records
           <span class="admin-summary-label">Paid</span>
           <strong>{index.counts.paid || 0}</strong>
           <p>These leads should move into website-projects execution, not stay stuck in outreach.</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Paid handoff pending</span>
+          <strong>{index.counts.paidHandoffPending || 0}</strong>
+          <p>Customer has paid, but the project workspace handoff is still missing or incomplete.</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Blocked</span>
@@ -159,6 +165,7 @@ const urgent = index.records
                 data-view-replied={record.stageKey === 'replied' ? 'true' : 'false'}
                 data-view-bounced={record.stageKey === 'bounced' ? 'true' : 'false'}
                 data-view-paid={record.paymentStatus === 'paid' ? 'true' : 'false'}
+                data-view-paid-handoff-pending={record.paymentStatus === 'paid' && !record.websiteTaskThreadId ? 'true' : 'false'}
                 data-view-missing-assets={record.assetsReady ? 'false' : 'true'}
                 data-view-missing-email={record.emailDraftReady ? 'false' : 'true'}
               >

@@ -9,6 +9,7 @@ export const LEAD_ADMIN_VIEWS = {
   replied: { label: 'Replied' },
   bounced: { label: 'Bounced' },
   paid: { label: 'Paid' },
+  paid_handoff_pending: { label: 'Paid handoff pending' },
   missing_assets: { label: 'Missing assets' },
   missing_email: { label: 'Missing outreach draft' },
 };
@@ -42,6 +43,8 @@ export function matchesLeadView(record, view = 'all') {
       return record.stageKey === 'bounced';
     case 'paid':
       return record.paymentStatus === 'paid';
+    case 'paid_handoff_pending':
+      return record.paymentStatus === 'paid' && !record.websiteTaskThreadId;
     case 'missing_assets':
       return !record.assetsReady;
     case 'missing_email':
@@ -181,6 +184,7 @@ function buildCounts(records) {
     if (record.assetsReady) acc.assetsReady += 1;
     if (record.emailDraftReady) acc.emailDraftReady += 1;
     if (record.outreachSent) acc.outreachSent += 1;
+    if (record.paymentStatus === 'paid' && !record.websiteTaskThreadId) acc.paidHandoffPending += 1;
     if (record.blocker) acc.blocked += 1;
     return acc;
   }, {
@@ -189,6 +193,7 @@ function buildCounts(records) {
     assetsReady: 0,
     emailDraftReady: 0,
     outreachSent: 0,
+    paidHandoffPending: 0,
     blocked: 0,
   });
 }
