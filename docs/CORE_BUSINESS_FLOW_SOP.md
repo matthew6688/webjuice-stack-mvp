@@ -232,6 +232,11 @@ lead profile 的字段设计、分阶段推进、以及后续 lead truth source 
   - 当前 deploy 证据：
     - version: `d40fd7ca-5a8d-4a04-b050-7271ce0ae8ed`
     - 记录文件：`data/qa/agentic-inbox-webhook-deploy-summary.json`
+  - 当前 production routing 证据：
+    - endpoint: `/api/outreach-provider-event`
+    - workflow run: `25533771745`
+    - unique lead match: `info@babylonbrisbane.com.au -> babylon-brisbane-restaurant`
+    - 记录文件：`data/qa/agentic-inbox-production-routing-summary.json`
 
 当前 milestone 真相源：
 

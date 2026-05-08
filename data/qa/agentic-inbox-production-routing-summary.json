@@ -1,0 +1,42 @@
+{
+  "date": "2026-05-08",
+  "endpoint": "https://profitslocal.com/api/outreach-provider-event",
+  "workflowRunId": 25533771745,
+  "worker": "agentic-inbox-profitslocal",
+  "deployVersionId": "d40fd7ca-5a8d-4a04-b050-7271ce0ae8ed",
+  "payload": {
+    "provider": "agentic-email",
+    "leadEmail": "info@babylonbrisbane.com.au",
+    "eventType": "reply_received",
+    "messageId": "test-message-babylon-002",
+    "threadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=test-thread-babylon-002"
+  },
+  "verification": {
+    "dispatchAccepted": true,
+    "workflowSuccess": true,
+    "uniqueLeadMatch": true,
+    "resolvedClientSlug": "babylon-brisbane-restaurant",
+    "artifactUpdated": true,
+    "artifactShaBefore": "ef29266eff1b4d65d72f134a58069163710e2716",
+    "artifactShaAfter": "a8d1a437df2d3d6a0ff498614b0f3f5d38b5ddd5"
+  },
+  "artifactState": {
+    "provider": "agentic-email",
+    "status": "replied",
+    "externalLeadId": "info@babylonbrisbane.com.au",
+    "externalMessageId": "test-message-babylon-002",
+    "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=test-thread-babylon-002",
+    "lastEventType": "reply_received",
+    "replySnippet": "Testing production Babylon reply routing after content-contact registry deploy."
+  },
+  "boundary": {
+    "verified": [
+      "production no-slug provider event routing by unique lead email",
+      "production workflow writeback into outreach artifact",
+      "lead registry can now resolve business email from content.restaurant.json"
+    ],
+    "notYetVerified": [
+      "an event physically emitted by the live Agentic Inbox UI rather than a direct POST to the main endpoint"
+    ]
+  }
+}

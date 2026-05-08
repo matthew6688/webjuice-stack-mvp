@@ -661,7 +661,8 @@ lead / intake
     - version: `d40fd7ca-5a8d-4a04-b050-7271ce0ae8ed`
     - secret: `PROFITSLOCAL_OUTREACH_WEBHOOK_SECRET`
 - 剩余 hard evidence：
-  - 至少一条真实回流事件被主站接收并写回 artifact / case / admin / forum
+  - 至少一条事件真正由 live Agentic Inbox UI 触发，而不是直接 POST 到主站 endpoint
+  - 如有 case/forum 绑定，再补一条 artifact / case / admin / forum 全写回证据
 
 ---
 
