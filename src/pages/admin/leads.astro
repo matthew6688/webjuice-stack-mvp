@@ -33,6 +33,31 @@ function urgencyScore(record) {
   if (record.blocker) score += 20;
   return score;
 }
+
+function summarizeLeadSubstatus(record) {
+  if (record.replyState === 'replied') return '等人工判断';
+  if (record.nextFollowUpDue) return `跟进 ${record.nextFollowUpDue}`;
+  if (record.outreachSent) return '已发出';
+  if (record.emailDraftReady) return '可发送';
+  return '';
+}
+
+function summarizeFlow(record) {
+  return record.salesWorkspaceName || '未建线索工作区';
+}
+
+function summarizeAction(record) {
+  const label = record.nextAction.label;
+  if (label === '执行下一次 follow-up') return '按记录时间继续跟进';
+  if (label === '等待或安排 follow-up') return '等回复或补下一次跟进';
+  if (label === '发送或跟进 outreach') return 'demo、证明、草稿都齐';
+  if (label === '处理回复并判断是否成交') return '先判断购买意向，再决定是否转项目';
+  if (label === '生成 outreach pack') return '先补 demo、证明和草稿';
+  if (label === '补截图和视频') return '先补展示素材';
+  if (label === '生成 cold outreach draft') return '先补 outreach 草稿';
+  if (label === '修正邮箱或替换发送通道') return '先修邮箱或换通道';
+  return record.blocker || record.nextAction.reason;
+}
 ---
 
 <Layout title={`线索与触达 - ${siteConfig.name}`} description="ProfitsLocal 售前线索与冷启动触达面板。" active="leads">
@@ -167,7 +192,7 @@ function urgencyScore(record) {
                 <td>
                   <mark class={`status-pill status-${record.stageTone}`}>{record.stageLabel}</mark>
                   {record.outreachSent ? <mark class="status-pill status-ready">已发送</mark> : null}
-                  <span>{record.caseStatus || record.paidIntakeStatus || '仅线索阶段'}</span>
+                  {summarizeLeadSubstatus(record) ? <span>{summarizeLeadSubstatus(record)}</span> : null}
                 </td>
                 <td>
                   <div class="admin-health-pills">
@@ -180,24 +205,32 @@ function urgencyScore(record) {
                 </td>
                 <td>
                   <span>{record.email ? <a class="admin-inline-link" href={`mailto:${record.email}`}>{record.email}</a> : record.customerEmail ? <a class="admin-inline-link" href={`mailto:${record.customerEmail}`}>{record.customerEmail}</a> : '未记邮箱'}</span>
-                  <span>{record.phone ? <a class="admin-inline-link" href={`tel:${record.phone}`}>{record.phone}</a> : '未记电话'}</span>
-                  <span>{record.websiteUrl ? <a class="admin-inline-link" href={record.websiteUrl} target="_blank" rel="noreferrer">官网</a> : '未记官网'}{record.contactPageUrl ? ` · ` : ''}{record.contactPageUrl ? <a class="admin-inline-link" href={record.contactPageUrl} target="_blank" rel="noreferrer">联系页</a> : ''}</span>
+                  {record.phone ? <span><a class="admin-inline-link" href={`tel:${record.phone}`}>{record.phone}</a></span> : null}
+                  {(record.websiteUrl || record.contactPageUrl) ? (
+                    <span>
+                      {record.websiteUrl ? <a class="admin-inline-link" href={record.websiteUrl} target="_blank" rel="noreferrer">官网</a> : null}
+                      {record.websiteUrl && record.contactPageUrl ? ' · ' : null}
+                      {record.contactPageUrl ? <a class="admin-inline-link" href={record.contactPageUrl} target="_blank" rel="noreferrer">联系页</a> : null}
+                    </span>
+                  ) : null}
                   <span>{record.outreachSentAt ? `已发送 · ${record.outreachSentAt}` : '未发送'}{record.nextFollowUpDue ? ` · 跟进 ${record.nextFollowUpDue}` : ''}</span>
-                  <span>{record.outreachProvider ? `${record.outreachProvider}${record.replyState === 'replied' ? ' · 已回复' : record.bounceState === 'bounced' ? ' · 退信' : ''}` : '未记 provider'}</span>
-                  <span>{record.latestLeadNote?.note ? `备注：${record.latestLeadNote.note}` : '无备注'}</span>
+                  {record.outreachProvider ? <span>{`${record.outreachProvider}${record.replyState === 'replied' ? ' · 已回复' : record.bounceState === 'bounced' ? ' · 退信' : ''}`}</span> : null}
+                  {record.latestLeadNote?.note ? <span>{`备注：${record.latestLeadNote.note}`}</span> : null}
                 </td>
                 <td>
-                  <span>{record.salesWorkspaceName || '未建 website-leads workspace'}</span>
-                  <span class="admin-link-row">
-                    {record.discordThreadUrl ? <a class="admin-inline-link" href={record.discordThreadUrl} target="_blank" rel="noreferrer">Discord</a> : <span>无 Discord</span>}
-                    {record.projectAdminUrl && record.orderId ? <a class="admin-inline-link" href={record.projectAdminUrl}>项目</a> : <span>无项目</span>}
-                    {record.repoUrl ? <a class="admin-inline-link" href={record.repoUrl} target="_blank" rel="noreferrer">Repo</a> : <span>无 Repo</span>}
-                  </span>
-                  <span>{record.openDesignProjectId ? `OD：${record.openDesignProjectId}` : '无 Open Design 项目'}</span>
+                  <span>{summarizeFlow(record)}</span>
+                  {record.discordThreadUrl || (record.projectAdminUrl && record.orderId) || record.repoUrl ? (
+                    <span class="admin-link-row">
+                      {record.discordThreadUrl ? <a class="admin-inline-link" href={record.discordThreadUrl} target="_blank" rel="noreferrer">Discord</a> : null}
+                      {record.projectAdminUrl && record.orderId ? <a class="admin-inline-link" href={record.projectAdminUrl}>项目</a> : null}
+                      {record.repoUrl ? <a class="admin-inline-link" href={record.repoUrl} target="_blank" rel="noreferrer">Repo</a> : null}
+                    </span>
+                  ) : <span>还没接 Discord / 项目 / Repo</span>}
+                  {record.openDesignProjectId ? <span>{`OD：${record.openDesignProjectId}`}</span> : null}
                 </td>
                 <td>
                   <strong>{record.nextAction.label}</strong>
-                  <span>{record.blocker || record.nextAction.reason}</span>
+                  <span>{summarizeAction(record)}</span>
                   <details class="admin-inline-form">
                     <summary>添加备注</summary>
                     <form method="post" action="/admin/lead-note" class="admin-action-form">

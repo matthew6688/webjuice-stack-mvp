@@ -69,39 +69,23 @@ const savedViews = [
         </article>
       </div>
 
-      <div class="admin-finance-grid">
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">优先行动</span>
-              <h2>现在先做</h2>
-            </div>
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <span class="eyebrow">优先行动</span>
+            <h2>现在先做</h2>
           </div>
-          <div class="admin-urgent-list">
-            {urgentQueue.length ? urgentQueue.map((record) => (
-              <a class="admin-urgent-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
-                <strong>{record.customer.company || record.clientSlug}</strong>
-                <span>{record.nextActionSummary?.label || '打开项目'}</span>
-                <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.status}</code>
-              </a>
-            )) : <p class="micro">当前没有特别紧急的项目。</p>}
-          </div>
-        </section>
-
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">页面边界</span>
-              <h2>这里只看项目推进</h2>
-            </div>
-          </div>
-          <ul class="admin-list">
-            <li><strong>这里只看项目</strong><span>review、修订、DNS、OD、阻塞项。</span></li>
-            <li><strong>不看售前</strong><span>线索、触达、回复去 <a href="/admin/leads/">线索面板</a>。</span></li>
-            <li><strong>不看财务</strong><span>收入、成本、利润只在 <a href="/admin/finance/">财务面板</a>。</span></li>
-          </ul>
-        </section>
-      </div>
+        </div>
+        <div class="admin-urgent-list">
+          {urgentQueue.length ? urgentQueue.map((record) => (
+            <a class="admin-urgent-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
+              <strong>{record.customer.company || record.clientSlug}</strong>
+              <span>{record.nextActionSummary?.label || '打开项目'}</span>
+              <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.status}</code>
+            </a>
+          )) : <p class="micro">当前没有特别紧急的项目。</p>}
+        </div>
+      </section>
 
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
@@ -250,7 +234,7 @@ const savedViews = [
         </table>
       </div>
 
-      <p class="micro">页面从 <code>data/paid-intakes</code> 生成；repo 里的 JSON 仍然是最终真相源。</p>
+      <p class="admin-section-note">这里只看项目推进：review、修订、DNS、Open Design、阻塞项。售前去 <a href="/admin/leads/" class="admin-inline-link">线索面板</a>，财务去 <a href="/admin/finance/" class="admin-inline-link">财务面板</a>。项目真相源仍然是 repo 里的 `data/paid-intakes` 和 `data/cases`。</p>
     </div>
   </section>
 </Layout>

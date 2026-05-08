@@ -95,7 +95,7 @@ const stageLabels = {
         </article>
       </div>
 
-      <div class="admin-overview-hero admin-overview-paper">
+      <div class="admin-overview-hero admin-overview-paper admin-overview-paper-slim">
         <section class="admin-overview-card admin-overview-primary">
           <span class="eyebrow">总览说明</span>
           <h2>这里只做分流，不做细看。</h2>
@@ -103,28 +103,6 @@ const stageLabels = {
           <div class="admin-note-stack">
             <p class="micro">线索、项目、财务、设置各管一类事，不在这里混在一起。</p>
           </div>
-        </section>
-
-        <section class="admin-overview-card">
-          <span class="eyebrow">项目概况</span>
-          <ul class="admin-list admin-list-tight">
-            <li><strong>待发 review</strong><span>{stageCounts.review_ready || 0}</span></li>
-            <li><strong>修订中</strong><span>{stageCounts.revision || 0}</span></li>
-            <li><strong>等待 DNS</strong><span>{index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length}</span></li>
-            <li><strong>OD 运行中</strong><span>{odCounts.running || 0}</span></li>
-            <li><strong>OD 需输入</strong><span>{odCounts.needs_input || 0}</span></li>
-          </ul>
-        </section>
-
-        <section class="admin-overview-card">
-          <span class="eyebrow">线索概况</span>
-          <ul class="admin-list admin-list-tight">
-            <li><strong>草稿已就绪</strong><span>{leadIndex.prospectCounts.draft_ready || 0}</span></li>
-            <li><strong>已发送</strong><span>{leadIndex.prospectCounts.outreachSent || 0}</span></li>
-            <li><strong>已回复待看</strong><span>{leadIndex.prospectCounts.repliedNeedsReview || 0}</span></li>
-            <li><strong>跟进过期</strong><span>{leadIndex.prospectCounts.followUpOverdue || 0}</span></li>
-            <li><strong>付款待交接</strong><span>{leadIndex.customerCounts.paidHandoffPending || 0}</span></li>
-          </ul>
         </section>
 
         <section class="admin-overview-card">
@@ -176,41 +154,9 @@ const stageLabels = {
             )) : <p class="micro">当前没有特别紧急的项目。</p>}
           </div>
         </section>
-
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">下一批可发</span>
-              <h2>准备发给客户</h2>
-            </div>
-          </div>
-          <ul class="admin-list">
-            {reviewReady.length ? reviewReady.map((record) => (
-              <li>
-                <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
-                  <strong>{record.customer.company || record.clientSlug}</strong>
-                </a>
-                <span>{record.nextActionSummary?.label || '发送客户 review'}</span>
-                <span>{record.previewUrl || record.artifactSummary?.outreachPreviewUrl || '还没有记录 preview'}</span>
-              </li>
-            )) : <li>目前还没有已经准备好发 review 的项目。</li>}
-          </ul>
-        </section>
-
-        <section class="admin-finance-panel">
-          <div class="admin-finance-head">
-            <div>
-              <span class="eyebrow">阶段分布</span>
-              <h2>工作现在堆在哪</h2>
-            </div>
-          </div>
-          <ul class="admin-list">
-            {Object.entries(stageCounts).sort((a, b) => b[1] - a[1]).map(([stage, count]) => (
-              <li><strong>{stageLabels[stage] || stage.replaceAll('_', ' ')}</strong><span>{count} 个项目</span></li>
-            ))}
-          </ul>
-        </section>
       </div>
+
+      <p class="admin-section-note">总览只做分流。待发 review、修订、DNS、Open Design 去 <a href="/admin/intakes/" class="admin-inline-link">项目面板</a>；reply、follow-up、paid handoff 去 <a href="/admin/leads/" class="admin-inline-link">线索面板</a>；财务始终单独留在 <a href="/admin/finance/" class="admin-inline-link">财务面板</a>。</p>
     </div>
   </section>
 </Layout>
