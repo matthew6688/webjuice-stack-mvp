@@ -15,6 +15,10 @@
 
 - `docs/P0_P1_TODO.md`
 
+lead profile 的字段设计、分阶段推进、以及后续 lead truth source 的目标，统一记录在：
+
+- `docs/LEAD_PROFILE_SCHEMA.md`
+
 ## 一句话流程
 
 ```text
@@ -132,6 +136,11 @@
   - 自动状态切换说明：
     - `follow-up due` 在收到 `replied / bounced / paid` 之后会自动让位给更高优先级状态
     - 如果人工在外部邮箱完成跟进，但没有 provider event 回流，admin 不会自动知道，仍需手动补 note 或 event
+  - 后续方向：
+    - 现在 `/admin/leads` 仍主要从 outreach artifact 反推状态
+    - 后面要逐步演进成更明确的 lead truth source
+    - 具体 schema 和 Phase 1/2/3 见：
+      - `docs/LEAD_PROFILE_SCHEMA.md`
 
 - `/admin/intakes`
   - 当前已经能显示：
@@ -166,6 +175,16 @@
     - `Agentic Inbox = current live operator path`
     - `Instantly / Smartlead = planned`
     - `Resend = transactional only`
+  - lead 匹配原则：
+    - 对外发件身份保持统一专业
+    - 不把 `clientSlug` 或内部 routing key 暴露给客户
+    - reply / follow-up / paid handoff 后面要优先依赖：
+      - `leadId`
+      - `clientSlug`
+      - `lead email`
+      - provider external ids / thread url
+    - 详细说明见：
+      - `docs/LEAD_PROFILE_SCHEMA.md`
   - 当前 inbound 事件入口：
     - `/api/outreach-provider-event`
     - 鉴权：`OUTREACH_PROVIDER_WEBHOOK_SECRET`，没有单独配置时临时回落到 `ADMIN_ACCESS_TOKEN`

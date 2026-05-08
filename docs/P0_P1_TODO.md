@@ -258,6 +258,41 @@ lead / intake
   - 这决定后面大量项目时 Discord 是否仍然清晰可管
 - 是否需要显示到 admin：
   - **需要**
+
+## C3. Lead truth source / lead profile schema
+
+- 状态：`PENDING`
+- 目标：
+  - 从“由 outreach artifact 反推状态”逐步演进成明确的 lead truth source
+  - 先做 MVP core fields，再按阶段补强
+- 主文档：
+  - `docs/LEAD_PROFILE_SCHEMA.md`
+- Phase 1 先做：
+  - `leadId`
+  - `clientSlug`
+  - `businessName`
+  - `address`
+  - `phone`
+  - `email`
+  - `websiteUrl`
+  - `contactPageUrl`
+  - `googleMapsUrl`
+  - `googlePlaceId`
+  - `hasWebsite`
+  - `menuUrl`
+  - `evidenceSources[]`
+  - `qualificationStatus`
+  - `outreachStatus`
+  - `replyStatus`
+  - `followUpDue`
+  - `notes[]`
+  - `provider`
+  - `externalThreadUrl`
+- 为什么重要：
+  - 决定 reply matching、follow-up、paid handoff 能不能围绕同一个 lead 继续推进
+- 是否需要显示到 admin：
+  - **需要**
+  - 先落 `/admin/leads`
   - 最终要在 admin 里有专门的 cold outreach / leads 面板
 
 ## C3. 项目 milestone 是否需要进 admin

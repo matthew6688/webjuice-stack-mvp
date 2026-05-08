@@ -17,6 +17,18 @@ Transactional email includes payment receipts, revision receipts, review links, 
 
 Agentic Inbox handles conversational email at `hi@profitslocal.com`. It may draft replies, but operators send manually for now.
 
+ProfitsLocal 的客户可见发件身份应保持统一专业。  
+不要把 `clientSlug`、内部 routing key、或奇怪的 project-specific 邮箱地址作为主要对外发件身份。
+
+后续 lead / reply matching 的主方向是：
+
+- 统一对外发件身份
+- 内部靠 lead truth source、lead email、provider external ids、thread url 做归因
+
+相关字段设计见：
+
+- `docs/LEAD_PROFILE_SCHEMA.md`
+
 ## Production Setup
 
 | Item | Value |
