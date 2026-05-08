@@ -1,5 +1,5 @@
 {
-  "provider": "resend",
+  "provider": "agentic-email",
   "to": "matthew6688@gmail.com",
   "from": "Profits Local <hello@fengtalk.ai>",
   "replyTo": "",
@@ -27,5 +27,33 @@
     }
   },
   "dryRun": true,
-  "generatedAt": "2026-05-04T15:20:09.268Z"
+  "generatedAt": "2026-05-04T15:20:09.268Z",
+  "providerEvent": {
+    "status": "replied",
+    "eventType": "reply_received",
+    "timestamp": "2026-05-08T13:05:00+10:00",
+    "leadEmail": "info@babylonbrisbane.com.au",
+    "threadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=test-thread-babylon-002",
+    "messageId": "test-message-babylon-002",
+    "replySnippet": "Testing production Babylon reply routing after content-contact registry deploy."
+  },
+  "leadWorkspace": {},
+  "sendResult": {
+    "provider": "agentic-email",
+    "sourceSystem": "agentic-email",
+    "status": "replied",
+    "sentAt": "",
+    "id": "",
+    "externalCampaignId": "",
+    "externalLeadId": "info@babylonbrisbane.com.au",
+    "externalMessageId": "test-message-babylon-002",
+    "externalThreadUrl": "https://mail.profitslocal.com/mailbox/hi@profitslocal.com/emails/inbox?thread=test-thread-babylon-002",
+    "replyState": "",
+    "nextFollowUpDue": "",
+    "bounceState": "",
+    "lastEventType": "reply_received",
+    "lastEventAt": "2026-05-08T13:05:00+10:00",
+    "replySnippet": "Testing production Babylon reply routing after content-contact registry deploy."
+  },
+  "updatedAt": "2026-05-08T02:47:47.362Z"
 }
