@@ -84,10 +84,11 @@ const artifactLabels = [
   ['reply', '回复'],
   ['discord', 'Discord'],
 ];
+const leadPipelineUiVersion = 'local-style-2026-05-08';
 ---
 
 <Layout title={`线索触达 - ${siteConfig.name}`} description="Cold outreach lead pipeline." active="leads">
-  <section class="poster-section admin-section">
+  <section class="poster-section admin-section" data-ui-version={leadPipelineUiVersion}>
     <div class="admin-shell lead-admin-shell">
       <div class="admin-header">
         <div>
