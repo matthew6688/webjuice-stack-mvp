@@ -23,7 +23,7 @@
 |---|---|---|---|
 | C-1 V2 scoring config (JSON) + site-quick-scan + cheap-audit-v2 engine + 31-lead test | ✅ | `0e41629` | 10/10 assertions pass; cheap-audit-config.json = single source of truth |
 | C-2 enrichment router (5-route search) + 2 live fixtures | ✅ | `73bc0f4` | Regan Brothers + Brisbane Roofing Solutions enriched live; all T0 free; profile-score URL preference picks brand pages over deep links |
-| C-3 `/admin/scoring` + `/admin/leads/<slug>` score breakdown | ✅ | `1f46435` | `npm run build` produces 110 pages; score breakdown shows all 9 Stage 1 rules with earned/missed/rationale per lead |
+| C-3 `/admin/scoring` + `/admin/leads/<slug>` score breakdown | ✅ | `1f46435` + (next push fix) | `npm run build` 110 pages; score breakdown shows all 9 Stage 1 rules; **retro-verified in real Chrome** — fixed h1/h2 leak from global marketing typography (`max-width: 12ch` + serif 98px); screenshots saved to `data/v2/fixtures/admin-ui/`; regression script `npm run admin:screenshot` |
 | C-4 rescore CLI + 34-lead comparison report + Stage 0.5 orchestration | ✅ | (next push) | full live run: 30 Tinyfish fetches, 251s total, **27 V1-skip flipped, 10 audit_candidate, 1 starter_candidate, 2 still skip** (Stage 2 confirmed 2 sites OK); report at `docs/v2/autoresearch-results/scoring-v2-vs-v1.md` |
 
 Block takeaway → V2 cheap audit produces a coherent ladder: Stage 1 GBP triage (always) + Stage 2 site quick scan (when has-website) + Stage 0.5 enrichment fallback (when contact thin) + hard triggers (no_website starter, http+traction obvious win, high_traction_old_site floor). Algorithm definition + per-lead breakdown both visible in admin UI. Block D (6-dim 39-item detailed audit on audit_candidates) and Block F (internal audit report HTML) are next.
