@@ -6,6 +6,16 @@
 
 ---
 
+## 最新交接入口
+
+- Repo：`https://github.com/matthew6688/webjuice-stack-mvp`
+- 最新线上 handoff：`https://github.com/matthew6688/webjuice-stack-mvp/blob/main/docs/HANDOFF_2026-05-10.md`
+- 当前 release commit：`ab941d2 Add handoff repository links`
+
+接手时先读 `docs/HANDOFF_2026-05-10.md`，再读 `docs/P0_P1_TODO.md`、`docs/MODULE_STATUS.md`、`docs/LEAD_OPS_SYSTEM.md`。本根文件保留长期背景和历史闭环；dated handoff 才是当前操作入口。
+
+---
+
 ## 1. 项目概述
 
 WebJuice / Profits Local 是一个 AI 驱动的 B2B 本地商家网站 agency 工具链。

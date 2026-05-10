@@ -1,6 +1,6 @@
 # ProfitsLocal 核心业务闭环 TODO 台账
 
-更新日期：2026-05-09
+更新日期：2026-05-10
 
 这份文档是 **当前进行中的唯一 TODO 台账**。  
 以后我们验证核心业务闭环、发现文档过期、发现 admin 缺口、发现运营流程断点，都先记到这里，再按优先级逐个清。
@@ -22,13 +22,20 @@
 
 ## 当前执行面板
 
+### 2026-05-10 handoff sync
+
+- 当前 repo：`https://github.com/matthew6688/webjuice-stack-mvp`
+- 线上 handoff：`https://github.com/matthew6688/webjuice-stack-mvp/blob/main/docs/HANDOFF_2026-05-10.md`
+- 最新 handoff commit：`ab941d2 Add handoff repository links`
+- 本页是下一棒接手人的 priority board。若本页和 dated handoff 冲突，以本页的 `NOW / IN PROGRESS / PENDING` 为准，再把 dated handoff 补齐。
+- 5/10 交接后的核心判断：系统已经能从 low-cost discovery 进入 admin/queue/lead packet，但收入闭环仍卡在真实 mockup artifact、触达发送/回复回流、paid handoff 操作面三段。
+
 ### NOW
 
-- `G1` low-cost Google Maps scrape -> discovery store -> lead pipeline 稳定化（第一轮 hard evidence 已完成；继续观察更多 query）
-- `G2` cheap audit -> selected enrichment -> promote to client workflow 稳定化
-- `G3` outreach-ready lead packet 和行动队列闭环
-- `G4` mockup / Open Design handoff 阀门
-- `G5` 从回复/成交交接到 paid intake 的人工最短路径
+- `G4.1` 真实 mockup artifact：把 `build_mockup_artifacts` 的 placeholder preview / screenshot / video 替换成真实 Open Design 或 template runner 输出。
+- `G4.2` outreach 状态闭环：`draft_ready -> outreach_sent -> follow_up_due / replied` 阶段迁移测试和后台 action。
+- `G5` replied / paid handoff：把回复或人工成交意向推进到 paid intake / project handoff，不再靠复制粘贴上下文。
+- `G3.1` Leads CRM 证据视图：继续补 replied / follow-up / paid handoff 操作面。
 
 ### DONE
 
@@ -37,12 +44,14 @@
 - `A3` 真实 revision 闭环
 - `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
 - `G5.1` 真实 query 批量 discovery regression：restaurant / roofing / dentist 三组低成本 scrape 已入库并保存 hard evidence
+- `G1` low-cost Google Maps scrape -> discovery store -> lead pipeline 第一轮稳定化：scrape/import、central store、dedupe、queue、admin visibility、relevance gate、hard evidence 已落地
+- `G2` cheap audit -> selected enrichment 成本门控第一版：cheap audit、selected-enrichment dry-run plan、gate 状态源、admin/action 入口已落地
+- `G3` outreach-ready lead packet 第一版：lead ops、ready-to-build、outreach brief、CRM snapshot、admin leads/queue 读取已落地
 - fresh lead 从 outreach 到 paid 真闭环
 
 ### IN PROGRESS
 
 - `G2.1` selected enrichment 成本关口：dry-run plan / approved / executed / ingested 状态源已落地，继续接真实执行和入库
-- `G3.1` Leads CRM 证据视图：CRM 快照已落地，继续补 replied / follow-up / paid handoff 操作面
 - `B4` Open Design pipeline 状态映射到我们的项目状态
 - `C2` 售前 lead / outreach / forum 流转继续补齐
 - `C3` lead truth source / lead profile schema（Phase 1 已落地，后续字段与自动回流继续补）
@@ -52,9 +61,8 @@
 
 ### PENDING
 
-- `G4.1` 把 `build_mockup_artifacts` 的 placeholder preview / screenshot / video 替换成真实 Open Design 或 template runner 输出
-- `G4.2` `draft_ready -> outreach_sent -> follow_up_due / replied` 阶段迁移测试和后台 action
 - `/admin/leads` replied / follow-up due / paid handoff 再细化
+- 长期 generated evidence 存储策略：决定哪些 `data/qa`、`data/template-experiments`、Open Design run logs 留在 git，哪些迁到外部 artifact storage
 
 ### BACKLOG
 

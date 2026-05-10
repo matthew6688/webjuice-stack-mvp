@@ -1,5 +1,19 @@
 # Module Status
 
+更新日期：2026-05-10
+
+最新 repo：`https://github.com/matthew6688/webjuice-stack-mvp`  
+最新线上 handoff：`https://github.com/matthew6688/webjuice-stack-mvp/blob/main/docs/HANDOFF_2026-05-10.md`
+
+## 2026-05-10 Release Sync
+
+本页同步 `ab941d2` handoff 后的模块状态。重点变化不是所有模块都在 5/10 当天从零修改，而是把 5/9-5/10 release bundle 的可接手状态写清楚：
+
+- Lead discovery / lead ops：low-cost Maps scraper、central discovery store、cheap audit、selected enrichment gate、promotion、lead packet、queue action 已是 Working MVP。
+- Admin workspace：`/admin`、`/admin/leads`、`/admin/queue`、`/admin/reports`、`/admin/templates`、`/admin/settings` 已进入 Working MVP；下一步是把 mockup/outreach/paid handoff 操作继续做实。
+- Open Design / template library：runner、artifact fallback、production/template handoff、roofing starter families 已可验证；真实 mockup artifact 替换仍是下一阶段重点。
+- Artifact policy：compact summaries、manifests、QA screenshots、public admin artifacts 可以进 git；raw Maps scraper `results.full.json` 不提交。
+
 ## Working Prototype
 
 | Module | Status | Notes |
@@ -7,6 +21,9 @@
 | GitHub/Cloudflare deploy | Working | Main/dev deploys work for current restaurant repos. Main repo and all 5 generated restaurant repos now use Node 24-hardened deploy workflows, and the latest generated dev/live deploys completed success. |
 | Google Places extraction | Working MVP | `npm run extract:google-places` supports text search, details, evidence writing, and cost logging. |
 | Maps scraper discovery | Working MVP | `npm run leads:maps-scrape` runs low-cost Google Maps discovery through Docker or analyzes existing scraper JSONL. Default policy does not call Google Places API, does not use proxy, does not request email extraction or extra reviews, strips review/email payloads before analysis storage, writes run artifacts plus the central `data/leads` discovery store (`discovery-index.json`, per-entity records, events, queues, report). `/admin/leads` reads raw discovery records. `npm run leads:audit-discovery-sites` runs cheap website audit for selected raw candidates before enrichment. `npm run leads:plan-discovery-enrichment` creates dry-run Tinyfish/Google Places commands for selected candidates. `npm run leads:build-discovery-outreach-briefs` writes local offer-angle drafts before contact extraction. `npm run leads:promote-discovery-store` promotes selected store candidates into `clients/<client>/lead/*`, copies audit/brief artifacts, runs local lead-ops, and marks the entity promoted. |
+| Lead queue actions | Working MVP | `.github/workflows/run-lead-queue-action.yml`, `functions/admin/lead-queue-action.ts`, and `npm run leads:run-queue-action` support queued operator actions such as cheap audit, selected enrichment planning, gate approval dry-run, promote, outreach brief, approve mockup, mockup artifacts, and email draft. Verified with `npm run admin:test-lead-queue-action-entrypoint` and `npm run leads:test-run-queue-action`. |
+| Admin reports/templates | Working MVP | `/admin/reports` reads report index data and exposes public report/admin artifact links. `/admin/templates` and `/templates` expose the roofing starter template library and screenshots. Verified with `npm run admin:test-report-index` and `npm run build`. |
+| Roofing template library | Working MVP | `templates/roofing/` contains starter families, brand kits, design language, screenshots, image candidates, Open Design handoffs, and shared service/trust/image taxonomies. Next step is connecting template match output to real mockup-ready artifacts in the lead queue. |
 | Firecrawl official-site scrape | Working MVP | `npm run extract:firecrawl` standardizes official-site scrape artifacts into evidence packs and cost events. |
 | Restaurant preview renderer | Working MVP | `webjuice-restaurant` renders from content/design/checkout artifacts; all 5 Brisbane generated dev branches are synced to the current artifact renderer and passed build after sync. Opa also has a deployed mobile menu polish on `dev`. |
 | Link QA | Working MVP | `npm run qa:links` validates `tel:`, Google Maps, menu source, reservation, email, and menu item source chains from content artifacts. |

@@ -1,6 +1,6 @@
 # Lead Ops Skill System
 
-更新日期：2026-05-08
+更新日期：2026-05-10
 
 这份文档定义网站业务前半段的技能系统：
 
@@ -23,6 +23,31 @@ lead source
 找出最值得推进的机会，
 并把它们稳定推进到 preview、outreach、paid、project handoff。
 ```
+
+---
+
+## 0. 2026-05-10 Handoff Sync
+
+- Repo：`https://github.com/matthew6688/webjuice-stack-mvp`
+- 线上 handoff：`https://github.com/matthew6688/webjuice-stack-mvp/blob/main/docs/HANDOFF_2026-05-10.md`
+- 当前 release commit：`ab941d2 Add handoff repository links`
+- 本文是 lead ops 行为说明；任务优先级以 `docs/P0_P1_TODO.md` 为准。
+
+当前已落地：
+
+- `maps_scraper` 作为 low-cost discovery source。
+- `data/leads` central discovery store、entity upsert、event log、queues、report。
+- cheap site audit gate：先审站点，再决定 selected enrichment / skip。
+- selected enrichment gate：默认 dry-run，不自动花 Tinyfish / Google Places / contact extraction 成本。
+- discovery outreach brief：先生成 offer-angle 草稿，明确不能当最终发送文案。
+- store promotion：把高潜力 entity 复制到 `clients/<client>/lead/*` 并运行本地 `lead-ops`。
+- admin read surface：`/admin/leads` 和 `/admin/queue` 能读取 CRM snapshot、audit evidence、queue action、mockup/outreach stage。
+
+当前还没完成：
+
+- `mockup_building -> mockup_ready` 仍需要真实 Open Design 或 template runner 产物替换 placeholder。
+- `draft_ready -> outreach_sent -> follow_up_due / replied -> paid_handoff` 仍需要后台 action、测试和 provider/manual event 回流。
+- 长期 generated evidence 需要决定哪些留在 git，哪些迁到外部 artifact storage。
 
 ---
 
