@@ -13,7 +13,19 @@
 
 `e559430` — V2 字段 / 分级 / rollup / hashRequest，11 段断言通过。
 
-## Block A — T0 retrieval 层（Tinyfish + Dokobot + DDG）
+## Block ✅ DONE — Block A — T0 retrieval 层（Tinyfish + Dokobot + DDG）
+
+完成 commits：`92cc20c` (A.1 Tinyfish + token bucket) + `95e2c36` (A.2 Dokobot + DDG)
+
+Evidence：
+- `npm run util:test-token-bucket` — 10/10 token bucket 单元测试过
+- `npm run extractors:test-tinyfish-v2` — live API 调用，search 1.0s/10 SERP，fetch 10.8s/8607 chars，rate-limit 本地 + 远端 429 都验证，7/7 断言过
+- `npm run scrape:test-dokobot-smoke` — 真本地 Chrome 渲染 rooroofing.com.au 拿 11,370 chars（多于 Tinyfish 30%），23.5s，6/6 断言过
+- `npm run scrape:test-ddg-smoke` — 当前被 DDG anti-bot 挡（HTTP 202），smoke 正确 skipped 且 ledger 写了 provider_unavailable 事件
+- Fixtures：`data/v2/fixtures/{tinyfish,dokobot,ddg}/`
+- Routing 修订：Dokobot 退到 fetch-only（search 要 DOKO_API_KEY），ENRICHMENT_ROUTING.md 同步
+
+Takeaway：T0 search + fetch 两条链都跑通，ledger 全打通，每条调用都带 V2 fields（leadId/stage/purpose/tier/requestHash）。Block C 的 router 可以直接 import 这些 helper。
 
 **为什么先做这块：** 所有付费 provider 都是 fallback；T0 三个 provider 跑通后，绝大多数 enrichment 任务零成本。
 
