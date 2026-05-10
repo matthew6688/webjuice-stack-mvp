@@ -1,0 +1,84 @@
+{
+  "candidate": {
+    "id": "ollama-gemma3-27b",
+    "model": "gemma3:27b",
+    "adapter": "ollama",
+    "tier": "T0"
+  },
+  "fixture": {
+    "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
+    "businessName": "Roof Space Renovators",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 110428,
+  "tokensIn": 1342,
+  "tokensOut": 1144,
+  "costUsd": 0,
+  "rawText": "```json\n{\n  \"freshness_score\": 4,\n  \"trust_score\": 6,\n  \"conversion_score\": 5,\n  \"design_age_estimate\": \"slightly_outdated\",\n  \"summary\": \"The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.\",\n  \"issues\": [\n    {\n      \"id\": \"hero_image_quality\",\n      \"severity\": \"major\",\n      \"title\": \"Low-Quality Hero Image\",\n      \"what_observed\": \"The hero image features a stock photo of two people pointing, appearing unnatural and low resolution.\",\n      \"why_problem\": \"Customers searching for a local service expect professionalism. A low-quality, generic image makes the business appear less credible and trustworthy. It feels like a placeholder, not a real company.\",\n      \"what_correct_looks_like\": \"A high-quality, authentic photo of a completed roof renovation project in a local Brisbane setting. Focus on showcasing the quality of work.\",\n      \"how_to_fix_in_redesign\": \"Replace the stock photo with a professional, high-resolution image of a real roof renovation in the Brisbane area. Prioritize authenticity over staged photos.\"\n    },\n    {\n      \"id\": \"overused_gradient\",\n      \"severity\": \"major\",\n      \"title\": \"Outdated Gradient Effects\",\n      \"what_observed\": \"The hero section uses a strong blue-to-green gradient, and the logo also incorporates gradients.\",\n      \"why_problem\": \"Gradients like these were popular in the early 2000s and now make the design look dated and unprofessional. It detracts from the message and makes the business appear less current.\",\n      \"what_correct_looks_like\": \"Flat color palettes with subtle shadows or textures. Use a single primary color and a complementary accent color.\",\n      \"how_to_fix_in_redesign\": \"Remove all gradients and replace them with flat colors. Use a modern color palette that reflects the brand's identity.\"\n    },\n    {\n      \"id\": \"mobile_cta_visibility\",\n      \"severity\": \"critical\",\n      \"title\": \"CTA Below the Fold on Mobile\",\n      \"what_observed\": \"On mobile, the 'Get in touch for a free quote!' button is located far down the page, requiring significant scrolling.\",\n      \"why_problem\": \"Mobile users have short attention spans. If the primary call to action isn't immediately visible, they're likely to abandon the site before converting. This is especially critical for local search where users are often looking for immediate contact information.\",\n      \"what_correct_looks_like\": \"A prominent, full-width call-to-action button fixed to the bottom of the screen on mobile, or positioned immediately below the hero section.\",\n      \"how_to_fix_in_redesign\": \"Make the 'Get in touch for a free quote!' button sticky on mobile, or move it directly below the hero image. Ensure it's easily tappable and visible without scrolling.\"\n    },\n    {\n      \"id\": \"font_legibility\",\n      \"severity\": \"major\",\n      \"title\": \"Small Body Text\",\n      \"what_observed\": \"The body text appears small and difficult to read, especially on desktop.\",\n      \"why_problem\": \"Small text strains the eyes and makes it difficult for visitors to consume the content. This leads to frustration and a higher bounce rate. People won't read what they can't easily see.\",\n      \"what_correct_looks_like\": \"Body text should be at least 16px on desktop and 14px on mobile, with sufficient line height and contrast.\",\n      \"how_to_fix_in_redesign\": \"Increase the font size of all body text to at least 16px on desktop and 14px on mobile. Improve line height and contrast for better readability.\"\n    },\n    {\n      \"id\": \"social_icon_clarity\",\n      \"severity\": \"minor\",\n      \"title\": \"Social Icons Lack Hover State\",\n      \"what_observed\": \"The social media icons do not change state on hover.\",\n      \"why_problem\": \"Lack of visual feedback on hover makes the icons appear static and less interactive. Users may not realize they are clickable.\",\n      \"what_correct_looks_like\": \"Social icons should have a subtle hover state (e.g., color change, slight animation) to indicate they are clickable.\",\n      \"how_to_fix_in_redesign\": \"Add a hover state to the social media icons to provide visual feedback to users.\"\n    }\n  ],\n  \"positive_observations\": [\n    \"Clear contact information is present in the header.\",\n    \"The navigation menu is straightforward and easy to understand.\",\n    \"The use of a tagline ('Same house, more home.') is memorable.\"\n  ],\n  \"redesign_priorities\": [\"1. Make CTA visible above the fold on mobile\", \"2. Replace hero image with authentic local photography\", \"3. Modernize color palette and remove gradients\"],\n  \"confidence\": 0.8\n}\n```",
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 6,
+    "conversion_score": 5,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.",
+    "issues": [
+      {
+        "id": "hero_image_quality",
+        "severity": "major",
+        "title": "Low-Quality Hero Image",
+        "what_observed": "The hero image features a stock photo of two people pointing, appearing unnatural and low resolution.",
+        "why_problem": "Customers searching for a local service expect professionalism. A low-quality, generic image makes the business appear less credible and trustworthy. It feels like a placeholder, not a real company.",
+        "what_correct_looks_like": "A high-quality, authentic photo of a completed roof renovation project in a local Brisbane setting. Focus on showcasing the quality of work.",
+        "how_to_fix_in_redesign": "Replace the stock photo with a professional, high-resolution image of a real roof renovation in the Brisbane area. Prioritize authenticity over staged photos."
+      },
+      {
+        "id": "overused_gradient",
+        "severity": "major",
+        "title": "Outdated Gradient Effects",
+        "what_observed": "The hero section uses a strong blue-to-green gradient, and the logo also incorporates gradients.",
+        "why_problem": "Gradients like these were popular in the early 2000s and now make the design look dated and unprofessional. It detracts from the message and makes the business appear less current.",
+        "what_correct_looks_like": "Flat color palettes with subtle shadows or textures. Use a single primary color and a complementary accent color.",
+        "how_to_fix_in_redesign": "Remove all gradients and replace them with flat colors. Use a modern color palette that reflects the brand's identity."
+      },
+      {
+        "id": "mobile_cta_visibility",
+        "severity": "critical",
+        "title": "CTA Below the Fold on Mobile",
+        "what_observed": "On mobile, the 'Get in touch for a free quote!' button is located far down the page, requiring significant scrolling.",
+        "why_problem": "Mobile users have short attention spans. If the primary call to action isn't immediately visible, they're likely to abandon the site before converting. This is especially critical for local search where users are often looking for immediate contact information.",
+        "what_correct_looks_like": "A prominent, full-width call-to-action button fixed to the bottom of the screen on mobile, or positioned immediately below the hero section.",
+        "how_to_fix_in_redesign": "Make the 'Get in touch for a free quote!' button sticky on mobile, or move it directly below the hero image. Ensure it's easily tappable and visible without scrolling."
+      },
+      {
+        "id": "font_legibility",
+        "severity": "major",
+        "title": "Small Body Text",
+        "what_observed": "The body text appears small and difficult to read, especially on desktop.",
+        "why_problem": "Small text strains the eyes and makes it difficult for visitors to consume the content. This leads to frustration and a higher bounce rate. People won't read what they can't easily see.",
+        "what_correct_looks_like": "Body text should be at least 16px on desktop and 14px on mobile, with sufficient line height and contrast.",
+        "how_to_fix_in_redesign": "Increase the font size of all body text to at least 16px on desktop and 14px on mobile. Improve line height and contrast for better readability."
+      },
+      {
+        "id": "social_icon_clarity",
+        "severity": "minor",
+        "title": "Social Icons Lack Hover State",
+        "what_observed": "The social media icons do not change state on hover.",
+        "why_problem": "Lack of visual feedback on hover makes the icons appear static and less interactive. Users may not realize they are clickable.",
+        "what_correct_looks_like": "Social icons should have a subtle hover state (e.g., color change, slight animation) to indicate they are clickable.",
+        "how_to_fix_in_redesign": "Add a hover state to the social media icons to provide visual feedback to users."
+      }
+    ],
+    "positive_observations": [
+      "Clear contact information is present in the header.",
+      "The navigation menu is straightforward and easy to understand.",
+      "The use of a tagline ('Same house, more home.') is memorable."
+    ],
+    "redesign_priorities": [
+      "1. Make CTA visible above the fold on mobile",
+      "2. Replace hero image with authentic local photography",
+      "3. Modernize color palette and remove gradients"
+    ],
+    "confidence": 0.8
+  }
+}

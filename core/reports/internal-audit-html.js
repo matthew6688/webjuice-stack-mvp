@@ -1,0 +1,561 @@
+/**
+ * Internal Audit Report — HTML renderer.
+ *
+ * Output: self-contained HTML document, brand-aligned (Display serif +
+ * cream + 2px black borders + coral accent + citrus stat tile), printable.
+ *
+ * Inputs:
+ *   - entity (required) — discovery store entity
+ *   - cheapAudit (required) — output of cheapAuditV2()
+ *   - detailedAudit (required for full content) — output of detailedAudit()
+ *   - visualAudit (optional, Block E) — placeholder shown if absent
+ *   - reviewAnalysis (optional, Block D iter 5) — placeholder if absent
+ *   - leadSpend (optional) — summarizeLeadSpend() result for cost line
+ *   - screenshotDir (optional) — relative path from output HTML to
+ *     desktop.png / mobile.png (for <img> src)
+ *
+ * Output: HTML string. Caller writes to disk.
+ */
+
+const DIMENSION_LABELS = {
+  gbp: 'Google Business Profile',
+  technical: 'Technical',
+  ux_conversion: 'UX & Conversion',
+  content: 'Content',
+  seo: 'SEO',
+  visual: 'Visual',
+};
+const DIMENSION_WEIGHTS = { gbp: 15, technical: 20, ux_conversion: 25, content: 15, seo: 10, visual: 15 };
+const DIMENSION_ORDER = ['gbp', 'technical', 'ux_conversion', 'content', 'seo', 'visual'];
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
+  );
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function decisionLabel(d) {
+  return ({
+    strong_redesign: 'STRONG REDESIGN',
+    moderate_candidate: 'MODERATE CANDIDATE',
+    low_priority: 'LOW PRIORITY',
+    not_qualified: 'NOT QUALIFIED',
+  }[d] || d || 'UNKNOWN').toUpperCase();
+}
+
+function decisionColor(d) {
+  if (d === 'strong_redesign') return 'coral';
+  if (d === 'moderate_candidate') return 'citrus';
+  if (d === 'low_priority') return 'sky';
+  if (d === 'not_qualified') return 'mint';
+  return 'paper';
+}
+
+function deriveSalesAngle({ detailedAudit }) {
+  if (!detailedAudit) return null;
+  const dims = detailedAudit.dimensions || {};
+  const weakest = Object.entries(dims)
+    .filter(([k]) => k !== 'visual')
+    .sort(([, a], [, b]) => (a.score || 0) - (b.score || 0))
+    .slice(0, 2);
+  const critical = (detailedAudit.issues?.critical || []);
+  const triggers = detailedAudit.hard_triggers || [];
+
+  const triggerTalk = {
+    no_https: '你的网站没有 HTTPS — 浏览器对来访客户显示「不安全」，直接伤害信任',
+    mobile_broken: '你的网站在手机上基本不可用 — 这是大多数本地搜索的入口',
+    no_visible_cta_or_phone: '客户进来看不到联系按钮和电话 — 找不到怎么联系你就直接走了',
+    no_website: '你目前没有独立网站 — 所有 Google 流量进来后没地方落地',
+    high_traction_old_site: '你已经有不错的 Google 流量基础，但网站设计在浪费这些点击',
+  };
+
+  const lines = [];
+  for (const t of triggers) {
+    if (triggerTalk[t]) lines.push(triggerTalk[t]);
+  }
+  if (!lines.length && weakest.length) {
+    const w = weakest[0];
+    lines.push(`你的最大短板是 ${DIMENSION_LABELS[w[0]] || w[0]}（得分 ${w[1].score}/100）`);
+  }
+  if (critical.length) {
+    lines.push(`有 ${critical.length} 个 critical 级问题正在直接伤害成交`);
+  }
+  return lines.length ? lines : null;
+}
+
+function renderRules(rules) {
+  if (!rules?.length) return '';
+  return `
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        ${rules.map((r) => {
+          const cls = r.data_missing ? 'na' : (r.hit ? 'hit' : 'miss');
+          const mark = r.data_missing ? '—' : (r.hit ? '✓' : '✗');
+          return `<tr class="${cls}"><td><code>${escapeHtml(r.id)}</code></td><td class="mark">${mark}</td><td class="num">${r.earned}/${r.max}</td><td class="why">${escapeHtml(r.rationale || '')}</td></tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+}
+
+function renderIssue(issue) {
+  return `
+    <div class="issue-card issue-${issue.severity || 'minor'}">
+      <div class="issue-head">
+        <span class="issue-severity">${escapeHtml(issue.severity || 'minor').toUpperCase()}</span>
+        <code class="issue-id">${escapeHtml(issue.id)}</code>
+      </div>
+      <div class="issue-title">${escapeHtml(issue.title || issue.id)}</div>
+      ${issue.what_observed ? `<p class="issue-row"><span class="lab">观察到</span>${escapeHtml(issue.what_observed)}</p>` : ''}
+      ${issue.why_problem ? `<p class="issue-row"><span class="lab">为什么是问题</span>${escapeHtml(issue.why_problem)}</p>` : ''}
+      ${issue.what_correct_looks_like ? `<p class="issue-row"><span class="lab">正确长啥样</span>${escapeHtml(issue.what_correct_looks_like)}</p>` : ''}
+      ${issue.how_to_fix_in_redesign ? `<p class="issue-row fix"><span class="lab">redesign 怎么改</span>${escapeHtml(issue.how_to_fix_in_redesign)}</p>` : ''}
+      ${(!issue.what_observed && issue.rationale) ? `<p class="issue-row"><span class="lab">命中原因</span>${escapeHtml(issue.rationale)}</p>` : ''}
+    </div>`;
+}
+
+function renderVisualSection({ visualAudit }) {
+  if (!visualAudit) {
+    return `
+    <section class="section section-placeholder">
+      <h2>视觉审计</h2>
+      <p class="placeholder-note">⏳ Vision LLM 视觉审计待生成（Block E autoresearch 中）。报告生成后将补充：</p>
+      <ul class="placeholder-list">
+        <li>新鲜度 / 信任度 / 转化准备度 1-10 分</li>
+        <li>设计年代估计（modern / outdated / severely_outdated）</li>
+        <li>每个视觉问题的「为什么是问题 / 正确长啥样 / redesign 怎么改」</li>
+        <li>需要保留的优点 + redesign 优先级</li>
+      </ul>
+    </section>`;
+  }
+  const issues = visualAudit.issues || [];
+  return `
+    <section class="section">
+      <p class="eyebrow">视觉审计</p>
+      <h2>${escapeHtml(visualAudit.summary || '')}</h2>
+      <div class="visual-scores">
+        <div class="vs"><span>新鲜度</span><strong>${visualAudit.freshness_score ?? '-'}</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>${visualAudit.trust_score ?? '-'}</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>${visualAudit.conversion_score ?? '-'}</strong><small>/10</small></div>
+        <div class="vs vs-text"><span>设计年代</span><strong class="age">${escapeHtml(visualAudit.design_age_estimate || '-')}</strong></div>
+      </div>
+      <div class="issues-grid">
+        ${issues.map(renderIssue).join('')}
+      </div>
+      ${(visualAudit.positive_observations || []).length ? `
+        <div class="positives">
+          <p class="eyebrow accent-mint">需要保留的优点</p>
+          <ul>${visualAudit.positive_observations.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
+        </div>` : ''}
+      ${(visualAudit.redesign_priorities || []).length ? `
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 优先级</p>
+          <ol>${visualAudit.redesign_priorities.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ol>
+        </div>` : ''}
+    </section>`;
+}
+
+function renderReviewSection({ reviewAnalysis }) {
+  if (!reviewAnalysis) {
+    return `
+    <section class="section section-placeholder">
+      <h2>客户评论分析</h2>
+      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑）。当此 lead 被批准为正式销售目标后会补充：</p>
+      <ul class="placeholder-list">
+        <li>评论情感分布（5★/4★/3★/2★/1★ 占比）</li>
+        <li>商家回复率 + 最近一次回复时间</li>
+        <li>常见好评 / 差评关键词</li>
+        <li>5-8 条高质量 quote — 可直接放到 redesign 后的网站上</li>
+        <li>vs 同行评论平均水平的差距</li>
+      </ul>
+    </section>`;
+  }
+  return `<section class="section"><h2>客户评论分析</h2><pre>${escapeHtml(JSON.stringify(reviewAnalysis, null, 2))}</pre></section>`;
+}
+
+function renderSpeedComparisonSection() {
+  return `
+    <section class="section section-placeholder">
+      <h2>速度对比 (前 / 后)</h2>
+      <p class="placeholder-note">⏳ 加载速度前后对比视频 — 等 ProfitsLocal 真实 mockup 网站上线后录制：</p>
+      <ul class="placeholder-list">
+        <li>当前网站慢速节流加载视频（模拟 4G 移动网络）</li>
+        <li>Mockup 网站同条件加载视频</li>
+        <li>side-by-side 对比 + 客户能直接看到的转化率影响估算</li>
+      </ul>
+    </section>`;
+}
+
+export function renderInternalAuditHtml({
+  entity,
+  cheapAudit,
+  detailedAudit,
+  visualAudit = null,
+  reviewAnalysis = null,
+  leadSpend = null,
+  screenshotDir = './screenshots',
+} = {}) {
+  if (!entity) throw new Error('entity is required');
+  const latest = entity.latest || {};
+  const businessName = latest.name || entity.entityKey;
+  const niche = latest.niche || latest.category || '';
+  const city = latest.city || '';
+  const dims = detailedAudit?.dimensions || {};
+  const auditScore = detailedAudit?.audit_score ?? cheapAudit?.final_score ?? null;
+  const decision = detailedAudit?.decision || null;
+  const reason = detailedAudit?.qualification_reason || cheapAudit?.reason || '';
+  const triggers = detailedAudit?.hard_triggers || cheapAudit?.fired_triggers || [];
+  const critical = detailedAudit?.issues?.critical || [];
+  const major = detailedAudit?.issues?.major || [];
+  const salesAngles = deriveSalesAngle({ detailedAudit });
+
+  return `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>Internal Audit · ${escapeHtml(businessName)}</title>
+<style>
+  :root {
+    --cream: #fff6ec; --paper: #fffcf7; --ink: #17191c; --line: #17191c;
+    --muted: #5e6268; --coral: #ff5a3d; --coral-soft: #ffb39f;
+    --peach: #ffe1ce; --citrus: #ffd45a; --mint: #cdeccf;
+    --green: #47b86a; --sky: #8bd3f7; --lilac: #eadcfb;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-weight: 600; }
+  body { background-image: linear-gradient(rgba(23,25,28,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(23,25,28,0.04) 1px, transparent 1px); background-size: 54px 54px; }
+  .doc { max-width: 920px; margin: 32px auto; background: var(--paper); border: 2px solid var(--line); box-shadow: 6px 6px 0 var(--line); }
+  .cover { padding: 36px 36px 28px; border-bottom: 2px solid var(--line); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; }
+  .cover .eyebrow { margin: 0; font-size: 11px; font-weight: 950; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); }
+  .cover h1 { font-family: var(--serif); font-size: 44px; font-weight: 900; line-height: 1.05; margin: 8px 0 8px; max-width: 600px; word-break: break-word; }
+  .cover .subline { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; font-size: 14px; font-weight: 800; color: var(--muted); margin: 0; }
+  .cover .subline strong { color: var(--coral); }
+  .cover .meta-line { margin-top: 12px; font-size: 11px; font-weight: 800; color: var(--muted); display: flex; gap: 8px; }
+  .cover .meta-line code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+  .score-tile { background: var(--${decisionColor(decision)}); border: 2px solid var(--line); padding: 18px 22px; text-align: center; min-width: 180px; box-shadow: 4px 4px 0 var(--line); }
+  .score-tile .label { font-size: 10px; font-weight: 950; letter-spacing: 0.1em; color: var(--ink); text-transform: uppercase; }
+  .score-tile .num { font-family: var(--serif); font-size: 64px; font-weight: 950; line-height: 1; margin: 6px 0 4px; color: var(--ink); }
+  .score-tile .num small { font-size: 14px; color: var(--ink); opacity: 0.75; font-weight: 800; }
+  .score-tile .decision { font-family: var(--mono); font-size: 12px; font-weight: 950; color: var(--ink); }
+
+  .section { padding: 28px 36px; border-top: 2px solid var(--line); }
+  .section .eyebrow { margin: 0 0 6px; font-size: 11px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); }
+  .section h2 { font-family: var(--serif); font-size: 30px; font-weight: 900; line-height: 1.1; margin: 4px 0 16px; max-width: none; word-break: break-word; }
+  .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
+
+  .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); }
+  .contact-cell { padding: 14px 18px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+  .contact-cell:nth-child(2n) { border-right: 0; }
+  .contact-cell:nth-last-child(-n+2) { border-bottom: 0; }
+  .contact-cell .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .contact-cell .val { font-size: 14px; font-weight: 800; word-break: break-word; }
+
+  .dim-grid { display: grid; grid-template-columns: repeat(6, 1fr); border: 2px solid var(--line); margin: 14px 0; }
+  .dim-card { padding: 14px 12px; border-right: 2px solid var(--line); }
+  .dim-card:last-child { border-right: 0; }
+  .dim-card .label { font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+  .dim-card .score { font-family: var(--serif); font-size: 28px; font-weight: 950; line-height: 1; margin: 6px 0 6px; }
+  .dim-card .bar { height: 5px; background: rgba(23,25,28,0.08); border: 1.5px solid var(--line); overflow: hidden; margin-bottom: 4px; }
+  .dim-card .fill { height: 100%; background: var(--coral); }
+  .dim-card .weight { font-size: 9.5px; font-weight: 800; color: var(--muted); }
+
+  .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 12px 0; }
+  .screenshots figure { margin: 0; padding: 14px; border-right: 2px solid var(--line); }
+  .screenshots figure:last-child { border-right: 0; }
+  .screenshots img { width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .screenshots figcaption { margin-top: 10px; font-size: 11px; font-weight: 800; color: var(--muted); }
+
+  .perf-strip { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin-top: 12px; }
+  .perf-cell { padding: 12px; border-right: 2px solid var(--line); }
+  .perf-cell:last-child { border-right: 0; }
+  .perf-cell .lab { font-size: 9.5px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .perf-cell .val { font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1; margin-top: 4px; }
+  .perf-cell .val.ok { color: var(--green); }
+  .perf-cell .val.bad { color: var(--coral); }
+
+  .issue-card { padding: 14px 18px; border: 2px solid var(--line); background: var(--paper); margin: 10px 0; box-shadow: 3px 3px 0 var(--line); }
+  .issue-card.issue-critical { background: color-mix(in srgb, var(--coral-soft) 30%, var(--paper)); }
+  .issue-card.issue-major { background: color-mix(in srgb, var(--citrus) 18%, var(--paper)); }
+  .issue-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .issue-severity { font-family: var(--mono); font-size: 10.5px; font-weight: 950; padding: 2px 8px; background: var(--coral); color: white; border: 1.5px solid var(--line); }
+  .issue-major .issue-severity { background: var(--citrus); color: var(--ink); }
+  .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
+  .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
+  .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+  .issue-row { margin: 4px 0; font-size: 13px; line-height: 1.5; font-weight: 700; }
+  .issue-row .lab { display: inline-block; min-width: 90px; font-size: 10px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 8px; vertical-align: top; }
+  .issue-row.fix .lab { color: var(--coral); }
+
+  details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
+  details.dim-detail summary { cursor: pointer; padding: 10px 16px; display: flex; gap: 14px; align-items: center; list-style: none; font-weight: 850; }
+  details.dim-detail summary::-webkit-details-marker { display: none; }
+  details.dim-detail summary::before { content: '▶'; color: var(--coral); font-size: 10px; transition: transform 0.2s; }
+  details.dim-detail[open] summary::before { transform: rotate(90deg); }
+  .dim-summary-label { flex: 1; font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .dim-summary-score { font-family: var(--serif); font-size: 18px; font-weight: 950; }
+  .dim-summary-rules { font-size: 11px; font-weight: 800; color: var(--muted); }
+  .dim-detail .rule-table { border-top: 2px solid var(--line); }
+
+  .rule-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+  .rule-table th { background: color-mix(in srgb, var(--citrus) 50%, var(--paper)); padding: 10px 12px; font-size: 10.5px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; border-bottom: 2px solid var(--line); }
+  .rule-table td { padding: 9px 12px; border-bottom: 1.5px solid rgba(23,25,28,0.08); vertical-align: top; font-weight: 700; }
+  .rule-table tr:last-child td { border-bottom: 0; }
+  .rule-table td.mark { text-align: center; font-weight: 950; font-size: 14px; }
+  .rule-table tr.hit td.mark { color: var(--green); }
+  .rule-table tr.miss td.mark { color: rgba(23,25,28,0.35); }
+  .rule-table tr.na td.mark { color: rgba(23,25,28,0.25); }
+  .rule-table td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 950; }
+  .rule-table td.why { color: var(--muted); font-weight: 700; }
+  .rule-table code { background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); font-size: 11px; font-weight: 800; }
+
+  .visual-scores { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin: 12px 0 18px; }
+  .vs { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .vs:last-child { border-right: 0; }
+  .vs span { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .vs strong { display: block; font-family: var(--serif); font-size: 32px; font-weight: 950; line-height: 1; margin-top: 6px; }
+  .vs small { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .vs.vs-text strong.age { font-size: 16px; line-height: 1.3; padding-top: 4px; display: inline-block; }
+
+  .issues-grid { display: flex; flex-direction: column; gap: 0; }
+  .positives, .priorities { padding: 14px 16px; border: 2px solid var(--line); background: var(--paper); margin-top: 14px; }
+  .positives ul, .priorities ol { margin: 6px 0 0 18px; padding: 0; line-height: 1.55; font-weight: 700; }
+  .accent-mint { color: var(--green); }
+  .accent-coral { color: var(--coral); }
+
+  .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
+
+  .sales-strip { padding: 16px 18px; background: var(--peach); border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); margin-top: 8px; }
+  .sales-strip ul { margin: 6px 0 0 22px; padding: 0; font-size: 14px; line-height: 1.55; font-weight: 800; }
+
+  .appendix { padding: 22px 36px; border-top: 2px solid var(--line); background: color-mix(in srgb, white 50%, var(--paper)); }
+  .appendix h2 { font-size: 14px; font-weight: 950; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .appendix .meta-row { font-size: 11.5px; font-weight: 800; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+  .appendix code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+
+  @media print {
+    html, body { background: white; }
+    body { background-image: none; }
+    .doc { box-shadow: none; margin: 0 auto; }
+    details.dim-detail { break-inside: avoid; }
+    details.dim-detail[open] summary { break-after: avoid; }
+    .issue-card, .perf-strip, .visual-scores, .dim-grid, .contact-grid, .screenshots { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="cover">
+    <div>
+      <p class="eyebrow">Internal Audit Report · ProfitsLocal</p>
+      <h1>${escapeHtml(businessName)}</h1>
+      <p class="subline">
+        ${niche ? `<span><strong>${escapeHtml(niche)}</strong></span>` : ''}
+        ${city ? `<span>·</span><span>${escapeHtml(city)}</span>` : ''}
+        <span>·</span>
+        <span>★ ${escapeHtml(latest.rating || '-')} (${escapeHtml(String(latest.review_count || 0))} reviews)</span>
+      </p>
+      <p class="meta-line">
+        <span>generated ${fmtDate(detailedAudit?.audited_at || new Date().toISOString())}</span>
+        <span>·</span>
+        <span>config <code>${escapeHtml(detailedAudit?.audit_version || cheapAudit?.config_version || 'v1')}</code></span>
+        <span>·</span>
+        <span>entity <code>${escapeHtml(entity.entityKey)}</code></span>
+      </p>
+    </div>
+    <div class="score-tile">
+      <span class="label">Audit Score</span>
+      <div class="num">${auditScore ?? '-'}<small>/100</small></div>
+      <span class="decision">${escapeHtml(decisionLabel(decision))}</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <p class="eyebrow">总体判断</p>
+    <h2>${escapeHtml(reason || 'audit pending')}</h2>
+    ${triggers.length ? `
+      <div>
+        <p class="eyebrow accent-coral" style="margin-top:18px">已触发 hard triggers</p>
+        <div class="trigger-list">
+          ${triggers.map((t) => `<span class="trigger-pill">${escapeHtml(t)}</span>`).join('')}
+        </div>
+      </div>` : ''}
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">联系方式 + GBP 快照</p>
+    <h2>商家档案</h2>
+    <div class="contact-grid">
+      <div class="contact-cell"><span class="lab">电话</span><span class="val">${escapeHtml(latest.phone || '—')}</span></div>
+      <div class="contact-cell"><span class="lab">网址</span><span class="val">${latest.website ? `<a href="${escapeHtml(latest.website)}" target="_blank">${escapeHtml(latest.website)}</a>` : '—'}</span></div>
+      <div class="contact-cell"><span class="lab">地址</span><span class="val">${escapeHtml(latest.address || '—')}</span></div>
+      <div class="contact-cell"><span class="lab">类目</span><span class="val">${escapeHtml(latest.category || latest.niche || '—')}</span></div>
+      <div class="contact-cell"><span class="lab">Google Maps</span><span class="val">${latest.google_maps_url ? `<a href="${escapeHtml(latest.google_maps_url)}" target="_blank">打开</a>` : '—'}</span></div>
+      <div class="contact-cell"><span class="lab">网站状态</span><span class="val"><code>${escapeHtml(latest.websiteStatus || '—')}</code></span></div>
+      <div class="contact-cell"><span class="lab">来源</span><span class="val">${escapeHtml(latest.sourceQuery || latest.sourceType || '—')}</span></div>
+      <div class="contact-cell"><span class="lab">图片数 / 抓取分</span><span class="val">${escapeHtml(String(latest.signals?.imageCount ?? '—'))} · ${escapeHtml(String(latest.discoveryScore ?? '—'))}</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">6 维度审计 At-a-glance</p>
+    <h2>得分 ${auditScore}/100 → ${escapeHtml(decisionLabel(decision))}</h2>
+    <div class="dim-grid">
+      ${DIMENSION_ORDER.map((k) => {
+        const d = dims[k] || { score: 0 };
+        return `
+        <div class="dim-card">
+          <span class="label">${escapeHtml(DIMENSION_LABELS[k] || k)}</span>
+          <div class="score">${d.score}<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:${Math.max(0, Math.min(100, d.score))}%"></div></div>
+          <span class="weight">权重 ${DIMENSION_WEIGHTS[k]}%</span>
+        </div>`;
+      }).join('')}
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">网站抓取证据</p>
+    <h2>当前网站快照</h2>
+    <div class="screenshots">
+      <figure>
+        <img src="${escapeHtml(screenshotDir)}/desktop.png" alt="desktop screenshot" />
+        <figcaption>桌面 1440×900 · 来源：Playwright headless Chromium</figcaption>
+      </figure>
+      <figure>
+        <img src="${escapeHtml(screenshotDir)}/mobile.png" alt="mobile screenshot" />
+        <figcaption>移动 375×667 · iPhone 12 viewport</figcaption>
+      </figure>
+    </div>
+    <div class="perf-strip">
+      <div class="perf-cell">
+        <span class="lab">LCP</span>
+        <span class="val ${perfClass(detailedAudit?.dimensions?.technical, 'first_paint_under_3s', 'lcp')}">${perfFmt(detailedAudit?.dimensions?.technical, 'first_paint_under_3s', 'lcp', 's')}</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">HTTPS</span>
+        <span class="val ${dimRuleHit(detailedAudit?.dimensions?.technical, 'https_enabled') ? 'ok' : 'bad'}">${dimRuleHit(detailedAudit?.dimensions?.technical, 'https_enabled') ? 'YES' : 'NO'}</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Mobile Lighthouse</span>
+        <span class="val">${perfFmtPlain(detailedAudit?.dimensions?.technical, 'mobile_responsive') || '—'}</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Console Errors</span>
+        <span class="val ${dimRuleHit(detailedAudit?.dimensions?.technical, 'no_console_errors') ? 'ok' : 'bad'}">${perfFmtPlain(detailedAudit?.dimensions?.technical, 'no_console_errors') || '—'}</span>
+      </div>
+    </div>
+  </section>
+
+  ${critical.length ? `
+  <section class="section">
+    <p class="eyebrow accent-coral">CRITICAL · ${critical.length}</p>
+    <h2>关键问题</h2>
+    <div class="issues-grid">
+      ${critical.map((i) => renderIssue({ ...i, severity: 'critical' })).join('')}
+    </div>
+  </section>` : ''}
+
+  ${major.length ? `
+  <section class="section">
+    <p class="eyebrow">MAJOR · ${major.length}</p>
+    <h2>主要问题</h2>
+    <div class="issues-grid">
+      ${major.map((i) => renderIssue({ ...i, severity: 'major' })).join('')}
+    </div>
+  </section>` : ''}
+
+  <section class="section">
+    <p class="eyebrow">39 项规则明细</p>
+    <h2>每条规则命中情况</h2>
+    ${DIMENSION_ORDER.map((k) => {
+      const d = dims[k];
+      if (!d) return '';
+      return `
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">${escapeHtml(DIMENSION_LABELS[k])}</span>
+            <span class="dim-summary-score">${d.score}/100</span>
+            <span class="dim-summary-rules">${d.rules?.length || 0} 规则</span>
+          </summary>
+          ${renderRules(d.rules)}
+        </details>`;
+    }).join('')}
+  </section>
+
+  ${renderVisualSection({ visualAudit })}
+
+  ${renderReviewSection({ reviewAnalysis })}
+
+  ${renderSpeedComparisonSection()}
+
+  ${salesAngles ? `
+  <section class="section">
+    <p class="eyebrow accent-coral">推荐销售角度</p>
+    <h2>从 audit 数据推导出的切入点</h2>
+    <div class="sales-strip">
+      <ul>
+        ${salesAngles.map((a) => `<li>${escapeHtml(a)}</li>`).join('')}
+      </ul>
+    </div>
+  </section>` : ''}
+
+  <footer class="appendix">
+    <h2>Appendix</h2>
+    <p class="meta-row">
+      <span>Cheap audit version: <code>${escapeHtml(cheapAudit?.config_version || '—')}</code></span>
+      <span>Detailed audit version: <code>${escapeHtml(detailedAudit?.audit_version || '—')}</code></span>
+      ${leadSpend ? `<span>Lead spend (this audit lifecycle): $${(leadSpend.totalCost || 0).toFixed(4)}</span>` : ''}
+    </p>
+    <p class="meta-row" style="margin-top:8px">
+      <span>Visual auditor: ${visualAudit ? '✓ filled (Block E)' : '⏳ pending Block E autoresearch'}</span>
+      <span>Review analysis: ${reviewAnalysis ? '✓ filled' : '⏳ on-demand for high-value leads'}</span>
+      <span>Speed video: ⏳ post-mockup</span>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>`;
+}
+
+function dimRuleHit(dim, ruleId) {
+  if (!dim?.rules) return false;
+  const r = dim.rules.find((x) => x.id === ruleId);
+  return Boolean(r?.hit);
+}
+
+function perfFmt(dim, ruleId, field, suffix = '') {
+  const r = dim?.rules?.find((x) => x.id === ruleId);
+  if (!r) return '—';
+  if (r.data_missing) return '—';
+  // rationale often contains useful number we can pull e.g. "LCP 1.5s"
+  const num = r.rationale?.match(/[\d.]+/)?.[0];
+  return num ? num + suffix : '—';
+}
+function perfFmtPlain(dim, ruleId) {
+  const r = dim?.rules?.find((x) => x.id === ruleId);
+  if (!r || r.data_missing) return null;
+  const num = r.rationale?.match(/[\d.]+/)?.[0];
+  return num || (r.hit ? 'OK' : 'FAIL');
+}
+function perfClass(dim, ruleId, field) {
+  const r = dim?.rules?.find((x) => x.id === ruleId);
+  if (!r || r.data_missing) return '';
+  return r.hit ? 'ok' : 'bad';
+}

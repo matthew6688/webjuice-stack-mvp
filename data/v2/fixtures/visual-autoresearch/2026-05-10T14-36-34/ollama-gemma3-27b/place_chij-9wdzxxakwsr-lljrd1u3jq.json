@@ -1,0 +1,84 @@
+{
+  "candidate": {
+    "id": "ollama-gemma3-27b",
+    "model": "gemma3:27b",
+    "adapter": "ollama",
+    "tier": "T0"
+  },
+  "fixture": {
+    "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
+    "businessName": "Queensland Roofing Pty Ltd",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 116958,
+  "tokensIn": 1342,
+  "tokensOut": 1120,
+  "costUsd": 0,
+  "rawText": "```json\n{\n  \"freshness_score\": 4,\n  \"trust_score\": 6,\n  \"conversion_score\": 5,\n  \"design_age_estimate\": \"slightly_outdated\",\n  \"summary\": \"The website presents a functional but visually dated experience, potentially hindering trust and immediate action from local search visitors.\",\n  \"issues\": [\n    {\n      \"id\": \"hero_image_quality\",\n      \"severity\": \"major\",\n      \"title\": \"Low-Resolution Hero Image\",\n      \"what_observed\": \"The hero image on desktop appears pixelated and blurry, especially noticeable in the roofing tiles.\",\n      \"why_problem\": \"A blurry image immediately signals a lack of professionalism and attention to detail. A potential customer searching for a quality roofing service will likely assume the business doesn't care about quality if their own website looks sloppy.\",\n      \"what_correct_looks_like\": \"High-resolution, professionally shot image of a completed roofing project, showcasing quality workmanship. Image should be optimized for web to load quickly.\",\n      \"how_to_fix_in_redesign\": \"Replace the current hero image with a high-resolution, professionally photographed image. Ensure image is compressed for web performance.\"\n    },\n    {\n      \"id\": \"hidden_phone_number\",\n      \"severity\": \"critical\",\n      \"title\": \"Hidden Phone Number (Mobile)\",\n      \"what_observed\": \"On the mobile screenshot, the phone number is tucked away in the header and requires scrolling to see.\",\n      \"why_problem\": \"Mobile users are often searching 'on the go' and need immediate access to contact information. Hiding the phone number creates friction and makes it difficult for them to quickly call for a quote or emergency service, leading to lost leads.\",\n      \"what_correct_looks_like\": \"Prominent, 'sticky' phone number at the top of the mobile screen, easily tappable. Consider a 'Call Now' button.\",\n      \"how_to_fix_in_redesign\": \"Implement a sticky header on mobile with a clearly visible and tappable phone number. Add a 'Call Now' button.\"\n    },\n    {\n      \"id\": \"dated_visual_style\",\n      \"severity\": \"major\",\n      \"title\": \"Outdated Visual Style\",\n      \"what_observed\": \"The website uses a dated color palette (muted blues and grays) and a generic, stock-photo aesthetic. The overall design feels flat and lacks visual interest.\",\n      \"why_problem\": \"An outdated design can make the business appear less trustworthy and established. Potential customers may perceive the business as being behind the times and less capable.\",\n      \"what_correct_looks_like\": \"Modern color palette (e.g., blues, grays, and a vibrant accent color), high-quality photography of actual projects, and a clean, minimalist layout.\",\n      \"how_to_fix_in_redesign\": \"Update the color palette and typography to reflect a more modern aesthetic. Replace stock photos with high-quality images of completed projects.\"\n    },\n    {\n      \"id\": \"lack_of_social_proof\",\n      \"severity\": \"major\",\n      \"title\": \"Missing Testimonials/Reviews\",\n      \"what_observed\": \"There are no visible customer testimonials or reviews on either the desktop or mobile screenshot.\",\n      \"why_problem\": \"Potential customers rely heavily on social proof when choosing a local service provider. The absence of testimonials creates doubt and makes it harder to build trust.\",\n      \"what_correct_looks_like\": \"Dedicated section on the homepage showcasing customer testimonials with photos and/or star ratings. Integration with Google Reviews or other review platforms.\",\n      \"how_to_fix_in_redesign\": \"Add a section on the homepage to display customer testimonials and reviews. Integrate with Google Reviews.\"\n    },\n    {\n      \"id\": \"generic_cta\",\n      \"severity\": \"minor\",\n      \"title\": \"Vague Call to Action\",\n      \"what_observed\": \"The 'Get a Quote' button is generic and doesn't convey a sense of urgency or value.\",\n      \"why_problem\": \"A weak call to action can discourage visitors from taking the next step. It doesn't clearly communicate the benefits of requesting a quote.\",\n      \"what_correct_looks_like\": \"Specific and benefit-driven call to action, such as 'Get a Free Roofing Estimate' or 'Schedule Your Inspection Today'.\",\n      \"how_to_fix_in_redesign\": \"Rewrite the call to action to be more specific and benefit-driven.\"\n    }\n  ],\n  \"positive_observations\": [\n    \"Clear navigation menu on desktop.\",\n    \"Services are listed, indicating a focus on specific offerings.\",\n    \"Contact information is present (though placement needs improvement).\"\n  ],\n  \"redesign_priorities\": [\"1. Make phone number prominently visible on mobile\", \"2. Replace low-resolution hero image with a high-quality photo\", \"3. Add customer testimonials to build trust\"],\n  \"confidence\": 0.85\n}\n```",
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 6,
+    "conversion_score": 5,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The website presents a functional but visually dated experience, potentially hindering trust and immediate action from local search visitors.",
+    "issues": [
+      {
+        "id": "hero_image_quality",
+        "severity": "major",
+        "title": "Low-Resolution Hero Image",
+        "what_observed": "The hero image on desktop appears pixelated and blurry, especially noticeable in the roofing tiles.",
+        "why_problem": "A blurry image immediately signals a lack of professionalism and attention to detail. A potential customer searching for a quality roofing service will likely assume the business doesn't care about quality if their own website looks sloppy.",
+        "what_correct_looks_like": "High-resolution, professionally shot image of a completed roofing project, showcasing quality workmanship. Image should be optimized for web to load quickly.",
+        "how_to_fix_in_redesign": "Replace the current hero image with a high-resolution, professionally photographed image. Ensure image is compressed for web performance."
+      },
+      {
+        "id": "hidden_phone_number",
+        "severity": "critical",
+        "title": "Hidden Phone Number (Mobile)",
+        "what_observed": "On the mobile screenshot, the phone number is tucked away in the header and requires scrolling to see.",
+        "why_problem": "Mobile users are often searching 'on the go' and need immediate access to contact information. Hiding the phone number creates friction and makes it difficult for them to quickly call for a quote or emergency service, leading to lost leads.",
+        "what_correct_looks_like": "Prominent, 'sticky' phone number at the top of the mobile screen, easily tappable. Consider a 'Call Now' button.",
+        "how_to_fix_in_redesign": "Implement a sticky header on mobile with a clearly visible and tappable phone number. Add a 'Call Now' button."
+      },
+      {
+        "id": "dated_visual_style",
+        "severity": "major",
+        "title": "Outdated Visual Style",
+        "what_observed": "The website uses a dated color palette (muted blues and grays) and a generic, stock-photo aesthetic. The overall design feels flat and lacks visual interest.",
+        "why_problem": "An outdated design can make the business appear less trustworthy and established. Potential customers may perceive the business as being behind the times and less capable.",
+        "what_correct_looks_like": "Modern color palette (e.g., blues, grays, and a vibrant accent color), high-quality photography of actual projects, and a clean, minimalist layout.",
+        "how_to_fix_in_redesign": "Update the color palette and typography to reflect a more modern aesthetic. Replace stock photos with high-quality images of completed projects."
+      },
+      {
+        "id": "lack_of_social_proof",
+        "severity": "major",
+        "title": "Missing Testimonials/Reviews",
+        "what_observed": "There are no visible customer testimonials or reviews on either the desktop or mobile screenshot.",
+        "why_problem": "Potential customers rely heavily on social proof when choosing a local service provider. The absence of testimonials creates doubt and makes it harder to build trust.",
+        "what_correct_looks_like": "Dedicated section on the homepage showcasing customer testimonials with photos and/or star ratings. Integration with Google Reviews or other review platforms.",
+        "how_to_fix_in_redesign": "Add a section on the homepage to display customer testimonials and reviews. Integrate with Google Reviews."
+      },
+      {
+        "id": "generic_cta",
+        "severity": "minor",
+        "title": "Vague Call to Action",
+        "what_observed": "The 'Get a Quote' button is generic and doesn't convey a sense of urgency or value.",
+        "why_problem": "A weak call to action can discourage visitors from taking the next step. It doesn't clearly communicate the benefits of requesting a quote.",
+        "what_correct_looks_like": "Specific and benefit-driven call to action, such as 'Get a Free Roofing Estimate' or 'Schedule Your Inspection Today'.",
+        "how_to_fix_in_redesign": "Rewrite the call to action to be more specific and benefit-driven."
+      }
+    ],
+    "positive_observations": [
+      "Clear navigation menu on desktop.",
+      "Services are listed, indicating a focus on specific offerings.",
+      "Contact information is present (though placement needs improvement)."
+    ],
+    "redesign_priorities": [
+      "1. Make phone number prominently visible on mobile",
+      "2. Replace low-resolution hero image with a high-quality photo",
+      "3. Add customer testimonials to build trust"
+    ],
+    "confidence": 0.85
+  }
+}
