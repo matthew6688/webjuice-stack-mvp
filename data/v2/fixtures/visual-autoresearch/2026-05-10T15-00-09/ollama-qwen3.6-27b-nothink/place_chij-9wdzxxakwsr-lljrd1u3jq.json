@@ -1,0 +1,45 @@
+{
+  "candidate": {
+    "id": "ollama-qwen3.6-27b-nothink",
+    "model": "qwen3.6:27b",
+    "adapter": "ollama",
+    "tier": "T0",
+    "think": false
+  },
+  "fixture": {
+    "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
+    "businessName": "Queensland Roofing Pty Ltd",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 67933,
+  "tokensIn": 2307,
+  "tokensOut": 359,
+  "costUsd": 0,
+  "rawText": "{\n  \"freshness_score\": 1,\n  \"trust_score\": 1,\n  \"conversion_score\": 1,\n  \"design_age_estimate\": \"severely_outdated\",\n  \"summary\": \"The provided screenshots are completely blank white images, indicating a total failure to load content or a missing file, which prevents any visual assessment of the actual website design.\",\n  \"issues\": [\n    {\n      \"id\": \"blank_screenshots\",\n      \"severity\": \"critical\",\n      \"title\": \"Screenshots are completely blank\",\n      \"what_observed\": \"Both the desktop and mobile screenshots provided are entirely white with no visible text, images, buttons, or navigation elements.\",\n      \"why_problem\": \"A visitor seeing a blank page assumes the website is broken, the business is closed, or it is a scam. It is impossible to trust a business that cannot display its own website.\",\n      \"what_correct_looks_like\": \"A fully rendered webpage with a visible header, navigation menu, hero section with an image, and clear call-to-action buttons.\",\n      \"how_to_fix_in_redesign\": \"Ensure the website files are correctly hosted and accessible. If this is a staging environment, ensure the correct URL is provided for the audit.\"\n    }\n  ],\n  \"positive_observations\": [],\n  \"redesign_priorities\": [\n    \"1. Resolve the blank page issue to ensure content is visible.\",\n    \"2. Verify that the website is live and accessible to the public.\",\n    \"3. Re-audit the actual website design once the visual content is available.\"\n  ],\n  \"confidence\": 0.0\n}",
+  "parsedJson": {
+    "freshness_score": 1,
+    "trust_score": 1,
+    "conversion_score": 1,
+    "design_age_estimate": "severely_outdated",
+    "summary": "The provided screenshots are completely blank white images, indicating a total failure to load content or a missing file, which prevents any visual assessment of the actual website design.",
+    "issues": [
+      {
+        "id": "blank_screenshots",
+        "severity": "critical",
+        "title": "Screenshots are completely blank",
+        "what_observed": "Both the desktop and mobile screenshots provided are entirely white with no visible text, images, buttons, or navigation elements.",
+        "why_problem": "A visitor seeing a blank page assumes the website is broken, the business is closed, or it is a scam. It is impossible to trust a business that cannot display its own website.",
+        "what_correct_looks_like": "A fully rendered webpage with a visible header, navigation menu, hero section with an image, and clear call-to-action buttons.",
+        "how_to_fix_in_redesign": "Ensure the website files are correctly hosted and accessible. If this is a staging environment, ensure the correct URL is provided for the audit."
+      }
+    ],
+    "positive_observations": [],
+    "redesign_priorities": [
+      "1. Resolve the blank page issue to ensure content is visible.",
+      "2. Verify that the website is live and accessible to the public.",
+      "3. Re-audit the actual website design once the visual content is available."
+    ],
+    "confidence": 0
+  }
+}

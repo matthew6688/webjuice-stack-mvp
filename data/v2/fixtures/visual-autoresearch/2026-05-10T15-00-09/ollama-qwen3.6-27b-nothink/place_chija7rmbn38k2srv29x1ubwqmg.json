@@ -1,0 +1,76 @@
+{
+  "candidate": {
+    "id": "ollama-qwen3.6-27b-nothink",
+    "model": "qwen3.6:27b",
+    "adapter": "ollama",
+    "tier": "T0",
+    "think": false
+  },
+  "fixture": {
+    "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
+    "businessName": "Roof Space Renovators",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 156844,
+  "tokensIn": 2306,
+  "tokensOut": 1099,
+  "costUsd": 0,
+  "rawText": "{\n  \"freshness_score\": 5,\n  \"trust_score\": 6,\n  \"conversion_score\": 4,\n  \"design_age_estimate\": \"slightly_outdated\",\n  \"summary\": \"The site uses a dated stock-photo aesthetic and cluttered navigation that distracts from the primary goal of getting a quote, particularly on mobile where the call-to-action is buried.\",\n  \"issues\": [\n    {\n      \"id\": \"mobile_missing_cta\",\n      \"severity\": \"critical\",\n      \"title\": \"Mobile CTA buried below fold\",\n      \"what_observed\": \"On the mobile screenshot, the 'Get in touch for a free quote' button is not visible; the user sees the headline and the top of the family photo, but must scroll to find the action.\",\n      \"why_problem\": \"A local customer searching on their phone wants to know if they can get a quote immediately. If they have to scroll past the hero image to find the button, they will likely bounce back to Google results.\",\n      \"what_correct_looks_like\": \"The primary 'Get a Free Quote' button should be visible immediately below the headline on mobile, or a sticky bottom bar should appear as soon as the user scrolls.\",\n      \"how_to_fix_in_redesign\": \"Move the CTA button above the fold on mobile, placing it directly under the 'Love the space you're in' headline, or implement a sticky 'Get Quote' button fixed to the bottom of the screen.\"\n    },\n    {\n      \"id\": \"hero_stock_photo\",\n      \"severity\": \"major\",\n      \"title\": \"Generic stock photo damages trust\",\n      \"what_observed\": \"The hero image features a generic family pointing upwards with exaggerated expressions, overlaid with a heavy blue gradient.\",\n      \"why_problem\": \"This looks like a template rather than a specialized local business. It fails to show the actual product (roof renovations) or the team, making it hard for a Brisbane homeowner to trust the company's specific expertise.\",\n      \"what_correct_looks_like\": \"A high-quality photo of a real roof renovation project in Brisbane, or a photo of the actual team working on a roof, with a subtle overlay to ensure text readability.\",\n      \"how_to_fix_in_redesign\": \"Replace the stock family photo with a high-resolution image of a completed skylight or attic renovation project, or a candid shot of the team on a roof.\"\n    },\n    {\n      \"id\": \"desktop_nav_clutter\",\n      \"severity\": \"major\",\n      \"title\": \"Desktop navigation is too dense\",\n      \"what_observed\": \"The desktop header contains 8 distinct menu items (Home, About Us, Our Services, Our Product Range, Be Inspired, Our Showroom, FAQs, Contact Us) plus a logo and contact info.\",\n      \"why_problem\": \"This creates visual noise and cognitive load. A visitor looking for a quote doesn't need to see 'Be Inspired' or 'Our Showroom' immediately; the clutter dilutes the focus on the main conversion goal.\",\n      \"what_correct_looks_like\": \"A simplified navigation with 3-4 key items (Services, Projects, About) and a distinct, high-contrast 'Get a Quote' button in the header.\",\n      \"how_to_fix_in_redesign\": \"Consolidate menu items into dropdowns (e.g., 'Services' and 'Resources') and replace the 'Contact Us' text link with a prominent 'Get a Quote' button in the header.\"\n    },\n    {\n      \"id\": \"top_bar_redundancy\",\n      \"severity\": \"minor\",\n      \"title\": \"Redundant top bar wastes space\",\n      \"what_observed\": \"A dark teal bar at the very top lists 'Servicing Brisbane, Sunshine Coast...' and repeats the address and phone number found in the header.\",\n      \"why_problem\": \"This takes up valuable vertical space on mobile screens and repeats information unnecessarily. The service area text is small and hard to read.\",\n      \"what_correct_looks_like\": \"Remove the top bar entirely and integrate the service area into the footer or a dedicated 'Service Areas' page. Keep the phone number in the main header only.\",\n      \"how_to_fix_in_redesign\": \"Remove the top teal bar. Move the 'Servicing...' text to the footer. Ensure the phone number in the main header is clickable (tel: link).\"\n    }\n  ],\n  \"positive_observations\": [\n    \"The value proposition 'Same House, More Home' is clear and easy to understand.\",\n    \"The color palette (teal and yellow) provides good contrast for text readability.\",\n    \"The mobile menu icon is standard and easy to find.\"\n  ],\n  \"redesign_priorities\": [\n    \"1. Move the 'Get a Quote' CTA above the fold on mobile devices.\",\n    \"2. Replace the generic stock photo with real project imagery or team photos.\",\n    \"3. Simplify the desktop navigation to reduce cognitive load and highlight the CTA.\"\n  ],\n  \"confidence\": 0.95\n}",
+  "parsedJson": {
+    "freshness_score": 5,
+    "trust_score": 6,
+    "conversion_score": 4,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The site uses a dated stock-photo aesthetic and cluttered navigation that distracts from the primary goal of getting a quote, particularly on mobile where the call-to-action is buried.",
+    "issues": [
+      {
+        "id": "mobile_missing_cta",
+        "severity": "critical",
+        "title": "Mobile CTA buried below fold",
+        "what_observed": "On the mobile screenshot, the 'Get in touch for a free quote' button is not visible; the user sees the headline and the top of the family photo, but must scroll to find the action.",
+        "why_problem": "A local customer searching on their phone wants to know if they can get a quote immediately. If they have to scroll past the hero image to find the button, they will likely bounce back to Google results.",
+        "what_correct_looks_like": "The primary 'Get a Free Quote' button should be visible immediately below the headline on mobile, or a sticky bottom bar should appear as soon as the user scrolls.",
+        "how_to_fix_in_redesign": "Move the CTA button above the fold on mobile, placing it directly under the 'Love the space you're in' headline, or implement a sticky 'Get Quote' button fixed to the bottom of the screen."
+      },
+      {
+        "id": "hero_stock_photo",
+        "severity": "major",
+        "title": "Generic stock photo damages trust",
+        "what_observed": "The hero image features a generic family pointing upwards with exaggerated expressions, overlaid with a heavy blue gradient.",
+        "why_problem": "This looks like a template rather than a specialized local business. It fails to show the actual product (roof renovations) or the team, making it hard for a Brisbane homeowner to trust the company's specific expertise.",
+        "what_correct_looks_like": "A high-quality photo of a real roof renovation project in Brisbane, or a photo of the actual team working on a roof, with a subtle overlay to ensure text readability.",
+        "how_to_fix_in_redesign": "Replace the stock family photo with a high-resolution image of a completed skylight or attic renovation project, or a candid shot of the team on a roof."
+      },
+      {
+        "id": "desktop_nav_clutter",
+        "severity": "major",
+        "title": "Desktop navigation is too dense",
+        "what_observed": "The desktop header contains 8 distinct menu items (Home, About Us, Our Services, Our Product Range, Be Inspired, Our Showroom, FAQs, Contact Us) plus a logo and contact info.",
+        "why_problem": "This creates visual noise and cognitive load. A visitor looking for a quote doesn't need to see 'Be Inspired' or 'Our Showroom' immediately; the clutter dilutes the focus on the main conversion goal.",
+        "what_correct_looks_like": "A simplified navigation with 3-4 key items (Services, Projects, About) and a distinct, high-contrast 'Get a Quote' button in the header.",
+        "how_to_fix_in_redesign": "Consolidate menu items into dropdowns (e.g., 'Services' and 'Resources') and replace the 'Contact Us' text link with a prominent 'Get a Quote' button in the header."
+      },
+      {
+        "id": "top_bar_redundancy",
+        "severity": "minor",
+        "title": "Redundant top bar wastes space",
+        "what_observed": "A dark teal bar at the very top lists 'Servicing Brisbane, Sunshine Coast...' and repeats the address and phone number found in the header.",
+        "why_problem": "This takes up valuable vertical space on mobile screens and repeats information unnecessarily. The service area text is small and hard to read.",
+        "what_correct_looks_like": "Remove the top bar entirely and integrate the service area into the footer or a dedicated 'Service Areas' page. Keep the phone number in the main header only.",
+        "how_to_fix_in_redesign": "Remove the top teal bar. Move the 'Servicing...' text to the footer. Ensure the phone number in the main header is clickable (tel: link)."
+      }
+    ],
+    "positive_observations": [
+      "The value proposition 'Same House, More Home' is clear and easy to understand.",
+      "The color palette (teal and yellow) provides good contrast for text readability.",
+      "The mobile menu icon is standard and easy to find."
+    ],
+    "redesign_priorities": [
+      "1. Move the 'Get a Quote' CTA above the fold on mobile devices.",
+      "2. Replace the generic stock photo with real project imagery or team photos.",
+      "3. Simplify the desktop navigation to reduce cognitive load and highlight the CTA."
+    ],
+    "confidence": 0.95
+  }
+}

@@ -107,7 +107,10 @@ function findLatestVisualAudit(entityKey, root) {
     // Each run has subdirs per candidate; we want the consensus / preferred candidate
     // For now take qwen3.6 if present, else first non-error
     const candDirs = fs.readdirSync(runDir).filter((d) => fs.statSync(path.join(runDir, d)).isDirectory());
-    const preferOrder = ['ollama-qwen3.6-27b', 'ollama-gemma3-27b'];
+    // Prefer qwen-nothink over gemma3: qwen honestly admits blank/insufficient inputs;
+    // gemma3 was observed hallucinating 4 issues on a blank screenshot. See
+    // docs/v2/autoresearch-results/visual-auditor.md for the comparison.
+    const preferOrder = ['ollama-qwen3.6-27b-nothink', 'ollama-qwen3.6-27b', 'ollama-gemma3-27b'];
     const ordered = [...preferOrder.filter((p) => candDirs.includes(p)), ...candDirs.filter((d) => !preferOrder.includes(d))];
     for (const cand of ordered) {
       const candFile = path.join(runDir, cand, `${entityKey}.json`);

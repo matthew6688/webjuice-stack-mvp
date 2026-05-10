@@ -381,85 +381,73 @@
   
     <section class="section">
       <p class="eyebrow">视觉审计</p>
-      <h2>The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.</h2>
+      <h2>The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional quality expected of a restoration specialist.</h2>
       <div class="visual-scores">
         <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
-        <div class="vs"><span>信任度</span><strong>6</strong><small>/10</small></div>
-        <div class="vs"><span>转化准备度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>6</strong><small>/10</small></div>
         <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
       </div>
       <div class="issues-grid">
         
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">hero_text_contrast</code>
+      </div>
+      <div class="issue-title">Low contrast white text on light background</div>
+      <p class="issue-row"><span class="lab">观察到</span>The main headline &#39;Brisbane Roof Restoration Specialists&#39; is white text overlaid on a light blue sky background. The text has a drop shadow, but the contrast is low, making it look washed out.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor scanning the page on a bright phone screen will struggle to read the headline instantly. If they can&#39;t read it easily, they assume the business is unprofessional or the site is broken.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Dark charcoal or navy text on the light background, or a dark semi-transparent overlay behind the text to ensure high contrast.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Change headline color to #1a1a1a (dark grey) or add a dark overlay (opacity 0.4) behind the text block.</p>
+      
+    </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">hero_gradient</code>
+        <code class="issue-id">form_visual_clutter</code>
       </div>
-      <div class="issue-title">Outdated Hero Gradient</div>
-      <p class="issue-row"><span class="lab">观察到</span>The large blue gradient background in the hero section appears dated and unprofessional.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Gradients like this were popular in the early 2000s and now make the business look less current and trustworthy. A potential customer searching for a roof restoration service might assume the business isn&#39;t up-to-date with modern techniques.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A clean, flat color background or a high-quality, professional photograph of a restored roof.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the gradient with a solid, modern color or a professional hero image. Ensure sufficient contrast between text and background.</p>
+      <div class="issue-title">Overwhelming form layout with radio buttons</div>
+      <p class="issue-row"><span class="lab">观察到</span>The desktop form is a dense grid of inputs, followed by four distinct sections of radio buttons (Roof type, Scope, Work Type, Roof age) with yellow labels.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>This looks like a data entry task rather than a conversation. A local customer just wants a quote; asking them to categorize their roof type and age before speaking to a human creates friction and anxiety.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A simplified &#39;Get a Quote&#39; form with only Name, Phone, and Suburb. The technical details should be handled by the sales team later.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the radio button sections. Replace with a single &#39;Tell us about your roof&#39; text area or remove the form entirely in favor of a &#39;Call Now&#39; button.</p>
       
     </div>
-    <div class="issue-card issue-critical">
+    <div class="issue-card issue-major">
       <div class="issue-head">
-        <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">form_length</code>
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">mobile_menu_icon</code>
       </div>
-      <div class="issue-title">Excessive Form Length</div>
-      <p class="issue-row"><span class="lab">观察到</span>The quote request form is very long, requiring multiple fields including &#39;Roof Age&#39; and a detailed description.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A long form creates friction and discourages potential customers from requesting a quote. People searching locally want quick solutions, not lengthy forms. They may abandon the site and choose a competitor with a simpler process.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A simplified form with only essential fields: Name, Phone, Email, and a brief &#39;Describe your project&#39; field. Consider progressive disclosure for additional details.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Reduce the form to the minimum required information. Implement a &#39;Get Started&#39; button that leads to a phone call as the primary conversion action.</p>
-      
-    </div>
-    <div class="issue-card issue-critical">
-      <div class="issue-head">
-        <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">mobile_form_visibility</code>
-      </div>
-      <div class="issue-title">Form Obscures Content on Mobile</div>
-      <p class="issue-row"><span class="lab">观察到</span>The form takes up a significant portion of the screen, pushing the main content (image and text) down and potentially requiring scrolling to see it.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>On mobile, users expect immediate access to information. Hiding content below the fold without a clear call to action reduces engagement and trust. A user might think the site is poorly designed or untrustworthy.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A single-column layout on mobile with the form positioned below the hero image and key information. Ensure the most important content is visible without scrolling.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Implement a responsive design that prioritizes content visibility on mobile devices. Stack elements vertically and reduce form length.</p>
+      <div class="issue-title">Hidden navigation on mobile</div>
+      <p class="issue-row"><span class="lab">观察到</span>The mobile screenshot shows a hamburger menu icon in the top right, hiding all navigation links.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Local searchers often look for specific services (e.g., &#39;roof cleaning&#39; vs &#39;restoration&#39;) or social proof (reviews). Hiding this behind a click adds friction and hides trust signals.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A sticky bottom bar or a visible top bar with the most critical link (e.g., &#39;Services&#39; or &#39;Reviews&#39;) visible without clicking.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Implement a sticky bottom navigation bar on mobile with &#39;Call&#39;, &#39;Services&#39;, and &#39;Reviews&#39; buttons permanently visible.</p>
       
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">phone_number_repetition</code>
+        <code class="issue-id">logo_design</code>
       </div>
-      <div class="issue-title">Repeated Phone Number</div>
-      <p class="issue-row"><span class="lab">观察到</span>The phone number (07) 3132 1605 is displayed twice: in the header and as a call to action button.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>While making the phone number visible is good, repetition can feel cluttered and slightly unprofessional. It doesn&#39;t add significant value.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A single, prominent phone number in the header or a dedicated &#39;Call Now&#39; button.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove one instance of the phone number to reduce visual clutter.</p>
-      
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">roof_image_quality</code>
-      </div>
-      <div class="issue-title">Low-Quality Roof Image</div>
-      <p class="issue-row"><span class="lab">观察到</span>The image of the house with the roof appears slightly blurry and low resolution.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A low-quality image conveys a lack of attention to detail and professionalism. Potential customers may question the quality of the work if the website itself appears unprofessional.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>High-resolution, professionally shot images of completed roof restoration projects.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the existing image with a high-quality, visually appealing photograph of a restored roof.</p>
+      <div class="issue-title">Amateurish logo styling</div>
+      <p class="issue-row"><span class="lab">观察到</span>The logo features a hand-drawn style house outline with a red underline and mixed font weights.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Roof restoration is a high-ticket service. A logo that looks like a quick sketch suggests a &#39;one-man band&#39; rather than an established company, reducing trust for larger jobs.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A clean, vector-based logo with a solid icon and professional typography.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Redesign logo to use a solid, geometric roof icon and a clean sans-serif font.</p>
       
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>Clear call to action with phone number.</li><li>Services are clearly stated.</li><li>Use of local keyword &#39;Brisbane&#39;.</li></ul>
+          <ul><li>The phone number is prominent and repeated in the hero section, which is excellent for local intent.</li><li>The background image is relevant (shows a roof), providing immediate context.</li><li>The &#39;Call&#39; button uses a high-contrast red color that stands out against the background.</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Simplify the quote request form</li><li>2. Modernize the hero section with a flat design</li><li>3. Improve mobile responsiveness and content visibility</li></ol>
+          <ol><li>1. Fix text contrast in the hero section to ensure the headline is instantly readable.</li><li>2. Simplify the contact form to reduce friction and remove the intimidating radio buttons.</li><li>3. Improve the logo and typography to establish a more professional, high-ticket brand identity.</li></ol>
         </div>
     </section>
 

@@ -24,8 +24,8 @@ import { appendLedgerEvent, hashRequest } from '../finance/ledger.js';
 
 const DESKTOP_VIEWPORT = { width: 1440, height: 900 };
 const MOBILE_VIEWPORT = { width: 375, height: 667, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
-const NAV_TIMEOUT_MS = 30_000;
-const SETTLE_MS = 800;
+const NAV_TIMEOUT_MS = 45_000;
+const SETTLE_MS = 3_000;
 
 export async function siteFetchFull({
   url,
@@ -53,7 +53,7 @@ export async function siteFetchFull({
     desktopPage.on('console', (msg) => { if (msg.type() === 'error') consoleErrors += 1; });
 
     const navStart = Date.now();
-    const response = await desktopPage.goto(url, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT_MS }).catch(() => null);
+    const response = await desktopPage.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS }).catch(() => null);
     await desktopPage.waitForTimeout(SETTLE_MS);
 
     payload.finalUrl = desktopPage.url();
@@ -109,7 +109,7 @@ export async function siteFetchFull({
       userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
     });
     const mobilePage = await mobileCtx.newPage();
-    await mobilePage.goto(url, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT_MS }).catch(() => null);
+    await mobilePage.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS }).catch(() => null);
     await mobilePage.waitForTimeout(SETTLE_MS);
     payload.mobileHtml = await mobilePage.content();
     if (screenshotDir) {

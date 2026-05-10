@@ -1,0 +1,93 @@
+{
+  "candidate": {
+    "id": "ollama-gemma3-27b",
+    "model": "gemma3:27b",
+    "adapter": "ollama",
+    "tier": "T0"
+  },
+  "fixture": {
+    "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
+    "businessName": "Roof Space Renovators",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 120962,
+  "tokensIn": 1342,
+  "tokensOut": 1306,
+  "costUsd": 0,
+  "rawText": "```json\n{\n  \"freshness_score\": 4,\n  \"trust_score\": 6,\n  \"conversion_score\": 5,\n  \"design_age_estimate\": \"slightly_outdated\",\n  \"summary\": \"The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.\",\n  \"issues\": [\n    {\n      \"id\": \"hero_image_quality\",\n      \"severity\": \"major\",\n      \"title\": \"Low-Resolution Hero Image\",\n      \"what_observed\": \"The hero image featuring the couple appears pixelated and low-resolution, especially noticeable on desktop.\",\n      \"why_problem\": \"A blurry image immediately signals a lack of professionalism and attention to detail. A local customer searching for a reliable roofing company will likely perceive this as a sign of a poorly run business and quickly leave.\",\n      \"what_correct_looks_like\": \"High-resolution, professionally shot image of a finished attic renovation or happy customers. Image should be optimized for web and appear sharp on all devices.\",\n      \"how_to_fix_in_redesign\": \"Replace the current hero image with a high-resolution, professionally photographed image. Ensure the image is optimized for web to reduce file size and improve loading speed.\"\n    },\n    {\n      \"id\": \"overused_stock_photo\",\n      \"severity\": \"major\",\n      \"title\": \"Generic Stock Photo\",\n      \"what_observed\": \"The couple in the hero image appears to be a generic stock photo, lacking authenticity.\",\n      \"why_problem\": \"Customers are increasingly wary of stock photos, as they suggest a lack of genuine work or local presence. A local customer wants to see *real* results from a company that understands their area.\",\n      \"what_correct_looks_like\": \"Real photos of completed attic renovations in the Brisbane area, showcasing the company's work and local expertise.\",\n      \"how_to_fix_in_redesign\": \"Replace the stock photo with authentic photos of completed projects in the Brisbane area. Consider a gallery of before-and-after photos.\"\n    },\n    {\n      \"id\": \"busy_hero_design\",\n      \"severity\": \"major\",\n      \"title\": \"Cluttered Hero Section\",\n      \"what_observed\": \"The hero section is visually busy with overlapping elements (text, images, shapes) and a bright color scheme.\",\n      \"why_problem\": \"A cluttered design overwhelms visitors and makes it difficult to focus on the key message. A local customer arriving from a search result needs to quickly understand what the company offers.\",\n      \"what_correct_looks_like\": \"Clean, minimalist hero section with a clear headline, concise value proposition, and a prominent call to action. Use whitespace effectively to create visual breathing room.\",\n      \"how_to_fix_in_redesign\": \"Simplify the hero section by removing unnecessary elements and using a more restrained color palette. Focus on a clear headline and a strong call to action.\"\n    },\n    {\n      \"id\": \"illegible_text_color\",\n      \"severity\": \"critical\",\n      \"title\": \"Low Contrast Text\",\n      \"what_observed\": \"The white text on the light blue background in the hero section has low contrast, making it difficult to read.\",\n      \"why_problem\": \"Poor contrast makes the text illegible, especially for users with visual impairments or on smaller screens. A local customer won't bother trying to read if it's straining their eyes.\",\n      \"what_correct_looks_like\": \"Dark text on a light background or vice versa, with sufficient contrast to ensure readability. Use a color contrast checker to verify accessibility.\",\n      \"how_to_fix_in_redesign\": \"Increase the contrast between the text and background in the hero section. Use a dark color for the text and a lighter color for the background, or vice versa.\"\n    },\n    {\n      \"id\": \"hidden_contact_mobile\",\n      \"severity\": \"critical\",\n      \"title\": \"Hidden Phone Number on Mobile\",\n      \"what_observed\": \"The phone number is small and difficult to find on mobile, requiring scrolling to see.\",\n      \"why_problem\": \"Local search customers are primarily looking for a phone number to call immediately. Hiding this information creates a significant conversion barrier and sends them to a competitor.\",\n      \"what_correct_looks_like\": \"Prominent, clickable phone number in the header of the mobile site, visible without scrolling.\",\n      \"how_to_fix_in_redesign\": \"Make the phone number a prominent, clickable element in the mobile header. Ensure it's easily visible and accessible on all screen sizes.\"\n    },\n    {\n      \"id\": \"dated_visual_style\",\n      \"severity\": \"minor\",\n      \"title\": \"Outdated Visual Style\",\n      \"what_observed\": \"The use of gradients, bevels, and overly bright colors feels dated and unprofessional.\",\n      \"why_problem\": \"An outdated visual style can erode trust and make the business appear less credible. A local customer may assume the company is not up-to-date with current trends or technology.\",\n      \"what_correct_looks_like\": \"Modern, flat design with a clean color palette and minimalist aesthetic.\",\n      \"how_to_fix_in_redesign\": \"Adopt a modern, flat design style with a clean color palette and minimalist aesthetic. Remove gradients, bevels, and other outdated visual effects.\"\n    }\n  ],\n  \"positive_observations\": [\n    \"Clear navigation menu.\",\n    \"Service area listed prominently.\",\n    \"Use of relevant keywords in headings.\"\n  ],\n  \"redesign_priorities\": [\"1. Make phone number immediately visible on mobile\", \"2. Replace low-resolution/stock photos with authentic local images\", \"3. Simplify hero section and improve text contrast\"],\n  \"confidence\": 0.85\n}\n```",
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 6,
+    "conversion_score": 5,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.",
+    "issues": [
+      {
+        "id": "hero_image_quality",
+        "severity": "major",
+        "title": "Low-Resolution Hero Image",
+        "what_observed": "The hero image featuring the couple appears pixelated and low-resolution, especially noticeable on desktop.",
+        "why_problem": "A blurry image immediately signals a lack of professionalism and attention to detail. A local customer searching for a reliable roofing company will likely perceive this as a sign of a poorly run business and quickly leave.",
+        "what_correct_looks_like": "High-resolution, professionally shot image of a finished attic renovation or happy customers. Image should be optimized for web and appear sharp on all devices.",
+        "how_to_fix_in_redesign": "Replace the current hero image with a high-resolution, professionally photographed image. Ensure the image is optimized for web to reduce file size and improve loading speed."
+      },
+      {
+        "id": "overused_stock_photo",
+        "severity": "major",
+        "title": "Generic Stock Photo",
+        "what_observed": "The couple in the hero image appears to be a generic stock photo, lacking authenticity.",
+        "why_problem": "Customers are increasingly wary of stock photos, as they suggest a lack of genuine work or local presence. A local customer wants to see *real* results from a company that understands their area.",
+        "what_correct_looks_like": "Real photos of completed attic renovations in the Brisbane area, showcasing the company's work and local expertise.",
+        "how_to_fix_in_redesign": "Replace the stock photo with authentic photos of completed projects in the Brisbane area. Consider a gallery of before-and-after photos."
+      },
+      {
+        "id": "busy_hero_design",
+        "severity": "major",
+        "title": "Cluttered Hero Section",
+        "what_observed": "The hero section is visually busy with overlapping elements (text, images, shapes) and a bright color scheme.",
+        "why_problem": "A cluttered design overwhelms visitors and makes it difficult to focus on the key message. A local customer arriving from a search result needs to quickly understand what the company offers.",
+        "what_correct_looks_like": "Clean, minimalist hero section with a clear headline, concise value proposition, and a prominent call to action. Use whitespace effectively to create visual breathing room.",
+        "how_to_fix_in_redesign": "Simplify the hero section by removing unnecessary elements and using a more restrained color palette. Focus on a clear headline and a strong call to action."
+      },
+      {
+        "id": "illegible_text_color",
+        "severity": "critical",
+        "title": "Low Contrast Text",
+        "what_observed": "The white text on the light blue background in the hero section has low contrast, making it difficult to read.",
+        "why_problem": "Poor contrast makes the text illegible, especially for users with visual impairments or on smaller screens. A local customer won't bother trying to read if it's straining their eyes.",
+        "what_correct_looks_like": "Dark text on a light background or vice versa, with sufficient contrast to ensure readability. Use a color contrast checker to verify accessibility.",
+        "how_to_fix_in_redesign": "Increase the contrast between the text and background in the hero section. Use a dark color for the text and a lighter color for the background, or vice versa."
+      },
+      {
+        "id": "hidden_contact_mobile",
+        "severity": "critical",
+        "title": "Hidden Phone Number on Mobile",
+        "what_observed": "The phone number is small and difficult to find on mobile, requiring scrolling to see.",
+        "why_problem": "Local search customers are primarily looking for a phone number to call immediately. Hiding this information creates a significant conversion barrier and sends them to a competitor.",
+        "what_correct_looks_like": "Prominent, clickable phone number in the header of the mobile site, visible without scrolling.",
+        "how_to_fix_in_redesign": "Make the phone number a prominent, clickable element in the mobile header. Ensure it's easily visible and accessible on all screen sizes."
+      },
+      {
+        "id": "dated_visual_style",
+        "severity": "minor",
+        "title": "Outdated Visual Style",
+        "what_observed": "The use of gradients, bevels, and overly bright colors feels dated and unprofessional.",
+        "why_problem": "An outdated visual style can erode trust and make the business appear less credible. A local customer may assume the company is not up-to-date with current trends or technology.",
+        "what_correct_looks_like": "Modern, flat design with a clean color palette and minimalist aesthetic.",
+        "how_to_fix_in_redesign": "Adopt a modern, flat design style with a clean color palette and minimalist aesthetic. Remove gradients, bevels, and other outdated visual effects."
+      }
+    ],
+    "positive_observations": [
+      "Clear navigation menu.",
+      "Service area listed prominently.",
+      "Use of relevant keywords in headings."
+    ],
+    "redesign_priorities": [
+      "1. Make phone number immediately visible on mobile",
+      "2. Replace low-resolution/stock photos with authentic local images",
+      "3. Simplify hero section and improve text contrast"
+    ],
+    "confidence": 0.85
+  }
+}

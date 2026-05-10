@@ -1,0 +1,75 @@
+{
+  "candidate": {
+    "id": "ollama-gemma3-27b",
+    "model": "gemma3:27b",
+    "adapter": "ollama",
+    "tier": "T0"
+  },
+  "fixture": {
+    "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
+    "businessName": "Queensland Roofing Pty Ltd",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 96287,
+  "tokensIn": 1342,
+  "tokensOut": 912,
+  "costUsd": 0,
+  "rawText": "```json\n{\n  \"freshness_score\": 4,\n  \"trust_score\": 6,\n  \"conversion_score\": 5,\n  \"design_age_estimate\": \"slightly_outdated\",\n  \"summary\": \"The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local customers.\",\n  \"issues\": [\n    {\n      \"id\": \"hero_image_quality\",\n      \"severity\": \"major\",\n      \"title\": \"Low-Resolution Hero Image\",\n      \"what_observed\": \"The hero image on desktop appears pixelated and low resolution.\",\n      \"why_problem\": \"A blurry image immediately signals a lack of professionalism and attention to detail. A customer searching for a reliable roofing service will likely assume the quality of the work will also be subpar.\",\n      \"what_correct_looks_like\": \"High-resolution, professionally shot image of a completed roofing project, optimized for web display (around 1920x600px).\",\n      \"how_to_fix_in_redesign\": \"Replace the current hero image with a high-quality, professionally photographed image. Ensure the image is optimized for web use to reduce file size and improve loading speed.\"\n    },\n    {\n      \"id\": \"mobile_contact_hidden\",\n      \"severity\": \"critical\",\n      \"title\": \"Hidden Mobile Contact Info\",\n      \"what_observed\": \"On mobile, the phone number is not immediately visible above the fold and requires scrolling to find.\",\n      \"why_problem\": \"Mobile users are often searching 'on the go' and need immediate access to contact information. Hiding the phone number creates friction and increases the likelihood they'll choose a competitor with easier access.\",\n      \"what_correct_looks_like\": \"Prominent, clickable phone number in the header of the mobile site, visible without scrolling. Consider a 'Call Now' button.\",\n      \"how_to_fix_in_redesign\": \"Implement a sticky header on mobile with a clearly visible and clickable phone number. Add a 'Call Now' button for one-tap dialing.\"\n    },\n    {\n      \"id\": \"outdated_color_palette\",\n      \"severity\": \"major\",\n      \"title\": \"Outdated Color Scheme\",\n      \"what_observed\": \"The website uses a color scheme with dated blues and oranges.\",\n      \"why_problem\": \"The color scheme feels visually old and doesn't inspire confidence. Modern, clean color palettes build trust and convey professionalism.\",\n      \"what_correct_looks_like\": \"A modern color palette with 2-3 primary colors (e.g., shades of blue and gray, or a neutral base with a single accent color).\",\n      \"how_to_fix_in_redesign\": \"Update the website's color scheme to a more modern and professional palette. Focus on clean, neutral colors with a single accent color for calls to action.\"\n    },\n    {\n      \"id\": \"generic_stock_photos\",\n      \"severity\": \"minor\",\n      \"title\": \"Generic Stock Photography\",\n      \"what_observed\": \"The images appear to be generic stock photos rather than photos of actual projects.\",\n      \"why_problem\": \"Stock photos lack authenticity and don't demonstrate the company's specific expertise or quality of work. Customers want to see real examples of the company's capabilities.\",\n      \"what_correct_looks_like\": \"High-quality photos of completed roofing projects in the Brisbane area, showcasing the company's workmanship.\",\n      \"how_to_fix_in_redesign\": \"Replace stock photos with original photos of completed projects. Include before-and-after shots to highlight the transformation.\"\n    }\n  ],\n  \"positive_observations\": [\n    \"Clear navigation menu.\",\n    \"Services are listed explicitly.\",\n    \"Contact form is present.\"\n  ],\n  \"redesign_priorities\": [\"1. Make phone number immediately visible on mobile\", \"2. Replace low-resolution hero image\", \"3. Update color scheme to a modern palette\"],\n  \"confidence\": 0.85\n}\n```",
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 6,
+    "conversion_score": 5,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local customers.",
+    "issues": [
+      {
+        "id": "hero_image_quality",
+        "severity": "major",
+        "title": "Low-Resolution Hero Image",
+        "what_observed": "The hero image on desktop appears pixelated and low resolution.",
+        "why_problem": "A blurry image immediately signals a lack of professionalism and attention to detail. A customer searching for a reliable roofing service will likely assume the quality of the work will also be subpar.",
+        "what_correct_looks_like": "High-resolution, professionally shot image of a completed roofing project, optimized for web display (around 1920x600px).",
+        "how_to_fix_in_redesign": "Replace the current hero image with a high-quality, professionally photographed image. Ensure the image is optimized for web use to reduce file size and improve loading speed."
+      },
+      {
+        "id": "mobile_contact_hidden",
+        "severity": "critical",
+        "title": "Hidden Mobile Contact Info",
+        "what_observed": "On mobile, the phone number is not immediately visible above the fold and requires scrolling to find.",
+        "why_problem": "Mobile users are often searching 'on the go' and need immediate access to contact information. Hiding the phone number creates friction and increases the likelihood they'll choose a competitor with easier access.",
+        "what_correct_looks_like": "Prominent, clickable phone number in the header of the mobile site, visible without scrolling. Consider a 'Call Now' button.",
+        "how_to_fix_in_redesign": "Implement a sticky header on mobile with a clearly visible and clickable phone number. Add a 'Call Now' button for one-tap dialing."
+      },
+      {
+        "id": "outdated_color_palette",
+        "severity": "major",
+        "title": "Outdated Color Scheme",
+        "what_observed": "The website uses a color scheme with dated blues and oranges.",
+        "why_problem": "The color scheme feels visually old and doesn't inspire confidence. Modern, clean color palettes build trust and convey professionalism.",
+        "what_correct_looks_like": "A modern color palette with 2-3 primary colors (e.g., shades of blue and gray, or a neutral base with a single accent color).",
+        "how_to_fix_in_redesign": "Update the website's color scheme to a more modern and professional palette. Focus on clean, neutral colors with a single accent color for calls to action."
+      },
+      {
+        "id": "generic_stock_photos",
+        "severity": "minor",
+        "title": "Generic Stock Photography",
+        "what_observed": "The images appear to be generic stock photos rather than photos of actual projects.",
+        "why_problem": "Stock photos lack authenticity and don't demonstrate the company's specific expertise or quality of work. Customers want to see real examples of the company's capabilities.",
+        "what_correct_looks_like": "High-quality photos of completed roofing projects in the Brisbane area, showcasing the company's workmanship.",
+        "how_to_fix_in_redesign": "Replace stock photos with original photos of completed projects. Include before-and-after shots to highlight the transformation."
+      }
+    ],
+    "positive_observations": [
+      "Clear navigation menu.",
+      "Services are listed explicitly.",
+      "Contact form is present."
+    ],
+    "redesign_priorities": [
+      "1. Make phone number immediately visible on mobile",
+      "2. Replace low-resolution hero image",
+      "3. Update color scheme to a modern palette"
+    ],
+    "confidence": 0.85
+  }
+}

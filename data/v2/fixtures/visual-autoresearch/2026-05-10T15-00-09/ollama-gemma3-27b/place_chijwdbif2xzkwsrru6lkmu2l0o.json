@@ -1,0 +1,84 @@
+{
+  "candidate": {
+    "id": "ollama-gemma3-27b",
+    "model": "gemma3:27b",
+    "adapter": "ollama",
+    "tier": "T0"
+  },
+  "fixture": {
+    "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
+    "businessName": "Brisbane Roof Restoration Experts",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 109889,
+  "tokensIn": 1342,
+  "tokensOut": 1140,
+  "costUsd": 0,
+  "rawText": "```json\n{\n  \"freshness_score\": 4,\n  \"trust_score\": 6,\n  \"conversion_score\": 5,\n  \"design_age_estimate\": \"slightly_outdated\",\n  \"summary\": \"The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.\",\n  \"issues\": [\n    {\n      \"id\": \"hero_gradient\",\n      \"severity\": \"major\",\n      \"title\": \"Outdated Hero Gradient\",\n      \"what_observed\": \"The large blue gradient background in the hero section appears dated and unprofessional.\",\n      \"why_problem\": \"Gradients like this were popular in the early 2000s and now make the business look less current and trustworthy. A potential customer searching for a roof restoration service might assume the business isn't up-to-date with modern techniques.\",\n      \"what_correct_looks_like\": \"A clean, flat color background or a high-quality, relevant image of a restored roof. Use a single primary brand color.\",\n      \"how_to_fix_in_redesign\": \"Replace the gradient with a flat, modern background color (e.g., a muted blue or gray) or a professional photograph of a completed roof restoration project.\"\n    },\n    {\n      \"id\": \"form_length\",\n      \"severity\": \"critical\",\n      \"title\": \"Excessive Form Fields\",\n      \"what_observed\": \"The quote request form contains numerous fields, including 'Roof Type', 'Scope of Work', 'Work Type', and 'Roof age'.\",\n      \"why_problem\": \"A long form creates friction and discourages potential customers from submitting a request. People searching for local services want quick and easy contact options. Requiring too much information upfront feels intrusive and time-consuming.\",\n      \"what_correct_looks_like\": \"A simplified form with only essential fields: Name, Phone Number, and a brief 'Description' field. Offer to gather more details during a phone consultation.\",\n      \"how_to_fix_in_redesign\": \"Reduce the form to Name, Phone, and Description. Add text like 'We'll discuss details over the phone' to reassure users.\"\n    },\n    {\n      \"id\": \"mobile_form_visibility\",\n      \"severity\": \"critical\",\n      \"title\": \"Form Partially Hidden on Mobile\",\n      \"what_observed\": \"On mobile, a significant portion of the form is initially hidden below the fold, requiring scrolling to view all fields.\",\n      \"why_problem\": \"Users may not scroll to see the entire form, leading to incomplete submissions or abandonment. This is especially problematic on mobile where screen real estate is limited.\",\n      \"what_correct_looks_like\": \"A single-column layout on mobile with the entire form visible above the fold. Prioritize essential fields and use a clear call to action.\",\n      \"how_to_fix_in_redesign\": \"Implement a responsive design that stacks form fields vertically on mobile, ensuring all fields are visible without scrolling.\"\n    },\n    {\n      \"id\": \"phone_number_repetition\",\n      \"severity\": \"major\",\n      \"title\": \"Repeated Phone Number\",\n      \"what_observed\": \"The phone number '(07) 3132 1605' is displayed multiple times on the page.\",\n      \"why_problem\": \"While making the phone number visible is good, excessive repetition can appear spammy or desperate. It doesn't build trust.\",\n      \"what_correct_looks_like\": \"Display the phone number prominently in the header and potentially once in the footer. Make it easily clickable on mobile.\",\n      \"how_to_fix_in_redesign\": \"Remove redundant phone number instances, focusing on clear visibility in the header and footer.\"\n    },\n    {\n      \"id\": \"image_quality\",\n      \"severity\": \"minor\",\n      \"title\": \"Low-Resolution Image\",\n      \"what_observed\": \"The image of the house on the right side of the screen appears slightly pixelated and low resolution.\",\n      \"why_problem\": \"Low-quality images detract from the overall professionalism of the website and can make the business appear less credible.\",\n      \"what_correct_looks_like\": \"High-resolution, professionally shot images of completed roof restoration projects.\",\n      \"how_to_fix_in_redesign\": \"Replace the existing image with a high-resolution version or a new, professional photograph.\"\n    }\n  ],\n  \"positive_observations\": [\n    \"Clear call to action ('Call (07) 3132 1605') is present.\",\n    \"Navigation is straightforward and includes essential pages.\",\n    \"The use of a local keyword ('Brisbane') in the logo and content is good for SEO.\"\n  ],\n  \"redesign_priorities\": [\"1. Simplify the quote request form to reduce friction\", \"2. Modernize the hero section with a flat design and high-quality imagery\", \"3. Ensure the entire form is visible above the fold on mobile devices\"],\n  \"confidence\": 0.85\n}\n```",
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 6,
+    "conversion_score": 5,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.",
+    "issues": [
+      {
+        "id": "hero_gradient",
+        "severity": "major",
+        "title": "Outdated Hero Gradient",
+        "what_observed": "The large blue gradient background in the hero section appears dated and unprofessional.",
+        "why_problem": "Gradients like this were popular in the early 2000s and now make the business look less current and trustworthy. A potential customer searching for a roof restoration service might assume the business isn't up-to-date with modern techniques.",
+        "what_correct_looks_like": "A clean, flat color background or a high-quality, relevant image of a restored roof. Use a single primary brand color.",
+        "how_to_fix_in_redesign": "Replace the gradient with a flat, modern background color (e.g., a muted blue or gray) or a professional photograph of a completed roof restoration project."
+      },
+      {
+        "id": "form_length",
+        "severity": "critical",
+        "title": "Excessive Form Fields",
+        "what_observed": "The quote request form contains numerous fields, including 'Roof Type', 'Scope of Work', 'Work Type', and 'Roof age'.",
+        "why_problem": "A long form creates friction and discourages potential customers from submitting a request. People searching for local services want quick and easy contact options. Requiring too much information upfront feels intrusive and time-consuming.",
+        "what_correct_looks_like": "A simplified form with only essential fields: Name, Phone Number, and a brief 'Description' field. Offer to gather more details during a phone consultation.",
+        "how_to_fix_in_redesign": "Reduce the form to Name, Phone, and Description. Add text like 'We'll discuss details over the phone' to reassure users."
+      },
+      {
+        "id": "mobile_form_visibility",
+        "severity": "critical",
+        "title": "Form Partially Hidden on Mobile",
+        "what_observed": "On mobile, a significant portion of the form is initially hidden below the fold, requiring scrolling to view all fields.",
+        "why_problem": "Users may not scroll to see the entire form, leading to incomplete submissions or abandonment. This is especially problematic on mobile where screen real estate is limited.",
+        "what_correct_looks_like": "A single-column layout on mobile with the entire form visible above the fold. Prioritize essential fields and use a clear call to action.",
+        "how_to_fix_in_redesign": "Implement a responsive design that stacks form fields vertically on mobile, ensuring all fields are visible without scrolling."
+      },
+      {
+        "id": "phone_number_repetition",
+        "severity": "major",
+        "title": "Repeated Phone Number",
+        "what_observed": "The phone number '(07) 3132 1605' is displayed multiple times on the page.",
+        "why_problem": "While making the phone number visible is good, excessive repetition can appear spammy or desperate. It doesn't build trust.",
+        "what_correct_looks_like": "Display the phone number prominently in the header and potentially once in the footer. Make it easily clickable on mobile.",
+        "how_to_fix_in_redesign": "Remove redundant phone number instances, focusing on clear visibility in the header and footer."
+      },
+      {
+        "id": "image_quality",
+        "severity": "minor",
+        "title": "Low-Resolution Image",
+        "what_observed": "The image of the house on the right side of the screen appears slightly pixelated and low resolution.",
+        "why_problem": "Low-quality images detract from the overall professionalism of the website and can make the business appear less credible.",
+        "what_correct_looks_like": "High-resolution, professionally shot images of completed roof restoration projects.",
+        "how_to_fix_in_redesign": "Replace the existing image with a high-resolution version or a new, professional photograph."
+      }
+    ],
+    "positive_observations": [
+      "Clear call to action ('Call (07) 3132 1605') is present.",
+      "Navigation is straightforward and includes essential pages.",
+      "The use of a local keyword ('Brisbane') in the logo and content is good for SEO."
+    ],
+    "redesign_priorities": [
+      "1. Simplify the quote request form to reduce friction",
+      "2. Modernize the hero section with a flat design and high-quality imagery",
+      "3. Ensure the entire form is visible above the fold on mobile devices"
+    ],
+    "confidence": 0.85
+  }
+}

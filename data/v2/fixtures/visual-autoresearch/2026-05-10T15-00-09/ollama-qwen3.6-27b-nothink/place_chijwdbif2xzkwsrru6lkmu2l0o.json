@@ -1,0 +1,76 @@
+{
+  "candidate": {
+    "id": "ollama-qwen3.6-27b-nothink",
+    "model": "qwen3.6:27b",
+    "adapter": "ollama",
+    "tier": "T0",
+    "think": false
+  },
+  "fixture": {
+    "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
+    "businessName": "Brisbane Roof Restoration Experts",
+    "niche": "roofing",
+    "city": "Brisbane"
+  },
+  "latencyMs": 148035,
+  "tokensIn": 2306,
+  "tokensOut": 1009,
+  "costUsd": 0,
+  "rawText": "{\n  \"freshness_score\": 4,\n  \"trust_score\": 5,\n  \"conversion_score\": 6,\n  \"design_age_estimate\": \"slightly_outdated\",\n  \"summary\": \"The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional quality expected of a restoration specialist.\",\n  \"issues\": [\n    {\n      \"id\": \"hero_text_contrast\",\n      \"severity\": \"critical\",\n      \"title\": \"Low contrast white text on light background\",\n      \"what_observed\": \"The main headline 'Brisbane Roof Restoration Specialists' is white text overlaid on a light blue sky background. The text has a drop shadow, but the contrast is low, making it look washed out.\",\n      \"why_problem\": \"A visitor scanning the page on a bright phone screen will struggle to read the headline instantly. If they can't read it easily, they assume the business is unprofessional or the site is broken.\",\n      \"what_correct_looks_like\": \"Dark charcoal or navy text on the light background, or a dark semi-transparent overlay behind the text to ensure high contrast.\",\n      \"how_to_fix_in_redesign\": \"Change headline color to #1a1a1a (dark grey) or add a dark overlay (opacity 0.4) behind the text block.\"\n    },\n    {\n      \"id\": \"form_visual_clutter\",\n      \"severity\": \"major\",\n      \"title\": \"Overwhelming form layout with radio buttons\",\n      \"what_observed\": \"The desktop form is a dense grid of inputs, followed by four distinct sections of radio buttons (Roof type, Scope, Work Type, Roof age) with yellow labels.\",\n      \"why_problem\": \"This looks like a data entry task rather than a conversation. A local customer just wants a quote; asking them to categorize their roof type and age before speaking to a human creates friction and anxiety.\",\n      \"what_correct_looks_like\": \"A simplified 'Get a Quote' form with only Name, Phone, and Suburb. The technical details should be handled by the sales team later.\",\n      \"how_to_fix_in_redesign\": \"Remove the radio button sections. Replace with a single 'Tell us about your roof' text area or remove the form entirely in favor of a 'Call Now' button.\"\n    },\n    {\n      \"id\": \"mobile_menu_icon\",\n      \"severity\": \"major\",\n      \"title\": \"Hidden navigation on mobile\",\n      \"what_observed\": \"The mobile screenshot shows a hamburger menu icon in the top right, hiding all navigation links.\",\n      \"why_problem\": \"Local searchers often look for specific services (e.g., 'roof cleaning' vs 'restoration') or social proof (reviews). Hiding this behind a click adds friction and hides trust signals.\",\n      \"what_correct_looks_like\": \"A sticky bottom bar or a visible top bar with the most critical link (e.g., 'Services' or 'Reviews') visible without clicking.\",\n      \"how_to_fix_in_redesign\": \"Implement a sticky bottom navigation bar on mobile with 'Call', 'Services', and 'Reviews' buttons permanently visible.\"\n    },\n    {\n      \"id\": \"logo_design\",\n      \"severity\": \"minor\",\n      \"title\": \"Amateurish logo styling\",\n      \"what_observed\": \"The logo features a hand-drawn style house outline with a red underline and mixed font weights.\",\n      \"why_problem\": \"Roof restoration is a high-ticket service. A logo that looks like a quick sketch suggests a 'one-man band' rather than an established company, reducing trust for larger jobs.\",\n      \"what_correct_looks_like\": \"A clean, vector-based logo with a solid icon and professional typography.\",\n      \"how_to_fix_in_redesign\": \"Redesign logo to use a solid, geometric roof icon and a clean sans-serif font.\"\n    }\n  ],\n  \"positive_observations\": [\n    \"The phone number is prominent and repeated in the hero section, which is excellent for local intent.\",\n    \"The background image is relevant (shows a roof), providing immediate context.\",\n    \"The 'Call' button uses a high-contrast red color that stands out against the background.\"\n  ],\n  \"redesign_priorities\": [\n    \"1. Fix text contrast in the hero section to ensure the headline is instantly readable.\",\n    \"2. Simplify the contact form to reduce friction and remove the intimidating radio buttons.\",\n    \"3. Improve the logo and typography to establish a more professional, high-ticket brand identity.\"\n  ],\n  \"confidence\": 0.95\n}",
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 5,
+    "conversion_score": 6,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional quality expected of a restoration specialist.",
+    "issues": [
+      {
+        "id": "hero_text_contrast",
+        "severity": "critical",
+        "title": "Low contrast white text on light background",
+        "what_observed": "The main headline 'Brisbane Roof Restoration Specialists' is white text overlaid on a light blue sky background. The text has a drop shadow, but the contrast is low, making it look washed out.",
+        "why_problem": "A visitor scanning the page on a bright phone screen will struggle to read the headline instantly. If they can't read it easily, they assume the business is unprofessional or the site is broken.",
+        "what_correct_looks_like": "Dark charcoal or navy text on the light background, or a dark semi-transparent overlay behind the text to ensure high contrast.",
+        "how_to_fix_in_redesign": "Change headline color to #1a1a1a (dark grey) or add a dark overlay (opacity 0.4) behind the text block."
+      },
+      {
+        "id": "form_visual_clutter",
+        "severity": "major",
+        "title": "Overwhelming form layout with radio buttons",
+        "what_observed": "The desktop form is a dense grid of inputs, followed by four distinct sections of radio buttons (Roof type, Scope, Work Type, Roof age) with yellow labels.",
+        "why_problem": "This looks like a data entry task rather than a conversation. A local customer just wants a quote; asking them to categorize their roof type and age before speaking to a human creates friction and anxiety.",
+        "what_correct_looks_like": "A simplified 'Get a Quote' form with only Name, Phone, and Suburb. The technical details should be handled by the sales team later.",
+        "how_to_fix_in_redesign": "Remove the radio button sections. Replace with a single 'Tell us about your roof' text area or remove the form entirely in favor of a 'Call Now' button."
+      },
+      {
+        "id": "mobile_menu_icon",
+        "severity": "major",
+        "title": "Hidden navigation on mobile",
+        "what_observed": "The mobile screenshot shows a hamburger menu icon in the top right, hiding all navigation links.",
+        "why_problem": "Local searchers often look for specific services (e.g., 'roof cleaning' vs 'restoration') or social proof (reviews). Hiding this behind a click adds friction and hides trust signals.",
+        "what_correct_looks_like": "A sticky bottom bar or a visible top bar with the most critical link (e.g., 'Services' or 'Reviews') visible without clicking.",
+        "how_to_fix_in_redesign": "Implement a sticky bottom navigation bar on mobile with 'Call', 'Services', and 'Reviews' buttons permanently visible."
+      },
+      {
+        "id": "logo_design",
+        "severity": "minor",
+        "title": "Amateurish logo styling",
+        "what_observed": "The logo features a hand-drawn style house outline with a red underline and mixed font weights.",
+        "why_problem": "Roof restoration is a high-ticket service. A logo that looks like a quick sketch suggests a 'one-man band' rather than an established company, reducing trust for larger jobs.",
+        "what_correct_looks_like": "A clean, vector-based logo with a solid icon and professional typography.",
+        "how_to_fix_in_redesign": "Redesign logo to use a solid, geometric roof icon and a clean sans-serif font."
+      }
+    ],
+    "positive_observations": [
+      "The phone number is prominent and repeated in the hero section, which is excellent for local intent.",
+      "The background image is relevant (shows a roof), providing immediate context.",
+      "The 'Call' button uses a high-contrast red color that stands out against the background."
+    ],
+    "redesign_priorities": [
+      "1. Fix text contrast in the hero section to ensure the headline is instantly readable.",
+      "2. Simplify the contact form to reduce friction and remove the intimidating radio buttons.",
+      "3. Improve the logo and typography to establish a more professional, high-ticket brand identity."
+    ],
+    "confidence": 0.95
+  }
+}
