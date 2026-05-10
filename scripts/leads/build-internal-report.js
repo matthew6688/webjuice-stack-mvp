@@ -81,7 +81,18 @@ for (const entityKey of targets) {
   });
   const outPath = path.join(clientV2Dir, 'internal-audit-report.html');
   fs.writeFileSync(outPath, html);
-  written.push({ entityKey, slug: slugRoot, path: outPath, hasDetailed: Boolean(detailedAudit), hasVisual: Boolean(visualAudit) });
+
+  // Also publish under public/ so Astro serves it at /audit-reports/<entityKey>/...
+  const publicDir = path.join(repoRoot, 'public/audit-reports', entityKey);
+  fs.mkdirSync(path.join(publicDir, 'screenshots'), { recursive: true });
+  fs.writeFileSync(path.join(publicDir, 'internal-audit-report.html'), html);
+  if (fs.existsSync(srcShotDir)) {
+    for (const f of fs.readdirSync(srcShotDir)) {
+      fs.copyFileSync(path.join(srcShotDir, f), path.join(publicDir, 'screenshots', f));
+    }
+  }
+
+  written.push({ entityKey, slug: slugRoot, path: outPath, public_url: `/audit-reports/${entityKey}/internal-audit-report.html`, hasDetailed: Boolean(detailedAudit), hasVisual: Boolean(visualAudit) });
   console.log(`  ✓ ${entity.latest?.name?.slice(0, 50)} → ${path.relative(repoRoot, outPath)}${detailedAudit ? '' : ' [cheap-only]'}${visualAudit ? ' +visual' : ''}`);
 }
 

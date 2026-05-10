@@ -23,6 +23,7 @@ export async function visionOllama({
   campaignId,
   fetchImpl = globalThis.fetch,
   timeoutMs = 240_000,
+  think,             // pass false to disable thinking on qwen3 / r1 family models
 } = {}) {
   if (!model) throw new Error('model is required (e.g. "qwen3.6:27b")');
   if (!prompt) throw new Error('prompt is required');
@@ -37,6 +38,7 @@ export async function visionOllama({
     stream: false,
     options: { temperature: 0.2 },
   };
+  if (think !== undefined) body.think = think;
 
   const requestHash = await hashRequest({ provider: 'ollama', endpoint: 'generate', model, prompt, imageCount: imagePaths.length });
   const start = Date.now();
@@ -105,21 +107,23 @@ export async function visionOllama({
  */
 export function tryExtractJson(text) {
   if (!text) return null;
+  // Strip <think>...</think> blocks (qwen3 / r1 family) before extraction
+  const stripped = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
   // Look for code-fenced JSON first
-  const fence = text.match(/```(?:json)?\s*\n?([\s\S]+?)\n?```/);
+  const fence = stripped.match(/```(?:json)?\s*\n?([\s\S]+?)\n?```/);
   if (fence) {
     try { return JSON.parse(fence[1]); } catch {}
   }
   // Otherwise find first balanced {...}
-  const start = text.indexOf('{');
+  const start = stripped.indexOf('{');
   if (start === -1) return null;
   let depth = 0;
-  for (let i = start; i < text.length; i += 1) {
-    if (text[i] === '{') depth += 1;
-    else if (text[i] === '}') {
+  for (let i = start; i < stripped.length; i += 1) {
+    if (stripped[i] === '{') depth += 1;
+    else if (stripped[i] === '}') {
       depth -= 1;
       if (depth === 0) {
-        const candidate = text.slice(start, i + 1);
+        const candidate = stripped.slice(start, i + 1);
         try { return JSON.parse(candidate); } catch { return null; }
       }
     }

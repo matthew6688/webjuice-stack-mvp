@@ -37,6 +37,12 @@ if (fs.existsSync(detailedFixturePath)) {
     detailedAudit = raw.detailed_audit || null;
   } catch {}
 }
+
+// Check if internal audit report HTML has been published to public/
+const publicReportPath = path.join(process.cwd(), 'public/audit-reports', entity.entityKey, 'internal-audit-report.html');
+const internalReportUrl = fs.existsSync(publicReportPath)
+  ? `/audit-reports/${entity.entityKey}/internal-audit-report.html`
+  : null;
 const dimensionOrder = ['gbp', 'technical', 'ux_conversion', 'content', 'seo', 'visual'];
 const dimensionLabels = {
   gbp: 'GBP',
@@ -221,6 +227,12 @@ const cityLabel = (latest.city || latest.address?.split(',').pop()?.trim() || ''
                 <span>v{detailedAudit.audit_version}</span>
                 <span class="dot">·</span>
                 <span>{new Date(detailedAudit.audited_at).toLocaleString('zh-CN')}</span>
+                {internalReportUrl && (
+                  <>
+                    <span class="dot">·</span>
+                    <a href={internalReportUrl} target="_blank" class="report-link">查看完整 internal report HTML ↗</a>
+                  </>
+                )}
               </p>
             </div>
             <div class="detailed-headline">
@@ -568,6 +580,13 @@ const cityLabel = (latest.city || latest.address?.split(',').pop()?.trim() || ''
   .detailed-audit-section {
     background: color-mix(in srgb, white 50%, var(--pl-paper));
   }
+  .report-link {
+    color: var(--pl-coral); font-weight: 950; text-decoration: none;
+    background: var(--pl-citrus);
+    border: 1.5px solid var(--pl-line);
+    padding: 2px 8px;
+  }
+  .report-link:hover { background: var(--pl-coral); color: white; }
   .detailed-meta {
     margin: 8px 0 0;
     font-size: 12px; font-weight: 800;

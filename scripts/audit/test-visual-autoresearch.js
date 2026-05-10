@@ -28,8 +28,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
 
 const CANDIDATES = [
-  { id: 'ollama-qwen3.6-27b', model: 'qwen3.6:27b', adapter: 'ollama', tier: 'T0' },
-  { id: 'ollama-gemma3-27b',  model: 'gemma3:27b',  adapter: 'ollama', tier: 'T0' },
+  // qwen3 family has thinking enabled by default; we pass think:false because vision-audit
+  // is a structured extraction task, not a reasoning task. Thinking adds latency + noise.
+  { id: 'ollama-qwen3.6-27b-nothink', model: 'qwen3.6:27b', adapter: 'ollama', tier: 'T0', think: false },
+  { id: 'ollama-gemma3-27b',          model: 'gemma3:27b',  adapter: 'ollama', tier: 'T0' },
 ];
 
 const SCREENSHOT_ROOT = path.join(repoRoot, 'data/v2/fixtures/detailed-audit/screenshots');
@@ -82,6 +84,7 @@ for (const cand of CANDIDATES) {
       const r = await (cand.adapter === 'ollama'
         ? visionOllama({
             model: cand.model, prompt, imagePaths: imgs,
+            think: cand.think,
             ledgerPath,
             leadId: fx.entityKey,
             clientSlug: slug(fx.entity?.latest?.name),

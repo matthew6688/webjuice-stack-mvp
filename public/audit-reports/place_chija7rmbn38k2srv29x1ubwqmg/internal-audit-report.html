@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>Internal Audit · Roof Space Renovators</title>
+<style>
+  :root {
+    --cream: #fff6ec; --paper: #fffcf7; --ink: #17191c; --line: #17191c;
+    --muted: #5e6268; --coral: #ff5a3d; --coral-soft: #ffb39f;
+    --peach: #ffe1ce; --citrus: #ffd45a; --mint: #cdeccf;
+    --green: #47b86a; --sky: #8bd3f7; --lilac: #eadcfb;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-weight: 600; }
+  body { background-image: linear-gradient(rgba(23,25,28,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(23,25,28,0.04) 1px, transparent 1px); background-size: 54px 54px; }
+  .doc { max-width: 920px; margin: 32px auto; background: var(--paper); border: 2px solid var(--line); box-shadow: 6px 6px 0 var(--line); }
+  .cover { padding: 36px 36px 28px; border-bottom: 2px solid var(--line); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; }
+  .cover .eyebrow { margin: 0; font-size: 11px; font-weight: 950; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); }
+  .cover h1 { font-family: var(--serif); font-size: 44px; font-weight: 900; line-height: 1.05; margin: 8px 0 8px; max-width: 600px; word-break: break-word; }
+  .cover .subline { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; font-size: 14px; font-weight: 800; color: var(--muted); margin: 0; }
+  .cover .subline strong { color: var(--coral); }
+  .cover .meta-line { margin-top: 12px; font-size: 11px; font-weight: 800; color: var(--muted); display: flex; gap: 8px; }
+  .cover .meta-line code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+  .score-tile { background: var(--citrus); border: 2px solid var(--line); padding: 18px 22px; text-align: center; min-width: 180px; box-shadow: 4px 4px 0 var(--line); }
+  .score-tile .label { font-size: 10px; font-weight: 950; letter-spacing: 0.1em; color: var(--ink); text-transform: uppercase; }
+  .score-tile .num { font-family: var(--serif); font-size: 64px; font-weight: 950; line-height: 1; margin: 6px 0 4px; color: var(--ink); }
+  .score-tile .num small { font-size: 14px; color: var(--ink); opacity: 0.75; font-weight: 800; }
+  .score-tile .decision { font-family: var(--mono); font-size: 12px; font-weight: 950; color: var(--ink); }
+
+  .section { padding: 28px 36px; border-top: 2px solid var(--line); }
+  .section .eyebrow { margin: 0 0 6px; font-size: 11px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); }
+  .section h2 { font-family: var(--serif); font-size: 30px; font-weight: 900; line-height: 1.1; margin: 4px 0 16px; max-width: none; word-break: break-word; }
+  .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
+
+  .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); }
+  .contact-cell { padding: 14px 18px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+  .contact-cell:nth-child(2n) { border-right: 0; }
+  .contact-cell:nth-last-child(-n+2) { border-bottom: 0; }
+  .contact-cell .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .contact-cell .val { font-size: 14px; font-weight: 800; word-break: break-word; }
+
+  .dim-grid { display: grid; grid-template-columns: repeat(6, 1fr); border: 2px solid var(--line); margin: 14px 0; }
+  .dim-card { padding: 14px 12px; border-right: 2px solid var(--line); }
+  .dim-card:last-child { border-right: 0; }
+  .dim-card .label { font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+  .dim-card .score { font-family: var(--serif); font-size: 28px; font-weight: 950; line-height: 1; margin: 6px 0 6px; }
+  .dim-card .bar { height: 5px; background: rgba(23,25,28,0.08); border: 1.5px solid var(--line); overflow: hidden; margin-bottom: 4px; }
+  .dim-card .fill { height: 100%; background: var(--coral); }
+  .dim-card .weight { font-size: 9.5px; font-weight: 800; color: var(--muted); }
+
+  .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 12px 0; }
+  .screenshots figure { margin: 0; padding: 14px; border-right: 2px solid var(--line); }
+  .screenshots figure:last-child { border-right: 0; }
+  .screenshots img { width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .screenshots figcaption { margin-top: 10px; font-size: 11px; font-weight: 800; color: var(--muted); }
+
+  .perf-strip { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin-top: 12px; }
+  .perf-cell { padding: 12px; border-right: 2px solid var(--line); }
+  .perf-cell:last-child { border-right: 0; }
+  .perf-cell .lab { font-size: 9.5px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .perf-cell .val { font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1; margin-top: 4px; }
+  .perf-cell .val.ok { color: var(--green); }
+  .perf-cell .val.bad { color: var(--coral); }
+
+  .issue-card { padding: 14px 18px; border: 2px solid var(--line); background: var(--paper); margin: 10px 0; box-shadow: 3px 3px 0 var(--line); }
+  .issue-card.issue-critical { background: color-mix(in srgb, var(--coral-soft) 30%, var(--paper)); }
+  .issue-card.issue-major { background: color-mix(in srgb, var(--citrus) 18%, var(--paper)); }
+  .issue-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .issue-severity { font-family: var(--mono); font-size: 10.5px; font-weight: 950; padding: 2px 8px; background: var(--coral); color: white; border: 1.5px solid var(--line); }
+  .issue-major .issue-severity { background: var(--citrus); color: var(--ink); }
+  .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
+  .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
+  .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+  .issue-row { margin: 4px 0; font-size: 13px; line-height: 1.5; font-weight: 700; }
+  .issue-row .lab { display: inline-block; min-width: 90px; font-size: 10px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 8px; vertical-align: top; }
+  .issue-row.fix .lab { color: var(--coral); }
+
+  details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
+  details.dim-detail summary { cursor: pointer; padding: 10px 16px; display: flex; gap: 14px; align-items: center; list-style: none; font-weight: 850; }
+  details.dim-detail summary::-webkit-details-marker { display: none; }
+  details.dim-detail summary::before { content: '▶'; color: var(--coral); font-size: 10px; transition: transform 0.2s; }
+  details.dim-detail[open] summary::before { transform: rotate(90deg); }
+  .dim-summary-label { flex: 1; font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .dim-summary-score { font-family: var(--serif); font-size: 18px; font-weight: 950; }
+  .dim-summary-rules { font-size: 11px; font-weight: 800; color: var(--muted); }
+  .dim-detail .rule-table { border-top: 2px solid var(--line); }
+
+  .rule-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+  .rule-table th { background: color-mix(in srgb, var(--citrus) 50%, var(--paper)); padding: 10px 12px; font-size: 10.5px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; border-bottom: 2px solid var(--line); }
+  .rule-table td { padding: 9px 12px; border-bottom: 1.5px solid rgba(23,25,28,0.08); vertical-align: top; font-weight: 700; }
+  .rule-table tr:last-child td { border-bottom: 0; }
+  .rule-table td.mark { text-align: center; font-weight: 950; font-size: 14px; }
+  .rule-table tr.hit td.mark { color: var(--green); }
+  .rule-table tr.miss td.mark { color: rgba(23,25,28,0.35); }
+  .rule-table tr.na td.mark { color: rgba(23,25,28,0.25); }
+  .rule-table td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 950; }
+  .rule-table td.why { color: var(--muted); font-weight: 700; }
+  .rule-table code { background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); font-size: 11px; font-weight: 800; }
+
+  .visual-scores { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin: 12px 0 18px; }
+  .vs { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .vs:last-child { border-right: 0; }
+  .vs span { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .vs strong { display: block; font-family: var(--serif); font-size: 32px; font-weight: 950; line-height: 1; margin-top: 6px; }
+  .vs small { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .vs.vs-text strong.age { font-size: 16px; line-height: 1.3; padding-top: 4px; display: inline-block; }
+
+  .issues-grid { display: flex; flex-direction: column; gap: 0; }
+  .positives, .priorities { padding: 14px 16px; border: 2px solid var(--line); background: var(--paper); margin-top: 14px; }
+  .positives ul, .priorities ol { margin: 6px 0 0 18px; padding: 0; line-height: 1.55; font-weight: 700; }
+  .accent-mint { color: var(--green); }
+  .accent-coral { color: var(--coral); }
+
+  .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
+
+  .sales-strip { padding: 16px 18px; background: var(--peach); border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); margin-top: 8px; }
+  .sales-strip ul { margin: 6px 0 0 22px; padding: 0; font-size: 14px; line-height: 1.55; font-weight: 800; }
+
+  .appendix { padding: 22px 36px; border-top: 2px solid var(--line); background: color-mix(in srgb, white 50%, var(--paper)); }
+  .appendix h2 { font-size: 14px; font-weight: 950; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .appendix .meta-row { font-size: 11.5px; font-weight: 800; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+  .appendix code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+
+  @media print {
+    html, body { background: white; }
+    body { background-image: none; }
+    .doc { box-shadow: none; margin: 0 auto; }
+    details.dim-detail { break-inside: avoid; }
+    details.dim-detail[open] summary { break-after: avoid; }
+    .issue-card, .perf-strip, .visual-scores, .dim-grid, .contact-grid, .screenshots { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="cover">
+    <div>
+      <p class="eyebrow">Internal Audit Report · ProfitsLocal</p>
+      <h1>Roof Space Renovators</h1>
+      <p class="subline">
+        <span><strong>roofing</strong></span>
+        <span>·</span><span>Brisbane</span>
+        <span>·</span>
+        <span>★ 5 (221 reviews)</span>
+      </p>
+      <p class="meta-line">
+        <span>generated 2026/05/11 00:11</span>
+        <span>·</span>
+        <span>config <code>2026-05-11-v1</code></span>
+        <span>·</span>
+        <span>entity <code>place_chija7rmbn38k2srv29x1ubwqmg</code></span>
+      </p>
+    </div>
+    <div class="score-tile">
+      <span class="label">Audit Score</span>
+      <div class="num">64<small>/100</small></div>
+      <span class="decision">MODERATE CANDIDATE</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <p class="eyebrow">总体判断</p>
+    <h2>audit_score=64 → moderate_candidate · weakest: seo 25, visual 50 · fired: high_traction_old_site</h2>
+    
+      <div>
+        <p class="eyebrow accent-coral" style="margin-top:18px">已触发 hard triggers</p>
+        <div class="trigger-list">
+          <span class="trigger-pill">high_traction_old_site</span>
+        </div>
+      </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">联系方式 + GBP 快照</p>
+    <h2>商家档案</h2>
+    <div class="contact-grid">
+      <div class="contact-cell"><span class="lab">电话</span><span class="val">(07) 3889 6688</span></div>
+      <div class="contact-cell"><span class="lab">网址</span><span class="val"><a href="https://www.roofspacerenovators.com.au/" target="_blank">https://www.roofspacerenovators.com.au/</a></span></div>
+      <div class="contact-cell"><span class="lab">地址</span><span class="val">5/53 Lawnton Pocket Rd, Lawnton QLD 4501</span></div>
+      <div class="contact-cell"><span class="lab">类目</span><span class="val">Home improvement store</span></div>
+      <div class="contact-cell"><span class="lab">Google Maps</span><span class="val"><a href="https://www.google.com/maps/place/Roof+Space+Renovators/data=!4m7!3m6!1s0x6b93fcdd6c4cb403:0x68425640d5716f57!8m2!3d-27.2830883!4d152.9900512!16s%2Fg%2F11c1rf965s!19sChIJA7RMbN38k2sRV29x1UBWQmg?authuser=0&amp;hl=en&amp;rclk=1" target="_blank">打开</a></span></div>
+      <div class="contact-cell"><span class="lab">网站状态</span><span class="val"><code>independent_https_site</code></span></div>
+      <div class="contact-cell"><span class="lab">来源</span><span class="val">roof restoration in Brisbane</span></div>
+      <div class="contact-cell"><span class="lab">图片数 / 抓取分</span><span class="val">6 · 42</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">6 维度审计 At-a-glance</p>
+    <h2>得分 64/100 → MODERATE CANDIDATE</h2>
+    <div class="dim-grid">
+      
+        <div class="dim-card">
+          <span class="label">Google Business Profile</span>
+          <div class="score">61<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:61%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Technical</span>
+          <div class="score">60<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:60%"></div></div>
+          <span class="weight">权重 20%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">UX &amp; Conversion</span>
+          <div class="score">90<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:90%"></div></div>
+          <span class="weight">权重 25%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Content</span>
+          <div class="score">70<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:70%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">SEO</span>
+          <div class="score">25<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:25%"></div></div>
+          <span class="weight">权重 10%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Visual</span>
+          <div class="score">50<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:50%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">网站抓取证据</p>
+    <h2>当前网站快照</h2>
+    <div class="screenshots">
+      <figure>
+        <img src="screenshots/desktop.png" alt="desktop screenshot" />
+        <figcaption>桌面 1440×900 · 来源：Playwright headless Chromium</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/mobile.png" alt="mobile screenshot" />
+        <figcaption>移动 375×667 · iPhone 12 viewport</figcaption>
+      </figure>
+    </div>
+    <div class="perf-strip">
+      <div class="perf-cell">
+        <span class="lab">LCP</span>
+        <span class="val ">—</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">HTTPS</span>
+        <span class="val ok">YES</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Mobile Lighthouse</span>
+        <span class="val">80</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Console Errors</span>
+        <span class="val bad">3</span>
+      </div>
+    </div>
+  </section>
+
+  
+
+  
+  <section class="section">
+    <p class="eyebrow">MAJOR · 3</p>
+    <h2>主要问题</h2>
+    <div class="issues-grid">
+      
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">homepage_title_clear</code>
+      </div>
+      <div class="issue-title">homepage_title_clear</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>title=&#39;## Bigger. Brighter. Better. Love the space you’re in.&#39; contains-name=false contains-niche=false</p>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">h1_unique</code>
+      </div>
+      <div class="issue-title">h1_unique</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>0 &lt;h1&gt; tags</p>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">local_schema_markup</code>
+      </div>
+      <div class="issue-title">local_schema_markup</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>no LocalBusiness JSON-LD</p>
+    </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">39 项规则明细</p>
+    <h2>每条规则命中情况</h2>
+    
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Google Business Profile</span>
+            <span class="dim-summary-score">61/100</span>
+            <span class="dim-summary-rules">8 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>has_website_link</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">website: https://www.roofspacerenovators.com.au/</td></tr><tr class="hit"><td><code>review_volume_vs_peers</code></td><td class="mark">✓</td><td class="num">25/25</td><td class="why">221 reviews</td></tr><tr class="hit"><td><code>average_rating</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">★5</td></tr><tr class="miss"><td><code>has_hours</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">no hours</td></tr><tr class="hit"><td><code>image_count</code></td><td class="mark">✓</td><td class="num">6/10</td><td class="why">6 images</td></tr><tr class="hit"><td><code>has_business_description</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">description present</td></tr><tr class="miss"><td><code>has_service_area</code></td><td class="mark">✗</td><td class="num">0/15</td><td class="why">no service area</td></tr><tr class="na"><td><code>owner_replies_to_reviews</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">reply rate not enriched</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Technical</span>
+            <span class="dim-summary-score">60/100</span>
+            <span class="dim-summary-rules">7 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>https_enabled</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">https</td></tr><tr class="na"><td><code>first_paint_under_3s</code></td><td class="mark">—</td><td class="num">0/25</td><td class="why">LCP not measured (need Playwright/Lighthouse)</td></tr><tr class="hit"><td><code>mobile_responsive</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">lighthouse mobile 80</td></tr><tr class="na"><td><code>core_web_vitals_pass</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">CWV not measured</td></tr><tr class="hit"><td><code>form_submittable</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">form submits</td></tr><tr class="miss"><td><code>no_console_errors</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">3 console errors</td></tr><tr class="hit"><td><code>favicon_and_meta</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">favicon: yes, meta: yes</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">UX &amp; Conversion</span>
+            <span class="dim-summary-score">90/100</span>
+            <span class="dim-summary-rules">7 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>above_fold_cta_within_5s</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">CTA keyword found above fold</td></tr><tr class="hit"><td><code>phone_visible_above_fold</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">phone digits above fold</td></tr><tr class="hit"><td><code>click_to_call_link</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">tel: link present</td></tr><tr class="hit"><td><code>quote_or_booking_form</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">&lt;form&gt; element present</td></tr><tr class="na"><td><code>contact_path_short</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">click-depth not measured</td></tr><tr class="hit"><td><code>has_gallery</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">gallery mentioned</td></tr><tr class="hit"><td><code>has_testimonials</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">testimonials section present</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Content</span>
+            <span class="dim-summary-score">70/100</span>
+            <span class="dim-summary-rules">6 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="miss"><td><code>homepage_title_clear</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">title=&#39;## Bigger. Brighter. Better. Love the space you’re in.&#39; contains-name=false contains-niche=false</td></tr><tr class="hit"><td><code>service_copy_specific</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">26 service-related verbs detected</td></tr><tr class="hit"><td><code>trust_signals_present</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">8 trust-keyword mentions</td></tr><tr class="hit"><td><code>localized_content</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">mentions brisbane</td></tr><tr class="hit"><td><code>evidence_of_recent_update</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">fresh year mentioned</td></tr><tr class="miss"><td><code>non_ai_filler_copy</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">AI-filler phrasing detected</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">SEO</span>
+            <span class="dim-summary-score">25/100</span>
+            <span class="dim-summary-rules">5 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>title_meta_present</code></td><td class="mark">✓</td><td class="num">25/25</td><td class="why">title=yes meta=yes</td></tr><tr class="miss"><td><code>h1_unique</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">0 &lt;h1&gt; tags</td></tr><tr class="miss"><td><code>local_schema_markup</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">no LocalBusiness JSON-LD</td></tr><tr class="miss"><td><code>image_alt_present</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">125 images, 10% with alt</td></tr><tr class="na"><td><code>sitemap_robots</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">/sitemap.xml + /robots.txt probe not run (need Playwright)</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Visual</span>
+            <span class="dim-summary-score">50/100</span>
+            <span class="dim-summary-rules">1 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="na"><td><code>visual_dimension_stub</code></td><td class="mark">—</td><td class="num">50/100</td><td class="why">visual dimension is filled by Block E (vision LLM autoresearch)</td></tr>
+      </tbody>
+    </table>
+        </details>
+  </section>
+
+  
+    <section class="section">
+      <p class="eyebrow">视觉审计</p>
+      <h2>The website presents a functional but visually dated design that could benefit from modernization to improve trust and conversion rates for local search customers.</h2>
+      <div class="visual-scores">
+        <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>6</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
+      </div>
+      <div class="issues-grid">
+        
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">hero_image_quality</code>
+      </div>
+      <div class="issue-title">Low-Quality Hero Image</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero image features a stock photo of two people pointing, appearing unnatural and low resolution.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Customers searching for a local service expect professionalism. A low-quality, generic image makes the business appear less credible and trustworthy. It feels like a placeholder, not a real company.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A high-quality, authentic photo of a completed roof renovation project in a local Brisbane setting. Focus on showcasing the quality of work.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the stock photo with a professional, high-resolution image of a real roof renovation in the Brisbane area. Prioritize authenticity over staged photos.</p>
+      
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">overused_gradient</code>
+      </div>
+      <div class="issue-title">Outdated Gradient Effects</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero section uses a strong blue-to-green gradient, and the logo also incorporates gradients.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Gradients like these were popular in the early 2000s and now make the design look dated and unprofessional. It detracts from the message and makes the business appear less current.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Flat color palettes with subtle shadows or textures. Use a single primary color and a complementary accent color.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove all gradients and replace them with flat colors. Use a modern color palette that reflects the brand&#39;s identity.</p>
+      
+    </div>
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">mobile_cta_visibility</code>
+      </div>
+      <div class="issue-title">CTA Below the Fold on Mobile</div>
+      <p class="issue-row"><span class="lab">观察到</span>On mobile, the &#39;Get in touch for a free quote!&#39; button is located far down the page, requiring significant scrolling.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Mobile users have short attention spans. If the primary call to action isn&#39;t immediately visible, they&#39;re likely to abandon the site before converting. This is especially critical for local search where users are often looking for immediate contact information.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A prominent, full-width call-to-action button fixed to the bottom of the screen on mobile, or positioned immediately below the hero section.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Make the &#39;Get in touch for a free quote!&#39; button sticky on mobile, or move it directly below the hero image. Ensure it&#39;s easily tappable and visible without scrolling.</p>
+      
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">font_legibility</code>
+      </div>
+      <div class="issue-title">Small Body Text</div>
+      <p class="issue-row"><span class="lab">观察到</span>The body text appears small and difficult to read, especially on desktop.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Small text strains the eyes and makes it difficult for visitors to consume the content. This leads to frustration and a higher bounce rate. People won&#39;t read what they can&#39;t easily see.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Body text should be at least 16px on desktop and 14px on mobile, with sufficient line height and contrast.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Increase the font size of all body text to at least 16px on desktop and 14px on mobile. Improve line height and contrast for better readability.</p>
+      
+    </div>
+    <div class="issue-card issue-minor">
+      <div class="issue-head">
+        <span class="issue-severity">MINOR</span>
+        <code class="issue-id">social_icon_clarity</code>
+      </div>
+      <div class="issue-title">Social Icons Lack Hover State</div>
+      <p class="issue-row"><span class="lab">观察到</span>The social media icons do not change state on hover.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Lack of visual feedback on hover makes the icons appear static and less interactive. Users may not realize they are clickable.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Social icons should have a subtle hover state (e.g., color change, slight animation) to indicate they are clickable.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Add a hover state to the social media icons to provide visual feedback to users.</p>
+      
+    </div>
+      </div>
+      
+        <div class="positives">
+          <p class="eyebrow accent-mint">需要保留的优点</p>
+          <ul><li>Clear contact information is present in the header.</li><li>The navigation menu is straightforward and easy to understand.</li><li>The use of a tagline (&#39;Same house, more home.&#39;) is memorable.</li></ul>
+        </div>
+      
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 优先级</p>
+          <ol><li>1. Make CTA visible above the fold on mobile</li><li>2. Replace hero image with authentic local photography</li><li>3. Modernize color palette and remove gradients</li></ol>
+        </div>
+    </section>
+
+  
+    <section class="section section-placeholder">
+      <h2>客户评论分析</h2>
+      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑）。当此 lead 被批准为正式销售目标后会补充：</p>
+      <ul class="placeholder-list">
+        <li>评论情感分布（5★/4★/3★/2★/1★ 占比）</li>
+        <li>商家回复率 + 最近一次回复时间</li>
+        <li>常见好评 / 差评关键词</li>
+        <li>5-8 条高质量 quote — 可直接放到 redesign 后的网站上</li>
+        <li>vs 同行评论平均水平的差距</li>
+      </ul>
+    </section>
+
+  
+    <section class="section section-placeholder">
+      <h2>速度对比 (前 / 后)</h2>
+      <p class="placeholder-note">⏳ 加载速度前后对比视频 — 等 ProfitsLocal 真实 mockup 网站上线后录制：</p>
+      <ul class="placeholder-list">
+        <li>当前网站慢速节流加载视频（模拟 4G 移动网络）</li>
+        <li>Mockup 网站同条件加载视频</li>
+        <li>side-by-side 对比 + 客户能直接看到的转化率影响估算</li>
+      </ul>
+    </section>
+
+  
+  <section class="section">
+    <p class="eyebrow accent-coral">推荐销售角度</p>
+    <h2>从 audit 数据推导出的切入点</h2>
+    <div class="sales-strip">
+      <ul>
+        <li>你已经有不错的 Google 流量基础，但网站设计在浪费这些点击</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="appendix">
+    <h2>Appendix</h2>
+    <p class="meta-row">
+      <span>Cheap audit version: <code>2026-05-10-v1</code></span>
+      <span>Detailed audit version: <code>2026-05-11-v1</code></span>
+      
+    </p>
+    <p class="meta-row" style="margin-top:8px">
+      <span>Visual auditor: ✓ filled (Block E)</span>
+      <span>Review analysis: ⏳ on-demand for high-value leads</span>
+      <span>Speed video: ⏳ post-mockup</span>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
