@@ -1,0 +1,228 @@
+{
+  "generatedAt": "2026-05-10T12:34:22.556Z",
+  "entity_input": {
+    "entityKey": "place_chijo3rniu9fkwsr8jworgytgmy",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Repair service"
+      ],
+      "address": "101 Kulcha St, Algester QLD 4115",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3276 1546",
+      "website": "https://brisbaneroofingsolutions.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roofing+Solutions+%7C+Roof+Restoration+%26+Repairs/data=!4m7!3m6!1s0x6b9145ef8ae77aa3:0x66822d66aca835f2!8m2!3d-27.626822!4d153.0280723!16s%2Fg%2F1tjxfv0t!19sChIJo3rniu9FkWsR8jWorGYtgmY?authuser=0&hl=en&rclk=1",
+      "rating": 4.8,
+      "review_count": 118,
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 49,
+      "recommendedAction": "manual_review",
+      "sourceQuery": "roof restoration in Brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": true,
+        "imageCount": 8,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+      "cid": "7386516257847653874",
+      "data_id": "0x6b9145ef8ae77aa3:0x66822d66aca835f2",
+      "websiteDomain": "brisbaneroofingsolutions.com.au",
+      "phoneDigits": "0732761546"
+    }
+  },
+  "profile": {
+    "leadId": "place_chijo3rniu9fkwsr8jworgytgmy",
+    "business_name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+    "niche": "roofing",
+    "enriched_at": "2026-05-10T12:34:22.554Z",
+    "contact": {
+      "phone": "(07) 3276 1546",
+      "website": "https://brisbaneroofingsolutions.com.au/",
+      "address": "101 Kulcha St, Algester QLD 4115",
+      "city": "Brisbane",
+      "social": {
+        "instagram": "https://www.instagram.com/p/DHc7HsfhVEO/",
+        "facebook": "https://www.facebook.com/brisbaneroofingsolutions/photos/a.138860539571477/1054884661302389/?type=3&locale=en_GB"
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+      "cid": "7386516257847653874",
+      "website_domain": "brisbaneroofingsolutions.com.au"
+    },
+    "decision_maker": null,
+    "third_party_reviews": [
+      {
+        "source": "yelp",
+        "url": "https://www.yelp.com/biz/brisbane-roofing-solutions-algester-3",
+        "title": "BRISBANE ROOFING SOLUTIONS - Updated May 2026 - Yelp - Yelp"
+      }
+    ],
+    "evidence_sources": [
+      {
+        "field": "social.instagram",
+        "source": "tinyfish",
+        "route": "enrich_reverse_phone",
+        "url": "https://www.instagram.com/p/DHc7HsfhVEO/",
+        "title": "Brisbane Roofing Solutions on Instagram",
+        "profile_score": 1
+      },
+      {
+        "field": "social.facebook",
+        "source": "tinyfish",
+        "route": "enrich_reverse_phone",
+        "url": "https://www.facebook.com/brisbaneroofingsolutions/photos/a.138860539571477/1054884661302389/?type=3&locale=en_GB",
+        "title": "Brisbane - Another roof professionally restored by the Brisbane ...",
+        "profile_score": 2
+      },
+      {
+        "field": "third_party_reviews",
+        "source": "tinyfish",
+        "route": "enrich_reverse_phone",
+        "url": "https://www.yelp.com/biz/brisbane-roofing-solutions-algester-3",
+        "title": "BRISBANE ROOFING SOLUTIONS - Updated May 2026 - Yelp - Yelp"
+      }
+    ],
+    "enrichment_trace": {
+      "queries_run": 6,
+      "queries_succeeded": 6,
+      "queries_failed": 0,
+      "total_results": 12,
+      "routes": [
+        {
+          "purpose": "enrich_discover_official",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 1
+        },
+        {
+          "purpose": "enrich_social_facebook",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 0
+        },
+        {
+          "purpose": "enrich_social_instagram",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 0
+        },
+        {
+          "purpose": "enrich_social_linkedin",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 0
+        },
+        {
+          "purpose": "enrich_reviews_thirdparty",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 1
+        },
+        {
+          "purpose": "enrich_reverse_phone",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 10
+        }
+      ]
+    },
+    "clientSlug": "brisbane-roofing-solutions-roof-restoration-repairs"
+  },
+  "routes_summary": [
+    {
+      "purpose": "enrich_discover_official",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 1,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Brisbane Roofing Solutions | Roof Restoration & Repairs - Poyst",
+          "url": "https://www.poyst.com/business/brisbane-roofing-solutions-roof-restoration-repairs"
+        }
+      ]
+    },
+    {
+      "purpose": "enrich_social_facebook",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 0,
+      "top_3": []
+    },
+    {
+      "purpose": "enrich_social_instagram",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 0,
+      "top_3": []
+    },
+    {
+      "purpose": "enrich_social_linkedin",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 0,
+      "top_3": []
+    },
+    {
+      "purpose": "enrich_reviews_thirdparty",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 1,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Brisbane Roofing Solutions | Roof Restoration & Repairs - Poyst",
+          "url": "https://www.poyst.com/business/brisbane-roofing-solutions-roof-restoration-repairs"
+        }
+      ]
+    },
+    {
+      "purpose": "enrich_reverse_phone",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 10,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Contact Us - Brisbane Roofing Solutions",
+          "url": "https://brisbaneroofingsolutions.com.au/contact-brs/"
+        },
+        {
+          "position": 2,
+          "title": "Brisbane West Roofing Services - Call (07) 3276 1546",
+          "url": "https://brisbaneroofingsolutions.com.au/brisbane-west-roofing-services/"
+        },
+        {
+          "position": 3,
+          "title": "BRISBANE ROOFING SOLUTIONS - Updated May 2026 - Yelp - Yelp",
+          "url": "https://www.yelp.com/biz/brisbane-roofing-solutions-algester-3"
+        }
+      ]
+    }
+  ],
+  "ledger_summary": {
+    "eventCount": 6,
+    "total_cost": 0,
+    "by_purpose": {
+      "enrich_discover_official": 1,
+      "enrich_social_facebook": 1,
+      "enrich_social_instagram": 1,
+      "enrich_social_linkedin": 1,
+      "enrich_reviews_thirdparty": 1,
+      "enrich_reverse_phone": 1
+    }
+  },
+  "total_elapsed_ms": 3172
+}
