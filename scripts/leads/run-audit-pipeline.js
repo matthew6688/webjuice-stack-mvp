@@ -45,6 +45,7 @@ const VISION_MODEL = process.env.VISION_OLLAMA_MODEL || 'qwen3.6:27b';
 const VISION_CAND_ID = 'ollama-qwen3.6-27b-nothink';
 const refetch = args.refetch === true;
 const withReviews = args['with-reviews'] === true;
+const uploadCloudinary = args['upload-cloudinary'] === true;
 
 let targets = [];
 if (args.all || args['all-audit-candidates']) {
@@ -56,7 +57,7 @@ if (args.all || args['all-audit-candidates']) {
   process.exit(1);
 }
 
-console.log(`[run-pipeline] targets=${targets.length}  refetch=${refetch}  reviews=${withReviews}`);
+console.log(`[run-pipeline] targets=${targets.length}  refetch=${refetch}  reviews=${withReviews}  cloudinary=${uploadCloudinary}`);
 
 const summary = [];
 for (const entityKey of targets) {
@@ -154,6 +155,7 @@ for (const entityKey of targets) {
   console.log(`  [stage ${withReviews ? '3-4' : '4'}/4] build HTML report${withReviews ? ' (+ reviews)' : ''}`);
   const buildArgs = ['scripts/leads/build-internal-report.js', '--entity-key', entityKey];
   if (withReviews) buildArgs.push('--with-reviews');
+  if (uploadCloudinary) buildArgs.push('--upload-cloudinary');
   const r = spawnSync('node', ['--env-file=.env.local', ...buildArgs], {
     cwd: repoRoot, stdio: 'inherit',
   });

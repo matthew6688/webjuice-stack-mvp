@@ -18,6 +18,7 @@ import { renderInternalAuditHtml } from '../../core/reports/internal-audit-html.
 import { captureIssueEvidence } from '../../core/audit/issue-evidence.js';
 import { fetchLeadReviews } from '../../core/reviews/fetch-reviews.js';
 import { analyzeReviews } from '../../core/reviews/analyze-reviews.js';
+import { uploadAuditAssets } from '../../core/assets/upload-audit-assets.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -44,6 +45,7 @@ console.log(`[build-internal-report] targets=${targets.length}`);
 
 const captureEvidence = args['capture-evidence'] !== false && args['no-evidence'] !== true;
 const withReviews = args['with-reviews'] === true;
+const uploadCloudinary = args['upload-cloudinary'] === true;
 const reviewsDir = path.join(repoRoot, 'data/v2/fixtures/reviews');
 
 const written = [];
@@ -142,6 +144,39 @@ for (const entityKey of targets) {
       if (out.videoPath) videoRel = `video/${path.basename(out.videoPath)}`;
     } catch (err) {
       console.warn(`  ⚠ evidence capture failed: ${err.message}`);
+    }
+  }
+
+  // Optional Cloudinary upload — when enabled, swap local paths for CDN URLs.
+  // Saves manifest at clients/<slug>/v2/cloudinary-manifest.json for re-use.
+  let cloudinaryManifest = null;
+  if (uploadCloudinary && Object.keys(evidenceById).length) {
+    const evidenceDir = path.join(clientV2Dir, 'evidence');
+    const videoPath = path.join(clientV2Dir, 'video', 'mobile-throttled.webm');
+    try {
+      const upl = await uploadAuditAssets({
+        entityKey,
+        evidenceDir,
+        videoPath: fs.existsSync(videoPath) ? videoPath : null,
+        clientSlug: slugRoot,
+      });
+      if (upl.ok) {
+        cloudinaryManifest = upl;
+        fs.writeFileSync(path.join(clientV2Dir, 'cloudinary-manifest.json'), JSON.stringify(upl, null, 2));
+        // Map CDN URLs onto evidenceById entries (file basenames match issueId)
+        for (const id of Object.keys(evidenceById)) {
+          const ev = evidenceById[id];
+          if (!ev?.relPath) continue;
+          const base = path.basename(ev.relPath, '.png').replace(/^issue-/, '');
+          if (upl.evidenceUrls[base]) ev.cdnUrl = upl.evidenceUrls[base];
+        }
+        if (upl.videoUrl) videoRel = upl.videoUrl;  // override local video URL
+        console.log(`  ✓ Cloudinary: ${Object.keys(upl.evidenceUrls).length} evidence + ${upl.videoUrl ? 'video' : 'no video'}`);
+      } else {
+        console.warn(`  ⚠ Cloudinary upload failed: ${upl.reason}`);
+      }
+    } catch (err) {
+      console.warn(`  ⚠ Cloudinary upload error: ${err.message}`);
     }
   }
 

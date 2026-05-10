@@ -109,11 +109,11 @@ function renderIssueEvidence(ev, screenshotDir) {
   if (!ev) return '';
   const t = ev.type;
   if (t === 'cropped' || t === 'element' || t === 'full') {
-    const rel = ev.relPath || ev.path?.split('/').pop();
-    if (!rel) return '';
+    const src = ev.cdnUrl || ev.relPath || ev.path?.split('/').pop();
+    if (!src) return '';
     return `<div class="issue-evidence">
       <p class="ev-lab">证据截图 · ${escapeHtml(ev.label || t)}</p>
-      <img src="${escapeHtml(rel)}" alt="evidence for ${escapeHtml(ev.label || '')}" />
+      <img src="${escapeHtml(src)}" alt="evidence for ${escapeHtml(ev.label || '')}" loading="lazy" />
     </div>`;
   }
   if (t === 'mobile-ref') {
@@ -181,8 +181,9 @@ function renderVisualSection({ visualAudit, evidenceById, screenshotDir }) {
   const issues = visualAudit.issues || [];
   return `
     <section class="section">
-      <p class="eyebrow">视觉审计</p>
-      <h2>${escapeHtml(visualAudit.summary || '')}</h2>
+      <p class="eyebrow">视觉审计 · Vision LLM</p>
+      <h2>设计观感的整体诊断</h2>
+      ${visualAudit.summary ? `<p class="lead-summary">${escapeHtml(visualAudit.summary)}</p>` : ''}
       <div class="visual-scores">
         <div class="vs"><span>新鲜度</span><strong>${visualAudit.freshness_score ?? '-'}</strong><small>/10</small></div>
         <div class="vs"><span>信任度</span><strong>${visualAudit.trust_score ?? '-'}</strong><small>/10</small></div>
@@ -224,8 +225,9 @@ function renderReviewSection({ reviewAnalysis, reviewSample, entity }) {
   const trustClass = a.trust_signal_strength === 'strong' ? 'mint' : (a.trust_signal_strength === 'weak' ? 'coral-soft' : 'citrus');
   return `
     <section class="section">
-      <p class="eyebrow">客户评论分析</p>
-      <h2>${escapeHtml(a.summary || '')}</h2>
+      <p class="eyebrow">客户评论分析 · Google Reviews</p>
+      <h2>客户在 Google 上怎么夸 / 怎么抱怨</h2>
+      ${a.summary ? `<p class="lead-summary">${escapeHtml(a.summary)}</p>` : ''}
       <div class="review-overview">
         <div class="review-stat"><span class="lab">Google 整体</span><strong>${escapeHtml(overall)}</strong></div>
         <div class="review-stat trust-${trustClass}"><span class="lab">信号强度</span><strong>${escapeHtml((a.trust_signal_strength || '-').toUpperCase())}</strong></div>
@@ -276,8 +278,8 @@ function renderSpeedComparisonSection({ videoUrl } = {}) {
   if (videoUrl) {
     return `
     <section class="section">
-      <p class="eyebrow">速度证据</p>
-      <h2>当前网站 · 慢速 4G 移动加载</h2>
+      <p class="eyebrow">加载速度证据 · 慢速 4G 移动网络</p>
+      <h2>客户在手机上看到的真实加载体验</h2>
       <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
       <video class="speed-video" controls preload="metadata" playsinline>
         <source src="${escapeHtml(videoUrl)}" type="video/webm" />
@@ -361,6 +363,11 @@ export function renderInternalAuditHtml({
   .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
 
   .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .lead-summary { margin: 0 0 14px; padding: 14px 18px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 14.5px; font-weight: 700; line-height: 1.65; max-width: 760px; word-break: break-word; font-family: var(--sans); }
+  .dim-meta { margin: -8px 0 16px; font-size: 12.5px; font-weight: 800; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+  .dim-meta strong { color: var(--coral); font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .triggers-block { margin-top: 22px; }
+  .triggers-block .eyebrow { margin: 0 0 8px; }
   .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
 
@@ -403,8 +410,9 @@ export function renderInternalAuditHtml({
   .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
   .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
   .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-  .issue-row { margin: 4px 0; font-size: 13px; line-height: 1.5; font-weight: 700; }
-  .issue-row .lab { display: inline-block; min-width: 90px; font-size: 10px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 8px; vertical-align: top; }
+  .issue-row { margin: 10px 0 0; font-size: 13px; line-height: 1.6; font-weight: 700; }
+  .issue-row .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 3px; }
+  .issue-row.fix { padding-top: 8px; margin-top: 12px; border-top: 1.5px dashed rgba(23,25,28,0.18); }
   .issue-row.fix .lab { color: var(--coral); }
 
   details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
@@ -529,10 +537,11 @@ export function renderInternalAuditHtml({
 
   <section class="section">
     <p class="eyebrow">总体判断</p>
-    <h2>${escapeHtml(reason || 'audit pending')}</h2>
+    <h2>审计概览</h2>
+    <p class="lead-summary">${escapeHtml(reason || 'audit pending')}</p>
     ${triggers.length ? `
-      <div>
-        <p class="eyebrow accent-coral" style="margin-top:18px">已触发 hard triggers</p>
+      <div class="triggers-block">
+        <p class="eyebrow accent-coral">已触发 hard triggers</p>
         <div class="trigger-list">
           ${triggers.map((t) => `<span class="trigger-pill">${escapeHtml(t)}</span>`).join('')}
         </div>
@@ -555,8 +564,9 @@ export function renderInternalAuditHtml({
   </section>
 
   <section class="section">
-    <p class="eyebrow">6 维度审计 At-a-glance</p>
-    <h2>得分 ${auditScore}/100 → ${escapeHtml(decisionLabel(decision))}</h2>
+    <p class="eyebrow">六维度评分总览</p>
+    <h2>每个维度的强弱在哪</h2>
+    <p class="dim-meta"><strong>${auditScore}/100</strong> · ${escapeHtml(decisionLabel(decision))}</p>
     <div class="dim-grid">
       ${DIMENSION_ORDER.map((k) => {
         const d = dims[k] || { score: 0 };
@@ -572,8 +582,8 @@ export function renderInternalAuditHtml({
   </section>
 
   <section class="section">
-    <p class="eyebrow">网站抓取证据</p>
-    <h2>当前网站快照</h2>
+    <p class="eyebrow">现场证据 · 桌面 + 移动</p>
+    <h2>客户访问时看到的页面</h2>
     <div class="screenshots">
       <figure>
         <img src="${escapeHtml(screenshotDir)}/desktop.png" alt="desktop screenshot" />
@@ -606,8 +616,8 @@ export function renderInternalAuditHtml({
 
   ${critical.length ? `
   <section class="section">
-    <p class="eyebrow accent-coral">CRITICAL · ${critical.length}</p>
-    <h2>关键问题</h2>
+    <p class="eyebrow accent-coral">关键问题 · ${critical.length} 项</p>
+    <h2>立刻在伤害成交的硬伤</h2>
     <div class="issues-grid">
       ${critical.map((i) => renderIssue({ ...i, severity: 'critical' }, { evidenceById, screenshotDir })).join('')}
     </div>
@@ -615,16 +625,16 @@ export function renderInternalAuditHtml({
 
   ${major.length ? `
   <section class="section">
-    <p class="eyebrow">MAJOR · ${major.length}</p>
-    <h2>主要问题</h2>
+    <p class="eyebrow">主要问题 · ${major.length} 项</p>
+    <h2>影响转化的明显短板</h2>
     <div class="issues-grid">
       ${major.map((i) => renderIssue({ ...i, severity: 'major' }, { evidenceById, screenshotDir })).join('')}
     </div>
   </section>` : ''}
 
   <section class="section">
-    <p class="eyebrow">39 项规则明细</p>
-    <h2>每条规则命中情况</h2>
+    <p class="eyebrow">规则细节 · 39 项明细</p>
+    <h2>每条规则的命中与失分原因</h2>
     ${DIMENSION_ORDER.map((k) => {
       const d = dims[k];
       if (!d) return '';
@@ -648,8 +658,8 @@ export function renderInternalAuditHtml({
 
   ${salesAngles ? `
   <section class="section">
-    <p class="eyebrow accent-coral">推荐销售角度</p>
-    <h2>从 audit 数据推导出的切入点</h2>
+    <p class="eyebrow accent-coral">销售切入点</p>
+    <h2>从 audit 数据自动推导的开场话术</h2>
     <div class="sales-strip">
       <ul>
         ${salesAngles.map((a) => `<li>${escapeHtml(a)}</li>`).join('')}
