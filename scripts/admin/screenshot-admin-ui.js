@@ -34,8 +34,16 @@ fs.mkdirSync(fixturesDir, { recursive: true });
 const EXAMPLE_LEAD_SLUG = 'place_chijo3rniu9fkwsr8jworgytgmy';
 
 const targets = [
-  { name: 'admin-scoring', url: `${BASE}/admin/scoring`, fullPage: true },
-  { name: `admin-lead-${EXAMPLE_LEAD_SLUG.slice(0, 18)}`, url: `${BASE}/admin/leads/${EXAMPLE_LEAD_SLUG}`, fullPage: true },
+  { name: 'admin-overview', url: `${BASE}/admin`, fullPage: false },
+  { name: 'admin-leads-list', url: `${BASE}/admin/leads`, fullPage: false },
+  { name: 'admin-queue', url: `${BASE}/admin/queue`, fullPage: false },
+  { name: 'admin-templates', url: `${BASE}/admin/templates`, fullPage: false },
+  { name: 'admin-reports', url: `${BASE}/admin/reports`, fullPage: false },
+  { name: 'admin-finance', url: `${BASE}/admin/finance`, fullPage: false },
+  { name: 'admin-intakes', url: `${BASE}/admin/intakes`, fullPage: false },
+  { name: 'admin-settings', url: `${BASE}/admin/settings`, fullPage: false },
+  { name: 'admin-scoring', url: `${BASE}/admin/scoring`, fullPage: false },
+  { name: `admin-lead-${EXAMPLE_LEAD_SLUG.slice(0, 18)}`, url: `${BASE}/admin/leads/${EXAMPLE_LEAD_SLUG}`, fullPage: false },
 ];
 
 const browser = await chromium.launch({ headless: true });
