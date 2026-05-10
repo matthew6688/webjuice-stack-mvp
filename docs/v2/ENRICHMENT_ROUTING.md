@@ -7,6 +7,8 @@
 ## 路由顺序（fail-soft，先 free 后 paid）
 
 > **2026-05-10 修订：** 实测 Tinyfish `api.search.tinyfish.ai` + `api.fetch.tinyfish.ai` 都是免费 + 结构化输出（search 1.68s/10 SERP，fetch 5.4s/markdown），质量足够当 T0 主力。Dokobot 退到 JS-heavy / 登录墙场景。
+>
+> **Rate limit：** Tinyfish 免费但可能有每分钟限速。`core/extractors/tinyfish.js` 必须带本地 token-bucket（默认 30 req/min，可调），429 自动 backoff + 跳到下一档（不堆 retry）；命中限速也写 ledger 一条 `provider_rate_limited` 事件，便于事后调阀值。
 
 Search 路由（找信息源）：
 
