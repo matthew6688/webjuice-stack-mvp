@@ -6,38 +6,66 @@
 
 ## 路由顺序（fail-soft，先 free 后 paid）
 
+> **2026-05-10 修订：** 实测 Tinyfish `api.search.tinyfish.ai` + `api.fetch.tinyfish.ai` 都是免费 + 结构化输出（search 1.68s/10 SERP，fetch 5.4s/markdown），质量足够当 T0 主力。Dokobot 退到 JS-heavy / 登录墙场景。
+
+Search 路由（找信息源）：
+
 ```
-                                ┌────────────────────────────┐
-  enrichment task arrives  ───►│ 1. Dokobot (Doko Search /  │  T0  本地 Chrome，免费
-                               │    Doko Research) — local   │      已装：2.10.10
-                               └─────────┬──────────────────┘
-                                         │ insufficient
-                                         ▼
-                               ┌────────────────────────────┐
-                               │ 2. DuckDuckGo HTML scrape   │  T0  Playwright 抓 SERP
-                               │    via local Playwright     │      免费，速率限制自控
-                               └─────────┬──────────────────┘
-                                         │ insufficient
-                                         ▼
-                               ┌────────────────────────────┐
-                               │ 3. Tinyfish search skill    │  T0/T1  本地 skill，免费
-                               │    (already in repo)        │
-                               └─────────┬──────────────────┘
-                                         │ insufficient
-                                         ▼
-                               ┌────────────────────────────┐
-                               │ 4. Firecrawl                │  T1 (free quota) → T2
-                               │    multi-key rotation       │  超出免费额度计成本
-                               └─────────┬──────────────────┘
-                                         │ still insufficient
-                                         ▼
-                               ┌────────────────────────────┐
-                               │ 5. Perplexity (sonar)       │  T2  最后一档，按调用计费
-                               │    multi-key rotation       │
-                               └────────────────────────────┘
+  search query arrives ───►┌────────────────────────────┐
+                           │ 1. Tinyfish Search          │  T0  免费，结构化 SERP
+                           │    api.search.tinyfish.ai   │      默认入口
+                           └────────┬───────────────────┘
+                                    │ fail / insufficient
+                                    ▼
+                           ┌────────────────────────────┐
+                           │ 2. Dokobot Doko Search      │  T0  本地 Chrome
+                           │    (local skill)            │      JS-heavy 场景
+                           └────────┬───────────────────┘
+                                    │ fail
+                                    ▼
+                           ┌────────────────────────────┐
+                           │ 3. DuckDuckGo via Playwright│  T0  备援 SERP
+                           └────────┬───────────────────┘
+                                    │ fail
+                                    ▼
+                           ┌────────────────────────────┐
+                           │ 4. Perplexity sonar-online  │  T2  rotation，最后兜底
+                           └────────────────────────────┘
 ```
 
-`insufficient` 的判断由调用方给出（例如：返回内容字符数不足、关键字段缺失、search snippet 不命中预期）。每一档都尝试一次，失败或返回不够才升档。
+Fetch 路由（抓页面内容）：
+
+```
+  url arrives ───►┌────────────────────────────┐
+                  │ 1. Tinyfish Fetch           │  T0  免费，markdown 输出
+                  │    api.fetch.tinyfish.ai    │      默认入口
+                  └────────┬───────────────────┘
+                           │ fail / blocked / JS-rendered empty
+                           ▼
+                  ┌────────────────────────────┐
+                  │ 2. Dokobot read --local     │  T0  本地 Chrome 渲染
+                  │    (local skill)            │      JS-heavy / 登录墙
+                  └────────┬───────────────────┘
+                           │ fail
+                           ▼
+                  ┌────────────────────────────┐
+                  │ 3. Firecrawl                │  T1 (free quota) → T2
+                  │    multi-key rotation       │  仍失败时计成本
+                  └────────────────────────────┘
+```
+
+Synthesis 路由（要 LLM 综合多源得到一段背景描述）：
+
+```
+  research question ───►┌────────────────────────────┐
+                        │ Perplexity sonar            │  T2  rotation
+                        │ + grounding URLs from above │
+                        └────────────────────────────┘
+```
+
+Perplexity 不和 Tinyfish 抢"找内容"这一步——它的强项是把已有 URL 列表 + 问题喂进去拿到 LLM 综合答案。Synthesis 是 enrichment 的最后一档可选输出。
+
+`fail / insufficient` 判断由调用方给出（例如：HTTP 非 200、返回内容字符数不足、关键字段缺失、search snippet 0 命中）。每一档尝试一次，失败或不够才升档。
 
 ## Multi-key rotation
 
@@ -94,12 +122,13 @@ T0（dokobot / DDG / tinyfish）也登记，`amount=0`，但记 `units`。这样
 
 | 模块 | 路径 | 职责 |
 |---|---|---|
-| Provider router | `core/leads/enrichment.js` | 按上面顺序串行降级；返回标准化 `EnrichmentResult` |
-| Dokobot client | `core/scrape/dokobot.js` | spawn `dokobot read --local` / Doko Search skill |
-| DDG client | `core/scrape/ddg.js` | Playwright 抓 SERP |
-| Tinyfish search | `core/extractors/tinyfish.js`（扩展） | 复用现有 extractor，加 search 入口 |
-| Firecrawl rotation | `core/extractors/firecrawl.js`（扩展） | 接 key-rotation；现有单 key 调用平滑迁移 |
-| Perplexity client | `core/llm/perplexity.js` | 新增；接 key-rotation 和 ledger |
+| Provider router | `core/leads/enrichment.js` | 按上面 search/fetch/synthesis 三组顺序降级；返回标准化 `EnrichmentResult` |
+| Tinyfish search | `core/extractors/tinyfish.js`（扩展） | 加 `search()` 入口调 `api.search.tinyfish.ai`；返回 [{position, title, snippet, url}] |
+| Tinyfish fetch | `core/extractors/tinyfish.js`（扩展） | 加 `fetch()` 入口调 `api.fetch.tinyfish.ai`；返回 markdown + title/description |
+| Dokobot client | `core/scrape/dokobot.js` | spawn `dokobot read --local` 和 Doko Search skill；JS-heavy / 登录墙场景 |
+| DDG client | `core/scrape/ddg.js` | Playwright 抓 SERP；备援 search |
+| Firecrawl rotation | `core/extractors/firecrawl.js`（扩展） | 接 key-rotation；现有单 key 调用平滑迁移；最后档 fetch |
+| Perplexity client | `core/llm/perplexity.js` | 新增；接 key-rotation 和 ledger；用于 synthesis 而非 retrieval |
 | Key rotation | `core/llm/key-rotation.js` | 通用 least-loaded 选 key；失败降级 cooldown |
 | Provider keys store | `data/admin/provider-keys.json`（gitignored） | Admin 编辑的 key 元数据；key 真值仍在 .env |
 | Admin UI | `src/pages/admin/settings.astro`（扩展） | 加 multi-key 元数据管理 tab |
