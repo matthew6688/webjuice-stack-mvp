@@ -80,11 +80,38 @@ assert.ok(['audit_candidate', 'manual_review'].includes(v1BadFullAudit.action),
 assert.notEqual(v1BadFullAudit.action, 'skip', 'V1 known-bad case must NOT skip in V2');
 assertions.v1_known_bad_does_not_skip_in_v2 = true;
 
-// Relevance fail
-const wrongCategory = { ...strongCandidate, latest: { ...strongCandidate.latest, category: 'Pizza takeaway' } };
+// Relevance fail — name AND category AND categories array all non-roofing.
+// Note: under the expanded haystack (cat + categories + name), a wrong
+// PRIMARY category is forgiven if name still says "roofing"; that's the
+// desired behavior (Roof Space Renovators has primary "Home improvement
+// store" but is clearly a roofer).
+const wrongCategory = {
+  ...strongCandidate,
+  latest: {
+    ...strongCandidate.latest,
+    name: 'Pete\'s Pizza Palace',
+    category: 'Pizza takeaway',
+    categories: ['Pizza takeaway', 'Italian restaurant'],
+  },
+};
 const wrongCatStage1 = gbpTriage(wrongCategory, { sourceQuery: 'roof restoration brisbane' });
 assert.equal(wrongCatStage1.relevance_pass, false);
 assertions.relevance_fail_detected = true;
+
+// Misclassified roofer — primary category is non-roofing but name reveals
+// the business. Should pass relevance under expanded haystack.
+const misclassifiedRoofer = {
+  ...strongCandidate,
+  latest: {
+    ...strongCandidate.latest,
+    name: 'Roof Space Renovators',
+    category: 'Home improvement store',
+    categories: ['Home improvement store', 'Skylight contractor'],
+  },
+};
+const misStage1 = gbpTriage(misclassifiedRoofer, { sourceQuery: 'roof restoration brisbane' });
+assert.equal(misStage1.relevance_pass, true, 'misclassified-but-named roofer should pass relevance');
+assertions.misclassified_roofer_passes = true;
 
 // No-website with phone + reachable → starter_candidate
 const noWebsiteReachable = {

@@ -165,11 +165,15 @@ for (const entityKey of targets) {
       fs.copyFileSync(path.join(srcShotDir, f), path.join(publicDir, 'screenshots', f));
     }
   }
-  // Copy evidence + video into public/
+  // Copy evidence + video into public/. Wipe destination first so stale
+  // PNGs from prior issue IDs don't persist.
   for (const sub of ['evidence', 'video']) {
     const src = path.join(clientV2Dir, sub);
     if (!fs.existsSync(src)) continue;
     const dst = path.join(publicDir, sub);
+    if (fs.existsSync(dst)) {
+      for (const f of fs.readdirSync(dst)) fs.unlinkSync(path.join(dst, f));
+    }
     fs.mkdirSync(dst, { recursive: true });
     for (const f of fs.readdirSync(src)) {
       fs.copyFileSync(path.join(src, f), path.join(dst, f));
@@ -215,6 +219,13 @@ async function captureForLead({ url, detailedAudit, visualAudit, evidenceDir, vi
     ...(detailedAudit.issues?.major || []).map((i) => ({ ...i, severity: 'major' })),
     ...((visualAudit?.issues || []).map((i) => ({ ...i, severity: i.severity || 'major' }))),
   ];
+  // Clear stale PNGs from previous runs — vision LLM produces different
+  // issue IDs across runs, so old files would accumulate forever.
+  if (fs.existsSync(evidenceDir)) {
+    for (const f of fs.readdirSync(evidenceDir)) {
+      if (f.endsWith('.png')) fs.unlinkSync(path.join(evidenceDir, f));
+    }
+  }
   fs.mkdirSync(evidenceDir, { recursive: true });
   fs.mkdirSync(videoDir, { recursive: true });
 
