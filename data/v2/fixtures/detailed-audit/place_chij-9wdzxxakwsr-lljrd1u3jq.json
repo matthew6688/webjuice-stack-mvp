@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T14:07:27.435Z",
+  "generatedAt": "2026-05-10T14:11:42.128Z",
   "entity_input": {
     "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
     "latest": {
@@ -41,23 +41,27 @@
       "phoneDigits": "0489263653"
     }
   },
-  "fetch_summary": null,
+  "fetch_summary": {
+    "url": "http://www.queenslandroofing.com.au/",
+    "markdown_length": 0
+  },
   "detailed_audit": {
     "business_id": "place_chij-9wdzxxakwsr-lljrd1u3jq",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T14:07:27.435Z",
-    "audit_score": 16,
+    "audited_at": "2026-05-10T14:11:42.128Z",
+    "audit_score": 23,
     "dimension_scores": {
       "gbp": 48,
-      "technical": 0,
+      "technical": 23,
       "ux_conversion": 0,
       "content": 10,
-      "seo": 0,
+      "seo": 20,
       "visual": 50
     },
     "decision": "strong_redesign",
-    "qualification_reason": "audit_score=16 → strong_redesign · weakest: technical 0, ux_conversion 0 · fired: no_https, no_visible_cta_or_phone · 3 critical issues",
+    "qualification_reason": "audit_score=23 → strong_redesign · weakest: ux_conversion 0, content 10 · fired: mobile_broken, no_https, no_visible_cta_or_phone · 3 critical issues",
     "hard_triggers": [
+      "mobile_broken",
       "no_https",
       "no_visible_cta_or_phone"
     ],
@@ -81,6 +85,11 @@
       ],
       "major": [
         {
+          "id": "click_to_call_link",
+          "rationale": "no tel: link",
+          "max": 10
+        },
+        {
           "id": "homepage_title_clear",
           "rationale": "title='' contains-name=false contains-niche=false",
           "max": 20
@@ -94,6 +103,16 @@
           "id": "trust_signals_present",
           "rationale": "0 trust-keyword mentions",
           "max": 20
+        },
+        {
+          "id": "h1_unique",
+          "rationale": "0 <h1> tags",
+          "max": 20
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20
         }
       ],
       "minor": [
@@ -106,6 +125,16 @@
           "id": "has_service_area",
           "rationale": "no service area",
           "max": 15
+        },
+        {
+          "id": "favicon_and_meta",
+          "rationale": "favicon: no, meta: no",
+          "max": 5
+        },
+        {
+          "id": "quote_or_booking_form",
+          "rationale": "no form",
+          "max": 20
         },
         {
           "id": "has_gallery",
@@ -126,6 +155,11 @@
           "id": "evidence_of_recent_update",
           "rationale": "no recent year (≤ 1 year ago)",
           "max": 15
+        },
+        {
+          "id": "title_meta_present",
+          "rationale": "title=no meta=no",
+          "max": 25
         }
       ]
     },
@@ -197,8 +231,8 @@
       },
       "technical": {
         "dimension": "technical",
-        "score": 0,
-        "earned": 0,
+        "score": 23,
+        "earned": 23,
         "max": 100,
         "rules": [
           {
@@ -218,11 +252,10 @@
           },
           {
             "id": "mobile_responsive",
-            "earned": 0,
+            "earned": 18,
             "max": 30,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml available"
+            "hit": true,
+            "rationale": "lighthouse mobile 50"
           },
           {
             "id": "core_web_vitals_pass",
@@ -242,19 +275,17 @@
           },
           {
             "id": "no_console_errors",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "console not captured"
+            "hit": true,
+            "rationale": "0 console errors"
           },
           {
             "id": "favicon_and_meta",
             "earned": 0,
             "max": 5,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "favicon: no, meta: no"
           }
         ]
       },
@@ -283,16 +314,14 @@
             "earned": 0,
             "max": 10,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "no tel: link"
           },
           {
             "id": "quote_or_booking_form",
             "earned": 0,
             "max": 20,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "no form"
           },
           {
             "id": "contact_path_short",
@@ -370,8 +399,8 @@
       },
       "seo": {
         "dimension": "seo",
-        "score": 0,
-        "earned": 0,
+        "score": 20,
+        "earned": 20,
         "max": 100,
         "rules": [
           {
@@ -379,32 +408,28 @@
             "earned": 0,
             "max": 25,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "title=no meta=no"
           },
           {
             "id": "h1_unique",
             "earned": 0,
             "max": 20,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "0 <h1> tags"
           },
           {
             "id": "local_schema_markup",
             "earned": 0,
             "max": 20,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "no LocalBusiness JSON-LD"
           },
           {
             "id": "image_alt_present",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "0 images, 100% with alt"
           },
           {
             "id": "sitemap_robots",
@@ -412,7 +437,7 @@
             "max": 15,
             "hit": false,
             "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
           }
         ]
       },
@@ -436,9 +461,9 @@
     "inputs_present": {
       "entity": true,
       "business_profile": false,
-      "fetch_payload": false,
-      "raw_html": false,
-      "lighthouse": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
       "visual_score_provided": false
     }
   }

@@ -18,7 +18,10 @@ import assert from 'assert/strict';
 import { fileURLToPath } from 'url';
 import { detailedAudit, reloadConfig } from '../../core/scoring/detailed-audit.js';
 import { tinyfishFetchUrls } from '../../core/extractors/tinyfish.js';
+import { siteFetchFull } from '../../core/audit/site-fetch-full.js';
 import { clearAllBuckets } from '../../core/util/token-bucket.js';
+
+const USE_PLAYWRIGHT = process.argv.includes('--playwright') || true;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -57,18 +60,28 @@ for (const entityKey of targetEntityKeys) {
   console.log(`[fetch] ${entity.latest?.name?.slice(0, 40)} ... ${url}`);
 
   let fetchPayload = null;
+  const screenshotDir = path.join(fixturesDir, 'screenshots', entityKey);
   try {
-    const r = await tinyfishFetchUrls({
-      urls: [url], format: 'markdown',
-      ledgerPath: tmpLedger,
-      leadId: entityKey,
-      clientSlug: slugifyName(entity.latest?.name),
-      stage: 'detailed_audit_test',
-      purpose: 'detailed_audit_fetch',
-    });
-    const result = (r.results || [])[0];
-    if (result?.text) {
-      fetchPayload = { url: result.final_url || url, markdown: result.text };
+    if (USE_PLAYWRIGHT) {
+      fetchPayload = await siteFetchFull({
+        url, screenshotDir,
+        ledgerPath: tmpLedger,
+        leadId: entityKey,
+        clientSlug: slugifyName(entity.latest?.name),
+        stage: 'detailed_audit_test',
+        purpose: 'detailed_audit_full_fetch',
+      });
+    } else {
+      const r = await tinyfishFetchUrls({
+        urls: [url], format: 'markdown',
+        ledgerPath: tmpLedger,
+        leadId: entityKey,
+        clientSlug: slugifyName(entity.latest?.name),
+        stage: 'detailed_audit_test',
+        purpose: 'detailed_audit_fetch',
+      });
+      const result = (r.results || [])[0];
+      if (result?.text) fetchPayload = { url: result.final_url || url, markdown: result.text };
     }
   } catch (err) {
     console.warn(`[fetch] failed for ${entityKey}: ${err.message}`);

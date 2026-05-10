@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T14:07:30.971Z",
+  "generatedAt": "2026-05-10T14:11:49.973Z",
   "entity_input": {
     "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
     "latest": {
@@ -44,54 +44,43 @@
     }
   },
   "fetch_summary": {
-    "url": "https://roofspacerenovators.com.au/",
-    "markdown_length": 384
+    "url": "https://www.roofspacerenovators.com.au/",
+    "markdown_length": 26591
   },
   "detailed_audit": {
     "business_id": "place_chija7rmbn38k2srv29x1ubwqmg",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T14:07:30.971Z",
-    "audit_score": 24,
+    "audited_at": "2026-05-10T14:11:49.973Z",
+    "audit_score": 64,
     "dimension_scores": {
       "gbp": 61,
-      "technical": 20,
-      "ux_conversion": 0,
-      "content": 25,
-      "seo": 0,
+      "technical": 60,
+      "ux_conversion": 90,
+      "content": 70,
+      "seo": 25,
       "visual": 50
     },
-    "decision": "strong_redesign",
-    "qualification_reason": "audit_score=24 → strong_redesign · weakest: ux_conversion 0, seo 0 · fired: no_visible_cta_or_phone · 2 critical issues",
+    "decision": "moderate_candidate",
+    "qualification_reason": "audit_score=64 → moderate_candidate · weakest: seo 25, visual 50 · fired: high_traction_old_site",
     "hard_triggers": [
-      "no_visible_cta_or_phone"
+      "high_traction_old_site"
     ],
     "issues": {
-      "critical": [
-        {
-          "id": "above_fold_cta_within_5s",
-          "rationale": "no CTA keyword in first 1500 chars",
-          "max": 30
-        },
-        {
-          "id": "phone_visible_above_fold",
-          "rationale": "phone hidden below fold or missing",
-          "max": 20
-        }
-      ],
+      "critical": [],
       "major": [
         {
           "id": "homepage_title_clear",
-          "rationale": "title='' contains-name=false contains-niche=false",
+          "rationale": "title='## Bigger. Brighter. Better. Love the space you’re in.' contains-name=false contains-niche=false",
           "max": 20
         },
         {
-          "id": "service_copy_specific",
-          "rationale": "0 service-related verbs detected",
+          "id": "h1_unique",
+          "rationale": "0 <h1> tags",
           "max": 20
         },
         {
-          "id": "trust_signals_present",
-          "rationale": "0 trust-keyword mentions",
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
           "max": 20
         }
       ],
@@ -107,19 +96,19 @@
           "max": 15
         },
         {
-          "id": "has_gallery",
-          "rationale": "no gallery",
+          "id": "no_console_errors",
+          "rationale": "3 console errors",
           "max": 5
         },
         {
-          "id": "has_testimonials",
-          "rationale": "no testimonials",
-          "max": 5
+          "id": "non_ai_filler_copy",
+          "rationale": "AI-filler phrasing detected",
+          "max": 10
         },
         {
-          "id": "localized_content",
-          "rationale": "no local mention",
-          "max": 15
+          "id": "image_alt_present",
+          "rationale": "125 images, 10% with alt",
+          "max": 20
         }
       ]
     },
@@ -191,8 +180,8 @@
       },
       "technical": {
         "dimension": "technical",
-        "score": 20,
-        "earned": 20,
+        "score": 60,
+        "earned": 60,
         "max": 100,
         "rules": [
           {
@@ -212,11 +201,10 @@
           },
           {
             "id": "mobile_responsive",
-            "earned": 0,
+            "earned": 30,
             "max": 30,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml available"
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
           },
           {
             "id": "core_web_vitals_pass",
@@ -228,65 +216,60 @@
           },
           {
             "id": "form_submittable",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "form submit not tested"
+            "hit": true,
+            "rationale": "form submits"
           },
           {
             "id": "no_console_errors",
             "earned": 0,
             "max": 5,
             "hit": false,
-            "data_missing": true,
-            "rationale": "console not captured"
+            "rationale": "3 console errors"
           },
           {
             "id": "favicon_and_meta",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "favicon: yes, meta: yes"
           }
         ]
       },
       "ux_conversion": {
         "dimension": "ux_conversion",
-        "score": 0,
-        "earned": 0,
+        "score": 90,
+        "earned": 90,
         "max": 100,
         "rules": [
           {
             "id": "above_fold_cta_within_5s",
-            "earned": 0,
+            "earned": 30,
             "max": 30,
-            "hit": false,
-            "rationale": "no CTA keyword in first 1500 chars"
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
           },
           {
             "id": "phone_visible_above_fold",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "rationale": "phone hidden below fold or missing"
+            "hit": true,
+            "rationale": "phone digits above fold"
           },
           {
             "id": "click_to_call_link",
-            "earned": 0,
+            "earned": 10,
             "max": 10,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "tel: link present"
           },
           {
             "id": "quote_or_booking_form",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "<form> element present"
           },
           {
             "id": "contact_path_short",
@@ -298,24 +281,24 @@
           },
           {
             "id": "has_gallery",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "rationale": "no gallery"
+            "hit": true,
+            "rationale": "gallery mentioned"
           },
           {
             "id": "has_testimonials",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "rationale": "no testimonials"
+            "hit": true,
+            "rationale": "testimonials section present"
           }
         ]
       },
       "content": {
         "dimension": "content",
-        "score": 25,
-        "earned": 25,
+        "score": 70,
+        "earned": 70,
         "max": 100,
         "rules": [
           {
@@ -323,28 +306,28 @@
             "earned": 0,
             "max": 20,
             "hit": false,
-            "rationale": "title='' contains-name=false contains-niche=false"
+            "rationale": "title='## Bigger. Brighter. Better. Love the space you’re in.' contains-name=false contains-niche=false"
           },
           {
             "id": "service_copy_specific",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "rationale": "0 service-related verbs detected"
+            "hit": true,
+            "rationale": "26 service-related verbs detected"
           },
           {
             "id": "trust_signals_present",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "rationale": "0 trust-keyword mentions"
+            "hit": true,
+            "rationale": "8 trust-keyword mentions"
           },
           {
             "id": "localized_content",
-            "earned": 0,
+            "earned": 15,
             "max": 15,
-            "hit": false,
-            "rationale": "no local mention"
+            "hit": true,
+            "rationale": "mentions brisbane"
           },
           {
             "id": "evidence_of_recent_update",
@@ -355,50 +338,46 @@
           },
           {
             "id": "non_ai_filler_copy",
-            "earned": 10,
+            "earned": 0,
             "max": 10,
-            "hit": true,
-            "rationale": "no obvious AI-filler"
+            "hit": false,
+            "rationale": "AI-filler phrasing detected"
           }
         ]
       },
       "seo": {
         "dimension": "seo",
-        "score": 0,
-        "earned": 0,
+        "score": 25,
+        "earned": 25,
         "max": 100,
         "rules": [
           {
             "id": "title_meta_present",
-            "earned": 0,
+            "earned": 25,
             "max": 25,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "title=yes meta=yes"
           },
           {
             "id": "h1_unique",
             "earned": 0,
             "max": 20,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "0 <h1> tags"
           },
           {
             "id": "local_schema_markup",
             "earned": 0,
             "max": 20,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "no LocalBusiness JSON-LD"
           },
           {
             "id": "image_alt_present",
             "earned": 0,
             "max": 20,
             "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "125 images, 10% with alt"
           },
           {
             "id": "sitemap_robots",
@@ -406,7 +385,7 @@
             "max": 15,
             "hit": false,
             "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
           }
         ]
       },
@@ -431,8 +410,8 @@
       "entity": true,
       "business_profile": false,
       "fetch_payload": true,
-      "raw_html": false,
-      "lighthouse": false,
+      "raw_html": true,
+      "lighthouse": true,
       "visual_score_provided": false
     }
   }

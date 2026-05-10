@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T14:07:22.018Z",
+  "generatedAt": "2026-05-10T14:11:37.978Z",
   "entity_input": {
     "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "latest": {
@@ -40,57 +40,32 @@
       "phoneDigits": "0731321605"
     }
   },
-  "fetch_summary": null,
+  "fetch_summary": {
+    "url": "https://brisbaneroofrestorationexperts.com.au/",
+    "markdown_length": 6184
+  },
   "detailed_audit": {
     "business_id": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T14:07:22.018Z",
-    "audit_score": 16,
+    "audited_at": "2026-05-10T14:11:37.978Z",
+    "audit_score": 70,
     "dimension_scores": {
       "gbp": 48,
-      "technical": 0,
-      "ux_conversion": 0,
-      "content": 10,
-      "seo": 0,
+      "technical": 65,
+      "ux_conversion": 85,
+      "content": 84,
+      "seo": 85,
       "visual": 50
     },
-    "decision": "strong_redesign",
-    "qualification_reason": "audit_score=16 → strong_redesign · weakest: technical 0, ux_conversion 0 · fired: no_visible_cta_or_phone · 3 critical issues",
-    "hard_triggers": [
-      "no_visible_cta_or_phone"
-    ],
+    "decision": "low_priority",
+    "qualification_reason": "audit_score=70 → low_priority · weakest: gbp 48, visual 50",
+    "hard_triggers": [],
     "issues": {
-      "critical": [
-        {
-          "id": "https_enabled",
-          "rationale": "http only",
-          "max": 20
-        },
-        {
-          "id": "above_fold_cta_within_5s",
-          "rationale": "no CTA keyword in first 1500 chars",
-          "max": 30
-        },
-        {
-          "id": "phone_visible_above_fold",
-          "rationale": "phone hidden below fold or missing",
-          "max": 20
-        }
-      ],
+      "critical": [],
       "major": [
         {
           "id": "homepage_title_clear",
-          "rationale": "title='' contains-name=false contains-niche=false",
-          "max": 20
-        },
-        {
-          "id": "service_copy_specific",
-          "rationale": "0 service-related verbs detected",
-          "max": 20
-        },
-        {
-          "id": "trust_signals_present",
-          "rationale": "0 trust-keyword mentions",
+          "rationale": "title='# Brisbane Roof Restoration Specialists' contains-name=true contains-niche=false",
           "max": 20
         }
       ],
@@ -109,21 +84,6 @@
           "id": "has_gallery",
           "rationale": "no gallery",
           "max": 5
-        },
-        {
-          "id": "has_testimonials",
-          "rationale": "no testimonials",
-          "max": 5
-        },
-        {
-          "id": "localized_content",
-          "rationale": "no local mention",
-          "max": 15
-        },
-        {
-          "id": "evidence_of_recent_update",
-          "rationale": "no recent year (≤ 1 year ago)",
-          "max": 15
         }
       ]
     },
@@ -195,16 +155,16 @@
       },
       "technical": {
         "dimension": "technical",
-        "score": 0,
-        "earned": 0,
+        "score": 65,
+        "earned": 65,
         "max": 100,
         "rules": [
           {
             "id": "https_enabled",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "rationale": "http only"
+            "hit": true,
+            "rationale": "https"
           },
           {
             "id": "first_paint_under_3s",
@@ -216,11 +176,10 @@
           },
           {
             "id": "mobile_responsive",
-            "earned": 0,
+            "earned": 30,
             "max": 30,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml available"
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
           },
           {
             "id": "core_web_vitals_pass",
@@ -232,65 +191,60 @@
           },
           {
             "id": "form_submittable",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "form submit not tested"
+            "hit": true,
+            "rationale": "form submits"
           },
           {
             "id": "no_console_errors",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "console not captured"
+            "hit": true,
+            "rationale": "0 console errors"
           },
           {
             "id": "favicon_and_meta",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "favicon: yes, meta: yes"
           }
         ]
       },
       "ux_conversion": {
         "dimension": "ux_conversion",
-        "score": 0,
-        "earned": 0,
+        "score": 85,
+        "earned": 85,
         "max": 100,
         "rules": [
           {
             "id": "above_fold_cta_within_5s",
-            "earned": 0,
+            "earned": 30,
             "max": 30,
-            "hit": false,
-            "rationale": "no CTA keyword in first 1500 chars"
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
           },
           {
             "id": "phone_visible_above_fold",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "rationale": "phone hidden below fold or missing"
+            "hit": true,
+            "rationale": "phone digits above fold"
           },
           {
             "id": "click_to_call_link",
-            "earned": 0,
+            "earned": 10,
             "max": 10,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "tel: link present"
           },
           {
             "id": "quote_or_booking_form",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "<form> element present"
           },
           {
             "id": "contact_path_short",
@@ -309,53 +263,53 @@
           },
           {
             "id": "has_testimonials",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "rationale": "no testimonials"
+            "hit": true,
+            "rationale": "testimonials section present"
           }
         ]
       },
       "content": {
         "dimension": "content",
-        "score": 10,
-        "earned": 10,
+        "score": 84,
+        "earned": 84,
         "max": 100,
         "rules": [
           {
             "id": "homepage_title_clear",
-            "earned": 0,
+            "earned": 12,
             "max": 20,
             "hit": false,
-            "rationale": "title='' contains-name=false contains-niche=false"
+            "rationale": "title='# Brisbane Roof Restoration Specialists' contains-name=true contains-niche=false"
           },
           {
             "id": "service_copy_specific",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "rationale": "0 service-related verbs detected"
+            "hit": true,
+            "rationale": "52 service-related verbs detected"
           },
           {
             "id": "trust_signals_present",
-            "earned": 0,
+            "earned": 12,
             "max": 20,
-            "hit": false,
-            "rationale": "0 trust-keyword mentions"
+            "hit": true,
+            "rationale": "1 trust-keyword mentions"
           },
           {
             "id": "localized_content",
-            "earned": 0,
+            "earned": 15,
             "max": 15,
-            "hit": false,
-            "rationale": "no local mention"
+            "hit": true,
+            "rationale": "mentions brisbane"
           },
           {
             "id": "evidence_of_recent_update",
-            "earned": 0,
+            "earned": 15,
             "max": 15,
-            "hit": false,
-            "rationale": "no recent year (≤ 1 year ago)"
+            "hit": true,
+            "rationale": "fresh year mentioned"
           },
           {
             "id": "non_ai_filler_copy",
@@ -368,41 +322,37 @@
       },
       "seo": {
         "dimension": "seo",
-        "score": 0,
-        "earned": 0,
+        "score": 85,
+        "earned": 85,
         "max": 100,
         "rules": [
           {
             "id": "title_meta_present",
-            "earned": 0,
+            "earned": 25,
             "max": 25,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "title=yes meta=yes"
           },
           {
             "id": "h1_unique",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "1 <h1> tags"
           },
           {
             "id": "local_schema_markup",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "LocalBusiness schema present"
           },
           {
             "id": "image_alt_present",
-            "earned": 0,
+            "earned": 20,
             "max": 20,
-            "hit": false,
-            "data_missing": true,
-            "rationale": "no rawHtml"
+            "hit": true,
+            "rationale": "5 images, 100% with alt"
           },
           {
             "id": "sitemap_robots",
@@ -410,7 +360,7 @@
             "max": 15,
             "hit": false,
             "data_missing": true,
-            "rationale": "no rawHtml"
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
           }
         ]
       },
@@ -434,9 +384,9 @@
     "inputs_present": {
       "entity": true,
       "business_profile": false,
-      "fetch_payload": false,
-      "raw_html": false,
-      "lighthouse": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
       "visual_score_provided": false
     }
   }

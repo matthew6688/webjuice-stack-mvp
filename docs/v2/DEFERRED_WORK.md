@@ -5,11 +5,9 @@
 > 已经讨论 / 设计过、但暂时不优先做的事项。每条带触发条件 — 满足条件再启动。
 > 顺序不代表优先级，只是登记顺序。
 
-## 1. /admin/queue 重整 + 三页定位重构
+## 1. /admin/queue 移除 + 三页定位重构
 
-**背景：** 2026-05-10 讨论确认 queue 与 leads 数据同源，重叠太多。当系统自动化为主时 queue 不必独立成页。
-
-**决策：** 短期不动。queue 保留现状，等核心 audit/outreach 流程跑通有真实业务量后再做。
+**决策（2026-05-11 确认）：** queue 肯定要去掉，无核心价值，保留只会增加 leads 页面的功能冲突。**确认延后**到核心 audit / outreach 跑通之后启动。
 
 **待做（合并落实时执行）：**
 - 把 queue 从 admin nav 移除，路由保留 30 天兼容
@@ -19,7 +17,7 @@
 
 **触发条件：** Block D（detailed audit）+ Block F（internal audit report）+ Block G（端到端）跑完后启动。
 
-参考讨论：本会话 2026-05-10。
+参考讨论：本会话 2026-05-10 + 2026-05-11 复确认。
 
 ## 2. /admin/sources（Lead 进货渠道总管）
 
@@ -38,7 +36,11 @@
 - 进来后流程：dedupe → discovery store entity → cheap audit V2 → 写 provenance
 - `data/admin/scrape-schedules.json` 调度配置
 - GitHub Actions cron `.github/workflows/scrape-schedule.yml` 每 30 min 触发到期任务
-- **关键约束：调度用 random 时间间隔，不是固定每日**（避免被 Google 反爬识别为机器人 + 模拟真实人工节奏）。例如 8-72 小时随机区间，每个关键词独立 jitter
+- **关键约束：调度用 random 时间间隔，不是固定每日**（避免被 Google 反爬识别为机器人 + 模拟真实人工节奏）：
+  - 每个关键词独立 jitter，例如 8-72 小时随机区间
+  - **同一任务类型（同一关键词）连续运行用 random 时间间隔，模拟真人间歇查询**
+  - **不同任务类型（不同关键词 / 城市）允许交叉运行**，整体看起来更像有节奏的人工活动
+  - 加入业务时段权重（例如周末 / 凌晨频率降低，工作日白天频率正常）
 - 与本地 Maps search skill 配合（不依赖外部付费 API）
 - /admin/sources 页面三 tab：Schedules / Webhooks / Manual + Run history
 
