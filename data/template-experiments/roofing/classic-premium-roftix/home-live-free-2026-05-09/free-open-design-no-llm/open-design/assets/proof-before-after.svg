@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title desc">
+  <title id="title">Roof transformation teaser</title>
+  <desc id="desc">A split before and after style roof transformation composition without claims or customer details.</desc>
+  <defs>
+    <linearGradient id="left" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9d9180"/>
+      <stop offset="1" stop-color="#645849"/>
+    </linearGradient>
+    <linearGradient id="right" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4ead9"/>
+      <stop offset="1" stop-color="#bd8a58"/>
+    </linearGradient>
+  </defs>
+  <rect width="500" height="620" fill="url(#left)"/>
+  <rect x="500" width="500" height="620" fill="url(#right)"/>
+  <path d="M74 430 L266 242 L454 430" fill="#34312b"/>
+  <path d="M546 430 L742 238 L932 430" fill="#152025"/>
+  <path d="M118 430 L266 294 L414 430 V528 H118 Z" fill="#766a58"/>
+  <path d="M590 430 L742 294 L888 430 V528 H590 Z" fill="#ead9bf"/>
+  <path d="M0 430 H1000" stroke="#24231f" stroke-width="10" opacity=".32"/>
+  <path d="M500 0 V620" stroke="#f8f0e5" stroke-width="8"/>
+  <text x="54" y="82" font-family="Georgia, serif" font-size="42" fill="#f8f0e5">Before</text>
+  <text x="554" y="82" font-family="Georgia, serif" font-size="42" fill="#22221e">After</text>
+</svg>

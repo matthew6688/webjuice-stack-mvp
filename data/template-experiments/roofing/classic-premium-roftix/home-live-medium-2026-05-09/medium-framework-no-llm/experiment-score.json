@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "variant": "medium-framework-no-llm",
+  "score": 11,
+  "ok": false,
+  "execute": true,
+  "durationMs": 36808,
+  "experimentReliability": {
+    "score": 0,
+    "max": 100,
+    "issues": [
+      "Open Design command failed or dry-run command failed.",
+      "Native clean finish was not proven.",
+      "No generated HTML found.",
+      "Only 0 <img> tags found.",
+      "Only 0 sections found.",
+      "No obvious phone/form/quote path found.",
+      "Only 0 approved asset(s) matched by hash."
+    ]
+  },
+  "localBusinessWebsite": {
+    "totalScore": 14,
+    "grade": "F",
+    "dimensions": {
+      "conversion": {
+        "score": 0,
+        "max": 25,
+        "issues": [
+          "首屏或页面缺少明显 CTA。",
+          "CTA 或首屏没有明显本地意图词。",
+          "联系方式应覆盖电话、地区/地址、营业时间。",
+          "5 秒内业务类型不够清晰。"
+        ],
+        "checks": [
+          {
+            "id": "hero_cta",
+            "score": 0,
+            "max": 8,
+            "issue": "首屏或页面缺少明显 CTA。"
+          },
+          {
+            "id": "local_intent_cta",
+            "score": 0,
+            "max": 4,
+            "issue": "CTA 或首屏没有明显本地意图词。"
+          },
+          {
+            "id": "contact_completeness",
+            "score": 0,
+            "max": 8,
+            "issue": "联系方式应覆盖电话、地区/地址、营业时间。"
+          },
+          {
+            "id": "five_second_clarity",
+            "score": 0,
+            "max": 5,
+            "issue": "5 秒内业务类型不够清晰。"
+          }
+        ]
+      },
+      "local_seo": {
+        "score": 0,
+        "max": 25,
+        "issues": [
+          "Title 应包含城市/地区和业务关键词。",
+          "模板阶段检查 NAP slot；真实 lead 阶段应和 Google Place/GMB 对照一致性。",
+          "缺少完整 LocalBusiness/Roofing schema。",
+          "H1 应包含业务类型和地区。",
+          "缺少 Google Maps 嵌入或地图链接。"
+        ],
+        "checks": [
+          {
+            "id": "title_city_business",
+            "score": 0,
+            "max": 6,
+            "issue": "Title 应包含城市/地区和业务关键词。"
+          },
+          {
+            "id": "nap_structure",
+            "score": 0,
+            "max": 6,
+            "issue": "模板阶段检查 NAP slot；真实 lead 阶段应和 Google Place/GMB 对照一致性。"
+          },
+          {
+            "id": "local_business_schema",
+            "score": 0,
+            "max": 7,
+            "issue": "缺少完整 LocalBusiness/Roofing schema。"
+          },
+          {
+            "id": "h1_business_location",
+            "score": 0,
+            "max": 4,
+            "issue": "H1 应包含业务类型和地区。"
+          },
+          {
+            "id": "map_link",
+            "score": 0,
+            "max": 2,
+            "issue": "缺少 Google Maps 嵌入或地图链接。"
+          }
+        ]
+      },
+      "technical": {
+        "score": 4,
+        "max": 20,
+        "issues": [
+          "需要 viewport meta 和响应式 CSS。",
+          "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。",
+          "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。",
+          "图片需要 alt 文本和 lazy loading。"
+        ],
+        "checks": [
+          {
+            "id": "responsive",
+            "score": 0,
+            "max": 6,
+            "issue": "需要 viewport meta 和响应式 CSS。"
+          },
+          {
+            "id": "lcp_proxy",
+            "score": 2,
+            "max": 6,
+            "issue": "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。"
+          },
+          {
+            "id": "https",
+            "score": 2,
+            "max": 4,
+            "issue": "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。"
+          },
+          {
+            "id": "image_alt_lazy",
+            "score": 0,
+            "max": 4,
+            "issue": "图片需要 alt 文本和 lazy loading。"
+          }
+        ]
+      },
+      "design_trust": {
+        "score": 5,
+        "max": 20,
+        "issues": [
+          "设计和图片需要明显属于 roofing/local service。",
+          "应使用 approved/generated niche images，不要泛 stock/占位图。",
+          "可以使用 demo review/reference review，但上线需换成真实 review 或 Google review。",
+          "标题层级或排版层次不够清楚。"
+        ],
+        "checks": [
+          {
+            "id": "industry_fit",
+            "score": 2,
+            "max": 5,
+            "issue": "设计和图片需要明显属于 roofing/local service。"
+          },
+          {
+            "id": "realistic_images",
+            "score": 0,
+            "max": 5,
+            "issue": "应使用 approved/generated niche images，不要泛 stock/占位图。"
+          },
+          {
+            "id": "proof_or_reviews",
+            "score": 3,
+            "max": 5,
+            "issue": "可以使用 demo review/reference review，但上线需换成真实 review 或 Google review。"
+          },
+          {
+            "id": "typographic_hierarchy",
+            "score": 0,
+            "max": 5,
+            "issue": "标题层级或排版层次不够清楚。"
+          }
+        ]
+      },
+      "content": {
+        "score": 5,
+        "max": 10,
+        "issues": [
+          "需要明确地区和服务范围。",
+          "缺少具体差异化理由。"
+        ],
+        "checks": [
+          {
+            "id": "service_area_scope",
+            "score": 1,
+            "max": 4,
+            "issue": "需要明确地区和服务范围。"
+          },
+          {
+            "id": "differentiation",
+            "score": 1,
+            "max": 3,
+            "issue": "缺少具体差异化理由。"
+          },
+          {
+            "id": "language_quality",
+            "score": 3,
+            "max": 3,
+            "issue": ""
+          }
+        ]
+      }
+    },
+    "notes": [
+      "Template-stage scoring allows demo/reference reviews when they are not presented as verified customer proof.",
+      "Real lead scoring should compare NAP against Google Place/GMB when placeId evidence is available.",
+      "PageSpeed/HTTPS are partial in local HTML experiments and become strict after deploy."
+    ],
+    "top3Fixes": [
+      "首屏或页面缺少明显 CTA。",
+      "CTA 或首屏没有明显本地意图词。",
+      "联系方式应覆盖电话、地区/地址、营业时间。"
+    ]
+  },
+  "htmlFiles": [],
+  "provenance": {
+    "rasterAssetCount": 0,
+    "approvedAssetCount": 5,
+    "usedApprovedAssetCount": 0,
+    "matchedApprovedAssets": [],
+    "unapprovedRasterAssets": []
+  },
+  "findings": [
+    {
+      "severity": "critical",
+      "code": "open_design_command_failed",
+      "points": 30,
+      "message": "Open Design command failed or dry-run command failed."
+    },
+    {
+      "severity": "critical",
+      "code": "not_native_clean_finish",
+      "points": 25,
+      "message": "Native clean finish was not proven."
+    },
+    {
+      "severity": "critical",
+      "code": "missing_html",
+      "points": 25,
+      "message": "No generated HTML found."
+    },
+    {
+      "severity": "high",
+      "code": "weak_image_density",
+      "points": 14,
+      "message": "Only 0 <img> tags found."
+    },
+    {
+      "severity": "medium",
+      "code": "weak_section_depth",
+      "points": 8,
+      "message": "Only 0 sections found."
+    },
+    {
+      "severity": "high",
+      "code": "missing_conversion_path",
+      "points": 14,
+      "message": "No obvious phone/form/quote path found."
+    },
+    {
+      "severity": "high",
+      "code": "approved_assets_not_used",
+      "points": 16,
+      "message": "Only 0 approved asset(s) matched by hash."
+    }
+  ],
+  "generatedAt": "2026-05-09T02:55:40.949Z"
+}

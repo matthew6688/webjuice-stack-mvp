@@ -132,6 +132,27 @@ If the daemon is running but the project is not visible, the script stops. That 
 
 ## Moving From Open Design Back To Production
 
+Before production handoff, the Open Design concept must pass both run validation and customer-facing quality audit:
+
+```bash
+npm run open-design:audit-concept -- \
+  --client <client> \
+  --fail-below 85
+
+npm run open-design:validate-concept -- \
+  --client <client> \
+  --require-quality-audit true
+```
+
+Acceptance rules:
+
+- normal runs must finish with native Open Design `event:end`;
+- `artifact_quiet_fallback` is rescue-only and cannot be treated as normal success;
+- if Open Design emits a question form, the runner must answer it from the lead handoff automatically and rerun before validation can pass;
+- every accepted concept must write `open-design-run-state.json`, `open-design-run-summary.md`, `concept-quality-audit.json`, and `concept-quality-audit.md`;
+- customer-visible HTML must not leak internal words such as `demo`, `mockup`, `audit`, `Resend`, `verified`, or `final details`;
+- local business concepts need a visible conversion path and visual assets, not a text-only editorial page.
+
 After the visual concept is accepted, create/update the production handoff:
 
 ```bash
@@ -159,6 +180,8 @@ Open Design can improve layout, typography, visual rhythm, and concept copy.
 Business facts must still come from ProfitsLocal evidence/content/survey artifacts.
 ```
 
+For redesigns, the production handoff must also carry the quality audit result. If the concept failed to visibly address the original redesign plan, the handoff remains diagnostic only and must not be pushed as customer work.
+
 ## Sync Metadata
 
 The runner writes this file into the Open Design project folder:
@@ -172,6 +195,7 @@ It points back to:
 - ProfitsLocal client slug;
 - concept manifest;
 - production handoff;
+- Open Design run state and quality audit, through the exported concept folder;
 - Open Design project/run IDs;
 - data directory;
 - rule that production changes must be ported to Webjuice/Astro and pushed to `dev`.

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "taskId": "lead-search-discovery-65968524",
+  "createdAt": "2026-05-08T18:46:08.524Z",
+  "updatedAt": "2026-05-08T18:46:08.524Z",
+  "source": {
+    "platform": "discord",
+    "channelName": "website-task",
+    "channelId": "1501072883001065614",
+    "messageId": "",
+    "messageUrl": "",
+    "authorId": "",
+    "authorName": "operator"
+  },
+  "rawText": "google search Brisbane roofers leads",
+  "attachments": [],
+  "intent": {
+    "kind": "lead_search_discovery",
+    "label": "批量线索搜索",
+    "workflow": "lead-search-discovery",
+    "workflowLabel": "Google/地图线索搜索 -> qualification -> lead-ops",
+    "skills": [
+      "lead-ops"
+    ],
+    "priority": "lead",
+    "clientSlug": "",
+    "nextAction": "按行业和城市做小批量 discovery，筛掉不可联系/无突破口的 lead，把可推进对象写入 admin。",
+    "confidence": 0.86
+  },
+  "thread": {
+    "name": "lead-search-lead-search-discovery-65968524",
+    "id": "existing-thread-smoke",
+    "url": "",
+    "status": "existing"
+  },
+  "artifacts": {
+    "taskPath": "data/discord-tasks/lead-search-discovery-65968524/task.json",
+    "logPath": "data/discord-tasks/lead-search-discovery-65968524/task-log.jsonl",
+    "expectedClientRoot": ""
+  },
+  "nextAction": "按行业和城市做小批量 discovery，筛掉不可联系/无突破口的 lead，把可推进对象写入 admin。"
+}

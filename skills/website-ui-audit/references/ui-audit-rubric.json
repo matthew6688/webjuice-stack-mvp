@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "name": "website-ui-audit-rubric",
+  "total": 100,
+  "dimensions": [
+    {
+      "id": "hero",
+      "label": "Hero and first viewport",
+      "max": 25,
+      "checks": [
+        { "id": "business_category_visible", "points": 5, "description": "Visitor can identify the business category in 5 seconds." },
+        { "id": "dominant_relevant_visual", "points": 6, "description": "First viewport has a strong, relevant niche visual rather than a text-heavy or generic layout." },
+        { "id": "clear_headline", "points": 4, "description": "Headline has a concrete business/value angle, not generic welcome/trusted-partner copy." },
+        { "id": "above_fold_cta", "points": 5, "description": "Phone, quote, booking, or contact CTA is visible and visually prioritized." },
+        { "id": "local_or_service_signal", "points": 3, "description": "Service area or key service appears near the first viewport." },
+        { "id": "hero_composition", "points": 2, "description": "Visual/text balance feels intentional and not cramped, empty, or misaligned." }
+      ]
+    },
+    {
+      "id": "industryFit",
+      "label": "Industry fit and reference fidelity",
+      "max": 15,
+      "checks": [
+        { "id": "niche_visual_language", "points": 5, "description": "Color, type, spacing, and imagery match the niche and price tier." },
+        { "id": "reference_family_alignment", "points": 5, "description": "Output follows the selected reference/template family without copying protected brands." },
+        { "id": "offer_model_fit", "points": 3, "description": "Page structure fits the business model: service, quote, appointment, project proof, or catalog." },
+        { "id": "not_wrong_category", "points": 2, "description": "Page does not feel like SaaS, blog, portfolio, agency, or restaurant when the niche is different." }
+      ]
+    },
+    {
+      "id": "visualHierarchy",
+      "label": "Visual hierarchy and composition",
+      "max": 15,
+      "checks": [
+        { "id": "type_scale", "points": 3, "description": "Typography scale clearly separates H1, H2, body, labels, and buttons." },
+        { "id": "spacing_system", "points": 3, "description": "Spacing is consistent and not randomly cramped or overly empty." },
+        { "id": "section_rhythm", "points": 3, "description": "Sections have a natural scanning rhythm and do not all look identical." },
+        { "id": "contrast_and_color", "points": 3, "description": "Contrast and palette support readability, trust, and brand tone." },
+        { "id": "no_duplicate_or_redundant_blocks", "points": 3, "description": "No repeated headers, duplicated facts, or filler modules that add noise." }
+      ]
+    },
+    {
+      "id": "imagery",
+      "label": "Imagery and asset quality",
+      "max": 15,
+      "checks": [
+        { "id": "asset_relevance", "points": 4, "description": "Photos clearly relate to the niche, services, materials, or local business promise." },
+        { "id": "asset_quality", "points": 4, "description": "Images are high-resolution, well-cropped, and not visually broken." },
+        { "id": "image_variety", "points": 2, "description": "Image set supports hero, service, proof, and contact contexts without looking repetitive." },
+        { "id": "ai_artifact_check", "points": 3, "description": "AI images do not show obvious impossible anatomy, warped tools, broken text, or fake logos." },
+        { "id": "asset_provenance", "points": 2, "description": "Generated, searched, official, or placeholder image source is recorded." }
+      ]
+    },
+    {
+      "id": "conversion",
+      "label": "Conversion affordance",
+      "max": 10,
+      "checks": [
+        { "id": "primary_action", "points": 3, "description": "Primary action is obvious and repeated at sensible moments." },
+        { "id": "contact_path", "points": 3, "description": "Phone, form, email, map, or contact page path is present and clickable when relevant." },
+        { "id": "trust_path", "points": 2, "description": "Page gives a reason to trust: process, reviews, project proof, guarantee policy, credentials, or transparent placeholder proof." },
+        { "id": "friction_reduction", "points": 2, "description": "Copy/UI reduces hesitation: free quote, inspection, response time, what happens next." }
+      ]
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile and responsive quality",
+      "max": 10,
+      "checks": [
+        { "id": "mobile_first_view", "points": 3, "description": "Mobile first viewport still communicates business, value, and CTA." },
+        { "id": "no_overflow", "points": 2, "description": "No horizontal scrolling, overlap, clipped text, or broken columns." },
+        { "id": "tap_targets", "points": 2, "description": "Buttons and links are large enough and not crowded." },
+        { "id": "mobile_section_order", "points": 2, "description": "Important sections appear in a useful order on mobile." },
+        { "id": "mobile_media_crop", "points": 1, "description": "Images crop gracefully on mobile." }
+      ]
+    },
+    {
+      "id": "technicalUx",
+      "label": "Technical UX hygiene",
+      "max": 5,
+      "checks": [
+        { "id": "links_and_forms", "points": 2, "description": "Key links and forms are clickable and not dead placeholders unless clearly marked." },
+        { "id": "basic_accessibility", "points": 2, "description": "Text contrast, semantic headings, alt text, and focus states are acceptable for demo quality." },
+        { "id": "runtime_health", "points": 1, "description": "No visible runtime errors or missing asset failures." }
+      ]
+    },
+    {
+      "id": "aiSlop",
+      "label": "AI slop and professionalism",
+      "max": 5,
+      "checks": [
+        { "id": "no_internal_language", "points": 2, "description": "No internal workflow, audit, prompt, artifact, readiness, or generated labels leak into the website." },
+        { "id": "not_generic_ai_pattern", "points": 2, "description": "Avoids generic AI layout clichés, vague gradients, generic trust copy, and bland repeated cards." },
+        { "id": "truthfulness_surface", "points": 1, "description": "Demo-only claims are clearly placeholders and not presented as verified truth." }
+      ]
+    }
+  ],
+  "decisionThresholds": {
+    "approve": { "minScore": 85, "maxHighFindings": 0, "allowHardFail": false },
+    "revise": { "minScore": 70, "maxCriticalFindings": 0, "allowHardFail": false },
+    "rerun": { "when": "hard fail caused by wrong direction, weak hero, missing visual assets, or generic unusable layout" },
+    "human_review": { "when": "confidence is low, evidence conflicts, or two revision rounds fail" }
+  },
+  "hardFailRules": [
+    "Hero is visually weak, text-heavy, or not industry-specific.",
+    "No clear above-fold CTA.",
+    "Contact path is missing or broken.",
+    "Internal workflow text appears in customer-facing UI.",
+    "Fake exact claims are presented as true facts.",
+    "Major mobile layout break or unreadable content.",
+    "Open Design did not reach native clean finish but result is being considered for approval.",
+    "Reference family is ignored enough to change the intended template direction."
+  ]
+}

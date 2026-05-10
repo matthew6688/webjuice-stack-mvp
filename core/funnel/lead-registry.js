@@ -2,14 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import { readLeadNotes } from './lead-notes.js';
 import { normalizeOutreachArtifactState } from './outreach-provider-state.js';
+import { loadDiscoveryEntities } from '../leads/discovery-store.js';
 
 export function loadLeadRegistry({
   clientsRoot = 'clients',
   casesRoot = 'data/cases',
   paidIntakesRoot = 'data/paid-intakes',
+  discoveryRoot = 'data/leads',
 } = {}) {
   const records = new Map();
 
+  ingestDiscoveryStore(records, discoveryRoot);
   ingestClientArtifacts(records, clientsRoot);
   ingestCaseFiles(records, casesRoot);
   ingestPaidIntakes(records, paidIntakesRoot);
@@ -23,6 +26,63 @@ export function loadLeadRegistry({
     byClientSlug: new Map(list.map((record) => [record.clientSlug, record])),
     updatedAt: new Date().toISOString(),
   };
+}
+
+function ingestDiscoveryStore(records, discoveryRoot) {
+  const entities = loadDiscoveryEntities({ storeRoot: discoveryRoot });
+  for (const entity of entities) {
+    if (entity.promotedClientSlug) continue;
+    const latest = entity.latest || {};
+    const clientSlug = `discovery-${entity.entityKey}`;
+    const record = ensureRecord(records, clientSlug);
+    record.clientSlug = clientSlug;
+    record.leadId = entity.entityKey;
+    record.discoveryStoreKey = entity.entityKey;
+    record.discoveryStorePath = path.join(discoveryRoot, 'entities', `${entity.entityKey}.json`);
+    record.discoveryStoreStatus = entity.status || '';
+    record.businessName = firstNonEmpty(record.businessName, latest.name);
+    record.company = record.businessName;
+    record.niche = firstNonEmpty(record.niche, latest.niche, latest.category);
+    record.city = firstNonEmpty(record.city, latest.city);
+    record.address = firstNonEmpty(record.address, latest.address);
+    record.phone = firstNonEmpty(record.phone, latest.phone);
+    record.websiteUrl = firstNonEmpty(record.websiteUrl, latest.website);
+    record.officialWebsiteUrl = firstNonEmpty(record.officialWebsiteUrl, homepageUrl(latest.website));
+    record.googleMapsUrl = firstNonEmpty(record.googleMapsUrl, latest.google_maps_url);
+    record.googlePlaceId = firstNonEmpty(record.googlePlaceId, entity.identifiers?.place_id);
+    record.hasWebsite = Boolean(record.websiteUrl);
+    record.leadSourceType = 'maps_scraper';
+    record.leadSpecificObservation = firstNonEmpty(
+      record.leadSpecificObservation,
+      discoveryObservation(entity),
+    );
+    record.leadRecommendedAction = firstNonEmpty(record.leadRecommendedAction, latest.recommendedAction);
+    record.leadAiScore = Number.isFinite(latest.discoveryScore) ? latest.discoveryScore : record.leadAiScore;
+    record.discoveryScore = Number.isFinite(latest.discoveryScore) ? latest.discoveryScore : record.discoveryScore;
+    record.websiteStatus = firstNonEmpty(record.websiteStatus, latest.websiteStatus);
+    record.discoveryLogPath = fs.existsSync(path.join(discoveryRoot, 'discovery-events.jsonl')) ? path.join(discoveryRoot, 'discovery-events.jsonl') : '';
+    record.discoveryLog = [
+      {
+        at: entity.lastSeenAt || entity.firstSeenAt || '',
+        event: 'maps_scraper_discovery_indexed',
+        tool: 'gosom/google-maps-scraper',
+        summary: discoveryObservation(entity),
+        outputPath: record.discoveryStorePath,
+      },
+      ...(entity.history || []).slice(-3).map((entry) => ({
+        at: entry.at || '',
+        event: entry.event || 'discovery_store_event',
+        tool: 'lead discovery store',
+        summary: [entry.query, entry.action, entry.status].filter(Boolean).join(' / '),
+        outputPath: record.discoveryStorePath,
+      })),
+    ];
+    if (entity.status === 'skipped') {
+      record.leadAiConclusion = 'skip';
+      record.leadGateStatus = 'skipped';
+    }
+    record.updatedAt = maxDate(record.updatedAt, entity.lastSeenAt, entity.firstSeenAt);
+  }
 }
 
 export function resolveLeadByEmail(registryOrRecords, email) {
@@ -70,6 +130,9 @@ function ingestClientArtifacts(records, clientsRoot) {
     const leadResearch = readJsonIfExists(path.join(clientDir, 'lead', 'lead-research.json')) || {};
     const redesignCheck = readJsonIfExists(path.join(clientDir, 'lead', 'redesign-check.json')) || {};
     const readyToBuild = readJsonIfExists(path.join(clientDir, 'lead', 'ready-to-build.json')) || {};
+    const templateMatch = readJsonIfExists(path.join(clientDir, 'lead', 'template-match.json')) || {};
+    const copyBrief = readJsonIfExists(path.join(clientDir, 'lead', 'copy-brief.json')) || {};
+    const openDesignHandoff = readJsonIfExists(path.join(clientDir, 'lead', 'open-design-handoff.json')) || {};
     const leadOps = readJsonIfExists(path.join(clientDir, 'lead', 'lead-ops.json')) || {};
     const outreachBrief = readJsonIfExists(path.join(clientDir, 'outreach', 'outreach-brief.json')) || {};
     const outreachPack = readJsonIfExists(path.join(clientDir, 'outreach', 'outreach-pack.json')) || {};
@@ -77,7 +140,15 @@ function ingestClientArtifacts(records, clientsRoot) {
     const survey = readJsonIfExists(path.join(clientDir, 'intake', 'website-survey.json')) || {};
     const evidence = readJsonIfExists(path.join(clientDir, 'evidence', 'evidence.json')) || {};
     const content = readJsonIfExists(path.join(clientDir, 'content.restaurant.json')) || {};
-    const conceptManifest = readJsonIfExists(path.join(clientDir, 'concept', 'open-design', 'concept-manifest.json')) || {};
+    const conceptOpenDesignDir = path.join(clientDir, 'concept', 'open-design');
+    const conceptManifest = readJsonIfExists(path.join(conceptOpenDesignDir, 'concept-manifest.json')) || {};
+    const openDesignRunRequest = readJsonIfExists(path.join(clientDir, 'lead', 'open-design-run-request.json')) || {};
+    const openDesignRunState = readJsonIfExists(path.join(conceptOpenDesignDir, 'open-design-run-state.json')) || {};
+    const archivedOpenDesignQuestionForms = readOpenDesignQuestionFormArchive(conceptOpenDesignDir);
+    const conceptQualityAudit = readJsonIfExists(path.join(conceptOpenDesignDir, 'concept-quality-audit.json')) || {};
+    const discordThread = readJsonIfExists(path.join(clientDir, 'lead', 'discord-thread.json')) || {};
+    const discoveryLogPath = path.join(clientDir, 'lead', 'discovery-log.jsonl');
+    const discoveryLog = readJsonlIfExists(discoveryLogPath);
 
     const emailDir = path.join(clientDir, 'outreach', 'email');
     const emailArtifacts = readEmailArtifacts(emailDir);
@@ -96,7 +167,7 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.city = firstNonEmpty(record.city, leadIntake.project?.city, survey.location?.city, outreachPack.business?.city);
     record.country = firstNonEmpty(record.country, leadIntake.project?.country);
     record.previewUrl = firstNonEmpty(record.previewUrl, outreachPack.previewUrl);
-    record.address = firstNonEmpty(record.address, leadIntake.facts?.verified?.address, survey.contact?.address, content.contact?.address, outreachPack.business?.address);
+    record.address = firstNonEmpty(record.address, leadIntake.facts?.verified?.address, leadResearch.facts?.verified?.address, survey.contact?.address, content.contact?.address, outreachPack.business?.address, firstEvidenceValue(evidence, 'contact.address'));
     record.phone = firstNonEmpty(record.phone, leadIntake.facts?.verified?.phones?.[0], survey.contact?.phone, content.contact?.phone);
     record.email = firstNonEmpty(record.email, leadIntake.facts?.verified?.emails?.[0], survey.contact?.email, content.contact?.email, emailArtifacts[0]?.to);
     record.websiteUrl = firstNonEmpty(record.websiteUrl, leadIntake.facts?.verified?.websiteUrl, survey.contact?.website, content.contact?.website);
@@ -120,7 +191,15 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.reservationUrl = firstNonEmpty(record.reservationUrl, findQaLink(outreachPack, 'reserve'));
     record.logoUrl = firstNonEmpty(record.logoUrl, survey.assets?.logo, content.brand?.logo?.src);
     record.hasWebsite = Boolean(record.websiteUrl || survey.contact?.website);
-    record.evidenceSources = Array.isArray(evidence.sources) ? evidence.sources : [];
+    record.evidenceSources = normalizeEvidenceSources(evidence);
+    record.discoveryLogPath = fs.existsSync(discoveryLogPath) ? discoveryLogPath : '';
+    record.discoveryLog = discoveryLog;
+    record.discordTaskThreadPath = fs.existsSync(path.join(clientDir, 'lead', 'discord-thread.json')) ? path.join(clientDir, 'lead', 'discord-thread.json') : '';
+    record.discordTaskThread = discordThread;
+    record.discordThreadUrl = firstNonEmpty(record.discordThreadUrl, discordThread.thread?.url);
+    record.websiteTaskThreadId = firstNonEmpty(record.websiteTaskThreadId, discordThread.thread?.id);
+    record.discordConversationSummary = firstNonEmpty(record.discordConversationSummary, discordThread.latestSummary);
+    record.discordConversationMessages = Array.isArray(discordThread.messages) ? discordThread.messages : record.discordConversationMessages || [];
     record.qualificationStatus = firstNonEmpty(record.qualificationStatus, leadIntake.qualification?.grade, deriveQualificationStatus(survey, evidence, outreachPack));
     record.leadSourceType = firstNonEmpty(record.leadSourceType, leadIntake.sourceType);
     record.leadBuildMode = firstNonEmpty(record.leadBuildMode, leadIntake.buildMode);
@@ -130,6 +209,25 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.leadFamilyId = firstNonEmpty(record.leadFamilyId, leadOps.summary?.familyId, leadIntake.strategy?.familyId, redesignCheck.familyId);
     record.leadRedesignDecision = firstNonEmpty(record.leadRedesignDecision, leadOps.summary?.redesignDecision, redesignCheck.decision);
     record.leadReadyToBuildStatus = firstNonEmpty(record.leadReadyToBuildStatus, leadOps.summary?.readyToBuildStatus, readyToBuild.status);
+    record.leadAiConclusion = firstNonEmpty(record.leadAiConclusion, leadOps.summary?.aiConclusion, readyToBuild.aiConclusion?.result);
+    record.leadAiConfidence = firstNonEmpty(record.leadAiConfidence, leadOps.summary?.aiConfidence, readyToBuild.aiConclusion?.confidence);
+    record.leadAiScore = Number.isFinite(leadOps.summary?.aiScore) ? leadOps.summary.aiScore : Number.isFinite(readyToBuild.aiConclusion?.score) ? readyToBuild.aiConclusion.score : record.leadAiScore;
+    record.websitePlanType = firstNonEmpty(record.websitePlanType, leadOps.summary?.websitePlanType, readyToBuild.websiteBuildHandoff?.websitePlan?.type);
+    record.websiteBuildHandoffPath = fs.existsSync(path.join(clientDir, 'lead', 'ready-to-build.json')) && readyToBuild.websiteBuildHandoff ? path.join(clientDir, 'lead', 'ready-to-build.json') : '';
+    record.templateMatchPath = fs.existsSync(path.join(clientDir, 'lead', 'template-match.json')) ? path.join(clientDir, 'lead', 'template-match.json') : '';
+    record.copyBriefPath = fs.existsSync(path.join(clientDir, 'lead', 'copy-brief.json')) ? path.join(clientDir, 'lead', 'copy-brief.json') : '';
+    record.templateOpenDesignHandoffPath = fs.existsSync(path.join(clientDir, 'lead', 'open-design-handoff.json')) ? path.join(clientDir, 'lead', 'open-design-handoff.json') : '';
+    record.selectedTemplateFamily = firstNonEmpty(record.selectedTemplateFamily, templateMatch.selected?.family, copyBrief.selectedTemplate?.family, openDesignHandoff.selectedTemplate?.family);
+    record.selectedTemplateId = firstNonEmpty(record.selectedTemplateId, templateMatch.selected?.templateId, copyBrief.selectedTemplate?.templateId, openDesignHandoff.selectedTemplate?.templateId);
+    record.templateMatchConfidence = Number.isFinite(templateMatch.confidence) ? templateMatch.confidence : record.templateMatchConfidence;
+    record.templateMatchReason = firstNonEmpty(record.templateMatchReason, templateMatch.reason);
+    record.copyBriefHero = firstNonEmpty(record.copyBriefHero, copyBrief.pageCopyPlan?.heroHeadline);
+    record.copyBriefPrimaryCta = firstNonEmpty(record.copyBriefPrimaryCta, copyBrief.pageCopyPlan?.primaryCta);
+    record.copyBriefVerifiedFacts = copyBrief.verifiedFacts || record.copyBriefVerifiedFacts || null;
+    record.copyBriefForbiddenClaims = copyBrief.forbiddenClaims || record.copyBriefForbiddenClaims || [];
+    record.openDesignPrompt = firstNonEmpty(record.openDesignPrompt, openDesignHandoff.prompt, readyToBuild.websiteBuildHandoff?.openDesignPayload?.prompt);
+    record.templateOpenDesignQualityGate = openDesignHandoff.json?.qualityGate || record.templateOpenDesignQualityGate || [];
+    record.templateOpenDesignRunRequirements = openDesignHandoff.json?.runRequirements || record.templateOpenDesignRunRequirements || null;
     record.leadRecommendedAction = firstNonEmpty(record.leadRecommendedAction, leadResearch.strategy?.recommendedAction, readyToBuild.nextAction);
     record.leadSpecificObservation = firstNonEmpty(
       record.leadSpecificObservation,
@@ -160,6 +258,53 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.openDesignProjectId = firstNonEmpty(record.openDesignProjectId, conceptManifest.projectId);
     record.openDesignLastRunId = firstNonEmpty(record.openDesignLastRunId, conceptManifest.lastRunId);
     record.openDesignStatus = firstNonEmpty(record.openDesignStatus, conceptManifest.status);
+    record.openDesignRunRequestPath = fs.existsSync(path.join(clientDir, 'lead', 'open-design-run-request.json')) ? path.join(clientDir, 'lead', 'open-design-run-request.json') : '';
+    record.openDesignRunRequestStatus = firstNonEmpty(record.openDesignRunRequestStatus, openDesignRunRequest.status);
+    record.openDesignRunRequestMode = firstNonEmpty(record.openDesignRunRequestMode, openDesignRunRequest.mode);
+    record.openDesignRunRequestTimeoutMs = Number.isFinite(openDesignRunRequest.timeoutMs) ? openDesignRunRequest.timeoutMs : record.openDesignRunRequestTimeoutMs;
+    record.openDesignRunRequestAllowFallback = openDesignRunRequest.allowArtifactFallback ?? record.openDesignRunRequestAllowFallback;
+    record.openDesignRunStatePath = fs.existsSync(path.join(conceptOpenDesignDir, 'open-design-run-state.json')) ? path.join(conceptOpenDesignDir, 'open-design-run-state.json') : '';
+    record.openDesignRunNativeCleanFinish = openDesignRunState.nativeCleanFinish ?? conceptManifest.lifecycle?.nativeCleanFinish ?? record.openDesignRunNativeCleanFinish;
+    record.openDesignRunCompletionMode = firstNonEmpty(record.openDesignRunCompletionMode, openDesignRunState.completionMode, conceptManifest.status?.completionMode);
+    record.openDesignRunStartedAt = firstNonEmpty(record.openDesignRunStartedAt, openDesignRunState.startedAt, conceptManifest.lifecycle?.startedAt);
+    record.openDesignRunEndedAt = firstNonEmpty(record.openDesignRunEndedAt, openDesignRunState.endedAt, conceptManifest.lifecycle?.endedAt);
+    const stateQuestionForms = Array.isArray(openDesignRunState.questionForms)
+      ? openDesignRunState.questionForms
+      : Array.isArray(conceptManifest.lifecycle?.questionForms)
+        ? conceptManifest.lifecycle.questionForms
+        : record.openDesignRunQuestionForms || [];
+    const stateQuestionFormRounds = Array.isArray(openDesignRunState.questionFormRounds)
+      ? openDesignRunState.questionFormRounds
+      : Array.isArray(conceptManifest.lifecycle?.questionFormRounds)
+        ? conceptManifest.lifecycle.questionFormRounds
+        : record.openDesignRunQuestionFormRounds || [];
+    record.openDesignRunQuestionForms = mergeQuestionFormEvidence(stateQuestionForms, archivedOpenDesignQuestionForms.forms);
+    record.openDesignRunQuestionFormRounds = mergeQuestionFormEvidence(stateQuestionFormRounds, archivedOpenDesignQuestionForms.rounds);
+    record.conceptManifestPath = fs.existsSync(path.join(conceptOpenDesignDir, 'concept-manifest.json')) ? path.join(conceptOpenDesignDir, 'concept-manifest.json') : '';
+    record.conceptQualityAuditPath = fs.existsSync(path.join(conceptOpenDesignDir, 'concept-quality-audit.json')) ? path.join(conceptOpenDesignDir, 'concept-quality-audit.json') : '';
+    record.conceptIndexPath = fs.existsSync(path.join(conceptOpenDesignDir, 'index.html')) ? path.join(conceptOpenDesignDir, 'index.html') : '';
+    record.conceptPublicPreviewUrl = firstNonEmpty(
+      record.conceptPublicPreviewUrl,
+      fs.existsSync(path.join('public', 'admin-artifacts', clientSlug, 'open-design', 'index.html'))
+        ? `/admin-artifacts/${clientSlug}/open-design/index.html`
+        : '',
+      openDesignRunRequest.publicSync?.previewUrl,
+    );
+    record.conceptPublicAuditUrl = firstNonEmpty(
+      record.conceptPublicAuditUrl,
+      fs.existsSync(path.join('public', 'admin-artifacts', clientSlug, 'open-design', 'concept-quality-audit.md'))
+        ? `/admin-artifacts/${clientSlug}/open-design/concept-quality-audit.md`
+        : '',
+    );
+    record.conceptPublicRunStateUrl = firstNonEmpty(
+      record.conceptPublicRunStateUrl,
+      fs.existsSync(path.join('public', 'admin-artifacts', clientSlug, 'open-design', 'open-design-run-state.json'))
+        ? `/admin-artifacts/${clientSlug}/open-design/open-design-run-state.json`
+        : '',
+    );
+    record.conceptQualityAuditOk = conceptQualityAudit.ok ?? record.conceptQualityAuditOk;
+    record.conceptQualityAuditScore = Number.isFinite(conceptQualityAudit.score) ? conceptQualityAudit.score : record.conceptQualityAuditScore;
+    record.conceptQualityAuditFindings = Array.isArray(conceptQualityAudit.findings) ? conceptQualityAudit.findings : record.conceptQualityAuditFindings || [];
     record.proofPoints = Array.isArray(outreachPack?.emailBrief?.proofPoints) ? outreachPack.emailBrief.proofPoints.length : record.proofPoints || 0;
     record.outreachDiagnosis = firstNonEmpty(record.outreachDiagnosis, outreachPack.outreachBrief?.diagnosis, outreachBrief.diagnosis);
     record.outreachSiteBrief = firstNonEmpty(record.outreachSiteBrief, outreachPack.outreachBrief?.siteBrief, outreachBrief.siteBrief);
@@ -189,6 +334,13 @@ function ingestClientArtifacts(records, clientsRoot) {
     record.currentSitePublicAuditJsonUrl = firstNonEmpty(record.currentSitePublicAuditJsonUrl, currentSiteAudit.artifacts?.publicAuditJsonUrl);
     record.currentSiteAuditVerdict = firstNonEmpty(record.currentSiteAuditVerdict, currentSiteAudit.verdict);
     record.currentSiteAuditScore = Number.isFinite(currentSiteAudit.score) ? currentSiteAudit.score : record.currentSiteAuditScore;
+    record.currentSiteSalesDecision = firstNonEmpty(record.currentSiteSalesDecision, currentSiteAudit.salesDecision);
+    record.currentSiteOpportunityConfidence = firstNonEmpty(record.currentSiteOpportunityConfidence, currentSiteAudit.opportunityConfidence);
+    record.currentSiteAuditSummary = firstNonEmpty(record.currentSiteAuditSummary, currentSiteAudit.summary);
+    record.currentSiteOutreachHook = firstNonEmpty(record.currentSiteOutreachHook, currentSiteAudit.outreachHook);
+    record.currentSiteOpenDesignDirection = firstNonEmpty(record.currentSiteOpenDesignDirection, currentSiteAudit.openDesignDirection);
+    record.currentSiteAuditFindings = Array.isArray(currentSiteAudit.findings) ? currentSiteAudit.findings : record.currentSiteAuditFindings || [];
+    record.currentSitePriorityActions = Array.isArray(currentSiteAudit.priorityActions) ? currentSiteAudit.priorityActions : record.currentSitePriorityActions || [];
     record.currentSiteAuditIssues = Array.isArray(currentSiteAudit.issues) ? currentSiteAudit.issues : record.currentSiteAuditIssues || [];
     record.currentSiteImprovements = Array.isArray(currentSiteAudit.improvements) ? currentSiteAudit.improvements : record.currentSiteImprovements || [];
     record.emailDraftReady = emailArtifacts.length > 0;
@@ -207,7 +359,23 @@ function ingestClientArtifacts(records, clientsRoot) {
     if (!record.nextFollowUpDue && leadNotes[0]?.nextFollowUpDue) {
       record.nextFollowUpDue = leadNotes[0].nextFollowUpDue;
     }
-    record.updatedAt = maxDate(record.updatedAt, leadIntake.generatedAt, leadResearch.generatedAt, outreachPack.generatedAt, survey.generatedAt, emailArtifacts[0]?.generatedAt);
+    record.updatedAt = maxDate(
+      record.updatedAt,
+      leadIntake.generatedAt,
+      leadResearch.generatedAt,
+      outreachPack.generatedAt,
+      survey.generatedAt,
+      templateMatch.generatedAt,
+      copyBrief.generatedAt,
+      openDesignHandoff.generatedAt,
+      openDesignRunRequest.generatedAt,
+      openDesignRunRequest.completedAt,
+      openDesignRunState.startedAt,
+      openDesignRunState.endedAt,
+      conceptQualityAudit.generatedAt,
+      emailArtifacts[0]?.generatedAt,
+      discoveryLog[0]?.at,
+    );
   }
 }
 
@@ -362,6 +530,17 @@ function deriveQualificationStatus(survey, evidence, outreachPack) {
   return '';
 }
 
+function discoveryObservation(entity) {
+  const latest = entity.latest || {};
+  const parts = [
+    latest.websiteStatus ? `Maps website status: ${latest.websiteStatus}` : '',
+    Number.isFinite(latest.discoveryScore) ? `score ${latest.discoveryScore}` : '',
+    latest.recommendedAction ? `recommended ${latest.recommendedAction}` : '',
+    latest.sourceQuery ? `query "${latest.sourceQuery}"` : '',
+  ].filter(Boolean);
+  return parts.join('; ') || 'Maps scraper discovery candidate indexed.';
+}
+
 function deriveOutreachStatus(record) {
   if (record.paymentStatus === 'paid') return 'paid';
   if (record.replyState === 'replied') return 'replied';
@@ -402,6 +581,10 @@ function ensureRecord(records, clientSlug) {
       leadFamilyId: '',
       leadRedesignDecision: '',
       leadReadyToBuildStatus: '',
+      leadAiConclusion: '',
+      leadAiConfidence: '',
+      leadAiScore: null,
+      websitePlanType: '',
       leadRecommendedAction: '',
       leadSpecificObservation: '',
       leadCoreServices: [],
@@ -420,6 +603,13 @@ function ensureRecord(records, clientSlug) {
       currentSitePublicAuditJsonUrl: '',
       currentSiteAuditVerdict: '',
       currentSiteAuditScore: null,
+      currentSiteSalesDecision: '',
+      currentSiteOpportunityConfidence: '',
+      currentSiteAuditSummary: '',
+      currentSiteOutreachHook: '',
+      currentSiteOpenDesignDirection: '',
+      currentSiteAuditFindings: [],
+      currentSitePriorityActions: [],
       currentSiteAuditIssues: [],
       currentSiteImprovements: [],
       previewUrl: '',
@@ -427,6 +617,10 @@ function ensureRecord(records, clientSlug) {
       repoUrl: '',
       projectAdminUrl: '',
       discordThreadUrl: '',
+      discordTaskThreadPath: '',
+      discordTaskThread: null,
+      discordConversationSummary: '',
+      discordConversationMessages: [],
       address: '',
       city: '',
       country: '',
@@ -446,6 +640,8 @@ function ensureRecord(records, clientSlug) {
       logoUrl: '',
       hasWebsite: false,
       evidenceSources: [],
+      discoveryLogPath: '',
+      discoveryLog: [],
       qualificationStatus: '',
       outreachStatus: '',
       replyStatus: '',
@@ -488,6 +684,21 @@ function ensureRecord(records, clientSlug) {
       leadResearchPath: '',
       leadOpsPath: '',
       leadReadyToBuildPath: '',
+      websiteBuildHandoffPath: '',
+      openDesignPrompt: '',
+      templateMatchPath: '',
+      copyBriefPath: '',
+      templateOpenDesignHandoffPath: '',
+      selectedTemplateFamily: '',
+      selectedTemplateId: '',
+      templateMatchConfidence: null,
+      templateMatchReason: '',
+      copyBriefHero: '',
+      copyBriefPrimaryCta: '',
+      copyBriefVerifiedFacts: null,
+      copyBriefForbiddenClaims: [],
+      templateOpenDesignQualityGate: [],
+      templateOpenDesignRunRequirements: null,
       redesignCheckPath: '',
       outreachMarkdownPath: '',
       outreachEmailDir: '',
@@ -496,6 +707,27 @@ function ensureRecord(records, clientSlug) {
       openDesignProjectId: '',
       openDesignLastRunId: '',
       openDesignStatus: '',
+      openDesignRunRequestPath: '',
+      openDesignRunStatePath: '',
+      openDesignRunRequestStatus: '',
+      openDesignRunRequestMode: '',
+      openDesignRunRequestTimeoutMs: null,
+      openDesignRunRequestAllowFallback: null,
+      openDesignRunNativeCleanFinish: null,
+      openDesignRunCompletionMode: '',
+      openDesignRunStartedAt: '',
+      openDesignRunEndedAt: '',
+      openDesignRunQuestionForms: [],
+      openDesignRunQuestionFormRounds: [],
+      conceptManifestPath: '',
+      conceptIndexPath: '',
+      conceptPublicPreviewUrl: '',
+      conceptPublicAuditUrl: '',
+      conceptPublicRunStateUrl: '',
+      conceptQualityAuditPath: '',
+      conceptQualityAuditOk: null,
+      conceptQualityAuditScore: null,
+      conceptQualityAuditFindings: [],
       casePath: '',
       caseStatus: '',
       paidIntakePath: '',
@@ -548,10 +780,86 @@ function readJsonIfExists(filePath) {
   }
 }
 
+function readJsonlIfExists(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return [];
+  return fs.readFileSync(filePath, 'utf8')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
+
+function readOpenDesignQuestionFormArchive(conceptDir) {
+  if (!conceptDir || !fs.existsSync(conceptDir)) return { forms: [], rounds: [] };
+  return fs.readdirSync(conceptDir)
+    .filter((file) => /^run-events-question-form.*\.sse$/i.test(file))
+    .sort()
+    .reduce((archive, file, index) => {
+      const fullPath = path.join(conceptDir, file);
+      const text = fs.readFileSync(fullPath, 'utf8');
+      const questionFormCount = (text.match(/<question-form\b/gi) || []).length;
+      if (!questionFormCount) return archive;
+      const relativePath = path.relative(process.cwd(), fullPath);
+      archive.forms.push({
+        source: 'archived_open_design_question_form',
+        path: relativePath,
+        count: questionFormCount,
+      });
+      archive.rounds.push({
+        round: index + 1,
+        source: 'archived_open_design_question_form',
+        eventsPath: relativePath,
+        questionFormCount,
+      });
+      return archive;
+    }, { forms: [], rounds: [] });
+}
+
+function mergeQuestionFormEvidence(primary = [], archived = []) {
+  const combined = [
+    ...(Array.isArray(primary) ? primary : []),
+    ...(Array.isArray(archived) ? archived : []),
+  ];
+  const seen = new Set();
+  return combined.filter((item) => {
+    const key = item?.eventsPath || item?.path || JSON.stringify(item);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function normalizeEvidenceSources(evidence) {
+  if (Array.isArray(evidence?.sources)) return evidence.sources;
+  if (!Array.isArray(evidence?.items)) return [];
+  return evidence.items.map((item) => ({
+    key: item.key || '',
+    value: item.value || '',
+    sourceType: item.sourceType || '',
+    sourceUrl: item.sourceUrl || '',
+    confidence: item.confidence,
+    extractor: item.extractor || '',
+    metadata: item.metadata || {},
+  }));
+}
+
 function firstEvidenceUrl(evidence, sourceType) {
-  const source = (Array.isArray(evidence?.sources) ? evidence.sources : [])
+  const source = normalizeEvidenceSources(evidence)
     .find((item) => item?.sourceType === sourceType && item?.sourceUrl);
   return source?.sourceUrl || '';
+}
+
+function firstEvidenceValue(evidence, key) {
+  const source = normalizeEvidenceSources(evidence)
+    .find((item) => item?.key === key && item?.value);
+  return source?.value || '';
 }
 
 function extractPlaceIdFromEvidence(evidence) {

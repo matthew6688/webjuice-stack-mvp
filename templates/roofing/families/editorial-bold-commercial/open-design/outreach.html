@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ridge & Hammer Roofing · Roof Walkthrough Outreach</title>
+  <style>
+    :root {
+      --bg: #F7F7F4;
+      --surface: #FFFFFF;
+      --fg: #050505;
+      --muted: #6D6D6D;
+      --border: #D8D8D2;
+      --accent: #F25A1D;
+      --sky: #DDEAF0;
+      --metal: #B8B9B4;
+      --on-primary: #FFFFFF;
+      --on-tertiary: #111111;
+      --accent-soft: color-mix(in oklch, var(--accent) 14%, transparent);
+      --fg-soft: color-mix(in oklch, var(--fg) 6%, transparent);
+      --font-display: Inter, Arial, Helvetica, sans-serif;
+      --font-body: Inter, Arial, Helvetica, sans-serif;
+      --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --container: 1240px;
+      --gutter: clamp(18px, 3vw, 44px);
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; max-width: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p { margin: 0; text-wrap: balance; }
+    p { text-wrap: pretty; }
+    .container { max-width: var(--container); margin: 0 auto; padding-inline: var(--gutter); }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+    .lead { color: var(--muted); font-size: clamp(18px, 1.7vw, 23px); line-height: 1.35; max-width: 46ch; }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 20px; border: 1px solid transparent; border-radius: var(--radius); font-size: 13px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .btn-primary { background: var(--accent); color: var(--on-tertiary); border-color: var(--accent); }
+    .btn-secondary { color: var(--fg); border-color: var(--fg); }
+    .topbar { background: var(--fg); color: var(--surface); border-bottom: 1px solid color-mix(in oklch, var(--surface) 16%, transparent); }
+    .topbar .inner { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .brand-mark { width: 180px; height: 48px; }
+    .brand { display: inline-flex; align-items: center; gap: 14px; }
+    .brand-word { display: flex; flex-direction: column; line-height: .95; font-weight: 900; text-transform: uppercase; letter-spacing: 0; }
+    .phone { color: var(--accent); font-weight: 900; white-space: nowrap; }
+    .hero { min-height: calc(100svh - 74px); background: var(--fg); color: var(--surface); position: relative; overflow: hidden; }
+    .hero .container { position: relative; z-index: 2; min-height: calc(100svh - 74px); display: grid; grid-template-columns: .95fr 1.05fr; gap: clamp(28px, 5vw, 76px); align-items: center; padding-block: 36px; }
+    h1 { font-family: var(--font-display); font-size: clamp(64px, 10.5vw, 156px); line-height: .82; letter-spacing: 0; text-transform: uppercase; font-weight: 950; max-width: 8ch; }
+    h1 span { color: var(--accent); }
+    h2 { font-family: var(--font-display); font-size: clamp(42px, 6vw, 90px); line-height: .9; text-transform: uppercase; font-weight: 950; }
+    h3 { font-family: var(--font-display); font-size: clamp(22px, 2vw, 32px); line-height: 1; text-transform: uppercase; font-weight: 920; }
+    .hero-copy { display: flex; flex-direction: column; gap: 24px; }
+    .hero-copy .lead { color: color-mix(in oklch, var(--surface) 74%, transparent); }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-actions .btn-secondary { color: var(--surface); border-color: color-mix(in oklch, var(--surface) 55%, transparent); }
+    .hero-image { align-self: stretch; min-height: 560px; border-radius: var(--radius-lg); overflow: hidden; position: relative; background: var(--metal); }
+    .hero-image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, color-mix(in oklch, var(--fg) 38%, transparent), transparent 48%); }
+    .strip { border-block: 1px solid var(--fg); background: var(--surface); }
+    .strip-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .strip-item { padding: 24px; border-right: 1px solid var(--fg); min-height: 150px; display: flex; flex-direction: column; justify-content: space-between; }
+    .strip-item:last-child { border-right: 0; }
+    .strip-item strong { font-family: var(--font-display); text-transform: uppercase; font-size: 24px; line-height: 1; }
+    .strip-item span { color: var(--muted); font-size: 14px; }
+    .section { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid var(--border); }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+    .service-list { border-top: 1px solid var(--border); }
+    .service { display: grid; grid-template-columns: 72px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .service p { color: var(--muted); margin-top: 8px; max-width: 54ch; }
+    .proof-photo { min-height: 620px; border-radius: var(--radius-lg); overflow: hidden; background: var(--metal); }
+    .cta { background: var(--fg); color: var(--surface); border-radius: var(--radius-lg); padding: clamp(28px, 5vw, 64px); display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: end; }
+    .cta .lead { color: color-mix(in oklch, var(--surface) 74%, transparent); margin-top: 20px; }
+    .contact-card { background: var(--surface); color: var(--fg); padding: 22px; border-radius: var(--radius-lg); display: grid; gap: 12px; }
+    .contact-line { display: flex; justify-content: space-between; gap: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .contact-line:last-child { border-bottom: 0; padding-bottom: 0; }
+    .contact-line span:first-child { color: var(--muted); font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    footer { padding: 34px 0; color: var(--muted); font-size: 13px; }
+    footer .inner { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    @media (max-width: 900px) {
+      .hero .container, .split, .cta { grid-template-columns: 1fr; }
+      .hero-image, .proof-photo { min-height: 380px; }
+      .strip-grid { grid-template-columns: 1fr 1fr; }
+      .strip-item:nth-child(2) { border-right: 0; }
+      .strip-item:nth-child(-n+2) { border-bottom: 1px solid var(--fg); }
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: clamp(58px, 18vw, 92px); }
+      .brand-mark { width: 138px; }
+      .strip-grid { grid-template-columns: 1fr; }
+      .strip-item, .strip-item:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--fg); }
+      .strip-item:last-child { border-bottom: 0; }
+      .hero-actions .btn, .cta .btn { width: 100%; }
+      .phone { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container inner">
+      <a class="brand" href="index.html" aria-label="Ridge & Hammer Roofing home">
+        <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ridge and Hammer Roofing">
+          <path d="M8 27 30 9l22 18" fill="none" stroke="var(--muted)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 27h24v14H20z" fill="var(--surface)"/>
+          <text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="var(--surface)">RH</text>
+        </svg>
+        <span class="brand-word"><span>Ridge & Hammer</span><span>Roofing</span></span>
+      </a>
+      <a class="phone" href="tel:+15550101988">(555) 010-1988</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" data-od-id="outreach-hero">
+      <div class="container">
+        <div class="hero-copy">
+          <p class="eyebrow">For commercial buildings with roof questions</p>
+          <h1>Your roof needs a <span>clear next move.</span></h1>
+          <p class="lead">Ridge & Hammer Roofing helps building owners and property managers sort leaks, aging metal roof systems, storm issues, and replacement planning without the sales fog.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">Request a walkthrough</a>
+            <a class="btn btn-secondary" href="#services">View fit</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="assets/hero-worker-standing-metal-roof-wide.png" alt="Commercial roof worker standing on metal roof with large sky" />
+        </div>
+      </div>
+    </section>
+
+    <section class="strip" data-od-id="outreach-proof-strip">
+      <div class="container strip-grid">
+        <div class="strip-item"><strong>Metal roof systems</strong><span>Panels, seams, fasteners, flashing, and coatings.</span></div>
+        <div class="strip-item"><strong>Leak investigation</strong><span>Find the failure path before quoting the repair.</span></div>
+        <div class="strip-item"><strong>Maintenance planning</strong><span>Prioritize drainage, penetrations, edges, and storm exposure.</span></div>
+        <div class="strip-item"><strong>Photo-backed updates</strong><span>Clear notes for owners, managers, and tenants.</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="services" data-od-id="outreach-services">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">Good fit when</p>
+          <h2>The roof has moved from background to blocker.</h2>
+        </div>
+        <div class="service-list">
+          <article class="service">
+            <span class="num">01</span>
+            <div>
+              <h3>Water is showing up inside</h3>
+              <p>Trace likely entry points, protect the building, and separate urgent repair from longer-term roof decisions.</p>
+            </div>
+          </article>
+          <article class="service">
+            <span class="num">02</span>
+            <div>
+              <h3>The metal roof is aging</h3>
+              <p>Evaluate seams, fasteners, panel condition, coatings, and flashing before a small issue spreads.</p>
+            </div>
+          </article>
+          <article class="service">
+            <span class="num">03</span>
+            <div>
+              <h3>A replacement is on the table</h3>
+              <p>Build a scope that respects access, tenant disruption, weather windows, and budget timing.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="outreach-photo-proof">
+      <div class="container split">
+        <div class="proof-photo">
+          <img src="assets/service-roofer-metal-roof-diagonal.png" alt="Roofer working across a diagonal commercial metal roof" />
+        </div>
+        <div>
+          <p class="eyebrow">What you get</p>
+          <h2>Less guessing from the ground.</h2>
+          <p class="lead" style="margin-top: 22px;">A roof walkthrough should make the decision easier: the visible issue, the likely cause, the practical options, and the recommended next step.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-od-id="outreach-contact">
+      <div class="container cta">
+        <div>
+          <p class="eyebrow">Next step</p>
+          <h2>Send the roof concern.</h2>
+          <p class="lead">Share what type of building it is, what changed, and whether photos are available. Ridge & Hammer will respond with the cleanest next move.</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-line"><span>Call</span><strong>(555) 010-1988</strong></div>
+          <div class="contact-line"><span>Send</span><strong>Roof photos welcome</strong></div>
+          <a class="btn btn-primary" href="tel:+15550101988">Call about a roof</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container inner">
+      <span>Ridge & Hammer Roofing · Commercial roof repair, replacement, and maintenance.</span>
+      <a href="index.html">Full template</a>
+    </div>
+  </footer>
+</body>
+</html>

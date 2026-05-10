@@ -1,8 +1,8 @@
 # Ops Dashboard Plan
 
-Updated: 2026-05-06
+Updated: 2026-05-09
 
-Status: deferred until the restaurant closed loop is stable.
+Status: partially implemented. The admin shell now has overview, leads, templates, projects, finance, queue, and settings pages; settings is still an operator aid, not a secret-writing control plane.
 
 ## Positioning
 
@@ -30,9 +30,33 @@ Do not implement this before the restaurant loop is complete:
 - Settings: non-secret pricing, revision limits, provider unit costs, default niche, prompt/design protocol version.
 - Pricing Controls: dashboard-editable package prices, enabled/disabled tiers, revision allowances, Stripe price/session mapping, and an audit trail for price changes.
 
+## Current Settings Page
+
+`/admin/settings` is the runtime configuration checklist for operators. It groups configuration into purpose-based tabs:
+
+- core operations
+- special alerts
+- Open Design
+- transactional email
+- cold outreach
+- checkout/billing
+- media uploads
+- lead research
+- domain/deploy
+- local AI audit
+
+The page intentionally uses plain Chinese labels first. Low-level environment variable names, aliases, and detailed implementation notes are hidden behind “技术细节” so operators can answer two practical questions quickly:
+
+1. Is anything required missing?
+2. If something is missing, what exact next step should I take?
+
+Local development reads `.env`, `.env.local`, and `.dev.vars`, then overlays runtime `process.env`. The UI shows the source of configured values, for example `.env.local` or `runtime`, without exposing raw secrets. Secret values are masked and secret inputs are blank by design; pasting a replacement value only generates an `.env` line for copying.
+
+Important: `/admin/settings` does not persist secrets by itself. To make a change real, copy the generated line into local `.env.local` or the deployment provider's environment variables, then restart/redeploy the affected service.
+
 ## Security
 
-Use Cloudflare Access for `/admin`. Do not build custom password auth for MVP. Never display API keys; only show configured/missing/failing.
+Production `/admin` remains protected by admin middleware and `ADMIN_ACCESS_TOKEN`; Cloudflare Access is still preferred for a stronger outer gate. Never display API keys. The settings page may show masked values and source files, but must not render raw secret values into HTML.
 
 ## Data Sources
 

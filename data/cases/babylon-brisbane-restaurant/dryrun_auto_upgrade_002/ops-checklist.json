@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "mode": "project_dry_run",
+  "clientSlug": "babylon-brisbane-restaurant",
+  "businessName": "Babylon Brisbane",
+  "niche": "restaurant",
+  "route": "website",
+  "repo": "matthew6688/babylon-brisbane-restaurant",
+  "repoDir": "/Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant",
+  "sourceUrl": "https://babylonbrisbane.com.au/",
+  "previewUrl": "https://babylon-brisbane-restaurant-dev.pages.dev/",
+  "orderId": "dryrun_auto_upgrade_002",
+  "customerEmail": "matthew6688@gmail.com",
+  "status": "blocked",
+  "createdAt": "2026-05-07T07:26:49.891Z",
+  "updatedAt": "2026-05-07T07:26:51.640Z",
+  "stages": [
+    {
+      "id": "stage_0_case_created",
+      "name": "创建 dry-run case",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Dry-run case created.",
+      "evidence": [
+        "data/cases/babylon-brisbane-restaurant/dryrun_auto_upgrade_002/case.json",
+        "data/cases/babylon-brisbane-restaurant/dryrun_auto_upgrade_002/context-packet.json"
+      ],
+      "nextAction": "继续验证 evidence 和 website-ready packet。",
+      "startedAt": "2026-05-07T07:26:49.892Z",
+      "finishedAt": "2026-05-07T07:26:49.892Z"
+    },
+    {
+      "id": "stage_1_evidence_validate",
+      "name": "验证 evidence",
+      "critical": true,
+      "status": "pass",
+      "command": "npm run evidence:validate -- --client babylon-brisbane-restaurant --niche restaurant",
+      "output": "> webjuice-mvp@0.0.1 evidence:validate\n> node scripts/evidence/validate.js --client babylon-brisbane-restaurant --niche restaurant\nEvidence validation: /Users/matthew/Developer/google-map-website/clients/babylon-brisbane-restaurant/evidence/evidence.json\nStatus: ok\nNo issues found.",
+      "evidence": [
+        "clients/babylon-brisbane-restaurant/evidence/evidence.json"
+      ],
+      "nextAction": "继续生成 website-ready packet。",
+      "startedAt": "2026-05-07T07:26:49.892Z",
+      "finishedAt": "2026-05-07T07:26:50.068Z"
+    },
+    {
+      "id": "stage_2_website_ready_packet",
+      "name": "生成 website-ready packet",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Readiness: website_ready_to_build; readyToBuild=true",
+      "evidence": [
+        "clients/babylon-brisbane-restaurant/intake/website-survey.json",
+        "data/cases/babylon-brisbane-restaurant/dryrun_auto_upgrade_002/build-packet.md"
+      ],
+      "data": {
+        "readiness": "website_ready_to_build",
+        "readyToBuild": true,
+        "missing": [],
+        "nextAction": "Create or continue the website task thread and build on dev."
+      },
+      "nextAction": "创建或继续 Discord website task thread，然后在 dev 上构建。",
+      "startedAt": "2026-05-07T07:26:50.068Z",
+      "finishedAt": "2026-05-07T07:26:50.071Z"
+    },
+    {
+      "id": "stage_3_open_design_binding",
+      "name": "检查 Open Design project",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Open Design project bound: babylon-brisbane-restaurant-open-design-1778138142858",
+      "evidence": [
+        "clients/babylon-brisbane-restaurant/concept/open-design/concept-manifest.json",
+        "clients/babylon-brisbane-restaurant/concept/open-design/production-handoff.json"
+      ],
+      "data": {
+        "status": "bound",
+        "mode": "app-visible",
+        "dataDir": "/Users/matthew/Developer/open-design/.od",
+        "projectId": "babylon-brisbane-restaurant-open-design-1778138142858",
+        "runId": "94a3a5f2-b4af-47c0-a8bc-129447d4c9ad",
+        "conceptPath": "clients/babylon-brisbane-restaurant/concept/open-design",
+        "manifestPath": "clients/babylon-brisbane-restaurant/concept/open-design/concept-manifest.json",
+        "productionHandoffPath": "clients/babylon-brisbane-restaurant/concept/open-design/production-handoff.json",
+        "createCommand": "",
+        "continueCommand": "npm run open-design:continue-concept -- --client babylon-brisbane-restaurant --prompt \"<change request>\"",
+        "syncCommand": "npm run open-design:sync-from-app -- --client babylon-brisbane-restaurant",
+        "rule": "Use this exact local Open Design project for design concept changes. Do not start a separate Open Design project unless the operator explicitly asks."
+      },
+      "nextAction": "继续确认 production handoff。",
+      "startedAt": "2026-05-07T07:26:50.071Z",
+      "finishedAt": "2026-05-07T07:26:50.071Z"
+    },
+    {
+      "id": "stage_4_production_handoff",
+      "name": "检查 production handoff",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Production handoff exists: clients/babylon-brisbane-restaurant/concept/open-design/production-handoff.json",
+      "evidence": [
+        "clients/babylon-brisbane-restaurant/concept/open-design/production-handoff.json"
+      ],
+      "nextAction": "继续 port/build customer repo dev preview。",
+      "startedAt": "2026-05-07T07:26:50.071Z",
+      "finishedAt": "2026-05-07T07:26:50.071Z"
+    },
+    {
+      "id": "stage_5_customer_repo_build",
+      "name": "构建 customer repo dev preview",
+      "critical": true,
+      "status": "pass",
+      "command": "cd /Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant && npm run build",
+      "output": "17:26:51 [WARN] [build] Could not render `/blog` from route `/blog/[...slug]` as it conflicts with higher priority route `/blog`.\n17:26:51 [WARN] [build] Could not render `/cases` from route `/cases/[...slug]` as it conflicts with higher priority route `/cases`.\n17:26:51   ├─ /approve/index.html (+6ms) \n17:26:51   ├─ /blog/index.html (+2ms) \n17:26:51   ├─ /cases/index.html (+1ms) \n17:26:51   ├─ /checkout/index.html (+2ms) \n17:26:51   ├─ /contact/index.html (+1ms) \n17:26:51   ├─ /demo-faq/index.html (+1ms) \n17:26:51   ├─ /domain-help/index.html (+3ms) \n17:26:51   ├─ /domain-setup/index.html (+1ms) \n17:26:51   ├─ /menu/index.html (+1ms) \n17:26:51   ├─ /revise/index.html (+1ms) \n17:26:51   ├─ /thank-you/index.html (+1ms) \n17:26:51   ├─ /index.html (+2ms) \n17:26:51 ✓ Completed in 37ms.\n17:26:51 [build] ✓ Completed in 601ms.\n17:26:51 [build] 12 page(s) built in 798ms\n17:26:51 [build] Complete!",
+      "evidence": [
+        "/Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant/dist"
+      ],
+      "nextAction": "继续验证 customer repo preview banner。",
+      "startedAt": "2026-05-07T07:26:50.071Z",
+      "finishedAt": "2026-05-07T07:26:51.460Z"
+    },
+    {
+      "id": "stage_5b_preview_funnel_qa",
+      "name": "验证 preview banner 和官方 funnel links",
+      "critical": true,
+      "status": "blocker",
+      "command": "npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant/dist --client Babylon Brisbane",
+      "output": "      \"status\": 200,\n      \"ok\": false,\n      \"checks\": [\n        {\n          \"name\": \"local_funnel_route_removed_or_redirected\",\n          \"ok\": false,\n          \"detail\": \"/domain-help still exists at /Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant/dist/domain-help/index.html and no official redirect was found\"\n        },\n        {\n          \"name\": \"removed_route_not_serving_funnel\",\n          \"ok\": false,\n          \"detail\": \"/domain-help still serves ProfitsLocal funnel chrome\"\n        }\n      ]\n    }\n  ]\n}\nCommand failed: npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant/dist --client Babylon Brisbane",
+      "evidence": [
+        "/Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant/dist"
+      ],
+      "nextAction": "这个 customer repo 还残留旧版本地 funnel 页面。先同步到最新模板规则，移除本地 /checkout /approve /revise /domain-help 等页面，再重新运行 dry-run。",
+      "startedAt": "2026-05-07T07:26:51.461Z",
+      "finishedAt": "2026-05-07T07:26:51.638Z"
+    },
+    {
+      "id": "stage_8_agent_task_draft",
+      "name": "创建 agent task draft",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Task draft valid: task_1778138811638_ks17cb6v",
+      "evidence": [
+        "data/cases/babylon-brisbane-restaurant/dryrun_auto_upgrade_002/agent-task-draft.json"
+      ],
+      "data": {
+        "taskId": "task_1778138811638_ks17cb6v",
+        "validation": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "nextAction": "人工确认后可把 task dispatch 到 Discord website thread。",
+      "startedAt": "2026-05-07T07:26:51.638Z",
+      "finishedAt": "2026-05-07T07:26:51.639Z"
+    },
+    {
+      "id": "stage_9_customer_review_email_draft",
+      "name": "生成 customer review email draft",
+      "critical": false,
+      "status": "pass",
+      "command": "",
+      "output": "Review email draft written for matthew6688@gmail.com",
+      "evidence": [
+        "data/cases/babylon-brisbane-restaurant/dryrun_auto_upgrade_002/customer-review-email-draft.json"
+      ],
+      "nextAction": "customer email 只能在 delivery QA 通过后通过 Resend 正式发送。",
+      "startedAt": "2026-05-07T07:26:51.639Z",
+      "finishedAt": "2026-05-07T07:26:51.640Z"
+    }
+  ],
+  "nextActions": [
+    {
+      "stage": "stage_5b_preview_funnel_qa",
+      "action": "这个 customer repo 还残留旧版本地 funnel 页面。先同步到最新模板规则，移除本地 /checkout /approve /revise /domain-help 等页面，再重新运行 dry-run。"
+    }
+  ]
+}

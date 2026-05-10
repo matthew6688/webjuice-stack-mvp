@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-05-09T06:20:35.216Z",
+  "task": "G1 low-cost maps scrape -> discovery store -> lead pipeline",
+  "query": "roof restoration New Farm Brisbane",
+  "costPolicy": {
+    "googlePlacesApi": "not_used_in_discovery",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis",
+    "proxy": "none",
+    "notes": [
+      "Use maps scraper for cheap broad discovery.",
+      "Use Google Places API only after a candidate is selected for official verification/evidence.",
+      "Use Tinyfish/site-audit only for selected website audit candidates.",
+      "The upstream scraper may return small default review samples; this workflow strips review/email payloads before analysis storage unless explicitly overridden."
+    ]
+  },
+  "runs": [
+    {
+      "runId": "20260509-g1-roof-new-farm-a",
+      "rawRows": 21,
+      "actionCounts": {
+        "audit_candidate": 1,
+        "skip": 19,
+        "manual_review": 1
+      },
+      "withPhone": 21,
+      "withWebsite": 21
+    },
+    {
+      "runId": "20260509-g1-roof-new-farm-b",
+      "rawRows": 22,
+      "actionCounts": {
+        "audit_candidate": 1,
+        "skip": 19,
+        "manual_review": 2
+      },
+      "withPhone": 22,
+      "withWebsite": 22
+    },
+    {
+      "runId": "20260509-g1-roof-new-farm-b-reanalyzed",
+      "rawRows": 22,
+      "actionCounts": {
+        "audit_candidate": 1,
+        "skip": 20,
+        "manual_review": 1
+      },
+      "withPhone": 22,
+      "withWebsite": 22
+    }
+  ],
+  "repeatEvidence": {
+    "overlapCount": 20,
+    "ratioAgainstRunA": 0.952,
+    "ratioAgainstRunB": 0.909,
+    "note": "Google Maps result set drifted slightly between runs; overlapping entities were upserted instead of duplicated."
+  },
+  "relevanceGateEvidence": {
+    "name": "Hurricane Digital - SEO Brisbane",
+    "category": "Internet marketing service",
+    "relevance": {
+      "relevant": false,
+      "reason": "category_name_mismatch",
+      "requiredAny": [
+        "roof",
+        "gutter",
+        "til",
+        "restoration",
+        "metal"
+      ],
+      "haystack": "hurricane digital - seo brisbane internet marketing service internet marketing service advertising agency e commerce agency marketing agency website designer"
+    },
+    "recommendedAction": "skip"
+  },
+  "store": {
+    "totals": {
+      "entities": 41,
+      "promoted": 4,
+      "skipped": 22,
+      "needsAudit": 1,
+      "needsEnrichment": 0,
+      "readyForOutreachBrief": 8
+    },
+    "queueCounts": {
+      "cheapSiteAudit": 1,
+      "enrichment": 0,
+      "outreachBrief": 12
+    }
+  },
+  "nextRecommendedAction": "Run cheap audit for the single queued audit candidate before any paid enrichment."
+}

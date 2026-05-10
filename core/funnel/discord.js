@@ -450,6 +450,7 @@ export async function updateDiscordThread({
   name = '',
   appliedTagIds = null,
   fetchImpl = fetch,
+  retryOnRateLimit = true,
 }) {
   if (!threadId) throw new Error('Discord thread ID is required');
   if (!botToken) throw new Error('Discord bot token is required');
@@ -475,6 +476,18 @@ export async function updateDiscordThread({
     }
   }
   if (!response.ok) {
+    if (response.status === 429 && retryOnRateLimit) {
+      const retryAfter = Number(data?.retry_after || 3);
+      await sleep(Math.ceil(retryAfter * 1000));
+      return updateDiscordThread({
+        threadId,
+        botToken,
+        name,
+        appliedTagIds,
+        fetchImpl,
+        retryOnRateLimit: false,
+      });
+    }
     throw new Error(`Discord thread update failed: ${response.status} ${text}`.trim());
   }
   return { ok: true, status: response.status, data };
@@ -722,6 +735,16 @@ async function createThreadFromMessage({ fetchImpl, botToken, channelId, message
     threadId,
     threadUrl: guildId && threadId ? `https://discord.com/channels/${guildId}/${threadId}` : '',
   };
+}
+
+export async function createDiscordThreadFromMessage({
+  fetchImpl = fetch,
+  botToken,
+  channelId,
+  messageId,
+  threadName,
+}) {
+  return createThreadFromMessage({ fetchImpl, botToken, channelId, messageId, threadName });
 }
 
 function field(name, value, inline = false, limit = 250) {

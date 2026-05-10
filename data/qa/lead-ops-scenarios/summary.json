@@ -1,0 +1,236 @@
+{
+  "ok": true,
+  "scenarios": [
+    {
+      "id": "starter-clinic-google",
+      "summary": {
+        "familyId": "clinic",
+        "previewability": "ready_for_preview",
+        "productionReadiness": "needs_more_research",
+        "redesignDecision": "not_applicable",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 74,
+        "aiConfidence": "medium",
+        "websitePlanType": "simple_multi_page",
+        "outreachChannel": "call",
+        "outreachPreviewMode": "starter_preview"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "medium",
+        "score": 74,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "simple_multi_page",
+      "paths": {
+        "intake": "scenario-output/starter-clinic-google/lead-intake.json",
+        "research": "scenario-output/starter-clinic-google/lead-research.json",
+        "redesignCheck": "scenario-output/starter-clinic-google/redesign-check.json",
+        "readyToBuild": "scenario-output/starter-clinic-google/ready-to-build.json",
+        "outreachBrief": "scenario-output/starter-clinic-google/outreach-brief.json",
+        "leadOps": "scenario-output/starter-clinic-google/lead-ops.json"
+      }
+    },
+    {
+      "id": "redesign-field-service",
+      "summary": {
+        "familyId": "field_service",
+        "previewability": "ready_for_redesign_preview",
+        "productionReadiness": "needs_more_research",
+        "redesignDecision": "redesign_preview",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 68,
+        "aiConfidence": "medium",
+        "websitePlanType": "one_page",
+        "outreachChannel": "email",
+        "outreachPreviewMode": "redesign_preview"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "medium",
+        "score": 68,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "one_page",
+      "paths": {
+        "intake": "scenario-output/redesign-field-service/lead-intake.json",
+        "research": "scenario-output/redesign-field-service/lead-research.json",
+        "redesignCheck": "scenario-output/redesign-field-service/redesign-check.json",
+        "readyToBuild": "scenario-output/redesign-field-service/ready-to-build.json",
+        "outreachBrief": "scenario-output/redesign-field-service/outreach-brief.json",
+        "leadOps": "scenario-output/redesign-field-service/lead-ops.json"
+      }
+    },
+    {
+      "id": "social-only-salon",
+      "summary": {
+        "familyId": "studio_or_visual",
+        "previewability": "ready_for_preview",
+        "productionReadiness": "needs_more_research",
+        "redesignDecision": "not_applicable",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 68,
+        "aiConfidence": "medium",
+        "websitePlanType": "one_page",
+        "outreachChannel": "instagram_dm",
+        "outreachPreviewMode": "starter_preview"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "medium",
+        "score": 68,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "one_page",
+      "paths": {
+        "intake": "scenario-output/social-only-salon/lead-intake.json",
+        "research": "scenario-output/social-only-salon/lead-research.json",
+        "redesignCheck": "scenario-output/social-only-salon/redesign-check.json",
+        "readyToBuild": "scenario-output/social-only-salon/ready-to-build.json",
+        "outreachBrief": "scenario-output/social-only-salon/outreach-brief.json",
+        "leadOps": "scenario-output/social-only-salon/lead-ops.json"
+      }
+    },
+    {
+      "id": "professional-redesign",
+      "summary": {
+        "familyId": "professional_service",
+        "previewability": "ready_for_redesign_preview",
+        "productionReadiness": "needs_more_research",
+        "redesignDecision": "redesign_preview",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 68,
+        "aiConfidence": "medium",
+        "websitePlanType": "one_page",
+        "outreachChannel": "email",
+        "outreachPreviewMode": "redesign_preview"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "medium",
+        "score": 68,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "one_page",
+      "paths": {
+        "intake": "scenario-output/professional-redesign/lead-intake.json",
+        "research": "scenario-output/professional-redesign/lead-research.json",
+        "redesignCheck": "scenario-output/professional-redesign/redesign-check.json",
+        "readyToBuild": "scenario-output/professional-redesign/ready-to-build.json",
+        "outreachBrief": "scenario-output/professional-redesign/outreach-brief.json",
+        "leadOps": "scenario-output/professional-redesign/lead-ops.json"
+      }
+    },
+    {
+      "id": "venue-contact-form-only",
+      "summary": {
+        "familyId": "venue",
+        "previewability": "ready_for_redesign_preview",
+        "productionReadiness": "needs_more_research",
+        "redesignDecision": "redesign_preview",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 67,
+        "aiConfidence": "medium",
+        "websitePlanType": "one_page",
+        "outreachChannel": "manual_review",
+        "outreachPreviewMode": "redesign_preview"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "medium",
+        "score": 67,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "one_page",
+      "paths": {
+        "intake": "scenario-output/venue-contact-form-only/lead-intake.json",
+        "research": "scenario-output/venue-contact-form-only/lead-research.json",
+        "redesignCheck": "scenario-output/venue-contact-form-only/redesign-check.json",
+        "readyToBuild": "scenario-output/venue-contact-form-only/ready-to-build.json",
+        "outreachBrief": "scenario-output/venue-contact-form-only/outreach-brief.json",
+        "leadOps": "scenario-output/venue-contact-form-only/lead-ops.json"
+      }
+    },
+    {
+      "id": "imported-unreachable",
+      "summary": {
+        "familyId": "field_service",
+        "previewability": "blocked_unreachable",
+        "productionReadiness": "blocked_unreachable",
+        "redesignDecision": "blocked_unreachable",
+        "readyToBuildStatus": "blocked_unreachable",
+        "aiConclusion": "skip",
+        "aiScore": 39,
+        "aiConfidence": "high",
+        "websitePlanType": "one_page",
+        "outreachChannel": "manual_review",
+        "outreachPreviewMode": "outreach_only"
+      },
+      "aiConclusion": {
+        "result": "skip",
+        "label": "跳过",
+        "confidence": "high",
+        "score": 39,
+        "reason": "没有真实邮箱、电话、联系页或社媒 DM，无法触达。AI 可以补内容，但不能补一个假的联系方式。",
+        "nextAction": "继续搜索真实联系方式；找不到就跳过。"
+      },
+      "websitePlanType": "one_page",
+      "paths": {
+        "intake": "scenario-output/imported-unreachable/lead-intake.json",
+        "research": "scenario-output/imported-unreachable/lead-research.json",
+        "redesignCheck": "scenario-output/imported-unreachable/redesign-check.json",
+        "readyToBuild": "scenario-output/imported-unreachable/ready-to-build.json",
+        "outreachBrief": "scenario-output/imported-unreachable/outreach-brief.json",
+        "leadOps": "scenario-output/imported-unreachable/lead-ops.json"
+      }
+    },
+    {
+      "id": "provider-reply-teaser",
+      "summary": {
+        "familyId": "field_service",
+        "previewability": "ready_for_teaser",
+        "productionReadiness": "needs_more_research",
+        "redesignDecision": "not_applicable",
+        "readyToBuildStatus": "ready_for_teaser",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 66,
+        "aiConfidence": "medium",
+        "websitePlanType": "one_page",
+        "outreachChannel": "email",
+        "outreachPreviewMode": "teaser"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "medium",
+        "score": 66,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "one_page",
+      "paths": {
+        "intake": "scenario-output/provider-reply-teaser/lead-intake.json",
+        "research": "scenario-output/provider-reply-teaser/lead-research.json",
+        "redesignCheck": "scenario-output/provider-reply-teaser/redesign-check.json",
+        "readyToBuild": "scenario-output/provider-reply-teaser/ready-to-build.json",
+        "outreachBrief": "scenario-output/provider-reply-teaser/outreach-brief.json",
+        "leadOps": "scenario-output/provider-reply-teaser/lead-ops.json"
+      }
+    }
+  ]
+}

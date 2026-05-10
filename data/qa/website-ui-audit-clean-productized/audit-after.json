@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "auditType": "website-ui-audit",
+  "subject": {
+    "family": "productized-modern-roofing",
+    "source": "data/template-experiments/roofing/productized-modern-roofing/home-live-medium-v1-app-visible-2026-05-09-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/open-design/index.html",
+    "desktopScreenshot": "data/qa/website-ui-audit-clean-productized-after-desktop.png",
+    "mobileScreenshot": "data/qa/website-ui-audit-clean-productized-after-mobile.png",
+    "comparisonScreenshot": "data/qa/website-ui-audit-clean-productized-before-after.png",
+    "runEvidence": {
+      "runId": "c0f45c54-cfdf-4596-be62-83ad99b0e9ac",
+      "nativeCleanFinish": true,
+      "completionMode": "native",
+      "durationMs": 316742,
+      "questionForms": 0
+    }
+  },
+  "score": 89,
+  "decision": "approve_with_minor_notes",
+  "confidence": "medium",
+  "hardFailReasons": [],
+  "dimensions": {
+    "hero": {
+      "score": 23,
+      "max": 25,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "hero",
+          "message": "The revised first viewport is photo-led and now clearly feels like a roofing service page while preserving business clarity and CTA.",
+          "evidence": "After desktop screenshot: approved roofing image spans the full hero surface with headline, CTA, service tags, and proof cells layered into the composition.",
+          "suggestedFix": "Minor optional improvement: crop mobile slightly lower to show more roof texture earlier, but current version is acceptable."
+        }
+      ]
+    },
+    "industryFit": {
+      "score": 14,
+      "max": 15,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "reference_fidelity",
+          "message": "The design still fits the productized-modern family while feeling more like a local roofing company.",
+          "evidence": "Clean nav, material proof cells, restrained palette, and full-bleed roof image preserve the family direction.",
+          "suggestedFix": "Keep this direction for the next iteration; avoid adding decorative complexity."
+        }
+      ]
+    },
+    "visualHierarchy": {
+      "score": 14,
+      "max": 15,
+      "findings": []
+    },
+    "imagery": {
+      "score": 14,
+      "max": 15,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "imagery",
+          "message": "The approved roof image is now the primary visual surface and has much stronger first-viewport impact.",
+          "evidence": "After desktop screenshot: roof image fills the hero; after mobile screenshot: image remains full-viewport background behind H1/CTA.",
+          "suggestedFix": "Optional mobile crop tuning only."
+        }
+      ]
+    },
+    "conversion": {
+      "score": 9,
+      "max": 10,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "conversion",
+          "message": "CTA and phone path remain clearly visible above the fold on desktop and mobile.",
+          "evidence": "Buttons: Request an inspection; Call 0400 000 000.",
+          "suggestedFix": "No required change."
+        }
+      ]
+    },
+    "mobile": {
+      "score": 9,
+      "max": 10,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "mobile",
+          "message": "Mobile is readable, conversion path is visible, and no overlap is visible in the captured first viewport.",
+          "evidence": "After mobile screenshot: brand, call button, H1, description, and CTAs are visible and readable.",
+          "suggestedFix": "Optional crop adjustment to reduce empty sky at the top."
+        }
+      ]
+    },
+    "technicalUx": {
+      "score": 5,
+      "max": 5,
+      "findings": []
+    },
+    "aiSlop": {
+      "score": 5,
+      "max": 5,
+      "findings": []
+    }
+  },
+  "postRunChecks": {
+    "nativeCleanFinish": true,
+    "internalTermsFound": false,
+    "h1Count": 1,
+    "sections": 6,
+    "images": 9,
+    "hasTel": true,
+    "hasMaps": true
+  },
+  "topFixes": [
+    "Optional: tune mobile hero image-position to show slightly more roof texture above the CTA.",
+    "Optional: evaluate whether the bottom proof strip should be a little smaller on shorter laptop viewports."
+  ],
+  "evidence": [
+    "data/qa/website-ui-audit-clean-productized/audit-before.json",
+    "data/qa/website-ui-audit-clean-productized/revision-brief.md",
+    "data/qa/website-ui-audit-clean-productized-before-desktop.png",
+    "data/qa/website-ui-audit-clean-productized-after-desktop.png",
+    "data/qa/website-ui-audit-clean-productized-before-after.png",
+    "data/qa/website-ui-audit-clean-productized-after-mobile.png"
+  ]
+}

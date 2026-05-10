@@ -8,19 +8,9 @@ const dashboardSummary = {
   reviewReady: index.records.filter((record) => record.stageSummary?.key === 'review_ready').length,
   revisionsPending: index.records.filter((record) => record.status === 'revision_requested').length,
   waitingDns: index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length,
+  missingOpenDesign: index.records.filter((record) => !record.artifactSummary?.openDesignBound).length,
+  qaBlocked: index.records.filter((record) => !record.artifactSummary?.deliveryQaReady).length,
 };
-const urgentQueue = index.records
-  .filter((record) => record.blockerSummary?.blocking || record.status === 'revision_requested' || record.artifactSummary?.domainStatus === 'waiting_for_customer_dns')
-  .map((record) => ({
-    ...record,
-    urgencyScore:
-      (record.status === 'revision_requested' ? 100 : 0)
-      + (record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 80 : 0)
-      + ((record.blockerSummary?.count || 0) * 10)
-      + (record.stageSummary?.key === 'review_ready' ? 15 : 0),
-  }))
-  .sort((a, b) => b.urgencyScore - a.urgencyScore)
-  .slice(0, 6);
 const savedViews = [
   ['all', ADMIN_VIEWS.all.label],
   ['review_ready', ADMIN_VIEWS.review_ready.label],
@@ -29,16 +19,91 @@ const savedViews = [
   ['missing_open_design', ADMIN_VIEWS.missing_open_design.label],
   ['qa_blocked', ADMIN_VIEWS.qa_blocked.label],
 ];
+const projectKey = (record) => `${record.clientSlug}:${record.orderId}`;
+const assignedProjectKeys = new Set();
+const takeProjects = (predicate) => {
+  const picked = index.records.filter((record) => predicate(record) && !assignedProjectKeys.has(projectKey(record)));
+  picked.forEach((record) => assignedProjectKeys.add(projectKey(record)));
+  return picked;
+};
+const projectGroups = [
+  {
+    key: 'review_ready',
+    label: '待发 review',
+    summary: 'Delivery QA 已过，下一步要把 review 链接发给客户。',
+    criteria: ['dev preview 已可访问。', 'delivery QA 已通过或有足够截图/证据。', '客户 review 邮件/链接可以安全发出。'],
+    records: takeProjects((record) => record.stageSummary?.key === 'review_ready'),
+  },
+  {
+    key: 'revision_pending',
+    label: '修订待处理',
+    summary: '客户已经提交 revision，优先回到同一个 thread 和 dev branch。',
+    criteria: ['客户已提交 revision request。', 'revision quota 和 order/email 已验证。', '需要回到同一个 case、thread 和 dev branch 处理。'],
+    records: takeProjects((record) => record.status === 'revision_requested'),
+  },
+  {
+    key: 'waiting_dns',
+    label: '等待 DNS',
+    summary: '站点基本完成，但客户域名还需要 DNS/CNAME 动作。',
+    criteria: ['网站已接近或已经 live-ready。', '域名状态是 waiting_for_customer_dns。', '下一步需要客户或 operator 完成 DNS/CNAME。'],
+    records: takeProjects((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns'),
+  },
+  {
+    key: 'missing_open_design',
+    label: '缺少 Open Design',
+    summary: '正式项目还没有绑定 Open Design，需要先创建或恢复设计 workspace。',
+    criteria: ['这是正式 paid project。', '没有 openDesignBound / concept manifest / project id。', '继续生产前需要创建或恢复 Open Design workspace。'],
+    records: takeProjects((record) => !record.artifactSummary?.openDesignBound),
+  },
+  {
+    key: 'qa_blocked',
+    label: 'QA 阻塞',
+    summary: '还没有达到 customer review 前的 delivery QA 门槛。',
+    criteria: ['项目还不能发给客户 review。', '缺 delivery QA、截图、客户链接检查或关键 production evidence。', '需要先补 QA gate。'],
+    records: takeProjects((record) => !record.artifactSummary?.deliveryQaReady),
+  },
+  {
+    key: 'steady',
+    label: '正常推进',
+    summary: '没有进入优先异常队列，按常规项目节奏推进。',
+    criteria: ['没有 revision、DNS、Open Design 或 QA 阻塞。', '按项目详情里的 next action 继续推进。', '如果出现阻塞，应进入更具体的优先 stage。'],
+    records: takeProjects(() => true),
+  },
+];
+const groupCriteriaSummary = (group) => (group.criteria || [group.summary]).join(' ');
+const activeGroupKey = projectGroups.find((group) => group.records.length)?.key || 'all';
+const recordSearch = (record) => [
+  record.clientSlug,
+  record.customer.company,
+  record.customer.email,
+  record.customer.domain,
+  record.orderId,
+  record.status,
+  record.stageSummary?.label,
+  record.nextActionSummary?.label,
+  record.nextActionSummary?.reason,
+].filter(Boolean).join(' ').toLowerCase();
+const contactLine = (record) => [
+  record.customer.email || '无邮箱',
+  record.customer.phone || '无电话',
+  record.customer.domain || record.previewUrl || '无域名',
+].join(' · ');
+const healthItems = (record) => [
+  `OD ${record.artifactSummary?.openDesignPipelineLabel || (record.artifactSummary?.openDesignBound ? '运行中' : '缺失')}`,
+  `QA ${record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'}`,
+  record.artifactSummary?.domainStatus ? `域名 ${record.artifactSummary.domainStatus}` : '',
+].filter(Boolean);
+const projectUiVersion = 'local-style-2026-05-08';
 ---
 
 <Layout title={`项目工作台 - ${siteConfig.name}`} description="ProfitsLocal 已付款项目与交付状态面板。" active="intakes">
-  <section class="poster-section admin-section">
-    <div class="admin-shell">
+  <section class="poster-section admin-section" data-ui-version={projectUiVersion}>
+    <div class="admin-shell lead-admin-shell">
       <div class="admin-header">
         <div>
           <p class="eyebrow">内部运营</p>
           <h1>项目工作台</h1>
-          <p class="lede">这里只看正式项目：当前阶段、阻塞项、review、修订、DNS 和 Open Design。</p>
+          <p class="lede">正式项目按下一步动作排队：review、修订、DNS、Open Design 和 QA。先看 active stage，再打开项目详情处理。</p>
         </div>
         <div class="admin-count">
           <strong>{index.counts.total}</strong>
@@ -46,34 +111,42 @@ const savedViews = [
         </div>
       </div>
 
-      <dl class="admin-meta-line">
-        <div><dt>项目总数</dt><dd>{index.counts.total}</dd></div>
-        <div><dt>待发 review</dt><dd>{dashboardSummary.reviewReady}</dd></div>
-        <div><dt>修订待处理</dt><dd>{dashboardSummary.revisionsPending}</dd></div>
-        <div><dt>等待 DNS</dt><dd>{dashboardSummary.waitingDns}</dd></div>
-      </dl>
-
-      <section class="admin-paper-section">
-        <div class="admin-paper-section-head">
-          <div>
-            <span class="eyebrow">优先行动</span>
-            <h2>现在先做</h2>
-          </div>
-        </div>
-        <div class="admin-urgent-list">
-          {urgentQueue.length ? urgentQueue.map((record) => (
-            <a class="admin-urgent-card" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
-              <strong>{record.customer.company || record.clientSlug}</strong>
-              <span>{record.nextActionSummary?.label || '打开项目'}</span>
-              <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.status}</code>
-            </a>
-          )) : <p class="micro">当前没有特别紧急的项目。</p>}
-        </div>
-      </section>
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">项目总数</span>
+          <strong>{index.counts.total}</strong>
+          <p>所有已付款项目和交付记录。</p>
+        </article>
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">待发 review</span>
+          <strong>{dashboardSummary.reviewReady}</strong>
+          <p>QA 已具备，下一步是客户确认。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">修订待处理</span>
+          <strong>{dashboardSummary.revisionsPending}</strong>
+          <p>客户已反馈，优先回到交付 thread。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">等待 DNS</span>
+          <strong>{dashboardSummary.waitingDns}</strong>
+          <p>需要客户或我们完成域名动作。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">OD 缺口</span>
+          <strong>{dashboardSummary.missingOpenDesign}</strong>
+          <p>没有设计 workspace，项目无法进入稳定生产。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">QA 阻塞</span>
+          <strong>{dashboardSummary.qaBlocked}</strong>
+          <p>不能发 review 前先补证据和 QA。</p>
+        </article>
+      </div>
 
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
-          <span class="admin-toolbar-label">快速筛选</span>
+          <span class="admin-toolbar-label">视图</span>
           <div class="admin-view-pills">
             {savedViews.map(([key, label], idx) => (
               <button type="button" class={`admin-view-pill ${idx === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
@@ -89,144 +162,136 @@ const savedViews = [
         </div>
       </div>
 
-      <div class="admin-mobile-records">
-        {index.records.map((record) => (
-          <article
-            class="admin-mobile-record"
-            data-client={record.clientSlug}
-            data-company={record.customer.company || ''}
-            data-order-id={record.orderId}
-            data-domain={record.customer.domain || ''}
-            data-status={record.status}
-            data-stage={record.stageSummary?.key || ''}
-            data-view-review-ready={record.stageSummary?.key === 'review_ready' ? 'true' : 'false'}
-            data-view-revision-pending={record.status === 'revision_requested' ? 'true' : 'false'}
-            data-view-waiting-dns={record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 'true' : 'false'}
-            data-view-missing-open-design={record.artifactSummary?.openDesignBound ? 'false' : 'true'}
-            data-view-qa-blocked={record.artifactSummary?.deliveryQaReady ? 'false' : 'true'}
-          >
-            <div class="admin-mobile-record-head">
-              <div>
-                <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
-                  <strong>{record.customer.company || record.clientSlug}</strong>
-                </a>
-                <span class="admin-mono">{record.orderId}</span>
-              </div>
-              <a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>详情</a>
-            </div>
-            <div class="admin-health-pills">
-              <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || '未知'}</mark>
-              <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
-            </div>
-            <p class="micro">{record.milestoneSummary?.currentLabel || '线索已收集'} · {record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</p>
-            <p class="micro">{record.nextActionSummary?.label || '查看'} · {record.nextActionSummary?.reason || '还没有记录推荐动作。'}</p>
-            <div class="admin-mobile-record-grid">
-              <div><span class="admin-toolbar-label">健康度</span><p>OD {record.artifactSummary?.openDesignPipelineLabel || (record.artifactSummary?.openDesignBound ? '运行中' : '未绑定')} · QA {record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'} · 域名 {record.artifactSummary?.domainStatus || '无'}</p></div>
-              <div><span class="admin-toolbar-label">阻塞</span><p>{record.blockerSummary?.primary || (record.missing.length ? record.missing.join(', ') : '当前没有明显阻塞')}</p></div>
-              <div><span class="admin-toolbar-label">联系</span><p>{record.customer.email || '没有邮箱'} · {record.customer.domain || '没有域名'}</p></div>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>客户</th>
-              <th>当前阶段</th>
-              <th>设计 / 交付</th>
-              <th>阻塞</th>
-              <th>下一步动作</th>
-              <th>入口</th>
-            </tr>
-          </thead>
-          <tbody>
-            {index.records.map((record) => (
-              <tr
-                data-client={record.clientSlug}
-                data-company={record.customer.company || ''}
-                data-order-id={record.orderId}
-                data-domain={record.customer.domain || ''}
-                data-status={record.status}
-                data-stage={record.stageSummary?.key || ''}
-                data-view-review-ready={record.stageSummary?.key === 'review_ready' ? 'true' : 'false'}
-                data-view-revision-pending={record.status === 'revision_requested' ? 'true' : 'false'}
-                data-view-waiting-dns={record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 'true' : 'false'}
-                data-view-missing-open-design={record.artifactSummary?.openDesignBound ? 'false' : 'true'}
-                data-view-qa-blocked={record.artifactSummary?.deliveryQaReady ? 'false' : 'true'}
-              >
-                <td>
-                  <a class="admin-record-link" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
-                    <strong>{record.customer.company || record.clientSlug}</strong>
-                  </a>
-                  <span>{record.clientSlug}</span>
-                  <span class="admin-mono">{record.orderId}</span>
-                </td>
-                <td>
-                  <mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || '未知'}</mark>
-                  <mark class={`status-pill status-${record.status}`}>{record.status.replaceAll('_', ' ')}</mark>
-                  <span>{record.milestoneSummary?.currentLabel || '线索已收集'} · {record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</span>
-                  {record.revisionCount ? <span>{`修订 ${record.revisionCount}/${record.revisionLimit}`}</span> : null}
-                </td>
-                <td>
-                  <div class="admin-health-pills">
-                    <mark class={`status-pill ${
-                      record.artifactSummary?.openDesignPipelineTone === 'ready'
-                        ? 'status-ready'
-                        : record.artifactSummary?.openDesignPipelineTone === 'warn'
-                          ? 'status-warn'
-                          : record.artifactSummary?.openDesignPipelineTone === 'alert'
-                            ? 'status-alert'
-                            : (record.artifactSummary?.openDesignBound ? 'status-working' : 'status-alert')
-                    }`}>
-                      OD {record.artifactSummary?.openDesignPipelineLabel || (record.artifactSummary?.openDesignBound ? '运行中' : '缺失')}
-                    </mark>
-                    <mark class={`status-pill ${record.artifactSummary?.deliveryQaReady ? 'status-ready' : 'status-warn'}`}>QA {record.artifactSummary?.deliveryQaReady ? '通过' : '待完成'}</mark>
-                    {record.artifactSummary?.domainStatus ? <mark class="status-pill status-info">域名 {record.artifactSummary?.domainStatus}</mark> : null}
+      <div class="lead-pipeline" data-project-pipeline>
+        {projectGroups.map((group) => {
+          const isActive = group.key === activeGroupKey;
+          return (
+            <section class={`lead-stage ${isActive ? 'is-active' : ''}`} data-stage-column={group.key}>
+              <button class="lead-stage-rail" type="button" data-stage-toggle={group.key} aria-expanded={isActive ? 'true' : 'false'} title={`${group.label}：${groupCriteriaSummary(group)}`} aria-label={`${group.label}，进入标准：${groupCriteriaSummary(group)}`}>
+                <span>{group.records.length}</span>
+                <strong>{group.label}</strong>
+              </button>
+              <div class="lead-stage-panel">
+                <header class="lead-stage-head">
+                  <div>
+                    <span class="eyebrow">Project queue</span>
+                    <h2>{group.label}</h2>
+                    <details class="stage-criteria">
+                      <summary>进入这个 stage 的标准</summary>
+                      <ul>
+                        {(group.criteria || [group.summary]).map((item) => <li>{item}</li>)}
+                      </ul>
+                    </details>
                   </div>
-                  <span>{record.artifactSummary?.openDesignCompletionMode || '等待 native 结束'}</span>
-                  {record.artifactSummary?.latestTimeline?.type ? <span>{record.artifactSummary.latestTimeline.type}</span> : null}
-                </td>
-                <td>
-                  {record.blockerSummary?.count ? (
-                    <div class="admin-risk-stack">
-                      <strong>{record.blockerSummary.primary}</strong>
-                      <span>{record.blockerSummary.count} 个阻塞</span>
-                    </div>
-                  ) : (
-                    <span class="admin-ready">当前没有明显阻塞</span>
-                  )}
-                  <span>{record.customer.email || '没有邮箱'} · {record.customer.domain || '没有域名'}</span>
-                </td>
-                <td>
-                  <strong>{record.nextActionSummary?.label || '查看'}</strong>
-                  <span>{record.nextActionSummary?.reason || ''}</span>
-                </td>
-                <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>详情</a></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <strong>{group.records.length}</strong>
+                </header>
+                <div class="lead-card-list">
+                  {group.records.length ? group.records.slice(0, 12).map((record, idx) => (
+                    <article
+                      class={`lead-card ${isActive && idx === 0 ? 'is-open' : ''}`}
+                      data-lead-card
+                      data-stage={group.key}
+                      data-search={recordSearch(record)}
+                      data-view-all="true"
+                      data-view-review-ready={record.stageSummary?.key === 'review_ready' ? 'true' : 'false'}
+                      data-view-revision-pending={record.status === 'revision_requested' ? 'true' : 'false'}
+                      data-view-waiting-dns={record.artifactSummary?.domainStatus === 'waiting_for_customer_dns' ? 'true' : 'false'}
+                      data-view-missing-open-design={record.artifactSummary?.openDesignBound ? 'false' : 'true'}
+                      data-view-qa-blocked={record.artifactSummary?.deliveryQaReady ? 'false' : 'true'}
+                    >
+                      <button class="lead-card-main" type="button" data-card-toggle>
+                        <span class={`status-pill status-${record.stageSummary?.tone || 'working'}`}>{record.stageSummary?.label || '未知'}</span>
+                        <strong>{record.customer.company || record.clientSlug}</strong>
+                        <span>{record.clientSlug} / {record.orderId}</span>
+                        <span class="lead-card-contact">{contactLine(record)}</span>
+                        <em>{record.nextActionSummary?.label || '查看项目'}</em>
+                      </button>
+                      <div class="lead-card-detail">
+                        <section class="lead-handoff-brief">
+                          <div class="lead-section-head">
+                            <h3>下一步动作</h3>
+                            <span>{record.status}</span>
+                          </div>
+                          <p><strong>{group.summary}</strong></p>
+                          <p>{record.nextActionSummary?.reason || '继续推进当前项目。'}</p>
+                          {record.nextActionSummary?.command ? (
+                            <div class="lead-command-card">
+                              <span>建议命令</span>
+                              <code>{record.nextActionSummary.command}</code>
+                            </div>
+                          ) : null}
+                        </section>
+                        <section class="lead-site-audit">
+                          <div class="lead-section-head">
+                            <h3>交付健康度</h3>
+                            <span>{record.milestoneSummary?.completedCount || 0}/{record.milestoneSummary?.total || 0}</span>
+                          </div>
+                          <div class="lead-proof-grid">
+                            {healthItems(record).map((item) => <span>{item}</span>)}
+                          </div>
+                          <p>{record.milestoneSummary?.currentLabel || '线索已收集'} · {record.artifactSummary?.openDesignCompletionMode || '等待 native 结束'}</p>
+                        </section>
+                        <section class={record.blockerSummary?.count ? 'lead-inline-warning' : 'lead-handoff-brief'}>
+                          {record.blockerSummary?.count
+                            ? `${record.blockerSummary.primary} · ${record.blockerSummary.count} 个阻塞`
+                            : '当前没有明显阻塞。'}
+                        </section>
+                        <div class="lead-decision-row">
+                          <a class="button" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>打开项目</a>
+                          {record.previewUrl ? <a class="button secondary" href={record.previewUrl}>预览</a> : null}
+                          {record.discordThreadUrl ? <a class="button secondary" href={record.discordThreadUrl}>Thread</a> : null}
+                        </div>
+                      </div>
+                    </article>
+                  )) : <p class="lead-empty">这个阶段暂时没有项目。</p>}
+                </div>
+              </div>
+            </section>
+          );
+        })}
       </div>
 
-      <p class="admin-section-note">这里只看项目推进：review、修订、DNS、Open Design、阻塞项。售前去 <a href="/admin/leads/" class="admin-inline-link">线索面板</a>，财务去 <a href="/admin/finance/" class="admin-inline-link">财务面板</a>。项目真相源仍然是 repo 里的 `data/paid-intakes` 和 `data/cases`。</p>
+      <details class="admin-audit-view">
+        <summary>打开项目审计表格</summary>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>客户</th>
+                <th>当前阶段</th>
+                <th>设计 / 交付</th>
+                <th>阻塞</th>
+                <th>下一步动作</th>
+                <th>入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {index.records.map((record) => (
+                <tr>
+                  <td><strong>{record.customer.company || record.clientSlug}</strong><span>{record.clientSlug}</span><span class="admin-mono">{record.orderId}</span></td>
+                  <td><mark class={`status-pill status-${record.stageSummary?.tone || 'info'}`}>{record.stageSummary?.label || '未知'}</mark><span>{record.milestoneSummary?.currentLabel || '线索已收集'}</span></td>
+                  <td>{healthItems(record).join(' · ')}</td>
+                  <td>{record.blockerSummary?.primary || '当前没有明显阻塞'}</td>
+                  <td><strong>{record.nextActionSummary?.label || '查看'}</strong><span>{record.nextActionSummary?.reason || ''}</span></td>
+                  <td><a class="admin-open" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>详情</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </div>
   </section>
-</Layout>
 
-<script>
-  const toolbar = document.querySelector('[data-admin-toolbar]');
-  if (toolbar) {
-    const tableRows = Array.from(document.querySelectorAll('tbody tr'));
-    const mobileCards = Array.from(document.querySelectorAll('.admin-mobile-record'));
-    const records = [...tableRows, ...mobileCards];
-    const pills = Array.from(toolbar.querySelectorAll('[data-admin-view]'));
-    const search = toolbar.querySelector('[data-admin-search]');
-    const visibleCount = toolbar.querySelector('[data-admin-visible-count]');
-    let activeView = 'all';
+  <script>
+    const toolbar = document.querySelector('[data-admin-toolbar]');
+    const pipeline = document.querySelector('[data-project-pipeline]');
+    const searchInput = toolbar?.querySelector('[data-admin-search]');
+    const viewButtons = [...(toolbar?.querySelectorAll('[data-admin-view]') || [])];
+    const cards = [...document.querySelectorAll('[data-lead-card][data-stage]')];
+    const visibleCount = toolbar?.querySelector('[data-admin-visible-count]');
     const viewDatasetKey = {
-      all: null,
+      all: 'viewAll',
       review_ready: 'viewReviewReady',
       revision_pending: 'viewRevisionPending',
       waiting_dns: 'viewWaitingDns',
@@ -234,38 +299,49 @@ const savedViews = [
       qa_blocked: 'viewQaBlocked',
     };
 
+    document.querySelectorAll('[data-stage-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-stage-column]').forEach((column) => {
+          const active = column.dataset.stageColumn === button.dataset.stageToggle;
+          column.classList.toggle('is-active', active);
+          column.querySelector('[data-stage-toggle]')?.setAttribute('aria-expanded', active ? 'true' : 'false');
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-card-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('[data-lead-card]');
+        const column = card?.closest('[data-stage-column]');
+        column?.querySelectorAll('[data-lead-card]').forEach((item) => item.classList.toggle('is-open', item === card && !item.classList.contains('is-open')));
+      });
+    });
+
     const applyFilters = () => {
-      const query = (search?.value || '').trim().toLowerCase();
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      const activeView = viewButtons.find((button) => button.classList.contains('is-active'))?.dataset.adminView || 'all';
+      const datasetKey = viewDatasetKey[activeView] || 'viewAll';
       let shown = 0;
-      records.forEach((record) => {
-        const haystack = [
-          record.dataset.client,
-          record.dataset.company,
-          record.dataset.orderId,
-          record.dataset.domain,
-          record.dataset.status,
-          record.dataset.stage,
-        ].join(' ').toLowerCase();
-        const matchesQuery = !query || haystack.includes(query);
-        const datasetKey = viewDatasetKey[activeView];
-        const matchesView = !datasetKey ? true : record.dataset[datasetKey] === 'true';
+      cards.forEach((card) => {
+        const matchesQuery = !query || (card.dataset.search || '').includes(query);
+        const matchesView = card.dataset[datasetKey] === 'true';
         const visible = matchesQuery && matchesView;
-        record.hidden = !visible;
+        card.hidden = !visible;
         if (visible) shown += 1;
       });
       if (visibleCount) visibleCount.textContent = `${shown} 条可见`;
+      pipeline?.classList.toggle('is-filtering', activeView !== 'all' || Boolean(query));
     };
 
-    pills.forEach((pill) => {
-      pill.addEventListener('click', () => {
-        pills.forEach((item) => item.classList.remove('is-active'));
-        pill.classList.add('is-active');
-        activeView = pill.dataset.adminView || 'all';
+    viewButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        viewButtons.forEach((item) => item.classList.remove('is-active'));
+        button.classList.add('is-active');
         applyFilters();
       });
     });
 
-    search?.addEventListener('input', applyFilters);
+    searchInput?.addEventListener('input', applyFilters);
     applyFilters();
-  }
-</script>
+  </script>
+</Layout>

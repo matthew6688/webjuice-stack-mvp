@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-07T07:24:47.365Z",
+  "clientSlug": "babylon-brisbane-restaurant",
+  "projectId": "babylon-brisbane-restaurant-open-design-1778138142858",
+  "conversationId": "d3be87de-c312-4fad-85b5-989987c8e17e",
+  "runId": "94a3a5f2-b4af-47c0-a8bc-129447d4c9ad",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": "https://babylonbrisbane.com.au/",
+  "businessType": "local business",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "multi-page",
+  "prompt": "Skip questions. Use Open Design's existing web-prototype/design workflow and produce a high-fidelity concept artifact.\nSource website: https://babylonbrisbane.com.au/\nClient slug: babylon-brisbane-restaurant\nBusiness type: local business\nVisual tone: high-fidelity, brand-matched, polished\nScope: multi-page\n\nIf a source website is provided, inspect it and match the existing brand direction instead of inventing a new generic style.\nPreserve core business facts, logo/brand identity, existing navigation intent, contact details, booking/order/contact links, menu/service/product content, and old URL intent where visible.\nCreate concept files in the project folder. Prefer index.html plus local assets and brand-spec.md when brand information is available.\nDo not deploy. Do not edit any ProfitsLocal production repo. This is concept generation only.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/babylon-brisbane-restaurant/concept/open-design",
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 28390,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "assets/fire.webp",
+      "size": 54534,
+      "kind": "image",
+      "mime": "image/webp",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/meze.webp",
+      "size": 48500,
+      "kind": "image",
+      "mime": "image/webp",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/functions.jpg",
+      "size": 86162,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/gardens.webp",
+      "size": 72372,
+      "kind": "image",
+      "mime": "image/webp",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/restaurant.webp",
+      "size": 67642,
+      "kind": "image",
+      "mime": "image/webp",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/hero-logo.png",
+      "size": 5252,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/logo.png",
+      "size": 27532,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "brand-spec.md",
+      "size": 2269,
+      "kind": "text",
+      "mime": "text/markdown; charset=utf-8",
+      "artifactKind": "markdown-document"
+    }
+  ]
+}

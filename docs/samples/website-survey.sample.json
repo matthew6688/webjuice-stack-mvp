@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "niche": "restaurant",
+  "targetProduct": "website",
+  "sourceType": "outbound",
+  "generatedAt": "2026-05-06T00:00:00.000Z",
+  "business": {
+    "name": "Opa Bar & Mezze",
+    "addressOrServiceArea": "123 Eagle St, Brisbane City QLD 4000, Australia",
+    "phone": "+61 7 2111 5155",
+    "email": "",
+    "website": "https://www.opabar.com.au"
+  },
+  "content": {
+    "primaryOffer": "Greek restaurant and mezze bar in Brisbane",
+    "primaryCta": "Reserve",
+    "primaryCtaUrl": "https://www.sevenrooms.com/explore/opabarmezze/reservations/create/search",
+    "menuNeeded": false,
+    "menuSource": "https://www.opabar.com.au/menu",
+    "notes": "Build a formal official website. Menu may be linked or added as a restaurant-specific optional route only if needed."
+  },
+  "brand": {
+    "logo": "/images/logo.png",
+    "colors": [
+      "#063e52",
+      "#fbf6ef",
+      "#112832",
+      "#26b9c8"
+    ],
+    "designDirection": "formal premium Greek riverside hospitality"
+  },
+  "evidenceStatus": {
+    "missing": [],
+    "conflicts": [],
+    "unverifiedClaims": [],
+    "sourceCount": 28
+  },
+  "readyToBuild": {
+    "status": "ready_to_build",
+    "canBuild": true,
+    "needsCustomerConfirmation": false,
+    "blockingIssues": []
+  },
+  "qaContract": {
+    "mustVerify": [
+      "business.name",
+      "business.addressOrServiceArea",
+      "business.phone",
+      "business.website",
+      "content.primaryCtaUrl"
+    ],
+    "mustNotInvent": [
+      "menu prices",
+      "opening hours",
+      "review counts",
+      "reservation links",
+      "awards"
+    ],
+    "nicheRequired": [
+      "restaurant contact or reservation CTA",
+      "real restaurant logo/photo assets when available"
+    ],
+    "designExpectation": "formal official website with restaurant brand hierarchy; not a menu-only page and not a data dump",
+    "copyExpectation": "specific local-business copy with no fake claims or generic AI slogans",
+    "technicalExpectation": "build passes, phone/map/reservation links work, mobile has no horizontal overflow"
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+    "buildPacket": "data/cases/opa-bar-mezze-restaurant/<order>/build-packet.md"
+  }
+}

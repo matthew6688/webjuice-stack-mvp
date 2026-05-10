@@ -1,29 +1,56 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-05-08T11:20:37.231Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-08T12:31:03.386Z",
   "clientSlug": "radiant-roof-repairs",
   "businessName": "Radiant Roof Repairs",
-  "websiteUrl": "https://www.radiantroofrepairs.com.au/contact",
-  "verdict": "moderate_redesign_opportunity",
-  "score": 82,
+  "websiteUrl": "https://www.radiantroofrepairs.com.au/",
+  "verdict": "weak_redesign_opportunity",
+  "score": 86,
+  "salesDecision": "skip_or_monitor",
+  "opportunityConfidence": "low",
+  "summary": "Radiant Roof Repairs already has a reasonably solid website. Only low-impact gaps were found, so this should not auto-advance to a mockup.",
+  "outreachHook": "No strong outreach hook found from the current homepage audit. Treat as skip or human review unless another source shows a sharper opportunity.",
+  "openDesignDirection": "Do not create a redesign mockup from this audit alone. If manually approved, focus on preserving the existing strengths while making only small trust/SEO hygiene improvements.",
   "captured": {
-    "title": "Contact Us | Get a Quote | Radiant Roof Repairs",
+    "title": "Radiant Roof Repairs | Gold Coast Roof Restoration & Repairs",
     "headings": [
-      "Contact Us",
-      "Get in Touch",
-      "Phone",
-      "Email",
-      "Service Areas",
-      "Hours"
+      "Your Trusted Roof Repairs and Roof Restoration Gold Coast Professionals.",
+      "Request Your Quote",
+      "Seamless Roof Solutions",
+      "Connect & Quote",
+      "Inspect & Plan",
+      "Restore & Protect",
+      "ComprehensiveRoofing Services",
+      "Roof Repairs",
+      "Roof Replacement",
+      "Roof Restoration",
+      "Guttering",
+      "Leak Detection",
+      "Ventilation",
+      "Roof Painting",
+      "Gutter Guard Installation",
+      "Skylight Installation",
+      "Repointing",
+      "Gutter Installation",
+      "Storm Damage Repair",
+      "Ready to Get Started?",
+      "Gold Coast Roof Cost Guide",
+      "How much does roof restoration cost on the Gold Coast?",
+      "What does a roof replacement cost in Gold Coast?",
+      "How much do roof repairs cost on the Gold Coast?",
+      "What is the cost of gutter replacement on the Gold Coast?",
+      "Trusted by Local Homeowners",
+      "Recent Projects",
+      "Roofing Tips & Insights",
+      "How to Know When Your Roof Needs Repairs",
+      "Roof Restoration vs Replacement: Which is Right for You?"
     ],
     "linkCount": 80,
-    "imageCount": 1,
+    "imageCount": 22,
     "contactPageCandidates": [
-      "https://www.radiantroofrepairs.com.au/contact#contact",
       "https://www.radiantroofrepairs.com.au/#contact",
       "https://www.radiantroofrepairs.com.au/contact",
-      "https://www.radiantroofrepairs.com.au/contact#",
-      "https://www.radiantroofrepairs.com.au/contact#faq"
+      "https://www.radiantroofrepairs.com.au/#quote-form"
     ],
     "socialLinks": [
       {
@@ -35,17 +62,139 @@
         "url": "https://www.instagram.com/radiantroofrepairs"
       }
     ],
-    "textLength": 12626,
+    "textLength": 23158,
     "phoneVisible": true,
     "emailVisible": true,
     "quoteVisible": true,
-    "serviceVisible": true
+    "serviceVisible": true,
+    "primaryCta": "Get a Quote arrow_forward"
   },
+  "audits": {
+    "conversion": {
+      "score": 100,
+      "signals": {
+        "phoneVisible": true,
+        "emailVisible": true,
+        "quoteVisible": true,
+        "serviceVisible": true,
+        "primaryCta": "Get a Quote arrow_forward"
+      },
+      "findings": []
+    },
+    "trust": {
+      "score": 95,
+      "signals": {
+        "hasContactPage": true,
+        "hasAddressOrArea": true,
+        "hasSocial": true,
+        "hasProofLanguage": true,
+        "hasPrivacyOrTerms": false
+      },
+      "findings": [
+        {
+          "category": "trust",
+          "title": "Basic trust/legal links are thin",
+          "evidence": "Privacy or terms links were not captured from visible page links.",
+          "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+          "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    },
+    "seo": {
+      "score": 95,
+      "keyword": "roof repairs roof replacement",
+      "checks": {
+        "title": "Radiant Roof Repairs | Gold Coast Roof Restoration & Repairs",
+        "metaDescription": "Premier roof restoration, leak detection, and roof repairs on the Gold Coast & Brisbane. 20+ years experience. Get a quote for your roof transformation today.",
+        "h1s": [
+          "Your Trusted Roof Repairs and Roof Restoration Gold Coast Professionals."
+        ],
+        "canonical": "https://radiantroofrepairs.com.au/",
+        "wordCount": 3174,
+        "internalLinkCount": 75,
+        "imageCount": 22,
+        "missingAltCount": 0,
+        "emptyAltCount": 0,
+        "jsonLdTypes": [
+          "RoofingContractor",
+          "FAQPage"
+        ],
+        "og": {
+          "title": "Radiant Roof Repairs | Gold Coast Roof Restoration & Repairs",
+          "description": "Premier roof restoration, leak detection, and roof repairs on the Gold Coast & Brisbane. 20+ years experience. Quotes available.",
+          "image": "",
+          "type": "website",
+          "url": "https://radiantroofrepairs.com.au"
+        },
+        "twitter": {
+          "card": "summary_large_image",
+          "title": "Radiant Roof Repairs | Gold Coast Roof Restoration",
+          "description": "Premier roof restoration and repairs on the Gold Coast. 20+ years experience. Quotes available.",
+          "image": ""
+        },
+        "robotsMeta": "index, follow",
+        "htmlLang": "en"
+      },
+      "findings": [
+        {
+          "category": "seo",
+          "title": "Social sharing tags are incomplete",
+          "evidence": "OG title: true, description: true, image: false.",
+          "impact": "Shared previews may look weak when sent in email, SMS, or social DMs.",
+          "fix": "Add og:title, og:description, and og:image that match the redesigned positioning.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "category": "trust",
+      "title": "Basic trust/legal links are thin",
+      "evidence": "Privacy or terms links were not captured from visible page links.",
+      "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+      "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Social sharing tags are incomplete",
+      "evidence": "OG title: true, description: true, image: false.",
+      "impact": "Shared previews may look weak when sent in email, SMS, or social DMs.",
+      "fix": "Add og:title, og:description, and og:image that match the redesigned positioning.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    }
+  ],
   "issues": [
-    "Images have limited descriptive alt text or proof context."
+    "Basic trust/legal links are thin: Privacy or terms links were not captured from visible page links.",
+    "Social sharing tags are incomplete: OG title: true, description: true, image: false."
   ],
   "improvements": [
-    "Use before/after or job-site proof with descriptive captions."
+    "Add privacy and terms links in the footer when forms or tracking are used.",
+    "Add og:title, og:description, and og:image that match the redesigned positioning."
+  ],
+  "priorityActions": [
+    {
+      "title": "Basic trust/legal links are thin",
+      "impact": "low",
+      "effort": "low",
+      "fix": "Add privacy and terms links in the footer when forms or tracking are used."
+    },
+    {
+      "title": "Social sharing tags are incomplete",
+      "impact": "low",
+      "effort": "low",
+      "fix": "Add og:title, og:description, and og:image that match the redesigned positioning."
+    }
   ],
   "nextStepInput": {
     "businessName": "Radiant Roof Repairs",
@@ -60,10 +209,18 @@
     "heroAngle": "Radiant Roof Repairs already has real-world traction; the website should finally feel as strong as the service.",
     "primaryCta": "Call now",
     "outreachObservation": "Contact path is clear and the service list is broad.",
+    "auditFocus": [
+      "Basic trust/legal links are thin",
+      "Social sharing tags are incomplete"
+    ],
+    "redesignValue": [
+      "Add privacy and terms links in the footer when forms or tracking are used.",
+      "Add og:title, og:description, and og:image that match the redesigned positioning."
+    ],
     "contactProfile": {
       "email": "radiantroofrepairs@gmail.com",
       "phone": "0480 855 390",
-      "contactPageUrl": "https://www.radiantroofrepairs.com.au/contact#contact",
+      "contactPageUrl": "https://www.radiantroofrepairs.com.au/#contact",
       "socialLinks": [
         {
           "label": "Facebook",

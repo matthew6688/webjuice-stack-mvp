@@ -1,0 +1,171 @@
+
+> webjuice-mvp@0.0.1 deploy:bootstrap-client-repo
+> node scripts/deploy/bootstrap-client-repo.js --repo matthew6688/bootstrap-remote-smoke-b-1778165239 --repo-dir /tmp/bootstrap-remote-smoke-b-K0siaA/repo --pages-project-name bootstrap-remote-smoke-b-1778165239 --wait false --execute true
+
+https://github.com/matthew6688/bootstrap-remote-smoke-b-1778165239
+
+ ⛅️ wrangler 4.89.0
+───────────────────
+✨ Successfully created the 'bootstrap-remote-smoke-b-1778165239-dev' project. It will be available at https://bootstrap-remote-smoke-b-1778165239-dev.pages.dev/ once you create your first deployment.
+To deploy a folder of assets, run 'wrangler pages deploy [directory]'.
+
+ ⛅️ wrangler 4.89.0
+───────────────────
+✨ Successfully created the 'bootstrap-remote-smoke-b-1778165239-live' project. It will be available at https://bootstrap-remote-smoke-b-1778165239-live.pages.dev/ once you create your first deployment.
+To deploy a folder of assets, run 'wrangler pages deploy [directory]'.
+branch 'main' set up to track 'origin/main'.
+[dev bc900b4] chore: bootstrap dev deployment
+branch 'dev' set up to track 'origin/dev'.
+{
+  "ok": true,
+  "dryRun": false,
+  "repo": "matthew6688/bootstrap-remote-smoke-b-1778165239",
+  "repoDir": "/tmp/bootstrap-remote-smoke-b-K0siaA/repo",
+  "pagesProjectName": "bootstrap-remote-smoke-b-1778165239",
+  "stepOrder": [
+    "create-github-repo",
+    "set-pages-project-variable",
+    "set-cloudflare-api-token-secret",
+    "set-cloudflare-account-secret",
+    "create-pages-dev-project",
+    "create-pages-live-project",
+    "ensure-origin",
+    "push-main",
+    "ensure-dev-branch",
+    "create-dev-bootstrap-commit",
+    "push-dev"
+  ],
+  "executed": [
+    {
+      "id": "create-github-repo",
+      "command": [
+        "gh",
+        "repo",
+        "create",
+        "matthew6688/bootstrap-remote-smoke-b-1778165239",
+        "--private"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "set-pages-project-variable",
+      "command": [
+        "gh",
+        "variable",
+        "set",
+        "PAGES_PROJECT_NAME",
+        "--repo",
+        "matthew6688/bootstrap-remote-smoke-b-1778165239",
+        "--body",
+        "bootstrap-remote-smoke-b-1778165239"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "set-cloudflare-api-token-secret",
+      "command": [
+        "gh",
+        "secret",
+        "set",
+        "<secret>",
+        "--repo",
+        "matthew6688/bootstrap-remote-smoke-b-1778165239"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "set-cloudflare-account-secret",
+      "command": [
+        "gh",
+        "secret",
+        "set",
+        "CLOUDFLARE_ACCOUNT_ID",
+        "--repo",
+        "matthew6688/bootstrap-remote-smoke-b-1778165239"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "create-pages-dev-project",
+      "command": [
+        "npx",
+        "wrangler",
+        "pages",
+        "project",
+        "create",
+        "bootstrap-remote-smoke-b-1778165239-dev",
+        "--production-branch",
+        "dev"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "create-pages-live-project",
+      "command": [
+        "npx",
+        "wrangler",
+        "pages",
+        "project",
+        "create",
+        "bootstrap-remote-smoke-b-1778165239-live",
+        "--production-branch",
+        "main"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "ensure-origin",
+      "command": [
+        "git",
+        "remote",
+        "add",
+        "origin",
+        "https://github.com/matthew6688/bootstrap-remote-smoke-b-1778165239.git"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "push-main",
+      "command": [
+        "git",
+        "push",
+        "-u",
+        "origin",
+        "main"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "ensure-dev-branch",
+      "command": [
+        "git",
+        "checkout",
+        "-B",
+        "dev"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "create-dev-bootstrap-commit",
+      "command": [
+        "git",
+        "commit",
+        "--allow-empty",
+        "-m",
+        "chore: bootstrap dev deployment"
+      ],
+      "dryRun": false
+    },
+    {
+      "id": "push-dev",
+      "command": [
+        "git",
+        "push",
+        "-u",
+        "origin",
+        "dev"
+      ],
+      "dryRun": false
+    }
+  ]
+}

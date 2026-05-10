@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "send": true,
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "orderId": "dryrun_ops_dispatch_001",
+  "checklistStatus": "ready_for_customer_review",
+  "casePath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_001/case.json",
+  "checklistPath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_001/ops-checklist.json",
+  "reviewDraftPath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_001/customer-review-email-draft.json",
+  "ready": true,
+  "preReviewGate": {
+    "ok": true,
+    "skipped": true,
+    "reason": "no_latest_agent_run",
+    "missing": []
+  },
+  "deliveryQa": null,
+  "sendResult": {
+    "ok": true,
+    "status": 200,
+    "id": "725d123d-cec8-46d3-aaea-29b9fac7bda0",
+    "ledgerEvent": null
+  },
+  "message": "Review email 已正式发送。",
+  "caseRecord": {
+    "ok": true,
+    "casePath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_001/case.json"
+  }
+}

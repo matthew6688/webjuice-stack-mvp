@@ -10,6 +10,7 @@ lead source
 -> lead-research
 -> redesign-check
 -> build-ready
+-> websiteBuildHandoff
 -> outreach-brief
 -> demo-video
 -> Open Design / paid handoff
@@ -63,6 +64,15 @@ skill 要短、直观、跨行业，不带品牌前缀。
 1. **联系方式是硬门槛。**
 2. **事实不完整不是硬门槛。**
 3. **demo 可以用 placeholder 补齐，但不能伪装成已验证事实。**
+4. **不要因为小问题等人回答。** 自动推进到 AI 结论，只有真正的商业判断才停下来。
+
+AI 早期结论只允许三类：
+
+- `ready_for_mockup`
+- `needs_human`
+- `skip`
+
+结论必须带 0-100 分数和依据，不允许只给一句“感觉可以”。
 
 ### 1.4 不要把 family 和 renderer adapter 混在一起
 
@@ -107,11 +117,130 @@ skill 要短、直观、跨行业，不带品牌前缀。
 - `website_inbound`
 - `paid_intake`
 - `imported_list`
+- `maps_scraper`
 - `referral`
 - `provider_reply`
 - `existing_project_reentry`
 
 系统职责不是要求每种来源一样完整，而是把来源差异统一整理成同一份 lead 记录。
+
+---
+
+## 2.0.1 Maps scraper discovery（低成本来源）
+
+`maps_scraper` 是 low-cost discovery source，不是最终事实源。
+
+默认入口：
+
+```bash
+npm run leads:maps-scrape -- \
+  --query "restaurants in West End Brisbane" \
+  --niche restaurant \
+  --city Brisbane
+```
+
+默认策略：
+
+- 不调用 Google Places API。
+- 不开启 email extraction。
+- 不开启 `-extra-reviews`。
+- 不保留 review 正文或 email payload。
+- 上游 scraper 默认带出的少量 `user_reviews` 会在 ProfitsLocal CLI 分析落盘前剥离。
+
+每次 run 输出：
+
+- `results.maps.json`：已剥离 review/email payload 的 JSONL。
+- `discovery-run.json`：可审计的分析结果、cost policy、queue。
+- `queue.json`：按 starter / audit / manual / skip 分桶。
+- `leads.compact.json`：用于人工快速浏览。
+- `tool-log.jsonl`：工具轨迹和成本策略。
+- `data/leads/discovery-index.json`：全局去重后的 scraped lead index。
+- `data/leads/entities/<entity-key>.json`：单个 scraped lead 的长期记录和 run history。
+- `data/leads/discovery-events.jsonl`：所有 discovery/store/status 事件。
+- `data/leads/queues/queues.json`：cheap audit、selected enrichment、outreach brief 队列。
+- `data/leads/reports/discovery-report.json`：闭环指标和 top candidates。
+
+推荐动作：
+
+| `recommendedAction` | 用途 |
+|---|---|
+| `starter_candidate` | Maps 显示无官网或只有社媒，且有电话/评分/评论量等信号。 |
+| `audit_candidate` | 有官网但可能老旧，例如 `http` 站点或高分高评论但站点需审计。 |
+| `manual_review` | 有潜力但证据不足，先人工看一眼。 |
+| `skip` | 现阶段不推进。 |
+
+raw scraped leads 会进入 `/admin/leads` 的研究中视图，client workflow promotion 仍必须显式执行：
+
+```bash
+npm run leads:maps-promote -- \
+  --input data/maps-scraper/runs/<run-id>/discovery-run.json \
+  --top 3 \
+  --dry-run
+```
+
+如果候选已经在中央 discovery store 里完成 cheap audit / outreach brief，优先从 store promote：
+
+```bash
+npm run leads:promote-discovery-store -- --limit 3 --dry-run
+npm run leads:promote-discovery-store -- --limit 3
+```
+
+store promote 会复制 discovery audit 和 discovery outreach brief，并运行本地 `lead-ops`，写入：
+
+- `clients/<client>/lead/lead-intake.json`
+- `clients/<client>/lead/lead-research.json`
+- `clients/<client>/lead/redesign-check.json`
+- `clients/<client>/lead/ready-to-build.json`
+- `clients/<client>/lead/lead-ops.json`
+- `clients/<client>/lead/discovery-log.jsonl`
+- `clients/<client>/audit/current-site-*`
+- `clients/<client>/outreach/discovery-outreach-brief.json`
+
+二段 cheap audit：
+
+```bash
+npm run leads:audit-discovery-sites -- --limit 3
+```
+
+这个命令只使用已经入库的 `audit_candidate`，保存官网桌面/手机截图、HTML/text、JSON/Markdown audit 到 `data/leads/audits/<entity-key>/`，然后把目标推进到：
+
+- `queued_for_enrichment`：有明确改版/offer 机会，再考虑 Tinyfish、Google Places API、email/contact 查找。
+- `skipped`：现站足够好或突破口弱，不继续烧钱。
+
+三段 selected enrichment 默认只出计划，不花钱：
+
+```bash
+npm run leads:plan-discovery-enrichment -- --limit 3
+```
+
+输出：
+
+- `data/leads/queues/selected-enrichment-plan.json`
+- 每个候选的 Tinyfish dry-run 命令。
+- 每个候选的 Google Places dry-run 命令。
+- spend guardrails：cheap audit 通过、operator 接受、仍不找 email。
+
+触达角度可先生成 discovery-level draft：
+
+```bash
+npm run leads:build-discovery-outreach-briefs -- --limit 2
+```
+
+输出：
+
+- `data/leads/outreach-briefs/<entity-key>/outreach-brief.json`
+- entity 状态进入 `ready_for_outreach_brief`
+- draft 明确标注：不是最终发送文案，不得引用 review 正文，不得假装 Google API 已核验。
+
+真实 promote 后写入：
+
+- `clients/<client>/lead/lead-intake.json`
+- `clients/<client>/lead/discovery-log.jsonl`
+
+后续工具进入条件：
+
+- Tinyfish / site-audit：只对 `audit_candidate` 或人工挑出的高分 lead 跑。
+- Google Places API：只对准备进入正式 evidence、build、outreach 的候选跑，用于官方核验，不用于批量 discovery。
 
 ---
 
@@ -199,15 +328,23 @@ skill 要短、直观、跨行业，不带品牌前缀。
 
 这一步不要求所有 business facts 都齐。
 
-### Gate C: Production-ready
+### Gate C: Mockup-ready / Production-ready
 
 最后判断：
 
 ```text
-这个项目能不能正式交给 Open Design / production handoff？
+这个项目能不能交给 Open Design 做 mockup？
+这个项目离 production launch 还缺什么？
 ```
 
-这里才要求 source-of-truth 更完整、冲突更少、preservation 更清楚。
+Mockup-ready 不要求所有资料齐全。它要求：
+
+- 真实联系路径存在；
+- business scope 足够明确；
+- AI 能解释我们为什么能创造价值；
+- 缺失内容可以用内部标记的 AI/demo copy 补齐。
+
+Production-ready 才要求 source-of-truth 更完整、冲突更少、preservation 更清楚。
 
 ---
 
@@ -393,6 +530,27 @@ Open Design 不应该直接吃一段模糊 prompt。
 
 它应该收到一个结构化 handoff。
 
+当前代码输出位置：
+
+```text
+clients/<client>/lead/ready-to-build.json
+  aiConclusion
+  scorecard
+  websiteBuildHandoff
+  openDesignHandoffDraft.prompt
+```
+
+`websiteBuildHandoff` 必须回答：
+
+- AI 结论是什么，多少分，为什么；
+- 网站是 `one_page` 还是 `simple_multi_page`；
+- 页面/section 顺序是什么；
+- demo copy 如何填满；
+- SEO/conversion focus 是什么；
+- contact form 如何接 Resend transactional email；
+- 哪些是真实事实，哪些是 AI/demo placeholder；
+- Open Design 可以直接用的 prompt 和 JSON payload。
+
 ### 第一版推荐结构
 
 ```json
@@ -457,6 +615,56 @@ Open Design 不应该直接吃一段模糊 prompt。
 }
 ```
 
+### 当前新增 build handoff 结构
+
+```json
+{
+  "aiConclusion": {
+    "result": "ready_for_mockup | needs_human | skip",
+    "score": 0,
+    "confidence": "high | medium | low",
+    "reason": "",
+    "nextAction": ""
+  },
+  "scorecard": {
+    "overall": 0,
+    "contactability": 0,
+    "opportunity": 0,
+    "evidence": 0,
+    "buildFeasibility": 0,
+    "reasons": []
+  },
+  "websitePlan": {
+    "type": "one_page | simple_multi_page",
+    "pages": [],
+    "sections": [],
+    "contactForm": {
+      "provider": "resend",
+      "recipient": "hi@profitslocal.com"
+    }
+  },
+  "content": {
+    "hero": {},
+    "services": [],
+    "about": "",
+    "trust": [],
+    "faq": [],
+    "blogIdeas": []
+  },
+  "openDesignPayload": {
+    "prompt": "",
+    "json": {}
+  }
+}
+```
+
+规则：
+
+- `one_page` 也必须是完整网站：所有核心详情、服务说明、FAQ、SEO/conversion copy、trust、contact form 都要有。
+- `simple_multi_page` 用于专业服务、诊所、venue 或 SEO 深度更重要的情况，默认包含 home/services/about/contact/blog seed。
+- Contact form 默认使用现有 Resend transactional email 思路，operational context 是 `hi@profitslocal.com`。
+- AI 可以补 service/about/FAQ/blog/SEO copy，但不能补假的联系方式、价格、证照、奖项、review quote、法律/医疗保证。
+
 ### 为什么这样设计
 
 因为我们当前真实的 Open Design -> production handoff 重点是：
@@ -504,13 +712,11 @@ Open Design 不应该直接吃一段模糊 prompt。
 
 职责：
 
-- 做最终分流：
-  - `ready_for_preview`
-  - `ready_for_redesign_preview`
-  - `ready_for_teaser`
-  - `outreach_only`
-  - `needs_more_research`
-  - `blocked_unreachable`
+- 做最终分流，并生成 `websiteBuildHandoff`：
+  - `ready_for_mockup`
+  - `needs_human`
+  - `skip`
+  - 同时保留旧的 `ready_for_preview / ready_for_redesign_preview / ready_for_teaser / blocked_unreachable` 兼容字段
 
 ### `outreach-brief`
 

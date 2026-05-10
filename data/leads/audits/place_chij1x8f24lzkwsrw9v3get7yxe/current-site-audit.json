@@ -1,0 +1,438 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-09T04:37:31.997Z",
+  "clientSlug": "place_chij1x8f24lzkwsrw9v3get7yxe",
+  "businessName": "Dicki's New Farm",
+  "websiteUrl": "http://www.dickis.com.au/",
+  "verdict": "clear_redesign_opportunity",
+  "score": 35,
+  "salesDecision": "build_mockup",
+  "opportunityConfidence": "high",
+  "summary": "Dicki's New Farm has an existing website, and the strongest useful gap is: core services are not instantly clear.",
+  "outreachHook": "I noticed your site has a fixable conversion gap: Expected services were not all visible in captured text: Vegan restaurant, Vegetarian restaurant.",
+  "openDesignDirection": "Dicki's New Farm should feel like the obvious restaurant choice in Brisbane. Show 3-5 core services near the top with plain-language outcomes. Add a proof section with real reviews, project examples, and verified guarantees/credentials. Rewrite title around \"restaurant Vegan restaurant\" while keeping the business name.",
+  "captured": {
+    "title": "Dicki's New Farm",
+    "headings": [
+      "About us",
+      "Location",
+      "Dicki's New Farm",
+      "DISCOVER OUR LARGE CAKES",
+      "REELS",
+      "Dicki's New Farm - 2018 Opening",
+      "Dicki's New Farm - 2020",
+      "Contact"
+    ],
+    "linkCount": 28,
+    "imageCount": 10,
+    "contactPageCandidates": [
+      "https://dickis.com.au/#contact",
+      "https://www.facebook.com/dickis.newfarm"
+    ],
+    "socialLinks": [
+      {
+        "label": "Follow us on Instagram",
+        "url": "https://www.instagram.com/dickis.newfarm/"
+      },
+      {
+        "label": "Follow us on Facebook",
+        "url": "https://www.facebook.com/dickis.newfarm"
+      },
+      {
+        "label": "Follow us on Tik Tok",
+        "url": "https://www.tiktok.com/@dickis.ascot"
+      }
+    ],
+    "textLength": 174,
+    "phoneVisible": true,
+    "emailVisible": true,
+    "quoteVisible": true,
+    "serviceVisible": false,
+    "primaryCta": "Contact"
+  },
+  "audits": {
+    "conversion": {
+      "score": 80,
+      "signals": {
+        "phoneVisible": true,
+        "emailVisible": true,
+        "quoteVisible": true,
+        "serviceVisible": false,
+        "primaryCta": "Contact"
+      },
+      "findings": [
+        {
+          "category": "conversion",
+          "title": "Core services are not instantly clear",
+          "evidence": "Expected services were not all visible in captured text: Vegan restaurant, Vegetarian restaurant.",
+          "impact": "A lead may not recognize that the business solves their specific problem.",
+          "fix": "Show 3-5 core services near the top with plain-language outcomes.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "conversion",
+          "title": "Trust signal is not strong in the first screen",
+          "evidence": "The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+          "impact": "For local services, trust often matters before design polish.",
+          "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "medium"
+        }
+      ]
+    },
+    "trust": {
+      "score": 85,
+      "signals": {
+        "hasContactPage": true,
+        "hasAddressOrArea": true,
+        "hasSocial": true,
+        "hasProofLanguage": false,
+        "hasPrivacyOrTerms": false
+      },
+      "findings": [
+        {
+          "category": "trust",
+          "title": "Proof is not doing enough work",
+          "evidence": "The captured text does not clearly surface reviews, project proof, warranty, licences, or gallery proof.",
+          "impact": "The site may feel informational rather than convincing.",
+          "fix": "Add a proof section with real reviews, project examples, and verified guarantees/credentials.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "medium"
+        },
+        {
+          "category": "trust",
+          "title": "Basic trust/legal links are thin",
+          "evidence": "Privacy or terms links were not captured from visible page links.",
+          "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+          "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    },
+    "seo": {
+      "score": 35,
+      "keyword": "restaurant Vegan restaurant",
+      "checks": {
+        "title": "Dicki's New Farm",
+        "metaDescription": "",
+        "h1s": [],
+        "canonical": "https://dickis.com.au/",
+        "wordCount": 28,
+        "internalLinkCount": 0,
+        "imageCount": 10,
+        "missingAltCount": 3,
+        "emptyAltCount": 5,
+        "jsonLdTypes": [],
+        "og": {
+          "title": "Dicki's New Farm",
+          "description": "About us Dicki’s New Farm is a welcoming plant-based café nestled on Brunswick Street.   Offering both indoor and al fresco dining choices, guests can also enjoy a quaint balcony area upfront. For those on-the-go, there’s a convenient takeaway bench inside.   At Dicki’s we pride ourselves on doing fabulous coffee and have a wide […]",
+          "image": "https://dickis.com.au/wp-content/uploads/2024/04/dickis-new-farm-about-e1713839642775-1024x804.jpg"
+        },
+        "twitter": {
+          "card": "summary_large_image",
+          "title": "",
+          "description": "",
+          "image": ""
+        },
+        "robotsMeta": "",
+        "htmlLang": ""
+      },
+      "findings": [
+        {
+          "category": "seo",
+          "title": "Title does not target the main local intent",
+          "evidence": "Captured title: \"Dicki's New Farm\". Inferred keyword: \"restaurant Vegan restaurant\".",
+          "impact": "The page may rank or click worse for the service/location query we care about.",
+          "fix": "Rewrite title around \"restaurant Vegan restaurant\" while keeping the business name.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Meta description is missing",
+          "evidence": "No meta description was captured.",
+          "impact": "Search snippets may be generic or less compelling.",
+          "fix": "Write a specific 1-2 sentence snippet with service, location, and next action.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "H1 structure needs cleanup",
+          "evidence": "0 H1 tag(s) captured.",
+          "impact": "A single clear H1 helps both search and page comprehension.",
+          "fix": "Use one H1 focused on the primary service/location promise.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Page content is thin",
+          "evidence": "28 words captured.",
+          "impact": "Thin pages have fewer chances to explain services, locations, and trust.",
+          "fix": "Add concise service, proof, area, and FAQ copy without stuffing.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Internal linking is weak",
+          "evidence": "0 internal link(s) captured.",
+          "impact": "Important pages may be harder to discover and preserve during redesign.",
+          "fix": "Link to services, contact/quote, about/proof, and relevant location pages.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Image alt text is weak",
+          "evidence": "3 image(s) missing alt attribute and 5 image(s) have empty alt.",
+          "impact": "Images do not help accessibility, local proof, or image-search context.",
+          "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Structured data is missing",
+          "evidence": "No JSON-LD schema types were captured.",
+          "impact": "LocalBusiness schema can make core business facts clearer to search engines.",
+          "fix": "Add LocalBusiness/Organization schema with verified name, phone, area, URL, and social links.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "category": "conversion",
+      "title": "Core services are not instantly clear",
+      "evidence": "Expected services were not all visible in captured text: Vegan restaurant, Vegetarian restaurant.",
+      "impact": "A lead may not recognize that the business solves their specific problem.",
+      "fix": "Show 3-5 core services near the top with plain-language outcomes.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "conversion",
+      "title": "Trust signal is not strong in the first screen",
+      "evidence": "The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+      "impact": "For local services, trust often matters before design polish.",
+      "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "medium"
+    },
+    {
+      "category": "trust",
+      "title": "Proof is not doing enough work",
+      "evidence": "The captured text does not clearly surface reviews, project proof, warranty, licences, or gallery proof.",
+      "impact": "The site may feel informational rather than convincing.",
+      "fix": "Add a proof section with real reviews, project examples, and verified guarantees/credentials.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "medium"
+    },
+    {
+      "category": "seo",
+      "title": "Title does not target the main local intent",
+      "evidence": "Captured title: \"Dicki's New Farm\". Inferred keyword: \"restaurant Vegan restaurant\".",
+      "impact": "The page may rank or click worse for the service/location query we care about.",
+      "fix": "Rewrite title around \"restaurant Vegan restaurant\" while keeping the business name.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Meta description is missing",
+      "evidence": "No meta description was captured.",
+      "impact": "Search snippets may be generic or less compelling.",
+      "fix": "Write a specific 1-2 sentence snippet with service, location, and next action.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "H1 structure needs cleanup",
+      "evidence": "0 H1 tag(s) captured.",
+      "impact": "A single clear H1 helps both search and page comprehension.",
+      "fix": "Use one H1 focused on the primary service/location promise.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Page content is thin",
+      "evidence": "28 words captured.",
+      "impact": "Thin pages have fewer chances to explain services, locations, and trust.",
+      "fix": "Add concise service, proof, area, and FAQ copy without stuffing.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Image alt text is weak",
+      "evidence": "3 image(s) missing alt attribute and 5 image(s) have empty alt.",
+      "impact": "Images do not help accessibility, local proof, or image-search context.",
+      "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Structured data is missing",
+      "evidence": "No JSON-LD schema types were captured.",
+      "impact": "LocalBusiness schema can make core business facts clearer to search engines.",
+      "fix": "Add LocalBusiness/Organization schema with verified name, phone, area, URL, and social links.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "trust",
+      "title": "Basic trust/legal links are thin",
+      "evidence": "Privacy or terms links were not captured from visible page links.",
+      "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+      "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Internal linking is weak",
+      "evidence": "0 internal link(s) captured.",
+      "impact": "Important pages may be harder to discover and preserve during redesign.",
+      "fix": "Link to services, contact/quote, about/proof, and relevant location pages.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    }
+  ],
+  "issues": [
+    "Core services are not instantly clear: Expected services were not all visible in captured text: Vegan restaurant, Vegetarian restaurant.",
+    "Trust signal is not strong in the first screen: The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+    "Proof is not doing enough work: The captured text does not clearly surface reviews, project proof, warranty, licences, or gallery proof.",
+    "Title does not target the main local intent: Captured title: \"Dicki's New Farm\". Inferred keyword: \"restaurant Vegan restaurant\".",
+    "Meta description is missing: No meta description was captured.",
+    "H1 structure needs cleanup: 0 H1 tag(s) captured.",
+    "Page content is thin: 28 words captured.",
+    "Image alt text is weak: 3 image(s) missing alt attribute and 5 image(s) have empty alt.",
+    "Structured data is missing: No JSON-LD schema types were captured.",
+    "Basic trust/legal links are thin: Privacy or terms links were not captured from visible page links.",
+    "Internal linking is weak: 0 internal link(s) captured."
+  ],
+  "improvements": [
+    "Show 3-5 core services near the top with plain-language outcomes.",
+    "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+    "Add a proof section with real reviews, project examples, and verified guarantees/credentials.",
+    "Rewrite title around \"restaurant Vegan restaurant\" while keeping the business name.",
+    "Write a specific 1-2 sentence snippet with service, location, and next action.",
+    "Use one H1 focused on the primary service/location promise."
+  ],
+  "priorityActions": [
+    {
+      "title": "Core services are not instantly clear",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Show 3-5 core services near the top with plain-language outcomes."
+    },
+    {
+      "title": "Trust signal is not strong in the first screen",
+      "impact": "medium",
+      "effort": "medium",
+      "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise."
+    },
+    {
+      "title": "Proof is not doing enough work",
+      "impact": "medium",
+      "effort": "medium",
+      "fix": "Add a proof section with real reviews, project examples, and verified guarantees/credentials."
+    },
+    {
+      "title": "Title does not target the main local intent",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Rewrite title around \"restaurant Vegan restaurant\" while keeping the business name."
+    },
+    {
+      "title": "Meta description is missing",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Write a specific 1-2 sentence snippet with service, location, and next action."
+    }
+  ],
+  "nextStepInput": {
+    "businessName": "Dicki's New Farm",
+    "industry": "restaurant",
+    "location": "Brisbane",
+    "services": [
+      "Vegan restaurant",
+      "Vegetarian restaurant"
+    ],
+    "heroAngle": "Dicki's New Farm should feel like the obvious restaurant choice in Brisbane.",
+    "primaryCta": "Contact",
+    "outreachObservation": "I noticed your site has a fixable conversion gap: Expected services were not all visible in captured text: Vegan restaurant, Vegetarian restaurant.",
+    "auditFocus": [
+      "Core services are not instantly clear",
+      "Trust signal is not strong in the first screen",
+      "Proof is not doing enough work",
+      "Title does not target the main local intent"
+    ],
+    "redesignValue": [
+      "Show 3-5 core services near the top with plain-language outcomes.",
+      "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+      "Add a proof section with real reviews, project examples, and verified guarantees/credentials.",
+      "Rewrite title around \"restaurant Vegan restaurant\" while keeping the business name.",
+      "Write a specific 1-2 sentence snippet with service, location, and next action.",
+      "Use one H1 focused on the primary service/location promise."
+    ],
+    "contactProfile": {
+      "email": "",
+      "phone": "(07) 3254 2341",
+      "contactPageUrl": "https://dickis.com.au/#contact",
+      "socialLinks": [
+        {
+          "label": "Follow us on Instagram",
+          "url": "https://www.instagram.com/dickis.newfarm/"
+        },
+        {
+          "label": "Follow us on Facebook",
+          "url": "https://www.facebook.com/dickis.newfarm"
+        },
+        {
+          "label": "Follow us on Tik Tok",
+          "url": "https://www.tiktok.com/@dickis.ascot"
+        }
+      ]
+    }
+  },
+  "artifacts": {
+    "desktopPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site-desktop.png",
+    "mobilePath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site-mobile.png",
+    "htmlPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site.html",
+    "textPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site-text.txt",
+    "jsonPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site-audit.json",
+    "mdPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site-audit.md"
+  }
+}

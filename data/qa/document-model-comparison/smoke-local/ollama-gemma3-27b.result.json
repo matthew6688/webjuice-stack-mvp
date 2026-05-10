@@ -1,0 +1,29 @@
+{
+  "id": "ollama-gemma3:27b",
+  "provider": "ollama",
+  "model": "gemma3:27b",
+  "status": "error",
+  "durationMs": 180006,
+  "rawOutput": "",
+  "error": "The operation was aborted due to timeout",
+  "evaluation": {
+    "schemaVersion": 1,
+    "ok": false,
+    "score": 0,
+    "grade": "F",
+    "parse": {
+      "ok": false,
+      "error": "json_parse_failed",
+      "excerpt": "The operation was aborted due to timeout"
+    },
+    "findings": [
+      {
+        "severity": "hard_fail",
+        "code": "invalid_json",
+        "points": -100,
+        "message": "Output was not parseable JSON."
+      }
+    ],
+    "metrics": {}
+  }
+}

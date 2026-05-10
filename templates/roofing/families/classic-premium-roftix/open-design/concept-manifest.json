@@ -1,0 +1,278 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T01:19:54.548Z",
+  "clientSlug": "template-roofing-classic-premium-roftix",
+  "projectId": "template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z",
+  "conversationId": "e0b9338a-e4bf-41c5-97ae-ec8527181679",
+  "runId": "c30f61f5-c425-45db-b886-8ce106b82b45",
+  "lastRunId": "c30f61f5-c425-45db-b886-8ce106b82b45",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "roofing website template family",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "multi-page",
+  "prompt": "Build an original premium roofing website template family inspired by the reference brief in this folder.\n\nTemplate family: classic-premium-roftix\n\nUse the local design-language.md and section-patterns.json as the contract. The result should feel like a complete premium roofing site system: cinematic roof hero, editorial serif headings, practical services, project proof, FAQ/contact, and a deep trust-building footer.\n\nDo not copy the reference brand, logo, exact text, code, or paid assets. Recreate the design language and section patterns as an original ProfitsLocal template.\n\nRequired outputs:\n- index.html for the primary template\n- at least one one-page version that could be used for cold outreach\n- local assets under assets/\n- style-guide.md if brand/design tokens are clear\n\nRules:\n- Customer-facing copy only.\n- No internal workflow terms.\n- Use rich demo content where allowed by template-manifest.json.\n- Do not invent verified facts listed in factsPolicy.mustNotInvent.\n- Use photo-quality niche imagery when the reference style depends on photography.\n- Include industry-relevant visual assets. If real source images are unavailable, create/license/use suitable roofing imagery rather than shipping a text-only layout.\n- Prefer the reviewed manual ChatGPT Image assets recorded in template-manifest.json `selectedImages`.\n- Primary hero should use the blue-hour premium roof image; service/detail sections should use the flashing repair and installation detail images.\n- Do not replace these approved photo assets with SVG-only hero art or generic stock-like placeholders.\n- Ask no question form unless generation is technically impossible.\n\n## Brand Kit / Logo Policy\nBusiness name: Roftrix Roofing\nLogo policy: single-default-demo-logo\nIf the client has no logo, use exactly one default demo logo direction. Do not ask the client to choose and do not create multiple logo options.\nSelected logo direction: Classic Premium Roftix style: simple geometric roof/service mark plus readable wordmark. No fake badges, no copied reference logo.\nSelected SVG concept: <svg viewBox=\"0 0 180 48\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\"><path d=\"M8 27 30 9l22 18\" fill=\"none\" stroke=\"#FF6F3C\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M20 27h24v14H20z\" fill=\"#004D40\"/><text x=\"66\" y=\"32\" font-family=\"Inter, Arial, sans-serif\" font-size=\"24\" font-weight=\"800\" fill=\"#212121\">RR</text></svg>\n\n## Reviewed Local Image Assets\nUse these reviewed images as the primary visual source for this template. Copy them into `assets/` before referencing them from HTML.\nDo not substitute these approved images with SVG-only art, weak placeholders, or unrelated generic stock imagery.\n\n- hero: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-hero-premium-roof-at-blue-hour.png\n- serviceRepair: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-repair-flashing-detail.png\n- serviceInstall: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-installation-detail.png\n- about: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-about-roofer-working-roof-frame.png\n- proof: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-project-before-after-roof-transformation.png\n\n## Design Language\n# Classic Premium Roftix Design Language\n\nNiche: roofing\n\n## Reference Summary\n\nInspired by the Roftix-style multi-page roofing screenshots Matthew provided: dark blue photographic roof hero, elegant editorial serif headings, generous white editorial sections, green trust/CTA accents, deep dark footer, and strong page system coverage.\n\nUse this as a premium roofing system, not a literal clone.\n\n## Visual Thesis\n\nPremium residential roofing with cinematic trust: dramatic roof photography, refined editorial typography, and practical conversion sections that feel established rather than flashy.\n\n## Typography Direction\n\n- Display: elegant high-contrast serif for H1/H2.\n- Body: clean sans-serif with generous line height.\n- Navigation / labels: compact sans-serif, medium weight, restrained letter case.\n\n## Color System\n\n- Dominant: deep roof blue / navy photo overlays.\n- Accent: forest green for contact and primary CTA.\n- Secondary accent: warm orange only for small active states.\n- Background: white and very light warm gray.\n- Footer: near-black charcoal with muted gray text.\n\n## Imagery\n\n- hero: real house roof / roofline photo with evening or premium architectural mood.\n- services: roofers at work, material details, roof repair/install photos.\n- project/gallery: before/after, residential roof projects, close-ups.\n- team/trust: credible contractor portraits if available; otherwise no fake team claims.\n- CTA: roof or home exterior image with readable overlay.\n\n## Layout Patterns\n\n- hero: full-bleed or large photographic hero, nav over image or clean top nav.\n- services: 3-6 service blocks with icons or imagery, not generic cards only.\n- proof: verified proof only; demo-safe proof structure allowed without fake reviews.\n- projects: gallery grid and project-detail style section for premium/multi-page.\n- FAQ/contact: FAQ + appointment/contact form for high-intent conversion.\n- footer: substantial footer with quick links, service areas, contact details.\n\n## Best Fit\n\n- Established roofer with a website worth redesigning.\n- Premium residential roof restoration / replacement.\n- Lead where we have enough visuals or can source/produce strong roof imagery.\n\n## Do\n\n- Make the first viewport unmistakably roofing.\n- Preserve a multi-page system feel even when generating a one-page teaser.\n- Use customer-safe, polished copy with practical buyer language.\n- Keep verified facts separate from demo content.\n\n## Do Not\n\n- Copy the reference brand, logo, exact copy, code, or paid assets.\n- Use text-only hero.\n- Add fake reviews, fake years, fake warranties, or fake licenses.\n- Expose internal workflow language to customers.\n\n## Machine-Readable DESIGN.md Contract\n---\nversion: alpha\nname: \"Classic Premium Roftix\"\ndescription: \"Classic Premium Roftix roofing template family design contract\"\ncolors:\n  primary: \"#0B2F57\"\n  secondary: \"#51606F\"\n  tertiary: \"#0E6B4F\"\n  neutral: \"#F7F5F0\"\n  surface: \"#FFFFFF\"\n  on-primary: \"#FFFFFF\"\n  on-tertiary: \"#FFFFFF\"\ntypography:\n  h1:\n    fontFamily: \"Playfair Display\"\n    fontSize: 4.75rem\n    fontWeight: 700\n    lineHeight: 0.95\n    letterSpacing: 0\n  h2:\n    fontFamily: \"Playfair Display\"\n    fontSize: 3rem\n    fontWeight: 700\n    lineHeight: 1.05\n  body-md:\n    fontFamily: \"Inter\"\n    fontSize: 1rem\n    fontWeight: \"400\"\n    lineHeight: \"1.6\"\n  label-caps:\n    fontFamily: \"Inter\"\n    fontSize: \"0.75rem\"\n    fontWeight: \"800\"\n    lineHeight: \"1.2\"\nrounded:\n  sm: 4px\n  md: 8px\n  lg: 16px\nspacing:\n  sm: 8px\n  md: 16px\n  lg: 32px\n  xl: 64px\ncomponents:\n  button-primary:\n    backgroundColor: \"{colors.tertiary}\"\n    textColor: \"{colors.on-tertiary}\"\n    typography: \"{typography.label-caps}\"\n    rounded: \"{rounded.md}\"\n    padding: 14px\n  hero-surface:\n    backgroundColor: \"{colors.primary}\"\n    textColor: \"{colors.on-primary}\"\n    rounded: \"{rounded.lg}\"\n---\n\n## Overview\n\nPremium residential roofing with cinematic trust: dramatic roof photography, refined editorial typography, and practical conversion sections that feel established rather than flashy.\n\n## Colors\n\n- **Primary (#0B2F57):** cinematic navy for hero overlays and premium roof photography.\n- **Secondary (#51606F):** slate captions, borders, and restrained metadata.\n- **Tertiary (#0E6B4F):** forest-green contact and conversion actions.\n- **Neutral (#F7F5F0):** warm editorial page background.\n- **Surface (#FFFFFF):** main content canvas.\n\n## Typography\n\n- Display: elegant high-contrast serif for H1/H2.\n- Body: clean sans-serif with generous line height.\n- Navigation / labels: compact sans-serif, medium weight, restrained letter case.\n\n## Layout\n\n- hero: full-bleed or large photographic hero, nav over image or clean top nav.\n- services: 3-6 service blocks with icons or imagery, not generic cards only.\n- proof: verified proof only; demo-safe proof structure allowed without fake reviews.\n- projects: gallery grid and project-detail style section for premium/multi-page.\n- FAQ/contact: FAQ + appointment/contact form for high-intent conversion.\n- footer: substantial footer with quick links, service areas, contact details.\n\n## Elevation & Depth\n\nUse depth only when it supports hierarchy. Photo-heavy families should rely on image composition, contrast, and section rhythm before decorative shadows.\n\n## Shapes\n\nDefault to restrained corners. Use larger radii only for image containers and CTA panels when the reference style supports it.\n\n## Components\n\n- **Hero:** must clearly communicate the niche in the first viewport.\n- **Primary CTA:** uses the tertiary token and must be visually obvious.\n- **Service modules:** should match the family layout direction, not a generic card grid.\n- **Footer:** must feel complete and credible, even when demo-safe content is used.\n\n## Do's and Don'ts\n\n### Do\n\n- Make the first viewport unmistakably roofing.\n- Preserve a multi-page system feel even when generating a one-page teaser.\n- Use customer-safe, polished copy with practical buyer language.\n- Keep verified facts separate from demo content.\n\n### Don't\n\n- Copy the reference brand, logo, exact copy, code, or paid assets.\n- Use text-only hero.\n- Add fake reviews, fake years, fake warranties, or fake licenses.\n- Expose internal workflow language to customers.\n\n## Extracted Reference Design Signals\n{\n  \"schemaVersion\": 1,\n  \"ok\": true,\n  \"dryRun\": false,\n  \"provider\": \"openai\",\n  \"model\": \"gpt-4.1-mini\",\n  \"generatedAt\": \"2026-05-08T23:34:30.859Z\",\n  \"reason\": \"\",\n  \"referenceSummary\": \"A premium classic roofing website template emphasizing durability and modern style through a warm, earthy palette and structured layout.\",\n  \"visualThesis\": \"Blending timeless craftsmanship with bold modern design to convey strength, clarity, and trustworthiness.\",\n  \"palette\": [\n    {\n      \"name\": \"primary\",\n      \"hex\": \"#004D40\",\n      \"usage\": \"Dark green background blocks for branding, trust, and textual contrast.\"\n    },\n    {\n      \"name\": \"secondary\",\n      \"hex\": \"#FF6F3C\",\n      \"usage\": \"Accent and call-to-action buttons to draw user attention.\"\n    },\n    {\n      \"name\": \"neutral-light\",\n      \"hex\": \"#FFF5E1\",\n      \"usage\": \"Background for sections to create warmth and improve readability.\"\n    },\n    {\n      \"name\": \"text-dark\",\n      \"hex\": \"#212121\",\n      \"usage\": \"Primary text color for high reading contrast.\"\n    },\n    {\n      \"name\": \"text-muted\",\n      \"hex\": \"#757575\",\n      \"usage\": \"Secondary text and descriptive labels.\"\n    }\n  ],\n  \"typography\": {\n    \"display\": \"Serif, Bold, Uppercase or Title Case for headings to evoke premium and classic tone\",\n    \"body\": \"Sans-serif, Regular weight for readability in paragraphs\",\n    \"label\": \"Sans-serif, Medium weight, uppercase or small caps for service icons and badges\",\n    \"notes\": \"Clean, modern type pairing emphasizing clear hierarchy with no excessive ornamentation\"\n  },\n  \"imageDirection\": {\n    \"hero\": \"High-quality architectural photos of modern roofed homes with warm sunlight\",\n    \"services\": \"Minimalist line icons paired with subtle photo overlays representing roof tasks\",\n    \"projects\": \"Photographic case studies showing diverse roofing styles in real environments\",\n    \"mustAvoid\": [\n      \"Overly staged or generic stock images with too much unrelated props\",\n      \"Images with excessive filters or low contrast\",\n      \"Photos featuring people facing camera or unrelated lifestyle shots\"\n    ]\n  },\n  \"layoutRhythm\": [\n    {\n      \"section\": \"hero\",\n      \"pattern\": \"Full width split hero with left aligned text and right aligned image; warm background gradient\"\n    },\n    {\n      \"section\": \"about\",\n      \"pattern\": \"Wide container with centered text block on dark background\",\n      \"notes\": \"Includes founder signature and photo in small circle\"\n    },\n    {\n      \"section\": \"services\",\n      \"pattern\": \"Grid of evenly spaced icon + text cards with subtle borders and light background\"\n    },\n    {\n      \"section\": \"why choose us\",\n      \"pattern\": \"Two column masonry with bullet list on left and embedded images on right with elevations\"\n    },\n    {\n      \"section\": \"projects and testimonials\",\n      \"pattern\": \"Horizontal scroller or card clusters with badges and star ratings\"\n    },\n    {\n      \"section\": \"blog\",\n      \"pattern\": \"Horizontal carousel of cards with small text overlays and images\"\n    },\n    {\n      \"section\": \"footer\",\n      \"pattern\": \"Full width dark block with multi-column links and subscription input\"\n    }\n  ],\n  \"componentTokens\": {\n    \"radius\": \"6px for cards and buttons for subtle rounding\",\n    \"border\": \"1px solid rgba(0,0,0,0.1) for service cards and testimonial containers\",\n    \"shadow\": \"Soft drop shadows with 0 2px 8px rgba(0,0,0,0.12) for floating effect\",\n    \"button\": \"Filled background primary color with white text, medium padding, hover lighten effect\"\n  },\n  \"ctaHierarchy\": [\n    \"Primary: 'Get Your Free Roof Audit' button in orange in hero\",\n    \"Secondary: Contact Us button in dark green top right\",\n    \"Tertiary: Newsletter subscription form at footer\"\n  ],\n  \"fidelityRisks\": [\n    \"Maintaining consistent quality and resolution of architectural images\",\n    \"Balancing warm background tones while preserving text legibility\",\n    \"Retaining clean iconography with minimal detail to match classic style\"\n  ],\n  \"openDesignRules\": [\n    \"Use serif fonts for headings and sans-serif for body text for hierarchy clarity\",\n    \"Limit palette to 4-5 core colors to maintain brand coherence\",\n    \"Ensure enough padding inside cards and text sections for readability\",\n    \"Maintain center alignment for testimonial content and quotes\",\n    \"Use star rating component consistently with 5 stars max\"\n  ],\n  \"publicApprovalChecklist\": [\n    \"Confirm the brand colors meet accessibility contrast requirements\",\n    \"Validate that all images depict roof-related scenes without licensing issues\",\n    \"Verify all CTA text aligns with the roofing niche and is actionable\",\n    \"Collect user feedback on readability of text blocks with background variations\",\n    \"Ensure responsive behavior for hero split layout and service grid\"\n  ]\n}\n\n## Section Contract\n{\n  \"schemaVersion\": 1,\n  \"niche\": \"roofing\",\n  \"family\": \"classic-premium-roftix\",\n  \"pageTypes\": {\n    \"onePage\": {\n      \"requiredSections\": [\n        \"hero\",\n        \"services\",\n        \"proof\",\n        \"projectsTeaser\",\n        \"process\",\n        \"faq\",\n        \"contact\",\n        \"footer\"\n      ],\n      \"optionalSections\": [\n        \"about\",\n        \"serviceArea\",\n        \"materials\",\n        \"blogTeaser\"\n      ]\n    },\n    \"multiPage\": {\n      \"pages\": [\n        \"home\",\n        \"about\",\n        \"services\",\n        \"serviceDetail\",\n        \"projects\",\n        \"projectDetail\",\n        \"faq\",\n        \"blog\",\n        \"blogDetail\",\n        \"appointment\"\n      ]\n    }\n  },\n  \"sections\": []\n}\n\n## QA Rubric\n{\n  \"schemaVersion\": 1,\n  \"passScore\": 85,\n  \"criteria\": [\n    {\n      \"id\": \"referenceFidelity\",\n      \"label\": \"Reference fidelity without copying\",\n      \"weight\": 15\n    },\n    {\n      \"id\": \"firstViewportImpact\",\n      \"label\": \"First viewport impact\",\n      \"weight\": 15\n    },\n    {\n      \"id\": \"imageDensity\",\n      \"label\": \"Image density and niche relevance\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"nicheFit\",\n      \"label\": \"Niche and sub-niche fit\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"pageCompleteness\",\n      \"label\": \"Page/system completeness\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"ctaHierarchy\",\n      \"label\": \"CTA hierarchy and conversion path\",\n      \"weight\": 10\n    },\n    {\n      \"id\": \"trustProof\",\n      \"label\": \"Trust/proof richness\",\n      \"weight\": 8\n    },\n    {\n      \"id\": \"mobilePolish\",\n      \"label\": \"Mobile polish\",\n      \"weight\": 8\n    },\n    {\n      \"id\": \"copyCleanliness\",\n      \"label\": \"Customer-facing copy cleanliness\",\n      \"weight\": 8\n    }\n  ],\n  \"hardFails\": [\n    \"customer-visible internal workflow terms\",\n    \"missing primary visual asset in a photo-heavy family\",\n    \"fake verified facts such as reviews, licenses, address, years, awards, or prices\",\n    \"no visible phone/form/contact path in lead-generation templates\"\n  ]\n}\n\n## Template Library Requirements\n- Build an original ProfitsLocal-owned template, not a clone.\n- Use realistic local-business copy and rich demo-safe content where allowed.\n- Include visible niche imagery or generated assets; do not ship a text-only page.\n- If reviewed local images are listed, copy them into the generated project assets directory and use them as real <img> assets.\n- If a brand kit is listed, use the selected default logo direction and do not generate multiple customer-choice logos.\n- Do not expose internal words like audit, mockup, lead-ops, Open Design, or template-lab in customer-facing pages.\n- Produce a result strong enough to be listed in the ProfitsLocal public template library after QA.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "isolated",
+  "dataDir": "/tmp/profitslocal-open-design-template-roofing-classic-premium-roftix",
+  "outDir": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/open-design",
+  "seedDir": null,
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 900000,
+    "timeoutMs": 900000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": false
+  },
+  "allowArtifactFallback": false,
+  "artifactQuietMs": 20000,
+  "maxQuestionFormRounds": 2,
+  "lifecycle": {
+    "startedAt": "2026-05-09T01:10:24.300Z",
+    "endedAt": "2026-05-09T01:19:54.548Z",
+    "nativeCleanFinish": true,
+    "questionForms": [],
+    "questionFormRounds": [],
+    "toolUses": [
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,240p' .od-skills/web-prototype/assets/template.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,220p' .od-skills/web-prototype/references/checklist.md\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,260p' .od-skills/web-prototype/references/layouts.md\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg --files'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'mkdir -p assets && cp /Users/matthew/Developer/open-design/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-repair-flashing-detail.pn…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'mkdir -p assets && cp /Users/matthew/Developer/open-design/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-hero-premium-roof-at-blue-hour.png ass…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'mkdir -p assets && cp /Users/matthew/Developer/open-design/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-installation-detail.png a…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'mkdir -p assets && cp /Users/matthew/Developer/open-design/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-about-roofer-working-roof-frame.png as…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'mkdir -p assets && cp /Users/matthew/Developer/open-design/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-project-before-after-roof-transformati…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'find . -maxdepth 5 -type f'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design -name 'family1-hero-premium-roof-at-blue-hour.png' -o -name 'family1-service-roof-repair-flashing-detail.png' -o -name 'family1-service-roof-installation-detail.png' -o -…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'command -v magick || command -v convert || command -v gm || command -v sips'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"curl -L --fail --silent --show-error 'https://upload.wikimedia.org/wikipedia/commons/6/60/Roof_repair_-_DPLA_-_e8c6d5e6a77d5e6d4ea0767cc3189a1a.jpg' -o assets/service-roof-repair-flashing-detail.jpg && curl -L --…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"curl -L --silent 'https://commons.wikimedia.org/wiki/File:Robert_Borthwick_Adam_House,_Buffalo,_New_York_-_20191208.jpg' | rg -o 'https://upload\\\\\\\\.wikimedia\\\\\\\\.org[\\\"'^\\\" ]+Robert[''^\\\" ]+'\\\"\\\\\\\\.jpg' | head -…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"curl -L --silent 'https://commons.wikimedia.org/wiki/File:Roof_replacement.jpg' | rg -o 'https://upload\\\\\\\\.wikimedia\\\\\\\\.org[\\\"'^\\\" ]+'\\\"\\\\\\\\.jpg' | head -3\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"curl -L --fail --silent --show-error 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Robert_Borthwick_Adam_House%2C_Buffalo%2C_New_York_-_20191208.jpg/1280px-Robert_Borthwick_Adam_House%2C_Buffalo%2C_N…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n \\\\\\\"audit|mockup|lead-ops|Open Design|template-lab|Lorem ipsum|Feature One|Feature Two|99\\\\\\\\.9|10×|award|licensed|warranty|years\\\\\\\" index.html outreach.html style-guide.md\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n '<section(?\\\"'![''^>]*data-od-id)'\\\"' index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n '#[0-9a-fA-F]{3,8}' index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find assets -maxdepth 1 -type f -print -exec file {} \\\\\\\\;\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n \\\\\\\"audit|mockup|lead-ops|Open Design|template-lab|template|demo|This system|this page|Lorem ipsum|Feature One|Feature Two|99\\\\\\\\.9|10×|award|licensed|warranty|years\\\\\\\" index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg --pcre2 -n '<section(?\\\"'![''^>]*data-od-id)'\\\"' index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'wc -l index.html outreach.html style-guide.md'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n 'scrollIntoView|<img [\\\"'^>]*(src=\\\"assets/[''^\\\"]+\\\")'\\\"' index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n \\\\\\\"audit|mockup|lead-ops|Open Design|template-lab|Lorem ipsum|Feature One|Feature Two|99\\\\\\\\.9|10×|fake|award|licensed|warranty\\\\\\\" index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg --pcre2 -n '<section(?\\\"'![''^>]*data-od-id)'\\\"' index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'for f in assets/hero-premium-roof-blue-hour.jpg assets/service-roof-repair-flashing-detail.jpg assets/service-roof-installation-detail.jpg assets/about-roofer-working-roof-frame.jpg assets/project-before-after-roo…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n 'data-od-id=' index.html outreach.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,380p' index.html\\\"\"}"
+      }
+    ],
+    "fileChanges": [
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/index.html",
+        "kind": "add",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/index.html",
+        "kind": "add",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/outreach.html",
+        "kind": "add",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/outreach.html",
+        "kind": "add",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/style-guide.md",
+        "kind": "add",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/style-guide.md",
+        "kind": "add",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/index.html",
+        "kind": "update",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/outreach.html",
+        "kind": "update",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/index.html",
+        "kind": "update",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-classic-premium-roftix-2026-05-09t01-10-22-600z/outreach.html",
+        "kind": "update",
+        "status": "completed"
+      }
+    ]
+  },
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 23856,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "outreach.html",
+      "size": 11134,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "style-guide.md",
+      "size": 1904,
+      "kind": "text",
+      "mime": "text/markdown; charset=utf-8",
+      "artifactKind": "markdown-document"
+    },
+    {
+      "path": "assets/project-before-after-roof-transformation.jpg",
+      "size": 6756612,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/hero-premium-roof-blue-hour.jpg",
+      "size": 350829,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/service-roof-installation-detail.jpg",
+      "size": 6756612,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/about-roofer-working-roof-frame.jpg",
+      "size": 12872751,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/service-roof-repair-flashing-detail.jpg",
+      "size": 763309,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-07T22:48:20.241Z",
+  "clientSlug": "rich-and-rare-longterm-smoke-v4",
+  "projectId": "rich-and-rare-longterm-smoke-v4-open-design-1778193842482",
+  "conversationId": "34813142-de70-4bef-a7c9-56df11e2158f",
+  "runId": "faad21c0-1f3a-465b-a90a-1d789d01df7d",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": "https://www.richandrare.com.au/",
+  "businessType": "restaurant - steak and seafood restaurant",
+  "tone": "Luxury / refined, match existing Rich & Rare brand",
+  "scope": "Full concept with 3-4 key pages",
+  "prompt": "[form answers — discovery]\n- Primary surface: Responsive — all sizes\n- Who is this redesign for?: restaurant - steak and seafood restaurant\n- Visual tone: Luxury / refined\n- Brand context: Match the existing richandrare.com.au brand\n- What should I redesign first?: Full concept with 3–4 key pages\n- Source website: https://www.richandrare.com.au/\n- Anything else I should know?: Preserve the existing Rich & Rare brand, logo, menu, booking/contact/location intent, current sitemap intent, and official business facts. Local source captures have already been seeded into ./source/ inside the Open Design project. Use those local files as the primary reference instead of re-crawling the website unless one of them is missing. Produce a canonical concept entry page as index.html, plus brand-spec.md and local assets, not source captures only. This is concept generation only. Do not deploy and do not edit any ProfitsLocal production repo.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/rich-and-rare-longterm-smoke-v4/concept/open-design",
+  "seedDir": "/var/folders/hb/8h19ztd93k3g6wvkhrt_3j880000gn/T/rich-and-rare-longterm-smoke-v4-od-seed",
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 900000,
+    "timeoutMs": 900000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": false
+  },
+  "status": {
+    "status": "succeeded",
+    "code": 0,
+    "signal": null,
+    "completionMode": "artifact_quiet_fallback",
+    "artifactSnapshot": {
+      "ready": true,
+      "htmlCount": 6,
+      "generatedHtmlCount": 1,
+      "cssCount": 0,
+      "fileCount": 11,
+      "quietForMs": 20823.1728515625,
+      "latestMtimeMs": 1778194079399.8271
+    }
+  },
+  "files": [
+    {
+      "path": "assets/rich-and-rare-hero.jpg",
+      "size": 367722,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "assets/rich-and-rare-logo-white.png",
+      "size": 16042,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "assets/rich-and-rare-menu.jpg",
+      "size": 398158,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "brand-spec.md",
+      "size": 2169,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "index.html",
+      "size": 22918,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "source/bookings.html",
+      "size": 330724,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "source/contact.html",
+      "size": 223831,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "source/functions.html",
+      "size": 304316,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "source/home.html",
+      "size": 260932,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "source/menu.html",
+      "size": 386993,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "source-brief.md",
+      "size": 473,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    }
+  ]
+}

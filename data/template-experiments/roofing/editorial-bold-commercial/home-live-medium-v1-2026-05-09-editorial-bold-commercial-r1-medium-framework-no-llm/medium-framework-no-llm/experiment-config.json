@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "variant": {
+    "id": "medium-framework-no-llm",
+    "constraintMode": "medium",
+    "frameworkMode": "design-language-plus-required-sections",
+    "copyMode": "none",
+    "hypothesis": "Medium constraints should preserve business structure while leaving visual freedom."
+  },
+  "baseFacts": {
+    "niche": "roofing",
+    "family": "editorial-bold-commercial",
+    "page": "home",
+    "businessName": "RidgeLine Roof Co.",
+    "businessType": "local roofing contractor",
+    "serviceArea": "Brisbane and Gold Coast",
+    "contact": {
+      "phone": "0400 000 000",
+      "email": "",
+      "website": ""
+    },
+    "services": [
+      "Roof repairs",
+      "Roof restoration",
+      "Metal roofing",
+      "Gutter repairs",
+      "Roof inspections"
+    ],
+    "primaryAction": "request a roof inspection or quote",
+    "proofBoundary": [
+      "exact address",
+      "email",
+      "phone",
+      "reviews",
+      "licenses",
+      "certifications",
+      "years in business",
+      "awards",
+      "prices"
+    ],
+    "demoSafeContent": [
+      "FAQ",
+      "process",
+      "service descriptions",
+      "project teaser structure",
+      "blog titles"
+    ]
+  },
+  "approvedAssets": [
+    {
+      "slot": "hero",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-hero-worker-standing-metal-roof-wide.png",
+      "sha256": "b91752026dec5249712a463034359485c9d9a99a35d17c4f845fdc04730e9b49",
+      "bytes": 1597350
+    },
+    {
+      "slot": "projectDetail",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-project-commercial-metal-roof-detail.png",
+      "sha256": "26bca0a341f8bf8b346090e033ee8d7b26a76c5b7d98910356775bc40728f964",
+      "bytes": 2073687
+    },
+    {
+      "slot": "service",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-roofer-metal-roof-diagonal.png",
+      "sha256": "a6890a2adb99ecf6a9eedc59a0859b4ca0b85bc9360941df4fa64bfc1fa9732e",
+      "bytes": 1765486
+    },
+    {
+      "slot": "projectTile",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-orange-accent-roof-work.png",
+      "sha256": "5adfc148fb532049f68dbfc3ad55e3407c4868fd0be27544f2ea05c84ce9bf76",
+      "bytes": 2235944
+    },
+    {
+      "slot": "story",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-story-two-roofers-metal-roof-portrait.png",
+      "sha256": "d9c23209f79cc57f13dec686dbd8122e4bad2203d009b5fbd918357a551a3a84",
+      "bytes": 2414120
+    }
+  ],
+  "seedAssets": [
+    {
+      "slot": "hero",
+      "fileName": "hero-family2-hero-worker-standing-metal-roof-wide.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-hero-worker-standing-metal-roof-wide.png",
+      "seedPath": "assets/hero-family2-hero-worker-standing-metal-roof-wide.png",
+      "sha256": "b91752026dec5249712a463034359485c9d9a99a35d17c4f845fdc04730e9b49",
+      "bytes": 1597350
+    },
+    {
+      "slot": "projectDetail",
+      "fileName": "projectDetail-family2-project-commercial-metal-roof-detail.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-project-commercial-metal-roof-detail.png",
+      "seedPath": "assets/projectDetail-family2-project-commercial-metal-roof-detail.png",
+      "sha256": "26bca0a341f8bf8b346090e033ee8d7b26a76c5b7d98910356775bc40728f964",
+      "bytes": 2073687
+    },
+    {
+      "slot": "service",
+      "fileName": "service-family2-service-roofer-metal-roof-diagonal.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-roofer-metal-roof-diagonal.png",
+      "seedPath": "assets/service-family2-service-roofer-metal-roof-diagonal.png",
+      "sha256": "a6890a2adb99ecf6a9eedc59a0859b4ca0b85bc9360941df4fa64bfc1fa9732e",
+      "bytes": 1765486
+    },
+    {
+      "slot": "projectTile",
+      "fileName": "projectTile-family2-service-orange-accent-roof-work.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-orange-accent-roof-work.png",
+      "seedPath": "assets/projectTile-family2-service-orange-accent-roof-work.png",
+      "sha256": "5adfc148fb532049f68dbfc3ad55e3407c4868fd0be27544f2ea05c84ce9bf76",
+      "bytes": 2235944
+    },
+    {
+      "slot": "story",
+      "fileName": "story-family2-story-two-roofers-metal-roof-portrait.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-story-two-roofers-metal-roof-portrait.png",
+      "seedPath": "assets/story-family2-story-two-roofers-metal-roof-portrait.png",
+      "sha256": "d9c23209f79cc57f13dec686dbd8122e4bad2203d009b5fbd918357a551a3a84",
+      "bytes": 2414120
+    }
+  ],
+  "localCopy": {
+    "status": "not_requested",
+    "mode": "none",
+    "model": null,
+    "reason": "copy mode disabled"
+  },
+  "execute": true,
+  "generatedAt": "2026-05-09T08:56:48.418Z"
+}

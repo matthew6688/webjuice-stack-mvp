@@ -1,0 +1,133 @@
+{
+  "id": "ollama-deepseek-r1:14b",
+  "provider": "ollama",
+  "model": "deepseek-r1:14b",
+  "status": "ok",
+  "durationMs": 57130,
+  "rawOutput": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration\",\n    \"contactPaths\": [],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"\",\n    \"opportunityDiagnosis\": \"\",\n    \"recommendedAngle\": \"\",\n    \"evidenceUsed\": [],\n    \"missingEvidence\": []\n  },\n  \"gapScore\": {\n    \"total\": 0,\n    \"conversion\": 0,\n    \"localSeo\": 0,\n    \"designTrust\": 0,\n    \"content\": 0,\n    \"rationale\": \"\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"\",\n    \"blockPlan\": [\n      \"hero\",\n      \"services\",\n      \"trust\",\n      \"process\",\n      \"faq\",\n      \"contact\"\n    ],\n    \"assetPlan\": [],\n    \"contactPlan\": {},\n    \"seoPlan\": {},\n    \"factLock\": {\n      \"mustKeep\": [\n        \"0424 371 622\"\n      ],\n      \"mustNotClaim\": [\n        \"email\",\n        \"address\",\n        \"website URL\",\n        \"real reviews\",\n        \"licence\",\n        \"award\",\n        \"rating\",\n        \"price\",\n        \"guarantee\"\n      ]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Professional Roofing & Restoration Services\",\n    \"heroSubcopy\": \"Expert in roof restorations, capping, respray, and more.\",\n    \"primaryCta\": \"Call Greg on 0424 371 622 for a free inspection and quote.\",\n    \"serviceCopy\": [\n      \"Roof Restorations: Bring back the beauty of your home with our expert restoration services.\",\n      \"Capping & Respray: Get that new look with our high-quality capping and respray solutions.\",\n      \"Repairs & Maintenance: Keep your roof in top condition with our reliable repairs and maintenance services.\"\n    ],\n    \"faq\": [\n      {\n        \"question\": \"Do you offer free inspections?\",\n        \"answer\": \"Yes, we provide a free in-person inspection and quote for all new customers.\"\n      },\n      {\n        \"question\": \"What is your service area?\",\n        \"answer\": \"We serve [insert service area].\"\n      }\n    ],\n    \"outreachHook\": \"\"\n  },\n  \"riskNotes\": [\n    \"No verified website URL, email, or address available.\",\n    \"Generated demo copy must be used for completeness only and not presented as real evidence.\"\n  ]\n}",
+  "error": "",
+  "evaluation": {
+    "schemaVersion": 1,
+    "ok": true,
+    "score": 89,
+    "grade": "B",
+    "parse": {
+      "ok": true,
+      "value": {
+        "discoveryReport": {
+          "businessIdentity": "Roofing & Restoration",
+          "contactPaths": [],
+          "services": [
+            "roof restorations",
+            "capping",
+            "respray",
+            "repairs",
+            "gutters",
+            "driveway",
+            "patio",
+            "external living",
+            "retaining wall",
+            "pressure cleaning"
+          ],
+          "currentPresence": "",
+          "opportunityDiagnosis": "",
+          "recommendedAngle": "",
+          "evidenceUsed": [],
+          "missingEvidence": []
+        },
+        "gapScore": {
+          "total": 0,
+          "conversion": 0,
+          "localSeo": 0,
+          "designTrust": 0,
+          "content": 0,
+          "rationale": ""
+        },
+        "websiteProductionSpec": {
+          "pageMode": "one_page_preview",
+          "templateDirection": "",
+          "blockPlan": [
+            "hero",
+            "services",
+            "trust",
+            "process",
+            "faq",
+            "contact"
+          ],
+          "assetPlan": [],
+          "contactPlan": {},
+          "seoPlan": {},
+          "factLock": {
+            "mustKeep": [
+              "0424 371 622"
+            ],
+            "mustNotClaim": [
+              "email",
+              "address",
+              "website URL",
+              "real reviews",
+              "licence",
+              "award",
+              "rating",
+              "price",
+              "guarantee"
+            ]
+          }
+        },
+        "copyBrief": {
+          "heroHeadline": "Professional Roofing & Restoration Services",
+          "heroSubcopy": "Expert in roof restorations, capping, respray, and more.",
+          "primaryCta": "Call Greg on 0424 371 622 for a free inspection and quote.",
+          "serviceCopy": [
+            "Roof Restorations: Bring back the beauty of your home with our expert restoration services.",
+            "Capping & Respray: Get that new look with our high-quality capping and respray solutions.",
+            "Repairs & Maintenance: Keep your roof in top condition with our reliable repairs and maintenance services."
+          ],
+          "faq": [
+            {
+              "question": "Do you offer free inspections?",
+              "answer": "Yes, we provide a free in-person inspection and quote for all new customers."
+            },
+            {
+              "question": "What is your service area?",
+              "answer": "We serve [insert service area]."
+            }
+          ],
+          "outreachHook": ""
+        },
+        "riskNotes": [
+          "No verified website URL, email, or address available.",
+          "Generated demo copy must be used for completeness only and not presented as real evidence."
+        ]
+      },
+      "rawJson": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration\",\n    \"contactPaths\": [],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"\",\n    \"opportunityDiagnosis\": \"\",\n    \"recommendedAngle\": \"\",\n    \"evidenceUsed\": [],\n    \"missingEvidence\": []\n  },\n  \"gapScore\": {\n    \"total\": 0,\n    \"conversion\": 0,\n    \"localSeo\": 0,\n    \"designTrust\": 0,\n    \"content\": 0,\n    \"rationale\": \"\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"\",\n    \"blockPlan\": [\n      \"hero\",\n      \"services\",\n      \"trust\",\n      \"process\",\n      \"faq\",\n      \"contact\"\n    ],\n    \"assetPlan\": [],\n    \"contactPlan\": {},\n    \"seoPlan\": {},\n    \"factLock\": {\n      \"mustKeep\": [\n        \"0424 371 622\"\n      ],\n      \"mustNotClaim\": [\n        \"email\",\n        \"address\",\n        \"website URL\",\n        \"real reviews\",\n        \"licence\",\n        \"award\",\n        \"rating\",\n        \"price\",\n        \"guarantee\"\n      ]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Professional Roofing & Restoration Services\",\n    \"heroSubcopy\": \"Expert in roof restorations, capping, respray, and more.\",\n    \"primaryCta\": \"Call Greg on 0424 371 622 for a free inspection and quote.\",\n    \"serviceCopy\": [\n      \"Roof Restorations: Bring back the beauty of your home with our expert restoration services.\",\n      \"Capping & Respray: Get that new look with our high-quality capping and respray solutions.\",\n      \"Repairs & Maintenance: Keep your roof in top condition with our reliable repairs and maintenance services.\"\n    ],\n    \"faq\": [\n      {\n        \"question\": \"Do you offer free inspections?\",\n        \"answer\": \"Yes, we provide a free in-person inspection and quote for all new customers.\"\n      },\n      {\n        \"question\": \"What is your service area?\",\n        \"answer\": \"We serve [insert service area].\"\n      }\n    ],\n    \"outreachHook\": \"\"\n  },\n  \"riskNotes\": [\n    \"No verified website URL, email, or address available.\",\n    \"Generated demo copy must be used for completeness only and not presented as real evidence.\"\n  ]\n}"
+    },
+    "findings": [
+      {
+        "severity": "minor",
+        "code": "thin_evidence_used",
+        "points": -4,
+        "message": "Evidence used is too thin."
+      },
+      {
+        "severity": "minor",
+        "code": "thin_missing_evidence",
+        "points": -4,
+        "message": "Missing evidence is not clearly listed."
+      },
+      {
+        "severity": "minor",
+        "code": "thin_asset_plan",
+        "points": -6,
+        "message": "Asset plan should specify hero, service/detail, and proof/contact imagery."
+      }
+    ],
+    "metrics": {
+      "outputCharacters": 2268,
+      "blockCount": 6,
+      "assetCount": 0,
+      "serviceCopyCount": 3,
+      "faqCount": 2
+    }
+  }
+}

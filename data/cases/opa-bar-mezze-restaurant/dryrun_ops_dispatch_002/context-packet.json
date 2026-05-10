@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "caseId": "opa-bar-mezze-restaurant_dryrun_ops_dispatch_002",
+  "status": "dry_run_created",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+  "order": {
+    "id": "dryrun_ops_dispatch_002",
+    "provider": "dry_run",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD",
+    "paymentStatus": "not_paid"
+  },
+  "customer": {
+    "company": "Opa Bar & Mezze",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "discord": {
+    "salesThreadId": "",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "1501853611238621227",
+    "salesWorkspaceChannelId": "",
+    "revisionWorkspaceChannelId": "",
+    "websiteWorkspaceChannelId": "1501853611238621227",
+    "websiteWorkspaceType": "",
+    "websiteWorkspaceName": "[Review] Opa Bar & Mezze",
+    "websiteWorkspaceTagIds": [
+      "1501948304479748148",
+      "1501948304479748152",
+      "1501948304488140850"
+    ],
+    "lastChannelId": "1501853611238621227",
+    "lastMessageId": "1501949186092826695",
+    "lastMessageUrl": "",
+    "lastThreadUrl": "",
+    "threadCreatedByBot": false
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+    "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/opa-bar-mezze-restaurant/intake/website-survey.json"
+  },
+  "paths": {
+    "casePath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_002/case.json",
+    "contextPath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_002/context-packet.json",
+    "timelinePath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_002/timeline.jsonl",
+    "buildPacketPath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_002/build-packet.md",
+    "artifactsDir": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_002/artifacts"
+  },
+  "buildPacketPath": "data/cases/opa-bar-mezze-restaurant/dryrun_ops_dispatch_002/build-packet.md",
+  "recentTimeline": [
+    {
+      "id": "case_evt_1778140206562_mz2smw9u",
+      "type": "website_agent_handoff_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "ops_dispatch_ready_for_customer_review",
+      "discordChannelId": "1501072883001065614",
+      "discordThreadId": "1501853611238621227",
+      "discordMessageId": "1501853611238621227",
+      "discordMessageUrl": "",
+      "createdAt": "2026-05-07T07:50:06.561Z"
+    },
+    {
+      "id": "case_evt_1778162991328_xvypp05q",
+      "type": "website_agent_handoff_sent",
+      "ok": true,
+      "channel": "discord",
+      "reason": "ops_dispatch_ready_for_customer_review",
+      "discordChannelId": "1501853611238621227",
+      "discordThreadId": "1501853611238621227",
+      "discordMessageId": "1501949186092826695",
+      "discordMessageUrl": "",
+      "createdAt": "2026-05-07T14:09:51.325Z"
+    }
+  ],
+  "agentStartProtocol": [
+    "Read this context packet before changing files.",
+    "Read case.json and timeline.jsonl for the full memory trail.",
+    "Read build-packet.md and website-survey.json when present before choosing a build approach.",
+    "Read evidence/content/design/brand files before planning any edit.",
+    "Classify the request as website, menu, domain, or account utility before patching.",
+    "Do not override locked decisions.",
+    "Do not treat unverified customer text as source of truth for menu prices, hours, address, phone, or reservation links.",
+    "If evidence conflicts with the customer request, stop and write needs_human_decision instead of guessing.",
+    "After work, append an agent run summary and timeline event."
+  ]
+}

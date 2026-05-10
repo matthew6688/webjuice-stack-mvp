@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "page": "home",
+  "runId": "live-medium-v3-2026-05-09",
+  "execute": true,
+  "targetScore": 95,
+  "maxRounds": 1,
+  "variants": [
+    "medium-framework-no-llm"
+  ],
+  "families": [
+    {
+      "family": "editorial-bold-commercial",
+      "accepted": true,
+      "reason": "target_score_met_with_native_clean_finish",
+      "best": {
+        "family": "editorial-bold-commercial",
+        "variant": "medium-framework-no-llm",
+        "runId": "live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm",
+        "execute": true,
+        "status": 0,
+        "durationMs": 937272,
+        "score": 95,
+        "ok": true,
+        "accepted": true,
+        "nativeCleanFinish": true,
+        "completionMode": "native",
+        "outDir": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/open-design",
+        "promptPath": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/prompt.md",
+        "scorePath": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/experiment-score.json",
+        "experimentRoot": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm",
+        "failureReason": ""
+      },
+      "attempts": [
+        {
+          "family": "editorial-bold-commercial",
+          "variant": "medium-framework-no-llm",
+          "runId": "live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm",
+          "execute": true,
+          "status": 0,
+          "durationMs": 937272,
+          "score": 95,
+          "ok": true,
+          "accepted": true,
+          "nativeCleanFinish": true,
+          "completionMode": "native",
+          "outDir": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/open-design",
+          "promptPath": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/prompt.md",
+          "scorePath": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/experiment-score.json",
+          "experimentRoot": "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm",
+          "failureReason": ""
+        }
+      ]
+    }
+  ],
+  "accepted": [
+    "editorial-bold-commercial"
+  ],
+  "pending": [],
+  "generatedAt": "2026-05-09T09:47:49.699Z"
+}

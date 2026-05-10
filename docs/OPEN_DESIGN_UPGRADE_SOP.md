@@ -340,24 +340,30 @@ npm run open-design:validate-concept -- \
 
 对于 `codex + web-prototype`：
 
-- 默认 timeout 不应低于 `600000ms`
+- 默认 timeout 使用 `900000ms`（15 分钟），给 Open Design 足够时间完成真实 artifact 和自然结束事件
+- 最低 timeout 不应低于 `600000ms`（10 分钟）
 - 除非在故障调查里明确加入 `--allow-short-timeout`
 
 原因：
 
 - 之前的 `120000ms / 180000ms` 会把仍在正常推进的 native run 误判成失败；
+- Open Design app-visible/web-prototype 经常需要 10 分钟以上，尤其是有 source capture、audit、concept generation、self-check 的任务；
 - 这已经被验证是一个真实根因。
 
 ## 什么时候接受 fallback
 
-`artifact_quiet_fallback` 只有在下面条件成立时才算成功：
+正常业务不接受 `artifact_quiet_fallback` 作为最终通过。它只作为显式故障救援工具使用，并且必须由命令显式传入 `--allow-artifact-fallback`。
+
+救援模式下，`artifact_quiet_fallback` 只有在下面条件成立时才允许导出：
 
 1. 已经存在**真实生成的** HTML 页面；
 2. 不是 `source-*.html` 这种源站抓取文件；
 3. 目录静默一段时间；
-4. 导出内容足够进入 handoff / port / build。
+4. 导出内容足够继续诊断或人工接管。
 
 如果连第一个生成 HTML 都没有，就不是 fallback success，而是 run failure / timeout。
+
+如果要证明 Open Design 链路健康，必须使用默认 no-fallback 路径，并在 `run-events.sse` 里看到 `event: end`，或在 run status endpoint 看到 terminal success。
 
 ## 和 ProfitsLocal 主仓库的关系
 

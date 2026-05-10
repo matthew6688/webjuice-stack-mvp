@@ -1,0 +1,449 @@
+{
+  "schemaVersion": 1,
+  "niche": "restaurant",
+  "clientSlug": "rich-and-rare-collect-smoke",
+  "sourceEvidencePath": "data/collect-smoke/rich-and-rare/evidence.json",
+  "generatedAt": "2026-05-06T06:39:09.272Z",
+  "fallbackLevel": "official_site_menu",
+  "hero": {
+    "name": "Rich & Rare Restaurant",
+    "cuisine": "restaurant",
+    "rating": 4.8,
+    "reviewCount": 3194,
+    "tagline": "Restaurant in Brisbane"
+  },
+  "contact": {
+    "phone": "(07) 3638 8888",
+    "email": "",
+    "address": "97 Boundary St, West End QLD 4101, Australia",
+    "website": "https://www.richandrare.com.au/",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=97%20Boundary%20St%2C%20West%20End%20QLD%204101%2C%20Australia"
+  },
+  "cta": {
+    "callUrl": "tel:0736388888",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=97%20Boundary%20St%2C%20West%20End%20QLD%204101%2C%20Australia",
+    "reserveUrl": "https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?date=2026-05-10&venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant"
+  },
+  "booking": {
+    "provider": "SevenRooms",
+    "url": "https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?date=2026-05-10&venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant"
+  },
+  "menu": {
+    "sourceUrl": "https://www.richandrare.com.au/menus",
+    "sections": [
+      {
+        "name": "BANQUETS",
+        "description": "",
+        "items": [
+          {
+            "name": "DrOVer’s delight",
+            "description": "",
+            "price": "88pp",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.sections",
+            "generated": false
+          }
+        ]
+      },
+      {
+        "name": "Raw Salmon",
+        "description": "",
+        "items": [
+          {
+            "name": "Wave & Wagyu",
+            "description": "",
+            "price": "132pp",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "Tajima Wagyu Striploin MB6",
+            "description": "",
+            "price": "7",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.sections",
+            "generated": false
+          },
+          {
+            "name": "R&R EXPERIENCE",
+            "description": "",
+            "price": "220pp",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.sections",
+            "generated": false
+          }
+        ]
+      },
+      {
+        "name": "Mixed Leaf Salad",
+        "description": "",
+        "items": [
+          {
+            "name": "Fried Egg 5 Foie Gras 40 King Prawn 12 Whole Live Lobster 240 Blue Cheese",
+            "description": "",
+            "price": "10",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "sourceKey": "menu.sections",
+            "generated": false
+          }
+        ]
+      }
+    ],
+    "sourceChain": [
+      {
+        "key": "links.menuCandidates",
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/",
+        "confidence": 0.7,
+        "extractor": "firecrawl_scrape"
+      },
+      {
+        "key": "menu.source",
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/",
+        "confidence": 0.75,
+        "extractor": "firecrawl_scrape"
+      },
+      {
+        "key": "links.menuCandidates",
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/menus",
+        "confidence": 0.7,
+        "extractor": "firecrawl_scrape"
+      },
+      {
+        "key": "menu.source",
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/menus",
+        "confidence": 0.75,
+        "extractor": "firecrawl_scrape"
+      },
+      {
+        "key": "menu.source",
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/menus",
+        "confidence": 0.78,
+        "extractor": "menu_text_parser"
+      },
+      {
+        "key": "menu.sections",
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/menus",
+        "confidence": 0.78,
+        "extractor": "menu_text_parser"
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "type": "image",
+      "url": "http://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w",
+      "source": "official_site"
+    },
+    {
+      "type": "image",
+      "url": "http://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/19f3cb37-cf2c-46fe-bcc7-e309fcf78111/R%26R_Winner.png",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/43db72df-198f-49ae-9f24-bbaa214cfe7b/bronze-award.png",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "image",
+      "url": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/a0fba70f-ea90-45c7-ad8c-cba7128b6dc7/Rich-and-Rare_Web-Page-design_V2.jpg",
+      "source": "legacy_restaurant_data"
+    },
+    {
+      "type": "google_photo_reference",
+      "reference": "Ab43m-tiaKjatY3zolOaKa-bUYDDSytFwF1ZurWbL3GRUBkXFfxgpPKwkb-uQ81LgOUMLapY6inOpKxbmwdunhRcI9RW6IzVlT5eZA7mAvTeBq9j2YUN3nL91tX0nKuazfWuNsP_L97n2iUlnqhYG0Xrwd0RUdtGPya0VBWEfkiO4LAgEdZHJxeqhmiSLTaTc5s5bPJmVA4f8bEJ4zxGDgCnlB2LmN3ppxvToMOibmMZNbk1EvOpuWE7r0f013QlDm49XkhevBPNkgtobMHXM0iEZDT4OKKV-wgp6bP6mHMcj_Ve1PDJF5d3lFf6WyPu0tWBPxeWGCXBuxY16J8VaosPYc3y46ceeuzBcukWBde5zcUvDThpbHKjWnbVIxQD8miwzaOTQAEcO-3w31zqrhSmyluDTlsxWwmTsb3SHMpf1aVWoHHJLsMjdZEEmT_Tb4Qw",
+      "source": "google_places"
+    }
+  ],
+  "brand": {
+    "logo": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/cc41bc60-4e56-4535-97b8-ba1ee763d87a/Rich+and+Rare_Type+Logo_CMYK_White.png?format=1500w",
+    "colors": [
+      "#112233",
+      "#112255"
+    ],
+    "fonts": [
+      "Montserrat"
+    ],
+    "ogImage": "http://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w"
+  },
+  "evidenceSummary": [
+    {
+      "key": "identity.name",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.95,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "contact.address",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.95,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "contact.phone",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.9,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "contact.website",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.8,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "reviews.rating",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.9,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "reviews.count",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.9,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "hours.weekdayText",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.85,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "google.placeId",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.95,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "google.photoReference",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.75,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "business.types",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.8,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "business.niche",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.8,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "business.city",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.8,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "cta.call",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.9,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "cta.map",
+      "sourceType": "google_places",
+      "sourceUrl": "",
+      "confidence": 0.9,
+      "extractor": "legacy_google_places_lead"
+    },
+    {
+      "key": "brand.logo",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.82,
+      "extractor": "brand_asset_extractor"
+    },
+    {
+      "key": "brand.colors",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.72,
+      "extractor": "brand_asset_extractor"
+    },
+    {
+      "key": "brand.fonts",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.65,
+      "extractor": "brand_asset_extractor"
+    },
+    {
+      "key": "brand.ogImage",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.72,
+      "extractor": "brand_asset_extractor"
+    },
+    {
+      "key": "gallery.images",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.72,
+      "extractor": "brand_asset_extractor"
+    },
+    {
+      "key": "website.homepage",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.85,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "website.title",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.8,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "website.description",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.75,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "brand.ogImage",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.65,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "contact.phoneFromWebsite",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.6,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "links.menuCandidates",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.7,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "links.reservationCandidates",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.7,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "menu.source",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.75,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "cta.reserve",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/",
+      "confidence": 0.75,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "website.homepage",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.85,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "website.title",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.8,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "brand.ogImage",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.65,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "contact.phoneFromWebsite",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.6,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "links.menuCandidates",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.7,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "links.reservationCandidates",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.7,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "menu.source",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.75,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "cta.reserve",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.75,
+      "extractor": "firecrawl_scrape"
+    },
+    {
+      "key": "menu.source",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.78,
+      "extractor": "menu_text_parser"
+    },
+    {
+      "key": "menu.sections",
+      "sourceType": "official_site",
+      "sourceUrl": "https://www.richandrare.com.au/menus",
+      "confidence": 0.78,
+      "extractor": "menu_text_parser"
+    }
+  ]
+}

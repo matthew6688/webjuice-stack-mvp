@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Roof restoration scene</title>
+  <desc id="desc">A warm residential roof surface with tools and clean restored tiles.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7efe5"/>
+      <stop offset="1" stop-color="#e4d1bd"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f3125"/>
+      <stop offset="0.55" stop-color="#bc5234"/>
+      <stop offset="1" stop-color="#52231f"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence baseFrequency="0.75" numOctaves="3" seed="19" type="fractalNoise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.13"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="multiply"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="820" fill="url(#sky)"/>
+  <path d="M0 340 L1200 170 L1200 820 L0 820 Z" fill="#352f2a"/>
+  <g filter="url(#grain)">
+    <path d="M0 374 L1200 204 L1200 820 L0 820 Z" fill="url(#tile)"/>
+    <g opacity="0.35" stroke="#f5d5bd" stroke-width="4">
+      <path d="M-80 420 L1120 250"/>
+      <path d="M-60 500 L1140 330"/>
+      <path d="M-40 580 L1160 410"/>
+      <path d="M-20 660 L1180 490"/>
+      <path d="M0 740 L1200 570"/>
+    </g>
+    <g opacity="0.22" stroke="#210f0d" stroke-width="8">
+      <path d="M140 354 L410 820"/>
+      <path d="M390 318 L660 820"/>
+      <path d="M650 278 L920 820"/>
+      <path d="M910 238 L1180 820"/>
+    </g>
+  </g>
+  <g transform="translate(675 185) rotate(-8)">
+    <rect x="0" y="0" width="238" height="38" rx="8" fill="#f4eee7"/>
+    <rect x="18" y="38" width="204" height="26" rx="7" fill="#282520"/>
+    <rect x="84" y="64" width="72" height="220" rx="16" fill="#f4eee7"/>
+    <rect x="102" y="92" width="36" height="164" rx="12" fill="#d06c3b"/>
+  </g>
+  <g opacity="0.62">
+    <circle cx="230" cy="206" r="74" fill="#ffffff"/>
+    <circle cx="294" cy="214" r="48" fill="#ffffff"/>
+    <circle cx="164" cy="222" r="42" fill="#ffffff"/>
+  </g>
+</svg>

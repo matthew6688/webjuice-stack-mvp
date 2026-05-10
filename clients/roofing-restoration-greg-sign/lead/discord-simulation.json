@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "dryRun": true,
+  "workspace": "website-leads",
+  "channelId": "1501187038706401290",
+  "threadPolicy": "do_not_create_thread_until_human_approves_or_mockup_starts",
+  "simulatedMessage": {
+    "content": "New image lead from Discord\nclientSlug: roofing-restoration-greg-sign\nsource: photo OCR + operator text\nvisible contact: 0424 371 622\ncontact person: Greg\nservices: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning",
+    "attachments": [
+      {
+        "name": "roofing-restoration-sign.jpg",
+        "note": "Image supplied in chat; local binary was not available to persist, OCR text was persisted."
+      }
+    ]
+  },
+  "resultingArtifacts": {
+    "intake": "clients/roofing-restoration-greg-sign/lead/lead-intake.json",
+    "research": "clients/roofing-restoration-greg-sign/lead/lead-research.json",
+    "redesignCheck": "clients/roofing-restoration-greg-sign/lead/redesign-check.json",
+    "readyToBuild": "clients/roofing-restoration-greg-sign/lead/ready-to-build.json",
+    "outreachBrief": "clients/roofing-restoration-greg-sign/outreach/outreach-brief.json",
+    "leadOps": "clients/roofing-restoration-greg-sign/lead/lead-ops.json"
+  }
+}

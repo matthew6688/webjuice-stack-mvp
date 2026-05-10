@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-07T21:43:30.818Z",
+  "clientSlug": "od-pipeline-status-smoke",
+  "projectId": "od-pipeline-status-smoke-open-design-1778190126754",
+  "conversationId": "9951c1a1-5867-4e81-819d-df7339609e52",
+  "runId": "94bff442-4254-4835-b8c4-71961b64e72a",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "local business",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "multi-page",
+  "prompt": "Skip questions. Do not fetch the web. Use Open Design web-prototype skill context. Create a tiny standalone index.html saying 'Pipeline status smoke'. Keep it simple and finish naturally.",
+  "daemonUrl": "http://127.0.0.1:7482",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/od-pipeline-status-smoke/concept/open-design",
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 120000,
+    "timeoutMs": 120000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": true
+  },
+  "status": {
+    "status": "succeeded",
+    "code": 0,
+    "signal": null,
+    "completionMode": "artifact_quiet_fallback",
+    "artifactSnapshot": {
+      "ready": true,
+      "htmlCount": 1,
+      "generatedHtmlCount": 1,
+      "cssCount": 0,
+      "fileCount": 1,
+      "quietForMs": 169558.99389648438,
+      "latestMtimeMs": 1778190190691.006
+    }
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 1595,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    }
+  ],
+  "updatedAt": "2026-05-07T21:46:00.264Z",
+  "lastRunId": "6e4adc29-29c7-4d42-8552-993bc5096eb9",
+  "previousRunId": "94bff442-4254-4835-b8c4-71961b64e72a",
+  "continuationRuns": [
+    {
+      "runId": "6e4adc29-29c7-4d42-8552-993bc5096eb9",
+      "createdAt": "2026-05-07T21:46:00.265Z",
+      "prompt": "Tiny follow-up only. Keep the existing file and add one short line with exact text 'Continuation status smoke'. Do not fetch the web.",
+      "status": {
+        "status": "succeeded",
+        "code": 0,
+        "signal": null,
+        "completionMode": "artifact_quiet_fallback",
+        "artifactSnapshot": {
+          "ready": true,
+          "htmlCount": 1,
+          "generatedHtmlCount": 1,
+          "cssCount": 0,
+          "fileCount": 1,
+          "quietForMs": 169558.99389648438,
+          "latestMtimeMs": 1778190190691.006
+        }
+      },
+      "eventsPath": "run-events-6e4adc29-29c7-4d42-8552-993bc5096eb9.sse"
+    }
+  ]
+}

@@ -87,7 +87,7 @@ const healthItems = [
 
 <Layout title={`${summary.customer.company || summary.clientSlug} - 项目工作台 - ${siteConfig.name}`} description="已付款项目详情与操作面板。" active="intakes">
   <section class="poster-section admin-section">
-    <div class="admin-shell admin-detail-shell">
+    <div class="admin-shell lead-admin-shell admin-detail-shell" data-ui-version="local-style-2026-05-08">
       <div class="admin-header">
         <div>
           <p class="eyebrow"><a href="/admin/intakes">内部运营</a> / 项目详情</p>
@@ -132,7 +132,7 @@ const healthItems = [
         </article>
       </div>
 
-      <div class="admin-detail-lead">
+      <div class="admin-detail-lead admin-detail-workbench">
         <section class="admin-panel admin-detail-primary">
           <div class="admin-finance-head">
             <div>
@@ -198,7 +198,7 @@ const healthItems = [
         </aside>
       </div>
 
-      <div class="admin-detail-grid">
+      <div class="admin-detail-grid admin-detail-workbench-grid">
         <section class="admin-panel">
           <h2>里程碑时间线</h2>
           <ol class="admin-milestone-list">
@@ -265,7 +265,7 @@ const healthItems = [
         </section>
       </div>
 
-      <section class="admin-panel">
+      <section class="admin-panel admin-project-links-panel">
         <h2>Project Links</h2>
         <div class="admin-link-grid">
           {projectLinks.map((link) => (
@@ -280,7 +280,7 @@ const healthItems = [
         </dl>
       </section>
 
-      <div class="admin-detail-grid lower">
+      <div class="admin-detail-grid lower admin-detail-workbench-grid">
         <section class="admin-panel">
           <h2>Operator Console</h2>
           <dl>
@@ -312,7 +312,7 @@ const healthItems = [
         </section>
       </div>
 
-      <div class="admin-detail-grid lower">
+      <div class="admin-detail-grid lower admin-detail-workbench-grid">
         <section class="admin-panel">
           <h2>Intake</h2>
           <dl>
@@ -347,7 +347,7 @@ const healthItems = [
         </section>
       </div>
 
-      <div class="admin-detail-grid lower">
+      <div class="admin-detail-grid lower admin-detail-workbench-grid">
         <section class="admin-panel">
           <h2>Outreach</h2>
           <dl>

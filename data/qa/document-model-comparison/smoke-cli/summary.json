@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-cli",
+  "outRoot": "data/qa/document-model-comparison/smoke-cli",
+  "providers": [
+    {
+      "id": "codex",
+      "provider": "codex",
+      "model": null,
+      "status": "ok",
+      "durationMs": 44772,
+      "score": 100,
+      "grade": "A",
+      "ok": true,
+      "topFindings": []
+    },
+    {
+      "id": "claude",
+      "provider": "claude",
+      "model": null,
+      "status": "ok",
+      "durationMs": 35639,
+      "score": 95,
+      "grade": "A",
+      "ok": true,
+      "topFindings": [
+        {
+          "severity": "major",
+          "code": "gap_score_out_of_range",
+          "points": -6,
+          "message": "Gap score dimensions exceed expected ranges: localSeo."
+        }
+      ]
+    }
+  ],
+  "bestProvider": "codex",
+  "generatedAt": "2026-05-10T06:29:38.958Z",
+  "reevaluatedAt": "2026-05-10T07:08:23.883Z"
+}

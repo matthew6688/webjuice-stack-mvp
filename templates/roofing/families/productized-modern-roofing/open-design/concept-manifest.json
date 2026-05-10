@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T01:43:39.149Z",
+  "clientSlug": "template-roofing-productized-modern-roofing",
+  "projectId": "template-roofing-productized-modern-roofing-2026-05-09t01-34-36-040z",
+  "conversationId": "89af824a-da3b-46ee-a7fd-6a8b74c04bee",
+  "runId": "5f0e166f-b553-4705-86bd-456b438bc126",
+  "lastRunId": "875f8bfe-2987-443b-a2d2-def3e6935537",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "roofing website template family",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "multi-page",
+  "prompt": "Build an original productized modern roofing website template family inspired by the reference brief in this folder.\n\nTemplate family: productized-modern-roofing\n\nUse design-language.md and section-patterns.json as the contract. The result should feel like a polished Webflow/SaaS-quality roofing site: clean hero, service/material product cards, service accordion, FAQ, quote CTA, and a calm premium footer.\n\nDo not copy the reference brand, logo, exact text, code, or paid assets. Recreate the design language and section patterns as an original ProfitsLocal template.\n\nRequired outputs:\n- index.html for the primary template\n- a clean one-page version and notes for a simple multi-page expansion\n- local assets under assets/\n- style-guide.md if brand/design tokens are clear\n\nRules:\n- Customer-facing copy only.\n- No internal workflow terms.\n- Use rich demo content where allowed by template-manifest.json.\n- Do not invent verified facts listed in factsPolicy.mustNotInvent.\n- Use photo-quality niche imagery when the reference style depends on photography.\n- Use material/product visuals where possible, but do not invent prices or product brands.\n- Prefer the reviewed manual ChatGPT Image assets recorded in template-manifest.json `selectedImages`.\n- Primary hero should use the wide sunset metal-roof image.\n- Product/material cards should use the reviewed metal, terracotta, and composite sample images.\n- Use the drone inspection image for inspection/package/FAQ proof and the roofer-on-metal-roof image for service detail.\n- Do not replace these approved photo assets with SVG-only product art or generic stock-like placeholders.\n- Ask no question form unless generation is technically impossible.\n\n## Brand Kit / Logo Policy\nBusiness name: Roofex Roofing Systems\nLogo policy: single-default-demo-logo\nIf the client has no logo, use exactly one default demo logo direction. Do not ask the client to choose and do not create multiple logo options.\nSelected logo direction: Productized Modern Roofing style: simple geometric roof/service mark plus readable wordmark. No fake badges, no copied reference logo.\nSelected SVG concept: <svg viewBox=\"0 0 180 48\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\"><path d=\"M8 27 30 9l22 18\" fill=\"none\" stroke=\"#64748B\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M20 27h24v14H20z\" fill=\"#111827\"/><text x=\"66\" y=\"32\" font-family=\"Inter, Arial, sans-serif\" font-size=\"24\" font-weight=\"800\" fill=\"#F3F4F6\">RR</text></svg>\n\n## Reviewed Local Image Assets\nUse these reviewed images as the primary visual source for this template. Copy them into `assets/` before referencing them from HTML.\nDo not substitute these approved images with SVG-only art, weak placeholders, or unrelated generic stock imagery.\n\n- hero: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-hero-modern-metal-roof-sunset-wide.png\n- inspection: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-inspection-drone-roof-check.png\n- materialTerracotta: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-terracotta-tile-sample.png\n- materialMetal: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-standing-seam-metal-sample.png\n- materialComposite: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-composite-shingle-sample.png\n- service: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-service-modern-roofer-metal-roof.png\n\n## Design Language\n# Productized Modern Roofing Design Language\n\nNiche: roofing\n\n## Reference Summary\n\nInspired by Matthew's Roofex-style reference: modern SaaS/Webflow-like polish, clean gray/white layout, product/material tiles, partner logo strip, FAQ accordion, service accordion, large footer wordmark, and calm premium photography.\n\n## Visual Thesis\n\nModern productized roofing: precise, clean, consultative, and easy to compare, especially for businesses that sell materials, roofing systems, inspections, or quote packages.\n\n## Typography Direction\n\n- Display: modern sans-serif with large clean shapes.\n- Body: neutral sans-serif.\n- UI labels: small, technical, understated.\n\n## Color System\n\n- Dominant: white and light gray.\n- Accent: black / charcoal with subtle green or blue only for actions.\n- Background: airy off-white bands.\n- Footer: pale gray or charcoal with oversized wordmark treatment.\n\n## Imagery\n\n- hero: contractor on roof with clean overlay.\n- materials: tile/metal product shots or AI-generated material tiles.\n- services: one strong service image plus accordion rows.\n- FAQ: minimal, clear.\n\n## Layout Patterns\n\n- hero: contained image hero with simple nav and stats.\n- trust: muted logo/partner strip when demo-safe.\n- materials: product grid with roof tile/material cards.\n- services: accordion/list with one preview image.\n- FAQ: centered accordion.\n- CTA: premium roofing banner with image overlay.\n\n## Best Fit\n\n- Roofers who sell roof materials, restoration packages, inspections, or repeatable service bundles.\n- Simple multi-page website where clarity and quoting matter more than editorial drama.\n- Leads where we want to emphasize organized process and product choice.\n\n## Do\n\n- Keep spacing calm and readable.\n- Make comparison/product structure clear.\n- Use FAQ and materials as conversion tools.\n\n## Do Not\n\n- Use busy collage layouts.\n- Overdo luxury serif type.\n- Invent prices or product brands unless provided.\n\n## Machine-Readable DESIGN.md Contract\n---\nversion: alpha\nname: \"Productized Modern Roofing\"\ndescription: \"Productized Modern Roofing roofing template family design contract\"\ncolors:\n  primary: \"#111827\"\n  secondary: \"#64748B\"\n  tertiary: \"#2F6F5E\"\n  neutral: \"#F3F4F6\"\n  surface: \"#FFFFFF\"\n  on-primary: \"#FFFFFF\"\n  on-tertiary: \"#FFFFFF\"\ntypography:\n  h1:\n    fontFamily: \"Inter\"\n    fontSize: 4rem\n    fontWeight: 750\n    lineHeight: 1\n    letterSpacing: 0\n  h2:\n    fontFamily: \"Inter\"\n    fontSize: 2.5rem\n    fontWeight: 700\n    lineHeight: 1.08\n  body-md:\n    fontFamily: \"Inter\"\n    fontSize: 1rem\n    fontWeight: \"400\"\n    lineHeight: \"1.6\"\n  label-caps:\n    fontFamily: \"Inter\"\n    fontSize: \"0.75rem\"\n    fontWeight: \"800\"\n    lineHeight: \"1.2\"\nrounded:\n  sm: 4px\n  md: 8px\n  lg: 16px\nspacing:\n  sm: 8px\n  md: 16px\n  lg: 32px\n  xl: 64px\ncomponents:\n  button-primary:\n    backgroundColor: \"{colors.tertiary}\"\n    textColor: \"{colors.on-tertiary}\"\n    typography: \"{typography.label-caps}\"\n    rounded: \"{rounded.md}\"\n    padding: 14px\n  hero-surface:\n    backgroundColor: \"{colors.primary}\"\n    textColor: \"{colors.on-primary}\"\n    rounded: \"{rounded.lg}\"\n---\n\n## Overview\n\nModern productized roofing: precise, clean, consultative, and easy to compare, especially for businesses that sell materials, roofing systems, inspections, or quote packages.\n\n## Colors\n\n- **Primary (#111827):** clean charcoal for productized service clarity.\n- **Secondary (#64748B):** muted UI labels, dividers, and secondary copy.\n- **Tertiary (#2F6F5E):** subtle green for quote and action paths.\n- **Neutral (#F3F4F6):** airy gray bands and product comparison areas.\n- **Surface (#FFFFFF):** main content canvas.\n\n## Typography\n\n- Display: modern sans-serif with large clean shapes.\n- Body: neutral sans-serif.\n- UI labels: small, technical, understated.\n\n## Layout\n\n- hero: contained image hero with simple nav and stats.\n- trust: muted logo/partner strip when demo-safe.\n- materials: product grid with roof tile/material cards.\n- services: accordion/list with one preview image.\n- FAQ: centered accordion.\n- CTA: premium roofing banner with image overlay.\n\n## Elevation & Depth\n\nUse depth only when it supports hierarchy. Photo-heavy families should rely on image composition, contrast, and section rhythm before decorative shadows.\n\n## Shapes\n\nDefault to restrained corners. Use larger radii only for image containers and CTA panels when the reference style supports it.\n\n## Components\n\n- **Hero:** must clearly communicate the niche in the first viewport.\n- **Primary CTA:** uses the tertiary token and must be visually obvious.\n- **Service modules:** should match the family layout direction, not a generic card grid.\n- **Footer:** must feel complete and credible, even when demo-safe content is used.\n\n## Do's and Don'ts\n\n### Do\n\n- Keep spacing calm and readable.\n- Make comparison/product structure clear.\n- Use FAQ and materials as conversion tools.\n\n### Don't\n\n- Use busy collage layouts.\n- Overdo luxury serif type.\n- Invent prices or product brands unless provided.\n\n\n\n\n## Section Contract\n{\n  \"schemaVersion\": 1,\n  \"niche\": \"roofing\",\n  \"family\": \"productized-modern-roofing\",\n  \"pageTypes\": {\n    \"onePage\": {\n      \"requiredSections\": [\n        \"hero\",\n        \"services\",\n        \"proof\",\n        \"projectsTeaser\",\n        \"process\",\n        \"faq\",\n        \"contact\",\n        \"footer\"\n      ],\n      \"optionalSections\": [\n        \"about\",\n        \"serviceArea\",\n        \"materials\",\n        \"blogTeaser\"\n      ]\n    },\n    \"multiPage\": {\n      \"pages\": [\n        \"home\",\n        \"about\",\n        \"services\",\n        \"serviceDetail\",\n        \"projects\",\n        \"projectDetail\",\n        \"faq\",\n        \"blog\",\n        \"blogDetail\",\n        \"appointment\"\n      ]\n    }\n  },\n  \"sections\": []\n}\n\n## QA Rubric\n{\n  \"schemaVersion\": 1,\n  \"passScore\": 85,\n  \"criteria\": [\n    {\n      \"id\": \"referenceFidelity\",\n      \"label\": \"Reference fidelity without copying\",\n      \"weight\": 15\n    },\n    {\n      \"id\": \"firstViewportImpact\",\n      \"label\": \"First viewport impact\",\n      \"weight\": 15\n    },\n    {\n      \"id\": \"imageDensity\",\n      \"label\": \"Image density and niche relevance\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"nicheFit\",\n      \"label\": \"Niche and sub-niche fit\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"pageCompleteness\",\n      \"label\": \"Page/system completeness\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"ctaHierarchy\",\n      \"label\": \"CTA hierarchy and conversion path\",\n      \"weight\": 10\n    },\n    {\n      \"id\": \"trustProof\",\n      \"label\": \"Trust/proof richness\",\n      \"weight\": 8\n    },\n    {\n      \"id\": \"mobilePolish\",\n      \"label\": \"Mobile polish\",\n      \"weight\": 8\n    },\n    {\n      \"id\": \"copyCleanliness\",\n      \"label\": \"Customer-facing copy cleanliness\",\n      \"weight\": 8\n    }\n  ],\n  \"hardFails\": [\n    \"customer-visible internal workflow terms\",\n    \"missing primary visual asset in a photo-heavy family\",\n    \"fake verified facts such as reviews, licenses, address, years, awards, or prices\",\n    \"no visible phone/form/contact path in lead-generation templates\"\n  ]\n}\n\n## Template Library Requirements\n- Build an original ProfitsLocal-owned template, not a clone.\n- Use realistic local-business copy and rich demo-safe content where allowed.\n- Include visible niche imagery or generated assets; do not ship a text-only page.\n- If reviewed local images are listed, copy them into the generated project assets directory and use them as real <img> assets.\n- If a brand kit is listed, use the selected default logo direction and do not generate multiple customer-choice logos.\n- Do not expose internal words like audit, mockup, lead-ops, Open Design, or template-lab in customer-facing pages.\n- Produce a result strong enough to be listed in the ProfitsLocal public template library after QA.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "isolated",
+  "dataDir": "/tmp/profitslocal-open-design-template-roofing-productized-modern-roofing",
+  "outDir": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/open-design",
+  "seedDir": null,
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 1800000,
+    "timeoutMs": 1800000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": false
+  },
+  "allowArtifactFallback": false,
+  "artifactQuietMs": 20000,
+  "maxQuestionFormRounds": 2,
+  "lifecycle": {
+    "startedAt": "2026-05-09T13:02:03.554Z",
+    "endedAt": "2026-05-09T13:07:34.248Z",
+    "nativeCleanFinish": true,
+    "questionForms": [],
+    "questionFormRounds": [],
+    "toolUses": [
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,260p' .od-skills/web-prototype/references/layouts.md\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,220p' .od-skills/web-prototype/assets/template.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,220p' .od-skills/web-prototype/references/checklist.md\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,260p' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '620,1040p' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '260,620p' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'find assets -maxdepth 1 -type f -print'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"hero|assets/|quote|material|inspection|FAQ|faq|form|Roofex|placeholder|audit|mockup|Open Design|template|lead-ops|generated|artifact\\\" index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"audit|mockup|Open Design|template|lead-ops|generated|artifact|placeholder|Approved\\\" index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"#[0-9a-fA-F]{3,8}|scrollIntoView|linear-gradient|purple|violet|🚀|✨|🎯\\\" index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"<section\\\" index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -o \\\"assets/[''^\\\"]+\\\" index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -o 'assets/[\\\"'^\\\" ]+'\\\"' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"test -d node_modules && echo node_modules-present || echo no-node_modules; rg --files -g 'package.json' -g 'pnpm-lock.yaml' -g 'node_modules/.bin/playwright' -g 'node_modules/playwright/package.json'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"node -e \\\\\\\"const fs=require('fs');const html=fs.readFileSync('index.html','utf8');const refs=[...html.matchAll(/src=\\\\\\\\\\\\\\\"([\\\"'^'\\\"\\\\\\\\\\\\\\\"]+)\\\\\\\\\\\\\\\"/g)].map(m=>m[1]).filter(s=>s.startsWith('assets/'));let ok…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"command -v chromium || command -v google-chrome || command -v 'Google Chrome' || true\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'command -v playwright || true'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'ls -la'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"open -a 'Google Chrome' \\\\\\\"file://\\\"'$PWD/index.html\\\"'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'open -b com.google.Chrome \\\"file://$PWD/index.html\\\"'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'open -b ai.perplexity.comet \\\"file://$PWD/index.html\\\"'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'xmllint --html --noout index.html 2>&1 | head -40'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '150,245p' index.html && sed -n '452,498p' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"node -e \\\\\\\"const fs=require('fs');const s=fs.readFileSync('index.html','utf8');const open=(s.match(/<section\\\\\\\\b/g)||[]).length;const ids=(s.match(/<section\\\\\\\\b[\\\"'^>]*data-od-id=/g)||[]).length;console.log({s…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'command -v wkhtmltoimage || true'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'command -v chromium-browser || command -v chrome || command -v google-chrome-stable || true'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'command -v tidy || true'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'tidy -errors -quiet index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'tidy -errors -quiet --doctype html5 index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'git diff -- index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'cat index.html'\"}"
+      }
+    ],
+    "fileChanges": [
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-productized-modern-roofing-2026-05-09t01-34-36-040z/index.html",
+        "kind": "update",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-productized-modern-roofing-2026-05-09t01-34-36-040z/index.html",
+        "kind": "update",
+        "status": "completed"
+      }
+    ]
+  },
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 35253,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "style-guide.md",
+      "size": 1920,
+      "kind": "text",
+      "mime": "text/markdown; charset=utf-8",
+      "artifactKind": "markdown-document"
+    },
+    {
+      "path": "one-page-and-expansion-notes.md",
+      "size": 2254,
+      "kind": "text",
+      "mime": "text/markdown; charset=utf-8",
+      "artifactKind": "markdown-document"
+    },
+    {
+      "path": "assets/service-modern-roofer-metal-roof.png",
+      "size": 1873434,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/product-composite-shingle-sample.png",
+      "size": 2634676,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/product-standing-seam-metal-sample.png",
+      "size": 1301665,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/product-terracotta-tile-sample.png",
+      "size": 2039900,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/inspection-drone-roof-check.png",
+      "size": 2028489,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/hero-modern-metal-roof-sunset-wide.png",
+      "size": 1668425,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    }
+  ],
+  "updatedAt": "2026-05-09T13:07:34.248Z",
+  "previousRunId": "5f0e166f-b553-4705-86bd-456b438bc126",
+  "continuationRuns": [
+    {
+      "runId": "875f8bfe-2987-443b-a2d2-def3e6935537",
+      "lastRunId": "875f8bfe-2987-443b-a2d2-def3e6935537",
+      "createdAt": "2026-05-09T13:07:34.248Z",
+      "prompt": "Website UI Audit revision required. Keep the existing productized modern roofing direction, approved assets, business name, services, material/product structure, FAQ, and quote flow. Do not rewrite this into a generic landing page. The current first viewport fails the hero quality gate: the roofing image feels like a passive side panel, the page reads too much like a clean SaaS/product explainer, and the visitor does not immediately feel this is a premium roofing company. Revise index.html to use Open Design's strongest visual design ability: make the first viewport photo-led and more desirable, with the approved wide sunset metal-roof image dominating the hero composition. Integrate headline, quote CTA, and material/inspection proof into the image composition or overlay, not as a plain split-card. Make the roof/photo feel cinematic, premium, and local-service credible. Keep copy customer-facing only. Do not expose internal words like audit, mockup, Open Design, template, lead-ops, generated, artifact, or placeholder. Improve only if you can preserve contact/quote actions and the productized material comparison sections. After revising, check desktop and mobile for no overflow, clear CTA above fold, and no broken asset references.",
+      "status": {
+        "code": 0,
+        "signal": null,
+        "status": "succeeded"
+      },
+      "eventsPath": "run-events-875f8bfe-2987-443b-a2d2-def3e6935537.sse"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "page": "home",
+  "runId": "live-medium-v2-2026-05-09",
+  "execute": true,
+  "targetScore": 95,
+  "maxRounds": 1,
+  "variants": [
+    "medium-framework-no-llm"
+  ],
+  "families": [
+    {
+      "family": "editorial-bold-commercial",
+      "accepted": false,
+      "reason": "experiment_command_failed",
+      "best": {
+        "family": "editorial-bold-commercial",
+        "variant": "medium-framework-no-llm",
+        "runId": "live-medium-v2-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm",
+        "execute": true,
+        "status": null,
+        "durationMs": 586469,
+        "score": null,
+        "ok": false,
+        "accepted": false,
+        "nativeCleanFinish": false,
+        "completionMode": null,
+        "outDir": null,
+        "promptPath": null,
+        "scorePath": null,
+        "experimentRoot": null,
+        "failureReason": "experiment_command_failed"
+      },
+      "attempts": [
+        {
+          "family": "editorial-bold-commercial",
+          "variant": "medium-framework-no-llm",
+          "runId": "live-medium-v2-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm",
+          "execute": true,
+          "status": null,
+          "durationMs": 586469,
+          "score": null,
+          "ok": false,
+          "accepted": false,
+          "nativeCleanFinish": false,
+          "completionMode": null,
+          "outDir": null,
+          "promptPath": null,
+          "scorePath": null,
+          "experimentRoot": null,
+          "failureReason": "experiment_command_failed"
+        }
+      ]
+    }
+  ],
+  "accepted": [],
+  "pending": [
+    "editorial-bold-commercial"
+  ],
+  "generatedAt": "2026-05-09T09:29:25.375Z"
+}

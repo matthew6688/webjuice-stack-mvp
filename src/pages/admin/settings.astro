@@ -4,16 +4,17 @@ import { siteConfig } from '../../config/site';
 import { loadAdminSettingsIndex } from '../../../core/admin/settings-index.js';
 
 const settings = loadAdminSettingsIndex();
+const firstSection = settings.sections[0];
 ---
 
 <Layout title={`系统设置 - ${siteConfig.name}`} description="ProfitsLocal 运行配置与集成状态面板。" active="settings">
   <section class="poster-section admin-section">
-    <div class="admin-shell">
+    <div class="admin-shell lead-admin-shell" data-ui-version="local-style-2026-05-08">
       <div class="admin-header">
         <div>
           <p class="eyebrow">内部运营</p>
           <h1>系统设置</h1>
-          <p class="lede">这里统一看第三方依赖、回调线路、密钥配置，以及业务运行真正依赖的那些开关。</p>
+          <p class="lede">这里统一管理后台访问、邮件、收款、图片上传、线索研究和部署相关的配置。</p>
         </div>
         <div class="admin-count">
           <strong>{settings.counts.configured}</strong>
@@ -21,57 +22,240 @@ const settings = loadAdminSettingsIndex();
         </div>
       </div>
 
-      <dl class="admin-meta-line admin-meta-line-wide">
-        <div><dt>配置覆盖</dt><dd>{settings.counts.configured} / {settings.counts.total}</dd></div>
-        <div><dt>必需缺失</dt><dd>{settings.counts.missing}</dd></div>
-        <div><dt>半完成</dt><dd>{settings.counts.partial}</dd></div>
-        <div><dt>可选项</dt><dd>{settings.counts.optional}</dd></div>
-      </dl>
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">配置覆盖</span>
+          <strong>{settings.counts.configured} / {settings.counts.total}</strong>
+          <p>已经填写的配置。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">缺失项</span>
+          <strong>{settings.counts.missing}</strong>
+          <p>需要优先补上。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">待确认</span>
+          <strong>{settings.counts.partial}</strong>
+          <p>可能还能运行，但最好检查。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">可选项</span>
+          <strong>{settings.counts.optional}</strong>
+          <p>不填也可以运行。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">分区</span>
+          <strong>{settings.sections.length}</strong>
+          <p>按用途分组。</p>
+        </article>
+      </div>
 
-      <section class="admin-paper-section">
+      <section class="admin-paper-section admin-command-section">
         <div class="admin-paper-section-head">
           <div>
-            <span class="eyebrow">阻塞</span>
-            <h2>需要优先补配置</h2>
+            <span class="eyebrow">优先处理</span>
+            <h2>{settings.blockers.length ? '先补配置' : '本地配置已就绪'}</h2>
           </div>
         </div>
-        <div class="admin-urgent-list">
+        <p class="admin-settings-local-note">
+          {settings.localEnvFiles.length
+            ? `已读取本地 ${settings.localEnvFiles.join('、')}。页面里的缺失项会告诉你下一步要补到哪里。`
+            : '没有找到本地 .env/.env.local/.dev.vars；如果你已经配置过，请确认文件名和项目目录。'}
+        </p>
+        <div class="admin-urgent-list admin-settings-priority-list">
           {settings.blockers.length ? settings.blockers.map((blocker) => (
             <article class="admin-urgent-card">
-              <strong>{blocker.label}</strong>
-              <span>{blocker.section}</span>
-              <code>{blocker.reason}</code>
+              <div class="admin-settings-line">
+                <strong>{blocker.label}</strong>
+                <mark class="status-pill status-alert">{blocker.statusLabel}</mark>
+              </div>
+              <span>{blocker.section} · {blocker.summary}</span>
+              <b class="admin-settings-next-step">下一步：{blocker.actionText}</b>
+              <details class="admin-settings-tech-details">
+                <summary>技术细节</summary>
+                <div>
+                  <span>环境变量：<code>{blocker.primaryKey}</code></span>
+                  <span>{blocker.reason}</span>
+                </div>
+              </details>
             </article>
-          )) : <p class="micro">当前没有必需配置缺失。</p>}
+          )) : <p class="admin-settings-all-good">当前没有必填配置缺失。剩下的“可选”或“待确认”可以按需要慢慢补。</p>}
         </div>
       </section>
 
-      <div class="admin-settings-grid">
-        {settings.sections.map((section) => (
-          <section class="admin-settings-panel">
-            <div class="admin-finance-head">
-              <div>
-                <span class="eyebrow">{section.title}</span>
-                <h2>{section.description}</h2>
-              </div>
-            </div>
-            <ul class="admin-list">
-              {section.items.map((item) => (
-                <li>
-                  <div class="admin-settings-line">
-                    <strong>{item.label}</strong>
-                    <mark class={`status-pill status-${item.status === 'configured' ? 'ready' : item.status === 'optional' ? 'info' : item.status === 'partial' ? 'warn' : 'alert'}`}>{item.statusLabel}</mark>
+      <section class="admin-paper-section admin-settings-workbench" aria-labelledby="settings-workbench-title">
+        <div class="admin-paper-section-head">
+          <div>
+            <span class="eyebrow">配置工作台</span>
+            <h2 id="settings-workbench-title">分区设置</h2>
+          </div>
+          <span class="admin-section-count">共 {settings.counts.total} 项</span>
+        </div>
+
+        <div class="admin-settings-tabs" data-settings-tabs>
+          <div class="admin-settings-tablist" role="tablist" aria-label="Settings sections">
+            {settings.sections.map((section, index) => (
+              <button
+                class:list={{ 'admin-settings-tab': true, 'is-active': index === 0 }}
+                type="button"
+                role="tab"
+                id={`settings-tab-${section.slug}`}
+                aria-selected={index === 0 ? 'true' : 'false'}
+                aria-controls={`settings-panel-${section.slug}`}
+                data-settings-tab={section.slug}
+              >
+                <span>
+                  <strong>{section.title}</strong>
+                  <small>{section.items.length} 项</small>
+                </span>
+                <mark class={`status-pill status-${section.summary.missing ? 'alert' : section.summary.partial ? 'warn' : 'ready'}`}>
+                  {section.summary.missing ? `缺 ${section.summary.missing}` : section.summary.partial ? `待确认 ${section.summary.partial}` : '正常'}
+                </mark>
+              </button>
+            ))}
+          </div>
+
+          <div class="admin-settings-panels">
+            {settings.sections.map((section, index) => (
+              <section
+                class:list={{ 'admin-settings-panel': true, 'is-active': index === 0 }}
+                id={`settings-panel-${section.slug}`}
+                role="tabpanel"
+                aria-labelledby={`settings-tab-${section.slug}`}
+                data-settings-panel={section.slug}
+                hidden={index !== 0}
+              >
+                <div class="admin-settings-panel-head">
+                  <div>
+                    <span class="eyebrow">{section.title}</span>
+                    <h3>{section.description}</h3>
                   </div>
-                  <span class="admin-mono">{item.display}</span>
-                  <span>{item.reason}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
+                  <div class="admin-settings-section-meta">
+                    <strong>{section.summary.configured}</strong>
+                    <span>已配置</span>
+                  </div>
+                </div>
+
+                <div class="admin-settings-editor-list">
+                  {section.items.map((item, itemIndex) => {
+                    const inputId = `setting-${section.slug}-${itemIndex}`;
+                    return (
+                      <article class="admin-settings-editor-card" data-setting-card>
+                        <div class="admin-settings-editor-main">
+                          <div>
+                            <div class="admin-settings-line">
+                              <strong>{item.label}</strong>
+                              <mark class={`status-pill status-${item.status === 'configured' ? 'ready' : item.status === 'optional' ? 'info' : item.status === 'partial' ? 'warn' : 'alert'}`}>{item.statusLabel}</mark>
+                            </div>
+                            <p>{item.summary}</p>
+                          </div>
+                        </div>
+
+                        <div class="admin-settings-value-row">
+                          <label for={inputId}>值</label>
+                          <input
+                            id={inputId}
+                            type={item.inputType}
+                            value={item.editableValue}
+                            placeholder={item.placeholder}
+                            autocomplete="off"
+                            data-setting-input
+                            data-setting-key={item.primaryKey}
+                          />
+                          <button class="admin-settings-copy button button-secondary" type="button" data-setting-copy>复制 env 行</button>
+                        </div>
+
+                        <div class="admin-settings-meta-row">
+                          <span class="admin-mono">当前：{item.display}</span>
+                          <span>下一步：{item.actionText}</span>
+                          {item.source && <span>来源：{item.source}</span>}
+                          {item.defaultValue && <span>默认：<code>{item.defaultValue}</code></span>}
+                          {item.secret && <span>密钥不会直接显示；要修改请粘贴新值。</span>}
+                        </div>
+
+                        <details class="admin-settings-tech-details">
+                          <summary>技术细节</summary>
+                          <div>
+                            <span>环境变量：<code>{item.primaryKey || 'runtime value'}</code></span>
+                            {item.envKeys.length > 1 && <span>可用别名：<code>{item.envKeys.slice(1).join(', ')}</code></span>}
+                            <span>{item.reason}</span>
+                          </div>
+                        </details>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+
+        <div class="admin-settings-draft" aria-live="polite">
+          <div>
+            <span class="eyebrow">保存方式</span>
+            <p>你可以在这里逐项填写 value，并复制生成的 env 行。真正生效还需要写入本地 `.env` 或部署环境变量，然后重启服务。</p>
+          </div>
+          <textarea readonly data-settings-draft placeholder={`${firstSection?.items[0]?.primaryKey || 'ENV_KEY'}=your-value`}></textarea>
+        </div>
+      </section>
 
       <p class="admin-section-note">这里只看系统覆盖和集成状态，不看项目细节。密钥始终脱敏；Resend 只算事务邮件，cold outreach 走 Agentic Inbox / 后续 provider。</p>
     </div>
   </section>
+
+  <script>
+    const tabsRoot = document.querySelector('[data-settings-tabs]');
+    const draft = document.querySelector('[data-settings-draft]');
+
+    if (tabsRoot) {
+      const tabs = Array.from(tabsRoot.querySelectorAll('[data-settings-tab]'));
+      const panels = Array.from(tabsRoot.querySelectorAll('[data-settings-panel]'));
+
+      const activate = (slug) => {
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.settingsTab === slug;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+        panels.forEach((panel) => {
+          const isActive = panel.dataset.settingsPanel === slug;
+          panel.classList.toggle('is-active', isActive);
+          panel.hidden = !isActive;
+        });
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => activate(tab.dataset.settingsTab));
+      });
+    }
+
+    document.querySelectorAll('[data-setting-card]').forEach((card) => {
+      const input = card.querySelector('[data-setting-input]');
+      const copyButton = card.querySelector('[data-setting-copy]');
+      if (!input || !copyButton) return;
+
+      const updateDraft = () => {
+        const key = input.dataset.settingKey || 'ENV_KEY';
+        const value = input.value || '';
+        const line = `${key}=${value}`;
+        if (draft) draft.value = line;
+        return line;
+      };
+
+      input.addEventListener('input', updateDraft);
+      copyButton.addEventListener('click', async () => {
+        const line = updateDraft();
+        try {
+          await navigator.clipboard.writeText(line);
+          copyButton.textContent = '已复制';
+          window.setTimeout(() => {
+            copyButton.textContent = '复制 env 行';
+          }, 1400);
+        } catch {
+          input.focus();
+          input.select();
+        }
+      });
+    });
+  </script>
 </Layout>

@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "routes": {
+    "image": "image_lead_discovery",
+    "search": "lead_search_discovery",
+    "audit": "site_audit",
+    "project": "website_project_task"
+  },
+  "artifacts": {
+    "taskExists": true,
+    "logExists": true,
+    "taskPath": "data/qa/discord-task-router/roofing-and-restoration-00000001/task.json",
+    "logPath": "data/qa/discord-task-router/roofing-and-restoration-00000001/task-log.jsonl",
+    "persistedOnlyTaskExists": true
+  },
+  "discord": {
+    "createdThread": true,
+    "postedInitialPayload": true,
+    "initialPayloadMentionsNoOne": true
+  },
+  "log": {
+    "payloadHasTool": true,
+    "payloadHasEvidenceUrl": true
+  },
+  "title": {
+    "stageTitle": "[可做 Mockup] M&B Roofing · roofing · Western Sydney",
+    "titleLooksSynced": true
+  },
+  "persistedOnly": {
+    "dryRun": true,
+    "existingThreadPreserved": true
+  },
+  "assertions": {
+    "imageRoute": true,
+    "searchRoute": true,
+    "auditRoute": true,
+    "projectRoute": true,
+    "taskPersisted": true,
+    "persistedOnlyTaskCreated": true,
+    "persistedOnlyKeepsThread": true,
+    "logPersisted": true,
+    "threadCreated": true,
+    "initialPayloadPosted": true,
+    "noAccidentalMention": true,
+    "logPayloadReadable": true,
+    "stageTitleTemplate": true
+  }
+}

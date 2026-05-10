@@ -8,6 +8,9 @@ const clientSlug = args.client || '';
 const conceptDir = path.resolve(args.dir || (clientSlug ? path.join('clients', clientSlug, 'concept', 'open-design') : ''));
 const requireSourcePages = booleanArg(args, 'require-source-pages');
 const requireScreenshots = booleanArg(args, 'require-screenshots');
+const allowArtifactFallback = booleanArg(args, 'allow-artifact-fallback');
+const allowQuestionForm = booleanArg(args, 'allow-question-form');
+const requireQualityAudit = booleanArg(args, 'require-quality-audit');
 const requiredContains = toArray(args['must-contain']);
 
 if (!clientSlug && !args.dir) {
@@ -22,10 +25,14 @@ const manifestPath = path.join(conceptDir, 'concept-manifest.json');
 const indexPath = path.join(conceptDir, 'index.html');
 const statusPath = path.join(conceptDir, 'run-status.json');
 const eventsPath = path.join(conceptDir, 'run-events.sse');
+const runStatePath = path.join(conceptDir, 'open-design-run-state.json');
 const brandSpecPath = path.join(conceptDir, 'brand-spec.md');
+const qualityAuditPath = path.join(conceptDir, 'concept-quality-audit.json');
 
 const manifest = readJson(manifestPath, 'concept manifest');
 const status = readJson(statusPath, 'run status');
+const runState = fs.existsSync(runStatePath) ? readJson(runStatePath, 'Open Design run state') : null;
+const qualityAudit = fs.existsSync(qualityAuditPath) ? readJson(qualityAuditPath, 'concept quality audit') : null;
 const indexHtml = readText(indexPath, 'index.html');
 
 if (manifest) {
@@ -44,6 +51,9 @@ if (manifest) {
   if (manifest.status?.status !== 'succeeded') {
     errors.push(`Open Design run status must be succeeded, got "${manifest.status?.status || 'missing'}"`);
   }
+  if (manifest.status?.completionMode === 'artifact_quiet_fallback' && !allowArtifactFallback) {
+    errors.push('Open Design run used artifact_quiet_fallback; normal validation requires native clean finish. Use --allow-artifact-fallback only for explicit rescue-mode validation.');
+  }
   for (const file of manifest.files || []) {
     if (!file.path) {
       errors.push('manifest file entry missing path');
@@ -61,6 +71,9 @@ if (manifest) {
 if (status && status.status !== 'succeeded') {
   errors.push(`run-status.json must be succeeded, got "${status.status || 'missing'}"`);
 }
+if (status?.completionMode === 'artifact_quiet_fallback' && !allowArtifactFallback) {
+  errors.push('run-status.json shows artifact_quiet_fallback; normal validation requires native clean finish.');
+}
 
 if (indexHtml) {
   if (!/<html[\s>]/i.test(indexHtml)) errors.push('index.html must be a full HTML document');
@@ -73,9 +86,24 @@ if (indexHtml) {
   }
 }
 
-if (!fs.existsSync(eventsPath)) errors.push('run-events.sse is missing');
+const eventsText = fs.existsSync(eventsPath) ? fs.readFileSync(eventsPath, 'utf8') : '';
+if (!eventsText) errors.push('run-events.sse is missing');
+if (eventsText && !/event:\s*end\b/.test(eventsText) && !allowArtifactFallback) {
+  errors.push('run-events.sse does not contain native event:end; normal validation requires native clean finish.');
+}
+const questionFormCount = (eventsText.match(/<question-form\b/gi) || []).length
+  + (Array.isArray(runState?.questionForms) ? runState.questionForms.length : 0);
+if (questionFormCount > 0 && !allowQuestionForm) {
+  errors.push(`Open Design emitted ${questionFormCount} question form marker(s); automation must answer them and rerun before this concept can pass.`);
+}
 if (manifest?.sourceUrl && !fs.existsSync(brandSpecPath)) {
   errors.push('sourceUrl is present, so brand-spec.md must exist');
+}
+if (requireQualityAudit && !qualityAudit) {
+  errors.push('concept-quality-audit.json is required. Run npm run open-design:audit-concept -- --client <client> before accepting the concept.');
+}
+if (qualityAudit && qualityAudit.ok !== true) {
+  errors.push(`concept-quality-audit.json did not pass. Score ${qualityAudit.score}; findings: ${(qualityAudit.findings || []).map((item) => item.code).join(', ') || 'unknown'}`);
 }
 
 const files = manifest?.files || [];
@@ -110,6 +138,14 @@ const result = {
   runId: manifest?.lastRunId || manifest?.runId || null,
   initialRunId: manifest?.runId || null,
   status: manifest?.status?.status || status?.status || null,
+  nativeCleanFinish: Boolean((runState?.nativeCleanFinish) || (eventsText && /event:\s*end\b/.test(eventsText) && !manifest?.status?.completionMode && !status?.completionMode)),
+  completionMode: manifest?.status?.completionMode || status?.completionMode || null,
+  questionFormCount,
+  qualityAudit: qualityAudit ? {
+    ok: qualityAudit.ok,
+    score: qualityAudit.score,
+    findingCount: Array.isArray(qualityAudit.findings) ? qualityAudit.findings.length : 0,
+  } : null,
   counts: {
     files: files.length,
     htmlFiles: htmlFiles.length,

@@ -1,0 +1,450 @@
+Build an original premium roofing website template family inspired by the reference brief in this folder.
+
+Template family: classic-premium-roftix
+
+Use the local design-language.md and section-patterns.json as the contract. The result should feel like a complete premium roofing site system: cinematic roof hero, editorial serif headings, practical services, project proof, FAQ/contact, and a deep trust-building footer.
+
+Do not copy the reference brand, logo, exact text, code, or paid assets. Recreate the design language and section patterns as an original ProfitsLocal template.
+
+Required outputs:
+- index.html for the primary template
+- at least one one-page version that could be used for cold outreach
+- local assets under assets/
+- style-guide.md if brand/design tokens are clear
+
+Rules:
+- Customer-facing copy only.
+- No internal workflow terms.
+- Use rich demo content where allowed by template-manifest.json.
+- Do not invent verified facts listed in factsPolicy.mustNotInvent.
+- Use photo-quality niche imagery when the reference style depends on photography.
+- Include industry-relevant visual assets. If real source images are unavailable, create/license/use suitable roofing imagery rather than shipping a text-only layout.
+- Prefer the reviewed manual ChatGPT Image assets recorded in template-manifest.json `selectedImages`.
+- Primary hero should use the blue-hour premium roof image; service/detail sections should use the flashing repair and installation detail images.
+- Do not replace these approved photo assets with SVG-only hero art or generic stock-like placeholders.
+- Ask no question form unless generation is technically impossible.
+
+## Brand Kit / Logo Policy
+Business name: Roftrix Roofing
+Logo policy: single-default-demo-logo
+If the client has no logo, use exactly one default demo logo direction. Do not ask the client to choose and do not create multiple logo options.
+Selected logo direction: Classic Premium Roftix style: simple geometric roof/service mark plus readable wordmark. No fake badges, no copied reference logo.
+Selected SVG concept: <svg viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M8 27 30 9l22 18" fill="none" stroke="#FF6F3C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 27h24v14H20z" fill="#004D40"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#212121">RR</text></svg>
+
+## Reviewed Local Image Assets
+Use these reviewed images as the primary visual source for this template. Copy them into `assets/` before referencing them from HTML.
+Do not substitute these approved images with SVG-only art, weak placeholders, or unrelated generic stock imagery.
+
+- hero: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-hero-premium-roof-at-blue-hour.png
+- serviceRepair: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-repair-flashing-detail.png
+- serviceInstall: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-installation-detail.png
+- about: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-about-roofer-working-roof-frame.png
+- proof: templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-project-before-after-roof-transformation.png
+
+## Design Language
+# Classic Premium Roftix Design Language
+
+Niche: roofing
+
+## Reference Summary
+
+Inspired by the Roftix-style multi-page roofing screenshots Matthew provided: dark blue photographic roof hero, elegant editorial serif headings, generous white editorial sections, green trust/CTA accents, deep dark footer, and strong page system coverage.
+
+Use this as a premium roofing system, not a literal clone.
+
+## Visual Thesis
+
+Premium residential roofing with cinematic trust: dramatic roof photography, refined editorial typography, and practical conversion sections that feel established rather than flashy.
+
+## Typography Direction
+
+- Display: elegant high-contrast serif for H1/H2.
+- Body: clean sans-serif with generous line height.
+- Navigation / labels: compact sans-serif, medium weight, restrained letter case.
+
+## Color System
+
+- Dominant: deep roof blue / navy photo overlays.
+- Accent: forest green for contact and primary CTA.
+- Secondary accent: warm orange only for small active states.
+- Background: white and very light warm gray.
+- Footer: near-black charcoal with muted gray text.
+
+## Imagery
+
+- hero: real house roof / roofline photo with evening or premium architectural mood.
+- services: roofers at work, material details, roof repair/install photos.
+- project/gallery: before/after, residential roof projects, close-ups.
+- team/trust: credible contractor portraits if available; otherwise no fake team claims.
+- CTA: roof or home exterior image with readable overlay.
+
+## Layout Patterns
+
+- hero: full-bleed or large photographic hero, nav over image or clean top nav.
+- services: 3-6 service blocks with icons or imagery, not generic cards only.
+- proof: verified proof only; demo-safe proof structure allowed without fake reviews.
+- projects: gallery grid and project-detail style section for premium/multi-page.
+- FAQ/contact: FAQ + appointment/contact form for high-intent conversion.
+- footer: substantial footer with quick links, service areas, contact details.
+
+## Best Fit
+
+- Established roofer with a website worth redesigning.
+- Premium residential roof restoration / replacement.
+- Lead where we have enough visuals or can source/produce strong roof imagery.
+
+## Do
+
+- Make the first viewport unmistakably roofing.
+- Preserve a multi-page system feel even when generating a one-page teaser.
+- Use customer-safe, polished copy with practical buyer language.
+- Keep verified facts separate from demo content.
+
+## Do Not
+
+- Copy the reference brand, logo, exact copy, code, or paid assets.
+- Use text-only hero.
+- Add fake reviews, fake years, fake warranties, or fake licenses.
+- Expose internal workflow language to customers.
+
+## Machine-Readable DESIGN.md Contract
+---
+version: alpha
+name: "Classic Premium Roftix"
+description: "Classic Premium Roftix roofing template family design contract"
+colors:
+  primary: "#0B2F57"
+  secondary: "#51606F"
+  tertiary: "#0E6B4F"
+  neutral: "#F7F5F0"
+  surface: "#FFFFFF"
+  on-primary: "#FFFFFF"
+  on-tertiary: "#FFFFFF"
+typography:
+  h1:
+    fontFamily: "Playfair Display"
+    fontSize: 4.75rem
+    fontWeight: 700
+    lineHeight: 0.95
+    letterSpacing: 0
+  h2:
+    fontFamily: "Playfair Display"
+    fontSize: 3rem
+    fontWeight: 700
+    lineHeight: 1.05
+  body-md:
+    fontFamily: "Inter"
+    fontSize: 1rem
+    fontWeight: "400"
+    lineHeight: "1.6"
+  label-caps:
+    fontFamily: "Inter"
+    fontSize: "0.75rem"
+    fontWeight: "800"
+    lineHeight: "1.2"
+rounded:
+  sm: 4px
+  md: 8px
+  lg: 16px
+spacing:
+  sm: 8px
+  md: 16px
+  lg: 32px
+  xl: 64px
+components:
+  button-primary:
+    backgroundColor: "{colors.tertiary}"
+    textColor: "{colors.on-tertiary}"
+    typography: "{typography.label-caps}"
+    rounded: "{rounded.md}"
+    padding: 14px
+  hero-surface:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.lg}"
+---
+
+## Overview
+
+Premium residential roofing with cinematic trust: dramatic roof photography, refined editorial typography, and practical conversion sections that feel established rather than flashy.
+
+## Colors
+
+- **Primary (#0B2F57):** cinematic navy for hero overlays and premium roof photography.
+- **Secondary (#51606F):** slate captions, borders, and restrained metadata.
+- **Tertiary (#0E6B4F):** forest-green contact and conversion actions.
+- **Neutral (#F7F5F0):** warm editorial page background.
+- **Surface (#FFFFFF):** main content canvas.
+
+## Typography
+
+- Display: elegant high-contrast serif for H1/H2.
+- Body: clean sans-serif with generous line height.
+- Navigation / labels: compact sans-serif, medium weight, restrained letter case.
+
+## Layout
+
+- hero: full-bleed or large photographic hero, nav over image or clean top nav.
+- services: 3-6 service blocks with icons or imagery, not generic cards only.
+- proof: verified proof only; demo-safe proof structure allowed without fake reviews.
+- projects: gallery grid and project-detail style section for premium/multi-page.
+- FAQ/contact: FAQ + appointment/contact form for high-intent conversion.
+- footer: substantial footer with quick links, service areas, contact details.
+
+## Elevation & Depth
+
+Use depth only when it supports hierarchy. Photo-heavy families should rely on image composition, contrast, and section rhythm before decorative shadows.
+
+## Shapes
+
+Default to restrained corners. Use larger radii only for image containers and CTA panels when the reference style supports it.
+
+## Components
+
+- **Hero:** must clearly communicate the niche in the first viewport.
+- **Primary CTA:** uses the tertiary token and must be visually obvious.
+- **Service modules:** should match the family layout direction, not a generic card grid.
+- **Footer:** must feel complete and credible, even when demo-safe content is used.
+
+## Do's and Don'ts
+
+### Do
+
+- Make the first viewport unmistakably roofing.
+- Preserve a multi-page system feel even when generating a one-page teaser.
+- Use customer-safe, polished copy with practical buyer language.
+- Keep verified facts separate from demo content.
+
+### Don't
+
+- Copy the reference brand, logo, exact copy, code, or paid assets.
+- Use text-only hero.
+- Add fake reviews, fake years, fake warranties, or fake licenses.
+- Expose internal workflow language to customers.
+
+## Extracted Reference Design Signals
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "dryRun": false,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "generatedAt": "2026-05-08T23:34:30.859Z",
+  "reason": "",
+  "referenceSummary": "A premium classic roofing website template emphasizing durability and modern style through a warm, earthy palette and structured layout.",
+  "visualThesis": "Blending timeless craftsmanship with bold modern design to convey strength, clarity, and trustworthiness.",
+  "palette": [
+    {
+      "name": "primary",
+      "hex": "#004D40",
+      "usage": "Dark green background blocks for branding, trust, and textual contrast."
+    },
+    {
+      "name": "secondary",
+      "hex": "#FF6F3C",
+      "usage": "Accent and call-to-action buttons to draw user attention."
+    },
+    {
+      "name": "neutral-light",
+      "hex": "#FFF5E1",
+      "usage": "Background for sections to create warmth and improve readability."
+    },
+    {
+      "name": "text-dark",
+      "hex": "#212121",
+      "usage": "Primary text color for high reading contrast."
+    },
+    {
+      "name": "text-muted",
+      "hex": "#757575",
+      "usage": "Secondary text and descriptive labels."
+    }
+  ],
+  "typography": {
+    "display": "Serif, Bold, Uppercase or Title Case for headings to evoke premium and classic tone",
+    "body": "Sans-serif, Regular weight for readability in paragraphs",
+    "label": "Sans-serif, Medium weight, uppercase or small caps for service icons and badges",
+    "notes": "Clean, modern type pairing emphasizing clear hierarchy with no excessive ornamentation"
+  },
+  "imageDirection": {
+    "hero": "High-quality architectural photos of modern roofed homes with warm sunlight",
+    "services": "Minimalist line icons paired with subtle photo overlays representing roof tasks",
+    "projects": "Photographic case studies showing diverse roofing styles in real environments",
+    "mustAvoid": [
+      "Overly staged or generic stock images with too much unrelated props",
+      "Images with excessive filters or low contrast",
+      "Photos featuring people facing camera or unrelated lifestyle shots"
+    ]
+  },
+  "layoutRhythm": [
+    {
+      "section": "hero",
+      "pattern": "Full width split hero with left aligned text and right aligned image; warm background gradient"
+    },
+    {
+      "section": "about",
+      "pattern": "Wide container with centered text block on dark background",
+      "notes": "Includes founder signature and photo in small circle"
+    },
+    {
+      "section": "services",
+      "pattern": "Grid of evenly spaced icon + text cards with subtle borders and light background"
+    },
+    {
+      "section": "why choose us",
+      "pattern": "Two column masonry with bullet list on left and embedded images on right with elevations"
+    },
+    {
+      "section": "projects and testimonials",
+      "pattern": "Horizontal scroller or card clusters with badges and star ratings"
+    },
+    {
+      "section": "blog",
+      "pattern": "Horizontal carousel of cards with small text overlays and images"
+    },
+    {
+      "section": "footer",
+      "pattern": "Full width dark block with multi-column links and subscription input"
+    }
+  ],
+  "componentTokens": {
+    "radius": "6px for cards and buttons for subtle rounding",
+    "border": "1px solid rgba(0,0,0,0.1) for service cards and testimonial containers",
+    "shadow": "Soft drop shadows with 0 2px 8px rgba(0,0,0,0.12) for floating effect",
+    "button": "Filled background primary color with white text, medium padding, hover lighten effect"
+  },
+  "ctaHierarchy": [
+    "Primary: 'Get Your Free Roof Audit' button in orange in hero",
+    "Secondary: Contact Us button in dark green top right",
+    "Tertiary: Newsletter subscription form at footer"
+  ],
+  "fidelityRisks": [
+    "Maintaining consistent quality and resolution of architectural images",
+    "Balancing warm background tones while preserving text legibility",
+    "Retaining clean iconography with minimal detail to match classic style"
+  ],
+  "openDesignRules": [
+    "Use serif fonts for headings and sans-serif for body text for hierarchy clarity",
+    "Limit palette to 4-5 core colors to maintain brand coherence",
+    "Ensure enough padding inside cards and text sections for readability",
+    "Maintain center alignment for testimonial content and quotes",
+    "Use star rating component consistently with 5 stars max"
+  ],
+  "publicApprovalChecklist": [
+    "Confirm the brand colors meet accessibility contrast requirements",
+    "Validate that all images depict roof-related scenes without licensing issues",
+    "Verify all CTA text aligns with the roofing niche and is actionable",
+    "Collect user feedback on readability of text blocks with background variations",
+    "Ensure responsive behavior for hero split layout and service grid"
+  ]
+}
+
+## Section Contract
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "family": "classic-premium-roftix",
+  "pageTypes": {
+    "onePage": {
+      "requiredSections": [
+        "hero",
+        "services",
+        "proof",
+        "projectsTeaser",
+        "process",
+        "faq",
+        "contact",
+        "footer"
+      ],
+      "optionalSections": [
+        "about",
+        "serviceArea",
+        "materials",
+        "blogTeaser"
+      ]
+    },
+    "multiPage": {
+      "pages": [
+        "home",
+        "about",
+        "services",
+        "serviceDetail",
+        "projects",
+        "projectDetail",
+        "faq",
+        "blog",
+        "blogDetail",
+        "appointment"
+      ]
+    }
+  },
+  "sections": []
+}
+
+## QA Rubric
+{
+  "schemaVersion": 1,
+  "passScore": 85,
+  "criteria": [
+    {
+      "id": "referenceFidelity",
+      "label": "Reference fidelity without copying",
+      "weight": 15
+    },
+    {
+      "id": "firstViewportImpact",
+      "label": "First viewport impact",
+      "weight": 15
+    },
+    {
+      "id": "imageDensity",
+      "label": "Image density and niche relevance",
+      "weight": 12
+    },
+    {
+      "id": "nicheFit",
+      "label": "Niche and sub-niche fit",
+      "weight": 12
+    },
+    {
+      "id": "pageCompleteness",
+      "label": "Page/system completeness",
+      "weight": 12
+    },
+    {
+      "id": "ctaHierarchy",
+      "label": "CTA hierarchy and conversion path",
+      "weight": 10
+    },
+    {
+      "id": "trustProof",
+      "label": "Trust/proof richness",
+      "weight": 8
+    },
+    {
+      "id": "mobilePolish",
+      "label": "Mobile polish",
+      "weight": 8
+    },
+    {
+      "id": "copyCleanliness",
+      "label": "Customer-facing copy cleanliness",
+      "weight": 8
+    }
+  ],
+  "hardFails": [
+    "customer-visible internal workflow terms",
+    "missing primary visual asset in a photo-heavy family",
+    "fake verified facts such as reviews, licenses, address, years, awards, or prices",
+    "no visible phone/form/contact path in lead-generation templates"
+  ]
+}
+
+## Template Library Requirements
+- Build an original ProfitsLocal-owned template, not a clone.
+- Use realistic local-business copy and rich demo-safe content where allowed.
+- Include visible niche imagery or generated assets; do not ship a text-only page.
+- If reviewed local images are listed, copy them into the generated project assets directory and use them as real <img> assets.
+- If a brand kit is listed, use the selected default logo direction and do not generate multiple customer-choice logos.
+- Do not expose internal words like audit, mockup, lead-ops, Open Design, or template-lab in customer-facing pages.
+- Produce a result strong enough to be listed in the ProfitsLocal public template library after QA.

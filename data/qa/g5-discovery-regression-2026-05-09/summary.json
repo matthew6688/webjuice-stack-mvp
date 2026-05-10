@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-09T10:54:51.039Z",
+  "purpose": "G5 real query regression for low-cost maps scraper discovery flow.",
+  "costPolicy": {
+    "proxy": "not_used",
+    "googlePlacesApi": "not_used",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis"
+  },
+  "runs": [
+    {
+      "runId": "20260509-g5-restaurant-paddington",
+      "query": "restaurants in Paddington Brisbane",
+      "niche": "restaurant",
+      "city": "Brisbane",
+      "generatedAt": "2026-05-09T10:53:13.889Z",
+      "runPath": "data/maps-scraper/runs/20260509-g5-restaurant-paddington/discovery-run.json",
+      "compactPath": "data/maps-scraper/runs/20260509-g5-restaurant-paddington/leads.compact.json",
+      "queuePath": "data/maps-scraper/runs/20260509-g5-restaurant-paddington/queue.json",
+      "toolLogPath": "data/maps-scraper/runs/20260509-g5-restaurant-paddington/tool-log.jsonl",
+      "totals": {
+        "rawRows": 18,
+        "leads": 18,
+        "withWebsite": 17,
+        "withPhone": 17,
+        "actionCounts": {
+          "audit_candidate": 6,
+          "starter_candidate": 1,
+          "manual_review": 9,
+          "skip": 2
+        },
+        "websiteStatusCounts": {
+          "independent_http_site": 6,
+          "social_or_third_party_only": 1,
+          "independent_https_site": 10,
+          "no_website": 1
+        }
+      },
+      "costPolicy": {
+        "googlePlacesApi": "not_used_in_discovery",
+        "emailExtraction": "disabled",
+        "reviewBodyExtraction": "disabled",
+        "reviewPayloadStorage": "stripped_before_analysis",
+        "proxy": "none",
+        "notes": [
+          "Use maps scraper for cheap broad discovery.",
+          "Use Google Places API only after a candidate is selected for official verification/evidence.",
+          "Use Tinyfish/site-audit only for selected website audit candidates.",
+          "The upstream scraper may return small default review samples; this workflow strips review/email payloads before analysis storage unless explicitly overridden."
+        ]
+      },
+      "toolLog": {
+        "tool": "gosom/google-maps-scraper",
+        "toolVersion": "docker:gosom/google-maps-scraper:latest",
+        "command": "docker run --rm -v gmaps-playwright-cache:/opt -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-restaurant-paddington/queries.txt:/queries.txt:ro -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-restaurant-paddington:/out gosom/google-maps-scraper:latest -input /queries.txt -results /out/results.maps.json -json -depth 1 -c 1 -lang en -exit-on-inactivity 90s",
+        "rawPath": "data/maps-scraper/runs/20260509-g5-restaurant-paddington/results.maps.json",
+        "proxy": "none",
+        "googlePlacesApi": "not_used",
+        "emailExtraction": "disabled",
+        "reviewBodyExtraction": "disabled",
+        "reviewPayloadStorage": "stripped_before_analysis",
+        "docker": {
+          "status": 0,
+          "signal": null,
+          "skipped": false
+        }
+      },
+      "topCandidates": [
+        {
+          "name": "Ngon Brisbane",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 83,
+          "recommendedAction": "audit_candidate",
+          "phone": "(07) 3705 3082",
+          "website": "http://ngonbrisbane.com.au/",
+          "rating": 4.7,
+          "reviewCount": 605
+        },
+        {
+          "name": "Marinara Trattoria",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 80,
+          "recommendedAction": "audit_candidate",
+          "phone": "0480 284 636",
+          "website": "http://www.marinara.com.au/",
+          "rating": 4.7,
+          "reviewCount": 1482
+        },
+        {
+          "name": "Emily Yeoh Restaurant",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 79,
+          "recommendedAction": "audit_candidate",
+          "phone": "(07) 3368 3868",
+          "website": "http://www.emilyyeoh.com.au/",
+          "rating": 4.4,
+          "reviewCount": 625
+        },
+        {
+          "name": "Old Monk Modern Indian",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 76,
+          "recommendedAction": "audit_candidate",
+          "phone": "(07) 3195 1262",
+          "website": "http://oldmonkbne.com/",
+          "rating": 4.3,
+          "reviewCount": 539
+        },
+        {
+          "name": "SOLA | Bhutanese Cafe Bar & Restaurant",
+          "websiteStatus": "social_or_third_party_only",
+          "discoveryScore": 76,
+          "recommendedAction": "starter_candidate",
+          "phone": "(07) 2146 7823",
+          "website": "https://sites.google.com/view/solacafebar/home",
+          "rating": 4.3,
+          "reviewCount": 110
+        }
+      ]
+    },
+    {
+      "runId": "20260509-g5-roof-brisbane",
+      "query": "roof restoration in Brisbane",
+      "niche": "roofing",
+      "city": "Brisbane",
+      "generatedAt": "2026-05-09T10:53:53.252Z",
+      "runPath": "data/maps-scraper/runs/20260509-g5-roof-brisbane/discovery-run.json",
+      "compactPath": "data/maps-scraper/runs/20260509-g5-roof-brisbane/leads.compact.json",
+      "queuePath": "data/maps-scraper/runs/20260509-g5-roof-brisbane/queue.json",
+      "toolLogPath": "data/maps-scraper/runs/20260509-g5-roof-brisbane/tool-log.jsonl",
+      "totals": {
+        "rawRows": 22,
+        "leads": 22,
+        "withWebsite": 21,
+        "withPhone": 22,
+        "actionCounts": {
+          "starter_candidate": 1,
+          "audit_candidate": 1,
+          "skip": 17,
+          "manual_review": 3
+        },
+        "websiteStatusCounts": {
+          "no_website": 1,
+          "independent_http_site": 4,
+          "independent_https_site": 17
+        }
+      },
+      "costPolicy": {
+        "googlePlacesApi": "not_used_in_discovery",
+        "emailExtraction": "disabled",
+        "reviewBodyExtraction": "disabled",
+        "reviewPayloadStorage": "stripped_before_analysis",
+        "proxy": "none",
+        "notes": [
+          "Use maps scraper for cheap broad discovery.",
+          "Use Google Places API only after a candidate is selected for official verification/evidence.",
+          "Use Tinyfish/site-audit only for selected website audit candidates.",
+          "The upstream scraper may return small default review samples; this workflow strips review/email payloads before analysis storage unless explicitly overridden."
+        ]
+      },
+      "toolLog": {
+        "tool": "gosom/google-maps-scraper",
+        "toolVersion": "docker:gosom/google-maps-scraper:latest",
+        "command": "docker run --rm -v gmaps-playwright-cache:/opt -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-roof-brisbane/queries.txt:/queries.txt:ro -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-roof-brisbane:/out gosom/google-maps-scraper:latest -input /queries.txt -results /out/results.maps.json -json -depth 1 -c 1 -lang en -exit-on-inactivity 90s",
+        "rawPath": "data/maps-scraper/runs/20260509-g5-roof-brisbane/results.maps.json",
+        "proxy": "none",
+        "googlePlacesApi": "not_used",
+        "emailExtraction": "disabled",
+        "reviewBodyExtraction": "disabled",
+        "reviewPayloadStorage": "stripped_before_analysis",
+        "docker": {
+          "status": 0,
+          "signal": null,
+          "skipped": false
+        }
+      },
+      "topCandidates": [
+        {
+          "name": "Regan Brothers Roof Restoration",
+          "websiteStatus": "no_website",
+          "discoveryScore": 67,
+          "recommendedAction": "starter_candidate",
+          "phone": "0431 275 646",
+          "website": "",
+          "rating": 5,
+          "reviewCount": 4
+        },
+        {
+          "name": "FIX MY ROOF Total Roof Restorations",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 66,
+          "recommendedAction": "audit_candidate",
+          "phone": "0410 607 076",
+          "website": "http://billdu.me/fixmyrooftotalroofrestorations",
+          "rating": 5,
+          "reviewCount": 127
+        },
+        {
+          "name": "Diamond Roof Tiling & Restoration",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 51,
+          "recommendedAction": "skip",
+          "phone": "0413 559 693",
+          "website": "http://www.diamondrooftiling.com.au/",
+          "rating": 4.9,
+          "reviewCount": 65
+        },
+        {
+          "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+          "websiteStatus": "independent_https_site",
+          "discoveryScore": 49,
+          "recommendedAction": "manual_review",
+          "phone": "(07) 3276 1546",
+          "website": "https://brisbaneroofingsolutions.com.au/",
+          "rating": 4.8,
+          "reviewCount": 118
+        },
+        {
+          "name": "ABC Roof Restoration Brisbane",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 47,
+          "recommendedAction": "skip",
+          "phone": "(07) 3130 0115",
+          "website": "http://abcroofrestorationbrisbane.com.au/",
+          "rating": 4.9,
+          "reviewCount": 20
+        }
+      ]
+    },
+    {
+      "runId": "20260509-g5-dentist-new-farm",
+      "query": "dentists in New Farm Brisbane",
+      "niche": "dentist",
+      "city": "Brisbane",
+      "generatedAt": "2026-05-09T10:54:22.525Z",
+      "runPath": "data/maps-scraper/runs/20260509-g5-dentist-new-farm/discovery-run.json",
+      "compactPath": "data/maps-scraper/runs/20260509-g5-dentist-new-farm/leads.compact.json",
+      "queuePath": "data/maps-scraper/runs/20260509-g5-dentist-new-farm/queue.json",
+      "toolLogPath": "data/maps-scraper/runs/20260509-g5-dentist-new-farm/tool-log.jsonl",
+      "totals": {
+        "rawRows": 12,
+        "leads": 12,
+        "withWebsite": 12,
+        "withPhone": 12,
+        "actionCounts": {
+          "audit_candidate": 1,
+          "manual_review": 4,
+          "skip": 7
+        },
+        "websiteStatusCounts": {
+          "independent_http_site": 3,
+          "independent_https_site": 9
+        }
+      },
+      "costPolicy": {
+        "googlePlacesApi": "not_used_in_discovery",
+        "emailExtraction": "disabled",
+        "reviewBodyExtraction": "disabled",
+        "reviewPayloadStorage": "stripped_before_analysis",
+        "proxy": "none",
+        "notes": [
+          "Use maps scraper for cheap broad discovery.",
+          "Use Google Places API only after a candidate is selected for official verification/evidence.",
+          "Use Tinyfish/site-audit only for selected website audit candidates.",
+          "The upstream scraper may return small default review samples; this workflow strips review/email payloads before analysis storage unless explicitly overridden."
+        ]
+      },
+      "toolLog": {
+        "tool": "gosom/google-maps-scraper",
+        "toolVersion": "docker:gosom/google-maps-scraper:latest",
+        "command": "docker run --rm -v gmaps-playwright-cache:/opt -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-dentist-new-farm/queries.txt:/queries.txt:ro -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-dentist-new-farm:/out gosom/google-maps-scraper:latest -input /queries.txt -results /out/results.maps.json -json -depth 1 -c 1 -lang en -exit-on-inactivity 90s",
+        "rawPath": "data/maps-scraper/runs/20260509-g5-dentist-new-farm/results.maps.json",
+        "proxy": "none",
+        "googlePlacesApi": "not_used",
+        "emailExtraction": "disabled",
+        "reviewBodyExtraction": "disabled",
+        "reviewPayloadStorage": "stripped_before_analysis",
+        "docker": {
+          "status": 0,
+          "signal": null,
+          "skipped": false
+        }
+      },
+      "topCandidates": [
+        {
+          "name": "Newstead Dental Co",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 65,
+          "recommendedAction": "audit_candidate",
+          "phone": "(07) 3257 7342",
+          "website": "http://www.newsteaddental.co/",
+          "rating": 5,
+          "reviewCount": 172
+        },
+        {
+          "name": "SmileFresh Teeth Whitening Brisbane - Mobile & In-Studio",
+          "websiteStatus": "independent_https_site",
+          "discoveryScore": 55,
+          "recommendedAction": "manual_review",
+          "phone": "1800 950 350",
+          "website": "https://smilefreshau.com.au/pages/brisbane-teeth-whitening-locations",
+          "rating": 5,
+          "reviewCount": 976
+        },
+        {
+          "name": "Sparkle Dental - Dentist Teneriffe & New Farm",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 50,
+          "recommendedAction": "skip",
+          "phone": "(07) 3254 0823",
+          "website": "http://sparkledental.com.au/",
+          "rating": 4.8,
+          "reviewCount": 66
+        },
+        {
+          "name": "Amitis Dental Studio",
+          "websiteStatus": "independent_https_site",
+          "discoveryScore": 49,
+          "recommendedAction": "manual_review",
+          "phone": "(07) 3130 2133",
+          "website": "https://www.amitisdentalstudio.com.au/?utm_source=GBP&utm_medium=Organic",
+          "rating": 4.9,
+          "reviewCount": 260
+        },
+        {
+          "name": "Everlasting Smiles Trading as More Fun Dental",
+          "websiteStatus": "independent_http_site",
+          "discoveryScore": 47,
+          "recommendedAction": "skip",
+          "phone": "(07) 3861 5006",
+          "website": "http://www.everlastingsmiles.com.au/",
+          "rating": 5,
+          "reviewCount": 1
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "runs": 3,
+    "rawRows": 52,
+    "leads": 52,
+    "withWebsite": 50,
+    "withPhone": 51,
+    "actionCounts": {
+      "audit_candidate": 8,
+      "starter_candidate": 2,
+      "manual_review": 16,
+      "skip": 26
+    },
+    "websiteStatusCounts": {
+      "independent_http_site": 13,
+      "social_or_third_party_only": 1,
+      "independent_https_site": 36,
+      "no_website": 2
+    }
+  },
+  "storeEvidence": {
+    "discoveryIndex": "data/leads/discovery-index.json",
+    "queues": "data/leads/queues/queues.json",
+    "report": "data/leads/reports/discovery-report.json",
+    "events": "data/leads/discovery-events.jsonl"
+  }
+}

@@ -59,7 +59,7 @@ const stageLabels = {
 
 <Layout title={`后台总览 - ${siteConfig.name}`} description="ProfitsLocal 内部运营总览。" active="overview">
   <section class="poster-section admin-section">
-    <div class="admin-shell">
+    <div class="admin-shell lead-admin-shell" data-ui-version="local-style-2026-05-08">
       <div class="admin-header">
         <div>
           <p class="eyebrow">内部运营</p>
@@ -72,14 +72,35 @@ const stageLabels = {
         </div>
       </div>
 
-      <dl class="admin-meta-line">
-        <div><dt>今天先动</dt><dd>{urgentQueue.length + leadUrgentQueue.length}</dd></div>
-        <div><dt>待发 review</dt><dd>{stageCounts.review_ready || 0}</dd></div>
-        <div><dt>跟进过期</dt><dd>{leadIndex.prospectCounts.followUpOverdue || 0}</dd></div>
-        <div><dt>OD 需输入</dt><dd>{odCounts.needs_input || 0}</dd></div>
-      </dl>
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">今天先动</span>
+          <strong>{urgentQueue.length + leadUrgentQueue.length}</strong>
+          <p>线索和项目的合并行动入口。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">待发 review</span>
+          <strong>{stageCounts.review_ready || 0}</strong>
+          <p>项目页里优先处理。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">跟进过期</span>
+          <strong>{leadIndex.prospectCounts.followUpOverdue || 0}</strong>
+          <p>线索页里需要马上补动作。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">OD 需输入</span>
+          <strong>{odCounts.needs_input || 0}</strong>
+          <p>缺信息会阻塞交付。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">项目总数</span>
+          <strong>{index.counts.total}</strong>
+          <p>当前后台追踪中的 paid intake。</p>
+        </article>
+      </div>
 
-      <section class="admin-paper-section">
+      <section class="admin-paper-section admin-command-section">
         <div class="admin-paper-section-head">
           <div>
             <span class="eyebrow">总览说明</span>
@@ -96,8 +117,8 @@ const stageLabels = {
         </ul>
       </section>
 
-      <div class="admin-finance-grid">
-        <section class="admin-finance-panel">
+      <div class="admin-workbench-grid">
+        <section class="admin-panel admin-workbench-panel">
           <div class="admin-finance-head">
             <div>
               <span class="eyebrow">线索行动</span>
@@ -116,7 +137,7 @@ const stageLabels = {
           </div>
         </section>
 
-        <section class="admin-finance-panel">
+        <section class="admin-panel admin-workbench-panel">
           <div class="admin-finance-head">
             <div>
               <span class="eyebrow">项目行动</span>

@@ -2,6 +2,7 @@ import path from 'path';
 import { BUILD_MODES } from './intake.js';
 import { createLeadResearch } from './research.js';
 import { buildWebsiteReady, READINESS } from '../intake/website-ready.js';
+import { createWebsiteBuildHandoff } from './website-build-handoff.js';
 
 export const BUILD_READY_STATUS = {
   READY_FOR_OPEN_DESIGN: 'ready_for_open_design',
@@ -19,41 +20,61 @@ export function createBuildReadyDecision(input = {}) {
   const niche = input.niche || research.niche || 'generic';
 
   if (research.previewability.status === 'blocked_unreachable') {
-    return baseDecision(research, BUILD_READY_STATUS.BLOCKED_UNREACHABLE, 'No reachable contact path exists.');
+    return withAutonomousHandoff(
+      baseDecision(research, BUILD_READY_STATUS.BLOCKED_UNREACHABLE, 'No reachable contact path exists.'),
+      { input, research }
+    );
   }
 
   if (research.buildMode === BUILD_MODES.OUTREACH_ONLY) {
-    return baseDecision(research, BUILD_READY_STATUS.OUTREACH_ONLY, 'Send outreach first before any build.');
+    return withAutonomousHandoff(
+      baseDecision(research, BUILD_READY_STATUS.OUTREACH_ONLY, 'Send outreach first before any build.'),
+      { input, research }
+    );
   }
 
   if (research.buildMode === BUILD_MODES.TEASER && research.productionReadiness.status !== 'ready_for_open_design') {
-    return {
+    return withAutonomousHandoff({
       ...baseDecision(research, BUILD_READY_STATUS.READY_FOR_TEASER, 'Build a teaser preview with placeholders.'),
       buildPacket: {
         mode: 'teaser',
         nextAction: 'Generate a teaser demo and outreach assets, then wait for reply.',
         openDesignReady: false,
       },
-    };
+    }, { input, research });
+  }
+
+  if (
+    research.productionReadiness.status !== 'ready_for_open_design'
+    && ['ready_for_preview', 'ready_for_redesign_preview'].includes(research.previewability?.status)
+  ) {
+    return withAutonomousHandoff({
+      ...baseDecision(research, BUILD_READY_STATUS.READY_FOR_OPEN_DESIGN, 'Preview handoff is ready; missing production-only facts can be filled with internally labelled AI/demo content.'),
+      buildPacket: {
+        mode: research.buildMode,
+        nextAction: 'Use the autonomous website handoff for Open Design mockup generation, then replace demo-only content before production launch.',
+        openDesignReady: true,
+      },
+    }, { input, research });
   }
 
   if (research.productionReadiness.status !== 'ready_for_open_design') {
-    return baseDecision(
+    return withAutonomousHandoff(baseDecision(
       research,
       BUILD_READY_STATUS.NEEDS_MORE_RESEARCH,
       research.productionReadiness.reason || 'Research still needs one more pass before build handoff.'
-    );
+    ), { input, research });
   }
 
   if (niche !== 'restaurant') {
-    return {
+    return withAutonomousHandoff({
       ...baseDecision(research, BUILD_READY_STATUS.READY_FOR_OPEN_DESIGN, 'Cross-industry packet is ready for design handoff.'),
       buildPacket: {
         mode: research.buildMode,
         nextAction: 'Use the Open Design handoff draft directly for the next build module.',
         openDesignReady: true,
       },
-    };
+    }, { input, research });
   }
 
   const websiteReady = buildWebsiteReady({
@@ -74,7 +95,7 @@ export function createBuildReadyDecision(input = {}) {
     buildPacketPath: input.buildPacketPath || path.join('clients', clientSlug, 'intake', 'build-packet.md'),
   });
 
-  return {
+  return withAutonomousHandoff({
     ...baseDecision(
       research,
       mapWebsiteReadyStatus(websiteReady.survey.readiness),
@@ -91,7 +112,7 @@ export function createBuildReadyDecision(input = {}) {
       nextAction: websiteReady.survey.nextAction,
       openDesignReady: websiteReady.survey.readyToBuild,
     },
-  };
+  }, { input, research });
 }
 
 function baseDecision(research, status, reason) {
@@ -107,6 +128,28 @@ function baseDecision(research, status, reason) {
     productionReadiness: research.productionReadiness,
     contactability: research.contactability,
     openDesignHandoffDraft: research.openDesignHandoffDraft,
+  };
+}
+
+function withAutonomousHandoff(decision, { input, research }) {
+  const handoff = createWebsiteBuildHandoff({
+    ...input,
+    research,
+    intake: input.intake,
+    redesignCheck: input.redesignCheck,
+    outreachBrief: input.outreachBrief,
+    currentSiteAudit: input.currentSiteAudit,
+  });
+  return {
+    ...decision,
+    aiConclusion: handoff.aiConclusion,
+    scorecard: handoff.scorecard,
+    websiteBuildHandoff: handoff,
+    openDesignHandoffDraft: {
+      ...decision.openDesignHandoffDraft,
+      websiteBuildHandoff: handoff.openDesignPayload.json,
+      prompt: handoff.openDesignPayload.prompt,
+    },
   };
 }
 

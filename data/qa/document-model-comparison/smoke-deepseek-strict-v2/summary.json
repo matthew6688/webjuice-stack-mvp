@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-deepseek-strict-v2",
+  "promptVariant": "strict-v2",
+  "outRoot": "data/qa/document-model-comparison/smoke-deepseek-strict-v2",
+  "providers": [
+    {
+      "id": "ollama-deepseek-r1:14b",
+      "provider": "ollama",
+      "model": "deepseek-r1:14b",
+      "status": "ok",
+      "durationMs": 67001,
+      "score": 89,
+      "grade": "B",
+      "ok": true,
+      "topFindings": [
+        {
+          "severity": "minor",
+          "code": "thin_evidence_used",
+          "points": -4,
+          "message": "Evidence used is too thin."
+        },
+        {
+          "severity": "minor",
+          "code": "thin_missing_evidence",
+          "points": -4,
+          "message": "Missing evidence is not clearly listed."
+        },
+        {
+          "severity": "minor",
+          "code": "thin_asset_plan",
+          "points": -6,
+          "message": "Asset plan should specify hero, service/detail, and proof/contact imagery."
+        }
+      ]
+    }
+  ],
+  "bestProvider": "ollama-deepseek-r1:14b",
+  "generatedAt": "2026-05-10T06:48:22.278Z",
+  "reevaluatedAt": "2026-05-10T07:08:23.886Z"
+}

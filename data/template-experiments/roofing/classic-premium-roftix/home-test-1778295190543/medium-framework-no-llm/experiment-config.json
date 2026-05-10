@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "variant": {
+    "id": "medium-framework-no-llm",
+    "constraintMode": "medium",
+    "frameworkMode": "design-language-plus-required-sections",
+    "copyMode": "none",
+    "hypothesis": "Medium constraints should preserve business structure while leaving visual freedom."
+  },
+  "baseFacts": {
+    "niche": "roofing",
+    "family": "classic-premium-roftix",
+    "page": "home",
+    "businessName": "RidgeLine Roof Co.",
+    "businessType": "local roofing contractor",
+    "serviceArea": "Brisbane and Gold Coast",
+    "contact": {
+      "phone": "0400 000 000",
+      "email": "",
+      "website": ""
+    },
+    "services": [
+      "Roof repairs",
+      "Roof restoration",
+      "Metal roofing",
+      "Gutter repairs",
+      "Roof inspections"
+    ],
+    "primaryAction": "request a roof inspection or quote",
+    "proofBoundary": [
+      "exact address",
+      "email",
+      "phone",
+      "reviews",
+      "licenses",
+      "certifications",
+      "years in business",
+      "awards",
+      "prices"
+    ],
+    "demoSafeContent": [
+      "FAQ",
+      "process",
+      "service descriptions",
+      "project teaser structure",
+      "blog titles"
+    ]
+  },
+  "approvedAssets": [
+    {
+      "slot": "hero",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-hero-premium-roof-at-blue-hour.png",
+      "sha256": "6dddb55aee2b0216db17a2ce297e8ff9ac9d6ab566439dfb5e157012e7f06861",
+      "bytes": 1955019
+    },
+    {
+      "slot": "serviceRepair",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-repair-flashing-detail.png",
+      "sha256": "ffad6a21f15acea1252286d4ed92c646525baaeb7722f731034da399e0a7005e",
+      "bytes": 2536288
+    },
+    {
+      "slot": "serviceInstall",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-installation-detail.png",
+      "sha256": "1c3418d06644e7aea8929289c8aa89ac191b88cf85a5612ad72aba1477d8ad76",
+      "bytes": 2421256
+    },
+    {
+      "slot": "about",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-about-roofer-working-roof-frame.png",
+      "sha256": "d38c9365a6f9240b5bf07809c0430031005adb73741e0f456fa4ecb4d6f8682a",
+      "bytes": 2260537
+    },
+    {
+      "slot": "proof",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-project-before-after-roof-transformation.png",
+      "sha256": "0ee14f3749e5fe3d21413fd9281679fead537cc5a0a79d760e2c64a63c503a2b",
+      "bytes": 2063544
+    }
+  ],
+  "seedAssets": [
+    {
+      "slot": "hero",
+      "fileName": "hero-family1-hero-premium-roof-at-blue-hour.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-hero-premium-roof-at-blue-hour.png",
+      "seedPath": "assets/hero-family1-hero-premium-roof-at-blue-hour.png",
+      "sha256": "6dddb55aee2b0216db17a2ce297e8ff9ac9d6ab566439dfb5e157012e7f06861",
+      "bytes": 1955019
+    },
+    {
+      "slot": "serviceRepair",
+      "fileName": "serviceRepair-family1-service-roof-repair-flashing-detail.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-repair-flashing-detail.png",
+      "seedPath": "assets/serviceRepair-family1-service-roof-repair-flashing-detail.png",
+      "sha256": "ffad6a21f15acea1252286d4ed92c646525baaeb7722f731034da399e0a7005e",
+      "bytes": 2536288
+    },
+    {
+      "slot": "serviceInstall",
+      "fileName": "serviceInstall-family1-service-roof-installation-detail.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-installation-detail.png",
+      "seedPath": "assets/serviceInstall-family1-service-roof-installation-detail.png",
+      "sha256": "1c3418d06644e7aea8929289c8aa89ac191b88cf85a5612ad72aba1477d8ad76",
+      "bytes": 2421256
+    },
+    {
+      "slot": "about",
+      "fileName": "about-family1-about-roofer-working-roof-frame.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-about-roofer-working-roof-frame.png",
+      "seedPath": "assets/about-family1-about-roofer-working-roof-frame.png",
+      "sha256": "d38c9365a6f9240b5bf07809c0430031005adb73741e0f456fa4ecb4d6f8682a",
+      "bytes": 2260537
+    },
+    {
+      "slot": "proof",
+      "fileName": "proof-family1-project-before-after-roof-transformation.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-project-before-after-roof-transformation.png",
+      "seedPath": "assets/proof-family1-project-before-after-roof-transformation.png",
+      "sha256": "0ee14f3749e5fe3d21413fd9281679fead537cc5a0a79d760e2c64a63c503a2b",
+      "bytes": 2063544
+    }
+  ],
+  "localCopy": {
+    "status": "not_requested",
+    "mode": "none",
+    "model": null,
+    "reason": "copy mode disabled"
+  },
+  "execute": false,
+  "generatedAt": "2026-05-09T02:53:10.672Z"
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
+  <title id="title">Roof gutter detail</title>
+  <desc id="desc">Close detail of guttering and roof edge after cleaning.</desc>
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf4eb"/><stop offset="1" stop-color="#d7c1aa"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f2f1ee"/><stop offset="0.5" stop-color="#aeb0ab"/><stop offset="1" stop-color="#f8f7f2"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="620" fill="url(#wall)"/>
+  <path d="M0 145 L900 34 L900 235 L0 348 Z" fill="#953728"/>
+  <g opacity="0.28" stroke="#ffd4b6" stroke-width="5">
+    <path d="M0 178 L900 67"/><path d="M0 226 L900 115"/><path d="M0 274 L900 163"/>
+  </g>
+  <path d="M0 334 L900 222 L900 288 L0 400 Z" fill="url(#metal)"/>
+  <path d="M0 399 L900 288" stroke="#5e5a55" stroke-width="12"/>
+  <rect x="603" y="260" width="70" height="288" rx="18" fill="url(#metal)"/>
+  <path d="M638 538 C638 586 692 591 708 552" fill="none" stroke="#aeb0ab" stroke-width="28" stroke-linecap="round"/>
+</svg>

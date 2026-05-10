@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "taskId": "roofing-and-restoration-00000001",
+  "createdAt": "2026-05-09T00:00:00.000Z",
+  "updatedAt": "2026-05-09T00:00:00.000Z",
+  "source": {
+    "platform": "discord",
+    "channelName": "website-task",
+    "channelId": "1501072883001065614",
+    "messageId": "1502000000000000001",
+    "messageUrl": "https://discord.com/channels/guild-1/1501072883001065614/1502000000000000001",
+    "authorId": "operator-1",
+    "authorName": "matthew"
+  },
+  "rawText": "Roofing & Restoration\n40 years experience call or message now\nCall Greg on 0424 371 622",
+  "attachments": [
+    {
+      "id": "att-1",
+      "filename": "roofing-sign.jpg",
+      "url": "https://cdn.discordapp.test/roofing-sign.jpg",
+      "contentType": "image/jpeg",
+      "size": 0
+    }
+  ],
+  "intent": {
+    "kind": "image_lead_discovery",
+    "label": "图片线索识别",
+    "workflow": "image-lead-discovery",
+    "workflowLabel": "图片/OCR 线索 discovery -> lead-ops -> admin stage",
+    "skills": [
+      "image-lead-discovery",
+      "lead-ops"
+    ],
+    "priority": "lead",
+    "clientSlug": "roofing-and-restoration",
+    "nextAction": "读取图片/OCR文字，搜索电话/商家信息，保存证据，再判断跳过、需人工或可做 Mockup。",
+    "confidence": 0.92
+  },
+  "thread": {
+    "name": "lead-img-roofing-and-restoration",
+    "id": "thread-image-1",
+    "url": "https://discord.com/channels/guild-1/thread-image-1",
+    "status": "ready",
+    "messageId": "thread-message-1"
+  },
+  "artifacts": {
+    "taskPath": "data/qa/discord-task-router/roofing-and-restoration-00000001/task.json",
+    "logPath": "data/qa/discord-task-router/roofing-and-restoration-00000001/task-log.jsonl",
+    "expectedClientRoot": "clients/roofing-and-restoration"
+  },
+  "nextAction": "读取图片/OCR文字，搜索电话/商家信息，保存证据，再判断跳过、需人工或可做 Mockup。"
+}

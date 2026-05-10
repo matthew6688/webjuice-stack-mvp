@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "auditType": "website-ui-audit",
+  "subject": {
+    "family": "productized-modern-roofing",
+    "source": "data/template-experiments/roofing/productized-modern-roofing/home-live-medium-v1-app-visible-2026-05-09-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/open-design/index.html",
+    "desktopScreenshot": "data/qa/website-ui-audit-clean-productized-before-desktop.png",
+    "mobileScreenshot": "data/qa/website-ui-audit-clean-productized-before-mobile.png",
+    "runEvidence": {
+      "nativeCleanFinish": true,
+      "mode": "app-visible",
+      "completionMode": "native"
+    }
+  },
+  "score": 81,
+  "decision": "revise",
+  "confidence": "medium",
+  "hardFailReasons": [],
+  "dimensions": {
+    "hero": {
+      "score": 19,
+      "max": 25,
+      "findings": [
+        {
+          "severity": "medium",
+          "category": "hero",
+          "message": "The business category, service area, and CTA are clear, but the first viewport uses a safe split composition where the approved roof image reads as a contained proof card rather than the main emotional selling surface.",
+          "evidence": "Desktop screenshot first viewport: H1 and CTA are left aligned; roof image occupies the right card and starts below the nav with a large light-gray page field.",
+          "suggestedFix": "Keep the productized-modern direction, but make the approved roof photo carry more of the first viewport through a larger image-led hero or integrated overlay."
+        },
+        {
+          "severity": "low",
+          "category": "hero",
+          "message": "The hero promise is clear but slightly procedural; it explains the service more than it creates desire.",
+          "evidence": "Headline: Modern roofing help for Brisbane and Gold Coast homes.",
+          "suggestedFix": "Sharpen the hero language around roof clarity, inspection, and confidence without inventing claims."
+        }
+      ]
+    },
+    "industryFit": {
+      "score": 13,
+      "max": 15,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "reference_fidelity",
+          "message": "The page fits a modern roofing service, but the first screen leans toward productized SaaS calm more than premium local contractor confidence.",
+          "evidence": "Large white/gray field, compact nav, contained image card, chip-style services.",
+          "suggestedFix": "Increase the roofing-specific visual weight in the first screen while preserving the clean comparison-oriented system."
+        }
+      ]
+    },
+    "visualHierarchy": {
+      "score": 13,
+      "max": 15,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "hierarchy",
+          "message": "Hierarchy is readable and stable. The main opportunity is stronger visual contrast between the hero and the following services section.",
+          "evidence": "Hero and next section both sit on pale gray backgrounds with restrained transitions.",
+          "suggestedFix": "Use a stronger hero surface, image crop, or darker/larger photographic band so the first viewport has more visual priority."
+        }
+      ]
+    },
+    "imagery": {
+      "score": 11,
+      "max": 15,
+      "findings": [
+        {
+          "severity": "medium",
+          "category": "imagery",
+          "message": "The approved hero asset is relevant and high quality, but its crop underuses the roof texture and local-service atmosphere.",
+          "evidence": "The right-side card shows mostly sky and roof surface, with no contractor or direct service action in the first viewport.",
+          "suggestedFix": "Use a more assertive crop and pair it with inspection/material proof so the image feels like the site identity, not decoration."
+        }
+      ]
+    },
+    "conversion": {
+      "score": 9,
+      "max": 10,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "conversion",
+          "message": "The quote and phone CTAs are present and visible.",
+          "evidence": "Buttons: Request an inspection; Call 0400 000 000.",
+          "suggestedFix": "Keep the CTA wording and placement visible after hero revision."
+        }
+      ]
+    },
+    "mobile": {
+      "score": 8,
+      "max": 10,
+      "findings": [
+        {
+          "severity": "low",
+          "category": "mobile",
+          "message": "Mobile needs to preserve the service category, CTA, and image impact without stacking into a long text-first opening.",
+          "evidence": "Mobile screenshot exists for verification; no hard break found in this audit pass.",
+          "suggestedFix": "After revision, verify mobile first viewport still shows business category and a direct CTA."
+        }
+      ]
+    },
+    "technicalUx": {
+      "score": 5,
+      "max": 5,
+      "findings": []
+    },
+    "aiSlop": {
+      "score": 3,
+      "max": 5,
+      "findings": [
+        {
+          "severity": "medium",
+          "category": "ai_slop",
+          "message": "The layout is polished but close to a common AI-generated split hero pattern.",
+          "evidence": "Large left text block, right rounded image card, service chips, and proof cells follow a familiar generated landing-page composition.",
+          "suggestedFix": "Create a more distinctive productized roofing first viewport using the approved photo and material system."
+        }
+      ]
+    }
+  },
+  "topFixes": [
+    "Make the approved roofing image the dominant first-viewport visual surface instead of a contained side card.",
+    "Preserve the quote and phone CTA while integrating them more tightly with the hero composition.",
+    "Increase roofing-specific atmosphere and material proof above the fold without inventing factual claims.",
+    "Avoid generic split-hero AI composition while keeping the clean productized material-comparison direction."
+  ],
+  "openDesignRevisionBrief": "Revision required from website-ui-audit. Keep the existing productized modern roofing direction, business facts, service area, phone number, quote path, material comparison structure, FAQ, and approved local assets. The current page passes basic clarity but needs a stronger first viewport: the approved roofing image should become the dominant visual surface, not a contained side card. Preserve customer-facing copy only. Improve the hero so a visitor immediately feels this is a polished local roofing company with organized roof inspections, repairs, restoration, and metal roofing options. Keep one clear above-fold quote CTA and phone path. Increase roofing-specific atmosphere and material/inspection proof above the fold, but do not invent licenses, awards, reviews, exact years, prices, or addresses. Do not expose internal words like audit, mockup, Open Design, template, experiment, generated, artifact, or placeholder. After changes, verify desktop and mobile have no overflow, no broken asset references, exactly one H1, and visible above-fold CTA.",
+  "evidence": [
+    "skills/website-ui-audit/references/ui-audit-rubric.json",
+    "data/qa/website-ui-audit-clean-productized-before-desktop.png",
+    "data/qa/website-ui-audit-clean-productized-before-mobile.png",
+    "data/qa/website-ui-audit-clean-productized/before-index.html"
+  ]
+}

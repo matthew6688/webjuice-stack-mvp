@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-qwen-deepseek",
+  "providers": "ollama:deepseek-r1:14b,ollama:qwen3.6:27b",
+  "variants": [
+    "baseline",
+    "strict-v2"
+  ],
+  "targetScore": 90,
+  "attempts": [
+    {
+      "variant": "baseline",
+      "status": 0,
+      "durationMs": 301890,
+      "summaryPath": "data/qa/document-model-comparison/smoke-qwen-deepseek-baseline/summary.json",
+      "bestProvider": "ollama-qwen3.6:27b",
+      "bestScore": 95,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-qwen-deepseek-baseline\",\n  \"promptVariant\": \"baseline\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-qwen-deepseek-baseline\",\n  \"providers\": [\n    {\n      \"id\": \"ollama-deepseek-r1:14b\",\n      \"provider\": \"ollama\",\n      \"model\": \"deepseek-r1:14b\",\n      \"status\": \"ok\",\n      \"durationMs\": 67030,\n      \"score\": 49,\n      \"grade\": \"F\",\n      \"ok\": false,\n      \"topFindings\": [\n        {\n          \"severity\": \"hard_fail\",\n          \"code\": \"invented_email\",\n          \"points\": -20,\n          \"message\": \"Output invented an email address.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_evidence_used\",\n          \"points\": -4,\n          \"message\": \"Evidence used is too thin.\"\n        },\n        {\n          \"severity\": \"major\",\n          \"code\": \"weak_block_plan\",\n          \"points\": -10,\n          \"message\": \"Block plan should include at least hero, services, proof/trust, process/FAQ, and contact.\"\n        }\n    ",
+      "stderrExcerpt": ""
+    },
+    {
+      "variant": "strict-v2",
+      "status": 0,
+      "durationMs": 246275,
+      "summaryPath": "data/qa/document-model-comparison/smoke-qwen-deepseek-strict-v2/summary.json",
+      "bestProvider": "ollama-qwen3.6:27b",
+      "bestScore": 95,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-qwen-deepseek-strict-v2\",\n  \"promptVariant\": \"strict-v2\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-qwen-deepseek-strict-v2\",\n  \"providers\": [\n    {\n      \"id\": \"ollama-deepseek-r1:14b\",\n      \"provider\": \"ollama\",\n      \"model\": \"deepseek-r1:14b\",\n      \"status\": \"ok\",\n      \"durationMs\": 57130,\n      \"score\": 89,\n      \"grade\": \"B\",\n      \"ok\": true,\n      \"topFindings\": [\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_evidence_used\",\n          \"points\": -4,\n          \"message\": \"Evidence used is too thin.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_missing_evidence\",\n          \"points\": -4,\n          \"message\": \"Missing evidence is not clearly listed.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_asset_plan\",\n          \"points\": -6,\n          \"message\": \"Asset plan should specify hero, service/detail, and proof/contact imagery.\"\n        }\n      ]\n  ",
+      "stderrExcerpt": ""
+    }
+  ],
+  "best": {
+    "variant": "strict-v2",
+    "status": 0,
+    "durationMs": 246275,
+    "summaryPath": "data/qa/document-model-comparison/smoke-qwen-deepseek-strict-v2/summary.json",
+    "bestProvider": "ollama-qwen3.6:27b",
+    "bestScore": 95,
+    "ok": true,
+    "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-qwen-deepseek-strict-v2\",\n  \"promptVariant\": \"strict-v2\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-qwen-deepseek-strict-v2\",\n  \"providers\": [\n    {\n      \"id\": \"ollama-deepseek-r1:14b\",\n      \"provider\": \"ollama\",\n      \"model\": \"deepseek-r1:14b\",\n      \"status\": \"ok\",\n      \"durationMs\": 57130,\n      \"score\": 89,\n      \"grade\": \"B\",\n      \"ok\": true,\n      \"topFindings\": [\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_evidence_used\",\n          \"points\": -4,\n          \"message\": \"Evidence used is too thin.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_missing_evidence\",\n          \"points\": -4,\n          \"message\": \"Missing evidence is not clearly listed.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_asset_plan\",\n          \"points\": -6,\n          \"message\": \"Asset plan should specify hero, service/detail, and proof/contact imagery.\"\n        }\n      ]\n  ",
+    "stderrExcerpt": ""
+  },
+  "accepted": [
+    {
+      "variant": "strict-v2",
+      "status": 0,
+      "durationMs": 246275,
+      "summaryPath": "data/qa/document-model-comparison/smoke-qwen-deepseek-strict-v2/summary.json",
+      "bestProvider": "ollama-qwen3.6:27b",
+      "bestScore": 95,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-qwen-deepseek-strict-v2\",\n  \"promptVariant\": \"strict-v2\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-qwen-deepseek-strict-v2\",\n  \"providers\": [\n    {\n      \"id\": \"ollama-deepseek-r1:14b\",\n      \"provider\": \"ollama\",\n      \"model\": \"deepseek-r1:14b\",\n      \"status\": \"ok\",\n      \"durationMs\": 57130,\n      \"score\": 89,\n      \"grade\": \"B\",\n      \"ok\": true,\n      \"topFindings\": [\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_evidence_used\",\n          \"points\": -4,\n          \"message\": \"Evidence used is too thin.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_missing_evidence\",\n          \"points\": -4,\n          \"message\": \"Missing evidence is not clearly listed.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_asset_plan\",\n          \"points\": -6,\n          \"message\": \"Asset plan should specify hero, service/detail, and proof/contact imagery.\"\n        }\n      ]\n  ",
+      "stderrExcerpt": ""
+    },
+    {
+      "variant": "baseline",
+      "status": 0,
+      "durationMs": 301890,
+      "summaryPath": "data/qa/document-model-comparison/smoke-qwen-deepseek-baseline/summary.json",
+      "bestProvider": "ollama-qwen3.6:27b",
+      "bestScore": 95,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-qwen-deepseek-baseline\",\n  \"promptVariant\": \"baseline\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-qwen-deepseek-baseline\",\n  \"providers\": [\n    {\n      \"id\": \"ollama-deepseek-r1:14b\",\n      \"provider\": \"ollama\",\n      \"model\": \"deepseek-r1:14b\",\n      \"status\": \"ok\",\n      \"durationMs\": 67030,\n      \"score\": 49,\n      \"grade\": \"F\",\n      \"ok\": false,\n      \"topFindings\": [\n        {\n          \"severity\": \"hard_fail\",\n          \"code\": \"invented_email\",\n          \"points\": -20,\n          \"message\": \"Output invented an email address.\"\n        },\n        {\n          \"severity\": \"minor\",\n          \"code\": \"thin_evidence_used\",\n          \"points\": -4,\n          \"message\": \"Evidence used is too thin.\"\n        },\n        {\n          \"severity\": \"major\",\n          \"code\": \"weak_block_plan\",\n          \"points\": -10,\n          \"message\": \"Block plan should include at least hero, services, proof/trust, process/FAQ, and contact.\"\n        }\n    ",
+      "stderrExcerpt": ""
+    }
+  ],
+  "generatedAt": "2026-05-10T07:20:21.089Z"
+}

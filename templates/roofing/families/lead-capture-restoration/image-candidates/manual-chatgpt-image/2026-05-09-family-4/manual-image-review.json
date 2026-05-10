@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "provider": "manual-chatgpt-image",
+  "model": "chatgpt-image2-ui",
+  "family": "lead-capture-restoration",
+  "niche": "roofing",
+  "generatedAt": "2026-05-09T10:39:44+10:00",
+  "recordedAt": "2026-05-09T00:42:42.437Z",
+  "promptPack": "templates/roofing/image-prompts/chatgpt-image2-prompt-pack.md",
+  "status": "reviewed",
+  "overall": {
+    "approvedCount": 2,
+    "usableCount": 3,
+    "crossFamilyCount": 4,
+    "rejectedCount": 0,
+    "recommendation": "Use the two roofer-on-metal-roof images as Family 4 hero/service assets. Treat the four standing seam product images as reusable cross-family material cards, especially for productized-modern-roofing."
+  },
+  "assets": [
+    {
+      "file": "family4-product-standing-seam-panel-angle-a.png",
+      "promptId": "productized-13-product-card-metal-roof-material-sample",
+      "slot": "shared/product-material-metal",
+      "status": "usable_cross_family",
+      "score": 86,
+      "notes": "Clean standing seam product image. Useful as reusable material card, but not enough for lead-capture hero by itself.",
+      "path": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-angle-a.png"
+    },
+    {
+      "file": "family4-product-standing-seam-panel-front.png",
+      "promptId": "productized-13-product-card-metal-roof-material-sample",
+      "slot": "shared/product-material-metal",
+      "status": "approved_cross_family_asset",
+      "score": 88,
+      "notes": "Best clean product-card variant in this batch. Use for material comparison or productized template, not main lead-capture visual.",
+      "path": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-front.png"
+    },
+    {
+      "file": "family4-product-standing-seam-panel-angle-b.png",
+      "promptId": "productized-13-product-card-metal-roof-material-sample",
+      "slot": "shared/product-material-metal",
+      "status": "usable_cross_family",
+      "score": 84,
+      "notes": "Good alternate panel angle. Similar to other product-card images; use only if variation is needed.",
+      "path": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-angle-b.png"
+    },
+    {
+      "file": "family4-product-standing-seam-panel-symmetric.png",
+      "promptId": "productized-13-product-card-metal-roof-material-sample",
+      "slot": "shared/product-material-metal",
+      "status": "usable_cross_family",
+      "score": 85,
+      "notes": "Symmetric product image with clean edge detail. Good for material card or spec section.",
+      "path": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-symmetric.png"
+    },
+    {
+      "file": "family4-service-local-roofer-metal-roof-wide.png",
+      "promptId": "lead-18-hero-local-roof-restoration-worker",
+      "slot": "hero/service",
+      "status": "approved_for_template_candidate",
+      "score": 90,
+      "notes": "Strong lead-capture/service image. Roofer, local home, clear roof plane, good left negative space. Best Family 4 primary visual.",
+      "path": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-service-local-roofer-metal-roof-wide.png"
+    },
+    {
+      "file": "family4-hero-local-roofer-metal-roof-wide.png",
+      "promptId": "lead-18-hero-local-roof-restoration-worker",
+      "slot": "hero",
+      "status": "approved_for_template_candidate",
+      "score": 89,
+      "notes": "Very usable hero/CTA image. Worker and roof are clear; slightly less open left space than image 5 but still strong.",
+      "path": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-hero-local-roofer-metal-roof-wide.png"
+    }
+  ]
+}

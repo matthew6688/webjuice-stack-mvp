@@ -1,6 +1,6 @@
 # ProfitsLocal 核心业务闭环 TODO 台账
 
-更新日期：2026-05-08
+更新日期：2026-05-09
 
 这份文档是 **当前进行中的唯一 TODO 台账**。  
 以后我们验证核心业务闭环、发现文档过期、发现 admin 缺口、发现运营流程断点，都先记到这里，再按优先级逐个清。
@@ -22,24 +22,38 @@
 
 ## 当前执行面板
 
+### NOW
+
+- `G1` low-cost Google Maps scrape -> discovery store -> lead pipeline 稳定化（第一轮 hard evidence 已完成；继续观察更多 query）
+- `G2` cheap audit -> selected enrichment -> promote to client workflow 稳定化
+- `G3` outreach-ready lead packet 和行动队列闭环
+- `G4` mockup / Open Design handoff 阀门
+- `G5` 从回复/成交交接到 paid intake 的人工最短路径
+
 ### DONE
 
 - `A1` fresh 项目从 0 到 dev preview
 - `A2` fresh 项目从 review 到 live + domain
 - `A3` 真实 revision 闭环
 - `D2.1` Agentic Inbox 作为第一类 cold outreach provider 接入
+- `G5.1` 真实 query 批量 discovery regression：restaurant / roofing / dentist 三组低成本 scrape 已入库并保存 hard evidence
 - fresh lead 从 outreach 到 paid 真闭环
 
 ### IN PROGRESS
 
+- `G2.1` selected enrichment 成本关口：dry-run plan / approved / executed / ingested 状态源已落地，继续接真实执行和入库
+- `G3.1` Leads CRM 证据视图：CRM 快照已落地，继续补 replied / follow-up / paid handoff 操作面
 - `B4` Open Design pipeline 状态映射到我们的项目状态
 - `C2` 售前 lead / outreach / forum 流转继续补齐
 - `C3` lead truth source / lead profile schema（Phase 1 已落地，后续字段与自动回流继续补）
 - `D2.2` Agentic Inbox 自动 provider event 回流上线验证
 - `C4` lead-intake / lead-research / redesign-check / build-ready / outreach-brief / lead-ops contract 设计与 smoke 打磨（intake + research + redesign-check + build-ready + outreach-brief + lead-ops 已落地；outreach-brief 已接到 outreach-pack / cold email artifact；已接到 lead-registry truth source；field_service / professional_service redesign smoke 已过；低信息 Google Places / 官网 scrape / PDF / image OCR / generated-only fixtures 已加入压力测试；后续继续补多 niche renderer/contract） 
+- `C5` niche template library / template-lab（roofing starter families 已开始；后续把截图/链接 ingest、template match、Open Design prompt、QA report 接进 Discord lead-ops）
 
 ### PENDING
 
+- `G4.1` 把 `build_mockup_artifacts` 的 placeholder preview / screenshot / video 替换成真实 Open Design 或 template runner 输出
+- `G4.2` `draft_ready -> outreach_sent -> follow_up_due / replied` 阶段迁移测试和后台 action
 - `/admin/leads` replied / follow-up due / paid handoff 再细化
 
 ### BACKLOG
@@ -47,6 +61,323 @@
 - `opened / clicked / unsubscribed / spam complaint`
 - Instantly / Smartlead live integration
 - Open Design pipeline 视觉借鉴到 admin / task 分类
+- Template library admin inventory：在 admin 里查看 niche、template family、截图、QA 分、适用 lead 类型
+
+---
+
+# G. 当前核心业务增长任务包
+
+这个任务包围绕当前最重要的业务闭环：
+
+```text
+低成本找本地商家
+-> 入库去重
+-> 便宜审计
+-> 只对高潜力目标补资料
+-> 生成可行动 lead packet
+-> 人工决定 mockup / skip / follow-up
+-> Open Design / preview
+-> outreach
+-> reply
+-> paid intake
+-> 项目交付
+```
+
+原则：
+
+- 先省钱，默认不抓 review 正文、不跑 Google Places API、不跑 email extraction。
+- 只有 cheap audit 证明有销售突破口，才进入 Tinyfish / Google Places / contact enrichment。
+- 每一步都必须写入 lead truth source 或 discovery store，admin 里能看见。
+- 每个任务完成都要有 hard evidence：命令、输出文件、截图、admin 命中、测试结果。
+
+## G1. Scrape discovery 到 lead pipeline 稳定化
+
+- 状态：`IN PROGRESS`
+- 目标：
+  - 把 `gosom/google-maps-scraper` 的低成本采集结果稳定进入：
+    - `data/maps-scraper/runs/<run-id>/`
+    - `data/leads/discovery-index.json`
+    - `data/leads/entities/<entity-key>.json`
+    - `/admin/leads`
+- 为什么重要：
+  - 这是我们规模化找 local business 的最低成本入口。
+  - 先有稳定入库和去重，后面才谈 enrichment、mockup、outreach。
+- 范围：
+  - 不抓 review 正文。
+  - 不做 email extraction。
+  - 不调用 Google Places API。
+  - 只保存可审计的 lightweight profile、source URL、place/category/location、website/phone/rating/count 等基础字段。
+- 完成标准：
+  - 同一个 query 连跑 3 次，不产生重复 lead。
+  - 新 discovery run 出现在 admin leads 的研究/发现视图。
+  - 每个 lead 的 tool log / cost policy 可追踪。
+  - scrape result、compact list、queue、global store 都能互相对上。
+- hard evidence：
+  - `data/maps-scraper/runs/<run-id>/discovery-run.json`
+  - `data/maps-scraper/runs/<run-id>/tool-log.jsonl`
+  - `data/leads/discovery-index.json`
+  - `/admin/leads` screenshot
+  - 重复运行对比 summary
+- 当前证据：
+  - `data/maps-scraper/runs/20260509-g1-roof-new-farm-a/discovery-run.json`
+  - `data/maps-scraper/runs/20260509-g1-roof-new-farm-b/discovery-run.json`
+  - `data/maps-scraper/runs/20260509-g1-roof-new-farm-b-reanalyzed/discovery-run.json`
+  - `data/qa/g1-discovery-flow-2026-05-09/repeat-run-comparison.json`
+  - `data/qa/g1-discovery-flow-2026-05-09/g1-hard-evidence-summary.json`
+- 当前结论：
+  - 同一个 query 两次真实 scrape 分别返回 21 / 22 条，Google Maps 结果有轻微漂移。
+  - 两次结果重叠 20 条，重叠实体由 discovery store upsert，不重复创建 client workflow。
+  - 当前策略没有使用 Google Places API、email extraction 或 review body storage。
+  - 已补 `relevance` gate：例如 `Hurricane Digital - SEO Brisbane` 这种 query 漂移进来的 internet marketing service，会因 `category_name_mismatch` 直接 `skip`，不进入 audit/enrichment 队列。
+  - 当前 store：41 entities，1 个 cheap audit 候选，0 个 selected enrichment 候选，12 个 outreach brief 队列项。
+- 验证命令：
+  ```bash
+  npm run leads:maps-scrape -- --query "<niche> in <city>" --niche <niche> --city <city>
+  npm run funnel:test-lead-registry
+  npm run funnel:test-lead-outreach-index
+  ```
+
+## G2. Cheap audit -> selected enrichment 阀门
+
+- 状态：`IN PROGRESS`
+- 目标：
+  - 对有官网的 scrape targets 先跑 cheap audit。
+  - 只有 audit 发现明确 sales angle，才进入 selected enrichment。
+- 为什么重要：
+  - 避免大规模烧 Google Places API、Tinyfish、email/contact finder 成本。
+  - 我们卖的是“更能转化的网站”，不是“所有商家都做一遍 mockup”。
+- 范围：
+  - audit 保存 desktop/mobile 截图、HTML/text、JSON/Markdown report。
+  - audit 输出 `salesDecision`：
+    - `build_mockup`
+    - `human_review`
+    - `skip_or_monitor`
+  - selected enrichment 先 dry-run 出计划，再人工确认花钱。
+- 完成标准：
+  - `audit_candidate` 能自动变成 `queued_for_enrichment` 或 `skipped`。
+  - `skip_or_monitor` 的对象不会进入 mockup 队列。
+  - enrichment plan 明确每个候选为什么值得花钱。
+- hard evidence：
+  - `data/leads/audits/<entity-key>/current-site-audit.json`
+  - `data/leads/audits/<entity-key>/current-site-desktop.png`
+  - `data/leads/queues/selected-enrichment-plan.json`
+  - admin lead card 上可见 audit evidence
+- 当前证据：
+  - 候选：`FIX MY ROOF Total Roof Restorations`
+  - entity：`place_chijn587yc79k2sr7vyvy-egoam`
+  - audit JSON：`data/leads/audits/place_chijn587yc79k2sr7vyvy-egoam/current-site-audit.json`
+  - audit MD：`data/leads/audits/place_chijn587yc79k2sr7vyvy-egoam/current-site-audit.md`
+  - desktop screenshot：`data/leads/audits/place_chijn587yc79k2sr7vyvy-egoam/current-site-desktop.png`
+  - mobile screenshot：`data/leads/audits/place_chijn587yc79k2sr7vyvy-egoam/current-site-mobile.png`
+  - enrichment plan：`data/leads/queues/selected-enrichment-plan.json`
+- 当前结论：
+  - cheap audit score：35
+  - verdict：`clear_redesign_opportunity`
+  - salesDecision：`build_mockup`
+  - nextStatus：`queued_for_enrichment`
+  - selected enrichment plan 已生成，`live=false`，Tinyfish / Google Places command 仍是 dry-run，未花钱。
+  - audit keyword 生成已修正为 `Roofing contractor Brisbane`，避免重复的 `roofing Roofing contractor` 文案流入 outreach / Open Design。
+  - selected enrichment 成本关口已新增统一状态源：`data/leads/queues/selected-enrichment-gates.json`。
+  - dry-run plan 会显示 `costGate.status`，后台 action 可先记录 `approved`，不直接调用 Tinyfish / Google Places。
+- 验证命令：
+  ```bash
+  npm run leads:audit-discovery-sites -- --limit 3
+  npm run leads:plan-discovery-enrichment -- --limit 3
+  npm run leads:update-enrichment-gate -- --entity-key <entity-key> --status approved
+  npm run leads:test-discovery-second-stage
+  npm run leads:test-lead-ops-audit
+  ```
+
+## G1.1. 真实 query 批量 discovery regression
+
+- 状态：`DONE`
+- 目标：
+  - 用多个真实 query 验证 low-cost scrape -> discovery store -> queue 的稳定性。
+- 为什么重要：
+  - 单个 query 可能偶然正常；我们需要不同 niche 都能低成本入库、去重、分流。
+- 本次范围：
+  - 不使用 proxy。
+  - 不调用 Google Places API。
+  - 不做 email extraction。
+  - 不保存 review body。
+  - Docker 镜像仍提示 amd64 on arm64，但本地 Mac mini 可正常运行。
+- hard evidence：
+  - `data/qa/g5-discovery-regression-2026-05-09/summary.json`
+  - `data/qa/g5-discovery-regression-2026-05-09/summary.md`
+  - `data/maps-scraper/runs/20260509-g5-restaurant-paddington/discovery-run.json`
+  - `data/maps-scraper/runs/20260509-g5-roof-brisbane/discovery-run.json`
+  - `data/maps-scraper/runs/20260509-g5-dentist-new-farm/discovery-run.json`
+- 当前结果：
+  - 3 runs
+  - 52 raw rows / 52 leads
+  - 50 with website
+  - 51 with phone
+  - action counts：8 audit_candidate、2 starter_candidate、16 manual_review、26 skip
+  - discovery store unique entities：82
+- 验证命令：
+  ```bash
+  npm run leads:maps-scrape -- --query "restaurants in Paddington Brisbane" --niche restaurant --city Brisbane --run-id 20260509-g5-restaurant-paddington --depth 1 --exit-on-inactivity 90s
+  npm run leads:maps-scrape -- --query "roof restoration in Brisbane" --niche roofing --city Brisbane --run-id 20260509-g5-roof-brisbane --depth 1 --exit-on-inactivity 90s
+  npm run leads:maps-scrape -- --query "dentists in New Farm Brisbane" --niche dentist --city Brisbane --run-id 20260509-g5-dentist-new-farm --depth 1 --exit-on-inactivity 90s
+  ```
+
+## G3. Lead packet 和行动队列闭环
+
+- 状态：`NOW`
+- 目标：
+  - 把高潜力 lead 生成 operator 可直接判断的 packet：
+    - verified facts
+    - contact path
+    - audit evidence
+    - redesign angle
+    - outreach brief
+    - recommended next action
+  - 同步到 `/admin/leads` 和 `/admin/queue`。
+- 为什么重要：
+  - 我们不缺数据，缺的是“现在该处理谁、为什么、下一步点什么”。
+- 范围：
+  - `lead-ops` 继续作为统一总控。
+  - `ready-to-build.json` 是 Open Design 前的主交接文件。
+  - `outreach-brief.json` 是触达前的主交接文件。
+- 完成标准：
+  - promote 后每个 client 都有完整 lead artifacts。
+  - admin card detail 能看到证据、联系方式、AI 结论、工具轨迹。
+  - queue 能把 `needs_human`、`ready_for_mockup`、`follow_up_due`、`replied` 明确分组。
+  - lead card detail 有 CRM 快照：阶段、下一步、负责人动作、联系路径、来源、成本关口、证明资产、触达草稿。
+- hard evidence：
+  - `clients/<client>/lead/lead-ops.json`
+  - `clients/<client>/lead/ready-to-build.json`
+  - `clients/<client>/outreach/outreach-brief.json`
+  - `/admin/leads` screenshot
+  - `/admin/queue` screenshot
+  - Playwright smoke：`CRM 快照` 可见，mobile overflow = 0。
+- 验证命令：
+  ```bash
+  npm run leads:promote-discovery-store -- --limit 3 --dry-run
+  npm run leads:promote-discovery-store -- --limit 3
+  npm run leads:test-lead-ops
+  npm run leads:test-lead-ops-scenarios
+  npm run leads:test-lead-ops-low-info
+  ```
+
+## G4. Mockup / Open Design handoff 阀门
+
+- 状态：`NOW`
+- 目标：
+  - 只有满足以下条件的 lead 才进入 mockup / Open Design：
+    - contactable
+    - audit 或 no-website 机会明确
+    - `ready-to-build.json` 有完整 websiteBuildHandoff
+    - `openDesignHandoffDraft.prompt` 足够完整
+- 为什么重要：
+  - Open Design 和 mockup 是时间成本，不应该给低概率目标乱跑。
+- 范围：
+  - 不为 `skip_or_monitor` 自动生成 mockup。
+  - `needs_human` 必须有 operator 按钮决定。
+  - 可先支持 roofing/restaurant 两个高价值路径。
+- 完成标准：
+  - admin 里能从 lead card 看到 “创建 Mockup / 跳过 / 再研究” 的决策结果。
+  - Open Design handoff 能从 `ready-to-build.json` 直接生成，不需要重新问小问题。
+  - 生成的 mockup / template match 能回写 lead history。
+  - `build_mockup_artifacts` 产出的 placeholder preview / screenshot / video 被真实 Open Design 或 template runner 产物替换。
+  - `mockup_ready` 后能自动生成 cold outreach draft，但不自动发送。
+- hard evidence：
+  - `clients/<client>/lead/ready-to-build.json`
+  - `clients/<client>/lead/discovery-log.jsonl`
+  - Open Design prompt / run summary
+  - admin lead note / decision log
+  - `clients/<client>/concept/open-design/mockup-artifacts.json`
+  - `clients/<client>/outreach/outreach-pack.json`
+  - `clients/<client>/outreach/email/01-<client>.json`
+- 验证命令：
+  ```bash
+  npm run leads:build-ready -- --client <client>
+  npm run leads:outreach-brief -- --client <client>
+  npm run funnel:test-lead-note
+  npm run leads:test-discovery-to-mockup-stage
+  ```
+
+### G4.1. 真实样稿产物替换 placeholder
+
+- 状态：`PENDING`
+- 目标：
+  - 把当前 `build_mockup_artifacts` 里的 placeholder preview / screenshot / video，替换成真实 Open Design 或 template runner 产物。
+- 为什么重要：
+  - 当前 pipeline 已经能走到 `mockup_ready` 和 `draft_ready`，但客户可见质量还必须由真实样稿承担。
+- 范围：
+  - 优先支持 restaurant / roofing 两条路径。
+  - 先 template match，再 Open Design run；有成熟模板时不要每个 lead 从零跑。
+  - 产物必须回写：
+    - `clients/<client>/concept/open-design/mockup-artifacts.json`
+    - `clients/<client>/outreach/outreach-pack.json`
+    - `public/admin-artifacts/<client>/mockup-preview.html`
+    - desktop/mobile screenshot
+    - demo video 或可替代的 proof artifact
+- 完成标准：
+  - `mockup_building -> mockup_ready` 不再依赖 placeholder。
+  - Queue / Leads 能显示真实 preview、截图、证明素材和 Open Design/template run evidence。
+  - 如果 Open Design 失败，lead 留在 `mockup_building` 并显示失败原因，不假装 ready。
+- hard evidence：
+  - Open Design/template run status
+  - preview HTML / URL
+  - desktop/mobile screenshots
+  - `mockup-artifacts.json`
+  - Playwright screenshot check
+  - `npm run leads:test-discovery-to-mockup-stage`
+
+### G4.2. 触达发送与回复回流
+
+- 状态：`PENDING`
+- 目标：
+  - 把 `draft_ready` 后面的人工发送 / provider 发送 / 回复回流做成可验证闭环。
+- 为什么重要：
+  - 线索系统真正产生收入，要靠发出、回复、推进成交，而不是停在草稿。
+- 范围：
+  - 默认不自动 live-send。
+  - 先支持人工确认后写 `outreach_sent`，再接 Agentic Inbox provider event。
+  - 记录 opened / clicked / unsubscribed / bounced 先放 backlog，不阻塞第一版。
+- 完成标准：
+  - `draft_ready -> outreach_sent` 有后台 action 和 lead note。
+  - `outreach_sent -> follow_up_due` 能根据 next follow-up 时间进入 Queue。
+  - `replied -> paid_handoff` 有明确人工按钮和 handoff payload。
+- hard evidence：
+  - `clients/<client>/outreach/email/01-<client>.json`
+  - `clients/<client>/outreach/lead-notes.jsonl`
+  - provider/manual send result artifact
+  - `npm run funnel:test-lead-outreach-sent`
+  - `npm run funnel:test-lead-to-paid-handoff`
+
+## G5. Reply / paid handoff 最短路径
+
+- 状态：`NOW`
+- 目标：
+  - 当 lead 回复或人工标记成交意向时，后台能把它推进到 paid intake / project handoff，不需要在聊天里重新拼资料。
+- 为什么重要：
+  - 找 lead 和做 mockup 只有接到钱才闭环。
+  - 这个节点不能靠人工复制粘贴丢上下文。
+- 范围：
+  - `/admin/leads` 的 replied / paid handoff 状态继续细化。
+  - paid handoff 要携带：
+    - lead facts
+    - contact path
+    - outreach brief
+    - mockup / preview link
+    - proposed offer
+    - next customer action
+- 完成标准：
+  - `进入成交交接` 能写入 lead note。
+  - `lead-to-paid-handoff` 生成可用于 paid intake / Discord project thread 的 payload。
+  - `/admin/queue` 能显示 paid handoff 的待处理项。
+- hard evidence：
+  - `clients/<client>/outreach/lead-notes.jsonl`
+  - `data/qa/lead-closure-smoke/lead-to-paid-handoff.json`
+  - `/admin/queue` paid handoff screenshot
+- 验证命令：
+  ```bash
+  npm run funnel:test-lead-to-paid-handoff
+  npm run funnel:test-lead-outreach-sent
+  npm run funnel:test-lead-outreach-index
+  ```
 
 ---
 
@@ -499,7 +830,8 @@ lead / intake
       - 保存到 repo 的 HTML/text
       - `current-site-audit.json` 和 `current-site-audit.md`
       - audit 结论、分数、问题、改进方向
-    - audit 机会弱时自动进入 `需人工`，不再把“很弱的 redesign 机会”硬推成高把握 `可做 Mockup`
+    - audit gate 已固定为：高于 80 分 `skip_or_monitor`，60 到 80 分 `human_review`，低于 60 分 `build_mockup`
+    - 已新增 `site-audit` skill，要求 conversion/trust/SEO 三层审计，并禁止把低影响 SEO/信任卫生项包装成主要触达突破口
     - `Mockup 方向` 明确标记为给 Open Design 的输入
     - `触达草稿` 明确标记为模板级，需要 LLM/人工复写
     - `skip` 作为正式筛选结果：必须显示原因和做过的工作
@@ -516,7 +848,7 @@ lead / intake
     - future agentic inbox 更完整 reply/thread state
     - live external webhook ingest（Instantly / Smartlead）
     - 更高质量的 cold outreach copywriter step：现在 admin 能显示草稿，但质量仍应由专门 LLM/copywriting 流程重写
-    - current-site audit 仍是启发式审计，还需要后续加入更深的网站截图/正文理解和竞争对比
+    - current-site audit 已有 conversion/trust/SEO 结构化输出，但仍是单站启发式审计；后续要加入更深的网站截图/正文理解、竞争对比和更强 copywriter step
 - 最低需求：
   - qualified leads
   - demo-ready leads

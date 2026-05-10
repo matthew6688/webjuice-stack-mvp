@@ -161,10 +161,20 @@ try {
     if (scenario.expect.redesignDecision) assert.equal(result.redesignCheck.decision, scenario.expect.redesignDecision, scenario.id);
     if (scenario.expect.readyToBuildStatus) assert.equal(result.readyToBuild.status, scenario.expect.readyToBuildStatus, scenario.id);
     if (scenario.expect.outreachChannel) assert.equal(result.outreachBrief.channelRecommendation, scenario.expect.outreachChannel, scenario.id);
+    assert.ok(result.readyToBuild.websiteBuildHandoff, `${scenario.id}: expected autonomous website handoff`);
+    assert.ok(result.readyToBuild.aiConclusion?.result, `${scenario.id}: expected AI conclusion`);
+    assert.equal(typeof result.readyToBuild.aiConclusion.score, 'number', `${scenario.id}: expected numeric AI score`);
+    assert.ok(result.readyToBuild.websiteBuildHandoff.openDesignPayload?.prompt?.includes(result.intake.project.businessName), `${scenario.id}: expected Open Design prompt`);
+    assert.ok(result.readyToBuild.websiteBuildHandoff.openDesignPayload?.prompt?.includes('Questionnaire answers'), `${scenario.id}: expected pre-filled Open Design question answers`);
+    if (result.research.contactability.status === 'reachable') {
+      assert.notEqual(result.readyToBuild.aiConclusion.result, 'skip', `${scenario.id}: reachable leads should not be skipped by default`);
+    }
 
     outputs.push({
       id: scenario.id,
       summary: result.summary,
+      aiConclusion: result.readyToBuild.aiConclusion,
+      websitePlanType: result.readyToBuild.websiteBuildHandoff.websitePlan.type,
       paths,
     });
   }

@@ -512,7 +512,7 @@ function inferToneFromContent(content) {
 
 function extractCoreServicesFromContent(content) {
   const menuSections = content.menu?.sections || [];
-  return menuSections.slice(0, 3).map((section) => section.name).filter(Boolean);
+  return menuSections.slice(0, 6).map((section) => section.name).filter(Boolean);
 }
 
 function inferProblemType({ intake, preservation }) {

@@ -6,15 +6,20 @@ import { spawn } from 'child_process';
 import {
   appendAutomationResult,
   buildAutomationMessage,
+  buildQuestionFormAnswerPrompt,
   exportProjectFilesFromDisk,
   normalizeOpenDesignTimeoutMs,
+  buildArtifactWatchConfig,
   normalizeProducedFilesForOpenDesign,
+  summarizeOpenDesignEvents,
   streamRun,
   upsertAutomationMessage,
+  writeOpenDesignRunState,
 } from './run-concept.js';
 
 const DEFAULT_OPEN_DESIGN_ROOT = '/Users/matthew/Developer/open-design';
 const DEFAULT_NODE24 = '/Users/matthew/.local/share/mise/installs/node/24.15.0/bin/node';
+const DEFAULT_OPEN_DESIGN_TIMEOUT_MS = 15 * 60 * 1000;
 
 const args = parseArgs(process.argv.slice(2));
 const clientSlug = args.client || '';
@@ -32,9 +37,11 @@ const port = Number(args.port || process.env.OPEN_DESIGN_PORT || 7466);
 const daemonUrl = (args['daemon-url'] || manifest.daemonUrl || `http://127.0.0.1:${port}`).replace(/\/$/, '');
 const dataDir = path.resolve(args['data-dir'] || manifest.dataDir || process.env.OPEN_DESIGN_DATA_DIR || path.join('/tmp', `profitslocal-open-design-${clientSlug}`));
 const outDir = path.resolve(args.out || manifest.outDir || path.dirname(manifestPath));
-const requestedTimeoutMs = Number(args['timeout-ms'] || args.timeout || 12 * 60 * 1000);
+const requestedTimeoutMs = Number(args['timeout-ms'] || args.timeout || DEFAULT_OPEN_DESIGN_TIMEOUT_MS);
 const artifactQuietMs = Number(args['artifact-quiet-ms'] || 20_000);
+const allowArtifactFallback = Boolean(args['allow-artifact-fallback']);
 const allowShortTimeout = Boolean(args['allow-short-timeout']);
+const maxQuestionFormRounds = Number(args['max-question-form-rounds'] ?? 2);
 const keepDaemon = Boolean(args['keep-daemon'] || args['daemon-url']);
 const dryRun = Boolean(args['dry-run']);
 
@@ -63,7 +70,9 @@ try {
       conversationId: manifest.conversationId || null,
       prompt: buildContinuationPrompt(args.prompt),
       timeoutPolicy,
+      allowArtifactFallback,
       artifactQuietMs,
+      maxQuestionFormRounds,
     }, null, 2));
     process.exit(0);
   }
@@ -116,6 +125,31 @@ try {
     reasoning: args.reasoning || manifest.reasoning || null,
     message: buildContinuationPrompt(args.prompt),
   });
+  const runStartedAt = new Date();
+  const lifecycleBase = {
+    schemaVersion: 1,
+    clientSlug,
+    projectId: manifest.projectId,
+    conversationId,
+    runId: run.runId,
+    agentId: args.agent || manifest.agentId || 'codex',
+    skillId: args.skill || manifest.skillId || 'web-prototype',
+    mode: manifest.mode || 'app-visible',
+    status: 'running',
+    nativeCleanFinish: false,
+    allowArtifactFallback,
+    timeoutPolicy,
+    startedAt: runStartedAt.toISOString(),
+    endedAt: null,
+    durationMs: null,
+    files: [],
+    questionForms: [],
+    questionFormRounds: [],
+    toolUses: [],
+    fileChanges: [],
+    audit: null,
+  };
+  writeOpenDesignRunState({ outDir, state: lifecycleBase });
   await upsertAutomationMessage({
     daemonUrl,
     projectId: manifest.projectId,
@@ -133,38 +167,153 @@ try {
   const eventsPath = path.join(outDir, `run-events-${run.runId}.sse`);
   let finalStatus = null;
   let files = [];
+  let runSummary = null;
+  let activeRun = run;
+  let activeMessageId = assistantMessageId;
+  let activeMessageContent = assistantMessageContent;
+  const questionFormRounds = [];
   try {
-    finalStatus = await streamRun({
-      daemonUrl,
-      runId: run.runId,
-      eventsPath,
-      timeoutMs,
-      artifactWatch: {
-        projectDir: path.join(dataDir, 'projects', manifest.projectId),
-        quietMs: artifactQuietMs,
+    for (let questionRound = 0; ; questionRound += 1) {
+      finalStatus = await streamRun({
+        daemonUrl,
+        runId: activeRun.runId,
+        eventsPath,
+        timeoutMs,
+        artifactWatch: buildArtifactWatchConfig({
+          allowArtifactFallback,
+          projectDir: path.join(dataDir, 'projects', manifest.projectId),
+          quietMs: artifactQuietMs,
+        }),
+      });
+      if (finalStatus.status !== 'succeeded') {
+        throw new Error(`Open Design continuation failed: ${JSON.stringify(finalStatus)}`);
+      }
+
+      files = finalStatus.completionMode === 'artifact_quiet_fallback'
+        ? exportProjectFilesFromDisk({ projectDir: path.join(dataDir, 'projects', manifest.projectId), outDir })
+        : await exportProjectFiles({ daemonUrl, projectId: manifest.projectId, outDir });
+      runSummary = summarizeOpenDesignEvents(eventsPath);
+      if (runSummary.questionForms.length > 0) {
+        if (questionRound >= maxQuestionFormRounds) {
+          throw new Error(`Open Design continuation emitted ${runSummary.questionForms.length} question form(s) after ${maxQuestionFormRounds} auto-answer round(s).`);
+        }
+        const archivedEventsPath = path.join(outDir, `run-events-question-form-continuation-${questionRound}-${activeRun.runId}.sse`);
+        fs.renameSync(eventsPath, archivedEventsPath);
+        const answerPrompt = buildQuestionFormAnswerPrompt({
+          clientSlug,
+          sourceUrl: manifest.sourceUrl || '',
+          businessType: manifest.businessType || 'local business',
+          tone: manifest.tone || 'inherit existing concept',
+          scope: manifest.scope || 'existing concept',
+          originalPrompt: buildContinuationPrompt(args.prompt),
+          questionForms: runSummary.questionForms,
+        });
+        questionFormRounds.push({
+          round: questionRound + 1,
+          sourceRunId: activeRun.runId,
+          eventsPath: path.relative(outDir, archivedEventsPath),
+          questionForms: runSummary.questionForms,
+          answerPrompt,
+          answeredAt: new Date().toISOString(),
+        });
+        writeOpenDesignRunState({
+          outDir,
+          state: {
+            ...lifecycleBase,
+            status: 'answering_question_form',
+            runId: activeRun.runId,
+            questionForms: runSummary.questionForms,
+            questionFormRounds,
+            toolUses: runSummary.toolUses,
+            fileChanges: runSummary.fileChanges,
+            eventCounts: runSummary.eventCounts,
+          },
+        });
+
+        activeMessageId = `assistant-question-form-${Date.now()}`;
+        activeMessageContent = buildAutomationMessage({
+          mode: 'answer-question-form',
+          sourceUrl: manifest.sourceUrl || null,
+          businessType: manifest.businessType || 'unknown',
+          tone: manifest.tone || 'inherit existing concept',
+          scope: manifest.scope || 'existing concept',
+          prompt: answerPrompt,
+        });
+        await upsertAutomationMessage({
+          daemonUrl,
+          projectId: manifest.projectId,
+          conversationId,
+          messageId: activeMessageId,
+          role: 'assistant',
+          content: activeMessageContent,
+          agentId: args.agent || manifest.agentId || 'codex',
+          agentName: args.agent || manifest.agentName || manifest.agentId || 'codex',
+          runStatus: 'queued',
+        });
+        activeRun = await postJson(`${daemonUrl}/api/runs`, {
+          agentId: args.agent || manifest.agentId || 'codex',
+          projectId: manifest.projectId,
+          conversationId,
+          assistantMessageId: activeMessageId,
+          clientRequestId: `client-question-form-${Date.now()}`,
+          skillId: args.skill || manifest.skillId || 'web-prototype',
+          designSystemId: args['design-system'] || manifest.designSystemId || null,
+          model: args.model || manifest.model || 'default',
+          reasoning: args.reasoning || manifest.reasoning || null,
+          message: answerPrompt,
+        });
+        await upsertAutomationMessage({
+          daemonUrl,
+          projectId: manifest.projectId,
+          conversationId,
+          messageId: activeMessageId,
+          role: 'assistant',
+          content: activeMessageContent,
+          agentId: args.agent || manifest.agentId || 'codex',
+          agentName: args.agent || manifest.agentName || manifest.agentId || 'codex',
+          runId: activeRun.runId,
+          runStatus: 'running',
+          startedAt: Date.now(),
+        });
+        continue;
+      }
+      break;
+    }
+    const runEndedAt = new Date();
+    writeOpenDesignRunState({
+      outDir,
+      state: {
+        ...lifecycleBase,
+        runId: activeRun.runId,
+        initialRunId: run.runId,
+        status: finalStatus.status || 'unknown',
+        nativeCleanFinish: runSummary.nativeCleanFinish && !finalStatus.completionMode,
+        completionMode: finalStatus.completionMode || 'native',
+        endedAt: runEndedAt.toISOString(),
+        durationMs: runEndedAt.getTime() - runStartedAt.getTime(),
+        files,
+        questionForms: runSummary.questionForms,
+        questionFormRounds,
+        toolUses: runSummary.toolUses,
+        fileChanges: runSummary.fileChanges,
+        eventCounts: runSummary.eventCounts,
+        audit: null,
       },
     });
-    if (finalStatus.status !== 'succeeded') {
-      throw new Error(`Open Design continuation failed: ${JSON.stringify(finalStatus)}`);
-    }
-
-    files = finalStatus.completionMode === 'artifact_quiet_fallback'
-      ? exportProjectFilesFromDisk({ projectDir: path.join(dataDir, 'projects', manifest.projectId), outDir })
-      : await exportProjectFiles({ daemonUrl, projectId: manifest.projectId, outDir });
     await upsertAutomationMessage({
       daemonUrl,
       projectId: manifest.projectId,
       conversationId,
-      messageId: assistantMessageId,
+      messageId: activeMessageId,
       role: 'assistant',
-      content: appendAutomationResult(assistantMessageContent, {
+      content: appendAutomationResult(activeMessageContent, {
         status: 'succeeded',
         completionMode: finalStatus.completionMode || 'native',
         fileCount: files.length,
       }),
       agentId: args.agent || manifest.agentId || 'codex',
       agentName: args.agent || manifest.agentName || manifest.agentId || 'codex',
-      runId: run.runId,
+      runId: activeRun.runId,
       runStatus: 'succeeded',
       startedAt: Date.now(),
       endedAt: Date.now(),
@@ -193,15 +342,28 @@ try {
   const updatedManifest = {
     ...manifest,
     updatedAt: new Date().toISOString(),
-    lastRunId: run.runId,
+    lastRunId: activeRun.runId,
     previousRunId: manifest.lastRunId || manifest.runId,
     timeoutPolicy,
+    allowArtifactFallback,
+    artifactQuietMs,
+    maxQuestionFormRounds,
+    lifecycle: {
+      startedAt: runStartedAt.toISOString(),
+      endedAt: new Date().toISOString(),
+      nativeCleanFinish: Boolean(runSummary?.nativeCleanFinish && !finalStatus?.completionMode),
+      questionForms: runSummary?.questionForms || [],
+      questionFormRounds,
+      toolUses: runSummary?.toolUses || [],
+      fileChanges: runSummary?.fileChanges || [],
+    },
     status: finalStatus,
     files,
     continuationRuns: [
       ...(manifest.continuationRuns || []),
       {
         runId: run.runId,
+        lastRunId: activeRun.runId,
         createdAt: new Date().toISOString(),
         prompt: args.prompt,
         status: finalStatus,
@@ -217,7 +379,7 @@ try {
     ok: true,
     clientSlug,
     projectId: manifest.projectId,
-    runId: run.runId,
+    runId: activeRun.runId,
     outDir,
     files: files.length,
   }, null, 2));
@@ -226,6 +388,7 @@ try {
   process.exitCode = 1;
 } finally {
   if (daemonProcess && !keepDaemon) daemonProcess.kill('SIGTERM');
+  process.exit(process.exitCode || 0);
 }
 
 function buildContinuationPrompt(prompt) {

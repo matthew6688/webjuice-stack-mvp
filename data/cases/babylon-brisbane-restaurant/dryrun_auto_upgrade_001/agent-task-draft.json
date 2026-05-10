@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "id": "task_1778138689540_zzz3ouqg",
+  "clientSlug": "babylon-brisbane-restaurant",
+  "type": "sale",
+  "repo": "matthew6688/babylon-brisbane-restaurant",
+  "branch": "dev",
+  "evidencePath": "clients/babylon-brisbane-restaurant/evidence/evidence.json",
+  "contentPath": "clients/babylon-brisbane-restaurant/content.restaurant.json",
+  "designPath": "clients/babylon-brisbane-restaurant/design.restaurant.json",
+  "checkoutPath": "clients/babylon-brisbane-restaurant/funnel/checkout.json",
+  "brandSpecPath": "clients/babylon-brisbane-restaurant/brand-spec.md",
+  "websiteSurveyPath": "clients/babylon-brisbane-restaurant/intake/website-survey.json",
+  "buildPacketPath": "data/cases/babylon-brisbane-restaurant/dryrun_auto_upgrade_001/build-packet.md",
+  "openDesign": {
+    "status": "bound",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "babylon-brisbane-restaurant-open-design-1778138142858",
+    "runId": "94a3a5f2-b4af-47c0-a8bc-129447d4c9ad",
+    "conceptPath": "clients/babylon-brisbane-restaurant/concept/open-design",
+    "manifestPath": "clients/babylon-brisbane-restaurant/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/babylon-brisbane-restaurant/concept/open-design/production-handoff.json",
+    "createCommand": "",
+    "continueCommand": "npm run open-design:continue-concept -- --client babylon-brisbane-restaurant --prompt \"<change request>\"",
+    "syncCommand": "npm run open-design:sync-from-app -- --client babylon-brisbane-restaurant",
+    "rule": "Use this exact local Open Design project for design concept changes. Do not start a separate Open Design project unless the operator explicitly asks."
+  },
+  "productionHandoffPath": "clients/babylon-brisbane-restaurant/concept/open-design/production-handoff.json",
+  "repoBootstrap": {
+    "status": "ready",
+    "repo": "matthew6688/babylon-brisbane-restaurant",
+    "repoDir": "/Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant",
+    "pagesProjectName": "babylon-brisbane-restaurant",
+    "defaultBranch": "main",
+    "devBranch": "dev",
+    "waitForActions": true,
+    "command": "npm run deploy:bootstrap-client-repo -- --repo matthew6688/babylon-brisbane-restaurant --repo-dir /Users/matthew/Developer/webjuice-generated/babylon-brisbane-restaurant --pages-project-name babylon-brisbane-restaurant --main main --dev dev --wait true --execute true",
+    "rule": "Run this once before agent completion when the customer repo or Pages projects do not exist yet."
+  },
+  "createdFrom": "manual",
+  "createdAt": "2026-05-07T07:24:49.540Z",
+  "order": {
+    "orderId": "dryrun_auto_upgrade_001",
+    "clientSlug": "babylon-brisbane-restaurant",
+    "repo": "matthew6688/babylon-brisbane-restaurant",
+    "email": "matthew6688@gmail.com",
+    "company": "Babylon Brisbane",
+    "previewUrl": "https://babylon-brisbane-restaurant-dev.pages.dev/",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD"
+  },
+  "acceptanceCriteria": [
+    "Complete the requested task.",
+    "Run the relevant validation command.",
+    "Record outcome and next action."
+  ]
+}

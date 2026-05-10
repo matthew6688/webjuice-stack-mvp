@@ -58,6 +58,33 @@ try {
   });
   assert.equal(blockedDecision.status, BUILD_READY_STATUS.BLOCKED_UNREACHABLE);
 
+  const auditBase = {
+    research: createLeadResearch({
+      sourceType: 'manual',
+      businessName: 'Audit Roofing',
+      industry: 'roofing',
+      phone: '0400 111 222',
+      websiteUrl: 'https://auditroof.example',
+      observations: ['Existing website audit drives the sales decision.'],
+      services: ['roof repairs'],
+    }),
+  };
+  const weakSiteDecision = createBuildReadyDecision({
+    ...auditBase,
+    currentSiteAudit: { score: 55, verdict: 'clear conversion issues' },
+  });
+  assert.equal(weakSiteDecision.aiConclusion.result, 'ready_for_mockup');
+  const middlingSiteDecision = createBuildReadyDecision({
+    ...auditBase,
+    currentSiteAudit: { score: 72, verdict: 'some issues' },
+  });
+  assert.equal(middlingSiteDecision.aiConclusion.result, 'needs_human');
+  const strongSiteDecision = createBuildReadyDecision({
+    ...auditBase,
+    currentSiteAudit: { score: 84, verdict: 'solid website' },
+  });
+  assert.equal(strongSiteDecision.aiConclusion.result, 'skip');
+
   console.log(JSON.stringify({
     ok: true,
     assertions: {
@@ -65,6 +92,9 @@ try {
       readyReadiness: readyDecision.websiteReady?.readiness,
       teaserStatus: teaserDecision.status,
       blockedStatus: blockedDecision.status,
+      audit55: weakSiteDecision.aiConclusion.result,
+      audit72: middlingSiteDecision.aiConclusion.result,
+      audit84: strongSiteDecision.aiConclusion.result,
     },
   }, null, 2));
 } finally {

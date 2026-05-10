@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "provider": "manual-chatgpt-image",
+  "model": "chatgpt-image2-ui",
+  "family": "editorial-bold-commercial",
+  "niche": "roofing",
+  "generatedAt": "2026-05-09T10:14:28+10:00",
+  "recordedAt": "2026-05-09T00:16:38.370Z",
+  "promptPack": "templates/roofing/image-prompts/chatgpt-image2-prompt-pack.md",
+  "status": "reviewed",
+  "overall": {
+    "approvedCount": 3,
+    "usableCount": 2,
+    "rejectedCount": 0,
+    "recommendation": "Use wide worker-on-metal-roof as primary hero. Use commercial roof detail for project/material proof, diagonal roofer shot for services/alternate hero, orange worker image as high-energy tile, portrait team shot for story block."
+  },
+  "assets": [
+    {
+      "file": "family2-hero-worker-standing-metal-roof-wide.png",
+      "promptId": "editorial-07-hero-bold-roofer-on-metal-roof",
+      "slot": "hero",
+      "status": "approved_for_template_candidate",
+      "score": 93,
+      "notes": "Best Family 2 hero. Huge blue negative space, strong metal roof plane, worker scale, editorial commercial feel. Great for oversized headline overlay.",
+      "path": "templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-hero-worker-standing-metal-roof-wide.png"
+    },
+    {
+      "file": "family2-project-commercial-metal-roof-detail.png",
+      "promptId": "editorial-09-project-commercial-roof-detail",
+      "slot": "project/detail",
+      "status": "approved_for_template_candidate",
+      "score": 89,
+      "notes": "Excellent architectural/detail crop for project gallery or material proof. No people, strong geometry, premium commercial metal finish.",
+      "path": "templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-project-commercial-metal-roof-detail.png"
+    },
+    {
+      "file": "family2-service-roofer-metal-roof-diagonal.png",
+      "promptId": "editorial-11-services-numbered-service-list-background",
+      "slot": "service/hero-alternate",
+      "status": "approved_for_template_candidate",
+      "score": 90,
+      "notes": "Strong diagonal metal roof and worker placement. Can be services hero or alternate hero; enough sky on left for text.",
+      "path": "templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-roofer-metal-roof-diagonal.png"
+    },
+    {
+      "file": "family2-service-orange-accent-roof-work.png",
+      "promptId": "editorial-10-project-orange-accent-roof-work",
+      "slot": "service/project",
+      "status": "usable_with_crop",
+      "score": 84,
+      "notes": "Good orange accent and energy. Slightly busy and close-cropped, but useful for bold project/service tiles.",
+      "path": "templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-orange-accent-roof-work.png"
+    },
+    {
+      "file": "family2-story-two-roofers-metal-roof-portrait.png",
+      "promptId": "editorial-08-story-two-roofers-on-site",
+      "slot": "story/team",
+      "status": "usable",
+      "score": 83,
+      "notes": "Useful team/story section image. Portrait format, good black/orange palette, but less iconic than the hero and detail shots.",
+      "path": "templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-story-two-roofers-metal-roof-portrait.png"
+    }
+  ]
+}

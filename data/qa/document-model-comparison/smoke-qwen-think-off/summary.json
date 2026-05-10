@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-qwen-think-off",
+  "promptVariant": "strict-v2",
+  "outRoot": "data/qa/document-model-comparison/smoke-qwen-think-off",
+  "providers": [
+    {
+      "id": "ollama-qwen3.6:27b",
+      "provider": "ollama",
+      "model": "qwen3.6:27b",
+      "status": "ok",
+      "durationMs": 230390,
+      "score": 95,
+      "grade": "A",
+      "ok": true,
+      "topFindings": [
+        {
+          "severity": "major",
+          "code": "gap_score_out_of_range",
+          "points": -6,
+          "message": "Gap score dimensions exceed expected ranges: conversion, localSeo, designTrust, content."
+        }
+      ]
+    }
+  ],
+  "bestProvider": "ollama-qwen3.6:27b",
+  "generatedAt": "2026-05-10T06:58:29.531Z",
+  "reevaluatedAt": "2026-05-10T07:08:23.886Z"
+}

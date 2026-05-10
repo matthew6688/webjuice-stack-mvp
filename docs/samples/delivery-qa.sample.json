@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "orderId": "cs_test_example",
+  "generatedAt": "2026-05-06T00:00:00.000Z",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+  "qaContractPath": "clients/opa-bar-mezze-restaurant/intake/website-survey.json",
+  "checks": {
+    "businessData": {
+      "status": "pass",
+      "blockers": [],
+      "verified": [
+        "business.name",
+        "business.addressOrServiceArea",
+        "business.phone",
+        "business.website",
+        "content.primaryCtaUrl"
+      ]
+    },
+    "nicheCompleteness": {
+      "status": "pass",
+      "blockers": [],
+      "notes": [
+        "Restaurant reservation CTA present.",
+        "Menu is treated as restaurant-specific optional content."
+      ]
+    },
+    "design": {
+      "status": "pass",
+      "score": 8,
+      "blockers": [],
+      "warnings": [],
+      "notes": [
+        "Looks like a formal official restaurant website, not a menu-only page.",
+        "Brand colors and logo are used."
+      ]
+    },
+    "copywriting": {
+      "status": "pass",
+      "blockers": [],
+      "warnings": [],
+      "notes": [
+        "Copy is specific and avoids unsupported claims."
+      ]
+    },
+    "technical": {
+      "status": "pass",
+      "blockers": [],
+      "commands": [
+        {
+          "command": "npm run build",
+          "ok": true
+        }
+      ],
+      "links": {
+        "tel": "pass",
+        "maps": "pass",
+        "reservation": "pass",
+        "approve": "pass",
+        "revise": "pass",
+        "domainSetup": "pass"
+      }
+    },
+    "customerCommunication": {
+      "status": "pass",
+      "blockers": [],
+      "reviewEmailIntent": "dev_preview_ready",
+      "requiredLinks": {
+        "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+        "approveUrl": "https://profitslocal.com/approve?order_id=cs_test_example&email=customer%40example.com&client_slug=opa-bar-mezze-restaurant&preview_url=https%3A%2F%2Fopa-bar-mezze-restaurant-dev.pages.dev%2F",
+        "reviseUrl": "https://profitslocal.com/revision?order_id=cs_test_example&email=customer%40example.com&client_slug=opa-bar-mezze-restaurant&preview_url=https%3A%2F%2Fopa-bar-mezze-restaurant-dev.pages.dev%2F",
+        "domainSetupUrl": "https://profitslocal.com/domain-setup?client_slug=opa-bar-mezze-restaurant&order_id=cs_test_example&email=customer%40example.com&preview_url=https%3A%2F%2Fopa-bar-mezze-restaurant-dev.pages.dev%2F"
+      }
+    }
+  },
+  "blockingIssues": [],
+  "warnings": [],
+  "readyForCustomerReview": true
+}

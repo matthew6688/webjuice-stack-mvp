@@ -1,0 +1,2130 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-09T10:53:53.252Z",
+  "runId": "20260509-g5-roof-brisbane",
+  "query": "roof restoration in Brisbane",
+  "niche": "roofing",
+  "city": "Brisbane",
+  "costPolicy": {
+    "googlePlacesApi": "not_used_in_discovery",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis",
+    "proxy": "none",
+    "notes": [
+      "Use maps scraper for cheap broad discovery.",
+      "Use Google Places API only after a candidate is selected for official verification/evidence.",
+      "Use Tinyfish/site-audit only for selected website audit candidates.",
+      "The upstream scraper may return small default review samples; this workflow strips review/email payloads before analysis storage unless explicitly overridden."
+    ]
+  },
+  "toolLog": {
+    "tool": "gosom/google-maps-scraper",
+    "toolVersion": "docker:gosom/google-maps-scraper:latest",
+    "command": "docker run --rm -v gmaps-playwright-cache:/opt -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-roof-brisbane/queries.txt:/queries.txt:ro -v /Users/matthew/Developer/google-map-website/data/maps-scraper/runs/20260509-g5-roof-brisbane:/out gosom/google-maps-scraper:latest -input /queries.txt -results /out/results.maps.json -json -depth 1 -c 1 -lang en -exit-on-inactivity 90s",
+    "rawPath": "data/maps-scraper/runs/20260509-g5-roof-brisbane/results.maps.json",
+    "proxy": "none",
+    "googlePlacesApi": "not_used",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis",
+    "docker": {
+      "status": 0,
+      "signal": null,
+      "skipped": false
+    }
+  },
+  "totals": {
+    "rawRows": 22,
+    "leads": 22,
+    "withWebsite": 21,
+    "withPhone": 22,
+    "actionCounts": {
+      "starter_candidate": 1,
+      "audit_candidate": 1,
+      "skip": 17,
+      "manual_review": 3
+    },
+    "websiteStatusCounts": {
+      "no_website": 1,
+      "independent_http_site": 4,
+      "independent_https_site": 17
+    }
+  },
+  "queue": {
+    "starterCandidates": [
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJd28oJC37k2sR-3f5YiMLY-4",
+        "place_id": "ChIJd28oJC37k2sR-3f5YiMLY-4",
+        "cid": "17177585650333480955",
+        "data_id": "0x6b93fb2d24286f77:0xee630b2362f977fb",
+        "name": "Regan Brothers Roof Restoration",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "Kallangur QLD 4503",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0431 275 646",
+        "website": "",
+        "google_maps_url": "https://www.google.com/maps/place/Regan+Brothers+Roof+Restoration/data=!4m7!3m6!1s0x6b93fb2d24286f77:0xee630b2362f977fb!8m2!3d-27.2507456!4d152.9926509!16s%2Fg%2F11j65chsg2!19sChIJd28oJC37k2sR-3f5YiMLY-4?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 4,
+        "latitude": -27.2507456,
+        "longitude": 152.9926509,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "no_website",
+        "discoveryScore": 67,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "starter_candidate",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": false,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 2,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      }
+    ],
+    "auditCandidates": [
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJn587YC79k2sR7VYVY-EGoaM",
+        "place_id": "ChIJn587YC79k2sR7VYVY-EGoaM",
+        "cid": "11790712864532420333",
+        "data_id": "0x6b93fd2e603b9f9f:0xa3a106e1631556ed",
+        "name": "FIX MY ROOF Total Roof Restorations",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Tile contractor"
+        ],
+        "address": "29 Darien St, Bridgeman Downs QLD 4035",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0410 607 076",
+        "website": "http://billdu.me/fixmyrooftotalroofrestorations",
+        "google_maps_url": "https://www.google.com/maps/place/FIX+MY+ROOF+Total+Roof+Restorations/data=!4m7!3m6!1s0x6b93fd2e603b9f9f:0xa3a106e1631556ed!8m2!3d-27.3612506!4d152.9921766!16s%2Fg%2F11bbw_yb_r!19sChIJn587YC79k2sR7VYVY-EGoaM?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 127,
+        "latitude": -27.361250599999998,
+        "longitude": 152.9921766,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 66,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "til",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "audit_candidate",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 8,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      }
+    ],
+    "manualReview": [
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+        "place_id": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+        "cid": "7386516257847653874",
+        "data_id": "0x6b9145ef8ae77aa3:0x66822d66aca835f2",
+        "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Repair service"
+        ],
+        "address": "101 Kulcha St, Algester QLD 4115",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3276 1546",
+        "website": "https://brisbaneroofingsolutions.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roofing+Solutions+%7C+Roof+Restoration+%26+Repairs/data=!4m7!3m6!1s0x6b9145ef8ae77aa3:0x66822d66aca835f2!8m2!3d-27.626822!4d153.0280723!16s%2Fg%2F1tjxfv0t!19sChIJo3rniu9FkWsR8jWorGYtgmY?authuser=0&hl=en&rclk=1",
+        "rating": 4.8,
+        "review_count": 118,
+        "latitude": -27.626821999999997,
+        "longitude": 153.0280723,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 49,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "manual_review",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": true,
+          "imageCount": 8,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJzffLvfb3k2sRldcXRdV26p4",
+        "place_id": "ChIJzffLvfb3k2sRldcXRdV26p4",
+        "cid": "11451095660902209429",
+        "data_id": "0x6b93f7f6bdcbf7cd:0x9eea76d54517d795",
+        "name": "WeatherpRoof Restorations",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "115/193 S Pine Rd, Brendale QLD 4500",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3171 2855",
+        "website": "https://weatherproof.net.au/",
+        "google_maps_url": "https://www.google.com/maps/place/WeatherpRoof+Restorations/data=!4m7!3m6!1s0x6b93f7f6bdcbf7cd:0x9eea76d54517d795!8m2!3d-27.3257159!4d152.9817482!16s%2Fg%2F11h_t5lw82!19sChIJzffLvfb3k2sRldcXRdV26p4?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 134,
+        "latitude": -27.3257159,
+        "longitude": 152.9817482,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 45,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "manual_review",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": true,
+          "imageCount": 6,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJA7RMbN38k2sRV29x1UBWQmg",
+        "place_id": "ChIJA7RMbN38k2sRV29x1UBWQmg",
+        "cid": "7512661964866285399",
+        "data_id": "0x6b93fcdd6c4cb403:0x68425640d5716f57",
+        "name": "Roof Space Renovators",
+        "category": "Home improvement store",
+        "categories": [
+          "Home improvement store",
+          "Construction company",
+          "Ladder supplier",
+          "Skylight contractor"
+        ],
+        "address": "5/53 Lawnton Pocket Rd, Lawnton QLD 4501",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3889 6688",
+        "website": "https://www.roofspacerenovators.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Roof+Space+Renovators/data=!4m7!3m6!1s0x6b93fcdd6c4cb403:0x68425640d5716f57!8m2!3d-27.2830883!4d152.9900512!16s%2Fg%2F11c1rf965s!19sChIJA7RMbN38k2sRV29x1UBWQmg?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 221,
+        "latitude": -27.2830883,
+        "longitude": 152.99005119999998,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 42,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "manual_review",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 6,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      }
+    ],
+    "skipped": [
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJVVVVVbxekWsRjEOQJzDBkOI",
+        "place_id": "ChIJVVVVVbxekWsRjEOQJzDBkOI",
+        "cid": "16325761061784404876",
+        "data_id": "0x6b915ebc55555555:0xe290c1302790438c",
+        "name": "Diamond Roof Tiling & Restoration",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Painting",
+          "Repair service"
+        ],
+        "address": "64 Washington Ave, Tingalpa QLD 4173",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0413 559 693",
+        "website": "http://www.diamondrooftiling.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Diamond+Roof+Tiling+%26+Restoration/data=!4m7!3m6!1s0x6b915ebc55555555:0xe290c1302790438c!8m2!3d-27.4760304!4d153.122351!16s%2Fg%2F11xc_dfx6!19sChIJVVVVVbxekWsRjEOQJzDBkOI?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 65,
+        "latitude": -27.4760304,
+        "longitude": 153.12235099999998,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 51,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "til",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 8,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJK3BAqR1akWsR204xlo83bFg",
+        "place_id": "ChIJK3BAqR1akWsR204xlo83bFg",
+        "cid": "6371528662662074075",
+        "data_id": "0x6b915a1da940702b:0x586c378f96314edb",
+        "name": "ABC Roof Restoration Brisbane",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "12/76 Eagle St, Brisbane City QLD 4000",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3130 0115",
+        "website": "http://abcroofrestorationbrisbane.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/ABC+Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x6b915a1da940702b:0x586c378f96314edb!8m2!3d-27.4669178!4d153.0300616!16s%2Fg%2F11y2ndgxqp!19sChIJK3BAqR1akWsR204xlo83bFg?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 20,
+        "latitude": -27.466917799999997,
+        "longitude": 153.03006159999998,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 47,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJa-7okWVXkWsRV9oeIdsGkkU",
+        "place_id": "ChIJa-7okWVXkWsRV9oeIdsGkkU",
+        "cid": "5013076873440057943",
+        "data_id": "0x6b91576591e8ee6b:0x459206db211eda57",
+        "name": "ACM Constructions",
+        "category": "Custom home builder",
+        "categories": [
+          "Custom home builder",
+          "Bathroom remodeler",
+          "Deck builder",
+          "Home builder",
+          "Kitchen remodeler"
+        ],
+        "address": "26 Kate St, Alderley QLD 4051",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3607 3133",
+        "website": "http://www.acmconstructions.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/ACM+Constructions/data=!4m7!3m6!1s0x6b91576591e8ee6b:0x459206db211eda57!8m2!3d-27.430302!4d153.003782!16s%2Fg%2F11bz0d1xs4!19sChIJa-7okWVXkWsRV9oeIdsGkkU?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 8,
+        "latitude": -27.4303016,
+        "longitude": 153.0037817,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 47,
+        "relevance": {
+          "relevant": false,
+          "reason": "category_name_mismatch",
+          "requiredAny": [
+            "roof",
+            "gutter",
+            "til",
+            "restoration",
+            "metal"
+          ],
+          "haystack": "acm constructions custom home builder custom home builder bathroom remodeler deck builder home builder kitchen remodeler"
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJp1SHDrSUrCIRfsytxKskNTk",
+        "place_id": "ChIJp1SHDrSUrCIRfsytxKskNTk",
+        "cid": "4122241354085289086",
+        "data_id": "0x22ac94b40e8754a7:0x393524abc4adcc7e",
+        "name": "Oz-Roof Restoration Brisbane",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Service establishment"
+        ],
+        "address": "",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0419 039 693",
+        "website": "https://oz-roof.com.au/roof-restoration-brisbane/",
+        "google_maps_url": "https://www.google.com/maps/place/Oz-Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x22ac94b40e8754a7:0x393524abc4adcc7e!8m2!3d-27.598581!4d153.1103469!16s%2Fg%2F11w8fxl1bf!19sChIJp1SHDrSUrCIRfsytxKskNTk?authuser=0&hl=en&rclk=1",
+        "rating": 4.8,
+        "review_count": 53,
+        "latitude": -27.598581,
+        "longitude": 153.1103469,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 30,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": true,
+          "imageCount": 6,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJ4yVIrdnjk2sRc2uajtK3YKo",
+        "place_id": "ChIJ4yVIrdnjk2sRc2uajtK3YKo",
+        "cid": "12277014699175471987",
+        "data_id": "0x6b93e3d9ad4825e3:0xaa60b7d28e9a6b73",
+        "name": "A One Roof Restoration",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "6 Peppermint Ct, Bracken Ridge QLD 4017",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0420 764 197",
+        "website": "https://aoneroofingsolutions.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/A+One+Roof+Restoration/data=!4m7!3m6!1s0x6b93e3d9ad4825e3:0xaa60b7d28e9a6b73!8m2!3d-27.327785!4d153.0168504!16s%2Fg%2F11rq62gf87!19sChIJ4yVIrdnjk2sRc2uajtK3YKo?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 91,
+        "latitude": -27.327785,
+        "longitude": 153.01685039999998,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJs5iYMFBXkWsRupfzt6iWDYY",
+        "place_id": "ChIJs5iYMFBXkWsRupfzt6iWDYY",
+        "cid": "9659542427164448698",
+        "data_id": "0x6b915750309898b3:0x860d96a8b7f397ba",
+        "name": "Metro Hail",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Small claims assistance service"
+        ],
+        "address": "14 Gore St, Albion QLD 4010",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3101 0881",
+        "website": "https://metrohail.com.au/?utm_source=google&utm_medium=organic&utm_campaign=gbp",
+        "google_maps_url": "https://www.google.com/maps/place/Metro+Hail/data=!4m7!3m6!1s0x6b915750309898b3:0x860d96a8b7f397ba!8m2!3d-27.432462!4d153.041824!16s%2Fg%2F11llb777lz!19sChIJs5iYMFBXkWsRupfzt6iWDYY?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 90,
+        "latitude": -27.4324621,
+        "longitude": 153.0418243,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJ6ekVliTjk2sRPRTYnZjLDQ8",
+        "place_id": "ChIJ6ekVliTjk2sRPRTYnZjLDQ8",
+        "cid": "1084746941609808957",
+        "data_id": "0x6b93e3249615e9e9:0xf0dcb989dd8143d",
+        "name": "Storm Call Roofing Projects Pty Ltd",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Skylight contractor"
+        ],
+        "address": "9/133 S Pine Rd, Brendale QLD 4500",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3886 6166",
+        "website": "https://stormcallroofing.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Storm+Call+Roofing+Projects+Pty+Ltd/data=!4m7!3m6!1s0x6b93e3249615e9e9:0xf0dcb989dd8143d!8m2!3d-27.3227793!4d152.9864488!16s%2Fg%2F11nxnmtbjn!19sChIJ6ekVliTjk2sRPRTYnZjLDQ8?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 63,
+        "latitude": -27.322779299999997,
+        "longitude": 152.9864488,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 6,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJ51azx8ubk2sRwqzA1WpfNt8",
+        "place_id": "ChIJ51azx8ubk2sRwqzA1WpfNt8",
+        "cid": "16084148031657651394",
+        "data_id": "0x6b939bcbc7b356e7:0xdf365f6ad5c0acc2",
+        "name": "The Roofing Group",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Property maintenance",
+          "Siding contractor"
+        ],
+        "address": "108 Lipscombe Rd, Deception Bay QLD 4508",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "1300 780 079",
+        "website": "https://www.theroofinggroup.com.au/?utm_source=googlemybusiness&utm_medium=organic&utm_campaign=GMB",
+        "google_maps_url": "https://www.google.com/maps/place/The+Roofing+Group/data=!4m7!3m6!1s0x6b939bcbc7b356e7:0xdf365f6ad5c0acc2!8m2!3d-27.1997142!4d153.0149648!16s%2Fg%2F11h3_c1zxz!19sChIJ51azx8ubk2sRwqzA1WpfNt8?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 60,
+        "latitude": -27.1997142,
+        "longitude": 153.0149648,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJPcgN0U37k2sRJPVWz5jGtZA",
+        "place_id": "ChIJPcgN0U37k2sRJPVWz5jGtZA",
+        "cid": "10427458871862162724",
+        "data_id": "0x6b93fb4dd10dc83d:0x90b5c698cf56f524",
+        "name": "Renewed Roofing Pty Ltd",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "Diamond Jubilee Way, North Lakes QLD 4509",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "1300 570 704",
+        "website": "https://renewedroofing.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Renewed+Roofing+Pty+Ltd/data=!4m7!3m6!1s0x6b93fb4dd10dc83d:0x90b5c698cf56f524!8m2!3d-27.2190568!4d153.0000603!16s%2Fg%2F11q8wxt9dk!19sChIJPcgN0U37k2sRJPVWz5jGtZA?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 44,
+        "latitude": -27.219056799999997,
+        "longitude": 153.0000603,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJrQ6qULNbkWsRUEttr7eeGYc",
+        "place_id": "ChIJrQ6qULNbkWsRUEttr7eeGYc",
+        "cid": "9734986581297417040",
+        "data_id": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+        "name": "Ace Roofing Service",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "72 Queen St, Brisbane City QLD 4000",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0449 168 985",
+        "website": "https://aceroofingservice.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Ace+Roofing+Service/data=!4m7!3m6!1s0x6b915bb350aa0ead:0x87199eb7af6d4b50!8m2!3d-27.4701995!4d153.023841!16s%2Fg%2F11lmp8hp4y!19sChIJrQ6qULNbkWsRUEttr7eeGYc?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 36,
+        "latitude": -27.4701995,
+        "longitude": 153.023841,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJE8dPKvf7k2sRb5xFPG8J9Sw",
+        "place_id": "ChIJE8dPKvf7k2sRb5xFPG8J9Sw",
+        "cid": "3239505880320154735",
+        "data_id": "0x6b93fbf72a4fc713:0x2cf5096f3c459c6f",
+        "name": "Rainbird Roof Restorations",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "12 Stonehaven Pl, Narangba QLD 4504",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0414 909 346",
+        "website": "https://rainbirdroofing.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Rainbird+Roof+Restorations/data=!4m7!3m6!1s0x6b93fbf72a4fc713:0x2cf5096f3c459c6f!8m2!3d-27.1849142!4d152.9275327!16s%2Fg%2F11t5n4dqts!19sChIJE8dPKvf7k2sRb5xFPG8J9Sw?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 32,
+        "latitude": -27.184914199999998,
+        "longitude": 152.9275327,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJb_O9UPtZkWsREA8k_RrJ7AU",
+        "place_id": "ChIJb_O9UPtZkWsREA8k_RrJ7AU",
+        "cid": "426937182446685968",
+        "data_id": "0x6b9159fb50bdf36f:0x5ecc91afd240f10",
+        "name": "J & R Rooftiling",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "28 Bowen St, Windsor QLD 4030",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0410 481 697",
+        "website": "https://www.jandrrooftiling.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/J+%26+R+Rooftiling/data=!4m7!3m6!1s0x6b9159fb50bdf36f:0x5ecc91afd240f10!8m2!3d-27.4333342!4d153.0336807!16s%2Fg%2F11rzphhscs!19sChIJb_O9UPtZkWsREA8k_RrJ7AU?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 23,
+        "latitude": -27.433334199999997,
+        "longitude": 153.0336807,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "til"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
+        "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
+        "cid": "5345551503130488494",
+        "data_id": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
+        "name": "Brisbane Roof Restoration Experts",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "Unit 22/104 Barwon St, Morningside QLD 4170",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3132 1605",
+        "website": "https://brisbaneroofrestorationexperts.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roof+Restoration+Experts/data=!4m7!3m6!1s0x6b91596c1762d0c1:0x4a2f36c528a5eeae!8m2!3d-27.4577712!4d153.0780826!16s%2Fg%2F11lmhqwqq0!19sChIJwdBiF2xZkWsRru6lKMU2L0o?authuser=0&hl=en&rclk=1",
+        "rating": 4.9,
+        "review_count": 21,
+        "latitude": -27.4577712,
+        "longitude": 153.0780826,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJbdSMbxxakWsR_OCvjKMTNFc",
+        "place_id": "ChIJbdSMbxxakWsR_OCvjKMTNFc",
+        "cid": "6283668973249618172",
+        "data_id": "0x6b915a1c6f8cd46d:0x573413a38cafe0fc",
+        "name": "Smart Roof Restoration Brisbane",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "12 Eagle St, Brisbane City QLD 4000",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3132 2002",
+        "website": "https://www.smartroofrestorationbrisbane.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Smart+Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x6b915a1c6f8cd46d:0x573413a38cafe0fc!8m2!3d-27.4694344!4d153.0302442!16s%2Fg%2F11vpx731rt!19sChIJbdSMbxxakWsR_OCvjKMTNFc?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 17,
+        "latitude": -27.469434399999997,
+        "longitude": 153.0302442,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJSypmTxxakWsRj5ytLt8t_PE",
+        "place_id": "ChIJSypmTxxakWsRj5ytLt8t_PE",
+        "cid": "17436862293855804559",
+        "data_id": "0x6b915a1c4f662a4b:0xf1fc2ddf2ead9c8f",
+        "name": "Pro Roof Restoration Brisbane",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Building restoration service"
+        ],
+        "address": "Riparian Plaza, 36/71 Eagle St, Brisbane City QLD 4000",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3062 8404",
+        "website": "https://www.proroofrestorationbrisbane.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Pro+Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x6b915a1c4f662a4b:0xf1fc2ddf2ead9c8f!8m2!3d-27.46817!4d153.0304744!16s%2Fg%2F11gy6jvjlh!19sChIJSypmTxxakWsRj5ytLt8t_PE?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 16,
+        "latitude": -27.468169999999997,
+        "longitude": 153.0304744,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJe23J9nb7k2sRuODx4lNSLeU",
+        "place_id": "ChIJe23J9nb7k2sRuODx4lNSLeU",
+        "cid": "16513945928880742584",
+        "data_id": "0x6b93fb76f6c96d7b:0xe52d5253e2f1e0b8",
+        "name": "Roofing North Lakes - Roof Replacements & Restorations",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "3/32 Burke Cres, North Lakes QLD 4509",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3050 0759",
+        "website": "https://roofreplacementsbrisbane.com.au/north-lakes/",
+        "google_maps_url": "https://www.google.com/maps/place/Roofing+North+Lakes+-+Roof+Replacements+%26+Restorations/data=!4m7!3m6!1s0x6b93fb76f6c96d7b:0xe52d5253e2f1e0b8!8m2!3d-27.2294084!4d153.0051504!16s%2Fg%2F11mx4_1hnr!19sChIJe23J9nb7k2sRuODx4lNSLeU?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 4,
+        "latitude": -27.2294084,
+        "longitude": 153.0051504,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "ChIJh_qFGR_xk2sRKJ308u6JuJI",
+        "place_id": "ChIJh_qFGR_xk2sRKJ308u6JuJI",
+        "cid": "10572351784623578408",
+        "data_id": "0x6b93f11f1985fa87:0x92b889eef2f49d28",
+        "name": "Roof Restoration Services North Brisbane",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor",
+          "Service establishment",
+          "Painting",
+          "Roofing supply store"
+        ],
+        "address": "",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "(07) 3556 4499",
+        "website": "https://roofrestorationnorthbrisbane.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Roof+Restoration+Services+North+Brisbane/data=!4m7!3m6!1s0x6b93f11f1985fa87:0x92b889eef2f49d28!8m2!3d-27.1073226!4d152.9292768!16s%2Fg%2F11gl093fwn!19sChIJh_qFGR_xk2sRKJ308u6JuJI?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 2,
+        "latitude": -27.1073226,
+        "longitude": 152.9292768,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roof restoration in Brisbane"
+      }
+    ]
+  },
+  "leads": [
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJd28oJC37k2sR-3f5YiMLY-4",
+      "place_id": "ChIJd28oJC37k2sR-3f5YiMLY-4",
+      "cid": "17177585650333480955",
+      "data_id": "0x6b93fb2d24286f77:0xee630b2362f977fb",
+      "name": "Regan Brothers Roof Restoration",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "Kallangur QLD 4503",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0431 275 646",
+      "website": "",
+      "google_maps_url": "https://www.google.com/maps/place/Regan+Brothers+Roof+Restoration/data=!4m7!3m6!1s0x6b93fb2d24286f77:0xee630b2362f977fb!8m2!3d-27.2507456!4d152.9926509!16s%2Fg%2F11j65chsg2!19sChIJd28oJC37k2sR-3f5YiMLY-4?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 4,
+      "latitude": -27.2507456,
+      "longitude": 152.9926509,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "no_website",
+      "discoveryScore": 67,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "starter_candidate",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": false,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 2,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJn587YC79k2sR7VYVY-EGoaM",
+      "place_id": "ChIJn587YC79k2sR7VYVY-EGoaM",
+      "cid": "11790712864532420333",
+      "data_id": "0x6b93fd2e603b9f9f:0xa3a106e1631556ed",
+      "name": "FIX MY ROOF Total Roof Restorations",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Tile contractor"
+      ],
+      "address": "29 Darien St, Bridgeman Downs QLD 4035",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0410 607 076",
+      "website": "http://billdu.me/fixmyrooftotalroofrestorations",
+      "google_maps_url": "https://www.google.com/maps/place/FIX+MY+ROOF+Total+Roof+Restorations/data=!4m7!3m6!1s0x6b93fd2e603b9f9f:0xa3a106e1631556ed!8m2!3d-27.3612506!4d152.9921766!16s%2Fg%2F11bbw_yb_r!19sChIJn587YC79k2sR7VYVY-EGoaM?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 127,
+      "latitude": -27.361250599999998,
+      "longitude": 152.9921766,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 66,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "til",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "audit_candidate",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 8,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJVVVVVbxekWsRjEOQJzDBkOI",
+      "place_id": "ChIJVVVVVbxekWsRjEOQJzDBkOI",
+      "cid": "16325761061784404876",
+      "data_id": "0x6b915ebc55555555:0xe290c1302790438c",
+      "name": "Diamond Roof Tiling & Restoration",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Painting",
+        "Repair service"
+      ],
+      "address": "64 Washington Ave, Tingalpa QLD 4173",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0413 559 693",
+      "website": "http://www.diamondrooftiling.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Diamond+Roof+Tiling+%26+Restoration/data=!4m7!3m6!1s0x6b915ebc55555555:0xe290c1302790438c!8m2!3d-27.4760304!4d153.122351!16s%2Fg%2F11xc_dfx6!19sChIJVVVVVbxekWsRjEOQJzDBkOI?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 65,
+      "latitude": -27.4760304,
+      "longitude": 153.12235099999998,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 51,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "til",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 8,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+      "place_id": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+      "cid": "7386516257847653874",
+      "data_id": "0x6b9145ef8ae77aa3:0x66822d66aca835f2",
+      "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Repair service"
+      ],
+      "address": "101 Kulcha St, Algester QLD 4115",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3276 1546",
+      "website": "https://brisbaneroofingsolutions.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roofing+Solutions+%7C+Roof+Restoration+%26+Repairs/data=!4m7!3m6!1s0x6b9145ef8ae77aa3:0x66822d66aca835f2!8m2!3d-27.626822!4d153.0280723!16s%2Fg%2F1tjxfv0t!19sChIJo3rniu9FkWsR8jWorGYtgmY?authuser=0&hl=en&rclk=1",
+      "rating": 4.8,
+      "review_count": 118,
+      "latitude": -27.626821999999997,
+      "longitude": 153.0280723,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 49,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "manual_review",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": true,
+        "imageCount": 8,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJK3BAqR1akWsR204xlo83bFg",
+      "place_id": "ChIJK3BAqR1akWsR204xlo83bFg",
+      "cid": "6371528662662074075",
+      "data_id": "0x6b915a1da940702b:0x586c378f96314edb",
+      "name": "ABC Roof Restoration Brisbane",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "12/76 Eagle St, Brisbane City QLD 4000",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3130 0115",
+      "website": "http://abcroofrestorationbrisbane.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/ABC+Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x6b915a1da940702b:0x586c378f96314edb!8m2!3d-27.4669178!4d153.0300616!16s%2Fg%2F11y2ndgxqp!19sChIJK3BAqR1akWsR204xlo83bFg?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 20,
+      "latitude": -27.466917799999997,
+      "longitude": 153.03006159999998,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 47,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJa-7okWVXkWsRV9oeIdsGkkU",
+      "place_id": "ChIJa-7okWVXkWsRV9oeIdsGkkU",
+      "cid": "5013076873440057943",
+      "data_id": "0x6b91576591e8ee6b:0x459206db211eda57",
+      "name": "ACM Constructions",
+      "category": "Custom home builder",
+      "categories": [
+        "Custom home builder",
+        "Bathroom remodeler",
+        "Deck builder",
+        "Home builder",
+        "Kitchen remodeler"
+      ],
+      "address": "26 Kate St, Alderley QLD 4051",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3607 3133",
+      "website": "http://www.acmconstructions.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/ACM+Constructions/data=!4m7!3m6!1s0x6b91576591e8ee6b:0x459206db211eda57!8m2!3d-27.430302!4d153.003782!16s%2Fg%2F11bz0d1xs4!19sChIJa-7okWVXkWsRV9oeIdsGkkU?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 8,
+      "latitude": -27.4303016,
+      "longitude": 153.0037817,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 47,
+      "relevance": {
+        "relevant": false,
+        "reason": "category_name_mismatch",
+        "requiredAny": [
+          "roof",
+          "gutter",
+          "til",
+          "restoration",
+          "metal"
+        ],
+        "haystack": "acm constructions custom home builder custom home builder bathroom remodeler deck builder home builder kitchen remodeler"
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJzffLvfb3k2sRldcXRdV26p4",
+      "place_id": "ChIJzffLvfb3k2sRldcXRdV26p4",
+      "cid": "11451095660902209429",
+      "data_id": "0x6b93f7f6bdcbf7cd:0x9eea76d54517d795",
+      "name": "WeatherpRoof Restorations",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "115/193 S Pine Rd, Brendale QLD 4500",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3171 2855",
+      "website": "https://weatherproof.net.au/",
+      "google_maps_url": "https://www.google.com/maps/place/WeatherpRoof+Restorations/data=!4m7!3m6!1s0x6b93f7f6bdcbf7cd:0x9eea76d54517d795!8m2!3d-27.3257159!4d152.9817482!16s%2Fg%2F11h_t5lw82!19sChIJzffLvfb3k2sRldcXRdV26p4?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 134,
+      "latitude": -27.3257159,
+      "longitude": 152.9817482,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 45,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "manual_review",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": true,
+        "imageCount": 6,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJA7RMbN38k2sRV29x1UBWQmg",
+      "place_id": "ChIJA7RMbN38k2sRV29x1UBWQmg",
+      "cid": "7512661964866285399",
+      "data_id": "0x6b93fcdd6c4cb403:0x68425640d5716f57",
+      "name": "Roof Space Renovators",
+      "category": "Home improvement store",
+      "categories": [
+        "Home improvement store",
+        "Construction company",
+        "Ladder supplier",
+        "Skylight contractor"
+      ],
+      "address": "5/53 Lawnton Pocket Rd, Lawnton QLD 4501",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3889 6688",
+      "website": "https://www.roofspacerenovators.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Roof+Space+Renovators/data=!4m7!3m6!1s0x6b93fcdd6c4cb403:0x68425640d5716f57!8m2!3d-27.2830883!4d152.9900512!16s%2Fg%2F11c1rf965s!19sChIJA7RMbN38k2sRV29x1UBWQmg?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 221,
+      "latitude": -27.2830883,
+      "longitude": 152.99005119999998,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 42,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "manual_review",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 6,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJp1SHDrSUrCIRfsytxKskNTk",
+      "place_id": "ChIJp1SHDrSUrCIRfsytxKskNTk",
+      "cid": "4122241354085289086",
+      "data_id": "0x22ac94b40e8754a7:0x393524abc4adcc7e",
+      "name": "Oz-Roof Restoration Brisbane",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Service establishment"
+      ],
+      "address": "",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0419 039 693",
+      "website": "https://oz-roof.com.au/roof-restoration-brisbane/",
+      "google_maps_url": "https://www.google.com/maps/place/Oz-Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x22ac94b40e8754a7:0x393524abc4adcc7e!8m2!3d-27.598581!4d153.1103469!16s%2Fg%2F11w8fxl1bf!19sChIJp1SHDrSUrCIRfsytxKskNTk?authuser=0&hl=en&rclk=1",
+      "rating": 4.8,
+      "review_count": 53,
+      "latitude": -27.598581,
+      "longitude": 153.1103469,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 30,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": true,
+        "imageCount": 6,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJ4yVIrdnjk2sRc2uajtK3YKo",
+      "place_id": "ChIJ4yVIrdnjk2sRc2uajtK3YKo",
+      "cid": "12277014699175471987",
+      "data_id": "0x6b93e3d9ad4825e3:0xaa60b7d28e9a6b73",
+      "name": "A One Roof Restoration",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "6 Peppermint Ct, Bracken Ridge QLD 4017",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0420 764 197",
+      "website": "https://aoneroofingsolutions.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/A+One+Roof+Restoration/data=!4m7!3m6!1s0x6b93e3d9ad4825e3:0xaa60b7d28e9a6b73!8m2!3d-27.327785!4d153.0168504!16s%2Fg%2F11rq62gf87!19sChIJ4yVIrdnjk2sRc2uajtK3YKo?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 91,
+      "latitude": -27.327785,
+      "longitude": 153.01685039999998,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJs5iYMFBXkWsRupfzt6iWDYY",
+      "place_id": "ChIJs5iYMFBXkWsRupfzt6iWDYY",
+      "cid": "9659542427164448698",
+      "data_id": "0x6b915750309898b3:0x860d96a8b7f397ba",
+      "name": "Metro Hail",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Small claims assistance service"
+      ],
+      "address": "14 Gore St, Albion QLD 4010",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3101 0881",
+      "website": "https://metrohail.com.au/?utm_source=google&utm_medium=organic&utm_campaign=gbp",
+      "google_maps_url": "https://www.google.com/maps/place/Metro+Hail/data=!4m7!3m6!1s0x6b915750309898b3:0x860d96a8b7f397ba!8m2!3d-27.432462!4d153.041824!16s%2Fg%2F11llb777lz!19sChIJs5iYMFBXkWsRupfzt6iWDYY?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 90,
+      "latitude": -27.4324621,
+      "longitude": 153.0418243,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 5,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJ6ekVliTjk2sRPRTYnZjLDQ8",
+      "place_id": "ChIJ6ekVliTjk2sRPRTYnZjLDQ8",
+      "cid": "1084746941609808957",
+      "data_id": "0x6b93e3249615e9e9:0xf0dcb989dd8143d",
+      "name": "Storm Call Roofing Projects Pty Ltd",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Skylight contractor"
+      ],
+      "address": "9/133 S Pine Rd, Brendale QLD 4500",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3886 6166",
+      "website": "https://stormcallroofing.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Storm+Call+Roofing+Projects+Pty+Ltd/data=!4m7!3m6!1s0x6b93e3249615e9e9:0xf0dcb989dd8143d!8m2!3d-27.3227793!4d152.9864488!16s%2Fg%2F11nxnmtbjn!19sChIJ6ekVliTjk2sRPRTYnZjLDQ8?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 63,
+      "latitude": -27.322779299999997,
+      "longitude": 152.9864488,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 6,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJ51azx8ubk2sRwqzA1WpfNt8",
+      "place_id": "ChIJ51azx8ubk2sRwqzA1WpfNt8",
+      "cid": "16084148031657651394",
+      "data_id": "0x6b939bcbc7b356e7:0xdf365f6ad5c0acc2",
+      "name": "The Roofing Group",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Property maintenance",
+        "Siding contractor"
+      ],
+      "address": "108 Lipscombe Rd, Deception Bay QLD 4508",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "1300 780 079",
+      "website": "https://www.theroofinggroup.com.au/?utm_source=googlemybusiness&utm_medium=organic&utm_campaign=GMB",
+      "google_maps_url": "https://www.google.com/maps/place/The+Roofing+Group/data=!4m7!3m6!1s0x6b939bcbc7b356e7:0xdf365f6ad5c0acc2!8m2!3d-27.1997142!4d153.0149648!16s%2Fg%2F11h3_c1zxz!19sChIJ51azx8ubk2sRwqzA1WpfNt8?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 60,
+      "latitude": -27.1997142,
+      "longitude": 153.0149648,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJPcgN0U37k2sRJPVWz5jGtZA",
+      "place_id": "ChIJPcgN0U37k2sRJPVWz5jGtZA",
+      "cid": "10427458871862162724",
+      "data_id": "0x6b93fb4dd10dc83d:0x90b5c698cf56f524",
+      "name": "Renewed Roofing Pty Ltd",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "Diamond Jubilee Way, North Lakes QLD 4509",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "1300 570 704",
+      "website": "https://renewedroofing.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Renewed+Roofing+Pty+Ltd/data=!4m7!3m6!1s0x6b93fb4dd10dc83d:0x90b5c698cf56f524!8m2!3d-27.2190568!4d153.0000603!16s%2Fg%2F11q8wxt9dk!19sChIJPcgN0U37k2sRJPVWz5jGtZA?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 44,
+      "latitude": -27.219056799999997,
+      "longitude": 153.0000603,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJrQ6qULNbkWsRUEttr7eeGYc",
+      "place_id": "ChIJrQ6qULNbkWsRUEttr7eeGYc",
+      "cid": "9734986581297417040",
+      "data_id": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+      "name": "Ace Roofing Service",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "72 Queen St, Brisbane City QLD 4000",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0449 168 985",
+      "website": "https://aceroofingservice.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Ace+Roofing+Service/data=!4m7!3m6!1s0x6b915bb350aa0ead:0x87199eb7af6d4b50!8m2!3d-27.4701995!4d153.023841!16s%2Fg%2F11lmp8hp4y!19sChIJrQ6qULNbkWsRUEttr7eeGYc?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 36,
+      "latitude": -27.4701995,
+      "longitude": 153.023841,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 5,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJE8dPKvf7k2sRb5xFPG8J9Sw",
+      "place_id": "ChIJE8dPKvf7k2sRb5xFPG8J9Sw",
+      "cid": "3239505880320154735",
+      "data_id": "0x6b93fbf72a4fc713:0x2cf5096f3c459c6f",
+      "name": "Rainbird Roof Restorations",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "12 Stonehaven Pl, Narangba QLD 4504",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0414 909 346",
+      "website": "https://rainbirdroofing.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Rainbird+Roof+Restorations/data=!4m7!3m6!1s0x6b93fbf72a4fc713:0x2cf5096f3c459c6f!8m2!3d-27.1849142!4d152.9275327!16s%2Fg%2F11t5n4dqts!19sChIJE8dPKvf7k2sRb5xFPG8J9Sw?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 32,
+      "latitude": -27.184914199999998,
+      "longitude": 152.9275327,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 5,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJb_O9UPtZkWsREA8k_RrJ7AU",
+      "place_id": "ChIJb_O9UPtZkWsREA8k_RrJ7AU",
+      "cid": "426937182446685968",
+      "data_id": "0x6b9159fb50bdf36f:0x5ecc91afd240f10",
+      "name": "J & R Rooftiling",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "28 Bowen St, Windsor QLD 4030",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0410 481 697",
+      "website": "https://www.jandrrooftiling.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/J+%26+R+Rooftiling/data=!4m7!3m6!1s0x6b9159fb50bdf36f:0x5ecc91afd240f10!8m2!3d-27.4333342!4d153.0336807!16s%2Fg%2F11rzphhscs!19sChIJb_O9UPtZkWsREA8k_RrJ7AU?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 23,
+      "latitude": -27.433334199999997,
+      "longitude": 153.0336807,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "til"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 5,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
+      "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
+      "cid": "5345551503130488494",
+      "data_id": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
+      "name": "Brisbane Roof Restoration Experts",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "Unit 22/104 Barwon St, Morningside QLD 4170",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3132 1605",
+      "website": "https://brisbaneroofrestorationexperts.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roof+Restoration+Experts/data=!4m7!3m6!1s0x6b91596c1762d0c1:0x4a2f36c528a5eeae!8m2!3d-27.4577712!4d153.0780826!16s%2Fg%2F11lmhqwqq0!19sChIJwdBiF2xZkWsRru6lKMU2L0o?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 21,
+      "latitude": -27.4577712,
+      "longitude": 153.0780826,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 5,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJbdSMbxxakWsR_OCvjKMTNFc",
+      "place_id": "ChIJbdSMbxxakWsR_OCvjKMTNFc",
+      "cid": "6283668973249618172",
+      "data_id": "0x6b915a1c6f8cd46d:0x573413a38cafe0fc",
+      "name": "Smart Roof Restoration Brisbane",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "12 Eagle St, Brisbane City QLD 4000",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3132 2002",
+      "website": "https://www.smartroofrestorationbrisbane.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Smart+Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x6b915a1c6f8cd46d:0x573413a38cafe0fc!8m2!3d-27.4694344!4d153.0302442!16s%2Fg%2F11vpx731rt!19sChIJbdSMbxxakWsR_OCvjKMTNFc?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 17,
+      "latitude": -27.469434399999997,
+      "longitude": 153.0302442,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJSypmTxxakWsRj5ytLt8t_PE",
+      "place_id": "ChIJSypmTxxakWsRj5ytLt8t_PE",
+      "cid": "17436862293855804559",
+      "data_id": "0x6b915a1c4f662a4b:0xf1fc2ddf2ead9c8f",
+      "name": "Pro Roof Restoration Brisbane",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Building restoration service"
+      ],
+      "address": "Riparian Plaza, 36/71 Eagle St, Brisbane City QLD 4000",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3062 8404",
+      "website": "https://www.proroofrestorationbrisbane.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Pro+Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x6b915a1c4f662a4b:0xf1fc2ddf2ead9c8f!8m2!3d-27.46817!4d153.0304744!16s%2Fg%2F11gy6jvjlh!19sChIJSypmTxxakWsRj5ytLt8t_PE?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 16,
+      "latitude": -27.468169999999997,
+      "longitude": 153.0304744,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJe23J9nb7k2sRuODx4lNSLeU",
+      "place_id": "ChIJe23J9nb7k2sRuODx4lNSLeU",
+      "cid": "16513945928880742584",
+      "data_id": "0x6b93fb76f6c96d7b:0xe52d5253e2f1e0b8",
+      "name": "Roofing North Lakes - Roof Replacements & Restorations",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "3/32 Burke Cres, North Lakes QLD 4509",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3050 0759",
+      "website": "https://roofreplacementsbrisbane.com.au/north-lakes/",
+      "google_maps_url": "https://www.google.com/maps/place/Roofing+North+Lakes+-+Roof+Replacements+%26+Restorations/data=!4m7!3m6!1s0x6b93fb76f6c96d7b:0xe52d5253e2f1e0b8!8m2!3d-27.2294084!4d153.0051504!16s%2Fg%2F11mx4_1hnr!19sChIJe23J9nb7k2sRuODx4lNSLeU?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 4,
+      "latitude": -27.2294084,
+      "longitude": 153.0051504,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "ChIJh_qFGR_xk2sRKJ308u6JuJI",
+      "place_id": "ChIJh_qFGR_xk2sRKJ308u6JuJI",
+      "cid": "10572351784623578408",
+      "data_id": "0x6b93f11f1985fa87:0x92b889eef2f49d28",
+      "name": "Roof Restoration Services North Brisbane",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Service establishment",
+        "Painting",
+        "Roofing supply store"
+      ],
+      "address": "",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3556 4499",
+      "website": "https://roofrestorationnorthbrisbane.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Roof+Restoration+Services+North+Brisbane/data=!4m7!3m6!1s0x6b93f11f1985fa87:0x92b889eef2f49d28!8m2!3d-27.1073226!4d152.9292768!16s%2Fg%2F11gl093fwn!19sChIJh_qFGR_xk2sRKJ308u6JuJI?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 2,
+      "latitude": -27.1073226,
+      "longitude": 152.9292768,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 27,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 5,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roof restoration in Brisbane"
+    }
+  ]
+}

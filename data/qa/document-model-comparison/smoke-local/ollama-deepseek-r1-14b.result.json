@@ -1,0 +1,212 @@
+{
+  "id": "ollama-deepseek-r1:14b",
+  "provider": "ollama",
+  "model": "deepseek-r1:14b",
+  "status": "ok",
+  "durationMs": 105350,
+  "rawOutput": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration, a business offering various roofing and restoration services including roof restorations, capping, respray, repairs, gutters, driveways, patios, external living areas, retaining walls, and pressure cleaning.\",\n    \"contactPaths\": [\"0424 371 622\"],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"No verified website, email, address, or social media presence available.\",\n    \"opportunityDiagnosis\": \"The business has a strong set of services but lacks online presence. There is potential to create a professional website that showcases their expertise and services effectively.\",\n    \"recommendedAngle\": \"Focus on the 40 years of experience and free in-person inspections as unique selling points. Emphasize reliability, quality, and customer satisfaction through service descriptions and testimonials (if available).\",\n    \"evidenceUsed\": [\"source\", \"verifiedFacts\"],\n    \"missingEvidence\": [\n      \"email\",\n      \"address\",\n      \"websiteUrl\",\n      \"licence\",\n      \"Google rating\",\n      \"real reviews\",\n      \"price information\",\n      \"guarantees\"\n    ]\n  },\n  \"gapScore\": {\n    \"total\": 45,\n    \"conversion\": 10,\n    \"localSeo\": 15,\n    \"designTrust\": 10,\n    \"content\": 10,\n    \"rationale\": \"The business has potential but lacks essential online elements. The lack of contact details and website URL significantly impacts its digital presence.\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"professional_roofing_template\",\n    \"blockPlan\": [\n      {\n        \"type\": \"hero_section\",\n        \"content\": {\n          \"headline\": \"Professional Roofing & Restoration Services\",\n          \"subcopy\": \"With 40 Years of Expertise, We Restore Your Home's Beauty and Integrity.\",\n          \"cta\": \"Get a Free Inspection Today\"\n        }\n      },\n      {\n        \"type\": \"services_section\",\n        \"content\": {\n          \"title\": \"Our Services\",\n          \"items\": [\n            { \"name\": \"Roof Restorations\", \"description\": \"Revitalize your roof with our expert restoration services.\" },\n            { \"name\": \"Capping & Respray\", \"description\": \"Enhance the appearance of your home with our high-quality capping and respray services.\" },\n            { \"name\": \"Repairs & Maintenance\", \"description\": \"Keep your property in top condition with our reliable repair and maintenance solutions.\" }\n          ]\n        }\n      },\n      {\n        \"type\": \"testimonials_section\",\n        \"content\": {\n          \"title\": \"What Our Clients Say\",\n          \"items\": [] \t}\n      },\n      {\n        \"type\": \"contact_section\",\n        \"content\": {}\n      }\n    ],\n    \"assetPlan\": [\n      { \"type\": \"header_logo\", \"source\": \"generated\" },\n      { \"type\": \"service_images\", \"source\": \"generated\" },\n      { \"type\": \"testimonial_images\", \"source\": \"generated\" }\n    ],\n    \"contactPlan\": {\n      \"phone\": \"0424 371 622\",\n      \"email\": \"demo@example.com\",\n      \"address\": \"Demo Address, Demo City, Demo State, 1234\"\n    },\n    \"seoPlan\": {\n      \"primaryKeyword\": \"roofing restoration services\",\n      \"secondaryKeywords\": [\"capping\", \"respray\", \"repairs\"],\n      \"metaDescription\": \"Professional roofing and restoration services in your area. Get a free inspection today!\"\n    },\n    \"factLock\": {\n      \"mustKeep\": [\"40 years experience\", \"free in person inspection and quote\"],\n      \"mustNotClaim\": []\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Professional Roofing & Restoration Services\",\n    \"heroSubcopy\": \"With 40 Years of Expertise, We Restore Your Home's Beauty and Integrity.\",\n    \"primaryCta\": \"Get a Free Inspection Today\",\n    \"serviceCopy\": [\n      { \"headline\": \"Roof Restorations\", \"subcopy\": \"Revitalize your roof with our expert restoration services.\" },\n      { \"headline\": \"Capping & Respray\", \"subcopy\": \"Enhance the appearance of your home with our high-quality capping and respray services.\" },\n      { \"headline\": \"Repairs & Maintenance\", \"subcopy\": \"Keep your property in top condition with our reliable repair and maintenance solutions.\" }\n    ],\n    \"faq\": [\n      {\n        \"question\": \"How long does a roof restoration take?\",\n        \"answer\": \"The duration varies depending on the extent of the work, but we aim to complete it as efficiently as possible while maintaining high standards.\"\n      },\n      {\n        \"question\": \"Do you offer warranties?\",\n        \"answer\": \"Yes, we provide warranties on our services to ensure your satisfaction and peace of mind.\"\n      }\n    ],\n    \"outreachHook\": \"Looking for reliable roofing and restoration services? Contact Roofing & Restoration today for a free inspection!\"\n  },\n  \"riskNotes\": [\n    \"No real testimonials available; generated ones will be used temporarily.\",\n    \"Email and address are placeholders and should be replaced with verified information before live deployment.\",\n    \"No pricing information is available, which could be a barrier to conversion. Consider adding price estimates or a contact form for inquiries.\"\n  ]\n}",
+  "error": "",
+  "evaluation": {
+    "schemaVersion": 1,
+    "ok": false,
+    "score": 49,
+    "grade": "F",
+    "parse": {
+      "ok": true,
+      "value": {
+        "discoveryReport": {
+          "businessIdentity": "Roofing & Restoration, a business offering various roofing and restoration services including roof restorations, capping, respray, repairs, gutters, driveways, patios, external living areas, retaining walls, and pressure cleaning.",
+          "contactPaths": [
+            "0424 371 622"
+          ],
+          "services": [
+            "roof restorations",
+            "capping",
+            "respray",
+            "repairs",
+            "gutters",
+            "driveway",
+            "patio",
+            "external living",
+            "retaining wall",
+            "pressure cleaning"
+          ],
+          "currentPresence": "No verified website, email, address, or social media presence available.",
+          "opportunityDiagnosis": "The business has a strong set of services but lacks online presence. There is potential to create a professional website that showcases their expertise and services effectively.",
+          "recommendedAngle": "Focus on the 40 years of experience and free in-person inspections as unique selling points. Emphasize reliability, quality, and customer satisfaction through service descriptions and testimonials (if available).",
+          "evidenceUsed": [
+            "source",
+            "verifiedFacts"
+          ],
+          "missingEvidence": [
+            "email",
+            "address",
+            "websiteUrl",
+            "licence",
+            "Google rating",
+            "real reviews",
+            "price information",
+            "guarantees"
+          ]
+        },
+        "gapScore": {
+          "total": 45,
+          "conversion": 10,
+          "localSeo": 15,
+          "designTrust": 10,
+          "content": 10,
+          "rationale": "The business has potential but lacks essential online elements. The lack of contact details and website URL significantly impacts its digital presence."
+        },
+        "websiteProductionSpec": {
+          "pageMode": "one_page_preview",
+          "templateDirection": "professional_roofing_template",
+          "blockPlan": [
+            {
+              "type": "hero_section",
+              "content": {
+                "headline": "Professional Roofing & Restoration Services",
+                "subcopy": "With 40 Years of Expertise, We Restore Your Home's Beauty and Integrity.",
+                "cta": "Get a Free Inspection Today"
+              }
+            },
+            {
+              "type": "services_section",
+              "content": {
+                "title": "Our Services",
+                "items": [
+                  {
+                    "name": "Roof Restorations",
+                    "description": "Revitalize your roof with our expert restoration services."
+                  },
+                  {
+                    "name": "Capping & Respray",
+                    "description": "Enhance the appearance of your home with our high-quality capping and respray services."
+                  },
+                  {
+                    "name": "Repairs & Maintenance",
+                    "description": "Keep your property in top condition with our reliable repair and maintenance solutions."
+                  }
+                ]
+              }
+            },
+            {
+              "type": "testimonials_section",
+              "content": {
+                "title": "What Our Clients Say",
+                "items": []
+              }
+            },
+            {
+              "type": "contact_section",
+              "content": {}
+            }
+          ],
+          "assetPlan": [
+            {
+              "type": "header_logo",
+              "source": "generated"
+            },
+            {
+              "type": "service_images",
+              "source": "generated"
+            },
+            {
+              "type": "testimonial_images",
+              "source": "generated"
+            }
+          ],
+          "contactPlan": {
+            "phone": "0424 371 622",
+            "email": "demo@example.com",
+            "address": "Demo Address, Demo City, Demo State, 1234"
+          },
+          "seoPlan": {
+            "primaryKeyword": "roofing restoration services",
+            "secondaryKeywords": [
+              "capping",
+              "respray",
+              "repairs"
+            ],
+            "metaDescription": "Professional roofing and restoration services in your area. Get a free inspection today!"
+          },
+          "factLock": {
+            "mustKeep": [
+              "40 years experience",
+              "free in person inspection and quote"
+            ],
+            "mustNotClaim": []
+          }
+        },
+        "copyBrief": {
+          "heroHeadline": "Professional Roofing & Restoration Services",
+          "heroSubcopy": "With 40 Years of Expertise, We Restore Your Home's Beauty and Integrity.",
+          "primaryCta": "Get a Free Inspection Today",
+          "serviceCopy": [
+            {
+              "headline": "Roof Restorations",
+              "subcopy": "Revitalize your roof with our expert restoration services."
+            },
+            {
+              "headline": "Capping & Respray",
+              "subcopy": "Enhance the appearance of your home with our high-quality capping and respray services."
+            },
+            {
+              "headline": "Repairs & Maintenance",
+              "subcopy": "Keep your property in top condition with our reliable repair and maintenance solutions."
+            }
+          ],
+          "faq": [
+            {
+              "question": "How long does a roof restoration take?",
+              "answer": "The duration varies depending on the extent of the work, but we aim to complete it as efficiently as possible while maintaining high standards."
+            },
+            {
+              "question": "Do you offer warranties?",
+              "answer": "Yes, we provide warranties on our services to ensure your satisfaction and peace of mind."
+            }
+          ],
+          "outreachHook": "Looking for reliable roofing and restoration services? Contact Roofing & Restoration today for a free inspection!"
+        },
+        "riskNotes": [
+          "No real testimonials available; generated ones will be used temporarily.",
+          "Email and address are placeholders and should be replaced with verified information before live deployment.",
+          "No pricing information is available, which could be a barrier to conversion. Consider adding price estimates or a contact form for inquiries."
+        ]
+      },
+      "rawJson": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration, a business offering various roofing and restoration services including roof restorations, capping, respray, repairs, gutters, driveways, patios, external living areas, retaining walls, and pressure cleaning.\",\n    \"contactPaths\": [\"0424 371 622\"],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"No verified website, email, address, or social media presence available.\",\n    \"opportunityDiagnosis\": \"The business has a strong set of services but lacks online presence. There is potential to create a professional website that showcases their expertise and services effectively.\",\n    \"recommendedAngle\": \"Focus on the 40 years of experience and free in-person inspections as unique selling points. Emphasize reliability, quality, and customer satisfaction through service descriptions and testimonials (if available).\",\n    \"evidenceUsed\": [\"source\", \"verifiedFacts\"],\n    \"missingEvidence\": [\n      \"email\",\n      \"address\",\n      \"websiteUrl\",\n      \"licence\",\n      \"Google rating\",\n      \"real reviews\",\n      \"price information\",\n      \"guarantees\"\n    ]\n  },\n  \"gapScore\": {\n    \"total\": 45,\n    \"conversion\": 10,\n    \"localSeo\": 15,\n    \"designTrust\": 10,\n    \"content\": 10,\n    \"rationale\": \"The business has potential but lacks essential online elements. The lack of contact details and website URL significantly impacts its digital presence.\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"professional_roofing_template\",\n    \"blockPlan\": [\n      {\n        \"type\": \"hero_section\",\n        \"content\": {\n          \"headline\": \"Professional Roofing & Restoration Services\",\n          \"subcopy\": \"With 40 Years of Expertise, We Restore Your Home's Beauty and Integrity.\",\n          \"cta\": \"Get a Free Inspection Today\"\n        }\n      },\n      {\n        \"type\": \"services_section\",\n        \"content\": {\n          \"title\": \"Our Services\",\n          \"items\": [\n            { \"name\": \"Roof Restorations\", \"description\": \"Revitalize your roof with our expert restoration services.\" },\n            { \"name\": \"Capping & Respray\", \"description\": \"Enhance the appearance of your home with our high-quality capping and respray services.\" },\n            { \"name\": \"Repairs & Maintenance\", \"description\": \"Keep your property in top condition with our reliable repair and maintenance solutions.\" }\n          ]\n        }\n      },\n      {\n        \"type\": \"testimonials_section\",\n        \"content\": {\n          \"title\": \"What Our Clients Say\",\n          \"items\": [] \t}\n      },\n      {\n        \"type\": \"contact_section\",\n        \"content\": {}\n      }\n    ],\n    \"assetPlan\": [\n      { \"type\": \"header_logo\", \"source\": \"generated\" },\n      { \"type\": \"service_images\", \"source\": \"generated\" },\n      { \"type\": \"testimonial_images\", \"source\": \"generated\" }\n    ],\n    \"contactPlan\": {\n      \"phone\": \"0424 371 622\",\n      \"email\": \"demo@example.com\",\n      \"address\": \"Demo Address, Demo City, Demo State, 1234\"\n    },\n    \"seoPlan\": {\n      \"primaryKeyword\": \"roofing restoration services\",\n      \"secondaryKeywords\": [\"capping\", \"respray\", \"repairs\"],\n      \"metaDescription\": \"Professional roofing and restoration services in your area. Get a free inspection today!\"\n    },\n    \"factLock\": {\n      \"mustKeep\": [\"40 years experience\", \"free in person inspection and quote\"],\n      \"mustNotClaim\": []\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Professional Roofing & Restoration Services\",\n    \"heroSubcopy\": \"With 40 Years of Expertise, We Restore Your Home's Beauty and Integrity.\",\n    \"primaryCta\": \"Get a Free Inspection Today\",\n    \"serviceCopy\": [\n      { \"headline\": \"Roof Restorations\", \"subcopy\": \"Revitalize your roof with our expert restoration services.\" },\n      { \"headline\": \"Capping & Respray\", \"subcopy\": \"Enhance the appearance of your home with our high-quality capping and respray services.\" },\n      { \"headline\": \"Repairs & Maintenance\", \"subcopy\": \"Keep your property in top condition with our reliable repair and maintenance solutions.\" }\n    ],\n    \"faq\": [\n      {\n        \"question\": \"How long does a roof restoration take?\",\n        \"answer\": \"The duration varies depending on the extent of the work, but we aim to complete it as efficiently as possible while maintaining high standards.\"\n      },\n      {\n        \"question\": \"Do you offer warranties?\",\n        \"answer\": \"Yes, we provide warranties on our services to ensure your satisfaction and peace of mind.\"\n      }\n    ],\n    \"outreachHook\": \"Looking for reliable roofing and restoration services? Contact Roofing & Restoration today for a free inspection!\"\n  },\n  \"riskNotes\": [\n    \"No real testimonials available; generated ones will be used temporarily.\",\n    \"Email and address are placeholders and should be replaced with verified information before live deployment.\",\n    \"No pricing information is available, which could be a barrier to conversion. Consider adding price estimates or a contact form for inquiries.\"\n  ]\n}"
+    },
+    "findings": [
+      {
+        "severity": "hard_fail",
+        "code": "invented_email",
+        "points": -20,
+        "message": "Output invented an email address."
+      },
+      {
+        "severity": "major",
+        "code": "weak_block_plan",
+        "points": -10,
+        "message": "Block plan should include at least hero, services, proof/trust, process/FAQ, and contact."
+      },
+      {
+        "severity": "major",
+        "code": "weak_contact_cta",
+        "points": -4,
+        "message": "Copy does not make the phone/contact CTA clear."
+      },
+      {
+        "severity": "major",
+        "code": "weak_fact_lock",
+        "points": -5,
+        "message": "Fact lock does not protect contact details and forbidden claims clearly."
+      }
+    ],
+    "metrics": {
+      "outputCharacters": 5235,
+      "blockCount": 4,
+      "assetCount": 3,
+      "serviceCopyCount": 3,
+      "faqCount": 2
+    }
+  }
+}

@@ -194,9 +194,15 @@ try {
     if (scenario.expect.blocked) {
       assert.equal(result.research.previewability.status, 'blocked_unreachable', scenario.id);
       assert.equal(result.outreachBrief.outreachReady, false, scenario.id);
+      assert.equal(result.readyToBuild.aiConclusion.result, 'skip', `${scenario.id}: blocked low-info lead should skip`);
     } else {
       assert.notEqual(result.research.previewability.status, 'blocked_unreachable', scenario.id);
       assert.equal(result.outreachBrief.outreachReady, true, scenario.id);
+      assert.equal(result.readyToBuild.aiConclusion.result, 'ready_for_mockup', `${scenario.id}: reachable low-info lead should produce mockup-ready conclusion`);
+      assert.ok(result.readyToBuild.websiteBuildHandoff.openDesignPayload.prompt.includes('Resend transactional email flow'), `${scenario.id}: expected contact form/Resend handoff`);
+      assert.ok(result.readyToBuild.websiteBuildHandoff.openDesignPayload.prompt.includes('Do not ask follow-up questions'), `${scenario.id}: expected no-question Open Design handoff`);
+      assert.ok(result.readyToBuild.websiteBuildHandoff.openDesignPayload.prompt.includes('Questionnaire answers'), `${scenario.id}: expected AI-filled questionnaire handoff`);
+      assert.ok(result.readyToBuild.websiteBuildHandoff.content.services.length >= 3, `${scenario.id}: expected AI-completed service content`);
     }
 
     outputs.push({
@@ -209,6 +215,8 @@ try {
       evidenceSources: result.research.researchSummary.evidenceSources,
       redesign: result.research.redesign,
       paths,
+      aiConclusion: result.readyToBuild.aiConclusion,
+      websitePlanType: result.readyToBuild.websiteBuildHandoff.websitePlan.type,
     });
   }
 

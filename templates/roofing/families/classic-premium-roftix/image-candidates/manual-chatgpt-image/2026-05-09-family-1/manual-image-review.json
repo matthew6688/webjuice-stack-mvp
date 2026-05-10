@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "provider": "manual-chatgpt-image",
+  "model": "chatgpt-image2-ui",
+  "family": "classic-premium-roftix",
+  "niche": "roofing",
+  "generatedAt": "2026-05-09T10:10:59+10:00",
+  "recordedAt": "2026-05-09T00:13:46.255Z",
+  "promptPack": "templates/roofing/image-prompts/chatgpt-image2-prompt-pack.md",
+  "status": "reviewed",
+  "overall": {
+    "approvedCount": 3,
+    "usableCount": 3,
+    "rejectedCount": 0,
+    "recommendation": "Use image 3 as primary hero, images 4 and 6 as service/detail, image 5 as about/process, image 2 as proof with careful crop, image 1 as alternate/warm CTA hero."
+  },
+  "assets": [
+    {
+      "file": "family1-hero-premium-roof-at-dusk-wide.png",
+      "promptId": "classic-01-hero-premium-roof-at-dusk",
+      "slot": "hero",
+      "status": "usable_alternate",
+      "score": 86,
+      "notes": "Beautiful premium exterior and strong warm sky. Good CTA negative space, but warmer/more sunset than the darker Roftix reference.",
+      "path": "templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-hero-premium-roof-at-dusk-wide.png"
+    },
+    {
+      "file": "family1-project-before-after-roof-transformation.png",
+      "promptId": "classic-05-project-before-after-roof-transformation",
+      "slot": "proof/project",
+      "status": "usable_with_crop",
+      "score": 82,
+      "notes": "Useful before/after proof asset. The split line is visible and could feel slightly artificial, so use as project/proof image rather than hero.",
+      "path": "templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-project-before-after-roof-transformation.png"
+    },
+    {
+      "file": "family1-hero-premium-roof-at-blue-hour.png",
+      "promptId": "classic-01-hero-premium-roof-at-dusk",
+      "slot": "hero",
+      "status": "approved_for_template_candidate",
+      "score": 92,
+      "notes": "Best family-1 hero candidate. Dark blue mood, premium roof detail, warm windows, clean left negative space, close to Roftix reference direction.",
+      "path": "templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-hero-premium-roof-at-blue-hour.png"
+    },
+    {
+      "file": "family1-service-roof-repair-flashing-detail.png",
+      "promptId": "classic-04-service-roof-repair-leak-prevention",
+      "slot": "service/repair",
+      "status": "approved_for_template_candidate",
+      "score": 91,
+      "notes": "Strong service detail. Realistic flashing, focused action, good material texture. Suitable for service detail or trust section.",
+      "path": "templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-repair-flashing-detail.png"
+    },
+    {
+      "file": "family1-about-roofer-working-roof-frame.png",
+      "promptId": "classic-02-about-roofer-working-on-timber-and-roof-frame",
+      "slot": "about/craft",
+      "status": "usable",
+      "score": 84,
+      "notes": "Good craft/story image. Slightly broad stock-feel but believable, can support about/process sections.",
+      "path": "templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-about-roofer-working-roof-frame.png"
+    },
+    {
+      "file": "family1-service-roof-installation-detail.png",
+      "promptId": "classic-03-service-roof-installation-detail",
+      "slot": "service/install",
+      "status": "approved_for_template_candidate",
+      "score": 90,
+      "notes": "Excellent close service asset. No face/logos/text, strong roof texture and tool detail. Good for services/project detail.",
+      "path": "templates/roofing/families/classic-premium-roftix/image-candidates/manual-chatgpt-image/2026-05-09-family-1/family1-service-roof-installation-detail.png"
+    }
+  ]
+}

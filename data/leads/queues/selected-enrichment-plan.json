@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-09T06:21:37.574Z",
+  "mode": "dry_run_plan_only",
+  "costPolicy": {
+    "default": "do_not_call_paid_or_external_enrichment_until_live_flag_is_set",
+    "tinyfish": "planned_only",
+    "googlePlacesApi": "planned_only",
+    "emailExtraction": "not_in_this_step"
+  },
+  "selected": [
+    {
+      "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
+      "name": "FIX MY ROOF Total Roof Restorations",
+      "status": "queued_for_enrichment",
+      "website": "http://billdu.me/fixmyrooftotalroofrestorations",
+      "placeId": "ChIJn587YC79k2sR7VYVY-EGoaM",
+      "phone": "0410 607 076",
+      "audit": {
+        "path": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijn587yc79k2sr7vyvy-egoam/current-site-audit.json",
+        "score": 35,
+        "salesDecision": "build_mockup",
+        "verdict": "clear_redesign_opportunity"
+      },
+      "requiredBeforeSpend": [
+        "cheap site audit has build_mockup or human_review salesDecision",
+        "operator accepts this candidate or live flag is intentionally set",
+        "no email extraction yet"
+      ],
+      "commands": {
+        "tinyfish": "npm run extract:tinyfish -- --url http://billdu.me/fixmyrooftotalroofrestorations --raw /Users/matthew/Developer/google-map-website/data/leads/enrichment/place_chijn587yc79k2sr7vyvy-egoam/tinyfish.raw.json --text /Users/matthew/Developer/google-map-website/data/leads/enrichment/place_chijn587yc79k2sr7vyvy-egoam/tinyfish.text.txt --dry-run",
+        "googlePlaces": "npm run extract:google-places -- --placeId ChIJn587YC79k2sR7VYVY-EGoaM --niche roofing --city Brisbane --dry-run"
+      }
+    }
+  ]
+}

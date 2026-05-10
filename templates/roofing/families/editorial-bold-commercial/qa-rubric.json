@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "passScore": 85,
+  "criteria": [
+    {
+      "id": "referenceFidelity",
+      "label": "Reference fidelity without copying",
+      "weight": 15
+    },
+    {
+      "id": "firstViewportImpact",
+      "label": "First viewport impact",
+      "weight": 15
+    },
+    {
+      "id": "imageDensity",
+      "label": "Image density and niche relevance",
+      "weight": 12
+    },
+    {
+      "id": "nicheFit",
+      "label": "Niche and sub-niche fit",
+      "weight": 12
+    },
+    {
+      "id": "pageCompleteness",
+      "label": "Page/system completeness",
+      "weight": 12
+    },
+    {
+      "id": "ctaHierarchy",
+      "label": "CTA hierarchy and conversion path",
+      "weight": 10
+    },
+    {
+      "id": "trustProof",
+      "label": "Trust/proof richness",
+      "weight": 8
+    },
+    {
+      "id": "mobilePolish",
+      "label": "Mobile polish",
+      "weight": 8
+    },
+    {
+      "id": "copyCleanliness",
+      "label": "Customer-facing copy cleanliness",
+      "weight": 8
+    }
+  ],
+  "hardFails": [
+    "customer-visible internal workflow terms",
+    "missing primary visual asset in a photo-heavy family",
+    "fake verified facts such as reviews, licenses, address, years, awards, or prices",
+    "no visible phone/form/contact path in lead-generation templates"
+  ]
+}

@@ -82,6 +82,8 @@ npm run check:env -- --workflow localAudit
 
 安全规则见 `docs/SECURITY.md`。
 
+后台设置页 `/admin/settings` 会读取本地 `.env`、`.env.local`、`.dev.vars`，再叠加 runtime `process.env`。它只显示配置状态、脱敏值、来源和下一步提示；不会把密钥明文写进页面，也不会直接保存密钥。需要修改时，页面可生成一行 env，仍需写回 `.env.local` 或部署环境变量后重启/重部署。
+
 ---
 
 ## 4. 完整工作流
@@ -226,11 +228,13 @@ Tally remains as a fallback/provider boundary, but live payment-block creation f
 | Cold email | Owner-inbox live smoke 已完成 | Opa validated outreach pack 已 live 发送到 `matthew6688@gmail.com`，Resend id `1ad4a572-be28-4103-8717-be674ccfa9ce`；真实冷邮件仍建议用独立 outreach sender/domain |
 | Cloudinary revision attachments | MVP 已完成 | template + 5 generated dev/live Pages secrets 已配置；Opa deployed upload 返回真实 Cloudinary URL；revision task 已携带 attachment URL |
 | Approval publish dry/live-safe | MVP 已完成 | Opa paid order + email 解析到同 case/latest task/thread；`data/agent-runs/opa-approval-publish-dry-run.json` 记录 dev→main dry plan，`pushed:false` |
-| Ops dashboard | 已规划/暂缓实现 | 先完成 restaurant 闭环；dashboard 只记录方案，详见 `docs/OPS_DASHBOARD_PLAN.md` |
+| Ops dashboard | 部分已落地 | `/admin` 总览、线索、模板、项目、财务、队列、设置页已可用；`/admin/settings` 已改为中文 tab 分区、读取本地 env、隐藏技术细节并显示下一步；详见 `docs/OPS_DASHBOARD_PLAN.md` |
 
 ---
 
 ## 7. 下一步 TODO
+
+最新本地交接说明见 `docs/HANDOFF_2026-05-10.md`。
 
 详细模块化计划见：
 

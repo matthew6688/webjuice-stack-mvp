@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RidgeLine Roof Restoration - Compact inspection page</title>
+  <style>
+    :root {
+      --bg: #FAF3E8;
+      --surface: #FFFDF8;
+      --fg: #1D2328;
+      --muted: #6B6258;
+      --border: #E8DCCA;
+      --accent: #C9472A;
+      --on-primary: #FFFFFF;
+      --accent-soft: color-mix(in oklch, var(--accent) 13%, transparent);
+      --font-display: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-mono: "SF Mono", ui-monospace, Menlo, monospace;
+      --radius: 8px;
+      --radius-lg: 16px;
+      --container: 860px;
+      --gutter: clamp(18px, 5vw, 30px);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.02; letter-spacing: 0; text-wrap: balance; }
+    h1 { font-size: clamp(40px, 11vw, 70px); font-weight: 850; }
+    h2 { font-size: clamp(28px, 7vw, 42px); font-weight: 830; }
+    h3 { font-size: 20px; font-weight: 820; }
+    p { text-wrap: pretty; }
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(34px, 8vw, 64px); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .top { background: var(--fg); color: var(--on-primary); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+    .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 850; }
+    .mark { width: 46px; height: 32px; border-radius: var(--radius); background: var(--surface); display: grid; place-items: center; overflow: hidden; }
+    .btn { display: inline-flex; justify-content: center; align-items: center; min-height: 44px; padding: 12px 17px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13px; font-weight: 850; letter-spacing: 0.02em; text-transform: uppercase; }
+    .btn-primary { background: var(--accent); color: var(--on-primary); border-color: var(--accent); }
+    .btn-secondary { background: var(--surface); color: var(--fg); border-color: var(--border); }
+    .hero { display: grid; grid-template-columns: 1fr 0.86fr; gap: 28px; align-items: center; padding-block: clamp(28px, 8vw, 70px); }
+    .lead { color: color-mix(in oklch, var(--on-primary) 72%, var(--muted)); font-size: 18px; max-width: 46ch; }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in oklch, var(--on-primary) 68%, var(--muted)); margin: 0 0 16px; }
+    .hero-img { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid color-mix(in oklch, var(--surface) 18%, transparent); min-height: 330px; }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .chip { border: 1px solid color-mix(in oklch, var(--surface) 25%, transparent); border-radius: 999px; padding: 5px 10px; font-size: 12px; color: color-mix(in oklch, var(--on-primary) 76%, var(--muted)); }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .cell { background: var(--surface); padding: 22px; }
+    .cell p { color: var(--muted); margin: 8px 0 0; font-size: 15px; }
+    .split { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; align-items: start; }
+    .steps { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; counter-reset: step; }
+    .step { counter-increment: step; background: var(--surface); padding: 20px; }
+    .step::before { content: counter(step, decimal-leading-zero); display: block; color: var(--accent); font-family: var(--font-mono); font-weight: 900; margin-bottom: 8px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+    .field { display: grid; gap: 6px; margin-bottom: 12px; }
+    label { color: var(--muted); font-size: 13px; font-weight: 800; }
+    input, textarea { width: 100%; padding: 12px 13px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font: inherit; }
+    textarea { min-height: 94px; resize: vertical; }
+    footer { background: var(--fg); color: color-mix(in oklch, var(--on-primary) 72%, var(--muted)); padding-block: 28px; font-size: 13px; }
+    .phone-fixed { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 5; display: none; box-shadow: 0 10px 28px color-mix(in oklch, var(--fg) 22%, transparent); }
+    @media (max-width: 760px) {
+      .hero, .split, .grid { grid-template-columns: 1fr; }
+      .nav .btn { display: none; }
+      .hero-img { min-height: 280px; }
+      .phone-fixed { display: inline-flex; }
+      body { padding-bottom: 74px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <header class="container nav" data-od-id="topnav">
+      <a class="logo" href="#top">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M8 27 30 9l22 18" fill="none" stroke="var(--muted)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 27h24v14H20z" fill="var(--fg)"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="var(--fg)">RR</text></svg>
+        </span>
+        RidgeLine Roof Restoration
+      </a>
+      <a class="btn btn-primary" href="tel:+15550120488">Call (555) 012-0488</a>
+    </header>
+    <section class="container hero" data-od-id="hero" id="top">
+      <div>
+        <p class="eyebrow">Free inspection / Roof restoration</p>
+        <h1>Roof repairs, gutters, and restoration made easy to request.</h1>
+        <p class="lead">For homeowners who need a quick roof check and a clear quote path.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="tel:+15550120488">Call now</a>
+          <a class="btn btn-secondary" href="#contact">Send details</a>
+        </div>
+        <div class="chips"><span class="chip">Repairs</span><span class="chip">Restoration</span><span class="chip">Gutters</span><span class="chip">Pressure cleaning</span></div>
+      </div>
+      <figure class="hero-img"><img src="assets/hero-roofer-metal-roof-wide.png" alt="Roofer working on a local metal roof" /></figure>
+    </section>
+  </div>
+  <main>
+    <section class="section" data-od-id="services">
+      <div class="container grid">
+        <div class="cell"><h3>Inspect</h3><p>Start with visible roof, gutter, leak, or storm-wear concerns.</p></div>
+        <div class="cell"><h3>Quote</h3><p>Receive a practical repair or restoration path before work begins.</p></div>
+        <div class="cell"><h3>Restore</h3><p>Book roof repairs, cleaning, gutter help, or restoration work.</p></div>
+      </div>
+    </section>
+    <section class="section" data-od-id="process">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>One call, one simple inspection request.</h2>
+        </div>
+        <div class="steps">
+          <div class="step"><h3>Call or send roof details</h3></div>
+          <div class="step"><h3>Arrange a free inspection</h3></div>
+          <div class="step"><h3>Choose the repair or restoration path</h3></div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-od-id="contact" id="contact">
+      <div class="container split">
+        <figure class="hero-img"><img src="assets/service-roofer-metal-roof-wide.png" alt="Roofer checking a metal roof surface" /></figure>
+        <form class="card" action="#" method="post">
+          <h2>Request inspection</h2>
+          <p style="color: var(--muted);">Share the roof issue and the best number to call back.</p>
+          <div class="field"><label for="compact-name">Name</label><input id="compact-name" name="name" /></div>
+          <div class="field"><label for="compact-phone">Phone</label><input id="compact-phone" name="phone" /></div>
+          <div class="field"><label for="compact-message">Roof details</label><textarea id="compact-message" name="message"></textarea></div>
+          <button class="btn btn-primary" type="submit">Request inspection</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer data-od-id="footer"><div class="container">RidgeLine Roof Restoration / Roof restoration, repairs, gutters, and pressure cleaning / (555) 012-0488</div></footer>
+  <a class="btn btn-primary phone-fixed" href="tel:+15550120488">Call (555) 012-0488</a>
+</body>
+</html>

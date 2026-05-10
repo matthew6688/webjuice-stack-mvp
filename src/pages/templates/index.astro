@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import { getPublishedTemplateFamilies } from '../../lib/template-library';
+
+const families = getPublishedTemplateFamilies();
+const roofing = families.filter((family) => family.niche === 'roofing');
+
+const stats = [
+  [String(families.length), 'published templates'],
+  ['0', 'unapproved shown'],
+  ['100%', 'approval gated'],
+  ['1', 'template lab'],
+];
+---
+
+<Layout title={`Template library - ${siteConfig.name}`} description="ProfitsLocal template library for local business website previews. Built from niche references, refined in Open Design, and adapted to real leads.">
+  <section class="template-hero">
+    <div class="template-hero-copy">
+      <p class="eyebrow">Template library</p>
+      <h1>Template library is being curated.</h1>
+      <p class="lede">We only publish template families after human visual approval. Draft and QA-ready templates stay inside the admin review workflow until the images, palette, copy, and niche fit are strong enough.</p>
+      <div class="template-actions">
+        <a class="button" href="/#contact">Request a preview</a>
+        <a class="button secondary" href="/#work">See our work</a>
+      </div>
+    </div>
+    <div class="template-hero-visual" aria-label="Template library preview">
+      <img src="/brand/images/section-04-preview-gallery.png" alt="Website template preview collage" />
+      <div class="template-hero-note">
+        <b>Reference first</b>
+        <span>Reference -> Open Design -> QA -> human approval -> published library.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="template-stats" aria-label="Template library stats">
+    {stats.map(([value, label]) => (
+      <div>
+        <b>{value}</b>
+        <span>{label}</span>
+      </div>
+    ))}
+  </section>
+
+  {roofing.length ? (
+    <section id="roofing" class="template-section">
+      <div class="template-section-head">
+        <div>
+          <p class="eyebrow">Approved</p>
+          <h2>Published template families</h2>
+        </div>
+        <p class="lede">Only approved and published templates appear here.</p>
+      </div>
+
+      <div class="template-grid">
+        {roofing.map((family) => (
+          <article class="template-family" style={`--template-accent: ${family.accent}`}>
+            <div class="template-preview">
+              <img src={family.image} alt={`${family.displayName} visual direction`} loading="lazy" />
+              <span>{family.status}</span>
+            </div>
+            <div class="template-family-copy">
+              <p class="template-niche">{family.niche}</p>
+              <h3>{family.displayName}</h3>
+              <p>{family.notes[0] || 'Reusable local-business template family.'}</p>
+              <div class="template-tags">
+                {family.subNiches.slice(0, 4).map((tag) => <span>{tag}</span>)}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <section id="roofing" class="template-section template-empty">
+      <div class="template-section-head">
+        <div>
+          <p class="eyebrow">Approval gate</p>
+          <h2>No public templates yet.</h2>
+        </div>
+        <p class="lede">The first roofing families are in internal QA. They will appear here only after manual approval and publish status are both set.</p>
+      </div>
+    </section>
+  )}
+
+  <section class="template-process">
+    <div>
+      <p class="eyebrow">How we use them</p>
+      <h2>Templates speed up the first mockup, but facts still win the sale.</h2>
+    </div>
+    <ol>
+      <li><b>Capture reference</b><span>Screenshot, existing website, template link, flyer, or niche inspiration.</span></li>
+      <li><b>Choose a family</b><span>Match the business to the closest template family and reject poor fits.</span></li>
+      <li><b>Generate in Open Design</b><span>Use a specific family prompt, wait for native finish, then audit the result.</span></li>
+      <li><b>Customize for outreach</b><span>Inject verified contact facts, services, audit findings, and a soft cold message.</span></li>
+    </ol>
+  </section>
+</Layout>

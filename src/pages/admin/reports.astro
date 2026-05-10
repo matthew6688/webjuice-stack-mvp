@@ -1,0 +1,231 @@
+---
+import Layout from '../../layouts/AdminLayout.astro';
+import { siteConfig } from '../../config/site';
+import { loadAdminReportIndex } from '../../../core/admin/report-index.js';
+
+const reportIndex = loadAdminReportIndex();
+const comparison = reportIndex.comparison;
+const leadReports = reportIndex.leadReports;
+const selectedProvider = comparison.providers.find((provider) => provider.label === comparison.selectedProvider) || comparison.providers[0];
+const payloadPreview = JSON.stringify(comparison.input || {}, null, 2);
+const providerTone = (provider) => {
+  if ((provider.score || 0) >= 95) return 'ready';
+  if ((provider.score || 0) >= 85) return 'working';
+  return 'blocked';
+};
+const formatMs = (ms = 0) => {
+  if (!ms) return 'n/a';
+  if (ms > 60000) return `${(ms / 1000).toFixed(1)}s`;
+  return `${Math.round(ms)}ms`;
+};
+---
+
+<Layout title={`报告与模型比较 - ${siteConfig.name}`} description="ProfitsLocal 内部报告、提示词、payload、模型比较和 autoresearch 优化记录。" active="reports">
+  <section class="poster-section admin-section">
+    <div class="admin-shell lead-admin-shell admin-report-shell" data-ui-version="local-style-2026-05-08">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">生产报告</p>
+          <h1>报告、提示词与模型比较</h1>
+          <p class="lede">这里专门看“为什么这样判断”：源 payload、提示词、模型输出、评分、最终选择，以及生成给 sales/operator 阅读的中文报告。</p>
+        </div>
+        <div class="admin-count">
+          <strong>{leadReports.length}</strong>
+          <span>中文报告</span>
+        </div>
+      </div>
+
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">最终选择</span>
+          <strong>{comparison.selectedProvider || 'n/a'}</strong>
+          <p>当前用于生成首个中文报告的模型。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">模型数</span>
+          <strong>{comparison.providers.length}</strong>
+          <p>保留 raw output、score 和 findings。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Prompt</span>
+          <strong>{comparison.prompt.length}</strong>
+          <p>字符，固定保存到 evidence。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Payload</span>
+          <strong>{payloadPreview.length}</strong>
+          <p>字符，作为报告事实输入。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">状态</span>
+          <strong>{comparison.ok ? 'OK' : '缺证据'}</strong>
+          <p>来自 summary.json 和本地报告文件。</p>
+        </article>
+      </div>
+
+      <div class="admin-report-tabs" data-report-tabs>
+        <div class="admin-report-tablist" role="tablist" aria-label="Reports">
+          <button type="button" class="admin-report-tab is-active" data-report-tab="reports">中文报告</button>
+          <button type="button" class="admin-report-tab" data-report-tab="comparison">模型比较</button>
+          <button type="button" class="admin-report-tab" data-report-tab="prompt">Prompt / Payload</button>
+          <button type="button" class="admin-report-tab" data-report-tab="sop">Autoresearch SOP</button>
+        </div>
+
+        <section class="admin-report-panel is-active" data-report-panel="reports">
+          <div class="admin-paper-section-head">
+            <div>
+              <span class="eyebrow">Operator readable</span>
+              <h2>中文业务报告</h2>
+            </div>
+            <span class="admin-section-count">{leadReports.length} 份</span>
+          </div>
+          <div class="admin-report-list">
+            {leadReports.length ? leadReports.map((report) => (
+              <article class="admin-report-item">
+                <header>
+                  <div>
+                    <span class="status-pill status-ready">{report.confidence || '已生成'}</span>
+                    <h3>{report.title}</h3>
+                    <p>{report.oneLine}</p>
+                  </div>
+                  <strong>{report.sourceProvider || 'model'}</strong>
+                </header>
+                <div class="admin-report-grid">
+                  <section>
+                    <h4>结论</h4>
+                    <p>{report.verdict}</p>
+                  </section>
+                  <section>
+                    <h4>已确认事实</h4>
+                    <dl>
+                      {report.verifiedFacts.slice(0, 5).map((row) => (
+                        <div><dt>{row.label}</dt><dd>{row.value}</dd></div>
+                      ))}
+                    </dl>
+                  </section>
+                  <section>
+                    <h4>缺口</h4>
+                    <ul>
+                      {report.missingEvidence.slice(0, 6).map((item) => <li>{item}</li>)}
+                    </ul>
+                  </section>
+                  <section>
+                    <h4>下一步</h4>
+                    <ul>
+                      {report.nextSteps.slice(0, 5).map((item) => <li>{item}</li>)}
+                    </ul>
+                  </section>
+                </div>
+                <div class="lead-decision-row">
+                  {report.publicHtmlHref && <a class="button" href={report.publicHtmlHref}>打开 HTML</a>}
+                  {report.publicMdHref && <a class="button secondary" href={report.publicMdHref}>Markdown</a>}
+                  {report.publicJsonHref && <a class="button secondary" href={report.publicJsonHref}>JSON</a>}
+                </div>
+                <p class="micro">文件：{report.htmlPath}</p>
+              </article>
+            )) : <p class="lead-empty">还没有生成中文报告。先运行 <code>npm run leads:build-document-comparison-report</code>。</p>}
+          </div>
+        </section>
+
+        <section class="admin-report-panel" data-report-panel="comparison" hidden>
+          <div class="admin-paper-section-head">
+            <div>
+              <span class="eyebrow">Model comparison</span>
+              <h2>模型评分与最终选择</h2>
+            </div>
+            <span class="admin-section-count">Selected: {comparison.selectedProvider || 'n/a'}</span>
+          </div>
+          {comparison.publicComparisonPath && (
+            <p class="admin-report-source-line">完整比较 HTML：<a class="admin-inline-link" href={`/${comparison.publicComparisonPath.replace(/^public\//, '')}`}>打开模型比较报告</a></p>
+          )}
+          <div class="admin-model-table">
+            {comparison.providers.map((provider) => (
+              <article class={`admin-model-row ${provider.label === comparison.selectedProvider ? 'is-selected' : ''}`}>
+                <div>
+                  <span class={`status-pill status-${providerTone(provider)}`}>{provider.grade || 'F'}</span>
+                  <strong>{provider.label}</strong>
+                  <p>{provider.runId} · {formatMs(provider.durationMs)} · {provider.rawPath}</p>
+                </div>
+                <div class="admin-model-score">
+                  <b>{provider.score ?? 0}</b>
+                  <span>score</span>
+                </div>
+                <details>
+                  <summary>Findings / raw output</summary>
+                  {provider.findings.length ? (
+                    <ul>
+                      {provider.findings.map((finding) => <li>{finding.code}: {finding.message}</li>)}
+                    </ul>
+                  ) : <p class="micro">没有主要 finding。</p>}
+                  <pre>{provider.rawPreview || 'raw output missing'}</pre>
+                </details>
+              </article>
+            ))}
+          </div>
+          {selectedProvider && (
+            <section class="admin-report-callout">
+              <h3>当前选择理由</h3>
+              <p>{selectedProvider.label} 当前分数最高或质量最稳定，用作正式中文报告生成器。其他模型保留为二审、离线候选或 critique/fallback，不直接覆盖最终报告。</p>
+            </section>
+          )}
+        </section>
+
+        <section class="admin-report-panel" data-report-panel="prompt" hidden>
+          <div class="admin-report-split">
+            <section>
+              <div class="admin-paper-section-head">
+                <div>
+                  <span class="eyebrow">Exact prompt</span>
+                  <h2>提示词</h2>
+                </div>
+              </div>
+              <pre>{comparison.prompt || 'prompt missing'}</pre>
+            </section>
+            <section>
+              <div class="admin-paper-section-head">
+                <div>
+                  <span class="eyebrow">Source payload</span>
+                  <h2>源数据</h2>
+                </div>
+              </div>
+              <pre>{payloadPreview}</pre>
+            </section>
+          </div>
+        </section>
+
+        <section class="admin-report-panel" data-report-panel="sop" hidden>
+          <div class="admin-paper-section-head">
+            <div>
+              <span class="eyebrow">Reusable loop</span>
+              <h2>Autoresearch 优化 SOP</h2>
+            </div>
+            <span class="admin-section-count">docs/AUTORESEARCH_OPTIMIZATION_SOP.md</span>
+          </div>
+          <ol class="admin-report-sop-list">
+            <li><strong>锁定输入</strong><span>保存 source payload，标出 verified / inferred / generated。</span></li>
+            <li><strong>固定 rubric</strong><span>先定义评分、红线和通过门槛，再跑模型。</span></li>
+            <li><strong>跑多模型/多 prompt</strong><span>保存 prompt、raw output、duration、score、findings。</span></li>
+            <li><strong>比较并选择</strong><span>选择不是看分数单点，而是看事实安全、可读性、稳定性和成本。</span></li>
+            <li><strong>生成可读报告</strong><span>把机器 JSON 转成 operator/sales 能直接使用的中文报告。</span></li>
+            <li><strong>复用到下一环</strong><span>copy、UI audit、SEO audit、Open Design handoff 都按同一套路迭代。</span></li>
+          </ol>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const tabs = [...document.querySelectorAll('[data-report-tab]')];
+    const panels = [...document.querySelectorAll('[data-report-panel]')];
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((item) => item.classList.toggle('is-active', item === tab));
+        panels.forEach((panel) => {
+          const active = panel.dataset.reportPanel === tab.dataset.reportTab;
+          panel.classList.toggle('is-active', active);
+          panel.hidden = !active;
+        });
+      });
+    });
+  </script>
+</Layout>

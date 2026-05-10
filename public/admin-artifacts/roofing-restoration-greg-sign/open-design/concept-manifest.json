@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-10T00:50:26.810Z",
+  "clientSlug": "roofing-restoration-greg-sign",
+  "projectId": "roofing-restoration-greg-sign-open-design-1778373605798",
+  "conversationId": "c821d889-b439-48a9-b2ee-4fb61938d5ed",
+  "runId": "799e08d1-79ca-4da8-9bd6-6ffe647d60b0",
+  "lastRunId": "07bc654f-0f4c-44df-8710-8af00bec862d",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "roofing and restoration",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "one-page",
+  "prompt": "Build a local-business website mockup using the approved niche template workflow.\n\nTemplate family:\n- Use: Lead Capture Restoration\n- Manifest: templates/roofing/families/lead-capture-restoration/template-manifest.json\n- Preserve the family design language, section rhythm, image style, and conversion pattern.\n\nVerified facts to preserve exactly:\n- Business name: M&B Roofing\n- Phone: 0424 371 622\n- Email: ghilton@live.com.au\n- Address: Jamison Town, NSW 2750\n- Website: missing\n\nGenerated demo content policy:\n- The customer-facing page must look complete and natural.\n- Do not print labels like placeholder, inferred, generated, audit, or Open Design on the frontend.\n- It is okay to use generated demo copy for services, FAQ, process, benefits, CTA labels, and demo proof modules.\n- Do not claim real reviews, licences, awards, exact years, prices, warranties, or project counts unless provided as verified facts.\n\nCopy plan:\n- Hero angle: roof restorations for Jamison Town / Greater Western Sydney, with a clearer first impression and a simpler path to action.\n- Hero headline: Roof Restorations for Jamison Town / Greater Western Sydney\n- Hero subcopy: M&B Roofing can present a clear, phone-friendly roofing page with services, trust cues, and a fast quote path for local customers.\n- Primary CTA: Call for a roof inspection\n- Secondary CTA: View services\n- Services: Roof Restorations, Roof Repairs, Gutters Fascia And Down Pipes, Tile And Metal Roofing, Core Service, Emergency Or Fast Response\n- Proof strategy: Use process clarity, service-area relevance, realistic project modules, and review placeholders until real Google/customer proof is supplied.\n- Final CTA: Ready to make the roof easier to understand? Call for a roof inspection.\n\nRequirements:\n- Make mobile first-class, not an afterthought.\n- Include clear CTA/contact path.\n- Include LocalBusiness-ready content structure.\n- Use selected template images/assets if provided.\n- Output real HTML/CSS assets and screenshots for QA.\nRun discipline:\n- Treat timeout as a checkpoint, not acceptance of a partial artifact.\n- Do not use artifact_quiet_fallback unless the operator explicitly passed --allow-artifact-fallback.\n- If a question form appears, answer it from the handoff facts and continue until native completion.\n- Preserve verified phone, email, address, business name, and contact path exactly.\n- Keep customer-facing copy complete and natural; do not expose internal labels.",
+  "daemonUrl": "http://127.0.0.1:7467",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/roofing-restoration-greg-sign/concept/open-design",
+  "seedDir": null,
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 600000,
+    "timeoutMs": 600000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": false
+  },
+  "allowArtifactFallback": false,
+  "artifactQuietMs": 20000,
+  "maxQuestionFormRounds": 2,
+  "lifecycle": {
+    "startedAt": "2026-05-10T01:16:48.938Z",
+    "endedAt": "2026-05-10T01:18:02.410Z",
+    "nativeCleanFinish": true,
+    "questionForms": [],
+    "questionFormRounds": [],
+    "toolUses": [
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,260p' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"Verified|verified|audit|mockup|demo|internal|generated|placeholder|contact|Contact\\\" index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '260,560p' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '560,720p' index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n \\\\\\\"0424 371 622|0424371622|ghilton@live\\\\\\\\.com\\\\\\\\.au|Jamison Town|NSW 2750|Greater Western Sydney\\\\\\\" index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -ni \\\"verified|audit|mockup|demo|internal|generated|placeholder\\\" index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'git diff -- index.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '392,406p' index.html && wc -l index.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'cat index.html'\"}"
+      }
+    ],
+    "fileChanges": [
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/roofing-restoration-greg-sign-open-design-1778373605798/index.html",
+        "kind": "update",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/roofing-restoration-greg-sign-open-design-1778373605798/index.html",
+        "kind": "update",
+        "status": "completed"
+      }
+    ]
+  },
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 28093,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "assets/service-roofer-metal-roof-wide.png",
+      "size": 1765486,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/material-standing-seam-symmetric.png",
+      "size": 2073687,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/material-standing-seam-front.png",
+      "size": 1301665,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/hero-roofer-metal-roof-wide.png",
+      "size": 1597350,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    }
+  ],
+  "updatedAt": "2026-05-10T01:18:02.410Z",
+  "previousRunId": "9dd9324f-bab4-4047-8e5f-a142ec8ef654",
+  "continuationRuns": [
+    {
+      "runId": "07bc654f-0f4c-44df-8710-8af00bec862d",
+      "lastRunId": "07bc654f-0f4c-44df-8710-8af00bec862d",
+      "createdAt": "2026-05-10T01:18:02.410Z",
+      "prompt": "Quality gate revision: remove customer-facing internal/operator wording. In index.html, replace any phrase like 'Verified contact details' with natural customer-facing wording such as 'Contact details stay visible and easy to use.' Do not mention verified, audit, mockup, demo, internal, generated, or placeholder anywhere in customer-visible copy. Preserve all verified contact facts exactly. Keep the same layout and assets. Finish natively and export updated files.",
+      "status": {
+        "code": 0,
+        "signal": null,
+        "status": "succeeded"
+      },
+      "eventsPath": "run-events-07bc654f-0f4c-44df-8710-8af00bec862d.sse"
+    }
+  ]
+}

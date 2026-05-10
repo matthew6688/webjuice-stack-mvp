@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-qwen-deepseek-baseline",
+  "promptVariant": "baseline",
+  "outRoot": "data/qa/document-model-comparison/smoke-qwen-deepseek-baseline",
+  "providers": [
+    {
+      "id": "ollama-deepseek-r1:14b",
+      "provider": "ollama",
+      "model": "deepseek-r1:14b",
+      "status": "ok",
+      "durationMs": 67030,
+      "score": 49,
+      "grade": "F",
+      "ok": false,
+      "topFindings": [
+        {
+          "severity": "hard_fail",
+          "code": "invented_email",
+          "points": -20,
+          "message": "Output invented an email address."
+        },
+        {
+          "severity": "minor",
+          "code": "thin_evidence_used",
+          "points": -4,
+          "message": "Evidence used is too thin."
+        },
+        {
+          "severity": "major",
+          "code": "weak_block_plan",
+          "points": -10,
+          "message": "Block plan should include at least hero, services, proof/trust, process/FAQ, and contact."
+        }
+      ]
+    },
+    {
+      "id": "ollama-qwen3.6:27b",
+      "provider": "ollama",
+      "model": "qwen3.6:27b",
+      "status": "ok",
+      "durationMs": 234791,
+      "score": 95,
+      "grade": "A",
+      "ok": true,
+      "topFindings": [
+        {
+          "severity": "major",
+          "code": "customer_facing_internal_language",
+          "points": -8,
+          "message": "Output includes internal/customer-facing unsafe words: placeholder."
+        }
+      ]
+    }
+  ],
+  "bestProvider": "ollama-qwen3.6:27b",
+  "generatedAt": "2026-05-10T07:16:14.803Z"
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-qwen-deepseek-strict-v2",
+  "promptVariant": "strict-v2",
+  "outRoot": "data/qa/document-model-comparison/smoke-qwen-deepseek-strict-v2",
+  "providers": [
+    {
+      "id": "ollama-deepseek-r1:14b",
+      "provider": "ollama",
+      "model": "deepseek-r1:14b",
+      "status": "ok",
+      "durationMs": 57130,
+      "score": 89,
+      "grade": "B",
+      "ok": true,
+      "topFindings": [
+        {
+          "severity": "minor",
+          "code": "thin_evidence_used",
+          "points": -4,
+          "message": "Evidence used is too thin."
+        },
+        {
+          "severity": "minor",
+          "code": "thin_missing_evidence",
+          "points": -4,
+          "message": "Missing evidence is not clearly listed."
+        },
+        {
+          "severity": "minor",
+          "code": "thin_asset_plan",
+          "points": -6,
+          "message": "Asset plan should specify hero, service/detail, and proof/contact imagery."
+        }
+      ]
+    },
+    {
+      "id": "ollama-qwen3.6:27b",
+      "provider": "ollama",
+      "model": "qwen3.6:27b",
+      "status": "ok",
+      "durationMs": 189070,
+      "score": 95,
+      "grade": "A",
+      "ok": true,
+      "topFindings": [
+        {
+          "severity": "major",
+          "code": "gap_score_out_of_range",
+          "points": -6,
+          "message": "Gap score dimensions exceed expected ranges: conversion, localSeo, designTrust, content."
+        }
+      ]
+    }
+  ],
+  "bestProvider": "ollama-qwen3.6:27b",
+  "generatedAt": "2026-05-10T07:20:21.079Z"
+}

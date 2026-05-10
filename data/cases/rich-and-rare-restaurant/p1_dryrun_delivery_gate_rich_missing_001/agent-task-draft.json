@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "task_1778146136694_xp0hbhrp",
+  "clientSlug": "rich-and-rare-restaurant",
+  "type": "sale",
+  "repo": "matthew6688/rich-and-rare-restaurant",
+  "branch": "dev",
+  "evidencePath": "clients/rich-and-rare-restaurant/evidence/evidence.json",
+  "contentPath": "clients/rich-and-rare-restaurant/content.restaurant.json",
+  "designPath": "clients/rich-and-rare-restaurant/design.restaurant.json",
+  "checkoutPath": "clients/rich-and-rare-restaurant/funnel/checkout.json",
+  "brandSpecPath": "clients/rich-and-rare-restaurant/brand-spec.md",
+  "websiteSurveyPath": "clients/rich-and-rare-restaurant/intake/website-survey.json",
+  "requiredContext": {
+    "evidence": "clients/rich-and-rare-restaurant/evidence/evidence.json",
+    "content": "clients/rich-and-rare-restaurant/content.restaurant.json",
+    "design": "clients/rich-and-rare-restaurant/design.restaurant.json",
+    "brandSpec": "clients/rich-and-rare-restaurant/brand-spec.md",
+    "checkout": "clients/rich-and-rare-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/rich-and-rare-restaurant/intake/website-survey.json"
+  },
+  "buildPacketPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/build-packet.md",
+  "openDesign": {
+    "status": "bound",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "rich-and-rare-restaurant-open-design-1778065212163",
+    "runId": "2a69100b-a214-4488-ad6c-0a58277b00b5",
+    "conceptPath": "clients/rich-and-rare-restaurant/concept/open-design",
+    "manifestPath": "clients/rich-and-rare-restaurant/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/rich-and-rare-restaurant/concept/open-design/production-handoff.json",
+    "createCommand": "",
+    "continueCommand": "npm run open-design:continue-concept -- --client rich-and-rare-restaurant --prompt \"<change request>\"",
+    "syncCommand": "npm run open-design:sync-from-app -- --client rich-and-rare-restaurant",
+    "rule": "Use this exact local Open Design project for design concept changes. Do not start a separate Open Design project unless the operator explicitly asks."
+  },
+  "productionHandoffPath": "clients/rich-and-rare-restaurant/concept/open-design/production-handoff.json",
+  "repoBootstrap": {
+    "status": "ready",
+    "repo": "matthew6688/rich-and-rare-restaurant",
+    "repoDir": "/Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant",
+    "pagesProjectName": "rich-and-rare-restaurant",
+    "defaultBranch": "main",
+    "devBranch": "dev",
+    "waitForActions": true,
+    "command": "npm run deploy:bootstrap-client-repo -- --repo matthew6688/rich-and-rare-restaurant --repo-dir /Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant --pages-project-name rich-and-rare-restaurant --main main --dev dev --wait true --execute true",
+    "rule": "Run this once before agent completion when the customer repo or Pages projects do not exist yet."
+  },
+  "createdFrom": "manual",
+  "createdAt": "2026-05-07T09:28:56.694Z",
+  "order": {
+    "orderId": "p1_dryrun_delivery_gate_rich_missing_001",
+    "clientSlug": "rich-and-rare-restaurant",
+    "repo": "matthew6688/rich-and-rare-restaurant",
+    "email": "matthew6688@gmail.com",
+    "company": "Rich & Rare Restaurant",
+    "previewUrl": "https://rich-and-rare-restaurant-dev.pages.dev/",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD"
+  },
+  "acceptanceCriteria": [
+    "Complete the requested task.",
+    "Run the relevant validation command.",
+    "Record outcome and next action."
+  ]
+}

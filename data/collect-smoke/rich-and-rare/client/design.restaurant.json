@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "designSkill": "huashu-design",
+  "clientSlug": "rich-and-rare-collect-smoke",
+  "sourceContentPath": "data/collect-smoke/rich-and-rare/client/content.restaurant.json",
+  "generatedAt": "2026-05-06T06:39:09.274Z",
+  "business": {
+    "name": "Rich & Rare Restaurant",
+    "cuisine": "restaurant",
+    "rating": 4.8,
+    "reviewCount": 3194,
+    "fallbackLevel": "official_site_menu"
+  },
+  "assetProtocol": {
+    "requiredAssets": [
+      {
+        "id": "logo",
+        "status": "present",
+        "value": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/cc41bc60-4e56-4535-97b8-ba1ee763d87a/Rich+and+Rare_Type+Logo_CMYK_White.png?format=1500w",
+        "note": "Logo is required for strong brand recognition."
+      },
+      {
+        "id": "heroFoodPhoto",
+        "status": "present",
+        "value": "http://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w",
+        "note": "Use official or Google Places food/interior photos before generated imagery."
+      },
+      {
+        "id": "menuSource",
+        "status": "present",
+        "value": "https://www.richandrare.com.au/menus",
+        "note": "Menu source is required for factual menu design."
+      },
+      {
+        "id": "reservationUrl",
+        "status": "present",
+        "value": "https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?date=2026-05-10&venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant",
+        "note": "Reservation CTA is optional but valuable when available."
+      },
+      {
+        "id": "brandColors",
+        "status": "present",
+        "value": "#112233, #112255",
+        "note": "Use official colors when extracted."
+      }
+    ],
+    "warnings": [],
+    "rules": [
+      "Use real logo as an image asset; do not redraw it as SVG/CSS.",
+      "Use real restaurant/menu/food photos first.",
+      "Generated imagery must be marked as generated in evidence.",
+      "Do not render sample menu items.",
+      "Menu item text must come from menu.sections evidence."
+    ]
+  },
+  "tokens": {
+    "colorSource": "scraped",
+    "colors": [
+      "#112233",
+      "#112255",
+      "#151515",
+      "#f8f3ea",
+      "#fffdf8"
+    ],
+    "palette": {
+      "background": "#112233",
+      "surface": "#112255",
+      "ink": "#151515",
+      "accent": "#f8f3ea",
+      "muted": "#fffdf8"
+    },
+    "typography": {
+      "heading": "Montserrat",
+      "body": "Humanist sans-serif for mobile menu readability",
+      "numeric": "Tabular figures for prices"
+    },
+    "radius": {
+      "cards": "8px",
+      "buttons": "999px"
+    }
+  },
+  "directions": [
+    {
+      "id": "editorial-menu",
+      "name": "Editorial Menu System",
+      "philosophy": "Pentagram-style information architecture",
+      "bestFor": "Restaurants with rich menus where clarity and trust matter most.",
+      "visualTraits": [
+        "tight typographic hierarchy",
+        "clear price alignment",
+        "low ornament",
+        "strong source labeling"
+      ],
+      "menuTreatment": "restaurant sections become the main visual rhythm."
+    },
+    {
+      "id": "photo-led-hospitality",
+      "name": "Photo-Led Hospitality",
+      "philosophy": "Field.io motion warmth adapted for food photography",
+      "bestFor": "Restaurants with strong official or Google Places photos.",
+      "visualTraits": [
+        "large real imagery",
+        "soft motion",
+        "warm contrast",
+        "sticky mobile actions"
+      ],
+      "menuTreatment": "Photos introduce sections, but text remains scannable."
+    },
+    {
+      "id": "quiet-premium",
+      "name": "Quiet Premium",
+      "philosophy": "Kenya Hara-inspired restraint",
+      "bestFor": "Higher-ticket venues or brands with limited assets that need taste, not noise.",
+      "visualTraits": [
+        "generous whitespace",
+        "controlled accent color",
+        "small details",
+        "paper-like menu surface"
+      ],
+      "menuTreatment": "Menu reads like a refined printed object on mobile."
+    }
+  ],
+  "layoutRules": [
+    "Mobile-first menu: section tabs, sticky call/map/reserve actions, readable prices.",
+    "Desktop menu: two-column rhythm only when item text remains readable.",
+    "Address links open Google Maps; phone links use tel:.",
+    "Reservation CTA appears only when official provider URL exists.",
+    "No nested decorative cards; menu sections are content, not marketing panels."
+  ],
+  "conversionRules": {
+    "primaryCta": "reserve",
+    "secondaryCtas": [
+      "map",
+      "call"
+    ],
+    "funnel": {
+      "purchaseProvider": "tally_or_stripe",
+      "requiredHiddenFields": [
+        "clientSlug",
+        "previewUrl",
+        "repo",
+        "campaignId",
+        "niche",
+        "package",
+        "price"
+      ]
+    }
+  }
+}

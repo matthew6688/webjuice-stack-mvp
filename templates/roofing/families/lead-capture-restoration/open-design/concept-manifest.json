@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T01:54:25.582Z",
+  "clientSlug": "template-roofing-lead-capture-restoration",
+  "projectId": "template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z",
+  "conversationId": "aed2c056-051d-4f0c-879f-cd6c30ea16d4",
+  "runId": "f7157607-39f7-4438-ac63-9218844fa92f",
+  "lastRunId": "f7157607-39f7-4438-ac63-9218844fa92f",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "roofing website template family",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "multi-page",
+  "prompt": "Build an original phone-first roofing restoration lead-capture template inspired by the reference brief in this folder.\n\nTemplate family: lead-capture-restoration\n\nUse design-language.md and section-patterns.json as the contract. This is for low-info leads from screenshots, flyers, signage, OCR, or manual discovery. The site should prioritize phone, services, free inspection/quote, and a simple contact form.\n\nDo not copy the reference brand, logo, exact text, code, or paid assets. Recreate the design language and section patterns as an original ProfitsLocal template.\n\nRequired outputs:\n- index.html for the primary template\n- one compact one-page version suitable for a cold outreach mockup\n- local assets under assets/\n- style-guide.md if brand/design tokens are clear\n\nRules:\n- Customer-facing copy only.\n- No internal workflow terms.\n- Use rich demo content where allowed by template-manifest.json.\n- Do not invent verified facts listed in factsPolicy.mustNotInvent.\n- Use photo-quality niche imagery when the reference style depends on photography.\n- If only phone/services are known, fill sections with demo-safe service/process/FAQ copy, but never invent email, address, reviews, licenses, awards, or years in business.\n- Prefer the reviewed manual ChatGPT Image assets recorded in template-manifest.json `selectedImages`.\n- Primary hero should use the wide roofer-on-metal-roof image with local home context.\n- Use the second roofer-on-metal-roof image for service/process proof and the metal panel images only as supporting material visuals.\n- Do not make the page feel like a product catalogue; this family is phone-first and quote-first.\n- Do not replace these approved photo assets with SVG-only hero art or generic stock-like placeholders.\n- Ask no question form unless generation is technically impossible.\n\n## Brand Kit / Logo Policy\nBusiness name: RidgeLine Roof Restoration\nLogo policy: single-default-demo-logo\nIf the client has no logo, use exactly one default demo logo direction. Do not ask the client to choose and do not create multiple logo options.\nSelected logo direction: Lead Capture Restoration style: simple geometric roof/service mark plus readable wordmark. No fake badges, no copied reference logo.\nSelected SVG concept: <svg viewBox=\"0 0 180 48\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\"><path d=\"M8 27 30 9l22 18\" fill=\"none\" stroke=\"#6B6258\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M20 27h24v14H20z\" fill=\"#1D2328\"/><text x=\"66\" y=\"32\" font-family=\"Inter, Arial, sans-serif\" font-size=\"24\" font-weight=\"800\" fill=\"#FAF3E8\">RR</text></svg>\n\n## Reviewed Local Image Assets\nUse these reviewed images as the primary visual source for this template. Copy them into `assets/` before referencing them from HTML.\nDo not substitute these approved images with SVG-only art, weak placeholders, or unrelated generic stock imagery.\n\n- hero: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-service-local-roofer-metal-roof-wide.png\n- service: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-hero-local-roofer-metal-roof-wide.png\n- materialMetal: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-front.png\n- materialMetalAlt: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-symmetric.png\n\n## Design Language\n# Lead Capture Restoration Design Language\n\nNiche: roofing\n\n## Reference Summary\n\nDesigned for quick cold outreach mockups when the lead has strong contact info but limited brand assets. It should be practical, conversion-forward, and local: roof restoration, repairs, gutters, free inspection, phone-first contact.\n\n## Visual Thesis\n\nLocal roofing lead capture: immediately says what they do, why to call, and how to request a free inspection, with enough visual substance to avoid looking like a text flyer.\n\n## Typography Direction\n\n- Display: confident sans-serif or sturdy serif, not delicate.\n- Body: plain readable sans-serif.\n- Labels: strong chips for services and trust points.\n\n## Color System\n\n- Dominant: warm white or light neutral.\n- Accent: strong roof red, orange, or trade green depending on source material.\n- Support: dark charcoal for footer and contrast bands.\n- CTA: phone/contact button must stand out.\n\n## Imagery\n\n- hero: roofer working / roof restoration / exterior home with roof visible.\n- proof: before-after placeholder structure without fake customer claims.\n- contact: form next to roof image or phone-first CTA.\n- service: icons or small photos for restoration, repairs, gutters, pressure cleaning.\n\n## Layout Patterns\n\n- hero: phone-first, service area, free inspection CTA.\n- services: clear bullet/service grid from provided lead copy.\n- why us: common-sense benefits, clearly marked as positioning not verified claims.\n- process: inspect, quote, restore, cleanup.\n- contact: simple form and big phone number.\n- footer: compact with contact links.\n\n## Best Fit\n\n- Low-info lead from photo/OCR/flyer/signage.\n- No website found, but phone and services are clear.\n- Fast one-page demo to test interest.\n\n## Do\n\n- Show phone and contact path above the fold.\n- Use provided services exactly when available.\n- Use dummy copy only to make modules complete, not to fake proof.\n\n## Do Not\n\n- Build a huge multi-page site from very little info.\n- Invent email, address, reviews, project count, or exact service area.\n- Use internal audit language in customer-facing copy.\n\n## Machine-Readable DESIGN.md Contract\n---\nversion: alpha\nname: \"Lead Capture Restoration\"\ndescription: \"Lead Capture Restoration roofing template family design contract\"\ncolors:\n  primary: \"#1D2328\"\n  secondary: \"#6B6258\"\n  tertiary: \"#C9472A\"\n  neutral: \"#FAF3E8\"\n  surface: \"#FFFDF8\"\n  on-primary: \"#FFFFFF\"\n  on-tertiary: \"#FFFFFF\"\ntypography:\n  h1:\n    fontFamily: \"Inter\"\n    fontSize: 3.8rem\n    fontWeight: 850\n    lineHeight: 0.98\n    letterSpacing: 0\n  h2:\n    fontFamily: \"Inter\"\n    fontSize: 2.4rem\n    fontWeight: 800\n    lineHeight: 1.05\n  body-md:\n    fontFamily: \"Inter\"\n    fontSize: 1rem\n    fontWeight: \"400\"\n    lineHeight: \"1.6\"\n  label-caps:\n    fontFamily: \"Inter\"\n    fontSize: \"0.75rem\"\n    fontWeight: \"800\"\n    lineHeight: \"1.2\"\nrounded:\n  sm: 4px\n  md: 8px\n  lg: 16px\nspacing:\n  sm: 8px\n  md: 16px\n  lg: 32px\n  xl: 64px\ncomponents:\n  button-primary:\n    backgroundColor: \"{colors.tertiary}\"\n    textColor: \"{colors.on-tertiary}\"\n    typography: \"{typography.label-caps}\"\n    rounded: \"{rounded.md}\"\n    padding: 14px\n  hero-surface:\n    backgroundColor: \"{colors.primary}\"\n    textColor: \"{colors.on-primary}\"\n    rounded: \"{rounded.lg}\"\n---\n\n## Overview\n\nLocal roofing lead capture: immediately says what they do, why to call, and how to request a free inspection, with enough visual substance to avoid looking like a text flyer.\n\n## Colors\n\n- **Primary (#1D2328):** dark trade contrast for footer and phone-first bands.\n- **Secondary (#6B6258):** warm gray local-business support copy.\n- **Tertiary (#C9472A):** roof-red/orange quote and phone actions.\n- **Neutral (#FAF3E8):** warm flyer-like background without feeling cheap.\n- **Surface (#FFFDF8):** main content canvas.\n\n## Typography\n\n- Display: confident sans-serif or sturdy serif, not delicate.\n- Body: plain readable sans-serif.\n- Labels: strong chips for services and trust points.\n\n## Layout\n\n- hero: phone-first, service area, free inspection CTA.\n- services: clear bullet/service grid from provided lead copy.\n- why us: common-sense benefits, clearly marked as positioning not verified claims.\n- process: inspect, quote, restore, cleanup.\n- contact: simple form and big phone number.\n- footer: compact with contact links.\n\n## Elevation & Depth\n\nUse depth only when it supports hierarchy. Photo-heavy families should rely on image composition, contrast, and section rhythm before decorative shadows.\n\n## Shapes\n\nDefault to restrained corners. Use larger radii only for image containers and CTA panels when the reference style supports it.\n\n## Components\n\n- **Hero:** must clearly communicate the niche in the first viewport.\n- **Primary CTA:** uses the tertiary token and must be visually obvious.\n- **Service modules:** should match the family layout direction, not a generic card grid.\n- **Footer:** must feel complete and credible, even when demo-safe content is used.\n\n## Do's and Don'ts\n\n### Do\n\n- Show phone and contact path above the fold.\n- Use provided services exactly when available.\n- Use dummy copy only to make modules complete, not to fake proof.\n\n### Don't\n\n- Build a huge multi-page site from very little info.\n- Invent email, address, reviews, project count, or exact service area.\n- Use internal audit language in customer-facing copy.\n\n\n\n\n## Section Contract\n{\n  \"schemaVersion\": 1,\n  \"niche\": \"roofing\",\n  \"family\": \"lead-capture-restoration\",\n  \"pageTypes\": {\n    \"onePage\": {\n      \"requiredSections\": [\n        \"hero\",\n        \"services\",\n        \"proof\",\n        \"projectsTeaser\",\n        \"process\",\n        \"faq\",\n        \"contact\",\n        \"footer\"\n      ],\n      \"optionalSections\": [\n        \"about\",\n        \"serviceArea\",\n        \"materials\",\n        \"blogTeaser\"\n      ]\n    },\n    \"multiPage\": {\n      \"pages\": [\n        \"home\",\n        \"about\",\n        \"services\",\n        \"serviceDetail\",\n        \"projects\",\n        \"projectDetail\",\n        \"faq\",\n        \"blog\",\n        \"blogDetail\",\n        \"appointment\"\n      ]\n    }\n  },\n  \"sections\": []\n}\n\n## QA Rubric\n{\n  \"schemaVersion\": 1,\n  \"passScore\": 85,\n  \"criteria\": [\n    {\n      \"id\": \"referenceFidelity\",\n      \"label\": \"Reference fidelity without copying\",\n      \"weight\": 15\n    },\n    {\n      \"id\": \"firstViewportImpact\",\n      \"label\": \"First viewport impact\",\n      \"weight\": 15\n    },\n    {\n      \"id\": \"imageDensity\",\n      \"label\": \"Image density and niche relevance\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"nicheFit\",\n      \"label\": \"Niche and sub-niche fit\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"pageCompleteness\",\n      \"label\": \"Page/system completeness\",\n      \"weight\": 12\n    },\n    {\n      \"id\": \"ctaHierarchy\",\n      \"label\": \"CTA hierarchy and conversion path\",\n      \"weight\": 10\n    },\n    {\n      \"id\": \"trustProof\",\n      \"label\": \"Trust/proof richness\",\n      \"weight\": 8\n    },\n    {\n      \"id\": \"mobilePolish\",\n      \"label\": \"Mobile polish\",\n      \"weight\": 8\n    },\n    {\n      \"id\": \"copyCleanliness\",\n      \"label\": \"Customer-facing copy cleanliness\",\n      \"weight\": 8\n    }\n  ],\n  \"hardFails\": [\n    \"customer-visible internal workflow terms\",\n    \"missing primary visual asset in a photo-heavy family\",\n    \"fake verified facts such as reviews, licenses, address, years, awards, or prices\",\n    \"no visible phone/form/contact path in lead-generation templates\"\n  ]\n}\n\n## Template Library Requirements\n- Build an original ProfitsLocal-owned template, not a clone.\n- Use realistic local-business copy and rich demo-safe content where allowed.\n- Include visible niche imagery or generated assets; do not ship a text-only page.\n- If reviewed local images are listed, copy them into the generated project assets directory and use them as real <img> assets.\n- If a brand kit is listed, use the selected default logo direction and do not generate multiple customer-choice logos.\n- Do not expose internal words like audit, mockup, lead-ops, Open Design, or template-lab in customer-facing pages.\n- Produce a result strong enough to be listed in the ProfitsLocal public template library after QA.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "isolated",
+  "dataDir": "/tmp/profitslocal-open-design-template-roofing-lead-capture-restoration",
+  "outDir": "/Users/matthew/Developer/google-map-website/templates/roofing/families/lead-capture-restoration/open-design",
+  "seedDir": null,
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 900000,
+    "timeoutMs": 900000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": false
+  },
+  "allowArtifactFallback": false,
+  "artifactQuietMs": 20000,
+  "maxQuestionFormRounds": 2,
+  "lifecycle": {
+    "startedAt": "2026-05-09T01:44:43.811Z",
+    "endedAt": "2026-05-09T01:54:25.582Z",
+    "nativeCleanFinish": true,
+    "questionForms": [],
+    "questionFormRounds": [],
+    "toolUses": [
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,220p' .od-skills/web-prototype/references/checklist.md\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,260p' .od-skills/web-prototype/assets/template.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,260p' .od-skills/web-prototype/references/layouts.md\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find . -maxdepth 4 -type f | sort | sed -n '1,240p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '261,520p' .od-skills/web-prototype/assets/template.html\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design -path '*manual-chatgpt-image/2026-05-09-family-4/*' -type f -maxdepth 12 | sort\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design -name template-manifest.json -path '*lead-capture-restoration*' -type f | sort | sed -n '1,80p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design -name 'family4-service-local-roofer-metal-roof-wide.png' -o -name 'family4-hero-local-roofer-metal-roof-wide.png' -o -name 'family4-product-standing-seam-panel-front.png'…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design -path '*lead-capture-restoration*' -maxdepth 15 -type f | sort | sed -n '1,200p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'find /Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration/assets -type f -maxdepth 1 -print'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'ls -la /Users/matthew/Developer/open-design/templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4 2>/dev/null'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design -type d -name templates | sed -n '1,50p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design/.od -type f \\\\\\\\( -name '*.png' -o -name '*.jpg' -o -name '*.webp' \\\\\\\\) | sort | sed -n '1,200p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"find /Users/matthew/Developer/open-design -type f \\\\\\\\( -name '*roofer*' -o -name '*metal-roof*' -o -name '*standing-seam*' -o -name '*family4*' \\\\\\\\) | sort | sed -n '1,200p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'mkdir -p assets && cp /Users/matthew/Developer/open-design/.od/projects/template-roofing-editorial-bold-commercial-2026-05-09t01-21-18-932z/assets/hero-worker-standing-metal-roof-wide.png assets/hero-roofer-metal-…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'wc -l index.html compact-one-page.html style-guide.md && ls -lh index.html compact-one-page.html style-guide.md assets'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"<section|data-od-id|scrollIntoView|<img|tel:|<form|<footer\\\" index.html compact-one-page.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"#[0-9a-fA-F]{3,8}\\\" index.html compact-one-page.html style-guide.md'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n \\\\\\\"audit|mockup|lead-ops|Open Design|template-lab|template|demo|internal|lorem|Feature One|Feature Two|license|licensed|award|review|years|address|email|99\\\\\\\\.9|10×|10x\\\\\\\" index.html compact-one-page.htm…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'python -m html.parser index.html >/tmp/od-index-html-check.txt && python -m html.parser compact-one-page.html >/tmp/od-compact-html-check.txt && echo ok'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n \\\\\\\"audit|mockup|lead-ops|Open Design|template-lab|template|demo|internal|lorem|Feature One|Feature Two|license|licensed|award|review|years|address|email|99\\\\\\\\.9|10×|10x\\\\\\\" index.html compact-one-page.htm…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"<section\\\" index.html compact-one-page.html && rg -n \\\"data-od-id\\\" index.html compact-one-page.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'sips -g pixelWidth -g pixelHeight assets/*.png'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"xmllint --html --noout index.html compact-one-page.html 2>&1 | sed -n '1,120p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n -i \\\\\\\"audit|mockup|lead-ops|open design|template-lab|lorem|feature one|feature two|licensed|license|award|review|years in business|street address|email|99\\\\\\\\.9|10x|10×\\\\\\\" index.html compact-one-page.html…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'find . -maxdepth 2 -type f | sort'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"#[0-9a-fA-F]{3,8}\\\" index.html compact-one-page.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"tidy -qe index.html compact-one-page.html 2>&1 | sed -n '1,160p'\\\"\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'LC_ALL=C rg -n \\\"[''^[:ascii:]]\\\" index.html compact-one-page.html style-guide.md'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'LC_ALL=C rg -n \\\"[''^[:ascii:]]\\\" index.html compact-one-page.html style-guide.md'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n -i \\\\\\\"audit|mockup|lead-ops|open design|template-lab|lorem|feature one|feature two|licensed|license|award|review|years in business|street address|email|99\\\\\\\\.9|10x|10×\\\\\\\" index.html compact-one-page.html…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'rg -n \\\"#[0-9a-fA-F]{3,8}\\\" index.html compact-one-page.html'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'test $(rg -c \\\"<section\\\" index.html) -eq $(rg -c \\\"<section[''^'\\\"\\\\\\\\n]*data-od-id\\\\\\\" index.html) && test \\\"'$(rg -c \\\"<section\\\" compact-one-page.html) -eq $(rg -c \\\"<section[''^'\\\"\\\\\\\\n]*data-od-id\\\\\\\" compac…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'LC_ALL=C rg -n \\\"[''^[:ascii:]]\\\" index.html compact-one-page.html style-guide.md'\"}"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"rg -n -i \\\\\\\"audit|mockup|lead-ops|open design|template-lab|lorem|feature one|feature two|licensed|license|award|review|years in business|street address|email|99\\\\\\\\.9|10x|10×\\\\\\\" index.html compact-one-page.html…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc 'test -s assets/hero-roofer-metal-roof-wide.png && test -s assets/service-roofer-metal-roof-wide.png && test -s assets/material-standing-seam-front.png && test -s assets/material-standing-seam-symmetric.png && echo…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc '\\\"$OD_NODE_BIN\\\" -e \\\"const fs=require('\\\"'fs'); for (const f of ['index.html','compact-one-page.html']) { const s=fs.readFileSync(f,'utf8'); for (const t of ['html','head','style','body','main']) { const open=(s.…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc '\\\"$OD_NODE_BIN\\\" -e '\\\"'const fs=require(\\\\\\\"fs\\\\\\\"); for (const f of [\\\\\\\"index.html\\\\\\\",\\\\\\\"compact-one-page.html\\\\\\\"]) { const s=fs.readFileSync(f,\\\\\\\"utf8\\\\\\\"); for (const t of [\\\\\\\"html\\\\\\\",\\\\\\\"head\\\\\\\",\\\\\\\"s…"
+      },
+      {
+        "tool": "Bash",
+        "inputPreview": "{\"command\":\"/bin/zsh -lc \\\"sed -n '1,620p' index.html\\\"\"}"
+      }
+    ],
+    "fileChanges": [
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/compact-one-page.html",
+        "kind": "add",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/index.html",
+        "kind": "add",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/style-guide.md",
+        "kind": "add",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/compact-one-page.html",
+        "kind": "add",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/index.html",
+        "kind": "add",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/style-guide.md",
+        "kind": "add",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/compact-one-page.html",
+        "kind": "update",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/index.html",
+        "kind": "update",
+        "status": "in_progress"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/compact-one-page.html",
+        "kind": "update",
+        "status": "completed"
+      },
+      {
+        "path": "/Users/matthew/Developer/open-design/.od/projects/template-roofing-lead-capture-restoration-2026-05-09t01-44-41-801z/index.html",
+        "kind": "update",
+        "status": "completed"
+      }
+    ]
+  },
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "compact-one-page.html",
+      "size": 9314,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "index.html",
+      "size": 25658,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "style-guide.md",
+      "size": 1510,
+      "kind": "text",
+      "mime": "text/markdown; charset=utf-8",
+      "artifactKind": "markdown-document"
+    },
+    {
+      "path": "assets/material-standing-seam-symmetric.png",
+      "size": 2073687,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/material-standing-seam-front.png",
+      "size": 1301665,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/service-roofer-metal-roof-wide.png",
+      "size": 1765486,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/hero-roofer-metal-roof-wide.png",
+      "size": 1597350,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    }
+  ]
+}

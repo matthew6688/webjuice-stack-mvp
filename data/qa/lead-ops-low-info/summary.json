@@ -1,0 +1,356 @@
+{
+  "ok": true,
+  "scenarioCount": 5,
+  "scenarios": [
+    {
+      "id": "google-places-only-dental",
+      "description": "A sparse Google Maps-style lead becomes contactable after Google Places enrichment.",
+      "summary": {
+        "familyId": "clinic",
+        "previewability": "ready_for_preview",
+        "productionReadiness": "ready_for_open_design",
+        "redesignDecision": "not_applicable",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 79,
+        "aiConfidence": "high",
+        "websitePlanType": "simple_multi_page",
+        "outreachChannel": "call",
+        "outreachPreviewMode": "starter_preview"
+      },
+      "contactability": {
+        "status": "reachable",
+        "channels": {
+          "emails": [],
+          "phones": [
+            "+61 7 3000 2001"
+          ],
+          "contactPageUrl": "",
+          "socialDm": []
+        }
+      },
+      "previewability": {
+        "status": "ready_for_preview",
+        "reason": "The lead is reachable and has enough context for a starter preview."
+      },
+      "productionReadiness": {
+        "status": "ready_for_open_design",
+        "reason": "The packet has enough verified facts and structured content for Open Design.",
+        "warnings": []
+      },
+      "evidenceSources": [
+        "google_places"
+      ],
+      "redesign": {
+        "isRedesign": false,
+        "hasPreservationPacket": false,
+        "readiness": "",
+        "blockers": [],
+        "warnings": [],
+        "currentPageCount": 0,
+        "proposedPageCount": 0,
+        "redirectCount": 0,
+        "value": []
+      },
+      "paths": {
+        "intake": "low-info-output/google-places-only-dental/lead-intake.json",
+        "research": "low-info-output/google-places-only-dental/lead-research.json",
+        "redesignCheck": "low-info-output/google-places-only-dental/redesign-check.json",
+        "readyToBuild": "low-info-output/google-places-only-dental/ready-to-build.json",
+        "outreachBrief": "low-info-output/google-places-only-dental/outreach-brief.json",
+        "leadOps": "low-info-output/google-places-only-dental/lead-ops.json"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "high",
+        "score": 79,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "simple_multi_page"
+    },
+    {
+      "id": "official-site-redesign-roofer",
+      "description": "A website URL plus official-site scrape/search text creates a redesign preservation packet.",
+      "summary": {
+        "familyId": "field_service",
+        "previewability": "ready_for_redesign_preview",
+        "productionReadiness": "ready_for_open_design",
+        "redesignDecision": "redesign_preview",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 83,
+        "aiConfidence": "high",
+        "websitePlanType": "one_page",
+        "outreachChannel": "sms_or_call",
+        "outreachPreviewMode": "redesign_preview"
+      },
+      "contactability": {
+        "status": "reachable",
+        "channels": {
+          "emails": [
+            "quotes@lowinforoofing.example"
+          ],
+          "phones": [
+            "+61 7 3000 2002"
+          ],
+          "contactPageUrl": "https://lowinforoofing.example/contact",
+          "socialDm": []
+        }
+      },
+      "previewability": {
+        "status": "ready_for_redesign_preview",
+        "reason": "The lead has enough context for a redesign preview."
+      },
+      "productionReadiness": {
+        "status": "ready_for_open_design",
+        "reason": "The packet has enough verified facts and structured content for Open Design.",
+        "warnings": [
+          "logo missing or unconfirmed"
+        ]
+      },
+      "evidenceSources": [
+        "official_site"
+      ],
+      "redesign": {
+        "isRedesign": true,
+        "hasPreservationPacket": true,
+        "readiness": "needs_customer_confirmation",
+        "blockers": [],
+        "warnings": [
+          "logo missing or unconfirmed"
+        ],
+        "currentPageCount": 3,
+        "proposedPageCount": 3,
+        "redirectCount": 0,
+        "value": [
+          "Preserve old URLs where possible.",
+          "Create 301 redirects for changed URLs.",
+          "Generate sitemap.xml.",
+          "Generate robots.txt.",
+          "Set canonical URLs."
+        ]
+      },
+      "paths": {
+        "intake": "low-info-output/official-site-redesign-roofer/lead-intake.json",
+        "research": "low-info-output/official-site-redesign-roofer/lead-research.json",
+        "redesignCheck": "low-info-output/official-site-redesign-roofer/redesign-check.json",
+        "readyToBuild": "low-info-output/official-site-redesign-roofer/ready-to-build.json",
+        "outreachBrief": "low-info-output/official-site-redesign-roofer/outreach-brief.json",
+        "leadOps": "low-info-output/official-site-redesign-roofer/lead-ops.json"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "high",
+        "score": 83,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "one_page"
+    },
+    {
+      "id": "pdf-image-ocr-event-venue",
+      "description": "A venue with PDF and image OCR evidence can become a teaser/preview candidate with filled placeholders.",
+      "summary": {
+        "familyId": "venue",
+        "previewability": "ready_for_preview",
+        "productionReadiness": "ready_for_open_design",
+        "redesignDecision": "not_applicable",
+        "readyToBuildStatus": "ready_for_open_design",
+        "aiConclusion": "ready_for_mockup",
+        "aiScore": 83,
+        "aiConfidence": "high",
+        "websitePlanType": "simple_multi_page",
+        "outreachChannel": "social_dm",
+        "outreachPreviewMode": "starter_preview"
+      },
+      "contactability": {
+        "status": "reachable",
+        "channels": {
+          "emails": [],
+          "phones": [
+            "+61 7 3000 2003"
+          ],
+          "contactPageUrl": "",
+          "socialDm": [
+            {
+              "label": "instagram",
+              "url": "https://instagram.com/lighthallevents"
+            }
+          ]
+        }
+      },
+      "previewability": {
+        "status": "ready_for_preview",
+        "reason": "The lead is reachable and has enough context for a starter preview."
+      },
+      "productionReadiness": {
+        "status": "ready_for_open_design",
+        "reason": "The packet has enough verified facts and structured content for Open Design.",
+        "warnings": []
+      },
+      "evidenceSources": [
+        "pdf",
+        "image_ocr"
+      ],
+      "redesign": {
+        "isRedesign": false,
+        "hasPreservationPacket": false,
+        "readiness": "",
+        "blockers": [],
+        "warnings": [],
+        "currentPageCount": 0,
+        "proposedPageCount": 0,
+        "redirectCount": 0,
+        "value": []
+      },
+      "paths": {
+        "intake": "low-info-output/pdf-image-ocr-event-venue/lead-intake.json",
+        "research": "low-info-output/pdf-image-ocr-event-venue/lead-research.json",
+        "redesignCheck": "low-info-output/pdf-image-ocr-event-venue/redesign-check.json",
+        "readyToBuild": "low-info-output/pdf-image-ocr-event-venue/ready-to-build.json",
+        "outreachBrief": "low-info-output/pdf-image-ocr-event-venue/outreach-brief.json",
+        "leadOps": "low-info-output/pdf-image-ocr-event-venue/lead-ops.json"
+      },
+      "aiConclusion": {
+        "result": "ready_for_mockup",
+        "label": "可做 Mockup",
+        "confidence": "high",
+        "score": 83,
+        "reason": "已有真实联系路径和足够业务范围。缺失的营销文案、FAQ、服务说明可以由 AI 基于行业最佳实践补全，用于 demo 完整性。",
+        "nextAction": "生成 Open Design mockup payload，并创建一页或简单多页网站预览。"
+      },
+      "websitePlanType": "simple_multi_page"
+    },
+    {
+      "id": "generated-placeholder-contact-blocked",
+      "description": "AI/dummy placeholder contact facts must not make an otherwise unreachable lead contactable.",
+      "summary": {
+        "familyId": "field_service",
+        "previewability": "blocked_unreachable",
+        "productionReadiness": "blocked_unreachable",
+        "redesignDecision": "blocked_unreachable",
+        "readyToBuildStatus": "blocked_unreachable",
+        "aiConclusion": "skip",
+        "aiScore": 46,
+        "aiConfidence": "high",
+        "websitePlanType": "one_page",
+        "outreachChannel": "manual_review",
+        "outreachPreviewMode": "outreach_only"
+      },
+      "contactability": {
+        "status": "unreachable",
+        "channels": {
+          "emails": [],
+          "phones": [],
+          "contactPageUrl": "",
+          "socialDm": []
+        }
+      },
+      "previewability": {
+        "status": "blocked_unreachable",
+        "reason": "No contact path exists, so a preview is not worth building yet."
+      },
+      "productionReadiness": {
+        "status": "blocked_unreachable",
+        "reason": "No reachable contact channel."
+      },
+      "evidenceSources": [
+        "generated"
+      ],
+      "redesign": {
+        "isRedesign": false,
+        "hasPreservationPacket": false,
+        "readiness": "",
+        "blockers": [],
+        "warnings": [],
+        "currentPageCount": 0,
+        "proposedPageCount": 0,
+        "redirectCount": 0,
+        "value": []
+      },
+      "paths": {
+        "intake": "low-info-output/generated-placeholder-contact-blocked/lead-intake.json",
+        "research": "low-info-output/generated-placeholder-contact-blocked/lead-research.json",
+        "redesignCheck": "low-info-output/generated-placeholder-contact-blocked/redesign-check.json",
+        "readyToBuild": "low-info-output/generated-placeholder-contact-blocked/ready-to-build.json",
+        "outreachBrief": "low-info-output/generated-placeholder-contact-blocked/outreach-brief.json",
+        "leadOps": "low-info-output/generated-placeholder-contact-blocked/lead-ops.json"
+      },
+      "aiConclusion": {
+        "result": "skip",
+        "label": "跳过",
+        "confidence": "high",
+        "score": 46,
+        "reason": "没有真实邮箱、电话、联系页或社媒 DM，无法触达。AI 可以补内容，但不能补一个假的联系方式。",
+        "nextAction": "继续搜索真实联系方式；找不到就跳过。"
+      },
+      "websitePlanType": "one_page"
+    },
+    {
+      "id": "manual-name-only-blocked",
+      "description": "A business-name-only manual lead remains blocked until a real contact path is found.",
+      "summary": {
+        "familyId": "field_service",
+        "previewability": "blocked_unreachable",
+        "productionReadiness": "blocked_unreachable",
+        "redesignDecision": "blocked_unreachable",
+        "readyToBuildStatus": "blocked_unreachable",
+        "aiConclusion": "skip",
+        "aiScore": 39,
+        "aiConfidence": "high",
+        "websitePlanType": "one_page",
+        "outreachChannel": "manual_review",
+        "outreachPreviewMode": "outreach_only"
+      },
+      "contactability": {
+        "status": "unreachable",
+        "channels": {
+          "emails": [],
+          "phones": [],
+          "contactPageUrl": "",
+          "socialDm": []
+        }
+      },
+      "previewability": {
+        "status": "blocked_unreachable",
+        "reason": "No contact path exists, so a preview is not worth building yet."
+      },
+      "productionReadiness": {
+        "status": "blocked_unreachable",
+        "reason": "No reachable contact channel."
+      },
+      "evidenceSources": [],
+      "redesign": {
+        "isRedesign": false,
+        "hasPreservationPacket": false,
+        "readiness": "",
+        "blockers": [],
+        "warnings": [],
+        "currentPageCount": 0,
+        "proposedPageCount": 0,
+        "redirectCount": 0,
+        "value": []
+      },
+      "paths": {
+        "intake": "low-info-output/manual-name-only-blocked/lead-intake.json",
+        "research": "low-info-output/manual-name-only-blocked/lead-research.json",
+        "redesignCheck": "low-info-output/manual-name-only-blocked/redesign-check.json",
+        "readyToBuild": "low-info-output/manual-name-only-blocked/ready-to-build.json",
+        "outreachBrief": "low-info-output/manual-name-only-blocked/outreach-brief.json",
+        "leadOps": "low-info-output/manual-name-only-blocked/lead-ops.json"
+      },
+      "aiConclusion": {
+        "result": "skip",
+        "label": "跳过",
+        "confidence": "high",
+        "score": 39,
+        "reason": "没有真实邮箱、电话、联系页或社媒 DM，无法触达。AI 可以补内容，但不能补一个假的联系方式。",
+        "nextAction": "继续搜索真实联系方式；找不到就跳过。"
+      },
+      "websitePlanType": "one_page"
+    }
+  ]
+}

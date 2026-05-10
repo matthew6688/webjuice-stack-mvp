@@ -1,0 +1,110 @@
+You are preparing internal documents for a local business website mockup pipeline.
+Return JSON only. Do not include markdown fences, hidden reasoning, XML tags, or prose outside JSON.
+
+Critical fact rules:
+- Keep verified business name, phone, email, address, and website URL exact.
+- Do not invent an email, address, website URL, licence, award, Google rating, real review, price, or guarantee.
+- You may generate demo-safe service copy, FAQ, process copy, and page structure for a preview website.
+- Generated demo content must be tracked internally, but the customer-facing page must not say placeholder, AI-generated, inferred, audit, or internal.
+
+Prompt variant: strict-v2
+Strict completion rules:
+- If email is not verified, output email as an empty string or null. Never use demo@example.com or any invented email.
+- If address is not verified, output address as an empty string or null. Never use Demo Address or an invented street address.
+- If website URL is not verified, output websiteUrl as an empty string or null.
+- Do not use the words placeholder, AI-generated, inferred, audit, internal, or lead ops in copyBrief or customer-visible block copy.
+- Do not include testimonial/review modules unless real review evidence exists. Use process clarity, service scope, and inspection offer as trust instead.
+- websiteProductionSpec.blockPlan must contain at least these six block ids: hero, services, trust, process, faq, contact.
+- copyBrief.primaryCta must include the verified phone number or the word Call.
+- websiteProductionSpec.factLock.mustKeep must include the exact verified phone number.
+- websiteProductionSpec.factLock.mustNotClaim must include email, address, website URL, real reviews, licence, award, rating, price, and guarantee.
+
+Output JSON schema:
+{
+  "discoveryReport": {
+    "businessIdentity": "",
+    "contactPaths": [],
+    "services": [],
+    "currentPresence": "",
+    "opportunityDiagnosis": "",
+    "recommendedAngle": "",
+    "evidenceUsed": [],
+    "missingEvidence": []
+  },
+  "gapScore": {
+    "total": 0,
+    "conversion": 0,
+    "localSeo": 0,
+    "designTrust": 0,
+    "content": 0,
+    "rationale": ""
+  },
+  "websiteProductionSpec": {
+    "pageMode": "one_page_preview",
+    "templateDirection": "",
+    "blockPlan": [],
+    "assetPlan": [],
+    "contactPlan": {},
+    "seoPlan": {},
+    "factLock": {
+      "mustKeep": [],
+      "mustNotClaim": []
+    }
+  },
+  "copyBrief": {
+    "heroHeadline": "",
+    "heroSubcopy": "",
+    "primaryCta": "",
+    "serviceCopy": [],
+    "faq": [],
+    "outreachHook": ""
+  },
+  "riskNotes": []
+}
+
+Lead input:
+{
+  "leadSlug": "roofing-restoration-greg-sign",
+  "businessName": "Roofing & Restoration",
+  "niche": "roofing",
+  "source": "operator_image_and_text",
+  "verifiedFacts": {
+    "businessName": "Roofing & Restoration",
+    "contactName": "Greg",
+    "phones": [
+      "0424 371 622"
+    ],
+    "emails": [],
+    "address": "",
+    "websiteUrl": "",
+    "serviceArea": "",
+    "services": [
+      "roof restorations",
+      "capping",
+      "respray",
+      "repairs",
+      "gutters",
+      "driveway",
+      "patio",
+      "external living",
+      "retaining wall",
+      "pressure cleaning"
+    ],
+    "claimsFromSource": [
+      "40 years experience",
+      "free in person inspection and quote"
+    ]
+  },
+  "researchNotes": [
+    "Input came from a sign/photo plus operator text, not a verified website.",
+    "No website, email, address, licence, Google rating, or real review evidence is available in this fixture.",
+    "The page can use generated demo copy for completeness, but it must not invent contact details or verified proof."
+  ],
+  "targetArtifacts": [
+    "discoveryReport",
+    "gapScore",
+    "websiteProductionSpec",
+    "copyBrief",
+    "riskNotes"
+  ]
+}

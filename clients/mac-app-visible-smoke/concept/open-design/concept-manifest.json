@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-06T23:07:45.756Z",
+  "clientSlug": "mac-app-visible-smoke",
+  "projectId": "mac-app-visible-smoke-open-design-1778108761460",
+  "conversationId": "3dbcd6ff-0333-4ff4-bc5b-716eca03aa71",
+  "runId": "3a2fbd15-5969-4159-975d-e5cb9ba6e8d8",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "local business",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "multi-page",
+  "prompt": "Skip questions. Mac app visibility smoke only. Do not fetch the web. Create index.html with heading 'Mac App Visible Smoke'.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/mac-app-visible-smoke/concept/open-design",
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 3004,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    }
+  ],
+  "updatedAt": "2026-05-07T00:35:08.413Z",
+  "syncedFromOpenDesignAt": "2026-05-07T00:35:08.413Z",
+  "lastRunId": "234582dc-9618-45b2-819e-341fb41fa52e",
+  "previousRunId": "3a2fbd15-5969-4159-975d-e5cb9ba6e8d8",
+  "continuationRuns": [
+    {
+      "runId": "234582dc-9618-45b2-819e-341fb41fa52e",
+      "createdAt": "2026-05-07T00:34:59.832Z",
+      "prompt": "Smoke update only. Keep the existing page, add a visible section with exact text 'Open Design Discord Update Smoke', and do not fetch the web.",
+      "status": {
+        "code": 0,
+        "signal": null,
+        "status": "succeeded"
+      },
+      "eventsPath": "run-events-234582dc-9618-45b2-819e-341fb41fa52e.sse"
+    }
+  ]
+}

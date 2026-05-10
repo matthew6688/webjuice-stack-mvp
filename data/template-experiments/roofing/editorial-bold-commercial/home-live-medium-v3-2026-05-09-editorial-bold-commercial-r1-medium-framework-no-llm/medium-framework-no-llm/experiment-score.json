@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "variant": "medium-framework-no-llm",
+  "score": 95,
+  "ok": true,
+  "execute": true,
+  "durationMs": 937174,
+  "experimentReliability": {
+    "score": 97,
+    "max": 100,
+    "issues": [
+      "Run took 937174 ms."
+    ]
+  },
+  "localBusinessWebsite": {
+    "totalScore": 94,
+    "grade": "A",
+    "dimensions": {
+      "conversion": {
+        "score": 25,
+        "max": 25,
+        "issues": [],
+        "checks": [
+          {
+            "id": "hero_cta",
+            "score": 8,
+            "max": 8,
+            "issue": ""
+          },
+          {
+            "id": "local_intent_cta",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "contact_completeness",
+            "score": 8,
+            "max": 8,
+            "issue": ""
+          },
+          {
+            "id": "five_second_clarity",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          }
+        ]
+      },
+      "local_seo": {
+        "score": 25,
+        "max": 25,
+        "issues": [],
+        "checks": [
+          {
+            "id": "title_city_business",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "nap_structure",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "local_business_schema",
+            "score": 7,
+            "max": 7,
+            "issue": ""
+          },
+          {
+            "id": "h1_business_location",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "map_link",
+            "score": 2,
+            "max": 2,
+            "issue": ""
+          }
+        ]
+      },
+      "technical": {
+        "score": 16,
+        "max": 20,
+        "issues": [
+          "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。",
+          "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。"
+        ],
+        "checks": [
+          {
+            "id": "responsive",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "lcp_proxy",
+            "score": 4,
+            "max": 6,
+            "issue": "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。"
+          },
+          {
+            "id": "https",
+            "score": 2,
+            "max": 4,
+            "issue": "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。"
+          },
+          {
+            "id": "image_alt_lazy",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          }
+        ]
+      },
+      "design_trust": {
+        "score": 18,
+        "max": 20,
+        "issues": [
+          "可以使用 AI-generated demo/reference review，不是 critical blocker；上线需换成真实 review 或 Google review。"
+        ],
+        "checks": [
+          {
+            "id": "industry_fit",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          },
+          {
+            "id": "realistic_images",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          },
+          {
+            "id": "proof_or_reviews",
+            "score": 3,
+            "max": 5,
+            "issue": "可以使用 AI-generated demo/reference review，不是 critical blocker；上线需换成真实 review 或 Google review。"
+          },
+          {
+            "id": "typographic_hierarchy",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          }
+        ]
+      },
+      "content": {
+        "score": 10,
+        "max": 10,
+        "issues": [],
+        "checks": [
+          {
+            "id": "service_area_scope",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "differentiation",
+            "score": 3,
+            "max": 3,
+            "issue": ""
+          },
+          {
+            "id": "language_quality",
+            "score": 3,
+            "max": 3,
+            "issue": ""
+          }
+        ]
+      }
+    },
+    "notes": [
+      "Template-stage scoring allows AI-generated demo/reference reviews as placeholder proof copy.",
+      "Demo/reference reviews are not critical blockers, but artifact metadata must mark provenance and live sites should replace them with real or Google reviews.",
+      "Real lead scoring should compare NAP against Google Place/GMB when placeId evidence is available.",
+      "PageSpeed/HTTPS are partial in local HTML experiments and become strict after deploy."
+    ],
+    "top3Fixes": [
+      "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。",
+      "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。",
+      "可以使用 AI-generated demo/reference review，不是 critical blocker；上线需换成真实 review 或 Google review。"
+    ]
+  },
+  "htmlFiles": [
+    "data/template-experiments/roofing/editorial-bold-commercial/home-live-medium-v3-2026-05-09-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/open-design/index.html"
+  ],
+  "provenance": {
+    "rasterAssetCount": 5,
+    "approvedAssetCount": 5,
+    "usedApprovedAssetCount": 5,
+    "matchedApprovedAssets": [
+      {
+        "file": "hero-family2-hero-worker-standing-metal-roof-wide.png",
+        "slot": "hero",
+        "sha256": "b91752026dec5249712a463034359485c9d9a99a35d17c4f845fdc04730e9b49"
+      },
+      {
+        "file": "projectDetail-family2-project-commercial-metal-roof-detail.png",
+        "slot": "projectDetail",
+        "sha256": "26bca0a341f8bf8b346090e033ee8d7b26a76c5b7d98910356775bc40728f964"
+      },
+      {
+        "file": "projectTile-family2-service-orange-accent-roof-work.png",
+        "slot": "projectTile",
+        "sha256": "5adfc148fb532049f68dbfc3ad55e3407c4868fd0be27544f2ea05c84ce9bf76"
+      },
+      {
+        "file": "service-family2-service-roofer-metal-roof-diagonal.png",
+        "slot": "service",
+        "sha256": "a6890a2adb99ecf6a9eedc59a0859b4ca0b85bc9360941df4fa64bfc1fa9732e"
+      },
+      {
+        "file": "story-family2-story-two-roofers-metal-roof-portrait.png",
+        "slot": "story",
+        "sha256": "d9c23209f79cc57f13dec686dbd8122e4bad2203d009b5fbd918357a551a3a84"
+      }
+    ],
+    "unapprovedRasterAssets": []
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "code": "slow_run",
+      "points": 3,
+      "message": "Run took 937174 ms."
+    }
+  ],
+  "generatedAt": "2026-05-09T09:47:49.691Z"
+}

@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-05-09T06:18:09.258Z",
+  "query": "roof restoration New Farm Brisbane",
+  "runs": [
+    {
+      "runId": "20260509-g1-roof-new-farm-a",
+      "file": "data/maps-scraper/runs/20260509-g1-roof-new-farm-a/discovery-run.json",
+      "rawRows": 21,
+      "leads": 21,
+      "actionCounts": {
+        "audit_candidate": 1,
+        "skip": 19,
+        "manual_review": 1
+      },
+      "websiteStatusCounts": {
+        "independent_http_site": 6,
+        "independent_https_site": 15
+      }
+    },
+    {
+      "runId": "20260509-g1-roof-new-farm-b",
+      "file": "data/maps-scraper/runs/20260509-g1-roof-new-farm-b/discovery-run.json",
+      "rawRows": 22,
+      "leads": 22,
+      "actionCounts": {
+        "audit_candidate": 1,
+        "skip": 19,
+        "manual_review": 2
+      },
+      "websiteStatusCounts": {
+        "independent_http_site": 6,
+        "independent_https_site": 16
+      }
+    }
+  ],
+  "overlap": {
+    "count": 20,
+    "ratioAgainstRunA": 0.9523809523809523,
+    "ratioAgainstRunB": 0.9090909090909091
+  },
+  "runDrift": {
+    "onlyA": [
+      {
+        "name": "Gerard Roofs",
+        "category": "Roofing contractor",
+        "website": "https://www.gerardroofs.com.au/",
+        "phone": "0420 320 968",
+        "score": 27,
+        "action": "skip",
+        "place_id": "ChIJtdw_5W8VkWsRUXlCpWqZdyo"
+      }
+    ],
+    "onlyB": [
+      {
+        "name": "Hurricane Digital - SEO Brisbane",
+        "category": "Internet marketing service",
+        "website": "https://hurricanedigital.com.au/",
+        "phone": "(07) 3132 8715",
+        "score": 45,
+        "action": "manual_review",
+        "place_id": "ChIJYwYPvHJZkWsR6cLfDdPq0nc"
+      },
+      {
+        "name": "DTM METAL ROOFING PTY LTD",
+        "category": "Roofing contractor",
+        "website": "https://www.dtmmetalroofing.com.au/",
+        "phone": "(07) 2004 0422",
+        "score": 27,
+        "action": "skip",
+        "place_id": "ChIJKzAJXcOhy4kRT_DLq4p5Y8c"
+      }
+    ]
+  },
+  "suspiciousInRunB": [
+    {
+      "name": "Hurricane Digital - SEO Brisbane",
+      "category": "Internet marketing service",
+      "website": "https://hurricanedigital.com.au/",
+      "phone": "(07) 3132 8715",
+      "score": 45,
+      "action": "manual_review",
+      "place_id": "ChIJYwYPvHJZkWsR6cLfDdPq0nc"
+    }
+  ],
+  "storeTotals": {
+    "entities": 41,
+    "promoted": 4,
+    "skipped": 22,
+    "needsAudit": 1,
+    "needsEnrichment": 0,
+    "readyForOutreachBrief": 8
+  },
+  "queueCounts": 1,
+  "conclusion": [
+    "Store upsert dedupes overlapping places by place_id/cid/domain/phone/name fallback.",
+    "Google Maps search results can drift between runs, so G1 should measure overlap and relevance, not expect identical raw result sets.",
+    "Need a query relevance filter before queueing/admin display to keep unrelated businesses out of lead ops."
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "id": "ollama-deepseek-r1:14b",
+  "provider": "ollama",
+  "model": "deepseek-r1:14b",
+  "status": "ok",
+  "durationMs": 67001,
+  "rawOutput": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration\",\n    \"contactPaths\": [],\n    \"services\": [\"roof restorations\", \"capping\", \"respray\", \"repairs\", \"gutters\", \"driveway\", \"patio\", \"external living\", \"retaining wall\", \"pressure cleaning\"],\n    \"currentPresence\": \"\",\n    \"opportunityDiagnosis\": \"\",\n    \"recommendedAngle\": \"\",\n    \"evidenceUsed\": [],\n    \"missingEvidence\": []\n  },\n  \"gapScore\": {\n    \"total\": 0,\n    \"conversion\": 0,\n    \"localSeo\": 0,\n    \"designTrust\": 0,\n    \"content\": 0,\n    \"rationale\": \"\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"\",\n    \"blockPlan\": [\"hero\", \"services\", \"trust\", \"process\", \"faq\", \"contact\"],\n    \"assetPlan\": [],\n    \"contactPlan\": {},\n    \"seoPlan\": {},\n    \"factLock\": {\n      \"mustKeep\": [\"0424 371 622\"],\n      \"mustNotClaim\": [\"email\", \"address\", \"websiteUrl\", \"real reviews\", \"licence\", \"award\", \"rating\", \"price\", \"guarantee\"]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Transform Your Home Exterior with Expert Roofing & Restoration\",\n    \"heroSubcopy\": \"Specializing in roof restorations, capping, respray, and more. Get a free in-person inspection and quote today.\",\n    \"primaryCta\": \"Call 0424 371 622 for expert roofing services\",\n    \"serviceCopy\": [\n      \"Professional Roof Restorations: Bring back the beauty of your home with our expert roof restoration services.\",\n      \"Quality Capping & Respray: Enhance your property's curb appeal with our top-notch capping and respray solutions.\",\n      \"Comprehensive Repairs: From gutters to driveways, we handle all exterior repairs with precision.\",\n      \"Free In-Person Inspection & Quote: Your satisfaction is our priority. We offer free inspections and detailed quotes.\"\n    ],\n    \"faq\": [\n      {\n        \"question\": \"What services do you offer?\",\n        \"answer\": \"We provide roof restorations, capping, respray, repairs, gutters, driveways, patios, external living areas, retaining walls, and pressure cleaning.\"\n      },\n      {\n        \"question\": \"How long does each service take?\",\n        \"answer\": \"Service duration varies depending on the scope of work. We provide detailed timelines during your free inspection.\"\n      },\n      {\n        \"question\": \"Do you offer a warranty?\",\n        \"answer\": \"We ensure our work with quality materials and expert craftsmanship, but specific warranties may vary. Please ask during your consultation.\"\n      }\n    ],\n    \"outreachHook\": \"\"\n  },\n  \"riskNotes\": [\n    \"No verified contact details (email, address, website) available; these are omitted or handled carefully in the output.\",\n    \"Generated content must be clearly marked as demo-only internally but not visible to customers.\",\n    \"Avoid making any claims about awards, licences, ratings, prices, or guarantees without verification.\"\n  ]\n}",
+  "error": "",
+  "evaluation": {
+    "schemaVersion": 1,
+    "ok": true,
+    "score": 89,
+    "grade": "B",
+    "parse": {
+      "ok": true,
+      "value": {
+        "discoveryReport": {
+          "businessIdentity": "Roofing & Restoration",
+          "contactPaths": [],
+          "services": [
+            "roof restorations",
+            "capping",
+            "respray",
+            "repairs",
+            "gutters",
+            "driveway",
+            "patio",
+            "external living",
+            "retaining wall",
+            "pressure cleaning"
+          ],
+          "currentPresence": "",
+          "opportunityDiagnosis": "",
+          "recommendedAngle": "",
+          "evidenceUsed": [],
+          "missingEvidence": []
+        },
+        "gapScore": {
+          "total": 0,
+          "conversion": 0,
+          "localSeo": 0,
+          "designTrust": 0,
+          "content": 0,
+          "rationale": ""
+        },
+        "websiteProductionSpec": {
+          "pageMode": "one_page_preview",
+          "templateDirection": "",
+          "blockPlan": [
+            "hero",
+            "services",
+            "trust",
+            "process",
+            "faq",
+            "contact"
+          ],
+          "assetPlan": [],
+          "contactPlan": {},
+          "seoPlan": {},
+          "factLock": {
+            "mustKeep": [
+              "0424 371 622"
+            ],
+            "mustNotClaim": [
+              "email",
+              "address",
+              "websiteUrl",
+              "real reviews",
+              "licence",
+              "award",
+              "rating",
+              "price",
+              "guarantee"
+            ]
+          }
+        },
+        "copyBrief": {
+          "heroHeadline": "Transform Your Home Exterior with Expert Roofing & Restoration",
+          "heroSubcopy": "Specializing in roof restorations, capping, respray, and more. Get a free in-person inspection and quote today.",
+          "primaryCta": "Call 0424 371 622 for expert roofing services",
+          "serviceCopy": [
+            "Professional Roof Restorations: Bring back the beauty of your home with our expert roof restoration services.",
+            "Quality Capping & Respray: Enhance your property's curb appeal with our top-notch capping and respray solutions.",
+            "Comprehensive Repairs: From gutters to driveways, we handle all exterior repairs with precision.",
+            "Free In-Person Inspection & Quote: Your satisfaction is our priority. We offer free inspections and detailed quotes."
+          ],
+          "faq": [
+            {
+              "question": "What services do you offer?",
+              "answer": "We provide roof restorations, capping, respray, repairs, gutters, driveways, patios, external living areas, retaining walls, and pressure cleaning."
+            },
+            {
+              "question": "How long does each service take?",
+              "answer": "Service duration varies depending on the scope of work. We provide detailed timelines during your free inspection."
+            },
+            {
+              "question": "Do you offer a warranty?",
+              "answer": "We ensure our work with quality materials and expert craftsmanship, but specific warranties may vary. Please ask during your consultation."
+            }
+          ],
+          "outreachHook": ""
+        },
+        "riskNotes": [
+          "No verified contact details (email, address, website) available; these are omitted or handled carefully in the output.",
+          "Generated content must be clearly marked as demo-only internally but not visible to customers.",
+          "Avoid making any claims about awards, licences, ratings, prices, or guarantees without verification."
+        ]
+      },
+      "rawJson": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration\",\n    \"contactPaths\": [],\n    \"services\": [\"roof restorations\", \"capping\", \"respray\", \"repairs\", \"gutters\", \"driveway\", \"patio\", \"external living\", \"retaining wall\", \"pressure cleaning\"],\n    \"currentPresence\": \"\",\n    \"opportunityDiagnosis\": \"\",\n    \"recommendedAngle\": \"\",\n    \"evidenceUsed\": [],\n    \"missingEvidence\": []\n  },\n  \"gapScore\": {\n    \"total\": 0,\n    \"conversion\": 0,\n    \"localSeo\": 0,\n    \"designTrust\": 0,\n    \"content\": 0,\n    \"rationale\": \"\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"\",\n    \"blockPlan\": [\"hero\", \"services\", \"trust\", \"process\", \"faq\", \"contact\"],\n    \"assetPlan\": [],\n    \"contactPlan\": {},\n    \"seoPlan\": {},\n    \"factLock\": {\n      \"mustKeep\": [\"0424 371 622\"],\n      \"mustNotClaim\": [\"email\", \"address\", \"websiteUrl\", \"real reviews\", \"licence\", \"award\", \"rating\", \"price\", \"guarantee\"]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Transform Your Home Exterior with Expert Roofing & Restoration\",\n    \"heroSubcopy\": \"Specializing in roof restorations, capping, respray, and more. Get a free in-person inspection and quote today.\",\n    \"primaryCta\": \"Call 0424 371 622 for expert roofing services\",\n    \"serviceCopy\": [\n      \"Professional Roof Restorations: Bring back the beauty of your home with our expert roof restoration services.\",\n      \"Quality Capping & Respray: Enhance your property's curb appeal with our top-notch capping and respray solutions.\",\n      \"Comprehensive Repairs: From gutters to driveways, we handle all exterior repairs with precision.\",\n      \"Free In-Person Inspection & Quote: Your satisfaction is our priority. We offer free inspections and detailed quotes.\"\n    ],\n    \"faq\": [\n      {\n        \"question\": \"What services do you offer?\",\n        \"answer\": \"We provide roof restorations, capping, respray, repairs, gutters, driveways, patios, external living areas, retaining walls, and pressure cleaning.\"\n      },\n      {\n        \"question\": \"How long does each service take?\",\n        \"answer\": \"Service duration varies depending on the scope of work. We provide detailed timelines during your free inspection.\"\n      },\n      {\n        \"question\": \"Do you offer a warranty?\",\n        \"answer\": \"We ensure our work with quality materials and expert craftsmanship, but specific warranties may vary. Please ask during your consultation.\"\n      }\n    ],\n    \"outreachHook\": \"\"\n  },\n  \"riskNotes\": [\n    \"No verified contact details (email, address, website) available; these are omitted or handled carefully in the output.\",\n    \"Generated content must be clearly marked as demo-only internally but not visible to customers.\",\n    \"Avoid making any claims about awards, licences, ratings, prices, or guarantees without verification.\"\n  ]\n}"
+    },
+    "findings": [
+      {
+        "severity": "minor",
+        "code": "thin_evidence_used",
+        "points": -4,
+        "message": "Evidence used is too thin."
+      },
+      {
+        "severity": "minor",
+        "code": "thin_missing_evidence",
+        "points": -4,
+        "message": "Missing evidence is not clearly listed."
+      },
+      {
+        "severity": "minor",
+        "code": "thin_asset_plan",
+        "points": -6,
+        "message": "Asset plan should specify hero, service/detail, and proof/contact imagery."
+      }
+    ],
+    "metrics": {
+      "outputCharacters": 2839,
+      "blockCount": 6,
+      "assetCount": 0,
+      "serviceCopyCount": 4,
+      "faqCount": 3
+    }
+  }
+}

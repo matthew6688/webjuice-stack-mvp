@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" role="img" aria-labelledby="title desc">
+  <title id="title">Before and after roof restoration panels</title>
+  <desc id="desc">Two roof panels showing a tired roof surface next to a cleaned and repainted roof.</desc>
+  <defs>
+    <linearGradient id="old" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5e5a51"/>
+      <stop offset="0.5" stop-color="#817566"/>
+      <stop offset="1" stop-color="#393934"/>
+    </linearGradient>
+    <linearGradient id="new" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a33b29"/>
+      <stop offset="0.5" stop-color="#d4673a"/>
+      <stop offset="1" stop-color="#5c211b"/>
+    </linearGradient>
+    <filter id="noise">
+      <feTurbulence baseFrequency="0.9" numOctaves="3" seed="31"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.11"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="multiply"/>
+    </filter>
+  </defs>
+  <rect width="1100" height="720" fill="#f8f2ea"/>
+  <g transform="translate(70 70)">
+    <rect width="460" height="560" rx="22" fill="url(#old)" filter="url(#noise)"/>
+    <g opacity="0.24" stroke="#201d1a" stroke-width="7">
+      <path d="M-20 110 H480"/><path d="M-20 210 H480"/><path d="M-20 310 H480"/><path d="M-20 410 H480"/>
+      <path d="M90 0 V560"/><path d="M235 0 V560"/><path d="M380 0 V560"/>
+    </g>
+    <rect x="24" y="24" width="112" height="38" rx="19" fill="#f8f2ea"/>
+    <text x="80" y="49" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#393934">Before</text>
+  </g>
+  <g transform="translate(570 70)">
+    <rect width="460" height="560" rx="22" fill="url(#new)" filter="url(#noise)"/>
+    <g opacity="0.26" stroke="#ffd6bd" stroke-width="7">
+      <path d="M-20 110 H480"/><path d="M-20 210 H480"/><path d="M-20 310 H480"/><path d="M-20 410 H480"/>
+      <path d="M90 0 V560"/><path d="M235 0 V560"/><path d="M380 0 V560"/>
+    </g>
+    <rect x="24" y="24" width="96" height="38" rx="19" fill="#f8f2ea"/>
+    <text x="72" y="49" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#5c211b">After</text>
+  </g>
+</svg>

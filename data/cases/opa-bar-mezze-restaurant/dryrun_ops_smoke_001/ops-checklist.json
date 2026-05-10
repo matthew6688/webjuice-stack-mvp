@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "mode": "project_dry_run",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "businessName": "Opa Bar & Mezze",
+  "niche": "restaurant",
+  "route": "website",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "repoDir": "/Users/matthew/Developer/webjuice-restaurant",
+  "sourceUrl": "https://www.opabar.com.au/",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+  "orderId": "dryrun_ops_smoke_001",
+  "customerEmail": "matthew6688@gmail.com",
+  "status": "blocked",
+  "createdAt": "2026-05-07T06:48:23.187Z",
+  "updatedAt": "2026-05-07T06:48:24.966Z",
+  "stages": [
+    {
+      "id": "stage_0_case_created",
+      "name": "创建 dry-run case",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Dry-run case created.",
+      "evidence": [
+        "data/cases/opa-bar-mezze-restaurant/dryrun_ops_smoke_001/case.json",
+        "data/cases/opa-bar-mezze-restaurant/dryrun_ops_smoke_001/context-packet.json"
+      ],
+      "nextAction": "继续验证 evidence 和 website-ready packet。",
+      "startedAt": "2026-05-07T06:48:23.188Z",
+      "finishedAt": "2026-05-07T06:48:23.188Z"
+    },
+    {
+      "id": "stage_1_evidence_validate",
+      "name": "验证 evidence",
+      "critical": true,
+      "status": "pass",
+      "command": "npm run evidence:validate -- --client opa-bar-mezze-restaurant --niche restaurant",
+      "output": "> webjuice-mvp@0.0.1 evidence:validate\n> node scripts/evidence/validate.js --client opa-bar-mezze-restaurant --niche restaurant\nEvidence validation: /Users/matthew/Developer/google-map-website/clients/opa-bar-mezze-restaurant/evidence/evidence.json\nStatus: ok\nNo issues found.",
+      "evidence": [
+        "clients/opa-bar-mezze-restaurant/evidence/evidence.json"
+      ],
+      "nextAction": "继续生成 website-ready packet。",
+      "startedAt": "2026-05-07T06:48:23.188Z",
+      "finishedAt": "2026-05-07T06:48:23.359Z"
+    },
+    {
+      "id": "stage_2_website_ready_packet",
+      "name": "生成 website-ready packet",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Readiness: website_ready_to_build; readyToBuild=true",
+      "evidence": [
+        "clients/opa-bar-mezze-restaurant/intake/website-survey.json",
+        "data/cases/opa-bar-mezze-restaurant/dryrun_ops_smoke_001/build-packet.md"
+      ],
+      "data": {
+        "readiness": "website_ready_to_build",
+        "readyToBuild": true,
+        "missing": [],
+        "nextAction": "Create or continue the website task thread and build on dev."
+      },
+      "nextAction": "创建或继续 Discord website task thread，然后在 dev 上构建。",
+      "startedAt": "2026-05-07T06:48:23.359Z",
+      "finishedAt": "2026-05-07T06:48:23.363Z"
+    },
+    {
+      "id": "stage_3_open_design_binding",
+      "name": "检查 Open Design project",
+      "critical": true,
+      "status": "blocker",
+      "command": "",
+      "output": "Open Design project is not created/bound.",
+      "evidence": [],
+      "data": {
+        "status": "not_created",
+        "mode": "app-visible",
+        "dataDir": "/Users/matthew/Developer/open-design/.od",
+        "projectId": "",
+        "runId": "",
+        "conceptPath": "clients/opa-bar-mezze-restaurant/concept/open-design",
+        "manifestPath": "clients/opa-bar-mezze-restaurant/concept/open-design/concept-manifest.json",
+        "productionHandoffPath": "clients/opa-bar-mezze-restaurant/concept/open-design/production-handoff.json",
+        "createCommand": "npm run open-design:run-concept -- --client opa-bar-mezze-restaurant --mode app-visible --source-url <official-site-url>",
+        "continueCommand": "",
+        "syncCommand": "",
+        "rule": "Create or bind one local Open Design project before doing high-fidelity design changes."
+      },
+      "nextAction": "npm run open-design:run-concept -- --client opa-bar-mezze-restaurant --mode app-visible --source-url <official-site-url>",
+      "startedAt": "2026-05-07T06:48:23.363Z",
+      "finishedAt": "2026-05-07T06:48:23.363Z"
+    },
+    {
+      "id": "stage_4_production_handoff",
+      "name": "检查 production handoff",
+      "critical": true,
+      "status": "blocker",
+      "command": "",
+      "output": "Missing production handoff: clients/opa-bar-mezze-restaurant/concept/open-design/production-handoff.json",
+      "evidence": [],
+      "nextAction": "在 Open Design concept 被接受后运行 open-design:build-production-handoff。",
+      "startedAt": "2026-05-07T06:48:23.363Z",
+      "finishedAt": "2026-05-07T06:48:23.363Z"
+    },
+    {
+      "id": "stage_5_customer_repo_build",
+      "name": "构建 customer repo dev preview",
+      "critical": true,
+      "status": "pass",
+      "command": "cd /Users/matthew/Developer/webjuice-restaurant && npm run build",
+      "output": "16:48:24 [build] Collecting build info...\n16:48:24 [build] ✓ Completed in 198ms.\n16:48:24 [build] Building static entrypoints...\n16:48:24 [vite] ✓ built in 415ms\n16:48:24 [vite] ✓ built in 6ms\n16:48:24 [build] Rearranging server assets...\n generating static routes \n16:48:24 [WARN] [build] Could not render `/blog` from route `/blog/[...slug]` as it conflicts with higher priority route `/blog`.\n16:48:24 [WARN] [build] Could not render `/cases` from route `/cases/[...slug]` as it conflicts with higher priority route `/cases`.\n16:48:24   ├─ /blog/index.html (+6ms) \n16:48:24   ├─ /cases/index.html (+2ms) \n16:48:24   ├─ /contact/index.html (+1ms) \n16:48:24   ├─ /menu/index.html (+1ms) \n16:48:24   ├─ /index.html (+2ms) \n16:48:24 ✓ Completed in 22ms.\n16:48:24 [build] ✓ Completed in 470ms.\n16:48:24 [build] 5 page(s) built in 669ms\n16:48:24 [build] Complete!",
+      "evidence": [
+        "/Users/matthew/Developer/webjuice-restaurant/dist"
+      ],
+      "nextAction": "继续验证 customer repo preview banner。",
+      "startedAt": "2026-05-07T06:48:23.363Z",
+      "finishedAt": "2026-05-07T06:48:24.793Z"
+    },
+    {
+      "id": "stage_5b_preview_funnel_qa",
+      "name": "验证 preview banner 和官方 funnel links",
+      "critical": true,
+      "status": "pass",
+      "command": "npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/webjuice-restaurant/dist --client Opa Bar & Mezze",
+      "output": "      \"source\": \"/Users/matthew/Developer/webjuice-restaurant/dist/domain-help/index.html\",\n      \"status\": 404,\n      \"ok\": true,\n      \"checks\": [\n        {\n          \"name\": \"local_funnel_route_removed_or_redirected\",\n          \"ok\": true,\n          \"detail\": \"\"\n        },\n        {\n          \"name\": \"removed_route_not_serving_funnel\",\n          \"ok\": true,\n          \"detail\": \"\"\n        }\n      ]\n    }\n  ]\n}",
+      "evidence": [
+        "/Users/matthew/Developer/webjuice-restaurant/dist"
+      ],
+      "nextAction": "继续创建 agent task draft。",
+      "startedAt": "2026-05-07T06:48:24.794Z",
+      "finishedAt": "2026-05-07T06:48:24.965Z"
+    },
+    {
+      "id": "stage_8_agent_task_draft",
+      "name": "创建 agent task draft",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Task draft valid: task_1778136504965_86s9rhp9",
+      "evidence": [
+        "data/cases/opa-bar-mezze-restaurant/dryrun_ops_smoke_001/agent-task-draft.json"
+      ],
+      "data": {
+        "taskId": "task_1778136504965_86s9rhp9",
+        "validation": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "nextAction": "人工确认后可把 task dispatch 到 Discord website thread。",
+      "startedAt": "2026-05-07T06:48:24.965Z",
+      "finishedAt": "2026-05-07T06:48:24.965Z"
+    },
+    {
+      "id": "stage_9_customer_review_email_draft",
+      "name": "生成 customer review email draft",
+      "critical": false,
+      "status": "pass",
+      "command": "",
+      "output": "Review email draft written for matthew6688@gmail.com",
+      "evidence": [
+        "data/cases/opa-bar-mezze-restaurant/dryrun_ops_smoke_001/customer-review-email-draft.json"
+      ],
+      "nextAction": "customer email 只能在 delivery QA 通过后通过 Resend 正式发送。",
+      "startedAt": "2026-05-07T06:48:24.965Z",
+      "finishedAt": "2026-05-07T06:48:24.966Z"
+    }
+  ],
+  "nextActions": [
+    {
+      "stage": "stage_3_open_design_binding",
+      "action": "npm run open-design:run-concept -- --client opa-bar-mezze-restaurant --mode app-visible --source-url <official-site-url>"
+    },
+    {
+      "stage": "stage_4_production_handoff",
+      "action": "在 Open Design concept 被接受后运行 open-design:build-production-handoff。"
+    }
+  ]
+}

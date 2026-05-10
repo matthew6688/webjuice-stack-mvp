@@ -190,11 +190,14 @@ This proves the earlier short-timeout samples were not valid evidence that nativ
 The current best operating model is:
 
 - **trust the shared Open Design project as the design workspace;**
-- **treat `artifact_quiet_fallback` as acceptable only when real visible artifacts already exist;**
+- **normal business runs must use the default no-fallback path and finish with native `event:end` / terminal success;**
+- **use `artifact_quiet_fallback` only as explicit rescue mode with `--allow-artifact-fallback`, and only when real visible artifacts already exist;**
 - **treat "no visible HTML" as a hard failure;**
 - **for `codex + web-prototype`, do not use a timeout below `600000ms` unless you are deliberately running a failure experiment;**
 - **when ProfitsLocal triggers `/api/runs` directly, also persist an assistant message with `run_id/run_status`, otherwise Open Design's Pipeline/Kanban will keep showing the project as `Not started`;**
 - **do not claim native clean finish unless `run-events.sse` actually contains `event: end` or the run status endpoint reaches terminal success before fallback.**
+- **if Open Design asks a question form, automation must answer from the lead handoff and rerun; unresolved question forms block validation.**
+- **every accepted concept must pass `open-design:audit-concept`; native finish only proves the run ended, not that the generated website is good enough.**
 
 Reference summary:
 
@@ -264,6 +267,138 @@ Verified example:
 Evidence:
 
 - `data/qa/open-design/rich-and-rare-longterm-smoke-v4-summary.json`
+
+## 2026-05-09 Core Website Generation SOP
+
+Open Design website generation is now a core ProfitsLocal production capability, not a casual prototype step. A run is not accepted just because an HTML file exists. It must finish natively, use the intended assets, preserve verified business facts, and pass the website quality gate.
+
+### Stable Input Contract
+
+Before starting a real Open Design website run, ProfitsLocal must prepare one clear handoff packet:
+
+- verified business facts: name, niche, service area, contact paths, website/contact page/social links when available;
+- selected offer mode: one-page preview, multi-page preview, redesign preview, or paid build handoff;
+- design language: reference screenshots/links, extracted design signals, palette/typography direction, section rhythm, and any `DESIGN.md` contract;
+- approved image pack: seeded raster assets under `assets/` with manifest and hashes; these are primary visual inputs, not optional decoration;
+- content plan: hero angle, service list, trust/proof modules, FAQ, process, CTA, contact form, and footer;
+- local SEO requirements: one H1 with business type and service area, LocalBusiness or niche-specific JSON-LD, real Google Maps/directions URL when an address or service-area placeholder is available, image alt text, and lazy loading;
+- copy guardrails: no internal audit language, no fake phone/email/address/licence/award/review, and demo reviews must be marked as placeholders.
+
+The best current pattern is **medium framework with visual freedom**: give Open Design enough structure and evidence, but do not over-prescribe every layout detail. Heavy constraints made earlier outputs stiff and text-heavy. Minimal prompts can look better, but are less reliable for facts and conversion requirements. Template-lab should keep testing this balance.
+
+### Daemon And Asset Alignment
+
+The Open Design daemon must be the daemon that sees the same project workspace and seeded assets as the ProfitsLocal runner.
+
+Required rule:
+
+- `OD_DATA_DIR and seeded assets stay aligned`.
+
+The runner now refuses silent reuse of a daemon on an explicitly requested port when that daemon may point at a different data directory. If a default daemon is already healthy and no explicit daemon URL was requested, the runner chooses a fresh available port for isolated runs.
+
+This prevents the repeated failure pattern where Open Design ran against a different project/data directory than the one ProfitsLocal seeded, causing missing assets, poor pages, or misleading fallback results.
+
+### Native Completion Gate
+
+For business-critical website generation:
+
+- accepted completion requires native clean finish: terminal `event:end` or terminal success from the run status endpoint;
+- `artifact_quiet_fallback` is rescue-only and must be explicitly allowed with `--allow-artifact-fallback`;
+- fallback can never be used to approve a public template, outreach mockup, or paid customer handoff;
+- no visible generated HTML is a hard failure;
+- source captures under `source/` or `source-*.html` never count as generated concept pages;
+- question forms must be answered automatically from the handoff packet and then the run continues;
+- Open Design should receive enough timeout for real work. For `codex + web-prototype`, use at least `600000ms`; template runs commonly need close to 10 minutes.
+- the SSE stream must stop watching immediately when a terminal `event:end` frame is parsed. Do not wait for the HTTP/SSE connection itself to close; some daemon/client combinations keep the stream open after native success, which makes the app and outer runner look stuck even though Open Design already finished.
+
+### Quality Gate
+
+Native finish only proves the agent stopped cleanly. It does not prove the website is good.
+
+Every accepted website concept must pass a separate quality gate:
+
+- approved image pack used, with SHA-256 matches where possible;
+- first viewport looks like a real local business website, not a text article or generic placeholder;
+- no horizontal strip / broken layout / low-density page that clearly missed the reference style;
+- strong niche-relevant imagery or approved generated imagery;
+- business facts are accurate or clearly marked as demo placeholders;
+- CTA path is visible: call, quote, booking, contact form, or directions;
+- contact form exists when the offer expects lead capture;
+- local SEO basics exist: title, H1, schema, map/directions URL, service area, meaningful alt text;
+- copy is customer-facing and specific enough for outreach;
+- redesigns must show what the current site does poorly and what the mockup improves.
+
+Hard reject if any of these are true:
+
+- completion used fallback without explicit rescue approval;
+- seeded/approved assets were ignored and replaced by generic SVGs or unrelated images;
+- internal terms appear in the customer-facing page, such as audit notes, skill names, or pipeline language;
+- fake verified claims appear, such as invented licences, awards, years in business, prices, reviews, addresses, phone numbers, or emails;
+- the page looks like the old failed outputs: thin text blocks, poor image use, repeated horizontal bands, or no credible local-business conversion path.
+
+### Evidence Checklist
+
+Each accepted run must leave hard evidence in repo artifacts:
+
+- `concept-manifest.json`;
+- `run-status.json`;
+- `run-events.sse`;
+- generated HTML and asset files;
+- desktop and mobile screenshots;
+- approved asset manifest / hashes;
+- quality audit JSON/Markdown;
+- Open Design start/end time, run ID, completion mode, question-form rounds, tool count, and produced file list.
+
+For template experiments, current evidence format lives under:
+
+```text
+data/template-experiments/<niche>/<family>/<page>-<run-id>/<variant>/
+```
+
+Latest stable roofing evidence:
+
+- run: `home-live-medium-v6-2026-05-09`
+- variant: `medium-framework-no-llm`
+- score: `96`
+- native clean finish: `true`
+- completion mode: `native`
+- approved assets matched: `5/5`
+- local business score: `94`
+- important pass: real Google Maps URL, JSON-LD, H1 with service area, image alt/lazy hygiene, review placeholder provenance.
+
+This v6 run is the current minimum bar for future Open Design website work.
+
+### Watcher Recommendation
+
+ProfitsLocal should not build a separate second Open Design orchestration system. The right path is a **runner-integrated watcher**:
+
+```text
+existing run-concept / continue-concept
+  -> stream SSE events
+  -> poll run status
+  -> scan project files
+  -> detect question forms
+  -> run checkpoint decisions
+  -> write repo/admin state
+  -> send special Discord alerts when human attention is needed
+```
+
+The watcher should treat timeout as a checkpoint, not an automatic kill:
+
+- no generated HTML and no recent activity: mark stuck/failed and notify special alerts webhook;
+- generated HTML exists but no native end: keep waiting or continue same project; do not approve yet;
+- recent tool/file activity exists: extend the watch window;
+- question form appears: auto-answer from handoff packet and continue;
+- native end arrives: export, screenshot, audit, score, and update admin.
+- if the Mac app does not show a running project, first check the runner mode. `isolated` runs write to `/tmp/profitslocal-open-design-*` and are intentionally invisible in the normal app. Use `--mode app-visible` when Matthew needs to watch the project in Open Design; this writes into `/Users/matthew/Developer/open-design/.od/projects`.
+
+Special alerts should use:
+
+```text
+SPECIAL_ALERTS_DISCORD_WEBHOOK_URL
+```
+
+Use this only for exceptional states: stuck Open Design run, repeated question-form loop, timeout with artifacts but no native finish, quality-gate failure after generation, or manual approval checkpoint. Normal progress should continue to use the existing case/thread/project state so Discord does not become noisy.
 
 ## Runtime Requirement
 

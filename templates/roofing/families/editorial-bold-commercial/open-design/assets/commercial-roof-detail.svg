@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" role="img" aria-labelledby="title desc">
+  <title id="title">Commercial roof detail</title>
+  <desc id="desc">Close detail of roof membrane, metal seams, and orange inspection markings.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#1b1b1b"/>
+      <stop offset=".38" stop-color="#687174"/>
+      <stop offset="1" stop-color="#f4f4ef"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="760" fill="#111"/>
+  <path d="M0 420 1000 140v620H0z" fill="url(#g)"/>
+  <g stroke="#f8faf8" stroke-width="6" opacity=".34">
+    <path d="M80 400 516 760M230 360 715 760M390 315 902 760M560 270 1000 650"/>
+  </g>
+  <g fill="none" stroke="#ff5a1f" stroke-width="16" stroke-linecap="round">
+    <path d="M628 228c64-13 126-10 188 9"/>
+    <path d="M122 522c54-18 108-21 162-9"/>
+  </g>
+  <circle cx="780" cy="210" r="58" fill="#ff5a1f" opacity=".9"/>
+  <circle cx="780" cy="210" r="23" fill="#111"/>
+</svg>

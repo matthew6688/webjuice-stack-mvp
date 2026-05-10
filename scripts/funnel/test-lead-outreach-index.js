@@ -6,6 +6,9 @@ import os from 'os';
 import path from 'path';
 import { loadLeadOutreachIndex, matchesLeadView } from '../../core/funnel/lead-outreach-index.js';
 import { runLeadOps, saveLeadOpsArtifacts } from '../../core/leads/lead-ops.js';
+import { matchTemplateFamily } from '../../core/leads/template-match.js';
+import { createLeadCopyBrief } from '../../core/leads/copy-brief.js';
+import { createTemplateOpenDesignHandoff } from '../../core/leads/open-design-handoff.js';
 
 const index = loadLeadOutreachIndex();
 
@@ -27,14 +30,31 @@ const missingEmailCount = index.records.filter((record) => matchesLeadView(recor
 assert.ok(demoReadyCount > 0, 'expected at least one demo-ready record');
 
 const discoveryFixture = buildDiscoveryFixture();
-assert.equal(discoveryFixture.pipelineStage, 'ready_for_mockup');
-assert.equal(discoveryFixture.nextAction.label, '创建 Mockup');
-assert.equal(matchesLeadView(discoveryFixture, 'ready_for_mockup'), true);
+assert.equal(discoveryFixture.pipelineStage, 'mockup_ready');
+assert.equal(discoveryFixture.nextAction.label, '确认并发送触达草稿');
+assert.equal(matchesLeadView(discoveryFixture, 'mockup_ready'), true);
 assert.equal(discoveryFixture.leadFamilyId, 'field_service');
 assert.ok(discoveryFixture.actionLog.some((entry) => entry.label === '运行线索流程'), 'expected visible work log');
 assert.ok(discoveryFixture.workTrace.some((entry) => entry.tool === 'lead-ops skill'), 'expected tool trace');
 assert.equal(discoveryFixture.aiAssessment.result, 'ready_for_mockup');
 assert.ok(discoveryFixture.decisionActions.some((action) => action.action === 'skip_lead'), 'expected skip decision action');
+assert.equal(discoveryFixture.artifactStatus.templateMatch, true);
+assert.equal(discoveryFixture.artifactStatus.copyBrief, true);
+assert.equal(discoveryFixture.artifactStatus.openDesignHandoff, true);
+assert.equal(discoveryFixture.artifactStatus.openDesignRun, true);
+assert.equal(discoveryFixture.artifactStatus.openDesignNativeFinish, true);
+assert.equal(discoveryFixture.artifactStatus.conceptQualityAudit, true);
+assert.equal(discoveryFixture.artifactStatus.mockup, true);
+assert.equal(discoveryFixture.artifactStatus.proof, true);
+assert.ok(discoveryFixture.openDesignBrief.template?.id, 'expected selected template on Open Design brief');
+assert.equal(discoveryFixture.openDesignBrief.run.nativeCleanFinish, true);
+assert.equal(discoveryFixture.openDesignBrief.run.qualityScore, 91);
+assert.ok(discoveryFixture.workTrace.some((entry) => entry.tool === 'template matcher'), 'expected template matcher trace');
+assert.ok(discoveryFixture.workTrace.some((entry) => entry.tool === 'Open Design runner'), 'expected Open Design runner trace');
+assert.ok(discoveryFixture.workTrace.some((entry) => entry.tool === 'mockup quality audit'), 'expected mockup audit trace');
+assert.ok(discoveryFixture.actionLog.some((entry) => entry.label === '生成 Open Design Handoff'), 'expected handoff action log');
+assert.ok(discoveryFixture.actionLog.some((entry) => entry.label === '同步 Open Design 运行状态'), 'expected run status action log');
+assert.ok(discoveryFixture.actionLog.some((entry) => entry.label === 'Mockup 已可审核'), 'expected mockup-ready action log');
 
 const needsHumanFixture = buildNeedsHumanFixture();
 assert.equal(needsHumanFixture.pipelineStage, 'needs_human');
@@ -89,6 +109,24 @@ function buildDiscoveryFixture() {
       services: ['roof restoration', 'roof repairs'],
     });
     saveLeadOpsArtifacts(result);
+    writeTemplateMockupArtifacts({
+      root,
+      clientSlug: 'fixture-roof-restoration',
+      templateRoot: previousCwd,
+      input: {
+        clientSlug: 'fixture-roof-restoration',
+        businessName: 'Fixture Roof Restoration',
+        industry: 'roof restoration',
+        niche: 'roofing',
+        city: 'Brisbane',
+        websiteUrl: 'https://fixture-roof.example',
+        email: 'hello@fixture-roof.example',
+        phone: '0415 000 000',
+        services: ['roof restoration', 'roof repairs'],
+        buildMode: 'teaser',
+      },
+    });
+    writeOpenDesignRunArtifacts({ root, clientSlug: 'fixture-roof-restoration' });
     const fixtureIndex = loadLeadOutreachIndex({
       clientsRoot: path.join(root, 'clients'),
       casesRoot: path.join(root, 'data', 'cases'),
@@ -196,4 +234,74 @@ function loadFixtureRecord(root, clientSlug) {
     paidIntakesRoot: path.join(root, 'data', 'paid-intakes'),
   });
   return fixtureIndex.records.find((record) => record.clientSlug === clientSlug);
+}
+
+function writeTemplateMockupArtifacts({ root, clientSlug, templateRoot, input }) {
+  const leadDir = path.join(root, 'clients', clientSlug, 'lead');
+  fs.mkdirSync(leadDir, { recursive: true });
+  const templateMatch = matchTemplateFamily({ ...input, root: templateRoot, allowInternal: true });
+  const templateMatchPath = path.join(leadDir, 'template-match.json');
+  fs.writeFileSync(templateMatchPath, `${JSON.stringify(templateMatch, null, 2)}\n`);
+  const copyBrief = createLeadCopyBrief({ ...input, root: templateRoot, templateMatch, templateMatchPath });
+  const copyBriefPath = path.join(leadDir, 'copy-brief.json');
+  fs.writeFileSync(copyBriefPath, `${JSON.stringify(copyBrief, null, 2)}\n`);
+  const handoff = createTemplateOpenDesignHandoff({
+    ...input,
+    root: templateRoot,
+    templateMatch,
+    copyBrief,
+    templateMatchPath,
+    copyBriefPath,
+  });
+  fs.writeFileSync(path.join(leadDir, 'open-design-handoff.json'), `${JSON.stringify(handoff, null, 2)}\n`);
+}
+
+function writeOpenDesignRunArtifacts({ root, clientSlug }) {
+  const leadDir = path.join(root, 'clients', clientSlug, 'lead');
+  const conceptDir = path.join(root, 'clients', clientSlug, 'concept', 'open-design');
+  fs.mkdirSync(leadDir, { recursive: true });
+  fs.mkdirSync(conceptDir, { recursive: true });
+  fs.writeFileSync(path.join(leadDir, 'open-design-run-request.json'), `${JSON.stringify({
+    schemaVersion: 1,
+    generatedAt: '2026-05-08T00:03:00.000Z',
+    type: 'open_design_template_run_request',
+    status: 'completed',
+    mode: 'app-visible',
+    timeoutMs: 1800000,
+    allowArtifactFallback: false,
+    timeoutPolicy: {
+      checkpointNotHardEnd: true,
+      nativeCleanFinishRequired: true,
+    },
+  }, null, 2)}\n`);
+  fs.writeFileSync(path.join(conceptDir, 'open-design-run-state.json'), `${JSON.stringify({
+    startedAt: '2026-05-08T00:04:00.000Z',
+    endedAt: '2026-05-08T00:18:00.000Z',
+    nativeCleanFinish: true,
+    completionMode: 'native',
+    questionForms: [],
+    questionFormRounds: [],
+  }, null, 2)}\n`);
+  fs.writeFileSync(path.join(conceptDir, 'concept-manifest.json'), `${JSON.stringify({
+    version: 1,
+    clientSlug,
+    projectId: 'fixture-project',
+    runId: 'fixture-run',
+    lastRunId: 'fixture-run',
+    agentId: 'fixture-agent',
+    skillId: 'web-prototype',
+    lifecycle: {
+      nativeCleanFinish: true,
+      questionForms: [],
+      questionFormRounds: [],
+    },
+    status: { status: 'succeeded' },
+    files: [{ path: 'index.html', kind: 'html', size: 20 }],
+  }, null, 2)}\n`);
+  fs.writeFileSync(path.join(conceptDir, 'concept-quality-audit.json'), `${JSON.stringify({
+    ok: true,
+    score: 91,
+    generatedAt: '2026-05-08T00:19:00.000Z',
+    findings: [],
+  }, null, 2)}\n`);
 }

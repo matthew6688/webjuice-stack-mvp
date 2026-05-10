@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "auditType": "website-ui-audit",
+  "scope": "mobile-polish",
+  "subject": {
+    "family": "productized-modern-roofing",
+    "source": "data/template-experiments/roofing/productized-modern-roofing/home-live-medium-v1-app-visible-2026-05-09-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/open-design/index.html",
+    "mobileScreenshot": "data/qa/website-ui-audit-clean-productized-after-mobile-v2.png",
+    "mobileComparison": "data/qa/website-ui-audit-clean-productized-mobile-v1-v2.png"
+  },
+  "score": 92,
+  "decision": "approve",
+  "confidence": "medium",
+  "changes": [
+    "Reduced mobile hero top padding so headline and CTA appear earlier.",
+    "Adjusted mobile image crop to show more roof texture and less empty sky.",
+    "Compressed mobile hero CTA layout into a single-column tap-friendly block.",
+    "Hid dense proof cards on small screens to keep the first viewport focused."
+  ],
+  "mobileChecks": [
+    {
+      "viewport": "390x900",
+      "overflowX": false,
+      "ctaVisible": true,
+      "ctaTop": 591,
+      "ctaBottom": 638
+    },
+    {
+      "viewport": "360x740",
+      "overflowX": false,
+      "ctaVisible": true,
+      "ctaTop": 595,
+      "ctaBottom": 642
+    },
+    {
+      "viewport": "430x932",
+      "overflowX": false,
+      "ctaVisible": true,
+      "ctaTop": 620,
+      "ctaBottom": 667
+    }
+  ],
+  "postRunChecks": {
+    "h1Count": 1,
+    "internalTermsFound": false,
+    "images": 9,
+    "hasTel": true,
+    "hasMaps": true
+  },
+  "remainingNotes": [
+    "CTA is visible on 360x740 but sits low in the first viewport. Acceptable for now, but a stricter future mobile gate could require the primary CTA above 85% viewport height."
+  ]
+}

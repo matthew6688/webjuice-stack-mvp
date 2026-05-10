@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "model": "gemma3:27b",
+  "htmlPath": "data/template-experiments/roofing/productized-modern-roofing/home-live-medium-v1-app-visible-2026-05-09-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/open-design/index.html",
+  "generatedAt": "2026-05-09T21:11:43.463Z",
+  "ok": true,
+  "response": {
+    "score": 68,
+    "decision": "revise_copy",
+    "confidence": "medium",
+    "hardFailReasons": [],
+    "dimensionScores": {
+      "conversion": 14,
+      "specificity": 12,
+      "trustProof": 13,
+      "serviceOffer": 14,
+      "localSeo": 9,
+      "toneReadability": 8,
+      "differentiation": 8,
+      "factualSafety": 5
+    },
+    "findings": [
+      "Repetitive phrasing throughout the copy (e.g., “Roof repairs, restoration and inspections” appears multiple times).",
+      "The copy focuses heavily on *process* (inspection first) and less on the *benefits* to the homeowner.",
+      "Lack of specific examples or quantifiable results.",
+      "The 'FAQ' section is minimal and doesn't address many common roofing concerns.",
+      "The copy reads as informational rather than persuasive.",
+      "The call to action is repetitive, and the placement can be improved."
+    ],
+    "rewriteBrief": {
+      "title": "Reframe the title to focus on benefits, not just location. e.g., 'Protect Your Brisbane & Gold Coast Home with RidgeLine Roofing'",
+      "h1": "Highlight the key benefit in the H1. E.g., 'Reliable Roofing Solutions for Brisbane & Gold Coast Homes'",
+      "body": "Rewrite sections to prioritize homeowner benefits over process descriptions. For example, instead of “Inspection-first advice…”, say “We’ll thoroughly inspect your roof to identify the *best* and *most cost-effective* solution for your needs.” Add social proof (testimonials, before/after photos if possible).",
+      "buttons": "Vary the button copy beyond just repeating the company name or phone number. Use action-oriented language. E.g., 'Get a Free Inspection', 'See Our Roofing Options'.",
+      "faq": "Expand the FAQ section to address common concerns (cost, timeline, warranty, etc.).",
+      "localSeo": "Optimize for long-tail keywords related to specific roofing problems (e.g., “leaking roof repair Brisbane”)."
+    },
+    "openDesignCopyBrief": "Consider a layout that visually breaks up the text and emphasizes key benefits. Use images of completed projects to build trust. Prioritize mobile responsiveness."
+  },
+  "evidence": {
+    "provider": "ollama",
+    "rawResponseRemoved": true,
+    "reason": "Keep QA artifact readable; JSON parse success is captured by ok=true and response object."
+  }
+}

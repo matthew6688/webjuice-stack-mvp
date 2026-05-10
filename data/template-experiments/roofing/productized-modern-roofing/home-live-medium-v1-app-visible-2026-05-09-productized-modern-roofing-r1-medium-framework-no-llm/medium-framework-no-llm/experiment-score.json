@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "variant": "medium-framework-no-llm",
+  "score": 95,
+  "ok": true,
+  "execute": true,
+  "durationMs": 937101,
+  "experimentReliability": {
+    "score": 97,
+    "max": 100,
+    "issues": [
+      "Run took 937101 ms."
+    ]
+  },
+  "localBusinessWebsite": {
+    "totalScore": 94,
+    "grade": "A",
+    "dimensions": {
+      "conversion": {
+        "score": 25,
+        "max": 25,
+        "issues": [],
+        "checks": [
+          {
+            "id": "hero_cta",
+            "score": 8,
+            "max": 8,
+            "issue": ""
+          },
+          {
+            "id": "local_intent_cta",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "contact_completeness",
+            "score": 8,
+            "max": 8,
+            "issue": ""
+          },
+          {
+            "id": "five_second_clarity",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          }
+        ]
+      },
+      "local_seo": {
+        "score": 25,
+        "max": 25,
+        "issues": [],
+        "checks": [
+          {
+            "id": "title_city_business",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "nap_structure",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "local_business_schema",
+            "score": 7,
+            "max": 7,
+            "issue": ""
+          },
+          {
+            "id": "h1_business_location",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "map_link",
+            "score": 2,
+            "max": 2,
+            "issue": ""
+          }
+        ]
+      },
+      "technical": {
+        "score": 16,
+        "max": 20,
+        "issues": [
+          "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。",
+          "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。"
+        ],
+        "checks": [
+          {
+            "id": "responsive",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "lcp_proxy",
+            "score": 4,
+            "max": 6,
+            "issue": "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。"
+          },
+          {
+            "id": "https",
+            "score": 2,
+            "max": 4,
+            "issue": "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。"
+          },
+          {
+            "id": "image_alt_lazy",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          }
+        ]
+      },
+      "design_trust": {
+        "score": 18,
+        "max": 20,
+        "issues": [
+          "可以使用 AI-generated demo/reference review，不是 critical blocker；上线需换成真实 review 或 Google review。"
+        ],
+        "checks": [
+          {
+            "id": "industry_fit",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          },
+          {
+            "id": "realistic_images",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          },
+          {
+            "id": "proof_or_reviews",
+            "score": 3,
+            "max": 5,
+            "issue": "可以使用 AI-generated demo/reference review，不是 critical blocker；上线需换成真实 review 或 Google review。"
+          },
+          {
+            "id": "typographic_hierarchy",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          }
+        ]
+      },
+      "content": {
+        "score": 10,
+        "max": 10,
+        "issues": [],
+        "checks": [
+          {
+            "id": "service_area_scope",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "differentiation",
+            "score": 3,
+            "max": 3,
+            "issue": ""
+          },
+          {
+            "id": "language_quality",
+            "score": 3,
+            "max": 3,
+            "issue": ""
+          }
+        ]
+      }
+    },
+    "notes": [
+      "Template-stage scoring allows AI-generated demo/reference reviews as placeholder proof copy.",
+      "Demo/reference reviews are not critical blockers, but artifact metadata must mark provenance and live sites should replace them with real or Google reviews.",
+      "Real lead scoring should compare NAP against Google Place/GMB when placeId evidence is available.",
+      "PageSpeed/HTTPS are partial in local HTML experiments and become strict after deploy."
+    ],
+    "top3Fixes": [
+      "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。",
+      "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。",
+      "可以使用 AI-generated demo/reference review，不是 critical blocker；上线需换成真实 review 或 Google review。"
+    ]
+  },
+  "htmlFiles": [
+    "data/template-experiments/roofing/productized-modern-roofing/home-live-medium-v1-app-visible-2026-05-09-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/open-design/index.html"
+  ],
+  "provenance": {
+    "rasterAssetCount": 6,
+    "approvedAssetCount": 6,
+    "usedApprovedAssetCount": 6,
+    "matchedApprovedAssets": [
+      {
+        "file": "hero-family3-hero-modern-metal-roof-sunset-wide.png",
+        "slot": "hero",
+        "sha256": "7c37f658fc8ccefe27a05277c1558be28e02f5f708500116efee058de32caf37"
+      },
+      {
+        "file": "inspection-family3-inspection-drone-roof-check.png",
+        "slot": "inspection",
+        "sha256": "288c9189b006b78633ba5a233ae6951a8e9828b5cac730018109a355080246d5"
+      },
+      {
+        "file": "materialComposite-family3-product-composite-shingle-sample.png",
+        "slot": "materialComposite",
+        "sha256": "ad102841ad12291d87987c8aae07f597316045874418879cf1e3b6630b8ee842"
+      },
+      {
+        "file": "materialMetal-family3-product-standing-seam-metal-sample.png",
+        "slot": "materialMetal",
+        "sha256": "28b473b683dfa0c1c34fbabc77be4f5979818184f793924cb66b949413519bfe"
+      },
+      {
+        "file": "materialTerracotta-family3-product-terracotta-tile-sample.png",
+        "slot": "materialTerracotta",
+        "sha256": "ae614e9d5cd3d4c1d5720db7dd1c54cf50bf8c918ef7f487ec80a83a76942d75"
+      },
+      {
+        "file": "service-family3-service-modern-roofer-metal-roof.png",
+        "slot": "service",
+        "sha256": "d7bb14aa18b03831f8aba43faa0c69101702cdb4c13adafb48de8530adc4b7d0"
+      }
+    ],
+    "unapprovedRasterAssets": []
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "code": "slow_run",
+      "points": 3,
+      "message": "Run took 937101 ms."
+    }
+  ],
+  "generatedAt": "2026-05-09T10:20:10.796Z"
+}

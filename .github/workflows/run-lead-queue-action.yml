@@ -1,0 +1,47 @@
+name: Run Lead Queue Action
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        required: true
+        type: string
+      dedupe_key:
+        required: true
+        type: string
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Write payload
+        run: printf '%s' '${{ inputs.payload }}' > /tmp/lead-queue-action.json
+
+      - name: Run queue action
+        run: npm run leads:run-queue-action -- --input /tmp/lead-queue-action.json --output /tmp/lead-queue-action-summary.json
+
+      - name: Commit queue action updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          git add clients data/leads data/cases public/admin-artifacts
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Run lead queue action (${{ inputs.dedupe_key }})"
+          git push origin HEAD:main

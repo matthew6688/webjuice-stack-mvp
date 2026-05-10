@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Roftrix Roofing · One-Page Roof Visit</title>
+  <style>
+    :root {
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --fg: #212121;
+      --muted: #51606F;
+      --border: #E3DFD6;
+      --accent: #0E6B4F;
+      --primary: #0B2F57;
+      --warm: #FF6F3C;
+      --ink: #101417;
+      --font-display: "Playfair Display", "Iowan Old Style", "Charter", Georgia, serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+      --container: 1120px;
+      --gutter: 28px;
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; max-width: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; }
+    p { text-wrap: pretty; }
+    .container { max-width: var(--container); margin: 0 auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(54px, 8vw, 96px); }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 800; margin-bottom: 18px; }
+    .lead { color: var(--muted); font-size: 19px; max-width: 58ch; }
+    .btn { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; border-radius: var(--radius); padding: 12px 20px; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; border: 1px solid transparent; }
+    .btn-primary { background: var(--accent); color: var(--surface); }
+    .btn-light { background: var(--surface); color: var(--primary); }
+    .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 4; color: var(--surface); }
+    .topbar-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; }
+    .brand svg { width: 54px; height: 36px; color: var(--surface); }
+    .brand .house { fill: var(--accent); }
+    .hero { min-height: 760px; display: grid; align-items: end; position: relative; isolation: isolate; color: var(--surface); background: var(--primary); overflow: hidden; }
+    .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 88%, black), color-mix(in oklch, var(--primary) 36%, transparent) 62%, transparent), linear-gradient(0deg, color-mix(in oklch, var(--primary) 74%, black), transparent 45%); }
+    .hero-img { position: absolute; inset: 0; z-index: -2; }
+    .hero-copy { width: min(760px, 100%); padding-block: 132px 82px; }
+    h1 { font-size: clamp(48px, 7vw, 86px); line-height: 0.96; }
+    h2 { font-size: clamp(34px, 4vw, 54px); line-height: 1.05; }
+    h3 { font-size: 24px; line-height: 1.2; }
+    .hero .lead { color: color-mix(in oklch, var(--surface) 82%, var(--border)); margin-top: 22px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; align-items: start; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .card-img { aspect-ratio: 4 / 3; background: color-mix(in oklch, var(--primary) 10%, var(--bg)); }
+    .card-body { padding: 24px; }
+    .card-body p { margin-top: 9px; color: var(--muted); }
+    .proof { background: var(--surface); border-block: 1px solid var(--border); }
+    .proof-list { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 12px; color: var(--muted); }
+    .proof-list li { border-top: 1px solid var(--border); padding-top: 12px; }
+    .faq details { border-top: 1px solid var(--border); padding: 18px 0; }
+    .faq summary { cursor: pointer; font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+    .faq p { margin-top: 10px; color: var(--muted); }
+    .contact { background: var(--primary); color: var(--surface); }
+    .contact .lead { color: color-mix(in oklch, var(--surface) 76%, transparent); }
+    .form { background: var(--surface); color: var(--fg); border-radius: var(--radius-lg); padding: 28px; display: grid; gap: 14px; }
+    input, textarea, select { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; font: inherit; }
+    textarea { min-height: 112px; resize: vertical; }
+    label { display: grid; gap: 6px; color: var(--muted); font-size: 13px; }
+    footer { background: var(--ink); color: color-mix(in oklch, var(--surface) 66%, transparent); padding-block: 42px; }
+    footer .row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    @media (max-width: 860px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .topbar .btn { display: none; }
+      .hero { min-height: 700px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top" aria-label="Roftrix Roofing home">
+        <svg viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Roftrix Roofing mark"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">RR</text></svg>
+        <span>Roftrix Roofing</span>
+      </a>
+      <a class="btn btn-light" href="#contact">Book a Roof Visit</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" data-od-id="outreach-hero">
+      <div class="hero-img"><img src="assets/hero-premium-roof-blue-hour.jpg" alt="Residential roofline at blue hour" /></div>
+      <div class="container hero-copy">
+        <p class="eyebrow">Roof repair · replacement planning · storm concerns</p>
+        <h1>A direct path from roof concern to scheduled visit.</h1>
+        <p class="lead">For homeowners deciding whether to repair, replace, or schedule a closer look at a roof issue.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#contact">Request a Visit</a>
+          <a class="btn btn-light" href="#proof">See What to Expect</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="outreach-services">
+      <div class="container">
+        <p class="eyebrow">Common reasons to call</p>
+        <div class="grid-3">
+          <article class="card"><div class="card-img"><img src="assets/service-roof-repair-flashing-detail.jpg" alt="Roof flashing repair detail" /></div><div class="card-body"><h3>Water at a roof transition</h3><p>For flashing, valley, wall, vent, or chimney areas that need a careful look.</p></div></article>
+          <article class="card"><div class="card-img"><img src="assets/service-roof-installation-detail.jpg" alt="Roof replacement materials" /></div><div class="card-body"><h3>Aging shingles or materials</h3><p>For roofs where replacement planning may be more practical than repeated repair.</p></div></article>
+          <article class="card"><div class="card-img"><img src="assets/about-roofer-working-roof-frame.jpg" alt="Roofing crew working on a roof frame" /></div><div class="card-body"><h3>Pre-sale or storm questions</h3><p>For homeowners who need clarity before listing, buying, or handling weather damage.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section proof" id="proof" data-od-id="outreach-proof">
+      <div class="container grid-2">
+        <div><img src="assets/project-before-after-roof-transformation.jpg" alt="Roofing project detail" style="border-radius: var(--radius-lg); min-height: 420px;" /></div>
+        <div>
+          <p class="eyebrow">What homeowners get</p>
+          <h2>Clear roof notes before a big decision.</h2>
+          <p class="lead" style="margin-top: 18px;">This page is structured around proof that can be shown honestly: photos, problem areas, material notes, and a clear next step.</p>
+          <ul class="proof-list">
+            <li>Plain-language explanation of likely problem areas.</li>
+            <li>Repair versus replacement discussion without pressure copy.</li>
+            <li>Photo-led service modules that keep the page specific to roofing.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section faq" data-od-id="outreach-faq">
+      <div class="container grid-2">
+        <div><p class="eyebrow">Quick answers</p><h2>Good roofing pages remove uncertainty.</h2></div>
+        <div>
+          <details open><summary>Can I ask about one problem area?</summary><p>Yes. Start with the area you can see: flashing, valleys, vents, shingles, storm wear, or an interior leak spot.</p></details>
+          <details><summary>What details help before a visit?</summary><p>Photos, leak locations, roof age if known, and any previous repair notes help the team understand the concern faster.</p></details>
+          <details><summary>What is the main action?</summary><p>The page consistently points homeowners to request a roof visit and describe the concern they can see.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact" data-od-id="outreach-contact">
+      <div class="container grid-2">
+        <div>
+          <p class="eyebrow">Request a visit</p>
+          <h2>Tell us what is happening on the roof.</h2>
+          <p class="lead" style="margin-top: 18px;">A short, practical form keeps the first step easy for homeowners and useful for the roofing team.</p>
+        </div>
+        <form class="form" action="#" method="post">
+          <label>Name<input name="name" autocomplete="name" /></label>
+          <label>Phone or email<input name="contact" autocomplete="email" /></label>
+          <label>Roof concern<select name="concern"><option>Leak or flashing repair</option><option>Replacement planning</option><option>Storm or wind concern</option><option>Not sure yet</option></select></label>
+          <label>What did you notice?<textarea name="message"></textarea></label>
+          <button class="btn btn-primary" type="submit">Request a Roof Visit</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer data-od-id="outreach-footer">
+    <div class="container row">
+      <span>Roftrix Roofing.</span>
+      <span>Replace sample details with verified company information before publishing.</span>
+    </div>
+  </footer>
+</body>
+</html>

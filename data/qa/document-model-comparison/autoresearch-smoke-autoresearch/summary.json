@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-autoresearch",
+  "providers": "deterministic",
+  "variants": [
+    "baseline",
+    "strict-v2"
+  ],
+  "targetScore": 90,
+  "attempts": [
+    {
+      "variant": "baseline",
+      "status": 0,
+      "durationMs": 59,
+      "summaryPath": "data/qa/document-model-comparison/smoke-autoresearch-baseline/summary.json",
+      "bestProvider": "deterministic",
+      "bestScore": 100,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-autoresearch-baseline\",\n  \"promptVariant\": \"baseline\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-autoresearch-baseline\",\n  \"providers\": [\n    {\n      \"id\": \"deterministic\",\n      \"provider\": \"deterministic\",\n      \"model\": null,\n      \"status\": \"ok\",\n      \"durationMs\": 0,\n      \"score\": 100,\n      \"grade\": \"A\",\n      \"ok\": true,\n      \"topFindings\": []\n    }\n  ],\n  \"bestProvider\": \"deterministic\",\n  \"generatedAt\": \"2026-05-10T06:47:15.265Z\"\n}\n",
+      "stderrExcerpt": ""
+    },
+    {
+      "variant": "strict-v2",
+      "status": 0,
+      "durationMs": 57,
+      "summaryPath": "data/qa/document-model-comparison/smoke-autoresearch-strict-v2/summary.json",
+      "bestProvider": "deterministic",
+      "bestScore": 100,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-autoresearch-strict-v2\",\n  \"promptVariant\": \"strict-v2\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-autoresearch-strict-v2\",\n  \"providers\": [\n    {\n      \"id\": \"deterministic\",\n      \"provider\": \"deterministic\",\n      \"model\": null,\n      \"status\": \"ok\",\n      \"durationMs\": 0,\n      \"score\": 100,\n      \"grade\": \"A\",\n      \"ok\": true,\n      \"topFindings\": []\n    }\n  ],\n  \"bestProvider\": \"deterministic\",\n  \"generatedAt\": \"2026-05-10T06:47:15.322Z\"\n}\n",
+      "stderrExcerpt": ""
+    }
+  ],
+  "best": {
+    "variant": "strict-v2",
+    "status": 0,
+    "durationMs": 57,
+    "summaryPath": "data/qa/document-model-comparison/smoke-autoresearch-strict-v2/summary.json",
+    "bestProvider": "deterministic",
+    "bestScore": 100,
+    "ok": true,
+    "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-autoresearch-strict-v2\",\n  \"promptVariant\": \"strict-v2\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-autoresearch-strict-v2\",\n  \"providers\": [\n    {\n      \"id\": \"deterministic\",\n      \"provider\": \"deterministic\",\n      \"model\": null,\n      \"status\": \"ok\",\n      \"durationMs\": 0,\n      \"score\": 100,\n      \"grade\": \"A\",\n      \"ok\": true,\n      \"topFindings\": []\n    }\n  ],\n  \"bestProvider\": \"deterministic\",\n  \"generatedAt\": \"2026-05-10T06:47:15.322Z\"\n}\n",
+    "stderrExcerpt": ""
+  },
+  "accepted": [
+    {
+      "variant": "strict-v2",
+      "status": 0,
+      "durationMs": 57,
+      "summaryPath": "data/qa/document-model-comparison/smoke-autoresearch-strict-v2/summary.json",
+      "bestProvider": "deterministic",
+      "bestScore": 100,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-autoresearch-strict-v2\",\n  \"promptVariant\": \"strict-v2\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-autoresearch-strict-v2\",\n  \"providers\": [\n    {\n      \"id\": \"deterministic\",\n      \"provider\": \"deterministic\",\n      \"model\": null,\n      \"status\": \"ok\",\n      \"durationMs\": 0,\n      \"score\": 100,\n      \"grade\": \"A\",\n      \"ok\": true,\n      \"topFindings\": []\n    }\n  ],\n  \"bestProvider\": \"deterministic\",\n  \"generatedAt\": \"2026-05-10T06:47:15.322Z\"\n}\n",
+      "stderrExcerpt": ""
+    },
+    {
+      "variant": "baseline",
+      "status": 0,
+      "durationMs": 59,
+      "summaryPath": "data/qa/document-model-comparison/smoke-autoresearch-baseline/summary.json",
+      "bestProvider": "deterministic",
+      "bestScore": 100,
+      "ok": true,
+      "stdoutExcerpt": "{\n  \"schemaVersion\": 1,\n  \"runId\": \"smoke-autoresearch-baseline\",\n  \"promptVariant\": \"baseline\",\n  \"outRoot\": \"data/qa/document-model-comparison/smoke-autoresearch-baseline\",\n  \"providers\": [\n    {\n      \"id\": \"deterministic\",\n      \"provider\": \"deterministic\",\n      \"model\": null,\n      \"status\": \"ok\",\n      \"durationMs\": 0,\n      \"score\": 100,\n      \"grade\": \"A\",\n      \"ok\": true,\n      \"topFindings\": []\n    }\n  ],\n  \"bestProvider\": \"deterministic\",\n  \"generatedAt\": \"2026-05-10T06:47:15.265Z\"\n}\n",
+      "stderrExcerpt": ""
+    }
+  ],
+  "generatedAt": "2026-05-10T06:47:15.326Z"
+}

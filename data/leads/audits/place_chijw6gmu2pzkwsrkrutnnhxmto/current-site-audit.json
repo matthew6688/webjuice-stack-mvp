@@ -1,0 +1,470 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-09T04:45:46.194Z",
+  "clientSlug": "place_chijw6gmu2pzkwsrkrutnnhxmto",
+  "businessName": "Mary Mae's Bar & Kitchen",
+  "websiteUrl": "http://www.marymaes.com.au/",
+  "verdict": "clear_redesign_opportunity",
+  "score": 35,
+  "salesDecision": "build_mockup",
+  "opportunityConfidence": "high",
+  "summary": "Mary Mae's Bar & Kitchen has an existing website, and the strongest useful gap is: phone path is not obvious enough.",
+  "outreachHook": "I noticed your site has a fixable conversion gap: The captured page text/link data does not show a clear phone action.",
+  "openDesignDirection": "Mary Mae's Bar & Kitchen should feel like the obvious restaurant choice in Brisbane. Make call/quote actions persistent in the hero and mobile header. Rewrite title around \"restaurant Restaurant\" while keeping the business name.",
+  "captured": {
+    "title": "Homepage - Mary Mae's Bar + Kitchen",
+    "headings": [
+      "Encapsulating the relaxed Brisbane lifestyle with uninterrupted river views, sun-drenched terraces and an all-day dining menu.",
+      "Brisbane Powerhouse",
+      "Join our community",
+      "marymaesbrisbane",
+      "Newsletter Sign Up",
+      "Menu",
+      "Connect with us"
+    ],
+    "linkCount": 44,
+    "imageCount": 11,
+    "contactPageCandidates": [
+      "https://marymaes.com.au/contact/",
+      "https://facebook.com/marymaesbrisbane/"
+    ],
+    "socialLinks": [
+      {
+        "label": "marymaesbrisbane\n\t\t\t\t\t\t\t\t\tOPEN MON - SUN \nLocated underneath the @bris_powerhous",
+        "url": "https://www.instagram.com/marymaesbrisbane/"
+      },
+      {
+        "label": "Your dream wedding + the most perfect riverside se",
+        "url": "https://www.instagram.com/p/DILPK_PpktU/"
+      },
+      {
+        "label": "It's a vibe. #MaryMaes",
+        "url": "https://www.instagram.com/p/DH9qlWOvM8i/"
+      },
+      {
+        "label": "What's a weekend without a cocktail? Our team of c",
+        "url": "https://www.instagram.com/p/DHwyoFnsDfD/"
+      },
+      {
+        "label": "Our pan-seared crispy skin salmon helping add a li",
+        "url": "https://www.instagram.com/p/DHmkkLesDEr/"
+      },
+      {
+        "label": "And we're back! Resuming our regular trading hours",
+        "url": "https://www.instagram.com/p/DHAmeEezy6S/"
+      },
+      {
+        "label": "https://facebook.com/marymaesbrisbane/",
+        "url": "https://facebook.com/marymaesbrisbane/"
+      }
+    ],
+    "textLength": 794,
+    "phoneVisible": false,
+    "emailVisible": false,
+    "quoteVisible": true,
+    "serviceVisible": false,
+    "primaryCta": "Contact"
+  },
+  "audits": {
+    "conversion": {
+      "score": 62,
+      "signals": {
+        "phoneVisible": false,
+        "emailVisible": false,
+        "quoteVisible": true,
+        "serviceVisible": false,
+        "primaryCta": "Contact"
+      },
+      "findings": [
+        {
+          "category": "conversion",
+          "title": "Phone path is not obvious enough",
+          "evidence": "The captured page text/link data does not show a clear phone action.",
+          "impact": "Field-service visitors often want the fastest quote path; hiding the phone path can leak high-intent enquiries.",
+          "fix": "Make call/quote actions persistent in the hero and mobile header.",
+          "severity": "high",
+          "impactLevel": "high",
+          "effort": "low"
+        },
+        {
+          "category": "conversion",
+          "title": "Core services are not instantly clear",
+          "evidence": "Expected services were not all visible in captured text: Restaurant.",
+          "impact": "A lead may not recognize that the business solves their specific problem.",
+          "fix": "Show 3-5 core services near the top with plain-language outcomes.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "conversion",
+          "title": "Trust signal is not strong in the first screen",
+          "evidence": "The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+          "impact": "For local services, trust often matters before design polish.",
+          "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "medium"
+        }
+      ]
+    },
+    "trust": {
+      "score": 95,
+      "signals": {
+        "hasContactPage": true,
+        "hasAddressOrArea": true,
+        "hasSocial": true,
+        "hasProofLanguage": true,
+        "hasPrivacyOrTerms": false
+      },
+      "findings": [
+        {
+          "category": "trust",
+          "title": "Basic trust/legal links are thin",
+          "evidence": "Privacy or terms links were not captured from visible page links.",
+          "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+          "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    },
+    "seo": {
+      "score": 35,
+      "keyword": "restaurant Restaurant",
+      "checks": {
+        "title": "Homepage - Mary Mae's Bar + Kitchen",
+        "metaDescription": "",
+        "h1s": [
+          "Encapsulating the relaxed Brisbane lifestyle with uninterrupted river views, sun-drenched terraces and an all-day dining menu."
+        ],
+        "canonical": "https://marymaes.com.au/",
+        "wordCount": 129,
+        "internalLinkCount": 8,
+        "imageCount": 11,
+        "missingAltCount": 5,
+        "emptyAltCount": 1,
+        "jsonLdTypes": [],
+        "og": {
+          "title": "Homepage - Mary Mae's Bar + Kitchen",
+          "description": "",
+          "image": ""
+        },
+        "twitter": {
+          "card": "summary",
+          "title": "Homepage - Mary Mae's Bar + Kitchen",
+          "description": "",
+          "image": ""
+        },
+        "robotsMeta": "",
+        "htmlLang": ""
+      },
+      "findings": [
+        {
+          "category": "seo",
+          "title": "Title does not target the main local intent",
+          "evidence": "Captured title: \"Homepage - Mary Mae's Bar + Kitchen\". Inferred keyword: \"restaurant Restaurant\".",
+          "impact": "The page may rank or click worse for the service/location query we care about.",
+          "fix": "Rewrite title around \"restaurant Restaurant\" while keeping the business name.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Meta description is missing",
+          "evidence": "No meta description was captured.",
+          "impact": "Search snippets may be generic or less compelling.",
+          "fix": "Write a specific 1-2 sentence snippet with service, location, and next action.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "H1 misses the main local intent",
+          "evidence": "Captured H1: \"Encapsulating the relaxed Brisbane lifestyle with uninterrupted river views, sun-drenched terraces and an all-day dining menu.\". Inferred keyword: \"restaurant Restaurant\".",
+          "impact": "Visitors and search engines may not see the core service immediately.",
+          "fix": "Make the H1 naturally cover \"restaurant Restaurant\" or a close variant.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Page content is thin",
+          "evidence": "129 words captured.",
+          "impact": "Thin pages have fewer chances to explain services, locations, and trust.",
+          "fix": "Add concise service, proof, area, and FAQ copy without stuffing.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Image alt text is weak",
+          "evidence": "5 image(s) missing alt attribute and 1 image(s) have empty alt.",
+          "impact": "Images do not help accessibility, local proof, or image-search context.",
+          "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Structured data is missing",
+          "evidence": "No JSON-LD schema types were captured.",
+          "impact": "LocalBusiness schema can make core business facts clearer to search engines.",
+          "fix": "Add LocalBusiness/Organization schema with verified name, phone, area, URL, and social links.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Social sharing tags are incomplete",
+          "evidence": "OG title: true, description: false, image: false.",
+          "impact": "Shared previews may look weak when sent in email, SMS, or social DMs.",
+          "fix": "Add og:title, og:description, and og:image that match the redesigned positioning.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "category": "conversion",
+      "title": "Phone path is not obvious enough",
+      "evidence": "The captured page text/link data does not show a clear phone action.",
+      "impact": "Field-service visitors often want the fastest quote path; hiding the phone path can leak high-intent enquiries.",
+      "fix": "Make call/quote actions persistent in the hero and mobile header.",
+      "severity": "high",
+      "impactLevel": "high",
+      "effort": "low"
+    },
+    {
+      "category": "conversion",
+      "title": "Core services are not instantly clear",
+      "evidence": "Expected services were not all visible in captured text: Restaurant.",
+      "impact": "A lead may not recognize that the business solves their specific problem.",
+      "fix": "Show 3-5 core services near the top with plain-language outcomes.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "conversion",
+      "title": "Trust signal is not strong in the first screen",
+      "evidence": "The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+      "impact": "For local services, trust often matters before design polish.",
+      "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "medium"
+    },
+    {
+      "category": "seo",
+      "title": "Title does not target the main local intent",
+      "evidence": "Captured title: \"Homepage - Mary Mae's Bar + Kitchen\". Inferred keyword: \"restaurant Restaurant\".",
+      "impact": "The page may rank or click worse for the service/location query we care about.",
+      "fix": "Rewrite title around \"restaurant Restaurant\" while keeping the business name.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Meta description is missing",
+      "evidence": "No meta description was captured.",
+      "impact": "Search snippets may be generic or less compelling.",
+      "fix": "Write a specific 1-2 sentence snippet with service, location, and next action.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "H1 misses the main local intent",
+      "evidence": "Captured H1: \"Encapsulating the relaxed Brisbane lifestyle with uninterrupted river views, sun-drenched terraces and an all-day dining menu.\". Inferred keyword: \"restaurant Restaurant\".",
+      "impact": "Visitors and search engines may not see the core service immediately.",
+      "fix": "Make the H1 naturally cover \"restaurant Restaurant\" or a close variant.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Page content is thin",
+      "evidence": "129 words captured.",
+      "impact": "Thin pages have fewer chances to explain services, locations, and trust.",
+      "fix": "Add concise service, proof, area, and FAQ copy without stuffing.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Image alt text is weak",
+      "evidence": "5 image(s) missing alt attribute and 1 image(s) have empty alt.",
+      "impact": "Images do not help accessibility, local proof, or image-search context.",
+      "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Structured data is missing",
+      "evidence": "No JSON-LD schema types were captured.",
+      "impact": "LocalBusiness schema can make core business facts clearer to search engines.",
+      "fix": "Add LocalBusiness/Organization schema with verified name, phone, area, URL, and social links.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "trust",
+      "title": "Basic trust/legal links are thin",
+      "evidence": "Privacy or terms links were not captured from visible page links.",
+      "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+      "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Social sharing tags are incomplete",
+      "evidence": "OG title: true, description: false, image: false.",
+      "impact": "Shared previews may look weak when sent in email, SMS, or social DMs.",
+      "fix": "Add og:title, og:description, and og:image that match the redesigned positioning.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    }
+  ],
+  "issues": [
+    "Phone path is not obvious enough: The captured page text/link data does not show a clear phone action.",
+    "Core services are not instantly clear: Expected services were not all visible in captured text: Restaurant.",
+    "Trust signal is not strong in the first screen: The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+    "Title does not target the main local intent: Captured title: \"Homepage - Mary Mae's Bar + Kitchen\". Inferred keyword: \"restaurant Restaurant\".",
+    "Meta description is missing: No meta description was captured.",
+    "H1 misses the main local intent: Captured H1: \"Encapsulating the relaxed Brisbane lifestyle with uninterrupted river views, sun-drenched terraces and an all-day dining menu.\". Inferred keyword: \"restaurant Restaurant\".",
+    "Page content is thin: 129 words captured.",
+    "Image alt text is weak: 5 image(s) missing alt attribute and 1 image(s) have empty alt.",
+    "Structured data is missing: No JSON-LD schema types were captured.",
+    "Basic trust/legal links are thin: Privacy or terms links were not captured from visible page links.",
+    "Social sharing tags are incomplete: OG title: true, description: false, image: false."
+  ],
+  "improvements": [
+    "Make call/quote actions persistent in the hero and mobile header.",
+    "Show 3-5 core services near the top with plain-language outcomes.",
+    "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+    "Rewrite title around \"restaurant Restaurant\" while keeping the business name.",
+    "Write a specific 1-2 sentence snippet with service, location, and next action.",
+    "Make the H1 naturally cover \"restaurant Restaurant\" or a close variant."
+  ],
+  "priorityActions": [
+    {
+      "title": "Phone path is not obvious enough",
+      "impact": "high",
+      "effort": "low",
+      "fix": "Make call/quote actions persistent in the hero and mobile header."
+    },
+    {
+      "title": "Core services are not instantly clear",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Show 3-5 core services near the top with plain-language outcomes."
+    },
+    {
+      "title": "Trust signal is not strong in the first screen",
+      "impact": "medium",
+      "effort": "medium",
+      "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise."
+    },
+    {
+      "title": "Title does not target the main local intent",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Rewrite title around \"restaurant Restaurant\" while keeping the business name."
+    },
+    {
+      "title": "Meta description is missing",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Write a specific 1-2 sentence snippet with service, location, and next action."
+    }
+  ],
+  "nextStepInput": {
+    "businessName": "Mary Mae's Bar & Kitchen",
+    "industry": "restaurant",
+    "location": "Brisbane",
+    "services": [
+      "Restaurant"
+    ],
+    "heroAngle": "Mary Mae's Bar & Kitchen should feel like the obvious restaurant choice in Brisbane.",
+    "primaryCta": "Contact",
+    "outreachObservation": "I noticed your site has a fixable conversion gap: The captured page text/link data does not show a clear phone action.",
+    "auditFocus": [
+      "Phone path is not obvious enough",
+      "Core services are not instantly clear",
+      "Trust signal is not strong in the first screen",
+      "Title does not target the main local intent"
+    ],
+    "redesignValue": [
+      "Make call/quote actions persistent in the hero and mobile header.",
+      "Show 3-5 core services near the top with plain-language outcomes.",
+      "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+      "Rewrite title around \"restaurant Restaurant\" while keeping the business name.",
+      "Write a specific 1-2 sentence snippet with service, location, and next action.",
+      "Make the H1 naturally cover \"restaurant Restaurant\" or a close variant."
+    ],
+    "contactProfile": {
+      "email": "",
+      "phone": "(07) 3358 5464",
+      "contactPageUrl": "https://marymaes.com.au/contact/",
+      "socialLinks": [
+        {
+          "label": "marymaesbrisbane\n\t\t\t\t\t\t\t\t\tOPEN MON - SUN \nLocated underneath the @bris_powerhous",
+          "url": "https://www.instagram.com/marymaesbrisbane/"
+        },
+        {
+          "label": "Your dream wedding + the most perfect riverside se",
+          "url": "https://www.instagram.com/p/DILPK_PpktU/"
+        },
+        {
+          "label": "It's a vibe. #MaryMaes",
+          "url": "https://www.instagram.com/p/DH9qlWOvM8i/"
+        },
+        {
+          "label": "What's a weekend without a cocktail? Our team of c",
+          "url": "https://www.instagram.com/p/DHwyoFnsDfD/"
+        },
+        {
+          "label": "Our pan-seared crispy skin salmon helping add a li",
+          "url": "https://www.instagram.com/p/DHmkkLesDEr/"
+        },
+        {
+          "label": "And we're back! Resuming our regular trading hours",
+          "url": "https://www.instagram.com/p/DHAmeEezy6S/"
+        },
+        {
+          "label": "https://facebook.com/marymaesbrisbane/",
+          "url": "https://facebook.com/marymaesbrisbane/"
+        }
+      ]
+    }
+  },
+  "artifacts": {
+    "desktopPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijw6gmu2pzkwsrkrutnnhxmto/current-site-desktop.png",
+    "mobilePath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijw6gmu2pzkwsrkrutnnhxmto/current-site-mobile.png",
+    "htmlPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijw6gmu2pzkwsrkrutnnhxmto/current-site.html",
+    "textPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijw6gmu2pzkwsrkrutnnhxmto/current-site-text.txt",
+    "jsonPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijw6gmu2pzkwsrkrutnnhxmto/current-site-audit.json",
+    "mdPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijw6gmu2pzkwsrkrutnnhxmto/current-site-audit.md"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "id": "task_1778136385281_d5qusr22",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "type": "sale",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "branch": "dev",
+  "evidencePath": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+  "contentPath": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+  "designPath": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+  "checkoutPath": "clients/opa-bar-mezze-restaurant/funnel/checkout.json",
+  "brandSpecPath": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+  "websiteSurveyPath": "clients/opa-bar-mezze-restaurant/intake/website-survey.json",
+  "buildPacketPath": "data/cases/opa-bar-mezze-restaurant/dryrun_1778136383212/build-packet.md",
+  "openDesign": {
+    "status": "not_created",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "",
+    "runId": "",
+    "conceptPath": "clients/opa-bar-mezze-restaurant/concept/open-design",
+    "manifestPath": "clients/opa-bar-mezze-restaurant/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/opa-bar-mezze-restaurant/concept/open-design/production-handoff.json",
+    "createCommand": "npm run open-design:run-concept -- --client opa-bar-mezze-restaurant --mode app-visible --source-url <official-site-url>",
+    "continueCommand": "",
+    "syncCommand": "",
+    "rule": "Create or bind one local Open Design project before doing high-fidelity design changes."
+  },
+  "productionHandoffPath": "clients/opa-bar-mezze-restaurant/concept/open-design/production-handoff.json",
+  "repoBootstrap": {
+    "status": "ready",
+    "repo": "matthew6688/opa-bar-mezze-restaurant",
+    "repoDir": "/Users/matthew/Developer/webjuice-generated/opa-bar-mezze-restaurant",
+    "pagesProjectName": "opa-bar-mezze-restaurant",
+    "defaultBranch": "main",
+    "devBranch": "dev",
+    "waitForActions": true,
+    "command": "npm run deploy:bootstrap-client-repo -- --repo matthew6688/opa-bar-mezze-restaurant --repo-dir /Users/matthew/Developer/webjuice-generated/opa-bar-mezze-restaurant --pages-project-name opa-bar-mezze-restaurant --main main --dev dev --wait true --execute true",
+    "rule": "Run this once before agent completion when the customer repo or Pages projects do not exist yet."
+  },
+  "createdFrom": "manual",
+  "createdAt": "2026-05-07T06:46:25.281Z",
+  "order": {
+    "orderId": "dryrun_1778136383212",
+    "clientSlug": "opa-bar-mezze-restaurant",
+    "repo": "matthew6688/opa-bar-mezze-restaurant",
+    "email": "matthew6688@gmail.com",
+    "company": "Opa Bar & Mezze",
+    "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD"
+  },
+  "acceptanceCriteria": [
+    "Complete the requested task.",
+    "Run the relevant validation command.",
+    "Record outcome and next action."
+  ]
+}

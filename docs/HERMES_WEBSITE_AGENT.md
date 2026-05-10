@@ -48,11 +48,97 @@ The sales webhook may still create an ops notification thread in the sales chann
 Current routing contract:
 
 - `#website-tasks` is a Discord text channel (`type: 0`).
+- Current channel ID: `1501072883001065614`.
 - Each new paid website task is first posted as a normal parent-channel message that mentions `website-agent`.
 - Hermes `auto_thread: true` then creates the thread from that parent message, producing the same clean text-channel thread display used by the other Hermes channels.
 - The parent message contains the full task packet: case path, build packet path, task path, repo, preview URL, order ID, customer email, and design/evidence pointers.
 - If Hermes does not create the thread in time, automation falls back to explicit Discord message-thread creation so the order is not lost.
 - Later revisions, approval updates, dev preview notifications, and live publish notifications reuse `case.json.discord.websiteTaskThreadId`.
+
+## Website Task Intake Router
+
+`#website-tasks` is the lead-ops command center. Keep using the existing channel instead of creating a second one. Default every new message in this channel to lead discovery, lead sync, lead audit, stage movement, or mockup handoff unless it clearly names a paid project/revision.
+
+When Matthew posts a parent message in `#website-tasks`, the router should create or reuse one task thread and write a task envelope under `data/discord-tasks/<taskId>/`:
+
+```text
+Discord parent message
+-> task router classifies intent
+-> thread is created from the parent message
+-> thread receives the intake receipt
+-> skill/workflow writes artifacts and task-log.jsonl
+-> admin reads lead/project artifacts and moves the card
+-> thread receives tool logs, evidence links, stage updates, and human decision prompts
+```
+
+Supported first-pass routing:
+
+| Operator input | Router kind | Workflow |
+|---|---|---|
+| Business photo, sign, phone screenshot, OCR text | `image_lead_discovery` | `image-lead-discovery` + `lead-ops` |
+| "google search / 找 / scrape leads" | `lead_search_discovery` | lead search + qualification + `lead-ops` |
+| URL plus audit/redesign/SEO language | `site_audit` | `site-audit` + `seo-audit` + `lead-ops` |
+| Open Design, repo, demo, revision, publish | `website_project_task` | website-agent / Open Design continuation |
+| Unknown text | `general_website_task` | manual triage before workflow |
+
+Thread replies should use Chinese operator-facing templates:
+
+- Intake receipt: what was recognized, which workflow will run, task/log paths.
+- Tool log: tool name, input, output, source URL, artifact path.
+- Stage update: old/new business stage, AI reason, next action.
+- Decision prompt: clear buttons later; short-term slash-command/reaction fallback is acceptable.
+- Final receipt: admin link, evidence paths, next action, and whether human approval is needed.
+
+Thread title should be stage-aware and synced with the admin pipeline when the AI reaches a decision:
+
+```text
+[研究中] Roofing & Restoration · roofing · unknown
+[需人工] Example Roofing · roofing · Brisbane
+[可做 Mockup] M&B Roofing · roofing · Western Sydney
+[已跳过] Strong Site Co · HVAC · Gold Coast
+```
+
+Use:
+
+```bash
+npm run discord:sync-website-task-title -- --thread <threadId> --stage ready_for_mockup --business "M&B Roofing" --industry roofing --city "Western Sydney"
+npm run discord:sync-website-task-thread -- --thread <threadId> --client <clientSlug>
+npm run discord:sync-lead-ops-thread -- --thread <threadId> --send true
+```
+
+Only add `--send true` when intentionally updating Discord.
+
+`sync-website-task-thread` pulls recent Discord conversation into `clients/<client>/lead/discord-thread.json`. The admin lead card then shows the thread link, useful conversation summary, and latest operator/agent messages alongside normal evidence logs.
+
+`sync-lead-ops-thread` is the automation path for "sync to admin": it reads the thread conversation, extracts structured lead candidates, writes `clients/<slug>/lead/*`, writes evidence and discovery logs, syncs the Discord conversation snapshot, updates the thread title, and posts a short summary back to the thread.
+
+The agent should not pause for small missing details. For each candidate it should keep moving until `ready-to-build.json` has:
+
+- `aiConclusion.result`: `ready_for_mockup`, `needs_human`, or `skip`
+- `aiConclusion.score`
+- `scorecard.reasons`
+- `websiteBuildHandoff.openDesignPayload.prompt`
+
+Only ask Matthew for a decision when the result is genuinely uncertain: current-site audit 60-80, conflicting evidence, compliance-sensitive claims, or approval to spend build time. Otherwise, auto-skip or auto-promote to mockup-ready and report the evidence in the thread.
+
+Verification:
+
+```bash
+npm run discord:test-website-task-router
+npm run discord:route-website-task -- --content "google search Brisbane roofers leads"
+npm run discord:route-website-task -- --content "google search Brisbane roofers leads" --persist true
+npm run discord:sync-website-task-title -- --thread 1502382386464424028 --stage ready_for_mockup --business "M&B Roofing" --industry roofing --city "Western Sydney"
+```
+
+Use `--persist true` from an existing Hermes/Discord thread when the thread already exists and the agent only needs to write the task envelope/log locally.
+
+Only run live dispatch intentionally:
+
+```bash
+npm run discord:route-website-task -- --input data/qa/discord-task-router/message.json --send true
+```
+
+Do not print, commit, or paste `WEBSITE_TASKS_DISCORD_BOT_TOKEN`.
 
 ## Required Profile Config
 
@@ -151,9 +237,11 @@ After creating the channel and setting the profile token:
 ```bash
 npm run hermes:setup-website-agent -- --channel WEBSITE_TASKS_CHANNEL_ID
 npm run hermes:set-website-agent-token -- --channel WEBSITE_TASKS_CHANNEL_ID
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ai.hermes.gateway-website-agent.plist
+npm run hermes:recover-discord-gateway -- --start true
 launchctl print gui/$(id -u)/ai.hermes.gateway-website-agent
 ```
+
+`hermes:recover-discord-gateway` checks Discord `/users/@me` first and starts the LaunchAgent only when the bot token returns HTTP 200. This prevents a broken Discord/API window from turning into a restart loop.
 
 If you want to clone local model auth from an existing Hermes profile, run with `--clone-auth true`. Do not clone or reuse the Discord bot token from another running profile.
 
@@ -208,3 +296,36 @@ Verified locally on 2026-05-05:
 - The handoff message includes pointers to case, context, task, website survey, build packet, evidence, content, design, and brand spec files.
 
 Known non-blocking warning: Discord slash command registration is over the server limit, so a few slash commands are skipped. Normal message/thread pickup works.
+
+## Discord API Incident / 429 Recovery
+
+If `#website-tasks` stops responding, diagnose before restarting:
+
+```bash
+npm run hermes:recover-discord-gateway
+tail -80 ~/.hermes/profiles/website-agent/logs/gateway.error.log
+```
+
+Hard evidence of the known failure mode:
+
+- `HTTPException: 429 Too Many Requests`
+- Discord code `40062`
+- message `Service resource is being rate limited`
+- `Timeout waiting for connection to Discord`
+
+When this happens, stop all Discord gateway LaunchAgents so they do not keep refreshing the limit window:
+
+```bash
+for label in ai.hermes.gateway ai.hermes.gateway-outreacher ai.hermes.gateway-distributor ai.hermes.gateway-enricher ai.hermes.gateway-marketer ai.hermes.gateway-prospector ai.hermes.gateway-curator ai.hermes.gateway-website-agent; do
+  launchctl bootout gui/$(id -u) "$HOME/Library/LaunchAgents/$label.plist" 2>/dev/null || true
+done
+pkill -f 'hermes_cli.main.*gateway run' 2>/dev/null || true
+```
+
+Wait for Discord health to return, then start only the website agent:
+
+```bash
+npm run hermes:recover-discord-gateway -- --start true
+```
+
+Do not repeatedly bootstrap the LaunchAgent while the healthcheck is still 429/500. The generated LaunchAgent includes `ThrottleInterval=300`, but manual retries can still prolong Discord's resource limit.

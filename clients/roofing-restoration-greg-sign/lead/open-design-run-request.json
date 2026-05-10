@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-10T00:40:05.722Z",
+  "type": "open_design_template_run_request",
+  "clientSlug": "roofing-restoration-greg-sign",
+  "handoffPath": "/Users/matthew/Developer/google-map-website/clients/roofing-restoration-greg-sign/lead/open-design-handoff.json",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/roofing-restoration-greg-sign/concept/open-design",
+  "mode": "app-visible",
+  "timeoutMs": 1800000,
+  "timeoutPolicy": {
+    "checkpointNotHardEnd": true,
+    "minimumMs": 600000,
+    "defaultBusinessMs": 1800000,
+    "nativeCleanFinishRequired": true
+  },
+  "maxQuestionFormRounds": 3,
+  "allowArtifactFallback": false,
+  "selectedTemplate": {
+    "templateId": "roofing/lead-capture-restoration",
+    "family": "lead-capture-restoration",
+    "displayName": "Lead Capture Restoration",
+    "status": "open-design-generated",
+    "approved": false,
+    "eligible": true,
+    "score": 84,
+    "reasons": [
+      "family is available for internal experimentation",
+      "qa score 100",
+      "matches service \"roof repairs\"",
+      "matches low-info or repair/restoration lead",
+      "matches redesign or established website lead",
+      "fits one-page/starter build mode"
+    ],
+    "penalties": [],
+    "manifestPath": "templates/roofing/families/lead-capture-restoration/template-manifest.json",
+    "familyDir": "templates/roofing/families/lead-capture-restoration",
+    "designContractPath": "templates/roofing/families/lead-capture-restoration/DESIGN.md",
+    "selectedImages": {
+      "hero": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-service-local-roofer-metal-roof-wide.png",
+      "service": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-hero-local-roofer-metal-roof-wide.png",
+      "materialMetal": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-front.png",
+      "materialMetalAlt": "templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-symmetric.png"
+    }
+  },
+  "sourceUrl": null,
+  "businessType": "roofing and restoration",
+  "scope": "one-page",
+  "promptHash": "8722fedacf821e704ccab67bb8229b0e2fed6af390f1b5e8f4632e9c9aeb2983",
+  "promptChars": 2457,
+  "commandPreview": [
+    "/opt/homebrew/Cellar/node/25.6.1/bin/node",
+    "/Users/matthew/Developer/google-map-website/scripts/open-design/run-concept.js",
+    "--client",
+    "roofing-restoration-greg-sign",
+    "--prompt",
+    "[prompt:2457 chars:8722fedacf82]",
+    "--business-type",
+    "roofing and restoration",
+    "--scope",
+    "one-page",
+    "--mode",
+    "app-visible",
+    "--out",
+    "/Users/matthew/Developer/google-map-website/clients/roofing-restoration-greg-sign/concept/open-design",
+    "--timeout-ms",
+    "1800000",
+    "--max-question-form-rounds",
+    "3"
+  ],
+  "status": "completed",
+  "completedAt": "2026-05-10T01:25:05.139Z",
+  "runStatePath": "/Users/matthew/Developer/google-map-website/clients/roofing-restoration-greg-sign/concept/open-design/open-design-run-state.json",
+  "nativeCleanFinish": true,
+  "completionMode": "native",
+  "questionFormRounds": 0,
+  "audit": {
+    "exitCode": 0,
+    "ok": true,
+    "score": 100,
+    "path": "/Users/matthew/Developer/google-map-website/clients/roofing-restoration-greg-sign/concept/open-design/concept-quality-audit.json",
+    "findingCount": 0
+  },
+  "validation": {
+    "exitCode": 0,
+    "ok": true,
+    "requireQualityAudit": true
+  }
+}

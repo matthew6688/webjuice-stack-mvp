@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "variant": {
+    "id": "medium-framework-no-llm",
+    "constraintMode": "medium",
+    "frameworkMode": "design-language-plus-required-sections",
+    "copyMode": "none",
+    "hypothesis": "Medium constraints should preserve business structure while leaving visual freedom."
+  },
+  "baseFacts": {
+    "niche": "roofing",
+    "family": "productized-modern-roofing",
+    "page": "home",
+    "businessName": "RidgeLine Roof Co.",
+    "businessType": "local roofing contractor",
+    "serviceArea": "Brisbane and Gold Coast",
+    "contact": {
+      "phone": "0400 000 000",
+      "email": "",
+      "website": ""
+    },
+    "services": [
+      "Roof repairs",
+      "Roof restoration",
+      "Metal roofing",
+      "Gutter repairs",
+      "Roof inspections"
+    ],
+    "primaryAction": "request a roof inspection or quote",
+    "proofBoundary": [
+      "exact address",
+      "email",
+      "phone",
+      "reviews",
+      "licenses",
+      "certifications",
+      "years in business",
+      "awards",
+      "prices"
+    ],
+    "demoSafeContent": [
+      "FAQ",
+      "process",
+      "service descriptions",
+      "project teaser structure",
+      "blog titles"
+    ]
+  },
+  "approvedAssets": [
+    {
+      "slot": "hero",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-hero-modern-metal-roof-sunset-wide.png",
+      "sha256": "7c37f658fc8ccefe27a05277c1558be28e02f5f708500116efee058de32caf37",
+      "bytes": 1668425
+    },
+    {
+      "slot": "inspection",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-inspection-drone-roof-check.png",
+      "sha256": "288c9189b006b78633ba5a233ae6951a8e9828b5cac730018109a355080246d5",
+      "bytes": 2028489
+    },
+    {
+      "slot": "materialTerracotta",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-terracotta-tile-sample.png",
+      "sha256": "ae614e9d5cd3d4c1d5720db7dd1c54cf50bf8c918ef7f487ec80a83a76942d75",
+      "bytes": 2039900
+    },
+    {
+      "slot": "materialMetal",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-standing-seam-metal-sample.png",
+      "sha256": "28b473b683dfa0c1c34fbabc77be4f5979818184f793924cb66b949413519bfe",
+      "bytes": 1301665
+    },
+    {
+      "slot": "materialComposite",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-composite-shingle-sample.png",
+      "sha256": "ad102841ad12291d87987c8aae07f597316045874418879cf1e3b6630b8ee842",
+      "bytes": 2634676
+    },
+    {
+      "slot": "service",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-service-modern-roofer-metal-roof.png",
+      "sha256": "d7bb14aa18b03831f8aba43faa0c69101702cdb4c13adafb48de8530adc4b7d0",
+      "bytes": 1873434
+    }
+  ],
+  "seedAssets": [
+    {
+      "slot": "hero",
+      "fileName": "hero-family3-hero-modern-metal-roof-sunset-wide.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-hero-modern-metal-roof-sunset-wide.png",
+      "seedPath": "assets/hero-family3-hero-modern-metal-roof-sunset-wide.png",
+      "sha256": "7c37f658fc8ccefe27a05277c1558be28e02f5f708500116efee058de32caf37",
+      "bytes": 1668425
+    },
+    {
+      "slot": "inspection",
+      "fileName": "inspection-family3-inspection-drone-roof-check.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-inspection-drone-roof-check.png",
+      "seedPath": "assets/inspection-family3-inspection-drone-roof-check.png",
+      "sha256": "288c9189b006b78633ba5a233ae6951a8e9828b5cac730018109a355080246d5",
+      "bytes": 2028489
+    },
+    {
+      "slot": "materialTerracotta",
+      "fileName": "materialTerracotta-family3-product-terracotta-tile-sample.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-terracotta-tile-sample.png",
+      "seedPath": "assets/materialTerracotta-family3-product-terracotta-tile-sample.png",
+      "sha256": "ae614e9d5cd3d4c1d5720db7dd1c54cf50bf8c918ef7f487ec80a83a76942d75",
+      "bytes": 2039900
+    },
+    {
+      "slot": "materialMetal",
+      "fileName": "materialMetal-family3-product-standing-seam-metal-sample.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-standing-seam-metal-sample.png",
+      "seedPath": "assets/materialMetal-family3-product-standing-seam-metal-sample.png",
+      "sha256": "28b473b683dfa0c1c34fbabc77be4f5979818184f793924cb66b949413519bfe",
+      "bytes": 1301665
+    },
+    {
+      "slot": "materialComposite",
+      "fileName": "materialComposite-family3-product-composite-shingle-sample.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-composite-shingle-sample.png",
+      "seedPath": "assets/materialComposite-family3-product-composite-shingle-sample.png",
+      "sha256": "ad102841ad12291d87987c8aae07f597316045874418879cf1e3b6630b8ee842",
+      "bytes": 2634676
+    },
+    {
+      "slot": "service",
+      "fileName": "service-family3-service-modern-roofer-metal-roof.png",
+      "sourcePath": "/Users/matthew/Developer/google-map-website/templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-service-modern-roofer-metal-roof.png",
+      "seedPath": "assets/service-family3-service-modern-roofer-metal-roof.png",
+      "sha256": "d7bb14aa18b03831f8aba43faa0c69101702cdb4c13adafb48de8530adc4b7d0",
+      "bytes": 1873434
+    }
+  ],
+  "localCopy": {
+    "status": "not_requested",
+    "mode": "none",
+    "model": null,
+    "reason": "copy mode disabled"
+  },
+  "execute": false,
+  "generatedAt": "2026-05-09T11:24:43.398Z"
+}

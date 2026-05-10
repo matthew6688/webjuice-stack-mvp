@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/node/25.6.1/bin/node",
+    "scripts/open-design/run-concept.js",
+    "--client",
+    "template-exp-roofing-classic-premium-roftix",
+    "--project-id",
+    "template-exp-roofing-classic-premium-roftix-home-free-open-design-no-llm-test-1778295190543-filtered",
+    "--name",
+    "Classic Premium Roftix home experiment free-open-design-no-llm",
+    "--business-type",
+    "roofing home page template experiment",
+    "--scope",
+    "one-page",
+    "--out",
+    "/Users/matthew/Developer/google-map-website/data/template-experiments/roofing/classic-premium-roftix/home-test-1778295190543-filtered/free-open-design-no-llm/open-design",
+    "--seed-dir",
+    "/Users/matthew/Developer/google-map-website/data/template-experiments/roofing/classic-premium-roftix/home-test-1778295190543-filtered/free-open-design-no-llm/seed",
+    "--timeout-ms",
+    "900000",
+    "--prompt",
+    "[prompt omitted: see prompt.md]",
+    "--dry-run"
+  ],
+  "status": 0,
+  "durationMs": 50,
+  "stdout": "{\n  \"clientSlug\": \"template-exp-roofing-classic-premium-roftix\",\n  \"openDesignRoot\": \"/Users/matthew/Developer/open-design\",\n  \"nodeBin\": \"/Users/matthew/.local/share/mise/installs/node/24.15.0/bin/node\",\n  \"port\": 7466,\n  \"daemonUrl\": \"http://127.0.0.1:7466\",\n  \"dataDir\": \"/tmp/profitslocal-open-design-template-exp-roofing-classic-premium-roftix\",\n  \"mode\": \"isolated\",\n  \"outDir\": \"/Users/matthew/Developer/google-map-website/data/template-experiments/roofing/classic-premium-roftix/home-test-1778295190543-filtered/free-open-design-no-llm/open-design\",\n  \"seedDir\": \"/Users/matthew/Developer/google-map-website/data/template-experiments/roofing/classic-premium-roftix/home-test-1778295190543-filtered/free-open-design-no-llm/seed\",\n  \"agentId\": \"codex\",\n  \"skillId\": \"web-prototype\",\n  \"designSystemId\": null,\n  \"model\": \"default\",\n  \"reasoning\": \"low\",\n  \"projectId\": \"template-exp-roofing-classic-premium-roftix-home-free-open-design-no-llm-test-1778295190543-filtered\",\n  \"projectName\": \"Classic Premium Roftix home experiment free-open-design-no-llm\",\n  \"prompt\": \"# Fixed Home Page Experiment: Classic Premium Roftix\\nVariant: free-open-design-no-llm\\nHypothesis: Low constraints show Open Design baseline quality with the same images and facts.\\n## Non-negotiable Experiment Rules\\n- Build only one polished home page: `index.html`.\\n- Use the files in the seeded `assets/` folder as primary imagery. Do not fetch replacement stock images.\\n- Do not use external URLs for images.\\n- No fake licences, fake awards, fake review quotes, fake exact addresses, fake years in business, or fake prices.\\n- Customer-facing text must not mention Open Design, ProfitsLocal, template-lab, audit, mockup, experiment, or internal workflow.\\n- Include one obvious phone/form quote path.\\n- The page should be visually strong enough to judge from a screenshot.\\n## Fixed Business Facts\\n{\\n  \\\"niche\\\": \\\"roofing\\\",\\n  \\\"family\\\": \\\"classic-premium-roftix\\\",\\n  \\\"page\\\": \\\"home\\\",\\n  \\\"businessName\\\": \\\"RidgeLine Roof Co.\\\",\\n  \\\"businessType\\\": \\\"local roofing contractor\\\",\\n  \\\"serviceArea\\\": \\\"Brisbane and Gold Coast\\\",\\n  \\\"contact\\\": {\\n    \\\"phone\\\": \\\"0400 000 000\\\",\\n    \\\"email\\\": \\\"\\\",\\n    \\\"website\\\": \\\"\\\"\\n  },\\n  \\\"services\\\": [\\n    \\\"Roof repairs\\\",\\n    \\\"Roof restoration\\\",\\n    \\\"Metal roofing\\\",\\n    \\\"Gutter repairs\\\",\\n    \\\"Roof inspections\\\"\\n  ],\\n  \\\"primaryAction\\\": \\\"request a roof inspection or quote\\\",\\n  \\\"proofBoundary\\\": [\\n    \\\"exact address\\\",\\n    \\\"email\\\",\\n    \\\"phone\\\",\\n    \\\"reviews\\\",\\n    \\\"licenses\\\",\\n    \\\"certifications\\\",\\n    \\\"years in business\\\",\\n    \\\"awards\\\",\\n    \\\"prices\\\"\\n  ],\\n  \\\"demoSafeContent\\\": [\\n    \\\"FAQ\\\",\\n    \\\"process\\\",\\n    \\\"service descriptions\\\",\\n    \\\"project teaser structure\\\",\\n    \\\"blog titles\\\"\\n  ]\\n}\\n## Seeded Approved Assets\\n- hero: assets/hero-family1-hero-premium-roof-at-blue-hour.png (6dddb55aee2b)\\n- serviceRepair: assets/serviceRepair-family1-service-roof-repair-flashing-detail.png (ffad6a21f15a)\\n- serviceInstall: assets/serviceInstall-family1-service-roof-installation-detail.png (1c3418d06644)\\n- about: assets/about-family1-about-roofer-working-roof-frame.png (d38c9365a6f9)\\n- proof: assets/proof-family1-project-before-after-roof-transformation.png (0ee14f3749e5)\\n## Local LLM Copy Brief\\nStatus: not_requested. Reason: copy mode disabled.\\n## Constraint Mode\\nUse your own design judgment. The fixed inputs are business facts, approved assets, and conversion goal.\\nYou may choose layout, typography, section order, and visual rhythm.\\nKeep it tasteful, premium, and local-business appropriate.\\n## Framework Contract\\nNo detailed framework injected for this variant. This tests Open Design freeform quality.\\n## Final Self-Check Before Finishing\\n- Screenshot mentally: does first viewport clearly look like a roofing business, not a generic text page?\\n- Are the images large enough and placed intentionally?\\n- Does the copy sound like a real local roofer, not a SaaS landing page?\\n- Is the design stronger than a default web-prototype seed?\",\n  \"timeoutPolicy\": {\n    \"requestedTimeoutMs\": 900000,\n    \"timeoutMs\": 900000,\n    \"clamped\": false,\n    \"reason\": null,\n    \"minimumTimeoutMs\": 600000,\n    \"allowShortTimeout\": false\n  },\n  \"allowArtifactFallback\": false,\n  \"artifactQuietMs\": 20000,\n  \"maxQuestionFormRounds\": 2\n}\n",
+  "stderr": ""
+}

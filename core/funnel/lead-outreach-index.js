@@ -1,45 +1,46 @@
 import { loadLeadRegistry } from './lead-registry.js';
+import { stageLabel, stageTone } from './stage-config.js';
 
 export const LEAD_ADMIN_VIEWS = {
   all: { label: '全部' },
-  new_lead: { label: '新线索' },
-  researching: { label: '研究中' },
-  needs_human: { label: '需人工' },
-  discovery_ready: { label: '需人工' },
-  needs_evidence: { label: '需人工' },
-  ready_for_mockup: { label: '可做 Mockup' },
-  mockup_building: { label: 'Mockup 制作中' },
-  mockup_ready: { label: 'Mockup 就绪' },
-  draft_ready: { label: '草稿就绪' },
-  outreach_sent: { label: '已发送' },
-  follow_up_due: { label: '待跟进' },
-  replied: { label: '已回复' },
-  bounced: { label: '退信' },
-  paid_handoff: { label: '成交交接' },
-  skipped: { label: '已跳过' },
+  new_lead: { label: stageLabel('new_lead') },
+  researching: { label: stageLabel('researching') },
+  needs_human: { label: stageLabel('needs_human') },
+  discovery_ready: { label: stageLabel('discovery_ready') },
+  needs_evidence: { label: stageLabel('needs_evidence') },
+  ready_for_mockup: { label: stageLabel('ready_for_mockup') },
+  mockup_building: { label: stageLabel('mockup_building') },
+  mockup_ready: { label: stageLabel('mockup_ready') },
+  draft_ready: { label: stageLabel('draft_ready') },
+  outreach_sent: { label: stageLabel('outreach_sent') },
+  follow_up_due: { label: stageLabel('follow_up_due') },
+  replied: { label: stageLabel('replied') },
+  bounced: { label: stageLabel('bounced') },
+  paid_handoff: { label: stageLabel('paid_handoff') },
+  skipped: { label: stageLabel('skipped') },
   missing_assets: { label: '缺素材' },
   missing_email: { label: '缺草稿' },
 };
 
 export const LEAD_PIPELINE_STAGES = [
-  { key: 'new_lead', label: '新线索' },
-  { key: 'researching', label: '研究中' },
-  { key: 'needs_human', label: '需人工' },
-  { key: 'ready_for_mockup', label: '可做 Mockup' },
-  { key: 'mockup_building', label: '制作中' },
-  { key: 'mockup_ready', label: 'Mockup 就绪' },
-  { key: 'draft_ready', label: '草稿就绪' },
-  { key: 'outreach_sent', label: '已发送' },
-  { key: 'follow_up_due', label: '待跟进' },
-  { key: 'replied', label: '已回复' },
-  { key: 'bounced', label: '退信' },
-  { key: 'paid_handoff', label: '成交交接' },
-  { key: 'skipped', label: '已跳过' },
+  { key: 'new_lead', label: stageLabel('new_lead') },
+  { key: 'researching', label: stageLabel('researching') },
+  { key: 'needs_human', label: stageLabel('needs_human') },
+  { key: 'ready_for_mockup', label: stageLabel('ready_for_mockup') },
+  { key: 'mockup_building', label: stageLabel('mockup_building') },
+  { key: 'mockup_ready', label: stageLabel('mockup_ready') },
+  { key: 'draft_ready', label: stageLabel('draft_ready') },
+  { key: 'outreach_sent', label: stageLabel('outreach_sent') },
+  { key: 'follow_up_due', label: stageLabel('follow_up_due') },
+  { key: 'replied', label: stageLabel('replied') },
+  { key: 'bounced', label: stageLabel('bounced') },
+  { key: 'paid_handoff', label: stageLabel('paid_handoff') },
+  { key: 'skipped', label: stageLabel('skipped') },
 ];
 
 export function loadLeadOutreachIndex(options = {}) {
   const registry = loadLeadRegistry(options);
-  const list = registry.records
+  const list = dedupeLeadRecords(registry.records)
     .map((record) => finalizeLeadRecord(record))
     .sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
   const prospectRecords = list.filter((record) => !isCustomerSideRecord(record));
@@ -55,6 +56,49 @@ export function loadLeadOutreachIndex(options = {}) {
     pipelineStages: LEAD_PIPELINE_STAGES,
     updatedAt: registry.updatedAt,
   };
+}
+
+function dedupeLeadRecords(records = []) {
+  const byKey = new Map();
+  const output = [];
+  for (const record of records) {
+    const key = duplicateLeadKey(record);
+    if (!key || record.paymentStatus === 'paid' || record.orderId) {
+      output.push(record);
+      continue;
+    }
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, record);
+      output.push(record);
+      continue;
+    }
+    const winner = preferredDuplicateRecord(existing, record);
+    if (winner !== existing) {
+      byKey.set(key, record);
+      const index = output.indexOf(existing);
+      if (index >= 0) output[index] = record;
+    }
+  }
+  return output;
+}
+
+function duplicateLeadKey(record) {
+  const name = String(record.businessName || record.company || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const contact = String(record.phone || record.email || record.address || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  return name && contact ? `${name}|${contact}` : '';
+}
+
+function preferredDuplicateRecord(a, b) {
+  const score = (record) => [
+    record.discordTaskThreadPath,
+    record.evidenceSources?.length,
+    record.leadOpsPath,
+    record.outreachBriefPath,
+    record.clientSlug?.includes(record.city ? String(record.city).toLowerCase().split(/\s+/)[0] : '____'),
+  ].filter(Boolean).length;
+  if (score(b) > score(a)) return b;
+  return String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')) > 0 ? b : a;
 }
 
 function isCustomerSideRecord(record) {
@@ -78,7 +122,7 @@ export function matchesLeadView(record, view = 'all') {
     case 'skipped':
       return record.pipelineStage === view;
     case 'demo_ready':
-      return Boolean(record.previewUrl && record.assetsReady);
+      return hasMockupReady(record);
     case 'needs_evidence':
     case 'discovery_ready':
       return record.pipelineStage === 'needs_human';
@@ -95,7 +139,7 @@ export function matchesLeadView(record, view = 'all') {
     case 'paid':
       return record.paymentStatus === 'paid';
     case 'missing_assets':
-      return !record.assetsReady;
+      return !hasMockupReady(record);
     case 'missing_email':
       return !record.emailDraftReady;
     case 'all':
@@ -135,13 +179,13 @@ function derivePipelineStage(record) {
   if (record.humanDecision?.action === 'mark_replied') return 'replied';
   if (record.replyState === 'replied') return 'replied';
   if (record.bounceState === 'bounced') return 'bounced';
-  if (record.humanDecision?.action === 'approve_mockup') return 'mockup_building';
   if (record.humanDecision?.action === 'research_more') return 'needs_human';
   if (record.nextFollowUpDue) return 'follow_up_due';
   if (record.outreachSent) return 'outreach_sent';
-  if (record.emailDraftReady && record.assetsReady && record.previewUrl) return 'draft_ready';
-  if (record.assetsReady && record.previewUrl) return 'mockup_ready';
-  if (record.outreachPackPath || record.previewUrl) return 'mockup_building';
+  if (record.emailDraftReady && hasMockupReady(record)) return 'draft_ready';
+  if (hasMockupReady(record)) return 'mockup_ready';
+  if (record.humanDecision?.action === 'approve_mockup') return 'mockup_building';
+  if (record.outreachPackPath || record.previewUrl || record.openDesignRunRequestStatus === 'started') return 'mockup_building';
   if (isReadyForMockup(record)) return 'ready_for_mockup';
   if (needsHuman(record)) return 'needs_human';
   if (isResearching(record)) return 'researching';
@@ -149,43 +193,11 @@ function derivePipelineStage(record) {
 }
 
 function deriveStageLabel(stageKey) {
-  return {
-    paid_handoff: '成交交接',
-    replied: '已回复',
-    bounced: '退信',
-    follow_up_due: '待跟进',
-    outreach_sent: '已发送',
-    draft_ready: '草稿就绪',
-    mockup_ready: 'Mockup 就绪',
-    mockup_building: '制作中',
-    ready_for_mockup: '可做 Mockup',
-    needs_human: '需人工',
-    needs_evidence: '需人工',
-    discovery_ready: '需人工',
-    researching: '研究中',
-    skipped: '已跳过',
-    new_lead: '新线索',
-  }[stageKey] || '新线索';
+  return stageLabel(stageKey) || '新线索';
 }
 
 function deriveStageTone(stageKey) {
-  return {
-    paid_handoff: 'ready',
-    replied: 'ready',
-    bounced: 'alert',
-    follow_up_due: 'warn',
-    outreach_sent: 'working',
-    draft_ready: 'working',
-    mockup_ready: 'ready',
-    mockup_building: 'working',
-    ready_for_mockup: 'info',
-    needs_human: 'warn',
-    needs_evidence: 'warn',
-    discovery_ready: 'warn',
-    researching: 'working',
-    skipped: 'skip',
-    new_lead: 'info',
-  }[stageKey] || 'info';
+  return stageTone(stageKey);
 }
 
 function deriveNextAction(record) {
@@ -233,10 +245,19 @@ function deriveNextAction(record) {
   }
   if (record.pipelineStage === 'ready_for_mockup') {
     return {
-      label: '创建 Mockup',
+      label: '批准进入 Mockup 队列',
       reason: record.leadBuildMode === 'redesign'
         ? '已有联系方式和基础证据，可以让 AI 生成 redesign preview。生成前仍保留人工确认按钮。'
         : '已有联系方式和基础业务信息，可以生成 teaser preview 或 starter mockup。',
+    };
+  }
+  if (record.pipelineStage === 'mockup_ready') {
+    const draftReady = Boolean(record.emailDraftReady || record.outreachBriefPath);
+    return {
+      label: draftReady ? '确认并发送触达草稿' : '生成 outreach pack',
+      reason: draftReady
+        ? 'Open Design concept 已 native 结束并通过质量审计；下一步确认触达文案和发送渠道。'
+        : 'Open Design concept 已 native 结束并通过质量审计；下一步生成截图、预览链接和 cold outreach 草稿。',
     };
   }
   if (record.pipelineStage === 'needs_human') {
@@ -257,7 +278,7 @@ function deriveNextAction(record) {
       reason: '这是刚进入系统或缺少 lead 研究产物的线索。下一步不是人工猜，而是先自动建档、搜索、打开官网/地图并记录证据。',
     };
   }
-  if (!record.outreachPackPath) {
+  if (!record.outreachPackPath && !hasMockupReady(record)) {
     return {
       label: '生成 outreach pack',
       reason: record.outreachDiagnosis
@@ -265,7 +286,7 @@ function deriveNextAction(record) {
         : '还没有 demo preview 与 proof pack，无法进入冷启动触达。',
     };
   }
-  if (!record.assetsReady) {
+  if (!record.assetsReady && !hasMockupReady(record)) {
     return {
       label: '补截图和视频',
       reason: 'demo 资产不完整，暂时不适合发 cold outreach。',
@@ -295,9 +316,9 @@ function deriveBlocker(record) {
   if (record.outreachSent) return '';
   if (record.pipelineStage === 'researching') return '等待 AI 自动研究';
   if (record.pipelineStage === 'needs_human') return 'AI 不确定，需要人工决定';
-  if (!record.outreachPackPath) return '缺少 Mockup / 触达包';
-  if (!record.assetsReady) return '缺少截图或视频';
-  if (!record.emailDraftReady) return '缺少冷启动草稿';
+  if (!record.outreachPackPath && !hasMockupReady(record)) return '缺少 Mockup / 触达包';
+  if (!record.assetsReady && !hasMockupReady(record)) return '缺少截图或视频';
+  if (!record.emailDraftReady && !record.outreachBriefPath) return '缺少冷启动草稿';
   if (!record.email && !record.customerEmail && !record.leadRecipientEmail) return '缺少明确的联系邮箱';
   return '';
 }
@@ -342,7 +363,7 @@ function buildCounts(records) {
 function isResearching(record) {
   return Boolean(
     !record.outreachPackPath
-    && record.leadIntakePath
+    && (record.leadIntakePath || record.discoveryStorePath)
     && !record.leadResearchPath
     && !record.leadOpsPath
     && record.leadGateStatus !== 'blocked_unreachable'
@@ -350,14 +371,38 @@ function isResearching(record) {
 }
 
 function isReadyForMockup(record) {
+  if (record.leadAiConclusion === 'ready_for_mockup' && hasContactPath(record) && !hasWeakCurrentSiteAudit(record)) return true;
   if (!hasContactPath(record)) return false;
   if (!['ready_for_preview', 'ready_for_redesign_preview', 'ready_for_teaser'].includes(record.leadPreviewability)) return false;
   if (record.leadReadyToBuildStatus === 'blocked') return false;
   if (hasWeakCurrentSiteAudit(record)) return false;
+  if (needsMoreImageLeadDiscovery(record)) return false;
   return hasEvidence(record) || record.outreachBriefPath;
 }
 
+function needsMoreImageLeadDiscovery(record) {
+  if (record.leadSourceType !== 'image_ocr') return false;
+  if ((record.websiteUrl || record.officialWebsiteUrl) && !record.currentSiteAuditPath) return true;
+  if (!hasImageLeadSearchMatch(record)) return true;
+  if (!(record.address || record.city || record.googleMapsUrl || record.googlePlaceId)) return true;
+  return false;
+}
+
+function hasImageLeadSearchMatch(record) {
+  return (record.evidenceSources || []).some((source) => {
+    const extractor = String(source.extractor || '');
+    const sourceType = String(source.sourceType || '');
+    const key = String(source.key || '');
+    return extractor === 'web_search_phone_match'
+      || extractor === 'google_places'
+      || sourceType === 'google_places'
+      || sourceType === 'official_site'
+      || key === 'opportunity.noDedicatedWebsiteFound';
+  });
+}
+
 function needsHuman(record) {
+  if (record.leadAiConclusion === 'needs_human') return true;
   if (!record.leadIntakePath && !record.leadResearchPath && !record.leadOpsPath) return false;
   if (isReadyForMockup(record)) return false;
   if (isSkipped(record)) return false;
@@ -381,28 +426,35 @@ function hasEvidence(record) {
 
 function hasWeakCurrentSiteAudit(record) {
   const score = Number(record.currentSiteAuditScore || 0);
-  const issues = Array.isArray(record.currentSiteAuditIssues) ? record.currentSiteAuditIssues : [];
+  const findings = Array.isArray(record.currentSiteAuditFindings) ? record.currentSiteAuditFindings : [];
+  const meaningfulFindings = findings.filter((finding) => finding.severity !== 'low');
   const verdict = String(record.currentSiteAuditVerdict || '');
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') return true;
   return Boolean(
     record.currentSiteAuditPath
     && score >= 80
-    && issues.length <= 1
+    && meaningfulFindings.length === 0
     && !verdict.includes('clear')
   );
 }
 
 function hasStrongCurrentSiteOpportunity(record) {
   const score = Number(record.currentSiteAuditScore || 0);
-  const issues = Array.isArray(record.currentSiteAuditIssues) ? record.currentSiteAuditIssues : [];
+  const findings = Array.isArray(record.currentSiteAuditFindings) ? record.currentSiteAuditFindings : [];
+  const meaningfulFindings = findings.filter((finding) => finding.severity !== 'low');
   const verdict = String(record.currentSiteAuditVerdict || '');
+  if (record.currentSiteSalesDecision === 'build_mockup') return true;
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') return false;
   return Boolean(
     record.currentSiteAuditPath
-    && (score <= 72 || issues.length >= 2 || verdict.includes('clear'))
+    && (score <= 72 || meaningfulFindings.length >= 2 || verdict.includes('clear'))
   );
 }
 
 function isSkipped(record) {
   return record.humanDecision?.action === 'skip_lead'
+    || record.leadAiConclusion === 'skip'
+    || record.currentSiteSalesDecision === 'skip_or_monitor'
     || ['skip', 'skipped', 'not_worth_pursuing'].includes(record.leadGateStatus)
     || record.leadReadyToBuildStatus === 'skip'
     || record.leadGateStatus === 'blocked_unreachable'
@@ -412,6 +464,8 @@ function isSkipped(record) {
 
 function deriveSkipReason(record) {
   if (record.humanDecision?.action === 'skip_lead') return record.humanDecision.note || '人工判断跳过。';
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') return '现站审计只发现低影响问题，没有足够强的销售突破口。';
+  if (record.leadAiConclusion === 'skip') return 'AI 判断跳过：没有足够明确的价值突破口，或缺少真实触达路径。';
   if (!hasContactPath(record) && (record.leadIntakePath || record.leadResearchPath)) return '没有邮箱、电话、网站或联系页，无法触达。';
   if (record.leadGateStatus === 'blocked_unreachable') return '无法触达：缺少有效联系方式。';
   if (record.leadReadyToBuildStatus === 'skip') return record.leadRecommendedAction || 'AI 判断暂时不值得继续。';
@@ -431,8 +485,11 @@ function deriveAiAssessment(record) {
     return {
       result: 'ready_for_mockup',
       label: 'AI 结论：可做 Mockup',
-      confidence: hasStrongCurrentSiteOpportunity(record) ? '高' : (hasEvidence(record) ? '中' : '低'),
-      reason: deriveCustomerOpportunitySummary(record),
+      confidence: record.leadAiConfidence || (hasStrongCurrentSiteOpportunity(record) ? '高' : (hasEvidence(record) ? '中' : '低')),
+      score: Number.isFinite(record.leadAiScore) ? record.leadAiScore : null,
+      reason: record.openDesignPrompt
+        ? `${deriveCustomerOpportunitySummary(record)} 已生成 Open Design 输入，可用 AI 补全 demo 内容，但联系方式必须保持真实。`
+        : deriveCustomerOpportunitySummary(record),
     };
   }
   if (isResearching(record)) {
@@ -455,13 +512,32 @@ function deriveAiAssessment(record) {
     result: 'needs_human',
     label: 'AI 结论：需人工',
     confidence: '不确定',
-    reason: hasWeakCurrentSiteAudit(record)
-      ? `现站 audit ${record.currentSiteAuditScore}分，只发现少量问题。AI 不应该假装很有把握，需要人工判断是否真的值得做 mockup。`
-      : 'AI 没有把握直接判断「跳过」或「可做 Mockup」。请看证据和工作记录后点击决策按钮。',
+    reason: needsMoreImageLeadDiscovery(record)
+      ? deriveImageLeadDiscoveryReason(record)
+      : hasWeakCurrentSiteAudit(record)
+        ? `现站 audit ${record.currentSiteAuditScore}分，只发现低影响问题。AI 不应该假装很有把握，建议跳过或人工确认是否另有突破口。`
+        : 'AI 没有把握直接判断「跳过」或「可做 Mockup」。请看证据和工作记录后点击决策按钮。',
   };
 }
 
+function deriveImageLeadDiscoveryReason(record) {
+  if ((record.websiteUrl || record.officialWebsiteUrl) && !record.currentSiteAuditPath) {
+    return '图片线索搜索到了官网或疑似官网，必须先保存截图/正文并跑 site-audit，再决定是否 redesign 或 starter mockup。';
+  }
+  if (!hasImageLeadSearchMatch(record)) {
+    return '图片线索目前只有 OCR/人工文字。需要用电话、品牌名或服务继续搜索，找到目录页、Google profile、官网、社媒或地区证据后再判断。';
+  }
+  if (!(record.address || record.city || record.googleMapsUrl || record.googlePlaceId)) {
+    return '图片线索已有搜索匹配，但还缺地区/地址证据。先确认服务区域，避免做出无法定位客户的 mockup。';
+  }
+  return '图片线索还需要补搜索证据。';
+}
+
 function deriveCustomerOpportunitySummary(record) {
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') {
+    return '当前官网基础较完整，只发现低影响问题。不要自动做 mockup；除非人工发现新的突破口，否则建议跳过或观察。';
+  }
+  if (record.currentSiteAuditSummary) return record.currentSiteAuditSummary;
   const issues = Array.isArray(record.currentSiteAuditIssues) ? record.currentSiteAuditIssues.filter(Boolean) : [];
   const improvements = Array.isArray(record.currentSiteImprovements) ? record.currentSiteImprovements.filter(Boolean) : [];
   const score = record.currentSiteAuditScore ? `${record.currentSiteAuditScore}分` : '';
@@ -485,6 +561,13 @@ function deriveOpenDesignBrief(record) {
     business: record.company || record.businessName || record.clientSlug,
     industry: record.niche || record.leadFamilyId || '行业待补',
     location: record.city || record.address || record.domain || '地区待补',
+    aiConclusion: {
+      result: record.leadAiConclusion || record.aiAssessment?.result || '',
+      score: Number.isFinite(record.leadAiScore) ? record.leadAiScore : record.aiAssessment?.score || null,
+      confidence: record.leadAiConfidence || record.aiAssessment?.confidence || '',
+      reason: record.aiAssessment?.reason || '',
+    },
+    websitePlanType: record.websitePlanType || '',
     currentWebsite: record.officialWebsiteUrl || record.websiteUrl || '',
     contactPage: record.contactPageUrl || '',
     contactProfile: {
@@ -494,11 +577,49 @@ function deriveOpenDesignBrief(record) {
       socialAccounts: Array.isArray(record.socialAccounts) ? record.socialAccounts : [],
     },
     services: Array.isArray(record.leadCoreServices) ? record.leadCoreServices.slice(0, 5) : [],
+    template: record.selectedTemplateId ? {
+      id: record.selectedTemplateId,
+      family: record.selectedTemplateFamily || '',
+      confidence: record.templateMatchConfidence ?? null,
+      reason: record.templateMatchReason || '',
+    } : null,
+    copyBrief: record.copyBriefPath ? {
+      hero: record.copyBriefHero || '',
+      primaryCta: record.copyBriefPrimaryCta || '',
+      verifiedFacts: record.copyBriefVerifiedFacts || null,
+      forbiddenClaims: record.copyBriefForbiddenClaims || [],
+    } : null,
+    run: record.openDesignRunRequestPath || record.openDesignRunStatePath || record.conceptManifestPath ? {
+      requestStatus: record.openDesignRunRequestStatus || '',
+      mode: record.openDesignRunRequestMode || '',
+      timeoutMs: record.openDesignRunRequestTimeoutMs || null,
+      nativeCleanFinish: record.openDesignRunNativeCleanFinish ?? null,
+      completionMode: record.openDesignRunCompletionMode || '',
+      questionForms: Array.isArray(record.openDesignRunQuestionForms) ? record.openDesignRunQuestionForms.length : 0,
+      questionFormRounds: Array.isArray(record.openDesignRunQuestionFormRounds) ? record.openDesignRunQuestionFormRounds.length : 0,
+      qualityScore: Number.isFinite(record.conceptQualityAuditScore) ? record.conceptQualityAuditScore : null,
+      qualityOk: record.conceptQualityAuditOk ?? null,
+      previewUrl: record.conceptPublicPreviewUrl || '',
+      auditUrl: record.conceptPublicAuditUrl || '',
+      runStateUrl: record.conceptPublicRunStateUrl || '',
+      indexPath: record.conceptIndexPath || '',
+      manifestPath: record.conceptManifestPath || '',
+      auditPath: record.conceptQualityAuditPath || '',
+    } : null,
     heroAngle: record.leadHeroAngle || record.outreachPrimaryProofPoint || '',
-    auditFocus: issues.slice(0, 3),
-    improvements: improvements.slice(0, 3),
+    auditFocus: record.currentSiteAuditFindings?.length
+      ? record.currentSiteAuditFindings.filter((finding) => finding.severity !== 'low').slice(0, 3).map((finding) => finding.title)
+      : issues.slice(0, 3),
+    improvements: record.currentSitePriorityActions?.length
+      ? record.currentSitePriorityActions.slice(0, 3).map((action) => action.fix)
+      : improvements.slice(0, 3),
+    auditSummary: record.currentSiteAuditSummary || '',
+    outreachHook: record.currentSiteOutreachHook || '',
+    openDesignDirection: record.currentSiteOpenDesignDirection || '',
+    salesDecision: record.currentSiteSalesDecision || '',
     primaryCta: record.leadPrimaryCta || 'Call now',
     screenshot: record.currentSitePublicScreenshotUrl || record.currentSiteScreenshotPath || '',
+    prompt: record.openDesignPrompt || '',
   };
 }
 
@@ -533,28 +654,54 @@ function deriveProfileCompleteness(record) {
 }
 
 function deriveArtifactStatus(record) {
+  const mockupReady = hasMockupReady(record);
   return {
     profile: Boolean(record.leadIntakePath || record.company),
     research: Boolean(record.leadResearchPath),
     evidence: hasEvidence(record),
     currentSiteAudit: Boolean(record.currentSiteAuditPath),
-    mockup: Boolean(record.previewUrl || record.outreachPackPath),
-    proof: Boolean(record.assetsReady),
+    templateMatch: Boolean(record.templateMatchPath),
+    copyBrief: Boolean(record.copyBriefPath),
+    openDesignHandoff: Boolean(record.templateOpenDesignHandoffPath || record.websiteBuildHandoffPath),
+    openDesignRun: Boolean(record.openDesignRunRequestPath || record.openDesignRunStatePath || record.conceptManifestPath),
+    openDesignNativeFinish: record.openDesignRunNativeCleanFinish === true,
+    conceptQualityAudit: Boolean(record.conceptQualityAuditPath),
+    mockup: Boolean(record.previewUrl || record.outreachPackPath || mockupReady),
+    proof: Boolean(record.assetsReady || mockupReady),
     draft: Boolean(record.emailDraftReady || record.outreachBriefPath),
     sent: Boolean(record.outreachSent),
     reply: record.replyState === 'replied',
-    discord: Boolean(record.salesThreadId || record.salesWorkspaceChannelId),
+    discord: Boolean(record.salesThreadId || record.salesWorkspaceChannelId || record.websiteTaskThreadId || record.discordTaskThreadPath),
   };
+}
+
+function hasMockupReady(record) {
+  return Boolean(
+    (record.assetsReady && record.previewUrl)
+      || (record.openDesignRunNativeCleanFinish === true && record.conceptQualityAuditOk === true && record.conceptManifestPath)
+  );
 }
 
 function deriveActionLog(record) {
   const entries = [];
   const push = (label, detail, at = '') => entries.push({ label, detail, at });
+  if (record.discordConversationSummary) push('同步 Discord thread', record.discordConversationSummary, record.discordTaskThread?.syncedAt || record.updatedAt);
+  for (const entry of (record.discoveryLog || [])) {
+    push(`Discovery：${translateDiscoveryEvent(entry.event)}`, entry.summary || entry.detail || '', entry.at);
+  }
   if (record.leadIntakePath) push('建立线索档案', formatSource(record.leadSourceType || 'manual'), record.updatedAt);
   if (record.leadResearchPath) push('完成背景研究', record.leadPreviewability ? `结论：${translateValue(record.leadPreviewability)}；服务：${formatServices(record)}` : '已整理业务信息', record.updatedAt);
   if (record.redesignCheckPath) push('检查现有网站', record.leadRedesignDecision ? `判断：${translateValue(record.leadRedesignDecision)}` : '已记录 redesign 判断', record.updatedAt);
   if (record.leadReadyToBuildPath) push('整理建站输入', record.leadReadyToBuildStatus ? `状态：${translateValue(record.leadReadyToBuildStatus)}` : '已生成可交接输入', record.updatedAt);
-  if (record.leadOpsPath) push('运行线索流程', record.leadFamilyId ? `分类：${translateValue(record.leadFamilyId)}；下一步：${record.leadRecommendedAction || record.leadReadyToBuildStatus || '待确认'}` : '已完成自动判断', record.updatedAt);
+  if (record.templateMatchPath) push('匹配模板族', record.selectedTemplateId ? `选择：${record.selectedTemplateId}${Number.isFinite(record.templateMatchConfidence) ? `；置信度 ${Math.round(record.templateMatchConfidence * 100)}%` : ''}` : '已生成模板匹配结果', record.updatedAt);
+  if (record.copyBriefPath) push('生成文案 Brief', record.copyBriefHero ? `Hero：${record.copyBriefHero}` : '已分离 verified / inferred / demo content', record.updatedAt);
+  if (record.templateOpenDesignHandoffPath) push('生成 Open Design Handoff', record.templateOpenDesignRunRequirements?.nativeCleanFinishRequired ? '要求 native finish，并保留 audit gate' : '已生成标准设计交接 payload', record.updatedAt);
+  if (record.openDesignRunRequestPath) push('创建 Open Design 运行请求', `${record.openDesignRunRequestMode || 'app-visible'}；checkpoint ${record.openDesignRunRequestTimeoutMs ? Math.round(record.openDesignRunRequestTimeoutMs / 60000) : '?'} 分钟；fallback=${record.openDesignRunRequestAllowFallback ? '允许' : '禁止'}`, record.updatedAt);
+  if (record.openDesignRunStatePath) push('同步 Open Design 运行状态', `${record.openDesignRunNativeCleanFinish ? 'native clean finish' : translateValue(record.openDesignRunCompletionMode) || '运行中/待确认'}；question forms ${(record.openDesignRunQuestionForms || []).length}`, record.openDesignRunEndedAt || record.updatedAt);
+  if (record.conceptQualityAuditPath) push('完成 Mockup 质量审计', `${record.conceptQualityAuditOk ? '通过' : '未通过'}${Number.isFinite(record.conceptQualityAuditScore) ? ` · ${record.conceptQualityAuditScore}分` : ''}`, record.updatedAt);
+  if (hasMockupReady(record)) push('Mockup 已可审核', record.previewUrl ? '已有预览链接和质量审计' : '本地 Open Design concept 已 native 结束并通过质量审计', record.updatedAt);
+  if (record.websiteBuildHandoffPath) push('生成 Open Design 输入', `${record.websitePlanType ? `${translateValue(record.websitePlanType)}；` : ''}${record.leadAiConclusion ? `AI：${translateValue(record.leadAiConclusion)} ${record.leadAiScore || ''}分` : '已生成建站 payload'}`, record.updatedAt);
+  if (record.leadOpsPath) push('运行线索流程', record.leadFamilyId ? `分类：${translateValue(record.leadFamilyId)}；AI：${translateValue(record.leadAiConclusion) || '待定'}${record.leadAiScore ? ` ${record.leadAiScore}分` : ''}` : '已完成自动判断', record.updatedAt);
   if (record.outreachBriefPath) push('生成触达策略', record.outreachChannelRecommendation ? `建议渠道：${translateValue(record.outreachChannelRecommendation)}；突破口：${record.outreachPrimaryProofPoint || '待复写'}` : '已生成诊断和冷启动话术', record.updatedAt);
   if (record.currentSiteAuditPath) push('完成现站审计', `${record.currentSiteAuditVerdict || '已生成报告'}${record.currentSiteAuditScore ? ` · ${record.currentSiteAuditScore}分` : ''}`, record.updatedAt);
   if (record.outreachPackPath) push('生成 Mockup 包', record.previewUrl ? '已有预览链接' : '已开始准备预览', record.updatedAt);
@@ -566,16 +713,35 @@ function deriveActionLog(record) {
     push(note.action ? `人工决定：${translateValue(note.action)}` : '人工备注', note.note || '', note.createdAt);
   }
   if (record.aiAssessment) push(record.aiAssessment.label, `${record.aiAssessment.confidence}：${record.aiAssessment.reason}`, record.updatedAt);
-  return entries.slice(0, 8);
+  return prioritizeRecentEntries(entries, 12, [
+    (entry) => ['匹配模板族', '生成文案 Brief', '生成 Open Design Handoff', '创建 Open Design 运行请求', '同步 Open Design 运行状态', '完成 Mockup 质量审计'].includes(entry.label),
+  ]);
 }
 
 function deriveWorkTrace(record) {
   const entries = [];
   const push = (tool, action, evidence = '') => entries.push({ tool, action, evidence });
+  for (const message of (record.discordConversationMessages || []).slice(-4)) {
+    push(
+      message.bot ? 'Discord website-agent' : 'Discord operator',
+      `${message.author || 'unknown'}：${String(message.content || '').replace(/\s+/g, ' ').slice(0, 220)}`,
+      record.discordThreadUrl || record.discordTaskThread?.thread?.url || '',
+    );
+  }
+  for (const entry of (record.discoveryLog || [])) {
+    push(entry.tool || 'lead-discovery skill', `${translateDiscoveryEvent(entry.event)}：${entry.summary || entry.detail || '已记录'}`, entry.outputPath || entry.sourceUrl || record.discoveryLogPath || '');
+  }
   if (record.leadIntakePath) push('lead-intake skill', `输出：来源=${formatSource(record.leadSourceType || 'manual')}；联系=${summarizeContact(record)}`, record.leadIntakePath);
   if (record.leadResearchPath) push('lead-research skill', `输出：${translateValue(record.leadPreviewability) || '已整理业务信息'}；服务=${formatServices(record)}`, record.leadResearchPath);
   if (record.redesignCheckPath) push('redesign-check skill', `输出：${translateValue(record.leadRedesignDecision) || '已记录 redesign 判断'}`, record.redesignCheckPath);
   if (record.leadReadyToBuildPath) push('ready-to-build skill', `输出：${translateValue(record.leadReadyToBuildStatus) || '可交接输入'}；模式=${translateValue(record.leadBuildMode) || record.leadBuildMode || '待定'}`, record.leadReadyToBuildPath);
+  if (record.templateMatchPath) push('template matcher', `输出：${record.selectedTemplateId || '模板族已匹配'}${Number.isFinite(record.templateMatchConfidence) ? `；confidence=${record.templateMatchConfidence}` : ''}`, record.templateMatchPath);
+  if (record.copyBriefPath) push('copy brief generator', `输出：${record.copyBriefHero || '文案 brief 已生成'}；CTA=${record.copyBriefPrimaryCta || '待定'}`, record.copyBriefPath);
+  if (record.templateOpenDesignHandoffPath) push('Open Design handoff generator', `输出：template handoff；audit=${(record.templateOpenDesignQualityGate || []).join('/') || '待定'}`, record.templateOpenDesignHandoffPath);
+  if (record.openDesignRunRequestPath) push('Open Design runner', `输出：运行请求；mode=${record.openDesignRunRequestMode || 'app-visible'}；fallback=${record.openDesignRunRequestAllowFallback ? 'opt-in' : 'off'}`, record.openDesignRunRequestPath);
+  if (record.openDesignRunStatePath) push('Open Design runner', `输出：${record.openDesignRunNativeCleanFinish ? 'native clean finish' : translateValue(record.openDesignRunCompletionMode) || '状态待确认'}；questionForms=${(record.openDesignRunQuestionForms || []).length}`, record.openDesignRunStatePath);
+  if (record.conceptQualityAuditPath) push('mockup quality audit', `输出：${record.conceptQualityAuditOk ? 'pass' : 'needs revision'}${Number.isFinite(record.conceptQualityAuditScore) ? `；score=${record.conceptQualityAuditScore}` : ''}`, record.conceptQualityAuditPath);
+  if (record.websiteBuildHandoffPath) push('Open Design handoff generator', `输出：${translateValue(record.websitePlanType) || '建站 payload'}；AI=${translateValue(record.leadAiConclusion) || '待定'}${record.leadAiScore ? ` ${record.leadAiScore}分` : ''}`, record.websiteBuildHandoffPath);
   if (record.leadOpsPath) push('lead-ops skill', `输出：${translateValue(record.leadFamilyId) || '分类完成'}；建议=${record.leadRecommendedAction || '待确认'}`, record.leadOpsPath);
   if (record.outreachBriefPath) push('outreach-brief skill', `输出：渠道=${translateValue(record.outreachChannelRecommendation) || '待定'}；草稿=模板级，需要复写`, record.outreachBriefPath);
   if (record.currentSiteAuditPath) push('Playwright browser audit', `输出：截图+HTML/text+报告；${record.currentSiteAuditVerdict || '已审计'}${record.currentSiteAuditScore ? ` ${record.currentSiteAuditScore}分` : ''}`, record.currentSiteAuditPath);
@@ -584,10 +750,38 @@ function deriveWorkTrace(record) {
   if (record.googleMapsUrl || record.googlePlaceId) push('Google Maps / Places', '核对地图或商家资料', record.googleMapsUrl || record.googlePlaceId);
   if (record.officialWebsiteUrl || record.websiteUrl) push('Browser / official site', '打开官网或已有网站，检查改版机会', record.officialWebsiteUrl || record.websiteUrl);
   for (const source of record.evidenceSources || []) {
-    push(translateEvidenceSource(source.sourceType), source.sourceUrl ? '读取证据来源' : '记录证据来源', source.sourceUrl || source.sourceType || '');
+    push(translateEvidenceSource(source.sourceType), source.sourceUrl ? `${source.extractor || '读取证据来源'}：${source.key || ''}${source.value ? `=${String(source.value).slice(0, 80)}` : ''}` : '记录证据来源', source.sourceUrl || source.sourceType || '');
   }
   if (!entries.length) push('等待自动研究', '还没有工具调用记录', '');
-  return entries.slice(0, 8);
+  return prioritizeRecentEntries(entries, 12, [
+    (entry) => ['template matcher', 'copy brief generator', 'Open Design handoff generator', 'Open Design runner', 'mockup quality audit'].includes(entry.tool),
+  ]);
+}
+
+function prioritizeRecentEntries(entries, limit, predicates = []) {
+  const important = entries.filter((entry) => predicates.some((predicate) => predicate(entry)));
+  const recent = entries.slice(-limit);
+  const seen = new Set();
+  return [...important, ...recent]
+    .filter((entry) => {
+      const key = JSON.stringify(entry);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
+}
+
+function translateDiscoveryEvent(value) {
+  return {
+    discord_image_received: '收到 Discord 图片线索',
+    ocr_text_recorded: '记录 OCR / 人工文字',
+    web_search_query: '执行网页搜索',
+    web_search_result_matched: '匹配搜索结果',
+    evidence_written: '写入证据',
+    lead_ops_run: '运行 lead-ops',
+    conflict_recorded: '记录冲突',
+  }[value] || value || '发现记录';
 }
 
 function summarizeContact(record) {
@@ -619,39 +813,39 @@ function deriveDecisionActions(record) {
   }
   if (record.pipelineStage === 'follow_up_due') {
     return [
-      { action: 'mark_followed_up', label: '已跟进', tone: 'primary', note: '已执行本次 follow-up。' },
-      { action: 'mark_replied', label: '标记已回复', tone: 'secondary', note: '人工确认客户已经回复。' },
+      { action: 'mark_followed_up', label: '记录已跟进', tone: 'primary', note: '已执行本次 follow-up。' },
+      { action: 'mark_replied', label: '记录已回复', tone: 'secondary', note: '人工确认客户已经回复。' },
       { action: 'skip_lead', label: '跳过', tone: 'secondary', note: '连续跟进无明确机会，跳过该线索。' },
     ];
   }
   if (record.pipelineStage === 'ready_for_mockup') {
     return [
-      { action: 'approve_mockup', label: '创建 Mockup', tone: 'primary', note: '人工确认这个 lead 有明确价值，开始创建 Mockup。' },
-      { action: 'research_more', label: '继续研究', tone: 'secondary', note: '需要再补充更多证据后再决定是否创建 Mockup。' },
+      { action: 'approve_mockup', label: '批准进 Mockup 队列', tone: 'primary', note: '人工确认这个 lead 有明确价值，批准进入 Mockup 队列。' },
+      { action: 'research_more', label: '记录需继续研究', tone: 'secondary', note: '需要再补充更多证据后再决定是否创建 Mockup。' },
       { action: 'skip_lead', label: '跳过', tone: 'secondary', note: '没有足够明确的突破口，跳过该线索。' },
     ];
   }
   if (record.pipelineStage === 'needs_human') {
     return [
-      { action: 'approve_mockup', label: '创建 Mockup', tone: 'primary', note: '人工看过证据，确认这个 lead 有明确价值，开始创建 Mockup。' },
+      { action: 'approve_mockup', label: '批准进 Mockup 队列', tone: 'primary', note: '人工看过证据，确认这个 lead 有明确价值，批准进入 Mockup 队列。' },
       { action: 'skip_lead', label: '跳过', tone: 'secondary', note: '人工看过证据，仍没有明确突破口，跳过该线索。' },
-      { action: 'research_more', label: '再研究', tone: 'secondary', note: '人工认为还需要补充搜索、官网、地图、截图或 OCR 证据。' },
+      { action: 'research_more', label: '记录需再研究', tone: 'secondary', note: '人工认为还需要补充搜索、官网、地图、截图或 OCR 证据。' },
     ];
   }
   if (record.pipelineStage === 'researching') {
     return [
-      { action: 'research_more', label: '开始/继续研究', tone: 'primary', note: '触发或安排自动研究，补充搜索、官网、地图、截图或 OCR 证据。' },
+      { action: 'research_more', label: '记录需继续研究', tone: 'primary', note: '记录需要自动研究补充搜索、官网、地图、截图或 OCR 证据。' },
       { action: 'skip_lead', label: '跳过', tone: 'secondary', note: '线索明显不符合目标或不可触达，跳过该线索。' },
     ];
   }
   if (record.pipelineStage === 'new_lead') {
     return [
-      { action: 'research_more', label: '开始研究', tone: 'primary', note: '触发或安排自动建档和研究，补充搜索、官网、地图、截图或 OCR 证据。' },
+      { action: 'research_more', label: '记录需开始研究', tone: 'primary', note: '记录需要自动建档和研究，补充搜索、官网、地图、截图或 OCR 证据。' },
       { action: 'skip_lead', label: '跳过', tone: 'secondary', note: '线索明显不符合目标或不可触达，跳过该线索。' },
     ];
   }
   return [
-    { action: 'research_more', label: '继续研究', tone: 'primary', note: '继续补充搜索、官网、地图、截图或 OCR 证据。' },
+    { action: 'research_more', label: '记录需继续研究', tone: 'primary', note: '继续补充搜索、官网、地图、截图或 OCR 证据。' },
     { action: 'skip_lead', label: '跳过', tone: 'secondary', note: '当前没有明确突破口，跳过该线索。' },
   ];
 }
@@ -690,9 +884,17 @@ function translateValue(value) {
     location: '地址',
     field_service: '本地上门服务',
     professional_service: '专业服务',
+    clinic: '诊所/医疗',
+    studio_or_visual: '视觉/预约型服务',
+    venue: '场地/活动',
     redesign: '改版',
     starter: '新站',
     teaser: '预览试探',
+    one_page: '一页网站',
+    simple_multi_page: '简单多页网站',
+    ready_for_mockup: '可做 Mockup',
+    needs_human: '需人工',
+    skip: '跳过',
     ready_for_preview: '可做预览',
     ready_for_redesign_preview: '可做改版预览',
     ready_for_teaser: '可做试探预览',
@@ -705,9 +907,9 @@ function translateValue(value) {
     provider: '发送服务',
     skip_lead: '跳过',
     reopen_lead: '重新打开',
-    research_more: '继续研究',
-    approve_mockup: '创建 Mockup',
-    mark_followed_up: '已跟进',
+    research_more: '需继续研究',
+    approve_mockup: '批准进 Mockup 队列',
+    mark_followed_up: '记录已跟进',
     mark_replied: '已回复',
     move_to_paid_handoff: '成交交接',
   }[value] || value || '';

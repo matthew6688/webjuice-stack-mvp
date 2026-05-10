@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-09T04:42:55.882Z",
+  "clientSlug": "place_chijs0mstipzkwsryzey4gfmqzs",
+  "businessName": "Continental Cafe",
+  "websiteUrl": "http://www.continentalcafe.com.au/",
+  "verdict": "clear_redesign_opportunity",
+  "score": 35,
+  "salesDecision": "build_mockup",
+  "opportunityConfidence": "high",
+  "summary": "Continental Cafe has an existing website, and the strongest useful gap is: core services are not instantly clear.",
+  "outreachHook": "I noticed your site has a fixable conversion gap: Expected services were not all visible in captured text: Continental restaurant.",
+  "openDesignDirection": "Continental Cafe should feel like the obvious restaurant choice in Brisbane. Show 3-5 core services near the top with plain-language outcomes. Rewrite title around \"restaurant Continental restaurant\" while keeping the business name.",
+  "captured": {
+    "title": "Continental Cafe",
+    "headings": [],
+    "linkCount": 24,
+    "imageCount": 3,
+    "contactPageCandidates": [
+      "https://continentalcafe.com.au/#rec571233356",
+      "https://www.facebook.com/continentalcafe.com.au",
+      "https://tableagent.com/brisbane/continental-cafe/"
+    ],
+    "socialLinks": [
+      {
+        "label": "https://www.facebook.com/continentalcafe.com.au",
+        "url": "https://www.facebook.com/continentalcafe.com.au"
+      },
+      {
+        "label": "https://www.instagram.com/continentalcafe/?hl=en",
+        "url": "https://www.instagram.com/continentalcafe/?hl=en"
+      }
+    ],
+    "textLength": 5616,
+    "phoneVisible": true,
+    "emailVisible": false,
+    "quoteVisible": true,
+    "serviceVisible": false,
+    "primaryCta": "Contact"
+  },
+  "audits": {
+    "conversion": {
+      "score": 70,
+      "signals": {
+        "phoneVisible": true,
+        "emailVisible": false,
+        "quoteVisible": true,
+        "serviceVisible": false,
+        "primaryCta": "Contact"
+      },
+      "findings": [
+        {
+          "category": "conversion",
+          "title": "Core services are not instantly clear",
+          "evidence": "Expected services were not all visible in captured text: Continental restaurant.",
+          "impact": "A lead may not recognize that the business solves their specific problem.",
+          "fix": "Show 3-5 core services near the top with plain-language outcomes.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "conversion",
+          "title": "Page is hard to scan",
+          "evidence": "Only 0 readable heading(s) were captured.",
+          "impact": "Skimming visitors have fewer anchors for services, proof, service area, and CTA.",
+          "fix": "Add clear section headings for services, proof, service area, and final CTA.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "conversion",
+          "title": "Visual proof is under-explained",
+          "evidence": "Few captured images include descriptive alt text or proof context.",
+          "impact": "Before/after, team, and job-site proof may not transfer trust quickly.",
+          "fix": "Use before/after or job-site proof with descriptive captions and useful alt text.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        }
+      ]
+    },
+    "trust": {
+      "score": 95,
+      "signals": {
+        "hasContactPage": true,
+        "hasAddressOrArea": true,
+        "hasSocial": true,
+        "hasProofLanguage": true,
+        "hasPrivacyOrTerms": false
+      },
+      "findings": [
+        {
+          "category": "trust",
+          "title": "Basic trust/legal links are thin",
+          "evidence": "Privacy or terms links were not captured from visible page links.",
+          "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+          "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    },
+    "seo": {
+      "score": 50,
+      "keyword": "restaurant Continental restaurant",
+      "checks": {
+        "title": "Continental Cafe",
+        "metaDescription": " Brisbane's Classic European Bistro",
+        "h1s": [],
+        "canonical": "https://continentalcafe.com.au/",
+        "wordCount": 873,
+        "internalLinkCount": 0,
+        "imageCount": 3,
+        "missingAltCount": 0,
+        "emptyAltCount": 3,
+        "jsonLdTypes": [],
+        "og": {
+          "title": "Continental Cafe",
+          "description": " Brisbane's Classic European Bistro",
+          "image": "https://thb.tildacdn.one/tild3134-6635-4362-b038-343965613531/-/resize/504x/WhatsApp_Image_2023-.jpeg"
+        },
+        "twitter": {
+          "card": "",
+          "title": "",
+          "description": "",
+          "image": ""
+        },
+        "robotsMeta": "",
+        "htmlLang": ""
+      },
+      "findings": [
+        {
+          "category": "seo",
+          "title": "Title does not target the main local intent",
+          "evidence": "Captured title: \"Continental Cafe\". Inferred keyword: \"restaurant Continental restaurant\".",
+          "impact": "The page may rank or click worse for the service/location query we care about.",
+          "fix": "Rewrite title around \"restaurant Continental restaurant\" while keeping the business name.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Meta description is too generic for the lead angle",
+          "evidence": "Captured meta description does not clearly include \"restaurant Continental restaurant\" or a close variant.",
+          "impact": "The search snippet may not match high-intent local searches.",
+          "fix": "Mention service, location, and a concrete result or quote action.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "H1 structure needs cleanup",
+          "evidence": "0 H1 tag(s) captured.",
+          "impact": "A single clear H1 helps both search and page comprehension.",
+          "fix": "Use one H1 focused on the primary service/location promise.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Internal linking is weak",
+          "evidence": "0 internal link(s) captured.",
+          "impact": "Important pages may be harder to discover and preserve during redesign.",
+          "fix": "Link to services, contact/quote, about/proof, and relevant location pages.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Image alt text is weak",
+          "evidence": "0 image(s) missing alt attribute and 3 image(s) have empty alt.",
+          "impact": "Images do not help accessibility, local proof, or image-search context.",
+          "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Structured data is missing",
+          "evidence": "No JSON-LD schema types were captured.",
+          "impact": "LocalBusiness schema can make core business facts clearer to search engines.",
+          "fix": "Add LocalBusiness/Organization schema with verified name, phone, area, URL, and social links.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "category": "conversion",
+      "title": "Core services are not instantly clear",
+      "evidence": "Expected services were not all visible in captured text: Continental restaurant.",
+      "impact": "A lead may not recognize that the business solves their specific problem.",
+      "fix": "Show 3-5 core services near the top with plain-language outcomes.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "conversion",
+      "title": "Page is hard to scan",
+      "evidence": "Only 0 readable heading(s) were captured.",
+      "impact": "Skimming visitors have fewer anchors for services, proof, service area, and CTA.",
+      "fix": "Add clear section headings for services, proof, service area, and final CTA.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "conversion",
+      "title": "Visual proof is under-explained",
+      "evidence": "Few captured images include descriptive alt text or proof context.",
+      "impact": "Before/after, team, and job-site proof may not transfer trust quickly.",
+      "fix": "Use before/after or job-site proof with descriptive captions and useful alt text.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Title does not target the main local intent",
+      "evidence": "Captured title: \"Continental Cafe\". Inferred keyword: \"restaurant Continental restaurant\".",
+      "impact": "The page may rank or click worse for the service/location query we care about.",
+      "fix": "Rewrite title around \"restaurant Continental restaurant\" while keeping the business name.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "H1 structure needs cleanup",
+      "evidence": "0 H1 tag(s) captured.",
+      "impact": "A single clear H1 helps both search and page comprehension.",
+      "fix": "Use one H1 focused on the primary service/location promise.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Image alt text is weak",
+      "evidence": "0 image(s) missing alt attribute and 3 image(s) have empty alt.",
+      "impact": "Images do not help accessibility, local proof, or image-search context.",
+      "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Structured data is missing",
+      "evidence": "No JSON-LD schema types were captured.",
+      "impact": "LocalBusiness schema can make core business facts clearer to search engines.",
+      "fix": "Add LocalBusiness/Organization schema with verified name, phone, area, URL, and social links.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "trust",
+      "title": "Basic trust/legal links are thin",
+      "evidence": "Privacy or terms links were not captured from visible page links.",
+      "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+      "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Meta description is too generic for the lead angle",
+      "evidence": "Captured meta description does not clearly include \"restaurant Continental restaurant\" or a close variant.",
+      "impact": "The search snippet may not match high-intent local searches.",
+      "fix": "Mention service, location, and a concrete result or quote action.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Internal linking is weak",
+      "evidence": "0 internal link(s) captured.",
+      "impact": "Important pages may be harder to discover and preserve during redesign.",
+      "fix": "Link to services, contact/quote, about/proof, and relevant location pages.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    }
+  ],
+  "issues": [
+    "Core services are not instantly clear: Expected services were not all visible in captured text: Continental restaurant.",
+    "Page is hard to scan: Only 0 readable heading(s) were captured.",
+    "Visual proof is under-explained: Few captured images include descriptive alt text or proof context.",
+    "Title does not target the main local intent: Captured title: \"Continental Cafe\". Inferred keyword: \"restaurant Continental restaurant\".",
+    "H1 structure needs cleanup: 0 H1 tag(s) captured.",
+    "Image alt text is weak: 0 image(s) missing alt attribute and 3 image(s) have empty alt.",
+    "Structured data is missing: No JSON-LD schema types were captured.",
+    "Basic trust/legal links are thin: Privacy or terms links were not captured from visible page links.",
+    "Meta description is too generic for the lead angle: Captured meta description does not clearly include \"restaurant Continental restaurant\" or a close variant.",
+    "Internal linking is weak: 0 internal link(s) captured."
+  ],
+  "improvements": [
+    "Show 3-5 core services near the top with plain-language outcomes.",
+    "Add clear section headings for services, proof, service area, and final CTA.",
+    "Use before/after or job-site proof with descriptive captions and useful alt text.",
+    "Rewrite title around \"restaurant Continental restaurant\" while keeping the business name.",
+    "Use one H1 focused on the primary service/location promise.",
+    "Add descriptive alt text for content images; keep decorative images empty intentionally."
+  ],
+  "priorityActions": [
+    {
+      "title": "Core services are not instantly clear",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Show 3-5 core services near the top with plain-language outcomes."
+    },
+    {
+      "title": "Page is hard to scan",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Add clear section headings for services, proof, service area, and final CTA."
+    },
+    {
+      "title": "Visual proof is under-explained",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Use before/after or job-site proof with descriptive captions and useful alt text."
+    },
+    {
+      "title": "Title does not target the main local intent",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Rewrite title around \"restaurant Continental restaurant\" while keeping the business name."
+    },
+    {
+      "title": "H1 structure needs cleanup",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Use one H1 focused on the primary service/location promise."
+    }
+  ],
+  "nextStepInput": {
+    "businessName": "Continental Cafe",
+    "industry": "restaurant",
+    "location": "Brisbane",
+    "services": [
+      "Continental restaurant"
+    ],
+    "heroAngle": "Continental Cafe should feel like the obvious restaurant choice in Brisbane.",
+    "primaryCta": "Contact",
+    "outreachObservation": "I noticed your site has a fixable conversion gap: Expected services were not all visible in captured text: Continental restaurant.",
+    "auditFocus": [
+      "Core services are not instantly clear",
+      "Page is hard to scan",
+      "Visual proof is under-explained",
+      "Title does not target the main local intent"
+    ],
+    "redesignValue": [
+      "Show 3-5 core services near the top with plain-language outcomes.",
+      "Add clear section headings for services, proof, service area, and final CTA.",
+      "Use before/after or job-site proof with descriptive captions and useful alt text.",
+      "Rewrite title around \"restaurant Continental restaurant\" while keeping the business name.",
+      "Use one H1 focused on the primary service/location promise.",
+      "Add descriptive alt text for content images; keep decorative images empty intentionally."
+    ],
+    "contactProfile": {
+      "email": "",
+      "phone": "(07) 3254 0377",
+      "contactPageUrl": "https://continentalcafe.com.au/#rec571233356",
+      "socialLinks": [
+        {
+          "label": "https://www.facebook.com/continentalcafe.com.au",
+          "url": "https://www.facebook.com/continentalcafe.com.au"
+        },
+        {
+          "label": "https://www.instagram.com/continentalcafe/?hl=en",
+          "url": "https://www.instagram.com/continentalcafe/?hl=en"
+        }
+      ]
+    }
+  },
+  "artifacts": {
+    "desktopPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijs0mstipzkwsryzey4gfmqzs/current-site-desktop.png",
+    "mobilePath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijs0mstipzkwsryzey4gfmqzs/current-site-mobile.png",
+    "htmlPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijs0mstipzkwsryzey4gfmqzs/current-site.html",
+    "textPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijs0mstipzkwsryzey4gfmqzs/current-site-text.txt",
+    "jsonPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijs0mstipzkwsryzey4gfmqzs/current-site-audit.json",
+    "mdPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijs0mstipzkwsryzey4gfmqzs/current-site-audit.md"
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "variant": "medium-framework-no-llm",
+  "score": 74,
+  "ok": false,
+  "execute": true,
+  "durationMs": 432496,
+  "experimentReliability": {
+    "score": 84,
+    "max": 100,
+    "issues": [
+      "Only 0 approved asset(s) matched by hash."
+    ]
+  },
+  "localBusinessWebsite": {
+    "totalScore": 71,
+    "grade": "C",
+    "dimensions": {
+      "conversion": {
+        "score": 25,
+        "max": 25,
+        "issues": [],
+        "checks": [
+          {
+            "id": "hero_cta",
+            "score": 8,
+            "max": 8,
+            "issue": ""
+          },
+          {
+            "id": "local_intent_cta",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "contact_completeness",
+            "score": 8,
+            "max": 8,
+            "issue": ""
+          },
+          {
+            "id": "five_second_clarity",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          }
+        ]
+      },
+      "local_seo": {
+        "score": 14,
+        "max": 25,
+        "issues": [
+          "缺少完整 LocalBusiness/Roofing schema。",
+          "H1 应包含业务类型和地区。",
+          "缺少 Google Maps 嵌入或地图链接。"
+        ],
+        "checks": [
+          {
+            "id": "title_city_business",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "nap_structure",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "local_business_schema",
+            "score": 0,
+            "max": 7,
+            "issue": "缺少完整 LocalBusiness/Roofing schema。"
+          },
+          {
+            "id": "h1_business_location",
+            "score": 2,
+            "max": 4,
+            "issue": "H1 应包含业务类型和地区。"
+          },
+          {
+            "id": "map_link",
+            "score": 0,
+            "max": 2,
+            "issue": "缺少 Google Maps 嵌入或地图链接。"
+          }
+        ]
+      },
+      "technical": {
+        "score": 12,
+        "max": 20,
+        "issues": [
+          "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。",
+          "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。",
+          "图片需要 alt 文本和 lazy loading。"
+        ],
+        "checks": [
+          {
+            "id": "responsive",
+            "score": 6,
+            "max": 6,
+            "issue": ""
+          },
+          {
+            "id": "lcp_proxy",
+            "score": 2,
+            "max": 6,
+            "issue": "实验阶段不跑 PageSpeed；上线 URL 后用 PSI 测 LCP。"
+          },
+          {
+            "id": "https",
+            "score": 2,
+            "max": 4,
+            "issue": "本地 file/html 阶段 HTTPS 不适用；上线后必须验证。"
+          },
+          {
+            "id": "image_alt_lazy",
+            "score": 2,
+            "max": 4,
+            "issue": "图片需要 alt 文本和 lazy loading。"
+          }
+        ]
+      },
+      "design_trust": {
+        "score": 10,
+        "max": 20,
+        "issues": [
+          "设计和图片需要明显属于 roofing/local service。",
+          "应使用 approved/generated niche images，不要泛 stock/占位图。",
+          "可以使用 demo review/reference review，但上线需换成真实 review 或 Google review。"
+        ],
+        "checks": [
+          {
+            "id": "industry_fit",
+            "score": 2,
+            "max": 5,
+            "issue": "设计和图片需要明显属于 roofing/local service。"
+          },
+          {
+            "id": "realistic_images",
+            "score": 0,
+            "max": 5,
+            "issue": "应使用 approved/generated niche images，不要泛 stock/占位图。"
+          },
+          {
+            "id": "proof_or_reviews",
+            "score": 3,
+            "max": 5,
+            "issue": "可以使用 demo review/reference review，但上线需换成真实 review 或 Google review。"
+          },
+          {
+            "id": "typographic_hierarchy",
+            "score": 5,
+            "max": 5,
+            "issue": ""
+          }
+        ]
+      },
+      "content": {
+        "score": 10,
+        "max": 10,
+        "issues": [],
+        "checks": [
+          {
+            "id": "service_area_scope",
+            "score": 4,
+            "max": 4,
+            "issue": ""
+          },
+          {
+            "id": "differentiation",
+            "score": 3,
+            "max": 3,
+            "issue": ""
+          },
+          {
+            "id": "language_quality",
+            "score": 3,
+            "max": 3,
+            "issue": ""
+          }
+        ]
+      }
+    },
+    "notes": [
+      "Template-stage scoring allows demo/reference reviews when they are not presented as verified customer proof.",
+      "Real lead scoring should compare NAP against Google Place/GMB when placeId evidence is available.",
+      "PageSpeed/HTTPS are partial in local HTML experiments and become strict after deploy."
+    ],
+    "top3Fixes": [
+      "缺少完整 LocalBusiness/Roofing schema。",
+      "H1 应包含业务类型和地区。",
+      "缺少 Google Maps 嵌入或地图链接。"
+    ]
+  },
+  "htmlFiles": [
+    "data/template-experiments/roofing/classic-premium-roftix/home-live-medium-v2-2026-05-09/medium-framework-no-llm/open-design/index.html"
+  ],
+  "provenance": {
+    "rasterAssetCount": 0,
+    "approvedAssetCount": 5,
+    "usedApprovedAssetCount": 0,
+    "matchedApprovedAssets": [],
+    "unapprovedRasterAssets": []
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "code": "approved_assets_not_used",
+      "points": 16,
+      "message": "Only 0 approved asset(s) matched by hash."
+    }
+  ],
+  "generatedAt": "2026-05-09T03:24:41.153Z"
+}

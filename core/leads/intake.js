@@ -10,6 +10,7 @@ export const LEAD_SOURCE_TYPES = [
     'website_inbound',
     'paid_intake',
     'imported_list',
+    'maps_scraper',
     'referral',
     'provider_reply',
     'existing_project_reentry',
@@ -395,7 +396,7 @@ function inferTone({ family, buildMode }) {
 }
 
 function inferCoreServices({ family, serviceHints }) {
-  if (serviceHints.length) return serviceHints.slice(0, 4);
+  if (serviceHints.length) return serviceHints.slice(0, 6);
   return family.defaultServices || ['Primary service', 'Supporting service', 'Get in touch'];
 }
 

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-06T10:58:59.728Z",
+  "clientSlug": "od-runner-smoke",
+  "projectId": "od-runner-smoke-open-design-1778065065620",
+  "conversationId": "f8150da4-a935-43cd-a95a-80cc1496d9df",
+  "runId": "5619ec8b-4c9b-4487-a584-be618f76548c",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "restaurant",
+  "tone": "clean smoke test",
+  "scope": "smoke",
+  "prompt": "Skip questions. Headless ProfitsLocal integration smoke. Do not fetch the web. Use Open Design web-prototype skill context. Create a tiny standalone index.html saying 'ProfitsLocal Open Design runner ok'. Keep it under 80 lines. Emit the artifact.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/od-runner-smoke/concept/open-design",
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 1553,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    }
+  ]
+}

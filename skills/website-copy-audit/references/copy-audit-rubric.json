@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "name": "website-copy-audit-rubric",
+  "total": 100,
+  "dimensions": {
+    "conversion": {
+      "max": 20,
+      "checks": [
+        { "id": "above_fold_cta", "points": 6, "description": "Primary CTA is visible and specific above the fold." },
+        { "id": "contact_path", "points": 5, "description": "Phone, form, map, or quote path is clear." },
+        { "id": "five_second_clarity", "points": 5, "description": "Visitor can identify business category and service area quickly." },
+        { "id": "next_step", "points": 4, "description": "Copy says what happens after contact or quote request." }
+      ]
+    },
+    "specificity": {
+      "max": 15,
+      "checks": [
+        { "id": "service_specific", "points": 5, "description": "Services match the niche and are not generic filler." },
+        { "id": "customer_problem", "points": 4, "description": "Names concrete customer problems, objections, or urgency." },
+        { "id": "local_context", "points": 3, "description": "Uses city, service area, climate, property type, or local intent when known." },
+        { "id": "evidence_reflected", "points": 3, "description": "Preserved facts or audit observations influence the copy." }
+      ]
+    },
+    "trustProof": {
+      "max": 15,
+      "checks": [
+        { "id": "proof_present", "points": 4, "description": "Includes proof mechanism: reviews, process, photos, certifications, warranties, project examples, or safe placeholders." },
+        { "id": "proof_honesty", "points": 5, "description": "Does not present AI-generated or unverified proof as real." },
+        { "id": "risk_reducers", "points": 3, "description": "Addresses common risks such as no-obligation quote, inspection clarity, cleanup, timelines, or transparent pricing." },
+        { "id": "review_policy", "points": 3, "description": "Google/customer reviews are used when available; AI reference reviews are clearly replaceable." }
+      ]
+    },
+    "serviceOffer": {
+      "max": 15,
+      "checks": [
+        { "id": "service_coverage", "points": 5, "description": "Core services are covered without overloading the page." },
+        { "id": "page_structure", "points": 4, "description": "Hero, services, proof/about, process/FAQ, and final CTA support conversion." },
+        { "id": "offer_fit", "points": 3, "description": "Offer fits the lead type: teaser preview, redesign, one-page, or multi-page." },
+        { "id": "form_fit", "points": 3, "description": "Contact form asks only useful fields for the niche and page type." }
+      ]
+    },
+    "localSeo": {
+      "max": 10,
+      "checks": [
+        { "id": "title_h1_keywords", "points": 3, "description": "Title/H1 include business type and location when known." },
+        { "id": "nap_terms", "points": 3, "description": "Name, address, phone, hours, and service area can support NAP consistency." },
+        { "id": "schema_ready", "points": 2, "description": "Copy provides fields needed for LocalBusiness schema." },
+        { "id": "faq_seo", "points": 2, "description": "FAQ includes real local-service questions, not generic marketing fluff." }
+      ]
+    },
+    "toneReadability": {
+      "max": 10,
+      "checks": [
+        { "id": "plain_language", "points": 3, "description": "Sounds like a real local business, not corporate filler." },
+        { "id": "scannable", "points": 3, "description": "Headings, bullets, labels, and short paragraphs are easy to scan." },
+        { "id": "voice_consistency", "points": 2, "description": "Tone matches niche and template style." },
+        { "id": "grammar", "points": 2, "description": "No obvious grammar, spelling, or awkward translation issues." }
+      ]
+    },
+    "differentiation": {
+      "max": 10,
+      "checks": [
+        { "id": "why_choose", "points": 4, "description": "Gives a concrete reason to choose the business." },
+        { "id": "redesign_value", "points": 3, "description": "For redesigns, copy explains what the new site fixes or improves." },
+        { "id": "outreach_angle", "points": 3, "description": "Copy produces a credible cold outreach angle and mockup rationale." }
+      ]
+    },
+    "factualSafety": {
+      "max": 5,
+      "checks": [
+        { "id": "contact_accuracy", "points": 2, "description": "Contact details match the lead profile/evidence." },
+        { "id": "claim_boundaries", "points": 2, "description": "Unsupported claims are absent or marked as placeholders." },
+        { "id": "no_internal_terms", "points": 1, "description": "No internal workflow terms leak into customer-facing copy." }
+      ]
+    }
+  },
+  "grades": [
+    { "min": 90, "grade": "A", "meaning": "Strong enough for approval; only polish if needed." },
+    { "min": 75, "grade": "B", "meaning": "Good structure; targeted improvements should lift it." },
+    { "min": 60, "grade": "C", "meaning": "Needs focused rewrite before outreach." },
+    { "min": 45, "grade": "D", "meaning": "Major copy problems; likely weak conversion." },
+    { "min": 0, "grade": "F", "meaning": "Unsafe, generic, or misleading; rebuild the brief." }
+  ],
+  "hardFails": [
+    "wrong_contact_fact",
+    "missing_contact_path",
+    "unclear_business_category",
+    "fake_verified_claim",
+    "internal_workflow_terms",
+    "evidence_conflict",
+    "generic_any_industry_copy"
+  ]
+}

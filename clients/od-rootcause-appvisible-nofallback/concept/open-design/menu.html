@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menus · Dark Shepherd</title>
+  <style>
+    :root { --bg: oklch(12% 0.014 55); --surface: oklch(18% 0.018 55); --fg: oklch(93% 0.018 78); --muted: oklch(70% 0.025 76); --border: oklch(34% 0.025 60); --accent: oklch(66% 0.12 55); --font-display: 'Iowan Old Style', 'Charter', Georgia, serif; --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; --font-mono: ui-monospace, 'JetBrains Mono', Menlo, monospace; }
+    * { box-sizing: border-box; } body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.55; } a { color: inherit; text-decoration: none; } .wrap { max-width: 1040px; margin: 0 auto; padding: 32px; } header, footer { display: flex; justify-content: space-between; gap: 24px; align-items: center; border-bottom: 1px solid var(--border); padding-block: 18px; } footer { border-top: 1px solid var(--border); border-bottom: 0; color: var(--muted); } nav { display: flex; gap: 22px; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; } img.logo { width: 150px; } h1, h2, h3 { font-family: var(--font-display); font-weight: 500; margin: 0; } h1 { font-size: clamp(48px, 8vw, 90px); line-height: 0.96; margin-top: 90px; max-width: 760px; } h2 { font-size: clamp(30px, 4vw, 48px); margin-top: 70px; } p { color: var(--muted); max-width: 62ch; } .eyebrow, .price { font-family: var(--font-mono); color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; } .menu-row { display: grid; grid-template-columns: 130px 1fr 92px; gap: 24px; border-top: 1px solid var(--border); padding: 20px 0; } .menu-row p { margin: 4px 0 0; font-size: 14px; } @media (max-width: 760px) { header, nav, .menu-row { display: block; } nav a { margin-right: 14px; } .price { margin-top: 8px; display: block; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header><a href="index.html"><img class="logo" src="assets/dark-shepherd-logo.png" alt="Dark Shepherd" /></a><nav><a href="index.html">Home</a><a href="functions.html">Functions</a><a href="drinks-menu.html">Drinks</a><a href="contact.html">Contact</a></nav></header>
+    <main>
+      <p class="eyebrow">Main menu · Banquets · Lunch specials</p>
+      <h1>Woodfire, lamb, seafood and village plates.</h1>
+      <p>Condensed concept menu using visible Dark Shepherd dishes and preserving the existing menu navigation intent.</p>
+      <h2>Snacks</h2>
+      <div class="menu-row"><span class="eyebrow">Bread</span><div><h3>Woodfired Pillow Bread</h3><p>Thyme and olive oil, or feta, olives and capers.</p></div><span class="price">$14+</span></div>
+      <div class="menu-row"><span class="eyebrow">Oyster</span><div><h3>Oyster</h3><p>Natural on ice, red wine vinegar with shallots, or sea brine with orange.</p></div><span class="price">$7ea</span></div>
+      <h2>Small plates</h2>
+      <div class="menu-row"><span class="eyebrow">Raw</span><div><h3>Kingfish</h3><p>Green apple, ginger, citrus, cherry tomato and red onion.</p></div><span class="price">$34</span></div>
+      <div class="menu-row"><span class="eyebrow">Fire</span><div><h3>Woodfired Octopus</h3><p>Olive oil and fava.</p></div><span class="price">$38</span></div>
+      <h2>Large plates</h2>
+      <div class="menu-row"><span class="eyebrow">Lamb</span><div><h3>White Pyrenees Lamb Shoulder</h3><p>21 days aged, bone in, served with tzatziki.</p></div><span class="price">$60 / $120</span></div>
+      <div class="menu-row"><span class="eyebrow">Seafood</span><div><h3>Live Lobster</h3><p>Orzo pasta with tomato and herbs, or grilled with tirokafteri butter.</p></div><span class="price">M/P</span></div>
+    </main>
+    <footer><span>The Terrace, Level 4, The Star Brisbane</span><a href="https://www.sevenrooms.com/explore/darkshepherd/reservations/create/search?venues=darkshepherd,pompetteau,yamasgreekdrink,stilts,richandrarerestaurant,fatcowrestaurant,longwangchopstickhouse,opabarmezze,massimorestaurantandbar,foshbarrestaurant">Bookings</a></footer>
+  </div>
+</body>
+</html>

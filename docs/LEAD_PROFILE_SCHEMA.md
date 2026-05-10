@@ -405,6 +405,8 @@ lead discovery
 - 当前 live outreach provider
 - provider webhook 配置覆盖情况
 - 事件支持矩阵
+- 线索相关配置是否已覆盖，例如 Google Places、TinyFish、Firecrawl、Agentic Inbox、Instantly、Smartlead
+- 缺失配置的下一步：应该补到 `.env.local`、部署环境变量，还是可以先忽略
 
 ### `/admin`
 
@@ -433,4 +435,3 @@ lead discovery
 - Instantly
 - Smartlead
 - 其他 cold outreach 工具
-

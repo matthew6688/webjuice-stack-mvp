@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact · Opa Bar + Mezze Concept</title>
+  <style>
+    :root {
+      --bg: oklch(98% 0.006 92);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(25% 0 0);
+      --muted: oklch(48% 0.012 72);
+      --border: oklch(87% 0.028 71);
+      --accent: oklch(74% 0.071 63);
+      --font-display: 'Bodoni Moda', Didot, 'Bodoni 72', 'Iowan Old Style', Georgia, serif;
+      --font-body: 'Pontano Sans', 'OMEGA SANS REGULAR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 980px; margin: 0 auto; padding: 32px; }
+    header, section { border-bottom: 1px solid var(--border); padding: 34px 0; }
+    nav { display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+    nav img { width: 92px; mix-blend-mode: multiply; }
+    nav div { display: flex; gap: 22px; color: var(--muted); font-size: 14px; }
+    h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; line-height: 1; }
+    h1 { font-size: clamp(54px, 10vw, 122px); max-width: 9ch; }
+    h2 { font-size: clamp(34px, 5vw, 58px); }
+    p { color: var(--muted); max-width: 58ch; }
+    .eyebrow { font-family: var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
+    .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .contact-card { border-top: 1px solid var(--fg); padding-top: 20px; }
+    .btn { display: inline-flex; padding: 12px 21px; border: 1px solid var(--accent); background: var(--accent); color: var(--surface); text-transform: uppercase; letter-spacing: .05em; font-weight: 700; font-size: 14px; }
+    @media (max-width: 760px) { nav, nav div, .contact-grid { display: block; } nav div { margin-top: 20px; } .contact-card { margin-top: 28px; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav>
+        <a href="index.html"><img src="assets/opa-logo-colour.jpg" alt="Opa Bar + Mezze" /></a>
+        <div><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="functions.html">Functions</a></div>
+      </nav>
+    </header>
+    <main>
+      <section data-od-id="contact-hero">
+        <p class="eyebrow">Contact</p>
+        <h1>Eagle Street, seven days.</h1>
+        <p>Preserves the current contact intent while making address, phone, hours and booking route immediately scannable.</p>
+      </section>
+      <section class="contact-grid" data-od-id="contact-details">
+        <div class="contact-card"><h3>Address</h3><p>123 Eagle Street<br />Brisbane Q 4000</p></div>
+        <div class="contact-card"><h3>Phone</h3><p><a href="tel:+61721115155">07 2111 5155</a></p></div>
+        <div class="contact-card"><h3>Hours</h3><p>Open 7 days<br />All day dining: 11:00am-late</p></div>
+      </section>
+      <section data-od-id="contact-cta">
+        <h2>For bookings, use the booking path.</h2>
+        <p>The original contact form notes general enquiries only; table bookings should go through the bookings page.</p>
+        <a class="btn" href="https://www.sevenrooms.com/explore/opabarmezze/reservations/create/search?venues=opabarmezze,pompetteau,darkshepherd,yamasgreekdrink,stilts,richandrarerestaurant,fatcowrestaurant,longwangchopstickhouse,massimorestaurantandbar,foshbarrestaurant">Bookings</a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

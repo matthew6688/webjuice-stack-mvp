@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RidgeLine Roof Co. | Roofing Brisbane & Gold Coast</title>
+  <meta name="description" content="RidgeLine Roof Co. helps Brisbane and Gold Coast homeowners request roof repairs, restoration, metal roofing, gutter repairs, and roof inspections." />
+  <meta name="review-provenance" content="ai-reference-placeholder; replace with real Google or customer reviews before live" />
+  <style>
+    :root {
+      --bg: oklch(97% 0.008 85);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(18% 0.035 250);
+      --muted: oklch(48% 0.026 250);
+      --border: oklch(88% 0.012 85);
+      --accent: oklch(47% 0.12 150);
+
+      --navy: oklch(20% 0.055 250);
+      --navy-deep: oklch(14% 0.045 250);
+      --warm: oklch(66% 0.145 54);
+      --accent-soft: color-mix(in oklch, var(--accent) 13%, transparent);
+      --fg-soft: color-mix(in oklch, var(--fg) 6%, transparent);
+      --navy-soft: color-mix(in oklch, var(--navy) 8%, transparent);
+
+      --font-display: 'Iowan Old Style', 'Charter', Georgia, 'Times New Roman', serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+      --fs-h1: clamp(48px, 6.4vw, 88px);
+      --fs-h2: clamp(34px, 4.4vw, 56px);
+      --fs-h3: 23px;
+      --fs-lead: 19px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 56px;
+      --gap-2xl: 96px;
+      --container: 1180px;
+      --gutter: 32px;
+      --radius: 8px;
+      --radius-lg: 14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.55;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    img { object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    p { text-wrap: pretty; }
+    h1, h2, h3, h4 { text-wrap: balance; }
+
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(58px, 8vw, var(--gap-2xl)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; }
+    .stack > * + * { margin-top: var(--gap-md); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); line-height: 0.98; letter-spacing: -0.02em; margin: 0; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); line-height: 1.04; letter-spacing: -0.015em; margin: 0; }
+    .h3, h3 { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; line-height: 1.22; margin: 0; }
+    .lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--muted); max-width: 60ch; margin: 0; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 var(--gap-md);
+    }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+    .topnav {
+      position: fixed;
+      top: 0;
+      inset-inline: 0;
+      z-index: 20;
+      color: var(--surface);
+      border-bottom: 1px solid color-mix(in oklch, var(--surface) 18%, transparent);
+      background: color-mix(in oklch, var(--navy-deep) 72%, transparent);
+      backdrop-filter: blur(14px);
+    }
+    .topnav-inner { display: flex; align-items: center; justify-content: space-between; padding-block: 15px; }
+    .topnav .logo { font-family: var(--font-display); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+    .topnav nav { display: flex; gap: var(--gap-lg); align-items: center; }
+    .topnav nav a { font-size: 14px; color: color-mix(in oklch, var(--surface) 78%, transparent); }
+    .topnav nav a:hover { color: var(--surface); }
+    .nav-phone { border: 1px solid color-mix(in oklch, var(--surface) 32%, transparent); padding: 8px 12px; border-radius: 999px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 11px 20px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: -0.005em;
+      transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 84%, var(--fg)); }
+    .btn-secondary { background: var(--surface); color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 8px; }
+    .btn-ghost:hover { color: var(--accent); }
+    .btn-arrow::after { content: '→'; transition: transform 0.15s ease; }
+    .btn-arrow:hover::after { transform: translateX(2px); }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .card-flat { background: transparent; border: 0; padding: 0; }
+    .card-rule { background: transparent; border: 0; border-top: 1px solid var(--fg); padding: 24px 0 0; border-radius: 0; }
+    .feature .feature-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--accent);
+      margin-bottom: var(--gap-md);
+    }
+    .feature .feature-mark svg { width: 18px; height: 18px; }
+    .feature h3 { margin-bottom: 7px; }
+    .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 13px; color: var(--muted); }
+    .input, .textarea, select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--fg);
+      font: inherit;
+      font-size: 15px;
+    }
+    .input:focus, .textarea:focus, select:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+    .textarea { min-height: 112px; resize: vertical; line-height: 1.55; }
+    .rule { height: 1px; background: var(--border); width: 100%; }
+    .rule-strong { height: 1px; background: var(--fg); width: 100%; }
+
+    .hero-photo {
+      min-height: 760px;
+      display: grid;
+      align-items: end;
+      padding-top: 90px;
+      padding-bottom: 72px;
+      color: var(--surface);
+      background:
+        linear-gradient(90deg, color-mix(in oklch, var(--navy-deep) 84%, transparent), color-mix(in oklch, var(--navy-deep) 34%, transparent) 58%, color-mix(in oklch, var(--navy-deep) 10%, transparent)),
+        linear-gradient(0deg, color-mix(in oklch, var(--navy-deep) 72%, transparent), transparent 54%),
+        url('assets/hero-family1-hero-premium-roof-at-blue-hour.png') center / cover no-repeat;
+    }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) 360px; gap: var(--gap-xl); align-items: end; }
+    .hero-copy { max-width: 780px; }
+    .hero-copy .lead { color: color-mix(in oklch, var(--surface) 82%, transparent); margin-top: 22px; }
+    .hero-cta { display: flex; gap: var(--gap-sm); flex-wrap: wrap; margin-top: 30px; }
+    .hero-panel {
+      background: color-mix(in oklch, var(--surface) 92%, transparent);
+      color: var(--fg);
+      border: 1px solid color-mix(in oklch, var(--surface) 45%, transparent);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: 0 24px 60px color-mix(in oklch, var(--navy-deep) 30%, transparent);
+    }
+    .hero-panel .eyebrow { margin-bottom: 12px; }
+    .hero-panel ul { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
+    .hero-panel li { display: flex; gap: 10px; color: var(--muted); font-size: 14px; }
+    .hero-panel li::before { content: ''; width: 7px; height: 7px; margin-top: 8px; border-radius: 999px; background: var(--accent); flex: 0 0 auto; }
+
+    .image-card { position: relative; overflow: hidden; min-height: 300px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--surface); }
+    .image-card img { width: 100%; height: 100%; min-height: inherit; }
+    .image-card .caption {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      right: 18px;
+      color: var(--surface);
+      background: color-mix(in oklch, var(--navy-deep) 72%, transparent);
+      border: 1px solid color-mix(in oklch, var(--surface) 20%, transparent);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      backdrop-filter: blur(10px);
+    }
+    .caption strong { display: block; font-family: var(--font-display); font-size: 19px; line-height: 1.15; }
+    .caption span { display: block; margin-top: 4px; color: color-mix(in oklch, var(--surface) 76%, transparent); font-size: 13px; }
+
+    .service-card { display: grid; grid-template-rows: 210px auto; overflow: hidden; padding: 0; }
+    .service-card img { width: 100%; height: 210px; }
+    .service-card .service-body { padding: 24px; }
+    .service-card p { margin: 9px 0 0; color: var(--muted); font-size: 15px; }
+    .service-card .meta { display: block; margin-top: 18px; }
+
+    .proof-band { background: var(--navy); color: var(--surface); }
+    .proof-band .lead, .proof-band .meta { color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .proof-band .eyebrow { color: color-mix(in oklch, var(--warm) 82%, var(--surface)); }
+    .proof-list { display: grid; gap: 0; border-top: 1px solid color-mix(in oklch, var(--surface) 18%, transparent); }
+    .proof-row { display: grid; grid-template-columns: 110px 1fr; gap: 22px; padding: 20px 0; border-bottom: 1px solid color-mix(in oklch, var(--surface) 18%, transparent); }
+    .proof-row h3 { color: var(--surface); }
+    .proof-row p { margin: 5px 0 0; color: color-mix(in oklch, var(--surface) 68%, transparent); }
+
+    .step { border-left: 1px solid var(--border); padding-left: 22px; position: relative; }
+    .step::before {
+      content: attr(data-step);
+      position: absolute;
+      left: -17px;
+      top: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-size: 12px;
+    }
+    .step h3, .step p { margin-left: 12px; }
+    .step p { color: var(--muted); margin-top: 7px; }
+
+    .faq-list { display: grid; gap: 12px; }
+    details { border-top: 1px solid var(--border); padding: 18px 0; }
+    details:last-child { border-bottom: 1px solid var(--border); }
+    summary { cursor: pointer; font-family: var(--font-display); font-size: 21px; font-weight: 600; }
+    details p { color: var(--muted); margin: 10px 0 0; max-width: 64ch; }
+    .contact-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-grid .wide-field { grid-column: 1 / -1; }
+
+    .pagefoot { background: var(--navy-deep); color: color-mix(in oklch, var(--surface) 68%, transparent); padding-block: 48px; font-size: 14px; }
+    .pagefoot a:hover { color: var(--surface); }
+    .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: var(--gap-lg); }
+    .pagefoot h3 { color: var(--surface); font-size: 20px; margin-bottom: 12px; }
+    .pagefoot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+
+    @media (max-width: 920px) {
+      :root { --gutter: 20px; --fs-h1: clamp(42px, 13vw, 62px); }
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .hero-grid, .footer-grid { grid-template-columns: 1fr; }
+      .topnav nav a:not(.nav-phone) { display: none; }
+      .hero-photo { min-height: 760px; padding-bottom: 44px; }
+      .hero-panel { max-width: 440px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .proof-row { grid-template-columns: 1fr; gap: 6px; }
+    }
+  </style>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "RoofingContractor",
+      "name": "RidgeLine Roof Co.",
+      "telephone": "0400 000 000",
+      "url": "",
+      "areaServed": [
+        "Brisbane",
+        "Gold Coast"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Service area placeholder",
+        "addressRegion": "QLD",
+        "addressCountry": "AU"
+      },
+      "makesOffer": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Roof repairs" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Roof restoration" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Metal roofing" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gutter repairs" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Roof inspections" } }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <header class="topnav">
+    <div class="container topnav-inner">
+      <a class="logo" href="#top" aria-label="RidgeLine Roof Co. home">RidgeLine Roof Co.</a>
+      <nav aria-label="Primary navigation">
+        <a href="#services">Services</a>
+        <a href="#proof">Workmanship</a>
+        <a href="#process">Quote process</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-phone" href="tel:0400000000">0400 000 000</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero-photo" id="top" data-od-id="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Roof repairs · restoration · metal roofing</p>
+          <h1>Roofing for Brisbane and Gold Coast homes</h1>
+          <p class="lead">RidgeLine Roof Co. helps homeowners inspect, repair, restore, and replace roof systems with clear advice before any work begins.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">Request a roof inspection</a>
+            <a class="btn btn-secondary" href="tel:0400000000">Call 0400 000 000</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Quote pathway">
+          <p class="eyebrow">What to expect</p>
+          <h3>Start with the roof condition, not a sales script.</h3>
+          <ul>
+            <li>Tell us what you are seeing: leak, rust, loose flashing, storm damage, or planned restoration.</li>
+            <li>We review access, urgency, roof type, and the best next inspection path.</li>
+            <li>You receive practical repair or quote guidance before committing to work.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="services" data-od-id="services">
+      <div class="container stack" style="gap: 56px;">
+        <div class="row-between" style="align-items: end;">
+          <div style="max-width: 46ch;">
+            <p class="eyebrow">Services</p>
+            <h2>Roof work homeowners can request without guesswork.</h2>
+          </div>
+          <a class="btn btn-ghost btn-arrow" href="#contact">Send an enquiry</a>
+        </div>
+        <div class="grid-3">
+          <article class="service-card card">
+            <img src="assets/serviceRepair-family1-service-roof-repair-flashing-detail.png" alt="Close detail of roof flashing repair work" loading="lazy" />
+            <div class="service-body">
+              <h3>Roof repairs</h3>
+              <p>Leak tracing, flashing issues, damaged sheets or tiles, and weather-related repair requests assessed with a clear scope.</p>
+              <span class="meta">Repairs · inspections</span>
+            </div>
+          </article>
+          <article class="service-card card">
+            <img src="assets/serviceInstall-family1-service-roof-installation-detail.png" alt="Metal roofing installation detail on a residential roof" loading="lazy" />
+            <div class="service-body">
+              <h3>Metal roofing</h3>
+              <p>New metal roof installation and replacement enquiries for residential properties across Brisbane and the Gold Coast.</p>
+              <span class="meta">Install · replacement</span>
+            </div>
+          </article>
+          <article class="service-card card">
+            <img src="assets/about-family1-about-roofer-working-roof-frame.png" alt="Roofer working on a residential roof frame" loading="lazy" />
+            <div class="service-body">
+              <h3>Restoration and gutters</h3>
+              <p>Roof restoration, gutter repairs, and maintenance planning for homes where the existing roof needs careful attention.</p>
+              <span class="meta">Restore · maintain</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section proof-band" id="proof" data-od-id="proof">
+      <div class="container grid-1-2">
+        <div class="stack">
+          <p class="eyebrow">Workmanship cues</p>
+          <h2>A roof should be explained before it is quoted.</h2>
+          <p class="lead">The process is built around visible roof condition, plain recommendations, and clear next steps. A homeowner can expect the roof to be inspected, the visible issues documented, and material choices explained before work proceeds.</p>
+        </div>
+        <div class="image-card">
+          <img src="assets/proof-family1-project-before-after-roof-transformation.png" alt="Before and after roof transformation showing residential roofing work" loading="lazy" />
+          <div class="caption">
+            <strong>Project structure without fake proof</strong>
+            <span>Use real project captions and customer permission before publishing live examples.</span>
+          </div>
+        </div>
+      </div>
+      <div class="container" style="margin-top: 52px;">
+        <div class="proof-list">
+          <article class="proof-row">
+            <span class="meta">Inspect</span>
+            <div>
+              <h3>Visible condition first</h3>
+              <p>Roof type, access, water entry points, gutters, flashing, and safety constraints shape the recommended path.</p>
+            </div>
+          </article>
+          <article class="proof-row">
+            <span class="meta">Explain</span>
+            <div>
+              <h3>Plain scope language</h3>
+              <p>Homeowners can understand whether the request is repair, restoration, replacement, or a staged maintenance issue.</p>
+            </div>
+          </article>
+          <article class="proof-row">
+            <span class="meta">Quote</span>
+            <div>
+              <h3>Clear next step</h3>
+              <p>The enquiry path is built around a phone call or form request, not pressure to book blind.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process" data-od-id="quote-process">
+      <div class="container grid-2-1">
+        <div class="image-card" style="min-height: 520px;">
+          <img src="assets/serviceInstall-family1-service-roof-installation-detail.png" alt="Premium metal roof installation detail with roofing sheets aligned" loading="lazy" />
+          <div class="caption">
+            <strong>Inspection-led quoting</strong>
+            <span>Helpful for roof repairs, restoration planning, and metal roofing enquiries.</span>
+          </div>
+        </div>
+        <div class="stack" style="gap: 28px;">
+          <div>
+            <p class="eyebrow">Quote process</p>
+            <h2>From roof concern to practical plan.</h2>
+          </div>
+          <article class="step" data-step="01">
+            <h3>Share the roof issue</h3>
+            <p>Use the form or phone number to describe leaks, storm damage, rust, ageing materials, or planned upgrades.</p>
+          </article>
+          <article class="step" data-step="02">
+            <h3>Confirm the inspection path</h3>
+            <p>RidgeLine Roof Co. checks the property type, urgency, access notes, and service area before recommending a next step.</p>
+          </article>
+          <article class="step" data-step="03">
+            <h3>Review repair or quote options</h3>
+            <p>You receive plain-language guidance on what needs attention and what can wait, subject to the on-site findings.</p>
+          </article>
+          <div class="row" style="flex-wrap: wrap; padding-top: 8px;">
+            <a class="btn btn-primary" href="#contact">Request a quote</a>
+            <a class="btn btn-secondary" href="tel:0400000000">Call now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-od-id="faq-contact-footer">
+      <div class="container grid-2">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2>Common roofing questions.</h2>
+          <div class="faq-list" style="margin-top: 28px;">
+            <details open>
+              <summary>Can I request a roof inspection before deciding on repairs?</summary>
+              <p>Yes. The enquiry should begin with what you are seeing, where the issue appears, and whether it is urgent. A roof inspection or quote path can then be recommended.</p>
+            </details>
+            <details>
+              <summary>Do you handle both repairs and restoration?</summary>
+              <p>Yes. The listed services include roof repairs, roof restoration, metal roofing, gutter repairs, and roof inspections for Brisbane and Gold Coast homeowners.</p>
+            </details>
+            <details>
+              <summary>What should I include in the enquiry?</summary>
+              <p>Share the suburb, roof concern, property type, preferred contact method, and any safe notes about access or visible damage.</p>
+            </details>
+            <details>
+              <summary>Can project photos and customer reviews be added?</summary>
+              <p>Yes. Real project captions, customer reviews, licence details, and insurance information can be added once the business has supplied the confirmed details.</p>
+            </details>
+          </div>
+        </div>
+        <aside class="contact-panel">
+          <p class="eyebrow">Request an inspection or quote</p>
+          <h2 style="font-size: clamp(30px, 3vw, 42px);">Tell us what your roof needs.</h2>
+          <p class="lead" style="margin-top: 12px;">For urgent roof concerns, call <a href="tel:0400000000">0400 000 000</a>. For planned work, send the form and include a short description.</p>
+          <form style="margin-top: 26px;" action="#" method="post">
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Name</label>
+                <input class="input" id="name" name="name" autocomplete="name" />
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input class="input" id="phone" name="phone" autocomplete="tel" />
+              </div>
+              <div class="field">
+                <label for="suburb">Suburb</label>
+                <input class="input" id="suburb" name="suburb" />
+              </div>
+              <div class="field">
+                <label for="service">Service needed</label>
+                <select id="service" name="service">
+                  <option>Roof inspection</option>
+                  <option>Roof repairs</option>
+                  <option>Roof restoration</option>
+                  <option>Metal roofing</option>
+                  <option>Gutter repairs</option>
+                </select>
+              </div>
+              <div class="field wide-field">
+                <label for="message">Roof concern</label>
+                <textarea class="textarea" id="message" name="message" placeholder="Tell us what you are seeing: leak, rust, storm damage, cracked material, gutter issue, or planned replacement."></textarea>
+              </div>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" type="submit">Send enquiry</button>
+          </form>
+          <div class="rule" style="margin: 26px 0 18px;"></div>
+          <p class="meta">Service area: Brisbane and Gold Coast</p>
+          <p class="meta">Hours: add verified trading hours before launch</p>
+          <p class="meta"><a href="#" aria-label="Directions link placeholder">Directions / map link placeholder</a></p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot">
+    <div class="container footer-grid">
+      <div>
+        <h3>RidgeLine Roof Co.</h3>
+        <p style="margin: 0; max-width: 34ch;">Local roofing contractor for roof repairs, restoration, metal roofing, gutter repairs, and roof inspections.</p>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <ul>
+          <li><a href="#services">Roof repairs</a></li>
+          <li><a href="#services">Roof restoration</a></li>
+          <li><a href="#services">Metal roofing</a></li>
+          <li><a href="#services">Gutter repairs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Areas</h3>
+        <ul>
+          <li>Brisbane</li>
+          <li>Gold Coast</li>
+          <li>Nearby service area enquiries</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="tel:0400000000">0400 000 000</a></li>
+          <li><a href="#contact">Request a quote</a></li>
+          <li><a href="#">Directions placeholder</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

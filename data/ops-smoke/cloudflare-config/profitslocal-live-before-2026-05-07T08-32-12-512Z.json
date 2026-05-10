@@ -1,0 +1,405 @@
+{
+  "result": {
+    "id": "0cec846b-e734-455e-97fb-49eb76cd0f0f",
+    "name": "profitslocal-live",
+    "subdomain": "profitslocal-live.pages.dev",
+    "domains": [
+      "profitslocal-live.pages.dev",
+      "profitslocal.com"
+    ],
+    "build_config": {
+      "web_analytics_tag": null,
+      "web_analytics_token": null
+    },
+    "deployment_configs": {
+      "preview": {
+        "env_vars": null,
+        "fail_open": true,
+        "always_use_latest_compatibility_date": false,
+        "compatibility_date": "2026-05-04",
+        "compatibility_flags": [],
+        "build_image_major_version": 3,
+        "usage_model": "standard"
+      },
+      "production": {
+        "env_vars": {
+          "ADMIN_ACCESS_TOKEN": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "AGENT_GITHUB_TOKEN": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "CLOUDINARY_API_KEY": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "CLOUDINARY_API_SECRET": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "CLOUDINARY_CLOUD_NAME": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "CLOUDINARY_UPLOAD_FOLDER": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "CLOUDINARY_UPLOAD_MAX_BYTES": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "CLOUDINARY_UPLOAD_PRESET": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "FROM_EMAIL": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "GH_PAT": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "NOTIFICATION_EMAIL": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "RESEND_API_KEY": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "REVISE_DISCORD_WEBHOOK_URL": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "SALES_DISCORD_WEBHOOK_URL": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "STRIPE_PUBLISHABLE_KEY": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "STRIPE_SECRET_KEY": {
+            "type": "secret_text",
+            "value": ""
+          },
+          "STRIPE_WEBHOOK_SECRET": {
+            "type": "secret_text",
+            "value": ""
+          }
+        },
+        "fail_open": true,
+        "always_use_latest_compatibility_date": false,
+        "compatibility_date": "2026-05-04",
+        "compatibility_flags": [],
+        "build_image_major_version": 3,
+        "usage_model": "standard"
+      }
+    },
+    "latest_deployment": {
+      "id": "cfa7de8c-157b-4bf4-a4e6-1c461040e69a",
+      "short_id": "cfa7de8c",
+      "project_id": "0cec846b-e734-455e-97fb-49eb76cd0f0f",
+      "project_name": "profitslocal-live",
+      "environment": "production",
+      "url": "https://cfa7de8c.profitslocal-live.pages.dev",
+      "created_on": "2026-05-07T08:30:05.943616Z",
+      "modified_on": "2026-05-07T08:30:08.811448Z",
+      "latest_stage": {
+        "name": "deploy",
+        "started_on": null,
+        "ended_on": "2026-05-07T08:30:08.811448Z",
+        "status": "success"
+      },
+      "deployment_trigger": {
+        "type": "ad_hoc",
+        "metadata": {
+          "branch": "main",
+          "commit_hash": "5e1befe55c4b0643d48f776c3272e01e6f72a746",
+          "commit_message": "Fix live approval workflow and first-party revision routing",
+          "commit_dirty": true
+        }
+      },
+      "stages": [
+        {
+          "name": "queued",
+          "started_on": "2026-05-07T08:30:05.943616Z",
+          "ended_on": null,
+          "status": "active"
+        },
+        {
+          "name": "initialize",
+          "started_on": null,
+          "ended_on": null,
+          "status": "idle"
+        },
+        {
+          "name": "clone_repo",
+          "started_on": null,
+          "ended_on": null,
+          "status": "idle"
+        },
+        {
+          "name": "build",
+          "started_on": null,
+          "ended_on": null,
+          "status": "idle"
+        },
+        {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-05-07T08:30:08.811448Z",
+          "status": "success"
+        }
+      ],
+      "build_config": {
+        "build_command": null,
+        "destination_dir": null,
+        "build_caching": null,
+        "root_dir": null,
+        "web_analytics_tag": null,
+        "web_analytics_token": null
+      },
+      "env_vars": {
+        "ADMIN_ACCESS_TOKEN": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "AGENT_GITHUB_TOKEN": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_API_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_API_SECRET": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_CLOUD_NAME": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_UPLOAD_FOLDER": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_UPLOAD_MAX_BYTES": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_UPLOAD_PRESET": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "FROM_EMAIL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "GH_PAT": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "NOTIFICATION_EMAIL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "RESEND_API_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "REVISE_DISCORD_WEBHOOK_URL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "SALES_DISCORD_WEBHOOK_URL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_PUBLISHABLE_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_SECRET_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_WEBHOOK_SECRET": {
+          "type": "secret_text",
+          "value": ""
+        }
+      },
+      "compatibility_date": "2026-05-04",
+      "compatibility_flags": [],
+      "build_image_major_version": 3,
+      "usage_model": "bundled",
+      "aliases": [
+        "https://profitslocal.com"
+      ],
+      "is_skipped": false,
+      "production_branch": "main",
+      "uses_functions": true
+    },
+    "canonical_deployment": {
+      "id": "cfa7de8c-157b-4bf4-a4e6-1c461040e69a",
+      "short_id": "cfa7de8c",
+      "project_id": "0cec846b-e734-455e-97fb-49eb76cd0f0f",
+      "project_name": "profitslocal-live",
+      "environment": "production",
+      "url": "https://cfa7de8c.profitslocal-live.pages.dev",
+      "created_on": "2026-05-07T08:30:05.943616Z",
+      "modified_on": "2026-05-07T08:30:08.811448Z",
+      "latest_stage": {
+        "name": "deploy",
+        "started_on": null,
+        "ended_on": "2026-05-07T08:30:08.811448Z",
+        "status": "success"
+      },
+      "deployment_trigger": {
+        "type": "ad_hoc",
+        "metadata": {
+          "branch": "main",
+          "commit_hash": "5e1befe55c4b0643d48f776c3272e01e6f72a746",
+          "commit_message": "Fix live approval workflow and first-party revision routing",
+          "commit_dirty": true
+        }
+      },
+      "stages": [
+        {
+          "name": "queued",
+          "started_on": "2026-05-07T08:30:05.943616Z",
+          "ended_on": null,
+          "status": "active"
+        },
+        {
+          "name": "initialize",
+          "started_on": null,
+          "ended_on": null,
+          "status": "idle"
+        },
+        {
+          "name": "clone_repo",
+          "started_on": null,
+          "ended_on": null,
+          "status": "idle"
+        },
+        {
+          "name": "build",
+          "started_on": null,
+          "ended_on": null,
+          "status": "idle"
+        },
+        {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-05-07T08:30:08.811448Z",
+          "status": "success"
+        }
+      ],
+      "build_config": {
+        "build_command": null,
+        "destination_dir": null,
+        "build_caching": null,
+        "root_dir": null,
+        "web_analytics_tag": null,
+        "web_analytics_token": null
+      },
+      "env_vars": {
+        "ADMIN_ACCESS_TOKEN": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "AGENT_GITHUB_TOKEN": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_API_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_API_SECRET": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_CLOUD_NAME": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_UPLOAD_FOLDER": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_UPLOAD_MAX_BYTES": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "CLOUDINARY_UPLOAD_PRESET": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "FROM_EMAIL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "GH_PAT": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "NOTIFICATION_EMAIL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "RESEND_API_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "REVISE_DISCORD_WEBHOOK_URL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "SALES_DISCORD_WEBHOOK_URL": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_PUBLISHABLE_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_SECRET_KEY": {
+          "type": "secret_text",
+          "value": ""
+        },
+        "STRIPE_WEBHOOK_SECRET": {
+          "type": "secret_text",
+          "value": ""
+        }
+      },
+      "compatibility_date": "2026-05-04",
+      "compatibility_flags": [],
+      "build_image_major_version": 3,
+      "usage_model": "bundled",
+      "aliases": [
+        "https://profitslocal.com"
+      ],
+      "is_skipped": false,
+      "production_branch": "main",
+      "uses_functions": true
+    },
+    "created_on": "2026-05-04T02:13:59.710721Z",
+    "production_branch": "main",
+    "production_script_name": "pages-worker--13431275-production",
+    "preview_script_name": "pages-worker--13431275-preview",
+    "uses_functions": true,
+    "framework": "",
+    "framework_version": ""
+  },
+  "success": true,
+  "errors": [],
+  "messages": []
+}
+

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "caseId": "dark-shepherd-restaurant_fresh_dark_shepherd_001",
+  "status": "project_initialized",
+  "clientSlug": "dark-shepherd-restaurant",
+  "repo": "matthew6688/dark-shepherd-restaurant",
+  "branch": "dev",
+  "sourceUrl": "https://www.darkshepherd.com.au/",
+  "route": "website",
+  "niche": "restaurant",
+  "customer": {
+    "company": "Dark Shepherd",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "openDesign": {
+    "status": "not_created",
+    "mode": "app-visible",
+    "dataDir": "/Users/matthew/Developer/open-design/.od",
+    "projectId": "",
+    "runId": "",
+    "conceptPath": "clients/dark-shepherd-restaurant/concept/open-design",
+    "manifestPath": "clients/dark-shepherd-restaurant/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/dark-shepherd-restaurant/concept/open-design/production-handoff.json",
+    "createCommand": "npm run open-design:run-concept -- --client dark-shepherd-restaurant --mode app-visible --source-url <official-site-url>",
+    "continueCommand": "",
+    "syncCommand": "",
+    "rule": "Create or bind one local Open Design project before doing high-fidelity design changes."
+  },
+  "requiredNextSteps": [
+    "先完成 evidence 收集，再运行 intake:build-website-ready。",
+    "创建或绑定 Open Design project，然后才能进入高保真设计阶段。",
+    "production handoff 生成后，再 port 到 customer repo dev。"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chij1x8f24lzkwsrw9v3get7yxe",
+  "firstSeenAt": "2026-05-09T04:36:05.407Z",
+  "lastSeenAt": "2026-05-09T04:36:05.407Z",
+  "status": "promoted",
+  "lastStatusAt": "2026-05-09T04:53:55.116Z",
+  "identifiers": {
+    "place_id": "ChIJ1X8F24lZkWsRW9V3GEt7yxE",
+    "cid": "1282254081380308315",
+    "data_id": "0x6b915989db057fd5:0x11cb7b4b1877d55b",
+    "websiteDomain": "dickis.com.au",
+    "phoneDigits": "0732542341"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "Dicki's New Farm",
+    "category": "Vegan restaurant",
+    "categories": [
+      "Vegan restaurant",
+      "Vegetarian restaurant"
+    ],
+    "address": "893 Brunswick St, New Farm QLD 4005",
+    "city": "Brisbane",
+    "niche": "restaurant",
+    "phone": "(07) 3254 2341",
+    "website": "http://www.dickis.com.au/",
+    "google_maps_url": "https://www.google.com/maps/place/Dicki%27s+New+Farm/data=!4m7!3m6!1s0x6b915989db057fd5:0x11cb7b4b1877d55b!8m2!3d-27.4674709!4d153.0463829!16s%2Fg%2F11gfgnwfv1!19sChIJ1X8F24lZkWsRW9V3GEt7yxE?authuser=0&hl=en&rclk=1",
+    "rating": 4.8,
+    "review_count": 707,
+    "websiteStatus": "independent_http_site",
+    "discoveryScore": 83,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "restaurants in New Farm Brisbane",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 15,
+      "hasPopularTimes": false,
+      "hasAboutAttributes": true
+    }
+  },
+  "runs": [
+    {
+      "runId": "20260509-1221-new-farm-store-check",
+      "query": "restaurants in New Farm Brisbane",
+      "runPath": "data/maps-scraper/runs/20260509-1221-new-farm-store-check/discovery-run.json",
+      "at": "2026-05-09T04:36:05.407Z",
+      "discoveryScore": 83,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-09T04:36:05.407Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260509-1221-new-farm-store-check",
+      "query": "restaurants in New Farm Brisbane",
+      "score": 83,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-09T04:37:31.997Z",
+      "event": "status_updated",
+      "status": "queued_for_enrichment",
+      "clientSlug": "",
+      "note": "Cheap site audit 35/100: build_mockup. /Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site-audit.json"
+    },
+    {
+      "at": "2026-05-09T04:44:38.203Z",
+      "event": "status_updated",
+      "status": "ready_for_outreach_brief",
+      "clientSlug": "",
+      "note": "Discovery outreach brief written: /Users/matthew/Developer/google-map-website/data/leads/outreach-briefs/place_chij1x8f24lzkwsrw9v3get7yxe/outreach-brief.json"
+    },
+    {
+      "at": "2026-05-09T04:53:55.116Z",
+      "event": "status_updated",
+      "status": "promoted",
+      "clientSlug": "dicki-s-new-farm",
+      "note": "Promoted from discovery store to dicki-s-new-farm."
+    }
+  ],
+  "notes": [
+    "Cheap site audit 35/100: build_mockup. /Users/matthew/Developer/google-map-website/data/leads/audits/place_chij1x8f24lzkwsrw9v3get7yxe/current-site-audit.json",
+    "Discovery outreach brief written: /Users/matthew/Developer/google-map-website/data/leads/outreach-briefs/place_chij1x8f24lzkwsrw9v3get7yxe/outreach-brief.json",
+    "Promoted from discovery store to dicki-s-new-farm."
+  ],
+  "promotedClientSlug": "dicki-s-new-farm"
+}

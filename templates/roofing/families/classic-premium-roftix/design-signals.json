@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "dryRun": false,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "generatedAt": "2026-05-08T23:34:30.859Z",
+  "reason": "",
+  "referenceSummary": "A premium classic roofing website template emphasizing durability and modern style through a warm, earthy palette and structured layout.",
+  "visualThesis": "Blending timeless craftsmanship with bold modern design to convey strength, clarity, and trustworthiness.",
+  "palette": [
+    {
+      "name": "primary",
+      "hex": "#004D40",
+      "usage": "Dark green background blocks for branding, trust, and textual contrast."
+    },
+    {
+      "name": "secondary",
+      "hex": "#FF6F3C",
+      "usage": "Accent and call-to-action buttons to draw user attention."
+    },
+    {
+      "name": "neutral-light",
+      "hex": "#FFF5E1",
+      "usage": "Background for sections to create warmth and improve readability."
+    },
+    {
+      "name": "text-dark",
+      "hex": "#212121",
+      "usage": "Primary text color for high reading contrast."
+    },
+    {
+      "name": "text-muted",
+      "hex": "#757575",
+      "usage": "Secondary text and descriptive labels."
+    }
+  ],
+  "typography": {
+    "display": "Serif, Bold, Uppercase or Title Case for headings to evoke premium and classic tone",
+    "body": "Sans-serif, Regular weight for readability in paragraphs",
+    "label": "Sans-serif, Medium weight, uppercase or small caps for service icons and badges",
+    "notes": "Clean, modern type pairing emphasizing clear hierarchy with no excessive ornamentation"
+  },
+  "imageDirection": {
+    "hero": "High-quality architectural photos of modern roofed homes with warm sunlight",
+    "services": "Minimalist line icons paired with subtle photo overlays representing roof tasks",
+    "projects": "Photographic case studies showing diverse roofing styles in real environments",
+    "mustAvoid": [
+      "Overly staged or generic stock images with too much unrelated props",
+      "Images with excessive filters or low contrast",
+      "Photos featuring people facing camera or unrelated lifestyle shots"
+    ]
+  },
+  "layoutRhythm": [
+    {
+      "section": "hero",
+      "pattern": "Full width split hero with left aligned text and right aligned image; warm background gradient"
+    },
+    {
+      "section": "about",
+      "pattern": "Wide container with centered text block on dark background",
+      "notes": "Includes founder signature and photo in small circle"
+    },
+    {
+      "section": "services",
+      "pattern": "Grid of evenly spaced icon + text cards with subtle borders and light background"
+    },
+    {
+      "section": "why choose us",
+      "pattern": "Two column masonry with bullet list on left and embedded images on right with elevations"
+    },
+    {
+      "section": "projects and testimonials",
+      "pattern": "Horizontal scroller or card clusters with badges and star ratings"
+    },
+    {
+      "section": "blog",
+      "pattern": "Horizontal carousel of cards with small text overlays and images"
+    },
+    {
+      "section": "footer",
+      "pattern": "Full width dark block with multi-column links and subscription input"
+    }
+  ],
+  "componentTokens": {
+    "radius": "6px for cards and buttons for subtle rounding",
+    "border": "1px solid rgba(0,0,0,0.1) for service cards and testimonial containers",
+    "shadow": "Soft drop shadows with 0 2px 8px rgba(0,0,0,0.12) for floating effect",
+    "button": "Filled background primary color with white text, medium padding, hover lighten effect"
+  },
+  "ctaHierarchy": [
+    "Primary: 'Get Your Free Roof Audit' button in orange in hero",
+    "Secondary: Contact Us button in dark green top right",
+    "Tertiary: Newsletter subscription form at footer"
+  ],
+  "fidelityRisks": [
+    "Maintaining consistent quality and resolution of architectural images",
+    "Balancing warm background tones while preserving text legibility",
+    "Retaining clean iconography with minimal detail to match classic style"
+  ],
+  "openDesignRules": [
+    "Use serif fonts for headings and sans-serif for body text for hierarchy clarity",
+    "Limit palette to 4-5 core colors to maintain brand coherence",
+    "Ensure enough padding inside cards and text sections for readability",
+    "Maintain center alignment for testimonial content and quotes",
+    "Use star rating component consistently with 5 stars max"
+  ],
+  "publicApprovalChecklist": [
+    "Confirm the brand colors meet accessibility contrast requirements",
+    "Validate that all images depict roof-related scenes without licensing issues",
+    "Verify all CTA text aligns with the roofing niche and is actionable",
+    "Collect user feedback on readability of text blocks with background variations",
+    "Ensure responsive behavior for hero split layout and service grid"
+  ]
+}

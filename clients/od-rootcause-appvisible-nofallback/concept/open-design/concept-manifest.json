@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-07T21:25:18.731Z",
+  "clientSlug": "od-rootcause-appvisible-nofallback",
+  "projectId": "od-rootcause-appvisible-nofallback-open-design-1778188614969",
+  "conversationId": "ad6e01d3-9eb9-44a5-9edc-eefd678ac637",
+  "runId": "fcfe14f0-2049-48ca-a6e3-b7e253b50305",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": "https://www.darkshepherd.com.au/",
+  "businessType": "restaurant",
+  "tone": "luxury, refined",
+  "scope": "multi-page",
+  "prompt": "Skip questions. Use Open Design's existing web-prototype/design workflow and produce a high-fidelity concept artifact.\nSource website: https://www.darkshepherd.com.au/\nClient slug: od-rootcause-appvisible-nofallback\nBusiness type: restaurant\nVisual tone: luxury, refined\nScope: multi-page\n\nIf a source website is provided, inspect it and match the existing brand direction instead of inventing a new generic style.\nPreserve core business facts, logo/brand identity, existing navigation intent, contact details, booking/order/contact links, menu/service/product content, and old URL intent where visible.\nCreate concept files in the project folder. Prefer index.html plus local assets and brand-spec.md when brand information is available.\nDo not deploy. Do not edit any ProfitsLocal production repo. This is concept generation only.",
+  "daemonUrl": "http://127.0.0.1:7481",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/od-rootcause-appvisible-nofallback/concept/open-design",
+  "status": {
+    "code": 0,
+    "signal": null,
+    "status": "succeeded"
+  },
+  "files": [
+    {
+      "path": "contact.html",
+      "size": 3424,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "drinks-menu.html",
+      "size": 3301,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "functions.html",
+      "size": 3698,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "menu.html",
+      "size": 4190,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "index.html",
+      "size": 21239,
+      "kind": "html",
+      "mime": "text/html; charset=utf-8",
+      "artifactKind": "html"
+    },
+    {
+      "path": "brand-spec.md",
+      "size": 1230,
+      "kind": "text",
+      "mime": "text/markdown; charset=utf-8",
+      "artifactKind": "markdown-document"
+    },
+    {
+      "path": "assets/bar.jpg",
+      "size": 402622,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/fire-table.jpg",
+      "size": 90118,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/dining-room.jpg",
+      "size": 313416,
+      "kind": "image",
+      "mime": "image/jpeg",
+      "artifactKind": null
+    },
+    {
+      "path": "assets/dark-shepherd-logo.png",
+      "size": 29852,
+      "kind": "image",
+      "mime": "image/png",
+      "artifactKind": null
+    }
+  ]
+}

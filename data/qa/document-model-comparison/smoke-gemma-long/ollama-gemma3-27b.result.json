@@ -1,0 +1,28 @@
+{
+  "id": "ollama-gemma3:27b",
+  "provider": "ollama",
+  "model": "gemma3:27b",
+  "status": "error",
+  "durationMs": 300984,
+  "rawOutput": "",
+  "error": "fetch failed",
+  "evaluation": {
+    "schemaVersion": 1,
+    "ok": false,
+    "score": 0,
+    "grade": "F",
+    "parse": {
+      "ok": false,
+      "error": "empty_output"
+    },
+    "findings": [
+      {
+        "severity": "hard_fail",
+        "code": "invalid_json",
+        "points": -100,
+        "message": "Output was not parseable JSON."
+      }
+    ],
+    "metrics": {}
+  }
+}

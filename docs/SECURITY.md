@@ -11,6 +11,21 @@ npm run check:env -- --workflow funnel
 
 Then replace only the values needed for the workflow you are running. Do not paste raw tokens into shell commands, docs, GitHub commits, screenshots, or generated artifacts. The setup script prompts locally and writes `.env.local` with file mode `0600`.
 
+## Admin Settings Checklist
+
+`/admin/settings` is a checklist and copy helper for configuration, not a secret editor.
+
+Local development checks these files, in order, before overlaying runtime environment variables:
+
+1. `.env`
+2. `.env.local`
+3. `.dev.vars`
+4. `process.env`
+
+The page reports whether each required value is configured, missing, optional, or needs confirmation. It may show the source of a configured value, such as `.env.local`, and it may show masked values like `sk_t…1234`. It must never render raw secrets into the HTML.
+
+When an operator types into a value field, the page only generates a copyable env line. To make the change take effect, write that line to local `.env.local` or to the deployed provider's environment variables, then restart/redeploy the relevant service.
+
 ## Rules
 
 - Never commit `.env`, `.env.local`, screenshots of dashboards, or API keys.

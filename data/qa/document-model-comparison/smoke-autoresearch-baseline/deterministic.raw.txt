@@ -1,0 +1,161 @@
+{
+  "discoveryReport": {
+    "businessIdentity": "Roofing & Restoration is a roofing and exterior restoration lead from operator-provided sign/photo evidence.",
+    "contactPaths": [
+      "Call 0424 371 622"
+    ],
+    "services": [
+      "roof restorations",
+      "capping",
+      "respray",
+      "repairs",
+      "gutters",
+      "driveway",
+      "patio",
+      "external living",
+      "retaining wall",
+      "pressure cleaning"
+    ],
+    "currentPresence": "No verified website, email, address, reviews, or Google Business data are present in this fixture.",
+    "opportunityDiagnosis": "A phone-first landing page can turn the visible service list into a clear quote path and make the business easier to evaluate.",
+    "recommendedAngle": "Free in-person roof inspection and quote for restoration, repairs, gutters, and exterior cleaning.",
+    "evidenceUsed": [
+      "operator image/text",
+      "verified phone",
+      "visible service list",
+      "source claim about free inspection"
+    ],
+    "missingEvidence": [
+      "website",
+      "email",
+      "address/service area",
+      "Google reviews",
+      "licence/warranty proof"
+    ]
+  },
+  "gapScore": {
+    "total": 74,
+    "conversion": 20,
+    "localSeo": 12,
+    "designTrust": 18,
+    "content": 24,
+    "rationale": "The lead has a clear phone and service scope but lacks online proof, location, and verified review evidence."
+  },
+  "websiteProductionSpec": {
+    "pageMode": "one_page_preview",
+    "templateDirection": "phone-first local roofing repair/restoration page with strong service tiles and inspection CTA",
+    "blockPlan": [
+      {
+        "id": "hero",
+        "goal": "Show roofing/restoration offer, call CTA, and free inspection angle."
+      },
+      {
+        "id": "services",
+        "goal": "Group roof restoration, repairs, gutters, and exterior cleaning into easy quote paths."
+      },
+      {
+        "id": "trust",
+        "goal": "Use process clarity and sourced claims without fake reviews."
+      },
+      {
+        "id": "process",
+        "goal": "Explain call, inspection, advice, and quote steps."
+      },
+      {
+        "id": "faq",
+        "goal": "Answer common inspection and service questions."
+      },
+      {
+        "id": "contact",
+        "goal": "Make 0424 371 622 the main conversion route."
+      }
+    ],
+    "assetPlan": [
+      {
+        "slot": "hero",
+        "need": "realistic roofer on roof or strong finished roof image"
+      },
+      {
+        "slot": "service",
+        "need": "roof repair/restoration work close-up"
+      },
+      {
+        "slot": "proof",
+        "need": "before/after or material detail, marked internally as demo if generated"
+      }
+    ],
+    "contactPlan": {
+      "primaryPhone": "0424 371 622",
+      "email": "",
+      "address": "",
+      "form": "name phone service details"
+    },
+    "seoPlan": {
+      "title": "Roof Restoration and Repairs",
+      "localKeywords": [
+        "roof restoration",
+        "roof repairs",
+        "gutters",
+        "pressure cleaning"
+      ]
+    },
+    "factLock": {
+      "mustKeep": [
+        "Roofing & Restoration",
+        "0424 371 622"
+      ],
+      "mustNotClaim": [
+        "email",
+        "address",
+        "website URL",
+        "real reviews",
+        "licence",
+        "award",
+        "rating",
+        "price",
+        "guarantee"
+      ]
+    }
+  },
+  "copyBrief": {
+    "heroHeadline": "Roof restorations, repairs and gutters made easy to quote",
+    "heroSubcopy": "Call Greg on 0424 371 622 for a free in-person inspection and clear next step.",
+    "primaryCta": "Call 0424 371 622",
+    "serviceCopy": [
+      {
+        "service": "roof restorations",
+        "copy": "Clear roof restorations copy that explains what the homeowner can ask about before booking an inspection."
+      },
+      {
+        "service": "capping",
+        "copy": "Clear capping copy that explains what the homeowner can ask about before booking an inspection."
+      },
+      {
+        "service": "respray",
+        "copy": "Clear respray copy that explains what the homeowner can ask about before booking an inspection."
+      },
+      {
+        "service": "repairs",
+        "copy": "Clear repairs copy that explains what the homeowner can ask about before booking an inspection."
+      },
+      {
+        "service": "gutters",
+        "copy": "Clear gutters copy that explains what the homeowner can ask about before booking an inspection."
+      },
+      {
+        "service": "driveway",
+        "copy": "Clear driveway copy that explains what the homeowner can ask about before booking an inspection."
+      }
+    ],
+    "faq": [
+      "Can I ask for a free inspection before deciding?",
+      "What roof issues should I describe when calling?",
+      "Can exterior cleaning and gutters be discussed at the same visit?"
+    ],
+    "outreachHook": "I saw the sign lists roof restorations, gutters, pressure cleaning and a free inspection, but I could not verify a matching website."
+  },
+  "riskNotes": [
+    "Do not fabricate service area, address, email, website, reviews, licences, or warranty claims.",
+    "If using generated images or demo reviews, keep that provenance in internal metadata and replace before production launch."
+  ]
+}

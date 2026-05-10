@@ -1,0 +1,330 @@
+Build an original bold commercial roofing website template family inspired by the reference brief in this folder.
+
+Template family: editorial-bold-commercial
+
+Use design-language.md and section-patterns.json as the contract. The result should use oversized poster typography, black/white/orange contrast, roof-worker imagery, a strong story/stat block, service marquee/list patterns, and an asymmetric project gallery.
+
+Do not copy the reference brand, logo, exact text, code, or paid assets. Recreate the design language and section patterns as an original ProfitsLocal template.
+
+Required outputs:
+- index.html for the primary template
+- a one-page outreach template that can be adapted quickly
+- local assets under assets/
+- style-guide.md if brand/design tokens are clear
+
+Rules:
+- Customer-facing copy only.
+- No internal workflow terms.
+- Use rich demo content where allowed by template-manifest.json.
+- Do not invent verified facts listed in factsPolicy.mustNotInvent.
+- Use photo-quality niche imagery when the reference style depends on photography.
+- Prefer the reviewed manual ChatGPT Image assets recorded in template-manifest.json `selectedImages`.
+- Primary hero should use the wide worker-on-metal-roof image with large sky negative space.
+- Use the commercial metal roof detail and diagonal roofer image for project/material/service proof.
+- Do not replace these approved photo assets with SVG-only hero art or generic stock-like placeholders.
+- Do not make this look like a generic contractor template. The first viewport should have a bold, memorable hook.
+- Ask no question form unless generation is technically impossible.
+
+## Brand Kit / Logo Policy
+Business name: Ridge & Hammer Roofing
+Logo policy: single-default-demo-logo
+If the client has no logo, use exactly one default demo logo direction. Do not ask the client to choose and do not create multiple logo options.
+Selected logo direction: Editorial Bold Commercial style: simple geometric roof/service mark plus readable wordmark. No fake badges, no copied reference logo.
+Selected SVG concept: <svg viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M8 27 30 9l22 18" fill="none" stroke="#6D6D6D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 27h24v14H20z" fill="#050505"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#F7F7F4">RH</text></svg>
+
+## Reviewed Local Image Assets
+Use these reviewed images as the primary visual source for this template. Copy them into `assets/` before referencing them from HTML.
+Do not substitute these approved images with SVG-only art, weak placeholders, or unrelated generic stock imagery.
+
+- hero: templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-hero-worker-standing-metal-roof-wide.png
+- projectDetail: templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-project-commercial-metal-roof-detail.png
+- service: templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-roofer-metal-roof-diagonal.png
+- projectTile: templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-service-orange-accent-roof-work.png
+- story: templates/roofing/families/editorial-bold-commercial/image-candidates/manual-chatgpt-image/2026-05-09-family-2/family2-story-two-roofers-metal-roof-portrait.png
+
+## Design Language
+# Editorial Bold Commercial Design Language
+
+Niche: roofing
+
+## Reference Summary
+
+Inspired by Matthew's Rooftop Heroes-style screenshot: oversized poster typography, black/white/orange palette, strong roof-worker cutouts, image collage, bold stats, large black story block, and confident commercial/residential service positioning.
+
+## Visual Thesis
+
+Bold commercial roofing energy: big type, sharp orange accents, documentary roof work photography, and confident proof blocks for companies that want to look bigger than a one-person operation.
+
+## Typography Direction
+
+- Display: oversized geometric sans-serif, tight but readable.
+- Body: clean sans-serif.
+- Labels: small uppercase category labels.
+
+## Color System
+
+- Dominant: white and black.
+- Accent: vivid construction orange.
+- Support: pale sky blue / roof metal gray for shaped section breaks.
+- Footer: light rounded CTA footer or black story block.
+
+## Imagery
+
+- hero: worker on roof / roof detail with strong scale.
+- collage: tiles, metal roofs, commercial roof angles.
+- services: human + roof material mix.
+- projects: large image grid with architectural roof details.
+
+## Layout Patterns
+
+- hero: poster-scale headline layered with roof image and contractor figure.
+- service band: horizontal marquee-like service categories.
+- story: black block with overlapping photos and big stats.
+- services list: numbered service rows with arrow actions.
+- featured work: asymmetric editorial image grid.
+- CTA: short, memorable, slightly playful but still professional.
+
+## Best Fit
+
+- Commercial roofing.
+- Metal roofing.
+- Established contractors with broad service range.
+- Cold outreach where we want the demo to feel expensive and differentiated.
+
+## Do
+
+- Use big visual hierarchy and fewer words.
+- Make statistics visually prominent only when demo-safe or verified.
+- Keep orange as accent, not background everywhere.
+
+## Do Not
+
+- Make it cute or pastel.
+- Use tiny service cards.
+- Claim exact project counts, countries, awards, or years unless verified.
+
+## Machine-Readable DESIGN.md Contract
+---
+version: alpha
+name: "Editorial Bold Commercial"
+description: "Editorial Bold Commercial roofing template family design contract"
+colors:
+  primary: "#050505"
+  secondary: "#6D6D6D"
+  tertiary: "#F25A1D"
+  neutral: "#F7F7F4"
+  surface: "#FFFFFF"
+  on-primary: "#FFFFFF"
+  on-tertiary: "#111111"
+typography:
+  h1:
+    fontFamily: "Inter"
+    fontSize: 6rem
+    fontWeight: 900
+    lineHeight: 0.88
+    letterSpacing: 0
+  h2:
+    fontFamily: "Inter"
+    fontSize: 3.4rem
+    fontWeight: 850
+    lineHeight: 0.96
+  body-md:
+    fontFamily: "Inter"
+    fontSize: 1rem
+    fontWeight: "400"
+    lineHeight: "1.6"
+  label-caps:
+    fontFamily: "Inter"
+    fontSize: "0.75rem"
+    fontWeight: "800"
+    lineHeight: "1.2"
+rounded:
+  sm: 4px
+  md: 8px
+  lg: 16px
+spacing:
+  sm: 8px
+  md: 16px
+  lg: 32px
+  xl: 64px
+components:
+  button-primary:
+    backgroundColor: "{colors.tertiary}"
+    textColor: "{colors.on-tertiary}"
+    typography: "{typography.label-caps}"
+    rounded: "{rounded.md}"
+    padding: 14px
+  hero-surface:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.lg}"
+---
+
+## Overview
+
+Bold commercial roofing energy: big type, sharp orange accents, documentary roof work photography, and confident proof blocks for companies that want to look bigger than a one-person operation.
+
+## Colors
+
+- **Primary (#050505):** black poster blocks and high-contrast commercial authority.
+- **Secondary (#6D6D6D):** industrial gray support text and rules.
+- **Tertiary (#F25A1D):** construction-orange emphasis, actions, and stats.
+- **Neutral (#F7F7F4):** white editorial space around bold typography.
+- **Surface (#FFFFFF):** main content canvas.
+
+## Typography
+
+- Display: oversized geometric sans-serif, tight but readable.
+- Body: clean sans-serif.
+- Labels: small uppercase category labels.
+
+## Layout
+
+- hero: poster-scale headline layered with roof image and contractor figure.
+- service band: horizontal marquee-like service categories.
+- story: black block with overlapping photos and big stats.
+- services list: numbered service rows with arrow actions.
+- featured work: asymmetric editorial image grid.
+- CTA: short, memorable, slightly playful but still professional.
+
+## Elevation & Depth
+
+Use depth only when it supports hierarchy. Photo-heavy families should rely on image composition, contrast, and section rhythm before decorative shadows.
+
+## Shapes
+
+Default to restrained corners. Use larger radii only for image containers and CTA panels when the reference style supports it.
+
+## Components
+
+- **Hero:** must clearly communicate the niche in the first viewport.
+- **Primary CTA:** uses the tertiary token and must be visually obvious.
+- **Service modules:** should match the family layout direction, not a generic card grid.
+- **Footer:** must feel complete and credible, even when demo-safe content is used.
+
+## Do's and Don'ts
+
+### Do
+
+- Use big visual hierarchy and fewer words.
+- Make statistics visually prominent only when demo-safe or verified.
+- Keep orange as accent, not background everywhere.
+
+### Don't
+
+- Make it cute or pastel.
+- Use tiny service cards.
+- Claim exact project counts, countries, awards, or years unless verified.
+
+
+
+
+## Section Contract
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "family": "editorial-bold-commercial",
+  "pageTypes": {
+    "onePage": {
+      "requiredSections": [
+        "hero",
+        "services",
+        "proof",
+        "projectsTeaser",
+        "process",
+        "faq",
+        "contact",
+        "footer"
+      ],
+      "optionalSections": [
+        "about",
+        "serviceArea",
+        "materials",
+        "blogTeaser"
+      ]
+    },
+    "multiPage": {
+      "pages": [
+        "home",
+        "about",
+        "services",
+        "serviceDetail",
+        "projects",
+        "projectDetail",
+        "faq",
+        "blog",
+        "blogDetail",
+        "appointment"
+      ]
+    }
+  },
+  "sections": []
+}
+
+## QA Rubric
+{
+  "schemaVersion": 1,
+  "passScore": 85,
+  "criteria": [
+    {
+      "id": "referenceFidelity",
+      "label": "Reference fidelity without copying",
+      "weight": 15
+    },
+    {
+      "id": "firstViewportImpact",
+      "label": "First viewport impact",
+      "weight": 15
+    },
+    {
+      "id": "imageDensity",
+      "label": "Image density and niche relevance",
+      "weight": 12
+    },
+    {
+      "id": "nicheFit",
+      "label": "Niche and sub-niche fit",
+      "weight": 12
+    },
+    {
+      "id": "pageCompleteness",
+      "label": "Page/system completeness",
+      "weight": 12
+    },
+    {
+      "id": "ctaHierarchy",
+      "label": "CTA hierarchy and conversion path",
+      "weight": 10
+    },
+    {
+      "id": "trustProof",
+      "label": "Trust/proof richness",
+      "weight": 8
+    },
+    {
+      "id": "mobilePolish",
+      "label": "Mobile polish",
+      "weight": 8
+    },
+    {
+      "id": "copyCleanliness",
+      "label": "Customer-facing copy cleanliness",
+      "weight": 8
+    }
+  ],
+  "hardFails": [
+    "customer-visible internal workflow terms",
+    "missing primary visual asset in a photo-heavy family",
+    "fake verified facts such as reviews, licenses, address, years, awards, or prices",
+    "no visible phone/form/contact path in lead-generation templates"
+  ]
+}
+
+## Template Library Requirements
+- Build an original ProfitsLocal-owned template, not a clone.
+- Use realistic local-business copy and rich demo-safe content where allowed.
+- Include visible niche imagery or generated assets; do not ship a text-only page.
+- If reviewed local images are listed, copy them into the generated project assets directory and use them as real <img> assets.
+- If a brand kit is listed, use the selected default logo direction and do not generate multiple customer-choice logos.
+- Do not expose internal words like audit, mockup, lead-ops, Open Design, or template-lab in customer-facing pages.
+- Produce a result strong enough to be listed in the ProfitsLocal public template library after QA.

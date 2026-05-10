@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-09T04:45:54.114Z",
+  "clientSlug": "place_chijoarpc4dzkwsrgcvsntwqllc",
+  "businessName": "Bar Alto",
+  "websiteUrl": "http://www.baralto.com.au/",
+  "verdict": "clear_redesign_opportunity",
+  "score": 56,
+  "salesDecision": "build_mockup",
+  "opportunityConfidence": "high",
+  "summary": "Bar Alto has an existing website, and the strongest useful gap is: trust signal is not strong in the first screen.",
+  "outreachHook": "I noticed your site has a fixable conversion gap: The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+  "openDesignDirection": "Bar Alto should feel like the obvious restaurant choice in Brisbane. Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise. Use one H1 focused on the primary service/location promise.",
+  "captured": {
+    "title": "Bar Alto, Modern Italian Restaurant, Brisbane",
+    "headings": [
+      "GoodFood",
+      "BarAlto",
+      "APPETISERS",
+      "FROM THE GRILL",
+      "SHARE",
+      "OurWine LIST",
+      "MeetOur CHEF",
+      "GroupDining",
+      "OurBar",
+      "ContactBar Alto",
+      "OurCakes",
+      "CONTACT US",
+      "FIND US",
+      "FOLLOW US"
+    ],
+    "linkCount": 41,
+    "imageCount": 19,
+    "contactPageCandidates": [
+      "http://www.baralto.com.au/#contactus",
+      "https://www.facebook.com/baralto.newfarm/",
+      "https://www.facebook.com/baralto.newfarm/?ref=br_rs"
+    ],
+    "socialLinks": [
+      {
+        "label": "https://www.facebook.com/baralto.newfarm/",
+        "url": "https://www.facebook.com/baralto.newfarm/"
+      },
+      {
+        "label": "http://instagram.com/baralto",
+        "url": "http://instagram.com/baralto"
+      },
+      {
+        "label": "https://www.instagram.com/baralto/",
+        "url": "https://www.instagram.com/baralto/"
+      },
+      {
+        "label": "https://www.facebook.com/baralto.newfarm/?ref=br_rs",
+        "url": "https://www.facebook.com/baralto.newfarm/?ref=br_rs"
+      }
+    ],
+    "textLength": 6250,
+    "phoneVisible": true,
+    "emailVisible": true,
+    "quoteVisible": true,
+    "serviceVisible": true,
+    "primaryCta": "BOOK NOW"
+  },
+  "audits": {
+    "conversion": {
+      "score": 90,
+      "signals": {
+        "phoneVisible": true,
+        "emailVisible": true,
+        "quoteVisible": true,
+        "serviceVisible": true,
+        "primaryCta": "BOOK NOW"
+      },
+      "findings": [
+        {
+          "category": "conversion",
+          "title": "Trust signal is not strong in the first screen",
+          "evidence": "The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+          "impact": "For local services, trust often matters before design polish.",
+          "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "medium"
+        }
+      ]
+    },
+    "trust": {
+      "score": 95,
+      "signals": {
+        "hasContactPage": true,
+        "hasAddressOrArea": true,
+        "hasSocial": true,
+        "hasProofLanguage": true,
+        "hasPrivacyOrTerms": false
+      },
+      "findings": [
+        {
+          "category": "trust",
+          "title": "Basic trust/legal links are thin",
+          "evidence": "Privacy or terms links were not captured from visible page links.",
+          "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+          "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    },
+    "seo": {
+      "score": 75,
+      "keyword": "restaurant Bar",
+      "checks": {
+        "title": "Bar Alto, Modern Italian Restaurant, Brisbane",
+        "metaDescription": "Bar Alto is a modern Italian restaurant located at the Brisbane Powerhouse, nestled on the beautiful banks of the Brisbane River.",
+        "h1s": [],
+        "canonical": "http://www.baralto.com.au/",
+        "wordCount": 1004,
+        "internalLinkCount": 32,
+        "imageCount": 19,
+        "missingAltCount": 5,
+        "emptyAltCount": 11,
+        "jsonLdTypes": [
+          "WebSite",
+          "Organization"
+        ],
+        "og": {
+          "title": "Bar Alto, Modern Italian Restaurant, Brisbane",
+          "description": "Bar Alto is a modern Italian restaurant located at the Brisbane Powerhouse, nestled on the beautiful banks of the Brisbane River.",
+          "image": ""
+        },
+        "twitter": {
+          "card": "summary_large_image",
+          "title": "Bar Alto, Modern Italian Restaurant, Brisbane",
+          "description": "Bar Alto is a modern Italian restaurant located at the Brisbane Powerhouse, nestled on the beautiful banks of the Brisbane River.",
+          "image": "https://www.baralto.com.au/wp-content/uploads/2017/12/BarAlto_web-37.jpg"
+        },
+        "robotsMeta": "",
+        "htmlLang": ""
+      },
+      "findings": [
+        {
+          "category": "seo",
+          "title": "H1 structure needs cleanup",
+          "evidence": "0 H1 tag(s) captured.",
+          "impact": "A single clear H1 helps both search and page comprehension.",
+          "fix": "Use one H1 focused on the primary service/location promise.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Image alt text is weak",
+          "evidence": "5 image(s) missing alt attribute and 11 image(s) have empty alt.",
+          "impact": "Images do not help accessibility, local proof, or image-search context.",
+          "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+          "severity": "medium",
+          "impactLevel": "medium",
+          "effort": "low"
+        },
+        {
+          "category": "seo",
+          "title": "Social sharing tags are incomplete",
+          "evidence": "OG title: true, description: true, image: false.",
+          "impact": "Shared previews may look weak when sent in email, SMS, or social DMs.",
+          "fix": "Add og:title, og:description, and og:image that match the redesigned positioning.",
+          "severity": "low",
+          "impactLevel": "low",
+          "effort": "low"
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "category": "conversion",
+      "title": "Trust signal is not strong in the first screen",
+      "evidence": "The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+      "impact": "For local services, trust often matters before design polish.",
+      "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "medium"
+    },
+    {
+      "category": "seo",
+      "title": "H1 structure needs cleanup",
+      "evidence": "0 H1 tag(s) captured.",
+      "impact": "A single clear H1 helps both search and page comprehension.",
+      "fix": "Use one H1 focused on the primary service/location promise.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Image alt text is weak",
+      "evidence": "5 image(s) missing alt attribute and 11 image(s) have empty alt.",
+      "impact": "Images do not help accessibility, local proof, or image-search context.",
+      "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+      "severity": "medium",
+      "impactLevel": "medium",
+      "effort": "low"
+    },
+    {
+      "category": "trust",
+      "title": "Basic trust/legal links are thin",
+      "evidence": "Privacy or terms links were not captured from visible page links.",
+      "impact": "This is a minor trust and SEO hygiene gap, especially when forms collect customer data.",
+      "fix": "Add privacy and terms links in the footer when forms or tracking are used.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    },
+    {
+      "category": "seo",
+      "title": "Social sharing tags are incomplete",
+      "evidence": "OG title: true, description: true, image: false.",
+      "impact": "Shared previews may look weak when sent in email, SMS, or social DMs.",
+      "fix": "Add og:title, og:description, and og:image that match the redesigned positioning.",
+      "severity": "low",
+      "impactLevel": "low",
+      "effort": "low"
+    }
+  ],
+  "issues": [
+    "Trust signal is not strong in the first screen: The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+    "H1 structure needs cleanup: 0 H1 tag(s) captured.",
+    "Image alt text is weak: 5 image(s) missing alt attribute and 11 image(s) have empty alt.",
+    "Basic trust/legal links are thin: Privacy or terms links were not captured from visible page links.",
+    "Social sharing tags are incomplete: OG title: true, description: true, image: false."
+  ],
+  "improvements": [
+    "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+    "Use one H1 focused on the primary service/location promise.",
+    "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+    "Add privacy and terms links in the footer when forms or tracking are used.",
+    "Add og:title, og:description, and og:image that match the redesigned positioning."
+  ],
+  "priorityActions": [
+    {
+      "title": "Trust signal is not strong in the first screen",
+      "impact": "medium",
+      "effort": "medium",
+      "fix": "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise."
+    },
+    {
+      "title": "H1 structure needs cleanup",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Use one H1 focused on the primary service/location promise."
+    },
+    {
+      "title": "Image alt text is weak",
+      "impact": "medium",
+      "effort": "low",
+      "fix": "Add descriptive alt text for content images; keep decorative images empty intentionally."
+    },
+    {
+      "title": "Basic trust/legal links are thin",
+      "impact": "low",
+      "effort": "low",
+      "fix": "Add privacy and terms links in the footer when forms or tracking are used."
+    },
+    {
+      "title": "Social sharing tags are incomplete",
+      "impact": "low",
+      "effort": "low",
+      "fix": "Add og:title, og:description, and og:image that match the redesigned positioning."
+    }
+  ],
+  "nextStepInput": {
+    "businessName": "Bar Alto",
+    "industry": "restaurant",
+    "location": "Brisbane",
+    "services": [
+      "Bar",
+      "Restaurant"
+    ],
+    "heroAngle": "Bar Alto should feel like the obvious restaurant choice in Brisbane.",
+    "primaryCta": "BOOK NOW",
+    "outreachObservation": "I noticed your site has a fixable conversion gap: The first captured text block does not clearly surface reviews, warranty, credentials, years, or local proof.",
+    "auditFocus": [
+      "Trust signal is not strong in the first screen",
+      "H1 structure needs cleanup",
+      "Image alt text is weak",
+      "Basic trust/legal links are thin"
+    ],
+    "redesignValue": [
+      "Add a compact trust strip near the hero: reviews, warranty/licence claims when verified, service area, and response promise.",
+      "Use one H1 focused on the primary service/location promise.",
+      "Add descriptive alt text for content images; keep decorative images empty intentionally.",
+      "Add privacy and terms links in the footer when forms or tracking are used.",
+      "Add og:title, og:description, and og:image that match the redesigned positioning."
+    ],
+    "contactProfile": {
+      "email": "",
+      "phone": "(07) 3358 1063",
+      "contactPageUrl": "http://www.baralto.com.au/#contactus",
+      "socialLinks": [
+        {
+          "label": "https://www.facebook.com/baralto.newfarm/",
+          "url": "https://www.facebook.com/baralto.newfarm/"
+        },
+        {
+          "label": "http://instagram.com/baralto",
+          "url": "http://instagram.com/baralto"
+        },
+        {
+          "label": "https://www.instagram.com/baralto/",
+          "url": "https://www.instagram.com/baralto/"
+        },
+        {
+          "label": "https://www.facebook.com/baralto.newfarm/?ref=br_rs",
+          "url": "https://www.facebook.com/baralto.newfarm/?ref=br_rs"
+        }
+      ]
+    }
+  },
+  "artifacts": {
+    "desktopPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site-desktop.png",
+    "mobilePath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site-mobile.png",
+    "htmlPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site.html",
+    "textPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site-text.txt",
+    "jsonPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site-audit.json",
+    "mdPath": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site-audit.md"
+  }
+}

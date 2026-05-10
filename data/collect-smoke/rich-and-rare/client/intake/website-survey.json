@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "rich-and-rare-collect-smoke",
+  "niche": "restaurant",
+  "route": "website",
+  "sourceType": "outbound",
+  "generatedAt": "2026-05-06T06:39:16.259Z",
+  "readiness": "website_ready_to_build",
+  "readyToBuild": true,
+  "customerConfirmationRequired": false,
+  "customerConfirmed": false,
+  "businessName": "Rich & Rare Restaurant",
+  "contact": {
+    "phone": "(07) 3638 8888",
+    "email": "",
+    "address": "97 Boundary St, West End QLD 4101, Australia",
+    "serviceArea": "Brisbane",
+    "addressOrServiceArea": "97 Boundary St, West End QLD 4101, Australia",
+    "website": "https://www.richandrare.com.au/",
+    "primaryContact": "(07) 3638 8888",
+    "primaryCtaUrl": "https://www.sevenrooms.com/explore/richandrarerestaurant/reservations/create/search?date=2026-05-10&venues=richandrarerestaurant%2Cpompetteau%2Cdarkshepherd%2Cyamasgreekdrink%2Cstilts%2Cfatcowrestaurant%2Clongwangchopstickhouse%2Copabarmezze%2Cmassimorestaurantandbar%2Cfoshbarrestaurant"
+  },
+  "offer": {
+    "primary": "Restaurant in Brisbane",
+    "route": "website",
+    "menuSource": "https://www.richandrare.com.au/menus",
+    "sectionCount": 3,
+    "serviceCount": 0
+  },
+  "design": {
+    "direction": "Editorial Menu System",
+    "colors": [
+      "#112233",
+      "#112255",
+      "#151515",
+      "#f8f3ea",
+      "#fffdf8"
+    ],
+    "designSkill": "huashu-design",
+    "brandSpecPath": "data/collect-smoke/rich-and-rare/client/brand-spec.md"
+  },
+  "assets": {
+    "logo": "https://images.squarespace-cdn.com/content/v1/645aeb6e5e03ca278fcc244b/cc41bc60-4e56-4535-97b8-ba1ee763d87a/Rich+and+Rare_Type+Logo_CMYK_White.png?format=1500w",
+    "primaryPhoto": "http://static1.squarespace.com/static/645aeb6e5e03ca278fcc244b/t/6678c0d2407be66f5c957acc/1719189714919/Rich+%26+Rare+-+Markus+Ravik+106.jpg?format=1500w",
+    "menuSource": "https://www.richandrare.com.au/menus"
+  },
+  "evidence": {
+    "path": "data/collect-smoke/rich-and-rare/evidence.json",
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    "sourceCount": 38,
+    "sources": [
+      {
+        "sourceType": "google_places",
+        "sourceUrl": "",
+        "extractor": "legacy_google_places_lead",
+        "count": 14
+      },
+      {
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/",
+        "extractor": "firecrawl_scrape",
+        "count": 9
+      },
+      {
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/menus",
+        "extractor": "firecrawl_scrape",
+        "count": 8
+      },
+      {
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/",
+        "extractor": "brand_asset_extractor",
+        "count": 5
+      },
+      {
+        "sourceType": "official_site",
+        "sourceUrl": "https://www.richandrare.com.au/menus",
+        "extractor": "menu_text_parser",
+        "count": 2
+      }
+    ],
+    "conflicts": []
+  },
+  "artifacts": {
+    "ok": true,
+    "errors": [],
+    "warnings": []
+  },
+  "framework": {
+    "stack": "Astro + Cloudflare Pages + artifact-driven content/design JSON",
+    "templateRepo": "matthew6688/webjuice-restaurant",
+    "repo": "matthew6688/rich-and-rare-collect-smoke",
+    "branch": "dev",
+    "route": "website",
+    "buildCommand": "npm run build",
+    "deployRoute": "Cloudflare Pages dev preview first, live publish after explicit approval",
+    "agentHandoff": "Discord website-tasks thread backed by local Hermes website-agent; other tools may edit the repo if they preserve this packet.",
+    "requiredDesignSkill": "huashu-design / open-design design protocol",
+    "syncRule": "All builders must keep clients/<client>/ evidence/content/design/brand files as source of truth and push repo changes back to dev."
+  },
+  "sourceOfTruth": {
+    "evidence": "data/collect-smoke/rich-and-rare/evidence.json",
+    "content": "data/collect-smoke/rich-and-rare/client/content.restaurant.json",
+    "design": "data/collect-smoke/rich-and-rare/client/design.restaurant.json",
+    "brandSpec": "data/collect-smoke/rich-and-rare/client/brand-spec.md",
+    "checkout": "clients/rich-and-rare-collect-smoke/funnel/checkout.json",
+    "websiteSurvey": "data/collect-smoke/rich-and-rare/client/intake/website-survey.json",
+    "buildPacket": "data/collect-smoke/rich-and-rare/build-packet.md",
+    "case": "",
+    "task": ""
+  },
+  "case": null,
+  "missing": [],
+  "warnings": [],
+  "decisions": [],
+  "nextAction": "Create or continue the website task thread and build on dev."
+}

@@ -12,7 +12,7 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
 
 <Layout title={`财务后台 - ${siteConfig.name}`} description="ProfitsLocal 收入、成本与 ROI 面板。" active="finance">
   <section class="poster-section admin-section">
-    <div class="admin-shell">
+    <div class="admin-shell lead-admin-shell" data-ui-version="local-style-2026-05-08">
       <div class="admin-header">
         <div>
           <p class="eyebrow">内部运营</p>
@@ -25,15 +25,36 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
         </div>
       </div>
 
-      <dl class="admin-meta-line admin-meta-line-wide">
-        <div><dt>当前净额</dt><dd>{formatMoney(summary.profit || 0)}</dd></div>
-        <div><dt>收入事件</dt><dd>{summary.revenueEventCount || 0}</dd></div>
-        <div><dt>成本事件</dt><dd>{summary.costEventCount || 0}</dd></div>
-        <div><dt>主要客户</dt><dd>{byClient[0]?.[0] || 'N/A'}</dd></div>
-      </dl>
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">当前净额</span>
+          <strong>{formatMoney(summary.profit || 0)}</strong>
+          <p>收入减去已记录成本。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">收入事件</span>
+          <strong>{summary.revenueEventCount || 0}</strong>
+          <p>{formatMoney(summary.revenue || 0)}</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">成本事件</span>
+          <strong>{summary.costEventCount || 0}</strong>
+          <p>{formatMoney(summary.cost || 0)}</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">ROI</span>
+          <strong>{summary.roi == null ? 'N/A' : `${(summary.roi * 100).toFixed(1)}%`}</strong>
+          <p>规模化时优先盯这个。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">主要客户</span>
+          <strong>{byClient[0]?.[0] || 'N/A'}</strong>
+          <p>{byClient[0] ? formatMoney(byClient[0][1]) : '还没有客户级数据'}</p>
+        </article>
+      </div>
 
-      <div class="admin-finance-grid">
-        <section class="admin-finance-panel">
+      <div class="admin-workbench-grid admin-workbench-grid-three">
+        <section class="admin-panel admin-workbench-panel">
           <div class="admin-finance-head">
             <div>
               <span class="eyebrow">快照</span>
@@ -52,7 +73,7 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
           </div>
         </section>
 
-        <section class="admin-finance-panel">
+        <section class="admin-panel admin-workbench-panel">
           <div class="admin-finance-head">
             <div>
               <span class="eyebrow">客户贡献</span>
@@ -66,7 +87,7 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
           </ul>
         </section>
 
-        <section class="admin-finance-panel">
+        <section class="admin-panel admin-workbench-panel">
           <div class="admin-finance-head">
             <div>
               <span class="eyebrow">供应商花费</span>
@@ -81,8 +102,8 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
         </section>
       </div>
 
-      <div class="admin-finance-grid">
-        <section class="admin-finance-panel">
+      <div class="admin-workbench-grid">
+        <section class="admin-panel admin-workbench-panel">
           <div class="admin-finance-head">
             <div>
               <span class="eyebrow">成本分类</span>
@@ -96,7 +117,7 @@ const byCategory = Object.entries(summary.byCategory || {}).sort((a, b) => a[1] 
           </ul>
         </section>
 
-        <section class="admin-finance-panel">
+        <section class="admin-panel admin-workbench-panel">
           <div class="admin-finance-head">
             <div>
               <span class="eyebrow">读法提示</span>

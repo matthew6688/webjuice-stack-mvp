@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-08T20:23:40.805Z",
+  "clientSlug": "od-handoff-roofer-smoke",
+  "projectId": "od-handoff-roofer-smoke-open-design-1778271699273",
+  "conversationId": "3300d2e8-02e0-461f-a7c2-f4602d3aefaa",
+  "runId": "17a6958d-7df5-4e1b-92cc-2107d350e011",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": null,
+  "businessType": "roofing",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "one-page",
+  "prompt": "Do not ask follow-up questions. Make reasonable assumptions from the payload and build the concept files now.\nThis is a pre-sale mockup, so complete the page with internally safe demo copy instead of waiting for missing minor details.\n\nBuild a one-page website for Precision Roof Restore, a roofing in Brisbane.\n\nAudience: roof restorations presented with a cleaner first impression, faster trust, and a stronger path to enquiry.\nHero angle: Precision Roof Restore deserves a clearer roofing presence online\nPrimary CTA: Call now\nVisible contact detail: 0424 371 622.\nAll call buttons must use href=\"tel:0424371622\" and visible text should include 0424 371 622.\nConversion goal: phone call; include a contact form routed through the existing Resend transactional email flow to hi@profitslocal.com.\nQuestionnaire answers: if your design workflow expects a questionnaire, use these answers automatically:\n- Primary surface: Responsive - all sizes, mobile-first contact actions.\n- Audience: roof restorations presented with a cleaner first impression, faster trust, and a stronger path to enquiry.\n- Visual tone: clear, human, locally credible\n- Brand context: Pick a tasteful industry-appropriate direction; do not wait for a brand spec.\n- CTA contact detail: 0424 371 622.\n- Contact form fields: Name, Phone, Service needed, Message, Preferred call time.\nNo complete current-site audit is available; use verified facts plus industry best practices and clearly filled demo copy.\n\nSections/pages to cover: hero, services, service-area, trust, cta.\nServices to show: roof restorations, capping, respray, repairs, gutters, pressure cleaning.\nTrust signals: Quote path and fast response emphasis.\n\nUse tasteful, conversion-focused design. Fill demo copy completely using common-sense industry best practices where verified details are missing.\nCreate the actual HTML/CSS/JS artifact. Do not return a question form, questionnaire, plan-only response, or request for more input.\nDo not invent phone, email, address, awards, prices, certifications, medical/legal claims, or review quotes.\nAvoid AI-looking gradients, generic stock photos, empty placeholder blocks, \"Welcome to\" headlines, and \"Your trusted partner\" copy.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/od-handoff-roofer-smoke/concept/open-design",
+  "seedDir": null,
+  "timeoutPolicy": {
+    "requestedTimeoutMs": 720000,
+    "timeoutMs": 720000,
+    "clamped": false,
+    "reason": null,
+    "minimumTimeoutMs": 600000,
+    "allowShortTimeout": false
+  },
+  "status": {
+    "status": "succeeded",
+    "code": 0,
+    "signal": null,
+    "completionMode": "artifact_quiet_fallback",
+    "artifactSnapshot": {
+      "ready": true,
+      "htmlCount": 1,
+      "generatedHtmlCount": 1,
+      "cssCount": 0,
+      "fileCount": 1,
+      "quietForMs": 21400.151611328125,
+      "latestMtimeMs": 1778271799392.8484
+    }
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size": 22031,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-07T13:02:12.076Z",
+  "clientSlug": "od-fallback-proof-2",
+  "projectId": "od-fallback-proof-2",
+  "conversationId": "f29d9a81-a991-49f6-9b4e-4f2778c39aff",
+  "runId": "8c916785-ff93-4a0a-8a16-500d69569424",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": "https://www.darkshepherd.com.au/",
+  "businessType": "restaurant - mediterranean steakhouse",
+  "tone": "high-fidelity, brand-matched, polished",
+  "scope": "multi-page",
+  "prompt": "Skip questions. Use Open Design's existing web-prototype/design workflow and produce a high-fidelity concept artifact.\nSource website: https://www.darkshepherd.com.au/\nClient slug: od-fallback-proof-2\nBusiness type: restaurant - mediterranean steakhouse\nVisual tone: high-fidelity, brand-matched, polished\nScope: multi-page\n\nIf a source website is provided, inspect it and match the existing brand direction instead of inventing a new generic style.\nPreserve core business facts, logo/brand identity, existing navigation intent, contact details, booking/order/contact links, menu/service/product content, and old URL intent where visible.\nCreate concept files in the project folder. Prefer index.html plus local assets and brand-spec.md when brand information is available.\nDo not deploy. Do not edit any ProfitsLocal production repo. This is concept generation only.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/od-fallback-proof-2/concept/open-design",
+  "status": {
+    "status": "succeeded",
+    "code": 0,
+    "signal": null,
+    "completionMode": "artifact_quiet_fallback",
+    "artifactSnapshot": {
+      "ready": true,
+      "htmlCount": 2,
+      "cssCount": 0,
+      "fileCount": 5,
+      "quietForMs": 265994512,
+      "latestMtimeMs": 1777892937551
+    }
+  },
+  "files": [
+    {
+      "path": ".od-skills/web-prototype/SKILL.md",
+      "size": 4162,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": ".od-skills/web-prototype/assets/template.html",
+      "size": 16364,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": ".od-skills/web-prototype/example.html",
+      "size": 4217,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": ".od-skills/web-prototype/references/checklist.md",
+      "size": 3756,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": ".od-skills/web-prototype/references/layouts.md",
+      "size": 10653,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    }
+  ]
+}

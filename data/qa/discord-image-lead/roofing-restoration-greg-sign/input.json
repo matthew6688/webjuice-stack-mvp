@@ -1,0 +1,102 @@
+{
+  "clientSlug": "roofing-restoration-greg-sign",
+  "discord": {
+    "workspace": "website-leads",
+    "channelId": "1501187038706401290",
+    "messageId": "simulated-photo-lead",
+    "sourceUrl": "discord://website-leads/1501187038706401290/simulated-photo-lead"
+  },
+  "image": {
+    "name": "roofing-restoration-sign.jpg",
+    "note": "Image supplied in chat; OCR/operator text is persisted here."
+  },
+  "ocrText": "Roofing & Restoration\n\n40 years experience call or message now\n\nFree in person inspection & quote\n\nROOF RESTORATIONS\nCAPPING\nRESPRAY\nREPAIRS\nGUTTERS\nDRIVEWAY\nPATIO\nEXTERNAL LIVING\nRETAINING WALL\nPRESSURE CLEANING\n\nCall Greg on\n\n0424 371 622",
+  "businessName": "Roofing & Restoration",
+  "businessNameConfidence": 0.62,
+  "businessNameNote": "Generic sign text, not enough to prove legal/trading name.",
+  "industry": "roofing and restoration",
+  "phone": "0424 371 622",
+  "services": [
+    "roof restorations",
+    "roof repairs",
+    "gutters fascia and down pipes",
+    "tile and metal roofing",
+    "driveway cleaning and resealing",
+    "pressure cleaning",
+    "capping",
+    "respray"
+  ],
+  "observations": [
+    "Discord image OCR showed a roofing/restoration sign with phone 0424 371 622 and free in-person quote offer.",
+    "No dedicated website was visible on the sign."
+  ],
+  "notes": [
+    "Photo text says call Greg; verify contact name before sending."
+  ],
+  "search": {
+    "noDedicatedWebsiteFound": true,
+    "queries": [
+      "\"0424 371 622\" roofing",
+      "\"0424371622\" roofing",
+      "\"Greg\" \"0424 371 622\""
+    ],
+    "results": [
+      {
+        "title": "M&B Roofing — Better Pages",
+        "url": "https://betterpages.com.au/item/mb-roofing/",
+        "summary": "Phone matched the listing. It identifies M&B Roofing, Jamison Town NSW, email ghilton@live.com.au, Facebook, roof restoration/repairs/gutters/tile-metal services, and free quotes.",
+        "match": "0424 371 622",
+        "businessName": "M&B Roofing",
+        "city": "Jamison Town / Greater Western Sydney",
+        "address": "Jamison Town, NSW 2750",
+        "email": "ghilton@live.com.au",
+        "facebookUrl": "https://www.facebook.com/M-B-Roofing-1746109772175941",
+        "services": [
+          "roof restorations",
+          "roof repairs",
+          "roof gutters fascia and down pipes",
+          "tile and metal",
+          "driveways cleaned and re-sealed"
+        ],
+        "confidence": 0.88
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "key": "contact.person",
+      "value": "Greg",
+      "sourceType": "manual",
+      "confidence": 0.68,
+      "extractor": "operator_note"
+    },
+    {
+      "key": "offer.freeQuote",
+      "value": "Free in person inspection & quote",
+      "sourceType": "image_ocr",
+      "confidence": 0.88,
+      "extractor": "operator_supplied_ocr"
+    },
+    {
+      "key": "trust.experience.photo",
+      "value": "40 years experience",
+      "sourceType": "image_ocr",
+      "confidence": 0.82,
+      "extractor": "operator_supplied_ocr"
+    },
+    {
+      "key": "trust.experience.directory",
+      "value": "50 years experience",
+      "sourceType": "manual",
+      "sourceUrl": "https://betterpages.com.au/item/mb-roofing/",
+      "confidence": 0.72,
+      "extractor": "web_search_phone_match",
+      "metadata": {
+        "conflict": "Photo says 40 years; directory says 50 years. Verify before using in customer-facing copy."
+      }
+    }
+  ],
+  "conflicts": [
+    "Experience claim conflict: photo says 40 years; Better Pages listing says 50 years. Verify before using in customer-facing copy."
+  ]
+}

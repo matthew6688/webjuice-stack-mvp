@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "roofing-restoration-greg-sign",
+  "sourceProvider": "Codex CLI",
+  "sourceRunId": "smoke-cli",
+  "report": {
+    "title": "Roofing & Restoration 线索调研与网站机会报告",
+    "verdict": "建议进入 Mockup 准备阶段，但需要把“证据缺口”清楚标记在内部记录里。",
+    "confidence": "中高",
+    "oneLine": "这个线索有真实电话、明确服务范围、强钩子（40 年经验 + 免费上门检查），但线上存在感很弱，适合用一个清晰、电话优先的本地服务网站做突破。",
+    "sourceSummary": [
+      "来源是 operator 提供的招牌图片和文字转录。",
+      "已确认电话：0424 371 622",
+      "没有确认官网、邮箱、地址、Google 评价或项目照片。"
+    ],
+    "verifiedFacts": [
+      [
+        "业务名称",
+        "Roofing & Restoration"
+      ],
+      [
+        "联系人",
+        "Greg"
+      ],
+      [
+        "电话",
+        "0424 371 622"
+      ],
+      [
+        "服务范围",
+        "屋顶翻新 / 修复、屋脊 / 边缘 capping、屋顶重新喷涂、维修、排水槽 / gutter、车道、露台、户外生活空间、挡土墙、高压清洗"
+      ],
+      [
+        "来源声明",
+        "40 年经验；免费上门检查和报价"
+      ]
+    ],
+    "gaps": [
+      "客户无法从搜索结果里快速确认这家公司是否真实可靠。",
+      "没有官网时，服务范围、报价方式、服务地区、项目案例都无法被系统化展示。",
+      "只有电话会让转化路径过于单薄，尤其是年轻客户和移动端用户。",
+      "缺少 Google 评价、项目图片和营业信息，后续需要继续补证据。"
+    ],
+    "opportunity": [
+      "首页首屏直接打“免费上门检查 + 电话预约”，减少用户犹豫。",
+      "把 roofing、gutters、driveway、patio、pressure cleaning 整理成清楚的服务模块。",
+      "用“40 年经验”作为信任钩子，但不要扩展成未经证实的资质、奖项或保修承诺。",
+      "用流程区解释：来电、确认问题、上门检查、给 quote，降低第一次联系的心理成本。"
+    ],
+    "recommendedSite": {
+      "position": "电话优先的本地屋顶修复与外部翻新单页网站。首屏先讲清楚免费上门检查和电话预约，再用服务模块、流程说明和图片建立信任。",
+      "blocks": [
+        "首屏：业务一句话 + 电话 CTA + 免费上门检查",
+        "服务总览：把屋顶、gutter、车道、露台、高压清洗分组讲清楚",
+        "检查与报价：解释免费上门检查如何开始",
+        "经验说明：用 40 年经验做可信度钩子",
+        "流程模块：来电、确认问题、上门检查、给 quote",
+        "常见问题：回答上门检查、服务范围、报价准备",
+        "最终 CTA：再次强调打电话预约检查"
+      ],
+      "assets": [
+        "服务图：屋顶修复或翻新现场图",
+        "细节图：gutter、屋顶边缘或材料细节",
+        "对比图：只有拿到真实项目照片后再使用 before / after"
+      ],
+      "cta": "Call Greg on 0424 371 622"
+    },
+    "copyDirection": {
+      "hero": "免费上门检查的屋顶修复与外部翻新服务",
+      "subcopy": "Roofing & Restoration 可以把屋顶修复、gutter、driveway、patio 和 pressure cleaning 这些服务整理成一个清楚的电话预约页面。用户第一眼就知道做什么、怎么联系、下一步怎么走。",
+      "tone": "直接、可信、像本地老师傅，不要写成科技公司，不要夸大。"
+    },
+    "missingEvidence": [
+      "邮箱",
+      "地址",
+      "官网",
+      "服务区域",
+      "执照 / 注册信息",
+      "保险信息",
+      "Google Business Profile",
+      "Google 评分",
+      "真实客户评价",
+      "项目照片",
+      "真实 before / after 照片",
+      "品牌 logo",
+      "营业时间"
+    ],
+    "forbidden": [
+      "不能编造邮箱、地址、官网。",
+      "不能编造 Google review、评分、执照、奖项、价格、保修。",
+      "如果使用 AI 生成图片或示例评价，只能作为内部 demo content 记录，前端不要写 placeholder。"
+    ],
+    "nextSteps": [
+      "补一次 Google / Maps / social 搜索，确认是否真的没有官网和 GBP。",
+      "如果仍无官网，直接进入电话优先 Mockup。",
+      "生成 asset plan：真实招牌图、roofing 工作图、屋顶细节图、联系区背景图。",
+      "用 Open Design 生成单页 mockup 后，必须跑 UI / copy / mobile / SEO / fact audit。",
+      "通过后再生成 cold outreach 文案和 10 秒 walkthrough。"
+    ],
+    "sourceModel": "Codex CLI (smoke-cli)"
+  },
+  "generatedAt": "2026-05-10T08:40:37.621Z"
+}

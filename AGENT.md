@@ -4,6 +4,30 @@
 
 These rules apply to all work in this repository.
 
+### -1. Karpathy-style engineering discipline
+
+All agents working in this repository should follow these defaults:
+
+1. Think before coding.
+   - State assumptions explicitly.
+   - Do not silently pick between multiple interpretations.
+   - If the problem is unclear, name the uncertainty before implementing.
+
+2. Simplicity first.
+   - Solve the requested problem with the minimum code needed.
+   - Do not add speculative abstraction, flexibility, or future-proofing.
+   - If the solution feels bigger than the problem, simplify it.
+
+3. Surgical changes only.
+   - Touch only the lines needed for the requested outcome.
+   - Do not refactor or "clean up" unrelated nearby code.
+   - Remove only the unused code that this change itself creates.
+
+4. Goal-driven verification.
+   - Turn work into verifiable goals.
+   - Define what will prove success before changing code.
+   - Do not stop at implementation when verification is possible.
+
 ### 0. Truth over convenience
 
 Never present a convenient assumption as a verified fact.

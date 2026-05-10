@@ -57,6 +57,10 @@ export function runLeadOps(input = {}) {
       productionReadiness: research.productionReadiness?.status || '',
       redesignDecision: redesignCheck.decision || '',
       readyToBuildStatus: readyToBuild.status || '',
+      aiConclusion: readyToBuild.aiConclusion?.result || '',
+      aiScore: readyToBuild.aiConclusion?.score ?? null,
+      aiConfidence: readyToBuild.aiConclusion?.confidence || '',
+      websitePlanType: readyToBuild.websiteBuildHandoff?.websitePlan?.type || '',
       outreachChannel: outreachBrief.channelRecommendation || '',
       outreachPreviewMode: outreachBrief.previewMode || '',
     },
@@ -106,4 +110,3 @@ function writeJson(filePath, value) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
-

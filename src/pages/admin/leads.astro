@@ -2,8 +2,14 @@
 import Layout from '../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../config/site';
 import { LEAD_ADMIN_VIEWS, loadLeadOutreachIndex } from '../../../core/funnel/lead-outreach-index.js';
+import { criteriaForLeadStage } from '../../../core/funnel/stage-config.js';
+import { loadDiscoveryIndex } from '../../../core/leads/discovery-store.js';
+import { loadEnrichmentGates, enrichmentGateLabel } from '../../../core/leads/enrichment-gate.js';
 
 const index = loadLeadOutreachIndex();
+const discoveryIndex = loadDiscoveryIndex();
+const enrichmentGates = loadEnrichmentGates();
+const discoveryPreview = (discoveryIndex.entities || []).slice(0, 12);
 const recordsByStage = Object.fromEntries(index.pipelineStages.map((stage) => [
   stage.key,
   index.records.filter((record) => record.pipelineStage === stage.key),
@@ -21,6 +27,8 @@ const savedViews = [
   ['replied', LEAD_ADMIN_VIEWS.replied.label],
   ['skipped', LEAD_ADMIN_VIEWS.skipped.label],
 ];
+const criteriaForStage = (stage) => criteriaForLeadStage(stage);
+const criteriaSummary = (stage) => criteriaForStage(stage).join(' ');
 
 const contactEmail = (record) => record.email || record.customerEmail || record.leadRecipientEmail || '';
 const contactLine = (record) => [record.niche || record.leadFamilyId || '行业待补', record.city || record.address || record.domain || '地区待补'].filter(Boolean).join(' / ');
@@ -38,6 +46,62 @@ const contactChips = (record) => [
   record.contactPageUrl ? { label: '联系页', value: '打开', href: record.contactPageUrl } : { label: '联系页', value: '待补' },
 ];
 const publicOrPath = (publicUrl, localPath) => publicUrl || localPath || '';
+const conceptAssetLinks = (record) => [
+  record.conceptPublicPreviewUrl ? ['打开样稿', record.conceptPublicPreviewUrl] : null,
+  record.conceptPublicAuditUrl ? ['质量审计', record.conceptPublicAuditUrl] : null,
+  record.conceptPublicRunStateUrl ? ['运行状态', record.conceptPublicRunStateUrl] : null,
+  record.openDesignRunRequestPath ? ['运行请求', record.openDesignRunRequestPath] : null,
+  record.conceptManifestPath ? ['Manifest', record.conceptManifestPath] : null,
+].filter(Boolean);
+const decisionLabel = (value) => ({
+  build_mockup: '可做 Mockup',
+  human_review: '需人工判断',
+  skip_or_monitor: '建议跳过/观察',
+}[value] || '未判断');
+const verdictLabel = (value) => ({
+  clear_redesign_opportunity: '明确改版机会',
+  moderate_redesign_opportunity: '可能有改版机会',
+  weak_redesign_opportunity: '改版机会较弱',
+}[value] || value || '已生成审计');
+const auditSummaryLine = (record) => {
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') {
+    return '当前官网基础较完整，只发现低影响问题。不要自动做 mockup；除非人工发现新的突破口，否则建议跳过或观察。';
+  }
+  return record.currentSiteAuditSummary || '';
+};
+const outreachHookLine = (record) => {
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') {
+    return '没有足够强的触达切入点。不要用隐私链接或 OG 图片这类小问题当销售理由。';
+  }
+  return record.currentSiteOutreachHook || '';
+};
+const openDesignDirectionLine = (record) => {
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') {
+    return '不要仅凭本次审计创建 redesign mockup。如人工批准，重点是保留现站优势，只做轻量信任与 SEO 卫生优化。';
+  }
+  return record.currentSiteOpenDesignDirection || '';
+};
+const impactFindings = (record) => Array.isArray(record.currentSiteAuditFindings)
+  ? record.currentSiteAuditFindings.filter((finding) => finding.severity !== 'low')
+  : [];
+const auditIssueLines = (record) => {
+  const findings = impactFindings(record);
+  if (findings.length) {
+    return findings.slice(0, 3).map((finding) => `${finding.title}: ${finding.evidence}`);
+  }
+  if (auditSummaryLine(record)) return [auditSummaryLine(record)];
+  return (record.currentSiteAuditIssues || []).slice(0, 3);
+};
+const improvementLine = (record) => {
+  if (record.currentSiteSalesDecision === 'skip_or_monitor') {
+    return '没有值得拿来做销售切入点的中高影响问题；只适合补隐私链接、社交预览图这类低优先级卫生项。';
+  }
+  if (record.currentSitePriorityActions?.length) {
+    return record.currentSitePriorityActions.slice(0, 3).map((action) => action.fix).join('；');
+  }
+  if (record.currentSiteImprovements?.length) return record.currentSiteImprovements.slice(0, 3).join('；');
+  return '需要先完成 current-site audit。';
+};
 const openDesignInputLines = (record) => {
   const brief = record.openDesignBrief || {};
   return [
@@ -49,6 +113,9 @@ const openDesignInputLines = (record) => {
     ['服务', Array.isArray(brief.services) && brief.services.length ? brief.services.join('、') : servicesLine(record)],
     ['Hero 角度', brief.heroAngle || record.outreachPrimaryProofPoint],
     ['Audit 重点', Array.isArray(brief.auditFocus) && brief.auditFocus.length ? brief.auditFocus.join('；') : '暂无'],
+    ['Audit 结论', brief.salesDecision ? decisionLabel(brief.salesDecision) : record.currentSiteSalesDecision ? decisionLabel(record.currentSiteSalesDecision) : '暂无'],
+    ['触达观察', brief.outreachHook || outreachHookLine(record) || '暂无'],
+    ['Open Design 方向', brief.openDesignDirection || openDesignDirectionLine(record) || '暂无'],
     ['改进方向', Array.isArray(brief.improvements) && brief.improvements.length ? brief.improvements.join('；') : '暂无'],
     ['CTA', brief.primaryCta || record.leadPrimaryCta],
   ].filter(([, value]) => Boolean(value));
@@ -77,6 +144,12 @@ const artifactLabels = [
   ['research', '研究'],
   ['evidence', '证据'],
   ['currentSiteAudit', '现站审计'],
+  ['templateMatch', '模板匹配'],
+  ['copyBrief', '文案 Brief'],
+  ['openDesignHandoff', '设计交接'],
+  ['openDesignRun', '设计运行'],
+  ['openDesignNativeFinish', 'Native 结束'],
+  ['conceptQualityAudit', '质量审计'],
   ['mockup', 'Mockup'],
   ['proof', '素材'],
   ['draft', '草稿'],
@@ -84,6 +157,107 @@ const artifactLabels = [
   ['reply', '回复'],
   ['discord', 'Discord'],
 ];
+const discoveryByKey = new Map((discoveryIndex.entities || []).map((entity) => [entity.entityKey, entity]));
+const enrichmentGateFor = (record) => {
+  const entityKey = record.discoveryStoreKey || (record.clientSlug || '').replace(/^discovery-/, '');
+  return entityKey ? enrichmentGates.gates?.[entityKey] || { status: 'planned' } : null;
+};
+const crmSnapshot = (record) => {
+  const gate = enrichmentGateFor(record);
+  return [
+    ['阶段', record.pipelineLabel],
+    ['下一步', record.nextAction?.label],
+    ['负责人动作', record.blockingReason || record.nextAction?.reason || '等待自动推进或人工确认。'],
+    ['联系路径', [contactEmail(record) || '无邮箱', record.phone || '无电话', (record.officialWebsiteUrl || record.websiteUrl) ? '有官网' : '无官网'].join(' · ')],
+    ['来源', record.discoveryStoreKey ? `Maps scraper · ${record.discoveryStoreKey}` : record.leadSourceType || record.source || '手动/客户侧'],
+    ['成本关口', gate ? enrichmentGateLabel(gate.status || 'planned') : '不适用'],
+    ['证明资产', record.assetsReady ? '样稿素材齐' : '素材未齐'],
+    ['触达草稿', record.emailDraftReady ? '已生成' : '未生成'],
+  ].filter(([, value]) => Boolean(value));
+};
+const discoveryCommandFor = (entity, action) => {
+  if (!entity) return '';
+  if (action === 'cheap_audit') return `npm run leads:audit-discovery-sites -- --entity-key ${entity.entityKey} --limit 1`;
+  if (action === 'promote') return `npm run leads:promote-discovery-store -- --entity-key ${entity.entityKey} --limit 1`;
+  if (action === 'manual_triage') return 'npm run leads:triage-discovery-manual -- --limit 8';
+  if (action === 'outreach_brief') return 'npm run leads:build-discovery-outreach-briefs -- --limit 5';
+  return '';
+};
+const discoveryActionsFor = (record) => {
+  const entityKey = record.discoveryStoreKey || (record.clientSlug || '').replace(/^discovery-/, '');
+  const entity = entityKey ? discoveryByKey.get(entityKey) : null;
+  const isRawDiscoveryLead = Boolean(entity && (record.clientSlug || '').startsWith('discovery-'));
+  if (!isRawDiscoveryLead) return [];
+  if (entity.status === 'queued_for_audit') {
+    return [{
+      label: '建议命令：cheap audit',
+      submitLabel: '记录决定：跑 audit',
+      action: 'run_cheap_audit',
+      command: discoveryCommandFor(entity, 'cheap_audit'),
+      note: 'Discovery action: run cheap site audit before promote/skip decision.',
+      tone: 'primary',
+    }, {
+      label: '跳过',
+      submitLabel: '记录跳过',
+      action: 'skip_lead',
+      command: '',
+      note: 'Discovery action: skipped before cheap audit.',
+      tone: 'secondary',
+    }];
+  }
+  if (entity.status === 'ready_for_outreach_brief') {
+    return [{
+      label: '建议命令：promote',
+      submitLabel: '记录决定：promote',
+      action: 'promote_discovery',
+      command: discoveryCommandFor(entity, 'promote'),
+      note: 'Discovery action: promote into lead pipeline.',
+      tone: 'primary',
+    }, {
+      label: '重新检查',
+      submitLabel: '记录重新检查',
+      action: 'research_more',
+      command: discoveryCommandFor(entity, 'outreach_brief'),
+      note: 'Discovery action: rebuild/verify outreach brief before promote.',
+      tone: 'secondary',
+    }];
+  }
+  if (entity.status === 'manual_review') {
+    return [{
+      label: '保留人工判断',
+      submitLabel: '保留人工判断',
+      action: 'keep_manual_review',
+      command: discoveryCommandFor(entity, 'manual_triage'),
+      note: 'Discovery action: keep in manual review queue.',
+      tone: 'secondary',
+    }, {
+      label: '建议命令：promote',
+      submitLabel: '记录决定：promote',
+      action: 'promote_discovery',
+      command: discoveryCommandFor(entity, 'promote'),
+      note: 'Discovery action: manually approved for promotion.',
+      tone: 'primary',
+    }, {
+      label: '跳过',
+      submitLabel: '记录跳过',
+      action: 'skip_lead',
+      command: '',
+      note: 'Discovery action: manually skipped after review.',
+      tone: 'secondary',
+    }];
+  }
+  if (entity.status === 'queued_for_enrichment') {
+    return [{
+      label: '建议命令：生成 outreach brief',
+      submitLabel: '记录决定：补 brief',
+      action: 'build_outreach_brief',
+      command: discoveryCommandFor(entity, 'outreach_brief'),
+      note: 'Discovery action: build outreach brief for scraped lead.',
+      tone: 'primary',
+    }];
+  }
+  return [];
+};
 const leadPipelineUiVersion = 'local-style-2026-05-08';
 ---
 
@@ -103,6 +277,11 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
       </div>
 
       <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">Scraped 库</span>
+          <strong>{discoveryIndex.totals?.entities || 0}</strong>
+          <p>{discoveryIndex.totals?.needsAudit || 0} 个待 cheap audit，{discoveryIndex.totals?.promoted || 0} 个已 promote。</p>
+        </article>
         <article class="admin-summary-tile admin-summary-primary">
           <span class="admin-summary-label">研究中</span>
           <strong>{index.counts.researching || 0}</strong>
@@ -111,12 +290,12 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
         <article class="admin-summary-tile">
           <span class="admin-summary-label">需人工</span>
           <strong>{index.counts.needsHuman || 0}</strong>
-          <p>AI 不确定，operator 看证据后点击创建 Mockup 或跳过。</p>
+          <p>AI 不确定，operator 看证据后记录批准、继续研究或跳过。</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">可做 Mockup</span>
           <strong>{index.counts.ready_for_mockup || 0}</strong>
-          <p>已有联系方式和基本证据，等待人工确认是否创建 Mockup。</p>
+          <p>已有联系方式和基本证据，等待人工批准进入 Mockup 队列。</p>
         </article>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Mockup 就绪</span>
@@ -164,7 +343,7 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
           const isActive = stage.key === activeStageKey;
           return (
             <section class={`lead-stage ${isActive ? 'is-active' : ''}`} data-stage-column={stage.key}>
-              <button class="lead-stage-rail" type="button" data-stage-toggle={stage.key} aria-expanded={isActive ? 'true' : 'false'}>
+              <button class="lead-stage-rail" type="button" data-stage-toggle={stage.key} aria-expanded={isActive ? 'true' : 'false'} title={`${stage.label}：${criteriaSummary(stage)}`} aria-label={`${stage.label}，进入标准：${criteriaSummary(stage)}`}>
                 <span>{records.length}</span>
                 <strong>{stage.label}</strong>
               </button>
@@ -173,11 +352,19 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
                   <div>
                     <span class="eyebrow">Pipeline</span>
                     <h2>{stage.label}</h2>
+                    <details class="stage-criteria">
+                      <summary>进入这个阶段的标准</summary>
+                      <ul>
+                        {criteriaForStage(stage).map((item) => <li>{item}</li>)}
+                      </ul>
+                    </details>
                   </div>
                   <strong>{records.length}</strong>
                 </header>
                 <div class="lead-card-list">
-                  {records.length ? records.slice(0, 12).map((record, idx) => (
+                  {records.length ? records.slice(0, 12).map((record, idx) => {
+                    const discoveryActions = discoveryActionsFor(record);
+                    return (
                     <article
                       class={`lead-card ${isActive && idx === 0 ? 'is-open' : ''}`}
                       data-lead-card
@@ -209,6 +396,18 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
                               ))
                               : '待补'}</dd></div>
                             <div><dt>观察</dt><dd>{record.leadSpecificObservation || record.outreachPrimaryProofPoint || '还没有具体观察。需要继续研究。'}</dd></div>
+                          </dl>
+                        </section>
+
+                        <section class="lead-crm-snapshot">
+                          <div class="lead-section-head">
+                            <h3>CRM 快照</h3>
+                            <span>{record.clientSlug}</span>
+                          </div>
+                          <dl class="lead-crm-grid">
+                            {crmSnapshot(record).map(([label, value]) => (
+                              <div><dt>{label}</dt><dd>{value}</dd></div>
+                            ))}
                           </dl>
                         </section>
 
@@ -244,20 +443,47 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
                                   ) : null}
                                 </div>
                               ) : null}
-                              <p><strong>{record.currentSiteAuditVerdict || '已生成审计'}</strong></p>
+                              <p><strong>{decisionLabel(record.currentSiteSalesDecision)} · {verdictLabel(record.currentSiteAuditVerdict)}</strong></p>
+                              {auditSummaryLine(record) ? <p>{auditSummaryLine(record)}</p> : null}
                               <ul class="lead-compact-list">
-                                {(record.currentSiteAuditIssues || []).slice(0, 3).map((issue) => <li>{issue}</li>)}
+                                {auditIssueLines(record).map((issue) => <li>{issue}</li>)}
                               </ul>
+                              {outreachHookLine(record) ? (
+                                <p class="micro"><strong>触达观察：</strong>{outreachHookLine(record)}</p>
+                              ) : null}
                               <p class="micro">
                                 报告：{publicOrPath(record.currentSitePublicAuditUrl, record.currentSiteAuditMdPath) ? <a href={publicOrPath(record.currentSitePublicAuditUrl, record.currentSiteAuditMdPath)}>{publicOrPath(record.currentSitePublicAuditUrl, record.currentSiteAuditMdPath)}</a> : '无'}
                                 {' · '}
                                 原文：{publicOrPath(record.currentSitePublicTextUrl, record.currentSiteTextPath) ? <a href={publicOrPath(record.currentSitePublicTextUrl, record.currentSiteTextPath)}>{publicOrPath(record.currentSitePublicTextUrl, record.currentSiteTextPath)}</a> : '无'}
                               </p>
                             </>
-                          ) : (
+                          ) : (record.officialWebsiteUrl || record.websiteUrl) ? (
                             <p class="lead-warning">还没有保存当前网站截图、HTML/text 和 audit 报告。这个 lead 的判断需要先补 audit 才更可信。</p>
+                          ) : (
+                            <p class="lead-warning">没有官网可审计；本次判断主要来自图片/OCR、搜索记录、联系方式和服务清单。后续要把真实官网或联系页补进 profile。</p>
                           )}
                         </section>
+
+                        {conceptAssetLinks(record).length ? (
+                        <section class="lead-site-audit">
+                          <div class="lead-section-head">
+                            <h3>样稿资产</h3>
+                            {Number.isFinite(record.conceptQualityAuditScore) ? <span>{record.conceptQualityAuditScore}分</span> : null}
+                          </div>
+                          <div class="lead-audit-links">
+                            {conceptAssetLinks(record).map(([label, href]) => <a href={href}>{label}</a>)}
+                          </div>
+                          {record.openDesignBrief?.run ? (
+                            <p class="micro">
+                              Native：{record.openDesignBrief.run.nativeCleanFinish ? '已自然结束' : '待确认'}
+                              {' · '}
+                              Question form：{record.openDesignBrief.run.questionForms || 0}
+                              {' · '}
+                              Fallback：{record.openDesignRunRequestAllowFallback ? '允许' : '禁止'}
+                            </p>
+                          ) : null}
+                        </section>
+                        ) : null}
 
                         <section class="lead-handoff-brief">
                           <div class="lead-section-head">
@@ -271,11 +497,11 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
                             </div>
                             <div>
                               <strong>Open Design 方向</strong>
-                              <p>{record.outreachSiteBrief || record.leadHeroAngle || '下一步需要先生成 site brief。'}</p>
+                              <p>{openDesignDirectionLine(record) || record.outreachSiteBrief || record.leadHeroAngle || '下一步需要先生成 site brief。'}</p>
                             </div>
                             <div>
                               <strong>可以改进的地方</strong>
-                              <p>{record.currentSiteImprovements?.length ? record.currentSiteImprovements.slice(0, 3).join('；') : '需要先完成 current-site audit。'}</p>
+                              <p>{improvementLine(record)}</p>
                             </div>
                             <div>
                               <strong>触达方向</strong>
@@ -291,6 +517,35 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
                             </dl>
                           </details>
                         </section>
+
+                        {discoveryActions.length ? (
+                          <section class="lead-discovery-actions">
+                            <div class="lead-section-head">
+                              <h3>Scraped lead 操作</h3>
+                              <span>{record.discoveryStoreKey || record.clientSlug}</span>
+                            </div>
+                            <p class="micro">这些按钮只记录 lead log / decision；命令需要人工或后台任务执行。</p>
+                            <div class="lead-command-list">
+                              {discoveryActions.map((action) => (
+                                <div class="lead-command-card">
+                                  <div>
+                                    <strong>{action.label}</strong>
+                                    {action.command ? <code>{action.command}</code> : <span>{action.note}</span>}
+                                  </div>
+                                  <form method="post" action="/admin/lead-note">
+                                    <input type="hidden" name="client_slug" value={record.clientSlug} />
+                                    <input type="hidden" name="order_id" value={record.orderId || ''} />
+                                    <input type="hidden" name="company" value={record.company || ''} />
+                                    <input type="hidden" name="actor" value="profitslocal-admin" />
+                                    <input type="hidden" name="action" value={action.action} />
+                                    <input type="hidden" name="note" value={`${action.note}${action.command ? ` Command: ${action.command}` : ''}`} />
+                                    <button class={`button ${action.tone === 'primary' ? '' : 'secondary'}`} type="submit">{action.submitLabel || action.label}</button>
+                                  </form>
+                                </div>
+                              ))}
+                            </div>
+                          </section>
+                        ) : null}
 
                         {record.blockingReason || record.pipelineStage === 'skipped' ? (
                           <section class="lead-inline-warning">
@@ -343,6 +598,7 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
                         {record.decisionActions.length ? (
                           <section>
                             <h3>人工决定</h3>
+                            <p class="micro">这些按钮只记录决定和状态，不会直接生成 Mockup、发送邮件或运行外部工具。</p>
                             <div class="lead-decision-row">
                               {record.decisionActions.map((action) => (
                                 <form method="post" action="/admin/lead-note">
@@ -370,7 +626,8 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
                         </form>
                       </div>
                     </article>
-                  )) : <p class="lead-empty">这一阶段暂时没有线索。</p>}
+                    );
+                  }) : <p class="lead-empty">这一阶段暂时没有线索。</p>}
                 </div>
               </div>
             </section>
@@ -405,6 +662,34 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
           </table>
         </div>
       </details>
+
+      <details class="admin-audit-view">
+        <summary>打开 Maps scraper discovery 库</summary>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>商家</th>
+                <th>状态</th>
+                <th>分数</th>
+                <th>官网状态</th>
+                <th>下一步</th>
+              </tr>
+            </thead>
+            <tbody>
+              {discoveryPreview.map((entity) => (
+                <tr>
+                  <td><strong>{entity.latest?.name || entity.entityKey}</strong><span>{entity.latest?.city || entity.latest?.sourceQuery || entity.entityKey}</span></td>
+                  <td><mark class="status-pill status-working">{entity.status}</mark></td>
+                  <td>{entity.latest?.discoveryScore ?? '-'}</td>
+                  <td>{entity.latest?.websiteStatus || '-'}</td>
+                  <td><strong>{entity.latest?.recommendedAction || '-'}</strong><span>{entity.promotedClientSlug ? `已进入 ${entity.promotedClientSlug}` : entity.latest?.website || entity.latest?.google_maps_url || '待补证据'}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -415,14 +700,27 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
     const viewButtons = [...(toolbar?.querySelectorAll('[data-admin-view]') || [])];
     const cards = [...document.querySelectorAll('[data-lead-card]')];
     const visibleCount = toolbar?.querySelector('[data-admin-visible-count]');
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get('q') || params.get('query') || params.get('search') || '';
+    const initialView = params.get('view') || '';
+
+    if (searchInput && initialQuery) searchInput.value = initialQuery;
+    if (initialView && viewButtons.some((button) => button.dataset.adminView === initialView)) {
+      viewButtons.forEach((button) => button.classList.toggle('is-active', button.dataset.adminView === initialView));
+    }
+
+    const activateStage = (stageKey) => {
+      if (!stageKey) return;
+      document.querySelectorAll('[data-stage-column]').forEach((column) => {
+        const active = column.dataset.stageColumn === stageKey;
+        column.classList.toggle('is-active', active);
+        column.querySelector('[data-stage-toggle]')?.setAttribute('aria-expanded', active ? 'true' : 'false');
+      });
+    };
 
     document.querySelectorAll('[data-stage-toggle]').forEach((button) => {
       button.addEventListener('click', () => {
-        document.querySelectorAll('[data-stage-column]').forEach((column) => {
-          const active = column.dataset.stageColumn === button.dataset.stageToggle;
-          column.classList.toggle('is-active', active);
-          column.querySelector('[data-stage-toggle]')?.setAttribute('aria-expanded', active ? 'true' : 'false');
-        });
+        activateStage(button.dataset.stageToggle);
       });
     });
 
@@ -438,15 +736,31 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
       const query = (searchInput?.value || '').trim().toLowerCase();
       const activeView = viewButtons.find((button) => button.classList.contains('is-active'))?.dataset.adminView || 'all';
       let shown = 0;
+      let firstVisibleCard = null;
       cards.forEach((card) => {
         const matchesQuery = !query || (card.dataset.search || '').includes(query);
         const matchesView = activeView === 'all' || card.dataset.stage === activeView;
         const visible = matchesQuery && matchesView;
         card.hidden = !visible;
-        if (visible) shown += 1;
+        if (visible) {
+          shown += 1;
+          firstVisibleCard ||= card;
+        }
       });
       if (visibleCount) visibleCount.textContent = `${shown} 条可见`;
       pipeline?.classList.toggle('is-filtering', activeView !== 'all' || Boolean(query));
+      const activeColumn = document.querySelector('[data-stage-column].is-active');
+      const activeColumnHasVisibleCard = Boolean(activeColumn?.querySelector('[data-lead-card]:not([hidden])'));
+      if (firstVisibleCard && !activeColumnHasVisibleCard) {
+        const nextStage = firstVisibleCard.dataset.stage;
+        activateStage(nextStage);
+      }
+      if (firstVisibleCard && (query || activeView !== 'all')) {
+        const nextColumn = firstVisibleCard.closest('[data-stage-column]');
+        nextColumn?.querySelectorAll('[data-lead-card]').forEach((item) => {
+          item.classList.toggle('is-open', item === firstVisibleCard);
+        });
+      }
     };
 
     viewButtons.forEach((button) => {

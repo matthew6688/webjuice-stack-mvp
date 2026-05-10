@@ -1,0 +1,828 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-08T09:35:25.118Z",
+  "clientSlug": "sams-roof-coatings",
+  "sourceType": "manual",
+  "buildMode": "redesign",
+  "gateStatus": "ready_for_redesign_preview",
+  "paths": {
+    "intake": "data/qa/roofer-discovery/sams-roof-coatings/lead-intake.json",
+    "research": "data/qa/roofer-discovery/sams-roof-coatings/lead-research.json",
+    "redesignCheck": "data/qa/roofer-discovery/sams-roof-coatings/redesign-check.json",
+    "readyToBuild": "data/qa/roofer-discovery/sams-roof-coatings/ready-to-build.json",
+    "outreachBrief": "data/qa/roofer-discovery/sams-roof-coatings/outreach-brief.json",
+    "leadOps": "data/qa/roofer-discovery/sams-roof-coatings/lead-ops.json"
+  },
+  "intake": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-05-08T09:35:25.117Z",
+    "sourceType": "manual",
+    "buildMode": "redesign",
+    "gateStatus": "ready_for_redesign_preview",
+    "leadId": "sam-s-roof-coatings:samsroofcoatings@gmail.com",
+    "clientSlug": "sams-roof-coatings",
+    "project": {
+      "businessName": "Sam's Roof Coatings",
+      "industry": "roof restoration",
+      "city": "South East Queensland",
+      "country": "Australia",
+      "hasWebsite": true,
+      "redesignSignal": "strong"
+    },
+    "qualification": {
+      "leadType": "bad_website",
+      "grade": "C",
+      "recommendedAction": "outreach_only",
+      "weightedScore": 47,
+      "scores": {
+        "contactability": 63,
+        "businessValue": 30,
+        "websiteOpportunity": 76,
+        "assetAvailability": 0,
+        "buildFeasibility": 42
+      },
+      "blockers": [
+        "Low public demand signal from rating/reviews.",
+        "Not enough verified information for a truthful preview."
+      ],
+      "reasons": [
+        "Phone exists, so the lead is contactable.",
+        "Official website exists and can be assessed.",
+        "Existing website looks like a redesign opportunity.",
+        "Website issue: website not inspected yet."
+      ]
+    },
+    "contactability": {
+      "status": "reachable",
+      "channels": {
+        "emails": [
+          "samsroofcoatings@gmail.com"
+        ],
+        "phones": [
+          "0450 031 128"
+        ],
+        "contactPageUrl": "",
+        "socialDm": []
+      }
+    },
+    "facts": {
+      "verified": {
+        "businessName": "Sam's Roof Coatings",
+        "industry": "roof restoration",
+        "city": "South East Queensland",
+        "country": "Australia",
+        "websiteUrl": "https://samsroofcoatings.com.au/",
+        "emails": [
+          "samsroofcoatings@gmail.com"
+        ],
+        "phones": [
+          "0450 031 128"
+        ]
+      },
+      "inferred": {
+        "audience": "people looking for a trusted local option with a clear next step",
+        "primaryCTA": "Call now",
+        "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+        "tone": "confident, practical, conversion-focused",
+        "coreServices": [
+          "roof coatings",
+          "roof painting",
+          "roof repair",
+          "roof restorations"
+        ],
+        "designDirection": [
+          "high-contrast CTA",
+          "practical trust signals",
+          "service-area clarity",
+          "visible before/after uplift"
+        ],
+        "problemType": "missing_conversion_path"
+      },
+      "placeholderCandidates": {
+        "heroHeadline": "Sam's Roof Coatings deserves a clearer roof restoration presence online",
+        "heroSubhead": "roof coatings presented with a cleaner first impression, faster trust, and a stronger path to enquiry.",
+        "about": "Sam's Roof Coatings appears to serve South East Queensland with a focus on roof coatings. This placeholder copy is here to make the demo feel complete until real owner-approved details are supplied.",
+        "serviceSummary": "roof coatings explained in a concise, customer-friendly way for a first-pass demo.",
+        "testimonial": "Placeholder social proof for Sam's Roof Coatings that will be replaced by verified customer wording after approval.",
+        "location": "Location placeholder for Sam's Roof Coatings in South East Queensland. Replace with verified address or service area before launch.",
+        "faq": "Short placeholder answers covering bookings, service expectations, and contact flow for a roof restoration website.",
+        "observationEcho": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+        "modeIntent": "redesign"
+      },
+      "missingCritical": []
+    },
+    "strategy": {
+      "recommendedNextStep": "Run redesign-check, capture preservation, then build a redesign preview.",
+      "modeDecision": [
+        "Existing website shows strong redesign opportunity.",
+        "Qualification suggested outreach_only, but intake kept redesign because demo completeness can still be useful when contactability exists."
+      ],
+      "problemType": "missing_conversion_path",
+      "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+      "primaryCTA": "Call now",
+      "audience": "people looking for a trusted local option with a clear next step",
+      "tone": "confident, practical, conversion-focused",
+      "coreServices": [
+        "roof coatings",
+        "roof painting",
+        "roof repair",
+        "roof restorations"
+      ],
+      "designDirection": [
+        "high-contrast CTA",
+        "practical trust signals",
+        "service-area clarity",
+        "visible before/after uplift"
+      ],
+      "familyId": "field_service"
+    },
+    "outreach": {
+      "diagnosis": "Sam's Roof Coatings already has a website, but it likely undersells the real business. The redesign opportunity is to improve clarity, trust, and the path from interest to booking or enquiry.",
+      "specificObservation": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+      "coldMessageAngle": "I took a look at the current site and mocked up a version that makes the offer clearer and the next step easier for mobile visitors."
+    },
+    "contentPolicy": {
+      "allowPlaceholders": true,
+      "placeholdersMustBeFilled": true,
+      "mustNotInventContactFacts": true,
+      "mustLabelDummyContentInternally": true
+    },
+    "rawInputs": {
+      "sources": [
+        "https://samsroofcoatings.com.au/"
+      ],
+      "importedFrom": "",
+      "notes": [
+        "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+        "The current site has enough content for a redesign mockup."
+      ]
+    },
+    "openDesignHandoffDraft": {
+      "project": {
+        "clientSlug": "sams-roof-coatings",
+        "businessName": "Sam's Roof Coatings",
+        "industry": "roof restoration",
+        "familyId": "field_service",
+        "city": "South East Queensland",
+        "country": "Australia",
+        "sourceType": "manual",
+        "buildMode": "redesign"
+      },
+      "contactability": {
+        "status": "reachable",
+        "channels": {
+          "emails": [
+            "samsroofcoatings@gmail.com"
+          ],
+          "phones": [
+            "0450 031 128"
+          ],
+          "contactPageUrl": "",
+          "socialDm": []
+        }
+      },
+      "facts": {
+        "verified": {
+          "businessName": "Sam's Roof Coatings",
+          "industry": "roof restoration",
+          "city": "South East Queensland",
+          "country": "Australia",
+          "websiteUrl": "https://samsroofcoatings.com.au/",
+          "emails": [
+            "samsroofcoatings@gmail.com"
+          ],
+          "phones": [
+            "0450 031 128"
+          ]
+        },
+        "inferred": {
+          "audience": "people looking for a trusted local option with a clear next step",
+          "primaryCTA": "Call now",
+          "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+          "tone": "confident, practical, conversion-focused",
+          "coreServices": [
+            "roof coatings",
+            "roof painting",
+            "roof repair",
+            "roof restorations"
+          ],
+          "designDirection": [
+            "high-contrast CTA",
+            "practical trust signals",
+            "service-area clarity",
+            "visible before/after uplift"
+          ],
+          "problemType": "missing_conversion_path"
+        },
+        "placeholderCandidates": {
+          "heroHeadline": "Sam's Roof Coatings deserves a clearer roof restoration presence online",
+          "heroSubhead": "roof coatings presented with a cleaner first impression, faster trust, and a stronger path to enquiry.",
+          "about": "Sam's Roof Coatings appears to serve South East Queensland with a focus on roof coatings. This placeholder copy is here to make the demo feel complete until real owner-approved details are supplied.",
+          "serviceSummary": "roof coatings explained in a concise, customer-friendly way for a first-pass demo.",
+          "testimonial": "Placeholder social proof for Sam's Roof Coatings that will be replaced by verified customer wording after approval.",
+          "location": "Location placeholder for Sam's Roof Coatings in South East Queensland. Replace with verified address or service area before launch.",
+          "faq": "Short placeholder answers covering bookings, service expectations, and contact flow for a roof restoration website.",
+          "observationEcho": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+          "modeIntent": "redesign"
+        },
+        "missingCritical": []
+      },
+      "strategy": {
+        "problemType": "missing_conversion_path",
+        "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+        "primaryCTA": "Call now",
+        "audience": "people looking for a trusted local option with a clear next step",
+        "tone": "confident, practical, conversion-focused",
+        "coreServices": [
+          "roof coatings",
+          "roof painting",
+          "roof repair",
+          "roof restorations"
+        ],
+        "coreSections": [
+          "hero",
+          "services",
+          "service-area",
+          "proof",
+          "cta"
+        ],
+        "designDirection": [
+          "high-contrast CTA",
+          "practical trust signals",
+          "service-area clarity",
+          "visible before/after uplift"
+        ],
+        "avoid": [
+          "Generic stock-photo feel",
+          "AI-looking gradients",
+          "Buzzword-heavy local marketing copy"
+        ]
+      },
+      "redesign": {
+        "isRedesign": true,
+        "preservationPacket": null,
+        "redesignValue": [
+          "Improve clarity of offer and service hierarchy",
+          "Improve trust and premium feel",
+          "Strengthen mobile conversion path"
+        ],
+        "upgradeTargets": [
+          "hero clarity",
+          "CTA path",
+          "mobile usability",
+          "trust presentation"
+        ]
+      },
+      "outreach": {
+        "diagnosis": "Sam's Roof Coatings already has a website, but it likely undersells the real business. The redesign opportunity is to improve clarity, trust, and the path from interest to booking or enquiry.",
+        "specificObservation": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+        "coldMessageAngle": "I took a look at the current site and mocked up a version that makes the offer clearer and the next step easier for mobile visitors."
+      },
+      "evidence": {
+        "sources": [
+          "https://samsroofcoatings.com.au/"
+        ],
+        "confidence": "medium",
+        "assets": []
+      },
+      "contentPolicy": {
+        "allowPlaceholders": true,
+        "placeholdersMustBeFilled": true,
+        "mustNotInventContactFacts": true,
+        "mustLabelDummyContentInternally": true
+      }
+    }
+  },
+  "research": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-05-08T09:35:25.118Z",
+    "clientSlug": "sams-roof-coatings",
+    "sourceType": "manual",
+    "buildMode": "redesign",
+    "gateStatus": "ready_for_redesign_preview",
+    "niche": "roof restoration",
+    "contactability": {
+      "status": "reachable",
+      "channels": {
+        "emails": [
+          "samsroofcoatings@gmail.com"
+        ],
+        "phones": [
+          "0450 031 128"
+        ],
+        "contactPageUrl": "",
+        "socialDm": []
+      }
+    },
+    "previewability": {
+      "status": "ready_for_redesign_preview",
+      "reason": "The lead has enough context for a redesign preview."
+    },
+    "productionReadiness": {
+      "status": "needs_more_research",
+      "reason": "Evidence still needs cleanup before production handoff.",
+      "errors": [
+        "Evidence pack missing"
+      ]
+    },
+    "facts": {
+      "verified": {
+        "businessName": "Sam's Roof Coatings",
+        "industry": "roof restoration",
+        "city": "South East Queensland",
+        "websiteUrl": "https://samsroofcoatings.com.au/",
+        "phones": [
+          "0450 031 128"
+        ],
+        "emails": [
+          "samsroofcoatings@gmail.com"
+        ],
+        "socialDm": []
+      },
+      "inferred": {
+        "audience": "people looking for a trusted local option with a clear next step",
+        "primaryCTA": "Call now",
+        "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+        "tone": "confident, practical, conversion-focused",
+        "coreServices": [
+          "roof coatings",
+          "roof painting",
+          "roof repair",
+          "roof restorations"
+        ],
+        "designDirection": [
+          "high-contrast CTA",
+          "practical trust signals",
+          "service-area clarity",
+          "visible before/after uplift"
+        ],
+        "problemType": "missing_conversion_path",
+        "preservationNeed": "preserve_core_facts_and_routes"
+      },
+      "placeholderCandidates": {
+        "heroHeadline": "Sam's Roof Coatings deserves a clearer roof restoration presence online",
+        "heroSubhead": "roof coatings presented with a cleaner first impression, faster trust, and a stronger path to enquiry.",
+        "about": "Sam's Roof Coatings appears to serve South East Queensland with a focus on roof coatings. This placeholder copy is here to make the demo feel complete until real owner-approved details are supplied.",
+        "serviceSummary": "roof coatings explained in a concise, customer-friendly way for a first-pass demo.",
+        "testimonial": "Placeholder social proof for Sam's Roof Coatings that will be replaced by verified customer wording after approval.",
+        "location": "Location placeholder for Sam's Roof Coatings in South East Queensland. Replace with verified address or service area before launch.",
+        "faq": "Short placeholder answers covering bookings, service expectations, and contact flow for a roof restoration website.",
+        "observationEcho": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+        "modeIntent": "redesign",
+        "subhead": "Sam's Roof Coatings can present roof restoration services more clearly and convert interest into enquiries."
+      },
+      "missingCritical": []
+    },
+    "researchSummary": {
+      "evidencePath": "",
+      "contentPath": "",
+      "preservationPath": "clients/sams-roof-coatings/redesign/preservation-packet.json",
+      "evidenceSources": [],
+      "evidenceValidation": {
+        "ok": false,
+        "errors": [
+          "Evidence pack missing"
+        ],
+        "warnings": []
+      },
+      "contentValidation": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "generatedFromEvidence": false
+      }
+    },
+    "redesign": {
+      "isRedesign": true,
+      "hasPreservationPacket": true,
+      "readiness": "needs_customer_confirmation",
+      "blockers": [],
+      "warnings": [
+        "logo missing or unconfirmed",
+        "favicon missing or unconfirmed",
+        "No niche adapter configured; using generic local-business rules."
+      ],
+      "currentPageCount": 1,
+      "proposedPageCount": 2,
+      "redirectCount": 0,
+      "value": [
+        "Preserve old URLs where possible.",
+        "Create 301 redirects for changed URLs.",
+        "Generate sitemap.xml.",
+        "Generate robots.txt.",
+        "Set canonical URLs."
+      ]
+    },
+    "strategy": {
+      "recommendedAction": "build_redesign_preview",
+      "outreachReady": true,
+      "openDesignReady": false,
+      "nextStep": "Collect one more round of evidence and rerun lead-research."
+    },
+    "openDesignHandoffDraft": {
+      "project": {
+        "clientSlug": "sams-roof-coatings",
+        "businessName": "Sam's Roof Coatings",
+        "industry": "roof restoration",
+        "city": "South East Queensland",
+        "country": "Australia",
+        "sourceType": "manual",
+        "buildMode": "redesign"
+      },
+      "contactability": {
+        "status": "reachable",
+        "channels": {
+          "emails": [
+            "samsroofcoatings@gmail.com"
+          ],
+          "phones": [
+            "0450 031 128"
+          ],
+          "contactPageUrl": "",
+          "socialDm": []
+        }
+      },
+      "facts": {
+        "verified": {
+          "businessName": "Sam's Roof Coatings",
+          "industry": "roof restoration",
+          "city": "South East Queensland",
+          "websiteUrl": "https://samsroofcoatings.com.au/",
+          "phones": [
+            "0450 031 128"
+          ],
+          "emails": [
+            "samsroofcoatings@gmail.com"
+          ],
+          "socialDm": []
+        },
+        "inferred": {
+          "audience": "people looking for a trusted local option with a clear next step",
+          "primaryCTA": "Call now",
+          "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+          "tone": "confident, practical, conversion-focused",
+          "coreServices": [
+            "roof coatings",
+            "roof painting",
+            "roof repair",
+            "roof restorations"
+          ],
+          "designDirection": [
+            "high-contrast CTA",
+            "practical trust signals",
+            "service-area clarity",
+            "visible before/after uplift"
+          ],
+          "problemType": "missing_conversion_path",
+          "preservationNeed": "preserve_core_facts_and_routes"
+        },
+        "placeholderCandidates": {
+          "heroHeadline": "Sam's Roof Coatings deserves a clearer roof restoration presence online",
+          "heroSubhead": "roof coatings presented with a cleaner first impression, faster trust, and a stronger path to enquiry.",
+          "about": "Sam's Roof Coatings appears to serve South East Queensland with a focus on roof coatings. This placeholder copy is here to make the demo feel complete until real owner-approved details are supplied.",
+          "serviceSummary": "roof coatings explained in a concise, customer-friendly way for a first-pass demo.",
+          "testimonial": "Placeholder social proof for Sam's Roof Coatings that will be replaced by verified customer wording after approval.",
+          "location": "Location placeholder for Sam's Roof Coatings in South East Queensland. Replace with verified address or service area before launch.",
+          "faq": "Short placeholder answers covering bookings, service expectations, and contact flow for a roof restoration website.",
+          "observationEcho": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+          "modeIntent": "redesign",
+          "subhead": "Sam's Roof Coatings can present roof restoration services more clearly and convert interest into enquiries."
+        },
+        "missingCritical": []
+      },
+      "strategy": {
+        "problemType": "missing_conversion_path",
+        "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+        "primaryCTA": "Call now",
+        "audience": "people looking for a trusted local option with a clear next step",
+        "tone": "confident, practical, conversion-focused",
+        "coreServices": [
+          "roof coatings",
+          "roof painting",
+          "roof repair",
+          "roof restorations"
+        ],
+        "coreSections": [
+          "hero",
+          "services",
+          "service-area",
+          "proof",
+          "cta"
+        ],
+        "designDirection": [
+          "high-contrast CTA",
+          "practical trust signals",
+          "service-area clarity",
+          "visible before/after uplift"
+        ],
+        "avoid": [
+          "Generic stock-photo feel",
+          "AI-looking gradients",
+          "Buzzword-heavy local marketing copy"
+        ]
+      },
+      "redesign": {
+        "isRedesign": true,
+        "preservationPacket": {
+          "currentPageCount": 1,
+          "proposedPageCount": 2,
+          "keepSameUrl": [
+            "https://samsroofcoatings.com.au/"
+          ]
+        },
+        "redesignValue": [
+          "Preserve old URLs where possible.",
+          "Create 301 redirects for changed URLs.",
+          "Generate sitemap.xml.",
+          "Generate robots.txt.",
+          "Set canonical URLs."
+        ],
+        "upgradeTargets": [
+          "hero clarity",
+          "CTA path",
+          "mobile usability",
+          "trust presentation"
+        ]
+      },
+      "outreach": {
+        "diagnosis": "Sam's Roof Coatings already has a website, but it likely undersells the real business. The redesign opportunity is to improve clarity, trust, and the path from interest to booking or enquiry.",
+        "specificObservation": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+        "coldMessageAngle": "I took a look at the current site and mocked up a version that makes the offer clearer and the next step easier for mobile visitors."
+      },
+      "contentPolicy": {
+        "allowPlaceholders": true,
+        "placeholdersMustBeFilled": true,
+        "mustNotInventContactFacts": true,
+        "mustLabelDummyContentInternally": true
+      }
+    }
+  },
+  "redesignCheck": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-05-08T09:35:25.118Z",
+    "clientSlug": "sams-roof-coatings",
+    "niche": "roof restoration",
+    "familyId": "field_service",
+    "buildMode": "redesign",
+    "decision": "redesign_preview",
+    "reason": "The redesign opportunity is strong enough for a preview, even though production handoff still needs another research pass.",
+    "riskLevel": "medium",
+    "previewability": {
+      "status": "ready_for_redesign_preview",
+      "reason": "The lead has enough context for a redesign preview."
+    },
+    "productionReadiness": {
+      "status": "needs_more_research",
+      "reason": "Evidence still needs cleanup before production handoff.",
+      "errors": [
+        "Evidence pack missing"
+      ]
+    },
+    "currentSite": {
+      "sourceWebsiteUrl": "https://samsroofcoatings.com.au/",
+      "currentPageCount": 1,
+      "proposedPageCount": 2,
+      "mustKeepPageCount": 1
+    },
+    "preservation": {
+      "readiness": "needs_customer_confirmation",
+      "keepSameUrlCount": 0,
+      "redirectCount": 0,
+      "manualRedirectReviewCount": 0,
+      "missingBrandAssets": []
+    },
+    "redesignValue": [
+      "Make the current site feel more credible than the existing version.",
+      "Clarify the next step so mobile visitors can act faster.",
+      "Show service coverage, fast response, and quote intent more clearly.",
+      "Turn phone or quote actions into the dominant path on mobile."
+    ],
+    "upgradeTargets": [
+      "hero clarity",
+      "CTA path",
+      "mobile usability",
+      "trust presentation",
+      "service-area clarity",
+      "quote or call CTA"
+    ],
+    "outreachAngle": {
+      "hook": "I took a look at the current site and mocked up a version that makes the offer clearer and the next step easier for mobile visitors.",
+      "observation": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+      "diagnosis": "Sam's Roof Coatings already has a website, but it likely undersells the real business. The redesign opportunity is to improve clarity, trust, and the path from interest to booking or enquiry."
+    },
+    "blockers": [],
+    "warnings": [
+      "logo missing or unconfirmed",
+      "favicon missing or unconfirmed",
+      "No niche adapter configured; using generic local-business rules."
+    ]
+  },
+  "readyToBuild": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-05-08T09:35:25.118Z",
+    "clientSlug": "sams-roof-coatings",
+    "niche": "roof restoration",
+    "buildMode": "redesign",
+    "status": "needs_more_research",
+    "reason": "Evidence still needs cleanup before production handoff.",
+    "previewability": {
+      "status": "ready_for_redesign_preview",
+      "reason": "The lead has enough context for a redesign preview."
+    },
+    "productionReadiness": {
+      "status": "needs_more_research",
+      "reason": "Evidence still needs cleanup before production handoff.",
+      "errors": [
+        "Evidence pack missing"
+      ]
+    },
+    "contactability": {
+      "status": "reachable",
+      "channels": {
+        "emails": [
+          "samsroofcoatings@gmail.com"
+        ],
+        "phones": [
+          "0450 031 128"
+        ],
+        "contactPageUrl": "",
+        "socialDm": []
+      }
+    },
+    "openDesignHandoffDraft": {
+      "project": {
+        "clientSlug": "sams-roof-coatings",
+        "businessName": "Sam's Roof Coatings",
+        "industry": "roof restoration",
+        "city": "South East Queensland",
+        "country": "Australia",
+        "sourceType": "manual",
+        "buildMode": "redesign"
+      },
+      "contactability": {
+        "status": "reachable",
+        "channels": {
+          "emails": [
+            "samsroofcoatings@gmail.com"
+          ],
+          "phones": [
+            "0450 031 128"
+          ],
+          "contactPageUrl": "",
+          "socialDm": []
+        }
+      },
+      "facts": {
+        "verified": {
+          "businessName": "Sam's Roof Coatings",
+          "industry": "roof restoration",
+          "city": "South East Queensland",
+          "websiteUrl": "https://samsroofcoatings.com.au/",
+          "phones": [
+            "0450 031 128"
+          ],
+          "emails": [
+            "samsroofcoatings@gmail.com"
+          ],
+          "socialDm": []
+        },
+        "inferred": {
+          "audience": "people looking for a trusted local option with a clear next step",
+          "primaryCTA": "Call now",
+          "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+          "tone": "confident, practical, conversion-focused",
+          "coreServices": [
+            "roof coatings",
+            "roof painting",
+            "roof repair",
+            "roof restorations"
+          ],
+          "designDirection": [
+            "high-contrast CTA",
+            "practical trust signals",
+            "service-area clarity",
+            "visible before/after uplift"
+          ],
+          "problemType": "missing_conversion_path",
+          "preservationNeed": "preserve_core_facts_and_routes"
+        },
+        "placeholderCandidates": {
+          "heroHeadline": "Sam's Roof Coatings deserves a clearer roof restoration presence online",
+          "heroSubhead": "roof coatings presented with a cleaner first impression, faster trust, and a stronger path to enquiry.",
+          "about": "Sam's Roof Coatings appears to serve South East Queensland with a focus on roof coatings. This placeholder copy is here to make the demo feel complete until real owner-approved details are supplied.",
+          "serviceSummary": "roof coatings explained in a concise, customer-friendly way for a first-pass demo.",
+          "testimonial": "Placeholder social proof for Sam's Roof Coatings that will be replaced by verified customer wording after approval.",
+          "location": "Location placeholder for Sam's Roof Coatings in South East Queensland. Replace with verified address or service area before launch.",
+          "faq": "Short placeholder answers covering bookings, service expectations, and contact flow for a roof restoration website.",
+          "observationEcho": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+          "modeIntent": "redesign",
+          "subhead": "Sam's Roof Coatings can present roof restoration services more clearly and convert interest into enquiries."
+        },
+        "missingCritical": []
+      },
+      "strategy": {
+        "problemType": "missing_conversion_path",
+        "heroAngle": "Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service.",
+        "primaryCTA": "Call now",
+        "audience": "people looking for a trusted local option with a clear next step",
+        "tone": "confident, practical, conversion-focused",
+        "coreServices": [
+          "roof coatings",
+          "roof painting",
+          "roof repair",
+          "roof restorations"
+        ],
+        "coreSections": [
+          "hero",
+          "services",
+          "service-area",
+          "proof",
+          "cta"
+        ],
+        "designDirection": [
+          "high-contrast CTA",
+          "practical trust signals",
+          "service-area clarity",
+          "visible before/after uplift"
+        ],
+        "avoid": [
+          "Generic stock-photo feel",
+          "AI-looking gradients",
+          "Buzzword-heavy local marketing copy"
+        ]
+      },
+      "redesign": {
+        "isRedesign": true,
+        "preservationPacket": {
+          "currentPageCount": 1,
+          "proposedPageCount": 2,
+          "keepSameUrl": [
+            "https://samsroofcoatings.com.au/"
+          ]
+        },
+        "redesignValue": [
+          "Preserve old URLs where possible.",
+          "Create 301 redirects for changed URLs.",
+          "Generate sitemap.xml.",
+          "Generate robots.txt.",
+          "Set canonical URLs."
+        ],
+        "upgradeTargets": [
+          "hero clarity",
+          "CTA path",
+          "mobile usability",
+          "trust presentation"
+        ]
+      },
+      "outreach": {
+        "diagnosis": "Sam's Roof Coatings already has a website, but it likely undersells the real business. The redesign opportunity is to improve clarity, trust, and the path from interest to booking or enquiry.",
+        "specificObservation": "Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan.",
+        "coldMessageAngle": "I took a look at the current site and mocked up a version that makes the offer clearer and the next step easier for mobile visitors."
+      },
+      "contentPolicy": {
+        "allowPlaceholders": true,
+        "placeholdersMustBeFilled": true,
+        "mustNotInventContactFacts": true,
+        "mustLabelDummyContentInternally": true
+      }
+    }
+  },
+  "outreachBrief": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-05-08T09:35:25.118Z",
+    "clientSlug": "sams-roof-coatings",
+    "niche": "roof restoration",
+    "familyId": "field_service",
+    "buildMode": "redesign",
+    "previewMode": "redesign_preview",
+    "outreachReady": true,
+    "diagnosis": "Sam's Roof Coatings already has a website, but it likely undersells the real business. The redesign opportunity is to improve clarity, trust, and the path from interest to booking or enquiry. Make the current site feel more credible than the existing version. Clarify the next step so mobile visitors can act faster. The biggest revenue leak is usually weak quote intent and unclear trust on mobile.",
+    "siteBrief": "Sam's Roof Coatings is a roof restoration in South East Queensland. Lead with Sam's Roof Coatings already has real-world traction; the website should finally feel as strong as the service. Highlight roof coatings, roof painting, roof repair. Keep the tone confident, practical, conversion-focused. The main CTA should be Call now. One design choice that should stand out is high-contrast CTA.",
+    "coldMessage": "Hey Sam's, I looked at Sam's Roof Coatings in South East Queensland. Family business story and long experience are visible, but the page could make quote intent and trust hierarchy easier to scan. I took a look at the current site and mocked up a version that makes the offer clearer and the next step easier for mobile visitors. Happy to send the mockup if you want to see it.",
+    "followUps": [
+      "Quick follow-up: the clearest gap I noticed is hero clarity. I can send over the mockup if it would help.",
+      "One more thought: nearby competitors usually do a better job showing CTA path. I already mocked up a tighter version if you want to compare it."
+    ],
+    "channelRecommendation": "sms_or_call",
+    "subjectLines": [
+      "Built something for Sam's Roof Coatings",
+      "Quick mockup for Sam's Roof Coatings",
+      "Saw your listing and made this for Sam's Roof Coatings"
+    ],
+    "proofPoints": [
+      "Current website reviewed",
+      "Direct contact route found",
+      "Main improvement angle: hero clarity",
+      "Service-area and quote path can be made clearer on mobile"
+    ]
+  },
+  "summary": {
+    "familyId": "field_service",
+    "previewability": "ready_for_redesign_preview",
+    "productionReadiness": "needs_more_research",
+    "redesignDecision": "redesign_preview",
+    "readyToBuildStatus": "needs_more_research",
+    "outreachChannel": "sms_or_call",
+    "outreachPreviewMode": "redesign_preview"
+  }
+}

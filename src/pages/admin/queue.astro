@@ -1,92 +1,640 @@
 ---
 import Layout from '../../layouts/AdminLayout.astro';
 import { siteConfig } from '../../config/site';
+import fs from 'fs';
+import path from 'path';
+import { loadLeadOutreachIndex } from '../../../core/funnel/lead-outreach-index.js';
 import { loadPaidIntakeIndex } from '../../../core/funnel/paid-intake-index.js';
+import { readQueueOperations } from '../../../core/funnel/queue-operations.js';
+import { EXECUTABLE_QUEUE_ACTIONS, QUEUE_TYPE_LABELS, decisionLabel, queueActionLabel, queueGroupMeta, stageLabel } from '../../../core/funnel/stage-config.js';
+import { buildDiscoveryQueues, loadDiscoveryIndex } from '../../../core/leads/discovery-store.js';
+import { loadEnrichmentGates, enrichmentGateLabel } from '../../../core/leads/enrichment-gate.js';
 
-const index = loadPaidIntakeIndex();
-const queueGroups = [
+const paidIndex = loadPaidIntakeIndex();
+const leadIndex = loadLeadOutreachIndex();
+const discoveryIndex = loadDiscoveryIndex();
+const enrichmentGates = loadEnrichmentGates();
+const enrichmentGateFor = (entityKey) => enrichmentGates.gates?.[entityKey] || { status: 'planned' };
+const discoveryQueues = buildDiscoveryQueues({ limit: 18 });
+const discoveryEntities = discoveryIndex.entities || [];
+const queueOperations = readQueueOperations().sort((a, b) => String(b.finishedAt || b.createdAt || '').localeCompare(String(a.finishedAt || a.createdAt || ''))).slice(0, 8);
+
+const contactEmail = (record) => record.email || record.customerEmail || record.leadRecipientEmail || '';
+const leadContactLine = (record) => [record.niche || record.leadFamilyId || '行业待补', record.city || record.address || record.domain || '地区待补'].filter(Boolean).join(' / ');
+const entityTitle = (entity) => entity.latest?.name || entity.entityKey;
+const entityLocation = (entity) => [entity.latest?.city, entity.latest?.sourceQuery].filter(Boolean).join(' / ') || entity.latest?.formattedAddress || entity.entityKey;
+const entityCommand = (entity, command) => command.replace('{entityKey}', entity.entityKey);
+const discoveryAuditFor = (entityKey) => readJsonIfExists(path.join('data', 'leads', 'audits', entityKey, 'current-site-audit.json'));
+const compact = (value, fallback = '') => String(value || fallback || '').replace(/\s+/g, ' ').trim();
+const yesNo = (value) => Boolean(value);
+const queueStatusLabel = (value) => stageLabel(value);
+const queueDetailLabel = (value) => decisionLabel(value);
+const entityWebsiteLabel = (entity) => ({
+  independent_http_site: '独立官网',
+  independent_https_site: '独立官网',
+  has_website: '有网站',
+  no_website: '无网站',
+  google_business_profile: 'Google 商家资料',
+  social_profile: '社媒主页',
+}[entity.latest?.websiteStatus] || (entity.latest?.website ? '有网站' : '无网站'));
+const queueTypeLabel = (type) => QUEUE_TYPE_LABELS[type] || type || '';
+const adminLeadHref = (query, view = 'all') => `/admin/leads?${new URLSearchParams({ q: compact(query), view }).toString()}`;
+const fact = (label, value) => compact(value) ? { label, value: compact(value) } : null;
+const check = (label, done, value = '') => ({ label, done: yesNo(done), value: compact(value) });
+const auditFact = (audit) => audit ? [
+  fact('审计分数', `${audit.score ?? '无'}分 · ${queueDetailLabel(audit.salesDecision || audit.verdict)}`),
+  fact('审计摘要', audit.summary),
+].filter(Boolean) : [];
+const discoveryFacts = (entity) => {
+  const latest = entity.latest || {};
+  const audit = discoveryAuditFor(entity.entityKey);
+  const gate = enrichmentGateFor(entity.entityKey);
+  return {
+    metrics: [
+      fact('抓取分', Number.isFinite(latest.discoveryScore) ? latest.discoveryScore : ''),
+      fact('Google 评分', latest.rating ? `${latest.rating}${latest.review_count ? ` · ${latest.review_count}条` : ''}` : ''),
+      fact('分类', latest.category || latest.niche),
+      fact('搜索词', latest.sourceQuery),
+      entity.status === 'queued_for_enrichment' ? fact('成本关口', enrichmentGateLabel(gate.status || 'planned')) : null,
+      ...auditFact(audit),
+    ].filter(Boolean),
+    evidence: [
+      fact('销售切入点', audit?.outreachHook || audit?.summary),
+      fact('设计方向', audit?.openDesignDirection),
+      fact('Place ID', entity.identifiers?.place_id),
+    ].filter(Boolean),
+    checks: [
+      check('官网', latest.website, latest.website ? entityWebsiteLabel(entity) : '缺'),
+      check('电话', latest.phone, latest.phone || '缺'),
+      check('现站审计', audit, audit ? `${audit.score ?? '-'}分` : '缺'),
+      check('Place ID', entity.identifiers?.place_id, entity.identifiers?.place_id ? '有' : '缺'),
+    ],
+  };
+};
+const leadFacts = (record) => ({
+  metrics: [
+    fact('AI 判断', record.aiAssessment ? `${record.aiAssessment.confidence || '待定'}${record.aiAssessment.score ? ` · ${record.aiAssessment.score}分` : ''}` : ''),
+    fact('审计分数', record.currentSiteAuditScore ? `${record.currentSiteAuditScore}分 · ${queueDetailLabel(record.currentSiteSalesDecision || record.currentSiteAuditVerdict)}` : ''),
+    fact('档案完整度', record.profileCompleteness ? `${record.profileCompleteness.done}/${record.profileCompleteness.total}` : ''),
+    fact('推荐渠道', record.outreachChannelRecommendation),
+  ].filter(Boolean),
+  evidence: [
+    fact('销售切入点', record.customerOpportunitySummary || record.currentSiteAuditSummary),
+    fact('触达角度', record.currentSiteOutreachHook || record.outreachPrimaryProofPoint),
+    fact('设计方向', record.currentSiteOpenDesignDirection || record.openDesignBrief?.heroAngle),
+  ].filter(Boolean),
+  checks: [
+    check('官网', record.officialWebsiteUrl || record.websiteUrl, record.officialWebsiteUrl || record.websiteUrl ? '有' : '缺'),
+    check('联系方式', contactEmail(record) || record.phone, contactEmail(record) || record.phone || '缺'),
+    check('现站审计', record.currentSiteAuditPath, record.currentSiteAuditScore ? `${record.currentSiteAuditScore}分` : '缺'),
+    check('设计输入', record.openDesignPrompt || record.websiteBuildHandoffPath, record.openDesignPrompt || record.websiteBuildHandoffPath ? '有' : '缺'),
+    check('样稿链接', record.previewUrl, record.previewUrl ? '有' : '缺'),
+    check('证明素材', record.assetsReady, record.assetsReady ? '齐' : '缺'),
+    check('触达草稿', record.emailDraftReady, record.emailDraftReady ? '齐' : '缺'),
+    check('触达包', record.outreachPackPath, record.outreachPackPath ? '齐' : '缺'),
+  ],
+});
+const projectFacts = (record) => ({
+  metrics: [
+    fact('订单', [record.tier, record.amount ? `${record.amount} ${record.currency}` : ''].filter(Boolean).join(' · ')),
+    fact('修订', `${record.revisionUsed || 0}/${record.revisionLimit || 0}`),
+    fact('状态', record.stageSummary?.label || record.status),
+  ].filter(Boolean),
+  evidence: [
+    fact('阻塞', record.blockerSummary?.primary),
+    fact('下一步', record.nextActionSummary?.label),
+    fact('预览', record.previewUrl),
+  ].filter(Boolean),
+  checks: [
+    check('客户资料', !record.missing?.length, record.missing?.length ? `缺 ${record.missing.length} 项` : '齐'),
+    check('设计输入', record.artifactSummary?.openDesignBound, record.artifactSummary?.openDesignBound ? '有' : '缺'),
+    check('生产交接', record.artifactSummary?.productionHandoffReady, record.artifactSummary?.productionHandoffReady ? '齐' : '缺'),
+    check('质检', record.artifactSummary?.deliveryQaReady, record.artifactSummary?.deliveryQaReady ? '通过' : '缺'),
+    check('预览', record.previewUrl, record.previewUrl ? '有' : '缺'),
+  ],
+});
+const leadNoteAction = (item) => ({
+  clientSlug: item.clientSlug || `discovery-${item.entityKey || 'unknown'}`,
+  orderId: item.orderId || '',
+  company: item.title || '',
+  action: item.noteAction || 'research_more',
+  note: item.note || item.command || item.detail || '',
+});
+
+const discoveryAction = (entity, options) => ({
+  ...discoveryFacts(entity),
+  type: 'discovery',
+  entityKey: entity.entityKey,
+  href: adminLeadHref(entity.promotedClientSlug || entityTitle(entity), entity.promotedClientSlug ? 'all' : 'researching'),
+  title: entityTitle(entity),
+  status: queueStatusLabel(entity.status),
+  tone: options.tone || 'working',
+  meta: entityLocation(entity),
+  contact: `${entity.latest?.phone || '无电话'} · ${entityWebsiteLabel(entity)}`,
+  next: options.next,
+  detail: options.detail || queueDetailLabel(entity.latest?.recommendedAction) || '等待人工判断。',
+  command: options.command ? entityCommand(entity, options.command) : '',
+  runQueueAction: EXECUTABLE_QUEUE_ACTIONS.has(options.noteAction || ''),
+  primaryButton: options.primaryButton || '记录处理',
+  noteAction: options.noteAction || 'research_more',
+  note: options.note || '',
+});
+
+const leadAction = (record, options) => ({
+  ...leadFacts(record),
+  type: 'lead',
+  clientSlug: record.clientSlug,
+  orderId: record.orderId,
+  href: adminLeadHref(record.clientSlug || record.company, record.pipelineStage || 'all'),
+  title: record.company || record.clientSlug,
+  status: queueStatusLabel(record.pipelineLabel),
+  tone: record.pipelineTone,
+  meta: leadContactLine(record),
+  contact: `${contactEmail(record) || '无邮箱'} · ${record.phone || '无电话'} · ${(record.officialWebsiteUrl || record.websiteUrl) ? '有网站' : '无网站'}`,
+  next: options.next || record.nextAction?.label || record.pipelineLabel,
+  detail: queueDetailLabel(options.detail || record.blockingReason || record.nextAction?.reason || record.customerOpportunitySummary || '等待下一步。'),
+  command: options.command || '',
+  runQueueAction: EXECUTABLE_QUEUE_ACTIONS.has(options.noteAction || ''),
+  primaryButton: options.primaryButton || '记录处理',
+  noteAction: options.noteAction || 'research_more',
+  note: options.note || record.nextAction?.reason || '',
+});
+
+const projectAction = (record, options) => ({
+  ...projectFacts(record),
+  type: 'project',
+  href: `/admin/intakes/${record.clientSlug}/${record.orderId}`,
+  title: record.customer.company || record.clientSlug,
+  status: queueStatusLabel(record.status),
+  tone: options.tone || 'working',
+  meta: record.orderId,
+  contact: record.customer.email || record.customer.phone || record.customer.website || '联系方式待补',
+  next: options.next || record.nextActionSummary?.label || record.status,
+  detail: queueDetailLabel(options.detail || record.blockerSummary?.primary || record.artifactSummary?.domainStatus || '等待下一步。'),
+  command: '',
+});
+const queueItemSearch = (item) => [
+  item.title,
+  item.status,
+  item.meta,
+  item.contact,
+  item.next,
+  item.detail,
+  item.command,
+  item.entityKey,
+  item.clientSlug,
+].filter(Boolean).join(' ').toLowerCase();
+
+function readJsonIfExists(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+const readyToPromote = discoveryEntities.filter((entity) => entity.status === 'ready_for_outreach_brief' && !entity.promotedClientSlug);
+const queuedForEnrichment = discoveryEntities.filter((entity) => entity.status === 'queued_for_enrichment' && !entity.promotedClientSlug);
+const manualReview = discoveryEntities.filter((entity) => entity.status === 'manual_review');
+const promotedReadyForMockup = leadIndex.prospectRecords.filter((record) => record.pipelineStage === 'ready_for_mockup');
+const needsVerification = promotedReadyForMockup.filter((record) => {
+  const hasWebsite = Boolean(record.officialWebsiteUrl || record.websiteUrl);
+  const hasAudit = Boolean(record.currentSiteAuditPath);
+  const hasContact = Boolean(contactEmail(record) || record.phone);
+  return !hasWebsite || !hasAudit || !hasContact;
+});
+const outreachPack = leadIndex.prospectRecords.filter((record) => ['mockup_building', 'mockup_ready', 'draft_ready'].includes(record.pipelineStage) && !record.outreachPackPath);
+const outreachDraft = leadIndex.prospectRecords.filter((record) => record.pipelineStage === 'mockup_ready' && record.outreachPackPath && record.assetsReady && record.previewUrl && !record.emailDraftReady);
+const queueMetricNote = '这些数字是本页工作队列计数，不是最终业务 KPI；地图抓取库是上游池子总量，其余数字是当前需要处理的动作量。';
+const queueGroup = (key, items) => ({
+  key,
+  ...queueGroupMeta(key),
+  items,
+});
+
+const leadQueueGroups = [
+  queueGroup('discovery_audit', discoveryQueues.cheapSiteAudit.map((entity) => discoveryAction(entity, {
+      next: '运行初筛审计',
+      command: 'npm run leads:audit-discovery-sites -- --entity-key {entityKey} --limit 1',
+      primaryButton: '记录决定：跑初筛',
+      noteAction: 'run_cheap_audit',
+      note: 'Queue: run cheap site audit for scraped discovery lead.',
+    }))),
+  queueGroup('discovery_promote', readyToPromote.map((entity) => discoveryAction(entity, {
+      next: '转入正式线索',
+      command: 'npm run leads:promote-discovery-store -- --entity-key {entityKey} --limit 1',
+      primaryButton: '记录决定：转正式',
+      noteAction: 'promote_discovery',
+      note: 'Queue: promote discovery entity into lead pipeline.',
+      tone: 'ready',
+    }))),
+  queueGroup('selected_enrichment', queuedForEnrichment.map((entity) => discoveryAction(entity, {
+      next: enrichmentGateFor(entity.entityKey).status === 'approved' ? '已批准，等待执行补资料' : '批准补资料成本',
+      command: `npm run leads:update-enrichment-gate -- --entity-key ${entity.entityKey} --status approved`,
+      primaryButton: enrichmentGateFor(entity.entityKey).status === 'approved' ? '记录：已批准' : '记录决定：批准补资料成本',
+      noteAction: 'approve_enrichment_spend',
+      note: 'Queue: operator approved selected enrichment spend after cheap audit.',
+      tone: 'ready',
+    }))),
+  queueGroup('manual_review', manualReview.map((entity) => discoveryAction(entity, {
+      next: '人工判断',
+      command: 'npm run leads:triage-discovery-manual -- --limit 8',
+      primaryButton: '保留人工判断',
+      noteAction: 'keep_manual_review',
+      note: 'Queue: keep discovery entity in manual review.',
+      tone: 'blocked',
+    }))),
+  queueGroup('ready_mockup', promotedReadyForMockup.map((record) => leadAction(record, {
+      next: '批准进入样稿队列',
+      primaryButton: '记录决定：批准样稿',
+      noteAction: 'approve_mockup',
+      note: 'Queue: approved to create mockup.',
+      tone: 'ready',
+    }))),
+  queueGroup('verification', needsVerification.map((record) => leadAction(record, {
+      next: '补证据',
+      command: `npm run leads:plan-discovery-enrichment -- --limit 5`,
+      primaryButton: '记录决定：补证据',
+      noteAction: 'research_more',
+      note: 'Queue: verify website/contact/audit evidence before mockup.',
+      tone: 'working',
+    }))),
+  queueGroup('outreach_pack', outreachPack.map((record) => leadAction(record, {
+      next: '生成样稿证据包',
+      command: `npm run leads:build-mockup-artifacts -- --client-slug ${record.clientSlug}`,
+      primaryButton: '记录决定：补样稿证据',
+      noteAction: 'build_mockup_artifacts',
+      note: 'Queue: build mockup preview/proof artifacts after approval.',
+      tone: 'ready',
+    }))),
+  queueGroup('outreach_draft', outreachDraft.map((record) => leadAction(record, {
+      next: '生成触达草稿',
+      command: `npm run leads:build-outreach-email-draft -- --client-slug ${record.clientSlug}`,
+      primaryButton: '记录决定：生成草稿',
+      noteAction: 'build_outreach_email_draft',
+      note: 'Queue: build cold outreach draft from mockup proof pack.',
+      tone: 'ready',
+    }))),
+];
+const queueCriteriaSummary = (group) => (group.criteria || [group.summary]).join(' ');
+
+const activeLeadGroupKey = leadQueueGroups.find((group) => group.items.length)?.key || leadQueueGroups[0].key;
+
+const projectQueueGroups = [
   {
     key: 'revision_requested',
     label: '先处理修订',
-    records: index.records.filter((record) => record.status === 'revision_requested'),
+    items: paidIndex.records.filter((record) => record.status === 'revision_requested').map((record) => projectAction(record, { next: '处理修订', tone: 'blocked' })),
   },
   {
     key: 'review_ready',
-    label: '发客户 review',
-    records: index.records.filter((record) => record.stageSummary?.key === 'review_ready'),
+    label: '发客户验收',
+    items: paidIndex.records.filter((record) => record.stageSummary?.key === 'review_ready').map((record) => projectAction(record, { next: '发送验收', tone: 'ready' })),
   },
   {
     key: 'waiting_dns',
-    label: '等待 DNS',
-    records: index.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns'),
+    label: '等待域名解析',
+    items: paidIndex.records.filter((record) => record.artifactSummary?.domainStatus === 'waiting_for_customer_dns').map((record) => projectAction(record, { next: '跟进域名解析' })),
   },
   {
     key: 'missing_open_design',
-    label: '缺少 Open Design',
-    records: index.records.filter((record) => !record.artifactSummary?.openDesignBound),
-  },
-  {
-    key: 'od_needs_input',
-    label: 'OD 需要输入',
-    records: index.records.filter((record) => record.artifactSummary?.openDesignPipelineState === 'needs_input'),
+    label: '缺少设计输入',
+    items: paidIndex.records.filter((record) => !record.artifactSummary?.openDesignBound).map((record) => projectAction(record, { next: '绑定设计输入' })),
   },
   {
     key: 'od_failed',
-    label: 'OD 失败',
-    records: index.records.filter((record) => record.artifactSummary?.openDesignPipelineState === 'failed'),
+    label: '设计生成失败',
+    items: paidIndex.records.filter((record) => record.artifactSummary?.openDesignPipelineState === 'failed').map((record) => projectAction(record, { next: '修复设计生成', tone: 'blocked' })),
   },
   {
     key: 'qa_blocked',
-    label: 'QA 阻塞',
-    records: index.records.filter((record) => !record.artifactSummary?.deliveryQaReady),
+    label: '质检阻塞',
+    items: paidIndex.records.filter((record) => !record.artifactSummary?.deliveryQaReady).map((record) => projectAction(record, { next: '补质检' })),
   },
 ];
+
+const totalLeadQueue = leadQueueGroups.reduce((sum, group) => sum + group.items.length, 0);
+const totalProjectQueue = projectQueueGroups.reduce((sum, group) => sum + group.items.length, 0);
+const queueUiVersion = 'local-style-2026-05-08';
 ---
 
 <Layout title={`行动队列 - ${siteConfig.name}`} description="ProfitsLocal 当前优先动作面板。" active="queue">
-  <section class="poster-section admin-section">
-    <div class="admin-shell">
+  <section class="poster-section admin-section" data-ui-version={queueUiVersion}>
+    <div class="admin-shell lead-admin-shell">
       <div class="admin-header">
         <div>
           <p class="eyebrow">内部运营</p>
           <h1>行动队列</h1>
-          <p class="lede">当你想先决定“现在先做什么”而不是“先看哪个客户”时，就看这个页面。</p>
+          <p class="lede">从地图抓取、初筛、转正式线索、样稿到触达包，用同一张队列表把下一步动作排出来。这里优先显示会影响获客闭环的动作，项目交付队列放在下面继续保留。</p>
         </div>
         <div class="admin-count">
-          <strong>{queueGroups.reduce((sum, group) => sum + group.records.length, 0)}</strong>
+          <strong>{totalLeadQueue + totalProjectQueue}</strong>
           <span>待处理项</span>
         </div>
       </div>
 
-      <dl class="admin-meta-line">
-        <div><dt>修订</dt><dd>{queueGroups.find((group) => group.key === 'revision_requested')?.records.length || 0}</dd></div>
-        <div><dt>DNS</dt><dd>{queueGroups.find((group) => group.key === 'waiting_dns')?.records.length || 0}</dd></div>
-        <div><dt>OD 需输入</dt><dd>{queueGroups.find((group) => group.key === 'od_needs_input')?.records.length || 0}</dd></div>
-        <div><dt>OD 失败</dt><dd>{queueGroups.find((group) => group.key === 'od_failed')?.records.length || 0}</dd></div>
-      </dl>
-
-      <div class="admin-queue-list">
-        {queueGroups.map((group) => (
-          <section class="admin-queue-section">
-            <div class="admin-paper-section-head admin-paper-section-head-inline">
-              <div>
-                <span class="eyebrow">分组</span>
-                <h2>{group.label}</h2>
-              </div>
-              <strong class="admin-section-count">{group.records.length}</strong>
-            </div>
-            <div class="admin-queue-rows">
-              {group.records.length ? group.records.slice(0, 12).map((record) => (
-                <a class="admin-queue-row" href={`/admin/intakes/${record.clientSlug}/${record.orderId}`}>
-                  <strong>{record.customer.company || record.clientSlug}</strong>
-                  <span>{record.nextActionSummary?.label || record.status}</span>
-                  <code>{record.blockerSummary?.primary || record.artifactSummary?.domainStatus || record.orderId}</code>
-                </a>
-              )) : <p class="micro">这个分组里暂时没有项目。</p>}
-            </div>
-          </section>
-        ))}
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">地图抓取库</span>
+          <strong>{discoveryIndex.totals?.entities || 0}</strong>
+          <p>{discoveryIndex.totals?.promoted || 0} 个已转正式，{discoveryIndex.totals?.readyForOutreachBrief || 0} 个待处理。</p>
+        </article>
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">待转正式线索</span>
+          <strong>{readyToPromote.length}</strong>
+          <p>初筛审计后仍有明确销售切入点，可以进入正式线索流程。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">人工判断</span>
+          <strong>{manualReview.length}</strong>
+          <p>AI 证据不够稳，需要人工看官网、地图和审计记录。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">待补资料</span>
+          <strong>{queuedForEnrichment.length}</strong>
+          <p>初筛审计证明值得补资料，但还没有花钱补资料。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">可做样稿</span>
+          <strong>{promotedReadyForMockup.length}</strong>
+          <p>已转正式，等待确认是否进入样稿制作。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">待核实证据</span>
+          <strong>{needsVerification.length}</strong>
+          <p>缺网站、联系方式或现站审计，先补证据再花样稿成本。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">项目动作</span>
+          <strong>{totalProjectQueue}</strong>
+          <p>已付费项目的修订、域名解析、设计输入和质检阻塞动作。</p>
+        </article>
       </div>
+      <p class="admin-summary-note">{queueMetricNote}</p>
+
+      <details class="admin-audit-view queue-ops-log">
+        <summary>最近后台动作、日志和成本策略</summary>
+        <div class="admin-queue-rows">
+          {queueOperations.length ? queueOperations.map((entry) => (
+            <div class="admin-queue-row">
+              <strong>{queueActionLabel(entry.action)} · {entry.status === 'succeeded' ? '成功' : entry.status === 'failed' ? '失败' : entry.status}</strong>
+              <span>{entry.company || entry.clientSlug || entry.entityKey || '批量动作'} · {entry.dryRun ? 'dry-run' : '已执行'} · {entry.finishedAt || entry.createdAt}</span>
+              <code>Google Places: {entry.costPolicy?.googlePlacesApi || '未知'} · Reviews: {entry.costPolicy?.reviews || '未知'} · Email: {entry.costPolicy?.emailExtraction || '未知'}</code>
+            </div>
+          )) : <p class="micro">还没有 Queue 后台动作记录。</p>}
+        </div>
+      </details>
+
+      <div class="admin-toolbar" data-admin-toolbar>
+        <div class="admin-toolbar-group">
+          <span class="admin-toolbar-label">视图</span>
+          <div class="admin-view-pills">
+            <button type="button" class="admin-view-pill is-active" data-admin-view="all">全部</button>
+            {leadQueueGroups.map((group) => (
+              <button type="button" class="admin-view-pill" data-admin-view={group.key}>{group.label}</button>
+            ))}
+          </div>
+        </div>
+        <div class="admin-toolbar-group admin-toolbar-right">
+          <label class="admin-search">
+            <span class="admin-toolbar-label">搜索</span>
+            <input type="search" placeholder="商家、状态、命令、地区" data-admin-search />
+          </label>
+          <p class="micro" data-admin-visible-count>{totalLeadQueue} 条可见</p>
+        </div>
+      </div>
+
+      <div class="lead-pipeline queue-lead-board" data-queue-pipeline>
+        {leadQueueGroups.map((group) => {
+          const isActive = group.key === activeLeadGroupKey;
+          return (
+            <section class={`lead-stage ${isActive ? 'is-active' : ''}`} data-stage-column={group.key}>
+              <button class="lead-stage-rail" type="button" data-stage-toggle={group.key} aria-expanded={isActive ? 'true' : 'false'} title={`${group.label}：${queueCriteriaSummary(group)}`} aria-label={`${group.label}，进入标准：${queueCriteriaSummary(group)}`}>
+                <span>{group.items.length}</span>
+                <strong>{group.label}</strong>
+              </button>
+              <div class="lead-stage-panel">
+                <header class="lead-stage-head">
+                  <div>
+                    <span class="eyebrow">线索队列</span>
+                    <h2>{group.label}</h2>
+                    <p class={`stage-automation-mode stage-automation-${group.automationMode || 'auto'}`}>
+                      <strong>{group.automationLabel || '自动推进'}</strong>
+                      <span>{group.automationSummary || '这个阶段默认由系统推进；Queue 负责显示积压、失败和人工例外。'}</span>
+                    </p>
+                    <details class="stage-criteria">
+                      <summary>进入这个阶段的标准</summary>
+                      <ul>
+                        {(group.criteria || [group.summary]).map((item) => <li>{item}</li>)}
+                      </ul>
+                    </details>
+                  </div>
+                  <strong>{group.items.length}</strong>
+                </header>
+                <div class="stage-useful-info">
+                  <div>
+                    <span>当前应该看什么</span>
+                    <ul>
+                      {(group.visibleInfo || [group.summary]).map((item) => <li>{item}</li>)}
+                    </ul>
+                  </div>
+                  <details>
+                    <summary>工具、日志和成本</summary>
+                    <ul>
+                      {(group.opsInfo || ['暂无额外工具和成本说明。']).map((item) => <li>{item}</li>)}
+                    </ul>
+                    {group.items.some((item) => item.command) ? (
+                      <p class="micro">内部命令仅用于工程复现和排错；日常操作以卡片按钮为准。</p>
+                    ) : null}
+                  </details>
+                </div>
+                <div class="lead-card-list">
+                  {group.items.length ? group.items.slice(0, 12).map((item, idx) => {
+                    const noteAction = leadNoteAction(item);
+                    return (
+                      <article
+                        class={`lead-card ${isActive && idx === 0 ? 'is-open' : ''}`}
+                        data-lead-card
+                        data-stage={group.key}
+                        data-search={queueItemSearch(item)}
+                      >
+                        <button class="lead-card-main" type="button" data-card-toggle>
+                          <span class={`status-pill status-${item.tone}`}>{item.status}</span>
+                          <strong>{item.title}</strong>
+                          <span>{item.meta}</span>
+                          <span class="lead-card-contact">{item.contact}</span>
+                          <em>{item.next}</em>
+                        </button>
+                        <div class="lead-card-detail">
+                          <section class="lead-handoff-brief">
+                            <div class="lead-section-head">
+                              <h3>下一步动作</h3>
+                              <span>{queueTypeLabel(item.type)}</span>
+                            </div>
+                            <p><strong>{group.summary}</strong></p>
+                            <p>{item.detail}</p>
+                            {item.metrics?.length ? (
+                              <dl class="queue-fact-grid">
+                                {item.metrics.slice(0, 6).map((entry) => (
+                                  <div>
+                                    <dt>{entry.label}</dt>
+                                    <dd>{entry.value}</dd>
+                                  </div>
+                                ))}
+                              </dl>
+                            ) : null}
+                            {item.evidence?.length ? (
+                              <ul class="queue-evidence-list">
+                                {item.evidence.slice(0, 3).map((entry) => (
+                                  <li><strong>{entry.label}</strong><span>{entry.value}</span></li>
+                                ))}
+                              </ul>
+                            ) : null}
+                            {item.checks?.length ? (
+                              <div class="queue-check-list" aria-label="关键状态">
+                                {item.checks.slice(0, 8).map((entry) => (
+                                  <span class={entry.done ? 'is-done' : 'is-missing'}>
+                                    <strong>{entry.done ? '✓' : '!'}</strong>
+                                    {entry.label}{entry.value ? `：${entry.value}` : ''}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : null}
+                            {item.command ? (
+                              <details class="lead-command-card lead-internal-command">
+                                <summary>内部命令与复现路径</summary>
+                                <code>{item.command}</code>
+                              </details>
+                            ) : null}
+                          </section>
+                          {item.type === 'project' ? (
+                            <div class="lead-decision-row">
+                              <a class="button secondary" href={item.href}>打开项目</a>
+                            </div>
+                          ) : (
+                            <section>
+                              <h3>{['human_gate', 'cost_gate'].includes(group.automationMode) ? '人工决定' : '自动化控制'}</h3>
+                              <p class="micro">
+                                {group.automationMode === 'human_gate'
+                                  ? '这个阶段需要人工决定；按钮会记录决定，必要时触发后台流程。'
+                                  : group.automationMode === 'cost_gate'
+                                    ? '涉及付费补资料前必须先确认；按钮会记录批准或触发 dry-run 后台流程。'
+                                    : '这个阶段原则上自动推进；按钮主要用于手动重试、补跑或排错。'}
+                              </p>
+                              <div class="lead-decision-row">
+                                {item.runQueueAction ? (
+                                  <form method="post" action="/admin/lead-queue-action">
+                                    <input type="hidden" name="queue_action" value={noteAction.action} />
+                                    <input type="hidden" name="entity_key" value={item.entityKey || ''} />
+                                    <input type="hidden" name="client_slug" value={item.clientSlug || noteAction.clientSlug} />
+                                    <input type="hidden" name="company" value={noteAction.company} />
+                                    <input type="hidden" name="actor" value="profitslocal-admin" />
+                                    <button class="button" type="submit">运行这个动作</button>
+                                  </form>
+                                ) : null}
+                                <form method="post" action="/admin/lead-note">
+                                  <input type="hidden" name="client_slug" value={noteAction.clientSlug} />
+                                  <input type="hidden" name="order_id" value={noteAction.orderId} />
+                                  <input type="hidden" name="company" value={noteAction.company} />
+                                  <input type="hidden" name="actor" value="profitslocal-admin" />
+                                  <input type="hidden" name="action" value={noteAction.action} />
+                                  <input type="hidden" name="note" value={noteAction.note} />
+                                  <button class={`button ${item.runQueueAction ? 'secondary' : ''}`} type="submit">{item.primaryButton}</button>
+                                </form>
+                                <a class="button secondary" href={item.href || '/admin/leads'}>打开线索</a>
+                              </div>
+                            </section>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  }) : <p class="lead-empty">这个分组暂时没有线索。</p>}
+                </div>
+              </div>
+            </section>
+          );
+        })}
+      </div>
+
+      <details class="admin-audit-view">
+        <summary>打开项目交付队列</summary>
+        <div class="admin-queue-list">
+          {projectQueueGroups.map((group) => (
+            <section class="admin-queue-section">
+              <div class="admin-paper-section-head admin-paper-section-head-inline">
+                <div>
+                  <span class="eyebrow">项目队列</span>
+                  <h2>{group.label}</h2>
+                </div>
+                <strong class="admin-section-count">{group.items.length}</strong>
+              </div>
+              <div class="admin-queue-rows">
+                {group.items.length ? group.items.slice(0, 12).map((item) => (
+                  <a class="admin-queue-row" href={item.href}>
+                    <strong>{item.title}</strong>
+                    <span>{item.next}</span>
+                    <code>{item.detail}</code>
+                  </a>
+                )) : <p class="micro">这个分组里暂时没有项目。</p>}
+              </div>
+            </section>
+          ))}
+        </div>
+      </details>
     </div>
   </section>
+
+  <script>
+    const toolbar = document.querySelector('[data-admin-toolbar]');
+    const pipeline = document.querySelector('[data-queue-pipeline]');
+    const searchInput = toolbar?.querySelector('[data-admin-search]');
+    const viewButtons = [...(toolbar?.querySelectorAll('[data-admin-view]') || [])];
+    const cards = [...document.querySelectorAll('[data-lead-card][data-stage]')];
+    const visibleCount = toolbar?.querySelector('[data-admin-visible-count]');
+
+    document.querySelectorAll('[data-stage-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-stage-column]').forEach((column) => {
+          const active = column.dataset.stageColumn === button.dataset.stageToggle;
+          column.classList.toggle('is-active', active);
+          column.querySelector('[data-stage-toggle]')?.setAttribute('aria-expanded', active ? 'true' : 'false');
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-card-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('[data-lead-card]');
+        const column = card?.closest('[data-stage-column]');
+        column?.querySelectorAll('[data-lead-card]').forEach((item) => item.classList.toggle('is-open', item === card && !item.classList.contains('is-open')));
+      });
+    });
+
+    const applyFilters = () => {
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      const activeView = viewButtons.find((button) => button.classList.contains('is-active'))?.dataset.adminView || 'all';
+      let shown = 0;
+      cards.forEach((card) => {
+        const matchesQuery = !query || (card.dataset.search || '').includes(query);
+        const matchesView = activeView === 'all' || card.dataset.stage === activeView;
+        const visible = matchesQuery && matchesView;
+        card.hidden = !visible;
+        if (visible) shown += 1;
+      });
+      if (visibleCount) visibleCount.textContent = `${shown} 条可见`;
+      pipeline?.classList.toggle('is-filtering', activeView !== 'all' || Boolean(query));
+    };
+
+    viewButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        viewButtons.forEach((item) => item.classList.remove('is-active'));
+        button.classList.add('is-active');
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener('input', applyFilters);
+    applyFilters();
+  </script>
 </Layout>

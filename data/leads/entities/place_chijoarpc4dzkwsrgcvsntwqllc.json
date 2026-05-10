@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijoarpc4dzkwsrgcvsntwqllc",
+  "firstSeenAt": "2026-05-09T04:36:05.407Z",
+  "lastSeenAt": "2026-05-09T04:36:05.407Z",
+  "status": "ready_for_outreach_brief",
+  "lastStatusAt": "2026-05-09T04:46:00.690Z",
+  "identifiers": {
+    "place_id": "ChIJOaRPC4dZkWsRGcVsNTwqllc",
+    "cid": "6311278365889053977",
+    "data_id": "0x6b9159870b4fa439:0x57962a3c356cc519",
+    "websiteDomain": "baralto.com.au",
+    "phoneDigits": "0733581063"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "Bar Alto",
+    "category": "Bar",
+    "categories": [
+      "Bar",
+      "Restaurant"
+    ],
+    "address": "119 Lamington St, New Farm QLD 4005",
+    "city": "Brisbane",
+    "niche": "restaurant",
+    "phone": "(07) 3358 1063",
+    "website": "http://www.baralto.com.au/",
+    "google_maps_url": "https://www.google.com/maps/place/Bar+Alto/data=!4m7!3m6!1s0x6b9159870b4fa439:0x57962a3c356cc519!8m2!3d-27.4689954!4d153.0544137!16s%2Fg%2F11b6gm3629!19sChIJOaRPC4dZkWsRGcVsNTwqllc?authuser=0&hl=en&rclk=1",
+    "rating": 4.3,
+    "review_count": 386,
+    "websiteStatus": "independent_http_site",
+    "discoveryScore": 69,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "restaurants in New Farm Brisbane",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 9,
+      "hasPopularTimes": false,
+      "hasAboutAttributes": true
+    }
+  },
+  "runs": [
+    {
+      "runId": "20260509-1221-new-farm-store-check",
+      "query": "restaurants in New Farm Brisbane",
+      "runPath": "data/maps-scraper/runs/20260509-1221-new-farm-store-check/discovery-run.json",
+      "at": "2026-05-09T04:36:05.407Z",
+      "discoveryScore": 69,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-09T04:36:05.407Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260509-1221-new-farm-store-check",
+      "query": "restaurants in New Farm Brisbane",
+      "score": 69,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-09T04:45:54.115Z",
+      "event": "status_updated",
+      "status": "queued_for_enrichment",
+      "clientSlug": "",
+      "note": "Cheap site audit 56/100: build_mockup. /Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site-audit.json"
+    },
+    {
+      "at": "2026-05-09T04:46:00.690Z",
+      "event": "status_updated",
+      "status": "ready_for_outreach_brief",
+      "clientSlug": "",
+      "note": "Discovery outreach brief written: /Users/matthew/Developer/google-map-website/data/leads/outreach-briefs/place_chijoarpc4dzkwsrgcvsntwqllc/outreach-brief.json"
+    }
+  ],
+  "notes": [
+    "Cheap site audit 56/100: build_mockup. /Users/matthew/Developer/google-map-website/data/leads/audits/place_chijoarpc4dzkwsrgcvsntwqllc/current-site-audit.json",
+    "Discovery outreach brief written: /Users/matthew/Developer/google-map-website/data/leads/outreach-briefs/place_chijoarpc4dzkwsrgcvsntwqllc/outreach-brief.json"
+  ]
+}

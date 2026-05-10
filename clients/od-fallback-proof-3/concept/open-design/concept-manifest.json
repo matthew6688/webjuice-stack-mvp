@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-07T13:08:40.733Z",
+  "clientSlug": "od-fallback-proof-3",
+  "projectId": "od-fallback-proof-3",
+  "conversationId": "04c2fa0c-da33-4a17-a29c-6f348af20cbf",
+  "runId": "8691a4c6-35bd-4f0a-9e7f-a1202ca794d2",
+  "agentId": "codex",
+  "agentName": "Codex CLI",
+  "agentVersion": "codex-cli 0.128.0",
+  "skillId": "web-prototype",
+  "designSystemId": null,
+  "model": "default",
+  "reasoning": "low",
+  "sourceUrl": "https://www.darkshepherd.com.au/",
+  "businessType": "restaurant",
+  "tone": "luxury, refined, editorial",
+  "scope": "multi-page",
+  "prompt": "Skip questions. Use Open Design's existing web-prototype/design workflow and produce a high-fidelity concept artifact.\nSource website: https://www.darkshepherd.com.au/\nClient slug: od-fallback-proof-3\nBusiness type: restaurant\nVisual tone: luxury, refined, editorial\nScope: multi-page\n\nIf a source website is provided, inspect it and match the existing brand direction instead of inventing a new generic style.\nPreserve core business facts, logo/brand identity, existing navigation intent, contact details, booking/order/contact links, menu/service/product content, and old URL intent where visible.\nCreate concept files in the project folder. Prefer index.html plus local assets and brand-spec.md when brand information is available.\nDo not deploy. Do not edit any ProfitsLocal production repo. This is concept generation only.",
+  "daemonUrl": "http://127.0.0.1:7466",
+  "openDesignRoot": "/Users/matthew/Developer/open-design",
+  "mode": "app-visible",
+  "dataDir": "/Users/matthew/Developer/open-design/.od",
+  "outDir": "/Users/matthew/Developer/google-map-website/clients/od-fallback-proof-3/concept/open-design",
+  "status": {
+    "status": "succeeded",
+    "code": 0,
+    "signal": null,
+    "completionMode": "artifact_quiet_fallback",
+    "artifactSnapshot": {
+      "ready": true,
+      "htmlCount": 4,
+      "cssCount": 0,
+      "fileCount": 9,
+      "quietForMs": 15874.41845703125,
+      "latestMtimeMs": 1778159304844.5815
+    }
+  },
+  "files": [
+    {
+      "path": "assets/dark-shepherd-hero.jpg",
+      "size": 313416,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "assets/dining-room.jpg",
+      "size": 183790,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "assets/ds-logo.png",
+      "size": 13268,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "assets/lamb-fire.jpg",
+      "size": 247172,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "brand-spec.md",
+      "size": 1282,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "contact.html",
+      "size": 15987,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "functions.html",
+      "size": 15987,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "index.html",
+      "size": 15987,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    },
+    {
+      "path": "menu.html",
+      "size": 15987,
+      "kind": null,
+      "mime": null,
+      "artifactKind": null
+    }
+  ]
+}

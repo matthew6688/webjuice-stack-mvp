@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "comparisonPath": "data/qa/document-model-comparison/document-model-comparison-report.html",
+  "publicComparisonPath": "public/admin-artifacts/document-model-comparison/document-model-comparison-report.html",
+  "leadHtmlPath": "clients/roofing-restoration-greg-sign/reports/discovery-report-cn.html",
+  "leadMdPath": "clients/roofing-restoration-greg-sign/reports/discovery-report-cn.md",
+  "leadJsonPath": "clients/roofing-restoration-greg-sign/reports/discovery-report-cn.json",
+  "publicLeadHtmlPath": "public/admin-artifacts/roofing-restoration-greg-sign/reports/discovery-report-cn.html",
+  "publicLeadMdPath": "public/admin-artifacts/roofing-restoration-greg-sign/reports/discovery-report-cn.md",
+  "publicLeadJsonPath": "public/admin-artifacts/roofing-restoration-greg-sign/reports/discovery-report-cn.json",
+  "selectedProvider": "Codex CLI",
+  "providers": [
+    {
+      "label": "Codex CLI",
+      "runId": "smoke-cli",
+      "score": 100,
+      "grade": "A",
+      "durationMs": 44772
+    },
+    {
+      "label": "Claude Code CLI",
+      "runId": "smoke-cli",
+      "score": 95,
+      "grade": "A",
+      "durationMs": 35639
+    },
+    {
+      "label": "Qwen local think-off",
+      "runId": "smoke-qwen-think-off",
+      "score": 95,
+      "grade": "A",
+      "durationMs": 230390
+    },
+    {
+      "label": "DeepSeek local strict-v2",
+      "runId": "smoke-deepseek-strict-v2",
+      "score": 89,
+      "grade": "B",
+      "durationMs": 67001
+    }
+  ]
+}

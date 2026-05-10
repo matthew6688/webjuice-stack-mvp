@@ -27,7 +27,10 @@ try {
 
   assert.equal(result.intake.strategy.familyId, 'field_service');
   assert.equal(result.redesignCheck.decision, 'redesign_preview');
-  assert.equal(result.readyToBuild.status, 'needs_more_research');
+  assert.equal(result.readyToBuild.status, 'ready_for_open_design');
+  assert.equal(result.readyToBuild.aiConclusion.result, 'ready_for_mockup');
+  assert.equal(typeof result.readyToBuild.aiConclusion.score, 'number');
+  assert.ok(result.readyToBuild.websiteBuildHandoff.openDesignPayload.prompt.includes('Northside Roofing'));
   assert.equal(result.outreachBrief.channelRecommendation, 'email');
   assert.equal(fs.existsSync(saved.intake), true);
   assert.equal(fs.existsSync(saved.research), true);
@@ -42,6 +45,9 @@ try {
       familyId: result.summary.familyId,
       redesignDecision: result.summary.redesignDecision,
       readyToBuildStatus: result.summary.readyToBuildStatus,
+      aiConclusion: result.summary.aiConclusion,
+      aiScore: result.summary.aiScore,
+      websitePlanType: result.summary.websitePlanType,
       outreachChannel: result.summary.outreachChannel,
       savedLeadOps: saved.leadOps,
     },
@@ -50,4 +56,3 @@ try {
   process.chdir(previousCwd);
   fs.rmSync(tmp, { recursive: true, force: true });
 }
-

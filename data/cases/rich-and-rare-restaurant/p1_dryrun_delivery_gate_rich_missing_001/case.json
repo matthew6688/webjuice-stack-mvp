@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "caseId": "rich-and-rare-restaurant_p1_dryrun_delivery_gate_rich_missing_001",
+  "status": "dry_run_created",
+  "clientSlug": "rich-and-rare-restaurant",
+  "repo": "matthew6688/rich-and-rare-restaurant",
+  "branch": "dev",
+  "previewUrl": "https://rich-and-rare-restaurant-dev.pages.dev/",
+  "order": {
+    "id": "p1_dryrun_delivery_gate_rich_missing_001",
+    "provider": "dry_run",
+    "tier": "dry_run",
+    "amount": 0,
+    "currency": "USD",
+    "paymentStatus": "not_paid"
+  },
+  "customer": {
+    "company": "Rich & Rare Restaurant",
+    "email": "matthew6688@gmail.com",
+    "phone": "",
+    "domain": ""
+  },
+  "discord": {
+    "salesThreadId": "",
+    "revisionThreadId": "",
+    "websiteTaskThreadId": "",
+    "lastChannelId": "",
+    "lastMessageId": "",
+    "lastMessageUrl": ""
+  },
+  "sourceOfTruth": {
+    "evidence": "clients/rich-and-rare-restaurant/evidence/evidence.json",
+    "content": "clients/rich-and-rare-restaurant/content.restaurant.json",
+    "design": "clients/rich-and-rare-restaurant/design.restaurant.json",
+    "brandSpec": "clients/rich-and-rare-restaurant/brand-spec.md",
+    "checkout": "clients/rich-and-rare-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/rich-and-rare-restaurant/intake/website-survey.json"
+  },
+  "paths": {
+    "casePath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/case.json",
+    "contextPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/context-packet.json",
+    "timelinePath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/timeline.jsonl",
+    "buildPacketPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/build-packet.md",
+    "artifactsDir": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/artifacts"
+  },
+  "createdAt": "2026-05-07T09:28:54.833Z",
+  "updatedAt": "2026-05-07T09:28:54.833Z"
+}

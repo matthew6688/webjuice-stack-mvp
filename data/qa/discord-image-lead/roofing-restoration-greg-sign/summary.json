@@ -1,0 +1,141 @@
+{
+  "ok": true,
+  "clientSlug": "roofing-restoration-greg-sign",
+  "input": {
+    "clientSlug": "roofing-restoration-greg-sign",
+    "sourceType": "image_ocr",
+    "businessName": "Roofing & Restoration",
+    "industry": "roofing and restoration",
+    "phone": "0424 371 622",
+    "observations": [
+      "Lead came from a Discord-posted sign/photo OCR plus operator note.",
+      "Claims 40 years experience and free in-person inspection/quote.",
+      "Only phone contact is visible; no address, city, email, website, Google profile, or social account is known yet."
+    ],
+    "services": [
+      "roof restorations",
+      "capping",
+      "respray",
+      "repairs",
+      "gutters",
+      "driveway",
+      "patio",
+      "external living",
+      "retaining wall",
+      "pressure cleaning"
+    ],
+    "notes": [
+      "Contact person visible on sign: Greg."
+    ]
+  },
+  "discordSimulation": {
+    "ok": true,
+    "dryRun": true,
+    "workspace": "website-leads",
+    "channelId": "1501187038706401290",
+    "threadPolicy": "do_not_create_thread_until_human_approves_or_mockup_starts",
+    "simulatedMessage": {
+      "content": "New image lead from Discord\nclientSlug: roofing-restoration-greg-sign\nsource: photo OCR + operator text\nvisible contact: 0424 371 622\ncontact person: Greg\nservices: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning",
+      "attachments": [
+        {
+          "name": "roofing-restoration-sign.jpg",
+          "note": "Image supplied in chat; local binary was not available to persist, OCR text was persisted."
+        }
+      ]
+    },
+    "resultingArtifacts": {
+      "intake": "clients/roofing-restoration-greg-sign/lead/lead-intake.json",
+      "research": "clients/roofing-restoration-greg-sign/lead/lead-research.json",
+      "redesignCheck": "clients/roofing-restoration-greg-sign/lead/redesign-check.json",
+      "readyToBuild": "clients/roofing-restoration-greg-sign/lead/ready-to-build.json",
+      "outreachBrief": "clients/roofing-restoration-greg-sign/outreach/outreach-brief.json",
+      "leadOps": "clients/roofing-restoration-greg-sign/lead/lead-ops.json"
+    }
+  },
+  "evidencePath": "clients/roofing-restoration-greg-sign/evidence/evidence.json",
+  "leadOpsSummary": {
+    "familyId": "field_service",
+    "previewability": "ready_for_preview",
+    "productionReadiness": "ready_for_open_design",
+    "redesignDecision": "not_applicable",
+    "readyToBuildStatus": "ready_for_open_design",
+    "outreachChannel": "sms_or_call",
+    "outreachPreviewMode": "starter_preview"
+  },
+  "contactability": {
+    "status": "reachable",
+    "channels": {
+      "emails": [],
+      "phones": [
+        "0424 371 622"
+      ],
+      "contactPageUrl": "",
+      "socialDm": []
+    }
+  },
+  "previewability": {
+    "status": "ready_for_preview",
+    "reason": "The lead is reachable and has enough context for a starter preview."
+  },
+  "productionReadiness": {
+    "status": "ready_for_open_design",
+    "reason": "The packet has enough verified facts and structured content for Open Design.",
+    "warnings": []
+  },
+  "missingCritical": [],
+  "verified": {
+    "businessName": "Roofing & Restoration",
+    "industry": "roofing and restoration",
+    "phones": [
+      "0424 371 622"
+    ],
+    "emails": [],
+    "socialDm": []
+  },
+  "inferred": {
+    "audience": "property owners who need a reliable local operator they can contact quickly",
+    "primaryCTA": "Call now",
+    "heroAngle": "roof restorations presented around one clear local advantage: Lead came from a Discord-posted sign/photo OCR plus operator note",
+    "tone": "practical, credible, conversion-focused",
+    "coreServices": [
+      "roof restorations",
+      "capping",
+      "respray",
+      "repairs"
+    ],
+    "designDirection": [
+      "high-contrast CTA",
+      "practical trust signals",
+      "service-area clarity"
+    ],
+    "problemType": "no_website"
+  },
+  "nextStep": "Send the handoff into Open Design or the next build module.",
+  "outreach": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-05-08T12:40:21.917Z",
+    "clientSlug": "roofing-restoration-greg-sign",
+    "niche": "roofing and restoration",
+    "familyId": "field_service",
+    "buildMode": "starter",
+    "previewMode": "starter_preview",
+    "outreachReady": true,
+    "diagnosis": "Roofing & Restoration appears to have no meaningful website presence, which means search and referral traffic has nowhere strong to land. A simple, credible roofing and restoration site would likely improve trust and enquiry conversion. Show service coverage, fast response, and quote intent more clearly. Turn phone or quote actions into the dominant path on mobile. The biggest revenue leak is usually weak quote intent and unclear trust on mobile.",
+    "siteBrief": "Roofing & Restoration is a roofing and restoration. Lead with roof restorations presented around one clear local advantage: Lead came from a Discord-posted sign/photo OCR plus operator note Highlight roof restorations, capping, respray. Keep the tone practical, credible, conversion-focused. The main CTA should be Call now. One design choice that should stand out is high-contrast CTA.",
+    "coldMessage": "Hey Roofing, I looked at Roofing & Restoration. Lead came from a Discord-posted sign/photo OCR plus operator note. Noticed there is no dedicated website experience for your roofing and restoration in your area, so I mocked up what a clearer first impression could look like. Happy to send the mockup if you want to see it.",
+    "followUps": [
+      "Quick follow-up: the clearest gap I noticed is service-area clarity. I can send over the mockup if it would help.",
+      "One more thought: nearby competitors usually do a better job showing quote or call CTA. I already mocked up a tighter version if you want to compare it."
+    ],
+    "channelRecommendation": "sms_or_call",
+    "subjectLines": [
+      "Built something for Roofing & Restoration",
+      "Quick mockup for Roofing & Restoration",
+      "Saw your listing and made this for Roofing & Restoration"
+    ],
+    "proofPoints": [
+      "Main improvement angle: service-area clarity",
+      "Service-area and quote path can be made clearer on mobile"
+    ]
+  }
+}

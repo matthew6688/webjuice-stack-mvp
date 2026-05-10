@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "runId": "smoke-local",
+  "outRoot": "data/qa/document-model-comparison/smoke-local",
+  "providers": [
+    {
+      "id": "deterministic",
+      "provider": "deterministic",
+      "model": null,
+      "status": "ok",
+      "durationMs": 0,
+      "score": 100,
+      "grade": "A",
+      "ok": true,
+      "topFindings": []
+    },
+    {
+      "id": "ollama-gemma3:27b",
+      "provider": "ollama",
+      "model": "gemma3:27b",
+      "status": "error",
+      "durationMs": 180006,
+      "score": 0,
+      "grade": "F",
+      "ok": false,
+      "topFindings": [
+        {
+          "severity": "hard_fail",
+          "code": "invalid_json",
+          "points": -100,
+          "message": "Output was not parseable JSON."
+        }
+      ]
+    },
+    {
+      "id": "ollama-deepseek-r1:14b",
+      "provider": "ollama",
+      "model": "deepseek-r1:14b",
+      "status": "ok",
+      "durationMs": 105350,
+      "score": 49,
+      "grade": "F",
+      "ok": false,
+      "topFindings": [
+        {
+          "severity": "hard_fail",
+          "code": "invented_email",
+          "points": -20,
+          "message": "Output invented an email address."
+        },
+        {
+          "severity": "major",
+          "code": "weak_block_plan",
+          "points": -10,
+          "message": "Block plan should include at least hero, services, proof/trust, process/FAQ, and contact."
+        },
+        {
+          "severity": "major",
+          "code": "weak_contact_cta",
+          "points": -4,
+          "message": "Copy does not make the phone/contact CTA clear."
+        },
+        {
+          "severity": "major",
+          "code": "weak_fact_lock",
+          "points": -5,
+          "message": "Fact lock does not protect contact details and forbidden claims clearly."
+        }
+      ]
+    }
+  ],
+  "bestProvider": "deterministic",
+  "generatedAt": "2026-05-10T06:19:07.333Z",
+  "reevaluatedAt": "2026-05-10T07:08:23.887Z"
+}

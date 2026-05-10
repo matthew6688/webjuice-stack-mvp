@@ -1,0 +1,331 @@
+Build an original productized modern roofing website template family inspired by the reference brief in this folder.
+
+Template family: productized-modern-roofing
+
+Use design-language.md and section-patterns.json as the contract. The result should feel like a polished Webflow/SaaS-quality roofing site: clean hero, service/material product cards, service accordion, FAQ, quote CTA, and a calm premium footer.
+
+Do not copy the reference brand, logo, exact text, code, or paid assets. Recreate the design language and section patterns as an original ProfitsLocal template.
+
+Required outputs:
+- index.html for the primary template
+- a clean one-page version and notes for a simple multi-page expansion
+- local assets under assets/
+- style-guide.md if brand/design tokens are clear
+
+Rules:
+- Customer-facing copy only.
+- No internal workflow terms.
+- Use rich demo content where allowed by template-manifest.json.
+- Do not invent verified facts listed in factsPolicy.mustNotInvent.
+- Use photo-quality niche imagery when the reference style depends on photography.
+- Use material/product visuals where possible, but do not invent prices or product brands.
+- Prefer the reviewed manual ChatGPT Image assets recorded in template-manifest.json `selectedImages`.
+- Primary hero should use the wide sunset metal-roof image.
+- Product/material cards should use the reviewed metal, terracotta, and composite sample images.
+- Use the drone inspection image for inspection/package/FAQ proof and the roofer-on-metal-roof image for service detail.
+- Do not replace these approved photo assets with SVG-only product art or generic stock-like placeholders.
+- Ask no question form unless generation is technically impossible.
+
+## Brand Kit / Logo Policy
+Business name: Roofex Roofing Systems
+Logo policy: single-default-demo-logo
+If the client has no logo, use exactly one default demo logo direction. Do not ask the client to choose and do not create multiple logo options.
+Selected logo direction: Productized Modern Roofing style: simple geometric roof/service mark plus readable wordmark. No fake badges, no copied reference logo.
+Selected SVG concept: <svg viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M8 27 30 9l22 18" fill="none" stroke="#64748B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 27h24v14H20z" fill="#111827"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#F3F4F6">RR</text></svg>
+
+## Reviewed Local Image Assets
+Use these reviewed images as the primary visual source for this template. Copy them into `assets/` before referencing them from HTML.
+Do not substitute these approved images with SVG-only art, weak placeholders, or unrelated generic stock imagery.
+
+- hero: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-hero-modern-metal-roof-sunset-wide.png
+- inspection: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-inspection-drone-roof-check.png
+- materialTerracotta: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-terracotta-tile-sample.png
+- materialMetal: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-standing-seam-metal-sample.png
+- materialComposite: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-product-composite-shingle-sample.png
+- service: templates/roofing/families/productized-modern-roofing/image-candidates/manual-chatgpt-image/2026-05-09-family-3/family3-service-modern-roofer-metal-roof.png
+
+## Design Language
+# Productized Modern Roofing Design Language
+
+Niche: roofing
+
+## Reference Summary
+
+Inspired by Matthew's Roofex-style reference: modern SaaS/Webflow-like polish, clean gray/white layout, product/material tiles, partner logo strip, FAQ accordion, service accordion, large footer wordmark, and calm premium photography.
+
+## Visual Thesis
+
+Modern productized roofing: precise, clean, consultative, and easy to compare, especially for businesses that sell materials, roofing systems, inspections, or quote packages.
+
+## Typography Direction
+
+- Display: modern sans-serif with large clean shapes.
+- Body: neutral sans-serif.
+- UI labels: small, technical, understated.
+
+## Color System
+
+- Dominant: white and light gray.
+- Accent: black / charcoal with subtle green or blue only for actions.
+- Background: airy off-white bands.
+- Footer: pale gray or charcoal with oversized wordmark treatment.
+
+## Imagery
+
+- hero: contractor on roof with clean overlay.
+- materials: tile/metal product shots or AI-generated material tiles.
+- services: one strong service image plus accordion rows.
+- FAQ: minimal, clear.
+
+## Layout Patterns
+
+- hero: contained image hero with simple nav and stats.
+- trust: muted logo/partner strip when demo-safe.
+- materials: product grid with roof tile/material cards.
+- services: accordion/list with one preview image.
+- FAQ: centered accordion.
+- CTA: premium roofing banner with image overlay.
+
+## Best Fit
+
+- Roofers who sell roof materials, restoration packages, inspections, or repeatable service bundles.
+- Simple multi-page website where clarity and quoting matter more than editorial drama.
+- Leads where we want to emphasize organized process and product choice.
+
+## Do
+
+- Keep spacing calm and readable.
+- Make comparison/product structure clear.
+- Use FAQ and materials as conversion tools.
+
+## Do Not
+
+- Use busy collage layouts.
+- Overdo luxury serif type.
+- Invent prices or product brands unless provided.
+
+## Machine-Readable DESIGN.md Contract
+---
+version: alpha
+name: "Productized Modern Roofing"
+description: "Productized Modern Roofing roofing template family design contract"
+colors:
+  primary: "#111827"
+  secondary: "#64748B"
+  tertiary: "#2F6F5E"
+  neutral: "#F3F4F6"
+  surface: "#FFFFFF"
+  on-primary: "#FFFFFF"
+  on-tertiary: "#FFFFFF"
+typography:
+  h1:
+    fontFamily: "Inter"
+    fontSize: 4rem
+    fontWeight: 750
+    lineHeight: 1
+    letterSpacing: 0
+  h2:
+    fontFamily: "Inter"
+    fontSize: 2.5rem
+    fontWeight: 700
+    lineHeight: 1.08
+  body-md:
+    fontFamily: "Inter"
+    fontSize: 1rem
+    fontWeight: "400"
+    lineHeight: "1.6"
+  label-caps:
+    fontFamily: "Inter"
+    fontSize: "0.75rem"
+    fontWeight: "800"
+    lineHeight: "1.2"
+rounded:
+  sm: 4px
+  md: 8px
+  lg: 16px
+spacing:
+  sm: 8px
+  md: 16px
+  lg: 32px
+  xl: 64px
+components:
+  button-primary:
+    backgroundColor: "{colors.tertiary}"
+    textColor: "{colors.on-tertiary}"
+    typography: "{typography.label-caps}"
+    rounded: "{rounded.md}"
+    padding: 14px
+  hero-surface:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.lg}"
+---
+
+## Overview
+
+Modern productized roofing: precise, clean, consultative, and easy to compare, especially for businesses that sell materials, roofing systems, inspections, or quote packages.
+
+## Colors
+
+- **Primary (#111827):** clean charcoal for productized service clarity.
+- **Secondary (#64748B):** muted UI labels, dividers, and secondary copy.
+- **Tertiary (#2F6F5E):** subtle green for quote and action paths.
+- **Neutral (#F3F4F6):** airy gray bands and product comparison areas.
+- **Surface (#FFFFFF):** main content canvas.
+
+## Typography
+
+- Display: modern sans-serif with large clean shapes.
+- Body: neutral sans-serif.
+- UI labels: small, technical, understated.
+
+## Layout
+
+- hero: contained image hero with simple nav and stats.
+- trust: muted logo/partner strip when demo-safe.
+- materials: product grid with roof tile/material cards.
+- services: accordion/list with one preview image.
+- FAQ: centered accordion.
+- CTA: premium roofing banner with image overlay.
+
+## Elevation & Depth
+
+Use depth only when it supports hierarchy. Photo-heavy families should rely on image composition, contrast, and section rhythm before decorative shadows.
+
+## Shapes
+
+Default to restrained corners. Use larger radii only for image containers and CTA panels when the reference style supports it.
+
+## Components
+
+- **Hero:** must clearly communicate the niche in the first viewport.
+- **Primary CTA:** uses the tertiary token and must be visually obvious.
+- **Service modules:** should match the family layout direction, not a generic card grid.
+- **Footer:** must feel complete and credible, even when demo-safe content is used.
+
+## Do's and Don'ts
+
+### Do
+
+- Keep spacing calm and readable.
+- Make comparison/product structure clear.
+- Use FAQ and materials as conversion tools.
+
+### Don't
+
+- Use busy collage layouts.
+- Overdo luxury serif type.
+- Invent prices or product brands unless provided.
+
+
+
+
+## Section Contract
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "family": "productized-modern-roofing",
+  "pageTypes": {
+    "onePage": {
+      "requiredSections": [
+        "hero",
+        "services",
+        "proof",
+        "projectsTeaser",
+        "process",
+        "faq",
+        "contact",
+        "footer"
+      ],
+      "optionalSections": [
+        "about",
+        "serviceArea",
+        "materials",
+        "blogTeaser"
+      ]
+    },
+    "multiPage": {
+      "pages": [
+        "home",
+        "about",
+        "services",
+        "serviceDetail",
+        "projects",
+        "projectDetail",
+        "faq",
+        "blog",
+        "blogDetail",
+        "appointment"
+      ]
+    }
+  },
+  "sections": []
+}
+
+## QA Rubric
+{
+  "schemaVersion": 1,
+  "passScore": 85,
+  "criteria": [
+    {
+      "id": "referenceFidelity",
+      "label": "Reference fidelity without copying",
+      "weight": 15
+    },
+    {
+      "id": "firstViewportImpact",
+      "label": "First viewport impact",
+      "weight": 15
+    },
+    {
+      "id": "imageDensity",
+      "label": "Image density and niche relevance",
+      "weight": 12
+    },
+    {
+      "id": "nicheFit",
+      "label": "Niche and sub-niche fit",
+      "weight": 12
+    },
+    {
+      "id": "pageCompleteness",
+      "label": "Page/system completeness",
+      "weight": 12
+    },
+    {
+      "id": "ctaHierarchy",
+      "label": "CTA hierarchy and conversion path",
+      "weight": 10
+    },
+    {
+      "id": "trustProof",
+      "label": "Trust/proof richness",
+      "weight": 8
+    },
+    {
+      "id": "mobilePolish",
+      "label": "Mobile polish",
+      "weight": 8
+    },
+    {
+      "id": "copyCleanliness",
+      "label": "Customer-facing copy cleanliness",
+      "weight": 8
+    }
+  ],
+  "hardFails": [
+    "customer-visible internal workflow terms",
+    "missing primary visual asset in a photo-heavy family",
+    "fake verified facts such as reviews, licenses, address, years, awards, or prices",
+    "no visible phone/form/contact path in lead-generation templates"
+  ]
+}
+
+## Template Library Requirements
+- Build an original ProfitsLocal-owned template, not a clone.
+- Use realistic local-business copy and rich demo-safe content where allowed.
+- Include visible niche imagery or generated assets; do not ship a text-only page.
+- If reviewed local images are listed, copy them into the generated project assets directory and use them as real <img> assets.
+- If a brand kit is listed, use the selected default logo direction and do not generate multiple customer-choice logos.
+- Do not expose internal words like audit, mockup, lead-ops, Open Design, or template-lab in customer-facing pages.
+- Produce a result strong enough to be listed in the ProfitsLocal public template library after QA.

@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "mode": "project_dry_run",
+  "clientSlug": "rich-and-rare-restaurant",
+  "businessName": "Rich & Rare Restaurant",
+  "niche": "restaurant",
+  "route": "website",
+  "repo": "matthew6688/rich-and-rare-restaurant",
+  "repoDir": "/Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant",
+  "sourceUrl": "https://www.richandrare.com.au/",
+  "previewUrl": "https://rich-and-rare-restaurant-dev.pages.dev/",
+  "orderId": "p1_dryrun_delivery_gate_rich_missing_001",
+  "customerEmail": "matthew6688@gmail.com",
+  "status": "blocked",
+  "createdAt": "2026-05-07T09:28:54.832Z",
+  "updatedAt": "2026-05-07T09:28:56.695Z",
+  "stages": [
+    {
+      "id": "stage_0_case_created",
+      "name": "创建 dry-run case",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Dry-run case created.",
+      "evidence": [
+        "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/case.json",
+        "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/context-packet.json"
+      ],
+      "nextAction": "继续验证 evidence 和 website-ready packet。",
+      "startedAt": "2026-05-07T09:28:54.834Z",
+      "finishedAt": "2026-05-07T09:28:54.834Z"
+    },
+    {
+      "id": "stage_1_evidence_validate",
+      "name": "验证 evidence",
+      "critical": true,
+      "status": "blocker",
+      "command": "npm run evidence:validate -- --client rich-and-rare-restaurant --niche restaurant",
+      "output": "Missing evidence file: clients/rich-and-rare-restaurant/evidence/evidence.json",
+      "evidence": [],
+      "nextAction": "先运行资料收集，生成 evidence/evidence.json。",
+      "startedAt": "2026-05-07T09:28:54.834Z",
+      "finishedAt": "2026-05-07T09:28:54.834Z"
+    },
+    {
+      "id": "stage_2_website_ready_packet",
+      "name": "生成 website-ready packet",
+      "critical": true,
+      "status": "blocker",
+      "command": "",
+      "output": "ENOENT: no such file or directory, open '/Users/matthew/Developer/google-map-website/clients/rich-and-rare-restaurant/evidence/evidence.json'",
+      "evidence": [],
+      "nextAction": "修复 evidence/content/design 缺口后重新运行 dry-run。",
+      "startedAt": "2026-05-07T09:28:54.834Z",
+      "finishedAt": "2026-05-07T09:28:54.834Z"
+    },
+    {
+      "id": "stage_3_open_design_binding",
+      "name": "检查 Open Design project",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Open Design project bound: rich-and-rare-restaurant-open-design-1778065212163",
+      "evidence": [
+        "clients/rich-and-rare-restaurant/concept/open-design/concept-manifest.json",
+        "clients/rich-and-rare-restaurant/concept/open-design/production-handoff.json"
+      ],
+      "data": {
+        "status": "bound",
+        "mode": "app-visible",
+        "dataDir": "/Users/matthew/Developer/open-design/.od",
+        "projectId": "rich-and-rare-restaurant-open-design-1778065212163",
+        "runId": "2a69100b-a214-4488-ad6c-0a58277b00b5",
+        "conceptPath": "clients/rich-and-rare-restaurant/concept/open-design",
+        "manifestPath": "clients/rich-and-rare-restaurant/concept/open-design/concept-manifest.json",
+        "productionHandoffPath": "clients/rich-and-rare-restaurant/concept/open-design/production-handoff.json",
+        "createCommand": "",
+        "continueCommand": "npm run open-design:continue-concept -- --client rich-and-rare-restaurant --prompt \"<change request>\"",
+        "syncCommand": "npm run open-design:sync-from-app -- --client rich-and-rare-restaurant",
+        "rule": "Use this exact local Open Design project for design concept changes. Do not start a separate Open Design project unless the operator explicitly asks."
+      },
+      "nextAction": "继续确认 production handoff。",
+      "startedAt": "2026-05-07T09:28:54.834Z",
+      "finishedAt": "2026-05-07T09:28:54.834Z"
+    },
+    {
+      "id": "stage_4_production_handoff",
+      "name": "检查 production handoff",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Production handoff exists: clients/rich-and-rare-restaurant/concept/open-design/production-handoff.json",
+      "evidence": [
+        "clients/rich-and-rare-restaurant/concept/open-design/production-handoff.json"
+      ],
+      "nextAction": "继续 port/build customer repo dev preview。",
+      "startedAt": "2026-05-07T09:28:54.834Z",
+      "finishedAt": "2026-05-07T09:28:54.834Z"
+    },
+    {
+      "id": "stage_5_customer_repo_build",
+      "name": "构建 customer repo dev preview",
+      "critical": true,
+      "status": "pass",
+      "command": "cd /Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant && npm run build",
+      "output": " generating static routes \n19:28:56 [WARN] [build] Could not render `/blog` from route `/blog/[...slug]` as it conflicts with higher priority route `/blog`.\n19:28:56 [WARN] [build] Could not render `/cases` from route `/cases/[...slug]` as it conflicts with higher priority route `/cases`.\n19:28:56   ├─ /blog/index.html (+6ms) \n19:28:56   ├─ /cases/index.html (+2ms) \n19:28:56   ├─ /contact/index.html (+2ms) \n19:28:56   ├─ /design-compare/huashu/index.html (+2ms) \n19:28:56   ├─ /design-compare/open-design/index.html (+1ms) \n19:28:56   ├─ /design-compare/design/index.html (+1ms) \n19:28:56   ├─ /design-compare/index.html (+1ms) \n19:28:56   ├─ /menu/index.html (+2ms) \n19:28:56   ├─ /private-dining/index.html (+2ms) \n19:28:56   ├─ /visit/index.html (+1ms) \n19:28:56   ├─ /index.html (+2ms) \n19:28:56 ✓ Completed in 33ms.\n19:28:56 [build] ✓ Completed in 557ms.\n19:28:56 [build] 11 page(s) built in 783ms\n19:28:56 [build] Complete!",
+      "evidence": [
+        "/Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant/dist"
+      ],
+      "nextAction": "继续验证 customer repo preview banner。",
+      "startedAt": "2026-05-07T09:28:54.835Z",
+      "finishedAt": "2026-05-07T09:28:56.524Z"
+    },
+    {
+      "id": "stage_5b_preview_funnel_qa",
+      "name": "验证 preview banner 和官方 funnel links",
+      "critical": true,
+      "status": "pass",
+      "command": "npm run qa:funnel-pages -- --dist-dir /Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant/dist --client Rich & Rare Restaurant",
+      "output": "      \"source\": \"/Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant/dist/domain-help/index.html\",\n      \"status\": 404,\n      \"ok\": true,\n      \"checks\": [\n        {\n          \"name\": \"local_funnel_route_removed_or_redirected\",\n          \"ok\": true,\n          \"detail\": \"\"\n        },\n        {\n          \"name\": \"removed_route_not_serving_funnel\",\n          \"ok\": true,\n          \"detail\": \"\"\n        }\n      ]\n    }\n  ]\n}",
+      "evidence": [
+        "/Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant/dist"
+      ],
+      "nextAction": "继续创建 agent task draft。",
+      "startedAt": "2026-05-07T09:28:56.524Z",
+      "finishedAt": "2026-05-07T09:28:56.693Z"
+    },
+    {
+      "id": "stage_6_delivery_qa",
+      "name": "验证 delivery QA 报告",
+      "critical": true,
+      "status": "blocker",
+      "command": "",
+      "output": "delivery QA report is missing; missing: deliveryQaReport",
+      "evidence": [
+        "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/delivery-qa.json"
+      ],
+      "data": {
+        "missing": [
+          "deliveryQaReport"
+        ],
+        "errors": [
+          "delivery QA report is missing"
+        ]
+      },
+      "nextAction": "先运行 npm run qa:write-delivery-qa -- --client rich-and-rare-restaurant --order p1_dryrun_delivery_gate_rich_missing_001 --preview-url https://rich-and-rare-restaurant-dev.pages.dev/ --email matthew6688@gmail.com --repo matthew6688/rich-and-rare-restaurant，人工确认后重新运行 dry-run。",
+      "startedAt": "2026-05-07T09:28:56.694Z",
+      "finishedAt": "2026-05-07T09:28:56.694Z"
+    },
+    {
+      "id": "stage_8_agent_task_draft",
+      "name": "创建 agent task draft",
+      "critical": true,
+      "status": "pass",
+      "command": "",
+      "output": "Task draft valid: task_1778146136694_xp0hbhrp",
+      "evidence": [
+        "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/agent-task-draft.json"
+      ],
+      "data": {
+        "taskId": "task_1778146136694_xp0hbhrp",
+        "validation": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "nextAction": "人工确认后可把 task dispatch 到 Discord website thread。",
+      "startedAt": "2026-05-07T09:28:56.694Z",
+      "finishedAt": "2026-05-07T09:28:56.694Z"
+    },
+    {
+      "id": "stage_9_customer_review_email_draft",
+      "name": "生成 customer review email draft",
+      "critical": false,
+      "status": "pass",
+      "command": "",
+      "output": "Review email draft written for matthew6688@gmail.com",
+      "evidence": [
+        "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_missing_001/customer-review-email-draft.json"
+      ],
+      "nextAction": "customer email 只能在 delivery QA 通过后通过 Resend 正式发送。",
+      "startedAt": "2026-05-07T09:28:56.694Z",
+      "finishedAt": "2026-05-07T09:28:56.695Z"
+    }
+  ],
+  "nextActions": [
+    {
+      "stage": "stage_1_evidence_validate",
+      "action": "先运行资料收集，生成 evidence/evidence.json。"
+    },
+    {
+      "stage": "stage_2_website_ready_packet",
+      "action": "修复 evidence/content/design 缺口后重新运行 dry-run。"
+    },
+    {
+      "stage": "stage_6_delivery_qa",
+      "action": "先运行 npm run qa:write-delivery-qa -- --client rich-and-rare-restaurant --order p1_dryrun_delivery_gate_rich_missing_001 --preview-url https://rich-and-rare-restaurant-dev.pages.dev/ --email matthew6688@gmail.com --repo matthew6688/rich-and-rare-restaurant，人工确认后重新运行 dry-run。"
+    }
+  ]
+}

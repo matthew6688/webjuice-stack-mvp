@@ -1,0 +1,47 @@
+{
+  "ok": false,
+  "score": 36,
+  "failBelow": 85,
+  "generatedAt": "2026-05-08T21:01:41.464Z",
+  "clientSlug": "od-native-clean-roofer-smoke",
+  "conceptDir": "/Users/matthew/Developer/google-map-website/clients/od-native-clean-roofer-smoke/concept/open-design",
+  "nativeCleanFinish": true,
+  "completionMode": null,
+  "counts": {
+    "images": 0,
+    "cssBackgroundImages": 0,
+    "visualAssets": 0,
+    "internalTermHits": 6,
+    "findings": 3
+  },
+  "findings": [
+    {
+      "code": "customer_facing_internal_language",
+      "severity": "critical",
+      "penalty": 28,
+      "evidence": "Customer-visible page contains internal/operator language: demo, mockup, pre-sale, resend, hi@profitslocal.com, verified.",
+      "fix": "Rewrite customer-facing copy so it never mentions mockup/demo/internal/Resend/verification workflow."
+    },
+    {
+      "code": "no_visual_assets",
+      "severity": "critical",
+      "penalty": 18,
+      "evidence": "No real image or generated visual asset was found in the exported concept.",
+      "fix": "Use verified business photos, Google/website/social photos, or a clearly project-local AI-generated industry visual before accepting the mockup."
+    },
+    {
+      "code": "wrong_local_business_style",
+      "severity": "high",
+      "penalty": 18,
+      "evidence": "The page reads like an editorial text prototype rather than a practical local business site.",
+      "fix": "Use a stronger local-service visual system: real/AI job imagery, bolder CTA band, proof/quote flow, practical service cards, and fewer abstract essay headings."
+    }
+  ],
+  "gates": {
+    "customerFacingCopyClean": false,
+    "hasVisualAsset": false,
+    "nativeCleanFinish": true,
+    "noQuestionForms": true,
+    "conversionPathPresent": true
+  }
+}

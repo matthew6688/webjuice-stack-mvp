@@ -1,0 +1,329 @@
+Build an original phone-first roofing restoration lead-capture template inspired by the reference brief in this folder.
+
+Template family: lead-capture-restoration
+
+Use design-language.md and section-patterns.json as the contract. This is for low-info leads from screenshots, flyers, signage, OCR, or manual discovery. The site should prioritize phone, services, free inspection/quote, and a simple contact form.
+
+Do not copy the reference brand, logo, exact text, code, or paid assets. Recreate the design language and section patterns as an original ProfitsLocal template.
+
+Required outputs:
+- index.html for the primary template
+- one compact one-page version suitable for a cold outreach mockup
+- local assets under assets/
+- style-guide.md if brand/design tokens are clear
+
+Rules:
+- Customer-facing copy only.
+- No internal workflow terms.
+- Use rich demo content where allowed by template-manifest.json.
+- Do not invent verified facts listed in factsPolicy.mustNotInvent.
+- Use photo-quality niche imagery when the reference style depends on photography.
+- If only phone/services are known, fill sections with demo-safe service/process/FAQ copy, but never invent email, address, reviews, licenses, awards, or years in business.
+- Prefer the reviewed manual ChatGPT Image assets recorded in template-manifest.json `selectedImages`.
+- Primary hero should use the wide roofer-on-metal-roof image with local home context.
+- Use the second roofer-on-metal-roof image for service/process proof and the metal panel images only as supporting material visuals.
+- Do not make the page feel like a product catalogue; this family is phone-first and quote-first.
+- Do not replace these approved photo assets with SVG-only hero art or generic stock-like placeholders.
+- Ask no question form unless generation is technically impossible.
+
+## Brand Kit / Logo Policy
+Business name: RidgeLine Roof Restoration
+Logo policy: single-default-demo-logo
+If the client has no logo, use exactly one default demo logo direction. Do not ask the client to choose and do not create multiple logo options.
+Selected logo direction: Lead Capture Restoration style: simple geometric roof/service mark plus readable wordmark. No fake badges, no copied reference logo.
+Selected SVG concept: <svg viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M8 27 30 9l22 18" fill="none" stroke="#6B6258" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 27h24v14H20z" fill="#1D2328"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#FAF3E8">RR</text></svg>
+
+## Reviewed Local Image Assets
+Use these reviewed images as the primary visual source for this template. Copy them into `assets/` before referencing them from HTML.
+Do not substitute these approved images with SVG-only art, weak placeholders, or unrelated generic stock imagery.
+
+- hero: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-service-local-roofer-metal-roof-wide.png
+- service: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-hero-local-roofer-metal-roof-wide.png
+- materialMetal: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-front.png
+- materialMetalAlt: templates/roofing/families/lead-capture-restoration/image-candidates/manual-chatgpt-image/2026-05-09-family-4/family4-product-standing-seam-panel-symmetric.png
+
+## Design Language
+# Lead Capture Restoration Design Language
+
+Niche: roofing
+
+## Reference Summary
+
+Designed for quick cold outreach mockups when the lead has strong contact info but limited brand assets. It should be practical, conversion-forward, and local: roof restoration, repairs, gutters, free inspection, phone-first contact.
+
+## Visual Thesis
+
+Local roofing lead capture: immediately says what they do, why to call, and how to request a free inspection, with enough visual substance to avoid looking like a text flyer.
+
+## Typography Direction
+
+- Display: confident sans-serif or sturdy serif, not delicate.
+- Body: plain readable sans-serif.
+- Labels: strong chips for services and trust points.
+
+## Color System
+
+- Dominant: warm white or light neutral.
+- Accent: strong roof red, orange, or trade green depending on source material.
+- Support: dark charcoal for footer and contrast bands.
+- CTA: phone/contact button must stand out.
+
+## Imagery
+
+- hero: roofer working / roof restoration / exterior home with roof visible.
+- proof: before-after placeholder structure without fake customer claims.
+- contact: form next to roof image or phone-first CTA.
+- service: icons or small photos for restoration, repairs, gutters, pressure cleaning.
+
+## Layout Patterns
+
+- hero: phone-first, service area, free inspection CTA.
+- services: clear bullet/service grid from provided lead copy.
+- why us: common-sense benefits, clearly marked as positioning not verified claims.
+- process: inspect, quote, restore, cleanup.
+- contact: simple form and big phone number.
+- footer: compact with contact links.
+
+## Best Fit
+
+- Low-info lead from photo/OCR/flyer/signage.
+- No website found, but phone and services are clear.
+- Fast one-page demo to test interest.
+
+## Do
+
+- Show phone and contact path above the fold.
+- Use provided services exactly when available.
+- Use dummy copy only to make modules complete, not to fake proof.
+
+## Do Not
+
+- Build a huge multi-page site from very little info.
+- Invent email, address, reviews, project count, or exact service area.
+- Use internal audit language in customer-facing copy.
+
+## Machine-Readable DESIGN.md Contract
+---
+version: alpha
+name: "Lead Capture Restoration"
+description: "Lead Capture Restoration roofing template family design contract"
+colors:
+  primary: "#1D2328"
+  secondary: "#6B6258"
+  tertiary: "#C9472A"
+  neutral: "#FAF3E8"
+  surface: "#FFFDF8"
+  on-primary: "#FFFFFF"
+  on-tertiary: "#FFFFFF"
+typography:
+  h1:
+    fontFamily: "Inter"
+    fontSize: 3.8rem
+    fontWeight: 850
+    lineHeight: 0.98
+    letterSpacing: 0
+  h2:
+    fontFamily: "Inter"
+    fontSize: 2.4rem
+    fontWeight: 800
+    lineHeight: 1.05
+  body-md:
+    fontFamily: "Inter"
+    fontSize: 1rem
+    fontWeight: "400"
+    lineHeight: "1.6"
+  label-caps:
+    fontFamily: "Inter"
+    fontSize: "0.75rem"
+    fontWeight: "800"
+    lineHeight: "1.2"
+rounded:
+  sm: 4px
+  md: 8px
+  lg: 16px
+spacing:
+  sm: 8px
+  md: 16px
+  lg: 32px
+  xl: 64px
+components:
+  button-primary:
+    backgroundColor: "{colors.tertiary}"
+    textColor: "{colors.on-tertiary}"
+    typography: "{typography.label-caps}"
+    rounded: "{rounded.md}"
+    padding: 14px
+  hero-surface:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.lg}"
+---
+
+## Overview
+
+Local roofing lead capture: immediately says what they do, why to call, and how to request a free inspection, with enough visual substance to avoid looking like a text flyer.
+
+## Colors
+
+- **Primary (#1D2328):** dark trade contrast for footer and phone-first bands.
+- **Secondary (#6B6258):** warm gray local-business support copy.
+- **Tertiary (#C9472A):** roof-red/orange quote and phone actions.
+- **Neutral (#FAF3E8):** warm flyer-like background without feeling cheap.
+- **Surface (#FFFDF8):** main content canvas.
+
+## Typography
+
+- Display: confident sans-serif or sturdy serif, not delicate.
+- Body: plain readable sans-serif.
+- Labels: strong chips for services and trust points.
+
+## Layout
+
+- hero: phone-first, service area, free inspection CTA.
+- services: clear bullet/service grid from provided lead copy.
+- why us: common-sense benefits, clearly marked as positioning not verified claims.
+- process: inspect, quote, restore, cleanup.
+- contact: simple form and big phone number.
+- footer: compact with contact links.
+
+## Elevation & Depth
+
+Use depth only when it supports hierarchy. Photo-heavy families should rely on image composition, contrast, and section rhythm before decorative shadows.
+
+## Shapes
+
+Default to restrained corners. Use larger radii only for image containers and CTA panels when the reference style supports it.
+
+## Components
+
+- **Hero:** must clearly communicate the niche in the first viewport.
+- **Primary CTA:** uses the tertiary token and must be visually obvious.
+- **Service modules:** should match the family layout direction, not a generic card grid.
+- **Footer:** must feel complete and credible, even when demo-safe content is used.
+
+## Do's and Don'ts
+
+### Do
+
+- Show phone and contact path above the fold.
+- Use provided services exactly when available.
+- Use dummy copy only to make modules complete, not to fake proof.
+
+### Don't
+
+- Build a huge multi-page site from very little info.
+- Invent email, address, reviews, project count, or exact service area.
+- Use internal audit language in customer-facing copy.
+
+
+
+
+## Section Contract
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "family": "lead-capture-restoration",
+  "pageTypes": {
+    "onePage": {
+      "requiredSections": [
+        "hero",
+        "services",
+        "proof",
+        "projectsTeaser",
+        "process",
+        "faq",
+        "contact",
+        "footer"
+      ],
+      "optionalSections": [
+        "about",
+        "serviceArea",
+        "materials",
+        "blogTeaser"
+      ]
+    },
+    "multiPage": {
+      "pages": [
+        "home",
+        "about",
+        "services",
+        "serviceDetail",
+        "projects",
+        "projectDetail",
+        "faq",
+        "blog",
+        "blogDetail",
+        "appointment"
+      ]
+    }
+  },
+  "sections": []
+}
+
+## QA Rubric
+{
+  "schemaVersion": 1,
+  "passScore": 85,
+  "criteria": [
+    {
+      "id": "referenceFidelity",
+      "label": "Reference fidelity without copying",
+      "weight": 15
+    },
+    {
+      "id": "firstViewportImpact",
+      "label": "First viewport impact",
+      "weight": 15
+    },
+    {
+      "id": "imageDensity",
+      "label": "Image density and niche relevance",
+      "weight": 12
+    },
+    {
+      "id": "nicheFit",
+      "label": "Niche and sub-niche fit",
+      "weight": 12
+    },
+    {
+      "id": "pageCompleteness",
+      "label": "Page/system completeness",
+      "weight": 12
+    },
+    {
+      "id": "ctaHierarchy",
+      "label": "CTA hierarchy and conversion path",
+      "weight": 10
+    },
+    {
+      "id": "trustProof",
+      "label": "Trust/proof richness",
+      "weight": 8
+    },
+    {
+      "id": "mobilePolish",
+      "label": "Mobile polish",
+      "weight": 8
+    },
+    {
+      "id": "copyCleanliness",
+      "label": "Customer-facing copy cleanliness",
+      "weight": 8
+    }
+  ],
+  "hardFails": [
+    "customer-visible internal workflow terms",
+    "missing primary visual asset in a photo-heavy family",
+    "fake verified facts such as reviews, licenses, address, years, awards, or prices",
+    "no visible phone/form/contact path in lead-generation templates"
+  ]
+}
+
+## Template Library Requirements
+- Build an original ProfitsLocal-owned template, not a clone.
+- Use realistic local-business copy and rich demo-safe content where allowed.
+- Include visible niche imagery or generated assets; do not ship a text-only page.
+- If reviewed local images are listed, copy them into the generated project assets directory and use them as real <img> assets.
+- If a brand kit is listed, use the selected default logo direction and do not generate multiple customer-choice logos.
+- Do not expose internal words like audit, mockup, lead-ops, Open Design, or template-lab in customer-facing pages.
+- Produce a result strong enough to be listed in the ProfitsLocal public template library after QA.

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "clientSlug": "rich-and-rare-restaurant",
+  "businessName": "Rich & Rare Restaurant",
+  "repo": "matthew6688/rich-and-rare-restaurant",
+  "repoDir": "/Users/matthew/Developer/webjuice-generated/rich-and-rare-restaurant",
+  "previewUrl": "https://rich-and-rare-restaurant-dev.pages.dev/",
+  "orderId": "p1_dryrun_delivery_gate_rich_001",
+  "status": "blocked",
+  "sourceUrl": "https://www.richandrare.com.au/",
+  "websiteSurveyPath": "clients/rich-and-rare-restaurant/intake/website-survey.json",
+  "buildPacketPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_001/build-packet.md",
+  "openDesign": {
+    "status": "bound",
+    "projectId": "rich-and-rare-restaurant-open-design-1778065212163",
+    "manifestPath": "clients/rich-and-rare-restaurant/concept/open-design/concept-manifest.json",
+    "productionHandoffPath": "clients/rich-and-rare-restaurant/concept/open-design/production-handoff.json",
+    "continueCommand": "npm run open-design:continue-concept -- --client rich-and-rare-restaurant --prompt \"<change request>\"",
+    "syncCommand": "npm run open-design:sync-from-app -- --client rich-and-rare-restaurant"
+  },
+  "taskDraftPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_001/agent-task-draft.json",
+  "reviewEmailDraftPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_001/customer-review-email-draft.json",
+  "checklistPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_001/ops-checklist.json",
+  "checklistMarkdownPath": "data/cases/rich-and-rare-restaurant/p1_dryrun_delivery_gate_rich_001/ops-checklist.md",
+  "nextActions": [
+    {
+      "stage": "stage_1_evidence_validate",
+      "action": "先运行资料收集，生成 evidence/evidence.json。"
+    },
+    {
+      "stage": "stage_2_website_ready_packet",
+      "action": "修复 evidence/content/design 缺口后重新运行 dry-run。"
+    }
+  ],
+  "summaryText": "这个项目还没有达到客户 review 标准，请先处理 blockers。"
+}

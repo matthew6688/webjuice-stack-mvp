@@ -1,0 +1,175 @@
+{
+  "id": "ollama-qwen3.6:27b",
+  "provider": "ollama",
+  "model": "qwen3.6:27b",
+  "status": "ok",
+  "durationMs": 189070,
+  "rawOutput": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration\",\n    \"contactPaths\": [\n      \"Phone: 0424 371 622\"\n    ],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"Physical signage and operator-provided text only. No digital footprint verified.\",\n    \"opportunityDiagnosis\": \"High trust potential due to claimed 40 years experience, but zero online visibility. Immediate need for a digital presence to capture local search traffic and validate the 'free inspection' offer.\",\n    \"recommendedAngle\": \"Leverage the 40-year experience and free inspection offer to build immediate trust. Focus on comprehensive property care (roof + exterior) rather than just roofing.\",\n    \"evidenceUsed\": [\n      \"Business Name: Roofing & Restoration\",\n      \"Contact Name: Greg\",\n      \"Phone: 0424 371 622\",\n      \"Services List\",\n      \"Claim: 40 years experience\",\n      \"Claim: Free in person inspection and quote\"\n    ],\n    \"missingEvidence\": [\n      \"Verified Email Address\",\n      \"Verified Physical Address\",\n      \"Verified Website URL\",\n      \"Licence Number\",\n      \"Google Rating/Reviews\",\n      \"Service Area Boundaries\"\n    ]\n  },\n  \"gapScore\": {\n    \"total\": 95,\n    \"conversion\": 80,\n    \"localSeo\": 95,\n    \"designTrust\": 90,\n    \"content\": 85,\n    \"rationale\": \"Critical gaps in local SEO and digital trust signals. No website or reviews exist. Conversion potential is high if the free inspection offer is prominent, but currently inaccessible online.\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"Clean, industrial, high-contrast. Use images of restored roofs and clean driveways. Emphasize the 'Free Inspection' CTA.\",\n    \"blockPlan\": [\n      \"hero\",\n      \"services\",\n      \"trust\",\n      \"process\",\n      \"faq\",\n      \"contact\"\n    ],\n    \"assetPlan\": [\n      \"Hero image: High-quality before/after roof restoration\",\n      \"Icon set: For services (Roof, Gutter, Driveway, Wall)\",\n      \"Trust badge: 40 Years Experience graphic\",\n      \"Contact button: Sticky header with phone number\"\n    ],\n    \"contactPlan\": {\n      \"primaryMethod\": \"Phone Call\",\n      \"phoneNumber\": \"0424 371 622\",\n      \"formEnabled\": false,\n      \"reason\": \"No verified email or address to support form submission or map integration.\"\n    },\n    \"seoPlan\": {\n      \"targetKeywords\": [\n        \"roof restoration\",\n        \"roof repairs\",\n        \"driveway resurfacing\",\n        \"pressure cleaning\",\n        \"retaining wall repair\"\n      ],\n      \"metaTitle\": \"Roofing & Restoration | 40 Years Experience | Free Inspection\",\n      \"metaDescription\": \"Expert roof restorations, repairs, and exterior maintenance. 40 years experience. Call Greg for a free in-person inspection and quote.\"\n    },\n    \"factLock\": {\n      \"mustKeep\": [\n        \"0424 371 622\",\n        \"Roofing & Restoration\",\n        \"Greg\",\n        \"40 years experience\",\n        \"free in person inspection and quote\"\n      ],\n      \"mustNotClaim\": [\n        \"email\",\n        \"address\",\n        \"website URL\",\n        \"real reviews\",\n        \"licence\",\n        \"award\",\n        \"rating\",\n        \"price\",\n        \"guarantee\"\n      ]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Expert Roof Restorations & Exterior Care\",\n    \"heroSubcopy\": \"Trusted local specialists with 40 years of experience. We handle everything from roof repairs to driveway resurfacing. Get a free in-person inspection and quote today.\",\n    \"primaryCta\": \"Call 0424 371 622\",\n    \"serviceCopy\": [\n      {\n        \"title\": \"Roof Restoration & Repairs\",\n        \"description\": \"Comprehensive roof restorations including capping, respraying, and structural repairs to extend the life of your roof.\"\n      },\n      {\n        \"title\": \"Gutter Maintenance\",\n        \"description\": \"Professional gutter cleaning, repair, and replacement to ensure proper water flow and prevent damage.\"\n      },\n      \"Driveway & Patio Resurfacing\",\n      \"Retaining Wall Construction\",\n      \"Pressure Cleaning Services\"\n    ],\n    \"faq\": [\n      {\n        \"question\": \"Do you offer free quotes?\",\n        \"answer\": \"Yes, we provide free in-person inspections and quotes for all roofing and exterior projects.\"\n      },\n      {\n        \"question\": \"What areas do you service?\",\n        \"answer\": \"We service the local area. Please call us to confirm availability for your specific location.\"\n      },\n      {\n        \"question\": \"How long does a roof restoration take?\",\n        \"answer\": \"Timelines vary based on the size of the roof and the extent of repairs needed. We will provide a detailed timeline during your free inspection.\"\n      }\n    ],\n    \"outreachHook\": \"Don't let roof damage worsen. With 40 years of experience, Roofing & Restoration offers free inspections to protect your home's value.\"\n  },\n  \"riskNotes\": [\n    \"No verified email or address exists; do not include contact forms or map widgets.\",\n    \"Claims of '40 years experience' and 'free inspection' are from unverified source text; treat as marketing copy only, not legal fact.\",\n    \"No licence number provided; do not display licence badges.\",\n    \"No reviews exist; do not display star ratings or testimonial sliders.\"\n  ]\n}",
+  "error": "",
+  "evaluation": {
+    "schemaVersion": 1,
+    "ok": true,
+    "score": 95,
+    "grade": "A",
+    "parse": {
+      "ok": true,
+      "value": {
+        "discoveryReport": {
+          "businessIdentity": "Roofing & Restoration",
+          "contactPaths": [
+            "Phone: 0424 371 622"
+          ],
+          "services": [
+            "roof restorations",
+            "capping",
+            "respray",
+            "repairs",
+            "gutters",
+            "driveway",
+            "patio",
+            "external living",
+            "retaining wall",
+            "pressure cleaning"
+          ],
+          "currentPresence": "Physical signage and operator-provided text only. No digital footprint verified.",
+          "opportunityDiagnosis": "High trust potential due to claimed 40 years experience, but zero online visibility. Immediate need for a digital presence to capture local search traffic and validate the 'free inspection' offer.",
+          "recommendedAngle": "Leverage the 40-year experience and free inspection offer to build immediate trust. Focus on comprehensive property care (roof + exterior) rather than just roofing.",
+          "evidenceUsed": [
+            "Business Name: Roofing & Restoration",
+            "Contact Name: Greg",
+            "Phone: 0424 371 622",
+            "Services List",
+            "Claim: 40 years experience",
+            "Claim: Free in person inspection and quote"
+          ],
+          "missingEvidence": [
+            "Verified Email Address",
+            "Verified Physical Address",
+            "Verified Website URL",
+            "Licence Number",
+            "Google Rating/Reviews",
+            "Service Area Boundaries"
+          ]
+        },
+        "gapScore": {
+          "total": 95,
+          "conversion": 80,
+          "localSeo": 95,
+          "designTrust": 90,
+          "content": 85,
+          "rationale": "Critical gaps in local SEO and digital trust signals. No website or reviews exist. Conversion potential is high if the free inspection offer is prominent, but currently inaccessible online."
+        },
+        "websiteProductionSpec": {
+          "pageMode": "one_page_preview",
+          "templateDirection": "Clean, industrial, high-contrast. Use images of restored roofs and clean driveways. Emphasize the 'Free Inspection' CTA.",
+          "blockPlan": [
+            "hero",
+            "services",
+            "trust",
+            "process",
+            "faq",
+            "contact"
+          ],
+          "assetPlan": [
+            "Hero image: High-quality before/after roof restoration",
+            "Icon set: For services (Roof, Gutter, Driveway, Wall)",
+            "Trust badge: 40 Years Experience graphic",
+            "Contact button: Sticky header with phone number"
+          ],
+          "contactPlan": {
+            "primaryMethod": "Phone Call",
+            "phoneNumber": "0424 371 622",
+            "formEnabled": false,
+            "reason": "No verified email or address to support form submission or map integration."
+          },
+          "seoPlan": {
+            "targetKeywords": [
+              "roof restoration",
+              "roof repairs",
+              "driveway resurfacing",
+              "pressure cleaning",
+              "retaining wall repair"
+            ],
+            "metaTitle": "Roofing & Restoration | 40 Years Experience | Free Inspection",
+            "metaDescription": "Expert roof restorations, repairs, and exterior maintenance. 40 years experience. Call Greg for a free in-person inspection and quote."
+          },
+          "factLock": {
+            "mustKeep": [
+              "0424 371 622",
+              "Roofing & Restoration",
+              "Greg",
+              "40 years experience",
+              "free in person inspection and quote"
+            ],
+            "mustNotClaim": [
+              "email",
+              "address",
+              "website URL",
+              "real reviews",
+              "licence",
+              "award",
+              "rating",
+              "price",
+              "guarantee"
+            ]
+          }
+        },
+        "copyBrief": {
+          "heroHeadline": "Expert Roof Restorations & Exterior Care",
+          "heroSubcopy": "Trusted local specialists with 40 years of experience. We handle everything from roof repairs to driveway resurfacing. Get a free in-person inspection and quote today.",
+          "primaryCta": "Call 0424 371 622",
+          "serviceCopy": [
+            {
+              "title": "Roof Restoration & Repairs",
+              "description": "Comprehensive roof restorations including capping, respraying, and structural repairs to extend the life of your roof."
+            },
+            {
+              "title": "Gutter Maintenance",
+              "description": "Professional gutter cleaning, repair, and replacement to ensure proper water flow and prevent damage."
+            },
+            "Driveway & Patio Resurfacing",
+            "Retaining Wall Construction",
+            "Pressure Cleaning Services"
+          ],
+          "faq": [
+            {
+              "question": "Do you offer free quotes?",
+              "answer": "Yes, we provide free in-person inspections and quotes for all roofing and exterior projects."
+            },
+            {
+              "question": "What areas do you service?",
+              "answer": "We service the local area. Please call us to confirm availability for your specific location."
+            },
+            {
+              "question": "How long does a roof restoration take?",
+              "answer": "Timelines vary based on the size of the roof and the extent of repairs needed. We will provide a detailed timeline during your free inspection."
+            }
+          ],
+          "outreachHook": "Don't let roof damage worsen. With 40 years of experience, Roofing & Restoration offers free inspections to protect your home's value."
+        },
+        "riskNotes": [
+          "No verified email or address exists; do not include contact forms or map widgets.",
+          "Claims of '40 years experience' and 'free inspection' are from unverified source text; treat as marketing copy only, not legal fact.",
+          "No licence number provided; do not display licence badges.",
+          "No reviews exist; do not display star ratings or testimonial sliders."
+        ]
+      },
+      "rawJson": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration\",\n    \"contactPaths\": [\n      \"Phone: 0424 371 622\"\n    ],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"Physical signage and operator-provided text only. No digital footprint verified.\",\n    \"opportunityDiagnosis\": \"High trust potential due to claimed 40 years experience, but zero online visibility. Immediate need for a digital presence to capture local search traffic and validate the 'free inspection' offer.\",\n    \"recommendedAngle\": \"Leverage the 40-year experience and free inspection offer to build immediate trust. Focus on comprehensive property care (roof + exterior) rather than just roofing.\",\n    \"evidenceUsed\": [\n      \"Business Name: Roofing & Restoration\",\n      \"Contact Name: Greg\",\n      \"Phone: 0424 371 622\",\n      \"Services List\",\n      \"Claim: 40 years experience\",\n      \"Claim: Free in person inspection and quote\"\n    ],\n    \"missingEvidence\": [\n      \"Verified Email Address\",\n      \"Verified Physical Address\",\n      \"Verified Website URL\",\n      \"Licence Number\",\n      \"Google Rating/Reviews\",\n      \"Service Area Boundaries\"\n    ]\n  },\n  \"gapScore\": {\n    \"total\": 95,\n    \"conversion\": 80,\n    \"localSeo\": 95,\n    \"designTrust\": 90,\n    \"content\": 85,\n    \"rationale\": \"Critical gaps in local SEO and digital trust signals. No website or reviews exist. Conversion potential is high if the free inspection offer is prominent, but currently inaccessible online.\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"Clean, industrial, high-contrast. Use images of restored roofs and clean driveways. Emphasize the 'Free Inspection' CTA.\",\n    \"blockPlan\": [\n      \"hero\",\n      \"services\",\n      \"trust\",\n      \"process\",\n      \"faq\",\n      \"contact\"\n    ],\n    \"assetPlan\": [\n      \"Hero image: High-quality before/after roof restoration\",\n      \"Icon set: For services (Roof, Gutter, Driveway, Wall)\",\n      \"Trust badge: 40 Years Experience graphic\",\n      \"Contact button: Sticky header with phone number\"\n    ],\n    \"contactPlan\": {\n      \"primaryMethod\": \"Phone Call\",\n      \"phoneNumber\": \"0424 371 622\",\n      \"formEnabled\": false,\n      \"reason\": \"No verified email or address to support form submission or map integration.\"\n    },\n    \"seoPlan\": {\n      \"targetKeywords\": [\n        \"roof restoration\",\n        \"roof repairs\",\n        \"driveway resurfacing\",\n        \"pressure cleaning\",\n        \"retaining wall repair\"\n      ],\n      \"metaTitle\": \"Roofing & Restoration | 40 Years Experience | Free Inspection\",\n      \"metaDescription\": \"Expert roof restorations, repairs, and exterior maintenance. 40 years experience. Call Greg for a free in-person inspection and quote.\"\n    },\n    \"factLock\": {\n      \"mustKeep\": [\n        \"0424 371 622\",\n        \"Roofing & Restoration\",\n        \"Greg\",\n        \"40 years experience\",\n        \"free in person inspection and quote\"\n      ],\n      \"mustNotClaim\": [\n        \"email\",\n        \"address\",\n        \"website URL\",\n        \"real reviews\",\n        \"licence\",\n        \"award\",\n        \"rating\",\n        \"price\",\n        \"guarantee\"\n      ]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Expert Roof Restorations & Exterior Care\",\n    \"heroSubcopy\": \"Trusted local specialists with 40 years of experience. We handle everything from roof repairs to driveway resurfacing. Get a free in-person inspection and quote today.\",\n    \"primaryCta\": \"Call 0424 371 622\",\n    \"serviceCopy\": [\n      {\n        \"title\": \"Roof Restoration & Repairs\",\n        \"description\": \"Comprehensive roof restorations including capping, respraying, and structural repairs to extend the life of your roof.\"\n      },\n      {\n        \"title\": \"Gutter Maintenance\",\n        \"description\": \"Professional gutter cleaning, repair, and replacement to ensure proper water flow and prevent damage.\"\n      },\n      \"Driveway & Patio Resurfacing\",\n      \"Retaining Wall Construction\",\n      \"Pressure Cleaning Services\"\n    ],\n    \"faq\": [\n      {\n        \"question\": \"Do you offer free quotes?\",\n        \"answer\": \"Yes, we provide free in-person inspections and quotes for all roofing and exterior projects.\"\n      },\n      {\n        \"question\": \"What areas do you service?\",\n        \"answer\": \"We service the local area. Please call us to confirm availability for your specific location.\"\n      },\n      {\n        \"question\": \"How long does a roof restoration take?\",\n        \"answer\": \"Timelines vary based on the size of the roof and the extent of repairs needed. We will provide a detailed timeline during your free inspection.\"\n      }\n    ],\n    \"outreachHook\": \"Don't let roof damage worsen. With 40 years of experience, Roofing & Restoration offers free inspections to protect your home's value.\"\n  },\n  \"riskNotes\": [\n    \"No verified email or address exists; do not include contact forms or map widgets.\",\n    \"Claims of '40 years experience' and 'free inspection' are from unverified source text; treat as marketing copy only, not legal fact.\",\n    \"No licence number provided; do not display licence badges.\",\n    \"No reviews exist; do not display star ratings or testimonial sliders.\"\n  ]\n}"
+    },
+    "findings": [
+      {
+        "severity": "major",
+        "code": "gap_score_out_of_range",
+        "points": -6,
+        "message": "Gap score dimensions exceed expected ranges: conversion, localSeo, designTrust, content."
+      }
+    ],
+    "metrics": {
+      "outputCharacters": 5375,
+      "blockCount": 6,
+      "assetCount": 4,
+      "serviceCopyCount": 5,
+      "faqCount": 3
+    }
+  }
+}

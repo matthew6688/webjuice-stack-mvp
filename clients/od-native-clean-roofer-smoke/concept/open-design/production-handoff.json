@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-08T20:37:08.677Z",
+  "clientSlug": "od-native-clean-roofer-smoke",
+  "purpose": "open_design_concept_to_webjuice_astro_handoff",
+  "status": "ready_with_warnings",
+  "concept": {
+    "conceptDir": "/Users/matthew/Developer/google-map-website/clients/od-native-clean-roofer-smoke/concept/open-design",
+    "manifestPath": "/Users/matthew/Developer/google-map-website/clients/od-native-clean-roofer-smoke/concept/open-design/concept-manifest.json",
+    "indexPath": "/Users/matthew/Developer/google-map-website/clients/od-native-clean-roofer-smoke/concept/open-design/index.html",
+    "brandSpecPath": null,
+    "projectId": "od-native-clean-roofer-smoke-open-design-1778272265798",
+    "runId": "e9f5705f-49c9-451d-ad1f-82d54fcedffc",
+    "agentId": "codex",
+    "skillId": "web-prototype",
+    "sourceUrl": null,
+    "scope": "one-page",
+    "screenshots": [],
+    "files": {
+      "total": 1,
+      "sourcePages": [],
+      "assets": []
+    }
+  },
+  "sourceOfTruth": {
+    "evidencePath": null,
+    "contentPath": null,
+    "designPath": null,
+    "surveyPath": null,
+    "rule": "Use evidence/content/design/survey for business facts. Use Open Design for visual direction, layout rhythm, tokens, and asset inspiration."
+  },
+  "target": {
+    "repo": null,
+    "branch": "dev",
+    "framework": "Webjuice/Astro on Cloudflare Pages"
+  },
+  "extracted": {
+    "conceptFacts": {
+      "title": "Precision Roof Restore · Brisbane Roof Restoration",
+      "headings": [
+        "Precision Roof Restore deserves a clearer roofing presence online.",
+        "Give visitors the jobs they recognise, without making them hunt.",
+        "Roof restorations",
+        "Capping",
+        "Respray",
+        "Repairs",
+        "Gutters",
+        "Pressure cleaning",
+        "A Brisbane-first page that feels local without pretending to know every suburb.",
+        "“Tell us the roof type, suburb and the issue you are seeing.”",
+        "Make the quote process feel straightforward.",
+        "Call or send the form"
+      ],
+      "phones": [],
+      "urls": [
+        "#top",
+        "#services",
+        "#areas",
+        "#enquiry",
+        "tel:0424371622"
+      ],
+      "brandSpecHighlights": []
+    },
+    "contentFacts": null,
+    "tokens": {
+      "--bg": "oklch(97% 0.012 82)",
+      "--surface": "oklch(99% 0.004 82)",
+      "--fg": "oklch(19% 0.018 62)",
+      "--muted": "oklch(47% 0.014 70)",
+      "--border": "oklch(88% 0.012 82)",
+      "--accent": "oklch(43% 0.105 150)",
+      "--accent-soft": "color-mix(in oklch, var(--accent) 14%, transparent)",
+      "--fg-soft": "color-mix(in oklch, var(--fg) 6%, transparent)",
+      "--font-display": "'Iowan Old Style', 'Charter', Georgia, 'Times New Roman', serif",
+      "--font-body": "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif",
+      "--font-mono": "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace",
+      "--fs-h1": "clamp(44px, 6vw, 76px)",
+      "--fs-h2": "clamp(32px, 4vw, 48px)",
+      "--fs-h3": "22px",
+      "--fs-lead": "19px",
+      "--fs-body": "16px",
+      "--fs-meta": "13px",
+      "--gap-xs": "8px",
+      "--gap-sm": "12px",
+      "--gap-md": "20px",
+      "--gap-lg": "32px",
+      "--gap-xl": "56px",
+      "--gap-2xl": "96px",
+      "--container": "1120px",
+      "--gutter": "20px",
+      "--radius": "10px",
+      "--radius-lg": "16px"
+    },
+    "pages": []
+  },
+  "requiredPreservationChecks": [
+    "business name",
+    "phone",
+    "address",
+    "primary CTA",
+    "brand/logo",
+    "navigation/sitemap intent"
+  ],
+  "implementationPlan": [
+    "Validate the Open Design concept folder before implementation.",
+    "Read the project capsule, evidence artifact, content artifact, design artifact, and survey/build packet.",
+    "Port visual tokens, imagery direction, layout rhythm, and page hierarchy from the Open Design concept.",
+    "Build production routes/components in the Webjuice/Astro repo instead of shipping the standalone concept HTML directly.",
+    "Preserve official business facts from source-of-truth artifacts even when the concept has nicer copy.",
+    "For redesigns, preserve old URL intent and add permanent redirects where route names change.",
+    "Run build, link QA, visual QA screenshots, and delivery QA before customer review email.",
+    "Push to the dev branch only until customer approval."
+  ],
+  "warnings": [
+    "targetRepo was not supplied; handoff is tool-agnostic and must be bound before implementation.",
+    "content artifact not found; importer must not trust concept text as final business data.",
+    "Open Design brand-spec.md missing; production builder must manually extract tokens from index.html.",
+    "No local concept image assets found."
+  ]
+}

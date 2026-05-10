@@ -1,0 +1,297 @@
+---
+import Layout from '../../layouts/AdminLayout.astro';
+import { siteConfig } from '../../config/site';
+import { getTemplateFamilies } from '../../lib/template-library';
+
+const families = getTemplateFamilies();
+const counts = {
+  total: families.length,
+  qaReady: families.filter((family) => family.approvalState === 'qa-ready').length,
+  approved: families.filter((family) => family.approvalState === 'approved').length,
+  published: families.filter((family) => family.approvalState === 'published').length,
+  blocked: families.filter((family) => family.visualIssues.length).length,
+};
+const stateLabel: Record<string, string> = {
+  draft: '草稿',
+  'qa-ready': '待人工审批',
+  approved: '已审批',
+  published: '已公开',
+};
+const assignedTemplateIds = new Set<string>();
+const takeTemplates = (predicate: (family: typeof families[number]) => boolean) => {
+  const picked = families.filter((family) => predicate(family) && !assignedTemplateIds.has(family.id));
+  picked.forEach((family) => assignedTemplateIds.add(family.id));
+  return picked;
+};
+const templateGroups = [
+  {
+    key: 'qa_ready',
+    label: '待人工审批',
+    summary: '技术已到 QA-ready，但还需要人看图片、配色、行业情绪和参考还原度。',
+    criteria: ['template-lab / Open Design run 已产出可审查截图。', '技术 QA 到 qa-ready。', '还没有人工批准公开。'],
+    families: takeTemplates((family) => family.approvalState === 'qa-ready'),
+  },
+  {
+    key: 'visual_risk',
+    label: '视觉风险',
+    summary: '有截图、品牌、design signals、图片实验或 logo policy 缺口。',
+    criteria: ['存在 visualIssues。', '常见原因是图片密度、品牌策略、配色、参考还原度、截图或 design contract 缺口。', '修复前不能公开发布。'],
+    families: takeTemplates((family) => Boolean(family.visualIssues.length)),
+  },
+  {
+    key: 'approved',
+    label: '已审批',
+    summary: '可以发布到官网模板库，但还没有公开。',
+    criteria: ['人工已看过视觉、截图、风险和适用 lead 类型。', 'approvalState 是 approved。', '下一步可以发布到公开模板库。'],
+    families: takeTemplates((family) => family.approvalState === 'approved'),
+  },
+  {
+    key: 'published',
+    label: '已公开',
+    summary: '已经出现在官网模板库，后续只做版本更新。',
+    criteria: ['status/approvalState 已到 published。', '允许出现在官网模板库。', '后续只做版本更新或下架审查。'],
+    families: takeTemplates((family) => family.approvalState === 'published'),
+  },
+  {
+    key: 'draft',
+    label: '草稿',
+    summary: '还在生成、补 QA 或补材料阶段。',
+    criteria: ['还没到 qa-ready。', '缺截图、QA、brand kit、design contract 或 run evidence。', '只能内部迭代，不能作为公开模板。'],
+    families: takeTemplates((family) => family.approvalState === 'draft'),
+  },
+];
+const templateCriteriaSummary = (group) => (group.criteria || [group.summary]).join(' ');
+const activeGroupKey = templateGroups.find((group) => group.families.length)?.key || templateGroups[0].key;
+const savedViews = [
+  ['all', '全部'],
+  ...templateGroups.map((group) => [group.key, group.label]),
+];
+const templateSearch = (family) => [
+  family.displayName,
+  family.niche,
+  family.family,
+  family.approvalState,
+  family.nextAction,
+  family.visualIssues.join(' '),
+  family.subNiches.join(' '),
+].filter(Boolean).join(' ').toLowerCase();
+const toneFor = (family) => {
+  if (family.approvalState === 'published' || family.approvalState === 'approved') return 'ready';
+  if (family.visualIssues.length) return 'blocked';
+  if (family.approvalState === 'qa-ready') return 'working';
+  return 'info';
+};
+const templateUiVersion = 'local-style-2026-05-08';
+---
+
+<Layout title={`模板库管理 - ${siteConfig.name}`} description="ProfitsLocal 模板库审批、视觉 QA 与发布管理。" active="templates">
+  <section class="poster-section admin-section" data-ui-version={templateUiVersion}>
+    <div class="admin-shell lead-admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">内部模板库</p>
+          <h1>模板审批与视觉 QA</h1>
+          <p class="lede">模板像项目一样进入审批队列：先看视觉风险和 QA-ready，再决定是否公开到官网模板库。</p>
+        </div>
+        <div class="admin-count">
+          <strong>{counts.total}</strong>
+          <span>模板族</span>
+        </div>
+      </div>
+
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">模板族</span>
+          <strong>{counts.total}</strong>
+          <p>当前 repo 里可管理的模板 family。</p>
+        </article>
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">待审批</span>
+          <strong>{counts.qaReady}</strong>
+          <p>技术通过后进入人工视觉判断。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">视觉风险</span>
+          <strong>{counts.blocked}</strong>
+          <p>有图片、配色、参考或品牌策略缺口。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">已审批</span>
+          <strong>{counts.approved}</strong>
+          <p>可以发布，但还没有公开。</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">已公开</span>
+          <strong>{counts.published}</strong>
+          <p>官网模板库可见。</p>
+        </article>
+      </div>
+
+      <div class="admin-toolbar" data-admin-toolbar>
+        <div class="admin-toolbar-group">
+          <span class="admin-toolbar-label">视图</span>
+          <div class="admin-view-pills">
+            {savedViews.map(([key, label], idx) => (
+              <button type="button" class={`admin-view-pill ${idx === 0 ? 'is-active' : ''}`} data-admin-view={key}>{label}</button>
+            ))}
+          </div>
+        </div>
+        <div class="admin-toolbar-group admin-toolbar-right">
+          <label class="admin-search">
+            <span class="admin-toolbar-label">搜索</span>
+            <input type="search" placeholder="模板、行业、风险、状态" data-admin-search />
+          </label>
+          <p class="micro" data-admin-visible-count>{families.length} 条可见</p>
+        </div>
+      </div>
+
+      <div class="lead-pipeline" data-template-pipeline>
+        {templateGroups.map((group) => {
+          const isActive = group.key === activeGroupKey;
+          return (
+            <section class={`lead-stage ${isActive ? 'is-active' : ''}`} data-stage-column={group.key}>
+              <button class="lead-stage-rail" type="button" data-stage-toggle={group.key} aria-expanded={isActive ? 'true' : 'false'} title={`${group.label}：${templateCriteriaSummary(group)}`} aria-label={`${group.label}，进入标准：${templateCriteriaSummary(group)}`}>
+                <span>{group.families.length}</span>
+                <strong>{group.label}</strong>
+              </button>
+              <div class="lead-stage-panel">
+                <header class="lead-stage-head">
+                  <div>
+                    <span class="eyebrow">Template queue</span>
+                    <h2>{group.label}</h2>
+                    <details class="stage-criteria">
+                      <summary>进入这个 stage 的标准</summary>
+                      <ul>
+                        {(group.criteria || [group.summary]).map((item) => <li>{item}</li>)}
+                      </ul>
+                    </details>
+                  </div>
+                  <strong>{group.families.length}</strong>
+                </header>
+                <div class="lead-card-list">
+                  {group.families.length ? group.families.slice(0, 12).map((family, idx) => (
+                    <article
+                      id={`${family.niche}-${family.family}`}
+                      class={`lead-card ${isActive && idx === 0 ? 'is-open' : ''}`}
+                      data-lead-card
+                      data-stage={group.key}
+                      data-search={templateSearch(family)}
+                    >
+                      <button class="lead-card-main" type="button" data-card-toggle>
+                        <span class={`status-pill status-${toneFor(family)}`}>{stateLabel[family.approvalState] || family.approvalState}</span>
+                        <strong>{family.displayName}</strong>
+                        <span>{family.niche} / {family.family}</span>
+                        <span class="lead-card-contact">Score {family.qaScore ?? 'n/a'} · {family.visualIssues.length} risks · {family.imageExperimentCount} images</span>
+                        <em>{family.nextAction}</em>
+                      </button>
+                      <div class="lead-card-detail">
+                        <section class="lead-profile-panel">
+                          <div class="template-card-preview">
+                            <img src={family.image} alt={`${family.displayName} screenshot`} loading="lazy" />
+                          </div>
+                          <div class="lead-section-head">
+                            <h3>上线判断</h3>
+                            <span>{family.approvalState}</span>
+                          </div>
+                          <p><strong>{group.summary}</strong></p>
+                          <p>{family.nextAction}</p>
+                          <div class="template-tags">
+                            {family.subNiches.slice(0, 5).map((tag) => <span>{tag}</span>)}
+                          </div>
+                        </section>
+                        <section class={family.visualIssues.length ? 'lead-inline-warning' : 'lead-handoff-brief'}>
+                          {family.visualIssues.length
+                            ? family.visualIssues.slice(0, 3).join('；')
+                            : '没有阻塞项，可以准备发布。'}
+                        </section>
+                        <details class="lead-tool-details">
+                          <summary>截图与审查材料（{family.publicScreenshots.length}）</summary>
+                          <div class="template-admin-shots">
+                            <div>
+                              {family.publicScreenshots.map((shot) => (
+                                <a href={shot} target="_blank" rel="noreferrer">
+                                  <img src={shot} alt={`${family.displayName} QA screenshot`} loading="lazy" />
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </details>
+                        <details class="lead-proof-details">
+                          <summary>运行与材料</summary>
+                          <dl class="lead-open-design-input">
+                            <div><dt>Run</dt><dd>{family.runIds.at(-1) || 'n/a'}</dd></div>
+                            <div><dt>Files</dt><dd>{family.conceptDir || 'n/a'}</dd></div>
+                            <div><dt>DESIGN</dt><dd>{family.designContractPath || 'missing'}</dd></div>
+                            <div><dt>Signals</dt><dd>{family.designSignalsPath || 'missing'}</dd></div>
+                            <div><dt>Brand kit</dt><dd>{family.brandKitPath || 'missing'}</dd></div>
+                          </dl>
+                        </details>
+                        <div class="lead-decision-row">
+                          <a class="button" href={family.href}>打开模板</a>
+                          <a class="button secondary" href={`#${family.niche}-${family.family}`}>定位</a>
+                        </div>
+                      </div>
+                    </article>
+                  )) : <p class="lead-empty">这个阶段暂时没有模板。</p>}
+                </div>
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const toolbar = document.querySelector('[data-admin-toolbar]');
+    const pipeline = document.querySelector('[data-template-pipeline]');
+    const searchInput = toolbar?.querySelector('[data-admin-search]');
+    const viewButtons = [...(toolbar?.querySelectorAll('[data-admin-view]') || [])];
+    const cards = [...document.querySelectorAll('[data-lead-card][data-stage]')];
+    const visibleCount = toolbar?.querySelector('[data-admin-visible-count]');
+
+    document.querySelectorAll('[data-stage-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-stage-column]').forEach((column) => {
+          const active = column.dataset.stageColumn === button.dataset.stageToggle;
+          column.classList.toggle('is-active', active);
+          column.querySelector('[data-stage-toggle]')?.setAttribute('aria-expanded', active ? 'true' : 'false');
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-card-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('[data-lead-card]');
+        const column = card?.closest('[data-stage-column]');
+        column?.querySelectorAll('[data-lead-card]').forEach((item) => item.classList.toggle('is-open', item === card && !item.classList.contains('is-open')));
+      });
+    });
+
+    const applyFilters = () => {
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      const activeView = viewButtons.find((button) => button.classList.contains('is-active'))?.dataset.adminView || 'all';
+      let shown = 0;
+      cards.forEach((card) => {
+        const matchesQuery = !query || (card.dataset.search || '').includes(query);
+        const matchesView = activeView === 'all' || card.dataset.stage === activeView;
+        const visible = matchesQuery && matchesView;
+        card.hidden = !visible;
+        if (visible) shown += 1;
+      });
+      if (visibleCount) visibleCount.textContent = `${shown} 条可见`;
+      pipeline?.classList.toggle('is-filtering', activeView !== 'all' || Boolean(query));
+    };
+
+    viewButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        viewButtons.forEach((item) => item.classList.remove('is-active'));
+        button.classList.add('is-active');
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener('input', applyFilters);
+    applyFilters();
+  </script>
+</Layout>

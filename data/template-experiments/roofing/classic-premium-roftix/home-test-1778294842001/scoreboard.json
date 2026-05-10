@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "family": "classic-premium-roftix",
+  "page": "home",
+  "execute": false,
+  "runId": "test-1778294842001",
+  "experimentRoot": "data/template-experiments/roofing/classic-premium-roftix/home-test-1778294842001",
+  "variants": [
+    {
+      "variant": "strong-framework-no-llm",
+      "constraintMode": "strong",
+      "frameworkMode": "strict-section-contract",
+      "copyMode": "none",
+      "localLlmModel": null,
+      "localLlmStatus": "not_requested",
+      "score": null,
+      "ok": true,
+      "durationMs": 53,
+      "outDir": "data/template-experiments/roofing/classic-premium-roftix/home-test-1778294842001/strong-framework-no-llm/open-design",
+      "promptPath": "data/template-experiments/roofing/classic-premium-roftix/home-test-1778294842001/strong-framework-no-llm/prompt.md",
+      "scorePath": "data/template-experiments/roofing/classic-premium-roftix/home-test-1778294842001/strong-framework-no-llm/experiment-score.json"
+    },
+    {
+      "variant": "medium-framework-no-llm",
+      "constraintMode": "medium",
+      "frameworkMode": "design-language-plus-required-sections",
+      "copyMode": "none",
+      "localLlmModel": null,
+      "localLlmStatus": "not_requested",
+      "score": null,
+      "ok": true,
+      "durationMs": 54,
+      "outDir": "data/template-experiments/roofing/classic-premium-roftix/home-test-1778294842001/medium-framework-no-llm/open-design",
+      "promptPath": "data/template-experiments/roofing/classic-premium-roftix/home-test-1778294842001/medium-framework-no-llm/prompt.md",
+      "scorePath": "data/template-experiments/roofing/classic-premium-roftix/home-test-1778294842001/medium-framework-no-llm/experiment-score.json"
+    }
+  ],
+  "best": null,
+  "generatedAt": "2026-05-09T02:47:22.195Z"
+}

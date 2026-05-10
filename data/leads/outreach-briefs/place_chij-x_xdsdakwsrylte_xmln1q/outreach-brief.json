@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-09T04:46:00.688Z",
+  "sourceType": "maps_scraper_discovery_store",
+  "entityKey": "place_chij-x_xdsdakwsrylte_xmln1q",
+  "businessName": "New Farm Deli",
+  "niche": "restaurant",
+  "city": "Brisbane",
+  "phone": "(07) 3358 2634",
+  "website": "http://www.newfarmdeli.com.au/",
+  "googleMapsUrl": "https://www.google.com/maps/place/New+Farm+Deli/data=!4m7!3m6!1s0x6b915a270df11ffb:0x549f8b19ff5e5b62!8m2!3d-27.4672595!4d153.0472039!16s%2Fg%2F1ttdymdt!19sChIJ-x_xDSdakWsRYlte_xmLn1Q?authuser=0&hl=en&rclk=1",
+  "discoveryScore": 72,
+  "websiteStatus": "independent_http_site",
+  "audit": {
+    "path": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chij-x_xdsdakwsrylte_xmln1q/current-site-audit.json",
+    "score": 61,
+    "verdict": "moderate_redesign_opportunity",
+    "salesDecision": "human_review",
+    "summary": "New Farm Deli has an existing website, and the strongest useful gap is: proof is not doing enough work.",
+    "findings": [
+      {
+        "title": "Proof is not doing enough work",
+        "severity": "medium",
+        "evidence": "The captured text does not clearly surface reviews, project proof, warranty, licences, or gallery proof.",
+        "fix": "Add a proof section with real reviews, project examples, and verified guarantees/credentials."
+      },
+      {
+        "title": "Title does not target the main local intent",
+        "severity": "medium",
+        "evidence": "Captured title: \"New Farm Deli and Café: Authentic Italian Dining in Brisbane\". Inferred keyword: \"restaurant Deli\".",
+        "fix": "Rewrite title around \"restaurant Deli\" while keeping the business name."
+      },
+      {
+        "title": "H1 structure needs cleanup",
+        "severity": "medium",
+        "evidence": "0 H1 tag(s) captured.",
+        "fix": "Use one H1 focused on the primary service/location promise."
+      }
+    ]
+  },
+  "channelRecommendation": "call_or_sms_first",
+  "offerAngle": "I noticed your site has a fixable trust gap: The captured text does not clearly surface reviews, project proof, warranty, licences, or gallery proof.",
+  "proofPoints": [
+    "1906 Google reviews listed in Maps scrape",
+    "4.5 Maps rating",
+    "Cheap site audit score 61/100",
+    "Audit decision: human_review"
+  ],
+  "coldMessageDraft": "Hey New, I was looking at New Farm Deli in Brisbane. I noticed your site has a fixable trust gap: The captured text does not clearly surface reviews, project proof, warranty, licences, or gallery proof. I made a quick note on what I would tighten first; happy to send it over if useful.",
+  "followUpDraft": "Quick follow-up on New Farm Deli: the main opportunity I noticed is Add a proof section with real reviews, project examples, and verified guarantees/credentials.. Worth me sending the short audit?",
+  "guardrails": [
+    "This is a draft, not a final send.",
+    "Do not mention review body text.",
+    "Do not claim Google API verification until it has been run.",
+    "Find email/contact path only after operator accepts the offer angle."
+  ]
+}

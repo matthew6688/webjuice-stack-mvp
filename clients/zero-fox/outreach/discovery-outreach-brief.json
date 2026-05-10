@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-09T04:46:00.685Z",
+  "sourceType": "maps_scraper_discovery_store",
+  "entityKey": "place_chijs7yyijbzkwsr49jftrkxj4m",
+  "businessName": "Zero Fox",
+  "niche": "restaurant",
+  "city": "Brisbane",
+  "phone": "0481 447 893",
+  "website": "http://www.zerofoxbne.com/",
+  "googleMapsUrl": "https://www.google.com/maps/place/Zero+Fox/data=!4m7!3m6!1s0x6b9159908898bc4b:0x838f31b94edfd8e3!8m2!3d-27.4548207!4d153.0494381!16s%2Fg%2F11cp0b3_3k!19sChIJS7yYiJBZkWsR49jfTrkxj4M?authuser=0&hl=en&rclk=1",
+  "discoveryScore": 76,
+  "websiteStatus": "independent_http_site",
+  "audit": {
+    "path": "/Users/matthew/Developer/google-map-website/data/leads/audits/place_chijs7yyijbzkwsr49jftrkxj4m/current-site-audit.json",
+    "score": 38,
+    "verdict": "clear_redesign_opportunity",
+    "salesDecision": "build_mockup",
+    "summary": "Zero Fox has an existing website, and the strongest useful gap is: contact page is not easy to verify.",
+    "findings": [
+      {
+        "title": "Contact page is not easy to verify",
+        "severity": "high",
+        "evidence": "No contact/enquiry/quote page candidate was captured from visible links.",
+        "fix": "Preserve or create a clear contact/quote page and link it from header, footer, and CTA blocks."
+      },
+      {
+        "title": "Title does not target the main local intent",
+        "severity": "medium",
+        "evidence": "Captured title: \"ZERO FOX | bar & korean kitchen\". Inferred keyword: \"restaurant Restaurant\".",
+        "fix": "Rewrite title around \"restaurant Restaurant\" while keeping the business name."
+      },
+      {
+        "title": "H1 structure needs cleanup",
+        "severity": "medium",
+        "evidence": "4 H1 tag(s) captured.",
+        "fix": "Use one H1 focused on the primary service/location promise."
+      }
+    ]
+  },
+  "channelRecommendation": "call_or_sms_first",
+  "offerAngle": "I noticed your site has a fixable trust gap: No contact/enquiry/quote page candidate was captured from visible links.",
+  "proofPoints": [
+    "1008 Google reviews listed in Maps scrape",
+    "4.6 Maps rating",
+    "Cheap site audit score 38/100",
+    "Audit decision: build_mockup"
+  ],
+  "coldMessageDraft": "Hey Zero, I was looking at Zero Fox in Brisbane. I noticed your site has a fixable trust gap: No contact/enquiry/quote page candidate was captured from visible links. I made a quick note on what I would tighten first; happy to send it over if useful.",
+  "followUpDraft": "Quick follow-up on Zero Fox: the main opportunity I noticed is Preserve or create a clear contact/quote page and link it from header, footer, and CTA blocks.. Worth me sending the short audit?",
+  "guardrails": [
+    "This is a draft, not a final send.",
+    "Do not mention review body text.",
+    "Do not claim Google API verification until it has been run.",
+    "Find email/contact path only after operator accepts the offer angle."
+  ]
+}

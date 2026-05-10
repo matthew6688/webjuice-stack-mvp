@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProfitsLocal 文档模型比较</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5d6673;
+      --paper: #fff7ea;
+      --surface: #fffdf7;
+      --line: #1d232b;
+      --accent: #ff6640;
+      --gold: #ffd95a;
+      --soft: #f1e6d4;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(23,32,42,.035) 1px, transparent 1px), linear-gradient(rgba(23,32,42,.025) 1px, transparent 1px); background-size: 56px 56px; }
+    main { width: min(1180px, calc(100% - 40px)); margin: 32px auto; background: var(--surface); border: 2px solid var(--line); box-shadow: 8px 8px 0 var(--line); }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 28px; border-bottom: 2px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .01em; }
+    .mark { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; color: white; font-weight: 900; }
+    .eyebrow { color: var(--muted); font-size: 13px; font-weight: 800; text-transform: uppercase; }
+    section { padding: 30px 36px; border-bottom: 1px solid rgba(29,35,43,.22); }
+    .hero { display: grid; grid-template-columns: 1fr 180px; gap: 32px; align-items: end; }
+    .kicker { margin: 0 0 14px; font-size: 13px; font-weight: 900; text-transform: uppercase; color: var(--accent); }
+    h1 { font-size: clamp(38px, 7vw, 88px); line-height: .92; margin: 0; max-width: 920px; letter-spacing: 0; }
+    h2 { font-size: 22px; margin: 0 0 18px; }
+    h3 { font-size: 15px; margin: 22px 0 8px; color: var(--muted); text-transform: uppercase; }
+    .lede { max-width: 760px; color: var(--muted); font-size: 18px; line-height: 1.6; font-weight: 650; }
+    .stamp { border: 2px solid var(--line); background: var(--gold); min-height: 128px; display: grid; place-items: center; text-align: center; padding: 16px; box-shadow: 4px 4px 0 var(--line); }
+    .stamp strong { display: block; font-size: 24px; }
+    .stamp span { color: var(--muted); font-weight: 800; font-size: 12px; }
+    .grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .decision { background: #17202a; color: #fffdf7; display: grid; grid-template-columns: 90px 1fr; gap: 20px; align-items: start; }
+    .decision span { color: var(--gold); font-weight: 900; }
+    .decision p { margin: 0; font-size: 22px; line-height: 1.45; font-weight: 850; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border: 1px solid rgba(29,35,43,.24); padding: 12px 14px; vertical-align: top; text-align: left; }
+    th { background: var(--soft); width: 150px; }
+    thead th { width: auto; }
+    ul, ol { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.65; font-weight: 650; }
+    li + li { margin-top: 6px; }
+    p { color: var(--muted); line-height: 1.65; font-weight: 650; }
+    pre { white-space: pre-wrap; word-break: break-word; background: #17202a; color: #fffdf7; padding: 18px; border-radius: 0; border: 2px solid var(--line); max-height: 520px; overflow: auto; font-size: 12px; line-height: 1.55; }
+    details { border: 1px solid rgba(29,35,43,.28); background: #fffaf0; margin: 12px 0; }
+    summary { cursor: pointer; padding: 14px 16px; font-weight: 900; }
+    details pre { margin: 0; border-left: 0; border-right: 0; border-bottom: 0; }
+    .ok { color: #137a47; font-weight: 900; }
+    .quote { border-left: 6px solid var(--accent); background: #fff4df; padding: 20px 22px; }
+    .quote strong { font-size: 26px; line-height: 1.1; display: block; }
+    .quote small { color: var(--muted); font-weight: 800; }
+    .cta { display: inline-block; color: var(--line); background: var(--gold); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); padding: 10px 14px; font-weight: 900; }
+    footer { display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between; padding: 18px 28px; color: var(--muted); font-size: 12px; font-weight: 800; }
+    @media (max-width: 760px) {
+      main { width: calc(100% - 18px); margin: 12px auto; box-shadow: 4px 4px 0 var(--line); }
+      header, section { padding: 20px; }
+      .hero, .grid.two, .decision { grid-template-columns: 1fr; }
+      h1 { font-size: 42px; }
+      .stamp { min-height: 96px; }
+      pre { max-height: 420px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="brand"><span class="mark">P</span><span>profitslocal</span></div>
+      <div class="eyebrow">Model QA</div>
+    </header>
+    
+      <section class="hero">
+        <div>
+          <p class="kicker">ProfitsLocal 内部实验</p>
+          <h1>文档模型比较：从线索 payload 到网站生产报告</h1>
+          <p class="lede">这个页面保留完整 prompt、源数据、模型输出和评分。目标是让我们知道哪个模型适合写 discovery report、gap score、production spec 和 copy brief。</p>
+        </div>
+        <div class="stamp">
+          <strong>Codex CLI</strong>
+          <span>当前推荐</span>
+        </div>
+      </section>
+      <section>
+        <h2>评分结果</h2>
+        <table>
+          <thead><tr><th>模型</th><th>分数</th><th>耗时</th><th>主要发现</th></tr></thead>
+          <tbody>
+      <tr>
+        <td><strong>Codex CLI</strong><br><span>smoke-cli</span></td>
+        <td>100 / A</td>
+        <td>44.8s</td>
+        <td><span class="ok">无主要问题</span></td>
+      </tr>
+      <tr>
+        <td><strong>Claude Code CLI</strong><br><span>smoke-cli</span></td>
+        <td>95 / A</td>
+        <td>35.6s</td>
+        <td><ul><li>gap_score_out_of_range：Gap score dimensions exceed expected ranges: localSeo.</li></ul></td>
+      </tr>
+      <tr>
+        <td><strong>Qwen local think-off</strong><br><span>smoke-qwen-think-off</span></td>
+        <td>95 / A</td>
+        <td>230.4s</td>
+        <td><ul><li>gap_score_out_of_range：Gap score dimensions exceed expected ranges: conversion, localSeo, designTrust, content.</li></ul></td>
+      </tr>
+      <tr>
+        <td><strong>DeepSeek local strict-v2</strong><br><span>smoke-deepseek-strict-v2</span></td>
+        <td>89 / B</td>
+        <td>67.0s</td>
+        <td><ul><li>thin_evidence_used：Evidence used is too thin.</li><li>thin_missing_evidence：Missing evidence is not clearly listed.</li><li>thin_asset_plan：Asset plan should specify hero, service/detail, and proof/contact imagery.</li></ul></td>
+      </tr></tbody>
+        </table>
+      </section>
+      <section class="grid two">
+        <div>
+          <h2>源数据 Payload</h2>
+          <pre>{
+  &quot;leadSlug&quot;: &quot;roofing-restoration-greg-sign&quot;,
+  &quot;businessName&quot;: &quot;Roofing &amp; Restoration&quot;,
+  &quot;niche&quot;: &quot;roofing&quot;,
+  &quot;source&quot;: &quot;operator_image_and_text&quot;,
+  &quot;verifiedFacts&quot;: {
+    &quot;businessName&quot;: &quot;Roofing &amp; Restoration&quot;,
+    &quot;contactName&quot;: &quot;Greg&quot;,
+    &quot;phones&quot;: [
+      &quot;0424 371 622&quot;
+    ],
+    &quot;emails&quot;: [],
+    &quot;address&quot;: &quot;&quot;,
+    &quot;websiteUrl&quot;: &quot;&quot;,
+    &quot;serviceArea&quot;: &quot;&quot;,
+    &quot;services&quot;: [
+      &quot;roof restorations&quot;,
+      &quot;capping&quot;,
+      &quot;respray&quot;,
+      &quot;repairs&quot;,
+      &quot;gutters&quot;,
+      &quot;driveway&quot;,
+      &quot;patio&quot;,
+      &quot;external living&quot;,
+      &quot;retaining wall&quot;,
+      &quot;pressure cleaning&quot;
+    ],
+    &quot;claimsFromSource&quot;: [
+      &quot;40 years experience&quot;,
+      &quot;free in person inspection and quote&quot;
+    ]
+  },
+  &quot;researchNotes&quot;: [
+    &quot;Input came from a sign/photo plus operator text, not a verified website.&quot;,
+    &quot;No website, email, address, licence, Google rating, or real review evidence is available in this fixture.&quot;,
+    &quot;The page can use generated demo copy for completeness, but it must not invent contact details or verified proof.&quot;
+  ],
+  &quot;targetArtifacts&quot;: [
+    &quot;discoveryReport&quot;,
+    &quot;gapScore&quot;,
+    &quot;websiteProductionSpec&quot;,
+    &quot;copyBrief&quot;,
+    &quot;riskNotes&quot;
+  ]
+}</pre>
+        </div>
+        <div>
+          <h2>统一提示词</h2>
+          <pre>You are preparing internal documents for a local business website mockup pipeline.
+Return JSON only. Do not include markdown fences, hidden reasoning, XML tags, or prose outside JSON.
+
+Critical fact rules:
+- Keep verified business name, phone, email, address, and website URL exact.
+- Do not invent an email, address, website URL, licence, award, Google rating, real review, price, or guarantee.
+- You may generate demo-safe service copy, FAQ, process copy, and page structure for a preview website.
+- Generated demo content must be tracked internally, but the customer-facing page must not say placeholder, AI-generated, inferred, audit, or internal.
+
+Output JSON schema:
+{
+  &quot;discoveryReport&quot;: {
+    &quot;businessIdentity&quot;: &quot;&quot;,
+    &quot;contactPaths&quot;: [],
+    &quot;services&quot;: [],
+    &quot;currentPresence&quot;: &quot;&quot;,
+    &quot;opportunityDiagnosis&quot;: &quot;&quot;,
+    &quot;recommendedAngle&quot;: &quot;&quot;,
+    &quot;evidenceUsed&quot;: [],
+    &quot;missingEvidence&quot;: []
+  },
+  &quot;gapScore&quot;: {
+    &quot;total&quot;: 0,
+    &quot;conversion&quot;: 0,
+    &quot;localSeo&quot;: 0,
+    &quot;designTrust&quot;: 0,
+    &quot;content&quot;: 0,
+    &quot;rationale&quot;: &quot;&quot;
+  },
+  &quot;websiteProductionSpec&quot;: {
+    &quot;pageMode&quot;: &quot;one_page_preview&quot;,
+    &quot;templateDirection&quot;: &quot;&quot;,
+    &quot;blockPlan&quot;: [],
+    &quot;assetPlan&quot;: [],
+    &quot;contactPlan&quot;: {},
+    &quot;seoPlan&quot;: {},
+    &quot;factLock&quot;: {
+      &quot;mustKeep&quot;: [],
+      &quot;mustNotClaim&quot;: []
+    }
+  },
+  &quot;copyBrief&quot;: {
+    &quot;heroHeadline&quot;: &quot;&quot;,
+    &quot;heroSubcopy&quot;: &quot;&quot;,
+    &quot;primaryCta&quot;: &quot;&quot;,
+    &quot;serviceCopy&quot;: [],
+    &quot;faq&quot;: [],
+    &quot;outreachHook&quot;: &quot;&quot;
+  },
+  &quot;riskNotes&quot;: []
+}
+
+Lead input:
+{
+  &quot;leadSlug&quot;: &quot;roofing-restoration-greg-sign&quot;,
+  &quot;businessName&quot;: &quot;Roofing &amp; Restoration&quot;,
+  &quot;niche&quot;: &quot;roofing&quot;,
+  &quot;source&quot;: &quot;operator_image_and_text&quot;,
+  &quot;verifiedFacts&quot;: {
+    &quot;businessName&quot;: &quot;Roofing &amp; Restoration&quot;,
+    &quot;contactName&quot;: &quot;Greg&quot;,
+    &quot;phones&quot;: [
+      &quot;0424 371 622&quot;
+    ],
+    &quot;emails&quot;: [],
+    &quot;address&quot;: &quot;&quot;,
+    &quot;websiteUrl&quot;: &quot;&quot;,
+    &quot;serviceArea&quot;: &quot;&quot;,
+    &quot;services&quot;: [
+      &quot;roof restorations&quot;,
+      &quot;capping&quot;,
+      &quot;respray&quot;,
+      &quot;repairs&quot;,
+      &quot;gutters&quot;,
+      &quot;driveway&quot;,
+      &quot;patio&quot;,
+      &quot;external living&quot;,
+      &quot;retaining wall&quot;,
+      &quot;pressure cleaning&quot;
+    ],
+    &quot;claimsFromSource&quot;: [
+      &quot;40 years experience&quot;,
+      &quot;free in person inspection and quote&quot;
+    ]
+  },
+  &quot;researchNotes&quot;: [
+    &quot;Input came from a sign/photo plus operator text, not a verified website.&quot;,
+    &quot;No website, email, address, licence, Google rating, or real review evidence is available in this fixture.&quot;,
+    &quot;The page can use generated demo copy for completeness, but it must not invent contact details or verified proof.&quot;
+  ],
+  &quot;targetArtifacts&quot;: [
+    &quot;discoveryReport&quot;,
+    &quot;gapScore&quot;,
+    &quot;websiteProductionSpec&quot;,
+    &quot;copyBrief&quot;,
+    &quot;riskNotes&quot;
+  ]
+}</pre>
+        </div>
+      </section>
+      <section>
+        <h2>模型原始输出</h2>
+        
+    <details>
+      <summary>Codex CLI 原始输出 · 100/A</summary>
+      <pre>{
+  &quot;discoveryReport&quot;: {
+    &quot;businessIdentity&quot;: &quot;Roofing &amp; Restoration is a local roofing and exterior surface restoration business represented by Greg. Verified source material lists roofing-related services plus driveway, patio, external living, retaining wall, and pressure cleaning work.&quot;,
+    &quot;contactPaths&quot;: [
+      {
+        &quot;type&quot;: &quot;phone&quot;,
+        &quot;value&quot;: &quot;0424 371 622&quot;,
+        &quot;verified&quot;: true
+      }
+    ],
+    &quot;services&quot;: [
+      &quot;roof restorations&quot;,
+      &quot;capping&quot;,
+      &quot;respray&quot;,
+      &quot;repairs&quot;,
+      &quot;gutters&quot;,
+      &quot;driveway&quot;,
+      &quot;patio&quot;,
+      &quot;external living&quot;,
+      &quot;retaining wall&quot;,
+      &quot;pressure cleaning&quot;
+    ],
+    &quot;currentPresence&quot;: &quot;No verified website, email address, street address, service area, licence details, Google rating, or review evidence is available from the supplied lead fixture.&quot;,
+    &quot;opportunityDiagnosis&quot;: &quot;The business appears to rely on offline visibility and direct phone contact. A focused one-page preview can improve credibility, explain the service range, and make the inspection-and-quote path clearer without adding unverified claims.&quot;,
+    &quot;recommendedAngle&quot;: &quot;Position Roofing &amp; Restoration around experienced, practical roof and exterior restoration help, with a direct call-to-book flow for in-person inspections and quotes.&quot;,
+    &quot;evidenceUsed&quot;: [
+      &quot;Verified business name: Roofing &amp; Restoration&quot;,
+      &quot;Verified contact name: Greg&quot;,
+      &quot;Verified phone: 0424 371 622&quot;,
+      &quot;Verified services from source: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning&quot;,
+      &quot;Claim from source: 40 years experience&quot;,
+      &quot;Claim from source: free in person inspection and quote&quot;,
+      &quot;Research note: source was operator image and text, not a verified website&quot;,
+      &quot;Research note: no website, email, address, licence, Google rating, or real review evidence available&quot;
+    ],
+    &quot;missingEvidence&quot;: [
+      &quot;Email address&quot;,
+      &quot;Street address&quot;,
+      &quot;Website URL&quot;,
+      &quot;Service area&quot;,
+      &quot;Business licence or registration details&quot;,
+      &quot;Insurance details&quot;,
+      &quot;Google Business Profile&quot;,
+      &quot;Google rating&quot;,
+      &quot;Real customer reviews&quot;,
+      &quot;Project photos&quot;,
+      &quot;Before-and-after photos&quot;,
+      &quot;Brand logo&quot;,
+      &quot;Opening hours&quot;
+    ]
+  },
+  &quot;gapScore&quot;: {
+    &quot;total&quot;: 79,
+    &quot;conversion&quot;: 18,
+    &quot;localSeo&quot;: 22,
+    &quot;designTrust&quot;: 20,
+    &quot;content&quot;: 19,
+    &quot;rationale&quot;: &quot;The business has a verified name, phone number, service list, experience claim, and quote offer, which are useful conversion anchors. The main gaps are absence of a verified website, email, address, service area, reviews, project photos, licence details, and structured local SEO signals.&quot;
+  },
+  &quot;websiteProductionSpec&quot;: {
+    &quot;pageMode&quot;: &quot;one_page_preview&quot;,
+    &quot;templateDirection&quot;: &quot;Trade-services one-page preview with a direct phone-first conversion path, practical service sections, inspection-and-quote messaging, and restrained trust-building based only on supplied facts.&quot;,
+    &quot;blockPlan&quot;: [
+      {
+        &quot;block&quot;: &quot;hero&quot;,
+        &quot;purpose&quot;: &quot;Introduce Roofing &amp; Restoration, explain the main service category, and make phone contact immediate.&quot;,
+        &quot;contentType&quot;: &quot;verified business name, generated service positioning, verified phone CTA&quot;
+      },
+      {
+        &quot;block&quot;: &quot;service_overview&quot;,
+        &quot;purpose&quot;: &quot;Group the supplied services into clear categories so visitors can quickly identify relevant work.&quot;,
+        &quot;contentType&quot;: &quot;verified service list with generated explanatory copy&quot;
+      },
+      {
+        &quot;block&quot;: &quot;inspection_quote&quot;,
+        &quot;purpose&quot;: &quot;Highlight the supplied free in-person inspection and quote claim.&quot;,
+        &quot;contentType&quot;: &quot;source claim with generated process copy&quot;
+      },
+      {
+        &quot;block&quot;: &quot;experience&quot;,
+        &quot;purpose&quot;: &quot;Use the supplied 40 years experience claim as a credibility point without adding unsupported proof.&quot;,
+        &quot;contentType&quot;: &quot;source claim with conservative supporting copy&quot;
+      },
+      {
+        &quot;block&quot;: &quot;process&quot;,
+        &quot;purpose&quot;: &quot;Explain a simple enquiry, inspection, quote, and work scheduling flow.&quot;,
+        &quot;contentType&quot;: &quot;generated demo-safe process copy&quot;
+      },
+      {
+        &quot;block&quot;: &quot;faq&quot;,
+        &quot;purpose&quot;: &quot;Answer likely customer questions while avoiding pricing, warranty, licence, or location claims.&quot;,
+        &quot;contentType&quot;: &quot;generated demo-safe FAQ&quot;
+      },
+      {
+        &quot;block&quot;: &quot;final_cta&quot;,
+        &quot;purpose&quot;: &quot;Repeat the phone contact path and inspection quote offer.&quot;,
+        &quot;contentType&quot;: &quot;verified phone and source claim&quot;
+      }
+    ],
+    &quot;assetPlan&quot;: [
+      {
+        &quot;asset&quot;: &quot;roof restoration work image&quot;,
+        &quot;sourceRequirement&quot;: &quot;Use supplied operator image if available; otherwise use neutral trade-style demo imagery without implying it is a completed project by the business.&quot;
+      },
+      {
+        &quot;asset&quot;: &quot;roof detail or gutter image&quot;,
+        &quot;sourceRequirement&quot;: &quot;Use generic licensed visual support only if no real business photos are provided.&quot;
+      },
+      {
+        &quot;asset&quot;: &quot;before-after section&quot;,
+        &quot;sourceRequirement&quot;: &quot;Do not include real before-and-after claims unless project photos are supplied and approved.&quot;
+      }
+    ],
+    &quot;contactPlan&quot;: {
+      &quot;primaryContact&quot;: &quot;0424 371 622&quot;,
+      &quot;contactName&quot;: &quot;Greg&quot;,
+      &quot;displayPhone&quot;: true,
+      &quot;clickToCall&quot;: true,
+      &quot;email&quot;: &quot;&quot;,
+      &quot;address&quot;: &quot;&quot;,
+      &quot;websiteUrl&quot;: &quot;&quot;,
+      &quot;contactForm&quot;: &quot;Optional preview form may be shown as a website interaction pattern, but it must not imply a verified email destination.&quot;
+    },
+    &quot;seoPlan&quot;: {
+      &quot;title&quot;: &quot;Roofing &amp; Restoration | Roof Restorations, Repairs &amp; Exterior Cleaning&quot;,
+      &quot;metaDescription&quot;: &quot;Call Roofing &amp; Restoration on 0424 371 622 for roof restorations, capping, resprays, repairs, gutters, pressure cleaning and exterior restoration enquiries.&quot;,
+      &quot;h1&quot;: &quot;Roofing &amp; Restoration&quot;,
+      &quot;localSeoNotes&quot;: [
+        &quot;Do not add suburb, city, or service area until verified.&quot;,
+        &quot;Do not create address schema without a verified address.&quot;,
+        &quot;Use service keywords from the verified service list.&quot;,
+        &quot;Use phone number exactly as supplied.&quot;
+      ]
+    },
+    &quot;factLock&quot;: {
+      &quot;mustKeep&quot;: [
+        &quot;Business name: Roofing &amp; Restoration&quot;,
+        &quot;Contact name: Greg&quot;,
+        &quot;Phone: 0424 371 622&quot;,
+        &quot;Services: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning&quot;,
+        &quot;Claim from source: 40 years experience&quot;,
+        &quot;Claim from source: free in person inspection and quote&quot;
+      ],
+      &quot;mustNotClaim&quot;: [
+        &quot;Email address&quot;,
+        &quot;Street address&quot;,
+        &quot;Website URL&quot;,
+        &quot;Service area&quot;,
+        &quot;Licence number&quot;,
+        &quot;Insurance status&quot;,
+        &quot;Google rating&quot;,
+        &quot;Customer reviews&quot;,
+        &quot;Awards&quot;,
+        &quot;Prices&quot;,
+        &quot;Guarantees&quot;,
+        &quot;Emergency availability&quot;,
+        &quot;Specific suburbs or regions&quot;,
+        &quot;Completed project examples unless supplied&quot;
+      ]
+    }
+  },
+  &quot;copyBrief&quot;: {
+    &quot;heroHeadline&quot;: &quot;Roofing &amp; Restoration&quot;,
+    &quot;heroSubcopy&quot;: &quot;Roof restorations, capping, resprays, repairs, gutters, pressure cleaning and exterior restoration work handled with decades of trade experience.&quot;,
+    &quot;primaryCta&quot;: &quot;Call Greg on 0424 371 622&quot;,
+    &quot;serviceCopy&quot;: [
+      {
+        &quot;service&quot;: &quot;Roof restorations&quot;,
+        &quot;copy&quot;: &quot;Refresh tired roofing with restoration work designed to improve appearance, condition, and long-term presentation.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Capping, respray and repairs&quot;,
+        &quot;copy&quot;: &quot;Practical roofing support for capping, respray work, and repairs where an in-person inspection can confirm the right approach.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Gutters&quot;,
+        &quot;copy&quot;: &quot;Gutter-related work can be assessed as part of the broader roof and exterior inspection.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Driveway, patio and external living&quot;,
+        &quot;copy&quot;: &quot;Exterior surfaces around the home can be reviewed for cleaning, restoration, and presentation improvements.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Retaining wall and pressure cleaning&quot;,
+        &quot;copy&quot;: &quot;Pressure cleaning and related exterior work can help restore the look of hard surfaces and outdoor areas.&quot;
+      }
+    ],
+    &quot;faq&quot;: [
+      {
+        &quot;question&quot;: &quot;How do I get a quote?&quot;,
+        &quot;answer&quot;: &quot;Call Greg on 0424 371 622 to arrange a free in-person inspection and quote.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;What types of work does Roofing &amp; Restoration handle?&quot;,
+        &quot;answer&quot;: &quot;Services listed include roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, and pressure cleaning work.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;Can the work be quoted without seeing the property?&quot;,
+        &quot;answer&quot;: &quot;The supplied information promotes an in-person inspection and quote, so the preview page should guide visitors to call and arrange a site visit.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;Does the business list an email address?&quot;,
+        &quot;answer&quot;: &quot;No verified email address is available, so the preview should use phone contact only.&quot;
+      }
+    ],
+    &quot;outreachHook&quot;: &quot;I put together a phone-first website preview for Roofing &amp; Restoration that turns the sign details into a clear service page, keeps Greg&#39;s number prominent, and avoids adding any unverified claims.&quot;
+  },
+  &quot;riskNotes&quot;: [
+    &quot;Source is operator image and text, not a verified website or official business profile.&quot;,
+    &quot;No verified email, address, website URL, service area, licence, rating, reviews, pricing, or guarantee details are available.&quot;,
+    &quot;The 40 years experience and free in-person inspection and quote claims come from the supplied source and should remain phrased conservatively.&quot;,
+    &quot;Do not imply generic imagery shows this business&#39;s completed work unless the assets are supplied and confirmed.&quot;,
+    &quot;Customer-facing copy should not mention internal evidence status or content generation.&quot;
+  ]
+}</pre>
+    </details>
+    <details>
+      <summary>Claude Code CLI 原始输出 · 95/A</summary>
+      <pre>```json
+{
+  &quot;discoveryReport&quot;: {
+    &quot;businessIdentity&quot;: &quot;Roofing &amp; Restoration, operated by Greg. Verified contact: 0424 371 622. Specializes in roof restorations, capping, respray, repairs, and external services (gutters, driveway, patio, external living, retaining wall, pressure cleaning). Claims 40 years experience and offers free in-person inspection and quote.&quot;,
+    &quot;contactPaths&quot;: [
+      {
+        &quot;type&quot;: &quot;phone&quot;,
+        &quot;value&quot;: &quot;0424 371 622&quot;,
+        &quot;verified&quot;: true
+      }
+    ],
+    &quot;services&quot;: [
+      &quot;roof restorations&quot;,
+      &quot;capping&quot;,
+      &quot;respray&quot;,
+      &quot;repairs&quot;,
+      &quot;gutters&quot;,
+      &quot;driveway&quot;,
+      &quot;patio&quot;,
+      &quot;external living&quot;,
+      &quot;retaining wall&quot;,
+      &quot;pressure cleaning&quot;
+    ],
+    &quot;currentPresence&quot;: &quot;No website, email, address, or public listings detected. Lead sourced from physical sign photo and operator-provided text only.&quot;,
+    &quot;opportunityDiagnosis&quot;: &quot;Complete digital absence creates barrier to lead capture and credibility. Local search cannot rank a business with no web presence. Customers cannot easily verify credentials, see portfolio, or request quotes online. High friction in conversion funnel.&quot;,
+    &quot;recommendedAngle&quot;: &quot;Position as trusted local expert with 40 years of hands-on experience. Anchor site around free inspection/quote offer and portfolio of completed work. Build trust through transparent process, detailed service breakdown, and clear contact CTA.&quot;,
+    &quot;evidenceUsed&quot;: [
+      &quot;Operator-supplied phone contact&quot;,
+      &quot;Service list from source material&quot;,
+      &quot;Experience claim (40 years)&quot;,
+      &quot;Free quote offer statement&quot;
+    ],
+    &quot;missingEvidence&quot;: [
+      &quot;Website URL&quot;,
+      &quot;Email address&quot;,
+      &quot;Physical business address&quot;,
+      &quot;Google Business Profile&quot;,
+      &quot;Customer reviews or ratings&quot;,
+      &quot;License or certifications&quot;,
+      &quot;Portfolio or work photos&quot;,
+      &quot;Service area/coverage zone&quot;
+    ]
+  },
+  &quot;gapScore&quot;: {
+    &quot;total&quot;: 87,
+    &quot;conversion&quot;: 23,
+    &quot;localSeo&quot;: 28,
+    &quot;designTrust&quot;: 18,
+    &quot;content&quot;: 18,
+    &quot;rationale&quot;: &quot;Business has zero online presence. No website means no conversion funnel, no local SEO ranking, no trust signals (reviews, credentials, portfolio), and no discoverable content. Phone number alone is insufficient for modern lead capture. One-page preview site will address all four gaps simultaneously by establishing baseline web presence, claiming local search identity, building trust through transparent layout, and enabling online contact pathways.&quot;
+  },
+  &quot;websiteProductionSpec&quot;: {
+    &quot;pageMode&quot;: &quot;one_page_preview&quot;,
+    &quot;templateDirection&quot;: &quot;Single-page hero-to-CTA layout optimized for mobile and desktop. Clean, trustworthy design using clear typography, high-quality imagery areas, and prominent phone/contact CTA. Structured for Google Business Profile cross-linking and local SEO foundation. No unnecessary decoration; every section serves conversion or credibility.&quot;,
+    &quot;blockPlan&quot;: [
+      {
+        &quot;blockName&quot;: &quot;Hero&quot;,
+        &quot;purpose&quot;: &quot;Establish credibility and immediate value proposition&quot;,
+        &quot;content&quot;: &quot;Headline: [Generated from copyBrief], subheading with experience claim, prominent phone CTA button&quot;
+      },
+      {
+        &quot;blockName&quot;: &quot;Services Grid&quot;,
+        &quot;purpose&quot;: &quot;Show breadth and scope of work&quot;,
+        &quot;content&quot;: &quot;10 service tiles: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning. Cards use icons + short description, no superlatives.&quot;
+      },
+      {
+        &quot;blockName&quot;: &quot;Why Choose Us&quot;,
+        &quot;purpose&quot;: &quot;Differentiate on experience and process&quot;,
+        &quot;content&quot;: &quot;40 years experience, free in-person inspection and quote, family-owned/locally operated angle. Keep factual only—no invented awards or ratings.&quot;
+      },
+      {
+        &quot;blockName&quot;: &quot;Our Process&quot;,
+        &quot;purpose&quot;: &quot;Reduce friction and build confidence&quot;,
+        &quot;content&quot;: &quot;4-step process: (1) Free inspection, (2) Detailed quote, (3) Scheduling, (4) Professional completion. Each step has 1-2 sentence explanation.&quot;
+      },
+      {
+        &quot;blockName&quot;: &quot;FAQ&quot;,
+        &quot;purpose&quot;: &quot;Address common objections and questions&quot;,
+        &quot;content&quot;: &quot;Generated FAQ from copyBrief. Focus on timeline, pricing, warranty, inspection process, service area.&quot;
+      },
+      {
+        &quot;blockName&quot;: &quot;Contact CTA&quot;,
+        &quot;purpose&quot;: &quot;Drive phone or inquiry submission&quot;,
+        &quot;content&quot;: &quot;Prominent phone number (0424 371 622), optional email inquiry form if email later verified, headline: &#39;Get Your Free Inspection &amp; Quote Today&#39;&quot;
+      }
+    ],
+    &quot;assetPlan&quot;: [
+      {
+        &quot;assetType&quot;: &quot;Hero Image&quot;,
+        &quot;placeholder&quot;: &quot;High-quality image of residential roofing work (restored roof, clean gutters, or completed exterior project). Source: licensed stock or client-approved photo. Alt text: &#39;Restored residential roof showing quality workmanship&#39;.&quot;
+      },
+      {
+        &quot;assetType&quot;: &quot;Service Icons&quot;,
+        &quot;placeholder&quot;: &quot;10 simple, professional icons for each service category (roof, capping, repairs, gutters, driveway, patio, exterior, retaining wall, pressure cleaning). Consistent style, neutral color palette.&quot;
+      },
+      {
+        &quot;assetType&quot;: &quot;Portfolio Placeholder&quot;,
+        &quot;placeholder&quot;: &quot;3–5 grid images showing before/after or completed work examples. If not available: professional placeholder images of roofing/restoration work with disclosure that these are representative examples pending portfolio upload.&quot;
+      },
+      {
+        &quot;assetType&quot;: &quot;Testimonial Placeholder&quot;,
+        &quot;placeholder&quot;: &quot;Optional: 2–3 simple testimonial cards with name, service, and brief quote. Only use if verified; otherwise omit entirely—do not fabricate reviews.&quot;
+      }
+    ],
+    &quot;contactPlan&quot;: {
+      &quot;primaryPhone&quot;: &quot;0424 371 622&quot;,
+      &quot;primaryEmail&quot;: null,
+      &quot;emailInquiryForm&quot;: false,
+      &quot;formFields&quot;: [
+        &quot;Name&quot;,
+        &quot;Phone&quot;,
+        &quot;Service Interest (dropdown: roof restoration, repairs, gutters, driveway, patio, retaining wall, pressure cleaning, other)&quot;,
+        &quot;Message&quot;
+      ],
+      &quot;formSubmissionPath&quot;: &quot;Email inquiry to verified email or CRM integration pending contact details verification&quot;,
+      &quot;contactCTAPlacement&quot;: [
+        &quot;Hero CTA button&quot;,
+        &quot;Sticky phone button (mobile)&quot;,
+        &quot;Footer section&quot;,
+        &quot;FAQ section&quot;
+      ]
+    },
+    &quot;seoPlan&quot;: {
+      &quot;metaTitle&quot;: &quot;Roofing &amp; Restoration | Greg&#39;s Expert Roof Repairs &amp; Restorations&quot;,
+      &quot;metaDescription&quot;: &quot;40 years of roofing expertise. Free inspection and quote. Roof restorations, repairs, gutters, driveways, patios, retaining walls, and pressure cleaning.&quot;,
+      &quot;h1&quot;: &quot;Expert Roofing &amp; Restoration Services | 40 Years of Quality Craftsmanship&quot;,
+      &quot;localKeywords&quot;: [
+        &quot;roof restoration&quot;,
+        &quot;roof repairs&quot;,
+        &quot;roof capping&quot;,
+        &quot;gutter cleaning&quot;,
+        &quot;driveway restoration&quot;,
+        &quot;patio repairs&quot;,
+        &quot;retaining wall&quot;,
+        &quot;pressure cleaning&quot;,
+        &quot;local roofing&quot;
+      ],
+      &quot;schemaMarkup&quot;: &quot;LocalBusiness + Service schema with business name, phone, service categories, and free quote offer&quot;,
+      &quot;googleBusinessSetupNote&quot;: &quot;Site serves as digital foundation. Post-launch: register Google Business Profile using phone number (0424 371 622) and completed site URL to enable local search visibility.&quot;
+    },
+    &quot;factLock&quot;: {
+      &quot;mustKeep&quot;: [
+        &quot;Business name: &#39;Roofing &amp; Restoration&#39;&quot;,
+        &quot;Contact name: &#39;Greg&#39;&quot;,
+        &quot;Phone: &#39;0424 371 622&#39;&quot;,
+        &quot;Services: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning&quot;,
+        &quot;Experience claim: &#39;40 years&#39;&quot;,
+        &quot;Free offer: &#39;free in-person inspection and quote&#39;&quot;
+      ],
+      &quot;mustNotClaim&quot;: [
+        &quot;Email address (not verified)&quot;,
+        &quot;Physical address (not verified)&quot;,
+        &quot;License or certifications (not verified)&quot;,
+        &quot;Specific Google rating or review count (no reviews exist)&quot;,
+        &quot;Awards, guarantees, or warranties (not verified)&quot;,
+        &quot;Specific service area or coverage zone (not specified)&quot;,
+        &quot;Specific pricing or payment terms (not disclosed)&quot;
+      ]
+    }
+  },
+  &quot;copyBrief&quot;: {
+    &quot;heroHeadline&quot;: &quot;Expert Roofing &amp; Restoration | 40 Years of Quality Craftsmanship&quot;,
+    &quot;heroSubcopy&quot;: &quot;From roof restorations to complete exterior projects. Free in-person inspection and detailed quote. Serving the local area with trusted, proven expertise.&quot;,
+    &quot;primaryCta&quot;: &quot;Get Your Free Inspection &amp; Quote&quot;,
+    &quot;serviceCopy&quot;: [
+      {
+        &quot;service&quot;: &quot;Roof Restorations&quot;,
+        &quot;copy&quot;: &quot;Complete restoration of aged or damaged roofs using premium materials and proven techniques. We assess, repair, and restore to extend the life of your roof.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Roof Repairs&quot;,
+        &quot;copy&quot;: &quot;Fast, reliable repairs for leaks, missing tiles, and storm damage. Every repair is inspected to ensure lasting protection.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Roof Capping&quot;,
+        &quot;copy&quot;: &quot;Professional capping installation to seal edges, transitions, and joints. Improves weather resistance and aesthetic finish.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Gutter Services&quot;,
+        &quot;copy&quot;: &quot;Installation, repair, and maintenance of gutters and downpipes. Keep water flowing safely away from your property.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Driveway Restoration&quot;,
+        &quot;copy&quot;: &quot;Restore appearance and functionality of driveways with cleaning, repair, and resurfacing. Safe, slip-resistant surfaces.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Patio &amp; Outdoor Spaces&quot;,
+        &quot;copy&quot;: &quot;Repair and restoration of patios, decks, and outdoor living areas. Create durable, attractive spaces for entertaining.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;External Living&quot;,
+        &quot;copy&quot;: &quot;Complete external renovations and upgrades. From planning to completion, we deliver polished outdoor environments.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Retaining Walls&quot;,
+        &quot;copy&quot;: &quot;Installation and repair of retaining walls. Engineered for stability, built for longevity.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Pressure Cleaning&quot;,
+        &quot;copy&quot;: &quot;Professional pressure cleaning for roofs, driveways, patios, and exterior surfaces. Remove dirt, algae, and weathering.&quot;
+      },
+      {
+        &quot;service&quot;: &quot;Respray&quot;,
+        &quot;copy&quot;: &quot;High-quality respray finishing for roofs, exterior walls, and protective coatings. Professional results that last.&quot;
+      }
+    ],
+    &quot;faq&quot;: [
+      {
+        &quot;question&quot;: &quot;How long does a roof restoration take?&quot;,
+        &quot;answer&quot;: &quot;Timeline depends on the scope of work. During your free inspection, we&#39;ll provide a detailed estimate including scheduling and completion date.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;Do you offer a warranty on your work?&quot;,
+        &quot;answer&quot;: &quot;Yes. We stand behind our work with professional craftsmanship guarantees. Details are provided in your quote.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;What areas do you service?&quot;,
+        &quot;answer&quot;: &quot;Contact us at 0424 371 622 with your location and we&#39;ll confirm service availability.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;How much does a roof restoration cost?&quot;,
+        &quot;answer&quot;: &quot;Cost varies based on roof size, condition, and materials. We provide a free in-person inspection and detailed quote with no obligation.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;What&#39;s included in your free inspection?&quot;,
+        &quot;answer&quot;: &quot;We assess your roof or external area, identify any damage or wear, discuss repair options, and provide a detailed written quote.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;Can you repair just the damaged section?&quot;,
+        &quot;answer&quot;: &quot;Often, yes. We evaluate the condition of the entire roof or area to recommend the most cost-effective solution.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;Do I need repairs if there are no visible leaks?&quot;,
+        &quot;answer&quot;: &quot;Not always. Our inspection identifies issues that may not yet be visible. Preventive maintenance can save significant costs later.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;How do I schedule an inspection?&quot;,
+        &quot;answer&quot;: &quot;Call us at 0424 371 622 to book your free, no-obligation inspection. We&#39;ll work around your schedule.&quot;
+      }
+    ],
+    &quot;outreachHook&quot;: &quot;Roofing &amp; Restoration: 40 years of trusted expertise in roof restorations, repairs, and complete exterior projects. Free inspection and quote—call Greg today.&quot;
+  },
+  &quot;riskNotes&quot;: [
+    &quot;No email address verified. Contact form should route to CRM or pending email verification. Do not invent an email.&quot;,
+    &quot;No physical address provided. Site footer should omit address or use placeholder text until verified. Local SEO setup (Google Business) requires confirmed address.&quot;,
+    &quot;No portfolio, photos, or case studies available. Hero and services sections use stock/placeholder imagery with clear attribution. Portfolio should be added post-launch when client provides photos.&quot;,
+    &quot;No license, certifications, or awards documented. Do not claim or imply credentials beyond &#39;40 years experience.&#39; Remove any superlatives or third-party endorsements not explicitly verified.&quot;,
+    &quot;No customer reviews or Google rating available. Do not display testimonials section unless client provides verified reviews. Optional: add simple CTA encouraging reviews post-launch.&quot;,
+    &quot;Service area not specified. FAQ includes language asking for contact to confirm service area. Do not claim statewide or national coverage.&quot;,
+    &quot;Free quote offer is verified claim but must be prominently featured to drive conversion. Ensure CTA repeats this value proposition.&quot;,
+    &quot;Phone number is sole reliable contact method. Sticky or hero CTA must be click-to-call on mobile. Desktop should also provide clear phone display.&quot;,
+    &quot;Site functions as digital foundation only. Does not replace need for Google Business Profile, social media, or review management post-launch.&quot;,
+    &quot;If email or address added later, update meta, schema, contact form routing, and footer. Maintain factLock discipline—never invent or assume details.&quot;
+  ]
+}
+```
+</pre>
+    </details>
+    <details>
+      <summary>Qwen local think-off 原始输出 · 95/A</summary>
+      <pre>{
+  &quot;discoveryReport&quot;: {
+    &quot;businessIdentity&quot;: &quot;Roofing &amp; Restoration&quot;,
+    &quot;contactPaths&quot;: [
+      &quot;Phone: 0424 371 622&quot;
+    ],
+    &quot;services&quot;: [
+      &quot;roof restorations&quot;,
+      &quot;capping&quot;,
+      &quot;respray&quot;,
+      &quot;repairs&quot;,
+      &quot;gutters&quot;,
+      &quot;driveway&quot;,
+      &quot;patio&quot;,
+      &quot;external living&quot;,
+      &quot;retaining wall&quot;,
+      &quot;pressure cleaning&quot;
+    ],
+    &quot;currentPresence&quot;: &quot;Physical signage and operator-provided text only. No digital footprint verified.&quot;,
+    &quot;opportunityDiagnosis&quot;: &quot;High trust potential due to claimed 40 years experience, but zero online visibility. Immediate need for a digital presence to capture local search intent and validate the &#39;free inspection&#39; offer.&quot;,
+    &quot;recommendedAngle&quot;: &quot;Leverage the &#39;40 years experience&#39; and &#39;free in-person inspection&#39; as primary trust signals. Focus on comprehensive exterior home care (roof + living spaces) to differentiate from single-service roofers.&quot;,
+    &quot;evidenceUsed&quot;: [
+      &quot;Business name from sign&quot;,
+      &quot;Contact name Greg from operator text&quot;,
+      &quot;Phone number 0424 371 622 from operator text&quot;,
+      &quot;Service list from operator text&quot;,
+      &quot;Experience claim from operator text&quot;,
+      &quot;Inspection offer from operator text&quot;
+    ],
+    &quot;missingEvidence&quot;: [
+      &quot;Verified physical address&quot;,
+      &quot;Verified email address&quot;,
+      &quot;Verified website URL&quot;,
+      &quot;Licence numbers&quot;,
+      &quot;Customer reviews or ratings&quot;,
+      &quot;Specific service area boundaries&quot;
+    ]
+  },
+  &quot;gapScore&quot;: {
+    &quot;total&quot;: 95,
+    &quot;conversion&quot;: 80,
+    &quot;localSeo&quot;: 95,
+    &quot;designTrust&quot;: 90,
+    &quot;content&quot;: 85,
+    &quot;rationale&quot;: &quot;Critical gaps in local SEO and digital trust signals. No website or address means zero organic visibility. Conversion potential is high if the &#39;free inspection&#39; offer is prominent, but currently inaccessible online.&quot;
+  },
+  &quot;websiteProductionSpec&quot;: {
+    &quot;pageMode&quot;: &quot;one_page_preview&quot;,
+    &quot;templateDirection&quot;: &quot;Clean, industrial-residential hybrid. High contrast for readability. Emphasis on phone CTA and inspection booking.&quot;,
+    &quot;blockPlan&quot;: [
+      &quot;hero&quot;,
+      &quot;services&quot;,
+      &quot;trust&quot;,
+      &quot;process&quot;,
+      &quot;faq&quot;,
+      &quot;contact&quot;
+    ],
+    &quot;assetPlan&quot;: [
+      &quot;Hero image: High-quality exterior home shot showing roof and patio&quot;,
+      &quot;Icon set: For services (roof, gutter, driveway, wall)&quot;,
+      &quot;Process graphic: Step-by-step inspection to completion&quot;,
+      &quot;Contact button: Sticky mobile header with phone icon&quot;
+    ],
+    &quot;contactPlan&quot;: {
+      &quot;primaryMethod&quot;: &quot;Phone&quot;,
+      &quot;phoneNumber&quot;: &quot;0424 371 622&quot;,
+      &quot;secondaryMethod&quot;: &quot;None verified&quot;,
+      &quot;formFields&quot;: [
+        &quot;Name&quot;,
+        &quot;Phone&quot;,
+        &quot;Service Interest&quot;,
+        &quot;Message&quot;
+      ]
+    },
+    &quot;seoPlan&quot;: {
+      &quot;titleTag&quot;: &quot;Roofing &amp; Restoration | Expert Roof Repairs &amp; Exterior Care&quot;,
+      &quot;metaDescription&quot;: &quot;Trusted roofing restoration, repairs, and exterior living space upgrades. 40 years experience. Free in-person inspection and quote. Call 0424 371 622.&quot;,
+      &quot;keywords&quot;: [
+        &quot;roof restoration&quot;,
+        &quot;roof repairs&quot;,
+        &quot;gutter cleaning&quot;,
+        &quot;driveway resurfacing&quot;,
+        &quot;retaining walls&quot;,
+        &quot;pressure cleaning&quot;
+      ]
+    },
+    &quot;factLock&quot;: {
+      &quot;mustKeep&quot;: [
+        &quot;0424 371 622&quot;
+      ],
+      &quot;mustNotClaim&quot;: [
+        &quot;email&quot;,
+        &quot;address&quot;,
+        &quot;website URL&quot;,
+        &quot;real reviews&quot;,
+        &quot;licence&quot;,
+        &quot;award&quot;,
+        &quot;rating&quot;,
+        &quot;price&quot;,
+        &quot;guarantee&quot;
+      ]
+    }
+  },
+  &quot;copyBrief&quot;: {
+    &quot;heroHeadline&quot;: &quot;Expert Roofing &amp; Exterior Restoration with 40 Years of Experience&quot;,
+    &quot;heroSubcopy&quot;: &quot;From roof repairs to driveway upgrades, we restore your home’s exterior with precision. Get a free in-person inspection and quote today.&quot;,
+    &quot;primaryCta&quot;: &quot;Call 0424 371 622&quot;,
+    &quot;serviceCopy&quot;: [
+      {
+        &quot;title&quot;: &quot;Roof Restoration &amp; Repairs&quot;,
+        &quot;description&quot;: &quot;Comprehensive roof capping, respraying, and structural repairs to extend the life of your roof and improve curb appeal.&quot;
+      },
+      {
+        &quot;title&quot;: &quot;Gutter Maintenance&quot;,
+        &quot;description&quot;: &quot;Professional gutter cleaning, repair, and installation to ensure proper water drainage and protect your home’s foundation.&quot;
+      },
+      {
+        &quot;title&quot;: &quot;Exterior Living Spaces&quot;,
+        &quot;description&quot;: &quot;Transform your outdoor areas with driveway resurfacing, patio upgrades, and retaining wall construction.&quot;
+      },
+      {
+        &quot;title&quot;: &quot;Pressure Cleaning&quot;,
+        &quot;description&quot;: &quot;Deep cleaning services for roofs, driveways, and walls to remove dirt, moss, and stains, restoring your property’s original look.&quot;
+      }
+    ],
+    &quot;faq&quot;: [
+      {
+        &quot;question&quot;: &quot;Do you offer free inspections?&quot;,
+        &quot;answer&quot;: &quot;Yes, we provide a free in-person inspection and quote for all roofing and exterior restoration projects.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;What areas do you service?&quot;,
+        &quot;answer&quot;: &quot;We service the local area. Please call us to confirm availability for your specific location.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;How long does a typical roof restoration take?&quot;,
+        &quot;answer&quot;: &quot;Timelines vary based on roof size and condition. During your free inspection, we will provide a detailed timeline.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;Do you handle both roofing and driveway work?&quot;,
+        &quot;answer&quot;: &quot;Yes, we offer a full range of exterior services including roofing, gutters, driveways, patios, and retaining walls.&quot;
+      }
+    ],
+    &quot;outreachHook&quot;: &quot;Don&#39;t let roof damage or worn-out exterior spaces lower your property value. With 40 years of experience, Roofing &amp; Restoration delivers durable, high-quality results. Book your free inspection now.&quot;
+  },
+  &quot;riskNotes&quot;: [
+    &quot;No verified address or email exists; contact form must rely on phone callback or unverified email collection.&quot;,
+    &quot;Claims of &#39;40 years experience&#39; and &#39;free inspection&#39; are based on operator text/signage, not third-party verification.&quot;,
+    &quot;Absence of licence numbers or reviews may reduce trust for some users; process clarity and professional design are critical substitutes.&quot;,
+    &quot;Service area is undefined; copy must avoid specific suburb names to prevent misinformation.&quot;
+  ]
+}</pre>
+    </details>
+    <details>
+      <summary>DeepSeek local strict-v2 原始输出 · 89/B</summary>
+      <pre>{
+  &quot;discoveryReport&quot;: {
+    &quot;businessIdentity&quot;: &quot;Roofing &amp; Restoration&quot;,
+    &quot;contactPaths&quot;: [],
+    &quot;services&quot;: [&quot;roof restorations&quot;, &quot;capping&quot;, &quot;respray&quot;, &quot;repairs&quot;, &quot;gutters&quot;, &quot;driveway&quot;, &quot;patio&quot;, &quot;external living&quot;, &quot;retaining wall&quot;, &quot;pressure cleaning&quot;],
+    &quot;currentPresence&quot;: &quot;&quot;,
+    &quot;opportunityDiagnosis&quot;: &quot;&quot;,
+    &quot;recommendedAngle&quot;: &quot;&quot;,
+    &quot;evidenceUsed&quot;: [],
+    &quot;missingEvidence&quot;: []
+  },
+  &quot;gapScore&quot;: {
+    &quot;total&quot;: 0,
+    &quot;conversion&quot;: 0,
+    &quot;localSeo&quot;: 0,
+    &quot;designTrust&quot;: 0,
+    &quot;content&quot;: 0,
+    &quot;rationale&quot;: &quot;&quot;
+  },
+  &quot;websiteProductionSpec&quot;: {
+    &quot;pageMode&quot;: &quot;one_page_preview&quot;,
+    &quot;templateDirection&quot;: &quot;&quot;,
+    &quot;blockPlan&quot;: [&quot;hero&quot;, &quot;services&quot;, &quot;trust&quot;, &quot;process&quot;, &quot;faq&quot;, &quot;contact&quot;],
+    &quot;assetPlan&quot;: [],
+    &quot;contactPlan&quot;: {},
+    &quot;seoPlan&quot;: {},
+    &quot;factLock&quot;: {
+      &quot;mustKeep&quot;: [&quot;0424 371 622&quot;],
+      &quot;mustNotClaim&quot;: [&quot;email&quot;, &quot;address&quot;, &quot;websiteUrl&quot;, &quot;real reviews&quot;, &quot;licence&quot;, &quot;award&quot;, &quot;rating&quot;, &quot;price&quot;, &quot;guarantee&quot;]
+    }
+  },
+  &quot;copyBrief&quot;: {
+    &quot;heroHeadline&quot;: &quot;Transform Your Home Exterior with Expert Roofing &amp; Restoration&quot;,
+    &quot;heroSubcopy&quot;: &quot;Specializing in roof restorations, capping, respray, and more. Get a free in-person inspection and quote today.&quot;,
+    &quot;primaryCta&quot;: &quot;Call 0424 371 622 for expert roofing services&quot;,
+    &quot;serviceCopy&quot;: [
+      &quot;Professional Roof Restorations: Bring back the beauty of your home with our expert roof restoration services.&quot;,
+      &quot;Quality Capping &amp; Respray: Enhance your property&#39;s curb appeal with our top-notch capping and respray solutions.&quot;,
+      &quot;Comprehensive Repairs: From gutters to driveways, we handle all exterior repairs with precision.&quot;,
+      &quot;Free In-Person Inspection &amp; Quote: Your satisfaction is our priority. We offer free inspections and detailed quotes.&quot;
+    ],
+    &quot;faq&quot;: [
+      {
+        &quot;question&quot;: &quot;What services do you offer?&quot;,
+        &quot;answer&quot;: &quot;We provide roof restorations, capping, respray, repairs, gutters, driveways, patios, external living areas, retaining walls, and pressure cleaning.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;How long does each service take?&quot;,
+        &quot;answer&quot;: &quot;Service duration varies depending on the scope of work. We provide detailed timelines during your free inspection.&quot;
+      },
+      {
+        &quot;question&quot;: &quot;Do you offer a warranty?&quot;,
+        &quot;answer&quot;: &quot;We ensure our work with quality materials and expert craftsmanship, but specific warranties may vary. Please ask during your consultation.&quot;
+      }
+    ],
+    &quot;outreachHook&quot;: &quot;&quot;
+  },
+  &quot;riskNotes&quot;: [
+    &quot;No verified contact details (email, address, website) available; these are omitted or handled carefully in the output.&quot;,
+    &quot;Generated content must be clearly marked as demo-only internally but not visible to customers.&quot;,
+    &quot;Avoid making any claims about awards, licences, ratings, prices, or guarantees without verification.&quot;
+  ]
+}</pre>
+    </details>
+      </section>
+    
+  </main>
+</body>
+</html>

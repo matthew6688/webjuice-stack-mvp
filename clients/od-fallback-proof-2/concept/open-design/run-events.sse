@@ -1,0 +1,24 @@
+id: 1
+event: start
+data: {"runId":"8c916785-ff93-4a0a-8a16-500d69569424","agentId":"codex","bin":"/Users/matthew/.npm-global/bin/codex","streamFormat":"json-event-stream","projectId":"od-fallback-proof-2","cwd":"/Users/matthew/Developer/open-design/.od/projects/od-fallback-proof-2","model":"default","reasoning":"low","toolTokenExpiresAt":"2026-05-07T13:17:10.060Z"}
+
+id: 2
+event: stderr
+data: {"chunk":"Reading prompt from stdin...\n"}
+
+id: 3
+event: stderr
+data: {"chunk":"2026-05-07T13:02:10.162914Z  WARN codex_features: unknown feature key in config: shell\n"}
+
+id: 4
+event: agent
+data: {"type":"status","label":"initializing"}
+
+id: 5
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"error\",\"message\":\"`[features].web_search` is deprecated because web search is enabled by default. (Set `web_search` to `\\\"live\\\"`, `\\\"cached\\\"`, or `\\\"disabled\\\"` at the top level (or under a profile) in config.toml if you want to override it.)\"}}"}
+
+id: 6
+event: agent
+data: {"type":"status","label":"running"}
+

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "niche": "roofing",
+  "page": "home",
+  "runId": "test-1778316911951",
+  "execute": false,
+  "targetScore": 95,
+  "maxRounds": 1,
+  "variants": [
+    "medium-framework-no-llm"
+  ],
+  "families": [
+    {
+      "family": "editorial-bold-commercial",
+      "accepted": true,
+      "reason": "target_score_met_with_native_clean_finish",
+      "best": {
+        "family": "editorial-bold-commercial",
+        "variant": "medium-framework-no-llm",
+        "runId": "test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm",
+        "execute": false,
+        "status": 0,
+        "durationMs": 133,
+        "score": null,
+        "ok": true,
+        "accepted": true,
+        "nativeCleanFinish": false,
+        "completionMode": null,
+        "outDir": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/open-design",
+        "promptPath": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/prompt.md",
+        "scorePath": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/experiment-score.json",
+        "experimentRoot": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm",
+        "failureReason": ""
+      },
+      "attempts": [
+        {
+          "family": "editorial-bold-commercial",
+          "variant": "medium-framework-no-llm",
+          "runId": "test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm",
+          "execute": false,
+          "status": 0,
+          "durationMs": 133,
+          "score": null,
+          "ok": true,
+          "accepted": true,
+          "nativeCleanFinish": false,
+          "completionMode": null,
+          "outDir": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/open-design",
+          "promptPath": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/prompt.md",
+          "scorePath": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm/medium-framework-no-llm/experiment-score.json",
+          "experimentRoot": "data/template-experiments/roofing/editorial-bold-commercial/home-test-1778316911951-editorial-bold-commercial-r1-medium-framework-no-llm",
+          "failureReason": ""
+        }
+      ]
+    },
+    {
+      "family": "productized-modern-roofing",
+      "accepted": true,
+      "reason": "target_score_met_with_native_clean_finish",
+      "best": {
+        "family": "productized-modern-roofing",
+        "variant": "medium-framework-no-llm",
+        "runId": "test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm",
+        "execute": false,
+        "status": 0,
+        "durationMs": 141,
+        "score": null,
+        "ok": true,
+        "accepted": true,
+        "nativeCleanFinish": false,
+        "completionMode": null,
+        "outDir": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/open-design",
+        "promptPath": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/prompt.md",
+        "scorePath": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/experiment-score.json",
+        "experimentRoot": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm",
+        "failureReason": ""
+      },
+      "attempts": [
+        {
+          "family": "productized-modern-roofing",
+          "variant": "medium-framework-no-llm",
+          "runId": "test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm",
+          "execute": false,
+          "status": 0,
+          "durationMs": 141,
+          "score": null,
+          "ok": true,
+          "accepted": true,
+          "nativeCleanFinish": false,
+          "completionMode": null,
+          "outDir": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/open-design",
+          "promptPath": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/prompt.md",
+          "scorePath": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm/medium-framework-no-llm/experiment-score.json",
+          "experimentRoot": "data/template-experiments/roofing/productized-modern-roofing/home-test-1778316911951-productized-modern-roofing-r1-medium-framework-no-llm",
+          "failureReason": ""
+        }
+      ]
+    }
+  ],
+  "accepted": [
+    "editorial-bold-commercial",
+    "productized-modern-roofing"
+  ],
+  "pending": [],
+  "generatedAt": "2026-05-09T08:55:12.277Z"
+}

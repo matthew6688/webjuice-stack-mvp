@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Roofing crew on a clean modern roof</title>
+  <desc id="desc">Original stylized roofing photograph placeholder with a contractor silhouette, roof planes, and soft sky.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="oklch(94% 0.012 230)"/>
+      <stop offset="1" stop-color="oklch(80% 0.02 245)"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="oklch(47% 0.018 240)"/>
+      <stop offset="1" stop-color="oklch(22% 0.02 245)"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence baseFrequency="0.8" numOctaves="3" seed="11" type="fractalNoise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.18"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#sky)"/>
+  <circle cx="1080" cy="180" r="110" fill="oklch(98% 0.018 85)" opacity=".7"/>
+  <path d="M0 560 520 280 1400 610v290H0z" fill="url(#roof)"/>
+  <path d="M100 620 552 378 1280 654" fill="none" stroke="oklch(75% 0.012 235)" stroke-width="3" opacity=".55"/>
+  <g opacity=".34" stroke="oklch(77% 0.01 235)" stroke-width="2">
+    <path d="M130 650 560 420 1210 668"/>
+    <path d="M190 690 600 470 1300 738"/>
+    <path d="M270 728 640 530 1400 820"/>
+    <path d="M440 480v360M595 418v450M750 475v390M905 535v365M1060 595v305"/>
+  </g>
+  <path d="M490 370h360l-44 104H536z" fill="oklch(34% 0.025 230)" opacity=".72"/>
+  <g transform="translate(720 300)">
+    <ellipse cx="42" cy="35" rx="32" ry="25" fill="oklch(29% 0.03 55)"/>
+    <path d="M22 56h50l23 114H0z" fill="oklch(23% 0.025 65)"/>
+    <path d="M70 74c44 22 86 54 117 96" fill="none" stroke="oklch(23% 0.025 65)" stroke-width="22" stroke-linecap="round"/>
+    <path d="M34 166 0 246M68 168l60 78" fill="none" stroke="oklch(23% 0.025 65)" stroke-width="24" stroke-linecap="round"/>
+    <path d="M-35 134h110" stroke="oklch(85% 0.025 80)" stroke-width="13" stroke-linecap="round"/>
+  </g>
+  <rect width="1400" height="900" filter="url(#grain)" opacity=".4"/>
+</svg>

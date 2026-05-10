@@ -1,0 +1,294 @@
+id: 1
+event: start
+data: {"runId":"436b1126-17ab-41eb-916d-7c722264f076","agentId":"codex","bin":"/Users/matthew/.npm-global/bin/codex","streamFormat":"json-event-stream","projectId":"open-design-upgrade-smoke-1778108682817-open-design-1778108683002","cwd":"/tmp/profitslocal-open-design-open-design-upgrade-smoke-1778108682817/projects/open-design-upgrade-smoke-1778108682817-open-design-1778108683002","model":"default","reasoning":"low","toolTokenExpiresAt":"2026-05-06T23:19:46.143Z"}
+
+id: 2
+event: stderr
+data: {"chunk":"Reading prompt from stdin...\n"}
+
+id: 3
+event: stderr
+data: {"chunk":"2026-05-06T23:04:46.319424Z  WARN codex_features: unknown feature key in config: shell\n"}
+
+id: 4
+event: stderr
+data: {"chunk":"2026-05-06T23:04:46.323578Z  WARN codex_features: unknown feature key in config: shell\n"}
+
+id: 5
+event: stderr
+data: {"chunk":"2026-05-06T23:04:46.942437Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 6
+event: stderr
+data: {"chunk":"2026-05-06T23:04:46.942713Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 7
+event: agent
+data: {"type":"status","label":"initializing"}
+
+id: 8
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"error\",\"message\":\"`[features].web_search` is deprecated because web search is enabled by default. (Set `web_search` to `\\\"live\\\"`, `\\\"cached\\\"`, or `\\\"disabled\\\"` at the top level (or under a profile) in config.toml if you want to override it.)\"}}"}
+
+id: 9
+event: agent
+data: {"type":"status","label":"running"}
+
+id: 10
+event: stderr
+data: {"chunk":"2026-05-06T23:05:06.856133Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedContentType(Some(\"text/plain; charset=UTF-8; body: error code: 522\"))\n"}
+
+id: 11
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.960200Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 12
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.960611Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 13
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.976282Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:07.976296Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 14
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.976705Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:07.976713Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 15
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.977165Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:07.977169Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 16
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.977558Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:07.977562Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 17
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.977988Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:07.977992Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 18
+event: stderr
+data: {"chunk":"2026-05-06T23:05:07.978866Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:07.978871Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+: keepalive
+
+id: 19
+event: agent
+data: {"type":"text_delta","delta":"I’ll keep this to the smoke check: a minimal `index.html` with the requested text, no web access."}
+
+id: 20
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.started\",\"item\":{\"id\":\"item_2\",\"type\":\"todo_list\",\"items\":[{\"text\":\"Create minimal index.html for upgrade smoke\",\"completed\":false},{\"text\":\"Verify file content\",\"completed\":false}]}}"}
+
+id: 21
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.628249Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 22
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.628592Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 23
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.643089Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:14.643106Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 24
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.643455Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:14.643461Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 25
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.643886Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:14.643889Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 26
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.644242Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:14.644244Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 27
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.644602Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:14.644608Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 28
+event: stderr
+data: {"chunk":"2026-05-06T23:05:14.645435Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:14.645441Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 29
+event: agent
+data: {"type":"text_delta","delta":"I’m writing the smallest standalone HTML file that satisfies the smoke requirement."}
+
+id: 30
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.started\",\"item\":{\"id\":\"item_4\",\"type\":\"file_change\",\"changes\":[{\"path\":\"/tmp/profitslocal-open-design-open-design-upgrade-smoke-1778108682817/projects/open-design-upgrade-smoke-1778108682817-open-design-1778108683002/index.html\",\"kind\":\"add\"}],\"status\":\"in_progress\"}}"}
+
+id: 31
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.completed\",\"item\":{\"id\":\"item_4\",\"type\":\"file_change\",\"changes\":[{\"path\":\"/tmp/profitslocal-open-design-open-design-upgrade-smoke-1778108682817/projects/open-design-upgrade-smoke-1778108682817-open-design-1778108683002/index.html\",\"kind\":\"add\"}],\"status\":\"completed\"}}"}
+
+id: 32
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.066668Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 33
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.066921Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 34
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.079913Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:19.079927Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 35
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.080261Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:19.080265Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 36
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.080631Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:19.080635Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 37
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.080993Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:19.080999Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 38
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.081346Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:19.081352Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 39
+event: stderr
+data: {"chunk":"2026-05-06T23:05:19.082212Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:19.082218Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 40
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.updated\",\"item\":{\"id\":\"item_2\",\"type\":\"todo_list\",\"items\":[{\"text\":\"Create minimal index.html for upgrade smoke\",\"completed\":true},{\"text\":\"Verify file content\",\"completed\":false}]}}"}
+
+id: 41
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.815530Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 42
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.815830Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 43
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.830813Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:21.830830Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 44
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.831272Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:21.831279Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 45
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.831752Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:21.831766Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 46
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.832239Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:21.832244Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 47
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.832649Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:21.832657Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 48
+event: stderr
+data: {"chunk":"2026-05-06T23:05:21.833487Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:21.833492Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 49
+event: agent
+data: {"type":"tool_use","id":"item_5","name":"Bash","input":{"command":"/bin/zsh -lc \"sed -n '1,80p' index.html\""}}
+
+id: 50
+event: agent
+data: {"type":"tool_result","toolUseId":"item_5","content":"<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Open Design Upgrade Smoke</title>\n</head>\n<body>\n  Open Design upgrade smoke ok\n</body>\n</html>\n","isError":false}
+
+id: 51
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.343627Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 52
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.343856Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 53
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.355811Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:25.355829Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 54
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.356262Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:25.356266Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 55
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.356602Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:25.356606Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 56
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.356942Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:25.356947Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 57
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.357269Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:25.357272Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 58
+event: stderr
+data: {"chunk":"2026-05-06T23:05:25.357923Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:25.357926Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 59
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.updated\",\"item\":{\"id\":\"item_2\",\"type\":\"todo_list\",\"items\":[{\"text\":\"Create minimal index.html for upgrade smoke\",\"completed\":true},{\"text\":\"Verify file content\",\"completed\":true}]}}"}
+
+id: 60
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.765242Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 61
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.765626Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 62
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.782060Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:28.782072Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 63
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.782472Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:28.782479Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 64
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.782898Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:28.782902Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 65
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.783326Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:28.783332Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 66
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.783738Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:28.783742Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 67
+event: stderr
+data: {"chunk":"2026-05-06T23:05:28.784791Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path must not contain '..'\n2026-05-06T23:05:28.784798Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path must not contain '..'\n"}
+
+id: 68
+event: agent
+data: {"type":"text_delta","delta":"Created and verified [index.html](/tmp/profitslocal-open-design-open-design-upgrade-smoke-1778108682817/projects/open-design-upgrade-smoke-1778108682817-open-design-1778108683002/index.html) with the requested text: `Open Design upgrade smoke ok`."}
+
+id: 69
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.completed\",\"item\":{\"id\":\"item_2\",\"type\":\"todo_list\",\"items\":[{\"text\":\"Create minimal index.html for upgrade smoke\",\"completed\":true},{\"text\":\"Verify file content\",\"completed\":true}]}}"}
+
+id: 70
+event: agent
+data: {"type":"usage","usage":{"input_tokens":223700,"output_tokens":516,"cached_read_tokens":153856}}
+
+id: 71
+event: stderr
+data: {"chunk":"2026-05-06T23:05:32.831259Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: Environment variable TINYFISH_API_KEY for MCP server 'tinyfish' is not set\n"}
+
+id: 72
+event: stderr
+data: {"chunk":"2026-05-06T23:05:32.831272Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Unexpected content type: Some(\"text/plain; charset=UTF-8; body: error code: 522\"), when send initialize request\n"}
+
+id: 73
+event: end
+data: {"code":0,"signal":null,"status":"succeeded"}
+

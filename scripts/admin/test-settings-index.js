@@ -9,6 +9,8 @@ const settings = loadAdminSettingsIndex({
   WEBSITE_PROJECTS_DISCORD_CHANNEL_ID: '1501945763650080899',
   WEBSITE_TASKS_DISCORD_BOT_TOKEN: 'discord-bot-token-1234',
   WEBSITE_AGENT_MENTION: '<@1501073096696664184>',
+  SPECIAL_ALERTS_DISCORD_WEBHOOK_URL: 'https://discord.com/api/webhooks/1502564006789906472/test-webhook-token-1234',
+  OPEN_DESIGN_WATCHER_CHECKPOINT_MS: '600000',
   RESEND_API_KEY: 're_test_123456789',
   FROM_EMAIL: 'Profits Local <hello@fengtalk.ai>',
   STRIPE_SECRET_KEY: 'sk_test_123456789',
@@ -26,8 +28,13 @@ const settings = loadAdminSettingsIndex({
 
 assert.ok(settings.sections.length >= 6);
 assert.equal(settings.counts.missing, 0);
-assert.ok(settings.sections.some((section) => section.title === 'Cold outreach'));
-assert.ok(settings.sections.some((section) => section.title === 'Core ops'));
+assert.ok(settings.sections.some((section) => section.title === '冷邮件拓客'));
+assert.ok(settings.sections.some((section) => section.title === '核心运营'));
+assert.ok(settings.sections.some((section) => section.title === '特殊提醒'));
+
+const specialAlerts = settings.sections.find((section) => section.title === '特殊提醒');
+assert.ok(specialAlerts.items.some((item) => item.label === 'Discord 特殊提醒入口' && item.status === 'configured'));
+assert.ok(specialAlerts.items.some((item) => item.label === 'Open Design 监控模式' && item.display.includes('runner-integrated')));
 
 console.log(JSON.stringify({
   ok: true,
@@ -35,7 +42,8 @@ console.log(JSON.stringify({
     sectionCount: settings.sections.length,
     configured: settings.counts.configured,
     missing: settings.counts.missing,
-    hasColdOutreach: settings.sections.some((section) => section.title === 'Cold outreach'),
-    hasCoreOps: settings.sections.some((section) => section.title === 'Core ops'),
+    hasColdOutreach: settings.sections.some((section) => section.title === '冷邮件拓客'),
+    hasCoreOps: settings.sections.some((section) => section.title === '核心运营'),
+    hasSpecialAlerts: settings.sections.some((section) => section.title === '特殊提醒'),
   },
 }, null, 2));

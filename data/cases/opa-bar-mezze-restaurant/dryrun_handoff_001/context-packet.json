@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "caseId": "opa-bar-mezze-restaurant_dryrun_handoff_001",
+  "clientSlug": "opa-bar-mezze-restaurant",
+  "repo": "matthew6688/opa-bar-mezze-restaurant",
+  "previewUrl": "https://opa-bar-mezze-restaurant-dev.pages.dev/",
+  "sourceOfTruth": {
+    "evidence": "clients/opa-bar-mezze-restaurant/evidence/evidence.json",
+    "content": "clients/opa-bar-mezze-restaurant/content.restaurant.json",
+    "design": "clients/opa-bar-mezze-restaurant/design.restaurant.json",
+    "brandSpec": "clients/opa-bar-mezze-restaurant/brand-spec.md",
+    "checkout": "clients/opa-bar-mezze-restaurant/funnel/checkout.json",
+    "websiteSurvey": "clients/opa-bar-mezze-restaurant/intake/website-survey.json"
+  },
+  "paths": {
+    "casePath": "data/cases/opa-bar-mezze-restaurant/dryrun_handoff_001/case.json",
+    "contextPath": "data/cases/opa-bar-mezze-restaurant/dryrun_handoff_001/context-packet.json",
+    "timelinePath": "data/cases/opa-bar-mezze-restaurant/dryrun_handoff_001/timeline.jsonl",
+    "buildPacketPath": "data/cases/opa-bar-mezze-restaurant/dryrun_handoff_001/build-packet.md",
+    "artifactsDir": "data/cases/opa-bar-mezze-restaurant/dryrun_handoff_001/artifacts"
+  },
+  "note": "Dry-run context only. Do not treat as paid customer order."
+}

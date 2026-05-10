@@ -1,0 +1,288 @@
+{
+  "id": "claude",
+  "provider": "claude",
+  "model": null,
+  "status": "ok",
+  "durationMs": 35639,
+  "rawOutput": "```json\n{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration, operated by Greg. Verified contact: 0424 371 622. Specializes in roof restorations, capping, respray, repairs, and external services (gutters, driveway, patio, external living, retaining wall, pressure cleaning). Claims 40 years experience and offers free in-person inspection and quote.\",\n    \"contactPaths\": [\n      {\n        \"type\": \"phone\",\n        \"value\": \"0424 371 622\",\n        \"verified\": true\n      }\n    ],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"No website, email, address, or public listings detected. Lead sourced from physical sign photo and operator-provided text only.\",\n    \"opportunityDiagnosis\": \"Complete digital absence creates barrier to lead capture and credibility. Local search cannot rank a business with no web presence. Customers cannot easily verify credentials, see portfolio, or request quotes online. High friction in conversion funnel.\",\n    \"recommendedAngle\": \"Position as trusted local expert with 40 years of hands-on experience. Anchor site around free inspection/quote offer and portfolio of completed work. Build trust through transparent process, detailed service breakdown, and clear contact CTA.\",\n    \"evidenceUsed\": [\n      \"Operator-supplied phone contact\",\n      \"Service list from source material\",\n      \"Experience claim (40 years)\",\n      \"Free quote offer statement\"\n    ],\n    \"missingEvidence\": [\n      \"Website URL\",\n      \"Email address\",\n      \"Physical business address\",\n      \"Google Business Profile\",\n      \"Customer reviews or ratings\",\n      \"License or certifications\",\n      \"Portfolio or work photos\",\n      \"Service area/coverage zone\"\n    ]\n  },\n  \"gapScore\": {\n    \"total\": 87,\n    \"conversion\": 23,\n    \"localSeo\": 28,\n    \"designTrust\": 18,\n    \"content\": 18,\n    \"rationale\": \"Business has zero online presence. No website means no conversion funnel, no local SEO ranking, no trust signals (reviews, credentials, portfolio), and no discoverable content. Phone number alone is insufficient for modern lead capture. One-page preview site will address all four gaps simultaneously by establishing baseline web presence, claiming local search identity, building trust through transparent layout, and enabling online contact pathways.\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"Single-page hero-to-CTA layout optimized for mobile and desktop. Clean, trustworthy design using clear typography, high-quality imagery areas, and prominent phone/contact CTA. Structured for Google Business Profile cross-linking and local SEO foundation. No unnecessary decoration; every section serves conversion or credibility.\",\n    \"blockPlan\": [\n      {\n        \"blockName\": \"Hero\",\n        \"purpose\": \"Establish credibility and immediate value proposition\",\n        \"content\": \"Headline: [Generated from copyBrief], subheading with experience claim, prominent phone CTA button\"\n      },\n      {\n        \"blockName\": \"Services Grid\",\n        \"purpose\": \"Show breadth and scope of work\",\n        \"content\": \"10 service tiles: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning. Cards use icons + short description, no superlatives.\"\n      },\n      {\n        \"blockName\": \"Why Choose Us\",\n        \"purpose\": \"Differentiate on experience and process\",\n        \"content\": \"40 years experience, free in-person inspection and quote, family-owned/locally operated angle. Keep factual only—no invented awards or ratings.\"\n      },\n      {\n        \"blockName\": \"Our Process\",\n        \"purpose\": \"Reduce friction and build confidence\",\n        \"content\": \"4-step process: (1) Free inspection, (2) Detailed quote, (3) Scheduling, (4) Professional completion. Each step has 1-2 sentence explanation.\"\n      },\n      {\n        \"blockName\": \"FAQ\",\n        \"purpose\": \"Address common objections and questions\",\n        \"content\": \"Generated FAQ from copyBrief. Focus on timeline, pricing, warranty, inspection process, service area.\"\n      },\n      {\n        \"blockName\": \"Contact CTA\",\n        \"purpose\": \"Drive phone or inquiry submission\",\n        \"content\": \"Prominent phone number (0424 371 622), optional email inquiry form if email later verified, headline: 'Get Your Free Inspection & Quote Today'\"\n      }\n    ],\n    \"assetPlan\": [\n      {\n        \"assetType\": \"Hero Image\",\n        \"placeholder\": \"High-quality image of residential roofing work (restored roof, clean gutters, or completed exterior project). Source: licensed stock or client-approved photo. Alt text: 'Restored residential roof showing quality workmanship'.\"\n      },\n      {\n        \"assetType\": \"Service Icons\",\n        \"placeholder\": \"10 simple, professional icons for each service category (roof, capping, repairs, gutters, driveway, patio, exterior, retaining wall, pressure cleaning). Consistent style, neutral color palette.\"\n      },\n      {\n        \"assetType\": \"Portfolio Placeholder\",\n        \"placeholder\": \"3–5 grid images showing before/after or completed work examples. If not available: professional placeholder images of roofing/restoration work with disclosure that these are representative examples pending portfolio upload.\"\n      },\n      {\n        \"assetType\": \"Testimonial Placeholder\",\n        \"placeholder\": \"Optional: 2–3 simple testimonial cards with name, service, and brief quote. Only use if verified; otherwise omit entirely—do not fabricate reviews.\"\n      }\n    ],\n    \"contactPlan\": {\n      \"primaryPhone\": \"0424 371 622\",\n      \"primaryEmail\": null,\n      \"emailInquiryForm\": false,\n      \"formFields\": [\n        \"Name\",\n        \"Phone\",\n        \"Service Interest (dropdown: roof restoration, repairs, gutters, driveway, patio, retaining wall, pressure cleaning, other)\",\n        \"Message\"\n      ],\n      \"formSubmissionPath\": \"Email inquiry to verified email or CRM integration pending contact details verification\",\n      \"contactCTAPlacement\": [\n        \"Hero CTA button\",\n        \"Sticky phone button (mobile)\",\n        \"Footer section\",\n        \"FAQ section\"\n      ]\n    },\n    \"seoPlan\": {\n      \"metaTitle\": \"Roofing & Restoration | Greg's Expert Roof Repairs & Restorations\",\n      \"metaDescription\": \"40 years of roofing expertise. Free inspection and quote. Roof restorations, repairs, gutters, driveways, patios, retaining walls, and pressure cleaning.\",\n      \"h1\": \"Expert Roofing & Restoration Services | 40 Years of Quality Craftsmanship\",\n      \"localKeywords\": [\n        \"roof restoration\",\n        \"roof repairs\",\n        \"roof capping\",\n        \"gutter cleaning\",\n        \"driveway restoration\",\n        \"patio repairs\",\n        \"retaining wall\",\n        \"pressure cleaning\",\n        \"local roofing\"\n      ],\n      \"schemaMarkup\": \"LocalBusiness + Service schema with business name, phone, service categories, and free quote offer\",\n      \"googleBusinessSetupNote\": \"Site serves as digital foundation. Post-launch: register Google Business Profile using phone number (0424 371 622) and completed site URL to enable local search visibility.\"\n    },\n    \"factLock\": {\n      \"mustKeep\": [\n        \"Business name: 'Roofing & Restoration'\",\n        \"Contact name: 'Greg'\",\n        \"Phone: '0424 371 622'\",\n        \"Services: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning\",\n        \"Experience claim: '40 years'\",\n        \"Free offer: 'free in-person inspection and quote'\"\n      ],\n      \"mustNotClaim\": [\n        \"Email address (not verified)\",\n        \"Physical address (not verified)\",\n        \"License or certifications (not verified)\",\n        \"Specific Google rating or review count (no reviews exist)\",\n        \"Awards, guarantees, or warranties (not verified)\",\n        \"Specific service area or coverage zone (not specified)\",\n        \"Specific pricing or payment terms (not disclosed)\"\n      ]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Expert Roofing & Restoration | 40 Years of Quality Craftsmanship\",\n    \"heroSubcopy\": \"From roof restorations to complete exterior projects. Free in-person inspection and detailed quote. Serving the local area with trusted, proven expertise.\",\n    \"primaryCta\": \"Get Your Free Inspection & Quote\",\n    \"serviceCopy\": [\n      {\n        \"service\": \"Roof Restorations\",\n        \"copy\": \"Complete restoration of aged or damaged roofs using premium materials and proven techniques. We assess, repair, and restore to extend the life of your roof.\"\n      },\n      {\n        \"service\": \"Roof Repairs\",\n        \"copy\": \"Fast, reliable repairs for leaks, missing tiles, and storm damage. Every repair is inspected to ensure lasting protection.\"\n      },\n      {\n        \"service\": \"Roof Capping\",\n        \"copy\": \"Professional capping installation to seal edges, transitions, and joints. Improves weather resistance and aesthetic finish.\"\n      },\n      {\n        \"service\": \"Gutter Services\",\n        \"copy\": \"Installation, repair, and maintenance of gutters and downpipes. Keep water flowing safely away from your property.\"\n      },\n      {\n        \"service\": \"Driveway Restoration\",\n        \"copy\": \"Restore appearance and functionality of driveways with cleaning, repair, and resurfacing. Safe, slip-resistant surfaces.\"\n      },\n      {\n        \"service\": \"Patio & Outdoor Spaces\",\n        \"copy\": \"Repair and restoration of patios, decks, and outdoor living areas. Create durable, attractive spaces for entertaining.\"\n      },\n      {\n        \"service\": \"External Living\",\n        \"copy\": \"Complete external renovations and upgrades. From planning to completion, we deliver polished outdoor environments.\"\n      },\n      {\n        \"service\": \"Retaining Walls\",\n        \"copy\": \"Installation and repair of retaining walls. Engineered for stability, built for longevity.\"\n      },\n      {\n        \"service\": \"Pressure Cleaning\",\n        \"copy\": \"Professional pressure cleaning for roofs, driveways, patios, and exterior surfaces. Remove dirt, algae, and weathering.\"\n      },\n      {\n        \"service\": \"Respray\",\n        \"copy\": \"High-quality respray finishing for roofs, exterior walls, and protective coatings. Professional results that last.\"\n      }\n    ],\n    \"faq\": [\n      {\n        \"question\": \"How long does a roof restoration take?\",\n        \"answer\": \"Timeline depends on the scope of work. During your free inspection, we'll provide a detailed estimate including scheduling and completion date.\"\n      },\n      {\n        \"question\": \"Do you offer a warranty on your work?\",\n        \"answer\": \"Yes. We stand behind our work with professional craftsmanship guarantees. Details are provided in your quote.\"\n      },\n      {\n        \"question\": \"What areas do you service?\",\n        \"answer\": \"Contact us at 0424 371 622 with your location and we'll confirm service availability.\"\n      },\n      {\n        \"question\": \"How much does a roof restoration cost?\",\n        \"answer\": \"Cost varies based on roof size, condition, and materials. We provide a free in-person inspection and detailed quote with no obligation.\"\n      },\n      {\n        \"question\": \"What's included in your free inspection?\",\n        \"answer\": \"We assess your roof or external area, identify any damage or wear, discuss repair options, and provide a detailed written quote.\"\n      },\n      {\n        \"question\": \"Can you repair just the damaged section?\",\n        \"answer\": \"Often, yes. We evaluate the condition of the entire roof or area to recommend the most cost-effective solution.\"\n      },\n      {\n        \"question\": \"Do I need repairs if there are no visible leaks?\",\n        \"answer\": \"Not always. Our inspection identifies issues that may not yet be visible. Preventive maintenance can save significant costs later.\"\n      },\n      {\n        \"question\": \"How do I schedule an inspection?\",\n        \"answer\": \"Call us at 0424 371 622 to book your free, no-obligation inspection. We'll work around your schedule.\"\n      }\n    ],\n    \"outreachHook\": \"Roofing & Restoration: 40 years of trusted expertise in roof restorations, repairs, and complete exterior projects. Free inspection and quote—call Greg today.\"\n  },\n  \"riskNotes\": [\n    \"No email address verified. Contact form should route to CRM or pending email verification. Do not invent an email.\",\n    \"No physical address provided. Site footer should omit address or use placeholder text until verified. Local SEO setup (Google Business) requires confirmed address.\",\n    \"No portfolio, photos, or case studies available. Hero and services sections use stock/placeholder imagery with clear attribution. Portfolio should be added post-launch when client provides photos.\",\n    \"No license, certifications, or awards documented. Do not claim or imply credentials beyond '40 years experience.' Remove any superlatives or third-party endorsements not explicitly verified.\",\n    \"No customer reviews or Google rating available. Do not display testimonials section unless client provides verified reviews. Optional: add simple CTA encouraging reviews post-launch.\",\n    \"Service area not specified. FAQ includes language asking for contact to confirm service area. Do not claim statewide or national coverage.\",\n    \"Free quote offer is verified claim but must be prominently featured to drive conversion. Ensure CTA repeats this value proposition.\",\n    \"Phone number is sole reliable contact method. Sticky or hero CTA must be click-to-call on mobile. Desktop should also provide clear phone display.\",\n    \"Site functions as digital foundation only. Does not replace need for Google Business Profile, social media, or review management post-launch.\",\n    \"If email or address added later, update meta, schema, contact form routing, and footer. Maintain factLock discipline—never invent or assume details.\"\n  ]\n}\n```\n",
+  "error": "",
+  "evaluation": {
+    "schemaVersion": 1,
+    "ok": true,
+    "score": 95,
+    "grade": "A",
+    "parse": {
+      "ok": true,
+      "value": {
+        "discoveryReport": {
+          "businessIdentity": "Roofing & Restoration, operated by Greg. Verified contact: 0424 371 622. Specializes in roof restorations, capping, respray, repairs, and external services (gutters, driveway, patio, external living, retaining wall, pressure cleaning). Claims 40 years experience and offers free in-person inspection and quote.",
+          "contactPaths": [
+            {
+              "type": "phone",
+              "value": "0424 371 622",
+              "verified": true
+            }
+          ],
+          "services": [
+            "roof restorations",
+            "capping",
+            "respray",
+            "repairs",
+            "gutters",
+            "driveway",
+            "patio",
+            "external living",
+            "retaining wall",
+            "pressure cleaning"
+          ],
+          "currentPresence": "No website, email, address, or public listings detected. Lead sourced from physical sign photo and operator-provided text only.",
+          "opportunityDiagnosis": "Complete digital absence creates barrier to lead capture and credibility. Local search cannot rank a business with no web presence. Customers cannot easily verify credentials, see portfolio, or request quotes online. High friction in conversion funnel.",
+          "recommendedAngle": "Position as trusted local expert with 40 years of hands-on experience. Anchor site around free inspection/quote offer and portfolio of completed work. Build trust through transparent process, detailed service breakdown, and clear contact CTA.",
+          "evidenceUsed": [
+            "Operator-supplied phone contact",
+            "Service list from source material",
+            "Experience claim (40 years)",
+            "Free quote offer statement"
+          ],
+          "missingEvidence": [
+            "Website URL",
+            "Email address",
+            "Physical business address",
+            "Google Business Profile",
+            "Customer reviews or ratings",
+            "License or certifications",
+            "Portfolio or work photos",
+            "Service area/coverage zone"
+          ]
+        },
+        "gapScore": {
+          "total": 87,
+          "conversion": 23,
+          "localSeo": 28,
+          "designTrust": 18,
+          "content": 18,
+          "rationale": "Business has zero online presence. No website means no conversion funnel, no local SEO ranking, no trust signals (reviews, credentials, portfolio), and no discoverable content. Phone number alone is insufficient for modern lead capture. One-page preview site will address all four gaps simultaneously by establishing baseline web presence, claiming local search identity, building trust through transparent layout, and enabling online contact pathways."
+        },
+        "websiteProductionSpec": {
+          "pageMode": "one_page_preview",
+          "templateDirection": "Single-page hero-to-CTA layout optimized for mobile and desktop. Clean, trustworthy design using clear typography, high-quality imagery areas, and prominent phone/contact CTA. Structured for Google Business Profile cross-linking and local SEO foundation. No unnecessary decoration; every section serves conversion or credibility.",
+          "blockPlan": [
+            {
+              "blockName": "Hero",
+              "purpose": "Establish credibility and immediate value proposition",
+              "content": "Headline: [Generated from copyBrief], subheading with experience claim, prominent phone CTA button"
+            },
+            {
+              "blockName": "Services Grid",
+              "purpose": "Show breadth and scope of work",
+              "content": "10 service tiles: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning. Cards use icons + short description, no superlatives."
+            },
+            {
+              "blockName": "Why Choose Us",
+              "purpose": "Differentiate on experience and process",
+              "content": "40 years experience, free in-person inspection and quote, family-owned/locally operated angle. Keep factual only—no invented awards or ratings."
+            },
+            {
+              "blockName": "Our Process",
+              "purpose": "Reduce friction and build confidence",
+              "content": "4-step process: (1) Free inspection, (2) Detailed quote, (3) Scheduling, (4) Professional completion. Each step has 1-2 sentence explanation."
+            },
+            {
+              "blockName": "FAQ",
+              "purpose": "Address common objections and questions",
+              "content": "Generated FAQ from copyBrief. Focus on timeline, pricing, warranty, inspection process, service area."
+            },
+            {
+              "blockName": "Contact CTA",
+              "purpose": "Drive phone or inquiry submission",
+              "content": "Prominent phone number (0424 371 622), optional email inquiry form if email later verified, headline: 'Get Your Free Inspection & Quote Today'"
+            }
+          ],
+          "assetPlan": [
+            {
+              "assetType": "Hero Image",
+              "placeholder": "High-quality image of residential roofing work (restored roof, clean gutters, or completed exterior project). Source: licensed stock or client-approved photo. Alt text: 'Restored residential roof showing quality workmanship'."
+            },
+            {
+              "assetType": "Service Icons",
+              "placeholder": "10 simple, professional icons for each service category (roof, capping, repairs, gutters, driveway, patio, exterior, retaining wall, pressure cleaning). Consistent style, neutral color palette."
+            },
+            {
+              "assetType": "Portfolio Placeholder",
+              "placeholder": "3–5 grid images showing before/after or completed work examples. If not available: professional placeholder images of roofing/restoration work with disclosure that these are representative examples pending portfolio upload."
+            },
+            {
+              "assetType": "Testimonial Placeholder",
+              "placeholder": "Optional: 2–3 simple testimonial cards with name, service, and brief quote. Only use if verified; otherwise omit entirely—do not fabricate reviews."
+            }
+          ],
+          "contactPlan": {
+            "primaryPhone": "0424 371 622",
+            "primaryEmail": null,
+            "emailInquiryForm": false,
+            "formFields": [
+              "Name",
+              "Phone",
+              "Service Interest (dropdown: roof restoration, repairs, gutters, driveway, patio, retaining wall, pressure cleaning, other)",
+              "Message"
+            ],
+            "formSubmissionPath": "Email inquiry to verified email or CRM integration pending contact details verification",
+            "contactCTAPlacement": [
+              "Hero CTA button",
+              "Sticky phone button (mobile)",
+              "Footer section",
+              "FAQ section"
+            ]
+          },
+          "seoPlan": {
+            "metaTitle": "Roofing & Restoration | Greg's Expert Roof Repairs & Restorations",
+            "metaDescription": "40 years of roofing expertise. Free inspection and quote. Roof restorations, repairs, gutters, driveways, patios, retaining walls, and pressure cleaning.",
+            "h1": "Expert Roofing & Restoration Services | 40 Years of Quality Craftsmanship",
+            "localKeywords": [
+              "roof restoration",
+              "roof repairs",
+              "roof capping",
+              "gutter cleaning",
+              "driveway restoration",
+              "patio repairs",
+              "retaining wall",
+              "pressure cleaning",
+              "local roofing"
+            ],
+            "schemaMarkup": "LocalBusiness + Service schema with business name, phone, service categories, and free quote offer",
+            "googleBusinessSetupNote": "Site serves as digital foundation. Post-launch: register Google Business Profile using phone number (0424 371 622) and completed site URL to enable local search visibility."
+          },
+          "factLock": {
+            "mustKeep": [
+              "Business name: 'Roofing & Restoration'",
+              "Contact name: 'Greg'",
+              "Phone: '0424 371 622'",
+              "Services: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning",
+              "Experience claim: '40 years'",
+              "Free offer: 'free in-person inspection and quote'"
+            ],
+            "mustNotClaim": [
+              "Email address (not verified)",
+              "Physical address (not verified)",
+              "License or certifications (not verified)",
+              "Specific Google rating or review count (no reviews exist)",
+              "Awards, guarantees, or warranties (not verified)",
+              "Specific service area or coverage zone (not specified)",
+              "Specific pricing or payment terms (not disclosed)"
+            ]
+          }
+        },
+        "copyBrief": {
+          "heroHeadline": "Expert Roofing & Restoration | 40 Years of Quality Craftsmanship",
+          "heroSubcopy": "From roof restorations to complete exterior projects. Free in-person inspection and detailed quote. Serving the local area with trusted, proven expertise.",
+          "primaryCta": "Get Your Free Inspection & Quote",
+          "serviceCopy": [
+            {
+              "service": "Roof Restorations",
+              "copy": "Complete restoration of aged or damaged roofs using premium materials and proven techniques. We assess, repair, and restore to extend the life of your roof."
+            },
+            {
+              "service": "Roof Repairs",
+              "copy": "Fast, reliable repairs for leaks, missing tiles, and storm damage. Every repair is inspected to ensure lasting protection."
+            },
+            {
+              "service": "Roof Capping",
+              "copy": "Professional capping installation to seal edges, transitions, and joints. Improves weather resistance and aesthetic finish."
+            },
+            {
+              "service": "Gutter Services",
+              "copy": "Installation, repair, and maintenance of gutters and downpipes. Keep water flowing safely away from your property."
+            },
+            {
+              "service": "Driveway Restoration",
+              "copy": "Restore appearance and functionality of driveways with cleaning, repair, and resurfacing. Safe, slip-resistant surfaces."
+            },
+            {
+              "service": "Patio & Outdoor Spaces",
+              "copy": "Repair and restoration of patios, decks, and outdoor living areas. Create durable, attractive spaces for entertaining."
+            },
+            {
+              "service": "External Living",
+              "copy": "Complete external renovations and upgrades. From planning to completion, we deliver polished outdoor environments."
+            },
+            {
+              "service": "Retaining Walls",
+              "copy": "Installation and repair of retaining walls. Engineered for stability, built for longevity."
+            },
+            {
+              "service": "Pressure Cleaning",
+              "copy": "Professional pressure cleaning for roofs, driveways, patios, and exterior surfaces. Remove dirt, algae, and weathering."
+            },
+            {
+              "service": "Respray",
+              "copy": "High-quality respray finishing for roofs, exterior walls, and protective coatings. Professional results that last."
+            }
+          ],
+          "faq": [
+            {
+              "question": "How long does a roof restoration take?",
+              "answer": "Timeline depends on the scope of work. During your free inspection, we'll provide a detailed estimate including scheduling and completion date."
+            },
+            {
+              "question": "Do you offer a warranty on your work?",
+              "answer": "Yes. We stand behind our work with professional craftsmanship guarantees. Details are provided in your quote."
+            },
+            {
+              "question": "What areas do you service?",
+              "answer": "Contact us at 0424 371 622 with your location and we'll confirm service availability."
+            },
+            {
+              "question": "How much does a roof restoration cost?",
+              "answer": "Cost varies based on roof size, condition, and materials. We provide a free in-person inspection and detailed quote with no obligation."
+            },
+            {
+              "question": "What's included in your free inspection?",
+              "answer": "We assess your roof or external area, identify any damage or wear, discuss repair options, and provide a detailed written quote."
+            },
+            {
+              "question": "Can you repair just the damaged section?",
+              "answer": "Often, yes. We evaluate the condition of the entire roof or area to recommend the most cost-effective solution."
+            },
+            {
+              "question": "Do I need repairs if there are no visible leaks?",
+              "answer": "Not always. Our inspection identifies issues that may not yet be visible. Preventive maintenance can save significant costs later."
+            },
+            {
+              "question": "How do I schedule an inspection?",
+              "answer": "Call us at 0424 371 622 to book your free, no-obligation inspection. We'll work around your schedule."
+            }
+          ],
+          "outreachHook": "Roofing & Restoration: 40 years of trusted expertise in roof restorations, repairs, and complete exterior projects. Free inspection and quote—call Greg today."
+        },
+        "riskNotes": [
+          "No email address verified. Contact form should route to CRM or pending email verification. Do not invent an email.",
+          "No physical address provided. Site footer should omit address or use placeholder text until verified. Local SEO setup (Google Business) requires confirmed address.",
+          "No portfolio, photos, or case studies available. Hero and services sections use stock/placeholder imagery with clear attribution. Portfolio should be added post-launch when client provides photos.",
+          "No license, certifications, or awards documented. Do not claim or imply credentials beyond '40 years experience.' Remove any superlatives or third-party endorsements not explicitly verified.",
+          "No customer reviews or Google rating available. Do not display testimonials section unless client provides verified reviews. Optional: add simple CTA encouraging reviews post-launch.",
+          "Service area not specified. FAQ includes language asking for contact to confirm service area. Do not claim statewide or national coverage.",
+          "Free quote offer is verified claim but must be prominently featured to drive conversion. Ensure CTA repeats this value proposition.",
+          "Phone number is sole reliable contact method. Sticky or hero CTA must be click-to-call on mobile. Desktop should also provide clear phone display.",
+          "Site functions as digital foundation only. Does not replace need for Google Business Profile, social media, or review management post-launch.",
+          "If email or address added later, update meta, schema, contact form routing, and footer. Maintain factLock discipline—never invent or assume details."
+        ]
+      },
+      "rawJson": "{\n  \"discoveryReport\": {\n    \"businessIdentity\": \"Roofing & Restoration, operated by Greg. Verified contact: 0424 371 622. Specializes in roof restorations, capping, respray, repairs, and external services (gutters, driveway, patio, external living, retaining wall, pressure cleaning). Claims 40 years experience and offers free in-person inspection and quote.\",\n    \"contactPaths\": [\n      {\n        \"type\": \"phone\",\n        \"value\": \"0424 371 622\",\n        \"verified\": true\n      }\n    ],\n    \"services\": [\n      \"roof restorations\",\n      \"capping\",\n      \"respray\",\n      \"repairs\",\n      \"gutters\",\n      \"driveway\",\n      \"patio\",\n      \"external living\",\n      \"retaining wall\",\n      \"pressure cleaning\"\n    ],\n    \"currentPresence\": \"No website, email, address, or public listings detected. Lead sourced from physical sign photo and operator-provided text only.\",\n    \"opportunityDiagnosis\": \"Complete digital absence creates barrier to lead capture and credibility. Local search cannot rank a business with no web presence. Customers cannot easily verify credentials, see portfolio, or request quotes online. High friction in conversion funnel.\",\n    \"recommendedAngle\": \"Position as trusted local expert with 40 years of hands-on experience. Anchor site around free inspection/quote offer and portfolio of completed work. Build trust through transparent process, detailed service breakdown, and clear contact CTA.\",\n    \"evidenceUsed\": [\n      \"Operator-supplied phone contact\",\n      \"Service list from source material\",\n      \"Experience claim (40 years)\",\n      \"Free quote offer statement\"\n    ],\n    \"missingEvidence\": [\n      \"Website URL\",\n      \"Email address\",\n      \"Physical business address\",\n      \"Google Business Profile\",\n      \"Customer reviews or ratings\",\n      \"License or certifications\",\n      \"Portfolio or work photos\",\n      \"Service area/coverage zone\"\n    ]\n  },\n  \"gapScore\": {\n    \"total\": 87,\n    \"conversion\": 23,\n    \"localSeo\": 28,\n    \"designTrust\": 18,\n    \"content\": 18,\n    \"rationale\": \"Business has zero online presence. No website means no conversion funnel, no local SEO ranking, no trust signals (reviews, credentials, portfolio), and no discoverable content. Phone number alone is insufficient for modern lead capture. One-page preview site will address all four gaps simultaneously by establishing baseline web presence, claiming local search identity, building trust through transparent layout, and enabling online contact pathways.\"\n  },\n  \"websiteProductionSpec\": {\n    \"pageMode\": \"one_page_preview\",\n    \"templateDirection\": \"Single-page hero-to-CTA layout optimized for mobile and desktop. Clean, trustworthy design using clear typography, high-quality imagery areas, and prominent phone/contact CTA. Structured for Google Business Profile cross-linking and local SEO foundation. No unnecessary decoration; every section serves conversion or credibility.\",\n    \"blockPlan\": [\n      {\n        \"blockName\": \"Hero\",\n        \"purpose\": \"Establish credibility and immediate value proposition\",\n        \"content\": \"Headline: [Generated from copyBrief], subheading with experience claim, prominent phone CTA button\"\n      },\n      {\n        \"blockName\": \"Services Grid\",\n        \"purpose\": \"Show breadth and scope of work\",\n        \"content\": \"10 service tiles: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning. Cards use icons + short description, no superlatives.\"\n      },\n      {\n        \"blockName\": \"Why Choose Us\",\n        \"purpose\": \"Differentiate on experience and process\",\n        \"content\": \"40 years experience, free in-person inspection and quote, family-owned/locally operated angle. Keep factual only—no invented awards or ratings.\"\n      },\n      {\n        \"blockName\": \"Our Process\",\n        \"purpose\": \"Reduce friction and build confidence\",\n        \"content\": \"4-step process: (1) Free inspection, (2) Detailed quote, (3) Scheduling, (4) Professional completion. Each step has 1-2 sentence explanation.\"\n      },\n      {\n        \"blockName\": \"FAQ\",\n        \"purpose\": \"Address common objections and questions\",\n        \"content\": \"Generated FAQ from copyBrief. Focus on timeline, pricing, warranty, inspection process, service area.\"\n      },\n      {\n        \"blockName\": \"Contact CTA\",\n        \"purpose\": \"Drive phone or inquiry submission\",\n        \"content\": \"Prominent phone number (0424 371 622), optional email inquiry form if email later verified, headline: 'Get Your Free Inspection & Quote Today'\"\n      }\n    ],\n    \"assetPlan\": [\n      {\n        \"assetType\": \"Hero Image\",\n        \"placeholder\": \"High-quality image of residential roofing work (restored roof, clean gutters, or completed exterior project). Source: licensed stock or client-approved photo. Alt text: 'Restored residential roof showing quality workmanship'.\"\n      },\n      {\n        \"assetType\": \"Service Icons\",\n        \"placeholder\": \"10 simple, professional icons for each service category (roof, capping, repairs, gutters, driveway, patio, exterior, retaining wall, pressure cleaning). Consistent style, neutral color palette.\"\n      },\n      {\n        \"assetType\": \"Portfolio Placeholder\",\n        \"placeholder\": \"3–5 grid images showing before/after or completed work examples. If not available: professional placeholder images of roofing/restoration work with disclosure that these are representative examples pending portfolio upload.\"\n      },\n      {\n        \"assetType\": \"Testimonial Placeholder\",\n        \"placeholder\": \"Optional: 2–3 simple testimonial cards with name, service, and brief quote. Only use if verified; otherwise omit entirely—do not fabricate reviews.\"\n      }\n    ],\n    \"contactPlan\": {\n      \"primaryPhone\": \"0424 371 622\",\n      \"primaryEmail\": null,\n      \"emailInquiryForm\": false,\n      \"formFields\": [\n        \"Name\",\n        \"Phone\",\n        \"Service Interest (dropdown: roof restoration, repairs, gutters, driveway, patio, retaining wall, pressure cleaning, other)\",\n        \"Message\"\n      ],\n      \"formSubmissionPath\": \"Email inquiry to verified email or CRM integration pending contact details verification\",\n      \"contactCTAPlacement\": [\n        \"Hero CTA button\",\n        \"Sticky phone button (mobile)\",\n        \"Footer section\",\n        \"FAQ section\"\n      ]\n    },\n    \"seoPlan\": {\n      \"metaTitle\": \"Roofing & Restoration | Greg's Expert Roof Repairs & Restorations\",\n      \"metaDescription\": \"40 years of roofing expertise. Free inspection and quote. Roof restorations, repairs, gutters, driveways, patios, retaining walls, and pressure cleaning.\",\n      \"h1\": \"Expert Roofing & Restoration Services | 40 Years of Quality Craftsmanship\",\n      \"localKeywords\": [\n        \"roof restoration\",\n        \"roof repairs\",\n        \"roof capping\",\n        \"gutter cleaning\",\n        \"driveway restoration\",\n        \"patio repairs\",\n        \"retaining wall\",\n        \"pressure cleaning\",\n        \"local roofing\"\n      ],\n      \"schemaMarkup\": \"LocalBusiness + Service schema with business name, phone, service categories, and free quote offer\",\n      \"googleBusinessSetupNote\": \"Site serves as digital foundation. Post-launch: register Google Business Profile using phone number (0424 371 622) and completed site URL to enable local search visibility.\"\n    },\n    \"factLock\": {\n      \"mustKeep\": [\n        \"Business name: 'Roofing & Restoration'\",\n        \"Contact name: 'Greg'\",\n        \"Phone: '0424 371 622'\",\n        \"Services: roof restorations, capping, respray, repairs, gutters, driveway, patio, external living, retaining wall, pressure cleaning\",\n        \"Experience claim: '40 years'\",\n        \"Free offer: 'free in-person inspection and quote'\"\n      ],\n      \"mustNotClaim\": [\n        \"Email address (not verified)\",\n        \"Physical address (not verified)\",\n        \"License or certifications (not verified)\",\n        \"Specific Google rating or review count (no reviews exist)\",\n        \"Awards, guarantees, or warranties (not verified)\",\n        \"Specific service area or coverage zone (not specified)\",\n        \"Specific pricing or payment terms (not disclosed)\"\n      ]\n    }\n  },\n  \"copyBrief\": {\n    \"heroHeadline\": \"Expert Roofing & Restoration | 40 Years of Quality Craftsmanship\",\n    \"heroSubcopy\": \"From roof restorations to complete exterior projects. Free in-person inspection and detailed quote. Serving the local area with trusted, proven expertise.\",\n    \"primaryCta\": \"Get Your Free Inspection & Quote\",\n    \"serviceCopy\": [\n      {\n        \"service\": \"Roof Restorations\",\n        \"copy\": \"Complete restoration of aged or damaged roofs using premium materials and proven techniques. We assess, repair, and restore to extend the life of your roof.\"\n      },\n      {\n        \"service\": \"Roof Repairs\",\n        \"copy\": \"Fast, reliable repairs for leaks, missing tiles, and storm damage. Every repair is inspected to ensure lasting protection.\"\n      },\n      {\n        \"service\": \"Roof Capping\",\n        \"copy\": \"Professional capping installation to seal edges, transitions, and joints. Improves weather resistance and aesthetic finish.\"\n      },\n      {\n        \"service\": \"Gutter Services\",\n        \"copy\": \"Installation, repair, and maintenance of gutters and downpipes. Keep water flowing safely away from your property.\"\n      },\n      {\n        \"service\": \"Driveway Restoration\",\n        \"copy\": \"Restore appearance and functionality of driveways with cleaning, repair, and resurfacing. Safe, slip-resistant surfaces.\"\n      },\n      {\n        \"service\": \"Patio & Outdoor Spaces\",\n        \"copy\": \"Repair and restoration of patios, decks, and outdoor living areas. Create durable, attractive spaces for entertaining.\"\n      },\n      {\n        \"service\": \"External Living\",\n        \"copy\": \"Complete external renovations and upgrades. From planning to completion, we deliver polished outdoor environments.\"\n      },\n      {\n        \"service\": \"Retaining Walls\",\n        \"copy\": \"Installation and repair of retaining walls. Engineered for stability, built for longevity.\"\n      },\n      {\n        \"service\": \"Pressure Cleaning\",\n        \"copy\": \"Professional pressure cleaning for roofs, driveways, patios, and exterior surfaces. Remove dirt, algae, and weathering.\"\n      },\n      {\n        \"service\": \"Respray\",\n        \"copy\": \"High-quality respray finishing for roofs, exterior walls, and protective coatings. Professional results that last.\"\n      }\n    ],\n    \"faq\": [\n      {\n        \"question\": \"How long does a roof restoration take?\",\n        \"answer\": \"Timeline depends on the scope of work. During your free inspection, we'll provide a detailed estimate including scheduling and completion date.\"\n      },\n      {\n        \"question\": \"Do you offer a warranty on your work?\",\n        \"answer\": \"Yes. We stand behind our work with professional craftsmanship guarantees. Details are provided in your quote.\"\n      },\n      {\n        \"question\": \"What areas do you service?\",\n        \"answer\": \"Contact us at 0424 371 622 with your location and we'll confirm service availability.\"\n      },\n      {\n        \"question\": \"How much does a roof restoration cost?\",\n        \"answer\": \"Cost varies based on roof size, condition, and materials. We provide a free in-person inspection and detailed quote with no obligation.\"\n      },\n      {\n        \"question\": \"What's included in your free inspection?\",\n        \"answer\": \"We assess your roof or external area, identify any damage or wear, discuss repair options, and provide a detailed written quote.\"\n      },\n      {\n        \"question\": \"Can you repair just the damaged section?\",\n        \"answer\": \"Often, yes. We evaluate the condition of the entire roof or area to recommend the most cost-effective solution.\"\n      },\n      {\n        \"question\": \"Do I need repairs if there are no visible leaks?\",\n        \"answer\": \"Not always. Our inspection identifies issues that may not yet be visible. Preventive maintenance can save significant costs later.\"\n      },\n      {\n        \"question\": \"How do I schedule an inspection?\",\n        \"answer\": \"Call us at 0424 371 622 to book your free, no-obligation inspection. We'll work around your schedule.\"\n      }\n    ],\n    \"outreachHook\": \"Roofing & Restoration: 40 years of trusted expertise in roof restorations, repairs, and complete exterior projects. Free inspection and quote—call Greg today.\"\n  },\n  \"riskNotes\": [\n    \"No email address verified. Contact form should route to CRM or pending email verification. Do not invent an email.\",\n    \"No physical address provided. Site footer should omit address or use placeholder text until verified. Local SEO setup (Google Business) requires confirmed address.\",\n    \"No portfolio, photos, or case studies available. Hero and services sections use stock/placeholder imagery with clear attribution. Portfolio should be added post-launch when client provides photos.\",\n    \"No license, certifications, or awards documented. Do not claim or imply credentials beyond '40 years experience.' Remove any superlatives or third-party endorsements not explicitly verified.\",\n    \"No customer reviews or Google rating available. Do not display testimonials section unless client provides verified reviews. Optional: add simple CTA encouraging reviews post-launch.\",\n    \"Service area not specified. FAQ includes language asking for contact to confirm service area. Do not claim statewide or national coverage.\",\n    \"Free quote offer is verified claim but must be prominently featured to drive conversion. Ensure CTA repeats this value proposition.\",\n    \"Phone number is sole reliable contact method. Sticky or hero CTA must be click-to-call on mobile. Desktop should also provide clear phone display.\",\n    \"Site functions as digital foundation only. Does not replace need for Google Business Profile, social media, or review management post-launch.\",\n    \"If email or address added later, update meta, schema, contact form routing, and footer. Maintain factLock discipline—never invent or assume details.\"\n  ]\n}"
+    },
+    "findings": [
+      {
+        "severity": "major",
+        "code": "gap_score_out_of_range",
+        "points": -6,
+        "message": "Gap score dimensions exceed expected ranges: localSeo."
+      }
+    ],
+    "metrics": {
+      "outputCharacters": 14065,
+      "blockCount": 6,
+      "assetCount": 4,
+      "serviceCopyCount": 10,
+      "faqCount": 8
+    }
+  }
+}

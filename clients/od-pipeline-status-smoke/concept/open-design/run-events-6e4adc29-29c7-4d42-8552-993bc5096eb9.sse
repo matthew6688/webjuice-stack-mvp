@@ -1,0 +1,36 @@
+id: 1
+event: start
+data: {"runId":"6e4adc29-29c7-4d42-8552-993bc5096eb9","agentId":"codex","bin":"/Users/matthew/.npm-global/bin/codex","streamFormat":"json-event-stream","projectId":"od-pipeline-status-smoke-open-design-1778190126754","cwd":"/Users/matthew/Developer/open-design/.od/projects/od-pipeline-status-smoke-open-design-1778190126754","model":"default","reasoning":"low","toolTokenExpiresAt":"2026-05-07T22:00:58.247Z"}
+
+id: 2
+event: stderr
+data: {"chunk":"Reading prompt from stdin...\n"}
+
+id: 3
+event: stderr
+data: {"chunk":"2026-05-07T21:45:58.427972Z  WARN codex_features: unknown feature key in config: shell\n"}
+
+id: 4
+event: stderr
+data: {"chunk":"2026-05-07T21:45:59.056046Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: prompt must be at most 128 characters path=/Users/matthew/.codex/.tmp/plugins/plugins/build-ios-apps/.codex-plugin/plugin.json\n"}
+
+id: 5
+event: stderr
+data: {"chunk":"2026-05-07T21:45:59.056309Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/plugin-eval/.codex-plugin/plugin.json\n"}
+
+id: 6
+event: stderr
+data: {"chunk":"2026-05-07T21:45:59.057893Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/matthew/.codex/.tmp/plugins/plugins/twilio-developer-kit/.codex-plugin/plugin.json\n"}
+
+id: 7
+event: agent
+data: {"type":"status","label":"initializing"}
+
+id: 8
+event: agent
+data: {"type":"raw","line":"{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"error\",\"message\":\"`[features].web_search` is deprecated because web search is enabled by default. (Set `web_search` to `\\\"live\\\"`, `\\\"cached\\\"`, or `\\\"disabled\\\"` at the top level (or under a profile) in config.toml if you want to override it.)\"}}"}
+
+id: 9
+event: agent
+data: {"type":"status","label":"running"}
+

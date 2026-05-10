@@ -9,7 +9,7 @@ The Lead Qualification Engine decides whether a local business is worth moving i
 This is the money filter before the Collect Skill:
 
 ```text
-Google Places / manual lead
+Maps scraper / Google Places / manual lead
 -> Lead Qualification
 -> Collect Skill
 -> Ready-to-Build Gate
@@ -19,6 +19,35 @@ Google Places / manual lead
 ```
 
 The goal is not to build a website for every lead. The goal is to find businesses where a truthful preview has a real chance to turn into revenue.
+
+## Cost-Aware Discovery Funnel
+
+At scale, do not start with Google Places API for every possible local business.
+
+Default funnel:
+
+```text
+Maps scraper discovery
+-> cheap field-only scoring
+-> discovery store dedupe/status/events
+-> selected candidates only
+-> cheap site-audit when website quality matters
+-> Tinyfish / enrichment only after cheap audit still says there is an opportunity
+-> Google Places API verification only before official evidence/build/outreach
+```
+
+Rules:
+
+- `npm run leads:maps-scrape` is the broad discovery tool.
+- It should run without Google Places API, without email extraction, and without `-extra-reviews`.
+- The workflow strips review/email payloads before analysis storage. Use `rating` and `review_count`, not review body text, for first-pass scoring.
+- Every run updates `data/leads/discovery-index.json`, `data/leads/entities/<entity-key>.json`, `data/leads/queues/queues.json`, and `data/leads/reports/discovery-report.json`.
+- Google Places API is for official verification and evidence, not broad scraping.
+- Cheap site audit runs with `npm run leads:audit-discovery-sites -- --limit 3` and saves screenshots, HTML/text, and JSON/Markdown reports under `data/leads/audits/<entity-key>/`.
+- Tinyfish/site-audit enrichment is for candidates that pass cheap audit, not every listing.
+- `npm run leads:plan-discovery-enrichment -- --limit 3` creates dry-run Tinyfish and Google Places commands for selected candidates.
+- `npm run leads:build-discovery-outreach-briefs -- --limit 2` creates local offer-angle drafts before contact extraction.
+- Raw discovery leads appear in `/admin/leads`; `npm run leads:maps-promote` or `npm run leads:promote-discovery-store` is still required to create a full `clients/<client>/lead/*` workflow.
 
 ## Two Main Lead Types
 
