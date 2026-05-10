@@ -15,6 +15,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { cheapAuditV2 } from '../../core/scoring/cheap-audit-v2.js';
 import { renderInternalAuditHtml } from '../../core/reports/internal-audit-html.js';
+import { captureIssueEvidence } from '../../core/audit/issue-evidence.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -38,6 +39,8 @@ if (args.all) {
 }
 
 console.log(`[build-internal-report] targets=${targets.length}`);
+
+const captureEvidence = args['capture-evidence'] !== false && args['no-evidence'] !== true;
 
 const written = [];
 for (const entityKey of targets) {
@@ -75,9 +78,32 @@ for (const entityKey of targets) {
     }
   }
 
+  // Per-issue evidence + mobile-throttled video. T0 (local Playwright).
+  let evidenceById = {};
+  let videoRel = null;
+  const websiteUrl = entity.latest?.website;
+  if (captureEvidence && websiteUrl && detailedAudit) {
+    const evidenceDir = path.join(clientV2Dir, 'evidence');
+    const videoDir = path.join(clientV2Dir, 'video');
+    try {
+      const out = await captureForLead({ url: websiteUrl, detailedAudit, visualAudit, evidenceDir, videoDir });
+      evidenceById = out.evidenceById;
+      // Make evidence paths relative to the HTML location
+      for (const id of Object.keys(evidenceById)) {
+        const ev = evidenceById[id];
+        if (ev?.path) ev.relPath = `evidence/${path.basename(ev.path)}`;
+      }
+      if (out.videoPath) videoRel = `video/${path.basename(out.videoPath)}`;
+    } catch (err) {
+      console.warn(`  ⚠ evidence capture failed: ${err.message}`);
+    }
+  }
+
   const html = renderInternalAuditHtml({
     entity, cheapAudit, detailedAudit, visualAudit,
     screenshotDir: 'screenshots',
+    evidenceById,
+    videoUrl: videoRel,
   });
   const outPath = path.join(clientV2Dir, 'internal-audit-report.html');
   fs.writeFileSync(outPath, html);
@@ -89,6 +115,16 @@ for (const entityKey of targets) {
   if (fs.existsSync(srcShotDir)) {
     for (const f of fs.readdirSync(srcShotDir)) {
       fs.copyFileSync(path.join(srcShotDir, f), path.join(publicDir, 'screenshots', f));
+    }
+  }
+  // Copy evidence + video into public/
+  for (const sub of ['evidence', 'video']) {
+    const src = path.join(clientV2Dir, sub);
+    if (!fs.existsSync(src)) continue;
+    const dst = path.join(publicDir, sub);
+    fs.mkdirSync(dst, { recursive: true });
+    for (const f of fs.readdirSync(src)) {
+      fs.copyFileSync(path.join(src, f), path.join(dst, f));
     }
   }
 
@@ -123,6 +159,94 @@ function findLatestVisualAudit(entityKey, root) {
     }
   }
   return null;
+}
+
+async function captureForLead({ url, detailedAudit, visualAudit, evidenceDir, videoDir }) {
+  const issues = [
+    ...(detailedAudit.issues?.critical || []).map((i) => ({ ...i, severity: 'critical' })),
+    ...(detailedAudit.issues?.major || []).map((i) => ({ ...i, severity: 'major' })),
+    ...((visualAudit?.issues || []).map((i) => ({ ...i, severity: i.severity || 'major' }))),
+  ];
+  fs.mkdirSync(evidenceDir, { recursive: true });
+  fs.mkdirSync(videoDir, { recursive: true });
+
+  const { chromium } = await import('playwright');
+  const browser = await chromium.launch({ headless: true });
+  let evidenceById = {};
+  let videoPath = null;
+  try {
+    // Mobile context with video + throttled network
+    const mobileCtx = await browser.newContext({
+      viewport: { width: 375, height: 667, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
+      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+      recordVideo: { dir: videoDir, size: { width: 375, height: 667 } },
+    });
+    const mobilePage = await mobileCtx.newPage();
+    try {
+      const cdp = await mobileCtx.newCDPSession(mobilePage);
+      await cdp.send('Network.emulateNetworkConditions', {
+        offline: false,
+        downloadThroughput: (1.6 * 1024 * 1024) / 8,
+        uploadThroughput: (750 * 1024) / 8,
+        latency: 150,
+      });
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    } catch {}
+    await mobilePage.goto(url, { waitUntil: 'load', timeout: 45_000 }).catch(() => null);
+    await mobilePage.waitForTimeout(3000);
+    await mobilePage.close();
+    await mobileCtx.close();
+
+    const videos = fs.readdirSync(videoDir).filter((f) => f.endsWith('.webm'));
+    if (videos.length) {
+      const newest = videos.map((f) => ({ f, m: fs.statSync(path.join(videoDir, f)).mtimeMs })).sort((a, b) => b.m - a.m)[0].f;
+      const dst = path.join(videoDir, 'mobile-throttled.webm');
+      if (newest !== 'mobile-throttled.webm') fs.renameSync(path.join(videoDir, newest), dst);
+      videoPath = dst;
+    }
+
+    // Desktop context for per-issue cropped screenshots
+    if (issues.length) {
+      const desktopCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+      const desktopPage = await desktopCtx.newPage();
+      const navResp = await desktopPage.goto(url, { waitUntil: 'load', timeout: 45_000 }).catch(() => null);
+      await desktopPage.waitForTimeout(2000);
+
+      // Detect broken/blank sites: HTTPS hang, blank body, near-empty render.
+      // For these, every cropped screenshot would just be empty white — replace
+      // with a single "site failed to load" evidence type instead.
+      const pageState = await desktopPage.evaluate(() => ({
+        textLen: (document.body?.innerText || '').trim().length,
+        scrollH: document.documentElement.scrollHeight,
+        title: document.title,
+      })).catch(() => ({ textLen: 0, scrollH: 0, title: '' }));
+      const httpStatus = navResp?.status() || 0;
+      const isBroken = pageState.textLen < 50 || pageState.scrollH < 200 || (httpStatus && httpStatus >= 400);
+
+      if (isBroken) {
+        const reasonBits = [];
+        if (httpStatus >= 400) reasonBits.push(`HTTP ${httpStatus}`);
+        if (pageState.textLen < 50) reasonBits.push(`仅 ${pageState.textLen} 字符正文`);
+        if (pageState.scrollH < 200) reasonBits.push(`页面高度 ${pageState.scrollH}px`);
+        const reason = reasonBits.join(' · ') || '站点未渲染任何内容';
+        for (const issue of issues) {
+          evidenceById[issue.id] = {
+            type: 'broken-site',
+            label: '站点加载失败 — 客户在浏览器里看到空白页',
+            reason,
+          };
+        }
+      } else {
+        const results = await captureIssueEvidence({ page: desktopPage, issues, outputDir: evidenceDir });
+        for (const r of results) evidenceById[r.id] = r.evidence;
+      }
+      await desktopPage.close();
+      await desktopCtx.close();
+    }
+  } finally {
+    await browser.close();
+  }
+  return { evidenceById, videoPath };
 }
 
 function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }

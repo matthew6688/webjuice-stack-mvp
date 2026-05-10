@@ -30,6 +30,8 @@ const SETTLE_MS = 3_000;
 export async function siteFetchFull({
   url,
   screenshotDir,
+  videoDir,                 // when set, records mobile-throttled loading video
+  recordVideo = true,       // toggle off if caller doesn't want video
   ledgerPath,
   leadId,
   clientSlug,
@@ -103,12 +105,39 @@ export async function siteFetchFull({
     await desktopPage.close();
     await desktopCtx.close();
 
-    // ─── Mobile pass ─────────────────────────────────────────────────
-    const mobileCtx = await browser.newContext({
+    // ─── Mobile pass (with throttled-network video recording) ────────
+    const videoOutDir = videoDir || (screenshotDir ? path.join(screenshotDir, '..', 'video') : null);
+    const wantVideo = recordVideo && videoOutDir;
+    if (wantVideo) fs.mkdirSync(videoOutDir, { recursive: true });
+
+    const mobileCtxOpts = {
       viewport: MOBILE_VIEWPORT,
       userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
-    });
+    };
+    if (wantVideo) {
+      mobileCtxOpts.recordVideo = {
+        dir: videoOutDir,
+        size: { width: MOBILE_VIEWPORT.width, height: MOBILE_VIEWPORT.height },
+      };
+    }
+    const mobileCtx = await browser.newContext(mobileCtxOpts);
     const mobilePage = await mobileCtx.newPage();
+
+    // Emulate slow 4G network — gives operator/customer a clear "this is what
+    // your visitors actually see" experience for the loading video.
+    if (wantVideo) {
+      try {
+        const cdp = await mobileCtx.newCDPSession(mobilePage);
+        await cdp.send('Network.emulateNetworkConditions', {
+          offline: false,
+          downloadThroughput: (1.6 * 1024 * 1024) / 8,  // 1.6 Mbps slow 4G
+          uploadThroughput: (750 * 1024) / 8,
+          latency: 150,                                 // 150ms RTT
+        });
+        await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+      } catch {}
+    }
+
     await mobilePage.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS }).catch(() => null);
     await mobilePage.waitForTimeout(SETTLE_MS);
     payload.mobileHtml = await mobilePage.content();
@@ -119,6 +148,22 @@ export async function siteFetchFull({
     }
     await mobilePage.close();
     await mobileCtx.close();
+
+    // Video file is written when context closes — find it and rename to a
+    // predictable filename so downstream report generator can embed it.
+    if (wantVideo) {
+      try {
+        const files = fs.readdirSync(videoOutDir).filter((f) => f.endsWith('.webm'));
+        if (files.length) {
+          const newest = files.map((f) => ({ f, mtime: fs.statSync(path.join(videoOutDir, f)).mtimeMs })).sort((a, b) => b.mtime - a.mtime)[0].f;
+          const dst = path.join(videoOutDir, 'mobile-throttled.webm');
+          if (path.basename(newest) !== 'mobile-throttled.webm') {
+            fs.renameSync(path.join(videoOutDir, newest), dst);
+          }
+          payload.video = { mobileThrottled: dst };
+        }
+      } catch {}
+    }
 
     // ─── Sitemap + robots probe ──────────────────────────────────────
     const probeBase = new URL(payload.finalUrl || url);

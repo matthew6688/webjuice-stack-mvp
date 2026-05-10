@@ -118,6 +118,15 @@
   .accent-mint { color: var(--green); }
   .accent-coral { color: var(--coral); }
 
+  .issue-evidence { margin-top: 10px; padding-top: 10px; border-top: 1.5px dashed rgba(23,25,28,0.25); }
+  .issue-evidence .ev-lab { margin: 0 0 6px; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  .issue-evidence img { max-width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .issue-evidence-html { margin-top: 8px; border: 1.5px solid var(--line); padding: 8px 10px; background: var(--cream); }
+  .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
+  .issue-row.ev-ref { color: var(--muted); }
+  .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
   .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
 
@@ -284,6 +293,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>title=&#39;# Brisbane Roof Restoration Specialists&#39; contains-name=true contains-niche=false</p>
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 600px region</p>
+      <img src="evidence/issue-homepage-title-clear.png" alt="evidence for Desktop 600px region" />
+    </div>
     </div>
     </div>
   </section>
@@ -401,6 +414,10 @@
       <p class="issue-row"><span class="lab">正确长啥样</span>Dark charcoal or navy text on the light background, or a dark semi-transparent overlay behind the text to ensure high contrast.</p>
       <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Change headline color to #1a1a1a (dark grey) or add a dark overlay (opacity 0.4) behind the text block.</p>
       
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-hero-text-contrast.png" alt="evidence for Desktop 700px region" />
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -413,6 +430,10 @@
       <p class="issue-row"><span class="lab">正确长啥样</span>A simplified &#39;Get a Quote&#39; form with only Name, Phone, and Suburb. The technical details should be handled by the sales team later.</p>
       <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the radio button sections. Replace with a single &#39;Tell us about your roof&#39; text area or remove the form entirely in favor of a &#39;Call Now&#39; button.</p>
       
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Element: form</p>
+      <img src="evidence/issue-form-visual-clutter.png" alt="evidence for Element: form" />
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -425,6 +446,10 @@
       <p class="issue-row"><span class="lab">正确长啥样</span>A sticky bottom bar or a visible top bar with the most critical link (e.g., &#39;Services&#39; or &#39;Reviews&#39;) visible without clicking.</p>
       <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Implement a sticky bottom navigation bar on mobile with &#39;Call&#39;, &#39;Services&#39;, and &#39;Reviews&#39; buttons permanently visible.</p>
       
+      <div class="issue-evidence">
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="screenshots/mobile.png" alt="mobile evidence" />
+    </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
@@ -437,6 +462,10 @@
       <p class="issue-row"><span class="lab">正确长啥样</span>A clean, vector-based logo with a solid icon and professional typography.</p>
       <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Redesign logo to use a solid, geometric roof icon and a clean sans-serif font.</p>
       
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-logo-design.png" alt="evidence for Full desktop" />
+    </div>
     </div>
       </div>
       
@@ -465,14 +494,14 @@
     </section>
 
   
-    <section class="section section-placeholder">
-      <h2>速度对比 (前 / 后)</h2>
-      <p class="placeholder-note">⏳ 加载速度前后对比视频 — 等 ProfitsLocal 真实 mockup 网站上线后录制：</p>
-      <ul class="placeholder-list">
-        <li>当前网站慢速节流加载视频（模拟 4G 移动网络）</li>
-        <li>Mockup 网站同条件加载视频</li>
-        <li>side-by-side 对比 + 客户能直接看到的转化率影响估算</li>
-      </ul>
+    <section class="section">
+      <p class="eyebrow">速度证据</p>
+      <h2>当前网站 · 慢速 4G 移动加载</h2>
+      <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
+      <video class="speed-video" controls preload="metadata" playsinline>
+        <source src="video/mobile-throttled.webm" type="video/webm" />
+      </video>
+      <p class="placeholder-note" style="margin-top:14px">⏳ Mockup 站点对比视频 — 等 ProfitsLocal 真实 mockup 上线后录制 side-by-side 对比。</p>
     </section>
 
   

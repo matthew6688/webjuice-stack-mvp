@@ -105,7 +105,49 @@ function renderRules(rules) {
     </table>`;
 }
 
-function renderIssue(issue) {
+function renderIssueEvidence(ev, screenshotDir) {
+  if (!ev) return '';
+  const t = ev.type;
+  if (t === 'cropped' || t === 'element' || t === 'full') {
+    const rel = ev.relPath || ev.path?.split('/').pop();
+    if (!rel) return '';
+    return `<div class="issue-evidence">
+      <p class="ev-lab">证据截图 · ${escapeHtml(ev.label || t)}</p>
+      <img src="${escapeHtml(rel)}" alt="evidence for ${escapeHtml(ev.label || '')}" />
+    </div>`;
+  }
+  if (t === 'mobile-ref') {
+    return `<div class="issue-evidence">
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="${escapeHtml(screenshotDir)}/mobile.png" alt="mobile evidence" />
+    </div>`;
+  }
+  if (t === 'video-ref') {
+    return `<p class="issue-row ev-ref"><span class="lab">证据视频</span>见下方「速度对比」段的慢速 4G 加载视频</p>`;
+  }
+  if (t === 'html-snippet') {
+    return `<details class="issue-evidence-html"><summary>证据 · ${escapeHtml(ev.label || 'HTML snippet')}</summary><pre><code>${escapeHtml(ev.text || '')}</code></pre></details>`;
+  }
+  if (t === 'html-list' || t === 'jsonld-list') {
+    const items = ev.items || [];
+    if (!items.length) return `<p class="issue-row"><span class="lab">证据</span>${escapeHtml(ev.label || '(empty)')}</p>`;
+    return `<details class="issue-evidence-html"><summary>证据 · ${escapeHtml(ev.label || '')}</summary>${items.map((it) => `<pre><code>${escapeHtml(it)}</code></pre>`).join('')}</details>`;
+  }
+  if (t === 'broken-site') {
+    return `<div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · ${escapeHtml(ev.label || '站点加载失败')}</p>
+      <p class="broken-reason">${escapeHtml(ev.reason || '')} — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>`;
+  }
+  if (t === 'note' || t === 'error') {
+    return `<p class="issue-row ev-ref"><span class="lab">证据</span>${escapeHtml(ev.label || '')}</p>`;
+  }
+  return '';
+}
+
+function renderIssue(issue, ctx = {}) {
+  const ev = ctx.evidenceById?.[issue.id];
+  const screenshotDir = ctx.screenshotDir || './screenshots';
   return `
     <div class="issue-card issue-${issue.severity || 'minor'}">
       <div class="issue-head">
@@ -118,10 +160,11 @@ function renderIssue(issue) {
       ${issue.what_correct_looks_like ? `<p class="issue-row"><span class="lab">正确长啥样</span>${escapeHtml(issue.what_correct_looks_like)}</p>` : ''}
       ${issue.how_to_fix_in_redesign ? `<p class="issue-row fix"><span class="lab">redesign 怎么改</span>${escapeHtml(issue.how_to_fix_in_redesign)}</p>` : ''}
       ${(!issue.what_observed && issue.rationale) ? `<p class="issue-row"><span class="lab">命中原因</span>${escapeHtml(issue.rationale)}</p>` : ''}
+      ${renderIssueEvidence(ev, screenshotDir)}
     </div>`;
 }
 
-function renderVisualSection({ visualAudit }) {
+function renderVisualSection({ visualAudit, evidenceById, screenshotDir }) {
   if (!visualAudit) {
     return `
     <section class="section section-placeholder">
@@ -147,7 +190,7 @@ function renderVisualSection({ visualAudit }) {
         <div class="vs vs-text"><span>设计年代</span><strong class="age">${escapeHtml(visualAudit.design_age_estimate || '-')}</strong></div>
       </div>
       <div class="issues-grid">
-        ${issues.map(renderIssue).join('')}
+        ${issues.map((i) => renderIssue(i, { evidenceById, screenshotDir })).join('')}
       </div>
       ${(visualAudit.positive_observations || []).length ? `
         <div class="positives">
@@ -180,7 +223,19 @@ function renderReviewSection({ reviewAnalysis }) {
   return `<section class="section"><h2>客户评论分析</h2><pre>${escapeHtml(JSON.stringify(reviewAnalysis, null, 2))}</pre></section>`;
 }
 
-function renderSpeedComparisonSection() {
+function renderSpeedComparisonSection({ videoUrl } = {}) {
+  if (videoUrl) {
+    return `
+    <section class="section">
+      <p class="eyebrow">速度证据</p>
+      <h2>当前网站 · 慢速 4G 移动加载</h2>
+      <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
+      <video class="speed-video" controls preload="metadata" playsinline>
+        <source src="${escapeHtml(videoUrl)}" type="video/webm" />
+      </video>
+      <p class="placeholder-note" style="margin-top:14px">⏳ Mockup 站点对比视频 — 等 ProfitsLocal 真实 mockup 上线后录制 side-by-side 对比。</p>
+    </section>`;
+  }
   return `
     <section class="section section-placeholder">
       <h2>速度对比 (前 / 后)</h2>
@@ -201,6 +256,8 @@ export function renderInternalAuditHtml({
   reviewAnalysis = null,
   leadSpend = null,
   screenshotDir = './screenshots',
+  evidenceById = {},
+  videoUrl = null,
 } = {}) {
   if (!entity) throw new Error('entity is required');
   const latest = entity.latest || {};
@@ -336,6 +393,18 @@ export function renderInternalAuditHtml({
   .accent-mint { color: var(--green); }
   .accent-coral { color: var(--coral); }
 
+  .issue-evidence { margin-top: 10px; padding-top: 10px; border-top: 1.5px dashed rgba(23,25,28,0.25); }
+  .issue-evidence .ev-lab { margin: 0 0 6px; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  .issue-evidence img { max-width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .issue-evidence-html { margin-top: 8px; border: 1.5px solid var(--line); padding: 8px 10px; background: var(--cream); }
+  .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
+  .issue-row.ev-ref { color: var(--muted); }
+  .broken-evidence { background: color-mix(in srgb, var(--coral-soft) 35%, var(--paper)); border: 2px dashed var(--coral); padding: 12px 14px; margin-top: 10px; }
+  .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
+  .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
   .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
 
@@ -467,7 +536,7 @@ export function renderInternalAuditHtml({
     <p class="eyebrow accent-coral">CRITICAL · ${critical.length}</p>
     <h2>关键问题</h2>
     <div class="issues-grid">
-      ${critical.map((i) => renderIssue({ ...i, severity: 'critical' })).join('')}
+      ${critical.map((i) => renderIssue({ ...i, severity: 'critical' }, { evidenceById, screenshotDir })).join('')}
     </div>
   </section>` : ''}
 
@@ -476,7 +545,7 @@ export function renderInternalAuditHtml({
     <p class="eyebrow">MAJOR · ${major.length}</p>
     <h2>主要问题</h2>
     <div class="issues-grid">
-      ${major.map((i) => renderIssue({ ...i, severity: 'major' })).join('')}
+      ${major.map((i) => renderIssue({ ...i, severity: 'major' }, { evidenceById, screenshotDir })).join('')}
     </div>
   </section>` : ''}
 
@@ -498,11 +567,11 @@ export function renderInternalAuditHtml({
     }).join('')}
   </section>
 
-  ${renderVisualSection({ visualAudit })}
+  ${renderVisualSection({ visualAudit, evidenceById, screenshotDir })}
 
   ${renderReviewSection({ reviewAnalysis })}
 
-  ${renderSpeedComparisonSection()}
+  ${renderSpeedComparisonSection({ videoUrl })}
 
   ${salesAngles ? `
   <section class="section">
