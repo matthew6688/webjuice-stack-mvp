@@ -119,6 +119,8 @@ export function buildMasterMd({
   visualAudit,
   reviewAnalysis,
   reviewSample,
+  reviewBundle,        // full fetched bundle (includes rating_distribution if from local docker)
+  techStack,           // detectTechStack output (CMS / analytics / pixels)
   cloudinaryManifest,
   screenshotDir = './screenshots',
 } = {}) {
@@ -204,6 +206,26 @@ export function buildMasterMd({
       sections.push(`> ${reviews.summary}`);
       sections.push('');
     }
+    // Rating distribution table — only available when reviewBundle came
+    // from local docker scrape (Places API doesn't return per-star counts).
+    const dist = reviewBundle?.rating_distribution;
+    const total = dist ? Object.values(dist).reduce((a, b) => a + Number(b || 0), 0) : 0;
+    if (dist && total > 0) {
+      sections.push('**评分分布（基于 Google 全量评论）：**');
+      sections.push('');
+      sections.push('| 星级 | 条数 | 占比 |');
+      sections.push('|---|---|---|');
+      for (const star of [5, 4, 3, 2, 1]) {
+        const n = Number(dist[star] || 0);
+        const pct = total ? ((n / total) * 100).toFixed(1) : '0';
+        sections.push(`| ${star}★ | ${n} | ${pct}% |`);
+      }
+      sections.push(`| **合计** | **${total}** | 100% |`);
+      sections.push('');
+      const fivePct = ((Number(dist[5] || 0) / total) * 100).toFixed(0);
+      sections.push(`**${fivePct}% 是 5★ 评价** — 这条数据本身就是巨大的销售素材，redesign 后的网站应该把它放在 hero 区。`);
+      sections.push('');
+    }
     if ((reviews.positive_themes || []).length) {
       sections.push(`**一致夸赞：** ${reviews.positive_themes.map((t) => '`' + t + '`').join(' · ')}`);
       sections.push('');
@@ -268,6 +290,42 @@ export function buildMasterMd({
     sections.push('');
     for (const a of salesAngles) sections.push(`- ${a}`);
     sections.push('');
+  }
+
+  // ── 技术栈与营销基建 ──
+  if (techStack && techStack.ok) {
+    sections.push('## 技术栈与营销基建');
+    sections.push('');
+    sections.push('从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。');
+    sections.push('');
+    const ts = techStack;
+    const rows = [];
+    if (ts.cms) rows.push(`- **网站平台 (CMS)：** ${ts.cms.name}（迁移复杂度参考；WordPress / Wix / Squarespace 这类有标准导出工具，custom-coded 会复杂）`);
+    if (ts.cms_alternatives?.length) rows.push(`  - 还检测到：${ts.cms_alternatives.map((c) => c.name).join(' · ')}`);
+    if (ts.analytics?.length) rows.push(`- **分析工具：** ${ts.analytics.map((a) => a.name).join(' · ')}`);
+    else rows.push(`- **分析工具：** 未检测到 — 客户目前看不到任何流量数据，等于在盲飞`);
+    if (ts.pixels?.length) {
+      rows.push(`- **广告 Pixel：** ${ts.pixels.map((p) => p.name).join(' · ')} — 客户已经在投放（或投放过）付费广告，对营销预算不陌生`);
+    } else {
+      rows.push(`- **广告 Pixel：** 未检测到 — 暂未投放追踪型广告`);
+    }
+    if (ts.chat?.length) rows.push(`- **客服 / 聊天：** ${ts.chat.map((c) => c.name).join(' · ')}`);
+    if (ts.email_capture?.length) rows.push(`- **邮件捕获：** ${ts.email_capture.map((e) => e.name).join(' · ')}`);
+    if (ts.hosting_hint) rows.push(`- **托管 / CDN 线索：** ${ts.hosting_hint}`);
+    sections.push(rows.join('\n'));
+    sections.push('');
+    sections.push(`**数字成熟度打分：** ${ts.sophistication_score} / 6 ${
+      ts.sophistication_score >= 4 ? '（高 — 客户懂数字营销，redesign 谈预算时不必从零教育）'
+      : ts.sophistication_score >= 2 ? '（中 — 已有基础设施，缺少深度运营）'
+      : '（低 — 客户对网站的认知是「有就行」，需要先讲清楚一份能赚钱的网站长什么样）'
+    }`);
+    sections.push('');
+
+    // Notable risk: Universal Analytics (deprecated July 2023) still installed
+    if (ts.analytics?.some((a) => a.id === 'ua')) {
+      sections.push('> **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。');
+      sections.push('');
+    }
   }
 
   // ── 附录 ──

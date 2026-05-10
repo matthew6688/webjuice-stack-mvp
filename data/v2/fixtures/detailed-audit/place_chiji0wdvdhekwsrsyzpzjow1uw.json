@@ -1,0 +1,423 @@
+{
+  "generatedAt": "2026-05-10T16:15:41.204Z",
+  "entity_input": {
+    "entityKey": "place_chiji0wdvdhekwsrsyzpzjow1uw",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Roofshield Roof Restorations",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Roofing supply store"
+      ],
+      "address": "Unit 9/52 Aquarium Ave, Hemmant QLD 4174",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "1800 173 885",
+      "website": "http://www.roofshield.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Roofshield+Roof+Restorations/data=!4m7!3m6!1s0x6b915ed8bd034c8b:0x4cd59693cccf8c49!8m2!3d-27.441917!4d153.125327!16s%2Fg%2F1tddscbq!19sChIJi0wDvdhekWsRSYzPzJOW1Uw?authuser=0&hl=en&rclk=1",
+      "rating": 4.4,
+      "review_count": 51,
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 43,
+      "recommendedAction": "skip",
+      "sourceQuery": "roof restoration New Farm Brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 4,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": false
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJi0wDvdhekWsRSYzPzJOW1Uw",
+      "cid": "5536496878462405705",
+      "data_id": "0x6b915ed8bd034c8b:0x4cd59693cccf8c49",
+      "websiteDomain": "roofshield.com.au",
+      "phoneDigits": "1800173885"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://roofshield.com.au/",
+    "markdown_length": 5812
+  },
+  "detailed_audit": {
+    "business_id": "place_chiji0wdvdhekwsrsyzpzjow1uw",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-10T16:15:41.204Z",
+    "audit_score": 53,
+    "dimension_scores": {
+      "gbp": 37,
+      "technical": 40,
+      "ux_conversion": 50,
+      "content": 92,
+      "seo": 57,
+      "visual": 50
+    },
+    "decision": "strong_redesign",
+    "qualification_reason": "audit_score=53 → strong_redesign · weakest: gbp 37, technical 40 · fired: no_https · 2 critical issues",
+    "hard_triggers": [
+      "no_https"
+    ],
+    "issues": {
+      "critical": [
+        {
+          "id": "https_enabled",
+          "rationale": "http only",
+          "max": 20
+        },
+        {
+          "id": "phone_visible_above_fold",
+          "rationale": "phone hidden below fold or missing",
+          "max": 20
+        }
+      ],
+      "major": [
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='# ROOFSHIELD - ROOF RESTORATION' contains-name=true contains-niche=false",
+          "max": 20
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5
+        },
+        {
+          "id": "has_business_description",
+          "rationale": "no description",
+          "max": 10
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15
+        },
+        {
+          "id": "quote_or_booking_form",
+          "rationale": "no form",
+          "max": 20
+        },
+        {
+          "id": "image_alt_present",
+          "rationale": "26 images, 73% with alt",
+          "max": 20
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 37,
+        "earned": 37,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: http://www.roofshield.com.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 17,
+            "max": 25,
+            "hit": true,
+            "rationale": "51 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 7,
+            "max": 10,
+            "hit": true,
+            "rationale": "★4.4"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 3,
+            "max": 10,
+            "hit": true,
+            "rationale": "4 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "no description"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 40,
+        "earned": 40,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "http only"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "form submit not tested"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "0 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "favicon: yes, meta: yes"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "phone hidden below fold or missing"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "tel: link present"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no form"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "gallery mentioned"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "testimonials section present"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 92,
+        "earned": 92,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 12,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='# ROOFSHIELD - ROOF RESTORATION' contains-name=true contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "37 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "9 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "mentions brisbane"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "fresh year mentioned"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 57,
+        "earned": 57,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "title=yes meta=yes"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "1 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no LocalBusiness JSON-LD"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 12,
+            "max": 20,
+            "hit": false,
+            "rationale": "26 images, 73% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

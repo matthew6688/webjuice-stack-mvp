@@ -1,0 +1,410 @@
+{
+  "generatedAt": "2026-05-10T16:41:02.921Z",
+  "entity_input": {
+    "entityKey": "place_chijywypvhjzkwsr6clfddpq0nc",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Hurricane Digital - SEO Brisbane",
+      "category": "Internet marketing service",
+      "categories": [
+        "Internet marketing service",
+        "Advertising agency",
+        "E commerce agency",
+        "Marketing agency",
+        "Website designer"
+      ],
+      "address": "3/52 McDougall St, Milton QLD 4064",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3132 8715",
+      "website": "https://hurricanedigital.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Hurricane+Digital+-+SEO+Brisbane/data=!4m7!3m6!1s0x6b915972bc0f0663:0x77d2ead30ddfc2e9!8m2!3d-27.471975!4d153.006204!16s%2Fg%2F11rvc02dvc!19sChIJYwYPvHJZkWsR6cLfDdPq0nc?authuser=0&hl=en&rclk=1",
+      "rating": 4.7,
+      "review_count": 183,
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 45,
+      "recommendedAction": "skip",
+      "sourceQuery": "roof restoration New Farm Brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": true,
+        "imageCount": 3,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJYwYPvHJZkWsR6cLfDdPq0nc",
+      "cid": "8634221627814429417",
+      "data_id": "0x6b915972bc0f0663:0x77d2ead30ddfc2e9",
+      "websiteDomain": "hurricanedigital.com.au",
+      "phoneDigits": "0731328715"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://hurricanedigital.com.au/",
+    "markdown_length": 15380
+  },
+  "detailed_audit": {
+    "business_id": "place_chijywypvhjzkwsr6clfddpq0nc",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-10T16:41:02.921Z",
+    "audit_score": 64,
+    "dimension_scores": {
+      "gbp": 58,
+      "technical": 65,
+      "ux_conversion": 65,
+      "content": 80,
+      "seo": 65,
+      "visual": 50
+    },
+    "decision": "moderate_candidate",
+    "qualification_reason": "audit_score=64 → moderate_candidate · weakest: visual 50, gbp 58 · fired: high_traction_old_site · 1 critical issues",
+    "hard_triggers": [
+      "high_traction_old_site"
+    ],
+    "issues": {
+      "critical": [
+        {
+          "id": "phone_visible_above_fold",
+          "rationale": "phone hidden below fold or missing",
+          "max": 20
+        }
+      ],
+      "major": [
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='# Transform Your Local Business with Expert Digital Marketin' contains-name=false contains-niche=false",
+          "max": 20
+        },
+        {
+          "id": "h1_unique",
+          "rationale": "3 <h1> tags",
+          "max": 20
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15
+        },
+        {
+          "id": "has_gallery",
+          "rationale": "no gallery",
+          "max": 5
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 58,
+        "earned": 58,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: https://hurricanedigital.com.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "183 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★4.7"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 3,
+            "max": 10,
+            "hit": true,
+            "rationale": "3 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "description present"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 65,
+        "earned": 65,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "https"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "form submits"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "0 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "favicon: yes, meta: yes"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 65,
+        "earned": 65,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "phone hidden below fold or missing"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "tel: link present"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "<form> element present"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no gallery"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "testimonials section present"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 80,
+        "earned": 80,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='# Transform Your Local Business with Expert Digital Marketin' contains-name=false contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "20 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "9 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "mentions brisbane"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "fresh year mentioned"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 65,
+        "earned": 65,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "title=yes meta=yes"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "3 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "LocalBusiness schema present"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "62 images, 100% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

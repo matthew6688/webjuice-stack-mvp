@@ -16,7 +16,7 @@ visual_freshness: 2
 visual_trust: 4
 visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:34:03.245Z"
+generated_at: "2026-05-10T19:57:40.829Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -48,13 +48,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The website relies on a black background with low-contrast text and 1990s-style beveled buttons, creating a visual experience that feels abandoned and difficult to read.
+> The website features a cluttered, low-contrast layout with a black background and small text that feels like a template from the early 2010s, making it difficult for users to quickly find contact information or trust the service quality.
 
 新鲜度 **2/10** · 信任度 **4/10** · 转化准备度 **3/10** · 设计年代 `severely_outdated`
 
 **值得保留的优点：**
-- The business has strong trust assets (HIA membership, QBCC license, multiple awards) that are currently visible.
-- The logo is distinct and clearly communicates the industry (roofing/diamond shape).
+- The business has strong social proof (ThreeBestRated awards) that should be preserved but better placed.
+- The license number (QBCC) is visible, which is a crucial trust signal for trades in Australia.
+- The use of partner logos (Milwaukee, Ridgebond) shows they use professional-grade materials.
 
 ## 四、客户在 Google 上怎么说
 
@@ -112,9 +113,9 @@ assets:
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Switch to a white background with high-contrast dark text to fix immediate readability issues.
-2. [视觉] 2. Remove all 3D bevels and gradients to modernize the aesthetic instantly.
-3. [视觉] 3. Simplify the header to prioritize the phone number and remove visual clutter.
+1. [视觉] 1. Switch to a white background and increase text contrast for readability.
+2. [视觉] 2. Create a clear, sticky 'Call Now' button and a prominent 'Get a Quote' CTA.
+3. [视觉] 3. Simplify the header by removing awards and clutter, focusing on the logo and contact info.
 4. [评论] Feature the 'honest advice' quote prominently to address common customer fears of upselling in the roofing industry.
 5. [评论] Use the 'less heat in' benefit in the hero section to appeal to energy-conscious homeowners.
 6. [评论] Highlight the owner's hands-on involvement in a 'Why Choose Us' section to differentiate from larger, impersonal competitors.
@@ -124,6 +125,18 @@ assets:
 
 - 你的网站没有 HTTPS — 浏览器对来访客户显示「不安全」，直接伤害信任
 - 客户口碑已经强（honest and transparent advice / high-quality craftsmanship / professional and friendly team）— 网站只需要把这份信任承接住，不需要从零建立
+
+## 技术栈与营销基建
+
+从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
+
+- **网站平台 (CMS)：** WordPress（迁移复杂度参考；WordPress / Wix / Squarespace 这类有标准导出工具，custom-coded 会复杂）
+- **分析工具：** Google Tag Manager · Google Analytics 4 · Google Analytics (Universal) · Microsoft Clarity
+- **广告 Pixel：** 未检测到 — 暂未投放追踪型广告
+
+**数字成熟度打分：** 2 / 6 （中 — 已有基础设施，缺少深度运营）
+
+> **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。
 
 ## 附录 · 数据出处
 

@@ -16,7 +16,7 @@ visual_freshness: 6
 visual_trust: 7
 visual_conversion: 7
 review_trust_signal: "moderate"
-generated_at: "2026-05-10T19:34:02.878Z"
+generated_at: "2026-05-10T19:57:40.417Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0

@@ -1,0 +1,406 @@
+{
+  "generatedAt": "2026-05-10T16:29:20.719Z",
+  "entity_input": {
+    "entityKey": "place_chijo3rniu9fkwsr8jworgytgmy",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Repair service"
+      ],
+      "address": "101 Kulcha St, Algester QLD 4115",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3276 1546",
+      "website": "https://brisbaneroofingsolutions.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roofing+Solutions+%7C+Roof+Restoration+%26+Repairs/data=!4m7!3m6!1s0x6b9145ef8ae77aa3:0x66822d66aca835f2!8m2!3d-27.626822!4d153.0280723!16s%2Fg%2F1tjxfv0t!19sChIJo3rniu9FkWsR8jWorGYtgmY?authuser=0&hl=en&rclk=1",
+      "rating": 4.8,
+      "review_count": 118,
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 49,
+      "recommendedAction": "manual_review",
+      "sourceQuery": "roof restoration in Brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": true,
+        "imageCount": 8,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+      "cid": "7386516257847653874",
+      "data_id": "0x6b9145ef8ae77aa3:0x66822d66aca835f2",
+      "websiteDomain": "brisbaneroofingsolutions.com.au",
+      "phoneDigits": "0732761546"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://brisbaneroofingsolutions.com.au/",
+    "markdown_length": 16755
+  },
+  "detailed_audit": {
+    "business_id": "place_chijo3rniu9fkwsr8jworgytgmy",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-10T16:29:20.719Z",
+    "audit_score": 69,
+    "dimension_scores": {
+      "gbp": 61,
+      "technical": 60,
+      "ux_conversion": 90,
+      "content": 100,
+      "seo": 31,
+      "visual": 50
+    },
+    "decision": "moderate_candidate",
+    "qualification_reason": "audit_score=69 → moderate_candidate · weakest: seo 31, visual 50 · fired: high_traction_old_site",
+    "hard_triggers": [
+      "high_traction_old_site"
+    ],
+    "issues": {
+      "critical": [],
+      "major": [
+        {
+          "id": "h1_unique",
+          "rationale": "0 <h1> tags",
+          "max": 20
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15
+        },
+        {
+          "id": "no_console_errors",
+          "rationale": "4 console errors",
+          "max": 5
+        },
+        {
+          "id": "image_alt_present",
+          "rationale": "20 images, 35% with alt",
+          "max": 20
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 61,
+        "earned": 61,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: https://brisbaneroofingsolutions.com.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "118 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★4.8"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 6,
+            "max": 10,
+            "hit": true,
+            "rationale": "8 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "description present"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 60,
+        "earned": 60,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "https"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "form submits"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "4 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "favicon: yes, meta: yes"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 90,
+        "earned": 90,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "phone digits above fold"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "tel: link present"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "<form> element present"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "gallery mentioned"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "testimonials section present"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 100,
+        "earned": 100,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "title='### CALL BRISBANE ROOFING SOLUTIONS' contains-name=true contains-niche=true"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "87 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "13 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "mentions brisbane"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "fresh year mentioned"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 31,
+        "earned": 31,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "title=yes meta=yes"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "0 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no LocalBusiness JSON-LD"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 6,
+            "max": 20,
+            "hit": false,
+            "rationale": "20 images, 35% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

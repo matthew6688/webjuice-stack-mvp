@@ -21,6 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { appendLedgerEvent, hashRequest } from '../finance/ledger.js';
+import { detectTechStack } from './tech-stack-detector.js';
 
 const DESKTOP_VIEWPORT = { width: 1440, height: 900 };
 const MOBILE_VIEWPORT = { width: 375, height: 667, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
@@ -80,6 +81,7 @@ export async function siteFetchFull({
 
     payload.rawHtml = await desktopPage.content();
     payload.markdown = await markdownishExtract(desktopPage);
+    payload.tech_stack = detectTechStack({ rawHtml: payload.rawHtml, finalUrl: payload.finalUrl });
 
     payload.performance = {
       lcp: perf.lcp != null ? perf.lcp / 1000 : null,           // seconds

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T14:11:49.973Z",
+  "generatedAt": "2026-05-10T19:45:28.069Z",
   "entity_input": {
     "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
     "latest": {
@@ -44,24 +44,54 @@
     }
   },
   "fetch_summary": {
-    "url": "https://www.roofspacerenovators.com.au/",
-    "markdown_length": 26591
+    "url": "https://roofspacerenovators.com.au/",
+    "markdown_length": 50000
+  },
+  "tech_stack": {
+    "ok": true,
+    "cms": {
+      "id": "wordpress",
+      "name": "WordPress",
+      "evidence": "wp-content/plugins"
+    },
+    "cms_alternatives": [],
+    "analytics": [
+      {
+        "id": "ga4",
+        "name": "Google Analytics 4",
+        "evidence": "googletagmanager.com/gtag/js?id=G-"
+      }
+    ],
+    "pixels": [
+      {
+        "id": "google_ads",
+        "name": "Google Ads Conversion",
+        "evidence": "AW-853643371"
+      }
+    ],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": null,
+    "sophistication_score": 4,
+    "has_paid_ads_evidence": true,
+    "has_measurement": true,
+    "final_url": "https://roofspacerenovators.com.au/"
   },
   "detailed_audit": {
     "business_id": "place_chija7rmbn38k2srv29x1ubwqmg",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T14:11:49.973Z",
-    "audit_score": 64,
+    "audited_at": "2026-05-10T19:45:28.069Z",
+    "audit_score": 65,
     "dimension_scores": {
       "gbp": 61,
       "technical": 60,
       "ux_conversion": 90,
       "content": 70,
-      "seo": 25,
+      "seo": 31,
       "visual": 50
     },
     "decision": "moderate_candidate",
-    "qualification_reason": "audit_score=64 → moderate_candidate · weakest: seo 25, visual 50 · fired: high_traction_old_site",
+    "qualification_reason": "audit_score=65 → moderate_candidate · weakest: seo 31, visual 50 · fired: high_traction_old_site",
     "hard_triggers": [
       "high_traction_old_site"
     ],
@@ -97,7 +127,7 @@
         },
         {
           "id": "no_console_errors",
-          "rationale": "3 console errors",
+          "rationale": "2 console errors",
           "max": 5
         },
         {
@@ -107,7 +137,7 @@
         },
         {
           "id": "image_alt_present",
-          "rationale": "125 images, 10% with alt",
+          "rationale": "230 images, 30% with alt",
           "max": 20
         }
       ]
@@ -226,7 +256,7 @@
             "earned": 0,
             "max": 5,
             "hit": false,
-            "rationale": "3 console errors"
+            "rationale": "2 console errors"
           },
           {
             "id": "favicon_and_meta",
@@ -313,14 +343,14 @@
             "earned": 20,
             "max": 20,
             "hit": true,
-            "rationale": "26 service-related verbs detected"
+            "rationale": "62 service-related verbs detected"
           },
           {
             "id": "trust_signals_present",
             "earned": 20,
             "max": 20,
             "hit": true,
-            "rationale": "8 trust-keyword mentions"
+            "rationale": "37 trust-keyword mentions"
           },
           {
             "id": "localized_content",
@@ -347,8 +377,8 @@
       },
       "seo": {
         "dimension": "seo",
-        "score": 25,
-        "earned": 25,
+        "score": 31,
+        "earned": 31,
         "max": 100,
         "rules": [
           {
@@ -374,10 +404,10 @@
           },
           {
             "id": "image_alt_present",
-            "earned": 0,
+            "earned": 6,
             "max": 20,
             "hit": false,
-            "rationale": "125 images, 10% with alt"
+            "rationale": "230 images, 30% with alt"
           },
           {
             "id": "sitemap_robots",

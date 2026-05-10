@@ -1,0 +1,467 @@
+{
+  "generatedAt": "2026-05-10T19:53:12.197Z",
+  "entity_input": {
+    "entityKey": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Diamond Roof Tiling & Restoration",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor",
+        "Painting",
+        "Repair service"
+      ],
+      "address": "64 Washington Ave, Tingalpa QLD 4173",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "0413 559 693",
+      "website": "http://www.diamondrooftiling.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Diamond+Roof+Tiling+%26+Restoration/data=!4m7!3m6!1s0x6b915ebc55555555:0xe290c1302790438c!8m2!3d-27.4760304!4d153.122351!16s%2Fg%2F11xc_dfx6!19sChIJVVVVVbxekWsRjEOQJzDBkOI?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 65,
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 51,
+      "recommendedAction": "skip",
+      "sourceQuery": "roof restoration in Brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 8,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJVVVVVbxekWsRjEOQJzDBkOI",
+      "cid": "16325761061784404876",
+      "data_id": "0x6b915ebc55555555:0xe290c1302790438c",
+      "websiteDomain": "diamondrooftiling.com.au",
+      "phoneDigits": "0413559693"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://diamondrooftiling.com.au/",
+    "markdown_length": 6309
+  },
+  "tech_stack": {
+    "ok": true,
+    "cms": {
+      "id": "wordpress",
+      "name": "WordPress",
+      "evidence": "wp-content/themes"
+    },
+    "cms_alternatives": [],
+    "analytics": [
+      {
+        "id": "gtm",
+        "name": "Google Tag Manager",
+        "evidence": "googletagmanager.com/gtm.js?id=GTM-"
+      },
+      {
+        "id": "ga4",
+        "name": "Google Analytics 4",
+        "evidence": "googletagmanager.com/gtag/js?id=G-"
+      },
+      {
+        "id": "ua",
+        "name": "Google Analytics (Universal)",
+        "evidence": "UA-59158059-1"
+      },
+      {
+        "id": "ms_clarity",
+        "name": "Microsoft Clarity",
+        "evidence": "clarity.ms/tag/"
+      }
+    ],
+    "pixels": [],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": null,
+    "sophistication_score": 2,
+    "has_paid_ads_evidence": false,
+    "has_measurement": true,
+    "final_url": "https://diamondrooftiling.com.au/"
+  },
+  "detailed_audit": {
+    "business_id": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-10T19:53:12.197Z",
+    "audit_score": 55,
+    "dimension_scores": {
+      "gbp": 53,
+      "technical": 40,
+      "ux_conversion": 65,
+      "content": 80,
+      "seo": 31,
+      "visual": 50
+    },
+    "decision": "strong_redesign",
+    "qualification_reason": "audit_score=55 → strong_redesign · weakest: seo 31, technical 40 · fired: no_https · 2 critical issues",
+    "hard_triggers": [
+      "no_https"
+    ],
+    "issues": {
+      "critical": [
+        {
+          "id": "https_enabled",
+          "rationale": "http only",
+          "max": 20
+        },
+        {
+          "id": "phone_visible_above_fold",
+          "rationale": "phone hidden below fold or missing",
+          "max": 20
+        }
+      ],
+      "major": [
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='## Get a Free Quote' contains-name=false contains-niche=false",
+          "max": 20
+        },
+        {
+          "id": "h1_unique",
+          "rationale": "0 <h1> tags",
+          "max": 20
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15
+        },
+        {
+          "id": "no_console_errors",
+          "rationale": "1 console errors",
+          "max": 5
+        },
+        {
+          "id": "has_gallery",
+          "rationale": "no gallery",
+          "max": 5
+        },
+        {
+          "id": "image_alt_present",
+          "rationale": "43 images, 49% with alt",
+          "max": 20
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 53,
+        "earned": 53,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: http://www.diamondrooftiling.com.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 17,
+            "max": 25,
+            "hit": true,
+            "rationale": "65 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★4.9"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 6,
+            "max": 10,
+            "hit": true,
+            "rationale": "8 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "description present"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 40,
+        "earned": 40,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "http only"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "form submits"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "1 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "favicon: yes, meta: yes"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 65,
+        "earned": 65,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "phone hidden below fold or missing"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "tel: link present"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "<form> element present"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no gallery"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "testimonials section present"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 80,
+        "earned": 80,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='## Get a Free Quote' contains-name=false contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "48 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "6 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "mentions brisbane"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "fresh year mentioned"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 31,
+        "earned": 31,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "title=yes meta=yes"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "0 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no LocalBusiness JSON-LD"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 6,
+            "max": 20,
+            "hit": false,
+            "rationale": "43 images, 49% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

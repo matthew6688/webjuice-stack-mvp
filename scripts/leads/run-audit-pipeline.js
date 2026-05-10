@@ -98,6 +98,7 @@ for (const entityKey of targets) {
       generatedAt: new Date().toISOString(),
       entity_input: { entityKey, latest: entity.latest, identifiers: entity.identifiers },
       fetch_summary: fetchPayload ? { url: fetchPayload.finalUrl || url, markdown_length: fetchPayload.markdown?.length || 0 } : null,
+      tech_stack: fetchPayload?.tech_stack || null,
       detailed_audit: audit,
     };
     fs.writeFileSync(detailedPath, JSON.stringify(detailedFixture, null, 2) + '\n');

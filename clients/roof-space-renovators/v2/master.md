@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "slightly_outdated"
-visual_freshness: 5
-visual_trust: 6
+visual_age: "outdated"
+visual_freshness: 4
+visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:34:02.783Z"
+generated_at: "2026-05-10T19:57:40.318Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5
@@ -52,42 +52,55 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The site features a clear value proposition and strong imagery, but the navigation is cluttered and the primary call-to-action is buried below the fold, making it difficult for mobile users to initiate contact immediately.
+> The site uses a dated, cluttered layout with a heavy image overlay that obscures content and lacks clear, accessible contact options for local searchers.
 
-新鲜度 **5/10** · 信任度 **6/10** · 转化准备度 **4/10** · 设计年代 `slightly_outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **4/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- The headline 'Same House, more home!' is catchy and clearly communicates the benefit of the service.
-- The use of a family photo in the hero section creates an emotional connection and illustrates the 'more space' benefit well.
-- The logo is clear and legible, establishing brand identity immediately.
+- The slogan 'Same house, more home' is catchy and clearly communicates the benefit of the service.
+- The logo is legible and uses a professional color palette (teal and yellow) that suggests construction/renovation.
+- The top banner clearly states the service area (Brisbane, Sunshine Coast, etc.), which is good for local relevance.
 
 ## 四、客户在 Google 上怎么说
 
-> Customers consistently praise the company for exceptional professionalism, speed, and cleanliness, with specific highlights on the seamless process from quoting to installation.
+> Customers overwhelmingly praise the professionalism, cleanliness, and communication of the team, with specific highlights on fast turnaround times and high-quality craftsmanship for skylights and attic renovations.
 
-**一致夸赞：** `fast response times` · `professional and friendly staff` · `thorough cleanup` · `high-quality finishes` · `efficient project management`
+**评分分布（基于 Google 全量评论）：**
+
+| 星级 | 条数 | 占比 |
+|---|---|---|
+| 5★ | 219 | 99.1% |
+| 4★ | 1 | 0.5% |
+| 3★ | 0 | 0.0% |
+| 2★ | 0 | 0.0% |
+| 1★ | 1 | 0.5% |
+| **合计** | **221** | 100% |
+
+**99% 是 5★ 评价** — 这条数据本身就是巨大的销售素材，redesign 后的网站应该把它放在 hero 区。
+
+**一致夸赞：** `professional and tidy crews` · `excellent communication` · `fast response and turnaround` · `high-quality craftsmanship` · `friendly and respectful staff`
 
 **可直接放上 redesign 后网站的 quote：**
-
-> "Caleb and Mick did an awesome job and even finished a day early!"
-> — **Sean**, ★★★★★
->
-> *放哪：Hero section proof of efficiency and reliability*
 
 > "The team were friendly, tidy, and respectful throughout the job, making sure to clean up at the end of each day."
 > — **Brett**, ★★★★★
 >
-> *放哪：Addresses common homeowner anxiety about mess and disruption*
+> *放哪：Addresses common homeowner anxiety about mess and disruption during renovations.*
 
-> "They listened to my concerns about future storm damage risk and were able to future proof my skylight."
+> "They listened to my concerns about future storm damage risk and were able to future proof my skylight with a toughened glass double glazed product."
 > — **Wendy**, ★★★★★
 >
-> *放哪：Demonstrates expertise and customer-centric problem solving*
+> *放哪：Demonstrates expertise and consultative approach rather than just selling a product.*
 
-> "The skylight gives the bathroom such a wow factor and I’m just so pleased with it."
-> — **Justine**, ★★★★★
+> "From our initial web enquiry... the response was extremely fast and appointment scheduled very quickly."
+> — **Sean**, ★★★★★
 >
-> *放哪：Visual impact testimonial for gallery or before/after section*
+> *放哪：Highlights operational efficiency and ease of doing business.*
+
+> "The result is fantastic – a great finish that has completely transformed what was previously wasted space into something really useful."
+> — **Brett**, ★★★★★
+>
+> *放哪：Showcases the tangible value and transformation provided by the service.*
 
 ## 五、当前网站在哪里"漏水"
 
@@ -110,17 +123,27 @@ assets:
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Move the 'Get a Quote' CTA into the header and next to the headline for immediate visibility.
-2. [视觉] 2. Simplify the navigation menu to reduce cognitive load and highlight the contact button.
-3. [视觉] 3. Remove the dark top utility bar to create a cleaner, more modern header structure.
-4. [评论] Highlight 'finished early' and 'fast response' in the hero section to appeal to busy homeowners
-5. [评论] Feature the 'clean up' theme prominently to alleviate fears of construction mess
-6. [评论] Use the skylight transformation story to showcase aesthetic value and design capability
+1. [视觉] 1. Move the phone number to a prominent, tappable button in the main navigation or sticky footer.
+2. [视觉] 2. Replace the cluttered hero section with a clean layout featuring a real project photo and a clear 'Get a Quote' button.
+3. [视觉] 3. Simplify the navigation menu to reduce cognitive load and highlight the primary conversion path.
+4. [评论] Feature the 'clean up at the end of each day' quote in the 'Our Process' section to alleviate mess concerns.
+5. [评论] Use the 'future proof my skylight' snippet in the 'Skylight Services' page to highlight technical expertise and durability.
+6. [评论] Display the 'fast response' quote near the contact form to encourage immediate inquiries.
 
 ## 七、推荐销售切入点
 
 - 你已经有不错的 Google 流量基础（221 条 5★ 评论），但当前网站设计在浪费这些点击
-- 客户口碑已经强（fast response times / professional and friendly staff / thorough cleanup）— 网站只需要把这份信任承接住，不需要从零建立
+- 客户口碑已经强（professional and tidy crews / excellent communication / fast response and turnaround）— 网站只需要把这份信任承接住，不需要从零建立
+
+## 技术栈与营销基建
+
+从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
+
+- **网站平台 (CMS)：** WordPress（迁移复杂度参考；WordPress / Wix / Squarespace 这类有标准导出工具，custom-coded 会复杂）
+- **分析工具：** Google Analytics 4
+- **广告 Pixel：** Google Ads Conversion — 客户已经在投放（或投放过）付费广告，对营销预算不陌生
+
+**数字成熟度打分：** 4 / 6 （高 — 客户懂数字营销，redesign 谈预算时不必从零教育）
 
 ## 附录 · 数据出处
 

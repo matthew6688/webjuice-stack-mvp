@@ -1,0 +1,426 @@
+{
+  "generatedAt": "2026-05-10T16:46:13.759Z",
+  "entity_input": {
+    "entityKey": "place_chijzfflvfb3k2srldcxrdv26p4",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "WeatherpRoof Restorations",
+      "category": "Roofing contractor",
+      "categories": [
+        "Roofing contractor"
+      ],
+      "address": "115/193 S Pine Rd, Brendale QLD 4500",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3171 2855",
+      "website": "https://weatherproof.net.au/",
+      "google_maps_url": "https://www.google.com/maps/place/WeatherpRoof+Restorations/data=!4m7!3m6!1s0x6b93f7f6bdcbf7cd:0x9eea76d54517d795!8m2!3d-27.3257159!4d152.9817482!16s%2Fg%2F11h_t5lw82!19sChIJzffLvfb3k2sRldcXRdV26p4?authuser=0&hl=en&rclk=1",
+      "rating": 4.9,
+      "review_count": 134,
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 45,
+      "recommendedAction": "manual_review",
+      "sourceQuery": "roof restoration in Brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": true,
+        "imageCount": 6,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJzffLvfb3k2sRldcXRdV26p4",
+      "cid": "11451095660902209429",
+      "data_id": "0x6b93f7f6bdcbf7cd:0x9eea76d54517d795",
+      "websiteDomain": "weatherproof.net.au",
+      "phoneDigits": "0731712855"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://weatherproof.net.au/",
+    "markdown_length": 9017
+  },
+  "detailed_audit": {
+    "business_id": "place_chijzfflvfb3k2srldcxrdv26p4",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-10T16:46:13.759Z",
+    "audit_score": 61,
+    "dimension_scores": {
+      "gbp": 61,
+      "technical": 58,
+      "ux_conversion": 70,
+      "content": 77,
+      "seo": 34,
+      "visual": 50
+    },
+    "decision": "moderate_candidate",
+    "qualification_reason": "audit_score=61 → moderate_candidate · weakest: seo 34, visual 50 · fired: high_traction_old_site · 1 critical issues",
+    "hard_triggers": [
+      "high_traction_old_site"
+    ],
+    "issues": {
+      "critical": [
+        {
+          "id": "phone_visible_above_fold",
+          "rationale": "phone hidden below fold or missing",
+          "max": 20
+        }
+      ],
+      "major": [
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='# EXPERIENCE THE WEATHERPROOF DIFFERENCE. QUALITY YOU CAN TR' contains-name=true contains-niche=false",
+          "max": 20
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15
+        },
+        {
+          "id": "no_console_errors",
+          "rationale": "3 console errors",
+          "max": 5
+        },
+        {
+          "id": "favicon_and_meta",
+          "rationale": "favicon: yes, meta: no",
+          "max": 5
+        },
+        {
+          "id": "evidence_of_recent_update",
+          "rationale": "no recent year (≤ 1 year ago)",
+          "max": 15
+        },
+        {
+          "id": "title_meta_present",
+          "rationale": "title=yes meta=no",
+          "max": 25
+        },
+        {
+          "id": "image_alt_present",
+          "rationale": "19 images, 0% with alt",
+          "max": 20
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 61,
+        "earned": 61,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: https://weatherproof.net.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "134 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★4.9"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 6,
+            "max": 10,
+            "hit": true,
+            "rationale": "6 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "description present"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 58,
+        "earned": 58,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "https"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "form submits"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "3 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 3,
+            "max": 5,
+            "hit": false,
+            "rationale": "favicon: yes, meta: no"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 70,
+        "earned": 70,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "phone hidden below fold or missing"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "tel: link present"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "<form> element present"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "gallery mentioned"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "testimonials section present"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 77,
+        "earned": 77,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 12,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='# EXPERIENCE THE WEATHERPROOF DIFFERENCE. QUALITY YOU CAN TR' contains-name=true contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "62 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "25 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "mentions brisbane"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no recent year (≤ 1 year ago)"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 34,
+        "earned": 34,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 14,
+            "max": 25,
+            "hit": false,
+            "rationale": "title=yes meta=no"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "1 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no LocalBusiness JSON-LD"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "19 images, 0% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

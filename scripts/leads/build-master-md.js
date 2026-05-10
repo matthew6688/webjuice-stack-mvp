@@ -71,13 +71,18 @@ for (const entityKey of targets) {
   const reviewAnalysis = reviewBundle?.analysis || null;
   const reviewSample = reviewBundle?.fetched?.reviews || null;
 
+  const techStack = detailed?.tech_stack || null;
+
   const manifestPath = path.join(clientV2Dir, 'cloudinary-manifest.json');
   const cloudinaryManifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
 
   const outputMd = path.join(clientV2Dir, 'master.md');
   const built = writeMasterMd({
     outputPath: outputMd,
-    entity, detailedAudit, visualAudit, reviewAnalysis, reviewSample, cloudinaryManifest,
+    entity, detailedAudit, visualAudit, reviewAnalysis, reviewSample,
+    reviewBundle: reviewBundle?.fetched || null,
+    techStack,
+    cloudinaryManifest,
     screenshotDir: './screenshots',
   });
 
