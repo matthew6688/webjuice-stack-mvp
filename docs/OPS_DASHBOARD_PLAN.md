@@ -1,38 +1,66 @@
 # Ops Dashboard Plan
 
-Updated: 2026-05-09
+Updated: 2026-05-10
 
-Status: partially implemented. The admin shell now has overview, leads, templates, projects, finance, queue, and settings pages; settings is still an operator aid, not a secret-writing control plane.
+Status: 8 admin panels live; read-only operations cockpit covering overview / leads / queue / reports / templates / finance / intakes / settings. Settings remains an operator aid, not a secret-writing control plane.
 
 ## Positioning
 
-The dashboard should be an operations command center, not a CMS. It should show system health, revenue/cost, client preview status, order/revision state, agent queue, third-party dependencies, and core settings.
+The dashboard is an operations command center, not a CMS. It surfaces system health, revenue/cost, client preview status, order/revision state, agent queue, third-party dependencies, and core settings.
 
-## Priority
+## Panel Status (2026-05-10)
 
-Do not implement this before the restaurant loop is complete:
+| Path | Role | Status |
+| --- | --- | --- |
+| `/admin` | Overview KPIs: revenue, costs, ROI, online previews, paid orders, pending revisions, failed deploys | Working MVP |
+| `/admin/leads` | Discovery + CRM snapshots, audit evidence, contact paths, lead pipeline state, mockup/outreach readiness | Working MVP |
+| `/admin/queue` | Operational work grouped by lead stage, queue action, outreach state, project state; triggers `lead-queue-action` workflow | Working MVP |
+| `/admin/reports` | Discovery / audit / outreach / document-comparison reports | Partial |
+| `/admin/templates` | Template inventory, template-lab artifacts, starter experiment outputs | Working MVP |
+| `/admin/finance` | Ledger summary, campaign/client/provider ROI | Partial |
+| `/admin/intakes` | Paid intake review: structured fields, missing-info detection, file summary, build-readiness | Partial |
+| `/admin/settings` | Masked env checklist with source attribution; read-only by design | Working MVP |
 
-1. Real menu evidence → preview.
-2. Local AI audit.
-3. Outreach screenshot/video proof.
-4. Cold email dry-run/live test.
-5. Paid order → agent task → dev preview → approval → live publish.
+Code: `src/pages/admin/{index,leads,queue,reports,templates,finance,intakes,settings}.astro` and `src/pages/admin/intakes/` sub-routes.
 
-## P0 Read-Only Dashboard
+## /admin/queue — Queue Action Workflow
 
-- Overview: revenue, costs, ROI, online previews, paid orders, pending revisions, failed deploys.
-- Clients: repo, preview URL, menu evidence, screenshots/video, deploy status, QA status.
-- Orders/Revisions: order ID, masked email, tier, revisions used/remaining, task, case, Discord thread.
-- Paid Intake: submitted structured intake, missing information, file summary, latest customer update, case link, and whether the build is ready for an agent task.
-- Agent Queue: pending/running/completed/failed, source-of-truth files, allowed file scope, case context.
-- ROI: campaign/client/provider revenue and cost summary.
-- Integrations: GitHub, Cloudflare, Stripe, Resend, Discord, Google Places, Firecrawl, OpenAI/Ollama health.
-- Settings: non-secret pricing, revision limits, provider unit costs, default niche, prompt/design protocol version.
-- Pricing Controls: dashboard-editable package prices, enabled/disabled tiers, revision allowances, Stripe price/session mapping, and an audit trail for price changes.
+Queue items group around lead stage, queue action, outreach state, and project state. An operator triggers an action from the page; the workflow path:
 
-## Current Settings Page
+- UI: `src/pages/admin/queue.astro`
+- Edge entrypoint: `functions/admin/lead-queue-action.ts`
+- Local script: `scripts/leads/run-queue-action.js`
+- GitHub Actions runner: `.github/workflows/run-lead-queue-action.yml`
+- Note recording: `functions/admin/lead-note.ts` + `.github/workflows/record-lead-note.yml`
 
-`/admin/settings` is the runtime configuration checklist for operators. It groups configuration into purpose-based tabs:
+Verify:
+
+```
+npm run admin:test-lead-queue-action-entrypoint
+npm run leads:test-run-queue-action
+```
+
+## /admin/reports
+
+Surfaces compact summaries and manifests produced by the leads / audit / document pipelines. Read-only. Source data lives under `data/` and `public/admin-artifacts/`.
+
+Verify:
+
+```
+npm run admin:test-report-index
+```
+
+## /admin/templates
+
+Lists the template library (niche templates, starter experiments, template-lab artifacts) and their handoff status into the mockup pipeline. Read-only browse. Building artifacts is done from `scripts/leads/build-template-mockup-handoff.js` and related scripts.
+
+## /admin/intakes
+
+Renders submitted paid intakes: structured fields, missing information, file summary, latest customer update, case link, and whether the build is ready for an agent task.
+
+## /admin/settings
+
+`/admin/settings` is the runtime configuration checklist for operators, organized into purpose tabs:
 
 - core operations
 - special alerts
@@ -45,18 +73,16 @@ Do not implement this before the restaurant loop is complete:
 - domain/deploy
 - local AI audit
 
-The page intentionally uses plain Chinese labels first. Low-level environment variable names, aliases, and detailed implementation notes are hidden behind “技术细节” so operators can answer two practical questions quickly:
+Plain Chinese labels first; low-level env names and aliases hide behind "技术细节" so operators can answer two questions quickly:
 
 1. Is anything required missing?
-2. If something is missing, what exact next step should I take?
+2. If so, what is the exact next step?
 
-Local development reads `.env`, `.env.local`, and `.dev.vars`, then overlays runtime `process.env`. The UI shows the source of configured values, for example `.env.local` or `runtime`, without exposing raw secrets. Secret values are masked and secret inputs are blank by design; pasting a replacement value only generates an `.env` line for copying.
-
-Important: `/admin/settings` does not persist secrets by itself. To make a change real, copy the generated line into local `.env.local` or the deployment provider's environment variables, then restart/redeploy the affected service.
+Source/masking behavior is fully specified in `docs/SECURITY.md` under "/admin/settings — Masked-Only Contract". Summary: the page reads `.env`, `.env.local`, `.dev.vars`, then overlays runtime `process.env`; shows masked values with source attribution; never persists secrets and never renders raw secrets into HTML. Pasting a replacement value generates an `.env` line for the operator to copy into `.env.local` or the deployment provider's env, then restart / redeploy.
 
 ## Security
 
-Production `/admin` remains protected by admin middleware and `ADMIN_ACCESS_TOKEN`; Cloudflare Access is still preferred for a stronger outer gate. Never display API keys. The settings page may show masked values and source files, but must not render raw secret values into HTML.
+Production `/admin` is gated by `functions/admin/_middleware.ts` + `ADMIN_ACCESS_TOKEN`; Cloudflare Access is preferred as a stronger outer gate. See `docs/SECURITY.md` for the full contract.
 
 ## Data Sources
 
@@ -65,18 +91,13 @@ Production `/admin` remains protected by admin middleware and `ADMIN_ACCESS_TOKE
 - `data/funnel/orders/*`
 - `data/paid-intakes/*`
 - `data/finance/ledger.jsonl`
-- deploy/domain/link/outreach/audit artifacts
+- `public/admin-artifacts/*`
+- deploy / domain / link / outreach / audit artifacts
 - third-party health checks through server-side functions
 
-## Later Actions
+## Backlog (not yet wired)
 
-Only after read-only status is trustworthy:
-
-- rerun deploy check
-- regenerate outreach assets
-- rebuild client artifacts
-- create agent task
-- request more structured intake details
-- adjust non-secret package pricing and revision allowances
-- send review email
-- publish approved dev to live
+- Pricing controls editable from the dashboard: package prices, enabled tiers, revision allowances, Stripe price/session mapping, audit trail
+- Integrations health board: GitHub, Cloudflare, Stripe, Resend, Discord, Google Places, Firecrawl, OpenAI/Ollama
+- Live action surface beyond queue: rerun deploy check, regenerate outreach assets, rebuild client artifacts, create agent task, request more intake details, send review email, publish approved dev to live
+- Finance and intakes lift from "Partial" to "Working MVP" once ROI rollup and intake-to-task handoff are end-to-end
