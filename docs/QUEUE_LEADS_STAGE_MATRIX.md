@@ -213,10 +213,9 @@ PHASE 3 · PAID PROJECT QUEUE  (data/paid-intakes/) — /admin/intakes
 
 1. **真实 mockup artifact 替换**（进行中）：把 `build_mockup_artifacts` 里的 placeholder preview / screenshot / video 换成真实 Open Design / template runner 输出。没有真实 artifact 不能进 `mockup_ready`。
 2. **打通 send → follow-up → reply → paid_handoff 链**：
-   - 新增 `send_outreach` action：`draft_ready → outreach_sent`，记录 provider、`externalMessageId`、`externalThreadUrl`、`nextFollowUpDue`
-   - 接 follow-up 调度（cron 检查 `nextFollowUpDue`）：`outreach_sent → follow_up_due`
-   - 核实 provider event 把 `outreach_sent → replied / bounced` 写回到 lead 的状态（不只是事件存档）
-   - 新增 `record_reply_intent` action：`replied → paid_handoff`，把人工判断落到 lead-notes，并触发 paid intake 链路
+   > **当前阶段策略：邮件发送先手工。** Phase 1 先用 Resend / Instantly 后台或人工发，自动化（`send_outreach` action、follow-up 定时器）放 Phase 2。Phase 1 优先打通**事后写回**：人工发完后能用 `mark_outreach_sent` 把 provider id / 发送时间 / `nextFollowUpDue` 落到 lead，让 reply / bounce / follow-up 能正常被 trigger。
+   - **Phase 1（当前）：** 新增 `mark_outreach_sent` action（手工触发，记录已发送的元数据）；核实 provider event 把 `outreach_sent → replied / bounced` 写回到 lead 状态（不只是事件存档）；新增 `record_reply_intent` action：`replied → paid_handoff`，把人工判断落到 lead-notes 并触发 paid intake 链路
+   - **Phase 2（后续）：** 自动 `send_outreach`、follow-up 定时器、A/B 草稿、provider rotation
 3. **手工 intake 汇入 cheap audit 流程**：让 `scripts/leads/intake.js` 也写一份 discovery entity，触发一次 `run_cheap_audit`，让每个 lead 都有 audit 证据。区分留到事后核实。
 4. **selected enrichment 接到真实执行**：当前已支持 dry-run 计划和 `approved` 状态记录；下一步是 `executed / ingested` 自动回写证据。
 5. **`/admin/leads` 阶段说明对齐 Queue**：保留更完整证据，但阶段说明 / 关键事实区与 Queue 同源。
