@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>WeatherpRoof Restorations · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">WeatherpRoof Restorations · 现状审计与重构提议</h1>
+</header>
+<h1 id="weatherproof-restorations-现状审计与重构提议">WeatherpRoof
+Restorations · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>61/100</strong> · moderate_candidate · 行业：roofing ·
+地区：Brisbane · Google 评价：4.9★ （134 条）</p>
+</blockquote>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=61 → moderate_candidate ·
+weakest: seo 34, visual 50 · fired: high_traction_old_site · 1 critical
+issues</p>
+<p><strong>已触发的 hard triggers：</strong>
+<code>high_traction_old_site</code></p>
+<ul>
+<li>电话：(07) 3171 2855</li>
+<li>地址：115/193 S Pine Rd, Brendale QLD 4500</li>
+<li>网站：<a
+href="https://weatherproof.net.au/">https://weatherproof.net.au/</a></li>
+<li>网站状态：<code>independent_https_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The site uses a dated dark-overlay aesthetic with a cluttered form
+that creates friction, though the clear value proposition and prominent
+contact info provide a functional base.</p>
+</blockquote>
+<p>新鲜度 <strong>4/10</strong> · 信任度 <strong>6/10</strong> ·
+转化准备度 <strong>5/10</strong> · 设计年代 <code>outdated</code></p>
+<p><strong>值得保留的优点：</strong> - The headline ‘Experience the
+Weatherproof Difference’ is large, legible, and clearly states the value
+proposition. - The ‘Get Your Free Quote’ form is visible above the fold,
+which is excellent for capturing leads immediately. - The logo is clear
+and professional, and the color scheme (Teal/Black/White) is consistent
+with the industry.</p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers overwhelmingly praise the business for its honesty,
+professionalism, and clear communication, particularly valuing
+transparent assessments that avoid unnecessary upsells. A single severe
+complaint regarding poor workmanship and communication exists, but it
+appears to be an outlier against a backdrop of consistent high
+satisfaction.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong> <code>honest assessments</code> ·
+<code>excellent communication</code> ·
+<code>professional workmanship</code> · <code>punctual service</code> ·
+<code>fair pricing</code></p>
+<p><strong>抱怨 / 短板：</strong> <code>poor communication</code> ·
+<code>substandard workmanship</code> · <code>unreliability</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“Weatherproof Restoration was the only one that responded… I really
+appreciated his honesty and professionalism.” — <strong>Joe</strong>,
+★★★★★</p>
+<p><em>放哪：Hero section proof of integrity and responsiveness</em></p>
+</blockquote>
+<blockquote>
+<p>“Great response and quick resolution to a minor concern we raised -
+sign of a quality, trustworthy business.” — <strong>Sam</strong>,
+★★★★★</p>
+<p><em>放哪：Trust section highlighting after-care and
+reliability</em></p>
+</blockquote>
+<blockquote>
+<p>“From my first contact with them to my last contact they were very
+friendly, kept up communication.” — <strong>Julian</strong>, ★★★★★</p>
+<p><em>放哪：Process section emphasizing customer experience</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-1-项立刻在伤害成交">🔴 关键问题 · 1
+项（立刻在伤害成交）</h3>
+<h3 id="关键-phone_visible_above_fold">🔴 关键 ·
+phone_visible_above_fold</h3>
+<p><strong>命中原因：</strong> phone hidden below fold or missing</p>
+<h3 id="主要问题-2-项影响转化的明显短板">🟡 主要问题 · 2
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">🟡 主要 · homepage_title_clear</h3>
+<p><strong>命中原因：</strong> title=‘# EXPERIENCE THE WEATHERPROOF
+DIFFERENCE. QUALITY YOU CAN TR’ contains-name=true
+contains-niche=false</p>
+<h3 id="主要-local_schema_markup">🟡 主要 · local_schema_markup</h3>
+<p><strong>命中原因：</strong> no LocalBusiness JSON-LD</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>👁 1. Clean up the hero image by removing the heavy dark overlay to
+improve visual appeal and trust.</li>
+<li>👁 2. Redesign the contact form inputs for higher contrast and easier
+readability.</li>
+<li>👁 3. Simplify the top navigation bar to reduce visual clutter.</li>
+<li>💬 Feature Joe Lin’s review prominently to counter ‘scam’ fears
+common in roofing by highlighting honest, no-upsell inspections.</li>
+<li>💬 Use Sam Pengelly’s quote in a ‘Why Choose Us’ section to
+demonstrate proactive problem-solving and trustworthiness.</li>
+<li>💬 Highlight the peer endorsement from Elizabeth High to establish
+industry credibility and quality assurance.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你已经有不错的 Google 流量基础（134 条 4.9★
+评论），但当前网站设计在浪费这些点击</li>
+<li>客户口碑已经强（honest assessments / excellent communication /
+professional workmanship）—
+网站只需要把这份信任承接住，不需要从零建立</li>
+</ul>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

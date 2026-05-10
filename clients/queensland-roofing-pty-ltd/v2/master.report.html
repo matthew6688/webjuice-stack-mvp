@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Queensland Roofing Pty Ltd · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Queensland Roofing Pty Ltd · 现状审计与重构提议</h1>
+</header>
+<h1 id="queensland-roofing-pty-ltd-现状审计与重构提议">Queensland
+Roofing Pty Ltd · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>23/100</strong> · strong_redesign · 行业：roofing ·
+地区：Brisbane · Google 评价：4.5★ （35 条）</p>
+</blockquote>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=23 → strong_redesign ·
+weakest: ux_conversion 0, content 10 · fired: mobile_broken, no_https,
+no_visible_cta_or_phone · 3 critical issues</p>
+<p><strong>已触发的 hard triggers：</strong> <code>mobile_broken</code>
+· <code>no_https</code> · <code>no_visible_cta_or_phone</code></p>
+<ul>
+<li>电话：0489 263 653</li>
+<li>地址：19/10 Eagle St, Brisbane City QLD 4000</li>
+<li>网站：<a
+href="http://www.queenslandroofing.com.au/">http://www.queenslandroofing.com.au/</a></li>
+<li>网站状态：<code>independent_http_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The provided screenshots are completely blank white images,
+indicating a critical technical failure or missing content that prevents
+any visual assessment.</p>
+</blockquote>
+<p>新鲜度 <strong>1/10</strong> · 信任度 <strong>1/10</strong> ·
+转化准备度 <strong>1/10</strong> · 设计年代
+<code>severely_outdated</code></p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers consistently praise the team’s professionalism, speed, and
+thoroughness, with specific highlights on storm damage repairs and
+complete roof replacements. The reviews reflect high trust in the
+company’s integrity and work quality, with no negative feedback present
+in this sample.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong> <code>professional and polite crew</code>
+· <code>fast and efficient turnaround</code> ·
+<code>thorough inspection and quoting</code> ·
+<code>effective storm damage repair</code> ·
+<code>excellent cleanup and debris removal</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“Stunned by how fast and efficiently they work with our whole roof
+replaced in 3 days” — <strong>David</strong>, ★★★★★</p>
+<p><em>放哪：Hero section proof of speed and efficiency</em></p>
+</blockquote>
+<blockquote>
+<p>“Not a single drop of water came through our ceiling, so I consider
+that a job extremely well tested” — <strong>Meagan</strong>, ★★★★★</p>
+<p><em>放哪：Trust signal for leak repair reliability</em></p>
+</blockquote>
+<blockquote>
+<p>“It didn’t feel like we were just another job to them” —
+<strong>Zenda</strong>, ★★★★★</p>
+<p><em>放哪：Testimonial section highlighting personalized care</em></p>
+</blockquote>
+<blockquote>
+<p>“These guys also had the best price by a significant amount” —
+<strong>David</strong>, ★★★★★</p>
+<p><em>放哪：Value proposition for pricing section</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-3-项立刻在伤害成交">🔴 关键问题 · 3
+项（立刻在伤害成交）</h3>
+<h3 id="关键-https_enabled">🔴 关键 · https_enabled</h3>
+<p><strong>命中原因：</strong> http only</p>
+<h3 id="关键-above_fold_cta_within_5s">🔴 关键 ·
+above_fold_cta_within_5s</h3>
+<p><strong>命中原因：</strong> no CTA keyword in first 1500 chars</p>
+<h3 id="关键-phone_visible_above_fold">🔴 关键 ·
+phone_visible_above_fold</h3>
+<p><strong>命中原因：</strong> phone hidden below fold or missing</p>
+<h3 id="主要问题-6-项影响转化的明显短板">🟡 主要问题 · 6
+项（影响转化的明显短板）</h3>
+<h3 id="主要-click_to_call_link">🟡 主要 · click_to_call_link</h3>
+<p><strong>命中原因：</strong> no tel: link</p>
+<h3 id="主要-homepage_title_clear">🟡 主要 · homepage_title_clear</h3>
+<p><strong>命中原因：</strong> title=’’ contains-name=false
+contains-niche=false</p>
+<h3 id="主要-service_copy_specific">🟡 主要 · service_copy_specific</h3>
+<p><strong>命中原因：</strong> 0 service-related verbs detected</p>
+<h3 id="主要-trust_signals_present">🟡 主要 · trust_signals_present</h3>
+<p><strong>命中原因：</strong> 0 trust-keyword mentions</p>
+<h3 id="主要-h1_unique">🟡 主要 · h1_unique</h3>
+<strong>命中原因：</strong> 0
+<h1>
+<p>tags</p>
+<h3 id="主要-local_schema_markup">🟡 主要 · local_schema_markup</h3>
+<p><strong>命中原因：</strong> no LocalBusiness JSON-LD</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>👁 1. Restore website content so the site is visible.</li>
+<li>👁 2. Re-audit the actual design once content is visible.</li>
+<li>👁 3. Implement standard roofing conversion elements (phone number,
+trust badges).</li>
+<li>💬 Feature the ‘3-day replacement’ statistic prominently to address
+customer anxiety about project timelines.</li>
+<li>💬 Use the Cyclone Debbie repair story as a case study for
+durability and weather resistance.</li>
+<li>💬 Highlight the ‘thorough inspection’ process to differentiate from
+competitors who may offer quick, superficial quotes.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你的网站在手机上基本不可用 — 这是大多数本地搜索的入口</li>
+<li>你的网站没有 HTTPS —
+浏览器对来访客户显示「不安全」，直接伤害信任</li>
+<li>客户进来看不到联系按钮和电话 — 找不到怎么联系你就直接走了</li>
+<li>客户口碑已经强（professional and polite crew / fast and efficient
+turnaround / thorough inspection and quoting）—
+网站只需要把这份信任承接住，不需要从零建立</li>
+</ul>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

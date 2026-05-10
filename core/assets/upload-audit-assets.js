@@ -70,6 +70,7 @@ export async function uploadAuditAssets({
   entityKey,
   evidenceDir,
   videoPath,
+  screenshotDir,        // optional — uploads desktop.png + mobile.png too
   ledgerPath,
   clientSlug,
   campaignId,
@@ -82,8 +83,30 @@ export async function uploadAuditAssets({
 
   const folderBase = `${FOLDER_ROOT}/${entityKey.replace(/[^a-zA-Z0-9_-]+/g, '-').slice(0, 80)}`;
   const evidenceUrls = {};
+  const screenshotUrls = {};
   let videoUrl = null;
   const uploads = [];
+
+  // ── Full desktop / mobile screenshots ──
+  if (screenshotDir && fs.existsSync(screenshotDir)) {
+    for (const variant of ['desktop', 'mobile']) {
+      const filePath = path.join(screenshotDir, `${variant}.png`);
+      if (!fs.existsSync(filePath)) continue;
+      try {
+        const body = await signedUpload({
+          filePath,
+          folder: `${folderBase}/screenshots`,
+          publicId: variant,
+          resourceType: 'image',
+          env,
+        });
+        screenshotUrls[variant] = body.secure_url;
+        uploads.push({ kind: 'screenshot', variant, bytes: body.bytes, secureUrl: body.secure_url });
+      } catch (err) {
+        uploads.push({ kind: 'screenshot', variant, error: err.message });
+      }
+    }
+  }
 
   // ── Evidence PNGs ──
   if (evidenceDir && fs.existsSync(evidenceDir)) {
@@ -157,6 +180,7 @@ export async function uploadAuditAssets({
     ok: true,
     entityKey,
     evidenceUrls,
+    screenshotUrls,
     videoUrl,
     uploads,
     folderBase,

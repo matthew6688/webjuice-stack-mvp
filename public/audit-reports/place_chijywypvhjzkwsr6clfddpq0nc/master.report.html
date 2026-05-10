@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Hurricane Digital - SEO Brisbane · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Hurricane Digital - SEO Brisbane ·
+现状审计与重构提议</h1>
+</header>
+<h1 id="hurricane-digital---seo-brisbane-现状审计与重构提议">Hurricane
+Digital - SEO Brisbane · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>64/100</strong> · moderate_candidate · 行业：roofing ·
+地区：Brisbane · Google 评价：4.7★ （183 条）</p>
+</blockquote>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=64 → moderate_candidate ·
+weakest: visual 50, gbp 58 · fired: high_traction_old_site · 1 critical
+issues</p>
+<p><strong>已触发的 hard triggers：</strong>
+<code>high_traction_old_site</code></p>
+<ul>
+<li>电话：(07) 3132 8715</li>
+<li>地址：3/52 McDougall St, Milton QLD 4064</li>
+<li>网站：<a
+href="https://hurricanedigital.com.au/">https://hurricanedigital.com.au/</a></li>
+<li>网站状态：<code>independent_https_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The design features a clean, modern aesthetic with good typography,
+but it suffers from a critical disconnect between the visual branding
+(digital marketing) and the stated industry (roofing), alongside a
+confusing primary call-to-action.</p>
+</blockquote>
+<p>新鲜度 <strong>8/10</strong> · 信任度 <strong>6/10</strong> ·
+转化准备度 <strong>5/10</strong> · 设计年代 <code>modern</code></p>
+<p><strong>值得保留的优点：</strong> - The color palette (navy blue,
+teal, white) is professional and trustworthy. - The typography is clean,
+modern, and highly legible. - The layout is spacious with good use of
+whitespace, avoiding a cluttered feel.</p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers overwhelmingly praise specific staff members for tangible
+improvements in visibility, lead generation, and website performance,
+though one significant complaint highlights a disconnect between sales
+promises and actual ROI.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong>
+<code>rapid improvement in google rankings</code> ·
+<code>responsive and proactive communication</code> ·
+<code>measurable increase in leads</code> ·
+<code>personalized account management</code> ·
+<code>effective website optimization</code></p>
+<p><strong>抱怨 / 短板：</strong> <code>lack of measurable roi</code> ·
+<code>difficult cancellation process</code> ·
+<code>billing issues after cancellation</code> ·
+<code>unmet sales expectations</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“getting us back on Google where we can actually be seen/found. I am
+back to getting calls &amp; email inquiries” — <strong>Tracey</strong>,
+★★★★★</p>
+<p><em>放哪：Hero section proof of lead generation and visibility
+recovery</em></p>
+</blockquote>
+<blockquote>
+<p>“He understands performance marketing properly and focuses on what
+actually drives leads and growth.” — <strong>Brady</strong>, ★★★★★</p>
+<p><em>放哪：Services page to highlight strategic expertise over generic
+SEO</em></p>
+</blockquote>
+<blockquote>
+<p>“the difference has been clear the value Hurricane Digital and Nash
+provide more than justifies the investment.” — <strong>Steven</strong>,
+★★★★★</p>
+<p><em>放哪：Pricing or About page to justify cost and demonstrate
+value</em></p>
+</blockquote>
+<blockquote>
+<p>“He goes above and beyond, putting in extra work to ensure everything
+is properly setup.” — <strong>Ben</strong>, ★★★★★</p>
+<p><em>放哪：Testimonials section to emphasize customer care and
+attention to detail</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-1-项立刻在伤害成交">🔴 关键问题 · 1
+项（立刻在伤害成交）</h3>
+<h3 id="关键-phone_visible_above_fold">🔴 关键 ·
+phone_visible_above_fold</h3>
+<p><strong>命中原因：</strong> phone hidden below fold or missing</p>
+<h3 id="主要问题-2-项影响转化的明显短板">🟡 主要问题 · 2
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">🟡 主要 · homepage_title_clear</h3>
+<p><strong>命中原因：</strong> title=‘# Transform Your Local Business
+with Expert Digital Marketin’ contains-name=false
+contains-niche=false</p>
+<h3 id="主要-h1_unique">🟡 主要 · h1_unique</h3>
+<strong>命中原因：</strong> 3
+<h1>
+<p>tags</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>👁 1. Replace the hero image with a photo of a roof/roofing work to
+match user intent.</li>
+<li>👁 2. Change the primary CTA from ‘Book Strategy Session’ to ‘Call
+for Quote’ or ‘Get a Quote’.</li>
+<li>👁 3. Rewrite headline copy to focus on roofing services rather than
+digital marketing.</li>
+<li>💬 Feature Tracey’s quote prominently on the homepage to address the
+primary pain point of being ‘invisible’ online.</li>
+<li>💬 Use Brady’s and Steven’s reviews in a ‘Results’ or ‘Case Studies’
+section to validate the ROI of the investment.</li>
+<li>💬 Highlight the specific staff names (Aiden, Nash) in team bios to
+leverage the personal connection customers feel.</li>
+<li>💬 Address the negative review’s concern about transparency by
+adding a ‘What to Expect’ or ‘Deliverables’ section to the sales
+page.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你已经有不错的 Google 流量基础（183 条 4.7★
+评论），但当前网站设计在浪费这些点击</li>
+<li>客户口碑已经强（rapid improvement in google rankings / responsive
+and proactive communication / measurable increase in leads）—
+网站只需要把这份信任承接住，不需要从零建立</li>
+</ul>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

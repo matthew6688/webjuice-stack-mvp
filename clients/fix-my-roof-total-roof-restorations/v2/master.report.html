@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>FIX MY ROOF Total Roof Restorations · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">FIX MY ROOF Total Roof Restorations ·
+现状审计与重构提议</h1>
+</header>
+<h1 id="fix-my-roof-total-roof-restorations-现状审计与重构提议">FIX MY
+ROOF Total Roof Restorations · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>51/100</strong> · strong_redesign · 行业：roofing ·
+地区：Brisbane · Google 评价：5★ （127 条）</p>
+</blockquote>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=51 → strong_redesign ·
+weakest: technical 40, ux_conversion 45 · fired: no_https,
+high_traction_old_site · 2 critical issues</p>
+<p><strong>已触发的 hard triggers：</strong> <code>no_https</code> ·
+<code>high_traction_old_site</code></p>
+<ul>
+<li>电话：0410 607 076</li>
+<li>地址：29 Darien St, Bridgeman Downs QLD 4035</li>
+<li>网站：<a
+href="http://billdu.me/fixmyrooftotalroofrestorations">http://billdu.me/fixmyrooftotalroofrestorations</a></li>
+<li>网站状态：<code>independent_http_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The design relies heavily on a Google Business Profile layout which
+feels like a directory listing rather than a professional brand website,
+lacking immediate visual hierarchy for conversion.</p>
+</blockquote>
+<p>新鲜度 <strong>4/10</strong> · 信任度 <strong>6/10</strong> ·
+转化准备度 <strong>5/10</strong> · 设计年代
+<code>slightly_outdated</code></p>
+<p><strong>值得保留的优点：</strong> - The brand colors (purple and
+yellow) provide good contrast and are distinct. - The text clearly
+defines the specific service area (North Brisbane) and service type
+(concrete tile roofs), which is good for relevance. - The mention of ‘5
+star reviews’ in the text is a strong trust signal that should be
+visualized.</p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers overwhelmingly praise Dino for his exceptional integrity,
+punctuality, and high-quality workmanship, with one reviewer
+highlighting his refusal to accept payment as a key trust signal.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong> <code>exceptional integrity</code> ·
+<code>punctual and reliable</code> ·
+<code>high-quality workmanship</code> · <code>clean job site</code> ·
+<code>clear communication</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“What really impressed me was that he wouldn’t accept any payment for
+his work.” — <strong>Neil</strong>, ★★★★★</p>
+<p><em>放哪：Hero section proof of integrity and character</em></p>
+</blockquote>
+<blockquote>
+<p>“He quickly identified the problem, explained the solution clearly,
+and carried out the work to a very high standard.” —
+<strong>Glenn</strong>, ★★★★★</p>
+<p><em>放哪：Testimonial section highlighting expertise and
+process</em></p>
+</blockquote>
+<blockquote>
+<p>“Dino’s work is of an excellent standard and he goes the extra mile
+to ensure the job site is clean.” — <strong>Anthony</strong>, ★★★★★</p>
+<p><em>放哪：Service details section emphasizing professionalism and
+tidiness</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-2-项立刻在伤害成交">🔴 关键问题 · 2
+项（立刻在伤害成交）</h3>
+<h3 id="关键-https_enabled">🔴 关键 · https_enabled</h3>
+<p><strong>命中原因：</strong> http only</p>
+<h3 id="关键-phone_visible_above_fold">🔴 关键 ·
+phone_visible_above_fold</h3>
+<p><strong>命中原因：</strong> phone hidden below fold or missing</p>
+<h3 id="主要问题-2-项影响转化的明显短板">🟡 主要问题 · 2
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">🟡 主要 · homepage_title_clear</h3>
+<p><strong>命中原因：</strong> title=‘# FIX MY ROOF TOTAL ROOF
+RESTORATIONS’ contains-name=true contains-niche=false</p>
+<h3 id="主要-local_schema_markup">🟡 主要 · local_schema_markup</h3>
+<p><strong>命中原因：</strong> no LocalBusiness JSON-LD</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>👁 1. Add a prominent ‘Get a Free Quote’ button above the fold.</li>
+<li>👁 2. Break the dense text paragraph into scannable bullet points or
+service cards.</li>
+<li>👁 3. Replace the generic icon row with clear, clickable phone and
+email contact details.</li>
+<li>💬 Feature the ‘no payment accepted’ story prominently to build
+immediate trust and differentiate from competitors.</li>
+<li>💬 Highlight ‘punctuality’ and ‘clean job site’ in the service
+guarantees section to address common homeowner anxieties.</li>
+<li>💬 Use quotes about ‘clear communication’ in the ‘How It Works’
+section to reassure potential clients about the process.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你的网站没有 HTTPS —
+浏览器对来访客户显示「不安全」，直接伤害信任</li>
+<li>你已经有不错的 Google 流量基础（127 条 5★
+评论），但当前网站设计在浪费这些点击</li>
+<li>客户口碑已经强（exceptional integrity / punctual and reliable /
+high-quality workmanship）—
+网站只需要把这份信任承接住，不需要从零建立</li>
+</ul>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

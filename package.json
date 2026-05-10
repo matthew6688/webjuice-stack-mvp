@@ -37,6 +37,7 @@
     "audit:test-visual-autoresearch": "node scripts/audit/test-visual-autoresearch.js",
     "leads:build-internal-report": "node scripts/leads/build-internal-report.js",
     "leads:run-pipeline": "node --env-file=.env.local scripts/leads/run-audit-pipeline.js",
+    "leads:build-master-md": "node scripts/leads/build-master-md.js",
     "admin:screenshot": "node scripts/admin/screenshot-admin-ui.js",
     "evidence:build": "node scripts/evidence/build.js",
     "evidence:validate": "node scripts/evidence/validate.js",

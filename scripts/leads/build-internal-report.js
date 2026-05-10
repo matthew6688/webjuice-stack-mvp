@@ -153,11 +153,13 @@ for (const entityKey of targets) {
   if (uploadCloudinary && Object.keys(evidenceById).length) {
     const evidenceDir = path.join(clientV2Dir, 'evidence');
     const videoPath = path.join(clientV2Dir, 'video', 'mobile-throttled.webm');
+    const localShotDir = path.join(clientV2Dir, 'screenshots');
     try {
       const upl = await uploadAuditAssets({
         entityKey,
         evidenceDir,
         videoPath: fs.existsSync(videoPath) ? videoPath : null,
+        screenshotDir: fs.existsSync(localShotDir) ? localShotDir : null,
         clientSlug: slugRoot,
       });
       if (upl.ok) {

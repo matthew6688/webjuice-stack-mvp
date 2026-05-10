@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Brisbane Roof Restoration Experts · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Brisbane Roof Restoration Experts ·
+现状审计与重构提议</h1>
+</header>
+<h1 id="brisbane-roof-restoration-experts-现状审计与重构提议">Brisbane
+Roof Restoration Experts · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>70/100</strong> · low_priority · 行业：roofing ·
+地区：Brisbane · Google 评价：4.9★ （21 条）</p>
+</blockquote>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=70 → low_priority · weakest:
+gbp 48, visual 50</p>
+<ul>
+<li>电话：(07) 3132 1605</li>
+<li>地址：Unit 22/104 Barwon St, Morningside QLD 4170</li>
+<li>网站：<a
+href="https://brisbaneroofrestorationexperts.com.au/">https://brisbaneroofrestorationexperts.com.au/</a></li>
+<li>网站状态：<code>independent_https_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The site uses a functional but dated layout with a heavy overlay that
+obscures the background imagery, and a form that feels cluttered rather
+than inviting.</p>
+</blockquote>
+<p>新鲜度 <strong>4/10</strong> · 信任度 <strong>5/10</strong> ·
+转化准备度 <strong>6/10</strong> · 设计年代
+<code>slightly_outdated</code></p>
+<p><strong>值得保留的优点：</strong> - The phone number is prominent in
+the header and repeated in the hero section, which is excellent for
+local service businesses. - The form is ‘above the fold’ on desktop,
+allowing users to engage immediately without scrolling. - The use of a
+real photo (even if obscured) is better than a generic stock image, as
+it likely represents the local area.</p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers consistently praise the business for exceptional
+responsiveness, reliability, and high-quality workmanship on both large
+restorations and small repairs. The reviews highlight a personal touch
+with quick quoting and professional execution, resulting in strong
+recommendations.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong> <code>fast response times</code> ·
+<code>high quality workmanship</code> ·
+<code>reliable and punctual</code> · <code>honest and transparent</code>
+· <code>flexible for small jobs</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“Aron gave us outstanding customer service. He quoted within 24 hours
+of my enquiry and began work the next day.” — <strong>Dave</strong>,
+★★★★★</p>
+<p><em>放哪：Hero section proof of speed and service quality</em></p>
+</blockquote>
+<blockquote>
+<p>“The result has dramatically improved our street appeal and home
+value.” — <strong>Dave</strong>, ★★★★★</p>
+<p><em>放哪：Value proposition section highlighting ROI</em></p>
+</blockquote>
+<blockquote>
+<p>“Aaron answered my phone call message, promptly, arranged to meet and
+see the job, and turned up on time.” — <strong>Loren</strong>, ★★★★★</p>
+<p><em>放哪：Trust section emphasizing reliability and
+communication</em></p>
+</blockquote>
+<blockquote>
+<p>“Most want to restore your entire roof… My job was a smaller job…
+Aaron… turned up on time.” — <strong>Loren</strong>, ★★★★★</p>
+<p><em>放哪：Service page highlighting flexibility for minor
+repairs</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="主要问题-1-项影响转化的明显短板">🟡 主要问题 · 1
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">🟡 主要 · homepage_title_clear</h3>
+<p><strong>命中原因：</strong> title=‘# Brisbane Roof Restoration
+Specialists’ contains-name=true contains-niche=false</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>👁 1. Clean up the hero section by reducing the overlay opacity to
+reveal the background image and improve text contrast.</li>
+<li>👁 2. Redesign the lead generation form to be less cluttered, using a
+white card style with better spacing and clearer visual hierarchy.</li>
+<li>👁 3. Upgrade the logo to a vector format and standardize the color
+palette to remove the clashing yellow/blue combination.</li>
+<li>💬 Feature the ‘24-hour quote’ metric prominently in the header to
+address urgency.</li>
+<li>💬 Use Loren’s review to create a dedicated ‘Minor Repairs’ section
+to capture leads who feel ignored by larger competitors.</li>
+<li>💬 Highlight the ‘home value’ improvement in before/after gallery
+captions.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>客户口碑已经强（fast response times / high quality workmanship /
+reliable and punctual）— 网站只需要把这份信任承接住，不需要从零建立</li>
+</ul>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

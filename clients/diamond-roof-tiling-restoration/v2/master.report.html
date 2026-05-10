@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Diamond Roof Tiling &amp; Restoration · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Diamond Roof Tiling &amp; Restoration ·
+现状审计与重构提议</h1>
+</header>
+<h1 id="diamond-roof-tiling-restoration-现状审计与重构提议">Diamond Roof
+Tiling &amp; Restoration · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>55/100</strong> · strong_redesign · 行业：roofing ·
+地区：Brisbane · Google 评价：4.9★ （65 条）</p>
+</blockquote>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=55 → strong_redesign ·
+weakest: seo 31, technical 40 · fired: no_https · 2 critical issues</p>
+<p><strong>已触发的 hard triggers：</strong> <code>no_https</code></p>
+<ul>
+<li>电话：0413 559 693</li>
+<li>地址：64 Washington Ave, Tingalpa QLD 4173</li>
+<li>网站：<a
+href="http://www.diamondrooftiling.com.au/">http://www.diamondrooftiling.com.au/</a></li>
+<li>网站状态：<code>independent_http_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The website relies on a black background with low-contrast text and
+1990s-style beveled buttons, creating a visual experience that feels
+abandoned and difficult to read.</p>
+</blockquote>
+<p>新鲜度 <strong>2/10</strong> · 信任度 <strong>4/10</strong> ·
+转化准备度 <strong>3/10</strong> · 设计年代
+<code>severely_outdated</code></p>
+<p><strong>值得保留的优点：</strong> - The business has strong trust
+assets (HIA membership, QBCC license, multiple awards) that are
+currently visible. - The logo is distinct and clearly communicates the
+industry (roofing/diamond shape).</p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers consistently praise Sam and his team for their
+professionalism, honesty, and high-quality restoration work that visibly
+improves roof condition and energy efficiency. The reviews highlight a
+personal touch, with the owner often working on-site, and emphasize
+trustworthiness through honest advice regarding necessary repairs.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong>
+<code>honest and transparent advice</code> ·
+<code>high-quality craftsmanship</code> ·
+<code>professional and friendly team</code> ·
+<code>owner involvement on-site</code> ·
+<code>visible aesthetic improvement</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“Sam is honest and advised only repairs is necessary. The quote is
+reasonable and his team did amazing work.” — <strong>Jack</strong>,
+★★★★★</p>
+<p><em>放哪：Builds trust by demonstrating honesty and value for money
+in the testimonials section</em></p>
+</blockquote>
+<blockquote>
+<p>“Our roof is looking like new, letting less heat in on these hot
+summer days, and I’ve received compliments from my neighbours.” —
+<strong>Pants</strong>, ★★★★★</p>
+<p><em>放哪：Highlights functional benefits (energy efficiency) and
+social proof for the hero section</em></p>
+</blockquote>
+<blockquote>
+<p>“We were impressed that you were not only the quote person but worked
+on the roof throughout the restoration process.” —
+<strong>Cheryl</strong>, ★★★★★</p>
+<p><em>放哪：Emphasizes owner accountability and hands-on leadership for
+the ‘About Us’ or trust signals section</em></p>
+</blockquote>
+<blockquote>
+<p>“The solar guy also remarked that the quality of the repairs is
+excellent during the solar installation.” — <strong>Jack</strong>,
+★★★★★</p>
+<p><em>放哪：Provides third-party validation of quality for the services
+page</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-2-项立刻在伤害成交">🔴 关键问题 · 2
+项（立刻在伤害成交）</h3>
+<h3 id="关键-https_enabled">🔴 关键 · https_enabled</h3>
+<p><strong>命中原因：</strong> http only</p>
+<h3 id="关键-phone_visible_above_fold">🔴 关键 ·
+phone_visible_above_fold</h3>
+<p><strong>命中原因：</strong> phone hidden below fold or missing</p>
+<h3 id="主要问题-3-项影响转化的明显短板">🟡 主要问题 · 3
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">🟡 主要 · homepage_title_clear</h3>
+<p><strong>命中原因：</strong> title=‘## Get a Free Quote’
+contains-name=false contains-niche=false</p>
+<h3 id="主要-h1_unique">🟡 主要 · h1_unique</h3>
+<strong>命中原因：</strong> 0
+<h1>
+<p>tags</p>
+<h3 id="主要-local_schema_markup">🟡 主要 · local_schema_markup</h3>
+<p><strong>命中原因：</strong> no LocalBusiness JSON-LD</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>👁 1. Switch to a white background with high-contrast dark text to
+fix immediate readability issues.</li>
+<li>👁 2. Remove all 3D bevels and gradients to modernize the aesthetic
+instantly.</li>
+<li>👁 3. Simplify the header to prioritize the phone number and remove
+visual clutter.</li>
+<li>💬 Feature the ‘honest advice’ quote prominently to address common
+customer fears of upselling in the roofing industry.</li>
+<li>💬 Use the ‘less heat in’ benefit in the hero section to appeal to
+energy-conscious homeowners.</li>
+<li>💬 Highlight the owner’s hands-on involvement in a ‘Why Choose Us’
+section to differentiate from larger, impersonal competitors.</li>
+<li>💬 Display the third-party validation from the solar installer as a
+subtle trust badge near the contact form.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你的网站没有 HTTPS —
+浏览器对来访客户显示「不安全」，直接伤害信任</li>
+<li>客户口碑已经强（honest and transparent advice / high-quality
+craftsmanship / professional and friendly team）—
+网站只需要把这份信任承接住，不需要从零建立</li>
+</ul>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>
