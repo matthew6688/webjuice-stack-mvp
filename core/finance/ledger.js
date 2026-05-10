@@ -20,6 +20,7 @@ export const LEDGER_CATEGORIES = [
   'sale',
   'other',
   // V2 enrichment + LLM stack (added 2026-05-10)
+  'tinyfish',           // legacy generic; existing TinyFishExtractor.fetchPages writes this
   'perplexity',
   'dokobot',
   'tinyfish_search',
@@ -27,6 +28,8 @@ export const LEDGER_CATEGORIES = [
   'ddg_local',
   'kimi',
   'anthropic',
+  'provider_rate_limited',
+  'provider_unavailable',
 ];
 
 export const LEDGER_TIERS = ['T0', 'T1', 'T2', 'T3'];
