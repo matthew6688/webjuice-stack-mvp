@@ -5,11 +5,41 @@ import { LEAD_ADMIN_VIEWS, loadLeadOutreachIndex } from '../../../core/funnel/le
 import { criteriaForLeadStage } from '../../../core/funnel/stage-config.js';
 import { loadDiscoveryIndex } from '../../../core/leads/discovery-store.js';
 import { loadEnrichmentGates, enrichmentGateLabel } from '../../../core/leads/enrichment-gate.js';
+import { cheapAuditV2 } from '../../../core/scoring/cheap-audit-v2.js';
 
 const index = loadLeadOutreachIndex();
 const discoveryIndex = loadDiscoveryIndex();
 const enrichmentGates = loadEnrichmentGates();
 const discoveryPreview = (discoveryIndex.entities || []).slice(0, 12);
+
+// V2 cheap-audit: score every discovery entity (Stage 1 only — no network),
+// then sort to surface the strongest V2 candidates at the top of the page.
+const v2Audited = (discoveryIndex.entities || []).map((entity) => {
+  try {
+    const audit = cheapAuditV2({ entity, sourceQuery: entity.latest?.sourceQuery });
+    return { entity, audit };
+  } catch {
+    return { entity, audit: null };
+  }
+});
+function v2ChipClass(action) {
+  const a = String(action || '');
+  if (a === 'audit_candidate') return 'chip-mint';
+  if (a === 'starter_candidate') return 'chip-citrus';
+  if (a === 'manual_review') return 'chip-sky';
+  if (a === 'queued_for_enrichment') return 'chip-lilac';
+  if (a === 'skip') return 'chip-coral';
+  return '';
+}
+const v2TopCandidates = v2Audited
+  .filter((row) => row.audit && ['audit_candidate', 'starter_candidate'].includes(row.audit.action))
+  .sort((a, b) => (b.audit.final_score || 0) - (a.audit.final_score || 0))
+  .slice(0, 20);
+const v2Stats = v2Audited.reduce((acc, row) => {
+  if (!row.audit) return acc;
+  acc[row.audit.action] = (acc[row.audit.action] || 0) + 1;
+  return acc;
+}, {});
 const recordsByStage = Object.fromEntries(index.pipelineStages.map((stage) => [
   stage.key,
   index.records.filter((record) => record.pipelineStage === stage.key),
@@ -318,6 +348,63 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
           <p>没有明确突破口或不可触达的线索，保留原因和工作记录。</p>
         </article>
       </div>
+
+      <section class="v2-sort-section">
+        <div class="v2-sort-head">
+          <div>
+            <p class="eyebrow">V2 排序 · cheap-audit-v2</p>
+            <h2>新算法 high-priority candidates</h2>
+            <p class="v2-sort-meta">
+              <span><strong class="num-mint">{v2Stats.audit_candidate || 0}</strong> audit_candidate</span>
+              <span class="dot">·</span>
+              <span><strong class="num-citrus">{v2Stats.starter_candidate || 0}</strong> starter</span>
+              <span class="dot">·</span>
+              <span><strong class="num-sky">{v2Stats.manual_review || 0}</strong> manual_review</span>
+              <span class="dot">·</span>
+              <span><strong class="num-coral">{v2Stats.skip || 0}</strong> skip</span>
+              <span class="dot">·</span>
+              <span class="muted">完整算法在 <a href="/admin/scoring" class="inline-link">/admin/scoring</a></span>
+            </p>
+          </div>
+          <div class="v2-sort-count">Top {v2TopCandidates.length} / {v2Audited.length}</div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table v2-sort-table">
+            <thead>
+              <tr>
+                <th>商家</th>
+                <th class="v2-sort-num-col">V2 final</th>
+                <th>V2 决策</th>
+                <th>V1 决策</th>
+                <th>★ / 评论</th>
+                <th>网站</th>
+                <th>触发器</th>
+              </tr>
+            </thead>
+            <tbody>
+              {v2TopCandidates.map((row) => (
+                <tr class="v2-sort-row">
+                  <td>
+                    <a href={`/admin/leads/${row.entity.entityKey}`} class="v2-lead-link">
+                      <strong>{row.entity.latest?.name || row.entity.entityKey}</strong>
+                      <span class="v2-lead-loc">{row.entity.latest?.city || row.entity.latest?.address?.split(',').pop()?.trim() || '—'}</span>
+                    </a>
+                  </td>
+                  <td class="v2-sort-num">{row.audit.final_score}</td>
+                  <td><span class={`chip ${v2ChipClass(row.audit.action)}`}>{row.audit.action.replace(/_/g, ' ')}</span></td>
+                  <td><span class="v1-action">{row.entity.latest?.recommendedAction || '—'}</span></td>
+                  <td class="v2-rating">★{row.entity.latest?.rating || '-'} <span class="muted">({row.entity.latest?.review_count || 0})</span></td>
+                  <td><code class="v2-status">{row.entity.latest?.websiteStatus || 'unknown'}</code></td>
+                  <td>{row.audit.fired_triggers.length > 0 ? <code class="v2-trig">{row.audit.fired_triggers[0]}</code> : <span class="muted">—</span>}</td>
+                </tr>
+              ))}
+              {v2TopCandidates.length === 0 && (
+                <tr><td colspan="7" class="v2-empty">暂无 V2 candidate 级别 lead。新 lead 进来或重跑 rescore 后会出现在这里。</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <div class="admin-toolbar" data-admin-toolbar>
         <div class="admin-toolbar-group">
@@ -664,28 +751,42 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
       </details>
 
       <details class="admin-audit-view">
-        <summary>打开 Maps scraper discovery 库</summary>
+        <summary>打开 Maps scraper discovery 库（前 12 条）</summary>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead>
               <tr>
                 <th>商家</th>
                 <th>状态</th>
-                <th>分数</th>
+                <th>V1 分数</th>
+                <th>V2 分数</th>
+                <th>V2 决策</th>
                 <th>官网状态</th>
-                <th>下一步</th>
+                <th>下一步（V1）</th>
               </tr>
             </thead>
             <tbody>
-              {discoveryPreview.map((entity) => (
-                <tr>
-                  <td><strong>{entity.latest?.name || entity.entityKey}</strong><span>{entity.latest?.city || entity.latest?.sourceQuery || entity.entityKey}</span></td>
-                  <td><mark class="status-pill status-working">{entity.status}</mark></td>
-                  <td>{entity.latest?.discoveryScore ?? '-'}</td>
-                  <td>{entity.latest?.websiteStatus || '-'}</td>
-                  <td><strong>{entity.latest?.recommendedAction || '-'}</strong><span>{entity.promotedClientSlug ? `已进入 ${entity.promotedClientSlug}` : entity.latest?.website || entity.latest?.google_maps_url || '待补证据'}</span></td>
-                </tr>
-              ))}
+              {discoveryPreview.map((entity) => {
+                const audit = (() => {
+                  try { return cheapAuditV2({ entity, sourceQuery: entity.latest?.sourceQuery }); } catch { return null; }
+                })();
+                return (
+                  <tr>
+                    <td>
+                      <a href={`/admin/leads/${entity.entityKey}`} class="v2-lead-link">
+                        <strong>{entity.latest?.name || entity.entityKey}</strong>
+                        <span>{entity.latest?.city || entity.latest?.sourceQuery || entity.entityKey}</span>
+                      </a>
+                    </td>
+                    <td><mark class="status-pill status-working">{entity.status}</mark></td>
+                    <td>{entity.latest?.discoveryScore ?? '-'}</td>
+                    <td class="v2-sort-num">{audit ? audit.final_score : '-'}</td>
+                    <td>{audit ? <span class={`chip ${v2ChipClass(audit.action)}`}>{audit.action.replace(/_/g, ' ')}</span> : '—'}</td>
+                    <td>{entity.latest?.websiteStatus || '-'}</td>
+                    <td><strong>{entity.latest?.recommendedAction || '-'}</strong><span>{entity.promotedClientSlug ? `已进入 ${entity.promotedClientSlug}` : entity.latest?.website || entity.latest?.google_maps_url || '待补证据'}</span></td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -775,3 +876,137 @@ const leadPipelineUiVersion = 'local-style-2026-05-08';
     applyFilters();
   </script>
 </Layout>
+
+<style>
+  /* V2 排序 section */
+  .v2-sort-section {
+    margin: 0 0 18px;
+    padding: 22px 30px;
+    border-top: 2px solid var(--pl-line);
+    border-bottom: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 14%, var(--pl-paper));
+  }
+  .v2-sort-head {
+    display: flex; gap: 18px; justify-content: space-between; align-items: end;
+    margin-bottom: 14px;
+  }
+  .v2-sort-head h2 {
+    font-family: var(--pl-display);
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 950;
+    line-height: 1.1;
+    margin: 4px 0 6px;
+    max-width: none;
+  }
+  .v2-sort-meta {
+    font-size: 13px; font-weight: 800;
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    margin: 0;
+  }
+  .v2-sort-meta strong { font-family: var(--pl-display); font-size: 18px; font-weight: 950; }
+  .v2-sort-meta .num-mint   { color: #1d6b35; }
+  .v2-sort-meta .num-citrus { color: #5a4500; }
+  .v2-sort-meta .num-sky    { color: #0e3e63; }
+  .v2-sort-meta .num-coral  { color: var(--pl-coral); }
+  .v2-sort-meta .dot { color: rgba(23,25,28,0.3); }
+  .v2-sort-meta .muted { color: var(--pl-muted); font-weight: 800; }
+  .v2-sort-meta .inline-link { color: var(--pl-coral); font-weight: 950; text-decoration: none; }
+  .v2-sort-meta .inline-link:hover { text-decoration: underline; }
+  .v2-sort-count {
+    font-family: var(--pl-display);
+    font-size: 18px; font-weight: 950;
+    background: var(--pl-citrus);
+    border: 2px solid var(--pl-line);
+    padding: 6px 12px;
+    box-shadow: 3px 3px 0 var(--pl-line);
+  }
+
+  .v2-sort-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+  }
+  .v2-sort-table th {
+    position: static !important;
+    padding: 10px 12px;
+    font-size: 11px; font-weight: 950;
+    color: var(--pl-ink);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: color-mix(in srgb, var(--pl-citrus) 55%, var(--pl-paper));
+    border-bottom: 2px solid var(--pl-line);
+    text-align: left;
+    box-shadow: none;
+  }
+  .v2-sort-table td {
+    padding: 10px 12px;
+    font-size: 13px; font-weight: 800;
+    border-bottom: 1.5px solid rgba(23,25,28,0.1);
+    vertical-align: middle;
+  }
+  .v2-sort-table tr:last-child td { border-bottom: 0; }
+  .v2-sort-table tr:hover td { background: color-mix(in srgb, var(--pl-citrus) 10%, var(--pl-paper)); }
+
+  .v2-lead-link {
+    display: block;
+    color: var(--pl-ink);
+    text-decoration: none;
+  }
+  .v2-lead-link strong {
+    display: block;
+    font-family: var(--pl-display);
+    font-size: 16px; font-weight: 950;
+    line-height: 1.2;
+  }
+  .v2-lead-link span {
+    display: block;
+    font-size: 11.5px; color: var(--pl-muted); font-weight: 800;
+    margin-top: 2px;
+  }
+  .v2-lead-loc { font-style: normal; }
+  .v2-lead-link:hover strong { color: var(--pl-coral); text-decoration: underline; }
+
+  .v2-sort-num {
+    font-family: var(--pl-display);
+    font-size: 22px; font-weight: 950;
+    color: var(--pl-ink);
+    width: 80px;
+  }
+  .v2-rating { white-space: nowrap; font-weight: 850; }
+  .v2-rating .muted { color: var(--pl-muted); font-weight: 800; }
+  .v1-action { color: var(--pl-muted); font-weight: 800; font-size: 12px; }
+  .v2-status, .v2-trig {
+    display: inline-block;
+    background: var(--pl-paper);
+    border: 1.5px solid var(--pl-line);
+    color: var(--pl-ink);
+    padding: 1px 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px; font-weight: 800;
+  }
+  .v2-trig { background: var(--pl-mint); }
+  .v2-empty { padding: 24px; text-align: center; color: var(--pl-muted); font-weight: 800; font-style: italic; }
+
+  /* chip — same as scoring/lead detail */
+  .v2-sort-section .chip,
+  .admin-audit-view .chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px; font-weight: 950;
+    letter-spacing: 0.02em;
+    background: var(--pl-paper);
+    color: var(--pl-ink);
+    border: 2px solid var(--pl-line);
+  }
+  .v2-sort-section .chip-mint,   .admin-audit-view .chip-mint { background: var(--pl-mint); }
+  .v2-sort-section .chip-citrus, .admin-audit-view .chip-citrus { background: var(--pl-citrus); }
+  .v2-sort-section .chip-coral,  .admin-audit-view .chip-coral { background: var(--pl-coral); color: white; }
+  .v2-sort-section .chip-sky,    .admin-audit-view .chip-sky { background: var(--pl-sky); }
+  .v2-sort-section .chip-lilac,  .admin-audit-view .chip-lilac { background: var(--pl-lilac); }
+
+  @media (max-width: 800px) {
+    .v2-sort-head { flex-direction: column; align-items: start; }
+    .v2-sort-num { font-size: 18px; }
+  }
+</style>
