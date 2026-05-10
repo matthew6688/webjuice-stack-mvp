@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:19.628Z"
+generated_at: "2026-05-10T19:34:02.968Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -87,28 +87,28 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🟡 主要问题 · 3 项（影响转化的明显短板）
+### 主要问题 · 3 项（影响转化的明显短板）
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='# Brisbane Gutter & Roof Repairs' contains-name=true contains-niche=false
 
-### 🟡 主要 · h1_unique
+### 主要 · h1_unique
 
 **命中原因：** 3 <h1> tags
 
-### 🟡 主要 · local_schema_markup
+### 主要 · local_schema_markup
 
 **命中原因：** no LocalBusiness JSON-LD
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Remove the distracting truck graphic from the bottom of the page to clean up the layout.
-2. 👁 2. Simplify the lead capture form to reduce friction and increase submissions.
-3. 👁 3. Update the logo and branding to look more professional and trustworthy.
-4. 💬 Highlight the 'free, no-obligation quote' aspect prominently to reduce friction for new leads.
-5. 💬 Use Bernard's review to showcase capability in handling difficult, high-risk jobs (e.g., near electrical lines).
-6. 💬 Feature Chris's review to demonstrate transparency when unforeseen issues arise, building trust in pricing integrity.
+1. [视觉] 1. Remove the distracting truck graphic from the bottom of the page to clean up the layout.
+2. [视觉] 2. Simplify the lead capture form to reduce friction and increase submissions.
+3. [视觉] 3. Update the logo and branding to look more professional and trustworthy.
+4. [评论] Highlight the 'free, no-obligation quote' aspect prominently to reduce friction for new leads.
+5. [评论] Use Bernard's review to showcase capability in handling difficult, high-risk jobs (e.g., near electrical lines).
+6. [评论] Feature Chris's review to demonstrate transparency when unforeseen issues arise, building trust in pricing integrity.
 
 ## 七、推荐销售切入点
 

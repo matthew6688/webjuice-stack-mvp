@@ -16,7 +16,7 @@ visual_freshness: 2
 visual_trust: 4
 visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:19.881Z"
+generated_at: "2026-05-10T19:34:03.245Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -86,39 +86,39 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🔴 关键问题 · 2 项（立刻在伤害成交）
+### 关键问题 · 2 项（立刻在伤害成交）
 
-### 🔴 关键 · https_enabled
+### 关键 · https_enabled
 
 **命中原因：** http only
 
-### 🔴 关键 · phone_visible_above_fold
+### 关键 · phone_visible_above_fold
 
 **命中原因：** phone hidden below fold or missing
 
-### 🟡 主要问题 · 3 项（影响转化的明显短板）
+### 主要问题 · 3 项（影响转化的明显短板）
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='## Get a Free Quote' contains-name=false contains-niche=false
 
-### 🟡 主要 · h1_unique
+### 主要 · h1_unique
 
 **命中原因：** 0 <h1> tags
 
-### 🟡 主要 · local_schema_markup
+### 主要 · local_schema_markup
 
 **命中原因：** no LocalBusiness JSON-LD
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Switch to a white background with high-contrast dark text to fix immediate readability issues.
-2. 👁 2. Remove all 3D bevels and gradients to modernize the aesthetic instantly.
-3. 👁 3. Simplify the header to prioritize the phone number and remove visual clutter.
-4. 💬 Feature the 'honest advice' quote prominently to address common customer fears of upselling in the roofing industry.
-5. 💬 Use the 'less heat in' benefit in the hero section to appeal to energy-conscious homeowners.
-6. 💬 Highlight the owner's hands-on involvement in a 'Why Choose Us' section to differentiate from larger, impersonal competitors.
-7. 💬 Display the third-party validation from the solar installer as a subtle trust badge near the contact form.
+1. [视觉] 1. Switch to a white background with high-contrast dark text to fix immediate readability issues.
+2. [视觉] 2. Remove all 3D bevels and gradients to modernize the aesthetic instantly.
+3. [视觉] 3. Simplify the header to prioritize the phone number and remove visual clutter.
+4. [评论] Feature the 'honest advice' quote prominently to address common customer fears of upselling in the roofing industry.
+5. [评论] Use the 'less heat in' benefit in the hero section to appeal to energy-conscious homeowners.
+6. [评论] Highlight the owner's hands-on involvement in a 'Why Choose Us' section to differentiate from larger, impersonal competitors.
+7. [评论] Display the third-party validation from the solar installer as a subtle trust badge near the contact form.
 
 ## 七、推荐销售切入点
 

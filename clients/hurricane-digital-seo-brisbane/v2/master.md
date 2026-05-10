@@ -16,7 +16,7 @@ visual_freshness: 8
 visual_trust: 6
 visual_conversion: 5
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:20.060Z"
+generated_at: "2026-05-10T19:34:03.430Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -89,31 +89,31 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🔴 关键问题 · 1 项（立刻在伤害成交）
+### 关键问题 · 1 项（立刻在伤害成交）
 
-### 🔴 关键 · phone_visible_above_fold
+### 关键 · phone_visible_above_fold
 
 **命中原因：** phone hidden below fold or missing
 
-### 🟡 主要问题 · 2 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='# Transform Your Local Business with Expert Digital Marketin' contains-name=false contains-niche=false
 
-### 🟡 主要 · h1_unique
+### 主要 · h1_unique
 
 **命中原因：** 3 <h1> tags
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Replace the hero image with a photo of a roof/roofing work to match user intent.
-2. 👁 2. Change the primary CTA from 'Book Strategy Session' to 'Call for Quote' or 'Get a Quote'.
-3. 👁 3. Rewrite headline copy to focus on roofing services rather than digital marketing.
-4. 💬 Feature Tracey's quote prominently on the homepage to address the primary pain point of being 'invisible' online.
-5. 💬 Use Brady's and Steven's reviews in a 'Results' or 'Case Studies' section to validate the ROI of the investment.
-6. 💬 Highlight the specific staff names (Aiden, Nash) in team bios to leverage the personal connection customers feel.
-7. 💬 Address the negative review's concern about transparency by adding a 'What to Expect' or 'Deliverables' section to the sales page.
+1. [视觉] 1. Replace the hero image with a photo of a roof/roofing work to match user intent.
+2. [视觉] 2. Change the primary CTA from 'Book Strategy Session' to 'Call for Quote' or 'Get a Quote'.
+3. [视觉] 3. Rewrite headline copy to focus on roofing services rather than digital marketing.
+4. [评论] Feature Tracey's quote prominently on the homepage to address the primary pain point of being 'invisible' online.
+5. [评论] Use Brady's and Steven's reviews in a 'Results' or 'Case Studies' section to validate the ROI of the investment.
+6. [评论] Highlight the specific staff names (Aiden, Nash) in team bios to leverage the personal connection customers feel.
+7. [评论] Address the negative review's concern about transparency by adding a 'What to Expect' or 'Deliverables' section to the sales page.
 
 ## 七、推荐销售切入点
 

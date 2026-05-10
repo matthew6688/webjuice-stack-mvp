@@ -18,7 +18,7 @@ visual_freshness: 1
 visual_trust: 1
 visual_conversion: 1
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:19.357Z"
+generated_at: "2026-05-10T19:34:02.448Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -84,54 +84,54 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🔴 关键问题 · 3 项（立刻在伤害成交）
+### 关键问题 · 3 项（立刻在伤害成交）
 
-### 🔴 关键 · https_enabled
+### 关键 · https_enabled
 
 **命中原因：** http only
 
-### 🔴 关键 · above_fold_cta_within_5s
+### 关键 · above_fold_cta_within_5s
 
 **命中原因：** no CTA keyword in first 1500 chars
 
-### 🔴 关键 · phone_visible_above_fold
+### 关键 · phone_visible_above_fold
 
 **命中原因：** phone hidden below fold or missing
 
-### 🟡 主要问题 · 6 项（影响转化的明显短板）
+### 主要问题 · 6 项（影响转化的明显短板）
 
-### 🟡 主要 · click_to_call_link
+### 主要 · click_to_call_link
 
 **命中原因：** no tel: link
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='' contains-name=false contains-niche=false
 
-### 🟡 主要 · service_copy_specific
+### 主要 · service_copy_specific
 
 **命中原因：** 0 service-related verbs detected
 
-### 🟡 主要 · trust_signals_present
+### 主要 · trust_signals_present
 
 **命中原因：** 0 trust-keyword mentions
 
-### 🟡 主要 · h1_unique
+### 主要 · h1_unique
 
 **命中原因：** 0 <h1> tags
 
-### 🟡 主要 · local_schema_markup
+### 主要 · local_schema_markup
 
 **命中原因：** no LocalBusiness JSON-LD
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Restore website content so the site is visible.
-2. 👁 2. Re-audit the actual design once content is visible.
-3. 👁 3. Implement standard roofing conversion elements (phone number, trust badges).
-4. 💬 Feature the '3-day replacement' statistic prominently to address customer anxiety about project timelines.
-5. 💬 Use the Cyclone Debbie repair story as a case study for durability and weather resistance.
-6. 💬 Highlight the 'thorough inspection' process to differentiate from competitors who may offer quick, superficial quotes.
+1. [视觉] 1. Restore website content so the site is visible.
+2. [视觉] 2. Re-audit the actual design once content is visible.
+3. [视觉] 3. Implement standard roofing conversion elements (phone number, trust badges).
+4. [评论] Feature the '3-day replacement' statistic prominently to address customer anxiety about project timelines.
+5. [评论] Use the Cyclone Debbie repair story as a case study for durability and weather resistance.
+6. [评论] Highlight the 'thorough inspection' process to differentiate from competitors who may offer quick, superficial quotes.
 
 ## 七、推荐销售切入点
 

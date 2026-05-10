@@ -98,7 +98,7 @@ function renderEvidenceLine(issue, manifest) {
 }
 
 function renderIssueBlock(issue, manifest, severity) {
-  const tag = severity === 'critical' ? '🔴 关键' : '🟡 主要';
+  const tag = severity === 'critical' ? '关键' : '主要';
   const lines = [];
   lines.push(`### ${tag} · ${issue.title || issue.id}`);
   lines.push('');
@@ -170,7 +170,7 @@ export function buildMasterMd({
   if (fm.assets.video_url) {
     sections.push(`**慢速 4G 加载实景视频**（1.6 Mbps · 150ms 延迟 · 4× CPU 节流，模拟真实手机访客的体验）：`);
     sections.push('');
-    sections.push(`[▶ 播放视频](${fm.assets.video_url})`);
+    sections.push(`[播放视频](${fm.assets.video_url})`);
     sections.push('');
   }
 
@@ -232,12 +232,12 @@ export function buildMasterMd({
     sections.push('## 五、当前网站在哪里"漏水"');
     sections.push('');
     if (critical.length) {
-      sections.push(`### 🔴 关键问题 · ${critical.length} 项（立刻在伤害成交）`);
+      sections.push(`### 关键问题 · ${critical.length} 项（立刻在伤害成交）`);
       sections.push('');
       for (const issue of critical) sections.push(renderIssueBlock(issue, manifest, 'critical'));
     }
     if (major.length) {
-      sections.push(`### 🟡 主要问题 · ${major.length} 项（影响转化的明显短板）`);
+      sections.push(`### 主要问题 · ${major.length} 项（影响转化的明显短板）`);
       sections.push('');
       for (const issue of major) sections.push(renderIssueBlock(issue, manifest, 'major'));
     }
@@ -253,7 +253,7 @@ export function buildMasterMd({
     sections.push('');
     for (let i = 0; i < redesignHooks.length; i += 1) {
       const h = redesignHooks[i];
-      const tag = h.source === 'vision' ? '👁' : '💬';
+      const tag = h.source === 'vision' ? '[视觉]' : '[评论]';
       sections.push(`${i + 1}. ${tag} ${h.text}`);
     }
     sections.push('');

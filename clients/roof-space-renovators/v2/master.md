@@ -16,7 +16,7 @@ visual_freshness: 5
 visual_trust: 6
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:19.449Z"
+generated_at: "2026-05-10T19:34:02.783Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5
@@ -48,7 +48,7 @@ assets:
 
 **慢速 4G 加载实景视频**（1.6 Mbps · 150ms 延迟 · 4× CPU 节流，模拟真实手机访客的体验）：
 
-[▶ 播放视频](https://res.cloudinary.com/dm1hroqlg/video/upload/v1778440632/profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg/video/mobile-throttled.webm)
+[播放视频](https://res.cloudinary.com/dm1hroqlg/video/upload/v1778440632/profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg/video/mobile-throttled.webm)
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
@@ -91,31 +91,31 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🟡 主要问题 · 3 项（影响转化的明显短板）
+### 主要问题 · 3 项（影响转化的明显短板）
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='## Bigger. Brighter. Better. Love the space you’re in.' contains-name=false contains-niche=false
 
 ![homepage_title_clear](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778439853/profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg/evidence/evidence-homepage-title-clear.png)
 
 
-### 🟡 主要 · h1_unique
+### 主要 · h1_unique
 
 **命中原因：** 0 <h1> tags
 
-### 🟡 主要 · local_schema_markup
+### 主要 · local_schema_markup
 
 **命中原因：** no LocalBusiness JSON-LD
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Move the 'Get a Quote' CTA into the header and next to the headline for immediate visibility.
-2. 👁 2. Simplify the navigation menu to reduce cognitive load and highlight the contact button.
-3. 👁 3. Remove the dark top utility bar to create a cleaner, more modern header structure.
-4. 💬 Highlight 'finished early' and 'fast response' in the hero section to appeal to busy homeowners
-5. 💬 Feature the 'clean up' theme prominently to alleviate fears of construction mess
-6. 💬 Use the skylight transformation story to showcase aesthetic value and design capability
+1. [视觉] 1. Move the 'Get a Quote' CTA into the header and next to the headline for immediate visibility.
+2. [视觉] 2. Simplify the navigation menu to reduce cognitive load and highlight the contact button.
+3. [视觉] 3. Remove the dark top utility bar to create a cleaner, more modern header structure.
+4. [评论] Highlight 'finished early' and 'fast response' in the hero section to appeal to busy homeowners
+5. [评论] Feature the 'clean up' theme prominently to alleviate fears of construction mess
+6. [评论] Use the skylight transformation story to showcase aesthetic value and design capability
 
 ## 七、推荐销售切入点
 

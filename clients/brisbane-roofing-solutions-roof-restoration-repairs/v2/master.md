@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 6
 visual_conversion: 5
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:19.791Z"
+generated_at: "2026-05-10T19:34:03.151Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -87,24 +87,24 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🟡 主要问题 · 2 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
-### 🟡 主要 · h1_unique
+### 主要 · h1_unique
 
 **命中原因：** 0 <h1> tags
 
-### 🟡 主要 · local_schema_markup
+### 主要 · local_schema_markup
 
 **命中原因：** no LocalBusiness JSON-LD
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Simplify the hero section: Remove cluttered text and add a clear, high-contrast Call-to-Action button.
-2. 👁 2. Fix the logo and navigation: Replace the screenshot logo with a clean file and increase navigation text contrast.
-3. 👁 3. Improve content readability: Break up text blocks with white space and bullet points.
-4. 💬 Feature 'Before & After' photos prominently, as multiple reviewers mention visual results and longevity.
-5. 💬 Highlight 'No Overspray' and 'Spotless Cleanup' as key service guarantees to reduce buyer anxiety.
-6. 💬 Use the 'Fair Price' and 'Detailed Quote' themes in the contact/quote request section to build trust early.
+1. [视觉] 1. Simplify the hero section: Remove cluttered text and add a clear, high-contrast Call-to-Action button.
+2. [视觉] 2. Fix the logo and navigation: Replace the screenshot logo with a clean file and increase navigation text contrast.
+3. [视觉] 3. Improve content readability: Break up text blocks with white space and bullet points.
+4. [评论] Feature 'Before & After' photos prominently, as multiple reviewers mention visual results and longevity.
+5. [评论] Highlight 'No Overspray' and 'Spotless Cleanup' as key service guarantees to reduce buyer anxiety.
+6. [评论] Use the 'Fair Price' and 'Detailed Quote' themes in the contact/quote request section to build trust early.
 
 ## 七、推荐销售切入点
 

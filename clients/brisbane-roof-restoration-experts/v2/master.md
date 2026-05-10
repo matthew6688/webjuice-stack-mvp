@@ -15,7 +15,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:19.968Z"
+generated_at: "2026-05-10T19:34:03.338Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -84,20 +84,20 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🟡 主要问题 · 1 项（影响转化的明显短板）
+### 主要问题 · 1 项（影响转化的明显短板）
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='# Brisbane Roof Restoration Specialists' contains-name=true contains-niche=false
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Clean up the hero section by reducing the overlay opacity to reveal the background image and improve text contrast.
-2. 👁 2. Redesign the lead generation form to be less cluttered, using a white card style with better spacing and clearer visual hierarchy.
-3. 👁 3. Upgrade the logo to a vector format and standardize the color palette to remove the clashing yellow/blue combination.
-4. 💬 Feature the '24-hour quote' metric prominently in the header to address urgency.
-5. 💬 Use Loren's review to create a dedicated 'Minor Repairs' section to capture leads who feel ignored by larger competitors.
-6. 💬 Highlight the 'home value' improvement in before/after gallery captions.
+1. [视觉] 1. Clean up the hero section by reducing the overlay opacity to reveal the background image and improve text contrast.
+2. [视觉] 2. Redesign the lead generation form to be less cluttered, using a white card style with better spacing and clearer visual hierarchy.
+3. [视觉] 3. Upgrade the logo to a vector format and standardize the color palette to remove the clashing yellow/blue combination.
+4. [评论] Feature the '24-hour quote' metric prominently in the header to address urgency.
+5. [评论] Use Loren's review to create a dedicated 'Minor Repairs' section to capture leads who feel ignored by larger competitors.
+6. [评论] Highlight the 'home value' improvement in before/after gallery captions.
 
 ## 七、推荐销售切入点
 

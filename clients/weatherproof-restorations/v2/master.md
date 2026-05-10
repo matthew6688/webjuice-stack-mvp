@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 6
 visual_conversion: 5
 review_trust_signal: "strong"
-generated_at: "2026-05-10T19:18:20.150Z"
+generated_at: "2026-05-10T19:34:03.522Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -84,30 +84,30 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🔴 关键问题 · 1 项（立刻在伤害成交）
+### 关键问题 · 1 项（立刻在伤害成交）
 
-### 🔴 关键 · phone_visible_above_fold
+### 关键 · phone_visible_above_fold
 
 **命中原因：** phone hidden below fold or missing
 
-### 🟡 主要问题 · 2 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='# EXPERIENCE THE WEATHERPROOF DIFFERENCE. QUALITY YOU CAN TR' contains-name=true contains-niche=false
 
-### 🟡 主要 · local_schema_markup
+### 主要 · local_schema_markup
 
 **命中原因：** no LocalBusiness JSON-LD
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Clean up the hero image by removing the heavy dark overlay to improve visual appeal and trust.
-2. 👁 2. Redesign the contact form inputs for higher contrast and easier readability.
-3. 👁 3. Simplify the top navigation bar to reduce visual clutter.
-4. 💬 Feature Joe Lin's review prominently to counter 'scam' fears common in roofing by highlighting honest, no-upsell inspections.
-5. 💬 Use Sam Pengelly's quote in a 'Why Choose Us' section to demonstrate proactive problem-solving and trustworthiness.
-6. 💬 Highlight the peer endorsement from Elizabeth High to establish industry credibility and quality assurance.
+1. [视觉] 1. Clean up the hero image by removing the heavy dark overlay to improve visual appeal and trust.
+2. [视觉] 2. Redesign the contact form inputs for higher contrast and easier readability.
+3. [视觉] 3. Simplify the top navigation bar to reduce visual clutter.
+4. [评论] Feature Joe Lin's review prominently to counter 'scam' fears common in roofing by highlighting honest, no-upsell inspections.
+5. [评论] Use Sam Pengelly's quote in a 'Why Choose Us' section to demonstrate proactive problem-solving and trustworthiness.
+6. [评论] Highlight the peer endorsement from Elizabeth High to establish industry credibility and quality assurance.
 
 ## 七、推荐销售切入点
 

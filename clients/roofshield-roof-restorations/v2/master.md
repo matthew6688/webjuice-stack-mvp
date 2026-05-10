@@ -16,7 +16,7 @@ visual_freshness: 6
 visual_trust: 7
 visual_conversion: 7
 review_trust_signal: "moderate"
-generated_at: "2026-05-10T19:18:19.539Z"
+generated_at: "2026-05-10T19:34:02.878Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -84,34 +84,34 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 🔴 关键问题 · 2 项（立刻在伤害成交）
+### 关键问题 · 2 项（立刻在伤害成交）
 
-### 🔴 关键 · https_enabled
+### 关键 · https_enabled
 
 **命中原因：** http only
 
-### 🔴 关键 · phone_visible_above_fold
+### 关键 · phone_visible_above_fold
 
 **命中原因：** phone hidden below fold or missing
 
-### 🟡 主要问题 · 2 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
-### 🟡 主要 · homepage_title_clear
+### 主要 · homepage_title_clear
 
 **命中原因：** title='# ROOFSHIELD - ROOF RESTORATION' contains-name=true contains-niche=false
 
-### 🟡 主要 · local_schema_markup
+### 主要 · local_schema_markup
 
 **命中原因：** no LocalBusiness JSON-LD
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. 👁 1. Uncover the hero image by removing the giant text overlay and moving text to a clean area.
-2. 👁 2. Simplify the navigation bar by standardizing link colors and making the CTA button solid.
-3. 👁 3. Rewrite the hero headline to focus on customer benefits rather than repeating the brand name.
-4. 💬 Highlight the 'photos at each visit' feature in the service process section to address communication concerns.
-5. 💬 Use the 'good value' and 'detailed explanation' quotes to counter price sensitivity and build trust.
-6. 💬 Address warranty concerns proactively in an FAQ section, given the negative review about hoops to jump through.
+1. [视觉] 1. Uncover the hero image by removing the giant text overlay and moving text to a clean area.
+2. [视觉] 2. Simplify the navigation bar by standardizing link colors and making the CTA button solid.
+3. [视觉] 3. Rewrite the hero headline to focus on customer benefits rather than repeating the brand name.
+4. [评论] Highlight the 'photos at each visit' feature in the service process section to address communication concerns.
+5. [评论] Use the 'good value' and 'detailed explanation' quotes to counter price sensitivity and build trust.
+6. [评论] Address warranty concerns proactively in an FAQ section, given the negative review about hoops to jump through.
 
 ## 七、推荐销售切入点
 
