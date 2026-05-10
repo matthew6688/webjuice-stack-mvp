@@ -36,6 +36,23 @@ Repairs · 现状审计与重构提议</h1>
 <p><strong>69/100</strong> · moderate_candidate · 行业：roofing ·
 地区：Brisbane · Google 评价：4.6★ （150 条）</p>
 </blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>B</code> 预览试探 — ChatGPT 生成
+mockup hero 图 + 短邮件试反应</p>
+<p><strong>触发依据：</strong> - moderate_candidate + 150 评论 + audit
+69（仍有改进空间）</p>
+<p><strong>产品档位：</strong> <code>T3</code> 多页站 + 月度运营包</p>
+<ul>
+<li>150★4.6 强口碑底子</li>
+<li>已投放过广告（懂月度预算）</li>
+<li>数字成熟度 4/6</li>
+<li>评论 trust strong</li>
+</ul>
+<p><strong>建议报价：</strong> 一次性 $5-8K + 月度 $800-1500/月（社媒 +
+内容 + GEO）</p>
+<p><strong>下一步行动：</strong> 用 ChatGPT Image / Gemini Imagen 生成
+hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1
+次跟进。回应后升级到 A 档处理。</p>
 <h2 id="一店家现状速览">一、店家现状速览</h2>
 <p><strong>审计结论：</strong> audit_score=69 → moderate_candidate ·
 weakest: seo 31, visual 50 · fired: high_traction_old_site</p>
@@ -241,7 +258,7 @@ PageSpeed Insights</h2>
 <tbody>
 <tr>
 <td>性能 (Performance)</td>
-<td><strong>50/100</strong></td>
+<td><strong>45/100</strong></td>
 </tr>
 <tr>
 <td>可访问性 (Accessibility)</td>
@@ -257,8 +274,8 @@ PageSpeed Insights</h2>
 </tr>
 </tbody>
 </table>
-<p><strong>Lab 关键指标：</strong> LCP <code>12.8s</code> · FCP
-<code>3.0s</code> · CLS <code>0.018</code> · TBT <code>425ms</code></p>
+<p><strong>Lab 关键指标：</strong> LCP <code>7.2s</code> · FCP
+<code>3.0s</code> · CLS <code>0.018</code> · TBT <code>888ms</code></p>
 <p><strong>真实用户体验（过去 28 天 CRUX field data）总评：</strong>
 <code>SLOW</code></p>
 <table>
@@ -297,14 +314,14 @@ PageSpeed Insights</h2>
 用户数据统计出来的。</p>
 <p><strong>Google 建议的优化项（按节省时间排序，前 3）：</strong></p>
 <ul>
-<li><strong>Reduce unused JavaScript</strong> — 节省 3010ms · 节省
-1390KB</li>
-<li><strong>Reduce initial server response time</strong> — 节省
-616ms</li>
-<li><strong>Reduce unused CSS</strong> — 节省 69KB</li>
+<li><strong>Reduce unused JavaScript</strong> — 节省 600ms · 节省
+1392KB</li>
+<li><strong>Initial server response time was short</strong> — 节省
+331ms</li>
+<li><strong>Reduce unused CSS</strong> — 节省 150ms · 节省 69KB</li>
 </ul>
 <h3 id="桌面端desktop">桌面端（desktop）</h3>
-<p><strong>Lighthouse 分数：</strong> Performance 64 · A11y 90 · Best
+<p><strong>Lighthouse 分数：</strong> Performance 65 · A11y 90 · Best
 Practices 100 · SEO 85</p>
 <h2 id="seo-迁移评估-与-运营活跃度">SEO 迁移评估 与 运营活跃度</h2>
 <p>客户最常担心的问题：「我重做网站，会不会丢掉 Google
@@ -377,6 +394,75 @@ redirect map）</li>
 <li><strong>社交媒体链接：</strong> 网站上没有 social 链接 — GBP
 流量进来后没有第二触点</li>
 </ul>
+<h2 id="联系表单与防垃圾设置">联系表单与防垃圾设置</h2>
+<p>客户能不能 <em>方便地</em> 把信息留下来 =
+直接的转化路径。这一段审视所有 <code>&lt;form&gt;</code> 元素的可用性 +
+防 spam 配置。</p>
+<h3 id="表单-12-字段摩擦高7-字段会显著降低转化">表单 · 12
+字段（摩擦：高（≥7 字段，会显著降低转化））</h3>
+<ul>
+<li><strong>字段构成：</strong> Name(text) · First(text) · Last(text) ·
+Email<em>(email) · Phone</em>(tel) · Street Address(text) · Suburb(text)
+· Post Code(text) · Service Required<em>(select-one) · Type of
+roof</em>(select-one) · Additional Information(text) ·
+g-recaptcha-response(textarea)</li>
+<li><strong>必填字段数：</strong> 0/12</li>
+<li><strong>常见关键字段：</strong> email · phone · message</li>
+<li><strong>提交按钮：</strong> 「Submit」</li>
+<li><strong>Honeypot 防 spam：</strong> 未检测到</li>
+</ul>
+<h3 id="表单-12-字段摩擦高7-字段会显著降低转化-1">表单 · 12
+字段（摩擦：高（≥7 字段，会显著降低转化））</h3>
+<ul>
+<li><strong>字段构成：</strong> URL(text) · First(text) · Last(text) ·
+Email<em>(email) · Phone</em>(tel) · Street Address(text) · Suburb(text)
+· Post Code(text) · Service Required<em>(select-one) · Type of
+roof</em>(select-one) · Additional Information(text) ·
+g-recaptcha-response(textarea)</li>
+<li><strong>必填字段数：</strong> 0/12</li>
+<li><strong>常见关键字段：</strong> email · phone · message</li>
+<li><strong>提交按钮：</strong> 「Submit」</li>
+<li><strong>Honeypot 防 spam：</strong> 未检测到</li>
+</ul>
+<h3 id="表单-12-字段摩擦高7-字段会显著降低转化-2">表单 · 12
+字段（摩擦：高（≥7 字段，会显著降低转化））</h3>
+<ul>
+<li><strong>字段构成：</strong> Facebook(text) · First(text) ·
+Last(text) · Email<em>(email) · Phone</em>(tel) · Address(text) ·
+Suburb(text) · Post Code(text) · Service Required<em>(select-one) · Type
+of roof</em>(select-one) · Additional Information(text) ·
+g-recaptcha-response(textarea)</li>
+<li><strong>必填字段数：</strong> 0/12</li>
+<li><strong>常见关键字段：</strong> email · phone · message</li>
+<li><strong>提交按钮：</strong> 「Submit」</li>
+<li><strong>Honeypot 防 spam：</strong> 未检测到</li>
+</ul>
+<p><strong>已部署的人机验证：</strong> - reCAPTCHA v2 (visible “I’m not
+a robot”) — 高摩擦</p>
+<p><strong>Audit 总结：</strong></p>
+<ul>
+<li>[关键] 表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率</li>
+<li>[关键] 表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率</li>
+<li>[关键] 表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率</li>
+<li>[提示] reCAPTCHA v2 (visible “I’m not a robot”) —
+给真人增加额外操作（点击”我不是机器人”），轻微降低转化；redesign 可改用
+v3/Turnstile 等 invisible 方案</li>
+</ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> 已配置</li>
+<li><strong>DKIM (邮件签名)：</strong> 已配置（selectors: s1, s2）</li>
+<li><strong>DMARC (策略)：</strong> ⚠ 未配置 — 域名易被仿冒做钓鱼</li>
+<li><strong>整体邮件投递信誉：</strong> <code>partial</code> (只有 2/3 —
+建议补全)</li>
+</ul>
+<blockquote>
+<p>这是后续 <strong>「Social Media Management 月度包」</strong> 或
+<strong>「Cold Outreach 启动包」</strong> 的前置条件 —— 邮件 DNS
+没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。</p>
+</blockquote>
 <h2 id="技术栈与营销基建">技术栈与营销基建</h2>
 <p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
 <ul>
@@ -390,6 +476,18 @@ WordPress（迁移复杂度参考；WordPress / Wix / Squarespace
 </ul>
 <p><strong>数字成熟度打分：</strong> 4 / 6 （高 —
 客户懂数字营销，redesign 谈预算时不必从零教育）</p>
+<h3 id="redesign-时必须保留-重新安装的追踪代码">Redesign 时必须保留 /
+重新安装的追踪代码</h3>
+<p>客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID
+上面。重做时<strong>必须用同一套 ID
+重新接进新网站</strong>，否则等于清零所有累积。</p>
+<ul>
+<li>Google Tag Manager</li>
+<li>Google Analytics 4</li>
+<li>Google Analytics (Universal)</li>
+<li>Google Ads Conversion</li>
+</ul>
+<p>我们 redesign 交付清单会把这些列为「必须 setup 项」。</p>
 <blockquote>
 <p><strong>关键发现：客户网站还装着 Universal
 Analytics</strong>，这套工具 Google 已于 2023 年 7
@@ -440,6 +538,19 @@ heading(s) found (Q&amp;A format helps AI extraction)</li>
 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是
 55/100。」</p>
 </blockquote>
+<h2 id="业务规模信号-内部筛选用">业务规模信号 · 内部筛选用</h2>
+<p><strong>注：这一段只给运营内部看，不进入客户报告。</strong>
+用来判断这个 lead 是不是匹配我们「小网站 / 多批量 /
+快上线」的产品定位。</p>
+<ul>
+<li><strong>规模信号汇总：</strong> 中型客户特征</li>
+<li><strong>客户分级：</strong> <code>mid</code> —
+中型客户，可接但价格要往上提（基础包 + 配置项）</li>
+<li><strong>建议定价档：</strong> 基础包 $6-10K + 月度运营 $1-2K</li>
+</ul>
+<p><strong>触发依据：</strong> - Google 评价 150 条（≥50，有规模基础） -
+网站页面数 114（≥100，中等复杂度） - 已部署 4 个分析 / pixel
+工具（高数字成熟度）</p>
 <h2 id="upsell-机会-redesign-之外的月度营收">Upsell 机会 · redesign
 之外的月度营收</h2>
 <p>redesign

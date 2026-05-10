@@ -1,70 +1,70 @@
 {
   "model": "qwen3.6:27b",
   "candidateId": "ollama-qwen3.6-27b-nothink",
-  "latencyMs": 221379,
+  "latencyMs": 200241,
   "parsedJson": {
-    "freshness_score": 5,
-    "trust_score": 6,
-    "conversion_score": 7,
-    "design_age_estimate": "slightly_outdated",
-    "summary": "The site has a functional layout with a clear lead capture form, but the visual presentation feels dated due to the use of drop shadows, generic stock photography, and a lack of authentic business imagery.",
+    "freshness_score": 4,
+    "trust_score": 5,
+    "conversion_score": 6,
+    "design_age_estimate": "outdated",
+    "summary": "The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional image of a restoration expert.",
     "issues": [
       {
-        "id": "hero_image_authenticity",
+        "id": "hero_text_contrast",
+        "severity": "critical",
+        "title": "White text on light sky background is illegible",
+        "what_observed": "The main headline 'Brisbane Roof Restoration Specialists' is white text placed directly over a bright, washed-out sky background in the hero image.",
+        "why_problem": "Visitors cannot read the headline without straining. If a user cannot read the main value proposition within 3 seconds, they assume the site is broken or unprofessional and leave.",
+        "what_correct_looks_like": "A dark semi-transparent overlay (black or navy at 40-60% opacity) behind the text, or dark charcoal text with a drop shadow, ensuring high contrast against the background.",
+        "how_to_fix_in_redesign": "Apply a CSS linear-gradient overlay over the hero image to darken the background, ensuring the white text meets WCAG AA contrast standards.",
+        "plain_explanation": "标题文字是白色的，背景也是亮白色的天空，导致文字几乎看不清。",
+        "customer_impact": "访客在 3 秒内无法看清您提供什么服务，会直接关闭网页。这会导致高达 50% 的潜在访客流失，因为他们认为网站不专业或已损坏。"
+      },
+      {
+        "id": "form_visual_clutter",
         "severity": "major",
-        "title": "Generic stock photo hurts local trust",
-        "what_observed": "The hero background image is a generic stock photo of a house with a blue roof, overlaid with a heavy dark gradient. It does not appear to be a photo of the business owner, their team, or a specific job site in Brisbane.",
-        "why_problem": "Local service customers are skeptical of 'faceless' companies. A generic image suggests a national franchise or a scam rather than a local expert. It fails to build the personal connection required for high-ticket home services.",
-        "what_correct_looks_like": "A high-quality, authentic photo of the actual business owner or a team member standing in front of a branded van or a completed roof project in a recognizable Brisbane suburb.",
-        "how_to_fix_in_redesign": "Replace the stock photo with a professional headshot of the owner or a 'before and after' split image of a real local project. Remove the heavy dark overlay to let the image breathe.",
-        "plain_explanation": "现在的背景图看起来像是网上随便找的素材，不像是一家真实的本地公司。客户会觉得你们可能不是本地人，或者不专业。",
-        "customer_impact": "本地服务行业非常依赖信任感。如果客户第一眼觉得网站不真实，他们很可能会直接关掉页面去找竞争对手。使用真实照片可以将信任度提高 20-30%。"
+        "title": "Form fields are too dense and overwhelming",
+        "what_observed": "The 'Get a FREE Quote' form is a dense block with small input fields, tight padding, and multiple radio button groups (Roof type, Scope, Work Type, Roof age) stacked closely together.",
+        "why_problem": "The form looks like a chore rather than a quick inquiry. The small text and tight spacing make it look like a data-entry task, causing 'form fatigue' where users abandon the process before starting.",
+        "what_correct_looks_like": "A simplified form with larger, taller input fields (48px+ height), more whitespace between sections, and fewer initial questions (Name, Phone, Email only) with the rest hidden or optional.",
+        "how_to_fix_in_redesign": "Increase input field height to 50px, add 20px padding inside fields, and reduce the initial visible fields to just Name, Phone, and Email to lower the barrier to entry.",
+        "plain_explanation": "表格设计得太拥挤，输入框太小，问题太多，看起来像是在填复杂的表格，让人不想填。",
+        "customer_impact": "复杂的表格会让访客感到压力。如果表格太长，约 30% 的用户会放弃填写。简化表格可以显著提高客户咨询的数量。"
       },
       {
-        "id": "form_visual_weight",
+        "id": "logo_branding",
         "severity": "major",
-        "title": "Form looks like a pop-up overlay",
-        "what_observed": "The contact form is placed inside a semi-transparent dark box with a drop shadow, floating on top of the hero image. It looks like a modal or a pop-up rather than part of the page structure.",
-        "why_problem": "Users are trained to ignore or close pop-ups. By making the form look like an intrusive overlay, you are subconsciously telling the user to dismiss it. It also creates visual clutter and makes the text harder to read.",
-        "what_correct_looks_like": "A clean, white, solid background form integrated into the layout (e.g., a two-column layout with text on the left and form on the right), or a distinct section below the fold with a clear heading.",
-        "how_to_fix_in_redesign": "Remove the semi-transparent background and drop shadow. Use a solid white card with a subtle border or a distinct background color that contrasts with the hero image, ensuring the form feels like a permanent part of the page.",
-        "plain_explanation": "这个表格看起来像是一个可以关闭的广告弹窗，而不是网站的一部分。用户可能会下意识地忽略它，或者觉得它很烦人。",
-        "customer_impact": "这种设计会让用户产生抵触心理。如果表格看起来像广告，填写率可能会下降 15-20%。把它变成页面的一部分，会让用户更愿意留下联系方式。"
+        "title": "Logo looks like a placeholder or amateur graphic",
+        "what_observed": "The logo in the top left is a thin line-art house outline with red text 'BRISBANE' and smaller grey text 'roof restoration experts' underneath, lacking a solid shape or professional weight.",
+        "why_problem": "A thin, sketch-like logo suggests a 'one-man band' or a temporary business rather than an established expert. It fails to convey the structural integrity and reliability required for roof restoration.",
+        "what_correct_looks_like": "A solid, bold icon (perhaps a stylized roof or shield) with clear, legible typography. The logo should look substantial and trustworthy.",
+        "how_to_fix_in_redesign": "Redesign the logo to use a solid vector icon and a bold sans-serif font. Ensure the logo is legible at small sizes and conveys stability.",
+        "plain_explanation": "Logo 看起来像是一个简单的线条画，不够稳重，无法体现专业屋顶修复公司的实力和可靠性。",
+        "customer_impact": "信任是本地服务的关键。如果 Logo 看起来不专业，客户会怀疑您的施工质量。一个专业的 Logo 能增加 20% 以上的品牌信任度。"
       },
       {
-        "id": "typography_hierarchy",
+        "id": "navigation_hierarchy",
         "severity": "minor",
-        "title": "Weak headline hierarchy and font choice",
-        "what_observed": "The main headline 'Brisbane Roof Restoration Specialists' uses a generic sans-serif font with a heavy drop shadow. The sub-headline is also white text on a dark background, making it hard to distinguish from the main title.",
-        "why_problem": "The drop shadow on the text gives it a 'Web 2.0' (circa 2010) feel, which makes the business look outdated. The lack of clear hierarchy means the visitor doesn't immediately know what the unique selling point is.",
-        "what_correct_looks_like": "Clean, bold typography without drop shadows. The main headline should be large and clear, with a sub-headline that highlights a specific benefit (e.g., '10-Year Warranty' or 'Free Inspections') in a contrasting color.",
-        "how_to_fix_in_redesign": "Remove all text shadows. Use a modern, readable font. Increase the contrast between the headline and sub-headline by using size and weight differences rather than just color.",
-        "plain_explanation": "标题的字体和阴影效果看起来有点过时，像是十年前的设计风格。这会让客户觉得公司技术落后，不够专业。",
-        "customer_impact": "过时的设计会让客户质疑你们的服务质量。在 8 秒内，如果网站看起来不专业，客户可能会认为你们的工作也不够细致，从而流失潜在客户。"
-      },
-      {
-        "id": "cta_button_redundancy",
-        "severity": "minor",
-        "title": "Redundant phone number buttons",
-        "what_observed": "There is a red 'Call (07) 3132 1605' button in the top navigation, and another identical red button in the hero section below the text.",
-        "why_problem": "While having multiple CTAs is good, having two identical buttons in the same visual area creates visual noise. The user's eye doesn't know where to focus first.",
-        "what_correct_looks_like": "One primary CTA in the hero section (e.g., 'Get a Free Quote') and a clear phone number in the header. The hero button should focus on the form, while the header focuses on immediate calls.",
-        "how_to_fix_in_redesign": "Keep the phone number in the header as a text link or small button. In the hero section, use a single, prominent button that says 'Get Your Free Quote' to drive form submissions, or 'Call Now' if calls are the primary goal, but not both in the same spot.",
-        "plain_explanation": "页面上有两个一模一样的红色按钮，这会让用户感到困惑，不知道该点哪一个。",
-        "customer_impact": "视觉混乱会降低用户的行动意愿。如果用户不知道该点哪里，他们可能什么都不做。简化按钮设计可以提高点击率 10-15%。"
+        "title": "Phone number is not the primary navigation element",
+        "what_observed": "The phone number 'Call (07) 3132 1605' is in a red button in the top right, but it is visually competing with 'Home', 'About', 'Services', and 'Contact' links which are plain text.",
+        "why_problem": "While the phone number is visible, it is treated as just another menu item. For a local service, the phone number should be the dominant element, distinct from the navigation menu.",
+        "what_correct_looks_like": "The phone number should be a distinct, high-contrast button separated from the text navigation, or the navigation should be simplified to a hamburger menu on mobile to give the phone number more prominence.",
+        "how_to_fix_in_redesign": "Increase the visual weight of the phone button (larger font, distinct border radius) and ensure it stands out clearly from the text links. On mobile, move the phone number to a sticky bottom bar.",
+        "plain_explanation": "电话号码虽然可见，但没有突出显示。对于本地服务，打电话应该是最容易、最显眼的事情。",
+        "customer_impact": "如果访客找不到或看不清电话号码，他们可能会转向竞争对手。突出电话号码可以直接提高电话咨询率 15-25%。"
       }
     ],
     "positive_observations": [
-      "The form fields are comprehensive and relevant to the roofing industry (roof type, scope, age), which helps qualify leads.",
-      "The phone number is clearly visible in the header, which is crucial for local service businesses.",
-      "The layout is structured logically with a clear hero section and form placement."
+      "The 'Get a FREE Quote' form is visible above the fold, which is excellent for capturing leads immediately.",
+      "The use of a red accent color for the CTA button provides a clear visual cue for action.",
+      "The background image shows a relevant local style (Queenslander home), which helps with local relevance."
     ],
     "redesign_priorities": [
-      "1. Replace the generic stock photo with an authentic image of the team or a local project to build immediate trust.",
-      "2. Redesign the contact form to look like a permanent part of the page (solid background, no drop shadows) rather than a pop-up overlay.",
-      "3. Update the typography by removing drop shadows and improving the hierarchy between the headline and sub-headline."
+      "1. Fix hero text contrast by adding a dark overlay so the headline is instantly readable.",
+      "2. Simplify the lead form by increasing field size and reducing initial questions to reduce friction.",
+      "3. Redesign the logo to be bolder and more professional to build immediate trust."
     ],
-    "confidence": 0.9
+    "confidence": 0.95
   },
   "rawText": null
 }

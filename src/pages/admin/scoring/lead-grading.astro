@@ -1,0 +1,221 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import { siteConfig } from '../../../config/site.js';
+import {
+  HARD_SKIP_DEFINITIONS,
+  INVESTMENT_LEVEL_TABLE,
+  PRODUCT_TIER_TABLE,
+  gradeLead,
+} from '../../../../core/scoring/lead-grading.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(__dirname, '../../../../');
+
+const entitiesDir = path.join(repoRoot, 'data/leads/entities');
+const detailedDir = path.join(repoRoot, 'data/v2/fixtures/detailed-audit');
+const reviewsDir = path.join(repoRoot, 'data/v2/fixtures/reviews');
+
+function loadDeriveSizeSignal() {
+  // Lightweight inline (master-md-builder is full of MD-generation code we
+  // don't need here). This duplicates the logic — keep it in sync if rules
+  // change.
+  return ({ latest, sitemapAnalysis, activity, techStack }) => {
+    const indicators = [];
+    let score = 0;
+    const rc = Number(latest?.review_count || 0);
+    const pages = sitemapAnalysis?.total_urls || 0;
+    const cats = (latest?.categories || []).length;
+    const trackers = (techStack?.analytics?.length || 0) + (techStack?.pixels?.length || 0);
+    if (rc >= 500) score += 3;
+    else if (rc >= 200) score += 2;
+    else if (rc >= 50) score += 1;
+    if (pages >= 300) score += 3;
+    else if (pages >= 100) score += 2;
+    else if (pages >= 30) score += 1;
+    if (cats >= 4) score += 1;
+    if (trackers >= 4) score += 2;
+    else if (trackers >= 2) score += 1;
+    if (score >= 7) return { tier: 'enterprise', score };
+    if (score >= 4) return { tier: 'mid', score };
+    return { tier: 'small', score };
+  };
+}
+
+const deriveSize = loadDeriveSizeSignal();
+
+// Grade every lead with a detailed-audit fixture
+const allGrades = [];
+if (fs.existsSync(detailedDir)) {
+  const files = fs.readdirSync(detailedDir).filter((f) => f.endsWith('.json') && !f.startsWith('ledger-'));
+  for (const f of files) {
+    const entityKey = f.replace(/\.json$/, '');
+    const entityPath = path.join(entitiesDir, `${entityKey}.json`);
+    if (!fs.existsSync(entityPath)) continue;
+    const entity = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+    const detailedRaw = JSON.parse(fs.readFileSync(path.join(detailedDir, f), 'utf8'));
+    const reviewPath = path.join(reviewsDir, f);
+    const reviewBundle = fs.existsSync(reviewPath) ? JSON.parse(fs.readFileSync(reviewPath, 'utf8')) : null;
+    const ctx = {
+      entity,
+      detailedAudit: detailedRaw.detailed_audit,
+      techStack: detailedRaw.tech_stack,
+      sitemapAnalysis: detailedRaw.sitemap_analysis,
+      activity: detailedRaw.activity,
+      domainHistory: detailedRaw.domain_history,
+      reviewAnalysis: reviewBundle?.analysis || null,
+      businessSizeSignal: deriveSize({
+        latest: entity.latest,
+        sitemapAnalysis: detailedRaw.sitemap_analysis,
+        activity: detailedRaw.activity,
+        techStack: detailedRaw.tech_stack,
+      }),
+    };
+    const result = gradeLead(ctx);
+    allGrades.push({
+      entityKey,
+      name: entity.latest?.name || entityKey,
+      auditScore: detailedRaw.detailed_audit?.audit_score,
+      decision: detailedRaw.detailed_audit?.decision,
+      ...result,
+    });
+  }
+}
+
+// Aggregate counts
+const counts = { A: 0, B: 0, C: 0, D: 0 };
+const tierCounts = { T1: 0, T2: 0, T3: 0 };
+for (const g of allGrades) {
+  counts[g.investment_level] = (counts[g.investment_level] || 0) + 1;
+  if (g.product_tier) tierCounts[g.product_tier] = (tierCounts[g.product_tier] || 0) + 1;
+}
+
+function levelColor(level) {
+  return { A: 'chip-coral', B: 'chip-citrus', C: 'chip-sky', D: 'chip-mint' }[level] || '';
+}
+
+function tierColor(tier) {
+  return { T1: 'chip-mint', T2: 'chip-citrus', T3: 'chip-coral' }[tier] || '';
+}
+---
+
+<Layout title={`Lead 分级规则 - ${siteConfig.name}`} description="投入分级 + 产品档位规则可视化" active="scoring" data-ui-version="local-style-2026-05-08">
+  <div class="page">
+    <header class="page-header">
+      <p class="eyebrow">运营内部 · Lead Grading</p>
+      <h1>Lead 投入分级 + 产品档位</h1>
+      <p class="lede">每个 lead 经过 audit 后会被自动打成两个独立标签：<strong>投入分级 (A/B/C/D)</strong>「我们花多少精力」+ <strong>产品档位 (T1/T2/T3)</strong>「卖什么给他」。这一页展示规则与每个 lead 的当前分级，规则在 <code>core/scoring/lead-grading.js</code>。</p>
+    </header>
+
+    <section class="stat-strip">
+      <div class="stat"><span class="lab">A 全攻</span><strong>{counts.A}</strong></div>
+      <div class="stat"><span class="lab">B 预览试探</span><strong>{counts.B}</strong></div>
+      <div class="stat"><span class="lab">C 批量轻触</span><strong>{counts.C}</strong></div>
+      <div class="stat"><span class="lab">D 跳过</span><strong>{counts.D}</strong></div>
+      <div class="stat divider"></div>
+      <div class="stat"><span class="lab">T1 单页站</span><strong>{tierCounts.T1}</strong></div>
+      <div class="stat"><span class="lab">T2 多页站</span><strong>{tierCounts.T2}</strong></div>
+      <div class="stat"><span class="lab">T3 多页+运营</span><strong>{tierCounts.T3}</strong></div>
+    </section>
+
+    <section class="section">
+      <h2>1. Hard Skip 一票否决</h2>
+      <p>命中任一条 → 投入分级直接判定为 <strong>D 跳过</strong>，不进入后续。</p>
+      <ul class="rule-list">
+        {HARD_SKIP_DEFINITIONS.map((r) => (
+          <li><code>{r.id}</code> — {r.reason}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>2. 投入分级（A / B / C / D）</h2>
+      <table class="rule-table">
+        <thead><tr><th>档</th><th>名称</th><th>判定条件</th><th>我们做什么</th></tr></thead>
+        <tbody>
+          {INVESTMENT_LEVEL_TABLE.map((row) => (
+            <tr>
+              <td><span class={`chip ${levelColor(row.level)}`}>{row.level}</span></td>
+              <td><strong>{row.label}</strong></td>
+              <td>{row.criteria}</td>
+              <td>{row.action}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>3. 产品档位（T1 / T2 / T3）</h2>
+      <p>仅对 A 和 B 档 lead 进行产品档位推荐。判定基于业务复杂度与数字成熟度。</p>
+      <table class="rule-table">
+        <thead><tr><th>档</th><th>名称</th><th>判定信号</th><th>定价</th></tr></thead>
+        <tbody>
+          {PRODUCT_TIER_TABLE.map((row) => (
+            <tr>
+              <td><span class={`chip ${tierColor(row.tier)}`}>{row.tier}</span></td>
+              <td><strong>{row.label}</strong></td>
+              <td>{row.signals}</td>
+              <td>{row.pricing}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>4. 当前所有 lead 的实时分级</h2>
+      <p>下表实时从 <code>data/v2/fixtures/detailed-audit/</code> 读取，跑 pipeline 后自动更新。</p>
+      <table class="rule-table">
+        <thead>
+          <tr><th>Lead</th><th>Audit</th><th>决策</th><th>投入</th><th>产品档</th><th>建议报价</th><th>主要依据</th></tr>
+        </thead>
+        <tbody>
+          {allGrades.sort((a, b) => 'ABCD'.indexOf(a.investment_level) - 'ABCD'.indexOf(b.investment_level)).map((g) => (
+            <tr>
+              <td><a href={`/admin/leads/${g.entityKey}`}>{g.name?.slice(0, 40)}</a></td>
+              <td class="num">{g.auditScore}</td>
+              <td><code>{g.decision}</code></td>
+              <td><span class={`chip ${levelColor(g.investment_level)}`}>{g.investment_level}</span></td>
+              <td>{g.product_tier ? <span class={`chip ${tierColor(g.product_tier)}`}>{g.product_tier}</span> : '—'}</td>
+              <td class="num">{g.recommended_pricing?.one_time || '—'}{g.recommended_pricing?.monthly ? <><br/><small>+ {g.recommended_pricing.monthly}</small></> : ''}</td>
+              <td class="why">{(g.investment_factors || []).slice(0, 2).join(' · ')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <style>
+    .page { max-width: 1200px; margin: 32px auto; padding: 0 24px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .page-header .eyebrow { font-size: 11px; font-weight: 950; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral, #ff5a3d); margin: 0; }
+    .page-header h1 { font-family: Georgia, serif; font-size: 38px; font-weight: 950; margin: 8px 0 12px; max-width: none; }
+    .page-header .lede { font-size: 15px; line-height: 1.55; max-width: 760px; font-weight: 600; }
+    .stat-strip { display: flex; gap: 0; border: 2px solid var(--line, #17191c); margin: 28px 0; background: var(--paper, #fffcf7); }
+    .stat { padding: 14px 18px; border-right: 2px solid var(--line, #17191c); flex: 1; }
+    .stat:last-child { border-right: 0; }
+    .stat.divider { flex: 0 0 8px; background: var(--cream, #fff6ec); border-right: 2px solid var(--line, #17191c); }
+    .stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: #5e6268; }
+    .stat strong { display: block; font-family: Georgia, serif; font-size: 28px; font-weight: 950; line-height: 1; margin-top: 4px; }
+    .section { margin: 36px 0; }
+    .section h2 { font-family: Georgia, serif; font-size: 26px; font-weight: 900; margin: 0 0 12px; }
+    .rule-list { list-style: none; padding: 0; margin: 0; border: 2px solid var(--line, #17191c); background: var(--paper, #fffcf7); }
+    .rule-list li { padding: 12px 16px; border-bottom: 1.5px solid rgba(23,25,28,0.1); font-size: 13.5px; line-height: 1.5; }
+    .rule-list li:last-child { border-bottom: 0; }
+    .rule-list code { background: var(--cream, #fff6ec); border: 1.5px solid var(--line, #17191c); padding: 1px 6px; font-family: ui-monospace, monospace; font-size: 11.5px; margin-right: 8px; }
+    .rule-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 2px solid var(--line, #17191c); background: var(--paper, #fffcf7); font-size: 13px; }
+    .rule-table th { background: color-mix(in srgb, var(--citrus, #ffd45a) 50%, var(--paper, #fffcf7)); padding: 10px 12px; font-size: 10.5px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; border-bottom: 2px solid var(--line, #17191c); }
+    .rule-table td { padding: 10px 12px; border-bottom: 1.5px solid rgba(23,25,28,0.08); vertical-align: top; }
+    .rule-table tr:last-child td { border-bottom: 0; }
+    .rule-table td.num { font-family: ui-monospace, monospace; font-variant-numeric: tabular-nums; font-weight: 800; }
+    .rule-table td.why { color: #5e6268; font-size: 12.5px; }
+    .chip { display: inline-block; padding: 3px 10px; font-family: ui-monospace, monospace; font-size: 12px; font-weight: 950; border: 1.5px solid var(--line, #17191c); }
+    .chip-coral { background: #ff5a3d; color: white; }
+    .chip-citrus { background: #ffd45a; color: #17191c; }
+    .chip-mint { background: #cdeccf; color: #17191c; }
+    .chip-sky { background: #8bd3f7; color: #17191c; }
+  </style>
+</Layout>

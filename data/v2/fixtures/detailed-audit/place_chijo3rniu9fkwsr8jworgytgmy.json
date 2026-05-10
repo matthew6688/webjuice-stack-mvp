@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:29:11.870Z",
+  "generatedAt": "2026-05-10T23:11:11.311Z",
   "entity_input": {
     "entityKey": "place_chijo3rniu9fkwsr8jworgytgmy",
     "latest": {
@@ -43,7 +43,7 @@
   },
   "fetch_summary": {
     "url": "https://brisbaneroofingsolutions.com.au/",
-    "markdown_length": 16751
+    "markdown_length": 16757
   },
   "tech_stack": {
     "ok": true,
@@ -495,19 +495,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 52,
+          "performance": 53,
           "accessibility": 87,
           "best_practices": 73,
           "seo": 92
         },
         "lab_metrics": {
-          "lcp_ms": 6406.0197689674615,
-          "fcp_ms": 2129.0125104206295,
+          "lcp_ms": 4501.054218058495,
+          "fcp_ms": 2263.025172670016,
           "cls": 0,
-          "tbt_ms": 632,
-          "tti_ms": 14380.3836670171,
-          "speed_index_ms": 7477.744707402615,
-          "transfer_size_bytes": 2370723
+          "tbt_ms": 966.5,
+          "tti_ms": 14515.065339563911,
+          "speed_index_ms": 7225.541322998686,
+          "transfer_size_bytes": 2370578
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -522,13 +522,13 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 930,
-            "savings_bytes": 603052
+            "savings_ms": 300,
+            "savings_bytes": 603758
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 0,
+            "savings_ms": 150,
             "savings_bytes": 53880
           }
         ]
@@ -536,19 +536,19 @@
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 58,
-          "accessibility": 87,
+          "performance": 45,
+          "accessibility": 90,
           "best_practices": 77,
           "seo": 92
         },
         "lab_metrics": {
-          "lcp_ms": 1218.4167530146483,
-          "fcp_ms": 583.0140398727643,
+          "lcp_ms": 841.0901428783623,
+          "fcp_ms": 612.0569323442288,
           "cls": 0.295375,
-          "tbt_ms": 402.5,
-          "tti_ms": 3573.0982506782766,
-          "speed_index_ms": 2591.2746637237433,
-          "transfer_size_bytes": 2820253
+          "tbt_ms": 2696.9999999999986,
+          "tti_ms": 5152.718977448076,
+          "speed_index_ms": 4446.862984350038,
+          "transfer_size_bytes": 2819941
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -561,27 +561,193 @@
         "crux_origin_overall": null,
         "opportunities": [
           {
-            "id": "unused-javascript",
-            "title": "Reduce unused JavaScript",
-            "savings_ms": 80,
-            "savings_bytes": 794912
-          },
-          {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
             "savings_ms": 0,
-            "savings_bytes": 54017
+            "savings_bytes": 54030
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 0,
+            "savings_bytes": 795439
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 63619
+    "latency_ms": 77759
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 1,
+    "contact_form_count": 1,
+    "forms": [
+      {
+        "action": "https://brisbaneroofingsolutions.com.au/",
+        "method": "post",
+        "field_count": 9,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "wpforms[fields][1][first]",
+            "required": true,
+            "placeholder": "First Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "wpforms[fields][1][last]",
+            "required": true,
+            "placeholder": "Last Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "wpforms[fields][4]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Your Phone Number"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "wpforms[fields][5]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Name Help Phone"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "wpforms[fields][2]",
+            "required": true,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email *"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "wpforms[fields][6]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": ""
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "wpforms[fields][3]",
+            "required": true,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "How Can We Help You Today? *"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "apbct__email_id__wp_wpforms",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "apbct__email_id__elementor_form",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": null
+          }
+        ],
+        "required_count": 4,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": true,
+        "role": "contact",
+        "friction_level": "high"
+      }
+    ],
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      },
+      {
+        "id": "recaptcha_v3",
+        "name": "reCAPTCHA v3 (invisible)",
+        "friction": "low"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "表单字段数 9 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "brisbaneroofingsolutions.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2026-03-31T23:15:05.000Z",
+    "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "wayback 503"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 ip4:101.0.115.60 ip4:54.79.225.86 include:spf.mailcluster.com.au -all",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1;p=quarantine;sp=none;adkim=r;aspf=r;pct=100;fo=0;rf=afrf;ri=86400;ruf=mailto:postmaster@brisbaneroofingsolutions.com.au",
+      "dmarc_policy": "quarantine",
+      "dkim_selectors_found": [
+        "default"
+      ],
+      "posture": "strong"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chijo3rniu9fkwsr8jworgytgmy",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:29:11.870Z",
+    "audited_at": "2026-05-10T23:11:11.311Z",
     "audit_score": 69,
     "dimension_scores": {
       "gbp": 61,

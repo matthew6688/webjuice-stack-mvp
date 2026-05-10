@@ -104,6 +104,7 @@ for (const entityKey of targets) {
       ai_geo: fetchPayload?.ai_geo || null,
       pagespeed: fetchPayload?.pagespeed || null,
       form_audit: fetchPayload?.form_audit || null,
+      domain_history: fetchPayload?.domain_history || null,
       detailed_audit: audit,
     };
     fs.writeFileSync(detailedPath, JSON.stringify(detailedFixture, null, 2) + '\n');

@@ -76,6 +76,8 @@ for (const entityKey of targets) {
   const activity = detailed?.activity || null;
   const aiGeo = detailed?.ai_geo || null;
   const pagespeed = detailed?.pagespeed || null;
+  const formAudit = detailed?.form_audit || null;
+  const domainHistory = detailed?.domain_history || null;
 
   const manifestPath = path.join(clientV2Dir, 'cloudinary-manifest.json');
   const cloudinaryManifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
@@ -90,6 +92,8 @@ for (const entityKey of targets) {
     activity,
     aiGeo,
     pagespeed,
+    formAudit,
+    domainHistory,
     cloudinaryManifest,
     screenshotDir: './screenshots',
   });

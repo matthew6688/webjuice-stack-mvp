@@ -18,7 +18,7 @@ visual_freshness: 1
 visual_trust: 1
 visual_conversion: 1
 review_trust_signal: "strong"
-generated_at: "2026-05-10T21:58:20.710Z"
+generated_at: "2026-05-10T23:43:22.570Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -30,6 +30,24 @@ assets:
 # Queensland Roofing Pty Ltd · 现状审计与重构提议
 
 > **23/100** · strong_redesign · 行业：roofing · 地区：Brisbane · Google 评价：4.5★ （35 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `A` 全攻 — 完整 OD redesign + 个性化销售流程
+
+**触发依据：**
+- strong_redesign + 35 评论 + 4.5★
+- 评论 trust signal 强
+
+**产品档位：** `T2` 多页站
+
+- 业务中等复杂度 / 中等口碑 / 中等数字成熟度 — 多页架构合适
+- 35 评论 = 中等规模运营
+- 2 个业务分类 = 需要多页面分流
+
+**建议报价：** 一次性 $3-6K
+
+**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页站。
 
 ## 一、店家现状速览
 
@@ -50,7 +68,7 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The provided screenshots are completely blank white images, indicating a critical technical failure or missing content that prevents any design evaluation.
+> The provided screenshots are completely blank white images, indicating a critical technical failure or missing content that prevents any user interaction.
 
 新鲜度 **1/10** · 信任度 **1/10** · 转化准备度 **1/10** · 设计年代 `severely_outdated`
 
@@ -135,23 +153,23 @@ phone hidden below fold or missing
 
 **技术事实**
 
-Both the desktop and mobile screenshots provided are entirely white rectangles with no visible text, images, buttons, or navigation elements.
+Both the desktop and mobile screenshots provided are entirely white with no visible text, images, navigation, or logos.
 
 **普通话翻译**
 
-您提供的图片完全是空白的，我看不到任何网站内容。这就像一家商店的橱窗被白纸遮住了，路人根本不知道里面卖什么。
+您提供的网站截图完全是空白的，没有任何内容。
 
 **对客户的影响**
 
-如果网站真的显示为空白，您的潜在客户流失率是 100%。没有人会拨打一个他们无法看到电话号码的公司的电话。这直接导致所有广告费和自然搜索流量浪费。
+如果网站是空白的，100% 的访客会立即离开。这意味着您完全失去了所有潜在客户，没有任何收入机会。
 
 **正确长啥样**
 
-A fully rendered homepage with a clear headline, a visible phone number in the header, and a hero image of a roof or team member.
+A fully rendered homepage with a visible header, navigation menu, hero image of a roof, and a clear 'Get a Quote' button.
 
 **Redesign 怎么改**
 
-Verify the website URL and hosting status immediately. If the site is live, ensure the screenshots capture the actual rendered HTML/CSS. If the site is blank, this is a server-side emergency requiring immediate IT intervention.
+Verify the source images are uploaded correctly. If the website is actually blank, this is a server/hosting issue that must be resolved before any design work can begin.
 
 
 ### 主要问题 · 6 项（影响转化的明显短板）
@@ -248,9 +266,9 @@ Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Resolve the technical issue causing the blank display immediately.
-2. [视觉] 2. Re-capture screenshots of the actual live website for a proper audit.
-3. [视觉] 3. Ensure the site loads correctly on both mobile and desktop browsers.
+1. [视觉] 1. Resolve the missing content/blank page issue immediately.
+2. [视觉] 2. Re-upload valid screenshots for audit.
+3. [视觉] 3. Verify server status.
 4. [评论] Feature the '3-day replacement' statistic prominently to address customer anxiety about project timelines.
 5. [评论] Use the Cyclone Debbie repair story as a case study for durability and weather resistance.
 6. [评论] Highlight the 'thorough inspection' process to differentiate from competitors who may offer quick, superficial quotes.
@@ -271,6 +289,18 @@ Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类
 - **整体活跃度：** 无法判断 
 - **Blog 板块：** 未发现 — 没有内容营销基础
 - **社交媒体链接：** 网站上没有 social 链接 — GBP 流量进来后没有第二触点
+
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** ⚠ 未配置 — 客户如果用域名邮箱发邮件，进垃圾箱的概率高
+- **DKIM (邮件签名)：** ⚠ 常见 selector 未发现 DKIM 配置（不一定确凿，但提示有问题）
+- **DMARC (策略)：** ⚠ 未配置 — 域名易被仿冒做钓鱼
+- **整体邮件投递信誉：** `none` (全无配置 — 邮件营销 / cold outreach 几乎不可能投递成功)
+
+> 这是后续 **「Social Media Management 月度包」** 或 **「Cold Outreach 启动包」** 的前置条件 —— 邮件 DNS 没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。
 
 ## 技术栈与营销基建
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:06:40.292Z",
+  "generatedAt": "2026-05-10T22:45:24.536Z",
   "entity_input": {
     "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
     "latest": {
@@ -496,6 +496,62 @@
   "pagespeed": {
     "ok": true,
     "results": {
+      "mobile": {
+        "strategy": "mobile",
+        "scores": {
+          "performance": 26,
+          "accessibility": 84,
+          "best_practices": 92,
+          "seo": 85
+        },
+        "lab_metrics": {
+          "lcp_ms": 13126.059016969895,
+          "fcp_ms": 3788.015875910031,
+          "cls": 0.149774,
+          "tbt_ms": 1462.000000000001,
+          "tti_ms": 19134.862044856065,
+          "speed_index_ms": 12925.876008496543,
+          "transfer_size_bytes": 5415109
+        },
+        "crux_overall": "SLOW",
+        "crux_field_data": {
+          "lcp_p75_ms": {
+            "p75": 4009,
+            "category": "SLOW"
+          },
+          "fcp_p75_ms": {
+            "p75": 3491,
+            "category": "SLOW"
+          },
+          "cls_p75": {
+            "p75": 7,
+            "category": "FAST"
+          },
+          "inp_p75_ms": {
+            "p75": 102,
+            "category": "FAST"
+          },
+          "ttfb_p75_ms": {
+            "p75": 2851,
+            "category": "SLOW"
+          }
+        },
+        "crux_origin_overall": "SLOW",
+        "opportunities": [
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 1650,
+            "savings_bytes": 733147
+          },
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
+            "savings_ms": 600,
+            "savings_bytes": 232911
+          }
+        ]
+      },
       "desktop": {
         "strategy": "desktop",
         "scores": {
@@ -505,13 +561,13 @@
           "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 2561.059422354954,
-          "fcp_ms": 795.0162932263586,
+          "lcp_ms": 2521.030029361959,
+          "fcp_ms": 839.0088611232011,
           "cls": 0.606546,
-          "tbt_ms": 1162.4999999999986,
-          "tti_ms": 4882.951131978012,
-          "speed_index_ms": 4842.265921277536,
-          "transfer_size_bytes": 5568139
+          "tbt_ms": 1133.4948310114653,
+          "tti_ms": 4299.368922845238,
+          "speed_index_ms": 4819.714418714493,
+          "transfer_size_bytes": 5568101
         },
         "crux_overall": "SLOW",
         "crux_field_data": {
@@ -541,30 +597,254 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 320,
-            "savings_bytes": 733047
+            "savings_ms": 200,
+            "savings_bytes": 732911
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 160,
-            "savings_bytes": 234037
+            "savings_ms": 120,
+            "savings_bytes": 234047
           }
         ]
       }
     },
-    "failures": [
+    "failures": [],
+    "latency_ms": 102302
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 4,
+    "contact_form_count": 1,
+    "forms": [
       {
-        "strategy": "mobile",
-        "reason": "This operation was aborted"
+        "action": "https://roofspacerenovators.com.au/",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "s",
+            "required": false,
+            "placeholder": "Type and hit enter …",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": false,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Go!",
+        "honeypot_present": false,
+        "role": "unknown",
+        "friction_level": "unknown"
+      },
+      {
+        "action": "https://roofspacerenovators.com.au/",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "s",
+            "required": false,
+            "placeholder": "Type and hit enter …",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": false,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Go!",
+        "honeypot_present": false,
+        "role": "unknown",
+        "friction_level": "unknown"
+      },
+      {
+        "action": "https://roofspacerenovators.com.au/",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "s",
+            "required": false,
+            "placeholder": "Type and hit enter …",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": false,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Go!",
+        "honeypot_present": false,
+        "role": "unknown",
+        "friction_level": "unknown"
+      },
+      {
+        "action": "https://roofspacerenovators.com.au/",
+        "method": "post",
+        "field_count": 8,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_1",
+            "required": false,
+            "placeholder": "First Name:",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First Name(Required)"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_7",
+            "required": false,
+            "placeholder": "Last Name:",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last Name(Required)"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "input_2",
+            "required": false,
+            "placeholder": "Email:",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email(Required)"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_3",
+            "required": false,
+            "placeholder": "Phone:",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone(Required)"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_4",
+            "required": false,
+            "placeholder": "Suburb:",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Suburb(Required)"
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "input_5",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "How Can We Help(Required)"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "input_6",
+            "required": false,
+            "placeholder": "Comments/Details:",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Comments(Required)"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
       }
     ],
-    "latency_ms": 108013
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "表单字段数 8 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "roofspacerenovators.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2026-01-14T23:49:04.000Z",
+    "registrar": "Web Address Registration Pty Ltd",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "The operation was aborted due to timeout"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 include:spf.protection.outlook.com include:transmail.net.au include:au.zcsend.net include:zoho.com.au ip4:27.50.87.137 -all",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1; p=none;",
+      "dmarc_policy": "none",
+      "dkim_selectors_found": [
+        "default"
+      ],
+      "posture": "strong"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chija7rmbn38k2srv29x1ubwqmg",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:06:40.292Z",
+    "audited_at": "2026-05-10T22:45:24.536Z",
     "audit_score": 65,
     "dimension_scores": {
       "gbp": 61,

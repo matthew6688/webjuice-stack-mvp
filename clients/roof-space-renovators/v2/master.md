@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "slightly_outdated"
+visual_age: "outdated"
 visual_freshness: 4
 visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-10T21:58:22.139Z"
+generated_at: "2026-05-10T23:43:23.079Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5
@@ -28,6 +28,16 @@ assets:
 # Roof Space Renovators · 现状审计与重构提议
 
 > **65/100** · moderate_candidate · 行业：roofing · 地区：Brisbane · Google 评价：5★ （221 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `D` 跳过 — 不投入精力
+
+**触发依据：**
+- [hard skip · enterprise_size] 业务规模过大（enterprise tier）— 不符合我们 small / batch / 快上的产品定位
+- [hard skip · too_many_pages] 现有网站超过 200 页 — 迁移成本失控
+
+**下一步行动：** 不投入精力，归档原因。';
 
 ## 一、店家现状速览
 
@@ -52,14 +62,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The website uses a dated layout with a cluttered header and a hero section that relies on a generic stock photo, making the business feel less professional than it likely is.
+> The website uses a dated layout with a heavy image overlay and cluttered navigation that obscures the primary call to action, making it difficult for local customers to quickly identify the business's value proposition.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **4/10** · 设计年代 `slightly_outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **4/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- The tagline 'Same house, more home' is catchy and clearly communicates the value proposition.
-- The contact information (phone number and address) is present in the header, which is good for local SEO.
-- The headline 'Bigger. Brighter. Better.' is clear and benefit-driven.
+- The value proposition 'Same House, More Home' is clear and relevant to the attic renovation niche.
+- The use of a family photo in the hero section helps humanize the brand and suggests a family-friendly service.
+- The color scheme (teal and yellow) is consistent with the logo, maintaining brand identity.
 
 ## 四、客户在 Google 上怎么说
 
@@ -104,29 +114,52 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 1 项（立刻在伤害成交）
+### 关键问题 · 2 项（立刻在伤害成交）
 
-### 关键 · Primary call-to-action button is buried and low contrast
+### 关键 · Hero text is hard to read against busy background
 
 **技术事实**
 
-The 'Get in touch for a free quote!' button is yellow, placed at the bottom of the hero section, and requires scrolling to see fully on mobile. It is not the most prominent element.
+The main hero section features a photograph of a family with a semi-transparent blue overlay. The white text ('Same House more home!') and the yellow script font ('more home!') struggle to contrast against the busy background details.
 
 **普通话翻译**
 
-获取报价的按钮太小，位置也太靠下，颜色也不够突出。访客可能根本看不到它，或者不知道该怎么联系你们。
+网站的主图背景太花哨，上面的文字很难看清。就像在嘈杂的房间里听人说话，客人第一眼就抓不到重点。
 
 **对客户的影响**
 
-如果访客在 5 秒内找不到行动按钮，他们就会离开。优化 CTA 按钮的位置和可见性可以直接将询盘量提高 15-25%。
+访客通常在 8 秒内决定是否离开。如果文字看不清，他们会直接关掉网页，导致您白白浪费了从 Google 广告或搜索获得的流量。
 
 **正确长啥样**
 
-A large, high-contrast button (e.g., bright orange or white with dark text) placed above the fold, directly under the main headline. It should say 'Get Your Free Quote' or 'Call Now'.
+A clean, solid color background (e.g., white or light grey) with a high-quality image placed to the side (desktop) or below the text (mobile), ensuring the headline is in a bold, dark sans-serif font with high contrast.
 
 **Redesign 怎么改**
 
-Move the CTA button to be immediately visible under the headline. Increase its size and contrast. Add a secondary CTA like 'Call 07 3889 6688' for immediate contact.
+Remove the full-width background image. Use a split layout: text on the left, image on the right. Ensure the headline is at least 48px font size and dark grey (#333) on a white background for maximum readability.
+
+
+### 关键 · Phone number is not a sticky, clickable element
+
+**技术事实**
+
+The phone number is visible in the top header bar, but it is small text next to an icon. It is not a large, sticky button that follows the user as they scroll.
+
+**普通话翻译**
+
+在手机上看网站时，电话号码太小且不固定。客人想打电话咨询，却找不到按钮，这会让想立刻联系您的客户流失。
+
+**对客户的影响**
+
+本地搜索用户中 70% 使用手机。如果电话按钮不明显，您会直接失去那些急需服务的客户，导致潜在客户流向竞争对手。
+
+**正确长啥样**
+
+A sticky 'Call Now' button fixed to the bottom of the screen on mobile devices, visible at all times regardless of scroll position.
+
+**Redesign 怎么改**
+
+Implement a sticky bottom bar for mobile views containing a large 'Call 07 3889 6688' button. Ensure the header phone number is also clickable (tel: link).
 
 
 ### 主要问题 · 5 项（影响转化的明显短板）
@@ -179,57 +212,57 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Header is too busy and distracts from the phone number
+### 主要 · Primary Call-to-Action is buried and weak
 
 **技术事实**
 
-The top navigation bar contains 8 distinct menu items (Home, About Us, Our Services, etc.) plus social icons, a search icon, and contact details, all crammed into a single horizontal strip.
+The primary button 'Get in touch for a free quote!' is a yellow rectangle located at the bottom of the hero section. It is visually competing with the text above it and is not the most prominent element on the screen.
 
 **普通话翻译**
 
-网页顶部的导航栏太乱了，塞进了太多链接和图标。这让访客不知道该看哪里，甚至找不到电话号码。
+“免费报价”按钮藏得太深，而且不够显眼。客人想联系您，但找不到按钮，就像去商店买东西却找不到收银台一样。
 
 **对客户的影响**
 
-访客在几秒钟内就会感到困惑并离开。如果找不到联系方式，他们就会直接去竞争对手的网站。这可能导致高达 30% 的潜在客户流失。
+行动号召（CTA）不显眼会直接导致转化率下降。对于本地服务行业，每 10 个访客中可能因此流失 3-5 个潜在客户，直接损失收入。
 
 **正确长啥样**
 
-A simplified header with a logo on the left, a 'Get a Quote' button on the right, and a hamburger menu for secondary links. The phone number should be prominent and clickable.
+A large, high-contrast button (e.g., bright orange or blue) placed immediately below the headline, above the fold. It should say 'Get a Free Quote' and be the most distinct element on the page.
 
 **Redesign 怎么改**
 
-Reduce navigation items to 3-4 key categories. Move the phone number to a sticky header or make it a large button. Remove social icons from the main nav to reduce visual noise.
+Move the CTA button up, directly under the 'Bigger. Brighter. Better.' headline. Increase the button size (padding) and use a color that contrasts sharply with the background (e.g., a strong blue or orange) to draw the eye.
 
 
-### 主要 · Hero image uses a generic stock photo instead of real work
+### 主要 · Navigation menu is too dense and distracting
 
 **技术事实**
 
-The main banner image features a smiling family pointing upwards in a generic room, overlaid with a blue tint and text. It does not show any actual roof renovations or the company's work.
+The top navigation bar contains 8 distinct links (Home, About Us, Our Services, Our Product Range, Be Inspired, Our Showroom, FAQs, Contact Us) plus social icons and contact info, all crammed into a single row.
 
 **普通话翻译**
 
-主页的大图是一张通用的家庭照片，而不是你们实际做的屋顶改造案例。这让访客觉得你们不够专业，或者没有真实的作品展示。
+导航栏塞了太多选项，让客人眼花缭乱。他们只想找服务或联系方式，过多的链接会让网站显得杂乱无章，不够专业。
 
 **对客户的影响**
 
-信任感是本地服务业务的关键。使用真实案例图片可以将转化率提高 20-40%，因为客户能看到实际效果，而不是想象。
+杂乱的导航会让访客感到困惑，降低对品牌的信任度。研究表明，清晰的导航能提升 20% 以上的用户停留时间，混乱的菜单则会让客人迅速流失。
 
 **正确长啥样**
 
-A high-quality photo of a real, completed attic renovation project by the company, showing the 'before and after' or the finished space. Alternatively, a photo of the team at work.
+A simplified menu with max 5 items: Home, Services, About, Gallery, Contact. 'Contact Us' should be a distinct button, not just text. Secondary links can be moved to the footer.
 
 **Redesign 怎么改**
 
-Replace the stock photo with a real project image. Use a split-screen 'before/after' slider or a high-res photo of a finished attic space with the headline overlaid clearly.
+Reduce the menu to 4-5 core items. Move 'FAQs', 'Be Inspired', and 'Our Showroom' to the footer. Make 'Contact Us' a distinct button style to separate it from informational links.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace the generic stock photo with a real project image to build immediate trust.
-2. [视觉] 2. Simplify the header and make the phone number/quote button the most prominent element.
-3. [视觉] 3. Move the primary CTA button above the fold and increase its visual weight.
+1. [视觉] 1. Implement a sticky 'Call Now' button for mobile users to capture immediate leads.
+2. [视觉] 2. Simplify the hero section: remove the busy background image, increase headline contrast, and move the CTA button above the fold.
+3. [视觉] 3. Streamline the navigation menu to reduce cognitive load and highlight the 'Contact' action.
 4. [评论] Feature the 'clean up at the end of each day' quote in the 'Our Process' section to alleviate mess concerns.
 5. [评论] Use the 'future proof my skylight' snippet in the 'Skylight Services' page to highlight technical expertise and durability.
 6. [评论] Display the 'fast response' quote near the contact form to encourage immediate inquiries.
@@ -242,6 +275,36 @@ Replace the stock photo with a real project image. Use a split-screen 'before/af
 ## 真实速度数据 · Google PageSpeed Insights
 
 我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
+
+### 移动端（mobile）
+
+**Lighthouse 分数（实验室）：**
+
+| 维度 | 分数 |
+|---|---|
+| 性能 (Performance) | **26/100** |
+| 可访问性 (Accessibility) | 84/100 |
+| 最佳实践 (Best Practices) | 92/100 |
+| SEO | 85/100 |
+
+**Lab 关键指标：** LCP `13.1s` · FCP `3.8s` · CLS `0.150` · TBT `1462ms`
+
+**真实用户体验（过去 28 天 CRUX field data）总评：** `SLOW`
+
+| 指标 | 75% 用户值 | Google 评级 |
+|---|---|---|
+| LCP（最大内容绘制 p75） | 4.01s | SLOW |
+| FCP（首次内容绘制 p75） | 3.49s | SLOW |
+| TTFB（服务器响应 p75） | 2.85s | SLOW |
+| CLS（布局抖动 p75） | 0.070 | FAST |
+| INP（交互响应 p75） | 102ms | FAST |
+
+**这意味着：** 过去 28 天访问你网站的实际用户里，75% 的人遇到的体验就是上面这些数字 — 不是我们测的、是 Google 用真实 Chrome 用户数据统计出来的。
+
+**Google 建议的优化项（按节省时间排序，前 2）：**
+
+- **Reduce unused JavaScript** — 节省 1650ms · 节省 716KB
+- **Reduce unused CSS** — 节省 600ms · 节省 227KB
 
 ### 桌面端（desktop）
 
@@ -282,6 +345,36 @@ Replace the stock photo with a real project image. Use a split-screen 'before/af
 - **Blog 板块：** 有，共 1 篇文章 
 - **社交媒体链接：** 网站上引用了 3 个平台 — facebook, instagram, youtube
 
+## 联系表单与防垃圾设置
+
+客户能不能 *方便地* 把信息留下来 = 直接的转化路径。这一段审视所有 `<form>` 元素的可用性 + 防 spam 配置。
+
+### 表单 · 8 字段（摩擦：高（≥7 字段，会显著降低转化））
+
+- **字段构成：** First Name(Required)(text) · Last Name(Required)(text) · Email(Required)(email) · Phone(Required)(text) · Suburb(Required)(text) · How Can We Help(Required)(select-one) · Comments(Required)(textarea) · g-recaptcha-response(textarea)
+- **必填字段数：** 0/8
+- **常见关键字段：** email · phone · message
+- **提交按钮：** 「Submit」
+- **Honeypot 防 spam：** 未检测到
+
+**已部署的人机验证：**
+- reCAPTCHA v2 (visible "I'm not a robot") — 高摩擦
+
+**Audit 总结：**
+
+- [关键] 表单字段数 8 — 远超行业标准 3-4 字段，会显著降低转化率
+- [提示] reCAPTCHA v2 (visible "I'm not a robot") — 给真人增加额外操作（点击"我不是机器人"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案
+
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** 已配置
+- **DKIM (邮件签名)：** 已配置（selectors: default）
+- **DMARC (策略)：** 已配置（policy: `none`）
+- **整体邮件投递信誉：** `strong` (SPF + DKIM + DMARC 齐全)
+
 ## 技术栈与营销基建
 
 从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
@@ -291,6 +384,15 @@ Replace the stock photo with a real project image. Use a split-screen 'before/af
 - **广告 Pixel：** Google Ads Conversion — 客户已经在投放（或投放过）付费广告，对营销预算不陌生
 
 **数字成熟度打分：** 4 / 6 （高 — 客户懂数字营销，redesign 谈预算时不必从零教育）
+
+### Redesign 时必须保留 / 重新安装的追踪代码
+
+客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。
+
+- Google Analytics 4
+- Google Ads Conversion
+
+我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 ## AI 时代可发现性 · GEO Readiness
 
@@ -317,6 +419,20 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - [缺失] `eeat_business_credentials` (10 分) — only 1/4 credentials found (license/QBCC) — need ≥2 of: ABN, license/QBCC, years-in-business, insurance
 
 > **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 30/100。」
+
+## 业务规模信号 · 内部筛选用
+
+**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
+
+- **规模信号汇总：** 大型客户特征
+- **客户分级：** `enterprise` — 大客户，要求多、决策慢，**与我们小批量模式不匹配**，建议跳过或转介给定制开发服务商
+- **建议定价档：** 不建议接（与我们小批量模式不匹配）；如果接，最低 $20K + 月度运营 $3K+
+
+**触发依据：**
+- Google 评价 221 条（≥200，成熟运营）
+- 网站页面数 439（≥300，复杂多服务体系）
+- GBP 多业务分类 4 个（多元化经营）
+- 已部署 2 个追踪工具
 
 ## 附录 · 数据出处
 

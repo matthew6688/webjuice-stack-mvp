@@ -10,12 +10,12 @@ audit_score: 70
 decision: "low_priority"
 audit_version: "2026-05-11-v1"
 fired_triggers: []
-visual_age: "slightly_outdated"
-visual_freshness: 5
-visual_trust: 6
-visual_conversion: 7
+visual_age: "outdated"
+visual_freshness: 4
+visual_trust: 5
+visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-10T21:58:22.932Z"
+generated_at: "2026-05-10T23:43:23.812Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -27,6 +27,15 @@ assets:
 # Brisbane Roof Restoration Experts · 现状审计与重构提议
 
 > **70/100** · low_priority · 行业：roofing · 地区：Brisbane · Google 评价：4.9★ （21 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
+
+**触发依据：**
+- low_priority audit decision (score 70)
+
+**下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
 ## 一、店家现状速览
 
@@ -45,14 +54,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The site has a functional layout with a clear lead capture form, but the visual presentation feels dated due to the use of drop shadows, generic stock photography, and a lack of authentic business imagery.
+> The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional image of a restoration expert.
 
-新鲜度 **5/10** · 信任度 **6/10** · 转化准备度 **7/10** · 设计年代 `slightly_outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- The form fields are comprehensive and relevant to the roofing industry (roof type, scope, age), which helps qualify leads.
-- The phone number is clearly visible in the header, which is crucial for local service businesses.
-- The layout is structured logically with a clear hero section and form placement.
+- The 'Get a FREE Quote' form is visible above the fold, which is excellent for capturing leads immediately.
+- The use of a red accent color for the CTA button provides a clear visual cue for action.
+- The background image shows a relevant local style (Queenslander home), which helps with local relevance.
 
 ## 四、客户在 Google 上怎么说
 
@@ -84,6 +93,31 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
+### 关键问题 · 1 项（立刻在伤害成交）
+
+### 关键 · White text on light sky background is illegible
+
+**技术事实**
+
+The main headline 'Brisbane Roof Restoration Specialists' is white text placed directly over a bright, washed-out sky background in the hero image.
+
+**普通话翻译**
+
+标题文字是白色的，背景也是亮白色的天空，导致文字几乎看不清。
+
+**对客户的影响**
+
+访客在 3 秒内无法看清您提供什么服务，会直接关闭网页。这会导致高达 50% 的潜在访客流失，因为他们认为网站不专业或已损坏。
+
+**正确长啥样**
+
+A dark semi-transparent overlay (black or navy at 40-60% opacity) behind the text, or dark charcoal text with a drop shadow, ensuring high contrast against the background.
+
+**Redesign 怎么改**
+
+Apply a CSS linear-gradient overlay over the hero image to darken the background, ensuring the white text meets WCAG AA contrast standards.
+
+
 ### 主要问题 · 3 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
@@ -101,57 +135,57 @@ title='# Brisbane Roof Restoration Specialists' contains-name=true contains-nich
 Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
 
 
-### 主要 · Generic stock photo hurts local trust
+### 主要 · Form fields are too dense and overwhelming
 
 **技术事实**
 
-The hero background image is a generic stock photo of a house with a blue roof, overlaid with a heavy dark gradient. It does not appear to be a photo of the business owner, their team, or a specific job site in Brisbane.
+The 'Get a FREE Quote' form is a dense block with small input fields, tight padding, and multiple radio button groups (Roof type, Scope, Work Type, Roof age) stacked closely together.
 
 **普通话翻译**
 
-现在的背景图看起来像是网上随便找的素材，不像是一家真实的本地公司。客户会觉得你们可能不是本地人，或者不专业。
+表格设计得太拥挤，输入框太小，问题太多，看起来像是在填复杂的表格，让人不想填。
 
 **对客户的影响**
 
-本地服务行业非常依赖信任感。如果客户第一眼觉得网站不真实，他们很可能会直接关掉页面去找竞争对手。使用真实照片可以将信任度提高 20-30%。
+复杂的表格会让访客感到压力。如果表格太长，约 30% 的用户会放弃填写。简化表格可以显著提高客户咨询的数量。
 
 **正确长啥样**
 
-A high-quality, authentic photo of the actual business owner or a team member standing in front of a branded van or a completed roof project in a recognizable Brisbane suburb.
+A simplified form with larger, taller input fields (48px+ height), more whitespace between sections, and fewer initial questions (Name, Phone, Email only) with the rest hidden or optional.
 
 **Redesign 怎么改**
 
-Replace the stock photo with a professional headshot of the owner or a 'before and after' split image of a real local project. Remove the heavy dark overlay to let the image breathe.
+Increase input field height to 50px, add 20px padding inside fields, and reduce the initial visible fields to just Name, Phone, and Email to lower the barrier to entry.
 
 
-### 主要 · Form looks like a pop-up overlay
+### 主要 · Logo looks like a placeholder or amateur graphic
 
 **技术事实**
 
-The contact form is placed inside a semi-transparent dark box with a drop shadow, floating on top of the hero image. It looks like a modal or a pop-up rather than part of the page structure.
+The logo in the top left is a thin line-art house outline with red text 'BRISBANE' and smaller grey text 'roof restoration experts' underneath, lacking a solid shape or professional weight.
 
 **普通话翻译**
 
-这个表格看起来像是一个可以关闭的广告弹窗，而不是网站的一部分。用户可能会下意识地忽略它，或者觉得它很烦人。
+Logo 看起来像是一个简单的线条画，不够稳重，无法体现专业屋顶修复公司的实力和可靠性。
 
 **对客户的影响**
 
-这种设计会让用户产生抵触心理。如果表格看起来像广告，填写率可能会下降 15-20%。把它变成页面的一部分，会让用户更愿意留下联系方式。
+信任是本地服务的关键。如果 Logo 看起来不专业，客户会怀疑您的施工质量。一个专业的 Logo 能增加 20% 以上的品牌信任度。
 
 **正确长啥样**
 
-A clean, white, solid background form integrated into the layout (e.g., a two-column layout with text on the left and form on the right), or a distinct section below the fold with a clear heading.
+A solid, bold icon (perhaps a stylized roof or shield) with clear, legible typography. The logo should look substantial and trustworthy.
 
 **Redesign 怎么改**
 
-Remove the semi-transparent background and drop shadow. Use a solid white card with a subtle border or a distinct background color that contrasts with the hero image, ensuring the form feels like a permanent part of the page.
+Redesign the logo to use a solid vector icon and a bold sans-serif font. Ensure the logo is legible at small sizes and conveys stability.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace the generic stock photo with an authentic image of the team or a local project to build immediate trust.
-2. [视觉] 2. Redesign the contact form to look like a permanent part of the page (solid background, no drop shadows) rather than a pop-up overlay.
-3. [视觉] 3. Update the typography by removing drop shadows and improving the hierarchy between the headline and sub-headline.
+1. [视觉] 1. Fix hero text contrast by adding a dark overlay so the headline is instantly readable.
+2. [视觉] 2. Simplify the lead form by increasing field size and reducing initial questions to reduce friction.
+3. [视觉] 3. Redesign the logo to be bolder and more professional to build immediate trust.
 4. [评论] Feature the '24-hour quote' metric prominently in the header to address urgency.
 5. [评论] Use Loren's review to create a dedicated 'Minor Repairs' section to capture leads who feel ignored by larger competitors.
 6. [评论] Highlight the 'home value' improvement in before/after gallery captions.
@@ -170,20 +204,21 @@ Remove the semi-transparent background and drop shadow. Use a solid white card w
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **69/100** |
+| 性能 (Performance) | **64/100** |
 | 可访问性 (Accessibility) | 95/100 |
 | 最佳实践 (Best Practices) | 100/100 |
 | SEO | 100/100 |
 
-**Lab 关键指标：** LCP `15.5s` · FCP `2.0s` · CLS `0.000` · TBT `80ms`
+**Lab 关键指标：** LCP `15.6s` · FCP `2.0s` · CLS `0.000` · TBT `154ms`
 
-**Google 建议的优化项（按节省时间排序，前 1）：**
+**Google 建议的优化项（按节省时间排序，前 2）：**
 
-- **Reduce unused JavaScript** — 节省 300ms · 节省 54KB
+- **Reduce unused JavaScript** — 节省 300ms · 节省 55KB
+- **Initial server response time was short** — 节省 79ms
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 87 · A11y 92 · Best Practices 100 · SEO 100
+**Lighthouse 分数：** Performance 84 · A11y 92 · Best Practices 100 · SEO 100
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -199,6 +234,35 @@ Remove the semi-transparent background and drop shadow. Use a solid white card w
 - **Blog 板块：** 未发现 — 没有内容营销基础
 - **社交媒体链接：** 网站上没有 social 链接 — GBP 流量进来后没有第二触点
 
+## 联系表单与防垃圾设置
+
+客户能不能 *方便地* 把信息留下来 = 直接的转化路径。这一段审视所有 `<form>` 元素的可用性 + 防 spam 配置。
+
+### 表单 · 18 字段（摩擦：高（≥7 字段，会显著降低转化））
+
+- **字段构成：** Name:*(text,必填) · Phone:*(tel,必填) · Email:*(email,必填) · Location:*(text,必填) · Tile Roof(radio) · Metal Roof(radio) · Other(radio) · Full roof(radio) · Partial area(radio) · Other(radio) · Full restoration(radio) · Repairs only(radio) · Not sure(radio) · Under 10 yrs(radio) · 10–20 yrs(radio) · 20+ yrs(radio) · Not sure(radio) · Description:*(textarea,必填)
+- **必填字段数：** 5/18
+- **常见关键字段：** email · phone · message
+- **提交按钮：** 「Request Quote」
+- **Honeypot 防 spam：** 未检测到
+
+**未检测到任何 anti-spam 措施**（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 表单极容易被自动机器人灌爆，垃圾询盘会让客户对真实询盘麻木。redesign 时建议加 Cloudflare Turnstile（不可见，免费）。
+
+**Audit 总结：**
+
+- [关键] 表单字段数 18 — 远超行业标准 3-4 字段，会显著降低转化率
+- [中等] 表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险
+
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** 已配置
+- **DKIM (邮件签名)：** 已配置（selectors: mail）
+- **DMARC (策略)：** 已配置（policy: `none`）
+- **整体邮件投递信誉：** `strong` (SPF + DKIM + DMARC 齐全)
+
 ## 技术栈与营销基建
 
 从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
@@ -209,6 +273,14 @@ Remove the semi-transparent background and drop shadow. Use a solid white card w
 - **托管 / CDN 线索：** Cloudflare-fronted
 
 **数字成熟度打分：** 3 / 6 （中 — 已有基础设施，缺少深度运营）
+
+### Redesign 时必须保留 / 重新安装的追踪代码
+
+客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。
+
+- Google Ads Conversion
+
+我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 ## AI 时代可发现性 · GEO Readiness
 

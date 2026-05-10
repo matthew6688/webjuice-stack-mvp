@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:12:45.118Z",
+  "generatedAt": "2026-05-10T22:52:10.891Z",
   "entity_input": {
     "entityKey": "place_chiji0wdvdhekwsrsyzpzjow1uw",
     "latest": {
@@ -485,19 +485,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 46,
+          "performance": 43,
           "accessibility": 91,
           "best_practices": 54,
           "seo": 92
         },
         "lab_metrics": {
-          "lcp_ms": 24677.098542776337,
-          "fcp_ms": 2705.7029271053525,
+          "lcp_ms": 10582.552352837261,
+          "fcp_ms": 2705.7021910132776,
           "cls": 0.008345,
-          "tbt_ms": 626,
-          "tti_ms": 43624.72090637818,
-          "speed_index_ms": 13769.439230538017,
-          "transfer_size_bytes": 9720167
+          "tbt_ms": 768.5000000000009,
+          "tti_ms": 51265.2698474987,
+          "speed_index_ms": 14019.030532139734,
+          "transfer_size_bytes": 9519073
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -512,8 +512,8 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 13650,
-            "savings_bytes": 4336859
+            "savings_ms": 3600,
+            "savings_bytes": 4294799
           },
           {
             "id": "unused-css-rules",
@@ -526,19 +526,19 @@
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 49,
+          "performance": 42,
           "accessibility": 88,
           "best_practices": 58,
-          "seo": 85
+          "seo": 92
         },
         "lab_metrics": {
-          "lcp_ms": 2366.542384438018,
-          "fcp_ms": 726.2940442709607,
+          "lcp_ms": 3366.0752624996294,
+          "fcp_ms": 726.7086865186927,
           "cls": 0.010918,
-          "tbt_ms": 1151.500000000001,
-          "tti_ms": 10766.846626841008,
-          "speed_index_ms": 3855.5030552112003,
-          "transfer_size_bytes": 10327626
+          "tbt_ms": 1375.000000000002,
+          "tti_ms": 11480.506239196475,
+          "speed_index_ms": 4755.919039684553,
+          "transfer_size_bytes": 11521572
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -553,25 +553,109 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 920,
-            "savings_bytes": 3745838
+            "savings_ms": 1480,
+            "savings_bytes": 5009960
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 90,
+            "savings_bytes": null
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
             "savings_ms": 0,
-            "savings_bytes": 63341
+            "savings_bytes": 63339
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 83676
+    "latency_ms": 77413
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 0,
+    "contact_form_count": 0,
+    "forms": [],
+    "captchas_detected": [],
+    "has_any_captcha": false,
+    "has_any_anti_spam": false,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "未发现联系/报价表单 — 客户只能通过电话或邮件触达，转化路径单一"
+      },
+      {
+        "severity": "medium",
+        "text": "表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "roofshield.com.au",
+    "is_au_domain": true,
+    "domain_age_days": 8449,
+    "domain_age_years": 23,
+    "domain_age_source": "wayback_first_snapshot_proxy",
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2025-10-17T01:45:14.000Z",
+    "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+    "wayback": {
+      "snapshot_count": 149,
+      "first_snapshot": "2003-03-24",
+      "last_snapshot": "2026-03-05",
+      "snapshots_per_year": {
+        "2003": 8,
+        "2004": 4,
+        "2005": 6,
+        "2006": 2,
+        "2007": 2,
+        "2008": 4,
+        "2009": 7,
+        "2010": 4,
+        "2011": 1,
+        "2012": 9,
+        "2013": 8,
+        "2014": 8,
+        "2015": 4,
+        "2016": 7,
+        "2017": 3,
+        "2018": 11,
+        "2019": 9,
+        "2020": 7,
+        "2021": 8,
+        "2022": 6,
+        "2023": 7,
+        "2024": 9,
+        "2025": 12,
+        "2026": 3
+      }
+    },
+    "days_since_last_wayback_snapshot": 67,
+    "days_since_first_wayback_snapshot": 8449,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 redirect=_symqsnpvc.sdmarc.net",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1; p=none; pct=100; rua=mailto:a.ymqsnpvc@sdmarc.net",
+      "dmarc_policy": "none",
+      "dkim_selectors_found": [
+        "default",
+        "selector1",
+        "s1",
+        "s2"
+      ],
+      "posture": "strong"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chiji0wdvdhekwsrsyzpzjow1uw",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:12:45.118Z",
+    "audited_at": "2026-05-10T22:52:10.891Z",
     "audit_score": 52,
     "dimension_scores": {
       "gbp": 37,

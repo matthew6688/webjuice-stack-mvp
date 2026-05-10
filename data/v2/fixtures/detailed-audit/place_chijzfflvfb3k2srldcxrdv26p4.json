@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:53:04.956Z",
+  "generatedAt": "2026-05-10T23:36:24.399Z",
   "entity_input": {
     "entityKey": "place_chijzfflvfb3k2srldcxrdv26p4",
     "latest": {
@@ -423,19 +423,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 97,
+          "performance": 99,
           "accessibility": 88,
           "best_practices": 96,
           "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 2448,
-          "fcp_ms": 1473,
-          "cls": 0.0022429999999999998,
+          "lcp_ms": 2026,
+          "fcp_ms": 1351,
+          "cls": 0.002245,
           "tbt_ms": 0,
-          "tti_ms": 2455.5,
-          "speed_index_ms": 3003.8350480000013,
-          "transfer_size_bytes": 3803885
+          "tti_ms": 2063.5,
+          "speed_index_ms": 2894.6998219999814,
+          "transfer_size_bytes": 3804080
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -450,8 +450,8 @@
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 300,
-            "savings_bytes": 50674
+            "savings_ms": 150,
+            "savings_bytes": 50664
           }
         ]
       },
@@ -464,13 +464,13 @@
           "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 781,
-          "fcp_ms": 321,
+          "lcp_ms": 784,
+          "fcp_ms": 324,
           "cls": 0.003445,
           "tbt_ms": 0,
-          "tti_ms": 791,
-          "speed_index_ms": 832.1395227587419,
-          "transfer_size_bytes": 3885424
+          "tti_ms": 794,
+          "speed_index_ms": 883.5020308540269,
+          "transfer_size_bytes": 3885248
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -492,12 +492,410 @@
       }
     },
     "failures": [],
-    "latency_ms": 47869
+    "latency_ms": 45589
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 3,
+    "contact_form_count": 3,
+    "forms": [
+      {
+        "action": "https://weatherproof.net.au/",
+        "method": "get",
+        "field_count": 10,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[name]",
+            "required": true,
+            "placeholder": "Full Name*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Full Name**"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "fields[email]",
+            "required": true,
+            "placeholder": "Email*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email**"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[text_suburb]",
+            "required": true,
+            "placeholder": "Suburb*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "fields[tel_phone-number]",
+            "required": true,
+            "placeholder": "Phone Number*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Cleaning"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Painting"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Repair"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Restoration"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "fields[jroujx]",
+            "required": false,
+            "placeholder": "Write your message here",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Write your message here"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[hpname]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": "HP Name"
+          }
+        ],
+        "required_count": 4,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Send Message",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      },
+      {
+        "action": "https://weatherproof.net.au/",
+        "method": "get",
+        "field_count": 10,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[name]",
+            "required": true,
+            "placeholder": "Full Name*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Full Name**"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "fields[email]",
+            "required": true,
+            "placeholder": "Email*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email**"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[text_suburb]",
+            "required": true,
+            "placeholder": "Suburb*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "fields[tel_phone-number]",
+            "required": true,
+            "placeholder": "Phone Number*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Cleaning"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Painting"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Repair"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "fields[ukunyd][]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Roof Restoration"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "fields[jroujx]",
+            "required": false,
+            "placeholder": "Write your message here",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Write your message here"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[hpname]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": "HP Name"
+          }
+        ],
+        "required_count": 4,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Send Message",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      },
+      {
+        "action": "https://weatherproof.net.au/",
+        "method": "get",
+        "field_count": 8,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[name]",
+            "required": true,
+            "placeholder": "Full Name*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Full Name**"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[veuxib]",
+            "required": true,
+            "placeholder": "Last Name*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last Name**"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "fields[email]",
+            "required": true,
+            "placeholder": "Email*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email**"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "fields[tel_phone-number]",
+            "required": true,
+            "placeholder": "Phone Number*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[text_suburb]",
+            "required": true,
+            "placeholder": "Suburb*",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "fields[qmfzky]",
+            "required": true,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "What Service are you looking for?*"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "fields[jroujx]",
+            "required": false,
+            "placeholder": "Write your message here",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Write your message here"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "fields[hpname]",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": "HP Name"
+          }
+        ],
+        "required_count": 6,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Send Enquiry",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      }
+    ],
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      },
+      {
+        "id": "recaptcha_v3",
+        "name": "reCAPTCHA v3 (invisible)",
+        "friction": "low"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "表单字段数 10 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "high",
+        "text": "表单字段数 10 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "high",
+        "text": "表单字段数 8 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "weatherproof.net.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2025-12-16T00:16:38.000Z",
+    "registrar": "Domain Directors Pty Ltd trading as Instra",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "The operation was aborted due to timeout"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 include:_spf.weatherproof_net_au._d.easydmarc.pro -all",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1;p=quarantine;pct=100;rua=mailto:be3261d3c5@rua.easydmarc.com,mailto:rua@dmarc.brevo.com;ruf=mailto:be3261d3c5@ruf.easydmarc.com;ri=86400;fo=1;",
+      "dmarc_policy": "quarantine",
+      "dkim_selectors_found": [
+        "mail",
+        "selector1",
+        "selector2"
+      ],
+      "posture": "strong"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chijzfflvfb3k2srldcxrdv26p4",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:53:04.956Z",
+    "audited_at": "2026-05-10T23:36:24.399Z",
     "audit_score": 61,
     "dimension_scores": {
       "gbp": 61,
@@ -555,7 +953,7 @@
         },
         {
           "id": "no_console_errors",
-          "rationale": "2 console errors",
+          "rationale": "3 console errors",
           "max": 5,
           "plain_language": "你的网站在浏览器控制台里有报错。访客看不到这些错误，但报错的脚本通常就是导致按钮点不动 / 表单提交不了 / 图片加载失败的原因。",
           "customer_impact": "一个失败的 click-to-call 按钮等于这次访问完全白来。每月成百上千次访问，哪怕只有 1% 受影响也是几十次失之交臂的咨询。"
@@ -704,7 +1102,7 @@
             "earned": 0,
             "max": 5,
             "hit": false,
-            "rationale": "2 console errors"
+            "rationale": "3 console errors"
           },
           {
             "id": "favicon_and_meta",

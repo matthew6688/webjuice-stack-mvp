@@ -36,6 +36,21 @@ Roofing Pty Ltd · 现状审计与重构提议</h1>
 <p><strong>23/100</strong> · strong_redesign · 行业：roofing ·
 地区：Brisbane · Google 评价：4.5★ （35 条）</p>
 </blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>A</code> 全攻 — 完整 OD redesign +
+个性化销售流程</p>
+<p><strong>触发依据：</strong> - strong_redesign + 35 评论 + 4.5★ - 评论
+trust signal 强</p>
+<p><strong>产品档位：</strong> <code>T2</code> 多页站</p>
+<ul>
+<li>业务中等复杂度 / 中等口碑 / 中等数字成熟度 — 多页架构合适</li>
+<li>35 评论 = 中等规模运营</li>
+<li>2 个业务分类 = 需要多页面分流</li>
+</ul>
+<p><strong>建议报价：</strong> 一次性 $3-6K</p>
+<p><strong>下一步行动：</strong> 跑完整 Open Design redesign brief +
+个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3
+次跟进。报价主推 多页站。</p>
 <h2 id="一店家现状速览">一、店家现状速览</h2>
 <p><strong>审计结论：</strong> audit_score=23 → strong_redesign ·
 weakest: ux_conversion 0, content 10 · fired: mobile_broken, no_https,
@@ -63,7 +78,7 @@ href="http://www.queenslandroofing.com.au/">http://www.queenslandroofing.com.au/
 <blockquote>
 <p>The provided screenshots are completely blank white images,
 indicating a critical technical failure or missing content that prevents
-any design evaluation.</p>
+any user interaction.</p>
 </blockquote>
 <p>新鲜度 <strong>1/10</strong> · 信任度 <strong>1/10</strong> ·
 转化准备度 <strong>1/10</strong> · 设计年代
@@ -141,21 +156,19 @@ phone_visible_above_fold</h3>
 completely blank</h3>
 <p><strong>技术事实</strong></p>
 <p>Both the desktop and mobile screenshots provided are entirely white
-rectangles with no visible text, images, buttons, or navigation
-elements.</p>
+with no visible text, images, navigation, or logos.</p>
 <p><strong>普通话翻译</strong></p>
-<p>您提供的图片完全是空白的，我看不到任何网站内容。这就像一家商店的橱窗被白纸遮住了，路人根本不知道里面卖什么。</p>
+<p>您提供的网站截图完全是空白的，没有任何内容。</p>
 <p><strong>对客户的影响</strong></p>
-<p>如果网站真的显示为空白，您的潜在客户流失率是
-100%。没有人会拨打一个他们无法看到电话号码的公司的电话。这直接导致所有广告费和自然搜索流量浪费。</p>
+<p>如果网站是空白的，100%
+的访客会立即离开。这意味着您完全失去了所有潜在客户，没有任何收入机会。</p>
 <p><strong>正确长啥样</strong></p>
-<p>A fully rendered homepage with a clear headline, a visible phone
-number in the header, and a hero image of a roof or team member.</p>
+<p>A fully rendered homepage with a visible header, navigation menu,
+hero image of a roof, and a clear ‘Get a Quote’ button.</p>
 <p><strong>Redesign 怎么改</strong></p>
-<p>Verify the website URL and hosting status immediately. If the site is
-live, ensure the screenshots capture the actual rendered HTML/CSS. If
-the site is blank, this is a server-side emergency requiring immediate
-IT intervention.</p>
+<p>Verify the source images are uploaded correctly. If the website is
+actually blank, this is a server/hosting issue that must be resolved
+before any design work can begin.</p>
 <h3 id="主要问题-6-项影响转化的明显短板">主要问题 · 6
 项（影响转化的明显短板）</h3>
 <h3 id="主要-click_to_call_link">主要 · click_to_call_link</h3>
@@ -224,12 +237,10 @@ Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / 
 <h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
 的发力点（综合视觉 + 评论数据）</h2>
 <ol type="1">
-<li>[视觉] 1. Resolve the technical issue causing the blank display
+<li>[视觉] 1. Resolve the missing content/blank page issue
 immediately.</li>
-<li>[视觉] 2. Re-capture screenshots of the actual live website for a
-proper audit.</li>
-<li>[视觉] 3. Ensure the site loads correctly on both mobile and desktop
-browsers.</li>
+<li>[视觉] 2. Re-upload valid screenshots for audit.</li>
+<li>[视觉] 3. Verify server status.</li>
 <li>[评论] Feature the ‘3-day replacement’ statistic prominently to
 address customer anxiety about project timelines.</li>
 <li>[评论] Use the Cyclone Debbie repair story as a case study for
@@ -257,6 +268,23 @@ turnaround / thorough inspection and quoting）—
 <li><strong>社交媒体链接：</strong> 网站上没有 social 链接 — GBP
 流量进来后没有第二触点</li>
 </ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> ⚠ 未配置 —
+客户如果用域名邮箱发邮件，进垃圾箱的概率高</li>
+<li><strong>DKIM (邮件签名)：</strong> ⚠ 常见 selector 未发现 DKIM
+配置（不一定确凿，但提示有问题）</li>
+<li><strong>DMARC (策略)：</strong> ⚠ 未配置 — 域名易被仿冒做钓鱼</li>
+<li><strong>整体邮件投递信誉：</strong> <code>none</code> (全无配置 —
+邮件营销 / cold outreach 几乎不可能投递成功)</li>
+</ul>
+<blockquote>
+<p>这是后续 <strong>「Social Media Management 月度包」</strong> 或
+<strong>「Cold Outreach 启动包」</strong> 的前置条件 —— 邮件 DNS
+没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。</p>
+</blockquote>
 <h2 id="技术栈与营销基建">技术栈与营销基建</h2>
 <p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
 <ul>

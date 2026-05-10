@@ -11,12 +11,12 @@ decision: "strong_redesign"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "no_https"
-visual_age: "slightly_outdated"
+visual_age: "outdated"
 visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "moderate"
-generated_at: "2026-05-10T21:58:22.282Z"
+generated_at: "2026-05-10T23:43:23.195Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -28,6 +28,24 @@ assets:
 # Roofshield Roof Restorations · 现状审计与重构提议
 
 > **52/100** · strong_redesign · 行业：roofing · 地区：Brisbane · Google 评价：4.4★ （51 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `A` 全攻 — 完整 OD redesign + 个性化销售流程
+
+**触发依据：**
+- strong_redesign + 51 评论 + 4.4★
+
+**产品档位：** `T2` 多页站
+
+- 业务中等复杂度 / 中等口碑 / 中等数字成熟度 — 多页架构合适
+- 51 评论 = 中等规模运营
+- 现有 153 页内容可迁移
+- 2 个业务分类 = 需要多页面分流
+
+**建议报价：** 一次性 $3-6K
+
+**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页站。
 
 ## 一、店家现状速览
 
@@ -48,14 +66,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The website uses a standard, functional layout with a generic stock photo and a heavy visual overlay that obscures the service being offered, making it feel like a template rather than a specialized local business.
+> The website uses a standard, slightly dated template with a generic stock photo and a cluttered navigation menu that distracts from the primary call to action.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `slightly_outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- The logo is clear and professional, with a recognizable brand mark.
-- The headline text is large and legible, clearly stating the service.
-- The color scheme (red, white, dark blue) is appropriate for the roofing industry and conveys trust.
+- The logo is clear and legible, establishing brand identity.
+- The value proposition text ('Roof Restorations | Roof Painting...') clearly lists the services offered.
+- The 'Get Your Free Quote' button is present and visible above the fold.
 
 ## 四、客户在 Google 上怎么说
 
@@ -116,27 +134,27 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · Hero image obscured by dark overlay
+### 关键 · Hero text is hard to read against background
 
 **技术事实**
 
-The main hero image (a house with a roof) is covered by a heavy, dark blue/black gradient overlay that makes the photo look dim and indistinct.
+The large red headline 'ROOFSHIELD - ROOF RESTORATION' and the white subtext are placed directly over a busy aerial photo of a house. The red text blends with the reddish tones of the roof tiles, and the white text lacks sufficient contrast against the bright sky and white walls.
 
 **普通话翻译**
 
-您的主页背景图被一层深色滤镜盖住了，导致原本漂亮的屋顶照片看起来很暗，看不清细节。
+大标题文字直接压在复杂的背景图上，导致文字颜色（红色和白色）与背景（屋顶和天空）混在一起，很难看清。
 
 **对客户的影响**
 
-客户在搜索屋顶服务时，第一反应是看“效果”。图片太暗会让客户觉得您的工作成果不明显，或者网站看起来像是一个通用的模板，而不是专业的屋顶公司。这可能导致客户在 3 秒内离开，去寻找那些展示清晰、明亮案例的竞争对手。
+访客在几秒钟内无法看清您提供什么服务，会直接关闭网页。这会导致高达 40-60% 的潜在访客流失，因为他们觉得网站看起来不专业或难以阅读。
 
 **正确长啥样**
 
-A bright, high-contrast photo of a finished roof restoration with no dark overlay, or a very subtle gradient only at the bottom to ensure text readability.
+A dark semi-transparent overlay (e.g., black at 40% opacity) behind the text, or a solid dark background section for the headline to ensure the white text pops. The red accent should be reserved for buttons, not large body text.
 
 **Redesign 怎么改**
 
-Remove the dark overlay. Use a high-quality, bright photo of a completed roof restoration. Ensure the text is legible by using a drop shadow or a semi-transparent white text box, rather than darkening the whole image.
+Apply a dark gradient overlay to the hero image to ensure the white headline text has a contrast ratio of at least 7:1. Move the red color to the CTA buttons instead of the headline.
 
 
 ### 主要问题 · 5 项（影响转化的明显短板）
@@ -171,80 +189,80 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Generic stock photo instead of real work
+### 主要 · Generic stock photo lacks local relevance
 
 **技术事实**
 
-The hero image appears to be a generic stock photo of a suburban house, not a specific project completed by Roofshield in Brisbane.
+The main banner image is a generic aerial shot of a suburban house with a metal roof. It looks like a stock photo rather than a real project completed by Roofshield in Brisbane.
 
 **普通话翻译**
 
-主页使用的是一张通用的网络图片，而不是您实际完成的屋顶修复案例。这让网站看起来缺乏真实感。
+首页的大图看起来像是网上下载的通用素材，而不是你们在布里斯班实际做过的工程案例。
 
 **对客户的影响**
 
-本地客户更信任那些展示真实案例的公司。使用通用图片会让客户怀疑您的实际经验。研究表明，展示真实客户案例可以将转化率提高 20-30%，因为客户能看到“别人家”的效果，从而建立信任。
+本地客户更信任有真实案例展示的公司。使用通用图片会让客户怀疑你们是否是本地公司，从而降低信任度，导致他们选择竞争对手。
 
 **正确长啥样**
 
-A real photo of a roof restoration project completed by the business, ideally with recognizable Brisbane architecture or landmarks, or a photo of the team at work.
+A high-quality photo of a real Roofshield team member working on a roof in a recognizable Brisbane suburb, or a 'Before & After' slider of a local restoration project.
 
 **Redesign 怎么改**
 
-Replace the stock photo with a high-resolution, real photo of a recent roof restoration project in Brisbane. Add a caption or badge saying 'Restored in [Suburb Name]' to build local relevance.
+Replace the stock image with a real photo of a recent job site in Brisbane. Add a caption like 'Restoring roofs in [Suburb Name]' to anchor the location.
 
 
-### 主要 · Cluttered navigation with too many links
+### 主要 · Navigation menu is too crowded and distracting
 
 **技术事实**
 
-The top navigation bar has 6 main links plus a dropdown, plus a secondary row of 4 links below it. This creates a 'menu overload'.
+The top navigation bar contains 8-9 menu items (Roofshield, Process, Repairs, About, Case studies, Gallery, Blog, Contact) spread across two rows, plus a 'Get Quote' button. The text is small and dense.
 
 **普通话翻译**
 
-顶部的导航栏链接太多，让客户不知道该点哪里。对于急需屋顶服务的客户来说，他们只想快速找到联系方式或报价按钮。
+顶部的导航菜单选项太多，排成了两行，显得非常拥挤，让用户不知道该点哪里。
 
 **对客户的影响**
 
-过多的导航选项会让客户感到困惑，增加跳出率。简化导航并突出“获取报价”按钮，可以直接引导客户采取行动，预计可提高 15-20% 的咨询转化率。
+过多的选项会让访客感到困惑，分散他们对‘获取报价’这一核心目标的注意力。简化菜单可以引导用户更快地联系您。
 
 **正确长啥样**
 
-A simplified navigation with 3-4 key links (Services, About, Contact) and a prominent, high-contrast 'Get a Quote' or 'Call Now' button in the top right.
+A simplified menu with max 4-5 items (Services, About, Gallery, Contact). Secondary items like 'Blog' or 'Process' should be hidden in a dropdown or footer.
 
 **Redesign 怎么改**
 
-Reduce the top navigation to 3-4 essential links. Move 'Case studies' and 'Gallery' to the footer or a secondary menu. Make the 'Get Your Free Quote' button a distinct, high-contrast element (e.g., red or orange) in the top right corner, separate from the nav links.
+Consolidate the menu. Keep only 'Services', 'Gallery', 'About', and 'Contact'. Move 'Blog' and 'Process' to the footer or a dropdown under Services.
 
 
 ### 主要 · Call-to-action buttons lack visual hierarchy
 
 **技术事实**
 
-The two buttons in the hero section ('Call Us Today' and 'Get Your Free Quote') are identical in style (white outline, same size).
+There are two buttons in the hero section: 'CALL US TODAY' and 'GET YOUR FREE QUOTE'. Both are identical in style (white outline, white text). There is no visual distinction between the primary and secondary action.
 
 **普通话翻译**
 
-两个行动按钮（“致电”和“获取报价”）看起来完全一样，没有主次之分。客户不知道应该优先点击哪一个。
+两个按钮长得一模一样，用户无法一眼看出哪个是最重要的操作。
 
 **对客户的影响**
 
-缺乏视觉层级的按钮会让客户犹豫，降低点击率。突出主要行动按钮（如“获取报价”）可以引导客户完成转化，预计可提高 10-15% 的按钮点击率。
+缺乏视觉引导会让用户犹豫不决。突出主要按钮（如获取报价）可以显著提高转化率，预计可提升 10-20% 的点击率。
 
 **正确长啥样**
 
-One primary button (e.g., 'Get Your Free Quote') filled with a bold color (red/orange) and one secondary button (e.g., 'Call Us') as an outline or text link.
+One solid, high-contrast button (e.g., bright red or orange) for the primary action ('Get Free Quote'), and a secondary outlined button for the less critical action ('Call Us').
 
 **Redesign 怎么改**
 
-Make 'Get Your Free Quote' a solid, high-contrast button (matching the brand red). Make 'Call Us Today' a secondary outline button or a simple text link with a phone icon. This creates a clear visual path for the user.
+Make the 'Get Your Free Quote' button a solid red/orange fill with white text to make it pop. Keep 'Call Us Today' as an outlined button.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace the dark, generic hero image with a bright, real photo of a completed roof restoration in Brisbane.
-2. [视觉] 2. Simplify the navigation and make the 'Get Your Free Quote' button the most prominent element on the page.
-3. [视觉] 3. Establish a clear visual hierarchy for the call-to-action buttons (primary vs. secondary).
+1. [视觉] 1. Improve hero text legibility by adding a dark overlay to the background image.
+2. [视觉] 2. Replace the generic stock photo with a real local project image to build trust.
+3. [视觉] 3. Simplify the navigation menu and create a clear visual hierarchy for the CTA buttons.
 4. [评论] Highlight the 'photos at each visit' feature in the service process section to address communication concerns.
 5. [评论] Use the 'good value' and 'detailed explanation' quotes to counter price sensitivity and build trust.
 6. [评论] Address warranty concerns proactively in an FAQ section, given the negative review about hoops to jump through.
@@ -263,21 +281,21 @@ Make 'Get Your Free Quote' a solid, high-contrast button (matching the brand red
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **46/100** |
+| 性能 (Performance) | **43/100** |
 | 可访问性 (Accessibility) | 91/100 |
 | 最佳实践 (Best Practices) | 54/100 |
 | SEO | 92/100 |
 
-**Lab 关键指标：** LCP `24.7s` · FCP `2.7s` · CLS `0.008` · TBT `626ms`
+**Lab 关键指标：** LCP `10.6s` · FCP `2.7s` · CLS `0.008` · TBT `769ms`
 
 **Google 建议的优化项（按节省时间排序，前 2）：**
 
-- **Reduce unused JavaScript** — 节省 13650ms · 节省 4235KB
+- **Reduce unused JavaScript** — 节省 3600ms · 节省 4194KB
 - **Reduce unused CSS** — 节省 150ms · 节省 52KB
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 49 · A11y 88 · Best Practices 58 · SEO 85
+**Lighthouse 分数：** Performance 42 · A11y 88 · Best Practices 58 · SEO 92
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -311,6 +329,18 @@ Make 'Get Your Free Quote' a solid, high-contrast button (matching the brand red
 - **整体活跃度：** 活跃（30 天内有更新） （最近一次更新 1 天前）
 - **Blog 板块：** 有，共 1 篇文章 
 - **社交媒体链接：** 网站上引用了 2 个平台 — facebook, linkedin
+
+## 域名历史与邮件信誉
+
+- **域名"在线已"约：** 23 年（Wayback 首次快照 2003-03-24 起算（.au 域名无公开创建日期））— 老域名 = 多年 SEO 资产，redesign 时 redirect map 必须做对
+- **Wayback Machine 快照：** 149 条（2003-03-24 → 2026-03-05）
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** 已配置
+- **DKIM (邮件签名)：** 已配置（selectors: default, selector1, s1, s2）
+- **DMARC (策略)：** 已配置（policy: `none`）
+- **整体邮件投递信誉：** `strong` (SPF + DKIM + DMARC 齐全)
 
 ## 技术栈与营销基建
 
@@ -347,6 +377,18 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - [缺失] `faq_qa_pattern` (10 分) — 0 question-style heading(s) found (Q&A format helps AI extraction)
 
 > **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 55/100。」
+
+## 业务规模信号 · 内部筛选用
+
+**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
+
+- **规模信号汇总：** 小型客户特征
+- **客户分级：** `small` — 小型，符合我们标准产品包定位
+- **建议定价档：** 标准包 $3-6K（符合我们核心产品）
+
+**触发依据：**
+- Google 评价 51 条（≥50，有规模基础）
+- 网站页面数 153（≥100，中等复杂度）
 
 ## 附录 · 数据出处
 

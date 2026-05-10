@@ -1,68 +1,68 @@
 {
   "model": "qwen3.6:27b",
   "candidateId": "ollama-qwen3.6-27b-nothink",
-  "latencyMs": 217546,
+  "latencyMs": 198788,
   "parsedJson": {
     "freshness_score": 8,
     "trust_score": 6,
     "conversion_score": 5,
     "design_age_estimate": "modern",
-    "summary": "The visual design is modern and clean, but the content strategy is confusing for a roofing business, and the primary call-to-action is a low-commitment email form rather than a direct contact method.",
+    "summary": "The website features a clean, modern aesthetic with good typography, but the lack of clear industry-specific imagery and a confusing primary call-to-action creates a disconnect for local customers seeking immediate roofing services.",
     "issues": [
       {
-        "id": "industry_mismatch",
+        "id": "missing_industry_visuals",
         "severity": "critical",
-        "title": "Content does not match roofing industry",
-        "what_observed": "The headline reads 'Transform Your Local Business with Expert Digital Marketing' and the subhead is 'Flood your Business with Partners'.",
-        "why_problem": "A customer searching for 'roofing Brisbane' is looking for a roofer, not a marketing agency. This text signals that the website belongs to an SEO company, not a contractor. The visitor will immediately bounce because they cannot find roofing services.",
-        "what_correct_looks_like": "Headlines should focus on the service provided, e.g., 'Brisbane's Trusted Roofing Experts' or 'Quality Roof Repairs & Installations'.",
-        "how_to_fix_in_redesign": "Replace all marketing-focused copy with service-focused copy. The hero section must clearly state that this is a roofing company offering repairs, maintenance, or installation.",
-        "plain_explanation": "网站上的文字是在推销“数字营销服务”，而不是推销“屋顶维修服务”。对于正在寻找屋顶工人的客户来说，这就像走进一家理发店却看到卖电脑的广告一样令人困惑。",
-        "customer_impact": "这是最严重的问题。如果客户搜索“布里斯班屋顶维修”却看到营销广告，他们会认为这是一个错误的网站并立即离开。这会导致几乎 100% 的潜在客户流失，因为网站没有展示他们需要的服务。"
+        "title": "Hero image fails to show roofing services",
+        "what_observed": "The main hero image on the right shows a generic office reception desk with a 'Hurricane Digital' logo on the wall, rather than a roof, a construction site, or a technician.",
+        "why_problem": "A user searching for 'roofing Brisbane' expects to see roofs or workers immediately. Seeing an office desk makes them question if they are on the right site or if this is just a generic marketing agency that doesn't understand the trade. It breaks the immediate visual confirmation of the service.",
+        "what_correct_looks_like": "A high-quality photo of a completed roof project, a team member in safety gear on a roof, or a split screen showing a 'before and after' of a roof repair.",
+        "how_to_fix_in_redesign": "Replace the office reception image with a high-resolution, authentic photo of a roofing project or the team at work to instantly validate the service offering.",
+        "plain_explanation": "网站的主图展示的是办公室前台，而不是屋顶或施工场景。对于寻找屋顶维修服务的客户来说，这让他们无法一眼确认你们就是做屋顶生意的。",
+        "customer_impact": "访客在 8 秒内就会判断网站是否相关。如果第一眼没看到屋顶，他们可能会认为你们不专业或找错了地方，导致跳出率增加，直接损失潜在客户。"
       },
       {
-        "id": "weak_primary_cta",
-        "severity": "critical",
-        "title": "Primary CTA is an email form, not a phone call",
-        "what_observed": "The main call-to-action button is 'Book Free Strategy Session' next to an 'Enter Your Email Here' input field.",
-        "why_problem": "Local service customers (especially in emergencies like roof leaks) want immediate answers. They do not want to fill out a form or book a 'strategy session' (which sounds like a sales pitch for marketing). They want to call a phone number or request a quote.",
-        "what_correct_looks_like": "A large, high-contrast button that says 'Get a Free Quote' or 'Call Now' with a clickable phone number (tel: link) visible above the fold.",
-        "how_to_fix_in_redesign": "Replace the email input and 'Strategy Session' button with a prominent 'Get a Free Quote' button and a visible phone number in the header.",
-        "plain_explanation": "主要按钮要求用户输入邮箱或预约“策略会议”，这对于急需修屋顶的客户来说太复杂了。他们想要的是直接打电话或获取报价，而不是填写表格。",
-        "customer_impact": "本地服务客户通常希望立即获得帮助。要求填写表格会增加摩擦，导致约 30-50% 的潜在客户因为嫌麻烦而放弃联系。直接提供电话号码或简单的报价表单能显著提高转化率。"
-      },
-      {
-        "id": "hidden_contact_info",
+        "id": "cta_mismatch",
         "severity": "major",
-        "title": "Phone number is not in the main navigation",
-        "what_observed": "The top navigation bar contains links (Home, About Us, Services) and buttons (Client Login, Speak to an Expert), but no phone number is visible in the header.",
-        "why_problem": "Trust is built on accessibility. If a user cannot see a phone number at the very top of the page, they may doubt the legitimacy of the business or assume it is difficult to reach.",
-        "what_correct_looks_like": "A phone number (e.g., (07) 3132 8715) should be placed in the top right corner of the header, next to the logo or navigation links.",
-        "how_to_fix_in_redesign": "Add the phone number to the header navigation, ensuring it is clickable on mobile devices.",
-        "plain_explanation": "网站顶部没有显示电话号码。对于本地服务业务来说，电话号码是建立信任的关键。如果客户第一眼看不到联系方式，他们可能会怀疑这家公司的可靠性。",
-        "customer_impact": "研究表明，如果网站头部没有明显的联系方式，用户的信任度会显著下降。在本地搜索中，约 70% 的用户会在 5 秒内决定是否继续浏览。缺少显眼的电话号码可能导致大量潜在客户流失。"
+        "title": "Primary CTA is a form, not a phone number",
+        "what_observed": "The primary call-to-action (CTA) in the hero section is a text input field ('Enter Your Email Here') and a button for a 'Free Strategy Session'. There is no visible phone number in the main hero area.",
+        "why_problem": "Local service customers (especially for urgent needs like roofing) often want to call immediately. Forcing them to type an email address creates friction. They may feel the business is trying to 'sell' them a strategy session rather than just fixing their roof.",
+        "what_correct_looks_like": "A prominent 'Call Now' button with a clickable phone number, or a 'Get a Free Quote' button that leads to a simple contact form, placed above the fold.",
+        "how_to_fix_in_redesign": "Replace the email input field with a large, high-contrast 'Call Now' button or a 'Get Instant Quote' button. Move the phone number to the top right of the hero section.",
+        "plain_explanation": "主要按钮要求用户输入邮箱预约“策略会议”，而不是直接提供电话号码。对于急需修屋顶的客户来说，这增加了沟通的障碍，让他们觉得你们更想推销服务而不是解决问题。",
+        "customer_impact": "本地搜索用户中，超过 50% 会在 30 分钟内拨打电话。如果找不到显眼的电话按钮，这些高意向客户可能会直接转向竞争对手，导致大量商机流失。"
       },
       {
-        "id": "generic_hero_image",
+        "id": "generic_headline",
+        "severity": "major",
+        "title": "Headline focuses on marketing, not the service",
+        "what_observed": "The headline reads 'Transform Your Local Business with Expert Digital Marketing' and 'Flood your Business with Partners'.",
+        "why_problem": "This language is aimed at business owners looking for marketing help, not homeowners looking for a roofer. It confuses the target audience. A homeowner doesn't care about 'digital marketing'; they care about a leak-free roof.",
+        "what_correct_looks_like": "A headline that speaks directly to the customer's problem, e.g., 'Brisbane's Trusted Roofing Experts' or 'Fast, Reliable Roof Repairs in Brisbane'.",
+        "how_to_fix_in_redesign": "Rewrite the headline to focus on the roofing service and the location (Brisbane). Use clear, benefit-driven language like 'Protect Your Home with Brisbane's Top Roofing Team'.",
+        "plain_explanation": "标题强调的是“数字营销”和“合作伙伴”，而不是屋顶服务。这让普通客户感到困惑，因为他们只想找修屋顶的人，而不是学习营销知识。",
+        "customer_impact": "如果标题不能立刻说明你们提供什么服务，访客会感到迷茫并离开。清晰的标题能提高访客的停留时间和转化率，减少因误解而流失的客户。"
+      },
+      {
+        "id": "weak_trust_signals",
         "severity": "minor",
-        "title": "Hero image shows an office, not a roof",
-        "what_observed": "The large image on the right shows a modern office reception desk with the 'Hurricane Digital' logo on the wall.",
-        "why_problem": "This reinforces the 'marketing agency' vibe. A roofing customer wants to see roofs, workers, or before/after shots of repairs. An office photo feels corporate and disconnected from the physical work.",
-        "what_correct_looks_like": "A high-quality photo of a completed roofing project, a team member on a roof, or a friendly team photo in front of a work van.",
-        "how_to_fix_in_redesign": "Replace the office reception photo with a relevant image of roofing work or the team at a job site.",
-        "plain_explanation": "图片展示的是办公室前台，而不是屋顶或施工场景。客户希望看到与屋顶维修相关的图片，以确认这是一家专业的屋顶公司。",
-        "customer_impact": "不相关的图片会让客户感到困惑，降低信任度。使用与业务相关的图片可以提高用户的停留时间和转化率，因为客户能立即识别出这是他们需要的服务。"
+        "title": "Lack of visible social proof in hero section",
+        "what_observed": "There are no star ratings, review snippets, or trust badges (like 'Licensed & Insured') visible in the main hero section.",
+        "why_problem": "Local customers rely heavily on reviews and trust signals before contacting a service provider. Without these visible immediately, the site feels less credible.",
+        "what_correct_looks_like": "A small section below the headline showing '4.9/5 Stars from 100+ Reviews' or a 'Licensed & Insured' badge.",
+        "how_to_fix_in_redesign": "Add a trust bar below the headline with star ratings, a snippet of a positive review, and relevant trust badges (e.g., Master Builder, Licensed).",
+        "plain_explanation": "主区域没有展示客户评价或资质认证。对于本地服务来说，这些信任标志能迅速建立客户信心，让他们更愿意联系你们。",
+        "customer_impact": "研究显示，带有评价和评分的网站转化率更高。缺少这些信任信号会让潜在客户犹豫，甚至转向有明确好评展示的竞争对手。"
       }
     ],
     "positive_observations": [
-      "The visual design is clean, with good use of whitespace and a professional color palette (blue/white).",
-      "The typography is modern and legible, with clear hierarchy between headlines and subheads.",
-      "The 'Speak to an Expert' button in the header is a good secondary call-to-action, though it needs to be more prominent."
+      "Clean, modern typography and color scheme that feels professional.",
+      "Clear navigation menu with logical categories.",
+      "Good use of white space, making the content easy to read."
     ],
     "redesign_priorities": [
-      "1. Rewrite all copy to focus on roofing services, not digital marketing.",
-      "2. Replace the email form with a 'Get a Free Quote' button and add a clickable phone number to the header.",
-      "3. Replace the office photo with a relevant image of roofing work or the team."
+      "1. Replace the office hero image with a high-quality photo of a roofing project or team.",
+      "2. Change the primary CTA to a 'Call Now' or 'Get a Quote' button with a visible phone number.",
+      "3. Rewrite the headline to focus on roofing services in Brisbane, not digital marketing."
     ],
     "confidence": 0.95
   },

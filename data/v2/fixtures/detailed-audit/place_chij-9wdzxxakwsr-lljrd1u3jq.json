@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:02:38.318Z",
+  "generatedAt": "2026-05-10T22:41:03.731Z",
   "entity_input": {
     "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
     "latest": {
@@ -187,12 +187,57 @@
         "reason": "Request contains an invalid argument."
       }
     ],
-    "latency_ms": 1037
+    "latency_ms": 775
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 0,
+    "contact_form_count": 0,
+    "forms": [],
+    "captchas_detected": [],
+    "has_any_captcha": false,
+    "has_any_anti_spam": false,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "未发现联系/报价表单 — 客户只能通过电话或邮件触达，转化路径单一"
+      },
+      {
+        "severity": "medium",
+        "text": "表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "chromewebdata",
+    "is_au_domain": false,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": null,
+    "registrar": null,
+    "wayback": {
+      "snapshot_count": 0
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": false,
+      "spf_record": null,
+      "dmarc_present": false,
+      "dmarc_record": null,
+      "dmarc_policy": null,
+      "dkim_selectors_found": [],
+      "posture": "none"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chij-9wdzxxakwsr-lljrd1u3jq",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:02:38.318Z",
+    "audited_at": "2026-05-10T22:41:03.731Z",
     "audit_score": 23,
     "dimension_scores": {
       "gbp": 48,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:35:46.407Z",
+  "generatedAt": "2026-05-10T23:17:31.202Z",
   "entity_input": {
     "entityKey": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
     "latest": {
@@ -224,22 +224,22 @@
   "pagespeed": {
     "ok": true,
     "results": {
-      "desktop": {
-        "strategy": "desktop",
+      "mobile": {
+        "strategy": "mobile",
         "scores": {
-          "performance": 36,
-          "accessibility": 77,
+          "performance": 35,
+          "accessibility": 73,
           "best_practices": 65,
           "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 8495.034035344272,
-          "fcp_ms": 1054.5049051371245,
-          "cls": 0.01181,
-          "tbt_ms": 868.9436968645709,
-          "tti_ms": 8908.384127670732,
-          "speed_index_ms": 7418.731336452868,
-          "transfer_size_bytes": 10138946
+          "lcp_ms": 48579.286756945556,
+          "fcp_ms": 4900.5151258374,
+          "cls": 0.023811,
+          "tbt_ms": 898,
+          "tti_ms": 52460.4589296074,
+          "speed_index_ms": 18196.4653882738,
+          "transfer_size_bytes": 10869253
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -254,25 +254,25 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 3280,
-            "savings_bytes": 2384568
-          },
-          {
-            "id": "server-response-time",
-            "title": "Initial server response time was short",
-            "savings_ms": 366,
-            "savings_bytes": null
+            "savings_ms": 19460,
+            "savings_bytes": 2382092
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 360,
-            "savings_bytes": 271791
+            "savings_ms": 2550,
+            "savings_bytes": 271860
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 164,
+            "savings_bytes": null
           },
           {
             "id": "unminified-css",
             "title": "Minify CSS",
-            "savings_ms": 0,
+            "savings_ms": 150,
             "savings_bytes": 21364
           },
           {
@@ -282,20 +282,201 @@
             "savings_bytes": 15513
           }
         ]
+      },
+      "desktop": {
+        "strategy": "desktop",
+        "scores": {
+          "performance": 34,
+          "accessibility": 77,
+          "best_practices": 65,
+          "seo": 77
+        },
+        "lab_metrics": {
+          "lcp_ms": 7877.136610356347,
+          "fcp_ms": 1055.002637661859,
+          "cls": 0.010202000000000001,
+          "tbt_ms": 1231.0000000000005,
+          "tti_ms": 9089.646589347523,
+          "speed_index_ms": 5476.926903992371,
+          "transfer_size_bytes": 10138323
+        },
+        "crux_overall": null,
+        "crux_field_data": {
+          "lcp_p75_ms": null,
+          "fcp_p75_ms": null,
+          "cls_p75": null,
+          "inp_p75_ms": null,
+          "ttfb_p75_ms": null
+        },
+        "crux_origin_overall": null,
+        "opportunities": [
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 2800,
+            "savings_bytes": 2384453
+          },
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
+            "savings_ms": 440,
+            "savings_bytes": 271814
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 163,
+            "savings_bytes": null
+          },
+          {
+            "id": "unminified-css",
+            "title": "Minify CSS",
+            "savings_ms": 40,
+            "savings_bytes": 21364
+          },
+          {
+            "id": "unminified-javascript",
+            "title": "Minify JavaScript",
+            "savings_ms": 40,
+            "savings_bytes": 15513
+          }
+        ]
       }
     },
-    "failures": [
+    "failures": [],
+    "latency_ms": 89824
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 1,
+    "contact_form_count": 1,
+    "forms": [
       {
-        "strategy": "mobile",
-        "reason": "Lighthouse returned error: Something went wrong."
+        "action": "https://diamondrooftiling.com.au/#wpcf7-f2689-p203-o1",
+        "method": "post",
+        "field_count": 6,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "name",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "telephone",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "address",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "your-email",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "message",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Send",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "moderate"
       }
     ],
-    "latency_ms": 82361
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "diamondrooftiling.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2026-03-25T02:09:55.000Z",
+    "registrar": "Web Address Registration Pty Ltd",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "The operation was aborted due to timeout"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 +mx +a +ip4:122.201.124.35 +ip4:122.201.127.145 ~all",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1; p=none;",
+      "dmarc_policy": "none",
+      "dkim_selectors_found": [
+        "default"
+      ],
+      "posture": "strong"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:35:46.407Z",
+    "audited_at": "2026-05-10T23:17:31.202Z",
     "audit_score": 55,
     "dimension_scores": {
       "gbp": 53,

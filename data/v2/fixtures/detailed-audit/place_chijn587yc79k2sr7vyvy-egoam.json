@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:23:59.662Z",
+  "generatedAt": "2026-05-10T23:05:30.447Z",
   "entity_input": {
     "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
     "latest": {
@@ -203,19 +203,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 38,
+          "performance": 28,
           "accessibility": 91,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 22789.625915415818,
-          "fcp_ms": 2433.9393102846793,
+          "lcp_ms": 23255.113111155824,
+          "fcp_ms": 8070.893762642412,
           "cls": 0,
-          "tbt_ms": 1252.999999999999,
-          "tti_ms": 22789.625915415818,
-          "speed_index_ms": 17506.88646387501,
-          "transfer_size_bytes": 3713414
+          "tbt_ms": 1675,
+          "tti_ms": 23255.113111155828,
+          "speed_index_ms": 16529.444846212144,
+          "transfer_size_bytes": 3721822
         },
         "crux_overall": "SLOW",
         "crux_field_data": {
@@ -246,44 +246,44 @@
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
             "savings_ms": 5700,
-            "savings_bytes": 1105375
-          },
-          {
-            "id": "server-response-time",
-            "title": "Initial server response time was short",
-            "savings_ms": 476,
-            "savings_bytes": null
+            "savings_bytes": 1107715
           },
           {
             "id": "unminified-javascript",
             "title": "Minify JavaScript",
             "savings_ms": 300,
-            "savings_bytes": 32754
+            "savings_bytes": 32546
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 194,
+            "savings_bytes": null
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 0,
-            "savings_bytes": 18922
+            "savings_ms": 150,
+            "savings_bytes": 18803
           }
         ]
       },
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 45,
+          "performance": 41,
           "accessibility": 91,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 4347.266784271539,
-          "fcp_ms": 598.6734452787667,
+          "lcp_ms": 4516.658079659126,
+          "fcp_ms": 718.1736603216006,
           "cls": 0,
-          "tbt_ms": 647.9999999999986,
-          "tti_ms": 4347.266784271539,
-          "speed_index_ms": 3476.746449444767,
-          "transfer_size_bytes": 3763404
+          "tbt_ms": 1123,
+          "tti_ms": 4516.658079659126,
+          "speed_index_ms": 3076.745705100442,
+          "transfer_size_bytes": 3734785
         },
         "crux_overall": "FAST",
         "crux_field_data": {
@@ -313,37 +313,82 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 800,
-            "savings_bytes": 1109332
+            "savings_ms": 990,
+            "savings_bytes": 1104110
           },
           {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 351,
+            "savings_ms": 141,
             "savings_bytes": null
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
             "savings_ms": 40,
-            "savings_bytes": 18854
+            "savings_bytes": 18802
           },
           {
             "id": "unminified-javascript",
             "title": "Minify JavaScript",
             "savings_ms": 0,
-            "savings_bytes": 32610
+            "savings_bytes": 32634
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 65901
+    "latency_ms": 79928
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 0,
+    "contact_form_count": 0,
+    "forms": [],
+    "captchas_detected": [],
+    "has_any_captcha": false,
+    "has_any_anti_spam": false,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "未发现联系/报价表单 — 客户只能通过电话或邮件触达，转化路径单一"
+      },
+      {
+        "severity": "medium",
+        "text": "表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "billdu.me",
+    "is_au_domain": false,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": null,
+    "registrar": null,
+    "wayback": {
+      "snapshot_count": 0
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": false,
+      "spf_record": null,
+      "dmarc_present": false,
+      "dmarc_record": null,
+      "dmarc_policy": null,
+      "dkim_selectors_found": [],
+      "posture": "none"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chijn587yc79k2sr7vyvy-egoam",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:23:59.662Z",
+    "audited_at": "2026-05-10T23:05:30.447Z",
     "audit_score": 51,
     "dimension_scores": {
       "gbp": 61,

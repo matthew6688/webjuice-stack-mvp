@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 6
 visual_conversion: 5
 review_trust_signal: "strong"
-generated_at: "2026-05-10T21:58:22.669Z"
+generated_at: "2026-05-10T23:43:23.541Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -28,6 +28,24 @@ assets:
 # Brisbane Roofing Solutions | Roof Restoration & Repairs · 现状审计与重构提议
 
 > **69/100** · moderate_candidate · 行业：roofing · 地区：Brisbane · Google 评价：4.8★ （118 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `B` 预览试探 — ChatGPT 生成 mockup hero 图 + 短邮件试反应
+
+**触发依据：**
+- moderate_candidate + 118 评论 + audit 69（仍有改进空间）
+
+**产品档位：** `T3` 多页站 + 月度运营包
+
+- 118★4.8 强口碑底子
+- 已投放过广告（懂月度预算）
+- 数字成熟度 4/6
+- 评论 trust strong
+
+**建议报价：** 一次性 $5-8K + 月度 $800-1500/月（社媒 + 内容 + GEO）
+
+**下一步行动：** 用 ChatGPT Image / Gemini Imagen 生成 hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1 次跟进。回应后升级到 A 档处理。
 
 ## 一、店家现状速览
 
@@ -48,14 +66,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The website displays a functional but visually dated layout with a cluttered header and a hero section that lacks a clear visual hierarchy, making it difficult for visitors to immediately identify the primary call to action.
+> The website relies on a heavy, high-contrast red color scheme and a dated layout structure that feels cluttered, potentially making the business appear less professional than its competitors.
 
 新鲜度 **4/10** · 信任度 **6/10** · 转化准备度 **5/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- The phone number is large and visible in the header, which is good for local service businesses.
-- The use of red branding is consistent with the industry (construction/roofing) and creates a sense of urgency.
-- The hero image clearly shows a roof, immediately communicating the service offered.
+- The phone number is large and easy to read in the header.
+- The hero image clearly shows a residential roof, which is relevant to the service.
+- The value proposition 'Residential and Commercial Roofing Services' is clear.
 
 ## 四、客户在 Google 上怎么说
 
@@ -89,30 +107,30 @@ assets:
 
 ### 关键问题 · 1 项（立刻在伤害成交）
 
-### 关键 · Hero section lacks visual hierarchy and contrast
+### 关键 · White text on busy roof background is hard to read
 
 **技术事实**
 
-The hero section features a busy background image of a roof with large white text overlaid directly on top. The text 'BRISBANE ROOFING SOLUTIONS' and 'YOUR ROOF RESTORATION SPECIALISTS' blends into the background, and the red 'BOOK YOUR FREE ROOF INSPECTION' button is small and buried at the bottom of the text block.
+The main headline 'BRISBANE ROOFING SOLUTIONS' and subtext are white text overlaid directly on a photograph of a roof with complex textures and shadows.
 
 **普通话翻译**
 
-网站的主图（Hero区域）文字和背景混在一起，很难看清楚。红色的按钮太小了，藏在文字下面，用户第一眼找不到。
+白色文字直接压在复杂的屋顶照片上，导致文字难以辨认。
 
 **对客户的影响**
 
-用户在访问网站的前8秒内决定是否留下。如果找不到明显的“预约”按钮，70%的移动端用户可能会直接关闭页面，导致潜在客户流失。
+用户在手机上浏览时，如果第一眼看不清文字，通常会在3秒内关闭页面。这直接导致大量潜在客户流失。
 
 **正确长啥样**
 
-A darkened overlay (approx 40-60% opacity) behind the white text to ensure 100% readability. The CTA button should be significantly larger, placed centrally or to the right, and use a high-contrast color (like bright orange or yellow) that stands out against the red branding.
+A solid dark overlay (black or dark grey with 50% opacity) behind the text, or a solid color background with the image on the side.
 
 **Redesign 怎么改**
 
-Apply a dark gradient overlay to the hero image. Increase the font size of the headline. Create a dedicated, high-contrast CTA button (e.g., 'Get a Free Quote') that is at least 48px tall and positioned clearly below the sub-headline.
+Add a dark gradient overlay over the hero image to ensure the white text has high contrast and is readable on all devices.
 
 
-### 主要问题 · 4 项（影响转化的明显短板）
+### 主要问题 · 5 项（影响转化的明显短板）
 
 ### 主要 · h1_unique
 
@@ -144,57 +162,80 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Header is cluttered with too many navigation links
+### 主要 · Header is too busy with too many elements
 
 **技术事实**
 
-The red navigation bar contains 8 distinct menu items (About, Roof Restorations, Roof Painting, Services, Whirlybirds, Gallery, Get a Quote, Locations) plus a dropdown arrow. The text is small and tightly packed.
+The top section contains a logo, a 'Call' label, a phone number, a service area list, and a full navigation menu all crammed into the top area.
 
 **普通话翻译**
 
-顶部的红色导航栏塞了太多菜单选项，看起来非常拥挤。用户不知道该点哪里，因为选项太多太乱了。
+顶部区域塞入了太多信息（Logo、电话、服务区域、菜单），显得非常杂乱。
 
 **对客户的影响**
 
-导航混乱会让用户感到困惑，增加跳出率。对于本地搜索用户来说，如果无法在3次点击内找到所需服务，他们很可能会转向竞争对手。
+杂乱的界面会让用户感到困惑，不知道该看哪里。研究表明，视觉噪音会降低用户对网站专业度的信任感，导致他们转向竞争对手。
 
 **正确长啥样**
 
-A simplified navigation with max 4-5 items. Group related items under 'Services'. The 'Get a Quote' or phone number should be a distinct button on the far right, separated from the menu links.
+A simplified header with just the logo and a prominent 'Call Now' button on the right. The navigation menu should be hidden behind a 'hamburger' icon on mobile.
 
 **Redesign 怎么改**
 
-Consolidate menu items into 'Services' and 'About'. Move the phone number to a sticky header or a prominent button in the top right. Ensure the 'Get a Quote' button is visually distinct from the text links.
+Simplify the header to Logo + Phone Button only. Move the service area text and secondary links to the footer or a dedicated page.
 
 
-### 主要 · Logo placement and header layout are confusing
+### 主要 · Heavy use of bright red feels aggressive and dated
 
 **技术事实**
 
-The logo is placed in the top left, but there is a large block of text 'CALL BRISBANE ROOFING SOLUTIONS' and a phone number to its right, spanning the full width. The logo itself is a rectangular image that looks like a sticker rather than a vector graphic.
+The entire navigation bar, the 'Call' text, and the CTA button use a very bright, saturated red (#cc0000 approx).
 
 **普通话翻译**
 
-顶部的Logo和电话号码排版不协调，Logo看起来有点模糊，旁边的文字也是多余的，浪费了空间。
+大面积使用鲜艳的红色会让网站看起来像过时的促销广告，缺乏专业感。
 
 **对客户的影响**
 
-低质量的Logo和混乱的排版会降低用户对品牌的信任感。在竞争激烈的屋顶维修行业，专业形象是赢得客户信任的关键。
+现代用户更倾向于信任设计简洁、配色沉稳的网站。过于刺眼的颜色会让用户觉得这家公司可能还在使用旧的经营模式，从而降低信任度。
 
 **正确长啥样**
 
-A clean header with the logo on the left and a clear 'Call Now' button on the right. The logo should be a crisp SVG or high-res PNG. The phone number should be clickable and prominent without needing the extra text label.
+Use a more sophisticated color palette. A deep navy blue or charcoal grey for the navigation, with red used only sparingly for the primary 'Call' button.
 
 **Redesign 怎么改**
 
-Replace the logo image with a vector version. Remove the redundant text 'CALL BRISBANE ROOFING SOLUTIONS' next to the phone number. Align the phone number and logo vertically for a cleaner look.
+Change the navigation background to white or dark grey. Keep the red only for the 'Call' button to make it pop without overwhelming the user.
+
+
+### 主要 · Primary Call-to-Action is buried below the fold
+
+**技术事实**
+
+The main button 'BOOK YOUR FREE ROOF INSPECTION' is located at the bottom of the hero image, requiring the user to scroll down to see it.
+
+**普通话翻译**
+
+主要的行动按钮（预约检查）被放在了页面下方，用户需要滚动才能看到。
+
+**对客户的影响**
+
+在移动端，如果用户需要滚动才能找到联系方式，转化率通常会下降20-30%。让按钮始终可见可以显著提高电话咨询量。
+
+**正确长啥样**
+
+A sticky 'Call Now' button at the bottom of the screen on mobile, or the button placed higher up in the hero section.
+
+**Redesign 怎么改**
+
+Implement a sticky footer on mobile that always shows the phone number and 'Book Inspection' button, regardless of scroll position.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Redesign the hero section with a dark overlay and a large, high-contrast CTA button to improve immediate conversion.
-2. [视觉] 2. Simplify the navigation menu to reduce clutter and guide users more effectively to key services.
-3. [视觉] 3. Clean up the header layout by removing redundant text and improving the logo presentation.
+1. [视觉] 1. Add a dark overlay to the hero image to make text readable and professional.
+2. [视觉] 2. Simplify the header to reduce visual clutter and highlight the phone number.
+3. [视觉] 3. Implement a sticky 'Call Now' button on mobile for immediate access.
 4. [评论] Feature 'Before & After' photos prominently, as multiple reviewers mention visual results and longevity.
 5. [评论] Highlight 'No Overspray' and 'Spotless Cleanup' as key service guarantees to reduce buyer anxiety.
 6. [评论] Use the 'Fair Price' and 'Detailed Quote' themes in the contact/quote request section to build trust early.
@@ -214,21 +255,21 @@ Replace the logo image with a vector version. Remove the redundant text 'CALL BR
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **52/100** |
+| 性能 (Performance) | **53/100** |
 | 可访问性 (Accessibility) | 87/100 |
 | 最佳实践 (Best Practices) | 73/100 |
 | SEO | 92/100 |
 
-**Lab 关键指标：** LCP `6.4s` · FCP `2.1s` · CLS `0.000` · TBT `632ms`
+**Lab 关键指标：** LCP `4.5s` · FCP `2.3s` · CLS `0.000` · TBT `967ms`
 
 **Google 建议的优化项（按节省时间排序，前 2）：**
 
-- **Reduce unused JavaScript** — 节省 930ms · 节省 589KB
-- **Reduce unused CSS** — 节省 53KB
+- **Reduce unused JavaScript** — 节省 300ms · 节省 590KB
+- **Reduce unused CSS** — 节省 150ms · 节省 53KB
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 58 · A11y 87 · Best Practices 77 · SEO 92
+**Lighthouse 分数：** Performance 45 · A11y 90 · Best Practices 77 · SEO 92
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -263,6 +304,37 @@ Replace the logo image with a vector version. Remove the redundant text 'CALL BR
 - **Blog 板块：** 有，共 1 篇文章 
 - **社交媒体链接：** 网站上引用了 2 个平台 — facebook, instagram
 
+## 联系表单与防垃圾设置
+
+客户能不能 *方便地* 把信息留下来 = 直接的转化路径。这一段审视所有 `<form>` 元素的可用性 + 防 spam 配置。
+
+### 表单 · 9 字段（摩擦：高（≥7 字段，会显著降低转化））
+
+- **字段构成：** First(text,必填) · Last(text,必填) · Your Phone Number(tel) · Name Help Phone(text) · Email *(email,必填) · wpforms[fields][6](text) · How Can We Help You Today? *(textarea,必填) · apbct__email_id__wp_wpforms(text) · apbct__email_id__elementor_form(text)
+- **必填字段数：** 4/9
+- **常见关键字段：** email · phone · message
+- **提交按钮：** 「Submit」
+- **Honeypot 防 spam：** 已配置（推荐做法，对真人无感）
+
+**已部署的人机验证：**
+- reCAPTCHA v2 (visible "I'm not a robot") — 高摩擦
+- reCAPTCHA v3 (invisible) — 低摩擦
+
+**Audit 总结：**
+
+- [关键] 表单字段数 9 — 远超行业标准 3-4 字段，会显著降低转化率
+- [提示] reCAPTCHA v2 (visible "I'm not a robot") — 给真人增加额外操作（点击"我不是机器人"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案
+
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** 已配置
+- **DKIM (邮件签名)：** 已配置（selectors: default）
+- **DMARC (策略)：** 已配置（policy: `quarantine`）
+- **整体邮件投递信誉：** `strong` (SPF + DKIM + DMARC 齐全)
+
 ## 技术栈与营销基建
 
 从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
@@ -273,6 +345,16 @@ Replace the logo image with a vector version. Remove the redundant text 'CALL BR
 - **托管 / CDN 线索：** Cloudflare-fronted
 
 **数字成熟度打分：** 4 / 6 （高 — 客户懂数字营销，redesign 谈预算时不必从零教育）
+
+### Redesign 时必须保留 / 重新安装的追踪代码
+
+客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。
+
+- Google Tag Manager
+- Google Analytics 4
+- Google Ads Conversion
+
+我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 ## AI 时代可发现性 · GEO Readiness
 
@@ -299,6 +381,19 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - [缺失] `faq_qa_pattern` (10 分) — 0 question-style heading(s) found (Q&A format helps AI extraction)
 
 > **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 50/100。」
+
+## 业务规模信号 · 内部筛选用
+
+**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
+
+- **规模信号汇总：** 小型客户特征
+- **客户分级：** `small` — 小型，符合我们标准产品包定位
+- **建议定价档：** 标准包 $3-6K（符合我们核心产品）
+
+**触发依据：**
+- Google 评价 118 条（≥50，有规模基础）
+- 网站页面数 78（≥30，中小规模）
+- 已部署 3 个追踪工具
 
 ## Upsell 机会 · redesign 之外的月度营收
 

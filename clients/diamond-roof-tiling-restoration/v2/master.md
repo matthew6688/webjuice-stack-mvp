@@ -16,7 +16,7 @@ visual_freshness: 2
 visual_trust: 4
 visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-10T21:58:22.812Z"
+generated_at: "2026-05-10T23:43:23.659Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -28,6 +28,24 @@ assets:
 # Diamond Roof Tiling & Restoration · 现状审计与重构提议
 
 > **55/100** · strong_redesign · 行业：roofing · 地区：Brisbane · Google 评价：4.9★ （65 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `A` 全攻 — 完整 OD redesign + 个性化销售流程
+
+**触发依据：**
+- strong_redesign + 65 评论 + 4.9★
+- 评论 trust signal 强
+
+**产品档位：** `T2` 多页站
+
+- 业务中等复杂度 / 中等口碑 / 中等数字成熟度 — 多页架构合适
+- 65 评论 = 中等规模运营
+- 3 个业务分类 = 需要多页面分流
+
+**建议报价：** 一次性 $3-6K
+
+**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页站。
 
 ## 一、店家现状速览
 
@@ -277,9 +295,30 @@ Simplify the header. Place the logo on the left, navigation in the center, and a
 
 我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
 
+### 移动端（mobile）
+
+**Lighthouse 分数（实验室）：**
+
+| 维度 | 分数 |
+|---|---|
+| 性能 (Performance) | **35/100** |
+| 可访问性 (Accessibility) | 73/100 |
+| 最佳实践 (Best Practices) | 65/100 |
+| SEO | 85/100 |
+
+**Lab 关键指标：** LCP `48.6s` · FCP `4.9s` · CLS `0.024` · TBT `898ms`
+
+**Google 建议的优化项（按节省时间排序，前 5）：**
+
+- **Reduce unused JavaScript** — 节省 19460ms · 节省 2326KB
+- **Reduce unused CSS** — 节省 2550ms · 节省 265KB
+- **Initial server response time was short** — 节省 164ms
+- **Minify CSS** — 节省 150ms · 节省 21KB
+- **Minify JavaScript** — 节省 15KB
+
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 36 · A11y 77 · Best Practices 65 · SEO 85
+**Lighthouse 分数：** Performance 34 · A11y 77 · Best Practices 65 · SEO 77
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -295,6 +334,35 @@ Simplify the header. Place the logo on the left, navigation in the center, and a
 - **Blog 板块：** 未发现 — 没有内容营销基础
 - **社交媒体链接：** 网站上引用了 3 个平台 — facebook, twitter, youtube
 
+## 联系表单与防垃圾设置
+
+客户能不能 *方便地* 把信息留下来 = 直接的转化路径。这一段审视所有 `<form>` 元素的可用性 + 防 spam 配置。
+
+### 表单 · 6 字段（摩擦：中（5-6 字段））
+
+- **字段构成：** name(text) · telephone(tel) · address(text) · your-email(email) · message(textarea) · g-recaptcha-response(textarea)
+- **必填字段数：** 0/6
+- **常见关键字段：** email · phone · message
+- **提交按钮：** 「Send」
+- **Honeypot 防 spam：** 未检测到
+
+**已部署的人机验证：**
+- reCAPTCHA v2 (visible "I'm not a robot") — 高摩擦
+
+**Audit 总结：**
+
+- [提示] reCAPTCHA v2 (visible "I'm not a robot") — 给真人增加额外操作（点击"我不是机器人"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案
+
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** 已配置
+- **DKIM (邮件签名)：** 已配置（selectors: default）
+- **DMARC (策略)：** 已配置（policy: `none`）
+- **整体邮件投递信誉：** `strong` (SPF + DKIM + DMARC 齐全)
+
 ## 技术栈与营销基建
 
 从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
@@ -304,6 +372,17 @@ Simplify the header. Place the logo on the left, navigation in the center, and a
 - **广告 Pixel：** 未检测到 — 暂未投放追踪型广告
 
 **数字成熟度打分：** 2 / 6 （中 — 已有基础设施，缺少深度运营）
+
+### Redesign 时必须保留 / 重新安装的追踪代码
+
+客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。
+
+- Google Tag Manager
+- Google Analytics 4
+- Google Analytics (Universal)
+- Microsoft Clarity
+
+我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 > **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。
 
@@ -332,6 +411,18 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - [缺失] `eeat_warranty_trust` (5 分) — no warranty/guarantee in copy
 
 > **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 20/100。」
+
+## 业务规模信号 · 内部筛选用
+
+**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
+
+- **规模信号汇总：** 小型客户特征
+- **客户分级：** `small` — 小型，符合我们标准产品包定位
+- **建议定价档：** 标准包 $3-6K（符合我们核心产品）
+
+**触发依据：**
+- Google 评价 65 条（≥50，有规模基础）
+- 已部署 4 个分析 / pixel 工具（高数字成熟度）
 
 ## Upsell 机会 · redesign 之外的月度营收
 

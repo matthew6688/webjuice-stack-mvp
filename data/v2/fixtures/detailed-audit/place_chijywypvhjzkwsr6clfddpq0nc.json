@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:47:11.913Z",
+  "generatedAt": "2026-05-10T23:30:20.817Z",
   "entity_input": {
     "entityKey": "place_chijywypvhjzkwsr6clfddpq0nc",
     "latest": {
@@ -514,13 +514,13 @@
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 19065.07331985293,
-          "fcp_ms": 3305.709380039439,
-          "cls": 0.000627,
-          "tbt_ms": 1805.0000000000018,
-          "tti_ms": 28552.914564225102,
-          "speed_index_ms": 13909.076436123869,
-          "transfer_size_bytes": 7127371
+          "lcp_ms": 18546.094925582798,
+          "fcp_ms": 3334.706825817433,
+          "cls": 0.000589,
+          "tbt_ms": 1883.5,
+          "tti_ms": 28818.793094341177,
+          "speed_index_ms": 14564.467174337078,
+          "transfer_size_bytes": 7125545
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -536,18 +536,18 @@
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
             "savings_ms": 1200,
-            "savings_bytes": 1235524
+            "savings_bytes": 1224349
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 600,
-            "savings_bytes": 100517
+            "savings_ms": 450,
+            "savings_bytes": 100522
           },
           {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 174,
+            "savings_ms": 250,
             "savings_bytes": null
           }
         ]
@@ -555,24 +555,24 @@
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 52,
+          "performance": 43,
           "accessibility": 86,
           "best_practices": 96,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 3089.0413761974005,
-          "fcp_ms": 766.6017086173775,
-          "cls": 0.001415,
-          "tbt_ms": 555.9011051194979,
-          "tti_ms": 5417.165954735887,
-          "speed_index_ms": 3472.303339720519,
-          "transfer_size_bytes": 7128355
+          "lcp_ms": 3295.5512588649563,
+          "fcp_ms": 805.7048279690575,
+          "cls": 0,
+          "tbt_ms": 1097.7984389043993,
+          "tti_ms": 6055.051683705973,
+          "speed_index_ms": 4326.13721679009,
+          "transfer_size_bytes": 7128061
         },
         "crux_overall": "FAST",
         "crux_field_data": {
           "lcp_p75_ms": {
-            "p75": 2211,
+            "p75": 2186,
             "category": "FAST"
           },
           "fcp_p75_ms": {
@@ -591,31 +591,332 @@
           {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 174,
+            "savings_ms": 296,
             "savings_bytes": null
-          },
-          {
-            "id": "unused-css-rules",
-            "title": "Reduce unused CSS",
-            "savings_ms": 100,
-            "savings_bytes": 99986
           },
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
+            "savings_ms": 240,
+            "savings_bytes": 1223639
+          },
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
             "savings_ms": 80,
-            "savings_bytes": 1222038
+            "savings_bytes": 99996
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 84936
+    "latency_ms": 104850
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 5,
+    "contact_form_count": 2,
+    "forms": [
+      {
+        "action": "http://localhost/hurricane/free-30-minute-growth-strategy-session",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "email",
+            "required": true,
+            "placeholder": "Enter Your Email Here",
+            "pattern": null,
+            "autocomplete": "email",
+            "labelText": null
+          }
+        ],
+        "required_count": 1,
+        "has_email_field": true,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Book Free Strategy Session",
+        "honeypot_present": false,
+        "role": "newsletter",
+        "friction_level": "unknown"
+      },
+      {
+        "action": "https://hurricanedigital.com.au/free-30-minute-growth-strategy-session",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "email",
+            "required": true,
+            "placeholder": "Enter Your Email Here",
+            "pattern": null,
+            "autocomplete": "email",
+            "labelText": null
+          }
+        ],
+        "required_count": 1,
+        "has_email_field": true,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Book Free Strategy Session",
+        "honeypot_present": false,
+        "role": "newsletter",
+        "friction_level": "unknown"
+      },
+      {
+        "action": "https://hurricanedigital.com.au/free-30-minute-growth-strategy-session",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "email",
+            "required": true,
+            "placeholder": "Enter Your Email Here",
+            "pattern": null,
+            "autocomplete": "email",
+            "labelText": null
+          }
+        ],
+        "required_count": 1,
+        "has_email_field": true,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Book Free Strategy Session",
+        "honeypot_present": false,
+        "role": "newsletter",
+        "friction_level": "unknown"
+      },
+      {
+        "action": "https://hurricanedigital.com.au/#gf_4",
+        "method": "post",
+        "field_count": 6,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_1.3",
+            "required": false,
+            "placeholder": "Full Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First Name"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_1.6",
+            "required": false,
+            "placeholder": "Last Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last Name"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_9",
+            "required": false,
+            "placeholder": "Company Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Company"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "input_3",
+            "required": false,
+            "placeholder": "0400 000 000",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone(Required)"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "input_4",
+            "required": false,
+            "placeholder": "Email Address",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email(Required)"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "moderate"
+      },
+      {
+        "action": "https://hurricanedigital.com.au/#gf_6",
+        "method": "post",
+        "field_count": 7,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_1.3",
+            "required": false,
+            "placeholder": "Full Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First Name"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_1.6",
+            "required": false,
+            "placeholder": "Last Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last Name"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_9",
+            "required": false,
+            "placeholder": "Company Name",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Company"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "input_3",
+            "required": false,
+            "placeholder": "0400 000 000",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone(Required)"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "input_4",
+            "required": false,
+            "placeholder": "Email Address",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email(Required)"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "input_6",
+            "required": false,
+            "placeholder": "Write your message",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "How can we help"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      }
+    ],
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "表单字段数 7 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "hurricanedigital.com.au",
+    "is_au_domain": true,
+    "domain_age_days": 1369,
+    "domain_age_years": 3,
+    "domain_age_source": "wayback_first_snapshot_proxy",
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2026-04-18T04:31:21.000Z",
+    "registrar": "GoDaddy.com LLC trading as GoDaddy.com",
+    "wayback": {
+      "snapshot_count": 30,
+      "first_snapshot": "2022-08-11",
+      "last_snapshot": "2026-03-15",
+      "snapshots_per_year": {
+        "2022": 3,
+        "2023": 4,
+        "2024": 8,
+        "2025": 12,
+        "2026": 3
+      }
+    },
+    "days_since_last_wayback_snapshot": 57,
+    "days_since_first_wayback_snapshot": 1369,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 include:secureserver.net -all",
+      "dmarc_present": false,
+      "dmarc_record": null,
+      "dmarc_policy": null,
+      "dkim_selectors_found": [],
+      "posture": "weak"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chijywypvhjzkwsr6clfddpq0nc",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:47:11.913Z",
+    "audited_at": "2026-05-10T23:30:20.817Z",
     "audit_score": 64,
     "dimension_scores": {
       "gbp": 58,

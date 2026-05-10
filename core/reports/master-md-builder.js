@@ -21,6 +21,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { gradeLead } from '../scoring/lead-grading.js';
 
 function fmtRating(n) {
   if (n == null || n === '') return '-';
@@ -168,6 +169,8 @@ export function buildMasterMd({
   activity,            // auditActivity output (freshness, blog, socials)
   aiGeo,               // auditAiGeoReadiness output (12 checks)
   pagespeed,           // PSI mobile + desktop result with CRUX field data
+  formAudit,           // auditFormsOnPage output (forms + captcha + spam)
+  domainHistory,       // auditDomainHistory output (whois + Wayback + DNS)
   cloudinaryManifest,
   screenshotDir = './screenshots',
 } = {}) {
@@ -186,6 +189,47 @@ export function buildMasterMd({
   sections.push(`# ${fm.business_name} · 现状审计与重构提议`);
   sections.push('');
   sections.push(`> **${fm.audit_score}/100** · ${fm.decision || '-'} · 行业：${fm.niche || '-'} · 地区：${fm.city || '-'} · Google 评价：${fmtRating(fm.rating)} （${fm.review_count || 0} 条）`);
+  sections.push('');
+
+  // ── Lead grading (internal-only summary at the top) ──
+  const sizeSignal = deriveBusinessSizeSignal({ latest, sitemapAnalysis, activity, techStack });
+  const grading = gradeLead({
+    entity,
+    detailedAudit: audit,
+    cheapAudit: null,
+    techStack,
+    sitemapAnalysis,
+    activity,
+    domainHistory,
+    reviewAnalysis: reviews,
+    businessSizeSignal: sizeSignal,
+  });
+  sections.push('## 内部分级 · 运营优先看这段');
+  sections.push('');
+  sections.push(`**投入分级：** \`${grading.investment_level}\` ${
+    { A: '全攻 — 完整 OD redesign + 个性化销售流程',
+      B: '预览试探 — ChatGPT 生成 mockup hero 图 + 短邮件试反应',
+      C: '批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进',
+      D: '跳过 — 不投入精力' }[grading.investment_level] || ''
+  }`);
+  sections.push('');
+  if (grading.investment_factors?.length) {
+    sections.push('**触发依据：**');
+    for (const f of grading.investment_factors) sections.push(`- ${f}`);
+    sections.push('');
+  }
+  if (grading.product_tier) {
+    sections.push(`**产品档位：** \`${grading.product_tier}\` ${grading.product_tier_label}`);
+    sections.push('');
+    sections.push(`- ${grading.product_tier_factors.join('\n- ')}`);
+    sections.push('');
+    if (grading.recommended_pricing) {
+      const p = grading.recommended_pricing;
+      sections.push(`**建议报价：** 一次性 ${p.one_time}${p.monthly ? ` + 月度 ${p.monthly}` : ''}`);
+      sections.push('');
+    }
+  }
+  sections.push(`**下一步行动：** ${grading.next_action}`);
   sections.push('');
 
   // ── 一、店家现状速览 ──
@@ -494,6 +538,92 @@ export function buildMasterMd({
     }
   }
 
+  // ── 表单与 anti-spam 审计 ──
+  if (formAudit?.ok && formAudit.form_count_total > 0) {
+    sections.push('## 联系表单与防垃圾设置');
+    sections.push('');
+    sections.push('客户能不能 *方便地* 把信息留下来 = 直接的转化路径。这一段审视所有 `<form>` 元素的可用性 + 防 spam 配置。');
+    sections.push('');
+    const contactForms = formAudit.forms.filter((f) => f.role === 'contact');
+    if (!contactForms.length) {
+      sections.push('**关键发现：网站上没有可识别的联系/报价表单** — 客户只能通过电话或邮件触达。redesign 必须补一个高效的报价请求表单（建议 3-4 字段：姓名 / 电话 / 邮箱 / 简短需求）。');
+      sections.push('');
+    } else {
+      for (const f of contactForms) {
+        const firctionLabel = { low: '低（≤4 字段，转化友好）', moderate: '中（5-6 字段）', high: '高（≥7 字段，会显著降低转化）' }[f.friction_level] || f.friction_level;
+        sections.push(`### 表单 · ${f.field_count} 字段（摩擦：${firctionLabel}）`);
+        sections.push('');
+        sections.push(`- **字段构成：** ${f.inputs.map((i) => `${i.labelText || i.name}(${i.type}${i.required ? ',必填' : ''})`).join(' · ')}`);
+        sections.push(`- **必填字段数：** ${f.required_count}/${f.field_count}`);
+        sections.push(`- **常见关键字段：** ${[f.has_email_field && 'email', f.has_phone_field && 'phone', f.has_message_field && 'message'].filter(Boolean).join(' · ') || '都没有 — 异常'}`);
+        sections.push(`- **提交按钮：** ${f.has_submit_button ? `「${f.submit_label}」` : '⚠ 未找到 submit 按钮 — 表单可能根本无法提交'}`);
+        sections.push(`- **Honeypot 防 spam：** ${f.honeypot_present ? '已配置（推荐做法，对真人无感）' : '未检测到'}`);
+        sections.push('');
+      }
+    }
+    if (formAudit.captchas_detected.length) {
+      sections.push('**已部署的人机验证：**');
+      for (const c of formAudit.captchas_detected) {
+        const frictionTag = { high: '高摩擦', low: '低摩擦', invisible: '不可见' }[c.friction] || c.friction;
+        sections.push(`- ${c.name} — ${frictionTag}`);
+      }
+      sections.push('');
+    } else if (!formAudit.has_any_anti_spam) {
+      sections.push('**未检测到任何 anti-spam 措施**（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 表单极容易被自动机器人灌爆，垃圾询盘会让客户对真实询盘麻木。redesign 时建议加 Cloudflare Turnstile（不可见，免费）。');
+      sections.push('');
+    }
+    if (formAudit.auditor_notes?.length) {
+      sections.push('**Audit 总结：**');
+      sections.push('');
+      for (const n of formAudit.auditor_notes) {
+        const tag = { high: '关键', medium: '中等', low: '提示' }[n.severity] || n.severity;
+        sections.push(`- [${tag}] ${n.text}`);
+      }
+      sections.push('');
+    }
+  }
+
+  // ── 域名年龄 + Wayback 历史 + 邮件 DNS ──
+  if (domainHistory?.ok) {
+    sections.push('## 域名历史与邮件信誉');
+    sections.push('');
+    const dh = domainHistory;
+    if (dh.domain_age_years != null) {
+      const referenceDate = dh.domain_created_iso || dh.wayback?.first_snapshot || null;
+      const sourceLabel = dh.domain_age_source === 'wayback_first_snapshot_proxy'
+        ? `Wayback 首次快照 ${referenceDate || '-'} 起算（.au 域名无公开创建日期）`
+        : `创建于 ${referenceDate?.slice(0,10) || '-'}`;
+      sections.push(`- **域名"在线已"约：** ${dh.domain_age_years} 年（${sourceLabel}）— ${dh.domain_age_years >= 5 ? '老域名 = 多年 SEO 资产，redesign 时 redirect map 必须做对' : dh.domain_age_years >= 2 ? '中等年龄' : '相对年轻的域名'}`);
+    }
+    if (dh.wayback?.snapshot_count) {
+      sections.push(`- **Wayback Machine 快照：** ${dh.wayback.snapshot_count} 条（${dh.wayback.first_snapshot} → ${dh.wayback.last_snapshot}）`);
+      if (dh.recent_redesign_signal) {
+        sections.push(`  - ⚠ ${dh.recent_redesign_signal} — **建议把这个 lead 降低优先级**（刚 redesign 过的客户短期不会再投资重做）`);
+      }
+    }
+    sections.push('');
+
+    if (dh.email_dns) {
+      const ed = dh.email_dns;
+      sections.push('### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）');
+      sections.push('');
+      sections.push(`- **SPF (反垃圾发件验证)：** ${ed.spf_present ? '已配置' : '⚠ 未配置 — 客户如果用域名邮箱发邮件，进垃圾箱的概率高'}`);
+      sections.push(`- **DKIM (邮件签名)：** ${ed.dkim_selectors_found.length ? `已配置（selectors: ${ed.dkim_selectors_found.join(', ')}）` : '⚠ 常见 selector 未发现 DKIM 配置（不一定确凿，但提示有问题）'}`);
+      sections.push(`- **DMARC (策略)：** ${ed.dmarc_present ? `已配置（policy: \`${ed.dmarc_policy || 'none'}\`）` : '⚠ 未配置 — 域名易被仿冒做钓鱼'}`);
+      sections.push(`- **整体邮件投递信誉：** \`${ed.posture}\` ${
+        ed.posture === 'strong' ? '(SPF + DKIM + DMARC 齐全)'
+        : ed.posture === 'partial' ? '(只有 2/3 — 建议补全)'
+        : ed.posture === 'weak' ? '(只有 1/3 — 邮件营销前必须修)'
+        : '(全无配置 — 邮件营销 / cold outreach 几乎不可能投递成功)'
+      }`);
+      sections.push('');
+      if (ed.posture !== 'strong') {
+        sections.push('> 这是后续 **「Social Media Management 月度包」** 或 **「Cold Outreach 启动包」** 的前置条件 —— 邮件 DNS 没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。');
+        sections.push('');
+      }
+    }
+  }
+
   // ── 技术栈与营销基建 ──
   if (techStack && techStack.ok) {
     sections.push('## 技术栈与营销基建');
@@ -522,6 +652,24 @@ export function buildMasterMd({
       : '（低 — 客户对网站的认知是「有就行」，需要先讲清楚一份能赚钱的网站长什么样）'
     }`);
     sections.push('');
+
+    // Pixel preservation clause — every detected tracker must be re-installed
+    // on the rebuild, otherwise the customer loses historical conversion data
+    // and ad-account targeting audiences.
+    const allTrackers = [
+      ...(ts.analytics || []).map((a) => a.name),
+      ...(ts.pixels || []).map((p) => p.name),
+    ];
+    if (allTrackers.length) {
+      sections.push('### Redesign 时必须保留 / 重新安装的追踪代码');
+      sections.push('');
+      sections.push('客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。');
+      sections.push('');
+      for (const name of allTrackers) sections.push(`- ${name}`);
+      sections.push('');
+      sections.push('我们 redesign 交付清单会把这些列为「必须 setup 项」。');
+      sections.push('');
+    }
 
     // Notable risk: Universal Analytics (deprecated July 2023) still installed
     if (ts.analytics?.some((a) => a.id === 'ua')) {
@@ -554,6 +702,23 @@ export function buildMasterMd({
     }
     sections.push('> **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 ' + aiGeo.dimension_score + '/100。」');
     sections.push('');
+  }
+
+  // ── 业务规模信号（筛选 / 定价用，非销售素材）──
+  if (sizeSignal) {
+    sections.push('## 业务规模信号 · 内部筛选用');
+    sections.push('');
+    sections.push('**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。');
+    sections.push('');
+    sections.push(`- **规模信号汇总：** ${sizeSignal.summary}`);
+    sections.push(`- **客户分级：** \`${sizeSignal.tier}\` ${sizeSignal.tier === 'enterprise' ? '— 大客户，要求多、决策慢，**与我们小批量模式不匹配**，建议跳过或转介给定制开发服务商' : sizeSignal.tier === 'mid' ? '— 中型客户，可接但价格要往上提（基础包 + 配置项）' : '— 小型，符合我们标准产品包定位'}`);
+    sections.push(`- **建议定价档：** ${sizeSignal.pricingTier}`);
+    sections.push('');
+    if (sizeSignal.indicators?.length) {
+      sections.push('**触发依据：**');
+      for (const i of sizeSignal.indicators) sections.push(`- ${i}`);
+      sections.push('');
+    }
   }
 
   // ── Upsell 机会（基于活跃度 + GBP 流量底子）──
@@ -611,6 +776,56 @@ function deriveSalesAngles({ audit, reviewAnalysis, latest }) {
     out.push('客户口碑已经强（' + reviewAnalysis.positive_themes?.slice(0, 3).join(' / ') + '）— 网站只需要把这份信任承接住，不需要从零建立');
   }
   return out;
+}
+
+function deriveBusinessSizeSignal({ latest, sitemapAnalysis, activity, techStack }) {
+  const indicators = [];
+  let score = 0;
+
+  const reviewCount = Number(latest?.review_count || 0);
+  const pageCount = sitemapAnalysis?.total_urls || 0;
+  const categories = (latest?.categories || []).length;
+  const trackerCount = (techStack?.analytics?.length || 0) + (techStack?.pixels?.length || 0);
+  const socials = Object.keys(activity?.social_links || {}).length;
+
+  // Reviews — proxy for established business operation
+  if (reviewCount >= 500) { score += 3; indicators.push(`Google 评价 ${reviewCount} 条（≥500，大企业级口碑积累）`); }
+  else if (reviewCount >= 200) { score += 2; indicators.push(`Google 评价 ${reviewCount} 条（≥200，成熟运营）`); }
+  else if (reviewCount >= 50) { score += 1; indicators.push(`Google 评价 ${reviewCount} 条（≥50，有规模基础）`); }
+
+  // Page count — proxy for content investment / multi-service complexity
+  if (pageCount >= 300) { score += 3; indicators.push(`网站页面数 ${pageCount}（≥300，复杂多服务体系）`); }
+  else if (pageCount >= 100) { score += 2; indicators.push(`网站页面数 ${pageCount}（≥100，中等复杂度）`); }
+  else if (pageCount >= 30) { score += 1; indicators.push(`网站页面数 ${pageCount}（≥30，中小规模）`); }
+
+  // Categories — multiple = diversified service offering
+  if (categories >= 4) { score += 1; indicators.push(`GBP 多业务分类 ${categories} 个（多元化经营）`); }
+
+  // Tracker sophistication — paid digital marketing budget
+  if (trackerCount >= 4) { score += 2; indicators.push(`已部署 ${trackerCount} 个分析 / pixel 工具（高数字成熟度）`); }
+  else if (trackerCount >= 2) { score += 1; indicators.push(`已部署 ${trackerCount} 个追踪工具`); }
+
+  // Social channel diversity
+  if (socials >= 4) { score += 1; indicators.push(`引用 ${socials} 个社交平台（多渠道运营）`); }
+
+  if (!indicators.length) return null;
+
+  let tier, pricingTier, summary;
+  if (score >= 7) {
+    tier = 'enterprise';
+    pricingTier = '不建议接（与我们小批量模式不匹配）；如果接，最低 $20K + 月度运营 $3K+';
+    summary = '大型客户特征';
+  } else if (score >= 4) {
+    tier = 'mid';
+    pricingTier = '基础包 $6-10K + 月度运营 $1-2K';
+    summary = '中型客户特征';
+  } else {
+    tier = 'small';
+    pricingTier = '标准包 $3-6K（符合我们核心产品）';
+    summary = '小型客户特征';
+  }
+
+  return { tier, pricingTier, summary, indicators, score };
 }
 
 function deriveUpsellOpportunities({ activity, latest, techStack, reviews }) {

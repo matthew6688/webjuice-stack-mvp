@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:18:39.788Z",
+  "generatedAt": "2026-05-10T22:58:29.623Z",
   "entity_input": {
     "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
     "latest": {
@@ -42,7 +42,7 @@
   },
   "fetch_summary": {
     "url": "https://gutterandroofrepairs.com.au/",
-    "markdown_length": 10299
+    "markdown_length": 10297
   },
   "tech_stack": {
     "ok": true,
@@ -495,19 +495,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 50,
+          "performance": 45,
           "accessibility": 90,
           "best_practices": 100,
           "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 12838.704742754371,
-          "fcp_ms": 3039.197491900431,
+          "lcp_ms": 7201.031861898329,
+          "fcp_ms": 3010.202114711493,
           "cls": 0.018134,
-          "tbt_ms": 424.5,
-          "tti_ms": 24626.873027338996,
-          "speed_index_ms": 10163.527442436582,
-          "transfer_size_bytes": 5651838
+          "tbt_ms": 888,
+          "tti_ms": 25486.739953653043,
+          "speed_index_ms": 6444.421943877488,
+          "transfer_size_bytes": 5651403
         },
         "crux_overall": "SLOW",
         "crux_field_data": {
@@ -534,39 +534,39 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 3010,
-            "savings_bytes": 1423664
+            "savings_ms": 600,
+            "savings_bytes": 1425260
           },
           {
             "id": "server-response-time",
-            "title": "Reduce initial server response time",
-            "savings_ms": 616,
+            "title": "Initial server response time was short",
+            "savings_ms": 331,
             "savings_bytes": null
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 0,
-            "savings_bytes": 70261
+            "savings_ms": 150,
+            "savings_bytes": 70258
           }
         ]
       },
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 64,
+          "performance": 65,
           "accessibility": 90,
           "best_practices": 100,
           "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 1161.0220604607925,
-          "fcp_ms": 794.7331446270483,
-          "cls": 0.007992,
-          "tbt_ms": 2231.700588280423,
-          "tti_ms": 6900.055586979221,
-          "speed_index_ms": 1815.1366395277191,
-          "transfer_size_bytes": 5704897
+          "lcp_ms": 3196.014688913054,
+          "fcp_ms": 798.2994472294207,
+          "cls": 0.018481,
+          "tbt_ms": 311.5,
+          "tti_ms": 5178.046548620885,
+          "speed_index_ms": 1901.0257689623431,
+          "transfer_size_bytes": 5839166
         },
         "crux_overall": "AVERAGE",
         "crux_field_data": {
@@ -591,33 +591,505 @@
         "crux_origin_overall": "AVERAGE",
         "opportunities": [
           {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 940,
+            "savings_bytes": 1427457
+          },
+          {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 187,
+            "savings_ms": 189,
             "savings_bytes": null
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
             "savings_ms": 0,
-            "savings_bytes": 71239
-          },
-          {
-            "id": "unused-javascript",
-            "title": "Reduce unused JavaScript",
-            "savings_ms": 0,
-            "savings_bytes": 1321409
+            "savings_bytes": 28794
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 83662
+    "latency_ms": 60648
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 3,
+    "contact_form_count": 3,
+    "forms": [
+      {
+        "action": "https://gutterandroofrepairs.com.au/#gf_1",
+        "method": "post",
+        "field_count": 12,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_12",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "new-password",
+            "labelText": "Name"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_10.3",
+            "required": false,
+            "placeholder": "First Name *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_10.6",
+            "required": false,
+            "placeholder": "Last Name *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "input_4",
+            "required": false,
+            "placeholder": "Email Address *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email*"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "input_5",
+            "required": false,
+            "placeholder": "Phone *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.1",
+            "required": false,
+            "placeholder": "Street Address *",
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": "Street Address"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.3",
+            "required": false,
+            "placeholder": "Suburb *",
+            "pattern": null,
+            "autocomplete": "address-level2",
+            "labelText": "Suburb"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.5",
+            "required": false,
+            "placeholder": "Post Code *",
+            "pattern": null,
+            "autocomplete": "postal-code",
+            "labelText": "Post Code"
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "input_8",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Service Required*"
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "input_7",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Type of roof*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_9",
+            "required": false,
+            "placeholder": "Please Provide Additional Information",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Additional Information"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      },
+      {
+        "action": "https://gutterandroofrepairs.com.au/#gf_5",
+        "method": "post",
+        "field_count": 12,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_12",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "new-password",
+            "labelText": "URL"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_10.3",
+            "required": false,
+            "placeholder": "First Name *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_10.6",
+            "required": false,
+            "placeholder": "Last Name *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "input_4",
+            "required": false,
+            "placeholder": "Email Address *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email*"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "input_5",
+            "required": false,
+            "placeholder": "Phone *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.1",
+            "required": false,
+            "placeholder": "Street Address *",
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": "Street Address"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.3",
+            "required": false,
+            "placeholder": "Suburb *",
+            "pattern": null,
+            "autocomplete": "address-level2",
+            "labelText": "Suburb"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.5",
+            "required": false,
+            "placeholder": "Post Code *",
+            "pattern": null,
+            "autocomplete": "postal-code",
+            "labelText": "Post Code"
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "input_8",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Service Required*"
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "input_7",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Type of roof*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_9",
+            "required": false,
+            "placeholder": "Please Provide Additional Information",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Additional Information"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      },
+      {
+        "action": "https://gutterandroofrepairs.com.au/#gf_3",
+        "method": "post",
+        "field_count": 12,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_12",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": "new-password",
+            "labelText": "Facebook"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_10.3",
+            "required": false,
+            "placeholder": "First Name *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_10.6",
+            "required": false,
+            "placeholder": "Last Name *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "input_4",
+            "required": false,
+            "placeholder": "Email Address *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email*"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "input_5",
+            "required": false,
+            "placeholder": "Phone *",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.1",
+            "required": false,
+            "placeholder": "Street Address *",
+            "pattern": null,
+            "autocomplete": "off",
+            "labelText": "Address"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.3",
+            "required": false,
+            "placeholder": "Suburb *",
+            "pattern": null,
+            "autocomplete": "address-level2",
+            "labelText": "Suburb"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_6.5",
+            "required": false,
+            "placeholder": "Post Code *",
+            "pattern": null,
+            "autocomplete": "postal-code",
+            "labelText": "Post Code"
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "input_8",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Service Required*"
+          },
+          {
+            "tag": "select",
+            "type": "select-one",
+            "name": "input_7",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Type of roof*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "input_9",
+            "required": false,
+            "placeholder": "Please Provide Additional Information",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Additional Information"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      }
+    ],
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "high",
+        "text": "表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "high",
+        "text": "表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "gutterandroofrepairs.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2025-06-25T10:50:56.000Z",
+    "registrar": "Melbourne IT",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "The operation was aborted due to timeout"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 +a +mx +a:s106.hostserver.au ~all",
+      "dmarc_present": false,
+      "dmarc_record": null,
+      "dmarc_policy": null,
+      "dkim_selectors_found": [
+        "s1",
+        "s2"
+      ],
+      "posture": "partial"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chijl3ph8wbbkwsrlheky2pl5pm",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:18:39.788Z",
+    "audited_at": "2026-05-10T22:58:29.623Z",
     "audit_score": 69,
     "dimension_scores": {
       "gbp": 61,

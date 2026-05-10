@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T21:41:10.294Z",
+  "generatedAt": "2026-05-10T23:23:55.419Z",
   "entity_input": {
     "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "latest": {
@@ -202,19 +202,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 69,
+          "performance": 64,
           "accessibility": 95,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 15526.218314238035,
-          "fcp_ms": 1956.1078877289658,
+          "lcp_ms": 15602.298448145953,
+          "fcp_ms": 1956.111037504248,
           "cls": 0,
-          "tbt_ms": 80,
-          "tti_ms": 15548.718636869915,
-          "speed_index_ms": 5511.02005889551,
-          "transfer_size_bytes": 2656707
+          "tbt_ms": 154,
+          "tti_ms": 15617.298740742175,
+          "speed_index_ms": 8486.995184991783,
+          "transfer_size_bytes": 2655169
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -230,26 +230,32 @@
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
             "savings_ms": 300,
-            "savings_bytes": 55430
+            "savings_bytes": 56067
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 79,
+            "savings_bytes": null
           }
         ]
       },
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 87,
+          "performance": 84,
           "accessibility": 92,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 2481.158785834966,
-          "fcp_ms": 525.1110767714922,
+          "lcp_ms": 2544.1311331604747,
+          "fcp_ms": 525.1078747778312,
           "cls": 0,
-          "tbt_ms": 7,
-          "tti_ms": 2481.158785834966,
-          "speed_index_ms": 839.7615336027031,
-          "transfer_size_bytes": 3085678
+          "tbt_ms": 101.99999999999989,
+          "tti_ms": 2544.1311331604747,
+          "speed_index_ms": 1294.2498164316348,
+          "transfer_size_bytes": 3085651
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -264,19 +270,290 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 40,
-            "savings_bytes": 249449
+            "savings_ms": 50,
+            "savings_bytes": 249487
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 33659
+    "latency_ms": 44896
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 2,
+    "contact_form_count": 1,
+    "forms": [
+      {
+        "action": "ref: <Node>",
+        "method": "post",
+        "field_count": 18,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "name",
+            "required": true,
+            "placeholder": "John Smith",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Name:*"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "phone",
+            "required": true,
+            "placeholder": "Your phone number...",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone:*"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "email",
+            "required": true,
+            "placeholder": "jsmith@email.com",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email:*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "location",
+            "required": true,
+            "placeholder": "eg. Coorparoo",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Location:*"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Tile Roof"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Metal Roof"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Other"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "scope-of-work",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Full roof"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "scope-of-work",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Partial area"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "scope-of-work",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Other"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "work-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Full restoration"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "work-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Repairs only"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "work-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Not sure"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Under 10 yrs"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "10–20 yrs"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "20+ yrs"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Not sure"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "service",
+            "required": true,
+            "placeholder": "Please tell us more about the service you require...",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Description:*"
+          }
+        ],
+        "required_count": 5,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Request Quote",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      },
+      {
+        "action": "https://brisbaneroofrestorationexperts.com.au/",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "search",
+            "name": "s",
+            "required": false,
+            "placeholder": "Search …",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Search for:"
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": false,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Search",
+        "honeypot_present": false,
+        "role": "unknown",
+        "friction_level": "unknown"
+      }
+    ],
+    "captchas_detected": [],
+    "has_any_captcha": false,
+    "has_any_anti_spam": false,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "表单字段数 18 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "medium",
+        "text": "表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "brisbaneroofrestorationexperts.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2026-04-24T02:02:16.000Z",
+    "registrar": "GoDaddy.com LLC trading as GoDaddy.com",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "wayback 503"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 include:_spf.mx.cloudflare.net include:spf.sendinblue.com ~all",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1; p=none;",
+      "dmarc_policy": "none",
+      "dkim_selectors_found": [
+        "mail"
+      ],
+      "posture": "strong"
+    }
   },
   "detailed_audit": {
     "business_id": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T21:41:10.294Z",
+    "audited_at": "2026-05-10T23:23:55.419Z",
     "audit_score": 70,
     "dimension_scores": {
       "gbp": 48,

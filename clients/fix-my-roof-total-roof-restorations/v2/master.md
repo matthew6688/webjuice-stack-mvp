@@ -12,12 +12,12 @@ audit_version: "2026-05-11-v1"
 fired_triggers:
   - "no_https"
   - "high_traction_old_site"
-visual_age: "slightly_outdated"
+visual_age: "outdated"
 visual_freshness: 4
 visual_trust: 5
 visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-10T21:58:22.543Z"
+generated_at: "2026-05-10T23:43:23.433Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -29,6 +29,26 @@ assets:
 # FIX MY ROOF Total Roof Restorations · 现状审计与重构提议
 
 > **51/100** · strong_redesign · 行业：roofing · 地区：Brisbane · Google 评价：5★ （127 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `A` 全攻 — 完整 OD redesign + 个性化销售流程
+
+**触发依据：**
+- strong_redesign + 127 评论 + 5★
+- 数字成熟度 3/6（懂数字营销）
+- 评论 trust signal 强
+
+**产品档位：** `T3` 多页站 + 月度运营包
+
+- 127★5 强口碑底子
+- 已投放过广告（懂月度预算）
+- 评论 trust strong
+- Blog 缺失（月度内容包机会）
+
+**建议报价：** 一次性 $5-8K + 月度 $800-1500/月（社媒 + 内容 + GEO）
+
+**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页站 + 月度运营包。
 
 ## 一、店家现状速览
 
@@ -49,14 +69,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The design relies heavily on a Google Business Profile-style layout with a dense text block that fails to guide the user toward taking action.
+> The design relies on a Google Business Profile-style layout that feels like a temporary placeholder rather than a professional business website, lacking clear calls to action and visual hierarchy.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **3/10** · 设计年代 `slightly_outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **3/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- Clear business name and tagline ('Total Roof Restorations')
-- Operating hours are visible and clear
-- Mention of '5 star reviews' in the text (though buried)
+- Clear business name and specialization in the text.
+- Operating hours are visible in the hero section.
+- Mention of '5 star reviews' helps build social proof.
 
 ## 四、客户在 Google 上怎么说
 
@@ -115,27 +135,27 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · No visible 'Call Now' or 'Get Quote' button
+### 关键 · No visible 'Get a Quote' button above the fold
 
 **技术事实**
 
-The screenshot shows a business profile view with a logo, hours, and a text description, but there is no visible 'Call Now', 'Book Online', or 'Get a Quote' button in the viewport.
+The hero section contains a logo and a small 'Open 6:30 AM - 7:00 PM' badge, but there is no primary button inviting the user to contact the business or request a quote.
 
 **普通话翻译**
 
-页面上找不到明显的“打电话”或“预约”按钮。客户找不到联系方式，就会直接离开。
+网站顶部缺少明显的“联系我们”或“获取报价”按钮。访客第一眼看到后，不知道该如何开始合作。
 
 **对客户的影响**
 
-约 70% 的本地搜索来自手机用户。如果没有一键拨号功能，客户流失率可能高达 50% 以上，直接导致订单损失。
+这会导致大量潜在客户流失。研究表明，如果访客在3秒内找不到联系方式，他们很可能会离开。对于急需修屋顶的客户，这直接意味着订单被竞争对手抢走。
 
 **正确长啥样**
 
-A sticky 'Call Now' button at the bottom of the screen on mobile, or a large, high-contrast 'Get a Free Quote' button immediately below the logo in the hero section.
+A large, high-contrast button (e.g., bright orange or yellow) centered below the logo saying 'Get a Free Quote' or 'Call Now', visible without scrolling.
 
 **Redesign 怎么改**
 
-Implement a sticky bottom navigation bar on mobile containing a 'Call' and 'Message' button, and place a primary CTA button in the top hero area.
+Add a primary Call-to-Action (CTA) button in the hero section immediately below the logo. Ensure it links to the phone number or a contact form.
 
 
 ### 主要问题 · 4 项（影响转化的明显短板）
@@ -170,57 +190,57 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Large paragraph of text blocks quick scanning
+### 主要 · Logo uses generic purple background instead of custom imagery
 
 **技术事实**
 
-The main content area consists of a single, large paragraph of text describing 'DINO' and the services, with no bullet points, bolding, or visual breaks.
+The top section features a logo placed on a solid, flat purple background with a generic house outline graphic.
 
 **普通话翻译**
 
-大段文字让人不想看。客户只想快速了解你能做什么，而不是读一篇长文章。
+目前的紫色背景看起来像是一个通用的模板，而不是专业的装修公司网站。它没有展示任何实际的工作成果。
 
 **对客户的影响**
 
-用户在 8 秒内决定是否留下。如果第一眼看到密密麻麻的字，他们会觉得这家店不专业或太麻烦，从而转向竞争对手。
+缺乏真实感会降低信任度。客户更倾向于选择那些展示真实案例和团队照片的公司，因为这证明了他们的专业能力。
 
 **正确长啥样**
 
-Short, punchy headlines (e.g., 'Expert Roof Restorations') followed by 3-4 bullet points highlighting key benefits (e.g., '10-Year Warranty', 'Free Inspection').
+A high-quality photograph of a restored roof or a team member working, with a dark overlay and white text, or a clean white background with a professional logo.
 
 **Redesign 怎么改**
 
-Break the text into a 'Services' section with icons and bullet points. Highlight key selling points in bold text.
+Replace the solid purple background with a high-resolution photo of a completed roof restoration project or a professional team shot to build immediate trust.
 
 
-### 主要 · Intrusive cookie banner blocks content
+### 主要 · Dense text block discourages reading on mobile
 
 **技术事实**
 
-A large black cookie consent banner covers the bottom-left corner of the screen, obscuring part of the content and requiring interaction before the user can focus on the business.
+The main content area starts with a large block of text describing 'DINO from FIX MY ROOF...' with small font size and tight line spacing.
 
 **普通话翻译**
 
-那个黑色的弹窗挡住了页面内容，让客户在了解服务前就被打扰，体验很差。
+大段文字在手机屏幕上很难阅读，客户通常会直接跳过。这让他们无法快速了解你们提供的具体服务。
 
 **对客户的影响**
 
-弹窗会分散注意力，导致跳出率增加 10-20%。客户可能因为觉得网站太乱而直接关闭页面。
+如果客户无法在5秒内找到他们需要的服务，他们就会离开。将服务列表化可以提高信息获取效率，从而增加咨询量。
 
 **正确长啥样**
 
-A slim, non-intrusive banner at the very bottom or a simple 'Accept' link in the footer that doesn't block the main view.
+Short, scannable bullet points or icons representing services (e.g., 'Roof Restoration', 'Leak Repair', 'Colorbond Roofing') with brief descriptions.
 
 **Redesign 怎么改**
 
-Replace the modal popup with a slim, fixed footer bar that only appears after the user scrolls or interacts, or use a simple 'Accept' button that doesn't cover content.
+Break the text into a grid of service cards with icons and short titles. Keep the detailed description for a 'About Us' section or expandable accordion.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Add a sticky 'Call Now' button and a prominent 'Get Quote' CTA above the fold.
-2. [视觉] 2. Replace the wall of text with scannable bullet points and service icons.
-3. [视觉] 3. Add a high-quality hero image of a roof project to build immediate trust.
+1. [视觉] 1. Add a prominent 'Get a Free Quote' button in the hero section.
+2. [视觉] 2. Replace the generic purple background with a high-quality image of a roof restoration project.
+3. [视觉] 3. Convert the dense text block into a scannable list of services with icons.
 4. [评论] Feature the 'no payment accepted' story prominently to build immediate trust and differentiate from competitors.
 5. [评论] Highlight 'punctuality' and 'clean job site' in the service guarantees section to address common homeowner anxieties.
 6. [评论] Use quotes about 'clear communication' in the 'How It Works' section to reassure potential clients about the process.
@@ -241,12 +261,12 @@ Replace the modal popup with a slim, fixed footer bar that only appears after th
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **38/100** |
+| 性能 (Performance) | **28/100** |
 | 可访问性 (Accessibility) | 91/100 |
 | 最佳实践 (Best Practices) | 100/100 |
 | SEO | 100/100 |
 
-**Lab 关键指标：** LCP `22.8s` · FCP `2.4s` · CLS `0.000` · TBT `1253ms`
+**Lab 关键指标：** LCP `23.3s` · FCP `8.1s` · CLS `0.000` · TBT `1675ms`
 
 **真实用户体验（过去 28 天 CRUX field data）总评：** `SLOW`
 
@@ -262,14 +282,14 @@ Replace the modal popup with a slim, fixed footer bar that only appears after th
 
 **Google 建议的优化项（按节省时间排序，前 4）：**
 
-- **Reduce unused JavaScript** — 节省 5700ms · 节省 1079KB
-- **Initial server response time was short** — 节省 476ms
+- **Reduce unused JavaScript** — 节省 5700ms · 节省 1082KB
 - **Minify JavaScript** — 节省 300ms · 节省 32KB
-- **Reduce unused CSS** — 节省 18KB
+- **Initial server response time was short** — 节省 194ms
+- **Reduce unused CSS** — 节省 150ms · 节省 18KB
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 45 · A11y 91 · Best Practices 100 · SEO 100
+**Lighthouse 分数：** Performance 41 · A11y 91 · Best Practices 100 · SEO 100
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -285,6 +305,18 @@ Replace the modal popup with a slim, fixed footer bar that only appears after th
 - **Blog 板块：** 未发现 — 没有内容营销基础
 - **社交媒体链接：** 网站上引用了 1 个平台 — facebook
 
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** ⚠ 未配置 — 客户如果用域名邮箱发邮件，进垃圾箱的概率高
+- **DKIM (邮件签名)：** ⚠ 常见 selector 未发现 DKIM 配置（不一定确凿，但提示有问题）
+- **DMARC (策略)：** ⚠ 未配置 — 域名易被仿冒做钓鱼
+- **整体邮件投递信誉：** `none` (全无配置 — 邮件营销 / cold outreach 几乎不可能投递成功)
+
+> 这是后续 **「Social Media Management 月度包」** 或 **「Cold Outreach 启动包」** 的前置条件 —— 邮件 DNS 没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。
+
 ## 技术栈与营销基建
 
 从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
@@ -293,6 +325,15 @@ Replace the modal popup with a slim, fixed footer bar that only appears after th
 - **广告 Pixel：** Meta (Facebook) Pixel — 客户已经在投放（或投放过）付费广告，对营销预算不陌生
 
 **数字成熟度打分：** 3 / 6 （中 — 已有基础设施，缺少深度运营）
+
+### Redesign 时必须保留 / 重新安装的追踪代码
+
+客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。
+
+- Google Tag Manager
+- Meta (Facebook) Pixel
+
+我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 ## AI 时代可发现性 · GEO Readiness
 
@@ -316,6 +357,18 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - [缺失] `jsonld_at_least_one` (10 分) — 0 JSON-LD block(s) detected on page
 
 > **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 0/100。」
+
+## 业务规模信号 · 内部筛选用
+
+**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
+
+- **规模信号汇总：** 小型客户特征
+- **客户分级：** `small` — 小型，符合我们标准产品包定位
+- **建议定价档：** 标准包 $3-6K（符合我们核心产品）
+
+**触发依据：**
+- Google 评价 127 条（≥50，有规模基础）
+- 已部署 2 个追踪工具
 
 ## Upsell 机会 · redesign 之外的月度营收
 

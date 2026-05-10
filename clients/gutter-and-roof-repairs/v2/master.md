@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-10T21:58:22.395Z"
+generated_at: "2026-05-10T23:43:23.309Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -28,6 +28,24 @@ assets:
 # Gutter and Roof Repairs · 现状审计与重构提议
 
 > **69/100** · moderate_candidate · 行业：roofing · 地区：Brisbane · Google 评价：4.6★ （150 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `B` 预览试探 — ChatGPT 生成 mockup hero 图 + 短邮件试反应
+
+**触发依据：**
+- moderate_candidate + 150 评论 + audit 69（仍有改进空间）
+
+**产品档位：** `T3` 多页站 + 月度运营包
+
+- 150★4.6 强口碑底子
+- 已投放过广告（懂月度预算）
+- 数字成熟度 4/6
+- 评论 trust strong
+
+**建议报价：** 一次性 $5-8K + 月度 $800-1500/月（社媒 + 内容 + GEO）
+
+**下一步行动：** 用 ChatGPT Image / Gemini Imagen 生成 hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1 次跟进。回应后升级到 A 档处理。
 
 ## 一、店家现状速览
 
@@ -229,12 +247,12 @@ Reduce the form to 3 fields max for the initial capture. Use a 'Call Now' button
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **50/100** |
+| 性能 (Performance) | **45/100** |
 | 可访问性 (Accessibility) | 90/100 |
 | 最佳实践 (Best Practices) | 100/100 |
 | SEO | 85/100 |
 
-**Lab 关键指标：** LCP `12.8s` · FCP `3.0s` · CLS `0.018` · TBT `425ms`
+**Lab 关键指标：** LCP `7.2s` · FCP `3.0s` · CLS `0.018` · TBT `888ms`
 
 **真实用户体验（过去 28 天 CRUX field data）总评：** `SLOW`
 
@@ -249,13 +267,13 @@ Reduce the form to 3 fields max for the initial capture. Use a 'Call Now' button
 
 **Google 建议的优化项（按节省时间排序，前 3）：**
 
-- **Reduce unused JavaScript** — 节省 3010ms · 节省 1390KB
-- **Reduce initial server response time** — 节省 616ms
-- **Reduce unused CSS** — 节省 69KB
+- **Reduce unused JavaScript** — 节省 600ms · 节省 1392KB
+- **Initial server response time was short** — 节省 331ms
+- **Reduce unused CSS** — 节省 150ms · 节省 69KB
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 64 · A11y 90 · Best Practices 100 · SEO 85
+**Lighthouse 分数：** Performance 65 · A11y 90 · Best Practices 100 · SEO 85
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -291,6 +309,56 @@ Reduce the form to 3 fields max for the initial capture. Use a 'Call Now' button
 - **Blog 板块：** 有，共 1 篇文章 
 - **社交媒体链接：** 网站上没有 social 链接 — GBP 流量进来后没有第二触点
 
+## 联系表单与防垃圾设置
+
+客户能不能 *方便地* 把信息留下来 = 直接的转化路径。这一段审视所有 `<form>` 元素的可用性 + 防 spam 配置。
+
+### 表单 · 12 字段（摩擦：高（≥7 字段，会显著降低转化））
+
+- **字段构成：** Name(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Street Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
+- **必填字段数：** 0/12
+- **常见关键字段：** email · phone · message
+- **提交按钮：** 「Submit」
+- **Honeypot 防 spam：** 未检测到
+
+### 表单 · 12 字段（摩擦：高（≥7 字段，会显著降低转化））
+
+- **字段构成：** URL(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Street Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
+- **必填字段数：** 0/12
+- **常见关键字段：** email · phone · message
+- **提交按钮：** 「Submit」
+- **Honeypot 防 spam：** 未检测到
+
+### 表单 · 12 字段（摩擦：高（≥7 字段，会显著降低转化））
+
+- **字段构成：** Facebook(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
+- **必填字段数：** 0/12
+- **常见关键字段：** email · phone · message
+- **提交按钮：** 「Submit」
+- **Honeypot 防 spam：** 未检测到
+
+**已部署的人机验证：**
+- reCAPTCHA v2 (visible "I'm not a robot") — 高摩擦
+
+**Audit 总结：**
+
+- [关键] 表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率
+- [关键] 表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率
+- [关键] 表单字段数 12 — 远超行业标准 3-4 字段，会显著降低转化率
+- [提示] reCAPTCHA v2 (visible "I'm not a robot") — 给真人增加额外操作（点击"我不是机器人"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案
+
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** 已配置
+- **DKIM (邮件签名)：** 已配置（selectors: s1, s2）
+- **DMARC (策略)：** ⚠ 未配置 — 域名易被仿冒做钓鱼
+- **整体邮件投递信誉：** `partial` (只有 2/3 — 建议补全)
+
+> 这是后续 **「Social Media Management 月度包」** 或 **「Cold Outreach 启动包」** 的前置条件 —— 邮件 DNS 没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。
+
 ## 技术栈与营销基建
 
 从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
@@ -300,6 +368,17 @@ Reduce the form to 3 fields max for the initial capture. Use a 'Call Now' button
 - **广告 Pixel：** Google Ads Conversion — 客户已经在投放（或投放过）付费广告，对营销预算不陌生
 
 **数字成熟度打分：** 4 / 6 （高 — 客户懂数字营销，redesign 谈预算时不必从零教育）
+
+### Redesign 时必须保留 / 重新安装的追踪代码
+
+客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。
+
+- Google Tag Manager
+- Google Analytics 4
+- Google Analytics (Universal)
+- Google Ads Conversion
+
+我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 > **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。
 
@@ -328,6 +407,19 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - [缺失] `faq_qa_pattern` (10 分) — 1 question-style heading(s) found (Q&A format helps AI extraction)
 
 > **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 55/100。」
+
+## 业务规模信号 · 内部筛选用
+
+**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
+
+- **规模信号汇总：** 中型客户特征
+- **客户分级：** `mid` — 中型客户，可接但价格要往上提（基础包 + 配置项）
+- **建议定价档：** 基础包 $6-10K + 月度运营 $1-2K
+
+**触发依据：**
+- Google 评价 150 条（≥50，有规模基础）
+- 网站页面数 114（≥100，中等复杂度）
+- 已部署 4 个分析 / pixel 工具（高数字成熟度）
 
 ## Upsell 机会 · redesign 之外的月度营收
 
