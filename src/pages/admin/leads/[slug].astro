@@ -1,0 +1,110 @@
+---
+import fs from 'fs';
+import path from 'path';
+import Layout from '../../../layouts/AdminLayout.astro';
+import { cheapAuditV2 } from '../../../../core/scoring/cheap-audit-v2.js';
+
+export async function getStaticPaths() {
+  const entitiesDir = path.join(process.cwd(), 'data/leads/entities');
+  if (!fs.existsSync(entitiesDir)) return [];
+  return fs.readdirSync(entitiesDir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => {
+      try {
+        const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8'));
+        return { params: { slug: e.entityKey }, props: { entity: e } };
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
+
+const { entity } = Astro.props;
+const latest = entity.latest || {};
+const audit = cheapAuditV2({ entity, sourceQuery: latest.sourceQuery });
+const stage1Rules = audit.stage_1.rules;
+const actionLabel = audit.action.replace(/_/g, ' ');
+const ratingDisplay = latest.rating || '-';
+const reviewDisplay = latest.review_count || 0;
+const addressDisplay = latest.address || latest.city || 'address unknown';
+const websiteStatus = latest.websiteStatus || 'unknown';
+---
+
+<Layout title={`Lead detail: ${latest.name || entity.entityKey}`} active="leads">
+  <main class="page">
+    <header class="page-header">
+      <a href="/admin/leads" class="breadcrumb">back to leads</a>
+      <h1>{latest.name || entity.entityKey}</h1>
+      <div class="meta-row">
+        <span>star {ratingDisplay} ({reviewDisplay} reviews)</span>
+        <span>status: <code>{websiteStatus}</code></span>
+        <span>{addressDisplay}</span>
+      </div>
+    </header>
+
+    <section class="card score-card">
+      <div class="score-headline">
+        <div class="big-score">
+          <div class="num">{audit.final_score}</div>
+          <div class="label">final score</div>
+        </div>
+        <div class="action-block">
+          <div class="action-tag" data-action={audit.action}>{actionLabel}</div>
+          <div class="action-reason">{audit.reason}</div>
+        </div>
+      </div>
+
+      <div class="dimension-grid">
+        <div class="dim">
+          <div class="dim-label">GBP quality</div>
+          <div class="dim-score">{audit.gbp_quality}</div>
+          <div class="dim-weight">weight 40 percent</div>
+        </div>
+        <div class="dim">
+          <div class="dim-label">Redesign need</div>
+          <div class="dim-score">{audit.redesign_need == null ? 'n/a' : audit.redesign_need}</div>
+          <div class="dim-weight">weight 60 percent</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Stage 1 GBP triage breakdown</h2>
+      <p class="meta">Algorithm spec at <a href="/admin/scoring">/admin/scoring</a></p>
+      <table>
+        <thead><tr><th>rule</th><th>hit</th><th>score</th><th>rationale</th></tr></thead>
+        <tbody>
+          {stage1Rules.map((r) => <tr><td><code>{r.id}</code></td><td>{r.hit ? 'yes' : 'no'}</td><td>{r.earned} / {r.max}</td><td>{r.rationale}</td></tr>)}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .page { max-width: 1100px; margin: 2rem auto; padding: 0 1.5rem; font-family: ui-sans-serif, system-ui, sans-serif; color: #1a1a1a; }
+  .breadcrumb { color: #666; text-decoration: none; font-size: 0.9rem; }
+  h1 { margin: 0.5rem 0; font-size: 1.6rem; }
+  .meta-row { color: #555; font-size: 0.9rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; padding: 1.2rem 1.4rem; margin-bottom: 1.2rem; }
+  .card h2 { margin-top: 0; font-size: 1.2rem; }
+  .meta { color: #666; font-size: 0.85rem; }
+  .score-headline { display: flex; gap: 2rem; align-items: center; margin-bottom: 1.5rem; }
+  .big-score .num { font-size: 3rem; font-weight: 700; line-height: 1; }
+  .big-score .label { font-size: 0.8rem; color: #888; }
+  .action-tag { display: inline-block; padding: 0.35rem 0.85rem; border-radius: 4px; font-family: ui-monospace, monospace; font-weight: 600; background: #eef5ff; color: #1a4f9c; }
+  .action-tag[data-action="audit_candidate"] { background: #e8f5e9; color: #2e7d32; }
+  .action-tag[data-action="starter_candidate"] { background: #fff3e0; color: #e65100; }
+  .action-tag[data-action="manual_review"] { background: #fff9c4; color: #816200; }
+  .action-tag[data-action="skip"] { background: #f5f5f5; color: #666; }
+  .action-reason { color: #444; margin-top: 0.5rem; font-size: 0.92rem; }
+  .dimension-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .dim-label { font-size: 0.85rem; color: #666; text-transform: uppercase; }
+  .dim-score { font-size: 1.8rem; font-weight: 600; }
+  .dim-weight { font-size: 0.8rem; color: #888; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  th { background: #fafafa; font-weight: 600; color: #444; }
+  code { background: #f5f5f5; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.85em; }
+</style>

@@ -21,13 +21,21 @@ import { fileURLToPath } from 'url';
 import { siteQuickScan } from './site-quick-scan.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONFIG_PATH = path.join(__dirname, 'cheap-audit-config.json');
+const CONFIG_PATH_CANDIDATES = [
+  path.join(__dirname, 'cheap-audit-config.json'),                 // dev / source layout
+  path.join(process.cwd(), 'core/scoring/cheap-audit-config.json'), // built output (cwd = repo root)
+];
 
 let _config = null;
 export function loadCheapAuditConfig() {
   if (_config) return _config;
-  _config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-  return _config;
+  for (const p of CONFIG_PATH_CANDIDATES) {
+    if (fs.existsSync(p)) {
+      _config = JSON.parse(fs.readFileSync(p, 'utf8'));
+      return _config;
+    }
+  }
+  throw new Error(`cheap-audit-config.json not found in any of: ${CONFIG_PATH_CANDIDATES.join(', ')}`);
 }
 
 /**

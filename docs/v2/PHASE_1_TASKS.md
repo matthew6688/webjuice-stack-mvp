@@ -23,7 +23,7 @@
 |---|---|---|
 | C-1 V2 scoring config (JSON) + site-quick-scan + cheap-audit-v2 engine + 31-lead test | ✅ | `0e41629` — 10 assertions pass; 27 of 31 V1-skip flipped |
 | C-2 enrichment router (5-route search) + 2 live fixtures | ✅ | (next push) — Regan Brothers (no_website) + Brisbane Roofing Solutions both run, all T0 free, ledger trace verified; Stage 0.5 orchestration deferred to C-4 (rescore CLI is the natural orchestrator) |
-| C-3 `/admin/scoring` page + `/admin/leads/<slug>` score breakdown | ⏳ |  |
+| C-3 `/admin/scoring` page + `/admin/leads/<slug>` score breakdown | ✅ | (next push) — both pages build under `npm run build`; algorithm definition rendered as readable spec; per-lead breakdown shows all 9 Stage 1 rules with earned/missed/rationale |
 | C-4 rescore CLI + new-vs-old comparison report on 31 entities + Stage 0.5 orchestration | ⏳ |  |
 
 ## Block ✅ DONE — Block A — T0 retrieval 层（Tinyfish + Dokobot + DDG）

@@ -14,13 +14,21 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONFIG_PATH = path.join(__dirname, 'cheap-audit-config.json');
+const CONFIG_PATH_CANDIDATES = [
+  path.join(__dirname, 'cheap-audit-config.json'),
+  path.join(process.cwd(), 'core/scoring/cheap-audit-config.json'),
+];
 
 let _config = null;
 function loadConfig() {
   if (_config) return _config;
-  _config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-  return _config;
+  for (const p of CONFIG_PATH_CANDIDATES) {
+    if (fs.existsSync(p)) {
+      _config = JSON.parse(fs.readFileSync(p, 'utf8'));
+      return _config;
+    }
+  }
+  throw new Error(`cheap-audit-config.json not found in any of: ${CONFIG_PATH_CANDIDATES.join(', ')}`);
 }
 
 const CTA_KEYWORDS = ['quote', 'contact', 'book', 'call', 'get a', 'free quote', 'get quote', 'get in touch', 'request', 'enquir'];
