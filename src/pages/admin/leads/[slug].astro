@@ -4,6 +4,8 @@ import path from 'path';
 import Layout from '../../../layouts/AdminLayout.astro';
 import { cheapAuditV2 } from '../../../../core/scoring/cheap-audit-v2.js';
 
+const DETAILED_AUDIT_FIXTURE_DIR = path.join(process.cwd(), 'data/v2/fixtures/detailed-audit');
+
 export async function getStaticPaths() {
   const entitiesDir = path.join(process.cwd(), 'data/leads/entities');
   if (!fs.existsSync(entitiesDir)) return [];
@@ -25,6 +27,33 @@ const latest = entity.latest || {};
 const audit = cheapAuditV2({ entity, sourceQuery: latest.sourceQuery });
 const stage1Rules = audit.stage_1.rules;
 const stage2Rules = audit.stage_2 ? audit.stage_2.rules : [];
+
+// Load detailed_audit fixture if available
+let detailedAudit = null;
+const detailedFixturePath = path.join(DETAILED_AUDIT_FIXTURE_DIR, `${entity.entityKey}.json`);
+if (fs.existsSync(detailedFixturePath)) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(detailedFixturePath, 'utf8'));
+    detailedAudit = raw.detailed_audit || null;
+  } catch {}
+}
+const dimensionOrder = ['gbp', 'technical', 'ux_conversion', 'content', 'seo', 'visual'];
+const dimensionLabels = {
+  gbp: 'GBP',
+  technical: 'Technical',
+  ux_conversion: 'UX & Conversion',
+  content: 'Content',
+  seo: 'SEO',
+  visual: 'Visual',
+};
+const dimensionWeights = { gbp: 15, technical: 20, ux_conversion: 25, content: 15, seo: 10, visual: 15 };
+const decisionChip = (d) => {
+  if (d === 'strong_redesign') return 'chip-coral';
+  if (d === 'moderate_candidate') return 'chip-citrus';
+  if (d === 'low_priority') return 'chip-sky';
+  if (d === 'not_qualified') return 'chip-mint';
+  return '';
+};
 
 const ratingDisplay = latest.rating || '-';
 const reviewDisplay = latest.review_count || 0;
@@ -182,11 +211,113 @@ const cityLabel = (latest.city || latest.address?.split(',').pop()?.trim() || ''
         </section>
       )}
 
+      {detailedAudit && (
+        <section class="admin-paper-section detailed-audit-section">
+          <div class="admin-paper-section-head">
+            <div>
+              <p class="eyebrow">Block D · Detailed audit</p>
+              <h2>6 维 39 项详细审计</h2>
+              <p class="detailed-meta">
+                <span>v{detailedAudit.audit_version}</span>
+                <span class="dot">·</span>
+                <span>{new Date(detailedAudit.audited_at).toLocaleString('zh-CN')}</span>
+              </p>
+            </div>
+            <div class="detailed-headline">
+              <span class={`chip ${decisionChip(detailedAudit.decision)}`}>{detailedAudit.decision.replace(/_/g, ' ')}</span>
+              <strong class="detailed-score">{detailedAudit.audit_score}<small> / 100</small></strong>
+            </div>
+          </div>
+
+          <p class="qualification-line">{detailedAudit.qualification_reason}</p>
+
+          {detailedAudit.hard_triggers.length > 0 && (
+            <div class="trigger-strip">
+              <span class="eyebrow accent-coral">FIRED HARD TRIGGERS</span>
+              <div class="trigger-pills">
+                {detailedAudit.hard_triggers.map((t) => <code class="trig-pill">{t}</code>)}
+              </div>
+            </div>
+          )}
+
+          <div class="dim-grid-6">
+            {dimensionOrder.map((dimKey) => {
+              const dim = detailedAudit.dimensions?.[dimKey];
+              if (!dim) return null;
+              return (
+                <div class="dim-card">
+                  <div class="dim-card-label">{dimensionLabels[dimKey]}</div>
+                  <div class="dim-card-score">{dim.score}<small> / 100</small></div>
+                  <div class="dim-card-bar"><div class="dim-card-fill" style={`width: ${dim.score}%`}></div></div>
+                  <div class="dim-card-weight">权重 {dimensionWeights[dimKey]}%</div>
+                </div>
+              );
+            })}
+          </div>
+
+          {detailedAudit.issues.critical.length > 0 && (
+            <div class="issue-strip issue-critical">
+              <span class="eyebrow accent-coral">CRITICAL ({detailedAudit.issues.critical.length})</span>
+              <ul>
+                {detailedAudit.issues.critical.map((i) => <li><code>{i.id}</code> <span>{i.rationale}</span></li>)}
+              </ul>
+            </div>
+          )}
+          {detailedAudit.issues.major.length > 0 && (
+            <div class="issue-strip issue-major">
+              <span class="eyebrow">MAJOR ({detailedAudit.issues.major.length})</span>
+              <ul>
+                {detailedAudit.issues.major.map((i) => <li><code>{i.id}</code> <span>{i.rationale}</span></li>)}
+              </ul>
+            </div>
+          )}
+
+          {dimensionOrder.map((dimKey) => {
+            const dim = detailedAudit.dimensions?.[dimKey];
+            if (!dim) return null;
+            return (
+              <details class="dim-detail">
+                <summary>
+                  <span class="dim-detail-label">{dimensionLabels[dimKey]}</span>
+                  <span class="dim-detail-score">{dim.score} / 100</span>
+                  <span class="dim-detail-rules">{dim.rules.length} 规则</span>
+                </summary>
+                <div class="admin-table-wrap">
+                  <table class="admin-table">
+                    <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+                    <tbody>
+                      {dim.rules.map((r) => {
+                        const cls = r.data_missing ? 'skip-row' : (r.hit ? 'hit-row' : 'miss-row');
+                        const mark = r.data_missing ? <span class="dash">—</span> : (r.hit ? <span class="check">✓</span> : <span class="x">✗</span>);
+                        return (
+                          <tr class={cls}>
+                            <td><code>{r.id}</code></td>
+                            <td>{mark}</td>
+                            <td class="num"><strong>{r.earned}</strong> / {r.max}</td>
+                            <td class="rationale">{r.rationale}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            );
+          })}
+        </section>
+      )}
+
       <section class="admin-paper-section raw-section">
         <details>
           <summary>raw cheap-audit-v2 output</summary>
           <pre>{auditJson}</pre>
         </details>
+        {detailedAudit && (
+          <details>
+            <summary>raw detailed-audit output</summary>
+            <pre>{JSON.stringify(detailedAudit, null, 2)}</pre>
+          </details>
+        )}
       </section>
     </div>
   </section>
@@ -432,6 +563,164 @@ const cityLabel = (latest.city || latest.address?.split(',').pop()?.trim() || ''
   .chip-lilac { background: var(--pl-lilac); }
 
   .stage2-skipped p { color: var(--pl-muted); font-weight: 800; margin: 6px 0 0; }
+
+  /* ─── Detailed audit (Block D) ─── */
+  .detailed-audit-section {
+    background: color-mix(in srgb, white 50%, var(--pl-paper));
+  }
+  .detailed-meta {
+    margin: 8px 0 0;
+    font-size: 12px; font-weight: 800;
+    color: var(--pl-muted);
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .detailed-meta .dot { color: rgba(23,25,28,0.3); }
+  .detailed-headline {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+  }
+  .detailed-score {
+    font-family: var(--pl-display);
+    font-size: 56px; font-weight: 950;
+    line-height: 1;
+    color: var(--pl-ink);
+  }
+  .detailed-score small {
+    font-size: 14px; color: var(--pl-muted); font-weight: 800;
+  }
+  .qualification-line {
+    margin: 12px 0 18px;
+    padding: 12px 16px;
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+    box-shadow: 3px 3px 0 var(--pl-line);
+    font-size: 13.5px; font-weight: 800;
+    color: var(--pl-ink);
+    line-height: 1.45;
+    max-width: 100%;
+    word-break: break-word;
+  }
+  .trigger-strip {
+    margin: 0 0 18px;
+    padding: 12px 16px;
+    background: var(--pl-coral-soft);
+    border: 2px solid var(--pl-line);
+    box-shadow: 3px 3px 0 var(--pl-line);
+  }
+  .trigger-pills { margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .trig-pill {
+    background: var(--pl-coral); color: white;
+    padding: 3px 10px;
+    border: 1.5px solid var(--pl-line);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; font-weight: 950;
+  }
+
+  .dim-grid-6 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+    margin: 0 0 20px;
+  }
+  .dim-card {
+    padding: 14px 14px;
+    border-right: 2px solid var(--pl-line);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .dim-card:last-child { border-right: 0; }
+  .dim-card-label {
+    font-size: 11px; font-weight: 950;
+    color: var(--pl-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .dim-card-score {
+    font-family: var(--pl-display);
+    font-size: 32px; font-weight: 950;
+    line-height: 1;
+    color: var(--pl-ink);
+  }
+  .dim-card-score small {
+    font-size: 12px; color: var(--pl-muted); font-weight: 800;
+  }
+  .dim-card-bar {
+    height: 6px; background: rgba(23,25,28,0.08);
+    border: 1.5px solid var(--pl-line);
+    overflow: hidden;
+  }
+  .dim-card-fill { height: 100%; background: var(--pl-coral); transition: width 0.4s; }
+  .dim-card-weight {
+    font-size: 10.5px; font-weight: 800;
+    color: var(--pl-muted);
+  }
+
+  .issue-strip {
+    margin: 0 0 14px;
+    padding: 12px 16px;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+  }
+  .issue-strip ul {
+    margin: 6px 0 0; padding-left: 20px;
+    list-style: '✗  ';
+    color: var(--pl-ink);
+    font-size: 12.5px; font-weight: 800;
+    line-height: 1.55;
+  }
+  .issue-strip li { margin: 4px 0; }
+  .issue-strip li code {
+    background: var(--pl-cream);
+    border: 1.5px solid var(--pl-line);
+    padding: 1px 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px; font-weight: 800;
+    margin-right: 6px;
+  }
+  .issue-strip li span { color: var(--pl-muted); font-weight: 700; }
+  .issue-critical { background: color-mix(in srgb, var(--pl-coral-soft) 35%, var(--pl-paper)); }
+  .issue-major { background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper)); }
+
+  .dim-detail {
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+    margin: 8px 0;
+  }
+  .dim-detail summary {
+    cursor: pointer;
+    padding: 10px 14px;
+    display: flex; gap: 16px; align-items: center;
+    font-weight: 850;
+    list-style: none;
+  }
+  .dim-detail summary::-webkit-details-marker { display: none; }
+  .dim-detail summary::before {
+    content: '▶';
+    font-size: 10px;
+    color: var(--pl-coral);
+    transition: transform 0.2s;
+  }
+  .dim-detail[open] summary::before { transform: rotate(90deg); }
+  .dim-detail-label {
+    font-family: var(--pl-display);
+    font-size: 16px; font-weight: 950;
+    color: var(--pl-ink);
+    flex: 1;
+  }
+  .dim-detail-score {
+    font-family: var(--pl-display);
+    font-size: 18px; font-weight: 950;
+    color: var(--pl-ink);
+  }
+  .dim-detail-rules {
+    font-size: 11px; font-weight: 800;
+    color: var(--pl-muted);
+  }
+  .dim-detail .admin-table-wrap {
+    border-top: 2px solid var(--pl-line);
+  }
+  .dim-detail .admin-table { border: 0; }
+  .accent-coral { color: var(--pl-coral); }
+  /* ─── end detailed audit ─── */
 
   .raw-section details { padding: 0; }
   .raw-section summary {
