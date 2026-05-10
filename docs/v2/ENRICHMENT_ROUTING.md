@@ -10,26 +10,37 @@
 >
 > **Rate limit：** Tinyfish 免费但可能有每分钟限速。`core/extractors/tinyfish.js` 必须带本地 token-bucket（默认 30 req/min，可调），429 自动 backoff + 跳到下一档（不堆 retry）；命中限速也写 ledger 一条 `provider_rate_limited` 事件，便于事后调阀值。
 
-Search 路由（找信息源）：
+Search 路由（找信息源）—— 实测对比见 [autoresearch-results/search-providers.md](autoresearch-results/search-providers.md)：
 
 ```
-  search query arrives ───►┌────────────────────────────┐
-                           │ 1. Tinyfish Search          │  T0  免费，结构化 SERP
-                           │    api.search.tinyfish.ai   │      默认入口
-                           └────────┬───────────────────┘
-                                    │ fail / insufficient
-                                    ▼
-                           ┌────────────────────────────┐
-                           │ 2. DuckDuckGo via Playwright│  T0  备援 SERP，本地抓
-                           └────────┬───────────────────┘
-                                    │ fail
-                                    ▼
-                           ┌────────────────────────────┐
-                           │ 3. Perplexity sonar-online  │  T2  rotation，最后兜底
-                           └────────────────────────────┘
+  search query arrives ───►┌─────────────────────────────────┐
+                           │ 1. Tinyfish search              │  T0  ~2.6s，结构化 JSON
+                           │    api.search.tinyfish.ai       │      默认入口
+                           └─────────┬───────────────────────┘
+                                     │ fail / insufficient
+                                     ▼
+                           ┌─────────────────────────────────┐
+                           │ 2. DDGS (Python ddgs lib)       │  T0  ~4.0s，结构化 JSON
+                           │    .venv-ddgs/bin/python        │      免费 fallback
+                           │    scripts/scrape/ddgs-runner.py│
+                           └─────────┬───────────────────────┘
+                                     │ fail
+                                     ▼
+                           ┌─────────────────────────────────┐
+                           │ 3. Doko Search                  │  T0  ~5.3s，原始 SERP 文本
+                           │    dokobot read --local         │      用户真 Chrome session
+                           │    https://google.com/search?q= │      无法被 anti-bot 阻挡
+                           └─────────┬───────────────────────┘
+                                     │ fail
+                                     ▼
+                           ┌─────────────────────────────────┐
+                           │ 4. Perplexity sonar-online      │  T2  rotation，最后兜底
+                           └─────────────────────────────────┘
 ```
 
-> 注：`dokobot search` 需要远程 API key（DOKO_API_KEY），我们目前没配。Dokobot 只在 fetch chain 出现（`dokobot read --local` 不需 key）。
+> 注：`dokobot search`（远程 SaaS）需要 DOKO_API_KEY 我们没配。但 `Doko Search` 是个**模式**——把 SERP URL 喂给 `dokobot read --local`，等于让用户的 Chrome 替我们去搜。不需 key，且因为是真 Chrome，反爬完全无效。代价是慢（5-15s/次）。
+>
+> **DDG 已从 Playwright HTML 抓改为 ddgs Python 库**（原方案被 DDG 反爬挡 HTTP 202）。Bootstrap：`python3 -m venv .venv-ddgs && .venv-ddgs/bin/pip install ddgs`（已装在本地，gitignored）。
 
 Fetch 路由（抓页面内容）：
 

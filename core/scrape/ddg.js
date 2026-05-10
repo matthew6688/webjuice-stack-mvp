@@ -1,16 +1,28 @@
 /**
- * DuckDuckGo SERP scrape via local Playwright.
+ * DuckDuckGo SERP via the `ddgs` Python library (formerly duckduckgo-search).
  *
- * V2 fail-soft fallback for the search chain when Tinyfish search is
- * unavailable / insufficient. Costs nothing (T0), but DDG can rate-limit
- * or anti-bot the scraper, so this is positioned as a backup.
+ * Bridges to scripts/scrape/ddgs-runner.py over stdin/stdout JSON. This
+ * replaces the earlier Playwright html.duckduckgo.com scrape, which DDG
+ * anti-botted (HTTP 202). The Python lib uses DDG's html / lite / bing
+ * backends programmatically and is far more reliable.
+ *
+ * Requires a venv with `ddgs` installed at `.venv-ddgs` (gitignored).
+ * Bootstrap: `python3 -m venv .venv-ddgs && .venv-ddgs/bin/pip install ddgs`.
  */
 
+import { spawn } from 'child_process';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { appendLedgerEvent, hashRequest } from '../finance/ledger.js';
 import { getBucket } from '../util/token-bucket.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(__dirname, '../..');
+
 const DEFAULT_RATE_PER_MIN = Number(process.env.DDG_RATE_PER_MIN || 12);
-const SERP_URL = 'https://duckduckgo.com/html/';
+const RUNNER_PATH = path.join(repoRoot, 'scripts/scrape/ddgs-runner.py');
+const VENV_PYTHON = path.join(repoRoot, '.venv-ddgs/bin/python');
 
 function ddgBucket() {
   return getBucket('ddg', { ratePerMinute: DEFAULT_RATE_PER_MIN });
@@ -24,25 +36,80 @@ export class DdgRateLimitedError extends Error {
   }
 }
 
-export class DdgBlockedError extends Error {
+export class DdgUnavailableError extends Error {
   constructor(message, { reason } = {}) {
     super(message);
-    this.name = 'DdgBlockedError';
+    this.name = 'DdgUnavailableError';
     this.reason = reason;
   }
 }
 
+/** Backwards-compat alias kept so existing test imports keep working. */
+export const DdgBlockedError = DdgUnavailableError;
+
+function resolvePython() {
+  if (process.env.DDGS_PYTHON) return process.env.DDGS_PYTHON;
+  if (fs.existsSync(VENV_PYTHON)) return VENV_PYTHON;
+  return null;
+}
+
+async function runDdgsRunner(payload, timeoutMs = 30_000) {
+  const python = resolvePython();
+  if (!python) {
+    throw new DdgUnavailableError(
+      'ddgs venv not found; run: python3 -m venv .venv-ddgs && .venv-ddgs/bin/pip install ddgs',
+      { reason: 'venv_missing' },
+    );
+  }
+
+  return new Promise((resolve, reject) => {
+    const child = spawn(python, [RUNNER_PATH], { stdio: ['pipe', 'pipe', 'pipe'] });
+    let out = '';
+    let err = '';
+    const timer = setTimeout(() => {
+      child.kill('SIGKILL');
+      reject(new DdgUnavailableError('ddgs runner timed out', { reason: 'timeout' }));
+    }, timeoutMs);
+
+    child.stdout.on('data', (d) => { out += d.toString(); });
+    child.stderr.on('data', (d) => { err += d.toString(); });
+    child.on('error', (e) => {
+      clearTimeout(timer);
+      reject(new DdgUnavailableError(`ddgs runner failed to spawn: ${e.message}`, { reason: 'spawn_error' }));
+    });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      try {
+        const parsed = JSON.parse(out);
+        if (code !== 0 || parsed.error) {
+          reject(new DdgUnavailableError(parsed.error || `ddgs runner exited ${code}`, {
+            reason: parsed.error || `exit_${code}`,
+          }));
+          return;
+        }
+        resolve(parsed);
+      } catch (e) {
+        reject(new DdgUnavailableError(`ddgs runner returned non-JSON: ${out.slice(0, 200)} (stderr: ${err.slice(0, 200)})`, {
+          reason: 'invalid_json',
+        }));
+      }
+    });
+
+    child.stdin.write(JSON.stringify(payload));
+    child.stdin.end();
+  });
+}
+
 /**
- * Run a SERP query against DDG's html.duckduckgo.com endpoint.
- * Returns { query, results: [{ position, title, snippet, url, site_name }] }.
- *
- * Uses Playwright Chromium headless. Caller passes browser if they want to
- * reuse one across queries; otherwise we spawn + close.
+ * Run a SERP query through the ddgs Python lib.
+ * Returns { query, results: [{ position, title, snippet, url }] }.
  */
 export async function ddgSearch({
   query,
+  region = 'wt-wt',
   maxResults = 10,
-  browser: providedBrowser,
+  timelimit,
+  backend = 'auto',
   ledgerPath,
   leadId,
   clientSlug,
@@ -63,66 +130,30 @@ export async function ddgSearch({
     });
   }
 
-  // Lazy-import playwright so the module can load even if Playwright isn't installed
-  const { chromium } = await import('playwright');
-  const browser = providedBrowser || await chromium.launch({ headless: true });
-  const ownsBrowser = !providedBrowser;
-
   const start = Date.now();
-  let results;
-  let httpStatus = 0;
+  let payload;
   try {
-    const page = await browser.newPage();
-    const url = new URL(SERP_URL);
-    url.searchParams.set('q', query);
-    const response = await page.goto(url.toString(), { waitUntil: 'domcontentloaded', timeout: 20_000 });
-    httpStatus = response?.status() || 0;
-
-    if (httpStatus !== 200) {
+    payload = await runDdgsRunner({ query, region, max_results: maxResults, timelimit, backend });
+  } catch (err) {
+    if (err instanceof DdgUnavailableError) {
       appendUnavailableEvent({
         ledgerPath, leadId, clientSlug, stage, purpose, campaignId,
-        reason: `http_${httpStatus}`, metadata: { query, http_status: httpStatus },
+        reason: err.reason || 'unknown', metadata: { query },
       });
-      throw new DdgBlockedError(`ddg returned HTTP ${httpStatus}`, { reason: `http_${httpStatus}` });
     }
-
-    // DDG html SERP — each result is a div.result with .result__a (title link), .result__snippet, .result__url
-    results = await page.$$eval('.result', (nodes, max) => {
-      const out = [];
-      for (const node of nodes) {
-        if (out.length >= max) break;
-        const titleEl = node.querySelector('.result__a');
-        const snippetEl = node.querySelector('.result__snippet');
-        const urlEl = node.querySelector('.result__url');
-        if (!titleEl) continue;
-        const href = titleEl.href || '';
-        const url = href || (urlEl?.textContent || '').trim();
-        out.push({
-          position: out.length + 1,
-          title: (titleEl.textContent || '').trim(),
-          snippet: (snippetEl?.textContent || '').trim(),
-          url,
-          site_name: (urlEl?.textContent || '').trim(),
-        });
-      }
-      return out;
-    }, maxResults);
-
-    if (!results.length) {
-      // DDG sometimes returns a captcha / "anomalous traffic" page
-      appendUnavailableEvent({
-        ledgerPath, leadId, clientSlug, stage, purpose, campaignId,
-        reason: 'empty_serp', metadata: { query, http_status: httpStatus },
-      });
-      throw new DdgBlockedError('ddg returned empty SERP (likely anti-bot)', { reason: 'empty_serp' });
-    }
-
-    await page.close();
-  } finally {
-    if (ownsBrowser) await browser.close();
+    throw err;
   }
   const latencyMs = Date.now() - start;
-  const requestHash = await hashRequest({ provider: 'ddg', endpoint: 'search', query, maxResults });
+
+  if (!payload.results || !payload.results.length) {
+    appendUnavailableEvent({
+      ledgerPath, leadId, clientSlug, stage, purpose, campaignId,
+      reason: 'empty_results', metadata: { query, latency_ms: latencyMs },
+    });
+    throw new DdgUnavailableError('ddgs returned empty results', { reason: 'empty_results' });
+  }
+
+  const requestHash = await hashRequest({ provider: 'ddg', endpoint: 'search', query, region, maxResults, backend });
 
   if (ledgerPath || leadId || clientSlug) {
     appendLedgerEvent({
@@ -138,15 +169,14 @@ export async function ddgSearch({
       amount: 0,
       currency: process.env.ROI_CURRENCY || 'USD',
       metadata: {
-        endpoint: 'search', query, maxResults,
-        results_count: results.length,
+        endpoint: 'search', query, region, maxResults, backend,
+        results_count: payload.results.length,
         latency_ms: latencyMs,
-        http_status: httpStatus,
       },
     }, ledgerPath);
   }
 
-  return { query, results };
+  return { query, results: payload.results };
 }
 
 function appendRateLimitedEvent({ ledgerPath, leadId, clientSlug, stage, purpose, campaignId, reason, metadata }) {

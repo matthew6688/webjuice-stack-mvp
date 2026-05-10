@@ -157,6 +157,95 @@ export async function dokobotRead({
   return { text, device: targetDevice, latencyMs, cliVersion };
 }
 
+/**
+ * Doko Search — pattern from the dokobot.ai "doko-search" skill:
+ * search the web by reading a search engine's SERP through local Chrome.
+ * No API key, no rate limits (uses the user's actual Chrome session).
+ *
+ * Returns { engine, query, serpUrl, rawText, latencyMs, device, results }
+ * where `results` is a best-effort parsed list of { position, title, url };
+ * `rawText` is the full rendered SERP text for downstream LLM consumption.
+ *
+ * Slow (~10-20s per search) but unblockable — useful as last-ditch fallback
+ * when Tinyfish + DDGS are both unavailable.
+ */
+const SEARCH_ENGINE_URLS = {
+  google: 'https://www.google.com/search?q=',
+  bing: 'https://www.bing.com/search?q=',
+  duckduckgo: 'https://duckduckgo.com/?q=',
+  baidu: 'https://www.baidu.com/s?wd=',
+};
+
+export async function dokoSearch({
+  query,
+  engine = 'google',
+  device,
+  screens = 1,
+  timeout = 45,
+  exec,
+  ledgerPath,
+  leadId,
+  clientSlug,
+  stage,
+  purpose = 'lead_enrichment_search',
+  campaignId,
+} = {}) {
+  if (!query) throw new Error('query is required');
+  const base = SEARCH_ENGINE_URLS[engine];
+  if (!base) throw new Error(`unknown engine: ${engine}; valid: ${Object.keys(SEARCH_ENGINE_URLS).join(', ')}`);
+
+  const serpUrl = base + encodeURIComponent(query);
+  const read = await dokobotRead({
+    url: serpUrl, device, screens, timeout, exec,
+    ledgerPath, leadId, clientSlug, stage,
+    purpose: `${purpose}_via_${engine}`,
+    campaignId,
+  });
+
+  return {
+    engine,
+    query,
+    serpUrl,
+    device: read.device,
+    cliVersion: read.cliVersion,
+    latencyMs: read.latencyMs,
+    rawText: read.text,
+    results: parseSerpText(read.text, engine),
+  };
+}
+
+/**
+ * Best-effort SERP parser. Search engine result pages rendered as text by
+ * dokobot have predictable patterns but vary by engine. Returns position +
+ * title + url where confidence is high; downstream code can fall back to
+ * the raw text when this returns empty.
+ */
+function parseSerpText(text, engine) {
+  const results = [];
+  if (!text) return results;
+
+  // Generic pattern: lines that contain http(s):// urls. Walk lines, treat
+  // a non-empty line followed by a URL line as title→url.
+  const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+  let position = 0;
+  for (let i = 0; i < lines.length; i += 1) {
+    const m = lines[i].match(/(https?:\/\/[^\s)\]]+)/);
+    if (!m) continue;
+    const url = m[1];
+    // Skip search-engine-internal URLs
+    if (/google\.com|bing\.com|duckduckgo\.com|baidu\.com/.test(url)) continue;
+    // Title heuristic: prior non-URL line
+    let title = '';
+    for (let j = i - 1; j >= Math.max(0, i - 3); j -= 1) {
+      if (!/(https?:\/\/)/.test(lines[j])) { title = lines[j]; break; }
+    }
+    position += 1;
+    results.push({ position, title, url, _engine: engine });
+    if (results.length >= 20) break;
+  }
+  return results;
+}
+
 function appendRateLimitedEvent({ ledgerPath, leadId, clientSlug, stage, purpose, campaignId, reason, metadata }) {
   if (!ledgerPath && !leadId && !clientSlug) return;
   appendLedgerEvent({
