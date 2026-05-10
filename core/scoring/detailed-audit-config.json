@@ -1,0 +1,160 @@
+{
+  "$schema": "internal://profitslocal/detailed-audit-config-v2",
+  "version": "2026-05-11-v1",
+  "purpose": "Detailed audit — runs on V2 audit_candidate or starter_candidate after cheap audit. 6 dimensions × 39 rules → audit_result schema (PRD). Higher cost than cheap audit (full Playwright fetch + Lighthouse), so gated by cheap-audit decision.",
+  "philosophy": "Rules favor concrete operator/customer-explainable signals over abstract SEO scores. UX 25% + Technical 20% weighted highest because they drive conversion most directly for local services. Visual 15% is partly LLM-judged (deferred to Block E). Hard triggers force candidacy for specific catastrophic failures regardless of score.",
+  "dimension_weights": {
+    "gbp": 0.15,
+    "technical": 0.20,
+    "ux_conversion": 0.25,
+    "content": 0.15,
+    "seo": 0.10,
+    "visual": 0.15
+  },
+  "dimensions": {
+    "gbp": {
+      "label": "Google Business Profile",
+      "max": 100,
+      "uses": ["entity.latest", "business_profile (search-enriched)"],
+      "rules": [
+        { "id": "has_website_link", "max": 10, "check": "latest.website is set", "deduct_if_missing": 10 },
+        { "id": "review_volume_vs_peers", "max": 25, "check": "review_count tiered AND vs niche peer median",
+          "tiers": [
+            { "if": "review_count >= 100", "earn": 25 },
+            { "if": "review_count >= 50",  "earn": 17 },
+            { "if": "review_count >= 20",  "earn": 12 },
+            { "if": "review_count >= 10",  "earn": 8 },
+            { "if": "review_count >= 1",   "earn": 4 },
+            { "if": "review_count = 0",    "earn": 0 }
+          ] },
+        { "id": "average_rating", "max": 10, "check": "rating tiered",
+          "tiers": [
+            { "if": "rating >= 4.5", "earn": 10 },
+            { "if": "rating >= 4.0", "earn": 7 },
+            { "if": "rating >= 3.5", "earn": 4 },
+            { "if": "rating < 3.5",  "earn": 0 }
+          ] },
+        { "id": "has_hours", "max": 5, "check": "GBP hours present", "deduct_if_missing": 5 },
+        { "id": "image_count", "max": 10, "check": "image_count tiered",
+          "tiers": [
+            { "if": "imageCount >= 10", "earn": 10 },
+            { "if": "imageCount >= 5",  "earn": 6 },
+            { "if": "imageCount >= 1",  "earn": 3 },
+            { "if": "imageCount = 0",   "earn": 0 }
+          ] },
+        { "id": "has_business_description", "max": 10, "check": "GBP description present", "deduct_if_missing": 10 },
+        { "id": "has_service_area", "max": 15, "check": "service area declared", "deduct_if_missing": 15 },
+        { "id": "owner_replies_to_reviews", "max": 15, "check": "operator replies to >= 25% of reviews",
+          "tiers": [
+            { "if": "reply_rate >= 50%", "earn": 15 },
+            { "if": "reply_rate >= 25%", "earn": 10 },
+            { "if": "reply_rate >= 10%", "earn": 5 },
+            { "if": "reply_rate < 10%",  "earn": 0 }
+          ] }
+      ]
+    },
+    "technical": {
+      "label": "Technical (loading / mobile / errors)",
+      "max": 100,
+      "uses": ["site_fetch", "lighthouse"],
+      "rules": [
+        { "id": "https_enabled", "max": 20, "check": "URL scheme is https", "deduct_if_missing": 20 },
+        { "id": "first_paint_under_3s", "max": 25, "check": "LCP / first paint",
+          "tiers": [
+            { "if": "lcp <= 2",  "earn": 25 },
+            { "if": "lcp <= 3",  "earn": 18 },
+            { "if": "lcp <= 5",  "earn": 10 },
+            { "if": "lcp > 5",   "earn": 0 }
+          ] },
+        { "id": "mobile_responsive", "max": 30, "check": "viewport meta + Lighthouse mobile score",
+          "tiers": [
+            { "if": "lighthouse_mobile >= 80", "earn": 30 },
+            { "if": "lighthouse_mobile >= 50", "earn": 18 },
+            { "if": "lighthouse_mobile >= 20", "earn": 8 },
+            { "if": "lighthouse_mobile < 20",  "earn": 0 }
+          ] },
+        { "id": "core_web_vitals_pass", "max": 10, "check": "CWV all green", "deduct_if_missing": 10 },
+        { "id": "form_submittable", "max": 5, "check": "any form has action target & no JS error", "deduct_if_missing": 5 },
+        { "id": "no_console_errors", "max": 5, "check": "page renders without severe console errors", "deduct_if_missing": 5 },
+        { "id": "favicon_and_meta", "max": 5, "check": "favicon link + meta description present", "deduct_if_missing": 5 }
+      ]
+    },
+    "ux_conversion": {
+      "label": "UX & Conversion",
+      "max": 100,
+      "uses": ["site_fetch", "html"],
+      "rules": [
+        { "id": "above_fold_cta_within_5s", "max": 30, "check": "above-fold has visible CTA / contact action", "deduct_if_missing": 30,
+          "rationale": "the strongest predictor of mobile-search conversion for local services" },
+        { "id": "phone_visible_above_fold", "max": 20, "check": "phone digits in first 1500 chars", "deduct_if_missing": 20 },
+        { "id": "click_to_call_link", "max": 10, "check": "tel: link present", "deduct_if_missing": 10 },
+        { "id": "quote_or_booking_form", "max": 20, "check": "form for quote/booking present", "deduct_if_missing": 20 },
+        { "id": "contact_path_short", "max": 10, "check": "contact reachable in <= 2 clicks", "deduct_if_missing": 10 },
+        { "id": "has_gallery", "max": 5, "check": "gallery / portfolio section present", "deduct_if_missing": 5 },
+        { "id": "has_testimonials", "max": 5, "check": "testimonials block present", "deduct_if_missing": 5 }
+      ]
+    },
+    "content": {
+      "label": "Content quality",
+      "max": 100,
+      "uses": ["html", "markdown"],
+      "rules": [
+        { "id": "homepage_title_clear", "max": 20, "check": "title contains business name AND service keyword", "deduct_if_missing": 20 },
+        { "id": "service_copy_specific", "max": 20, "check": "copy mentions specific services beyond generic", "deduct_if_missing": 20 },
+        { "id": "trust_signals_present", "max": 20, "check": "license/insurance/years/reviews/awards mention", "deduct_if_missing": 20 },
+        { "id": "localized_content", "max": 15, "check": "city/suburb/state mentioned in copy", "deduct_if_missing": 15 },
+        { "id": "evidence_of_recent_update", "max": 15, "check": "fresh date/year/post in copy", "deduct_if_missing": 15 },
+        { "id": "non_ai_filler_copy", "max": 10, "check": "absence of generic AI-spam phrasing", "deduct_if_missing": 10 }
+      ]
+    },
+    "seo": {
+      "label": "SEO basics",
+      "max": 100,
+      "uses": ["html"],
+      "rules": [
+        { "id": "title_meta_present", "max": 25, "check": "<title> + <meta description>", "deduct_if_missing": 25 },
+        { "id": "h1_unique", "max": 20, "check": "exactly one <h1>", "deduct_if_missing": 20 },
+        { "id": "local_schema_markup", "max": 20, "check": "JSON-LD LocalBusiness schema present", "deduct_if_missing": 20 },
+        { "id": "image_alt_present", "max": 20, "check": ">= 80% of <img> have alt", "deduct_if_missing": 20 },
+        { "id": "sitemap_robots", "max": 15, "check": "/sitemap.xml + /robots.txt accessible", "deduct_if_missing": 15 }
+      ]
+    },
+    "visual": {
+      "label": "Visual age (rules + LLM)",
+      "max": 100,
+      "uses": ["html_css", "screenshot_via_vision_llm"],
+      "deferred_to_block": "E",
+      "stub_score": 50,
+      "stub_note": "Block D iteration 1 sets visual=50 (neutral). Block E will fill via Vision LLM autoresearch.",
+      "rules": [
+        { "id": "responsive_modern_layout", "max": 25, "vision_llm": true },
+        { "id": "no_table_layout", "max": 20, "check": "raw HTML has < 3 non-presentation <table>" },
+        { "id": "modern_color_palette", "max": 20, "vision_llm": true },
+        { "id": "modern_font_choice", "max": 20, "vision_llm": true },
+        { "id": "high_quality_images", "max": 15, "check": "img dimensions/alt heuristics + vision_llm" }
+      ]
+    }
+  },
+  "decision_thresholds": [
+    { "min": 0,  "max": 49,  "decision": "strong_redesign",    "label": "强 redesign 候选 — 进入 demo build 队列" },
+    { "min": 50, "max": 64,  "decision": "moderate_candidate", "label": "中等候选 — 人工复核后决定" },
+    { "min": 65, "max": 79,  "decision": "low_priority",       "label": "低优先 — 可后续 nurture" },
+    { "min": 80, "max": 100, "decision": "not_qualified",      "label": "不优先投入" }
+  ],
+  "hard_triggers": [
+    { "id": "no_website",       "if": "websiteStatus = no_website",                                 "force": "strong_redesign" },
+    { "id": "mobile_broken",    "if": "lighthouse_mobile < 30 OR no viewport meta",                 "force": "strong_redesign" },
+    { "id": "no_https",         "if": "URL scheme is http",                                         "force": "strong_redesign" },
+    { "id": "no_visible_cta_or_phone", "if": "above_fold_cta_within_5s AND phone_visible_above_fold both fail", "force": "strong_redesign" },
+    { "id": "high_traction_old_site", "if": "review_count >= 100 AND audit_score >= 50",            "force_min": "moderate_candidate" }
+  ],
+  "issue_severity": {
+    "critical": ["https_enabled", "mobile_responsive", "above_fold_cta_within_5s", "phone_visible_above_fold", "form_submittable"],
+    "major": ["first_paint_under_3s", "review_volume_vs_peers", "homepage_title_clear", "service_copy_specific", "trust_signals_present", "click_to_call_link", "h1_unique", "local_schema_markup"],
+    "minor": "all-other-rules"
+  },
+  "ui_visibility": {
+    "admin_scoring_page": "/admin/scoring renders this entire JSON read-only as the algorithm spec",
+    "admin_lead_detail": "/admin/leads/<slug> renders detailed_audit per-rule breakdown when present"
+  }
+}

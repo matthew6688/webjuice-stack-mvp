@@ -1,0 +1,439 @@
+{
+  "generatedAt": "2026-05-10T14:07:30.971Z",
+  "entity_input": {
+    "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Roof Space Renovators",
+      "category": "Home improvement store",
+      "categories": [
+        "Home improvement store",
+        "Construction company",
+        "Ladder supplier",
+        "Skylight contractor"
+      ],
+      "address": "5/53 Lawnton Pocket Rd, Lawnton QLD 4501",
+      "city": "Brisbane",
+      "niche": "roofing",
+      "phone": "(07) 3889 6688",
+      "website": "https://www.roofspacerenovators.com.au/",
+      "google_maps_url": "https://www.google.com/maps/place/Roof+Space+Renovators/data=!4m7!3m6!1s0x6b93fcdd6c4cb403:0x68425640d5716f57!8m2!3d-27.2830883!4d152.9900512!16s%2Fg%2F11c1rf965s!19sChIJA7RMbN38k2sRV29x1UBWQmg?authuser=0&hl=en&rclk=1",
+      "rating": 5,
+      "review_count": 221,
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 42,
+      "recommendedAction": "manual_review",
+      "sourceQuery": "roof restoration in Brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 6,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJA7RMbN38k2sRV29x1UBWQmg",
+      "cid": "7512661964866285399",
+      "data_id": "0x6b93fcdd6c4cb403:0x68425640d5716f57",
+      "websiteDomain": "roofspacerenovators.com.au",
+      "phoneDigits": "0738896688"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://roofspacerenovators.com.au/",
+    "markdown_length": 384
+  },
+  "detailed_audit": {
+    "business_id": "place_chija7rmbn38k2srv29x1ubwqmg",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-10T14:07:30.971Z",
+    "audit_score": 24,
+    "dimension_scores": {
+      "gbp": 61,
+      "technical": 20,
+      "ux_conversion": 0,
+      "content": 25,
+      "seo": 0,
+      "visual": 50
+    },
+    "decision": "strong_redesign",
+    "qualification_reason": "audit_score=24 → strong_redesign · weakest: ux_conversion 0, seo 0 · fired: no_visible_cta_or_phone · 2 critical issues",
+    "hard_triggers": [
+      "no_visible_cta_or_phone"
+    ],
+    "issues": {
+      "critical": [
+        {
+          "id": "above_fold_cta_within_5s",
+          "rationale": "no CTA keyword in first 1500 chars",
+          "max": 30
+        },
+        {
+          "id": "phone_visible_above_fold",
+          "rationale": "phone hidden below fold or missing",
+          "max": 20
+        }
+      ],
+      "major": [
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='' contains-name=false contains-niche=false",
+          "max": 20
+        },
+        {
+          "id": "service_copy_specific",
+          "rationale": "0 service-related verbs detected",
+          "max": 20
+        },
+        {
+          "id": "trust_signals_present",
+          "rationale": "0 trust-keyword mentions",
+          "max": 20
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15
+        },
+        {
+          "id": "has_gallery",
+          "rationale": "no gallery",
+          "max": 5
+        },
+        {
+          "id": "has_testimonials",
+          "rationale": "no testimonials",
+          "max": 5
+        },
+        {
+          "id": "localized_content",
+          "rationale": "no local mention",
+          "max": 15
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 61,
+        "earned": 61,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: https://www.roofspacerenovators.com.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "221 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★5"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 6,
+            "max": 10,
+            "hit": true,
+            "rationale": "6 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "description present"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 20,
+        "earned": 20,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "https"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 0,
+            "max": 30,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml available"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "form submit not tested"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "console not captured"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 0,
+        "earned": 0,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 0,
+            "max": 30,
+            "hit": false,
+            "rationale": "no CTA keyword in first 1500 chars"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "phone hidden below fold or missing"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no gallery"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no testimonials"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 25,
+        "earned": 25,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='' contains-name=false contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "0 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "0 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no local mention"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "fresh year mentioned"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 0,
+        "earned": 0,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "no rawHtml"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": false,
+      "lighthouse": false,
+      "visual_score_provided": false
+    }
+  }
+}
