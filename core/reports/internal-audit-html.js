@@ -205,22 +205,71 @@ function renderVisualSection({ visualAudit, evidenceById, screenshotDir }) {
     </section>`;
 }
 
-function renderReviewSection({ reviewAnalysis }) {
+function renderReviewSection({ reviewAnalysis, reviewSample, entity }) {
   if (!reviewAnalysis) {
     return `
     <section class="section section-placeholder">
       <h2>客户评论分析</h2>
-      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑）。当此 lead 被批准为正式销售目标后会补充：</p>
+      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑，加 <code>--with-reviews</code> 触发）。会补充：</p>
       <ul class="placeholder-list">
-        <li>评论情感分布（5★/4★/3★/2★/1★ 占比）</li>
-        <li>商家回复率 + 最近一次回复时间</li>
-        <li>常见好评 / 差评关键词</li>
-        <li>5-8 条高质量 quote — 可直接放到 redesign 后的网站上</li>
-        <li>vs 同行评论平均水平的差距</li>
+        <li>5 条 Google 「最相关」评论 + 商家整体评分概览</li>
+        <li>常见好评 / 差评 themes（Ollama 本地提取）</li>
+        <li>quotable 评论 — 可直接放到 redesign 后网站</li>
+        <li>redesign hooks — 哪些主题该在网站哪些位置呈现</li>
       </ul>
     </section>`;
   }
-  return `<section class="section"><h2>客户评论分析</h2><pre>${escapeHtml(JSON.stringify(reviewAnalysis, null, 2))}</pre></section>`;
+  const a = reviewAnalysis;
+  const overall = `${entity?.latest?.rating ?? '-'}★ · ${entity?.latest?.review_count ?? '-'} 条评论`;
+  const trustClass = a.trust_signal_strength === 'strong' ? 'mint' : (a.trust_signal_strength === 'weak' ? 'coral-soft' : 'citrus');
+  return `
+    <section class="section">
+      <p class="eyebrow">客户评论分析</p>
+      <h2>${escapeHtml(a.summary || '')}</h2>
+      <div class="review-overview">
+        <div class="review-stat"><span class="lab">Google 整体</span><strong>${escapeHtml(overall)}</strong></div>
+        <div class="review-stat trust-${trustClass}"><span class="lab">信号强度</span><strong>${escapeHtml((a.trust_signal_strength || '-').toUpperCase())}</strong></div>
+        <div class="review-stat"><span class="lab">分析样本</span><strong>${reviewSample?.length || 0} 条</strong><small>Google 「最相关」</small></div>
+      </div>
+
+      ${(a.positive_themes || []).length ? `
+        <h3>客户一致夸赞</h3>
+        <div class="theme-pills theme-pos">${a.positive_themes.map((t) => `<span class="theme-pill pos">${escapeHtml(t)}</span>`).join('')}</div>
+      ` : ''}
+
+      ${(a.negative_themes || []).length ? `
+        <h3>抱怨 / 短板</h3>
+        <div class="theme-pills theme-neg">${a.negative_themes.map((t) => `<span class="theme-pill neg">${escapeHtml(t)}</span>`).join('')}</div>
+      ` : ''}
+
+      ${(a.quotable_for_redesign || []).length ? `
+        <h3>可直接用在 redesign 的 quote</h3>
+        <div class="quote-grid">
+          ${a.quotable_for_redesign.map((q) => `
+            <blockquote class="review-quote">
+              <p class="quote-text">"${escapeHtml(q.quote || '')}"</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— ${escapeHtml(q.author || 'anonymous')}</span>
+                <span class="quote-rating">${'★'.repeat(Math.round(q.rating || 5))}</span>
+              </footer>
+              ${q.why_useful ? `<p class="quote-why"><span class="lab">放哪</span>${escapeHtml(q.why_useful)}</p>` : ''}
+            </blockquote>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${a.owner_reply_observations ? `
+        <h3>商家回复观察</h3>
+        <p class="review-row">${escapeHtml(a.owner_reply_observations)}</p>
+      ` : ''}
+
+      ${(a.redesign_hooks || []).length ? `
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 可发力的钩子</p>
+          <ol>${a.redesign_hooks.map((h) => `<li>${escapeHtml(h)}</li>`).join('')}</ol>
+        </div>
+      ` : ''}
+    </section>`;
 }
 
 function renderSpeedComparisonSection({ videoUrl } = {}) {
@@ -254,6 +303,7 @@ export function renderInternalAuditHtml({
   detailedAudit,
   visualAudit = null,
   reviewAnalysis = null,
+  reviewSample = null,
   leadSpend = null,
   screenshotDir = './screenshots',
   evidenceById = {},
@@ -404,6 +454,29 @@ export function renderInternalAuditHtml({
   .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
   .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .review-overview { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--line); margin: 14px 0 8px; }
+  .review-stat { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .review-stat:last-child { border-right: 0; }
+  .review-stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .review-stat strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1.1; margin-top: 4px; }
+  .review-stat small { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-top: 3px; }
+  .review-stat.trust-mint { background: var(--mint); }
+  .review-stat.trust-citrus { background: var(--citrus); }
+  .review-stat.trust-coral-soft { background: var(--coral-soft); }
+  .theme-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .theme-pill { padding: 4px 10px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .theme-pill.pos { background: var(--mint); }
+  .theme-pill.neg { background: var(--coral-soft); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 8px 0 14px; }
+  .review-quote { margin: 0; padding: 14px 16px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--paper); }
+  .review-quote:nth-child(2n) { border-right: 0; }
+  .review-quote:nth-last-child(-n+2) { border-bottom: 0; }
+  .review-quote .quote-text { font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.45; margin: 0 0 8px; }
+  .review-quote .quote-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .review-quote .quote-rating { color: var(--coral); letter-spacing: 0.08em; }
+  .review-quote .quote-why { font-size: 12px; font-weight: 700; line-height: 1.45; color: var(--muted); margin: 6px 0 0; padding-top: 8px; border-top: 1.5px dashed rgba(23,25,28,0.2); }
+  .review-quote .quote-why .lab { display: inline-block; font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); margin-right: 6px; }
+  .review-row { font-size: 13.5px; font-weight: 700; line-height: 1.5; }
   .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
   .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
@@ -569,7 +642,7 @@ export function renderInternalAuditHtml({
 
   ${renderVisualSection({ visualAudit, evidenceById, screenshotDir })}
 
-  ${renderReviewSection({ reviewAnalysis })}
+  ${renderReviewSection({ reviewAnalysis, reviewSample, entity })}
 
   ${renderSpeedComparisonSection({ videoUrl })}
 

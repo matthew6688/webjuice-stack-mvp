@@ -125,7 +125,33 @@
   .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
   .issue-row.ev-ref { color: var(--muted); }
+  .broken-evidence { background: color-mix(in srgb, var(--coral-soft) 35%, var(--paper)); border: 2px dashed var(--coral); padding: 12px 14px; margin-top: 10px; }
+  .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
+  .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .review-overview { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--line); margin: 14px 0 8px; }
+  .review-stat { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .review-stat:last-child { border-right: 0; }
+  .review-stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .review-stat strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1.1; margin-top: 4px; }
+  .review-stat small { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-top: 3px; }
+  .review-stat.trust-mint { background: var(--mint); }
+  .review-stat.trust-citrus { background: var(--citrus); }
+  .review-stat.trust-coral-soft { background: var(--coral-soft); }
+  .theme-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .theme-pill { padding: 4px 10px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .theme-pill.pos { background: var(--mint); }
+  .theme-pill.neg { background: var(--coral-soft); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 8px 0 14px; }
+  .review-quote { margin: 0; padding: 14px 16px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--paper); }
+  .review-quote:nth-child(2n) { border-right: 0; }
+  .review-quote:nth-last-child(-n+2) { border-bottom: 0; }
+  .review-quote .quote-text { font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.45; margin: 0 0 8px; }
+  .review-quote .quote-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .review-quote .quote-rating { color: var(--coral); letter-spacing: 0.08em; }
+  .review-quote .quote-why { font-size: 12px; font-weight: 700; line-height: 1.45; color: var(--muted); margin: 6px 0 0; padding-top: 8px; border-top: 1.5px dashed rgba(23,25,28,0.2); }
+  .review-quote .quote-why .lab { display: inline-block; font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); margin-right: 6px; }
+  .review-row { font-size: 13.5px; font-weight: 700; line-height: 1.5; }
   .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
   .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
@@ -481,16 +507,76 @@
     </section>
 
   
-    <section class="section section-placeholder">
-      <h2>客户评论分析</h2>
-      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑）。当此 lead 被批准为正式销售目标后会补充：</p>
-      <ul class="placeholder-list">
-        <li>评论情感分布（5★/4★/3★/2★/1★ 占比）</li>
-        <li>商家回复率 + 最近一次回复时间</li>
-        <li>常见好评 / 差评关键词</li>
-        <li>5-8 条高质量 quote — 可直接放到 redesign 后的网站上</li>
-        <li>vs 同行评论平均水平的差距</li>
-      </ul>
+    <section class="section">
+      <p class="eyebrow">客户评论分析</p>
+      <h2>Customers consistently praise the business for exceptional responsiveness, reliability, and high-quality workmanship across both large restorations and small repairs. The reviews highlight a personal touch with the owner, Aaron, and a willingness to handle urgent or smaller jobs that other companies ignore.</h2>
+      <div class="review-overview">
+        <div class="review-stat"><span class="lab">Google 整体</span><strong>4.9★ · 21 条评论</strong></div>
+        <div class="review-stat trust-mint"><span class="lab">信号强度</span><strong>STRONG</strong></div>
+        <div class="review-stat"><span class="lab">分析样本</span><strong>5 条</strong><small>Google 「最相关」</small></div>
+      </div>
+
+      
+        <h3>客户一致夸赞</h3>
+        <div class="theme-pills theme-pos"><span class="theme-pill pos">rapid response time</span><span class="theme-pill pos">punctual and reliable</span><span class="theme-pill pos">high quality finish</span><span class="theme-pill pos">willing to do small repairs</span><span class="theme-pill pos">professional communication</span></div>
+      
+
+      
+
+      
+        <h3>可直接用在 redesign 的 quote</h3>
+        <div class="quote-grid">
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"He quoted within 24 hours of my enquiry and began work the next day."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Dave</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Hero section proof of speed and efficiency</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"Most want to restore your entire roof... My job was a smaller job... Aaron answered my phone call message, promptly."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Loren</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Service page to highlight flexibility for small repairs</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"The result has dramatically improved our street appeal and home value."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Dave</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Before/After gallery caption or benefits section</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"Aaron and the team were quick to respond, explained every detail of the repairs/work."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Shannan</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Testimonial section emphasizing transparency and communication</p>
+            </blockquote>
+          
+        </div>
+      
+
+      
+        <h3>商家回复观察</h3>
+        <p class="review-row">No owner replies are visible in the provided sample data. Given the high volume of 5-star reviews, the lack of visible replies is neutral, but adding personalized responses would further boost trust.</p>
+      
+
+      
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 可发力的钩子</p>
+          <ol><li>Feature the &#39;small repair&#39; success story prominently to differentiate from competitors who only do full restorations.</li><li>Use the &#39;24-hour quote&#39; metric in the header to emphasize speed.</li><li>Highlight the &#39;home value&#39; improvement angle in the benefits section to appeal to homeowners looking for ROI.</li></ol>
+        </div>
+      
     </section>
 
   
@@ -524,7 +610,7 @@
     </p>
     <p class="meta-row" style="margin-top:8px">
       <span>Visual auditor: ✓ filled (Block E)</span>
-      <span>Review analysis: ⏳ on-demand for high-value leads</span>
+      <span>Review analysis: ✓ filled</span>
       <span>Speed video: ⏳ post-mockup</span>
     </p>
   </footer>

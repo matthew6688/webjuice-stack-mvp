@@ -16,6 +16,8 @@ import { fileURLToPath } from 'url';
 import { cheapAuditV2 } from '../../core/scoring/cheap-audit-v2.js';
 import { renderInternalAuditHtml } from '../../core/reports/internal-audit-html.js';
 import { captureIssueEvidence } from '../../core/audit/issue-evidence.js';
+import { fetchLeadReviews } from '../../core/reviews/fetch-reviews.js';
+import { analyzeReviews } from '../../core/reviews/analyze-reviews.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -41,6 +43,8 @@ if (args.all) {
 console.log(`[build-internal-report] targets=${targets.length}`);
 
 const captureEvidence = args['capture-evidence'] !== false && args['no-evidence'] !== true;
+const withReviews = args['with-reviews'] === true;
+const reviewsDir = path.join(repoRoot, 'data/v2/fixtures/reviews');
 
 const written = [];
 for (const entityKey of targets) {
@@ -78,6 +82,48 @@ for (const entityKey of targets) {
     }
   }
 
+  // Optional review mining (T2 Google Places + T0 local Ollama analysis).
+  // Cached as fixture per entity — re-run with --with-reviews to refresh.
+  let reviewAnalysis = null;
+  let reviewSample = null;
+  const reviewFixturePath = path.join(reviewsDir, `${entityKey}.json`);
+  if (withReviews) {
+    fs.mkdirSync(reviewsDir, { recursive: true });
+    try {
+      const fetched = await fetchLeadReviews({ entity });
+      if (fetched.ok && fetched.reviews.length) {
+        const analyzed = await analyzeReviews({
+          reviews: fetched.reviews,
+          rating: fetched.rating,
+          review_count: fetched.review_count,
+          business_name: entity.latest?.name,
+          niche: entity.latest?.niche,
+          leadId: entityKey,
+          clientSlug: slugRoot,
+        });
+        const fixture = {
+          fetched,
+          analysis: analyzed.ok ? analyzed.analysis : null,
+          model: analyzed.model,
+          analyzed_at: new Date().toISOString(),
+        };
+        fs.writeFileSync(reviewFixturePath, JSON.stringify(fixture, null, 2));
+        reviewAnalysis = fixture.analysis;
+        reviewSample = fetched.reviews;
+      } else {
+        console.warn(`  ⚠ review fetch failed: ${fetched.reason}`);
+      }
+    } catch (err) {
+      console.warn(`  ⚠ review mining failed: ${err.message}`);
+    }
+  } else if (fs.existsSync(reviewFixturePath)) {
+    try {
+      const cached = JSON.parse(fs.readFileSync(reviewFixturePath, 'utf8'));
+      reviewAnalysis = cached.analysis;
+      reviewSample = cached.fetched?.reviews || null;
+    } catch {}
+  }
+
   // Per-issue evidence + mobile-throttled video. T0 (local Playwright).
   let evidenceById = {};
   let videoRel = null;
@@ -104,6 +150,8 @@ for (const entityKey of targets) {
     screenshotDir: 'screenshots',
     evidenceById,
     videoUrl: videoRel,
+    reviewAnalysis,
+    reviewSample,
   });
   const outPath = path.join(clientV2Dir, 'internal-audit-report.html');
   fs.writeFileSync(outPath, html);
