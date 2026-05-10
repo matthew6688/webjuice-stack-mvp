@@ -1,0 +1,126 @@
+{
+  "$schema": "internal://profitslocal/cheap-audit-config-v2",
+  "version": "2026-05-10-v1",
+  "purpose": "Cheap audit — initial filter that decides skip / manual_review / starter_candidate / audit_candidate. Reads only Maps scrape payload + one Tinyfish fetch of the homepage. T0 cost (free) per lead.",
+  "philosophy": "V1 wrongly penalized https + many-reviews leads as 'too established'. V2 reverses this: the BEST V2 lead is a high-GBP-quality business whose website is old/broken. We score gbp_quality and redesign_need separately, then weight redesign_need higher because that's the V2 sales angle.",
+  "stages": {
+    "stage_0_5_enrichment_gate": {
+      "name": "Stage 0.5 — Enrichment-before-skip gate",
+      "description": "Before Stage 1, if a lead has ANY usable signal but lacks contact channels, force search enrichment first. Only after enrichment do we decide to skip.",
+      "triggers_enrichment_if": [
+        "has business name AND (no phone AND no website AND no social)",
+        "has business name AND category matches niche AND missing key contact"
+      ],
+      "skips_immediately_if": [
+        "no business name AND no phone AND no website",
+        "category mismatches the search query (relevance fail)"
+      ]
+    },
+    "stage_1_gbp_triage": {
+      "name": "Stage 1 — GBP triage",
+      "description": "Reads only Maps scrape payload. Outputs gbp_quality 0-100 and an early skip/continue decision. No network calls.",
+      "rules": [
+        { "id": "has_phone", "weight": 10, "check": "phone_present", "deduct_if": "phone missing", "max": 10 },
+        { "id": "rating_high", "weight": 15, "check": "rating >= 4.5", "deduct_tiers": [
+          { "if": "rating >= 4.7", "earn": 15 },
+          { "if": "rating >= 4.3", "earn": 10 },
+          { "if": "rating >= 3.5", "earn": 5 },
+          { "if": "rating < 3.5 OR null", "earn": 0 }
+        ], "max": 15 },
+        { "id": "review_volume", "weight": 25, "check": "review_count tiers", "deduct_tiers": [
+          { "if": "review_count >= 100", "earn": 25 },
+          { "if": "review_count >= 50",  "earn": 18 },
+          { "if": "review_count >= 20",  "earn": 12 },
+          { "if": "review_count >= 5",   "earn": 6 },
+          { "if": "review_count < 5",    "earn": 2 }
+        ], "max": 25 },
+        { "id": "has_website", "weight": 5, "check": "any website status", "deduct_tiers": [
+          { "if": "websiteStatus = independent_https_site OR independent_http_site", "earn": 5 },
+          { "if": "websiteStatus = social_or_third_party_only", "earn": 2 },
+          { "if": "websiteStatus = no_website", "earn": 0 }
+        ], "max": 5 },
+        { "id": "image_count", "weight": 10, "check": "imageCount tiers", "deduct_tiers": [
+          { "if": "imageCount >= 10", "earn": 10 },
+          { "if": "imageCount >= 5",  "earn": 6 },
+          { "if": "imageCount >= 1",  "earn": 3 },
+          { "if": "imageCount = 0",   "earn": 0 }
+        ], "max": 10 },
+        { "id": "has_popular_times", "weight": 5, "check": "signals.hasPopularTimes", "deduct_if": "false", "max": 5 },
+        { "id": "has_about_attributes", "weight": 5, "check": "signals.hasAboutAttributes", "deduct_if": "false", "max": 5 },
+        { "id": "address_complete", "weight": 5, "check": "address present and not empty", "deduct_if": "missing or empty", "max": 5 },
+        { "id": "category_relevant", "weight": 20, "check": "category matches sourceQuery niche tokens", "deduct_if": "no match", "max": 20, "is_hard_skip": true,
+          "hard_skip_note": "Relevance fail = skip immediately. The 20 points reflect that we strongly require relevance, but the binary outcome matters more than the score." }
+      ],
+      "max_score": 100
+    },
+    "stage_2_site_quick_scan": {
+      "name": "Stage 2 — Website quick scan",
+      "description": "Only runs if has_website. Fetches homepage via Tinyfish (T0, free). Outputs redesign_need 0-100 — higher = the website is more in need of redesign = MORE valuable lead for ProfitsLocal.",
+      "skipped_when": "websiteStatus = no_website (becomes starter_candidate via different path)",
+      "rules": [
+        { "id": "missing_https", "weight": 18, "check": "url scheme is http not https", "earn_if_missing": 18, "max": 18,
+          "rationale": "No HTTPS = trust gap, easy fix, instant before/after wow" },
+        { "id": "homepage_text_thin", "weight": 8, "check": "markdown text length < 300 chars", "earn_tiers": [
+          { "if": "length < 300", "earn": 8 },
+          { "if": "length < 800", "earn": 4 },
+          { "if": "length >= 800", "earn": 0 }
+        ], "max": 8, "rationale": "Sparse text = empty placeholder site or single-page dead site" },
+        { "id": "no_local_mention", "weight": 10, "check": "homepage text does not mention business city/suburb", "earn_if_missing": 10, "max": 10,
+          "rationale": "No local mention = generic template, weak local SEO + trust" },
+        { "id": "no_phone_above_fold", "weight": 12, "check": "phone digits NOT in first 1500 chars of markdown", "earn_if_missing": 12, "max": 12,
+          "rationale": "Hidden contact = critical UX issue; the #1 sales angle for many leads" },
+        { "id": "no_cta_keywords", "weight": 10, "check": "first 1500 chars lack any of: quote, contact, book, call, get, free", "earn_if_missing": 10, "max": 10,
+          "rationale": "No call-to-action language = unclear next step" },
+        { "id": "stale_year_marker", "weight": 8, "check": "footer copyright year < (current year - 2)", "earn_if_stale": 8, "max": 8,
+          "rationale": "Stale year = abandoned/unmaintained site" },
+        { "id": "missing_skeleton", "weight": 10, "check": "markdown lacks 2+ of: Services, About, Contact, Reviews, FAQ", "earn_if_missing": 10, "max": 10,
+          "rationale": "Missing structural sections = thin/dead site" },
+        { "id": "no_mobile_viewport", "weight": 12, "check": "no viewport meta tag in raw HTML head", "earn_if_missing": 12, "max": 12,
+          "rationale": "No viewport = non-responsive = mobile broken" },
+        { "id": "table_layout_smell", "weight": 6, "check": "raw HTML contains 5+ <table without role=presentation", "earn_if_present": 6, "max": 6,
+          "rationale": "Table layouts = pre-2010 design pattern" },
+        { "id": "image_quality_smell", "weight": 6, "check": "Tinyfish-extracted image refs imply low quality (alt missing OR url contains /200x/ /150/ /thumb/)", "earn_if_present": 6, "max": 6,
+          "rationale": "Low-res images = dated visuals" }
+      ],
+      "max_score": 100
+    }
+  },
+  "scoring": {
+    "formula": "final_score = gbp_quality * 0.4 + redesign_need * 0.6",
+    "rationale": "redesign_need weighted higher because V2 sells redesign. A site with bad GBP but bad website is still a strong target; a site with great GBP but already-modern website is a weak target for V2.",
+    "dimensions": {
+      "gbp_quality": { "from": "stage_1_gbp_triage", "weight": 0.4 },
+      "redesign_need": { "from": "stage_2_site_quick_scan", "weight": 0.6 }
+    }
+  },
+  "hard_triggers": [
+    { "id": "no_website_with_contact", "if": "websiteStatus = no_website AND (phone OR email)", "force_action": "starter_candidate",
+      "rationale": "No website + reachable = easiest V2 win (build them anything)" },
+    { "id": "missing_https_with_evidence", "if": "websiteStatus = independent_http_site AND review_count >= 50", "force_action": "audit_candidate",
+      "rationale": "HTTP-only with proven traction = obvious redesign win" },
+    { "id": "high_traction_old_site", "if": "review_count >= 100 AND rating >= 4.5", "force_action_min": "audit_candidate",
+      "rationale": "Strong GBP traction = lead is valuable regardless of cheap signals; FORCE at minimum into audit_candidate. Fixes the V1 bug where high-review HTTPS leads got skipped." }
+  ],
+  "thresholds": [
+    { "min": 70, "action": "audit_candidate", "label": "Strong V2 candidate — proceed to detailed audit" },
+    { "min": 55, "action": "manual_review", "label": "Borderline — operator should look" },
+    { "min": 30, "action": "manual_review", "label": "Marginal — likely too thin but worth a glance" },
+    { "min": 0,  "action": "skip", "label": "Below quality bar — skip" }
+  ],
+  "starter_candidate_path": {
+    "description": "Leads with no_website but reachable contact go through a different decision: they're not scored for redesign_need (no site to scan). Instead, gbp_quality alone + Stage 0.5 enrichment determines their value.",
+    "decision_rules": [
+      { "if": "no_website AND (phone OR email) AND gbp_quality >= 30", "action": "starter_candidate",
+        "rationale": "Easy V2 win — build them anything, they currently have nothing" },
+      { "if": "no_website AND no contact channels", "action": "queued_for_enrichment",
+        "rationale": "Stage 0.5 — try search before giving up" },
+      { "if": "no_website AND gbp_quality < 30", "action": "manual_review",
+        "rationale": "Thin signal — operator decides if worth more research" }
+    ]
+  },
+  "ui_visibility": {
+    "admin_scoring_page": "/admin/scoring renders this entire JSON as a readable spec",
+    "admin_leads_breakdown": "/admin/leads/<slug> shows the per-rule earn/miss breakdown for a specific lead",
+    "queue_card_criteria": "/admin/queue stage cards reference the thresholds + hard_triggers"
+  }
+}

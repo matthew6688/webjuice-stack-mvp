@@ -13,6 +13,19 @@
 
 `e559430` — V2 字段 / 分级 / rollup / hashRequest，11 段断言通过。
 
+## Block 🔨 IN PROGRESS — Block C — V2 lead intake & filter with explainability
+
+合并自原 C1+C2+C3+UI 子任务（per "bundle work" feedback）。完成后这个块产出：新 cheap audit 算法引擎、5 路 enrichment、Stage 0.5（enrichment-before-skip）、`/admin/scoring` 算法定义页、`/admin/leads/<slug>` score breakdown、对 31 个真实 roofing lead 的新旧打分对比。
+
+子任务进度：
+
+| 子任务 | 状态 | Commit |
+|---|---|---|
+| C-1 V2 scoring config (JSON) + site-quick-scan + cheap-audit-v2 engine + 31-lead test | ✅ | (next push) |
+| C-2 enrichment router (5-route search) + Stage 0.5 enrichment-before-skip | ⏳ |  |
+| C-3 `/admin/scoring` page + `/admin/leads/<slug>` score breakdown | ⏳ |  |
+| C-4 rescore CLI + new-vs-old comparison report on 31 entities | ⏳ |  |
+
 ## Block ✅ DONE — Block A — T0 retrieval 层（Tinyfish + Dokobot + DDG）
 
 完成 commits：`92cc20c` (A.1 Tinyfish + token bucket) + `95e2c36` (A.2 Dokobot + DDG)
