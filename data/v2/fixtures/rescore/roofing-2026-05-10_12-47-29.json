@@ -1,0 +1,817 @@
+{
+  "niche": "roofing",
+  "generatedAt": "2026-05-10T12:47:29.807Z",
+  "finishedAt": "2026-05-10T12:51:40.708Z",
+  "duration_seconds": 250.9,
+  "fetchSites": true,
+  "total_entities": 34,
+  "summary": {
+    "flipped_v1_skip_to_v2_not_skip": 27,
+    "still_skip": 2,
+    "audit_candidates_v2": 10,
+    "starter_candidates_v2": 1,
+    "stage_2_ran": 30
+  },
+  "rows": [
+    {
+      "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
+      "name": "Queensland Roofing Pty Ltd",
+      "rating": 4.5,
+      "review_count": 35,
+      "websiteStatus": "independent_http_site",
+      "website": "http://www.queenslandroofing.com.au/",
+      "v1": {
+        "score": 43,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 73,
+        "gbp_quality": 73,
+        "redesign_need": null,
+        "action": "audit_candidate",
+        "reason": "Strong V2 candidate — proceed to detailed audit",
+        "fired_triggers": [],
+        "stage_2_ran": false,
+        "stage_2_skipped_reason": "empty_result"
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chij4yvirdnjk2src2uajtk3yko",
+      "name": "A One Roof Restoration",
+      "rating": 4.9,
+      "review_count": 91,
+      "websiteStatus": "independent_https_site",
+      "website": "https://aoneroofingsolutions.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 32,
+        "gbp_quality": 81,
+        "redesign_need": 0,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chij51azx8ubk2srwqza1wpfnt8",
+      "name": "The Roofing Group",
+      "rating": 4.9,
+      "review_count": 60,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.theroofinggroup.com.au/?utm_source=googlemybusiness&utm_medium=organic&utm_campaign=GMB",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 41,
+        "gbp_quality": 81,
+        "redesign_need": 15,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chij6ekvlitjk2srprtynzjldq8",
+      "name": "Storm Call Roofing Projects Pty Ltd",
+      "rating": 5,
+      "review_count": 63,
+      "websiteStatus": "independent_https_site",
+      "website": "https://stormcallroofing.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 63,
+        "gbp_quality": 84,
+        "redesign_need": 49,
+        "action": "manual_review",
+        "reason": "Borderline — operator should look",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chija-7okwvxkwsrv9oeidsgkku",
+      "name": "ACM Constructions",
+      "rating": 4.9,
+      "review_count": 8,
+      "websiteStatus": "independent_http_site",
+      "website": "http://www.acmconstructions.com.au/",
+      "v1": {
+        "score": 47,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 29,
+        "gbp_quality": 49,
+        "redesign_need": 15,
+        "action": "skip",
+        "reason": "Below quality bar — skip",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
+      "name": "Roof Space Renovators",
+      "rating": 5,
+      "review_count": 221,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.roofspacerenovators.com.au/",
+      "v1": {
+        "score": 42,
+        "action": "manual_review"
+      },
+      "v2": {
+        "final_score": 62,
+        "gbp_quality": 71,
+        "redesign_need": 56,
+        "action": "audit_candidate",
+        "reason": "Borderline — operator should look (lifted by high_traction_old_site trigger)",
+        "fired_triggers": [
+          "high_traction_old_site"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijb_o9uptzkwsrea8k_rrj7au",
+      "name": "J & R Rooftiling",
+      "rating": 5,
+      "review_count": 23,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.jandrrooftiling.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 53,
+        "gbp_quality": 78,
+        "redesign_need": 37,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijbdsmbxxakwsr_ocvjkmtnfc",
+      "name": "Smart Roof Restoration Brisbane",
+      "rating": 5,
+      "review_count": 17,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.smartroofrestorationbrisbane.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 34,
+        "gbp_quality": 69,
+        "redesign_need": 10,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijd28ojc37k2sr-3f5yimly-4",
+      "name": "Regan Brothers Roof Restoration",
+      "rating": 5,
+      "review_count": 4,
+      "websiteStatus": "no_website",
+      "website": null,
+      "v1": {
+        "score": 67,
+        "action": "starter_candidate"
+      },
+      "v2": {
+        "final_score": 60,
+        "gbp_quality": 60,
+        "redesign_need": null,
+        "action": "starter_candidate",
+        "reason": "no_website + reachable + gbp_quality ≥ 30 — easiest V2 win",
+        "fired_triggers": [
+          "no_website_with_contact"
+        ],
+        "stage_2_ran": false,
+        "stage_2_skipped_reason": "no_website"
+      },
+      "enrichment_fixture_present": true
+    },
+    {
+      "entityKey": "place_chije23j9nb7k2sruodx4lnsleu",
+      "name": "Roofing North Lakes - Roof Replacements & Restorations",
+      "rating": 5,
+      "review_count": 4,
+      "websiteStatus": "independent_https_site",
+      "website": "https://roofreplacementsbrisbane.com.au/north-lakes/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 55,
+        "gbp_quality": 65,
+        "redesign_need": 49,
+        "action": "manual_review",
+        "reason": "Borderline — operator should look",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chije8dpkvf7k2srb5xfpg8j9sw",
+      "name": "Rainbird Roof Restorations",
+      "rating": 4.9,
+      "review_count": 32,
+      "websiteStatus": "independent_https_site",
+      "website": "https://rainbirdroofing.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 40,
+        "gbp_quality": 78,
+        "redesign_need": 15,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijh_qfgr_xk2srkj308u6juji",
+      "name": "Roof Restoration Services North Brisbane",
+      "rating": 5,
+      "review_count": 2,
+      "websiteStatus": "independent_https_site",
+      "website": "https://roofrestorationnorthbrisbane.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 58,
+        "gbp_quality": 58,
+        "redesign_need": null,
+        "action": "manual_review",
+        "reason": "Borderline — operator should look",
+        "fired_triggers": [],
+        "stage_2_ran": false,
+        "stage_2_skipped_reason": "empty_result"
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chiji0wdvdhekwsrsyzpzjow1uw",
+      "name": "Roofshield Roof Restorations",
+      "rating": 4.4,
+      "review_count": 51,
+      "websiteStatus": "independent_http_site",
+      "website": "http://www.roofshield.com.au/",
+      "v1": {
+        "score": 43,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 37,
+        "gbp_quality": 71,
+        "redesign_need": 15,
+        "action": "audit_candidate",
+        "reason": "HTTP-only with proven traction (≥50 reviews) = obvious redesign win",
+        "fired_triggers": [
+          "missing_https_with_evidence"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijk3baqr1akwsr204xlo83bfg",
+      "name": "ABC Roof Restoration Brisbane",
+      "rating": 4.9,
+      "review_count": 20,
+      "websiteStatus": "independent_http_site",
+      "website": "http://abcroofrestorationbrisbane.com.au/",
+      "v1": {
+        "score": 47,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 30,
+        "gbp_quality": 75,
+        "redesign_need": 0,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijkzajxcohy4krt_dlq4p5y8c",
+      "name": "DTM METAL ROOFING PTY LTD",
+      "rating": 5,
+      "review_count": 8,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.dtmmetalroofing.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 44,
+        "gbp_quality": 69,
+        "redesign_need": 27,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
+      "name": "Gutter and Roof Repairs",
+      "rating": 4.6,
+      "review_count": 150,
+      "websiteStatus": "independent_https_site",
+      "website": "https://gutterandroofrepairs.com.au/",
+      "v1": {
+        "score": 38,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 43,
+        "gbp_quality": 86,
+        "redesign_need": 15,
+        "action": "audit_candidate",
+        "reason": "Marginal — likely too thin but worth a glance (lifted by high_traction_old_site trigger)",
+        "fired_triggers": [
+          "high_traction_old_site"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijl8b8qnbbkwsrf98qjvn9c8g",
+      "name": "Roof Restoration Brisbane",
+      "rating": 0,
+      "review_count": 0,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.roofrestorationbrisbane.com/",
+      "v1": {
+        "score": 15,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 47,
+        "gbp_quality": 45,
+        "redesign_need": 49,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
+      "name": "FIX MY ROOF Total Roof Restorations",
+      "rating": 5,
+      "review_count": 127,
+      "websiteStatus": "independent_http_site",
+      "website": "http://billdu.me/fixmyrooftotalroofrestorations",
+      "v1": {
+        "score": 66,
+        "action": "audit_candidate"
+      },
+      "v2": {
+        "final_score": 56,
+        "gbp_quality": 91,
+        "redesign_need": 32,
+        "action": "audit_candidate",
+        "reason": "HTTP-only with proven traction (≥50 reviews) = obvious redesign win",
+        "fired_triggers": [
+          "missing_https_with_evidence"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijo3rniu9fkwsr8jworgytgmy",
+      "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+      "rating": 4.8,
+      "review_count": 118,
+      "websiteStatus": "independent_https_site",
+      "website": "https://brisbaneroofingsolutions.com.au/",
+      "v1": {
+        "score": 49,
+        "action": "manual_review"
+      },
+      "v2": {
+        "final_score": 45,
+        "gbp_quality": 91,
+        "redesign_need": 15,
+        "action": "audit_candidate",
+        "reason": "Marginal — likely too thin but worth a glance (lifted by high_traction_old_site trigger)",
+        "fired_triggers": [
+          "high_traction_old_site"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": true
+    },
+    {
+      "entityKey": "place_chijp1shdrsurcirfsytxkskntk",
+      "name": "Oz-Roof Restoration Brisbane",
+      "rating": 4.8,
+      "review_count": 53,
+      "websiteStatus": "independent_https_site",
+      "website": "https://oz-roof.com.au/roof-restoration-brisbane/",
+      "v1": {
+        "score": 30,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 32,
+        "gbp_quality": 79,
+        "redesign_need": 0,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijp8fpyf9zkwsr3w7ztfxvpuk",
+      "name": ".",
+      "rating": 0,
+      "review_count": 0,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.skyshieldroofingpro.com/",
+      "v1": {
+        "score": 15,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 29,
+        "gbp_quality": 50,
+        "redesign_need": 15,
+        "action": "skip",
+        "reason": "Below quality bar — skip",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijpcgn0u37k2srjpvwz5jgtza",
+      "name": "Renewed Roofing Pty Ltd",
+      "rating": 5,
+      "review_count": 44,
+      "websiteStatus": "independent_https_site",
+      "website": "https://renewedroofing.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 39,
+        "gbp_quality": 75,
+        "redesign_need": 15,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijqxea1qtzf2ar_jwoxf06e3o",
+      "name": "Rapid Roof Solutions",
+      "rating": 5,
+      "review_count": 55,
+      "websiteStatus": "independent_https_site",
+      "website": "https://rapidroofsolutions.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 34,
+        "gbp_quality": 84,
+        "redesign_need": 0,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijrq6qulnbkwsruettr7eegyc",
+      "name": "Ace Roofing Service",
+      "rating": 5,
+      "review_count": 36,
+      "websiteStatus": "independent_https_site",
+      "website": "https://aceroofingservice.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 38,
+        "gbp_quality": 73,
+        "redesign_need": 15,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijs5iymfbxkwsrupfzt6iwdyy",
+      "name": "Metro Hail",
+      "rating": 5,
+      "review_count": 90,
+      "websiteStatus": "independent_https_site",
+      "website": "https://metrohail.com.au/?utm_source=google&utm_medium=organic&utm_campaign=gbp",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 34,
+        "gbp_quality": 84,
+        "redesign_need": 0,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "name": "Pro Roof Restoration Brisbane",
+      "rating": 5,
+      "review_count": 16,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.proroofrestorationbrisbane.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 37,
+        "gbp_quality": 69,
+        "redesign_need": 15,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijtdw_5w8vkwsruxlcpwqzdyo",
+      "name": "Gerard Roofs",
+      "rating": 5,
+      "review_count": 1,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.gerardroofs.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 57,
+        "gbp_quality": 65,
+        "redesign_need": 51,
+        "action": "manual_review",
+        "reason": "Borderline — operator should look",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijutib72nzkwsrbyxejwlcviw",
+      "name": "Brisbane Roofing - Brisbane Roof Repairers",
+      "rating": 5,
+      "review_count": 9,
+      "websiteStatus": "independent_https_site",
+      "website": "https://www.thebrisbaneroofrepairers.com/?utm_campaign=gmb",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 37,
+        "gbp_quality": 69,
+        "redesign_need": 15,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "name": "Roo Roofing",
+      "rating": 4.6,
+      "review_count": 40,
+      "websiteStatus": "independent_http_site",
+      "website": "http://www.rooroofing.com.au/",
+      "v1": {
+        "score": 46,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 45,
+        "gbp_quality": 73,
+        "redesign_need": 27,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
+      "name": "Diamond Roof Tiling & Restoration",
+      "rating": 4.9,
+      "review_count": 65,
+      "websiteStatus": "independent_http_site",
+      "website": "http://www.diamondrooftiling.com.au/",
+      "v1": {
+        "score": 51,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 43,
+        "gbp_quality": 84,
+        "redesign_need": 15,
+        "action": "audit_candidate",
+        "reason": "HTTP-only with proven traction (≥50 reviews) = obvious redesign win",
+        "fired_triggers": [
+          "missing_https_with_evidence"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
+      "name": "Brisbane Roof Restoration Experts",
+      "rating": 4.9,
+      "review_count": 21,
+      "websiteStatus": "independent_https_site",
+      "website": "https://brisbaneroofrestorationexperts.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 78,
+        "gbp_quality": 78,
+        "redesign_need": null,
+        "action": "audit_candidate",
+        "reason": "Strong V2 candidate — proceed to detailed audit",
+        "fired_triggers": [],
+        "stage_2_ran": false,
+        "stage_2_skipped_reason": "empty_result"
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijywypvhjzkwsr6clfddpq0nc",
+      "name": "Hurricane Digital - SEO Brisbane",
+      "rating": 4.7,
+      "review_count": 183,
+      "websiteStatus": "independent_https_site",
+      "website": "https://hurricanedigital.com.au/",
+      "v1": {
+        "score": 45,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 43,
+        "gbp_quality": 68,
+        "redesign_need": 27,
+        "action": "audit_candidate",
+        "reason": "Marginal — likely too thin but worth a glance (lifted by high_traction_old_site trigger)",
+        "fired_triggers": [
+          "high_traction_old_site"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijzfflvfb3k2srldcxrdv26p4",
+      "name": "WeatherpRoof Restorations",
+      "rating": 4.9,
+      "review_count": 134,
+      "websiteStatus": "independent_https_site",
+      "website": "https://weatherproof.net.au/",
+      "v1": {
+        "score": 45,
+        "action": "manual_review"
+      },
+      "v2": {
+        "final_score": 45,
+        "gbp_quality": 91,
+        "redesign_need": 15,
+        "action": "audit_candidate",
+        "reason": "Marginal — likely too thin but worth a glance (lifted by high_traction_old_site trigger)",
+        "fired_triggers": [
+          "high_traction_old_site"
+        ],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    },
+    {
+      "entityKey": "place_chijzzbbtopbkwsr_zxhse51w5e",
+      "name": "Skyline roofing restorations",
+      "rating": 5,
+      "review_count": 1,
+      "websiteStatus": "independent_https_site",
+      "website": "https://skylineroofrestorations.com.au/",
+      "v1": {
+        "score": 27,
+        "action": "skip"
+      },
+      "v2": {
+        "final_score": 33,
+        "gbp_quality": 60,
+        "redesign_need": 15,
+        "action": "manual_review",
+        "reason": "Marginal — likely too thin but worth a glance",
+        "fired_triggers": [],
+        "stage_2_ran": true,
+        "stage_2_skipped_reason": null
+      },
+      "enrichment_fixture_present": false
+    }
+  ]
+}

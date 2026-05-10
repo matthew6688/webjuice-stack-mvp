@@ -13,18 +13,20 @@
 
 `e559430` — V2 字段 / 分级 / rollup / hashRequest，11 段断言通过。
 
-## Block 🔨 IN PROGRESS — Block C — V2 lead intake & filter with explainability
+## Block ✅ DONE — Block C — V2 lead intake & filter with explainability
 
-合并自原 C1+C2+C3+UI 子任务（per "bundle work" feedback）。完成后这个块产出：新 cheap audit 算法引擎、5 路 enrichment、Stage 0.5（enrichment-before-skip）、`/admin/scoring` 算法定义页、`/admin/leads/<slug>` score breakdown、对 31 个真实 roofing lead 的新旧打分对比。
+完成 commits：`0e41629` (C-1) + `73bc0f4` (C-2) + `1f46435` (C-3) + (next push) (C-4)
 
-子任务进度：
+子任务：
 
-| 子任务 | 状态 | Commit |
-|---|---|---|
-| C-1 V2 scoring config (JSON) + site-quick-scan + cheap-audit-v2 engine + 31-lead test | ✅ | `0e41629` — 10 assertions pass; 27 of 31 V1-skip flipped |
-| C-2 enrichment router (5-route search) + 2 live fixtures | ✅ | (next push) — Regan Brothers (no_website) + Brisbane Roofing Solutions both run, all T0 free, ledger trace verified; Stage 0.5 orchestration deferred to C-4 (rescore CLI is the natural orchestrator) |
-| C-3 `/admin/scoring` page + `/admin/leads/<slug>` score breakdown | ✅ | (next push) — both pages build under `npm run build`; algorithm definition rendered as readable spec; per-lead breakdown shows all 9 Stage 1 rules with earned/missed/rationale |
-| C-4 rescore CLI + new-vs-old comparison report on 31 entities + Stage 0.5 orchestration | ⏳ |  |
+| 子任务 | 状态 | Commit | 关键 evidence |
+|---|---|---|---|
+| C-1 V2 scoring config (JSON) + site-quick-scan + cheap-audit-v2 engine + 31-lead test | ✅ | `0e41629` | 10/10 assertions pass; cheap-audit-config.json = single source of truth |
+| C-2 enrichment router (5-route search) + 2 live fixtures | ✅ | `73bc0f4` | Regan Brothers + Brisbane Roofing Solutions enriched live; all T0 free; profile-score URL preference picks brand pages over deep links |
+| C-3 `/admin/scoring` + `/admin/leads/<slug>` score breakdown | ✅ | `1f46435` | `npm run build` produces 110 pages; score breakdown shows all 9 Stage 1 rules with earned/missed/rationale per lead |
+| C-4 rescore CLI + 34-lead comparison report + Stage 0.5 orchestration | ✅ | (next push) | full live run: 30 Tinyfish fetches, 251s total, **27 V1-skip flipped, 10 audit_candidate, 1 starter_candidate, 2 still skip** (Stage 2 confirmed 2 sites OK); report at `docs/v2/autoresearch-results/scoring-v2-vs-v1.md` |
+
+Block takeaway → V2 cheap audit produces a coherent ladder: Stage 1 GBP triage (always) + Stage 2 site quick scan (when has-website) + Stage 0.5 enrichment fallback (when contact thin) + hard triggers (no_website starter, http+traction obvious win, high_traction_old_site floor). Algorithm definition + per-lead breakdown both visible in admin UI. Block D (6-dim 39-item detailed audit on audit_candidates) and Block F (internal audit report HTML) are next.
 
 ## Block ✅ DONE — Block A — T0 retrieval 层（Tinyfish + Dokobot + DDG）
 
