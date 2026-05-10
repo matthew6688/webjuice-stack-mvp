@@ -1,0 +1,278 @@
+{
+  "1_business_profile": {
+    "id": "biz_brisbane_apex_roofing_001",
+    "business_name": "Apex Roofing Brisbane",
+    "category": "roofing",
+    "phone": "+61 7 3123 4567",
+    "email": null,
+    "website_url": "http://apexroofingbrisbane.com.au",
+    "location": {
+      "address": "45 Industrial Drive",
+      "suburb": "Eagle Farm",
+      "city": "Brisbane",
+      "state": "QLD",
+      "country": "Australia",
+      "postcode": "4009"
+    },
+    "gbp_data": {
+      "claimed": true,
+      "rating": 4.1,
+      "review_count": 28,
+      "image_count": 4,
+      "has_hours": true,
+      "has_description": true,
+      "has_service_area": false,
+      "reviews_replied_pct": 3.6
+    },
+    "source": {
+      "query": "roofing Brisbane",
+      "scraped_at": "2026-05-10T14:30:00+10:00",
+      "map_rank": 9
+    },
+    "status": "audited",
+    "created_at": "2026-05-10T14:30:00+10:00",
+    "updated_at": "2026-05-10T15:15:00+10:00"
+  },
+  "2_audit_result": {
+    "business_id": "biz_brisbane_apex_roofing_001",
+    "audit_version": "v1.0.0",
+    "audited_at": "2026-05-10T15:15:00+10:00",
+    "audit_score": 38,
+    "dimension_scores": {
+      "gbp": 52,
+      "technical": 28,
+      "ux_conversion": 31,
+      "content": 45,
+      "seo": 35,
+      "visual": 22
+    },
+    "decision": "strong_redesign",
+    "qualification_reason": "技术分和视觉分极低，移动端严重不可用，GBP有一定流量基础但网站体验极差，竞争对手平均分高出43分",
+    "hard_triggers": [
+      "mobile_broken",
+      "no_https",
+      "no_clear_cta"
+    ],
+    "issues": {
+      "critical": [
+        {
+          "issue": "移动端完全不可用",
+          "category": "technical",
+          "evidence": "Lighthouse移动端评分12/100，页面宽度固定800px无响应式",
+          "impact": "63%本地搜索来自手机，这些用户基本都会直接离开"
+        },
+        {
+          "issue": "无HTTPS",
+          "category": "technical",
+          "evidence": "网站仍使用http://，浏览器显示'不安全'警告",
+          "impact": "严重影响信任感，尤其是填写联系表单时"
+        },
+        {
+          "issue": "首屏无清晰CTA",
+          "category": "ux_conversion",
+          "evidence": "首屏只有公司名和一张模糊图片，无任何行动按钮",
+          "impact": "用户不知道下一步该做什么，容易直接关掉"
+        }
+      ],
+      "major": [
+        {
+          "issue": "加载速度7.8秒",
+          "category": "technical",
+          "evidence": "Lighthouse性能评分23/100，LCP 7.8s",
+          "impact": "53%用户会在3秒后放弃"
+        },
+        {
+          "issue": "评论数远低于竞争对手",
+          "category": "gbp",
+          "evidence": "28条评论 vs 竞争对手平均194条",
+          "impact": "社交证明弱，客户更可能选择评论多的竞争对手"
+        },
+        {
+          "issue": "设计明显老旧",
+          "category": "visual",
+          "evidence": "table布局，渐变按钮，Comic Sans字体，2008年风格",
+          "impact": "第一印象不专业，影响信任感"
+        },
+        {
+          "issue": "联系方式隐藏",
+          "category": "ux_conversion",
+          "evidence": "电话号码在页脚小字，需滚动3屏才能看到",
+          "impact": "增加联系摩擦，流失急需服务的客户"
+        }
+      ],
+      "minor": [
+        {
+          "issue": "无服务区域说明",
+          "category": "content",
+          "evidence": "网站未说明服务哪些区域",
+          "impact": "潜在客户不确定是否覆盖他们"
+        },
+        {
+          "issue": "项目案例只有2张图",
+          "category": "content",
+          "evidence": "竞争对手平均18张案例图",
+          "impact": "缺少工作质量证明"
+        }
+      ]
+    },
+    "competitors": {
+      "avg_score": 81,
+      "avg_review_count": 194,
+      "top_3_names": [
+        "Brisbane Roof Repairs",
+        "Skyline Roofing",
+        "QLD Roof Restoration"
+      ],
+      "delta_summary": "排名前3的竞争对手平均分81，领先你43分；评论数平均194条，是你的7倍"
+    },
+    "evidence": {
+      "screenshots": [
+        {
+          "url": "s3://profitslocal/apex-roofing-desktop-home.png",
+          "type": "desktop_home",
+          "timestamp": "2026-05-10T15:10:00+10:00"
+        },
+        {
+          "url": "s3://profitslocal/apex-roofing-mobile-home.png",
+          "type": "mobile_home",
+          "timestamp": "2026-05-10T15:10:05+10:00"
+        }
+      ],
+      "lighthouse_report": {
+        "performance": 23,
+        "accessibility": 67,
+        "best_practices": 71,
+        "seo": 58,
+        "mobile_performance": 12
+      },
+      "technical_metrics": {
+        "https": false,
+        "responsive": false,
+        "load_time_seconds": 7.8,
+        "lcp_seconds": 7.8,
+        "cls": 0.42
+      }
+    },
+    "recommended_solution": "full_redesign",
+    "estimated_price_band": "standard",
+    "confidence_score": 92
+  },
+  "3_visual_audit": {
+    "visual_freshness_score": 2,
+    "trust_score": 4,
+    "conversion_readiness_score": 3,
+    "design_age_estimate": "severely_outdated",
+    "issues": [
+      "首屏视觉层次混乱，无清晰焦点",
+      "使用table布局和过时的渐变按钮",
+      "配色过时（大量深蓝渐变+金色边框）",
+      "字体选择不当（标题使用Comic Sans）",
+      "图片模糊且压缩失真严重"
+    ],
+    "evidence": [
+      "首屏区域没有明确标题，只有公司Logo和一张低质量背景图",
+      "导航栏使用深蓝到浅蓝的渐变效果，典型2008-2012年风格",
+      "按钮样式带有厚重阴影和圆角渐变，已过时至少10年",
+      "主标题字体为Comic Sans MS，严重降低专业感",
+      "项目案例图片分辨率极低（约300x200px）且有明显JPEG压缩痕迹",
+      "整体页面给人的感觉是'很久没人维护的网站'"
+    ],
+    "client_safe_summary": "网站整体设计较旧，容易让新访客觉得公司可能不够与时俱进。",
+    "confidence": 0.95,
+    "needs_human_review": false,
+    "version": "visual_auditor_v1.2"
+  },
+  "4_sales_angle": {
+    "primary_angle": {
+      "type": "mobile_gap",
+      "headline": "你的网站在手机上完全打不开，正在流失大量客户",
+      "talking_point": "Brisbane有63%的屋顶维修搜索来自手机。你的网站在手机上完全无法使用，这意味着每10个潜在客户里，至少6个会直接去找竞争对手。"
+    },
+    "secondary_angles": [
+      {
+        "type": "trust_gap",
+        "headline": "网站第一印象让人觉得公司可能不太专业"
+      },
+      {
+        "type": "competitor_gap",
+        "headline": "你的竞争对手网站评论是你的7倍，他们在网站上展示得更专业"
+      },
+      {
+        "type": "conversion_loss",
+        "headline": "客户找不到怎么联系你，你正在白白浪费Google流量"
+      }
+    ],
+    "best_channel": "email",
+    "urgency_factor": "high",
+    "confidence": 0.88,
+    "version": "angle_gen_v1.0"
+  },
+  "5_outreach_content": {
+    "email_1": {
+      "subject": "Apex Roofing的网站在手机上打不开",
+      "body": "Hi,\n\n我在Google搜索Brisbane屋顶维修时看到Apex Roofing排在第9位。点进去发现一个问题：网站在手机上完全无法正常显示。\n\n这可能是个大问题，因为Brisbane有63%的屋顶维修搜索来自手机。也就是说，你每10个潜在客户里，至少6个会因为看不清网站而直接去找竞争对手。\n\n我花了几个小时帮你重做了一个新版本，修复了这个问题，也改进了加载速度和联系方式的显示。你可以先看看效果：\n\n[Demo链接]\n\n如果觉得有用，$399就能上线。不喜欢的话，我直接删掉就好。\n\nMatthew\nProfitsLocal",
+      "angle": "mobile_gap"
+    },
+    "email_2": {
+      "subject": "你的网站可能每月流失$18,000",
+      "body": "Hi,\n\n快速问一个问题：你知道Apex Roofing的网站因为加载太慢和手机端不可用，每个月可能流失多少潜在客户吗？\n\n我分析了Brisbane屋顶维修市场的数据：\n- 月搜索量约2,400次\n- 你当前排名第9，预估获得约60次点击\n- 但你的网站加载需要7.8秒，手机端完全打不开\n- 这意味着约70%的访客会直接离开\n= 你每月流失约42个潜在客户\n= 按3%转化率估算，流失约1.3单\n= 平均每单$4,500 = 月流失约$5,850\n= 年流失约$70,000\n\n我已经帮你重做了网站，速度提升到1.6秒，手机端完美适配。先看效果：\n\n[Demo链接]\n\n值得的话，$399上线。\n\nMatthew",
+      "angle": "conversion_loss"
+    },
+    "email_3": {
+      "subject": "你的竞争对手网站比你强在哪里",
+      "body": "Hi,\n\n我在帮Brisbane的屋顶公司做市场调研时，发现一个数据差距：\n\nApex Roofing的Google评论：28条\n排名前3的竞争对手平均：194条\n\n更关键的是，他们都在网站首屏显眼地展示这些评论，而你的网站首屏只有一张模糊图片，没有任何信任背书。\n\n这意味着当客户在你和他们之间选择时，他们看到的社交证明是你的7倍。\n\n我帮你做了新版本，把你的28条评论（4.1星）清晰地展示在首屏，还加了服务区域、案例展示和明显的联系按钮：\n\n[Demo链接]\n\n$399上线，觉得值得就用。\n\nMatthew",
+      "angle": "competitor_gap"
+    },
+    "sms_1": {
+      "message": "Hi, Matthew这边。我看到Apex Roofing网站手机端打不开，可能流失很多客户。帮你做了新版，先看效果：[短链接] 觉得好就$399上线。",
+      "short_url": "https://pl.co/apex-demo"
+    },
+    "phone_opening": {
+      "opening_line": "Hi，我是Matthew，我不是来推销的。我上周在Google搜索Brisbane roofers时看到Apex Roofing，点进去发现网站在手机上完全打不开。",
+      "hook": "我回去花了几小时帮你重做了一个，你现在有5分钟可以看一下效果吗？",
+      "transition": "如果你方便的话，我可以发链接到你手机，你可以在手机和电脑上都试试，感受一下区别。"
+    },
+    "followups": {
+      "day_3": {
+        "subject": "Re: Apex Roofing的网站在手机上打不开",
+        "body": "Hi，上次发你的demo看了吗？如果有任何问题或想法，随时可以回复我。\n\nMatthew"
+      },
+      "day_7": {
+        "subject": "Re: Apex Roofing demo",
+        "body": "快速提醒：我帮你做的网站demo还在线上，这周末有空可以看看。在手机和电脑上都试试，能明显感觉到速度和体验的差别。\n\nMatthew"
+      },
+      "day_14": {
+        "subject": "最后一次打扰",
+        "body": "Hi，最后一次提醒。如果你对新网站没兴趣，我就把demo下线了。如果觉得有用，回复YES我就保留。\n\n没压力，不回复也完全没问题。\n\nMatthew"
+      }
+    },
+    "dm_version": {
+      "platform": "facebook",
+      "message": "Hi，我在Google搜索Brisbane屋顶维修时看到Apex Roofing。网站在手机上打不开，这可能让你流失很多客户。我帮你重做了一版，可以先看效果再决定要不要用：[链接]"
+    },
+    "objections": [
+      {
+        "objection": "我已经有网站了",
+        "response": "对，我知道。但现在这个网站在手机上是这样的[展示截图]，而新版是这样的[展示demo]。63%的客户用手机搜索，区别还是很大的。"
+      },
+      {
+        "objection": "我没预算",
+        "response": "$399一次性费用，如果能帮你多接一单屋顶活（平均$4,500），就回本了。而且你可以先看效果，不满意我直接删掉，不用付款。"
+      },
+      {
+        "objection": "我要考虑一下",
+        "response": "完全理解。我把demo链接发你邮箱，你有空可以在手机和电脑上都看看。觉得值得的话，随时联系我。"
+      },
+      {
+        "objection": "我朋友/侄子会做网站",
+        "response": "那很好。你可以把这个demo给他们看看，如果他们能做出类似效果，那当然更好。我只是先把成品做出来了，你可以直接看到结果。"
+      },
+      {
+        "objection": "我不确定这值不值得",
+        "response": "理解。这就是为什么我先把demo做出来了。你可以在手机上打开现在的网站，再打开demo，对比一下。如果觉得没明显改进，就不用花这个钱。"
+      }
+    ],
+    "generated_at": "2026-05-10T15:45:00+10:00",
+    "version": "outreach_gen_v1.0"
+  }
+}
