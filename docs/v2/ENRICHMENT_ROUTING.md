@@ -20,20 +20,16 @@ Search 路由（找信息源）：
                                     │ fail / insufficient
                                     ▼
                            ┌────────────────────────────┐
-                           │ 2. Dokobot Doko Search      │  T0  本地 Chrome
-                           │    (local skill)            │      JS-heavy 场景
+                           │ 2. DuckDuckGo via Playwright│  T0  备援 SERP，本地抓
                            └────────┬───────────────────┘
                                     │ fail
                                     ▼
                            ┌────────────────────────────┐
-                           │ 3. DuckDuckGo via Playwright│  T0  备援 SERP
-                           └────────┬───────────────────┘
-                                    │ fail
-                                    ▼
-                           ┌────────────────────────────┐
-                           │ 4. Perplexity sonar-online  │  T2  rotation，最后兜底
+                           │ 3. Perplexity sonar-online  │  T2  rotation，最后兜底
                            └────────────────────────────┘
 ```
+
+> 注：`dokobot search` 需要远程 API key（DOKO_API_KEY），我们目前没配。Dokobot 只在 fetch chain 出现（`dokobot read --local` 不需 key）。
 
 Fetch 路由（抓页面内容）：
 
