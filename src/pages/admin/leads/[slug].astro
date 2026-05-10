@@ -32,7 +32,7 @@ const addressDisplay = latest.address || latest.city || '地址未知';
 const websiteStatus = latest.websiteStatus || 'unknown';
 const auditJson = JSON.stringify(audit, null, 2);
 
-function actionChipClass(action) {
+function chipClass(action) {
   const a = String(action || '');
   if (a === 'audit_candidate') return 'chip-mint';
   if (a === 'starter_candidate') return 'chip-citrus';
@@ -42,121 +42,83 @@ function actionChipClass(action) {
   return '';
 }
 
-const actionClass = actionChipClass(audit.action);
 const actionLabel = audit.action.replace(/_/g, ' ');
+const niche = (latest.niche || 'lead').toUpperCase();
+const cityLabel = (latest.city || latest.address?.split(',').pop()?.trim() || '').toUpperCase();
 ---
 
 <Layout title={`Lead · ${latest.name || entity.entityKey}`} active="leads">
-  <div class="admin-shell lead-admin-shell lead-detail-shell">
-    <header class="admin-header">
-      <div>
-        <a href="/admin/leads" class="back-link">← 线索列表</a>
-        <p class="eyebrow"><span>{latest.niche || 'lead'}</span> · <span>{latest.city || latest.address?.split(',').pop()?.trim() || ''}</span></p>
-        <h1>{latest.name || entity.entityKey}</h1>
-        <p class="lede">
-          <span class="rating">★ {ratingDisplay}</span>
-          <span class="reviews">{reviewDisplay} reviews</span>
-          <span class="dot">·</span>
-          <span class="addr">{addressDisplay}</span>
-        </p>
-        <div class="meta-tags">
-          <span class={`chip ${actionClass}`}>{actionLabel}</span>
-          <code class="status-code">{websiteStatus}</code>
-          {latest.google_maps_url && <a href={latest.google_maps_url} class="map-link" target="_blank" rel="noopener">Google Maps ↗</a>}
-        </div>
-      </div>
-      <div class="score-display">
-        <span class="micro">FINAL SCORE</span>
-        <strong>{audit.final_score}</strong>
-        <span class="micro">{audit.reason}</span>
-      </div>
-    </header>
-
-    <section class="admin-stat-grid score-grid">
-      <div class="admin-stat dim-stat dim-gbp">
-        <span>GBP quality</span>
-        <strong>{audit.gbp_quality}</strong>
-        <div class="dim-bar"><div class="dim-fill gbp-fill" style={`width: ${audit.gbp_quality}%`}></div></div>
-        <span class="micro">权重 40%</span>
-      </div>
-      <div class="admin-stat dim-stat dim-redesign">
-        <span>Redesign need</span>
-        <strong>{audit.redesign_need == null ? '—' : audit.redesign_need}</strong>
-        <div class="dim-bar"><div class="dim-fill redesign-fill" style={`width: ${audit.redesign_need || 0}%`}></div></div>
-        <span class="micro">权重 60% {audit.redesign_need == null && <span class="hint">未抓站</span>}</span>
-      </div>
-      <div class="admin-stat dim-stat dim-formula">
-        <span>Formula</span>
-        <strong class="formula-num">gbp × .4 + redesign × .6</strong>
-        <span class="micro">→ {audit.final_score}</span>
-        {audit.fired_triggers.length > 0 && (
-          <span class="micro trigger-line">trigger: <code>{audit.fired_triggers.join(', ')}</code></span>
-        )}
-      </div>
-    </section>
-
-    <section class="admin-paper-section">
-      <div class="admin-paper-section-head">
+  <section class="poster-section admin-section">
+    <div class="admin-shell lead-admin-shell lead-detail-shell" data-ui-version="local-style-2026-05-08">
+      <header class="admin-header">
         <div>
-          <p class="eyebrow">Stage 1 · GBP triage</p>
-          <h2>分项明细</h2>
+          <a href="/admin/leads" class="back-link">← 线索列表</a>
+          <p class="eyebrow"><span>{niche}</span>{cityLabel && <><span> · </span><span>{cityLabel}</span></>}</p>
+          <h1>{latest.name || entity.entityKey}</h1>
+          <p class="lede">
+            <span class="rating">★ {ratingDisplay}</span>
+            <span class="reviews">{reviewDisplay} reviews</span>
+            <span class="dot">·</span>
+            <span class="addr">{addressDisplay}</span>
+          </p>
+          <div class="meta-tags">
+            <span class={`chip ${chipClass(audit.action)}`}>{actionLabel}</span>
+            <code class="status-code">{websiteStatus}</code>
+            {latest.google_maps_url && <a href={latest.google_maps_url} class="map-link" target="_blank" rel="noopener">Google Maps ↗</a>}
+          </div>
         </div>
-        <span class="admin-section-count">
-          {audit.stage_1.earned_total} / {audit.stage_1.max_total} · 全规则定义在
-          <a href="/admin/scoring" class="inline-link">/admin/scoring</a>
-        </span>
-      </div>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr>
-          </thead>
-          <tbody>
-            {stage1Rules.map((r) => {
-              return (
-                <tr class={r.hit ? 'hit' : 'miss'}>
-                  <td><code>{r.id}</code></td>
-                  <td>{r.hit ? <span class="check">✓</span> : <span class="x">✗</span>}</td>
-                  <td class="num"><strong>{r.earned}</strong> / {r.max}</td>
-                  <td class="rationale">{r.rationale}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </section>
+        <div class="admin-count">
+          <span>FINAL SCORE</span>
+          <strong>{audit.final_score}</strong>
+          <span class="micro-note">{audit.reason}</span>
+        </div>
+      </header>
 
-    {audit.stage_2 && (
+      <div class="admin-summary-strip score-strip">
+        <div class="admin-summary-tile dim-tile">
+          <span>GBP quality</span>
+          <strong>{audit.gbp_quality}</strong>
+          <p>权重 40 · GBP 信号完整度</p>
+          <div class="dim-bar"><div class="dim-fill gbp-fill" style={`width: ${audit.gbp_quality}%`}></div></div>
+        </div>
+        <div class={`admin-summary-tile dim-tile ${audit.redesign_need == null ? 'dim-empty' : ''}`}>
+          <span>Redesign need</span>
+          <strong>{audit.redesign_need == null ? '—' : audit.redesign_need}</strong>
+          <p>权重 60 · 网站需 redesign 程度{audit.redesign_need == null && <span class="hint"> · 未抓站</span>}</p>
+          <div class="dim-bar"><div class="dim-fill redesign-fill" style={`width: ${audit.redesign_need || 0}%`}></div></div>
+        </div>
+        <div class="admin-summary-tile dim-tile">
+          <span>Formula</span>
+          <strong class="formula-num">gbp × .4 + redesign × .6</strong>
+          <p>= <b>{audit.final_score}</b></p>
+          {audit.fired_triggers.length > 0 && (
+            <p class="trigger-row">trigger: <code>{audit.fired_triggers.join(', ')}</code></p>
+          )}
+        </div>
+      </div>
+
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Stage 2 · Site quick-scan</p>
-            <h2>网页规则明细</h2>
+            <p class="eyebrow">Stage 1 · GBP triage</p>
+            <h2>分项明细</h2>
           </div>
-          <span class="admin-section-count">{audit.stage_2.earned_total} / {audit.stage_2.max_total}</span>
+          <span class="admin-section-count">
+            {audit.stage_1.earned_total} / {audit.stage_1.max_total} · 完整算法在
+            <a href="/admin/scoring" class="inline-link">/admin/scoring</a>
+          </span>
         </div>
-        <p class="micro fetch-meta">
-          <span>fetched: <code>{audit.stage_2.evidence.url}</code></span>
-          <span class="dot">·</span>
-          <span>{audit.stage_2.evidence.markdown_length} chars</span>
-          <span class="dot">·</span>
-          <span>{audit.stage_2.evidence.rules_evaluated}/{audit.stage_2.evidence.rules_evaluated + audit.stage_2.evidence.rules_skipped} rules evaluated</span>
-        </p>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead>
               <tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr>
             </thead>
             <tbody>
-              {stage2Rules.map((r) => {
-                const cls = r.not_evaluated ? 'skip' : (r.hit ? 'hit' : 'miss');
+              {stage1Rules.map((r) => {
                 return (
-                  <tr class={cls}>
+                  <tr class={r.hit ? 'hit-row' : 'miss-row'}>
                     <td><code>{r.id}</code></td>
-                    <td>
-                      {r.not_evaluated ? <span class="dash">—</span> : (r.hit ? <span class="check">✓</span> : <span class="x">✗</span>)}
-                    </td>
+                    <td>{r.hit ? <span class="check">✓</span> : <span class="x">✗</span>}</td>
                     <td class="num"><strong>{r.earned}</strong> / {r.max}</td>
                     <td class="rationale">{r.rationale}</td>
                   </tr>
@@ -166,260 +128,335 @@ const actionLabel = audit.action.replace(/_/g, ' ');
           </table>
         </div>
       </section>
-    )}
 
-    {!audit.stage_2 && (
-      <section class="admin-paper-section stage2-skipped">
-        <div class="admin-paper-section-head">
-          <div>
-            <p class="eyebrow">Stage 2</p>
-            <h2>未抓取网站</h2>
+      {audit.stage_2 && (
+        <section class="admin-paper-section">
+          <div class="admin-paper-section-head">
+            <div>
+              <p class="eyebrow">Stage 2 · Site quick-scan</p>
+              <h2>网页规则明细</h2>
+            </div>
+            <span class="admin-section-count">{audit.stage_2.earned_total} / {audit.stage_2.max_total}</span>
           </div>
-        </div>
-        <p class="micro">{websiteStatus === 'no_website' ? '无网站，按 starter 路径决策（不需要 redesign_need）' : '需要先 Tinyfish fetch homepage 后再跑 Stage 2'}</p>
-      </section>
-    )}
+          <p class="fetch-meta">
+            <span>fetched <code>{audit.stage_2.evidence.url}</code></span>
+            <span class="dot">·</span>
+            <span>{audit.stage_2.evidence.markdown_length} chars</span>
+            <span class="dot">·</span>
+            <span>{audit.stage_2.evidence.rules_evaluated}/{audit.stage_2.evidence.rules_evaluated + audit.stage_2.evidence.rules_skipped} rules evaluated</span>
+          </p>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr>
+              </thead>
+              <tbody>
+                {stage2Rules.map((r) => {
+                  const cls = r.not_evaluated ? 'skip-row' : (r.hit ? 'hit-row' : 'miss-row');
+                  return (
+                    <tr class={cls}>
+                      <td><code>{r.id}</code></td>
+                      <td>
+                        {r.not_evaluated ? <span class="dash">—</span> : (r.hit ? <span class="check">✓</span> : <span class="x">✗</span>)}
+                      </td>
+                      <td class="num"><strong>{r.earned}</strong> / {r.max}</td>
+                      <td class="rationale">{r.rationale}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
-    <section class="admin-paper-section raw-section">
-      <details>
-        <summary>raw cheap-audit-v2 output</summary>
-        <pre>{auditJson}</pre>
-      </details>
-    </section>
-  </div>
+      {!audit.stage_2 && (
+        <section class="admin-paper-section stage2-skipped">
+          <div class="admin-paper-section-head">
+            <div>
+              <p class="eyebrow">Stage 2</p>
+              <h2>未抓取网站</h2>
+            </div>
+          </div>
+          <p>{websiteStatus === 'no_website' ? '无网站，按 starter 路径决策（不需要 redesign_need）' : '需要先 Tinyfish fetch homepage 后再跑 Stage 2'}</p>
+        </section>
+      )}
+
+      <section class="admin-paper-section raw-section">
+        <details>
+          <summary>raw cheap-audit-v2 output</summary>
+          <pre>{auditJson}</pre>
+        </details>
+      </section>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  .lead-detail-shell { padding: 32px 28px 64px; }
-
-  .lead-detail-shell .admin-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 32px;
-    border-bottom: 1px solid rgba(90,72,47,0.15);
-    padding-bottom: 28px;
-  }
-  .back-link {
-    color: var(--pl-muted);
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .back-link:hover { color: var(--pl-coral); }
+  /* most chrome inherited from global local-style-2026-05-08 */
+  .lead-detail-shell .admin-header { gap: 24px; }
   .lead-detail-shell .admin-header h1 {
     font-family: var(--pl-display);
-    font-size: clamp(32px, 4vw, 52px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-size: clamp(32px, 3.6vw, 52px);
+    font-weight: 950;
     line-height: 1.05;
-    margin: 8px 0 0;
+    letter-spacing: 0;
+    margin: 4px 0 0;
     max-width: 760px;
+    word-break: normal;
+    overflow-wrap: anywhere;
   }
-  .lead-detail-shell .admin-header .eyebrow {
-    margin: 12px 0 0;
-    color: var(--pl-coral);
-  }
-  .lead-detail-shell .admin-header .lede {
-    margin-top: 14px;
-    font-size: 16px;
-    color: var(--pl-ink);
-    font-weight: 500;
-    display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline;
-  }
-  .rating { font-weight: 700; color: var(--pl-coral); }
-  .reviews { color: var(--pl-muted); }
-  .addr { color: var(--pl-muted); }
-  .dot { color: rgba(90,72,47,0.4); }
-
-  .meta-tags { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-  .status-code {
-    background: rgba(90,72,47,0.06);
+  .back-link {
+    display: inline-block;
     color: var(--pl-muted);
-    padding: 3px 8px; border-radius: 4px;
+    font-size: 13px; font-weight: 850;
+    text-decoration: none;
+    margin-bottom: 8px;
+  }
+  .back-link:hover { color: var(--pl-coral); }
+  .lead-detail-shell .admin-header .lede {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline;
+    font-size: 16px; font-weight: 800;
+  }
+  .rating { font-weight: 950; color: var(--pl-coral); }
+  .reviews { font-weight: 850; }
+  .addr { color: var(--pl-muted); font-weight: 800; }
+  .dot { color: rgba(23,25,28,0.3); font-weight: 800; }
+
+  .meta-tags {
+    margin-top: 14px;
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  }
+  .status-code {
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+    color: var(--pl-ink);
+    padding: 3px 10px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px; font-weight: 600;
+    font-size: 11px; font-weight: 850;
   }
   .map-link {
     color: var(--pl-blue);
-    font-size: 12px; font-weight: 600;
+    font-size: 12.5px; font-weight: 950;
     text-decoration: none;
   }
   .map-link:hover { text-decoration: underline; }
 
-  .score-display {
+  .lead-detail-shell .admin-count {
+    background: var(--pl-citrus);
+    border: 2px solid var(--pl-line);
+    padding: 16px 14px;
     text-align: center;
-    background: var(--pl-paper);
-    border: 1px solid rgba(90,72,47,0.15);
-    border-radius: 18px;
-    padding: 18px 24px;
-    min-width: 160px;
-    display: flex; flex-direction: column; gap: 4px;
+    min-width: 158px;
   }
-  .score-display .micro:first-child {
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em;
-    color: var(--pl-muted);
+  .lead-detail-shell .admin-count > span:first-child {
+    display: block;
+    font-size: 10.5px; font-weight: 950;
+    letter-spacing: 0.1em;
+    color: var(--pl-ink);
   }
-  .score-display strong {
+  .lead-detail-shell .admin-count strong {
+    display: block;
+    margin: 6px 0;
     font-family: var(--pl-display);
-    font-size: 56px; font-weight: 600;
+    font-size: 60px; font-weight: 950;
     line-height: 1;
-    color: var(--pl-coral);
-    margin: 4px 0;
+    color: var(--pl-ink);
   }
-  .score-display .micro:last-child {
-    color: var(--pl-muted);
-    font-size: 11.5px;
-    line-height: 1.4;
+  .lead-detail-shell .admin-count .micro-note {
+    display: block;
+    font-size: 11px; font-weight: 850;
+    color: var(--pl-ink);
+    line-height: 1.35;
     max-width: 200px; margin: 4px auto 0;
-    font-weight: 500;
   }
 
-  .score-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-    margin-top: 24px;
-    border-radius: 18px;
-    border: 1px solid rgba(90,72,47,0.12);
-    overflow: hidden;
+  .score-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 2px solid var(--pl-line);
+    background: color-mix(in srgb, white 42%, var(--pl-paper));
   }
-  .dim-stat {
-    padding: 18px 22px;
-    background: var(--pl-paper);
-    display: flex; flex-direction: column; gap: 6px;
+  .dim-tile {
+    padding: 22px 24px;
+    border-right: 2px solid var(--pl-line);
+    min-height: 138px;
   }
-  .dim-stat span:first-child {
-    font-size: 11px; font-weight: 700;
-    color: var(--pl-muted);
+  .dim-tile:last-child { border-right: 0; }
+  .dim-tile span:first-child {
+    font-size: 11px; font-weight: 950;
+    color: var(--pl-ink);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
-  .dim-stat strong {
+  .dim-tile strong {
+    display: block;
+    margin: 8px 0;
     font-family: var(--pl-display);
-    font-size: 42px;
-    font-weight: 600;
-    color: var(--pl-ink);
+    font-size: 44px; font-weight: 950;
     line-height: 1;
-    margin: 6px 0 4px;
+    color: var(--pl-ink);
   }
-  .dim-stat .formula-num {
+  .dim-tile .formula-num {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--pl-muted);
     line-height: 1.4;
-    font-weight: 600;
+    font-weight: 850;
   }
+  .dim-tile p {
+    margin: 0;
+    font-size: 12px; font-weight: 850;
+    color: var(--pl-muted);
+    line-height: 1.4;
+  }
+  .dim-tile .trigger-row { margin-top: 8px; }
+  .dim-tile .trigger-row code {
+    background: var(--pl-mint);
+    border: 1.5px solid var(--pl-line);
+    color: var(--pl-ink);
+    padding: 2px 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; font-weight: 950;
+  }
+  .dim-tile .hint { color: var(--pl-coral); font-weight: 950; }
   .dim-bar {
-    height: 6px;
-    background: rgba(90,72,47,0.08);
-    border-radius: 3px;
+    margin-top: 10px;
+    height: 8px;
+    background: var(--pl-paper);
+    border: 1.5px solid var(--pl-line);
     overflow: hidden;
-    margin-top: 4px;
   }
   .dim-fill { height: 100%; transition: width 0.4s ease; }
   .gbp-fill { background: var(--pl-blue); }
   .redesign-fill { background: var(--pl-coral); }
-  .dim-stat .micro { color: var(--pl-muted); font-size: 11.5px; font-weight: 500; }
-  .trigger-line { margin-top: 6px; }
-  .trigger-line code {
-    background: var(--pl-mint); color: #1d6b35;
-    padding: 2px 6px; border-radius: 3px;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px; font-weight: 600;
-  }
-  .hint { color: var(--pl-coral); margin-left: 4px; }
+  .dim-empty .dim-bar .dim-fill { background: rgba(23,25,28,0.15); width: 0; }
 
   .lead-detail-shell .admin-paper-section {
-    padding: 22px 0 18px;
+    padding: 24px 30px;
+    border-top: 2px solid var(--pl-line);
   }
   .lead-detail-shell .admin-paper-section h2 {
     font-family: var(--pl-display);
-    font-size: clamp(20px, 1.7vw, 26px);
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-size: clamp(26px, 2.4vw, 38px);
+    font-weight: 950;
+    line-height: 1.1;
+    max-width: none;
     margin: 4px 0 0;
   }
-  .lead-detail-shell .admin-paper-section-head .eyebrow { color: var(--pl-coral); }
-  .admin-section-count { color: var(--pl-muted); font-size: 13px; font-weight: 600; }
-  .inline-link { color: var(--pl-coral); font-weight: 700; }
+  .lead-detail-shell .admin-section-count {
+    font-size: 13px; font-weight: 850;
+    color: var(--pl-muted);
+  }
+  .inline-link {
+    color: var(--pl-coral);
+    font-weight: 950;
+    text-decoration: none;
+  }
   .inline-link:hover { text-decoration: underline; }
-  .fetch-meta { color: var(--pl-muted); margin: 4px 0 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .fetch-meta {
+    margin: 4px 0 14px;
+    color: var(--pl-muted);
+    font-size: 12.5px; font-weight: 800;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .fetch-meta code {
+    background: var(--pl-paper);
+    border: 1.5px solid var(--pl-line);
+    color: var(--pl-ink);
+    padding: 1px 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px; font-weight: 800;
+  }
 
-  .lead-detail-shell .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .lead-detail-shell .admin-table th,
-  .lead-detail-shell .admin-table td {
-    padding: 10px 12px; vertical-align: top; text-align: left;
-    border-bottom: 1px solid rgba(90,72,47,0.08);
+  /* table — sharp 2px border, citrus header band */
+  .lead-detail-shell .admin-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
   }
   .lead-detail-shell .admin-table th {
-    position: static;            /* override global sticky top:127px (no admin-toolbar on this page) */
-    font-size: 10.5px; font-weight: 700;
-    color: var(--pl-muted);
+    position: static !important;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 11px; font-weight: 950;
+    color: var(--pl-ink);
     text-transform: uppercase; letter-spacing: 0.08em;
-    border-bottom: 1px solid rgba(90,72,47,0.18);
-    background: transparent;
+    background: color-mix(in srgb, var(--pl-citrus) 55%, var(--pl-paper));
+    border-bottom: 2px solid var(--pl-line);
     box-shadow: none;
   }
-  .lead-detail-shell .admin-table td.num { font-variant-numeric: tabular-nums; font-weight: 500; }
-  .lead-detail-shell .admin-table td.num strong { font-weight: 800; color: var(--pl-ink); }
-  .lead-detail-shell .admin-table td.rationale { color: var(--pl-muted); font-weight: 500; }
-  .lead-detail-shell .admin-table tr.hit td.num strong { color: var(--pl-green); }
-  .lead-detail-shell .admin-table tr.miss td.num strong { color: var(--pl-muted); }
-  .lead-detail-shell .admin-table tr.skip td { color: rgba(90,72,47,0.4); font-style: italic; }
-  .lead-detail-shell .admin-table .check { color: var(--pl-green); font-weight: 700; }
-  .lead-detail-shell .admin-table .x { color: rgba(90,72,47,0.35); font-weight: 700; }
-  .lead-detail-shell .admin-table .dash { color: rgba(90,72,47,0.3); }
+  .lead-detail-shell .admin-table td {
+    padding: 12px 14px;
+    font-size: 13px; font-weight: 700;
+    border-bottom: 1.5px solid rgba(23,25,28,0.12);
+    vertical-align: top;
+  }
+  .lead-detail-shell .admin-table tr:last-child td { border-bottom: 0; }
+  .lead-detail-shell .admin-table td.num {
+    font-variant-numeric: tabular-nums;
+    font-weight: 850;
+  }
+  .lead-detail-shell .admin-table td.num strong { font-family: var(--pl-display); font-size: 16px; font-weight: 950; }
+  .lead-detail-shell .admin-table tr.hit-row td.num strong { color: var(--pl-green); }
+  .lead-detail-shell .admin-table tr.miss-row td.num strong { color: var(--pl-muted); }
+  .lead-detail-shell .admin-table tr.skip-row td { color: rgba(23,25,28,0.35); font-style: italic; }
+  .lead-detail-shell .admin-table td.rationale { color: var(--pl-muted); font-weight: 800; }
+  .lead-detail-shell .admin-table .check { color: var(--pl-green); font-weight: 950; font-size: 16px; }
+  .lead-detail-shell .admin-table .x { color: rgba(23,25,28,0.3); font-weight: 950; font-size: 16px; }
+  .lead-detail-shell .admin-table .dash { color: rgba(23,25,28,0.3); }
   .lead-detail-shell .admin-table code {
-    background: rgba(255,90,61,0.08);
-    color: var(--pl-coral);
-    padding: 2px 6px; border-radius: 4px;
+    background: var(--pl-cream);
+    border: 1.5px solid var(--pl-line);
+    color: var(--pl-ink);
+    padding: 1px 8px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11.5px;
-    font-weight: 600;
+    font-size: 11.5px; font-weight: 800;
   }
 
-  /* chips — same brand colors as scoring page */
   .chip {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 999px;
+    padding: 3px 10px;
+    border-radius: 0;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11.5px; font-weight: 700;
+    font-size: 11px; font-weight: 950;
     letter-spacing: 0.02em;
     background: var(--pl-paper);
     color: var(--pl-ink);
-    border: 1px solid rgba(90,72,47,0.15);
+    border: 2px solid var(--pl-line);
   }
-  .chip-mint { background: var(--pl-mint); color: #1d6b35; border-color: rgba(71,184,106,0.3); }
-  .chip-citrus { background: var(--pl-citrus); color: #5a4500; border-color: rgba(218,168,5,0.3); }
-  .chip-coral { background: var(--pl-coral-soft); color: #8c2419; border-color: rgba(255,90,61,0.4); }
-  .chip-sky { background: var(--pl-sky); color: #0e3e63; border-color: rgba(50,123,234,0.3); }
-  .chip-lilac { background: var(--pl-lilac); color: #3e2877; border-color: rgba(150,110,210,0.25); }
+  .chip-mint { background: var(--pl-mint); }
+  .chip-citrus { background: var(--pl-citrus); }
+  .chip-coral { background: var(--pl-coral); color: white; }
+  .chip-sky { background: var(--pl-sky); }
+  .chip-lilac { background: var(--pl-lilac); }
 
-  .stage2-skipped { color: var(--pl-muted); }
+  .stage2-skipped p { color: var(--pl-muted); font-weight: 800; margin: 6px 0 0; }
 
   .raw-section details { padding: 0; }
   .raw-section summary {
     cursor: pointer;
     color: var(--pl-muted);
-    font-size: 12.5px;
-    font-weight: 600;
+    font-size: 13px; font-weight: 850;
     padding: 8px 0;
   }
   .raw-section summary:hover { color: var(--pl-coral); }
   .raw-section pre {
     background: var(--pl-paper);
-    border: 1px solid rgba(90,72,47,0.12);
-    border-radius: 8px;
+    border: 2px solid var(--pl-line);
+    box-shadow: 4px 4px 0 var(--pl-line);
     padding: 14px 16px;
     font-size: 11.5px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    max-height: 400px;
+    max-height: 420px;
     overflow: auto;
     margin: 8px 0 0;
   }
 
   @media (max-width: 900px) {
-    .score-grid { grid-template-columns: 1fr; }
+    .score-strip { grid-template-columns: 1fr; }
+    .dim-tile { border-right: 0; border-bottom: 2px solid var(--pl-line); }
+    .dim-tile:last-child { border-bottom: 0; }
     .lead-detail-shell .admin-header { grid-template-columns: 1fr; }
-    .score-display { width: fit-content; }
   }
 </style>

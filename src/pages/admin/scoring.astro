@@ -6,6 +6,7 @@ const config = loadCheapAuditConfig();
 const stage1 = config.stages.stage_1_gbp_triage;
 const stage2 = config.stages.stage_2_site_quick_scan;
 const stage05 = config.stages.stage_0_5_enrichment_gate;
+const totalRules = stage1.rules.length + stage2.rules.length;
 
 function fmtRule(rule) {
   if (rule.deduct_tiers || rule.earn_tiers) {
@@ -19,7 +20,7 @@ function fmtRule(rule) {
   return `max ${rule.max}`;
 }
 
-function actionChipClass(action) {
+function chipClass(action) {
   const a = String(action || '');
   if (a === 'audit_candidate') return 'chip-mint';
   if (a === 'starter_candidate') return 'chip-citrus';
@@ -31,394 +32,406 @@ function actionChipClass(action) {
 ---
 
 <Layout title="算法定义 — Cheap Audit V2" active="settings">
-  <div class="admin-shell lead-admin-shell scoring-shell">
-    <header class="admin-header">
-      <div>
-        <p class="eyebrow">算法定义</p>
-        <h1>Cheap Audit V2</h1>
-        <p class="lede">{config.purpose}</p>
-        <p class="micro meta-line">
-          <span>config: <code>{config.version}</code></span>
-          <span class="dot">·</span>
-          <span>source: <code>core/scoring/cheap-audit-config.json</code></span>
-        </p>
-      </div>
-      <div class="admin-count">
-        <span class="micro">规则数</span>
-        <strong>{stage1.rules.length + stage2.rules.length}</strong>
-        <span class="micro">两段 + {config.hard_triggers.length} 个 hard trigger</span>
-      </div>
-    </header>
-
-    <div class="philosophy-callout">
-      <span class="eyebrow">设计哲学</span>
-      <p>{config.philosophy}</p>
-    </div>
-
-    <section class="admin-paper-section">
-      <div class="admin-paper-section-head">
+  <section class="poster-section admin-section">
+    <div class="admin-shell lead-admin-shell scoring-shell" data-ui-version="local-style-2026-05-08">
+      <header class="admin-header">
         <div>
-          <p class="eyebrow">Stage 0.5</p>
-          <h2>Enrichment-before-skip 门槛</h2>
+          <p class="eyebrow">算法定义</p>
+          <h1>Cheap Audit V2</h1>
+          <p class="lede">{config.purpose}</p>
+          <p class="meta-line">
+            <span>config <code>{config.version}</code></span>
+            <span class="dot">·</span>
+            <span>source <code>core/scoring/cheap-audit-config.json</code></span>
+          </p>
         </div>
-      </div>
-      <p class="micro section-lede">{stage05.description}</p>
-      <div class="rule-grid two">
-        <div class="rule-list">
-          <p class="eyebrow accent-coral">触发 enrichment</p>
-          <ul>
-            {stage05.triggers_enrichment_if.map((t) => <li><code>{t}</code></li>)}
-          </ul>
+        <div class="admin-count">
+          <span>规则数</span>
+          <strong>{totalRules}</strong>
+          <span class="micro-note">两段 + {config.hard_triggers.length} 个 hard trigger</span>
         </div>
-        <div class="rule-list">
-          <p class="eyebrow accent-muted">立即 skip</p>
-          <ul>
-            {stage05.skips_immediately_if.map((t) => <li><code>{t}</code></li>)}
-          </ul>
-        </div>
-      </div>
-    </section>
+      </header>
 
-    <section class="admin-paper-section">
-      <div class="admin-paper-section-head">
-        <div>
-          <p class="eyebrow">Stage 1 · 满分 {stage1.max_score}</p>
-          <h2>GBP triage</h2>
-        </div>
-        <span class="admin-section-count">{stage1.rules.length} 项</span>
+      <div class="philosophy-strip">
+        <p class="eyebrow">设计哲学</p>
+        <p>{config.philosophy}</p>
       </div>
-      <p class="micro section-lede">{stage1.description}</p>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr><th>规则</th><th>检测</th><th>满分</th><th>评分规则</th></tr>
-          </thead>
-          <tbody>
-            {stage1.rules.map((r) => (
-              <tr>
-                <td>
-                  <code>{r.id}</code>
-                  {r.is_hard_skip && <span class="chip chip-coral">hard-skip</span>}
-                </td>
-                <td>{r.check}</td>
-                <td class="num">{r.max}</td>
-                <td class="formula">{fmtRule(r)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
 
-    <section class="admin-paper-section">
-      <div class="admin-paper-section-head">
-        <div>
-          <p class="eyebrow">Stage 2 · 满分 {stage2.max_score}</p>
-          <h2>Website quick scan</h2>
-        </div>
-        <span class="admin-section-count">{stage2.rules.length} 项</span>
-      </div>
-      <p class="micro section-lede">{stage2.description}</p>
-      <p class="micro skip-note">⤳ skip when: <code>{stage2.skipped_when}</code></p>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr><th>规则</th><th>检测</th><th>满分</th><th>判定</th><th>意义</th></tr>
-          </thead>
-          <tbody>
-            {stage2.rules.map((r) => (
-              <tr>
-                <td><code>{r.id}</code></td>
-                <td>{r.check}</td>
-                <td class="num">{r.max}</td>
-                <td class="formula">{fmtRule(r)}</td>
-                <td class="rationale">{r.rationale}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="admin-paper-section formula-section">
-      <div class="admin-paper-section-head">
-        <div>
-          <p class="eyebrow">最终评分</p>
-          <h2>Final score formula</h2>
-        </div>
-      </div>
-      <p class="formula-line"><code>{config.scoring.formula}</code></p>
-      <p class="micro rationale-line">{config.scoring.rationale}</p>
-    </section>
-
-    <section class="admin-paper-section">
-      <div class="admin-paper-section-head">
-        <div>
-          <p class="eyebrow">Hard triggers</p>
-          <h2>强制覆盖阈值的规则</h2>
-        </div>
-        <span class="admin-section-count">{config.hard_triggers.length} 条</span>
-      </div>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead><tr><th>触发条件</th><th>强制动作</th><th>原因</th></tr></thead>
-          <tbody>
-            {config.hard_triggers.map((t) => (
-              <tr>
-                <td><code>{t.if}</code></td>
-                <td>
-                  <span class={`chip ${actionChipClass(t.force_action || t.force_action_min)}`}>{t.force_action || t.force_action_min || '—'}</span>
-                  {t.force_action_min && <span class="micro hint">lift floor</span>}
-                </td>
-                <td class="rationale">{t.rationale}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="admin-paper-section threshold-section">
-      <div class="admin-paper-section-head">
-        <div>
-          <p class="eyebrow">阈值</p>
-          <h2>Score → action 映射</h2>
-        </div>
-      </div>
-      <div class="threshold-grid">
-        {config.thresholds.map((t) => (
-          <div class={`threshold-card threshold-${actionChipClass(t.action)}`}>
-            <div class="threshold-min">≥ {t.min}</div>
-            <div class={`chip ${actionChipClass(t.action)}`}>{t.action}</div>
-            <p class="micro">{t.label}</p>
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Stage 0.5</p>
+            <h2>Enrichment-before-skip 门槛</h2>
           </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="admin-paper-section">
-      <div class="admin-paper-section-head">
-        <div>
-          <p class="eyebrow">No-website 路径</p>
-          <h2>Starter candidate 决策</h2>
         </div>
-      </div>
-      <p class="micro section-lede">{config.starter_candidate_path.description}</p>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead><tr><th>条件</th><th>动作</th><th>原因</th></tr></thead>
-          <tbody>
-            {config.starter_candidate_path.decision_rules.map((r) => (
-              <tr>
-                <td><code>{r.if}</code></td>
-                <td><span class={`chip ${actionChipClass(r.action)}`}>{r.action}</span></td>
-                <td class="rationale">{r.rationale}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="admin-paper-section ui-map-section">
-      <div class="admin-paper-section-head">
-        <div>
-          <p class="eyebrow">显性化映射</p>
-          <h2>这份算法在哪里可见</h2>
+        <p class="section-lede">{stage05.description}</p>
+        <div class="rule-grid two">
+          <div class="rule-list">
+            <p class="eyebrow accent-coral">触发 enrichment</p>
+            <ul>
+              {stage05.triggers_enrichment_if.map((t) => <li><code>{t}</code></li>)}
+            </ul>
+          </div>
+          <div class="rule-list">
+            <p class="eyebrow accent-muted">立即 skip</p>
+            <ul>
+              {stage05.skips_immediately_if.map((t) => <li><code>{t}</code></li>)}
+            </ul>
+          </div>
         </div>
-      </div>
-      <ul class="ui-map">
-        {Object.entries(config.ui_visibility).map(([k, v]) => (
-          <li><code>{k}</code> → {v}</li>
-        ))}
-      </ul>
-    </section>
-  </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Stage 1 · 满分 {stage1.max_score}</p>
+            <h2>GBP triage</h2>
+          </div>
+          <span class="admin-section-count">{stage1.rules.length} 项</span>
+        </div>
+        <p class="section-lede">{stage1.description}</p>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>规则</th><th>检测</th><th>满分</th><th>评分规则</th></tr>
+            </thead>
+            <tbody>
+              {stage1.rules.map((r) => (
+                <tr>
+                  <td>
+                    <code>{r.id}</code>
+                    {r.is_hard_skip && <span class="chip chip-coral">hard-skip</span>}
+                  </td>
+                  <td>{r.check}</td>
+                  <td class="num">{r.max}</td>
+                  <td class="formula">{fmtRule(r)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Stage 2 · 满分 {stage2.max_score}</p>
+            <h2>Website quick scan</h2>
+          </div>
+          <span class="admin-section-count">{stage2.rules.length} 项</span>
+        </div>
+        <p class="section-lede">{stage2.description}</p>
+        <p class="skip-note">⤳ skip when: <code>{stage2.skipped_when}</code></p>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>规则</th><th>检测</th><th>满分</th><th>判定</th><th>意义</th></tr>
+            </thead>
+            <tbody>
+              {stage2.rules.map((r) => (
+                <tr>
+                  <td><code>{r.id}</code></td>
+                  <td>{r.check}</td>
+                  <td class="num">{r.max}</td>
+                  <td class="formula">{fmtRule(r)}</td>
+                  <td class="rationale">{r.rationale}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">最终评分</p>
+            <h2>Final score formula</h2>
+          </div>
+        </div>
+        <p class="formula-line"><code>{config.scoring.formula}</code></p>
+        <p class="rationale-line">{config.scoring.rationale}</p>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Hard triggers</p>
+            <h2>强制覆盖阈值的规则</h2>
+          </div>
+          <span class="admin-section-count">{config.hard_triggers.length} 条</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>触发条件</th><th>强制动作</th><th>原因</th></tr></thead>
+            <tbody>
+              {config.hard_triggers.map((t) => (
+                <tr>
+                  <td><code>{t.if}</code></td>
+                  <td>
+                    <span class={`chip ${chipClass(t.force_action || t.force_action_min)}`}>{t.force_action || t.force_action_min || '—'}</span>
+                    {t.force_action_min && <span class="hint">lift floor</span>}
+                  </td>
+                  <td class="rationale">{t.rationale}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">阈值</p>
+            <h2>Score → action 映射</h2>
+          </div>
+        </div>
+        <div class="threshold-grid">
+          {config.thresholds.map((t) => (
+            <div class="threshold-card">
+              <div class="threshold-min">≥ {t.min}</div>
+              <div class={`chip ${chipClass(t.action)}`}>{t.action}</div>
+              <p>{t.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">No-website 路径</p>
+            <h2>Starter candidate 决策</h2>
+          </div>
+        </div>
+        <p class="section-lede">{config.starter_candidate_path.description}</p>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>条件</th><th>动作</th><th>原因</th></tr></thead>
+            <tbody>
+              {config.starter_candidate_path.decision_rules.map((r) => (
+                <tr>
+                  <td><code>{r.if}</code></td>
+                  <td><span class={`chip ${chipClass(r.action)}`}>{r.action}</span></td>
+                  <td class="rationale">{r.rationale}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">显性化映射</p>
+            <h2>这份算法在哪里可见</h2>
+          </div>
+        </div>
+        <ul class="ui-map">
+          {Object.entries(config.ui_visibility).map((entry) => (
+            <li><code>{entry[0]}</code> → {entry[1]}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  /* page-scoped overrides + brand-aligned typography */
-  .scoring-shell {
-    padding: 32px 28px 64px;
-  }
-  .scoring-shell .admin-header h1 {
-    font-family: var(--pl-display);
-    font-size: clamp(40px, 4.6vw, 64px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin: 4px 0 0;
-  }
-  .scoring-shell .admin-header .lede {
-    margin-top: 12px;
-    font-size: 17px;
-    font-weight: 500;
-    color: var(--pl-ink);
-  }
-  .scoring-shell .meta-line {
+  /* most chrome inherited from global local-style-2026-05-08 system */
+  .scoring-shell .admin-header { gap: 18px; }
+  .scoring-shell .admin-header .meta-line {
     margin-top: 14px;
     color: var(--pl-muted);
+    font-size: 13px; font-weight: 800;
     display: flex; gap: 8px; flex-wrap: wrap;
   }
-  .scoring-shell .meta-line .dot { color: rgba(90,72,47,0.4); }
+  .scoring-shell .meta-line .dot { color: rgba(23,25,28,0.3); }
+  .scoring-shell .meta-line code {
+    background: var(--pl-paper); border: 1.5px solid var(--pl-line);
+    padding: 1px 8px; font-size: 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 700;
+  }
   .scoring-shell .admin-count strong {
     font-family: var(--pl-display);
-    font-size: 44px;
-    line-height: 1;
-    color: var(--pl-coral);
-    font-weight: 600;
+    font-size: 44px; line-height: 1; font-weight: 950;
+    margin: 4px 0;
+  }
+  .scoring-shell .admin-count .micro-note {
+    display: block; margin-top: 6px;
+    font-size: 11px; font-weight: 850;
+    color: var(--pl-ink); opacity: 0.7;
   }
 
-  .philosophy-callout {
+  .philosophy-strip {
+    border-bottom: 2px solid var(--pl-line);
     background: var(--pl-peach);
-    border: 1px solid var(--pl-coral-soft);
-    border-radius: 18px;
-    padding: 18px 22px;
-    margin: 20px 0 8px;
+    padding: 18px 30px;
   }
-  .philosophy-callout p {
+  .philosophy-strip p:last-child {
     margin: 6px 0 0;
-    font-size: 15px;
+    font-size: 15px; font-weight: 700;
     line-height: 1.55;
-    color: var(--pl-ink);
-    font-weight: 500;
     max-width: 80ch;
   }
 
-  .scoring-shell .admin-paper-section h2,
+  .scoring-shell .admin-paper-section {
+    padding: 22px 30px;
+    border-top: 2px solid var(--pl-line);
+  }
   .scoring-shell .admin-paper-section-head h2 {
     font-family: var(--pl-display);
-    font-size: clamp(22px, 1.9vw, 30px);
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-size: clamp(26px, 2.4vw, 38px);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1.1;
     max-width: none;
-    line-height: 1.15;
     margin: 4px 0 0;
   }
   .section-lede {
-    color: var(--pl-muted);
-    margin: 4px 0 14px;
+    color: var(--pl-ink);
+    font-weight: 800;
+    margin: 6px 0 16px;
     max-width: 80ch;
-    line-height: 1.5;
-    font-weight: 500;
+    line-height: 1.45;
+    font-size: 14.5px;
   }
-  .skip-note { color: var(--pl-muted); margin: -6px 0 14px; }
+  .skip-note {
+    color: var(--pl-muted);
+    margin: -8px 0 14px;
+    font-weight: 800; font-size: 13px;
+  }
 
   .scoring-shell .admin-table {
-    width: 100%; border-collapse: collapse;
-    font-size: 13px;
-  }
-  .scoring-shell .admin-table th,
-  .scoring-shell .admin-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(90,72,47,0.08);
-    vertical-align: top;
-    text-align: left;
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
   }
   .scoring-shell .admin-table th {
-    position: static;            /* override global sticky top:127px (no admin-toolbar on this page) */
-    font-size: 11px; font-weight: 700;
-    color: var(--pl-muted);
+    position: static !important;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 11px; font-weight: 950;
+    color: var(--pl-ink);
     text-transform: uppercase; letter-spacing: 0.06em;
-    border-bottom: 1px solid rgba(90,72,47,0.18);
-    background: transparent;
+    background: color-mix(in srgb, var(--pl-citrus) 55%, var(--pl-paper));
+    border-bottom: 2px solid var(--pl-line);
     box-shadow: none;
   }
-  .scoring-shell .admin-table td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
-  .scoring-shell .admin-table td.formula { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; color: var(--pl-muted); }
-  .scoring-shell .admin-table td.rationale { color: var(--pl-muted); }
-  .scoring-shell .admin-table code {
-    background: rgba(255,90,61,0.08);
-    color: var(--pl-coral);
-    padding: 2px 6px; border-radius: 4px;
-    font-size: 12px;
+  .scoring-shell .admin-table td {
+    padding: 12px 14px;
+    font-size: 13px; font-weight: 700;
+    border-bottom: 1.5px solid rgba(23,25,28,0.12);
+    vertical-align: top;
+  }
+  .scoring-shell .admin-table tr:last-child td { border-bottom: 0; }
+  .scoring-shell .admin-table td.num { font-variant-numeric: tabular-nums; font-weight: 950; }
+  .scoring-shell .admin-table td.formula {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-weight: 600;
+    font-size: 11.5px; color: var(--pl-muted);
+    font-weight: 800;
+  }
+  .scoring-shell .admin-table td.rationale { color: var(--pl-muted); font-weight: 800; }
+  .scoring-shell .admin-table code {
+    background: var(--pl-cream);
+    border: 1.5px solid var(--pl-line);
+    color: var(--pl-ink);
+    padding: 1px 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px; font-weight: 800;
   }
 
   .rule-grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .rule-list ul { padding-left: 0; list-style: none; margin: 6px 0 0; }
+  .rule-list ul { padding-left: 0; list-style: none; margin: 8px 0 0; }
   .rule-list li {
-    margin: 6px 0;
+    margin: 8px 0;
     padding: 10px 14px;
     background: var(--pl-paper);
-    border: 1px solid rgba(90,72,47,0.1);
-    border-radius: 10px;
+    border: 2px solid var(--pl-line);
+    box-shadow: 3px 3px 0 var(--pl-line);
   }
-  .rule-list code {
-    background: transparent; color: var(--pl-ink);
+  .rule-list li code {
+    background: transparent; border: 0; padding: 0;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12px; padding: 0;
+    font-size: 12.5px; font-weight: 800;
   }
   .accent-coral { color: var(--pl-coral); }
   .accent-muted { color: var(--pl-muted); }
 
-  /* chips — brand-aligned status colors */
+  /* status chips — sharp corners + 2px line, brand colors for fill */
   .chip {
     display: inline-block;
     padding: 3px 10px;
-    border-radius: 999px;
+    border-radius: 0;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px; font-weight: 700;
+    font-size: 11px; font-weight: 950;
     letter-spacing: 0.02em;
     background: var(--pl-paper);
     color: var(--pl-ink);
-    border: 1px solid rgba(90,72,47,0.12);
+    border: 2px solid var(--pl-line);
   }
-  .chip-mint { background: var(--pl-mint); color: #1d6b35; border-color: rgba(71,184,106,0.3); }
-  .chip-citrus { background: var(--pl-citrus); color: #5a4500; border-color: rgba(218,168,5,0.3); }
-  .chip-coral { background: var(--pl-coral-soft); color: #8c2419; border-color: rgba(255,90,61,0.4); }
-  .chip-sky { background: var(--pl-sky); color: #0e3e63; border-color: rgba(50,123,234,0.3); }
-  .chip-lilac { background: var(--pl-lilac); color: #3e2877; border-color: rgba(150,110,210,0.25); }
-  .hint { color: var(--pl-muted); margin-left: 6px; font-size: 11px; }
+  .chip-mint { background: var(--pl-mint); }
+  .chip-citrus { background: var(--pl-citrus); }
+  .chip-coral { background: var(--pl-coral); color: white; }
+  .chip-sky { background: var(--pl-sky); }
+  .chip-lilac { background: var(--pl-lilac); }
+  .hint { color: var(--pl-muted); margin-left: 8px; font-size: 11px; font-weight: 800; }
 
-  .formula-section .formula-line {
+  .formula-line {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 16px; padding: 14px 18px;
+    font-size: 16px; font-weight: 800;
+    padding: 14px 18px;
     background: var(--pl-paper);
-    border: 1px solid rgba(90,72,47,0.12);
-    border-radius: 12px;
+    border: 2px solid var(--pl-line);
+    box-shadow: 4px 4px 0 var(--pl-line);
+    display: inline-block;
   }
-  .formula-section .rationale-line { color: var(--pl-muted); margin-top: 12px; line-height: 1.55; max-width: 80ch; font-weight: 500; }
+  .formula-line code { background: transparent; border: 0; font-weight: 800; padding: 0; }
+  .rationale-line { color: var(--pl-muted); margin-top: 16px; line-height: 1.55; max-width: 80ch; font-weight: 800; font-size: 13.5px; }
 
   .threshold-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
   }
   .threshold-card {
-    padding: 16px 18px; border-radius: 16px;
-    background: var(--pl-paper);
-    border: 1px solid rgba(90,72,47,0.12);
-    display: flex; flex-direction: column; gap: 8px;
+    padding: 18px 20px;
+    border-right: 2px solid var(--pl-line);
+    display: flex; flex-direction: column; gap: 10px;
   }
+  .threshold-card:last-child { border-right: 0; }
   .threshold-card .threshold-min {
     font-family: var(--pl-display);
-    font-size: 32px; font-weight: 600;
+    font-size: 38px; font-weight: 950;
     color: var(--pl-ink);
     line-height: 1;
   }
-  .threshold-card p { margin: 0; color: var(--pl-muted); font-size: 12.5px; line-height: 1.5; font-weight: 500; }
-  .threshold-chip-mint { border-color: rgba(71,184,106,0.4); }
-  .threshold-chip-citrus { border-color: rgba(218,168,5,0.4); }
-  .threshold-chip-coral { border-color: rgba(255,90,61,0.4); }
+  .threshold-card p { margin: 0; color: var(--pl-muted); font-size: 12.5px; line-height: 1.5; font-weight: 800; }
 
   .ui-map { padding-left: 0; list-style: none; margin: 0; }
   .ui-map li {
-    padding: 8px 0;
-    border-bottom: 1px dashed rgba(90,72,47,0.12);
-    color: var(--pl-muted);
+    padding: 10px 0;
+    border-bottom: 1.5px dashed rgba(23,25,28,0.18);
+    color: var(--pl-ink);
     font-size: 13.5px;
-    font-weight: 500;
+    font-weight: 800;
   }
   .ui-map li:last-child { border-bottom: 0; }
   .ui-map code {
-    background: rgba(255,90,61,0.08);
-    color: var(--pl-coral);
-    padding: 2px 6px; border-radius: 4px;
+    background: var(--pl-cream);
+    border: 1.5px solid var(--pl-line);
+    padding: 1px 8px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12px;
+    font-size: 12px; font-weight: 800;
   }
 
   @media (max-width: 900px) {
     .threshold-grid { grid-template-columns: repeat(2, 1fr); }
+    .threshold-card:nth-child(2n) { border-right: 0; }
+    .threshold-card:nth-child(-n+2) { border-bottom: 2px solid var(--pl-line); }
     .rule-grid.two { grid-template-columns: 1fr; }
   }
 </style>
