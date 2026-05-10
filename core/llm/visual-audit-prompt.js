@@ -23,7 +23,9 @@ export const VISUAL_AUDIT_OUTPUT_SCHEMA_DESCRIPTION = `
       "what_observed": "ground in the screenshot — describe the specific visual artifact you see",
       "why_problem": "explain WHY this hurts trust or conversion in plain language; reference how a Google-searching local customer would react",
       "what_correct_looks_like": "what a well-designed alternative looks like; concrete, not 'modern and clean'",
-      "how_to_fix_in_redesign": "concrete change ProfitsLocal would make in the redesign"
+      "how_to_fix_in_redesign": "concrete change ProfitsLocal would make in the redesign",
+      "plain_explanation": "Chinese (中文) — translate the technical observation into a sentence a non-technical small-business owner can understand. Use everyday language. NO jargon.",
+      "customer_impact": "Chinese (中文) — explain how this directly costs the business money or customers. Reference percentages or behavioral patterns when known (e.g. '70% of local searches are mobile', 'visitors decide in 8 seconds'). Tie back to the customer's GBP traffic when possible."
     }
   ],
   "positive_observations": ["things worth preserving in the redesign — short bullets"],
@@ -52,6 +54,7 @@ CRITICAL OUTPUT RULES
 - "why_problem" must explain in plain language how this hurts a real visitor's trust or willingness to act. No jargon ("SEO", "conversion rate optimization") — explain the human behavior.
 - "what_correct_looks_like" must describe a concrete alternative. NOT "clean modern design" — something like "single-column on mobile with 16px+ body type, primary phone button visible without scrolling, max two accent colors".
 - "how_to_fix_in_redesign" must be actionable enough to drop into a redesign brief. e.g. "replace gradient hero with flat coral CTA above fold", not "improve the hero".
+- "plain_explanation" and "customer_impact" MUST be in Chinese (中文). They translate the same finding for a non-technical small-business owner. plain_explanation = WHAT it means in everyday language. customer_impact = WHY this costs money / customers, with a percentage or behavioral fact when possible.
 - Severity guide: critical = breaks trust or conversion immediately (mobile broken, hidden contact, illegible text); major = noticeably degrades; minor = polish.
 - positive_observations: things that ARE working and should be preserved. List 1-3.
 - redesign_priorities: the top 3 changes in priority order, written as a one-line action item.

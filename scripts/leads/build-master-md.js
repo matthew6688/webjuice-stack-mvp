@@ -72,6 +72,10 @@ for (const entityKey of targets) {
   const reviewSample = reviewBundle?.fetched?.reviews || null;
 
   const techStack = detailed?.tech_stack || null;
+  const sitemapAnalysis = detailed?.sitemap_analysis || null;
+  const activity = detailed?.activity || null;
+  const aiGeo = detailed?.ai_geo || null;
+  const pagespeed = detailed?.pagespeed || null;
 
   const manifestPath = path.join(clientV2Dir, 'cloudinary-manifest.json');
   const cloudinaryManifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
@@ -82,6 +86,10 @@ for (const entityKey of targets) {
     entity, detailedAudit, visualAudit, reviewAnalysis, reviewSample,
     reviewBundle: reviewBundle?.fetched || null,
     techStack,
+    sitemapAnalysis,
+    activity,
+    aiGeo,
+    pagespeed,
     cloudinaryManifest,
     screenshotDir: './screenshots',
   });

@@ -36,6 +36,11 @@
   .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
 
   .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .lead-summary { margin: 0 0 14px; padding: 14px 18px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 14.5px; font-weight: 700; line-height: 1.65; max-width: 760px; word-break: break-word; font-family: var(--sans); }
+  .dim-meta { margin: -8px 0 16px; font-size: 12.5px; font-weight: 800; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+  .dim-meta strong { color: var(--coral); font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .triggers-block { margin-top: 22px; }
+  .triggers-block .eyebrow { margin: 0 0 8px; }
   .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
 
@@ -78,8 +83,9 @@
   .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
   .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
   .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-  .issue-row { margin: 4px 0; font-size: 13px; line-height: 1.5; font-weight: 700; }
-  .issue-row .lab { display: inline-block; min-width: 90px; font-size: 10px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 8px; vertical-align: top; }
+  .issue-row { margin: 10px 0 0; font-size: 13px; line-height: 1.6; font-weight: 700; }
+  .issue-row .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 3px; }
+  .issue-row.fix { padding-top: 8px; margin-top: 12px; border-top: 1.5px dashed rgba(23,25,28,0.18); }
   .issue-row.fix .lab { color: var(--coral); }
 
   details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
@@ -188,7 +194,7 @@
         <span>★ 4.9 (21 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/11 00:11</span>
+        <span>generated 2026/05/11 07:41</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -204,7 +210,8 @@
 
   <section class="section">
     <p class="eyebrow">总体判断</p>
-    <h2>audit_score=70 → low_priority · weakest: gbp 48, visual 50</h2>
+    <h2>审计概览</h2>
+    <p class="lead-summary">audit_score=70 → low_priority · weakest: gbp 48, visual 50</p>
     
   </section>
 
@@ -224,8 +231,9 @@
   </section>
 
   <section class="section">
-    <p class="eyebrow">6 维度审计 At-a-glance</p>
-    <h2>得分 70/100 → LOW PRIORITY</h2>
+    <p class="eyebrow">六维度评分总览</p>
+    <h2>每个维度的强弱在哪</h2>
+    <p class="dim-meta"><strong>70/100</strong> · LOW PRIORITY</p>
     <div class="dim-grid">
       
         <div class="dim-card">
@@ -268,8 +276,8 @@
   </section>
 
   <section class="section">
-    <p class="eyebrow">网站抓取证据</p>
-    <h2>当前网站快照</h2>
+    <p class="eyebrow">现场证据 · 桌面 + 移动</p>
+    <h2>客户访问时看到的页面</h2>
     <div class="screenshots">
       <figure>
         <img src="screenshots/desktop.png" alt="desktop screenshot" />
@@ -304,8 +312,8 @@
 
   
   <section class="section">
-    <p class="eyebrow">MAJOR · 1</p>
-    <h2>主要问题</h2>
+    <p class="eyebrow">主要问题 · 1 项</p>
+    <h2>影响转化的明显短板</h2>
     <div class="issues-grid">
       
     <div class="issue-card issue-major">
@@ -321,15 +329,15 @@
       <p class="issue-row"><span class="lab">命中原因</span>title=&#39;# Brisbane Roof Restoration Specialists&#39; contains-name=true contains-niche=false</p>
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 600px region</p>
-      <img src="evidence/issue-homepage-title-clear.png" alt="evidence for Desktop 600px region" />
+      <img src="evidence/issue-homepage-title-clear.png" alt="evidence for Desktop 600px region" loading="lazy" />
     </div>
     </div>
     </div>
   </section>
 
   <section class="section">
-    <p class="eyebrow">39 项规则明细</p>
-    <h2>每条规则命中情况</h2>
+    <p class="eyebrow">规则细节 · 39 项明细</p>
+    <h2>每条规则的命中与失分原因</h2>
     
         <details class="dim-detail">
           <summary>
@@ -419,97 +427,99 @@
 
   
     <section class="section">
-      <p class="eyebrow">视觉审计</p>
-      <h2>The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional quality expected of a restoration specialist.</h2>
+      <p class="eyebrow">视觉审计 · Vision LLM</p>
+      <h2>设计观感的整体诊断</h2>
+      <p class="lead-summary">The site has a functional layout with a clear lead capture form, but the visual presentation feels dated due to the use of drop shadows, generic stock photography, and a lack of authentic business imagery.</p>
       <div class="visual-scores">
-        <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
-        <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
-        <div class="vs"><span>转化准备度</span><strong>6</strong><small>/10</small></div>
+        <div class="vs"><span>新鲜度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>6</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>7</strong><small>/10</small></div>
         <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
       </div>
       <div class="issues-grid">
         
-    <div class="issue-card issue-critical">
+    <div class="issue-card issue-major">
       <div class="issue-head">
-        <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">hero_text_contrast</code>
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">hero_image_authenticity</code>
       </div>
-      <div class="issue-title">Low contrast white text on light background</div>
-      <p class="issue-row"><span class="lab">观察到</span>The main headline &#39;Brisbane Roof Restoration Specialists&#39; is white text overlaid on a light blue sky background. The text has a drop shadow, but the contrast is low, making it look washed out.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor scanning the page on a bright phone screen will struggle to read the headline instantly. If they can&#39;t read it easily, they assume the business is unprofessional or the site is broken.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Dark charcoal or navy text on the light background, or a dark semi-transparent overlay behind the text to ensure high contrast.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Change headline color to #1a1a1a (dark grey) or add a dark overlay (opacity 0.4) behind the text block.</p>
+      <div class="issue-title">Generic stock photo hurts local trust</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero background image is a generic stock photo of a house with a blue roof, overlaid with a heavy dark gradient. It does not appear to be a photo of the business owner, their team, or a specific job site in Brisbane.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Local service customers are skeptical of &#39;faceless&#39; companies. A generic image suggests a national franchise or a scam rather than a local expert. It fails to build the personal connection required for high-ticket home services.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A high-quality, authentic photo of the actual business owner or a team member standing in front of a branded van or a completed roof project in a recognizable Brisbane suburb.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the stock photo with a professional headshot of the owner or a &#39;before and after&#39; split image of a real local project. Remove the heavy dark overlay to let the image breathe.</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-hero-text-contrast.png" alt="evidence for Desktop 700px region" />
+      <img src="evidence/issue-hero-image-authenticity.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">form_visual_clutter</code>
+        <code class="issue-id">form_visual_weight</code>
       </div>
-      <div class="issue-title">Overwhelming form layout with radio buttons</div>
-      <p class="issue-row"><span class="lab">观察到</span>The desktop form is a dense grid of inputs, followed by four distinct sections of radio buttons (Roof type, Scope, Work Type, Roof age) with yellow labels.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>This looks like a data entry task rather than a conversation. A local customer just wants a quote; asking them to categorize their roof type and age before speaking to a human creates friction and anxiety.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A simplified &#39;Get a Quote&#39; form with only Name, Phone, and Suburb. The technical details should be handled by the sales team later.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the radio button sections. Replace with a single &#39;Tell us about your roof&#39; text area or remove the form entirely in favor of a &#39;Call Now&#39; button.</p>
+      <div class="issue-title">Form looks like a pop-up overlay</div>
+      <p class="issue-row"><span class="lab">观察到</span>The contact form is placed inside a semi-transparent dark box with a drop shadow, floating on top of the hero image. It looks like a modal or a pop-up rather than part of the page structure.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Users are trained to ignore or close pop-ups. By making the form look like an intrusive overlay, you are subconsciously telling the user to dismiss it. It also creates visual clutter and makes the text harder to read.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A clean, white, solid background form integrated into the layout (e.g., a two-column layout with text on the left and form on the right), or a distinct section below the fold with a clear heading.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the semi-transparent background and drop shadow. Use a solid white card with a subtle border or a distinct background color that contrasts with the hero image, ensuring the form feels like a permanent part of the page.</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Element: form</p>
-      <img src="evidence/issue-form-visual-clutter.png" alt="evidence for Element: form" />
-    </div>
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">mobile_menu_icon</code>
-      </div>
-      <div class="issue-title">Hidden navigation on mobile</div>
-      <p class="issue-row"><span class="lab">观察到</span>The mobile screenshot shows a hamburger menu icon in the top right, hiding all navigation links.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Local searchers often look for specific services (e.g., &#39;roof cleaning&#39; vs &#39;restoration&#39;) or social proof (reviews). Hiding this behind a click adds friction and hides trust signals.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A sticky bottom bar or a visible top bar with the most critical link (e.g., &#39;Services&#39; or &#39;Reviews&#39;) visible without clicking.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Implement a sticky bottom navigation bar on mobile with &#39;Call&#39;, &#39;Services&#39;, and &#39;Reviews&#39; buttons permanently visible.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据 · 移动端截图</p>
-      <img src="screenshots/mobile.png" alt="mobile evidence" />
+      <img src="evidence/issue-form-visual-weight.png" alt="evidence for Element: form" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">logo_design</code>
+        <code class="issue-id">typography_hierarchy</code>
       </div>
-      <div class="issue-title">Amateurish logo styling</div>
-      <p class="issue-row"><span class="lab">观察到</span>The logo features a hand-drawn style house outline with a red underline and mixed font weights.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Roof restoration is a high-ticket service. A logo that looks like a quick sketch suggests a &#39;one-man band&#39; rather than an established company, reducing trust for larger jobs.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A clean, vector-based logo with a solid icon and professional typography.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Redesign logo to use a solid, geometric roof icon and a clean sans-serif font.</p>
+      <div class="issue-title">Weak headline hierarchy and font choice</div>
+      <p class="issue-row"><span class="lab">观察到</span>The main headline &#39;Brisbane Roof Restoration Specialists&#39; uses a generic sans-serif font with a heavy drop shadow. The sub-headline is also white text on a dark background, making it hard to distinguish from the main title.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The drop shadow on the text gives it a &#39;Web 2.0&#39; (circa 2010) feel, which makes the business look outdated. The lack of clear hierarchy means the visitor doesn&#39;t immediately know what the unique selling point is.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Clean, bold typography without drop shadows. The main headline should be large and clear, with a sub-headline that highlights a specific benefit (e.g., &#39;10-Year Warranty&#39; or &#39;Free Inspections&#39;) in a contrasting color.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove all text shadows. Use a modern, readable font. Increase the contrast between the headline and sub-headline by using size and weight differences rather than just color.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-logo-design.png" alt="evidence for Full desktop" />
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-typography-hierarchy.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-minor">
+      <div class="issue-head">
+        <span class="issue-severity">MINOR</span>
+        <code class="issue-id">cta_button_redundancy</code>
+      </div>
+      <div class="issue-title">Redundant phone number buttons</div>
+      <p class="issue-row"><span class="lab">观察到</span>There is a red &#39;Call (07) 3132 1605&#39; button in the top navigation, and another identical red button in the hero section below the text.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>While having multiple CTAs is good, having two identical buttons in the same visual area creates visual noise. The user&#39;s eye doesn&#39;t know where to focus first.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>One primary CTA in the hero section (e.g., &#39;Get a Free Quote&#39;) and a clear phone number in the header. The hero button should focus on the form, while the header focuses on immediate calls.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Keep the phone number in the header as a text link or small button. In the hero section, use a single, prominent button that says &#39;Get Your Free Quote&#39; to drive form submissions, or &#39;Call Now&#39; if calls are the primary goal, but not both in the same spot.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 800px region</p>
+      <img src="evidence/issue-cta-button-redundancy.png" alt="evidence for Desktop 800px region" loading="lazy" />
     </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>The phone number is prominent and repeated in the hero section, which is excellent for local intent.</li><li>The background image is relevant (shows a roof), providing immediate context.</li><li>The &#39;Call&#39; button uses a high-contrast red color that stands out against the background.</li></ul>
+          <ul><li>The form fields are comprehensive and relevant to the roofing industry (roof type, scope, age), which helps qualify leads.</li><li>The phone number is clearly visible in the header, which is crucial for local service businesses.</li><li>The layout is structured logically with a clear hero section and form placement.</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Fix text contrast in the hero section to ensure the headline is instantly readable.</li><li>2. Simplify the contact form to reduce friction and remove the intimidating radio buttons.</li><li>3. Improve the logo and typography to establish a more professional, high-ticket brand identity.</li></ol>
+          <ol><li>1. Replace the generic stock photo with an authentic image of the team or a local project to build immediate trust.</li><li>2. Redesign the contact form to look like a permanent part of the page (solid background, no drop shadows) rather than a pop-up overlay.</li><li>3. Update the typography by removing drop shadows and improving the hierarchy between the headline and sub-headline.</li></ol>
         </div>
     </section>
 
   
     <section class="section">
-      <p class="eyebrow">客户评论分析</p>
-      <h2>Customers consistently praise the business for exceptional responsiveness, reliability, and high-quality workmanship across both large restorations and small repairs. The reviews highlight a personal touch with the owner, Aaron, and a willingness to handle urgent or smaller jobs that other companies ignore.</h2>
+      <p class="eyebrow">客户评论分析 · Google Reviews</p>
+      <h2>客户在 Google 上怎么夸 / 怎么抱怨</h2>
+      <p class="lead-summary">Customers consistently praise the business for exceptional responsiveness, reliability, and high-quality workmanship on both large restorations and small repairs. The reviews highlight a personal touch with quick quoting and professional execution, resulting in strong recommendations.</p>
       <div class="review-overview">
         <div class="review-stat"><span class="lab">Google 整体</span><strong>4.9★ · 21 条评论</strong></div>
         <div class="review-stat trust-mint"><span class="lab">信号强度</span><strong>STRONG</strong></div>
@@ -518,7 +528,7 @@
 
       
         <h3>客户一致夸赞</h3>
-        <div class="theme-pills theme-pos"><span class="theme-pill pos">rapid response time</span><span class="theme-pill pos">punctual and reliable</span><span class="theme-pill pos">high quality finish</span><span class="theme-pill pos">willing to do small repairs</span><span class="theme-pill pos">professional communication</span></div>
+        <div class="theme-pills theme-pos"><span class="theme-pill pos">fast response times</span><span class="theme-pill pos">high quality workmanship</span><span class="theme-pill pos">reliable and punctual</span><span class="theme-pill pos">honest and transparent</span><span class="theme-pill pos">flexible for small jobs</span></div>
       
 
       
@@ -528,21 +538,12 @@
         <div class="quote-grid">
           
             <blockquote class="review-quote">
-              <p class="quote-text">"He quoted within 24 hours of my enquiry and began work the next day."</p>
+              <p class="quote-text">"Aron gave us outstanding customer service. He quoted within 24 hours of my enquiry and began work the next day."</p>
               <footer class="quote-meta">
                 <span class="quote-author">— Dave</span>
                 <span class="quote-rating">★★★★★</span>
               </footer>
-              <p class="quote-why"><span class="lab">放哪</span>Hero section proof of speed and efficiency</p>
-            </blockquote>
-          
-            <blockquote class="review-quote">
-              <p class="quote-text">"Most want to restore your entire roof... My job was a smaller job... Aaron answered my phone call message, promptly."</p>
-              <footer class="quote-meta">
-                <span class="quote-author">— Loren</span>
-                <span class="quote-rating">★★★★★</span>
-              </footer>
-              <p class="quote-why"><span class="lab">放哪</span>Service page to highlight flexibility for small repairs</p>
+              <p class="quote-why"><span class="lab">放哪</span>Hero section proof of speed and service quality</p>
             </blockquote>
           
             <blockquote class="review-quote">
@@ -551,16 +552,25 @@
                 <span class="quote-author">— Dave</span>
                 <span class="quote-rating">★★★★★</span>
               </footer>
-              <p class="quote-why"><span class="lab">放哪</span>Before/After gallery caption or benefits section</p>
+              <p class="quote-why"><span class="lab">放哪</span>Value proposition section highlighting ROI</p>
             </blockquote>
           
             <blockquote class="review-quote">
-              <p class="quote-text">"Aaron and the team were quick to respond, explained every detail of the repairs/work."</p>
+              <p class="quote-text">"Aaron answered my phone call message, promptly, arranged to meet and see the job, and turned up on time."</p>
               <footer class="quote-meta">
-                <span class="quote-author">— Shannan</span>
+                <span class="quote-author">— Loren</span>
                 <span class="quote-rating">★★★★★</span>
               </footer>
-              <p class="quote-why"><span class="lab">放哪</span>Testimonial section emphasizing transparency and communication</p>
+              <p class="quote-why"><span class="lab">放哪</span>Trust section emphasizing reliability and communication</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"Most want to restore your entire roof... My job was a smaller job... Aaron... turned up on time."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Loren</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Service page highlighting flexibility for minor repairs</p>
             </blockquote>
           
         </div>
@@ -568,21 +578,21 @@
 
       
         <h3>商家回复观察</h3>
-        <p class="review-row">No owner replies are visible in the provided sample data. Given the high volume of 5-star reviews, the lack of visible replies is neutral, but adding personalized responses would further boost trust.</p>
+        <p class="review-row">No owner replies are visible in the provided sample data. While the reviews are highly positive, the absence of visible responses suggests a missed opportunity to reinforce engagement.</p>
       
 
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 可发力的钩子</p>
-          <ol><li>Feature the &#39;small repair&#39; success story prominently to differentiate from competitors who only do full restorations.</li><li>Use the &#39;24-hour quote&#39; metric in the header to emphasize speed.</li><li>Highlight the &#39;home value&#39; improvement angle in the benefits section to appeal to homeowners looking for ROI.</li></ol>
+          <ol><li>Feature the &#39;24-hour quote&#39; metric prominently in the header to address urgency.</li><li>Use Loren&#39;s review to create a dedicated &#39;Minor Repairs&#39; section to capture leads who feel ignored by larger competitors.</li><li>Highlight the &#39;home value&#39; improvement in before/after gallery captions.</li></ol>
         </div>
       
     </section>
 
   
     <section class="section">
-      <p class="eyebrow">速度证据</p>
-      <h2>当前网站 · 慢速 4G 移动加载</h2>
+      <p class="eyebrow">加载速度证据 · 慢速 4G 移动网络</p>
+      <h2>客户在手机上看到的真实加载体验</h2>
       <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
       <video class="speed-video" controls preload="metadata" playsinline>
         <source src="video/mobile-throttled.webm" type="video/webm" />
@@ -592,8 +602,8 @@
 
   
   <section class="section">
-    <p class="eyebrow accent-coral">推荐销售角度</p>
-    <h2>从 audit 数据推导出的切入点</h2>
+    <p class="eyebrow accent-coral">销售切入点</p>
+    <h2>从 audit 数据自动推导的开场话术</h2>
     <div class="sales-strip">
       <ul>
         <li>你的最大短板是 Google Business Profile（得分 48/100）</li>

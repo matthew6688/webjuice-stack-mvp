@@ -22,6 +22,12 @@ import fs from 'fs';
 import path from 'path';
 import { appendLedgerEvent, hashRequest } from '../finance/ledger.js';
 import { detectTechStack } from './tech-stack-detector.js';
+import { analyzeSitemap } from './sitemap-analyzer.js';
+import { auditActivity } from './activity-audit.js';
+import { auditAiGeoReadiness } from './ai-geo-checks.js';
+import { pagespeedAudit } from './pagespeed-insights.js';
+import { auditFormsOnPage } from './form-audit.js';
+import { auditDomainHistory } from './domain-history.js';
 
 const DESKTOP_VIEWPORT = { width: 1440, height: 900 };
 const MOBILE_VIEWPORT = { width: 375, height: 667, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
@@ -82,6 +88,7 @@ export async function siteFetchFull({
     payload.rawHtml = await desktopPage.content();
     payload.markdown = await markdownishExtract(desktopPage);
     payload.tech_stack = detectTechStack({ rawHtml: payload.rawHtml, finalUrl: payload.finalUrl });
+    payload.form_audit = await auditFormsOnPage({ page: desktopPage }).catch(() => null);
 
     payload.performance = {
       lcp: perf.lcp != null ? perf.lcp / 1000 : null,           // seconds
@@ -173,6 +180,37 @@ export async function siteFetchFull({
       probe(`${probeBase.origin}/sitemap.xml`),
       probe(`${probeBase.origin}/robots.txt`),
     ]).then(([s, r]) => ({ hasSitemap: s, hasRobots: r }));
+
+    // ─── Deep sitemap analysis (page count, redirect plan) ──────────
+    payload.sitemap_analysis = await analyzeSitemap({ baseUrl: probeBase.origin }).catch(() => null);
+
+    // ─── Activity / freshness audit (last_modified, blog dates, socials) ─
+    payload.activity = await auditActivity({
+      baseUrl: payload.finalUrl || url,
+      rawHtml: payload.rawHtml,
+      sitemapAnalysis: payload.sitemap_analysis,
+    }).catch(() => null);
+
+    // ─── AI / GEO readiness ──────────────────────────────────────────
+    payload.ai_geo = await auditAiGeoReadiness({
+      rawHtml: payload.rawHtml,
+      markdown: payload.markdown,
+      finalUrl: payload.finalUrl || url,
+    }).catch(() => null);
+
+    // ─── PageSpeed Insights (mobile + desktop) ──────────────────────
+    if (process.env.PAGESPEED_API_KEY) {
+      payload.pagespeed = await pagespeedAudit({
+        url: payload.finalUrl || url,
+        leadId, clientSlug, ledgerPath,
+        stage: 'detailed_audit',
+      }).catch(() => null);
+    }
+
+    // ─── Domain history (whois + Wayback + DNS for SPF/DMARC/DKIM) ──
+    payload.domain_history = await auditDomainHistory({
+      baseUrl: payload.finalUrl || url,
+    }).catch(() => null);
 
   } finally {
     await browser.close();

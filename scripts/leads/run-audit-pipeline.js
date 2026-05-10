@@ -99,6 +99,11 @@ for (const entityKey of targets) {
       entity_input: { entityKey, latest: entity.latest, identifiers: entity.identifiers },
       fetch_summary: fetchPayload ? { url: fetchPayload.finalUrl || url, markdown_length: fetchPayload.markdown?.length || 0 } : null,
       tech_stack: fetchPayload?.tech_stack || null,
+      sitemap_analysis: fetchPayload?.sitemap_analysis || null,
+      activity: fetchPayload?.activity || null,
+      ai_geo: fetchPayload?.ai_geo || null,
+      pagespeed: fetchPayload?.pagespeed || null,
+      form_audit: fetchPayload?.form_audit || null,
       detailed_audit: audit,
     };
     fs.writeFileSync(detailedPath, JSON.stringify(detailedFixture, null, 2) + '\n');

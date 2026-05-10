@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T16:24:40.667Z",
+  "generatedAt": "2026-05-10T21:23:59.662Z",
   "entity_input": {
     "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
     "latest": {
@@ -43,12 +43,307 @@
   },
   "fetch_summary": {
     "url": "https://billdu.me/fixmyrooftotalroofrestorations#/",
-    "markdown_length": 1047
+    "markdown_length": 1049
+  },
+  "tech_stack": {
+    "ok": true,
+    "cms": null,
+    "cms_alternatives": [],
+    "analytics": [
+      {
+        "id": "gtm",
+        "name": "Google Tag Manager",
+        "evidence": "googletagmanager.com/gtm.js?id=GTM-"
+      }
+    ],
+    "pixels": [
+      {
+        "id": "meta_pixel",
+        "name": "Meta (Facebook) Pixel",
+        "evidence": "connect.facebook.net/en_US/fbevents.js"
+      }
+    ],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": null,
+    "sophistication_score": 3,
+    "has_paid_ads_evidence": true,
+    "has_measurement": true,
+    "final_url": "https://billdu.me/fixmyrooftotalroofrestorations#/"
+  },
+  "sitemap_analysis": {
+    "ok": true,
+    "has_sitemap": false,
+    "has_robots": true,
+    "total_urls": 0,
+    "migration_complexity": "unknown",
+    "reason": "no sitemap found at standard paths"
+  },
+  "activity": {
+    "ok": true,
+    "base_url": "https://billdu.me/fixmyrooftotalroofrestorations#/",
+    "last_modified_header": null,
+    "days_since_last_modified": null,
+    "newest_sitemap_lastmod": null,
+    "days_since_newest_sitemap": null,
+    "blog_section_present": false,
+    "blog_post_count": 0,
+    "blog_newest_lastmod": null,
+    "days_since_newest_blog": null,
+    "blog_freshness": "unknown",
+    "social_links": {
+      "facebook": [
+        "https://www.facebook.com/tr"
+      ]
+    },
+    "overall_freshness": "unknown",
+    "days_since_any_update": null
+  },
+  "ai_geo": {
+    "ok": true,
+    "dimension_score": 0,
+    "rules": [
+      {
+        "id": "llms_txt_present",
+        "max": 5,
+        "hit": false,
+        "rationale": "no /llms.txt at standard path"
+      },
+      {
+        "id": "ai_bot_robots_policy",
+        "max": 5,
+        "hit": false,
+        "rationale": "robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)"
+      },
+      {
+        "id": "localbusiness_schema",
+        "max": 15,
+        "hit": false,
+        "rationale": "no LocalBusiness or Organization JSON-LD"
+      },
+      {
+        "id": "service_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no Service JSON-LD"
+      },
+      {
+        "id": "faqpage_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)"
+      },
+      {
+        "id": "aggregaterating_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no AggregateRating JSON-LD (★ rating not shown in search snippets)"
+      },
+      {
+        "id": "breadcrumb_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no BreadcrumbList JSON-LD"
+      },
+      {
+        "id": "semantic_landmarks",
+        "max": 10,
+        "hit": false,
+        "rationale": "2 semantic landmarks present: <main, <section"
+      },
+      {
+        "id": "faq_qa_pattern",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 question-style heading(s) found (Q&A format helps AI extraction)"
+      },
+      {
+        "id": "eeat_business_credentials",
+        "max": 10,
+        "hit": false,
+        "rationale": "only 0/4 credentials found — need ≥2 of: ABN, license/QBCC, years-in-business, insurance"
+      },
+      {
+        "id": "eeat_warranty_trust",
+        "max": 5,
+        "hit": false,
+        "rationale": "no warranty/guarantee in copy"
+      },
+      {
+        "id": "jsonld_at_least_one",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 JSON-LD block(s) detected on page"
+      }
+    ],
+    "summary": "AI agent / ChatGPT 几乎无法准确引用此网站 — 在生成式搜索时代等于隐身",
+    "detail": {
+      "llms_txt": false,
+      "ai_bot_mentions": [],
+      "jsonld_block_count": 0,
+      "jsonld_types": [],
+      "semantic_landmarks": [
+        "<main",
+        "<section"
+      ],
+      "faq_q_headings": 0,
+      "eeat": {
+        "has_abn": false,
+        "has_qbcc": false,
+        "has_license": false,
+        "has_years": false,
+        "has_insurance": false,
+        "has_warranty": false
+      }
+    }
+  },
+  "pagespeed": {
+    "ok": true,
+    "results": {
+      "mobile": {
+        "strategy": "mobile",
+        "scores": {
+          "performance": 38,
+          "accessibility": 91,
+          "best_practices": 100,
+          "seo": 100
+        },
+        "lab_metrics": {
+          "lcp_ms": 22789.625915415818,
+          "fcp_ms": 2433.9393102846793,
+          "cls": 0,
+          "tbt_ms": 1252.999999999999,
+          "tti_ms": 22789.625915415818,
+          "speed_index_ms": 17506.88646387501,
+          "transfer_size_bytes": 3713414
+        },
+        "crux_overall": "SLOW",
+        "crux_field_data": {
+          "lcp_p75_ms": {
+            "p75": 5325,
+            "category": "SLOW"
+          },
+          "fcp_p75_ms": {
+            "p75": 2819,
+            "category": "AVERAGE"
+          },
+          "cls_p75": {
+            "p75": 0,
+            "category": "FAST"
+          },
+          "inp_p75_ms": {
+            "p75": 211,
+            "category": "AVERAGE"
+          },
+          "ttfb_p75_ms": {
+            "p75": 1448,
+            "category": "AVERAGE"
+          }
+        },
+        "crux_origin_overall": "SLOW",
+        "opportunities": [
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 5700,
+            "savings_bytes": 1105375
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 476,
+            "savings_bytes": null
+          },
+          {
+            "id": "unminified-javascript",
+            "title": "Minify JavaScript",
+            "savings_ms": 300,
+            "savings_bytes": 32754
+          },
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
+            "savings_ms": 0,
+            "savings_bytes": 18922
+          }
+        ]
+      },
+      "desktop": {
+        "strategy": "desktop",
+        "scores": {
+          "performance": 45,
+          "accessibility": 91,
+          "best_practices": 100,
+          "seo": 100
+        },
+        "lab_metrics": {
+          "lcp_ms": 4347.266784271539,
+          "fcp_ms": 598.6734452787667,
+          "cls": 0,
+          "tbt_ms": 647.9999999999986,
+          "tti_ms": 4347.266784271539,
+          "speed_index_ms": 3476.746449444767,
+          "transfer_size_bytes": 3763404
+        },
+        "crux_overall": "FAST",
+        "crux_field_data": {
+          "lcp_p75_ms": {
+            "p75": 2360,
+            "category": "FAST"
+          },
+          "fcp_p75_ms": {
+            "p75": 1327,
+            "category": "FAST"
+          },
+          "cls_p75": {
+            "p75": 0,
+            "category": "FAST"
+          },
+          "inp_p75_ms": {
+            "p75": 56,
+            "category": "FAST"
+          },
+          "ttfb_p75_ms": {
+            "p75": 736,
+            "category": "FAST"
+          }
+        },
+        "crux_origin_overall": "FAST",
+        "opportunities": [
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 800,
+            "savings_bytes": 1109332
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 351,
+            "savings_bytes": null
+          },
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
+            "savings_ms": 40,
+            "savings_bytes": 18854
+          },
+          {
+            "id": "unminified-javascript",
+            "title": "Minify JavaScript",
+            "savings_ms": 0,
+            "savings_bytes": 32610
+          }
+        ]
+      }
+    },
+    "failures": [],
+    "latency_ms": 65901
   },
   "detailed_audit": {
     "business_id": "place_chijn587yc79k2sr7vyvy-egoam",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T16:24:40.667Z",
+    "audited_at": "2026-05-10T21:23:59.662Z",
     "audit_score": 51,
     "dimension_scores": {
       "gbp": 61,
@@ -69,56 +364,76 @@
         {
           "id": "https_enabled",
           "rationale": "http only",
-          "max": 20
+          "max": 20,
+          "plain_language": "你的网站没有 HTTPS — 浏览器会在地址栏显示「不安全」标记，部分浏览器（Chrome / Firefox）甚至会弹出全屏警告挡住页面。",
+          "customer_impact": "Google 早在 2018 年起把 HTTPS 列为搜索排名因素，没有 HTTPS 直接拉低自然搜索可见度；且超过 80% 的访客看到「不安全」标识会立刻关掉。对你这种 127 条 Google 评价积累起来的口碑来说，访客在网址栏就被劝退，等于浪费了所有 GBP 流量。"
         },
         {
           "id": "phone_visible_above_fold",
           "rationale": "phone hidden below fold or missing",
-          "max": 20
+          "max": 20,
+          "plain_language": "电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。",
+          "customer_impact": "本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。"
         }
       ],
       "major": [
         {
           "id": "homepage_title_clear",
           "rationale": "title='# FIX MY ROOF TOTAL ROOF RESTORATIONS' contains-name=true contains-niche=false",
-          "max": 20
+          "max": 20,
+          "plain_language": "你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「FIX MY ROOF Total Roof Restorations - roofing Brisbane」，但目前是泛泛一句）。",
+          "customer_impact": "Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。"
         },
         {
           "id": "local_schema_markup",
           "rationale": "no LocalBusiness JSON-LD",
-          "max": 20
+          "max": 20,
+          "plain_language": "网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI 知道你是本地企业、地址、电话、营业时间的标准格式）。",
+          "customer_impact": "Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。"
         }
       ],
       "minor": [
         {
           "id": "has_hours",
           "rationale": "no hours",
-          "max": 5
+          "max": 5,
+          "plain_language": "GBP 上没有完整的营业时间。",
+          "customer_impact": "客户搜「现在还在营业的 roofer」时你不会被显示。"
         },
         {
           "id": "has_service_area",
           "rationale": "no service area",
-          "max": 15
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
         },
         {
           "id": "quote_or_booking_form",
           "rationale": "no form",
-          "max": 20
+          "max": 20,
+          "plain_language": "你的网站没有 quote / booking 表单 — 客户只能打电话或发邮件。",
+          "customer_impact": "工作时间外（晚上 / 周末）的访客没办法联系你，只能等。家庭装修客户经常在晚上做决策；你正在错过非营业时间的转化窗口。"
         },
         {
           "id": "has_gallery",
           "rationale": "no gallery",
-          "max": 5
+          "max": 5,
+          "plain_language": "没有项目作品集 / before-after 图库。",
+          "customer_impact": "屋顶 / renovation 行业，「眼见为实」是关键决策因素之一。没有作品集 = 客户没法判断你的工艺水准 = 比起有图库的同行落后一截。"
         },
         {
           "id": "evidence_of_recent_update",
           "rationale": "no recent year (≤ 1 year ago)",
-          "max": 15
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
         },
         {
           "id": "image_alt_present",
           "rationale": "3 images, 0% with alt",
-          "max": 20
+          "max": 20,
+          "plain_language": "图片没有 alt 文字描述。",
+          "customer_impact": "影响两件事：① 视障用户的可访问性（在澳洲是法律风险）；② Google 图片搜索流量（屋顶项目图片是极强的 SEO 资产，但没 alt 等于没标）。"
         }
       ]
     },

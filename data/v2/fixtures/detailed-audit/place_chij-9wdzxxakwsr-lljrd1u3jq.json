@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T14:11:42.128Z",
+  "generatedAt": "2026-05-10T21:02:38.318Z",
   "entity_input": {
     "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
     "latest": {
@@ -42,13 +42,157 @@
     }
   },
   "fetch_summary": {
-    "url": "http://www.queenslandroofing.com.au/",
+    "url": "chrome-error://chromewebdata/",
     "markdown_length": 0
+  },
+  "tech_stack": {
+    "ok": true,
+    "cms": null,
+    "cms_alternatives": [],
+    "analytics": [],
+    "pixels": [],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": null,
+    "sophistication_score": 0,
+    "has_paid_ads_evidence": false,
+    "has_measurement": false,
+    "final_url": "chrome-error://chromewebdata/"
+  },
+  "sitemap_analysis": {
+    "ok": false,
+    "reason": "invalid baseUrl"
+  },
+  "activity": {
+    "ok": true,
+    "base_url": "chrome-error://chromewebdata/",
+    "last_modified_header": null,
+    "days_since_last_modified": null,
+    "newest_sitemap_lastmod": null,
+    "days_since_newest_sitemap": null,
+    "blog_section_present": false,
+    "blog_post_count": 0,
+    "blog_newest_lastmod": null,
+    "days_since_newest_blog": null,
+    "blog_freshness": "unknown",
+    "social_links": {},
+    "overall_freshness": "unknown",
+    "days_since_any_update": null
+  },
+  "ai_geo": {
+    "ok": true,
+    "dimension_score": 0,
+    "rules": [
+      {
+        "id": "llms_txt_present",
+        "max": 5,
+        "hit": false,
+        "rationale": "no /llms.txt at standard path"
+      },
+      {
+        "id": "ai_bot_robots_policy",
+        "max": 5,
+        "hit": false,
+        "rationale": "robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)"
+      },
+      {
+        "id": "localbusiness_schema",
+        "max": 15,
+        "hit": false,
+        "rationale": "no LocalBusiness or Organization JSON-LD"
+      },
+      {
+        "id": "service_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no Service JSON-LD"
+      },
+      {
+        "id": "faqpage_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)"
+      },
+      {
+        "id": "aggregaterating_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no AggregateRating JSON-LD (★ rating not shown in search snippets)"
+      },
+      {
+        "id": "breadcrumb_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no BreadcrumbList JSON-LD"
+      },
+      {
+        "id": "semantic_landmarks",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 semantic landmarks present: none"
+      },
+      {
+        "id": "faq_qa_pattern",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 question-style heading(s) found (Q&A format helps AI extraction)"
+      },
+      {
+        "id": "eeat_business_credentials",
+        "max": 10,
+        "hit": false,
+        "rationale": "only 0/4 credentials found — need ≥2 of: ABN, license/QBCC, years-in-business, insurance"
+      },
+      {
+        "id": "eeat_warranty_trust",
+        "max": 5,
+        "hit": false,
+        "rationale": "no warranty/guarantee in copy"
+      },
+      {
+        "id": "jsonld_at_least_one",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 JSON-LD block(s) detected on page"
+      }
+    ],
+    "summary": "AI agent / ChatGPT 几乎无法准确引用此网站 — 在生成式搜索时代等于隐身",
+    "detail": {
+      "llms_txt": false,
+      "ai_bot_mentions": [],
+      "jsonld_block_count": 0,
+      "jsonld_types": [],
+      "semantic_landmarks": [],
+      "faq_q_headings": 0,
+      "eeat": {
+        "has_abn": false,
+        "has_qbcc": false,
+        "has_license": false,
+        "has_years": false,
+        "has_insurance": false,
+        "has_warranty": false
+      }
+    }
+  },
+  "pagespeed": {
+    "ok": false,
+    "results": {},
+    "failures": [
+      {
+        "strategy": "mobile",
+        "reason": "Request contains an invalid argument."
+      },
+      {
+        "strategy": "desktop",
+        "reason": "Request contains an invalid argument."
+      }
+    ],
+    "latency_ms": 1037
   },
   "detailed_audit": {
     "business_id": "place_chij-9wdzxxakwsr-lljrd1u3jq",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T14:11:42.128Z",
+    "audited_at": "2026-05-10T21:02:38.318Z",
     "audit_score": 23,
     "dimension_scores": {
       "gbp": 48,
@@ -70,96 +214,132 @@
         {
           "id": "https_enabled",
           "rationale": "http only",
-          "max": 20
+          "max": 20,
+          "plain_language": "你的网站没有 HTTPS — 浏览器会在地址栏显示「不安全」标记，部分浏览器（Chrome / Firefox）甚至会弹出全屏警告挡住页面。",
+          "customer_impact": "Google 早在 2018 年起把 HTTPS 列为搜索排名因素，没有 HTTPS 直接拉低自然搜索可见度；且超过 80% 的访客看到「不安全」标识会立刻关掉。对你这种 35 条 Google 评价积累起来的口碑来说，访客在网址栏就被劝退，等于浪费了所有 GBP 流量。"
         },
         {
           "id": "above_fold_cta_within_5s",
           "rationale": "no CTA keyword in first 1500 chars",
-          "max": 30
+          "max": 30,
+          "plain_language": "客户打开你的网站后，前 5 秒内（一屏之内）看不到任何明显的「联系我们 / 报价 / 立即拨打」按钮。",
+          "customer_impact": "行业研究：移动用户做决策的前 8 秒决定 70% 的留存。看不到 CTA = 等于没办法转化。你的 35 条好评在堆积信任，但客户找不到下一步该点哪。"
         },
         {
           "id": "phone_visible_above_fold",
           "rationale": "phone hidden below fold or missing",
-          "max": 20
+          "max": 20,
+          "plain_language": "电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。",
+          "customer_impact": "本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。"
         }
       ],
       "major": [
         {
           "id": "click_to_call_link",
           "rationale": "no tel: link",
-          "max": 10
+          "max": 10,
+          "plain_language": "电话号码不是 click-to-call 链接（手机上点击不会自动拨号）。",
+          "customer_impact": "移动客户必须复制号码再切到拨号界面再粘贴 — 每多一步操作就流失一批客户。修复成本只是把 `<a href=\"tel:0712345678\">` 写对，但能立刻拉高电话转化率。"
         },
         {
           "id": "homepage_title_clear",
           "rationale": "title='' contains-name=false contains-niche=false",
-          "max": 20
+          "max": 20,
+          "plain_language": "你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Queensland Roofing Pty Ltd - roofing Brisbane」，但目前是泛泛一句）。",
+          "customer_impact": "Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。"
         },
         {
           "id": "service_copy_specific",
           "rationale": "0 service-related verbs detected",
-          "max": 20
+          "max": 20,
+          "plain_language": "网站文案里没有具体说清楚你做哪些服务（比如 metal roofing / tile restoration / gutter / skylight 等专项），只是泛泛说「我们做屋顶」。",
+          "customer_impact": "客户搜的是具体问题（「漏水维修」「屋顶翻新报价」），网站没有匹配的具体服务文字，搜索引擎匹配不上你 + 客户进来也判断不了你做不做他要的活儿。"
         },
         {
           "id": "trust_signals_present",
           "rationale": "0 trust-keyword mentions",
-          "max": 20
+          "max": 20,
+          "plain_language": "网站上没有显眼地写出执照号 / ABN / 保险信息 / 从业年限 / 行业证书。",
+          "customer_impact": "澳洲 QLD 的屋顶服务必须有 QBCC 执照才能合法开工；客户在花几千几万块前一定会查这些。你网站上没标 = 客户要么打电话来问要么直接选下一家更透明的。"
         },
         {
           "id": "h1_unique",
           "rationale": "0 <h1> tags",
-          "max": 20
+          "max": 20,
+          "plain_language": "页面要么没有 H1 标题（搜索引擎无法理解页面主旨），要么有多个 H1（搜索引擎不知道哪个是主题）。",
+          "customer_impact": "H1 是搜索引擎判断页面主题最权威的信号。写错或缺失 = 关键词排名拉低；同一页面同样的内容，H1 写对的可以排到前 3 页，写不对的可能挂在第 7 页。"
         },
         {
           "id": "local_schema_markup",
           "rationale": "no LocalBusiness JSON-LD",
-          "max": 20
+          "max": 20,
+          "plain_language": "网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI 知道你是本地企业、地址、电话、营业时间的标准格式）。",
+          "customer_impact": "Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。"
         }
       ],
       "minor": [
         {
           "id": "has_hours",
           "rationale": "no hours",
-          "max": 5
+          "max": 5,
+          "plain_language": "GBP 上没有完整的营业时间。",
+          "customer_impact": "客户搜「现在还在营业的 roofer」时你不会被显示。"
         },
         {
           "id": "has_service_area",
           "rationale": "no service area",
-          "max": 15
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
         },
         {
           "id": "favicon_and_meta",
           "rationale": "favicon: no, meta: no",
-          "max": 5
+          "max": 5,
+          "plain_language": "你的网站缺少 favicon（浏览器标签页上的小图标）或基本的 meta 标签。",
+          "customer_impact": "客户在多 tab 浏览时找不到你的网站；Facebook / WhatsApp 分享时缩略图会拉错图甚至没有图，链接显得不专业。"
         },
         {
           "id": "quote_or_booking_form",
           "rationale": "no form",
-          "max": 20
+          "max": 20,
+          "plain_language": "你的网站没有 quote / booking 表单 — 客户只能打电话或发邮件。",
+          "customer_impact": "工作时间外（晚上 / 周末）的访客没办法联系你，只能等。家庭装修客户经常在晚上做决策；你正在错过非营业时间的转化窗口。"
         },
         {
           "id": "has_gallery",
           "rationale": "no gallery",
-          "max": 5
+          "max": 5,
+          "plain_language": "没有项目作品集 / before-after 图库。",
+          "customer_impact": "屋顶 / renovation 行业，「眼见为实」是关键决策因素之一。没有作品集 = 客户没法判断你的工艺水准 = 比起有图库的同行落后一截。"
         },
         {
           "id": "has_testimonials",
           "rationale": "no testimonials",
-          "max": 5
+          "max": 5,
+          "plain_language": "网站上没有客户评价 / 推荐 — 即使你 Google 上有 35 条 4.5★ 评价。",
+          "customer_impact": "客户进了你的网站不会回过头去看 Google Maps；网站上没有评价就等于你的口碑资产没被网站这块阵地利用。把 5-8 条 4.5★ 真实 quote 直接放上去，转化率提升 30-50% 是行业基准。"
         },
         {
           "id": "localized_content",
           "rationale": "no local mention",
-          "max": 15
+          "max": 15,
+          "plain_language": "网站文案没明确提到服务的城市 / 区域（比如 Brisbane / Sunshine Coast / Lawnton 等具体地名）。",
+          "customer_impact": "本地搜索 SEO 的核心信号之一就是地理关键词。「Brisbane roofing」这类搜索流量直接跟你网站里的本地化文案挂钩；不写具体地区 = 把流量让给写得清楚的同行。"
         },
         {
           "id": "evidence_of_recent_update",
           "rationale": "no recent year (≤ 1 year ago)",
-          "max": 15
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
         },
         {
           "id": "title_meta_present",
           "rationale": "title=no meta=no",
-          "max": 25
+          "max": 25,
+          "plain_language": "页面缺少 SEO 用的 title 标签或 meta description。",
+          "customer_impact": "Google 搜索结果里显示的就是这两块。没写 = Google 自己截一段（往往不重点），客户看到不是吸引人的描述就不会点进来。"
         }
       ]
     },

@@ -18,6 +18,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { narrate } from './rule-narrations.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CONFIG_PATH_CANDIDATES = [
@@ -271,14 +272,27 @@ function rule_tier(id, max, earned, rationale) {
   return { id, earned, max, hit: earned > 0, rationale };
 }
 
-function classifyIssues(allRules, severityConfig) {
+function classifyIssues(allRules, severityConfig, narrationCtx = {}) {
   const issues = { critical: [], major: [], minor: [] };
   const criticalIds = new Set(severityConfig.critical || []);
   const majorIds = new Set(severityConfig.major || []);
   for (const rule of allRules) {
     if (rule.hit || rule.data_missing) continue;
     const tier = criticalIds.has(rule.id) ? 'critical' : majorIds.has(rule.id) ? 'major' : 'minor';
-    issues[tier].push({ id: rule.id, rationale: rule.rationale, max: rule.max });
+    const ctxForRule = { ...narrationCtx };
+    // Pull rule-specific data from rationale where useful
+    if (rule.id === 'first_paint_under_3s') {
+      const lcpMatch = String(rule.rationale || '').match(/[\d.]+/);
+      if (lcpMatch) ctxForRule.lcp_seconds_rounded = Number(lcpMatch[0]).toFixed(1);
+    }
+    const { plain, impact } = narrate(rule.id, ctxForRule);
+    issues[tier].push({
+      id: rule.id,
+      rationale: rule.rationale,
+      max: rule.max,
+      plain_language: plain || null,
+      customer_impact: impact || null,
+    });
   }
   return issues;
 }
@@ -364,7 +378,15 @@ export function detailedAudit({ entity, businessProfile, fetchPayload, visualSco
   );
 
   const allRules = Object.values(dimensions).flatMap((d) => d.rules);
-  const issues = classifyIssues(allRules, config.issue_severity);
+  const narrationCtx = {
+    business_name: entity?.latest?.name || '',
+    niche: entity?.latest?.niche || '',
+    city: entity?.latest?.city || '',
+    rating: entity?.latest?.rating ?? '-',
+    review_count: entity?.latest?.review_count ?? '-',
+    final_url: fetchPayload?.finalUrl || fetchPayload?.url || entity?.latest?.website || '',
+  };
+  const issues = classifyIssues(allRules, config.issue_severity, narrationCtx);
 
   const triggerOut = applyHardTriggers(config.hard_triggers, { entity, fetchPayload, dimensions });
   // high_traction_old_site needs audit_score; finalize trigger
