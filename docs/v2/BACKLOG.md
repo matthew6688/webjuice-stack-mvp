@@ -10,6 +10,17 @@
 
 ---
 
+## ✅ 本周追加完成
+
+- **V2 Queue admin page** (`/admin/v2-queue/`) — Discovery 漏斗 [904ebcaf](../../../../commits/904ebcaf)
+  - 4 阶段 funnel（scored / queued_for_audit / ready_for_outreach_brief / manual_review）
+  - Bottleneck hero 自动识别最堵的关 + CLI 推一推
+  - Hermes cron card grid
+  - Skip reasons breakdown
+  - Recent discovery events feed
+- **V2 test matrix** [2bdff782](../../../../commits/2bdff782) — 21 cases, 含 LIVE Discord sync sandbox
+- **Bug fix**: pl:* CLI 之前 6 个漏 `--env-file-if-exists=.env.local`，导致 Discord token 没加载、setEntityPhase hook 静默失败 — [0179c9bd](../../../../commits/0179c9bd)
+
 ## 🚦 当前可立刻启用（你的动作，无需我介入）
 
 | # | 任务 | 时长 | 命令 |
