@@ -47,6 +47,14 @@ const refetch = args.refetch === true;
 const withReviews = args['with-reviews'] === true;
 const uploadCloudinary = args['upload-cloudinary'] === true;
 
+// Profile controls how aggressively we parallelize. GPU stage (vision)
+// remains serial (Mac mini has 1 GPU); only non-GPU stages parallelize.
+//   light  — 1 lead at a time, no cross-lead concurrency (work hours)
+//   normal — 1 lead at a time, full within-lead parallel (default)
+//   max    — 2 leads concurrent for non-GPU stages, GPU serialized via queue
+const PROFILE = (args.profile || process.env.PIPELINE_PROFILE || 'normal').toLowerCase();
+const CONCURRENT_LEADS = { light: 1, normal: 1, max: 2 }[PROFILE] || 1;
+
 let targets = [];
 if (args.all || args['all-audit-candidates']) {
   targets = listAuditCandidateEntityKeys();
@@ -57,16 +65,14 @@ if (args.all || args['all-audit-candidates']) {
   process.exit(1);
 }
 
-console.log(`[run-pipeline] targets=${targets.length}  refetch=${refetch}  reviews=${withReviews}  cloudinary=${uploadCloudinary}`);
+console.log(`[run-pipeline] targets=${targets.length}  refetch=${refetch}  reviews=${withReviews}  cloudinary=${uploadCloudinary}  profile=${PROFILE} (concurrent_leads=${CONCURRENT_LEADS})`);
 
-const summary = [];
-for (const entityKey of targets) {
+async function processLead(entityKey) {
   console.log(`\n══════════ ${entityKey} ══════════`);
   const entityPath = path.join(entitiesDir, `${entityKey}.json`);
   if (!fs.existsSync(entityPath)) {
     console.warn(`  ✗ no entity file`);
-    summary.push({ entityKey, ok: false, reason: 'no entity' });
-    continue;
+    return { entityKey, ok: false, reason: 'no entity' };
   }
   const entity = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
   const url = entity.latest?.website;
@@ -115,8 +121,7 @@ for (const entityKey of targets) {
     console.log(`     → audit_score=${audit.audit_score}/100 decision=${audit.decision}`);
   } else if (!detailedFixture) {
     console.warn(`  ✗ no website URL on entity, can't run detailed audit`);
-    summary.push({ entityKey, ok: false, reason: 'no website' });
-    continue;
+    return { entityKey, ok: false, reason: 'no website' };
   }
 
   // ── Stage 2: visual audit (Ollama vision on desktop screenshot) ──────
@@ -181,11 +186,10 @@ for (const entityKey of targets) {
     cwd: repoRoot, stdio: 'inherit',
   });
   if (r.status !== 0) {
-    summary.push({ entityKey, ok: false, reason: `build-report exit ${r.status}` });
-    continue;
+    return { entityKey, ok: false, reason: `build-report exit ${r.status}` };
   }
 
-  summary.push({
+  return {
     entityKey,
     name: entity.latest?.name,
     ok: true,
@@ -193,8 +197,25 @@ for (const entityKey of targets) {
     decision: detailedFixture.detailed_audit?.decision,
     visual_issues: visualFixture?.parsedJson?.issues?.length || 0,
     report_url: `/audit-reports/${entityKey}/internal-audit-report.html`,
-  });
+  };
 }
+
+// ─── Dispatcher: concurrency-pooled execution ───────────────────────
+async function runWithPool(items, concurrency, fn) {
+  const out = [];
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+    while (true) {
+      const i = cursor++;
+      if (i >= items.length) return;
+      out[i] = await fn(items[i]);
+    }
+  });
+  await Promise.all(workers);
+  return out;
+}
+
+const summary = await runWithPool(targets, CONCURRENT_LEADS, processLead);
 
 console.log('\n══════════ Pipeline summary ══════════');
 console.table(summary);

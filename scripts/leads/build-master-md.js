@@ -82,6 +82,9 @@ for (const entityKey of targets) {
   const trustSignals = detailed?.trust_signals || null;
   const thirdPartyWeight = detailed?.third_party_weight || null;
 
+  const gbpExtrasPath = path.join(repoRoot, 'data/v2/fixtures/gbp-extras', `${entityKey}.json`);
+  const gbpExtras = fs.existsSync(gbpExtrasPath) ? JSON.parse(fs.readFileSync(gbpExtrasPath, 'utf8')) : null;
+
   const manifestPath = path.join(clientV2Dir, 'cloudinary-manifest.json');
   const cloudinaryManifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
 
@@ -100,6 +103,7 @@ for (const entityKey of targets) {
     imageOptimization,
     trustSignals,
     thirdPartyWeight,
+    gbpExtras,
     cloudinaryManifest,
     screenshotDir: './screenshots',
   });

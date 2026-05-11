@@ -19,6 +19,7 @@ import { captureIssueEvidence } from '../../core/audit/issue-evidence.js';
 import { fetchLeadReviews } from '../../core/reviews/fetch-reviews.js';
 import { analyzeReviews } from '../../core/reviews/analyze-reviews.js';
 import { uploadAuditAssets } from '../../core/assets/upload-audit-assets.js';
+import { scrapeGbpExtras } from '../../core/audit/gbp-extras.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -45,9 +46,11 @@ console.log(`[build-internal-report] targets=${targets.length}`);
 
 const captureEvidence = args['capture-evidence'] !== false && args['no-evidence'] !== true;
 const withReviews = args['with-reviews'] === true;
+const withGbpExtras = args['with-gbp-extras'] === true;  // GBP Posts + Q&A scrape
 const ignoreGrade = args['no-grade-gating'] === true;  // bypass grade-based skipping
 const uploadCloudinary = args['upload-cloudinary'] === true;
 const reviewsDir = path.join(repoRoot, 'data/v2/fixtures/reviews');
+const gbpExtrasDir = path.join(repoRoot, 'data/v2/fixtures/gbp-extras');
 
 const written = [];
 for (const entityKey of targets) {
@@ -146,6 +149,34 @@ for (const entityKey of targets) {
       reviewAnalysis = cached.analysis;
       reviewSample = cached.fetched?.reviews || null;
     } catch {}
+  }
+
+  // ── GBP Posts + Q&A extras (grade-gated like reviews) ──
+  // Only meaningful for A/B leads where we plan personalized outreach.
+  // Posts give SMM upsell signal; Q&A gives "no one is answering" angle.
+  let gbpExtras = null;
+  const gbpFixturePath = path.join(gbpExtrasDir, `${entityKey}.json`);
+  const gbpBlocked = leadGrade && !ignoreGrade && !['A', 'B'].includes(leadGrade.investment_level);
+  if (withGbpExtras && gbpBlocked) {
+    console.log(`  [grade-gate] skipping GBP extras — lead is grade ${leadGrade.investment_level}`);
+  }
+  if (withGbpExtras && !gbpBlocked) {
+    const placeUrl = entity.latest?.google_maps_url;
+    if (placeUrl) {
+      fs.mkdirSync(gbpExtrasDir, { recursive: true });
+      console.log(`  fetching GBP Posts + Q&A via Playwright...`);
+      try {
+        gbpExtras = await scrapeGbpExtras({ placeUrl });
+        fs.writeFileSync(gbpFixturePath, JSON.stringify(gbpExtras, null, 2));
+        console.log(`  → ${gbpExtras.post_count} posts, ${gbpExtras.question_count} Q&A${gbpExtras.observations.length ? ', ' + gbpExtras.observations.length + ' observations' : ''}`);
+      } catch (err) {
+        console.warn(`  ⚠ GBP extras failed: ${err.message}`);
+      }
+    } else {
+      console.log(`  ⚠ no google_maps_url on entity, skipping GBP extras`);
+    }
+  } else if (fs.existsSync(gbpFixturePath)) {
+    try { gbpExtras = JSON.parse(fs.readFileSync(gbpFixturePath, 'utf8')); } catch {}
   }
 
   // Per-issue evidence + mobile-throttled video. T0 (local Playwright).

@@ -174,6 +174,7 @@ export function buildMasterMd({
   imageOptimization,   // auditImageOptimization (img formats / srcset / lazy)
   trustSignals,        // industry-aware trust adapter (QBCC / ABN / etc)
   thirdPartyWeight,    // 3rd-party request weight + tracker breakdown
+  gbpExtras,           // GBP Posts + Q&A scrape (grade-gated)
   cloudinaryManifest,
   screenshotDir = './screenshots',
 } = {}) {
@@ -392,6 +393,31 @@ export function buildMasterMd({
     sections.push('');
     for (const a of salesAngles) sections.push(`- ${a}`);
     sections.push('');
+  }
+
+  // ── GBP Posts + Q&A 活跃度 ──
+  if (gbpExtras?.ok) {
+    sections.push('## GBP Posts 与 Q&A · Google 商家档案运营');
+    sections.push('');
+    sections.push(`Google Maps 上客户除了看星级，也会看商家有没有发 post（最新工程 / 优惠 / 团队动态）和有没有回答客户提问。这一段直接抓 Google Maps 页面看实际情况。`);
+    sections.push('');
+    sections.push(`- **Posts 数量：** ${gbpExtras.post_count}${gbpExtras.last_post_relative ? ` · 最近一条「${gbpExtras.last_post_relative}」` : ''}`);
+    sections.push(`- **Q&A 数量：** ${gbpExtras.question_count}${gbpExtras.owner_reply_rate != null ? ` · 商家回复率 ${Math.round(gbpExtras.owner_reply_rate * 100)}%` : ''}`);
+    sections.push('');
+    if (gbpExtras.observations?.length) {
+      sections.push('**销售相关发现：**');
+      for (const obs of gbpExtras.observations) sections.push(`- ${obs}`);
+      sections.push('');
+    }
+    if (gbpExtras.questions?.length) {
+      sections.push(`**Q&A 抓样（前 ${Math.min(3, gbpExtras.questions.length)} 条）：**`);
+      sections.push('');
+      for (const q of gbpExtras.questions.slice(0, 3)) {
+        sections.push(`> Q: ${q.q.slice(0, 200)}`);
+        if (q.a) sections.push(`> A: ${q.a.slice(0, 200)}${q.owner_replied ? ' *(商家回复)*' : ' *(其他用户回复)*'}`);
+        sections.push('');
+      }
+    }
   }
 
   // ── PageSpeed Insights · 真实用户速度数据 ──

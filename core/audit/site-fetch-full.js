@@ -196,45 +196,44 @@ export async function siteFetchFull({
       } catch {}
     }
 
-    // ─── Sitemap + robots probe ──────────────────────────────────────
+    // ─── All independent network-bound audits run IN PARALLEL ──────
+    // These were previously sequential (sitemap → analysis → activity →
+    // ai_geo → PSI → domain). Each is a separate HTTP fetch with its
+    // own targets; running them concurrently saves ~30-45s per lead.
     const probeBase = new URL(payload.finalUrl || url);
-    payload.sitemap = await Promise.all([
-      probe(`${probeBase.origin}/sitemap.xml`),
-      probe(`${probeBase.origin}/robots.txt`),
-    ]).then(([s, r]) => ({ hasSitemap: s, hasRobots: r }));
+    const finalUrl = payload.finalUrl || url;
 
-    // ─── Deep sitemap analysis (page count, redirect plan) ──────────
-    payload.sitemap_analysis = await analyzeSitemap({
-      baseUrl: probeBase.origin,
-      niche: entityNiche,
-    }).catch(() => null);
+    const [
+      sitemapProbe,
+      sitemapAnalysis,
+      aiGeo,
+      pagespeed,
+      domainHistory,
+    ] = await Promise.all([
+      Promise.all([
+        probe(`${probeBase.origin}/sitemap.xml`),
+        probe(`${probeBase.origin}/robots.txt`),
+      ]).then(([s, r]) => ({ hasSitemap: s, hasRobots: r })),
+      analyzeSitemap({ baseUrl: probeBase.origin, niche: entityNiche }).catch(() => null),
+      auditAiGeoReadiness({ rawHtml: payload.rawHtml, markdown: payload.markdown, finalUrl }).catch(() => null),
+      process.env.PAGESPEED_API_KEY
+        ? pagespeedAudit({ url: finalUrl, leadId, clientSlug, ledgerPath, stage: 'detailed_audit' }).catch(() => null)
+        : Promise.resolve(null),
+      auditDomainHistory({ baseUrl: finalUrl }).catch(() => null),
+    ]);
 
-    // ─── Activity / freshness audit (last_modified, blog dates, socials) ─
+    payload.sitemap = sitemapProbe;
+    payload.sitemap_analysis = sitemapAnalysis;
+    payload.ai_geo = aiGeo;
+    payload.pagespeed = pagespeed;
+    payload.domain_history = domainHistory;
+
+    // ─── Activity audit depends on sitemap_analysis result, so it runs
+    //     after the parallel block ──
     payload.activity = await auditActivity({
-      baseUrl: payload.finalUrl || url,
+      baseUrl: finalUrl,
       rawHtml: payload.rawHtml,
       sitemapAnalysis: payload.sitemap_analysis,
-    }).catch(() => null);
-
-    // ─── AI / GEO readiness ──────────────────────────────────────────
-    payload.ai_geo = await auditAiGeoReadiness({
-      rawHtml: payload.rawHtml,
-      markdown: payload.markdown,
-      finalUrl: payload.finalUrl || url,
-    }).catch(() => null);
-
-    // ─── PageSpeed Insights (mobile + desktop) ──────────────────────
-    if (process.env.PAGESPEED_API_KEY) {
-      payload.pagespeed = await pagespeedAudit({
-        url: payload.finalUrl || url,
-        leadId, clientSlug, ledgerPath,
-        stage: 'detailed_audit',
-      }).catch(() => null);
-    }
-
-    // ─── Domain history (whois + Wayback + DNS for SPF/DMARC/DKIM) ──
-    payload.domain_history = await auditDomainHistory({
-      baseUrl: payload.finalUrl || url,
     }).catch(() => null);
 
   } finally {
