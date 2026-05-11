@@ -14,7 +14,10 @@ const CLI = process.env.CLAUDE_CLI_PATH || 'claude';
 
 export async function textClaudeCli({
   prompt,
-  model = process.env.CLAUDE_CLI_MODEL || 'sonnet',
+  // Text-only tasks (review analysis, classification, extraction) default
+  // to haiku — 3× cheaper than sonnet, fast, plenty good for structured
+  // JSON extraction. Vision uses sonnet (quality matters there).
+  model = process.env.CLAUDE_CLI_TEXT_MODEL || 'haiku',
   ledgerPath,
   leadId,
   clientSlug,
