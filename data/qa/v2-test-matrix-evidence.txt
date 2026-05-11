@@ -1,0 +1,48 @@
+  cli_list                                 ✓  rows=5, found=true
+  cli_show                                 ✓  locale=true, grade=true
+  cli_context                              ✓  sections=4 (≥4), chars=458
+  cli_advance_basic                        ✓  phase=awaiting, history=1
+  cli_advance_idempotent                   ✓  noop=true, history_len=1
+  cli_advance_invalid_phase                ✓  exit=1
+  cli_advance_archive_no_reason            ✓  exit=1
+  cli_advance_archive_with_reason          ✓  phase=archived, reason=no_interest
+  cli_kpi                                  ✓  awaiting=1
+  cli_variant_list                         ✓  count=3
+  cli_reply_handle_interested              ✓  class=interested
+  cli_reply_handle_objection               ✓  class=objection-price
+  cli_reply_handle_unsubscribe             ✓  class=unsubscribe, phase=archived, reason=unsubscribe
+  cli_email_draft_ai                       ✓  tier=T3, provider=claude_cli
+  cli_email_draft_b_grade                  ✓  tier=T0, model=qwen3.5:9b, has_warning=true
+  cli_email_send_dryrun                    ✓  dry_run=true, phase=outreach-active, sent=1
+  cli_daily_tick_nurture                   ✓  revived=true, phase=awaiting
+  cli_daily_tick_timeout                   ✓  archived=true, phase=archived, reason=no_response_30d
+  discord_phase_sync                       ✓  phaseBefore=unset, phaseAfter=outreach-active, edited_changed=true, latest_msg=🔄 Phase (none) → **outreach-active**
+  discord_no_thread_skips_cleanly          ✓  phase=awaiting, no_discord_err=true
+  reply_poll_match_by_sender               ✓  class=interested, conf=0.8
+
+═══════════ V2 TEST MATRIX ═══════════
+✓ Pass: 21  ✗ Fail: 0  ○ Skip: 0  (of 21)
+
+| Test ID | Status | Detail |
+|---|---|---|
+| cli_list | ✓ | rows=5, found=true |
+| cli_show | ✓ | locale=true, grade=true |
+| cli_context | ✓ | sections=4 (≥4), chars=458 |
+| cli_advance_basic | ✓ | phase=awaiting, history=1 |
+| cli_advance_idempotent | ✓ | noop=true, history_len=1 |
+| cli_advance_invalid_phase | ✓ | exit=1 |
+| cli_advance_archive_no_reason | ✓ | exit=1 |
+| cli_advance_archive_with_reason | ✓ | phase=archived, reason=no_interest |
+| cli_kpi | ✓ | awaiting=1 |
+| cli_variant_list | ✓ | count=3 |
+| cli_reply_handle_interested | ✓ | class=interested |
+| cli_reply_handle_objection | ✓ | class=objection-price |
+| cli_reply_handle_unsubscribe | ✓ | class=unsubscribe, phase=archived, reason=unsubscribe |
+| cli_email_draft_ai | ✓ | tier=T3, provider=claude_cli |
+| cli_email_draft_b_grade | ✓ | tier=T0, model=qwen3.5:9b, has_warning=true |
+| cli_email_send_dryrun | ✓ | dry_run=true, phase=outreach-active, sent=1 |
+| cli_daily_tick_nurture | ✓ | revived=true, phase=awaiting |
+| cli_daily_tick_timeout | ✓ | archived=true, phase=archived, reason=no_response_30d |
+| discord_phase_sync | ✓ | phaseBefore=unset, phaseAfter=outreach-active, edited_changed=true, latest_msg=🔄 Phase (none) → **outreach-active** |
+| discord_no_thread_skips_cleanly | ✓ | phase=awaiting, no_discord_err=true |
+| reply_poll_match_by_sender | ✓ | class=interested, conf=0.8 |
