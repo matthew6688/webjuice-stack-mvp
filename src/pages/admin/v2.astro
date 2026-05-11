@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/AdminLayout.astro';
 import { spawnSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 const uiVersion = 'local-style-2026-05-08';
 
@@ -8,9 +10,7 @@ let kpi = null;
 try {
   const r = spawnSync('node', ['scripts/cli/pl-kpi.js'], { encoding: 'utf8' });
   if (r.status === 0) kpi = JSON.parse(r.stdout);
-} catch (err) {
-  kpi = { error: String(err) };
-}
+} catch (err) { kpi = { error: String(err) }; }
 
 const lastRefreshed = new Date().toISOString();
 const totals = kpi?.totals || {};
@@ -18,118 +18,124 @@ const byGrade = kpi?.by_grade || { A: 0, B: 0, C: 0, D: 0, ungraded: 0 };
 const byPhase = kpi?.by_phase || {};
 const websites = kpi?.websites || { has_website: 0, no_website: 0, breakdown: {} };
 const pipeline = kpi?.pipeline || {};
-const finance = kpi?.finance_today || {};
-const deferred = kpi?.deferred_metrics || [];
 
-const sellablePct = totals.entities ? `${(Number(totals.sellable_pct) * 100).toFixed(1)}%` : '—';
-const phaseEntries = Object.entries(byPhase).filter(([k]) => k !== '_unset');
-const unsetPhase = byPhase._unset || 0;
+// Phase priorities: needs-human and replied are "needs attention"; others are healthy.
+const phaseAttention = (byPhase['needs-human'] || 0) + (byPhase['replied'] || 0);
+const phaseActive = (byPhase['outreach-active'] || 0) + (byPhase['awaiting'] || 0);
+const phaseClosed = (byPhase['paid'] || 0) + (byPhase['archived'] || 0);
+
+// Detail: replies last 7 days
+const entitiesDir = path.join(process.cwd(), 'data', 'leads', 'entities');
+const recentReplies = [];
+if (fs.existsSync(entitiesDir)) {
+  const cutoff = Date.now() - 7 * 86400000;
+  for (const f of fs.readdirSync(entitiesDir).filter((x) => x.endsWith('.json'))) {
+    try {
+      const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8'));
+      const at = e.last_reply_at ? new Date(e.last_reply_at).getTime() : 0;
+      if (at > cutoff && e.last_reply_class) {
+        recentReplies.push({
+          entityKey: e.entityKey, name: e.latest?.name, at: e.last_reply_at,
+          class: e.last_reply_class, phase: e.phase, grade: e.grade?.investment_level,
+        });
+      }
+    } catch {}
+  }
+  recentReplies.sort((a, b) => String(b.at).localeCompare(String(a.at)));
+}
+
+const sellable = byGrade.A + byGrade.B + byGrade.C;
+const sellablePct = totals.entities ? `${((sellable / totals.entities) * 100).toFixed(1)}%` : '0%';
 ---
 <Layout title="V2 Overview" active="overview">
   <section class="poster-section admin-section" data-ui-version={uiVersion}>
     <div class="admin-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">V2 Overview</p>
-          <h1>Discord-first 销售闭环</h1>
-          <p class="lede">真实的推进面在 Discord。这里是只读快照——entity JSON 是单一来源，A/B 进 forum thread，C 批量列表，D 自动归档。</p>
+          <p class="eyebrow">V2 Overview · Discord-driven sales</p>
+          <h1>{totals.entities || 0} leads, {sellable} 可成交</h1>
+          <p class="lede">A/B 自动进 Discord forum thread，C 批量池，D 自动归档。日常推进在 Discord — 这里看节奏与瓶颈。</p>
         </div>
-        <div class="admin-count">
-          <strong>{totals.entities || 0}</strong>
-          <span>Entities 总数</span>
-        </div>
+        <a class="admin-count v2-overview-cta" href="/admin/v2-leads/">
+          <strong>→</strong>
+          <span>Lead 看板</span>
+        </a>
       </div>
 
-      <div class="admin-summary-strip admin-summary-strip-compact">
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">可成交 A+B+C</span>
-          <strong>{totals.sellable_a_b_c || 0}</strong>
-          <p>{sellablePct} of {totals.entities || 0} — sonnet (A) / haiku (B+C) 路由</p>
+      <!-- Hot dashboard: 4 KPI tiles that matter day-to-day -->
+      <div class="admin-summary-strip admin-summary-strip-compact v2-kpi-strip">
+        <article class={`admin-summary-tile ${phaseAttention > 0 ? 'admin-summary-primary' : ''}`}>
+          <span class="admin-summary-label">需要 attention</span>
+          <strong>{phaseAttention}</strong>
+          <p>{byPhase['needs-human'] || 0} needs-human · {byPhase['replied'] || 0} replied</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">Audit 已完成</span>
-          <strong>{pipeline.audit_completed_cumulative || 0}</strong>
-          <p>{pipeline.queued_for_audit || 0} 个待 audit · 今日抓取 ≈ {pipeline.todays_scraped_estimate || 0}</p>
+          <span class="admin-summary-label">外发中 + 就绪</span>
+          <strong>{phaseActive}</strong>
+          <p>{byPhase['outreach-active'] || 0} 已发等回 · {byPhase['awaiting'] || 0} 等首封</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">有/无网站</span>
-          <strong>{websites.has_website || 0} <span class="admin-stat-sep">/</span> {websites.no_website || 0}</strong>
-          <p>主要 niche 是 roofing；C/D 大多是已 redesign 不久</p>
+          <span class="admin-summary-label">可成交占比</span>
+          <strong>{sellable} <span class="v2-kpi-sub">/ {totals.entities || 0}</span></strong>
+          <p>{sellablePct} · A {byGrade.A} · B {byGrade.B} · C {byGrade.C}</p>
         </article>
         <article class="admin-summary-tile">
-          <span class="admin-summary-label">今日成本</span>
-          <strong>${finance.revenue_usd || 0}<span class="admin-stat-sep">↔</span>${finance.cost_usd || 0}</strong>
-          <p>收入 / 成本 · {finance.revenue_events || 0} 笔成交事件</p>
+          <span class="admin-summary-label">Audit 完成 / 待跑</span>
+          <strong>{pipeline.audit_completed_cumulative || 0} <span class="v2-kpi-sub">/ {pipeline.queued_for_audit || 0}</span></strong>
+          <p>{websites.has_website || 0} 有官网 · {websites.no_website || 0} 无官网</p>
         </article>
       </div>
 
-      <section class="admin-block">
-        <header class="admin-block-head">
-          <p class="eyebrow">Grade 分布</p>
-          <p class="admin-block-lede">投资等级 — A 全攻，B 试探，C 批量，D 自动归档。</p>
+      <!-- Grade distribution row — concise -->
+      <section class="v2-block">
+        <header class="v2-block-head">
+          <h2>Grade 分布</h2>
+          <p>投资等级决定 LLM 路由：A → sonnet · B/C → haiku · D 自动归档</p>
         </header>
         <div class="v2-grade-row">
-          <article class="v2-grade-cell v2-grade-a">
-            <span class="v2-grade-letter">A</span>
-            <strong>{byGrade.A || 0}</strong>
-            <span class="v2-grade-note">sonnet · 个性化全攻</span>
-          </article>
-          <article class="v2-grade-cell v2-grade-b">
-            <span class="v2-grade-letter">B</span>
-            <strong>{byGrade.B || 0}</strong>
-            <span class="v2-grade-note">haiku · 试探包</span>
-          </article>
-          <article class="v2-grade-cell v2-grade-c">
-            <span class="v2-grade-letter">C</span>
-            <strong>{byGrade.C || 0}</strong>
-            <span class="v2-grade-note">haiku · 批量模板</span>
-          </article>
-          <article class="v2-grade-cell v2-grade-d">
-            <span class="v2-grade-letter">D</span>
-            <strong>{byGrade.D || 0}</strong>
-            <span class="v2-grade-note">自动归档 · 不投入</span>
-          </article>
-          <article class="v2-grade-cell v2-grade-ungraded">
-            <span class="v2-grade-letter">?</span>
-            <strong>{byGrade.ungraded || 0}</strong>
-            <span class="v2-grade-note">未跑过 audit pipeline</span>
-          </article>
-        </div>
-      </section>
-
-      <section class="admin-block">
-        <header class="admin-block-head">
-          <p class="eyebrow">Lifecycle phase</p>
-          <p class="admin-block-lede">真推进面在 Discord forum。这里只显示当前快照——entity JSON 是单一来源。</p>
-        </header>
-        <div class="v2-phase-list">
-          {phaseEntries.length === 0 ? (
-            <p class="v2-empty">没有任何 lead 设了 phase — 跑过 grade 才有；本地 entity 状态可能未 commit。</p>
-          ) : phaseEntries.map(([phase, count]) => (
-            <div class={`v2-phase-row v2-phase-${phase}`}>
-              <span class="v2-phase-name">{phase}</span>
-              <strong class="v2-phase-count">{count}</strong>
-            </div>
-          ))}
-          {unsetPhase > 0 && (
-            <div class="v2-phase-row v2-phase-unset">
-              <span class="v2-phase-name">_unset</span>
-              <strong class="v2-phase-count">{unsetPhase}</strong>
-              <span class="v2-phase-note">尚未推送 entity 到 git，admin 看不到新状态（H.9）</span>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section class="admin-block admin-block-muted">
-        <header class="admin-block-head">
-          <p class="eyebrow">推迟集成 — TrackLayer fork 后启用</p>
-        </header>
-        <div class="v2-deferred-grid">
-          {deferred.map((m) => (
-            <article class="v2-deferred-pill">
-              <code>{m}</code>
+          {[
+            { key: 'A', count: byGrade.A, sub: 'sonnet · 个性化', tone: 'a' },
+            { key: 'B', count: byGrade.B, sub: 'haiku · 试探', tone: 'b' },
+            { key: 'C', count: byGrade.C, sub: 'haiku · 批量', tone: 'c' },
+            { key: 'D', count: byGrade.D, sub: 'auto-archive', tone: 'd' },
+          ].map((g) => (
+            <article class={`v2-grade-cell v2-grade-cell-${g.tone}`}>
+              <span class="v2-grade-letter">{g.key}</span>
+              <strong>{g.count}</strong>
+              <span class="v2-grade-sub">{g.sub}</span>
             </article>
+          ))}
+        </div>
+      </section>
+
+      {recentReplies.length > 0 && (
+        <section class="v2-block">
+          <header class="v2-block-head">
+            <h2>近 7 天客户回信</h2>
+            <p>分类 + 当前 phase — 点开看 Discord thread 草稿</p>
+          </header>
+          <ol class="v2-reply-feed">
+            {recentReplies.map((r) => (
+              <li class="v2-reply-row">
+                <span class="v2-reply-time">{r.at.slice(5, 16).replace('T', ' ')}</span>
+                <a class="v2-reply-name" href={`/admin/v2-leads/${r.entityKey}/`}>{r.name}</a>
+                <span class={`v2-grade-chip v2-grade-chip-${r.grade?.toLowerCase()}`}>{r.grade}</span>
+                <span class="v2-reply-class v2-reply-class-{r.class}">{r.class}</span>
+                {r.phase && <span class={`v2-phase-chip v2-phase-chip-${r.phase}`}>{r.phase}</span>}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <section class="v2-block v2-block-context">
+        <header class="v2-block-head">
+          <h2>未启用的指标</h2>
+          <p>邮件 open/click/visit/engage 信号链路 — 等 TrackLayer fork 后接入</p>
+        </header>
+        <div class="v2-deferred-row">
+          {(kpi?.deferred_metrics || []).map((m) => (
+            <span class="v2-deferred-chip"><code>{m}</code></span>
           ))}
         </div>
       </section>
@@ -139,11 +145,8 @@ const unsetPhase = byPhase._unset || 0;
           <span class="eyebrow-inline">Last refreshed</span>
           <code>{lastRefreshed}</code>
           ·
-          <span class="eyebrow-inline">推进面</span>
-          <a href="https://discord.com/channels/@me" target="_blank">Discord website-leads forum</a>
-          ·
-          <span class="eyebrow-inline">详情</span>
-          <a href="/admin/v2-leads/">V2 Leads 看板</a>
+          <span class="eyebrow-inline">看板</span>
+          <a href="/admin/v2-leads/">V2 Leads</a>
           ·
           <span class="eyebrow-inline">老 admin</span>
           <a href="/admin/queue">/admin/queue</a> ·
@@ -156,162 +159,207 @@ const unsetPhase = byPhase._unset || 0;
 </Layout>
 
 <style is:global>
-  /* V2 admin styles — scoped via data-ui-version inheritance + .admin-block prefix */
-  .admin-block {
+  /* === V2 Overview === */
+  .v2-overview-cta {
+    text-decoration: none;
+    color: var(--pl-ink);
+    transition: background 80ms;
+    cursor: pointer;
+  }
+  .v2-overview-cta:hover { background: var(--pl-citrus); }
+  .v2-overview-cta strong {
+    font-family: var(--pl-display);
+    font-size: 38px;
+    line-height: 1;
+  }
+
+  .v2-kpi-strip strong { white-space: nowrap; }
+  .v2-kpi-sub {
+    font-family: var(--pl-display);
+    font-size: 22px;
+    color: var(--pl-muted);
+    margin-left: 4px;
+  }
+
+  /* Generic v2 block (replaces admin-block-* on this page) */
+  .v2-block {
     padding: 22px 24px;
     border-bottom: 2px solid var(--pl-line);
   }
-  .admin-block:last-of-type { border-bottom: 0; }
-  .admin-block-head { margin-bottom: 14px; }
-  .admin-block-head .eyebrow { margin: 0; }
-  .admin-block-lede {
-    margin: 6px 0 0;
-    font-size: 14px;
-    color: var(--pl-muted);
-    max-width: 720px;
-  }
-  .admin-block-muted { background: color-mix(in srgb, white 80%, var(--pl-cream)); }
-  .admin-block-foot {
-    padding: 18px 24px;
-    border-top: 2px solid var(--pl-line);
-    background: color-mix(in srgb, white 50%, var(--pl-cream));
-    font-size: 13px;
-  }
-  .admin-block-foot a {
-    color: var(--pl-blue);
-    text-decoration: none;
-    border-bottom: 1px solid var(--pl-line);
-  }
-  .admin-block-foot a:hover { background: var(--pl-citrus); }
-  .admin-block-foot code {
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 12px;
-    background: var(--pl-paper);
-    border: 1px solid var(--pl-line);
-    padding: 1px 6px;
-  }
-  .eyebrow-inline {
-    font-size: 10px;
-    font-weight: 950;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--pl-muted);
-  }
-
-  .admin-stat-sep {
-    margin: 0 6px;
-    color: var(--pl-muted);
+  .v2-block:last-of-type { border-bottom: 0; }
+  .v2-block-head { margin-bottom: 14px; }
+  .v2-block-head h2 {
+    margin: 0;
+    font-family: var(--pl-display);
+    font-size: 22px;
     font-weight: 700;
   }
+  .v2-block-head p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--pl-muted);
+  }
+  .v2-block-context { background: color-mix(in srgb, white 84%, var(--pl-cream)); }
 
-  /* Grade row — 5 hard-edged tiles */
+  /* Grade row — tighter */
   .v2-grade-row {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     border: 2px solid var(--pl-line);
   }
   .v2-grade-cell {
-    padding: 18px 20px;
+    padding: 16px 18px;
     border-right: 2px solid var(--pl-line);
     display: grid;
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: 48px 1fr;
     grid-template-rows: auto auto;
-    gap: 4px 14px;
+    gap: 2px 14px;
     align-items: baseline;
-    background: var(--pl-paper);
   }
   .v2-grade-cell:last-child { border-right: 0; }
   .v2-grade-letter {
     grid-row: 1 / span 2;
     align-self: center;
     font-family: var(--pl-display);
-    font-size: 48px;
+    font-size: 42px;
     font-weight: 700;
     line-height: 1;
     text-align: center;
   }
   .v2-grade-cell strong {
     font-family: var(--pl-display);
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
     line-height: 1;
   }
-  .v2-grade-note {
+  .v2-grade-sub {
     font-size: 11px;
     font-weight: 700;
     color: var(--pl-muted);
-    letter-spacing: 0.04em;
   }
-  .v2-grade-a { background: var(--pl-mint); }
-  .v2-grade-b { background: var(--pl-sky); }
-  .v2-grade-c { background: var(--pl-peach); }
-  .v2-grade-d { background: color-mix(in srgb, var(--pl-coral-soft) 65%, white); }
-  .v2-grade-ungraded { background: color-mix(in srgb, var(--pl-lilac) 65%, white); }
+  .v2-grade-cell-a { background: var(--pl-mint); }
+  .v2-grade-cell-b { background: var(--pl-sky); }
+  .v2-grade-cell-c { background: var(--pl-peach); }
+  .v2-grade-cell-d { background: var(--pl-coral-soft); }
 
-  /* Phase rows — newspaper-style ledger */
-  .v2-phase-list {
+  /* Recent reply feed */
+  .v2-reply-feed {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     border: 2px solid var(--pl-line);
     background: var(--pl-paper);
   }
-  .v2-phase-row {
+  .v2-reply-row {
     display: grid;
-    grid-template-columns: 180px 80px 1fr;
-    gap: 16px;
-    align-items: baseline;
+    grid-template-columns: 110px minmax(0, 1fr) auto auto auto;
+    gap: 12px;
+    align-items: center;
     padding: 12px 18px;
-    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
-    font-size: 14px;
-  }
-  .v2-phase-row:last-child { border-bottom: 0; }
-  .v2-phase-name {
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-weight: 700;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 20%, transparent);
     font-size: 13px;
   }
-  .v2-phase-count {
-    font-family: var(--pl-display);
-    font-size: 22px;
-    font-weight: 700;
-  }
-  .v2-phase-note { color: var(--pl-muted); font-size: 12px; }
-  .v2-phase-awaiting { background: color-mix(in srgb, var(--pl-citrus) 18%, transparent); }
-  .v2-phase-outreach-active { background: color-mix(in srgb, var(--pl-sky) 18%, transparent); }
-  .v2-phase-replied { background: color-mix(in srgb, var(--pl-lilac) 22%, transparent); }
-  .v2-phase-paid { background: color-mix(in srgb, var(--pl-mint) 35%, transparent); }
-  .v2-phase-needs-human { background: color-mix(in srgb, var(--pl-coral) 12%, transparent); }
-  .v2-phase-archived { background: color-mix(in srgb, var(--pl-muted) 12%, transparent); }
-  .v2-phase-unset { background: color-mix(in srgb, var(--pl-muted) 6%, transparent); }
-  .v2-empty {
-    padding: 18px 24px;
+  .v2-reply-row:last-child { border-bottom: 0; }
+  .v2-reply-time {
+    font-family: ui-monospace, monospace;
+    font-size: 11.5px;
     color: var(--pl-muted);
-    font-style: italic;
-    font-size: 14px;
+  }
+  .v2-reply-name {
+    font-family: var(--pl-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--pl-ink);
+    text-decoration: none;
+    border-bottom: 1.5px solid transparent;
+  }
+  .v2-reply-name:hover { border-bottom-color: var(--pl-line); }
+  .v2-reply-class {
+    padding: 2px 7px;
+    background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper));
+    border: 1px solid color-mix(in srgb, var(--pl-coral) 50%, transparent);
+    font-size: 10.5px;
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    color: var(--pl-coral);
   }
 
-  /* Deferred metrics — chip rack */
-  .v2-deferred-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .v2-deferred-pill {
-    border: 1px dashed var(--pl-line);
-    padding: 8px 14px;
-    background: var(--pl-paper);
-    font-size: 13px;
-  }
-  .v2-deferred-pill code {
-    font-family: ui-monospace, SFMono-Regular, monospace;
+  /* Chips (shared) */
+  .v2-grade-chip {
+    display: inline-block;
+    padding: 2px 9px;
+    border: 1.5px solid var(--pl-line);
+    font-family: var(--pl-display);
     font-size: 12px;
     font-weight: 700;
+    background: var(--pl-paper);
+    line-height: 1.3;
+  }
+  .v2-grade-chip-a { background: var(--pl-mint); }
+  .v2-grade-chip-b { background: var(--pl-sky); }
+  .v2-grade-chip-c { background: var(--pl-peach); }
+  .v2-grade-chip-d { background: var(--pl-coral-soft); }
+  .v2-phase-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    border: 1px solid var(--pl-line);
+    line-height: 1.4;
+  }
+  .v2-phase-chip-awaiting { background: var(--pl-citrus); }
+  .v2-phase-chip-outreach-active { background: var(--pl-sky); }
+  .v2-phase-chip-replied { background: var(--pl-lilac); }
+  .v2-phase-chip-proposal-sent { background: color-mix(in srgb, var(--pl-lilac) 60%, var(--pl-blue)); color: white; }
+  .v2-phase-chip-nurture { background: var(--pl-mint); }
+  .v2-phase-chip-paid { background: var(--pl-green); color: white; }
+  .v2-phase-chip-archived { background: color-mix(in srgb, var(--pl-muted) 30%, white); }
+  .v2-phase-chip-needs-human { background: var(--pl-coral); color: white; }
+
+  /* Deferred chip row — compact, low-priority */
+  .v2-deferred-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .v2-deferred-chip {
+    border: 1px dashed color-mix(in srgb, var(--pl-line) 60%, transparent);
+    padding: 5px 10px;
+    background: transparent;
+  }
+  .v2-deferred-chip code {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
     color: var(--pl-muted);
+    font-weight: 600;
+  }
+
+  .eyebrow-inline {
+    font-size: 10px; font-weight: 950; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--pl-muted);
+  }
+  .admin-block-foot {
+    padding: 18px 24px;
+    border-top: 2px solid var(--pl-line);
+    background: color-mix(in srgb, white 50%, var(--pl-cream));
+    font-size: 13px;
+  }
+  .admin-block-foot a { color: var(--pl-blue); text-decoration: none; border-bottom: 1px solid var(--pl-line); }
+  .admin-block-foot a:hover { background: var(--pl-citrus); }
+  .admin-block-foot code {
+    font-family: ui-monospace, monospace; font-size: 12px;
+    background: var(--pl-paper); border: 1px solid var(--pl-line); padding: 1px 6px;
   }
 
   @media (max-width: 880px) {
     .v2-grade-row { grid-template-columns: repeat(2, 1fr); }
     .v2-grade-cell:nth-child(2n) { border-right: 0; }
-    .v2-grade-cell { border-bottom: 2px solid var(--pl-line); }
-    .v2-phase-row { grid-template-columns: 1fr 60px; }
-    .v2-phase-note { grid-column: 1 / -1; }
+    .v2-grade-cell:not(:last-child):nth-child(-n+2) { border-bottom: 2px solid var(--pl-line); }
+    .v2-reply-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
   }
 </style>
+</Layout>

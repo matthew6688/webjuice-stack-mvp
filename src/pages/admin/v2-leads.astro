@@ -11,25 +11,17 @@ const entitiesDir = path.join(process.cwd(), 'data', 'leads', 'entities');
 const entities = fs.existsSync(entitiesDir)
   ? fs.readdirSync(entitiesDir).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8')))
   : [];
-
 const graded = entities.filter((e) => e.grade?.investment_level);
 
-const byGrade = { A: [], B: [], C: [], D: [] };
-for (const e of graded) {
-  const g = e.grade?.investment_level;
-  if (byGrade[g]) byGrade[g].push(e);
-}
-
 function fmtDaysAgo(iso) {
-  if (!iso) return '—';
+  if (!iso) return null;
   const ms = Date.now() - new Date(iso).getTime();
-  if (!Number.isFinite(ms) || ms < 0) return '—';
+  if (!Number.isFinite(ms) || ms < 0) return null;
   const d = Math.floor(ms / 86400000);
   return d < 1 ? 'today' : `${d}d`;
 }
-function discordUrl(threadId) {
-  return threadId ? `https://discord.com/channels/@me/${threadId}` : '';
-}
+function discordUrl(threadId) { return threadId ? `https://discord.com/channels/@me/${threadId}` : ''; }
+
 function row(e) {
   const audit = readDetailedAudit(e.entityKey)?.detailed_audit;
   const locale = deriveLocale(e);
@@ -37,8 +29,8 @@ function row(e) {
   return {
     entityKey: e.entityKey,
     name: e.latest?.name || '—',
-    niche: e.latest?.niche || '—',
-    city: e.latest?.city || '—',
+    niche: e.latest?.niche || null,
+    city: e.latest?.city || null,
     grade: e.grade?.investment_level,
     tier: e.grade?.product_tier,
     phase: e.phase || null,
@@ -55,16 +47,63 @@ function row(e) {
   };
 }
 
-const groups = {
-  ready_a: { label: '就绪 · A 全攻', tone: 'a', rows: byGrade.A.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row) },
-  ready_b: { label: '就绪 · B 试探', tone: 'b', rows: byGrade.B.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row) },
-  ready_c: { label: '就绪 · C 批量', tone: 'c', rows: byGrade.C.filter((e) => !['paid', 'archived'].includes(e.phase)).map(row) },
-  in_conversation: { label: '对话中', tone: 'replied', rows: graded.filter((e) => e.phase === 'replied' || e.phase === 'proposal-sent').map(row) },
-  archived: { label: '归档', tone: 'archived', rows: byGrade.D.map(row) },
+// Action-first grouping: things that need Matthew's attention come first.
+const allRows = graded.map(row);
+const groups = [
+  {
+    key: 'needs_human',
+    label: '需要你介入',
+    tone: 'urgent',
+    rationale: '回复不明确或 AI 拿不准 — 优先处理',
+    rows: allRows.filter((r) => r.phase === 'needs-human'),
+  },
+  {
+    key: 'replied',
+    label: '客户已回',
+    tone: 'replied',
+    rationale: '已分类，Discord thread 有 draft 等 ✅',
+    rows: allRows.filter((r) => r.phase === 'replied' || r.phase === 'proposal-sent'),
+  },
+  {
+    key: 'outreach_active',
+    label: '外发中',
+    tone: 'active',
+    rationale: '已发，等回信 (≤ 21 天)',
+    rows: allRows.filter((r) => r.phase === 'outreach-active'),
+  },
+  {
+    key: 'awaiting',
+    label: '就绪 — 等首封',
+    tone: 'awaiting',
+    rationale: 'AI 已起草 / 准备好，等你 ✅ 发出',
+    rows: allRows.filter((r) => r.phase === 'awaiting' || (!r.phase && (r.grade === 'A' || r.grade === 'B'))),
+  },
+  {
+    key: 'batch_c',
+    label: 'C 批量池',
+    tone: 'batch',
+    rationale: '模板邮件批发，不开 Discord thread',
+    rows: allRows.filter((r) => r.grade === 'C' && r.phase !== 'archived'),
+  },
+  {
+    key: 'archived',
+    label: '归档',
+    tone: 'archived',
+    rationale: 'D 自动 / 拒绝 / 长期沉默',
+    rows: allRows.filter((r) => r.phase === 'archived' || r.grade === 'D'),
+    collapsed: true,
+  },
+];
+
+const counts = {
+  total: graded.length,
+  needs: groups.find((g) => g.key === 'needs_human').rows.length,
+  replied: groups.find((g) => g.key === 'replied').rows.length,
+  active: groups.find((g) => g.key === 'outreach_active').rows.length,
+  awaiting: groups.find((g) => g.key === 'awaiting').rows.length,
 };
 
 const lastRefreshed = new Date().toISOString();
-const phasesActive = new Set(Object.keys(entities.reduce((acc, e) => { if (e.phase) acc[e.phase] = 1; return acc; }, {})));
 ---
 <Layout title="V2 Leads — Discord-driven" active="leads">
   <section class="poster-section admin-section" data-ui-version={uiVersion}>
@@ -73,159 +112,99 @@ const phasesActive = new Set(Object.keys(entities.reduce((acc, e) => { if (e.pha
         <div>
           <p class="eyebrow">V2 Leads · Discord-driven</p>
           <h1>Lead 看板</h1>
-          <p class="lede">A/B 就绪后自动开 forum thread。日常推进在 Discord — 这里看快照、找入口、紧急时跑 CLI 救援。</p>
+          <p class="lede">日常推进在 Discord 完成。这里只用来扫一眼"现在该处理谁"——按紧急度排序，最需要你介入的在最上。</p>
         </div>
         <div class="admin-count">
-          <strong>{graded.length}</strong>
-          <span>Graded</span>
+          <strong>{counts.total}</strong>
+          <span>Graded leads</span>
         </div>
       </div>
 
-      <div class="admin-summary-strip admin-summary-strip-compact">
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">A 全攻</span>
-          <strong>{byGrade.A.length}</strong>
-          <p>sonnet 个性化邮件 · 4h heartbeat</p>
-        </article>
-        <article class="admin-summary-tile admin-summary-primary">
-          <span class="admin-summary-label">B 试探</span>
-          <strong>{byGrade.B.length}</strong>
-          <p>haiku 邮件 · 12h heartbeat</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">C 批量</span>
-          <strong>{byGrade.C.length}</strong>
-          <p>haiku 批量模板，无 thread</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">D 自动归档</span>
-          <strong>{byGrade.D.length}</strong>
-          <p>hard-skip 命中，不投入</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">活跃 phase</span>
-          <strong>{phasesActive.size}</strong>
-          <p>{phasesActive.size === 0 ? '本地 entity 未推送' : '看下方分组分布'}</p>
-        </article>
+      <div class="v2-attention-strip">
+        <a class={`v2-attention-cell ${counts.needs > 0 ? 'v2-attention-hot' : ''}`} href="#needs_human">
+          <span class="v2-attention-num">{counts.needs}</span>
+          <span class="v2-attention-label">需介入</span>
+        </a>
+        <a class={`v2-attention-cell ${counts.replied > 0 ? 'v2-attention-warm' : ''}`} href="#replied">
+          <span class="v2-attention-num">{counts.replied}</span>
+          <span class="v2-attention-label">已回信</span>
+        </a>
+        <a class="v2-attention-cell" href="#outreach_active">
+          <span class="v2-attention-num">{counts.active}</span>
+          <span class="v2-attention-label">外发中</span>
+        </a>
+        <a class="v2-attention-cell" href="#awaiting">
+          <span class="v2-attention-num">{counts.awaiting}</span>
+          <span class="v2-attention-label">就绪</span>
+        </a>
       </div>
 
-      {Object.entries(groups).map(([key, group]) => (
-        <section class="admin-block" id={key}>
-          <header class="admin-block-head">
-            <div class="admin-block-head-row">
-              <p class="eyebrow">{group.label}</p>
-              <span class="admin-section-count">{group.rows.length}</span>
+      {groups.map((group) => (
+        <section class={`v2-group v2-group-${group.tone}`} id={group.key}>
+          <header class="v2-group-head">
+            <div class="v2-group-head-left">
+              <h2 class="v2-group-title">{group.label}</h2>
+              <span class="v2-group-count">{group.rows.length}</span>
             </div>
+            <p class="v2-group-rationale">{group.rationale}</p>
           </header>
           {group.rows.length === 0 ? (
-            <p class="v2-empty">— 此分组为空 —</p>
+            <p class="v2-group-empty">— 此分组当前为空 —</p>
           ) : (
-            <div class="admin-table-wrap">
-              <table class="admin-table v2-leads-table">
-                <thead>
-                  <tr>
-                    <th>商家</th>
-                    <th>分类 / 城市</th>
-                    <th>Grade</th>
-                    <th>Phase</th>
-                    <th>Audit</th>
-                    <th>口碑</th>
-                    <th>信号</th>
-                    <th>上次接触</th>
-                    <th>客户时间</th>
-                    <th>→ Discord</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {group.rows.map((r) => (
-                    <tr>
-                      <td>
-                        <a class="v2-lead-name" href={`/admin/v2-leads/${r.entityKey}/`}>{r.name}</a>
-                        <div class="v2-lead-key">{r.entityKey.slice(0, 24)}…</div>
-                      </td>
-                      <td>
-                        <div class="v2-cell-primary">{r.niche}</div>
-                        <div class="v2-cell-secondary">{r.city}</div>
-                      </td>
-                      <td>
-                        <span class={`v2-grade-chip v2-grade-chip-${r.grade?.toLowerCase()}`}>{r.grade}{r.tier ? `/${r.tier}` : ''}</span>
-                      </td>
-                      <td>
-                        {r.phase ? (
-                          <span class={`v2-phase-chip v2-phase-chip-${r.phase}`}>{r.phase}</span>
-                        ) : <span class="v2-cell-muted">—</span>}
-                        {r.sub_status && <div class="v2-cell-secondary">({r.sub_status})</div>}
-                      </td>
-                      <td>
-                        {r.audit_score != null ? (
-                          <>
-                            <div class="v2-cell-primary">{r.audit_score}/100</div>
-                            {r.audit_decision && <div class="v2-cell-secondary">{r.audit_decision}</div>}
-                          </>
-                        ) : <span class="v2-cell-muted">—</span>}
-                      </td>
-                      <td>
-                        <div class="v2-cell-primary">{r.rating ?? '—'}★</div>
-                        <div class="v2-cell-secondary">{r.reviews ?? 0} reviews</div>
-                      </td>
-                      <td>
-                        <div class="v2-signals">
-                          <span title="sent">📤<strong>{r.signals.sent}</strong></span>
-                          <span title="opened">📧<strong>{r.signals.opened}</strong></span>
-                          <span title="clicked">🔗<strong>{r.signals.clicked}</strong></span>
-                          <span title="replied">💬<strong>{r.signals.replied}</strong></span>
-                        </div>
-                      </td>
-                      <td>
-                        {r.last_contact_at ? (
-                          <>
-                            <div class="v2-cell-primary">{r.last_contact_at.slice(0, 10)}</div>
-                            <div class="v2-cell-secondary">{fmtDaysAgo(r.last_contact_at)}</div>
-                          </>
-                        ) : <span class="v2-cell-muted">—</span>}
-                        {r.last_reply_class && (
-                          <div class="v2-cell-tag">[{r.last_reply_class}]</div>
-                        )}
-                      </td>
-                      <td><span class="v2-cell-primary">{r.locale_now || '—'}</span></td>
-                      <td>
-                        {r.discord_thread_id ? (
-                          <a class="v2-discord-link" href={discordUrl(r.discord_thread_id)} target="_blank">open ↗</a>
-                        ) : <span class="v2-cell-muted">—</span>}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div class="v2-row-list">
+              {group.rows.map((r) => (
+                <a class="v2-row" href={`/admin/v2-leads/${r.entityKey}/`}>
+                  <div class="v2-row-main">
+                    <h3 class="v2-row-name">{r.name}</h3>
+                    <div class="v2-row-meta">
+                      <span class={`v2-grade-chip v2-grade-chip-${r.grade?.toLowerCase()}`}>{r.grade}{r.tier ? `/${r.tier}` : ''}</span>
+                      {r.phase && <span class={`v2-phase-chip v2-phase-chip-${r.phase}`}>{r.phase}</span>}
+                      {r.last_reply_class && <span class="v2-reply-tag">[{r.last_reply_class}]</span>}
+                      {r.niche && <span class="v2-row-niche">{r.niche}</span>}
+                      {r.city && <span class="v2-row-city">{r.city}</span>}
+                    </div>
+                  </div>
+                  <div class="v2-row-stats">
+                    {r.audit_score != null && (
+                      <div class="v2-row-stat" title={r.audit_decision || ''}>
+                        <span class="v2-row-stat-num">{r.audit_score}</span>
+                        <span class="v2-row-stat-label">audit</span>
+                      </div>
+                    )}
+                    {r.rating != null && (
+                      <div class="v2-row-stat">
+                        <span class="v2-row-stat-num">{r.rating}★</span>
+                        <span class="v2-row-stat-label">{r.reviews ?? 0} reviews</span>
+                      </div>
+                    )}
+                    {(r.signals.sent > 0 || r.signals.replied > 0) && (
+                      <div class="v2-row-stat">
+                        <span class="v2-row-stat-num v2-signals-row">
+                          <span title="sent">📤{r.signals.sent}</span>
+                          {r.signals.replied > 0 && <span title="replied">💬{r.signals.replied}</span>}
+                        </span>
+                        <span class="v2-row-stat-label">signals</span>
+                      </div>
+                    )}
+                    {r.last_contact_at && (
+                      <div class="v2-row-stat">
+                        <span class="v2-row-stat-num">{fmtDaysAgo(r.last_contact_at)}</span>
+                        <span class="v2-row-stat-label">since last</span>
+                      </div>
+                    )}
+                  </div>
+                  <div class="v2-row-aside">
+                    {r.locale_now && <div class="v2-row-locale">{r.locale_now}</div>}
+                    {r.discord_thread_id && (
+                      <span class="v2-row-discord" onclick={`event.stopPropagation();event.preventDefault();window.open('${discordUrl(r.discord_thread_id)}','_blank');`}>→ Discord ↗</span>
+                    )}
+                  </div>
+                </a>
+              ))}
             </div>
           )}
         </section>
       ))}
-
-      <section class="admin-block admin-block-muted">
-        <header class="admin-block-head">
-          <p class="eyebrow">紧急操作 · CLI 救援</p>
-          <p class="admin-block-lede">日常推进在 Discord 进行。下列只在异常恢复时用 — admin 不直接写 entity（D8 决策）。</p>
-        </header>
-        <div class="v2-cli-grid">
-          <article class="v2-cli-card">
-            <span class="v2-cli-label">手动归档</span>
-            <code>npm run pl:advance -- &lt;entityKey&gt; --to archived --reason &lt;reason&gt;</code>
-          </article>
-          <article class="v2-cli-card">
-            <span class="v2-cli-label">标记需 Matthew 介入</span>
-            <code>npm run pl:advance -- &lt;entityKey&gt; --to needs-human</code>
-          </article>
-          <article class="v2-cli-card">
-            <span class="v2-cli-label">重新分级</span>
-            <code>npm run leads:run-pipeline -- --entity-key &lt;key&gt; --refetch</code>
-          </article>
-          <article class="v2-cli-card">
-            <span class="v2-cli-label">看上下文（agent 准备）</span>
-            <code>npm run pl:context -- &lt;entityKey&gt;</code>
-          </article>
-        </div>
-      </section>
 
       <footer class="admin-block-foot">
         <p>
@@ -245,135 +224,231 @@ const phasesActive = new Set(Object.keys(entities.reduce((acc, e) => { if (e.pha
 </Layout>
 
 <style is:global>
-  /* === V2 Leads board === */
-  .admin-block { padding: 22px 24px; border-bottom: 2px solid var(--pl-line); }
-  .admin-block:last-of-type { border-bottom: 0; }
-  .admin-block-head { margin-bottom: 14px; }
-  .admin-block-head .eyebrow { margin: 0; }
-  .admin-block-head-row { display: flex; align-items: baseline; gap: 14px; }
-  .admin-block-lede { margin: 6px 0 0; font-size: 14px; color: var(--pl-muted); max-width: 720px; }
-  .admin-block-muted { background: color-mix(in srgb, white 80%, var(--pl-cream)); }
+  /* === V2 Leads — action-first === */
+  .eyebrow-inline {
+    font-size: 10px; font-weight: 950; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--pl-muted);
+  }
   .admin-block-foot {
     padding: 18px 24px;
     border-top: 2px solid var(--pl-line);
     background: color-mix(in srgb, white 50%, var(--pl-cream));
     font-size: 13px;
   }
-  .admin-block-foot a {
-    color: var(--pl-blue);
-    text-decoration: none;
-    border-bottom: 1px solid var(--pl-line);
-  }
+  .admin-block-foot a { color: var(--pl-blue); text-decoration: none; border-bottom: 1px solid var(--pl-line); }
   .admin-block-foot a:hover { background: var(--pl-citrus); }
   .admin-block-foot code {
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 12px;
-    background: var(--pl-paper);
-    border: 1px solid var(--pl-line);
-    padding: 1px 6px;
-  }
-  .eyebrow-inline {
-    font-size: 10px;
-    font-weight: 950;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--pl-muted);
+    font-family: ui-monospace, monospace; font-size: 12px;
+    background: var(--pl-paper); border: 1px solid var(--pl-line); padding: 1px 6px;
   }
 
-  /* Override legacy sticky-th positioning — V2 pages don't have the 127px
-     fixed sub-header that .admin-table th's top:127px assumes. */
-  body:has([data-ui-version="local-style-2026-05-08"]) .v2-leads-table th {
-    position: static;
-    top: auto;
-    background: var(--pl-paper);
+  /* Attention bar — clickable jump cells */
+  .v2-attention-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 2px solid var(--pl-line);
     border-bottom: 2px solid var(--pl-line);
-    padding: 8px 10px;
-    text-align: left;
   }
-  body:has([data-ui-version="local-style-2026-05-08"]) .v2-leads-table {
-    min-width: unset;
-    table-layout: auto;
-  }
-  body:has([data-ui-version="local-style-2026-05-08"]) .v2-leads-table td {
-    padding: 12px 10px;
-    vertical-align: top;
-    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 18%, transparent);
-  }
-
-  /* Table cells */
-  .v2-lead-name {
+  .v2-attention-cell {
+    padding: 18px 24px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    border-right: 2px solid var(--pl-line);
+    background: var(--pl-paper);
     color: var(--pl-ink);
     text-decoration: none;
+    transition: background 80ms;
+  }
+  .v2-attention-cell:last-child { border-right: 0; }
+  .v2-attention-cell:hover { background: var(--pl-citrus); }
+  .v2-attention-hot { background: color-mix(in srgb, var(--pl-coral) 16%, var(--pl-paper)); }
+  .v2-attention-hot:hover { background: var(--pl-coral); color: white; }
+  .v2-attention-warm { background: color-mix(in srgb, var(--pl-citrus) 32%, var(--pl-paper)); }
+  .v2-attention-num {
+    font-family: var(--pl-display);
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .v2-attention-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* Group sections */
+  .v2-group {
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .v2-group:last-of-type { border-bottom: 0; }
+  .v2-group-head {
+    padding: 16px 24px 12px;
+    display: grid;
+    grid-template-columns: minmax(0, auto) 1fr;
+    gap: 18px;
+    align-items: baseline;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
+  }
+  .v2-group-head-left { display: flex; gap: 12px; align-items: baseline; }
+  .v2-group-title {
+    margin: 0;
+    font-family: var(--pl-display);
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .v2-group-count {
+    font-family: var(--pl-display);
+    font-size: 18px;
+    color: var(--pl-muted);
+  }
+  .v2-group-rationale {
+    margin: 0;
+    text-align: right;
+    font-size: 12.5px;
+    color: var(--pl-muted);
+    line-height: 1.4;
+  }
+  .v2-group-urgent .v2-group-head {
+    background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper));
+    border-bottom-color: var(--pl-coral);
+  }
+  .v2-group-replied .v2-group-head {
+    background: color-mix(in srgb, var(--pl-citrus) 24%, var(--pl-paper));
+  }
+  .v2-group-active .v2-group-head {
+    background: color-mix(in srgb, var(--pl-sky) 16%, var(--pl-paper));
+  }
+  .v2-group-awaiting .v2-group-head {
+    background: color-mix(in srgb, var(--pl-mint) 18%, var(--pl-paper));
+  }
+  .v2-group-archived .v2-group-head {
+    background: color-mix(in srgb, var(--pl-muted) 8%, var(--pl-paper));
+  }
+  .v2-group-empty {
+    margin: 0;
+    padding: 18px 24px;
+    color: var(--pl-muted);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* Row layout — dense + scannable */
+  .v2-row-list { background: var(--pl-paper); }
+  .v2-row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) auto;
+    gap: 18px;
+    padding: 14px 24px;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 12%, transparent);
+    color: var(--pl-ink);
+    text-decoration: none;
+    transition: background 80ms;
+    align-items: center;
+  }
+  .v2-row:last-child { border-bottom: 0; }
+  .v2-row:hover { background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper)); }
+  .v2-row-name {
+    margin: 0;
     font-family: var(--pl-display);
     font-size: 17px;
     font-weight: 700;
     line-height: 1.2;
-    border-bottom: 2px solid transparent;
   }
-  .v2-lead-name:hover { border-bottom-color: var(--pl-line); }
-  .v2-lead-key {
-    margin-top: 4px;
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 10.5px;
+  .v2-row-meta {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    font-size: 12px;
+  }
+  .v2-row-niche, .v2-row-city {
     color: var(--pl-muted);
+    font-size: 12px;
   }
-  .v2-cell-primary { font-size: 13px; font-weight: 700; }
-  .v2-cell-secondary { font-size: 11px; color: var(--pl-muted); margin-top: 2px; }
-  .v2-cell-muted { color: color-mix(in srgb, var(--pl-muted) 60%, transparent); }
-  .v2-cell-tag {
-    margin-top: 4px;
-    font-size: 10px;
-    font-weight: 950;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--pl-coral);
-  }
+  .v2-row-niche::before { content: '· '; }
+  .v2-row-city::before { content: '· '; }
 
-  /* Grade chips */
+  /* Chips inline in meta */
   .v2-grade-chip {
     display: inline-block;
-    padding: 4px 10px;
-    border: 2px solid var(--pl-line);
+    padding: 2px 9px;
+    border: 1.5px solid var(--pl-line);
     font-family: var(--pl-display);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     background: var(--pl-paper);
+    line-height: 1.3;
   }
   .v2-grade-chip-a { background: var(--pl-mint); }
   .v2-grade-chip-b { background: var(--pl-sky); }
   .v2-grade-chip-c { background: var(--pl-peach); }
   .v2-grade-chip-d { background: var(--pl-coral-soft); }
-
-  /* Phase chips */
   .v2-phase-chip {
     display: inline-block;
-    padding: 3px 9px;
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 11px;
+    padding: 2px 8px;
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
     font-weight: 700;
     border: 1px solid var(--pl-line);
+    line-height: 1.4;
   }
   .v2-phase-chip-awaiting { background: var(--pl-citrus); }
   .v2-phase-chip-outreach-active { background: var(--pl-sky); }
   .v2-phase-chip-replied { background: var(--pl-lilac); }
-  .v2-phase-chip-proposal-sent { background: color-mix(in srgb, var(--pl-lilac) 65%, var(--pl-blue)); }
+  .v2-phase-chip-proposal-sent { background: color-mix(in srgb, var(--pl-lilac) 60%, var(--pl-blue)); color: white; }
   .v2-phase-chip-nurture { background: var(--pl-mint); }
   .v2-phase-chip-paid { background: var(--pl-green); color: white; }
   .v2-phase-chip-archived { background: color-mix(in srgb, var(--pl-muted) 30%, white); }
   .v2-phase-chip-needs-human { background: var(--pl-coral); color: white; }
 
-  /* Signals */
-  .v2-signals {
-    display: flex;
-    gap: 8px;
-    font-size: 11px;
-    font-family: ui-monospace, SFMono-Regular, monospace;
+  .v2-reply-tag {
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--pl-coral);
+    border: 1px solid var(--pl-coral);
   }
-  .v2-signals span { display: inline-flex; align-items: baseline; gap: 2px; }
-  .v2-signals strong { font-size: 13px; font-weight: 700; font-family: var(--pl-display); }
 
-  /* Discord link */
-  .v2-discord-link {
+  /* Right: numeric stats inline */
+  .v2-row-stats {
+    display: flex;
+    gap: 22px;
+    align-items: baseline;
+  }
+  .v2-row-stat { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+  .v2-row-stat-num {
+    font-family: var(--pl-display);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .v2-row-stat-label {
+    font-size: 9.5px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pl-muted);
+  }
+  .v2-signals-row { display: flex; gap: 6px; font-family: ui-monospace, monospace; font-size: 14px; }
+
+  /* Right-most: locale + Discord */
+  .v2-row-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .v2-row-locale {
+    font-family: ui-monospace, monospace;
+    font-size: 11.5px;
+    color: var(--pl-muted);
+  }
+  .v2-row-discord {
     display: inline-block;
     padding: 3px 10px;
     border: 1.5px solid var(--pl-line);
@@ -382,55 +457,21 @@ const phasesActive = new Set(Object.keys(entities.reduce((acc, e) => { if (e.pha
     font-size: 11px;
     font-weight: 700;
     text-decoration: none;
+    cursor: pointer;
   }
-  .v2-discord-link:hover { background: var(--pl-blue); color: white; }
+  .v2-row-discord:hover { background: var(--pl-blue); color: white; }
 
-  /* Empty group */
-  .v2-empty {
-    padding: 18px 24px;
-    margin: 0;
-    color: var(--pl-muted);
-    font-style: italic;
-    font-size: 14px;
-    border: 1px dashed var(--pl-line);
-    background: var(--pl-paper);
-  }
-
-  /* CLI rescue card grid */
-  .v2-cli-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0;
-    border: 2px solid var(--pl-line);
-    background: var(--pl-paper);
-  }
-  .v2-cli-card {
-    padding: 14px 18px;
-    border-right: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent);
-    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent);
-  }
-  .v2-cli-card:nth-child(2n) { border-right: 0; }
-  .v2-cli-card:nth-last-child(-n+2) { border-bottom: 0; }
-  .v2-cli-label {
-    display: block;
-    font-size: 11px;
-    font-weight: 950;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--pl-muted);
-    margin-bottom: 6px;
-  }
-  .v2-cli-card code {
-    display: block;
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 12px;
-    color: var(--pl-ink);
-    white-space: pre-wrap;
-    word-break: break-all;
-  }
-
-  @media (max-width: 880px) {
-    .v2-cli-grid { grid-template-columns: 1fr; }
-    .v2-cli-card { border-right: 0 !important; border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent) !important; }
+  @media (max-width: 960px) {
+    .v2-attention-strip { grid-template-columns: repeat(2, 1fr); }
+    .v2-attention-cell:nth-child(2n) { border-right: 0; }
+    .v2-attention-cell:nth-child(-n+2) { border-bottom: 2px solid var(--pl-line); }
+    .v2-row {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .v2-row-stats { flex-wrap: wrap; gap: 14px; }
+    .v2-row-aside { align-items: flex-start; flex-direction: row; gap: 12px; }
+    .v2-group-head { grid-template-columns: 1fr; }
+    .v2-group-rationale { text-align: left; }
   }
 </style>

@@ -31,7 +31,16 @@ const clientSlug = entity.promotedClientSlug || slugify(latest.name || '');
 let manifest = null;
 try { manifest = readManifest(clientSlug); } catch {}
 
-const embed = renderProfileCard(entity, { audit });
+const embedRaw = renderProfileCard(entity, { audit });
+// Filter out placeholder fields ("—" / "(none)" / "未知") — they make the card look hollow
+function isEmpty(val) {
+  const s = String(val || '').trim();
+  return s === '—' || s === '(none)' || s === 'NONE' || s === '0' || s === '' || s === '0 reviews';
+}
+const embed = {
+  ...embedRaw,
+  fields: embedRaw.fields.filter((f) => !isEmpty(f.value)),
+};
 
 const recentHistory = (entity.history || []).slice(-10).reverse();
 const discordThreadUrl = entity.discord_thread_id ? `https://discord.com/channels/@me/${entity.discord_thread_id}` : null;
