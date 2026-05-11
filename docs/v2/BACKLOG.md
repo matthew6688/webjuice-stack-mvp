@@ -23,12 +23,15 @@
 
 ## 🚦 当前可立刻启用（你的动作，无需我介入）
 
+> 详细决策见 [SCALING_AND_PRICING.md](SCALING_AND_PRICING.md)
+
 | # | 任务 | 时长 | 命令 |
 |---|---|---|---|
 | **U.1** | Roll Cloudflare Global API Key（之前在聊天贴出）| 1 min | CF dashboard → My Profile → API Tokens → Change Key |
-| **U.2** | 启用 `pl-reply-poll` cron（every 5m） | 30s | `hermes cron resume f5c76d685a1d` |
-| **U.3** | 启用 `pl-daily-tick` cron（daily 9am） | 30s | `hermes cron resume 71a491d0d6bc` |
-| **U.4** | 发第一封真 cold outreach | 5 min | `npm run pl:email-draft -- <key>` → review → `npm run pl:email-send -- <key> ... --no-dry-run` |
+| **U.2** | **升级 CF Workers Paid ($5/月)** | 1 min | dashboard → Workers & Pages → Plan → Workers Paid |
+| **U.3** | 启用 `pl-reply-poll` cron（every 5m） | 30s | `hermes cron resume f5c76d685a1d` |
+| **U.4** | 启用 `pl-daily-tick` cron（daily 9am） | 30s | `hermes cron resume 71a491d0d6bc` |
+| **U.5** | 发第一封真 cold outreach | 5 min | `npm run pl:email-draft -- <key>` → review → `npm run pl:email-send -- <key> ... --no-dry-run` |
 
 ---
 
@@ -86,6 +89,19 @@
 
 ## 🔵 闭环健壮性（我可以做，等你 say go）
 
+### H.0 — Pages slot monitoring + 30-day TTL preview cleanup ⭐ 现在做
+- **背景**：CF Pages 100 slot 是 hard cap，slot 释放靠主动删 stale demo
+- **三步**：
+  1. `scripts/cli/pl-pages-ttl-tick.js` — 扫所有 Pages projects，删除满足条件的：
+     - 创建超过 30 天
+     - 关联 entity 状态 ∈ {skipped, archived, manual_review > 30d}
+     - 没有 paid_intake 记录
+  2. 注册 Hermes weekly cron 默认 paused（首次手动验证）
+  3. admin/v2/ 加 "active Pages: N/100" 计数，N≥80 推 Discord 告警
+- **依赖**：无新基建
+- **时长**：~3h
+- **关联**：[SCALING_AND_PRICING.md §5 U.3](SCALING_AND_PRICING.md)
+
 ### H.1 — P1.4 Emergency action POST handlers（1.5h）
 - 当前 admin 只暴露 copy-paste 命令
 - 加 3 个按钮 → POST `/api/admin/pl-advance` → 内部 spawn `npm run pl:advance`
@@ -119,7 +135,19 @@
 - 每次 tick 写 `data/leads/cron-health.jsonl`
 - KPI 页面读，操作员能看到"reply-poll 上次成功 X 分钟前"
 
-### H.9 — Admin pages SSR runtime（根本解决 entity 快照问题）⚠ 长期必做
+### H.9.b — Pages slot 解锁：迁移到 R2 + Workers routing 🚨 触发后必做
+- **触发条件**：当 active Pages projects (含 customer sites) ≥ 80 时启动
+- **背景**：CF Pages 每账号 100 projects 硬上限；不是钱的问题
+- **方案**：详见 [SCALING_AND_PRICING.md §6](SCALING_AND_PRICING.md)
+  - 1 个 Worker 按 hostname 路由 → R2 bucket
+  - 1 客户 = 1 个 R2 key prefix（不再占 Pages slot）
+  - 老 100 Pages projects 分批迁移
+- **预算**：~25h 一次性工程
+- **月成本**：$5-15（Workers req + R2 storage）
+- **risk 缓解**：蓝绿部署 30 天 + 灰度 10 客户先验
+- **客户感知**：0（DNS CNAME 切换即可）
+
+### H.9.a — Admin pages SSR runtime（根本解决 entity 快照问题）⚠ 长期必做
 - **背景**：当前 admin 是 static build，entity 状态变化要 commit + push + 重 deploy 才在 live 显示
 - **现状决策**：暂走 D — admin 是部署时快照，真推进在 Discord（D8）
 - **长期方向**：改 CF Pages Functions SSR
