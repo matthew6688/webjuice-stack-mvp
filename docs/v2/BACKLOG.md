@@ -108,6 +108,16 @@
 - 每次 tick 写 `data/leads/cron-health.jsonl`
 - KPI 页面读，操作员能看到"reply-poll 上次成功 X 分钟前"
 
+### H.9 — Admin pages SSR runtime（根本解决 entity 快照问题）⚠ 长期必做
+- **背景**：当前 admin 是 static build，entity 状态变化要 commit + push + 重 deploy 才在 live 显示
+- **现状决策**：暂走 D — admin 是部署时快照，真推进在 Discord（D8）
+- **长期方向**：改 CF Pages Functions SSR
+  - entity 数据迁到 R2（JSON blob）或 D1（SQLite）
+  - admin pages 改成 CF Functions handler，运行时读
+  - 实时反映 phase/thread_id/signals 变化，无需重新 deploy
+- **时机**：当 admin 真成为日常工作面，或 entity 数量 > 200 时（git 太重）
+- **依赖**：先做 H.8 push hook（webhook 写 R2 而不是 git）
+
 ### H.8 — agentic-inbox push hook（替代 pull）
 - 当前 pull 5min 延迟
 - 加 1 个 hook 到 agentic-inbox worker `receiveEmail` 函数末尾，POST 到 profitslocal webhook

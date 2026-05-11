@@ -7,15 +7,14 @@ import { renderProfileCard } from '../../../../core/funnel/profile-card.js';
 import { readDetailedAudit } from '../../../../core/funnel/lead-thread-helpers.js';
 import { readManifest } from '../../../../core/leads/asset-manifest.js';
 
-// Static-output dynamic route: emit one page per graded entity
+const uiVersion = 'local-style-2026-05-08';
+
 export async function getStaticPaths() {
   const dir = path.join(process.cwd(), 'data', 'leads', 'entities');
   if (!fs.existsSync(dir)) return [];
   const entities = fs.readdirSync(dir)
     .filter((f) => f.endsWith('.json'))
-    .map((f) => {
-      try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; }
-    })
+    .map((f) => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } })
     .filter((e) => e && e.grade?.investment_level);
   return entities.map((entity) => ({ params: { entityKey: entity.entityKey }, props: { entity } }));
 }
@@ -32,146 +31,453 @@ const clientSlug = entity.promotedClientSlug || slugify(latest.name || '');
 let manifest = null;
 try { manifest = readManifest(clientSlug); } catch {}
 
-// Re-use the SAME render function as Discord profile card — same data shape
 const embed = renderProfileCard(entity, { audit });
 
-function gradeColor(level) {
-  return level === 'A' ? 'bg-green-100 text-green-800 border-green-300'
-    : level === 'B' ? 'bg-blue-100 text-blue-800 border-blue-300'
-    : level === 'C' ? 'bg-gray-100 text-gray-700 border-gray-300'
-    : 'bg-red-100 text-red-800 border-red-300';
-}
-function phaseColor(phase) {
-  return phase === 'awaiting' ? 'bg-yellow-100 text-yellow-800'
-    : phase === 'outreach-active' ? 'bg-blue-100 text-blue-800'
-    : phase === 'replied' ? 'bg-purple-100 text-purple-800'
-    : phase === 'proposal-sent' ? 'bg-indigo-100 text-indigo-800'
-    : phase === 'paid' ? 'bg-green-100 text-green-800'
-    : phase === 'archived' ? 'bg-gray-100 text-gray-600'
-    : phase === 'needs-human' ? 'bg-orange-100 text-orange-800'
-    : phase === 'nurture' ? 'bg-cyan-100 text-cyan-800'
-    : 'bg-gray-50 text-gray-500';
-}
-
 const recentHistory = (entity.history || []).slice(-10).reverse();
-const discordThreadUrl = entity.discord_thread_id
-  ? `https://discord.com/channels/@me/${entity.discord_thread_id}`
-  : null;
+const discordThreadUrl = entity.discord_thread_id ? `https://discord.com/channels/@me/${entity.discord_thread_id}` : null;
 const lastRefreshed = new Date().toISOString();
+const fmtDaysAgo = (iso) => {
+  if (!iso) return '—';
+  const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  return d < 1 ? 'today' : `${d}d`;
+};
 ---
-<Layout title={`Lead: ${latest.name || entity.entityKey}`}>
-  <main class="mx-auto max-w-6xl px-4 py-6">
-    <div class="mb-4 flex items-center justify-between">
-      <div>
-        <a href="/admin/v2-leads" class="text-sm text-indigo-600 hover:underline">← V2 Leads</a>
-        <h1 class="mt-1 text-2xl font-semibold">{latest.name || entity.entityKey}</h1>
-        <p class="text-sm text-gray-500 font-mono">{entity.entityKey}</p>
+<Layout title={`Lead: ${latest.name || entity.entityKey}`} active="leads">
+  <section class="poster-section admin-section" data-ui-version={uiVersion}>
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow"><a href="/admin/v2-leads/" class="eyebrow-link">← V2 Leads</a></p>
+          <h1>{latest.name || entity.entityKey}</h1>
+          <p class="lede">{latest.address || '— 地址未识别 —'}</p>
+        </div>
+        <div class="v2-detail-status">
+          <span class={`v2-grade-chip v2-grade-chip-${grade.investment_level?.toLowerCase()}`}>{grade.investment_level}{grade.product_tier ? `/${grade.product_tier}` : ''}</span>
+          {entity.phase && <span class={`v2-phase-chip v2-phase-chip-${entity.phase}`}>{entity.phase}</span>}
+          {entity.last_reply_class && <span class="v2-reply-tag">[{entity.last_reply_class}]</span>}
+          {discordThreadUrl && (
+            <a class="v2-discord-link" href={discordThreadUrl} target="_blank">→ Discord thread ↗</a>
+          )}
+          {entity.do_not_contact && <span class="v2-warn-chip">DO NOT CONTACT</span>}
+        </div>
       </div>
-      <div class="text-xs text-gray-500">Last refreshed: <span class="font-mono">{lastRefreshed}</span></div>
-    </div>
 
-    <!-- Status badges -->
-    <div class="mb-4 flex flex-wrap gap-2">
-      <span class={`rounded border px-2 py-1 text-xs font-semibold ${gradeColor(grade.investment_level)}`}>
-        Grade {grade.investment_level}{grade.product_tier ? `/${grade.product_tier}` : ''}
-      </span>
-      <span class={`rounded px-2 py-1 text-xs ${phaseColor(entity.phase)}`}>
-        Phase: {entity.phase || '—'}{entity.sub_status && ` (${entity.sub_status})`}
-      </span>
-      {entity.last_reply_class && (
-        <span class="rounded bg-purple-50 text-purple-700 px-2 py-1 text-xs">
-          Last reply: {entity.last_reply_class}
-        </span>
-      )}
-      {entity.do_not_contact && (
-        <span class="rounded bg-red-100 text-red-800 px-2 py-1 text-xs font-semibold">DO NOT CONTACT</span>
-      )}
-      {discordThreadUrl && (
-        <a href={discordThreadUrl} target="_blank" class="rounded bg-indigo-100 text-indigo-800 hover:bg-indigo-200 px-2 py-1 text-xs">
-          → Discord thread
-        </a>
-      )}
-    </div>
+      <div class="v2-detail-layout">
+        <!-- LEFT: Profile card (Discord-parity) -->
+        <section class="v2-card-frame">
+          <header class="v2-card-frame-head" style={`border-left: 8px solid #${embed.color.toString(16).padStart(6, '0')}`}>
+            <p class="eyebrow">Profile card · Discord 同源</p>
+            <h2>{embed.title}</h2>
+            <p class="v2-card-frame-desc">{embed.description}</p>
+          </header>
+          <div class="v2-meta-grid">
+            {embed.fields.map((f) => (
+              <div class={`v2-meta-cell ${f.inline ? '' : 'v2-meta-cell-wide'}`}>
+                <dt>{f.name}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            ))}
+          </div>
+          <footer class="v2-card-frame-foot">
+            <code>{embed.footer?.text}</code>
+            <span class="v2-card-frame-sep">·</span>
+            <code>{embed.timestamp}</code>
+          </footer>
+        </section>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- LEFT (2/3): profile card from same function as Discord -->
-      <section class="lg:col-span-2 rounded border bg-white">
-        <div class="p-4 border-b" style={`border-left: 6px solid #${embed.color.toString(16).padStart(6,'0')}`}>
-          <h2 class="text-lg font-semibold">{embed.title}</h2>
-          <p class="text-sm text-gray-600 mt-1">{embed.description}</p>
-        </div>
-        <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-          {embed.fields.map((f) => (
-            <div class={f.inline ? '' : 'md:col-span-2'}>
-              <div class="text-xs uppercase tracking-wide text-gray-500">{f.name}</div>
-              <div class="mt-0.5 whitespace-pre-line break-words">{f.value}</div>
-            </div>
-          ))}
-        </div>
-        <div class="px-4 py-2 border-t bg-gray-50 text-xs text-gray-500 font-mono">
-          {embed.footer?.text} · {embed.timestamp}
-        </div>
-      </section>
-
-      <!-- RIGHT (1/3): assets + history -->
-      <aside class="space-y-4">
-        <!-- Assets -->
-        <section class="rounded border bg-white p-4">
-          <h3 class="text-sm font-semibold mb-2">Assets ({manifest?.assets?.length || 0})</h3>
-          {manifest?.assets?.length ? (
-            <ul class="space-y-2 text-sm">
-              {manifest.assets.map((a) => (
-                <li class="border-b last:border-b-0 pb-2">
-                  <div class="flex items-start justify-between">
-                    <div class="flex-1 min-w-0">
-                      <div class="font-medium text-sm">{a.label}</div>
-                      <div class="text-xs text-gray-500">type=<code>{a.type}</code></div>
-                      <div class="text-xs text-gray-400 font-mono truncate" title={a.localPath}>{a.localPath}</div>
+        <!-- RIGHT: Assets / History / CLI -->
+        <aside class="v2-detail-aside">
+          <section class="admin-block-mini">
+            <header class="admin-block-mini-head">
+              <p class="eyebrow">Assets</p>
+              <span class="admin-block-mini-count">{manifest?.assets?.length || 0}</span>
+            </header>
+            {manifest?.assets?.length ? (
+              <ul class="v2-asset-list">
+                {manifest.assets.map((a) => (
+                  <li class="v2-asset-row">
+                    <div class="v2-asset-main">
+                      <div class="v2-asset-label">{a.label}</div>
+                      <div class="v2-asset-meta">
+                        <code class="v2-asset-type">{a.type}</code>
+                        <code class="v2-asset-path">{a.localPath}</code>
+                      </div>
                     </div>
-                    {a.cloudinaryUrl && (
-                      <a href={a.cloudinaryUrl} target="_blank" class="text-xs text-indigo-600 hover:underline shrink-0">CDN ↗</a>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p class="text-xs text-gray-500">— no manifest registered —</p>
-          )}
-        </section>
+                    {a.cloudinaryUrl && <a class="v2-cdn-link" href={a.cloudinaryUrl} target="_blank">CDN ↗</a>}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="v2-empty-inline">— 未注册 manifest，跑 <code>npm run leads:migrate-existing-assets</code></p>
+            )}
+          </section>
 
-        <!-- Recent history -->
-        <section class="rounded border bg-white p-4">
-          <h3 class="text-sm font-semibold mb-2">Recent history</h3>
-          {recentHistory.length ? (
-            <ul class="space-y-1.5 text-xs">
-              {recentHistory.map((h) => (
-                <li>
-                  <div class="font-mono text-gray-500">{h.at?.slice(0, 19)}</div>
-                  <div>
-                    <span class="font-medium">{h.event}</span>
-                    {h.from && h.to && <span class="text-gray-600"> {h.from}→{h.to}</span>}
-                    {h.note && <div class="text-gray-500 italic mt-0.5">{h.note}</div>}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p class="text-xs text-gray-500">— no history yet —</p>
-          )}
-        </section>
+          <section class="admin-block-mini">
+            <header class="admin-block-mini-head">
+              <p class="eyebrow">Recent history</p>
+              <span class="admin-block-mini-count">{recentHistory.length}</span>
+            </header>
+            {recentHistory.length ? (
+              <ol class="v2-history">
+                {recentHistory.map((h) => (
+                  <li class="v2-history-row">
+                    <time>{h.at?.slice(0, 19)}</time>
+                    <div>
+                      <strong>{h.event}</strong>
+                      {h.from && h.to && <span class="v2-history-arrow"> {h.from} → {h.to}</span>}
+                      {h.note && <p class="v2-history-note">{h.note}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p class="v2-empty-inline">— 暂无 history —</p>
+            )}
+          </section>
 
-        <!-- Emergency actions -->
-        <section class="rounded border bg-yellow-50 p-4">
-          <h3 class="text-sm font-semibold mb-2">紧急操作（CLI）</h3>
-          <ul class="space-y-1 text-xs font-mono">
-            <li><code class="break-all">npm run pl:advance -- {entity.entityKey} --to archived --reason &lt;reason&gt;</code></li>
-            <li><code class="break-all">npm run pl:advance -- {entity.entityKey} --to needs-human</code></li>
-            <li><code class="break-all">npm run pl:show -- {entity.entityKey}</code></li>
-            <li><code class="break-all">npm run pl:context -- {entity.entityKey}</code></li>
-          </ul>
-        </section>
-      </aside>
+          <section class="admin-block-mini admin-block-mini-muted">
+            <header class="admin-block-mini-head">
+              <p class="eyebrow">紧急 CLI</p>
+            </header>
+            <ul class="v2-cli-mini-list">
+              <li><span>显示</span><code>npm run pl:show -- {entity.entityKey}</code></li>
+              <li><span>Agent 上下文</span><code>npm run pl:context -- {entity.entityKey}</code></li>
+              <li><span>归档</span><code>npm run pl:advance -- {entity.entityKey} --to archived --reason &lt;reason&gt;</code></li>
+              <li><span>标记需介入</span><code>npm run pl:advance -- {entity.entityKey} --to needs-human</code></li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="admin-block-foot">
+        <p>
+          <span class="eyebrow-inline">Last refreshed</span>
+          <code>{lastRefreshed}</code>
+          ·
+          <span class="eyebrow-inline">EntityKey</span>
+          <code>{entity.entityKey}</code>
+        </p>
+      </footer>
     </div>
-  </main>
+  </section>
 </Layout>
+
+<style is:global>
+  .admin-block-foot {
+    padding: 18px 24px;
+    border-top: 2px solid var(--pl-line);
+    background: color-mix(in srgb, white 50%, var(--pl-cream));
+    font-size: 13px;
+  }
+  .admin-block-foot code {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 12px;
+    background: var(--pl-paper);
+    border: 1px solid var(--pl-line);
+    padding: 1px 6px;
+  }
+  .eyebrow-inline {
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pl-muted);
+  }
+  .eyebrow-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .eyebrow-link:hover { background: var(--pl-citrus); }
+
+  /* Status pills in header */
+  .v2-detail-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-self: end;
+    justify-self: end;
+  }
+  .v2-grade-chip {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 2px solid var(--pl-line);
+    font-family: var(--pl-display);
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--pl-paper);
+  }
+  .v2-grade-chip-a { background: var(--pl-mint); }
+  .v2-grade-chip-b { background: var(--pl-sky); }
+  .v2-grade-chip-c { background: var(--pl-peach); }
+  .v2-grade-chip-d { background: var(--pl-coral-soft); }
+  .v2-phase-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--pl-line);
+  }
+  .v2-phase-chip-awaiting { background: var(--pl-citrus); }
+  .v2-phase-chip-outreach-active { background: var(--pl-sky); }
+  .v2-phase-chip-replied { background: var(--pl-lilac); }
+  .v2-phase-chip-proposal-sent { background: color-mix(in srgb, var(--pl-lilac) 60%, var(--pl-blue)); color: white; }
+  .v2-phase-chip-nurture { background: var(--pl-mint); }
+  .v2-phase-chip-paid { background: var(--pl-green); color: white; }
+  .v2-phase-chip-archived { background: color-mix(in srgb, var(--pl-muted) 30%, white); }
+  .v2-phase-chip-needs-human { background: var(--pl-coral); color: white; }
+  .v2-reply-tag {
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pl-coral);
+    border: 1px solid var(--pl-coral);
+  }
+  .v2-warn-chip {
+    padding: 4px 10px;
+    background: var(--pl-coral);
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .v2-discord-link {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-lilac);
+    color: var(--pl-ink);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .v2-discord-link:hover { background: var(--pl-blue); color: white; }
+
+  /* Two-column layout */
+  .v2-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 0;
+    border-top: 2px solid var(--pl-line);
+  }
+
+  /* Profile card frame (Discord-parity) */
+  .v2-card-frame {
+    border-right: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+  }
+  .v2-card-frame-head {
+    padding: 22px 24px;
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .v2-card-frame-head .eyebrow { margin: 0 0 8px; }
+  .v2-card-frame-head h2 {
+    margin: 0;
+    font-family: var(--pl-display);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .v2-card-frame-desc {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--pl-muted);
+  }
+  .v2-meta-grid {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .v2-meta-cell {
+    padding: 14px 20px;
+    border-right: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
+    min-height: 70px;
+  }
+  .v2-meta-cell:nth-child(2n) { border-right: 0; }
+  .v2-meta-cell-wide {
+    grid-column: 1 / -1;
+    border-right: 0;
+  }
+  .v2-meta-cell dt {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pl-muted);
+  }
+  .v2-meta-cell dd {
+    margin: 6px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: pre-line;
+    word-break: break-word;
+  }
+  .v2-card-frame-foot {
+    padding: 12px 20px;
+    background: color-mix(in srgb, white 30%, var(--pl-cream));
+    font-size: 11px;
+    color: var(--pl-muted);
+  }
+  .v2-card-frame-foot code {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    background: var(--pl-paper);
+    border: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
+    padding: 1px 5px;
+  }
+  .v2-card-frame-sep { margin: 0 6px; }
+
+  /* Aside: assets/history/CLI */
+  .v2-detail-aside { background: color-mix(in srgb, white 70%, var(--pl-cream)); }
+  .admin-block-mini {
+    padding: 16px 20px;
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .admin-block-mini:last-child { border-bottom: 0; }
+  .admin-block-mini-muted { background: var(--pl-cream); }
+  .admin-block-mini-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .admin-block-mini-head .eyebrow { margin: 0; }
+  .admin-block-mini-count {
+    margin-left: auto;
+    font-family: var(--pl-display);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .v2-asset-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
+  }
+  .v2-asset-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 15%, transparent);
+  }
+  .v2-asset-row:last-child { border-bottom: 0; }
+  .v2-asset-main { flex: 1; min-width: 0; }
+  .v2-asset-label { font-size: 13px; font-weight: 700; }
+  .v2-asset-meta { display: flex; gap: 6px; margin-top: 3px; align-items: baseline; flex-wrap: wrap; }
+  .v2-asset-type {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    background: var(--pl-paper);
+    border: 1px solid var(--pl-line);
+    padding: 1px 6px;
+    text-transform: lowercase;
+  }
+  .v2-asset-path {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--pl-muted);
+    overflow-wrap: anywhere;
+  }
+  .v2-cdn-link {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pl-blue);
+    text-decoration: none;
+    border-bottom: 1px solid var(--pl-blue);
+  }
+  .v2-cdn-link:hover { background: var(--pl-citrus); }
+
+  .v2-history {
+    list-style: none;
+    counter-reset: hist;
+    margin: 0;
+    padding: 0;
+  }
+  .v2-history-row {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 15%, transparent);
+    align-items: baseline;
+    font-size: 12px;
+  }
+  .v2-history-row:last-child { border-bottom: 0; }
+  .v2-history-row time {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--pl-muted);
+  }
+  .v2-history-row strong { font-size: 12.5px; }
+  .v2-history-arrow {
+    font-family: ui-monospace, monospace;
+    color: var(--pl-blue);
+  }
+  .v2-history-note {
+    margin: 4px 0 0;
+    font-size: 11px;
+    color: var(--pl-muted);
+    font-style: italic;
+  }
+
+  .v2-cli-mini-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .v2-cli-mini-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 15%, transparent);
+  }
+  .v2-cli-mini-list li:last-child { border-bottom: 0; }
+  .v2-cli-mini-list span {
+    display: block;
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pl-muted);
+    margin-bottom: 3px;
+  }
+  .v2-cli-mini-list code {
+    font-family: ui-monospace, monospace;
+    font-size: 11.5px;
+    word-break: break-all;
+    display: block;
+  }
+
+  .v2-empty-inline {
+    margin: 0;
+    padding: 12px;
+    background: var(--pl-paper);
+    border: 1px dashed var(--pl-line);
+    color: var(--pl-muted);
+    font-size: 12px;
+    font-style: italic;
+  }
+  .v2-empty-inline code {
+    font-family: ui-monospace, monospace;
+    font-style: normal;
+    background: white;
+    border: 1px solid var(--pl-line);
+    padding: 1px 5px;
+  }
+
+  @media (max-width: 980px) {
+    .v2-detail-layout { grid-template-columns: 1fr; }
+    .v2-card-frame { border-right: 0; border-bottom: 2px solid var(--pl-line); }
+    .v2-meta-grid { grid-template-columns: 1fr; }
+    .v2-meta-cell { border-right: 0; }
+  }
+</style>

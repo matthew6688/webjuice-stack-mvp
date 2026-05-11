@@ -1,14 +1,11 @@
 ---
 import Layout from '../../layouts/AdminLayout.astro';
-import { siteConfig } from '../../config/site';
 import fs from 'fs';
 import path from 'path';
 import { deriveLocale, nowInLocale } from '../../../core/leads/locale.js';
 import { readDetailedAudit } from '../../../core/funnel/lead-thread-helpers.js';
 
-// V2 lead admin — DISCORD_OUTREACH_PRD.md §8.1
-// Single source of truth = entity JSON. This page reads + renders + never writes.
-// Discord profile card and this page share the SAME field set (PRD §8.1.2).
+const uiVersion = 'local-style-2026-05-08';
 
 const entitiesDir = path.join(process.cwd(), 'data', 'leads', 'entities');
 const entities = fs.existsSync(entitiesDir)
@@ -23,30 +20,6 @@ for (const e of graded) {
   if (byGrade[g]) byGrade[g].push(e);
 }
 
-const byPhase = {};
-for (const e of entities) {
-  const p = e.phase || '_unset';
-  byPhase[p] = (byPhase[p] || 0) + 1;
-}
-
-const lastRefreshed = new Date().toISOString();
-
-function badgeClass(level) {
-  return level === 'A' ? 'bg-green-100 text-green-800'
-    : level === 'B' ? 'bg-blue-100 text-blue-800'
-    : level === 'C' ? 'bg-gray-100 text-gray-700'
-    : 'bg-red-100 text-red-800';
-}
-function phaseClass(phase) {
-  return phase === 'awaiting' ? 'bg-yellow-100 text-yellow-800'
-    : phase === 'outreach-active' ? 'bg-blue-100 text-blue-800'
-    : phase === 'replied' ? 'bg-purple-100 text-purple-800'
-    : phase === 'proposal-sent' ? 'bg-indigo-100 text-indigo-800'
-    : phase === 'paid' ? 'bg-green-100 text-green-800'
-    : phase === 'archived' ? 'bg-gray-100 text-gray-600'
-    : phase === 'needs-human' ? 'bg-orange-100 text-orange-800'
-    : 'bg-gray-50 text-gray-500';
-}
 function fmtDaysAgo(iso) {
   if (!iso) return '—';
   const ms = Date.now() - new Date(iso).getTime();
@@ -74,109 +47,370 @@ function row(e) {
     audit_decision: audit?.decision ?? null,
     rating: e.latest?.rating,
     reviews: e.latest?.review_count,
-    phone: e.latest?.phone,
-    email: e.latest?.email,
-    website: e.latest?.website,
     last_contact_at: e.last_contact_at,
     last_reply_class: e.last_reply_class,
-    signals_summary: `📤${s.sent ?? 0} 📧${s.opened ?? 0} 🔗${s.clicked ?? 0} 💬${s.replied ?? 0}`,
+    signals: { sent: s.sent ?? 0, opened: s.opened ?? 0, clicked: s.clicked ?? 0, replied: s.replied ?? 0 },
     locale_now: nowInLocale(locale),
     discord_thread_id: e.discord_thread_id,
-    pricing: e.grade?.recommended_pricing?.one_time || '—',
   };
 }
 
 const groups = {
-  ready_a: byGrade.A.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row),
-  ready_b: byGrade.B.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row),
-  ready_c: byGrade.C.filter((e) => !['paid', 'archived'].includes(e.phase)).map(row),
-  in_conversation: graded.filter((e) => e.phase === 'replied' || e.phase === 'proposal-sent').map(row),
-  archived: byGrade.D.map(row),
+  ready_a: { label: '就绪 · A 全攻', tone: 'a', rows: byGrade.A.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row) },
+  ready_b: { label: '就绪 · B 试探', tone: 'b', rows: byGrade.B.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row) },
+  ready_c: { label: '就绪 · C 批量', tone: 'c', rows: byGrade.C.filter((e) => !['paid', 'archived'].includes(e.phase)).map(row) },
+  in_conversation: { label: '对话中', tone: 'replied', rows: graded.filter((e) => e.phase === 'replied' || e.phase === 'proposal-sent').map(row) },
+  archived: { label: '归档', tone: 'archived', rows: byGrade.D.map(row) },
 };
 
-const title = 'V2 Leads — Discord-driven';
+const lastRefreshed = new Date().toISOString();
+const phasesActive = new Set(Object.keys(entities.reduce((acc, e) => { if (e.phase) acc[e.phase] = 1; return acc; }, {})));
 ---
-<Layout title={title}>
-  <main class="mx-auto max-w-7xl px-4 py-6">
-    <div class="mb-4 flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">{title}</h1>
-      <div class="text-sm text-gray-500">Last refreshed: <span class="font-mono">{lastRefreshed}</span> · 单一来源: entity JSON · 推进面: Discord</div>
-    </div>
+<Layout title="V2 Leads — Discord-driven" active="leads">
+  <section class="poster-section admin-section" data-ui-version={uiVersion}>
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">V2 Leads · Discord-driven</p>
+          <h1>Lead 看板</h1>
+          <p class="lede">A/B 就绪后自动开 forum thread。日常推进在 Discord — 这里看快照、找入口、紧急时跑 CLI 救援。</p>
+        </div>
+        <div class="admin-count">
+          <strong>{graded.length}</strong>
+          <span>Graded</span>
+        </div>
+      </div>
 
-    <!-- 概览 -->
-    <section class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">Entities</div><div class="text-xl font-semibold">{entities.length}</div></div>
-      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">Graded A/B/C</div><div class="text-xl font-semibold">{byGrade.A.length + byGrade.B.length + byGrade.C.length}</div></div>
-      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">Active phases</div><div class="text-xl font-semibold">{Object.keys(byPhase).filter((p) => p !== '_unset').length}</div></div>
-      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">In conversation</div><div class="text-xl font-semibold">{groups.in_conversation.length}</div></div>
-    </section>
+      <div class="admin-summary-strip admin-summary-strip-compact">
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">A 全攻</span>
+          <strong>{byGrade.A.length}</strong>
+          <p>sonnet 个性化邮件 · 4h heartbeat</p>
+        </article>
+        <article class="admin-summary-tile admin-summary-primary">
+          <span class="admin-summary-label">B 试探</span>
+          <strong>{byGrade.B.length}</strong>
+          <p>haiku 邮件 · 12h heartbeat</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">C 批量</span>
+          <strong>{byGrade.C.length}</strong>
+          <p>haiku 批量模板，无 thread</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">D 自动归档</span>
+          <strong>{byGrade.D.length}</strong>
+          <p>hard-skip 命中，不投入</p>
+        </article>
+        <article class="admin-summary-tile">
+          <span class="admin-summary-label">活跃 phase</span>
+          <strong>{phasesActive.size}</strong>
+          <p>{phasesActive.size === 0 ? '本地 entity 未推送' : '看下方分组分布'}</p>
+        </article>
+      </div>
 
-    {(['ready_a', 'ready_b', 'ready_c', 'in_conversation', 'archived'] as const).map((key) => (
-      <section class="mb-8" id={key}>
-        <h2 class="mb-2 text-lg font-semibold flex items-center gap-2">
-          <span>{
-            key === 'ready_a' ? '就绪 · A 全攻' :
-            key === 'ready_b' ? '就绪 · B 试探' :
-            key === 'ready_c' ? '就绪 · C 批量' :
-            key === 'in_conversation' ? '对话中（replied / proposal-sent）' :
-            '归档（D 自动）'
-          }</span>
-          <span class="text-sm text-gray-500">({groups[key].length})</span>
-        </h2>
-        {groups[key].length === 0 ? (
-          <p class="text-sm text-gray-500">无</p>
-        ) : (
-          <div class="overflow-x-auto rounded border bg-white">
-            <table class="w-full text-sm">
-              <thead class="bg-gray-50 text-left text-xs uppercase text-gray-600">
-                <tr>
-                  <th class="p-2">Name</th>
-                  <th class="p-2">Niche / City</th>
-                  <th class="p-2">Grade</th>
-                  <th class="p-2">Phase</th>
-                  <th class="p-2">Audit</th>
-                  <th class="p-2">Reviews</th>
-                  <th class="p-2">Signals</th>
-                  <th class="p-2">Last contact</th>
-                  <th class="p-2">Local now</th>
-                  <th class="p-2">→ Discord</th>
-                </tr>
-              </thead>
-              <tbody>
-                {groups[key].map((r) => (
-                  <tr class="border-t hover:bg-gray-50">
-                    <td class="p-2 font-medium">
-                      <a href={`/admin/v2-leads/${r.entityKey}`} class="hover:underline">{r.name}</a>
-                      <div class="text-xs text-gray-500 font-mono">{r.entityKey.slice(0, 16)}…</div>
-                    </td>
-                    <td class="p-2 text-xs">{r.niche}<br/><span class="text-gray-500">{r.city}</span></td>
-                    <td class="p-2"><span class={`rounded px-2 py-0.5 text-xs font-semibold ${badgeClass(r.grade)}`}>{r.grade}{r.tier ? `/${r.tier}` : ''}</span></td>
-                    <td class="p-2"><span class={`rounded px-2 py-0.5 text-xs ${phaseClass(r.phase)}`}>{r.phase || '—'}</span>{r.sub_status && <div class="text-xs text-gray-500">({r.sub_status})</div>}</td>
-                    <td class="p-2">{r.audit_score ?? '—'}{r.audit_decision && <div class="text-xs text-gray-500">{r.audit_decision}</div>}</td>
-                    <td class="p-2 text-xs">{r.rating ?? '—'}★ / {r.reviews ?? 0}</td>
-                    <td class="p-2 font-mono text-xs">{r.signals_summary}</td>
-                    <td class="p-2 text-xs">{r.last_contact_at ? `${r.last_contact_at.slice(0,10)} (${fmtDaysAgo(r.last_contact_at)})` : '—'}{r.last_reply_class && <div class="text-gray-500">[{r.last_reply_class}]</div>}</td>
-                    <td class="p-2 text-xs">{r.locale_now}</td>
-                    <td class="p-2">{r.discord_thread_id ? (
-                      <a href={discordUrl(r.discord_thread_id)} target="_blank" class="text-indigo-600 hover:underline">open ↗</a>
-                    ) : <span class="text-gray-400">—</span>}</td>
+      {Object.entries(groups).map(([key, group]) => (
+        <section class="admin-block" id={key}>
+          <header class="admin-block-head">
+            <div class="admin-block-head-row">
+              <p class="eyebrow">{group.label}</p>
+              <span class="admin-section-count">{group.rows.length}</span>
+            </div>
+          </header>
+          {group.rows.length === 0 ? (
+            <p class="v2-empty">— 此分组为空 —</p>
+          ) : (
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>商家</th>
+                    <th>分类 / 城市</th>
+                    <th>Grade</th>
+                    <th>Phase</th>
+                    <th>Audit</th>
+                    <th>口碑</th>
+                    <th>信号</th>
+                    <th>上次接触</th>
+                    <th>客户时间</th>
+                    <th>→ Discord</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
-    ))}
+                </thead>
+                <tbody>
+                  {group.rows.map((r) => (
+                    <tr>
+                      <td>
+                        <a class="v2-lead-name" href={`/admin/v2-leads/${r.entityKey}/`}>{r.name}</a>
+                        <div class="v2-lead-key">{r.entityKey.slice(0, 24)}…</div>
+                      </td>
+                      <td>
+                        <div class="v2-cell-primary">{r.niche}</div>
+                        <div class="v2-cell-secondary">{r.city}</div>
+                      </td>
+                      <td>
+                        <span class={`v2-grade-chip v2-grade-chip-${r.grade?.toLowerCase()}`}>{r.grade}{r.tier ? `/${r.tier}` : ''}</span>
+                      </td>
+                      <td>
+                        {r.phase ? (
+                          <span class={`v2-phase-chip v2-phase-chip-${r.phase}`}>{r.phase}</span>
+                        ) : <span class="v2-cell-muted">—</span>}
+                        {r.sub_status && <div class="v2-cell-secondary">({r.sub_status})</div>}
+                      </td>
+                      <td>
+                        {r.audit_score != null ? (
+                          <>
+                            <div class="v2-cell-primary">{r.audit_score}/100</div>
+                            {r.audit_decision && <div class="v2-cell-secondary">{r.audit_decision}</div>}
+                          </>
+                        ) : <span class="v2-cell-muted">—</span>}
+                      </td>
+                      <td>
+                        <div class="v2-cell-primary">{r.rating ?? '—'}★</div>
+                        <div class="v2-cell-secondary">{r.reviews ?? 0} reviews</div>
+                      </td>
+                      <td>
+                        <div class="v2-signals">
+                          <span title="sent">📤<strong>{r.signals.sent}</strong></span>
+                          <span title="opened">📧<strong>{r.signals.opened}</strong></span>
+                          <span title="clicked">🔗<strong>{r.signals.clicked}</strong></span>
+                          <span title="replied">💬<strong>{r.signals.replied}</strong></span>
+                        </div>
+                      </td>
+                      <td>
+                        {r.last_contact_at ? (
+                          <>
+                            <div class="v2-cell-primary">{r.last_contact_at.slice(0, 10)}</div>
+                            <div class="v2-cell-secondary">{fmtDaysAgo(r.last_contact_at)}</div>
+                          </>
+                        ) : <span class="v2-cell-muted">—</span>}
+                        {r.last_reply_class && (
+                          <div class="v2-cell-tag">[{r.last_reply_class}]</div>
+                        )}
+                      </td>
+                      <td><span class="v2-cell-primary">{r.locale_now || '—'}</span></td>
+                      <td>
+                        {r.discord_thread_id ? (
+                          <a class="v2-discord-link" href={discordUrl(r.discord_thread_id)} target="_blank">open ↗</a>
+                        ) : <span class="v2-cell-muted">—</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      ))}
 
-    <section class="mt-12 rounded border bg-yellow-50 p-4 text-sm">
-      <h3 class="font-semibold mb-1">紧急操作（手动救援）</h3>
-      <p class="text-gray-700 mb-2">日常推进在 Discord 进行。下列只用于异常恢复：</p>
-      <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
-        <li><code>npm run pl:advance -- &lt;entityKey&gt; --to archived --reason &lt;reason&gt;</code> — 手动归档（D 误判救援）</li>
-        <li><code>npm run pl:advance -- &lt;entityKey&gt; --to needs-human</code> — 标记需 Matthew 介入</li>
-        <li><code>npm run leads:run-pipeline -- --entity-key &lt;key&gt; --refetch</code> — 重新分级</li>
-      </ul>
-    </section>
-  </main>
+      <section class="admin-block admin-block-muted">
+        <header class="admin-block-head">
+          <p class="eyebrow">紧急操作 · CLI 救援</p>
+          <p class="admin-block-lede">日常推进在 Discord 进行。下列只在异常恢复时用 — admin 不直接写 entity（D8 决策）。</p>
+        </header>
+        <div class="v2-cli-grid">
+          <article class="v2-cli-card">
+            <span class="v2-cli-label">手动归档</span>
+            <code>npm run pl:advance -- &lt;entityKey&gt; --to archived --reason &lt;reason&gt;</code>
+          </article>
+          <article class="v2-cli-card">
+            <span class="v2-cli-label">标记需 Matthew 介入</span>
+            <code>npm run pl:advance -- &lt;entityKey&gt; --to needs-human</code>
+          </article>
+          <article class="v2-cli-card">
+            <span class="v2-cli-label">重新分级</span>
+            <code>npm run leads:run-pipeline -- --entity-key &lt;key&gt; --refetch</code>
+          </article>
+          <article class="v2-cli-card">
+            <span class="v2-cli-label">看上下文（agent 准备）</span>
+            <code>npm run pl:context -- &lt;entityKey&gt;</code>
+          </article>
+        </div>
+      </section>
+
+      <footer class="admin-block-foot">
+        <p>
+          <span class="eyebrow-inline">Last refreshed</span>
+          <code>{lastRefreshed}</code>
+          ·
+          <span class="eyebrow-inline">KPI</span>
+          <a href="/admin/v2/">V2 Overview</a>
+          ·
+          <span class="eyebrow-inline">老 admin</span>
+          <a href="/admin/queue">/admin/queue</a> ·
+          <a href="/admin/leads">/admin/leads</a>
+        </p>
+      </footer>
+    </div>
+  </section>
 </Layout>
+
+<style is:global>
+  /* === V2 Leads board === */
+  .admin-block { padding: 22px 24px; border-bottom: 2px solid var(--pl-line); }
+  .admin-block:last-of-type { border-bottom: 0; }
+  .admin-block-head { margin-bottom: 14px; }
+  .admin-block-head .eyebrow { margin: 0; }
+  .admin-block-head-row { display: flex; align-items: baseline; gap: 14px; }
+  .admin-block-lede { margin: 6px 0 0; font-size: 14px; color: var(--pl-muted); max-width: 720px; }
+  .admin-block-muted { background: color-mix(in srgb, white 80%, var(--pl-cream)); }
+  .admin-block-foot {
+    padding: 18px 24px;
+    border-top: 2px solid var(--pl-line);
+    background: color-mix(in srgb, white 50%, var(--pl-cream));
+    font-size: 13px;
+  }
+  .admin-block-foot a {
+    color: var(--pl-blue);
+    text-decoration: none;
+    border-bottom: 1px solid var(--pl-line);
+  }
+  .admin-block-foot a:hover { background: var(--pl-citrus); }
+  .admin-block-foot code {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 12px;
+    background: var(--pl-paper);
+    border: 1px solid var(--pl-line);
+    padding: 1px 6px;
+  }
+  .eyebrow-inline {
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pl-muted);
+  }
+
+  /* Table cells */
+  .v2-lead-name {
+    color: var(--pl-ink);
+    text-decoration: none;
+    font-family: var(--pl-display);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+    border-bottom: 2px solid transparent;
+  }
+  .v2-lead-name:hover { border-bottom-color: var(--pl-line); }
+  .v2-lead-key {
+    margin-top: 4px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 10.5px;
+    color: var(--pl-muted);
+  }
+  .v2-cell-primary { font-size: 13px; font-weight: 700; }
+  .v2-cell-secondary { font-size: 11px; color: var(--pl-muted); margin-top: 2px; }
+  .v2-cell-muted { color: color-mix(in srgb, var(--pl-muted) 60%, transparent); }
+  .v2-cell-tag {
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pl-coral);
+  }
+
+  /* Grade chips */
+  .v2-grade-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 2px solid var(--pl-line);
+    font-family: var(--pl-display);
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--pl-paper);
+  }
+  .v2-grade-chip-a { background: var(--pl-mint); }
+  .v2-grade-chip-b { background: var(--pl-sky); }
+  .v2-grade-chip-c { background: var(--pl-peach); }
+  .v2-grade-chip-d { background: var(--pl-coral-soft); }
+
+  /* Phase chips */
+  .v2-phase-chip {
+    display: inline-block;
+    padding: 3px 9px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid var(--pl-line);
+  }
+  .v2-phase-chip-awaiting { background: var(--pl-citrus); }
+  .v2-phase-chip-outreach-active { background: var(--pl-sky); }
+  .v2-phase-chip-replied { background: var(--pl-lilac); }
+  .v2-phase-chip-proposal-sent { background: color-mix(in srgb, var(--pl-lilac) 65%, var(--pl-blue)); }
+  .v2-phase-chip-nurture { background: var(--pl-mint); }
+  .v2-phase-chip-paid { background: var(--pl-green); color: white; }
+  .v2-phase-chip-archived { background: color-mix(in srgb, var(--pl-muted) 30%, white); }
+  .v2-phase-chip-needs-human { background: var(--pl-coral); color: white; }
+
+  /* Signals */
+  .v2-signals {
+    display: flex;
+    gap: 8px;
+    font-size: 11px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+  }
+  .v2-signals span { display: inline-flex; align-items: baseline; gap: 2px; }
+  .v2-signals strong { font-size: 13px; font-weight: 700; font-family: var(--pl-display); }
+
+  /* Discord link */
+  .v2-discord-link {
+    display: inline-block;
+    padding: 3px 10px;
+    border: 1.5px solid var(--pl-line);
+    background: var(--pl-lilac);
+    color: var(--pl-ink);
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .v2-discord-link:hover { background: var(--pl-blue); color: white; }
+
+  /* Empty group */
+  .v2-empty {
+    padding: 18px 24px;
+    margin: 0;
+    color: var(--pl-muted);
+    font-style: italic;
+    font-size: 14px;
+    border: 1px dashed var(--pl-line);
+    background: var(--pl-paper);
+  }
+
+  /* CLI rescue card grid */
+  .v2-cli-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+  }
+  .v2-cli-card {
+    padding: 14px 18px;
+    border-right: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent);
+  }
+  .v2-cli-card:nth-child(2n) { border-right: 0; }
+  .v2-cli-card:nth-last-child(-n+2) { border-bottom: 0; }
+  .v2-cli-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pl-muted);
+    margin-bottom: 6px;
+  }
+  .v2-cli-card code {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 12px;
+    color: var(--pl-ink);
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  @media (max-width: 880px) {
+    .v2-cli-grid { grid-template-columns: 1fr; }
+    .v2-cli-card { border-right: 0 !important; border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent) !important; }
+  }
+</style>
