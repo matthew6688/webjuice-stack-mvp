@@ -33,50 +33,56 @@ const detailedAuditSubAudits = [
 
 // 4 Discord channels in V2 lead lifecycle
 const channels = [
-  { id: '#lead-discovery-runs',  channel_id: '1503513633756283070', type: 'forum (type 15)', unit: '1 batch task = 1 thread', audience: '你 + AI agent (运营监督)', purpose: 'discovery + audit batch progress', sop: 'SOP-2 (this)' },
-  { id: '#website-leads',        channel_id: '1501187038706401290', type: 'forum (type 15)', unit: '1 A/B lead = 1 thread',  audience: '销售人员',          purpose: 'per-lead CRM + outreach 对话',          sop: 'SOP-3 (待写)' },
-  { id: '#website-projects',     channel_id: '1501945763650080899', type: 'forum (type 15)', unit: '1 demo 候选 = 1 thread',  audience: '设计 + 客户',      purpose: 'demo/proposal 制作追踪',                sop: 'SOP-4 (待写)' },
-  { id: '#paid-websites',        channel_id: '1503529874336383137', type: 'forum (type 15)', unit: '1 paid customer = 1 thread', audience: '交付 + ongoing', purpose: '付费客户生产部署 + 维护',              sop: 'SOP-5 (待写)' },
+  { id: '#lead-discovery-runs',  zh: '线索发现批次',            stage_zh: '阶段 1：找客户',     channel_id: '1503513633756283070', type: 'forum', unit: '1 个抓取任务 = 1 个 thread',   audience: '你 + AI 监督',  purpose: '看每批"抓 + 筛 + 审"进度',           sop: 'SOP-1 + SOP-2 (本页)' },
+  { id: '#website-leads',        zh: '高质量销售线索',           stage_zh: '阶段 2：销售对话',   channel_id: '1501187038706401290', type: 'forum', unit: '1 个 A/B 级客户 = 1 个 thread',  audience: '销售人员',     purpose: '每个潜在客户单独跟进 + 沟通记录',   sop: 'SOP-3 (待写)' },
+  { id: '#website-projects',     zh: '网站方案 / Demo 制作',     stage_zh: '阶段 3：方案 + Demo', channel_id: '1501945763650080899', type: 'forum', unit: '1 个 demo 制作 = 1 个 thread',   audience: '设计 + 客户',  purpose: '给客户看的新站 demo / 改版 demo 制作', sop: 'SOP-4 (待写)' },
+  { id: '#paid-websites',        zh: '付费客户',                 stage_zh: '阶段 4：成交交付',   channel_id: '1503529874336383137', type: 'forum', unit: '1 个付费客户 = 1 个 thread',     audience: '交付 + 客服',  purpose: '客户付费后的部署 + 长期维护',         sop: 'SOP-5 (待写)' },
 ];
 
-// 5 stages of the V2 batch pipeline
+// 5 stages of the V2 batch pipeline (中文主导，英文对照代码)
 const stages = [
   {
-    n: 0, name: 'Discovery', cli: 'pl:scrape-docker (待建)', cost: 'T0 local (gosom Docker)',
-    desc: 'gosom Web API 抓 Google Maps → CSV → upsertDiscoveryRun → entity store',
-    outputs: ['data/leads/entities/<key>.json × N', 'discovery-events.jsonl', 'queues.json'],
-    ui_signal: '/admin/v2-queue discovery funnel +N',
+    n: 0, zh: '抓取候选客户', en: 'Discovery', cli: 'pl:scrape-docker (待建 CLI)', cost: '免费（本地 Docker）',
+    desc_zh: '通过本地 gosom Docker 容器从 Google Maps 抓商家列表，写入我们的客户数据库。',
+    desc_en: 'gosom Web API → CSV → upsertDiscoveryRun → entity store',
+    outputs: ['每条线索一个 entity 文件 (entities/<key>.json)', '抓取事件日志 (discovery-events.jsonl)', '队列状态 (queues.json)'],
+    ui_signal: '/admin/v2-queue 漏斗显示新增 N 条',
   },
   {
-    n: 0.5, name: 'Enrichment', cli: '(自动, conditional)', cost: 'T0 (Tinyfish/DDGS free)',
-    desc: '仅 queued_for_enrichment lead 触发 — 5 路并行 search (FB/IG/LinkedIn/3rd-party reviews)',
-    outputs: ['data/v2/fixtures/enrichment/<key>.json'],
-    ui_signal: '(无直接 UI, 回流到 rescore)',
+    n: 0.5, zh: '补充资料', en: 'Enrichment', cli: '自动触发（仅缺联系方式时）', cost: '免费（Tinyfish + DDGS）',
+    desc_zh: '如果某条线索没网站、也没电话，自动跑 5 路并行搜索（FB / IG / LinkedIn / 第三方评价站）找补充信息，然后回到第 1 阶段重判。',
+    desc_en: 'Trigger only for queued_for_enrichment — 5 parallel search routes',
+    outputs: ['fixtures/enrichment/<key>.json'],
+    ui_signal: '（无直接 UI，自动回流到第 1 阶段）',
     conditional: true,
   },
   {
-    n: 1, name: 'Rescore', cli: 'npm run rescore-v2-cli -- --niche <X>', cost: 'T0 (本地脚本 + Tinyfish quick-scan)',
-    desc: 'cheap-audit-v2 跑 GBP triage + site quick-scan → 输出 5 种 action',
-    outputs: ['data/v2/fixtures/rescore/<niche>-<ts>.json'],
-    ui_signal: '本页 Outcome 分布 (audit / starter / manual / skip)',
+    n: 1, zh: '初步筛选', en: 'Rescore', cli: 'npm run rescore-v2-cli -- --niche <X>', cost: '免费（本地脚本）',
+    desc_zh: '跑 cheap-audit-v2 算法（19 项规则 + 4 个 hard trigger），把每条线索分成 5 类：值得详细审计 / 起步客户 / 待补料 / 人工判断 / 跳过。这是关键分流点。',
+    desc_en: 'cheap-audit-v2 → 5 action outputs (audit / starter / enrichment / manual / skip)',
+    outputs: ['fixtures/rescore/<niche>-<ts>.json'],
+    ui_signal: '本页"分流结果"部分显示分布',
   },
   {
-    n: 2, name: 'Audit + Visual + Grade + Reviews + Report', cli: 'npm run leads:run-pipeline -- --all-audit-candidates --with-reviews --refetch', cost: 'T0 Playwright + T2 PSI free + T1 claude_cli',
-    desc: '11 sub-audits (含 PSI/domain/form) → 6-dim 39-rule scoring → visual audit (claude_cli) → gradeLead → A/B 自动 graduate to #website-leads → build internal report',
-    outputs: ['detailed-audit/<key>.json', 'visual-autoresearch/.../<key>.json', 'reviews/<key>.json (A/B)', 'clients/<slug>/v2/internal-audit-report.html + evidence/ + video/', 'entity.grade + entity.discord_thread_id (A/B)'],
-    ui_signal: '/admin/v2-leads grade 分布 + Discord per-lead thread',
+    n: 2, zh: '详细审计 + 评级 + 出报告', en: 'Audit + Visual + Grade + Reviews + Report', cli: 'npm run leads:run-pipeline -- --all-audit-candidates --with-reviews --refetch', cost: '免费（本地 Playwright + 免费 API + Claude 订阅）',
+    desc_zh: '对每个"值得详细审计"的线索一气呵成跑 5 步：(1) Playwright 抓站 + 11 个子审计；(2) Claude 看截图做视觉审计；(3) 综合打分 + 评级 A/B/C/D；(4) A/B 级自动开 Discord 销售 thread；(5) 生成审计报告 HTML。',
+    desc_en: '11 sub-audits → 6-dim 39-rule scoring → Claude vision → gradeLead → auto Discord thread (A/B) → HTML report',
+    outputs: ['fixtures/detailed-audit/<key>.json', 'fixtures/visual-autoresearch/.../<key>.json', 'fixtures/reviews/<key>.json (仅 A/B)', '客户审计报告 HTML + 证据截图 + 视频', 'entity.grade（评级）+ Discord thread ID（A/B）'],
+    ui_signal: '/admin/v2-leads 显示评级分布 + 每个 A/B 线索的 Discord thread',
   },
   {
-    n: 3, name: 'Master MD', cli: 'npm run leads:build-master-md -- --all-with-detailed', cost: 'T0',
-    desc: '销售素材源头 — YAML frontmatter + 中文销售叙述',
+    n: 3, zh: '生成销售素材', en: 'Master MD', cli: 'npm run leads:build-master-md -- --all-with-detailed', cost: '免费',
+    desc_zh: '把上一步的所有数据汇总成一份 markdown（master.md），里面有 YAML 头 + 中文销售叙述（评级理由 / 报价档位 / 痛点解读）。这是销售物料的"源真理"，后面的 PDF / 视频 / 客户报告都从这里衍生。',
+    desc_en: 'master.md = source of truth, 下游 HTML/video/slides 都派生于此',
     outputs: ['clients/<slug>/v2/master.md'],
-    ui_signal: '/admin/v2-leads/[entityKey] Reports & Evidence strip',
+    ui_signal: '/admin/v2-leads/[entityKey] 显示 master.md 链接',
   },
   {
-    n: 4, name: 'Entity ↔ Artifact Linkage (F5)', cli: 'pl:entity-link-reports --batch-id <id> (待建)', cost: 'T0',
-    desc: '把 HTML / master.md / public URL 显式写进 entity.audit_reports.internal',
-    outputs: ['entity.audit_reports.internal {html_path, public_url, master_md, audit_version, built_at}', 'entity.batch_id'],
-    ui_signal: 'admin per-lead detail 显示 audit version + batch_id',
+    n: 4, zh: '关联收尾', en: 'Entity ↔ Artifact Linkage (F5)', cli: 'pl:entity-link-reports --batch-id <id> (待建 CLI)', cost: '免费',
+    desc_zh: '在 entity 数据里显式写入审计报告路径、master.md 路径、公开 URL、版本号——以后 admin UI 直接读这些字段，不再靠目录名约定推导（避免重命名时关联断裂）。',
+    desc_en: 'Write entity.audit_reports.internal + entity.batch_id',
+    outputs: ['entity.audit_reports.internal {html_path, public_url, master_md, audit_version, built_at}', 'entity.batch_id（本批 ID）'],
+    ui_signal: 'admin 个人线索详情页显示审计版本 + 批次 ID',
   },
 ];
 
@@ -113,28 +119,29 @@ function chipClass(action) {
 }
 ---
 
-<Layout title="SOP-2 · V2 Lead Pipeline" active="scoring">
+<Layout title="SOP-2 · 线索筛选 + 审计" active="scoring">
   <section class="poster-section admin-section">
     <div class="admin-shell lead-admin-shell scoring-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
-          <p class="eyebrow">SOP-2 概览 (macro view)</p>
-          <h1>V2 Lead Pipeline · Discovery → Audit → Graduation</h1>
-          <p class="lede">从一个搜索 query 到 A/B 客户进入销售 thread 的完整流程。本页是 <strong>macro overview</strong>（看大局）。需要细节看 <strong>详细文档</strong>。</p>
+          <p class="eyebrow">SOP-2 概览 · 给你看大局</p>
+          <h1>线索筛选 + 审计流程</h1>
+          <p class="zh-en-sub"><span class="zh">Lead Screening &amp; Audit Pipeline</span><span class="dot">·</span><span class="micro">英文是代码里的名字，方便对照</span></p>
+          <p class="lede">从我们抓到的候选客户，到 <strong>可销售的 A/B 级客户进入销售 thread</strong> 的完整流程。<br/>本页是给你看的"大局图"。技术细节、容易忽略的点、决策记录在<strong>详细文档</strong>里。</p>
           <div class="sop2-doc-link-row">
-            <a href="/admin/scoring/sop-2" class="sop2-doc-link-btn">
+            <a href="/admin/scoring/sop-2-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📘</span>
               <span class="sop2-doc-link-text">
-                <strong>SOP-2 详细文档</strong>
-                <span class="sop2-doc-link-sub">完整流程 · 容易忽略的点 · 决策记录 · 660 行</span>
+                <strong>SOP-2 详细文档 / Full SOP-2 doc</strong>
+                <span class="sop2-doc-link-sub">完整流程 · 容易忽略的点 · 决策记录 · ~660 行</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
           </div>
           <p class="meta-line">
-            <span>cheap-audit config <code>{config.version}</code></span>
+            <span>cheap-audit 配置版本 <code>{config.version}</code></span>
             <span class="dot">·</span>
-            <span>pipeline source <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code></span>
+            <span>源文件 <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code></span>
           </p>
         </div>
         <div class="admin-count">
@@ -144,16 +151,30 @@ function chipClass(action) {
         </div>
       </header>
 
+      <!-- ─── SOP tab strip ──────────────────────────────────────────────── -->
+      <nav class="sop-tabs" aria-label="SOP navigation">
+        <a href="/admin/scoring/sop-1" class="sop-tab">
+          <span class="sop-tab-id">SOP-1</span>
+          <span class="sop-tab-zh">客户发现</span>
+          <span class="sop-tab-en">Intake & Discovery</span>
+        </a>
+        <a href="/admin/scoring" class="sop-tab sop-tab--active" aria-current="page">
+          <span class="sop-tab-id">SOP-2</span>
+          <span class="sop-tab-zh">筛选 + 审计</span>
+          <span class="sop-tab-en">Screening & Audit</span>
+        </a>
+      </nav>
+
       <div class="sop2-banner">
         <div class="sop2-banner-icon">⚠</div>
         <div class="sop2-banner-body">
-          <strong>Source of truth</strong>: 这个页面（macro overview）和 <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code> 是 V2 lead pipeline 的唯一权威。
-          <br/>任何流程变动 — <strong>必须同时改这两处</strong>。代码、admin UI、master.md frontmatter 都从这里衍生。
+          <strong>唯一真理来源 / Source of truth</strong>：这个页面（给你看的大局图）和 <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code>（详细文档）一起是 SOP-2 的<strong>唯一权威</strong>。
+          <br/>任何流程改动都必须<strong>同时改这两处</strong>。所有代码、admin 页面、销售物料（master.md）都从这里衍生。
         </div>
       </div>
 
       <div class="philosophy-strip">
-        <p class="eyebrow">设计哲学 (cheap-audit-v2)</p>
+        <p class="eyebrow">设计哲学 · 这套筛选算法为什么这样设计</p>
         <p>{config.philosophy}</p>
       </div>
 
@@ -161,29 +182,30 @@ function chipClass(action) {
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Discord 4-channel 架构</p>
-            <h2>Lead 生命周期分 4 段，每段一个 Discord channel</h2>
+            <p class="eyebrow">Discord 频道架构 · 4 段生命周期</p>
+            <h2>客户在 Discord 里走的 4 段路 <span class="en-sub">Lead lifecycle: 4 channels</span></h2>
           </div>
-          <span class="admin-section-count">{channels.length} channels · graduation 串连</span>
+          <span class="admin-section-count">4 个频道 · 客户级别上升时"毕业"到下一段</span>
         </div>
-        <p class="section-lede">每段 cadence / audience / SLA 不同。SOP-2 范围 = 前 2 段 (discovery-runs + website-leads) + 它们之间的 graduation 机制。</p>
+        <p class="section-lede">每段的<strong>节奏</strong>、<strong>受众</strong>、<strong>关注点</strong>都不同，所以分 4 个频道而不是一个。<br/>SOP-2 管的是前两段（发现批次 → 销售线索），以及客户从"批次"<strong>"毕业"</strong>到"个人销售线索"的机制。</p>
         <div class="channel-flow">
           {channels.map((c, i) => (
             <>
               <div class={`channel-card channel-${i}`}>
+                <div class="channel-stage">{c.stage_zh}</div>
+                <div class="channel-zh">{c.zh}</div>
                 <div class="channel-name"><code>{c.id}</code></div>
                 <div class="channel-unit">{c.unit}</div>
                 <div class="channel-purpose">{c.purpose}</div>
                 <div class="channel-meta">
-                  <span>受众: <strong>{c.audience}</strong></span>
-                  <span>{c.type}</span>
-                  <span>{c.sop}</span>
+                  <span>👁 受众：<strong>{c.audience}</strong></span>
+                  <span>📄 文档：{c.sop}</span>
                 </div>
               </div>
               {i < channels.length - 1 && (
                 <div class="channel-arrow">
                   <span class="channel-arrow-label">
-                    {i === 0 ? 'A/B grade 自动 graduate' : i === 1 ? '客户想看 demo' : '客户付费'}
+                    {i === 0 ? '当客户分级 A/B → 自动"毕业"到下一段' : i === 1 ? '客户表示有意，想看具体方案' : '客户付费签约'}
                   </span>
                   <span class="channel-arrow-glyph">▼</span>
                 </div>
@@ -197,30 +219,37 @@ function chipClass(action) {
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">SOP-2 流水线</p>
-            <h2>5 个 stage · 从 entity 入库到 audit report 落地</h2>
+            <p class="eyebrow">SOP-2 完整流水线 · 5 个阶段</p>
+            <h2>从抓取到落地 — 每条线索走完这 5 步 <span class="en-sub">5 stages: scrape → screen → audit → write → link</span></h2>
           </div>
-          <span class="admin-section-count">{stages.length} stages (含 0.5 conditional)</span>
+          <span class="admin-section-count">{stages.length} 步（含可选的 0.5 补充资料）</span>
         </div>
+        <p class="section-lede">每个阶段都有：<strong>一句话说做啥</strong> · <strong>命令</strong> · <strong>成本</strong> · <strong>产出文件</strong> · <strong>哪能看到</strong>。<br/>英文名 (Discovery / Rescore...) 是代码里的字段，方便和源代码对照。</p>
         <div class="stage-grid">
           {stages.map((s) => (
             <div class={`stage-card ${s.conditional ? 'stage-conditional' : ''}`}>
               <div class="stage-num">
-                Stage {s.n}
-                {s.conditional && <span class="stage-cond-badge">conditional</span>}
+                第 {s.n} 步
+                {s.conditional && <span class="stage-cond-badge">可选</span>}
               </div>
-              <div class="stage-name">{s.name}</div>
-              <div class="stage-desc">{s.desc}</div>
+              <div class="stage-name">
+                {s.zh}
+                <span class="stage-en">{s.en}</span>
+              </div>
+              <div class="stage-desc">
+                <p class="stage-desc-zh">{s.desc_zh}</p>
+                <p class="stage-desc-en"><span class="lang-tag">EN</span> {s.desc_en}</p>
+              </div>
               <div class="stage-meta">
-                <div><span class="stage-meta-label">CLI</span> <code>{s.cli}</code></div>
-                <div><span class="stage-meta-label">Cost</span> <span class="chip chip-muted">{s.cost}</span></div>
+                <div><span class="stage-meta-label">命令 / CLI</span> <code>{s.cli}</code></div>
+                <div><span class="stage-meta-label">成本 / Cost</span> <span class="chip chip-muted">{s.cost}</span></div>
                 <div>
-                  <span class="stage-meta-label">Output</span>
+                  <span class="stage-meta-label">产出 / Output</span>
                   <ul class="stage-outputs">
                     {s.outputs.map((o) => <li><code>{o}</code></li>)}
                   </ul>
                 </div>
-                <div><span class="stage-meta-label">UI signal</span> {s.ui_signal}</div>
+                <div><span class="stage-meta-label">在哪看 / Where</span> {s.ui_signal}</div>
               </div>
             </div>
           ))}
@@ -231,14 +260,14 @@ function chipClass(action) {
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">销售矩阵</p>
-            <h2>Investment Level × Product Tier · 决定销售物料 + 报价</h2>
+            <p class="eyebrow">销售矩阵 · 决定花多少功夫 + 报多少钱</p>
+            <h2>客户分级 × 报价档位 <span class="en-sub">Investment Level × Product Tier</span></h2>
           </div>
-          <span class="admin-section-count">A/B/C/D × T1/T2/T3 · V2 pricing locked 2026-05-11</span>
+          <span class="admin-section-count">4 级 × 3 档 · 价格对齐 profitslocal.com</span>
         </div>
-        <p class="section-lede">Stage 2 跑完，每个 audit_candidate 拿一个 <strong>investment level</strong>（销售投入度）+ <strong>product tier</strong>（报价档位）。匹配 profitslocal.com homepage live pricing。</p>
+        <p class="section-lede">第 2 步审计 + 评级跑完后，每个客户拿到两个标签：<br/>① <strong>客户分级</strong> A/B/C/D —— 我们投多少销售精力<br/>② <strong>报价档位</strong> T1/T2/T3 —— 给客户报什么价。<br/>价格直接对齐 <a href="https://profitslocal.com/" target="_blank" rel="noopener">profitslocal.com 官网</a>，改价时官网为准。</p>
 
-        <h3 class="subhead">Investment Level (A/B/C/D)</h3>
+        <h3 class="subhead">① 客户分级 / Investment Level (A · B · C · D)</h3>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead><tr><th>Level</th><th>标签</th><th>触发条件</th><th>销售动作</th></tr></thead>
@@ -255,7 +284,7 @@ function chipClass(action) {
           </table>
         </div>
 
-        <h3 class="subhead">Product Tier (T1/T2/T3) — V2 productized pricing</h3>
+        <h3 class="subhead">② 报价档位 / Product Tier (T1 · T2 · T3) — 官网定价</h3>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead><tr><th>Tier</th><th>标签</th><th>触发信号</th><th>报价</th><th>包含</th></tr></thead>
@@ -273,7 +302,7 @@ function chipClass(action) {
           </table>
         </div>
 
-        <h3 class="subhead">Add-on (任何 tier)</h3>
+        <h3 class="subhead">附加项 / Add-on（任何档位可加）</h3>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead><tr><th>Add-on</th><th>报价</th><th>适用</th></tr></thead>
@@ -289,19 +318,19 @@ function chipClass(action) {
           </table>
         </div>
 
-        <p class="note-line"><strong>价格 source of truth</strong>: profitslocal.com homepage (live) + <code>docs/v2/SCALING_AND_PRICING.md</code> (锁定 2026-05-11)。代码 <code>core/scoring/lead-grading.js</code> 的 PRODUCT_TIER_TABLE 已对齐。改价格 = 改这 3 处 + 重 generate 所有 master.md。</p>
+        <p class="note-line"><strong>价格唯一来源 / Price source of truth</strong>：<a href="https://profitslocal.com/" target="_blank" rel="noopener">profitslocal.com 官网（live）</a> + <code>docs/v2/SCALING_AND_PRICING.md</code>（决策记录）。代码 <code>core/scoring/lead-grading.js</code> 的 PRODUCT_TIER_TABLE 已对齐。<br/><strong>改价格 = 改这 3 处</strong>，并重跑 <code>npm run leads:build-master-md -- --all-with-detailed</code> 让所有客户的销售素材同步。</p>
       </section>
 
       <!-- ─── Stage 2 Detailed Audit Sub-Audits ───────────────────────────── -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Stage 2 内部</p>
-            <h2>Detailed audit 跑的 11 个 sub-audit</h2>
+            <p class="eyebrow">第 2 步内部 · 详细审计跑哪些子项目</p>
+            <h2>详细审计的 11 个子项目 <span class="en-sub">Detailed audit · 11 sub-audits in parallel</span></h2>
           </div>
-          <span class="admin-section-count">{detailedAuditSubAudits.length} 个并行 / per lead</span>
+          <span class="admin-section-count">{detailedAuditSubAudits.length} 个 · 一次性 Playwright 抓站 + 并行跑</span>
         </div>
-        <p class="section-lede">每个 audit_candidate 经过 <code>run-audit-pipeline</code> 时，<code>siteFetchFull</code> 一次 Playwright 访问内并行跑这 11 个模块，结果拼成 <code>fetchPayload</code> 喂给 <code>detailedAudit</code> 打 6-dim × 39-rule 分数。</p>
+        <p class="section-lede">每个"值得详细审计"的客户在第 2 步里，Playwright 浏览器访问他的网站一次，<strong>并行</strong>跑下面这 11 个子项目（页面速度 / 表单 / SEO / 域名年龄 / 第三方脚本权重 ...），把所有结果汇总成"审计报告"打分（6 维 × 39 规则）。</p>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead><tr><th>Sub</th><th>名称</th><th>模块</th><th>Tool</th><th>Tier</th><th>关键输出字段</th></tr></thead>
@@ -319,17 +348,17 @@ function chipClass(action) {
             </tbody>
           </table>
         </div>
-        <p class="note-line"><strong>注意 2i pagespeed</strong>: 历史上 <code>PAGESPEED_API_KEY</code> 缺失导致所有 lead LCP/CWV = 0；2026-05-11 已修复。<strong>容易忽略的点</strong>: 见 SOP-2 文档 §6。</p>
+        <p class="note-line"><strong>⚠ 注意第 2i 项（PageSpeed）</strong>：历史上 <code>PAGESPEED_API_KEY</code> 没配，导致所有客户的 LCP / CWV 都是 0（数据假象）。2026-05-11 已修复。<strong>更多"容易忽略的点"</strong>请看 <a href="/admin/scoring/sop-2-doc">SOP-2 详细文档 § 6</a>。</p>
       </section>
 
       <!-- ─── HARD-SKIP Definitions ────────────────────────────────────────── -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Grade D 触发</p>
-            <h2>Hard-skip 条件（命中即 D 级，不投入）</h2>
+            <p class="eyebrow">D 级触发条件 · 我们不投入的情况</p>
+            <h2>跳过条件 / Hard-skip rules <span class="en-sub">命中任一条 → 自动标为 D 级，不投销售精力</span></h2>
           </div>
-          <span class="admin-section-count">{HARD_SKIP_DEFINITIONS.length} 条</span>
+          <span class="admin-section-count">{HARD_SKIP_DEFINITIONS.length} 条规则</span>
         </div>
         <div class="admin-table-wrap">
           <table class="admin-table">
@@ -348,7 +377,8 @@ function chipClass(action) {
 
       <!-- ─── Existing detail sections (cheap-audit-v2 rule reference) below -->
       <div class="cheap-audit-divider">
-        <p class="eyebrow">↓ 下面是 cheap-audit-v2 详细规则参考（Stage 1）</p>
+        <p class="eyebrow">↓ 下面是第 1 步"初步筛选"的详细规则表（cheap-audit-v2 algorithm）</p>
+        <p class="cheap-audit-divider-note">如果你只想看大局，<strong>到这里为止够了</strong>。下面是算法工程师 / 调规则时才需要看的细节。</p>
       </div>
 
       <section class="admin-paper-section flow-section">
@@ -679,7 +709,7 @@ function chipClass(action) {
           <div class="maintenance-card">
             <p class="eyebrow accent-coral">详细文档 (source of truth)</p>
             <p>给 AI / 工程师 / 新人看的细节。每个步骤、容易忽略的点都在。</p>
-            <a href="/admin/scoring/sop-2" class="maintenance-doc-link">📘 打开 SOP-2 详细文档 →</a>
+            <a href="/admin/scoring/sop-2-doc" class="maintenance-doc-link">📘 打开 SOP-2 详细文档 →</a>
             <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code>
           </div>
         </div>
@@ -715,6 +745,97 @@ function chipClass(action) {
   .scoring-shell .admin-header { gap: 18px; }
   .scoring-shell .admin-header h1 { font-size: 32px; line-height: 1.15; }
   .scoring-shell .admin-header a { color: var(--pl-coral); text-decoration: none; border-bottom: 1px dashed currentColor; }
+
+  /* ─── Bilingual chrome ─── */
+  .zh-en-sub {
+    display: flex; gap: 10px; align-items: center;
+    margin: 2px 0 10px; font-size: 13px; color: var(--pl-muted);
+  }
+  .zh-en-sub .zh { font-family: Georgia, serif; font-style: italic; }
+  .zh-en-sub .micro { font-size: 11px; }
+  .scoring-shell .lede strong { color: var(--pl-coral); }
+  .en-sub {
+    display: inline-block; margin-left: 8px;
+    font-family: Georgia, serif; font-style: italic;
+    font-size: 13px; font-weight: 400; color: var(--pl-muted);
+    letter-spacing: 0;
+  }
+  .lang-tag {
+    display: inline-block; padding: 1px 6px;
+    background: var(--pl-line); color: var(--pl-cream);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+    border-radius: 2px; margin-right: 4px; vertical-align: middle;
+  }
+  .stage-en {
+    display: block; margin-top: 2px;
+    font-family: Georgia, serif; font-style: italic;
+    font-size: 12px; font-weight: 400; color: var(--pl-muted);
+  }
+  .stage-desc-zh { margin: 0 0 6px; font-size: 14px; line-height: 1.55; color: var(--pl-ink); }
+  .stage-desc-en { margin: 0; font-size: 12px; color: var(--pl-muted); }
+
+  /* ─── SOP tab strip ─── */
+  .sop-tabs {
+    display: flex; gap: 0;
+    margin: 14px 0 22px;
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .sop-tab {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 12px 22px;
+    background: color-mix(in srgb, var(--pl-paper) 50%, transparent);
+    border: 2px solid var(--pl-line);
+    border-bottom: none;
+    margin-right: 6px;
+    margin-bottom: -2px;
+    text-decoration: none;
+    color: var(--pl-muted);
+    min-width: 220px;
+  }
+  .sop-tab:hover {
+    background: color-mix(in srgb, var(--pl-citrus) 12%, var(--pl-paper));
+    color: var(--pl-ink);
+  }
+  .sop-tab--active {
+    background: var(--pl-paper);
+    color: var(--pl-ink);
+    box-shadow: 3px -3px 0 var(--pl-line);
+    transform: translateY(-2px);
+    border-bottom: 2px solid var(--pl-paper);
+  }
+  .sop-tab-id {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--pl-coral);
+  }
+  .sop-tab-zh {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px; font-weight: 700; line-height: 1.15;
+  }
+  .sop-tab-en {
+    font-size: 11px; color: var(--pl-muted);
+    font-style: italic;
+  }
+  .sop-tab--active .sop-tab-zh { color: var(--pl-ink); }
+
+  /* ─── Channel card improvements ─── */
+  .channel-stage {
+    font-size: 11px; font-weight: 700;
+    color: var(--pl-coral);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .channel-zh {
+    font-family: Georgia, serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--pl-ink); margin-top: 4px;
+  }
+
+  /* ─── Cheap-audit divider note ─── */
+  .cheap-audit-divider-note {
+    margin-top: 4px; font-size: 12px; color: var(--pl-muted);
+  }
+  .cheap-audit-divider-note strong { color: var(--pl-coral); }
 
   /* ─── SOP-2 doc link button (prominent at top) ─── */
   .sop2-doc-link-row { margin: 10px 0 6px; }

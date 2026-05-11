@@ -1,0 +1,131 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+---
+
+<Layout title="SOP-1 · Intake & Discovery" active="scoring">
+  <section class="poster-section admin-section">
+    <div class="admin-shell sop-shell" data-ui-version="local-style-2026-05-08">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-1 · 客户发现阶段</p>
+          <h1>线索抓取 / Intake & Discovery</h1>
+          <p class="lede">"我们要找客户" → "搜索任务 → gosom Docker scraper → entity 入库"。这一段流程的 SOP。<strong>待补充</strong>，Matthew 后续维护。</p>
+        </div>
+        <div class="admin-count">
+          <span>状态</span>
+          <strong>待写</strong>
+          <span class="micro-note">下次开发 lead-discovery-runs Discord workflow 时一起补</span>
+        </div>
+      </header>
+
+      <!-- ─── Tab strip (SOP nav) ─── -->
+      <nav class="sop-tabs" aria-label="SOP navigation">
+        <a href="/admin/scoring/sop-1" class="sop-tab sop-tab--active" aria-current="page">
+          <span class="sop-tab-id">SOP-1</span>
+          <span class="sop-tab-zh">客户发现</span>
+          <span class="sop-tab-en">Intake & Discovery</span>
+        </a>
+        <a href="/admin/scoring" class="sop-tab">
+          <span class="sop-tab-id">SOP-2</span>
+          <span class="sop-tab-zh">筛选 + 审计</span>
+          <span class="sop-tab-en">Screening & Audit</span>
+        </a>
+      </nav>
+
+      <section class="admin-paper-section sop-placeholder">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">这一段流程暂未文档化</p>
+            <h2>预计覆盖范围</h2>
+          </div>
+        </div>
+        <ul class="sop1-scope">
+          <li><strong>搜索任务设计</strong> — 怎么决定 query keywords（例："roofing sydney" / "dental clinic brisbane"），niche × city 组合策略</li>
+          <li><strong>gosom Docker scraper 使用</strong> — 本地 <code>localhost:8080</code> 容器，<code>/api/v1/jobs</code> API，CSV → JSONL 转换</li>
+          <li><strong>批次（batch）管理</strong> — 在 <code>#lead-discovery-runs</code> Discord forum 开 task thread，进度推送</li>
+          <li><strong>Entity 入库</strong> — <code>upsertDiscoveryRun</code> + <code>buildDiscoveryQueues</code> 写 <code>data/leads/entities/&lt;key&gt;.json</code></li>
+          <li><strong>去重 / 历史轨迹</strong> — discovery-index.json + discovery-events.jsonl</li>
+          <li><strong>跨 niche 扩展策略</strong> — 何时换新 niche / 城市 / 国家</li>
+        </ul>
+        <p class="note-line">现阶段，SOP-1 内容暂时穿插在 <a href="/admin/scoring">SOP-2 概览页 § Stage 0</a> 和 <a href="/admin/scoring/sop-2-doc">SOP-2 详细文档</a> 里。后续单独抽出来写成独立 SOP-1。</p>
+      </section>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .sop-shell .admin-header h1 { font-size: 30px; line-height: 1.15; }
+  .sop-shell .admin-header .lede strong { color: var(--pl-coral); }
+
+  /* ─── SOP tab strip ─── */
+  .sop-tabs {
+    display: flex; gap: 0;
+    margin: 18px 0 24px;
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .sop-tab {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 12px 22px;
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+    border-bottom: none;
+    margin-right: 6px;
+    margin-bottom: -2px;
+    text-decoration: none;
+    color: var(--pl-muted);
+    transition: background 80ms ease;
+    min-width: 200px;
+  }
+  .sop-tab:hover { background: color-mix(in srgb, var(--pl-citrus) 12%, var(--pl-paper)); color: var(--pl-ink); }
+  .sop-tab--active {
+    background: var(--pl-paper);
+    color: var(--pl-ink);
+    box-shadow: 3px -3px 0 var(--pl-line);
+    transform: translateY(-2px);
+  }
+  .sop-tab--active::after {
+    content: ''; position: absolute;
+  }
+  .sop-tab-id {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--pl-coral);
+  }
+  .sop-tab-zh {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px; font-weight: 700; line-height: 1.1;
+  }
+  .sop-tab-en {
+    font-size: 11px; color: var(--pl-muted);
+    font-style: italic;
+  }
+  .sop-tab--active .sop-tab-zh { color: var(--pl-ink); }
+
+  /* ─── Placeholder content ─── */
+  .sop-placeholder {
+    background: color-mix(in srgb, var(--pl-lilac) 12%, var(--pl-paper));
+    border: 2px dashed var(--pl-line);
+  }
+  .sop1-scope { list-style: none; padding-left: 0; margin: 0; }
+  .sop1-scope li {
+    padding: 10px 12px;
+    border-left: 3px solid var(--pl-coral);
+    background: var(--pl-paper);
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .sop1-scope li strong { color: var(--pl-ink); }
+  .sop1-scope li code {
+    background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 2px;
+    font-size: 12px; color: var(--pl-coral);
+  }
+  .note-line {
+    margin-top: 14px; padding: 10px 14px;
+    border-left: 3px solid var(--pl-coral);
+    background: color-mix(in srgb, var(--pl-coral) 8%, var(--pl-paper));
+    font-size: 13px; line-height: 1.55;
+  }
+  .note-line a { color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+</style>
