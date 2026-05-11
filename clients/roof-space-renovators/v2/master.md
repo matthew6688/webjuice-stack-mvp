@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "outdated"
-visual_freshness: 4
+visual_age: "slightly_outdated"
+visual_freshness: 5
 visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:23.079Z"
+generated_at: "2026-05-11T01:00:02.112Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5
@@ -62,14 +62,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The website uses a dated layout with a heavy image overlay and cluttered navigation that obscures the primary call to action, making it difficult for local customers to quickly identify the business's value proposition.
+> The site has clear branding and a visible service area, but the first screen feels crowded, light on trust proof, and weak on mobile action paths.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **4/10** · 设计年代 `outdated`
+新鲜度 **5/10** · 信任度 **5/10** · 转化准备度 **4/10** · 设计年代 `slightly_outdated`
 
 **值得保留的优点：**
-- The value proposition 'Same House, More Home' is clear and relevant to the attic renovation niche.
-- The use of a family photo in the hero section helps humanize the brand and suggests a family-friendly service.
-- The color scheme (teal and yellow) is consistent with the logo, maintaining brand identity.
+- The service area line at the very top clearly names Brisbane, Sunshine Coast, Gold Coast, and Ipswich.
+- The logo is distinctive and readable on both desktop and mobile.
+- The yellow primary button on desktop stands out clearly against the teal hero area.
 
 ## 四、客户在 Google 上怎么说
 
@@ -116,53 +116,53 @@ assets:
 
 ### 关键问题 · 2 项（立刻在伤害成交）
 
-### 关键 · Hero text is hard to read against busy background
+### 关键 · No mobile call button above the fold
 
 **技术事实**
 
-The main hero section features a photograph of a family with a semi-transparent blue overlay. The white text ('Same House more home!') and the yellow script font ('more home!') struggle to contrast against the busy background details.
+On the mobile screenshot, the header shows the Roof Space Renovators logo, a search icon, and a hamburger menu, but no visible phone number or call button.
 
 **普通话翻译**
 
-网站的主图背景太花哨，上面的文字很难看清。就像在嘈杂的房间里听人说话，客人第一眼就抓不到重点。
+手机页面一打开看不到可以直接打电话的按钮，客户要自己找联系方式。
 
 **对客户的影响**
 
-访客通常在 8 秒内决定是否离开。如果文字看不清，他们会直接关掉网页，导致您白白浪费了从 Google 广告或搜索获得的流量。
+本地客户通常是在手机上边搜边联系，超过一半的本地搜索来自移动端；如果第一眼不能打电话，很多人会直接回到 Google 点下一家公司。
 
 **正确长啥样**
 
-A clean, solid color background (e.g., white or light grey) with a high-quality image placed to the side (desktop) or below the text (mobile), ensuring the headline is in a bold, dark sans-serif font with high contrast.
+Mobile header with the logo on the left and a clearly visible tap-to-call button or phone icon on the right, plus a primary quote button visible within the first screen.
 
 **Redesign 怎么改**
 
-Remove the full-width background image. Use a split layout: text on the left, image on the right. Ensure the headline is at least 48px font size and dark grey (#333) on a white background for maximum readability.
+Replace the mobile search icon with a prominent tap-to-call control, keep the hamburger menu, and add a sticky bottom bar with 'Call' and 'Free Quote' actions.
 
 
-### 关键 · Phone number is not a sticky, clickable element
+### 关键 · Chat widget blocks key mobile content
 
 **技术事实**
 
-The phone number is visible in the top header bar, but it is small text next to an icon. It is not a large, sticky button that follows the user as they scroll.
+On the mobile screenshot, the 'We're Online!' chat box and blue chat button cover the lower part of the hero image and sit over the people cutout.
 
 **普通话翻译**
 
-在手机上看网站时，电话号码太小且不固定。客人想打电话咨询，却找不到按钮，这会让想立刻联系您的客户流失。
+聊天窗口在手机上挡住了首页内容，看起来很挤，也挡住了画面。
 
 **对客户的影响**
 
-本地搜索用户中 70% 使用手机。如果电话按钮不明显，您会直接失去那些急需服务的客户，导致潜在客户流向竞争对手。
+客户在手机上通常几秒内判断要不要继续看；重要内容被挡住会让人觉得网站不好用，从而减少询盘和电话。
 
 **正确长啥样**
 
-A sticky 'Call Now' button fixed to the bottom of the screen on mobile devices, visible at all times regardless of scroll position.
+A small chat launcher that stays collapsed on mobile, positioned so it does not cover hero text, faces, or the main call-to-action.
 
 **Redesign 怎么改**
 
-Implement a sticky bottom bar for mobile views containing a large 'Call 07 3889 6688' button. Ensure the header phone number is also clickable (tel: link).
+Set the chat widget to collapsed icon-only on mobile, move it above any sticky CTA bar, and delay the expanded message until after the visitor scrolls or spends several seconds on the page.
 
 
-### 主要问题 · 5 项（影响转化的明显短板）
+### 主要问题 · 7 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -212,57 +212,103 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Primary Call-to-Action is buried and weak
+### 主要 · Quote action is not visible on mobile
 
 **技术事实**
 
-The primary button 'Get in touch for a free quote!' is a yellow rectangle located at the bottom of the hero section. It is visually competing with the text above it and is not the most prominent element on the screen.
+On desktop, the yellow 'Get in touch for a free quote!' button appears in the hero, but in the mobile screenshot only the headline and chat widget are visible, with no quote button above the fold.
 
 **普通话翻译**
 
-“免费报价”按钮藏得太深，而且不够显眼。客人想联系您，但找不到按钮，就像去商店买东西却找不到收银台一样。
+电脑版有报价按钮，但手机版第一屏看不到，客户不知道下一步该点哪里。
 
 **对客户的影响**
 
-行动号召（CTA）不显眼会直接导致转化率下降。对于本地服务行业，每 10 个访客中可能因此流失 3-5 个潜在客户，直接损失收入。
+很多本地客户会同时打开几家公司比较；如果你的按钮不在第一屏，客户可能还没看到报价入口就离开了。
 
 **正确长啥样**
 
-A large, high-contrast button (e.g., bright orange or blue) placed immediately below the headline, above the fold. It should say 'Get a Free Quote' and be the most distinct element on the page.
+Mobile first screen with a short headline, one supporting line, and a full-width yellow 'Free Quote' button visible without scrolling.
 
 **Redesign 怎么改**
 
-Move the CTA button up, directly under the 'Bigger. Brighter. Better.' headline. Increase the button size (padding) and use a color that contrasts sharply with the background (e.g., a strong blue or orange) to draw the eye.
+Shorten the mobile hero text block, move the primary quote button directly under the headline, and keep a secondary call button fixed at the bottom of the screen.
 
 
-### 主要 · Navigation menu is too dense and distracting
+### 主要 · No proof near the first impression
 
 **技术事实**
 
-The top navigation bar contains 8 distinct links (Home, About Us, Our Services, Our Product Range, Be Inspired, Our Showroom, FAQs, Contact Us) plus social icons and contact info, all crammed into a single row.
+The hero area shows branding, a slogan, marketing copy, and a quote button, but no visible review rating, licence badge, years in business, project count, or before-and-after proof.
 
 **普通话翻译**
 
-导航栏塞了太多选项，让客人眼花缭乱。他们只想找服务或联系方式，过多的链接会让网站显得杂乱无章，不够专业。
+首页第一眼没有评价、资质、案例数量或施工前后对比，客户很难马上放心。
 
 **对客户的影响**
 
-杂乱的导航会让访客感到困惑，降低对品牌的信任度。研究表明，清晰的导航能提升 20% 以上的用户停留时间，混乱的菜单则会让客人迅速流失。
+屋顶和阁楼改造属于高金额、高风险服务；客户如果看不到可信证据，通常会先联系看起来更可靠的竞争对手。
 
 **正确长啥样**
 
-A simplified menu with max 5 items: Home, Services, About, Gallery, Contact. 'Contact Us' should be a distinct button, not just text. Secondary links can be moved to the footer.
+Above-fold proof row with Google rating, years serving Brisbane, licence or insurance note, and a small before-and-after project thumbnail.
 
 **Redesign 怎么改**
 
-Reduce the menu to 4-5 core items. Move 'FAQs', 'Be Inspired', and 'Our Showroom' to the footer. Make 'Contact Us' a distinct button style to separate it from informational links.
+Add a compact trust strip directly under the header or hero headline: '4.8 Google rating', 'Brisbane roof-space specialists', 'Licensed and insured', and 'View before/after projects'.
+
+
+### 主要 · Desktop contact details are too quiet
+
+**技术事实**
+
+On desktop, the address and phone number sit in a thin pale-grey strip above the logo and navigation, with light grey text and small icons.
+
+**普通话翻译**
+
+电脑版虽然有电话，但颜色太淡、位置太不起眼，不像一个重要按钮。
+
+**对客户的影响**
+
+客户找不到电话就会少打电话；对本地服务商来说，每少一个电话都可能少一个报价机会。
+
+**正确长啥样**
+
+A high-contrast phone number styled as a clear action, such as a dark teal phone button or yellow 'Call 07 3889 6688' button in the main header.
+
+**Redesign 怎么改**
+
+Move the phone number into the main desktop header as a prominent click-to-call button, keep the address smaller, and remove low-value social icons from the prime header area.
+
+
+### 主要 · Hero image feels generic
+
+**技术事实**
+
+The hero uses a teal-tinted room background with three surprised people cut out on the left, while the actual renovated roof space is heavily darkened behind the overlay.
+
+**普通话翻译**
+
+首页大图更像素材图，真正的施工成果被颜色遮住了，看不清质量。
+
+**对客户的影响**
+
+客户花钱前想看真实效果；如果看不到案例和做工，会降低信任，转去看有真实照片的商家。
+
+**正确长啥样**
+
+A bright real project photo or before-and-after image of a Brisbane roof-space renovation, with people secondary or absent, and the finished space easy to inspect.
+
+**Redesign 怎么改**
+
+Replace the stock-style people cutout with a high-resolution real project image, reduce the teal overlay opacity, and add a small before/after gallery link in the hero.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Implement a sticky 'Call Now' button for mobile users to capture immediate leads.
-2. [视觉] 2. Simplify the hero section: remove the busy background image, increase headline contrast, and move the CTA button above the fold.
-3. [视觉] 3. Streamline the navigation menu to reduce cognitive load and highlight the 'Contact' action.
+1. [视觉] 1. Add visible mobile call and quote actions above the fold.
+2. [视觉] 2. Replace the generic hero treatment with real project proof and trust badges.
+3. [视觉] 3. Simplify the hero layout so the phone number, quote action, and proof are easier to scan.
 4. [评论] Feature the 'clean up at the end of each day' quote in the 'Our Process' section to alleviate mess concerns.
 5. [评论] Use the 'future proof my skylight' snippet in the 'Skylight Services' page to highlight technical expertise and durability.
 6. [评论] Display the 'fast response' quote near the contact form to encourage immediate inquiries.
@@ -276,39 +322,44 @@ Reduce the menu to 4-5 core items. Move 'FAQs', 'Be Inspired', and 'Our Showroom
 
 我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
 
-### 移动端（mobile）
-
-**Lighthouse 分数（实验室）：**
-
-| 维度 | 分数 |
-|---|---|
-| 性能 (Performance) | **26/100** |
-| 可访问性 (Accessibility) | 84/100 |
-| 最佳实践 (Best Practices) | 92/100 |
-| SEO | 85/100 |
-
-**Lab 关键指标：** LCP `13.1s` · FCP `3.8s` · CLS `0.150` · TBT `1462ms`
-
-**真实用户体验（过去 28 天 CRUX field data）总评：** `SLOW`
-
-| 指标 | 75% 用户值 | Google 评级 |
-|---|---|---|
-| LCP（最大内容绘制 p75） | 4.01s | SLOW |
-| FCP（首次内容绘制 p75） | 3.49s | SLOW |
-| TTFB（服务器响应 p75） | 2.85s | SLOW |
-| CLS（布局抖动 p75） | 0.070 | FAST |
-| INP（交互响应 p75） | 102ms | FAST |
-
-**这意味着：** 过去 28 天访问你网站的实际用户里，75% 的人遇到的体验就是上面这些数字 — 不是我们测的、是 Google 用真实 Chrome 用户数据统计出来的。
-
-**Google 建议的优化项（按节省时间排序，前 2）：**
-
-- **Reduce unused JavaScript** — 节省 1650ms · 节省 716KB
-- **Reduce unused CSS** — 节省 600ms · 节省 227KB
-
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 25 · A11y 85 · Best Practices 96 · SEO 85
+**Lighthouse 分数：** Performance 20 · A11y 85 · Best Practices 96 · SEO 85
+
+## 图片优化与第三方脚本体重
+
+PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker 脚本。
+
+### 图片优化（共 230 张）
+
+- **优化率：** 17%（39/230 使用 WebP/AVIF/SVG）
+- **响应式 srcset：** 16%
+- **Lazy load：** 54%
+- **Alt 文字（非空）：** 30%
+- **显式 width/height：** 56%（防止 CLS 布局抖动）
+
+**总评：** 基本未优化 — redesign 可显著降低图片下载量
+
+**具体问题：**
+- [major] 230 张图几乎全是 JPG/PNG，未用 WebP/AVIF — 估算可节省 30-50% 图片下载量
+- [minor] 194/230 张图无响应式 srcset — 移动端浪费带宽
+- [major] 162/230 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取
+
+### 第三方脚本占用情况
+
+- **总请求数：** 122（92 自有 + 30 第三方）
+- **第三方占总下载量：** 19%（775 KB / 3982 KB）
+- **Tracker 脚本数：** 4（合计 319 KB）
+
+**已识别的 tracker：**
+
+| 工具 | 类型 | 请求数 | 字节 |
+|---|---|---|---|
+| Google Tag Manager | analytics | 2 | 317.0 KB |
+| DoubleClick | ad_serving | 1 | 2.2 KB |
+| Google Analytics | analytics | 1 | 0.0 KB |
+
+> **观察：** 4 个 tracker 合计加载了 319 KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -324,9 +375,11 @@ Reduce the menu to 4-5 core items. Move 'FAQs', 'Be Inspired', and 'Our Showroom
 
 | 类型 | 数量 |
 |---|---|
-| 顶层页面 | 264 |
-| 内页 | 154 |
-| 服务详情页 | 10 |
+| 服务详情页 | 209 |
+| service_area_page | 132 |
+| 内页 | 34 |
+| 顶层页面 | 31 |
+| area_page | 22 |
 | 作品集 / 案例 | 3 |
 | 法律 / 隐私 | 2 |
 | 关于 / 团队 | 2 |
@@ -338,6 +391,18 @@ Reduce the menu to 4-5 core items. Move 'FAQs', 'Be Inspired', and 'Our Showroom
 **Sitemap lastmod 跨度：** 最旧 2022-09-05 → 最新 2026-04-29
 
 **Redirect 计划承诺：** redesign 上线时我们会附一份 50 条 1:1 redirect 表（旧 URL → 新 URL），保证 Google 已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。
+
+### SEO 长尾结构（服务 × 区域 = 本地搜索流量金矿）
+
+- **服务专项页（如 /metal-roofing/）：** 209 个
+- **区域页（如 /service-areas/brisbane/）：** 22 个
+- **服务×区域组合页（如 /metal-roofing-brisbane/）：** 132 个
+
+**长尾覆盖：** 强 — 已有 5+ 服务×区域页，长尾流量基础在
+
+**现有服务页样本：** `/the-3-types-of-opening-roof-windows/` · `/3-roof-space-conversion-ideas-for-your-home/` · `/opening-skylights-the-ultimate-guide/` · `/5-tips-for-choosing-the-best-skylights-for-your-home/` · `/a-fresh-new-look-for-roof-space-renovators/`
+
+**现有服务×区域页样本：** `/choosing-the-best-attic-ladder-for-you-8-essentials-to-consider/` · `/why-is-roof-window-glazing-important/` · `/the-3-factors-that-affect-your-skylight-placement/` · `/3-things-you-didnt-know-about-roof-space-renovators/` · `/ladder-or-staircase-the-best-way-to-access-your-attic/`
 
 ### 运营活跃度
 
@@ -393,6 +458,28 @@ Reduce the menu to 4-5 core items. Move 'FAQs', 'Be Inspired', and 'Our Showroom
 - Google Ads Conversion
 
 我们 redesign 交付清单会把这些列为「必须 setup 项」。
+
+## 信任凭证 · AU 屋顶服务
+
+本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。
+
+**信任分：** 50/100
+
+### 已显示的（4 项）
+
+- **QBCC 执照号** (25 分) — "QBCC: 1305331"
+- **从业年限** (10 分) — "over 9 years"
+- **行业协会会员** (10 分) — "master builders"
+- **免费报价 / 上门估价** (5 分) — "free quote"
+
+### 缺失的（4 项 — redesign 必补 / 提醒客户提供素材）
+
+- [法律要求] **ABN** (15 分)
+- [行业惯例] **公共责任险** (15 分)
+- [法律要求] **工伤 / WHS 合规** (10 分)
+- [行业惯例] **保修 / 工艺保证** (10 分)
+
+> 客户网站缺少 2 个法律 / 行业要求的信任凭证：ABN、工伤 / WHS 合规。QLD 屋顶服务由 QBCC 监管，客户在花钱前会查这些；缺失等于直接给同行让单。
 
 ## AI 时代可发现性 · GEO Readiness
 

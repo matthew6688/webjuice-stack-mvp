@@ -44,10 +44,14 @@ export async function visionCodexCli({
     : `${prompt}\n\nImages:\n${abs.map((p, i) => `  ${i + 1}. ${p}`).join('\n')}`;
 
   const start = Date.now();
+  // Lean: --ignore-user-config skips ~/.codex/config.toml (which is where
+  // MCP servers + skill paths + plugins are configured). Stable, no
+  // "skill load failed" warnings, deterministic context.
   const r = spawnSync(CLI, [
     'exec',
     '--skip-git-repo-check',
     '--sandbox', 'workspace-write',
+    '--ignore-user-config',
     '--json',
     promptWithImages,
   ], {

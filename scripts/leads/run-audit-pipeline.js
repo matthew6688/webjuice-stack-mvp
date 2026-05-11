@@ -87,6 +87,7 @@ for (const entityKey of targets) {
     try {
       fetchPayload = await siteFetchFull({
         url, screenshotDir,
+        niche: entity.latest?.niche,
         ledgerPath, leadId: entityKey, clientSlug: slug,
         stage: 'detailed_audit', purpose: 'pipeline_full_fetch',
       });
@@ -105,6 +106,9 @@ for (const entityKey of targets) {
       pagespeed: fetchPayload?.pagespeed || null,
       form_audit: fetchPayload?.form_audit || null,
       domain_history: fetchPayload?.domain_history || null,
+      image_optimization: fetchPayload?.image_optimization || null,
+      trust_signals: fetchPayload?.trust_signals || null,
+      third_party_weight: fetchPayload?.third_party_weight || null,
       detailed_audit: audit,
     };
     fs.writeFileSync(detailedPath, JSON.stringify(detailedFixture, null, 2) + '\n');

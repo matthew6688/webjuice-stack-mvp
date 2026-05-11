@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T23:17:31.202Z",
+  "generatedAt": "2026-05-11T00:49:30.083Z",
   "entity_input": {
     "entityKey": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
     "latest": {
@@ -227,19 +227,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 35,
+          "performance": 40,
           "accessibility": 73,
           "best_practices": 65,
           "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 48579.286756945556,
-          "fcp_ms": 4900.5151258374,
+          "lcp_ms": 50206.23730847203,
+          "fcp_ms": 4868.01010180108,
           "cls": 0.023811,
-          "tbt_ms": 898,
-          "tti_ms": 52460.4589296074,
-          "speed_index_ms": 18196.4653882738,
-          "transfer_size_bytes": 10869253
+          "tbt_ms": 665,
+          "tti_ms": 52812.399694638414,
+          "speed_index_ms": 23378.89261515055,
+          "transfer_size_bytes": 10967065
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -254,19 +254,19 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 19460,
-            "savings_bytes": 2382092
+            "savings_ms": 19350,
+            "savings_bytes": 2392122
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
-            "savings_ms": 2550,
-            "savings_bytes": 271860
+            "savings_ms": 750,
+            "savings_bytes": 164021
           },
           {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 164,
+            "savings_ms": 384,
             "savings_bytes": null
           },
           {
@@ -289,16 +289,16 @@
           "performance": 34,
           "accessibility": 77,
           "best_practices": 65,
-          "seo": 77
+          "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 7877.136610356347,
-          "fcp_ms": 1055.002637661859,
-          "cls": 0.010202000000000001,
-          "tbt_ms": 1231.0000000000005,
-          "tti_ms": 9089.646589347523,
-          "speed_index_ms": 5476.926903992371,
-          "transfer_size_bytes": 10138323
+          "lcp_ms": 7976.209989717072,
+          "fcp_ms": 1071.016393530116,
+          "cls": 0.00581,
+          "tbt_ms": 1229.4999999999993,
+          "tti_ms": 8759.611324687952,
+          "speed_index_ms": 5653.199115027692,
+          "transfer_size_bytes": 10149026
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -313,19 +313,19 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 2800,
-            "savings_bytes": 2384453
+            "savings_ms": 2820,
+            "savings_bytes": 2382203
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
             "savings_ms": 440,
-            "savings_bytes": 271814
+            "savings_bytes": 271816
           },
           {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 163,
+            "savings_ms": 165,
             "savings_bytes": null
           },
           {
@@ -337,14 +337,14 @@
           {
             "id": "unminified-javascript",
             "title": "Minify JavaScript",
-            "savings_ms": 40,
+            "savings_ms": 0,
             "savings_bytes": 15513
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 89824
+    "latency_ms": 100404
   },
   "form_audit": {
     "ok": true,
@@ -473,10 +473,354 @@
       "posture": "strong"
     }
   },
+  "image_optimization": {
+    "ok": true,
+    "total_images": 43,
+    "picture_elements": 0,
+    "optimized_count": 0,
+    "optimized_pct": 0,
+    "formats": {
+      "webp": 0,
+      "avif": 0,
+      "jpg": 19,
+      "png": 19,
+      "svg": 0,
+      "gif": 4,
+      "other_image_path": 0,
+      "other": 1
+    },
+    "has_srcset_pct": 23,
+    "lazy_load_pct": 0,
+    "alt_present_pct": 79,
+    "alt_nonempty_pct": 49,
+    "dimensions_pct": 47,
+    "verdict": "unoptimized",
+    "sample_unoptimized": [
+      {
+        "src": "http://tmbhtest.com/images/ie7.jpg",
+        "format": "jpg",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load"
+        ]
+      },
+      {
+        "src": "https://diamondrooftiling.com.au/wp-content/uploads/2017/07/logo2-1.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load"
+        ]
+      },
+      {
+        "src": "https://diamondrooftiling.com.au/wp-content/uploads/2017/07/star.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load"
+        ]
+      },
+      {
+        "src": "https://diamondrooftiling.com.au/wp-content/uploads/2020/03/award_500.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load"
+        ]
+      },
+      {
+        "src": "https://diamondrooftiling.com.au/wp-content/uploads/2018/06/qbcc.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load"
+        ]
+      },
+      {
+        "src": "https://diamondrooftiling.com.au/wp-content/uploads/2017/07/number.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load"
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "severity": "major",
+        "msg": "43 张图几乎全是 JPG/PNG，未用 WebP/AVIF — 估算可节省 30-50% 图片下载量"
+      },
+      {
+        "severity": "minor",
+        "msg": "33/43 张图无响应式 srcset — 移动端浪费带宽"
+      },
+      {
+        "severity": "minor",
+        "msg": "43/43 张图未 lazy load — 首屏外的图阻塞主线程"
+      },
+      {
+        "severity": "major",
+        "msg": "22/43 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取"
+      },
+      {
+        "severity": "minor",
+        "msg": "23/43 张图无显式 width/height — 加重 CLS 布局抖动"
+      }
+    ]
+  },
+  "trust_signals": {
+    "ok": true,
+    "industry_label": "AU 屋顶服务",
+    "score": 15,
+    "signals": [
+      {
+        "id": "qbcc_license",
+        "name": "QBCC 执照号",
+        "present": false,
+        "weight": 25,
+        "required_by_law": true,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "abn",
+        "name": "ABN",
+        "present": false,
+        "weight": 15,
+        "required_by_law": true,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "public_liability",
+        "name": "公共责任险",
+        "present": false,
+        "weight": 15,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "years_in_business",
+        "name": "从业年限",
+        "present": true,
+        "weight": 10,
+        "required_by_law": false,
+        "evidence_excerpt": "over 20 years"
+      },
+      {
+        "id": "whs_workers_comp",
+        "name": "工伤 / WHS 合规",
+        "present": false,
+        "weight": 10,
+        "required_by_law": true,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "industry_membership",
+        "name": "行业协会会员",
+        "present": false,
+        "weight": 10,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "warranty_guarantee",
+        "name": "保修 / 工艺保证",
+        "present": false,
+        "weight": 10,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "free_quote",
+        "name": "免费报价 / 上门估价",
+        "present": true,
+        "weight": 5,
+        "required_by_law": false,
+        "evidence_excerpt": "Free Quote"
+      }
+    ],
+    "required_missing": [
+      "QBCC 执照号",
+      "ABN",
+      "工伤 / WHS 合规"
+    ],
+    "notes": [
+      "客户网站缺少 3 个法律 / 行业要求的信任凭证：QBCC 执照号、ABN、工伤 / WHS 合规。QLD 屋顶服务由 QBCC 监管，客户在花钱前会查这些；缺失等于直接给同行让单。"
+    ]
+  },
+  "third_party_weight": {
+    "ok": true,
+    "primary_domain": "diamondrooftiling.com.au",
+    "total_requests": 168,
+    "first_party_count": 120,
+    "first_party_bytes": 4667131,
+    "third_party_count": 48,
+    "third_party_bytes": 1756251,
+    "third_party_pct_of_bytes": 27,
+    "tracker_count": 15,
+    "tracker_bytes": 305867,
+    "tracker_summary": [
+      {
+        "id": "gtm",
+        "name": "Google Tag Manager",
+        "kind": "analytics",
+        "request_count": 2,
+        "bytes": 266880
+      },
+      {
+        "id": "ga",
+        "name": "Google Analytics",
+        "kind": "analytics",
+        "request_count": 5,
+        "bytes": 38071
+      },
+      {
+        "id": "ms_clarity",
+        "name": "Microsoft Clarity",
+        "kind": "analytics",
+        "request_count": 5,
+        "bytes": 767
+      },
+      {
+        "id": "doubleclick",
+        "name": "DoubleClick",
+        "kind": "ad_serving",
+        "request_count": 3,
+        "bytes": 149
+      }
+    ],
+    "heaviest_third_party": [
+      {
+        "url": "https://www.youtube.com/s/player/8fb635c2/player_embed_es6.vflset/en_GB/base.js",
+        "hostname": "www.youtube.com",
+        "domain": "youtube.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 446018,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.gstatic.com/recaptcha/releases/U5VsmTDhJM1iOJUyw4DEUTYv/recaptcha__en.js",
+        "hostname": "www.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 372549,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.youtube.com/s/_/ytembeds/_/js/k=ytembeds.base.en_US.34ZJqU1PH_M.2021.O/am=AAAAIA/d=1/exm=base,root/ed=1/br=1/rs=AGKMywGP9RJraOehA9jvh7KhSV7kSHdsyA/m=r78Drb",
+        "hostname": "www.youtube.com",
+        "domain": "youtube.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 198438,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-265HX99QGE&cx=c&_slc=1",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 150916,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://www.youtube.com/s/_/ytembeds/_/js/k=ytembeds.base.en_US.34ZJqU1PH_M.2021.O/am=AAAAIA/d=1/br=1/rs=AGKMywGP9RJraOehA9jvh7KhSV7kSHdsyA/m=root,base",
+        "hostname": "www.youtube.com",
+        "domain": "youtube.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 144193,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtm.js?id=GTM-WQK3BVB7",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 115964,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&ver=4.6.29",
+        "hostname": "maps.googleapis.com",
+        "domain": "googleapis.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 102741,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.youtube.com/s/player/8fb635c2/www-player.css",
+        "hostname": "www.youtube.com",
+        "domain": "youtube.com",
+        "first_party": false,
+        "resource_type": "stylesheet",
+        "size_bytes": 59283,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.youtube.com/s/_/ytembeds/_/ss/k=ytembeds.base.xtyqfmz4Ntg.L.W.O/am=AAAAIA/d=0/br=1/rs=AGKMywGmZONZZpPcNuFiwzhlprY6cpfnWQ",
+        "hostname": "www.youtube.com",
+        "domain": "youtube.com",
+        "first_party": false,
+        "resource_type": "stylesheet",
+        "size_bytes": 49613,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.gstatic.com/recaptcha/releases/U5VsmTDhJM1iOJUyw4DEUTYv/styles__ltr.css",
+        "hostname": "www.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "stylesheet",
+        "size_bytes": 42538,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      }
+    ]
+  },
   "detailed_audit": {
     "business_id": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T23:17:31.202Z",
+    "audited_at": "2026-05-11T00:49:30.083Z",
     "audit_score": 55,
     "dimension_scores": {
       "gbp": 53,

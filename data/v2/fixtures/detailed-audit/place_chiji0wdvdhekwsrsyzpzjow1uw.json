@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T22:52:10.891Z",
+  "generatedAt": "2026-05-11T00:31:41.784Z",
   "entity_input": {
     "entityKey": "place_chiji0wdvdhekwsrsyzpzjow1uw",
     "latest": {
@@ -80,7 +80,7 @@
       "inner_page": 38
     },
     "last_mod_summary": {
-      "newest": "2026-05-10",
+      "newest": "2026-05-11",
       "oldest": "2023-07-05",
       "distribution_by_year": {
         "2023": 14,
@@ -349,8 +349,8 @@
     "base_url": "https://roofshield.com.au/",
     "last_modified_header": null,
     "days_since_last_modified": null,
-    "newest_sitemap_lastmod": "2026-05-10",
-    "days_since_newest_sitemap": 1,
+    "newest_sitemap_lastmod": "2026-05-11",
+    "days_since_newest_sitemap": 0,
     "blog_section_present": true,
     "blog_post_count": 1,
     "blog_newest_lastmod": null,
@@ -366,7 +366,7 @@
       ]
     },
     "overall_freshness": "active",
-    "days_since_any_update": 1
+    "days_since_any_update": 0
   },
   "ai_geo": {
     "ok": true,
@@ -482,63 +482,22 @@
   "pagespeed": {
     "ok": true,
     "results": {
-      "mobile": {
-        "strategy": "mobile",
-        "scores": {
-          "performance": 43,
-          "accessibility": 91,
-          "best_practices": 54,
-          "seo": 92
-        },
-        "lab_metrics": {
-          "lcp_ms": 10582.552352837261,
-          "fcp_ms": 2705.7021910132776,
-          "cls": 0.008345,
-          "tbt_ms": 768.5000000000009,
-          "tti_ms": 51265.2698474987,
-          "speed_index_ms": 14019.030532139734,
-          "transfer_size_bytes": 9519073
-        },
-        "crux_overall": null,
-        "crux_field_data": {
-          "lcp_p75_ms": null,
-          "fcp_p75_ms": null,
-          "cls_p75": null,
-          "inp_p75_ms": null,
-          "ttfb_p75_ms": null
-        },
-        "crux_origin_overall": null,
-        "opportunities": [
-          {
-            "id": "unused-javascript",
-            "title": "Reduce unused JavaScript",
-            "savings_ms": 3600,
-            "savings_bytes": 4294799
-          },
-          {
-            "id": "unused-css-rules",
-            "title": "Reduce unused CSS",
-            "savings_ms": 150,
-            "savings_bytes": 53710
-          }
-        ]
-      },
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 42,
+          "performance": 39,
           "accessibility": 88,
           "best_practices": 58,
-          "seo": 92
+          "seo": 85
         },
         "lab_metrics": {
-          "lcp_ms": 3366.0752624996294,
-          "fcp_ms": 726.7086865186927,
+          "lcp_ms": 3948.091785869963,
+          "fcp_ms": 725.7025819424498,
           "cls": 0.010918,
-          "tbt_ms": 1375.000000000002,
-          "tti_ms": 11480.506239196475,
-          "speed_index_ms": 4755.919039684553,
-          "transfer_size_bytes": 11521572
+          "tbt_ms": 1689.9999999999995,
+          "tti_ms": 11989.901241601698,
+          "speed_index_ms": 5195.558035933458,
+          "transfer_size_bytes": 11119690
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -553,26 +512,31 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 1480,
-            "savings_bytes": 5009960
+            "savings_ms": 1720,
+            "savings_bytes": 4883999
           },
           {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 90,
+            "savings_ms": 103,
             "savings_bytes": null
           },
           {
             "id": "unused-css-rules",
             "title": "Reduce unused CSS",
             "savings_ms": 0,
-            "savings_bytes": 63339
+            "savings_bytes": 63341
           }
         ]
       }
     },
-    "failures": [],
-    "latency_ms": 77413
+    "failures": [
+      {
+        "strategy": "mobile",
+        "reason": "Lighthouse returned error: Something went wrong."
+      }
+    ],
+    "latency_ms": 71285
   },
   "form_audit": {
     "ok": true,
@@ -597,45 +561,18 @@
     "ok": true,
     "host": "roofshield.com.au",
     "is_au_domain": true,
-    "domain_age_days": 8449,
-    "domain_age_years": 23,
-    "domain_age_source": "wayback_first_snapshot_proxy",
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
     "domain_created_iso": null,
     "au_last_modified_iso": "2025-10-17T01:45:14.000Z",
     "registrar": "Synergy Wholesale Accreditations Pty Ltd",
     "wayback": {
-      "snapshot_count": 149,
-      "first_snapshot": "2003-03-24",
-      "last_snapshot": "2026-03-05",
-      "snapshots_per_year": {
-        "2003": 8,
-        "2004": 4,
-        "2005": 6,
-        "2006": 2,
-        "2007": 2,
-        "2008": 4,
-        "2009": 7,
-        "2010": 4,
-        "2011": 1,
-        "2012": 9,
-        "2013": 8,
-        "2014": 8,
-        "2015": 4,
-        "2016": 7,
-        "2017": 3,
-        "2018": 11,
-        "2019": 9,
-        "2020": 7,
-        "2021": 8,
-        "2022": 6,
-        "2023": 7,
-        "2024": 9,
-        "2025": 12,
-        "2026": 3
-      }
+      "snapshot_count": 0,
+      "error": "wayback 503"
     },
-    "days_since_last_wayback_snapshot": 67,
-    "days_since_first_wayback_snapshot": 8449,
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
     "recent_redesign_signal": null,
     "email_dns": {
       "spf_present": true,
@@ -655,18 +592,18 @@
   "detailed_audit": {
     "business_id": "place_chiji0wdvdhekwsrsyzpzjow1uw",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T22:52:10.891Z",
-    "audit_score": 52,
+    "audited_at": "2026-05-11T00:31:41.784Z",
+    "audit_score": 53,
     "dimension_scores": {
       "gbp": 37,
-      "technical": 35,
+      "technical": 40,
       "ux_conversion": 50,
       "content": 92,
       "seo": 57,
       "visual": 50
     },
     "decision": "strong_redesign",
-    "qualification_reason": "audit_score=52 → strong_redesign · weakest: technical 35, gbp 37 · fired: no_https · 2 critical issues",
+    "qualification_reason": "audit_score=53 → strong_redesign · weakest: gbp 37, technical 40 · fired: no_https · 2 critical issues",
     "hard_triggers": [
       "no_https"
     ],
@@ -724,13 +661,6 @@
           "max": 15,
           "plain_language": null,
           "customer_impact": null
-        },
-        {
-          "id": "no_console_errors",
-          "rationale": "1 console errors",
-          "max": 5,
-          "plain_language": "你的网站在浏览器控制台里有报错。访客看不到这些错误，但报错的脚本通常就是导致按钮点不动 / 表单提交不了 / 图片加载失败的原因。",
-          "customer_impact": "一个失败的 click-to-call 按钮等于这次访问完全白来。每月成百上千次访问，哪怕只有 1% 受影响也是几十次失之交臂的咨询。"
         },
         {
           "id": "quote_or_booking_form",
@@ -816,8 +746,8 @@
       },
       "technical": {
         "dimension": "technical",
-        "score": 35,
-        "earned": 35,
+        "score": 40,
+        "earned": 40,
         "max": 100,
         "rules": [
           {
@@ -860,10 +790,10 @@
           },
           {
             "id": "no_console_errors",
-            "earned": 0,
+            "earned": 5,
             "max": 5,
-            "hit": false,
-            "rationale": "1 console errors"
+            "hit": true,
+            "rationale": "0 console errors"
           },
           {
             "id": "favicon_and_meta",

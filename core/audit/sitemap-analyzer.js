@@ -48,18 +48,57 @@ function parseSitemapXml(xml, base) {
   return { isIndex, entries };
 }
 
-function classifyUrl(urlPath) {
+// Australian roofing-relevant location keywords. When a URL slug contains
+// one of these along with a service keyword, it likely is an area-targeted
+// landing page (key for local SEO long-tail).
+const AU_LOCATION_KEYWORDS = [
+  'brisbane', 'sunshine-coast', 'sunshinecoast', 'gold-coast', 'goldcoast',
+  'ipswich', 'logan', 'redland', 'caboolture', 'pine-rivers', 'morayfield',
+  'redcliffe', 'caboolture', 'beenleigh', 'springwood', 'cleveland', 'wynnum',
+  'sydney', 'melbourne', 'perth', 'adelaide', 'newcastle', 'hobart', 'canberra',
+  // QLD suburbs (incomplete — add as needed)
+  'new-farm', 'newfarm', 'paddington', 'toowong', 'indooroopilly', 'kenmore',
+  'chermside', 'aspley', 'sandgate', 'kallangur', 'lawnton', 'strathpine',
+  'capalaba', 'mansfield', 'mount-gravatt', 'mountgravatt', 'sherwood',
+  'qld', 'queensland', 'nsw', 'vic', 'wa', 'sa', 'tas', 'act', 'nt',
+];
+
+// Roofing-specific service keywords. Service pages should target these.
+const ROOFING_SERVICE_KEYWORDS = [
+  'roof', 'roofing', 'tile', 'metal-roof', 'metal-roofing', 'colorbond',
+  'tile-restoration', 'tile-replacement', 'tile-repair', 'tile-roof',
+  'gutter', 'guttering', 'gutter-cleaning', 'gutter-repair',
+  'skylight', 'skylights', 'velux',
+  'leak', 'leak-repair', 'leak-detection',
+  'attic', 'attic-conversion', 'roof-conversion', 'roof-space',
+  'insulation', 'roof-restoration', 'roof-painting', 'roof-replacement',
+  'storm-damage', 'storm-repair', 'emergency',
+];
+
+function classifyUrl(urlPath, opts = {}) {
   const p = urlPath.toLowerCase();
   if (p === '/' || p === '') return 'home';
   if (/\/(blog|news|article|post)/.test(p)) return 'blog_post';
-  if (/\/(service|services)\//.test(p)) return 'service_page';
-  if (/\/(about|company|team|history)/.test(p)) return 'about';
+  if (/\.(jpg|jpeg|png|gif|webp|pdf|svg)$/.test(p)) return 'asset';
+  if (/\/(about|company|team|history|our-story)/.test(p)) return 'about';
   if (/\/(contact|quote|booking|enquiry|enquire|call)/.test(p)) return 'contact';
   if (/\/(gallery|portfolio|projects|work|case-stud)/.test(p)) return 'gallery';
   if (/\/(faq|help|support)/.test(p)) return 'faq';
   if (/\/(privacy|terms|policy|legal)/.test(p)) return 'legal';
   if (/\/(testimonial|review)/.test(p)) return 'testimonial';
-  if (/\.(jpg|jpeg|png|gif|webp|pdf|svg)$/.test(p)) return 'asset';
+
+  // Service + area combinations — strong SEO long-tail signal
+  const niche = opts.niche || '';
+  const serviceWords = niche.includes('roof') ? ROOFING_SERVICE_KEYWORDS : ROOFING_SERVICE_KEYWORDS;
+  const matchedService = serviceWords.find((w) => p.includes(w));
+  const matchedLocation = AU_LOCATION_KEYWORDS.find((w) => p.includes(w));
+
+  if (matchedService && matchedLocation) return 'service_area_page';      // e.g. /metal-roofing-brisbane/
+  if (matchedService) return 'service_page';                              // e.g. /metal-roofing/
+  if (matchedLocation && p.includes('service')) return 'service_area_page';
+  if (matchedLocation) return 'area_page';                                // e.g. /service-areas/brisbane/
+
+  if (/\/(service|services)\//.test(p)) return 'service_page';
   if (p.split('/').filter(Boolean).length === 1) return 'top_level_page';
   return 'inner_page';
 }
@@ -76,7 +115,7 @@ function suggestNewUrl(oldUrl) {
   } catch { return oldUrl; }
 }
 
-export async function analyzeSitemap({ baseUrl, fetchImpl = globalThis.fetch } = {}) {
+export async function analyzeSitemap({ baseUrl, niche, fetchImpl = globalThis.fetch } = {}) {
   if (!baseUrl) return { ok: false, reason: 'baseUrl required' };
   let origin;
   try { origin = new URL(baseUrl).origin; }
@@ -144,11 +183,17 @@ export async function analyzeSitemap({ baseUrl, fetchImpl = globalThis.fetch } =
   }
 
   const urlsByPattern = {};
+  const servicePages = [];
+  const areaPages = [];
+  const serviceAreaPages = [];
   for (const u of allUrls) {
     let path;
     try { path = new URL(u.loc).pathname; } catch { continue; }
-    const kind = classifyUrl(path);
+    const kind = classifyUrl(path, { niche });
     urlsByPattern[kind] = (urlsByPattern[kind] || 0) + 1;
+    if (kind === 'service_page') servicePages.push(path);
+    else if (kind === 'area_page') areaPages.push(path);
+    else if (kind === 'service_area_page') serviceAreaPages.push(path);
   }
 
   // ── lastmod summary ──
@@ -178,6 +223,26 @@ export async function analyzeSitemap({ baseUrl, fetchImpl = globalThis.fetch } =
   else if (allUrls.length <= 80) complexity = 'medium';
   else complexity = 'high';
 
+  // ── SEO long-tail structure assessment ──
+  // For local services, "service × area" combos drive long-tail traffic.
+  // E.g. /metal-roofing-brisbane/ ranks for "metal roofing brisbane" much
+  // better than a generic /services/ page. Detect what they have + what's
+  // missing for the next-page-built recommendation.
+  const seoStructure = {
+    service_page_count: servicePages.length,
+    area_page_count: areaPages.length,
+    service_area_page_count: serviceAreaPages.length,
+    service_page_samples: servicePages.slice(0, 5),
+    area_page_samples: areaPages.slice(0, 5),
+    service_area_page_samples: serviceAreaPages.slice(0, 5),
+    long_tail_coverage:
+      serviceAreaPages.length >= 5 ? 'strong'
+      : serviceAreaPages.length >= 2 ? 'moderate'
+      : servicePages.length >= 3 ? 'service_only_no_area'
+      : servicePages.length >= 1 ? 'minimal'
+      : 'none',
+  };
+
   return {
     ok: true,
     has_sitemap: true,
@@ -188,6 +253,7 @@ export async function analyzeSitemap({ baseUrl, fetchImpl = globalThis.fetch } =
     last_mod_summary: lastModSummary,
     redirect_plan: redirectPlan,
     migration_complexity: complexity,
+    seo_structure: seoStructure,
     robots_excerpt: hasRobots ? robotsTxt.slice(0, 500) : null,
   };
 }

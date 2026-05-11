@@ -78,6 +78,9 @@ for (const entityKey of targets) {
   const pagespeed = detailed?.pagespeed || null;
   const formAudit = detailed?.form_audit || null;
   const domainHistory = detailed?.domain_history || null;
+  const imageOptimization = detailed?.image_optimization || null;
+  const trustSignals = detailed?.trust_signals || null;
+  const thirdPartyWeight = detailed?.third_party_weight || null;
 
   const manifestPath = path.join(clientV2Dir, 'cloudinary-manifest.json');
   const cloudinaryManifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
@@ -94,6 +97,9 @@ for (const entityKey of targets) {
     pagespeed,
     formAudit,
     domainHistory,
+    imageOptimization,
+    trustSignals,
+    thirdPartyWeight,
     cloudinaryManifest,
     screenshotDir: './screenshots',
   });

@@ -45,6 +45,7 @@ console.log(`[build-internal-report] targets=${targets.length}`);
 
 const captureEvidence = args['capture-evidence'] !== false && args['no-evidence'] !== true;
 const withReviews = args['with-reviews'] === true;
+const ignoreGrade = args['no-grade-gating'] === true;  // bypass grade-based skipping
 const uploadCloudinary = args['upload-cloudinary'] === true;
 const reviewsDir = path.join(repoRoot, 'data/v2/fixtures/reviews');
 
@@ -86,10 +87,31 @@ for (const entityKey of targets) {
 
   // Optional review mining (T2 Google Places + T0 local Ollama analysis).
   // Cached as fixture per entity — re-run with --with-reviews to refresh.
+  // Grade-gating: only run review fetch for A/B leads (the ones we'll
+  // make personalized outreach for). C/D leads get standard templates,
+  // so the extra fetch / Ollama analysis cost is wasted.
   let reviewAnalysis = null;
   let reviewSample = null;
   const reviewFixturePath = path.join(reviewsDir, `${entityKey}.json`);
-  if (withReviews) {
+
+  // Compute lead grade to gate downstream optional work
+  let leadGrade = null;
+  try {
+    const gradingModule = await import('../../core/scoring/lead-grading.js');
+    const techStack = detailedAudit?.tech_stack || null;
+    leadGrade = gradingModule.gradeLead({
+      entity, detailedAudit, cheapAudit, techStack,
+      sitemapAnalysis: null, activity: null, domainHistory: null,
+      reviewAnalysis: null, businessSizeSignal: null,
+    });
+  } catch {}
+
+  const gradeBlocksReviews = leadGrade && !ignoreGrade && !['A', 'B'].includes(leadGrade.investment_level);
+
+  if (withReviews && gradeBlocksReviews) {
+    console.log(`  [grade-gate] skipping review fetch — lead is grade ${leadGrade.investment_level} (only A/B run reviews)`);
+  }
+  if (withReviews && !gradeBlocksReviews) {
     fs.mkdirSync(reviewsDir, { recursive: true });
     try {
       const fetched = await fetchLeadReviews({ entity });

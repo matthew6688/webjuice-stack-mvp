@@ -194,7 +194,7 @@
         <span>★ 5 (221 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/11 07:06</span>
+        <span>generated 2026/05/11 10:56</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -461,89 +461,137 @@
     <section class="section">
       <p class="eyebrow">视觉审计 · Vision LLM</p>
       <h2>设计观感的整体诊断</h2>
-      <p class="lead-summary">The website uses a dated layout with a cluttered header and a hero section that relies on a generic stock photo, making the business feel less professional than it likely is.</p>
+      <p class="lead-summary">The site has clear branding and a visible service area, but the first screen feels crowded, light on trust proof, and weak on mobile action paths.</p>
       <div class="visual-scores">
-        <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
+        <div class="vs"><span>新鲜度</span><strong>5</strong><small>/10</small></div>
         <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
         <div class="vs"><span>转化准备度</span><strong>4</strong><small>/10</small></div>
         <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
       </div>
       <div class="issues-grid">
         
-    <div class="issue-card issue-major">
+    <div class="issue-card issue-critical">
       <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">cluttered_header_navigation</code>
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">mobile_no_visible_call_cta</code>
       </div>
-      <div class="issue-title">Header is too busy and distracts from the phone number</div>
-      <p class="issue-row"><span class="lab">观察到</span>The top navigation bar contains 8 distinct menu items (Home, About Us, Our Services, etc.) plus social icons, a search icon, and contact details, all crammed into a single horizontal strip.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor looking for a roofing quote is overwhelmed by choices. The phone number is buried in the top strip rather than being a primary call-to-action. The sheer number of links suggests a lack of focus on the main goal: getting a quote.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A simplified header with a logo on the left, a &#39;Get a Quote&#39; button on the right, and a hamburger menu for secondary links. The phone number should be prominent and clickable.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Reduce navigation items to 3-4 key categories. Move the phone number to a sticky header or make it a large button. Remove social icons from the main nav to reduce visual noise.</p>
+      <div class="issue-title">No mobile call button above the fold</div>
+      <p class="issue-row"><span class="lab">观察到</span>On the mobile screenshot, the header shows the Roof Space Renovators logo, a search icon, and a hamburger menu, but no visible phone number or call button.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A local-search visitor on their phone is often ready to call quickly. If they have to open the menu or scroll to find contact details, many will go back to Google and tap another business.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Mobile header with the logo on the left and a clearly visible tap-to-call button or phone icon on the right, plus a primary quote button visible within the first screen.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the mobile search icon with a prominent tap-to-call control, keep the hamburger menu, and add a sticky bottom bar with &#39;Call&#39; and &#39;Free Quote&#39; actions.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Element: header, nav</p>
-      <img src="evidence/issue-cluttered-header-navigation.png" alt="evidence for Element: header, nav" loading="lazy" />
-    </div>
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">generic_stock_hero_image</code>
-      </div>
-      <div class="issue-title">Hero image uses a generic stock photo instead of real work</div>
-      <p class="issue-row"><span class="lab">观察到</span>The main banner image features a smiling family pointing upwards in a generic room, overlaid with a blue tint and text. It does not show any actual roof renovations or the company&#39;s work.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Customers searching for &#39;roofing Brisbane&#39; want to see proof of capability. A stock photo feels impersonal and untrustworthy. It doesn&#39;t demonstrate the specific service (attic renovation) effectively.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A high-quality photo of a real, completed attic renovation project by the company, showing the &#39;before and after&#39; or the finished space. Alternatively, a photo of the team at work.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the stock photo with a real project image. Use a split-screen &#39;before/after&#39; slider or a high-res photo of a finished attic space with the headline overlaid clearly.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-generic-stock-hero-image.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="screenshots/mobile.png" alt="mobile evidence" />
     </div>
     </div>
     <div class="issue-card issue-critical">
       <div class="issue-head">
         <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">weak_call_to_action</code>
+        <code class="issue-id">mobile_chat_blocks_hero</code>
       </div>
-      <div class="issue-title">Primary call-to-action button is buried and low contrast</div>
-      <p class="issue-row"><span class="lab">观察到</span>The &#39;Get in touch for a free quote!&#39; button is yellow, placed at the bottom of the hero section, and requires scrolling to see fully on mobile. It is not the most prominent element.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>The main goal is to get a quote. The button is not immediately visible or compelling. On mobile, users might not scroll down to find it. The yellow color blends with the text and doesn&#39;t stand out enough against the blue background.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A large, high-contrast button (e.g., bright orange or white with dark text) placed above the fold, directly under the main headline. It should say &#39;Get Your Free Quote&#39; or &#39;Call Now&#39;.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Move the CTA button to be immediately visible under the headline. Increase its size and contrast. Add a secondary CTA like &#39;Call 07 3889 6688&#39; for immediate contact.</p>
+      <div class="issue-title">Chat widget blocks key mobile content</div>
+      <p class="issue-row"><span class="lab">观察到</span>On the mobile screenshot, the &#39;We&#39;re Online!&#39; chat box and blue chat button cover the lower part of the hero image and sit over the people cutout.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The chat widget competes with the main message and hides part of the page. On a small phone screen this makes the site feel cramped and can stop visitors from seeing the main next step.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A small chat launcher that stays collapsed on mobile, positioned so it does not cover hero text, faces, or the main call-to-action.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Set the chat widget to collapsed icon-only on mobile, move it above any sticky CTA bar, and delay the expanded message until after the visitor scrolls or spends several seconds on the page.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Desktop 800px region</p>
-      <img src="evidence/issue-weak-call-to-action.png" alt="evidence for Desktop 800px region" loading="lazy" />
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="screenshots/mobile.png" alt="mobile evidence" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">hero_cta_below_mobile_fold</code>
+      </div>
+      <div class="issue-title">Quote action is not visible on mobile</div>
+      <p class="issue-row"><span class="lab">观察到</span>On desktop, the yellow &#39;Get in touch for a free quote!&#39; button appears in the hero, but in the mobile screenshot only the headline and chat widget are visible, with no quote button above the fold.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The desktop page gives visitors a clear next step, but the mobile page delays it. A phone visitor who is comparing roof-space or roofing businesses may not scroll far enough to find the quote action.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Mobile first screen with a short headline, one supporting line, and a full-width yellow &#39;Free Quote&#39; button visible without scrolling.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Shorten the mobile hero text block, move the primary quote button directly under the headline, and keep a secondary call button fixed at the bottom of the screen.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="screenshots/mobile.png" alt="mobile evidence" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">trust_proof_missing_above_fold</code>
+      </div>
+      <div class="issue-title">No proof near the first impression</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero area shows branding, a slogan, marketing copy, and a quote button, but no visible review rating, licence badge, years in business, project count, or before-and-after proof.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Roof and roof-space work is a high-trust purchase. A Google-searching customer needs fast reassurance that this is a real, experienced Brisbane business before they share details or request a quote.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Above-fold proof row with Google rating, years serving Brisbane, licence or insurance note, and a small before-and-after project thumbnail.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Add a compact trust strip directly under the header or hero headline: &#39;4.8 Google rating&#39;, &#39;Brisbane roof-space specialists&#39;, &#39;Licensed and insured&#39;, and &#39;View before/after projects&#39;.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-trust-proof-missing-above-fold.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">desktop_header_contact_low_contrast</code>
+      </div>
+      <div class="issue-title">Desktop contact details are too quiet</div>
+      <p class="issue-row"><span class="lab">观察到</span>On desktop, the address and phone number sit in a thin pale-grey strip above the logo and navigation, with light grey text and small icons.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The phone number is present, but it does not visually behave like an important action. A visitor scanning quickly may miss it and focus instead on the navigation links.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A high-contrast phone number styled as a clear action, such as a dark teal phone button or yellow &#39;Call 07 3889 6688&#39; button in the main header.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Move the phone number into the main desktop header as a prominent click-to-call button, keep the address smaller, and remove low-value social icons from the prime header area.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-desktop-header-contact-low-contrast.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">hero_visual_feels_stocky</code>
+      </div>
+      <div class="issue-title">Hero image feels generic</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero uses a teal-tinted room background with three surprised people cut out on the left, while the actual renovated roof space is heavily darkened behind the overlay.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The people cutout feels staged and does not show the workmanship clearly. A local customer wants to see real spaces, quality, and outcomes, not just a generic excited-family image.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A bright real project photo or before-and-after image of a Brisbane roof-space renovation, with people secondary or absent, and the finished space easy to inspect.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the stock-style people cutout with a high-resolution real project image, reduce the teal overlay opacity, and add a small before/after gallery link in the hero.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-hero-visual-feels-stocky.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">outdated_typography_and_colors</code>
+        <code class="issue-id">hero_copy_too_dense_desktop</code>
       </div>
-      <div class="issue-title">Font choices and color scheme feel dated</div>
-      <p class="issue-row"><span class="lab">观察到</span>The logo uses a mix of sans-serif and script fonts. The color palette includes a dark teal header and yellow accents, which feels a bit generic and not particularly modern.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>While not broken, the design language feels like it hasn&#39;t been updated in 5-7 years. This can subconsciously signal to customers that the business is not current or innovative.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A cleaner, more modern font pairing (e.g., a strong sans-serif for headings, a readable sans-serif for body). A refined color palette that uses white space more effectively.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Update the logo slightly for a cleaner look. Use a modern sans-serif font throughout. Increase white space to make the content breathe.</p>
+      <div class="issue-title">Hero text is heavy to scan</div>
+      <p class="issue-row"><span class="lab">观察到</span>On desktop, the hero stacks a large slogan, a large headline, a question line, and a dense paragraph above the yellow quote button.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A search visitor is trying to decide quickly whether the business fits their problem. Too much text in the first screen slows them down and can bury the main offer.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>One clear headline, one short supporting sentence, three proof bullets, and one primary action button.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Rewrite the hero into a sharper structure: headline, one sentence explaining the roof-space outcome, three short benefit/proof points, then the quote and call actions.</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-outdated-typography-and-colors.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <img src="evidence/issue-hero-copy-too-dense-desktop.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>The tagline &#39;Same house, more home&#39; is catchy and clearly communicates the value proposition.</li><li>The contact information (phone number and address) is present in the header, which is good for local SEO.</li><li>The headline &#39;Bigger. Brighter. Better.&#39; is clear and benefit-driven.</li></ul>
+          <ul><li>The service area line at the very top clearly names Brisbane, Sunshine Coast, Gold Coast, and Ipswich.</li><li>The logo is distinctive and readable on both desktop and mobile.</li><li>The yellow primary button on desktop stands out clearly against the teal hero area.</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Replace the generic stock photo with a real project image to build immediate trust.</li><li>2. Simplify the header and make the phone number/quote button the most prominent element.</li><li>3. Move the primary CTA button above the fold and increase its visual weight.</li></ol>
+          <ol><li>1. Add visible mobile call and quote actions above the fold.</li><li>2. Replace the generic hero treatment with real project proof and trust badges.</li><li>3. Simplify the hero layout so the phone number, quote action, and proof are easier to scan.</li></ol>
         </div>
     </section>
 

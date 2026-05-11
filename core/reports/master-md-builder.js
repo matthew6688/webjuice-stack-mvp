@@ -165,12 +165,15 @@ export function buildMasterMd({
   reviewSample,
   reviewBundle,        // full fetched bundle (includes rating_distribution if from local docker)
   techStack,           // detectTechStack output (CMS / analytics / pixels)
-  sitemapAnalysis,     // analyzeSitemap output (page count + redirect plan)
+  sitemapAnalysis,     // analyzeSitemap output (page count + redirect plan + seo_structure)
   activity,            // auditActivity output (freshness, blog, socials)
   aiGeo,               // auditAiGeoReadiness output (12 checks)
   pagespeed,           // PSI mobile + desktop result with CRUX field data
   formAudit,           // auditFormsOnPage output (forms + captcha + spam)
   domainHistory,       // auditDomainHistory output (whois + Wayback + DNS)
+  imageOptimization,   // auditImageOptimization (img formats / srcset / lazy)
+  trustSignals,        // industry-aware trust adapter (QBCC / ABN / etc)
+  thirdPartyWeight,    // 3rd-party request weight + tracker breakdown
   cloudinaryManifest,
   screenshotDir = './screenshots',
 } = {}) {
@@ -455,6 +458,55 @@ export function buildMasterMd({
     }
   }
 
+  // ── 图片优化 + 3rd-party 脚本体重（速度故事的具体补充）──
+  if (imageOptimization?.ok && imageOptimization.total_images > 0) {
+    sections.push('## 图片优化与第三方脚本体重');
+    sections.push('');
+    sections.push(`PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker 脚本。`);
+    sections.push('');
+    sections.push(`### 图片优化（共 ${imageOptimization.total_images} 张）`);
+    sections.push('');
+    sections.push(`- **优化率：** ${imageOptimization.optimized_pct}%（${imageOptimization.optimized_count}/${imageOptimization.total_images} 使用 WebP/AVIF/SVG）`);
+    sections.push(`- **响应式 srcset：** ${imageOptimization.has_srcset_pct}%`);
+    sections.push(`- **Lazy load：** ${imageOptimization.lazy_load_pct}%`);
+    sections.push(`- **Alt 文字（非空）：** ${imageOptimization.alt_nonempty_pct}%`);
+    sections.push(`- **显式 width/height：** ${imageOptimization.dimensions_pct}%（防止 CLS 布局抖动）`);
+    sections.push('');
+    sections.push(`**总评：** ${
+      { optimized: '已优化 — 这块不是改进重点', partial: '部分优化 — 还有空间', unoptimized: '基本未优化 — redesign 可显著降低图片下载量', no_images: '无图' }[imageOptimization.verdict] || imageOptimization.verdict
+    }`);
+    sections.push('');
+    if (imageOptimization.issues?.length) {
+      sections.push('**具体问题：**');
+      for (const i of imageOptimization.issues) sections.push(`- [${i.severity}] ${i.msg}`);
+      sections.push('');
+    }
+  }
+
+  if (thirdPartyWeight?.ok && thirdPartyWeight.tracker_count > 0) {
+    const tp = thirdPartyWeight;
+    sections.push(`### 第三方脚本占用情况`);
+    sections.push('');
+    sections.push(`- **总请求数：** ${tp.total_requests}（${tp.first_party_count} 自有 + ${tp.third_party_count} 第三方）`);
+    sections.push(`- **第三方占总下载量：** ${tp.third_party_pct_of_bytes}%（${Math.round(tp.third_party_bytes / 1024)} KB / ${Math.round((tp.first_party_bytes + tp.third_party_bytes) / 1024)} KB）`);
+    sections.push(`- **Tracker 脚本数：** ${tp.tracker_count}（合计 ${Math.round(tp.tracker_bytes / 1024)} KB）`);
+    sections.push('');
+    if (tp.tracker_summary?.length) {
+      sections.push(`**已识别的 tracker：**`);
+      sections.push('');
+      sections.push('| 工具 | 类型 | 请求数 | 字节 |');
+      sections.push('|---|---|---|---|');
+      for (const t of tp.tracker_summary) {
+        sections.push(`| ${t.name} | ${t.kind} | ${t.request_count} | ${(t.bytes / 1024).toFixed(1)} KB |`);
+      }
+      sections.push('');
+    }
+    if (tp.tracker_count >= 3 && tp.tracker_bytes > 100_000) {
+      sections.push(`> **观察：** ${tp.tracker_count} 个 tracker 合计加载了 ${Math.round(tp.tracker_bytes / 1024)} KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。`);
+      sections.push('');
+    }
+  }
+
   // ── SEO 迁移评估 + 运营活跃度 ──
   if (sitemapAnalysis?.ok || activity?.ok) {
     sections.push('## SEO 迁移评估 与 运营活跃度');
@@ -498,6 +550,34 @@ export function buildMasterMd({
         }
         sections.push(`**Redirect 计划承诺：** redesign 上线时我们会附一份 ${Math.min(s.total_urls, s.redirect_plan?.length || 0)} 条 1:1 redirect 表（旧 URL → 新 URL），保证 Google 已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。`);
         sections.push('');
+
+        // ── SEO 长尾结构（服务页 + 区域页）──
+        if (s.seo_structure) {
+          const seo = s.seo_structure;
+          sections.push(`### SEO 长尾结构（服务 × 区域 = 本地搜索流量金矿）`);
+          sections.push('');
+          sections.push(`- **服务专项页（如 /metal-roofing/）：** ${seo.service_page_count} 个`);
+          sections.push(`- **区域页（如 /service-areas/brisbane/）：** ${seo.area_page_count} 个`);
+          sections.push(`- **服务×区域组合页（如 /metal-roofing-brisbane/）：** ${seo.service_area_page_count} 个`);
+          sections.push('');
+          const coverage = {
+            strong: '强 — 已有 5+ 服务×区域页，长尾流量基础在',
+            moderate: '中等 — 有 2-4 个组合页，可扩充',
+            service_only_no_area: '一般 — 有服务页但缺区域细分（错失 "[service] [suburb]" 搜索流量）',
+            minimal: '弱 — 仅 1 个服务页',
+            none: '无 — 没有服务专项页面，redesign 时是关键补点',
+          }[seo.long_tail_coverage] || seo.long_tail_coverage;
+          sections.push(`**长尾覆盖：** ${coverage}`);
+          sections.push('');
+          if (seo.service_page_samples?.length) {
+            sections.push(`**现有服务页样本：** ${seo.service_page_samples.map((p) => '`' + p + '`').join(' · ')}`);
+            sections.push('');
+          }
+          if (seo.service_area_page_samples?.length) {
+            sections.push(`**现有服务×区域页样本：** ${seo.service_area_page_samples.map((p) => '`' + p + '`').join(' · ')}`);
+            sections.push('');
+          }
+        }
       } else {
         sections.push(`### 现有页面盘点`);
         sections.push('');
@@ -675,6 +755,41 @@ export function buildMasterMd({
     if (ts.analytics?.some((a) => a.id === 'ua')) {
       sections.push('> **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。');
       sections.push('');
+    }
+  }
+
+  // ── Trust signals (industry-aware compliance + credentials) ──
+  if (trustSignals?.ok) {
+    sections.push(`## 信任凭证 · ${trustSignals.industry_label}`);
+    sections.push('');
+    sections.push(`本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。`);
+    sections.push('');
+    sections.push(`**信任分：** ${trustSignals.score}/100`);
+    sections.push('');
+    const present = trustSignals.signals.filter((s) => s.present);
+    const absent = trustSignals.signals.filter((s) => !s.present);
+    if (present.length) {
+      sections.push(`### 已显示的（${present.length} 项）`);
+      sections.push('');
+      for (const s of present) {
+        sections.push(`- **${s.name}** (${s.weight} 分) — ${s.evidence_excerpt ? '"' + s.evidence_excerpt + '"' : '✓'}`);
+      }
+      sections.push('');
+    }
+    if (absent.length) {
+      sections.push(`### 缺失的（${absent.length} 项 — redesign 必补 / 提醒客户提供素材）`);
+      sections.push('');
+      for (const s of absent) {
+        const tag = s.required_by_law ? '法律要求' : '行业惯例';
+        sections.push(`- [${tag}] **${s.name}** (${s.weight} 分)`);
+      }
+      sections.push('');
+    }
+    if (trustSignals.notes?.length) {
+      for (const n of trustSignals.notes) {
+        sections.push(`> ${n}`);
+        sections.push('');
+      }
     }
   }
 

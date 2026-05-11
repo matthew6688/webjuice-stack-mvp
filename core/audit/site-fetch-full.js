@@ -28,6 +28,9 @@ import { auditAiGeoReadiness } from './ai-geo-checks.js';
 import { pagespeedAudit } from './pagespeed-insights.js';
 import { auditFormsOnPage } from './form-audit.js';
 import { auditDomainHistory } from './domain-history.js';
+import { auditImageOptimization } from './image-optimization.js';
+import { attachThirdPartyWeightInterceptor } from './third-party-weight.js';
+import { auditTrustSignals } from './trust-signals/index.js';
 
 const DESKTOP_VIEWPORT = { width: 1440, height: 900 };
 const MOBILE_VIEWPORT = { width: 375, height: 667, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
@@ -39,6 +42,7 @@ export async function siteFetchFull({
   screenshotDir,
   videoDir,                 // when set, records mobile-throttled loading video
   recordVideo = true,       // toggle off if caller doesn't want video
+  niche,                    // passed to sitemap-analyzer for service/area classification
   ledgerPath,
   leadId,
   clientSlug,
@@ -46,6 +50,7 @@ export async function siteFetchFull({
   purpose = 'detailed_audit_full_fetch',
   campaignId,
 } = {}) {
+  const entityNiche = niche;
   if (!url) throw new Error('url is required');
   const { chromium } = await import('playwright');
   const browser = await chromium.launch({ headless: true });
@@ -60,6 +65,10 @@ export async function siteFetchFull({
     const desktopPage = await desktopCtx.newPage();
     desktopPage.on('pageerror', () => { consoleErrors += 1; });
     desktopPage.on('console', (msg) => { if (msg.type() === 'error') consoleErrors += 1; });
+
+    // ─── 3rd-party tracker / weight interceptor ──────────────────────
+    // Must be attached BEFORE goto() so it captures all requests.
+    const tpInterceptor = attachThirdPartyWeightInterceptor(desktopPage, url);
 
     const navStart = Date.now();
     const response = await desktopPage.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS }).catch(() => null);
@@ -89,6 +98,19 @@ export async function siteFetchFull({
     payload.markdown = await markdownishExtract(desktopPage);
     payload.tech_stack = detectTechStack({ rawHtml: payload.rawHtml, finalUrl: payload.finalUrl });
     payload.form_audit = await auditFormsOnPage({ page: desktopPage }).catch(() => null);
+
+    // ─── Image optimization (pure parse on already-fetched HTML) ─────
+    payload.image_optimization = auditImageOptimization({ rawHtml: payload.rawHtml });
+
+    // ─── Trust signals (industry-aware adapter; pure on rawHtml + md) ─
+    payload.trust_signals = auditTrustSignals({
+      rawHtml: payload.rawHtml,
+      markdown: payload.markdown,
+      niche: entityNiche,
+    });
+
+    // ─── 3rd-party weight (finalize interceptor; captured during goto) ─
+    payload.third_party_weight = tpInterceptor.finalize();
 
     payload.performance = {
       lcp: perf.lcp != null ? perf.lcp / 1000 : null,           // seconds
@@ -182,7 +204,10 @@ export async function siteFetchFull({
     ]).then(([s, r]) => ({ hasSitemap: s, hasRobots: r }));
 
     // ─── Deep sitemap analysis (page count, redirect plan) ──────────
-    payload.sitemap_analysis = await analyzeSitemap({ baseUrl: probeBase.origin }).catch(() => null);
+    payload.sitemap_analysis = await analyzeSitemap({
+      baseUrl: probeBase.origin,
+      niche: entityNiche,
+    }).catch(() => null);
 
     // ─── Activity / freshness audit (last_modified, blog dates, socials) ─
     payload.activity = await auditActivity({
