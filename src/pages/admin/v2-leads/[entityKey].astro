@@ -36,6 +36,33 @@ const embed = renderProfileCard(entity, { audit });
 const recentHistory = (entity.history || []).slice(-10).reverse();
 const discordThreadUrl = entity.discord_thread_id ? `https://discord.com/channels/@me/${entity.discord_thread_id}` : null;
 const lastRefreshed = new Date().toISOString();
+
+// Audit / report artifacts deployed under /audit-reports/<entityKey>/
+const reportBase = `/audit-reports/${entity.entityKey}`;
+const reports = [];
+const reportDir = path.join(process.cwd(), 'public', 'audit-reports', entity.entityKey);
+if (fs.existsSync(path.join(reportDir, 'internal-audit-report.html'))) {
+  reports.push({ id: 'internal', label: 'Internal Audit Report', url: `${reportBase}/internal-audit-report`, type: 'audit' });
+}
+if (fs.existsSync(path.join(reportDir, 'master.report.html'))) {
+  reports.push({ id: 'master', label: 'Master Narrative (master.md HTML)', url: `${reportBase}/master.report.html`, type: 'narrative' });
+}
+if (fs.existsSync(path.join(reportDir, 'screenshots/desktop.png'))) {
+  reports.push({ id: 'desktop', label: 'Desktop screenshot', url: `${reportBase}/screenshots/desktop.png`, type: 'screenshot' });
+}
+if (fs.existsSync(path.join(reportDir, 'screenshots/mobile.png'))) {
+  reports.push({ id: 'mobile', label: 'Mobile screenshot', url: `${reportBase}/screenshots/mobile.png`, type: 'screenshot' });
+}
+if (fs.existsSync(path.join(reportDir, 'video/mobile-throttled.webm'))) {
+  reports.push({ id: 'video', label: 'Mobile 4G walkthrough (webm)', url: `${reportBase}/video/mobile-throttled.webm`, type: 'video' });
+}
+const evidenceDir = path.join(reportDir, 'evidence');
+const evidence = fs.existsSync(evidenceDir)
+  ? fs.readdirSync(evidenceDir).filter((f) => f.endsWith('.png')).slice(0, 12).map((f) => ({
+      label: f.replace(/^issue-/, '').replace(/\.png$/, '').replace(/-/g, ' '),
+      url: `${reportBase}/evidence/${f}`,
+    }))
+  : [];
 const fmtDaysAgo = (iso) => {
   if (!iso) return '—';
   const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
@@ -61,6 +88,42 @@ const fmtDaysAgo = (iso) => {
           {entity.do_not_contact && <span class="v2-warn-chip">DO NOT CONTACT</span>}
         </div>
       </div>
+
+      {reports.length > 0 && (
+        <section class="v2-reports-strip">
+          <header class="v2-reports-head">
+            <p class="eyebrow">Reports & Evidence</p>
+            <span class="v2-reports-count">{reports.length + evidence.length} 个内部资产</span>
+          </header>
+          <div class="v2-reports-grid">
+            {reports.map((r) => (
+              <a class={`v2-report-tile v2-report-tile-${r.type}`} href={r.url} target="_blank">
+                <span class="v2-report-tile-type">
+                  {r.type === 'audit' && '📊'}
+                  {r.type === 'narrative' && '📄'}
+                  {r.type === 'screenshot' && '🖼️'}
+                  {r.type === 'video' && '🎥'}
+                </span>
+                <span class="v2-report-tile-label">{r.label}</span>
+                <span class="v2-report-tile-cta">open ↗</span>
+              </a>
+            ))}
+          </div>
+          {evidence.length > 0 && (
+            <details class="v2-evidence-fold">
+              <summary><span class="eyebrow">Per-issue evidence ({evidence.length})</span></summary>
+              <div class="v2-evidence-grid">
+                {evidence.map((e) => (
+                  <a class="v2-evidence-thumb" href={e.url} target="_blank">
+                    <img src={e.url} alt={e.label} loading="lazy" />
+                    <span class="v2-evidence-caption">{e.label}</span>
+                  </a>
+                ))}
+              </div>
+            </details>
+          )}
+        </section>
+      )}
 
       <div class="v2-detail-layout">
         <!-- LEFT: Profile card (Discord-parity) -->
@@ -256,6 +319,117 @@ const fmtDaysAgo = (iso) => {
     text-decoration: none;
   }
   .v2-discord-link:hover { background: var(--pl-blue); color: white; }
+
+  /* Reports & Evidence strip — top of detail page */
+  .v2-reports-strip {
+    border-top: 2px solid var(--pl-line);
+    border-bottom: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 12%, var(--pl-paper));
+  }
+  .v2-reports-head {
+    padding: 14px 24px 8px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .v2-reports-head .eyebrow { margin: 0; }
+  .v2-reports-count {
+    font-family: var(--pl-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--pl-muted);
+  }
+  .v2-reports-grid {
+    padding: 0 24px 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .v2-report-tile {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: white;
+    border: 2px solid var(--pl-line);
+    color: var(--pl-ink);
+    text-decoration: none;
+    transition: background 80ms;
+  }
+  .v2-report-tile:hover { background: var(--pl-citrus); }
+  .v2-report-tile-type {
+    font-size: 24px;
+    line-height: 1;
+    text-align: center;
+  }
+  .v2-report-tile-label {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .v2-report-tile-cta {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pl-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .v2-report-tile-audit { border-color: var(--pl-coral); }
+  .v2-report-tile-narrative { border-color: var(--pl-blue); }
+  .v2-report-tile-screenshot { border-color: var(--pl-green); }
+  .v2-report-tile-video { border-color: var(--pl-blue); border-style: dashed; }
+
+  /* Evidence thumbnail gallery (collapsed) */
+  .v2-evidence-fold {
+    margin: 0 24px 16px;
+    border-top: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
+    padding-top: 12px;
+  }
+  .v2-evidence-fold summary {
+    cursor: pointer;
+    padding: 6px 0;
+    list-style: none;
+  }
+  .v2-evidence-fold summary::-webkit-details-marker { display: none; }
+  .v2-evidence-fold summary::before {
+    content: '▸';
+    margin-right: 6px;
+    display: inline-block;
+    transition: transform 120ms;
+  }
+  .v2-evidence-fold[open] summary::before { transform: rotate(90deg); }
+  .v2-evidence-grid {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .v2-evidence-thumb {
+    display: block;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+    text-decoration: none;
+    color: var(--pl-ink);
+  }
+  .v2-evidence-thumb img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent);
+  }
+  .v2-evidence-thumb:hover { background: var(--pl-citrus); }
+  .v2-evidence-caption {
+    display: block;
+    padding: 6px 8px;
+    font-size: 10.5px;
+    text-transform: capitalize;
+    color: var(--pl-muted);
+    line-height: 1.3;
+  }
 
   /* Two-column layout */
   .v2-detail-layout {
