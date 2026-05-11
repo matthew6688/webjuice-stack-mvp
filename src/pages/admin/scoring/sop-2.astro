@@ -1,0 +1,169 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import { micromark } from 'micromark';
+import { gfm, gfmHtml } from 'micromark-extension-gfm';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const docPath = path.resolve(__dirname, '../../../../docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md');
+const rawMd = fs.readFileSync(docPath, 'utf8');
+
+// Render with GitHub-flavored markdown (tables, strikethrough, task lists)
+let html;
+try {
+  html = micromark(rawMd, {
+    extensions: [gfm()],
+    htmlExtensions: [gfmHtml()],
+    allowDangerousHtml: true,
+  });
+} catch (err) {
+  // Fallback: plain micromark if gfm extension fails to import
+  html = micromark(rawMd, { allowDangerousHtml: true });
+}
+
+const lastModified = fs.statSync(docPath).mtime.toISOString().slice(0, 16).replace('T', ' ');
+const wordCount = rawMd.split(/\s+/).length;
+---
+
+<Layout title="SOP-2 · 详细文档" active="scoring">
+  <section class="poster-section admin-section">
+    <div class="admin-shell sop2-doc-shell" data-ui-version="local-style-2026-05-08">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-2 详细文档 (source of truth)</p>
+          <h1>V2 Lead Pipeline · Discovery → Audit → Graduation</h1>
+          <p class="lede">这是配套 <a href="/admin/scoring">/admin/scoring 概览页</a> 的详细文档。所有细节、容易忽略的点、决策记录在这里。</p>
+          <p class="meta-line">
+            <span>文件 <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code></span>
+            <span class="dot">·</span>
+            <span>最后更新 {lastModified}</span>
+            <span class="dot">·</span>
+            <span>{wordCount} 字</span>
+          </p>
+        </div>
+        <div class="admin-count">
+          <a href="/admin/scoring" class="back-link">← 返回概览</a>
+        </div>
+      </header>
+
+      <article class="sop2-doc-body" set:html={html}></article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .sop2-doc-shell { max-width: 980px; }
+  .sop2-doc-shell .admin-header h1 { font-size: 28px; line-height: 1.2; }
+  .sop2-doc-shell .admin-header .lede a { color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+  .back-link {
+    display: inline-block; padding: 8px 14px;
+    border: 2px solid var(--pl-line); background: var(--pl-paper);
+    color: var(--pl-ink); text-decoration: none; font-size: 13px;
+    box-shadow: 3px 3px 0 var(--pl-line);
+  }
+  .back-link:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--pl-line); }
+
+  .sop2-doc-body {
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+    box-shadow: 4px 4px 0 var(--pl-line);
+    padding: 28px 36px;
+    margin-top: 18px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--pl-ink);
+  }
+
+  /* Markdown chrome */
+  .sop2-doc-body h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 26px; margin: 18px 0 12px; padding-bottom: 6px;
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .sop2-doc-body h2 {
+    font-family: Georgia, serif;
+    font-size: 20px; margin: 30px 0 10px; padding-bottom: 4px;
+    border-bottom: 1px solid var(--pl-line);
+  }
+  .sop2-doc-body h3 { font-family: Georgia, serif; font-size: 17px; margin: 22px 0 8px; }
+  .sop2-doc-body h4 { font-size: 15px; margin: 16px 0 6px; font-weight: 700; }
+  .sop2-doc-body p { margin: 10px 0; }
+  .sop2-doc-body ul, .sop2-doc-body ol { margin: 10px 0; padding-left: 24px; }
+  .sop2-doc-body li { margin: 4px 0; }
+  .sop2-doc-body strong { font-weight: 700; color: var(--pl-ink); }
+  .sop2-doc-body em { font-style: italic; color: var(--pl-muted); }
+  .sop2-doc-body code {
+    background: rgba(0,0,0,0.06);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--pl-coral);
+  }
+  .sop2-doc-body pre {
+    background: var(--pl-cream-deep, #2A2418);
+    color: var(--pl-cream, #F8F2E5);
+    padding: 14px 16px;
+    border: 2px solid var(--pl-line);
+    box-shadow: 3px 3px 0 var(--pl-line);
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 0;
+  }
+  .sop2-doc-body pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .sop2-doc-body blockquote {
+    border-left: 4px solid var(--pl-coral);
+    background: color-mix(in srgb, var(--pl-coral) 7%, var(--pl-paper));
+    margin: 14px 0;
+    padding: 8px 14px;
+    color: var(--pl-ink);
+  }
+  .sop2-doc-body blockquote p { margin: 4px 0; }
+  .sop2-doc-body a {
+    color: var(--pl-coral);
+    text-decoration: none;
+    border-bottom: 1px dashed currentColor;
+  }
+  .sop2-doc-body a:hover { background: color-mix(in srgb, var(--pl-coral) 12%, transparent); }
+  .sop2-doc-body hr {
+    border: none;
+    border-top: 1px dashed var(--pl-muted);
+    margin: 24px 0;
+  }
+
+  .sop2-doc-body table {
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+    width: 100%;
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+  }
+  .sop2-doc-body th, .sop2-doc-body td {
+    border: 1px solid var(--pl-line);
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .sop2-doc-body th {
+    background: color-mix(in srgb, var(--pl-citrus) 16%, var(--pl-paper));
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  .sop2-doc-body tr:nth-child(even) td { background: color-mix(in srgb, var(--pl-paper) 70%, white); }
+
+  /* Task lists */
+  .sop2-doc-body input[type=checkbox] { margin-right: 6px; }
+
+  /* Anchor scroll offset for sticky admin header (if any) */
+  .sop2-doc-body :is(h1, h2, h3, h4)[id] { scroll-margin-top: 80px; }
+</style>

@@ -120,7 +120,17 @@ function chipClass(action) {
         <div>
           <p class="eyebrow">SOP-2 概览 (macro view)</p>
           <h1>V2 Lead Pipeline · Discovery → Audit → Graduation</h1>
-          <p class="lede">从一个搜索 query 到 A/B 客户进入销售 thread 的完整流程。本页是 macro overview（看大局）；细节看 <a href="https://github.com/matthewkiata/google-map-website/blob/main/docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md" target="_blank" rel="noopener"><code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code></a>。</p>
+          <p class="lede">从一个搜索 query 到 A/B 客户进入销售 thread 的完整流程。本页是 <strong>macro overview</strong>（看大局）。需要细节看 <strong>详细文档</strong>。</p>
+          <div class="sop2-doc-link-row">
+            <a href="/admin/scoring/sop-2" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📘</span>
+              <span class="sop2-doc-link-text">
+                <strong>SOP-2 详细文档</strong>
+                <span class="sop2-doc-link-sub">完整流程 · 容易忽略的点 · 决策记录 · 660 行</span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
           <p class="meta-line">
             <span>cheap-audit config <code>{config.version}</code></span>
             <span class="dot">·</span>
@@ -669,6 +679,7 @@ function chipClass(action) {
           <div class="maintenance-card">
             <p class="eyebrow accent-coral">详细文档 (source of truth)</p>
             <p>给 AI / 工程师 / 新人看的细节。每个步骤、容易忽略的点都在。</p>
+            <a href="/admin/scoring/sop-2" class="maintenance-doc-link">📘 打开 SOP-2 详细文档 →</a>
             <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code>
           </div>
         </div>
@@ -704,6 +715,47 @@ function chipClass(action) {
   .scoring-shell .admin-header { gap: 18px; }
   .scoring-shell .admin-header h1 { font-size: 32px; line-height: 1.15; }
   .scoring-shell .admin-header a { color: var(--pl-coral); text-decoration: none; border-bottom: 1px dashed currentColor; }
+
+  /* ─── SOP-2 doc link button (prominent at top) ─── */
+  .sop2-doc-link-row { margin: 10px 0 6px; }
+  .sop2-doc-link-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 18px;
+    border: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper));
+    box-shadow: 4px 4px 0 var(--pl-line);
+    text-decoration: none;
+    color: var(--pl-ink);
+    transition: transform 80ms ease;
+    max-width: 540px;
+  }
+  .sop2-doc-link-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 32%, var(--pl-paper));
+  }
+  .sop2-doc-link-icon { font-size: 22px; line-height: 1; }
+  .sop2-doc-link-text { display: flex; flex-direction: column; gap: 2px; }
+  .sop2-doc-link-text strong { font-size: 15px; font-weight: 700; }
+  .sop2-doc-link-sub { font-size: 11.5px; color: var(--pl-muted); }
+  .sop2-doc-link-arrow { font-size: 18px; font-weight: 700; color: var(--pl-coral); margin-left: auto; }
+
+  /* maintenance section doc link */
+  .maintenance-doc-link {
+    display: inline-block;
+    margin: 8px 0;
+    padding: 8px 14px;
+    border: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper));
+    box-shadow: 3px 3px 0 var(--pl-line);
+    color: var(--pl-ink);
+    text-decoration: none;
+    font-size: 13px; font-weight: 700;
+  }
+  .maintenance-doc-link:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--pl-line);
+  }
 
   /* ─── SOP-2 source-of-truth banner ─── */
   .sop2-banner {
