@@ -1,0 +1,614 @@
+---
+import Layout from '../../layouts/AdminLayout.astro';
+import { spawnSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { deriveLocale, nowInLocale } from '../../../core/leads/locale.js';
+
+const uiVersion = 'local-style-2026-05-08';
+
+const entitiesDir = path.join(process.cwd(), 'data', 'leads', 'entities');
+const entities = fs.existsSync(entitiesDir)
+  ? fs.readdirSync(entitiesDir).filter((f) => f.endsWith('.json')).map((f) => {
+      try { return JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8')); } catch { return null; }
+    }).filter(Boolean)
+  : [];
+
+// ── Status buckets (V2 funnel gates) ──
+const STATUS_LABELS = {
+  discovered: 'Scraped 未审',
+  scored: '初步 GBP score',
+  queued_for_audit: '待 detailed audit',
+  queued_for_enrichment: '待补料',
+  ready_for_outreach_brief: '审过待分级',
+  manual_review: '需我介入',
+  promoted: '已转 leads (legacy)',
+  graded: '已分级',
+  skipped: '已跳过',
+};
+const PIPELINE_STAGES = [
+  { key: 'scored',                  label: '初步 GBP score',     tone: 'scored',  cli: 'leads:audit-discovery-sites' },
+  { key: 'queued_for_audit',        label: '待 detailed audit',  tone: 'queued',  cli: 'leads:run-pipeline -- --entity-key <key>' },
+  { key: 'ready_for_outreach_brief',label: '审过待分级',         tone: 'ready',   cli: 'leads:run-pipeline -- --entity-key <key>' },
+  { key: 'manual_review',           label: '需我介入',           tone: 'urgent',  cli: 'leads:triage-discovery-manual -- --limit 8' },
+];
+
+function row(e) {
+  const audit = (() => {
+    const p = path.join('data', 'v2', 'fixtures', 'detailed-audit', `${e.entityKey}.json`);
+    if (!fs.existsSync(p)) return null;
+    try { return JSON.parse(fs.readFileSync(p, 'utf8')).detailed_audit || null; } catch { return null; }
+  })();
+  const locale = deriveLocale(e);
+  return {
+    entityKey: e.entityKey,
+    name: e.latest?.name || '—',
+    niche: e.latest?.niche || null,
+    city: e.latest?.city || null,
+    website: e.latest?.website || null,
+    websiteStatus: e.latest?.websiteStatus || null,
+    rating: e.latest?.rating,
+    reviews: e.latest?.review_count,
+    status: e.status || 'discovered',
+    has_audit: Boolean(audit),
+    audit_score: audit?.audit_score ?? null,
+    audit_decision: audit?.decision ?? null,
+    discovery_score: e.latest?.discoveryScore ?? null,
+    locale_now: nowInLocale(locale),
+    firstSeenAt: e.firstSeenAt || '',
+    history_len: (e.history || []).length,
+    last_status_at: e.lastStatusAt || e.firstSeenAt || '',
+  };
+}
+const allRows = entities.map(row);
+
+const counts = {};
+for (const r of allRows) counts[r.status] = (counts[r.status] || 0) + 1;
+const total = entities.length;
+const todoCount = (counts.scored || 0) + (counts.queued_for_audit || 0) + (counts.ready_for_outreach_brief || 0) + (counts.manual_review || 0);
+
+// Cohorts for the visible feed (top of each stage)
+const PER_STAGE_LIMIT = 6;
+const stageData = PIPELINE_STAGES.map((s) => ({
+  ...s,
+  count: counts[s.key] || 0,
+  rows: allRows.filter((r) => r.status === s.key).slice(0, PER_STAGE_LIMIT),
+  total_in_stage: allRows.filter((r) => r.status === s.key).length,
+}));
+
+// Skip reasons breakdown (hard-skip rule firing analysis)
+const skipReasons = {};
+for (const e of entities.filter((x) => x.status === 'skipped')) {
+  const reasons = e.grade?.skip_reasons || [];
+  if (reasons.length === 0 && e.discoveryScore < 30) skipReasons['low_discovery_score'] = (skipReasons['low_discovery_score'] || 0) + 1;
+  for (const r of reasons) {
+    skipReasons[r.id] = (skipReasons[r.id] || 0) + 1;
+  }
+  if (reasons.length === 0 && !e.discoveryScore) skipReasons['no_data'] = (skipReasons['no_data'] || 0) + 1;
+}
+const sortedSkipReasons = Object.entries(skipReasons).sort((a, b) => b[1] - a[1]);
+
+// Scheduled tasks — Hermes cron jobs in profitslocal-namespace
+// (We can't shell out at static build, so list known names with status hint.)
+const crons = [
+  { name: 'pl-reply-poll', schedule: 'every 5m', purpose: '拉 agentic-inbox 新回信 → 分类 + Discord 同步', status: 'paused (dev)' },
+  { name: 'pl-daily-tick', schedule: '0 9 * * *', purpose: 'nurture 复活 + outreach 21d 超时归档', status: 'paused (dev)' },
+];
+
+// Recent discovery activity
+const discoveryEventsPath = path.join('data', 'leads', 'discovery-events.jsonl');
+const recentEvents = [];
+if (fs.existsSync(discoveryEventsPath)) {
+  const lines = fs.readFileSync(discoveryEventsPath, 'utf8').trim().split('\n').filter(Boolean);
+  for (const line of lines.slice(-20).reverse()) {
+    try {
+      const e = JSON.parse(line);
+      if (recentEvents.length < 8) recentEvents.push(e);
+    } catch {}
+  }
+}
+
+const lastRefreshed = new Date().toISOString();
+const bottleneckStage = stageData
+  .filter((s) => s.count > 0)
+  .sort((a, b) => b.count - a.count)[0];
+---
+<Layout title="V2 Queue · Discovery 漏斗" active="queue">
+  <section class="poster-section admin-section" data-ui-version={uiVersion}>
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">V2 Queue · Discovery 漏斗</p>
+          <h1>{total} entities, {todoCount} 待处理</h1>
+          <p class="lede">Lead 从 maps-scraper → cheap audit → detailed audit → grade → Discord forum thread。这页盯哪一关卡了人。</p>
+        </div>
+        <a class="admin-count v2-overview-cta" href="/admin/v2-leads/">
+          <strong>{counts.graded || 0}</strong>
+          <span>→ Graded 进 leads</span>
+        </a>
+      </div>
+
+      <!-- Bottleneck hero: which stage has the most stuck? -->
+      {bottleneckStage && bottleneckStage.count >= 3 && (
+        <section class="v2-bottleneck-hero">
+          <div class="v2-bottleneck-inner">
+            <p class="eyebrow">现在最大瓶颈</p>
+            <h2>
+              <span class={`v2-bottleneck-num v2-stage-${bottleneckStage.tone}`}>{bottleneckStage.count}</span>
+              个 lead 卡在 <strong>{bottleneckStage.label}</strong>
+            </h2>
+            <p class="v2-bottleneck-cli">
+              <span class="eyebrow-inline">CLI 推一推</span>
+              <code>npm run {bottleneckStage.cli}</code>
+            </p>
+          </div>
+        </section>
+      )}
+
+      <!-- Funnel stages, ordered by pipeline flow -->
+      {stageData.map((stage) => (
+        <section class={`v2-stage v2-stage-${stage.tone}`} id={stage.key}>
+          <header class="v2-stage-head">
+            <div class="v2-stage-head-left">
+              <h2 class="v2-stage-title">{stage.label}</h2>
+              <span class="v2-stage-count">{stage.count}</span>
+            </div>
+            {stage.cli && (
+              <code class="v2-stage-cli">npm run {stage.cli}</code>
+            )}
+          </header>
+          {stage.rows.length === 0 ? (
+            <p class="v2-stage-empty">— 此阶段当前为空 —</p>
+          ) : (
+            <div class="v2-stage-rows">
+              {stage.rows.map((r) => (
+                <div class="v2-queue-row">
+                  <div class="v2-queue-row-main">
+                    <h3 class="v2-queue-row-name">{r.name}</h3>
+                    <div class="v2-queue-row-meta">
+                      {r.niche && <span>{r.niche}</span>}
+                      {r.city && <span>· {r.city}</span>}
+                      {r.discovery_score != null && (
+                        <span class="v2-queue-discovery-score" title="cheap audit / discovery score">
+                          score {r.discovery_score}
+                        </span>
+                      )}
+                      {r.has_audit && r.audit_score != null && (
+                        <span class="v2-queue-audit-chip" title={r.audit_decision || ''}>
+                          audit {r.audit_score}/100
+                        </span>
+                      )}
+                      {r.website ? (
+                        <a class="v2-queue-website" href={r.website} target="_blank" rel="noopener">
+                          {r.websiteStatus === 'no_website' ? 'no website'
+                            : r.websiteStatus === 'third_party_landing_page' ? '3rd party'
+                            : '↗ visit'}
+                        </a>
+                      ) : <span class="v2-queue-no-site">no website</span>}
+                    </div>
+                  </div>
+                  <div class="v2-queue-row-aside">
+                    <code class="v2-queue-key">{r.entityKey.slice(6, 18)}…</code>
+                  </div>
+                </div>
+              ))}
+              {stage.total_in_stage > PER_STAGE_LIMIT && (
+                <p class="v2-stage-more">…还有 {stage.total_in_stage - PER_STAGE_LIMIT} 个 (跑 CLI 处理全部)</p>
+              )}
+            </div>
+          )}
+        </section>
+      ))}
+
+      <!-- Scheduled tasks (Hermes cron) -->
+      <section class="v2-stage">
+        <header class="v2-stage-head">
+          <div class="v2-stage-head-left">
+            <h2 class="v2-stage-title">Scheduled tasks (Hermes cron)</h2>
+            <span class="v2-stage-count">{crons.length}</span>
+          </div>
+          <code class="v2-stage-cli">hermes cron list --all</code>
+        </header>
+        <div class="v2-cron-grid">
+          {crons.map((c) => (
+            <article class="v2-cron-card">
+              <div class="v2-cron-head">
+                <code class="v2-cron-name">{c.name}</code>
+                <span class="v2-cron-status">{c.status}</span>
+              </div>
+              <div class="v2-cron-schedule">
+                <span class="eyebrow-inline">schedule</span>
+                <code>{c.schedule}</code>
+              </div>
+              <p class="v2-cron-purpose">{c.purpose}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Skipped reasons (D-grade + hard-skip rules) -->
+      {sortedSkipReasons.length > 0 && (
+        <section class="v2-stage v2-stage-archived">
+          <header class="v2-stage-head">
+            <div class="v2-stage-head-left">
+              <h2 class="v2-stage-title">已跳过 — 原因分布</h2>
+              <span class="v2-stage-count">{counts.skipped || 0}</span>
+            </div>
+          </header>
+          <div class="v2-skip-grid">
+            {sortedSkipReasons.map(([reason, n]) => (
+              <div class="v2-skip-row">
+                <code class="v2-skip-reason">{reason}</code>
+                <span class="v2-skip-count">{n}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Recent discovery events feed -->
+      {recentEvents.length > 0 && (
+        <section class="v2-stage">
+          <header class="v2-stage-head">
+            <div class="v2-stage-head-left">
+              <h2 class="v2-stage-title">近期 discovery events</h2>
+              <span class="v2-stage-count">{recentEvents.length}</span>
+            </div>
+          </header>
+          <ol class="v2-event-feed">
+            {recentEvents.map((e) => (
+              <li class="v2-event-row">
+                <span class="v2-event-time">{(e.at || '').slice(5, 16).replace('T', ' ')}</span>
+                <code class="v2-event-type">{e.event || 'unknown'}</code>
+                {e.entityKey && <code class="v2-event-key">{String(e.entityKey).slice(6, 22)}…</code>}
+                {e.status && <span class="v2-event-status">→ {e.status}</span>}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <footer class="admin-block-foot">
+        <div class="v2-foot-row">
+          <span class="eyebrow-inline">Last refreshed</span>
+          <code>{lastRefreshed}</code>
+          <span class="v2-foot-sep">·</span>
+          <span class="eyebrow-inline">下游</span>
+          <a href="/admin/v2-leads/">V2 Leads</a>
+          <a href="/admin/v2/">V2 Overview</a>
+          <span class="v2-foot-sep">·</span>
+          <span class="eyebrow-inline">老 admin</span>
+          <a href="/admin/queue">/admin/queue</a>
+        </div>
+      </footer>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  /* === V2 Queue === */
+  .eyebrow-inline {
+    font-size: 10px; font-weight: 950; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--pl-muted);
+  }
+  .v2-overview-cta {
+    text-decoration: none; color: var(--pl-ink);
+    cursor: pointer; transition: background 80ms;
+  }
+  .v2-overview-cta:hover { background: var(--pl-citrus); }
+  .v2-overview-cta strong { font-family: var(--pl-display); font-size: 38px; line-height: 1; }
+
+  /* Bottleneck hero — surface the biggest stuck point */
+  .v2-bottleneck-hero {
+    background: color-mix(in srgb, var(--pl-coral) 18%, var(--pl-paper));
+    border-top: 2px solid var(--pl-line);
+    border-bottom: 2px solid var(--pl-line);
+    padding: 20px 24px;
+  }
+  .v2-bottleneck-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: baseline;
+  }
+  .v2-bottleneck-inner .eyebrow { margin: 0 0 6px; }
+  .v2-bottleneck-inner h2 {
+    margin: 0;
+    font-family: var(--pl-display);
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .v2-bottleneck-num {
+    font-family: var(--pl-display);
+    font-size: 56px;
+    line-height: 1;
+    padding: 0 4px;
+    margin-right: 4px;
+  }
+  .v2-bottleneck-cli {
+    margin: 0;
+    text-align: right;
+    align-self: end;
+    font-size: 13px;
+  }
+  .v2-bottleneck-cli code {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 4px 10px;
+    background: white;
+    border: 1.5px solid var(--pl-line);
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+  }
+
+  /* Funnel stage sections */
+  .v2-stage {
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .v2-stage:last-of-type { border-bottom: 0; }
+  .v2-stage-head {
+    padding: 14px 24px 12px;
+    display: grid;
+    grid-template-columns: minmax(0, auto) 1fr;
+    gap: 18px;
+    align-items: baseline;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 25%, transparent);
+  }
+  .v2-stage-head-left { display: flex; gap: 12px; align-items: baseline; }
+  .v2-stage-title {
+    margin: 0;
+    font-family: var(--pl-display);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .v2-stage-count {
+    font-family: var(--pl-display);
+    font-size: 18px;
+    color: var(--pl-muted);
+  }
+  .v2-stage-cli {
+    margin: 0;
+    justify-self: end;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    background: var(--pl-paper);
+    border: 1px solid var(--pl-line);
+    padding: 3px 8px;
+    color: var(--pl-muted);
+  }
+  /* Tinted headers by stage tone */
+  .v2-stage-scored .v2-stage-head { background: color-mix(in srgb, var(--pl-sky) 10%, var(--pl-paper)); }
+  .v2-stage-queued .v2-stage-head { background: color-mix(in srgb, var(--pl-citrus) 16%, var(--pl-paper)); }
+  .v2-stage-ready .v2-stage-head { background: color-mix(in srgb, var(--pl-mint) 14%, var(--pl-paper)); }
+  .v2-stage-urgent .v2-stage-head {
+    background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper));
+    border-bottom-color: var(--pl-coral);
+  }
+  .v2-stage-archived .v2-stage-head { background: color-mix(in srgb, var(--pl-muted) 10%, var(--pl-paper)); }
+
+  .v2-stage-empty {
+    margin: 0;
+    padding: 18px 24px;
+    color: var(--pl-muted);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .v2-stage-rows { background: var(--pl-paper); }
+  .v2-queue-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    padding: 10px 24px;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 12%, transparent);
+    align-items: baseline;
+  }
+  .v2-queue-row:last-child { border-bottom: 0; }
+  .v2-queue-row-name {
+    margin: 0;
+    font-family: var(--pl-display);
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .v2-queue-row-meta {
+    margin-top: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    align-items: baseline;
+    font-size: 12px;
+    color: var(--pl-muted);
+  }
+  .v2-queue-discovery-score, .v2-queue-audit-chip {
+    border: 1px solid var(--pl-line);
+    padding: 1px 7px;
+    background: var(--pl-paper);
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--pl-ink);
+  }
+  .v2-queue-website {
+    color: var(--pl-blue);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-blue) 40%, transparent);
+  }
+  .v2-queue-website:hover { background: var(--pl-citrus); }
+  .v2-queue-no-site {
+    color: var(--pl-coral);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .v2-queue-key {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    color: color-mix(in srgb, var(--pl-muted) 70%, transparent);
+  }
+  .v2-stage-more {
+    margin: 8px 24px;
+    padding: 8px 12px;
+    background: color-mix(in srgb, var(--pl-citrus) 20%, var(--pl-paper));
+    border: 1px dashed var(--pl-line);
+    font-size: 12px;
+    color: var(--pl-muted);
+  }
+
+  /* Hermes cron card grid */
+  .v2-cron-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    background: var(--pl-paper);
+  }
+  .v2-cron-card {
+    padding: 14px 18px;
+    border-right: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 30%, transparent);
+  }
+  .v2-cron-card:last-child { border-right: 0; }
+  .v2-cron-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .v2-cron-name {
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .v2-cron-status {
+    font-size: 10px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pl-muted);
+    padding: 2px 6px;
+    border: 1px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 30%, white);
+  }
+  .v2-cron-schedule {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .v2-cron-schedule code {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    background: white;
+    border: 1px solid var(--pl-line);
+    padding: 1px 6px;
+  }
+  .v2-cron-purpose {
+    margin: 0;
+    font-size: 12px;
+    color: var(--pl-muted);
+    line-height: 1.4;
+  }
+
+  /* Skip reasons grid */
+  .v2-skip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0;
+    background: var(--pl-paper);
+  }
+  .v2-skip-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 16px;
+    border-right: 1px solid color-mix(in srgb, var(--pl-line) 20%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 20%, transparent);
+  }
+  .v2-skip-reason {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--pl-muted);
+  }
+  .v2-skip-count {
+    font-family: var(--pl-display);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* Event feed */
+  .v2-event-feed {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: var(--pl-paper);
+  }
+  .v2-event-row {
+    display: grid;
+    grid-template-columns: 96px minmax(0, auto) minmax(0, auto) 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding: 6px 24px;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 12%, transparent);
+    font-size: 12px;
+  }
+  .v2-event-row:last-child { border-bottom: 0; }
+  .v2-event-time {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--pl-muted);
+  }
+  .v2-event-type {
+    font-family: ui-monospace, monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+  .v2-event-key {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    color: color-mix(in srgb, var(--pl-muted) 70%, transparent);
+  }
+  .v2-event-status { color: var(--pl-muted); font-size: 11px; }
+
+  /* Stage number colors echoed in bottleneck */
+  .v2-stage-scored, .v2-stage-num.v2-stage-scored,
+  .v2-bottleneck-num.v2-stage-scored { color: var(--pl-sky); }
+  .v2-bottleneck-num.v2-stage-queued { color: color-mix(in srgb, var(--pl-citrus) 50%, var(--pl-coral)); }
+  .v2-bottleneck-num.v2-stage-ready { color: var(--pl-green); }
+  .v2-bottleneck-num.v2-stage-urgent { color: var(--pl-coral); }
+
+  .admin-block-foot {
+    padding: 16px 24px;
+    border-top: 2px solid var(--pl-line);
+    background: color-mix(in srgb, white 50%, var(--pl-cream));
+    font-size: 13px;
+  }
+  .v2-foot-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    align-items: baseline;
+  }
+  .v2-foot-sep { color: color-mix(in srgb, var(--pl-line) 40%, transparent); }
+  .admin-block-foot a {
+    color: var(--pl-blue);
+    text-decoration: none;
+    border-bottom: 1px solid var(--pl-line);
+  }
+  .admin-block-foot a:hover { background: var(--pl-citrus); }
+  .admin-block-foot code {
+    font-family: ui-monospace, monospace; font-size: 12px;
+    background: var(--pl-paper); border: 1px solid var(--pl-line); padding: 1px 6px;
+  }
+
+  @media (max-width: 880px) {
+    .v2-bottleneck-inner { grid-template-columns: 1fr; }
+    .v2-bottleneck-cli { text-align: left; }
+    .v2-stage-head { grid-template-columns: 1fr; }
+    .v2-stage-cli { justify-self: start; }
+    .v2-cron-grid { grid-template-columns: 1fr; }
+    .v2-cron-card { border-right: 0; }
+  }
+</style>
