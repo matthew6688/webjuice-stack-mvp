@@ -153,9 +153,11 @@ const lastRefreshed = new Date().toISOString();
           ) : (
             <div class="v2-row-list">
               {group.rows.map((r) => (
-                <a class="v2-row" href={`/admin/v2-leads/${r.entityKey}/`}>
+                <div class="v2-row">
                   <div class="v2-row-main">
-                    <h3 class="v2-row-name">{r.name}</h3>
+                    <a class="v2-row-name-link" href={`/admin/v2-leads/${r.entityKey}/`}>
+                      <h3 class="v2-row-name">{r.name}</h3>
+                    </a>
                     <div class="v2-row-meta">
                       <span class={`v2-grade-chip v2-grade-chip-${r.grade?.toLowerCase()}`}>{r.grade}{r.tier ? `/${r.tier}` : ''}</span>
                       {r.phase && <span class={`v2-phase-chip v2-phase-chip-${r.phase}`}>{r.phase}</span>}
@@ -196,10 +198,10 @@ const lastRefreshed = new Date().toISOString();
                   <div class="v2-row-aside">
                     {r.locale_now && <div class="v2-row-locale">{r.locale_now}</div>}
                     {r.discord_thread_id && (
-                      <span class="v2-row-discord" onclick={`event.stopPropagation();event.preventDefault();window.open('${discordUrl(r.discord_thread_id)}','_blank');`}>→ Discord ↗</span>
+                      <a class="v2-row-discord" href={discordUrl(r.discord_thread_id)} target="_blank" rel="noopener">→ Discord ↗</a>
                     )}
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           )}
@@ -342,12 +344,18 @@ const lastRefreshed = new Date().toISOString();
     padding: 14px 24px;
     border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 12%, transparent);
     color: var(--pl-ink);
-    text-decoration: none;
-    transition: background 80ms;
     align-items: center;
+    transition: background 80ms;
   }
   .v2-row:last-child { border-bottom: 0; }
-  .v2-row:hover { background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper)); }
+  .v2-row:hover { background: color-mix(in srgb, var(--pl-citrus) 16%, var(--pl-paper)); }
+  .v2-row-name-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+  }
+  .v2-row-name-link:hover { border-bottom-color: var(--pl-line); }
   .v2-row-name {
     margin: 0;
     font-family: var(--pl-display);

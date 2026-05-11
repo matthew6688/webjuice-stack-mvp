@@ -62,23 +62,23 @@ const sellablePct = totals.entities ? `${((sellable / totals.entities) * 100).to
         </a>
       </div>
 
-      <!-- Hot dashboard: 4 KPI tiles that matter day-to-day -->
+      <!-- Hot dashboard: 4 KPI tiles, all clickable jumps to Lead 看板 sections -->
       <div class="admin-summary-strip admin-summary-strip-compact v2-kpi-strip">
-        <article class={`admin-summary-tile ${phaseAttention > 0 ? 'admin-summary-primary' : ''}`}>
-          <span class="admin-summary-label">需要 attention</span>
+        <a class={`admin-summary-tile v2-kpi-tile ${phaseAttention > 0 ? 'admin-summary-primary v2-kpi-tile-hot' : ''}`} href="/admin/v2-leads/#needs_human">
+          <span class="admin-summary-label">需要 attention →</span>
           <strong>{phaseAttention}</strong>
           <p>{byPhase['needs-human'] || 0} needs-human · {byPhase['replied'] || 0} replied</p>
-        </article>
-        <article class="admin-summary-tile">
-          <span class="admin-summary-label">外发中 + 就绪</span>
+        </a>
+        <a class="admin-summary-tile v2-kpi-tile" href="/admin/v2-leads/#outreach_active">
+          <span class="admin-summary-label">外发中 + 就绪 →</span>
           <strong>{phaseActive}</strong>
           <p>{byPhase['outreach-active'] || 0} 已发等回 · {byPhase['awaiting'] || 0} 等首封</p>
-        </article>
-        <article class="admin-summary-tile">
+        </a>
+        <a class="admin-summary-tile v2-kpi-tile" href="/admin/v2-leads/">
           <span class="admin-summary-label">可成交占比</span>
           <strong>{sellable} <span class="v2-kpi-sub">/ {totals.entities || 0}</span></strong>
           <p>{sellablePct} · A {byGrade.A} · B {byGrade.B} · C {byGrade.C}</p>
-        </article>
+        </a>
         <article class="admin-summary-tile">
           <span class="admin-summary-label">Audit 完成 / 待跑</span>
           <strong>{pipeline.audit_completed_cumulative || 0} <span class="v2-kpi-sub">/ {pipeline.queued_for_audit || 0}</span></strong>
@@ -128,31 +128,23 @@ const sellablePct = totals.entities ? `${((sellable / totals.entities) * 100).to
         </section>
       )}
 
-      <section class="v2-block v2-block-context">
-        <header class="v2-block-head">
-          <h2>未启用的指标</h2>
-          <p>邮件 open/click/visit/engage 信号链路 — 等 TrackLayer fork 后接入</p>
-        </header>
-        <div class="v2-deferred-row">
-          {(kpi?.deferred_metrics || []).map((m) => (
-            <span class="v2-deferred-chip"><code>{m}</code></span>
-          ))}
-        </div>
-      </section>
-
-      <footer class="admin-block-foot">
-        <p>
+      <footer class="admin-block-foot v2-overview-foot">
+        <div class="v2-foot-row">
           <span class="eyebrow-inline">Last refreshed</span>
           <code>{lastRefreshed}</code>
-          ·
+          <span class="v2-foot-sep">·</span>
           <span class="eyebrow-inline">看板</span>
           <a href="/admin/v2-leads/">V2 Leads</a>
-          ·
+          <span class="v2-foot-sep">·</span>
           <span class="eyebrow-inline">老 admin</span>
-          <a href="/admin/queue">/admin/queue</a> ·
-          <a href="/admin/leads">/admin/leads</a> ·
+          <a href="/admin/queue">/admin/queue</a>
+          <a href="/admin/leads">/admin/leads</a>
           <a href="/admin/intakes">/admin/intakes</a>
-        </p>
+        </div>
+        <div class="v2-foot-row v2-foot-deferred">
+          <span class="eyebrow-inline">未启用指标</span>
+          <span class="v2-foot-muted">{(kpi?.deferred_metrics || []).join(' · ')} — 等 TrackLayer fork</span>
+        </div>
       </footer>
     </div>
   </section>
@@ -172,6 +164,18 @@ const sellablePct = totals.entities ? `${((sellable / totals.entities) * 100).to
     font-size: 38px;
     line-height: 1;
   }
+
+  /* Clickable KPI tiles */
+  .v2-kpi-tile {
+    text-decoration: none;
+    color: var(--pl-ink);
+    cursor: pointer;
+    transition: background 80ms;
+  }
+  .v2-kpi-tile:hover { background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper)) !important; }
+  .v2-kpi-tile-hot:hover { background: var(--pl-coral) !important; color: white; }
+  .v2-kpi-tile-hot:hover .admin-summary-label,
+  .v2-kpi-tile-hot:hover p { color: rgba(255, 255, 255, 0.9); }
 
   .v2-kpi-strip strong { white-space: nowrap; }
   .v2-kpi-sub {
@@ -350,6 +354,24 @@ const sellablePct = totals.entities ? `${((sellable / totals.entities) * 100).to
   .admin-block-foot code {
     font-family: ui-monospace, monospace; font-size: 12px;
     background: var(--pl-paper); border: 1px solid var(--pl-line); padding: 1px 6px;
+  }
+  .v2-overview-foot { padding-block: 14px 16px; }
+  .v2-foot-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    align-items: baseline;
+  }
+  .v2-foot-row + .v2-foot-row {
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid color-mix(in srgb, var(--pl-line) 18%, transparent);
+  }
+  .v2-foot-sep { color: color-mix(in srgb, var(--pl-line) 40%, transparent); }
+  .v2-foot-muted {
+    color: var(--pl-muted);
+    font-family: ui-monospace, monospace;
+    font-size: 11.5px;
   }
 
   @media (max-width: 880px) {
