@@ -42,12 +42,21 @@ export async function visionClaudeCli({
     : `${prompt}\n\nImages to analyze (in order):\n${abs.map((p, i) => `  ${i + 1}. ${p}`).join('\n')}`;
 
   const start = Date.now();
+  // Lean flags: no skills, no MCP servers, no user settings —
+  // gives deterministic subprocess behavior and removes the
+  // "loaded N skills with errors" noise on the side. Token cost is
+  // similar in our tests (cache-read vs cache-create wash) but the
+  // stability is the real win.
   const r = spawnSync(CLI, [
     '--print',
     '--output-format', 'json',
     '--model', model,
     '--permission-mode', 'bypassPermissions',
     '--no-session-persistence',
+    '--disable-slash-commands',         // skip ~/.claude/skills/*
+    '--strict-mcp-config',
+    '--mcp-config', '{"mcpServers":{}}', // no MCP servers
+    '--setting-sources', '',             // no user/project/local settings
   ], {
     input: promptWithImages,
     encoding: 'utf8',
