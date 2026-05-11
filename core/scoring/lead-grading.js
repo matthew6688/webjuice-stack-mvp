@@ -270,6 +270,51 @@ export function gradeLead(ctx = {}) {
 
 // ─── Surfaced for admin /admin/scoring/lead-grading page ─────────────────
 
+// ─── Side-effect: persist grade to entity ─────────────────────────────────
+// Called by the pipeline after a lead is graded. Writes the grade to the
+// entity file and triggers the right status transition:
+//   - grade=D → status='skipped' (auto-archive, no manual review)
+//   - grade=A/B/C → status='graded' (ready for sales pipeline)
+
+import { updateDiscoveryEntityStatus, defaultDiscoveryStoreRoot } from '../leads/discovery-store.js';
+import fs from 'fs';
+import path from 'path';
+
+export function persistLeadGrade({
+  entityKey,
+  grade,
+  storeRoot = defaultDiscoveryStoreRoot(),
+} = {}) {
+  if (!entityKey) return { ok: false, reason: 'entityKey required' };
+  if (!grade) return { ok: false, reason: 'grade required' };
+
+  const entityPath = path.join(storeRoot, 'entities', `${entityKey}.json`);
+  if (!fs.existsSync(entityPath)) return { ok: false, reason: 'entity not found' };
+
+  const entity = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+  entity.grade = {
+    investment_level: grade.investment_level,
+    product_tier: grade.product_tier,
+    recommended_pricing: grade.recommended_pricing,
+    skip_reasons: grade.skip_reasons,
+    graded_at: new Date().toISOString(),
+  };
+  fs.writeFileSync(entityPath, JSON.stringify(entity, null, 2) + '\n');
+
+  // Trigger status transition: D → archived (skipped), A/B/C → graded
+  const isD = grade.investment_level === 'D';
+  const note = isD
+    ? `Auto-archived: ${(grade.skip_reasons || []).map((r) => r.id).join(', ') || grade.investment_reason || 'D-grade hard skip'}`
+    : `Graded ${grade.investment_level} / ${grade.product_tier || '-'}`;
+
+  return updateDiscoveryEntityStatus({
+    entityKey,
+    status: isD ? 'skipped' : 'graded',
+    note,
+    storeRoot,
+  });
+}
+
 export const HARD_SKIP_DEFINITIONS = HARD_SKIP_RULES.map((r) => ({ id: r.id, reason: r.reason }));
 
 export const INVESTMENT_LEVEL_TABLE = [

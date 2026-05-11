@@ -28,6 +28,7 @@ import { detailedAudit, reloadConfig } from '../../core/scoring/detailed-audit.j
 import { siteFetchFull } from '../../core/audit/site-fetch-full.js';
 import { runVision } from '../../core/llm/vision-adapter.js';
 import { buildVisualAuditPrompt } from '../../core/llm/visual-audit-prompt.js';
+import { gradeLead, persistLeadGrade } from '../../core/scoring/lead-grading.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -173,9 +174,30 @@ async function processLead(entityKey) {
     console.warn(`  ! visual audit skipped (no desktop.png)`);
   }
 
-  // ── Stage 3 (optional): review mining ────────────────────────────────
-  // Just delegate to build-internal-report --with-reviews; it caches its
-  // own fixture, so we don't duplicate that orchestration here.
+  // ── Stage 3a: Lead Grading + persist to entity ────────────────────────
+  // Side effect: writes entity.grade + transitions status. If D-grade,
+  // auto-archives (no manual review per scale-first policy).
+  let leadGrade = null;
+  try {
+    leadGrade = gradeLead({
+      entity,
+      detailedAudit: detailedFixture.detailed_audit,
+      cheapAudit: null,
+      techStack: detailedFixture.tech_stack,
+      sitemapAnalysis: detailedFixture.sitemap_analysis,
+      activity: detailedFixture.activity,
+      domainHistory: detailedFixture.domain_history,
+      reviewAnalysis: null,
+      businessSizeSignal: null,
+    });
+    const persistResult = persistLeadGrade({ entityKey, grade: leadGrade });
+    console.log(`  [stage 3a/4] graded: ${leadGrade.investment_level}${leadGrade.product_tier ? '/' + leadGrade.product_tier : ''} ${persistResult.ok ? '✓ persisted' : '⚠ ' + persistResult.reason}`);
+  } catch (err) {
+    console.warn(`     ⚠ grading failed: ${err.message}`);
+  }
+
+  // ── Stage 3b (optional): review mining ────────────────────────────────
+  // Delegate to build-internal-report --with-reviews; cached fixture.
 
   // ── Stage 4: HTML report build (delegates to existing CLI) ───────────
   console.log(`  [stage ${withReviews ? '3-4' : '4'}/4] build HTML report${withReviews ? ' (+ reviews)' : ''}`);
@@ -196,6 +218,7 @@ async function processLead(entityKey) {
     audit_score: detailedFixture.detailed_audit?.audit_score,
     decision: detailedFixture.detailed_audit?.decision,
     visual_issues: visualFixture?.parsedJson?.issues?.length || 0,
+    grade: leadGrade ? `${leadGrade.investment_level}${leadGrade.product_tier ? '/' + leadGrade.product_tier : ''}` : null,
     report_url: `/audit-reports/${entityKey}/internal-audit-report.html`,
   };
 }

@@ -3,8 +3,8 @@
   "entityKey": "place_chijywypvhjzkwsr6clfddpq0nc",
   "firstSeenAt": "2026-05-09T06:17:47.515Z",
   "lastSeenAt": "2026-05-09T06:20:00.519Z",
-  "status": "manual_review",
-  "lastStatusAt": "2026-05-09T06:17:47.515Z",
+  "status": "skipped",
+  "lastStatusAt": "2026-05-11T02:09:40.564Z",
   "identifiers": {
     "place_id": "ChIJYwYPvHJZkWsR6cLfDdPq0nc",
     "cid": "8634221627814429417",
@@ -82,7 +82,32 @@
       "score": 45,
       "action": "skip",
       "status": "manual_review"
+    },
+    {
+      "at": "2026-05-11T02:09:40.564Z",
+      "event": "status_updated",
+      "status": "skipped",
+      "clientSlug": "",
+      "note": "Auto-archived: too_many_pages, too_many_categories"
     }
   ],
-  "notes": []
+  "notes": [
+    "Auto-archived: too_many_pages, too_many_categories"
+  ],
+  "grade": {
+    "investment_level": "D",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [
+      {
+        "id": "too_many_pages",
+        "reason": "现有网站超过 200 页 — 迁移成本失控"
+      },
+      {
+        "id": "too_many_categories",
+        "reason": "GBP 多元业务分类 ≥ 5 个 — 需求复杂度超出标准产品包"
+      }
+    ],
+    "graded_at": "2026-05-11T02:09:40.564Z"
+  }
 }

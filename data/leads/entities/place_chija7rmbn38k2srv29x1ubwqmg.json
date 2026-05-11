@@ -3,8 +3,8 @@
   "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
   "firstSeenAt": "2026-05-09T10:53:53.252Z",
   "lastSeenAt": "2026-05-09T10:53:53.252Z",
-  "status": "manual_review",
-  "lastStatusAt": "2026-05-09T10:53:53.252Z",
+  "status": "skipped",
+  "lastStatusAt": "2026-05-11T02:09:40.547Z",
   "identifiers": {
     "place_id": "ChIJA7RMbN38k2sRV29x1UBWQmg",
     "cid": "7512661964866285399",
@@ -64,7 +64,28 @@
       "score": 42,
       "action": "manual_review",
       "status": "manual_review"
+    },
+    {
+      "at": "2026-05-11T02:09:40.547Z",
+      "event": "status_updated",
+      "status": "skipped",
+      "clientSlug": "",
+      "note": "Auto-archived: too_many_pages"
     }
   ],
-  "notes": []
+  "notes": [
+    "Auto-archived: too_many_pages"
+  ],
+  "grade": {
+    "investment_level": "D",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [
+      {
+        "id": "too_many_pages",
+        "reason": "现有网站超过 200 页 — 迁移成本失控"
+      }
+    ],
+    "graded_at": "2026-05-11T02:09:40.547Z"
+  }
 }
