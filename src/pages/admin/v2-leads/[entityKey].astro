@@ -138,9 +138,8 @@ const fmtDaysAgo = (iso) => {
         <!-- LEFT: Profile card (Discord-parity) -->
         <section class="v2-card-frame">
           <header class="v2-card-frame-head" style={`border-left: 8px solid #${embed.color.toString(16).padStart(6, '0')}`}>
-            <p class="eyebrow">Profile card · Discord 同源</p>
-            <h2>{embed.title}</h2>
-            <p class="v2-card-frame-desc">{embed.description}</p>
+            <p class="eyebrow">Profile card · Discord embed 同源</p>
+            <p class="v2-card-frame-desc">14 字段中显示 {embed.fields.length} 个有数据 · {embed.fields.length === 14 ? '完整' : `还有 ${14 - embed.fields.length} 个字段未填`}</p>
           </header>
           <div class="v2-meta-grid">
             {embed.fields.map((f) => (
