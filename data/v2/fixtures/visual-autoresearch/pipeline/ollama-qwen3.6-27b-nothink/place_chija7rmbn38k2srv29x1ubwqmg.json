@@ -1,70 +1,131 @@
 {
-  "model": "qwen3.6:27b",
+  "provider": "codex_cli",
+  "model": null,
   "candidateId": "ollama-qwen3.6-27b-nothink",
-  "latencyMs": 211032,
+  "latencyMs": 83302,
   "parsedJson": {
-    "freshness_score": 4,
+    "freshness_score": 5,
     "trust_score": 5,
     "conversion_score": 4,
-    "design_age_estimate": "outdated",
-    "summary": "The website uses a dated layout with a heavy image overlay and cluttered navigation that obscures the primary call to action, making it difficult for local customers to quickly identify the business's value proposition.",
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The site has recognizable branding and a clear service message, but the first screen is visually crowded and the mobile contact path is weakened by blocked content and missing call-first action.",
     "issues": [
       {
-        "id": "hero_overlay_legibility",
+        "id": "mobile_chat_blocks_hero",
         "severity": "critical",
-        "title": "Hero text is hard to read against busy background",
-        "what_observed": "The main hero section features a photograph of a family with a semi-transparent blue overlay. The white text ('Same House more home!') and the yellow script font ('more home!') struggle to contrast against the busy background details.",
-        "why_problem": "Visitors decide within seconds if a site is relevant. If they have to squint to read the headline or struggle to distinguish the text from the background, they will bounce. The busy background distracts from the message.",
-        "what_correct_looks_like": "A clean, solid color background (e.g., white or light grey) with a high-quality image placed to the side (desktop) or below the text (mobile), ensuring the headline is in a bold, dark sans-serif font with high contrast.",
-        "how_to_fix_in_redesign": "Remove the full-width background image. Use a split layout: text on the left, image on the right. Ensure the headline is at least 48px font size and dark grey (#333) on a white background for maximum readability.",
-        "plain_explanation": "网站的主图背景太花哨，上面的文字很难看清。就像在嘈杂的房间里听人说话，客人第一眼就抓不到重点。",
-        "customer_impact": "访客通常在 8 秒内决定是否离开。如果文字看不清，他们会直接关掉网页，导致您白白浪费了从 Google 广告或搜索获得的流量。"
+        "title": "Mobile chat widget blocks hero content",
+        "what_observed": "On the mobile screenshot, the white 'We're offline / Leave a message' chat bubble and blue chat button cover the lower hero area, overlapping the people photo and taking over the bottom-right of the screen.",
+        "why_problem": "A phone visitor from Google is usually trying to quickly call, compare, or check if the business feels credible. Seeing an offline chat box covering the page makes the site feel less helpful at the exact moment they are deciding whether to act.",
+        "what_correct_looks_like": "A compact floating chat icon only, positioned below a sticky phone button or hidden until after the visitor scrolls, with no large offline message covering the hero.",
+        "how_to_fix_in_redesign": "Remove the expanded offline chat panel on initial mobile load; keep a 48px chat icon tucked in the lower-right after the main phone CTA, and trigger the larger message only after user tap.",
+        "plain_explanation": "手机页面一打开，聊天框挡住了主图和内容，而且还写着“离线”，看起来像没人及时接待。",
+        "customer_impact": "本地客户通常在手机上快速决定要不要联系，很多人会在几秒内离开。一个挡住页面的“离线”提示会直接降低信任感，让原本可能打电话的人转去看下一家。"
       },
       {
-        "id": "cta_button_visibility",
-        "severity": "major",
-        "title": "Primary Call-to-Action is buried and weak",
-        "what_observed": "The primary button 'Get in touch for a free quote!' is a yellow rectangle located at the bottom of the hero section. It is visually competing with the text above it and is not the most prominent element on the screen.",
-        "why_problem": "A local customer searching for 'roofing Brisbane' wants to contact the business immediately. If the button is small, blends in, or is buried under paragraphs of text, the user has to hunt for it, increasing the chance they will leave.",
-        "what_correct_looks_like": "A large, high-contrast button (e.g., bright orange or blue) placed immediately below the headline, above the fold. It should say 'Get a Free Quote' and be the most distinct element on the page.",
-        "how_to_fix_in_redesign": "Move the CTA button up, directly under the 'Bigger. Brighter. Better.' headline. Increase the button size (padding) and use a color that contrasts sharply with the background (e.g., a strong blue or orange) to draw the eye.",
-        "plain_explanation": "“免费报价”按钮藏得太深，而且不够显眼。客人想联系您，但找不到按钮，就像去商店买东西却找不到收银台一样。",
-        "customer_impact": "行动号召（CTA）不显眼会直接导致转化率下降。对于本地服务行业，每 10 个访客中可能因此流失 3-5 个潜在客户，直接损失收入。"
-      },
-      {
-        "id": "navigation_clutter",
-        "severity": "major",
-        "title": "Navigation menu is too dense and distracting",
-        "what_observed": "The top navigation bar contains 8 distinct links (Home, About Us, Our Services, Our Product Range, Be Inspired, Our Showroom, FAQs, Contact Us) plus social icons and contact info, all crammed into a single row.",
-        "why_problem": "Too many choices cause 'analysis paralysis'. A visitor looking for a quote doesn't care about 'Be Inspired' or 'Our Showroom' yet. The clutter makes the site look disorganized and unprofessional.",
-        "what_correct_looks_like": "A simplified menu with max 5 items: Home, Services, About, Gallery, Contact. 'Contact Us' should be a distinct button, not just text. Secondary links can be moved to the footer.",
-        "how_to_fix_in_redesign": "Reduce the menu to 4-5 core items. Move 'FAQs', 'Be Inspired', and 'Our Showroom' to the footer. Make 'Contact Us' a distinct button style to separate it from informational links.",
-        "plain_explanation": "导航栏塞了太多选项，让客人眼花缭乱。他们只想找服务或联系方式，过多的链接会让网站显得杂乱无章，不够专业。",
-        "customer_impact": "杂乱的导航会让访客感到困惑，降低对品牌的信任度。研究表明，清晰的导航能提升 20% 以上的用户停留时间，混乱的菜单则会让客人迅速流失。"
-      },
-      {
-        "id": "mobile_phone_accessibility",
+        "id": "no_visible_mobile_phone_cta",
         "severity": "critical",
-        "title": "Phone number is not a sticky, clickable element",
-        "what_observed": "The phone number is visible in the top header bar, but it is small text next to an icon. It is not a large, sticky button that follows the user as they scroll.",
-        "why_problem": "70% of local searches happen on mobile. A user on a phone wants to tap a number to call immediately. If they have to scroll back up to the top to find a small number, they will likely switch to a competitor.",
-        "what_correct_looks_like": "A sticky 'Call Now' button fixed to the bottom of the screen on mobile devices, visible at all times regardless of scroll position.",
-        "how_to_fix_in_redesign": "Implement a sticky bottom bar for mobile views containing a large 'Call 07 3889 6688' button. Ensure the header phone number is also clickable (tel: link).",
-        "plain_explanation": "在手机上看网站时，电话号码太小且不固定。客人想打电话咨询，却找不到按钮，这会让想立刻联系您的客户流失。",
-        "customer_impact": "本地搜索用户中 70% 使用手机。如果电话按钮不明显，您会直接失去那些急需服务的客户，导致潜在客户流向竞争对手。"
+        "title": "No obvious mobile call button",
+        "what_observed": "On mobile, the header shows the logo, a small search icon, and a hamburger menu, but there is no visible tap-to-call phone button above the fold.",
+        "why_problem": "Someone searching for roofing in Brisbane on a phone often wants the fastest way to call. If the phone action is hidden inside the menu or below the fold, motivated visitors may leave instead of hunting for contact details.",
+        "what_correct_looks_like": "A sticky mobile header or bottom bar with a clear phone button, such as 'Call 07 3889 6688', plus one secondary 'Get quote' button visible without opening the menu.",
+        "how_to_fix_in_redesign": "Add a persistent mobile call CTA in the header or bottom bar, using a phone icon and the phone number; keep the hamburger menu secondary.",
+        "plain_explanation": "手机首屏没有明显的“一键拨打电话”按钮，客户需要自己找联系方式。",
+        "customer_impact": "本地服务客户很多是边比较边打电话。少一步就可能多一个询盘，反过来说，电话按钮藏起来会让一部分高意向客户直接流失。"
+      },
+      {
+        "id": "desktop_contact_details_low_contrast",
+        "severity": "major",
+        "title": "Desktop contact details are too faint",
+        "what_observed": "On desktop, the address and phone number in the thin grey top strip are very small and pale grey against a light background.",
+        "why_problem": "The phone number and location are proof that this is a real local Brisbane-area business. When they are hard to see, visitors have to work harder to confirm the company is nearby and reachable.",
+        "what_correct_looks_like": "A high-contrast top contact bar with readable 14px+ text, a phone icon, clear phone number, service area, and a stronger visual hierarchy than social icons.",
+        "how_to_fix_in_redesign": "Increase the contact bar text size and contrast, make the phone number clickable and bold, and reduce the prominence of decorative social icons.",
+        "plain_explanation": "电脑版顶部的地址和电话太淡太小，客户不容易一眼看到这是本地公司、也不容易找到电话。",
+        "customer_impact": "客户从 Google 进来时会先确认“是不是本地、能不能联系”。电话和地址不醒目，会让一部分人失去耐心，尤其是在同时打开多家网站比较时。"
+      },
+      {
+        "id": "hero_cta_below_visual_priority",
+        "severity": "major",
+        "title": "Quote button is visually buried",
+        "what_observed": "The desktop hero has a yellow 'Get in touch for a free quote!' button, but it sits low in the dense text block and competes with the large slogan, people cutout, chat widget, and colored strip at the bottom.",
+        "why_problem": "The visitor's eye is pulled in many directions before reaching the action button. A local-search customer should immediately know what to do next without reading a long paragraph.",
+        "what_correct_looks_like": "A shorter hero with one dominant CTA above the fold, a secondary phone link beside it, and supporting copy limited to one or two short lines.",
+        "how_to_fix_in_redesign": "Move the quote CTA directly under the main headline, add a phone CTA beside it, shorten the paragraph, and remove competing bottom color bars from the hero.",
+        "plain_explanation": "“免费报价”按钮有，但它被很多文字、人物图、聊天框和颜色条分散了注意力。",
+        "customer_impact": "客户越难立刻看见下一步，越容易只是浏览一下就走。对本地服务来说，首屏按钮不够突出会减少电话和报价表单数量。"
+      },
+      {
+        "id": "hero_copy_too_dense",
+        "severity": "major",
+        "title": "Hero text is too long to scan",
+        "what_observed": "The desktop hero includes a multi-line paragraph beginning 'Think inside the box!' under the main headline, and the mobile hero shows large stacked headline text that fills most of the first screen.",
+        "why_problem": "People searching for a roofer or renovation service are usually comparing options quickly. Long hero copy slows them down before they see practical proof like services, areas served, reviews, or a call option.",
+        "what_correct_looks_like": "A concise hero message: one clear service promise, one line of proof such as 'Brisbane attic and roof space specialists', and immediate CTA buttons.",
+        "how_to_fix_in_redesign": "Rewrite the hero into a short headline, a 12-18 word supporting line, and move detailed explanation into the next section with bullets.",
+        "plain_explanation": "首屏文字太多，客户还没看到重点就要先读一大段。",
+        "customer_impact": "访客通常会在很短时间内判断值不值得继续看。文字越难扫读，越容易错过关键卖点和联系方式，尤其是手机流量。"
+      },
+      {
+        "id": "stock_cutout_feels_staged",
+        "severity": "major",
+        "title": "Staged people image weakens trust",
+        "what_observed": "The hero uses a cutout photo of three surprised people pointing upward, placed over a tinted roof-space background.",
+        "why_problem": "For roofing and home renovation work, visitors want evidence of real workmanship, real homes, and real trades. A staged reaction image can feel generic and makes the business look less grounded in actual local projects.",
+        "what_correct_looks_like": "A real finished roof-space or attic renovation photo, ideally from a Brisbane-area project, with natural lighting and a small caption or proof point.",
+        "how_to_fix_in_redesign": "Replace the cutout people image with authentic before-and-after project photography; use a real room/roof-space photo as the hero background and keep people photos for testimonial sections only if they are real customers or team members.",
+        "plain_explanation": "首屏人物图看起来像素材图，不像真实工程案例。",
+        "customer_impact": "装修和屋顶类服务很依赖信任。客户看不到真实作品时，会更难相信施工质量，可能转去选择展示真实案例的竞争对手。"
+      },
+      {
+        "id": "mobile_logo_takes_too_much_space",
+        "severity": "major",
+        "title": "Mobile logo dominates first screen",
+        "what_observed": "On mobile, the large 'ROOF SPACE RENOVATORS' logo block takes a full band under the teal service-area bar before the hero content begins.",
+        "why_problem": "Brand recognition matters, but mobile visitors need quick access to contact and proof. Oversized branding pushes useful actions and reassurance lower on the screen.",
+        "what_correct_looks_like": "A compact mobile header with a smaller logo, visible call button, and menu icon in one row, leaving more vertical space for the service message and CTA.",
+        "how_to_fix_in_redesign": "Reduce the mobile logo height, place call and menu controls in the same header row, and keep the service-area line shorter or collapsible.",
+        "plain_explanation": "手机顶部 logo 占了太多高度，真正能让客户行动的信息被挤下去了。",
+        "customer_impact": "手机屏幕空间很宝贵。首屏越多位置给 logo，留给电话、报价、信任证明的空间越少，询盘机会就越容易被浪费。"
+      },
+      {
+        "id": "service_area_bar_too_long",
+        "severity": "minor",
+        "title": "Service-area line is overloaded",
+        "what_observed": "The teal top bar says 'Servicing Brisbane, Sunshine Coast, Gold Coast, Ipswich (and all areas in between)' and wraps into two lines on mobile.",
+        "why_problem": "The information is useful, but the sentence is long and takes up prime first-screen space. A mobile visitor may read it as clutter before they understand the main service.",
+        "what_correct_looks_like": "A shorter service-area badge such as 'Brisbane + South East Queensland' with detailed suburbs listed lower on the page.",
+        "how_to_fix_in_redesign": "Shorten the top bar copy to one line on mobile and move the full area list into a dedicated service-area section with suburbs and map cues.",
+        "plain_explanation": "顶部服务区域说明太长，手机上还换行，占用了首屏空间。",
+        "customer_impact": "服务范围要清楚，但首屏太拥挤会让客户更难快速找到电话和报价入口，降低继续浏览的意愿。"
       }
     ],
     "positive_observations": [
-      "The value proposition 'Same House, More Home' is clear and relevant to the attic renovation niche.",
-      "The use of a family photo in the hero section helps humanize the brand and suggests a family-friendly service.",
-      "The color scheme (teal and yellow) is consistent with the logo, maintaining brand identity."
+      "The brand name is large and memorable, with a clear roof-space renovation positioning.",
+      "The teal and yellow brand colors are consistent across logo, hero overlay, and CTA.",
+      "The desktop navigation labels are straightforward and include useful trust-building pages like FAQs, showroom, and product range."
     ],
     "redesign_priorities": [
-      "1. Implement a sticky 'Call Now' button for mobile users to capture immediate leads.",
-      "2. Simplify the hero section: remove the busy background image, increase headline contrast, and move the CTA button above the fold.",
-      "3. Streamline the navigation menu to reduce cognitive load and highlight the 'Contact' action."
+      "1. Add a visible mobile tap-to-call CTA and stop the offline chat panel from opening over the first screen.",
+      "2. Rebuild the hero around real project photography, one short service promise, and one dominant quote/phone action.",
+      "3. Make local trust signals easier to see: readable phone number, Brisbane service area, reviews, project proof, and license/process cues near the top."
     ],
-    "confidence": 0.9
+    "confidence": 0.88
   },
-  "rawText": null
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 87912,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 83302
+    }
+  ],
+  "tokensIn": 68822,
+  "tokensOut": 3010,
+  "theoreticalCostUsd": 0.20215499999999997
 }

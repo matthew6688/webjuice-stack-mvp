@@ -26,7 +26,7 @@ import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { detailedAudit, reloadConfig } from '../../core/scoring/detailed-audit.js';
 import { siteFetchFull } from '../../core/audit/site-fetch-full.js';
-import { visionOllama } from '../../core/llm/vision-ollama.js';
+import { runVision } from '../../core/llm/vision-adapter.js';
 import { buildVisualAuditPrompt } from '../../core/llm/visual-audit-prompt.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -125,7 +125,8 @@ for (const entityKey of targets) {
     try { visualFixture = JSON.parse(fs.readFileSync(visualPath, 'utf8')); } catch {}
   }
   if (!visualFixture && fs.existsSync(desktopShot)) {
-    console.log(`  [stage 2/4] visual audit — qwen3.6:27b nothink`);
+    const forcedProvider = process.env.VISION_PROVIDER || 'auto (claude_cli → codex_cli → ollama)';
+    console.log(`  [stage 2/4] visual audit — provider: ${forcedProvider}`);
     fs.mkdirSync(visualRunDir, { recursive: true });
     const prompt = buildVisualAuditPrompt({
       businessName: entity.latest?.name,
@@ -133,20 +134,29 @@ for (const entityKey of targets) {
       city: entity.latest?.city,
     });
     try {
-      const out = await visionOllama({
-        model: VISION_MODEL,
+      const out = await runVision({
         prompt,
         imagePaths: [desktopShot],
-        think: false,
         leadId: entityKey,
         clientSlug: slug,
         stage: 'visual_audit',
         purpose: 'pipeline_visual_audit',
       });
-      visualFixture = { model: VISION_MODEL, candidateId: VISION_CAND_ID, latencyMs: out.latencyMs, parsedJson: out.parsedJson, rawText: out.parsedJson ? null : out.rawText?.slice(0, 2000) };
+      visualFixture = {
+        provider: out.provider,
+        model: out.model || null,
+        candidateId: VISION_CAND_ID,
+        latencyMs: out.latencyMs,
+        parsedJson: out.parsedJson,
+        rawText: out.parsedJson ? null : out.rawText?.slice(0, 2000),
+        attempts: out.attempts || null,
+        tokensIn: out.tokensIn || null,
+        tokensOut: out.tokensOut || null,
+        theoreticalCostUsd: out.theoreticalCostUsd || null,
+      };
       fs.writeFileSync(visualPath, JSON.stringify(visualFixture, null, 2));
       const issues = out.parsedJson?.issues?.length || 0;
-      console.log(`     → ${issues} visual issues, latency=${(out.latencyMs / 1000).toFixed(1)}s`);
+      console.log(`     → ${issues} visual issues via ${out.provider}, latency=${(out.latencyMs / 1000).toFixed(1)}s${out.tokensIn ? ` (in=${out.tokensIn} out=${out.tokensOut} ~$${(out.theoreticalCostUsd||0).toFixed(4)})` : ''}`);
     } catch (err) {
       console.warn(`     ⚠ vision failed: ${err.message}`);
     }
