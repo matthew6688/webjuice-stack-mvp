@@ -12,12 +12,12 @@ audit_version: "2026-05-11-v1"
 fired_triggers:
   - "no_https"
   - "high_traction_old_site"
-visual_age: "outdated"
-visual_freshness: 4
-visual_trust: 5
-visual_conversion: 3
+visual_age: null
+visual_freshness: null
+visual_trust: null
+visual_conversion: null
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:23.433Z"
+generated_at: "2026-05-11T23:42:04.894Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -39,16 +39,16 @@ assets:
 - 数字成熟度 3/6（懂数字营销）
 - 评论 trust signal 强
 
-**产品档位：** `T3` 多页站 + 月度运营包
+**产品档位：** `T3` 多页 / 定制（quote separately）
 
 - 127★5 强口碑底子
 - 已投放过广告（懂月度预算）
 - 评论 trust strong
 - Blog 缺失（月度内容包机会）
 
-**建议报价：** 一次性 $5-8K + 月度 $800-1500/月（社媒 + 内容 + GEO）
+**建议报价：** 一次性 $1000+ 定制报价
 
-**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页站 + 月度运营包。
+**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页 / 定制（quote separately）。
 
 ## 一、店家现状速览
 
@@ -66,17 +66,6 @@ assets:
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
-
-## 三、视觉审计 · Vision LLM 怎么看
-
-> The design relies on a Google Business Profile-style layout that feels like a temporary placeholder rather than a professional business website, lacking clear calls to action and visual hierarchy.
-
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **3/10** · 设计年代 `outdated`
-
-**值得保留的优点：**
-- Clear business name and specialization in the text.
-- Operating hours are visible in the hero section.
-- Mention of '5 star reviews' helps build social proof.
 
 ## 四、客户在 Google 上怎么说
 
@@ -103,7 +92,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 3 项（立刻在伤害成交）
+### 关键问题 · 2 项（立刻在伤害成交）
 
 ### 关键 · https_enabled
 
@@ -135,30 +124,7 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · No visible 'Get a Quote' button above the fold
-
-**技术事实**
-
-The hero section contains a logo and a small 'Open 6:30 AM - 7:00 PM' badge, but there is no primary button inviting the user to contact the business or request a quote.
-
-**普通话翻译**
-
-网站顶部缺少明显的“联系我们”或“获取报价”按钮。访客第一眼看到后，不知道该如何开始合作。
-
-**对客户的影响**
-
-这会导致大量潜在客户流失。研究表明，如果访客在3秒内找不到联系方式，他们很可能会离开。对于急需修屋顶的客户，这直接意味着订单被竞争对手抢走。
-
-**正确长啥样**
-
-A large, high-contrast button (e.g., bright orange or yellow) centered below the logo saying 'Get a Free Quote' or 'Call Now', visible without scrolling.
-
-**Redesign 怎么改**
-
-Add a primary Call-to-Action (CTA) button in the hero section immediately below the logo. Ensure it links to the phone number or a contact form.
-
-
-### 主要问题 · 4 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -190,60 +156,11 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Logo uses generic purple background instead of custom imagery
-
-**技术事实**
-
-The top section features a logo placed on a solid, flat purple background with a generic house outline graphic.
-
-**普通话翻译**
-
-目前的紫色背景看起来像是一个通用的模板，而不是专业的装修公司网站。它没有展示任何实际的工作成果。
-
-**对客户的影响**
-
-缺乏真实感会降低信任度。客户更倾向于选择那些展示真实案例和团队照片的公司，因为这证明了他们的专业能力。
-
-**正确长啥样**
-
-A high-quality photograph of a restored roof or a team member working, with a dark overlay and white text, or a clean white background with a professional logo.
-
-**Redesign 怎么改**
-
-Replace the solid purple background with a high-resolution photo of a completed roof restoration project or a professional team shot to build immediate trust.
-
-
-### 主要 · Dense text block discourages reading on mobile
-
-**技术事实**
-
-The main content area starts with a large block of text describing 'DINO from FIX MY ROOF...' with small font size and tight line spacing.
-
-**普通话翻译**
-
-大段文字在手机屏幕上很难阅读，客户通常会直接跳过。这让他们无法快速了解你们提供的具体服务。
-
-**对客户的影响**
-
-如果客户无法在5秒内找到他们需要的服务，他们就会离开。将服务列表化可以提高信息获取效率，从而增加咨询量。
-
-**正确长啥样**
-
-Short, scannable bullet points or icons representing services (e.g., 'Roof Restoration', 'Leak Repair', 'Colorbond Roofing') with brief descriptions.
-
-**Redesign 怎么改**
-
-Break the text into a grid of service cards with icons and short titles. Keep the detailed description for a 'About Us' section or expandable accordion.
-
-
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Add a prominent 'Get a Free Quote' button in the hero section.
-2. [视觉] 2. Replace the generic purple background with a high-quality image of a roof restoration project.
-3. [视觉] 3. Convert the dense text block into a scannable list of services with icons.
-4. [评论] Feature the 'no payment accepted' story prominently to build immediate trust and differentiate from competitors.
-5. [评论] Highlight 'punctuality' and 'clean job site' in the service guarantees section to address common homeowner anxieties.
-6. [评论] Use quotes about 'clear communication' in the 'How It Works' section to reassure potential clients about the process.
+1. [评论] Feature the 'no payment accepted' story prominently to build immediate trust and differentiate from competitors.
+2. [评论] Highlight 'punctuality' and 'clean job site' in the service guarantees section to address common homeowner anxieties.
+3. [评论] Use quotes about 'clear communication' in the 'How It Works' section to reassure potential clients about the process.
 
 ## 七、推荐销售切入点
 
@@ -364,7 +281,8 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - **规模信号汇总：** 小型客户特征
 - **客户分级：** `small` — 小型，符合我们标准产品包定位
-- **建议定价档：** 标准包 $3-6K（符合我们核心产品）
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
 - Google 评价 127 条（≥50，有规模基础）

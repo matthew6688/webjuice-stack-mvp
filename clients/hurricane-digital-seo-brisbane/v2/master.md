@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "modern"
-visual_freshness: 8
-visual_trust: 6
-visual_conversion: 5
+visual_age: null
+visual_freshness: null
+visual_trust: null
+visual_conversion: null
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:23.925Z"
+generated_at: "2026-05-11T23:42:04.899Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -57,17 +57,6 @@ assets:
 
 ![移动 375×667](./screenshots/mobile.png)
 
-## 三、视觉审计 · Vision LLM 怎么看
-
-> The website features a clean, modern aesthetic with good typography, but the lack of clear industry-specific imagery and a confusing primary call-to-action creates a disconnect for local customers seeking immediate roofing services.
-
-新鲜度 **8/10** · 信任度 **6/10** · 转化准备度 **5/10** · 设计年代 `modern`
-
-**值得保留的优点：**
-- Clean, modern typography and color scheme that feels professional.
-- Clear navigation menu with logical categories.
-- Good use of white space, making the content easy to read.
-
 ## 四、客户在 Google 上怎么说
 
 > Customers overwhelmingly praise specific staff members for tangible improvements in visibility, lead generation, and website performance, though one significant complaint highlights a disconnect between sales promises and actual ROI.
@@ -100,7 +89,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 2 项（立刻在伤害成交）
+### 关键问题 · 1 项（立刻在伤害成交）
 
 ### 关键 · phone_visible_above_fold
 
@@ -117,30 +106,7 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · Hero image fails to show roofing services
-
-**技术事实**
-
-The main hero image on the right shows a generic office reception desk with a 'Hurricane Digital' logo on the wall, rather than a roof, a construction site, or a technician.
-
-**普通话翻译**
-
-网站的主图展示的是办公室前台，而不是屋顶或施工场景。对于寻找屋顶维修服务的客户来说，这让他们无法一眼确认你们就是做屋顶生意的。
-
-**对客户的影响**
-
-访客在 8 秒内就会判断网站是否相关。如果第一眼没看到屋顶，他们可能会认为你们不专业或找错了地方，导致跳出率增加，直接损失潜在客户。
-
-**正确长啥样**
-
-A high-quality photo of a completed roof project, a team member in safety gear on a roof, or a split screen showing a 'before and after' of a roof repair.
-
-**Redesign 怎么改**
-
-Replace the office reception image with a high-resolution, authentic photo of a roofing project or the team at work to instantly validate the service offering.
-
-
-### 主要问题 · 4 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -172,61 +138,12 @@ Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 
 H1 是搜索引擎判断页面主题最权威的信号。写错或缺失 = 关键词排名拉低；同一页面同样的内容，H1 写对的可以排到前 3 页，写不对的可能挂在第 7 页。
 
 
-### 主要 · Primary CTA is a form, not a phone number
-
-**技术事实**
-
-The primary call-to-action (CTA) in the hero section is a text input field ('Enter Your Email Here') and a button for a 'Free Strategy Session'. There is no visible phone number in the main hero area.
-
-**普通话翻译**
-
-主要按钮要求用户输入邮箱预约“策略会议”，而不是直接提供电话号码。对于急需修屋顶的客户来说，这增加了沟通的障碍，让他们觉得你们更想推销服务而不是解决问题。
-
-**对客户的影响**
-
-本地搜索用户中，超过 50% 会在 30 分钟内拨打电话。如果找不到显眼的电话按钮，这些高意向客户可能会直接转向竞争对手，导致大量商机流失。
-
-**正确长啥样**
-
-A prominent 'Call Now' button with a clickable phone number, or a 'Get a Free Quote' button that leads to a simple contact form, placed above the fold.
-
-**Redesign 怎么改**
-
-Replace the email input field with a large, high-contrast 'Call Now' button or a 'Get Instant Quote' button. Move the phone number to the top right of the hero section.
-
-
-### 主要 · Headline focuses on marketing, not the service
-
-**技术事实**
-
-The headline reads 'Transform Your Local Business with Expert Digital Marketing' and 'Flood your Business with Partners'.
-
-**普通话翻译**
-
-标题强调的是“数字营销”和“合作伙伴”，而不是屋顶服务。这让普通客户感到困惑，因为他们只想找修屋顶的人，而不是学习营销知识。
-
-**对客户的影响**
-
-如果标题不能立刻说明你们提供什么服务，访客会感到迷茫并离开。清晰的标题能提高访客的停留时间和转化率，减少因误解而流失的客户。
-
-**正确长啥样**
-
-A headline that speaks directly to the customer's problem, e.g., 'Brisbane's Trusted Roofing Experts' or 'Fast, Reliable Roof Repairs in Brisbane'.
-
-**Redesign 怎么改**
-
-Rewrite the headline to focus on the roofing service and the location (Brisbane). Use clear, benefit-driven language like 'Protect Your Home with Brisbane's Top Roofing Team'.
-
-
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace the office hero image with a high-quality photo of a roofing project or team.
-2. [视觉] 2. Change the primary CTA to a 'Call Now' or 'Get a Quote' button with a visible phone number.
-3. [视觉] 3. Rewrite the headline to focus on roofing services in Brisbane, not digital marketing.
-4. [评论] Feature Tracey's quote prominently on the homepage to address the primary pain point of being 'invisible' online.
-5. [评论] Use Brady's and Steven's reviews in a 'Results' or 'Case Studies' section to validate the ROI of the investment.
-6. [评论] Highlight the specific staff names (Aiden, Nash) in team bios to leverage the personal connection customers feel.
-7. [评论] Address the negative review's concern about transparency by adding a 'What to Expect' or 'Deliverables' section to the sales page.
+1. [评论] Feature Tracey's quote prominently on the homepage to address the primary pain point of being 'invisible' online.
+2. [评论] Use Brady's and Steven's reviews in a 'Results' or 'Case Studies' section to validate the ROI of the investment.
+3. [评论] Highlight the specific staff names (Aiden, Nash) in team bios to leverage the personal connection customers feel.
+4. [评论] Address the negative review's concern about transparency by adding a 'What to Expect' or 'Deliverables' section to the sales page.
 
 ## 七、推荐销售切入点
 
@@ -388,7 +305,8 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - **规模信号汇总：** 大型客户特征
 - **客户分级：** `enterprise` — 大客户，要求多、决策慢，**与我们小批量模式不匹配**，建议跳过或转介给定制开发服务商
-- **建议定价档：** 不建议接（与我们小批量模式不匹配）；如果接，最低 $20K + 月度运营 $3K+
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
 - Google 评价 183 条（≥50，有规模基础）

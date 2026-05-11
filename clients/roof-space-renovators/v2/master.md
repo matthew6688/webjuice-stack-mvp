@@ -16,7 +16,7 @@ visual_freshness: 5
 visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-11T01:00:02.112Z"
+generated_at: "2026-05-11T23:42:04.889Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5
@@ -318,6 +318,18 @@ Replace the stock-style people cutout with a high-resolution real project image,
 - 你已经有不错的 Google 流量基础（221 条 5★ 评论），但当前网站设计在浪费这些点击
 - 客户口碑已经强（professional and tidy crews / excellent communication / fast response and turnaround）— 网站只需要把这份信任承接住，不需要从零建立
 
+## GBP Posts 与 Q&A · Google 商家档案运营
+
+Google Maps 上客户除了看星级，也会看商家有没有发 post（最新工程 / 优惠 / 团队动态）和有没有回答客户提问。这一段直接抓 Google Maps 页面看实际情况。
+
+- **Posts 数量：** 0
+- **Q&A 数量：** 0
+
+**销售相关发现：**
+- 未检测到 Updates / Posts 板块（可能客户从未发过 GBP post）
+- 未检测到 Q&A 板块（可能没人提过问题，或 Google 没显示）
+- GBP 从未发过 post — 完全没用商家自营内容功能。SMM 月度包的强切入点。
+
 ## 真实速度数据 · Google PageSpeed Insights
 
 我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
@@ -513,7 +525,8 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - **规模信号汇总：** 大型客户特征
 - **客户分级：** `enterprise` — 大客户，要求多、决策慢，**与我们小批量模式不匹配**，建议跳过或转介给定制开发服务商
-- **建议定价档：** 不建议接（与我们小批量模式不匹配）；如果接，最低 $20K + 月度运营 $3K+
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
 - Google 评价 221 条（≥200，成熟运营）

@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "outdated"
-visual_freshness: 4
-visual_trust: 5
-visual_conversion: 6
+visual_age: null
+visual_freshness: null
+visual_trust: null
+visual_conversion: null
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:23.309Z"
+generated_at: "2026-05-11T23:42:04.892Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -36,14 +36,14 @@ assets:
 **触发依据：**
 - moderate_candidate + 150 评论 + audit 69（仍有改进空间）
 
-**产品档位：** `T3` 多页站 + 月度运营包
+**产品档位：** `T3` 多页 / 定制（quote separately）
 
 - 150★4.6 强口碑底子
 - 已投放过广告（懂月度预算）
 - 数字成熟度 4/6
 - 评论 trust strong
 
-**建议报价：** 一次性 $5-8K + 月度 $800-1500/月（社媒 + 内容 + GEO）
+**建议报价：** 一次性 $1000+ 定制报价
 
 **下一步行动：** 用 ChatGPT Image / Gemini Imagen 生成 hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1 次跟进。回应后升级到 A 档处理。
 
@@ -63,17 +63,6 @@ assets:
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
-
-## 三、视觉审计 · Vision LLM 怎么看
-
-> The site uses a cluttered layout with low-contrast text and a busy background image that distracts from the primary goal of getting a quote.
-
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
-
-**值得保留的优点：**
-- The 'Quick Quote' form is visible above the fold, which is good for capturing leads immediately.
-- The phone number is clearly visible in the header, allowing for direct contact.
-- The use of orange as an accent color aligns with the construction/roofing industry and draws attention to key elements.
 
 ## 四、客户在 Google 上怎么说
 
@@ -105,32 +94,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 1 项（立刻在伤害成交）
-
-### 关键 · White text on busy background is unreadable
-
-**技术事实**
-
-The main headline 'Brisbane Gutter & Roofing Experts' and the subtext are white with a drop shadow, placed directly over a busy photo of workers on a roof.
-
-**普通话翻译**
-
-网站主图上的白色文字太淡，背景太花，导致客户很难看清我们在说什么。
-
-**对客户的影响**
-
-访客通常在 8 秒内决定是否离开。如果文字看不清，他们会认为网站不专业或加载错误，直接关闭页面，导致潜在客户流失。
-
-**正确长啥样**
-
-A solid dark overlay (e.g., 40% opacity black) behind the text, or a solid color block (like the orange used elsewhere) to make the white text pop. Alternatively, use a cleaner, less busy stock photo.
-
-**Redesign 怎么改**
-
-Apply a dark gradient overlay to the hero image to ensure the white text has a contrast ratio of at least 4.5:1. Ensure the headline is legible within 2 seconds of landing.
-
-
-### 主要问题 · 5 项（影响转化的明显短板）
+### 主要问题 · 3 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -177,60 +141,11 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Logo looks low-resolution and dated
-
-**技术事实**
-
-The logo in the top left features a cartoonish clip-art style with a heavy drop shadow and a sunburst background that looks pixelated.
-
-**普通话翻译**
-
-左上角的 Logo 看起来像是几十年前的设计，不够清晰，显得不够专业。
-
-**对客户的影响**
-
-客户在寻找屋顶维修这种高客单价服务时，非常看重信任感。过时的 Logo 会让客户怀疑公司的实力，从而转向竞争对手。
-
-**正确长啥样**
-
-A flat, vector-based logo with clean lines and modern typography. The icon should be simplified, and the text should be legible at small sizes.
-
-**Redesign 怎么改**
-
-Redesign the logo to be flat and vector-based. Remove the sunburst background and heavy shadows. Use a clean sans-serif font for the text.
-
-
-### 主要 · Quote form is visually overwhelming
-
-**技术事实**
-
-The 'Request a Quick Quote' form on the right has too many fields (First Name, Last Name, Email, Phone, Address, Suburb, Post Code, Service, Roof Type) stacked tightly with thin borders.
-
-**普通话翻译**
-
-右侧的报价表格字段太多，填起来很麻烦，像填表格一样繁琐。
-
-**对客户的影响**
-
-每增加一个表单字段，转化率就会下降。对于急需维修的客户，他们更倾向于直接打电话，而不是填写十几个框。这直接导致线索获取率降低。
-
-**正确长啥样**
-
-A simplified form with only 3-4 fields: Name, Phone, and 'Service Needed' (dropdown). The rest can be collected later or via a secondary step.
-
-**Redesign 怎么改**
-
-Reduce the form to 3 fields max for the initial capture. Use a 'Call Now' button as the primary alternative for mobile users. Group address fields into a single 'Location' field.
-
-
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Improve readability of the hero section by adding a dark overlay to the background image.
-2. [视觉] 2. Simplify the quote form to reduce friction and increase submissions.
-3. [视觉] 3. Modernize the logo and navigation to build trust and improve usability.
-4. [评论] Highlight the 'free, no-obligation quote' aspect prominently to reduce friction for new leads.
-5. [评论] Use Bernard's review to showcase capability in handling difficult, high-risk jobs (e.g., near electrical lines).
-6. [评论] Feature Chris's review to demonstrate transparency when unforeseen issues arise, building trust in pricing integrity.
+1. [评论] Highlight the 'free, no-obligation quote' aspect prominently to reduce friction for new leads.
+2. [评论] Use Bernard's review to showcase capability in handling difficult, high-risk jobs (e.g., near electrical lines).
+3. [评论] Feature Chris's review to demonstrate transparency when unforeseen issues arise, building trust in pricing integrity.
 
 ## 七、推荐销售切入点
 
@@ -414,7 +329,8 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - **规模信号汇总：** 中型客户特征
 - **客户分级：** `mid` — 中型客户，可接但价格要往上提（基础包 + 配置项）
-- **建议定价档：** 基础包 $6-10K + 月度运营 $1-2K
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
 - Google 评价 150 条（≥50，有规模基础）

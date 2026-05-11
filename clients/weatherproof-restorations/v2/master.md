@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "slightly_outdated"
-visual_freshness: 4
-visual_trust: 5
-visual_conversion: 6
+visual_age: null
+visual_freshness: null
+visual_trust: null
+visual_conversion: null
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:24.054Z"
+generated_at: "2026-05-11T23:42:04.901Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -36,14 +36,14 @@ assets:
 **触发依据：**
 - moderate_candidate + 134 评论 + audit 61（仍有改进空间）
 
-**产品档位：** `T3` 多页站 + 月度运营包
+**产品档位：** `T3` 多页 / 定制（quote separately）
 
 - 134★4.9 强口碑底子
 - 已投放过广告（懂月度预算）
 - 数字成熟度 4/6
 - 评论 trust strong
 
-**建议报价：** 一次性 $5-8K + 月度 $800-1500/月（社媒 + 内容 + GEO）
+**建议报价：** 一次性 $1000+ 定制报价
 
 **下一步行动：** 用 ChatGPT Image / Gemini Imagen 生成 hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1 次跟进。回应后升级到 A 档处理。
 
@@ -63,17 +63,6 @@ assets:
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
-
-## 三、视觉审计 · Vision LLM 怎么看
-
-> The site has a functional layout but relies on a dated dark-grey aesthetic and a low-contrast hero image that obscures the brand's value proposition.
-
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `slightly_outdated`
-
-**值得保留的优点：**
-- The '30+ Years of Experience' and '20-Year Warranty' are strong trust signals that should be kept.
-- The form fields are clearly labeled (Name, Email, Suburb), which is good for usability.
-- The brand color (teal) is distinct and appropriate for a trade business.
 
 ## 四、客户在 Google 上怎么说
 
@@ -102,7 +91,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 2 项（立刻在伤害成交）
+### 关键问题 · 1 项（立刻在伤害成交）
 
 ### 关键 · phone_visible_above_fold
 
@@ -119,30 +108,7 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · Hero image is too dark and muddy
-
-**技术事实**
-
-The main background image shows a worker on a roof but is heavily desaturated and darkened, making the scene look gloomy and the worker's face unrecognizable.
-
-**普通话翻译**
-
-主页背景图太暗、太灰，看起来像旧照片，让人看不清工人和屋顶的细节。
-
-**对客户的影响**
-
-访客在 8 秒内就会判断网站是否专业。昏暗的图片会让访客觉得公司设备陈旧或不正规，导致他们直接关闭页面去找竞争对手。
-
-**正确长啥样**
-
-A bright, high-resolution photo of a clean, finished roof or a smiling worker in high-vis gear, with a subtle semi-transparent overlay so text pops without hiding the image.
-
-**Redesign 怎么改**
-
-Replace the current hero image with a bright, high-quality photo of a completed roof restoration. Apply a 10-20% dark overlay only to ensure text readability, keeping the image vibrant.
-
-
-### 主要问题 · 4 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -174,60 +140,11 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Quote form looks like a 'wall of text'
-
-**技术事实**
-
-The 'Get Your Free Quote' form is a large, solid dark grey box with thin white borders. It dominates the right side of the screen and feels heavy and intimidating.
-
-**普通话翻译**
-
-右侧的报价表格是一个巨大的深灰色方块，看起来沉重且难以阅读，让人不想填写。
-
-**对客户的影响**
-
-复杂的视觉设计会增加用户的心理负担。如果表格看起来很难填，访客可能会放弃询价，导致潜在客户流失。
-
-**正确长啥样**
-
-A clean, white or light-grey form with distinct, high-contrast input fields. The 'Send Message' button should be the most colorful element on the page.
-
-**Redesign 怎么改**
-
-Change the form background to white or very light grey. Add subtle drop shadows to input fields to make them look clickable. Ensure the 'Send' button uses the brand's bright teal color to stand out.
-
-
-### 主要 · Top bar is visually noisy
-
-**技术事实**
-
-The very top strip (above the logo) is a bright teal bar with white text listing '30+ Years', 'Warranty', etc. It competes for attention with the main navigation below it.
-
-**普通话翻译**
-
-顶部的亮色条幅和下面的导航栏颜色太接近，导致页面顶部看起来很乱，分散了注意力。
-
-**对客户的影响**
-
-视觉混乱会让访客感到困惑，不知道该看哪里。这降低了网站的专业感，可能让急需屋顶维修的访客失去耐心。
-
-**正确长啥样**
-
-Remove the top bar entirely or integrate those trust signals (Warranty, Experience) into the hero section as small icons/badges next to the headline.
-
-**Redesign 怎么改**
-
-Remove the teal top bar. Move the '30+ Years' and 'Warranty' text into the main hero section as small, clean icons with text to the left of the main headline.
-
-
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace the dark hero image with a bright, high-quality photo of a finished roof to build immediate trust.
-2. [视觉] 2. Redesign the quote form to be light-colored and inviting, removing the heavy dark grey box.
-3. [视觉] 3. Remove the top teal bar and integrate trust signals into the hero section to reduce visual noise.
-4. [评论] Feature Joe Lin's review prominently to counter 'scam' fears common in roofing by highlighting honest, no-upsell inspections.
-5. [评论] Use Sam Pengelly's quote in a 'Why Choose Us' section to demonstrate proactive problem-solving and trustworthiness.
-6. [评论] Highlight the peer endorsement from Elizabeth High to establish industry credibility and quality assurance.
+1. [评论] Feature Joe Lin's review prominently to counter 'scam' fears common in roofing by highlighting honest, no-upsell inspections.
+2. [评论] Use Sam Pengelly's quote in a 'Why Choose Us' section to demonstrate proactive problem-solving and trustworthiness.
+3. [评论] Highlight the peer endorsement from Elizabeth High to establish industry credibility and quality assurance.
 
 ## 七、推荐销售切入点
 
@@ -393,7 +310,8 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - **规模信号汇总：** 中型客户特征
 - **客户分级：** `mid` — 中型客户，可接但价格要往上提（基础包 + 配置项）
-- **建议定价档：** 基础包 $6-10K + 月度运营 $1-2K
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
 - Google 评价 134 条（≥50，有规模基础）

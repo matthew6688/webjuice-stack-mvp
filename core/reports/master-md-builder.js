@@ -853,7 +853,8 @@ export function buildMasterMd({
     sections.push('');
     sections.push(`- **规模信号汇总：** ${sizeSignal.summary}`);
     sections.push(`- **客户分级：** \`${sizeSignal.tier}\` ${sizeSignal.tier === 'enterprise' ? '— 大客户，要求多、决策慢，**与我们小批量模式不匹配**，建议跳过或转介给定制开发服务商' : sizeSignal.tier === 'mid' ? '— 中型客户，可接但价格要往上提（基础包 + 配置项）' : '— 小型，符合我们标准产品包定位'}`);
-    sections.push(`- **建议定价档：** ${sizeSignal.pricingTier}`);
+    sections.push('');
+    sections.push('> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。');
     sections.push('');
     if (sizeSignal.indicators?.length) {
       sections.push('**触发依据：**');
@@ -951,22 +952,22 @@ function deriveBusinessSizeSignal({ latest, sitemapAnalysis, activity, techStack
 
   if (!indicators.length) return null;
 
-  let tier, pricingTier, summary;
+  // Business size classification only — NOT pricing.
+  // V2 pricing source of truth: PRODUCT_TIER_TABLE in core/scoring/lead-grading.js
+  // → entity.grade.recommended_pricing. Do NOT duplicate prices here.
+  let tier, summary;
   if (score >= 7) {
     tier = 'enterprise';
-    pricingTier = '不建议接（与我们小批量模式不匹配）；如果接，最低 $20K + 月度运营 $3K+';
     summary = '大型客户特征';
   } else if (score >= 4) {
     tier = 'mid';
-    pricingTier = '基础包 $6-10K + 月度运营 $1-2K';
     summary = '中型客户特征';
   } else {
     tier = 'small';
-    pricingTier = '标准包 $3-6K（符合我们核心产品）';
     summary = '小型客户特征';
   }
 
-  return { tier, pricingTier, summary, indicators, score };
+  return { tier, summary, indicators, score };
 }
 
 function deriveUpsellOpportunities({ activity, latest, techStack, reviews }) {

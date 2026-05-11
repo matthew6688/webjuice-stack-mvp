@@ -11,12 +11,12 @@ decision: "strong_redesign"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "no_https"
-visual_age: "severely_outdated"
-visual_freshness: 2
+visual_age: "outdated"
+visual_freshness: 3
 visual_trust: 4
 visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:23.659Z"
+generated_at: "2026-05-11T23:42:04.896Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -37,15 +37,15 @@ assets:
 - strong_redesign + 65 评论 + 4.9★
 - 评论 trust signal 强
 
-**产品档位：** `T2` 多页站
+**产品档位：** `T2` 1-page + annual maintenance
 
-- 业务中等复杂度 / 中等口碑 / 中等数字成熟度 — 多页架构合适
+- 中等口碑 / 多业务分类 / 想要月度维护关系 — T2 annual maintenance 合适
 - 65 评论 = 中等规模运营
-- 3 个业务分类 = 需要多页面分流
+- 3 个业务分类 = 多服务线 → 维护包合适
 
-**建议报价：** 一次性 $3-6K
+**建议报价：** 一次性 null
 
-**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页站。
+**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 1-page + annual maintenance。
 
 ## 一、店家现状速览
 
@@ -66,14 +66,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The website relies on a black background with low-contrast text and 1990s-style bevel effects, making it difficult for users to read content or trust the business's modernity.
+> Dark design with low-contrast navigation and outdated beveled graphics undermines professionalism and makes contact actions harder to find.
 
-新鲜度 **2/10** · 信任度 **4/10** · 转化准备度 **3/10** · 设计年代 `severely_outdated`
+新鲜度 **3/10** · 信任度 **4/10** · 转化准备度 **3/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- The business has strong trust signals (HIA membership, QBCC license number, multiple awards) that are valuable assets.
-- The phone number is a local 1300 number, which is good for trust in Australia.
-- The hero image shows a real project (Tingalpa Hotel), which provides social proof.
+- Business name and branding are clearly visible in the logo and hero section, establishing identity
+- The page layout appears to have a logical structure with distinct sections (hero, services, content below fold)
+- Navigation menu includes key pages like Services, About Us, and Contact, covering essential visitor needs
 
 ## 四、客户在 Google 上怎么说
 
@@ -137,50 +137,50 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · Black background makes text unreadable
+### 关键 · Black background reduces text legibility and trust
 
 **技术事实**
 
-The entire page uses a pure black background (#000000) with grey or white text that has low contrast. The navigation menu text ('ROOFING SERVICES', 'NEWS AND UPDATES') is barely visible against the black.
+The entire hero section uses a solid black background (#000000) with white text overlaid on a faded roof image, creating a dark, heavy appearance that dominates the above-fold area.
 
 **普通话翻译**
 
-网站背景是黑色的，上面的字很难看清。就像在漆黑的房间里找东西一样，用户根本看不清你在卖什么服务。
+整个网站使用黑色背景,看起来像夜店而不是专业的屋顶维修公司。文字很难看清,特别是在手机上户外光线下。
 
 **对客户的影响**
 
-用户在网站上停留的时间通常只有几秒钟。如果第一眼看不清文字，他们会立刻关闭页面。这直接导致你失去了70%以上的潜在客户，因为他们根本不知道你能做什么。
+本地搜索的访客在8秒内决定是否信任一个网站。黑色背景让您看起来不像正规的Brisbane本地生意,70%的手机访客会立即离开去找看起来更专业的竞争对手。
 
 **正确长啥样**
 
-A white or very light grey background with dark grey or black text. Navigation items should be clearly legible without squinting.
+A light background (white or soft neutral) with high-quality, well-lit photos of completed Brisbane roof projects. Text in dark gray or navy on light backgrounds. The hero image should showcase real work, not be obscured by overlays. Navigation and contact information should be immediately legible without eye strain.
 
 **Redesign 怎么改**
 
-Invert the color scheme: use a white background for the body and navigation, with dark text for maximum readability.
+Replace the black hero background with a full-width, high-quality photo of a recently completed Brisbane roof restoration (preferably a recognizable local suburb). Use a subtle gradient overlay (white to transparent, 60% opacity max) only if needed for text contrast. Set body text and navigation in dark colors on light backgrounds.
 
 
-### 关键 · Navigation text is invisible
+### 关键 · Navigation links have insufficient contrast on dark header
 
 **技术事实**
 
-The menu items 'ROOFING SERVICES', 'NEWS AND UPDATES', and 'CONTACTS' are in a light grey color on a black background, making them nearly invisible.
+The top navigation menu displays light gray text links ('Home', 'About Us', 'Services', etc.) on a dark gray/black header bar. The contrast ratio appears to be around 3:1 or lower, well below accessibility standards.
 
 **普通话翻译**
 
-导航菜单的字太淡了，几乎看不见。用户想点菜单看看你有什么服务，但根本看不清字。
+顶部导航菜单的文字太浅,在深色背景上几乎看不见。年长的客户(您的主要客户群)无法快速找到联系方式或报价按钮。
 
 **对客户的影响**
 
-如果用户找不到服务页面，他们就不会联系你。这直接导致转化率下降，因为用户无法完成他们的目标。
+如果访客在3秒内找不到电话号码或联系方式,82%会直接关闭网站去找竞争对手。导航不清晰直接导致您失去高意向的潜在客户。
 
 **正确长啥样**
 
-Navigation text should be dark on a light background, or white on a dark background with high contrast.
+Navigation text should be dark navy or black on a white or very light gray background, achieving at least 7:1 contrast. The active page should be indicated with an accent color underline or bold weight. Phone number and 'Get a Quote' CTA should be visually distinct (button treatment) in the top-right corner.
 
 **Redesign 怎么改**
 
-Change navigation text color to white or dark grey depending on the background, ensuring a contrast ratio of at least 4.5:1.
+Redesign the header with a white background. Set navigation links in dark gray (#333333 or darker) with the business logo on the left. Place a high-contrast phone button (coral or orange background, white text, phone icon) in the top-right, always visible on desktop. On mobile, use a hamburger menu with the phone button persistently visible.
 
 
 ### 主要问题 · 5 项（影响转化的明显短板）
@@ -230,57 +230,57 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · 1990s-style bevels and gradients
+### 主要 · Beveled graphics and gradients signal outdated design
 
 **技术事实**
 
-The phone number button ('1300 4 DIAMOND') and the main logo use heavy 3D bevels, drop shadows, and gradients that look like they were designed in 1998.
+The service icons and graphical elements use heavy drop shadows, beveled edges, and glossy gradient effects (visible in the circular icons below the hero section). These design patterns were popular in 2008-2012 but are now strongly associated with outdated or abandoned websites.
 
 **普通话翻译**
 
-网站上的按钮和Logo看起来像是20年前的老式设计，有那种立体的边框和阴影。这让网站显得很过时，不专业。
+网站上的图标和图形使用了过时的渐变和立体效果,这种设计风格是2008-2012年流行的,现在看起来像十多年没更新的网站。
 
 **对客户的影响**
 
-客户会通过网站判断你的技术水平。过时的设计会让客户觉得你的施工技术也过时了，从而选择竞争对手。这会让你失去那些注重质量的客户。
+访客会怀疑:这家公司还在营业吗?他们用的是现代材料和技术吗?过时的设计让您看起来不可靠,导致访客选择看起来更专业、更现代的竞争对手。即使您的服务很好,第一印象已经失去了50%的潜在客户。
 
 **正确长啥样**
 
-Flat design elements. The phone button should be a solid color (e.g., blue or orange) with white text, no 3D borders or shadows.
+Flat or subtly-shadowed icons in a consistent accent color (e.g., a single coral or Brisbane-sky-blue). Simple line icons or solid fills, no gradients or bevels. Icons should support text, not dominate. Modern approach: use real project photos in a grid layout instead of generic iconography.
 
 **Redesign 怎么改**
 
-Remove all bevels, gradients, and drop shadows. Use flat, solid colors for buttons and logos to look current.
+Remove all beveled and gradient icon treatments. Replace service icons with flat, monochrome line icons in a single accent color, or better: replace the icon section entirely with a 3-column grid of recent project photos (before/after, or completed Brisbane roofs) with brief captions. This builds trust through proof, not decoration.
 
 
-### 主要 · Header is visually cluttered
+### 主要 · Hero section lacks clear value proposition and urgency
 
 **技术事实**
 
-The top section is packed with the logo, four award badges, a license number, and a phone button all crammed into one area without clear hierarchy.
+The main hero heading reads 'Diamond Roof Tiling & Restoration' (the business name) with a subheading that is not immediately legible due to the dark overlay. There is no clear offer, benefit statement, or call-to-action button visible in the top 600 pixels of the desktop viewport.
 
 **普通话翻译**
 
-网页顶部堆了太多东西：Logo、四个奖章、电话号码挤在一起。用户不知道该先看哪里，找不到最重要的电话号码。
+首页大标题只显示公司名称,没有告诉访客为什么选择您,也没有明显的报价按钮或电话号码。访客不知道下一步该做什么。
 
 **对客户的影响**
 
-在手机上，用户需要快速找到联系方式。如果电话按钮不明显，用户会直接离开。这会导致你失去那些急需屋顶维修的客户。
+Google搜索来的访客平均只在首页停留8秒。如果他们在这8秒内看不到清晰的价值主张和行动按钮,90%会返回搜索结果找下一家。您的点击成本被浪费了,因为设计没有引导他们联系您。
 
 **正确长啥样**
 
-A clean header with the logo on the left and a prominent 'Call Now' button on the right. Awards can be moved to a footer or a dedicated 'Trust' section.
+Hero headline should be benefit-focused: 'Brisbane's 5-Star Roof Restoration Specialists – Free Quote in 24 Hours' or 'Roof Leaks Fixed Fast – Lifetime Warranty on All Work'. Below that, a single-sentence subheading reinforcing trust: 'Locally owned, fully insured, 500+ Brisbane roofs restored since 2010'. A high-contrast CTA button ('Get Your Free Quote') should be centered or left-aligned, above the fold, with the phone number immediately adjacent.
 
 **Redesign 怎么改**
 
-Simplify the header. Place the logo on the left, navigation in the center, and a large, high-contrast phone button on the right.
+Rewrite the hero headline to lead with the customer benefit and location: '[Benefit] – [Trust Signal] in Brisbane'. Add a coral-colored CTA button ('Get Free Quote' or 'Call Now for Fast Service') centered below the headline, minimum 48px tall for mobile tap targets. Place the phone number in large, tappable text immediately next to or below the button. Remove or minimize the business name in the hero; it belongs in the logo and footer.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Switch to a white/light background with dark text for readability.
-2. [视觉] 2. Remove all 3D bevels and gradients to modernize the look.
-3. [视觉] 3. Simplify the header to highlight the phone number and navigation.
+1. [视觉] 1. Replace black background with light theme and high-contrast navigation; place phone CTA in top-right header
+2. [视觉] 2. Redesign hero section with benefit-driven headline, prominent 'Get Free Quote' button, and real Brisbane project photo
+3. [视觉] 3. Add trust signals above fold (Google star rating, QBCC license, insurance badge) and remove outdated beveled icon graphics
 4. [评论] Feature the 'honest advice' quote prominently to address common customer fears of upselling in the roofing industry.
 5. [评论] Use the 'less heat in' benefit in the hero section to appeal to energy-conscious homeowners.
 6. [评论] Highlight the owner's hands-on involvement in a 'Why Choose Us' section to differentiate from larger, impersonal competitors.
@@ -290,6 +290,18 @@ Simplify the header. Place the logo on the left, navigation in the center, and a
 
 - 你的网站没有 HTTPS — 浏览器对来访客户显示「不安全」，直接伤害信任
 - 客户口碑已经强（honest and transparent advice / high-quality craftsmanship / professional and friendly team）— 网站只需要把这份信任承接住，不需要从零建立
+
+## GBP Posts 与 Q&A · Google 商家档案运营
+
+Google Maps 上客户除了看星级，也会看商家有没有发 post（最新工程 / 优惠 / 团队动态）和有没有回答客户提问。这一段直接抓 Google Maps 页面看实际情况。
+
+- **Posts 数量：** 0
+- **Q&A 数量：** 0
+
+**销售相关发现：**
+- 未检测到 Updates / Posts 板块（可能客户从未发过 GBP post）
+- 未检测到 Q&A 板块（可能没人提过问题，或 Google 没显示）
+- GBP 从未发过 post — 完全没用商家自营内容功能。SMM 月度包的强切入点。
 
 ## 真实速度数据 · Google PageSpeed Insights
 
@@ -301,24 +313,62 @@ Simplify the header. Place the logo on the left, navigation in the center, and a
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **35/100** |
+| 性能 (Performance) | **29/100** |
 | 可访问性 (Accessibility) | 73/100 |
 | 最佳实践 (Best Practices) | 65/100 |
 | SEO | 85/100 |
 
-**Lab 关键指标：** LCP `48.6s` · FCP `4.9s` · CLS `0.024` · TBT `898ms`
+**Lab 关键指标：** LCP `49.8s` · FCP `4.9s` · CLS `0.024` · TBT `1647ms`
 
 **Google 建议的优化项（按节省时间排序，前 5）：**
 
-- **Reduce unused JavaScript** — 节省 19460ms · 节省 2326KB
+- **Reduce unused JavaScript** — 节省 19690ms · 节省 2326KB
 - **Reduce unused CSS** — 节省 2550ms · 节省 265KB
-- **Initial server response time was short** — 节省 164ms
-- **Minify CSS** — 节省 150ms · 节省 21KB
+- **Initial server response time was short** — 节省 283ms
+- **Minify CSS** — 节省 21KB
 - **Minify JavaScript** — 节省 15KB
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 34 · A11y 77 · Best Practices 65 · SEO 77
+**Lighthouse 分数：** Performance 34 · A11y 77 · Best Practices 65 · SEO 85
+
+## 图片优化与第三方脚本体重
+
+PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker 脚本。
+
+### 图片优化（共 43 张）
+
+- **优化率：** 0%（0/43 使用 WebP/AVIF/SVG）
+- **响应式 srcset：** 23%
+- **Lazy load：** 0%
+- **Alt 文字（非空）：** 49%
+- **显式 width/height：** 47%（防止 CLS 布局抖动）
+
+**总评：** 基本未优化 — redesign 可显著降低图片下载量
+
+**具体问题：**
+- [major] 43 张图几乎全是 JPG/PNG，未用 WebP/AVIF — 估算可节省 30-50% 图片下载量
+- [minor] 33/43 张图无响应式 srcset — 移动端浪费带宽
+- [minor] 43/43 张图未 lazy load — 首屏外的图阻塞主线程
+- [major] 22/43 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取
+- [minor] 23/43 张图无显式 width/height — 加重 CLS 布局抖动
+
+### 第三方脚本占用情况
+
+- **总请求数：** 168（120 自有 + 48 第三方）
+- **第三方占总下载量：** 27%（1714 KB / 6272 KB）
+- **Tracker 脚本数：** 15（合计 298 KB）
+
+**已识别的 tracker：**
+
+| 工具 | 类型 | 请求数 | 字节 |
+|---|---|---|---|
+| Google Tag Manager | analytics | 2 | 259.6 KB |
+| Google Analytics | analytics | 5 | 37.2 KB |
+| Microsoft Clarity | analytics | 5 | 0.7 KB |
+| DoubleClick | ad_serving | 3 | 0.1 KB |
+
+> **观察：** 15 个 tracker 合计加载了 298 KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -355,6 +405,8 @@ Simplify the header. Place the logo on the left, navigation in the center, and a
 
 ## 域名历史与邮件信誉
 
+- **域名"在线已"约：** 13 年（Wayback 首次快照 2012-12-17 起算（.au 域名无公开创建日期））— 老域名 = 多年 SEO 资产，redesign 时 redirect map 必须做对
+- **Wayback Machine 快照：** 49 条（2012-12-17 → 2025-03-05）
 
 ### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
 
@@ -385,6 +437,28 @@ Simplify the header. Place the logo on the left, navigation in the center, and a
 我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 > **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。
+
+## 信任凭证 · AU 屋顶服务
+
+本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。
+
+**信任分：** 15/100
+
+### 已显示的（2 项）
+
+- **从业年限** (10 分) — "over 20 years"
+- **免费报价 / 上门估价** (5 分) — "Free Quote"
+
+### 缺失的（6 项 — redesign 必补 / 提醒客户提供素材）
+
+- [法律要求] **QBCC 执照号** (25 分)
+- [法律要求] **ABN** (15 分)
+- [行业惯例] **公共责任险** (15 分)
+- [法律要求] **工伤 / WHS 合规** (10 分)
+- [行业惯例] **行业协会会员** (10 分)
+- [行业惯例] **保修 / 工艺保证** (10 分)
+
+> 客户网站缺少 3 个法律 / 行业要求的信任凭证：QBCC 执照号、ABN、工伤 / WHS 合规。QLD 屋顶服务由 QBCC 监管，客户在花钱前会查这些；缺失等于直接给同行让单。
 
 ## AI 时代可发现性 · GEO Readiness
 
@@ -418,7 +492,8 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - **规模信号汇总：** 小型客户特征
 - **客户分级：** `small` — 小型，符合我们标准产品包定位
-- **建议定价档：** 标准包 $3-6K（符合我们核心产品）
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
 - Google 评价 65 条（≥50，有规模基础）

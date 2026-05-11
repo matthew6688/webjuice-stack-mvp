@@ -10,12 +10,12 @@ audit_score: 70
 decision: "low_priority"
 audit_version: "2026-05-11-v1"
 fired_triggers: []
-visual_age: "outdated"
+visual_age: "slightly_outdated"
 visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:23.812Z"
+generated_at: "2026-05-11T23:42:04.898Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -54,14 +54,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional image of a restoration expert.
+> The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional quality expected of a restoration specialist.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `slightly_outdated`
 
 **值得保留的优点：**
-- The 'Get a FREE Quote' form is visible above the fold, which is excellent for capturing leads immediately.
-- The use of a red accent color for the CTA button provides a clear visual cue for action.
-- The background image shows a relevant local style (Queenslander home), which helps with local relevance.
+- The phone number is prominent and repeated in the hero section, which is excellent for local intent.
+- The background image is relevant (shows a roof), providing immediate context.
+- The 'Call' button uses a high-contrast red color that stands out against the background.
 
 ## 四、客户在 Google 上怎么说
 
@@ -95,27 +95,23 @@ assets:
 
 ### 关键问题 · 1 项（立刻在伤害成交）
 
-### 关键 · White text on light sky background is illegible
+### 关键 · Low contrast white text on light background
 
 **技术事实**
 
-The main headline 'Brisbane Roof Restoration Specialists' is white text placed directly over a bright, washed-out sky background in the hero image.
+The main headline 'Brisbane Roof Restoration Specialists' is white text overlaid on a light blue sky background. The text has a drop shadow, but the contrast is low, making it look washed out.
 
-**普通话翻译**
+**为什么是问题**
 
-标题文字是白色的，背景也是亮白色的天空，导致文字几乎看不清。
-
-**对客户的影响**
-
-访客在 3 秒内无法看清您提供什么服务，会直接关闭网页。这会导致高达 50% 的潜在访客流失，因为他们认为网站不专业或已损坏。
+A visitor scanning the page on a bright phone screen will struggle to read the headline instantly. If they can't read it easily, they assume the business is unprofessional or the site is broken.
 
 **正确长啥样**
 
-A dark semi-transparent overlay (black or navy at 40-60% opacity) behind the text, or dark charcoal text with a drop shadow, ensuring high contrast against the background.
+Dark charcoal or navy text on the light background, or a dark semi-transparent overlay behind the text to ensure high contrast.
 
 **Redesign 怎么改**
 
-Apply a CSS linear-gradient overlay over the hero image to darken the background, ensuring the white text meets WCAG AA contrast standards.
+Change headline color to #1a1a1a (dark grey) or add a dark overlay (opacity 0.4) behind the text block.
 
 
 ### 主要问题 · 3 项（影响转化的明显短板）
@@ -135,57 +131,49 @@ title='# Brisbane Roof Restoration Specialists' contains-name=true contains-nich
 Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
 
 
-### 主要 · Form fields are too dense and overwhelming
+### 主要 · Overwhelming form layout with radio buttons
 
 **技术事实**
 
-The 'Get a FREE Quote' form is a dense block with small input fields, tight padding, and multiple radio button groups (Roof type, Scope, Work Type, Roof age) stacked closely together.
+The desktop form is a dense grid of inputs, followed by four distinct sections of radio buttons (Roof type, Scope, Work Type, Roof age) with yellow labels.
 
-**普通话翻译**
+**为什么是问题**
 
-表格设计得太拥挤，输入框太小，问题太多，看起来像是在填复杂的表格，让人不想填。
-
-**对客户的影响**
-
-复杂的表格会让访客感到压力。如果表格太长，约 30% 的用户会放弃填写。简化表格可以显著提高客户咨询的数量。
+This looks like a data entry task rather than a conversation. A local customer just wants a quote; asking them to categorize their roof type and age before speaking to a human creates friction and anxiety.
 
 **正确长啥样**
 
-A simplified form with larger, taller input fields (48px+ height), more whitespace between sections, and fewer initial questions (Name, Phone, Email only) with the rest hidden or optional.
+A simplified 'Get a Quote' form with only Name, Phone, and Suburb. The technical details should be handled by the sales team later.
 
 **Redesign 怎么改**
 
-Increase input field height to 50px, add 20px padding inside fields, and reduce the initial visible fields to just Name, Phone, and Email to lower the barrier to entry.
+Remove the radio button sections. Replace with a single 'Tell us about your roof' text area or remove the form entirely in favor of a 'Call Now' button.
 
 
-### 主要 · Logo looks like a placeholder or amateur graphic
+### 主要 · Hidden navigation on mobile
 
 **技术事实**
 
-The logo in the top left is a thin line-art house outline with red text 'BRISBANE' and smaller grey text 'roof restoration experts' underneath, lacking a solid shape or professional weight.
+The mobile screenshot shows a hamburger menu icon in the top right, hiding all navigation links.
 
-**普通话翻译**
+**为什么是问题**
 
-Logo 看起来像是一个简单的线条画，不够稳重，无法体现专业屋顶修复公司的实力和可靠性。
-
-**对客户的影响**
-
-信任是本地服务的关键。如果 Logo 看起来不专业，客户会怀疑您的施工质量。一个专业的 Logo 能增加 20% 以上的品牌信任度。
+Local searchers often look for specific services (e.g., 'roof cleaning' vs 'restoration') or social proof (reviews). Hiding this behind a click adds friction and hides trust signals.
 
 **正确长啥样**
 
-A solid, bold icon (perhaps a stylized roof or shield) with clear, legible typography. The logo should look substantial and trustworthy.
+A sticky bottom bar or a visible top bar with the most critical link (e.g., 'Services' or 'Reviews') visible without clicking.
 
 **Redesign 怎么改**
 
-Redesign the logo to use a solid vector icon and a bold sans-serif font. Ensure the logo is legible at small sizes and conveys stability.
+Implement a sticky bottom navigation bar on mobile with 'Call', 'Services', and 'Reviews' buttons permanently visible.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Fix hero text contrast by adding a dark overlay so the headline is instantly readable.
-2. [视觉] 2. Simplify the lead form by increasing field size and reducing initial questions to reduce friction.
-3. [视觉] 3. Redesign the logo to be bolder and more professional to build immediate trust.
+1. [视觉] 1. Fix text contrast in the hero section to ensure the headline is instantly readable.
+2. [视觉] 2. Simplify the contact form to reduce friction and remove the intimidating radio buttons.
+3. [视觉] 3. Improve the logo and typography to establish a more professional, high-ticket brand identity.
 4. [评论] Feature the '24-hour quote' metric prominently in the header to address urgency.
 5. [评论] Use Loren's review to create a dedicated 'Minor Repairs' section to capture leads who feel ignored by larger competitors.
 6. [评论] Highlight the 'home value' improvement in before/after gallery captions.

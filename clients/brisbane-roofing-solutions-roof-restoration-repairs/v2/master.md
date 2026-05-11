@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "outdated"
-visual_freshness: 4
-visual_trust: 6
-visual_conversion: 5
+visual_age: null
+visual_freshness: null
+visual_trust: null
+visual_conversion: null
 review_trust_signal: "strong"
-generated_at: "2026-05-10T23:43:23.541Z"
+generated_at: "2026-05-11T23:42:04.895Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -36,14 +36,14 @@ assets:
 **触发依据：**
 - moderate_candidate + 118 评论 + audit 69（仍有改进空间）
 
-**产品档位：** `T3` 多页站 + 月度运营包
+**产品档位：** `T3` 多页 / 定制（quote separately）
 
 - 118★4.8 强口碑底子
 - 已投放过广告（懂月度预算）
 - 数字成熟度 4/6
 - 评论 trust strong
 
-**建议报价：** 一次性 $5-8K + 月度 $800-1500/月（社媒 + 内容 + GEO）
+**建议报价：** 一次性 $1000+ 定制报价
 
 **下一步行动：** 用 ChatGPT Image / Gemini Imagen 生成 hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1 次跟进。回应后升级到 A 档处理。
 
@@ -63,17 +63,6 @@ assets:
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
-
-## 三、视觉审计 · Vision LLM 怎么看
-
-> The website relies on a heavy, high-contrast red color scheme and a dated layout structure that feels cluttered, potentially making the business appear less professional than its competitors.
-
-新鲜度 **4/10** · 信任度 **6/10** · 转化准备度 **5/10** · 设计年代 `outdated`
-
-**值得保留的优点：**
-- The phone number is large and easy to read in the header.
-- The hero image clearly shows a residential roof, which is relevant to the service.
-- The value proposition 'Residential and Commercial Roofing Services' is clear.
 
 ## 四、客户在 Google 上怎么说
 
@@ -105,32 +94,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 1 项（立刻在伤害成交）
-
-### 关键 · White text on busy roof background is hard to read
-
-**技术事实**
-
-The main headline 'BRISBANE ROOFING SOLUTIONS' and subtext are white text overlaid directly on a photograph of a roof with complex textures and shadows.
-
-**普通话翻译**
-
-白色文字直接压在复杂的屋顶照片上，导致文字难以辨认。
-
-**对客户的影响**
-
-用户在手机上浏览时，如果第一眼看不清文字，通常会在3秒内关闭页面。这直接导致大量潜在客户流失。
-
-**正确长啥样**
-
-A solid dark overlay (black or dark grey with 50% opacity) behind the text, or a solid color background with the image on the side.
-
-**Redesign 怎么改**
-
-Add a dark gradient overlay over the hero image to ensure the white text has high contrast and is readable on all devices.
-
-
-### 主要问题 · 5 项（影响转化的明显短板）
+### 主要问题 · 2 项（影响转化的明显短板）
 
 ### 主要 · h1_unique
 
@@ -162,83 +126,11 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Header is too busy with too many elements
-
-**技术事实**
-
-The top section contains a logo, a 'Call' label, a phone number, a service area list, and a full navigation menu all crammed into the top area.
-
-**普通话翻译**
-
-顶部区域塞入了太多信息（Logo、电话、服务区域、菜单），显得非常杂乱。
-
-**对客户的影响**
-
-杂乱的界面会让用户感到困惑，不知道该看哪里。研究表明，视觉噪音会降低用户对网站专业度的信任感，导致他们转向竞争对手。
-
-**正确长啥样**
-
-A simplified header with just the logo and a prominent 'Call Now' button on the right. The navigation menu should be hidden behind a 'hamburger' icon on mobile.
-
-**Redesign 怎么改**
-
-Simplify the header to Logo + Phone Button only. Move the service area text and secondary links to the footer or a dedicated page.
-
-
-### 主要 · Heavy use of bright red feels aggressive and dated
-
-**技术事实**
-
-The entire navigation bar, the 'Call' text, and the CTA button use a very bright, saturated red (#cc0000 approx).
-
-**普通话翻译**
-
-大面积使用鲜艳的红色会让网站看起来像过时的促销广告，缺乏专业感。
-
-**对客户的影响**
-
-现代用户更倾向于信任设计简洁、配色沉稳的网站。过于刺眼的颜色会让用户觉得这家公司可能还在使用旧的经营模式，从而降低信任度。
-
-**正确长啥样**
-
-Use a more sophisticated color palette. A deep navy blue or charcoal grey for the navigation, with red used only sparingly for the primary 'Call' button.
-
-**Redesign 怎么改**
-
-Change the navigation background to white or dark grey. Keep the red only for the 'Call' button to make it pop without overwhelming the user.
-
-
-### 主要 · Primary Call-to-Action is buried below the fold
-
-**技术事实**
-
-The main button 'BOOK YOUR FREE ROOF INSPECTION' is located at the bottom of the hero image, requiring the user to scroll down to see it.
-
-**普通话翻译**
-
-主要的行动按钮（预约检查）被放在了页面下方，用户需要滚动才能看到。
-
-**对客户的影响**
-
-在移动端，如果用户需要滚动才能找到联系方式，转化率通常会下降20-30%。让按钮始终可见可以显著提高电话咨询量。
-
-**正确长啥样**
-
-A sticky 'Call Now' button at the bottom of the screen on mobile, or the button placed higher up in the hero section.
-
-**Redesign 怎么改**
-
-Implement a sticky footer on mobile that always shows the phone number and 'Book Inspection' button, regardless of scroll position.
-
-
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Add a dark overlay to the hero image to make text readable and professional.
-2. [视觉] 2. Simplify the header to reduce visual clutter and highlight the phone number.
-3. [视觉] 3. Implement a sticky 'Call Now' button on mobile for immediate access.
-4. [评论] Feature 'Before & After' photos prominently, as multiple reviewers mention visual results and longevity.
-5. [评论] Highlight 'No Overspray' and 'Spotless Cleanup' as key service guarantees to reduce buyer anxiety.
-6. [评论] Use the 'Fair Price' and 'Detailed Quote' themes in the contact/quote request section to build trust early.
+1. [评论] Feature 'Before & After' photos prominently, as multiple reviewers mention visual results and longevity.
+2. [评论] Highlight 'No Overspray' and 'Spotless Cleanup' as key service guarantees to reduce buyer anxiety.
+3. [评论] Use the 'Fair Price' and 'Detailed Quote' themes in the contact/quote request section to build trust early.
 
 ## 七、推荐销售切入点
 
@@ -388,7 +280,8 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - **规模信号汇总：** 小型客户特征
 - **客户分级：** `small` — 小型，符合我们标准产品包定位
-- **建议定价档：** 标准包 $3-6K（符合我们核心产品）
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
 - Google 评价 118 条（≥50，有规模基础）
