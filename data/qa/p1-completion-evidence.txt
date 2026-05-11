@@ -1,0 +1,42 @@
+═════════ 全部 11 个 test ═════════
+  ✓ test-v2-leads-blueprint
+  ✓ test-forum-helpers
+  ✓ test-set-entity-phase
+  ✓ test-locale
+  ✓ test-asset-manifest
+  ✓ test-lead-thread-sync
+  ✓ test-persist-lead-grade-hook
+  ✓ test-reply-classifier
+  ✓ test-variant-picker
+  ✓ test-daily-tick
+  ✓ test-outreach-provider-event
+
+─── astro build (含 lead 详情页) ───
+15:55:53   ├─ /admin/v2-leads/place_chijzfflvfb3k2srldcxrdv26p4/index.html (+1ms) 
+15:55:53   ├─ /admin/v2-leads/index.html (+5ms) 
+15:55:53 ✓ Completed in 404ms.
+15:55:53 [build] ✓ Completed in 1.96s.
+15:55:53 [build] Complete!
+
+─── Hermes cron 状态 ───
+  f5c76d685a1d [paused]
+    Name:      pl-reply-poll
+    Schedule:  every 5m
+  71a491d0d6bc [paused]
+    Name:      pl-daily-tick
+    Schedule:  0 9 * * *
+
+─── pl:* 全清单 ───
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl
+  "pl

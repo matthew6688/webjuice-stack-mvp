@@ -418,6 +418,15 @@ function buildResearchSection(env) {
       summary: '备用的网站抓取和解析服务。',
       reason: 'fallback 或 alternative scraping/parsing provider。',
     }),
+    makeItem('PageSpeed Insights 密钥', env.PAGESPEED_API_KEY, {
+      envKeys: ['PAGESPEED_API_KEY'],
+      required: false,
+      display: maskSecret(env.PAGESPEED_API_KEY),
+      secret: true,
+      status: env.PAGESPEED_API_KEY ? 'configured' : 'optional',
+      summary: 'Google 官方性能审计 API（25k query/day 免费）。',
+      reason: '用于真实用户 CRUX field data + Lighthouse lab data — 比本地 Playwright 测得更权威，作 audit 报告中的速度证据。',
+    }),
   ]);
 }
 

@@ -36,6 +36,11 @@
   .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
 
   .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .lead-summary { margin: 0 0 14px; padding: 14px 18px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 14.5px; font-weight: 700; line-height: 1.65; max-width: 760px; word-break: break-word; font-family: var(--sans); }
+  .dim-meta { margin: -8px 0 16px; font-size: 12.5px; font-weight: 800; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+  .dim-meta strong { color: var(--coral); font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .triggers-block { margin-top: 22px; }
+  .triggers-block .eyebrow { margin: 0 0 8px; }
   .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
 
@@ -78,8 +83,9 @@
   .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
   .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
   .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-  .issue-row { margin: 4px 0; font-size: 13px; line-height: 1.5; font-weight: 700; }
-  .issue-row .lab { display: inline-block; min-width: 90px; font-size: 10px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 8px; vertical-align: top; }
+  .issue-row { margin: 10px 0 0; font-size: 13px; line-height: 1.6; font-weight: 700; }
+  .issue-row .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 3px; }
+  .issue-row.fix { padding-top: 8px; margin-top: 12px; border-top: 1.5px dashed rgba(23,25,28,0.18); }
   .issue-row.fix .lab { color: var(--coral); }
 
   details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
@@ -118,6 +124,41 @@
   .accent-mint { color: var(--green); }
   .accent-coral { color: var(--coral); }
 
+  .issue-evidence { margin-top: 10px; padding-top: 10px; border-top: 1.5px dashed rgba(23,25,28,0.25); }
+  .issue-evidence .ev-lab { margin: 0 0 6px; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  .issue-evidence img { max-width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .issue-evidence-html { margin-top: 8px; border: 1.5px solid var(--line); padding: 8px 10px; background: var(--cream); }
+  .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
+  .issue-row.ev-ref { color: var(--muted); }
+  .broken-evidence { background: color-mix(in srgb, var(--coral-soft) 35%, var(--paper)); border: 2px dashed var(--coral); padding: 12px 14px; margin-top: 10px; }
+  .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
+  .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .review-overview { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--line); margin: 14px 0 8px; }
+  .review-stat { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .review-stat:last-child { border-right: 0; }
+  .review-stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .review-stat strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1.1; margin-top: 4px; }
+  .review-stat small { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-top: 3px; }
+  .review-stat.trust-mint { background: var(--mint); }
+  .review-stat.trust-citrus { background: var(--citrus); }
+  .review-stat.trust-coral-soft { background: var(--coral-soft); }
+  .theme-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .theme-pill { padding: 4px 10px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .theme-pill.pos { background: var(--mint); }
+  .theme-pill.neg { background: var(--coral-soft); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 8px 0 14px; }
+  .review-quote { margin: 0; padding: 14px 16px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--paper); }
+  .review-quote:nth-child(2n) { border-right: 0; }
+  .review-quote:nth-last-child(-n+2) { border-bottom: 0; }
+  .review-quote .quote-text { font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.45; margin: 0 0 8px; }
+  .review-quote .quote-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .review-quote .quote-rating { color: var(--coral); letter-spacing: 0.08em; }
+  .review-quote .quote-why { font-size: 12px; font-weight: 700; line-height: 1.45; color: var(--muted); margin: 6px 0 0; padding-top: 8px; border-top: 1.5px dashed rgba(23,25,28,0.2); }
+  .review-quote .quote-why .lab { display: inline-block; font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); margin-right: 6px; }
+  .review-row { font-size: 13.5px; font-weight: 700; line-height: 1.5; }
+  .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
   .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
 
@@ -153,7 +194,7 @@
         <span>★ 5 (221 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/11 00:11</span>
+        <span>generated 2026/05/11 07:06</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -162,17 +203,18 @@
     </div>
     <div class="score-tile">
       <span class="label">Audit Score</span>
-      <div class="num">64<small>/100</small></div>
+      <div class="num">65<small>/100</small></div>
       <span class="decision">MODERATE CANDIDATE</span>
     </div>
   </header>
 
   <section class="section">
     <p class="eyebrow">总体判断</p>
-    <h2>audit_score=64 → moderate_candidate · weakest: seo 25, visual 50 · fired: high_traction_old_site</h2>
+    <h2>审计概览</h2>
+    <p class="lead-summary">audit_score=65 → moderate_candidate · weakest: seo 31, visual 50 · fired: high_traction_old_site</p>
     
-      <div>
-        <p class="eyebrow accent-coral" style="margin-top:18px">已触发 hard triggers</p>
+      <div class="triggers-block">
+        <p class="eyebrow accent-coral">已触发 hard triggers</p>
         <div class="trigger-list">
           <span class="trigger-pill">high_traction_old_site</span>
         </div>
@@ -195,8 +237,9 @@
   </section>
 
   <section class="section">
-    <p class="eyebrow">6 维度审计 At-a-glance</p>
-    <h2>得分 64/100 → MODERATE CANDIDATE</h2>
+    <p class="eyebrow">六维度评分总览</p>
+    <h2>每个维度的强弱在哪</h2>
+    <p class="dim-meta"><strong>65/100</strong> · MODERATE CANDIDATE</p>
     <div class="dim-grid">
       
         <div class="dim-card">
@@ -225,8 +268,8 @@
         </div>
         <div class="dim-card">
           <span class="label">SEO</span>
-          <div class="score">25<small>/100</small></div>
-          <div class="bar"><div class="fill" style="width:25%"></div></div>
+          <div class="score">31<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:31%"></div></div>
           <span class="weight">权重 10%</span>
         </div>
         <div class="dim-card">
@@ -239,8 +282,8 @@
   </section>
 
   <section class="section">
-    <p class="eyebrow">网站抓取证据</p>
-    <h2>当前网站快照</h2>
+    <p class="eyebrow">现场证据 · 桌面 + 移动</p>
+    <h2>客户访问时看到的页面</h2>
     <div class="screenshots">
       <figure>
         <img src="screenshots/desktop.png" alt="desktop screenshot" />
@@ -266,7 +309,7 @@
       </div>
       <div class="perf-cell">
         <span class="lab">Console Errors</span>
-        <span class="val bad">3</span>
+        <span class="val bad">2</span>
       </div>
     </div>
   </section>
@@ -275,8 +318,8 @@
 
   
   <section class="section">
-    <p class="eyebrow">MAJOR · 3</p>
-    <h2>主要问题</h2>
+    <p class="eyebrow">主要问题 · 3 项</p>
+    <h2>影响转化的明显短板</h2>
     <div class="issues-grid">
       
     <div class="issue-card issue-major">
@@ -290,6 +333,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>title=&#39;## Bigger. Brighter. Better. Love the space you’re in.&#39; contains-name=false contains-niche=false</p>
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 600px region</p>
+      <img src="evidence/issue-homepage-title-clear.png" alt="evidence for Desktop 600px region" loading="lazy" />
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -302,6 +349,7 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>0 &lt;h1&gt; tags</p>
+      <p class="issue-row"><span class="lab">证据</span>0 &lt;h1&gt; tag(s) found</p>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -314,13 +362,14 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>no LocalBusiness JSON-LD</p>
+      <details class="issue-evidence-html"><summary>证据 · 1 JSON-LD block(s) found</summary><pre><code>{&quot;@context&quot;:&quot;https:\/\/schema.org&quot;,&quot;@graph&quot;:[{&quot;@type&quot;:&quot;WebPage&quot;,&quot;@id&quot;:&quot;https:\/\/roofspacerenovators.com.au\/&quot;,&quot;url&quot;:&quot;https:\/\/roofspacerenovators.com.au\/&quot;,&quot;name&quot;:&quot;Home - Roof Space Renovators&quot;,&quot;isPartOf&quot;:{&quot;@id&quot;:&quot;https:\/\/roofspacerenovators.com.au\/#website&quot;},&quot;primaryImageOfPage&quot;:{&quot;@id&quot;:&quot;https:\/\/roofspacerenovators.com.au\/#primaryimage&quot;},&quot;image&quot;:{&quot;@id&quot;:&quot;https:\/\/roofspacerenovators.com.au\/#primaryimage&quot;},&quot;thumbnailUrl&quot;:&quot;https:\/\/roofspacerenovators.com.au\/wp-content\/uploads\/2023\/02\/Untitled-design-34-e1676439896976.png&quot;,&quot;datePublished&quot;:&quot;2022-09-07T07:02:52+00:00&quot;,&quot;dateModified&quot;:&quot;2026-03-26T01:46:17+00:00&quot;,&quot;description&quot;:&quot;As Queensland’s leading attic renovation company, we can help you awaken the awesome potential in your roof.&quot;,&quot;breadcrumb&quot;:{&quot;@id&quot;:&quot;https:\/\/roofspacerenovators.com.au\/#breadcrumb&quot;},&quot;inLanguage&quot;:&quot;en-AU&quot;,&quot;potentialAction&quot;:[{&quot;@type&quot;:&quot;ReadAction&quot;,&quot;target&quot;:[&quot;https:\/\/roofspacerenovators.com.au\/&quot;]}]},{&quot;@type&quot;:&quot;ImageObject&quot;,&quot;inLanguage&quot;:&quot;en-AU&quot;,&quot;@id&quot;:&quot;https:\/\/roofspacerenovators.com.au\/#primaryimage&quot;,&quot;url&quot;:&quot;https:\/\/roofspacerenovators.com.au\/wp-content\/uploads\/2023\/02\/Untitled-design-34-e1676439896976.png&quot;,&quot;contentUrl&quot;:&quot;https:\/\/roofspacerenovators.com.au\/wp-content\/uploads\/2023\/02\/Untitled-design-34-e1676439896976.png&quot;,&quot;width&quot;:20,&quot;height&quot;:20},{&quot;@type&quot;:&quot;BreadcrumbList&quot;,&quot;@id&quot;:&quot;https:\/\/roofspacerenovators.com.au\/#breadcrumb&quot;,&quot;itemListElement&quot;:[{&quot;@type&quot;:&quot;ListItem&quot;,&quot;position&quot;:1,&quot;name&quot;:&quot;Home&quot;}]},{&quot;@type&quot;:&quot;WebSite&quot;,&quot;@id&quot;:&quot;https:\/\/roo</code></pre></details>
     </div>
     </div>
   </section>
 
   <section class="section">
-    <p class="eyebrow">39 项规则明细</p>
-    <h2>每条规则命中情况</h2>
+    <p class="eyebrow">规则细节 · 39 项明细</p>
+    <h2>每条规则的命中与失分原因</h2>
     
         <details class="dim-detail">
           <summary>
@@ -346,7 +395,7 @@
     <table class="rule-table">
       <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
       <tbody>
-        <tr class="hit"><td><code>https_enabled</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">https</td></tr><tr class="na"><td><code>first_paint_under_3s</code></td><td class="mark">—</td><td class="num">0/25</td><td class="why">LCP not measured (need Playwright/Lighthouse)</td></tr><tr class="hit"><td><code>mobile_responsive</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">lighthouse mobile 80</td></tr><tr class="na"><td><code>core_web_vitals_pass</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">CWV not measured</td></tr><tr class="hit"><td><code>form_submittable</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">form submits</td></tr><tr class="miss"><td><code>no_console_errors</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">3 console errors</td></tr><tr class="hit"><td><code>favicon_and_meta</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">favicon: yes, meta: yes</td></tr>
+        <tr class="hit"><td><code>https_enabled</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">https</td></tr><tr class="na"><td><code>first_paint_under_3s</code></td><td class="mark">—</td><td class="num">0/25</td><td class="why">LCP not measured (need Playwright/Lighthouse)</td></tr><tr class="hit"><td><code>mobile_responsive</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">lighthouse mobile 80</td></tr><tr class="na"><td><code>core_web_vitals_pass</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">CWV not measured</td></tr><tr class="hit"><td><code>form_submittable</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">form submits</td></tr><tr class="miss"><td><code>no_console_errors</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">2 console errors</td></tr><tr class="hit"><td><code>favicon_and_meta</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">favicon: yes, meta: yes</td></tr>
       </tbody>
     </table>
         </details>
@@ -374,21 +423,21 @@
     <table class="rule-table">
       <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
       <tbody>
-        <tr class="miss"><td><code>homepage_title_clear</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">title=&#39;## Bigger. Brighter. Better. Love the space you’re in.&#39; contains-name=false contains-niche=false</td></tr><tr class="hit"><td><code>service_copy_specific</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">26 service-related verbs detected</td></tr><tr class="hit"><td><code>trust_signals_present</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">8 trust-keyword mentions</td></tr><tr class="hit"><td><code>localized_content</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">mentions brisbane</td></tr><tr class="hit"><td><code>evidence_of_recent_update</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">fresh year mentioned</td></tr><tr class="miss"><td><code>non_ai_filler_copy</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">AI-filler phrasing detected</td></tr>
+        <tr class="miss"><td><code>homepage_title_clear</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">title=&#39;## Bigger. Brighter. Better. Love the space you’re in.&#39; contains-name=false contains-niche=false</td></tr><tr class="hit"><td><code>service_copy_specific</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">62 service-related verbs detected</td></tr><tr class="hit"><td><code>trust_signals_present</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">37 trust-keyword mentions</td></tr><tr class="hit"><td><code>localized_content</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">mentions brisbane</td></tr><tr class="hit"><td><code>evidence_of_recent_update</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">fresh year mentioned</td></tr><tr class="miss"><td><code>non_ai_filler_copy</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">AI-filler phrasing detected</td></tr>
       </tbody>
     </table>
         </details>
         <details class="dim-detail">
           <summary>
             <span class="dim-summary-label">SEO</span>
-            <span class="dim-summary-score">25/100</span>
+            <span class="dim-summary-score">31/100</span>
             <span class="dim-summary-rules">5 规则</span>
           </summary>
           
     <table class="rule-table">
       <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
       <tbody>
-        <tr class="hit"><td><code>title_meta_present</code></td><td class="mark">✓</td><td class="num">25/25</td><td class="why">title=yes meta=yes</td></tr><tr class="miss"><td><code>h1_unique</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">0 &lt;h1&gt; tags</td></tr><tr class="miss"><td><code>local_schema_markup</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">no LocalBusiness JSON-LD</td></tr><tr class="miss"><td><code>image_alt_present</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">125 images, 10% with alt</td></tr><tr class="na"><td><code>sitemap_robots</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">/sitemap.xml + /robots.txt probe not run (need Playwright)</td></tr>
+        <tr class="hit"><td><code>title_meta_present</code></td><td class="mark">✓</td><td class="num">25/25</td><td class="why">title=yes meta=yes</td></tr><tr class="miss"><td><code>h1_unique</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">0 &lt;h1&gt; tags</td></tr><tr class="miss"><td><code>local_schema_markup</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">no LocalBusiness JSON-LD</td></tr><tr class="miss"><td><code>image_alt_present</code></td><td class="mark">✗</td><td class="num">6/20</td><td class="why">230 images, 30% with alt</td></tr><tr class="na"><td><code>sitemap_robots</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">/sitemap.xml + /robots.txt probe not run (need Playwright)</td></tr>
       </tbody>
     </table>
         </details>
@@ -410,105 +459,183 @@
 
   
     <section class="section">
-      <p class="eyebrow">视觉审计</p>
-      <h2>The site uses a dated stock-photo aesthetic and cluttered navigation that distracts from the primary goal of getting a quote, particularly on mobile where the call-to-action is buried.</h2>
+      <p class="eyebrow">视觉审计 · Vision LLM</p>
+      <h2>设计观感的整体诊断</h2>
+      <p class="lead-summary">The website uses a dated layout with a cluttered header and a hero section that relies on a generic stock photo, making the business feel less professional than it likely is.</p>
       <div class="visual-scores">
-        <div class="vs"><span>新鲜度</span><strong>5</strong><small>/10</small></div>
-        <div class="vs"><span>信任度</span><strong>6</strong><small>/10</small></div>
+        <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
         <div class="vs"><span>转化准备度</span><strong>4</strong><small>/10</small></div>
         <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
       </div>
       <div class="issues-grid">
         
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">cluttered_header_navigation</code>
+      </div>
+      <div class="issue-title">Header is too busy and distracts from the phone number</div>
+      <p class="issue-row"><span class="lab">观察到</span>The top navigation bar contains 8 distinct menu items (Home, About Us, Our Services, etc.) plus social icons, a search icon, and contact details, all crammed into a single horizontal strip.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor looking for a roofing quote is overwhelmed by choices. The phone number is buried in the top strip rather than being a primary call-to-action. The sheer number of links suggests a lack of focus on the main goal: getting a quote.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A simplified header with a logo on the left, a &#39;Get a Quote&#39; button on the right, and a hamburger menu for secondary links. The phone number should be prominent and clickable.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Reduce navigation items to 3-4 key categories. Move the phone number to a sticky header or make it a large button. Remove social icons from the main nav to reduce visual noise.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Element: header, nav</p>
+      <img src="evidence/issue-cluttered-header-navigation.png" alt="evidence for Element: header, nav" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">generic_stock_hero_image</code>
+      </div>
+      <div class="issue-title">Hero image uses a generic stock photo instead of real work</div>
+      <p class="issue-row"><span class="lab">观察到</span>The main banner image features a smiling family pointing upwards in a generic room, overlaid with a blue tint and text. It does not show any actual roof renovations or the company&#39;s work.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Customers searching for &#39;roofing Brisbane&#39; want to see proof of capability. A stock photo feels impersonal and untrustworthy. It doesn&#39;t demonstrate the specific service (attic renovation) effectively.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A high-quality photo of a real, completed attic renovation project by the company, showing the &#39;before and after&#39; or the finished space. Alternatively, a photo of the team at work.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the stock photo with a real project image. Use a split-screen &#39;before/after&#39; slider or a high-res photo of a finished attic space with the headline overlaid clearly.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-generic-stock-hero-image.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
     <div class="issue-card issue-critical">
       <div class="issue-head">
         <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">mobile_missing_cta</code>
+        <code class="issue-id">weak_call_to_action</code>
       </div>
-      <div class="issue-title">Mobile CTA buried below fold</div>
-      <p class="issue-row"><span class="lab">观察到</span>On the mobile screenshot, the &#39;Get in touch for a free quote&#39; button is not visible; the user sees the headline and the top of the family photo, but must scroll to find the action.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A local customer searching on their phone wants to know if they can get a quote immediately. If they have to scroll past the hero image to find the button, they will likely bounce back to Google results.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>The primary &#39;Get a Free Quote&#39; button should be visible immediately below the headline on mobile, or a sticky bottom bar should appear as soon as the user scrolls.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Move the CTA button above the fold on mobile, placing it directly under the &#39;Love the space you&#39;re in&#39; headline, or implement a sticky &#39;Get Quote&#39; button fixed to the bottom of the screen.</p>
+      <div class="issue-title">Primary call-to-action button is buried and low contrast</div>
+      <p class="issue-row"><span class="lab">观察到</span>The &#39;Get in touch for a free quote!&#39; button is yellow, placed at the bottom of the hero section, and requires scrolling to see fully on mobile. It is not the most prominent element.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The main goal is to get a quote. The button is not immediately visible or compelling. On mobile, users might not scroll down to find it. The yellow color blends with the text and doesn&#39;t stand out enough against the blue background.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A large, high-contrast button (e.g., bright orange or white with dark text) placed above the fold, directly under the main headline. It should say &#39;Get Your Free Quote&#39; or &#39;Call Now&#39;.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Move the CTA button to be immediately visible under the headline. Increase its size and contrast. Add a secondary CTA like &#39;Call 07 3889 6688&#39; for immediate contact.</p>
       
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 800px region</p>
+      <img src="evidence/issue-weak-call-to-action.png" alt="evidence for Desktop 800px region" loading="lazy" />
     </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">hero_stock_photo</code>
-      </div>
-      <div class="issue-title">Generic stock photo damages trust</div>
-      <p class="issue-row"><span class="lab">观察到</span>The hero image features a generic family pointing upwards with exaggerated expressions, overlaid with a heavy blue gradient.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>This looks like a template rather than a specialized local business. It fails to show the actual product (roof renovations) or the team, making it hard for a Brisbane homeowner to trust the company&#39;s specific expertise.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A high-quality photo of a real roof renovation project in Brisbane, or a photo of the actual team working on a roof, with a subtle overlay to ensure text readability.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the stock family photo with a high-resolution image of a completed skylight or attic renovation project, or a candid shot of the team on a roof.</p>
-      
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">desktop_nav_clutter</code>
-      </div>
-      <div class="issue-title">Desktop navigation is too dense</div>
-      <p class="issue-row"><span class="lab">观察到</span>The desktop header contains 8 distinct menu items (Home, About Us, Our Services, Our Product Range, Be Inspired, Our Showroom, FAQs, Contact Us) plus a logo and contact info.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>This creates visual noise and cognitive load. A visitor looking for a quote doesn&#39;t need to see &#39;Be Inspired&#39; or &#39;Our Showroom&#39; immediately; the clutter dilutes the focus on the main conversion goal.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A simplified navigation with 3-4 key items (Services, Projects, About) and a distinct, high-contrast &#39;Get a Quote&#39; button in the header.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Consolidate menu items into dropdowns (e.g., &#39;Services&#39; and &#39;Resources&#39;) and replace the &#39;Contact Us&#39; text link with a prominent &#39;Get a Quote&#39; button in the header.</p>
-      
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">top_bar_redundancy</code>
+        <code class="issue-id">outdated_typography_and_colors</code>
       </div>
-      <div class="issue-title">Redundant top bar wastes space</div>
-      <p class="issue-row"><span class="lab">观察到</span>A dark teal bar at the very top lists &#39;Servicing Brisbane, Sunshine Coast...&#39; and repeats the address and phone number found in the header.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>This takes up valuable vertical space on mobile screens and repeats information unnecessarily. The service area text is small and hard to read.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Remove the top bar entirely and integrate the service area into the footer or a dedicated &#39;Service Areas&#39; page. Keep the phone number in the main header only.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the top teal bar. Move the &#39;Servicing...&#39; text to the footer. Ensure the phone number in the main header is clickable (tel: link).</p>
+      <div class="issue-title">Font choices and color scheme feel dated</div>
+      <p class="issue-row"><span class="lab">观察到</span>The logo uses a mix of sans-serif and script fonts. The color palette includes a dark teal header and yellow accents, which feels a bit generic and not particularly modern.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>While not broken, the design language feels like it hasn&#39;t been updated in 5-7 years. This can subconsciously signal to customers that the business is not current or innovative.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A cleaner, more modern font pairing (e.g., a strong sans-serif for headings, a readable sans-serif for body). A refined color palette that uses white space more effectively.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Update the logo slightly for a cleaner look. Use a modern sans-serif font throughout. Increase white space to make the content breathe.</p>
       
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-outdated-typography-and-colors.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>The value proposition &#39;Same House, More Home&#39; is clear and easy to understand.</li><li>The color palette (teal and yellow) provides good contrast for text readability.</li><li>The mobile menu icon is standard and easy to find.</li></ul>
+          <ul><li>The tagline &#39;Same house, more home&#39; is catchy and clearly communicates the value proposition.</li><li>The contact information (phone number and address) is present in the header, which is good for local SEO.</li><li>The headline &#39;Bigger. Brighter. Better.&#39; is clear and benefit-driven.</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Move the &#39;Get a Quote&#39; CTA above the fold on mobile devices.</li><li>2. Replace the generic stock photo with real project imagery or team photos.</li><li>3. Simplify the desktop navigation to reduce cognitive load and highlight the CTA.</li></ol>
+          <ol><li>1. Replace the generic stock photo with a real project image to build immediate trust.</li><li>2. Simplify the header and make the phone number/quote button the most prominent element.</li><li>3. Move the primary CTA button above the fold and increase its visual weight.</li></ol>
         </div>
     </section>
 
   
-    <section class="section section-placeholder">
-      <h2>客户评论分析</h2>
-      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑）。当此 lead 被批准为正式销售目标后会补充：</p>
-      <ul class="placeholder-list">
-        <li>评论情感分布（5★/4★/3★/2★/1★ 占比）</li>
-        <li>商家回复率 + 最近一次回复时间</li>
-        <li>常见好评 / 差评关键词</li>
-        <li>5-8 条高质量 quote — 可直接放到 redesign 后的网站上</li>
-        <li>vs 同行评论平均水平的差距</li>
-      </ul>
+    <section class="section">
+      <p class="eyebrow">客户评论分析 · Google Reviews</p>
+      <h2>客户在 Google 上怎么夸 / 怎么抱怨</h2>
+      <p class="lead-summary">Customers overwhelmingly praise the professionalism, cleanliness, and communication of the team, with specific highlights on fast turnaround times and high-quality craftsmanship for skylights and attic renovations.</p>
+      <div class="review-overview">
+        <div class="review-stat"><span class="lab">Google 整体</span><strong>5★ · 221 条评论</strong></div>
+        <div class="review-stat trust-mint"><span class="lab">信号强度</span><strong>STRONG</strong></div>
+        <div class="review-stat"><span class="lab">分析样本</span><strong>221 条</strong><small>Google 「最相关」</small></div>
+      </div>
+
+      
+        <h3>客户一致夸赞</h3>
+        <div class="theme-pills theme-pos"><span class="theme-pill pos">professional and tidy crews</span><span class="theme-pill pos">excellent communication</span><span class="theme-pill pos">fast response and turnaround</span><span class="theme-pill pos">high-quality craftsmanship</span><span class="theme-pill pos">friendly and respectful staff</span></div>
+      
+
+      
+
+      
+        <h3>可直接用在 redesign 的 quote</h3>
+        <div class="quote-grid">
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"The team were friendly, tidy, and respectful throughout the job, making sure to clean up at the end of each day."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Brett</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Addresses common homeowner anxiety about mess and disruption during renovations.</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"They listened to my concerns about future storm damage risk and were able to future proof my skylight with a toughened glass double glazed product."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Wendy</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Demonstrates expertise and consultative approach rather than just selling a product.</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"From our initial web enquiry... the response was extremely fast and appointment scheduled very quickly."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Sean</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Highlights operational efficiency and ease of doing business.</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"The result is fantastic – a great finish that has completely transformed what was previously wasted space into something really useful."</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Brett</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Showcases the tangible value and transformation provided by the service.</p>
+            </blockquote>
+          
+        </div>
+      
+
+      
+        <h3>商家回复观察</h3>
+        <p class="review-row">No owner replies are visible in the provided sample data; however, the volume and consistency of 5-star reviews suggest high customer satisfaction regardless of reply visibility.</p>
+      
+
+      
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 可发力的钩子</p>
+          <ol><li>Feature the &#39;clean up at the end of each day&#39; quote in the &#39;Our Process&#39; section to alleviate mess concerns.</li><li>Use the &#39;future proof my skylight&#39; snippet in the &#39;Skylight Services&#39; page to highlight technical expertise and durability.</li><li>Display the &#39;fast response&#39; quote near the contact form to encourage immediate inquiries.</li></ol>
+        </div>
+      
     </section>
 
   
-    <section class="section section-placeholder">
-      <h2>速度对比 (前 / 后)</h2>
-      <p class="placeholder-note">⏳ 加载速度前后对比视频 — 等 ProfitsLocal 真实 mockup 网站上线后录制：</p>
-      <ul class="placeholder-list">
-        <li>当前网站慢速节流加载视频（模拟 4G 移动网络）</li>
-        <li>Mockup 网站同条件加载视频</li>
-        <li>side-by-side 对比 + 客户能直接看到的转化率影响估算</li>
-      </ul>
+    <section class="section">
+      <p class="eyebrow">加载速度证据 · 慢速 4G 移动网络</p>
+      <h2>客户在手机上看到的真实加载体验</h2>
+      <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
+      <video class="speed-video" controls preload="metadata" playsinline>
+        <source src="video/mobile-throttled.webm" type="video/webm" />
+      </video>
+      <p class="placeholder-note" style="margin-top:14px">⏳ Mockup 站点对比视频 — 等 ProfitsLocal 真实 mockup 上线后录制 side-by-side 对比。</p>
     </section>
 
   
   <section class="section">
-    <p class="eyebrow accent-coral">推荐销售角度</p>
-    <h2>从 audit 数据推导出的切入点</h2>
+    <p class="eyebrow accent-coral">销售切入点</p>
+    <h2>从 audit 数据自动推导的开场话术</h2>
     <div class="sales-strip">
       <ul>
         <li>你已经有不错的 Google 流量基础，但网站设计在浪费这些点击</li>
@@ -525,7 +652,7 @@
     </p>
     <p class="meta-row" style="margin-top:8px">
       <span>Visual auditor: ✓ filled (Block E)</span>
-      <span>Review analysis: ⏳ on-demand for high-value leads</span>
+      <span>Review analysis: ✓ filled</span>
       <span>Speed video: ⏳ post-mockup</span>
     </p>
   </footer>

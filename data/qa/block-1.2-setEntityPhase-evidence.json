@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "assertions_passed": 28,
+  "cases": {
+    "first_write_creates_phase": true,
+    "legacy_status_preserved": true,
+    "nested_latest_preserved": true,
+    "grade_preserved": true,
+    "notes_preserved": true,
+    "history_appended_on_change": true,
+    "idempotent_repeat_no_history": true,
+    "transition_to_new_phase": true,
+    "legacy_fields_preserved_across_writes": true,
+    "invalid_phase_rejected": true,
+    "archive_without_reason_rejected": true,
+    "archive_with_reason_accepted": true,
+    "events_jsonl_appended": true,
+    "noop_event_marked": true,
+    "entity_not_found_handled": true
+  }
+}

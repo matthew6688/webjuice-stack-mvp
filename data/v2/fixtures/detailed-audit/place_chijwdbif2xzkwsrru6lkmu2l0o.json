@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T14:11:37.978Z",
+  "generatedAt": "2026-05-10T23:23:55.419Z",
   "entity_input": {
     "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "latest": {
@@ -44,10 +44,516 @@
     "url": "https://brisbaneroofrestorationexperts.com.au/",
     "markdown_length": 6184
   },
+  "tech_stack": {
+    "ok": true,
+    "cms": {
+      "id": "wordpress",
+      "name": "WordPress",
+      "evidence": "wp-content/themes"
+    },
+    "cms_alternatives": [],
+    "analytics": [],
+    "pixels": [
+      {
+        "id": "google_ads",
+        "name": "Google Ads Conversion",
+        "evidence": "AW-10880396239"
+      }
+    ],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": "Cloudflare-fronted",
+    "sophistication_score": 3,
+    "has_paid_ads_evidence": true,
+    "has_measurement": true,
+    "final_url": "https://brisbaneroofrestorationexperts.com.au/"
+  },
+  "sitemap_analysis": {
+    "ok": true,
+    "has_sitemap": false,
+    "has_robots": true,
+    "total_urls": 0,
+    "migration_complexity": "unknown",
+    "reason": "no sitemap found at standard paths"
+  },
+  "activity": {
+    "ok": true,
+    "base_url": "https://brisbaneroofrestorationexperts.com.au/",
+    "last_modified_header": null,
+    "days_since_last_modified": null,
+    "newest_sitemap_lastmod": null,
+    "days_since_newest_sitemap": null,
+    "blog_section_present": false,
+    "blog_post_count": 0,
+    "blog_newest_lastmod": null,
+    "days_since_newest_blog": null,
+    "blog_freshness": "unknown",
+    "social_links": {},
+    "overall_freshness": "unknown",
+    "days_since_any_update": null
+  },
+  "ai_geo": {
+    "ok": true,
+    "dimension_score": 40,
+    "rules": [
+      {
+        "id": "llms_txt_present",
+        "max": 5,
+        "hit": true,
+        "rationale": "llms.txt found (159153 bytes)"
+      },
+      {
+        "id": "ai_bot_robots_policy",
+        "max": 5,
+        "hit": false,
+        "rationale": "robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)"
+      },
+      {
+        "id": "localbusiness_schema",
+        "max": 15,
+        "hit": true,
+        "rationale": "LocalBusiness JSON-LD present"
+      },
+      {
+        "id": "service_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no Service JSON-LD"
+      },
+      {
+        "id": "faqpage_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)"
+      },
+      {
+        "id": "aggregaterating_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no AggregateRating JSON-LD (★ rating not shown in search snippets)"
+      },
+      {
+        "id": "breadcrumb_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no BreadcrumbList JSON-LD"
+      },
+      {
+        "id": "semantic_landmarks",
+        "max": 10,
+        "hit": true,
+        "rationale": "6 semantic landmarks present: <main, <nav, <header, <footer, <article, <section"
+      },
+      {
+        "id": "faq_qa_pattern",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 question-style heading(s) found (Q&A format helps AI extraction)"
+      },
+      {
+        "id": "eeat_business_credentials",
+        "max": 10,
+        "hit": false,
+        "rationale": "only 1/4 credentials found (insurance) — need ≥2 of: ABN, license/QBCC, years-in-business, insurance"
+      },
+      {
+        "id": "eeat_warranty_trust",
+        "max": 5,
+        "hit": false,
+        "rationale": "no warranty/guarantee in copy"
+      },
+      {
+        "id": "jsonld_at_least_one",
+        "max": 10,
+        "hit": true,
+        "rationale": "1 JSON-LD block(s) detected on page"
+      }
+    ],
+    "summary": "AI agent 抓取部分支持，但关键 schema / 凭证 / FAQ 缺失",
+    "detail": {
+      "llms_txt": true,
+      "ai_bot_mentions": [],
+      "jsonld_block_count": 1,
+      "jsonld_types": [
+        "LocalBusiness"
+      ],
+      "semantic_landmarks": [
+        "<main",
+        "<nav",
+        "<header",
+        "<footer",
+        "<article",
+        "<section"
+      ],
+      "faq_q_headings": 0,
+      "eeat": {
+        "has_abn": false,
+        "has_qbcc": false,
+        "has_license": false,
+        "has_years": false,
+        "has_insurance": true,
+        "has_warranty": false
+      }
+    }
+  },
+  "pagespeed": {
+    "ok": true,
+    "results": {
+      "mobile": {
+        "strategy": "mobile",
+        "scores": {
+          "performance": 64,
+          "accessibility": 95,
+          "best_practices": 100,
+          "seo": 100
+        },
+        "lab_metrics": {
+          "lcp_ms": 15602.298448145953,
+          "fcp_ms": 1956.111037504248,
+          "cls": 0,
+          "tbt_ms": 154,
+          "tti_ms": 15617.298740742175,
+          "speed_index_ms": 8486.995184991783,
+          "transfer_size_bytes": 2655169
+        },
+        "crux_overall": null,
+        "crux_field_data": {
+          "lcp_p75_ms": null,
+          "fcp_p75_ms": null,
+          "cls_p75": null,
+          "inp_p75_ms": null,
+          "ttfb_p75_ms": null
+        },
+        "crux_origin_overall": null,
+        "opportunities": [
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 300,
+            "savings_bytes": 56067
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 79,
+            "savings_bytes": null
+          }
+        ]
+      },
+      "desktop": {
+        "strategy": "desktop",
+        "scores": {
+          "performance": 84,
+          "accessibility": 92,
+          "best_practices": 100,
+          "seo": 100
+        },
+        "lab_metrics": {
+          "lcp_ms": 2544.1311331604747,
+          "fcp_ms": 525.1078747778312,
+          "cls": 0,
+          "tbt_ms": 101.99999999999989,
+          "tti_ms": 2544.1311331604747,
+          "speed_index_ms": 1294.2498164316348,
+          "transfer_size_bytes": 3085651
+        },
+        "crux_overall": null,
+        "crux_field_data": {
+          "lcp_p75_ms": null,
+          "fcp_p75_ms": null,
+          "cls_p75": null,
+          "inp_p75_ms": null,
+          "ttfb_p75_ms": null
+        },
+        "crux_origin_overall": null,
+        "opportunities": [
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 50,
+            "savings_bytes": 249487
+          }
+        ]
+      }
+    },
+    "failures": [],
+    "latency_ms": 44896
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 2,
+    "contact_form_count": 1,
+    "forms": [
+      {
+        "action": "ref: <Node>",
+        "method": "post",
+        "field_count": 18,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "name",
+            "required": true,
+            "placeholder": "John Smith",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Name:*"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "phone",
+            "required": true,
+            "placeholder": "Your phone number...",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Phone:*"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "email",
+            "required": true,
+            "placeholder": "jsmith@email.com",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email:*"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "location",
+            "required": true,
+            "placeholder": "eg. Coorparoo",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Location:*"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Tile Roof"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Metal Roof"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Other"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "scope-of-work",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Full roof"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "scope-of-work",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Partial area"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "scope-of-work",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Other"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "work-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Full restoration"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "work-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Repairs only"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "work-type",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Not sure"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Under 10 yrs"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "10–20 yrs"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "20+ yrs"
+          },
+          {
+            "tag": "input",
+            "type": "radio",
+            "name": "roof-age",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Not sure"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "service",
+            "required": true,
+            "placeholder": "Please tell us more about the service you require...",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Description:*"
+          }
+        ],
+        "required_count": 5,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Request Quote",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "high"
+      },
+      {
+        "action": "https://brisbaneroofrestorationexperts.com.au/",
+        "method": "get",
+        "field_count": 1,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "search",
+            "name": "s",
+            "required": false,
+            "placeholder": "Search …",
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Search for:"
+          }
+        ],
+        "required_count": 0,
+        "has_email_field": false,
+        "has_phone_field": false,
+        "has_message_field": false,
+        "has_submit_button": true,
+        "submit_label": "Search",
+        "honeypot_present": false,
+        "role": "unknown",
+        "friction_level": "unknown"
+      }
+    ],
+    "captchas_detected": [],
+    "has_any_captcha": false,
+    "has_any_anti_spam": false,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "表单字段数 18 — 远超行业标准 3-4 字段，会显著降低转化率"
+      },
+      {
+        "severity": "medium",
+        "text": "表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "brisbaneroofrestorationexperts.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2026-04-24T02:02:16.000Z",
+    "registrar": "GoDaddy.com LLC trading as GoDaddy.com",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "wayback 503"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 include:_spf.mx.cloudflare.net include:spf.sendinblue.com ~all",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1; p=none;",
+      "dmarc_policy": "none",
+      "dkim_selectors_found": [
+        "mail"
+      ],
+      "posture": "strong"
+    }
+  },
   "detailed_audit": {
     "business_id": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-10T14:11:37.978Z",
+    "audited_at": "2026-05-10T23:23:55.419Z",
     "audit_score": 70,
     "dimension_scores": {
       "gbp": 48,
@@ -66,24 +572,32 @@
         {
           "id": "homepage_title_clear",
           "rationale": "title='# Brisbane Roof Restoration Specialists' contains-name=true contains-niche=false",
-          "max": 20
+          "max": 20,
+          "plain_language": "你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Brisbane Roof Restoration Experts - roofing Brisbane」，但目前是泛泛一句）。",
+          "customer_impact": "Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。"
         }
       ],
       "minor": [
         {
           "id": "has_hours",
           "rationale": "no hours",
-          "max": 5
+          "max": 5,
+          "plain_language": "GBP 上没有完整的营业时间。",
+          "customer_impact": "客户搜「现在还在营业的 roofer」时你不会被显示。"
         },
         {
           "id": "has_service_area",
           "rationale": "no service area",
-          "max": 15
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
         },
         {
           "id": "has_gallery",
           "rationale": "no gallery",
-          "max": 5
+          "max": 5,
+          "plain_language": "没有项目作品集 / before-after 图库。",
+          "customer_impact": "屋顶 / renovation 行业，「眼见为实」是关键决策因素之一。没有作品集 = 客户没法判断你的工艺水准 = 比起有图库的同行落后一截。"
         }
       ]
     },

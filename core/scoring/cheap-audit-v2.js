@@ -120,13 +120,21 @@ export function gbpTriage(entity, { sourceQuery = '' } = {}) {
         rationale = hit ? `address: ${latest.address}` : 'address missing or too short';
         break;
       case 'category_relevant': {
-        const cat = String(latest.category || '').toLowerCase();
         const niche = String(latest.niche || '').toLowerCase();
         const query = String(sourceQuery || latest.sourceQuery || '').toLowerCase();
-        const relevant = checkRelevance(cat, niche, query);
+        // Look at primary category, all secondary categories, AND the
+        // business name. Roof Space Renovators has primary
+        // "Home improvement store" but name contains "Roof" — clearly
+        // a roofer; should not be excluded by primary-only check.
+        const haystack = [
+          latest.category || '',
+          ...(latest.categories || []),
+          latest.name || '',
+        ].join(' ').toLowerCase();
+        const relevant = checkRelevance(haystack, niche, query);
         earned = relevant ? rule.max : 0;
         hit = relevant;
-        rationale = relevant ? `category "${cat}" matches niche/query` : `category "${cat}" did not match niche "${niche}"`;
+        rationale = relevant ? `relevance match in cat/categories/name` : `cat="${latest.category}" + categories/name had no niche overlap`;
         break;
       }
       default:
@@ -145,43 +153,121 @@ export function gbpTriage(entity, { sourceQuery = '' } = {}) {
   return { gbp_quality, earned_total: earnedTotal, max_total: maxTotal, rules: out, relevance_pass };
 }
 
-/** Naive niche-token overlap relevance check (matches V1 spirit). */
-function checkRelevance(cat, niche, query) {
-  if (!cat) return false;
-  const tokens = `${niche} ${query}`.toLowerCase().split(/\W+/).filter(Boolean);
+/**
+ * Niche-token overlap relevance check.
+ *
+ * Only uses niche + niche-expanders — NOT the source query, because the
+ * query contains city/geo tokens ("brisbane", "new farm") that match
+ * any local business including off-niche ones (Hurricane Digital — SEO
+ * agency in Brisbane — was passing because "brisbane" matched).
+ */
+function checkRelevance(haystack, niche, _query) {
+  if (!haystack) return false;
   const expanders = {
-    roof: ['roof', 'gutter', 'tile', 'metal'],
-    roofing: ['roof', 'gutter', 'tile', 'metal'],
+    roof: ['roof', 'gutter', 'tile', 'metal', 'skylight', 'tiling', 'restorat'],
+    roofing: ['roof', 'gutter', 'tile', 'metal', 'skylight', 'tiling', 'restorat'],
     restaurant: ['restaurant', 'cafe', 'bar', 'pizza', 'food', 'dining', 'bakery', 'noodle'],
     cafe: ['cafe', 'coffee', 'restaurant'],
-    dental: ['dental', 'dentist', 'clinic'],
-    dentist: ['dental', 'dentist', 'clinic'],
+    dental: ['dental', 'dentist', 'clinic', 'orthodont'],
+    dentist: ['dental', 'dentist', 'clinic', 'orthodont'],
     plumber: ['plumb'],
     plumbing: ['plumb'],
     electrician: ['electric'],
   };
-  const expanded = new Set(tokens);
-  for (const t of tokens) {
+  const nicheTok = String(niche || '').toLowerCase().split(/\W+/).filter(Boolean);
+  const expanded = new Set(nicheTok);
+  for (const t of nicheTok) {
     for (const ex of (expanders[t] || [])) expanded.add(ex);
   }
   for (const t of expanded) {
     if (t.length < 3) continue;
-    if (cat.includes(t)) return true;
+    if (haystack.includes(t)) return true;
   }
   return false;
+}
+
+/**
+ * Known third-party landing-page hosts. Businesses on these "websites"
+ * don't actually have a site we can audit — the page is a billing app
+ * profile, social directory, or no-code template host. Treated as
+ * effectively no_website for decision purposes (and a strong sales
+ * angle: "you don't have a real website").
+ */
+const THIRD_PARTY_HOSTS = [
+  'billdu.me',
+  'sites.google.com',
+  'business.site',           // Google Business Profile websites
+  'wix.com', 'wixsite.com',
+  'squarespace.com',
+  'godaddysites.com',
+  'mywebsiteforfree.com',
+  'webnode.com',
+  'tilda.cc',
+  'carrd.co',
+  'linktr.ee', 'linktree.com',
+  'strikingly.com',
+  'webs.com',
+  'simplesite.com',
+  'jimdofree.com', 'jimdo.com',
+];
+
+export function detectThirdPartyHost(url) {
+  if (!url) return null;
+  let host;
+  try { host = new URL(url).hostname.toLowerCase().replace(/^www\./, ''); }
+  catch { return null; }
+  for (const tp of THIRD_PARTY_HOSTS) {
+    if (host === tp || host.endsWith('.' + tp)) return tp;
+  }
+  return null;
 }
 
 /**
  * Apply hard triggers AND threshold-based decision.
  * Returns { action, reason, fired_triggers, threshold_used }.
  */
-export function decideAction({ final_score, gbp_quality, redesign_need, entity }) {
+export function decideAction({ final_score, gbp_quality, redesign_need, entity, relevance_pass = true }) {
   const config = loadCheapAuditConfig();
   const latest = entity.latest || {};
   const ws = latest.websiteStatus || '';
   const has_website_ish = /independent_/.test(ws) || ws === 'social_or_third_party_only';
   const reachable = Boolean(latest.phone || latest.email);
   const fired = [];
+
+  // ─── Niche mismatch hard exclusion ───
+  // If the GBP category doesn't match the searched niche, the lead was
+  // discovered by mistake (e.g. SEO agency surfaced for "roofing"). Skip
+  // outright regardless of rating/review volume — auditing the wrong
+  // industry burns time + Places API budget for zero conversion chance.
+  if (!relevance_pass) {
+    fired.push('niche_mismatch');
+    return {
+      action: 'skip',
+      reason: `category "${latest.category || '?'}" does not match niche "${latest.niche || '?'}" — wrong industry`,
+      fired_triggers: fired, threshold_used: null,
+    };
+  }
+
+  // ─── Third-party landing-page detection ───
+  // billdu.me, sites.google.com, etc — they don't have a real website,
+  // they have a billing/directory profile. Treat as no_website with a
+  // stronger pitch ("we'd give you an actual site").
+  const thirdParty = detectThirdPartyHost(latest.website);
+  if (thirdParty) {
+    fired.push('third_party_landing_page');
+    if (reachable && gbp_quality >= 30) {
+      return {
+        action: 'starter_candidate',
+        reason: `"website" is on ${thirdParty} — not a real site; reachable + gbp_quality ${gbp_quality} → strong starter pitch`,
+        fired_triggers: fired, threshold_used: null,
+      };
+    }
+    return {
+      action: 'manual_review',
+      reason: `"website" is on ${thirdParty} — not a real site; gbp_quality ${gbp_quality} too low for auto-starter`,
+      fired_triggers: fired, threshold_used: null,
+    };
+  }
 
   // ─── No-website starter path (bypass redesign_need scoring) ───
   if (ws === 'no_website') {
@@ -284,7 +370,7 @@ export function cheapAuditV2({ entity, fetchPayload, sourceQuery = '' } = {}) {
     final_score = gbp_quality;
   }
 
-  const decision = decideAction({ final_score, gbp_quality, redesign_need, entity });
+  const decision = decideAction({ final_score, gbp_quality, redesign_need, entity, relevance_pass: stage1.relevance_pass });
 
   return {
     config_version: config.version,

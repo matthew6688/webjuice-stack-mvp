@@ -15,6 +15,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { cheapAuditV2 } from '../../core/scoring/cheap-audit-v2.js';
 import { renderInternalAuditHtml } from '../../core/reports/internal-audit-html.js';
+import { captureIssueEvidence } from '../../core/audit/issue-evidence.js';
+import { fetchLeadReviews } from '../../core/reviews/fetch-reviews.js';
+import { analyzeReviews } from '../../core/reviews/analyze-reviews.js';
+import { uploadAuditAssets } from '../../core/assets/upload-audit-assets.js';
+import { scrapeGbpExtras } from '../../core/audit/gbp-extras.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -38,6 +43,14 @@ if (args.all) {
 }
 
 console.log(`[build-internal-report] targets=${targets.length}`);
+
+const captureEvidence = args['capture-evidence'] !== false && args['no-evidence'] !== true;
+const withReviews = args['with-reviews'] === true;
+const withGbpExtras = args['with-gbp-extras'] === true;  // GBP Posts + Q&A scrape
+const ignoreGrade = args['no-grade-gating'] === true;  // bypass grade-based skipping
+const uploadCloudinary = args['upload-cloudinary'] === true;
+const reviewsDir = path.join(repoRoot, 'data/v2/fixtures/reviews');
+const gbpExtrasDir = path.join(repoRoot, 'data/v2/fixtures/gbp-extras');
 
 const written = [];
 for (const entityKey of targets) {
@@ -75,9 +88,160 @@ for (const entityKey of targets) {
     }
   }
 
+  // Optional review mining (T2 Google Places + T0 local Ollama analysis).
+  // Cached as fixture per entity — re-run with --with-reviews to refresh.
+  // Grade-gating: only run review fetch for A/B leads (the ones we'll
+  // make personalized outreach for). C/D leads get standard templates,
+  // so the extra fetch / Ollama analysis cost is wasted.
+  let reviewAnalysis = null;
+  let reviewSample = null;
+  const reviewFixturePath = path.join(reviewsDir, `${entityKey}.json`);
+
+  // Compute lead grade to gate downstream optional work
+  let leadGrade = null;
+  try {
+    const gradingModule = await import('../../core/scoring/lead-grading.js');
+    const techStack = detailedAudit?.tech_stack || null;
+    leadGrade = gradingModule.gradeLead({
+      entity, detailedAudit, cheapAudit, techStack,
+      sitemapAnalysis: null, activity: null, domainHistory: null,
+      reviewAnalysis: null, businessSizeSignal: null,
+    });
+  } catch {}
+
+  const gradeBlocksReviews = leadGrade && !ignoreGrade && !['A', 'B'].includes(leadGrade.investment_level);
+
+  if (withReviews && gradeBlocksReviews) {
+    console.log(`  [grade-gate] skipping review fetch — lead is grade ${leadGrade.investment_level} (only A/B run reviews)`);
+  }
+  if (withReviews && !gradeBlocksReviews) {
+    fs.mkdirSync(reviewsDir, { recursive: true });
+    try {
+      const fetched = await fetchLeadReviews({ entity });
+      if (fetched.ok && fetched.reviews.length) {
+        const analyzed = await analyzeReviews({
+          reviews: fetched.reviews,
+          rating: fetched.rating,
+          review_count: fetched.review_count,
+          business_name: entity.latest?.name,
+          niche: entity.latest?.niche,
+          leadId: entityKey,
+          clientSlug: slugRoot,
+        });
+        const fixture = {
+          fetched,
+          analysis: analyzed.ok ? analyzed.analysis : null,
+          model: analyzed.model,
+          analyzed_at: new Date().toISOString(),
+        };
+        fs.writeFileSync(reviewFixturePath, JSON.stringify(fixture, null, 2));
+        reviewAnalysis = fixture.analysis;
+        reviewSample = fetched.reviews;
+      } else {
+        console.warn(`  ⚠ review fetch failed: ${fetched.reason}`);
+      }
+    } catch (err) {
+      console.warn(`  ⚠ review mining failed: ${err.message}`);
+    }
+  } else if (fs.existsSync(reviewFixturePath)) {
+    try {
+      const cached = JSON.parse(fs.readFileSync(reviewFixturePath, 'utf8'));
+      reviewAnalysis = cached.analysis;
+      reviewSample = cached.fetched?.reviews || null;
+    } catch {}
+  }
+
+  // ── GBP Posts + Q&A extras (grade-gated like reviews) ──
+  // Only meaningful for A/B leads where we plan personalized outreach.
+  // Posts give SMM upsell signal; Q&A gives "no one is answering" angle.
+  let gbpExtras = null;
+  const gbpFixturePath = path.join(gbpExtrasDir, `${entityKey}.json`);
+  const gbpBlocked = leadGrade && !ignoreGrade && !['A', 'B'].includes(leadGrade.investment_level);
+  if (withGbpExtras && gbpBlocked) {
+    console.log(`  [grade-gate] skipping GBP extras — lead is grade ${leadGrade.investment_level}`);
+  }
+  if (withGbpExtras && !gbpBlocked) {
+    const placeUrl = entity.latest?.google_maps_url;
+    if (placeUrl) {
+      fs.mkdirSync(gbpExtrasDir, { recursive: true });
+      console.log(`  fetching GBP Posts + Q&A via Playwright...`);
+      try {
+        gbpExtras = await scrapeGbpExtras({ placeUrl });
+        fs.writeFileSync(gbpFixturePath, JSON.stringify(gbpExtras, null, 2));
+        console.log(`  → ${gbpExtras.post_count} posts, ${gbpExtras.question_count} Q&A${gbpExtras.observations.length ? ', ' + gbpExtras.observations.length + ' observations' : ''}`);
+      } catch (err) {
+        console.warn(`  ⚠ GBP extras failed: ${err.message}`);
+      }
+    } else {
+      console.log(`  ⚠ no google_maps_url on entity, skipping GBP extras`);
+    }
+  } else if (fs.existsSync(gbpFixturePath)) {
+    try { gbpExtras = JSON.parse(fs.readFileSync(gbpFixturePath, 'utf8')); } catch {}
+  }
+
+  // Per-issue evidence + mobile-throttled video. T0 (local Playwright).
+  let evidenceById = {};
+  let videoRel = null;
+  const websiteUrl = entity.latest?.website;
+  if (captureEvidence && websiteUrl && detailedAudit) {
+    const evidenceDir = path.join(clientV2Dir, 'evidence');
+    const videoDir = path.join(clientV2Dir, 'video');
+    try {
+      const out = await captureForLead({ url: websiteUrl, detailedAudit, visualAudit, evidenceDir, videoDir });
+      evidenceById = out.evidenceById;
+      // Make evidence paths relative to the HTML location
+      for (const id of Object.keys(evidenceById)) {
+        const ev = evidenceById[id];
+        if (ev?.path) ev.relPath = `evidence/${path.basename(ev.path)}`;
+      }
+      if (out.videoPath) videoRel = `video/${path.basename(out.videoPath)}`;
+    } catch (err) {
+      console.warn(`  ⚠ evidence capture failed: ${err.message}`);
+    }
+  }
+
+  // Optional Cloudinary upload — when enabled, swap local paths for CDN URLs.
+  // Saves manifest at clients/<slug>/v2/cloudinary-manifest.json for re-use.
+  let cloudinaryManifest = null;
+  if (uploadCloudinary && Object.keys(evidenceById).length) {
+    const evidenceDir = path.join(clientV2Dir, 'evidence');
+    const videoPath = path.join(clientV2Dir, 'video', 'mobile-throttled.webm');
+    const localShotDir = path.join(clientV2Dir, 'screenshots');
+    try {
+      const upl = await uploadAuditAssets({
+        entityKey,
+        evidenceDir,
+        videoPath: fs.existsSync(videoPath) ? videoPath : null,
+        screenshotDir: fs.existsSync(localShotDir) ? localShotDir : null,
+        clientSlug: slugRoot,
+      });
+      if (upl.ok) {
+        cloudinaryManifest = upl;
+        fs.writeFileSync(path.join(clientV2Dir, 'cloudinary-manifest.json'), JSON.stringify(upl, null, 2));
+        // Map CDN URLs onto evidenceById entries (file basenames match issueId)
+        for (const id of Object.keys(evidenceById)) {
+          const ev = evidenceById[id];
+          if (!ev?.relPath) continue;
+          const base = path.basename(ev.relPath, '.png').replace(/^issue-/, '');
+          if (upl.evidenceUrls[base]) ev.cdnUrl = upl.evidenceUrls[base];
+        }
+        if (upl.videoUrl) videoRel = upl.videoUrl;  // override local video URL
+        console.log(`  ✓ Cloudinary: ${Object.keys(upl.evidenceUrls).length} evidence + ${upl.videoUrl ? 'video' : 'no video'}`);
+      } else {
+        console.warn(`  ⚠ Cloudinary upload failed: ${upl.reason}`);
+      }
+    } catch (err) {
+      console.warn(`  ⚠ Cloudinary upload error: ${err.message}`);
+    }
+  }
+
   const html = renderInternalAuditHtml({
     entity, cheapAudit, detailedAudit, visualAudit,
     screenshotDir: 'screenshots',
+    evidenceById,
+    videoUrl: videoRel,
+    reviewAnalysis,
+    reviewSample,
   });
   const outPath = path.join(clientV2Dir, 'internal-audit-report.html');
   fs.writeFileSync(outPath, html);
@@ -89,6 +253,20 @@ for (const entityKey of targets) {
   if (fs.existsSync(srcShotDir)) {
     for (const f of fs.readdirSync(srcShotDir)) {
       fs.copyFileSync(path.join(srcShotDir, f), path.join(publicDir, 'screenshots', f));
+    }
+  }
+  // Copy evidence + video into public/. Wipe destination first so stale
+  // PNGs from prior issue IDs don't persist.
+  for (const sub of ['evidence', 'video']) {
+    const src = path.join(clientV2Dir, sub);
+    if (!fs.existsSync(src)) continue;
+    const dst = path.join(publicDir, sub);
+    if (fs.existsSync(dst)) {
+      for (const f of fs.readdirSync(dst)) fs.unlinkSync(path.join(dst, f));
+    }
+    fs.mkdirSync(dst, { recursive: true });
+    for (const f of fs.readdirSync(src)) {
+      fs.copyFileSync(path.join(src, f), path.join(dst, f));
     }
   }
 
@@ -123,6 +301,101 @@ function findLatestVisualAudit(entityKey, root) {
     }
   }
   return null;
+}
+
+async function captureForLead({ url, detailedAudit, visualAudit, evidenceDir, videoDir }) {
+  const issues = [
+    ...(detailedAudit.issues?.critical || []).map((i) => ({ ...i, severity: 'critical' })),
+    ...(detailedAudit.issues?.major || []).map((i) => ({ ...i, severity: 'major' })),
+    ...((visualAudit?.issues || []).map((i) => ({ ...i, severity: i.severity || 'major' }))),
+  ];
+  // Clear stale PNGs from previous runs — vision LLM produces different
+  // issue IDs across runs, so old files would accumulate forever.
+  if (fs.existsSync(evidenceDir)) {
+    for (const f of fs.readdirSync(evidenceDir)) {
+      if (f.endsWith('.png')) fs.unlinkSync(path.join(evidenceDir, f));
+    }
+  }
+  fs.mkdirSync(evidenceDir, { recursive: true });
+  fs.mkdirSync(videoDir, { recursive: true });
+
+  const { chromium } = await import('playwright');
+  const browser = await chromium.launch({ headless: true });
+  let evidenceById = {};
+  let videoPath = null;
+  try {
+    // Mobile context with video + throttled network
+    const mobileCtx = await browser.newContext({
+      viewport: { width: 375, height: 667, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
+      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+      recordVideo: { dir: videoDir, size: { width: 375, height: 667 } },
+    });
+    const mobilePage = await mobileCtx.newPage();
+    try {
+      const cdp = await mobileCtx.newCDPSession(mobilePage);
+      await cdp.send('Network.emulateNetworkConditions', {
+        offline: false,
+        downloadThroughput: (1.6 * 1024 * 1024) / 8,
+        uploadThroughput: (750 * 1024) / 8,
+        latency: 150,
+      });
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    } catch {}
+    await mobilePage.goto(url, { waitUntil: 'load', timeout: 45_000 }).catch(() => null);
+    await mobilePage.waitForTimeout(3000);
+    await mobilePage.close();
+    await mobileCtx.close();
+
+    const videos = fs.readdirSync(videoDir).filter((f) => f.endsWith('.webm'));
+    if (videos.length) {
+      const newest = videos.map((f) => ({ f, m: fs.statSync(path.join(videoDir, f)).mtimeMs })).sort((a, b) => b.m - a.m)[0].f;
+      const dst = path.join(videoDir, 'mobile-throttled.webm');
+      if (newest !== 'mobile-throttled.webm') fs.renameSync(path.join(videoDir, newest), dst);
+      videoPath = dst;
+    }
+
+    // Desktop context for per-issue cropped screenshots
+    if (issues.length) {
+      const desktopCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+      const desktopPage = await desktopCtx.newPage();
+      const navResp = await desktopPage.goto(url, { waitUntil: 'load', timeout: 45_000 }).catch(() => null);
+      await desktopPage.waitForTimeout(2000);
+
+      // Detect broken/blank sites: HTTPS hang, blank body, near-empty render.
+      // For these, every cropped screenshot would just be empty white — replace
+      // with a single "site failed to load" evidence type instead.
+      const pageState = await desktopPage.evaluate(() => ({
+        textLen: (document.body?.innerText || '').trim().length,
+        scrollH: document.documentElement.scrollHeight,
+        title: document.title,
+      })).catch(() => ({ textLen: 0, scrollH: 0, title: '' }));
+      const httpStatus = navResp?.status() || 0;
+      const isBroken = pageState.textLen < 50 || pageState.scrollH < 200 || (httpStatus && httpStatus >= 400);
+
+      if (isBroken) {
+        const reasonBits = [];
+        if (httpStatus >= 400) reasonBits.push(`HTTP ${httpStatus}`);
+        if (pageState.textLen < 50) reasonBits.push(`仅 ${pageState.textLen} 字符正文`);
+        if (pageState.scrollH < 200) reasonBits.push(`页面高度 ${pageState.scrollH}px`);
+        const reason = reasonBits.join(' · ') || '站点未渲染任何内容';
+        for (const issue of issues) {
+          evidenceById[issue.id] = {
+            type: 'broken-site',
+            label: '站点加载失败 — 客户在浏览器里看到空白页',
+            reason,
+          };
+        }
+      } else {
+        const results = await captureIssueEvidence({ page: desktopPage, issues, outputDir: evidenceDir });
+        for (const r of results) evidenceById[r.id] = r.evidence;
+      }
+      await desktopPage.close();
+      await desktopCtx.close();
+    }
+  } finally {
+    await browser.close();
+  }
+  return { evidenceById, videoPath };
 }
 
 function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }

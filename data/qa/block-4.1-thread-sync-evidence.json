@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "assertions_passed": 24,
+  "sample_embed_summary": {
+    "title": "[roofing] FIX MY ROOF Total Roof Restorations — A/T3",
+    "color_hex": "0x2ecc71",
+    "field_count": 14,
+    "total_chars": 354,
+    "field_names": [
+      "📞 Phone",
+      "✉️ Primary email",
+      "✉️ Backup email",
+      "🌐 Website",
+      "👤 Decision maker",
+      "📱 Social",
+      "🌏 客户本地",
+      "Grade",
+      "Phase",
+      "Audit",
+      "Last contact",
+      "Email stats",
+      "Est value",
+      "🔗 Quick links"
+    ]
+  },
+  "sample_intended_open": {
+    "endpoint": "POST https://discord.com/api/v10/channels/0000000000000000000/threads",
+    "threadName": "[roofing] [A] FIX MY ROOF Total Roof Restorations",
+    "tags": [
+      "awaiting",
+      "grade-a"
+    ],
+    "embed_field_count": 14,
+    "embed_title": "[roofing] FIX MY ROOF Total Roof Restorations — A/T3"
+  },
+  "sample_intended_swap": {
+    "endpoint": "PATCH https://discord.com/api/v10/channels/9999999999999999999",
+    "tags": [
+      "awaiting",
+      "grade-a"
+    ]
+  },
+  "sample_intended_message": {
+    "endpoint": "POST https://discord.com/api/v10/channels/9999999999999999999/messages",
+    "content": "📤 sent variant=v_audit-led at 14:32 AEST"
+  },
+  "sample_intended_patch": {
+    "endpoint": "PATCH https://discord.com/api/v10/channels/9999999999999999999/messages/8888888888888888888",
+    "method": "PATCH",
+    "embed_field_count": 14,
+    "embed_title": "[roofing] FIX MY ROOF Total Roof Restorations — A/T3"
+  }
+}

@@ -36,6 +36,11 @@
   .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
 
   .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .lead-summary { margin: 0 0 14px; padding: 14px 18px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 14.5px; font-weight: 700; line-height: 1.65; max-width: 760px; word-break: break-word; font-family: var(--sans); }
+  .dim-meta { margin: -8px 0 16px; font-size: 12.5px; font-weight: 800; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+  .dim-meta strong { color: var(--coral); font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .triggers-block { margin-top: 22px; }
+  .triggers-block .eyebrow { margin: 0 0 8px; }
   .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
 
@@ -78,8 +83,9 @@
   .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
   .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
   .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-  .issue-row { margin: 4px 0; font-size: 13px; line-height: 1.5; font-weight: 700; }
-  .issue-row .lab { display: inline-block; min-width: 90px; font-size: 10px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 8px; vertical-align: top; }
+  .issue-row { margin: 10px 0 0; font-size: 13px; line-height: 1.6; font-weight: 700; }
+  .issue-row .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 3px; }
+  .issue-row.fix { padding-top: 8px; margin-top: 12px; border-top: 1.5px dashed rgba(23,25,28,0.18); }
   .issue-row.fix .lab { color: var(--coral); }
 
   details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
@@ -118,6 +124,41 @@
   .accent-mint { color: var(--green); }
   .accent-coral { color: var(--coral); }
 
+  .issue-evidence { margin-top: 10px; padding-top: 10px; border-top: 1.5px dashed rgba(23,25,28,0.25); }
+  .issue-evidence .ev-lab { margin: 0 0 6px; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  .issue-evidence img { max-width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .issue-evidence-html { margin-top: 8px; border: 1.5px solid var(--line); padding: 8px 10px; background: var(--cream); }
+  .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
+  .issue-row.ev-ref { color: var(--muted); }
+  .broken-evidence { background: color-mix(in srgb, var(--coral-soft) 35%, var(--paper)); border: 2px dashed var(--coral); padding: 12px 14px; margin-top: 10px; }
+  .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
+  .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .review-overview { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--line); margin: 14px 0 8px; }
+  .review-stat { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .review-stat:last-child { border-right: 0; }
+  .review-stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .review-stat strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1.1; margin-top: 4px; }
+  .review-stat small { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-top: 3px; }
+  .review-stat.trust-mint { background: var(--mint); }
+  .review-stat.trust-citrus { background: var(--citrus); }
+  .review-stat.trust-coral-soft { background: var(--coral-soft); }
+  .theme-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .theme-pill { padding: 4px 10px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .theme-pill.pos { background: var(--mint); }
+  .theme-pill.neg { background: var(--coral-soft); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 8px 0 14px; }
+  .review-quote { margin: 0; padding: 14px 16px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--paper); }
+  .review-quote:nth-child(2n) { border-right: 0; }
+  .review-quote:nth-last-child(-n+2) { border-bottom: 0; }
+  .review-quote .quote-text { font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.45; margin: 0 0 8px; }
+  .review-quote .quote-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .review-quote .quote-rating { color: var(--coral); letter-spacing: 0.08em; }
+  .review-quote .quote-why { font-size: 12px; font-weight: 700; line-height: 1.45; color: var(--muted); margin: 6px 0 0; padding-top: 8px; border-top: 1.5px dashed rgba(23,25,28,0.2); }
+  .review-quote .quote-why .lab { display: inline-block; font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); margin-right: 6px; }
+  .review-row { font-size: 13.5px; font-weight: 700; line-height: 1.5; }
+  .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
   .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
 
@@ -153,7 +194,7 @@
         <span>★ 4.5 (35 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/11 00:11</span>
+        <span>generated 2026/05/11 07:02</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -169,10 +210,11 @@
 
   <section class="section">
     <p class="eyebrow">总体判断</p>
-    <h2>audit_score=23 → strong_redesign · weakest: ux_conversion 0, content 10 · fired: mobile_broken, no_https, no_visible_cta_or_phone · 3 critical issues</h2>
+    <h2>审计概览</h2>
+    <p class="lead-summary">audit_score=23 → strong_redesign · weakest: ux_conversion 0, content 10 · fired: mobile_broken, no_https, no_visible_cta_or_phone · 3 critical issues</p>
     
-      <div>
-        <p class="eyebrow accent-coral" style="margin-top:18px">已触发 hard triggers</p>
+      <div class="triggers-block">
+        <p class="eyebrow accent-coral">已触发 hard triggers</p>
         <div class="trigger-list">
           <span class="trigger-pill">mobile_broken</span><span class="trigger-pill">no_https</span><span class="trigger-pill">no_visible_cta_or_phone</span>
         </div>
@@ -195,8 +237,9 @@
   </section>
 
   <section class="section">
-    <p class="eyebrow">6 维度审计 At-a-glance</p>
-    <h2>得分 23/100 → STRONG REDESIGN</h2>
+    <p class="eyebrow">六维度评分总览</p>
+    <h2>每个维度的强弱在哪</h2>
+    <p class="dim-meta"><strong>23/100</strong> · STRONG REDESIGN</p>
     <div class="dim-grid">
       
         <div class="dim-card">
@@ -239,8 +282,8 @@
   </section>
 
   <section class="section">
-    <p class="eyebrow">网站抓取证据</p>
-    <h2>当前网站快照</h2>
+    <p class="eyebrow">现场证据 · 桌面 + 移动</p>
+    <h2>客户访问时看到的页面</h2>
     <div class="screenshots">
       <figure>
         <img src="screenshots/desktop.png" alt="desktop screenshot" />
@@ -273,8 +316,8 @@
 
   
   <section class="section">
-    <p class="eyebrow accent-coral">CRITICAL · 3</p>
-    <h2>关键问题</h2>
+    <p class="eyebrow accent-coral">关键问题 · 3 项</p>
+    <h2>立刻在伤害成交的硬伤</h2>
     <div class="issues-grid">
       
     <div class="issue-card issue-critical">
@@ -288,6 +331,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>http only</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     <div class="issue-card issue-critical">
       <div class="issue-head">
@@ -300,6 +347,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>no CTA keyword in first 1500 chars</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     <div class="issue-card issue-critical">
       <div class="issue-head">
@@ -312,14 +363,18 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>phone hidden below fold or missing</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     </div>
   </section>
 
   
   <section class="section">
-    <p class="eyebrow">MAJOR · 6</p>
-    <h2>主要问题</h2>
+    <p class="eyebrow">主要问题 · 6 项</p>
+    <h2>影响转化的明显短板</h2>
     <div class="issues-grid">
       
     <div class="issue-card issue-major">
@@ -333,6 +388,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>no tel: link</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -345,6 +404,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>title=&#39;&#39; contains-name=false contains-niche=false</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -357,6 +420,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>0 service-related verbs detected</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -369,6 +436,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>0 trust-keyword mentions</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -381,6 +452,10 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>0 &lt;h1&gt; tags</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
@@ -393,13 +468,17 @@
       
       
       <p class="issue-row"><span class="lab">命中原因</span>no LocalBusiness JSON-LD</p>
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
     </div>
   </section>
 
   <section class="section">
-    <p class="eyebrow">39 项规则明细</p>
-    <h2>每条规则命中情况</h2>
+    <p class="eyebrow">规则细节 · 39 项明细</p>
+    <h2>每条规则的命中与失分原因</h2>
     
         <details class="dim-detail">
           <summary>
@@ -489,8 +568,9 @@
 
   
     <section class="section">
-      <p class="eyebrow">视觉审计</p>
-      <h2>The provided screenshots are completely blank white images, indicating a total failure to load content or a missing file, which prevents any visual assessment of the actual website design.</h2>
+      <p class="eyebrow">视觉审计 · Vision LLM</p>
+      <h2>设计观感的整体诊断</h2>
+      <p class="lead-summary">The provided screenshots are completely blank white images, indicating a critical technical failure or missing content that prevents any design evaluation.</p>
       <div class="visual-scores">
         <div class="vs"><span>新鲜度</span><strong>1</strong><small>/10</small></div>
         <div class="vs"><span>信任度</span><strong>1</strong><small>/10</small></div>
@@ -505,49 +585,114 @@
         <code class="issue-id">blank_screenshots</code>
       </div>
       <div class="issue-title">Screenshots are completely blank</div>
-      <p class="issue-row"><span class="lab">观察到</span>Both the desktop and mobile screenshots provided are entirely white with no visible text, images, buttons, or navigation elements.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor seeing a blank page assumes the website is broken, the business is closed, or it is a scam. It is impossible to trust a business that cannot display its own website.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A fully rendered webpage with a visible header, navigation menu, hero section with an image, and clear call-to-action buttons.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Ensure the website files are correctly hosted and accessible. If this is a staging environment, ensure the correct URL is provided for the audit.</p>
+      <p class="issue-row"><span class="lab">观察到</span>Both the desktop and mobile screenshots provided are entirely white rectangles with no visible text, images, buttons, or navigation elements.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor landing on a blank page assumes the website is broken, the business is closed, or it is a scam. There is zero opportunity to build trust or capture a lead because there is no content to view.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A fully rendered homepage with a clear headline, a visible phone number in the header, and a hero image of a roof or team member.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Verify the website URL and hosting status immediately. If the site is live, ensure the screenshots capture the actual rendered HTML/CSS. If the site is blank, this is a server-side emergency requiring immediate IT intervention.</p>
       
+      <div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · 站点加载失败 — 客户在浏览器里看到空白页</p>
+      <p class="broken-reason">仅 0 字符正文 — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>
     </div>
       </div>
       
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Resolve the blank page issue to ensure content is visible.</li><li>2. Verify that the website is live and accessible to the public.</li><li>3. Re-audit the actual website design once the visual content is available.</li></ol>
+          <ol><li>1. Resolve the technical issue causing the blank display immediately.</li><li>2. Re-capture screenshots of the actual live website for a proper audit.</li><li>3. Ensure the site loads correctly on both mobile and desktop browsers.</li></ol>
         </div>
     </section>
 
   
-    <section class="section section-placeholder">
-      <h2>客户评论分析</h2>
-      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑）。当此 lead 被批准为正式销售目标后会补充：</p>
-      <ul class="placeholder-list">
-        <li>评论情感分布（5★/4★/3★/2★/1★ 占比）</li>
-        <li>商家回复率 + 最近一次回复时间</li>
-        <li>常见好评 / 差评关键词</li>
-        <li>5-8 条高质量 quote — 可直接放到 redesign 后的网站上</li>
-        <li>vs 同行评论平均水平的差距</li>
-      </ul>
+    <section class="section">
+      <p class="eyebrow">客户评论分析 · Google Reviews</p>
+      <h2>客户在 Google 上怎么夸 / 怎么抱怨</h2>
+      <p class="lead-summary">Customers consistently praise the team&#39;s professionalism, speed, and thoroughness, with specific highlights on storm damage repairs and complete roof replacements. The reviews reflect high trust in the company&#39;s integrity and work quality, with no negative feedback present in this sample.</p>
+      <div class="review-overview">
+        <div class="review-stat"><span class="lab">Google 整体</span><strong>4.5★ · 35 条评论</strong></div>
+        <div class="review-stat trust-mint"><span class="lab">信号强度</span><strong>STRONG</strong></div>
+        <div class="review-stat"><span class="lab">分析样本</span><strong>5 条</strong><small>Google 「最相关」</small></div>
+      </div>
+
+      
+        <h3>客户一致夸赞</h3>
+        <div class="theme-pills theme-pos"><span class="theme-pill pos">professional and polite crew</span><span class="theme-pill pos">fast and efficient turnaround</span><span class="theme-pill pos">thorough inspection and quoting</span><span class="theme-pill pos">effective storm damage repair</span><span class="theme-pill pos">excellent cleanup and debris removal</span></div>
+      
+
+      
+
+      
+        <h3>可直接用在 redesign 的 quote</h3>
+        <div class="quote-grid">
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"Stunned by how fast and efficiently they work with our whole roof replaced in 3 days"</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— David</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Hero section proof of speed and efficiency</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"Not a single drop of water came through our ceiling, so I consider that a job extremely well tested"</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Meagan</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Trust signal for leak repair reliability</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"It didn&#39;t feel like we were just another job to them"</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— Zenda</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Testimonial section highlighting personalized care</p>
+            </blockquote>
+          
+            <blockquote class="review-quote">
+              <p class="quote-text">"These guys also had the best price by a significant amount"</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— David</span>
+                <span class="quote-rating">★★★★★</span>
+              </footer>
+              <p class="quote-why"><span class="lab">放哪</span>Value proposition for pricing section</p>
+            </blockquote>
+          
+        </div>
+      
+
+      
+        <h3>商家回复观察</h3>
+        <p class="review-row">No owner replies are visible in the provided sample data, suggesting either a lack of engagement or that replies are not included in this specific export.</p>
+      
+
+      
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 可发力的钩子</p>
+          <ol><li>Feature the &#39;3-day replacement&#39; statistic prominently to address customer anxiety about project timelines.</li><li>Use the Cyclone Debbie repair story as a case study for durability and weather resistance.</li><li>Highlight the &#39;thorough inspection&#39; process to differentiate from competitors who may offer quick, superficial quotes.</li></ol>
+        </div>
+      
     </section>
 
   
-    <section class="section section-placeholder">
-      <h2>速度对比 (前 / 后)</h2>
-      <p class="placeholder-note">⏳ 加载速度前后对比视频 — 等 ProfitsLocal 真实 mockup 网站上线后录制：</p>
-      <ul class="placeholder-list">
-        <li>当前网站慢速节流加载视频（模拟 4G 移动网络）</li>
-        <li>Mockup 网站同条件加载视频</li>
-        <li>side-by-side 对比 + 客户能直接看到的转化率影响估算</li>
-      </ul>
+    <section class="section">
+      <p class="eyebrow">加载速度证据 · 慢速 4G 移动网络</p>
+      <h2>客户在手机上看到的真实加载体验</h2>
+      <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
+      <video class="speed-video" controls preload="metadata" playsinline>
+        <source src="video/mobile-throttled.webm" type="video/webm" />
+      </video>
+      <p class="placeholder-note" style="margin-top:14px">⏳ Mockup 站点对比视频 — 等 ProfitsLocal 真实 mockup 上线后录制 side-by-side 对比。</p>
     </section>
 
   
   <section class="section">
-    <p class="eyebrow accent-coral">推荐销售角度</p>
-    <h2>从 audit 数据推导出的切入点</h2>
+    <p class="eyebrow accent-coral">销售切入点</p>
+    <h2>从 audit 数据自动推导的开场话术</h2>
     <div class="sales-strip">
       <ul>
         <li>你的网站在手机上基本不可用 — 这是大多数本地搜索的入口</li><li>你的网站没有 HTTPS — 浏览器对来访客户显示「不安全」，直接伤害信任</li><li>客户进来看不到联系按钮和电话 — 找不到怎么联系你就直接走了</li><li>有 3 个 critical 级问题正在直接伤害成交</li>
@@ -564,7 +709,7 @@
     </p>
     <p class="meta-row" style="margin-top:8px">
       <span>Visual auditor: ✓ filled (Block E)</span>
-      <span>Review analysis: ⏳ on-demand for high-value leads</span>
+      <span>Review analysis: ✓ filled</span>
       <span>Speed video: ⏳ post-mockup</span>
     </p>
   </footer>

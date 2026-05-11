@@ -13,6 +13,24 @@ export const DISCOVERY_ENTITY_STATUS = {
   CONTACTED: 'contacted',
 };
 
+// V2 lifecycle phase — DISCORD_OUTREACH_PRD.md §7.1
+// 8 mutually-exclusive phases that drive Discord forum tag swapping and admin sub-cells.
+// Coexists with legacy `entity.status` (kept for backward compat — Discord paid-intake flow,
+// stage-config-driven admin, etc.). Phase is set explicitly by setEntityPhase; never derived
+// implicitly from status.
+export const ENTITY_PHASE = {
+  AWAITING: 'awaiting',
+  OUTREACH_ACTIVE: 'outreach-active',
+  REPLIED: 'replied',
+  PROPOSAL_SENT: 'proposal-sent',
+  NURTURE: 'nurture',
+  PAID: 'paid',
+  ARCHIVED: 'archived',
+  NEEDS_HUMAN: 'needs-human',
+};
+
+const ENTITY_PHASE_VALUES = new Set(Object.values(ENTITY_PHASE));
+
 const STATUS_RANK = {
   discovered: 10,
   scored: 20,
@@ -142,6 +160,97 @@ export function updateDiscoveryEntityStatus({
   appendEvents(storeRoot, [{ at, event: 'discovery_entity_status_updated', entityKey: key, status: entity.status, clientSlug, note }]);
   rebuildDiscoveryIndex({ storeRoot });
   return { ok: true, entityKey: key, status: entity.status };
+}
+
+// Patch entity with V2 lifecycle phase. Strict read-merge-write — never touches fields
+// outside {phase, sub_status, archive_reason, history, phaseChangedAt}. Backward-compat
+// invariant: legacy entity.status field is left untouched.
+//
+// DISCORD_OUTREACH_PRD.md §13 invariant 1 & 2: writeEntity is wholesale-overwrite, so the
+// only safe path is read → mutate-in-place → write the same object back. Callers writing
+// other entity fields elsewhere must follow the same rule or risk dropping phase.
+export function setEntityPhase({
+  entityKey,
+  phase,
+  sub_status = undefined,
+  archive_reason = undefined,
+  note = '',
+  storeRoot = defaultDiscoveryStoreRoot(),
+  at = new Date().toISOString(),
+} = {}) {
+  if (!entityKey) return { ok: false, reason: 'entityKey required' };
+  if (!phase || !ENTITY_PHASE_VALUES.has(phase)) {
+    return { ok: false, reason: 'invalid_phase', phase, allowed: [...ENTITY_PHASE_VALUES] };
+  }
+  if (phase === ENTITY_PHASE.ARCHIVED && !archive_reason) {
+    return { ok: false, reason: 'archive_reason required for phase=archived' };
+  }
+  const entity = readEntity(storeRoot, entityKey);
+  if (!entity) return { ok: false, reason: 'entity_not_found', entityKey };
+
+  const prevPhase = entity.phase || null;
+  const prevSubStatus = entity.sub_status || null;
+  const isNoOp = prevPhase === phase
+    && (sub_status === undefined || prevSubStatus === sub_status)
+    && (archive_reason === undefined || entity.archive_reason === archive_reason);
+
+  entity.phase = phase;
+  if (sub_status !== undefined) entity.sub_status = sub_status || null;
+  if (archive_reason !== undefined) entity.archive_reason = archive_reason || null;
+  entity.phaseChangedAt = at;
+
+  if (!isNoOp) {
+    entity.history = [
+      ...(entity.history || []),
+      {
+        at,
+        event: 'phase_changed',
+        from: prevPhase,
+        to: phase,
+        sub_status: entity.sub_status || null,
+        archive_reason: entity.archive_reason || null,
+        note: note || '',
+      },
+    ];
+  }
+  writeEntity(storeRoot, entity);
+  appendEvents(storeRoot, [{
+    at,
+    event: 'entity_phase_changed',
+    entityKey,
+    from: prevPhase,
+    to: phase,
+    sub_status: entity.sub_status || null,
+    archive_reason: entity.archive_reason || null,
+    noop: isNoOp,
+    note: note || '',
+  }]);
+
+  // V2 Discord sync hook — DISCORD_OUTREACH_PRD.md §9 + Block 4.5
+  // Async fire-and-forget. Skipped when entity has no thread (C-grade / pre-V2)
+  // or when SKIP_LEAD_THREAD_SYNC=true (test mode).
+  if (!isNoOp && entity.discord_thread_id && !process.env.SKIP_LEAD_THREAD_SYNC) {
+    import('../funnel/lead-thread-sync.js').then(async ({ swapPhaseTag, appendThreadMessage, upsertProfileCard }) => {
+      try {
+        await swapPhaseTag(entityKey);
+        const msg = `🔄 Phase ${prevPhase || '(none)'} → **${phase}**${entity.sub_status ? ` (${entity.sub_status})` : ''}${note ? ` — ${note}` : ''}`;
+        await appendThreadMessage(entityKey, msg);
+        await upsertProfileCard(entityKey);
+      } catch (err) {
+        console.warn(`[setEntityPhase] thread sync failed: ${err.message}`);
+      }
+    }).catch((err) => console.warn(`[setEntityPhase] thread sync import failed: ${err.message}`));
+  }
+
+  return {
+    ok: true,
+    entityKey,
+    phase: entity.phase,
+    sub_status: entity.sub_status || null,
+    archive_reason: entity.archive_reason || null,
+    from: prevPhase,
+    noop: isNoOp,
+  };
 }
 
 export function rebuildDiscoveryIndex({ storeRoot = defaultDiscoveryStoreRoot() } = {}) {

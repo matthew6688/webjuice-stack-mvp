@@ -3,8 +3,8 @@
   "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-09T10:53:53.252Z",
-  "status": "queued_for_enrichment",
-  "lastStatusAt": "2026-05-09T06:22:29.105Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-11T02:09:40.555Z",
   "identifiers": {
     "place_id": "ChIJn587YC79k2sR7VYVY-EGoaM",
     "cid": "11790712864532420333",
@@ -127,9 +127,27 @@
       "score": 66,
       "action": "audit_candidate",
       "status": "queued_for_enrichment"
+    },
+    {
+      "at": "2026-05-11T02:09:40.555Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded A / T3"
     }
   ],
   "notes": [
-    "Cheap site audit 35/100: build_mockup. /Users/matthew/Developer/google-map-website/data/leads/audits/place_chijn587yc79k2sr7vyvy-egoam/current-site-audit.json"
-  ]
+    "Cheap site audit 35/100: build_mockup. /Users/matthew/Developer/google-map-website/data/leads/audits/place_chijn587yc79k2sr7vyvy-egoam/current-site-audit.json",
+    "Graded A / T3"
+  ],
+  "grade": {
+    "investment_level": "A",
+    "product_tier": "T3",
+    "recommended_pricing": {
+      "one_time": "$5-8K",
+      "monthly": "$800-1500/月（社媒 + 内容 + GEO）"
+    },
+    "skip_reasons": [],
+    "graded_at": "2026-05-11T02:09:40.555Z"
+  }
 }

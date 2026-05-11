@@ -21,6 +21,16 @@
 import fs from 'fs';
 import path from 'path';
 import { appendLedgerEvent, hashRequest } from '../finance/ledger.js';
+import { detectTechStack } from './tech-stack-detector.js';
+import { analyzeSitemap } from './sitemap-analyzer.js';
+import { auditActivity } from './activity-audit.js';
+import { auditAiGeoReadiness } from './ai-geo-checks.js';
+import { pagespeedAudit } from './pagespeed-insights.js';
+import { auditFormsOnPage } from './form-audit.js';
+import { auditDomainHistory } from './domain-history.js';
+import { auditImageOptimization } from './image-optimization.js';
+import { attachThirdPartyWeightInterceptor } from './third-party-weight.js';
+import { auditTrustSignals } from './trust-signals/index.js';
 
 const DESKTOP_VIEWPORT = { width: 1440, height: 900 };
 const MOBILE_VIEWPORT = { width: 375, height: 667, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
@@ -30,6 +40,9 @@ const SETTLE_MS = 3_000;
 export async function siteFetchFull({
   url,
   screenshotDir,
+  videoDir,                 // when set, records mobile-throttled loading video
+  recordVideo = true,       // toggle off if caller doesn't want video
+  niche,                    // passed to sitemap-analyzer for service/area classification
   ledgerPath,
   leadId,
   clientSlug,
@@ -37,6 +50,7 @@ export async function siteFetchFull({
   purpose = 'detailed_audit_full_fetch',
   campaignId,
 } = {}) {
+  const entityNiche = niche;
   if (!url) throw new Error('url is required');
   const { chromium } = await import('playwright');
   const browser = await chromium.launch({ headless: true });
@@ -51,6 +65,10 @@ export async function siteFetchFull({
     const desktopPage = await desktopCtx.newPage();
     desktopPage.on('pageerror', () => { consoleErrors += 1; });
     desktopPage.on('console', (msg) => { if (msg.type() === 'error') consoleErrors += 1; });
+
+    // ─── 3rd-party tracker / weight interceptor ──────────────────────
+    // Must be attached BEFORE goto() so it captures all requests.
+    const tpInterceptor = attachThirdPartyWeightInterceptor(desktopPage, url);
 
     const navStart = Date.now();
     const response = await desktopPage.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS }).catch(() => null);
@@ -78,6 +96,21 @@ export async function siteFetchFull({
 
     payload.rawHtml = await desktopPage.content();
     payload.markdown = await markdownishExtract(desktopPage);
+    payload.tech_stack = detectTechStack({ rawHtml: payload.rawHtml, finalUrl: payload.finalUrl });
+    payload.form_audit = await auditFormsOnPage({ page: desktopPage }).catch(() => null);
+
+    // ─── Image optimization (pure parse on already-fetched HTML) ─────
+    payload.image_optimization = auditImageOptimization({ rawHtml: payload.rawHtml });
+
+    // ─── Trust signals (industry-aware adapter; pure on rawHtml + md) ─
+    payload.trust_signals = auditTrustSignals({
+      rawHtml: payload.rawHtml,
+      markdown: payload.markdown,
+      niche: entityNiche,
+    });
+
+    // ─── 3rd-party weight (finalize interceptor; captured during goto) ─
+    payload.third_party_weight = tpInterceptor.finalize();
 
     payload.performance = {
       lcp: perf.lcp != null ? perf.lcp / 1000 : null,           // seconds
@@ -103,12 +136,39 @@ export async function siteFetchFull({
     await desktopPage.close();
     await desktopCtx.close();
 
-    // ─── Mobile pass ─────────────────────────────────────────────────
-    const mobileCtx = await browser.newContext({
+    // ─── Mobile pass (with throttled-network video recording) ────────
+    const videoOutDir = videoDir || (screenshotDir ? path.join(screenshotDir, '..', 'video') : null);
+    const wantVideo = recordVideo && videoOutDir;
+    if (wantVideo) fs.mkdirSync(videoOutDir, { recursive: true });
+
+    const mobileCtxOpts = {
       viewport: MOBILE_VIEWPORT,
       userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
-    });
+    };
+    if (wantVideo) {
+      mobileCtxOpts.recordVideo = {
+        dir: videoOutDir,
+        size: { width: MOBILE_VIEWPORT.width, height: MOBILE_VIEWPORT.height },
+      };
+    }
+    const mobileCtx = await browser.newContext(mobileCtxOpts);
     const mobilePage = await mobileCtx.newPage();
+
+    // Emulate slow 4G network — gives operator/customer a clear "this is what
+    // your visitors actually see" experience for the loading video.
+    if (wantVideo) {
+      try {
+        const cdp = await mobileCtx.newCDPSession(mobilePage);
+        await cdp.send('Network.emulateNetworkConditions', {
+          offline: false,
+          downloadThroughput: (1.6 * 1024 * 1024) / 8,  // 1.6 Mbps slow 4G
+          uploadThroughput: (750 * 1024) / 8,
+          latency: 150,                                 // 150ms RTT
+        });
+        await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+      } catch {}
+    }
+
     await mobilePage.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS }).catch(() => null);
     await mobilePage.waitForTimeout(SETTLE_MS);
     payload.mobileHtml = await mobilePage.content();
@@ -120,12 +180,61 @@ export async function siteFetchFull({
     await mobilePage.close();
     await mobileCtx.close();
 
-    // ─── Sitemap + robots probe ──────────────────────────────────────
+    // Video file is written when context closes — find it and rename to a
+    // predictable filename so downstream report generator can embed it.
+    if (wantVideo) {
+      try {
+        const files = fs.readdirSync(videoOutDir).filter((f) => f.endsWith('.webm'));
+        if (files.length) {
+          const newest = files.map((f) => ({ f, mtime: fs.statSync(path.join(videoOutDir, f)).mtimeMs })).sort((a, b) => b.mtime - a.mtime)[0].f;
+          const dst = path.join(videoOutDir, 'mobile-throttled.webm');
+          if (path.basename(newest) !== 'mobile-throttled.webm') {
+            fs.renameSync(path.join(videoOutDir, newest), dst);
+          }
+          payload.video = { mobileThrottled: dst };
+        }
+      } catch {}
+    }
+
+    // ─── All independent network-bound audits run IN PARALLEL ──────
+    // These were previously sequential (sitemap → analysis → activity →
+    // ai_geo → PSI → domain). Each is a separate HTTP fetch with its
+    // own targets; running them concurrently saves ~30-45s per lead.
     const probeBase = new URL(payload.finalUrl || url);
-    payload.sitemap = await Promise.all([
-      probe(`${probeBase.origin}/sitemap.xml`),
-      probe(`${probeBase.origin}/robots.txt`),
-    ]).then(([s, r]) => ({ hasSitemap: s, hasRobots: r }));
+    const finalUrl = payload.finalUrl || url;
+
+    const [
+      sitemapProbe,
+      sitemapAnalysis,
+      aiGeo,
+      pagespeed,
+      domainHistory,
+    ] = await Promise.all([
+      Promise.all([
+        probe(`${probeBase.origin}/sitemap.xml`),
+        probe(`${probeBase.origin}/robots.txt`),
+      ]).then(([s, r]) => ({ hasSitemap: s, hasRobots: r })),
+      analyzeSitemap({ baseUrl: probeBase.origin, niche: entityNiche }).catch(() => null),
+      auditAiGeoReadiness({ rawHtml: payload.rawHtml, markdown: payload.markdown, finalUrl }).catch(() => null),
+      process.env.PAGESPEED_API_KEY
+        ? pagespeedAudit({ url: finalUrl, leadId, clientSlug, ledgerPath, stage: 'detailed_audit' }).catch(() => null)
+        : Promise.resolve(null),
+      auditDomainHistory({ baseUrl: finalUrl }).catch(() => null),
+    ]);
+
+    payload.sitemap = sitemapProbe;
+    payload.sitemap_analysis = sitemapAnalysis;
+    payload.ai_geo = aiGeo;
+    payload.pagespeed = pagespeed;
+    payload.domain_history = domainHistory;
+
+    // ─── Activity audit depends on sitemap_analysis result, so it runs
+    //     after the parallel block ──
+    payload.activity = await auditActivity({
+      baseUrl: finalUrl,
+      rawHtml: payload.rawHtml,
+      sitemapAnalysis: payload.sitemap_analysis,
+    }).catch(() => null);
 
   } finally {
     await browser.close();

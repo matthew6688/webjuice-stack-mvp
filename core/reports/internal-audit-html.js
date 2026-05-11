@@ -105,7 +105,49 @@ function renderRules(rules) {
     </table>`;
 }
 
-function renderIssue(issue) {
+function renderIssueEvidence(ev, screenshotDir) {
+  if (!ev) return '';
+  const t = ev.type;
+  if (t === 'cropped' || t === 'element' || t === 'full') {
+    const src = ev.cdnUrl || ev.relPath || ev.path?.split('/').pop();
+    if (!src) return '';
+    return `<div class="issue-evidence">
+      <p class="ev-lab">证据截图 · ${escapeHtml(ev.label || t)}</p>
+      <img src="${escapeHtml(src)}" alt="evidence for ${escapeHtml(ev.label || '')}" loading="lazy" />
+    </div>`;
+  }
+  if (t === 'mobile-ref') {
+    return `<div class="issue-evidence">
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="${escapeHtml(screenshotDir)}/mobile.png" alt="mobile evidence" />
+    </div>`;
+  }
+  if (t === 'video-ref') {
+    return `<p class="issue-row ev-ref"><span class="lab">证据视频</span>见下方「速度对比」段的慢速 4G 加载视频</p>`;
+  }
+  if (t === 'html-snippet') {
+    return `<details class="issue-evidence-html"><summary>证据 · ${escapeHtml(ev.label || 'HTML snippet')}</summary><pre><code>${escapeHtml(ev.text || '')}</code></pre></details>`;
+  }
+  if (t === 'html-list' || t === 'jsonld-list') {
+    const items = ev.items || [];
+    if (!items.length) return `<p class="issue-row"><span class="lab">证据</span>${escapeHtml(ev.label || '(empty)')}</p>`;
+    return `<details class="issue-evidence-html"><summary>证据 · ${escapeHtml(ev.label || '')}</summary>${items.map((it) => `<pre><code>${escapeHtml(it)}</code></pre>`).join('')}</details>`;
+  }
+  if (t === 'broken-site') {
+    return `<div class="issue-evidence broken-evidence">
+      <p class="ev-lab broken-lab">⚠ 证据 · ${escapeHtml(ev.label || '站点加载失败')}</p>
+      <p class="broken-reason">${escapeHtml(ev.reason || '')} — 这条 issue 的根因就在这里：访客根本看不到内容。</p>
+    </div>`;
+  }
+  if (t === 'note' || t === 'error') {
+    return `<p class="issue-row ev-ref"><span class="lab">证据</span>${escapeHtml(ev.label || '')}</p>`;
+  }
+  return '';
+}
+
+function renderIssue(issue, ctx = {}) {
+  const ev = ctx.evidenceById?.[issue.id];
+  const screenshotDir = ctx.screenshotDir || './screenshots';
   return `
     <div class="issue-card issue-${issue.severity || 'minor'}">
       <div class="issue-head">
@@ -118,10 +160,11 @@ function renderIssue(issue) {
       ${issue.what_correct_looks_like ? `<p class="issue-row"><span class="lab">正确长啥样</span>${escapeHtml(issue.what_correct_looks_like)}</p>` : ''}
       ${issue.how_to_fix_in_redesign ? `<p class="issue-row fix"><span class="lab">redesign 怎么改</span>${escapeHtml(issue.how_to_fix_in_redesign)}</p>` : ''}
       ${(!issue.what_observed && issue.rationale) ? `<p class="issue-row"><span class="lab">命中原因</span>${escapeHtml(issue.rationale)}</p>` : ''}
+      ${renderIssueEvidence(ev, screenshotDir)}
     </div>`;
 }
 
-function renderVisualSection({ visualAudit }) {
+function renderVisualSection({ visualAudit, evidenceById, screenshotDir }) {
   if (!visualAudit) {
     return `
     <section class="section section-placeholder">
@@ -138,8 +181,9 @@ function renderVisualSection({ visualAudit }) {
   const issues = visualAudit.issues || [];
   return `
     <section class="section">
-      <p class="eyebrow">视觉审计</p>
-      <h2>${escapeHtml(visualAudit.summary || '')}</h2>
+      <p class="eyebrow">视觉审计 · Vision LLM</p>
+      <h2>设计观感的整体诊断</h2>
+      ${visualAudit.summary ? `<p class="lead-summary">${escapeHtml(visualAudit.summary)}</p>` : ''}
       <div class="visual-scores">
         <div class="vs"><span>新鲜度</span><strong>${visualAudit.freshness_score ?? '-'}</strong><small>/10</small></div>
         <div class="vs"><span>信任度</span><strong>${visualAudit.trust_score ?? '-'}</strong><small>/10</small></div>
@@ -147,7 +191,7 @@ function renderVisualSection({ visualAudit }) {
         <div class="vs vs-text"><span>设计年代</span><strong class="age">${escapeHtml(visualAudit.design_age_estimate || '-')}</strong></div>
       </div>
       <div class="issues-grid">
-        ${issues.map(renderIssue).join('')}
+        ${issues.map((i) => renderIssue(i, { evidenceById, screenshotDir })).join('')}
       </div>
       ${(visualAudit.positive_observations || []).length ? `
         <div class="positives">
@@ -162,25 +206,87 @@ function renderVisualSection({ visualAudit }) {
     </section>`;
 }
 
-function renderReviewSection({ reviewAnalysis }) {
+function renderReviewSection({ reviewAnalysis, reviewSample, entity }) {
   if (!reviewAnalysis) {
     return `
     <section class="section section-placeholder">
       <h2>客户评论分析</h2>
-      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑）。当此 lead 被批准为正式销售目标后会补充：</p>
+      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑，加 <code>--with-reviews</code> 触发）。会补充：</p>
       <ul class="placeholder-list">
-        <li>评论情感分布（5★/4★/3★/2★/1★ 占比）</li>
-        <li>商家回复率 + 最近一次回复时间</li>
-        <li>常见好评 / 差评关键词</li>
-        <li>5-8 条高质量 quote — 可直接放到 redesign 后的网站上</li>
-        <li>vs 同行评论平均水平的差距</li>
+        <li>5 条 Google 「最相关」评论 + 商家整体评分概览</li>
+        <li>常见好评 / 差评 themes（Ollama 本地提取）</li>
+        <li>quotable 评论 — 可直接放到 redesign 后网站</li>
+        <li>redesign hooks — 哪些主题该在网站哪些位置呈现</li>
       </ul>
     </section>`;
   }
-  return `<section class="section"><h2>客户评论分析</h2><pre>${escapeHtml(JSON.stringify(reviewAnalysis, null, 2))}</pre></section>`;
+  const a = reviewAnalysis;
+  const overall = `${entity?.latest?.rating ?? '-'}★ · ${entity?.latest?.review_count ?? '-'} 条评论`;
+  const trustClass = a.trust_signal_strength === 'strong' ? 'mint' : (a.trust_signal_strength === 'weak' ? 'coral-soft' : 'citrus');
+  return `
+    <section class="section">
+      <p class="eyebrow">客户评论分析 · Google Reviews</p>
+      <h2>客户在 Google 上怎么夸 / 怎么抱怨</h2>
+      ${a.summary ? `<p class="lead-summary">${escapeHtml(a.summary)}</p>` : ''}
+      <div class="review-overview">
+        <div class="review-stat"><span class="lab">Google 整体</span><strong>${escapeHtml(overall)}</strong></div>
+        <div class="review-stat trust-${trustClass}"><span class="lab">信号强度</span><strong>${escapeHtml((a.trust_signal_strength || '-').toUpperCase())}</strong></div>
+        <div class="review-stat"><span class="lab">分析样本</span><strong>${reviewSample?.length || 0} 条</strong><small>Google 「最相关」</small></div>
+      </div>
+
+      ${(a.positive_themes || []).length ? `
+        <h3>客户一致夸赞</h3>
+        <div class="theme-pills theme-pos">${a.positive_themes.map((t) => `<span class="theme-pill pos">${escapeHtml(t)}</span>`).join('')}</div>
+      ` : ''}
+
+      ${(a.negative_themes || []).length ? `
+        <h3>抱怨 / 短板</h3>
+        <div class="theme-pills theme-neg">${a.negative_themes.map((t) => `<span class="theme-pill neg">${escapeHtml(t)}</span>`).join('')}</div>
+      ` : ''}
+
+      ${(a.quotable_for_redesign || []).length ? `
+        <h3>可直接用在 redesign 的 quote</h3>
+        <div class="quote-grid">
+          ${a.quotable_for_redesign.map((q) => `
+            <blockquote class="review-quote">
+              <p class="quote-text">"${escapeHtml(q.quote || '')}"</p>
+              <footer class="quote-meta">
+                <span class="quote-author">— ${escapeHtml(q.author || 'anonymous')}</span>
+                <span class="quote-rating">${'★'.repeat(Math.round(q.rating || 5))}</span>
+              </footer>
+              ${q.why_useful ? `<p class="quote-why"><span class="lab">放哪</span>${escapeHtml(q.why_useful)}</p>` : ''}
+            </blockquote>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${a.owner_reply_observations ? `
+        <h3>商家回复观察</h3>
+        <p class="review-row">${escapeHtml(a.owner_reply_observations)}</p>
+      ` : ''}
+
+      ${(a.redesign_hooks || []).length ? `
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 可发力的钩子</p>
+          <ol>${a.redesign_hooks.map((h) => `<li>${escapeHtml(h)}</li>`).join('')}</ol>
+        </div>
+      ` : ''}
+    </section>`;
 }
 
-function renderSpeedComparisonSection() {
+function renderSpeedComparisonSection({ videoUrl } = {}) {
+  if (videoUrl) {
+    return `
+    <section class="section">
+      <p class="eyebrow">加载速度证据 · 慢速 4G 移动网络</p>
+      <h2>客户在手机上看到的真实加载体验</h2>
+      <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
+      <video class="speed-video" controls preload="metadata" playsinline>
+        <source src="${escapeHtml(videoUrl)}" type="video/webm" />
+      </video>
+      <p class="placeholder-note" style="margin-top:14px">⏳ Mockup 站点对比视频 — 等 ProfitsLocal 真实 mockup 上线后录制 side-by-side 对比。</p>
+    </section>`;
+  }
   return `
     <section class="section section-placeholder">
       <h2>速度对比 (前 / 后)</h2>
@@ -199,8 +305,11 @@ export function renderInternalAuditHtml({
   detailedAudit,
   visualAudit = null,
   reviewAnalysis = null,
+  reviewSample = null,
   leadSpend = null,
   screenshotDir = './screenshots',
+  evidenceById = {},
+  videoUrl = null,
 } = {}) {
   if (!entity) throw new Error('entity is required');
   const latest = entity.latest || {};
@@ -254,6 +363,11 @@ export function renderInternalAuditHtml({
   .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
 
   .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .lead-summary { margin: 0 0 14px; padding: 14px 18px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 14.5px; font-weight: 700; line-height: 1.65; max-width: 760px; word-break: break-word; font-family: var(--sans); }
+  .dim-meta { margin: -8px 0 16px; font-size: 12.5px; font-weight: 800; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+  .dim-meta strong { color: var(--coral); font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .triggers-block { margin-top: 22px; }
+  .triggers-block .eyebrow { margin: 0 0 8px; }
   .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
 
@@ -296,8 +410,9 @@ export function renderInternalAuditHtml({
   .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
   .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
   .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-  .issue-row { margin: 4px 0; font-size: 13px; line-height: 1.5; font-weight: 700; }
-  .issue-row .lab { display: inline-block; min-width: 90px; font-size: 10px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 8px; vertical-align: top; }
+  .issue-row { margin: 10px 0 0; font-size: 13px; line-height: 1.6; font-weight: 700; }
+  .issue-row .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 3px; }
+  .issue-row.fix { padding-top: 8px; margin-top: 12px; border-top: 1.5px dashed rgba(23,25,28,0.18); }
   .issue-row.fix .lab { color: var(--coral); }
 
   details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
@@ -336,6 +451,41 @@ export function renderInternalAuditHtml({
   .accent-mint { color: var(--green); }
   .accent-coral { color: var(--coral); }
 
+  .issue-evidence { margin-top: 10px; padding-top: 10px; border-top: 1.5px dashed rgba(23,25,28,0.25); }
+  .issue-evidence .ev-lab { margin: 0 0 6px; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  .issue-evidence img { max-width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .issue-evidence-html { margin-top: 8px; border: 1.5px solid var(--line); padding: 8px 10px; background: var(--cream); }
+  .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
+  .issue-row.ev-ref { color: var(--muted); }
+  .broken-evidence { background: color-mix(in srgb, var(--coral-soft) 35%, var(--paper)); border: 2px dashed var(--coral); padding: 12px 14px; margin-top: 10px; }
+  .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
+  .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .review-overview { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--line); margin: 14px 0 8px; }
+  .review-stat { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .review-stat:last-child { border-right: 0; }
+  .review-stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .review-stat strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1.1; margin-top: 4px; }
+  .review-stat small { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-top: 3px; }
+  .review-stat.trust-mint { background: var(--mint); }
+  .review-stat.trust-citrus { background: var(--citrus); }
+  .review-stat.trust-coral-soft { background: var(--coral-soft); }
+  .theme-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .theme-pill { padding: 4px 10px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .theme-pill.pos { background: var(--mint); }
+  .theme-pill.neg { background: var(--coral-soft); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 8px 0 14px; }
+  .review-quote { margin: 0; padding: 14px 16px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--paper); }
+  .review-quote:nth-child(2n) { border-right: 0; }
+  .review-quote:nth-last-child(-n+2) { border-bottom: 0; }
+  .review-quote .quote-text { font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.45; margin: 0 0 8px; }
+  .review-quote .quote-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .review-quote .quote-rating { color: var(--coral); letter-spacing: 0.08em; }
+  .review-quote .quote-why { font-size: 12px; font-weight: 700; line-height: 1.45; color: var(--muted); margin: 6px 0 0; padding-top: 8px; border-top: 1.5px dashed rgba(23,25,28,0.2); }
+  .review-quote .quote-why .lab { display: inline-block; font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); margin-right: 6px; }
+  .review-row { font-size: 13.5px; font-weight: 700; line-height: 1.5; }
+  .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
   .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
   .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
 
@@ -387,10 +537,11 @@ export function renderInternalAuditHtml({
 
   <section class="section">
     <p class="eyebrow">总体判断</p>
-    <h2>${escapeHtml(reason || 'audit pending')}</h2>
+    <h2>审计概览</h2>
+    <p class="lead-summary">${escapeHtml(reason || 'audit pending')}</p>
     ${triggers.length ? `
-      <div>
-        <p class="eyebrow accent-coral" style="margin-top:18px">已触发 hard triggers</p>
+      <div class="triggers-block">
+        <p class="eyebrow accent-coral">已触发 hard triggers</p>
         <div class="trigger-list">
           ${triggers.map((t) => `<span class="trigger-pill">${escapeHtml(t)}</span>`).join('')}
         </div>
@@ -413,8 +564,9 @@ export function renderInternalAuditHtml({
   </section>
 
   <section class="section">
-    <p class="eyebrow">6 维度审计 At-a-glance</p>
-    <h2>得分 ${auditScore}/100 → ${escapeHtml(decisionLabel(decision))}</h2>
+    <p class="eyebrow">六维度评分总览</p>
+    <h2>每个维度的强弱在哪</h2>
+    <p class="dim-meta"><strong>${auditScore}/100</strong> · ${escapeHtml(decisionLabel(decision))}</p>
     <div class="dim-grid">
       ${DIMENSION_ORDER.map((k) => {
         const d = dims[k] || { score: 0 };
@@ -430,8 +582,8 @@ export function renderInternalAuditHtml({
   </section>
 
   <section class="section">
-    <p class="eyebrow">网站抓取证据</p>
-    <h2>当前网站快照</h2>
+    <p class="eyebrow">现场证据 · 桌面 + 移动</p>
+    <h2>客户访问时看到的页面</h2>
     <div class="screenshots">
       <figure>
         <img src="${escapeHtml(screenshotDir)}/desktop.png" alt="desktop screenshot" />
@@ -464,25 +616,25 @@ export function renderInternalAuditHtml({
 
   ${critical.length ? `
   <section class="section">
-    <p class="eyebrow accent-coral">CRITICAL · ${critical.length}</p>
-    <h2>关键问题</h2>
+    <p class="eyebrow accent-coral">关键问题 · ${critical.length} 项</p>
+    <h2>立刻在伤害成交的硬伤</h2>
     <div class="issues-grid">
-      ${critical.map((i) => renderIssue({ ...i, severity: 'critical' })).join('')}
+      ${critical.map((i) => renderIssue({ ...i, severity: 'critical' }, { evidenceById, screenshotDir })).join('')}
     </div>
   </section>` : ''}
 
   ${major.length ? `
   <section class="section">
-    <p class="eyebrow">MAJOR · ${major.length}</p>
-    <h2>主要问题</h2>
+    <p class="eyebrow">主要问题 · ${major.length} 项</p>
+    <h2>影响转化的明显短板</h2>
     <div class="issues-grid">
-      ${major.map((i) => renderIssue({ ...i, severity: 'major' })).join('')}
+      ${major.map((i) => renderIssue({ ...i, severity: 'major' }, { evidenceById, screenshotDir })).join('')}
     </div>
   </section>` : ''}
 
   <section class="section">
-    <p class="eyebrow">39 项规则明细</p>
-    <h2>每条规则命中情况</h2>
+    <p class="eyebrow">规则细节 · 39 项明细</p>
+    <h2>每条规则的命中与失分原因</h2>
     ${DIMENSION_ORDER.map((k) => {
       const d = dims[k];
       if (!d) return '';
@@ -498,16 +650,16 @@ export function renderInternalAuditHtml({
     }).join('')}
   </section>
 
-  ${renderVisualSection({ visualAudit })}
+  ${renderVisualSection({ visualAudit, evidenceById, screenshotDir })}
 
-  ${renderReviewSection({ reviewAnalysis })}
+  ${renderReviewSection({ reviewAnalysis, reviewSample, entity })}
 
-  ${renderSpeedComparisonSection()}
+  ${renderSpeedComparisonSection({ videoUrl })}
 
   ${salesAngles ? `
   <section class="section">
-    <p class="eyebrow accent-coral">推荐销售角度</p>
-    <h2>从 audit 数据推导出的切入点</h2>
+    <p class="eyebrow accent-coral">销售切入点</p>
+    <h2>从 audit 数据自动推导的开场话术</h2>
     <div class="sales-strip">
       <ul>
         ${salesAngles.map((a) => `<li>${escapeHtml(a)}</li>`).join('')}

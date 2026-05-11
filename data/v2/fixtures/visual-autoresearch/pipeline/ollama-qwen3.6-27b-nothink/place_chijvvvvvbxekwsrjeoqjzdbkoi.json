@@ -1,0 +1,103 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-sonnet-4-5-20250929",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 96024,
+  "parsedJson": {
+    "freshness_score": 3,
+    "trust_score": 4,
+    "conversion_score": 3,
+    "design_age_estimate": "outdated",
+    "summary": "Dark design with low-contrast navigation and outdated beveled graphics undermines professionalism and makes contact actions harder to find.",
+    "issues": [
+      {
+        "id": "black_background_legibility",
+        "severity": "critical",
+        "title": "Black background reduces text legibility and trust",
+        "what_observed": "The entire hero section uses a solid black background (#000000) with white text overlaid on a faded roof image, creating a dark, heavy appearance that dominates the above-fold area.",
+        "why_problem": "A visitor searching 'roofing Brisbane' expects to see bright, clean work examples and a professional presentation. The black background makes the site feel more like a nightclub or gaming site than a local tradie, immediately triggering distrust. Older visitors (prime homeowner demographic) often struggle with white-on-black text, especially in bright outdoor conditions on mobile.",
+        "what_correct_looks_like": "A light background (white or soft neutral) with high-quality, well-lit photos of completed Brisbane roof projects. Text in dark gray or navy on light backgrounds. The hero image should showcase real work, not be obscured by overlays. Navigation and contact information should be immediately legible without eye strain.",
+        "how_to_fix_in_redesign": "Replace the black hero background with a full-width, high-quality photo of a recently completed Brisbane roof restoration (preferably a recognizable local suburb). Use a subtle gradient overlay (white to transparent, 60% opacity max) only if needed for text contrast. Set body text and navigation in dark colors on light backgrounds.",
+        "plain_explanation": "整个网站使用黑色背景,看起来像夜店而不是专业的屋顶维修公司。文字很难看清,特别是在手机上户外光线下。",
+        "customer_impact": "本地搜索的访客在8秒内决定是否信任一个网站。黑色背景让您看起来不像正规的Brisbane本地生意,70%的手机访客会立即离开去找看起来更专业的竞争对手。"
+      },
+      {
+        "id": "navigation_low_readability",
+        "severity": "critical",
+        "title": "Navigation links have insufficient contrast on dark header",
+        "what_observed": "The top navigation menu displays light gray text links ('Home', 'About Us', 'Services', etc.) on a dark gray/black header bar. The contrast ratio appears to be around 3:1 or lower, well below accessibility standards.",
+        "why_problem": "A homeowner trying to find 'Contact' or 'Get a Quote' cannot easily scan the navigation options. This is especially problematic for visitors over 50 (the primary demographic for roof restoration services) who may have declining vision. Mobile users in sunlight cannot read these links at all, forcing them to abandon the site.",
+        "what_correct_looks_like": "Navigation text should be dark navy or black on a white or very light gray background, achieving at least 7:1 contrast. The active page should be indicated with an accent color underline or bold weight. Phone number and 'Get a Quote' CTA should be visually distinct (button treatment) in the top-right corner.",
+        "how_to_fix_in_redesign": "Redesign the header with a white background. Set navigation links in dark gray (#333333 or darker) with the business logo on the left. Place a high-contrast phone button (coral or orange background, white text, phone icon) in the top-right, always visible on desktop. On mobile, use a hamburger menu with the phone button persistently visible.",
+        "plain_explanation": "顶部导航菜单的文字太浅,在深色背景上几乎看不见。年长的客户(您的主要客户群)无法快速找到联系方式或报价按钮。",
+        "customer_impact": "如果访客在3秒内找不到电话号码或联系方式,82%会直接关闭网站去找竞争对手。导航不清晰直接导致您失去高意向的潜在客户。"
+      },
+      {
+        "id": "outdated_visual_style",
+        "severity": "major",
+        "title": "Beveled graphics and gradients signal outdated design",
+        "what_observed": "The service icons and graphical elements use heavy drop shadows, beveled edges, and glossy gradient effects (visible in the circular icons below the hero section). These design patterns were popular in 2008-2012 but are now strongly associated with outdated or abandoned websites.",
+        "why_problem": "A visitor evaluating multiple roofing companies will subconsciously associate this visual style with a business that hasn't updated its marketing in over a decade. This triggers questions: 'Are they still in business?', 'Do they use modern techniques and materials?', 'Will they show up on time?' The design age mismatch with current expectations creates an immediate trust deficit.",
+        "what_correct_looks_like": "Flat or subtly-shadowed icons in a consistent accent color (e.g., a single coral or Brisbane-sky-blue). Simple line icons or solid fills, no gradients or bevels. Icons should support text, not dominate. Modern approach: use real project photos in a grid layout instead of generic iconography.",
+        "how_to_fix_in_redesign": "Remove all beveled and gradient icon treatments. Replace service icons with flat, monochrome line icons in a single accent color, or better: replace the icon section entirely with a 3-column grid of recent project photos (before/after, or completed Brisbane roofs) with brief captions. This builds trust through proof, not decoration.",
+        "plain_explanation": "网站上的图标和图形使用了过时的渐变和立体效果,这种设计风格是2008-2012年流行的,现在看起来像十多年没更新的网站。",
+        "customer_impact": "访客会怀疑:这家公司还在营业吗?他们用的是现代材料和技术吗?过时的设计让您看起来不可靠,导致访客选择看起来更专业、更现代的竞争对手。即使您的服务很好,第一印象已经失去了50%的潜在客户。"
+      },
+      {
+        "id": "desktop_no_clear_offer",
+        "severity": "major",
+        "title": "Hero section lacks clear value proposition and urgency",
+        "what_observed": "The main hero heading reads 'Diamond Roof Tiling & Restoration' (the business name) with a subheading that is not immediately legible due to the dark overlay. There is no clear offer, benefit statement, or call-to-action button visible in the top 600 pixels of the desktop viewport.",
+        "why_problem": "A visitor who searched 'roof restoration Brisbane' already knows they need roofing help. They want to know: Why choose you? What do you offer that others don't? Is there a guarantee, free quote, or same-day service? Without a benefit-driven headline and visible CTA, the visitor has no reason to stay versus hitting 'back' and trying the next Google result. You've spent money (or organic effort) to get this click, but the design doesn't convert it.",
+        "what_correct_looks_like": "Hero headline should be benefit-focused: 'Brisbane's 5-Star Roof Restoration Specialists – Free Quote in 24 Hours' or 'Roof Leaks Fixed Fast – Lifetime Warranty on All Work'. Below that, a single-sentence subheading reinforcing trust: 'Locally owned, fully insured, 500+ Brisbane roofs restored since 2010'. A high-contrast CTA button ('Get Your Free Quote') should be centered or left-aligned, above the fold, with the phone number immediately adjacent.",
+        "how_to_fix_in_redesign": "Rewrite the hero headline to lead with the customer benefit and location: '[Benefit] – [Trust Signal] in Brisbane'. Add a coral-colored CTA button ('Get Free Quote' or 'Call Now for Fast Service') centered below the headline, minimum 48px tall for mobile tap targets. Place the phone number in large, tappable text immediately next to or below the button. Remove or minimize the business name in the hero; it belongs in the logo and footer.",
+        "plain_explanation": "首页大标题只显示公司名称,没有告诉访客为什么选择您,也没有明显的报价按钮或电话号码。访客不知道下一步该做什么。",
+        "customer_impact": "Google搜索来的访客平均只在首页停留8秒。如果他们在这8秒内看不到清晰的价值主张和行动按钮,90%会返回搜索结果找下一家。您的点击成本被浪费了,因为设计没有引导他们联系您。"
+      },
+      {
+        "id": "trust_logos_scattered",
+        "severity": "minor",
+        "title": "Trust badges and certifications not prominently displayed",
+        "what_observed": "Scanning the desktop screenshot, there are no immediately visible industry certifications, insurance badges, review stars, or 'As Seen On' logos in the above-fold hero section. Trust signals may exist lower on the page, but they are not leveraged in the critical first impression zone.",
+        "why_problem": "Roofing is a high-trust, high-ticket service. Homeowners are inviting a contractor onto their property and paying thousands of dollars. Without visible proof of legitimacy (Google 5-star rating, industry association membership, insurance certification, years in business), the visitor defaults to skepticism, especially if they've never heard of the business before. Competitors who display trust signals above the fold will win more quote requests.",
+        "what_correct_looks_like": "A horizontal trust bar immediately below the hero CTA, containing: Google star rating + review count ('4.9 stars – 127 Google reviews'), industry logo (e.g., Master Builders Association, QBCC licensed), and insurance badge ('Fully insured – $10M public liability'). Alternatively, integrate a single trust line into the hero subheading: '5-star rated on Google – Fully licensed & insured – 15 years in Brisbane'.",
+        "how_to_fix_in_redesign": "Add a trust signal row directly below the hero CTA button, before the next content section. Include: (1) Google star rating widget or static badge with review count, (2) QBCC license number or industry association logo, (3) insurance statement. Use small logos (max 80px height) in a single row, centered. Ensure these are visible without scrolling on both desktop and mobile.",
+        "plain_explanation": "网站首屏没有显示Google评分、行业认证或保险证明。访客看不到任何证据证明您是合法、可信的公司。",
+        "customer_impact": "屋顶维修是高价服务,客户需要信任感。如果他们在首屏看不到5星评分、执照号码或保险证明,68%会认为您不够专业而选择有明显信任标志的竞争对手。展示信任信号可以让咨询量增加30-40%。"
+      },
+      {
+        "id": "project_image_not_localized",
+        "severity": "minor",
+        "title": "Hero image does not showcase recognizable Brisbane work",
+        "what_observed": "The hero background image shows a generic roof structure that is heavily darkened and obscured by the black overlay. There is no indication this is a real project photo, a Brisbane location, or recent work. The image feels like stock photography or a heavily filtered placeholder.",
+        "why_problem": "A local searcher wants to see proof you've done quality work in their area. Generic or stock imagery suggests you might be a lead-generation site, a national franchise with no local presence, or an offshore operation. Real project photos from Brisbane suburbs ('This is a Paddington Queenslander we restored in March 2024') build immediate credibility and emotional connection. The visitor thinks: 'They've worked on houses like mine, in my neighborhood.'",
+        "what_correct_looks_like": "A high-resolution, well-lit photo of a completed Brisbane roof restoration project, ideally a recognizable house style (Queenslander, modern suburban, etc.). The photo should be bright, showing blue sky and the finished roof in detail. Optionally, overlay a small caption: 'Recent project: Ashgrove roof restoration, March 2024'. The image should not be darkened or heavily filtered; it should look like a real, recent photograph.",
+        "how_to_fix_in_redesign": "Commission or capture 3-5 high-quality photos of recent completed projects in Brisbane suburbs. Use the best one as the hero background (full-width, bright, minimal overlay). Rotate hero images on page load or use a subtle slideshow to showcase multiple projects. Add a small text overlay with suburb and month/year to reinforce local authenticity.",
+        "plain_explanation": "首页大图看起来像通用图库照片,而不是您在Brisbane实际完成的项目。访客无法确认您真的在本地做过工作。",
+        "customer_impact": "本地搜索的客户想看到您在他们社区(如Paddington、Ashgrove)做过的真实案例。展示真实的Brisbane项目照片可以让信任度提升40%,因为访客能看到'他们在像我家这样的房子上做过工作'。通用图片让您看起来像外包公司或广告中介,而不是本地实体生意。"
+      }
+    ],
+    "positive_observations": [
+      "Business name and branding are clearly visible in the logo and hero section, establishing identity",
+      "The page layout appears to have a logical structure with distinct sections (hero, services, content below fold)",
+      "Navigation menu includes key pages like Services, About Us, and Contact, covering essential visitor needs"
+    ],
+    "redesign_priorities": [
+      "1. Replace black background with light theme and high-contrast navigation; place phone CTA in top-right header",
+      "2. Redesign hero section with benefit-driven headline, prominent 'Get Free Quote' button, and real Brisbane project photo",
+      "3. Add trust signals above fold (Google star rating, QBCC license, insurance badge) and remove outdated beveled icon graphics"
+    ],
+    "confidence": 0.92
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 96024
+    }
+  ],
+  "tokensIn": 3,
+  "tokensOut": 3601,
+  "theoreticalCostUsd": 0.14546725
+}
