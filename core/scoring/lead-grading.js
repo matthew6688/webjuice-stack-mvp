@@ -177,9 +177,12 @@ function recommendProductTier(ctx) {
     else if (ctx.activity?.days_since_newest_blog > 180) factors.push(`Blog 停滞 ${ctx.activity.days_since_newest_blog} 天（重启月度内容包机会）`);
     return {
       tier: 'T3',
-      tier_label: '多页站 + 月度运营包',
+      tier_label: '多页 / 定制（quote separately）',
       factors,
-      pricing: { one_time: '$5-8K', monthly: '$800-1500/月（社媒 + 内容 + GEO）' },
+      // V2 pricing (locked 2026-05-11 per SCALING_AND_PRICING.md +
+      // profitslocal.com live): T3 is custom — no fixed productized price.
+      // Quoted separately. Anchor "$1000+" from homepage FAQ.
+      pricing: { one_time: '$1000+ 定制报价', monthly: null, annual: null, note: 'Multi-page / custom build — quote separately. Profitslocal.com FAQ anchor.' },
     };
   }
 
@@ -200,22 +203,27 @@ function recommendProductTier(ctx) {
     if (sophistication < 2) factors.push('数字成熟度低 → 简单为好');
     return {
       tier: 'T1',
-      tier_label: '单页站',
+      tier_label: '1-page (build-and-launch)',
       factors,
-      pricing: { one_time: '$1.5-3K', monthly: null },
+      // V2 productized pricing (profitslocal.com live + SCALING_AND_PRICING.md
+      // locked 2026-05-11). T1 = $399 一次性 含 hosting 永久 + 3 次 revision.
+      pricing: { one_time: '$399', monthly: null, annual: null, note: '1-page · 3 revisions · hosting included permanently' },
     };
   }
 
   // ── T2 默认 ──
-  factors.push(`业务中等复杂度 / 中等口碑 / 中等数字成熟度 — 多页架构合适`);
+  // V2 architecture: T2 is the same 1-page site as T1 but with annual maintenance
+  // ($799/yr = monthly revisions + local SEO cleanup + maintenance). 触发信号是
+  // 客户有"持续关系"appetite — 中等口碑 / 多业务分类 / sitemap 15+ / 数字成熟度中等。
+  factors.push(`中等口碑 / 多业务分类 / 想要月度维护关系 — T2 annual maintenance 合适`);
   if (reviewCount >= 30 && reviewCount < 100) factors.push(`${reviewCount} 评论 = 中等规模运营`);
-  if (sitemapPages >= 15) factors.push(`现有 ${sitemapPages} 页内容可迁移`);
-  if (categoriesN >= 2) factors.push(`${categoriesN} 个业务分类 = 需要多页面分流`);
+  if (sitemapPages >= 15) factors.push(`现有 ${sitemapPages} 页内容 → 客户预期 ongoing 内容更新`);
+  if (categoriesN >= 2) factors.push(`${categoriesN} 个业务分类 = 多服务线 → 维护包合适`);
   return {
     tier: 'T2',
-    tier_label: '多页站',
+    tier_label: '1-page + annual maintenance',
     factors,
-    pricing: { one_time: '$3-6K', monthly: null },
+    pricing: { one_time: null, annual: '$799/年', monthly: null, note: '1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup' },
   };
 }
 
@@ -363,8 +371,36 @@ export const INVESTMENT_LEVEL_TABLE = [
   { level: 'D', label: '跳过', criteria: '命中任一 hard skip 条件', action: '不投入' },
 ];
 
+// V2 productized pricing (2026-05-11 locked; see docs/v2/SCALING_AND_PRICING.md).
+// Matches profitslocal.com homepage live pricing.
+// T1 / T2 are the SAME 1-page deliverable — they differ on maintenance.
+// T3 is bespoke (multi-page or custom) — no productized price; quoted.
 export const PRODUCT_TIER_TABLE = [
-  { tier: 'T1', label: '单页站', signals: '评论 < 30 / 无独立网站 / sitemap < 15 / 单业务分类 / 数字成熟度 < 2', pricing: '$1.5-3K 一次性' },
-  { tier: 'T2', label: '多页站', signals: '中等口碑 30-150 / sitemap 15-60 / 多业务分类 / 数字成熟度中等', pricing: '$3-6K 一次性' },
-  { tier: 'T3', label: '多页 + 月度运营包', signals: '强口碑 ≥ 100 ★ ≥ 4.3 + 投过广告 / GA4 / 数字成熟度 ≥ 4 + Blog 缺失或停滞', pricing: '$5-8K 一次性 + $800-1500/月' },
+  {
+    tier: 'T1',
+    label: '1-page (build-and-launch)',
+    signals: '评论 < 30 / 无独立网站 / sitemap < 15 / 单业务分类 / 数字成熟度 < 2',
+    pricing: '$399 一次性',
+    includes: '1-page · 3 revisions · hosting permanently · subdomain or custom domain (CNAME)',
+  },
+  {
+    tier: 'T2',
+    label: '1-page + annual maintenance',
+    signals: '中等口碑 30-150 / 多业务分类 / 数字成熟度中等 / 看到 ongoing 关系 appetite',
+    pricing: '$799/年',
+    includes: '1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup · domain setup',
+  },
+  {
+    tier: 'T3',
+    label: '多页 / 定制 (quote separately)',
+    signals: '强口碑 ≥ 100 ★ ≥ 4.3 + 投过广告 / GA4 / 数字成熟度 ≥ 4 + Blog 缺失或停滞 + 复杂业务',
+    pricing: '$1000+ 定制报价',
+    includes: 'Multi-page · custom build · 单独报价（profitslocal.com FAQ anchor）',
+  },
+];
+
+// Add-on (across all tiers)
+export const ADDON_TABLE = [
+  { id: 'extra_revision', label: 'Extra revision', pricing: '$100 / revision', applies_to: 'T1 (after 3) · T2 (after 12/yr)' },
+  { id: 'sender_domain_email', label: 'Custom sender domain email setup', pricing: '$150 一次性', applies_to: 'Any tier' },
 ];
