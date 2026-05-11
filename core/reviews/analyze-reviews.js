@@ -9,9 +9,7 @@
  * 30-60s on Mac mini. See feedback_qwen_disable_thinking memory.
  */
 
-import { textOllama } from '../llm/text-ollama.js';
-
-const DEFAULT_MODEL = process.env.REVIEW_OLLAMA_MODEL || 'qwen3.6:27b';
+import { runText } from '../llm/text-adapter.js';
 
 function buildPrompt({ reviews, rating, review_count, business_name, niche }) {
   const reviewBlock = reviews.map((r, i) => `Review ${i + 1} (${r.rating}★, by ${r.author_name || 'anonymous'}, ${r.relative_time || ''}):\n${r.text || '(no text)'}`).join('\n\n---\n\n');
@@ -53,7 +51,6 @@ export async function analyzeReviews({
   review_count,
   business_name,
   niche,
-  model = DEFAULT_MODEL,
   ledgerPath,
   leadId,
   clientSlug,
@@ -67,10 +64,10 @@ export async function analyzeReviews({
   }
 
   const prompt = buildPrompt({ reviews, rating, review_count, business_name, niche });
-  const out = await textOllama({
-    model,
+  // Cascade: claude_cli → codex_cli → ollama; vision and text share the
+  // same cascade pattern, so review analysis is no longer GPU-bound.
+  const out = await runText({
     prompt,
-    think: false,
     ledgerPath,
     leadId,
     clientSlug,
@@ -80,7 +77,8 @@ export async function analyzeReviews({
 
   return {
     ok: Boolean(out.parsedJson),
-    model,
+    model: out.model || null,
+    provider: out.provider,
     latencyMs: out.latencyMs,
     analysis: out.parsedJson,
     rawText: out.parsedJson ? null : out.rawText?.slice(0, 1000),
