@@ -1,0 +1,103 @@
+---
+import Layout from '../../layouts/AdminLayout.astro';
+import { spawnSync } from 'child_process';
+
+// V2 KPI overview — DISCORD_OUTREACH_TASKS.md Block 5.4
+// Reads from `npm run pl:kpi` output (single source of truth).
+
+let kpi = null;
+try {
+  const r = spawnSync('node', ['scripts/cli/pl-kpi.js'], { encoding: 'utf8' });
+  if (r.status === 0) kpi = JSON.parse(r.stdout);
+} catch (err) {
+  kpi = { error: String(err) };
+}
+
+const lastRefreshed = new Date().toISOString();
+---
+<Layout title="V2 Overview">
+  <main class="mx-auto max-w-6xl px-4 py-6">
+    <div class="mb-4 flex items-center justify-between">
+      <h1 class="text-2xl font-semibold">V2 Overview</h1>
+      <div class="text-sm text-gray-500">Last refreshed: <span class="font-mono">{lastRefreshed}</span></div>
+    </div>
+
+    <p class="mb-4 text-sm text-gray-600">
+      推进面 = <a href="https://discord.com/channels/@me" target="_blank" class="text-indigo-600 hover:underline">Discord website-leads forum</a> ·
+      只读看板 = <a href="/admin/v2-leads" class="text-indigo-600 hover:underline">/admin/v2-leads</a> ·
+      旧 admin（保留）= <a href="/admin/queue" class="text-gray-500 hover:underline">/admin/queue</a> / <a href="/admin/leads" class="text-gray-500 hover:underline">/admin/leads</a> / <a href="/admin/intakes" class="text-gray-500 hover:underline">/admin/intakes</a>
+    </p>
+
+    {kpi?.ok ? (
+      <>
+        <section class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="rounded border bg-white p-4">
+            <div class="text-xs text-gray-500">Total entities</div>
+            <div class="text-2xl font-semibold">{kpi.totals.entities}</div>
+          </div>
+          <div class="rounded border bg-white p-4">
+            <div class="text-xs text-gray-500">Sellable A/B/C</div>
+            <div class="text-2xl font-semibold">{kpi.totals.sellable_a_b_c}</div>
+            <div class="text-xs text-gray-500">{(Number(kpi.totals.sellable_pct) * 100).toFixed(1)}%</div>
+          </div>
+          <div class="rounded border bg-white p-4">
+            <div class="text-xs text-gray-500">Audit completed</div>
+            <div class="text-2xl font-semibold">{kpi.pipeline.audit_completed_cumulative}</div>
+            <div class="text-xs text-gray-500">queue: {kpi.pipeline.queued_for_audit}</div>
+          </div>
+          <div class="rounded border bg-white p-4">
+            <div class="text-xs text-gray-500">Today's revenue</div>
+            <div class="text-2xl font-semibold">${kpi.finance_today.revenue_usd}</div>
+            <div class="text-xs text-gray-500">cost: ${kpi.finance_today.cost_usd}</div>
+          </div>
+        </section>
+
+        <section class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded border bg-white p-4">
+            <h3 class="text-sm font-semibold mb-2">By grade</h3>
+            <ul class="text-sm space-y-1">
+              <li><span class="inline-block rounded bg-green-100 text-green-800 px-2 py-0.5 text-xs font-semibold mr-2">A</span>{kpi.by_grade.A}</li>
+              <li><span class="inline-block rounded bg-blue-100 text-blue-800 px-2 py-0.5 text-xs font-semibold mr-2">B</span>{kpi.by_grade.B}</li>
+              <li><span class="inline-block rounded bg-gray-100 text-gray-700 px-2 py-0.5 text-xs font-semibold mr-2">C</span>{kpi.by_grade.C}</li>
+              <li><span class="inline-block rounded bg-red-100 text-red-800 px-2 py-0.5 text-xs font-semibold mr-2">D</span>{kpi.by_grade.D}</li>
+              <li class="text-gray-400">ungraded {kpi.by_grade.ungraded}</li>
+            </ul>
+          </div>
+
+          <div class="rounded border bg-white p-4">
+            <h3 class="text-sm font-semibold mb-2">By phase</h3>
+            <ul class="text-sm space-y-1">
+              {Object.entries(kpi.by_phase).map(([phase, count]) => (
+                <li><code class="text-xs">{phase}</code> <span class="text-gray-500">{count}</span></li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="rounded border bg-white p-4">
+            <h3 class="text-sm font-semibold mb-2">Websites</h3>
+            <div class="text-sm">Has website: <strong>{kpi.websites.has_website}</strong></div>
+            <div class="text-sm">No website: <strong>{kpi.websites.no_website}</strong></div>
+            <ul class="mt-2 text-xs space-y-0.5 text-gray-600">
+              {Object.entries(kpi.websites.breakdown).map(([k, v]) => (
+                <li><code>{k}</code> {v}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section class="rounded border bg-yellow-50 p-4 text-sm">
+          <h3 class="font-semibold mb-1">Deferred metrics（需邮件追踪）</h3>
+          <ul class="list-disc pl-5 text-xs text-gray-700">
+            {(kpi.deferred_metrics || []).map((m) => <li><code>{m}</code></li>)}
+          </ul>
+          <p class="mt-2 text-xs text-gray-600">本期不集成 TrackLayer（决策 D9）。后期 fork tracklayer-panel 接入。</p>
+        </section>
+      </>
+    ) : (
+      <div class="rounded border bg-red-50 p-4">
+        <h3 class="font-semibold">KPI load failed</h3>
+        <pre class="text-xs mt-2">{JSON.stringify(kpi, null, 2)}</pre>
+      </div>
+    )}
+  </main>
+</Layout>

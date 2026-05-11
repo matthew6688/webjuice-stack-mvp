@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "asset_types_count": 6,
+  "assertions": {
+    "empty_manifest_materialized": true,
+    "six_types_registered": true,
+    "list_by_type_filters": true,
+    "list_by_type_all": true,
+    "get_asset_and_cloudinary_url": true,
+    "upsert_preserves_unknown_fields": true,
+    "invalid_type_rejected": true,
+    "missing_id_rejected": true,
+    "remove_asset": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "country": "AU",
+  "defaultTimezone": "Australia/Brisbane",
+  "defaultLanguage": "en-AU",
+  "cities": {
+    "brisbane": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "gold coast": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "sunshine coast": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "cairns": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "townsville": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "toowoomba": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "ipswich": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "logan": { "tz": "Australia/Brisbane", "state": "QLD" },
+    "sydney": { "tz": "Australia/Sydney", "state": "NSW" },
+    "newcastle": { "tz": "Australia/Sydney", "state": "NSW" },
+    "wollongong": { "tz": "Australia/Sydney", "state": "NSW" },
+    "central coast": { "tz": "Australia/Sydney", "state": "NSW" },
+    "melbourne": { "tz": "Australia/Melbourne", "state": "VIC" },
+    "geelong": { "tz": "Australia/Melbourne", "state": "VIC" },
+    "ballarat": { "tz": "Australia/Melbourne", "state": "VIC" },
+    "bendigo": { "tz": "Australia/Melbourne", "state": "VIC" },
+    "perth": { "tz": "Australia/Perth", "state": "WA" },
+    "fremantle": { "tz": "Australia/Perth", "state": "WA" },
+    "adelaide": { "tz": "Australia/Adelaide", "state": "SA" },
+    "hobart": { "tz": "Australia/Hobart", "state": "TAS" },
+    "canberra": { "tz": "Australia/Sydney", "state": "ACT" },
+    "darwin": { "tz": "Australia/Darwin", "state": "NT" }
+  },
+  "stateFallback": {
+    "QLD": "Australia/Brisbane",
+    "NSW": "Australia/Sydney",
+    "VIC": "Australia/Melbourne",
+    "WA": "Australia/Perth",
+    "SA": "Australia/Adelaide",
+    "TAS": "Australia/Hobart",
+    "ACT": "Australia/Sydney",
+    "NT": "Australia/Darwin"
+  }
+}

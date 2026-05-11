@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "count": 14,
+  "tags": [
+    "grade-a",
+    "grade-b",
+    "grade-c",
+    "awaiting",
+    "outreach-active",
+    "replied",
+    "proposal-sent",
+    "nurture",
+    "paid",
+    "archived",
+    "needs-human",
+    "urgent",
+    "do-not-contact",
+    "nurture-due"
+  ],
+  "groups": {
+    "grade": [
+      "grade-a",
+      "grade-b",
+      "grade-c"
+    ],
+    "lifecycle": [
+      "awaiting",
+      "outreach-active",
+      "replied",
+      "proposal-sent",
+      "nurture",
+      "paid",
+      "archived",
+      "needs-human"
+    ],
+    "modifier": [
+      "urgent",
+      "do-not-contact",
+      "nurture-due"
+    ]
+  },
+  "legacy_mappings": {
+    "paid_intake": [
+      "paid"
+    ],
+    "sale": [
+      "awaiting"
+    ],
+    "replied": [
+      "replied"
+    ],
+    "sale_with_grade_a": [
+      "awaiting",
+      "grade-a"
+    ]
+  },
+  "assertions": {
+    "exactly_14_tags": true,
+    "all_expected_present": true,
+    "no_unexpected_tags": true,
+    "niche_removed": true,
+    "legacy_paid_works": true,
+    "legacy_sale_maps_to_awaiting": true,
+    "legacy_replied_works": true,
+    "grade_a_tag_emitted": true,
+    "within_20_tag_limit": true
+  }
+}

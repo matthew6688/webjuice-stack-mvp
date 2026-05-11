@@ -1,0 +1,73 @@
+=== pl:list --grade A ===
+
+
+{
+  "ok": true,
+  "count": 4,
+  "filter": {
+    "grade": "A",
+    "phase": null
+  },
+  "rows": [
+    {
+      "entityKey": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
+      "name": "Diamond Roof Tiling & Restoration",
+      "niche": "roofing",
+      "city": "Brisbane",
+
+=== pl:show place_chijn587yc79k2sr7vyvy-egoam (header only) ===
+
+
+# FIX MY ROOF Total Roof Restorations
+
+- **Entity key**: `place_chijn587yc79k2sr7vyvy-egoam`
+- **Niche**: roofing
+- **Address**: 29 Darien St, Bridgeman Downs QLD 4035
+- **Phone**: 0410 607 076
+- **Website**: http://billdu.me/fixmyrooftotalroofrestorations  (`independent_http_site`)
+- **Rating / Reviews**: 5★ / 127
+- **Locale**: Australia/Brisbane (QLD) — 客户本地 14:18 AEST
+
+## V2 status
+- **Grade**: A / T3
+- **Pricing**: $5-8K + $800-1500/月（社媒 + 内容 + GEO）
+- **Phase**: awaiting
+- **Archive reason**: —
+- **Discord thread**: —
+- **Legacy status**: `graded`
+
+
+=== pl:context byte count ===
+- Draft cold email v1 (variant picker → audit-led tone). Send only after operator ✅.
+
+[pl:context] 1254 chars
+
+=== pl:advance idempotent ===
+
+
+{
+  "ok": true,
+  "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
+  "from": "awaiting",
+  "to": "awaiting",
+  "sub_status": null,
+  "archive_reason": null,
+  "noop": true
+
+=== pl:kpi totals ===
+{
+  "entities": 82,
+  "sellable_a_b_c": 8,
+  "sellable_pct": "0.098"
+}
+{
+  "A": 4,
+  "B": 3,
+  "C": 1,
+  "D": 2,
+  "ungraded": 72
+}
+{
+  "_unset": 81,
+  "awaiting": 1
+}

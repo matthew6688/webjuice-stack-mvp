@@ -276,7 +276,7 @@ export function gradeLead(ctx = {}) {
 //   - grade=D → status='skipped' (auto-archive, no manual review)
 //   - grade=A/B/C → status='graded' (ready for sales pipeline)
 
-import { updateDiscoveryEntityStatus, defaultDiscoveryStoreRoot } from '../leads/discovery-store.js';
+import { updateDiscoveryEntityStatus, defaultDiscoveryStoreRoot, setEntityPhase, ENTITY_PHASE } from '../leads/discovery-store.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -307,12 +307,51 @@ export function persistLeadGrade({
     ? `Auto-archived: ${(grade.skip_reasons || []).map((r) => r.id).join(', ') || grade.investment_reason || 'D-grade hard skip'}`
     : `Graded ${grade.investment_level} / ${grade.product_tier || '-'}`;
 
-  return updateDiscoveryEntityStatus({
+  const statusResult = updateDiscoveryEntityStatus({
     entityKey,
     status: isD ? 'skipped' : 'graded',
     note,
     storeRoot,
   });
+
+  // V2 phase hook — DISCORD_OUTREACH_PRD.md §9 + Block 4.4
+  // D → archived (auto). A/B → awaiting (waits for first outreach).
+  // C → no phase set (batch outreach handled separately, not via lead thread).
+  let phaseResult = null;
+  if (isD) {
+    phaseResult = setEntityPhase({
+      entityKey,
+      phase: ENTITY_PHASE.ARCHIVED,
+      archive_reason: (grade.skip_reasons || []).map((r) => r.id).join(',') || 'd_grade',
+      storeRoot,
+      note,
+    });
+  } else if (grade.investment_level === 'A' || grade.investment_level === 'B') {
+    phaseResult = setEntityPhase({
+      entityKey,
+      phase: ENTITY_PHASE.AWAITING,
+      storeRoot,
+      note,
+    });
+  }
+
+  // Async Discord thread open — fire-and-forget. Errors surface in lead-thread
+  // log, but never block the grading pipeline. Skip in test/dry contexts via
+  // SKIP_LEAD_THREAD_OPEN=true (used by unit tests that don't want network).
+  if ((grade.investment_level === 'A' || grade.investment_level === 'B')
+      && !process.env.SKIP_LEAD_THREAD_OPEN) {
+    // Lazy-import to avoid circular dep with lead-thread-sync → profile-card → manifest
+    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread }) => {
+      try {
+        const result = await openLeadThread(entityKey);
+        if (!result.ok) console.warn(`[persistLeadGrade] openLeadThread failed: ${result.reason}`);
+      } catch (err) {
+        console.warn(`[persistLeadGrade] openLeadThread threw: ${err.message}`);
+      }
+    }).catch((err) => console.warn(`[persistLeadGrade] lead-thread-sync import failed: ${err.message}`));
+  }
+
+  return { ...statusResult, phaseResult };
 }
 
 export const HARD_SKIP_DEFINITIONS = HARD_SKIP_RULES.map((r) => ({ id: r.id, reason: r.reason }));

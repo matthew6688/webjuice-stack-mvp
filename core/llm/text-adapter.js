@@ -1,11 +1,18 @@
 /**
- * Unified TEXT adapter — dispatches text-only LLM calls (review analysis,
- * content classification, summarization) to the best provider available.
+ * Unified TEXT adapter — dispatches text-only LLM calls to the right tier.
  *
- * Mirrors vision-adapter.js cascade:
- *   claude_cli → codex_cli → ollama
+ * Tiers (memory rule "V2 Cost Discipline"):
+ *   T0  local Ollama (free, runs on Mac GPU)
+ *   T1  Claude/Codex CLI subscription ($0 actual, tokens tracked)
+ *   T3  premium API (sonnet/opus via metered API key — not enabled in this codebase yet)
  *
- * Set TEXT_PROVIDER env var to force a specific one. Default cascades.
+ * Default cascade by tier:
+ *   T0 → ollama, fallback claude_cli, fallback codex_cli  (cheap-first)
+ *   T1 → claude_cli, fallback codex_cli, fallback ollama  (quality with cheap safety net)
+ *   T3 → claude_cli only, no fallback                     (force premium)
+ *
+ * Callers pass `tier: 'T0' | 'T1' | 'T3'` (default 'T0' — cheap by default).
+ * Env override: `TEXT_PROVIDER=ollama|claude_cli|codex_cli` forces one provider.
  *
  * All providers return the same shape so callers are provider-agnostic.
  */
@@ -14,16 +21,22 @@ import { textClaudeCli } from './text-claude-cli.js';
 import { textCodexCli } from './text-codex-cli.js';
 import { textOllama } from './text-ollama.js';
 
-const DEFAULT_PRIORITY = ['claude_cli', 'codex_cli', 'ollama'];
+const TIER_PRIORITY = {
+  T0: ['ollama', 'claude_cli', 'codex_cli'],
+  T1: ['claude_cli', 'codex_cli', 'ollama'],
+  T3: ['claude_cli'],
+};
+const DEFAULT_TIER = 'T0';
 
-function pickProviders() {
+function pickProviders(tier) {
   const forced = process.env.TEXT_PROVIDER;
   if (forced) {
     const fallback = process.env.TEXT_FALLBACK !== 'false';
     if (!fallback) return [forced];
-    return [forced, ...DEFAULT_PRIORITY.filter((p) => p !== forced)];
+    const all = ['claude_cli', 'codex_cli', 'ollama'];
+    return [forced, ...all.filter((p) => p !== forced)];
   }
-  return DEFAULT_PRIORITY;
+  return TIER_PRIORITY[tier] || TIER_PRIORITY[DEFAULT_TIER];
 }
 
 async function callProvider(name, opts) {
@@ -31,7 +44,10 @@ async function callProvider(name, opts) {
     case 'claude_cli': return textClaudeCli(opts);
     case 'codex_cli':  return textCodexCli(opts);
     case 'ollama': {
-      const model = opts.model || process.env.OLLAMA_TEXT_MODEL || 'qwen3.6:27b';
+      // Default Ollama model for T0 tasks: qwen3.5:9b is fast + small + plenty good
+      // for classification / summarization. Use OLLAMA_TEXT_MODEL env to override
+      // (e.g. set to 'qwen3.6:27b' for hypothesis generation that wants more quality).
+      const model = opts.model || process.env.OLLAMA_TEXT_MODEL || 'qwen3.5:9b';
       const out = await textOllama({
         ...opts,
         model,
@@ -44,14 +60,15 @@ async function callProvider(name, opts) {
 }
 
 export async function runText(opts = {}) {
-  const providers = pickProviders();
+  const tier = opts.tier || DEFAULT_TIER;
+  const providers = pickProviders(tier);
   const attempts = [];
   for (const name of providers) {
     try {
       const out = await callProvider(name, opts);
       attempts.push({ provider: name, ok: out.ok !== false, latencyMs: out.latencyMs, reason: out.reason });
       if (out.parsedJson && Object.keys(out.parsedJson).length > 0) {
-        return { ...out, attempts };
+        return { ok: true, ...out, attempts, tier };
       }
       attempts[attempts.length - 1].note = 'no parseable JSON in response';
     } catch (err) {
@@ -66,5 +83,6 @@ export async function runText(opts = {}) {
     rawText: '',
     parsedJson: null,
     latencyMs: 0,
+    tier,
   };
 }

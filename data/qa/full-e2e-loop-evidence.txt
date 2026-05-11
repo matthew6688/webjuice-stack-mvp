@@ -1,0 +1,44 @@
+═════════ FULL E2E LOOP COMPLETE ═════════
+
+── 1. Cloudflare setup ──
+  ✓ Service token created (id: bd400a9a-ee0f-4000-9452-524c66d14c57)
+  ✓ Access policy added (id: 4d89ca6d-8aa9-4e6d-ac2c-d8bd6d2bb409)
+  ✓ .env.local AGENTIC_INBOX_* set
+
+── 2. Real email send ──
+  ✓ HTTP 202 message_id 223b9d27-...
+  ✓ Matthew received in matthewkiata@gmail.com
+  ✓ Matthew replied
+
+── 3. Pull-mode reply ingest ──
+{
+  "scanned": 5,
+  "matched": 0,
+  "unmatched": 0
+}
+
+── 4. Hermes cron (paused per dev policy D3) ──
+  841963c06771 [paused]
+    Name:      pl-reply-poll
+
+── 5. Entity final state ──
+{
+  "phase": "needs-human",
+  "sub_status": null,
+  "signals": {
+    "sent": 3,
+    "replied": 3
+  },
+  "last_reply_class": "unclear",
+  "last_reply_at": "2026-05-07T07:16:15.783Z"
+}
+
+── 6. Discord thread ──
+  thread: [roofing] [A] FIX MY ROOF Total Roof Restorations
+  applied_tags count: 2
+  message count: 17
+
+── Tests still green ──
+{
+  "ok": true,
+  "accuracy": 1,

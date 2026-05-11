@@ -1,0 +1,35 @@
+=== test-set-entity-phase (still passing after hook addition) ===
+{
+  "ok": true,
+  "assertions_passed": 28,
+  "cases": {
+    "first_write_creates_phase": true,
+
+=== test-lead-thread-sync (dry-run) ===
+{
+  "ok": true,
+  "assertions_passed": 24,
+
+=== persistLeadGrade hook ===
+{
+  "ok": true,
+  "assertions_passed": 13,
+  "cases": {
+    "grade_A_sets_phase_awaiting": true,
+
+=== pl:thread dry-run ===
+
+
+{
+  "ok": true,
+  "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
+  "result": {
+    "ok": true,
+    "dry_run": true,
+    "intended": {
+      "endpoint": "POST https://discord.com/api/v10/channels/1501187038706401290/threads",
+      "threadName": "[roofing] [A] FIX MY ROOF Total Roof Restorations",
+      "tags": [
+        "awaiting",
+        "grade-a"
+      ],

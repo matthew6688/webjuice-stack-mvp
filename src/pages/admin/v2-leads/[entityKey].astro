@@ -1,0 +1,177 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import fs from 'fs';
+import path from 'path';
+import { deriveLocale, nowInLocale } from '../../../../core/leads/locale.js';
+import { renderProfileCard } from '../../../../core/funnel/profile-card.js';
+import { readDetailedAudit } from '../../../../core/funnel/lead-thread-helpers.js';
+import { readManifest } from '../../../../core/leads/asset-manifest.js';
+
+// Static-output dynamic route: emit one page per graded entity
+export async function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'data', 'leads', 'entities');
+  if (!fs.existsSync(dir)) return [];
+  const entities = fs.readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => {
+      try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; }
+    })
+    .filter((e) => e && e.grade?.investment_level);
+  return entities.map((entity) => ({ params: { entityKey: entity.entityKey }, props: { entity } }));
+}
+
+const { entity } = Astro.props;
+const latest = entity.latest || {};
+const grade = entity.grade || {};
+const audit = readDetailedAudit(entity.entityKey)?.detailed_audit;
+const locale = deriveLocale(entity);
+
+function slugify(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+const clientSlug = entity.promotedClientSlug || slugify(latest.name || '');
+
+let manifest = null;
+try { manifest = readManifest(clientSlug); } catch {}
+
+// Re-use the SAME render function as Discord profile card — same data shape
+const embed = renderProfileCard(entity, { audit });
+
+function gradeColor(level) {
+  return level === 'A' ? 'bg-green-100 text-green-800 border-green-300'
+    : level === 'B' ? 'bg-blue-100 text-blue-800 border-blue-300'
+    : level === 'C' ? 'bg-gray-100 text-gray-700 border-gray-300'
+    : 'bg-red-100 text-red-800 border-red-300';
+}
+function phaseColor(phase) {
+  return phase === 'awaiting' ? 'bg-yellow-100 text-yellow-800'
+    : phase === 'outreach-active' ? 'bg-blue-100 text-blue-800'
+    : phase === 'replied' ? 'bg-purple-100 text-purple-800'
+    : phase === 'proposal-sent' ? 'bg-indigo-100 text-indigo-800'
+    : phase === 'paid' ? 'bg-green-100 text-green-800'
+    : phase === 'archived' ? 'bg-gray-100 text-gray-600'
+    : phase === 'needs-human' ? 'bg-orange-100 text-orange-800'
+    : phase === 'nurture' ? 'bg-cyan-100 text-cyan-800'
+    : 'bg-gray-50 text-gray-500';
+}
+
+const recentHistory = (entity.history || []).slice(-10).reverse();
+const discordThreadUrl = entity.discord_thread_id
+  ? `https://discord.com/channels/@me/${entity.discord_thread_id}`
+  : null;
+const lastRefreshed = new Date().toISOString();
+---
+<Layout title={`Lead: ${latest.name || entity.entityKey}`}>
+  <main class="mx-auto max-w-6xl px-4 py-6">
+    <div class="mb-4 flex items-center justify-between">
+      <div>
+        <a href="/admin/v2-leads" class="text-sm text-indigo-600 hover:underline">← V2 Leads</a>
+        <h1 class="mt-1 text-2xl font-semibold">{latest.name || entity.entityKey}</h1>
+        <p class="text-sm text-gray-500 font-mono">{entity.entityKey}</p>
+      </div>
+      <div class="text-xs text-gray-500">Last refreshed: <span class="font-mono">{lastRefreshed}</span></div>
+    </div>
+
+    <!-- Status badges -->
+    <div class="mb-4 flex flex-wrap gap-2">
+      <span class={`rounded border px-2 py-1 text-xs font-semibold ${gradeColor(grade.investment_level)}`}>
+        Grade {grade.investment_level}{grade.product_tier ? `/${grade.product_tier}` : ''}
+      </span>
+      <span class={`rounded px-2 py-1 text-xs ${phaseColor(entity.phase)}`}>
+        Phase: {entity.phase || '—'}{entity.sub_status && ` (${entity.sub_status})`}
+      </span>
+      {entity.last_reply_class && (
+        <span class="rounded bg-purple-50 text-purple-700 px-2 py-1 text-xs">
+          Last reply: {entity.last_reply_class}
+        </span>
+      )}
+      {entity.do_not_contact && (
+        <span class="rounded bg-red-100 text-red-800 px-2 py-1 text-xs font-semibold">DO NOT CONTACT</span>
+      )}
+      {discordThreadUrl && (
+        <a href={discordThreadUrl} target="_blank" class="rounded bg-indigo-100 text-indigo-800 hover:bg-indigo-200 px-2 py-1 text-xs">
+          → Discord thread
+        </a>
+      )}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- LEFT (2/3): profile card from same function as Discord -->
+      <section class="lg:col-span-2 rounded border bg-white">
+        <div class="p-4 border-b" style={`border-left: 6px solid #${embed.color.toString(16).padStart(6,'0')}`}>
+          <h2 class="text-lg font-semibold">{embed.title}</h2>
+          <p class="text-sm text-gray-600 mt-1">{embed.description}</p>
+        </div>
+        <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          {embed.fields.map((f) => (
+            <div class={f.inline ? '' : 'md:col-span-2'}>
+              <div class="text-xs uppercase tracking-wide text-gray-500">{f.name}</div>
+              <div class="mt-0.5 whitespace-pre-line break-words">{f.value}</div>
+            </div>
+          ))}
+        </div>
+        <div class="px-4 py-2 border-t bg-gray-50 text-xs text-gray-500 font-mono">
+          {embed.footer?.text} · {embed.timestamp}
+        </div>
+      </section>
+
+      <!-- RIGHT (1/3): assets + history -->
+      <aside class="space-y-4">
+        <!-- Assets -->
+        <section class="rounded border bg-white p-4">
+          <h3 class="text-sm font-semibold mb-2">Assets ({manifest?.assets?.length || 0})</h3>
+          {manifest?.assets?.length ? (
+            <ul class="space-y-2 text-sm">
+              {manifest.assets.map((a) => (
+                <li class="border-b last:border-b-0 pb-2">
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1 min-w-0">
+                      <div class="font-medium text-sm">{a.label}</div>
+                      <div class="text-xs text-gray-500">type=<code>{a.type}</code></div>
+                      <div class="text-xs text-gray-400 font-mono truncate" title={a.localPath}>{a.localPath}</div>
+                    </div>
+                    {a.cloudinaryUrl && (
+                      <a href={a.cloudinaryUrl} target="_blank" class="text-xs text-indigo-600 hover:underline shrink-0">CDN ↗</a>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="text-xs text-gray-500">— no manifest registered —</p>
+          )}
+        </section>
+
+        <!-- Recent history -->
+        <section class="rounded border bg-white p-4">
+          <h3 class="text-sm font-semibold mb-2">Recent history</h3>
+          {recentHistory.length ? (
+            <ul class="space-y-1.5 text-xs">
+              {recentHistory.map((h) => (
+                <li>
+                  <div class="font-mono text-gray-500">{h.at?.slice(0, 19)}</div>
+                  <div>
+                    <span class="font-medium">{h.event}</span>
+                    {h.from && h.to && <span class="text-gray-600"> {h.from}→{h.to}</span>}
+                    {h.note && <div class="text-gray-500 italic mt-0.5">{h.note}</div>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="text-xs text-gray-500">— no history yet —</p>
+          )}
+        </section>
+
+        <!-- Emergency actions -->
+        <section class="rounded border bg-yellow-50 p-4">
+          <h3 class="text-sm font-semibold mb-2">紧急操作（CLI）</h3>
+          <ul class="space-y-1 text-xs font-mono">
+            <li><code class="break-all">npm run pl:advance -- {entity.entityKey} --to archived --reason &lt;reason&gt;</code></li>
+            <li><code class="break-all">npm run pl:advance -- {entity.entityKey} --to needs-human</code></li>
+            <li><code class="break-all">npm run pl:show -- {entity.entityKey}</code></li>
+            <li><code class="break-all">npm run pl:context -- {entity.entityKey}</code></li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+</Layout>

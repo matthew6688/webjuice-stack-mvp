@@ -1,0 +1,182 @@
+---
+import Layout from '../../layouts/AdminLayout.astro';
+import { siteConfig } from '../../config/site';
+import fs from 'fs';
+import path from 'path';
+import { deriveLocale, nowInLocale } from '../../../core/leads/locale.js';
+import { readDetailedAudit } from '../../../core/funnel/lead-thread-helpers.js';
+
+// V2 lead admin — DISCORD_OUTREACH_PRD.md §8.1
+// Single source of truth = entity JSON. This page reads + renders + never writes.
+// Discord profile card and this page share the SAME field set (PRD §8.1.2).
+
+const entitiesDir = path.join(process.cwd(), 'data', 'leads', 'entities');
+const entities = fs.existsSync(entitiesDir)
+  ? fs.readdirSync(entitiesDir).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8')))
+  : [];
+
+const graded = entities.filter((e) => e.grade?.investment_level);
+
+const byGrade = { A: [], B: [], C: [], D: [] };
+for (const e of graded) {
+  const g = e.grade?.investment_level;
+  if (byGrade[g]) byGrade[g].push(e);
+}
+
+const byPhase = {};
+for (const e of entities) {
+  const p = e.phase || '_unset';
+  byPhase[p] = (byPhase[p] || 0) + 1;
+}
+
+const lastRefreshed = new Date().toISOString();
+
+function badgeClass(level) {
+  return level === 'A' ? 'bg-green-100 text-green-800'
+    : level === 'B' ? 'bg-blue-100 text-blue-800'
+    : level === 'C' ? 'bg-gray-100 text-gray-700'
+    : 'bg-red-100 text-red-800';
+}
+function phaseClass(phase) {
+  return phase === 'awaiting' ? 'bg-yellow-100 text-yellow-800'
+    : phase === 'outreach-active' ? 'bg-blue-100 text-blue-800'
+    : phase === 'replied' ? 'bg-purple-100 text-purple-800'
+    : phase === 'proposal-sent' ? 'bg-indigo-100 text-indigo-800'
+    : phase === 'paid' ? 'bg-green-100 text-green-800'
+    : phase === 'archived' ? 'bg-gray-100 text-gray-600'
+    : phase === 'needs-human' ? 'bg-orange-100 text-orange-800'
+    : 'bg-gray-50 text-gray-500';
+}
+function fmtDaysAgo(iso) {
+  if (!iso) return '—';
+  const ms = Date.now() - new Date(iso).getTime();
+  if (!Number.isFinite(ms) || ms < 0) return '—';
+  const d = Math.floor(ms / 86400000);
+  return d < 1 ? 'today' : `${d}d`;
+}
+function discordUrl(threadId) {
+  return threadId ? `https://discord.com/channels/@me/${threadId}` : '';
+}
+function row(e) {
+  const audit = readDetailedAudit(e.entityKey)?.detailed_audit;
+  const locale = deriveLocale(e);
+  const s = e.signals || {};
+  return {
+    entityKey: e.entityKey,
+    name: e.latest?.name || '—',
+    niche: e.latest?.niche || '—',
+    city: e.latest?.city || '—',
+    grade: e.grade?.investment_level,
+    tier: e.grade?.product_tier,
+    phase: e.phase || null,
+    sub_status: e.sub_status,
+    audit_score: audit?.audit_score ?? null,
+    audit_decision: audit?.decision ?? null,
+    rating: e.latest?.rating,
+    reviews: e.latest?.review_count,
+    phone: e.latest?.phone,
+    email: e.latest?.email,
+    website: e.latest?.website,
+    last_contact_at: e.last_contact_at,
+    last_reply_class: e.last_reply_class,
+    signals_summary: `📤${s.sent ?? 0} 📧${s.opened ?? 0} 🔗${s.clicked ?? 0} 💬${s.replied ?? 0}`,
+    locale_now: nowInLocale(locale),
+    discord_thread_id: e.discord_thread_id,
+    pricing: e.grade?.recommended_pricing?.one_time || '—',
+  };
+}
+
+const groups = {
+  ready_a: byGrade.A.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row),
+  ready_b: byGrade.B.filter((e) => !['paid', 'archived', 'replied', 'proposal-sent'].includes(e.phase)).map(row),
+  ready_c: byGrade.C.filter((e) => !['paid', 'archived'].includes(e.phase)).map(row),
+  in_conversation: graded.filter((e) => e.phase === 'replied' || e.phase === 'proposal-sent').map(row),
+  archived: byGrade.D.map(row),
+};
+
+const title = 'V2 Leads — Discord-driven';
+---
+<Layout title={title}>
+  <main class="mx-auto max-w-7xl px-4 py-6">
+    <div class="mb-4 flex items-center justify-between">
+      <h1 class="text-2xl font-semibold">{title}</h1>
+      <div class="text-sm text-gray-500">Last refreshed: <span class="font-mono">{lastRefreshed}</span> · 单一来源: entity JSON · 推进面: Discord</div>
+    </div>
+
+    <!-- 概览 -->
+    <section class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">Entities</div><div class="text-xl font-semibold">{entities.length}</div></div>
+      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">Graded A/B/C</div><div class="text-xl font-semibold">{byGrade.A.length + byGrade.B.length + byGrade.C.length}</div></div>
+      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">Active phases</div><div class="text-xl font-semibold">{Object.keys(byPhase).filter((p) => p !== '_unset').length}</div></div>
+      <div class="rounded border bg-white p-3"><div class="text-xs text-gray-500">In conversation</div><div class="text-xl font-semibold">{groups.in_conversation.length}</div></div>
+    </section>
+
+    {(['ready_a', 'ready_b', 'ready_c', 'in_conversation', 'archived'] as const).map((key) => (
+      <section class="mb-8" id={key}>
+        <h2 class="mb-2 text-lg font-semibold flex items-center gap-2">
+          <span>{
+            key === 'ready_a' ? '就绪 · A 全攻' :
+            key === 'ready_b' ? '就绪 · B 试探' :
+            key === 'ready_c' ? '就绪 · C 批量' :
+            key === 'in_conversation' ? '对话中（replied / proposal-sent）' :
+            '归档（D 自动）'
+          }</span>
+          <span class="text-sm text-gray-500">({groups[key].length})</span>
+        </h2>
+        {groups[key].length === 0 ? (
+          <p class="text-sm text-gray-500">无</p>
+        ) : (
+          <div class="overflow-x-auto rounded border bg-white">
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 text-left text-xs uppercase text-gray-600">
+                <tr>
+                  <th class="p-2">Name</th>
+                  <th class="p-2">Niche / City</th>
+                  <th class="p-2">Grade</th>
+                  <th class="p-2">Phase</th>
+                  <th class="p-2">Audit</th>
+                  <th class="p-2">Reviews</th>
+                  <th class="p-2">Signals</th>
+                  <th class="p-2">Last contact</th>
+                  <th class="p-2">Local now</th>
+                  <th class="p-2">→ Discord</th>
+                </tr>
+              </thead>
+              <tbody>
+                {groups[key].map((r) => (
+                  <tr class="border-t hover:bg-gray-50">
+                    <td class="p-2 font-medium">
+                      <a href={`/admin/v2-leads/${r.entityKey}`} class="hover:underline">{r.name}</a>
+                      <div class="text-xs text-gray-500 font-mono">{r.entityKey.slice(0, 16)}…</div>
+                    </td>
+                    <td class="p-2 text-xs">{r.niche}<br/><span class="text-gray-500">{r.city}</span></td>
+                    <td class="p-2"><span class={`rounded px-2 py-0.5 text-xs font-semibold ${badgeClass(r.grade)}`}>{r.grade}{r.tier ? `/${r.tier}` : ''}</span></td>
+                    <td class="p-2"><span class={`rounded px-2 py-0.5 text-xs ${phaseClass(r.phase)}`}>{r.phase || '—'}</span>{r.sub_status && <div class="text-xs text-gray-500">({r.sub_status})</div>}</td>
+                    <td class="p-2">{r.audit_score ?? '—'}{r.audit_decision && <div class="text-xs text-gray-500">{r.audit_decision}</div>}</td>
+                    <td class="p-2 text-xs">{r.rating ?? '—'}★ / {r.reviews ?? 0}</td>
+                    <td class="p-2 font-mono text-xs">{r.signals_summary}</td>
+                    <td class="p-2 text-xs">{r.last_contact_at ? `${r.last_contact_at.slice(0,10)} (${fmtDaysAgo(r.last_contact_at)})` : '—'}{r.last_reply_class && <div class="text-gray-500">[{r.last_reply_class}]</div>}</td>
+                    <td class="p-2 text-xs">{r.locale_now}</td>
+                    <td class="p-2">{r.discord_thread_id ? (
+                      <a href={discordUrl(r.discord_thread_id)} target="_blank" class="text-indigo-600 hover:underline">open ↗</a>
+                    ) : <span class="text-gray-400">—</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    ))}
+
+    <section class="mt-12 rounded border bg-yellow-50 p-4 text-sm">
+      <h3 class="font-semibold mb-1">紧急操作（手动救援）</h3>
+      <p class="text-gray-700 mb-2">日常推进在 Discord 进行。下列只用于异常恢复：</p>
+      <ul class="list-disc pl-5 text-xs text-gray-700 space-y-1">
+        <li><code>npm run pl:advance -- &lt;entityKey&gt; --to archived --reason &lt;reason&gt;</code> — 手动归档（D 误判救援）</li>
+        <li><code>npm run pl:advance -- &lt;entityKey&gt; --to needs-human</code> — 标记需 Matthew 介入</li>
+        <li><code>npm run leads:run-pipeline -- --entity-key &lt;key&gt; --refetch</code> — 重新分级</li>
+      </ul>
+    </section>
+  </main>
+</Layout>

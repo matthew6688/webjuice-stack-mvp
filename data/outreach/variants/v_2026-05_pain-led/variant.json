@@ -1,0 +1,13 @@
+{
+  "id": "v_2026-05_pain-led",
+  "active": true,
+  "created_at": "2026-05-11T00:00:00.000Z",
+  "retired_at": null,
+  "subject_template": "{{businessName}} - the missed-lead problem",
+  "body_template_path": "v_2026-05_pain-led/body.md",
+  "send_time_rule": "client-local 14:00-16:00 weekday",
+  "tone": "direct",
+  "hypothesis": "Lead-loss framing (\"you're losing $X/month to competitors\") outperforms audit-led for grade-B leads where the operator may not care about technical detail but cares about revenue.",
+  "primary_metric": "reply_rate_grade_b",
+  "tracklayer_campaign_id": null
+}

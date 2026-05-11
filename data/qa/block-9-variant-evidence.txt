@@ -1,0 +1,51 @@
+=== pl:variant list ===
+
+
+{
+  "ok": true,
+  "count": 3,
+  "variants": [
+    {
+      "id": "v_2026-05_audit-led",
+      "active": true,
+      "tone": "friendly_technical",
+      "primary_metric": "reply_rate_grade_a_roofing",
+      "hypothesis": "Concrete technical issue list + friendly tone gets higher reply rate from grade-A roofing leads than generic sales pitch, because owners trust evidence over claims.",
+      "subject": "{{businessName}} - 3 specific issues I noticed on your site"
+    },
+    {
+      "id": "v_2026-05_curiosity-led",
+      "active": true,
+      "tone": "curious",
+      "primary_metric": "open_rate_minus_unsub_rate",
+      "hypothesis": "Curiosity-led cold opens (\"weird question\" / \"odd thing I noticed\") boost open rate, but may convert poorly because tone mismatches B2B context. Worth testing on grade-C to confirm batch viability.",
+      "subject": "weird question about your {{niche}} site"
+    },
+    {
+      "id": "v_2026-05_pain-led",
+      "active": true,
+
+=== pl:variant new dry-run hypothesis ===
+
+
+{
+  "ok": true,
+  "registered": {
+    "id": "v_2026-05_formal_test-variant",
+    "active": true,
+    "created_at": "2026-05-11T04:35:41.401Z",
+    "retired_at": null,
+    "subject_template": "test variant",
+    "body_template_path": "v_2026-05_formal_test-variant/body.md",
+    "send_time_rule": "client-local 09:00-17:00 weekday",
+    "tone": "formal",
+    "hypothesis": "[dry-run hypothesis] formal tone targeting grade-A roofing for variant subject \"test variant\"",
+    "primary_metric": "reply_rate_grade-A_roofing",
+
+=== pl:variant retire ===
+
+
+{
+  "ok": false,
+  "reason": "not_found"
+}

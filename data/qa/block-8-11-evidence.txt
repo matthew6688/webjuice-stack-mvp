@@ -1,0 +1,33 @@
+=== outreach-provider event (legacy still works) ===
+      "lead_workspace_outreach_updated"
+    ],
+    "fetchCalls": 4
+  }
+}
+
+=== reply classifier ===
+{
+  "ok": true,
+  "accuracy": 1,
+
+=== variant picker ===
+{
+  "ok": true,
+  "variants_count": 3,
+
+=== pl:reply-handle E2E ===
+
+
+{
+  "ok": true,
+  "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
+  "classified": {
+    "class": "objection-price",
+    "confidence": 0.85,
+    "method": "regex",
+    "signal_excerpt": "Too expensive",
+    "candidates": [
+      {
+        "class": "objection-price",
+        "confidence": 0.85,
+        "signal_excerpt": "Too expensive"
