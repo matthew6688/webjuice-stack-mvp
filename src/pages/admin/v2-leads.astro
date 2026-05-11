@@ -121,7 +121,7 @@ const phasesActive = new Set(Object.keys(entities.reduce((acc, e) => { if (e.pha
             <p class="v2-empty">— 此分组为空 —</p>
           ) : (
             <div class="admin-table-wrap">
-              <table class="admin-table">
+              <table class="admin-table v2-leads-table">
                 <thead>
                   <tr>
                     <th>商家</th>
@@ -278,6 +278,26 @@ const phasesActive = new Set(Object.keys(entities.reduce((acc, e) => { if (e.pha
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--pl-muted);
+  }
+
+  /* Override legacy sticky-th positioning — V2 pages don't have the 127px
+     fixed sub-header that .admin-table th's top:127px assumes. */
+  body:has([data-ui-version="local-style-2026-05-08"]) .v2-leads-table th {
+    position: static;
+    top: auto;
+    background: var(--pl-paper);
+    border-bottom: 2px solid var(--pl-line);
+    padding: 8px 10px;
+    text-align: left;
+  }
+  body:has([data-ui-version="local-style-2026-05-08"]) .v2-leads-table {
+    min-width: unset;
+    table-layout: auto;
+  }
+  body:has([data-ui-version="local-style-2026-05-08"]) .v2-leads-table td {
+    padding: 12px 10px;
+    vertical-align: top;
+    border-bottom: 1px solid color-mix(in srgb, var(--pl-line) 18%, transparent);
   }
 
   /* Table cells */
