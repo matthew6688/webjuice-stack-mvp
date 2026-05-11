@@ -41,7 +41,8 @@
       "imageCount": 8,
       "hasPopularTimes": false,
       "hasAboutAttributes": true
-    }
+    },
+    "email": "matthewkiata@gmail.com"
   },
   "runs": [
     {
@@ -134,6 +135,96 @@
       "status": "graded",
       "clientSlug": "",
       "note": "Graded A / T3"
+    },
+    {
+      "at": "2026-05-11T04:17:43.499Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "awaiting",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Block 2.4 test"
+    },
+    {
+      "at": "2026-05-11T04:37:00.640Z",
+      "event": "phase_changed",
+      "from": "awaiting",
+      "to": "outreach-active",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Sent variant=v_2026-05_audit-led to matthewkiata@gmail.com [dry-run]"
+    },
+    {
+      "at": "2026-05-11T04:43:11.523Z",
+      "event": "phase_changed",
+      "from": "outreach-active",
+      "to": "replied",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "E2E test — simulating customer reply"
+    },
+    {
+      "at": "2026-05-11T04:46:16.040Z",
+      "event": "phase_changed",
+      "from": "replied",
+      "to": "outreach-active",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Sent variant=v_2026-05_audit-led to matthewkiata@gmail.com"
+    },
+    {
+      "at": "2026-05-11T04:46:42.412Z",
+      "event": "phase_changed",
+      "from": "outreach-active",
+      "to": "replied",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Reply class=interested; send_discovery_questions_or_calendly"
+    },
+    {
+      "at": "2026-05-11T04:55:41.541Z",
+      "event": "phase_changed",
+      "from": "replied",
+      "to": "outreach-active",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Sent variant=v_2026-05_audit-led to matthewkiata@gmail.com"
+    },
+    {
+      "at": "2026-05-11T05:05:30.629Z",
+      "event": "phase_changed",
+      "from": "outreach-active",
+      "to": "replied",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Reply class=interested; send_discovery_questions_or_calendly"
+    },
+    {
+      "at": "2026-05-11T05:07:10.130Z",
+      "event": "phase_changed",
+      "from": "replied",
+      "to": "needs-human",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Reply class=unclear; flag_for_operator"
+    },
+    {
+      "at": "2026-05-11T05:07:10.719Z",
+      "event": "phase_changed",
+      "from": "needs-human",
+      "to": "replied",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Reply class=interested; send_discovery_questions_or_calendly"
+    },
+    {
+      "at": "2026-05-11T05:07:11.261Z",
+      "event": "phase_changed",
+      "from": "replied",
+      "to": "needs-human",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Reply class=unclear; flag_for_operator"
     }
   ],
   "notes": [
@@ -149,5 +240,24 @@
     },
     "skip_reasons": [],
     "graded_at": "2026-05-11T02:09:40.555Z"
-  }
+  },
+  "phase": "needs-human",
+  "phaseChangedAt": "2026-05-11T07:11:43.983Z",
+  "signals": {
+    "sent": 3,
+    "replied": 3
+  },
+  "last_contact_at": "2026-05-07T07:16:15.783Z",
+  "last_sent_variant_id": "v_2026-05_audit-led",
+  "discord_thread_id": "1503256064244842547",
+  "discord_profile_message_id": "1503256064244842547",
+  "discord_thread_opened_at": "2026-05-11T04:42:54.885Z",
+  "last_reply_class": "unclear",
+  "last_reply_at": "2026-05-07T07:16:15.783Z",
+  "last_reply_excerpt": "Do you build websites? Matthew",
+  "inbound_message_ids": [
+    "ae14b808-fa0a-41f1-98e6-29c5786c58ed",
+    "14c49d24-1d1e-4479-bf13-6923779c0cd9",
+    "8270832f-ef5f-4814-85ca-115a8adbdf5f"
+  ]
 }
