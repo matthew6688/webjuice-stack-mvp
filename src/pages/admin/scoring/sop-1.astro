@@ -1,8 +1,28 @@
 ---
 import Layout from '../../../layouts/AdminLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Pick a real entity sample for the handoff payload viz (prefer one with grade + multi-field)
+let sampleEntity = null;
+try {
+  const dir = path.join(process.cwd(), 'data/leads/entities');
+  const candidates = fs.readdirSync(dir).filter((f) => f.startsWith('place_') && f.endsWith('.json'));
+  // Prefer one with grade.investment_level set; fall back to any
+  for (const f of candidates) {
+    try {
+      const e = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      if (e.grade?.investment_level && !sampleEntity) sampleEntity = e;
+      if (sampleEntity) break;
+    } catch {}
+  }
+  if (!sampleEntity && candidates.length > 0) {
+    sampleEntity = JSON.parse(fs.readFileSync(path.join(dir, candidates[0]), 'utf8'));
+  }
+} catch {}
 ---
 
-<Layout title="SOP-1 · 客户发现 (调研中)" active="scoring">
+<Layout title="SOP-1 · 客户发现 + Dedup + Enrichment" active="scoring">
   <section class="poster-section admin-section sop-page">
     <nav class="sop-tabs sop-tabs--global" aria-label="SOP navigation">
       <a href="/admin/scoring" class="sop-tab">
@@ -21,262 +41,303 @@ import Layout from '../../../layouts/AdminLayout.astro';
         <span class="sop-tab-en">Screening & Audit</span>
       </a>
     </nav>
-    <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
+    <div class="admin-shell lead-admin-shell scoring-shell sop-shell">
       <header class="admin-header">
         <div>
-          <p class="eyebrow">SOP-1 · 客户发现 INTAKE & DISCOVERY</p>
-          <h1>客户发现 / Intake & Discovery</h1>
-          <p class="zh-en-sub"><span>Lead Intake &amp; Discovery</span>　·　<span class="micro">"我们怎么找客户" — 抓客户进入数据库的第一段</span></p>
-          <p class="lede">把候选客户从外面（Google Maps / 图片 / 关键词搜索）抓进 entity 数据库。所有入口最终统一进 V2 entity store，下游 SOP-2 筛选 + 审计完全一致。</p>
+          <p class="eyebrow">SOP-1 · 客户发现 + 去重 + 增强</p>
+          <h1>客户发现 / Intake</h1>
+          <p class="zh-en-sub"><span>Intake · Dedup · Enrichment</span>　·　<span class="micro">"我们找进来 + 整理干净 + 联系方式补全"</span></p>
+          <p class="lede">SOP-1 出口承诺给 SOP-2：每个 entity 都 <strong>dedup-clean + enrichment-complete</strong>。 SOP-2 拿到就能直接 audit，不用再做联系方式补全 / 去重判定。</p>
+
           <div class="sop2-doc-link-row">
             <a href="/admin/scoring/sop-1-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📘</span>
               <span class="sop2-doc-link-text">
                 <strong>SOP-1 详细文档 v1.0</strong>
-                <span class="sop2-doc-link-sub">source of truth · <code>docs/SOP_1_INTAKE_DISCOVERY.md</code></span>
+                <span class="sop2-doc-link-sub">完整技术细节 / gotchas / 工具 · <code>docs/SOP_1_INTAKE_DISCOVERY.md</code></span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
-          </div>
-          <div class="sop2-doc-link-row">
             <a href="/admin/scoring/sop-handoff-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📑</span>
               <span class="sop2-doc-link-text">
-                <strong>SOP-1 → SOP-2 数据交接合约 / Handoff Contract</strong>
-                <span class="sop2-doc-link-sub">SOP-1 出口契约 · entity schema 每字段解读 · 必填校验</span>
+                <strong>SOP-1 → SOP-2 Handoff Contract</strong>
+                <span class="sop2-doc-link-sub">entity schema 全字段定义 + 必填校验</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
-          </div>
-          <div class="sop2-doc-link-row">
-            <a href="#investigation-note" class="sop2-doc-link-btn">
-              <span class="sop2-doc-link-icon">📋</span>
+            <a href="/admin/scoring/sop-x-dedup-doc" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">🧬</span>
               <span class="sop2-doc-link-text">
-                <strong>SOP-1 调研笔记 (待 review)</strong>
-                <span class="sop2-doc-link-sub">现状摸底 · 6 个检查点等你回 · <code>data/qa/sop-investigations/sop-1.md</code></span>
+                <strong>Dedup 协议详解 (SOP-X-Dedup)</strong>
+                <span class="sop2-doc-link-sub">3-key 规则 + 合并语义 + operator UI</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
           </div>
+
           <p class="admin-page-meta">
             <span class="admin-page-version">v1.0</span>
             <span class="dot">·</span>
             <span class="admin-page-updated">最近更新 2026-05-12</span>
             <span class="dot">·</span>
-            <span>G-1 / G-2 / G-3 / G-6 ✅</span>
+            <span>4 步 · 2 入口 · enrichment 2 路</span>
           </p>
           <div class="admin-code-sync-banner is-synced">
             <span>✓</span>
             <div>
-              <strong>本页范围</strong>：仅 SOP-1（客户发现 · entity 入库）。cheap-audit / detailed-audit / grade / dedup 规则归 <a href="/admin/scoring/sop-2">SOP-2</a>；entity schema 全字段定义归 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；工具计费 / health 监控归 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<a href="/admin/scoring/sop-ownership-registry">概念归属表</a>。<br/>
-              <strong>页面与代码同步</strong> — G-1 <code>pl:scrape-docker</code> · G-2 <code>pl:preflight</code> · G-3 <code>entity.batch_id</code> · G-6 image-lead V2 (<code>pl:ingest-image</code>) · <strong>G-7 Places enrichment (<code>pl:places-enrich</code>)</strong> 均已落地。<br/>
-              完整内容见 <a href="/admin/scoring/sop-1-doc">SOP-1 详细文档 v1.0</a>。
+              <strong>本页范围</strong>：仅 SOP-1（Discovery + Dedup + Enrichment + Handoff）。audit / grade / thread 归 <a href="/admin/scoring/sop-2">SOP-2</a>；entity schema 全字段归 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；工具计费归 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<br/>
+              <strong>页面与代码同步</strong> — G-1 / G-2 / G-3 / G-6 / G-7 + dedup detector + niche cohort 均已落地。
             </div>
           </div>
         </div>
         <div class="admin-count">
           <span>当前状态</span>
-          <strong>🟡 调研中</strong>
-          <span class="micro-note">等 Matthew review<br/>4-step 协议 Step 2</span>
+          <strong>✅ v1.0</strong>
+          <span class="micro-note">4 步 pipeline · dedup-clean<br/>enrichment-complete</span>
         </div>
       </header>
 
-      <!-- ─── 4-step SOP 协议进度 (stage-grid pattern, SOP-2 同款) ───────── -->
-      <section class="admin-paper-section">
+      <!-- ─── SOP-1 流程图 (只画自己的 4 步) ────────────────────────────── -->
+      <section class="admin-paper-section flow-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">4-step SOP 协议 · 当前进度</p>
-            <h2>SOP-1 还在 Step 2 <span class="en-sub">Awaiting your review of the investigation note</span></h2>
+            <p class="eyebrow">SOP-1 流程</p>
+            <h2>从抓取到 SOP-2 交付的 4 步</h2>
           </div>
-          <span class="admin-section-count">4 step · Step 2 active</span>
-        </div>
-        <p class="section-lede">建任何 SOP 必须走完 4 步：调研 → review → 写 → 验证。SOP-1 调研笔记已完成（实测 gosom Docker + grep 代码 + 20 leads scrape），等你 review 回答 6 个检查点，才动手写 v0.1。</p>
-
-        <div class="stage-grid">
-          <div class="stage-card stage-done">
-            <div class="stage-num">Step 1<span class="stage-cond-badge">完成</span></div>
-            <div class="stage-name">现状调研<span class="stage-en">Investigation</span></div>
-            <div class="stage-desc">
-              <p class="stage-desc-zh">读相关代码 · 探 Docker 容器 · 跑 verify scrape (实测 20 leads / 3 分钟) · grep search/enrichment 模块清单。</p>
-              <p class="stage-desc-en"><span class="lang-tag">EN</span> Read code · test Docker · live scrape sample → investigation note</p>
-            </div>
-            <div class="stage-meta">
-              <div><span class="stage-meta-label">产出</span> <code>data/qa/sop-investigations/sop-1.md</code> (~290 行)</div>
-              <div><span class="stage-meta-label">状态</span> <span class="chip chip-mint">完成 ✅</span></div>
-            </div>
-          </div>
-
-          <div class="stage-card stage-active">
-            <div class="stage-num">Step 2<span class="stage-cond-badge">进行中</span></div>
-            <div class="stage-name">Matthew Review<span class="stage-en">Verify investigation</span></div>
-            <div class="stage-desc">
-              <p class="stage-desc-zh"><strong>等你回答 6 个检查点</strong>，确认我没把现状搞错。回完才进 Step 3 写 SOP-1 v0.1。</p>
-              <p class="stage-desc-en"><span class="lang-tag">EN</span> Answer 6 checkpoints → unblock writing</p>
-            </div>
-            <div class="stage-meta">
-              <div><span class="stage-meta-label">要回的</span> 调研笔记 §8 末尾 6 个检查点</div>
-              <div><span class="stage-meta-label">已答</span> 4/6 (剩 search skills 清单 + G-1/2/3 detail confirm)</div>
-              <div><span class="stage-meta-label">状态</span> <span class="chip chip-coral">等你 review</span></div>
-            </div>
-          </div>
-
-          <div class="stage-card stage-pending">
-            <div class="stage-num">Step 3<span class="stage-cond-badge">待</span></div>
-            <div class="stage-name">写 SOP-1 v0.1<span class="stage-en">Draft SOP doc</span></div>
-            <div class="stage-desc">
-              <p class="stage-desc-zh">中文为主 + 英文对照 · 目的 / 操作步骤 / 容易忽略的点 / 维护规则 4 section。</p>
-              <p class="stage-desc-en"><span class="lang-tag">EN</span> Compose doc per ADMIN_DESIGN_SYSTEM rules + SOP-2 template</p>
-            </div>
-            <div class="stage-meta">
-              <div><span class="stage-meta-label">产出</span> <code>docs/SOP_1_INTAKE_DISCOVERY.md</code> + admin page 内容 fill</div>
-            </div>
-          </div>
-
-          <div class="stage-card stage-pending">
-            <div class="stage-num">Step 4<span class="stage-cond-badge">待</span></div>
-            <div class="stage-name">验证<span class="stage-en">Deploy verify</span></div>
-            <div class="stage-desc">
-              <p class="stage-desc-zh">astro build 本地通过 → push → GH Actions success → browser verify live URL + screenshot。</p>
-              <p class="stage-desc-en"><span class="lang-tag">EN</span> Build + push + GH Actions + live URL marker + screenshot</p>
-            </div>
-            <div class="stage-meta">
-              <div><span class="stage-meta-label">协议</span> SOP-X-Deploy (待写为正式 SOP)</div>
-            </div>
-          </div>
+          <span class="admin-section-count">2 入口 · 4 步骤 · 1 决策点</span>
         </div>
 
-        <p class="admin-note-line"><strong>📋 调研笔记 review 入口</strong>：<code>data/qa/sop-investigations/sop-1.md</code> §8 末尾 6 个检查点等你回。</p>
+        <div class="flow-grid">
+          <!-- ENTRIES -->
+          <div class="flow-row">
+            <div class="flow-row-label">入口</div>
+            <div class="flow-entries">
+              <div class="flow-entry">
+                <div class="flow-entry-tag">gosom Docker</div>
+                <div class="flow-entry-desc">Google Maps 主流量</div>
+              </div>
+              <div class="flow-entry">
+                <div class="flow-entry-tag">image-lead V2</div>
+                <div class="flow-entry-desc">网上找到名片 / 店面图</div>
+              </div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 1: DISCOVERY WRITE -->
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Discovery 写入 <span class="flow-step-badge">always</span></div>
+              <div class="flow-step-desc"><code>data/leads/entities/&lt;entityKey&gt;.json</code> · normalize 字段 · stamp <code>batch_id</code> + <code>sourceQuery</code></div>
+              <div class="flow-step-meta">place_id 撞库 → 这里自动 <code>mergeLeadIntoEntity</code></div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 2: DEDUP -->
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Dedup 检测 <span class="flow-step-badge">always</span></div>
+              <div class="flow-step-desc">3 把钥匙：<code>place_id</code> · <code>phoneDigits</code> · <code>websiteDomain</code>。phone / domain 撞 → 入 review 队列。</div>
+              <div class="flow-step-out">
+                <span class="flow-out-fail">嫌疑 → <a href="/admin/v2-leads/dedup-review">/admin/v2-leads/dedup-review</a></span>
+              </div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- DECISION: thin-contact? -->
+          <div class="flow-decision-row">
+            <div class="flow-decision-diamond">thin-contact?<br/><span class="flow-decision-sub"><code>!phone && !website</code></span></div>
+          </div>
+
+          <!-- STEP 3a + 3b -->
+          <div class="flow-branch-row">
+            <div class="flow-branch flow-branch-yes">
+              <div class="flow-branch-label">是</div>
+              <div class="flow-step flow-step-conditional">
+                <div class="flow-step-num">3a</div>
+                <div class="flow-step-body">
+                  <div class="flow-step-title">Contact enrichment</div>
+                  <div class="flow-step-desc">5 路 search：官方 URL / FB / IG / LinkedIn / 3rd-party (hipages, yelp, ...)</div>
+                  <div class="flow-step-meta">补 <code>contact_identity</code>。失败 → <code>enrichment_status: 'unenrichable'</code></div>
+                </div>
+              </div>
+            </div>
+            <div class="flow-branch flow-branch-no">
+              <div class="flow-branch-label">否</div>
+              <div class="flow-step flow-step-conditional">
+                <div class="flow-step-num">3b</div>
+                <div class="flow-step-body">
+                  <div class="flow-step-title">Places enrichment <span class="flow-step-badge">grade ≥ B</span></div>
+                  <div class="flow-step-desc"><code>pl:places-enrich</code> · types[] / photos / E.164 phone / verified hours</div>
+                  <div class="flow-step-meta">月度配额 11K calls hard cap · 见 <a href="/admin/scoring/sop-x-tooling">Tooling §2</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 4: HANDOFF -->
+          <div class="flow-step flow-step-handoff">
+            <div class="flow-step-num">4</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Handoff → SOP-2</div>
+              <div class="flow-step-desc"><code>enrichment_status</code> 写入 · entity 落到 <code>queues/cheap-site-audit.json</code> · 等 SOP-2 拉取</div>
+              <div class="flow-step-meta">承诺：dedup-clean + enrichment-complete (或 unenrichable flag)</div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <!-- ─── 4 入口对比 (channel-flow pattern, SOP-2 同款) ─────────────── -->
+      <!-- ─── Handoff Payload Sample (annotated) ──────────────────────── -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">客户发现 · 4 个入口（含 Places enrichment）</p>
-            <h2>从哪里抓客户 <span class="en-sub">4 entries to V2 entity store</span></h2>
+            <p class="eyebrow">SOP-1 → SOP-2 Handoff Payload</p>
+            <h2>这就是 SOP-2 拿到的字段（注释版）</h2>
           </div>
-          <span class="admin-section-count">3 主入口 + 1 增强入口 · 全统一进 V2 entity store</span>
+          <span class="admin-section-count">完整 schema 见 Handoff Contract</span>
         </div>
-        <p class="section-lede">不同来源最后<strong>必须统一进 V2 entity store</strong>。4 个入口形态不同，但 entity schema + 后续 pipeline 完全一致。<br/>
-        📘 详见 <a href="/admin/scoring/sop-handoff-doc">SOP-1 → SOP-2 数据交接合约</a> · 🔧 工具清单见 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。</p>
+        <p class="section-lede">这是真实 entity 的样本（节选关键字段）。<strong>每个字段后面注释说明：SOP-1 怎么填 + SOP-2 怎么用</strong>。这是合约本身，不是数据 dump — SOP-2 拿到的就是这套结构。</p>
 
-        <div class="channel-flow">
-          <div class="channel-card channel-0">
-            <div class="channel-stage">主入口 · 日常主力</div>
-            <div class="channel-zh">🐳 gosom Docker scraper</div>
-            <div class="channel-name"><code>localhost:8080</code> Docker container</div>
-            <div class="channel-unit">1 batch 任务 = N leads (实测 20 leads / 3 分钟)</div>
-            <div class="channel-purpose"><code>POST /api/v1/jobs</code> with keywords array → CSV → 转 JSONL → upsertDiscoveryRun → entity store</div>
-            <div class="channel-meta">
-              <span>✅ 免费 · 批量</span>
-              <span>⚠ <code>max_time</code> ≥ 180s</span>
-              <span>34 列 CSV 字段</span>
-            </div>
-          </div>
-          <div class="channel-arrow">
-            <span class="channel-arrow-label">↓ 不同入口，相同 entity 形态</span>
-            <span class="channel-arrow-glyph">▼</span>
-          </div>
+        {sampleEntity && (
+          <div class="payload-sample">
+            <div class="payload-line"><span class="payload-key">entityKey</span><span class="payload-val">"{sampleEntity.entityKey}"</span><span class="payload-note">SOP-1 生成的主键 · SOP-2 用作所有引用</span></div>
 
-          <div class="channel-card channel-1">
-            <div class="channel-stage">V2 入口 · image-lead</div>
-            <div class="channel-zh">🖼 image-lead V2 (G-6 ✅)</div>
-            <div class="channel-name"><code>npm run pl:ingest-image -- --image PATH --business-name X --phone Y --niche --city</code></div>
-            <div class="channel-unit">1 张图片 (名片 / 店面 / 招牌) = 1 lead</div>
-            <div class="channel-purpose">网上只能找到图片格式时的 ingest 路径 — 写入 <code>data/leads/entities/image_&lt;slug&gt;_&lt;phone&gt;.json</code>，与 gosom 同等 V2 公民。OCR 自动 extract = G-6.1 backlog。</div>
-            <div class="channel-meta">
-              <span>✅ V2 active 2026-05-12</span>
-              <span>当前手填字段</span>
-              <span>OCR auto-extract → G-6.1</span>
-            </div>
-          </div>
-          <div class="channel-arrow">
-            <span class="channel-arrow-label">↓ 统一进 V2 entity store</span>
-            <span class="channel-arrow-glyph">▼</span>
-          </div>
+            <div class="payload-section">identifiers · 多键匹配（dedup 核心）</div>
+            <div class="payload-line"><span class="payload-key">  place_id</span><span class="payload-val">"{sampleEntity.identifiers?.place_id?.slice(0, 36) || ''}..."</span><span class="payload-note">SOP-1 dedup primary key</span></div>
+            <div class="payload-line"><span class="payload-key">  phoneDigits</span><span class="payload-val">"{sampleEntity.identifiers?.phoneDigits || ''}"</span><span class="payload-note">dedup secondary · 后 10 位归一化</span></div>
+            <div class="payload-line"><span class="payload-key">  websiteDomain</span><span class="payload-val">"{sampleEntity.identifiers?.websiteDomain || ''}"</span><span class="payload-note">dedup secondary · 去 www. + 根域名</span></div>
 
-          <div class="channel-card channel-2">
-            <div class="channel-stage">实验入口 · 关键词 search</div>
-            <div class="channel-zh">🔍 Search skill 系列</div>
-            <div class="channel-name">多 search 引擎 (Tinyfish / DDGS / Doko / etc.)</div>
-            <div class="channel-unit">1 关键词 query = N 搜索结果 → 提取商家信息</div>
-            <div class="channel-purpose">当前与 gosom keywords[] 参数同源；未来"非 Google Maps search" 是 v0.2 范围</div>
-            <div class="channel-meta">
-              <span>🧪 实验 / 同源 gosom</span>
-            </div>
-          </div>
-          <div class="channel-arrow">
-            <span class="channel-arrow-label">↓ grade ≥ B 才触发，控制成本</span>
-            <span class="channel-arrow-glyph">▼</span>
-          </div>
+            <div class="payload-section">latest · SOP-2 主要消费</div>
+            <div class="payload-line"><span class="payload-key">  name</span><span class="payload-val">"{sampleEntity.latest?.name || ''}"</span><span class="payload-note">SOP-2 master.md 标题</span></div>
+            <div class="payload-line"><span class="payload-key">  niche</span><span class="payload-val">"{sampleEntity.latest?.niche || ''}"</span><span class="payload-note">SOP-2 触发 niche-specific 规则</span></div>
+            <div class="payload-line"><span class="payload-key">  city</span><span class="payload-val">"{sampleEntity.latest?.city || ''}"</span><span class="payload-note">SOP-2 评论搜索 / niche-match scoring</span></div>
+            <div class="payload-line"><span class="payload-key">  phone</span><span class="payload-val">"{sampleEntity.latest?.phone || ''}"</span><span class="payload-note">⭐ SOP-1 enrichment 后填或标 unenrichable</span></div>
+            <div class="payload-line"><span class="payload-key">  website</span><span class="payload-val">"{sampleEntity.latest?.website || ''}"</span><span class="payload-note">⭐ 同上 · SOP-2 audit 入口</span></div>
+            <div class="payload-line"><span class="payload-key">  sourceQuery</span><span class="payload-val">"{sampleEntity.latest?.sourceQuery || ''}"</span><span class="payload-note">SOP-1 bridge 强制 = run.query · 追溯 batch</span></div>
+            <div class="payload-line"><span class="payload-key">  batch_id</span><span class="payload-val">"{sampleEntity.latest?.batch_id || ''}"</span><span class="payload-note">SOP-1 stamp · SOP-2 可 filter 本批</span></div>
 
-          <div class="channel-card channel-3">
-            <div class="channel-stage">增强入口 · Places API (G-7 ✅)</div>
-            <div class="channel-zh">📍 Google Places API enrichment</div>
-            <div class="channel-name"><code>npm run pl:places-enrich -- --entity-key place_X</code></div>
-            <div class="channel-unit">1 entity 增强 = 1 API call (Details Basic SKU, $0.017)</div>
-            <div class="channel-purpose">SOP-2 detailed-audit 后 grade ≥ B 触发 → Places Details Basic call → 写入 <code>entity.latest.places_enrichment</code> (types[] 多分类 / E.164 国际电话 / 验证 opening_hours / photos 引用)</div>
-            <div class="channel-meta">
-              <span>✅ active 2026-05-12</span>
-              <span>💰 $200/月免费额度 ≈ 11K calls (硬 cap 在 11K)</span>
-              <span>📊 quota 见 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a></span>
-            </div>
-          </div>
-        </div>
+            <div class="payload-section">enrichment_status · SOP-1 出口承诺</div>
+            <div class="payload-line"><span class="payload-key">enrichment_status</span><span class="payload-val">"{sampleEntity.enrichment_status || '(待 SOP-1 填; 当前样本属于历史 entity)'}"</span><span class="payload-note">complete / partial / unenrichable</span></div>
 
-        <p class="admin-note-line"><strong>关键设计</strong>：不管哪条路进来，最后<strong>统一</strong>写到 <code>data/leads/entities/&lt;key&gt;.json</code> + <code>discovery-events.jsonl</code> + <code>queues.json</code> → 后续 SOP-2 筛选 + 审计 pipeline 完全一致。Places enrichment 是 grade≥B 后的增强，**不**改变 entity schema 主结构（只加 <code>latest.places_enrichment</code> 子对象）。</p>
+            <div class="payload-section">SOP-2 写入字段（SOP-1 不读这些）</div>
+            <div class="payload-line"><span class="payload-key">grade</span><span class="payload-val">{sampleEntity.grade ? `{ investment_level: "${sampleEntity.grade.investment_level}", product_tier: "${sampleEntity.grade.product_tier || ''}" }` : 'null'}</span><span class="payload-note">SOP-2 gradeLead 后回填</span></div>
+            <div class="payload-line"><span class="payload-key">discord_thread_id</span><span class="payload-val">"{sampleEntity.discord_thread_id || ''}"</span><span class="payload-note">A/B 自动开 thread 后回填</span></div>
+
+            <p class="payload-source">↑ 真实 entity 样本：<code>{sampleEntity.entityKey}</code></p>
+          </div>
+        )}
+
+        {!sampleEntity && (
+          <p class="admin-note-line">⚠ 当前 entity store 为空，无法渲染样本。完整字段定义见 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff §2</a>。</p>
+        )}
       </section>
 
-      <!-- ─── 10 容易忽略的点 + 3 待建工具 (admin-table pattern) ─────────── -->
+      <!-- ─── 链接到详细文档 + admin operations -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">容易忽略的点 + 待建工具</p>
-            <h2>实战中的坑 <span class="en-sub">Gotchas + tools to build during SOP-1 implementation</span></h2>
+            <p class="eyebrow">深入了解</p>
+            <h2>看更多细节 · 跑操作</h2>
           </div>
-          <span class="admin-section-count">10 gotchas · 3 tools</span>
         </div>
-
-        <h3 class="subhead">① 10 个容易忽略的点</h3>
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>#</th><th>点</th><th>影响</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td>Niche 是 substring match (含 "oof" → roofing)</td><td>偶尔误进 "Roofer's Bar"，cheap-audit SKIP 兜底</td></tr>
-              <tr><td>2</td><td>同 lead 重复抓 → place_id dedup</td><td>自动合并 history，不污染 entity</td></tr>
-              <tr><td>3</td><td>V1 status + V2 phase 两套状态字段共存</td><td>discovery 写 status，sales 状态机用 phase</td></tr>
-              <tr><td>4</td><td>没 website 的 lead → starter_candidate</td><td>未完全自动化，要 SOP-2 §6 路径</td></tr>
-              <tr><td>5</td><td>Image lead 走 V1 不进 V2</td><td>Matthew 已定要并入 V2 主流程</td></tr>
-              <tr><td>6</td><td><code>max_time</code> ≥ 180 秒</td><td>gosom API hard limit，&lt; 180 直接 422</td></tr>
-              <tr><td>7</td><td><strong>Contact identity 多触点缺失</strong></td><td>social / contact-us URL 没记 → SOP-ART-3</td></tr>
-              <tr><td>8</td><td>sourceQuery 字段是关键追溯线</td><td>跨 niche/city 扩展时筛选靠这字段</td></tr>
-              <tr><td>9</td><td>Discord forum tags 必须先 setup</td><td>tags 不存在 → applied_tags API 422</td></tr>
-              <tr><td>10</td><td>GMB 没设 category → entity.latest.category 空</td><td>cheap-audit 会 SKIP，需手动 enrichment 补</td></tr>
-            </tbody>
-          </table>
+        <div class="admin-card-grid admin-card-grid-3">
+          <div class="admin-card">
+            <p class="eyebrow">详细文档</p>
+            <p><a href="/admin/scoring/sop-1-doc">SOP-1 v1.0 详细文档</a></p>
+            <p class="admin-card-meta">技术细节 / 字段命名差异 / batch_id 传播 / 8 条 gotchas / 工具实施状态</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">Operator UI</p>
+            <p><a href="/admin/v2-leads/dedup-review">Dedup Review</a> · <a href="/admin/v2-leads/niches">Niche Cohorts</a></p>
+            <p class="admin-card-meta">嫌疑撞库决策 · niche 分组浏览 · upsell 准备</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">CLI</p>
+            <p><code>pl:scrape-docker</code> · <code>pl:ingest-image</code> · <code>pl:places-enrich</code> · <code>pl:dedup-audit</code> · <code>pl:rebuild-niche-shards</code></p>
+            <p class="admin-card-meta">完整列表见 <a href="/admin/scoring/sop-1-doc">SOP-1 详细文档 §9</a></p>
+          </div>
         </div>
-
-        <h3 class="subhead">② 3 个工具 SOP-1 实施时要建</h3>
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>ID</th><th>工具</th><th>用途</th><th>工程量</th></tr></thead>
-            <tbody>
-              <tr><td><code>G-1</code></td><td><code>pl:scrape-docker</code> CLI</td><td>POST job → poll → CSV → JSONL → upsertDiscoveryRun (现在没有，每次都手动)</td><td>~1h</td></tr>
-              <tr><td><code>G-2</code></td><td><code>pl:preflight</code> CLI</td><td>跑 batch 前 30 秒健康检查：Docker / API / Discord / claude_cli / 磁盘</td><td>~30min</td></tr>
-              <tr><td><code>G-3</code></td><td>Entity schema 加 <code>batch_id</code></td><td>mergeLeadIntoEntity + bridge 透传，每 lead 知道"我哪批进来的"</td><td>~20min</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p class="admin-note-line">完整调研笔记在 <code>data/qa/sop-investigations/sop-1.md</code> (~280 行)。<strong>请打开 review 后回答 6 个检查点 (§8 末尾)</strong>，确认我没搞错现状，我才写 SOP-1 v0.1。</p>
       </section>
     </div>
   </section>
 </Layout>
 
-
 <style>
-  /* Page-specific layout only. All visual chrome from admin-design-system.css. */
-  .sop-shell { max-width: 1080px; }
-  .sop-shell .admin-header h1 { font-size: 30px; line-height: 1.15; }
+  /* Payload sample · annotated entity field viewer */
+  .payload-sample {
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+    box-shadow: 3px 3px 0 var(--pl-line);
+    padding: 16px 20px;
+    margin: 14px 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .payload-line {
+    display: grid;
+    grid-template-columns: 180px 1fr 1fr;
+    gap: 12px;
+    padding: 3px 0;
+    align-items: baseline;
+    border-bottom: 1px dotted color-mix(in srgb, var(--pl-line) 30%, transparent);
+  }
+  .payload-line:last-child { border-bottom: none; }
+  .payload-key { color: var(--pl-ink); font-weight: 600; white-space: pre; }
+  .payload-val { color: var(--pl-coral); word-break: break-all; }
+  .payload-note { color: var(--pl-muted); font-size: 11px; font-style: italic; font-family: Georgia, serif; }
+  .payload-section {
+    margin: 14px 0 6px;
+    padding: 4px 8px;
+    background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper));
+    border-left: 3px solid var(--pl-citrus);
+    font-family: Georgia, serif;
+    font-size: 12px;
+    font-weight: 700;
+    font-style: italic;
+  }
+  .payload-source {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--pl-muted);
+    font-family: Georgia, serif;
+  }
+
+  /* Decision diamond */
+  .flow-decision-row { display: flex; justify-content: center; margin: 6px 0; }
+  .flow-decision-diamond {
+    display: inline-block;
+    padding: 14px 22px;
+    border: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 28%, var(--pl-paper));
+    transform: rotate(0deg);
+    font-family: Georgia, serif;
+    font-weight: 700;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 3px 3px 0 var(--pl-line);
+  }
+  .flow-decision-sub { display: block; font-size: 11px; color: var(--pl-muted); font-weight: 400; margin-top: 4px; }
+
+  /* Branch row */
+  .flow-branch-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; }
+  .flow-branch { display: flex; flex-direction: column; gap: 4px; }
+  .flow-branch-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pl-coral);
+    letter-spacing: 0.1em;
+    padding: 4px 0;
+  }
+  .flow-branch-yes .flow-branch-label { color: var(--pl-coral); }
+  .flow-branch-no .flow-branch-label { color: var(--pl-mint); filter: brightness(0.7); }
+
+  .flow-step-handoff { background: color-mix(in srgb, var(--pl-mint) 15%, var(--pl-paper)); }
 </style>
