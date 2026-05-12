@@ -178,34 +178,66 @@ try {
           <div class="flow-step">
             <div class="flow-step-num">1</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">建档：把找到的商家写进系统 <span class="flow-step-badge">每条都跑</span></div>
-              <div class="flow-step-desc">在 <code>data/leads/entities/&lt;entityKey&gt;.json</code> 落一份档案 · 字段格式统一化 · 打上批次号（<code>batch_id</code>）和搜索词（<code>sourceQuery</code>）</div>
-              <div class="flow-step-meta">如果 Google 店铺 ID（<code>place_id</code>）已经入过库 → 直接合并到原档案（<code>mergeLeadIntoEntity</code>）</div>
+              <div class="flow-step-title">建档：把找到的商家落档 <span class="flow-step-badge">每条都跑</span></div>
+              <div class="flow-step-desc">字段格式统一化、打上批次号 + 搜索词来源，存进商家档案库。</div>
+              <div class="flow-step-meta">已存在的商家（Google 店铺 ID 撞库）→ 直接合并进原档案，不重复入库。</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- STEP 2: DEDUP -->
+          <!-- STEP 2: DEDUP (with AI auto-decision) -->
           <div class="flow-step">
             <div class="flow-step-num">2</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">去重：查有没有重复商家 <span class="flow-step-badge">每条都跑</span></div>
-              <div class="flow-step-desc">3 个判重信号：Google 店铺 ID（<code>place_id</code>）· 电话号（<code>phoneDigits</code>，归一后 10 位）· 官网域名（<code>websiteDomain</code>，去掉 www. 取根域）。电话或域名撞上 → 进人工复核队列。</div>
+              <div class="flow-step-title">去重：查有没有跟已入库的撞 <span class="flow-step-badge">每条都跑</span></div>
+              <div class="flow-step-desc">
+                <strong>8 个判重信号</strong>（按强度排序）：
+              </div>
+              <div class="flow-step-dedup-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.25em 1em;font-size:0.88em;margin:0.5em 0;padding:0.6em 0.8em;background:rgba(0,0,0,0.025);border-left:3px solid #6366f1;border-radius:3px">
+                <div>🟢 <strong>ABN</strong> 澳大利亚商业号</div><div style="opacity:0.65">最强 · 政府注册唯一</div>
+                <div>🟢 <strong>Google 店铺 ID</strong></div><div style="opacity:0.65">最强 · 一店一 ID</div>
+                <div>🟢 <strong>经纬度</strong> {'<'} 50m</div><div style="opacity:0.65">强 · 同地址换名也认</div>
+                <div>🟡 <strong>电话号</strong> 归一后 10 位</div><div style="opacity:0.65">中 · 可能换号但少见</div>
+                <div>🟡 <strong>邮箱</strong></div><div style="opacity:0.65">中 · 业务联系唯一性高</div>
+                <div>🟡 <strong>官网域名</strong></div><div style="opacity:0.65">中 · 同一公司多店共用</div>
+                <div>🔵 <strong>公司名</strong> fuzzy 匹配</div><div style="opacity:0.65">弱 · 容易冲突</div>
+                <div>🔵 <strong>地址</strong> 标准化后</div><div style="opacity:0.65">弱 · 商场 / 楼宇会撞</div>
+              </div>
+              <div class="flow-step-meta" style="background:rgba(99,102,241,0.05);padding:0.5em 0.7em;border-radius:3px;margin-top:0.4em">
+                <strong>🧠 AI 自动判断</strong>（本地 LLM · qwen3.5）：撞库 → 把两条商家档案丢给 LLM 判 → 3 种结果：
+                <ul style="margin:0.3em 0 0 1.2em;padding:0">
+                  <li><strong>同一家</strong>（高置信）→ 自动合并 · 继续往下走</li>
+                  <li><strong>不是同一家</strong>（高置信）→ 标"已查过非重复" · 继续往下走</li>
+                  <li><strong>不确定</strong>（低置信）→ 进人工复核队列</li>
+                </ul>
+              </div>
               <div class="flow-step-out">
-                <span class="flow-out-fail">疑似重复 → 去 <a href="/admin/v2-leads/dedup-review">/admin/v2-leads/dedup-review</a> 人工判定</span>
+                <span class="flow-out-fail">不确定的少数 case → 去 <a href="/admin/v2-leads/dedup-review">人工复核界面</a> 一键判定</span>
               </div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- STEP 3: ENRICHMENT (single-line · no branch) -->
+          <!-- STEP 3: ENRICHMENT (5 channels detailed) -->
           <div class="flow-step">
             <div class="flow-step-num">3</div>
             <div class="flow-step-body">
               <div class="flow-step-title">补联系方式：到处搜电话和官网 <span class="flow-step-badge">每条都跑</span></div>
-              <div class="flow-step-desc">5 个搜索通道：官网、Facebook、Instagram、LinkedIn、第三方目录（hipages、yelp 等）</div>
-              <div class="flow-step-meta">把找到的填进 <code>contact_identity</code>。出口三态：<code>complete</code>（有 phone OR website）/ <code>partial</code>（跑了但没拿到联系方式但有 social 等其他证据）/ <code>unenrichable</code>（所有 route 都失败）</div>
-              <div class="flow-step-meta" style="opacity:0.7">⚠ Places API 补全（行业分类 / 店面图 / E.164 phone / 营业时间）属于 <strong>SOP-2 回流</strong>（grade ≥ B 后由 SOP-2 调）· 不在 SOP-1 主链 · 见 <a href="/admin/scoring/sop-2">SOP-2</a></div>
+              <div class="flow-step-desc"><strong>5 个搜索通道</strong>（按优先级跑，找到立即标 complete · 也可继续找其它社交媒体）：</div>
+              <div class="flow-step-channels" style="margin:0.5em 0;padding:0.6em 0.8em;background:rgba(0,0,0,0.025);border-left:3px solid #10b981;border-radius:3px;font-size:0.9em">
+                <div style="margin-bottom:0.35em"><strong>1. 官网</strong> · 直接搜公司名 + 城市 + "official" → 找到 → 抓 phone / email</div>
+                <div style="margin-bottom:0.35em"><strong>2. Facebook 商家页</strong> · 90% 澳洲 SME 都有 · 抓 phone / Messenger / hours</div>
+                <div style="margin-bottom:0.35em"><strong>3. Instagram 商家页</strong> · 颜值业 / 餐饮强相关 · 抓 bio 里的电话 / WhatsApp</div>
+                <div style="margin-bottom:0.35em"><strong>4. LinkedIn 公司页</strong> · 主要 B2B / professional services · 抓 official website 反推</div>
+                <div><strong>5. 第三方目录</strong> · hipages / yelp / yellowpages / truelocal · 兜底</div>
+              </div>
+              <div class="flow-step-meta">
+                <strong>出口三态</strong>：
+                <span style="color:#059669">🟢 已补到（complete）</span>有 phone 或 website ·
+                <span style="color:#d97706">🟡 部分（partial）</span>没拿到 phone/website 但有社交账号等其它证据 ·
+                <span style="color:#dc2626">🔴 查不到（unenrichable）</span>所有通道都失败
+              </div>
+              <div class="flow-step-meta" style="opacity:0.7;font-size:0.82em;margin-top:0.4em">⚠ 行业分类 / 店面图 / E.164 phone / 营业时间这些深度字段，属于 <strong>SOP-2 回流补全</strong>（grade ≥ B 时由 SOP-2 调 Places API）· 不在 SOP-1 主链 · 见 <a href="/admin/scoring/sop-2">SOP-2</a></div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
@@ -214,9 +246,14 @@ try {
           <div class="flow-step admin-flow-step--handoff">
             <div class="flow-step-num">4</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">交接：把商家送进 SOP-2 队列</div>
-              <div class="flow-step-desc">写入补全状态（<code>enrichment_status</code>） · 商家档案落到 <code>queues/cheap-site-audit.json</code> · 等 SOP-2 来拉取</div>
-              <div class="flow-step-meta">出口承诺：已去过重 + 联系方式补到位（或者明确标了"查不到联系方式"）</div>
+              <div class="flow-step-title">交接：把商家送进 SOP-2 排队</div>
+              <div class="flow-step-desc">写好补全状态标签 → 商家档案进 SOP-2 审计队列 → 等 SOP-2 来取。</div>
+              <div class="flow-step-meta">
+                <strong>出口承诺给 SOP-2</strong>：每家商家都<br/>
+                ① 已去过重（明确"非重复"或"已合并"）<br/>
+                ② 联系方式已补全（complete / partial / unenrichable 三态都有明确标签）<br/>
+                SOP-2 拿到就能直接审计，不用再帮忙查电话 / 判重复。
+              </div>
             </div>
           </div>
         </div>
