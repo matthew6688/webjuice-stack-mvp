@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: v0.7 (P0-P6 完成 · admin live via tunnel · P7 next)
+**版本**: v0.8 (P0-P7 完成 · 5 daemon · retention + reactions live · P8 cleanup next)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -299,10 +299,46 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P4** | ~~3 CLI 加 `--task-id`~~ → **dispatcher stdout tee** · throttled appendProgress · 0 CLI 改动 | ✅ done 2026-05-12 · live verified | 100% |
 | **P5** | `discovery-store.js` createTask on thin-contact (push trigger, debounced) | ✅ done 2026-05-12 · 257ms E2E verified | 100% |
 | **P6** | `/admin/tasks` + `/admin/cron` · 选 path B (Cloudflare Tunnel + local HTTP API + live admin) | ✅ done 2026-05-12 · `tasks.profitslocal.com` live · Bearer auth · 4 daemon | 100% |
-| **P7** | E2E smoke 3 路 + retention archive (>30d → `data/tasks/_archive/YYYY-MM/`) | ⏳ | 85% |
+| **P7** | retention archive cron (>30d done/failed → `_archive/YYYY-MM/`) + Discord reaction listener (✅ retry / 🗑 abandon) — reactions 已在 P2.3 wired | ✅ done 2026-05-12 · 5 launchd 全活 | 100% |
 | **P8** | 老 `core/discord-tasks/` archive + 9 caller scripts 清理 + doc v0.3 锁定 | ⏳ | 92% |
 
-完成 11/12 (P0-P6) · 剩 ~3h (P7-P8)。
+完成 12/12 (P0-P7) · 剩 ~1h (P8 老代码归档)。
+
+### 7.3 P7 retention + reactions
+
+**Retention (新)**：`scripts/cli/pl-task-retention.js` · 默认 30 天 cutoff · 扫 `data/tasks/*.json` 中 `done`/`failed` · 超时移到 `_archive/YYYY-MM/<task_id>.json`. Idempotent · 0 移到任 N 次都安全.
+
+调度 = launchd `ai.profitslocal.task-retention` · `StartCalendarInterval` 每天 03:00 本地时间. 不放 Hermes cron — 因为不需要 Hermes context · 纯 fs 操作.
+
+```bash
+# 手动 (任何时候安全)
+npm run pl:task-retention                       # 30d default
+npm run pl:task-retention -- --days 7           # 紧一点
+npm run pl:task-retention -- --dry-run          # 看会移什么不动手
+npm run pl:task-retention -- --statuses done,failed,human  # 覆盖默认
+```
+
+**Reactions (P2.3 已有，P7 verified)**：listener daemon 内 `MessageReactionAdd` handler
+
+| 触发条件 | 动作 |
+|---|---|
+| Reaction on `human`-tagged thread + emoji `✅` + 非 bot user | task `human` → `pending` · tag swap · thread reply "retried by X" |
+| Reaction on `human`-tagged thread + emoji `🗑` / `🗑️` + 非 bot user | task `human` → `done` · tag swap · thread reply "abandoned by X" · error 字段保留原因 |
+| 其他 emoji / 非 human-tag thread / bot user | 静默 ignore |
+
+**测试方式**：你在 Discord forum 找一个 `human`-tag thread (没有的话等失败 task 自然产生)，点 ✅ 或 🗑 reaction，dispatcher 会接管。所有事件落 `data/tasks/_logs/task-listener.log`.
+
+### 7.4 当前全部 5 个 daemon
+
+```bash
+launchctl list | grep profitslocal
+#  PID  EXIT  Label
+#  -    0     ai.profitslocal.task-retention    # 每日 03:00 cron
+#  ...  0     ai.profitslocal.task-listener     # Discord WS
+#  ...  0     ai.profitslocal.task-dispatcher   # fs.watch spawn
+#  ...  0     ai.profitslocal.sop0-tunnel       # cloudflared QUIC
+#  ...  0     ai.profitslocal.task-api          # localhost:4040 REST
+```
 
 ### 7.2 P6 架构（live admin via Cloudflare Tunnel）
 
@@ -436,6 +472,10 @@ Logs:
 | 2026-05-12 | P6 auth 双 token 层 | **ADMIN_ACCESS_TOKEN (CF Pages middleware) + SOP0_API_AUTH_TOKEN (tunnel bearer)** | 单 token / CF Access dashboard 配置 | CF Pages 已有 middleware 现成 · CF Access API token 没权限 · 双层 token 即开即用 |
 | 2026-05-12 | API 只读 | GET only · 写操作走 Discord (reactions) / Hermes dashboard | 全 CRUD | "写" 边界面更复杂、auth 要求更高、Discord/Hermes 已 cover 写路径 · YAGNI |
 | 2026-05-12 | image-extract 任务 attachment 处理 | **TODO P6+** · 当前 listener 不下载 Discord 附件 | inline base64 / Cloudinary | Matthew 2026-05-12 self-test 时发图 → 路由对但 CLI 缺 args 退出 1 · 真实 gap · 单独 P6.X 工作 |
+| 2026-05-12 | Retention 调度位置 | **launchd `StartCalendarInterval` 每天 03:00** | Hermes cron / dispatcher 内嵌 | 纯 fs 操作 · 不需 Hermes context · launchd 更可靠 · 与其他 SOP-0 daemon 同一管理面 |
+| 2026-05-12 | Retention 默认 cutoff | **30 天** + `--days N` 覆盖 | 7 / 90 / 永不 | 30 天足够人肉回看常用窗口 · `_archive/YYYY-MM/` 仍可查 · 极端可以 `--days 365` 收紧 |
+| 2026-05-12 | Reactions 不接现有 thread chat | **only `human`-tag + ✅/🗑** | 接所有 MessageCreate | SOP-0 是任务系统不是聊天 bot · 聊天交给 Hermes website-agent (其他 channel) · 避免无限循环 |
+| 2026-05-12 | Thread-内对话不回复 | **故意** | bot 任意 reply | listener 只听 `ThreadCreate` · 现有 thread 评论 = 操作员自言自语 · 这是 feature 不是 bug |
 
 ---
 
