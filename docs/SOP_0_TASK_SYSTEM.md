@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: v0.4 (P0-P3 完成 · listener + dispatcher 双 daemon live · P4 next)
+**版本**: v0.5 (P0-P4 完成 · stdout tee live progress · P5 next)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -289,13 +289,26 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P2.4** | launchd plist `ai.profitslocal.task-listener` · KeepAlive · auto-restart | ✅ done 2026-05-12 · daemon running | 100% |
 | **P2.5** | E2E smoke — combined into P2.3 verification (catch-up routed thread, task created, tag PATCHed, reply posted, latency ~9s) | ✅ done | — |
 | **P3** | `pl-task-dispatcher.js` (fs.watch + 60s cron + flock + spawn target_cli + tag PATCH + thread reply) | ✅ done 2026-05-12 · E2E verified | 100% |
-| **P4** | 3 CLI 加 `--task-id` (intake / enrich / audit) + shared `appendProgress` helper | ⏳ | 95% |
+| **P4** | ~~3 CLI 加 `--task-id`~~ → **dispatcher stdout tee** · throttled appendProgress · 0 CLI 改动 | ✅ done 2026-05-12 · live verified | 100% |
 | **P5** | `discovery-store.js` createTask on thin-contact | ⏳ | 95% |
 | **P6** | `/admin/tasks` + `/admin/cron` 页面 | ⏳ | 88% |
 | **P7** | E2E smoke 3 路 + retention archive (>30d → `data/tasks/_archive/YYYY-MM/`) | ⏳ | 85% |
 | **P8** | 老 `core/discord-tasks/` archive + 9 caller scripts 清理 + doc v0.3 锁定 | ⏳ | 92% |
 
-完成 8/12 (P0-P3) · 剩 ~8h (P4-P8)。
+完成 9/12 (P0-P4) · 剩 ~6h (P5-P8)。
+
+### 7.X · P4 实时进度观测
+
+**Dispatcher 主动 tee subprocess stdout/stderr** → `task.progress[]` 追加 `cli.stream` 条目。
+- 触发：每 `SOP0_STREAM_FLUSH_MS` (默认 5000ms) **或** buffer ≥ `SOP0_STREAM_FLUSH_BYTES` (默认 2048) 先到
+- detail 字段 = 最近 200 字符 (ANSI 已剥)
+- 完整 stdout 仍在 exit 时落 thread reply tail（1500 chars）
+- **CLI 0 改动** — SOP-0 单向感知业务 CLI，不反向耦合
+
+可见性：
+- `data/tasks/<id>.json` 的 progress[] 实时长（每 5s 或 2KB）
+- Discord thread = 仍只发 create / complete 两条（不 spam）
+- `/admin/tasks` 页 (P6) = build-time 快照；要真活体需本地小 server
 
 ### 7.1 Deploy / 运维（listener + dispatcher daemons）
 
@@ -361,6 +374,9 @@ Logs:
 | 2026-05-12 | Dispatcher one-shot 等 in-flight | **轮询 `inFlight` set，直到空才退出** (最长 2× DEFAULT_TIMEOUT_MS) | 1s setTimeout 后 hard-exit | P3 smoke 发现的 bug：parent exit 不会等 spawned child，child 完成但 task 卡在 running → 一旦发现，**立刻**修 + 写 decision log，不让它二次出现 |
 | 2026-05-12 | Dispatcher 调 CLI 用 `npm run X --` | 直接 `spawn(scripts/cli/X.js)` | `npm run` 触发 package.json 的 `--env-file-if-exists` flag · 否则 .env.local 没加载 |
 | 2026-05-12 | Subprocess 完成后回帖 | **stdout/stderr 合并 tail 1500 字符** + tag PATCH + post 到 thread | 不回帖 / 静默落 JSON | Operator 在 Discord 直接看到结果，不用切 admin |
+| 2026-05-12 | P4 实时进度 | **dispatcher stdout tee → task.progress[]** (throttled 5s/2KB) | 3 个 CLI 各加 `--task-id` + import `appendProgress` | Matthew 原则: "为兼容老代码牺牲太多要敢于重新设计"。CLI 改动方案让业务 CLI 知道 SOP-0 = 反向耦合 / CLI 改 log 格式会 break SOP-0 / 30 LOC × 3。Tee 方案 dispatcher 单点 ~40 LOC，业务 CLI 0 改动，方向更对 |
+| 2026-05-12 | Admin /admin/tasks 不实时 | **build-time 快照** + Discord 是实时端 | 客户端 5s 轮询 / Cloudflare worker / 本地 web server | 仓库 prod 是 Astro static · CF worker 读不到本地 `data/tasks/` · Discord thread 已是天然实时面板 · 真要本地活体 admin → P6 加 30 行 node http server (defer) |
+| 2026-05-12 | catch-up `findByThreadId` 扫归档 | **`data/tasks/` + `_archive/` 都扫** | 只扫活动目录 | P3 E2E 测试发现的 bug：归档 task 后 forum thread 还活着 → 重启后 catch-up 当"未处理"重 route → 副本 task / 副本 batch metadata |
 
 ---
 
@@ -376,6 +392,9 @@ Logs:
 | `TEXT_PROVIDER` | (unset) | 强制单 provider，跳过 cascade |
 | `SOP0_TASK_TIMEOUT_MS` | `300000` (5min) | 默认 task 超时 |
 | `SOP0_DISPATCHER_TICK_MS` | `60000` | Cron safety tick 间隔 |
+| `SOP0_STREAM_FLUSH_MS` | `5000` | Dispatcher tee 节流间隔（progress[] 写频率） |
+| `SOP0_STREAM_FLUSH_BYTES` | `2048` | Dispatcher tee bytes 阈值（提前 flush） |
+| `LISTENER_ALLOW_BOTS` | (unset) | `=1` 允许 bot-authored forum thread (仅 E2E smoke 用) |
 
 ---
 

@@ -177,11 +177,68 @@ async function runTask(taskId) {
     setTimeout(() => { try { child.kill('SIGKILL'); } catch {} }, 5000);
   }, timeoutMs);
 
-  child.stdout.on('data', (b) => { stdoutChunks.push(b); });
-  child.stderr.on('data', (b) => { stderrChunks.push(b); });
+  // ── P4 · Throttled stdout/stderr tee → task.progress[] ───────────────
+  // Live progress visible while the CLI runs without modifying any CLI.
+  // Flush rule: every STREAM_FLUSH_MS OR when buffer grows past STREAM_FLUSH_BYTES.
+  // Detail field = last 200 chars of accumulated buffer since last flush
+  // (keeps progress[] entries readable, full output still captured at exit).
+  const STREAM_FLUSH_MS = parseInt(process.env.SOP0_STREAM_FLUSH_MS || '5000', 10);
+  const STREAM_FLUSH_BYTES = parseInt(process.env.SOP0_STREAM_FLUSH_BYTES || '2048', 10);
+  let pendingBuf = '';   // accumulated text since last flush
+  let lastFlushAt = Date.now();
+  let flushTimer = null;
+
+  function flushStream(force = false) {
+    if (!pendingBuf) return;
+    const now = Date.now();
+    if (!force
+        && now - lastFlushAt < STREAM_FLUSH_MS
+        && Buffer.byteLength(pendingBuf, 'utf8') < STREAM_FLUSH_BYTES) {
+      return; // not time yet
+    }
+    // Take last 200 chars (most-recent signal), strip ANSI for readability
+    const cleaned = pendingBuf.replace(/\x1b\[[0-9;]*m/g, '');
+    const detail = cleaned.slice(-200).trim();
+    try {
+      appendProgress(taskId, 'cli.stream', detail);
+    } catch (err) {
+      log('stream-flush appendProgress error', taskId, err.message);
+    }
+    pendingBuf = '';
+    lastFlushAt = now;
+  }
+
+  function scheduleFlush() {
+    if (flushTimer) return;
+    flushTimer = setTimeout(() => {
+      flushTimer = null;
+      flushStream();
+    }, STREAM_FLUSH_MS);
+  }
+
+  child.stdout.on('data', (b) => {
+    stdoutChunks.push(b);
+    pendingBuf += b.toString('utf8');
+    if (Buffer.byteLength(pendingBuf, 'utf8') >= STREAM_FLUSH_BYTES) {
+      flushStream();
+    } else {
+      scheduleFlush();
+    }
+  });
+  child.stderr.on('data', (b) => {
+    stderrChunks.push(b);
+    pendingBuf += b.toString('utf8');
+    if (Buffer.byteLength(pendingBuf, 'utf8') >= STREAM_FLUSH_BYTES) {
+      flushStream();
+    } else {
+      scheduleFlush();
+    }
+  });
 
   child.on('exit', async (code, signal) => {
     clearTimeout(timer);
+    if (flushTimer) { clearTimeout(flushTimer); flushTimer = null; }
+    flushStream(true);  // final tail flush
     const durationMs = Date.now() - start;
     const stdout = Buffer.concat(stdoutChunks).toString('utf8');
     const stderr = Buffer.concat(stderrChunks).toString('utf8');
