@@ -1,5 +1,39 @@
 import fs from 'fs';
 import path from 'path';
+import { createTask, listTasks } from '../tasks/task-store.js';
+
+/**
+ * SOP-0 P5 · spawn an `enrich` task on first thin-contact write.
+ * Debounce: skip if any enrich task is already pending or running
+ * (pl:run-enrichment-batch processes ALL pending entities in one run).
+ * Best-effort — failures are swallowed in the caller's try/catch.
+ */
+function maybeSpawnEnrichTask(entityKey) {
+  if (!entityKey) return null;
+  const existingPending = listTasks({ kind: 'enrich', status: 'pending', limit: 1 });
+  if (existingPending.length > 0) return null;
+  const existingRunning = listTasks({ kind: 'enrich', status: 'running', limit: 1 });
+  if (existingRunning.length > 0) return null;
+  return createTask({
+    kind: 'enrich',
+    source: {
+      platform:   'internal',
+      thread_id:  null,
+      author:     'discovery-store.mergeLeadIntoEntity',
+      message_id: null,
+    },
+    input: {
+      text: `auto: thin-contact entity ${entityKey} needs enrichment`,
+      attachments: [],
+    },
+    target: {
+      cli:               'pl:run-enrichment-batch',
+      args:              ['--skip-approval'],
+      target_entity_key: entityKey,
+      timeout_ms:        600_000,  // 10min for batch of pending entities
+    },
+  });
+}
 
 export const DISCOVERY_ENTITY_STATUS = {
   DISCOVERED: 'discovered',
@@ -404,12 +438,30 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
   const mergedWebsite = lead.website || entity.latest?.website || '';
   const thinContact = !mergedPhone && !mergedWebsite;
   const currentEnrichmentStatus = entity.enrichment_status;
+  let newlyPending = false;
   if (!currentEnrichmentStatus) {
     // First write — set default based on thin-contact status at this moment
     entity.enrichment_status = thinContact ? 'pending' : 'complete';
+    if (thinContact) newlyPending = true;
   } else if (currentEnrichmentStatus === 'pending' && !thinContact) {
     // Was pending, now we have contact info (gosom re-scrape or merge added it) → upgrade
     entity.enrichment_status = 'complete';
+  }
+  // SOP-0 P5 · push-based enrichment trigger.
+  // When an entity newly becomes thin-contact-pending, create a SOP-0 task
+  // (kind=enrich) so dispatcher spawns pl:run-enrichment-batch immediately
+  // — no waiting for periodic scan. Debounced: skip if any enrich task is
+  // already pending or running (one batch run clears the whole queue).
+  // Wrapped in try/catch so task-store failures never break entity merge.
+  if (newlyPending) {
+    try {
+      maybeSpawnEnrichTask(entity.entityKey);
+    } catch (err) {
+      // Best-effort. Log but don't propagate.
+      if (process.env.SOP0_DEBUG) {
+        console.error('[SOP-0] maybeSpawnEnrichTask failed:', err.message);
+      }
+    }
   }
   // 'unenrichable' / 'partial' are set by pl:run-enrichment-batch after enrichLead() runs.
   // Never auto-downgrade complete → pending.

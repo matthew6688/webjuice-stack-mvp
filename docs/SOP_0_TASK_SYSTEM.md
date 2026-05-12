@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: v0.5 (P0-P4 完成 · stdout tee live progress · P5 next)
+**版本**: v0.6 (P0-P5 完成 · entity-driven push 接通 · P6 next)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -223,16 +223,23 @@ hermes cron create "every 60s" "node scripts/cli/pl-task-dispatcher.js tick"
 
 Cron 列表在 `~/.hermes/cron/jobs.json` · admin viewer P6 待建。
 
-### 4.4 Entity-driven auto-dispatch (P5)
+### 4.4 Entity-driven auto-dispatch (P5 · 已落地)
 
 ```
-data/leads/entities/*.json 写入 (mergeLeadIntoEntity)
-  → if enrichment_status='pending'
-  → 直接调 createTask({ kind:'enrich', target_entity_key: ... })
-  → fs.watch → dispatcher → ...
+data/leads/entities/<key>.json 写入 (mergeLeadIntoEntity)
+  → if 新成为 thin-contact (no phone && no website) + enrichment_status='pending'
+  → maybeSpawnEnrichTask(entityKey)
+     · debounce: if any kind=enrich status∈{pending,running} → skip
+     · 否则 createTask({kind:'enrich', target_cli:'pl:run-enrichment-batch',
+                       args:['--skip-approval'], target_entity_key:<key>})
+  → fs.watch → dispatcher claim → spawn → 处理全队列 pending entities → done
 ```
 
-**Push-based · 不 scan entity store**（之前 v0.1 设计有 scan，废弃）。
+**Push-based · 不 scan entity store**（v0.1 的 scan 设计废弃）。
+
+**为什么 debounce**：`pl:run-enrichment-batch` 一次跑会处理所有 pending entities（不限 1 个）。10 entities 同时变 thin-contact → 不需要 10 个 task，1 个 batch 跑就清了。debounce 防 task 灾难。
+
+**为什么 best-effort try/catch**：task-store 任何错误**绝不破坏** entity 写入。SOP-0 是 SOP-1 的下游通知，不该反向阻塞。`SOP0_DEBUG=1` 可看错误。
 
 ---
 
@@ -290,12 +297,12 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P2.5** | E2E smoke — combined into P2.3 verification (catch-up routed thread, task created, tag PATCHed, reply posted, latency ~9s) | ✅ done | — |
 | **P3** | `pl-task-dispatcher.js` (fs.watch + 60s cron + flock + spawn target_cli + tag PATCH + thread reply) | ✅ done 2026-05-12 · E2E verified | 100% |
 | **P4** | ~~3 CLI 加 `--task-id`~~ → **dispatcher stdout tee** · throttled appendProgress · 0 CLI 改动 | ✅ done 2026-05-12 · live verified | 100% |
-| **P5** | `discovery-store.js` createTask on thin-contact | ⏳ | 95% |
+| **P5** | `discovery-store.js` createTask on thin-contact (push trigger, debounced) | ✅ done 2026-05-12 · 257ms E2E verified | 100% |
 | **P6** | `/admin/tasks` + `/admin/cron` 页面 | ⏳ | 88% |
 | **P7** | E2E smoke 3 路 + retention archive (>30d → `data/tasks/_archive/YYYY-MM/`) | ⏳ | 85% |
 | **P8** | 老 `core/discord-tasks/` archive + 9 caller scripts 清理 + doc v0.3 锁定 | ⏳ | 92% |
 
-完成 9/12 (P0-P4) · 剩 ~6h (P5-P8)。
+完成 10/12 (P0-P5) · 剩 ~5h (P6-P8)。
 
 ### 7.X · P4 实时进度观测
 
@@ -377,6 +384,9 @@ Logs:
 | 2026-05-12 | P4 实时进度 | **dispatcher stdout tee → task.progress[]** (throttled 5s/2KB) | 3 个 CLI 各加 `--task-id` + import `appendProgress` | Matthew 原则: "为兼容老代码牺牲太多要敢于重新设计"。CLI 改动方案让业务 CLI 知道 SOP-0 = 反向耦合 / CLI 改 log 格式会 break SOP-0 / 30 LOC × 3。Tee 方案 dispatcher 单点 ~40 LOC，业务 CLI 0 改动，方向更对 |
 | 2026-05-12 | Admin /admin/tasks 不实时 | **build-time 快照** + Discord 是实时端 | 客户端 5s 轮询 / Cloudflare worker / 本地 web server | 仓库 prod 是 Astro static · CF worker 读不到本地 `data/tasks/` · Discord thread 已是天然实时面板 · 真要本地活体 admin → P6 加 30 行 node http server (defer) |
 | 2026-05-12 | catch-up `findByThreadId` 扫归档 | **`data/tasks/` + `_archive/` 都扫** | 只扫活动目录 | P3 E2E 测试发现的 bug：归档 task 后 forum thread 还活着 → 重启后 catch-up 当"未处理"重 route → 副本 task / 副本 batch metadata |
+| 2026-05-12 | P5 entity→task 防爆 | **debounce** (任何 enrich pending/running 就跳过) | 每 entity 1 个 task | `pl:run-enrichment-batch` 一次跑处理所有 pending entities · 10 个 thin-contact 进来不需要 10 个 task · 一个 batch 跑就清 |
+| 2026-05-12 | P5 错误处理 | **best-effort try/catch** + 可选 `SOP0_DEBUG=1` | throw 让 entity 写入失败 | SOP-0 是 SOP-1 下游 · 永远不该反向阻塞 entity merge |
+| 2026-05-12 | P5 target_entity_key 不传 args | **`--skip-approval` only**，entity key 只记 metadata | `--limit 1 --entity-key X` 精确单 entity | batch CLI 设计为扫所有 pending；single-entity 模式会浪费 batch 设计意图 |
 
 ---
 
