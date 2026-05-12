@@ -717,6 +717,85 @@ Logs:
 - **kimi CLI 入 cascade**：等 kimi 出 non-interactive mode 或写 ACP client wrapper（独立 P）
 - **Hermes api_server LLM endpoint**：调研 port 8642 为何不绑 + 怎么外部 HTTP 调用 · 通了之后加入 cascade
 - **schemaVersion 升级协议**：参考 SOP-X-Handoff §6 + `places-quota-guard.js` v1→v2 模式
-- **task retention 自动化**：>30 天 status=done/failed 的 archive 到 `data/tasks/_archive/YYYY-MM/`
 - **task ↔ Hermes session ID 交叉链接**：cron-spawned task 怎么记录 Hermes session 来源
 - **multi-stage chain**：CLI 跑完 optionally `createTask({next stage args})` — 已 precedent (`pl:pipeline-batch-step --finalize` calls `pl:dedup-audit`)
+- **Yellow pages / local search 作为输入源**（v1.7+）：澳洲 yellowpages.com.au / truelocal / hotfrog / localsearch / startlocal —
+  作为 Places API 之外的 fallback / 补全通道。设计要点：
+  - 新 kind `directory-intake`（或扩展 `places-intake` 的 `--source` 选项）
+  - 抓取走 SOP-X-Search-Routing 既定 5-tier（Dokobot → DDG → Tinyfish → Firecrawl → Perplexity），不另起 scraper
+  - 单条目映射到 lead schema 后照常进 entity store（discovery_rank = directory 排序位）
+  - Hermes cron 周期巡查（每周扫一遍特定 niche × city × directory）
+  - 当前优先级：低于 SOP-1/SOP-2 业务正确性；Places API 已覆盖主要场景，directory 是冗余 + 长尾发现
+- **Task action 按钮**（v1.7+）：admin /tasks 行内 retry / archive / cancel 按钮（当前只能 Discord reaction 操作）
+- **PDF / audio attachment**（v1.7+）：image-extract 扩展到 PDF 文本层 + 语音转录
+- **Tesseract OCR fallback**：vision chain 全部 fail 时降级走纯 OCR（保底拿到电话号码）
+- **G-11 scraper fallback**：Places API quota 耗尽时降级 SerpAPI / 直抓 maps 页面
+
+---
+
+## 12. 健康自检 · How to verify SOP-0 is flowing
+
+把这一节当 **"SOP-0 没坏吧"5 分钟自检清单**。任何疑点先跑完这一节再 ping。
+
+### 12.1 一行总检（推荐每天早上 / 长会归来跑一次）
+
+```bash
+npm run pl:sop0-doctor
+```
+
+输出长这样（健康时）：
+
+```
+✅ 5 daemon 在跑 (listener · dispatcher · api · tunnel · retention)
+   4/5 在跑 · task-retention=stopped   ← retention 是 03:00 calendar，平时 stopped 正常
+✅ tasks.profitslocal.com 可达
+   HTTP 200 · 124ms
+✅ Discord listener 在线
+   log 最近 8s 前活动
+✅ Ollama router 可达
+   provider=ollama · kind=intake · 312ms
+✅ 没有 stuck task
+   pending=0 · running=0 · human=2 · stuck=0
+
+✅ 5/5 健康
+```
+
+任何 ❌ 行下面会给出对应修复命令（`launchctl kickstart …` / `ollama serve` / etc.）。
+退出码 0 = 全绿，1 = 任意 ❌ — 可以塞进 cron 做无人值守告警。
+
+加 `--json` 拿机器可读结果（给 Hermes agent 消费）：
+
+```bash
+npm run pl:sop0-doctor -- --json
+# → {ok:false, passed:3, total:5, checks:[...]}
+```
+
+### 12.2 手工五步法（doctor 落地前）
+
+| # | 检查 | 命令 | 通过条件 |
+|---|---|---|---|
+| 1 | **5 daemon 在跑** | `launchctl list \| grep profitslocal` | 看到 5 行 PID 都不是 `-` |
+| 2 | **API 通 + tunnel 活** | `curl -sS -H "Authorization: Bearer $SOP0_API_AUTH_TOKEN" https://tasks.profitslocal.com/api/tasks?limit=1` | HTTP 200 + JSON 数组 |
+| 3 | **Discord listener 在线** | `tail -n 5 data/tasks/_logs/task-listener.log` | 最近一行时间戳 < 60s 前，含 `ready` / `heartbeat` / `ThreadCreate` |
+| 4 | **Ollama router 通** | `npm run pl:intent-route -- "find brisbane plumbers"` | 输出 `kind=intake provider=ollama` |
+| 5 | **没有 stuck task** | `node -e "const {listTasks}=await import('./core/tasks/task-store.js'); const stuck=listTasks({status:'running'}).filter(t=>Date.now()-new Date(t.updated_at)>15*60*1000); console.log(stuck.length+' stuck')"` | `0 stuck` |
+
+任意一步 ❌ → 看对应 `_logs/*.error.log`，多半是 ollama 没起 / discord token 过期 / tunnel 掉。
+
+### 12.3 E2E 烟测（每次重大改动后 / 周一上线前跑一次）
+
+在 `#website-tasks` forum 用 **Handoff bot** 名义发以下 3 条，每条等 60s 看回帖：
+
+| 输入 | 预期 forum tag | 预期回帖 |
+|---|---|---|
+| `find brisbane roofers` | `intake` · `done` | 含 batch_id + `pipeline-batches/...` 链接 |
+| `"Joe's Plumbing" 0412 345 678 melbourne` | `single-enrich` · `done` | 含 entity_key + chained audit task ID |
+| 上传一张含商家名片的图片 | `image-extract` · `done`（或 `human`） | 含识别到的字段；若 human 则补字段提示 |
+
+任何一条 60s 后还在 `pending` / `running` → 看 dispatcher.log。任何一条 → `failed` → 看 task JSON `error` 字段。
+
+### 12.4 CI 自动跑的 16 条（GitHub Actions · 每次 push 到 main）
+
+`scripts/qa/test-sop0-regression.mjs` 跑 T1-T5 / T13 / T15 / T20 / T21 共 16 assertions。绿灯 = 路由 + state machine + retention + push-trigger 都活着。红灯先看 [SOP-0 Regression workflow](https://github.com/.../actions/workflows/sop0-regression.yml) 输出。
+
+> Discord-live cases (T6-T12 / T16-T19 / T22-T23) CI 跑不了 (没真 forum + 真 daemon)，靠 12.3 手工烟测覆盖。
