@@ -249,7 +249,6 @@ async function handleNewForumThread(thread) {
 
 async function handleReaction(reaction, user, type) {
   if (user.bot) return;
-  // Resolve partials
   if (reaction.partial) {
     try { await reaction.fetch(); } catch { return; }
   }
@@ -257,10 +256,20 @@ async function handleReaction(reaction, user, type) {
   if (!channel || !channel.parentId || channel.parentId !== FORUM_ID) return;
   const threadId = channel.id;
   const task = findByThreadId(threadId);
-  if (!task) return;
-  if (task.status !== 'human') return; // only act on human-tagged tasks
   const emoji = reaction.emoji.name;
-  log('reaction', type, emoji, 'on thread', threadId, '· task', task.task_id);
+  // Always log incoming reactions for diagnostics — silent-ignore was confusing
+  // operators who didn't know if their emoji even reached the listener.
+  log('reaction', type, emoji, '· user=' + user.username, '· thread=' + threadId,
+      '· task=' + (task?.task_id || 'NONE'),
+      '· status=' + (task?.status || 'NONE'));
+  if (!task) return;
+  if (task.status !== 'human') {
+    // Reactions on non-human tasks ignored intentionally (avoid retriggering
+    // expensive ops). Post one-line note so operator knows we saw the click.
+    await postThreadReply(threadId,
+      `_(reaction ${emoji} noted but task already \`${task.status}\` — only \`human\` tasks accept ✅/❌ retry/abandon. Use admin /tasks to act on \`done\`/\`failed\`.)_`);
+    return;
+  }
   // Accept multiple emoji synonyms — operator on mobile/desktop varies.
   // RETRY: ✅ ✔ ✔️ 🔁 🔄
   // ABANDON: 🗑 🗑️ ❌ ✖ ✖️ 🚫
