@@ -35,6 +35,9 @@ const OWNERSHIP_RULES = [
     'pl:pipeline-batch-start',
     'pl:scrape-docker',
     'pl:ingest-image',
+    'thin-contact predicate',             // SOP-1's own predicate, moved from SOP-2
+    'enrichment_status',                  // field SOP-1 fills
+    'isThinContact',                      // helper function
   ] },
   // SOP-2 owned phrases
   { owner: 'SOP_2_LEAD_DISCOVERY_PIPELINE.md', phrases: [

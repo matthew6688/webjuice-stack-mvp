@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>[WIREFRAME] Internal Audit · FIX MY ROOF Total Roof Restorations</title>
+<style>
+  :root{
+    --pl-cream:#F8F2E5; --pl-ink:#2A2418; --pl-coral:#E8775A;
+    --pl-sage:#6B8E6F; --pl-warm-gray:#8A7E6E; --pl-border:#2A2418;
+    --pl-amber:#D4934A; --pl-red:#B5483A; --pl-green:#5A7F5E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--pl-cream); color:var(--pl-ink);
+    padding:24px; max-width:1080px; margin:0 auto;
+  }
+  h1,h2,h3,.serif{font-family:Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:-.01em}
+  h1{font-size:32px;line-height:1.15;margin-bottom:6px}
+  h2{font-size:20px;border-bottom:1px solid var(--pl-border);padding-bottom:6px;margin:32px 0 16px}
+  h3{font-size:15px;margin:14px 0 6px}
+  .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pl-warm-gray);font-weight:600}
+  .lede{color:var(--pl-warm-gray);font-size:14px;margin-bottom:18px}
+  .chip{display:inline-block;padding:3px 10px;border:1px solid var(--pl-border);border-radius:99px;font-size:11px;font-weight:600;margin-right:6px;background:#fff}
+  .chip--grade-a{background:var(--pl-green);color:#fff;border-color:var(--pl-green)}
+  .chip--decision{background:var(--pl-coral);color:#fff;border-color:var(--pl-coral)}
+  .chip--alert{background:var(--pl-red);color:#fff;border-color:var(--pl-red)}
+  .chip--warn{background:var(--pl-amber);color:#fff;border-color:var(--pl-amber)}
+  .summary-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0 28px;padding:18px;border:1px solid var(--pl-border);background:#fff}
+  .summary-strip .cell .num{font-family:Georgia,serif;font-size:28px;font-weight:600;line-height:1}
+  .summary-strip .cell .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--pl-warm-gray);margin-top:4px}
+  .row{display:grid;grid-template-columns:2fr 1fr;gap:24px}
+  .dim-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;border:1px solid var(--pl-border);background:#fff;padding:14px}
+  .dim-cell{text-align:center;padding:8px 4px}
+  .dim-cell .bar{height:6px;background:#eee;border:1px solid var(--pl-border);margin-top:6px;position:relative}
+  .dim-cell .bar > span{display:block;height:100%;background:var(--pl-coral)}
+  .dim-cell .bar > span.good{background:var(--pl-green)}
+  .dim-cell .bar > span.warn{background:var(--pl-amber)}
+  .dim-cell .bar > span.bad{background:var(--pl-red)}
+  .dim-cell .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--pl-warm-gray);margin-top:6px}
+  .dim-cell .val{font-family:Georgia,serif;font-size:22px;font-weight:600}
+  .issue{border:1px solid var(--pl-border);background:#fff;padding:14px 16px;margin-bottom:10px}
+  .issue h3{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px}
+  .issue .why{color:var(--pl-warm-gray);font-size:13px}
+  .issue .plain{margin:8px 0 6px;font-weight:600}
+  .issue .impact{font-size:13px;color:var(--pl-ink);background:#fbf2dc;border-left:3px solid var(--pl-coral);padding:6px 10px;margin-top:6px}
+  .issue .meta{font-size:11px;color:var(--pl-warm-gray);margin-top:8px}
+  .issue .meta a{color:var(--pl-coral);text-decoration:none;border-bottom:1px dashed currentColor}
+  .signals{border:1px solid var(--pl-border);background:#fff;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+  .signals dt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--pl-warm-gray)}
+  .signals dd{margin:0 0 6px}
+  .signals dd .flag{color:var(--pl-red);font-weight:600;font-size:11px;margin-left:4px}
+  .reviews-block{border:1px solid var(--pl-border);background:#fff;padding:16px}
+  .reviews-block .quotable{border-left:3px solid var(--pl-sage);background:#f0eee5;padding:8px 12px;margin:8px 0;font-family:Georgia,serif;font-style:italic;font-size:13px}
+  .reviews-block .theme{display:inline-block;background:#eaeaea;border:1px solid var(--pl-border);padding:2px 8px;font-size:11px;margin:2px 4px 2px 0}
+  .reviews-block .theme.neg{background:#f7dcd6;border-color:var(--pl-red)}
+  .grade-footer{border:1px solid var(--pl-border);background:#fff;padding:16px;margin-top:18px}
+  .grade-footer .meta{font-size:12px;color:var(--pl-warm-gray)}
+  .deep-links{margin-top:12px;font-size:12px}
+  .deep-links a{color:var(--pl-coral);text-decoration:none;border-bottom:1px dashed currentColor;margin-right:14px}
+  .wirenote{background:repeating-linear-gradient(45deg,#fce5d2,#fce5d2 6px,#f8d6bd 6px,#f8d6bd 12px);color:#7a4d2a;padding:4px 8px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;display:inline-block;border:1px dashed #c47845;margin-left:8px}
+  .placeholder{color:#999;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="eyebrow">V2 内部 audit 报告 <span class="wirenote">wireframe — 数据真实，叙述占位</span></div>
+<h1>FIX MY ROOF Total Roof Restorations</h1>
+<div class="lede">29 Darien St, Bridgeman Downs QLD 4035 · roofing · QLD AU</div>
+
+<div>
+  <span class="chip chip--grade-a">grade A</span>
+  <span class="chip chip--decision">strong_redesign</span>
+  <span class="chip">tier T3</span>
+  <span class="chip">phase needs-human</span>
+  <span class="chip chip--alert">no_https</span>
+  <span class="chip chip--alert">high_traction_old_site</span>
+</div>
+
+<div class="summary-strip" aria-label="一眼数据条">
+  <div class="cell"><div class="num">51</div><div class="lbl">audit score</div></div>
+  <div class="cell"><div class="num">127</div><div class="lbl">reviews</div></div>
+  <div class="cell"><div class="num">★5.0</div><div class="lbl">rating</div></div>
+  <div class="cell"><div class="num">2</div><div class="lbl">hard triggers</div></div>
+  <div class="cell"><div class="num">8</div><div class="lbl">total issues</div></div>
+</div>
+
+<h2>六维评分</h2>
+<div class="dim-grid">
+  <div class="dim-cell"><div class="val">61</div><div class="bar"><span class="warn" style="width:61%"></span></div><div class="lbl">GBP</div></div>
+  <div class="dim-cell"><div class="val">40</div><div class="bar"><span class="bad" style="width:40%"></span></div><div class="lbl">Technical</div></div>
+  <div class="dim-cell"><div class="val">45</div><div class="bar"><span class="bad" style="width:45%"></span></div><div class="lbl">UX</div></div>
+  <div class="dim-cell"><div class="val">69</div><div class="bar"><span class="good" style="width:69%"></span></div><div class="lbl">Content</div></div>
+  <div class="dim-cell"><div class="val">45</div><div class="bar"><span class="bad" style="width:45%"></span></div><div class="lbl">SEO</div></div>
+  <div class="dim-cell"><div class="val">50</div><div class="bar"><span class="warn" style="width:50%"></span></div><div class="lbl">Visual</div></div>
+</div>
+
+<h2>三大杀手 issue <span style="font-size:12px;color:var(--pl-warm-gray);font-weight:400">— 销售开场用这 3 个</span></h2>
+
+<div class="issue">
+  <h3>1. 网站没有 HTTPS — 谷歌警告"不安全" <span class="chip chip--alert">critical</span></h3>
+  <div class="why">dim: technical · rule_id: no_https · earned 0/15</div>
+  <div class="plain"><span class="placeholder">[generator 填 plain_language: 这个站是 http:// 还在 2012 年水平]</span></div>
+  <div class="impact"><strong>客户影响：</strong><span class="placeholder">[generator 填: Chrome 在地址栏显示"不安全"，访客信任度直降，SEO 也扣分]</span></div>
+  <div class="meta">证据：<a href="../../../clients/fix-my-roof-total-roof-restorations/v2/screenshots/desktop.png">desktop screenshot</a> · rationale: <code>http://billdu.me/...</code></div>
+</div>
+
+<div class="issue">
+  <h3>2. 老网站 + 高流量 — 转化在漏 <span class="chip chip--alert">critical</span></h3>
+  <div class="why">dim: ux_conversion · hard_trigger: high_traction_old_site</div>
+  <div class="plain"><span class="placeholder">[generator 填: 127 个评价 = 强口碑，但落到 billdu.me 这种通用页面，留资率应 &lt; 1%]</span></div>
+  <div class="impact"><strong>客户影响：</strong><span class="placeholder">[generator 填: 估算每月 200+ 流量看到 page，留资约 1-2 人；改 landing 后保守 3-5x]</span></div>
+  <div class="meta">证据：<a href="#">mobile screenshot</a> · <a href="#">video</a></div>
+</div>
+
+<div class="issue">
+  <h3>3. 没营业时间 + 图片少 <span class="chip chip--warn">major</span></h3>
+  <div class="why">dim: gbp · rule_ids: has_hours(0/5), image_count(6/10)</div>
+  <div class="plain"><span class="placeholder">[generator 填]</span></div>
+  <div class="impact"><strong>客户影响：</strong><span class="placeholder">[generator 填]</span></div>
+  <div class="meta"><a href="#">GBP screenshot</a></div>
+</div>
+
+<details style="margin-top:12px">
+  <summary style="cursor:pointer;font-size:13px;color:var(--pl-warm-gray)">+ 5 个 minor / nit issue（点开查看）</summary>
+  <div class="placeholder" style="padding:10px">[generator 列出 minor: meta description 缺失 / og:image / alt text / etc]</div>
+</details>
+
+<h2>生意维度信号</h2>
+<div class="row">
+  <dl class="signals">
+    <dt>Tech stack</dt><dd><span class="placeholder">[billdu.me 平台 — DIY builder]</span> <span class="flag">⚠ 不可定制</span></dd>
+    <dt>Domain history</dt><dd><span class="placeholder">[年龄 / WHOIS]</span></dd>
+    <dt>Last activity</dt><dd><span class="placeholder">[最新 GBP post / review 日期]</span></dd>
+    <dt>Pagespeed</dt><dd><span class="placeholder">[mobile/desktop LCP]</span></dd>
+    <dt>GBP posts</dt><dd><span class="placeholder">[N posts / 最新日期]</span></dd>
+    <dt>GBP Q&amp;A</dt><dd><span class="placeholder">[N questions / 0 = 信号弱]</span></dd>
+  </dl>
+  <div class="signals" style="background:#fbf2dc">
+    <dt style="color:var(--pl-coral)">为什么 grade A</dt>
+    <dd><span class="placeholder">[generator 引用 investment_reason]</span></dd>
+    <dt style="color:var(--pl-coral)">为什么 T3 tier</dt>
+    <dd><span class="placeholder">[generator 引用 product_tier_reason]</span></dd>
+    <dt style="color:var(--pl-coral)">推荐定价</dt>
+    <dd>$5-8K 一次性 + $800-1500/月（社媒+内容+GEO）</dd>
+  </div>
+</div>
+
+<h2>Review 信号</h2>
+<div class="reviews-block">
+  <div><strong>Trust strength:</strong> <span class="placeholder">[score]</span> &nbsp;·&nbsp; <strong>N reviews:</strong> 127 &nbsp;·&nbsp; <strong>★</strong> 5.0</div>
+  <h3>正面主题</h3>
+  <div>
+    <span class="theme placeholder">[theme 1]</span>
+    <span class="theme placeholder">[theme 2]</span>
+    <span class="theme placeholder">[theme 3]</span>
+  </div>
+  <h3>负面主题</h3>
+  <div><span class="theme neg placeholder">[neg theme or 无]</span></div>
+  <h3>客户原话（可用于 redesign）</h3>
+  <div class="quotable">"<span class="placeholder">[quotable_for_redesign #1]</span>"</div>
+  <div class="quotable">"<span class="placeholder">[quotable_for_redesign #2]</span>"</div>
+</div>
+
+<h2>Grade 决策 + 行动链路</h2>
+<div class="grade-footer">
+  <p><strong>定 A / T3 的逻辑：</strong> <span class="placeholder">[投入级别 + tier 选择的逻辑链]</span></p>
+  <div class="meta">graded_at 2026-05-11 02:09Z · audit_version <span class="placeholder">[v2.x]</span></div>
+  <div class="deep-links">
+    <a href="../../../clients/fix-my-roof-total-roof-restorations/master.md">master.md</a>
+    <a href="../../../clients/fix-my-roof-total-roof-restorations/v2/screenshots/">截图目录</a>
+    <a href="../../../clients/fix-my-roof-total-roof-restorations/v2/video/mobile-throttled.webm">移动 throttled 视频</a>
+    <a href="discord://#thread">Discord thread</a>
+    <a href="../../../data/v2/fixtures/detailed-audit/place_chijn587yc79k2sr7vyvy-egoam.json">raw audit JSON</a>
+  </div>
+</div>
+
+</body>
+</html>

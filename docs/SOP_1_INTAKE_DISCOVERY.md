@@ -10,39 +10,63 @@
 
 ## 1. 目的 · Purpose
 
-SOP-1 覆盖**从"没有 lead"到"entity 已入库 + 有初始信号"**这一段。
+SOP-1 覆盖**从"没有 lead"到"dedup-clean + enrichment-complete 的 entity 入库"**这一段。
 
-**做什么**：
-- 用 gosom Docker scraper 从 Google Maps 抓 raw leads（主入口）
-- 用 image-lead V2 路径从图片提取 leads（OCR/VLM 入库）
-- normalize 字段 → 写入 V2 entity store
-- 跑 discovery queue 重建（cheap-site-audit / selected-enrichment / outreach-brief）
-- 在 Discord `#lead-discovery-runs` 开 batch thread 记录进度，stamp `batch_id` 到每个 entity
+**SOP-1 出口承诺给 SOP-2**：交付的每个 entity 都是：
+- 已去重（place_id auto-merge + phone/domain 嫌疑过审核）
+- 联系方式齐全（有 phone OR website，或显式 `enrichment_status: 'unenrichable'`）
+- 字段 schema 符合 [SOP-X-Handoff](SOP_HANDOFF_CONTRACT.md)
+
+**做什么**（4 步）：
+1. **Discovery 入口** — gosom Docker scraper / image-lead V2 写入 entity store
+2. **Dedup** — auto-merge by place_id + 检测 phone/domain 嫌疑入队列（协议详解 → [SOP-X-Dedup](SOP_X_DEDUP.md)）
+3. **Enrichment** — thin-contact (`!phone && !website`) → 5 路 search 补全 / Places API 增强 (3b)
+4. **Handoff** → 把 entity 交给 SOP-2
 
 **不做什么**：
-- 不做 audit 评分（→ SOP-2）
-- 不做 grade 计算（→ SOP-2）
+- 不做 audit 评分 / grade 计算（→ SOP-2）
 - 不做销售对接（→ SOP-4）
 - 不做 master.md / profile 生成（→ SOP-ART-1 / SOP-ART-3）
-- 不做 contact identity 多触点扩展（→ SOP-ART-3）
 
 ---
 
-## 2. 三个 V2 入口对比
+## 2. 两个 Discovery 入口
 
-| 入口 | CLI | 输出 | 进 V2 store | 用途 |
-|---|---|---|---|---|
-| **gosom Docker scraper** (主流量) | `npm run pl:scrape-docker -- --niche X --city Y --count N` | `data/leads/entities/place_<id>.json` | ✅ | 我们去找 Google Maps 上的客户 |
-| **image-lead V2** (新入口 · 2026-05-12) | `npm run pl:ingest-image -- --image PATH --business-name X --phone Y --niche --city` | `data/leads/entities/image_<slug>_<phone>.json` | ✅ | 网上只能找到图片格式（名片 / 店面 / 海报）时的 ingest 路径 |
-| **关键词 search** | 同主入口（gosom `keywords[]` 参数） | 同主入口 | ✅ | 当前与主入口同源；未来"非 Google Maps search" 是 v0.2 范围 |
+> ⚠ **Places API 不是入口** — 它是 §3 Step 3b 的 **增强工具**，作用于已经入库的 entity，不产生新 lead。
+
+| 入口 | CLI | 输出 | 用途 |
+|---|---|---|---|
+| **gosom Docker scraper** (主流量) | `npm run pl:scrape-docker -- --niche X --city Y --count N` | `data/leads/entities/place_<id>.json` | 我们去找 Google Maps 上的客户 |
+| **image-lead V2** | `npm run pl:ingest-image -- --image PATH --business-name X --phone Y --niche --city` | `data/leads/entities/image_<slug>_<phone>.json` | 网上只能找到图片格式（名片 / 店面 / 海报）时的 ingest 路径 |
 
 ### 2.1 image-lead V2 vs V1（重要）
 
-- **V2** (`pl:ingest-image`) — 入 entity store，走 cheap-audit-v2 评级，跟 gosom 同等公民
+- **V2** (`pl:ingest-image`) — 入 entity store，走 SOP-1 全流程，跟 gosom 同等公民
 - **V1** (`scripts/leads/image-lead-discovery.js`) — 旧的"客户送上门"服务模式，写 `clients/<slug>/`，**不进 entity store**。保留用于已付费客户的 single-lead 服务流程。
 - 决策：V2 是新发现入口；V1 不下线，但**新发现工作走 V2**。
 
 OCR 自动从图片提取字段（businessName/phone/address）— 当前由调用方手填 `--business-name` 等 flag。自动化是 **G-6.1（待建）**。
+
+### 2.2 Scraper Fallback Strategy（🟡 TODO · G-11）
+
+**当前问题**：gosom Docker 容器离线 → 整个发现链断了。
+
+**计划的 fallback chain**（尚未实现）：
+
+```
+gosom Docker (本地, T0)
+   ↓ 失败 / 离线
+Outscraper / Apify (T2 metered, ~$0.001-0.005/record · 待接)
+   ↓ 失败
+Google Places API Text Search (T0, 在配额内·部分覆盖)
+   ↓ 失败
+报警停止 + 等修复
+```
+
+`ops:health-check` 已经会检测 gosom Docker 离线 + 推 Discord。
+后续 G-11 实施时，`pl:scrape-docker` 会自动 fall-over 到下一级 provider。
+
+详见 [SOP-X-Tooling §1.1](SOP_X_TOOLING.md#11-discovery--scraping) fail-over 表 + overview backlog G-11。
 
 ---
 
@@ -104,6 +128,75 @@ spec:       http://localhost:8080/static/spec/spec.yaml
 ### 3.4 sourceQuery 规则
 
 **Bridge 强制 `lead.sourceQuery = run.query`**。下游不依赖 lead-level 推断，统一来源 = batch query。这避免"这 lead 是哪个 query 抓的"歧义。
+
+---
+
+## 3.5 Pipeline Step 2 · Dedup
+
+**触发**：每个 batch finalize 之后（自动 hook 进 `pl:pipeline-batch-step --finalize`，G-X 待实现）。
+**协议详解** → 见 [SOP-X-Dedup](SOP_X_DEDUP.md)。
+**SOP-1 范围**：保证 entity store 不再有 place_id 重复 + 把 phone/domain 嫌疑入 review queue。
+
+执行：
+- `place_id` 撞 → `mergeLeadIntoEntity` 已经自动合并（写入路径既有逻辑）
+- `phone` / `domain` 撞 → 写 `data/leads/dedup-review-queue.json`，由操作员决策（合并 / 不同 / 跳过）
+
+---
+
+## 3.6 Pipeline Step 3 · Enrichment
+
+**职责**：保证每个交付给 SOP-2 的 entity 都有完整的联系方式，或显式标 `unenrichable`。
+
+### 3.6.1 thin-contact predicate
+
+在 SOP-1 内部判定，不依赖 SOP-2:
+
+```js
+function isThinContact(entity) {
+  return !entity.latest.phone && !entity.latest.website;
+}
+```
+
+如果 `isThinContact(entity)` 为 true → 触发 Step 3a 5 路 search 补全。
+
+### 3.6.2 Step 3a · Contact enrichment (5 路 search · T0)
+
+**目的**：补 social handles + contact-us URL + 真正的网站。
+
+**5 路并行**：
+1. 官方 URL search（lead 可能 GMB 没挂网站但实际有）
+2. Facebook handle
+3. Instagram handle
+4. LinkedIn handle / decision-maker name
+5. 3rd-party review aggregators (hipages / yelp / productreview / truelocal / houzz)
+
+**Provider**：DDGS (T0) → Tinyfish (T2) fall-over。详见 [SOP-X-Tooling §1.1](SOP_X_TOOLING.md#11-discovery--scraping)。
+
+**输出**：写到 `entity.latest.contact_identity`（schema 字段见 SOP-X-Handoff）+ 写 `data/v2/fixtures/enrichment/<entityKey>.json` 审计轨迹。
+
+### 3.6.3 Step 3b · Profile enrichment (Places API · T0)
+
+**目的**：补 GMB photos / types[] / E.164 phone / verified opening_hours — 给销售更多素材。
+
+**触发**：
+- 操作员手动 `pl:places-enrich --entity-key X`
+- 自动：grade ≥ B 之后回流（SOP-2 → SOP-1 调）
+
+**配额**：月度免费 11K calls hard cap。详见 [SOP-X-Tooling §2](SOP_X_TOOLING.md#2-places-api--成本控制详)。
+
+**输出**：写到 `entity.latest.places_enrichment` 子对象。
+
+### 3.6.4 Enrichment status
+
+完成 enrichment 后写 `entity.enrichment_status`:
+
+| 值 | 含义 |
+|---|---|
+| `complete` | 有 phone OR website OR 至少 1 个 social handle |
+| `partial` | enrichment 跑了但只补到一部分 |
+| `unenrichable` | 5 路 search 全失败 + 仍没联系方式 |
+
+SOP-2 收到 entity 时**只 care** 这个 status，不重新跑 enrichment 判定。
 
 ---
 
@@ -182,20 +275,22 @@ spec:       http://localhost:8080/static/spec/spec.yaml
 
 ## 8. 容易忽略的点（SOP-1 owned）
 
-| # | 坑 | 来源 |
+| # | 坑 | 范围 |
 |---|---|---|
-| 1 | 同 lead 重复抓 — `place_id` dedup + `mergeLeadIntoEntity` 合并 | SOP-1 owner |
-| 2 | image-lead V2 (G-6 ✅) 已 port 到 V2 entity store | SOP-1 owner |
-| 3 | `max_time` 必须 ≥ 180 — gosom API hard limit | SOP-1 owner |
-| 4 | `sourceQuery` 强制 = `run.query` — bridge 统一来源（§3.4）| SOP-1 owner |
-| 5 | Discord channel 必须先建好 6 个 forum tags — bot setup 一次性 | SOP-1 owner |
-| 6 | image-lead 没 phone → 用 `image_<slug>_unknown` 兜底 key | SOP-1 owner |
+| 1 | place_id 撞库 auto-merge 已经发生在 mergeLeadIntoEntity，**Step 2 dedup 不会再处理它**，只看 phone/domain | SOP-1 §3.5 |
+| 2 | image-lead V2 (G-6 ✅) 已 port 到 V2 entity store | SOP-1 §2.1 |
+| 3 | `max_time` 必须 ≥ 180 — gosom API hard limit | SOP-1 §7 |
+| 4 | `sourceQuery` 强制 = `run.query` — bridge 统一来源 | SOP-1 §3.4 |
+| 5 | Discord channel 必须先建好 6 个 forum tags — bot setup 一次性 | SOP-1 §4 |
+| 6 | image-lead 没 phone → 用 `image_<slug>_unknown` 兜底 key | SOP-1 §2.1 |
+| 7 | thin-contact predicate 是 SOP-1 内部判，**不再依赖 SOP-2 cheap-audit-v2** | SOP-1 §3.6.1 |
+| 8 | Places API 月度配额 hard cap (11K calls)，超 → enrichment 3b 暂停 | SOP-X-Tooling §2 |
 
-**SOP-1 范围外的坑**（归其他 SOP 拥有，链接见 §7 末）：
+**SOP-1 范围外的坑**（归其他 SOP 拥有）：
 - Niche substring 误判 / `relevance_pass` → SOP-2 §3.3
-- 没 website 的 lead → SOP-2 §6
-- V1 status + V2 phase 两套状态机 → [SOP-X-Handoff §3-§4](SOP_HANDOFF_CONTRACT.md#3-status-状态机v1--discovery-用)
-- ContactIdentity 多触点缺失 → SOP-ART-3 (待写)
+- 没 website 的 lead `starter_candidate` → SOP-2 §6
+- V1 status + V2 phase 状态机 → [SOP-X-Handoff §3-§4](SOP_HANDOFF_CONTRACT.md)
+- ContactIdentity 多触点超 social 的扩展 → SOP-ART-3 (待写)
 
 ---
 

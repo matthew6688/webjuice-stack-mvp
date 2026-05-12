@@ -17,7 +17,9 @@
 
 ## 1. 概念归属表
 
-### 1.1 SOP-1 拥有（客户发现 / Intake）
+### 1.1 SOP-1 拥有（客户发现 + 去重 + 增强 / Intake）
+
+**SOP-1 出口承诺**：把候选客户找进来 + 去重 + 联系方式补全 → 输出 **dedup-clean + enrichment-complete 的 entity** 给 SOP-2。
 
 | 概念 | Owner | 引用方式 |
 |---|---|---|
@@ -25,13 +27,18 @@
 | `pl:scrape-docker` CLI 用法 | SOP-1 §3 | 同上 |
 | `pl:pipeline-batch-*` CLI | SOP-1 §4 | 同上 |
 | `pl:ingest-image` (image-lead V2) | SOP-1 §2.1 | 同上 |
-| `pl:places-enrich` CLI 触发逻辑 | SOP-1 §2 第 4 入口 | 同上 |
+| `pl:places-enrich` Places API 增强（Step 3b） | SOP-1 §3 | 同上 |
 | `batch_id` 字段语义 + 传播 | SOP-1 §4.1 | 同上 |
 | `sourceQuery` 强制规则 (= run.query) | SOP-1 §3.4 | 同上 |
-| Niche substring 匹配的容错（"oof"→roofing 误判）| SOP-1 §8.1 | 同上 |
 | `max_time ≥ 180` gosom API hard limit | SOP-1 §7 | 同上 |
+| **Dedup 作为 pipeline 步骤** (Step 2 · auto-merge + suspect detection) | SOP-1 §X (执行) | 协议详解 → SOP-X-Dedup |
+| **Enrichment 作为 pipeline 步骤** (Step 3 · thin-contact 5 路 search) | SOP-1 §X (执行) | thin-contact predicate 在 SOP-1 |
+| **Thin-contact predicate** (`!phone && !website`) | SOP-1 §X | SOP-2 不再 own 这个判定 |
+| **Scraper fallback chain** (gosom → Places → 3rd-party 待 G-11) | SOP-1 §X (TODO) | SOP-X-Tooling fail-over 配套 |
 
 ### 1.2 SOP-2 拥有（筛选 + 审计）
+
+**SOP-2 入口期望**：拿到 SOP-1 交付的 dedup-clean + enrichment-complete entity，**不再 own** 联系方式补全 / 去重逻辑。
 
 | 概念 | Owner | 引用方式 |
 |---|---|---|
@@ -51,6 +58,9 @@
 | `grade-c` tag 语义 (C 手动晋升) | SOP-2 §4.1 | 同上 |
 | Visual audit 链路 (claude→gemini→ollama) | SOP-2 Stage 2 Step C | 同上 |
 | PSI integration (Stage 2i) | SOP-2 §2 Step A | 同上 |
+| ~~Stage 0 Discovery~~ | **已迁出 → SOP-1** | — |
+| ~~Stage 0.5 Enrichment~~ | **已迁出 → SOP-1 §X** | — |
+| ~~Discord 4-channel 完整架构~~ | **已迁出 → SOP overview §6** | 待 SOP-X-Discord |
 
 ### 1.3 SOP-X-Handoff 拥有（数据交接）
 
@@ -75,7 +85,9 @@
 | LLM fallback chain (claude → gemini → ollama) | SOP-X-Tooling §1.2 | 同上 |
 | `SYSTEM_ALERTS_DISCORD_WEBHOOK_URL` + alert-pusher | SOP-X-Tooling §3 | 同上 |
 
-### 1.5 SOP-X-Dedup 拥有（去重业务逻辑）
+### 1.5 SOP-X-Dedup 拥有（去重协议详解）
+
+**职责分工**：本文档是 **dedup 协议详解 owner**。dedup 作为 **pipeline 步骤** 归 [SOP-1 §X](SOP_1_INTAKE_DISCOVERY.md)（执行时机 + 流程）。规则在这里，步骤在 SOP-1。
 
 | 概念 | Owner | 引用方式 |
 |---|---|---|

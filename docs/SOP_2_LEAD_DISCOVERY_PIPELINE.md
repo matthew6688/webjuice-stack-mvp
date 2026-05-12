@@ -100,24 +100,18 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
     /admin/scoring/sop-handoff-doc           (handoff schema)
 
 ═══════════════════════════════════════════════════════════════════════════════
-  Stage 0.5  ENRICHMENT (conditional · 只对 thin-contact lead 触发)
+  Stage 0.5  ENRICHMENT · 已迁出到 SOP-1 §3.6
 ═══════════════════════════════════════════════════════════════════════════════
 
-  触发条件: lead 没真网站 AND 没 phone （cheap-audit-v2 输出
-            action='queued_for_enrichment'）
-  CLI:      (没有独立 CLI; 自动通过 rescore-v2-cli 的缓存查找; 或手动
-             调 core/leads/enrichment.js 的 enrichLead)
-  Cost:     T0 (Tinyfish free + DDGS free fallback)
+  ⚠ 此阶段（thin-contact 补全）现在归 SOP-1 拥有。SOP-1 出口承诺
+  enrichment-complete 的 entity，SOP-2 不再 own 这个判定。
 
-  5 路并行 search：
-    1. 官方 URL                    (lead 可能 GMB 没挂网站但实际有)
-    2. Facebook handle
-    3. Instagram handle
-    4. LinkedIn handle / decision-maker name
-    5. 3rd-party review aggregators (hipages/yelp/productreview/truelocal/houzz)
+  详见: docs/SOP_1_INTAKE_DISCOVERY.md §3.6
+        /admin/scoring/sop-1
 
-  Output:                  data/v2/fixtures/enrichment/<entityKey>.json
-  Re-judge:                cheap-audit-v2 重新跑，使用 enrichment 数据再分流
+  注: cheap-audit-v2 内部仍可能输出 queued_for_enrichment action
+  作为 fallback safety net (entity 漏了 enrichment 还是被发现 → 回流
+  到 SOP-1 重新跑)，但 **主入口** 在 SOP-1 thin-contact predicate。
 
 ═══════════════════════════════════════════════════════════════════════════════
   Stage 1  V2 RESCORE · cheap-audit-v2 → 分 5 路

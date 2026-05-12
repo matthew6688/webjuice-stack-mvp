@@ -1,9 +1,12 @@
-# SOP-X-Dedup · 跨源去重业务逻辑
+# SOP-X-Dedup · 跨源去重协议详解
 
 **版本**: v1.0
 **最近更新**: 2026-05-12
-**配套页面**: [`/admin/v2-leads/dedup-review`](/admin/v2-leads/dedup-review) · [`/admin/v2-leads/dedup-overview`](/admin/v2-leads/dedup-overview)
-**Owner**: 本文档 — entity 去重所有业务规则在这里，**SOP-1 / SOP-2 引用时只能链接，不能重述**
+**配套页面**: [`/admin/v2-leads/dedup-review`](/admin/v2-leads/dedup-review)
+**Owner 范围（重要 · 职责分工）**：
+- 本文档 = **dedup 协议详解 owner**（规则 / 钥匙 / 合并语义 / 审计协议）
+- **Dedup 作为 pipeline 步骤** → 归 [SOP-1 §3.5](SOP_1_INTAKE_DISCOVERY.md#35-pipeline-step-2--dedup)（执行时机 / 流程位置）
+- 规则在这里，步骤在 SOP-1
 
 ---
 

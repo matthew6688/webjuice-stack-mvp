@@ -1,27 +1,27 @@
 # V2 vs V1 cheap-audit comparison — roofing
 
-Generated: 2026-05-10T12:47:29.807Z
-Duration: 250.9s
+Generated: 2026-05-12T02:48:34.773Z
+Duration: 226.6s
 Site fetches: yes (Stage 2 evaluated)
 Entities: 34
 
 ## Summary
 
-- **27** of 34 entities flipped from V1 `skip` to non-skip in V2
-- **2** still skip in V2
-- **10** are now `audit_candidate` (V2 sales pipeline ready)
-- **1** are `starter_candidate` (no-website easy wins)
+- **26** of 34 entities flipped from V1 `skip` to non-skip in V2
+- **3** still skip in V2
+- **8** are now `audit_candidate` (V2 sales pipeline ready)
+- **2** are `starter_candidate` (no-website easy wins)
 - **30** had Stage 2 site-fetch run
 
 ## V1 vs V2 side-by-side
 
 | Business | ★ / reviews | website | V1 score / action | V2 final / action | redesign_need | fired triggers |
 |---|---|---|---|---|---|---|
-| Roof Space Renovators | ★5 (221) | https | 42 manual_review | 62 **audit candidate** | 56 | high_traction_old_site |
-| Hurricane Digital - SEO Brisbane | ★4.7 (183) | https | 45 skip | 43 **audit candidate** | 27 | high_traction_old_site |
+| Roof Space Renovators | ★5 (221) | https | 42 manual_review | 70 **audit candidate** | 56 | high_traction_old_site |
+| Hurricane Digital - SEO Brisbane | ★4.7 (183) | https | 45 skip | 43 **skip** | 27 | niche_mismatch |
 | Gutter and Roof Repairs | ★4.6 (150) | https | 38 skip | 43 **audit candidate** | 15 | high_traction_old_site |
 | WeatherpRoof Restorations | ★4.9 (134) | https | 45 manual_review | 45 **audit candidate** | 15 | high_traction_old_site |
-| FIX MY ROOF Total Roof Restorations | ★5 (127) | http | 66 audit_candidate | 56 **audit candidate** | 32 | missing_https_with_evidence |
+| FIX MY ROOF Total Roof Restorations | ★5 (127) | http | 66 audit_candidate | 56 **starter candidate** | 32 | third_party_landing_page |
 | Brisbane Roofing Solutions | Roof Rest | ★4.8 (118) | https | 49 manual_review | 45 **audit candidate** | 15 | high_traction_old_site |
 | A One Roof Restoration | ★4.9 (91) | https | 27 skip | 32 **manual review** | 0 |  |
 | Metro Hail | ★5 (90) | https | 27 skip | 34 **manual review** | 0 |  |
@@ -42,7 +42,7 @@ Entities: 34
 | Smart Roof Restoration Brisbane | ★5 (17) | https | 27 skip | 34 **manual review** | 10 |  |
 | Pro Roof Restoration Brisbane | ★5 (16) | https | 27 skip | 37 **manual review** | 15 |  |
 | Brisbane Roofing - Brisbane Roof Repai | ★5 (9) | https | 27 skip | 37 **manual review** | 15 |  |
-| ACM Constructions | ★4.9 (8) | http | 47 skip | 29 **skip** | 15 |  |
+| ACM Constructions | ★4.9 (8) | http | 47 skip | 29 **skip** | 15 | niche_mismatch |
 | DTM METAL ROOFING PTY LTD | ★5 (8) | https | 27 skip | 44 **manual review** | 27 |  |
 | Regan Brothers Roof Restoration | ★5 (4) | no_website | 67 starter_candidate | 60 **starter candidate** | — | no_website_with_contact |
 | Roofing North Lakes - Roof Replacement | ★5 (4) | https | 27 skip | 55 **manual review** | 49 |  |

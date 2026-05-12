@@ -60,16 +60,7 @@ Open Design 网站预制 (SOP-3, 待写)
 
 ## 3. 4 个 Discord channel
 
-每段生命周期一个 forum channel：
-
-| Channel | ID | 用途 | 单位 | 谁看 |
-|---|---|---|---|---|
-| `#lead-discovery-runs` | 1503513633756283070 | 抓取 + 筛选 + 审计 batch ops | 1 batch task = 1 thread | 你 + AI 监督 |
-| `#website-leads` | 1501187038706401290 | A/B/C 客户销售对话 | 1 客户 = 1 thread | 销售 |
-| `#website-projects` | 1501945763650080899 | 网站方案 + demo 制作 | 1 demo = 1 thread | 设计 + 客户 |
-| `#paid-websites` | 1503529874336383137 | 付费客户交付维护 | 1 付费客户 = 1 thread | 交付 |
-
-详见 [SOP-X-Discord 详细文档](/admin/scoring/sop-x-discord-doc) **(TODO: 文档未建)**
+简表见下方 [§6 Discord 4-channel 生命周期架构](#6-discord-4-channel-生命周期架构临时-owner--待-sop-x-discord-写完迁出)（临时 owner · 待 SOP-X-Discord 写完迁出）。
 
 ---
 
@@ -79,7 +70,7 @@ Open Design 网站预制 (SOP-3, 待写)
 
 | # | 名称 | 状态 | 文档 |
 |---|---|---|---|
-| SOP-1 | 客户发现 Intake & Discovery | 🟡 调研笔记 | [`SOP_1_INTAKE_DISCOVERY.md`](SOP_1_INTAKE_DISCOVERY.md) **(TODO: v0.1 未写)** |
+| SOP-1 | 客户发现 + Dedup + Enrichment | ✅ v1.0 | [`SOP_1_INTAKE_DISCOVERY.md`](SOP_1_INTAKE_DISCOVERY.md) |
 | SOP-2 | 筛选 + 审计 Screening & Audit | ✅ v1.0 | [`SOP_2_LEAD_DISCOVERY_PIPELINE.md`](SOP_2_LEAD_DISCOVERY_PIPELINE.md) |
 | SOP-3 | Open Design 网站预制 | ⚪ 待写 | **(TODO)** |
 | SOP-4 | 销售对接 Sales Engagement | ⚪ 待写 | **(TODO)** |
@@ -165,30 +156,54 @@ v<MAJOR>.<MINOR>  ·  最近更新 YYYY-MM-DD  ·  [配套数据]
 
 ---
 
-## 6. 当前状态快照（build-time）
+## 6. Discord 4-channel 生命周期架构（临时 owner · 待 SOP-X-Discord 写完迁出）
+
+V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord channel。channel 之间用 "graduation" 机制串。
+
+| Channel | ID | 用途 | 单位 | 谁看 |
+|---|---|---|---|---|
+| `#lead-discovery-runs` | 1503513633756283070 | SOP-1 batch ops + dedup review + 健康警报 | 1 batch task = 1 thread | 你 + AI 监督 |
+| `#website-leads` | 1501187038706401290 | SOP-2/4 A/B/C 客户销售对话 | 1 客户 = 1 thread | 销售 |
+| `#website-projects` | 1501945763650080899 | SOP-3 网站方案 + demo 制作 | 1 demo = 1 thread | 设计 + 客户 |
+| `#paid-websites` | 1503529874336383137 | SOP-5 付费客户交付维护 | 1 付费客户 = 1 thread | 交付 |
+
+**为什么 4 个不是 1 个**：每 channel 的 cadence（节奏）/ audience（受众）/ SLA 都不同。batch 节奏 vs per-lead 节奏 vs project 节奏 vs 客户节奏 — 不能混。
+
+**Graduation 机制**：
+- SOP-2 grade ≥ B 自动从 `#lead-discovery-runs` graduate 到 `#website-leads`
+- 客户表示兴趣 → 手动从 `#website-leads` graduate 到 `#website-projects`
+- 客户付费 → 手动从 `#website-projects` graduate 到 `#paid-websites`
+
+⚠ **当 SOP-X-Discord v0.1 写完，这一节迁出本文档**（含 forum tags 完整列表 / bot 权限 / setup 协议等）。
+
+---
+
+## 7. 当前状态快照（build-time）
 
 注：这部分从 `data/leads/entities/` 和 `data/v2/pipeline-batches/` 读取，每次 build 刷新。详见 [`/admin/scoring/`](/admin/scoring/) 页面底部 "业务现状" section。
 
 ---
 
-## 7. 当前 TODO 列表（按优先级）
+## 8. 当前 TODO 列表（按优先级）
+
+### ✅ 已完成（最近）
+
+- [x] **SOP-1 v1.0** — Discovery + Dedup + Enrichment 全流程
+- [x] **G-9 dedup 简化版** — 3-key detector + 3 CLI + review UI
+- [x] **Niche Cohort** — `data/leads/niches/<niche>/` 物理 flat + 逻辑分组
+- [x] **G-1 `pl:scrape-docker`** · G-2 `pl:preflight` · G-3 `entity.batch_id` · G-6 image-lead V2 · G-7 Places enrichment
+- [x] **SOP-X-Tooling / Handoff / Dedup / Ownership Registry / Maintenance Rules** — 3 道墙立起
 
 ### 🔴 立刻做（业务关键 · 下一轮起手）
 
-- [ ] **G-9 跨源 dedup 工具链**（高优先 · `pl:dedup-audit` + `pl:dedup-merge` + `/admin/v2-leads/dedup-review` UI · 5 层 dedup 策略 — Scale 必需）
-- [ ] **B2 Merged Entity Schema** 页面（SOP-1 + SOP-2 加 section · live sample 渲染真实 entity）
-- [ ] **B3 Dedup overview page** `/admin/v2-leads/dedup-overview` — 业务核心可视化
-- [ ] **SOP-X-Discord** — 4-channel 架构 + bot 权限 + forum tags
+- [ ] **SOP-X-Discord** — 4-channel 架构 + bot 权限 + forum tags（迁出 §6 临时章节）
 - [ ] **SOP-X-Pricing** — 改价时 5 处必须同改的协议
 - [ ] **SOP-X-Deploy** — 前端 build + push + GH Actions + live verify + screenshot 协议
+- [ ] **C-grade Hermes auto-outreach P1**（让 C 类立刻产生收入）
 
 ### 🟡 调研中 / 待 review
 
-- [ ] **SOP-1 v0.1** — 调研笔记 `data/qa/sop-investigations/sop-1.md` 完成，待 Matthew 回 6 个检查点
 - [ ] **search/enrichment skills 清单** — grep `core/` 列所有 search engine modules
-- [ ] **G-1 `pl:scrape-docker` CLI** — gosom Web API → entity store bridge
-- [ ] **G-2 `pl:preflight` CLI** — 跑 batch 前健康检查
-- [ ] **G-3 entity.batch_id 字段** — mergeLeadIntoEntity 支持
 
 ### 🟡 中优（SOP-1 / SOP-X-Tooling 衍生工作）
 
@@ -221,7 +236,7 @@ v<MAJOR>.<MINOR>  ·  最近更新 YYYY-MM-DD  ·  [配套数据]
 
 ---
 
-## 8. 相关文档（已在线）
+## 9. 相关文档（已在线）
 
 | 文档 | 路径 | viewer |
 |---|---|---|
