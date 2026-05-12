@@ -202,55 +202,21 @@ function chipClass(action) {
         <p>{config.philosophy}</p>
       </div>
 
-      <!-- ─── 4-Channel Discord Lifecycle ─────────────────────────────────── -->
-      <section class="admin-paper-section">
-        <div class="admin-paper-section-head">
-          <div>
-            <p class="eyebrow">Discord 频道架构 · 4 段生命周期</p>
-            <h2>客户在 Discord 里走的 4 段路 <span class="en-sub">Lead lifecycle: 4 channels</span></h2>
-          </div>
-          <span class="admin-section-count">4 个频道 · 客户级别上升时"毕业"到下一段</span>
-        </div>
-        <p class="section-lede">每段的<strong>节奏</strong>、<strong>受众</strong>、<strong>关注点</strong>都不同，所以分 4 个频道而不是一个。<br/>SOP-2 管的是前两段（发现批次 → 销售线索），以及客户从"批次"<strong>"毕业"</strong>到"个人销售线索"的机制。</p>
-        <div class="channel-flow">
-          {channels.map((c, i) => (
-            <>
-              <div class={`channel-card channel-${i}`}>
-                <div class="channel-stage">{c.stage_zh}</div>
-                <div class="channel-zh">{c.zh}</div>
-                <div class="channel-name"><code>{c.id}</code></div>
-                <div class="channel-unit">{c.unit}</div>
-                <div class="channel-purpose">{c.purpose}</div>
-                <div class="channel-meta">
-                  <span>👁 受众：<strong>{c.audience}</strong></span>
-                  <span>📄 文档：{c.sop}</span>
-                </div>
-              </div>
-              {i < channels.length - 1 && (
-                <div class="channel-arrow">
-                  <span class="channel-arrow-label">
-                    {i === 0 ? '当客户分级 A/B → 自动"毕业"到下一段' : i === 1 ? '客户表示有意，想看具体方案' : '客户付费签约'}
-                  </span>
-                  <span class="channel-arrow-glyph">▼</span>
-                </div>
-              )}
-            </>
-          ))}
-        </div>
-      </section>
+      <!-- ─── 4-Channel Discord Lifecycle · 已迁出到 SOP overview §6 ──────── -->
+      <!-- (was here; moved to /admin/scoring/ overview matrix to honor single-ownership) -->
 
-      <!-- ─── 5-Stage Pipeline Overview ───────────────────────────────────── -->
+      <!-- ─── SOP-2 Pipeline · 只画自己的阶段 ────────────────────────────── -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">SOP-2 完整流水线 · 5 个阶段</p>
-            <h2>从抓取到落地 — 每条线索走完这 5 步 <span class="en-sub">5 stages: scrape → screen → audit → write → link</span></h2>
+            <p class="eyebrow">SOP-2 内部流水线 · 3 大步</p>
+            <h2>从 dedup-clean entity 到 grade + thread <span class="en-sub">cheap-audit → detailed-audit → grade & thread</span></h2>
           </div>
-          <span class="admin-section-count">{stages.length} 步（含可选的 0.5 补充资料）</span>
+          <span class="admin-section-count">3 步 · 入口来自 SOP-1 出口承诺</span>
         </div>
-        <p class="section-lede">每个阶段都有：<strong>一句话说做啥</strong> · <strong>命令</strong> · <strong>成本</strong> · <strong>产出文件</strong> · <strong>哪能看到</strong>。<br/>英文名 (Discovery / Rescore...) 是代码里的字段，方便和源代码对照。</p>
+        <p class="section-lede"><strong>入口期望（来自 SOP-1）</strong>：dedup-clean + enrichment-complete 的 entity，存在 <code>queues/cheap-site-audit.json</code>。<br/>本页只画 SOP-2 自己的步骤（Stage 1 起）。Stage 0 / 0.5 (Discovery / Dedup / Enrichment) 归 <a href="/admin/scoring/sop-1">SOP-1</a>，本页不重述。</p>
         <div class="stage-grid">
-          {stages.map((s) => (
+          {stages.filter((s) => s.n >= 1).map((s) => (
             <div class={`stage-card ${s.conditional ? 'stage-conditional' : ''}`}>
               <div class="stage-num">
                 第 {s.n} 步
@@ -414,117 +380,91 @@ function chipClass(action) {
       <section class="admin-paper-section flow-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Lead 分流流程</p>
-            <h2>从抓取到决策的完整路径</h2>
+            <p class="eyebrow">SOP-2 内部 lead 分流流程</p>
+            <h2>从 dedup-clean entity 到决策的路径</h2>
           </div>
-          <span class="admin-section-count">5 个步骤 · 5 个 hard trigger · 4 档阈值</span>
+          <span class="admin-section-count">3 步 · 5 个 hard trigger · 4 档阈值</span>
         </div>
 
         <div class="flow-grid">
-          <!-- Row 1: ENTRY -->
+          <!-- ENTRY EXPECTATION -->
           <div class="flow-row">
             <div class="flow-row-label">入口</div>
             <div class="flow-entries">
               <div class="flow-entry">
-                <div class="flow-entry-tag">maps_scraper</div>
-                <div class="flow-entry-desc">Google Maps 抓取（主入口）</div>
-              </div>
-              <div class="flow-entry">
-                <div class="flow-entry-tag">image-discovery</div>
-                <div class="flow-entry-desc">图片识别商家</div>
-              </div>
-              <div class="flow-entry">
-                <div class="flow-entry-tag">manual intake</div>
-                <div class="flow-entry-desc">手工 / 转介绍</div>
+                <div class="flow-entry-tag">SOP-1 出口</div>
+                <div class="flow-entry-desc">dedup-clean + enrichment-complete · 见 <a href="/admin/scoring/sop-1">SOP-1</a></div>
               </div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- Row 2: DISCOVERY STORE -->
-          <div class="flow-step">
-            <div class="flow-step-num">0</div>
-            <div class="flow-step-body">
-              <div class="flow-step-title">Discovery store</div>
-              <div class="flow-step-desc">data/leads/entities/&lt;entity-key&gt;.json &nbsp;·&nbsp; 去重 + 历史轨迹</div>
-            </div>
-          </div>
-          <div class="flow-arrow-row">▼</div>
-
-          <!-- Row 3: STAGE 0.5 -->
-          <div class="flow-step flow-step-conditional">
-            <div class="flow-step-num">0.5</div>
-            <div class="flow-step-body">
-              <div class="flow-step-title">Enrichment-before-skip 门槛</div>
-              <div class="flow-step-desc">联系方式不足 → 5 路 search 强制补全（Tinyfish / DDGS / Doko）→ 回到 Stage 1 重判</div>
-              <div class="flow-step-meta">条件触发 · 仅 thin-contact 走</div>
-            </div>
-          </div>
-          <div class="flow-arrow-row">▼</div>
-
-          <!-- Row 4: STAGE 1 -->
+          <!-- STAGE 1 -->
           <div class="flow-step">
             <div class="flow-step-num">1</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Stage 1 · GBP triage <span class="flow-step-badge">always</span></div>
-              <div class="flow-step-desc">9 项规则 · 满分 100 · 仅读 maps payload · T0 零成本</div>
+              <div class="flow-step-title">Stage 1 · GBP 资料筛查 <span class="flow-step-badge">always</span></div>
+              <div class="flow-step-desc">9 项 GBP 规则 · 满分 100 · 仅读 maps payload · T0 零成本</div>
               <div class="flow-step-out">
-                <span class="flow-out-fail">category 不匹配 → SKIP（hard）</span>
+                <span class="flow-out-fail">category 不匹配 → SKIP（hard trigger）</span>
               </div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- Row 5: BRANCH -->
-          <div class="flow-branch">
-            <div class="flow-branch-label">hasWebsite ?</div>
-            <div class="flow-branch-arrows">
-              <div class="flow-branch-arrow">no</div>
-              <div class="flow-branch-arrow">yes</div>
-            </div>
-            <div class="flow-branch-paths">
-              <div class="flow-step flow-step-no-site">
-                <div class="flow-step-body">
-                  <div class="flow-step-title">无网站路径</div>
-                  <div class="flow-step-desc">联系方式可达 → <span class="chip chip-citrus">starter_candidate</span> · 不跑 Stage 2</div>
-                </div>
-              </div>
+          <!-- BRANCH hasWebsite? -->
+          <div class="flow-decision-row">
+            <div class="flow-decision-diamond">hasWebsite?<br/><span class="flow-decision-sub">enrichment 后仍可能为空</span></div>
+          </div>
+
+          <div class="flow-branch-row">
+            <div class="flow-branch flow-branch-yes">
+              <div class="flow-branch-label">是</div>
               <div class="flow-step">
                 <div class="flow-step-num">2</div>
                 <div class="flow-step-body">
-                  <div class="flow-step-title">Stage 2 · Site quick-scan</div>
+                  <div class="flow-step-title">Stage 2 · 网站速查</div>
                   <div class="flow-step-desc">Tinyfish fetch 首页 → 10 项 redesign 启发式 · 满分 100 · T0</div>
                 </div>
               </div>
             </div>
+            <div class="flow-branch flow-branch-no">
+              <div class="flow-branch-label">否</div>
+              <div class="flow-step flow-step-no-site">
+                <div class="flow-step-body">
+                  <div class="flow-step-title">无网站路径</div>
+                  <div class="flow-step-desc">enrichment_complete + 联系方式可达 → <span class="chip chip-citrus">starter_candidate</span> · 不跑 Stage 2</div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- Row 6: HARD TRIGGERS -->
+          <!-- HARD TRIGGERS -->
           <div class="flow-step flow-step-trigger">
             <div class="flow-step-num">★</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Hard triggers 检查</div>
-              <div class="flow-step-desc">4 条强制覆盖规则（无网站可达 → starter / HTTP+评论 ≥50 → audit / 评论 ≥100 ★≥4.5 抬升下限 / ...）</div>
+              <div class="flow-step-title">Hard triggers 检查（5 条强制覆盖）</div>
+              <div class="flow-step-desc">no_website_with_contact · missing_https_with_evidence · high_traction_old_site · niche_mismatch · third_party_landing_page</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- Row 7: FINAL DECISION -->
+          <!-- FINAL DECISION -->
           <div class="flow-step">
             <div class="flow-step-num">3</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Final score · 阈值映射</div>
-              <div class="flow-step-desc"><code>final = gbp_quality × 0.4 + redesign_need × 0.6</code></div>
+              <div class="flow-step-title">综合评分 · 阈值映射</div>
+              <div class="flow-step-desc"><code>final = gbp_quality × 0.4 + redesign_need × 0.6</code> · 4 档 decision 阈值</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- Row 8: OUTCOMES -->
+          <!-- OUTCOMES -->
           <div class="flow-outcomes">
             <div class="flow-outcome">
               <span class="chip chip-mint">audit_candidate</span>
-              <div class="flow-outcome-desc">≥ 70 · 进入 Block D 详细 audit</div>
+              <div class="flow-outcome-desc">≥ 70 · 进入详细 audit + grade</div>
             </div>
             <div class="flow-outcome">
               <span class="chip chip-citrus">starter_candidate</span>
@@ -542,35 +482,14 @@ function chipClass(action) {
         </div>
       </section>
 
-      <section class="admin-paper-section">
-        <div class="admin-paper-section-head">
-          <div>
-            <p class="eyebrow">Stage 0.5</p>
-            <h2>Enrichment-before-skip 门槛</h2>
-          </div>
-        </div>
-        <p class="section-lede">{stage05.description}</p>
-        <div class="rule-grid two">
-          <div class="rule-list">
-            <p class="eyebrow accent-coral">触发 enrichment</p>
-            <ul>
-              {stage05.triggers_enrichment_if.map((t) => <li><code>{t}</code></li>)}
-            </ul>
-          </div>
-          <div class="rule-list">
-            <p class="eyebrow accent-muted">立即 skip</p>
-            <ul>
-              {stage05.skips_immediately_if.map((t) => <li><code>{t}</code></li>)}
-            </ul>
-          </div>
-        </div>
-      </section>
+      <!-- Stage 0.5 Enrichment section · 已迁出到 SOP-1 §3.6 -->
+      <!-- (was here; SOP-1 now owns thin-contact predicate + 5 路 search) -->
 
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">Stage 1 · 满分 {stage1.max_score}</p>
-            <h2>GBP triage</h2>
+            <h2>GBP 资料筛查 · 9 项规则</h2>
           </div>
           <span class="admin-section-count">{stage1.rules.length} 项</span>
         </div>
@@ -601,7 +520,7 @@ function chipClass(action) {
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">Stage 2 · 满分 {stage2.max_score}</p>
-            <h2>Website quick scan</h2>
+            <h2>网站速查 · 10 项 redesign 启发式</h2>
           </div>
           <span class="admin-section-count">{stage2.rules.length} 项</span>
         </div>
@@ -631,7 +550,7 @@ function chipClass(action) {
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">最终评分</p>
-            <h2>Final score formula</h2>
+            <h2>综合评分公式 · gbp × 0.4 + redesign × 0.6</h2>
           </div>
         </div>
         <p class="formula-line"><code>{config.scoring.formula}</code></p>
@@ -669,7 +588,7 @@ function chipClass(action) {
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">阈值</p>
-            <h2>Score → action 映射</h2>
+            <h2>分数 → 决策动作映射</h2>
           </div>
         </div>
         <div class="threshold-grid">
@@ -687,7 +606,7 @@ function chipClass(action) {
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">No-website 路径</p>
-            <h2>Starter candidate 决策</h2>
+            <h2>Starter candidate 路径决策</h2>
           </div>
         </div>
         <p class="section-lede">{config.starter_candidate_path.description}</p>
@@ -711,7 +630,7 @@ function chipClass(action) {
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">显性化映射</p>
-            <h2>这份算法在哪里可见</h2>
+            <h2>这套算法在哪里可见 / 在哪里改</h2>
           </div>
         </div>
         <ul class="ui-map">
