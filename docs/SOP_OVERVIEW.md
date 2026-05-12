@@ -233,7 +233,7 @@ V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord cha
 | ✅ G-12 | Places API 多账号 rotation | — | done | PlacesQuotaGuard.selectAvailableKey + schema v1→v2 migrate |
 | 🔵 **G-18** | Hermes cron 注册 ops:health-check (daily) | **2h** | **92%** | `hermesCron(['create', 'every 24h', ...])` · **低优**（手动跑 OK · 详见 [SOP-X-Tooling §3](SOP_X_TOOLING.md)）|
 | ✅ **G-13** | Places photos → master.md 素材库 | done 2026-05-12 | — | `pl:download-places-photos` CLI · Cloudinary 上传 · master.md "一(a) 商户视觉素材" 段 · smoke: New Farm Deli 6 张 |
-| 🟢 **Evidence trail UI** | `[entityKey].astro` 加 evidence_sources fold | **2h** | **90%** | 数据 ready (`fixtures/enrichment/*.json` shape 已知) · admin 页面有 `<details>` fold 现有 pattern |
+| ✅ **Evidence trail UI** | `[entityKey].astro` 加 contact_identity + evidence_sources fold + photo grid | done 2026-05-12 | — | smoke: Bluey's Fancy Restaurant 1 thin-contact entity → 1 pending → complete (5 routes/4 evidence in 5.5s) · operator 可看每字段来源 + GMB 照片网格 + 建议联系时间 |
 | 🟢 **Cost dashboard tier 视图** | finance.astro 加 tier × provider × month 面板 | **2-3h** | **95%** | `summarizeLedger()` 已支持 `byTier/byProvider` 过滤 · 只需 UI 面板 |
 | 🟡 **G-6.1** | image-lead OCR/VLM 自动 extract | **4h** | **87%** | `core/llm/vision-claude-cli.js` 已存在 · 加 extract prompt + 改 pl-ingest-image · 准确率：Claude ~94% name / ~89% phone |
 | ✅ **G-14** | opening_hours → sales-time signal | done 2026-05-12 | — | `core/leads/sales-contact-time.js` 解析 weekday_text · 写 `entity.latest.sales_signals.best_contact_time` · master.md "一(b) 建议联系时间" · smoke: New Farm Deli "Tue/Wed/Thu 10:00-12:00 high confidence" |

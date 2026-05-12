@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entityKey": "place_chijczmikqbxkwsrv0uhynlsn20",
   "firstSeenAt": "2026-05-09T10:53:13.889Z",
-  "lastSeenAt": "2026-05-09T10:53:13.889Z",
+  "lastSeenAt": "2026-05-12T08:17:20.970Z",
   "status": "manual_review",
   "lastStatusAt": "2026-05-09T10:53:13.889Z",
   "identifiers": {
@@ -40,6 +40,52 @@
       "imageCount": 2,
       "hasPopularTimes": false,
       "hasAboutAttributes": true
+    },
+    "contact_identity": {
+      "phone": "",
+      "website": "",
+      "social": {
+        "facebook": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/",
+        "instagram": "https://www.instagram.com/popular/bluey's-fancy-restaurant/",
+        "linkedin": "https://au.linkedin.com/company/taste-media"
+      },
+      "decision_maker": null,
+      "third_party_reviews": [],
+      "evidence_sources": [
+        {
+          "field": "social.facebook",
+          "source": "tinyfish",
+          "route": "enrich_discover_official",
+          "url": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/",
+          "title": "Love is on the menu Watch as we bring Bluey's Fancy Restaurant to ...",
+          "profile_score": 1
+        },
+        {
+          "field": "social.instagram",
+          "source": "tinyfish",
+          "route": "enrich_discover_official",
+          "url": "https://www.instagram.com/popular/bluey's-fancy-restaurant/",
+          "title": "Bluey's Fancy Restaurant - Instagram",
+          "profile_score": 5
+        },
+        {
+          "field": "social.tiktok",
+          "source": "tinyfish",
+          "route": "enrich_discover_official",
+          "url": "https://www.tiktok.com/discover/bluey-world-brisbane-menu",
+          "title": "Bluey World Brisbane Menu - TikTok",
+          "profile_score": 5
+        },
+        {
+          "field": "social.linkedin",
+          "source": "tinyfish",
+          "route": "enrich_social_linkedin",
+          "url": "https://au.linkedin.com/company/taste-media",
+          "title": "Taste Creative",
+          "profile_score": 5
+        }
+      ],
+      "enriched_at": "2026-05-12T08:17:20.969Z"
     }
   },
   "runs": [
@@ -61,7 +107,14 @@
       "score": 32,
       "action": "manual_review",
       "status": "manual_review"
+    },
+    {
+      "at": "2026-05-12T08:17:20.970Z",
+      "event": "enrichment_batch_ran",
+      "status": "complete",
+      "routes": 5
     }
   ],
-  "notes": []
+  "notes": [],
+  "enrichment_status": "complete"
 }

@@ -156,6 +156,82 @@ const fmtDaysAgo = (iso) => {
           </footer>
         </section>
 
+        {/* ── SOP-1 Enrichment Evidence Trail (G-13/G-14 context, Bluey verification) ── */}
+        {entity.latest?.contact_identity && (
+          <section class="v2-card-frame">
+            <header class="v2-card-frame-head" style={`border-left: 8px solid #ffd45a`}>
+              <p class="eyebrow">SOP-1 Enrichment Evidence Trail · 来源审计</p>
+              <p class="v2-card-frame-desc">每个 contact_identity 字段从哪个 enrichLead route 来 · score 越高越可信。operator 看到这些可以判断是否要"标记错误"。</p>
+            </header>
+            <div class="v2-meta-grid">
+              <div class="v2-meta-cell">
+                <dt>enrichment_status</dt>
+                <dd><strong style={`color: ${entity.enrichment_status === 'complete' ? '#2da06b' : entity.enrichment_status === 'partial' ? '#c98a00' : entity.enrichment_status === 'unenrichable' ? '#c92a2a' : '#5e6268'}`}>{entity.enrichment_status || '(legacy/null)'}</strong></dd>
+              </div>
+              <div class="v2-meta-cell">
+                <dt>enriched_at</dt>
+                <dd><code style="font-size:11px">{entity.latest.contact_identity.enriched_at?.slice(0,16).replace('T',' ') || '—'}</code></dd>
+              </div>
+              <div class="v2-meta-cell v2-meta-cell-wide">
+                <dt>phone</dt>
+                <dd>{entity.latest.contact_identity.phone || <span style="color:var(--pl-muted)">— empty —</span>}</dd>
+              </div>
+              <div class="v2-meta-cell v2-meta-cell-wide">
+                <dt>website</dt>
+                <dd>{entity.latest.contact_identity.website ? <a href={entity.latest.contact_identity.website} target="_blank" rel="noopener">{entity.latest.contact_identity.website}</a> : <span style="color:var(--pl-muted)">— empty —</span>}</dd>
+              </div>
+              {['facebook','instagram','linkedin'].map((sk) => {
+                const url = entity.latest.contact_identity.social?.[sk];
+                return (
+                  <div class="v2-meta-cell v2-meta-cell-wide">
+                    <dt>social.{sk}</dt>
+                    <dd>{url ? <a href={url} target="_blank" rel="noopener">{url}</a> : <span style="color:var(--pl-muted)">—</span>}</dd>
+                  </div>
+                );
+              })}
+            </div>
+            {(entity.latest.contact_identity.evidence_sources || []).length > 0 && (
+              <details class="v2-evidence-details" open>
+                <summary>Evidence sources · 来源 URL + 信心评分 ({entity.latest.contact_identity.evidence_sources.length})</summary>
+                <table class="admin-table" style="margin-top:8px;font-size:12px">
+                  <thead><tr><th>field</th><th>route</th><th>source</th><th>profile_score</th><th>title</th><th>URL</th></tr></thead>
+                  <tbody>
+                    {entity.latest.contact_identity.evidence_sources.map((ev) => (
+                      <tr>
+                        <td><code>{ev.field}</code></td>
+                        <td><code style="font-size:10px">{ev.route}</code></td>
+                        <td><span class="chip chip-muted" style="font-size:10px">{ev.source}</span></td>
+                        <td><strong>{ev.profile_score}</strong></td>
+                        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{ev.title || '—'}</td>
+                        <td><a href={ev.url} target="_blank" rel="noopener" style="font-size:10px">↗</a></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </details>
+            )}
+            {entity.latest.sales_signals?.best_contact_time && (
+              <p class="admin-note-line" style="margin-top:10px;font-size:13px">
+                📞 <strong>建议联系时间</strong>: {entity.latest.sales_signals.best_contact_time.suggested_window}
+                {' · '}<em>{entity.latest.sales_signals.best_contact_time.rationale}</em>
+                {' · '}confidence: <code>{entity.latest.sales_signals.best_contact_time.confidence}</code>
+              </p>
+            )}
+            {(entity.latest.places_enrichment?.photo_urls || []).length > 0 && (
+              <details class="v2-evidence-details">
+                <summary>GMB photos · {entity.latest.places_enrichment.photo_urls.length} 张 (Cloudinary CDN)</summary>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:8px">
+                  {entity.latest.places_enrichment.photo_urls.map((p) => (
+                    <a href={p.url} target="_blank" rel="noopener" style="display:block">
+                      <img src={p.url} alt={`GMB photo ${p.index}`} style="width:100%;aspect-ratio:1;object-fit:cover;border:1px solid var(--pl-line)" loading="lazy" />
+                    </a>
+                  ))}
+                </div>
+              </details>
+            )}
+          </section>
+        )}
+
         <!-- RIGHT: Assets / History / CLI -->
         <aside class="v2-detail-aside">
           <section class="admin-block-mini">

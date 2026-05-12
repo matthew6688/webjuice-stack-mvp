@@ -1,0 +1,260 @@
+{
+  "generatedAt": "2026-05-12T08:17:20.970Z",
+  "entity_input": {
+    "entityKey": "place_chijczmikqbxkwsrv0uhynlsn20",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Bluey's Fancy Restaurant",
+      "category": "French restaurant",
+      "categories": [
+        "French restaurant"
+      ],
+      "address": "55 Charlotte St, Paddington QLD 4064",
+      "city": "Brisbane",
+      "niche": "restaurant",
+      "phone": "",
+      "website": "",
+      "google_maps_url": "https://www.google.com/maps/place/Bluey%27s+Fancy+Restaurant/data=!4m7!3m6!1s0x6b91570029089309:0x6d9fec7262874bbf!8m2!3d-27.4600167!4d153.0075145!16s%2Fg%2F11msfwtskg!19sChIJCZMIKQBXkWsRv0uHYnLsn20?authuser=0&hl=en&rclk=1",
+      "rating": 4.7,
+      "review_count": 3,
+      "websiteStatus": "no_website",
+      "discoveryScore": 32,
+      "recommendedAction": "manual_review",
+      "sourceQuery": "restaurants in Paddington Brisbane",
+      "signals": {
+        "hasPhone": false,
+        "hasWebsite": false,
+        "hasMenuLink": false,
+        "hasReservationLink": false,
+        "hasOrderOnlineLink": false,
+        "imageCount": 2,
+        "hasPopularTimes": false,
+        "hasAboutAttributes": true
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJCZMIKQBXkWsRv0uHYnLsn20",
+      "cid": "7899292247454600127",
+      "data_id": "0x6b91570029089309:0x6d9fec7262874bbf",
+      "websiteDomain": "",
+      "phoneDigits": ""
+    }
+  },
+  "profile": {
+    "leadId": "place_chijczmikqbxkwsrv0uhynlsn20",
+    "business_name": "Bluey's Fancy Restaurant",
+    "niche": "restaurant",
+    "enriched_at": "2026-05-12T08:17:20.969Z",
+    "contact": {
+      "phone": "",
+      "website": "",
+      "address": "55 Charlotte St, Paddington QLD 4064",
+      "city": "Brisbane",
+      "social": {
+        "facebook": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/",
+        "instagram": "https://www.instagram.com/popular/bluey's-fancy-restaurant/",
+        "tiktok": "https://www.tiktok.com/discover/bluey-world-brisbane-menu",
+        "linkedin": "https://au.linkedin.com/company/taste-media"
+      }
+    },
+    "identifiers": {
+      "place_id": "ChIJCZMIKQBXkWsRv0uHYnLsn20",
+      "cid": "7899292247454600127",
+      "website_domain": ""
+    },
+    "decision_maker": null,
+    "third_party_reviews": [],
+    "evidence_sources": [
+      {
+        "field": "social.facebook",
+        "source": "tinyfish",
+        "route": "enrich_discover_official",
+        "url": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/",
+        "title": "Love is on the menu Watch as we bring Bluey's Fancy Restaurant to ...",
+        "profile_score": 1
+      },
+      {
+        "field": "social.instagram",
+        "source": "tinyfish",
+        "route": "enrich_discover_official",
+        "url": "https://www.instagram.com/popular/bluey's-fancy-restaurant/",
+        "title": "Bluey's Fancy Restaurant - Instagram",
+        "profile_score": 5
+      },
+      {
+        "field": "social.tiktok",
+        "source": "tinyfish",
+        "route": "enrich_discover_official",
+        "url": "https://www.tiktok.com/discover/bluey-world-brisbane-menu",
+        "title": "Bluey World Brisbane Menu - TikTok",
+        "profile_score": 5
+      },
+      {
+        "field": "social.linkedin",
+        "source": "tinyfish",
+        "route": "enrich_social_linkedin",
+        "url": "https://au.linkedin.com/company/taste-media",
+        "title": "Taste Creative",
+        "profile_score": 5
+      }
+    ],
+    "enrichment_trace": {
+      "queries_run": 5,
+      "queries_succeeded": 5,
+      "queries_failed": 0,
+      "total_results": 50,
+      "routes": [
+        {
+          "purpose": "enrich_discover_official",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 10
+        },
+        {
+          "purpose": "enrich_social_facebook",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 10
+        },
+        {
+          "purpose": "enrich_social_instagram",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 10
+        },
+        {
+          "purpose": "enrich_social_linkedin",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 10
+        },
+        {
+          "purpose": "enrich_reviews_thirdparty",
+          "ok": true,
+          "provider": "tinyfish",
+          "result_count": 10
+        }
+      ]
+    },
+    "clientSlug": "bluey-s-fancy-restaurant"
+  },
+  "routes_summary": [
+    {
+      "purpose": "enrich_discover_official",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 10,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Bluey Fancy Restaurant - Bluey Official Website",
+          "url": "https://www.bluey.tv/watch/bluey-fancy-restaurant/"
+        },
+        {
+          "position": 2,
+          "title": "Bluey Fancy Restaurant Challenge (TV Mini Series 2025) - IMDb",
+          "url": "https://www.imdb.com/title/tt37678086/"
+        },
+        {
+          "position": 3,
+          "title": "Love is on the menu Watch as we bring Bluey's Fancy Restaurant to ...",
+          "url": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/"
+        }
+      ]
+    },
+    {
+      "purpose": "enrich_social_facebook",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 10,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Love is on the menu 💙 Watch as we bring Bluey's Fancy ...",
+          "url": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/"
+        },
+        {
+          "position": 2,
+          "title": "Love is on the menu 💙 Watch as we bring Bluey's Fancy ...",
+          "url": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/2669279883432074/"
+        },
+        {
+          "position": 3,
+          "title": "Bluey Fancy Restaurant",
+          "url": "https://www.bluey.tv/watch/bluey-fancy-restaurant/"
+        }
+      ]
+    },
+    {
+      "purpose": "enrich_social_instagram",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 10,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Bluey's Fancy Restaurant",
+          "url": "https://www.instagram.com/popular/bluey's-fancy-restaurant/"
+        },
+        {
+          "position": 2,
+          "title": "Recreate the fun of Bluey's “Fancy Restaurant” episode ...",
+          "url": "https://www.instagram.com/p/DXwwHCxjCFN/"
+        },
+        {
+          "position": 3,
+          "title": "FINAL CALL FOR BLUEY FAMILIES! Only 3 days left to be ...",
+          "url": "https://www.instagram.com/p/DBsF0h_z3HT/"
+        }
+      ]
+    },
+    {
+      "purpose": "enrich_social_linkedin",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 10,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Taste Creative",
+          "url": "https://au.linkedin.com/company/taste-media"
+        },
+        {
+          "position": 2,
+          "title": "We're so excited to share our two live-action Bluey series ...",
+          "url": "https://www.instagram.com/p/DQDYljnkmi6/"
+        },
+        {
+          "position": 3,
+          "title": "Say hello to the newest Tasties Henry and Genevieve ...",
+          "url": "https://www.instagram.com/p/CUvZdkFB8TK/"
+        }
+      ]
+    },
+    {
+      "purpose": "enrich_reviews_thirdparty",
+      "ok": true,
+      "provider": "tinyfish",
+      "result_count": 10,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Bluey Fancy Restaurant Challenge (TV Mini Series 2025)",
+          "url": "https://www.imdb.com/title/tt37678086/"
+        },
+        {
+          "position": 2,
+          "title": "Blueys World Menu",
+          "url": "https://www.tiktok.com/discover/blueys-world-menu"
+        },
+        {
+          "position": 3,
+          "title": "Bluey is taking over playtime, one game at a time! 🙌 Shop ...",
+          "url": "https://www.instagram.com/reel/DPE_52KEZXD/"
+        }
+      ]
+    }
+  ],
+  "total_elapsed_ms": 5560,
+  "batch_source": "pl:run-enrichment-batch"
+}

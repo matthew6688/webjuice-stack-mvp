@@ -664,3 +664,25 @@
 .admin-flow-step--handoff {
   background: color-mix(in srgb, var(--pl-mint) 15%, var(--pl-paper));
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   v2-evidence-details · operator-visible enrichment audit fold
+   (SOP-1 G-13/G-14 evidence trail on /admin/v2-leads/[entityKey])
+   ─────────────────────────────────────────────────────────────────────────── */
+.v2-evidence-details {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border: 1px dashed var(--pl-line);
+  background: color-mix(in srgb, var(--pl-citrus) 6%, var(--pl-paper));
+}
+.v2-evidence-details summary {
+  cursor: pointer;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 0;
+}
+.v2-evidence-details[open] summary {
+  border-bottom: 1px dotted var(--pl-line);
+  padding-bottom: 6px;
+}
