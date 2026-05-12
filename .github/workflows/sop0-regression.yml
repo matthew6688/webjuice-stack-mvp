@@ -45,3 +45,10 @@ jobs:
       - name: SOP-1 intake channels registry (24 assertions)
         # 强制每个 active channel 的 cli_file 必须真存在 · 防止删 CLI 忘改 registry
         run: npm run qa:test-intake-channels
+      - name: SOP-1 dedup LLM auto-decider (mocked ollama)
+        # 怀疑重复 → 本地 LLM 判 → 高信心自动 decision · 低信心人工兜底
+        run: npm run qa:test-dedup-llm
+      - name: SOP-1 doc/code sync gate (28 assertions)
+        # 防漂移: docs/SOP_HANDOFF_CONTRACT 必须列全 status/phase enum ·
+        # sop-1.astro 流程必须 4 step 无 3a/3b 分支 · broken 入口必带 admin 警示
+        run: npm run qa:test-sop1-doc-sync
