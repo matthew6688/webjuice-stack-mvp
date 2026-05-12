@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: v0.3 (P0-P2 全部完成 · dispatcher P3 在做)
+**版本**: v0.4 (P0-P3 完成 · listener + dispatcher 双 daemon live · P4 next)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -181,13 +181,13 @@ Regex chain 输出同 schema（regex 路径走 `viaRegex()` 适配 5-class → 7
 
 | kind | target_cli | 备注 |
 |---|---|---|
-| `intake` | `pl:pipeline-batch-step` | SOP-1 主入口 |
+| `intake` | `pl:pipeline-batch-start` | SOP-1 主入口 (注意：`pl:pipeline-batch-step` 是 POST UPDATES 用的，不是入口) |
 | `enrich` | `pl:run-enrichment-batch` | SOP-1 step 3，需 entity_ref |
-| `audit` | `pl:run-audit-pipeline` | SOP-2 |
+| `audit` | `leads:run-pipeline` | SOP-2 (注意：`pl:run-audit-pipeline` 不存在，实际是 `leads:` 命名空间) |
 | `dedup` | `pl:dedup-audit` 或 `pl:dedup-merge` | SOP-X-Dedup |
 | `photos` | `pl:download-places-photos` + `pl:places-enrich` | G-13 |
 | `image-extract` | `pl:ingest-image` | SOP-1 §2.1 |
-| `ops` | (varies / null) | health-check / cron / admin |
+| `ops` | `ops:health-check` 或 null | health-check / cron / admin |
 
 ---
 
@@ -288,41 +288,49 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P2.3** | `pl-task-listener.js` (discord.js v14 + intent-router + reaction listener) | ✅ done 2026-05-12 · live-verified | 100% |
 | **P2.4** | launchd plist `ai.profitslocal.task-listener` · KeepAlive · auto-restart | ✅ done 2026-05-12 · daemon running | 100% |
 | **P2.5** | E2E smoke — combined into P2.3 verification (catch-up routed thread, task created, tag PATCHed, reply posted, latency ~9s) | ✅ done | — |
-| **P3** | `pl-task-dispatcher.js` (fs.watch + cron + flock) | ⏳ | 92% |
+| **P3** | `pl-task-dispatcher.js` (fs.watch + 60s cron + flock + spawn target_cli + tag PATCH + thread reply) | ✅ done 2026-05-12 · E2E verified | 100% |
 | **P4** | 3 CLI 加 `--task-id` (intake / enrich / audit) + shared `appendProgress` helper | ⏳ | 95% |
 | **P5** | `discovery-store.js` createTask on thin-contact | ⏳ | 95% |
 | **P6** | `/admin/tasks` + `/admin/cron` 页面 | ⏳ | 88% |
 | **P7** | E2E smoke 3 路 + retention archive (>30d → `data/tasks/_archive/YYYY-MM/`) | ⏳ | 85% |
 | **P8** | 老 `core/discord-tasks/` archive + 9 caller scripts 清理 + doc v0.3 锁定 | ⏳ | 92% |
 
-完成 7/12 (P0-P2) · 剩 ~10h (P3-P8)。
+完成 8/12 (P0-P3) · 剩 ~8h (P4-P8)。
 
-### 7.1 Deploy / 运维（listener daemon · P2.4）
+### 7.1 Deploy / 运维（listener + dispatcher daemons）
 
 ```bash
-# 安装 (一次)
-cp scripts/cli/pl-task-listener.launchd.plist ~/Library/LaunchAgents/ai.profitslocal.task-listener.plist
+# 安装 (一次, 两个 daemon)
+cp scripts/cli/pl-task-listener.launchd.plist   ~/Library/LaunchAgents/ai.profitslocal.task-listener.plist
+cp scripts/cli/pl-task-dispatcher.launchd.plist ~/Library/LaunchAgents/ai.profitslocal.task-dispatcher.plist
 launchctl bootstrap gui/$UID ~/Library/LaunchAgents/ai.profitslocal.task-listener.plist
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/ai.profitslocal.task-dispatcher.plist
 
 # 状态
 launchctl list | grep profitslocal
 tail -f data/tasks/_logs/task-listener.log
+tail -f data/tasks/_logs/task-dispatcher.log
 
 # 重启 (pick up code changes)
 launchctl kickstart -k gui/$UID/ai.profitslocal.task-listener
+launchctl kickstart -k gui/$UID/ai.profitslocal.task-dispatcher
 
 # 停 / 卸载
 launchctl bootout gui/$UID/ai.profitslocal.task-listener
+launchctl bootout gui/$UID/ai.profitslocal.task-dispatcher
 
 # 前台调试 (foreground)
 npm run pl:task-listener
-# 或允许 bot-authored thread (E2E smoke):
+npm run pl:task-dispatcher          # 长跑 fs.watch + cron 60s
+npm run pl:task-dispatcher -- tick   # 一次性扫，等所有 in-flight 完才退出
+
+# 允许 bot-authored thread (E2E smoke):
 LISTENER_ALLOW_BOTS=1 npm run pl:task-listener
 ```
 
 Logs:
-- stdout: `data/tasks/_logs/task-listener.log`
-- stderr: `data/tasks/_logs/task-listener.error.log`
+- listener:   `data/tasks/_logs/task-listener.{log,error.log}`
+- dispatcher: `data/tasks/_logs/task-dispatcher.{log,error.log}`
 
 ---
 
@@ -349,6 +357,10 @@ Logs:
 | 2026-05-12 | Listener daemon | **launchd KeepAlive** | systemd / pm2 / nohup | macOS native · 与 Hermes plist 模式一致 · 崩了自动重启 · `launchctl kickstart -k` 一行重启 |
 | 2026-05-12 | Bot-authored thread | **skip by default** + `LISTENER_ALLOW_BOTS=1` smoke flag | 永远 process | 防 listener 自己发的 reply 二次触发自身 = 无限循环 |
 | 2026-05-12 | Listener log path | **`data/tasks/_logs/task-listener.{log,error.log}`** | `~/.profitslocal/logs/` | 与 task 数据一起 → 一处看完整链路 |
+| 2026-05-12 | CLI 映射 bug 修正 (P3 测试发现) | `intake → pl:pipeline-batch-start` (NOT `-step`); `audit → leads:run-pipeline` (`pl:run-audit-pipeline` 不存在) | LLM 之前 guess 的 | LLM 不知道 npm script 名字真实空间 → 必须在 prompt 显式列 |
+| 2026-05-12 | Dispatcher one-shot 等 in-flight | **轮询 `inFlight` set，直到空才退出** (最长 2× DEFAULT_TIMEOUT_MS) | 1s setTimeout 后 hard-exit | P3 smoke 发现的 bug：parent exit 不会等 spawned child，child 完成但 task 卡在 running → 一旦发现，**立刻**修 + 写 decision log，不让它二次出现 |
+| 2026-05-12 | Dispatcher 调 CLI 用 `npm run X --` | 直接 `spawn(scripts/cli/X.js)` | `npm run` 触发 package.json 的 `--env-file-if-exists` flag · 否则 .env.local 没加载 |
+| 2026-05-12 | Subprocess 完成后回帖 | **stdout/stderr 合并 tail 1500 字符** + tag PATCH + post 到 thread | 不回帖 / 静默落 JSON | Operator 在 Discord 直接看到结果，不用切 admin |
 
 ---
 

@@ -66,7 +66,7 @@ ${(text || '').slice(0, 1500)}
 JSON schema (all fields required):
 {
   "kind":              <one of the 7 kinds above>,
-  "target_cli":        <one of: "pl:pipeline-batch-step" | "pl:run-enrichment-batch" | "pl:run-audit-pipeline" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
+  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:run-enrichment-batch" | "leads:run-pipeline" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
   "args":              <array of CLI args, e.g. ["--niche", "roofer", "--city", "brisbane"]; [] if none>,
   "target_entity_key": <string entityKey if found in input, else null>,
   "confidence":        <float 0..1>,
@@ -126,8 +126,8 @@ function viaRegex({ text, attachments }) {
 
 const REGEX_KIND_MAP = {
   image_lead_discovery: { kind: 'image-extract', target_cli: 'pl:ingest-image' },
-  lead_search_discovery:{ kind: 'intake',        target_cli: 'pl:pipeline-batch-step' },
-  site_audit:           { kind: 'audit',         target_cli: 'pl:run-audit-pipeline' },
+  lead_search_discovery:{ kind: 'intake',        target_cli: 'pl:pipeline-batch-start' },
+  site_audit:           { kind: 'audit',         target_cli: 'leads:run-pipeline' },
   website_project_task: { kind: 'ops',           target_cli: null },
   general_website_task: { kind: 'ops',           target_cli: null },
 };
