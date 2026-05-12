@@ -12,12 +12,12 @@
 |---|---|---|---|---|
 | §1 Routing 自动 | T1-T5 | 5 | 0 | — |
 | §2 E2E pipeline | T8, T10, T11 | 3 (含 fallback) | 0 | T6/T7/T9/T12 (之前已 verify) |
-| §3 失败 / 异常 | T13 | 1 | 0 | T14 timeout · T15 ollama-down |
+| §3 失败 / 异常 | T13, T14, T15 | 3 | 0 | — |
 | §4 边界 | T18, T20 | 2 | 0 | T19 catch-up edge |
-| §5 push + xref | T21 | 1 | 0 | T22/T23 (修了，等 Discord-live 验证) |
+| §5 push + xref | T21, **T22 live** | 2 | 0 | T23 (代码就绪等触发) |
 | §3 reactions | — | — | — | **T16/T17 需 Matthew 真人点 reaction** |
 
-**实测 12/12 PASS** · 5 待测（4 已 verify 历史 + 1 需 Matthew）· 2 deferred（低风险）
+**实测 15/15 PASS** · T22 **真实 Discord 验证 in production** (Matthew 的 "find roofer in redland brisbane" 任务 bot reply 含 `🔗 batch thread:` deeplink + `📦 batch: pipe-roofer-...`) · 1 需 Matthew · 2 deferred
 
 ---
 
@@ -121,10 +121,16 @@
 3. 点 🗑 → 任务应该 done · thread reply "abandoned"
 **估时**: 5min 操作
 
-### T14 timeout / T15 ollama-down
-**低风险** (代码路径都标准 SIGTERM / try-catch)
-**未跑原因**: ollama-down 需重启 daemon, T14 需 env override + 长任务
-**TODO**: stage-2 后回头跑
+### T14 timeout · ✅ PASS 2026-05-13
+- 创建 task `timeout_ms=2000`, cli=ops:health-check (实际跑 12s)
+- T+2s: dispatcher SIGTERM child + transitionStatus → human
+- task.error = "timeout after 2000ms" · last step=cli.timeout signal=SIGTERM
+
+### T15 ollama-down → regex · ✅ PASS 2026-05-13
+- `OLLAMA_URL=http://127.0.0.1:1` (unreachable) + 调 routeIntent
+- ollama 路径 fetch failed → 自动回 regex
+- result: provider='regex' · upstream_errors=["ollama: fetch failed"]
+- kind 仍正确路由
 
 ### T6 / T7 / T9 / T12
 **之前 verify 过** (intake / single-enrich / audit-via-existing-entity / ops-health-check)
@@ -134,10 +140,20 @@
 **之前隐式 verify** (listener 多次重启都正常)
 **完整 explicit case** 留给后续
 
-### T22 / T23 Discord-live cross-ref
-**修了**, 但没 Discord 实测 cross-ref 真实显示
-**留下 T8 thread 已被删除** (Stage 1 cleanup)
-**TODO**: stage-2 间隙跑 intake live 验证 reply 含 🔗 batch thread link
+### T22 cross-ref · ✅ PASS 2026-05-13 (live in production)
+- Matthew 发 "find roofer in redland brisbane" (forum thread 1503831075678453770)
+- listener route → intake → dispatcher spawn pl:pipeline-batch-start
+- exit=0 in 1.4s · stdout JSON 含 thread_id + batch_id
+- dispatcher parseLastJson 提取并生成 cross-ref
+- bot done reply 包含:
+  ```
+  🔗 batch thread: https://discord.com/channels/1493925728570310756/1503831142116102185
+  📦 batch: `pipe-roofer-redland brisbane-202605130448`
+  ```
+
+### T23 chain cross-ref · 代码就绪等触发
+- 同 parseLastJson 逻辑 · audit_chained 字段在 single-enrich CLI 输出
+- 等下次 single-enrich live invoke 自动验证
 
 ---
 
