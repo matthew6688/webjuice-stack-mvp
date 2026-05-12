@@ -120,6 +120,14 @@ async function processLead(entityKey) {
     };
     fs.writeFileSync(detailedPath, JSON.stringify(detailedFixture, null, 2) + '\n');
     console.log(`     → audit_score=${audit.audit_score}/100 decision=${audit.decision}`);
+
+    // Matthew 2026-05-13: audit 完自动 refresh master.md · 把审计字段填进 frontmatter + 报告段
+    // fire-and-forget · 去重 + 失败兜底在 enqueueMasterMdRefresh
+    if (process.env.SOP1_DISABLE_MASTER_MD_AUTOREFRESH !== '1') {
+      import('../../core/leads/master-md-refresh.js')
+        .then((m) => m.enqueueMasterMdRefresh(entityKey, { reason: 'audit' }))
+        .catch((err) => console.error(`[audit] master-md enqueue err: ${err.message}`));
+    }
   } else if (!detailedFixture) {
     console.warn(`  ✗ no website URL on entity, can't run detailed audit`);
     return { entityKey, ok: false, reason: 'no website' };

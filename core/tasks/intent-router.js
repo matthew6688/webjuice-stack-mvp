@@ -75,7 +75,7 @@ ${(text || '').slice(0, 1500)}
 JSON schema (all fields required):
 {
   "kind":              <one of the 8 kinds above>,
-  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:scrape-docker" | "pl:places-search-intake" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
+  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:scrape-docker" | "pl:places-search-intake" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "leads:build-master-md" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
   "args":              <array of CLI args; for single-enrich extract --business-name/--phone/--city/--niche/--website/--gbp-url to args>,
   "target_entity_key": <string entityKey if found in input, else null>,
   "confidence":        <float 0..1>,

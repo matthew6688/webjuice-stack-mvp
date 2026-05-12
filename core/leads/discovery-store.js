@@ -151,6 +151,15 @@ export function upsertDiscoveryRun(run, {
     ...events,
   ]);
   const index = rebuildDiscoveryIndex({ storeRoot });
+
+  // Matthew 2026-05-13: master.md 不要等 audit · 入库即自动建/更新
+  // fire-and-forget · 去重在 enqueueMasterMdRefresh 里 · 失败不反向阻塞 SOP-1 主路径
+  if (process.env.SOP1_DISABLE_MASTER_MD_AUTOREFRESH !== '1' && entityKeys.length > 0) {
+    import('./master-md-refresh.js')
+      .then((m) => m.enqueueMasterMdRefreshBatch(entityKeys, { reason: 'intake' }))
+      .catch((err) => console.error(`[discovery-store] master-md enqueue err: ${err.message}`));
+  }
+
   return {
     ok: true,
     storeRoot,
