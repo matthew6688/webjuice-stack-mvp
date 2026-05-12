@@ -151,13 +151,18 @@ export function desiredForumTagNames({ workspace = 'projects', kind = '', order 
     ? 'roofing'
     : 'restaurant';
   if (workspace === 'leads') {
-    const tags = [niche];
+    // V2 lead tag model: lifecycle phase + grade + modifier; niche moved to thread title prefix.
+    // Per DISCORD_OUTREACH_PRD.md §7. Old kind=sale/paid_intake callers map to new vocabulary
+    // here so the legacy paid-intake-ops flow keeps tagging existing threads correctly.
+    const tags = [];
     if (kind === 'paid_intake' || order.paymentStatus === 'paid') tags.push('paid');
     else if (order.replyState === 'replied') tags.push('replied');
-    else if (order.bounceState === 'bounced') tags.push('bounced');
-    else if (order.nextFollowUpDue) tags.push('follow-up-due');
-    else if (kind === 'sale') tags.push('qualified');
-    else tags.push('cold-outreach');
+    else if (order.bounceState === 'bounced') tags.push('archived');
+    else if (kind === 'sale') tags.push('awaiting');
+    else tags.push('outreach-active');
+    if (order.grade === 'A' || order.investmentLevel === 'A') tags.push('grade-a');
+    else if (order.grade === 'B' || order.investmentLevel === 'B') tags.push('grade-b');
+    else if (order.grade === 'C' || order.investmentLevel === 'C') tags.push('grade-c');
     return tags;
   }
 
@@ -179,17 +184,41 @@ export function desiredForumTagNames({ workspace = 'projects', kind = '', order 
 
 export function defaultDiscordForumBlueprints() {
   return {
+    // SOP-0 Task System — docs/SOP_0_TASK_SYSTEM.md
+    // Kind (7) + Status (5) = 12 tags. Kind = locked at create. Status = state-machine swap.
+    websiteTasks: [
+      // kind (mutually exclusive — locked at task creation)
+      { name: 'intake' },
+      { name: 'enrich' },
+      { name: 'audit' },
+      { name: 'dedup' },
+      { name: 'photos' },
+      { name: 'image-extract' },
+      { name: 'ops' },
+      // status (mutually exclusive — swapped by dispatcher state machine)
+      { name: 'pending' },
+      { name: 'running' },
+      { name: 'done' },
+      { name: 'failed' },
+      { name: 'human' },
+    ],
+    // V2 leads tag model — DISCORD_OUTREACH_PRD.md §7.3
+    // Grade (3) + Lifecycle (8) + Modifier (3) = 14 tags; niche moved to thread title prefix.
     leads: [
-      { name: 'restaurant' },
-      { name: 'roofing' },
-      { name: 'qualified' },
-      { name: 'demo-ready' },
-      { name: 'cold-outreach' },
+      { name: 'grade-a' },
+      { name: 'grade-b' },
+      { name: 'grade-c' },
+      { name: 'awaiting' },
+      { name: 'outreach-active' },
       { name: 'replied' },
-      { name: 'bounced' },
-      { name: 'follow-up-due' },
+      { name: 'proposal-sent' },
+      { name: 'nurture' },
       { name: 'paid' },
-      { name: 'not-fit' },
+      { name: 'archived' },
+      { name: 'needs-human' },
+      { name: 'urgent' },
+      { name: 'do-not-contact' },
+      { name: 'nurture-due' },
     ],
     projects: [
       { name: 'restaurant' },

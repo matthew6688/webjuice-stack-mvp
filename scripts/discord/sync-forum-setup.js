@@ -9,10 +9,11 @@ const args = parseArgs(process.argv.slice(2));
 const botToken = args.token || process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || process.env.DISCORD_BOT_TOKEN || '';
 const leadsChannelId = args.leads || args['leads-channel-id'] || process.env.WEBSITE_LEADS_DISCORD_CHANNEL_ID || '';
 const projectsChannelId = args.projects || args['projects-channel-id'] || process.env.WEBSITE_PROJECTS_DISCORD_CHANNEL_ID || '';
+const tasksChannelId = args.tasks || args['tasks-channel-id'] || process.env.WEBSITE_TASKS_FORUM_CHANNEL_ID || '';
 
 if (!botToken) throw new Error('Missing Discord bot token.');
-if (!leadsChannelId && !projectsChannelId) {
-  throw new Error('Provide --leads / --projects or set WEBSITE_LEADS_DISCORD_CHANNEL_ID / WEBSITE_PROJECTS_DISCORD_CHANNEL_ID.');
+if (!leadsChannelId && !projectsChannelId && !tasksChannelId) {
+  throw new Error('Provide --leads / --projects / --tasks or set WEBSITE_LEADS_DISCORD_CHANNEL_ID / WEBSITE_PROJECTS_DISCORD_CHANNEL_ID / WEBSITE_TASKS_FORUM_CHANNEL_ID.');
 }
 
 const blueprints = defaultDiscordForumBlueprints();
@@ -31,6 +32,14 @@ if (projectsChannelId) {
     channelId: projectsChannelId,
     botToken,
     tags: blueprints.projects,
+  });
+}
+
+if (tasksChannelId) {
+  output.results.websiteTasks = await syncDiscordForumTags({
+    channelId: tasksChannelId,
+    botToken,
+    tags: blueprints.websiteTasks,
   });
 }
 
