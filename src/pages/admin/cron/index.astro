@@ -1,42 +1,43 @@
 ---
 import Layout from '../../../layouts/AdminLayout.astro';
 
+const uiVersion = 'local-style-2026-05-08';
 const API_BASE = import.meta.env.PUBLIC_SOP0_API_BASE || 'https://tasks.profitslocal.com';
 const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
 ---
 
-<Layout title="Hermes Cron Jobs" active="tasks">
-  <section class="poster-section admin-section">
+<Layout title="Hermes Cron" active="tasks">
+  <section class="poster-section admin-section" data-ui-version={uiVersion}>
     <div class="admin-shell cron-shell">
-      <header class="admin-header">
+      <div class="admin-header">
         <div>
           <p class="eyebrow">SOP-0 · Hermes cron</p>
-          <h1>Hermes Cron Jobs</h1>
-          <p class="lede">所有 Hermes profile cron job · 读 <code>~/.hermes/profiles/&lt;profile&gt;/cron/jobs.json</code> · 只读视图</p>
+          <h1>Cron Jobs</h1>
+          <p class="lede">读 <code>~/.hermes/profiles/&lt;profile&gt;/cron/jobs.json</code> · 只读视图 · 改去 <a href="http://127.0.0.1:9119" target="_blank">Hermes Dashboard</a></p>
         </div>
         <div class="admin-count">
-          <a href="/admin/scoring/" class="back-link">← 返回 SOP 总览</a>
-          <a href="/admin/tasks" class="back-link">tasks →</a>
+          <strong id="count-jobs">—</strong>
+          <span>Cron jobs</span>
+          <span class="micro-note" id="count-profiles">loading…</span>
         </div>
+      </div>
+
+      <header class="admin-paper-section-head">
+        <h2>所有 cron job</h2>
+        <span class="filter-status-line" id="refresh-status"></span>
       </header>
 
-      <p class="dim" style="margin: 14px 0 6px">
-        想 create / pause / delete cron job？请去 <a href="http://127.0.0.1:9119" target="_blank">Hermes Dashboard</a> 本地 UI。
-        SOP-0 本页是 cross-device 只读观察面。
-      </p>
+      <div class="v2-row-list" id="cron-rows">
+        <p class="v2-group-empty">loading…</p>
+      </div>
 
-      <div id="status-line" class="dim"></div>
-
-      <table class="admin-table" id="cron-table">
-        <thead>
-          <tr>
-            <th>profile</th><th>name</th><th>schedule</th><th>prompt / cmd</th><th>id</th>
-          </tr>
-        </thead>
-        <tbody id="cron-rows">
-          <tr><td colspan="5" class="dim">loading…</td></tr>
-        </tbody>
-      </table>
+      <div class="admin-banner admin-banner-mint" style="margin-top: 18px">
+        <span class="admin-banner-icon">ℹ</span>
+        <div class="admin-banner-body">
+          <strong>想 create / pause / delete cron job?</strong>
+          <p>本页是 cross-device 只读观察面。写操作请去 <a href="http://127.0.0.1:9119" target="_blank">Hermes Dashboard</a> 本地 UI 或编辑 <code>~/.hermes/profiles/&lt;profile&gt;/cron/jobs.json</code> 后重启对应 gateway。</p>
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
@@ -54,7 +55,7 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
   }
 
   async function loadCron() {
-    $('status-line').textContent = 'loading…';
+    $('refresh-status').textContent = 'loading…';
     try {
       const r = await fetch(`${API_BASE}/api/cron`, {
         headers: API_TOKEN ? { 'Authorization': `Bearer ${API_TOKEN}` } : {},
@@ -62,24 +63,35 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
       if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
       const data = await r.json();
       const jobs = data.jobs || [];
-      const tbody = $('cron-rows');
+      const profiles = [...new Set(jobs.map((j) => j.profile))];
+      $('count-jobs').textContent = jobs.length;
+      $('count-profiles').textContent = `across ${profiles.length} profile${profiles.length === 1 ? '' : 's'}`;
+      const rows = $('cron-rows');
       if (jobs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="dim">no cron jobs found</td></tr>';
+        rows.innerHTML = '<p class="v2-group-empty">— 没有 cron job —</p>';
       } else {
-        tbody.innerHTML = jobs.map((j) => `
-          <tr>
-            <td class="mono">${escape(j.profile)}</td>
-            <td>${escape(j.name || '(unnamed)')}</td>
-            <td>${escape(fmtSchedule(j.schedule))}</td>
-            <td class="prompt mono">${escape((j.prompt || j.script || '').slice(0, 200))}</td>
-            <td class="mono dim">${escape((j.id || '').slice(0, 12))}</td>
-          </tr>
+        rows.innerHTML = jobs.map((j) => `
+          <div class="v2-row">
+            <div class="v2-row-main">
+              <h3 class="v2-row-name">${escape(j.name || '(unnamed)')}</h3>
+              <div class="v2-row-meta">
+                <span class="chip chip-mint">${escape(j.profile)}</span>
+                <span class="chip chip-citrus">${escape(fmtSchedule(j.schedule))}</span>
+                <span class="v2-row-niche">id ${escape((j.id || '').slice(0, 10))}</span>
+              </div>
+              ${j.prompt ? `<code class="v2-stage-cli cron-prompt">${escape((j.prompt || '').slice(0, 240))}</code>` : ''}
+            </div>
+            <div class="v2-row-stats">
+              ${j.no_agent ? '<span class="chip chip-muted">no-agent</span>' : ''}
+              ${j.model ? `<div class="v2-row-stat"><span class="v2-row-stat-num">${escape(j.model)}</span><span class="v2-row-stat-label">model</span></div>` : ''}
+            </div>
+          </div>
         `).join('');
       }
-      $('status-line').textContent = `${jobs.length} cron job(s) across ${[...new Set(jobs.map(j=>j.profile))].length} profile(s)`;
+      $('refresh-status').textContent = `${jobs.length} job(s)`;
     } catch (err) {
-      $('status-line').textContent = `error: ${err.message}`;
-      $('cron-rows').innerHTML = `<tr><td colspan="5" class="error">${escape(err.message)}</td></tr>`;
+      $('refresh-status').textContent = `error: ${err.message}`;
+      $('cron-rows').innerHTML = `<p class="admin-banner admin-banner-coral">${escape(err.message)}</p>`;
     }
   }
 
@@ -88,10 +100,11 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
 
 <style>
   .cron-shell { max-width: 1100px; }
-  .back-link { display:inline-block; padding:6px 12px; border:2px solid var(--pl-line); background:var(--pl-paper); color:var(--pl-ink); text-decoration:none; font-size:12px; box-shadow:3px 3px 0 var(--pl-line); margin-right:6px; }
-  .back-link:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--pl-line); }
-  .dim { color: var(--pl-muted); font-size: 11px; }
-  .error { color: var(--pl-coral); }
-  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11.5px; }
-  .prompt { max-width: 540px; word-break: break-all; }
+  .cron-shell .admin-count { min-width: 220px; flex-shrink: 0; }
+  .cron-shell .admin-count strong { font-size: 44px; line-height: 1; font-weight: 950; }
+  .cron-shell .admin-count .micro-note { display:block; margin-top:6px; font-size:11px; font-weight:700; color: var(--pl-muted); }
+  .cron-shell .admin-header h1 { font-size: 30px; }
+  .cron-shell .lede a { color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+  .cron-prompt { display: block; margin-top: 8px; max-width: 720px; word-break: break-word; font-size: 11px; padding: 4px 10px; }
+  .filter-status-line { color: var(--pl-muted); font-size: 11px; font-weight: 600; margin-left: auto; }
 </style>
