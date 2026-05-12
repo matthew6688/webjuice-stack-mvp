@@ -29,6 +29,16 @@ import Layout from '../../../layouts/AdminLayout.astro';
           <p class="zh-en-sub"><span>Lead Intake &amp; Discovery</span>　·　<span class="micro">"我们怎么找客户" — 抓客户进入数据库的第一段</span></p>
           <p class="lede">把候选客户从外面（Google Maps / 图片 / 关键词搜索）抓进 entity 数据库。所有入口最终统一进 V2 entity store，下游 SOP-2 筛选 + 审计完全一致。</p>
           <div class="sop2-doc-link-row">
+            <a href="/admin/scoring/sop-1-doc" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📘</span>
+              <span class="sop2-doc-link-text">
+                <strong>SOP-1 详细文档 (v0.1-draft)</strong>
+                <span class="sop2-doc-link-sub">source of truth · <code>docs/SOP_1_INTAKE_DISCOVERY.md</code></span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
+          <div class="sop2-doc-link-row">
             <a href="#investigation-note" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📋</span>
               <span class="sop2-doc-link-text">
@@ -38,13 +48,20 @@ import Layout from '../../../layouts/AdminLayout.astro';
               <span class="sop2-doc-link-arrow">→</span>
             </a>
           </div>
-          <p class="meta-line">
-            <span>3 入口 · gosom + image + search</span>
+          <p class="admin-page-meta">
+            <span class="admin-page-version">v0.1-draft</span>
             <span class="dot">·</span>
-            <span>Discord channel <code>#lead-discovery-runs</code></span>
+            <span class="admin-page-updated">最近更新 2026-05-12</span>
             <span class="dot">·</span>
-            <span>当前 4-step 协议 Step 2</span>
+            <span>4-step 协议 Step 2 (待 review)</span>
           </p>
+          <div class="admin-code-sync-banner is-stale">
+            <span>⚠</span>
+            <div>
+              <strong>SOP-1 文档为 v0.1-draft</strong> — 已有 <a href="/admin/scoring/sop-1-doc">详细文档</a>，但 §6 / §11 / §12 仍带 TODO 标记，等 Matthew 回 6 个检查点后升 v1.0。<br/>
+              <em>规则：未上代码（G-1 / G-2 / G-3）只能进 TODO，不能在此页声称已就绪。</em>
+            </div>
+          </div>
         </div>
         <div class="admin-count">
           <span>当前状态</span>

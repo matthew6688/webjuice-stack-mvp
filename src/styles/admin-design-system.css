@@ -258,6 +258,104 @@
 .sop-shell { max-width: 1080px; }
 .sop-shell .admin-banner { max-width: 720px; }
 
+/* ─── Content gap rule (was SOP-2 scoped, now design-system standard) ─────
+   All admin-paper-section content keeps 30px horizontal breathing room
+   from shell edge. Same as .lead-admin-shell .admin-header (28-30px pad).
+   Tables, headings, paragraphs inside sections all start 30px from container edge. */
+.scoring-shell .admin-paper-section,
+.sop-page .admin-paper-section {
+  padding: 22px 30px;
+  border-top: 2px solid var(--pl-line);
+}
+.scoring-shell .admin-paper-section:first-of-type,
+.sop-page .admin-paper-section:first-of-type {
+  border-top: none;
+}
+
+/* ─── Table format standard (was SOP-2 scoped, now design-system) ───────── */
+.scoring-shell .admin-table th,
+.sop-page .admin-table th {
+  background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper));
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 9px 12px;
+}
+.scoring-shell .admin-table td,
+.sop-page .admin-table td {
+  padding: 9px 12px;
+  font-size: 13px;
+  vertical-align: top;
+  line-height: 1.55;
+}
+.scoring-shell .admin-table tr:nth-child(even) td,
+.sop-page .admin-table tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--pl-paper) 70%, white);
+}
+.scoring-shell .admin-table tbody tr:hover td,
+.sop-page .admin-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--pl-citrus) 8%, var(--pl-paper));
+}
+.scoring-shell .admin-table code,
+.sop-page .admin-table code {
+  background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 2px; font-size: 12px;
+}
+
+/* ─── Page version + last-updated metadata ──────────────────────────────── */
+.admin-page-meta {
+  display: inline-flex; gap: 8px; align-items: center;
+  margin-top: 8px;
+  font-size: 11px; color: var(--pl-muted);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.02em;
+}
+.admin-page-meta .admin-page-version {
+  background: var(--pl-paper); border: 1px solid var(--pl-line);
+  padding: 1px 7px; color: var(--pl-ink);
+  font-weight: 700;
+}
+.admin-page-meta .admin-page-updated {
+  color: var(--pl-muted);
+}
+.admin-page-meta .dot { opacity: 0.4; }
+
+/* ─── Code sync banner (when page may be out of sync with code) ─────────── */
+.admin-code-sync-banner {
+  display: flex; gap: 12px; align-items: center;
+  margin: 10px 0;
+  padding: 8px 14px;
+  border: 2px dashed var(--pl-coral);
+  background: color-mix(in srgb, var(--pl-coral) 8%, var(--pl-paper));
+  font-size: 12px; color: var(--pl-ink);
+}
+.admin-code-sync-banner.is-stale {
+  border-color: var(--pl-coral);
+  background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper));
+}
+.admin-code-sync-banner.is-synced {
+  border-color: color-mix(in srgb, var(--pl-mint) 60%, var(--pl-line));
+  background: color-mix(in srgb, var(--pl-mint) 16%, var(--pl-paper));
+  border-style: solid;
+}
+.admin-code-sync-banner strong { font-weight: 700; }
+.admin-code-sync-banner code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 2px; font-size: 11px; }
+
+/* ─── Broken link / TODO marker (used when planned doc not yet live) ───── */
+.admin-todo-link {
+  display: inline-flex; gap: 4px; align-items: center;
+  color: var(--pl-muted);
+  text-decoration: line-through;
+  font-style: italic;
+}
+.admin-todo-link::before { content: "⏳"; font-style: normal; text-decoration: none; }
+.admin-todo-link::after {
+  content: "(TODO)";
+  font-size: 10px; padding: 1px 5px;
+  background: var(--pl-coral); color: white;
+  border-radius: 2px; text-decoration: none;
+  margin-left: 4px; font-style: normal; letter-spacing: 0.05em;
+}
+
 .sop-tab {
   display: flex; flex-direction: column; gap: 2px;
   padding: 12px 22px;
