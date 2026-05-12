@@ -94,12 +94,12 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
           <p class="zh-en-sub"><span>End-to-end Sales Pipeline</span></p>
           <p class="lede">从抓客户到成交付费交付——我们的整个销售流水线一页看清。每段流程都有独立 SOP；横切的资产 / 操作纪律有自己的 SOP。</p>
 
-          <div class="usp-banner">
-            <span class="usp-banner-icon">🎯</span>
-            <div class="usp-banner-body">
+          <div class="admin-banner admin-banner-coral">
+            <span class="admin-banner-icon">🎯</span>
+            <div class="admin-banner-body">
               <strong>我们的差异化 / Our USP</strong>
               <p>「先做好网站，再去对接客户」<br/><em>Pre-build the website, then pitch — not the other way around.</em></p>
-              <p class="usp-banner-note">这决定了我们的销售流程拓扑：A/B/C 都可能预制网站，A 优先，B 算力允许，C 看意向。</p>
+              <p>这决定了我们的销售流程拓扑：A/B/C 都可能预制网站，A 优先，B 算力允许，C 看意向。</p>
             </div>
           </div>
         </div>
@@ -129,105 +129,95 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
         </a>
       </nav>
 
-      <!-- ─── SECTION 1 · USP 三分支销售漏斗 ────────────────────────────── -->
-      <section class="admin-paper-section funnel-section">
+      <!-- ─── SECTION 1 · 销售流水线 ──────────────────────────────────────── -->
+      <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">销售流水线 · 三分支模型</p>
             <h2>从发现到付费 · 完整漏斗 <span class="en-sub">Pipeline · Discovery → Pre-build → Sales → Pay</span></h2>
           </div>
-          <span class="admin-section-count">5 段主流程 + USP 双路径</span>
+          <span class="admin-section-count">5 段主流程 + USP 三分支</span>
         </div>
 
-        <div class="funnel-grid">
-          <!-- Row 1: Discovery -->
-          <div class="funnel-step">
-            <div class="funnel-step-num">1</div>
-            <div class="funnel-step-body">
+        <div class="admin-flow-grid">
+          <div class="admin-flow-step">
+            <div class="admin-flow-num">1</div>
+            <div>
               <h3>客户发现 / Discovery</h3>
               <p>gosom Docker scraper (主) · image lead · 关键词 search</p>
-              <p class="funnel-step-meta">→ entity 入库 · SOP-1</p>
+              <p class="admin-flow-meta">→ entity 入库 · SOP-1</p>
             </div>
           </div>
-          <div class="funnel-arrow">▼</div>
+          <div class="admin-flow-arrow">▼</div>
 
-          <!-- Row 2: Screening -->
-          <div class="funnel-step">
-            <div class="funnel-step-num">2</div>
-            <div class="funnel-step-body">
+          <div class="admin-flow-step">
+            <div class="admin-flow-num">2</div>
+            <div>
               <h3>筛选 + 审计 / Screening</h3>
               <p>cheap-audit-v2 → detailed audit → 评级 A/B/C/D</p>
-              <p class="funnel-step-meta">→ entity.grade · SOP-2</p>
+              <p class="admin-flow-meta">→ entity.grade · SOP-2</p>
             </div>
           </div>
-          <div class="funnel-arrow">▼</div>
+          <div class="admin-flow-arrow">▼</div>
 
-          <!-- Row 3: USP branch -->
-          <div class="funnel-branch">
-            <div class="funnel-branch-label">分流 · USP 三分支</div>
-            <div class="funnel-branch-cols">
-              <div class="funnel-branch-col grade-a">
-                <div class="grade-chip">A</div>
-                <strong>必做网站，优先</strong>
-                <p>OD 立刻预制 → 销售带网站对接</p>
-              </div>
-              <div class="funnel-branch-col grade-b">
-                <div class="grade-chip">B</div>
-                <strong>也做网站</strong>
-                <p>A 排完算力允许 → OD 跟做 → 销售带网站对接</p>
-              </div>
-              <div class="funnel-branch-col grade-c">
-                <div class="grade-chip">C</div>
-                <strong>先问意向</strong>
-                <p>销售先对接 → 有意向 → OD 反向建</p>
-                <p class="grade-note">没意向 → 归档（niche 数据库备用）</p>
-              </div>
-              <div class="funnel-branch-col grade-d">
-                <div class="grade-chip">D</div>
-                <strong>跳过</strong>
-                <p>不投入 (hard-skip)</p>
-              </div>
+          <!-- USP 三分支：4 cards 用 design-system 标准 card-grid -->
+          <div class="admin-card-grid admin-card-grid-4">
+            <div class="admin-card admin-card-tinted-mint">
+              <span class="chip chip-mint">A</span>
+              <p class="admin-card-title">必做网站，优先</p>
+              <p class="admin-card-body">OD 立刻预制 → 销售带网站对接</p>
+            </div>
+            <div class="admin-card admin-card-tinted-citrus">
+              <span class="chip chip-citrus">B</span>
+              <p class="admin-card-title">也做网站</p>
+              <p class="admin-card-body">A 排完算力允许 → OD 跟做 → 销售带网站对接</p>
+            </div>
+            <div class="admin-card admin-card-tinted-sky">
+              <span class="chip chip-sky">C</span>
+              <p class="admin-card-title">先问意向</p>
+              <p class="admin-card-body">销售先对接 → 有意向 → OD 反向建</p>
+              <p class="admin-card-meta">没意向 → 归档（niche 数据库备用）</p>
+            </div>
+            <div class="admin-card">
+              <span class="chip chip-muted">D</span>
+              <p class="admin-card-title">跳过</p>
+              <p class="admin-card-body">不投入 (hard-skip)</p>
             </div>
           </div>
-          <div class="funnel-arrow">▼</div>
 
-          <!-- Row 4: OD build -->
-          <div class="funnel-step">
-            <div class="funnel-step-num">3</div>
-            <div class="funnel-step-body">
+          <div class="admin-flow-arrow">▼</div>
+
+          <div class="admin-flow-step">
+            <div class="admin-flow-num">3</div>
+            <div>
               <h3>Open Design 网站预制</h3>
               <p>基于 master.md + audit report，针对性建 demo 网站</p>
-              <p class="funnel-step-meta">→ clients/&lt;slug&gt;/v2/ · SOP-3</p>
+              <p class="admin-flow-meta">→ clients/&lt;slug&gt;/v2/ · SOP-3</p>
             </div>
           </div>
-          <div class="funnel-arrow">▼</div>
+          <div class="admin-flow-arrow">▼</div>
 
-          <!-- Row 5: Sales -->
-          <div class="funnel-step">
-            <div class="funnel-step-num">4</div>
-            <div class="funnel-step-body">
+          <div class="admin-flow-step">
+            <div class="admin-flow-num">4</div>
+            <div>
               <h3>销售对接 / Sales Engagement</h3>
               <p>多触点 outreach: contact-us 表单 · GMB · social · phone · email</p>
-              <p class="funnel-step-meta">→ #website-leads thread · SOP-4 · 自动化销售框架</p>
+              <p class="admin-flow-meta">→ #website-leads thread · SOP-4 · 自动化销售框架</p>
             </div>
           </div>
-          <div class="funnel-arrow">▼</div>
+          <div class="admin-flow-arrow">▼</div>
 
-          <!-- Row 6: Pay & Deliver -->
-          <div class="funnel-step funnel-step-end">
-            <div class="funnel-step-num">5</div>
-            <div class="funnel-step-body">
+          <div class="admin-flow-step flow-end">
+            <div class="admin-flow-num">5</div>
+            <div>
               <h3>客户决定 → 付费 → 交付维护</h3>
               <p>客户看 demo 决定 → Stripe → bootstrap repo → CF Pages → 持续维护</p>
-              <p class="funnel-step-meta">→ #paid-websites · SOP-5</p>
+              <p class="admin-flow-meta">→ #paid-websites · SOP-5</p>
             </div>
           </div>
         </div>
 
-        <div class="contact-id-note">
-          <p class="eyebrow accent-coral">📇 客户 Contact Identity (横跨所有阶段)</p>
-          <p>每个 entity 在我们这边维护多触点 ID：<strong>GMB / Google Maps URL</strong> · <strong>网站 Contact Us 页 URL</strong> · <strong>社交账号</strong> (FB / IG / LinkedIn) · <strong>Phone / Email</strong>。SOP-4 销售对接时按触点优先级跨渠道触达 → 单一渠道死 ≠ lead 死。详见 <strong>SOP-ART-3 客户 Profile</strong>（待写）。</p>
-        </div>
+        <p class="admin-note-line"><strong>📇 客户 Contact Identity</strong> (横跨所有阶段) — 每个 entity 维护多触点 ID：<strong>GMB / 网站 Contact Us 页 / 社交账号 (FB/IG/LinkedIn) / Phone / Email</strong>。SOP-4 销售对接时按触点优先级跨渠道触达 → 单一渠道死 ≠ lead 死。详见 <strong>SOP-ART-3 客户 Profile</strong>（待写）。</p>
       </section>
 
       <!-- ─── SECTION 2 · Discord 4-channel lifecycle (summary) ──────────── -->
@@ -240,29 +230,26 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
           <span class="admin-section-count">详情见 SOP-X-Discord (待写)</span>
         </div>
 
-        <div class="channel-mini-grid">
-          <div class="channel-mini channel-mini-0">
-            <div class="channel-mini-stage">阶段 1 · 发现</div>
-            <code>#lead-discovery-runs</code>
-            <p>1 batch = 1 thread · SOP-1 + SOP-2</p>
+        <div class="admin-card-grid admin-card-grid-4">
+          <div class="admin-card admin-card-tinted-sky">
+            <p class="eyebrow accent-coral">阶段 1 · 发现</p>
+            <p class="admin-card-title"><code>#lead-discovery-runs</code></p>
+            <p class="admin-card-body">1 batch = 1 thread · SOP-1 + SOP-2</p>
           </div>
-          <div class="channel-mini-arrow">→</div>
-          <div class="channel-mini channel-mini-1">
-            <div class="channel-mini-stage">阶段 2 · 销售</div>
-            <code>#website-leads</code>
-            <p>1 A/B/C lead = 1 thread · SOP-4</p>
+          <div class="admin-card admin-card-tinted-mint">
+            <p class="eyebrow accent-coral">阶段 2 · 销售</p>
+            <p class="admin-card-title"><code>#website-leads</code></p>
+            <p class="admin-card-body">1 A/B/C lead = 1 thread · SOP-4</p>
           </div>
-          <div class="channel-mini-arrow">→</div>
-          <div class="channel-mini channel-mini-2">
-            <div class="channel-mini-stage">阶段 3 · Demo</div>
-            <code>#website-projects</code>
-            <p>1 demo 制作 = 1 thread · SOP-3</p>
+          <div class="admin-card admin-card-tinted-citrus">
+            <p class="eyebrow accent-coral">阶段 3 · Demo</p>
+            <p class="admin-card-title"><code>#website-projects</code></p>
+            <p class="admin-card-body">1 demo 制作 = 1 thread · SOP-3</p>
           </div>
-          <div class="channel-mini-arrow">→</div>
-          <div class="channel-mini channel-mini-3">
-            <div class="channel-mini-stage">阶段 4 · 付费</div>
-            <code>#paid-websites</code>
-            <p>1 付费客户 = 1 thread · SOP-5</p>
+          <div class="admin-card admin-card-tinted-coral">
+            <p class="eyebrow accent-coral">阶段 4 · 付费</p>
+            <p class="admin-card-title"><code>#paid-websites</code></p>
+            <p class="admin-card-body">1 付费客户 = 1 thread · SOP-5</p>
           </div>
         </div>
       </section>
@@ -279,12 +266,10 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
 
         {Object.entries(sopCatalog).map(([key, group]) => (
           <div class="sop-layer">
-            <div class="sop-layer-head">
-              <h3>{group.title}</h3>
-              <p class="sop-layer-sub">{group.subtitle}</p>
-            </div>
+            <h3 class="admin-subhead">{group.title}</h3>
+            <p class="admin-subhead-note">{group.subtitle}</p>
             <div class="admin-table-wrap">
-              <table class="admin-table sop-matrix-table">
+              <table class="admin-table">
                 <thead><tr><th>编号</th><th>名称</th><th>状态</th><th>触发条件 / 范围</th><th>页面</th></tr></thead>
                 <tbody>
                   {group.items.map((s) => (
@@ -292,8 +277,8 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
                       <td><code>{s.id}</code></td>
                       <td><strong>{s.zh}</strong></td>
                       <td>{s.status}</td>
-                      <td class="rationale">{s.trigger}{s.channel && <span class="channel-pill"> · {s.channel}</span>}</td>
-                      <td>{s.href ? <a href={s.href} class="sop-link">打开 →</a> : <span class="sop-link-na">—</span>}</td>
+                      <td>{s.trigger}{s.channel && <span class="sop-channel-pill"> · {s.channel}</span>}</td>
+                      <td>{s.href ? <a href={s.href} class="admin-back-link" style="padding:3px 10px;font-size:11px;">打开 →</a> : <span class="text-muted">—</span>}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -313,225 +298,96 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
           <span class="admin-section-count">build-time 读取 · 不实时</span>
         </div>
 
-        <div class="snapshot-grid">
-          <div class="snapshot-card">
+        <div class="admin-card-grid admin-card-grid-4">
+          <div class="admin-card">
             <p class="eyebrow">总 entity</p>
-            <strong>{entityCount}</strong>
-            <p class="snapshot-detail">{detailedAudits} 已 detailed audit</p>
+            <p class="snapshot-big">{entityCount}</p>
+            <p class="admin-card-meta">{detailedAudits} 已 detailed audit</p>
           </div>
-          <div class="snapshot-card">
+          <div class="admin-card">
             <p class="eyebrow">Grade 分布</p>
-            <div class="snapshot-grade-row">
+            <p class="snapshot-grade-row">
               <span><b>A</b> {gradeCounts.A}</span>
               <span><b>B</b> {gradeCounts.B}</span>
               <span><b>C</b> {gradeCounts.C}</span>
               <span><b>D</b> {gradeCounts.D}</span>
-            </div>
-            <p class="snapshot-detail">{gradeCounts.ungraded} 未评级</p>
+            </p>
+            <p class="admin-card-meta">{gradeCounts.ungraded} 未评级</p>
           </div>
-          <div class="snapshot-card">
+          <div class="admin-card">
             <p class="eyebrow">Discord thread</p>
-            <strong>{withDiscordThread}</strong>
-            <p class="snapshot-detail">A/B graduated to #website-leads</p>
+            <p class="snapshot-big">{withDiscordThread}</p>
+            <p class="admin-card-meta">A/B graduated to #website-leads</p>
           </div>
-          <div class="snapshot-card">
+          <div class="admin-card">
             <p class="eyebrow">历史 batch</p>
-            <strong>{batchCount}</strong>
-            <p class="snapshot-detail">pipeline-batches 累计</p>
+            <p class="snapshot-big">{batchCount}</p>
+            <p class="admin-card-meta">pipeline-batches 累计</p>
           </div>
         </div>
       </section>
 
       <!-- ─── SECTION 5 · Maintenance protocol ───────────────────────────── -->
-      <section class="admin-paper-section sop2-maintenance">
+      <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">SOP 维护协议</p>
             <h2>改流程 = 改 doc + 改 admin 页 (paired)</h2>
           </div>
         </div>
-        <p class="section-lede">每个 SOP 都同时有：</p>
-        <ul class="maintenance-list">
-          <li><strong>1 个 admin 页面</strong> (macro overview, 给操作员看大局) — <code>/admin/scoring/&lt;sop-id&gt;</code></li>
-          <li><strong>1 个详细文档</strong> (source of truth, 给 AI / 工程师 / 新人看细节) — <code>docs/SOP_&lt;id&gt;_*.md</code></li>
-          <li><strong>1 份调研笔记</strong> (建立 SOP 前的现状摸底) — <code>data/qa/sop-investigations/&lt;sop-id&gt;.md</code></li>
-        </ul>
-        <p class="note-line">流程变动 → <strong>必须同时改 admin 页 + 详细文档</strong>。所有代码、master.md frontmatter、客户报告都从这里衍生。Decision records 加 REVISED 注释，不删历史。</p>
+        <div class="admin-banner admin-banner-lilac">
+          <span class="admin-banner-icon">📋</span>
+          <div class="admin-banner-body">
+            <strong>每个 SOP 同时有 3 个产物</strong>
+            <p>1 个 admin 页面 (macro · 给操作员) · 1 个详细文档 (source of truth · 给 AI/工程师) · 1 份调研笔记 (建 SOP 前的现状摸底)</p>
+          </div>
+        </div>
 
-        <p class="section-lede" style="margin-top:18px"><strong>4-step 工作流 (建 SOP 必须走完)</strong></p>
-        <ol class="maintenance-list">
+        <h3 class="admin-subhead">4-step 工作流 (建 SOP 必须走完)</h3>
+        <ul class="admin-marker-list">
           <li><strong>Step 1 · 现状调研</strong> — 读相关代码 / commit / 跑 happy path → 写 investigation note</li>
-          <li><strong>Step 2 · Review</strong> — Matthew 确认我没把现状搞错</li>
-          <li><strong>Step 3 · 写 SOP v0.1</strong> — 中文为主 + 英文对照 · 目的 / 步骤 / 容易忽略的点 / 维护规则</li>
-          <li><strong>Step 4 · 验证</strong> — astro build → push → GH Actions success → browser verify live URL + screenshot</li>
-        </ol>
+          <li><strong>Step 2 · Review</strong> — Matthew 确认现状没搞错</li>
+          <li><strong>Step 3 · 写 SOP v0.1</strong> — 中文主 + 英文对照 · 目的 / 步骤 / 容易忽略的点 / 维护规则</li>
+          <li><strong>Step 4 · 验证</strong> — astro build → push → GH Actions success → browser verify live + screenshot</li>
+        </ul>
+
+        <p class="admin-note-line"><strong>📘 Design System</strong>：所有 admin 页面遵守 <code>docs/ADMIN_DESIGN_SYSTEM.md</code> · 不允许 per-page 自造视觉模式 · 改 design system → 同时改 doc + admin-design-system.css + 截图验证</p>
       </section>
     </div>
   </section>
 </Layout>
 
 <style>
+  /* Page-specific layout only. All visual chrome from admin-design-system.css. */
   .sop-shell { max-width: 1080px; }
   .sop-shell .admin-header h1 { font-size: 30px; line-height: 1.15; }
-  .zh-en-sub { color: var(--pl-muted); font-size: 13px; margin: 2px 0 8px; font-style: italic; }
-  .en-sub { display: inline-block; margin-left: 8px; font-family: Georgia, serif; font-style: italic; font-size: 13px; font-weight: 400; color: var(--pl-muted); }
+  .sop-shell .admin-banner { max-width: 720px; }
 
-  /* USP banner */
-  .usp-banner {
-    display: flex; gap: 16px; align-items: flex-start;
-    margin: 14px 0 6px;
-    padding: 14px 18px;
-    border: 2px solid var(--pl-line);
-    background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper));
-    box-shadow: 4px 4px 0 var(--pl-line);
-    max-width: 720px;
+  /* SOP matrix sub-subhead (between admin-paper-section-head and table) */
+  .admin-subhead-note {
+    color: var(--pl-muted);
+    font-size: 12.5px;
+    margin: -4px 0 8px;
   }
-  .usp-banner-icon { font-size: 26px; line-height: 1; padding-top: 2px; }
-  .usp-banner-body strong { font-family: Georgia, serif; font-size: 16px; }
-  .usp-banner-body p { margin: 4px 0 0; font-size: 14px; line-height: 1.55; }
-  .usp-banner-body em { color: var(--pl-muted); font-size: 13px; }
-  .usp-banner-note { font-size: 12.5px; color: var(--pl-muted); }
 
-  /* Tab strip (reused) */
-  .sop-tabs { display: flex; gap: 0; margin: 18px 0 22px; border-bottom: 2px solid var(--pl-line); }
-  .sop-tab {
-    display: flex; flex-direction: column; gap: 2px;
-    padding: 12px 22px;
-    background: color-mix(in srgb, var(--pl-paper) 50%, transparent);
-    border: 2px solid var(--pl-line); border-bottom: none;
-    margin-right: 6px; margin-bottom: -2px;
-    text-decoration: none; color: var(--pl-muted);
-    min-width: 220px;
+  /* Channel pill inside table cell */
+  .sop-channel-pill {
+    color: var(--pl-muted);
+    font-size: 11px;
   }
-  .sop-tab:hover { background: color-mix(in srgb, var(--pl-citrus) 12%, var(--pl-paper)); color: var(--pl-ink); }
-  .sop-tab--active {
-    background: var(--pl-paper); color: var(--pl-ink);
-    box-shadow: 3px -3px 0 var(--pl-line);
-    transform: translateY(-2px); border-bottom: 2px solid var(--pl-paper);
-  }
-  .sop-tab-id { font-family: ui-monospace, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pl-coral); }
-  .sop-tab-zh { font-family: Georgia, serif; font-size: 16px; font-weight: 700; line-height: 1.15; }
-  .sop-tab-en { font-size: 11px; color: var(--pl-muted); font-style: italic; }
-  .sop-tab--active .sop-tab-zh { color: var(--pl-ink); }
+  .text-muted { color: var(--pl-muted); font-style: italic; }
 
-  /* Funnel diagram */
-  .funnel-section { background: color-mix(in srgb, var(--pl-citrus) 5%, var(--pl-paper)); }
-  .funnel-grid { display: flex; flex-direction: column; gap: 0; max-width: 880px; margin: 14px auto 6px; }
-  .funnel-step {
-    border: 2px solid var(--pl-line); background: var(--pl-paper);
-    padding: 14px 18px; box-shadow: 4px 4px 0 var(--pl-line);
-    display: grid; grid-template-columns: 60px 1fr; gap: 4px 16px;
+  /* Snapshot card oversized number */
+  .snapshot-big {
+    font-family: Georgia, serif;
+    font-size: 30px; font-weight: 700; line-height: 1;
+    margin: 6px 0;
+    color: var(--pl-ink);
   }
-  .funnel-step-end { background: color-mix(in srgb, var(--pl-mint) 14%, var(--pl-paper)); }
-  .funnel-step-num {
-    font-family: Georgia, serif; font-size: 32px; font-weight: 700; color: var(--pl-coral);
-    grid-row: 1 / span 3; align-self: center; text-align: center;
+  .snapshot-grade-row {
+    display: flex; gap: 12px;
+    font-size: 14px;
+    margin: 6px 0;
   }
-  .funnel-step h3 { font-family: Georgia, serif; font-size: 18px; font-weight: 700; margin: 0; }
-  .funnel-step p { margin: 4px 0 0; font-size: 13.5px; line-height: 1.55; }
-  .funnel-step-meta { color: var(--pl-muted); font-size: 12px; font-style: italic; }
-  .funnel-arrow { text-align: center; padding: 6px 0; color: var(--pl-muted); font-size: 16px; }
-
-  .funnel-branch {
-    border: 2px dashed var(--pl-line); background: color-mix(in srgb, var(--pl-lilac) 10%, var(--pl-paper));
-    padding: 14px 18px; margin: 0;
-  }
-  .funnel-branch-label {
-    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--pl-coral); font-weight: 700; margin-bottom: 10px;
-  }
-  .funnel-branch-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .funnel-branch-col {
-    border: 2px solid var(--pl-line); background: var(--pl-paper);
-    padding: 12px 12px 10px;
-    box-shadow: 3px 3px 0 var(--pl-line);
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .grade-chip {
-    width: 32px; height: 32px; border-radius: 50%; font-family: Georgia, serif;
-    font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;
-    color: var(--pl-cream); margin-bottom: 4px;
-  }
-  .grade-a .grade-chip { background: var(--pl-green); }
-  .grade-b .grade-chip { background: var(--pl-citrus); color: var(--pl-ink); }
-  .grade-c .grade-chip { background: var(--pl-sky); color: var(--pl-ink); }
-  .grade-d .grade-chip { background: var(--pl-muted); }
-  .funnel-branch-col strong { font-size: 13.5px; }
-  .funnel-branch-col p { margin: 2px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--pl-ink); }
-  .grade-note { color: var(--pl-muted); font-style: italic; font-size: 11.5px !important; }
-
-  .contact-id-note {
-    margin-top: 16px; padding: 12px 16px;
-    border: 1px dashed var(--pl-line); background: color-mix(in srgb, var(--pl-mint) 10%, var(--pl-paper));
-  }
-  .contact-id-note .eyebrow { margin-bottom: 4px; }
-  .contact-id-note p { font-size: 13px; line-height: 1.6; margin: 4px 0 0; }
-  .contact-id-note strong { color: var(--pl-ink); }
-  .accent-coral { color: var(--pl-coral); }
-
-  /* Channel mini grid */
-  .channel-mini-grid {
-    display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr 30px 1fr; gap: 10px;
-    align-items: center; margin-top: 6px;
-  }
-  .channel-mini {
-    border: 2px solid var(--pl-line); padding: 12px 14px;
-    background: var(--pl-paper); box-shadow: 3px 3px 0 var(--pl-line);
-  }
-  .channel-mini-0 { background: color-mix(in srgb, var(--pl-sky) 14%, var(--pl-paper)); }
-  .channel-mini-1 { background: color-mix(in srgb, var(--pl-mint) 16%, var(--pl-paper)); }
-  .channel-mini-2 { background: color-mix(in srgb, var(--pl-citrus) 14%, var(--pl-paper)); }
-  .channel-mini-3 { background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper)); }
-  .channel-mini-stage {
-    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--pl-coral); font-weight: 700;
-  }
-  .channel-mini code { font-size: 13px; font-weight: 700; margin-top: 4px; display: block; }
-  .channel-mini p { margin: 4px 0 0; font-size: 12px; line-height: 1.5; }
-  .channel-mini-arrow { text-align: center; color: var(--pl-coral); font-size: 18px; font-weight: 800; }
-
-  /* SOP matrix */
-  .sop-layer { margin: 22px 0; }
-  .sop-layer-head { margin-bottom: 8px; }
-  .sop-layer-head h3 { font-family: Georgia, serif; font-size: 17px; margin: 0; }
-  .sop-layer-sub { color: var(--pl-muted); font-size: 12.5px; margin: 2px 0 0; }
-  .sop-matrix-table th { background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper)); font-size: 12px; }
-  .sop-matrix-table td { font-size: 13px; vertical-align: top; }
-  .sop-matrix-table .channel-pill { color: var(--pl-muted); font-size: 11px; }
-  .sop-link {
-    display: inline-block; padding: 3px 10px;
-    border: 1px solid var(--pl-line); background: var(--pl-paper);
-    color: var(--pl-coral); text-decoration: none; font-size: 12px; font-weight: 700;
-  }
-  .sop-link:hover { background: color-mix(in srgb, var(--pl-citrus) 14%, var(--pl-paper)); }
-  .sop-link-na { color: var(--pl-muted); font-style: italic; }
-
-  /* Snapshot */
-  .snapshot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 6px; }
-  .snapshot-card {
-    border: 2px solid var(--pl-line); padding: 14px 16px;
-    background: var(--pl-paper); box-shadow: 3px 3px 0 var(--pl-line);
-  }
-  .snapshot-card .eyebrow { margin: 0 0 6px; }
-  .snapshot-card strong {
-    font-family: Georgia, serif; font-size: 30px; font-weight: 700; line-height: 1;
-    display: block; color: var(--pl-ink);
-  }
-  .snapshot-detail { font-size: 11.5px; color: var(--pl-muted); margin-top: 6px; }
-  .snapshot-grade-row { display: flex; gap: 12px; font-size: 14px; }
   .snapshot-grade-row span b { color: var(--pl-coral); margin-right: 2px; }
-
-  /* Maintenance section (reused style) */
-  .sop2-maintenance {
-    background: color-mix(in srgb, var(--pl-lilac) 10%, var(--pl-paper));
-    border: 2px solid var(--pl-line); box-shadow: 4px 4px 0 var(--pl-line);
-  }
-  .maintenance-list { padding-left: 20px; line-height: 1.7; font-size: 13.5px; }
-  .maintenance-list code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 2px; font-size: 12px; }
-  .note-line {
-    margin-top: 12px; padding: 10px 14px;
-    border-left: 3px solid var(--pl-coral);
-    background: color-mix(in srgb, var(--pl-coral) 8%, var(--pl-paper));
-    font-size: 13px; line-height: 1.55;
-  }
 </style>

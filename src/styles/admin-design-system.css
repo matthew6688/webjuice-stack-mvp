@@ -1,0 +1,280 @@
+/* ============================================================================
+   ADMIN DESIGN SYSTEM · v1.0 · 2026-05-12
+   ----------------------------------------------------------------------------
+   Source of truth: docs/ADMIN_DESIGN_SYSTEM.md
+   ALL admin pages (/admin/*) must follow these tokens + components.
+
+   Imported from: src/layouts/AdminLayout.astro
+
+   If you need to add a new component pattern → propose in
+   docs/ADMIN_DESIGN_SYSTEM.md FIRST, get approved, then add it here.
+   ============================================================================ */
+
+/* ---------- Override global h1/h2 constraints inside admin shell ----------
+   global.css has bare `h1 { max-width: 12ch }` and `h2 { max-width: 10.5ch }`
+   which forces 4-line wrapping inside admin sections. Reset for admin shell. */
+.admin-shell .admin-header h1 {
+  max-width: none !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 30px !important;
+  line-height: 1.15 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
+.admin-shell .admin-paper-section-head h2 {
+  max-width: none !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.005em !important;
+  line-height: 1.2 !important;
+}
+.admin-shell h3 {
+  max-width: none;
+}
+
+/* ---------- Color chips (replaces per-page declarations) -------------------- */
+.chip {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px;
+  border: 1px solid var(--pl-line);
+  background: var(--pl-paper);
+  color: var(--pl-ink);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 0;
+  white-space: nowrap;
+}
+.chip-coral  { background: var(--pl-coral);  color: white; }
+.chip-citrus { background: var(--pl-citrus); color: var(--pl-ink); }
+.chip-mint   { background: var(--pl-mint);   color: var(--pl-ink); }
+.chip-sky    { background: var(--pl-sky);    color: var(--pl-ink); }
+.chip-lilac  { background: var(--pl-lilac);  color: var(--pl-ink); }
+.chip-muted  { background: rgba(0,0,0,0.05); color: var(--pl-muted); }
+
+/* ---------- Eyebrow accent variants ---------------------------------------- */
+.eyebrow.accent-coral  { color: var(--pl-coral); }
+.eyebrow.accent-citrus { color: #b88a00; }
+.eyebrow.accent-mint   { color: #4a7a5e; }
+.eyebrow.accent-muted  { color: var(--pl-muted); }
+
+/* ---------- Universal admin card (paper + ink border + box-shadow) --------- */
+.admin-card {
+  border: 2px solid var(--pl-line);
+  background: var(--pl-paper);
+  padding: 14px 16px;
+  box-shadow: 3px 3px 0 var(--pl-line);
+}
+.admin-card-tinted-mint   { background: color-mix(in srgb, var(--pl-mint) 14%, var(--pl-paper)); }
+.admin-card-tinted-citrus { background: color-mix(in srgb, var(--pl-citrus) 14%, var(--pl-paper)); }
+.admin-card-tinted-sky    { background: color-mix(in srgb, var(--pl-sky) 14%, var(--pl-paper)); }
+.admin-card-tinted-lilac  { background: color-mix(in srgb, var(--pl-lilac) 14%, var(--pl-paper)); }
+.admin-card-tinted-coral  { background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper)); }
+
+.admin-card-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 6px;
+}
+.admin-card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.admin-card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.admin-card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.admin-card-grid-auto { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+.admin-card-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px; line-height: 1.2;
+  font-weight: 700; margin: 6px 0 4px;
+  letter-spacing: 0;
+}
+.admin-card-body {
+  font-size: 13px; line-height: 1.55;
+  color: var(--pl-ink);
+}
+.admin-card-meta {
+  font-size: 11.5px; color: var(--pl-muted);
+  font-style: italic; margin-top: 4px;
+}
+
+/* ---------- Universal admin banner (4 variants) ---------------------------- */
+.admin-banner {
+  display: flex; gap: 14px; align-items: flex-start;
+  margin: 14px 0;
+  padding: 12px 16px;
+  border: 2px solid var(--pl-line);
+  background: var(--pl-paper);
+  box-shadow: 4px 4px 0 var(--pl-line);
+}
+.admin-banner-coral  { background: color-mix(in srgb, var(--pl-coral) 12%, var(--pl-paper)); }
+.admin-banner-citrus { background: color-mix(in srgb, var(--pl-citrus) 14%, var(--pl-paper)); }
+.admin-banner-mint   { background: color-mix(in srgb, var(--pl-mint) 16%, var(--pl-paper)); }
+.admin-banner-lilac  { background: color-mix(in srgb, var(--pl-lilac) 14%, var(--pl-paper)); }
+
+.admin-banner-icon {
+  font-size: 22px; line-height: 1; padding-top: 2px; flex-shrink: 0;
+}
+.admin-banner-body {
+  font-size: 13.5px; line-height: 1.55; color: var(--pl-ink);
+  flex: 1;
+}
+.admin-banner-body strong { color: var(--pl-ink); font-weight: 700; }
+.admin-banner-body p { margin: 4px 0 0; }
+.admin-banner-body em { color: var(--pl-muted); font-style: italic; font-size: 12.5px; }
+.admin-banner-body code {
+  background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 2px; font-size: 12px;
+}
+
+/* ---------- Note-line (smaller inline callout) ----------------------------- */
+.admin-note-line {
+  margin: 12px 0 0;
+  padding: 8px 14px;
+  border-left: 3px solid var(--pl-coral);
+  background: color-mix(in srgb, var(--pl-coral) 7%, var(--pl-paper));
+  font-size: 13px; line-height: 1.55;
+  color: var(--pl-ink);
+}
+.admin-note-line code {
+  background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 2px; font-size: 12px;
+}
+.admin-note-line strong { color: var(--pl-coral); }
+
+/* ---------- Step list (replaces bespoke step-progress in SOP-1) ----------- */
+.admin-step-list {
+  list-style: none; padding: 0; margin: 6px 0 0;
+}
+.admin-step-list > li {
+  display: grid; grid-template-columns: 42px 1fr; gap: 14px;
+  padding: 10px 14px; margin-bottom: 6px;
+  border: 2px solid var(--pl-line);
+  background: var(--pl-paper);
+  box-shadow: 3px 3px 0 var(--pl-line);
+}
+.admin-step-list > li.step-done { opacity: 0.7; }
+.admin-step-list > li.step-active { box-shadow: 4px 4px 0 var(--pl-coral); background: color-mix(in srgb, var(--pl-coral) 8%, var(--pl-paper)); }
+.admin-step-list > li.step-pending { opacity: 0.5; box-shadow: 2px 2px 0 var(--pl-muted); }
+
+.admin-step-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  font-family: Georgia, serif; font-size: 17px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--pl-paper); border: 1px solid var(--pl-line); color: var(--pl-muted);
+}
+.step-done .admin-step-num { background: var(--pl-mint); color: var(--pl-ink); border-color: var(--pl-ink); }
+.step-active .admin-step-num { background: var(--pl-coral); color: white; border-color: var(--pl-ink); }
+.step-pending .admin-step-num { background: var(--pl-paper); border-color: var(--pl-muted); color: var(--pl-muted); }
+
+.admin-step-body strong { font-size: 14px; }
+.admin-step-body p { margin: 3px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--pl-ink); }
+
+/* ---------- Marker list (bulleted with code highlights) -------------------- */
+.admin-marker-list {
+  padding-left: 20px; line-height: 1.75; font-size: 13.5px; margin: 6px 0 0;
+}
+.admin-marker-list li { margin: 4px 0; }
+.admin-marker-list code {
+  background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 2px;
+  font-size: 12px; color: var(--pl-coral);
+}
+.admin-marker-list strong { color: var(--pl-ink); }
+
+/* ---------- Subhead inside sections ---------------------------------------- */
+.admin-subhead {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px; font-weight: 600;
+  margin: 18px 0 8px;
+  color: var(--pl-ink);
+  letter-spacing: 0;
+}
+.admin-subhead:first-child { margin-top: 6px; }
+
+/* ---------- Bilingual sub-label (under h1/h2) ------------------------------ */
+.zh-en-sub {
+  color: var(--pl-muted);
+  font-size: 13px; margin: 2px 0 8px;
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+.en-sub {
+  display: inline-block; margin-left: 8px;
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 13px; font-weight: 400; color: var(--pl-muted);
+  letter-spacing: 0;
+}
+
+/* ---------- SOP tab strip (used on all SOP pages) -------------------------- */
+.sop-tabs {
+  display: flex; gap: 0;
+  margin: 18px 0 22px;
+  border-bottom: 2px solid var(--pl-line);
+}
+.sop-tab {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 12px 22px;
+  background: color-mix(in srgb, var(--pl-paper) 50%, transparent);
+  border: 2px solid var(--pl-line); border-bottom: none;
+  margin-right: 6px; margin-bottom: -2px;
+  text-decoration: none; color: var(--pl-muted);
+  min-width: 220px;
+}
+.sop-tab:hover { background: color-mix(in srgb, var(--pl-citrus) 12%, var(--pl-paper)); color: var(--pl-ink); }
+.sop-tab--active {
+  background: var(--pl-paper); color: var(--pl-ink);
+  box-shadow: 3px -3px 0 var(--pl-line);
+  transform: translateY(-2px); border-bottom: 2px solid var(--pl-paper);
+}
+.sop-tab-id { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pl-coral); }
+.sop-tab-zh { font-family: Georgia, "Times New Roman", serif; font-size: 16px; font-weight: 700; line-height: 1.15; }
+.sop-tab-en { font-size: 11px; color: var(--pl-muted); font-style: italic; }
+.sop-tab--active .sop-tab-zh { color: var(--pl-ink); }
+
+/* ---------- Doc link button (SOP page → detail .md viewer) ----------------- */
+.admin-doc-link-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 10px 16px;
+  border: 2px solid var(--pl-line);
+  background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper));
+  box-shadow: 4px 4px 0 var(--pl-line);
+  text-decoration: none;
+  color: var(--pl-ink);
+  max-width: 540px;
+  transition: transform 80ms ease;
+}
+.admin-doc-link-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--pl-line); }
+.admin-doc-link-btn .icon { font-size: 20px; line-height: 1; }
+.admin-doc-link-btn .text { display: flex; flex-direction: column; gap: 2px; }
+.admin-doc-link-btn .text strong { font-size: 14px; font-weight: 700; }
+.admin-doc-link-btn .text .sub { font-size: 11.5px; color: var(--pl-muted); }
+.admin-doc-link-btn .arrow { font-size: 16px; font-weight: 700; color: var(--pl-coral); margin-left: auto; }
+
+/* ---------- Back-link (return-to-parent navigation) ------------------------ */
+.admin-back-link {
+  display: inline-block; padding: 6px 12px;
+  border: 2px solid var(--pl-line); background: var(--pl-paper);
+  color: var(--pl-ink); text-decoration: none; font-size: 12px;
+  box-shadow: 3px 3px 0 var(--pl-line);
+}
+.admin-back-link:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--pl-line); }
+
+/* ---------- Flow diagram (used in funnel / pipeline visuals) -------------- */
+.admin-flow-grid {
+  display: flex; flex-direction: column; gap: 0;
+  max-width: 880px; margin: 8px auto 0;
+}
+.admin-flow-step {
+  border: 2px solid var(--pl-line); background: var(--pl-paper);
+  padding: 12px 16px; box-shadow: 4px 4px 0 var(--pl-line);
+  display: grid; grid-template-columns: 52px 1fr; gap: 4px 14px;
+}
+.admin-flow-step.flow-end { background: color-mix(in srgb, var(--pl-mint) 14%, var(--pl-paper)); }
+.admin-flow-num {
+  font-family: Georgia, serif; font-size: 26px; font-weight: 700;
+  color: var(--pl-coral); grid-row: 1 / span 3;
+  align-self: center; text-align: center;
+}
+.admin-flow-step h3 { font-family: Georgia, serif; font-size: 16px; font-weight: 700; margin: 0; }
+.admin-flow-step p { margin: 3px 0 0; font-size: 13px; line-height: 1.5; }
+.admin-flow-meta { color: var(--pl-muted); font-size: 11.5px; font-style: italic; }
+.admin-flow-arrow { text-align: center; padding: 5px 0; color: var(--pl-muted); font-size: 14px; }
+
+/* ---------- DO NOT add new admin-only patterns to per-page <style> -------- */
+/* If a new component is needed → propose in docs/ADMIN_DESIGN_SYSTEM.md     */
+/* → review → add here → use across all pages.                              */
