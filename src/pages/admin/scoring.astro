@@ -63,9 +63,11 @@ const sopCatalog = {
     title: '🟢 Cross-cutting Method / Infra SOPs',
     subtitle: '不绑定任何阶段 · 所有阶段都必须遵守',
     items: [
+      { id: 'SOP-Meta-Rules',    zh: 'SOP 维护协议 + 5 问 checklist',    status: '✅ v1.0',   href: '/admin/scoring/sop-maintenance-rules', trigger: '改 SOP 前必读 · 单一真理来源协议' },
+      { id: 'SOP-Meta-Registry', zh: 'SOP 概念归属表 (Ownership)',       status: '✅ v1.0',   href: '/admin/scoring/sop-ownership-registry', trigger: '每个概念归属哪个 SOP · ops:sop-audit 校验' },
       { id: 'SOP-X-Tooling',     zh: '第三方工具矩阵 + Quota',         status: '✅ v1.0',   href: '/admin/scoring/sop-x-tooling', trigger: '20+ 工具 · tier + 计费 + fail-over' },
-      { id: 'SOP-X-Health',      zh: 'ops:health-check + Discord 警报', status: '✅ v1.0',   href: null, trigger: '9 项周期检查 · 失败推 Discord webhook' },
-      { id: 'SOP-X-Handoff',     zh: 'SOP-1 → SOP-2 数据交接合约',      status: '✅ v1.0',   href: null, trigger: 'entity schema 每字段解读' },
+      { id: 'SOP-X-Health',      zh: 'ops:health-check + Discord 警报', status: '✅ v1.0',   href: '/admin/scoring/sop-x-tooling#3-periodic-health-monitoring--ops-health-check', trigger: '9 项周期检查 · 失败推 Discord webhook (并入 Tooling §3)' },
+      { id: 'SOP-X-Handoff',     zh: 'SOP-1 → SOP-2 数据交接合约',      status: '✅ v1.0',   href: '/admin/scoring/sop-handoff-doc', trigger: 'entity schema 每字段解读' },
       { id: 'SOP-X-Discord',     zh: 'Discord 4-channel 架构 + 协议', status: '🔴 立刻写', href: null, trigger: '覆盖整个销售流程的载体' },
       { id: 'SOP-X-Pricing',     zh: '改价格协议',                    status: '🔴 立刻写', href: null, trigger: '改价漏点的纪律修正' },
       { id: 'SOP-X-Deploy',      zh: '前端部署验证协议',              status: '🔴 立刻写', href: null, trigger: '我刚 burned 的纪律' },

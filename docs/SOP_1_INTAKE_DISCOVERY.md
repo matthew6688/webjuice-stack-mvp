@@ -127,25 +127,24 @@ spec:       http://localhost:8080/static/spec/spec.yaml
 
 ---
 
-## 5. Entity schema · V2 lead 入库结构
+## 5. SOP-1 写入 entity store 的字段（视角：写入侧）
 
-简表（完整定义见 `core/leads/discovery-store.js`）：
+> ⚠ **完整 entity schema 不在本文档**。schema 字段定义、status/phase 状态机、必填校验 → 见 [`SOP_HANDOFF_CONTRACT.md`](SOP_HANDOFF_CONTRACT.md)（**SOP-X-Handoff owns**）。
+>
+> 本节只列 **SOP-1 自己关心的字段**（即 SOP-1 写入的那些）：
 
-| 字段 | 来源 | 用途 |
-|---|---|---|
-| `entityKey` | `place_${place_id}` (gosom) 或 `image_<slug>_<phone>` (image-lead V2) | dedup key |
-| `firstSeenAt` / `lastSeenAt` | upsert 时写入 | 时间追溯 |
-| `status` | V1 状态机 (8 值) | discovery 写 |
-| `phase` | V2 状态机 (8 phase) | sales 用 |
-| `identifiers.{place_id, cid, data_id, websiteDomain, phoneDigits}` | normalize | 多键匹配 |
-| `latest.{name, category, address, city, niche, phone, website, rating, review_count, sourceQuery, signals}` | normalize | 最新快照 |
-| `latest.batch_id` | **G-3 字段 ✅** | 本批 vs 老批区分 |
-| `batches[]` | **G-3 字段 ✅** | 累计被哪些 batch 抓到（最多 20）|
-| `runs[]` | 每次 discovery run append | 历史溯源 |
-| `grade` | SOP-2 写 | A/B/C/D + T1/T2/T3 |
-| `discord_thread_id` | SOP-2 写（A/B 自动开 thread） | 销售联动 |
+| 字段 | SOP-1 怎么写 |
+|---|---|
+| `entityKey` | gosom: `place_<id>` · image-lead V2: `image_<slug>_<phone>` |
+| `latest.sourceType` | `maps_scraper` / `image_lead` / `places_api`（看入口）|
+| `latest.sourceQuery` | **强制 = `run.query`**（bridge 统一，见 §3.4）|
+| `latest.batch_id` | 从 `pl:scrape-docker --batch-id` 传入；G-3 字段 |
+| `batches[]` | 累计被哪些 batch 抓到（最多 20，de-dup）|
+| `runs[]` | 每次 upsert append；最多 20，自动截断 |
+| `status` | 初始 `discovered` → cheap-audit-v2 升级到 `queued_for_audit`（**status 完整 8 值 + 升级规则在 [Handoff §3]**）|
+| `latest.places_enrichment` | 仅 `pl:places-enrich` 触发后写入（G-7）— 子对象结构在 [Handoff §2.3]|
 
-**V1 status + V2 phase 共存** — 两套独立状态机：discovery 写 `status`, sales 用 `phase`。详见 SOP-X-PhaseTransitions **(TODO)**。
+**SOP-1 不写**：`grade` / `phase` / `audit` / `visual_audit` / `discord_thread_id`（这些 SOP-2 拥有写入权）。
 
 ---
 
@@ -164,33 +163,39 @@ spec:       http://localhost:8080/static/spec/spec.yaml
 
 ---
 
-## 7. 常见失败 + retry
+## 7. 常见失败 + retry（SOP-1 范围内）
 
 | 失败模式 | 表现 | mitigation |
 |---|---|---|
 | `max_time < 180` | API 返回 422 `max time must be more than 3m` | `pl:scrape-docker` 内置 `Math.max(180, ...)` 强制下限 |
-| Docker 容器死 | 8080 端口连接拒绝 | `pl:preflight` 检测 + 提示 `docker restart gmaps-scraper-web` |
-| Niche 不准（substring 误判） | `Roofer's Bar` 进库 | cheap-audit `relevance_pass` SKIP（SOP-2 路径），不污染 audit pipeline；entity 仍占库 |
+| Docker 容器死 | 8080 端口连接拒绝 | `pl:preflight` 检测 + 提示 `docker restart gmaps-scraper-web`；同时 `ops:health-check` 会推 Discord |
 | 同 lead 重复抓 | 多 query 命中同 place_id | `discoveryEntityKey` dedup + `mergeLeadIntoEntity` 合并 |
-| 没 website 的 lead | category 类有 phone 没 site | 走 `starter_candidate` 路径（SOP-2 §6 已记） |
-| GMB 无 category | `latest.category` 空 | cheap-audit niche_match SKIP，需人工 review |
 | Discord forum tag 未建 | `applied_tags` API 422 | 一次性 bot setup |
 | image-lead 没 phone | OCR 提不到电话 | 用 `image_<slug>_unknown` 兜底 key + 标 phase: NEEDS_HUMAN |
 
+**SOP-1 范围外**（这些归 SOP-2 拥有，本文档不重述）：
+- niche substring 误判 / `relevance_pass` SKIP → 见 [SOP-2 §3.3](SOP_2_LEAD_DISCOVERY_PIPELINE.md#33-hard-triggers)
+- 没 website 的 lead → `starter_candidate` 路径 → 见 [SOP-2 §6](SOP_2_LEAD_DISCOVERY_PIPELINE.md#6-容易忽略的点)
+- GMB 无 category 时 niche_match SKIP → 见 [SOP-2 §3.3](SOP_2_LEAD_DISCOVERY_PIPELINE.md#33-hard-triggers)
+
 ---
 
-## 8. 容易忽略的点（10 条 · 全部来自调研踩坑）
+## 8. 容易忽略的点（SOP-1 owned）
 
-1. **Niche substring 误判**（`'oof'` → roofing）— entity 仍入库
-2. **同 lead 重复抓** — `place_id` dedup
-3. **V1 `status` + V2 `phase` 两套状态机共存** — discovery 写 status, sales 用 phase
-4. **没 website 的 lead 进 `starter_candidate`** — 当前未完全自动化
-5. **~~image-lead 走 V1~~ → 已 port 到 V2** (G-6 完成 2026-05-12)
-6. **`max_time` 必须 ≥ 180** — gosom API hard limit
-7. **ContactIdentity 多触点缺失** — 归 SOP-ART-3，不在 SOP-1 范围
-8. **`sourceQuery` 强制 = `run.query`** — bridge 统一来源（§3.4）
-9. **Discord channel 必须先建好 6 个 forum tags** — bot setup 一次性
-10. **GMB 无 category 时 niche_match SKIP** — 手动 enrichment 补
+| # | 坑 | 来源 |
+|---|---|---|
+| 1 | 同 lead 重复抓 — `place_id` dedup + `mergeLeadIntoEntity` 合并 | SOP-1 owner |
+| 2 | image-lead V2 (G-6 ✅) 已 port 到 V2 entity store | SOP-1 owner |
+| 3 | `max_time` 必须 ≥ 180 — gosom API hard limit | SOP-1 owner |
+| 4 | `sourceQuery` 强制 = `run.query` — bridge 统一来源（§3.4）| SOP-1 owner |
+| 5 | Discord channel 必须先建好 6 个 forum tags — bot setup 一次性 | SOP-1 owner |
+| 6 | image-lead 没 phone → 用 `image_<slug>_unknown` 兜底 key | SOP-1 owner |
+
+**SOP-1 范围外的坑**（归其他 SOP 拥有，链接见 §7 末）：
+- Niche substring 误判 / `relevance_pass` → SOP-2 §3.3
+- 没 website 的 lead → SOP-2 §6
+- V1 status + V2 phase 两套状态机 → [SOP-X-Handoff §3-§4](SOP_HANDOFF_CONTRACT.md#3-status-状态机v1--discovery-用)
+- ContactIdentity 多触点缺失 → SOP-ART-3 (待写)
 
 ---
 

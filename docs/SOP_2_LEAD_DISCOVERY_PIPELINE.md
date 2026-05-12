@@ -15,6 +15,8 @@
 
 ## 1. 4-channel Discord 生命周期架构
 
+> 🚧 **临时章节** · 这部分的 owner 应该是 [SOP-X-Discord](SOP_OWNERSHIP_REGISTRY.md#15-sop-x-discord-拥有待写--占位)（待写）。SOP-X-Discord v0.1 写完后，此章节会迁出 / 改为 "see SOP-X-Discord §X" 链接。
+
 V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord channel，channel 之间用"graduation"机制串起来**。
 
 ```
@@ -82,32 +84,20 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
 
 ```
 ═══════════════════════════════════════════════════════════════════════════════
-  Stage 0  DISCOVERY · 把候选 lead 写进 entity store
+  Stage 0  DISCOVERY · 上游 — entity 已入库 (SOP-2 不拥有)
 ═══════════════════════════════════════════════════════════════════════════════
 
-  Entry source (V2 主用):  gosom Google Maps Scraper (Docker container)
-  Container:               localhost:8080  ·  image: gosom/google-maps-scraper
-  Mount:                   data/maps-scraper/webdata → /gmapsdata
-  API:                     POST /api/v1/jobs · GET /jobs/{id}/download (CSV)
-  CLI:                     pl:scrape-docker --query "roofing sydney"
-                           --niche roofing --city sydney --batch-id <id>
-                           --max-time 240 --limit 20  (待建, ~80 行 bridge 脚本)
-  Cost:                    T0 (本地免费, gosom Docker)
+  ⚠ Stage 0 = SOP-1 完整范围。本文档只描述 SOP-2 的「入口预期」：
 
-  Pipe:
-    POST /api/v1/jobs  →  poll  →  download CSV  →  parse  →
-      buildMapsScraperDiscoveryRun (现有)  →  upsertDiscoveryRun (现有)  →
-      buildDiscoveryQueues (现有)
+  入口期望 (SOP-2 视角):
+    - 读 data/leads/entities/*.json (entity schema 见 SOP-X-Handoff)
+    - 按 status === 'queued_for_audit' 过滤 (Stage 1 入口条件)
+    - 不直接调 SOP-1 代码 (松耦合 · 只共享 JSON)
 
-  Output:
-    data/leads/entities/place_*.json × N        (V2 entity, 含 status)
-    data/leads/discovery-events.jsonl           (审计轨迹)
-    data/leads/discovery-index.json             (去重索引)
-    data/leads/queues/{queues, cheap-site-audit,
-                      selected-enrichment, outreach-brief}.json
-
-  UI:                      /admin/v2-queue 显示 discovery funnel
-  Batch thread post:       "✅ Stage 0 Discovery — N leads scraped..."
+  SOP-1 owner 文档:
+    docs/SOP_1_INTAKE_DISCOVERY.md           (full)
+    /admin/scoring/sop-1                     (admin 页)
+    /admin/scoring/sop-handoff-doc           (handoff schema)
 
 ═══════════════════════════════════════════════════════════════════════════════
   Stage 0.5  ENRICHMENT (conditional · 只对 thin-contact lead 触发)
@@ -520,11 +510,9 @@ rescore-v2-cli 过滤 `cat.includes('oof')` for roofing → 任何含 "oof" 的 
 
 **任何 master.md 编辑必须重新 build 下游产物**。
 
-### 6.10 ⚠ batch_id 字段需要 Stage 0 写入
+### 6.10 batch_id 字段（SOP-1 拥有）
 
-V2 新加的 `entity.batch_id` 字段必须在 Stage 0 discovery 时写入（每个 lead 都 tag 上当前 batch）。`pl:scrape-docker` bridge 脚本需要把 `batch_id` 透传到 lead object → `mergeLeadIntoEntity` → entity store。
-
-**当前 mergeLeadIntoEntity 不支持 batch_id**：需要小补丁（待做）。
+`entity.batch_id` 字段由 Stage 0 discovery 写入。SOP-2 读取该字段做"本批 vs 老批"筛选。**字段定义 + 写入逻辑见 [SOP-1 §5](SOP_1_INTAKE_DISCOVERY.md#5-sop-1-写入-entity-store-的字段视角写入侧) + [SOP-X-Handoff §2.3](SOP_HANDOFF_CONTRACT.md#23-latest--最新快照sop-2-主要消费)**。本文档不再描述。
 
 ---
 

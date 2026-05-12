@@ -118,13 +118,18 @@ Open Design 网站预制 (SOP-3, 待写)
 | **详细文档** (source of truth) | `docs/SOP_<id>.md` | AI / 工程师 / 新人 |
 | **调研笔记** (建 SOP 前的现状摸底) | `data/qa/sop-investigations/<sop-id>.md` | 建 SOP 时的过程 |
 
-### 5.1 单一真理来源规则
+### 5.1 单一真理来源规则（强制 · 双层）
 
-**代码 ↔ 文档 ↔ 页面 三者必须同步。**
+**Layer 1 · 代码 ↔ 文档 ↔ 页面 三者必须同步**：
+- 代码没改 → 文档 / 页面不能声称"已经这样做了"
+- 新想法 → 写在 **TODO 章节** / **待办列表**，不在主流程章节
+- 不一致 → admin 页面 `.admin-code-sync-banner` 显示 `is-stale`
 
-- **如果代码没改**：文档 / 页面里**不能**声称"已经这样做了"
-- **如果有新想法**：写在文档的 **TODO 章节**或页面的**待办列表**，不在主流程章节描述
-- **如果检测到不一致**：admin 页面顶部 `.admin-code-sync-banner` 显示 `is-stale`，列出哪些字段不匹配
+**Layer 2 · 跨 SOP 单源 (Single Owner)**：
+- 每个业务概念**有且只有一个** owner SOP（见 [`SOP_OWNERSHIP_REGISTRY.md`](SOP_OWNERSHIP_REGISTRY.md)）
+- 其他 SOP 引用 owner 时**必须链接**，**禁止重述**（详见 [`SOP_MAINTENANCE_RULES.md`](SOP_MAINTENANCE_RULES.md)）
+- 自动 audit: `npm run ops:sop-audit` — 检测跨 SOP 重复，失败 exit 1
+- AI 工程师 / 工程师 / 操作员 改 SOP 前必读 Registry + Rules
 
 代码 → 文档 → 页面的更新链路：
 ```
