@@ -59,6 +59,8 @@
     "pl:preflight": "node --env-file-if-exists=.env.local scripts/cli/pl-preflight.js",
     "ops:health-check": "node --env-file-if-exists=.env.local scripts/cli/pl-ops-health-check.js",
     "ops:sop-audit": "node scripts/qa/sop-content-audit.mjs",
+    "ops:design-audit": "node scripts/qa/admin-design-audit.mjs",
+    "ops:audit-all": "npm run ops:sop-audit && npm run ops:design-audit",
     "pl:places-enrich": "node --env-file-if-exists=.env.local scripts/cli/pl-places-enrich.js",
     "pl:dedup-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-dedup-audit.js",
     "pl:dedup-merge": "node --env-file-if-exists=.env.local scripts/cli/pl-dedup-merge.js",

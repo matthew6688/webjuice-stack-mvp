@@ -83,11 +83,16 @@ try {
             <span class="dot">·</span>
             <span>4 步 · 2 入口 · enrichment 2 路</span>
           </p>
-          <div class="admin-code-sync-banner is-synced">
-            <span>✓</span>
+          <div class="admin-code-sync-banner is-stale">
+            <span>⚠</span>
             <div>
               <strong>本页范围</strong>：仅 SOP-1（Discovery + Dedup + Enrichment + Handoff）。audit / grade / thread 归 <a href="/admin/scoring/sop-2">SOP-2</a>；entity schema 全字段归 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；工具计费归 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<br/>
-              <strong>页面与代码同步</strong> — G-1 / G-2 / G-3 / G-6 / G-7 + dedup detector + niche cohort 均已落地。
+              <strong>⚠ 文档承诺 vs 代码落地差距</strong>（待 C5 修复）—
+              <code>enrichment_status</code> 字段 / <code>contact_identity</code> 字段 / <code>isThinContact</code> predicate 在代码中尚未实现；
+              <code>buildDiscoveryQueues</code> 没加 enrichment gate；
+              <code>pl:pipeline-batch-step --finalize</code> 没自动 hook <code>dedup-audit</code>；
+              gosom fallback chain（G-11）未建。<br/>
+              <strong>已落地</strong> — G-1/G-2/G-3/G-6/G-7 CLI + dedup detector + niche cohort + place_id auto-merge。
             </div>
           </div>
         </div>
@@ -150,14 +155,14 @@ try {
           <div class="flow-arrow-row">▼</div>
 
           <!-- DECISION: thin-contact? -->
-          <div class="flow-decision-row">
-            <div class="flow-decision-diamond">thin-contact?<br/><span class="flow-decision-sub"><code>!phone && !website</code></span></div>
+          <div class="admin-flow-decision-row">
+            <div class="admin-flow-decision-diamond">thin-contact?<br/><span class="admin-flow-decision-sub"><code>!phone && !website</code></span></div>
           </div>
 
           <!-- STEP 3a + 3b -->
-          <div class="flow-branch-row">
-            <div class="flow-branch flow-branch-yes">
-              <div class="flow-branch-label">是</div>
+          <div class="admin-flow-branch-row">
+            <div class="admin-flow-branch admin-flow-branch--yes">
+              <div class="admin-flow-branch-label">是</div>
               <div class="flow-step flow-step-conditional">
                 <div class="flow-step-num">3a</div>
                 <div class="flow-step-body">
@@ -167,8 +172,8 @@ try {
                 </div>
               </div>
             </div>
-            <div class="flow-branch flow-branch-no">
-              <div class="flow-branch-label">否</div>
+            <div class="admin-flow-branch admin-flow-branch--no">
+              <div class="admin-flow-branch-label">否</div>
               <div class="flow-step flow-step-conditional">
                 <div class="flow-step-num">3b</div>
                 <div class="flow-step-body">
@@ -182,7 +187,7 @@ try {
           <div class="flow-arrow-row">▼</div>
 
           <!-- STEP 4: HANDOFF -->
-          <div class="flow-step flow-step-handoff">
+          <div class="flow-step admin-flow-step--handoff">
             <div class="flow-step-num">4</div>
             <div class="flow-step-body">
               <div class="flow-step-title">Handoff → SOP-2</div>
@@ -205,31 +210,31 @@ try {
         <p class="section-lede">这是真实 entity 的样本（节选关键字段）。<strong>每个字段后面注释说明：SOP-1 怎么填 + SOP-2 怎么用</strong>。这是合约本身，不是数据 dump — SOP-2 拿到的就是这套结构。</p>
 
         {sampleEntity && (
-          <div class="payload-sample">
-            <div class="payload-line"><span class="payload-key">entityKey</span><span class="payload-val">"{sampleEntity.entityKey}"</span><span class="payload-note">SOP-1 生成的主键 · SOP-2 用作所有引用</span></div>
+          <div class="admin-payload-card">
+            <div class="admin-payload-line"><span class="admin-payload-key">entityKey</span><span class="admin-payload-val">"{sampleEntity.entityKey}"</span><span class="admin-payload-note">SOP-1 生成的主键 · SOP-2 用作所有引用</span></div>
 
-            <div class="payload-section">identifiers · 多键匹配（dedup 核心）</div>
-            <div class="payload-line"><span class="payload-key">  place_id</span><span class="payload-val">"{sampleEntity.identifiers?.place_id?.slice(0, 36) || ''}..."</span><span class="payload-note">SOP-1 dedup primary key</span></div>
-            <div class="payload-line"><span class="payload-key">  phoneDigits</span><span class="payload-val">"{sampleEntity.identifiers?.phoneDigits || ''}"</span><span class="payload-note">dedup secondary · 后 10 位归一化</span></div>
-            <div class="payload-line"><span class="payload-key">  websiteDomain</span><span class="payload-val">"{sampleEntity.identifiers?.websiteDomain || ''}"</span><span class="payload-note">dedup secondary · 去 www. + 根域名</span></div>
+            <div class="admin-payload-section">identifiers · 多键匹配（dedup 核心）</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  place_id</span><span class="admin-payload-val">"{sampleEntity.identifiers?.place_id?.slice(0, 36) || ''}..."</span><span class="admin-payload-note">SOP-1 dedup primary key</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  phoneDigits</span><span class="admin-payload-val">"{sampleEntity.identifiers?.phoneDigits || ''}"</span><span class="admin-payload-note">dedup secondary · 后 10 位归一化</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  websiteDomain</span><span class="admin-payload-val">"{sampleEntity.identifiers?.websiteDomain || ''}"</span><span class="admin-payload-note">dedup secondary · 去 www. + 根域名</span></div>
 
-            <div class="payload-section">latest · SOP-2 主要消费</div>
-            <div class="payload-line"><span class="payload-key">  name</span><span class="payload-val">"{sampleEntity.latest?.name || ''}"</span><span class="payload-note">SOP-2 master.md 标题</span></div>
-            <div class="payload-line"><span class="payload-key">  niche</span><span class="payload-val">"{sampleEntity.latest?.niche || ''}"</span><span class="payload-note">SOP-2 触发 niche-specific 规则</span></div>
-            <div class="payload-line"><span class="payload-key">  city</span><span class="payload-val">"{sampleEntity.latest?.city || ''}"</span><span class="payload-note">SOP-2 评论搜索 / niche-match scoring</span></div>
-            <div class="payload-line"><span class="payload-key">  phone</span><span class="payload-val">"{sampleEntity.latest?.phone || ''}"</span><span class="payload-note">⭐ SOP-1 enrichment 后填或标 unenrichable</span></div>
-            <div class="payload-line"><span class="payload-key">  website</span><span class="payload-val">"{sampleEntity.latest?.website || ''}"</span><span class="payload-note">⭐ 同上 · SOP-2 audit 入口</span></div>
-            <div class="payload-line"><span class="payload-key">  sourceQuery</span><span class="payload-val">"{sampleEntity.latest?.sourceQuery || ''}"</span><span class="payload-note">SOP-1 bridge 强制 = run.query · 追溯 batch</span></div>
-            <div class="payload-line"><span class="payload-key">  batch_id</span><span class="payload-val">"{sampleEntity.latest?.batch_id || ''}"</span><span class="payload-note">SOP-1 stamp · SOP-2 可 filter 本批</span></div>
+            <div class="admin-payload-section">latest · SOP-2 主要消费</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  name</span><span class="admin-payload-val">"{sampleEntity.latest?.name || ''}"</span><span class="admin-payload-note">SOP-2 master.md 标题</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  niche</span><span class="admin-payload-val">"{sampleEntity.latest?.niche || ''}"</span><span class="admin-payload-note">SOP-2 触发 niche-specific 规则</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  city</span><span class="admin-payload-val">"{sampleEntity.latest?.city || ''}"</span><span class="admin-payload-note">SOP-2 评论搜索 / niche-match scoring</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  phone</span><span class="admin-payload-val">"{sampleEntity.latest?.phone || ''}"</span><span class="admin-payload-note">⭐ SOP-1 enrichment 后填或标 unenrichable</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  website</span><span class="admin-payload-val">"{sampleEntity.latest?.website || ''}"</span><span class="admin-payload-note">⭐ 同上 · SOP-2 audit 入口</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  sourceQuery</span><span class="admin-payload-val">"{sampleEntity.latest?.sourceQuery || ''}"</span><span class="admin-payload-note">SOP-1 bridge 强制 = run.query · 追溯 batch</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  batch_id</span><span class="admin-payload-val">"{sampleEntity.latest?.batch_id || ''}"</span><span class="admin-payload-note">SOP-1 stamp · SOP-2 可 filter 本批</span></div>
 
-            <div class="payload-section">enrichment_status · SOP-1 出口承诺</div>
-            <div class="payload-line"><span class="payload-key">enrichment_status</span><span class="payload-val">"{sampleEntity.enrichment_status || '(待 SOP-1 填; 当前样本属于历史 entity)'}"</span><span class="payload-note">complete / partial / unenrichable</span></div>
+            <div class="admin-payload-section">enrichment_status · SOP-1 出口承诺</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">enrichment_status</span><span class="admin-payload-val">"{sampleEntity.enrichment_status || '(待 SOP-1 填; 当前样本属于历史 entity)'}"</span><span class="admin-payload-note">complete / partial / unenrichable</span></div>
 
-            <div class="payload-section">SOP-2 写入字段（SOP-1 不读这些）</div>
-            <div class="payload-line"><span class="payload-key">grade</span><span class="payload-val">{sampleEntity.grade ? `{ investment_level: "${sampleEntity.grade.investment_level}", product_tier: "${sampleEntity.grade.product_tier || ''}" }` : 'null'}</span><span class="payload-note">SOP-2 gradeLead 后回填</span></div>
-            <div class="payload-line"><span class="payload-key">discord_thread_id</span><span class="payload-val">"{sampleEntity.discord_thread_id || ''}"</span><span class="payload-note">A/B 自动开 thread 后回填</span></div>
+            <div class="admin-payload-section">SOP-2 写入字段（SOP-1 不读这些）</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">grade</span><span class="admin-payload-val">{sampleEntity.grade ? `{ investment_level: "${sampleEntity.grade.investment_level}", product_tier: "${sampleEntity.grade.product_tier || ''}" }` : 'null'}</span><span class="admin-payload-note">SOP-2 gradeLead 后回填</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">discord_thread_id</span><span class="admin-payload-val">"{sampleEntity.discord_thread_id || ''}"</span><span class="admin-payload-note">A/B 自动开 thread 后回填</span></div>
 
-            <p class="payload-source">↑ 真实 entity 样本：<code>{sampleEntity.entityKey}</code></p>
+            <p class="admin-payload-source">↑ 真实 entity 样本：<code>{sampleEntity.entityKey}</code></p>
           </div>
         )}
 
@@ -268,76 +273,4 @@ try {
   </section>
 </Layout>
 
-<style>
-  /* Payload sample · annotated entity field viewer */
-  .payload-sample {
-    background: var(--pl-paper);
-    border: 2px solid var(--pl-line);
-    box-shadow: 3px 3px 0 var(--pl-line);
-    padding: 16px 20px;
-    margin: 14px 0;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12px;
-    line-height: 1.7;
-  }
-  .payload-line {
-    display: grid;
-    grid-template-columns: 180px 1fr 1fr;
-    gap: 12px;
-    padding: 3px 0;
-    align-items: baseline;
-    border-bottom: 1px dotted color-mix(in srgb, var(--pl-line) 30%, transparent);
-  }
-  .payload-line:last-child { border-bottom: none; }
-  .payload-key { color: var(--pl-ink); font-weight: 600; white-space: pre; }
-  .payload-val { color: var(--pl-coral); word-break: break-all; }
-  .payload-note { color: var(--pl-muted); font-size: 11px; font-style: italic; font-family: Georgia, serif; }
-  .payload-section {
-    margin: 14px 0 6px;
-    padding: 4px 8px;
-    background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper));
-    border-left: 3px solid var(--pl-citrus);
-    font-family: Georgia, serif;
-    font-size: 12px;
-    font-weight: 700;
-    font-style: italic;
-  }
-  .payload-source {
-    margin-top: 14px;
-    font-size: 11px;
-    color: var(--pl-muted);
-    font-family: Georgia, serif;
-  }
-
-  /* Decision diamond */
-  .flow-decision-row { display: flex; justify-content: center; margin: 6px 0; }
-  .flow-decision-diamond {
-    display: inline-block;
-    padding: 14px 22px;
-    border: 2px solid var(--pl-line);
-    background: color-mix(in srgb, var(--pl-citrus) 28%, var(--pl-paper));
-    transform: rotate(0deg);
-    font-family: Georgia, serif;
-    font-weight: 700;
-    text-align: center;
-    font-size: 14px;
-    box-shadow: 3px 3px 0 var(--pl-line);
-  }
-  .flow-decision-sub { display: block; font-size: 11px; color: var(--pl-muted); font-weight: 400; margin-top: 4px; }
-
-  /* Branch row */
-  .flow-branch-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; }
-  .flow-branch { display: flex; flex-direction: column; gap: 4px; }
-  .flow-branch-label {
-    text-align: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--pl-coral);
-    letter-spacing: 0.1em;
-    padding: 4px 0;
-  }
-  .flow-branch-yes .flow-branch-label { color: var(--pl-coral); }
-  .flow-branch-no .flow-branch-label { color: var(--pl-mint); filter: brightness(0.7); }
-
-  .flow-step-handoff { background: color-mix(in srgb, var(--pl-mint) 15%, var(--pl-paper)); }
-</style>
+<!-- No per-page <style> · all classes live in admin-design-system.css (v1.2+) -->

@@ -566,3 +566,101 @@
 /* ---------- DO NOT add new admin-only patterns to per-page <style> -------- */
 /* If a new component is needed → propose in docs/ADMIN_DESIGN_SYSTEM.md     */
 /* → review → add here → use across all pages.                              */
+
+/* ───────────────────────────────────────────────────────────────────────────
+   admin-payload-card · annotated JSON-ish field viewer
+   Used when displaying schema contracts / handoff payloads with
+   per-field "what does this mean for downstream" annotations.
+   Added v1.2 · originally on SOP-1 page for SOP-1→SOP-2 handoff payload viz.
+   ─────────────────────────────────────────────────────────────────────────── */
+.admin-payload-card {
+  background: var(--pl-paper);
+  border: 2px solid var(--pl-line);
+  box-shadow: 3px 3px 0 var(--pl-line);
+  padding: 16px 20px;
+  margin: 14px 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.admin-payload-line {
+  display: grid;
+  grid-template-columns: 180px 1fr 1fr;
+  gap: 12px;
+  padding: 3px 0;
+  align-items: baseline;
+  border-bottom: 1px dotted color-mix(in srgb, var(--pl-line) 30%, transparent);
+}
+.admin-payload-line:last-child { border-bottom: none; }
+.admin-payload-key { color: var(--pl-ink); font-weight: 600; white-space: pre; }
+.admin-payload-val { color: var(--pl-coral); word-break: break-all; }
+.admin-payload-note {
+  color: var(--pl-muted); font-size: 11px;
+  font-style: italic; font-family: Georgia, serif;
+}
+.admin-payload-section {
+  margin: 14px 0 6px;
+  padding: 4px 8px;
+  background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper));
+  border-left: 3px solid var(--pl-citrus);
+  font-family: Georgia, serif;
+  font-size: 12px; font-weight: 700; font-style: italic;
+}
+.admin-payload-source {
+  margin-top: 14px;
+  font-size: 11px; color: var(--pl-muted);
+  font-family: Georgia, serif;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   admin-flow-decision · decision diamond in flow diagrams
+   Extends .flow-section / .flow-grid family (currently in sop-2.astro
+   per-page style; TODO centralize).
+   Added v1.2 · for "thin-contact?" / "hasWebsite?" branching steps.
+   ─────────────────────────────────────────────────────────────────────────── */
+.admin-flow-decision-row { display: flex; justify-content: center; margin: 6px 0; }
+.admin-flow-decision-diamond {
+  display: inline-block;
+  padding: 14px 22px;
+  border: 2px solid var(--pl-line);
+  background: color-mix(in srgb, var(--pl-citrus) 28%, var(--pl-paper));
+  font-family: Georgia, serif;
+  font-weight: 700;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 3px 3px 0 var(--pl-line);
+}
+.admin-flow-decision-sub {
+  display: block; font-size: 11px; color: var(--pl-muted);
+  font-weight: 400; margin-top: 4px;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   admin-flow-branch · 2-column yes/no branch row in flow diagrams
+   Used together with admin-flow-decision-diamond.
+   ─────────────────────────────────────────────────────────────────────────── */
+.admin-flow-branch-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 8px 0;
+}
+.admin-flow-branch { display: flex; flex-direction: column; gap: 4px; }
+.admin-flow-branch-label {
+  text-align: center;
+  font-size: 11px; font-weight: 700;
+  color: var(--pl-coral);
+  letter-spacing: 0.1em;
+  padding: 4px 0;
+}
+.admin-flow-branch--yes .admin-flow-branch-label { color: var(--pl-coral); }
+.admin-flow-branch--no .admin-flow-branch-label { color: var(--pl-mint); filter: brightness(0.7); }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   admin-flow-step--handoff · handoff step variant (final step to next SOP)
+   Tinted mint to signal "hand-off / contract delivered".
+   ─────────────────────────────────────────────────────────────────────────── */
+.flow-step.admin-flow-step--handoff,
+.admin-flow-step--handoff {
+  background: color-mix(in srgb, var(--pl-mint) 15%, var(--pl-paper));
+}

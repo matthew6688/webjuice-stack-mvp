@@ -1,10 +1,29 @@
-# Admin Design System · v1.1
+# Admin Design System · v1.2
 
 **所有 `/admin/*` 页面遵守本文档。** 不允许 per-page 自造视觉模式。
 
 更新日期：2026-05-12
 对应 CSS：`src/styles/admin-design-system.css`（强制加载于 `src/layouts/AdminLayout.astro`）
 配套页面参考：`/admin/scoring/sop-2` （视觉典范）
+
+## v1.2 增量（2026-05-12）
+
+新增 3 组组件 · 配套 SOP-1 page 重写实战（C2）：
+
+| 组件 | 类名 | 用途 |
+|---|---|---|
+| **Annotated payload card** | `.admin-payload-card` + `.admin-payload-line` (key/val/note) + `.admin-payload-section` + `.admin-payload-source` | 显示 schema 合约 / handoff payload 的 JSON-ish viewer，每字段一行注释（"SOP-1 怎么填 + SOP-2 怎么用"）|
+| **Flow decision diamond** | `.admin-flow-decision-row` + `.admin-flow-decision-diamond` + `.admin-flow-decision-sub` | 流程图里的决策菱形（"thin-contact?" / "hasWebsite?" 类）· 配 `.flow-section` 用 |
+| **Flow branch row** | `.admin-flow-branch-row` + `.admin-flow-branch` (`--yes` / `--no` modifiers) + `.admin-flow-branch-label` | 决策菱形后面的 2 路分支布局 |
+| **Flow handoff step variant** | `.admin-flow-step--handoff` | 流程最后一步，标 mint 色调表示"交接给下个 SOP" |
+
+### 关键规则强化
+
+> **禁止在 per-page `<style>` 加新 class**。`scripts/qa/admin-design-audit.mjs` 自动 grep `src/pages/admin/**.astro` 里所有 `<style>` 块，flag 出非 design-system 注册的 class。
+
+**违反后果**：`npm run ops:design-audit` exit 1 → 不能 commit / push。
+
+---
 
 ## v1.1 增量（2026-05-12）
 
