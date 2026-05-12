@@ -224,14 +224,24 @@ V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord cha
 
 - [ ] **search/enrichment skills 清单** — grep `core/` 列所有 search engine modules
 
-### 🟡 中优（SOP-1 / SOP-X-Tooling 衍生工作）
+### 🟡 中优（SOP-1 / SOP-X-Tooling 衍生工作）— 调研后真实信心
 
-- [x] **G-12** Google Places API 多账号 rotation ✅ 2026-05-12 (PlacesQuotaGuard.selectAvailableKey + 自动 schema v1→v2 migrate)
-- [ ] **G-11** 3rd-party scraper provider interface (outscraper / apify / brightdata) — gosom 备份 + 国际扩展
-- [ ] **G-13** Places photos → master.md 素材库 · cloudinary helper 已就绪 (`core/cloudinary/attachments.js`) · 插入 master-md-builder "商户视觉素材" section
-- [ ] **G-14** opening_hours → 销售最佳联系时间 signal · 数据已在 `place.opening_hours.weekday_text[]` (Places API normalized)
-- [ ] **G-18** Hermes cron 实际注册 `ops:health-check`（替代手动跑）
-- [ ] **G-6.1** image-lead OCR/VLM 自动 extract（当前手填字段）
+详细调研报告：4 个并行 Explore agents · 2026-05-12 · 所有源码 + API 已读
+
+| ID | 任务 | 估时 | 信心 | 关键发现 |
+|---|---|---|---|---|
+| ✅ G-12 | Places API 多账号 rotation | — | done | PlacesQuotaGuard.selectAvailableKey + schema v1→v2 migrate |
+| 🟢 **G-18** | Hermes cron 注册 ops:health-check | **2h** | **92%** | `core/funnel/hermes-cron.js` wrapper 已存在，`hermesCron(['create', 'every 5m', ...])` 直接调用 |
+| 🟢 **G-13** | Places photos → master.md 素材库 | **2h** | **90%** | master-md-builder 第 261 行前插 "商户视觉素材" 段 · cloudinary helper 已就绪 · **阻塞**：测试 entity 需有 photo_references > 0 (Tugun 那个是 0) |
+| 🟢 **Evidence trail UI** | `[entityKey].astro` 加 evidence_sources fold | **2h** | **90%** | 数据 ready (`fixtures/enrichment/*.json` shape 已知) · admin 页面有 `<details>` fold 现有 pattern |
+| 🟢 **Cost dashboard tier 视图** | finance.astro 加 tier × provider × month 面板 | **2-3h** | **95%** | `summarizeLedger()` 已支持 `byTier/byProvider` 过滤 · 只需 UI 面板 |
+| 🟡 **G-6.1** | image-lead OCR/VLM 自动 extract | **4h** | **87%** | `core/llm/vision-claude-cli.js` 已存在 · 加 extract prompt + 改 pl-ingest-image · 准确率：Claude ~94% name / ~89% phone |
+| 🟡 **G-14** | opening_hours → sales-time signal | **1.5h** | **85%** | 用 Places `periods[]` 结构化数据 · 写 `entity.latest.sales_signals.best_contact_time` · **阻塞**：测试 entity 需 opening_hours_verified ≠ null |
+| 🟠 **G-11** | outscraper / apify scraper fallback | **8h** | **68%** | 在 pl-scrape-docker.js try-catch 加 fallback · 字段 schema match · **阻塞**：需 web-fetch outscraper/apify 当前 pricing + API key 结构 |
+| 🟠 **Admin trigger button** | "Run enrichment batch" UI 按钮 | **2-3 day** | **72%** | API endpoint 在 `/functions/api/*.ts` (Cloudflare Workers, 不是 Astro!) · spawnSync precedent in `v2.astro` build-time 用 · **无 long-running job pattern** 需要建第一个 |
+| 🟠 **Cross-niche rotation 策略** | daily quota + city schedule | needs design | **75%** | per-lead cron 已存在 (grade A=每 4h, B/C/D=每 12h) · 历史数据稀疏 (1 batch sample) · 建议 hybrid 模型 |
+| 🟠 **E2E test chain** | batch → enrichment → dedup → audit → grade → thread | needs design | **70%** | 现有脚本拼图存在 (test-enrichment-live + run-audit-pipeline) · 无 orchestrator · 需新 runner |
+| 🔴 **Design system 19-page CSS 清理** | per-page <style> 迁到 design system | **41-50h** | **88%** | mechanical · 393 unique classes 分 3 类 (A promote / B whitelist / C alias) · SOP-1 page 是 gold standard (0 violations) |
 
 ### ⚪ 后续（A/B 客户首次成交 / 算力突破后）
 
