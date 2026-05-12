@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: **v1.2** (P0-P8 + P6.X + race-fix + vision fallback chain + admin nav · 2026-05-12)
+**版本**: **v1.3** (v1.2 + Q5 single-enrich · 部分信号 → Places + 自动 audit 链 · 2026-05-12)
 **Operator guide**: [`SOP_0_OPERATOR_GUIDE.md`](SOP_0_OPERATOR_GUIDE.md)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
@@ -182,12 +182,13 @@ Regex chain 输出同 schema（regex 路径走 `viaRegex()` 适配 5-class → 7
 
 | kind | target_cli | 备注 |
 |---|---|---|
-| `intake` | `pl:pipeline-batch-start` | SOP-1 主入口 (注意：`pl:pipeline-batch-step` 是 POST UPDATES 用的，不是入口) |
-| `enrich` | `pl:run-enrichment-batch` | SOP-1 step 3，需 entity_ref |
-| `audit` | `leads:run-pipeline` | SOP-2 (注意：`pl:run-audit-pipeline` 不存在，实际是 `leads:` 命名空间) |
+| `intake` | `pl:pipeline-batch-start` | SOP-1 主入口 (batch scrape) |
+| **`single-enrich`** | **`pl:single-enrich`** | **v1.3 新增** · 部分信号 → Places resolve → entity → 链 audit |
+| `enrich` | `pl:run-enrichment-batch` | SOP-1 step 3 · 处理所有 pending entities |
+| `audit` | `leads:run-pipeline` | SOP-2 · 完整 audit pipeline |
 | `dedup` | `pl:dedup-audit` 或 `pl:dedup-merge` | SOP-X-Dedup |
 | `photos` | `pl:download-places-photos` + `pl:places-enrich` | G-13 |
-| `image-extract` | `pl:ingest-image` | SOP-1 §2.1 |
+| `image-extract` | `pl:ingest-image` (vision 提取在 listener) | SOP-1 §2.1 |
 | `ops` | `ops:health-check` 或 null | health-check / cron / admin |
 
 ---
@@ -307,7 +308,7 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 
 后续工作 (TODO):
 - ✅ **P6.X**: image-extract 任务 attachment 下载 + 视觉 LLM 提取业务字段 — done 2026-05-12 (v1.1) + v1.2 fixes
-- 🟡 **single-business-enrich kind** (Matthew Q5 2026-05-12): 部分业务信号 (phone/email/business-name) → 自动 search/enrich/补全 → 进 audit pipeline. 新 kind + 新 CLI. ~5-7h. **等 Matthew 拍板 scope**
+- ✅ **single-enrich kind** (Q5, v1.3 2026-05-12): 部分业务信号 / GBP URL → Places resolve → entity 写入 → 自动 chain audit task → 全自动走流程 · E2E verified Bluey's case 964ms+235ms
 - 🟡 **PDF / audio / docx 输入支持**: 本地 package 已有 (pdf-parse / whisper.cpp / mammoth); 不在 v1 范围. **等 Matthew 提优先级**
 - 🟡 **vision fallback chain 扩展**: 当前 qwen3.6→gemma3 都失败仍 human; 可加 Tesseract OCR + text-LLM 提取 / claude-cli vision (T1 subs) 作末端 fallback
 - **SOP-0 v2** (远期): 任务数据 cloud mirror / dispatcher 上 VPS 不依赖 Mac 在线
@@ -394,7 +395,64 @@ listener handleNewForumThread()
 
 如果 vision 缺 businessName / niche / city → task 自动转 `human` tag · operator triage。
 
-### 7.6 当前全部 5 个 daemon
+### 7.6 single-enrich path (Q5 · v1.3)
+
+**问题**: 你给系统 ONE 个具体商家信号（电话 / 名字 / GBP URL），系统应该自动 resolve + enrich + 走 audit，而不只是 "scrape 一批"。
+
+**Trigger 检测**（intent-router）:
+- 文本含电话号 (`+61 / 0412...`) → kind=single-enrich
+- 文本含 GBP URL (`maps.google.com / goo.gl/maps / maps.app.goo.gl`) → kind=single-enrich
+- 文本含 quoted business name → kind=single-enrich
+- "find batch X" 类（无具体商家）→ 仍走 intake
+
+**Resolver 链** (`core/leads/single-enrich-resolver.js`):
+
+```
+signals { businessName, phone, email, website, niche, city, gbpUrl }
+  ↓
+1. 若 gbpUrl 存在 → extractPlaceIdFromUrl (short-link 跟 redirect)
+  ↓
+2. PlacesQuotaGuard.selectAvailableKey → 选有额度的 key (rotation)
+  ↓
+3. extractor.searchText(query)  · query = "<biz> <city>" / "<phone>" / "<website>"
+  ↓
+4. pickBest(candidates, signals)  · 偏好 businessName 子串匹配 → place_id
+  ↓
+5. extractor.details(place_id)  · 拉完整 phone/website/address/hours/reviews
+  ↓
+6. checkAndCharge (textSearch + details = 2 calls 计入 quota ledger)
+  ↓
+7. 构 lead obj (sourceType='single_enrich')
+  ↓
+8. upsertDiscoveryRun → mergeLeadIntoEntity
+       → 若 entity 已存在 (place_id 同) → 合并 update
+       → 若 entity 新 + 仍 thin-contact → SOP-0 P5 push enrich task (自动 chain)
+       → 若 entity 新 + 完整 → enrichment_status='complete'
+  ↓
+9. CLI createTask(kind='audit', target_entity_key=key, cli='leads:run-pipeline')
+       → dispatcher fs.watch 接管 → 跑 audit
+```
+
+**成本**: ~$0.017 per resolve (Places textSearch + details, current pricing).
+
+**用例 (你能这么发)**:
+
+```
+in #website-tasks:
+  "Joe's Plumbing 0412 345 678 melbourne plumber"   ← phone trigger
+  "audit this customer: https://maps.app.goo.gl/abc"  ← GBP URL trigger
+  "\"Bluey's Cafe\" newcastle"                      ← quoted name trigger
+```
+
+**E2E verified 2026-05-12** · Bluey's Fancy Restaurant:
+- text → kind=single-enrich (intent-router)
+- Places textSearch 1 hit → ChIJCZMIKQBXkWsRv0uHYnLsn20
+- details → address "55 Charlotte St, Paddington QLD"
+- upsert merged into existing entity (no dup)
+- chain audit task created · dispatcher claimed in 2ms
+- Total wall: ~1.2s (Places) + chain happens 235ms later
+
+### 7.7 当前全部 5 个 daemon
 
 ```bash
 launchctl list | grep profitslocal
@@ -549,6 +607,10 @@ Logs:
 | 2026-05-12 | v1.2 vision 多模型 fallback chain | **`qwen3.6:27b → gemma3:27b` field-merge** | 单一 qwen3.6:27b | Matthew 2026-05-12："所有文字识别都是一系列模型,前面解决不了按顺序 fallback" · 两个本地 vision 模型 field 互补 · 早停若 key fields 都有 |
 | 2026-05-12 | v1.2 "received" 即时回帖 | **图任务 listener 先发📥 received 再开 vision** | vision 跑 30-60s 全程静默 | UX bug · 用户以为 bot 不响应 |
 | 2026-05-12 | v1.2 admin nav "任务" tab | **AdminLayout `tasks` key 加入 nav 数组** | 只能直 URL 访问 / SOP tab 下 | operational view 该在 top nav · SOP tab 留给 reference docs |
+| 2026-05-12 | v1.3 Q5 single-enrich **新 kind** | **8 kinds 系统** + 新 forum tag (forum 13 tags 共) + 新 CLI `pl:single-enrich` | 扩展 intake / enrich 老 kind | 新 trigger 模式 (phone / URL / quoted name) 必须分流 · batch vs single 是 fundamentally 不同 cost / latency profile · forum 操作员能按 tag filter |
+| 2026-05-12 | v1.3 resolver 用 Places `textSearch + details` 2 步 | **textSearch top 1 candidate → details(place_id)** | nearbysearch / findPlaceFromText | textSearch 接受任意自然语言，对 "Joe's Plumbing 0412345 melbourne" 类输入最稳；details 拿完整字段 |
+| 2026-05-12 | v1.3 chain audit task in CLI | **`createTask({kind:'audit',target_entity_key,...})` 在 pl:single-enrich 末尾** | dispatcher 内部 chain / 手动 trigger | 流水线连续性 · operator 不用记得"现在还要跑 audit" · 失败也能在 forum thread 一目了然 |
+| 2026-05-12 | v1.3 quota guard 用 checkAndCharge (不是 recordCall) | **`checkAndCharge(1, {skuLabel, keyId})` per call** | 在写代码后才发现 PlacesQuotaGuard 没 recordCall 方法 | 真实 API 名字 — 写代码前应该 read full file 而不是 imagine; 学到 |
 
 ---
 

@@ -50,13 +50,21 @@ function buildRouterPrompt(text, attachments = []) {
 Classify the user request into ONE of these kinds. Return ONLY JSON, no prose.
 
 Kinds:
-- intake           : new lead discovery (google search / map scrape / find businesses by niche + city)
-- enrich           : enrichment of an existing lead's contact info (phone / website / email)
-- audit            : run audit pipeline on an existing entity (entityKey provided or implied)
-- dedup            : trigger dedup audit / merge on the store
-- photos           : download GMB / Google Places photos for an entity
-- image-extract    : extract leads from an image / screenshot of a business card / sign
-- ops              : ops / system / health-check / cron / admin task
+- intake          : BATCH discovery — vague, like "find brisbane roofers" / "search melbourne plumbers" / no specific business name
+- single-enrich   : ONE specific business named → resolve via Google Places + enrich + chain audit. Signals: phone number, quoted business name, Google Maps URL, "this customer", "this business", "找这个客户"
+- enrich          : enrichment of existing leads in the store (general "补一下电话", "fill missing contacts")
+- audit           : run audit pipeline on an existing entity (entityKey provided like place_chij...)
+- dedup           : trigger dedup audit / merge on the store
+- photos          : download GMB / Google Places photos for an entity
+- image-extract   : extract leads from an image / screenshot of a business card / sign (input has image attachment)
+- ops             : ops / system / health-check / cron / admin task
+
+Decision hints:
+- Has phone number (e.g. 0412 345 678 / +61 412 345 678) → single-enrich
+- Has Google Maps URL (maps.google.com / goo.gl/maps / maps.app.goo.gl) → single-enrich
+- Quoted business name + location → single-enrich
+- Generic "find X in Y" without specific business → intake
+- Has image attachment → image-extract (highest priority for media)
 
 Input text:
 """
@@ -65,9 +73,9 @@ ${(text || '').slice(0, 1500)}
 
 JSON schema (all fields required):
 {
-  "kind":              <one of the 7 kinds above>,
-  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:run-enrichment-batch" | "leads:run-pipeline" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
-  "args":              <array of CLI args, e.g. ["--niche", "roofer", "--city", "brisbane"]; [] if none>,
+  "kind":              <one of the 8 kinds above>,
+  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
+  "args":              <array of CLI args; for single-enrich extract --business-name/--phone/--city/--niche/--website/--gbp-url to args>,
   "target_entity_key": <string entityKey if found in input, else null>,
   "confidence":        <float 0..1>,
   "reasoning":         <short string, < 50 chars>
@@ -108,8 +116,24 @@ async function viaPaidCli(name, { text, attachments }) {
 }
 
 function viaRegex({ text, attachments }) {
-  // Adapt the existing 5-class regex classifier to the SOP-0 7-kind schema.
-  // Mapping defined in REGEX_KIND_MAP; preserves regex's confidence number.
+  // Fast pre-check for single-enrich signals (highest specificity → check first)
+  const s = String(text || '');
+  const hasPhone = /(?:\+?\d[\d\s().-]{7,}\d)/.test(s);
+  const hasGbpUrl = /(?:maps\.google\.com|goo\.gl\/maps|maps\.app\.goo\.gl)/i.test(s);
+  const hasQuotedName = /["“][^"”]{3,60}["”]/.test(s);
+  if ((hasPhone || hasGbpUrl || hasQuotedName) && !attachments?.length) {
+    // Likely a single business reference, not a batch search
+    return {
+      kind:              'single-enrich',
+      target_cli:        'pl:single-enrich',
+      args:              buildSingleEnrichArgs(s),
+      target_entity_key: extractEntityKey(text),
+      confidence:        0.75,
+      provider:          'regex',
+      reasoning:         hasGbpUrl ? 'regex/gbp-url' : hasPhone ? 'regex/phone' : 'regex/quoted-name',
+    };
+  }
+  // Fall through to legacy 5-class classifier
   const message = { content: text || '', attachments: attachments || [] };
   const r = classifyWebsiteTask(message);
   const mapped = REGEX_KIND_MAP[r.kind] || { kind: 'ops', target_cli: null };
@@ -122,6 +146,21 @@ function viaRegex({ text, attachments }) {
     provider:          'regex',
     reasoning:         `regex/${r.kind}`,
   };
+}
+
+/** Extract --business-name / --phone / --gbp-url etc. from free text for single-enrich. */
+function buildSingleEnrichArgs(text) {
+  const args = [];
+  const phone = text.match(/(?:\+?\d[\d\s().-]{7,}\d)/);
+  if (phone) args.push('--phone', phone[0].replace(/\s+/g, ''));
+  const url = text.match(/https?:\/\/(?:maps\.google\.com|goo\.gl\/maps|maps\.app\.goo\.gl)[^\s)]+/i);
+  if (url) args.push('--gbp-url', url[0]);
+  const quoted = text.match(/["“]([^"”]{3,60})["”]/);
+  if (quoted) args.push('--business-name', quoted[1].trim());
+  // niche/city via existing helper
+  const nicheCity = extractArgsFromText(text, 'intake');
+  for (let i = 0; i < nicheCity.length; i += 2) args.push(nicheCity[i], nicheCity[i + 1]);
+  return args;
 }
 
 const REGEX_KIND_MAP = {

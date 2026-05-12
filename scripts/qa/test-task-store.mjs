@@ -108,7 +108,7 @@ try {
   console.log('\n8. loadForumTags + appliedTagsFor');
   const tags = ts.loadForumTags();
   check('tags file loads', tags && tags.channelId === '1503702990761099419');
-  check('kind tags has 7 entries', Object.keys(tags.kind).length === 7);
+  check('kind tags has 8 entries', Object.keys(tags.kind).length === 8);
   check('status tags has 5 entries', Object.keys(tags.status).length === 5);
   const applied = ts.appliedTagsFor('intake', 'pending');
   check('appliedTagsFor returns [kind, status] pair', Array.isArray(applied) && applied.length === 2);

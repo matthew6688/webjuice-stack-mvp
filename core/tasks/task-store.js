@@ -19,7 +19,7 @@ import crypto from 'node:crypto';
 const TASKS_DIR = path.resolve(process.cwd(), 'data/tasks');
 const TAGS_FILE = path.resolve(process.cwd(), 'data/discord/website-tasks-forum-tags.json');
 
-export const KINDS = ['intake', 'enrich', 'audit', 'dedup', 'photos', 'image-extract', 'ops'];
+export const KINDS = ['intake', 'enrich', 'audit', 'dedup', 'photos', 'image-extract', 'ops', 'single-enrich'];
 export const STATUSES = ['pending', 'running', 'done', 'failed', 'human'];
 export const SCHEMA_VERSION = 1;
 

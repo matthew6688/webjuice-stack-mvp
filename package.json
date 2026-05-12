@@ -69,6 +69,7 @@
     "pl:dedup-decide": "node scripts/cli/pl-dedup-decide.js",
     "pl:rebuild-niche-shards": "node scripts/cli/pl-rebuild-niche-shards.js",
     "pl:run-enrichment-batch": "node --env-file-if-exists=.env.local scripts/cli/pl-run-enrichment-batch.js",
+    "pl:single-enrich": "node --env-file-if-exists=.env.local scripts/cli/pl-single-enrich.js",
     "pl:task-listener": "node --env-file=.env.local scripts/cli/pl-task-listener.js",
     "pl:task-dispatcher": "node --env-file=.env.local scripts/cli/pl-task-dispatcher.js",
     "pl:task-api": "node --env-file=.env.local scripts/cli/pl-task-api.js",
