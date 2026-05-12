@@ -17,6 +17,24 @@
 
 ## 1. 概念归属表
 
+### 1.0 SOP-0 Task System 拥有（统一入口 + 调度）
+
+**SOP-0 出口承诺**：把一切活儿（Discord 文字 / 图 / PDF / admin 表单 / Hermes cron tick）统一成 task，自动路由到对应 SOP 的 CLI，进度回写 Discord thread + admin。**不做业务 · 只驱动业务。**
+
+| 概念 | Owner | 引用方式 |
+|---|---|---|
+| **Task schema** (`data/pipeline/tasks/<id>.json`) + status 状态机 | SOP-0 §2 | 他 SOP: "见 [SOP-0 §2]" |
+| 入口 router（Discord / admin / cron → kind 识别） | SOP-0 §3 | 同上 |
+| CLI 路由表（kind → target_cli） | SOP-0 §3.3 | 同上 |
+| Dispatcher（主 tick + entity-driven auto-dispatch） | SOP-0 §4 | 同上 |
+| Discord forum thread ↔ task 1:1 映射 + tag 同步 | SOP-0 §5.1 | SOP-X-Discord 接手后引用 |
+| `/admin/tasks` viewer (P7) | SOP-0 §5.2 | — |
+| `/admin/cron` viewer / setter (P7+) | SOP-0 §5.3 | Hermes cron infra 见 SOP-X-Tooling |
+| 失败处理协议（tag-based · `needs-human` · 不另设仓库） | SOP-0 §6 | 同上 |
+| task `task_id` 命名规则（`YYYYMMDD-HHMMSS-rand6`） | SOP-0 §2.1 | 同上 |
+
+详见 [`SOP_0_TASK_SYSTEM.md`](SOP_0_TASK_SYSTEM.md) (v0.1-draft · P1-P8 阶段化交付)。
+
 ### 1.1 SOP-1 拥有（客户发现 + 去重 + 增强 / Intake）
 
 **SOP-1 出口承诺**：把候选客户找进来 + 去重 + 联系方式补全 → 输出 **dedup-clean + enrichment-complete 的 entity** 给 SOP-2。
