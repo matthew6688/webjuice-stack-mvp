@@ -305,18 +305,18 @@ async function runTask(taskId) {
       if (lastJson && typeof lastJson === 'object') {
         const lines = [];
         if (lastJson.audit_chained) {
-          lines.push(`🔗 chained audit task: \`${lastJson.audit_chained}\` ([admin](/admin/tasks/#${lastJson.audit_chained}))`);
+          lines.push(`🔗 已链式触发 audit 任务: \`${lastJson.audit_chained}\` ([后台查看](/admin/tasks/#${lastJson.audit_chained}))`);
         }
         if (lastJson.thread_url) {
-          lines.push(`🔗 batch thread: ${lastJson.thread_url}`);
+          lines.push(`🔗 批次讨论串: ${lastJson.thread_url}`);
         } else if (lastJson.thread_id) {
-          lines.push(`🔗 batch thread: <#${lastJson.thread_id}>`);
+          lines.push(`🔗 批次讨论串: <#${lastJson.thread_id}>`);
         }
         if (lastJson.batch_id) {
-          lines.push(`📦 batch: \`${lastJson.batch_id}\``);
+          lines.push(`📦 批次 batch_id: \`${lastJson.batch_id}\``);
         }
         if (lastJson.entity_key) {
-          lines.push(`👤 entity: \`${lastJson.entity_key}\` ([admin](/admin/v2-leads/${lastJson.entity_key}))`);
+          lines.push(`👤 实体 entity_key: \`${lastJson.entity_key}\` ([后台查看](/admin/v2-leads/${lastJson.entity_key}))`);
         }
         if (lines.length) xref = '\n\n' + lines.join('\n');
       }
@@ -328,21 +328,21 @@ async function runTask(taskId) {
       appendProgress(taskId, 'cli.timeout', `signal=${signal} code=${code}`);
       const [k, t] = appliedTagsFor(task.kind, 'human');
       await patchThreadTags(threadId, [k, t]);
-      await postThreadReply(threadId, `⚠ task **${taskId}** timed out after ${Math.round(timeoutMs/1000)}s\n\`\`\`\n${tail.slice(-1200)}\n\`\`\``);
+      await postThreadReply(threadId, `⏳ 任务 **${taskId}** 执行超时 · 已运行 ${Math.round(timeoutMs/1000)}s 后被终止 · 已转交人工处理\n\`\`\`\n${tail.slice(-1200)}\n\`\`\``);
     } else if (code === 0) {
       log('done', taskId, `(${durationMs}ms exit=0)`);
       transitionStatus(taskId, 'done', { result: { exit_code: 0, duration_ms: durationMs } });
       appendProgress(taskId, 'cli.complete', `exit=0 dur=${durationMs}ms`);
       const [k, t] = appliedTagsFor(task.kind, 'done');
       await patchThreadTags(threadId, [k, t]);
-      await postThreadReply(threadId, `✓ task **${taskId}** done in ${(durationMs/1000).toFixed(1)}s${xref}\n\`\`\`\n${tail.slice(-1500 + xref.length)}\n\`\`\``);
+      await postThreadReply(threadId, `✅ 任务 **${taskId}** 完成 · 用时 ${(durationMs/1000).toFixed(1)}s${xref}\n\`\`\`\n${tail.slice(-1500 + xref.length)}\n\`\`\``);
     } else {
       log('failed', taskId, `(exit=${code} sig=${signal})`);
       transitionStatus(taskId, 'failed', { reason: `exit=${code} signal=${signal}`, result: { exit_code: code, duration_ms: durationMs } });
       appendProgress(taskId, 'cli.failed', `exit=${code} signal=${signal} dur=${durationMs}ms`);
       const [k, t] = appliedTagsFor(task.kind, 'failed');
       await patchThreadTags(threadId, [k, t]);
-      await postThreadReply(threadId, `✗ task **${taskId}** failed (exit=${code})\n\`\`\`\n${tail.slice(-1500)}\n\`\`\``);
+      await postThreadReply(threadId, `❌ 任务 **${taskId}** 执行失败 · CLI 退出码 exit=${code}\n\`\`\`\n${tail.slice(-1500)}\n\`\`\``);
     }
     inFlight.delete(taskId);
   });
@@ -354,7 +354,7 @@ async function runTask(taskId) {
     appendProgress(taskId, 'cli.spawn_error', err.message);
     const [k, t] = appliedTagsFor(task.kind, 'failed');
     await patchThreadTags(threadId, [k, t]);
-    await postThreadReply(threadId, `✗ task **${taskId}** spawn error: ${err.message}`);
+    await postThreadReply(threadId, `❌ 任务 **${taskId}** 启动失败 · 子进程 spawn 错误: ${err.message}`);
     inFlight.delete(taskId);
   });
 }

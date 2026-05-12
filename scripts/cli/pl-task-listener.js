@@ -146,7 +146,7 @@ async function handleNewForumThread(thread) {
   // user would otherwise see silence. Send BEFORE any LLM work.
   if (hasImage) {
     await postThreadReply(thread.id,
-      `📥 Received · ${attachments.length} attachment(s) · routing + vision OCR/extract starting…`);
+      `📥 已收到 · ${attachments.length} 个附件 · 正在路由意图并启动 vision OCR/extract…`);
   }
 
   const route = await routeIntent({ text, attachments });
@@ -163,14 +163,14 @@ async function handleNewForumThread(thread) {
       if (imagePrep.ok) {
         log('image.prep ok · ' + imagePrep.extracted.businessName + ' · ' + imagePrep.extracted.niche + '/' + imagePrep.extracted.city + ' · ' + imagePrep.extracted.latency_ms + 'ms');
         await postThreadReply(thread.id,
-          `🔍 OCR/extract done in ${(imagePrep.extracted.latency_ms / 1000).toFixed(1)}s · "${imagePrep.extracted.businessName}" · ${imagePrep.extracted.niche}/${imagePrep.extracted.city}`);
+          `🔍 OCR/extract 完成 · 用时 ${(imagePrep.extracted.latency_ms / 1000).toFixed(1)}s · 商家="${imagePrep.extracted.businessName}" · ${imagePrep.extracted.niche}/${imagePrep.extracted.city}`);
       } else {
         log('image.prep failed: ' + imagePrep.reason);
-        await postThreadReply(thread.id, `⚠ OCR/extract incomplete · ${imagePrep.reason}`);
+        await postThreadReply(thread.id, `⚠ OCR/extract 未完成 · 原因: ${imagePrep.reason}`);
       }
     } catch (err) {
       log('image.prep error', err.message);
-      await postThreadReply(thread.id, `⚠ OCR/extract error · ${err.message}`);
+      await postThreadReply(thread.id, `⚠ OCR/extract 出错 · ${err.message}`);
       imagePrep = { ok: false, reason: 'exception: ' + err.message };
     }
   }
@@ -224,10 +224,10 @@ async function handleNewForumThread(thread) {
 
   // Status message reply (pinned-style — listener owns the initial post, dispatcher edits later)
   const lines = [
-    `**Task created** \`${task.task_id}\``,
-    `kind: \`${route.kind}\` · status: \`${pendingStatus}\` · provider: \`${route.provider}\``,
-    route.target_cli ? `cli: \`${route.target_cli}\`${finalArgs.length ? ' ' + finalArgs.join(' ') : ''}` : `cli: _(none — needs operator)_`,
-    route.target_entity_key ? `entity: \`${route.target_entity_key}\`` : null,
+    `✅ **任务已创建** \`${task.task_id}\``,
+    `类型 kind: \`${route.kind}\` · 状态 status: \`${pendingStatus}\` · 路由提供方 provider: \`${route.provider}\``,
+    route.target_cli ? `执行命令 cli: \`${route.target_cli}\`${finalArgs.length ? ' ' + finalArgs.join(' ') : ''}` : `执行命令 cli: _(暂无 — 需要人工介入)_`,
+    route.target_entity_key ? `目标实体 entity_key: \`${route.target_entity_key}\`` : null,
   ].filter(Boolean);
   const msgId = await postThreadReply(thread.id, lines.join('\n'));
   if (msgId) {
@@ -267,7 +267,7 @@ async function handleReaction(reaction, user, type) {
     // Reactions on non-human tasks ignored intentionally (avoid retriggering
     // expensive ops). Post one-line note so operator knows we saw the click.
     await postThreadReply(threadId,
-      `_(reaction ${emoji} noted but task already \`${task.status}\` — only \`human\` tasks accept ✅/❌ retry/abandon. Use admin /tasks to act on \`done\`/\`failed\`.)_`);
+      `_(已记录表情 ${emoji}，但任务当前状态为 \`${task.status}\` — 仅 \`human\` 状态的任务接受 ✅/❌ 重试/放弃。如需操作 \`done\`/\`failed\` 任务，请使用后台 /tasks 页面。)_`);
     return;
   }
   // Accept multiple emoji synonyms — operator on mobile/desktop varies.
@@ -280,13 +280,13 @@ async function handleReaction(reaction, user, type) {
     appendProgress(task.task_id, 'operator.retry', `${user.username} requested retry via ${emoji}`);
     const [kindTag, statusTag] = appliedTagsFor(task.kind, 'pending');
     await patchThreadTags(threadId, [kindTag, statusTag]);
-    await postThreadReply(threadId, `${user.username} retried task → status: \`pending\` (via ${emoji})`);
+    await postThreadReply(threadId, `🔁 ${user.username} 请求重试任务 · 状态已切换为 \`pending\` (通过 ${emoji})`);
   } else if (ABANDON.has(emoji)) {
     transitionStatus(task.task_id, 'done', { reason: `abandoned by ${user.username}` });
     appendProgress(task.task_id, 'operator.abandon', `${user.username} marked task done via ${emoji}`);
     const [kindTag, statusTag] = appliedTagsFor(task.kind, 'done');
     await patchThreadTags(threadId, [kindTag, statusTag]);
-    await postThreadReply(threadId, `${user.username} abandoned task → status: \`done\` (via ${emoji})`);
+    await postThreadReply(threadId, `🗑 ${user.username} 已放弃任务 · 状态已切换为 \`done\` (通过 ${emoji})`);
   }
   // Other emojis silently ignored (operator can use any non-mapped emoji as bookmark).
 }

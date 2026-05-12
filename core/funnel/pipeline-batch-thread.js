@@ -75,12 +75,12 @@ export async function startBatchThread({ batchId, title, summary, niche, city, c
   const tagIds = await resolveTagIds(['in-progress']);
 
   const body = [
-    `**Pipeline batch started**`,
-    `Niche: \`${niche}\` · City: \`${city}\` · Target count: \`${count}\``,
-    `Started: ${new Date().toISOString()}`,
-    `Batch id: \`${batchId}\``,
+    `🚀 **批次流水线已启动**`,
+    `行业 niche: \`${niche}\` · 城市 city: \`${city}\` · 目标条数 count: \`${count}\``,
+    `启动时间: ${new Date().toISOString()}`,
+    `批次 batch_id: \`${batchId}\``,
     summary ? `\n${summary}` : '',
-    `\n_Flags_: ${Object.entries(runFlags).map(([k, v]) => `${k}=${v}`).join(' · ') || '(default)'}`,
+    `\n_运行参数 flags_: ${Object.entries(runFlags).map(([k, v]) => `${k}=${v}`).join(' · ') || '(默认)'}`,
   ].filter(Boolean).join('\n');
 
   const r = await fetch(`${DISCORD_API}/channels/${channelId()}/threads`, {
@@ -139,7 +139,8 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
   if (!state.thread_id) throw new Error('batch has no thread_id');
 
   const emoji = { ok: '✅', fail: '❌', skip: '⏭️', paused: '⏸️', info: '📝' }[status] || 'ℹ️';
-  const body = `${emoji} **${stage}** — _${status}_ · ${new Date().toLocaleTimeString('en-AU', { hour12: false })}\n\n${summary}`;
+  const statusLabelCn = { ok: '成功', fail: '失败', skip: '跳过', paused: '已暂停', info: '信息' }[status] || status;
+  const body = `${emoji} **${stage}** — _${statusLabelCn}_ · ${new Date().toLocaleTimeString('en-AU', { hour12: false })}\n\n${summary}`;
 
   const r = await fetch(`${DISCORD_API}/channels/${state.thread_id}/messages`, {
     method: 'POST',
@@ -180,7 +181,7 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
 export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAudit = false }) {
   const r = await postStageUpdate({
     batchId,
-    stage: 'Batch finalize',
+    stage: '批次收尾 Batch finalize',
     status: terminalTag === 'completed' ? 'ok' : 'info',
     summary,
     swapTag: terminalTag,
@@ -216,10 +217,10 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
       // Post a thread update so operators see dedup ran
       if (out.status === 0 && parsed) {
         const dedupSummary = parsed.total_suspects > 0
-          ? `🔍 Dedup-audit · **${parsed.total_suspects} suspect group(s)** found · review at /admin/v2-leads/dedup-review`
-          : `🔍 Dedup-audit · 0 suspects · store is clean`;
+          ? `🔍 去重审核 dedup-audit · 发现 **${parsed.total_suspects} 组疑似重复线索** · 请到 /admin/v2-leads/dedup-review 复核`
+          : `🔍 去重审核 dedup-audit · 0 组疑似重复 · 数据库无重复`;
         try {
-          await postStageUpdate({ batchId, stage: 'Auto dedup-audit', status: 'ok', summary: dedupSummary });
+          await postStageUpdate({ batchId, stage: '自动去重审核 Auto dedup-audit', status: 'ok', summary: dedupSummary });
         } catch {}
       }
     } catch (err) {
