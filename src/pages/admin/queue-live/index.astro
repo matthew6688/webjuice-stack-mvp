@@ -1,0 +1,120 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+
+const uiVersion = 'local-style-2026-05-08';
+const API_BASE = import.meta.env.PUBLIC_SOP0_API_BASE || 'https://tasks.profitslocal.com';
+const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
+
+const PIPELINE_STAGES = [
+  { key: 'scored',                   label: '初步 GBP score',    tone: 'scored',  cli: 'leads:audit-discovery-sites' },
+  { key: 'queued_for_audit',         label: '待 detailed audit', tone: 'queued',  cli: 'leads:run-pipeline -- --entity-key <key>' },
+  { key: 'ready_for_outreach_brief', label: '审过待分级',        tone: 'ready',   cli: 'leads:run-pipeline -- --entity-key <key>' },
+  { key: 'manual_review',            label: '需我介入',          tone: 'urgent',  cli: 'leads:triage-discovery-manual -- --limit 8' },
+];
+const STAGE_STATUSES = PIPELINE_STAGES.map((s) => s.key).join(',');
+---
+
+<Layout title="Queue · Live" active="queue">
+  <section class="poster-section admin-section" data-ui-version={uiVersion}>
+    <div class="admin-shell queue-live-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-0 · Queue (live)</p>
+          <h1>Discovery 漏斗</h1>
+          <p class="lede">从 maps-scraper → cheap audit → detailed audit → grade。这页盯哪一关卡了人。 <a href="/admin/v2-queue/">老 static 版</a> 仍可用。</p>
+        </div>
+        <div class="admin-count">
+          <strong id="count-total">—</strong>
+          <span>Entities in pipeline</span>
+          <span class="micro-note" id="bottleneck">loading…</span>
+        </div>
+      </div>
+
+      <div id="stages-view">
+        <p class="v2-group-empty" id="loading-msg">loading…</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ API_BASE, API_TOKEN, PIPELINE_STAGES, STAGE_STATUSES }}>
+  const $ = (id) => document.getElementById(id);
+  const escape = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+  function fmtDaysAgo(iso) {
+    if (!iso) return '—';
+    const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+    return d < 1 ? 'today' : `${d}d`;
+  }
+
+  async function load() {
+    try {
+      const t0 = Date.now();
+      const url = `${API_BASE}/api/entities?status=${STAGE_STATUSES}&limit=500`;
+      const r = await fetch(url, { headers: API_TOKEN ? { 'Authorization': `Bearer ${API_TOKEN}` } : {} });
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      const data = await r.json();
+      const ms = Date.now() - t0;
+      const entities = data.entities || [];
+      const stageData = PIPELINE_STAGES.map((s) => ({
+        ...s,
+        rows: entities.filter((e) => e.status === s.key),
+      }));
+      $('count-total').textContent = entities.length;
+      // bottleneck
+      const bn = stageData.slice().sort((a, b) => b.rows.length - a.rows.length)[0];
+      $('bottleneck').textContent = bn && bn.rows.length >= 3
+        ? `🛑 ${bn.rows.length} 卡在 ${bn.label} · ${ms}ms`
+        : `${ms}ms · 无明显瓶颈`;
+      render(stageData);
+    } catch (err) {
+      $('stages-view').innerHTML = `<p class="admin-banner admin-banner-coral">fetch error: ${escape(err.message)}</p>`;
+    }
+  }
+
+  function render(stageData) {
+    $('stages-view').innerHTML = stageData.map((stage) => `
+      <section class="v2-stage v2-stage-${stage.tone}" id="${escape(stage.key)}">
+        <header class="v2-stage-head">
+          <div class="v2-stage-head-left">
+            <h2 class="v2-stage-title">${escape(stage.label)}</h2>
+            <span class="v2-stage-count">${stage.rows.length}</span>
+          </div>
+          ${stage.cli ? `<code class="v2-stage-cli">npm run ${escape(stage.cli)}</code>` : ''}
+        </header>
+        ${stage.rows.length === 0
+          ? '<p class="v2-stage-empty">— 此阶段当前为空 —</p>'
+          : '<div class="v2-stage-rows">' + stage.rows.map((r) => `
+            <div class="v2-queue-row">
+              <div class="v2-queue-row-main">
+                <a class="v2-row-name-link" href="/admin/v2-leads/${escape(r.entityKey)}/">
+                  <h3 class="v2-queue-row-name">${escape(r.name)}</h3>
+                </a>
+                <div class="v2-queue-row-meta">
+                  ${r.niche ? `<span>${escape(r.niche)}</span>` : ''}
+                  ${r.city ? `<span>· ${escape(r.city)}</span>` : ''}
+                  ${r.sourceType ? `<span class="chip chip-muted">${escape({maps_scraper:'gosom',places_search:'places',single_enrich:'single',image_lead:'image'}[r.sourceType] || r.sourceType)}</span>` : ''}
+                  ${r.discovery_rank ? `<span class="v2-row-niche" title="rank">#${r.discovery_rank}</span>` : ''}
+                  ${r.discovery_score != null ? `<span class="v2-queue-discovery-score">score ${r.discovery_score}</span>` : ''}
+                  ${r.audit_score != null ? `<span class="v2-queue-audit-chip" title="${escape(r.audit_decision || '')}">audit ${r.audit_score}/100</span>` : ''}
+                </div>
+              </div>
+              <div class="v2-queue-row-aside">
+                <span class="dim">${fmtDaysAgo(r.firstSeenAt)}</span>
+              </div>
+            </div>`).join('') + '</div>'
+        }
+      </section>
+    `).join('');
+  }
+
+  load();
+</script>
+
+<style>
+  .queue-live-shell { max-width: 1200px; }
+  .queue-live-shell .admin-count { min-width: 220px; flex-shrink: 0; }
+  .queue-live-shell .admin-count strong { font-size: 44px; line-height: 1; font-weight: 950; }
+  .queue-live-shell .admin-count .micro-note { display:block; margin-top:6px; font-size:11px; font-weight:700; color: var(--pl-muted); }
+  .queue-live-shell .lede a { color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+  .dim { color: var(--pl-muted); font-size: 11px; }
+</style>

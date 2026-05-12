@@ -27,6 +27,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { listTasks, readTask, loadForumTags } from '../../core/tasks/task-store.js';
+import { loadPaidIntakeIndex, loadPaidIntakeRecord } from '../../core/funnel/paid-intake-index.js';
 
 const PORT = parseInt(process.env.SOP0_API_PORT || '4040', 10);
 const HOST = process.env.SOP0_API_HOST || '127.0.0.1';
@@ -314,6 +315,42 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    if (pathname === '/api/intakes') {
+      try {
+        const idx = loadPaidIntakeIndex();
+        const records = idx.records || [];
+        const projected = records.map((r) => ({
+          clientSlug:       r.clientSlug,
+          orderId:          r.orderId,
+          status:           r.status,
+          customer:         r.customer || null,
+          stageSummary:     r.stageSummary || null,
+          nextActionSummary:r.nextActionSummary || null,
+          artifactSummary:  r.artifactSummary || null,
+          blockerSummary:   r.blockerSummary || null,
+          createdAt:        r.createdAt || null,
+          updatedAt:        r.updatedAt || null,
+        }));
+        send(res, 200, { ok: true, intakes: projected, total: projected.length, updated_at: new Date().toISOString() }, req);
+      } catch (err) {
+        send(res, 500, { error: 'paid-intake-index load failed: ' + err.message }, req);
+      }
+      return;
+    }
+
+    const iMatch = pathname.match(/^\/api\/intakes\/([\w-]+)\/([\w-]+)$/);
+    if (iMatch) {
+      const [, clientSlug, orderId] = iMatch;
+      try {
+        const rec = loadPaidIntakeRecord({ clientSlug, orderId });
+        if (!rec) { send(res, 404, { error: 'intake not found', clientSlug, orderId }, req); return; }
+        send(res, 200, { ok: true, intake: rec, updated_at: new Date().toISOString() }, req);
+      } catch (err) {
+        send(res, 500, { error: err.message }, req);
+      }
+      return;
+    }
+
     const eMatch = pathname.match(/^\/api\/entities\/([\w-]+)$/);
     if (eMatch) {
       const entityKey = eMatch[1];
@@ -343,6 +380,8 @@ const server = http.createServer(async (req, res) => {
           '/api/tasks', '/api/tasks/:id',
           '/api/entities?graded=true|false&status=&phase=&niche=&limit=',
           '/api/entities/:entityKey',
+          '/api/intakes',
+          '/api/intakes/:clientSlug/:orderId',
           '/api/cron',
           '/api/forum-tags',
         ],

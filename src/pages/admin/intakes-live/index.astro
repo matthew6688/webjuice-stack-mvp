@@ -1,0 +1,190 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+
+const uiVersion = 'local-style-2026-05-08';
+const API_BASE = import.meta.env.PUBLIC_SOP0_API_BASE || 'https://tasks.profitslocal.com';
+const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
+---
+
+<Layout title="Intakes · Live" active="intakes">
+  <section class="poster-section admin-section" data-ui-version={uiVersion}>
+    <div class="admin-shell intakes-live-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-0 · Intakes (live)</p>
+          <h1>付费项目看板</h1>
+          <p class="lede">从 <code>data/paid-intakes/</code> 实时拉。 <a href="/admin/intakes/">老 static 版</a> 仍可用。</p>
+        </div>
+        <div class="admin-count">
+          <strong id="count-total">—</strong>
+          <span>Intakes</span>
+          <span class="micro-note" id="count-breakdown">loading…</span>
+        </div>
+      </div>
+
+      <div class="v2-attention-strip" id="attention-strip">
+        <a class="v2-attention-cell" href="#" data-filter="review_ready">
+          <span class="v2-attention-num" id="cnt-review">—</span>
+          <span class="v2-attention-label">待发 review</span>
+        </a>
+        <a class="v2-attention-cell" href="#" data-filter="revision_pending">
+          <span class="v2-attention-num" id="cnt-rev">—</span>
+          <span class="v2-attention-label">修订待处理</span>
+        </a>
+        <a class="v2-attention-cell" href="#" data-filter="waiting_dns">
+          <span class="v2-attention-num" id="cnt-dns">—</span>
+          <span class="v2-attention-label">等 DNS</span>
+        </a>
+        <a class="v2-attention-cell" href="#" data-filter="qa_blocked">
+          <span class="v2-attention-num" id="cnt-qa">—</span>
+          <span class="v2-attention-label">QA 阻塞</span>
+        </a>
+      </div>
+
+      <header class="admin-paper-section-head">
+        <h2>所有 intakes</h2>
+        <div class="filters-bar">
+          <label>view
+            <select id="filter-view">
+              <option value="">all</option>
+              <option value="review_ready">待发 review</option>
+              <option value="revision_pending">修订待处理</option>
+              <option value="waiting_dns">等 DNS</option>
+              <option value="missing_open_design">缺 Open Design</option>
+              <option value="qa_blocked">QA 阻塞</option>
+            </select>
+          </label>
+          <button class="admin-card-meta-action" id="refresh-btn">refresh</button>
+          <span id="refresh-status" class="filter-status-line"></span>
+        </div>
+      </header>
+
+      <div class="v2-row-list" id="intake-rows">
+        <p class="v2-group-empty">loading…</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ API_BASE, API_TOKEN }}>
+  const $ = (id) => document.getElementById(id);
+  const escape = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+  const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString('en-AU') : '—';
+
+  function applyView(records, view) {
+    if (!view) return records;
+    if (view === 'review_ready')        return records.filter((r) => r.stageSummary?.key === 'review_ready');
+    if (view === 'revision_pending')    return records.filter((r) => r.status === 'revision_requested');
+    if (view === 'waiting_dns')         return records.filter((r) => r.artifactSummary?.domainStatus === 'waiting_for_customer_dns');
+    if (view === 'missing_open_design') return records.filter((r) => !r.artifactSummary?.openDesignBound);
+    if (view === 'qa_blocked')          return records.filter((r) => !r.artifactSummary?.deliveryQaReady);
+    return records;
+  }
+
+  let cached = [];
+  async function load() {
+    $('refresh-status').textContent = 'loading…';
+    try {
+      const t0 = Date.now();
+      const r = await fetch(`${API_BASE}/api/intakes`, {
+        headers: API_TOKEN ? { 'Authorization': `Bearer ${API_TOKEN}` } : {},
+      });
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      const data = await r.json();
+      const ms = Date.now() - t0;
+      cached = data.intakes || [];
+      $('count-total').textContent = cached.length;
+      const counts = {
+        review_ready:        cached.filter((r) => r.stageSummary?.key === 'review_ready').length,
+        revision_pending:    cached.filter((r) => r.status === 'revision_requested').length,
+        waiting_dns:         cached.filter((r) => r.artifactSummary?.domainStatus === 'waiting_for_customer_dns').length,
+        qa_blocked:          cached.filter((r) => !r.artifactSummary?.deliveryQaReady).length,
+      };
+      $('cnt-review').textContent = counts.review_ready;
+      $('cnt-rev').textContent = counts.revision_pending;
+      $('cnt-dns').textContent = counts.waiting_dns;
+      $('cnt-qa').textContent = counts.qa_blocked;
+      $('count-breakdown').textContent = `${counts.review_ready}📤 · ${counts.revision_pending}🔁 · ${counts.qa_blocked}⚠`;
+      // attention tones
+      document.querySelectorAll('[data-filter]').forEach((el) => {
+        const k = el.dataset.filter;
+        el.classList.remove('v2-attention-hot', 'v2-attention-warm');
+        if (k === 'revision_pending' && counts[k] > 0) el.classList.add('v2-attention-hot');
+        else if (k === 'review_ready' && counts[k] > 0) el.classList.add('v2-attention-warm');
+      });
+      const filtered = applyView(cached, $('filter-view').value);
+      renderRows(filtered);
+      $('refresh-status').textContent = `${filtered.length}/${cached.length} intakes · ${ms}ms`;
+    } catch (err) {
+      $('refresh-status').textContent = `error: ${err.message}`;
+      $('intake-rows').innerHTML = `<p class="admin-banner admin-banner-coral">${escape(err.message)}</p>`;
+    }
+  }
+
+  function renderRows(rows) {
+    if (rows.length === 0) {
+      $('intake-rows').innerHTML = '<p class="v2-group-empty">— 无符合 view 的 intake —</p>';
+      return;
+    }
+    $('intake-rows').innerHTML = rows.map((r) => {
+      const customerName = r.customer?.company || r.customer?.contactName || r.clientSlug;
+      const stageLabel = r.stageSummary?.label || r.status || '—';
+      const stageTone = r.stageSummary?.tone || 'muted';
+      const nextAction = r.nextActionSummary?.label || '—';
+      return `
+        <div class="v2-row">
+          <div class="v2-row-main">
+            <a class="v2-row-name-link" href="/admin/intakes/#${escape(r.clientSlug)}-${escape(r.orderId)}">
+              <h3 class="v2-row-name">${escape(customerName)}</h3>
+            </a>
+            <div class="v2-row-meta">
+              <span class="chip chip-${stageTone === 'urgent' ? 'coral' : stageTone === 'warning' ? 'citrus' : stageTone === 'success' ? 'mint' : 'muted'}">${escape(stageLabel)}</span>
+              ${r.artifactSummary?.openDesignBound ? '<span class="chip chip-sky" title="Open Design bound">OD ✓</span>' : '<span class="chip chip-muted" title="No Open Design">OD —</span>'}
+              ${r.artifactSummary?.deliveryQaReady ? '<span class="chip chip-mint" title="QA ready">QA ✓</span>' : '<span class="chip chip-citrus" title="QA pending">QA ⏳</span>'}
+              ${r.artifactSummary?.domainStatus ? `<span class="chip chip-lilac" title="domain status">${escape(r.artifactSummary.domainStatus)}</span>` : ''}
+              <span class="v2-row-niche">${escape(r.clientSlug)}/${escape(r.orderId)}</span>
+            </div>
+            <div class="v2-row-meta dim" style="margin-top:4px">
+              ➜ ${escape(nextAction)}
+            </div>
+          </div>
+          <div class="v2-row-stats">
+            <div class="v2-row-stat">
+              <span class="v2-row-stat-num">${fmtDate(r.createdAt)}</span>
+              <span class="v2-row-stat-label">created</span>
+            </div>
+            <div class="v2-row-stat">
+              <span class="v2-row-stat-num">${fmtDate(r.updatedAt)}</span>
+              <span class="v2-row-stat-label">updated</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  document.querySelectorAll('[data-filter]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      $('filter-view').value = el.dataset.filter;
+      load();
+    });
+  });
+  $('refresh-btn').addEventListener('click', load);
+  $('filter-view').addEventListener('change', () => renderRows(applyView(cached, $('filter-view').value)));
+
+  load();
+</script>
+
+<style>
+  .intakes-live-shell { max-width: 1200px; }
+  .intakes-live-shell .admin-count { min-width: 220px; flex-shrink: 0; }
+  .intakes-live-shell .admin-count strong { font-size: 44px; line-height: 1; font-weight: 950; }
+  .intakes-live-shell .admin-count .micro-note { display:block; margin-top:6px; font-size:11px; font-weight:700; color: var(--pl-muted); }
+  .intakes-live-shell .lede a { color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+  .filters-bar { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: 12px; }
+  .filters-bar label { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--pl-muted); }
+  .filters-bar select { padding: 4px 10px; border: 2px solid var(--pl-line); background: var(--pl-paper); font: inherit; font-weight: 700; }
+  .filter-status-line { color: var(--pl-muted); font-size: 11px; margin-left: auto; }
+  .dim { color: var(--pl-muted); font-size: 11px; }
+</style>
