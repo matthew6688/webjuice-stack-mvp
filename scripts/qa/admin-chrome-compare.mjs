@@ -54,7 +54,17 @@ async function measure(page, selector) {
     const el = document.querySelector(sel);
     if (!el) return null;
     const r = el.getBoundingClientRect();
-    return { width: Math.round(r.width), height: Math.round(r.height) };
+    const cs = getComputedStyle(el);
+    // Capture box-styling so we catch "same dimensions different chrome"
+    // (e.g. SOP-1 admin-count was 356px wide but no yellow background).
+    return {
+      width: Math.round(r.width),
+      height: Math.round(r.height),
+      bg: cs.backgroundColor,
+      borderColor: cs.borderColor,
+      borderWidth: cs.borderWidth,
+      boxShadow: cs.boxShadow.slice(0, 40),
+    };
   }, selector);
 }
 
@@ -95,6 +105,9 @@ for (const cp of COMPARE_POINTS) {
       const hDiff = Math.abs(o.height - g.height) / g.height;
       if (wDiff > cp.tolerance.width) bad = true;
       if (cp.tolerance.height != null && hDiff > cp.tolerance.height) bad = true;
+      // Box-styling check: catch "same dimensions different chrome"
+      if (o.bg !== g.bg) bad = true;
+      if (o.borderColor !== g.borderColor) bad = true;
     } else if (g && !o) {
       bad = true;
     }
