@@ -88,6 +88,44 @@ function releaseProcessLock() {
   } catch { /* fine */ }
 }
 
+/**
+ * Parse the LAST JSON object out of a stdout blob. pl:* CLIs emit a final
+ * JSON object via emit() at the end (after their human-readable log lines).
+ * We scan from the end backwards looking for a balanced top-level {…} that
+ * parses cleanly. Returns the parsed object or null.
+ */
+function parseLastJson(stdout) {
+  if (!stdout) return null;
+  // Quick path: find a closing `}` near end, walk back for matching `{`
+  let i = stdout.lastIndexOf('}');
+  while (i > 0) {
+    let depth = 0;
+    let inStr = false;
+    let esc = false;
+    let start = -1;
+    for (let j = i; j >= 0; j -= 1) {
+      const c = stdout[j];
+      if (esc) { esc = false; continue; }
+      if (c === '\\') { esc = true; continue; }
+      if (c === '"') { inStr = !inStr; continue; }
+      if (inStr) continue;
+      if (c === '}') depth += 1;
+      else if (c === '{') {
+        depth -= 1;
+        if (depth === 0) { start = j; break; }
+      }
+    }
+    if (start === -1) return null;
+    try {
+      return JSON.parse(stdout.slice(start, i + 1));
+    } catch {
+      // try preceding `}` (in case of nested objects in logs)
+      i = stdout.lastIndexOf('}', i - 1);
+    }
+  }
+  return null;
+}
+
 /* ─── Discord helpers (REST PATCH/POST via fetch) ─────────────────── */
 
 async function patchThreadTags(threadId, tagIds) {
@@ -245,6 +283,35 @@ async function runTask(taskId) {
     // Compact summary for the thread reply (last 1500 chars of combined)
     const tail = (stdout + (stderr ? `\n[stderr]\n${stderr}` : '')).slice(-1500);
 
+    // Cross-ref: parse final JSON from stdout (pl:* CLIs use emit() = JSON.stringify).
+    // Pick up downstream identifiers we want to surface to the operator:
+    //   - audit_chained (single-enrich → audit task_id)
+    //   - thread_id / thread_url (intake → batch thread in #lead-discovery-runs)
+    //   - batch_id (intake → SOP-1 batch state file)
+    //   - entity_key (single-enrich resolved entity)
+    let xref = '';
+    try {
+      const lastJson = parseLastJson(stdout);
+      if (lastJson && typeof lastJson === 'object') {
+        const lines = [];
+        if (lastJson.audit_chained) {
+          lines.push(`🔗 chained audit task: \`${lastJson.audit_chained}\` ([admin](/admin/tasks/#${lastJson.audit_chained}))`);
+        }
+        if (lastJson.thread_url) {
+          lines.push(`🔗 batch thread: ${lastJson.thread_url}`);
+        } else if (lastJson.thread_id) {
+          lines.push(`🔗 batch thread: <#${lastJson.thread_id}>`);
+        }
+        if (lastJson.batch_id) {
+          lines.push(`📦 batch: \`${lastJson.batch_id}\``);
+        }
+        if (lastJson.entity_key) {
+          lines.push(`👤 entity: \`${lastJson.entity_key}\` ([admin](/admin/v2-leads/${lastJson.entity_key}))`);
+        }
+        if (lines.length) xref = '\n\n' + lines.join('\n');
+      }
+    } catch { /* xref best-effort */ }
+
     if (killedByTimeout) {
       log('timeout', taskId, `(${timeoutMs}ms)`);
       transitionStatus(taskId, 'human', { reason: `timeout after ${timeoutMs}ms` });
@@ -258,7 +325,7 @@ async function runTask(taskId) {
       appendProgress(taskId, 'cli.complete', `exit=0 dur=${durationMs}ms`);
       const [k, t] = appliedTagsFor(task.kind, 'done');
       await patchThreadTags(threadId, [k, t]);
-      await postThreadReply(threadId, `✓ task **${taskId}** done in ${(durationMs/1000).toFixed(1)}s\n\`\`\`\n${tail.slice(-1500)}\n\`\`\``);
+      await postThreadReply(threadId, `✓ task **${taskId}** done in ${(durationMs/1000).toFixed(1)}s${xref}\n\`\`\`\n${tail.slice(-1500 + xref.length)}\n\`\`\``);
     } else {
       log('failed', taskId, `(exit=${code} sig=${signal})`);
       transitionStatus(taskId, 'failed', { reason: `exit=${code} signal=${signal}`, result: { exit_code: code, duration_ms: durationMs } });
