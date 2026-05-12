@@ -60,6 +60,7 @@ export function siteQuickScan({
   if (!url) throw new Error('url is required');
   const config = loadConfig();
   const rules = config.stages.stage_2_site_quick_scan.rules;
+  const ruleById = new Map(rules.map((r) => [r.id, r]));
 
   const md = String(markdown || '');
   const mdLower = md.toLowerCase();
@@ -68,192 +69,178 @@ export function siteQuickScan({
   const html = String(rawHtml || '');
   const htmlLower = html.toLowerCase();
 
-  const results = [];
-  const earnMap = new Map(rules.map((r) => [r.id, 0]));
-
-  // 1. missing_https
-  {
-    const isHttp = /^http:\/\//i.test(url);
-    const earned = isHttp ? 18 : 0;
-    earnMap.set('missing_https', earned);
-    results.push({
-      id: 'missing_https', earned, max: 18, hit: isHttp,
-      rationale: isHttp ? 'URL uses http:// — no TLS' : 'HTTPS present',
-    });
-  }
-
-  // 2. homepage_text_thin
-  {
-    const len = md.length;
-    let earned;
-    if (len < 300) earned = 8;
-    else if (len < 800) earned = 4;
-    else earned = 0;
-    earnMap.set('homepage_text_thin', earned);
-    results.push({
-      id: 'homepage_text_thin', earned, max: 8, hit: earned > 0,
-      rationale: `homepage text length = ${len} chars`,
-    });
-  }
-
-  // 3. no_local_mention
-  {
-    const cityNorm = businessCity.toLowerCase().trim();
-    const suburbNorm = businessSuburb.toLowerCase().trim();
-    const hasCity = cityNorm && mdLower.includes(cityNorm);
-    const hasSuburb = suburbNorm && mdLower.includes(suburbNorm);
-    const missing = !hasCity && !hasSuburb;
-    const earned = missing ? 10 : 0;
-    earnMap.set('no_local_mention', earned);
-    results.push({
-      id: 'no_local_mention', earned, max: 10, hit: missing,
-      rationale: missing
-        ? `homepage does not mention "${businessCity || '(unknown city)'}" or "${businessSuburb || '(unknown suburb)'}"`
-        : `local mention found: ${hasCity ? businessCity : ''}${hasSuburb ? ' / ' + businessSuburb : ''}`.trim(),
-    });
-  }
-
-  // 4. no_phone_above_fold
-  {
-    let missing = true;
-    if (phoneDigits && phoneDigits.length >= 6) {
-      // strip non-digit and check digits substring
-      const aboveFoldDigits = aboveFold.replace(/\D+/g, '');
-      missing = !aboveFoldDigits.includes(phoneDigits.slice(-6));
-    }
-    const earned = missing ? 12 : 0;
-    earnMap.set('no_phone_above_fold', earned);
-    results.push({
-      id: 'no_phone_above_fold', earned, max: 12, hit: missing,
-      rationale: missing
-        ? 'phone digits not in first 1500 chars of homepage'
-        : 'phone present above fold',
-    });
-  }
-
-  // 5. no_cta_keywords
-  {
-    const hasCta = CTA_KEYWORDS.some((kw) => aboveFoldLower.includes(kw));
-    const earned = hasCta ? 0 : 10;
-    earnMap.set('no_cta_keywords', earned);
-    results.push({
-      id: 'no_cta_keywords', earned, max: 10, hit: !hasCta,
-      rationale: hasCta ? 'CTA keyword found above fold' : 'no CTA keyword in first 1500 chars',
-    });
-  }
-
-  // 6. stale_year_marker
-  {
-    // Scan for "©" or "copyright" followed by a 4-digit year, OR a bare 4-digit year in the last 500 chars (footer-ish)
-    const tail = md.slice(-1000);
-    const yearMatches = [...md.matchAll(/(?:©|copyright|\(c\))\s*(?:19|20)\d{2}/gi)];
-    let footerYear = null;
-    for (const m of yearMatches) {
-      const yMatch = m[0].match(/(19|20)\d{2}/);
-      if (yMatch) {
-        const y = Number(yMatch[0]);
-        if (!footerYear || y > footerYear) footerYear = y;
+  // Detection dispatch — config carries weight/max/severity; code carries only the test.
+  // Each detector returns { hit: boolean, earned?: number, rationale: string, not_evaluated?: boolean }.
+  // If `earned` is omitted, it defaults to rule.max when hit, else 0.
+  const detectors = {
+    missing_https: () => {
+      const isHttp = /^http:\/\//i.test(url);
+      return {
+        hit: isHttp,
+        rationale: isHttp ? 'URL uses http:// — no TLS' : 'HTTPS present',
+      };
+    },
+    homepage_text_thin: () => {
+      const len = md.length;
+      const max = ruleById.get('homepage_text_thin').max;
+      let earned;
+      if (len < 300) earned = max;
+      else if (len < 800) earned = Math.round(max / 2);
+      else earned = 0;
+      return {
+        hit: earned > 0,
+        earned,
+        rationale: `homepage text length = ${len} chars`,
+      };
+    },
+    no_local_mention: () => {
+      const cityNorm = businessCity.toLowerCase().trim();
+      const suburbNorm = businessSuburb.toLowerCase().trim();
+      const hasCity = cityNorm && mdLower.includes(cityNorm);
+      const hasSuburb = suburbNorm && mdLower.includes(suburbNorm);
+      const missing = !hasCity && !hasSuburb;
+      return {
+        hit: missing,
+        rationale: missing
+          ? `homepage does not mention "${businessCity || '(unknown city)'}" or "${businessSuburb || '(unknown suburb)'}"`
+          : `local mention found: ${hasCity ? businessCity : ''}${hasSuburb ? ' / ' + businessSuburb : ''}`.trim(),
+      };
+    },
+    no_phone_above_fold: () => {
+      let missing = true;
+      if (phoneDigits && phoneDigits.length >= 6) {
+        const aboveFoldDigits = aboveFold.replace(/\D+/g, '');
+        missing = !aboveFoldDigits.includes(phoneDigits.slice(-6));
       }
-    }
-    if (!footerYear) {
-      const tailYearMatches = [...tail.matchAll(/(19|20)\d{2}/g)].map((m) => Number(m[0]));
-      if (tailYearMatches.length) footerYear = Math.max(...tailYearMatches);
-    }
-    const stale = footerYear !== null && footerYear < currentYear - 2;
-    const earned = stale ? 8 : 0;
-    earnMap.set('stale_year_marker', earned);
-    results.push({
-      id: 'stale_year_marker', earned, max: 8, hit: stale,
-      rationale: footerYear === null
-        ? 'no copyright year detected'
-        : stale
-          ? `footer year ${footerYear} (≥${currentYear - 2} would be fresh)`
-          : `footer year ${footerYear} is fresh`,
-    });
-  }
-
-  // 7. missing_skeleton
-  {
-    const present = SKELETON_TOKENS.filter((t) => mdLower.includes(t));
-    const missing = present.length < 2;
-    const earned = missing ? 10 : 0;
-    earnMap.set('missing_skeleton', earned);
-    results.push({
-      id: 'missing_skeleton', earned, max: 10, hit: missing,
-      rationale: missing
-        ? `only ${present.length} skeleton sections present (need 2+)`
-        : `${present.length} sections found: ${present.join(', ')}`,
-    });
-  }
-
-  // 8. no_mobile_viewport
-  {
-    // Tinyfish doesn't return raw HTML; only flag if rawHtml is provided AND missing viewport
-    let earned = 0;
-    let rationale;
-    let hit = false;
-    if (html) {
+      return {
+        hit: missing,
+        rationale: missing
+          ? 'phone digits not in first 1500 chars of homepage'
+          : 'phone present above fold',
+      };
+    },
+    no_cta_keywords: () => {
+      const hasCta = CTA_KEYWORDS.some((kw) => aboveFoldLower.includes(kw));
+      return {
+        hit: !hasCta,
+        rationale: hasCta ? 'CTA keyword found above fold' : 'no CTA keyword in first 1500 chars',
+      };
+    },
+    stale_year_marker: () => {
+      const tail = md.slice(-1000);
+      const yearMatches = [...md.matchAll(/(?:©|copyright|\(c\))\s*(?:19|20)\d{2}/gi)];
+      let footerYear = null;
+      for (const m of yearMatches) {
+        const yMatch = m[0].match(/(19|20)\d{2}/);
+        if (yMatch) {
+          const y = Number(yMatch[0]);
+          if (!footerYear || y > footerYear) footerYear = y;
+        }
+      }
+      if (!footerYear) {
+        const tailYearMatches = [...tail.matchAll(/(19|20)\d{2}/g)].map((m) => Number(m[0]));
+        if (tailYearMatches.length) footerYear = Math.max(...tailYearMatches);
+      }
+      const stale = footerYear !== null && footerYear < currentYear - 2;
+      return {
+        hit: stale,
+        rationale: footerYear === null
+          ? 'no copyright year detected'
+          : stale
+            ? `footer year ${footerYear} (≥${currentYear - 2} would be fresh)`
+            : `footer year ${footerYear} is fresh`,
+      };
+    },
+    missing_skeleton: () => {
+      const present = SKELETON_TOKENS.filter((t) => mdLower.includes(t));
+      const missing = present.length < 2;
+      return {
+        hit: missing,
+        rationale: missing
+          ? `only ${present.length} skeleton sections present (need 2+)`
+          : `${present.length} sections found: ${present.join(', ')}`,
+      };
+    },
+    no_mobile_viewport: () => {
+      if (!html) {
+        return {
+          hit: false,
+          earned: 0,
+          rationale: 'rawHtml not available — cannot check viewport (skipped)',
+          not_evaluated: true,
+        };
+      }
       const has = /<meta[^>]+name=["']viewport["']/i.test(html);
-      hit = !has;
-      earned = hit ? 12 : 0;
-      rationale = hit ? 'no <meta name="viewport"> in HTML head' : 'viewport meta present';
-    } else {
-      rationale = 'rawHtml not available — cannot check viewport (skipped)';
-    }
-    earnMap.set('no_mobile_viewport', earned);
-    results.push({
-      id: 'no_mobile_viewport', earned, max: 12, hit, rationale,
-      not_evaluated: !html,
-    });
-  }
-
-  // 9. table_layout_smell
-  {
-    let earned = 0;
-    let hit = false;
-    let rationale;
-    if (html) {
+      const hit = !has;
+      return {
+        hit,
+        rationale: hit ? 'no <meta name="viewport"> in HTML head' : 'viewport meta present',
+      };
+    },
+    table_layout_smell: () => {
+      if (!html) {
+        return {
+          hit: false,
+          earned: 0,
+          rationale: 'rawHtml not available — cannot check tables (skipped)',
+          not_evaluated: true,
+        };
+      }
       const tableMatches = htmlLower.match(/<table\b/g) || [];
       const presentationMatches = htmlLower.match(/<table[^>]+role=["']presentation["']/g) || [];
       const layoutTables = tableMatches.length - presentationMatches.length;
-      hit = layoutTables >= 5;
-      earned = hit ? 6 : 0;
-      rationale = `${layoutTables} non-presentation <table> tags`;
-    } else {
-      rationale = 'rawHtml not available — cannot check tables (skipped)';
-    }
-    earnMap.set('table_layout_smell', earned);
-    results.push({
-      id: 'table_layout_smell', earned, max: 6, hit, rationale,
-      not_evaluated: !html,
-    });
-  }
+      const hit = layoutTables >= 5;
+      return {
+        hit,
+        rationale: `${layoutTables} non-presentation <table> tags`,
+      };
+    },
+    image_quality_smell: () => {
+      const mdImages = [...md.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)].map((m) => ({ alt: m[1], url: m[2] }));
+      const htmlImages = html
+        ? [...html.matchAll(/<img\b[^>]*src=["']([^"']+)["'][^>]*alt=["']([^"']*)["']?/gi)]
+          .map((m) => ({ alt: m[2] || '', url: m[1] }))
+        : [];
+      const imgs = [...mdImages, ...htmlImages];
+      let lowQualityCount = 0;
+      let missingAltCount = 0;
+      for (const img of imgs) {
+        if (!img.alt.trim()) missingAltCount += 1;
+        if (LOW_QUALITY_IMAGE_PATTERNS.some((p) => p.test(img.url))) lowQualityCount += 1;
+      }
+      const hit = imgs.length > 0 && (lowQualityCount > 0 || missingAltCount >= 3);
+      return {
+        hit,
+        rationale: imgs.length === 0
+          ? 'no image references detected in markdown'
+          : `${imgs.length} images, ${lowQualityCount} low-quality URL patterns, ${missingAltCount} missing alt`,
+      };
+    },
+  };
 
-  // 10. image_quality_smell
-  {
-    // Look for image refs in markdown ![alt](url) or HTML <img src=...>
-    const mdImages = [...md.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)].map((m) => ({ alt: m[1], url: m[2] }));
-    const htmlImages = html
-      ? [...html.matchAll(/<img\b[^>]*src=["']([^"']+)["'][^>]*alt=["']([^"']*)["']?/gi)]
-        .map((m) => ({ alt: m[2] || '', url: m[1] }))
-      : [];
-    const imgs = [...mdImages, ...htmlImages];
-    let lowQualityCount = 0;
-    let missingAltCount = 0;
-    for (const img of imgs) {
-      if (!img.alt.trim()) missingAltCount += 1;
-      if (LOW_QUALITY_IMAGE_PATTERNS.some((p) => p.test(img.url))) lowQualityCount += 1;
+  // Iterate config-declared rules in their declared order; pull weight/max from config.
+  const results = rules.map((rule) => {
+    const detector = detectors[rule.id];
+    if (!detector) {
+      return {
+        id: rule.id, earned: 0, max: rule.max, hit: false,
+        rationale: `no detector implemented for ${rule.id} (skipped)`,
+        not_evaluated: true,
+      };
     }
-    const hit = imgs.length > 0 && (lowQualityCount > 0 || missingAltCount >= 3);
-    const earned = hit ? 6 : 0;
-    earnMap.set('image_quality_smell', earned);
-    results.push({
-      id: 'image_quality_smell', earned, max: 6, hit,
-      rationale: imgs.length === 0
-        ? 'no image references detected in markdown'
-        : `${imgs.length} images, ${lowQualityCount} low-quality URL patterns, ${missingAltCount} missing alt`,
-    });
-  }
+    const out = detector();
+    const earned = out.not_evaluated
+      ? 0
+      : (typeof out.earned === 'number' ? out.earned : (out.hit ? rule.max : 0));
+    return {
+      id: rule.id,
+      earned,
+      max: rule.max,
+      hit: !!out.hit,
+      rationale: out.rationale,
+      ...(out.not_evaluated ? { not_evaluated: true } : {}),
+    };
+  });
 
   const evaluated = results.filter((r) => !r.not_evaluated);
   const earnedTotal = evaluated.reduce((a, r) => a + r.earned, 0);

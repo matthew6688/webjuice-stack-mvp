@@ -58,28 +58,28 @@
       "description": "Only runs if has_website. Fetches homepage via Tinyfish (T0, free). Outputs redesign_need 0-100 — higher = the website is more in need of redesign = MORE valuable lead for ProfitsLocal.",
       "skipped_when": "websiteStatus = no_website (becomes starter_candidate via different path)",
       "rules": [
-        { "id": "missing_https", "weight": 18, "check": "url scheme is http not https", "earn_if_missing": 18, "max": 18,
+        { "id": "missing_https", "weight": 18, "severity": "high", "signal": "url scheme is http not https", "check": "url scheme is http not https", "earn_if_missing": 18, "max": 18,
           "rationale": "No HTTPS = trust gap, easy fix, instant before/after wow" },
-        { "id": "homepage_text_thin", "weight": 8, "check": "markdown text length < 300 chars", "earn_tiers": [
+        { "id": "homepage_text_thin", "weight": 8, "severity": "med", "signal": "homepage markdown text length below threshold", "check": "markdown text length < 300 chars", "earn_tiers": [
           { "if": "length < 300", "earn": 8 },
           { "if": "length < 800", "earn": 4 },
           { "if": "length >= 800", "earn": 0 }
         ], "max": 8, "rationale": "Sparse text = empty placeholder site or single-page dead site" },
-        { "id": "no_local_mention", "weight": 10, "check": "homepage text does not mention business city/suburb", "earn_if_missing": 10, "max": 10,
+        { "id": "no_local_mention", "weight": 10, "severity": "med", "signal": "homepage text omits business city/suburb", "check": "homepage text does not mention business city/suburb", "earn_if_missing": 10, "max": 10,
           "rationale": "No local mention = generic template, weak local SEO + trust" },
-        { "id": "no_phone_above_fold", "weight": 12, "check": "phone digits NOT in first 1500 chars of markdown", "earn_if_missing": 12, "max": 12,
+        { "id": "no_phone_above_fold", "weight": 12, "severity": "high", "signal": "phone digits absent from first 1500 chars of markdown", "check": "phone digits NOT in first 1500 chars of markdown", "earn_if_missing": 12, "max": 12,
           "rationale": "Hidden contact = critical UX issue; the #1 sales angle for many leads" },
-        { "id": "no_cta_keywords", "weight": 10, "check": "first 1500 chars lack any of: quote, contact, book, call, get, free", "earn_if_missing": 10, "max": 10,
+        { "id": "no_cta_keywords", "weight": 10, "severity": "med", "signal": "first 1500 chars lack CTA keywords (quote/contact/book/call/get/free)", "check": "first 1500 chars lack any of: quote, contact, book, call, get, free", "earn_if_missing": 10, "max": 10,
           "rationale": "No call-to-action language = unclear next step" },
-        { "id": "stale_year_marker", "weight": 8, "check": "footer copyright year < (current year - 2)", "earn_if_stale": 8, "max": 8,
+        { "id": "stale_year_marker", "weight": 8, "severity": "low", "signal": "footer copyright year is more than 2 years stale", "check": "footer copyright year < (current year - 2)", "earn_if_stale": 8, "max": 8,
           "rationale": "Stale year = abandoned/unmaintained site" },
-        { "id": "missing_skeleton", "weight": 10, "check": "markdown lacks 2+ of: Services, About, Contact, Reviews, FAQ", "earn_if_missing": 10, "max": 10,
+        { "id": "missing_skeleton", "weight": 10, "severity": "med", "signal": "fewer than 2 of Services/About/Contact/Reviews/FAQ sections present", "check": "markdown lacks 2+ of: Services, About, Contact, Reviews, FAQ", "earn_if_missing": 10, "max": 10,
           "rationale": "Missing structural sections = thin/dead site" },
-        { "id": "no_mobile_viewport", "weight": 12, "check": "no viewport meta tag in raw HTML head", "earn_if_missing": 12, "max": 12,
+        { "id": "no_mobile_viewport", "weight": 12, "severity": "high", "signal": "rawHtml lacks <meta name=viewport>", "check": "no viewport meta tag in raw HTML head", "earn_if_missing": 12, "max": 12,
           "rationale": "No viewport = non-responsive = mobile broken" },
-        { "id": "table_layout_smell", "weight": 6, "check": "raw HTML contains 5+ <table without role=presentation", "earn_if_present": 6, "max": 6,
+        { "id": "table_layout_smell", "weight": 6, "severity": "low", "signal": "raw HTML has 5+ <table tags without role=presentation", "check": "raw HTML contains 5+ <table without role=presentation", "earn_if_present": 6, "max": 6,
           "rationale": "Table layouts = pre-2010 design pattern" },
-        { "id": "image_quality_smell", "weight": 6, "check": "Tinyfish-extracted image refs imply low quality (alt missing OR url contains /200x/ /150/ /thumb/)", "earn_if_present": 6, "max": 6,
+        { "id": "image_quality_smell", "weight": 6, "severity": "low", "signal": "image refs imply low quality (alt missing or url contains /200x/, /150/, /thumb/)", "check": "Tinyfish-extracted image refs imply low quality (alt missing OR url contains /200x/ /150/ /thumb/)", "earn_if_present": 6, "max": 6,
           "rationale": "Low-res images = dated visuals" }
       ],
       "max_score": 100

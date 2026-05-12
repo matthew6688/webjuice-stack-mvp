@@ -137,9 +137,10 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
               (现有, 跑全 niche 下所有 entity)
   代码:        core/scoring/cheap-audit-v2.js + cheap-audit-config.json
               (9 GBP triage 规则 + 10 site quick-scan 启发式 = 19 项)
-              注: 截至 2026-05-12，9 条 GBP rules 已在 config 落地；10 条
-              site quick-scan 启发式仍硬编码在 site-quick-scan.js — 计划提到
-              cheap-audit-config.json 让 UI 可视化（backlog SOP-2 §11 R-1）
+              注: ✅ 已提到 config (2026-05-12) — 9 条 GBP rules + 10 条
+              site quick-scan 启发式均在 cheap-audit-config.json 声明；
+              site-quick-scan.js 仅承载 detection logic，weight/severity 从 config 读取。
+              UI 可视化由 /admin/scoring/sop-2 直接渲染 config.stages.*.rules。
   Cost:       T0 (本地脚本) + 可选 T0 (Tinyfish quick-scan if fetchSites=true)
 
   逻辑:
