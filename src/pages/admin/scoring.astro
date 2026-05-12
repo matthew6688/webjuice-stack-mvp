@@ -86,22 +86,30 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
 
 <Layout title="SOP 总览 · 销售流水线" active="scoring">
   <section class="poster-section admin-section">
-    <div class="admin-shell sop-shell" data-ui-version="local-style-2026-05-08">
+    <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
           <p class="eyebrow">SOP 总览 · BUSINESS PIPELINE</p>
           <h1>ProfitsLocal 销售流水线总览</h1>
-          <p class="zh-en-sub"><span>End-to-end Sales Pipeline</span></p>
-          <p class="lede">从抓客户到成交付费交付——我们的整个销售流水线一页看清。每段流程都有独立 SOP；横切的资产 / 操作纪律有自己的 SOP。</p>
-
-          <div class="admin-banner admin-banner-coral">
-            <span class="admin-banner-icon">🎯</span>
-            <div class="admin-banner-body">
-              <strong>我们的差异化 / Our USP</strong>
-              <p>「先做好网站，再去对接客户」<br/><em>Pre-build the website, then pitch — not the other way around.</em></p>
-              <p>这决定了我们的销售流程拓扑：A/B/C 都可能预制网站，A 优先，B 算力允许，C 看意向。</p>
-            </div>
+          <p class="zh-en-sub"><span>End-to-end Sales Pipeline</span>　·　<span class="micro">从抓客户到付费交付的完整流水线</span></p>
+          <p class="lede">每段流程都有独立 SOP；横切的资产 / 操作纪律有自己的 SOP。点 tab 切到具体 SOP 看细节。</p>
+          <div class="sop2-doc-link-row">
+            <a href="/admin/scoring/sop-2-doc" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📘</span>
+              <span class="sop2-doc-link-text">
+                <strong>Admin Design System / 设计规范</strong>
+                <span class="sop2-doc-link-sub">所有 admin 页面遵守 · <code>docs/ADMIN_DESIGN_SYSTEM.md</code></span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
           </div>
+          <p class="meta-line">
+            <span>16 SOPs · 3 layers</span>
+            <span class="dot">·</span>
+            <span>4 channels lifecycle</span>
+            <span class="dot">·</span>
+            <span>源文件 <code>docs/ADMIN_DESIGN_SYSTEM.md</code></span>
+          </p>
         </div>
 
         <div class="admin-count">
@@ -128,6 +136,16 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
           <span class="sop-tab-en">Screening & Audit</span>
         </a>
       </nav>
+
+      <!-- ─── USP banner (now its own section after tab strip) ──────────── -->
+      <div class="admin-banner admin-banner-coral">
+        <span class="admin-banner-icon">🎯</span>
+        <div class="admin-banner-body">
+          <strong>我们的差异化 / Our USP</strong>
+          <p>「先做好网站，再去对接客户」<br/><em>Pre-build the website, then pitch — not the other way around.</em></p>
+          <p>这决定了我们的销售流程拓扑：A/B/C 都可能预制网站，A 优先，B 算力允许，C 看意向。</p>
+        </div>
+      </div>
 
       <!-- ─── SECTION 1 · 销售流水线 5 个 macro 阶段 (SOP-2 stage-grid pattern) -->
       <section class="admin-paper-section">

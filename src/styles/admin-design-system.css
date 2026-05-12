@@ -32,6 +32,36 @@
   max-width: none;
 }
 
+/* SOP page admin-count: big yellow badge (was SOP-2 scoped, now shared) */
+.scoring-shell .admin-count strong {
+  font-family: var(--pl-display);
+  font-size: 44px !important;
+  line-height: 1; font-weight: 950;
+  margin: 4px 0;
+}
+.scoring-shell .admin-count .micro-note {
+  display: block; margin-top: 6px;
+  font-size: 11px; font-weight: 850;
+  color: var(--pl-ink); opacity: 0.7;
+}
+.scoring-shell .admin-header .meta-line {
+  margin-top: 14px;
+  color: var(--pl-muted);
+  font-size: 13px; font-weight: 800;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.scoring-shell .meta-line .dot { color: rgba(23,25,28,0.3); }
+.scoring-shell .meta-line code {
+  background: var(--pl-paper); border: 1.5px solid var(--pl-line);
+  padding: 1px 8px; font-size: 12px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 700;
+}
+.scoring-shell .admin-header { gap: 18px; }
+.scoring-shell .admin-header h1 { font-size: 32px !important; line-height: 1.15 !important; }
+.scoring-shell .admin-header a { color: var(--pl-coral); text-decoration: none; border-bottom: 1px dashed currentColor; }
+.scoring-shell .lede strong { color: var(--pl-coral); }
+
 /* ---------- Color chips (replaces per-page declarations) -------------------- */
 .chip {
   display: inline-flex; align-items: center;
@@ -226,10 +256,14 @@
 .sop-tab-en { font-size: 11px; color: var(--pl-muted); font-style: italic; }
 .sop-tab--active .sop-tab-zh { color: var(--pl-ink); }
 
-/* ---------- Doc link button (SOP page → detail .md viewer) ----------------- */
-.admin-doc-link-btn {
+/* ---------- Doc link button (SOP page → detail .md viewer) -----------------
+   Two equivalent class names supported for legacy reasons:
+   .admin-doc-link-btn (new, preferred) and .sop2-doc-link-btn (originated
+   in SOP-2 page; reused on Overview / SOP-1). Treat them as aliases. */
+.admin-doc-link-btn,
+.sop2-doc-link-btn {
   display: inline-flex; align-items: center; gap: 12px;
-  padding: 10px 16px;
+  padding: 12px 18px;
   border: 2px solid var(--pl-line);
   background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper));
   box-shadow: 4px 4px 0 var(--pl-line);
@@ -238,12 +272,18 @@
   max-width: 540px;
   transition: transform 80ms ease;
 }
-.admin-doc-link-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--pl-line); }
-.admin-doc-link-btn .icon { font-size: 20px; line-height: 1; }
-.admin-doc-link-btn .text { display: flex; flex-direction: column; gap: 2px; }
-.admin-doc-link-btn .text strong { font-size: 14px; font-weight: 700; }
-.admin-doc-link-btn .text .sub { font-size: 11.5px; color: var(--pl-muted); }
-.admin-doc-link-btn .arrow { font-size: 16px; font-weight: 700; color: var(--pl-coral); margin-left: auto; }
+.admin-doc-link-btn:hover,
+.sop2-doc-link-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--pl-line);
+  background: color-mix(in srgb, var(--pl-citrus) 32%, var(--pl-paper));
+}
+.sop2-doc-link-icon, .admin-doc-link-btn .icon { font-size: 22px; line-height: 1; }
+.sop2-doc-link-text, .admin-doc-link-btn .text { display: flex; flex-direction: column; gap: 2px; }
+.sop2-doc-link-text strong, .admin-doc-link-btn .text strong { font-size: 15px; font-weight: 700; }
+.sop2-doc-link-sub, .admin-doc-link-btn .text .sub { font-size: 11.5px; color: var(--pl-muted); }
+.sop2-doc-link-arrow, .admin-doc-link-btn .arrow { font-size: 18px; font-weight: 700; color: var(--pl-coral); margin-left: auto; }
+.sop2-doc-link-row { margin: 10px 0 8px; }
 
 /* ---------- Back-link (return-to-parent navigation) ------------------------ */
 .admin-back-link {

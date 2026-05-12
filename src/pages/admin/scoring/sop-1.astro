@@ -4,18 +4,35 @@ import Layout from '../../../layouts/AdminLayout.astro';
 
 <Layout title="SOP-1 · 客户发现 (调研中)" active="scoring">
   <section class="poster-section admin-section">
-    <div class="admin-shell sop-shell" data-ui-version="local-style-2026-05-08">
+    <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
           <p class="eyebrow">SOP-1 · 客户发现 INTAKE & DISCOVERY</p>
           <h1>客户发现 / Intake & Discovery</h1>
-          <p class="zh-en-sub"><span>"我们怎么找客户" — 抓客户进入数据库的第一段流程</span></p>
-          <p class="lede">把候选客户从外面（Google Maps / 图片 / 关键词）抓进我们 entity 数据库，准备进入下一段筛选。</p>
+          <p class="zh-en-sub"><span>Lead Intake &amp; Discovery</span>　·　<span class="micro">"我们怎么找客户" — 抓客户进入数据库的第一段</span></p>
+          <p class="lede">把候选客户从外面（Google Maps / 图片 / 关键词搜索）抓进 entity 数据库。所有入口最终统一进 V2 entity store，下游 SOP-2 筛选 + 审计完全一致。</p>
+          <div class="sop2-doc-link-row">
+            <a href="#investigation-note" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📋</span>
+              <span class="sop2-doc-link-text">
+                <strong>SOP-1 调研笔记 (待 review)</strong>
+                <span class="sop2-doc-link-sub">现状摸底 · 6 个检查点等你回 · <code>data/qa/sop-investigations/sop-1.md</code></span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
+          <p class="meta-line">
+            <span>3 入口 · gosom + image + search</span>
+            <span class="dot">·</span>
+            <span>Discord channel <code>#lead-discovery-runs</code></span>
+            <span class="dot">·</span>
+            <span>当前 4-step 协议 Step 2</span>
+          </p>
         </div>
         <div class="admin-count">
           <span>当前状态</span>
-          <strong>🟡 调研笔记 ready</strong>
-          <span class="micro-note">等 Matthew review 现状描述<br/>review OK 后写 SOP-1 v0.1</span>
+          <strong>🟡 调研中</strong>
+          <span class="micro-note">等 Matthew review<br/>4-step 协议 Step 2</span>
         </div>
       </header>
 
