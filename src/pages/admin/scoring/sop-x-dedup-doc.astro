@@ -1,0 +1,72 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import { micromark } from 'micromark';
+import { gfm, gfmHtml } from 'micromark-extension-gfm';
+import fs from 'node:fs';
+import path from 'node:path';
+
+import rawMd from '../../../../docs/SOP_X_DEDUP.md?raw';
+
+const docPath = path.join(process.cwd(), 'docs/SOP_X_DEDUP.md');
+
+let html;
+try {
+  html = micromark(rawMd, { extensions: [gfm()], htmlExtensions: [gfmHtml()], allowDangerousHtml: true });
+} catch { html = micromark(rawMd, { allowDangerousHtml: true }); }
+
+let lastModified = '—';
+try { if (fs.existsSync(docPath)) lastModified = fs.statSync(docPath).mtime.toISOString().slice(0, 16).replace('T', ' '); } catch {}
+const wordCount = rawMd.split(/\s+/).length;
+---
+
+<Layout title="SOP-X-Dedup · 去重业务逻辑" active="scoring">
+  <section class="poster-section admin-section">
+    <div class="admin-shell sop2-doc-shell">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-X-Dedup · 横切 / Cross-cutting</p>
+          <h1>跨源去重业务逻辑 · Dedup</h1>
+          <p class="lede">3 把唯一性钥匙 (place_id / phone / domain)。 place_id 自动合并；其他命中进队列等操作员裁决。完整协议在本文档。</p>
+          <p class="meta-line">
+            <span>文件 <code>docs/SOP_X_DEDUP.md</code></span>
+            <span class="dot">·</span>
+            <span>最后更新 {lastModified}</span>
+            <span class="dot">·</span>
+            <span>{wordCount} 字</span>
+          </p>
+        </div>
+        <div class="admin-count">
+          <a href="/admin/scoring/" class="back-link">← 返回 SOP 总览</a>
+        </div>
+      </header>
+
+      <article class="sop2-doc-body" set:html={html}></article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .sop2-doc-shell { max-width: 980px; }
+  .sop2-doc-shell .admin-header h1 { font-size: 28px; line-height: 1.2; }
+  .back-link { display: inline-block; padding: 8px 14px; border: 2px solid var(--pl-line); background: var(--pl-paper); color: var(--pl-ink); text-decoration: none; font-size: 13px; box-shadow: 3px 3px 0 var(--pl-line); }
+  .back-link:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--pl-line); }
+  .sop2-doc-body { background: var(--pl-paper); border: 2px solid var(--pl-line); box-shadow: 4px 4px 0 var(--pl-line); padding: 28px 36px; margin-top: 18px; font-size: 14.5px; line-height: 1.7; color: var(--pl-ink); }
+  .sop2-doc-body :global(h1) { max-width: none !important; font-family: Georgia, "Times New Roman", serif !important; font-size: 24px !important; line-height: 1.25 !important; font-weight: 700 !important; letter-spacing: -0.01em !important; text-wrap: initial !important; margin: 16px 0 12px !important; padding-bottom: 6px !important; border-bottom: 2px solid var(--pl-line) !important; }
+  .sop2-doc-body :global(h2) { max-width: none !important; font-family: Georgia, serif !important; font-size: 19px !important; line-height: 1.3 !important; font-weight: 700 !important; letter-spacing: -0.01em !important; text-wrap: initial !important; margin: 26px 0 10px !important; padding-bottom: 4px !important; border-bottom: 1px solid var(--pl-line) !important; }
+  .sop2-doc-body :global(h3) { max-width: none !important; font-family: Georgia, serif !important; font-size: 16px !important; line-height: 1.35 !important; font-weight: 700 !important; letter-spacing: -0.005em !important; text-wrap: initial !important; margin: 20px 0 8px !important; }
+  .sop2-doc-body :global(p) { margin: 9px 0 !important; font-size: 14px; line-height: 1.65; }
+  .sop2-doc-body :global(ul), .sop2-doc-body :global(ol) { margin: 9px 0 !important; padding-left: 22px !important; font-size: 14px; line-height: 1.65; }
+  .sop2-doc-body :global(li) { margin: 3px 0 !important; }
+  .sop2-doc-body :global(strong) { font-weight: 700 !important; color: var(--pl-ink) !important; }
+  .sop2-doc-body :global(em) { font-style: italic !important; color: var(--pl-muted) !important; }
+  .sop2-doc-body :global(code) { background: rgba(0,0,0,0.06) !important; padding: 1px 5px !important; border-radius: 2px !important; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace !important; font-size: 12px !important; color: var(--pl-coral) !important; }
+  .sop2-doc-body :global(pre) { background: #2A2418 !important; color: #F8F2E5 !important; padding: 12px 14px !important; border: 2px solid var(--pl-line); box-shadow: 3px 3px 0 var(--pl-line); overflow-x: auto; margin: 14px 0 !important; border-radius: 0; font-size: 11.5px !important; line-height: 1.55 !important; }
+  .sop2-doc-body :global(pre code) { background: transparent !important; color: inherit !important; padding: 0 !important; font-size: 12.5px; line-height: 1.6; }
+  .sop2-doc-body :global(a) { color: var(--pl-coral) !important; text-decoration: none !important; border-bottom: 1px dashed currentColor !important; }
+  .sop2-doc-body :global(blockquote) { border-left: 4px solid var(--pl-coral) !important; background: color-mix(in srgb, var(--pl-coral) 7%, var(--pl-paper)) !important; margin: 12px 0 !important; padding: 6px 14px !important; color: var(--pl-ink); font-size: 13.5px; }
+  .sop2-doc-body :global(hr) { border: none !important; border-top: 1px dashed var(--pl-muted) !important; margin: 22px 0 !important; }
+  .sop2-doc-body :global(table) { border-collapse: collapse !important; margin: 14px 0 !important; font-size: 12.5px !important; width: 100%; background: var(--pl-paper); border: 2px solid var(--pl-line); }
+  .sop2-doc-body :global(th), .sop2-doc-body :global(td) { border: 1px solid var(--pl-line) !important; padding: 7px 10px !important; text-align: left; vertical-align: top; line-height: 1.5; }
+  .sop2-doc-body :global(th) { background: color-mix(in srgb, var(--pl-citrus) 16%, var(--pl-paper)) !important; font-weight: 700 !important; font-size: 11.5px !important; letter-spacing: 0.02em; }
+  .sop2-doc-body :global(tr:nth-child(even) td) { background: color-mix(in srgb, var(--pl-paper) 70%, white); }
+</style>

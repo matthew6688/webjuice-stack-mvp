@@ -1,0 +1,147 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const queuePath = path.join(process.cwd(), 'data/leads/dedup-review-queue.json');
+let queue = { generatedAt: '—', scanned: 0, totalSuspects: 0, summary: {}, suspects: [] };
+try {
+  if (fs.existsSync(queuePath)) {
+    queue = JSON.parse(fs.readFileSync(queuePath, 'utf8'));
+  }
+} catch {}
+
+const eventsPath = path.join(process.cwd(), 'data/leads/dedup-events.jsonl');
+let recentEvents = [];
+try {
+  if (fs.existsSync(eventsPath)) {
+    recentEvents = fs.readFileSync(eventsPath, 'utf8').trim().split('\n').slice(-10).map((l) => JSON.parse(l));
+  }
+} catch {}
+---
+
+<Layout title="Dedup Review · 嫌疑撞库决策" active="v2-leads">
+  <section class="poster-section admin-section">
+    <div class="admin-shell dedup-shell">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-X-Dedup · Operator 决策 UI</p>
+          <h1>嫌疑撞库决策 · Dedup Review</h1>
+          <p class="lede">3-key 检测（place_id / phone / domain）出来的嫌疑对。每对两栏对比 → 一键合并 / 不同 / 跳过。</p>
+          <p class="meta-line">
+            <span>队列生成 {queue.generatedAt?.slice(0, 16).replace('T', ' ') || '—'}</span>
+            <span class="dot">·</span>
+            <span>扫描 {queue.scanned} entities</span>
+            <span class="dot">·</span>
+            <span>嫌疑 {queue.totalSuspects} 组</span>
+          </p>
+          <div class="admin-code-sync-banner is-synced">
+            <span>📑</span>
+            <div>
+              <strong>SOP-X-Dedup</strong> — 完整去重业务逻辑 + 协议见 <a href="/admin/scoring/sop-x-dedup-doc">SOP-X-Dedup 详细文档</a>。
+              <code>place_id</code> 自动合并；电话 / 域名命中进队列等你裁决。
+            </div>
+          </div>
+        </div>
+        <div class="admin-count">
+          <span>嫌疑 {queue.totalSuspects}</span>
+          <strong>{queue.summary?.phone || 0} 电话 · {queue.summary?.domain || 0} 域名</strong>
+          <span class="micro-note">place_id={queue.summary?.place_id || 0}（应永远 0，gosom 路径自动合并）</span>
+        </div>
+      </header>
+
+      {queue.suspects.length === 0 && (
+        <section class="admin-paper-section">
+          <div class="dedup-empty">
+            <h2>✓ 当前无嫌疑撞库</h2>
+            <p>跑 <code>npm run pl:dedup-audit</code> 重新扫描 entity store。</p>
+          </div>
+        </section>
+      )}
+
+      {queue.suspects.length > 0 && queue.suspects.map((g) => (
+        <section class="admin-paper-section dedup-pair">
+          <div class="dedup-pair-head">
+            <span class="dedup-pair-key"><code>{g.matchKey}</code> = <code>{g.matchValue}</code></span>
+            <span class="dedup-pair-count">{g.entityKeys.length} entities</span>
+          </div>
+          <div class="dedup-pair-grid">
+            {g.previews.map((p, idx) => (
+              <div class={`dedup-card ${p.hasPlaceId ? 'dedup-card--strong' : ''}`}>
+                <div class="dedup-card-tag">
+                  {idx === 0 ? 'Candidate A' : idx === 1 ? 'Candidate B' : `Candidate ${String.fromCharCode(65 + idx)}`}
+                  {p.hasPlaceId && <span class="dedup-card-pl-id">has place_id</span>}
+                </div>
+                <div class="dedup-card-name">{p.name}</div>
+                <dl class="dedup-card-fields">
+                  <dt>entityKey</dt><dd><code>{p.entityKey}</code></dd>
+                  <dt>phone</dt><dd>{p.phone || '—'}</dd>
+                  <dt>website</dt><dd>{p.website || '—'}</dd>
+                  <dt>city / niche</dt><dd>{p.city || '—'} / {p.niche || '—'}</dd>
+                  <dt>source</dt><dd>{p.sourceType || '—'}</dd>
+                  <dt>firstSeen</dt><dd>{p.firstSeenAt?.slice(0, 16).replace('T', ' ') || '—'}</dd>
+                </dl>
+                <a href={`/admin/v2-leads/${p.entityKey}`} class="dedup-card-open">打开 entity →</a>
+              </div>
+            ))}
+          </div>
+          <div class="dedup-pair-actions">
+            <p class="dedup-action-instructions">
+              <strong>操作（CLI · 当前 admin 页只显示，不直接触发，避免误操作）</strong>：<br/>
+              ✅ <strong>合并</strong>：<code>npm run pl:dedup-merge -- --winner {g.previews.find((p) => p.hasPlaceId)?.entityKey || g.entityKeys[0]} --loser {g.entityKeys.find((k) => k !== (g.previews.find((p) => p.hasPlaceId)?.entityKey || g.entityKeys[0]))} --confirm</code><br/>
+              ❌ <strong>不同</strong>：<code>npm run pl:dedup-decide -- --k1 {g.entityKeys[0]} --k2 {g.entityKeys[1]} --decision different</code><br/>
+              ⏸ <strong>跳过</strong>：不操作即可（下次 audit 会再 flag）
+            </p>
+          </div>
+        </section>
+      ))}
+
+      {recentEvents.length > 0 && (
+        <section class="admin-paper-section">
+          <div class="admin-paper-section-head">
+            <p class="eyebrow">最近合并历史</p>
+            <h2>Dedup events 最近 {recentEvents.length} 条</h2>
+          </div>
+          <table class="admin-table">
+            <thead><tr><th>时间</th><th>动作</th><th>Winner</th><th>Loser</th><th>Operator</th></tr></thead>
+            <tbody>
+              {recentEvents.reverse().map((e) => (
+                <tr>
+                  <td><code>{e.at?.slice(0, 16).replace('T', ' ') || '—'}</code></td>
+                  <td><span class="chip chip-mint">{e.action}</span></td>
+                  <td><code>{e.winner}</code></td>
+                  <td><code>{e.loser}</code></td>
+                  <td>{e.operator || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .dedup-shell { max-width: 1080px; }
+  .dedup-empty { padding: 40px 30px; text-align: center; }
+  .dedup-empty h2 { font-family: Georgia, serif; font-size: 22px; color: var(--pl-mint); margin: 0 0 8px; }
+  .dedup-pair-head { display: flex; justify-content: space-between; align-items: center; padding: 6px 0 14px; border-bottom: 1px dashed var(--pl-line); margin-bottom: 16px; }
+  .dedup-pair-key { font-family: ui-monospace, monospace; font-size: 13px; }
+  .dedup-pair-key code { background: rgba(0,0,0,0.06); padding: 2px 6px; }
+  .dedup-pair-count { font-size: 12px; color: var(--pl-muted); }
+  .dedup-pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dedup-card { border: 2px solid var(--pl-line); background: var(--pl-paper); padding: 14px 16px; box-shadow: 3px 3px 0 var(--pl-line); }
+  .dedup-card--strong { border-color: var(--pl-coral); background: color-mix(in srgb, var(--pl-coral) 6%, var(--pl-paper)); }
+  .dedup-card-tag { display: flex; justify-content: space-between; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; color: var(--pl-muted); text-transform: uppercase; margin-bottom: 8px; }
+  .dedup-card-pl-id { color: var(--pl-coral); }
+  .dedup-card-name { font-family: Georgia, serif; font-size: 16px; font-weight: 700; margin: 0 0 10px; line-height: 1.25; }
+  .dedup-card-fields { font-size: 12px; line-height: 1.55; display: grid; grid-template-columns: 90px 1fr; gap: 3px 8px; }
+  .dedup-card-fields dt { color: var(--pl-muted); }
+  .dedup-card-fields dd { margin: 0; word-break: break-all; }
+  .dedup-card-fields code { font-size: 11px; background: rgba(0,0,0,0.05); padding: 1px 4px; }
+  .dedup-card-open { display: inline-block; margin-top: 10px; font-size: 11px; color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+  .dedup-pair-actions { margin-top: 12px; padding: 10px 12px; background: color-mix(in srgb, var(--pl-citrus) 10%, var(--pl-paper)); border: 1px dashed var(--pl-line); }
+  .dedup-action-instructions { font-size: 12px; line-height: 1.7; margin: 0; }
+  .dedup-action-instructions code { background: rgba(0,0,0,0.06); padding: 1px 5px; font-size: 11px; word-break: break-all; }
+</style>

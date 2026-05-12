@@ -186,6 +186,25 @@ const CHECKS = [
     },
   },
   {
+    id: 'dedup_queue_depth',
+    name: 'Dedup review queue depth',
+    severity_on_fail: 'warn',
+    suggested_fix: '`npm run pl:dedup-audit` to refresh; open /admin/v2-leads/dedup-review to clear suspects',
+    run: async () => {
+      const p = path.resolve(process.cwd(), 'data/leads/dedup-review-queue.json');
+      if (!fs.existsSync(p)) return { ok: true, detail: 'no queue yet (run pl:dedup-audit)' };
+      try {
+        const q = JSON.parse(fs.readFileSync(p, 'utf8'));
+        const n = q.totalSuspects || 0;
+        if (n > 100) return { ok: false, detail: `${n} suspect groups (>100 — operator fatigue risk)` };
+        if (n > 20) return { ok: false, detail: `${n} suspect groups (>20 — review backlog)` };
+        return { ok: true, detail: `${n} suspect groups` };
+      } catch (e) {
+        return { ok: false, detail: `queue corrupt: ${e.message}` };
+      }
+    },
+  },
+  {
     id: 'recent_batch_failures',
     name: 'Recent batch failure rate',
     severity_on_fail: 'error',

@@ -1,0 +1,122 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import { listCohorts } from '../../../../core/leads/niche-cohort.js';
+
+const cohorts = listCohorts({}).sort((a, b) => (b.totalEntities || 0) - (a.totalEntities || 0));
+const totalEntities = cohorts.reduce((sum, c) => sum + (c.totalEntities || 0), 0);
+---
+
+<Layout title="Niche Cohorts · 业务分组" active="v2-leads">
+  <section class="poster-section admin-section">
+    <div class="admin-shell niche-shell">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-1 §6 · Niche Cohort 业务分组</p>
+          <h1>Niche Cohorts · 业务垂直分组</h1>
+          <p class="lede">每个 niche 一个 cohort（物理 flat + 逻辑分组）。同一商户可以属多个 niche cohort。Lifecycle: active / mature / dormant / archived — 决定还做不做新发现，但 entity 永不删（留作未来 upsell）。</p>
+          <p class="meta-line">
+            <span>{cohorts.length} cohorts</span>
+            <span class="dot">·</span>
+            <span>{totalEntities} 累计 entities</span>
+            <span class="dot">·</span>
+            <span>Rebuild: <code>npm run pl:rebuild-niche-shards</code></span>
+          </p>
+          <div class="admin-code-sync-banner is-synced">
+            <span>✓</span>
+            <div>
+              <strong>Niche cohort layer 已上线 2026-05-12</strong>。后续 dedup / outreach / upsell 都基于 cohort 切分。<br/>
+              <strong>Upsell 场景</strong>：6 个月后给所有 roofing 客户群发 SMM/SEO → 直接读 <code>niches/roofing/*.entityKeys.json</code>。
+            </div>
+          </div>
+        </div>
+        <div class="admin-count">
+          <span>Total Entities</span>
+          <strong>{totalEntities}</strong>
+          <span class="micro-note">across {cohorts.length} niches</span>
+        </div>
+      </header>
+
+      {cohorts.length === 0 && (
+        <section class="admin-paper-section">
+          <div class="niche-empty">
+            <h2>暂无 cohort</h2>
+            <p>跑 <code>npm run pl:rebuild-niche-shards</code> 从 entity store 重建。</p>
+          </div>
+        </section>
+      )}
+
+      {cohorts.length > 0 && (
+        <section class="admin-paper-section">
+          <div class="admin-paper-section-head">
+            <p class="eyebrow">cohorts · 按 entity 数量排序</p>
+            <h2>所有 niche cohort 总览</h2>
+          </div>
+          <div class="niche-grid">
+            {cohorts.map((c) => {
+              const grades = c.gradeDistribution || {};
+              const gradeAB = (grades.A || 0) + (grades.B || 0);
+              const lifecycleColor = {
+                active: 'chip-mint',
+                mature: 'chip-sky',
+                dormant: 'chip-muted',
+                archived: 'chip-muted',
+              }[c.lifecycleState] || 'chip-muted';
+              return (
+                <div class="niche-card">
+                  <div class="niche-card-head">
+                    <h3>{c.niche}</h3>
+                    <span class={`chip ${lifecycleColor}`}>{c.lifecycleState}</span>
+                  </div>
+                  <p class="niche-card-count"><strong>{c.totalEntities}</strong> entities · {c.cities.length} cities</p>
+                  <div class="niche-card-grades">
+                    <span class="grade-chip grade-a">A {grades.A || 0}</span>
+                    <span class="grade-chip grade-b">B {grades.B || 0}</span>
+                    <span class="grade-chip grade-c">C {grades.C || 0}</span>
+                    <span class="grade-chip grade-d">D {grades.D || 0}</span>
+                    <span class="grade-chip grade-u">? {grades.ungraded || 0}</span>
+                  </div>
+                  <p class="niche-card-ab">A/B 可销售: <strong>{gradeAB}</strong></p>
+                  <details class="niche-card-cities">
+                    <summary>Cities ({c.cities.length})</summary>
+                    <ul>
+                      {c.cities.map((city) => (
+                        <li><code>{city.city}</code> — {city.count}</li>
+                      ))}
+                    </ul>
+                  </details>
+                  <p class="niche-card-meta">
+                    First seen: <code>{c.firstSeenAt?.slice(0, 10) || '—'}</code><br/>
+                    Last seen: <code>{c.lastSeenAt?.slice(0, 10) || '—'}</code>
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .niche-shell { max-width: 1080px; }
+  .niche-empty { padding: 40px 30px; text-align: center; }
+  .niche-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .niche-card { border: 2px solid var(--pl-line); background: var(--pl-paper); padding: 14px 16px; box-shadow: 3px 3px 0 var(--pl-line); }
+  .niche-card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .niche-card-head h3 { margin: 0; font-family: Georgia, serif; font-size: 18px; }
+  .niche-card-count { font-size: 13px; margin: 4px 0 10px; color: var(--pl-muted); }
+  .niche-card-grades { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+  .grade-chip { font-size: 11px; padding: 2px 7px; border: 1px solid var(--pl-line); font-family: ui-monospace, monospace; }
+  .grade-chip.grade-a { background: color-mix(in srgb, var(--pl-coral) 18%, var(--pl-paper)); }
+  .grade-chip.grade-b { background: color-mix(in srgb, var(--pl-citrus) 28%, var(--pl-paper)); }
+  .grade-chip.grade-c { background: color-mix(in srgb, var(--pl-sky) 18%, var(--pl-paper)); }
+  .grade-chip.grade-d { background: var(--pl-paper); color: var(--pl-muted); }
+  .grade-chip.grade-u { background: var(--pl-paper); color: var(--pl-muted); font-style: italic; }
+  .niche-card-ab { font-size: 12px; margin: 6px 0; }
+  .niche-card-cities summary { font-size: 12px; cursor: pointer; color: var(--pl-coral); padding: 4px 0; }
+  .niche-card-cities ul { list-style: none; padding: 4px 0 0; margin: 0; font-size: 11px; line-height: 1.6; }
+  .niche-card-cities li code { background: rgba(0,0,0,0.05); padding: 1px 4px; }
+  .niche-card-meta { font-size: 11px; color: var(--pl-muted); margin: 10px 0 0; line-height: 1.55; }
+  .niche-card-meta code { font-size: 10px; }
+</style>

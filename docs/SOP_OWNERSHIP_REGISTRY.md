@@ -75,7 +75,28 @@
 | LLM fallback chain (claude → gemini → ollama) | SOP-X-Tooling §1.2 | 同上 |
 | `SYSTEM_ALERTS_DISCORD_WEBHOOK_URL` + alert-pusher | SOP-X-Tooling §3 | 同上 |
 
-### 1.5 SOP-X-Discord 拥有（待写 · 占位）
+### 1.5 SOP-X-Dedup 拥有（去重业务逻辑）
+
+| 概念 | Owner | 引用方式 |
+|---|---|---|
+| 3-key dedup 策略 (place_id / phoneDigits / websiteDomain) | SOP-X-Dedup §1 | 他 SOP: "见 [SOP-X-Dedup]" |
+| Auto-merge 条件 (place_id 命中) | SOP-X-Dedup §2 | 同上 |
+| 嫌疑队列 (`dedup-review-queue.json`) | SOP-X-Dedup §3 | 同上 |
+| `pl:dedup-audit` / `pl:dedup-merge` CLI | SOP-X-Dedup §4 | 同上 |
+| Merge 协议 (loser 标 `merged_into` 归档不删) | SOP-X-Dedup §2 | 同上 |
+| Operator 决策 UI (`/admin/v2-leads/dedup-review`) | SOP-X-Dedup §5 | 同上 |
+
+### 1.6 Niche Cohort (SOP-1 §6 扩展) 拥有
+
+| 概念 | Owner |
+|---|---|
+| Niche cohort 分组 (物理 flat + 逻辑分组) | SOP-1 §6 |
+| `data/leads/niches/<niche>/<city>.entityKeys.json` 索引文件 | SOP-1 §6 |
+| `entity.cohorts[]` 字段（多 niche 兼容） | SOP-1 §6 |
+| `pl:rebuild-niche-shards` CLI | SOP-1 §6 |
+| Cohort lifecycle (active / mature / dormant / archived) | SOP-1 §6 |
+
+### 1.7 SOP-X-Discord 拥有（待写 · 占位）
 
 | 概念 | Owner | 当前状态 |
 |---|---|---|
@@ -84,7 +105,7 @@
 | Bot 权限 + 设置 | SOP-X-Discord (TODO) | 暂无 |
 | Webhook 双轨（SYSTEM_ALERTS vs SPECIAL_ALERTS）| SOP-X-Discord (TODO) | 暂存 SOP-X-Tooling |
 
-### 1.6 SOP overview 拥有
+### 1.8 SOP overview 拥有
 
 | 概念 | Owner |
 |---|---|
@@ -93,7 +114,7 @@
 | 维护协议 (单源原则 §5.1) | SOP_OVERVIEW.md §5 |
 | 全局 TODO 优先级列表 | SOP_OVERVIEW.md §7 |
 
-### 1.7 SOP-3 / SOP-4 / SOP-5 (待写)
+### 1.9 SOP-3 / SOP-4 / SOP-5 (待写)
 
 | 范围 | Owner (未来) |
 |---|---|
