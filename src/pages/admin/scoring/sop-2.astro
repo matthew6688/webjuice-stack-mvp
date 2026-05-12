@@ -58,15 +58,15 @@ const stages = [
   },
   {
     n: 1, zh: '初步筛选', en: 'Rescore', cli: 'npm run rescore-v2-cli -- --niche <X>', cost: '免费（本地脚本）',
-    desc_zh: '跑 cheap-audit-v2 算法（19 项规则 + 4 个 hard trigger），把每条线索分成 5 类：值得详细审计 / 起步客户 / 待补料 / 人工判断 / 跳过。这是关键分流点。',
+    desc_zh: '跑 cheap-audit-v2 算法（9 GBP 规则 + 10 站点启发式 + 5 个 hard trigger），把每条线索分成 5 类：值得详细审计 / 起步客户 / 待补料 / 人工判断 / 跳过。这是关键分流点。',
     desc_en: 'cheap-audit-v2 → 5 action outputs (audit / starter / enrichment / manual / skip)',
     outputs: ['fixtures/rescore/<niche>-<ts>.json'],
     ui_signal: '本页"分流结果"部分显示分布',
   },
   {
     n: 2, zh: '详细审计 + 评级 + 出报告', en: 'Audit + Visual + Grade + Reviews + Report', cli: 'npm run leads:run-pipeline -- --all-audit-candidates --with-reviews --refetch', cost: '免费（本地 Playwright + 免费 API + Claude 订阅）',
-    desc_zh: '对每个"值得详细审计"的线索一气呵成跑 5 步：(1) Playwright 抓站 + 11 个子审计；(2) Claude 看截图做视觉审计；(3) 综合打分 + 评级 A/B/C/D；(4) A/B 级自动开 Discord 销售 thread；(5) 生成审计报告 HTML。',
-    desc_en: '11 sub-audits → 6-dim 39-rule scoring → Claude vision → gradeLead → auto Discord thread (A/B) → HTML report',
+    desc_zh: '对每个"值得详细审计"的线索一气呵成跑 5 步：(1) Playwright 抓站 + 11 个子审计；(2) Claude 看截图做视觉审计；(3) 综合打分 + 评级 A/B/C/D（6 维 34 规则，visual dim 当前 1 条 stub + 4 待补）；(4) A/B 级自动开 Discord 销售 thread（C 类批量轻触，回复后手动晋升）；(5) 生成审计报告 HTML。',
+    desc_en: '11 sub-audits → 6-dim 34-rule scoring → Claude vision → gradeLead → auto Discord thread (A/B) → HTML report',
     outputs: ['fixtures/detailed-audit/<key>.json', 'fixtures/visual-autoresearch/.../<key>.json', 'fixtures/reviews/<key>.json (仅 A/B)', '客户审计报告 HTML + 证据截图 + 视频', 'entity.grade（评级）+ Discord thread ID（A/B）'],
     ui_signal: '/admin/v2-leads 显示评级分布 + 每个 A/B 线索的 Discord thread',
   },
@@ -165,7 +165,7 @@ function chipClass(action) {
           <div class="admin-code-sync-banner is-synced">
             <span>✓</span>
             <div>
-              <strong>页面与代码同步</strong> — 11 sub-audits / 6 dim 39 规则 / cheap-audit-v2 阈值都反映当前代码。
+              <strong>页面与代码同步</strong> — 11 sub-audits / 6 维 34 规则 (visual=1 stub) / cheap-audit-v2 阈值都反映当前代码。
               <a href="/admin/scoring/sop-2-doc">完整文档</a> 同步维护。
             </div>
           </div>
@@ -343,7 +343,8 @@ function chipClass(action) {
           </div>
           <span class="admin-section-count">{detailedAuditSubAudits.length} 个 · 一次性 Playwright 抓站 + 并行跑</span>
         </div>
-        <p class="section-lede">每个"值得详细审计"的客户在第 2 步里，Playwright 浏览器访问他的网站一次，<strong>并行</strong>跑下面这 11 个子项目（页面速度 / 表单 / SEO / 域名年龄 / 第三方脚本权重 ...），把所有结果汇总成"审计报告"打分（6 维 × 39 规则）。</p>
+        <p class="section-lede">每个"值得详细审计"的客户在第 2 步里，Playwright 浏览器访问他的网站一次，<strong>并行</strong>跑下面这 11 个子项目（页面速度 / 表单 / SEO / 域名年龄 / 第三方脚本权重 ...），把所有结果汇总成"审计报告"打分（6 维 × 34 规则 · gbp=8 / tech=7 / ux=7 / content=6 / seo=5 / visual=1 stub）。Visual dim 当前只有 1 条规则，4 条待补 — backlog SOP-2 §11。</p>
+        <p class="section-lede"><strong>5 个 detailed-audit hard triggers</strong>（命中即抬升 / 降级 decision）：<code>no_website</code> · <code>mobile_broken</code> · <code>no_https</code> · <code>no_visible_cta_or_phone</code> · <code>high_traction_old_site</code>。<strong>4 档 decision 阈值</strong>：0-49 <code>strong_redesign</code> · 50-64 <code>moderate_candidate</code> · 65-79 <code>low_priority</code> · 80-100 <code>not_qualified</code>。</p>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead><tr><th>Sub</th><th>名称</th><th>模块</th><th>Tool</th><th>Tier</th><th>关键输出字段</th></tr></thead>
@@ -394,7 +395,7 @@ function chipClass(action) {
           <span class="cheap-audit-fold-icon">📐</span>
           <span class="cheap-audit-fold-text">
             <strong>第 1 步算法详细规则 / cheap-audit-v2 (折叠)</strong>
-            <span class="cheap-audit-fold-sub">仅算法工程师 / 调阈值时需要看 · 19 规则 + 4 hard trigger + 4 档阈值</span>
+            <span class="cheap-audit-fold-sub">仅算法工程师 / 调阈值时需要看 · 9 GBP 规则 + 10 站点启发式 + 5 hard trigger + 4 档阈值</span>
           </span>
           <span class="cheap-audit-fold-arrow">▾</span>
         </summary>
@@ -405,7 +406,7 @@ function chipClass(action) {
             <p class="eyebrow">Lead 分流流程</p>
             <h2>从抓取到决策的完整路径</h2>
           </div>
-          <span class="admin-section-count">5 个步骤 · 4 个 hard trigger · 4 档阈值</span>
+          <span class="admin-section-count">5 个步骤 · 5 个 hard trigger · 4 档阈值</span>
         </div>
 
         <div class="flow-grid">

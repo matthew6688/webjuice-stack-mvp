@@ -135,7 +135,11 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
 
   CLI:        npm run rescore-v2-cli -- --niche roofing
               (现有, 跑全 niche 下所有 entity)
-  代码:        core/scoring/cheap-audit-v2.js (9+10 = 19 项规则)
+  代码:        core/scoring/cheap-audit-v2.js + cheap-audit-config.json
+              (9 GBP triage 规则 + 10 site quick-scan 启发式 = 19 项)
+              注: 截至 2026-05-12，9 条 GBP rules 已在 config 落地；10 条
+              site quick-scan 启发式仍硬编码在 site-quick-scan.js — 计划提到
+              cheap-audit-config.json 让 UI 可视化（backlog SOP-2 §11 R-1）
   Cost:       T0 (本地脚本) + 可选 T0 (Tinyfish quick-scan if fetchSites=true)
 
   逻辑:
@@ -143,7 +147,12 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
              category 不匹配 → SKIP (hard)
     Stage 2: Site quick-scan (only if has_website + fetchSites=true)
              10 redesign 启发式 (max 100 = redesign_need)
-    Hard triggers: 4 条 override 规则
+    Hard triggers (5 条 override 规则):
+      1. no_website_with_contact      → audit_candidate
+      2. missing_https_with_evidence  → audit_candidate
+      3. high_traction_old_site       → audit_candidate
+      4. niche_mismatch               → skip (在 decideAction 而非 config)
+      5. third_party_landing_page     → audit_candidate (在 decideAction)
     Final:   gbp_quality × 0.4 + redesign_need × 0.6 → 阈值映射
 
   输出 action (5 种):
@@ -185,8 +194,14 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
        Stage 2j  domain_history    WHOIS lookup (T2)
        Stage 2k  activity          rawHtml + GBP signals
 
-    Step B: detailedAudit (6 dim × 39 rules → audit_score, dimension_scores,
+    Step B: detailedAudit (6 dim × 34 rules → audit_score, dimension_scores,
             decision, hard_triggers, issues)
+            注: gbp=8 + technical=7 + ux_conversion=7 + content=6 + seo=5
+            + visual=1 (stub, 4 条待补 — backlog SOP-2 §11).
+            5 个 hard triggers: no_website / mobile_broken / no_https /
+            no_visible_cta_or_phone / high_traction_old_site
+            4 档 decision 阈值: 0-49 strong_redesign · 50-64 moderate_candidate
+            · 65-79 low_priority · 80-100 not_qualified
             Output: data/v2/fixtures/detailed-audit/<key>.json
 
     Step C: Visual audit (claude_cli vision → codex_cli → ollama fallback)
@@ -195,8 +210,10 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
     Step D: gradeLead + persistLeadGrade
             → entity.grade {investment_level, product_tier, recommended_pricing,
               skip_reasons, graded_at}
-            → entity.phase 转换 (NEEDS_HUMAN if A/B, AWAITING for B grade w/
-              moderate signals, etc.)
+            → entity.phase 转换:
+                - A/B → AWAITING (准备进入销售对接)
+                - C → 不动 phase (走批量轻触，不开 per-lead thread)
+                - D → ARCHIVED
             → if A/B: fire-and-forget 调 openLeadThread →
               GRADUATE to #website-leads (entity.discord_thread_id +
               discord_profile_message_id)  ⭐
@@ -320,13 +337,14 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
                               candidate  review    review
 ```
 
-### 3.3 Hard triggers（4 条 override）
+### 3.3 Hard triggers（5 条 override）
 
 | Trigger | 条件 | 强制 action |
 |---|---|---|
 | `niche_mismatch` | category 不含 niche 关键词 | SKIP (hard) |
 | `third_party_landing_page` | website host 在 billdu.me/sites.google.com 等 3rd-party | starter_candidate (if reachable+gbp≥30) |
 | `no_website_with_contact` | no_website + reachable + gbp_quality ≥30 | starter_candidate |
+| `missing_https_with_evidence` | site reachable 但无 HTTPS | audit_candidate |
 | `high_traction_old_site` | reviews ≥100 + ★≥4.5 | 抬升 floor（不会降到 skip / manual_review） |
 
 ---
@@ -344,7 +362,26 @@ V2 的核心思想：**lead 生命周期分 4 段，每段对应一个 Discord c
 | **C 批量轻触** | low_priority, OR moderate 弱信号, OR **starter 无口碑** | 标准模板邮件 + master.md PDF 链接, 无跟进 |
 | **D 跳过** | 命中任一 hard skip 条件 | 不投入 |
 
-**关键洞察**: starter_candidate 也能拿 B/C 级，**也走 lead-grading**。
+**Hard skip 8 条规则** (`core/scoring/lead-grading.js#HARD_SKIP_RULES`):
+
+| ID | 条件 |
+|---|---|
+| `niche_mismatch` | category 不含 niche 关键词 |
+| `recent_redesign` | 域名 < 6 月 + 现代化技术栈 |
+| `enterprise_size` | 100+ pages 或 enterprise indicators |
+| `too_many_pages` | sitemap > 80 pages |
+| `too_many_categories` | GMB categories > 5 |
+| `relevance_fail` | cheap-audit relevance_pass = false |
+| `fully_managed` | 全管型代理 (signal: corporate footer / brand-owned) |
+| `not_qualified_decision` | detailed-audit decision = `not_qualified` (score ≥ 80) |
+
+**关键洞察 1**: starter_candidate 也能拿 B/C 级，**也走 lead-grading**。
+
+**关键洞察 2 (C 类的 Discord 处理)**: C 类 **不** 自动开 per-lead thread（避免 channel 灾难）。
+- A/B → 自动开 thread 在 `#website-leads` (apply tag `grade-a` / `grade-b`)
+- C → 批量轻触（标准模板邮件，在 `#lead-discovery-runs` batch thread 汇总记录）
+- **C 一旦回复表达意向** → **手动**晋升：开 thread 在 `#website-leads` + apply `grade-c` tag
+- `core/funnel/lead-thread-sync.js#L62` 的 `grade-c` tag 服务的就是这个手动晋升场景（USP 三分支里 C 的"看意向 → 反向预制"路径），不是孤儿代码。
 
 ### 4.2 Product tier (T1/T2/T3) — 决定**销售报价**
 

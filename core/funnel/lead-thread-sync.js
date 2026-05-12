@@ -59,6 +59,9 @@ function tagsForEntity(entity) {
   const level = entity.grade?.investment_level;
   if (level === 'A') tags.push('grade-a');
   else if (level === 'B') tags.push('grade-b');
+  // C 类不自动开 per-lead thread (USP design: 批量轻触 + 回复后手动晋升)。
+  // 这里的 grade-c tag 服务"C lead 回复表达意向 → 操作员手动开 thread"场景，
+  // 标记原始 grade 提醒销售这是 USP 三分支的反向预制路径。详见 SOP-2 §4.1。
   else if (level === 'C') tags.push('grade-c');
   if (entity.do_not_contact) tags.push('do-not-contact');
   if (entity.nurture_due_at && new Date(entity.nurture_due_at) <= new Date()) tags.push('nurture-due');
