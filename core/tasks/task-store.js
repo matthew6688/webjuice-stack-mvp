@@ -190,16 +190,32 @@ export function listTasks({ status = null, kind = null, limit = null } = {}) {
 
 /* ─── Lookups ─────────────────────────────────────────────────────── */
 
-/** Find first task by Discord thread_id (catch-up uses this). null if none. */
+/** Find first task by Discord thread_id (catch-up uses this). null if none.
+ * Scans both active `data/tasks/*.json` AND `data/tasks/_archive/**\/*.json`
+ * so re-runs aren't triggered for already-processed (archived) threads.
+ */
 export function findByThreadId(threadId) {
   if (!threadId) return null;
   ensureDir();
-  const files = fs.readdirSync(TASKS_DIR).filter((f) => f.endsWith('.json'));
-  for (const f of files) {
-    try {
-      const t = JSON.parse(fs.readFileSync(path.join(TASKS_DIR, f), 'utf8'));
-      if (t.discord?.thread_id === threadId || t.source?.thread_id === threadId) return t;
-    } catch { /* skip */ }
+  const roots = [
+    TASKS_DIR,
+    path.join(TASKS_DIR, '_archive'),
+  ];
+  const stack = [...roots];
+  while (stack.length) {
+    const dir = stack.pop();
+    if (!fs.existsSync(dir)) continue;
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { continue; }
+    for (const e of entries) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) { stack.push(full); continue; }
+      if (!e.name.endsWith('.json')) continue;
+      try {
+        const t = JSON.parse(fs.readFileSync(full, 'utf8'));
+        if (t.discord?.thread_id === threadId || t.source?.thread_id === threadId) return t;
+      } catch { /* skip */ }
+    }
   }
   return null;
 }
