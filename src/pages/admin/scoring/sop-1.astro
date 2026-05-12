@@ -87,11 +87,14 @@ try {
             <span>✓</span>
             <div>
               <strong>本页范围</strong>：仅 SOP-1（Discovery + Dedup + Enrichment + Handoff）。audit / grade / thread 归 <a href="/admin/scoring/sop-2">SOP-2</a>；entity schema 全字段归 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；工具计费归 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<br/>
-              <strong>页面 ↔ 代码同步</strong>（C5-Phase-A 完成 2026-05-12）—
-              <code>enrichment_status</code> 字段已写入 <code>mergeLeadIntoEntity</code>（'pending' 默认，有 phone/website 自动升 'complete'，legacy 缺字段视作 'complete'）；
-              <code>buildDiscoveryQueues</code> 加 enrichment gate（<code>isEnrichmentReady</code>）；
-              <code>pl:pipeline-batch-step --finalize</code> 自动 hook <code>pl:dedup-audit</code>。<br/>
-              <strong>仍待实现</strong>（C5-Phase-B 下一轮）— <code>pl:run-enrichment-batch</code> CLI（接通 <code>enrichLead()</code> 生产路径）· gosom fallback chain (G-11)。
+              <strong>页面 ↔ 代码同步</strong>（C5-Phase-A+B+C 完成 2026-05-12）— SOP-1 出口契约端到端可执行：
+              <code>isThinContact()</code> predicate (<code>core/leads/thin-contact.js</code>) +
+              <code>enrichment_status</code> 字段自动写入 +
+              <code>isEnrichmentReady()</code> queue gate +
+              <code>pl:run-enrichment-batch</code> CLI（real-test 6/6 routes $0 cost）+
+              <code>pl:pipeline-batch-step --finalize</code> auto hook <code>pl:dedup-audit</code> +
+              cheap-audit-v2 layered-fallback 注释。<br/>
+              <strong>仍待</strong> — G-11 scraper fallback chain · G-13 photos→master.md · G-14 opening_hours sales-time · G-6.1 image OCR auto · G-18 Hermes cron register。
             </div>
           </div>
         </div>

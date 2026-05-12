@@ -393,21 +393,25 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
     phoneDigits: digits(lead.phone || entity.latest?.phone || ''),
   };
   // SOP-1 出口承诺: entity 必须 enrichment-complete 才进 SOP-2 audit 队列.
-  // 默认 'pending' for new entities (有 phone OR website 时立即升级 'complete';
-  // 无 phone 且无 website 时保持 pending, 等 pl:run-enrichment-batch CLI 跑完
-  // enrichLead() 后改为 'complete' 或 'unenrichable').
-  // 已有 entity 没此字段 → buildDiscoveryQueues 视作 'complete' (legacy backwards-compat).
-  // 详见 SOP-X-Handoff §2.3 + SOP-1 §3.6.
-  const hasContact = !!(lead.phone || lead.website || entity.latest?.phone || entity.latest?.website);
+  // 默认 'pending' for new thin-contact entities; 自动升 'complete' when contact 出现.
+  // Legacy entities (no field) treated as 'complete' by isEnrichmentReady gate (backwards-compat).
+  // See SOP-X-Handoff §2.3 + SOP-1 §3.6.
+  //
+  // Predicate: a "thin-contact" entity has no phone AND no website (see
+  // core/leads/thin-contact.js — same logic, but applied to the merged
+  // post-write state below).
+  const mergedPhone = lead.phone || entity.latest?.phone || '';
+  const mergedWebsite = lead.website || entity.latest?.website || '';
+  const thinContact = !mergedPhone && !mergedWebsite;
   const currentEnrichmentStatus = entity.enrichment_status;
   if (!currentEnrichmentStatus) {
-    // First write — set default based on contact richness at this moment
-    entity.enrichment_status = hasContact ? 'complete' : 'pending';
-  } else if (currentEnrichmentStatus === 'pending' && hasContact) {
+    // First write — set default based on thin-contact status at this moment
+    entity.enrichment_status = thinContact ? 'pending' : 'complete';
+  } else if (currentEnrichmentStatus === 'pending' && !thinContact) {
     // Was pending, now we have contact info (gosom re-scrape or merge added it) → upgrade
     entity.enrichment_status = 'complete';
   }
-  // 'unenrichable' is set by pl:run-enrichment-batch when enrichment exhausts options.
+  // 'unenrichable' / 'partial' are set by pl:run-enrichment-batch after enrichLead() runs.
   // Never auto-downgrade complete → pending.
   // G-3: stamp batch_id onto entity if the run was started by pl:pipeline-batch-start.
   // batch_id (string) groups all leads from the same batch task — used by Hermes
