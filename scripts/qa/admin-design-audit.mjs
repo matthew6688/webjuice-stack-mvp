@@ -187,7 +187,53 @@ if (orphans.length > 0) {
   console.log(`  ${GREEN}✓ no orphaned classes${RESET}\n`);
 }
 
-const hasIssues = violations.length > 0 || orphans.length > 0;
+// ─── PAGE-PATTERN CHECK (added 2026-05-12 III after SOP-1 doc-link cramp) ───
+// SOP-2 is the gold-standard page chrome. Other SOP pages MUST mirror its
+// markup pattern, not just leaf class names. This check enforces wrapper structure.
+console.log(`\n${YELLOW}page-pattern scan${RESET} · structural parity with gold-standard SOP-2\n`);
+
+const PATTERNS = [
+  {
+    description: 'Each <a class="sop2-doc-link-btn"> must be wrapped in its OWN <div class="sop2-doc-link-row">',
+    appliesTo: /\/(admin\/scoring\/)(sop-1|sop-2|scoring)\.astro$/,
+    check: (src) => {
+      // Find each .sop2-doc-link-row and count .sop2-doc-link-btn inside
+      const rowRegex = /<div\s+class="sop2-doc-link-row[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?=<div\s+class="sop2-doc-link-row|<\/header|<p\s+class="admin-page-meta)/g;
+      const violations = [];
+      let m;
+      while ((m = rowRegex.exec(src)) !== null) {
+        const inner = m[1];
+        const btnCount = (inner.match(/class="sop2-doc-link-btn/g) || []).length;
+        if (btnCount > 1) violations.push(`row contains ${btnCount} buttons (should be 1)`);
+      }
+      return violations;
+    },
+  },
+];
+
+const patternViolations = [];
+for (const file of allAstro) {
+  const src = fs.readFileSync(file, 'utf8');
+  for (const pattern of PATTERNS) {
+    if (!pattern.appliesTo.test(file)) continue;
+    const issues = pattern.check(src);
+    for (const issue of issues) {
+      patternViolations.push({ file: path.relative(ROOT, file), pattern: pattern.description, issue });
+    }
+  }
+}
+
+if (patternViolations.length > 0) {
+  console.log(`  ${RED}✗ ${patternViolations.length} page-pattern violation(s):${RESET}`);
+  for (const v of patternViolations) {
+    console.log(`      ${RED}.${RESET} ${v.file}: ${v.issue}`);
+    console.log(`        ${DIM}rule: ${v.pattern}${RESET}`);
+  }
+} else {
+  console.log(`  ${GREEN}✓ no page-pattern violations${RESET}\n`);
+}
+
+const hasIssues = violations.length > 0 || orphans.length > 0 || patternViolations.length > 0;
 if (!STRICT) {
   console.log(`${YELLOW}⚠ Warning mode (default). Run with --strict to block CI.${RESET}`);
   console.log(`${DIM}Pre-existing tech debt tracked in SOP_OVERVIEW backlog.${RESET}\n`);

@@ -32,7 +32,15 @@
   max-width: none;
 }
 
-/* SOP page admin-count: big yellow badge (was SOP-2 scoped, now shared) */
+/* SOP page admin-count: big yellow badge (was SOP-2 scoped, now shared).
+   min-width prevents flex shrink when content is short — keeps h1 + stat
+   box proportions consistent across SOP pages. Caught by chrome-compare:
+   SOP-1 was 170px vs SOP-2 356px → forced badge re-sizing inconsistency. */
+.scoring-shell .admin-count,
+.sop-page .admin-count {
+  min-width: 280px;
+  flex-shrink: 0;
+}
 .scoring-shell .admin-count strong {
   font-family: var(--pl-display);
   font-size: 44px !important;

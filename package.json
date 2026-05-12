@@ -61,6 +61,7 @@
     "ops:sop-audit": "node scripts/qa/sop-content-audit.mjs",
     "ops:design-audit": "node scripts/qa/admin-design-audit.mjs",
     "ops:audit-all": "npm run ops:sop-audit && npm run ops:design-audit",
+    "ops:chrome-compare": "node scripts/qa/admin-chrome-compare.mjs",
     "pl:places-enrich": "node --env-file-if-exists=.env.local scripts/cli/pl-places-enrich.js",
     "pl:download-places-photos": "node --env-file-if-exists=.env.local scripts/cli/pl-download-places-photos.js",
     "pl:dedup-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-dedup-audit.js",
