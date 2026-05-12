@@ -32,8 +32,18 @@ import Layout from '../../../layouts/AdminLayout.astro';
             <a href="/admin/scoring/sop-1-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📘</span>
               <span class="sop2-doc-link-text">
-                <strong>SOP-1 详细文档 (v0.1-draft)</strong>
+                <strong>SOP-1 详细文档 v1.0</strong>
                 <span class="sop2-doc-link-sub">source of truth · <code>docs/SOP_1_INTAKE_DISCOVERY.md</code></span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
+          <div class="sop2-doc-link-row">
+            <a href="/admin/scoring/sop-handoff-doc" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📑</span>
+              <span class="sop2-doc-link-text">
+                <strong>SOP-1 → SOP-2 数据交接合约 / Handoff Contract</strong>
+                <span class="sop2-doc-link-sub">SOP-1 出口契约 · entity schema 每字段解读 · 必填校验</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
@@ -58,7 +68,7 @@ import Layout from '../../../layouts/AdminLayout.astro';
           <div class="admin-code-sync-banner is-synced">
             <span>✓</span>
             <div>
-              <strong>页面与代码同步</strong> — G-1 <code>pl:scrape-docker</code> · G-2 <code>pl:preflight</code> · G-3 <code>entity.batch_id</code> · G-6 image-lead V2 (<code>pl:ingest-image</code>) 均已落地。<br/>
+              <strong>页面与代码同步</strong> — G-1 <code>pl:scrape-docker</code> · G-2 <code>pl:preflight</code> · G-3 <code>entity.batch_id</code> · G-6 image-lead V2 (<code>pl:ingest-image</code>) · <strong>G-7 Places enrichment (<code>pl:places-enrich</code>)</strong> 均已落地。<br/>
               完整内容见 <a href="/admin/scoring/sop-1-doc">SOP-1 详细文档 v1.0</a>。
             </div>
           </div>
@@ -137,16 +147,17 @@ import Layout from '../../../layouts/AdminLayout.astro';
         <p class="admin-note-line"><strong>📋 调研笔记 review 入口</strong>：<code>data/qa/sop-investigations/sop-1.md</code> §8 末尾 6 个检查点等你回。</p>
       </section>
 
-      <!-- ─── 3 入口对比 (channel-flow pattern, SOP-2 同款) ─────────────── -->
+      <!-- ─── 4 入口对比 (channel-flow pattern, SOP-2 同款) ─────────────── -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">客户发现 · 3 个入口</p>
-            <h2>从哪里抓客户 <span class="en-sub">3 entries to V2 entity store</span></h2>
+            <p class="eyebrow">客户发现 · 4 个入口（含 Places enrichment）</p>
+            <h2>从哪里抓客户 <span class="en-sub">4 entries to V2 entity store</span></h2>
           </div>
-          <span class="admin-section-count">主 + 补 + 实验 · 都必须落到 V2 entity store</span>
+          <span class="admin-section-count">3 主入口 + 1 增强入口 · 全统一进 V2 entity store</span>
         </div>
-        <p class="section-lede">不同来源最后<strong>必须统一进 V2 entity store</strong> (Matthew 已定)。3 个入口都不一样的强项 · 弱项 · 触发场景，但 entity schema + 后续 pipeline 完全一样。</p>
+        <p class="section-lede">不同来源最后<strong>必须统一进 V2 entity store</strong>。4 个入口形态不同，但 entity schema + 后续 pipeline 完全一致。<br/>
+        📘 详见 <a href="/admin/scoring/sop-handoff-doc">SOP-1 → SOP-2 数据交接合约</a> · 🔧 工具清单见 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。</p>
 
         <div class="channel-flow">
           <div class="channel-card channel-0">
@@ -167,14 +178,15 @@ import Layout from '../../../layouts/AdminLayout.astro';
           </div>
 
           <div class="channel-card channel-1">
-            <div class="channel-stage">补充入口 · 单 lead 入</div>
-            <div class="channel-zh">🖼 image-lead-discovery</div>
-            <div class="channel-name"><code>scripts/leads/image-lead-discovery.js</code></div>
-            <div class="channel-unit">1 张图片 / 名片 = 1 lead</div>
-            <div class="channel-purpose">客户截图 GMB / 名片 / 招牌照片 → OCR + 识别 → 单 lead 入库</div>
+            <div class="channel-stage">V2 入口 · image-lead</div>
+            <div class="channel-zh">🖼 image-lead V2 (G-6 ✅)</div>
+            <div class="channel-name"><code>npm run pl:ingest-image -- --image PATH --business-name X --phone Y --niche --city</code></div>
+            <div class="channel-unit">1 张图片 (名片 / 店面 / 招牌) = 1 lead</div>
+            <div class="channel-purpose">网上只能找到图片格式时的 ingest 路径 — 写入 <code>data/leads/entities/image_&lt;slug&gt;_&lt;phone&gt;.json</code>，与 gosom 同等 V2 公民。OCR 自动 extract = G-6.1 backlog。</div>
             <div class="channel-meta">
-              <span>🎯 客户转介绍场景</span>
-              <span>⚠ 当前走 V1 → 必须改造成 V2 (Matthew 已定)</span>
+              <span>✅ V2 active 2026-05-12</span>
+              <span>当前手填字段</span>
+              <span>OCR auto-extract → G-6.1</span>
             </div>
           </div>
           <div class="channel-arrow">
@@ -187,15 +199,31 @@ import Layout from '../../../layouts/AdminLayout.astro';
             <div class="channel-zh">🔍 Search skill 系列</div>
             <div class="channel-name">多 search 引擎 (Tinyfish / DDGS / Doko / etc.)</div>
             <div class="channel-unit">1 关键词 query = N 搜索结果 → 提取商家信息</div>
-            <div class="channel-purpose">用不同 search engine skills 跑不同关键词，从搜索结果里挖 lead (适合长尾 niche / 偏品类 / 不在 Google Maps 主路径的)</div>
+            <div class="channel-purpose">当前与 gosom keywords[] 参数同源；未来"非 Google Maps search" 是 v0.2 范围</div>
             <div class="channel-meta">
-              <span>🧪 实验</span>
-              <span>待调研：grep <code>search</code>/<code>enrichment</code> 模块清单</span>
+              <span>🧪 实验 / 同源 gosom</span>
+            </div>
+          </div>
+          <div class="channel-arrow">
+            <span class="channel-arrow-label">↓ grade ≥ B 才触发，控制成本</span>
+            <span class="channel-arrow-glyph">▼</span>
+          </div>
+
+          <div class="channel-card channel-3">
+            <div class="channel-stage">增强入口 · Places API (G-7 ✅)</div>
+            <div class="channel-zh">📍 Google Places API enrichment</div>
+            <div class="channel-name"><code>npm run pl:places-enrich -- --entity-key place_X</code></div>
+            <div class="channel-unit">1 entity 增强 = 1 API call (Details Basic SKU, $0.017)</div>
+            <div class="channel-purpose">SOP-2 detailed-audit 后 grade ≥ B 触发 → Places Details Basic call → 写入 <code>entity.latest.places_enrichment</code> (types[] 多分类 / E.164 国际电话 / 验证 opening_hours / photos 引用)</div>
+            <div class="channel-meta">
+              <span>✅ active 2026-05-12</span>
+              <span>💰 $200/月免费额度 ≈ 11K calls (硬 cap 在 11K)</span>
+              <span>📊 quota 见 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a></span>
             </div>
           </div>
         </div>
 
-        <p class="admin-note-line"><strong>关键设计</strong>：不管哪条路进来，最后<strong>统一</strong>写到 <code>data/leads/entities/&lt;key&gt;.json</code> + <code>discovery-events.jsonl</code> + <code>queues.json</code> → 后续 SOP-2 筛选 + 审计 pipeline 完全一致。</p>
+        <p class="admin-note-line"><strong>关键设计</strong>：不管哪条路进来，最后<strong>统一</strong>写到 <code>data/leads/entities/&lt;key&gt;.json</code> + <code>discovery-events.jsonl</code> + <code>queues.json</code> → 后续 SOP-2 筛选 + 审计 pipeline 完全一致。Places enrichment 是 grade≥B 后的增强，**不**改变 entity schema 主结构（只加 <code>latest.places_enrichment</code> 子对象）。</p>
       </section>
 
       <!-- ─── 10 容易忽略的点 + 3 待建工具 (admin-table pattern) ─────────── -->
