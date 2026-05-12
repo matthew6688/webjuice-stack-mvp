@@ -158,12 +158,32 @@ npm run ops:sop-audit
 
 ---
 
-## 8. AI 工程师特别约束
+## 8. AI 工程师特别约束（来自实战教训 2026-05-12）
 
-> 当 AI 工程师 (Claude / Hermes / Codex) 改 SOP 时：
-> 1. **必须先打开 `SOP_OWNERSHIP_REGISTRY.md` 读一遍**（哪怕已经记得）
-> 2. **必须在 commit message 里写出 Owner**
-> 3. **必须跑 `npm run ops:sop-audit`** 之后才能 push
-> 4. 如果 audit 失败 → 不能 force push / 不能 skip → 必须修
+当 AI 工程师 (Claude / Hermes / Codex) 改 SOP / admin page / code 时：
 
-这是硬约束，不是建议。
+### 8.1 起手前 5 件事（每次必做）
+1. 打开 `SOP_OWNERSHIP_REGISTRY.md` 查改的概念 owner — **哪怕已经记得**
+2. 打开本文档走 5-问 checklist — **哪怕觉得能过**
+3. 如果声称 X% confidence — **必须能指出实际读过的源码**（不能凭印象）
+4. 没读过源码 → confidence ≤ 60% · 没真实跑过 → ≤ 85% · 没 smoke verified → ≤ 95% · **100% 不存在**
+5. 改后必跑：`npm run ops:sop-audit` + `npm run ops:design-audit` + 改 admin page 时跑 live screenshot
+
+### 8.2 五个真实犯过的错 + 强制对策
+
+| 错误 | 强制对策 |
+|---|---|
+| 过度自信估时 | 调研先（用 Explore agent 读 ≥ 1 文件），估时后 |
+| per-page `<style>` 加新 CSS | `ops:design-audit` 必跑（warning mode 即可） |
+| 文档承诺超前代码 | grep 找代码实现；找不到 → sync banner is-stale + TODO |
+| 跨 SOP 单源忽略 | `ops:sop-audit` 必跑；先查 ownership-registry |
+| stale class 引用 | live verify + screenshot 必跑（不只是 build green） |
+
+### 8.3 commit message 必含
+- Owner 字段（自 ownership-registry 引）
+- Sync checks 5 个 [x] / [ ]
+- 关联的 PRD / backlog 引用
+
+**所有 audit 失败 → 不能 push（不能 --no-verify, 不能 skip）→ 必须修**。
+
+详见 user memory `feedback_self_discipline_lessons.md`。
