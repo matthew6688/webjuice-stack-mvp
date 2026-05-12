@@ -123,14 +123,75 @@ if (violations.length === 0) {
   process.exit(0);
 }
 
-console.log(`${RED}✗ ${violations.length} page(s) have per-page custom CSS not in design system${RESET}`);
-console.log(`${DIM}Fix: move class to src/styles/admin-design-system.css + document in docs/ADMIN_DESIGN_SYSTEM.md, then use the registered class.${RESET}`);
-console.log(`${DIM}Or: add to ALLOWED_PERPAGE in scripts/qa/admin-design-audit.mjs if truly page-unique.${RESET}`);
+if (violations.length > 0) {
+  console.log(`${RED}✗ ${violations.length} page(s) have per-page custom CSS not in design system${RESET}`);
+  console.log(`${DIM}Fix: move class to src/styles/admin-design-system.css + document in docs/ADMIN_DESIGN_SYSTEM.md, then use the registered class.${RESET}`);
+  console.log(`${DIM}Or: add to ALLOWED_PERPAGE in scripts/qa/admin-design-audit.mjs if truly page-unique.${RESET}\n`);
+}
 
+// ─── ORPHANED CLASS CHECK (the reverse problem · added 2026-05-12) ─────────
+// Markup references .some-class but no CSS rule (DS / global / per-page) defines it.
+// Caught the bug where sop-1.astro markup used .flow-step etc. but the CSS lived
+// only in sop-2.astro's scoped <style> — sop-1 rendered unstyled silently.
+console.log(`${YELLOW}orphaned-class scan${RESET} · markup references vs CSS-declared classes\n`);
+
+const TRACKED_MARKUP_CLASSES = new Set();   // class names used in admin/*.astro class attrs
+for (const file of allAstro) {
+  const src = fs.readFileSync(file, 'utf8');
+  // strip <style>...</style> blocks first
+  const html = src.replace(/<style[^>]*>[\s\S]*?<\/style>/g, '');
+  // Match class="..." and class={`...`} and class={'...'}
+  for (const m of html.matchAll(/class\s*=\s*\{?[`'"](.*?)[`'"]\}?/gs)) {
+    const expr = m[1];
+    // crude: split by whitespace, also support template literal interpolation by stripping ${...}
+    const stripped = expr.replace(/\$\{[^}]*\}/g, ' ');
+    for (const cls of stripped.split(/[\s,]+/)) {
+      const cleaned = cls.trim();
+      if (!cleaned) continue;
+      if (cleaned.startsWith('${') || cleaned.includes('?')) continue;
+      if (/^[a-zA-Z_][a-zA-Z0-9_\-]*$/.test(cleaned)) {
+        TRACKED_MARKUP_CLASSES.add(cleaned);
+      }
+    }
+  }
+}
+
+// Also collect classes defined in PER-PAGE <style> blocks (these are scoped but exist)
+const PAGE_SCOPED_CLASSES = new Set();
+for (const file of allAstro) {
+  const src = fs.readFileSync(file, 'utf8');
+  const styleBlocks = [...src.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]);
+  for (const block of styleBlocks) {
+    for (const sm of block.matchAll(/(?:^|\s|,|>|~|\+|&)\.([a-zA-Z_][a-zA-Z0-9_\-]*)/g)) {
+      PAGE_SCOPED_CLASSES.add(sm[1]);
+    }
+  }
+}
+
+const orphans = [];
+for (const cls of TRACKED_MARKUP_CLASSES) {
+  if (dsClasses.has(cls)) continue;            // in global / design-system
+  if (PAGE_SCOPED_CLASSES.has(cls)) continue;  // exists in some page's scoped <style>
+  if (ALLOWED_PERPAGE.has(cls)) continue;
+  // Skip purely semantic/utility names we'd recognize as global
+  if (['true','false','null','undefined'].includes(cls)) continue;
+  orphans.push(cls);
+}
+orphans.sort();
+
+if (orphans.length > 0) {
+  console.log(`  ${RED}✗ ${orphans.length} orphaned class(es) — used in markup, no CSS rule found:${RESET}`);
+  for (const o of orphans.slice(0, 30)) console.log(`      ${RED}.${o}${RESET}`);
+  if (orphans.length > 30) console.log(`      ${DIM}(...${orphans.length - 30} more)${RESET}`);
+} else {
+  console.log(`  ${GREEN}✓ no orphaned classes${RESET}\n`);
+}
+
+const hasIssues = violations.length > 0 || orphans.length > 0;
 if (!STRICT) {
   console.log(`${YELLOW}⚠ Warning mode (default). Run with --strict to block CI.${RESET}`);
-  console.log(`${DIM}Pre-existing tech debt: 19 admin pages have per-page <style>. Migration tracked in SOP_OVERVIEW backlog.${RESET}\n`);
+  console.log(`${DIM}Pre-existing tech debt tracked in SOP_OVERVIEW backlog.${RESET}\n`);
   process.exit(0);
 }
 console.log('');
-process.exit(1);
+process.exit(hasIssues ? 1 : 0);
