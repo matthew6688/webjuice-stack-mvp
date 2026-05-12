@@ -490,6 +490,10 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
     sourceQuery: clean(lead.sourceQuery || run.query || entity.latest?.sourceQuery),
     signals: lead.signals || entity.latest?.signals || {},
     batch_id: batchId || entity.latest?.batch_id || '',
+    // SOP-0 v1.5 source provenance · used by master-md "来源" section.
+    // rank = position in search/scrape result list (1-based). null for image_lead etc.
+    discovery_rank: lead.discovery_rank ?? entity.latest?.discovery_rank ?? null,
+    google_places_provider: lead.google_places_provider || entity.latest?.google_places_provider || null,
   };
   if (batchId) {
     entity.batches = Array.from(new Set([...(entity.batches || []), batchId])).slice(-20);

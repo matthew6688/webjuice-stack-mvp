@@ -239,6 +239,28 @@ export function buildMasterMd({
   // ── 一、店家现状速览 ──
   sections.push('## 一、店家现状速览');
   sections.push('');
+
+  // ── 一(0)、来源 (SOP-0 v1.5 source provenance · for sales context) ──
+  // Tells sales/agent "we found this lead via X search keyword, rank Y"
+  // — useful as opening line when reaching out ("I found you when searching for…")
+  const sourceLines = [];
+  const sourceTypeLabel = {
+    maps_scraper:   'Google Maps (gosom 抓取)',
+    places_search:  'Google Places API (官方搜索)',
+    single_enrich:  '指定客户解析 (single-enrich)',
+    image_lead:     '客户上传图片识别',
+  }[latest.sourceType] || latest.sourceType || '未知';
+  sourceLines.push(`- **来源**: ${sourceTypeLabel}`);
+  if (latest.sourceQuery) sourceLines.push(`- **搜索关键词**: \`${latest.sourceQuery}\``);
+  if (latest.discovery_rank != null) sourceLines.push(`- **结果排名**: 第 ${latest.discovery_rank} 位`);
+  if (entity.firstSeenAt) sourceLines.push(`- **首次发现**: ${entity.firstSeenAt.slice(0, 10)}`);
+  if (latest.batch_id) sourceLines.push(`- **Batch**: \`${latest.batch_id}\``);
+  if (sourceLines.length > 0) {
+    sections.push('**线索来源 · 联系开场可用**:');
+    sections.push(sourceLines.join('\n'));
+    sections.push('');
+  }
+
   if (audit.qualification_reason) {
     sections.push(`**审计结论：** ${audit.qualification_reason}`);
     sections.push('');

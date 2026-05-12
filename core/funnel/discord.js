@@ -196,6 +196,7 @@ export function defaultDiscordForumBlueprints() {
       { name: 'image-extract' },
       { name: 'ops' },
       { name: 'single-enrich' },
+      { name: 'places-intake' },
       // status (mutually exclusive — swapped by dispatcher state machine)
       { name: 'pending' },
       { name: 'running' },

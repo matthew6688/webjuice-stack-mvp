@@ -50,21 +50,22 @@ function buildRouterPrompt(text, attachments = []) {
 Classify the user request into ONE of these kinds. Return ONLY JSON, no prose.
 
 Kinds:
-- intake          : BATCH discovery — vague, like "find brisbane roofers" / "search melbourne plumbers" / no specific business name
-- single-enrich   : ONE specific business named → resolve via Google Places + enrich + chain audit. Signals: phone number, quoted business name, Google Maps URL, "this customer", "this business", "找这个客户"
-- enrich          : enrichment of existing leads in the store (general "补一下电话", "fill missing contacts")
-- audit           : run audit pipeline on an existing entity (entityKey provided like place_chij...)
+- intake          : BATCH discovery via gosom Maps SCRAPER (free, unofficial) — vague intent, "find brisbane roofers" / "搜索 melbourne plumbers"
+- places-intake   : BATCH discovery via Google Places API (official, paid free-tier) — TRIGGERED by: "places search ..." / "use places ..." / quoted search strings: "roofer brisbane" "roofer gold coast" (multi-query supported)
+- single-enrich   : ONE specific business named → resolve via Places + enrich + chain audit. Signals: phone number, Google Maps URL, "this customer", "找这个客户"
+- enrich          : enrichment of existing leads in store ("fill missing contacts" general)
+- audit           : run audit on an existing entity (entityKey provided like place_chij...)
 - dedup           : trigger dedup audit / merge on the store
-- photos          : download GMB / Google Places photos for an entity
-- image-extract   : extract leads from an image / screenshot of a business card / sign (input has image attachment)
+- photos          : download GMB photos for an entity
+- image-extract   : extract leads from image attachment (input has image)
 - ops             : ops / system / health-check / cron / admin task
 
-Decision hints:
-- Has phone number (e.g. 0412 345 678 / +61 412 345 678) → single-enrich
-- Has Google Maps URL (maps.google.com / goo.gl/maps / maps.app.goo.gl) → single-enrich
-- Quoted business name + location → single-enrich
-- Generic "find X in Y" without specific business → intake
-- Has image attachment → image-extract (highest priority for media)
+Decision hints (priority order):
+- Has image attachment → image-extract (HIGHEST priority for media)
+- "places search" / "use places" or **multiple quoted strings as search terms** → places-intake (multi-query)
+- Has phone number / Google Maps URL / single quoted business + location → single-enrich
+- "find X in Y" / "搜索 X Y" without quotes → intake (gosom)
+- entityKey reference → audit
 
 Input text:
 """
@@ -74,7 +75,7 @@ ${(text || '').slice(0, 1500)}
 JSON schema (all fields required):
 {
   "kind":              <one of the 8 kinds above>,
-  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
+  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:places-search-intake" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
   "args":              <array of CLI args; for single-enrich extract --business-name/--phone/--city/--niche/--website/--gbp-url to args>,
   "target_entity_key": <string entityKey if found in input, else null>,
   "confidence":        <float 0..1>,
@@ -116,11 +117,30 @@ async function viaPaidCli(name, { text, attachments }) {
 }
 
 function viaRegex({ text, attachments }) {
-  // Fast pre-check for single-enrich signals (highest specificity → check first)
   const s = String(text || '');
+  // PLACES-INTAKE detection (highest specificity for batch search):
+  // - explicit "places search" / "use places" keyword
+  // - OR 2+ quoted strings (multi-query convention)
+  const quotedAll = [...s.matchAll(/["“]([^"”\n]{3,80})["”]/g)].map((m) => m[1].trim());
+  const hasPlacesKeyword = /\b(places\s+search|use\s+places|官方搜索|places\s+intake)\b/i.test(s);
+  if ((quotedAll.length >= 2 || hasPlacesKeyword) && !attachments?.length) {
+    const queries = quotedAll.length ? quotedAll : [s.replace(/places\s+search|use\s+places/ig, '').trim()];
+    const args = [];
+    for (const q of queries) { args.push('--query', q); }
+    return {
+      kind:              'places-intake',
+      target_cli:        'pl:places-search-intake',
+      args,
+      target_entity_key: null,
+      confidence:        0.85,
+      provider:          'regex',
+      reasoning:         hasPlacesKeyword ? 'regex/places-keyword' : 'regex/multi-quoted',
+    };
+  }
+  // Single-enrich detection
   const hasPhone = /(?:\+?\d[\d\s().-]{7,}\d)/.test(s);
   const hasGbpUrl = /(?:maps\.google\.com|goo\.gl\/maps|maps\.app\.goo\.gl)/i.test(s);
-  const hasQuotedName = /["“][^"”]{3,60}["”]/.test(s);
+  const hasQuotedName = quotedAll.length === 1;
   if ((hasPhone || hasGbpUrl || hasQuotedName) && !attachments?.length) {
     // Likely a single business reference, not a batch search
     return {
