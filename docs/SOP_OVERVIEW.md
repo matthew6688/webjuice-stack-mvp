@@ -232,11 +232,11 @@ V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord cha
 |---|---|---|---|---|
 | ✅ G-12 | Places API 多账号 rotation | — | done | PlacesQuotaGuard.selectAvailableKey + schema v1→v2 migrate |
 | 🔵 **G-18** | Hermes cron 注册 ops:health-check (daily) | **2h** | **92%** | `hermesCron(['create', 'every 24h', ...])` · **低优**（手动跑 OK · 详见 [SOP-X-Tooling §3](SOP_X_TOOLING.md)）|
-| 🟢 **G-13** | Places photos → master.md 素材库 | **2h** | **90%** | master-md-builder 第 261 行前插 "商户视觉素材" 段 · cloudinary helper 已就绪 · **阻塞**：测试 entity 需有 photo_references > 0 (Tugun 那个是 0) |
+| ✅ **G-13** | Places photos → master.md 素材库 | done 2026-05-12 | — | `pl:download-places-photos` CLI · Cloudinary 上传 · master.md "一(a) 商户视觉素材" 段 · smoke: New Farm Deli 6 张 |
 | 🟢 **Evidence trail UI** | `[entityKey].astro` 加 evidence_sources fold | **2h** | **90%** | 数据 ready (`fixtures/enrichment/*.json` shape 已知) · admin 页面有 `<details>` fold 现有 pattern |
 | 🟢 **Cost dashboard tier 视图** | finance.astro 加 tier × provider × month 面板 | **2-3h** | **95%** | `summarizeLedger()` 已支持 `byTier/byProvider` 过滤 · 只需 UI 面板 |
 | 🟡 **G-6.1** | image-lead OCR/VLM 自动 extract | **4h** | **87%** | `core/llm/vision-claude-cli.js` 已存在 · 加 extract prompt + 改 pl-ingest-image · 准确率：Claude ~94% name / ~89% phone |
-| 🟡 **G-14** | opening_hours → sales-time signal | **1.5h** | **85%** | 用 Places `periods[]` 结构化数据 · 写 `entity.latest.sales_signals.best_contact_time` · **阻塞**：测试 entity 需 opening_hours_verified ≠ null |
+| ✅ **G-14** | opening_hours → sales-time signal | done 2026-05-12 | — | `core/leads/sales-contact-time.js` 解析 weekday_text · 写 `entity.latest.sales_signals.best_contact_time` · master.md "一(b) 建议联系时间" · smoke: New Farm Deli "Tue/Wed/Thu 10:00-12:00 high confidence" |
 | 🟠 **G-11** | outscraper / apify scraper fallback | **8h** | **68%** | 在 pl-scrape-docker.js try-catch 加 fallback · 字段 schema match · **阻塞**：需 web-fetch outscraper/apify 当前 pricing + API key 结构 |
 | 🟠 **Admin trigger button** | "Run enrichment batch" UI 按钮 | **2-3 day** | **72%** | API endpoint 在 `/functions/api/*.ts` (Cloudflare Workers, 不是 Astro!) · spawnSync precedent in `v2.astro` build-time 用 · **无 long-running job pattern** 需要建第一个 |
 | 🟠 **Cross-niche rotation 策略** | daily quota + city schedule | needs design | **75%** | per-lead cron 已存在 (grade A=每 4h, B/C/D=每 12h) · 历史数据稀疏 (1 batch sample) · 建议 hybrid 模型 |

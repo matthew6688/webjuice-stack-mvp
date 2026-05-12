@@ -62,6 +62,7 @@
     "ops:design-audit": "node scripts/qa/admin-design-audit.mjs",
     "ops:audit-all": "npm run ops:sop-audit && npm run ops:design-audit",
     "pl:places-enrich": "node --env-file-if-exists=.env.local scripts/cli/pl-places-enrich.js",
+    "pl:download-places-photos": "node --env-file-if-exists=.env.local scripts/cli/pl-download-places-photos.js",
     "pl:dedup-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-dedup-audit.js",
     "pl:dedup-merge": "node --env-file-if-exists=.env.local scripts/cli/pl-dedup-merge.js",
     "pl:dedup-decide": "node scripts/cli/pl-dedup-decide.js",

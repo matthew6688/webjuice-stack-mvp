@@ -257,6 +257,33 @@ export function buildMasterMd({
     sections.push('');
   }
 
+  // ── 一(b)、建议联系时间 (sales-contact-time signal · G-14) ──
+  // Source: entity.latest.sales_signals.best_contact_time (computed by
+  // core/leads/sales-contact-time.js from Places opening_hours.weekday_text).
+  const contactTime = latest.sales_signals?.best_contact_time;
+  if (contactTime?.suggested_window) {
+    sections.push(`> 📞 **建议联系时间**: ${contactTime.suggested_window}  ·  *${contactTime.rationale || ''}*  ·  confidence: ${contactTime.confidence}`);
+    sections.push('');
+    sections.push(`> *Hours: ${contactTime.weekday_summary}*`);
+    sections.push('');
+  }
+
+  // ── 一(a)、商户视觉素材 (GMB photos from Google Places API · G-13) ──
+  // Source: entity.latest.places_enrichment.photo_urls (set by pl:download-places-photos
+  // after pl:places-enrich populates photo_references). These are GMB-curated photos =
+  // 商户自己上传/挑选的店面、作品、产品图 = 销售物料金矿。
+  const placesPhotos = latest.places_enrichment?.photo_urls || [];
+  if (placesPhotos.length > 0) {
+    sections.push('## 一(a)、商户视觉素材 (GMB)');
+    sections.push('');
+    sections.push(`> 来自 Google Business Profile 的 ${placesPhotos.length} 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。`);
+    sections.push('');
+    for (const photo of placesPhotos) {
+      sections.push(`![GMB photo ${photo.index || ''}](${photo.url})`);
+      sections.push('');
+    }
+  }
+
   // ── 二、客户访问时看到的页面 ──
   sections.push('## 二、客户访问时看到的页面');
   sections.push('');

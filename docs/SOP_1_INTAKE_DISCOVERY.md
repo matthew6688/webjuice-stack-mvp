@@ -179,12 +179,20 @@ function isThinContact(entity) {
 **目的**：补 GMB photos / types[] / E.164 phone / verified opening_hours — 给销售更多素材。
 
 **触发**：
-- 操作员手动 `pl:places-enrich --entity-key X`
+- 操作员手动 `pl:places-enrich --entity-key X` (Place Details Basic SKU)
 - 自动：grade ≥ B 之后回流（SOP-2 → SOP-1 调）
 
-**配额**：月度免费 11K calls hard cap。详见 [SOP-X-Tooling §2](SOP_X_TOOLING.md#2-places-api--成本控制详)。
+**配额**：月度免费 11K calls hard cap（multi-key rotation G-12 已落地）。详见 [SOP-X-Tooling §2](SOP_X_TOOLING.md#2-places-api--成本控制详)。
 
-**输出**：写到 `entity.latest.places_enrichment` 子对象。
+**输出**：写到 `entity.latest.places_enrichment` 子对象（merge 模式，不覆盖 `photo_urls`）。
+
+**自动衍生** (`pl:places-enrich` 一次跑全):
+- **G-14 sales-contact-time**: 解析 `opening_hours_verified.weekday_text` → `entity.latest.sales_signals.best_contact_time` (含 `suggested_window` / `confidence` / `rationale` / `weekday_summary`)。详见 `core/leads/sales-contact-time.js`。
+
+**单独跑 G-13 photo pipeline** (`pl:download-places-photos`):
+- Place Photos API ($0.007/photo, 6 张默认) → 下载到 `data/v2/fixtures/places-photos/<key>/` → Cloudinary 上传 → URLs 写到 `entity.latest.places_enrichment.photo_urls[]`
+- master.md "一(a) 商户视觉素材" 段 自动渲染（如有 photo_urls）
+- 用例：销售物料、提案 hero、social media 素材
 
 ### 3.6.4 Enrichment status
 

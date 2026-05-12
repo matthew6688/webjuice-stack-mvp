@@ -24,6 +24,7 @@ import path from 'node:path';
 import { GooglePlacesExtractor } from '../../core/extractors/google-places.js';
 import { PlacesQuotaGuard, PlacesQuotaCapExceeded } from '../../core/extractors/places-quota-guard.js';
 import { pushAlert } from '../../core/ops/alert-pusher.js';
+import { computeSalesContactTime } from '../../core/leads/sales-contact-time.js';
 
 const args = Object.fromEntries(
   process.argv.slice(2).reduce((acc, tok, i, arr) => {
@@ -131,7 +132,21 @@ try {
   };
 
   entity.latest = entity.latest || {};
-  entity.latest.places_enrichment = enrichment;
+  // Merge enrichment into existing object instead of replacing — preserves
+  // downstream fields like photo_urls / photos_downloaded_at written by
+  // pl:download-places-photos (G-13). enrichment fields take precedence over
+  // older same-name fields.
+  entity.latest.places_enrichment = {
+    ...(entity.latest.places_enrichment || {}),
+    ...enrichment,
+  };
+
+  // G-14: compute sales-contact-time signal from opening_hours_verified
+  const salesTime = computeSalesContactTime(entity);
+  if (salesTime) {
+    entity.latest.sales_signals = entity.latest.sales_signals || {};
+    entity.latest.sales_signals.best_contact_time = salesTime;
+  }
   entity.history = [
     ...(entity.history || []),
     {
