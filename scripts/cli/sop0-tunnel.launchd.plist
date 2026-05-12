@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.profitslocal.sop0-tunnel</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/cloudflared</string>
+        <string>tunnel</string>
+        <string>--config</string>
+        <string>/Users/matthew/.cloudflared/sop0-admin-config.yml</string>
+        <string>run</string>
+        <string>sop0-admin</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>TUNNEL_ORIGIN_CERT</key>
+        <string>/Users/matthew/.cloudflared/cert.pem</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+        <key>Crashed</key>
+        <true/>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/matthew/Developer/google-map-website/data/tasks/_logs/sop0-tunnel.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/matthew/Developer/google-map-website/data/tasks/_logs/sop0-tunnel.error.log</string>
+</dict>
+</plist>

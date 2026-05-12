@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: v0.6 (P0-P5 完成 · entity-driven push 接通 · P6 next)
+**版本**: v0.7 (P0-P6 完成 · admin live via tunnel · P7 next)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -298,11 +298,56 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P3** | `pl-task-dispatcher.js` (fs.watch + 60s cron + flock + spawn target_cli + tag PATCH + thread reply) | ✅ done 2026-05-12 · E2E verified | 100% |
 | **P4** | ~~3 CLI 加 `--task-id`~~ → **dispatcher stdout tee** · throttled appendProgress · 0 CLI 改动 | ✅ done 2026-05-12 · live verified | 100% |
 | **P5** | `discovery-store.js` createTask on thin-contact (push trigger, debounced) | ✅ done 2026-05-12 · 257ms E2E verified | 100% |
-| **P6** | `/admin/tasks` + `/admin/cron` 页面 | ⏳ | 88% |
+| **P6** | `/admin/tasks` + `/admin/cron` · 选 path B (Cloudflare Tunnel + local HTTP API + live admin) | ✅ done 2026-05-12 · `tasks.profitslocal.com` live · Bearer auth · 4 daemon | 100% |
 | **P7** | E2E smoke 3 路 + retention archive (>30d → `data/tasks/_archive/YYYY-MM/`) | ⏳ | 85% |
 | **P8** | 老 `core/discord-tasks/` archive + 9 caller scripts 清理 + doc v0.3 锁定 | ⏳ | 92% |
 
-完成 10/12 (P0-P5) · 剩 ~5h (P6-P8)。
+完成 11/12 (P0-P6) · 剩 ~3h (P7-P8)。
+
+### 7.2 P6 架构（live admin via Cloudflare Tunnel）
+
+```
+profitslocal.com/admin/tasks/         (CF Pages static · gated by ADMIN_ACCESS_TOKEN)
+  └─ client JS fetch ──Bearer SOP0_API_AUTH_TOKEN──▶ tasks.profitslocal.com
+                                                       │
+                                                       ▼
+                                              Cloudflare Tunnel (sop0-admin)
+                                                       │  QUIC · 4 edge connections (syd/bne)
+                                                       ▼
+                                              Mac mini :4040  pl-task-api daemon
+                                                       │
+                                                       ▼
+                                              data/tasks/*.json
+                                              ~/.hermes/profiles/*/cron/jobs.json
+                                              data/discord/website-tasks-forum-tags.json
+```
+
+**4 个 daemon**（全部 launchd `KeepAlive`）：
+
+| daemon | label | port/role |
+|---|---|---|
+| listener | `ai.profitslocal.task-listener` | Discord WS gateway |
+| dispatcher | `ai.profitslocal.task-dispatcher` | fs.watch + spawn CLI |
+| api | `ai.profitslocal.task-api` | localhost:4040 read-only JSON API |
+| tunnel | `ai.profitslocal.sop0-tunnel` | cloudflared QUIC to CF edge |
+
+**双 token 防御**（layered）：
+
+| 层 | gate | token |
+|---|---|---|
+| CF Pages `/admin/*` | ADMIN_ACCESS_TOKEN cookie (existing middleware) | 已有 |
+| Tunnel API | `Authorization: Bearer SOP0_API_AUTH_TOKEN` | 新 (32-byte base64url) |
+
+`PUBLIC_SOP0_API_TOKEN` env var 在 build time 嵌入 admin page JS。因为 admin page 本身已被 ADMIN_ACCESS_TOKEN 关在门外，"看得到 JS = 已经过门" — bearer token 内嵌可接受。`/api/health` 不需 auth (公网 liveness probe)。
+
+**Endpoints (read-only)**：
+- `GET /api/health` (public)
+- `GET /api/tasks?status=&kind=&archived=1&limit=` (Bearer)
+- `GET /api/tasks/:id` (Bearer)
+- `GET /api/cron` (Bearer)
+- `GET /api/forum-tags` (Bearer)
+
+写操作 (re-run / cancel / create cron) **不在 P6 v1 范围** — 仍走 Discord (reaction) 或 Hermes dashboard。
 
 ### 7.X · P4 实时进度观测
 
@@ -387,6 +432,10 @@ Logs:
 | 2026-05-12 | P5 entity→task 防爆 | **debounce** (任何 enrich pending/running 就跳过) | 每 entity 1 个 task | `pl:run-enrichment-batch` 一次跑处理所有 pending entities · 10 个 thin-contact 进来不需要 10 个 task · 一个 batch 跑就清 |
 | 2026-05-12 | P5 错误处理 | **best-effort try/catch** + 可选 `SOP0_DEBUG=1` | throw 让 entity 写入失败 | SOP-0 是 SOP-1 下游 · 永远不该反向阻塞 entity merge |
 | 2026-05-12 | P5 target_entity_key 不传 args | **`--skip-approval` only**，entity key 只记 metadata | `--limit 1 --entity-key X` 精确单 entity | batch CLI 设计为扫所有 pending；single-entity 模式会浪费 batch 设计意图 |
+| 2026-05-12 | P6 admin 部署模型 | **B path · Cloudflare Tunnel + local HTTP API + live admin** | A path (build-time 静态) / G path (D1 镜像) | Matthew 偏好 live admin; CF Tunnel 一次设置永久 URL (tasks.profitslocal.com); 数据仍本地 (快); 无 cloud lock-in; "backup" 是独立工作 (Discord forum 已是 task 的 off-site trail) |
+| 2026-05-12 | P6 auth 双 token 层 | **ADMIN_ACCESS_TOKEN (CF Pages middleware) + SOP0_API_AUTH_TOKEN (tunnel bearer)** | 单 token / CF Access dashboard 配置 | CF Pages 已有 middleware 现成 · CF Access API token 没权限 · 双层 token 即开即用 |
+| 2026-05-12 | API 只读 | GET only · 写操作走 Discord (reactions) / Hermes dashboard | 全 CRUD | "写" 边界面更复杂、auth 要求更高、Discord/Hermes 已 cover 写路径 · YAGNI |
+| 2026-05-12 | image-extract 任务 attachment 处理 | **TODO P6+** · 当前 listener 不下载 Discord 附件 | inline base64 / Cloudinary | Matthew 2026-05-12 self-test 时发图 → 路由对但 CLI 缺 args 退出 1 · 真实 gap · 单独 P6.X 工作 |
 
 ---
 
@@ -405,6 +454,11 @@ Logs:
 | `SOP0_STREAM_FLUSH_MS` | `5000` | Dispatcher tee 节流间隔（progress[] 写频率） |
 | `SOP0_STREAM_FLUSH_BYTES` | `2048` | Dispatcher tee bytes 阈值（提前 flush） |
 | `LISTENER_ALLOW_BOTS` | (unset) | `=1` 允许 bot-authored forum thread (仅 E2E smoke 用) |
+| `SOP0_API_PORT` | `4040` | pl-task-api localhost 端口 |
+| `SOP0_API_HOST` | `127.0.0.1` | pl-task-api bind 地址 (don't change unless 知道在干嘛) |
+| `SOP0_API_AUTH_TOKEN` | (required) | Bearer token for tunnel API (32-byte base64url) |
+| `PUBLIC_SOP0_API_TOKEN` | (= SOP0_API_AUTH_TOKEN) | Astro build-time embed for admin pages |
+| `SOP0_API_ALLOWED_ORIGINS` | `https://profitslocal.com,https://tasks.profitslocal.com,http://localhost:4321` | CORS allowlist |
 
 ---
 

@@ -1,0 +1,232 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+
+const API_BASE = import.meta.env.PUBLIC_SOP0_API_BASE || 'https://tasks.profitslocal.com';
+const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
+---
+
+<Layout title="SOP-0 Tasks" active="scoring">
+  <section class="poster-section admin-section">
+    <div class="admin-shell tasks-shell">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-0 · 任务流水线</p>
+          <h1 id="page-title">Tasks</h1>
+          <p class="lede" id="page-subtitle">所有 SOP-0 task · 实时从本机 API 拉取 · Discord forum 是镜像端</p>
+        </div>
+        <div class="admin-count">
+          <a href="/admin/scoring/" class="back-link">← 返回 SOP 总览</a>
+          <a href="/admin/cron" class="back-link">cron →</a>
+        </div>
+      </header>
+
+      <div id="list-view">
+        <div class="filters">
+          <label>status:
+            <select id="filter-status">
+              <option value="">all</option>
+              <option value="pending">pending</option>
+              <option value="running">running</option>
+              <option value="done">done</option>
+              <option value="failed">failed</option>
+              <option value="human">human</option>
+            </select>
+          </label>
+          <label>kind:
+            <select id="filter-kind">
+              <option value="">all</option>
+              <option value="intake">intake</option>
+              <option value="enrich">enrich</option>
+              <option value="audit">audit</option>
+              <option value="dedup">dedup</option>
+              <option value="photos">photos</option>
+              <option value="image-extract">image-extract</option>
+              <option value="ops">ops</option>
+            </select>
+          </label>
+          <label>
+            <input type="checkbox" id="filter-archived" />
+            include archived
+          </label>
+          <button id="refresh-btn">refresh</button>
+          <span id="refresh-status" class="dim"></span>
+        </div>
+
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>task_id</th><th>kind</th><th>status</th><th>cli</th>
+              <th>author</th><th>created</th><th>dur</th><th>exit</th>
+            </tr>
+          </thead>
+          <tbody id="task-rows">
+            <tr><td colspan="8" class="dim">loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="detail-view" style="display:none">
+        <a href="#" id="back-to-list" class="back-link" style="margin-bottom:14px;display:inline-block">← back to list</a>
+        <div id="detail-content" class="dim">loading…</div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ API_BASE, API_TOKEN }}>
+  const $ = (id) => document.getElementById(id);
+  const fmt = (s) => (s == null ? '—' : String(s));
+  const fmtTime = (iso) => iso ? new Date(iso).toLocaleString('en-AU', { hour12: false }).replace(',', '') : '—';
+  const fmtDur = (ms) => ms == null ? '—' : ms < 1000 ? `${ms}ms` : `${(ms/1000).toFixed(1)}s`;
+  const escape = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+  function statusPill(s) {
+    return `<span class="pill pill-${s}">${s}</span>`;
+  }
+
+  async function fetchJson(url) {
+    const t0 = Date.now();
+    const r = await fetch(url, {
+      headers: API_TOKEN ? { 'Authorization': `Bearer ${API_TOKEN}` } : {},
+    });
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    const data = await r.json();
+    return { data, ms: Date.now() - t0 };
+  }
+
+  async function loadList() {
+    const status = $('filter-status').value;
+    const kind = $('filter-kind').value;
+    const archived = $('filter-archived').checked ? '1' : '0';
+    const url = `${API_BASE}/api/tasks?status=${encodeURIComponent(status)}&kind=${encodeURIComponent(kind)}&archived=${archived}&limit=100`;
+    $('refresh-status').textContent = 'loading…';
+    try {
+      const { data, ms } = await fetchJson(url);
+      const tasks = [...(data.active || []), ...(data.archived || [])]
+        .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+      const tbody = $('task-rows');
+      if (tasks.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="dim">no tasks match filter</td></tr>';
+      } else {
+        tbody.innerHTML = tasks.map((t) => `
+          <tr class="task-row${t.archived ? ' archived' : ''}" data-id="${escape(t.task_id)}">
+            <td><a href="#${escape(t.task_id)}">${escape(t.task_id)}</a>${t.archived ? ' <span class="dim">(arch)</span>' : ''}</td>
+            <td>${escape(t.kind)}</td>
+            <td>${statusPill(t.status)}</td>
+            <td class="mono">${escape(t.cli || '—')} ${escape((t.args || []).join(' '))}</td>
+            <td>${escape(t.author || '—')}</td>
+            <td class="dim">${fmtTime(t.created_at)}</td>
+            <td>${fmtDur(t.duration_ms)}</td>
+            <td>${t.exit_code == null ? '—' : t.exit_code}</td>
+          </tr>
+        `).join('');
+      }
+      $('refresh-status').textContent = `${tasks.length} task(s) · ${ms}ms · ${data.counts.active} active / ${data.counts.archived} archived`;
+    } catch (err) {
+      $('refresh-status').textContent = `error: ${err.message}`;
+      $('task-rows').innerHTML = `<tr><td colspan="8" class="error">fetch error: ${escape(err.message)}</td></tr>`;
+    }
+  }
+
+  async function loadDetail(taskId) {
+    $('list-view').style.display = 'none';
+    $('detail-view').style.display = 'block';
+    $('page-title').textContent = `Task ${taskId}`;
+    $('page-subtitle').textContent = 'Detail view · all 12 schema fields + progress timeline';
+    $('detail-content').textContent = 'loading…';
+    try {
+      const { data } = await fetchJson(`${API_BASE}/api/tasks/${encodeURIComponent(taskId)}`);
+      const t = data.task;
+      const progressRows = (t.progress || []).map((p) => `
+        <tr>
+          <td class="dim mono">${escape(p.at?.slice(11, 23) || '')}</td>
+          <td class="mono">${escape(p.step)}</td>
+          <td><pre class="progress-detail">${escape(p.detail || '')}</pre></td>
+        </tr>
+      `).join('');
+      const threadId = t.discord?.thread_id || t.source?.thread_id;
+      const threadLink = threadId
+        ? `<a href="https://discord.com/channels/@me/${threadId}" target="_blank">${threadId} ↗</a>`
+        : '—';
+      const entityKey = t.target?.target_entity_key;
+      const entityLink = entityKey
+        ? `<a href="/admin/v2-leads/${entityKey}">${entityKey} ↗</a>`
+        : '—';
+      $('detail-content').innerHTML = `
+        <div class="detail-grid">
+          <div class="kv"><span class="k">task_id</span><span class="v mono">${escape(t.task_id)}</span></div>
+          <div class="kv"><span class="k">kind</span><span class="v">${escape(t.kind)}</span></div>
+          <div class="kv"><span class="k">status</span><span class="v">${statusPill(t.status)}</span></div>
+          <div class="kv"><span class="k">created</span><span class="v dim">${fmtTime(t.created_at)}</span></div>
+          <div class="kv"><span class="k">updated</span><span class="v dim">${fmtTime(t.updated_at)}</span></div>
+          <div class="kv"><span class="k">cli</span><span class="v mono">${escape(t.target?.cli || '—')} ${escape((t.target?.args || []).join(' '))}</span></div>
+          <div class="kv"><span class="k">entity</span><span class="v mono">${entityLink}</span></div>
+          <div class="kv"><span class="k">discord thread</span><span class="v mono">${threadLink}</span></div>
+          <div class="kv"><span class="k">author</span><span class="v">${escape(t.source?.author || '—')}</span></div>
+          <div class="kv"><span class="k">duration</span><span class="v">${fmtDur(t.result?.duration_ms)}</span></div>
+          <div class="kv"><span class="k">exit_code</span><span class="v mono">${t.result?.exit_code == null ? '—' : t.result.exit_code}</span></div>
+          <div class="kv"><span class="k">error</span><span class="v">${escape(t.error || '—')}</span></div>
+        </div>
+
+        <h2>input</h2>
+        <pre class="boxed">${escape(t.input?.text || '')}</pre>
+
+        <h2>progress (${(t.progress || []).length})</h2>
+        <table class="admin-table">
+          <thead><tr><th style="width:10ch">at</th><th style="width:18ch">step</th><th>detail</th></tr></thead>
+          <tbody>${progressRows || '<tr><td colspan="3" class="dim">(empty)</td></tr>'}</tbody>
+        </table>
+      `;
+    } catch (err) {
+      $('detail-content').innerHTML = `<p class="error">${escape(err.message)}</p>`;
+    }
+  }
+
+  function routeFromHash() {
+    const id = window.location.hash.slice(1);
+    if (id) loadDetail(id);
+    else {
+      $('list-view').style.display = 'block';
+      $('detail-view').style.display = 'none';
+      $('page-title').textContent = 'Tasks';
+      $('page-subtitle').textContent = '所有 SOP-0 task · 实时从本机 API 拉取 · Discord forum 是镜像端';
+      loadList();
+    }
+  }
+
+  $('refresh-btn').addEventListener('click', loadList);
+  $('filter-status').addEventListener('change', loadList);
+  $('filter-kind').addEventListener('change', loadList);
+  $('filter-archived').addEventListener('change', loadList);
+  $('back-to-list').addEventListener('click', (e) => { e.preventDefault(); window.location.hash = ''; });
+  window.addEventListener('hashchange', routeFromHash);
+  routeFromHash();
+</script>
+
+<style>
+  .tasks-shell { max-width: 1200px; }
+  .back-link { display:inline-block; padding:6px 12px; border:2px solid var(--pl-line); background:var(--pl-paper); color:var(--pl-ink); text-decoration:none; font-size:12px; box-shadow:3px 3px 0 var(--pl-line); margin-right:6px; }
+  .back-link:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--pl-line); }
+  .filters { display:flex; gap:14px; align-items:center; margin:14px 0 10px; flex-wrap: wrap; }
+  .filters label { font-size: 12px; }
+  .filters select { padding: 4px 8px; border: 1px solid var(--pl-line); background: var(--pl-paper); font-size: 12px; }
+  .filters button { padding: 4px 12px; border: 2px solid var(--pl-line); background: var(--pl-citrus); cursor: pointer; font-size: 12px; box-shadow: 2px 2px 0 var(--pl-line); }
+  .filters button:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--pl-line); }
+  .dim { color: var(--pl-muted); font-size: 11px; }
+  .error { color: var(--pl-coral); }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11.5px; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:2px; font-size:11px; font-weight:600; border: 1px solid var(--pl-line); }
+  .pill-pending { background: color-mix(in srgb, var(--pl-citrus) 35%, var(--pl-paper)); }
+  .pill-running { background: color-mix(in srgb, #4a90e2 25%, var(--pl-paper)); }
+  .pill-done    { background: color-mix(in srgb, #2ecc71 25%, var(--pl-paper)); }
+  .pill-failed  { background: color-mix(in srgb, var(--pl-coral) 30%, var(--pl-paper)); }
+  .pill-human   { background: color-mix(in srgb, #f39c12 35%, var(--pl-paper)); }
+  .task-row.archived td { opacity: 0.6; }
+  .task-row a { color: var(--pl-coral); text-decoration: none; border-bottom: 1px dashed currentColor; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; margin: 14px 0; }
+  .kv { display: flex; gap: 10px; font-size: 13px; padding: 4px 0; border-bottom: 1px dashed var(--pl-line); }
+  .kv .k { color: var(--pl-muted); min-width: 13ch; }
+  .kv .v { word-break: break-all; }
+  .boxed { background: #2A2418; color: #F8F2E5; padding: 10px 14px; border: 2px solid var(--pl-line); box-shadow: 3px 3px 0 var(--pl-line); font-size: 12px; line-height: 1.5; margin: 8px 0 18px; white-space: pre-wrap; }
+  .progress-detail { margin: 0; white-space: pre-wrap; font-size: 11px; max-height: 120px; overflow: auto; }
+</style>
