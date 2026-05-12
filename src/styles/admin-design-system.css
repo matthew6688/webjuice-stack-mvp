@@ -272,14 +272,27 @@
   border-top: none;
 }
 
-/* ─── Table format standard (was SOP-2 scoped, now design-system) ───────── */
+/* ─── Table format standard (was SOP-2 scoped, now design-system) ─────────
+   IMPORTANT: global.css gives .admin-table th `position: sticky; top: 127px`
+   for the single-table leads page. On SOP pages we stack multiple tables in
+   one scroll context, so each table's sticky header parks itself on top of
+   later tables' bodies — visually it looks like a header row appears mid-table.
+   Kill the sticky here for all SOP / scoring pages. */
+.scoring-shell .admin-table,
+.sop-page .admin-table {
+  min-width: 0;          /* global.css forces min-width:1120 for leads layout */
+  table-layout: auto;
+}
 .scoring-shell .admin-table th,
 .sop-page .admin-table th {
+  position: static;
+  top: auto;
   background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper));
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.04em;
   padding: 9px 12px;
+  box-shadow: none;
 }
 .scoring-shell .admin-table td,
 .sop-page .admin-table td {
