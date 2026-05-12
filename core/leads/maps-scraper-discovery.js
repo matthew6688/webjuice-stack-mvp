@@ -104,6 +104,7 @@ export function buildMapsScraperDiscoveryRun({
   query = '',
   niche = '',
   city = '',
+  batchId = '',
   runId = '',
   generatedAt = new Date().toISOString(),
   toolLog = {},
@@ -122,6 +123,7 @@ export function buildMapsScraperDiscoveryRun({
     query,
     niche,
     city,
+    batchId,
     costPolicy: {
       googlePlacesApi: 'not_used_in_discovery',
       emailExtraction: 'disabled',

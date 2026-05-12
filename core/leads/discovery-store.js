@@ -48,10 +48,16 @@ export function defaultDiscoveryStoreRoot() {
 }
 
 export function discoveryEntityKey(lead = {}) {
+  if (lead.entityKey) return safeKey(lead.entityKey);
   const placeId = clean(lead.place_id || lead.placeId);
   if (placeId) return `place_${safeKey(placeId)}`;
   const cid = clean(lead.cid);
   if (cid) return `cid_${safeKey(cid)}`;
+  if (lead.sourceType === 'image_lead') {
+    const name = slugify(lead.name || lead.businessName || 'unknown');
+    const phone = digits(lead.phone);
+    return `image_${safeKey(`${name}_${phone || 'nophone'}`)}`;
+  }
   const domain = hostname(lead.website || lead.websiteUrl);
   if (domain) return `domain_${safeKey(domain)}`;
   const phone = digits(lead.phone);
@@ -375,6 +381,11 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
     websiteDomain: hostname(lead.website || entity.latest?.website || ''),
     phoneDigits: digits(lead.phone || entity.latest?.phone || ''),
   };
+  // G-3: stamp batch_id onto entity if the run was started by pl:pipeline-batch-start.
+  // batch_id (string) groups all leads from the same batch task — used by Hermes
+  // / Discord to filter "what came from batch X" without scanning every entity.
+  // See SOP-1 §5 entity schema.
+  const batchId = clean(lead.batch_id || run.batchId || '');
   entity.latest = {
     ...entity.latest,
     sourceType: lead.sourceType || 'maps_scraper',
@@ -394,7 +405,11 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
     recommendedAction: clean(lead.recommendedAction || entity.latest?.recommendedAction),
     sourceQuery: clean(lead.sourceQuery || run.query || entity.latest?.sourceQuery),
     signals: lead.signals || entity.latest?.signals || {},
+    batch_id: batchId || entity.latest?.batch_id || '',
   };
+  if (batchId) {
+    entity.batches = Array.from(new Set([...(entity.batches || []), batchId])).slice(-20);
+  }
   const nextStatus = statusForLead(lead);
   if (shouldPromoteStatus(entity.status, nextStatus)) {
     entity.status = nextStatus;

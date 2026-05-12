@@ -71,6 +71,7 @@ const run = buildMapsScraperDiscoveryRun({
   query,
   niche: args.niche || '',
   city: args.city || '',
+  batchId: args['batch-id'] || args.batchId || '',
   runId,
   toolLog: {
     tool: 'gosom/google-maps-scraper',
