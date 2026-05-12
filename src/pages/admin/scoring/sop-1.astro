@@ -3,7 +3,24 @@ import Layout from '../../../layouts/AdminLayout.astro';
 ---
 
 <Layout title="SOP-1 · 客户发现 (调研中)" active="scoring">
-  <section class="poster-section admin-section">
+  <section class="poster-section admin-section sop-page">
+    <nav class="sop-tabs sop-tabs--global" aria-label="SOP navigation">
+      <a href="/admin/scoring" class="sop-tab">
+        <span class="sop-tab-id">📊 概览</span>
+        <span class="sop-tab-zh">销售流水线总览</span>
+        <span class="sop-tab-en">Overview</span>
+      </a>
+      <a href="/admin/scoring/sop-1" class="sop-tab sop-tab--active" aria-current="page">
+        <span class="sop-tab-id">🎣 SOP-1</span>
+        <span class="sop-tab-zh">客户发现</span>
+        <span class="sop-tab-en">Intake & Discovery</span>
+      </a>
+      <a href="/admin/scoring/sop-2" class="sop-tab">
+        <span class="sop-tab-id">🔍 SOP-2</span>
+        <span class="sop-tab-zh">筛选 + 审计</span>
+        <span class="sop-tab-en">Screening & Audit</span>
+      </a>
+    </nav>
     <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
@@ -35,25 +52,6 @@ import Layout from '../../../layouts/AdminLayout.astro';
           <span class="micro-note">等 Matthew review<br/>4-step 协议 Step 2</span>
         </div>
       </header>
-
-      <!-- ─── Tab strip ─── -->
-      <nav class="sop-tabs" aria-label="SOP navigation">
-        <a href="/admin/scoring" class="sop-tab">
-          <span class="sop-tab-id">📊 概览</span>
-          <span class="sop-tab-zh">销售流水线总览</span>
-          <span class="sop-tab-en">Overview</span>
-        </a>
-        <a href="/admin/scoring/sop-1" class="sop-tab sop-tab--active" aria-current="page">
-          <span class="sop-tab-id">🎣 SOP-1</span>
-          <span class="sop-tab-zh">客户发现</span>
-          <span class="sop-tab-en">Intake & Discovery</span>
-        </a>
-        <a href="/admin/scoring/sop-2" class="sop-tab">
-          <span class="sop-tab-id">🔍 SOP-2</span>
-          <span class="sop-tab-zh">筛选 + 审计</span>
-          <span class="sop-tab-en">Screening & Audit</span>
-        </a>
-      </nav>
 
       <!-- ─── 4-step SOP 协议进度 (stage-grid pattern, SOP-2 同款) ───────── -->
       <section class="admin-paper-section">

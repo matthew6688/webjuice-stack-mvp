@@ -230,12 +230,25 @@
   letter-spacing: 0;
 }
 
-/* ---------- SOP tab strip (used on all SOP pages) -------------------------- */
+/* ---------- SOP tab strip (used on all SOP pages) --------------------------
+   .sop-tabs (legacy, inside container) and .sop-tabs--global (new, outside
+   container, visually attaches to admin-shell top like folder tabs). */
 .sop-tabs {
   display: flex; gap: 0;
   margin: 18px 0 22px;
   border-bottom: 2px solid var(--pl-line);
 }
+/* When tabs are ABOVE admin-shell (outside container), tabs visually sit
+   on top of the container, active tab "merges" into container top. */
+.sop-tabs--global {
+  margin: 0 0 -2px;
+  border-bottom: none;
+  padding-left: 24px;
+  position: relative;
+  z-index: 2;
+}
+.sop-page .admin-shell { position: relative; z-index: 1; }
+
 .sop-tab {
   display: flex; flex-direction: column; gap: 2px;
   padding: 12px 22px;
@@ -250,6 +263,15 @@
   background: var(--pl-paper); color: var(--pl-ink);
   box-shadow: 3px -3px 0 var(--pl-line);
   transform: translateY(-2px); border-bottom: 2px solid var(--pl-paper);
+}
+/* For outside-container tabs, the active tab visually merges with the
+   admin-shell top (which has its own 2px ink border). */
+.sop-tabs--global .sop-tab--active {
+  background: var(--pl-paper);
+  margin-bottom: -2px;
+  transform: translateY(0);
+  box-shadow: 4px -4px 0 var(--pl-line);
+  border-bottom: 2px solid var(--pl-paper);
 }
 .sop-tab-id { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pl-coral); }
 .sop-tab-zh { font-family: Georgia, "Times New Roman", serif; font-size: 16px; font-weight: 700; line-height: 1.15; }

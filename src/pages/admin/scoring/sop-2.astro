@@ -120,7 +120,24 @@ function chipClass(action) {
 ---
 
 <Layout title="SOP-2 · 线索筛选 + 审计" active="scoring">
-  <section class="poster-section admin-section">
+  <section class="poster-section admin-section sop-page">
+    <nav class="sop-tabs sop-tabs--global" aria-label="SOP navigation">
+      <a href="/admin/scoring" class="sop-tab">
+        <span class="sop-tab-id">📊 概览</span>
+        <span class="sop-tab-zh">销售流水线总览</span>
+        <span class="sop-tab-en">Overview</span>
+      </a>
+      <a href="/admin/scoring/sop-1" class="sop-tab">
+        <span class="sop-tab-id">🎣 SOP-1</span>
+        <span class="sop-tab-zh">客户发现</span>
+        <span class="sop-tab-en">Intake & Discovery</span>
+      </a>
+      <a href="/admin/scoring/sop-2" class="sop-tab sop-tab--active" aria-current="page">
+        <span class="sop-tab-id">🔍 SOP-2</span>
+        <span class="sop-tab-zh">筛选 + 审计</span>
+        <span class="sop-tab-en">Screening & Audit</span>
+      </a>
+    </nav>
     <div class="admin-shell lead-admin-shell scoring-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
@@ -152,24 +169,6 @@ function chipClass(action) {
       </header>
 
       <!-- ─── SOP tab strip ──────────────────────────────────────────────── -->
-      <nav class="sop-tabs" aria-label="SOP navigation">
-        <a href="/admin/scoring" class="sop-tab">
-          <span class="sop-tab-id">📊 概览</span>
-          <span class="sop-tab-zh">销售流水线总览</span>
-          <span class="sop-tab-en">Overview</span>
-        </a>
-        <a href="/admin/scoring/sop-1" class="sop-tab">
-          <span class="sop-tab-id">🎣 SOP-1</span>
-          <span class="sop-tab-zh">客户发现</span>
-          <span class="sop-tab-en">Intake & Discovery</span>
-        </a>
-        <a href="/admin/scoring/sop-2" class="sop-tab sop-tab--active" aria-current="page">
-          <span class="sop-tab-id">🔍 SOP-2</span>
-          <span class="sop-tab-zh">筛选 + 审计</span>
-          <span class="sop-tab-en">Screening & Audit</span>
-        </a>
-      </nav>
-
       <div class="sop2-banner">
         <div class="sop2-banner-icon">⚠</div>
         <div class="sop2-banner-body">
