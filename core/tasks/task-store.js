@@ -155,10 +155,36 @@ export function createTask(spec) {
   return task;
 }
 
+/**
+ * Read a task by id. Scans active dir first, then walks `_archive/` recursively
+ * as a fallback. This lets `transitionStatus(archivedTaskId, ...)` work: the
+ * task is read from archive, then written to active dir (effectively
+ * "promoting" the task back to active when an operator retries via reaction).
+ *
+ * Returns null if task_id not found anywhere.
+ */
 export function readTask(taskId) {
-  const filePath = pathFor(taskId);
-  if (!fs.existsSync(filePath)) return null;
-  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const active = pathFor(taskId);
+  if (fs.existsSync(active)) {
+    return JSON.parse(fs.readFileSync(active, 'utf8'));
+  }
+  // Walk archive (last 6 months only — older = not retried anymore)
+  const archive = path.join(TASKS_DIR, '_archive');
+  if (!fs.existsSync(archive)) return null;
+  const stack = [archive];
+  while (stack.length) {
+    const dir = stack.pop();
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { continue; }
+    for (const e of entries) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) { stack.push(full); continue; }
+      if (e.name === `${taskId}.json`) {
+        return JSON.parse(fs.readFileSync(full, 'utf8'));
+      }
+    }
+  }
+  return null;
 }
 
 export function writeTask(task) {
