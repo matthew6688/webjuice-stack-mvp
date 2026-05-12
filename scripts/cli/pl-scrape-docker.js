@@ -18,6 +18,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { geocodeCity } from '../../core/leads/geocode.js';
 
 const REPO_ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
 const DOCKER_BASE = 'http://localhost:8080';
@@ -72,6 +73,19 @@ const runDir = path.join(REPO_ROOT, 'data/maps-scraper/runs', runId);
 const webDataDir = path.join(REPO_ROOT, 'data/maps-scraper/webdata');
 const runOutputPath = path.join(runDir, 'results.maps.json');
 
+// gosom (新版本) 要求 jobBody 带 lat/lon · 用 Google Geocoding API 把 city 转坐标
+// 缓存到 data/geocode-cache.json · 同城市永不二次付费
+const allowSkipGeocode = args['skip-geocode'] === true || process.env.SCRAPE_DOCKER_SKIP_GEOCODE === '1';
+let geocoded = null;
+if (!dryRun && !allowSkipGeocode) {
+  try {
+    geocoded = await geocodeCity(city);
+    console.error(`geocode ${city} → ${geocoded.lat},${geocoded.lng} (${geocoded.source}) · ${geocoded.formatted_address}`);
+  } catch (err) {
+    die(`geocoding failed: ${err.message}`);
+  }
+}
+
 const jobBody = {
   name: runId,
   keywords,
@@ -81,6 +95,7 @@ const jobBody = {
   max_time: maxTime,
   fast_mode: true,
   radius: 0,
+  ...(geocoded ? { lat: String(geocoded.lat), lon: String(geocoded.lng) } : {}),
 };
 
 // ---------------------------------------------------------------------------
@@ -192,9 +207,16 @@ async function pollJob(id) {
     const res = await fetch(`${DOCKER_BASE}/api/v1/jobs/${id}`);
     if (res.ok) {
       const j = await res.json();
-      if (j.status === 'ok') {
+      // 2026-05-13 fix: gosom 返回 PascalCase ("Status":"ok") · 不是 "status"
+      // 兼容两种写法 (老版可能是小写)
+      const status = j.Status || j.status;
+      if (status === 'ok') {
         process.stderr.write(' done\n');
         return j;
+      }
+      // 失败状态也提前退出 (避免一直 poll 死任务)
+      if (status === 'failed' || status === 'error') {
+        throw new Error(`gosom job ${id} status=${status} · ${j.Error || j.error || 'no error detail'}`);
       }
     }
     process.stderr.write('.');
