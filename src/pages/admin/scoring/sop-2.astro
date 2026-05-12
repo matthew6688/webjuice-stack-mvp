@@ -1,0 +1,1405 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import { loadCheapAuditConfig } from '../../../../core/scoring/cheap-audit-v2.js';
+import {
+  INVESTMENT_LEVEL_TABLE,
+  PRODUCT_TIER_TABLE,
+  ADDON_TABLE,
+  HARD_SKIP_DEFINITIONS,
+} from '../../../../core/scoring/lead-grading.js';
+
+const config = loadCheapAuditConfig();
+const stage1 = config.stages.stage_1_gbp_triage;
+const stage2 = config.stages.stage_2_site_quick_scan;
+const stage05 = config.stages.stage_0_5_enrichment_gate;
+const totalRules = stage1.rules.length + stage2.rules.length;
+
+// Stage 2 detailed-audit sub-audits (11 modules that run in parallel during
+// run-audit-pipeline `--all-audit-candidates` per lead). See
+// docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md §2 (Stage 2 Step A).
+const detailedAuditSubAudits = [
+  { id: '2a', name: 'site fetch', module: 'core/audit/site-fetch-full.js (Playwright)', tool: 'Playwright headless chromium', tier: 'T0 local', outputs: 'rawHtml + mobileHtml + screenshots/{desktop,mobile}.png' },
+  { id: '2b', name: 'tech_stack', module: 'core/audit/tech-stack-detector.js', tool: 'wapalyzer-style regex', tier: 'T0', outputs: 'tech_stack {platform, frameworks, analytics, pixels}' },
+  { id: '2c', name: 'form_audit', module: 'core/audit/form-audit.js', tool: 'Playwright 真 submit 测试', tier: 'T0', outputs: 'form_audit {submittable, fields, redirect_url}' },
+  { id: '2d', name: 'image_optimization', module: 'core/audit/image-optimization.js', tool: 'rawHtml 解析', tier: 'T0', outputs: 'image_optimization {weights, formats, lazy_load}' },
+  { id: '2e', name: 'trust_signals', module: 'core/audit/trust-signals/index.js', tool: 'rawHtml + heuristics', tier: 'T0', outputs: 'trust_signals {social_proof, certifications, badges}' },
+  { id: '2f', name: 'third_party_weight', module: 'core/audit/third-party-weight.js', tool: 'Playwright request interceptor', tier: 'T0', outputs: 'third_party_weight {blocked_mb, scripts}' },
+  { id: '2g', name: 'sitemap_analysis', module: 'core/audit/sitemap-analyzer.js', tool: 'HTTP fetch /sitemap.xml + /robots.txt', tier: 'T0', outputs: 'sitemap_analysis {total_urls, has_sitemap, has_robots}' },
+  { id: '2h', name: 'ai_geo', module: 'core/audit/ai-geo-checks.js', tool: 'rawHtml + markdown analysis', tier: 'T0', outputs: 'ai_geo {LLMS.txt, JSON-LD, AI-search ready}' },
+  { id: '2i', name: 'pagespeed (PSI)', module: 'core/audit/pagespeed-insights.js', tool: 'Google PSI API (free 25k/day)', tier: 'T2 free', outputs: 'pagespeed {LCP, FCP, CWV, INP, TTFB + Lighthouse mobile+desktop}', critical: true },
+  { id: '2j', name: 'domain_history', module: 'core/audit/domain-history.js', tool: 'WHOIS API', tier: 'T2', outputs: 'domain_history {age_years, registrar, expiry}' },
+  { id: '2k', name: 'activity', module: 'core/audit/activity-audit.js', tool: 'rawHtml + GBP signals', tier: 'T0', outputs: 'activity {last_update, blog_freshness, gbp_post_recency}' },
+];
+
+// 4 Discord channels in V2 lead lifecycle
+const channels = [
+  { id: '#lead-discovery-runs',  zh: '线索发现批次',            stage_zh: '阶段 1：找客户',     channel_id: '1503513633756283070', type: 'forum', unit: '1 个抓取任务 = 1 个 thread',   audience: '你 + AI 监督',  purpose: '看每批"抓 + 筛 + 审"进度',           sop: 'SOP-1 + SOP-2 (本页)' },
+  { id: '#website-leads',        zh: '高质量销售线索',           stage_zh: '阶段 2：销售对话',   channel_id: '1501187038706401290', type: 'forum', unit: '1 个 A/B 级客户 = 1 个 thread',  audience: '销售人员',     purpose: '每个潜在客户单独跟进 + 沟通记录',   sop: 'SOP-3 (待写)' },
+  { id: '#website-projects',     zh: '网站方案 / Demo 制作',     stage_zh: '阶段 3：方案 + Demo', channel_id: '1501945763650080899', type: 'forum', unit: '1 个 demo 制作 = 1 个 thread',   audience: '设计 + 客户',  purpose: '给客户看的新站 demo / 改版 demo 制作', sop: 'SOP-4 (待写)' },
+  { id: '#paid-websites',        zh: '付费客户',                 stage_zh: '阶段 4：成交交付',   channel_id: '1503529874336383137', type: 'forum', unit: '1 个付费客户 = 1 个 thread',     audience: '交付 + 客服',  purpose: '客户付费后的部署 + 长期维护',         sop: 'SOP-5 (待写)' },
+];
+
+// 5 stages of the V2 batch pipeline (中文主导，英文对照代码)
+const stages = [
+  {
+    n: 0, zh: '抓取候选客户', en: 'Discovery', cli: 'pl:scrape-docker (待建 CLI)', cost: '免费（本地 Docker）',
+    desc_zh: '通过本地 gosom Docker 容器从 Google Maps 抓商家列表，写入我们的客户数据库。',
+    desc_en: 'gosom Web API → CSV → upsertDiscoveryRun → entity store',
+    outputs: ['每条线索一个 entity 文件 (entities/<key>.json)', '抓取事件日志 (discovery-events.jsonl)', '队列状态 (queues.json)'],
+    ui_signal: '/admin/v2-queue 漏斗显示新增 N 条',
+  },
+  {
+    n: 0.5, zh: '补充资料', en: 'Enrichment', cli: '自动触发（仅缺联系方式时）', cost: '免费（Tinyfish + DDGS）',
+    desc_zh: '如果某条线索没网站、也没电话，自动跑 5 路并行搜索（FB / IG / LinkedIn / 第三方评价站）找补充信息，然后回到第 1 阶段重判。',
+    desc_en: 'Trigger only for queued_for_enrichment — 5 parallel search routes',
+    outputs: ['fixtures/enrichment/<key>.json'],
+    ui_signal: '（无直接 UI，自动回流到第 1 阶段）',
+    conditional: true,
+  },
+  {
+    n: 1, zh: '初步筛选', en: 'Rescore', cli: 'npm run rescore-v2-cli -- --niche <X>', cost: '免费（本地脚本）',
+    desc_zh: '跑 cheap-audit-v2 算法（19 项规则 + 4 个 hard trigger），把每条线索分成 5 类：值得详细审计 / 起步客户 / 待补料 / 人工判断 / 跳过。这是关键分流点。',
+    desc_en: 'cheap-audit-v2 → 5 action outputs (audit / starter / enrichment / manual / skip)',
+    outputs: ['fixtures/rescore/<niche>-<ts>.json'],
+    ui_signal: '本页"分流结果"部分显示分布',
+  },
+  {
+    n: 2, zh: '详细审计 + 评级 + 出报告', en: 'Audit + Visual + Grade + Reviews + Report', cli: 'npm run leads:run-pipeline -- --all-audit-candidates --with-reviews --refetch', cost: '免费（本地 Playwright + 免费 API + Claude 订阅）',
+    desc_zh: '对每个"值得详细审计"的线索一气呵成跑 5 步：(1) Playwright 抓站 + 11 个子审计；(2) Claude 看截图做视觉审计；(3) 综合打分 + 评级 A/B/C/D；(4) A/B 级自动开 Discord 销售 thread；(5) 生成审计报告 HTML。',
+    desc_en: '11 sub-audits → 6-dim 39-rule scoring → Claude vision → gradeLead → auto Discord thread (A/B) → HTML report',
+    outputs: ['fixtures/detailed-audit/<key>.json', 'fixtures/visual-autoresearch/.../<key>.json', 'fixtures/reviews/<key>.json (仅 A/B)', '客户审计报告 HTML + 证据截图 + 视频', 'entity.grade（评级）+ Discord thread ID（A/B）'],
+    ui_signal: '/admin/v2-leads 显示评级分布 + 每个 A/B 线索的 Discord thread',
+  },
+  {
+    n: 3, zh: '生成销售素材', en: 'Master MD', cli: 'npm run leads:build-master-md -- --all-with-detailed', cost: '免费',
+    desc_zh: '把上一步的所有数据汇总成一份 markdown（master.md），里面有 YAML 头 + 中文销售叙述（评级理由 / 报价档位 / 痛点解读）。这是销售物料的"源真理"，后面的 PDF / 视频 / 客户报告都从这里衍生。',
+    desc_en: 'master.md = source of truth, 下游 HTML/video/slides 都派生于此',
+    outputs: ['clients/<slug>/v2/master.md'],
+    ui_signal: '/admin/v2-leads/[entityKey] 显示 master.md 链接',
+  },
+  {
+    n: 4, zh: '关联收尾', en: 'Entity ↔ Artifact Linkage (F5)', cli: 'pl:entity-link-reports --batch-id <id> (待建 CLI)', cost: '免费',
+    desc_zh: '在 entity 数据里显式写入审计报告路径、master.md 路径、公开 URL、版本号——以后 admin UI 直接读这些字段，不再靠目录名约定推导（避免重命名时关联断裂）。',
+    desc_en: 'Write entity.audit_reports.internal + entity.batch_id',
+    outputs: ['entity.audit_reports.internal {html_path, public_url, master_md, audit_version, built_at}', 'entity.batch_id（本批 ID）'],
+    ui_signal: 'admin 个人线索详情页显示审计版本 + 批次 ID',
+  },
+];
+
+// Investment level chip class
+function levelChipClass(level) {
+  const m = { A: 'chip-mint', B: 'chip-citrus', C: 'chip-sky', D: 'chip-coral' };
+  return m[level] || 'chip-muted';
+}
+function tierChipClass(tier) {
+  const m = { T1: 'chip-mint', T2: 'chip-citrus', T3: 'chip-lilac' };
+  return m[tier] || 'chip-muted';
+}
+
+function fmtRule(rule) {
+  if (rule.deduct_tiers || rule.earn_tiers) {
+    const tiers = rule.deduct_tiers || rule.earn_tiers;
+    return tiers.map((t) => `${t.if} → +${t.earn}`).join(' / ');
+  }
+  if (rule.deduct_if) return `miss → -${rule.max} (max ${rule.max})`;
+  if (rule.earn_if_missing) return `if missing → +${rule.earn_if_missing} redesign_need`;
+  if (rule.earn_if_present) return `if present → +${rule.earn_if_present} redesign_need`;
+  if (rule.earn_if_stale) return `if stale → +${rule.earn_if_stale}`;
+  return `max ${rule.max}`;
+}
+
+function chipClass(action) {
+  const a = String(action || '');
+  if (a === 'audit_candidate') return 'chip-mint';
+  if (a === 'starter_candidate') return 'chip-citrus';
+  if (a === 'manual_review') return 'chip-sky';
+  if (a === 'queued_for_enrichment') return 'chip-lilac';
+  if (a === 'skip') return 'chip-coral';
+  return '';
+}
+---
+
+<Layout title="SOP-2 · 线索筛选 + 审计" active="scoring">
+  <section class="poster-section admin-section">
+    <div class="admin-shell lead-admin-shell scoring-shell" data-ui-version="local-style-2026-05-08">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-2 概览 · 给你看大局</p>
+          <h1>线索筛选 + 审计流程</h1>
+          <p class="zh-en-sub"><span class="zh">Lead Screening &amp; Audit Pipeline</span><span class="dot">·</span><span class="micro">英文是代码里的名字，方便对照</span></p>
+          <p class="lede">从我们抓到的候选客户，到 <strong>可销售的 A/B 级客户进入销售 thread</strong> 的完整流程。<br/>本页是给你看的"大局图"。技术细节、容易忽略的点、决策记录在<strong>详细文档</strong>里。</p>
+          <div class="sop2-doc-link-row">
+            <a href="/admin/scoring/sop-2-doc" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📘</span>
+              <span class="sop2-doc-link-text">
+                <strong>SOP-2 详细文档 / Full SOP-2 doc</strong>
+                <span class="sop2-doc-link-sub">完整流程 · 容易忽略的点 · 决策记录 · ~660 行</span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
+          <p class="meta-line">
+            <span>cheap-audit 配置版本 <code>{config.version}</code></span>
+            <span class="dot">·</span>
+            <span>源文件 <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code></span>
+          </p>
+        </div>
+        <div class="admin-count">
+          <span>Pipeline</span>
+          <strong>5 stages</strong>
+          <span class="micro-note">4 channels · {totalRules} cheap-audit rules · {detailedAuditSubAudits.length} detailed sub-audits</span>
+        </div>
+      </header>
+
+      <!-- ─── SOP tab strip ──────────────────────────────────────────────── -->
+      <nav class="sop-tabs" aria-label="SOP navigation">
+        <a href="/admin/scoring/sop-1" class="sop-tab">
+          <span class="sop-tab-id">SOP-1</span>
+          <span class="sop-tab-zh">客户发现</span>
+          <span class="sop-tab-en">Intake & Discovery</span>
+        </a>
+        <a href="/admin/scoring" class="sop-tab sop-tab--active" aria-current="page">
+          <span class="sop-tab-id">SOP-2</span>
+          <span class="sop-tab-zh">筛选 + 审计</span>
+          <span class="sop-tab-en">Screening & Audit</span>
+        </a>
+      </nav>
+
+      <div class="sop2-banner">
+        <div class="sop2-banner-icon">⚠</div>
+        <div class="sop2-banner-body">
+          <strong>唯一真理来源 / Source of truth</strong>：这个页面（给你看的大局图）和 <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code>（详细文档）一起是 SOP-2 的<strong>唯一权威</strong>。
+          <br/>任何流程改动都必须<strong>同时改这两处</strong>。所有代码、admin 页面、销售物料（master.md）都从这里衍生。
+        </div>
+      </div>
+
+      <div class="philosophy-strip">
+        <p class="eyebrow">设计哲学 · 这套筛选算法为什么这样设计</p>
+        <p>{config.philosophy}</p>
+      </div>
+
+      <!-- ─── 4-Channel Discord Lifecycle ─────────────────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Discord 频道架构 · 4 段生命周期</p>
+            <h2>客户在 Discord 里走的 4 段路 <span class="en-sub">Lead lifecycle: 4 channels</span></h2>
+          </div>
+          <span class="admin-section-count">4 个频道 · 客户级别上升时"毕业"到下一段</span>
+        </div>
+        <p class="section-lede">每段的<strong>节奏</strong>、<strong>受众</strong>、<strong>关注点</strong>都不同，所以分 4 个频道而不是一个。<br/>SOP-2 管的是前两段（发现批次 → 销售线索），以及客户从"批次"<strong>"毕业"</strong>到"个人销售线索"的机制。</p>
+        <div class="channel-flow">
+          {channels.map((c, i) => (
+            <>
+              <div class={`channel-card channel-${i}`}>
+                <div class="channel-stage">{c.stage_zh}</div>
+                <div class="channel-zh">{c.zh}</div>
+                <div class="channel-name"><code>{c.id}</code></div>
+                <div class="channel-unit">{c.unit}</div>
+                <div class="channel-purpose">{c.purpose}</div>
+                <div class="channel-meta">
+                  <span>👁 受众：<strong>{c.audience}</strong></span>
+                  <span>📄 文档：{c.sop}</span>
+                </div>
+              </div>
+              {i < channels.length - 1 && (
+                <div class="channel-arrow">
+                  <span class="channel-arrow-label">
+                    {i === 0 ? '当客户分级 A/B → 自动"毕业"到下一段' : i === 1 ? '客户表示有意，想看具体方案' : '客户付费签约'}
+                  </span>
+                  <span class="channel-arrow-glyph">▼</span>
+                </div>
+              )}
+            </>
+          ))}
+        </div>
+      </section>
+
+      <!-- ─── 5-Stage Pipeline Overview ───────────────────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">SOP-2 完整流水线 · 5 个阶段</p>
+            <h2>从抓取到落地 — 每条线索走完这 5 步 <span class="en-sub">5 stages: scrape → screen → audit → write → link</span></h2>
+          </div>
+          <span class="admin-section-count">{stages.length} 步（含可选的 0.5 补充资料）</span>
+        </div>
+        <p class="section-lede">每个阶段都有：<strong>一句话说做啥</strong> · <strong>命令</strong> · <strong>成本</strong> · <strong>产出文件</strong> · <strong>哪能看到</strong>。<br/>英文名 (Discovery / Rescore...) 是代码里的字段，方便和源代码对照。</p>
+        <div class="stage-grid">
+          {stages.map((s) => (
+            <div class={`stage-card ${s.conditional ? 'stage-conditional' : ''}`}>
+              <div class="stage-num">
+                第 {s.n} 步
+                {s.conditional && <span class="stage-cond-badge">可选</span>}
+              </div>
+              <div class="stage-name">
+                {s.zh}
+                <span class="stage-en">{s.en}</span>
+              </div>
+              <div class="stage-desc">
+                <p class="stage-desc-zh">{s.desc_zh}</p>
+                <p class="stage-desc-en"><span class="lang-tag">EN</span> {s.desc_en}</p>
+              </div>
+              <div class="stage-meta">
+                <div><span class="stage-meta-label">命令 / CLI</span> <code>{s.cli}</code></div>
+                <div><span class="stage-meta-label">成本 / Cost</span> <span class="chip chip-muted">{s.cost}</span></div>
+                <div>
+                  <span class="stage-meta-label">产出 / Output</span>
+                  <ul class="stage-outputs">
+                    {s.outputs.map((o) => <li><code>{o}</code></li>)}
+                  </ul>
+                </div>
+                <div><span class="stage-meta-label">在哪看 / Where</span> {s.ui_signal}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ─── Investment Level × Product Tier Matrix ──────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">销售矩阵 · 决定花多少功夫 + 报多少钱</p>
+            <h2>客户分级 × 报价档位 <span class="en-sub">Investment Level × Product Tier</span></h2>
+          </div>
+          <span class="admin-section-count">4 级 × 3 档 · 价格对齐 profitslocal.com</span>
+        </div>
+        <p class="section-lede">第 2 步审计 + 评级跑完后，每个客户拿到两个标签：<br/>① <strong>客户分级</strong> A/B/C/D —— 我们投多少销售精力<br/>② <strong>报价档位</strong> T1/T2/T3 —— 给客户报什么价。<br/>价格直接对齐 <a href="https://profitslocal.com/" target="_blank" rel="noopener">profitslocal.com 官网</a>，改价时官网为准。</p>
+
+        <h3 class="subhead">① 客户分级 / Investment Level (A · B · C · D)</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Level</th><th>标签</th><th>触发条件</th><th>销售动作</th></tr></thead>
+            <tbody>
+              {INVESTMENT_LEVEL_TABLE.map((lv) => (
+                <tr>
+                  <td><span class={`chip ${levelChipClass(lv.level)}`}>{lv.level}</span></td>
+                  <td><strong>{lv.label}</strong></td>
+                  <td class="rationale">{lv.criteria}</td>
+                  <td class="rationale">{lv.action}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subhead">② 报价档位 / Product Tier (T1 · T2 · T3) — 官网定价</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Tier</th><th>标签</th><th>触发信号</th><th>报价</th><th>包含</th></tr></thead>
+            <tbody>
+              {PRODUCT_TIER_TABLE.map((t) => (
+                <tr>
+                  <td><span class={`chip ${tierChipClass(t.tier)}`}>{t.tier}</span></td>
+                  <td><strong>{t.label}</strong></td>
+                  <td class="rationale">{t.signals}</td>
+                  <td><strong class="price">{t.pricing}</strong></td>
+                  <td class="rationale">{t.includes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subhead">附加项 / Add-on（任何档位可加）</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Add-on</th><th>报价</th><th>适用</th></tr></thead>
+            <tbody>
+              {ADDON_TABLE.map((a) => (
+                <tr>
+                  <td><strong>{a.label}</strong></td>
+                  <td><strong class="price">{a.pricing}</strong></td>
+                  <td class="rationale">{a.applies_to}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="note-line"><strong>价格唯一来源 / Price source of truth</strong>：<a href="https://profitslocal.com/" target="_blank" rel="noopener">profitslocal.com 官网（live）</a> + <code>docs/v2/SCALING_AND_PRICING.md</code>（决策记录）。代码 <code>core/scoring/lead-grading.js</code> 的 PRODUCT_TIER_TABLE 已对齐。<br/><strong>改价格 = 改这 3 处</strong>，并重跑 <code>npm run leads:build-master-md -- --all-with-detailed</code> 让所有客户的销售素材同步。</p>
+      </section>
+
+      <!-- ─── Stage 2 Detailed Audit Sub-Audits ───────────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">第 2 步内部 · 详细审计跑哪些子项目</p>
+            <h2>详细审计的 11 个子项目 <span class="en-sub">Detailed audit · 11 sub-audits in parallel</span></h2>
+          </div>
+          <span class="admin-section-count">{detailedAuditSubAudits.length} 个 · 一次性 Playwright 抓站 + 并行跑</span>
+        </div>
+        <p class="section-lede">每个"值得详细审计"的客户在第 2 步里，Playwright 浏览器访问他的网站一次，<strong>并行</strong>跑下面这 11 个子项目（页面速度 / 表单 / SEO / 域名年龄 / 第三方脚本权重 ...），把所有结果汇总成"审计报告"打分（6 维 × 39 规则）。</p>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Sub</th><th>名称</th><th>模块</th><th>Tool</th><th>Tier</th><th>关键输出字段</th></tr></thead>
+            <tbody>
+              {detailedAuditSubAudits.map((s) => (
+                <tr class={s.critical ? 'sub-critical' : ''}>
+                  <td><code>{s.id}</code>{s.critical && <span class="chip chip-coral">critical</span>}</td>
+                  <td><strong>{s.name}</strong></td>
+                  <td><code>{s.module}</code></td>
+                  <td class="rationale">{s.tool}</td>
+                  <td><span class="chip chip-muted">{s.tier}</span></td>
+                  <td class="rationale"><code>{s.outputs}</code></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="note-line"><strong>⚠ 注意第 2i 项（PageSpeed）</strong>：历史上 <code>PAGESPEED_API_KEY</code> 没配，导致所有客户的 LCP / CWV 都是 0（数据假象）。2026-05-11 已修复。<strong>更多"容易忽略的点"</strong>请看 <a href="/admin/scoring/sop-2-doc">SOP-2 详细文档 § 6</a>。</p>
+      </section>
+
+      <!-- ─── HARD-SKIP Definitions ────────────────────────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">D 级触发条件 · 我们不投入的情况</p>
+            <h2>跳过条件 / Hard-skip rules <span class="en-sub">命中任一条 → 自动标为 D 级，不投销售精力</span></h2>
+          </div>
+          <span class="admin-section-count">{HARD_SKIP_DEFINITIONS.length} 条规则</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>ID</th><th>原因</th></tr></thead>
+            <tbody>
+              {HARD_SKIP_DEFINITIONS.map((h) => (
+                <tr>
+                  <td><code>{h.id}</code></td>
+                  <td class="rationale">{h.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── Cheap-audit-v2 detail (folded, click to expand) ───────────── -->
+      <details class="cheap-audit-fold">
+        <summary class="cheap-audit-fold-summary">
+          <span class="cheap-audit-fold-icon">📐</span>
+          <span class="cheap-audit-fold-text">
+            <strong>第 1 步算法详细规则 / cheap-audit-v2 (折叠)</strong>
+            <span class="cheap-audit-fold-sub">仅算法工程师 / 调阈值时需要看 · 19 规则 + 4 hard trigger + 4 档阈值</span>
+          </span>
+          <span class="cheap-audit-fold-arrow">▾</span>
+        </summary>
+
+      <section class="admin-paper-section flow-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Lead 分流流程</p>
+            <h2>从抓取到决策的完整路径</h2>
+          </div>
+          <span class="admin-section-count">5 个步骤 · 4 个 hard trigger · 4 档阈值</span>
+        </div>
+
+        <div class="flow-grid">
+          <!-- Row 1: ENTRY -->
+          <div class="flow-row">
+            <div class="flow-row-label">入口</div>
+            <div class="flow-entries">
+              <div class="flow-entry">
+                <div class="flow-entry-tag">maps_scraper</div>
+                <div class="flow-entry-desc">Google Maps 抓取（主入口）</div>
+              </div>
+              <div class="flow-entry">
+                <div class="flow-entry-tag">image-discovery</div>
+                <div class="flow-entry-desc">图片识别商家</div>
+              </div>
+              <div class="flow-entry">
+                <div class="flow-entry-tag">manual intake</div>
+                <div class="flow-entry-desc">手工 / 转介绍</div>
+              </div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- Row 2: DISCOVERY STORE -->
+          <div class="flow-step">
+            <div class="flow-step-num">0</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Discovery store</div>
+              <div class="flow-step-desc">data/leads/entities/&lt;entity-key&gt;.json &nbsp;·&nbsp; 去重 + 历史轨迹</div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- Row 3: STAGE 0.5 -->
+          <div class="flow-step flow-step-conditional">
+            <div class="flow-step-num">0.5</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Enrichment-before-skip 门槛</div>
+              <div class="flow-step-desc">联系方式不足 → 5 路 search 强制补全（Tinyfish / DDGS / Doko）→ 回到 Stage 1 重判</div>
+              <div class="flow-step-meta">条件触发 · 仅 thin-contact 走</div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- Row 4: STAGE 1 -->
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Stage 1 · GBP triage <span class="flow-step-badge">always</span></div>
+              <div class="flow-step-desc">9 项规则 · 满分 100 · 仅读 maps payload · T0 零成本</div>
+              <div class="flow-step-out">
+                <span class="flow-out-fail">category 不匹配 → SKIP（hard）</span>
+              </div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- Row 5: BRANCH -->
+          <div class="flow-branch">
+            <div class="flow-branch-label">hasWebsite ?</div>
+            <div class="flow-branch-arrows">
+              <div class="flow-branch-arrow">no</div>
+              <div class="flow-branch-arrow">yes</div>
+            </div>
+            <div class="flow-branch-paths">
+              <div class="flow-step flow-step-no-site">
+                <div class="flow-step-body">
+                  <div class="flow-step-title">无网站路径</div>
+                  <div class="flow-step-desc">联系方式可达 → <span class="chip chip-citrus">starter_candidate</span> · 不跑 Stage 2</div>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-step-num">2</div>
+                <div class="flow-step-body">
+                  <div class="flow-step-title">Stage 2 · Site quick-scan</div>
+                  <div class="flow-step-desc">Tinyfish fetch 首页 → 10 项 redesign 启发式 · 满分 100 · T0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- Row 6: HARD TRIGGERS -->
+          <div class="flow-step flow-step-trigger">
+            <div class="flow-step-num">★</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Hard triggers 检查</div>
+              <div class="flow-step-desc">4 条强制覆盖规则（无网站可达 → starter / HTTP+评论 ≥50 → audit / 评论 ≥100 ★≥4.5 抬升下限 / ...）</div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- Row 7: FINAL DECISION -->
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Final score · 阈值映射</div>
+              <div class="flow-step-desc"><code>final = gbp_quality × 0.4 + redesign_need × 0.6</code></div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- Row 8: OUTCOMES -->
+          <div class="flow-outcomes">
+            <div class="flow-outcome">
+              <span class="chip chip-mint">audit_candidate</span>
+              <div class="flow-outcome-desc">≥ 70 · 进入 Block D 详细 audit</div>
+            </div>
+            <div class="flow-outcome">
+              <span class="chip chip-citrus">starter_candidate</span>
+              <div class="flow-outcome-desc">无网站 + 可达 · 易成交</div>
+            </div>
+            <div class="flow-outcome">
+              <span class="chip chip-sky">manual_review</span>
+              <div class="flow-outcome-desc">30-69 · 等 operator 看</div>
+            </div>
+            <div class="flow-outcome">
+              <span class="chip chip-coral">skip</span>
+              <div class="flow-outcome-desc">&lt; 30 · 不推进</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Stage 0.5</p>
+            <h2>Enrichment-before-skip 门槛</h2>
+          </div>
+        </div>
+        <p class="section-lede">{stage05.description}</p>
+        <div class="rule-grid two">
+          <div class="rule-list">
+            <p class="eyebrow accent-coral">触发 enrichment</p>
+            <ul>
+              {stage05.triggers_enrichment_if.map((t) => <li><code>{t}</code></li>)}
+            </ul>
+          </div>
+          <div class="rule-list">
+            <p class="eyebrow accent-muted">立即 skip</p>
+            <ul>
+              {stage05.skips_immediately_if.map((t) => <li><code>{t}</code></li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Stage 1 · 满分 {stage1.max_score}</p>
+            <h2>GBP triage</h2>
+          </div>
+          <span class="admin-section-count">{stage1.rules.length} 项</span>
+        </div>
+        <p class="section-lede">{stage1.description}</p>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>规则</th><th>检测</th><th>满分</th><th>评分规则</th></tr>
+            </thead>
+            <tbody>
+              {stage1.rules.map((r) => (
+                <tr>
+                  <td>
+                    <code>{r.id}</code>
+                    {r.is_hard_skip && <span class="chip chip-coral">hard-skip</span>}
+                  </td>
+                  <td>{r.check}</td>
+                  <td class="num">{r.max}</td>
+                  <td class="formula">{fmtRule(r)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Stage 2 · 满分 {stage2.max_score}</p>
+            <h2>Website quick scan</h2>
+          </div>
+          <span class="admin-section-count">{stage2.rules.length} 项</span>
+        </div>
+        <p class="section-lede">{stage2.description}</p>
+        <p class="skip-note">⤳ skip when: <code>{stage2.skipped_when}</code></p>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>规则</th><th>检测</th><th>满分</th><th>判定</th><th>意义</th></tr>
+            </thead>
+            <tbody>
+              {stage2.rules.map((r) => (
+                <tr>
+                  <td><code>{r.id}</code></td>
+                  <td>{r.check}</td>
+                  <td class="num">{r.max}</td>
+                  <td class="formula">{fmtRule(r)}</td>
+                  <td class="rationale">{r.rationale}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">最终评分</p>
+            <h2>Final score formula</h2>
+          </div>
+        </div>
+        <p class="formula-line"><code>{config.scoring.formula}</code></p>
+        <p class="rationale-line">{config.scoring.rationale}</p>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Hard triggers</p>
+            <h2>强制覆盖阈值的规则</h2>
+          </div>
+          <span class="admin-section-count">{config.hard_triggers.length} 条</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>触发条件</th><th>强制动作</th><th>原因</th></tr></thead>
+            <tbody>
+              {config.hard_triggers.map((t) => (
+                <tr>
+                  <td><code>{t.if}</code></td>
+                  <td>
+                    <span class={`chip ${chipClass(t.force_action || t.force_action_min)}`}>{t.force_action || t.force_action_min || '—'}</span>
+                    {t.force_action_min && <span class="hint">lift floor</span>}
+                  </td>
+                  <td class="rationale">{t.rationale}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">阈值</p>
+            <h2>Score → action 映射</h2>
+          </div>
+        </div>
+        <div class="threshold-grid">
+          {config.thresholds.map((t) => (
+            <div class="threshold-card">
+              <div class="threshold-min">≥ {t.min}</div>
+              <div class={`chip ${chipClass(t.action)}`}>{t.action}</div>
+              <p>{t.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">No-website 路径</p>
+            <h2>Starter candidate 决策</h2>
+          </div>
+        </div>
+        <p class="section-lede">{config.starter_candidate_path.description}</p>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>条件</th><th>动作</th><th>原因</th></tr></thead>
+            <tbody>
+              {config.starter_candidate_path.decision_rules.map((r) => (
+                <tr>
+                  <td><code>{r.if}</code></td>
+                  <td><span class={`chip ${chipClass(r.action)}`}>{r.action}</span></td>
+                  <td class="rationale">{r.rationale}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">显性化映射</p>
+            <h2>这份算法在哪里可见</h2>
+          </div>
+        </div>
+        <ul class="ui-map">
+          {Object.entries(config.ui_visibility).map((entry) => (
+            <li><code>{entry[0]}</code> → {entry[1]}</li>
+          ))}
+        </ul>
+      </section>
+      </details>
+
+      <!-- ─── Maintenance Protocol ────────────────────────────────────────── -->
+      <section class="admin-paper-section sop2-maintenance">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">维护规则</p>
+            <h2>Source of truth · 改流程 = 改这两处</h2>
+          </div>
+        </div>
+        <div class="maintenance-grid">
+          <div class="maintenance-card">
+            <p class="eyebrow accent-coral">本页 (macro view)</p>
+            <p>给你看的概览。看完知道大局。</p>
+            <code>src/pages/admin/scoring.astro</code>
+          </div>
+          <div class="maintenance-arrow">⇆</div>
+          <div class="maintenance-card">
+            <p class="eyebrow accent-coral">详细文档 (source of truth)</p>
+            <p>给 AI / 工程师 / 新人看的细节。每个步骤、容易忽略的点都在。</p>
+            <a href="/admin/scoring/sop-2-doc" class="maintenance-doc-link">📘 打开 SOP-2 详细文档 →</a>
+            <code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code>
+          </div>
+        </div>
+        <div class="maintenance-rules">
+          <h3 class="subhead">何时更新这两处</h3>
+          <ul class="maintenance-list">
+            <li>加 / 拆 / 重命名 stage → 改本页 + SOP-2 §2 + §10</li>
+            <li>改 CLI 名 / 参数 → 改 SOP-2 §7 + 本页 stages 数组</li>
+            <li>改 cheap-audit-v2 规则 → 自动反映（页面从 config 读）+ SOP-2 §3</li>
+            <li>改 Investment / Tier / Pricing → 改 <code>core/scoring/lead-grading.js</code> + SOP-2 §4 + profitslocal.com homepage 同步</li>
+            <li>改 Discord channel 架构 → 改本页 channels 数组 + SOP-2 §1 + <code>core/admin/settings-index.js</code></li>
+            <li>新发现 gotcha → 加到 SOP-2 §6 容易忽略的点</li>
+          </ul>
+        </div>
+        <div class="related-docs">
+          <h3 class="subhead">相关文档（细节查这些）</h3>
+          <ul class="maintenance-list">
+            <li><code>docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md</code> — 本页详细版（必看）</li>
+            <li><code>docs/v2/SCALING_AND_PRICING.md</code> — Pricing 锁定 + Pages slot 瓶颈</li>
+            <li><code>docs/v2/REPORT_BUILD_OPTIMIZATION.md</code> — Stage 2 性能优化路线</li>
+            <li><code>docs/v2/ENRICHMENT_ROUTING.md</code> — Stage 0.5 enrichment 详情</li>
+            <li><code>docs/v2/AUDIT_REPORT_SCHEMA.md</code> — detailed-audit fixture schema</li>
+            <li><code>docs/v2/V2_UPGRADE_PLAN.md</code> — V2 整体背景</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* most chrome inherited from global local-style-2026-05-08 system */
+  .scoring-shell .admin-header { gap: 18px; }
+  .scoring-shell .admin-header h1 { font-size: 32px; line-height: 1.15; }
+  .scoring-shell .admin-header a { color: var(--pl-coral); text-decoration: none; border-bottom: 1px dashed currentColor; }
+
+  /* ─── Bilingual chrome ─── */
+  .zh-en-sub {
+    display: flex; gap: 10px; align-items: center;
+    margin: 2px 0 10px; font-size: 13px; color: var(--pl-muted);
+  }
+  .zh-en-sub .zh { font-family: Georgia, serif; font-style: italic; }
+  .zh-en-sub .micro { font-size: 11px; }
+  .scoring-shell .lede strong { color: var(--pl-coral); }
+  .en-sub {
+    display: inline-block; margin-left: 8px;
+    font-family: Georgia, serif; font-style: italic;
+    font-size: 13px; font-weight: 400; color: var(--pl-muted);
+    letter-spacing: 0;
+  }
+  .lang-tag {
+    display: inline-block; padding: 1px 6px;
+    background: var(--pl-line); color: var(--pl-cream);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+    border-radius: 2px; margin-right: 4px; vertical-align: middle;
+  }
+  .stage-en {
+    display: block; margin-top: 2px;
+    font-family: Georgia, serif; font-style: italic;
+    font-size: 12px; font-weight: 400; color: var(--pl-muted);
+  }
+  .stage-desc-zh { margin: 0 0 6px; font-size: 14px; line-height: 1.55; color: var(--pl-ink); }
+  .stage-desc-en { margin: 0; font-size: 12px; color: var(--pl-muted); }
+
+  /* ─── SOP tab strip ─── */
+  .sop-tabs {
+    display: flex; gap: 0;
+    margin: 14px 0 22px;
+    border-bottom: 2px solid var(--pl-line);
+  }
+  .sop-tab {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 12px 22px;
+    background: color-mix(in srgb, var(--pl-paper) 50%, transparent);
+    border: 2px solid var(--pl-line);
+    border-bottom: none;
+    margin-right: 6px;
+    margin-bottom: -2px;
+    text-decoration: none;
+    color: var(--pl-muted);
+    min-width: 220px;
+  }
+  .sop-tab:hover {
+    background: color-mix(in srgb, var(--pl-citrus) 12%, var(--pl-paper));
+    color: var(--pl-ink);
+  }
+  .sop-tab--active {
+    background: var(--pl-paper);
+    color: var(--pl-ink);
+    box-shadow: 3px -3px 0 var(--pl-line);
+    transform: translateY(-2px);
+    border-bottom: 2px solid var(--pl-paper);
+  }
+  .sop-tab-id {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--pl-coral);
+  }
+  .sop-tab-zh {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px; font-weight: 700; line-height: 1.15;
+  }
+  .sop-tab-en {
+    font-size: 11px; color: var(--pl-muted);
+    font-style: italic;
+  }
+  .sop-tab--active .sop-tab-zh { color: var(--pl-ink); }
+
+  /* ─── Channel card improvements ─── */
+  .channel-stage {
+    font-size: 11px; font-weight: 700;
+    color: var(--pl-coral);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .channel-zh {
+    font-family: Georgia, serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--pl-ink); margin-top: 4px;
+  }
+
+  /* ─── Cheap-audit divider note ─── */
+  .cheap-audit-divider-note {
+    margin-top: 4px; font-size: 12px; color: var(--pl-muted);
+  }
+  .cheap-audit-divider-note strong { color: var(--pl-coral); }
+
+  /* ─── Folded cheap-audit detail ─── */
+  .cheap-audit-fold {
+    margin: 28px 0 0;
+    border: 2px dashed var(--pl-line);
+    background: color-mix(in srgb, var(--pl-lilac) 8%, var(--pl-paper));
+  }
+  .cheap-audit-fold-summary {
+    display: flex; gap: 14px; align-items: center;
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .cheap-audit-fold-summary::-webkit-details-marker { display: none; }
+  .cheap-audit-fold[open] .cheap-audit-fold-summary {
+    border-bottom: 2px dashed var(--pl-line);
+    margin-bottom: 0;
+  }
+  .cheap-audit-fold-icon { font-size: 22px; line-height: 1; }
+  .cheap-audit-fold-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .cheap-audit-fold-text strong { font-size: 15px; }
+  .cheap-audit-fold-sub { font-size: 11.5px; color: var(--pl-muted); }
+  .cheap-audit-fold-arrow {
+    font-size: 18px; color: var(--pl-coral); font-weight: 800;
+    transition: transform 200ms ease;
+  }
+  .cheap-audit-fold[open] .cheap-audit-fold-arrow { transform: rotate(180deg); }
+  .cheap-audit-fold > section { padding: 4px 18px 14px; }
+
+  /* ─── SOP-2 doc link button (prominent at top) ─── */
+  .sop2-doc-link-row { margin: 10px 0 6px; }
+  .sop2-doc-link-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 18px;
+    border: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper));
+    box-shadow: 4px 4px 0 var(--pl-line);
+    text-decoration: none;
+    color: var(--pl-ink);
+    transition: transform 80ms ease;
+    max-width: 540px;
+  }
+  .sop2-doc-link-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 32%, var(--pl-paper));
+  }
+  .sop2-doc-link-icon { font-size: 22px; line-height: 1; }
+  .sop2-doc-link-text { display: flex; flex-direction: column; gap: 2px; }
+  .sop2-doc-link-text strong { font-size: 15px; font-weight: 700; }
+  .sop2-doc-link-sub { font-size: 11.5px; color: var(--pl-muted); }
+  .sop2-doc-link-arrow { font-size: 18px; font-weight: 700; color: var(--pl-coral); margin-left: auto; }
+
+  /* maintenance section doc link */
+  .maintenance-doc-link {
+    display: inline-block;
+    margin: 8px 0;
+    padding: 8px 14px;
+    border: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-citrus) 18%, var(--pl-paper));
+    box-shadow: 3px 3px 0 var(--pl-line);
+    color: var(--pl-ink);
+    text-decoration: none;
+    font-size: 13px; font-weight: 700;
+  }
+  .maintenance-doc-link:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--pl-line);
+  }
+
+  /* ─── SOP-2 source-of-truth banner ─── */
+  .sop2-banner {
+    display: flex; gap: 14px; align-items: flex-start;
+    border: 2px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-coral) 12%, var(--pl-paper));
+    padding: 14px 16px; margin: 16px 0 8px;
+    box-shadow: 4px 4px 0 var(--pl-line);
+  }
+  .sop2-banner-icon { font-size: 22px; line-height: 1; padding-top: 2px; }
+  .sop2-banner-body { font-size: 14px; line-height: 1.55; color: var(--pl-ink); }
+  .sop2-banner-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 2px; font-size: 12px; }
+
+  /* ─── Channel flow (4-channel lifecycle) ─── */
+  .channel-flow {
+    display: flex; flex-direction: column; align-items: stretch;
+    gap: 0; max-width: 880px; margin: 8px auto 0;
+  }
+  .channel-card {
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+    padding: 14px 18px;
+    box-shadow: 4px 4px 0 var(--pl-line);
+  }
+  .channel-card.channel-0 { background: color-mix(in srgb, var(--pl-sky) 14%, var(--pl-paper)); }
+  .channel-card.channel-1 { background: color-mix(in srgb, var(--pl-mint) 16%, var(--pl-paper)); }
+  .channel-card.channel-2 { background: color-mix(in srgb, var(--pl-citrus) 14%, var(--pl-paper)); }
+  .channel-card.channel-3 { background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper)); }
+  .channel-name { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 15px; font-weight: 800; color: var(--pl-ink); }
+  .channel-unit { font-size: 12px; color: var(--pl-muted); margin-top: 4px; }
+  .channel-purpose { font-size: 14px; margin-top: 8px; color: var(--pl-ink); }
+  .channel-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--pl-muted); }
+  .channel-arrow { text-align: center; padding: 10px 0; color: var(--pl-muted); font-size: 12px; }
+  .channel-arrow-label { display: block; font-style: italic; font-size: 11px; letter-spacing: 0.04em; }
+  .channel-arrow-glyph { display: block; font-size: 16px; line-height: 1; margin-top: 2px; }
+
+  /* ─── Stage cards (5 stages) ─── */
+  .stage-grid {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+    max-width: 1000px; margin: 8px auto 0;
+  }
+  .stage-card {
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+    padding: 14px 18px;
+    box-shadow: 4px 4px 0 var(--pl-line);
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 4px 18px;
+    align-items: start;
+  }
+  .stage-card.stage-conditional {
+    background: color-mix(in srgb, var(--pl-lilac) 14%, var(--pl-paper));
+    border-style: dashed;
+  }
+  .stage-num {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px; font-weight: 700; color: var(--pl-ink);
+    grid-row: 1 / 4;
+  }
+  .stage-cond-badge {
+    display: block; margin-top: 4px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px; color: var(--pl-muted); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .stage-name { font-weight: 700; font-size: 15px; color: var(--pl-ink); }
+  .stage-desc { color: var(--pl-ink); font-size: 13px; line-height: 1.5; }
+  .stage-meta { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; font-size: 12px; color: var(--pl-ink); }
+  .stage-meta-label {
+    display: inline-block; min-width: 76px;
+    font-size: 10px; letter-spacing: 0.08em;
+    color: var(--pl-muted); text-transform: uppercase; font-weight: 600;
+  }
+  .stage-outputs { display: inline-flex; flex-wrap: wrap; gap: 4px 6px; padding: 0; margin: 2px 0 0; list-style: none; }
+  .stage-outputs li code { background: rgba(0,0,0,0.04); padding: 1px 5px; border-radius: 2px; font-size: 11px; }
+
+  /* ─── Subhead ─── */
+  .subhead {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 15px; margin: 18px 0 8px; color: var(--pl-ink); font-weight: 600;
+  }
+  .note-line {
+    margin-top: 12px; padding: 10px 14px;
+    border-left: 3px solid var(--pl-coral);
+    background: color-mix(in srgb, var(--pl-coral) 8%, var(--pl-paper));
+    font-size: 13px; line-height: 1.55;
+  }
+
+  /* ─── Price formatting ─── */
+  .price { color: var(--pl-coral); font-family: Georgia, serif; font-size: 14px; }
+
+  /* ─── Stage 2 critical sub-audit row ─── */
+  tr.sub-critical td { background: color-mix(in srgb, var(--pl-coral) 6%, var(--pl-paper)); }
+  tr.sub-critical .chip-coral { font-size: 10px; margin-left: 6px; }
+
+  /* ─── Cheap-audit divider ─── */
+  .cheap-audit-divider {
+    text-align: center; margin: 26px auto 12px; padding: 10px;
+    border-top: 1px dashed var(--pl-muted);
+    color: var(--pl-muted);
+  }
+  .cheap-audit-divider .eyebrow { font-size: 11px; }
+
+  /* ─── Maintenance section ─── */
+  .sop2-maintenance {
+    background: color-mix(in srgb, var(--pl-lilac) 10%, var(--pl-paper));
+    border: 2px solid var(--pl-line);
+    box-shadow: 4px 4px 0 var(--pl-line);
+  }
+  .maintenance-grid {
+    display: grid; grid-template-columns: 1fr 60px 1fr; gap: 10px;
+    align-items: center; max-width: 760px; margin: 6px auto 16px;
+  }
+  .maintenance-card {
+    border: 2px solid var(--pl-line); padding: 14px 16px;
+    background: var(--pl-paper);
+  }
+  .maintenance-card code { font-size: 12px; display: block; margin-top: 6px; color: var(--pl-coral); }
+  .maintenance-arrow { font-size: 26px; text-align: center; color: var(--pl-coral); font-weight: 800; }
+  .maintenance-list { padding-left: 18px; line-height: 1.7; font-size: 13px; }
+  .maintenance-list code { background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 2px; font-size: 12px; }
+  .related-docs { margin-top: 14px; }
+
+  /* ─── Flow diagram (existing) ─── */
+  .flow-section { background: color-mix(in srgb, white 50%, var(--pl-paper)); }
+  .flow-grid {
+    display: flex; flex-direction: column; align-items: stretch;
+    gap: 0; max-width: 920px; margin: 0 auto;
+    padding: 14px 0 6px;
+  }
+
+  .flow-row { display: flex; flex-direction: column; gap: 8px; }
+  .flow-row-label {
+    font-size: 11px; font-weight: 950;
+    color: var(--pl-muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-align: center;
+  }
+  .flow-entries { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .flow-entry {
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+    padding: 12px 14px;
+    box-shadow: 3px 3px 0 var(--pl-line);
+  }
+  .flow-entry-tag {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px; font-weight: 950;
+    color: var(--pl-coral);
+    margin-bottom: 4px;
+  }
+  .flow-entry-desc { font-size: 12px; font-weight: 800; color: var(--pl-ink); }
+
+  .flow-arrow-row {
+    text-align: center;
+    font-size: 18px; font-weight: 950;
+    color: var(--pl-line);
+    line-height: 1;
+    margin: 10px 0;
+  }
+
+  .flow-step {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+    box-shadow: 4px 4px 0 var(--pl-line);
+  }
+  .flow-step-num {
+    background: var(--pl-line);
+    color: var(--pl-paper);
+    font-family: var(--pl-display);
+    font-size: 28px; font-weight: 950;
+    line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px 0;
+  }
+  .flow-step-body { padding: 14px 18px; }
+  .flow-step-title {
+    font-family: var(--pl-display);
+    font-size: 18px; font-weight: 950;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    color: var(--pl-ink);
+  }
+  .flow-step-title .flow-step-badge {
+    display: inline-block;
+    background: var(--pl-citrus);
+    border: 1.5px solid var(--pl-line);
+    color: var(--pl-ink);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px; font-weight: 950;
+    padding: 1px 6px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .flow-step-desc {
+    font-size: 13px; font-weight: 800;
+    line-height: 1.45;
+    color: var(--pl-ink);
+  }
+  .flow-step-desc code {
+    background: var(--pl-cream);
+    border: 1.5px solid var(--pl-line);
+    padding: 1px 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px; font-weight: 850;
+  }
+  .flow-step-meta {
+    margin-top: 6px;
+    font-size: 11.5px; font-weight: 800;
+    color: var(--pl-muted);
+    font-style: italic;
+  }
+  .flow-step-out {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1.5px dashed rgba(23,25,28,0.18);
+  }
+  .flow-out-fail {
+    display: inline-block;
+    font-size: 11.5px; font-weight: 850;
+    color: var(--pl-coral);
+  }
+
+  .flow-step-conditional .flow-step-num { background: var(--pl-lilac); color: var(--pl-ink); }
+  .flow-step-trigger .flow-step-num { background: var(--pl-coral); color: var(--pl-paper); }
+  .flow-step-no-site .flow-step-num { display: none; }
+  .flow-step-no-site { grid-template-columns: 1fr; }
+  .flow-step-no-site .flow-step-body { padding: 14px 18px; }
+
+  .flow-branch {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 8px;
+  }
+  .flow-branch-label {
+    text-align: center;
+    font-family: var(--pl-display);
+    font-size: 17px; font-weight: 950;
+    padding: 8px 14px;
+    background: var(--pl-citrus);
+    border: 2px solid var(--pl-line);
+    box-shadow: 3px 3px 0 var(--pl-line);
+    width: fit-content; margin: 0 auto;
+  }
+  .flow-branch-arrows {
+    display: grid; grid-template-columns: 1fr 1fr;
+    text-align: center;
+  }
+  .flow-branch-arrow {
+    font-size: 13px; font-weight: 950;
+    color: var(--pl-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: relative;
+    padding-bottom: 22px;
+  }
+  .flow-branch-arrow::after {
+    content: '▼';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    color: var(--pl-line);
+    font-size: 16px;
+  }
+  .flow-branch-paths {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+
+  .flow-outcomes {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+  }
+  .flow-outcome {
+    padding: 14px 14px;
+    border-right: 2px solid var(--pl-line);
+    display: flex; flex-direction: column; gap: 8px; align-items: flex-start;
+  }
+  .flow-outcome:last-child { border-right: 0; }
+  .flow-outcome-desc {
+    font-size: 11.5px; font-weight: 850;
+    color: var(--pl-muted);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 800px) {
+    .flow-entries { grid-template-columns: 1fr; }
+    .flow-branch-paths { grid-template-columns: 1fr; }
+    .flow-outcomes { grid-template-columns: 1fr 1fr; }
+    .flow-outcome { border-right: 0; border-bottom: 2px solid var(--pl-line); }
+    .flow-outcome:nth-child(2n) { border-right: 0; }
+    .flow-outcome:last-child, .flow-outcome:nth-last-child(2) { border-bottom: 0; }
+  }
+  /* ─── end flow ─── */
+
+  .scoring-shell .admin-header .meta-line {
+    margin-top: 14px;
+    color: var(--pl-muted);
+    font-size: 13px; font-weight: 800;
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .scoring-shell .meta-line .dot { color: rgba(23,25,28,0.3); }
+  .scoring-shell .meta-line code {
+    background: var(--pl-paper); border: 1.5px solid var(--pl-line);
+    padding: 1px 8px; font-size: 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 700;
+  }
+  .scoring-shell .admin-count strong {
+    font-family: var(--pl-display);
+    font-size: 44px; line-height: 1; font-weight: 950;
+    margin: 4px 0;
+  }
+  .scoring-shell .admin-count .micro-note {
+    display: block; margin-top: 6px;
+    font-size: 11px; font-weight: 850;
+    color: var(--pl-ink); opacity: 0.7;
+  }
+
+  .philosophy-strip {
+    border-bottom: 2px solid var(--pl-line);
+    background: var(--pl-peach);
+    padding: 18px 30px;
+  }
+  .philosophy-strip p:last-child {
+    margin: 6px 0 0;
+    font-size: 15px; font-weight: 700;
+    line-height: 1.55;
+    max-width: 80ch;
+  }
+
+  .scoring-shell .admin-paper-section {
+    padding: 22px 30px;
+    border-top: 2px solid var(--pl-line);
+  }
+  .scoring-shell .admin-paper-section-head h2 {
+    font-family: var(--pl-display);
+    font-size: clamp(26px, 2.4vw, 38px);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1.1;
+    max-width: none;
+    margin: 4px 0 0;
+  }
+  .section-lede {
+    color: var(--pl-ink);
+    font-weight: 800;
+    margin: 6px 0 16px;
+    max-width: 80ch;
+    line-height: 1.45;
+    font-size: 14.5px;
+  }
+  .skip-note {
+    color: var(--pl-muted);
+    margin: -8px 0 14px;
+    font-weight: 800; font-size: 13px;
+  }
+
+  .scoring-shell .admin-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+  }
+  .scoring-shell .admin-table th {
+    position: static !important;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 11px; font-weight: 950;
+    color: var(--pl-ink);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: color-mix(in srgb, var(--pl-citrus) 55%, var(--pl-paper));
+    border-bottom: 2px solid var(--pl-line);
+    box-shadow: none;
+  }
+  .scoring-shell .admin-table td {
+    padding: 12px 14px;
+    font-size: 13px; font-weight: 700;
+    border-bottom: 1.5px solid rgba(23,25,28,0.12);
+    vertical-align: top;
+  }
+  .scoring-shell .admin-table tr:last-child td { border-bottom: 0; }
+  .scoring-shell .admin-table td.num { font-variant-numeric: tabular-nums; font-weight: 950; }
+  .scoring-shell .admin-table td.formula {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px; color: var(--pl-muted);
+    font-weight: 800;
+  }
+  .scoring-shell .admin-table td.rationale { color: var(--pl-muted); font-weight: 800; }
+  .scoring-shell .admin-table code {
+    background: var(--pl-cream);
+    border: 1.5px solid var(--pl-line);
+    color: var(--pl-ink);
+    padding: 1px 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px; font-weight: 800;
+  }
+
+  .rule-grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .rule-list ul { padding-left: 0; list-style: none; margin: 8px 0 0; }
+  .rule-list li {
+    margin: 8px 0;
+    padding: 10px 14px;
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+    box-shadow: 3px 3px 0 var(--pl-line);
+  }
+  .rule-list li code {
+    background: transparent; border: 0; padding: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px; font-weight: 800;
+  }
+  .accent-coral { color: var(--pl-coral); }
+  .accent-muted { color: var(--pl-muted); }
+
+  /* status chips — sharp corners + 2px line, brand colors for fill */
+  .chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; font-weight: 950;
+    letter-spacing: 0.02em;
+    background: var(--pl-paper);
+    color: var(--pl-ink);
+    border: 2px solid var(--pl-line);
+  }
+  .chip-mint { background: var(--pl-mint); }
+  .chip-citrus { background: var(--pl-citrus); }
+  .chip-coral { background: var(--pl-coral); color: white; }
+  .chip-sky { background: var(--pl-sky); }
+  .chip-lilac { background: var(--pl-lilac); }
+  .hint { color: var(--pl-muted); margin-left: 8px; font-size: 11px; font-weight: 800; }
+
+  .formula-line {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 16px; font-weight: 800;
+    padding: 14px 18px;
+    background: var(--pl-paper);
+    border: 2px solid var(--pl-line);
+    box-shadow: 4px 4px 0 var(--pl-line);
+    display: inline-block;
+  }
+  .formula-line code { background: transparent; border: 0; font-weight: 800; padding: 0; }
+  .rationale-line { color: var(--pl-muted); margin-top: 16px; line-height: 1.55; max-width: 80ch; font-weight: 800; font-size: 13.5px; }
+
+  .threshold-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border: 2px solid var(--pl-line);
+    background: var(--pl-paper);
+  }
+  .threshold-card {
+    padding: 18px 20px;
+    border-right: 2px solid var(--pl-line);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .threshold-card:last-child { border-right: 0; }
+  .threshold-card .threshold-min {
+    font-family: var(--pl-display);
+    font-size: 38px; font-weight: 950;
+    color: var(--pl-ink);
+    line-height: 1;
+  }
+  .threshold-card p { margin: 0; color: var(--pl-muted); font-size: 12.5px; line-height: 1.5; font-weight: 800; }
+
+  .ui-map { padding-left: 0; list-style: none; margin: 0; }
+  .ui-map li {
+    padding: 10px 0;
+    border-bottom: 1.5px dashed rgba(23,25,28,0.18);
+    color: var(--pl-ink);
+    font-size: 13.5px;
+    font-weight: 800;
+  }
+  .ui-map li:last-child { border-bottom: 0; }
+  .ui-map code {
+    background: var(--pl-cream);
+    border: 1.5px solid var(--pl-line);
+    padding: 1px 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px; font-weight: 800;
+  }
+
+  @media (max-width: 900px) {
+    .threshold-grid { grid-template-columns: repeat(2, 1fr); }
+    .threshold-card:nth-child(2n) { border-right: 0; }
+    .threshold-card:nth-child(-n+2) { border-bottom: 2px solid var(--pl-line); }
+    .rule-grid.two { grid-template-columns: 1fr; }
+  }
+</style>
