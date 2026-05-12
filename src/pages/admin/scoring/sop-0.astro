@@ -35,15 +35,15 @@ try {
 } catch {}
 
 const KIND_LABELS = {
-  intake:          { zh: '批量 Maps 抓取',         tone: 'mint',   cli: 'pl:pipeline-batch-start' },
-  'places-intake': { zh: 'Places API 搜索',         tone: 'sky',    cli: 'pl:places-search-intake' },
-  'single-enrich': { zh: '单商家解析',              tone: 'coral',  cli: 'pl:single-enrich' },
-  enrich:          { zh: '联系方式补全',            tone: 'sky',    cli: 'pl:run-enrichment-batch' },
-  audit:           { zh: 'Audit pipeline',          tone: 'lilac',  cli: 'leads:run-pipeline' },
-  dedup:           { zh: '去重检测',                tone: 'citrus', cli: 'pl:dedup-audit' },
-  photos:          { zh: 'Places 照片下载',         tone: 'mint',   cli: 'pl:download-places-photos' },
-  'image-extract': { zh: '图片识别商家',            tone: 'coral',  cli: 'pl:ingest-image' },
-  ops:             { zh: '运维 / 健康检查',        tone: 'muted',  cli: 'ops:health-check' },
+  intake:          { zh: '批量采集',         when: '一次找一批新商家（按城市 + 行业）',           example: '"墨尔本的水电工，找 50 家"',                                  tone: 'mint',   cli: 'pl:pipeline-batch-start' },
+  'places-intake': { zh: 'Google Places 搜索', when: '用 Google 官方接口精准搜（贵但准）',           example: '"悉尼 CBD 的 cafe，要带电话和营业时间"',                       tone: 'sky',    cli: 'pl:places-search-intake' },
+  'single-enrich': { zh: '单条补全',          when: '已经有一家店，要把它信息补齐',                 example: '"这家店的电话、官网、社交媒体帮我查全"',                       tone: 'coral',  cli: 'pl:single-enrich' },
+  enrich:          { zh: '批量补全',          when: '已经在系统里的一批商家，把缺的联系方式补上',   example: '"把上批 30 家没电话的店一次补完"',                            tone: 'sky',    cli: 'pl:run-enrichment-batch' },
+  audit:           { zh: '审计',              when: '对一批商家做网站质量评分 / 出报告',           example: '"对上批 30 家跑一次 audit，按等级排序"',                       tone: 'lilac',  cli: 'leads:run-pipeline' },
+  dedup:           { zh: '去重',              when: '检查有没有重复商家（同电话 / 同官网）',       example: '"看看最近一周有没有重复入库的"',                              tone: 'citrus', cli: 'pl:dedup-audit' },
+  photos:          { zh: '图片抓取',          when: '把 Google 上的店面图下载下来本地存档',         example: '"把这批 20 家的店面图都下载一份"',                            tone: 'mint',   cli: 'pl:download-places-photos' },
+  'image-extract': { zh: '图片识别',          when: '丢张名片 / 店招照片，自动认出商家名',          example: '"这张名片是哪家店？帮我建档"',                                tone: 'coral',  cli: 'pl:ingest-image' },
+  ops:             { zh: '运维',              when: '系统自检 / 健康检查 / 后台维护',              example: '"看看 SOP-0 现在还活着没"',                                   tone: 'muted',  cli: 'ops:health-check' },
 };
 const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit', 'dedup', 'photos', 'image-extract', 'ops'];
 ---
@@ -76,17 +76,17 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
     <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
-          <p class="eyebrow">SOP-0 · 统一入口 + 调度</p>
-          <h1>Task System · 一切活儿的入口</h1>
-          <p class="zh-en-sub"><span>Task System</span>　·　<span class="micro">"Discord 一句话 → 自动跑 → 结果回帖"</span></p>
-          <p class="lede">SOP-0 不<strong>做</strong>业务（业务在 SOP-1..5），它<strong>驱动</strong>业务。任何活儿（文字 / 图 / cron）丢进 Discord forum <code>#website-tasks</code> → 自动路由到对应 SOP 的 CLI → 进度回写同一 thread + admin。</p>
+          <p class="eyebrow">SOP-0 · 统一入口 + 自动调度</p>
+          <h1>任务系统 · 干活的总入口</h1>
+          <p class="zh-en-sub"><span>Task System</span>　·　<span class="micro">"在 Discord 说一句话 → 自动跑 → 结果回到同一条帖子"</span></p>
+          <p class="lede">SOP-0 自己<strong>不做</strong>业务（具体活儿在 SOP-1..5 里），它的工作是：把零散的请求<strong>变成可执行的任务并自动追踪</strong>。在 Discord 论坛 <code>#website-tasks</code> 发一条（文字、图片、定时都行），系统自动判断要干啥、派给对应的程序去跑、进度实时回写。</p>
 
           <div class="sop2-doc-link-row">
             <a href="/admin/scoring/sop-0-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📘</span>
               <span class="sop2-doc-link-text">
                 <strong>SOP-0 详细文档 v1.5</strong>
-                <span class="sop2-doc-link-sub">架构 / 决策 log / env 参考 · <code>docs/SOP_0_TASK_SYSTEM.md</code></span>
+                <span class="sop2-doc-link-sub">完整技术细节 / 架构决策 / 环境变量 · <code>docs/SOP_0_TASK_SYSTEM.md</code></span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
@@ -95,8 +95,8 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
             <a href="/admin/tasks" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📋</span>
               <span class="sop2-doc-link-text">
-                <strong>Task viewer (live)</strong>
-                <span class="sop2-doc-link-sub">实时浏览所有 task · status / kind 过滤</span>
+                <strong>任务列表（实时）</strong>
+                <span class="sop2-doc-link-sub">看每一条任务现在跑到哪一步 · 可按状态 / 类型筛</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
@@ -105,21 +105,22 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
             <a href="/admin/cron" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">⏰</span>
               <span class="sop2-doc-link-text">
-                <strong>Hermes cron viewer</strong>
-                <span class="sop2-doc-link-sub">所有 profile 的 cron job · 改去 Hermes Dashboard</span>
+                <strong>定时任务一览</strong>
+                <span class="sop2-doc-link-sub">所有按时间自动跑的任务（健康检查 / 每日维护 等）· 增删改去 Hermes 后台</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
           </div>
           <div class="admin-note-line">
-            <strong>当前状态</strong> — v1.5 GA · 5 daemon (listener / dispatcher / api / tunnel / retention) · 9 task kinds · <a href="/admin/scoring/sop-0-doc">详细文档</a><br/>
-            <strong>仍待</strong> — task action 按钮 (re-run/abandon UI) · PDF/audio 输入 · vision Tesseract 末端 fallback · CI regression · v2 cloud mirror (Mac-independent).
+            <strong>当前状态</strong> — v1.5 已上线 · 后台 5 个常驻程序（接收 / 派发 / API / 隧道 / 归档）· 9 类任务可识别 · <a href="/admin/scoring/sop-0-doc">详细文档</a><br/>
+            <strong>体检</strong> — 跑 <code>npm run pl:sop0-doctor</code> 一键自检整个系统。<br/>
+            <strong>还没做</strong> — 列表页的"重跑 / 放弃"按钮 · 支持 PDF / 语音输入 · OCR 兜底 · 自动回归测试 · 云端镜像（脱离本机 Mac）。
           </div>
         </div>
         <div class="admin-count">
-          <span>累计 task</span>
+          <span>累计任务</span>
           <strong>{taskCounts.active + taskCounts.archived}</strong>
-          <span class="micro-note">{taskCounts.active} active · {taskCounts.archived} archived</span>
+          <span class="micro-note">{taskCounts.active} 进行中 · {taskCounts.archived} 已归档</span>
         </div>
       </header>
 
@@ -127,28 +128,28 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
       <section class="admin-paper-section flow-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">SOP-0 流程</p>
-            <h2>从 Discord 一句话到 CLI 完成的 5 步</h2>
+            <p class="eyebrow">5 步流程</p>
+            <h2>从一句话请求到结果回帖</h2>
           </div>
-          <span class="admin-section-count">3 入口 · 9 kinds · 5 状态</span>
+          <span class="admin-section-count">3 个入口 · 9 类任务 · 5 种状态</span>
         </div>
 
         <div class="flow-grid">
           <!-- ENTRIES -->
           <div class="flow-row">
-            <div class="flow-row-label">入口</div>
+            <div class="flow-row-label">从哪进来</div>
             <div class="flow-entries">
               <div class="flow-entry">
-                <div class="flow-entry-tag">#website-tasks 论坛</div>
-                <div class="flow-entry-desc">操作员主入口 · 文字 / 图 / 多 query</div>
+                <div class="flow-entry-tag">Discord 论坛 #website-tasks</div>
+                <div class="flow-entry-desc">操作员手动发：文字、图片、批量都行</div>
               </div>
               <div class="flow-entry">
-                <div class="flow-entry-tag">内部 push</div>
-                <div class="flow-entry-desc">thin-contact entity 写入 → 自动 enrich task</div>
+                <div class="flow-entry-tag">系统内部触发</div>
+                <div class="flow-entry-desc">前一步流程发现缺联系方式 → 自动生成补全任务</div>
               </div>
               <div class="flow-entry">
-                <div class="flow-entry-tag">Hermes cron</div>
-                <div class="flow-entry-desc">周期性 ops 任务 (health-check 等)</div>
+                <div class="flow-entry-tag">定时任务</div>
+                <div class="flow-entry-desc">按时间自动跑（健康检查、每日维护等）</div>
               </div>
             </div>
           </div>
@@ -158,9 +159,9 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
           <div class="flow-step">
             <div class="flow-step-num">1</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Listener 接收 <span class="flow-step-badge">always</span></div>
-              <div class="flow-step-desc"><code>pl-task-listener</code> daemon · discord.js gateway · Handoff bot · forum ThreadCreate event</div>
-              <div class="flow-step-meta">图片入口 → 下载附件 + vision LLM fallback chain (qwen3.6 → gemma3) 提取业务字段</div>
+              <div class="flow-step-title">收到请求</div>
+              <div class="flow-step-desc">系统盯着 Discord 论坛，一发新帖就立刻读取内容；如果是图片，先下载并用本地 AI 看图认字提取关键信息。</div>
+              <div class="flow-step-meta">中文："我要墨尔本的水电工 50 家" → 文字进系统</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
@@ -169,9 +170,9 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
           <div class="flow-step">
             <div class="flow-step-num">2</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Intent router 分类 <span class="flow-step-badge">T0 local</span></div>
-              <div class="flow-step-desc">Ollama qwen3.5:9b (本地 LLM) → kind · target_cli · args · confidence</div>
-              <div class="flow-step-meta">Fallback chain: ollama → regex (8-class) · paid CLIs opt-in only via env</div>
+              <div class="flow-step-title">自动判断要干啥</div>
+              <div class="flow-step-desc">用本地 AI（不花钱）判断这条请求属于 9 类任务里的哪一类，并把参数（城市、行业、数量）拆出来。AI 看不懂时退回关键词匹配。</div>
+              <div class="flow-step-meta">→ "这是 intake / 城市=Melbourne / 行业=plumber / 数量=50"</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
@@ -180,9 +181,9 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
           <div class="flow-step">
             <div class="flow-step-num">3</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Task 落盘 + tag</div>
-              <div class="flow-step-desc"><code>data/tasks/&lt;YYYYMMDD-HHMMSS-rand&gt;.json</code> · atomic write · forum tag = [kind, pending]</div>
-              <div class="flow-step-meta">forum thread 立刻收到 "Task created" reply with cli + args</div>
+              <div class="flow-step-title">任务建档</div>
+              <div class="flow-step-desc">把判断结果存成一份任务档案，状态标为"排队中"。Discord 帖子立刻收到一条回复："任务已创建，准备开跑"。</div>
+              <div class="flow-step-meta">每条任务都有唯一 ID，事后随时可查</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
@@ -191,9 +192,9 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
           <div class="flow-step">
             <div class="flow-step-num">4</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Dispatcher claim + spawn</div>
-              <div class="flow-step-desc"><code>pl-task-dispatcher</code> daemon · fs.watch (sub-second) + cron 60s safety · spawn <code>npm run &lt;cli&gt; -- &lt;args&gt;</code></div>
-              <div class="flow-step-meta">flock 单进程 · tryClaim atomic pending → running · auto-inject --entity-key if missing</div>
+              <div class="flow-step-title">派人 / 派程序去做</div>
+              <div class="flow-step-desc">后台调度程序看到"排队中"的任务，立刻启动对应的程序去跑，并把状态切到"处理中"。</div>
+              <div class="flow-step-meta">同一时间只允许一个调度在跑，避免任务被抢两次</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
@@ -202,9 +203,9 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
           <div class="flow-step admin-flow-step--handoff">
             <div class="flow-step-num">5</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">结果回写 + cross-ref</div>
-              <div class="flow-step-desc">stdout tee (5s/2KB) → progress[] live · exit → tag swap [done/failed/human] + thread reply with stdout tail</div>
-              <div class="flow-step-meta">parseLastJson 提取 batch_id / thread_url / audit_chained → "🔗 batch thread:" deeplink in reply</div>
+              <div class="flow-step-title">Discord 实时通知 + 完成 / 求救</div>
+              <div class="flow-step-desc">跑的过程中，每一步的进度都实时回写到 Discord 帖子。跑完 → 状态变"已完成" + 贴结果链接；失败或卡住 → 状态变"等人处理"，操作员点 ✅ 重跑或 ❌ 放弃。</div>
+              <div class="flow-step-meta">下游开了新批次 thread 时，回复里会带 🔗 直达链接</div>
             </div>
           </div>
         </div>
@@ -214,10 +215,10 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">9 个 Task Kind</p>
-            <h2>每个 kind 对应一个 SOP 入口</h2>
+            <p class="eyebrow">9 类任务</p>
+            <h2>系统能自动识别哪些活儿</h2>
           </div>
-          <span class="admin-section-count">7 + 2 (v1.5 新增)</span>
+          <span class="admin-section-count">每一类都对应后台一个具体程序</span>
         </div>
         <div class="admin-card-grid admin-card-grid-3">
           {KIND_ORDER.map((k) => {
@@ -225,10 +226,10 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
             const count = taskCounts.by_kind[k] || 0;
             return (
               <div class={`admin-card admin-card-tinted-${meta.tone}`}>
-                <p class="eyebrow">{k}</p>
-                <p><strong>{meta.zh}</strong></p>
-                <p class="admin-card-meta"><code>{meta.cli}</code></p>
-                <p class="admin-card-meta">已跑 {count} 次</p>
+                <p class="eyebrow">{meta.zh}<span class="micro" style="margin-left:6px;color:var(--pl-muted);font-weight:600">{k}</span></p>
+                <p><strong>{meta.when}</strong></p>
+                <p class="admin-card-meta">例：{meta.example}</p>
+                <p class="admin-card-meta">已跑 {count} 次 · <code>{meta.cli}</code></p>
               </div>
             );
           })}
@@ -239,39 +240,39 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">状态机</p>
-            <h2>5 状态 · 4 个 valid 转换 · Discord tag 同步</h2>
+            <p class="eyebrow">5 种状态</p>
+            <h2>每条任务在哪个阶段 · 你该做什么</h2>
           </div>
         </div>
         <div class="admin-card-grid admin-card-grid-auto">
           <div class="admin-card admin-card-tinted-citrus">
-            <p class="eyebrow">pending</p>
+            <p class="eyebrow">排队中 · pending</p>
             <p><strong>{taskCounts.by_status.pending || 0}</strong> 个</p>
-            <p class="admin-card-meta">task 写入未被 claim · 等 dispatcher</p>
+            <p class="admin-card-meta">已经收到，等系统派人去做。一般几秒就会变成"处理中"，你不用管。</p>
           </div>
           <div class="admin-card admin-card-tinted-sky">
-            <p class="eyebrow">running</p>
+            <p class="eyebrow">处理中 · running</p>
             <p><strong>{taskCounts.by_status.running || 0}</strong> 个</p>
-            <p class="admin-card-meta">dispatcher 正在 spawn 子进程</p>
+            <p class="admin-card-meta">正在跑。Discord 帖子里会实时刷进度。耐心等。</p>
           </div>
           <div class="admin-card admin-card-tinted-mint">
-            <p class="eyebrow">done</p>
+            <p class="eyebrow">已完成 · done</p>
             <p><strong>{taskCounts.by_status.done || 0}</strong> 个</p>
-            <p class="admin-card-meta">CLI exit 0 · 终态</p>
+            <p class="admin-card-meta">跑完了。回帖里有结果链接（批次 thread / 客户档案）。</p>
           </div>
           <div class="admin-card admin-card-tinted-coral">
-            <p class="eyebrow">failed</p>
+            <p class="eyebrow">失败 · failed</p>
             <p><strong>{taskCounts.by_status.failed || 0}</strong> 个</p>
-            <p class="admin-card-meta">CLI exit ≠ 0 · 可通过 ✅ reaction 重跑</p>
+            <p class="admin-card-meta">跑出错了。看回帖里的错误信息；想重跑就在 Discord 上点 ✅。</p>
           </div>
           <div class="admin-card admin-card-tinted-lilac">
-            <p class="eyebrow">human</p>
+            <p class="eyebrow">等人处理 · human</p>
             <p><strong>{taskCounts.by_status.human || 0}</strong> 个</p>
-            <p class="admin-card-meta">router 没辙 / 超时 / image prep 缺字段 · 操作员裁决</p>
+            <p class="admin-card-meta">系统判断不了（图片信息缺、请求看不懂、超时）。需要你看一眼：补全信息后点 ✅ 重跑，或者点 ❌ 放弃。</p>
           </div>
         </div>
         <p class="section-lede" style="margin-top:14px">
-          <strong>转换边</strong>: pending→running (claim) · running→done (exit 0) · running→failed (exit≠0) · running→human (timeout / unknown kind) · human→pending (✅) · human→done (❌). 状态机由 <code>canTransition()</code> 强制 — 非法转换 throw.
+          <strong>怎么转</strong>：排队中 → 处理中（系统派活儿）· 处理中 → 已完成（跑成功）· 处理中 → 失败（程序报错）· 处理中 → 等人处理（看不懂或超时）· 等人处理 → 排队中（你点 ✅ 重跑）· 等人处理 → 已完成（你点 ❌ 放弃归档）。
         </p>
       </section>
 
@@ -279,31 +280,31 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Multi-channel lifecycle</p>
-            <h2>task 触发下游 · 跨 channel 跑</h2>
+            <p class="eyebrow">Discord 频道分工</p>
+            <h2>任务跑完后，结果在哪个频道继续</h2>
           </div>
         </div>
-        <p class="section-lede">SOP-0 task thread ≠ SOP-1 batch thread。SOP-0 自己只 own <code>#website-tasks</code> 这一段。Task 跑的 CLI 在<strong>不同 channel</strong>开新 thread (跨 channel cross-ref 通过 done reply 中的 🔗 deeplink 表达)。</p>
+        <p class="section-lede">SOP-0 只管 <code>#website-tasks</code> 这一段：发请求、收任务 ID、看完成通知。<strong>任务真正的产出（一批客户、一个客户档案）会在别的频道开新 thread</strong>，完成通知里会带 🔗 直达链接。</p>
         <div class="admin-card-grid admin-card-grid-2">
           <div class="admin-card">
-            <p class="eyebrow">SOP-0 own</p>
-            <p><strong><code>#website-tasks</code> (forum)</strong></p>
-            <p class="admin-card-meta">1 task = 1 thread · 你的入口 · 系统确认 + 终止</p>
+            <p class="eyebrow">任务入口（这里）</p>
+            <p><strong><code>#website-tasks</code></strong></p>
+            <p class="admin-card-meta">一条请求 = 一个帖子。系统在这里确认 + 报告完成。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">SOP-1 own</p>
+            <p class="eyebrow">批量采集结果</p>
             <p><strong><code>#lead-discovery-runs</code></strong></p>
-            <p class="admin-card-meta">pl:pipeline-batch-start / pl:places-search-intake 开 batch thread 在这里</p>
+            <p class="admin-card-meta">"采集 50 家"这种批次任务，跑的过程和结果都在这。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">SOP-2/4 own</p>
-            <p><strong><code>#website-leads</code> (forum)</strong></p>
-            <p class="admin-card-meta">grade ≥ B 自动 graduate · 1 客户 = 1 thread</p>
+            <p class="eyebrow">客户档案</p>
+            <p><strong><code>#website-leads</code></strong></p>
+            <p class="admin-card-meta">值得跟进的客户（评级 B 以上）自动开 thread，一家一个。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">SOP-3 (待写) / SOP-5</p>
+            <p class="eyebrow">项目 / 付费客户</p>
             <p><strong><code>#website-projects</code> · <code>#paid-websites</code></strong></p>
-            <p class="admin-card-meta">手动 graduate (兴趣 / 付费)</p>
+            <p class="admin-card-meta">对方有兴趣 / 已付费后，手动搬到这里继续做。</p>
           </div>
         </div>
       </section>
@@ -312,36 +313,36 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">运行时</p>
-            <h2>5 个 launchd daemon</h2>
+            <p class="eyebrow">后台 5 个常驻程序</p>
+            <h2>谁在背后干什么</h2>
           </div>
-          <span class="admin-section-count">macOS launchd · KeepAlive auto-restart</span>
+          <span class="admin-section-count">开机自启 · 挂了自动重启</span>
         </div>
         <div class="admin-card-grid admin-card-grid-3">
           <div class="admin-card">
-            <p class="eyebrow">listener</p>
-            <p><code>ai.profitslocal.task-listener</code></p>
-            <p class="admin-card-meta">discord.js gateway · forum ThreadCreate + reaction events</p>
+            <p class="eyebrow">接收 · listener</p>
+            <p><strong>盯着 Discord 论坛收新帖</strong></p>
+            <p class="admin-card-meta">用户发一条 → 立刻读取内容、下载图片、交给"判断"步骤。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">dispatcher</p>
-            <p><code>ai.profitslocal.task-dispatcher</code></p>
-            <p class="admin-card-meta">fs.watch + 60s tick · spawn CLI · stdout tee · tag PATCH</p>
+            <p class="eyebrow">派发 · dispatcher</p>
+            <p><strong>监听有没有新任务出现</strong></p>
+            <p class="admin-card-meta">看到"排队中"的任务，立刻派对应的程序去跑，过程中把进度回写。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">api</p>
-            <p><code>ai.profitslocal.task-api</code></p>
-            <p class="admin-card-meta">localhost:4040 · GET /api/tasks /entities /intakes /cron · Bearer auth</p>
+            <p class="eyebrow">API · api</p>
+            <p><strong>给 admin 页面提供数据</strong></p>
+            <p class="admin-card-meta">所有 /admin/tasks 和 /admin/cron 页面从这里读任务列表。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">tunnel</p>
-            <p><code>ai.profitslocal.sop0-tunnel</code></p>
-            <p class="admin-card-meta">cloudflared QUIC · <code>tasks.profitslocal.com</code> permanent URL</p>
+            <p class="eyebrow">隧道 · tunnel</p>
+            <p><strong>让外网也能访问本机数据</strong></p>
+            <p class="admin-card-meta">通过 <code>tasks.profitslocal.com</code> 这个固定网址转发，你在别的设备也能查任务。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">retention</p>
-            <p><code>ai.profitslocal.task-retention</code></p>
-            <p class="admin-card-meta">每日 03:00 · done/failed > 30 天 archive 到 _archive/YYYY-MM/</p>
+            <p class="eyebrow">归档 · retention</p>
+            <p><strong>每天凌晨整理老任务</strong></p>
+            <p class="admin-card-meta">超过 30 天的"已完成 / 失败"任务自动搬到归档目录，保持列表干净。</p>
           </div>
         </div>
       </section>
@@ -351,39 +352,39 @@ const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">深入了解</p>
-            <h2>看更多细节 · 跑操作</h2>
+            <h2>看更多细节 · 实际操作</h2>
           </div>
         </div>
         <div class="admin-card-grid admin-card-grid-3">
           <div class="admin-card">
-            <p class="eyebrow">详细文档</p>
+            <p class="eyebrow">详细文档（给工程师看）</p>
             <p><a href="/admin/scoring/sop-0-doc">SOP-0 v1.5 详细文档</a></p>
-            <p class="admin-card-meta">11 节 · 完整决策 log (26 条架构选择 + why-not-X) · env 参考</p>
+            <p class="admin-card-meta">11 节 · 完整架构 / 决策记录 / 环境变量 / 测试矩阵。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">Operator UI</p>
-            <p><a href="/admin/tasks">Task viewer (live)</a> · <a href="/admin/cron">Cron viewer</a></p>
-            <p class="admin-card-meta">实时 Bearer-auth · 跨设备 admin · filter by kind/status</p>
+            <p class="eyebrow">实时查看</p>
+            <p><a href="/admin/tasks">任务列表</a> · <a href="/admin/cron">定时任务</a></p>
+            <p class="admin-card-meta">跨设备能开；按状态 / 类型过滤；点进去看每条任务的进度。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">Operator guide</p>
-            <p><a href="/admin/scoring/sop-0-doc#sop-0-operator-guide">SOP-0 Operator Guide</a></p>
-            <p class="admin-card-meta">7 个 kind 各自怎么触发 / 5 种 troubleshoot / 每周自查</p>
+            <p class="eyebrow">操作员手册</p>
+            <p><a href="/admin/scoring/sop-0-doc#sop-0-operator-guide">操作员手册</a></p>
+            <p class="admin-card-meta">每类任务怎么发 · 出问题怎么排查 · 每周自查清单。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">CLI</p>
-            <p><code>pl:task-listener</code> · <code>pl:task-dispatcher</code> · <code>pl:task-api</code> · <code>pl:task-retention</code></p>
-            <p class="admin-card-meta">前台调试时直接跑 npm run；通常 launchd 接管</p>
+            <p class="eyebrow">健康检查</p>
+            <p><code>npm run pl:sop0-doctor</code></p>
+            <p class="admin-card-meta">一键体检：5 个常驻程序、API、隧道、磁盘用量全跑一遍。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">Test plan</p>
-            <p><a href="/admin/scoring/sop-0-doc#sop-0-test-plan">23 case test matrix</a></p>
-            <p class="admin-card-meta">12+ 已 PASS (含 T22 cross-ref live verified) · 详细 results 见 SOP_0_TEST_RESULTS.md</p>
+            <p class="eyebrow">测试矩阵</p>
+            <p><a href="/admin/scoring/sop-0-doc#sop-0-test-plan">23 项测试清单</a></p>
+            <p class="admin-card-meta">每次大改之后跑一遍，验证没退化。</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">已知 backlog</p>
-            <p>task-action buttons · PDF/audio 输入 · Tesseract OCR · CI regression · v2 cloud mirror</p>
-            <p class="admin-card-meta">见 <a href="/admin/scoring/sop-0-doc">SOP-0 doc §11 TODO</a></p>
+            <p class="eyebrow">还没做</p>
+            <p>列表页"重跑 / 放弃"按钮 · PDF / 语音输入 · OCR 兜底 · 自动回归测试 · 云端镜像。</p>
+            <p class="admin-card-meta">详情见 <a href="/admin/scoring/sop-0-doc">详细文档 §11</a>。</p>
           </div>
         </div>
       </section>

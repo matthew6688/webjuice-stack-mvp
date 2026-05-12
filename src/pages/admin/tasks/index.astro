@@ -11,14 +11,14 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
     <div class="admin-shell tasks-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">SOP-0 · 任务流水线</p>
+          <p class="eyebrow">SOP-0 · 任务列表</p>
           <h1 id="page-title">任务</h1>
-          <p class="lede" id="page-subtitle">实时从本机 API 拉。Discord forum 是 live 端，这页跨设备查历史 + 详情。</p>
+          <p class="lede" id="page-subtitle">所有发到 Discord 的任务都在这。Discord 是干活的现场，这页是跨设备查历史和详情用的。</p>
         </div>
         <div class="admin-count">
           <strong id="count-total">—</strong>
-          <span>Tasks</span>
-          <span class="micro-note" id="count-breakdown">loading…</span>
+          <span>任务总数</span>
+          <span class="micro-note" id="count-breakdown">加载中…</span>
         </div>
       </div>
 
@@ -26,23 +26,23 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
       <div class="v2-attention-strip" id="attention-strip">
         <a class="v2-attention-cell" href="#" data-filter="human">
           <span class="v2-attention-num" id="cnt-human">—</span>
-          <span class="v2-attention-label">human</span>
+          <span class="v2-attention-label">等人处理</span>
         </a>
         <a class="v2-attention-cell" href="#" data-filter="running">
           <span class="v2-attention-num" id="cnt-running">—</span>
-          <span class="v2-attention-label">running</span>
+          <span class="v2-attention-label">处理中</span>
         </a>
         <a class="v2-attention-cell" href="#" data-filter="pending">
           <span class="v2-attention-num" id="cnt-pending">—</span>
-          <span class="v2-attention-label">pending</span>
+          <span class="v2-attention-label">排队中</span>
         </a>
         <a class="v2-attention-cell" href="#" data-filter="failed">
           <span class="v2-attention-num" id="cnt-failed">—</span>
-          <span class="v2-attention-label">failed</span>
+          <span class="v2-attention-label">失败</span>
         </a>
         <a class="v2-attention-cell" href="#" data-filter="done">
           <span class="v2-attention-num" id="cnt-done">—</span>
-          <span class="v2-attention-label">done</span>
+          <span class="v2-attention-label">已完成</span>
         </a>
       </div>
 
@@ -51,34 +51,35 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
         <header class="admin-paper-section-head">
           <h2>所有任务</h2>
           <div class="filters-bar">
-            <label>status
+            <label>状态
               <select id="filter-status">
-                <option value="">all</option>
-                <option value="pending">pending</option>
-                <option value="running">running</option>
-                <option value="done">done</option>
-                <option value="failed">failed</option>
-                <option value="human">human</option>
+                <option value="">全部</option>
+                <option value="pending">排队中</option>
+                <option value="running">处理中</option>
+                <option value="done">已完成</option>
+                <option value="failed">失败</option>
+                <option value="human">等人处理</option>
               </select>
             </label>
-            <label>kind
+            <label>类型
               <select id="filter-kind">
-                <option value="">all</option>
-                <option value="intake">intake</option>
-                <option value="single-enrich">single-enrich</option>
-                <option value="enrich">enrich</option>
-                <option value="audit">audit</option>
-                <option value="dedup">dedup</option>
-                <option value="photos">photos</option>
-                <option value="image-extract">image-extract</option>
-                <option value="ops">ops</option>
+                <option value="">全部</option>
+                <option value="intake">批量采集</option>
+                <option value="places-intake">Google Places 搜索</option>
+                <option value="single-enrich">单条补全</option>
+                <option value="enrich">批量补全</option>
+                <option value="audit">审计</option>
+                <option value="dedup">去重</option>
+                <option value="photos">图片抓取</option>
+                <option value="image-extract">图片识别</option>
+                <option value="ops">运维</option>
               </select>
             </label>
             <label class="filter-toggle">
               <input type="checkbox" id="filter-archived" />
-              include archived
+              包含已归档
             </label>
-            <button class="admin-card-meta-action" id="refresh-btn">refresh</button>
+            <button class="admin-card-meta-action" id="refresh-btn">刷新</button>
             <span id="refresh-status" class="filter-status-line"></span>
           </div>
         </header>
@@ -91,8 +92,8 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
       <!-- detail view -->
       <div id="detail-view" style="display:none">
         <header class="admin-paper-section-head">
-          <h2 id="detail-title">Task</h2>
-          <a href="#" id="back-to-list" class="admin-card-meta-action">← list</a>
+          <h2 id="detail-title">任务</h2>
+          <a href="#" id="back-to-list" class="admin-card-meta-action">← 返回列表</a>
         </header>
         <div id="detail-content">
           <p class="v2-group-empty">loading…</p>
@@ -110,17 +111,35 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
   const ago = (iso) => {
     if (!iso) return '—';
     const sec = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
-    if (sec < 60) return `${sec}s ago`;
-    if (sec < 3600) return `${Math.floor(sec/60)}m ago`;
-    if (sec < 86400) return `${Math.floor(sec/3600)}h ago`;
-    return `${Math.floor(sec/86400)}d ago`;
+    if (sec < 60) return `${sec} 秒前`;
+    if (sec < 3600) return `${Math.floor(sec/60)} 分钟前`;
+    if (sec < 86400) return `${Math.floor(sec/3600)} 小时前`;
+    return `${Math.floor(sec/86400)} 天前`;
   };
 
+  const STATUS_ZH = {
+    pending: '排队中',
+    running: '处理中',
+    done: '已完成',
+    failed: '失败',
+    human: '等人处理',
+  };
+  const KIND_ZH = {
+    intake: '批量采集',
+    'places-intake': 'Google Places 搜索',
+    'single-enrich': '单条补全',
+    enrich: '批量补全',
+    audit: '审计',
+    dedup: '去重',
+    photos: '图片抓取',
+    'image-extract': '图片识别',
+    ops: '运维',
+  };
   function statusChip(s) {
-    return `<span class="chip chip-status-${s}">${s}</span>`;
+    return `<span class="chip chip-status-${s}">${STATUS_ZH[s] || s}</span>`;
   }
   function kindChip(k) {
-    return `<span class="chip chip-kind-${k}">${k}</span>`;
+    return `<span class="chip chip-kind-${k}">${KIND_ZH[k] || k}</span>`;
   }
 
   async function fetchJson(url) {
@@ -140,7 +159,7 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
     const kind = $('filter-kind').value;
     const archived = $('filter-archived').checked ? '1' : '0';
     const url = `${API_BASE}/api/tasks?status=${encodeURIComponent(status)}&kind=${encodeURIComponent(kind)}&archived=${archived}&limit=100`;
-    $('refresh-status').textContent = 'loading…';
+    $('refresh-status').textContent = '加载中…';
     try {
       const { data, ms } = await fetchJson(url);
       const tasks = [...(data.active || []), ...(data.archived || [])]
@@ -148,10 +167,10 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
       cachedTasks = tasks;
       renderList(tasks);
       renderStrip(tasks);
-      $('refresh-status').textContent = `${tasks.length} task(s) · ${ms}ms · ${data.counts.active}/${data.counts.archived} active/archived`;
+      $('refresh-status').textContent = `${tasks.length} 条 · ${ms}ms · 进行中 ${data.counts.active} / 已归档 ${data.counts.archived}`;
     } catch (err) {
-      $('refresh-status').textContent = `error: ${err.message}`;
-      $('task-rows').innerHTML = `<p class="v2-group-empty admin-banner admin-banner-coral">fetch error: ${escape(err.message)}</p>`;
+      $('refresh-status').textContent = `出错: ${err.message}`;
+      $('task-rows').innerHTML = `<p class="v2-group-empty admin-banner admin-banner-coral">读取失败: ${escape(err.message)}</p>`;
     }
   }
 
@@ -164,7 +183,7 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
     $('cnt-failed').textContent = counts.failed;
     $('cnt-done').textContent = counts.done;
     $('count-total').textContent = tasks.length;
-    $('count-breakdown').textContent = `${counts.running}🏃 · ${counts.human}⚠ · ${counts.failed}✗`;
+    $('count-breakdown').textContent = `处理中 ${counts.running} · 等人 ${counts.human} · 失败 ${counts.failed}`;
     // attention tone
     document.querySelectorAll('[data-filter]').forEach((el) => {
       const k = el.dataset.filter;
@@ -178,14 +197,14 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
   function renderList(tasks) {
     const tbody = $('task-rows');
     if (tasks.length === 0) {
-      tbody.innerHTML = '<p class="v2-group-empty">— 无符合 filter 的 task —</p>';
+      tbody.innerHTML = '<p class="v2-group-empty">— 没有符合条件的任务 —</p>';
       return;
     }
     tbody.innerHTML = tasks.map((t) => `
       <div class="v2-row task-row task-row-${t.status}${t.archived ? ' task-row-archived' : ''}">
         <div class="v2-row-main">
           <a class="v2-row-name-link" href="#${escape(t.task_id)}">
-            <h3 class="v2-row-name">${escape(t.task_id)}${t.archived ? ' <span class="chip chip-muted">archived</span>' : ''}</h3>
+            <h3 class="v2-row-name">${escape(t.task_id)}${t.archived ? ' <span class="chip chip-muted">已归档</span>' : ''}</h3>
           </a>
           <div class="v2-row-meta">
             ${kindChip(t.kind)}
@@ -197,16 +216,16 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
         <div class="v2-row-stats">
           <div class="v2-row-stat">
             <span class="v2-row-stat-num">${ago(t.created_at)}</span>
-            <span class="v2-row-stat-label">created</span>
+            <span class="v2-row-stat-label">创建</span>
           </div>
           ${t.duration_ms != null ? `
             <div class="v2-row-stat">
               <span class="v2-row-stat-num">${fmtDur(t.duration_ms)}</span>
-              <span class="v2-row-stat-label">dur · exit ${t.exit_code ?? '—'}</span>
+              <span class="v2-row-stat-label">耗时 · exit ${t.exit_code ?? '—'}</span>
             </div>` : ''}
           <div class="v2-row-stat">
             <span class="v2-row-stat-num">${t.progress_count || 0}</span>
-            <span class="v2-row-stat-label">steps</span>
+            <span class="v2-row-stat-label">步骤</span>
           </div>
         </div>
       </div>
@@ -216,14 +235,14 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
   async function loadDetail(taskId) {
     $('list-view').style.display = 'none';
     $('detail-view').style.display = 'block';
-    $('detail-title').textContent = `Task ${taskId}`;
-    $('detail-content').innerHTML = '<p class="v2-group-empty">loading…</p>';
+    $('detail-title').textContent = `任务 ${taskId}`;
+    $('detail-content').innerHTML = '<p class="v2-group-empty">加载中…</p>';
     try {
       const { data } = await fetchJson(`${API_BASE}/api/tasks/${encodeURIComponent(taskId)}`);
       const t = data.task;
       const threadId = t.discord?.thread_id || t.source?.thread_id;
       const threadLink = threadId
-        ? `<a href="https://discord.com/channels/@me/${threadId}" target="_blank">discord thread ↗</a>`
+        ? `<a href="https://discord.com/channels/@me/${threadId}" target="_blank">Discord 帖子 ↗</a>`
         : '<span class="v2-row-niche">—</span>';
       const entityKey = t.target?.target_entity_key;
       const entityLink = entityKey
@@ -238,38 +257,38 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
       $('detail-content').innerHTML = `
         <div class="admin-card-grid admin-card-grid-2">
           <div class="admin-card">
-            <h3 class="admin-card-title">基本</h3>
+            <h3 class="admin-card-title">基本信息</h3>
             <div class="admin-card-body">
-              <div class="kv"><span class="k">kind</span> ${kindChip(t.kind)}</div>
-              <div class="kv"><span class="k">status</span> ${statusChip(t.status)}</div>
-              <div class="kv"><span class="k">created</span><code>${escape(fmtTime(t.created_at))}</code></div>
-              <div class="kv"><span class="k">updated</span><code>${escape(fmtTime(t.updated_at))}</code></div>
-              <div class="kv"><span class="k">author</span><span>${escape(t.source?.author || '—')}</span></div>
+              <div class="kv"><span class="k">类型</span> ${kindChip(t.kind)}</div>
+              <div class="kv"><span class="k">状态</span> ${statusChip(t.status)}</div>
+              <div class="kv"><span class="k">创建时间</span><code>${escape(fmtTime(t.created_at))}</code></div>
+              <div class="kv"><span class="k">更新时间</span><code>${escape(fmtTime(t.updated_at))}</code></div>
+              <div class="kv"><span class="k">发起人</span><span>${escape(t.source?.author || '—')}</span></div>
             </div>
           </div>
           <div class="admin-card">
-            <h3 class="admin-card-title">执行</h3>
+            <h3 class="admin-card-title">执行情况</h3>
             <div class="admin-card-body">
-              <div class="kv"><span class="k">cli</span><code>${escape(t.target?.cli || '—')}${t.target?.args?.length ? ' ' + escape(t.target.args.join(' ')) : ''}</code></div>
-              <div class="kv"><span class="k">duration</span><span>${fmtDur(t.result?.duration_ms)}</span></div>
-              <div class="kv"><span class="k">exit_code</span><code>${t.result?.exit_code == null ? '—' : t.result.exit_code}</code></div>
-              <div class="kv"><span class="k">entity</span><span>${entityLink}</span></div>
-              <div class="kv"><span class="k">discord</span><span>${threadLink}</span></div>
-              ${t.error ? `<div class="kv"><span class="k">error</span><span class="chip chip-coral">${escape(t.error)}</span></div>` : ''}
+              <div class="kv"><span class="k">运行命令</span><code>${escape(t.target?.cli || '—')}${t.target?.args?.length ? ' ' + escape(t.target.args.join(' ')) : ''}</code></div>
+              <div class="kv"><span class="k">耗时</span><span>${fmtDur(t.result?.duration_ms)}</span></div>
+              <div class="kv"><span class="k">退出码</span><code>${t.result?.exit_code == null ? '—' : t.result.exit_code}</code></div>
+              <div class="kv"><span class="k">关联客户</span><span>${entityLink}</span></div>
+              <div class="kv"><span class="k">Discord</span><span>${threadLink}</span></div>
+              ${t.error ? `<div class="kv"><span class="k">错误</span><span class="chip chip-coral">${escape(t.error)}</span></div>` : ''}
             </div>
           </div>
         </div>
 
-        <header class="admin-paper-section-head"><h2>Input</h2></header>
+        <header class="admin-paper-section-head"><h2>原始请求</h2></header>
         <div class="admin-banner admin-banner-mint">
           <span class="admin-banner-icon">📥</span>
-          <div class="admin-banner-body"><p style="white-space:pre-wrap">${escape(t.input?.text || '(empty)')}</p></div>
+          <div class="admin-banner-body"><p style="white-space:pre-wrap">${escape(t.input?.text || '(空)')}</p></div>
         </div>
 
-        <header class="admin-paper-section-head"><h2>Progress · ${(t.progress || []).length} steps</h2></header>
+        <header class="admin-paper-section-head"><h2>进度 · 共 ${(t.progress || []).length} 步</h2></header>
         <table class="admin-table progress-table">
-          <thead><tr><th style="width:10ch">at</th><th style="width:22ch">step</th><th>detail</th></tr></thead>
-          <tbody>${progressRows || '<tr><td colspan="3" class="v2-group-empty">(empty)</td></tr>'}</tbody>
+          <thead><tr><th style="width:10ch">时间</th><th style="width:22ch">步骤</th><th>详情</th></tr></thead>
+          <tbody>${progressRows || '<tr><td colspan="3" class="v2-group-empty">(无)</td></tr>'}</tbody>
         </table>
       `;
     } catch (err) {

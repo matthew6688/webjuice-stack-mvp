@@ -11,31 +11,31 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
     <div class="admin-shell cron-shell">
       <div class="admin-header">
         <div>
-          <p class="eyebrow">SOP-0 · Hermes cron</p>
-          <h1>Cron Jobs</h1>
-          <p class="lede">读 <code>~/.hermes/profiles/&lt;profile&gt;/cron/jobs.json</code> · 只读视图 · 改去 <a href="http://127.0.0.1:9119" target="_blank">Hermes Dashboard</a></p>
+          <p class="eyebrow">SOP-0 · 定时任务</p>
+          <h1>定时任务一览</h1>
+          <p class="lede">所有按时间自动跑的任务（健康检查、每日维护等）。本页只能看，不能改；增删改去 <a href="http://127.0.0.1:9119" target="_blank">Hermes 后台</a>。</p>
         </div>
         <div class="admin-count">
           <strong id="count-jobs">—</strong>
-          <span>Cron jobs</span>
-          <span class="micro-note" id="count-profiles">loading…</span>
+          <span>定时任务</span>
+          <span class="micro-note" id="count-profiles">加载中…</span>
         </div>
       </div>
 
       <header class="admin-paper-section-head">
-        <h2>所有 cron job</h2>
+        <h2>所有定时任务</h2>
         <span class="filter-status-line" id="refresh-status"></span>
       </header>
 
       <div class="v2-row-list" id="cron-rows">
-        <p class="v2-group-empty">loading…</p>
+        <p class="v2-group-empty">加载中…</p>
       </div>
 
       <div class="admin-banner admin-banner-mint" style="margin-top: 18px">
         <span class="admin-banner-icon">ℹ</span>
         <div class="admin-banner-body">
-          <strong>想 create / pause / delete cron job?</strong>
-          <p>本页是 cross-device 只读观察面。写操作请去 <a href="http://127.0.0.1:9119" target="_blank">Hermes Dashboard</a> 本地 UI 或编辑 <code>~/.hermes/profiles/&lt;profile&gt;/cron/jobs.json</code> 后重启对应 gateway。</p>
+          <strong>想新建 / 暂停 / 删除定时任务？</strong>
+          <p>本页只能看，跨设备查现状用。要改的话，去本机的 <a href="http://127.0.0.1:9119" target="_blank">Hermes 后台</a>操作，或直接编辑 <code>~/.hermes/profiles/&lt;profile&gt;/cron/jobs.json</code> 后重启对应的网关进程。</p>
         </div>
       </div>
     </div>
@@ -48,14 +48,14 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
 
   function fmtSchedule(s) {
     if (!s) return '—';
-    if (s.kind === 'interval') return `every ${s.minutes ?? '?'} min`;
+    if (s.kind === 'interval') return `每 ${s.minutes ?? '?'} 分钟`;
     if (s.kind === 'cron') return `cron ${s.expr || ''}`;
-    if (s.kind === 'daily') return `daily ${s.hour ?? ''}:${String(s.minute || 0).padStart(2,'0')}`;
+    if (s.kind === 'daily') return `每天 ${s.hour ?? ''}:${String(s.minute || 0).padStart(2,'0')}`;
     return JSON.stringify(s).slice(0, 60);
   }
 
   async function loadCron() {
-    $('refresh-status').textContent = 'loading…';
+    $('refresh-status').textContent = '加载中…';
     try {
       const r = await fetch(`${API_BASE}/api/cron`, {
         headers: API_TOKEN ? { 'Authorization': `Bearer ${API_TOKEN}` } : {},
@@ -65,32 +65,32 @@ const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
       const jobs = data.jobs || [];
       const profiles = [...new Set(jobs.map((j) => j.profile))];
       $('count-jobs').textContent = jobs.length;
-      $('count-profiles').textContent = `across ${profiles.length} profile${profiles.length === 1 ? '' : 's'}`;
+      $('count-profiles').textContent = `分布在 ${profiles.length} 个 profile`;
       const rows = $('cron-rows');
       if (jobs.length === 0) {
-        rows.innerHTML = '<p class="v2-group-empty">— 没有 cron job —</p>';
+        rows.innerHTML = '<p class="v2-group-empty">— 还没有定时任务 —</p>';
       } else {
         rows.innerHTML = jobs.map((j) => `
           <div class="v2-row">
             <div class="v2-row-main">
-              <h3 class="v2-row-name">${escape(j.name || '(unnamed)')}</h3>
+              <h3 class="v2-row-name">${escape(j.name || '(未命名)')}</h3>
               <div class="v2-row-meta">
                 <span class="chip chip-mint">${escape(j.profile)}</span>
                 <span class="chip chip-citrus">${escape(fmtSchedule(j.schedule))}</span>
-                <span class="v2-row-niche">id ${escape((j.id || '').slice(0, 10))}</span>
+                <span class="v2-row-niche">ID ${escape((j.id || '').slice(0, 10))}</span>
               </div>
               ${j.prompt ? `<code class="v2-stage-cli cron-prompt">${escape((j.prompt || '').slice(0, 240))}</code>` : ''}
             </div>
             <div class="v2-row-stats">
-              ${j.no_agent ? '<span class="chip chip-muted">no-agent</span>' : ''}
-              ${j.model ? `<div class="v2-row-stat"><span class="v2-row-stat-num">${escape(j.model)}</span><span class="v2-row-stat-label">model</span></div>` : ''}
+              ${j.no_agent ? '<span class="chip chip-muted">无 agent</span>' : ''}
+              ${j.model ? `<div class="v2-row-stat"><span class="v2-row-stat-num">${escape(j.model)}</span><span class="v2-row-stat-label">模型</span></div>` : ''}
             </div>
           </div>
         `).join('');
       }
-      $('refresh-status').textContent = `${jobs.length} job(s)`;
+      $('refresh-status').textContent = `${jobs.length} 条`;
     } catch (err) {
-      $('refresh-status').textContent = `error: ${err.message}`;
+      $('refresh-status').textContent = `出错: ${err.message}`;
       $('cron-rows').innerHTML = `<p class="admin-banner admin-banner-coral">${escape(err.message)}</p>`;
     }
   }
