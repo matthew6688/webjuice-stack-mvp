@@ -175,15 +175,25 @@ async function runTask(taskId) {
   if (!task) { inFlight.delete(taskId); return; }
 
   const cli = task.target?.cli;
-  const args = Array.isArray(task.target?.args) ? task.target.args : [];
+  let args = Array.isArray(task.target?.args) ? task.target.args.slice() : [];
   const timeoutMs = task.target?.timeout_ms || DEFAULT_TIMEOUT_MS;
   const threadId = task.discord?.thread_id || task.source?.thread_id;
+  const entityKey = task.target?.target_entity_key;
 
   if (!cli) {
-    // Already handled by listener — but double-guard here
     log('skip', taskId, '— no target.cli');
     inFlight.delete(taskId);
     return;
+  }
+
+  // Auto-inject --entity-key if task has target_entity_key but args missing it.
+  // Caught during test plan T11 (photos kind): router captured target_entity_key
+  // but LLM didn't echo it into args[]. CLIs that REQUIRE --entity-key:
+  // pl:download-places-photos, leads:run-pipeline. Injecting is idempotent.
+  const KIND_NEEDS_ENTITY_KEY = new Set(['photos', 'audit']);
+  if (entityKey && KIND_NEEDS_ENTITY_KEY.has(task.kind) && !args.includes('--entity-key')) {
+    args = ['--entity-key', entityKey, ...args];
+    log('args.injected', taskId, '+ --entity-key', entityKey);
   }
 
   // Try to claim (atomic pending → running)
