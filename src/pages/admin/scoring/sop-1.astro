@@ -49,17 +49,17 @@ try {
     <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
-          <p class="eyebrow">SOP-1 · 客户发现 + 去重 + 增强</p>
-          <h1>客户发现 / Intake</h1>
-          <p class="zh-en-sub"><span>Intake · Dedup · Enrichment</span>　·　<span class="micro">"我们找进来 + 整理干净 + 联系方式补全"</span></p>
-          <p class="lede">SOP-1 出口承诺给 SOP-2：每个 entity 都 <strong>dedup-clean + enrichment-complete</strong>。 SOP-2 拿到就能直接 audit，不用再做联系方式补全 / 去重判定。</p>
+          <p class="eyebrow">SOP-1 · 把新商家找进来、去重、补联系方式</p>
+          <h1>客户发现 · 把新商家找进来并整理干净</h1>
+          <p class="zh-en-sub"><span>找进来 · 去重 · 补联系方式（Intake · Dedup · Enrichment）</span>　·　<span class="micro">"找一批新店 + 重复的合并掉 + 电话官网都补齐"</span></p>
+          <p class="lede">SOP-1 交给下一站（SOP-2 筛选+审计）的承诺：每家商家都<strong>去过重 + 联系方式补到位</strong>。SOP-2 拿到就能直接做网站审计，不用再帮忙查电话、判重复。</p>
 
           <div class="sop2-doc-link-row">
             <a href="/admin/scoring/sop-1-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📘</span>
               <span class="sop2-doc-link-text">
-                <strong>SOP-1 详细文档 v1.0</strong>
-                <span class="sop2-doc-link-sub">完整技术细节 / gotchas / 工具 · <code>docs/SOP_1_INTAKE_DISCOVERY.md</code></span>
+                <strong>SOP-1 详细文档 v1.0（给工程师看）</strong>
+                <span class="sop2-doc-link-sub">完整技术细节、踩坑记录、工具清单 · <code>docs/SOP_1_INTAKE_DISCOVERY.md</code></span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
@@ -68,8 +68,8 @@ try {
             <a href="/admin/scoring/sop-handoff-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">📑</span>
               <span class="sop2-doc-link-text">
-                <strong>SOP-1 → SOP-2 Handoff Contract</strong>
-                <span class="sop2-doc-link-sub">entity schema 全字段定义 + 必填校验</span>
+                <strong>SOP-1 → SOP-2 交接清单（Handoff Contract）</strong>
+                <span class="sop2-doc-link-sub">交给下一站的商家档案到底要包含哪些字段、哪些必填</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
@@ -78,8 +78,8 @@ try {
             <a href="/admin/scoring/sop-x-dedup-doc" class="sop2-doc-link-btn">
               <span class="sop2-doc-link-icon">🧬</span>
               <span class="sop2-doc-link-text">
-                <strong>Dedup 协议详解 (SOP-X-Dedup)</strong>
-                <span class="sop2-doc-link-sub">3-key 规则 + 合并语义 + operator UI</span>
+                <strong>去重规则详解（SOP-X-Dedup）</strong>
+                <span class="sop2-doc-link-sub">3 个判重信号怎么用、撞库后怎么合并、人工复核界面在哪</span>
               </span>
               <span class="sop2-doc-link-arrow">→</span>
             </a>
@@ -90,27 +90,27 @@ try {
             <span class="dot">·</span>
             <span class="admin-page-updated">最近更新 2026-05-12</span>
             <span class="dot">·</span>
-            <span>4 步 · 2 入口 · enrichment 2 路</span>
+            <span>4 步流程 · 2 个入口 · 补联系方式分 2 条路</span>
           </p>
           <div class="admin-code-sync-banner is-synced">
             <span>✓</span>
             <div>
-              <strong>本页范围</strong>：仅 SOP-1（Discovery + Dedup + Enrichment + Handoff）。audit / grade / thread 归 <a href="/admin/scoring/sop-2">SOP-2</a>；entity schema 全字段归 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；工具计费归 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<br/>
-              <strong>页面 ↔ 代码同步</strong>（C5-Phase-A+B+C 完成 2026-05-12）— SOP-1 出口契约端到端可执行：
-              <code>isThinContact()</code> predicate (<code>core/leads/thin-contact.js</code>) +
-              <code>enrichment_status</code> 字段自动写入 +
-              <code>isEnrichmentReady()</code> queue gate +
-              <code>pl:run-enrichment-batch</code> CLI（real-test 6/6 routes $0 cost）+
-              <code>pl:pipeline-batch-step --finalize</code> auto hook <code>pl:dedup-audit</code> +
-              cheap-audit-v2 layered-fallback 注释。<br/>
-              <strong>仍待</strong> — G-11 scraper fallback chain · G-13 photos→master.md · G-14 opening_hours sales-time · G-6.1 image OCR auto · G-18 Hermes cron register。
+              <strong>这页只讲什么</strong>：只讲 SOP-1（找进来 + 去重 + 补联系方式 + 交接给 SOP-2）。网站审计、商家分级、Discord 开 thread 归 <a href="/admin/scoring/sop-2">SOP-2</a>；商家档案完整字段定义看 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；各种工具的成本/配额看 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<br/>
+              <strong>页面 ↔ 代码已同步</strong>（C5-Phase-A+B+C 完成 2026-05-12）— SOP-1 交接承诺端到端跑通：
+              <code>isThinContact()</code> 判断器（看商家是不是缺联系方式，源码在 <code>core/leads/thin-contact.js</code>）+
+              <code>enrichment_status</code>（补全状态标签）自动写入 +
+              <code>isEnrichmentReady()</code> 排队闸门（决定能不能进 SOP-2 队列）+
+              <code>pl:run-enrichment-batch</code> 命令行工具（实测 6/6 条路都跑通、$0 成本）+
+              <code>pl:pipeline-batch-step --finalize</code> 自动触发 <code>pl:dedup-audit</code>（批次跑完自动去重）+
+              cheap-audit-v2 兜底链注释。<br/>
+              <strong>还没做</strong> — G-11 抓取兜底链路 · G-13 店面图同步到客户档案 · G-14 营业时间用于推销时段判断 · G-6.1 图片自动 OCR 识别 · G-18 把定时任务接到 Hermes 调度。
             </div>
           </div>
         </div>
         <div class="admin-count">
           <span>当前状态</span>
           <strong>✅ v1.0</strong>
-          <span class="micro-note">4 步 pipeline · dedup-clean<br/>enrichment-complete</span>
+          <span class="micro-note">4 步流程已跑通 · 出口商家<br/>全部去过重 + 联系方式补到位</span>
         </div>
       </header>
 
@@ -119,23 +119,23 @@ try {
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">SOP-1 流程</p>
-            <h2>从抓取到 SOP-2 交付的 4 步</h2>
+            <h2>从抓商家到交给 SOP-2，一共 4 步</h2>
           </div>
-          <span class="admin-section-count">2 入口 · 4 步骤 · 1 决策点</span>
+          <span class="admin-section-count">2 个入口 · 4 步 · 1 个分岔判断</span>
         </div>
 
         <div class="flow-grid">
           <!-- ENTRIES -->
           <div class="flow-row">
-            <div class="flow-row-label">入口</div>
+            <div class="flow-row-label">从哪进来</div>
             <div class="flow-entries">
               <div class="flow-entry">
-                <div class="flow-entry-tag">gosom Docker</div>
-                <div class="flow-entry-desc">Google Maps 主流量</div>
+                <div class="flow-entry-tag">用 gosom 抓 Google Maps</div>
+                <div class="flow-entry-desc">主要来源 · 按城市+行业批量找新商家</div>
               </div>
               <div class="flow-entry">
-                <div class="flow-entry-tag">image-lead V2</div>
-                <div class="flow-entry-desc">网上找到名片 / 店面图</div>
+                <div class="flow-entry-tag">图片识别（image-lead V2）</div>
+                <div class="flow-entry-desc">网上找到名片 / 店面照片 → 自动认出商家建档</div>
               </div>
             </div>
           </div>
@@ -145,9 +145,9 @@ try {
           <div class="flow-step">
             <div class="flow-step-num">1</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Discovery 写入 <span class="flow-step-badge">always</span></div>
-              <div class="flow-step-desc"><code>data/leads/entities/&lt;entityKey&gt;.json</code> · normalize 字段 · stamp <code>batch_id</code> + <code>sourceQuery</code></div>
-              <div class="flow-step-meta">place_id 撞库 → 这里自动 <code>mergeLeadIntoEntity</code></div>
+              <div class="flow-step-title">建档：把找到的商家写进系统 <span class="flow-step-badge">每条都跑</span></div>
+              <div class="flow-step-desc">在 <code>data/leads/entities/&lt;entityKey&gt;.json</code> 落一份档案 · 字段格式统一化 · 打上批次号（<code>batch_id</code>）和搜索词（<code>sourceQuery</code>）</div>
+              <div class="flow-step-meta">如果 Google 店铺 ID（<code>place_id</code>）已经入过库 → 直接合并到原档案（<code>mergeLeadIntoEntity</code>）</div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
@@ -156,10 +156,10 @@ try {
           <div class="flow-step">
             <div class="flow-step-num">2</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Dedup 检测 <span class="flow-step-badge">always</span></div>
-              <div class="flow-step-desc">3 把钥匙：<code>place_id</code> · <code>phoneDigits</code> · <code>websiteDomain</code>。phone / domain 撞 → 入 review 队列。</div>
+              <div class="flow-step-title">去重：查有没有重复商家 <span class="flow-step-badge">每条都跑</span></div>
+              <div class="flow-step-desc">3 个判重信号：Google 店铺 ID（<code>place_id</code>）· 电话号（<code>phoneDigits</code>，归一后 10 位）· 官网域名（<code>websiteDomain</code>，去掉 www. 取根域）。电话或域名撞上 → 进人工复核队列。</div>
               <div class="flow-step-out">
-                <span class="flow-out-fail">嫌疑 → <a href="/admin/v2-leads/dedup-review">/admin/v2-leads/dedup-review</a></span>
+                <span class="flow-out-fail">疑似重复 → 去 <a href="/admin/v2-leads/dedup-review">/admin/v2-leads/dedup-review</a> 人工判定</span>
               </div>
             </div>
           </div>
@@ -167,7 +167,7 @@ try {
 
           <!-- DECISION: thin-contact? -->
           <div class="admin-flow-decision-row">
-            <div class="admin-flow-decision-diamond">thin-contact?<br/><span class="admin-flow-decision-sub"><code>!phone && !website</code></span></div>
+            <div class="admin-flow-decision-diamond">缺联系方式吗？<br/><span class="admin-flow-decision-sub">既没电话也没官网（<code>!phone && !website</code>）</span></div>
           </div>
 
           <!-- STEP 3a + 3b -->
@@ -177,9 +177,9 @@ try {
               <div class="flow-step flow-step-conditional">
                 <div class="flow-step-num">3a</div>
                 <div class="flow-step-body">
-                  <div class="flow-step-title">Contact enrichment</div>
-                  <div class="flow-step-desc">5 路 search：官方 URL / FB / IG / LinkedIn / 3rd-party (hipages, yelp, ...)</div>
-                  <div class="flow-step-meta">补 <code>contact_identity</code>。失败 → <code>enrichment_status: 'unenrichable'</code></div>
+                  <div class="flow-step-title">补联系方式：到处搜电话和官网</div>
+                  <div class="flow-step-desc">5 个搜索通道：官网、Facebook、Instagram、LinkedIn、第三方目录（hipages、yelp 等）</div>
+                  <div class="flow-step-meta">把找到的填进 <code>contact_identity</code>（联系方式字段）。都搜不到 → 标成<code>enrichment_status: 'unenrichable'</code>（查不到联系方式）</div>
                 </div>
               </div>
             </div>
@@ -188,9 +188,9 @@ try {
               <div class="flow-step flow-step-conditional">
                 <div class="flow-step-num">3b</div>
                 <div class="flow-step-body">
-                  <div class="flow-step-title">Places enrichment <span class="flow-step-badge">grade ≥ B</span></div>
-                  <div class="flow-step-desc"><code>pl:places-enrich</code> · types[] / photos / E.164 phone / verified hours</div>
-                  <div class="flow-step-meta">月度配额 11K calls hard cap · 见 <a href="/admin/scoring/sop-x-tooling">Tooling §2</a></div>
+                  <div class="flow-step-title">Places 补全：从 Google Places 拿更详细信息 <span class="flow-step-badge">仅评级 B 及以上</span></div>
+                  <div class="flow-step-desc">命令 <code>pl:places-enrich</code> · 拿到行业分类、店面图、国际格式电话（E.164）、官方认证营业时间</div>
+                  <div class="flow-step-meta">每月配额上限 11K 次调用（硬卡死） · 详见 <a href="/admin/scoring/sop-x-tooling">工具计费 §2</a></div>
                 </div>
               </div>
             </div>
@@ -201,9 +201,9 @@ try {
           <div class="flow-step admin-flow-step--handoff">
             <div class="flow-step-num">4</div>
             <div class="flow-step-body">
-              <div class="flow-step-title">Handoff → SOP-2</div>
-              <div class="flow-step-desc"><code>enrichment_status</code> 写入 · entity 落到 <code>queues/cheap-site-audit.json</code> · 等 SOP-2 拉取</div>
-              <div class="flow-step-meta">承诺：dedup-clean + enrichment-complete (或 unenrichable flag)</div>
+              <div class="flow-step-title">交接：把商家送进 SOP-2 队列</div>
+              <div class="flow-step-desc">写入补全状态（<code>enrichment_status</code>） · 商家档案落到 <code>queues/cheap-site-audit.json</code> · 等 SOP-2 来拉取</div>
+              <div class="flow-step-meta">出口承诺：已去过重 + 联系方式补到位（或者明确标了"查不到联系方式"）</div>
             </div>
           </div>
         </div>
@@ -213,44 +213,44 @@ try {
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">SOP-1 → SOP-2 Handoff Payload</p>
-            <h2>这就是 SOP-2 拿到的字段（注释版）</h2>
+            <p class="eyebrow">交给 SOP-2 的商家档案长什么样</p>
+            <h2>SOP-2 拿到的字段（带注释的样本）</h2>
           </div>
-          <span class="admin-section-count">完整 schema 见 Handoff Contract</span>
+          <span class="admin-section-count">完整字段定义见交接清单文档</span>
         </div>
-        <p class="section-lede">这是真实 entity 的样本（节选关键字段）。<strong>每个字段后面注释说明：SOP-1 怎么填 + SOP-2 怎么用</strong>。这是合约本身，不是数据 dump — SOP-2 拿到的就是这套结构。</p>
+        <p class="section-lede">下面是一个真实商家档案的节选（只挑了关键字段）。<strong>每行后面写清：SOP-1 怎么填进去 + SOP-2 拿来干嘛用</strong>。这是双方的约定本身，不是数据导出 — SOP-2 拿到的就是这个结构。</p>
 
         {sampleEntity && (
           <div class="admin-payload-card">
-            <div class="admin-payload-line"><span class="admin-payload-key">entityKey</span><span class="admin-payload-val">"{sampleEntity.entityKey}"</span><span class="admin-payload-note">SOP-1 生成的主键 · SOP-2 用作所有引用</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">entityKey</span><span class="admin-payload-val">"{sampleEntity.entityKey}"</span><span class="admin-payload-note">SOP-1 给商家发的唯一身份证号 · 后续所有引用都用这个</span></div>
 
-            <div class="admin-payload-section">identifiers · 多键匹配（dedup 核心）</div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  place_id</span><span class="admin-payload-val">"{sampleEntity.identifiers?.place_id?.slice(0, 36) || ''}..."</span><span class="admin-payload-note">SOP-1 dedup primary key</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  phoneDigits</span><span class="admin-payload-val">"{sampleEntity.identifiers?.phoneDigits || ''}"</span><span class="admin-payload-note">dedup secondary · 后 10 位归一化</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  websiteDomain</span><span class="admin-payload-val">"{sampleEntity.identifiers?.websiteDomain || ''}"</span><span class="admin-payload-note">dedup secondary · 去 www. + 根域名</span></div>
+            <div class="admin-payload-section">identifiers · 判重用的几个信号</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  place_id</span><span class="admin-payload-val">"{sampleEntity.identifiers?.place_id?.slice(0, 36) || ''}..."</span><span class="admin-payload-note">Google 店铺 ID · 判重首选信号</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  phoneDigits</span><span class="admin-payload-val">"{sampleEntity.identifiers?.phoneDigits || ''}"</span><span class="admin-payload-note">判重次选 · 电话归一化后留最后 10 位</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  websiteDomain</span><span class="admin-payload-val">"{sampleEntity.identifiers?.websiteDomain || ''}"</span><span class="admin-payload-note">判重次选 · 官网去掉 www. 留根域名</span></div>
 
-            <div class="admin-payload-section">latest · SOP-2 主要消费</div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  name</span><span class="admin-payload-val">"{sampleEntity.latest?.name || ''}"</span><span class="admin-payload-note">SOP-2 master.md 标题</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  niche</span><span class="admin-payload-val">"{sampleEntity.latest?.niche || ''}"</span><span class="admin-payload-note">SOP-2 触发 niche-specific 规则</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  city</span><span class="admin-payload-val">"{sampleEntity.latest?.city || ''}"</span><span class="admin-payload-note">SOP-2 评论搜索 / niche-match scoring</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  phone</span><span class="admin-payload-val">"{sampleEntity.latest?.phone || ''}"</span><span class="admin-payload-note">⭐ SOP-1 enrichment 后填或标 unenrichable</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  website</span><span class="admin-payload-val">"{sampleEntity.latest?.website || ''}"</span><span class="admin-payload-note">⭐ 同上 · SOP-2 audit 入口</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  sourceQuery</span><span class="admin-payload-val">"{sampleEntity.latest?.sourceQuery || ''}"</span><span class="admin-payload-note">SOP-1 bridge 强制 = run.query · 追溯 batch</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">  batch_id</span><span class="admin-payload-val">"{sampleEntity.latest?.batch_id || ''}"</span><span class="admin-payload-note">SOP-1 stamp · SOP-2 可 filter 本批</span></div>
+            <div class="admin-payload-section">latest · SOP-2 主要会读的字段</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  name</span><span class="admin-payload-val">"{sampleEntity.latest?.name || ''}"</span><span class="admin-payload-note">SOP-2 客户档案（master.md）的标题</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  niche</span><span class="admin-payload-val">"{sampleEntity.latest?.niche || ''}"</span><span class="admin-payload-note">行业 · SOP-2 根据这个挑专属审计规则</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  city</span><span class="admin-payload-val">"{sampleEntity.latest?.city || ''}"</span><span class="admin-payload-note">城市 · SOP-2 用来搜评论、算行业匹配分</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  phone</span><span class="admin-payload-val">"{sampleEntity.latest?.phone || ''}"</span><span class="admin-payload-note">⭐ SOP-1 补全后填 · 或标"查不到"（unenrichable）</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  website</span><span class="admin-payload-val">"{sampleEntity.latest?.website || ''}"</span><span class="admin-payload-note">⭐ 同上 · 这是 SOP-2 做网站审计的入口</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  sourceQuery</span><span class="admin-payload-val">"{sampleEntity.latest?.sourceQuery || ''}"</span><span class="admin-payload-note">当初的搜索词 · SOP-1 强制 = 批次查询 · 用来追溯</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">  batch_id</span><span class="admin-payload-val">"{sampleEntity.latest?.batch_id || ''}"</span><span class="admin-payload-note">批次号 · SOP-1 打上 · SOP-2 可以按批次过滤</span></div>
 
-            <div class="admin-payload-section">enrichment_status · SOP-1 出口承诺</div>
-            <div class="admin-payload-line"><span class="admin-payload-key">enrichment_status</span><span class="admin-payload-val">"{sampleEntity.enrichment_status || '(待 SOP-1 填; 当前样本属于历史 entity)'}"</span><span class="admin-payload-note">complete / partial / unenrichable</span></div>
+            <div class="admin-payload-section">enrichment_status · SOP-1 出口的核心承诺</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">enrichment_status</span><span class="admin-payload-val">"{sampleEntity.enrichment_status || '(待 SOP-1 填；当前样本是历史商家)'}"</span><span class="admin-payload-note">complete（补到位）/ partial（部分）/ unenrichable（查不到）</span></div>
 
-            <div class="admin-payload-section">SOP-2 写入字段（SOP-1 不读这些）</div>
-            <div class="admin-payload-line"><span class="admin-payload-key">grade</span><span class="admin-payload-val">{sampleEntity.grade ? `{ investment_level: "${sampleEntity.grade.investment_level}", product_tier: "${sampleEntity.grade.product_tier || ''}" }` : 'null'}</span><span class="admin-payload-note">SOP-2 gradeLead 后回填</span></div>
-            <div class="admin-payload-line"><span class="admin-payload-key">discord_thread_id</span><span class="admin-payload-val">"{sampleEntity.discord_thread_id || ''}"</span><span class="admin-payload-note">A/B 自动开 thread 后回填</span></div>
+            <div class="admin-payload-section">SOP-2 回填的字段（SOP-1 不读这些）</div>
+            <div class="admin-payload-line"><span class="admin-payload-key">grade</span><span class="admin-payload-val">{sampleEntity.grade ? `{ investment_level: "${sampleEntity.grade.investment_level}", product_tier: "${sampleEntity.grade.product_tier || ''}" }` : 'null'}</span><span class="admin-payload-note">商家分级 · SOP-2 评完之后写回</span></div>
+            <div class="admin-payload-line"><span class="admin-payload-key">discord_thread_id</span><span class="admin-payload-val">"{sampleEntity.discord_thread_id || ''}"</span><span class="admin-payload-note">Discord 客户档案 thread · 评级 A/B 自动开后写回</span></div>
 
-            <p class="admin-payload-source">↑ 真实 entity 样本：<code>{sampleEntity.entityKey}</code></p>
+            <p class="admin-payload-source">↑ 真实商家样本：<code>{sampleEntity.entityKey}</code></p>
           </div>
         )}
 
         {!sampleEntity && (
-          <p class="admin-note-line">⚠ 当前 entity store 为空，无法渲染样本。完整字段定义见 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff §2</a>。</p>
+          <p class="admin-note-line">⚠ 当前商家档案库为空，渲染不出样本。完整字段定义见 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff §2</a>。</p>
         )}
       </section>
 
@@ -259,24 +259,24 @@ try {
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">深入了解</p>
-            <h2>看更多细节 · 跑操作</h2>
+            <h2>看更多细节 · 实际操作</h2>
           </div>
         </div>
         <div class="admin-card-grid admin-card-grid-3">
           <div class="admin-card">
-            <p class="eyebrow">详细文档</p>
+            <p class="eyebrow">详细文档（给工程师看）</p>
             <p><a href="/admin/scoring/sop-1-doc">SOP-1 v1.0 详细文档</a></p>
-            <p class="admin-card-meta">技术细节 / 字段命名差异 / batch_id 传播 / 8 条 gotchas / 工具实施状态</p>
+            <p class="admin-card-meta">技术细节、字段命名差异、批次号怎么传、8 条踩坑记录、工具落地状态</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">Operator UI</p>
-            <p><a href="/admin/v2-leads/dedup-review">Dedup Review</a> · <a href="/admin/v2-leads/niches">Niche Cohorts</a></p>
-            <p class="admin-card-meta">嫌疑撞库决策 · niche 分组浏览 · upsell 准备</p>
+            <p class="eyebrow">操作员界面</p>
+            <p><a href="/admin/v2-leads/dedup-review">疑似重复复核</a> · <a href="/admin/v2-leads/niches">按行业浏览商家</a></p>
+            <p class="admin-card-meta">人工判定疑似重复的商家 · 按行业分组看 · 为加项推荐做准备</p>
           </div>
           <div class="admin-card">
-            <p class="eyebrow">CLI</p>
+            <p class="eyebrow">命令行工具</p>
             <p><code>pl:scrape-docker</code> · <code>pl:ingest-image</code> · <code>pl:places-enrich</code> · <code>pl:dedup-audit</code> · <code>pl:rebuild-niche-shards</code></p>
-            <p class="admin-card-meta">完整列表见 <a href="/admin/scoring/sop-1-doc">SOP-1 详细文档 §9</a></p>
+            <p class="admin-card-meta">分别对应：抓 Google Maps · 图片建档 · Places 补全 · 去重复核 · 重建行业分组。完整列表见 <a href="/admin/scoring/sop-1-doc">详细文档 §9</a></p>
           </div>
         </div>
       </section>
