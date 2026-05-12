@@ -5,10 +5,10 @@ fs.mkdirSync(outDir, { recursive: true });
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 for (const [url, name] of [
-  ['http://localhost:4325/admin/scoring', 'ds-overview'],
-  ['http://localhost:4325/admin/scoring/sop-1', 'ds-sop-1'],
-  ['http://localhost:4325/admin/scoring/sop-2', 'ds-sop-2'],
-  ['http://localhost:4325/admin/scoring/sop-2-doc', 'ds-sop-2-doc'],
+  ['http://localhost:4326/admin/scoring', 'ds-overview'],
+  ['http://localhost:4326/admin/scoring/sop-1', 'ds-sop-1'],
+  ['http://localhost:4326/admin/scoring/sop-2', 'ds-sop-2'],
+  ['http://localhost:4326/admin/scoring/sop-2-doc', 'ds-sop-2-doc'],
 ]) {
   const page = await ctx.newPage();
   await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });

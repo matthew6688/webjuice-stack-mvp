@@ -38,99 +38,174 @@ import Layout from '../../../layouts/AdminLayout.astro';
         </a>
       </nav>
 
-      <!-- ─── 4-step protocol status ─── -->
+      <!-- ─── 4-step SOP 协议进度 (stage-grid pattern, SOP-2 同款) ───────── -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
             <p class="eyebrow">4-step SOP 协议 · 当前进度</p>
-            <h2>SOP-1 还在 Step 2 (你 review 调研笔记)</h2>
+            <h2>SOP-1 还在 Step 2 <span class="en-sub">Awaiting your review of the investigation note</span></h2>
+          </div>
+          <span class="admin-section-count">4 step · Step 2 active</span>
+        </div>
+        <p class="section-lede">建任何 SOP 必须走完 4 步：调研 → review → 写 → 验证。SOP-1 调研笔记已完成（实测 gosom Docker + grep 代码 + 20 leads scrape），等你 review 回答 6 个检查点，才动手写 v0.1。</p>
+
+        <div class="stage-grid">
+          <div class="stage-card stage-done">
+            <div class="stage-num">Step 1<span class="stage-cond-badge">完成</span></div>
+            <div class="stage-name">现状调研<span class="stage-en">Investigation</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">读相关代码 · 探 Docker 容器 · 跑 verify scrape (实测 20 leads / 3 分钟) · grep search/enrichment 模块清单。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> Read code · test Docker · live scrape sample → investigation note</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">产出</span> <code>data/qa/sop-investigations/sop-1.md</code> (~290 行)</div>
+              <div><span class="stage-meta-label">状态</span> <span class="chip chip-mint">完成 ✅</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card stage-active">
+            <div class="stage-num">Step 2<span class="stage-cond-badge">进行中</span></div>
+            <div class="stage-name">Matthew Review<span class="stage-en">Verify investigation</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh"><strong>等你回答 6 个检查点</strong>，确认我没把现状搞错。回完才进 Step 3 写 SOP-1 v0.1。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> Answer 6 checkpoints → unblock writing</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">要回的</span> 调研笔记 §8 末尾 6 个检查点</div>
+              <div><span class="stage-meta-label">已答</span> 4/6 (剩 search skills 清单 + G-1/2/3 detail confirm)</div>
+              <div><span class="stage-meta-label">状态</span> <span class="chip chip-coral">等你 review</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card stage-pending">
+            <div class="stage-num">Step 3<span class="stage-cond-badge">待</span></div>
+            <div class="stage-name">写 SOP-1 v0.1<span class="stage-en">Draft SOP doc</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">中文为主 + 英文对照 · 目的 / 操作步骤 / 容易忽略的点 / 维护规则 4 section。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> Compose doc per ADMIN_DESIGN_SYSTEM rules + SOP-2 template</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">产出</span> <code>docs/SOP_1_INTAKE_DISCOVERY.md</code> + admin page 内容 fill</div>
+            </div>
+          </div>
+
+          <div class="stage-card stage-pending">
+            <div class="stage-num">Step 4<span class="stage-cond-badge">待</span></div>
+            <div class="stage-name">验证<span class="stage-en">Deploy verify</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">astro build 本地通过 → push → GH Actions success → browser verify live URL + screenshot。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> Build + push + GH Actions + live URL marker + screenshot</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">协议</span> SOP-X-Deploy (待写为正式 SOP)</div>
+            </div>
           </div>
         </div>
-        <ol class="admin-step-list">
-          <li class="step-done">
-            <span class="admin-step-num">1</span>
-            <div class="admin-step-body">
-              <strong>现状调研 / Investigation</strong>
-              <p>读代码 / 测 Docker / 跑 verify scrape (20 leads / 3 分钟实测) → 写调研笔记 ✅</p>
-            </div>
-          </li>
-          <li class="step-active">
-            <span class="admin-step-num">2</span>
-            <div class="admin-step-body">
-              <strong>Matthew Review</strong>
-              <p>确认调研笔记没把现状搞错 → 6 个检查点回答</p>
-              <p class="admin-note-line" style="margin-top:6px"><strong>📋 请打开调研笔记 review</strong>: <code>data/qa/sop-investigations/sop-1.md</code></p>
-            </div>
-          </li>
-          <li class="step-pending">
-            <span class="admin-step-num">3</span>
-            <div class="admin-step-body">
-              <strong>写 SOP-1 v0.1</strong>
-              <p>review 通过后才动手</p>
-            </div>
-          </li>
-          <li class="step-pending">
-            <span class="admin-step-num">4</span>
-            <div class="admin-step-body">
-              <strong>验证</strong>
-              <p>astro build → push → live URL marker + screenshot</p>
-            </div>
-          </li>
-        </ol>
+
+        <p class="admin-note-line"><strong>📋 调研笔记 review 入口</strong>：<code>data/qa/sop-investigations/sop-1.md</code> §8 末尾 6 个检查点等你回。</p>
       </section>
 
-      <!-- ─── Preview of investigation findings ─── -->
+      <!-- ─── 3 入口对比 (channel-flow pattern, SOP-2 同款) ─────────────── -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">调研发现 · Preview</p>
-            <h2>SOP-1 现状摘要 <span class="en-sub">从调研笔记提炼</span></h2>
+            <p class="eyebrow">客户发现 · 3 个入口</p>
+            <h2>从哪里抓客户 <span class="en-sub">3 entries to V2 entity store</span></h2>
+          </div>
+          <span class="admin-section-count">主 + 补 + 实验 · 都必须落到 V2 entity store</span>
+        </div>
+        <p class="section-lede">不同来源最后<strong>必须统一进 V2 entity store</strong> (Matthew 已定)。3 个入口都不一样的强项 · 弱项 · 触发场景，但 entity schema + 后续 pipeline 完全一样。</p>
+
+        <div class="channel-flow">
+          <div class="channel-card channel-0">
+            <div class="channel-stage">主入口 · 日常主力</div>
+            <div class="channel-zh">🐳 gosom Docker scraper</div>
+            <div class="channel-name"><code>localhost:8080</code> Docker container</div>
+            <div class="channel-unit">1 batch 任务 = N leads (实测 20 leads / 3 分钟)</div>
+            <div class="channel-purpose"><code>POST /api/v1/jobs</code> with keywords array → CSV → 转 JSONL → upsertDiscoveryRun → entity store</div>
+            <div class="channel-meta">
+              <span>✅ 免费 · 批量</span>
+              <span>⚠ <code>max_time</code> ≥ 180s</span>
+              <span>34 列 CSV 字段</span>
+            </div>
+          </div>
+          <div class="channel-arrow">
+            <span class="channel-arrow-label">↓ 不同入口，相同 entity 形态</span>
+            <span class="channel-arrow-glyph">▼</span>
+          </div>
+
+          <div class="channel-card channel-1">
+            <div class="channel-stage">补充入口 · 单 lead 入</div>
+            <div class="channel-zh">🖼 image-lead-discovery</div>
+            <div class="channel-name"><code>scripts/leads/image-lead-discovery.js</code></div>
+            <div class="channel-unit">1 张图片 / 名片 = 1 lead</div>
+            <div class="channel-purpose">客户截图 GMB / 名片 / 招牌照片 → OCR + 识别 → 单 lead 入库</div>
+            <div class="channel-meta">
+              <span>🎯 客户转介绍场景</span>
+              <span>⚠ 当前走 V1 → 必须改造成 V2 (Matthew 已定)</span>
+            </div>
+          </div>
+          <div class="channel-arrow">
+            <span class="channel-arrow-label">↓ 统一进 V2 entity store</span>
+            <span class="channel-arrow-glyph">▼</span>
+          </div>
+
+          <div class="channel-card channel-2">
+            <div class="channel-stage">实验入口 · 关键词 search</div>
+            <div class="channel-zh">🔍 Search skill 系列</div>
+            <div class="channel-name">多 search 引擎 (Tinyfish / DDGS / Doko / etc.)</div>
+            <div class="channel-unit">1 关键词 query = N 搜索结果 → 提取商家信息</div>
+            <div class="channel-purpose">用不同 search engine skills 跑不同关键词，从搜索结果里挖 lead (适合长尾 niche / 偏品类 / 不在 Google Maps 主路径的)</div>
+            <div class="channel-meta">
+              <span>🧪 实验</span>
+              <span>待调研：grep <code>search</code>/<code>enrichment</code> 模块清单</span>
+            </div>
           </div>
         </div>
 
-        <h3 class="admin-subhead">3 个入口现状</h3>
-        <div class="admin-card-grid admin-card-grid-3">
-          <div class="admin-card admin-card-tinted-mint">
-            <p class="eyebrow accent-coral">主入口</p>
-            <p class="admin-card-title">🐳 gosom Docker scraper</p>
-            <p class="admin-card-body">本地 <code>localhost:8080</code> 容器，<code>POST /api/v1/jobs</code> + 下载 CSV</p>
-            <p class="admin-card-meta">实测：20 leads / 3 min · 34 列 CSV 字段</p>
-            <p class="admin-card-meta">⚠ <code>max_time</code> 必须 ≥ 180 秒</p>
+        <p class="admin-note-line"><strong>关键设计</strong>：不管哪条路进来，最后<strong>统一</strong>写到 <code>data/leads/entities/&lt;key&gt;.json</code> + <code>discovery-events.jsonl</code> + <code>queues.json</code> → 后续 SOP-2 筛选 + 审计 pipeline 完全一致。</p>
+      </section>
+
+      <!-- ─── 10 容易忽略的点 + 3 待建工具 (admin-table pattern) ─────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">容易忽略的点 + 待建工具</p>
+            <h2>实战中的坑 <span class="en-sub">Gotchas + tools to build during SOP-1 implementation</span></h2>
           </div>
-          <div class="admin-card">
-            <p class="eyebrow accent-coral">补充入口</p>
-            <p class="admin-card-title">🖼 image-lead-discovery</p>
-            <p class="admin-card-body">单 lead 从图片输入 (CLI: scripts/leads/image-lead-discovery.js)</p>
-            <p class="admin-card-meta">⚠ 走 V1 路径不进 V2 entity store（Matthew 已定：要并入 V2）</p>
-          </div>
-          <div class="admin-card">
-            <p class="eyebrow accent-coral">实验入口</p>
-            <p class="admin-card-title">🔍 关键词 search</p>
-            <p class="admin-card-body">代码里有多个 search skill 可用不同搜索引擎，从搜索结果找客户</p>
-            <p class="admin-card-meta">⚠ 调研待补：grep search/enrichment 模块清单</p>
-          </div>
+          <span class="admin-section-count">10 gotchas · 3 tools</span>
         </div>
 
-        <h3 class="admin-subhead">10 个容易忽略的点 (调研笔记 § 5)</h3>
-        <ul class="admin-marker-list">
-          <li>Niche 是 substring match (含 "oof" → roofing)，偶尔误进 "Roofer's Bar"</li>
-          <li>同 lead 重复抓 → place_id dedup 自动合并 history</li>
-          <li>V1 status + V2 phase 两套状态字段共存</li>
-          <li>没 website 的 lead → starter_candidate 路径 (未完全自动化)</li>
-          <li>Image lead 走 V1 不进 V2 (Matthew 已定要并入主流程)</li>
-          <li><code>max_time</code> ≥ 180 秒硬限</li>
-          <li><strong>Contact identity 多触点</strong> (social handles / contact-us) 当前缺失 → SOP-ART-3 范围</li>
-          <li>sourceQuery 字段是关键追溯线</li>
-          <li>Discord forum tags 必须先 setup 才能 apply</li>
-          <li>Niche category 字段空时 cheap-audit SKIP，需手动 enrichment 补</li>
-        </ul>
+        <h3 class="subhead">① 10 个容易忽略的点</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>#</th><th>点</th><th>影响</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Niche 是 substring match (含 "oof" → roofing)</td><td>偶尔误进 "Roofer's Bar"，cheap-audit SKIP 兜底</td></tr>
+              <tr><td>2</td><td>同 lead 重复抓 → place_id dedup</td><td>自动合并 history，不污染 entity</td></tr>
+              <tr><td>3</td><td>V1 status + V2 phase 两套状态字段共存</td><td>discovery 写 status，sales 状态机用 phase</td></tr>
+              <tr><td>4</td><td>没 website 的 lead → starter_candidate</td><td>未完全自动化，要 SOP-2 §6 路径</td></tr>
+              <tr><td>5</td><td>Image lead 走 V1 不进 V2</td><td>Matthew 已定要并入 V2 主流程</td></tr>
+              <tr><td>6</td><td><code>max_time</code> ≥ 180 秒</td><td>gosom API hard limit，&lt; 180 直接 422</td></tr>
+              <tr><td>7</td><td><strong>Contact identity 多触点缺失</strong></td><td>social / contact-us URL 没记 → SOP-ART-3</td></tr>
+              <tr><td>8</td><td>sourceQuery 字段是关键追溯线</td><td>跨 niche/city 扩展时筛选靠这字段</td></tr>
+              <tr><td>9</td><td>Discord forum tags 必须先 setup</td><td>tags 不存在 → applied_tags API 422</td></tr>
+              <tr><td>10</td><td>GMB 没设 category → entity.latest.category 空</td><td>cheap-audit 会 SKIP，需手动 enrichment 补</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h3 class="admin-subhead">3 个工具 SOP-1 实施时要建</h3>
-        <ul class="admin-marker-list">
-          <li><strong>G-1 · <code>pl:scrape-docker</code> CLI</strong> — POST job → poll → CSV → JSONL → 入库 (~1h)</li>
-          <li><strong>G-2 · <code>pl:preflight</code> CLI</strong> — 容器 / API / Discord / claude_cli / 磁盘 健康检查 (~30min)</li>
-          <li><strong>G-3 · Entity schema 加 <code>batch_id</code> 字段</strong> — 区分本批 vs 老批 (~20min)</li>
-        </ul>
+        <h3 class="subhead">② 3 个工具 SOP-1 实施时要建</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>ID</th><th>工具</th><th>用途</th><th>工程量</th></tr></thead>
+            <tbody>
+              <tr><td><code>G-1</code></td><td><code>pl:scrape-docker</code> CLI</td><td>POST job → poll → CSV → JSONL → upsertDiscoveryRun (现在没有，每次都手动)</td><td>~1h</td></tr>
+              <tr><td><code>G-2</code></td><td><code>pl:preflight</code> CLI</td><td>跑 batch 前 30 秒健康检查：Docker / API / Discord / claude_cli / 磁盘</td><td>~30min</td></tr>
+              <tr><td><code>G-3</code></td><td>Entity schema 加 <code>batch_id</code></td><td>mergeLeadIntoEntity + bridge 透传，每 lead 知道"我哪批进来的"</td><td>~20min</td></tr>
+            </tbody>
+          </table>
+        </div>
 
         <p class="admin-note-line">完整调研笔记在 <code>data/qa/sop-investigations/sop-1.md</code> (~280 行)。<strong>请打开 review 后回答 6 个检查点 (§8 末尾)</strong>，确认我没搞错现状，我才写 SOP-1 v0.1。</p>
       </section>

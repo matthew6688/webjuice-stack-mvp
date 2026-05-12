@@ -129,129 +129,178 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
         </a>
       </nav>
 
-      <!-- ─── SECTION 1 · 销售流水线 ──────────────────────────────────────── -->
+      <!-- ─── SECTION 1 · 销售流水线 5 个 macro 阶段 (SOP-2 stage-grid pattern) -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">销售流水线 · 三分支模型</p>
-            <h2>从发现到付费 · 完整漏斗 <span class="en-sub">Pipeline · Discovery → Pre-build → Sales → Pay</span></h2>
+            <p class="eyebrow">销售流水线 · 5 个 macro 阶段</p>
+            <h2>从抓客户到付费交付 · 完整流水线 <span class="en-sub">5 stages: Discovery → Screening → Pre-build → Sales → Pay</span></h2>
           </div>
-          <span class="admin-section-count">5 段主流程 + USP 三分支</span>
+          <span class="admin-section-count">5 个 macro 阶段 + USP 三分支分流</span>
         </div>
+        <p class="section-lede">从外面抓客户进数据库 → 筛选审计评级 → A/B/C 都可能预制网站（USP 三分支） → 销售带网站去对接 → 客户决定付费 → 交付维护。每个阶段对应一份 SOP。</p>
 
-        <div class="admin-flow-grid">
-          <div class="admin-flow-step">
-            <div class="admin-flow-num">1</div>
-            <div>
-              <h3>客户发现 / Discovery</h3>
-              <p>gosom Docker scraper (主) · image lead · 关键词 search</p>
-              <p class="admin-flow-meta">→ entity 入库 · SOP-1</p>
+        <div class="stage-grid">
+          <div class="stage-card">
+            <div class="stage-num">第 1 步</div>
+            <div class="stage-name">客户发现<span class="stage-en">Discovery</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">从外面找客户：gosom Docker scraper (主入口) · image lead 单 lead 入 · 关键词 search（多 search 引擎）。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> 3 entries: gosom Docker / image / keyword search → entity store</p>
             </div>
-          </div>
-          <div class="admin-flow-arrow">▼</div>
-
-          <div class="admin-flow-step">
-            <div class="admin-flow-num">2</div>
-            <div>
-              <h3>筛选 + 审计 / Screening</h3>
-              <p>cheap-audit-v2 → detailed audit → 评级 A/B/C/D</p>
-              <p class="admin-flow-meta">→ entity.grade · SOP-2</p>
-            </div>
-          </div>
-          <div class="admin-flow-arrow">▼</div>
-
-          <!-- USP 三分支：4 cards 用 design-system 标准 card-grid -->
-          <div class="admin-card-grid admin-card-grid-4">
-            <div class="admin-card admin-card-tinted-mint">
-              <span class="chip chip-mint">A</span>
-              <p class="admin-card-title">必做网站，优先</p>
-              <p class="admin-card-body">OD 立刻预制 → 销售带网站对接</p>
-            </div>
-            <div class="admin-card admin-card-tinted-citrus">
-              <span class="chip chip-citrus">B</span>
-              <p class="admin-card-title">也做网站</p>
-              <p class="admin-card-body">A 排完算力允许 → OD 跟做 → 销售带网站对接</p>
-            </div>
-            <div class="admin-card admin-card-tinted-sky">
-              <span class="chip chip-sky">C</span>
-              <p class="admin-card-title">先问意向</p>
-              <p class="admin-card-body">销售先对接 → 有意向 → OD 反向建</p>
-              <p class="admin-card-meta">没意向 → 归档（niche 数据库备用）</p>
-            </div>
-            <div class="admin-card">
-              <span class="chip chip-muted">D</span>
-              <p class="admin-card-title">跳过</p>
-              <p class="admin-card-body">不投入 (hard-skip)</p>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">SOP</span> <a href="/admin/scoring/sop-1">SOP-1 (调研中)</a></div>
+              <div><span class="stage-meta-label">Channel</span> <code>#lead-discovery-runs</code></div>
+              <div><span class="stage-meta-label">产出</span> <code>data/leads/entities/&lt;key&gt;.json</code></div>
             </div>
           </div>
 
-          <div class="admin-flow-arrow">▼</div>
-
-          <div class="admin-flow-step">
-            <div class="admin-flow-num">3</div>
-            <div>
-              <h3>Open Design 网站预制</h3>
-              <p>基于 master.md + audit report，针对性建 demo 网站</p>
-              <p class="admin-flow-meta">→ clients/&lt;slug&gt;/v2/ · SOP-3</p>
+          <div class="stage-card">
+            <div class="stage-num">第 2 步</div>
+            <div class="stage-name">筛选 + 审计<span class="stage-en">Screening & Audit</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">先 cheap-audit-v2 19 规则粗筛 → audit_candidate 走 detailed audit (11 sub-audit 含 PSI/domain/form) + visual audit → 6 维 39 规则评级 → A/B/C/D。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> cheap-audit → detailed audit → visual → gradeLead → A/B/C/D + T1/T2/T3</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">SOP</span> <a href="/admin/scoring/sop-2">SOP-2 (有了)</a></div>
+              <div><span class="stage-meta-label">Channel</span> <code>#lead-discovery-runs</code> → <code>#website-leads</code></div>
+              <div><span class="stage-meta-label">产出</span> <code>entity.grade</code> + <code>internal-audit-report.html</code></div>
             </div>
           </div>
-          <div class="admin-flow-arrow">▼</div>
 
-          <div class="admin-flow-step">
-            <div class="admin-flow-num">4</div>
-            <div>
-              <h3>销售对接 / Sales Engagement</h3>
-              <p>多触点 outreach: contact-us 表单 · GMB · social · phone · email</p>
-              <p class="admin-flow-meta">→ #website-leads thread · SOP-4 · 自动化销售框架</p>
+          <div class="stage-card stage-conditional">
+            <div class="stage-num">USP 三分支<span class="stage-cond-badge">grade 决定</span></div>
+            <div class="stage-name">是否预制网站<span class="stage-en">Pre-build website?</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh"><strong>A</strong> 必做（优先）· <strong>B</strong> 也做（A 排完算力允许）· <strong>C</strong> 看意向（销售先聊，有意 → 反向建）· <strong>D</strong> 跳过。<br/>这是我们的差异化 — 拿着网站去对接 prospect，而不是嘴上推销空气。</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">A</span> <span class="chip chip-mint">必做</span> OD 立刻预制 → 销售带网站对接</div>
+              <div><span class="stage-meta-label">B</span> <span class="chip chip-citrus">也做</span> A 排完算力允许 → OD 跟做</div>
+              <div><span class="stage-meta-label">C</span> <span class="chip chip-sky">看意向</span> 销售先对接 · 有意 → OD 反向建 · 没意 → 归档</div>
+              <div><span class="stage-meta-label">D</span> <span class="chip chip-muted">跳过</span> 不投入 (hard-skip)</div>
             </div>
           </div>
-          <div class="admin-flow-arrow">▼</div>
 
-          <div class="admin-flow-step flow-end">
-            <div class="admin-flow-num">5</div>
-            <div>
-              <h3>客户决定 → 付费 → 交付维护</h3>
-              <p>客户看 demo 决定 → Stripe → bootstrap repo → CF Pages → 持续维护</p>
-              <p class="admin-flow-meta">→ #paid-websites · SOP-5</p>
+          <div class="stage-card">
+            <div class="stage-num">第 3 步</div>
+            <div class="stage-name">Open Design 网站预制<span class="stage-en">Pre-built Website</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">基于 master.md + audit report，针对性建 demo 网站（新站 / redesign）。需要自动化让单客户成本可控。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> Open Design → demo URL → clients/&lt;slug&gt;/v2/</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">SOP</span> SOP-3 (待写)</div>
+              <div><span class="stage-meta-label">Channel</span> <code>#website-projects</code></div>
+              <div><span class="stage-meta-label">输入</span> master.md + audit report</div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-num">第 4 步</div>
+            <div class="stage-name">销售对接<span class="stage-en">Sales Engagement</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">A/B/C 客户进入 per-lead Discord thread。多触点 outreach：contact-us 表单 / GMB / social handles / phone / email。自动化 sequence 是 scale 核心。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> Multi-touch outreach + auto sequence + reply handling</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">SOP</span> SOP-4 (待写)</div>
+              <div><span class="stage-meta-label">Channel</span> <code>#website-leads</code></div>
+              <div><span class="stage-meta-label">触点</span> contact-us · GMB · social · phone · email</div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-num">第 5 步</div>
+            <div class="stage-name">付费 → 交付 → 维护<span class="stage-en">Pay → Deliver → Maintain</span></div>
+            <div class="stage-desc">
+              <p class="stage-desc-zh">客户看 demo 决定 → Stripe checkout → bootstrap client repo → CF Pages 部署 → 域名 setup → ongoing 维护（revision / 内容 / SEO）。</p>
+              <p class="stage-desc-en"><span class="lang-tag">EN</span> Stripe → bootstrap → CF Pages → domain → maintain</p>
+            </div>
+            <div class="stage-meta">
+              <div><span class="stage-meta-label">SOP</span> SOP-5 (待写)</div>
+              <div><span class="stage-meta-label">Channel</span> <code>#paid-websites</code></div>
+              <div><span class="stage-meta-label">产出</span> live website + 客户长期关系</div>
             </div>
           </div>
         </div>
-
-        <p class="admin-note-line"><strong>📇 客户 Contact Identity</strong> (横跨所有阶段) — 每个 entity 维护多触点 ID：<strong>GMB / 网站 Contact Us 页 / 社交账号 (FB/IG/LinkedIn) / Phone / Email</strong>。SOP-4 销售对接时按触点优先级跨渠道触达 → 单一渠道死 ≠ lead 死。详见 <strong>SOP-ART-3 客户 Profile</strong>（待写）。</p>
       </section>
 
-      <!-- ─── SECTION 2 · Discord 4-channel lifecycle (summary) ──────────── -->
+      <!-- ─── SECTION 2 · Discord 4-channel lifecycle (channel-flow pattern) -->
       <section class="admin-paper-section">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Discord 4 频道 · 客户走过的 4 段路</p>
-            <h2>4-channel Lifecycle <span class="en-sub">Each channel = each lead lifecycle stage</span></h2>
+            <p class="eyebrow">Discord 频道架构 · 客户走过的 4 段路</p>
+            <h2>4 channels · 4 段生命周期 <span class="en-sub">Each Discord channel = one lead lifecycle stage</span></h2>
           </div>
-          <span class="admin-section-count">详情见 SOP-X-Discord (待写)</span>
+          <span class="admin-section-count">客户级别上升时"毕业"到下一段</span>
+        </div>
+        <p class="section-lede">每段的 <strong>节奏</strong> · <strong>受众</strong> · <strong>关注点</strong> 都不同，所以分 4 个频道而不是一个。详情见 SOP-X-Discord (待写)。</p>
+
+        <div class="channel-flow">
+          <div class="channel-card channel-0">
+            <div class="channel-stage">阶段 1 · 客户发现批次</div>
+            <div class="channel-zh">线索发现 + 审计 batch</div>
+            <div class="channel-name"><code>#lead-discovery-runs</code></div>
+            <div class="channel-unit">1 batch task = 1 thread</div>
+            <div class="channel-purpose">看每批"抓 + 筛 + 审"进度 · 监控 ops</div>
+            <div class="channel-meta">
+              <span>👁 受众：<strong>你 + AI 监督</strong></span>
+              <span>📄 文档：SOP-1 + SOP-2</span>
+            </div>
+          </div>
+          <div class="channel-arrow">
+            <span class="channel-arrow-label">当客户分级 A/B/C → 自动"毕业"到下一段</span>
+            <span class="channel-arrow-glyph">▼</span>
+          </div>
+
+          <div class="channel-card channel-1">
+            <div class="channel-stage">阶段 2 · 高质量销售线索</div>
+            <div class="channel-zh">per-lead 销售对话</div>
+            <div class="channel-name"><code>#website-leads</code></div>
+            <div class="channel-unit">1 A/B/C 客户 = 1 thread</div>
+            <div class="channel-purpose">每个潜在客户单独跟进 · 多触点 outreach + 沟通记录</div>
+            <div class="channel-meta">
+              <span>👁 受众：<strong>销售人员</strong></span>
+              <span>📄 文档：SOP-4 (待写)</span>
+            </div>
+          </div>
+          <div class="channel-arrow">
+            <span class="channel-arrow-label">客户表示有意 / OD 建好 demo → 进 demo 制作</span>
+            <span class="channel-arrow-glyph">▼</span>
+          </div>
+
+          <div class="channel-card channel-2">
+            <div class="channel-stage">阶段 3 · 网站方案 / Demo</div>
+            <div class="channel-zh">demo 制作 + revision</div>
+            <div class="channel-name"><code>#website-projects</code></div>
+            <div class="channel-unit">1 demo 制作 = 1 thread</div>
+            <div class="channel-purpose">给客户看的新站 demo / 改版 demo 制作 · Open Design 流程</div>
+            <div class="channel-meta">
+              <span>👁 受众：<strong>设计 + 客户</strong></span>
+              <span>📄 文档：SOP-3 (待写)</span>
+            </div>
+          </div>
+          <div class="channel-arrow">
+            <span class="channel-arrow-label">客户付费 → 进生产</span>
+            <span class="channel-arrow-glyph">▼</span>
+          </div>
+
+          <div class="channel-card channel-3">
+            <div class="channel-stage">阶段 4 · 付费客户</div>
+            <div class="channel-zh">交付 + 长期维护</div>
+            <div class="channel-name"><code>#paid-websites</code></div>
+            <div class="channel-unit">1 付费客户 = 1 thread</div>
+            <div class="channel-purpose">客户付费后的部署 + ongoing 维护 / 修订 / SEO</div>
+            <div class="channel-meta">
+              <span>👁 受众：<strong>交付 + 客服</strong></span>
+              <span>📄 文档：SOP-5 (待写)</span>
+            </div>
+          </div>
         </div>
 
-        <div class="admin-card-grid admin-card-grid-4">
-          <div class="admin-card admin-card-tinted-sky">
-            <p class="eyebrow accent-coral">阶段 1 · 发现</p>
-            <p class="admin-card-title"><code>#lead-discovery-runs</code></p>
-            <p class="admin-card-body">1 batch = 1 thread · SOP-1 + SOP-2</p>
-          </div>
-          <div class="admin-card admin-card-tinted-mint">
-            <p class="eyebrow accent-coral">阶段 2 · 销售</p>
-            <p class="admin-card-title"><code>#website-leads</code></p>
-            <p class="admin-card-body">1 A/B/C lead = 1 thread · SOP-4</p>
-          </div>
-          <div class="admin-card admin-card-tinted-citrus">
-            <p class="eyebrow accent-coral">阶段 3 · Demo</p>
-            <p class="admin-card-title"><code>#website-projects</code></p>
-            <p class="admin-card-body">1 demo 制作 = 1 thread · SOP-3</p>
-          </div>
-          <div class="admin-card admin-card-tinted-coral">
-            <p class="eyebrow accent-coral">阶段 4 · 付费</p>
-            <p class="admin-card-title"><code>#paid-websites</code></p>
-            <p class="admin-card-body">1 付费客户 = 1 thread · SOP-5</p>
-          </div>
-        </div>
+        <p class="admin-note-line"><strong>📇 客户 Contact Identity</strong> (横跨 4 channel 不变的 artifact) — 每个 entity 维护多触点 ID：GMB / 网站 Contact Us 页 / 社交账号 (FB/IG/LinkedIn) / Phone / Email。SOP-4 销售按触点优先级跨渠道触达 → 单一渠道死 ≠ lead 死。详见 <strong>SOP-ART-3</strong>（待写）。</p>
       </section>
 
       <!-- ─── SECTION 3 · 16-SOP Matrix ──────────────────────────────────── -->

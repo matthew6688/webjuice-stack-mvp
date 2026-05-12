@@ -275,6 +275,112 @@
 .admin-flow-meta { color: var(--pl-muted); font-size: 11.5px; font-style: italic; }
 .admin-flow-arrow { text-align: center; padding: 5px 0; color: var(--pl-muted); font-size: 14px; }
 
+/* ---------- Channel flow (vertical sequence with arrows) ---------------- */
+.channel-flow {
+  display: flex; flex-direction: column; align-items: stretch;
+  gap: 0; max-width: 880px; margin: 8px auto 0;
+}
+.channel-card {
+  border: 2px solid var(--pl-line);
+  background: var(--pl-paper);
+  padding: 14px 18px;
+  box-shadow: 4px 4px 0 var(--pl-line);
+}
+.channel-card.channel-0 { background: color-mix(in srgb, var(--pl-sky) 14%, var(--pl-paper)); }
+.channel-card.channel-1 { background: color-mix(in srgb, var(--pl-mint) 16%, var(--pl-paper)); }
+.channel-card.channel-2 { background: color-mix(in srgb, var(--pl-citrus) 14%, var(--pl-paper)); }
+.channel-card.channel-3 { background: color-mix(in srgb, var(--pl-coral) 14%, var(--pl-paper)); }
+.channel-card.channel-4 { background: color-mix(in srgb, var(--pl-lilac) 14%, var(--pl-paper)); }
+.channel-stage {
+  font-size: 11px; font-weight: 700;
+  color: var(--pl-coral); letter-spacing: 0.06em; text-transform: uppercase;
+}
+.channel-zh {
+  font-family: Georgia, serif;
+  font-size: 17px; font-weight: 700; color: var(--pl-ink); margin-top: 4px;
+}
+.channel-name { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 15px; font-weight: 800; color: var(--pl-ink); }
+.channel-unit { font-size: 12px; color: var(--pl-muted); margin-top: 4px; }
+.channel-purpose { font-size: 14px; margin-top: 8px; color: var(--pl-ink); }
+.channel-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--pl-muted); }
+.channel-arrow { text-align: center; padding: 10px 0; color: var(--pl-muted); font-size: 12px; }
+.channel-arrow-label { display: block; font-style: italic; font-size: 11px; letter-spacing: 0.04em; }
+.channel-arrow-glyph { display: block; font-size: 16px; line-height: 1; margin-top: 2px; }
+
+/* ---------- Stage cards (vertical stacked, 130px label + body) ----------- */
+.stage-grid {
+  display: grid; grid-template-columns: 1fr; gap: 12px;
+  max-width: 1000px; margin: 8px auto 0;
+}
+.stage-card {
+  border: 2px solid var(--pl-line);
+  background: var(--pl-paper);
+  padding: 14px 18px;
+  box-shadow: 4px 4px 0 var(--pl-line);
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 4px 18px;
+  align-items: start;
+}
+.stage-card.stage-conditional {
+  background: color-mix(in srgb, var(--pl-lilac) 14%, var(--pl-paper));
+  border-style: dashed;
+}
+.stage-card.stage-done    { background: color-mix(in srgb, var(--pl-mint)   12%, var(--pl-paper)); }
+.stage-card.stage-active  { background: color-mix(in srgb, var(--pl-coral)  10%, var(--pl-paper)); box-shadow: 5px 5px 0 var(--pl-coral); }
+.stage-card.stage-pending { opacity: 0.6; }
+.stage-num {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px; font-weight: 700; color: var(--pl-ink);
+  grid-row: 1 / 4;
+}
+.stage-cond-badge {
+  display: block; margin-top: 4px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px; color: var(--pl-muted); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.stage-name { font-weight: 700; font-size: 15px; color: var(--pl-ink); }
+.stage-en {
+  display: block; margin-top: 2px;
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 12px; font-weight: 400; color: var(--pl-muted);
+}
+.stage-desc { color: var(--pl-ink); font-size: 13px; line-height: 1.5; }
+.stage-desc-zh { margin: 0 0 6px; font-size: 14px; line-height: 1.55; color: var(--pl-ink); }
+.stage-desc-en { margin: 0; font-size: 12px; color: var(--pl-muted); }
+.stage-meta { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; font-size: 12px; color: var(--pl-ink); }
+.stage-meta-label {
+  display: inline-block; min-width: 76px;
+  font-size: 10px; letter-spacing: 0.08em;
+  color: var(--pl-muted); text-transform: uppercase; font-weight: 600;
+}
+.stage-outputs { display: inline-flex; flex-wrap: wrap; gap: 4px 6px; padding: 0; margin: 2px 0 0; list-style: none; }
+.stage-outputs li code { background: rgba(0,0,0,0.04); padding: 1px 5px; border-radius: 2px; font-size: 11px; }
+
+/* lang-tag (small EN badge inside stage descriptions) */
+.lang-tag {
+  display: inline-block; padding: 1px 6px;
+  background: var(--pl-line); color: var(--pl-cream);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  border-radius: 2px; margin-right: 4px; vertical-align: middle;
+}
+
+/* ---------- Subhead inside section (h3) ---------------------------------- */
+.subhead {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px; margin: 18px 0 8px; color: var(--pl-ink); font-weight: 600;
+}
+
+/* ---------- Section lede (intro paragraph below h2) ---------------------- */
+.section-lede {
+  font-size: 13.5px; line-height: 1.65; color: var(--pl-ink);
+  margin: 4px 0 14px;
+  max-width: 880px;
+}
+.section-lede strong { color: var(--pl-ink); font-weight: 700; }
+.section-lede a { color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+
 /* ---------- DO NOT add new admin-only patterns to per-page <style> -------- */
 /* If a new component is needed → propose in docs/ADMIN_DESIGN_SYSTEM.md     */
 /* → review → add here → use across all pages.                              */
