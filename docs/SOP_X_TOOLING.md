@@ -104,10 +104,12 @@
 
 **通知**: 失败 → 推 `SYSTEM_ALERTS_DISCORD_WEBHOOK_URL`（rich Discord embed）
 
-**调度（TODO）**：
-- 当前手动 `npm run ops:health-check`
-- Hermes cron 注册延到后续（需先读 `~/Developer/Hermes Agent/` 源码）
-- 备选：macOS `launchd` plist 或 system `cron`，每 15 min 跑一次
+**调度（计划）**：
+- 当前：手动 `npm run ops:health-check`
+- 目标：通过 Hermes cron 每日跑一次（**daily cadence · 不需要每 5 分钟，无业务紧急性**）
+- 实施路径：调用 `hermesCron(['create', 'every 24h', 'cd <repo> && npm run ops:health-check', '--name', 'daily-health-check'])` (`core/funnel/hermes-cron.js` wrapper 已就绪)
+- 优先级：🔵 **低**（手动跑现在工作 OK，自动化是 nice-to-have）
+- 详见 backlog G-18 in [SOP_OVERVIEW.md §8](SOP_OVERVIEW.md)
 
 ---
 

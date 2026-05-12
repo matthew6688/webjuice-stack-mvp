@@ -231,7 +231,7 @@ V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord cha
 | ID | 任务 | 估时 | 信心 | 关键发现 |
 |---|---|---|---|---|
 | ✅ G-12 | Places API 多账号 rotation | — | done | PlacesQuotaGuard.selectAvailableKey + schema v1→v2 migrate |
-| 🟢 **G-18** | Hermes cron 注册 ops:health-check | **2h** | **92%** | `core/funnel/hermes-cron.js` wrapper 已存在，`hermesCron(['create', 'every 5m', ...])` 直接调用 |
+| 🔵 **G-18** | Hermes cron 注册 ops:health-check (daily) | **2h** | **92%** | `hermesCron(['create', 'every 24h', ...])` · **低优**（手动跑 OK · 详见 [SOP-X-Tooling §3](SOP_X_TOOLING.md)）|
 | 🟢 **G-13** | Places photos → master.md 素材库 | **2h** | **90%** | master-md-builder 第 261 行前插 "商户视觉素材" 段 · cloudinary helper 已就绪 · **阻塞**：测试 entity 需有 photo_references > 0 (Tugun 那个是 0) |
 | 🟢 **Evidence trail UI** | `[entityKey].astro` 加 evidence_sources fold | **2h** | **90%** | 数据 ready (`fixtures/enrichment/*.json` shape 已知) · admin 页面有 `<details>` fold 现有 pattern |
 | 🟢 **Cost dashboard tier 视图** | finance.astro 加 tier × provider × month 面板 | **2-3h** | **95%** | `summarizeLedger()` 已支持 `byTier/byProvider` 过滤 · 只需 UI 面板 |
