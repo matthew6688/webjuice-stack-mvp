@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: **v1.0** (P0-P8 全部完成 · 5 daemon live · 2026-05-12)
+**版本**: **v1.1** (P0-P8 + P6.X image-extract attachment 自动化 · 2026-05-12)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -305,7 +305,7 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 **完成 13/13 (P0-P8) · SOP-0 v1.0 锁定 2026-05-12**。
 
 后续工作 (TODO):
-- **P6.X**: image-extract 任务 attachment 下载 + LLM 提取业务字段
+- ✅ **P6.X**: image-extract 任务 attachment 下载 + 视觉 LLM 提取业务字段 — done 2026-05-12 (v1.1)
 - **SOP-0 v2** (远期): 任务数据 cloud mirror / dispatcher 上 VPS 不依赖 Mac 在线
 
 ### 7.3 P7 retention + reactions
@@ -350,7 +350,47 @@ SOP-0 v1 **不删除** 老 `core/discord-tasks/`。原因：调研发现它的 5
 
 两条流水线**并行不相干**。`data/discord-tasks/` (2 个历史 task) 不迁移。
 
-### 7.5 当前全部 5 个 daemon
+### 7.5 image-extract 自动化路径 (P6.X · v1.1)
+
+**问题**: 你 2026-05-12 self-test 时发图给 #website-tasks，listener 路由对 (image-extract, conf 0.95) 但 `pl:ingest-image` 退出 1，因为 listener 没传 `--image <path>` `--niche` `--city` `--business-name`。
+
+**解 (v1.1)**:
+
+```
+listener handleNewForumThread()
+  → routeIntent (text + attachments)
+  → if route.kind === 'image-extract' && has image attachment:
+       prepareImageTask(task_id, attachments)
+         1. downloadAttachments → data/inbox/<task_id>/<idx>.<ext>
+         2. extractBusinessFromImage (vision Ollama qwen3.6:27b · 240s timeout)
+         3. parse JSON { businessName, niche, city, phone, address, website, category }
+         4. build args = [--image <path>, --niche X, --city Y, --business-name Z, ...]
+       Patch task.target.args + task.input.attachments[].local_path
+  → if prep ok → status=pending, dispatcher 接管
+  → if prep fail (missing businessName/niche/city) → status=human
+```
+
+**Vision model 选择**：
+- 默认 `qwen3.6:27b` (能识别中英文 + 高准确率)
+- 可换 `gemma3:27b` via `SOP0_IMAGE_VISION_MODEL` env
+- 不能用 `qwen3.5:9b` / `deepseek-r1` (无 vision 能力)
+
+**输出 schema (vision LLM 返回)**:
+```json
+{
+  "businessName": "Joe's Pizza",
+  "niche":        "restaurant",
+  "city":         "melbourne",
+  "address":      "123 Bourke St, Melbourne VIC 3000",
+  "phone":        "+61 3 1234 5678",
+  "website":      "joespizza.com.au",
+  "category":     "Pizza Restaurant"
+}
+```
+
+如果 vision 缺 businessName / niche / city → task 自动转 `human` tag · operator triage。
+
+### 7.6 当前全部 5 个 daemon
 
 ```bash
 launchctl list | grep profitslocal
@@ -499,6 +539,8 @@ Logs:
 | 2026-05-12 | Reactions 不接现有 thread chat | **only `human`-tag + ✅/🗑** | 接所有 MessageCreate | SOP-0 是任务系统不是聊天 bot · 聊天交给 Hermes website-agent (其他 channel) · 避免无限循环 |
 | 2026-05-12 | Thread-内对话不回复 | **故意** | bot 任意 reply | listener 只听 `ThreadCreate` · 现有 thread 评论 = 操作员自言自语 · 这是 feature 不是 bug |
 | 2026-05-12 | SOP-0 v1.0 lock | **doc lock + 13/13 P 全 done** | 持续迭代不 lock | 主要功能稳定 · 5 daemon 跑通 · 进一步工作 (image attachment / cloud mirror) 进 TODO / v2 |
+| 2026-05-12 | P6.X image 视觉提取放 listener | **listener 同步阻塞 ~10-60s vision** | dispatcher 端异步 / 中间专属 CLI | 用户已等 ollama route (~5s)，再加 vision 同一时段·避免 dispatcher 接到 task 后又"等条件" · 保持 dispatcher 简单 |
+| 2026-05-12 | image-extract 失败转 human | **缺 businessName/niche/city → human tag** | retry / silent fail | operator 见 forum human tag 一秒决定·补字段 / 放弃·而不是看一堆 retry log |
 
 ---
 
@@ -522,6 +564,8 @@ Logs:
 | `SOP0_API_AUTH_TOKEN` | (required) | Bearer token for tunnel API (32-byte base64url) |
 | `PUBLIC_SOP0_API_TOKEN` | (= SOP0_API_AUTH_TOKEN) | Astro build-time embed for admin pages |
 | `SOP0_API_ALLOWED_ORIGINS` | `https://profitslocal.com,https://tasks.profitslocal.com,http://localhost:4321` | CORS allowlist |
+| `SOP0_IMAGE_VISION_MODEL` | `qwen3.6:27b` | image-extract vision Ollama 模型 (备选 `gemma3:27b`) |
+| `SOP0_IMAGE_VISION_TIMEOUT_MS` | `240000` (4min) | vision LLM 调用超时 |
 
 ---
 
