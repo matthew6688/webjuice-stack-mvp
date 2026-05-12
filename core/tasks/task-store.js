@@ -188,6 +188,22 @@ export function listTasks({ status = null, kind = null, limit = null } = {}) {
   return out;
 }
 
+/* ─── Lookups ─────────────────────────────────────────────────────── */
+
+/** Find first task by Discord thread_id (catch-up uses this). null if none. */
+export function findByThreadId(threadId) {
+  if (!threadId) return null;
+  ensureDir();
+  const files = fs.readdirSync(TASKS_DIR).filter((f) => f.endsWith('.json'));
+  for (const f of files) {
+    try {
+      const t = JSON.parse(fs.readFileSync(path.join(TASKS_DIR, f), 'utf8'));
+      if (t.discord?.thread_id === threadId || t.source?.thread_id === threadId) return t;
+    } catch { /* skip */ }
+  }
+  return null;
+}
+
 /* ─── State machine ───────────────────────────────────────────────── */
 
 export function canTransition(from, to) {

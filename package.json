@@ -69,6 +69,7 @@
     "pl:dedup-decide": "node scripts/cli/pl-dedup-decide.js",
     "pl:rebuild-niche-shards": "node scripts/cli/pl-rebuild-niche-shards.js",
     "pl:run-enrichment-batch": "node --env-file-if-exists=.env.local scripts/cli/pl-run-enrichment-batch.js",
+    "pl:task-listener": "node --env-file=.env.local scripts/cli/pl-task-listener.js",
     "leads:build-master-md": "node scripts/leads/build-master-md.js",
     "admin:screenshot": "node scripts/admin/screenshot-admin-ui.js",
     "evidence:build": "node scripts/evidence/build.js",
@@ -291,6 +292,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.2.1",
+    "discord.js": "^14.26.4",
     "libsodium-wrappers": "^0.8.4",
     "tailwindcss": "^4.2.4"
   },

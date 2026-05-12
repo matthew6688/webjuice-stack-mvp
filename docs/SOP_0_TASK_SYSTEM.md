@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: v0.2 (P0+P1+P2.1 完成 · listener+dispatcher 在做)
+**版本**: v0.3 (P0-P2 全部完成 · dispatcher P3 在做)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -285,9 +285,9 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P1** | `core/tasks/task-store.js` + 29 assertion 全过 | ✅ done 2026-05-12 | 100% |
 | **P2.1** | `core/tasks/intent-router.js` + 19 assertion 全过 (live ollama verified) | ✅ done 2026-05-12 | 100% |
 | **P2.2** | smoke test (合并 P2.1) | ✅ done | — |
-| **P2.3** | `pl-task-listener.js` (discord.js + intent-router + 反应监听) | ⏳ next | 85% |
-| **P2.4** | launchd plist + boot catch-up (last 5min forum threads with no task) | ⏳ | 90% |
-| **P2.5** | E2E smoke | ⏳ | 88% |
+| **P2.3** | `pl-task-listener.js` (discord.js v14 + intent-router + reaction listener) | ✅ done 2026-05-12 · live-verified | 100% |
+| **P2.4** | launchd plist `ai.profitslocal.task-listener` · KeepAlive · auto-restart | ✅ done 2026-05-12 · daemon running | 100% |
+| **P2.5** | E2E smoke — combined into P2.3 verification (catch-up routed thread, task created, tag PATCHed, reply posted, latency ~9s) | ✅ done | — |
 | **P3** | `pl-task-dispatcher.js` (fs.watch + cron + flock) | ⏳ | 92% |
 | **P4** | 3 CLI 加 `--task-id` (intake / enrich / audit) + shared `appendProgress` helper | ⏳ | 95% |
 | **P5** | `discovery-store.js` createTask on thin-contact | ⏳ | 95% |
@@ -295,7 +295,34 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P7** | E2E smoke 3 路 + retention archive (>30d → `data/tasks/_archive/YYYY-MM/`) | ⏳ | 85% |
 | **P8** | 老 `core/discord-tasks/` archive + 9 caller scripts 清理 + doc v0.3 锁定 | ⏳ | 92% |
 
-完成 3/12 · 剩 ~14h。
+完成 7/12 (P0-P2) · 剩 ~10h (P3-P8)。
+
+### 7.1 Deploy / 运维（listener daemon · P2.4）
+
+```bash
+# 安装 (一次)
+cp scripts/cli/pl-task-listener.launchd.plist ~/Library/LaunchAgents/ai.profitslocal.task-listener.plist
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/ai.profitslocal.task-listener.plist
+
+# 状态
+launchctl list | grep profitslocal
+tail -f data/tasks/_logs/task-listener.log
+
+# 重启 (pick up code changes)
+launchctl kickstart -k gui/$UID/ai.profitslocal.task-listener
+
+# 停 / 卸载
+launchctl bootout gui/$UID/ai.profitslocal.task-listener
+
+# 前台调试 (foreground)
+npm run pl:task-listener
+# 或允许 bot-authored thread (E2E smoke):
+LISTENER_ALLOW_BOTS=1 npm run pl:task-listener
+```
+
+Logs:
+- stdout: `data/tasks/_logs/task-listener.log`
+- stderr: `data/tasks/_logs/task-listener.error.log`
 
 ---
 
@@ -318,6 +345,10 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | 2026-05-12 | 失败处理 | **tag `human` + reaction 重跑** | `#failures` 新 channel | 失败留原 thread → 上下文不丢 |
 | 2026-05-12 | 旧 `core/discord-tasks/` | **P8 archive 整 dir** | 渐进迁移 | 9 callers 都是 test/setup，迁完直接归档 |
 | 2026-05-12 | 历史 2 task 迁移 | **不迁** | 写迁移脚本 | 价值低；新系统从空开始 |
+| 2026-05-12 | Discord client lib | **discord.js v14.26.4** | eris / raw WS | 32K star · 维护活跃 · forum + reactions 都原生 · ESM 友好 |
+| 2026-05-12 | Listener daemon | **launchd KeepAlive** | systemd / pm2 / nohup | macOS native · 与 Hermes plist 模式一致 · 崩了自动重启 · `launchctl kickstart -k` 一行重启 |
+| 2026-05-12 | Bot-authored thread | **skip by default** + `LISTENER_ALLOW_BOTS=1` smoke flag | 永远 process | 防 listener 自己发的 reply 二次触发自身 = 无限循环 |
+| 2026-05-12 | Listener log path | **`data/tasks/_logs/task-listener.{log,error.log}`** | `~/.profitslocal/logs/` | 与 task 数据一起 → 一处看完整链路 |
 
 ---
 

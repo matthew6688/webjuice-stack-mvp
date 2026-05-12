@@ -1,0 +1,293 @@
+#!/usr/bin/env node
+/**
+ * scripts/cli/pl-task-listener.js · SOP-0 P2.3
+ *
+ * Long-running Discord gateway listener for #website-tasks forum.
+ *  - ProfitsLocal Handoff bot (token in WEBSITE_TASKS_DISCORD_BOT_TOKEN)
+ *  - On forum ThreadCreate: extract first message → routeIntent → createTask
+ *    → PATCH thread tags [kind, pending] → reply confirm
+ *  - On MessageReactionAdd in `human`-tagged threads: ✅ re-trigger / 🗑 give up
+ *  - Boot catch-up: scan active threads with no task file → backfill
+ *
+ * Run (foreground for testing):
+ *   node --env-file=.env.local scripts/cli/pl-task-listener.js
+ *
+ * Run (daemon · P2.4 will write launchd plist):
+ *   launchctl bootstrap gui/$UID ai.profitslocal.task-listener.plist
+ *
+ * SOP-0 §5.2.
+ */
+
+import { Client, GatewayIntentBits, Partials, Events, ChannelType } from 'discord.js';
+import {
+  createTask,
+  findByThreadId,
+  loadForumTags,
+  appliedTagsFor,
+  transitionStatus,
+  appendProgress,
+  readTask,
+  KINDS,
+} from '../../core/tasks/task-store.js';
+import { routeIntent } from '../../core/tasks/intent-router.js';
+
+const TOKEN = process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN;
+const FORUM_ID = process.env.WEBSITE_TASKS_FORUM_CHANNEL_ID;
+
+if (!TOKEN) { console.error('Missing WEBSITE_TASKS_DISCORD_BOT_TOKEN'); process.exit(2); }
+if (!FORUM_ID) { console.error('Missing WEBSITE_TASKS_FORUM_CHANNEL_ID'); process.exit(2); }
+
+const TAGS = loadForumTags();
+const DISCORD_API = 'https://discord.com/api/v10';
+
+/* ─── Discord client ──────────────────────────────────────────────── */
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.MessageContent,
+  ],
+  // Partials needed so reactions on uncached old messages still fire
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+});
+
+/* ─── Helpers ─────────────────────────────────────────────────────── */
+
+function log(...args) {
+  console.log(`[${new Date().toISOString()}]`, ...args);
+}
+
+async function patchThreadTags(threadId, tagIds) {
+  const res = await fetch(`${DISCORD_API}/channels/${threadId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bot ${TOKEN}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'sop0-task-listener',
+    },
+    body: JSON.stringify({ applied_tags: tagIds }),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    log('patchThreadTags failed', res.status, text.slice(0, 200));
+  }
+  return res.ok;
+}
+
+async function postThreadReply(threadId, content) {
+  const res = await fetch(`${DISCORD_API}/channels/${threadId}/messages`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bot ${TOKEN}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'sop0-task-listener',
+    },
+    body: JSON.stringify({ content: content.slice(0, 1900), allowed_mentions: { parse: [] } }),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    log('postThreadReply failed', res.status, text.slice(0, 200));
+    return null;
+  }
+  const data = await res.json().catch(() => null);
+  return data?.id || null;
+}
+
+function normalizeAttachments(msg) {
+  if (!msg?.attachments) return [];
+  return [...msg.attachments.values()].map((a) => ({
+    id: a.id,
+    filename: a.name,
+    url: a.url,
+    contentType: a.contentType,
+    size: a.size,
+  }));
+}
+
+/* ─── Core flow: new forum thread → task ──────────────────────────── */
+
+async function handleNewForumThread(thread) {
+  if (thread.parentId !== FORUM_ID) return;
+  if (findByThreadId(thread.id)) {
+    log('skip: task already exists for thread', thread.id);
+    return;
+  }
+  // Fetch the starter message (first post in the forum thread)
+  let starter = null;
+  try {
+    starter = await thread.fetchStarterMessage();
+  } catch (err) {
+    // forum threads sometimes don't have a fetchable starter immediately; retry once
+    await new Promise((r) => setTimeout(r, 1500));
+    try { starter = await thread.fetchStarterMessage(); } catch {}
+  }
+  if (!starter) {
+    log('skip: no starter message for thread', thread.id);
+    return;
+  }
+  // Bot-authored threads skipped by default (avoid self-loops). Override with
+  // LISTENER_ALLOW_BOTS=1 for E2E smoke tests where we create test threads
+  // via a sibling bot token.
+  if (starter.author?.bot && process.env.LISTENER_ALLOW_BOTS !== '1') {
+    log('skip: starter authored by bot', thread.id, starter.author.username);
+    return;
+  }
+
+  const text = starter.content || thread.name || '';
+  const attachments = normalizeAttachments(starter);
+
+  log('routing thread', thread.id, '·', text.slice(0, 60));
+  const route = await routeIntent({ text, attachments });
+  log('route → kind=' + route.kind, 'provider=' + route.provider, 'cli=' + route.target_cli, 'conf=' + route.confidence);
+
+  const task = createTask({
+    kind: route.kind,
+    source: {
+      platform:   'discord',
+      thread_id:  thread.id,
+      author:     starter.author?.username || 'unknown',
+      message_id: starter.id,
+    },
+    input: { text, attachments },
+    target: {
+      cli:               route.target_cli,
+      args:              route.args,
+      target_entity_key: route.target_entity_key,
+    },
+  });
+  appendProgress(task.task_id, 'router.resolved',
+    `kind=${route.kind} provider=${route.provider} cli=${route.target_cli || 'none'} conf=${route.confidence}`);
+
+  // Apply forum tags [kind, pending]
+  let pendingKind = route.kind;
+  let pendingStatus = 'pending';
+  // If router couldn't pick a CLI → still tag intake/etc, but listener can elevate to human
+  if (!route.target_cli && route.kind !== 'ops') {
+    pendingStatus = 'human';
+    appendProgress(task.task_id, 'router.no_cli', `kind=${route.kind} but no target_cli; needs operator triage`);
+    transitionStatus(task.task_id, 'human', { reason: 'router resolved kind but no target_cli mapping' });
+  }
+  const [kindTag, statusTag] = appliedTagsFor(pendingKind, pendingStatus);
+  await patchThreadTags(thread.id, [kindTag, statusTag]);
+
+  // Status message reply (pinned-style — listener owns the initial post, dispatcher edits later)
+  const lines = [
+    `**Task created** \`${task.task_id}\``,
+    `kind: \`${route.kind}\` · status: \`${pendingStatus}\` · provider: \`${route.provider}\``,
+    route.target_cli ? `cli: \`${route.target_cli}\`${route.args?.length ? ` ${route.args.join(' ')}` : ''}` : `cli: _(none — needs operator)_`,
+    route.target_entity_key ? `entity: \`${route.target_entity_key}\`` : null,
+  ].filter(Boolean);
+  const msgId = await postThreadReply(thread.id, lines.join('\n'));
+  if (msgId) {
+    const t = readTask(task.task_id);
+    if (t) {
+      t.discord.status_message_id = msgId;
+      const fs = await import('node:fs');
+      const path = await import('node:path');
+      // direct atomic write via task-store would be cleaner, but writeTask validates and
+      // bumps updated_at — that's fine here.
+      const { writeTask } = await import('../../core/tasks/task-store.js');
+      writeTask(t);
+    }
+  }
+  log('task', task.task_id, 'created · status=', pendingStatus);
+}
+
+/* ─── Reaction handler: ✅ retry / 🗑 abandon for `human`-tagged threads ─ */
+
+async function handleReaction(reaction, user, type) {
+  if (user.bot) return;
+  // Resolve partials
+  if (reaction.partial) {
+    try { await reaction.fetch(); } catch { return; }
+  }
+  const channel = reaction.message?.channel;
+  if (!channel || !channel.parentId || channel.parentId !== FORUM_ID) return;
+  const threadId = channel.id;
+  const task = findByThreadId(threadId);
+  if (!task) return;
+  if (task.status !== 'human') return; // only act on human-tagged tasks
+  const emoji = reaction.emoji.name;
+  log('reaction', type, emoji, 'on thread', threadId, '· task', task.task_id);
+  if (emoji === '✅') {
+    transitionStatus(task.task_id, 'pending', { reason: `retry by ${user.username}` });
+    appendProgress(task.task_id, 'operator.retry', `${user.username} requested retry via ✅`);
+    const [kindTag, statusTag] = appliedTagsFor(task.kind, 'pending');
+    await patchThreadTags(threadId, [kindTag, statusTag]);
+    await postThreadReply(threadId, `${user.username} retried task → status: \`pending\``);
+  } else if (emoji === '🗑️' || emoji === '🗑') {
+    transitionStatus(task.task_id, 'done', { reason: `abandoned by ${user.username}` });
+    appendProgress(task.task_id, 'operator.abandon', `${user.username} marked task done via 🗑`);
+    const [kindTag, statusTag] = appliedTagsFor(task.kind, 'done');
+    await patchThreadTags(threadId, [kindTag, statusTag]);
+    await postThreadReply(threadId, `${user.username} abandoned task → status: \`done\``);
+  }
+}
+
+/* ─── Boot catch-up: backfill missed threads ──────────────────────── */
+
+async function catchUp() {
+  log('boot catch-up: scanning active forum threads…');
+  let channel;
+  try {
+    channel = await client.channels.fetch(FORUM_ID);
+  } catch (err) {
+    log('catch-up: failed to fetch forum channel', err.message);
+    return;
+  }
+  if (!channel || channel.type !== ChannelType.GuildForum) {
+    log('catch-up: channel is not a forum', channel?.type);
+    return;
+  }
+  const fetched = await channel.threads.fetchActive().catch((err) => {
+    log('catch-up: fetchActive failed', err.message); return null;
+  });
+  if (!fetched) return;
+  let backfilled = 0;
+  for (const [, thread] of fetched.threads) {
+    if (findByThreadId(thread.id)) continue;
+    log('catch-up: backfilling thread', thread.id, thread.name);
+    try {
+      await handleNewForumThread(thread);
+      backfilled++;
+    } catch (err) {
+      log('catch-up: backfill error', thread.id, err.message);
+    }
+  }
+  log(`catch-up complete · backfilled=${backfilled}`);
+}
+
+/* ─── Wire events ─────────────────────────────────────────────────── */
+
+client.once(Events.ClientReady, async (c) => {
+  log(`logged in as ${c.user.tag} · listening forum ${FORUM_ID}`);
+  await catchUp();
+});
+
+client.on(Events.ThreadCreate, async (thread) => {
+  try {
+    await handleNewForumThread(thread);
+  } catch (err) {
+    log('ThreadCreate handler error', err.message);
+  }
+});
+
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
+  try { await handleReaction(reaction, user, 'add'); }
+  catch (err) { log('MessageReactionAdd error', err.message); }
+});
+
+client.on('error', (err) => log('client error', err.message));
+client.on('warn', (msg) => log('client warn', msg));
+
+process.on('SIGTERM', () => { log('SIGTERM · disconnecting'); client.destroy(); process.exit(0); });
+process.on('SIGINT',  () => { log('SIGINT · disconnecting');  client.destroy(); process.exit(0); });
+
+/* ─── Boot ────────────────────────────────────────────────────────── */
+
+client.login(TOKEN).catch((err) => {
+  console.error('login failed:', err.message);
+  process.exit(1);
+});

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.profitslocal.task-listener</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>--env-file=/Users/matthew/Developer/google-map-website/.env.local</string>
+        <string>scripts/cli/pl-task-listener.js</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/matthew/Developer/google-map-website</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/matthew/.local/bin</string>
+        <key>NODE_ENV</key>
+        <string>production</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+        <key>Crashed</key>
+        <true/>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/matthew/Developer/google-map-website/data/tasks/_logs/task-listener.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/matthew/Developer/google-map-website/data/tasks/_logs/task-listener.error.log</string>
+</dict>
+</plist>
