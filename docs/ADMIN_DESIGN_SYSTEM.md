@@ -1,10 +1,33 @@
-# Admin Design System · v1.0
+# Admin Design System · v1.1
 
 **所有 `/admin/*` 页面遵守本文档。** 不允许 per-page 自造视觉模式。
 
 更新日期：2026-05-12
 对应 CSS：`src/styles/admin-design-system.css`（强制加载于 `src/layouts/AdminLayout.astro`）
 配套页面参考：`/admin/scoring/sop-2` （视觉典范）
+
+## v1.1 增量（2026-05-12）
+
+新增组件 + 规则，配套 SOP 单一真理来源协议落地：
+
+| 组件 / 规则 | 类名 | 用途 |
+|---|---|---|
+| **页面元信息** | `.admin-page-meta` + `.admin-page-version` / `.admin-page-updated` | 每个 admin 页面顶部显示版本 + 最近更新日 |
+| **代码同步 banner** | `.admin-code-sync-banner` (`.is-synced` / `.is-stale`) | 显式声明页面与代码同步状态；is-stale 时强调 "未上代码只能 TODO" |
+| **TODO 链接 marker** | `.admin-todo-link` | 链接到不存在 / 未上线的文档时用：strikethrough + 红 TODO badge |
+| **Section padding 规则** | `.scoring-shell .admin-paper-section` / `.sop-page .admin-paper-section` | padding: 22px 30px · 配合 sop-shell 实现 text vs container-edge 间距一致 |
+| **Table 标准** | admin-table (citrus header + 交替行 + hover) | 所有 admin 表格统一样式，不允许 per-page 写 `<table>` 自定 CSS |
+| **Folder-tab 对齐** | `.sop-tabs--global { max-width: 1080px }` + `.sop-shell { max-width: 1080px }` | tabs 必须与 shell 容器顶边对齐 |
+
+### 单一真理来源协议（CRITICAL）
+
+代码 ↔ 文档 ↔ 页面 三者必须同步：
+
+1. 改代码 → 同一 PR 改 doc 对应章节 → 改 admin 页面 → 截图 verify live
+2. 想法未落代码 → 只能进 doc TODO / 页面 TODO 列表，**不能** 在主流程章节 claim "已就绪"
+3. 检测不一致 → `.admin-code-sync-banner.is-stale` 顶部明示
+
+详见 [SOP_OVERVIEW.md §5](SOP_OVERVIEW.md)。
 
 > **维护规则**：改 design system → 同时改这份 doc + admin-design-system.css + 截图所有 admin 页面 verify 没破坏。
 > **加新组件 → 先在本文档提议，被批准再落到 CSS。** 不要直接在 per-page `<style>` 加新模式。
