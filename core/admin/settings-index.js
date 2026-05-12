@@ -110,8 +110,19 @@ function buildSpecialAlertsSection(env) {
     || env.OPS_ALERTS_DISCORD_WEBHOOK_URL
     || env.OPEN_DESIGN_ALERTS_DISCORD_WEBHOOK_URL
     || '';
+  const systemAlertsWebhook = env.SYSTEM_ALERTS_DISCORD_WEBHOOK_URL || '';
   return makeSection('特殊提醒', '异常失败、卡住、需要人工判断的情况。', [
-    makeItem('Discord 特殊提醒入口', specialWebhook, {
+    makeItem('系统健康警报入口 (SOP-X-Health)', systemAlertsWebhook, {
+      envKeys: ['SYSTEM_ALERTS_DISCORD_WEBHOOK_URL'],
+      required: false,
+      display: summarizeDiscordWebhook(systemAlertsWebhook),
+      secret: true,
+      inputType: 'url',
+      status: systemAlertsWebhook ? 'configured' : 'optional',
+      summary: 'gosom Docker / PSI / Discord / Cloudinary / 磁盘 等周期检查异常 → 推这里。',
+      reason: 'ops:health-check 跑出问题时通过这个 webhook 推 Discord，让运营人员立刻知道。区别于上面那个 (针对 Open Design 业务流卡住)。',
+    }),
+    makeItem('Discord 特殊提醒入口 (Open Design)', specialWebhook, {
       envKeys: ['SPECIAL_ALERTS_DISCORD_WEBHOOK_URL', 'OPS_ALERTS_DISCORD_WEBHOOK_URL', 'OPEN_DESIGN_ALERTS_DISCORD_WEBHOOK_URL'],
       required: false,
       display: summarizeDiscordWebhook(specialWebhook),
@@ -166,6 +177,13 @@ function buildOpsSection(env) {
       display: env.WEBSITE_PROJECTS_DISCORD_CHANNEL_ID || 'missing',
       summary: '付费项目和交付流程会进入这个频道。',
       reason: '用于承载已付款、审核中、已上线项目的 Discord forum workspace。',
+    }),
+    makeItem('Lead 发现批次频道', env.LEAD_DISCOVERY_RUNS_DISCORD_CHANNEL_ID, {
+      envKeys: ['LEAD_DISCOVERY_RUNS_DISCORD_CHANNEL_ID'],
+      required: false,
+      display: env.LEAD_DISCOVERY_RUNS_DISCORD_CHANNEL_ID || 'missing',
+      summary: 'Lead 发现 + 审计 batch 任务的进度看板。',
+      reason: '每个 batch 任务在这里开一个 forum thread，stage-by-stage 推送进度 + 跨链接到 leads channel 的 per-lead thread。',
     }),
     makeItem('交接机器人密钥', env.WEBSITE_TASKS_DISCORD_BOT_TOKEN || env.DISCORD_BOT_TOKEN, {
       envKeys: ['WEBSITE_TASKS_DISCORD_BOT_TOKEN', 'DISCORD_BOT_TOKEN'],

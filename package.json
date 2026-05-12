@@ -57,6 +57,7 @@
     "pl:pipeline-batch-step": "node --env-file-if-exists=.env.local scripts/cli/pl-pipeline-batch-step.js",
     "pl:scrape-docker": "node scripts/cli/pl-scrape-docker.js",
     "pl:preflight": "node --env-file-if-exists=.env.local scripts/cli/pl-preflight.js",
+    "ops:health-check": "node --env-file-if-exists=.env.local scripts/cli/pl-ops-health-check.js",
     "leads:build-master-md": "node scripts/leads/build-master-md.js",
     "admin:screenshot": "node scripts/admin/screenshot-admin-ui.js",
     "evidence:build": "node scripts/evidence/build.js",
