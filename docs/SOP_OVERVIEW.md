@@ -196,10 +196,12 @@ V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord cha
 
 ### 🔴 立刻做（业务关键 · 下一轮起手）
 
-- [ ] **C5 SOP-1 出口契约 code 同步** — 让 SOP-1 文档承诺真正在代码中落地（HIGH PRIO 因为现在 doc/page 已 stale）
-  - 调研先（30 min）：读 `core/leads/enrichment.js` + `pl-pipeline-batch-step.js` + `buildDiscoveryQueues` 摸底
-  - 实施：`thin-contact.js` predicate · `enrichment_status` 字段写入 · `pl:enrich-thin-contact` CLI · `pipeline-batch-step --finalize` hook `dedup-audit` · `buildDiscoveryQueues` enrichment gate
-  - 调研后给真实工作量估计（之前盲估 2.5h 不靠谱）
+- [x] **C5-Phase-A SOP-1 出口契约 基础设施** ✅ 2026-05-12
+  - `enrichment_status` 字段自动写入 `mergeLeadIntoEntity`（'pending' / 'complete' 自动判定）
+  - `buildDiscoveryQueues` 加 `isEnrichmentReady` gate（向后兼容：缺字段=complete）
+  - `pl:pipeline-batch-step --finalize` 自动 hook `pl:dedup-audit`
+- [ ] **C5-Phase-B SOP-1 出口契约 接通 enrichment 自动执行** — 生产 `pl:run-enrichment-batch` CLI 处理 'pending' 队列，调用 `enrichLead()` + 持久化结果到 entity（含 fixture 写入策略 + Tinyfish 速率限制方案）
+- [ ] **C5-Phase-C E2E 测试 + cheap-audit-v2 enrichment-trigger 迁移** — `queued_for_enrichment` 仍 own 在 SOP-2，逻辑上应迁到 SOP-1 thin-contact predicate
 - [ ] **Design system 技术债清理** — 19 个 admin pages 仍有 per-page `<style>` 自定义 class。逐页迁到 `admin-design-system.css`。当前 `ops:design-audit` 是 warning mode，迁完后改 strict
 - [ ] **SOP-X-Discord** — 4-channel 架构 + bot 权限 + forum tags（迁出 §6 临时章节）
 - [ ] **SOP-X-Pricing** — 改价时 5 处必须同改的协议

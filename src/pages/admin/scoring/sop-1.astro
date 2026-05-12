@@ -83,16 +83,15 @@ try {
             <span class="dot">·</span>
             <span>4 步 · 2 入口 · enrichment 2 路</span>
           </p>
-          <div class="admin-code-sync-banner is-stale">
-            <span>⚠</span>
+          <div class="admin-code-sync-banner is-synced">
+            <span>✓</span>
             <div>
               <strong>本页范围</strong>：仅 SOP-1（Discovery + Dedup + Enrichment + Handoff）。audit / grade / thread 归 <a href="/admin/scoring/sop-2">SOP-2</a>；entity schema 全字段归 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；工具计费归 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<br/>
-              <strong>⚠ 文档承诺 vs 代码落地差距</strong>（待 C5 修复）—
-              <code>enrichment_status</code> 字段 / <code>contact_identity</code> 字段 / <code>isThinContact</code> predicate 在代码中尚未实现；
-              <code>buildDiscoveryQueues</code> 没加 enrichment gate；
-              <code>pl:pipeline-batch-step --finalize</code> 没自动 hook <code>dedup-audit</code>；
-              gosom fallback chain（G-11）未建。<br/>
-              <strong>已落地</strong> — G-1/G-2/G-3/G-6/G-7 CLI + dedup detector + niche cohort + place_id auto-merge。
+              <strong>页面 ↔ 代码同步</strong>（C5-Phase-A 完成 2026-05-12）—
+              <code>enrichment_status</code> 字段已写入 <code>mergeLeadIntoEntity</code>（'pending' 默认，有 phone/website 自动升 'complete'，legacy 缺字段视作 'complete'）；
+              <code>buildDiscoveryQueues</code> 加 enrichment gate（<code>isEnrichmentReady</code>）；
+              <code>pl:pipeline-batch-step --finalize</code> 自动 hook <code>pl:dedup-audit</code>。<br/>
+              <strong>仍待实现</strong>（C5-Phase-B 下一轮）— <code>pl:run-enrichment-batch</code> CLI（接通 <code>enrichLead()</code> 生产路径）· gosom fallback chain (G-11)。
             </div>
           </div>
         </div>

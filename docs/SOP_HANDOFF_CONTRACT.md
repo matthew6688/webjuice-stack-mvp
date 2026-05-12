@@ -114,7 +114,7 @@ SOP-1 交付给 SOP-2 的每个 entity 都保证：
 | `signals.{hasPhone, hasWebsite, hasImage, ...}` | object | ✅ | normalize | cheap-audit 快查 |
 | `batch_id` | string | ⚠️ G-3 新增 | run.batchId 或 lead.batch_id | filter 本批 vs 老批 |
 | `places_enrichment` | object / null | 可空（Places API 触发后才有）| Places API Details Basic | 增强 audit（types[] / photos / E.164 phone）|
-| **`enrichment_status`** | enum | ✅ SOP-1 必写 | SOP-1 Step 3 结尾 | `complete` (有 phone OR website OR social) / `partial` / `unenrichable` (全失败) |
+| **`enrichment_status`** | enum | ✅ SOP-1 必写 (自动) | `mergeLeadIntoEntity` 写 | 新 entity 默认 `'pending'`；有 phone OR website 自动升 `'complete'`；`pl:run-enrichment-batch` 跑完后改 `'complete'`/`'unenrichable'`。**Legacy 缺字段视作 `'complete'`** (backwards-compat) |
 | **`contact_identity`** | object / null | 可空 (Step 3a 后填) | SOP-1 5 路 search 输出 | `{ facebook, instagram, linkedin, contact_us_url, decision_maker }` |
 
 ### 2.4 `runs[]` · 历史 discovery runs

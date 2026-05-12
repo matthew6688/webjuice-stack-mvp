@@ -172,13 +172,12 @@ function chipClass(action) {
             <span class="dot">·</span>
             <span>cheap-audit <code>{config.version}</code></span>
           </p>
-          <div class="admin-code-sync-banner is-stale">
-            <span>⚠</span>
+          <div class="admin-code-sync-banner is-synced">
+            <span>✓</span>
             <div>
               <strong>本页范围</strong>：仅 SOP-2（筛选 + 审计 · entity → grade）。gosom Docker / image-lead V2 / batch_id 写入归 <a href="/admin/scoring/sop-1">SOP-1</a>；entity schema 全字段归 <a href="/admin/scoring/sop-handoff-doc">SOP-X-Handoff</a>；工具计费归 <a href="/admin/scoring/sop-x-tooling">SOP-X-Tooling</a>。<a href="/admin/scoring/sop-ownership-registry">概念归属表</a>。<br/>
-              <strong>⚠ 文档承诺 vs 代码落地差距</strong>（待 C5 修复）—
-              <code>cheap-audit-v2</code> 仍 own <code>queued_for_enrichment</code> 触发逻辑（文档说该归 SOP-1 thin-contact predicate）；
-              SOP-2 入口期望 "dedup-clean + enrichment-complete" 当前代码不强制校验。<br/>
+              <strong>页面 ↔ 代码同步</strong>（C5-Phase-A 完成 2026-05-12）— SOP-2 入口 gate 已生效（<code>buildDiscoveryQueues</code> isEnrichmentReady 过滤 'pending' entity）。<br/>
+              <strong>仍待 C5-Phase-B</strong>：cheap-audit-v2 输出的 <code>queued_for_enrichment</code> 触发逻辑迁移到 SOP-1 端（当前仍是 SOP-2 内部 fallback safety net）。<br/>
               <strong>已落地</strong> — 11 sub-audits / 6 维 34 规则 (visual=1 stub) / cheap-audit-v2 阈值都反映当前代码。
               <a href="/admin/scoring/sop-2-doc">完整文档</a> 同步维护。
             </div>

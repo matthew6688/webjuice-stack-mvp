@@ -283,12 +283,23 @@ export function rebuildDiscoveryIndex({ storeRoot = defaultDiscoveryStoreRoot() 
   return index;
 }
 
+// SOP-1 出口契约 gate: 只有 enrichment-complete (或 unenrichable) 的 entity 才能
+// 进入 SOP-2 的 cheap-site-audit 队列. 'pending' 表示 SOP-1 还没把联系方式补全.
+// Backwards-compat: 旧 entity 没有 enrichment_status 字段 → 视作 'complete' (legacy).
+// 详见 SOP-X-Handoff §1.1 + SOP-1 §3.6.4.
+function isEnrichmentReady(entity) {
+  const status = entity.enrichment_status;
+  if (!status) return true; // legacy entity (no field) → treat as complete
+  return status === 'complete' || status === 'unenrichable';
+}
+
 export function buildDiscoveryQueues({ storeRoot = defaultDiscoveryStoreRoot(), limit = 50 } = {}) {
   const entities = loadDiscoveryEntities({ storeRoot });
   const active = entities.filter((entity) => entity.status !== DISCOVERY_ENTITY_STATUS.SKIPPED);
   const cheapSiteAudit = active
     .filter((entity) => entity.status === DISCOVERY_ENTITY_STATUS.QUEUED_FOR_AUDIT)
     .filter((entity) => entity.latest?.website)
+    .filter(isEnrichmentReady)
     .sort(byScore)
     .slice(0, limit)
     .map(queueItem);
@@ -381,6 +392,23 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
     websiteDomain: hostname(lead.website || entity.latest?.website || ''),
     phoneDigits: digits(lead.phone || entity.latest?.phone || ''),
   };
+  // SOP-1 出口承诺: entity 必须 enrichment-complete 才进 SOP-2 audit 队列.
+  // 默认 'pending' for new entities (有 phone OR website 时立即升级 'complete';
+  // 无 phone 且无 website 时保持 pending, 等 pl:run-enrichment-batch CLI 跑完
+  // enrichLead() 后改为 'complete' 或 'unenrichable').
+  // 已有 entity 没此字段 → buildDiscoveryQueues 视作 'complete' (legacy backwards-compat).
+  // 详见 SOP-X-Handoff §2.3 + SOP-1 §3.6.
+  const hasContact = !!(lead.phone || lead.website || entity.latest?.phone || entity.latest?.website);
+  const currentEnrichmentStatus = entity.enrichment_status;
+  if (!currentEnrichmentStatus) {
+    // First write — set default based on contact richness at this moment
+    entity.enrichment_status = hasContact ? 'complete' : 'pending';
+  } else if (currentEnrichmentStatus === 'pending' && hasContact) {
+    // Was pending, now we have contact info (gosom re-scrape or merge added it) → upgrade
+    entity.enrichment_status = 'complete';
+  }
+  // 'unenrichable' is set by pl:run-enrichment-batch when enrichment exhausts options.
+  // Never auto-downgrade complete → pending.
   // G-3: stamp batch_id onto entity if the run was started by pl:pipeline-batch-start.
   // batch_id (string) groups all leads from the same batch task — used by Hermes
   // / Discord to filter "what came from batch X" without scanning every entity.

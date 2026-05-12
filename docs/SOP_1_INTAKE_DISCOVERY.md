@@ -188,13 +188,20 @@ function isThinContact(entity) {
 
 ### 3.6.4 Enrichment status
 
-完成 enrichment 后写 `entity.enrichment_status`:
+**实现** (C5-Phase-A · 2026-05-12)：
 
-| 值 | 含义 |
+`mergeLeadIntoEntity` 写入 `entity.enrichment_status`:
+
+| 值 | 触发 |
 |---|---|
-| `complete` | 有 phone OR website OR 至少 1 个 social handle |
-| `partial` | enrichment 跑了但只补到一部分 |
-| `unenrichable` | 5 路 search 全失败 + 仍没联系方式 |
+| `pending` | 默认（新 entity，无 phone 也无 website）|
+| `complete` | 有 phone OR website 自动升级；或 `pl:run-enrichment-batch` 跑完成功 |
+| `unenrichable` | `pl:run-enrichment-batch` 跑完仍无联系方式（待 C5-Phase-B 实现）|
+| `partial` | 备用值 — 当前未自动写入 |
+
+**Backwards-compat**：旧 entity 没此字段 → `buildDiscoveryQueues` 视作 `'complete'`（legacy default），不阻塞 SOP-2 audit。
+
+**Queue gate** (`isEnrichmentReady`) 在 `buildDiscoveryQueues` 生效：只有 `'complete'` 或 `'unenrichable'` 才进 `cheap-site-audit.json`。`'pending'` entity 等 `pl:run-enrichment-batch` 跑完才能进。
 
 SOP-2 收到 entity 时**只 care** 这个 status，不重新跑 enrichment 判定。
 
