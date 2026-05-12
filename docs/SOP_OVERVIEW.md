@@ -70,7 +70,7 @@ Open Design 网站预制 (SOP-3, 待写)
 
 | # | 名称 | 状态 | 文档 | Admin |
 |---|---|---|---|---|
-| SOP-0 | Task System · 统一入口 + 调度 | ✅ v1.5 GA | [`SOP_0_TASK_SYSTEM.md`](SOP_0_TASK_SYSTEM.md) · [test plan](SOP_0_TEST_PLAN.md) · [results](SOP_0_TEST_RESULTS.md) · [operator guide](SOP_0_OPERATOR_GUIDE.md) | [`/admin/scoring/sop-0`](/admin/scoring/sop-0) (macro) · [`sop-0-doc`](/admin/scoring/sop-0-doc) (doc viewer) · [`/admin/tasks`](/admin/tasks) (live) |
+| SOP-0 | 任务系统 · 干活的总入口 | ✅ v1.7 (健康自检 + Discord 人话化 + admin 人话化 + Hermes cron 骨架) | [`SOP_0_TASK_SYSTEM.md`](SOP_0_TASK_SYSTEM.md) · [test plan](SOP_0_TEST_PLAN.md) · [results](SOP_0_TEST_RESULTS.md) · [operator guide](SOP_0_OPERATOR_GUIDE.md) · 健康自检 `npm run pl:sop0-doctor` | [`/admin/scoring/sop-0`](/admin/scoring/sop-0) (总览) · [`sop-0-doc`](/admin/scoring/sop-0-doc) (文档浏览) · [`/admin/tasks`](/admin/tasks) (任务列表) · [`/admin/cron`](/admin/cron) (定时任务) |
 
 ### Layer 1 · Lifecycle Process (5 个)
 
