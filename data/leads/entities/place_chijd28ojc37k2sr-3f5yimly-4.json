@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entityKey": "place_chijd28ojc37k2sr-3f5yimly-4",
   "firstSeenAt": "2026-05-09T10:53:53.252Z",
-  "lastSeenAt": "2026-05-09T10:53:53.252Z",
+  "lastSeenAt": "2026-05-12T05:10:42.839Z",
   "status": "scored",
   "lastStatusAt": "2026-05-09T10:53:53.252Z",
   "identifiers": {
@@ -40,6 +40,36 @@
       "imageCount": 2,
       "hasPopularTimes": false,
       "hasAboutAttributes": true
+    },
+    "contact_identity": {
+      "phone": "0431 275 646",
+      "website": "",
+      "social": {
+        "facebook": "https://www.facebook.com/reganbrothersroofing/",
+        "instagram": "https://www.instagram.com/p/B_5gBX-BqPM/",
+        "linkedin": ""
+      },
+      "decision_maker": null,
+      "third_party_reviews": [],
+      "evidence_sources": [
+        {
+          "field": "social.instagram",
+          "source": "tinyfish",
+          "route": "enrich_social_instagram",
+          "url": "https://www.instagram.com/p/B_5gBX-BqPM/",
+          "title": "Roof restoration completed by BRS -Finished in colour ...",
+          "profile_score": 1
+        },
+        {
+          "field": "social.facebook",
+          "source": "tinyfish",
+          "route": "enrich_social_instagram",
+          "url": "https://www.facebook.com/reganbrothersroofing/",
+          "title": "Regan Brothers Roofing | Brisbane QLD - Facebook",
+          "profile_score": 10
+        }
+      ],
+      "enriched_at": "2026-05-12T05:10:42.836Z"
     }
   },
   "runs": [
@@ -61,7 +91,14 @@
       "score": 67,
       "action": "starter_candidate",
       "status": "scored"
+    },
+    {
+      "at": "2026-05-12T05:10:42.839Z",
+      "event": "enrichment_batch_ran",
+      "status": "complete",
+      "routes": 6
     }
   ],
-  "notes": []
+  "notes": [],
+  "enrichment_status": "complete"
 }

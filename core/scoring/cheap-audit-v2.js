@@ -280,9 +280,16 @@ export function decideAction({ final_score, gbp_quality, redesign_need, entity, 
       };
     }
     if (!reachable) {
+      // SOP-1/SOP-2 layered enrichment model (2026-05-12):
+      //   - PRIMARY trigger: SOP-1 thin-contact predicate (entity.enrichment_status='pending')
+      //     processed by `npm run pl:run-enrichment-batch` BEFORE this audit runs.
+      //   - FALLBACK (this line): if an entity slipped past SOP-1 (manual creation,
+      //     old import, etc.) and still has !reachable, output queued_for_enrichment
+      //     so it's caught downstream. The two are NOT redundant — SOP-1 is preventive,
+      //     this is the safety net. See SOP_HANDOFF_CONTRACT.md §1.1.
       return {
         action: 'queued_for_enrichment',
-        reason: 'no_website + no contact — try Stage 0.5 search enrichment first',
+        reason: 'no_website + no contact — SOP-1 fallback safety net (primary trigger is SOP-1 thin-contact pre-audit)',
         fired_triggers: [], threshold_used: null,
       };
     }
