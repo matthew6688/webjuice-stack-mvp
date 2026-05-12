@@ -105,6 +105,29 @@ Open Design 网站预制 (SOP-3, 待写)
 
 ---
 
+## 4.5 健康检查 cadence 规则（所有 SOP 强制 · 2026-05-13 起）
+
+**默认每天 1 次**。理由 + 升级触发 + 实施模板 → [`memory/feedback_sop_health_check_cadence.md`](../../.claude/projects/-Users-matthew-profitslocal/memory/feedback_sop_health_check_cadence.md)（auto-load）。
+
+简版规则：
+
+| 阶段 | cadence | 渠道 |
+|---|---|---|
+| 现在（未上线 · 0 付费客户） | **daily 09:00** | `bot-logs` 心跳 + `sop-alert` 升级 |
+| 第一个付费客户 / 自动外联开跑 | hourly | 同上 |
+| Production SLA | 15min / on-call | 同上 + PagerDuty 等 |
+
+**每个 SOP 必须有**：
+1. `pl:<sop>-doctor` CLI（`--json` 给机器读）
+2. Hermes daily cron 调上面 CLI
+3. 连续 ≥ 2 次 fail → @Matthew 升级到 `sop-alert` (1503855265949421658)
+4. Dead-man's switch：daily heartbeat 即便健康也发，**死寂 = 出事**
+5. 脚本进 `ops/hermes-scripts/` + README
+
+**SOP-0 是 canonical 参考**：`pl:sop0-doctor` + cron `2fad97bcc0c8` + `ops/hermes-scripts/sop0-*.sh`。新 SOP 复用这套模板，不重新发明。
+
+---
+
 ## 5. 维护协议（必读）
 
 每个 SOP 同时维护 3 个产物：

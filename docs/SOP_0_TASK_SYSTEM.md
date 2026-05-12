@@ -737,6 +737,17 @@ Logs:
 
 把这一节当 **"SOP-0 没坏吧"5 分钟自检清单**。任何疑点先跑完这一节再 ping。
 
+### 12.0 Cadence · 当前 daily（未上线，hourly 是浪费）
+
+**默认每天 09:00 跑一次** → SOP-overview §4.5 规则适用全 SOP。
+触发器（任一）→ 升 hourly：
+- 第一个付费客户上线
+- 自动外联 outreach 开跑
+- 24h 内连续 ≥ 2 次 fail 漏过没人看
+
+Hermes cron `2fad97bcc0c8` · `0 9 * * *` · 调 `ops/hermes-scripts/sop0-daily-heartbeat.sh`
+（→ `sop0-health-ping.sh --daily` → `npm run pl:sop0-doctor --json`）。
+
 ### 12.1 一行总检（推荐每天早上 / 长会归来跑一次）
 
 ```bash

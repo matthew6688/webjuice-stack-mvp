@@ -8,8 +8,12 @@
 
 | 文件 | 调用方 | Discord 路由 |
 |---|---|---|
-| `sop0-health-ping.sh` | Hermes cron `SOP-0 hourly health ping` (id `0a3482c05eef`, `0 * * * *`) | `bot-logs` (1493926218574200942) · critical fail 升级 `sop-alert` (1503855265949421658) |
+| `sop0-health-ping.sh` | （主逻辑，被 wrapper 调用） | `bot-logs` (1493926218574200942) · critical fail 升级 `sop-alert` (1503855265949421658) + @Matthew |
 | `sop0-daily-heartbeat.sh` | Hermes cron `SOP-0 daily 09:00 heartbeat` (id `2fad97bcc0c8`, `0 9 * * *`) | `bot-logs` |
+
+> **Cadence 规则**（2026-05-13 起，所有 SOP 适用，见 [SOP_OVERVIEW §4.5](../../docs/SOP_OVERVIEW.md#45)）：
+> 默认 **daily**。未上线，hourly 浪费资源 + 制造 noise。升 hourly 触发器：
+> 首付费客户 · 自动外联开跑 · 连续 fail 漏过去没人看。
 
 ## 告警逻辑
 
