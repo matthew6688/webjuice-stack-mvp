@@ -169,7 +169,7 @@ npm run ops:sop-audit
 4. 没读过源码 → confidence ≤ 60% · 没真实跑过 → ≤ 85% · 没 smoke verified → ≤ 95% · **100% 不存在**
 5. 改后必跑：`npm run ops:sop-audit` + `npm run ops:design-audit` + 改 admin page 时跑 live screenshot
 
-### 8.2 五个真实犯过的错 + 强制对策
+### 8.2 真实犯过的错 + 强制对策
 
 | 错误 | 强制对策 |
 |---|---|
@@ -178,6 +178,8 @@ npm run ops:sop-audit
 | 文档承诺超前代码 | grep 找代码实现；找不到 → sync banner is-stale + TODO |
 | 跨 SOP 单源忽略 | `ops:sop-audit` 必跑；先查 ownership-registry |
 | stale class 引用 | live verify + screenshot 必跑（不只是 build green） |
+| **删 per-page `<style>` 前没 grep 跨页引用** (2026-05-12 II) | 删 `<style>` 前 **grep `class=".*${className}"` 跨 admin/*.astro**。任何其他 page 引用 → MUST 先迁到 design-system，再删除。Astro `<style>` 是 scoped via data-astro-cid，**不跨页生效**。 |
+| **视觉 smoke test 只查 element 存在，没查 layout** | screenshot verification **不能只** `document.querySelector('.foo')`。要 check 视觉指标（bounding box / pixel area / 关键 layout 属性），或人眼看截图。`ops:design-audit` 加了 reverse orphan check (markup references → CSS missing)。 |
 
 ### 8.3 commit message 必含
 - Owner 字段（自 ownership-registry 引）
