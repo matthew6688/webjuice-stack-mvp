@@ -254,6 +254,10 @@
 }
 .sop-page .admin-shell { position: relative; z-index: 1; }
 
+/* Shared SOP shell width — tabs must match this for alignment */
+.sop-shell { max-width: 1080px; }
+.sop-shell .admin-banner { max-width: 720px; }
+
 .sop-tab {
   display: flex; flex-direction: column; gap: 2px;
   padding: 12px 22px;

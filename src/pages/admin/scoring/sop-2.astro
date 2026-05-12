@@ -138,7 +138,7 @@ function chipClass(action) {
         <span class="sop-tab-en">Screening & Audit</span>
       </a>
     </nav>
-    <div class="admin-shell lead-admin-shell scoring-shell" data-ui-version="local-style-2026-05-08">
+    <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
       <header class="admin-header">
         <div>
           <p class="eyebrow">SOP-2 概览 · 给你看大局</p>
@@ -784,50 +784,7 @@ function chipClass(action) {
   .stage-desc-zh { margin: 0 0 6px; font-size: 14px; line-height: 1.55; color: var(--pl-ink); }
   .stage-desc-en { margin: 0; font-size: 12px; color: var(--pl-muted); }
 
-  /* ─── SOP tab strip ─── */
-  .sop-tabs {
-    display: flex; gap: 0;
-    margin: 14px 0 22px;
-    border-bottom: 2px solid var(--pl-line);
-  }
-  .sop-tab {
-    display: flex; flex-direction: column; gap: 2px;
-    padding: 12px 22px;
-    background: color-mix(in srgb, var(--pl-paper) 50%, transparent);
-    border: 2px solid var(--pl-line);
-    border-bottom: none;
-    margin-right: 6px;
-    margin-bottom: -2px;
-    text-decoration: none;
-    color: var(--pl-muted);
-    min-width: 220px;
-  }
-  .sop-tab:hover {
-    background: color-mix(in srgb, var(--pl-citrus) 12%, var(--pl-paper));
-    color: var(--pl-ink);
-  }
-  .sop-tab--active {
-    background: var(--pl-paper);
-    color: var(--pl-ink);
-    box-shadow: 3px -3px 0 var(--pl-line);
-    transform: translateY(-2px);
-    border-bottom: 2px solid var(--pl-paper);
-  }
-  .sop-tab-id {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--pl-coral);
-  }
-  .sop-tab-zh {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 16px; font-weight: 700; line-height: 1.15;
-  }
-  .sop-tab-en {
-    font-size: 11px; color: var(--pl-muted);
-    font-style: italic;
-  }
-  .sop-tab--active .sop-tab-zh { color: var(--pl-ink); }
+  /* SOP tab strip styles removed — now in admin-design-system.css */
 
   /* ─── Channel card improvements ─── */
   .channel-stage {
