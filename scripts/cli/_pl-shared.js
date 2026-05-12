@@ -35,6 +35,13 @@ export function parseArgs(argv) {
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
     if (a.startsWith('--')) {
+      // 支持 --key=value (等号) 和 --key value (空格) 两种
+      // listener-prepped image task 用等号 · 操作员手敲一般用空格
+      const eqIdx = a.indexOf('=');
+      if (eqIdx > 2) {
+        out[a.slice(2, eqIdx)] = a.slice(eqIdx + 1);
+        continue;
+      }
       const k = a.slice(2);
       const next = argv[i + 1];
       if (!next || next.startsWith('--')) out[k] = true;
