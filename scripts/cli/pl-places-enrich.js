@@ -58,8 +58,10 @@ if (!placeId) {
 }
 
 const guard = new PlacesQuotaGuard();
-const status0 = guard.status();
-console.log(`Places API quota: ${status0.used}/${status0.limit} calls used in ${status0.month} (${(status0.pct * 100).toFixed(1)}%)`);
+const aggregateStatus = guard.status();
+const totalUsed = aggregateStatus.total_used;
+const totalLimit = aggregateStatus.total_limit;
+console.log(`Places API quota: ${totalUsed}/${totalLimit} calls used in ${aggregateStatus.month} across ${aggregateStatus.keys.length} key(s) (${(aggregateStatus.total_pct * 100).toFixed(1)}%)`);
 
 if (DRY_RUN) {
   console.log(JSON.stringify({
@@ -68,25 +70,26 @@ if (DRY_RUN) {
     entity_key: ENTITY_KEY,
     place_id: placeId,
     would_call: 'place_details_basic',
-    quota: status0,
+    quota: aggregateStatus,
   }, null, 2));
   process.exit(0);
 }
 
-let quotaAfter;
+// G-12: select first key with capacity remaining (multi-key rotation)
+let selectedKey;
 try {
-  quotaAfter = await guard.checkAndCharge(1, { skuLabel: 'details_basic' });
+  selectedKey = guard.selectAvailableKey();
 } catch (err) {
   if (err instanceof PlacesQuotaCapExceeded) {
     console.error(`HARD CAP: ${err.message}`);
     await pushAlert({
-      title: 'Google Places API hard cap reached',
-      detail: `Places API quota exhausted for ${err.month}: ${err.used}/${err.limit} calls.\nEnrichment requests will fail until 1st of next month, or until rotation (G-12 backlog) is built.\n\nEntity requested: \`${ENTITY_KEY}\``,
+      title: 'Google Places API · all keys capped',
+      detail: `All ${aggregateStatus.keys.length} Places API key(s) capped for ${err.month}.\nEnrichment will fail until 1st of next month, OR add another GCP account + GOOGLE_PLACES_API_KEY_${aggregateStatus.keys.length + 1}.\n\nEntity requested: \`${ENTITY_KEY}\``,
       severity: 'error',
       source: 'pl:places-enrich',
       fields: [
-        { name: 'used', value: String(err.used), inline: true },
-        { name: 'limit', value: String(err.limit), inline: true },
+        { name: 'keys', value: aggregateStatus.keys.length.toString(), inline: true },
+        { name: 'total used', value: String(totalUsed), inline: true },
         { name: 'month', value: err.month, inline: true },
       ],
       url: 'https://profitslocal.com/admin/scoring/sop-x-tooling',
@@ -96,7 +99,17 @@ try {
   throw err;
 }
 
-const extractor = new GooglePlacesExtractor();
+console.log(`  Using key: ${selectedKey.keyId} (rotation auto-select)`);
+
+let quotaAfter;
+try {
+  quotaAfter = await guard.checkAndCharge(1, { skuLabel: 'details_basic', keyId: selectedKey.keyId });
+} catch (err) {
+  console.error(`charge failed: ${err.message}`);
+  process.exit(1);
+}
+
+const extractor = new GooglePlacesExtractor({ apiKey: selectedKey.apiKey });
 
 try {
   const detail = await extractor.details({ placeId, niche: entity.latest?.niche, city: entity.latest?.city });

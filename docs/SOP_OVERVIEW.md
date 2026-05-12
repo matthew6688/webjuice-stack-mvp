@@ -226,10 +226,10 @@ V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord cha
 
 ### 🟡 中优（SOP-1 / SOP-X-Tooling 衍生工作）
 
+- [x] **G-12** Google Places API 多账号 rotation ✅ 2026-05-12 (PlacesQuotaGuard.selectAvailableKey + 自动 schema v1→v2 migrate)
 - [ ] **G-11** 3rd-party scraper provider interface (outscraper / apify / brightdata) — gosom 备份 + 国际扩展
-- [ ] **G-12** Google Places API 多账号 rotation — 当 1 个 key 接近 cap，自动切下一个
-- [ ] **G-13** Places photos → master.md 素材库 (Cloudinary 上传)
-- [ ] **G-14** opening_hours → 销售最佳联系时间 signal
+- [ ] **G-13** Places photos → master.md 素材库 · cloudinary helper 已就绪 (`core/cloudinary/attachments.js`) · 插入 master-md-builder "商户视觉素材" section
+- [ ] **G-14** opening_hours → 销售最佳联系时间 signal · 数据已在 `place.opening_hours.weekday_text[]` (Places API normalized)
 - [ ] **G-18** Hermes cron 实际注册 `ops:health-check`（替代手动跑）
 - [ ] **G-6.1** image-lead OCR/VLM 自动 extract（当前手填字段）
 

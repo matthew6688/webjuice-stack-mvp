@@ -80,9 +80,12 @@
 2. 操作员手动 enrich 单 entity
 3. **C/D 不投入**，节约额度
 
-**未来扩展（G-12 backlog）**：
-- 多账号 rotation：`GOOGLE_PLACES_API_KEY` / `_2` / `_3` → 当主 key 接近 cap，guard 自动切到 `_2`
-- 每个 key 一个 quota 文件，总额度叠加
+**多账号 rotation（G-12 · ✅ 2026-05-12）**：
+- env：`GOOGLE_PLACES_API_KEY` (primary) · `GOOGLE_PLACES_API_KEY_2` · `_3` ... 每个 = 独立 GCP 账号 = 独立 $200 配额
+- `PlacesQuotaGuard.selectAvailableKey()` 自动选第一个有余量的 key
+- 配额 ledger 升级 schemaVersion v1 → v2（per-key tracking）· 自动 migrate
+- 全 key capped → 抛 `PlacesQuotaCapExceeded` + Discord alert + 建议新增 `_N` key
+- `pl:places-enrich` 已接入：每次自动选 key + charge 对应 keyId
 
 ---
 
