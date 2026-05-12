@@ -1,6 +1,7 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: **v1.1** (P0-P8 + P6.X image-extract attachment 自动化 · 2026-05-12)
+**版本**: **v1.2** (P0-P8 + P6.X + race-fix + vision fallback chain + admin nav · 2026-05-12)
+**Operator guide**: [`SOP_0_OPERATOR_GUIDE.md`](SOP_0_OPERATOR_GUIDE.md)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -305,7 +306,10 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 **完成 13/13 (P0-P8) · SOP-0 v1.0 锁定 2026-05-12**。
 
 后续工作 (TODO):
-- ✅ **P6.X**: image-extract 任务 attachment 下载 + 视觉 LLM 提取业务字段 — done 2026-05-12 (v1.1)
+- ✅ **P6.X**: image-extract 任务 attachment 下载 + 视觉 LLM 提取业务字段 — done 2026-05-12 (v1.1) + v1.2 fixes
+- 🟡 **single-business-enrich kind** (Matthew Q5 2026-05-12): 部分业务信号 (phone/email/business-name) → 自动 search/enrich/补全 → 进 audit pipeline. 新 kind + 新 CLI. ~5-7h. **等 Matthew 拍板 scope**
+- 🟡 **PDF / audio / docx 输入支持**: 本地 package 已有 (pdf-parse / whisper.cpp / mammoth); 不在 v1 范围. **等 Matthew 提优先级**
+- 🟡 **vision fallback chain 扩展**: 当前 qwen3.6→gemma3 都失败仍 human; 可加 Tesseract OCR + text-LLM 提取 / claude-cli vision (T1 subs) 作末端 fallback
 - **SOP-0 v2** (远期): 任务数据 cloud mirror / dispatcher 上 VPS 不依赖 Mac 在线
 
 ### 7.3 P7 retention + reactions
@@ -541,6 +545,10 @@ Logs:
 | 2026-05-12 | SOP-0 v1.0 lock | **doc lock + 13/13 P 全 done** | 持续迭代不 lock | 主要功能稳定 · 5 daemon 跑通 · 进一步工作 (image attachment / cloud mirror) 进 TODO / v2 |
 | 2026-05-12 | P6.X image 视觉提取放 listener | **listener 同步阻塞 ~10-60s vision** | dispatcher 端异步 / 中间专属 CLI | 用户已等 ollama route (~5s)，再加 vision 同一时段·避免 dispatcher 接到 task 后又"等条件" · 保持 dispatcher 简单 |
 | 2026-05-12 | image-extract 失败转 human | **缺 businessName/niche/city → human tag** | retry / silent fail | operator 见 forum human tag 一秒决定·补字段 / 放弃·而不是看一堆 retry log |
+| 2026-05-12 | v1.2 race-fix: prep 在 createTask **之前** | **prepImage → createTask → fs.watch (有序)** | prepImage → createTask 早写 → fs.watch 抢跑 → CLI 半空 args 失败 | 真实 bug · Matthew 2026-05-12 thread 1503742230933012550 发图，dispatcher 在 prep 完成前 spawn → exit=1 "Missing --image" |
+| 2026-05-12 | v1.2 vision 多模型 fallback chain | **`qwen3.6:27b → gemma3:27b` field-merge** | 单一 qwen3.6:27b | Matthew 2026-05-12："所有文字识别都是一系列模型,前面解决不了按顺序 fallback" · 两个本地 vision 模型 field 互补 · 早停若 key fields 都有 |
+| 2026-05-12 | v1.2 "received" 即时回帖 | **图任务 listener 先发📥 received 再开 vision** | vision 跑 30-60s 全程静默 | UX bug · 用户以为 bot 不响应 |
+| 2026-05-12 | v1.2 admin nav "任务" tab | **AdminLayout `tasks` key 加入 nav 数组** | 只能直 URL 访问 / SOP tab 下 | operational view 该在 top nav · SOP tab 留给 reference docs |
 
 ---
 
@@ -564,8 +572,9 @@ Logs:
 | `SOP0_API_AUTH_TOKEN` | (required) | Bearer token for tunnel API (32-byte base64url) |
 | `PUBLIC_SOP0_API_TOKEN` | (= SOP0_API_AUTH_TOKEN) | Astro build-time embed for admin pages |
 | `SOP0_API_ALLOWED_ORIGINS` | `https://profitslocal.com,https://tasks.profitslocal.com,http://localhost:4321` | CORS allowlist |
-| `SOP0_IMAGE_VISION_MODEL` | `qwen3.6:27b` | image-extract vision Ollama 模型 (备选 `gemma3:27b`) |
-| `SOP0_IMAGE_VISION_TIMEOUT_MS` | `240000` (4min) | vision LLM 调用超时 |
+| `SOP0_IMAGE_VISION_CHAIN` | `qwen3.6:27b,gemma3:27b` | image-extract 多模型 fallback (逗号分隔，按顺序 try + field-merge) |
+| `SOP0_IMAGE_VISION_MODEL` | (deprecated, use _CHAIN) | back-compat 单模型 override |
+| `SOP0_IMAGE_VISION_TIMEOUT_MS` | `240000` (4min) | 每个 vision 模型调用超时 |
 
 ---
 

@@ -6,7 +6,7 @@ import { siteConfig } from '../config/site';
 interface Props {
   title: string;
   description?: string;
-  active?: 'overview' | 'intakes' | 'finance' | 'queue' | 'leads' | 'templates' | 'reports' | 'settings' | 'scoring';
+  active?: 'overview' | 'intakes' | 'finance' | 'queue' | 'leads' | 'templates' | 'reports' | 'settings' | 'scoring' | 'tasks';
 }
 
 const {
@@ -23,6 +23,7 @@ const adminNav = [
   { key: 'intakes', label: '项目', href: '/admin/intakes' },
   { key: 'finance', label: '财务', href: '/admin/finance' },
   { key: 'queue', label: '队列', href: '/admin/queue' },
+  { key: 'tasks', label: '任务', href: '/admin/tasks' },
   { key: 'scoring', label: 'SOP', href: '/admin/scoring/sop-2' },
   { key: 'settings', label: '设置', href: '/admin/settings' },
 ];

@@ -141,8 +141,45 @@ async function handleNewForumThread(thread) {
   const hasImage = attachments.some((a) => (a.contentType || '').toLowerCase().startsWith('image/'));
 
   log('routing thread', thread.id, '·', text.slice(0, 60), hasImage ? `· ${attachments.length} attachment(s)` : '');
+
+  // Immediate "received" reply for image tasks — vision extract takes 20-70s,
+  // user would otherwise see silence. Send BEFORE any LLM work.
+  if (hasImage) {
+    await postThreadReply(thread.id,
+      `📥 Received · ${attachments.length} attachment(s) · routing + vision OCR/extract starting…`);
+  }
+
   const route = await routeIntent({ text, attachments });
   log('route → kind=' + route.kind, 'provider=' + route.provider, 'cli=' + route.target_cli, 'conf=' + route.confidence);
+
+  // SOP-0 P6.X · image-extract prep MUST complete BEFORE createTask, otherwise
+  // dispatcher's fs.watch fires immediately on the half-prepared task and spawns
+  // pl:ingest-image with empty args → fails before we can patch.
+  // (Discovered 2026-05-12 thread 1503742230933012550 race condition.)
+  let imagePrep = null;
+  if (route.kind === 'image-extract' && hasImage) {
+    try {
+      imagePrep = await prepareImageTask({ taskId: 'pre-' + thread.id, attachments });
+      if (imagePrep.ok) {
+        log('image.prep ok · ' + imagePrep.extracted.businessName + ' · ' + imagePrep.extracted.niche + '/' + imagePrep.extracted.city + ' · ' + imagePrep.extracted.latency_ms + 'ms');
+        await postThreadReply(thread.id,
+          `🔍 OCR/extract done in ${(imagePrep.extracted.latency_ms / 1000).toFixed(1)}s · "${imagePrep.extracted.businessName}" · ${imagePrep.extracted.niche}/${imagePrep.extracted.city}`);
+      } else {
+        log('image.prep failed: ' + imagePrep.reason);
+        await postThreadReply(thread.id, `⚠ OCR/extract incomplete · ${imagePrep.reason}`);
+      }
+    } catch (err) {
+      log('image.prep error', err.message);
+      await postThreadReply(thread.id, `⚠ OCR/extract error · ${err.message}`);
+      imagePrep = { ok: false, reason: 'exception: ' + err.message };
+    }
+  }
+
+  // Final args/attachments resolved — NOW create task with ready-to-run target
+  const finalArgs = imagePrep?.ok ? imagePrep.args : (route.args || []);
+  const finalAttachments = imagePrep?.local_attachments?.length
+    ? imagePrep.local_attachments
+    : attachments;
 
   const task = createTask({
     kind: route.kind,
@@ -152,53 +189,30 @@ async function handleNewForumThread(thread) {
       author:     starter.author?.username || 'unknown',
       message_id: starter.id,
     },
-    input: { text, attachments },
+    input: { text, attachments: finalAttachments },
     target: {
       cli:               route.target_cli,
-      args:              route.args,
+      args:              finalArgs,
       target_entity_key: route.target_entity_key,
     },
   });
   appendProgress(task.task_id, 'router.resolved',
     `kind=${route.kind} provider=${route.provider} cli=${route.target_cli || 'none'} conf=${route.confidence}`);
-
-  // SOP-0 P6.X · image-extract path needs attachment download + vision extract
-  // BEFORE dispatcher can spawn pl:ingest-image (which requires --image <local-path>
-  // + --niche + --city + --business-name). Done in listener so dispatcher stays dumb.
-  // Failure → mark task `human` with reason; operator triages.
-  let imagePrep = null;
-  if (route.kind === 'image-extract' && hasImage) {
-    appendProgress(task.task_id, 'image.prep.start', `downloading ${attachments.length} attachment(s) + vision extract`);
-    try {
-      imagePrep = await prepareImageTask({ taskId: task.task_id, attachments });
-      if (imagePrep.ok) {
-        // Patch the task with extracted args
-        const t = readTask(task.task_id);
-        t.target.args = imagePrep.args;
-        t.input.attachments = imagePrep.local_attachments;
-        const { writeTask } = await import('../../core/tasks/task-store.js');
-        writeTask(t);
-        appendProgress(task.task_id, 'image.prep.ok',
-          `vision=${imagePrep.extracted.latency_ms}ms · businessName="${imagePrep.extracted.businessName}" · ${imagePrep.extracted.niche}/${imagePrep.extracted.city}`);
-      } else {
-        appendProgress(task.task_id, 'image.prep.failed', imagePrep.reason);
-      }
-    } catch (err) {
-      log('image.prep error', task.task_id, err.message);
-      appendProgress(task.task_id, 'image.prep.error', err.message);
-    }
+  if (imagePrep?.ok) {
+    appendProgress(task.task_id, 'image.prep.ok',
+      `vision=${imagePrep.extracted.latency_ms}ms · businessName="${imagePrep.extracted.businessName}" · ${imagePrep.extracted.niche}/${imagePrep.extracted.city}`);
+  } else if (imagePrep) {
+    appendProgress(task.task_id, 'image.prep.failed', imagePrep.reason);
   }
 
-  // Apply forum tags [kind, pending]
+  // Apply forum tags [kind, pending|human]
   let pendingKind = route.kind;
   let pendingStatus = 'pending';
-  // If router couldn't pick a CLI → still tag intake/etc, but listener can elevate to human
   if (!route.target_cli && route.kind !== 'ops') {
     pendingStatus = 'human';
     appendProgress(task.task_id, 'router.no_cli', `kind=${route.kind} but no target_cli; needs operator triage`);
     transitionStatus(task.task_id, 'human', { reason: 'router resolved kind but no target_cli mapping' });
   }
-  // Image-extract with failed prep → also human (CLI would fail validation)
   if (route.kind === 'image-extract' && hasImage && (!imagePrep || !imagePrep.ok)) {
     pendingStatus = 'human';
     const reason = imagePrep?.reason || 'image prep failed';
@@ -209,14 +223,11 @@ async function handleNewForumThread(thread) {
   await patchThreadTags(thread.id, [kindTag, statusTag]);
 
   // Status message reply (pinned-style — listener owns the initial post, dispatcher edits later)
-  const finalArgs = (imagePrep?.ok ? imagePrep.args : route.args) || [];
   const lines = [
     `**Task created** \`${task.task_id}\``,
     `kind: \`${route.kind}\` · status: \`${pendingStatus}\` · provider: \`${route.provider}\``,
     route.target_cli ? `cli: \`${route.target_cli}\`${finalArgs.length ? ' ' + finalArgs.join(' ') : ''}` : `cli: _(none — needs operator)_`,
     route.target_entity_key ? `entity: \`${route.target_entity_key}\`` : null,
-    imagePrep?.ok ? `image: vision extracted "${imagePrep.extracted.businessName}" (${imagePrep.extracted.niche}/${imagePrep.extracted.city}) in ${imagePrep.extracted.latency_ms}ms` : null,
-    imagePrep && !imagePrep.ok ? `image prep ✗: ${imagePrep.reason}` : null,
   ].filter(Boolean);
   const msgId = await postThreadReply(thread.id, lines.join('\n'));
   if (msgId) {

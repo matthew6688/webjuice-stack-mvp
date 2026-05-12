@@ -22,9 +22,17 @@ import path from 'node:path';
 import { visionOllama } from '../llm/vision-ollama.js';
 
 const INBOX_DIR = path.resolve(process.cwd(), 'data/inbox');
-const VISION_MODEL = process.env.SOP0_IMAGE_VISION_MODEL
+
+// Multi-model fallback chain (per Matthew 2026-05-12: "所有文字识别都是一系列模型，
+// 前面解决不了就按顺序 fallback").
+// Default chain: qwen3.6:27b → gemma3:27b (both T0 local Ollama, vision-capable).
+// To extend: SOP0_IMAGE_VISION_CHAIN=qwen3.6:27b,gemma3:27b,<more>
+// Single override: SOP0_IMAGE_VISION_MODEL (back-compat).
+const VISION_CHAIN = (process.env.SOP0_IMAGE_VISION_CHAIN
+  || process.env.SOP0_IMAGE_VISION_MODEL
   || process.env.VISION_OLLAMA_MODEL
-  || 'qwen3.6:27b';
+  || 'qwen3.6:27b,gemma3:27b')
+  .split(',').map((s) => s.trim()).filter(Boolean);
 
 /* ─── Download Discord attachment ─────────────────────────────────── */
 
@@ -78,27 +86,64 @@ Return ONLY a JSON object with these fields (use null for unknown):
 
 Be strict. Don't guess fields not visible. JSON only, no prose.`;
 
-export async function extractBusinessFromImage(localPath) {
-  const out = await visionOllama({
-    model: VISION_MODEL,
-    prompt: EXTRACT_PROMPT,
-    imagePaths: [localPath],
-    purpose: 'sop0_image_task_extract',
-    stage: 'image_task_routing',
-    timeoutMs: parseInt(process.env.SOP0_IMAGE_VISION_TIMEOUT_MS || '240000', 10),
-    think: false,
-  });
-  if (!out?.rawText) return null;
-  // Some Ollama vision models wrap in fences; strip and find first {…}
-  const raw = String(out.rawText).replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
-  const m = raw.match(/\{[\s\S]*\}/);
-  if (!m) return null;
+/** Try one model. Return normalized object or null. */
+async function extractWithModel(model, localPath) {
   try {
+    const out = await visionOllama({
+      model,
+      prompt: EXTRACT_PROMPT,
+      imagePaths: [localPath],
+      purpose: 'sop0_image_task_extract',
+      stage: 'image_task_routing',
+      timeoutMs: parseInt(process.env.SOP0_IMAGE_VISION_TIMEOUT_MS || '240000', 10),
+      think: false,
+    });
+    if (!out?.rawText) return null;
+    const raw = String(out.rawText).replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (!m) return null;
     const obj = JSON.parse(m[0]);
     return normalize(obj, out.latencyMs);
-  } catch {
+  } catch (err) {
     return null;
   }
+}
+
+/**
+ * Multi-model fallback extraction. Walks VISION_CHAIN, MERGING fields across
+ * models (first non-null wins per field). Stops early if "good enough" (has
+ * businessName + niche + city).
+ */
+export async function extractBusinessFromImage(localPath) {
+  const tried = [];
+  let merged = null;
+  let totalLatency = 0;
+  for (const model of VISION_CHAIN) {
+    const result = await extractWithModel(model, localPath);
+    const ok = !!result;
+    const goodFields = result
+      ? Object.entries(result).filter(([k, v]) => v && k !== 'latency_ms' && k !== 'tried_models').length
+      : 0;
+    tried.push({ model, ok, goodFields, latency_ms: result?.latency_ms || 0 });
+    if (result) {
+      totalLatency += (result.latency_ms || 0);
+      // Merge: prefer existing non-null, fill from new
+      if (!merged) {
+        merged = result;
+      } else {
+        for (const k of Object.keys(result)) {
+          if (k === 'latency_ms' || k === 'tried_models') continue;
+          if (!merged[k] && result[k]) merged[k] = result[k];
+        }
+      }
+      // Stop early if we already have key fields
+      if (merged.businessName && merged.niche && merged.city) break;
+    }
+  }
+  if (!merged) return null;
+  merged.latency_ms = totalLatency;
+  merged.tried_models = tried;
+  return merged;
 }
 
 function normalize(obj, latencyMs) {
