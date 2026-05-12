@@ -4,11 +4,14 @@ import { micromark } from 'micromark';
 import { gfm, gfmHtml } from 'micromark-extension-gfm';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const docPath = path.resolve(__dirname, '../../../../docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md');
-const rawMd = fs.readFileSync(docPath, 'utf8');
+// Use Vite's ?raw import — resolves at build time, robust to bundle location
+// (don't use __dirname since after Astro build, bundle is in dist/.prerender/
+// chunks/ and the relative ../../ path no longer points to source).
+import rawMd from '../../../../docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md?raw';
+
+// For lastModified, fall back to process.cwd() which is repo root during build.
+const docPath = path.join(process.cwd(), 'docs/SOP_2_LEAD_DISCOVERY_PIPELINE.md');
 
 // Render with GitHub-flavored markdown (tables, strikethrough, task lists)
 let html;
@@ -23,7 +26,12 @@ try {
   html = micromark(rawMd, { allowDangerousHtml: true });
 }
 
-const lastModified = fs.statSync(docPath).mtime.toISOString().slice(0, 16).replace('T', ' ');
+let lastModified = '—';
+try {
+  if (fs.existsSync(docPath)) {
+    lastModified = fs.statSync(docPath).mtime.toISOString().slice(0, 16).replace('T', ' ');
+  }
+} catch {}
 const wordCount = rawMd.split(/\s+/).length;
 ---
 
