@@ -168,8 +168,11 @@ v<MAJOR>.<MINOR>  ·  最近更新 YYYY-MM-DD  ·  [配套数据]
 
 ## 7. 当前 TODO 列表（按优先级）
 
-### 🔴 立刻写（这批 burned 过）
+### 🔴 立刻做（业务关键 · 下一轮起手）
 
+- [ ] **G-9 跨源 dedup 工具链**（高优先 · `pl:dedup-audit` + `pl:dedup-merge` + `/admin/v2-leads/dedup-review` UI · 5 层 dedup 策略 — Scale 必需）
+- [ ] **B2 Merged Entity Schema** 页面（SOP-1 + SOP-2 加 section · live sample 渲染真实 entity）
+- [ ] **B3 Dedup overview page** `/admin/v2-leads/dedup-overview` — 业务核心可视化
 - [ ] **SOP-X-Discord** — 4-channel 架构 + bot 权限 + forum tags
 - [ ] **SOP-X-Pricing** — 改价时 5 处必须同改的协议
 - [ ] **SOP-X-Deploy** — 前端 build + push + GH Actions + live verify + screenshot 协议
@@ -181,6 +184,15 @@ v<MAJOR>.<MINOR>  ·  最近更新 YYYY-MM-DD  ·  [配套数据]
 - [ ] **G-1 `pl:scrape-docker` CLI** — gosom Web API → entity store bridge
 - [ ] **G-2 `pl:preflight` CLI** — 跑 batch 前健康检查
 - [ ] **G-3 entity.batch_id 字段** — mergeLeadIntoEntity 支持
+
+### 🟡 中优（SOP-1 / SOP-X-Tooling 衍生工作）
+
+- [ ] **G-11** 3rd-party scraper provider interface (outscraper / apify / brightdata) — gosom 备份 + 国际扩展
+- [ ] **G-12** Google Places API 多账号 rotation — 当 1 个 key 接近 cap，自动切下一个
+- [ ] **G-13** Places photos → master.md 素材库 (Cloudinary 上传)
+- [ ] **G-14** opening_hours → 销售最佳联系时间 signal
+- [ ] **G-18** Hermes cron 实际注册 `ops:health-check`（替代手动跑）
+- [ ] **G-6.1** image-lead OCR/VLM 自动 extract（当前手填字段）
 
 ### ⚪ 后续（A/B 客户首次成交 / 算力突破后）
 

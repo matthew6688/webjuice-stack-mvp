@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entityKey": "place_chij-2w2g_dzkwsrlwbtsw5scjk",
   "firstSeenAt": "2026-05-09T04:36:05.407Z",
-  "lastSeenAt": "2026-05-09T04:36:05.407Z",
+  "lastSeenAt": "2026-05-12T03:20:24.648Z",
   "status": "manual_review",
   "lastStatusAt": "2026-05-09T04:36:05.407Z",
   "identifiers": {
@@ -40,6 +40,30 @@
       "imageCount": 9,
       "hasPopularTimes": true,
       "hasAboutAttributes": true
+    },
+    "places_enrichment": {
+      "fetched_at": "2026-05-12T03:20:24.648Z",
+      "sku": "details_basic",
+      "types": [
+        "establishment",
+        "food",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "international_phone": "",
+      "google_canonical_url": "https://maps.google.com/?cid=4139490228447675951",
+      "rating_verified": 4.7,
+      "user_ratings_total": null,
+      "photo_references": [],
+      "opening_hours_verified": null,
+      "quota_at_call": {
+        "month": "2026-05",
+        "used": 1,
+        "limit": 11000,
+        "pct": 0.0000909090909090909,
+        "capped": false
+      }
     }
   },
   "runs": [
@@ -61,6 +85,12 @@
       "score": 46,
       "action": "manual_review",
       "status": "manual_review"
+    },
+    {
+      "at": "2026-05-12T03:20:24.648Z",
+      "event": "places_enrichment_added",
+      "photo_count": 0,
+      "types_count": 5
     }
   ],
   "notes": []
