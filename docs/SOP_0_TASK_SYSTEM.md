@@ -395,6 +395,65 @@ listener handleNewForumThread()
 
 如果 vision 缺 businessName / niche / city → task 自动转 `human` tag · operator triage。
 
+### 7.5.5 Channel 流转 (Multi-channel lifecycle)
+
+SOP-0 是 **task 系统**，**不是** lead 系统。task 在 `#website-tasks` 出生死亡，但 task 触发的下游（batch / lead / project / paid customer）在**其他** channel 生命周期独立运行。
+
+```
+┌─ #website-tasks (forum · SOP-0 owns) ──────────────────────────┐
+│ 1 task = 1 thread · tag = [kind, status]                       │
+│ "操作员发请求 + 系统确认 + 终止"                                │
+└────────────┬───────────────────────────────────────────────────┘
+             │ task spawn 下游 CLI
+             ▼
+┌─ #lead-discovery-runs (text · SOP-1 owns) ─────────────────────┐
+│ pl:pipeline-batch-start 创建 batch thread                      │
+│ 1 batch = 1 thread · "batch 实际跑成什么样"                    │
+└────────────┬───────────────────────────────────────────────────┘
+             │ 自动 graduate (grade ≥ B 后 openLeadThread)
+             ▼
+┌─ #website-leads (forum · SOP-2/4 own) ─────────────────────────┐
+│ 1 客户 (entity) = 1 thread · tag = [grade, phase]              │
+│ outreach drafts / 客户回信 / 销售决策                          │
+└────────────┬───────────────────────────────────────────────────┘
+             │ 客户表示兴趣 (手动 graduate)
+             ▼
+┌─ #website-projects (forum · SOP-3 owns, 待写) ─────────────────┐
+│ 1 demo = 1 thread · Open Design 网站预制                       │
+└────────────┬───────────────────────────────────────────────────┘
+             │ 客户付费 (Stripe webhook 触发)
+             ▼
+┌─ #paid-websites (forum · SOP-5 owns, 待写) ────────────────────┐
+│ 1 付费客户 = 1 thread · 交付 + 维护                            │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**关键 invariant** (易混淆点):
+
+1. **SOP-0 task thread ≠ SOP-1 batch thread** · 是**两个不同** thread 在不同 channel
+   ```
+   你 "find brisbane roofers" 发在 #website-tasks → thread A
+   pl:pipeline-batch-start 在 #lead-discovery-runs → thread B
+   想看 batch 真实进度 → 切 channel 看 B（不在 A）
+   ```
+
+2. **Cross-channel cross-ref 当前不完整** · ⚠️ 已知 gap (test plan T22)
+   - SOP-0 task A 的 done reply 应该贴 thread B 的 deeplink，让 operator 一键跳过去
+   - 当前只 emit stdout tail，没解析 batch_id → thread_id
+
+3. **single-enrich chain task 在新 thread**（test plan T23）· A1 (single-enrich) chain 出 A2 (audit) 也是新 thread，**不复用** A1 thread。需要 cross-ref。
+
+4. **Graduation 边界**:
+
+| 边界 | 触发 | 谁执行 |
+|---|---|---|
+| `#website-tasks` → 下游 CLI | task spawn (synchronous) | SOP-0 dispatcher |
+| `#lead-discovery-runs` → `#website-leads` | grade ≥ B (audit 末端) | SOP-2 `openLeadThread` |
+| `#website-leads` → `#website-projects` | 客户兴趣 | 手动 + 操作员 |
+| `#website-projects` → `#paid-websites` | 付费 (Stripe webhook) | 自动 |
+
+5. **SOP-0 不负责**：跨 channel 的 lifecycle 顺利、entity 数据正确、grade 阈值合理。这些归属 SOP-1/2/3/4/5。SOP-0 只负责"我把请求路由对了，CLI 调用 exit=0 / 失败原因清晰报回 #website-tasks"。
+
 ### 7.6 single-enrich path (Q5 · v1.3)
 
 **问题**: 你给系统 ONE 个具体商家信号（电话 / 名字 / GBP URL），系统应该自动 resolve + enrich + 走 audit，而不只是 "scrape 一批"。

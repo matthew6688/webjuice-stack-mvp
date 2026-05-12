@@ -1,10 +1,26 @@
 # SOP-0 Test Plan · 系统化测试矩阵
 
-**版本**: v1 · 2026-05-13
+**版本**: v1.1 · 2026-05-13
 **配套**: [`SOP_0_TASK_SYSTEM.md`](SOP_0_TASK_SYSTEM.md) (架构) · [`SOP_0_OPERATOR_GUIDE.md`](SOP_0_OPERATOR_GUIDE.md) (操作)
-**目标**: 证明 SOP-0 v1.3 在 16 个具体场景下行为符合预期 · 失败必须有可执行修复
+**目标**: 证明 SOP-0 v1.3 + SOP-0/SOP-1 handoff contract 在具体场景下行为符合预期
 
 每个 test case 4 列：**做什么 · 证什么 · 期望什么 · 通过条件**
+
+---
+
+## 0.0 Scope (重要 · 边界澄清)
+
+本 test plan **不**测 SOP-1 / SOP-2 业务正确性 (scrape 质量 / audit 准确率 / grade 算法)。那些是 SOP-1/2 自己的 test 责任 (e.g. `scripts/leads/test-enrichment-live.js`).
+
+本 plan 测：
+
+✅ **SOP-0 内部**：listener / router / dispatcher / 状态机 / forum tag / retention / catch-up
+✅ **SOP-0 ↔ SOP-1 handoff**：task spawn 出 SOP-1 CLI 后能正确 exit=0、能落 entity / batch metadata
+✅ **SOP-0 cross-channel cross-ref**：T22 验证 task done reply 应该指向下游 thread / chained task
+
+❌ **不测**：SOP-1 内部 scrape 找出的 lead 数量是否准 / 字段是否对 / dedup 命中率是否高
+❌ **不测**：SOP-2 audit 跑出的 score 是否合理 / grade 阈值是否对
+❌ **不测**：SOP-3/4/5 (待写)
 
 ---
 
@@ -181,13 +197,30 @@ node scripts/qa/test-intent-router.mjs    # 已存在，包含 T1-T5 子集
 
 ---
 
-## 5. P5 push trigger
+## 5. Push trigger + Cross-channel
 
 ### T21 · 自动触发 enrich task
 - **做**: 用 `upsertDiscoveryRun` 写入 thin-contact entity (no phone, no website)
 - **证**: `mergeLeadIntoEntity` 检测 newly pending · `maybeSpawnEnrichTask` debounced 创建 enrich task
 - **期望**: createTask kind=enrich · cli=pl:run-enrichment-batch · dispatcher 接管
 - **通过**: enrich task in data/tasks/ within 1s
+
+### T22 · Cross-channel cross-ref (currently a gap)
+- **做**:
+  1. 在 #website-tasks 发 intake task → SOP-0 thread A1
+  2. pl:pipeline-batch-start 在 #lead-discovery-runs 开 thread B
+  3. 检查 SOP-0 thread A1 的 done reply
+- **证**: 操作员能从 A1 跳转到 B (cross-channel deeplink)，不用切 channel 找
+- **期望**: A1 的 done reply 含 `→ batch thread: https://discord.com/channels/.../<thread_B_id>`
+- **通过**: deeplink 存在且 clickable
+- **当前状态**: ⚠️ 已知 gap · dispatcher post done 时只写 stdout tail，没解析 batch_id → thread_id 加 link
+
+### T23 · single-enrich chain cross-ref (currently a gap)
+- **做**: single-enrich task A1 → chain audit task A2
+- **证**: A1 done reply 含 "→ chained audit task: <A2_id>" + deeplink to A2's forum thread
+- **期望**: A1 thread 提到 A2 (链上下游可追)
+- **通过**: link 存在
+- **当前状态**: ⚠️ 已知 gap · createTask(audit) 在新 thread 跑，A1 thread 不主动 cross-ref
 
 ---
 
@@ -199,8 +232,8 @@ node scripts/qa/test-intent-router.mjs    # 已存在，包含 T1-T5 子集
 | §2 E2E pipeline 7 case (Discord live) | T6-T12 | 1.5h (每个 ~10min · 等 LLM/CLI) |
 | §3 失败/异常 5 case | T13-T17 | 1h |
 | §4 并发/边界 3 case | T18-T20 | 45min |
-| §5 push trigger 1 case | T21 | 15min |
-| **总** | **21 cases** | **~4h** |
+| §5 push trigger + cross-ref 3 case | T21-T23 | 30min |
+| **总** | **23 cases** | **~4.5h** |
 
 ---
 
