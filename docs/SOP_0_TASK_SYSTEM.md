@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: v0.8 (P0-P7 完成 · 5 daemon · retention + reactions live · P8 cleanup next)
+**版本**: **v1.0** (P0-P8 全部完成 · 5 daemon live · 2026-05-12)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
 **Owner 范围**：所有 SOP 之"前"的统一入口 / 任务模型 / 路由 / 调度协议。它不**做**业务（业务在 SOP-1..5），它**驱动**业务。
@@ -300,9 +300,13 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 | **P5** | `discovery-store.js` createTask on thin-contact (push trigger, debounced) | ✅ done 2026-05-12 · 257ms E2E verified | 100% |
 | **P6** | `/admin/tasks` + `/admin/cron` · 选 path B (Cloudflare Tunnel + local HTTP API + live admin) | ✅ done 2026-05-12 · `tasks.profitslocal.com` live · Bearer auth · 4 daemon | 100% |
 | **P7** | retention archive cron (>30d done/failed → `_archive/YYYY-MM/`) + Discord reaction listener (✅ retry / 🗑 abandon) — reactions 已在 P2.3 wired | ✅ done 2026-05-12 · 5 launchd 全活 | 100% |
-| **P8** | 老 `core/discord-tasks/` archive + 9 caller scripts 清理 + doc v0.3 锁定 | ⏳ | 92% |
+| **P8** | 修订: ~~archive 整 dir~~ → 只标 `task-router.js` deprecated + 文档清边界 + v1.0 lock | ✅ done 2026-05-12 | 100% |
 
-完成 12/12 (P0-P7) · 剩 ~1h (P8 老代码归档)。
+**完成 13/13 (P0-P8) · SOP-0 v1.0 锁定 2026-05-12**。
+
+后续工作 (TODO):
+- **P6.X**: image-extract 任务 attachment 下载 + LLM 提取业务字段
+- **SOP-0 v2** (远期): 任务数据 cloud mirror / dispatcher 上 VPS 不依赖 Mac 在线
 
 ### 7.3 P7 retention + reactions
 
@@ -328,7 +332,25 @@ npm run pl:task-retention -- --statuses done,failed,human  # 覆盖默认
 
 **测试方式**：你在 Discord forum 找一个 `human`-tag thread (没有的话等失败 task 自然产生)，点 ✅ 或 🗑 reaction，dispatcher 会接管。所有事件落 `data/tasks/_logs/task-listener.log`.
 
-### 7.4 当前全部 5 个 daemon
+### 7.4 与老 `core/discord-tasks/` 的边界 (P8 清理结果)
+
+SOP-0 v1 **不删除** 老 `core/discord-tasks/`。原因：调研发现它的 5 个文件分别服务不同用例，**不是全 legacy**：
+
+| 老文件 | 状态 | 仍服务什么 |
+|---|---|---|
+| `task-router.js` | 🟡 **deprecated** (头标了) | 旧 `route-website-task.js` shim + legacy test 还在 import；不再用于新 task |
+| `task-log.js` | 🟢 **active** | `scripts/leads/image-lead-discovery.js` 用它写 `data/discord-tasks/<id>/task-log.jsonl` (不同 namespace) |
+| `thread-title.js` | 🟢 **active** | `discord:sync-website-task-title` script 仍用 |
+| `thread-sync.js` | 🟢 **active** | `discord:sync-website-task-thread` script 仍用 |
+| `lead-ops-sync.js` | 🟢 **active** | `discord:sync-lead-ops-thread` script (lead-ops 工作流，不是 SOP-0) |
+
+**清晰边界**：
+- **SOP-0 own**: Discord forum `#website-tasks` (1503702990761099419) 进来的活儿 · 用 `core/tasks/` 模块 · 落 `data/tasks/<id>.json`
+- **老 `core/discord-tasks/` own**: lead-ops thread sync · 图片 lead discovery · 旧 text channel task 路径 · 落 `data/discord-tasks/<taskId>/`
+
+两条流水线**并行不相干**。`data/discord-tasks/` (2 个历史 task) 不迁移。
+
+### 7.5 当前全部 5 个 daemon
 
 ```bash
 launchctl list | grep profitslocal
@@ -452,7 +474,7 @@ Logs:
 | 2026-05-12 | 并发模型 | **Global flock 串行 dispatcher tick** | 多 dispatcher 并行 | 1000 task/h 内串行够用；并行 = 复杂 race |
 | 2026-05-12 | Entity 触发 task | **直接调 `createTask()` push** | dispatcher scan entity store | Push 实时；scan 浪费 + 延迟 |
 | 2026-05-12 | 失败处理 | **tag `human` + reaction 重跑** | `#failures` 新 channel | 失败留原 thread → 上下文不丢 |
-| 2026-05-12 | 旧 `core/discord-tasks/` | **P8 archive 整 dir** | 渐进迁移 | 9 callers 都是 test/setup，迁完直接归档 |
+| 2026-05-12 | 旧 `core/discord-tasks/` | ~~P8 archive 整 dir~~ → **保留 + 标 `task-router.js` deprecated** | 全 archive (会 break 现有 thread-title/lead-ops sync scripts) | P8 调研发现 5 个文件分别服务不同用例 · 4 个 active 不可动 · 只 task-router 真 superseded · 边界写进 doc §7.4 |
 | 2026-05-12 | 历史 2 task 迁移 | **不迁** | 写迁移脚本 | 价值低；新系统从空开始 |
 | 2026-05-12 | Discord client lib | **discord.js v14.26.4** | eris / raw WS | 32K star · 维护活跃 · forum + reactions 都原生 · ESM 友好 |
 | 2026-05-12 | Listener daemon | **launchd KeepAlive** | systemd / pm2 / nohup | macOS native · 与 Hermes plist 模式一致 · 崩了自动重启 · `launchctl kickstart -k` 一行重启 |
@@ -476,6 +498,7 @@ Logs:
 | 2026-05-12 | Retention 默认 cutoff | **30 天** + `--days N` 覆盖 | 7 / 90 / 永不 | 30 天足够人肉回看常用窗口 · `_archive/YYYY-MM/` 仍可查 · 极端可以 `--days 365` 收紧 |
 | 2026-05-12 | Reactions 不接现有 thread chat | **only `human`-tag + ✅/🗑** | 接所有 MessageCreate | SOP-0 是任务系统不是聊天 bot · 聊天交给 Hermes website-agent (其他 channel) · 避免无限循环 |
 | 2026-05-12 | Thread-内对话不回复 | **故意** | bot 任意 reply | listener 只听 `ThreadCreate` · 现有 thread 评论 = 操作员自言自语 · 这是 feature 不是 bug |
+| 2026-05-12 | SOP-0 v1.0 lock | **doc lock + 13/13 P 全 done** | 持续迭代不 lock | 主要功能稳定 · 5 daemon 跑通 · 进一步工作 (image attachment / cloud mirror) 进 TODO / v2 |
 
 ---
 

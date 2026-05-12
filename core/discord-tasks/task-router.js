@@ -1,3 +1,22 @@
+/**
+ * ⚠ DEPRECATED for new Discord-to-task routing (2026-05-12).
+ *
+ * SOP-0 Task System supersedes this module's routeWebsiteTaskMessage and
+ * persistAndMaybeDispatchWebsiteTask functions:
+ *   - New entry: post in #website-tasks forum (channel 1503702990761099419)
+ *   - New listener: scripts/cli/pl-task-listener.js (discord.js gateway)
+ *   - New router:  core/tasks/intent-router.js (ollama → regex)
+ *   - New store:   core/tasks/task-store.js → data/tasks/<id>.json
+ *
+ * Kept (not deleted) because still imported by legacy scripts:
+ *   - scripts/discord/route-website-task.js (manual CLI shim)
+ *   - scripts/discord/test-website-task-router.js (legacy test)
+ *   - scripts/leads/image-lead-discovery.js indirectly via task-log
+ *
+ * For NEW work, use `core/tasks/task-store.js#createTask({...})` directly.
+ * See docs/SOP_0_TASK_SYSTEM.md §0-§4.
+ */
+
 import fs from 'fs';
 import path from 'path';
 import {
