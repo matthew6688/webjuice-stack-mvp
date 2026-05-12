@@ -42,3 +42,6 @@ jobs:
         # don't have ollama). Test handles both cases gracefully (regex OR
         # cached ollama URL).
         run: npm run qa:test-sop0-regression
+      - name: SOP-1 intake channels registry (24 assertions)
+        # 强制每个 active channel 的 cli_file 必须真存在 · 防止删 CLI 忘改 registry
+        run: npm run qa:test-intake-channels

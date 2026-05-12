@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SOP-1 intake channels registry",
+  "type": "object",
+  "required": ["version", "lastUpdated", "rule", "channels"],
+  "properties": {
+    "version": { "type": "string" },
+    "lastUpdated": { "type": "string", "format": "date" },
+    "rule": { "type": "string" },
+    "channels": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/channel" }
+    },
+    "future_channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name_zh", "status", "rationale"],
+        "properties": {
+          "id": { "type": "string" },
+          "name_zh": { "type": "string" },
+          "status": { "enum": ["planned-v1.1", "backlog", "researching"] },
+          "rationale": { "type": "string" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "channel": {
+      "type": "object",
+      "required": ["id", "name_zh", "cli", "cli_file", "trigger", "input_type", "primary_use", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "name_zh": { "type": "string" },
+        "name_en": { "type": "string" },
+        "icon": { "type": "string" },
+        "cli": { "type": "string", "pattern": "^pl:" },
+        "cli_file": { "type": "string", "pattern": "^scripts/cli/" },
+        "trigger": { "type": "string" },
+        "trigger_example": { "type": "string" },
+        "input_type": { "type": "string" },
+        "output_count": { "type": "string" },
+        "primary_use": { "type": "string" },
+        "status": { "enum": ["active", "deprecated"] },
+        "since": { "type": "string" },
+        "cost_note": { "type": "string" },
+        "chained_kind": { "type": "string" },
+        "vision_chain": { "type": "string" },
+        "fallback_to_human": { "type": "string" }
+      }
+    }
+  }
+}

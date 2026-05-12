@@ -1,0 +1,94 @@
+{
+  "$schema": "./intake-channels.schema.json",
+  "version": "1.0",
+  "lastUpdated": "2026-05-13",
+  "rule": "SOP-1 唯一入口注册表 · 新增入口必须改这里 + 同步更新 docs/SOP_1_INTAKE_DISCOVERY.md + sop-1.astro 流程图 · 删除入口同步 · 此文件由 admin 页和 doc 渲染读取",
+  "channels": [
+    {
+      "id": "batch-maps",
+      "name_zh": "批量 Maps 抓取",
+      "name_en": "Batch Google Maps scrape",
+      "icon": "🗺️",
+      "cli": "pl:pipeline-batch-start",
+      "cli_file": "scripts/cli/pl-pipeline-batch-start.js",
+      "trigger": "Discord 自然语言 query (无引号 / 多商家 query)",
+      "trigger_example": "find brisbane plumbers",
+      "input_type": "natural_language_query",
+      "output_count": "10-50 entities per run",
+      "primary_use": "operator 想找一批某城市某行业的新商家",
+      "status": "active-but-broken",
+      "since": "2026-04",
+      "known_issue": "pl:pipeline-batch-start 当前只创 Discord thread + 写 batch state · 不调 gosom · 不写 entity。真正抓取的 CLI 是 pl:scrape-docker · 但它不在 SOP-0 路由表里。后果：operator 在 Discord 说 'find brisbane plumbers' → 看到 task done 回帖 → 0 entity 入库。修复方案见 docs/SOP_1_INTAKE_DISCOVERY.md (Phase 3 fix)",
+      "actual_entity_writer": "pl:scrape-docker (尚未与 SOP-0 串联)"
+    },
+    {
+      "id": "places-api",
+      "name_zh": "Google Places 搜索",
+      "name_en": "Google Places API search",
+      "icon": "📍",
+      "cli": "pl:places-search-intake",
+      "cli_file": "scripts/cli/pl-places-search-intake.js",
+      "trigger": "Discord 多引号 query (走官方 API · 贵但准 · 字段全)",
+      "trigger_example": "search \"roofer brisbane\" \"roofer gold coast\"",
+      "input_type": "multi_quoted_query",
+      "output_count": "10-30 per query",
+      "primary_use": "需要带 phone / verified hours / E.164 phone 的高质量数据",
+      "status": "active",
+      "since": "2026-05",
+      "cost_note": "Places API 月度配额 11K calls · 见 SOP-X-Tooling §2"
+    },
+    {
+      "id": "single",
+      "name_zh": "单商家解析",
+      "name_en": "Single-business resolve + enrich",
+      "icon": "🔎",
+      "cli": "pl:single-enrich",
+      "cli_file": "scripts/cli/pl-single-enrich.js",
+      "trigger": "Discord 单引号商家名 / 带电话 / Google Maps URL",
+      "trigger_example": "\"Joe's Plumbing\" 0412 345 678 melbourne",
+      "input_type": "phone_or_name_or_url",
+      "output_count": "1 entity",
+      "primary_use": "operator 已经知道一家具体商家，要快速建档 + 补全 + 链式 audit",
+      "status": "active",
+      "since": "2026-05",
+      "chained_kind": "audit"
+    },
+    {
+      "id": "image",
+      "name_zh": "名片 / 店招照片",
+      "name_en": "Image extract (business card / shopfront)",
+      "icon": "📸",
+      "cli": "pl:ingest-image",
+      "cli_file": "scripts/cli/pl-ingest-image.js",
+      "trigger": "Discord 上传图片 (名片 / 店招 / 海报)",
+      "trigger_example": "(attach photo to forum thread)",
+      "input_type": "image_attachment",
+      "output_count": "1 entity (per image)",
+      "primary_use": "现实场景拍到商家 · 自动 OCR 出 name / phone / city / niche · 建档入流水线",
+      "status": "active",
+      "since": "2026-05",
+      "vision_chain": "qwen3.6:27b → gemma3:27b (field-merge fallback)",
+      "fallback_to_human": "缺 businessName / niche / city → forum thread 标 human tag 等补字段"
+    }
+  ],
+  "future_channels": [
+    {
+      "id": "manual-single",
+      "name_zh": "手工添加单家商家",
+      "status": "planned-v1.1",
+      "rationale": "operator 现实中认识的商家 · 不通过搜索 · 直接录入 name + phone + city + niche · 自动入 dedup + enrich 流程"
+    },
+    {
+      "id": "csv-bulk",
+      "name_zh": "CSV / Excel 批量导入",
+      "status": "backlog",
+      "rationale": "operator 手里有一份名单 (朋友给的 / 行业协会名录) · 一次批量入库"
+    },
+    {
+      "id": "yellow-pages",
+      "name_zh": "黄页 / 行业目录爬取",
+      "status": "backlog",
+      "rationale": "yellowpages.com.au / truelocal / hotfrog / localsearch · Places API 之外的 fallback 长尾发现 · 见 SOP-0 §11 TODO"
+    }
+  ]
+}

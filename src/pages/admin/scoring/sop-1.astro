@@ -2,6 +2,12 @@
 import Layout from '../../../layouts/AdminLayout.astro';
 import fs from 'node:fs';
 import path from 'node:path';
+import { activeChannels, plannedChannels } from '../../../../core/leads/intake-channels.js';
+
+// SOP-1 入口注册表 · 单一真相 · 改这一个 JSON 全站同步
+// data/sop1/intake-channels.json
+const channels = activeChannels();
+const planned = plannedChannels();
 
 // Pick a real entity sample for the handoff payload viz (prefer one with grade + multi-field)
 let sampleEntity = null;
@@ -121,24 +127,51 @@ try {
             <p class="eyebrow">SOP-1 流程</p>
             <h2>从抓商家到交给 SOP-2，一共 4 步</h2>
           </div>
-          <span class="admin-section-count">2 个入口 · 4 步 · 1 个分岔判断</span>
+          <span class="admin-section-count">{channels.length} 个入口 · 4 步流程 · 1 个分岔判断</span>
         </div>
 
         <div class="flow-grid">
-          <!-- ENTRIES -->
+          {/* ENTRIES · 从 data/sop1/intake-channels.json 动态渲染 · 新增入口改那个 JSON 即可 */}
           <div class="flow-row">
             <div class="flow-row-label">从哪进来</div>
             <div class="flow-entries">
-              <div class="flow-entry">
-                <div class="flow-entry-tag">用 gosom 抓 Google Maps</div>
-                <div class="flow-entry-desc">主要来源 · 按城市+行业批量找新商家</div>
-              </div>
-              <div class="flow-entry">
-                <div class="flow-entry-tag">图片识别（image-lead V2）</div>
-                <div class="flow-entry-desc">网上找到名片 / 店面照片 → 自动认出商家建档</div>
-              </div>
+              {channels.map((ch) => (
+                <div
+                  class="flow-entry"
+                  title={`CLI: ${ch.cli} · 触发: ${ch.trigger_example}${ch.known_issue ? '\n⚠ 已知问题: ' + ch.known_issue : ''}`}
+                  style={ch.status === 'active-but-broken' ? 'border-color: #d97706; background: rgba(217, 119, 6, 0.06)' : ''}
+                >
+                  <div class="flow-entry-tag">
+                    <span style="margin-right: 0.3em">{ch.icon}</span>{ch.name_zh}
+                    {ch.status === 'active-but-broken' && <span style="margin-left: 0.5em; font-size: 0.8em; color: #d97706">⚠ 待修</span>}
+                  </div>
+                  <div class="flow-entry-desc">{ch.primary_use}</div>
+                  <div class="flow-entry-meta" style="font-size: 0.75em; opacity: 0.6; margin-top: 0.25em">
+                    <code>{ch.cli}</code>
+                  </div>
+                  {ch.known_issue && (
+                    <div class="flow-entry-issue" style="font-size: 0.75em; color: #92400e; margin-top: 0.4em; padding: 0.3em 0.5em; background: rgba(217,119,6,0.08); border-left: 2px solid #d97706; border-radius: 3px">
+                      <strong>⚠ </strong>{ch.known_issue.split(' · ')[0]}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
+          {planned.length > 0 && (
+            <div class="flow-row" style="opacity: 0.55">
+              <div class="flow-row-label">待加入</div>
+              <div class="flow-entries">
+                {planned.map((ch) => (
+                  <div class="flow-entry">
+                    <div class="flow-entry-tag">{ch.name_zh}</div>
+                    <div class="flow-entry-desc" style="font-size: 0.85em">{ch.rationale}</div>
+                    <div class="flow-entry-meta" style="font-size: 0.7em; opacity: 0.7">{ch.status}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           <div class="flow-arrow-row">▼</div>
 
           <!-- STEP 1: DISCOVERY WRITE -->
