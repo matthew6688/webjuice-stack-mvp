@@ -261,19 +261,25 @@ async function handleReaction(reaction, user, type) {
   if (task.status !== 'human') return; // only act on human-tagged tasks
   const emoji = reaction.emoji.name;
   log('reaction', type, emoji, 'on thread', threadId, '· task', task.task_id);
-  if (emoji === '✅') {
+  // Accept multiple emoji synonyms — operator on mobile/desktop varies.
+  // RETRY: ✅ ✔ ✔️ 🔁 🔄
+  // ABANDON: 🗑 🗑️ ❌ ✖ ✖️ 🚫
+  const RETRY = new Set(['✅', '✔', '✔️', '🔁', '🔄']);
+  const ABANDON = new Set(['🗑', '🗑️', '❌', '✖', '✖️', '🚫']);
+  if (RETRY.has(emoji)) {
     transitionStatus(task.task_id, 'pending', { reason: `retry by ${user.username}` });
-    appendProgress(task.task_id, 'operator.retry', `${user.username} requested retry via ✅`);
+    appendProgress(task.task_id, 'operator.retry', `${user.username} requested retry via ${emoji}`);
     const [kindTag, statusTag] = appliedTagsFor(task.kind, 'pending');
     await patchThreadTags(threadId, [kindTag, statusTag]);
-    await postThreadReply(threadId, `${user.username} retried task → status: \`pending\``);
-  } else if (emoji === '🗑️' || emoji === '🗑') {
+    await postThreadReply(threadId, `${user.username} retried task → status: \`pending\` (via ${emoji})`);
+  } else if (ABANDON.has(emoji)) {
     transitionStatus(task.task_id, 'done', { reason: `abandoned by ${user.username}` });
-    appendProgress(task.task_id, 'operator.abandon', `${user.username} marked task done via 🗑`);
+    appendProgress(task.task_id, 'operator.abandon', `${user.username} marked task done via ${emoji}`);
     const [kindTag, statusTag] = appliedTagsFor(task.kind, 'done');
     await patchThreadTags(threadId, [kindTag, statusTag]);
-    await postThreadReply(threadId, `${user.username} abandoned task → status: \`done\``);
+    await postThreadReply(threadId, `${user.username} abandoned task → status: \`done\` (via ${emoji})`);
   }
+  // Other emojis silently ignored (operator can use any non-mapped emoji as bookmark).
 }
 
 /* ─── Boot catch-up: backfill missed threads ──────────────────────── */
