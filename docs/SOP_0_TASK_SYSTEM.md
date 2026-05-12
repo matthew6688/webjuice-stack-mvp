@@ -1,6 +1,6 @@
 # SOP-0 · Task System · 统一入口与调度
 
-**版本**: **v1.3** (v1.2 + Q5 single-enrich · 部分信号 → Places + 自动 audit 链 · 2026-05-12)
+**版本**: **v1.6** (v1.5 + admin macro page + auto-dedup-in-finalizeBatch + CI regression · 2026-05-13)
 **Operator guide**: [`SOP_0_OPERATOR_GUIDE.md`](SOP_0_OPERATOR_GUIDE.md)
 **最近更新**: 2026-05-12
 **配套页面**: [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) · [`/admin/tasks`](/admin/tasks) (P6 待建) · [`/admin/cron`](/admin/cron) (P6 待建)
@@ -309,6 +309,8 @@ Matthew 在 forum 看到 `human` tag → 一个 reaction (✅) = 重跑，(🗑)
 后续工作 (TODO):
 - ✅ **P6.X**: image-extract 任务 attachment 下载 + 视觉 LLM 提取业务字段 — done 2026-05-12 (v1.1) + v1.2 fixes
 - ✅ **single-enrich kind** (Q5, v1.3 2026-05-12): 部分业务信号 / GBP URL → Places resolve → entity 写入 → 自动 chain audit task → 全自动走流程 · E2E verified Bluey's case 964ms+235ms
+- ✅ **CI regression suite** (v1.6 · 2026-05-13): `scripts/qa/test-sop0-regression.mjs` + `.github/workflows/sop0-regression.yml` — T1-T5 / T13 / T15 / T20 / T21 自动跑 (16 assertions) · `npm run qa:test-sop0-regression`. CI 在 SOP-0 相关 file 改动时触发.
+- ✅ **Auto-dedup after batch finalize** (SOP-1 闭环 · v1.6): hook 移到 `finalizeBatch()` 内部，所有 caller (pl:pipeline-batch-step / pl:places-search-intake / future) 都自动触发 `pl:dedup-audit`，结果写 `state.dedup_audit` + 在 batch thread 报告. Bypass via `skipDedupAudit:true`.
 - 🟡 **PDF / audio / docx 输入支持**: 本地 package 已有 (pdf-parse / whisper.cpp / mammoth); 不在 v1 范围. **等 Matthew 提优先级**
 - 🟡 **vision fallback chain 扩展**: 当前 qwen3.6→gemma3 都失败仍 human; 可加 Tesseract OCR + text-LLM 提取 / claude-cli vision (T1 subs) 作末端 fallback
 - **SOP-0 v2** (远期): 任务数据 cloud mirror / dispatcher 上 VPS 不依赖 Mac 在线

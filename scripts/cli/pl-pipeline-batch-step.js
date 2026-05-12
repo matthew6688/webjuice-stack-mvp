@@ -17,8 +17,6 @@
  */
 
 import fs from 'fs';
-import { spawnSync } from 'child_process';
-import path from 'path';
 import { parseArgs, die, emit } from './_pl-shared.js';
 import { postStageUpdate, finalizeBatch } from '../../core/funnel/pipeline-batch-thread.js';
 
@@ -46,38 +44,21 @@ let res;
 let dedupAuditResult = null;
 
 if (finalize) {
+  // SOP-X-Dedup hook is now inside finalizeBatch() itself (so all callers
+  // get auto-dedup, not just this CLI). Pass skipDedupAudit:true to bypass
+  // for debug / dry-run runs.
   res = await finalizeBatch({
     batchId,
     terminalTag: swapTag || 'completed',
     summary: `**${stage}** — _${status}_\n\n${summary}`,
+    skipDedupAudit: args['skip-dedup-audit'] === true,
   });
-
-  // SOP-X-Dedup hook: after batch completes, auto-run dedup-audit so any
-  // suspicious phone/domain collisions land in the review queue immediately.
-  // Synchronous spawnSync — exit code/output captured + emitted in final JSON.
-  // Skipped only if --skip-dedup-audit flag is passed (for debug / dry-run).
-  if (!args['skip-dedup-audit']) {
-    try {
-      const repoRoot = path.resolve(process.argv[1], '../../..');
-      const r = spawnSync('node', [
-        '--env-file-if-exists=.env.local',
-        'scripts/cli/pl-dedup-audit.js',
-      ], { cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-      // Parse the JSON object from stdout (audit emits a single JSON object first)
-      let parsed = null;
-      try {
-        const jsonMatch = r.stdout.match(/\{[\s\S]*?\n\}/);
-        if (jsonMatch) parsed = JSON.parse(jsonMatch[0]);
-      } catch {}
-      dedupAuditResult = {
-        ok: r.status === 0,
-        total_suspects: parsed?.total_suspects ?? null,
-        summary: parsed?.summary ?? null,
-      };
-    } catch (err) {
-      dedupAuditResult = { ok: false, error: err.message };
-    }
-  }
+  // Mirror dedup result into emit payload for backwards-compat (was here
+  // before the hook moved). Read from batch state file.
+  try {
+    const state = JSON.parse(fs.readFileSync(`data/v2/pipeline-batches/${batchId}.json`, 'utf8'));
+    if (state.dedup_audit) dedupAuditResult = state.dedup_audit;
+  } catch {}
 } else {
   res = await postStageUpdate({ batchId, stage, status, summary, swapTag });
 }
