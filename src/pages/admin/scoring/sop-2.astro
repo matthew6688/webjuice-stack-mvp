@@ -777,17 +777,8 @@ function chipClass(action) {
 
   /* ─── SOP-2 doc link button (prominent at top) ─── */
   .sop2-doc-link-row { margin: 10px 0 6px; }
-  .sop2-doc-link-btn {
-    display: inline-flex; align-items: center; gap: 12px;
-    padding: 12px 18px;
-    border: 2px solid var(--pl-line);
-    background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper));
-    box-shadow: 4px 4px 0 var(--pl-line);
-    text-decoration: none;
-    color: var(--pl-ink);
-    transition: transform 80ms ease;
-    max-width: 540px;
-  }
+  /* sop2-doc-link-btn fully defined in admin-design-system.css (v1.2+).
+     Removed per-page override after chrome-compare detected width disparity. */
   .sop2-doc-link-btn:hover {
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 var(--pl-line);

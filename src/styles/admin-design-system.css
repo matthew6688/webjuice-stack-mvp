@@ -412,14 +412,16 @@
    in SOP-2 page; reused on Overview / SOP-1). Treat them as aliases. */
 .admin-doc-link-btn,
 .sop2-doc-link-btn {
-  display: inline-flex; align-items: center; gap: 12px;
+  display: flex; align-items: center; gap: 12px;
   padding: 12px 18px;
   border: 2px solid var(--pl-line);
   background: color-mix(in srgb, var(--pl-citrus) 22%, var(--pl-paper));
   box-shadow: 4px 4px 0 var(--pl-line);
   text-decoration: none;
   color: var(--pl-ink);
+  width: 100%;
   max-width: 540px;
+  box-sizing: border-box;
   transition: transform 80ms ease;
 }
 .admin-doc-link-btn:hover,
