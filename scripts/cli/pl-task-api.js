@@ -113,6 +113,91 @@ function listArchivedTasks({ limit = 100, status = null, kind = null } = {}) {
   return out;
 }
 
+const ENTITIES_DIR = path.resolve(process.cwd(), 'data/leads/entities');
+const DETAILED_AUDIT_DIR = path.resolve(process.cwd(), 'data/v2/fixtures/detailed-audit');
+
+function readEntityFile(entityKey) {
+  const p = path.join(ENTITIES_DIR, `${entityKey}.json`);
+  if (!fs.existsSync(p)) return null;
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
+}
+
+function readAuditFor(entityKey) {
+  const p = path.join(DETAILED_AUDIT_DIR, `${entityKey}.json`);
+  if (!fs.existsSync(p)) return null;
+  try {
+    const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return j?.detailed_audit || null;
+  } catch { return null; }
+}
+
+/**
+ * List entities with filters. Designed to serve /admin/v2-leads (graded) and
+ * /admin/v2-queue (status-filtered) from one endpoint.
+ *
+ * Filters:
+ *  - graded=true|false       → entity.grade?.investment_level exists
+ *  - status=a,b,c            → entity.status in list (legacy status field)
+ *  - phase=a,b,c             → entity.phase in list (V2 lifecycle)
+ *  - niche=X                 → entity.latest.niche
+ *  - limit=N (max 500)       → cap rows
+ */
+function listEntitiesFiltered({ graded = null, status = null, phase = null, niche = null, limit = 100 } = {}) {
+  if (!fs.existsSync(ENTITIES_DIR)) return [];
+  const lim = Math.min(parseInt(limit, 10) || 100, 500);
+  const statusSet = status ? new Set(status.split(',').map((s) => s.trim()).filter(Boolean)) : null;
+  const phaseSet = phase ? new Set(phase.split(',').map((s) => s.trim()).filter(Boolean)) : null;
+  const out = [];
+  for (const f of fs.readdirSync(ENTITIES_DIR)) {
+    if (!f.endsWith('.json')) continue;
+    let e;
+    try { e = JSON.parse(fs.readFileSync(path.join(ENTITIES_DIR, f), 'utf8')); } catch { continue; }
+    if (!e || !e.entityKey) continue;
+    if (graded === 'true' && !e.grade?.investment_level) continue;
+    if (graded === 'false' && e.grade?.investment_level) continue;
+    if (statusSet && !statusSet.has(e.status)) continue;
+    if (phaseSet && !phaseSet.has(e.phase)) continue;
+    if (niche && e.latest?.niche !== niche) continue;
+    out.push(e);
+    if (out.length >= lim) break;
+  }
+  return out;
+}
+
+/** Project entity to compact list row (drops verbose fields). */
+function projectEntityForList(e) {
+  const audit = readAuditFor(e.entityKey);
+  const s = e.signals || {};
+  const latest = e.latest || {};
+  return {
+    entityKey:        e.entityKey,
+    name:             latest.name || '—',
+    niche:            latest.niche || null,
+    city:             latest.city || null,
+    grade:            e.grade?.investment_level || null,
+    tier:             e.grade?.product_tier || null,
+    phase:            e.phase || null,
+    sub_status:       e.sub_status || null,
+    status:           e.status || null,
+    audit_score:      audit?.audit_score ?? null,
+    audit_decision:   audit?.decision ?? null,
+    discovery_score:  latest.discoveryScore ?? null,
+    discovery_rank:   latest.discovery_rank ?? null,
+    sourceType:       latest.sourceType || null,
+    sourceQuery:      latest.sourceQuery || null,
+    rating:           latest.rating ?? null,
+    review_count:     latest.review_count ?? null,
+    last_contact_at:  e.last_contact_at || null,
+    last_reply_class: e.last_reply_class || null,
+    signals:          { sent: s.sent ?? 0, opened: s.opened ?? 0, clicked: s.clicked ?? 0, replied: s.replied ?? 0 },
+    firstSeenAt:      e.firstSeenAt || null,
+    lastSeenAt:       e.lastSeenAt || null,
+    discord_thread_id:e.discord_thread_id || null,
+    enrichment_status:e.enrichment_status || null,
+    do_not_contact:   !!e.do_not_contact,
+  };
+}
+
 function listCronJobs() {
   if (!fs.existsSync(HERMES_PROFILES)) return [];
   const out = [];
@@ -212,6 +297,38 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    if (pathname === '/api/entities') {
+      const filtered = listEntitiesFiltered({
+        graded: q.graded || null,
+        status: q.status || null,
+        phase: q.phase || null,
+        niche: q.niche || null,
+        limit: q.limit || 100,
+      });
+      send(res, 200, {
+        ok: true,
+        entities: filtered.map(projectEntityForList),
+        total: filtered.length,
+        updated_at: new Date().toISOString(),
+      }, req);
+      return;
+    }
+
+    const eMatch = pathname.match(/^\/api\/entities\/([\w-]+)$/);
+    if (eMatch) {
+      const entityKey = eMatch[1];
+      const entity = readEntityFile(entityKey);
+      if (!entity) { send(res, 404, { error: 'entity not found', entityKey }, req); return; }
+      const audit = readAuditFor(entityKey);
+      send(res, 200, {
+        ok: true,
+        entity,
+        audit,
+        updated_at: new Date().toISOString(),
+      }, req);
+      return;
+    }
+
     if (pathname === '/api/forum-tags') {
       try { send(res, 200, { ok: true, tags: loadForumTags() }, req); }
       catch (err) { send(res, 500, { error: err.message }, req); }
@@ -221,7 +338,14 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/' || pathname === '') {
       send(res, 200, {
         service: 'pl-task-api',
-        endpoints: ['/api/health', '/api/tasks', '/api/tasks/:id', '/api/cron', '/api/forum-tags'],
+        endpoints: [
+          '/api/health',
+          '/api/tasks', '/api/tasks/:id',
+          '/api/entities?graded=true|false&status=&phase=&niche=&limit=',
+          '/api/entities/:entityKey',
+          '/api/cron',
+          '/api/forum-tags',
+        ],
       }, req);
       return;
     }

@@ -1,0 +1,235 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+
+const uiVersion = 'local-style-2026-05-08';
+const API_BASE = import.meta.env.PUBLIC_SOP0_API_BASE || 'https://tasks.profitslocal.com';
+const API_TOKEN = import.meta.env.PUBLIC_SOP0_API_TOKEN || '';
+---
+
+<Layout title="Leads · Live" active="leads">
+  <section class="poster-section admin-section" data-ui-version={uiVersion}>
+    <div class="admin-shell leads-live-shell">
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-0 · Leads (live · v2)</p>
+          <h1 id="page-title">Leads 看板</h1>
+          <p class="lede" id="page-subtitle">实时从本机 API 拉 · 跟 <a href="/admin/v2-leads/">老 v2-leads 静态版</a> 并存 · Stage 2 Phase 1.B 概念验证</p>
+        </div>
+        <div class="admin-count">
+          <strong id="count-total">—</strong>
+          <span>Graded</span>
+          <span class="micro-note" id="count-breakdown">loading…</span>
+        </div>
+      </div>
+
+      <div class="v2-attention-strip" id="attention-strip">
+        <a class="v2-attention-cell" href="#" data-filter-phase="needs-human">
+          <span class="v2-attention-num" id="cnt-needs">—</span>
+          <span class="v2-attention-label">需介入</span>
+        </a>
+        <a class="v2-attention-cell" href="#" data-filter-phase="replied">
+          <span class="v2-attention-num" id="cnt-replied">—</span>
+          <span class="v2-attention-label">已回信</span>
+        </a>
+        <a class="v2-attention-cell" href="#" data-filter-phase="outreach-active">
+          <span class="v2-attention-num" id="cnt-active">—</span>
+          <span class="v2-attention-label">外发中</span>
+        </a>
+        <a class="v2-attention-cell" href="#" data-filter-phase="awaiting">
+          <span class="v2-attention-num" id="cnt-awaiting">—</span>
+          <span class="v2-attention-label">就绪</span>
+        </a>
+      </div>
+
+      <div id="list-view">
+        <header class="admin-paper-section-head">
+          <h2>所有 graded leads</h2>
+          <div class="filters-bar">
+            <label>phase
+              <select id="filter-phase">
+                <option value="">all</option>
+                <option value="awaiting">awaiting</option>
+                <option value="outreach-active">outreach-active</option>
+                <option value="replied">replied</option>
+                <option value="proposal-sent">proposal-sent</option>
+                <option value="nurture">nurture</option>
+                <option value="paid">paid</option>
+                <option value="needs-human">needs-human</option>
+                <option value="archived">archived</option>
+              </select>
+            </label>
+            <label>grade
+              <select id="filter-grade">
+                <option value="">all</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+              </select>
+            </label>
+            <button class="admin-card-meta-action" id="refresh-btn">refresh</button>
+            <span id="refresh-status" class="filter-status-line"></span>
+          </div>
+        </header>
+
+        <div class="v2-row-list" id="lead-rows">
+          <p class="v2-group-empty">loading…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ API_BASE, API_TOKEN }}>
+  const $ = (id) => document.getElementById(id);
+  const escape = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+  const fmtDaysAgo = (iso) => {
+    if (!iso) return null;
+    const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+    return d < 1 ? 'today' : `${d}d`;
+  };
+
+  function gradeChip(g, t) {
+    if (!g) return '';
+    const cls = g.toLowerCase();
+    return `<span class="v2-grade-chip v2-grade-chip-${cls}">${g}${t ? '/' + t : ''}</span>`;
+  }
+  function phaseChip(p) {
+    if (!p) return '';
+    return `<span class="v2-phase-chip v2-phase-chip-${p}">${p}</span>`;
+  }
+  function sourceChip(s) {
+    if (!s) return '';
+    const label = {
+      'maps_scraper':  'gosom',
+      'places_search': 'places',
+      'single_enrich': 'single-enrich',
+      'image_lead':    'image',
+    }[s] || s;
+    return `<span class="chip chip-muted" title="${escape(s)}">${escape(label)}</span>`;
+  }
+
+  let cached = [];
+
+  async function loadList() {
+    const phaseFilter = $('filter-phase').value;
+    const gradeFilter = $('filter-grade').value;
+    $('refresh-status').textContent = 'loading…';
+    try {
+      const t0 = Date.now();
+      const url = `${API_BASE}/api/entities?graded=true&limit=200`;
+      const r = await fetch(url, {
+        headers: API_TOKEN ? { 'Authorization': `Bearer ${API_TOKEN}` } : {},
+      });
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      const data = await r.json();
+      const ms = Date.now() - t0;
+      cached = data.entities || [];
+      let rows = cached;
+      if (phaseFilter) rows = rows.filter((e) => e.phase === phaseFilter);
+      if (gradeFilter) rows = rows.filter((e) => e.grade === gradeFilter);
+      renderRows(rows);
+      renderStrip(cached);
+      $('refresh-status').textContent = `${rows.length}/${cached.length} entities · ${ms}ms`;
+    } catch (err) {
+      $('refresh-status').textContent = `error: ${err.message}`;
+      $('lead-rows').innerHTML = `<p class="admin-banner admin-banner-coral">fetch error: ${escape(err.message)}</p>`;
+    }
+  }
+
+  function renderStrip(rows) {
+    const counts = { 'needs-human': 0, 'replied': 0, 'outreach-active': 0, 'awaiting': 0 };
+    for (const r of rows) {
+      if (r.phase === 'needs-human') counts['needs-human']++;
+      else if (r.phase === 'replied' || r.phase === 'proposal-sent') counts['replied']++;
+      else if (r.phase === 'outreach-active') counts['outreach-active']++;
+      else if (r.phase === 'awaiting' || !r.phase) counts['awaiting']++;
+    }
+    $('cnt-needs').textContent = counts['needs-human'];
+    $('cnt-replied').textContent = counts['replied'];
+    $('cnt-active').textContent = counts['outreach-active'];
+    $('cnt-awaiting').textContent = counts['awaiting'];
+    $('count-total').textContent = rows.length;
+    $('count-breakdown').textContent = `${counts['needs-human']}⚠ · ${counts['outreach-active']}🏃 · ${counts.replied}💬`;
+    document.querySelectorAll('[data-filter-phase]').forEach((el) => {
+      const k = el.dataset.filterPhase;
+      el.classList.remove('v2-attention-hot', 'v2-attention-warm');
+      if (k === 'needs-human' && counts[k] > 0) el.classList.add('v2-attention-hot');
+      else if ((k === 'replied' || k === 'outreach-active') && counts[k] > 0) el.classList.add('v2-attention-warm');
+    });
+  }
+
+  function renderRows(rows) {
+    const tbody = $('lead-rows');
+    if (rows.length === 0) {
+      tbody.innerHTML = '<p class="v2-group-empty">— 无符合 filter 的 lead —</p>';
+      return;
+    }
+    tbody.innerHTML = rows.map((r) => `
+      <div class="v2-row">
+        <div class="v2-row-main">
+          <a class="v2-row-name-link" href="/admin/v2-leads/${escape(r.entityKey)}/">
+            <h3 class="v2-row-name">${escape(r.name)}</h3>
+          </a>
+          <div class="v2-row-meta">
+            ${gradeChip(r.grade, r.tier)}
+            ${phaseChip(r.phase)}
+            ${r.last_reply_class ? `<span class="v2-reply-tag">[${escape(r.last_reply_class)}]</span>` : ''}
+            ${r.niche ? `<span class="v2-row-niche">${escape(r.niche)}</span>` : ''}
+            ${r.city ? `<span class="v2-row-city">${escape(r.city)}</span>` : ''}
+            ${sourceChip(r.sourceType)}
+            ${r.discovery_rank ? `<span class="v2-row-niche" title="search rank">#${r.discovery_rank}</span>` : ''}
+          </div>
+        </div>
+        <div class="v2-row-stats">
+          ${r.audit_score != null ? `
+            <div class="v2-row-stat" title="${escape(r.audit_decision || '')}">
+              <span class="v2-row-stat-num">${r.audit_score}</span>
+              <span class="v2-row-stat-label">audit</span>
+            </div>` : ''}
+          ${r.rating != null ? `
+            <div class="v2-row-stat">
+              <span class="v2-row-stat-num">${r.rating}★</span>
+              <span class="v2-row-stat-label">${r.review_count ?? 0} reviews</span>
+            </div>` : ''}
+          ${(r.signals.sent > 0 || r.signals.replied > 0) ? `
+            <div class="v2-row-stat">
+              <span class="v2-row-stat-num">📤${r.signals.sent}${r.signals.replied > 0 ? ' 💬'+r.signals.replied : ''}</span>
+              <span class="v2-row-stat-label">outreach</span>
+            </div>` : ''}
+          ${r.firstSeenAt ? `
+            <div class="v2-row-stat">
+              <span class="v2-row-stat-num">${fmtDaysAgo(r.firstSeenAt) || '?'}</span>
+              <span class="v2-row-stat-label">seen</span>
+            </div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // strip click → set phase filter
+  document.querySelectorAll('[data-filter-phase]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      $('filter-phase').value = el.dataset.filterPhase;
+      loadList();
+    });
+  });
+  $('refresh-btn').addEventListener('click', loadList);
+  $('filter-phase').addEventListener('change', loadList);
+  $('filter-grade').addEventListener('change', loadList);
+
+  loadList();
+</script>
+
+<style>
+  .leads-live-shell { max-width: 1200px; }
+  .leads-live-shell .admin-count { min-width: 220px; flex-shrink: 0; }
+  .leads-live-shell .admin-count strong { font-size: 44px; line-height: 1; font-weight: 950; }
+  .leads-live-shell .admin-count .micro-note { display:block; margin-top:6px; font-size:11px; font-weight:700; color: var(--pl-muted); }
+  .leads-live-shell .lede a { color: var(--pl-coral); border-bottom: 1px dashed currentColor; text-decoration: none; }
+  .filters-bar { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: 12px; }
+  .filters-bar label { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--pl-muted); }
+  .filters-bar select { padding: 4px 10px; border: 2px solid var(--pl-line); background: var(--pl-paper); font: inherit; font-weight: 700; }
+  .filter-status-line { color: var(--pl-muted); font-size: 11px; margin-left: auto; }
+</style>
