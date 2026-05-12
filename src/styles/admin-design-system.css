@@ -239,13 +239,18 @@
   border-bottom: 2px solid var(--pl-line);
 }
 /* When tabs are ABOVE admin-shell (outside container), tabs visually sit
-   on top of the container, active tab "merges" into container top. */
+   on top of the container, active tab "merges" into container top.
+   Must match admin-shell's effective width — sop-shell overrides to 1080px
+   so use the same max-width here (and stay center-aligned). */
 .sop-tabs--global {
-  margin: 0 0 -2px;
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  margin-bottom: -2px;
   border-bottom: none;
-  padding-left: 24px;
   position: relative;
   z-index: 2;
+  padding-left: 0;
 }
 .sop-page .admin-shell { position: relative; z-index: 1; }
 

@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto('http://localhost:4333/admin/scoring', { waitUntil: 'networkidle' });
+const tabsBox = await page.locator('.sop-tabs--global').boundingBox();
+const shellBox = await page.locator('.admin-shell').boundingBox();
+const activeTabBox = await page.locator('.sop-tab--active').boundingBox();
+console.log('tabs container:', tabsBox);
+console.log('admin-shell  :', shellBox);
+console.log('active tab   :', activeTabBox);
+await browser.close();

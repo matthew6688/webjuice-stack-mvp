@@ -4,9 +4,9 @@ const outDir = 'data/qa/sop2-screenshots';
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 for (const [url, name] of [
-  ['http://localhost:4331/admin/scoring', 'tab-overview'],
-  ['http://localhost:4331/admin/scoring/sop-1', 'tab-sop-1'],
-  ['http://localhost:4331/admin/scoring/sop-2', 'tab-sop-2'],
+  ['http://localhost:4333/admin/scoring', 'tab-overview'],
+  ['http://localhost:4333/admin/scoring/sop-1', 'tab-sop-1'],
+  ['http://localhost:4333/admin/scoring/sop-2', 'tab-sop-2'],
 ]) {
   const page = await ctx.newPage();
   await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
