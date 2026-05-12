@@ -43,6 +43,7 @@ const sopCatalog = {
     title: '🔵 Lifecycle Process SOPs',
     subtitle: '按业务阶段 · 每段 Discord channel 对应一个',
     items: [
+      { id: 'SOP-0',  zh: '统一入口 Task System',             status: '✅ v1.5 GA',     href: '/admin/scoring/sop-0',    trigger: 'Discord 一句话 / 图 / cron · 路由到下游 CLI', channel: '#website-tasks' },
       { id: 'SOP-1',  zh: '客户发现 Intake & Discovery',     status: '🟡 调研笔记中', href: '/admin/scoring/sop-1',    trigger: 'gosom Docker / image / search keywords', channel: '#lead-discovery-runs' },
       { id: 'SOP-2',  zh: '筛选 + 审计 Screening & Audit',   status: '✅ 有了 (本次润色)',  href: '/admin/scoring/sop-2',    trigger: 'cheap-audit-v2 + detailed audit + grade',  channel: '#lead-discovery-runs → #website-leads' },
       { id: 'SOP-3',  zh: 'Open Design 网站预制',             status: '⚪ 待写',         href: null,                       trigger: 'A 必做 / B 排完 A 做 / C 有意向也做',     channel: '#website-projects' },
@@ -97,6 +98,11 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
         <span class="sop-tab-id">📊 概览</span>
         <span class="sop-tab-zh">销售流水线总览</span>
         <span class="sop-tab-en">Overview</span>
+      </a>
+      <a href="/admin/scoring/sop-0" class="sop-tab">
+        <span class="sop-tab-id">🚪 SOP-0</span>
+        <span class="sop-tab-zh">统一入口</span>
+        <span class="sop-tab-en">Task System</span>
       </a>
       <a href="/admin/scoring/sop-1" class="sop-tab">
         <span class="sop-tab-id">🎣 SOP-1</span>

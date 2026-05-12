@@ -68,9 +68,9 @@ Open Design 网站预制 (SOP-3, 待写)
 
 ### Layer 0 · 统一入口 (1 个)
 
-| # | 名称 | 状态 | 文档 |
-|---|---|---|---|
-| SOP-0 | Task System · 统一入口 + 调度 | 🟡 v0.1-draft | [`SOP_0_TASK_SYSTEM.md`](SOP_0_TASK_SYSTEM.md) · viewer [`/admin/scoring/sop-0-doc`](/admin/scoring/sop-0-doc) |
+| # | 名称 | 状态 | 文档 | Admin |
+|---|---|---|---|---|
+| SOP-0 | Task System · 统一入口 + 调度 | ✅ v1.5 GA | [`SOP_0_TASK_SYSTEM.md`](SOP_0_TASK_SYSTEM.md) · [test plan](SOP_0_TEST_PLAN.md) · [results](SOP_0_TEST_RESULTS.md) · [operator guide](SOP_0_OPERATOR_GUIDE.md) | [`/admin/scoring/sop-0`](/admin/scoring/sop-0) (macro) · [`sop-0-doc`](/admin/scoring/sop-0-doc) (doc viewer) · [`/admin/tasks`](/admin/tasks) (live) |
 
 ### Layer 1 · Lifecycle Process (5 个)
 

@@ -1,0 +1,392 @@
+---
+import Layout from '../../../layouts/AdminLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Snapshot: how many tasks have run, by kind (active + archive)
+const tasksDir = path.join(process.cwd(), 'data/tasks');
+const taskCounts = { active: 0, archived: 0, by_kind: {}, by_status: {} };
+
+function countTask(t) {
+  taskCounts.by_kind[t.kind] = (taskCounts.by_kind[t.kind] || 0) + 1;
+  taskCounts.by_status[t.status] = (taskCounts.by_status[t.status] || 0) + 1;
+}
+
+try {
+  if (fs.existsSync(tasksDir)) {
+    for (const f of fs.readdirSync(tasksDir).filter((x) => x.endsWith('.json'))) {
+      try { countTask(JSON.parse(fs.readFileSync(path.join(tasksDir, f), 'utf8'))); taskCounts.active += 1; } catch {}
+    }
+    const archive = path.join(tasksDir, '_archive');
+    if (fs.existsSync(archive)) {
+      const stack = [archive];
+      while (stack.length) {
+        const d = stack.pop();
+        for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+          const full = path.join(d, e.name);
+          if (e.isDirectory()) stack.push(full);
+          else if (e.name.endsWith('.json')) {
+            try { countTask(JSON.parse(fs.readFileSync(full, 'utf8'))); taskCounts.archived += 1; } catch {}
+          }
+        }
+      }
+    }
+  }
+} catch {}
+
+const KIND_LABELS = {
+  intake:          { zh: '批量 Maps 抓取',         tone: 'mint',   cli: 'pl:pipeline-batch-start' },
+  'places-intake': { zh: 'Places API 搜索',         tone: 'sky',    cli: 'pl:places-search-intake' },
+  'single-enrich': { zh: '单商家解析',              tone: 'coral',  cli: 'pl:single-enrich' },
+  enrich:          { zh: '联系方式补全',            tone: 'sky',    cli: 'pl:run-enrichment-batch' },
+  audit:           { zh: 'Audit pipeline',          tone: 'lilac',  cli: 'leads:run-pipeline' },
+  dedup:           { zh: '去重检测',                tone: 'citrus', cli: 'pl:dedup-audit' },
+  photos:          { zh: 'Places 照片下载',         tone: 'mint',   cli: 'pl:download-places-photos' },
+  'image-extract': { zh: '图片识别商家',            tone: 'coral',  cli: 'pl:ingest-image' },
+  ops:             { zh: '运维 / 健康检查',        tone: 'muted',  cli: 'ops:health-check' },
+};
+const KIND_ORDER = ['intake', 'places-intake', 'single-enrich', 'enrich', 'audit', 'dedup', 'photos', 'image-extract', 'ops'];
+---
+
+<Layout title="SOP-0 · Task System" active="scoring">
+  <section class="poster-section admin-section sop-page">
+    <nav class="sop-tabs sop-tabs--global" aria-label="SOP navigation">
+      <a href="/admin/scoring" class="sop-tab">
+        <span class="sop-tab-id">📊 概览</span>
+        <span class="sop-tab-zh">销售流水线总览</span>
+        <span class="sop-tab-en">Overview</span>
+      </a>
+      <a href="/admin/scoring/sop-0" class="sop-tab sop-tab--active" aria-current="page">
+        <span class="sop-tab-id">🚪 SOP-0</span>
+        <span class="sop-tab-zh">统一入口</span>
+        <span class="sop-tab-en">Task System</span>
+      </a>
+      <a href="/admin/scoring/sop-1" class="sop-tab">
+        <span class="sop-tab-id">🎣 SOP-1</span>
+        <span class="sop-tab-zh">客户发现</span>
+        <span class="sop-tab-en">Intake & Discovery</span>
+      </a>
+      <a href="/admin/scoring/sop-2" class="sop-tab">
+        <span class="sop-tab-id">🔍 SOP-2</span>
+        <span class="sop-tab-zh">筛选 + 审计</span>
+        <span class="sop-tab-en">Screening & Audit</span>
+      </a>
+    </nav>
+
+    <div class="admin-shell lead-admin-shell scoring-shell sop-shell" data-ui-version="local-style-2026-05-08">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">SOP-0 · 统一入口 + 调度</p>
+          <h1>Task System · 一切活儿的入口</h1>
+          <p class="zh-en-sub"><span>Task System</span>　·　<span class="micro">"Discord 一句话 → 自动跑 → 结果回帖"</span></p>
+          <p class="lede">SOP-0 不<strong>做</strong>业务（业务在 SOP-1..5），它<strong>驱动</strong>业务。任何活儿（文字 / 图 / cron）丢进 Discord forum <code>#website-tasks</code> → 自动路由到对应 SOP 的 CLI → 进度回写同一 thread + admin。</p>
+
+          <div class="sop2-doc-link-row">
+            <a href="/admin/scoring/sop-0-doc" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📘</span>
+              <span class="sop2-doc-link-text">
+                <strong>SOP-0 详细文档 v1.5</strong>
+                <span class="sop2-doc-link-sub">架构 / 决策 log / env 参考 · <code>docs/SOP_0_TASK_SYSTEM.md</code></span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
+          <div class="sop2-doc-link-row">
+            <a href="/admin/tasks" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">📋</span>
+              <span class="sop2-doc-link-text">
+                <strong>Task viewer (live)</strong>
+                <span class="sop2-doc-link-sub">实时浏览所有 task · status / kind 过滤</span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
+          <div class="sop2-doc-link-row">
+            <a href="/admin/cron" class="sop2-doc-link-btn">
+              <span class="sop2-doc-link-icon">⏰</span>
+              <span class="sop2-doc-link-text">
+                <strong>Hermes cron viewer</strong>
+                <span class="sop2-doc-link-sub">所有 profile 的 cron job · 改去 Hermes Dashboard</span>
+              </span>
+              <span class="sop2-doc-link-arrow">→</span>
+            </a>
+          </div>
+          <div class="admin-note-line">
+            <strong>当前状态</strong> — v1.5 GA · 5 daemon (listener / dispatcher / api / tunnel / retention) · 9 task kinds · <a href="/admin/scoring/sop-0-doc">详细文档</a><br/>
+            <strong>仍待</strong> — task action 按钮 (re-run/abandon UI) · PDF/audio 输入 · vision Tesseract 末端 fallback · CI regression · v2 cloud mirror (Mac-independent).
+          </div>
+        </div>
+        <div class="admin-count">
+          <span>累计 task</span>
+          <strong>{taskCounts.active + taskCounts.archived}</strong>
+          <span class="micro-note">{taskCounts.active} active · {taskCounts.archived} archived</span>
+        </div>
+      </header>
+
+      <!-- ─── SOP-0 流程图 ─────────────────────────────────────── -->
+      <section class="admin-paper-section flow-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">SOP-0 流程</p>
+            <h2>从 Discord 一句话到 CLI 完成的 5 步</h2>
+          </div>
+          <span class="admin-section-count">3 入口 · 9 kinds · 5 状态</span>
+        </div>
+
+        <div class="flow-grid">
+          <!-- ENTRIES -->
+          <div class="flow-row">
+            <div class="flow-row-label">入口</div>
+            <div class="flow-entries">
+              <div class="flow-entry">
+                <div class="flow-entry-tag">#website-tasks 论坛</div>
+                <div class="flow-entry-desc">操作员主入口 · 文字 / 图 / 多 query</div>
+              </div>
+              <div class="flow-entry">
+                <div class="flow-entry-tag">内部 push</div>
+                <div class="flow-entry-desc">thin-contact entity 写入 → 自动 enrich task</div>
+              </div>
+              <div class="flow-entry">
+                <div class="flow-entry-tag">Hermes cron</div>
+                <div class="flow-entry-desc">周期性 ops 任务 (health-check 等)</div>
+              </div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 1: LISTEN -->
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Listener 接收 <span class="flow-step-badge">always</span></div>
+              <div class="flow-step-desc"><code>pl-task-listener</code> daemon · discord.js gateway · Handoff bot · forum ThreadCreate event</div>
+              <div class="flow-step-meta">图片入口 → 下载附件 + vision LLM fallback chain (qwen3.6 → gemma3) 提取业务字段</div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 2: ROUTE -->
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Intent router 分类 <span class="flow-step-badge">T0 local</span></div>
+              <div class="flow-step-desc">Ollama qwen3.5:9b (本地 LLM) → kind · target_cli · args · confidence</div>
+              <div class="flow-step-meta">Fallback chain: ollama → regex (8-class) · paid CLIs opt-in only via env</div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 3: WRITE TASK -->
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Task 落盘 + tag</div>
+              <div class="flow-step-desc"><code>data/tasks/&lt;YYYYMMDD-HHMMSS-rand&gt;.json</code> · atomic write · forum tag = [kind, pending]</div>
+              <div class="flow-step-meta">forum thread 立刻收到 "Task created" reply with cli + args</div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 4: DISPATCH -->
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">Dispatcher claim + spawn</div>
+              <div class="flow-step-desc"><code>pl-task-dispatcher</code> daemon · fs.watch (sub-second) + cron 60s safety · spawn <code>npm run &lt;cli&gt; -- &lt;args&gt;</code></div>
+              <div class="flow-step-meta">flock 单进程 · tryClaim atomic pending → running · auto-inject --entity-key if missing</div>
+            </div>
+          </div>
+          <div class="flow-arrow-row">▼</div>
+
+          <!-- STEP 5: RESULT + XREF -->
+          <div class="flow-step admin-flow-step--handoff">
+            <div class="flow-step-num">5</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">结果回写 + cross-ref</div>
+              <div class="flow-step-desc">stdout tee (5s/2KB) → progress[] live · exit → tag swap [done/failed/human] + thread reply with stdout tail</div>
+              <div class="flow-step-meta">parseLastJson 提取 batch_id / thread_url / audit_chained → "🔗 batch thread:" deeplink in reply</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── 9 KIND 一张表 ────────────────────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">9 个 Task Kind</p>
+            <h2>每个 kind 对应一个 SOP 入口</h2>
+          </div>
+          <span class="admin-section-count">7 + 2 (v1.5 新增)</span>
+        </div>
+        <div class="admin-card-grid admin-card-grid-3">
+          {KIND_ORDER.map((k) => {
+            const meta = KIND_LABELS[k];
+            const count = taskCounts.by_kind[k] || 0;
+            return (
+              <div class={`admin-card admin-card-tinted-${meta.tone}`}>
+                <p class="eyebrow">{k}</p>
+                <p><strong>{meta.zh}</strong></p>
+                <p class="admin-card-meta"><code>{meta.cli}</code></p>
+                <p class="admin-card-meta">已跑 {count} 次</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <!-- ─── 5 状态机 + Discord forum tag ─────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">状态机</p>
+            <h2>5 状态 · 4 个 valid 转换 · Discord tag 同步</h2>
+          </div>
+        </div>
+        <div class="admin-card-grid admin-card-grid-auto">
+          <div class="admin-card admin-card-tinted-citrus">
+            <p class="eyebrow">pending</p>
+            <p><strong>{taskCounts.by_status.pending || 0}</strong> 个</p>
+            <p class="admin-card-meta">task 写入未被 claim · 等 dispatcher</p>
+          </div>
+          <div class="admin-card admin-card-tinted-sky">
+            <p class="eyebrow">running</p>
+            <p><strong>{taskCounts.by_status.running || 0}</strong> 个</p>
+            <p class="admin-card-meta">dispatcher 正在 spawn 子进程</p>
+          </div>
+          <div class="admin-card admin-card-tinted-mint">
+            <p class="eyebrow">done</p>
+            <p><strong>{taskCounts.by_status.done || 0}</strong> 个</p>
+            <p class="admin-card-meta">CLI exit 0 · 终态</p>
+          </div>
+          <div class="admin-card admin-card-tinted-coral">
+            <p class="eyebrow">failed</p>
+            <p><strong>{taskCounts.by_status.failed || 0}</strong> 个</p>
+            <p class="admin-card-meta">CLI exit ≠ 0 · 可通过 ✅ reaction 重跑</p>
+          </div>
+          <div class="admin-card admin-card-tinted-lilac">
+            <p class="eyebrow">human</p>
+            <p><strong>{taskCounts.by_status.human || 0}</strong> 个</p>
+            <p class="admin-card-meta">router 没辙 / 超时 / image prep 缺字段 · 操作员裁决</p>
+          </div>
+        </div>
+        <p class="section-lede" style="margin-top:14px">
+          <strong>转换边</strong>: pending→running (claim) · running→done (exit 0) · running→failed (exit≠0) · running→human (timeout / unknown kind) · human→pending (✅) · human→done (❌). 状态机由 <code>canTransition()</code> 强制 — 非法转换 throw.
+        </p>
+      </section>
+
+      <!-- ─── Discord channel 流转 ──────────────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">Multi-channel lifecycle</p>
+            <h2>task 触发下游 · 跨 channel 跑</h2>
+          </div>
+        </div>
+        <p class="section-lede">SOP-0 task thread ≠ SOP-1 batch thread。SOP-0 自己只 own <code>#website-tasks</code> 这一段。Task 跑的 CLI 在<strong>不同 channel</strong>开新 thread (跨 channel cross-ref 通过 done reply 中的 🔗 deeplink 表达)。</p>
+        <div class="admin-card-grid admin-card-grid-2">
+          <div class="admin-card">
+            <p class="eyebrow">SOP-0 own</p>
+            <p><strong><code>#website-tasks</code> (forum)</strong></p>
+            <p class="admin-card-meta">1 task = 1 thread · 你的入口 · 系统确认 + 终止</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">SOP-1 own</p>
+            <p><strong><code>#lead-discovery-runs</code></strong></p>
+            <p class="admin-card-meta">pl:pipeline-batch-start / pl:places-search-intake 开 batch thread 在这里</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">SOP-2/4 own</p>
+            <p><strong><code>#website-leads</code> (forum)</strong></p>
+            <p class="admin-card-meta">grade ≥ B 自动 graduate · 1 客户 = 1 thread</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">SOP-3 (待写) / SOP-5</p>
+            <p><strong><code>#website-projects</code> · <code>#paid-websites</code></strong></p>
+            <p class="admin-card-meta">手动 graduate (兴趣 / 付费)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── 5 daemon 状态 ─────────────────────────────────────── -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">运行时</p>
+            <h2>5 个 launchd daemon</h2>
+          </div>
+          <span class="admin-section-count">macOS launchd · KeepAlive auto-restart</span>
+        </div>
+        <div class="admin-card-grid admin-card-grid-3">
+          <div class="admin-card">
+            <p class="eyebrow">listener</p>
+            <p><code>ai.profitslocal.task-listener</code></p>
+            <p class="admin-card-meta">discord.js gateway · forum ThreadCreate + reaction events</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">dispatcher</p>
+            <p><code>ai.profitslocal.task-dispatcher</code></p>
+            <p class="admin-card-meta">fs.watch + 60s tick · spawn CLI · stdout tee · tag PATCH</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">api</p>
+            <p><code>ai.profitslocal.task-api</code></p>
+            <p class="admin-card-meta">localhost:4040 · GET /api/tasks /entities /intakes /cron · Bearer auth</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">tunnel</p>
+            <p><code>ai.profitslocal.sop0-tunnel</code></p>
+            <p class="admin-card-meta">cloudflared QUIC · <code>tasks.profitslocal.com</code> permanent URL</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">retention</p>
+            <p><code>ai.profitslocal.task-retention</code></p>
+            <p class="admin-card-meta">每日 03:00 · done/failed > 30 天 archive 到 _archive/YYYY-MM/</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── 链接到深入 -->
+      <section class="admin-paper-section">
+        <div class="admin-paper-section-head">
+          <div>
+            <p class="eyebrow">深入了解</p>
+            <h2>看更多细节 · 跑操作</h2>
+          </div>
+        </div>
+        <div class="admin-card-grid admin-card-grid-3">
+          <div class="admin-card">
+            <p class="eyebrow">详细文档</p>
+            <p><a href="/admin/scoring/sop-0-doc">SOP-0 v1.5 详细文档</a></p>
+            <p class="admin-card-meta">11 节 · 完整决策 log (26 条架构选择 + why-not-X) · env 参考</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">Operator UI</p>
+            <p><a href="/admin/tasks">Task viewer (live)</a> · <a href="/admin/cron">Cron viewer</a></p>
+            <p class="admin-card-meta">实时 Bearer-auth · 跨设备 admin · filter by kind/status</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">Operator guide</p>
+            <p><a href="/admin/scoring/sop-0-doc#sop-0-operator-guide">SOP-0 Operator Guide</a></p>
+            <p class="admin-card-meta">7 个 kind 各自怎么触发 / 5 种 troubleshoot / 每周自查</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">CLI</p>
+            <p><code>pl:task-listener</code> · <code>pl:task-dispatcher</code> · <code>pl:task-api</code> · <code>pl:task-retention</code></p>
+            <p class="admin-card-meta">前台调试时直接跑 npm run；通常 launchd 接管</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">Test plan</p>
+            <p><a href="/admin/scoring/sop-0-doc#sop-0-test-plan">23 case test matrix</a></p>
+            <p class="admin-card-meta">12+ 已 PASS (含 T22 cross-ref live verified) · 详细 results 见 SOP_0_TEST_RESULTS.md</p>
+          </div>
+          <div class="admin-card">
+            <p class="eyebrow">已知 backlog</p>
+            <p>task-action buttons · PDF/audio 输入 · Tesseract OCR · CI regression · v2 cloud mirror</p>
+            <p class="admin-card-meta">见 <a href="/admin/scoring/sop-0-doc">SOP-0 doc §11 TODO</a></p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</Layout>
