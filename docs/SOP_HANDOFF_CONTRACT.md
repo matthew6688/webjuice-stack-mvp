@@ -114,8 +114,51 @@ SOP-1 交付给 SOP-2 的每个 entity 都保证：
 | `signals.{hasPhone, hasWebsite, hasImage, ...}` | object | ✅ | normalize | cheap-audit 快查 |
 | `batch_id` | string | ⚠️ G-3 新增 | run.batchId 或 lead.batch_id | filter 本批 vs 老批 |
 | `places_enrichment` | object / null | 可空（Places API 触发后才有）| Places API Details Basic | 增强 audit（types[] / photos / E.164 phone）|
-| **`enrichment_status`** | enum | ✅ SOP-1 必写 (自动) | `mergeLeadIntoEntity` 写 | 新 entity 默认 `'pending'`；有 phone OR website 自动升 `'complete'`；`pl:run-enrichment-batch` 跑完后改 `'complete'`/`'unenrichable'`。**Legacy 缺字段视作 `'complete'`** (backwards-compat) |
-| **`contact_identity`** | object / null | 可空 (Step 3a 后填) | SOP-1 5 路 search 输出 | `{ facebook, instagram, linkedin, contact_us_url, decision_maker }` |
+| **`enrichment_status`** | enum | ✅ SOP-1 必写 (自动) | `mergeLeadIntoEntity` 写 | 新 entity 默认 `'pending'`；有 phone OR website 自动升 `'complete'`；`pl:run-enrichment-batch` 跑完后改 `'complete'`/`'partial'`/`'unenrichable'`。**Legacy 缺字段视作 `'complete'`** (backwards-compat) |
+| **`contact_identity`** | object / null | 可空 (Phase B `pl:run-enrichment-batch` 后填) | enrichLead() output 合并 | 实际 schema 见下 §2.3.1（real-test 2026-05-12 确认）|
+
+### 2.3.1 `latest.contact_identity` 完整 schema（real-test 验证 2026-05-12）
+
+**Source**: `enrichLead()` 返回的 `profile.contact` + adjacent fields, 合并到 entity 时按此 shape:
+
+```js
+entity.latest.contact_identity = {
+  phone:    string,    // profile.contact.phone (可能与 latest.phone 一致或更准)
+  website:  string,    // profile.contact.website (5 路 search 后可能仍空)
+  social: {
+    facebook:  string | '',
+    instagram: string | '',
+    linkedin:  string | '',
+  },
+  decision_maker:        null | { name, title, source },   // 多数 entity 为 null
+  third_party_reviews:   [],   // hipages/yelp/productreview/truelocal/houzz
+  evidence_sources: [          // 审计轨迹 - 哪个 route 给的哪个字段
+    { field, source, route, url, title, profile_score }
+  ],
+  enriched_at: ISO8601,
+}
+```
+
+### 2.3.2 `enrichment_status` 决定逻辑（real-test 确认）
+
+`pl:run-enrichment-batch` 跑完每个 entity 后按此规则写状态:
+
+```js
+const hasContact = !!(profile.contact.phone || profile.contact.website);
+const hasSocial  = Object.values(profile.contact.social || {}).some(Boolean);
+const succeeded  = profile.enrichment_trace.queries_succeeded;
+
+if (hasContact || hasSocial)  → 'complete'
+else if (succeeded > 0)        → 'partial'    // 跑了但没拿到联系方式
+else                            → 'unenrichable' // 所有 route 都失败
+```
+
+**Real-test evidence** (Regan Brothers Roofing, 2026-05-12):
+- 6/6 routes succeeded · cost $0 · 22 total results
+- Found: phone (GBP), social.instagram, social.facebook
+- Website 仍为空（不是所有商家都有官网）
+- Status: `'complete'`（满足 hasContact + hasSocial）
+- Fixture: `data/v2/fixtures/enrichment/place_chijd28ojc37k2sr-3f5yimly-4.json`
 
 ### 2.4 `runs[]` · 历史 discovery runs
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T12:32:59.373Z",
+  "generatedAt": "2026-05-12T05:05:15.127Z",
   "entity_input": {
     "entityKey": "place_chijd28ojc37k2sr-3f5yimly-4",
     "latest": {
@@ -44,13 +44,16 @@
     "leadId": "place_chijd28ojc37k2sr-3f5yimly-4",
     "business_name": "Regan Brothers Roof Restoration",
     "niche": "roofing",
-    "enriched_at": "2026-05-10T12:32:59.372Z",
+    "enriched_at": "2026-05-12T05:05:15.124Z",
     "contact": {
       "phone": "0431 275 646",
       "website": "",
       "address": "Kallangur QLD 4503",
       "city": "Brisbane",
-      "social": {}
+      "social": {
+        "instagram": "https://www.instagram.com/p/B_5gBX-BqPM/",
+        "facebook": "https://www.facebook.com/reganbrothersroofing/"
+      }
     },
     "identifiers": {
       "place_id": "ChIJd28oJC37k2sR-3f5YiMLY-4",
@@ -59,12 +62,29 @@
     },
     "decision_maker": null,
     "third_party_reviews": [],
-    "evidence_sources": [],
+    "evidence_sources": [
+      {
+        "field": "social.instagram",
+        "source": "tinyfish",
+        "route": "enrich_social_instagram",
+        "url": "https://www.instagram.com/p/B_5gBX-BqPM/",
+        "title": "Roof restoration completed by BRS -Finished in colour ...",
+        "profile_score": 1
+      },
+      {
+        "field": "social.facebook",
+        "source": "tinyfish",
+        "route": "enrich_social_instagram",
+        "url": "https://www.facebook.com/reganbrothersroofing/",
+        "title": "Regan Brothers Roofing | Brisbane QLD - Facebook",
+        "profile_score": 10
+      }
+    ],
     "enrichment_trace": {
       "queries_run": 6,
       "queries_succeeded": 6,
       "queries_failed": 0,
-      "total_results": 4,
+      "total_results": 22,
       "routes": [
         {
           "purpose": "enrich_discover_official",
@@ -82,13 +102,13 @@
           "purpose": "enrich_social_instagram",
           "ok": true,
           "provider": "tinyfish",
-          "result_count": 0
+          "result_count": 7
         },
         {
           "purpose": "enrich_social_linkedin",
           "ok": true,
           "provider": "tinyfish",
-          "result_count": 0
+          "result_count": 1
         },
         {
           "purpose": "enrich_reviews_thirdparty",
@@ -100,7 +120,7 @@
           "purpose": "enrich_reverse_phone",
           "ok": true,
           "provider": "tinyfish",
-          "result_count": 0
+          "result_count": 10
         }
       ]
     },
@@ -115,18 +135,18 @@
       "top_3": [
         {
           "position": 1,
-          "title": "Regan Brothers Roof Restoration - MapQuest",
+          "title": "Regan Brothers Roof Restoration, 33 Tanderra St, Bracken ...",
           "url": "https://www.mapquest.com/au/queensland/regan-brothers-roof-restoration-795813660"
         },
         {
           "position": 2,
-          "title": "Revsplastering, Brant St, Bracken Ridge, Queensland 4017, AU",
+          "title": "Revsplastering, Brant St, Bracken Ridge, Queensland ...",
           "url": "https://www.mapquest.com/au/queensland/revsplastering-795813194"
         },
         {
           "position": 3,
-          "title": "Pest Termite Defence, 8 Corlis St, Bracken Ridge, Queensland 4017 ...",
-          "url": "https://www.mapquest.com/au/queensland/pest-termite-defence-795813343"
+          "title": "We Colour Concrete, 20 Jude St, Bracken Ridge, Queensland ...",
+          "url": "https://www.mapquest.com/au/queensland/we-colour-concrete-795813753"
         }
       ]
     },
@@ -141,15 +161,37 @@
       "purpose": "enrich_social_instagram",
       "ok": true,
       "provider": "tinyfish",
-      "result_count": 0,
-      "top_3": []
+      "result_count": 7,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Roof restoration completed by BRS -Finished in colour ...",
+          "url": "https://www.instagram.com/p/B_5gBX-BqPM/"
+        },
+        {
+          "position": 2,
+          "title": "title Some before and after photos of a roof restoration we ...",
+          "url": "https://www.instagram.com/p/DHroOCOzejO/"
+        },
+        {
+          "position": 3,
+          "title": "Regan Brothers Roofing | Brisbane QLD - Facebook",
+          "url": "https://www.facebook.com/reganbrothersroofing/"
+        }
+      ]
     },
     {
       "purpose": "enrich_social_linkedin",
       "ok": true,
       "provider": "tinyfish",
-      "result_count": 0,
-      "top_3": []
+      "result_count": 1,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Regan Brothers Roofing | Brisbane QLD",
+          "url": "https://www.facebook.com/reganbrothersroofing/"
+        }
+      ]
     },
     {
       "purpose": "enrich_reviews_thirdparty",
@@ -162,8 +204,24 @@
       "purpose": "enrich_reverse_phone",
       "ok": true,
       "provider": "tinyfish",
-      "result_count": 0,
-      "top_3": []
+      "result_count": 10,
+      "top_3": [
+        {
+          "position": 1,
+          "title": "Reverse Australia: Reverse Phone Lookup",
+          "url": "https://www.reverseaustralia.com/"
+        },
+        {
+          "position": 2,
+          "title": "Can anyone tell me how to reverse lookup a number that ...",
+          "url": "https://www.reddit.com/r/hacking/comments/17gfyba/can_anyone_tell_me_how_to_reverse_lookup_a_number/"
+        },
+        {
+          "position": 3,
+          "title": "“HELLO” Text Scams: Are you getting texts from strange ...",
+          "url": "https://www.facebook.com/JasonKnowlesABC7/posts/hello-text-scamsare-you-getting-texts-from-strange-numbers-that-say-hello-or-how/825569048956683/"
+        }
+      ]
     }
   ],
   "ledger_summary": {
@@ -178,5 +236,5 @@
       "enrich_reverse_phone": 1
     }
   },
-  "total_elapsed_ms": 8874
+  "total_elapsed_ms": 7414
 }

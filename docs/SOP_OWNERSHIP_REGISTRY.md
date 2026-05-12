@@ -70,6 +70,8 @@
 | 8 个 V1 status 值 + 升级规则 | SOP-X-Handoff §3 | 同上 |
 | 8 个 V2 phase 值 + 转换规则 | SOP-X-Handoff §4 | 同上 |
 | `latest.places_enrichment` 子对象结构 | SOP-X-Handoff §2.3 | 同上 |
+| **`enrichment_status` 字段 schema + 决定逻辑** | SOP-X-Handoff §2.3.2 | SOP-1 引用 step / when to trigger |
+| **`contact_identity` 字段 schema** | SOP-X-Handoff §2.3.1 | 同上 |
 | schemaVersion 升级协议 | SOP-X-Handoff §6 | 同上 |
 | SOP-2 入口必填校验列表 | SOP-X-Handoff §5 | 同上 |
 

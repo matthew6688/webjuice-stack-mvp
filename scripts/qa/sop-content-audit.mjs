@@ -36,7 +36,6 @@ const OWNERSHIP_RULES = [
     'pl:scrape-docker',
     'pl:ingest-image',
     'thin-contact predicate',             // SOP-1's own predicate, moved from SOP-2
-    'enrichment_status',                  // field SOP-1 fills
     'isThinContact',                      // helper function
   ] },
   // SOP-2 owned phrases
@@ -56,6 +55,8 @@ const OWNERSHIP_RULES = [
     'DISCOVERY_ENTITY_STATUS',
     'PHASES enum',
     '`places_enrichment` 子对象',
+    'enrichment_status',                  // field schema + decision logic owned here
+    'contact_identity schema',            // exact field shape
   ] },
   // Tooling owned phrases
   { owner: 'SOP_X_TOOLING.md', phrases: [

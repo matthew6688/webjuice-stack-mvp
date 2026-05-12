@@ -200,8 +200,20 @@ V2 的运营载体：lead 生命周期分 4 段，每段对应一个 Discord cha
   - `enrichment_status` 字段自动写入 `mergeLeadIntoEntity`（'pending' / 'complete' 自动判定）
   - `buildDiscoveryQueues` 加 `isEnrichmentReady` gate（向后兼容：缺字段=complete）
   - `pl:pipeline-batch-step --finalize` 自动 hook `pl:dedup-audit`
-- [ ] **C5-Phase-B SOP-1 出口契约 接通 enrichment 自动执行** — 生产 `pl:run-enrichment-batch` CLI 处理 'pending' 队列，调用 `enrichLead()` + 持久化结果到 entity（含 fixture 写入策略 + Tinyfish 速率限制方案）
-- [ ] **C5-Phase-C E2E 测试 + cheap-audit-v2 enrichment-trigger 迁移** — `queued_for_enrichment` 仍 own 在 SOP-2，逻辑上应迁到 SOP-1 thin-contact predicate
+- [ ] **C5-Phase-B `pl:run-enrichment-batch` CLI** — 99% 信心已就绪 (real-test verified 2026-05-12)
+  - 设计决策全部锁定：`contact_identity` schema + `enrichment_status` 决定逻辑 见 [Handoff Contract §2.3.1-2.3.2](SOP_HANDOFF_CONTRACT.md#231-latestcontact_identity-完整-schemareal-test-验证-2026-05-12)
+  - Real-test 已跑：Regan Brothers Roofing · 6/6 routes 成功 · cost $0 · fixture `data/v2/fixtures/enrichment/place_chijd28ojc37k2sr-3f5yimly-4.json`
+  - **9-step impl plan (~1.5h, 99% 信心)**：
+    1. CLI scaffold + arg parsing (`--limit / --niche / --dry-run / --skip-approval`)
+    2. Scan entities, filter `enrichment_status === 'pending'`
+    3. enrichment-gate check (`getEnrichmentGate(entityKey)`)
+    4. Serial loop · 500ms 间隔 · `enrichLead()` 调用
+    5. Fixture write (复用 test-enrichment-live shape)
+    6. Merge `contact_identity` 到 `entity.latest` + flip `enrichment_status`
+    7. Discord summary 推 SYSTEM_ALERTS webhook
+    8. Smoke verify 1 个真实 pending entity
+    9. build + audit + commit + push
+- [ ] **C5-Phase-C 分层模型注释** — keep cheap-audit-v2 `queued_for_enrichment` 作 fallback safety net + 注释说明（不迁移，10min）
 - [ ] **Design system 技术债清理** — 19 个 admin pages 仍有 per-page `<style>` 自定义 class。逐页迁到 `admin-design-system.css`。当前 `ops:design-audit` 是 warning mode，迁完后改 strict
 - [ ] **SOP-X-Discord** — 4-channel 架构 + bot 权限 + forum tags（迁出 §6 临时章节）
 - [ ] **SOP-X-Pricing** — 改价时 5 处必须同改的协议
