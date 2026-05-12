@@ -111,9 +111,14 @@ loser     = K2
 - 跑前 backup loser entity 到 `data/leads/dedup-backups/<loser-key>-<ts>.json`
 - 写 `dedup-events.jsonl`
 
-### 4.3 `pl:dedup-undo --loser K2`
+### 4.3 `pl:dedup-undo --loser K2` · 🟡 尚未实装 · 已进 backlog (Phase 5+)
 
-读 backup，恢复 loser entity 到 store + 移除 winner 的 `merged_from` 末位 + jsonl append undo event。
+**计划行为**：读 backup（`data/leads/dedup-backups/<loser-key>-<ts>.json`），恢复 loser entity 到 store + 移除 winner 的 `merged_from` 末位 + jsonl append undo event。
+
+**当前手动 rollback 路径**（CLI 实装前）：
+1. 从 `data/leads/dedup-backups/<loser-key>-<ts>.json` 复制 JSON 回 `data/leads/entities/<loser-key>.json`
+2. 编辑 winner entity（`data/leads/entities/<winner-key>.json`）从 `merged_from[]` 移除该 loser key
+3. 在 `data/leads/dedup-events.jsonl` 末尾 append 一条 `{ "event": "manual_undo", "loser": "K2", "winner": "K1", "at": "<ISO8601>", "operator": "<name>" }`
 
 ---
 

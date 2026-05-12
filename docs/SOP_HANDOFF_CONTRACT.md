@@ -74,8 +74,8 @@ SOP-1 交付给 SOP-2 的每个 entity 都保证：
 | `lastSeenAt` | ISO8601 | ✅ | 最近一次 upsert | 6 个月没动 → 自动 archive |
 | `status` | enum (8) | ✅ | V1 状态机 — discovery 写 | 筛 `queued_for_audit` |
 | `lastStatusAt` | ISO8601 | ✅ | status 上次变更 | — |
-| `phase` | enum (8) | ✅ | V2 状态机 — sales 写 | 销售用 |
-| `phaseChangedAt` | ISO8601 | ✅ | phase 上次变更 | — |
+| `phase` | enum (8) | ⚠️ 可空（write-on-transition）| V2 状态机 — `setEntityPhase()` 显式写入；不从 status 隐式推导 | 销售用；缺失 = 尚未进入 V2 phase 状态机 |
+| `phaseChangedAt` | ISO8601 | ⚠️ 可空（与 `phase` 同时写）| `setEntityPhase()` 触发时写 | — |
 
 ### 2.2 `identifiers` · 多键匹配（dedup 核心）
 
@@ -114,6 +114,7 @@ SOP-1 交付给 SOP-2 的每个 entity 都保证：
 | `signals.{hasPhone, hasWebsite, hasImage, ...}` | object | ✅ | normalize | cheap-audit 快查 |
 | `batch_id` | string | ⚠️ G-3 新增 | run.batchId 或 lead.batch_id | filter 本批 vs 老批 |
 | `places_enrichment` | object / null | 可空（Places API 触发后才有）| Places API Details Basic | 增强 audit（types[] / photos / E.164 phone）|
+| `sales_signals.best_contact_time` | object / null | 可空（G-14 · `pl:places-enrich` 后衍生）| `core/leads/sales-contact-time.js`（解析 `places_enrichment.opening_hours_verified.weekday_text`）| 销售推销时段判断：`{ suggested_window, confidence, rationale, weekday_summary }` |
 | **`enrichment_status`** | enum | ✅ SOP-1 必写 (自动) | `mergeLeadIntoEntity` 写 | 新 entity 默认 `'pending'`；有 phone OR website 自动升 `'complete'`；`pl:run-enrichment-batch` 跑完后改 `'complete'`/`'partial'`/`'unenrichable'`。**Legacy 缺字段视作 `'complete'`** (backwards-compat) |
 | **`contact_identity`** | object / null | 可空 (Phase B `pl:run-enrichment-batch` 后填) | enrichLead() output 合并 | 实际 schema 见下 §2.3.1（real-test 2026-05-12 确认）|
 
@@ -200,35 +201,37 @@ else                            → 'unenrichable' // 所有 route 都失败
 
 ## 3. Status 状态机（V1 · discovery 用）
 
-8 个值（`DISCOVERY_ENTITY_STATUS`，`core/leads/discovery-store.js#L21`）：
+10 个值（`DISCOVERY_ENTITY_STATUS`，`core/leads/discovery-store.js` L38-48；外加 `merged` 由 `pl:dedup-merge` 写入）：
 
 1. `discovered` — 初始
 2. `scored` — discoveryScore 算完
 3. `queued_for_audit` — cheap-audit decision=audit_candidate ✅ SOP-2 入口筛
-4. `manual_review` — 30-69 分边界
-5. `queued_for_enrichment` — 没 contact，待补
-6. `skipped` — niche 不准 / 太差
-7. `archived` — 6 月没动
-8. `paid` — SOP-5 完结
+4. `queued_for_enrichment` — 没 contact，待补
+5. `ready_for_outreach_brief` — enrichment 完成 + grade 已写，待销售
+6. `promoted` — 已升入销售流程
+7. `skipped` — niche 不准 / 太差
+8. `manual_review` — 30-69 分边界 / 异常 fallback
+9. `contacted` — 销售已触达
+10. `merged` — 被 `pl:dedup-merge` 合并到 winner（loser 标记）
 
-**升级规则** (`shouldPromoteStatus`): status 单向往"更深"走，不可回退（除非 archive 重启）。
+**升级规则** (`shouldPromoteStatus`): status 单向往"更深"走，不可回退（除非 archive 重启）。`STATUS_RANK` 见同文件 L68-78。
 
 ---
 
 ## 4. Phase 状态机（V2 · sales 用）
 
-8 个 phase (`PHASES` enum，`core/leads/discovery-store.js#L21-30`)：
+8 个 phase (`ENTITY_PHASE` enum，`core/leads/discovery-store.js` L55-64)。**字面值为小写连字符**（操作员复制粘贴写入时注意）：
 
-1. `AWAITING` — 等销售触达
-2. `OUTREACH_ACTIVE` — 销售在跟
-3. `REPLIED` — 客户回复
-4. `PROPOSAL_SENT` — 报价已发
-5. `NURTURE` — 长线培育
-6. `PAID` — 成交
-7. `ARCHIVED` — 归档
-8. `NEEDS_HUMAN` — 需要人工介入
+1. `awaiting` — 等销售触达
+2. `outreach-active` — 销售在跟
+3. `replied` — 客户回复
+4. `proposal-sent` — 报价已发
+5. `nurture` — 长线培育
+6. `paid` — 成交
+7. `archived` — 归档
+8. `needs-human` — 需要人工介入
 
-A/B grade → 自动 `AWAITING`，C → 不动（批量轻触），D → `ARCHIVED`。
+A/B grade → 自动 `awaiting`，C → 不动（批量轻触），D → `archived`。
 
 ---
 

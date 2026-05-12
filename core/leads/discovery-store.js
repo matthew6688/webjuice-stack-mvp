@@ -45,6 +45,7 @@ export const DISCOVERY_ENTITY_STATUS = {
   SKIPPED: 'skipped',
   MANUAL_REVIEW: 'manual_review',
   CONTACTED: 'contacted',
+  MERGED: 'merged', // set by pl:dedup-merge on loser entity (SOP_X_DEDUP §2.2 step 7)
 };
 
 // V2 lifecycle phase — DISCORD_OUTREACH_PRD.md §7.1

@@ -96,7 +96,7 @@ try {
             <span class="dot">·</span>
             <span class="admin-page-updated">最近更新 2026-05-12</span>
             <span class="dot">·</span>
-            <span>4 步流程 · 2 个入口 · 补联系方式分 2 条路</span>
+            <span>4 步流程 · 2 个入口 · 单线 intake → dedup → enrich → handoff</span>
           </p>
           <div class="admin-code-sync-banner is-synced">
             <span>✓</span>
@@ -109,7 +109,7 @@ try {
               <code>pl:run-enrichment-batch</code> 命令行工具（实测 6/6 条路都跑通、$0 成本）+
               <code>pl:pipeline-batch-step --finalize</code> 自动触发 <code>pl:dedup-audit</code>（批次跑完自动去重）+
               cheap-audit-v2 兜底链注释。<br/>
-              <strong>还没做</strong> — G-11 抓取兜底链路 · G-13 店面图同步到客户档案 · G-14 营业时间用于推销时段判断 · G-6.1 图片自动 OCR 识别 · G-18 把定时任务接到 Hermes 调度。
+              <strong>还没做</strong> — G-11 抓取兜底链路 · G-6.1 图片自动 OCR 识别 · G-18 把定时任务接到 Hermes 调度。
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ try {
             <p class="eyebrow">SOP-1 流程</p>
             <h2>从抓商家到交给 SOP-2，一共 4 步</h2>
           </div>
-          <span class="admin-section-count">{channels.length} 个入口 · 4 步流程 · 1 个分岔判断</span>
+          <span class="admin-section-count">{channels.length} 个入口 · 4 步流程（建档 → 去重 → 补联系方式 → 交接）</span>
         </div>
 
         <div class="flow-grid">
@@ -198,34 +198,14 @@ try {
           </div>
           <div class="flow-arrow-row">▼</div>
 
-          <!-- DECISION: thin-contact? -->
-          <div class="admin-flow-decision-row">
-            <div class="admin-flow-decision-diamond">缺联系方式吗？<br/><span class="admin-flow-decision-sub">既没电话也没官网（<code>!phone && !website</code>）</span></div>
-          </div>
-
-          <!-- STEP 3a + 3b -->
-          <div class="admin-flow-branch-row">
-            <div class="admin-flow-branch admin-flow-branch--yes">
-              <div class="admin-flow-branch-label">是</div>
-              <div class="flow-step flow-step-conditional">
-                <div class="flow-step-num">3a</div>
-                <div class="flow-step-body">
-                  <div class="flow-step-title">补联系方式：到处搜电话和官网</div>
-                  <div class="flow-step-desc">5 个搜索通道：官网、Facebook、Instagram、LinkedIn、第三方目录（hipages、yelp 等）</div>
-                  <div class="flow-step-meta">把找到的填进 <code>contact_identity</code>（联系方式字段）。都搜不到 → 标成<code>enrichment_status: 'unenrichable'</code>（查不到联系方式）</div>
-                </div>
-              </div>
-            </div>
-            <div class="admin-flow-branch admin-flow-branch--no">
-              <div class="admin-flow-branch-label">否</div>
-              <div class="flow-step flow-step-conditional">
-                <div class="flow-step-num">3b</div>
-                <div class="flow-step-body">
-                  <div class="flow-step-title">Places 补全：从 Google Places 拿更详细信息 <span class="flow-step-badge">仅评级 B 及以上</span></div>
-                  <div class="flow-step-desc">命令 <code>pl:places-enrich</code> · 拿到行业分类、店面图、国际格式电话（E.164）、官方认证营业时间</div>
-                  <div class="flow-step-meta">每月配额上限 11K 次调用（硬卡死） · 详见 <a href="/admin/scoring/sop-x-tooling">工具计费 §2</a></div>
-                </div>
-              </div>
+          <!-- STEP 3: ENRICHMENT (single-line · no branch) -->
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <div class="flow-step-body">
+              <div class="flow-step-title">补联系方式：到处搜电话和官网 <span class="flow-step-badge">每条都跑</span></div>
+              <div class="flow-step-desc">5 个搜索通道：官网、Facebook、Instagram、LinkedIn、第三方目录（hipages、yelp 等）</div>
+              <div class="flow-step-meta">把找到的填进 <code>contact_identity</code>。出口三态：<code>complete</code>（有 phone OR website）/ <code>partial</code>（跑了但没拿到联系方式但有 social 等其他证据）/ <code>unenrichable</code>（所有 route 都失败）</div>
+              <div class="flow-step-meta" style="opacity:0.7">⚠ Places API 补全（行业分类 / 店面图 / E.164 phone / 营业时间）属于 <strong>SOP-2 回流</strong>（grade ≥ B 后由 SOP-2 调）· 不在 SOP-1 主链 · 见 <a href="/admin/scoring/sop-2">SOP-2</a></div>
             </div>
           </div>
           <div class="flow-arrow-row">▼</div>
