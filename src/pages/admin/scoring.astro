@@ -69,7 +69,7 @@ const sopCatalog = {
       { id: 'SOP-X-Health',      zh: 'ops:health-check + Discord 警报', status: '✅ v1.0',   href: '/admin/scoring/sop-x-tooling#3-periodic-health-monitoring--ops-health-check', trigger: '9 项周期检查 · 失败推 Discord webhook (并入 Tooling §3)' },
       { id: 'SOP-X-Handoff',     zh: 'SOP-1 → SOP-2 数据交接合约',      status: '✅ v1.0',   href: '/admin/scoring/sop-handoff-doc', trigger: 'entity schema 每字段解读' },
       { id: 'SOP-X-Dedup',       zh: '跨源去重业务逻辑',                 status: '✅ v1.0',   href: '/admin/scoring/sop-x-dedup-doc', trigger: '3-key 检测 + 操作员裁决 · /admin/v2-leads/dedup-review' },
-      { id: 'SOP-X-Discord',     zh: 'Discord 4-channel 架构 + 协议', status: '🔴 立刻写', href: null, trigger: '覆盖整个销售流程的载体' },
+      { id: 'SOP-X-Discord',     zh: 'Discord 4-channel 架构 + 协议', status: '🟡 v0.5-临时',  href: '/admin/scoring/#section-discord-channels', trigger: '临时章节在本页 §2，待 SOP-X-Discord v1.0 写完迁出' },
       { id: 'SOP-X-Pricing',     zh: '改价格协议',                    status: '🔴 立刻写', href: null, trigger: '改价漏点的纪律修正' },
       { id: 'SOP-X-Deploy',      zh: '前端部署验证协议',              status: '🔴 立刻写', href: null, trigger: '我刚 burned 的纪律' },
       { id: 'SOP-X-PhaseTrans',  zh: 'V2 phase 状态机',               status: '⚪ 待写',   href: null, trigger: '8 phase × setEntityPhase 谁负责' },
@@ -257,16 +257,16 @@ const sopUrgent = [...sopCatalog.lifecycle.items, ...sopCatalog.artifact.items, 
         </div>
       </section>
 
-      <!-- ─── SECTION 2 · Discord 4-channel lifecycle (channel-flow pattern) -->
-      <section class="admin-paper-section">
+      <!-- ─── SECTION 2 · Discord 4-channel lifecycle (TEMP owner here) ──── -->
+      <section class="admin-paper-section" id="section-discord-channels">
         <div class="admin-paper-section-head">
           <div>
-            <p class="eyebrow">Discord 频道架构 · 客户走过的 4 段路</p>
-            <h2>4 channels · 4 段生命周期 <span class="en-sub">Each Discord channel = one lead lifecycle stage</span></h2>
+            <p class="eyebrow">Discord 频道架构 · 客户走过的 4 段路（临时章节）</p>
+            <h2>4 channels · 4 段生命周期 <span class="en-sub">temp owner · awaiting SOP-X-Discord v1.0</span></h2>
           </div>
-          <span class="admin-section-count">客户级别上升时"毕业"到下一段</span>
+          <span class="admin-section-count">🟡 临时 owner · 待 SOP-X-Discord 写完迁出</span>
         </div>
-        <p class="section-lede">每段的 <strong>节奏</strong> · <strong>受众</strong> · <strong>关注点</strong> 都不同，所以分 4 个频道而不是一个。详情见 SOP-X-Discord (待写)。</p>
+        <p class="section-lede">每段的 <strong>节奏</strong> · <strong>受众</strong> · <strong>关注点</strong> 都不同，所以分 4 个频道而不是一个。客户级别上升时"毕业"到下一段。<br/>⚠ <strong>本章节是临时 owner</strong>（详细 4-channel 完整内容在 <code>docs/SOP_OVERVIEW.md §6</code>）。SOP-X-Discord v1.0 写完后，此章节会迁出。</p>
 
         <div class="channel-flow">
           <div class="channel-card channel-0">
