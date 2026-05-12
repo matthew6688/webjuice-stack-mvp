@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entityKey": "place_chijachlxrjqkwsrc15kww-dtxq",
   "firstSeenAt": "2026-05-09T10:53:13.889Z",
-  "lastSeenAt": "2026-05-09T10:53:13.889Z",
+  "lastSeenAt": "2026-05-12T07:54:39.048Z",
   "status": "queued_for_audit",
   "lastStatusAt": "2026-05-09T10:53:13.889Z",
   "identifiers": {
@@ -42,6 +42,31 @@
       "imageCount": 11,
       "hasPopularTimes": true,
       "hasAboutAttributes": true
+    },
+    "places_enrichment": {
+      "fetched_at": "2026-05-12T07:54:39.048Z",
+      "sku": "details_basic",
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "international_phone": "",
+      "google_canonical_url": "https://maps.google.com/?cid=1492806317504093811",
+      "rating_verified": 4.7,
+      "user_ratings_total": null,
+      "photo_references": [],
+      "opening_hours_verified": null,
+      "quota_at_call": {
+        "keyId": "primary",
+        "month": "2026-05",
+        "used": 5,
+        "limit": 11000,
+        "pct": 0.00045454545454545455,
+        "capped": false
+      }
     }
   },
   "runs": [
@@ -63,6 +88,12 @@
       "score": 80,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-12T07:54:39.048Z",
+      "event": "places_enrichment_added",
+      "photo_count": 0,
+      "types_count": 5
     }
   ],
   "notes": []

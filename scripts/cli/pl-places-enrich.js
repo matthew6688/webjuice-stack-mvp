@@ -114,21 +114,19 @@ const extractor = new GooglePlacesExtractor({ apiKey: selectedKey.apiKey });
 try {
   const detail = await extractor.details({ placeId, niche: entity.latest?.niche, city: entity.latest?.city });
 
+  // detail is normalized output from extractor.details() (see core/extractors/google-places.js
+  // #normalizeDetailsResult): fields are `phone`, `review_count`, `hours` (weekday_text array),
+  // `photo_references` (string array), `google_maps_url`. NOT raw API names.
   const enrichment = {
     fetched_at: new Date().toISOString(),
     sku: 'details_basic',
     types: detail.types || [],
-    international_phone: detail.international_phone_number || detail.formatted_phone_number || '',
-    google_canonical_url: detail.google_maps_url || detail.url || '',
+    international_phone: detail.phone || '',
+    google_canonical_url: detail.google_maps_url || '',
     rating_verified: detail.rating ?? null,
-    user_ratings_total: detail.user_ratings_total ?? null,
-    photo_references: (detail.photos || []).map((p) => ({
-      ref: p.photo_reference,
-      width: p.width,
-      height: p.height,
-      attributions: p.html_attributions || [],
-    })),
-    opening_hours_verified: detail.opening_hours || null,
+    user_ratings_total: detail.review_count ?? null,
+    photo_references: (detail.photo_references || []).filter(Boolean),
+    opening_hours_verified: detail.hours ? { weekday_text: detail.hours } : null,
     quota_at_call: quotaAfter,
   };
 

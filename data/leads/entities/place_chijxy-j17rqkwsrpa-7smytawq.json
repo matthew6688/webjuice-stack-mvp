@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entityKey": "place_chijxy-j17rqkwsrpa-7smytawq",
   "firstSeenAt": "2026-05-09T10:53:13.889Z",
-  "lastSeenAt": "2026-05-09T10:53:13.889Z",
+  "lastSeenAt": "2026-05-12T07:54:38.416Z",
   "status": "manual_review",
   "lastStatusAt": "2026-05-09T10:53:13.889Z",
   "identifiers": {
@@ -45,6 +45,31 @@
       "imageCount": 12,
       "hasPopularTimes": true,
       "hasAboutAttributes": true
+    },
+    "places_enrichment": {
+      "fetched_at": "2026-05-12T07:54:38.416Z",
+      "sku": "details_basic",
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "international_phone": "",
+      "google_canonical_url": "https://maps.google.com/?cid=289236894401408933",
+      "rating_verified": 4.7,
+      "user_ratings_total": null,
+      "photo_references": [],
+      "opening_hours_verified": null,
+      "quota_at_call": {
+        "keyId": "primary",
+        "month": "2026-05",
+        "used": 4,
+        "limit": 11000,
+        "pct": 0.0003636363636363636,
+        "capped": false
+      }
     }
   },
   "runs": [
@@ -66,6 +91,12 @@
       "score": 48,
       "action": "manual_review",
       "status": "manual_review"
+    },
+    {
+      "at": "2026-05-12T07:54:38.416Z",
+      "event": "places_enrichment_added",
+      "photo_count": 0,
+      "types_count": 5
     }
   ],
   "notes": []
