@@ -398,6 +398,22 @@ async function captureForLead({ url, detailedAudit, visualAudit, evidenceDir, vi
   return { evidenceById, videoPath };
 }
 
+// M2-D9 · Stage 4b · customer-facing report
+// After the internal-audit-report.html builds, A/B grade entities trigger an
+// autoresearch loop pass with --audience customer, producing
+// clients/<slug>/v2/customer-facing-audit.html via pl:report-optimize.
+// (Live invocation gated behind V3_LIVE_TEST=1 due to ~$1.50/lead cost.)
+async function maybeRunStage4bCustomerFacing({ entityKey, grade }) {
+  if (!['A', 'B'].includes(String(grade || '').toUpperCase())) return null;
+  if (process.env.V3_LIVE_TEST !== '1') return { skipped: 'V3_LIVE_TEST!=1' };
+  try {
+    const { runAutoresearchLoop } = await import('../../core/reports/autoresearch-loop.js');
+    return await runAutoresearchLoop({ entity: { entityKey }, audience: 'customer' });
+  } catch (err) {
+    return { error: err.message };
+  }
+}
+
 function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
 
 function parseArgs(argv) {

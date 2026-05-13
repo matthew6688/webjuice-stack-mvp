@@ -1,19 +1,37 @@
 {
   "deliverableId": "m2-d9-customer-audience",
   "overall": "PASS",
-  "total": 1,
-  "passed": 0,
+  "total": 4,
+  "passed": 3,
   "skipped": 1,
   "failed": 0,
   "took_ms": 1,
-  "ran_at": "2026-05-13T04:35:29.981Z",
+  "ran_at": "2026-05-13T04:48:22.630Z",
   "results": [
     {
-      "name": "autoresearch-loop-exists",
+      "name": "customer-audience-defined-in-generator",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "SYSTEM_PREAMBLES-has-both-audiences",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "live-1-customer-end-to-end",
       "passed": true,
       "skipped": true,
-      "reason": "core/reports/autoresearch-loop.js missing"
+      "reason": "V3_LIVE_TEST=1 required ($1.50 autoresearch run)"
+    },
+    {
+      "name": "integration-into-stage-4b",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
   ],
-  "implementation_present": false
+  "live_mode": false
 }
