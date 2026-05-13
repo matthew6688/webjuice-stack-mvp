@@ -1,0 +1,353 @@
+{
+  "overall": "PASS",
+  "total_steps": 29,
+  "passed": 29,
+  "failed": 0,
+  "ran_at": "2026-05-13T06:01:32.144Z",
+  "phases": [
+    {
+      "name": "Phase 1 · M1 · Dedup scoring",
+      "steps": [
+        {
+          "label": "scoreDedup contract: phone + name fuzzy → 30-60 LLM band",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "score": 53.5,
+            "verdict": "llm-decide"
+          }
+        },
+        {
+          "label": "scoreDedup: phone + email → ≥60 auto-merge",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "score": 65,
+            "verdict": "auto-merge"
+          }
+        },
+        {
+          "label": "scoreDedup: no signals → <30 pass",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "score": 0,
+            "verdict": "pass"
+          }
+        },
+        {
+          "label": "getThresholds env override works",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "autoMerge": 70,
+            "llm": 30
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.118Z"
+    },
+    {
+      "name": "Phase 2 · M1 · Discovery score",
+      "steps": [
+        {
+          "label": "full gosom entity → score ≥ 25",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "score": 38
+          }
+        },
+        {
+          "label": "image_lead with no signals → 0",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "score": 0
+          }
+        },
+        {
+          "label": "NO_WEBSITE bonus +40",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "score": 55
+          }
+        },
+        {
+          "label": "classifyWebsiteStatus exposed",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.122Z"
+    },
+    {
+      "name": "Phase 3 · M1 · Entity upsert pipeline",
+      "steps": [
+        {
+          "label": "upsertDiscoveryRun persists synthetic entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 10,
+          "data": {
+            "entityKey": "__e2e_m1_m2__",
+            "latestName": "E2E Test Roofing"
+          }
+        },
+        {
+          "label": "entity.latest.discoveryScore set by mergeLeadIntoEntity (M1-D2 wiring)",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "discoveryScore": 23
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.122Z"
+    },
+    {
+      "name": "Phase 4 · M2 · Audit staleness",
+      "steps": [
+        {
+          "label": "fresh fixture → reuse",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "decision": "reuse"
+          }
+        },
+        {
+          "label": "31-day-old fixture → refetch",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "decision": "refetch"
+          }
+        },
+        {
+          "label": "env override AUDIT_STALENESS_DAYS=7",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "decision": "refetch"
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.136Z"
+    },
+    {
+      "name": "Phase 5 · M2 · Reviews cascade",
+      "steps": [
+        {
+          "label": "normalizeReviews(docker) → places shape",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "count": 2
+          }
+        },
+        {
+          "label": "C-grade skips fetching",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "skipped": true
+          }
+        },
+        {
+          "label": "A-grade with docker fail → places fallback",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "source": "places"
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.137Z"
+    },
+    {
+      "name": "Phase 6 · M2 · Grade router",
+      "steps": [
+        {
+          "label": "C-grade opens Discord thread + enqueues",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "thread_opened": true
+          }
+        },
+        {
+          "label": "C-grade dedup (calling twice → 1 entry)",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "net_added": 1
+          }
+        },
+        {
+          "label": "A-grade NOT in cold-outreach queue",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "ok": true
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.137Z"
+    },
+    {
+      "name": "Phase 7 · M2 · master.md",
+      "steps": [
+        {
+          "label": "empty audit → 5 required Chinese sections",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "found": 5
+          }
+        },
+        {
+          "label": "section 7 (销售切入点) appears after section 1 (速览)",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "idx_1": 24,
+            "idx_7": 45
+          }
+        },
+        {
+          "label": "full real-customer master.md (regression: brisbane-roof renders)",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "real_file_lines": 330
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.138Z"
+    },
+    {
+      "name": "Phase 8 · M2 · v2/ structure",
+      "steps": [
+        {
+          "label": "ensureV2Structure creates 5 subdirs",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "v2_path": "/Users/matthew/Developer/google-map-website-v3/clients/__e2e_m1_m2__/v2"
+          }
+        },
+        {
+          "label": "Pattern A flat customer untouched (opa-bar-mezze)",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "ok": true
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.139Z"
+    },
+    {
+      "name": "Phase 9 · M2 · od-prep",
+      "steps": [
+        {
+          "label": "deriveOdPrep(rich-and-rare) returns sourceUrl/tone/scope/businessType",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "ok": true,
+            "entityKey": "rich-and-rare-restaurant",
+            "sourceUrl": "https://www.richandrare.com.au/menus",
+            "businessType": "restaurant",
+            "tone": "Refined hospitality · warm with editorial polish",
+            "scope": "Full concept with 3-4 key pages",
+            "command": "npm run open-design:run-concept -- --client rich-and-rare-restaurant --source-url https://www.richandrare.com.au/menus --business-type \"restaurant\" --tone \"Refined hospitality · warm with editorial polish\" --scope \"Full concept with 3-4 key pages\""
+          }
+        },
+        {
+          "label": "image_lead fallback tone",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "ok": true,
+            "entityKey": "__e2e_image_test__",
+            "sourceUrl": null,
+            "businessType": "small-business",
+            "tone": "refined-professional · clean modern small-business",
+            "scope": "Full concept with 3-4 key pages",
+            "command": "npm run open-design:run-concept -- --client __e2e_image_test__ --no-source-url --business-type \"small-business\" --tone \"refined-professional · clean modern small-business\" --scope \"Full concept with 3-4 key pages\""
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.140Z"
+    },
+    {
+      "name": "Phase 10 · M1 · bulk-archive",
+      "steps": [
+        {
+          "label": "bulkArchive dry-run lists candidates without modifying",
+          "passed": true,
+          "error": null,
+          "took_ms": 2,
+          "data": {
+            "candidates": 8
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.140Z"
+    },
+    {
+      "name": "Phase 11 · cross-module integration",
+      "steps": [
+        {
+          "label": "full pipeline: entity persists with discoveryScore",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "discoveryScore": 23,
+            "status": "discovered"
+          }
+        },
+        {
+          "label": "build master.md from real persisted entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "md_length": 1491
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:01:32.143Z"
+    }
+  ]
+}
