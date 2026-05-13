@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-105848-406120",
+  "created_at": "2026-05-13T10:58:48.697Z",
+  "updated_at": "2026-05-13T10:58:48.697Z",
+  "kind": "demo_build",
+  "status": "pending",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "grade-router.maybeSpawnDemoBuild",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: M3 demo build for grade A/B entity __e2e_m3_demo__ (slug=e2e-m3-demo-test)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "e2e-m3-demo-test"
+    ],
+    "target_entity_key": "__e2e_m3_demo__",
+    "timeout_ms": 360000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

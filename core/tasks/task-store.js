@@ -19,7 +19,9 @@ import crypto from 'node:crypto';
 const TASKS_DIR = path.resolve(process.cwd(), 'data/tasks');
 const TAGS_FILE = path.resolve(process.cwd(), 'data/discord/website-tasks-forum-tags.json');
 
-export const KINDS = ['intake', 'enrich', 'audit', 'dedup', 'photos', 'image-extract', 'ops', 'single-enrich', 'places-intake'];
+// V3 (2026-05-13): added demo_build (M3 auto demo · grade A/B trigger) and
+// photos_fetch (M5 paid · stripe webhook trigger).
+export const KINDS = ['intake', 'enrich', 'audit', 'dedup', 'photos', 'image-extract', 'ops', 'single-enrich', 'places-intake', 'demo_build', 'photos_fetch'];
 export const STATUSES = ['pending', 'running', 'done', 'failed', 'human'];
 export const SCHEMA_VERSION = 1;
 

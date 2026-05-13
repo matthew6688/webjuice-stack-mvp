@@ -1,0 +1,42 @@
+{
+  "deliverableId": "m3-demo-hook",
+  "overall": "PASS",
+  "total": 5,
+  "passed": 5,
+  "skipped": 0,
+  "failed": 0,
+  "took_ms": 17,
+  "ran_at": "2026-05-13T10:58:48.704Z",
+  "results": [
+    {
+      "name": "grade A triggers demo_build task",
+      "passed": true,
+      "error": null,
+      "took_ms": 2
+    },
+    {
+      "name": "grade B triggers demo_build task",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    },
+    {
+      "name": "grade C does NOT trigger demo_build",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    },
+    {
+      "name": "grade D does NOT trigger anything",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "A grade dedup · re-call same entity → no 2nd task",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    }
+  ]
+}

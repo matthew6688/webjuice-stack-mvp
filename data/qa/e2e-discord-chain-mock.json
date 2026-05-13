@@ -1,0 +1,78 @@
+{
+  "deliverableId": "e2e-discord-chain-mock",
+  "overall": "PASS",
+  "total": 11,
+  "passed": 11,
+  "skipped": 0,
+  "failed": 0,
+  "took_ms": 26701,
+  "ran_at": "2026-05-13T10:59:36.730Z",
+  "results": [
+    {
+      "name": "route: \"find brisbane roofers\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 4018
+    },
+    {
+      "name": "route: \"\"cafe brisbane\" \"cafe melbourne\"\" → places-intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5352
+    },
+    {
+      "name": "route: \"Joe's Plumbing 0412345678 Sydney\" → single-enrich",
+      "passed": true,
+      "error": null,
+      "took_ms": 6409
+    },
+    {
+      "name": "route: \"audit place_chijwdbif2xzkwsrru6lkmu2l0o\" → audit",
+      "passed": true,
+      "error": null,
+      "took_ms": 5377
+    },
+    {
+      "name": "listener post for intake task is human-readable",
+      "passed": true,
+      "error": null,
+      "took_ms": 5527
+    },
+    {
+      "name": "dispatcher done message extracts business summary",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    },
+    {
+      "name": "failed message gives human-readable docker hint",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "createTask writes pending task",
+      "passed": true,
+      "error": null,
+      "took_ms": 3
+    },
+    {
+      "name": "readTask retrieves what was written",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "cleanup test task",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "adminUrls covers all 6 surfaces",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    }
+  ]
+}
