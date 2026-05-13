@@ -113,13 +113,26 @@
     .card-flat { background: transparent; border: 0; padding: 0; }
     .rule { border-top: 1px solid var(--border); }
 
-    /* Audit banner · M3 sales overlay */
-    .audit-banner { background: var(--ink); color: var(--surface); padding-block: 14px; border-bottom: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); }
+    /* Audit banner · M3 sales overlay · expandable */
+    .audit-banner { background: var(--ink); color: var(--surface); border-bottom: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); }
+    .audit-banner > summary { padding-block: 14px; cursor: pointer; list-style: none; }
+    .audit-banner > summary::-webkit-details-marker { display: none; }
     .audit-banner-inner { display: grid; grid-template-columns: auto 1fr auto; gap: var(--gap-md); align-items: center; }
     .audit-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; background: var(--warm); color: var(--ink); font-weight: 800; }
     .audit-msg { font-size: 14px; color: color-mix(in oklch, var(--surface) 92%, transparent); }
     .audit-msg strong { color: var(--surface); }
-    .audit-cta { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--warm); border-bottom: 1px solid var(--warm); padding-bottom: 2px; }
+    .audit-cta { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--warm); border-bottom: 1px solid var(--warm); padding-bottom: 2px; transition: transform 0.15s ease; }
+    .audit-banner[open] .audit-cta::after { content: " ↑"; }
+    .audit-banner:not([open]) .audit-cta::after { content: " ↓"; }
+    .audit-drawer { padding: 0 var(--gutter) 28px; }
+    .audit-drawer-inner { max-width: var(--container); margin-inline: auto; }
+    .audit-score-row { display: flex; align-items: baseline; gap: 14px; padding-block: 18px; border-top: 1px dashed color-mix(in oklch, var(--surface) 20%, transparent); }
+    .audit-score-big { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--warm); font-weight: 700; }
+    .audit-score-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 60%, transparent); }
+    .audit-findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-md); margin-top: 10px; }
+    .audit-finding { padding: 16px; background: color-mix(in oklch, var(--surface) 6%, transparent); border-left: 3px solid var(--warm); border-radius: 4px; }
+    .audit-finding-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--surface); }
+    .audit-finding-body { font-size: 13px; color: color-mix(in oklch, var(--surface) 78%, transparent); margin-top: 6px; line-height: 1.5; }
 
     .hero { min-height: calc(100vh - 76px); display: grid; align-items: end; position: relative; isolation: isolate; color: var(--surface); background: var(--primary); overflow: hidden; }
     .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 72%, black), color-mix(in oklch, var(--primary) 18%, transparent) 62%, transparent 88%), linear-gradient(0deg, color-mix(in oklch, var(--primary) 56%, black), transparent 50%); z-index: -1; }
@@ -132,9 +145,10 @@
     .proof-cell strong { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1; }
     .proof-cell span { display: block; margin-top: 8px; color: color-mix(in oklch, var(--surface) 74%, transparent); font-size: 13px; }
     .section-head { max-width: 680px; margin-bottom: 48px; }
-    .service-card { overflow: hidden; padding: 0; }
+    .service-card { overflow: hidden; padding: 0; position: relative; display: flex; flex-direction: column; }
     .service-img { aspect-ratio: 4 / 3; background: var(--primary-soft); }
-    .service-body { padding: 26px; }
+    .service-body { padding: 26px; display: flex; flex-direction: column; flex: 1; }
+    .service-badge { position: absolute; top: 16px; right: 16px; padding: 6px 11px; background: var(--warm); color: var(--ink); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 2; }
     .service-body p { color: var(--muted); margin-top: 10px; }
     .service-list { display: grid; gap: 10px; margin-top: 18px; padding: 0; list-style: none; color: var(--fg); }
     .service-list li { border-top: 1px solid var(--border); padding-top: 10px; font-size: 14px; }
@@ -142,12 +156,13 @@
     .dark-band .lead, .dark-band .meta { color: color-mix(in oklch, var(--surface) 72%, transparent); }
     .dark-band .section + .section { border-top-color: color-mix(in oklch, var(--surface) 18%, transparent); }
     .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
-    .quote-card { padding: 28px; background: color-mix(in oklch, var(--surface) 8%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); border-radius: var(--radius-lg); }
-    .quote-text { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--surface); }
+    .quote-card { position: relative; padding: 32px 28px 28px; background: color-mix(in oklch, var(--surface) 8%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); border-left: 3px solid var(--warm); border-radius: var(--radius-lg); }
+    .quote-card::before { content: "\201C"; position: absolute; top: 0; right: 22px; font-family: var(--font-display); font-size: 96px; line-height: 1; color: color-mix(in oklch, var(--warm) 32%, transparent); font-weight: 700; pointer-events: none; }
+    .quote-text { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--surface); position: relative; }
     .quote-author { margin-top: 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 72%, transparent); }
     .stars { color: var(--warm); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
-    .sample-tag { display: inline-block; margin-left: 8px; padding: 3px 7px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in oklch, var(--warm) 16%, transparent); color: var(--warm); border: 1px solid color-mix(in oklch, var(--warm) 28%, transparent); border-radius: 3px; vertical-align: middle; font-weight: 700; }
-    .dark-band .sample-tag { background: color-mix(in oklch, var(--warm) 22%, transparent); color: var(--warm); }
+    .sample-tag { display: inline-block; margin-left: 10px; padding: 4px 9px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in oklch, var(--warm) 22%, transparent); color: color-mix(in oklch, var(--warm) 80%, black); border: 1px solid color-mix(in oklch, var(--warm) 42%, transparent); border-radius: 4px; vertical-align: middle; font-weight: 800; }
+    .dark-band .sample-tag { background: color-mix(in oklch, var(--warm) 26%, transparent); color: var(--warm); border-color: color-mix(in oklch, var(--warm) 50%, transparent); }
     .project-frame { display: grid; grid-template-columns: 1.15fr 0.85fr; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
     .project-image { min-height: 520px; }
     .project-copy { padding: clamp(28px, 5vw, 58px); }
@@ -155,8 +170,8 @@
     .check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 12px; color: var(--muted); }
     .check-list li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border-radius: 999px; background: var(--accent); }
     .process { counter-reset: step; }
-    .process-card { border-top: 1px solid var(--fg); padding-top: 22px; }
-    .process-card::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: block; font-family: var(--font-mono); color: var(--accent); margin-bottom: 18px; }
+    .process-card { border-top: 2px solid var(--fg); padding-top: 22px; }
+    .process-card::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: block; font-family: var(--font-mono); font-size: 28px; line-height: 1; color: var(--accent); margin-bottom: 22px; font-weight: 700; letter-spacing: -0.02em; }
     .process-card p { color: var(--muted); margin-top: 8px; }
     .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--gap-xl); align-items: start; }
     details { border-top: 1px solid var(--border); padding: 20px 0; }
@@ -184,6 +199,8 @@
       .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .project-frame, .faq-grid, .footer-grid, .quote-grid { grid-template-columns: 1fr; }
       .topnav nav, .nav-actions .btn-secondary, .nav-phone { display: none; }
       .audit-banner-inner { grid-template-columns: 1fr; text-align: center; gap: 8px; }
+      .audit-findings { grid-template-columns: 1fr; }
+      .audit-score-row { flex-direction: column; align-items: flex-start; gap: 4px; }
       .hero { min-height: 720px; }
       .hero-proof { grid-template-columns: 1fr; }
       .project-image { min-height: 330px; }
@@ -196,14 +213,38 @@
 </head>
 <body>
 
-  <!-- FLEXIBLE · audit-banner: OD may remove if customer has no audit findings, may swap content per customer -->
-  <div class="audit-banner" data-od-id="audit-banner" data-od-flexible="content">
-    <div class="container audit-banner-inner">
-      <span class="audit-tag">Site audit · Demo</span>
-      <span class="audit-msg">Your current site scored <strong>43/100</strong> · phone hidden in footer, no service-area visible, slow on mobile. <strong>This demo shows the fix.</strong></span>
-      <a class="audit-cta" href="#contact">See full audit →</a>
+  <!-- FLEXIBLE · audit-banner: expandable drawer with score + 3 findings. OD swaps to real audit; if customer has no audit, remove entire <details> -->
+  <details class="audit-banner" data-od-id="audit-banner" data-od-flexible="content" open>
+    <summary>
+      <div class="container audit-banner-inner">
+        <span class="audit-tag">Site audit · Demo</span>
+        <span class="audit-msg">Your current site scored <strong>43/100</strong> — phone hidden in footer, no service area, slow on mobile. <strong>This demo shows the fix.</strong></span>
+        <span class="audit-cta">See findings</span>
+      </div>
+    </summary>
+    <div class="audit-drawer">
+      <div class="audit-drawer-inner">
+        <div class="audit-score-row">
+          <span class="audit-score-big">43</span>
+          <span class="audit-score-label">/ 100 · audited 2026-05-12 · 12 dimensions</span>
+        </div>
+        <div class="audit-findings">
+          <div class="audit-finding">
+            <div class="audit-finding-title">Phone hidden in footer</div>
+            <div class="audit-finding-body">Mobile users tap home screen — your phone is 14 scrolls down. 73% of roofing leads call before form-fill. Fix: sticky tel: button + hero contact bar.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">No service-area visible</div>
+            <div class="audit-finding-body">"Do you cover my suburb?" is the first question. Your site has zero suburb mentions. Google can't match local intent searches either.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">Slow on mobile (LCP 6.2s)</div>
+            <div class="audit-finding-body">3.8MB unoptimised hero image. 76% of visitors leave before it loads. Fix: WebP + lazy-load + sub-1MB hero.</div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </details>
 
   <header class="topnav" data-od-id="topnav" data-od-locked="true">
     <div class="container topnav-inner">
@@ -258,7 +299,8 @@
         </div>
         <div class="grid-3">
           <article class="card service-card">
-            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="Close-up of replaced ridge capping and pointing on a Brisbane tile roof" /></div>
+            <span class="service-badge">Most requested</span>
+            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="Close-up of replaced ridge capping and pointing on a Brisbane tile roof" loading="lazy" /></div>
             <div class="service-body">
               <h3>Roof restoration</h3>
               <p>Re-bedding, re-pointing, repainting and sealing for tile and Colorbond roofs that are tired but structurally sound.</p>
@@ -271,7 +313,7 @@
             </div>
           </article>
           <article class="card service-card">
-            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="Crew installing new Colorbond roof sheeting on a Brisbane home" /></div>
+            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="Crew installing new Colorbond roof sheeting on a Brisbane home" loading="lazy" /></div>
             <div class="service-body">
               <h3>Roof replacement</h3>
               <p>Full re-roof in Colorbond or terracotta tile when the existing roof is beyond restoration. Done in 3–5 days for most homes.</p>
@@ -284,7 +326,7 @@
             </div>
           </article>
           <article class="card service-card">
-            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Roofer inspecting a leak point on a Brisbane residential roof" /></div>
+            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Roofer inspecting a leak point on a Brisbane residential roof" loading="lazy" /></div>
             <div class="service-body">
               <h3>Leak &amp; storm repair</h3>
               <p>Targeted repairs after the recent storms — lifted tiles, ceiling stains, gutter overflow, or water entry around chimneys and skylights.</p>
@@ -331,7 +373,7 @@
     <section class="section" id="projects" data-od-id="projects" data-od-sample="true">
       <div class="container">
         <div class="project-frame">
-          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Before-and-after of a restored terracotta tile roof in Hendra, Brisbane" /></div>
+          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Before-and-after of a restored terracotta tile roof in Hendra, Brisbane" loading="lazy" /></div>
           <div class="project-copy">
             <p class="eyebrow">Recent project · Hendra <span class="sample-tag">Sample · editable</span></p>
             <h2>1960s terracotta tile roof. Restored in 4 days.</h2>
