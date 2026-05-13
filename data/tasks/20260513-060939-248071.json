@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-060939-248071",
+  "created_at": "2026-05-13T06:09:39.726Z",
+  "updated_at": "2026-05-13T06:09:39.726Z",
+  "kind": "audit",
+  "status": "pending",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "pl:single-enrich auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: audit place_chijm9ktrjpxkwsrqk_e81qjagq from single-enrich resolve",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijm9ktrjpxkwsrqk_e81qjagq"
+    ],
+    "target_entity_key": "place_chijm9ktrjpxkwsrqk_e81qjagq",
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

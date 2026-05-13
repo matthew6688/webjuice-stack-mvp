@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-panel-beater-brisbane-202605131614",
+  "title": "[Places Pipeline] panel beater Brisbane — 2026-05-13 06:14 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504003835629408327",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504003835629408327",
+  "initial_message_id": "1504003835629408327",
+  "niche": null,
+  "city": "brisbane",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "panel beater Brisbane",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T06:14:17.603Z",
+  "finished_at": "2026-05-13T06:14:20.631Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T06:14:18.625Z",
+      "message_id": "1504003840318640244"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijwssgwdpmkwsrwgjn_m6vec8, place_chijaq1hdcrmkwsrjmh902vjk-m",
+      "at": "2026-05-13T06:14:19.540Z",
+      "message_id": "1504003843728347297"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `panel beater Brisbane`\nLeads (first 5): place_chijwssgwdpmkwsrwgjn_m6vec8, place_chijaq1hdcrmkwsrjmh902vjk-m",
+      "at": "2026-05-13T06:14:19.975Z",
+      "message_id": "1504003845859053681"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T06:14:20.714Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 0,
+      "domain": 0
+    },
+    "exit_code": 0
+  }
+}

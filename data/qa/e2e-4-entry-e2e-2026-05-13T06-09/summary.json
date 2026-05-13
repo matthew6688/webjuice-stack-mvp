@@ -1,0 +1,197 @@
+{
+  "overall": "FAIL",
+  "total_steps": 18,
+  "passed": 11,
+  "failed": 7,
+  "ran_at": "2026-05-13T06:09:40.605Z",
+  "output_dir": "/Users/matthew/Developer/google-map-website-v3/data/qa/e2e-4-entry-e2e-2026-05-13T06-09",
+  "entries": [
+    {
+      "name": "Entry 1 · pl:places-search-intake",
+      "steps": [
+        {
+          "label": "search \"panel beater Brisbane\" · limit 2",
+          "passed": true,
+          "error": null,
+          "took_ms": 5314,
+          "data": {
+            "stdout_len": 1116
+          }
+        },
+        {
+          "label": "at least 1 new entity persisted",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "new_entities": 2,
+            "sample": "place_chijaq1hdcrmkwsrjmh902vjk-m"
+          }
+        },
+        {
+          "label": "entity has discoveryScore + name",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "name": "MotorOne Autobody - Cleveland",
+            "score": 23
+          }
+        },
+        {
+          "label": "build master.md",
+          "passed": true,
+          "error": null,
+          "took_ms": 186,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md exists with 5 required Chinese sections",
+          "passed": false,
+          "error": "/Users/matthew/Developer/google-map-website-v3/clients/place_chijaq1hdcrmkwsrjmh902vjk-m/v2/master.md missing",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [
+        "place_chijaq1hdcrmkwsrjmh902vjk-m",
+        "place_chijwssgwdpmkwsrwgjn_m6vec8"
+      ],
+      "started_at": "2026-05-13T06:09:32.945Z"
+    },
+    {
+      "name": "Entry 2 · pl:single-enrich",
+      "steps": [
+        {
+          "label": "single-enrich \"Sky High Roofing\"",
+          "passed": true,
+          "error": null,
+          "took_ms": 1287,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "at least 1 new entity persisted",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "new_entities": 1,
+            "sample": "place_chijm9ktrjpxkwsrqk_e81qjagq"
+          }
+        },
+        {
+          "label": "build master.md for single-enriched entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 170,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": false,
+          "error": "/Users/matthew/Developer/google-map-website-v3/clients/place_chijm9ktrjpxkwsrqk_e81qjagq/v2/master.md missing",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [
+        "place_chijm9ktrjpxkwsrqk_e81qjagq"
+      ],
+      "started_at": "2026-05-13T06:09:38.448Z"
+    },
+    {
+      "name": "Entry 3 · pl:scrape-docker (gosom)",
+      "steps": [
+        {
+          "label": "scrape \"auto detail brisbane\" · 2 results",
+          "passed": false,
+          "error": "exit 1\npl:scrape-docker: --city required\n",
+          "took_ms": 172,
+          "data": null
+        },
+        {
+          "label": "at least 1 new entity from gosom",
+          "passed": false,
+          "error": "gosom produced no entities",
+          "took_ms": 1,
+          "data": null
+        },
+        {
+          "label": "entity has discoveryScore",
+          "passed": false,
+          "error": "discoveryScore missing",
+          "took_ms": 1,
+          "data": null
+        },
+        {
+          "label": "build master.md for scraped entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 172,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": false,
+          "error": "Cannot read properties of null (reading 'entityKey')",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [],
+      "started_at": "2026-05-13T06:09:39.906Z"
+    },
+    {
+      "name": "Entry 4 · pl:ingest-image",
+      "steps": [
+        {
+          "label": "ingest fake image lead",
+          "passed": true,
+          "error": null,
+          "took_ms": 185,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "at least 1 new image_* entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "new_entities": 1,
+            "sample": "image_e2e-image-lead-roofing_0419876543"
+          }
+        },
+        {
+          "label": "build master.md for image entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 168,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": false,
+          "error": "/Users/matthew/Developer/google-map-website-v3/clients/image_e2e-image-lead-roofing_0419876543/v2/master.md missing",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [
+        "image_e2e-image-lead-roofing_0419876543"
+      ],
+      "started_at": "2026-05-13T06:09:40.252Z"
+    }
+  ]
+}

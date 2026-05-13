@@ -219,9 +219,34 @@ export function buildMasterMd(opts = {}) {
   }
 
   // Real-data path: delegate to the detailed builder, then ensure required
-  // ordering invariants (销售切入点 right after 速览) hold.
+  // ordering invariants (销售切入点 right after 速览) hold, then inject
+  // placeholder for any of the 5 required sections still missing.
   const detailed = buildMasterMdDetailed({ ...opts, detailedAudit: auditData });
-  return ensureRequiredOrder(detailed.md);
+  return ensureAllRequiredSections(ensureRequiredOrder(detailed.md));
+}
+
+// V3 M2-D6 bug fix (2026-05-13 · found by e2e-4-entry-master-md.mjs):
+// `writeMasterMd` (production CLI path) previously bypassed the 5-section
+// scaffold guard that lived only in `buildMasterMd`. For entities with rich
+// GMB data but no audit yet (places-search-intake before audit pipeline runs),
+// the detailed render skipped 现网站快速诊断 / 业主沟通要点 / 账户与档案.
+// This helper injects a TBD placeholder for any of the 5 required sections
+// that's missing, so the invariant holds across every code path.
+function ensureAllRequiredSections(md) {
+  const required = [
+    { token: '速览',           header: '## 一、速览' },
+    { token: '销售切入点',     header: '## 二、销售切入点' },
+    { token: '现网站快速诊断', header: '## 三、现网站快速诊断' },
+    { token: '业主沟通要点',   header: '## 四、业主沟通要点' },
+    { token: '账户与档案',     header: '## 五、账户与档案' },
+  ];
+  const tbd = '**TBD · audit 不完整**';
+  let out = md;
+  for (const { token, header } of required) {
+    if (out.includes(token)) continue;
+    out = out.replace(/\s*$/, '') + `\n\n${header}\n\n${tbd}\n`;
+  }
+  return out;
 }
 
 // Move/insert "## 二、销售切入点" header directly after "## 一、店家现状速览" / "## 一、速览"
@@ -1169,7 +1194,11 @@ function deriveUpsellOpportunities({ activity, latest, techStack, reviews }) {
 
 export function writeMasterMd({ outputPath, ...rest }) {
   const { md, frontmatter, sectionCount } = buildMasterMdDetailed(rest);
-  const finalMd = ensureRequiredOrder(md);
+  // M2-D6 bug fix: apply BOTH ordering invariant AND required-section guarantee.
+  // Previously only ensureRequiredOrder ran here, so partial-audit cases
+  // (places-search entity before audit pipeline) shipped without
+  // 三、现网站快速诊断 / 四、业主沟通要点 / 五、账户与档案.
+  const finalMd = ensureAllRequiredSections(ensureRequiredOrder(md));
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, finalMd);
   return { mdPath: outputPath, frontmatter, sectionCount, byteLength: Buffer.byteLength(finalMd, 'utf8') };

@@ -1,0 +1,78 @@
+
+> webjuice-mvp@0.0.1 pl:scrape-docker
+> node --env-file-if-exists=.env.local scripts/cli/pl-scrape-docker.js --niche auto detail --city Brisbane --count 2
+
+
+> webjuice-mvp@0.0.1 leads:maps-scrape
+> node scripts/leads/maps-scraper-discovery.js --input /Users/matthew/Developer/google-map-website-v3/data/maps-scraper/runs/auto detail-Brisbane-2026-05-13T06-12-16-668Z/results.maps.json --query auto detail in Brisbane --niche auto detail --city Brisbane
+
+{
+  "ok": true,
+  "runId": "20260513-161222",
+  "query": "auto detail in Brisbane",
+  "runDir": "data/maps-scraper/runs/20260513-161222",
+  "totals": {
+    "rawRows": 3,
+    "leads": 3,
+    "withWebsite": 3,
+    "withPhone": 3,
+    "actionCounts": {
+      "skip": 3
+    },
+    "websiteStatusCounts": {
+      "independent_https_site": 3
+    }
+  },
+  "outputs": {
+    "discoveryRun": "data/maps-scraper/runs/20260513-161222/discovery-run.json",
+    "compactLeads": "data/maps-scraper/runs/20260513-161222/leads.compact.json",
+    "queue": "data/maps-scraper/runs/20260513-161222/queue.json",
+    "toolLog": "data/maps-scraper/runs/20260513-161222/tool-log.jsonl"
+  },
+  "store": {
+    "indexed": 3,
+    "uniqueEntities": 90,
+    "indexPath": "data/leads/discovery-index.json",
+    "eventsPath": "data/leads/discovery-events.jsonl",
+    "queuesPath": "data/leads/queues/queues.json",
+    "reportPath": "data/leads/reports/discovery-report.json",
+    "queueCounts": {
+      "cheapSiteAudit": 10,
+      "enrichment": 2,
+      "outreachBrief": 12
+    }
+  },
+  "topCandidates": [
+    {
+      "name": "Fully Detailed",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 34,
+      "recommendedAction": "skip",
+      "phone": "0415971872",
+      "website": "https://www.fullydetailed.au/",
+      "rating": 4.9,
+      "reviewCount": 0
+    },
+    {
+      "name": "Elite Detail Co.",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 34,
+      "recommendedAction": "skip",
+      "phone": "0448127116",
+      "website": "https://www.elitedetailco.com.au/",
+      "rating": 5,
+      "reviewCount": 0
+    },
+    {
+      "name": "Obsidian Mobile Car Detailing Brisbane",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 34,
+      "recommendedAction": "skip",
+      "phone": "0448242660",
+      "website": "https://www.obsidiandetailing.com.au/",
+      "rating": 5,
+      "reviewCount": 0
+    }
+  ]
+}
+{"ok":true,"job_id":"1f63ab6e-c173-4554-98bf-35d686d01d2a","lead_count":3,"run_path":"data/maps-scraper/runs/auto detail-Brisbane-2026-05-13T06-12-16-668Z/results.maps.json","niche":"auto detail","city":"Brisbane","keywords":["auto detail in Brisbane"],"batch_id":null,"queues_path":"data/leads/queues/"}

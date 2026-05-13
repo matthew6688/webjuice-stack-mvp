@@ -1,0 +1,32 @@
+
+> webjuice-mvp@0.0.1 pl:places-search-intake
+> node --env-file-if-exists=.env.local scripts/cli/pl-places-search-intake.js panel beater Brisbane --limit 2
+
+[pl:places-search-intake] queries=1 · limit=2/q · with_details=true · dry=false
+  · query="panel beater Brisbane"
+    ✓ batch thread: https://discord.com/channels/1493925728570310756/1504003305159004160
+    ✓ Places returned 2 candidates
+    ✓ upserted 2 entities
+{
+  "ok": true,
+  "query_count": 1,
+  "batch_count": 1,
+  "total_leads": 2,
+  "batch_id": "places-panel-beater-brisbane-202605131612",
+  "thread_id": "1504003305159004160",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504003305159004160",
+  "batches": [
+    {
+      "query": "panel beater Brisbane",
+      "batch_id": "places-panel-beater-brisbane-202605131612",
+      "thread_id": "1504003305159004160",
+      "thread_url": "https://discord.com/channels/1493925728570310756/1504003305159004160",
+      "lead_count": 2,
+      "lead_keys": [
+        "place_chijwssgwdpmkwsrwgjn_m6vec8",
+        "place_chijaq1hdcrmkwsrjmh902vjk-m"
+      ]
+    }
+  ],
+  "duration_ms": 4844
+}

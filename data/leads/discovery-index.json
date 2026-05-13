@@ -1,37 +1,955 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-09T10:54:22.549Z",
-  "storeRoot": "/Users/matthew/Developer/google-map-website/data/leads",
+  "updatedAt": "2026-05-13T06:14:35.592Z",
+  "storeRoot": "data/leads",
   "totals": {
-    "entities": 82,
+    "entities": 91,
     "promoted": 4,
     "skipped": 39,
-    "needsAudit": 7,
-    "needsEnrichment": 1,
+    "needsAudit": 11,
+    "needsEnrichment": 0,
     "readyForOutreachBrief": 8
   },
   "statusCounts": {
+    "discovered": 1,
+    "manual_review": 18,
     "skipped": 39,
-    "manual_review": 21,
-    "queued_for_audit": 7,
-    "scored": 2,
-    "queued_for_enrichment": 1,
+    "queued_for_audit": 11,
     "ready_for_outreach_brief": 8,
+    "scored": 2,
+    "graded": 8,
     "promoted": 4
   },
   "actionCounts": {
-    "skip": 40,
-    "manual_review": 24,
-    "audit_candidate": 16,
+    "unknown": 1,
+    "manual_review": 25,
+    "skip": 43,
+    "audit_candidate": 20,
     "starter_candidate": 2
   },
   "websiteStatusCounts": {
-    "independent_https_site": 55,
+    "https": 1,
+    "no_website": 3,
+    "independent_https_site": 58,
+    "unknown": 4,
     "independent_http_site": 24,
-    "no_website": 2,
     "social_or_third_party_only": 1
   },
   "entities": [
+    {
+      "entityKey": "__e2e_m1_m2__",
+      "status": "discovered",
+      "firstSeenAt": "2026-05-13T06:14:35.582Z",
+      "lastSeenAt": "2026-05-13T06:14:35.582Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "e2e-test-roofing.test",
+        "phoneDigits": "0412000000"
+      },
+      "latest": {
+        "sourceType": "gosom",
+        "name": "E2E Test Roofing",
+        "category": "",
+        "categories": [],
+        "address": "1 Test St, Brisbane QLD 4000",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0412000000",
+        "website": "https://e2e-test-roofing.test",
+        "google_maps_url": "",
+        "rating": 4.5,
+        "review_count": 10,
+        "websiteStatus": "https",
+        "discoveryScore": 23,
+        "recommendedAction": "",
+        "sourceQuery": "roofing brisbane e2e test",
+        "signals": {},
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "image_e2e-image-lead-roofing_0419876543",
+      "status": "manual_review",
+      "firstSeenAt": "2026-05-13T06:09:40.413Z",
+      "lastSeenAt": "2026-05-13T06:14:28.188Z",
+      "runCount": 4,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0419876543"
+      },
+      "latest": {
+        "sourceType": "image_lead",
+        "name": "E2E Image Lead Roofing",
+        "category": "",
+        "categories": [],
+        "address": "",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0419876543",
+        "website": "",
+        "google_maps_url": "",
+        "rating": null,
+        "review_count": null,
+        "websiteStatus": "no_website",
+        "discoveryScore": 0,
+        "recommendedAction": "manual_review",
+        "sourceQuery": "image_lead",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": false,
+          "hasImage": true,
+          "imageUrl": "",
+          "imagePath": "/Users/matthew/Developer/google-map-website-v3/data/qa/e2e-4-entry-e2e-2026-05-13T06-14/fake-lead.png"
+        },
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "domain_elitedetailco.com.au",
+      "status": "skipped",
+      "firstSeenAt": "2026-05-13T06:12:22.249Z",
+      "lastSeenAt": "2026-05-13T06:14:27.839Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b915ffec1e44f5f:0x47925774d8839be5",
+        "websiteDomain": "elitedetailco.com.au",
+        "phoneDigits": "0448127116"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "Elite Detail Co.",
+        "category": "",
+        "categories": [],
+        "address": "66 Washington Ave, Tingalpa QLD 4173",
+        "city": "Brisbane",
+        "niche": "auto detail",
+        "phone": "0448127116",
+        "website": "https://www.elitedetailco.com.au/",
+        "google_maps_url": "",
+        "rating": 5,
+        "review_count": 0,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 34,
+        "recommendedAction": "skip",
+        "sourceQuery": "auto detail in Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "domain_fullydetailed.au",
+      "status": "skipped",
+      "firstSeenAt": "2026-05-13T06:12:22.249Z",
+      "lastSeenAt": "2026-05-13T06:14:27.839Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b915b9fec0c4ca5:0xdf07a25bc2d1ece4",
+        "websiteDomain": "fullydetailed.au",
+        "phoneDigits": "0415971872"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "Fully Detailed",
+        "category": "",
+        "categories": [],
+        "address": "232 Wellington Rd, Kangaroo Point QLD 4169",
+        "city": "Brisbane",
+        "niche": "auto detail",
+        "phone": "0415971872",
+        "website": "https://www.fullydetailed.au/",
+        "google_maps_url": "",
+        "rating": 4.9,
+        "review_count": 0,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 34,
+        "recommendedAction": "skip",
+        "sourceQuery": "auto detail in Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "domain_obsidiandetailing.com.au",
+      "status": "skipped",
+      "firstSeenAt": "2026-05-13T06:12:22.249Z",
+      "lastSeenAt": "2026-05-13T06:14:27.839Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b915736110c9d43:0x6ebcc0923a1ba772",
+        "websiteDomain": "obsidiandetailing.com.au",
+        "phoneDigits": "0448242660"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "Obsidian Mobile Car Detailing Brisbane",
+        "category": "",
+        "categories": [],
+        "address": "Rogers Parade W, Everton Park QLD 4053",
+        "city": "Brisbane",
+        "niche": "auto detail",
+        "phone": "0448242660",
+        "website": "https://www.obsidiandetailing.com.au/",
+        "google_maps_url": "",
+        "rating": 5,
+        "review_count": 0,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 34,
+        "recommendedAction": "skip",
+        "sourceQuery": "auto detail in Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "place_chijm9ktrjpxkwsrqk_e81qjagq",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T06:09:39.713Z",
+      "lastSeenAt": "2026-05-13T06:14:22.240Z",
+      "runCount": 4,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJM9KTrJpXkWsRQK_e81qjAgQ",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0731234567"
+      },
+      "latest": {
+        "sourceType": "single_enrich",
+        "name": "Brisbane",
+        "category": "",
+        "categories": [],
+        "address": "Brisbane QLD, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0731234567",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=288972937138974528",
+        "rating": null,
+        "review_count": 0,
+        "websiteStatus": "",
+        "discoveryScore": 15,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "Brisbane",
+        "signals": {},
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "place_chijaq1hdcrmkwsrjmh902vjk-m",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T06:09:36.005Z",
+      "lastSeenAt": "2026-05-13T06:14:19.149Z",
+      "runCount": 4,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJAQ1HdcRmkWsRjMH902vJK-M",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "motoroneautobody.com",
+        "phoneDigits": "0732861996"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "MotorOne Autobody - Cleveland",
+        "category": "",
+        "categories": [
+          "car_repair",
+          "establishment",
+          "point_of_interest"
+        ],
+        "address": "123 Russell St, Cleveland QLD 4163, Australia",
+        "city": "brisbane",
+        "niche": "",
+        "phone": "(07) 3286 1996",
+        "website": "https://motoroneautobody.com/",
+        "google_maps_url": "https://maps.google.com/?cid=16369398735563506060",
+        "rating": 4.6,
+        "review_count": 62,
+        "websiteStatus": "",
+        "discoveryScore": 23,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "panel beater Brisbane",
+        "signals": {},
+        "batch_id": "places-panel-beater-brisbane-202605131614",
+        "discovery_rank": 2,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijwssgwdpmkwsrwgjn_m6vec8",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T06:09:36.005Z",
+      "lastSeenAt": "2026-05-13T06:14:19.149Z",
+      "runCount": 4,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJWSsGWdpmkWsRwgjN_M6vEc8",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "mandrakes.com.au",
+        "phoneDigits": "0732861873"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Mandrakes Paint & Panel",
+        "category": "",
+        "categories": [
+          "car_repair",
+          "establishment",
+          "point_of_interest"
+        ],
+        "address": "71 Shore St W, Cleveland QLD 4163, Australia",
+        "city": "brisbane",
+        "niche": "",
+        "phone": "(07) 3286 1873",
+        "website": "https://www.mandrakes.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=14920900343994583234",
+        "rating": 4.3,
+        "review_count": 126,
+        "websiteStatus": "",
+        "discoveryScore": 38,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "panel beater Brisbane",
+        "signals": {},
+        "batch_id": "places-panel-beater-brisbane-202605131614",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijreaqw6obkwsrc6otxmwwc2o",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-12T22:02:54.725Z",
+      "lastSeenAt": "2026-05-12T22:02:54.725Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJReAqW6obkWsRc6OTXMwWc2o",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "charlietheplumber.com.au",
+        "phoneDigits": "0755281414"
+      },
+      "latest": {
+        "sourceType": "single_enrich",
+        "name": "Charlie The Plumber",
+        "category": "",
+        "categories": [],
+        "address": "Servicing the Gold Coast for 40 Years, 2/11 Hinde St, Ashmore QLD 4214, Australia",
+        "city": "gold-coast",
+        "niche": "plumber",
+        "phone": "(07) 5528 1414",
+        "website": "https://charlietheplumber.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=7670499657324405619",
+        "rating": 4.6,
+        "review_count": 165,
+        "websiteStatus": "",
+        "discoveryScore": null,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "Charlie The Plumber gold-coast",
+        "signals": {},
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "place_chijczmikqbxkwsrv0uhynlsn20",
+      "status": "manual_review",
+      "firstSeenAt": "2026-05-09T10:53:13.889Z",
+      "lastSeenAt": "2026-05-12T08:17:20.970Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJCZMIKQBXkWsRv0uHYnLsn20",
+        "cid": "7899292247454600127",
+        "data_id": "0x6b91570029089309:0x6d9fec7262874bbf",
+        "websiteDomain": "",
+        "phoneDigits": ""
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "Bluey's Fancy Restaurant",
+        "category": "French restaurant",
+        "categories": [
+          "French restaurant"
+        ],
+        "address": "55 Charlotte St, Paddington QLD 4064",
+        "city": "Brisbane",
+        "niche": "restaurant",
+        "phone": "",
+        "website": "",
+        "google_maps_url": "https://www.google.com/maps/place/Bluey%27s+Fancy+Restaurant/data=!4m7!3m6!1s0x6b91570029089309:0x6d9fec7262874bbf!8m2!3d-27.4600167!4d153.0075145!16s%2Fg%2F11msfwtskg!19sChIJCZMIKQBXkWsRv0uHYnLsn20?authuser=0&hl=en&rclk=1",
+        "rating": 4.7,
+        "review_count": 3,
+        "websiteStatus": "no_website",
+        "discoveryScore": 32,
+        "recommendedAction": "manual_review",
+        "sourceQuery": "restaurants in Paddington Brisbane",
+        "signals": {
+          "hasPhone": false,
+          "hasWebsite": false,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 2,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "contact_identity": {
+          "phone": "",
+          "website": "",
+          "social": {
+            "facebook": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/",
+            "instagram": "https://www.instagram.com/popular/bluey's-fancy-restaurant/",
+            "linkedin": "https://au.linkedin.com/company/taste-media"
+          },
+          "decision_maker": null,
+          "third_party_reviews": [],
+          "evidence_sources": [
+            {
+              "field": "social.facebook",
+              "source": "tinyfish",
+              "route": "enrich_discover_official",
+              "url": "https://www.facebook.com/OfficialBlueyTV/videos/love-is-on-the-menu-watch-as-we-bring-blueys-fancy-restaurant-to-life-with-kids-/677449111649750/",
+              "title": "Love is on the menu Watch as we bring Bluey's Fancy Restaurant to ...",
+              "profile_score": 1
+            },
+            {
+              "field": "social.instagram",
+              "source": "tinyfish",
+              "route": "enrich_discover_official",
+              "url": "https://www.instagram.com/popular/bluey's-fancy-restaurant/",
+              "title": "Bluey's Fancy Restaurant - Instagram",
+              "profile_score": 5
+            },
+            {
+              "field": "social.tiktok",
+              "source": "tinyfish",
+              "route": "enrich_discover_official",
+              "url": "https://www.tiktok.com/discover/bluey-world-brisbane-menu",
+              "title": "Bluey World Brisbane Menu - TikTok",
+              "profile_score": 5
+            },
+            {
+              "field": "social.linkedin",
+              "source": "tinyfish",
+              "route": "enrich_social_linkedin",
+              "url": "https://au.linkedin.com/company/taste-media",
+              "title": "Taste Creative",
+              "profile_score": 5
+            }
+          ],
+          "enriched_at": "2026-05-12T08:17:20.969Z"
+        }
+      }
+    },
+    {
+      "entityKey": "place_chij-x_xdsdakwsrylte_xmln1q",
+      "status": "ready_for_outreach_brief",
+      "firstSeenAt": "2026-05-09T04:36:05.407Z",
+      "lastSeenAt": "2026-05-12T08:08:36.735Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ-x_xDSdakWsRYlte_xmLn1Q",
+        "cid": "6097745364257758050",
+        "data_id": "0x6b915a270df11ffb:0x549f8b19ff5e5b62",
+        "websiteDomain": "newfarmdeli.com.au",
+        "phoneDigits": "0733582634"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "New Farm Deli",
+        "category": "Deli",
+        "categories": [
+          "Deli",
+          "Breakfast restaurant",
+          "Cafe",
+          "Caterer",
+          "Coffee store",
+          "Corporate gift supplier",
+          "Gift basket store",
+          "Wine store"
+        ],
+        "address": "Shop 5, 6, 7 & 8, 900 Brunswick St, New Farm QLD 4005",
+        "city": "Brisbane",
+        "niche": "restaurant",
+        "phone": "(07) 3358 2634",
+        "website": "http://www.newfarmdeli.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/New+Farm+Deli/data=!4m7!3m6!1s0x6b915a270df11ffb:0x549f8b19ff5e5b62!8m2!3d-27.4672595!4d153.0472039!16s%2Fg%2F1ttdymdt!19sChIJ-x_xDSdakWsRYlte_xmLn1Q?authuser=0&hl=en&rclk=1",
+        "rating": 4.5,
+        "review_count": 1906,
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 72,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "restaurants in New Farm Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 13,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-12T08:08:36.735Z",
+          "sku": "details_basic",
+          "types": [
+            "cafe",
+            "establishment",
+            "food",
+            "liquor_store",
+            "point_of_interest",
+            "restaurant",
+            "store"
+          ],
+          "international_phone": "(07) 3358 2634",
+          "google_canonical_url": "https://maps.google.com/?cid=6097745364257758050",
+          "rating_verified": 4.5,
+          "user_ratings_total": 1908,
+          "photo_references": [
+            "Ab43m-t9R90l-J0qz6nWvJ_9dAbH7GzSOZecYU0ICu1242kjaahOitJf1OXrfIMUkg3mnz1bBegs6PIMgMk3xS4Yd3oyHFt9mQZr8RQF1n1pxKEQstCwsEIE7pfLaD6VaW-J5Jbp9z46oz_XGQXNn0fBOYT2JZXOSHYRXEB3Ufu2XVsFec7wqZXn9-Fi1hkILnNW6kS2NJHOcn9XZFvepGDWYC5s2y2d8vN4WifeXkO59uh4Vrk57x5nGlnMhr3NsguEN1Z1WdJymVLr9CZTm_UvxPlhvWCsQmiHxxKoXIg3fKIBPg",
+            "Ab43m-vcFzOL0nYJa6OsFq-XWrgfsvIewQIu8tlDxdbOltsRibUx5TZyprmWWxlbv6oQXBmGaI28yc4aYkvm3DTTM01OZon2bnnOE32N4bQtMl28YKxlPGxqdBFTSGIYgwV3ED_Mw-gBGnbY-qzI7j049zHlozTIWXuy-CeqAFYd08nwFucJ4SlY214rAalpC05jf5KEf4ge9LFe7ktSB4fNscVyrj7c-lY-xsRS-xyFc8hbC3lweDOKD0nXcPGLDzkb_MY0Zzw2q-hx2MBdugBj3ZUPbgBLkNL6O5_OWcvkOzmPHjuTsaNqCIJ79lnh5jwsbnL2VaYQONOKY59velrrbF6gxKCrR8_axT_Jge80CUVXFS7TW3s4pppc7o_MGqSwj2B4Y7GLY9onmOY2pDLY1jUkDHG4OX_yjRECIHeA1DoXM0zQNIrqKCylSbOLHa5c",
+            "Ab43m-vUqp7jUYi4IGxFUXnCE1BmiqWtris2ujAu8jFkrN9-gF6GEi-3oqxpVNSJzDmtdPhsMmNpmJN3SQIiEhxh2NYj9uDveIfdlYxa7ZwqouTfd7_A7ZkQyivvpWcqeUD8rzIxKKvyn1VtxhYoLuSyertuHkVU2NaJSMIrN9e2EskwEK8_xpK0vo_Tw7045iOtXhsQKVvlMImsf9PYKyarxnLFi_WstmXMvhLaL7kP3HcHe4SroivTRZAjSqulMsOI9O6BWnhTPrZZ9OzJhKRTB8hljXQ9xD3qZ0XSHgku9JI_lQ",
+            "Ab43m-trcVLWjqU4UkRFQCarBROezw8fqWO3R6Q4WCmrAlf9hyqQ_DHWsd9FWwkcSCLOG2pPW0lbDOttoF1NV4mUWycLjYptS-TDAJDk9AroecU_HoyC0cmqMC09kLaXagq8xSCsWDP0dWWUfVJUiVW4oN3pm1ccs88FA9wn8VbHO044fbCpPJodtfjf_xBq96qXBp07qgVexPkGbtF6fz1MYfWEt2rkwWMzPMhmKwNMlivjhPxDZyqYubAgmgVhlW9j9ZNl7oVZxGgCo8z1pYkMpktFnwkmUyqmwD-XsmMsMNv9MR_HzBdlkDPRE6tAVCaQv4VPY5iRx3p_Jwqbc9HY-EM2gy2A6JNnyn9zAf39sGQQRn7smHoqukJ1OuoAUYHpL2XtJhYNTooB4HUDNk09GeGxpyEWDqAQrFeSZglHigdhGeVb",
+            "Ab43m-seiNHpqIh1HoRvf_OMJte-4m3tgEkU92l_6M0tY23hiExzZc9oyiAbqAxWjsOvzjteVMuYXVQ__SxKvxGKw4lIimlWQfu4EzjgE_t8pMbxVu9w5l1pfedn_nsaJJv6r4b4mKItZTlhkOjUdaWjRlAsd__AVgSCHRMYz8m_AAcgE_NYORPv-rFg5ra25QswsSFa21VnK-ZLRc5QhypIa7Zh_T2LwyJJYV-vzBNB0W68kwIOav2zknSd7juXDfbayUA2ruEuX4xSOO0L2mIiCj53Qzy3-8MuVKR1GB7Amf9td0Cv1j5fUuL__TIQCDRCgpCT2PQxHgbgZ_NinkU5TmpUrPLFrJgJUHctciPQncmfcQ1w4qshfXKMH18F7uG_hdHmi26HoGHZahCJft11fxUSQ1lkSs0mRozGWxTK5JMY7kDh5xYq86dfJTNLFtIQ",
+            "Ab43m-t9mz-Vzuz3760Vi_p8ZgJz1s3ED9YnzhdATDJeJrX4aCfFSETx21zFrhYKuQvB1i03X0B4SGJHI3yP8T6E4TthGLt7adV_YCPPItWsyzGdj0S4GCV7Xt92ULTX30vH39n1XlRZnn2wBZO4Og7DrVD_6MHy1_ab0J624OHFJa9_NPhle89YwEn0vdcVB05_X40FnjFDWxUowmgcYRml9jd95-GKKNHo9lQzByEEX2YuIabVWs8MV6PdIdLlIHiGXldtqysDRLlBN2cmb0VpjAiVatqP-szkXvYIQgBRFV3ooCDCqUdJ643qY_93qrFRguH-WzgP4Ys_yrIYfBhCjrx1bZdlObERuH891UwaC6NGI6X5TzNXVWfMTuVeYnN3pe8a8vBdKw4LCPx-bQlhOsjaPWjagKR76TKg9nEMGLWvQp-jTA4aHSTe2lVQua4O",
+            "Ab43m-uH7F6_bRKuDtW06NVwBV0Tli4sr-2N3jOGxnd8IJ-WiiRHkQumNy3w7nQxcPJZmRXnkaeW7o10AyafyB7rtVF2PK2bTYN73TkKkrfKAV2pGUc10FW40O9WwNeG50kChWAH6IK2Y8BHopVSCX6AhXx516cwCtz3yHPQMp2eaZSKFwDqRQBWBUwc9TsmIEsqkJg3myXPVO9LEVpER2E4GavX7iyXk3XPEq4DO2Jz_Z3FTvM5xXyfa1vwTTrV93i65TlSh2t1DDCDhTtql9DJEjjLWwMWnxfEIzk1oozYXt2uMNatJNdLaLCzDEFfq48bwIolReMi9HQf3Lbk8IS6KTKGa0FEdxPaogYO6zux1jER3r-rG-S1RUxUqhxOfTEuxRv7GWxf_HN8tQ5YIWqYqSGdcAt_H2tdxALUaOknBMKdu7bP6u0rWaalaLX-RE6u",
+            "Ab43m-vQDWrWpsvPhD6do0N6buKOf6uJTkzBHGpElMYh2FwANYGByRXegyo9ecQ_evzEAbDPcB1PQBCbKLIBITsZ26dawZF3LItVSSVOnAEUiyo_fw2rUJcBuYgs1XAagCpqeGx1fLClVG-C-7YPlzAE3xHUdImOKeeytBoFmrixEgQC0Db-jUESpq-owBQc1v1LH32w7DoxZHYHfQawvJIFVFHgxsIILuARkRrAVFd9q28zQgPMTuHG3HUjspp45S6fJktDge7wMP5dV2mDh_D8aK4Qt3lfu5wtLlzGHOot1eLLxoj-rWdZ_gu62cob8nJ1or-M0FYtof8cwSj6X25tuT84L4-H9LLSzM28qlEw2596v9GIRXV3GBBwgsYkFCx0ycwRJMj4_ChzDuytPeDm8DIZDlVpS3iIcqP1B_lsU5O4c-CWP0mclta6hEj_yw",
+            "Ab43m-tM0j89cKAWKCF90pfo4zW_MdcUIT10tPtLjFZo29duKHD3RtUM5JsO4QI6PqM6RzQvbv6lfJlyzZAjrQOeZN8WgaLZVDyNuVBcMYjf4rnN1s6Q4GfHKfCBVe9MhegRShAJr9858WYrQPIGQANdJ-4NEpC6tdkdAfqLiTK0oSN2DemsLEQJjVb4kv1RbpluY-E6HmtQfaOI2DJpiGZbBgCMeHWngSSAfVu9ItpTtsEOYty5HuFN0IpnUtexBCTeYjkyJR_0rUdGf2pecXuE52aBix-hQsAkaC8LNNnntG2EcojKvjhIWzso5-MC5EesIEdOckni1yy0QToC_AC77H_NstugpdMZuCQvChNwXmIm9eJuZ_McE3DMDfFyU-REQTJ4TZpRWIN8TJmimkn7VsUydkLaQEjgRB9-NHotbQYCeGBBG7xW4VXj3CMxJnuI",
+            "Ab43m-taeqo5JFIbf7pzztlMQnyIc1-UJ2g6ov5pC_qG2SEfS6GUfI2mj2Y2nPCgdgQDn-PU3ZEkAinx__-47tjUDwt01zzbKrfwrYEk9ia0djT8K4lPxwwsw52BhAtjAKY_AOFIcSOnv_o_Pms7H-QjNj73Z6WVgbI-cypWPXDewDYa14RGgFd7akOqMLgtINNvRDOQVwVQ1CYMaKeIhmbhn_DMccrlNryU6T2WYLHc4XwLlHKSw0PGwXcFM9XNHtd87cvIfgQM7dYQlVCER6Y3e_xT-fTUoksxsEdLb8rIkMhLAzyQO-tKCLA0Rk1xPm8DSzrjsKZ5SyepQlXtQtG8YmvOoTCzyA6NGLxSRLo-YIxuvMPFmLwWV1HVu2qxQaHFBgVnSztSuTa_yqllf_49udBpBIbSEqDJRJd_ydPN5hOGxYSPLl07Ng-4nna1CA"
+          ],
+          "opening_hours_verified": {
+            "weekday_text": [
+              "Monday: 6:00 AM – 6:00 PM",
+              "Tuesday: 6:00 AM – 6:00 PM",
+              "Wednesday: 6:00 AM – 6:00 PM",
+              "Thursday: 6:00 AM – 6:00 PM",
+              "Friday: 6:00 AM – 6:00 PM",
+              "Saturday: 6:00 AM – 6:00 PM",
+              "Sunday: 6:00 AM – 5:00 PM"
+            ]
+          },
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 14,
+            "limit": 11000,
+            "pct": 0.0012727272727272728,
+            "capped": false
+          },
+          "photo_urls": [
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778573390/profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-01-1778573388418-aqapje.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-01-1778573388418-aqapje",
+              "bytes": 545827,
+              "index": 1,
+              "photo_reference": "Ab43m-t9R90l-J0qz6nWvJ_9dAbH7GzSOZecYU0ICu1242kjaahOitJf1OXrfIMUkg3mnz1bBegs6PIMgMk3xS4Yd3oyHFt9mQZr8RQF1n1pxKEQstCwsEIE7pfLaD6VaW-J5Jbp9z46oz_XGQXNn0fBOYT2JZXOSHYRXEB3Ufu2XVsFec7wqZXn9-Fi1hkILnNW6kS2NJHOcn9XZFvepGDWYC5s2y2d8vN4WifeXkO59uh4Vrk57x5nGlnMhr3NsguEN1Z1WdJymVLr9CZTm_UvxPlhvWCsQmiHxxKoXIg3fKIBPg"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778573391/profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-02-1778573391104-9zu5y1.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-02-1778573391104-9zu5y1",
+              "bytes": 338768,
+              "index": 2,
+              "photo_reference": "Ab43m-vcFzOL0nYJa6OsFq-XWrgfsvIewQIu8tlDxdbOltsRibUx5TZyprmWWxlbv6oQXBmGaI28yc4aYkvm3DTTM01OZon2bnnOE32N4bQtMl28YKxlPGxqdBFTSGIYgwV3ED_Mw-gBGnbY-qzI7j049zHlozTIWXuy-CeqAFYd08nwFucJ4SlY214rAalpC05jf5KEf4ge9LFe7ktSB4fNscVyrj7c-lY-xsRS-xyFc8hbC3lweDOKD0nXcPGLDzkb_MY0Zzw2q-hx2MBdugBj3ZUPbgBLkNL6O5_OWcvkOzmPHjuTsaNqCIJ79lnh5jwsbnL2VaYQONOKY59velrrbF6gxKCrR8_axT_Jge80CUVXFS7TW3s4pppc7o_MGqSwj2B4Y7GLY9onmOY2pDLY1jUkDHG4OX_yjRECIHeA1DoXM0zQNIrqKCylSbOLHa5c"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778573392/profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-03-1778573392443-eozoio.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-03-1778573392443-eozoio",
+              "bytes": 126787,
+              "index": 3,
+              "photo_reference": "Ab43m-vUqp7jUYi4IGxFUXnCE1BmiqWtris2ujAu8jFkrN9-gF6GEi-3oqxpVNSJzDmtdPhsMmNpmJN3SQIiEhxh2NYj9uDveIfdlYxa7ZwqouTfd7_A7ZkQyivvpWcqeUD8rzIxKKvyn1VtxhYoLuSyertuHkVU2NaJSMIrN9e2EskwEK8_xpK0vo_Tw7045iOtXhsQKVvlMImsf9PYKyarxnLFi_WstmXMvhLaL7kP3HcHe4SroivTRZAjSqulMsOI9O6BWnhTPrZZ9OzJhKRTB8hljXQ9xD3qZ0XSHgku9JI_lQ"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778573394/profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-04-1778573393491-eido17.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-04-1778573393491-eido17",
+              "bytes": 425796,
+              "index": 4,
+              "photo_reference": "Ab43m-trcVLWjqU4UkRFQCarBROezw8fqWO3R6Q4WCmrAlf9hyqQ_DHWsd9FWwkcSCLOG2pPW0lbDOttoF1NV4mUWycLjYptS-TDAJDk9AroecU_HoyC0cmqMC09kLaXagq8xSCsWDP0dWWUfVJUiVW4oN3pm1ccs88FA9wn8VbHO044fbCpPJodtfjf_xBq96qXBp07qgVexPkGbtF6fz1MYfWEt2rkwWMzPMhmKwNMlivjhPxDZyqYubAgmgVhlW9j9ZNl7oVZxGgCo8z1pYkMpktFnwkmUyqmwD-XsmMsMNv9MR_HzBdlkDPRE6tAVCaQv4VPY5iRx3p_Jwqbc9HY-EM2gy2A6JNnyn9zAf39sGQQRn7smHoqukJ1OuoAUYHpL2XtJhYNTooB4HUDNk09GeGxpyEWDqAQrFeSZglHigdhGeVb"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778573395/profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-05-1778573394570-bnxxwy.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-05-1778573394570-bnxxwy",
+              "bytes": 607136,
+              "index": 5,
+              "photo_reference": "Ab43m-seiNHpqIh1HoRvf_OMJte-4m3tgEkU92l_6M0tY23hiExzZc9oyiAbqAxWjsOvzjteVMuYXVQ__SxKvxGKw4lIimlWQfu4EzjgE_t8pMbxVu9w5l1pfedn_nsaJJv6r4b4mKItZTlhkOjUdaWjRlAsd__AVgSCHRMYz8m_AAcgE_NYORPv-rFg5ra25QswsSFa21VnK-ZLRc5QhypIa7Zh_T2LwyJJYV-vzBNB0W68kwIOav2zknSd7juXDfbayUA2ruEuX4xSOO0L2mIiCj53Qzy3-8MuVKR1GB7Amf9td0Cv1j5fUuL__TIQCDRCgpCT2PQxHgbgZ_NinkU5TmpUrPLFrJgJUHctciPQncmfcQ1w4qshfXKMH18F7uG_hdHmi26HoGHZahCJft11fxUSQ1lkSs0mRozGWxTK5JMY7kDh5xYq86dfJTNLFtIQ"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778573397/profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-06-1778573395825-wguspp.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-x_xdsdakwsrylte_xmln1q/places-photos/gmb/photo-06-1778573395825-wguspp",
+              "bytes": 236883,
+              "index": 6,
+              "photo_reference": "Ab43m-t9mz-Vzuz3760Vi_p8ZgJz1s3ED9YnzhdATDJeJrX4aCfFSETx21zFrhYKuQvB1i03X0B4SGJHI3yP8T6E4TthGLt7adV_YCPPItWsyzGdj0S4GCV7Xt92ULTX30vH39n1XlRZnn2wBZO4Og7DrVD_6MHy1_ab0J624OHFJa9_NPhle89YwEn0vdcVB05_X40FnjFDWxUowmgcYRml9jd95-GKKNHo9lQzByEEX2YuIabVWs8MV6PdIdLlIHiGXldtqysDRLlBN2cmb0VpjAiVatqP-szkXvYIQgBRFV3ooCDCqUdJ643qY_93qrFRguH-WzgP4Ys_yrIYfBhCjrx1bZdlObERuH891UwaC6NGI6X5TzNXVWfMTuVeYnN3pe8a8vBdKw4LCPx-bQlhOsjaPWjagKR76TKg9nEMGLWvQp-jTA4aHSTe2lVQua4O"
+            }
+          ],
+          "photos_downloaded_at": "2026-05-12T08:09:58.411Z"
+        },
+        "sales_signals": {
+          "best_contact_time": {
+            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
+            "confidence": "high",
+            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
+            "weekday_summary": "Mon: 06:00-18:00 · Tue: 06:00-18:00 · Wed: 06:00-18:00 · Thu: 06:00-18:00 · Fri: 06:00-18:00 · Sat: 06:00-18:00 · Sun: 06:00-17:00",
+            "days_open": 7,
+            "days_closed": 0,
+            "source": "places_api.opening_hours.weekday_text",
+            "computed_at": "2026-05-12T08:08:36.736Z"
+          }
+        }
+      }
+    },
+    {
+      "entityKey": "place_chijachlxrjqkwsrc15kww-dtxq",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T10:53:13.889Z",
+      "lastSeenAt": "2026-05-12T07:54:39.048Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJachlxrJQkWsRc15KwW-DtxQ",
+        "cid": "1492806317504093811",
+        "data_id": "0x6b9150b2c665c869:0x14b7836fc14a5e73",
+        "websiteDomain": "marinara.com.au",
+        "phoneDigits": "0480284636"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "Marinara Trattoria",
+        "category": "Italian restaurant",
+        "categories": [
+          "Italian restaurant",
+          "Cafe",
+          "Restaurant"
+        ],
+        "address": "34 Latrobe Ter, Paddington QLD 4064",
+        "city": "Brisbane",
+        "niche": "restaurant",
+        "phone": "0480 284 636",
+        "website": "http://www.marinara.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Marinara+Trattoria/data=!4m7!3m6!1s0x6b9150b2c665c869:0x14b7836fc14a5e73!8m2!3d-27.4594662!4d153.0013155!16s%2Fg%2F1tlvpq0b!19sChIJachlxrJQkWsRc15KwW-DtxQ?authuser=0&hl=en&rclk=1",
+        "rating": 4.7,
+        "review_count": 1482,
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 80,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "restaurants in Paddington Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 11,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-12T07:54:39.048Z",
+          "sku": "details_basic",
+          "types": [
+            "cafe",
+            "establishment",
+            "food",
+            "point_of_interest",
+            "restaurant"
+          ],
+          "international_phone": "",
+          "google_canonical_url": "https://maps.google.com/?cid=1492806317504093811",
+          "rating_verified": 4.7,
+          "user_ratings_total": null,
+          "photo_references": [],
+          "opening_hours_verified": null,
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 5,
+            "limit": 11000,
+            "pct": 0.00045454545454545455,
+            "capped": false
+          }
+        }
+      }
+    },
+    {
+      "entityKey": "place_chijxy-j17rqkwsrpa-7smytawq",
+      "status": "manual_review",
+      "firstSeenAt": "2026-05-09T10:53:13.889Z",
+      "lastSeenAt": "2026-05-12T07:54:38.416Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJxY-J17RQkWsRpa-7SmyTAwQ",
+        "cid": "289236894401408933",
+        "data_id": "0x6b9150b4d7898fc5:0x403936c4abbafa5",
+        "websiteDomain": "naimrestaurant.com.au",
+        "phoneDigits": "0738764991"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "NAÏM",
+        "category": "Restaurant",
+        "categories": [
+          "Restaurant",
+          "Bar",
+          "Bistro",
+          "Brunch restaurant",
+          "Mediterranean restaurant",
+          "Middle Eastern restaurant"
+        ],
+        "address": "14 Collingwood St, Paddington QLD 4064",
+        "city": "Brisbane",
+        "niche": "restaurant",
+        "phone": "(07) 3876 4991",
+        "website": "https://www.naimrestaurant.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/NA%C3%8FM/data=!4m7!3m6!1s0x6b9150b4d7898fc5:0x403936c4abbafa5!8m2!3d-27.4580049!4d152.9943419!16s%2Fg%2F1pzrbn91w!19sChIJxY-J17RQkWsRpa-7SmyTAwQ?authuser=0&hl=en&rclk=1",
+        "rating": 4.7,
+        "review_count": 1793,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 48,
+        "recommendedAction": "manual_review",
+        "sourceQuery": "restaurants in Paddington Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 12,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-12T07:54:38.416Z",
+          "sku": "details_basic",
+          "types": [
+            "bar",
+            "establishment",
+            "food",
+            "point_of_interest",
+            "restaurant"
+          ],
+          "international_phone": "",
+          "google_canonical_url": "https://maps.google.com/?cid=289236894401408933",
+          "rating_verified": 4.7,
+          "user_ratings_total": null,
+          "photo_references": [],
+          "opening_hours_verified": null,
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 4,
+            "limit": 11000,
+            "pct": 0.0003636363636363636,
+            "capped": false
+          }
+        }
+      }
+    },
+    {
+      "entityKey": "place_chij-2w2g_dzkwsrlwbtsw5scjk",
+      "status": "manual_review",
+      "firstSeenAt": "2026-05-09T04:36:05.407Z",
+      "lastSeenAt": "2026-05-12T07:33:16.890Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ-2W2g_dZkWsRLwbTSW5scjk",
+        "cid": "4139490228447675951",
+        "data_id": "0x6b9159f783b665fb:0x39726c6e49d3062f",
+        "websiteDomain": "johnnygiospizza.com.au",
+        "phoneDigits": "0721417725"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "Johnny Gio's Pizza New Farm",
+        "category": "Pizza takeaway",
+        "categories": [
+          "Pizza takeaway"
+        ],
+        "address": "5/84 Merthyr Rd, New Farm QLD 4005",
+        "city": "Brisbane",
+        "niche": "restaurant",
+        "phone": "(07) 2141 7725",
+        "website": "https://www.johnnygiospizza.com.au/",
+        "google_maps_url": "https://www.google.com/maps/place/Johnny+Gio%27s+Pizza+New+Farm/data=!4m7!3m6!1s0x6b9159f783b665fb:0x39726c6e49d3062f!8m2!3d-27.4671799!4d153.0459308!16s%2Fg%2F11mt2f47s9!19sChIJ-2W2g_dZkWsRLwbTSW5scjk?authuser=0&hl=en&rclk=1",
+        "rating": 4.7,
+        "review_count": 115,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 46,
+        "recommendedAction": "manual_review",
+        "sourceQuery": "restaurants in New Farm Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 9,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-12T07:33:16.890Z",
+          "sku": "details_basic",
+          "types": [
+            "establishment",
+            "food",
+            "meal_takeaway",
+            "point_of_interest",
+            "restaurant"
+          ],
+          "international_phone": "",
+          "google_canonical_url": "https://maps.google.com/?cid=4139490228447675951",
+          "rating_verified": 4.7,
+          "user_ratings_total": null,
+          "photo_references": [],
+          "opening_hours_verified": null,
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 2,
+            "limit": 11000,
+            "pct": 0.0001818181818181818,
+            "capped": false
+          }
+        }
+      }
+    },
+    {
+      "entityKey": "place_chijd28ojc37k2sr-3f5yimly-4",
+      "status": "scored",
+      "firstSeenAt": "2026-05-09T10:53:53.252Z",
+      "lastSeenAt": "2026-05-12T05:10:42.839Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJd28oJC37k2sR-3f5YiMLY-4",
+        "cid": "17177585650333480955",
+        "data_id": "0x6b93fb2d24286f77:0xee630b2362f977fb",
+        "websiteDomain": "",
+        "phoneDigits": "0431275646"
+      },
+      "latest": {
+        "sourceType": "maps_scraper",
+        "name": "Regan Brothers Roof Restoration",
+        "category": "Roofing contractor",
+        "categories": [
+          "Roofing contractor"
+        ],
+        "address": "Kallangur QLD 4503",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0431 275 646",
+        "website": "",
+        "google_maps_url": "https://www.google.com/maps/place/Regan+Brothers+Roof+Restoration/data=!4m7!3m6!1s0x6b93fb2d24286f77:0xee630b2362f977fb!8m2!3d-27.2507456!4d152.9926509!16s%2Fg%2F11j65chsg2!19sChIJd28oJC37k2sR-3f5YiMLY-4?authuser=0&hl=en&rclk=1",
+        "rating": 5,
+        "review_count": 4,
+        "websiteStatus": "no_website",
+        "discoveryScore": 67,
+        "recommendedAction": "starter_candidate",
+        "sourceQuery": "roof restoration in Brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": false,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 2,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "contact_identity": {
+          "phone": "0431 275 646",
+          "website": "",
+          "social": {
+            "facebook": "https://www.facebook.com/reganbrothersroofing/",
+            "instagram": "https://www.instagram.com/p/B_5gBX-BqPM/",
+            "linkedin": ""
+          },
+          "decision_maker": null,
+          "third_party_reviews": [],
+          "evidence_sources": [
+            {
+              "field": "social.instagram",
+              "source": "tinyfish",
+              "route": "enrich_social_instagram",
+              "url": "https://www.instagram.com/p/B_5gBX-BqPM/",
+              "title": "Roof restoration completed by BRS -Finished in colour ...",
+              "profile_score": 1
+            },
+            {
+              "field": "social.facebook",
+              "source": "tinyfish",
+              "route": "enrich_social_instagram",
+              "url": "https://www.facebook.com/reganbrothersroofing/",
+              "title": "Regan Brothers Roofing | Brisbane QLD - Facebook",
+              "profile_score": 10
+            }
+          ],
+          "enriched_at": "2026-05-12T05:10:42.836Z"
+        }
+      }
+    },
     {
       "entityKey": "place_chij3zdt0olzkwsrz0ldsxdl4gu",
       "status": "skipped",
@@ -811,7 +1729,7 @@
     },
     {
       "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
-      "status": "manual_review",
+      "status": "skipped",
       "firstSeenAt": "2026-05-09T10:53:53.252Z",
       "lastSeenAt": "2026-05-09T10:53:53.252Z",
       "runCount": 1,
@@ -942,51 +1860,6 @@
           "hasReservationLink": false,
           "hasOrderOnlineLink": false,
           "imageCount": 4,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
-      "entityKey": "place_chijd28ojc37k2sr-3f5yimly-4",
-      "status": "scored",
-      "firstSeenAt": "2026-05-09T10:53:53.252Z",
-      "lastSeenAt": "2026-05-09T10:53:53.252Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJd28oJC37k2sR-3f5YiMLY-4",
-        "cid": "17177585650333480955",
-        "data_id": "0x6b93fb2d24286f77:0xee630b2362f977fb",
-        "websiteDomain": "",
-        "phoneDigits": "0431275646"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Regan Brothers Roof Restoration",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor"
-        ],
-        "address": "Kallangur QLD 4503",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "0431 275 646",
-        "website": "",
-        "google_maps_url": "https://www.google.com/maps/place/Regan+Brothers+Roof+Restoration/data=!4m7!3m6!1s0x6b93fb2d24286f77:0xee630b2362f977fb!8m2!3d-27.2507456!4d152.9926509!16s%2Fg%2F11j65chsg2!19sChIJd28oJC37k2sR-3f5YiMLY-4?authuser=0&hl=en&rclk=1",
-        "rating": 5,
-        "review_count": 4,
-        "websiteStatus": "no_website",
-        "discoveryScore": 67,
-        "recommendedAction": "starter_candidate",
-        "sourceQuery": "roof restoration in Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": false,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 2,
           "hasPopularTimes": false,
           "hasAboutAttributes": true
         }
@@ -1177,7 +2050,7 @@
     },
     {
       "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
-      "status": "queued_for_enrichment",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-09T10:53:53.252Z",
       "runCount": 4,
@@ -1218,12 +2091,13 @@
           "imageCount": 8,
           "hasPopularTimes": false,
           "hasAboutAttributes": true
-        }
+        },
+        "email": "matthewkiata@gmail.com"
       }
     },
     {
       "entityKey": "place_chijo3rniu9fkwsr8jworgytgmy",
-      "status": "manual_review",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T10:53:53.252Z",
       "lastSeenAt": "2026-05-09T10:53:53.252Z",
       "runCount": 1,
@@ -1497,7 +2371,7 @@
     },
     {
       "entityKey": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
-      "status": "skipped",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-09T10:53:53.252Z",
       "runCount": 4,
@@ -1544,7 +2418,7 @@
     },
     {
       "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
-      "status": "skipped",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-09T10:53:53.252Z",
       "runCount": 4,
@@ -1589,7 +2463,7 @@
     },
     {
       "entityKey": "place_chijzfflvfb3k2srldcxrdv26p4",
-      "status": "manual_review",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-09T10:53:53.252Z",
       "runCount": 4,
@@ -1825,53 +2699,6 @@
       }
     },
     {
-      "entityKey": "place_chijachlxrjqkwsrc15kww-dtxq",
-      "status": "queued_for_audit",
-      "firstSeenAt": "2026-05-09T10:53:13.889Z",
-      "lastSeenAt": "2026-05-09T10:53:13.889Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJachlxrJQkWsRc15KwW-DtxQ",
-        "cid": "1492806317504093811",
-        "data_id": "0x6b9150b2c665c869:0x14b7836fc14a5e73",
-        "websiteDomain": "marinara.com.au",
-        "phoneDigits": "0480284636"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Marinara Trattoria",
-        "category": "Italian restaurant",
-        "categories": [
-          "Italian restaurant",
-          "Cafe",
-          "Restaurant"
-        ],
-        "address": "34 Latrobe Ter, Paddington QLD 4064",
-        "city": "Brisbane",
-        "niche": "restaurant",
-        "phone": "0480 284 636",
-        "website": "http://www.marinara.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Marinara+Trattoria/data=!4m7!3m6!1s0x6b9150b2c665c869:0x14b7836fc14a5e73!8m2!3d-27.4594662!4d153.0013155!16s%2Fg%2F1tlvpq0b!19sChIJachlxrJQkWsRc15KwW-DtxQ?authuser=0&hl=en&rclk=1",
-        "rating": 4.7,
-        "review_count": 1482,
-        "websiteStatus": "independent_http_site",
-        "discoveryScore": 80,
-        "recommendedAction": "audit_candidate",
-        "sourceQuery": "restaurants in Paddington Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": true,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 11,
-          "hasPopularTimes": true,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
       "entityKey": "place_chijca49ftdrkwsratqhhgw7uyi",
       "status": "queued_for_audit",
       "firstSeenAt": "2026-05-09T10:53:13.889Z",
@@ -1957,51 +2784,6 @@
           "hasReservationLink": true,
           "hasOrderOnlineLink": true,
           "imageCount": 8,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
-      "entityKey": "place_chijczmikqbxkwsrv0uhynlsn20",
-      "status": "manual_review",
-      "firstSeenAt": "2026-05-09T10:53:13.889Z",
-      "lastSeenAt": "2026-05-09T10:53:13.889Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJCZMIKQBXkWsRv0uHYnLsn20",
-        "cid": "7899292247454600127",
-        "data_id": "0x6b91570029089309:0x6d9fec7262874bbf",
-        "websiteDomain": "",
-        "phoneDigits": ""
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Bluey's Fancy Restaurant",
-        "category": "French restaurant",
-        "categories": [
-          "French restaurant"
-        ],
-        "address": "55 Charlotte St, Paddington QLD 4064",
-        "city": "Brisbane",
-        "niche": "restaurant",
-        "phone": "",
-        "website": "",
-        "google_maps_url": "https://www.google.com/maps/place/Bluey%27s+Fancy+Restaurant/data=!4m7!3m6!1s0x6b91570029089309:0x6d9fec7262874bbf!8m2!3d-27.4600167!4d153.0075145!16s%2Fg%2F11msfwtskg!19sChIJCZMIKQBXkWsRv0uHYnLsn20?authuser=0&hl=en&rclk=1",
-        "rating": 4.7,
-        "review_count": 3,
-        "websiteStatus": "no_website",
-        "discoveryScore": 32,
-        "recommendedAction": "manual_review",
-        "sourceQuery": "restaurants in Paddington Brisbane",
-        "signals": {
-          "hasPhone": false,
-          "hasWebsite": false,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 2,
           "hasPopularTimes": false,
           "hasAboutAttributes": true
         }
@@ -2336,56 +3118,6 @@
       }
     },
     {
-      "entityKey": "place_chijxy-j17rqkwsrpa-7smytawq",
-      "status": "manual_review",
-      "firstSeenAt": "2026-05-09T10:53:13.889Z",
-      "lastSeenAt": "2026-05-09T10:53:13.889Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJxY-J17RQkWsRpa-7SmyTAwQ",
-        "cid": "289236894401408933",
-        "data_id": "0x6b9150b4d7898fc5:0x403936c4abbafa5",
-        "websiteDomain": "naimrestaurant.com.au",
-        "phoneDigits": "0738764991"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "NAÏM",
-        "category": "Restaurant",
-        "categories": [
-          "Restaurant",
-          "Bar",
-          "Bistro",
-          "Brunch restaurant",
-          "Mediterranean restaurant",
-          "Middle Eastern restaurant"
-        ],
-        "address": "14 Collingwood St, Paddington QLD 4064",
-        "city": "Brisbane",
-        "niche": "restaurant",
-        "phone": "(07) 3876 4991",
-        "website": "https://www.naimrestaurant.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/NA%C3%8FM/data=!4m7!3m6!1s0x6b9150b4d7898fc5:0x403936c4abbafa5!8m2!3d-27.4580049!4d152.9943419!16s%2Fg%2F1pzrbn91w!19sChIJxY-J17RQkWsRpa-7SmyTAwQ?authuser=0&hl=en&rclk=1",
-        "rating": 4.7,
-        "review_count": 1793,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 48,
-        "recommendedAction": "manual_review",
-        "sourceQuery": "restaurants in Paddington Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": true,
-          "hasReservationLink": true,
-          "hasOrderOnlineLink": true,
-          "imageCount": 12,
-          "hasPopularTimes": true,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
       "entityKey": "place_chijzdctq9xrkwsrytxajaglqve",
       "status": "queued_for_audit",
       "firstSeenAt": "2026-05-09T10:53:13.889Z",
@@ -2479,7 +3211,7 @@
     },
     {
       "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
-      "status": "skipped",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-09T06:20:00.519Z",
       "runCount": 3,
@@ -2525,7 +3257,7 @@
     },
     {
       "entityKey": "place_chiji0wdvdhekwsrsyzpzjow1uw",
-      "status": "skipped",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-09T06:20:00.519Z",
       "runCount": 3,
@@ -2616,7 +3348,7 @@
     },
     {
       "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
-      "status": "skipped",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-09T06:20:00.519Z",
       "runCount": 3,
@@ -2886,7 +3618,7 @@
     },
     {
       "entityKey": "place_chijywypvhjzkwsr6clfddpq0nc",
-      "status": "manual_review",
+      "status": "skipped",
       "firstSeenAt": "2026-05-09T06:17:47.515Z",
       "lastSeenAt": "2026-05-09T06:20:00.519Z",
       "runCount": 2,
@@ -3019,103 +3751,6 @@
           "hasOrderOnlineLink": false,
           "imageCount": 2,
           "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
-      "entityKey": "place_chij-2w2g_dzkwsrlwbtsw5scjk",
-      "status": "manual_review",
-      "firstSeenAt": "2026-05-09T04:36:05.407Z",
-      "lastSeenAt": "2026-05-09T04:36:05.407Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJ-2W2g_dZkWsRLwbTSW5scjk",
-        "cid": "4139490228447675951",
-        "data_id": "0x6b9159f783b665fb:0x39726c6e49d3062f",
-        "websiteDomain": "johnnygiospizza.com.au",
-        "phoneDigits": "0721417725"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Johnny Gio's Pizza New Farm",
-        "category": "Pizza takeaway",
-        "categories": [
-          "Pizza takeaway"
-        ],
-        "address": "5/84 Merthyr Rd, New Farm QLD 4005",
-        "city": "Brisbane",
-        "niche": "restaurant",
-        "phone": "(07) 2141 7725",
-        "website": "https://www.johnnygiospizza.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Johnny+Gio%27s+Pizza+New+Farm/data=!4m7!3m6!1s0x6b9159f783b665fb:0x39726c6e49d3062f!8m2!3d-27.4671799!4d153.0459308!16s%2Fg%2F11mt2f47s9!19sChIJ-2W2g_dZkWsRLwbTSW5scjk?authuser=0&hl=en&rclk=1",
-        "rating": 4.7,
-        "review_count": 115,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 46,
-        "recommendedAction": "manual_review",
-        "sourceQuery": "restaurants in New Farm Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 9,
-          "hasPopularTimes": true,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
-      "entityKey": "place_chij-x_xdsdakwsrylte_xmln1q",
-      "status": "ready_for_outreach_brief",
-      "firstSeenAt": "2026-05-09T04:36:05.407Z",
-      "lastSeenAt": "2026-05-09T04:36:05.407Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJ-x_xDSdakWsRYlte_xmLn1Q",
-        "cid": "6097745364257758050",
-        "data_id": "0x6b915a270df11ffb:0x549f8b19ff5e5b62",
-        "websiteDomain": "newfarmdeli.com.au",
-        "phoneDigits": "0733582634"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "New Farm Deli",
-        "category": "Deli",
-        "categories": [
-          "Deli",
-          "Breakfast restaurant",
-          "Cafe",
-          "Caterer",
-          "Coffee store",
-          "Corporate gift supplier",
-          "Gift basket store",
-          "Wine store"
-        ],
-        "address": "Shop 5, 6, 7 & 8, 900 Brunswick St, New Farm QLD 4005",
-        "city": "Brisbane",
-        "niche": "restaurant",
-        "phone": "(07) 3358 2634",
-        "website": "http://www.newfarmdeli.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/New+Farm+Deli/data=!4m7!3m6!1s0x6b915a270df11ffb:0x549f8b19ff5e5b62!8m2!3d-27.4672595!4d153.0472039!16s%2Fg%2F1ttdymdt!19sChIJ-x_xDSdakWsRYlte_xmLn1Q?authuser=0&hl=en&rclk=1",
-        "rating": 4.5,
-        "review_count": 1906,
-        "websiteStatus": "independent_http_site",
-        "discoveryScore": 72,
-        "recommendedAction": "audit_candidate",
-        "sourceQuery": "restaurants in New Farm Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 13,
-          "hasPopularTimes": true,
           "hasAboutAttributes": true
         }
       }

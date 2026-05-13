@@ -1,0 +1,178 @@
+{
+  "overall": "FAIL",
+  "total_steps": 18,
+  "passed": 7,
+  "failed": 11,
+  "ran_at": "2026-05-13T06:10:48.232Z",
+  "output_dir": "/Users/matthew/Developer/google-map-website-v3/data/qa/e2e-4-entry-e2e-2026-05-13T06-10",
+  "entries": [
+    {
+      "name": "Entry 1 · pl:places-search-intake",
+      "steps": [
+        {
+          "label": "search \"panel beater Brisbane\" · limit 2",
+          "passed": true,
+          "error": null,
+          "took_ms": 5293,
+          "data": {
+            "stdout_len": 1116
+          }
+        },
+        {
+          "label": "at least 1 new entity persisted",
+          "passed": false,
+          "error": "no new entity files",
+          "took_ms": 0,
+          "data": null
+        },
+        {
+          "label": "entity has discoveryScore + name",
+          "passed": false,
+          "error": "entity null not readable",
+          "took_ms": 0,
+          "data": null
+        },
+        {
+          "label": "build master.md",
+          "passed": true,
+          "error": null,
+          "took_ms": 171,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md exists with 5 required Chinese sections",
+          "passed": false,
+          "error": "/Users/matthew/Developer/google-map-website-v3/clients/v2/master.md missing",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [],
+      "started_at": "2026-05-13T06:10:40.837Z"
+    },
+    {
+      "name": "Entry 2 · pl:single-enrich",
+      "steps": [
+        {
+          "label": "single-enrich \"Sky High Roofing\"",
+          "passed": true,
+          "error": null,
+          "took_ms": 1079,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "at least 1 new entity persisted",
+          "passed": false,
+          "error": "no new entity",
+          "took_ms": 0,
+          "data": null
+        },
+        {
+          "label": "build master.md for single-enriched entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 171,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": false,
+          "error": "/Users/matthew/Developer/google-map-website-v3/clients/v2/master.md missing",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [],
+      "started_at": "2026-05-13T06:10:46.303Z"
+    },
+    {
+      "name": "Entry 3 · pl:scrape-docker (gosom)",
+      "steps": [
+        {
+          "label": "scrape \"auto detail brisbane\" · 2 results",
+          "passed": false,
+          "error": "exit 1\npl:scrape-docker: geocoding failed: GOOGLE_PLACES_API_KEY missing for geocoding\n",
+          "took_ms": 167,
+          "data": null
+        },
+        {
+          "label": "at least 1 new entity from gosom",
+          "passed": false,
+          "error": "gosom produced no entities",
+          "took_ms": 0,
+          "data": null
+        },
+        {
+          "label": "entity has discoveryScore",
+          "passed": false,
+          "error": "discoveryScore missing",
+          "took_ms": 0,
+          "data": null
+        },
+        {
+          "label": "build master.md for scraped entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 167,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": false,
+          "error": "/Users/matthew/Developer/google-map-website-v3/clients/v2/master.md missing",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [],
+      "started_at": "2026-05-13T06:10:47.554Z"
+    },
+    {
+      "name": "Entry 4 · pl:ingest-image",
+      "steps": [
+        {
+          "label": "ingest fake image lead",
+          "passed": true,
+          "error": null,
+          "took_ms": 175,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "at least 1 new image_* entity",
+          "passed": false,
+          "error": "no new image entity",
+          "took_ms": 0,
+          "data": null
+        },
+        {
+          "label": "build master.md for image entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 169,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": false,
+          "error": "/Users/matthew/Developer/google-map-website-v3/clients/v2/master.md missing",
+          "took_ms": 0,
+          "data": null
+        }
+      ],
+      "entityKeys": [],
+      "started_at": "2026-05-13T06:10:47.888Z"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "total_steps": 29,
   "passed": 29,
   "failed": 0,
-  "ran_at": "2026-05-13T06:01:32.144Z",
+  "ran_at": "2026-05-13T06:14:35.603Z",
   "phases": [
     {
       "name": "Phase 1 · M1 · Dedup scoring",
@@ -12,7 +12,7 @@
           "label": "scoreDedup contract: phone + name fuzzy → 30-60 LLM band",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "score": 53.5,
             "verdict": "llm-decide"
@@ -49,7 +49,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.118Z"
+      "started_at": "2026-05-13T06:14:35.574Z"
     },
     {
       "name": "Phase 2 · M1 · Discovery score",
@@ -89,7 +89,7 @@
           "data": null
         }
       ],
-      "started_at": "2026-05-13T06:01:32.122Z"
+      "started_at": "2026-05-13T06:14:35.577Z"
     },
     {
       "name": "Phase 3 · M1 · Entity upsert pipeline",
@@ -98,7 +98,7 @@
           "label": "upsertDiscoveryRun persists synthetic entity",
           "passed": true,
           "error": null,
-          "took_ms": 10,
+          "took_ms": 11,
           "data": {
             "entityKey": "__e2e_m1_m2__",
             "latestName": "E2E Test Roofing"
@@ -114,7 +114,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.122Z"
+      "started_at": "2026-05-13T06:14:35.578Z"
     },
     {
       "name": "Phase 4 · M2 · Audit staleness",
@@ -147,7 +147,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.136Z"
+      "started_at": "2026-05-13T06:14:35.593Z"
     },
     {
       "name": "Phase 5 · M2 · Reviews cascade",
@@ -180,7 +180,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.137Z"
+      "started_at": "2026-05-13T06:14:35.594Z"
     },
     {
       "name": "Phase 6 · M2 · Grade router",
@@ -189,7 +189,7 @@
           "label": "C-grade opens Discord thread + enqueues",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "thread_opened": true
           }
@@ -213,7 +213,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.137Z"
+      "started_at": "2026-05-13T06:14:35.594Z"
     },
     {
       "name": "Phase 7 · M2 · master.md",
@@ -222,7 +222,7 @@
           "label": "empty audit → 5 required Chinese sections",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "found": 5
           }
@@ -241,13 +241,13 @@
           "label": "full real-customer master.md (regression: brisbane-roof renders)",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "real_file_lines": 330
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.138Z"
+      "started_at": "2026-05-13T06:14:35.595Z"
     },
     {
       "name": "Phase 8 · M2 · v2/ structure",
@@ -271,7 +271,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.139Z"
+      "started_at": "2026-05-13T06:14:35.597Z"
     },
     {
       "name": "Phase 9 · M2 · od-prep",
@@ -307,7 +307,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.140Z"
+      "started_at": "2026-05-13T06:14:35.598Z"
     },
     {
       "name": "Phase 10 · M1 · bulk-archive",
@@ -318,11 +318,11 @@
           "error": null,
           "took_ms": 2,
           "data": {
-            "candidates": 8
+            "candidates": 11
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.140Z"
+      "started_at": "2026-05-13T06:14:35.598Z"
     },
     {
       "name": "Phase 11 · cross-module integration",
@@ -343,11 +343,11 @@
           "error": null,
           "took_ms": 1,
           "data": {
-            "md_length": 1491
+            "md_length": 1593
           }
         }
       ],
-      "started_at": "2026-05-13T06:01:32.143Z"
+      "started_at": "2026-05-13T06:14:35.602Z"
     }
   ]
 }
