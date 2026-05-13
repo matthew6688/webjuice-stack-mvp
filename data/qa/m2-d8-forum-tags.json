@@ -1,12 +1,12 @@
 {
   "deliverableId": "m2-d8-forum-tags",
-  "overall": "FAIL",
+  "overall": "PASS",
   "total": 3,
-  "passed": 2,
+  "passed": 3,
   "skipped": 0,
-  "failed": 1,
-  "took_ms": 3,
-  "ran_at": "2026-05-13T04:35:29.929Z",
+  "failed": 0,
+  "took_ms": 1,
+  "ran_at": "2026-05-13T04:48:22.581Z",
   "results": [
     {
       "name": "json-parseable",
@@ -16,9 +16,9 @@
     },
     {
       "name": "14-tags-present",
-      "passed": false,
-      "error": "expected 14 tags · got 0",
-      "took_ms": 1
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     },
     {
       "name": "no-duplicate-tags",

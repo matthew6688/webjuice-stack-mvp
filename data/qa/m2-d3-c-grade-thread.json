@@ -1,19 +1,42 @@
 {
   "deliverableId": "m2-d3-c-grade-thread",
   "overall": "PASS",
-  "total": 1,
-  "passed": 0,
-  "skipped": 1,
+  "total": 5,
+  "passed": 5,
+  "skipped": 0,
   "failed": 0,
   "took_ms": 2,
-  "ran_at": "2026-05-13T04:35:29.650Z",
+  "ran_at": "2026-05-13T04:48:22.198Z",
   "results": [
     {
-      "name": "grade-router-exists",
+      "name": "persistLeadGrade-exposed",
       "passed": true,
-      "skipped": true,
-      "reason": "core/leads/grade-router.js missing (not found)"
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "c-grade-opens-discord-thread",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    },
+    {
+      "name": "c-grade-adds-to-cold-queue",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "c-grade-dedup-in-queue",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "a-b-grade-skips-cold-queue",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }

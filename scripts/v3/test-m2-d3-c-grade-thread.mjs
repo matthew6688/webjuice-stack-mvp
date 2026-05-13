@@ -20,6 +20,20 @@ function readQueue() {
   try { return JSON.parse(fs.readFileSync(QUEUE, 'utf8')); } catch { return []; }
 }
 
+// Test-state hygiene · purge any leftover __test_* entries before exercising
+// dedup semantics. Without this, the dedup assertion is order-dependent across
+// runs (validator reruns this test against a queue that already contains prior
+// test fixtures, which would make a re-add of __test_c3__ count as 0 net).
+function purgeTestEntries() {
+  if (!fs.existsSync(QUEUE)) return;
+  try {
+    const items = JSON.parse(fs.readFileSync(QUEUE, 'utf8'));
+    const filtered = items.filter((it) => !String(it.entityKey || '').startsWith('__test_'));
+    fs.writeFileSync(QUEUE, JSON.stringify(filtered, null, 2));
+  } catch {}
+}
+purgeTestEntries();
+
 await r.assert('persistLeadGrade-exposed', () => {
   if (typeof m.persistLeadGrade !== 'function') throw new Error('persistLeadGrade(opts) required');
   return true;

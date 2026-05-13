@@ -38,7 +38,8 @@ await r.assert('limit-flag-respected', () => {
 });
 
 await r.assert('template-renders-no-empty-placeholders', () => {
-  const m = require('child_process');
+  // Note: original draft used `require('child_process')` which fails in ESM.
+  // `spawnSync` is already imported at the top of this file.
   const env = { ...process.env, C_GRADE_BATCH_LIVE: '', PRINT_TEMPLATE: '1' };
   const out = spawnSync('node', [path.resolve(REPO_ROOT, SCRIPT), '--limit', '1'], {
     cwd: REPO_ROOT, env, encoding: 'utf8', timeout: 60_000,

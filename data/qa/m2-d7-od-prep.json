@@ -1,19 +1,48 @@
 {
   "deliverableId": "m2-d7-od-prep",
   "overall": "PASS",
-  "total": 1,
-  "passed": 0,
-  "skipped": 1,
+  "total": 6,
+  "passed": 6,
+  "skipped": 0,
   "failed": 0,
   "took_ms": 2,
-  "ran_at": "2026-05-13T04:35:29.877Z",
+  "ran_at": "2026-05-13T04:48:22.535Z",
   "results": [
     {
-      "name": "script-exists",
+      "name": "module-exposes-derive-fn",
       "passed": true,
-      "skipped": true,
-      "reason": "scripts/cli/pl-od-invoke-prep.js missing"
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "source-url-from-master-md",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    },
+    {
+      "name": "business-type-includes-niche",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "tone-default-when-no-existing-site",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "scope-format",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "no-hardcoded-customer-names-in-output",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }
