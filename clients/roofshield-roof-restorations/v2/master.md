@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "moderate"
-generated_at: "2026-05-13T07:07:02.644Z"
+generated_at: "2026-05-13T07:18:23.270Z"
 assets:
   cloudinary_folder: null
   evidence_count: 6
@@ -63,6 +63,26 @@ assets:
 - 网站：[http://www.roofshield.com.au/](http://www.roofshield.com.au/)
 - 网站状态：`independent_http_site`
 
+> 📞 **建议联系时间**: Tue / Wed / Thu 10:00 – 12:00 (local)  ·  *工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间*  ·  confidence: high
+
+> *Hours: Mon: 08:00-17:00 · Tue: 08:00-17:00 · Wed: 08:00-17:00 · Thu: 08:00-17:00 · Fri: 08:00-14:00 · Sat: closed · Sun: closed*
+
+## 一(a)、商户视觉素材 (GMB)
+
+> 来自 Google Business Profile 的 6 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。
+
+![GMB photo 1](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656503/profitslocal/main-site/clients/place_chiji0wdvdhekwsrsyzpzjow1uw/places-photos/gmb/photo-01-1778656501287-rzvw4i.jpg)
+
+![GMB photo 2](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656504/profitslocal/main-site/clients/place_chiji0wdvdhekwsrsyzpzjow1uw/places-photos/gmb/photo-02-1778656503596-oh8aq7.jpg)
+
+![GMB photo 3](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656505/profitslocal/main-site/clients/place_chiji0wdvdhekwsrsyzpzjow1uw/places-photos/gmb/photo-03-1778656504653-5tnib0.jpg)
+
+![GMB photo 4](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656506/profitslocal/main-site/clients/place_chiji0wdvdhekwsrsyzpzjow1uw/places-photos/gmb/photo-04-1778656505628-ebofrc.jpg)
+
+![GMB photo 5](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656507/profitslocal/main-site/clients/place_chiji0wdvdhekwsrsyzpzjow1uw/places-photos/gmb/photo-05-1778656506729-k3e1r2.jpg)
+
+![GMB photo 6](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656507/profitslocal/main-site/clients/place_chiji0wdvdhekwsrsyzpzjow1uw/places-photos/gmb/photo-06-1778656507598-us3ze8.jpg)
+
 ## 二、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
@@ -83,6 +103,19 @@ assets:
 ## 四、客户在 Google 上怎么说
 
 > Customers are polarized, with many praising the professionalism, communication, and quality of work, while others report severe issues with warranty enforcement, poor project management, and unfinished jobs.
+
+**评分分布（基于 Google 全量评论）：**
+
+| 星级 | 条数 | 占比 |
+|---|---|---|
+| 5★ | 43 | 84.3% |
+| 4★ | 1 | 2.0% |
+| 3★ | 0 | 0.0% |
+| 2★ | 0 | 0.0% |
+| 1★ | 7 | 13.7% |
+| **合计** | **51** | 100% |
+
+**84% 是 5★ 评价** — 这条数据本身就是巨大的销售素材，redesign 后的网站应该把它放在 hero 区。
 
 **一致夸赞：** `excellent communication` · `friendly and respectful staff` · `detailed process explanation` · `high-quality workmanship` · `prompt assistance`
 
@@ -366,6 +399,6 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - Cheap audit version: `-`
 - Detailed audit version: `2026-05-11-v1`
-- Vision model: `ollama-qwen3.6-27b-nothink`
-- Review source: `Google Places Place Details · most_relevant`
+- Vision model: `claude_cli · claude-sonnet-4-5-20250929`
+- Review source: `gmaps docker (full reviews)`
 - 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)

@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T07:07:00.929Z"
+generated_at: "2026-05-13T07:18:24.130Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -53,6 +53,26 @@ assets:
 - 地址：Servicing the Gold Coast for 40 Years, 2/11 Hinde St, Ashmore QLD 4214, Australia
 - 网站：[https://charlietheplumber.com.au/](https://charlietheplumber.com.au/)
 
+> 📞 **建议联系时间**: Tue / Wed / Thu 10:00 – 12:00 (local)  ·  *工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间*  ·  confidence: high
+
+> *Hours: Mon: 00:00-23:59 · Tue: 00:00-23:59 · Wed: 00:00-23:59 · Thu: 00:00-23:59 · Fri: 00:00-23:59 · Sat: 00:00-23:59 · Sun: 00:00-23:59*
+
+## 一(a)、商户视觉素材 (GMB)
+
+> 来自 Google Business Profile 的 6 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。
+
+![GMB photo 1](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656567/profitslocal/main-site/clients/place_chijreaqw6obkwsrc6otxmwwc2o/places-photos/gmb/photo-01-1778656565905-k7gawh.jpg)
+
+![GMB photo 2](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656569/profitslocal/main-site/clients/place_chijreaqw6obkwsrc6otxmwwc2o/places-photos/gmb/photo-02-1778656568238-xrzng7.png)
+
+![GMB photo 3](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656570/profitslocal/main-site/clients/place_chijreaqw6obkwsrc6otxmwwc2o/places-photos/gmb/photo-03-1778656569692-5eaoa1.png)
+
+![GMB photo 4](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656572/profitslocal/main-site/clients/place_chijreaqw6obkwsrc6otxmwwc2o/places-photos/gmb/photo-04-1778656570984-duhb6m.jpg)
+
+![GMB photo 5](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656574/profitslocal/main-site/clients/place_chijreaqw6obkwsrc6otxmwwc2o/places-photos/gmb/photo-05-1778656573039-qle3n2.png)
+
+![GMB photo 6](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656575/profitslocal/main-site/clients/place_chijreaqw6obkwsrc6otxmwwc2o/places-photos/gmb/photo-06-1778656574682-mk0ygm.jpg)
+
 ## 三、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
@@ -86,6 +106,6 @@ assets:
 
 - Cheap audit version: `-`
 - Detailed audit version: `-`
-- Vision model: `ollama-qwen3.6-27b-nothink`
-- Review source: `Google Places Place Details · most_relevant`
+- Vision model: `n/a`
+- Review source: `Google Places · most_relevant (max 5)`
 - 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)

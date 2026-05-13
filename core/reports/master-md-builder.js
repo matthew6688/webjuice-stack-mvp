@@ -1115,8 +1115,14 @@ export function buildMasterMdDetailed({
   sections.push('');
   sections.push(`- Cheap audit version: \`${audit.cheap_config_version || '-'}\``);
   sections.push(`- Detailed audit version: \`${audit.audit_version || '-'}\``);
-  sections.push(`- Vision model: \`ollama-qwen3.6-27b-nothink\``);
-  sections.push(`- Review source: \`Google Places Place Details · most_relevant\``);
+  // V3 bug fix #16 (2026-05-13): read actual provider/model from visual fixture
+  // instead of hardcoded ollama label. visualAudit may be undefined → fallback to "n/a".
+  const vp = visualAudit?.provider || 'n/a';
+  const vm = visualAudit?.model || (vp === 'ollama' ? 'qwen3.6:27b' : 'n/a');
+  sections.push(`- Vision model: \`${vp}${vm !== 'n/a' ? ' · ' + vm : ''}\``);
+  // V3 bug fix #17 (2026-05-13): reflect actual review source (docker vs places).
+  const rsource = reviewBundle?.source === 'gmaps_local_docker' ? 'gmaps docker (full reviews)' : 'Google Places · most_relevant (max 5)';
+  sections.push(`- Review source: \`${rsource}\``);
   sections.push(`- 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)`);
   sections.push('');
 

@@ -16,7 +16,7 @@ visual_freshness: 5
 visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-13T07:07:02.475Z"
+generated_at: "2026-05-13T07:18:22.731Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5
@@ -54,6 +54,26 @@ assets:
 - 地址：5/53 Lawnton Pocket Rd, Lawnton QLD 4501
 - 网站：[https://www.roofspacerenovators.com.au/](https://www.roofspacerenovators.com.au/)
 - 网站状态：`independent_https_site`
+
+> 📞 **建议联系时间**: Tue / Wed / Thu 10:00 – 12:00 (local)  ·  *工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间*  ·  confidence: high
+
+> *Hours: Mon: 08:30-17:00 · Tue: 08:30-17:00 · Wed: 08:30-17:00 · Thu: 08:30-17:00 · Fri: 08:30-15:00 · Sat: closed · Sun: closed*
+
+## 一(a)、商户视觉素材 (GMB)
+
+> 来自 Google Business Profile 的 6 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。
+
+![GMB photo 1](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656458/profitslocal/main-site/clients/place_chija7rmbn38k2srv29x1ubwqmg/places-photos/gmb/photo-01-1778656453593-c7wz1w.jpg)
+
+![GMB photo 2](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656460/profitslocal/main-site/clients/place_chija7rmbn38k2srv29x1ubwqmg/places-photos/gmb/photo-02-1778656458770-tzo9kg.jpg)
+
+![GMB photo 3](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656462/profitslocal/main-site/clients/place_chija7rmbn38k2srv29x1ubwqmg/places-photos/gmb/photo-03-1778656461232-d183gb.jpg)
+
+![GMB photo 4](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656463/profitslocal/main-site/clients/place_chija7rmbn38k2srv29x1ubwqmg/places-photos/gmb/photo-04-1778656462694-j1fkq7.jpg)
+
+![GMB photo 5](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656464/profitslocal/main-site/clients/place_chija7rmbn38k2srv29x1ubwqmg/places-photos/gmb/photo-05-1778656463927-vehm9s.jpg)
+
+![GMB photo 6](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656465/profitslocal/main-site/clients/place_chija7rmbn38k2srv29x1ubwqmg/places-photos/gmb/photo-06-1778656465267-9jdnqz.jpg)
 
 ## 二、客户访问时看到的页面
 
@@ -552,6 +572,6 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - Cheap audit version: `-`
 - Detailed audit version: `2026-05-11-v1`
-- Vision model: `ollama-qwen3.6-27b-nothink`
-- Review source: `Google Places Place Details · most_relevant`
+- Vision model: `codex_cli`
+- Review source: `gmaps docker (full reviews)`
 - 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)

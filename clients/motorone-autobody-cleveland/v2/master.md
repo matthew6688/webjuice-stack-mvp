@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T07:07:01.953Z"
+generated_at: "2026-05-13T07:18:22.553Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -55,6 +55,20 @@ assets:
 - 地址：123 Russell St, Cleveland QLD 4163, Australia
 - 网站：[https://motoroneautobody.com/](https://motoroneautobody.com/)
 
+> 📞 **建议联系时间**: Tue / Wed / Thu 10:00 – 12:00 (local)  ·  *工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间*  ·  confidence: high
+
+> *Hours: Mon: 08:30-16:30 · Tue: 08:30-16:30 · Wed: 08:30-16:30 · Thu: 08:30-16:30 · Fri: 08:30-15:30 · Sat: closed · Sun: closed*
+
+## 一(a)、商户视觉素材 (GMB)
+
+> 来自 Google Business Profile 的 3 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。
+
+![GMB photo 1](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656471/profitslocal/main-site/clients/place_chijaq1hdcrmkwsrjmh902vjk-m/places-photos/gmb/photo-01-1778656469514-pj1m6o.jpg)
+
+![GMB photo 2](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656472/profitslocal/main-site/clients/place_chijaq1hdcrmkwsrjmh902vjk-m/places-photos/gmb/photo-02-1778656471816-r9vnvo.jpg)
+
+![GMB photo 3](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656474/profitslocal/main-site/clients/place_chijaq1hdcrmkwsrjmh902vjk-m/places-photos/gmb/photo-03-1778656473028-34l41p.png)
+
 ## 三、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
@@ -88,6 +102,6 @@ assets:
 
 - Cheap audit version: `-`
 - Detailed audit version: `-`
-- Vision model: `ollama-qwen3.6-27b-nothink`
-- Review source: `Google Places Place Details · most_relevant`
+- Vision model: `n/a`
+- Review source: `Google Places · most_relevant (max 5)`
 - 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)

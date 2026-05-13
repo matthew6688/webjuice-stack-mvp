@@ -16,7 +16,7 @@ visual_freshness: 6
 visual_trust: 4
 visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-13T07:07:01.781Z"
+generated_at: "2026-05-13T07:18:24.522Z"
 assets:
   cloudinary_folder: null
   evidence_count: 9
@@ -56,6 +56,26 @@ assets:
 - 网站：[https://hurricanedigital.com.au/](https://hurricanedigital.com.au/)
 - 网站状态：`independent_https_site`
 
+> 📞 **建议联系时间**: Tue / Wed / Thu 10:00 – 12:00 (local)  ·  *工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间*  ·  confidence: high
+
+> *Hours: Mon: 08:30-17:00 · Tue: 08:30-17:00 · Wed: 08:30-17:00 · Thu: 08:30-17:00 · Fri: 08:30-17:00 · Sat: closed · Sun: closed*
+
+## 一(a)、商户视觉素材 (GMB)
+
+> 来自 Google Business Profile 的 6 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。
+
+![GMB photo 1](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656656/profitslocal/main-site/clients/place_chijywypvhjzkwsr6clfddpq0nc/places-photos/gmb/photo-01-1778656653745-mkmb10.png)
+
+![GMB photo 2](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656658/profitslocal/main-site/clients/place_chijywypvhjzkwsr6clfddpq0nc/places-photos/gmb/photo-02-1778656657494-u3s5gy.png)
+
+![GMB photo 3](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656661/profitslocal/main-site/clients/place_chijywypvhjzkwsr6clfddpq0nc/places-photos/gmb/photo-03-1778656658815-ajeofr.png)
+
+![GMB photo 4](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656664/profitslocal/main-site/clients/place_chijywypvhjzkwsr6clfddpq0nc/places-photos/gmb/photo-04-1778656661915-repyla.png)
+
+![GMB photo 5](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656665/profitslocal/main-site/clients/place_chijywypvhjzkwsr6clfddpq0nc/places-photos/gmb/photo-05-1778656665331-dsshcu.jpg)
+
+![GMB photo 6](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656666/profitslocal/main-site/clients/place_chijywypvhjzkwsr6clfddpq0nc/places-photos/gmb/photo-06-1778656666136-ytbxaq.png)
+
 ## 二、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
@@ -76,6 +96,19 @@ assets:
 ## 四、客户在 Google 上怎么说
 
 > Customers overwhelmingly praise specific staff members for tangible improvements in visibility, lead generation, and website performance, though one significant complaint highlights a disconnect between sales promises and actual ROI.
+
+**评分分布（基于 Google 全量评论）：**
+
+| 星级 | 条数 | 占比 |
+|---|---|---|
+| 5★ | 166 | 91.7% |
+| 4★ | 0 | 0.0% |
+| 3★ | 0 | 0.0% |
+| 2★ | 3 | 1.7% |
+| 1★ | 12 | 6.6% |
+| **合计** | **181** | 100% |
+
+**92% 是 5★ 评价** — 这条数据本身就是巨大的销售素材，redesign 后的网站应该把它放在 hero 区。
 
 **一致夸赞：** `rapid improvement in google rankings` · `responsive and proactive communication` · `measurable increase in leads` · `personalized account management` · `effective website optimization`
 
@@ -462,6 +495,6 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 - Cheap audit version: `-`
 - Detailed audit version: `2026-05-11-v1`
-- Vision model: `ollama-qwen3.6-27b-nothink`
-- Review source: `Google Places Place Details · most_relevant`
+- Vision model: `claude_cli · claude-sonnet-4-5-20250929`
+- Review source: `gmaps docker (full reviews)`
 - 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)

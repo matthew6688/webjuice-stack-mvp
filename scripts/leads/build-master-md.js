@@ -147,7 +147,9 @@ function findLatestVisualAudit(entityKey, root) {
       if (fs.existsSync(candFile)) {
         try {
           const r = JSON.parse(fs.readFileSync(candFile, 'utf8'));
-          if (r.parsedJson) return r.parsedJson;
+          // V3 bug fix #16 (2026-05-13): include provider/model so the master.md
+          // appendix can show actual vision model used (was hardcoded "ollama").
+          if (r.parsedJson) return { ...r.parsedJson, provider: r.provider || null, model: r.model || null };
         } catch {}
       }
     }
