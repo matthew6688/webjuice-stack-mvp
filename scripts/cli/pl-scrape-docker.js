@@ -59,6 +59,9 @@ const keywords = (args.keywords
   ? String(args.keywords).split(',').map((s) => s.trim()).filter(Boolean)
   : [`${niche} in ${city}`]);
 
+// NOTE: --count maps to gosom `depth` (search scroll depth) · NOT a hard result cap.
+// depth=1 typically returns ~10-20 results · depth=2 returns ~20-40 · etc.
+// For "give me N entities" semantics use --count 1 + accept whatever lands.
 const count = Number.parseInt(args.count || '20', 10);
 const maxTimeRaw = Number.parseInt(args['max-time'] || '240', 10);
 const maxTime = Math.max(180, maxTimeRaw);

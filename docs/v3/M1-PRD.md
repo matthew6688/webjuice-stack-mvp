@@ -373,3 +373,54 @@ Bug fixes during this sprint affecting M1:
 
 完整 audit: [MASTER-MD-AUDIT-V2-2026-05-13.md](./MASTER-MD-AUDIT-V2-2026-05-13.md)
 完整决策: [DECISIONS-LOG.md](./DECISIONS-LOG.md) (decisions 14-23)
+
+---
+
+## 8. Health Check · `pl:intake-doctor` (V3 · 2026-05-14)
+
+**Goal**: 一行总检 SOP-1 链路（intake → entity → master.md enqueue → dispatcher）是否健康。复用 `pl:sop0-doctor` 结构 · daily cron 09:00 跑 · 失败 → Discord webhook。
+
+**5 个 check**：
+
+| # | 检查 | 含义 | 失败 fix |
+|---|---|---|---|
+| 1 | `data/leads/entities/` 24h 新文件 | intake 还活着的最强信号 | 24h 无 intake → 跑 `pl:places-search-intake -- "plumber brisbane" --limit 1` 验证 |
+| 2 | Docker daemon + `gmaps-scraper-web` HTTP 200 | scrape-docker 路径可用 | `open -a Docker` / `docker start gmaps-scraper-web` |
+| 3 | `GOOGLE_PLACES_API_KEY` 设置 | places-intake / single-enrich 不缺 key | 检查 `.env.local` |
+| 4 | `build-master-md` 任务积压 < 10 | dispatcher 在消化 enqueue（Bug C 早期预警） | `launchctl list \| grep task-dispatcher` · per-worktree plist (D30) |
+| 5 | intent-router **regex** 路径 niche+city 提取正常 | paid CLI / ollama 都挂时 regex 必须保底 | 检查 `core/tasks/intent-router.js` NICHE_KEYWORDS / CITY_KEYWORDS |
+
+**用法**：
+```bash
+npm run pl:intake-doctor              # 彩色人读
+npm run pl:intake-doctor -- --json    # JSON 机器读 (cron/CI)
+```
+
+**Exit code**: 0 = 全绿 · 1 = 任一红灯。Heartbeat 写 `data/heartbeats/intake-doctor.txt`（dead-man 监测）。
+
+**成本**: $0 · 不调任何 paid LLM（仅 regex provider 路径）。
+
+**稳定性标准（per D29）**: 24h 连续 0 fail = SOP-1 stable。
+
+### 8.1 Stability Verification · 上线证据 (2026-05-14)
+
+**Cron**: `ai.profitslocal.intake-doctor-daily` · `StartCalendarInterval { Hour=9, Minute=0 }` · `RunAtLoad=true`
+- Plist: `~/Library/LaunchAgents/ai.profitslocal.intake-doctor-daily.plist`
+- 启动: `launchctl bootstrap "gui/$(id -u)" <plist>` · 已 bootstrap
+- 日志: `data/heartbeats/intake-doctor-daily.log` (JSON 一行/次)
+- Heartbeat: `data/heartbeats/intake-doctor.txt` · mtime < 25h = 活着
+
+**首跑 (RunAtLoad · 2026-05-13 21:18 UTC)**: `ok=true · 5/5 PASS`
+
+**Watchdog (TODO · 不阻塞稳定性认定)**:
+- 失败 → Discord webhook（暂未接 · 现阶段 5/5 全绿 · 不需）
+- heartbeat mtime > 25h → 单独 cron alert（dead-man）
+
+**完整链路验证 (post-D30 · 小压测)**:
+- `canberra × roofer × places+docker` = 2/2 batch · 9 fresh entities · 7/7 master.md OK
+- v3 dispatcher 实时消化 enqueue · doctor check #4 (`pending<10`) 全程绿
+- 输出: `data/qa/batch-master-md-2026-05-13T21-18/summary.json`
+
+**Phase 完工标志**: 5/5 doctor + 1 次压测 0 fail + 1 次 RunAtLoad 跑过 ✅。24h 稳定性观察期开始 2026-05-13 21:18 · 满期 2026-05-14 21:18 UTC。
+
+

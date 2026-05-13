@@ -105,6 +105,13 @@ if (fs.existsSync(internalAuditHtml)) {
   fs.copyFileSync(internalAuditHtml, path.join(stageDir, 'internal-audit-report.html'));
   console.log(`[pl:publish-demo] included internal-audit-report.html`);
 }
+// V3 (2026-05-14): include optimized internal audit (multi-round autoresearch)
+// if pl:optimize-internal-report ran for this entity.
+const optimizedHtml = path.join(REPO, 'clients', slug, 'v2', 'internal-audit-report.optimized.html');
+if (fs.existsSync(optimizedHtml)) {
+  fs.copyFileSync(optimizedHtml, path.join(stageDir, 'internal-audit-report.optimized.html'));
+  console.log(`[pl:publish-demo] included internal-audit-report.optimized.html`);
+}
 // Also copy screenshots/evidence/video dirs so they render inline
 for (const sub of ['screenshots', 'evidence', 'video']) {
   const srcDir = path.join(REPO, 'clients', slug, 'v2', sub);
@@ -151,6 +158,7 @@ const proc = spawn('wrangler', [
   '--project-name', projectName,
   '--branch', 'main',
   '--commit-dirty=true',
+  '--commit-message', `pl-publish-demo ${slug} ${new Date().toISOString()}`,
 ], { env, stdio: 'inherit' });
 
 proc.on('exit', async (code) => {
