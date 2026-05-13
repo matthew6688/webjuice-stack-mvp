@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gutter and Roof Repairs · Roof Restoration, Repair & Replacement · Brisbane</title>
+  <meta name="description" content="Gutter and Roof Repairs restores, repairs and replaces residential roofs across Brisbane and Moreton Bay. Free roof inspection. Call 0421 460 580." />
+  <!--
+    REFERENCE SITE · classic-premium-roftix · v3 round 0 · 2026-05-13
+    Adapted for: Gutter and Roof Repairs (real customer)
+    OD-BOUNDARY rules:
+      LOCKED   = color tokens, font families, type scale, spacing, button/card/form/section internal styling
+      FLEXIBLE = which sections appear · section order · how many cards per grid · banner content · pages
+      ADD-ABLE = new section types ONLY if built from existing tokens & marked data-od-new="true"
+    See ./HANDOFF-BOUNDARIES.md for full rules.
+  -->
+  <style>
+    :root {
+      /* LOCKED · color tokens */
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --fg: #212121;
+      --muted: #51606F;
+      --border: #E3DFD6;
+      --accent: #0E6B4F;        /* CTA green */
+      --primary: #0B2F57;       /* deep navy */
+      --warm: #FF6F3C;          /* audit banner accent */
+      --ink: #101417;
+      --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
+      --primary-soft: color-mix(in oklch, var(--primary) 12%, transparent);
+      --warm-soft: color-mix(in oklch, var(--warm) 14%, transparent);
+      /* LOCKED · font families */
+      --font-display: "Playfair Display", "Iowan Old Style", "Charter", Georgia, serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+      /* LOCKED · type scale */
+      --fs-h1: clamp(48px, 7vw, 92px);
+      --fs-h2: clamp(34px, 4vw, 58px);
+      --fs-h3: 24px;
+      --fs-lead: 19px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      /* LOCKED · spacing scale */
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 64px;
+      --gap-2xl: 104px;
+      --container: 1180px;
+      --gutter: 28px;
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    p { margin: 0; text-wrap: pretty; }
+    h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(56px, 8vw, var(--gap-2xl)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; gap: var(--gap-md); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700; line-height: 0.95; letter-spacing: 0; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; line-height: 1.05; }
+    .h3, h3 { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.2; font-weight: 700; }
+    .lead { font-size: var(--fs-lead); line-height: 1.62; color: var(--muted); max-width: 58ch; }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 800; margin: 0 0 var(--gap-md); }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .topnav { position: sticky; top: 0; z-index: 20; background: color-mix(in oklch, var(--surface) 88%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .topnav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: var(--gap-lg); }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.02em; }
+    .brand-mark { width: 54px; height: 36px; color: var(--accent); }
+    .brand-mark .house { fill: var(--primary); }
+    .brand-word { font-size: 18px; color: var(--fg); }
+    .topnav nav { display: flex; gap: 28px; color: var(--muted); font-size: 14px; }
+    .topnav nav a:hover { color: var(--fg); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-phone { font-family: var(--font-mono); font-size: 13px; color: var(--fg); padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 12px 20px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease; }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-light { background: var(--surface); color: var(--primary); border-color: var(--surface); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 8px; }
+    .btn-arrow::after { content: "→"; transition: transform 0.15s ease; }
+    .btn-arrow:hover::after { transform: translateX(2px); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .card-flat { background: transparent; border: 0; padding: 0; }
+    .rule { border-top: 1px solid var(--border); }
+
+    /* Audit banner · M3 sales overlay · expandable */
+    .audit-banner { background: var(--ink); color: var(--surface); border-bottom: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); }
+    .audit-banner > summary { padding-block: 14px; cursor: pointer; list-style: none; }
+    .audit-banner > summary::-webkit-details-marker { display: none; }
+    .audit-banner-inner { display: grid; grid-template-columns: auto 1fr auto; gap: var(--gap-md); align-items: center; }
+    .audit-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; background: var(--warm); color: var(--ink); font-weight: 800; }
+    .audit-msg { font-size: 14px; color: color-mix(in oklch, var(--surface) 92%, transparent); }
+    .audit-msg strong { color: var(--surface); }
+    .audit-cta { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--warm); border-bottom: 1px solid var(--warm); padding-bottom: 2px; transition: transform 0.15s ease; }
+    .audit-banner[open] .audit-cta::after { content: " ↑"; }
+    .audit-banner:not([open]) .audit-cta::after { content: " ↓"; }
+    .audit-drawer { padding: 0 var(--gutter) 28px; }
+    .audit-drawer-inner { max-width: var(--container); margin-inline: auto; }
+    .audit-score-row { display: flex; align-items: baseline; gap: 14px; padding-block: 18px; border-top: 1px dashed color-mix(in oklch, var(--surface) 20%, transparent); }
+    .audit-score-big { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--warm); font-weight: 700; }
+    .audit-score-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 60%, transparent); }
+    .audit-findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-md); margin-top: 10px; }
+    .audit-finding { padding: 16px; background: color-mix(in oklch, var(--surface) 6%, transparent); border-left: 3px solid var(--warm); border-radius: 4px; }
+    .audit-finding-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--surface); }
+    .audit-finding-body { font-size: 13px; color: color-mix(in oklch, var(--surface) 78%, transparent); margin-top: 6px; line-height: 1.5; }
+
+    .hero { min-height: calc(100vh - 76px); display: grid; align-items: end; position: relative; isolation: isolate; color: var(--surface); background: var(--primary); overflow: hidden; }
+    .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 72%, black), color-mix(in oklch, var(--primary) 18%, transparent) 62%, transparent 88%), linear-gradient(0deg, color-mix(in oklch, var(--primary) 56%, black), transparent 50%); z-index: -1; }
+    .hero-img { position: absolute; inset: 0; z-index: -2; }
+    .hero-panel { width: min(790px, 100%); padding-block: 84px; }
+    .hero .lead { color: color-mix(in oklch, var(--surface) 82%, var(--border)); margin-top: 22px; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+    .hero-proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; width: min(760px, 100%); margin-top: 54px; background: color-mix(in oklch, var(--surface) 24%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 28%, transparent); }
+    .proof-cell { padding: 18px; background: color-mix(in oklch, var(--primary) 74%, transparent); }
+    .proof-cell strong { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1; }
+    .proof-cell span { display: block; margin-top: 8px; color: color-mix(in oklch, var(--surface) 74%, transparent); font-size: 13px; }
+    .section-head { max-width: 680px; margin-bottom: 48px; }
+    .service-card { overflow: hidden; padding: 0; position: relative; display: flex; flex-direction: column; }
+    .service-img { aspect-ratio: 4 / 3; background: var(--primary-soft); }
+    .service-body { padding: 26px; display: flex; flex-direction: column; flex: 1; }
+    .service-badge { position: absolute; top: 16px; right: 16px; padding: 6px 11px; background: var(--warm); color: var(--ink); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 2; }
+    .service-body p { color: var(--muted); margin-top: 10px; }
+    .service-list { display: grid; gap: 10px; margin-top: 18px; padding: 0; list-style: none; color: var(--fg); }
+    .service-list li { border-top: 1px solid var(--border); padding-top: 10px; font-size: 14px; }
+    .dark-band { background: var(--primary); color: var(--surface); }
+    .dark-band .lead, .dark-band .meta { color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .dark-band .section + .section { border-top-color: color-mix(in oklch, var(--surface) 18%, transparent); }
+    .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .quote-card { position: relative; padding: 32px 28px 28px; background: color-mix(in oklch, var(--surface) 8%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); border-left: 3px solid var(--warm); border-radius: var(--radius-lg); }
+    .quote-card::before { content: "\201C"; position: absolute; top: 0; right: 22px; font-family: var(--font-display); font-size: 96px; line-height: 1; color: color-mix(in oklch, var(--warm) 32%, transparent); font-weight: 700; pointer-events: none; }
+    .quote-text { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--surface); position: relative; }
+    .quote-author { margin-top: 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .stars { color: var(--warm); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+    .sample-tag { display: inline-block; margin-left: 10px; padding: 4px 9px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in oklch, var(--warm) 22%, transparent); color: color-mix(in oklch, var(--warm) 80%, black); border: 1px solid color-mix(in oklch, var(--warm) 42%, transparent); border-radius: 4px; vertical-align: middle; font-weight: 800; }
+    .dark-band .sample-tag { background: color-mix(in oklch, var(--warm) 26%, transparent); color: var(--warm); border-color: color-mix(in oklch, var(--warm) 50%, transparent); }
+    .project-frame { display: grid; grid-template-columns: 1.15fr 0.85fr; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+    .project-image { min-height: 520px; }
+    .project-copy { padding: clamp(28px, 5vw, 58px); }
+    .check-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+    .check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 12px; color: var(--muted); }
+    .check-list li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border-radius: 999px; background: var(--accent); }
+    .process { counter-reset: step; }
+    .process-card { border-top: 2px solid var(--fg); padding-top: 22px; }
+    .process-card::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: block; font-family: var(--font-mono); font-size: 28px; line-height: 1; color: var(--accent); margin-bottom: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .process-card p { color: var(--muted); margin-top: 8px; }
+    .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--gap-xl); align-items: start; }
+    details { border-top: 1px solid var(--border); padding: 20px 0; }
+    details:last-child { border-bottom: 1px solid var(--border); }
+    summary { cursor: pointer; font-family: var(--font-display); font-size: 23px; font-weight: 700; }
+    details p { margin-top: 12px; color: var(--muted); max-width: 68ch; }
+    .contact-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(26px, 4vw, 44px); }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label { color: var(--muted); font-size: 13px; }
+    .input, .textarea, .select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--fg); }
+    .textarea { min-height: 118px; resize: vertical; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .wide-field { grid-column: 1 / -1; }
+    .service-area-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 24px; }
+    .suburb-pill { padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; background: var(--surface); }
+    .pagefoot { background: var(--ink); color: color-mix(in oklch, var(--surface) 68%, transparent); padding-block: 68px 36px; }
+    .pagefoot h2, .pagefoot h3 { color: var(--surface); }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: var(--gap-xl); margin-top: 42px; }
+    .footer-list { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 9px; font-size: 14px; }
+    .footer-bottom { border-top: 1px solid color-mix(in oklch, var(--surface) 16%, transparent); margin-top: 48px; padding-top: 22px; display: flex; justify-content: space-between; gap: var(--gap-md); flex-wrap: wrap; }
+    .credit { font-size: 12px; color: color-mix(in oklch, var(--surface) 42%, transparent); }
+    .mobile-call-bar { display: none; }
+
+    @media (max-width: 920px) {
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .project-frame, .faq-grid, .footer-grid, .quote-grid { grid-template-columns: 1fr; }
+      .topnav nav, .nav-actions .btn-secondary, .nav-phone { display: none; }
+      .audit-banner-inner { grid-template-columns: 1fr; text-align: center; gap: 8px; }
+      .audit-findings { grid-template-columns: 1fr; }
+      .audit-score-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .hero { min-height: 720px; }
+      .hero-proof { grid-template-columns: 1fr; }
+      .project-image { min-height: 330px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .service-area-grid { grid-template-columns: repeat(2, 1fr); }
+      .mobile-call-bar { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; background: var(--accent); color: var(--surface); padding: 14px; justify-content: center; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; box-shadow: 0 -6px 24px rgba(0,0,0,0.2); }
+      body { padding-bottom: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <details class="audit-banner" data-od-id="audit-banner" data-od-flexible="content" open>
+    <summary>
+      <div class="container audit-banner-inner">
+        <span class="audit-tag">Site audit · Real</span>
+        <span class="audit-msg">Your current site scored <strong>69/100</strong> — missing key SEO signals, 12-field contact forms, and no AI discoverability. <strong>Here's how we fix it.</strong></span>
+        <span class="audit-cta">See findings</span>
+      </div>
+    </summary>
+    <div class="audit-drawer">
+      <div class="audit-drawer-inner">
+        <div class="audit-score-row">
+          <span class="audit-score-big">69</span>
+          <span class="audit-score-label">/ 100 · audited 2026-05-11 · 12 dimensions</span>
+        </div>
+        <div class="audit-findings">
+          <div class="audit-finding">
+            <div class="audit-finding-title">Missing critical SEO signals</div>
+            <div class="audit-finding-body">Title tag doesn't include service keywords, 3 H1 tags confuse search engines, no LocalBusiness schema means you're invisible in AI search results (ChatGPT, Perplexity). These are the cheapest fixes with biggest impact.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">12-field contact form kills conversion</div>
+            <div class="audit-finding-body">Your contact form has 12 fields. Industry standard is 3-4. Every extra field drops conversion 5-10%. Plus visible reCAPTCHA adds friction. Redesign will cut to 4 fields + invisible verification.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">Universal Analytics still installed</div>
+            <div class="audit-finding-body">Google stopped collecting UA data in July 2023. You've had zero visitor analytics for 2+ years. Redesign will fix GA4 setup + show you exactly where leads come from and where they drop off.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <header class="topnav" data-od-id="topnav" data-od-locked="true">
+    <div class="container topnav-inner">
+      <a class="brand" href="#top" aria-label="Gutter and Roof Repairs home">
+        <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gutter and Roof Repairs mark"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">GR</text></svg>
+        <span class="brand-word">Gutter and Roof Repairs</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#trust">Reviews</a>
+        <a href="#process">Process</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-phone" href="tel:0421460580">0421 460 580</a>
+        <a class="btn btn-primary" href="#contact">Free Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="hero" data-od-id="hero">
+      <div class="hero-img"><img src="assets/hero-premium-roof.png" alt="Brisbane residential roof repair and gutter installation in progress" /></div>
+      <div class="container">
+        <div class="hero-panel">
+          <p class="eyebrow">Roof & gutter repairs · Brisbane & Moreton Bay</p>
+          <h1>Professional roofing and gutter repairs handled safely. No high-pressure quotes on the spot.</h1>
+          <p class="lead">Gutter and Roof Repairs brings clear communication and professional workmanship to every job across Brisbane. Free no-obligation quote — we explain the problem, get your approval, then fix it properly.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">Request Free Quote</a>
+            <a class="btn btn-light btn-arrow" href="tel:0421460580">Call 0421 460 580</a>
+          </div>
+          <div class="hero-proof" aria-label="Service highlights">
+            <div class="proof-cell"><strong>150+ reviews</strong><span>4.6★ on Google — clear communication praised</span></div>
+            <div class="proof-cell"><strong>No-obligation quote</strong><span>We explain, you approve — no surprises</span></div>
+            <div class="proof-cell"><strong>Complex jobs welcome</strong><span>High-risk work done safely with full insurance</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services" data-od-id="services" data-od-sample="true">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Services <span class="sample-tag">Sample · editable after sign-up</span></p>
+          <h2>Gutter and roof work done properly across Brisbane.</h2>
+          <p class="lead" style="margin-top: 18px;">Each job starts with a free inspection. We take photos, explain what's happening, and give you a written quote with no pressure. You decide when to proceed.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card service-card">
+            <span class="service-badge">Most requested</span>
+            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="Roof repair detail work on Brisbane home" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Roof repairs</h3>
+              <p>Leak repairs, broken tiles, storm damage, flashing work, and pointing for tile and Colorbond roofs across Brisbane.</p>
+              <ul class="service-list">
+                <li>Leak diagnosis with photo evidence</li>
+                <li>Tile replacement and re-pointing</li>
+                <li>Storm damage assessment for insurance</li>
+                <li>Same-week service for urgent repairs</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="Gutter installation work in progress" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Gutter installation & repair</h3>
+              <p>New gutter systems, downpipe replacement, overflow repairs, and gutter guard installation to keep water flowing properly.</p>
+              <ul class="service-list">
+                <li>Colorbond gutters colour-matched to roof</li>
+                <li>Overflow and blockage diagnosis</li>
+                <li>Gutter guard options to reduce maintenance</li>
+                <li>Complete downpipe replacement</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Roof restoration work on Brisbane residential property" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Roof restoration</h3>
+              <p>Full restoration services including cleaning, re-bedding, re-pointing, and protective coatings to extend roof life.</p>
+              <ul class="service-list">
+                <li>High-pressure cleaning before work starts</li>
+                <li>Ridge capping re-bedding and re-pointing</li>
+                <li>Membrane coating in matched colours</li>
+                <li>Pre-inspection with detailed photo report</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark-band" id="trust" data-od-id="trust">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" style="color: var(--warm);">What homeowners say</p>
+          <h2 style="color: var(--surface);">150+ five-star reviews highlighting professionalism and clear communication.</h2>
+        </div>
+        <div class="quote-grid">
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">The whole process was businesslike and professional. I cannot imagine a better experience.</p>
+            <p class="quote-author">Bernard · Brisbane</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">They didn't grumble. They didn't cut corners. Instead, they explained the problem, got my approval, and the team kept us updated every step of the way.</p>
+            <p class="quote-author">Chris · Brisbane</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">One of their team members showed a week later for a free, no-obligation quote - none of that "pay us just to take a look" nonsense. Arrived right on schedule, and did a brilliant job.</p>
+            <p class="quote-author">Mark · Brisbane</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects" data-od-id="projects" data-od-sample="true">
+      <div class="container">
+        <div class="project-frame">
+          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Completed roof and gutter repair project in Brisbane" loading="lazy" /></div>
+          <div class="project-copy">
+            <p class="eyebrow">Recent project · Morningside <span class="sample-tag">Sample · editable</span></p>
+            <h2>Tile roof leak repair with full gutter replacement.</h2>
+            <p class="lead" style="margin-top: 18px;">The owners noticed ceiling stains after storms. We identified cracked tiles and overflowing gutters as the source, then explained both fix options before proceeding.</p>
+            <ul class="check-list">
+              <li>12 cracked tiles replaced with colour-matched stock</li>
+              <li>Ridge capping re-bedded where water was entering</li>
+              <li>Complete gutter replacement in Colorbond to match roof</li>
+              <li>Site cleaned and all debris removed before handover</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section process" id="process" data-od-id="process">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">How a job runs</p>
+          <h2>Four steps from first call to completed work.</h2>
+        </div>
+        <div class="grid-4">
+          <div class="process-card"><h3>You call or enquire online</h3><p>Tell us what you've noticed — a leak, gutter overflow, broken tiles, or storm damage.</p></div>
+          <div class="process-card"><h3>Free inspection & quote</h3><p>We visit, take photos, explain what's happening, and provide a written quote with no obligation.</p></div>
+          <div class="process-card"><h3>You approve when ready</h3><p>No pressure. Review the quote, ask questions, then let us know when you want to proceed.</p></div>
+          <div class="process-card"><h3>Work completed & site cleaned</h3><p>Most jobs done in 1-3 days. Progress photos provided. Site cleaned and all debris removed.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="area" data-od-id="service-area" data-od-sample="true">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Service area <span class="sample-tag">Sample · editable</span></p>
+          <h2>Brisbane, Moreton Bay, and surrounding suburbs.</h2>
+          <p class="lead" style="margin-top: 18px;">Based in Morningside, we service properties across Brisbane's inner suburbs and Moreton Bay region. Outside this area? Call us — we'll let you know.</p>
+        </div>
+        <div class="service-area-grid">
+          <div class="suburb-pill">Morningside</div>
+          <div class="suburb-pill">Cannon Hill</div>
+          <div class="suburb-pill">Hawthorne</div>
+          <div class="suburb-pill">Balmoral</div>
+          <div class="suburb-pill">Bulimba</div>
+          <div class="suburb-pill">Norman Park</div>
+          <div class="suburb-pill">Coorparoo</div>
+          <div class="suburb-pill">Camp Hill</div>
+          <div class="suburb-pill">Tingalpa</div>
+          <div class="suburb-pill">Wynnum</div>
+          <div class="suburb-pill">Carindale</div>
+          <div class="suburb-pill">Belmont</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" data-od-id="faq" data-od-sample="true">
+      <div class="container faq-grid">
+        <div>
+          <p class="eyebrow">FAQ <span class="sample-tag">Sample · editable</span></p>
+          <h2>Honest answers to the questions Brisbane homeowners ask.</h2>
+          <p class="lead" style="margin-top: 18px;">If your question isn't here, call us — we'll tell you straight whether it's a job we can help with.</p>
+        </div>
+        <div>
+          <details open><summary>Is the quote really free with no obligation?</summary><p>Yes. We visit, inspect, take photos, and provide a written quote. No charge for the visit, no pressure to proceed. You review it and decide if and when you want us to start work.</p></details>
+          <details><summary>How quickly can you come out for urgent repairs?</summary><p>For leak repairs and storm damage we aim for same-week service. Call 0421 460 580 and we'll prioritise urgent jobs.</p></details>
+          <details><summary>Are you licensed and insured?</summary><p>Yes — fully licensed and insured for all roofing and gutter work. We carry public liability insurance and can provide documentation before starting any job.</p></details>
+          <details><summary>Can you help with insurance claims for storm damage?</summary><p>Yes. We provide detailed photo reports and itemised quotes that meet insurer requirements, and can work directly with your insurance company if needed.</p></details>
+          <details><summary>What if you find extra problems once work starts?</summary><p>We stop, take photos, explain the issue, and get your approval before doing any additional work. No surprises on the final invoice.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-od-id="contact">
+      <div class="container grid-1-2">
+        <div class="stack">
+          <p class="eyebrow">Get your free quote</p>
+          <h2>Tell us what's happening with your roof or gutters.</h2>
+          <p class="lead">We'll come out, inspect, explain what we find, and provide a written quote. Genuinely free — no obligation, no pressure.</p>
+          <p class="meta" style="margin-top: 12px;">Or call directly: <a href="tel:0421460580" style="color: var(--accent); font-weight: 700;">0421 460 580</a></p>
+        </div>
+        <form class="contact-panel" action="#" method="post">
+          <div class="form-grid">
+            <div class="field"><label for="name">Your name</label><input class="input" id="name" name="name" autocomplete="name" /></div>
+            <div class="field"><label for="phone">Best phone number</label><input class="input" id="phone" name="phone" autocomplete="tel" /></div>
+            <div class="field"><label for="suburb">Suburb</label><input class="input" id="suburb" name="suburb" placeholder="e.g. Morningside" /></div>
+            <div class="field"><label for="service">What do you need?</label><select class="select" id="service" name="service"><option>Free inspection & quote</option><option>Roof leak repair (urgent)</option><option>Gutter installation / repair</option><option>Roof restoration</option><option>Storm damage assessment</option><option>Not sure yet</option></select></div>
+            <div class="field wide-field"><label for="message">What have you noticed? (optional)</label><textarea class="textarea" id="message" name="message" placeholder="e.g. Water stains on bedroom ceiling after last storm, gutters overflowing at back corner."></textarea></div>
+          </div>
+          <button class="btn btn-primary" type="submit" style="margin-top: 18px; width: 100%;">Request Free Quote</button>
+          <p class="meta" style="margin-top: 12px; text-align: center;">We reply within 1 business day.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer" data-od-locked="true">
+    <div class="container">
+      <div class="row-between">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">GR</text></svg>
+          <span class="brand-word" style="color:var(--surface);">Gutter and Roof Repairs</span>
+        </div>
+        <a class="btn btn-light" href="tel:0421460580">Call 0421 460 580</a>
+      </div>
+      <div class="footer-grid">
+        <div>
+          <h2>Professional roofing and gutter repairs for Brisbane homes.</h2>
+          <p style="margin-top: 16px;">Clear communication, professional workmanship, and no-obligation quotes — that's what our 150+ five-star reviews consistently highlight.</p>
+          <p style="margin-top: 16px;" class="meta">1/41 Steel Pl, Morningside QLD 4170<br/>Fully licensed &amp; insured</p>
+        </div>
+        <div><h3>Services</h3><ul class="footer-list"><li>Roof repairs</li><li>Leak repairs</li><li>Gutter installation</li><li>Gutter repairs</li><li>Roof restoration</li><li>Storm damage</li></ul></div>
+        <div><h3>Service area</h3><ul class="footer-list"><li>Morningside</li><li>Brisbane inner suburbs</li><li>Moreton Bay region</li><li>Surrounding areas (call to confirm)</li></ul></div>
+        <div><h3>Contact</h3><ul class="footer-list"><li>0421 460 580</li><li>1/41 Steel Pl, Morningside</li><li>Free quotes with no obligation</li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Gutter and Roof Repairs. All rights reserved.</span>
+        <span class="credit">Adapted from classic-premium-roftix reference · v3 round 0</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="mobile-call-bar" href="tel:0421460580" aria-label="Call Gutter and Roof Repairs">
+    📞 Call 0421 460 580
+  </a>
+</body>
+</html>
