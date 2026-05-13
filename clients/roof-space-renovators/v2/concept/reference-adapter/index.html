@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roof Space Renovators · Skylights, Attic Conversions & Roof Windows · Brisbane</title>
+  <meta name="description" content="Roof Space Renovators installs skylights, attic ladders and roof space conversions across Brisbane, Sunshine Coast, Gold Coast and Ipswich. Free quote. Call (07) 3889 6688." />
+  <style>
+    :root {
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --fg: #212121;
+      --muted: #51606F;
+      --border: #E3DFD6;
+      --accent: #0E6B4F;
+      --primary: #0B2F57;
+      --warm: #FF6F3C;
+      --ink: #101417;
+      --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
+      --primary-soft: color-mix(in oklch, var(--primary) 12%, transparent);
+      --warm-soft: color-mix(in oklch, var(--warm) 14%, transparent);
+      --font-display: "Playfair Display", "Iowan Old Style", "Charter", Georgia, serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+      --fs-h1: clamp(48px, 7vw, 92px);
+      --fs-h2: clamp(34px, 4vw, 58px);
+      --fs-h3: 24px;
+      --fs-lead: 19px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 64px;
+      --gap-2xl: 104px;
+      --container: 1180px;
+      --gutter: 28px;
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    p { margin: 0; text-wrap: pretty; }
+    h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(56px, 8vw, var(--gap-2xl)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; gap: var(--gap-md); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700; line-height: 0.95; letter-spacing: 0; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; line-height: 1.05; }
+    .h3, h3 { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.2; font-weight: 700; }
+    .lead { font-size: var(--fs-lead); line-height: 1.62; color: var(--muted); max-width: 58ch; }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 800; margin: 0 0 var(--gap-md); }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .topnav { position: sticky; top: 0; z-index: 20; background: color-mix(in oklch, var(--surface) 88%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .topnav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: var(--gap-lg); }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.02em; }
+    .brand-mark { width: 54px; height: 36px; color: var(--accent); }
+    .brand-mark .house { fill: var(--primary); }
+    .brand-word { font-size: 18px; color: var(--fg); }
+    .topnav nav { display: flex; gap: 28px; color: var(--muted); font-size: 14px; }
+    .topnav nav a:hover { color: var(--fg); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-phone { font-family: var(--font-mono); font-size: 13px; color: var(--fg); padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 12px 20px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease; }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-light { background: var(--surface); color: var(--primary); border-color: var(--surface); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 8px; }
+    .btn-arrow::after { content: "→"; transition: transform 0.15s ease; }
+    .btn-arrow:hover::after { transform: translateX(2px); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .card-flat { background: transparent; border: 0; padding: 0; }
+    .rule { border-top: 1px solid var(--border); }
+
+    .audit-banner { background: var(--ink); color: var(--surface); border-bottom: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); }
+    .audit-banner > summary { padding-block: 14px; cursor: pointer; list-style: none; }
+    .audit-banner > summary::-webkit-details-marker { display: none; }
+    .audit-banner-inner { display: grid; grid-template-columns: auto 1fr auto; gap: var(--gap-md); align-items: center; }
+    .audit-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; background: var(--warm); color: var(--ink); font-weight: 800; }
+    .audit-msg { font-size: 14px; color: color-mix(in oklch, var(--surface) 92%, transparent); }
+    .audit-msg strong { color: var(--surface); }
+    .audit-cta { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--warm); border-bottom: 1px solid var(--warm); padding-bottom: 2px; transition: transform 0.15s ease; }
+    .audit-banner[open] .audit-cta::after { content: " ↑"; }
+    .audit-banner:not([open]) .audit-cta::after { content: " ↓"; }
+    .audit-drawer { padding: 0 var(--gutter) 28px; }
+    .audit-drawer-inner { max-width: var(--container); margin-inline: auto; }
+    .audit-score-row { display: flex; align-items: baseline; gap: 14px; padding-block: 18px; border-top: 1px dashed color-mix(in oklch, var(--surface) 20%, transparent); }
+    .audit-score-big { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--warm); font-weight: 700; }
+    .audit-score-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 60%, transparent); }
+    .audit-findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-md); margin-top: 10px; }
+    .audit-finding { padding: 16px; background: color-mix(in oklch, var(--surface) 6%, transparent); border-left: 3px solid var(--warm); border-radius: 4px; }
+    .audit-finding-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--surface); }
+    .audit-finding-body { font-size: 13px; color: color-mix(in oklch, var(--surface) 78%, transparent); margin-top: 6px; line-height: 1.5; }
+
+    .hero { min-height: calc(100vh - 76px); display: grid; align-items: end; position: relative; isolation: isolate; color: var(--surface); background: var(--primary); overflow: hidden; }
+    .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 72%, black), color-mix(in oklch, var(--primary) 18%, transparent) 62%, transparent 88%), linear-gradient(0deg, color-mix(in oklch, var(--primary) 56%, black), transparent 50%); z-index: -1; }
+    .hero-img { position: absolute; inset: 0; z-index: -2; }
+    .hero-panel { width: min(790px, 100%); padding-block: 84px; }
+    .hero .lead { color: color-mix(in oklch, var(--surface) 82%, var(--border)); margin-top: 22px; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+    .hero-proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; width: min(760px, 100%); margin-top: 54px; background: color-mix(in oklch, var(--surface) 24%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 28%, transparent); }
+    .proof-cell { padding: 18px; background: color-mix(in oklch, var(--primary) 74%, transparent); }
+    .proof-cell strong { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1; }
+    .proof-cell span { display: block; margin-top: 8px; color: color-mix(in oklch, var(--surface) 74%, transparent); font-size: 13px; }
+    .section-head { max-width: 680px; margin-bottom: 48px; }
+    .service-card { overflow: hidden; padding: 0; position: relative; display: flex; flex-direction: column; }
+    .service-img { aspect-ratio: 4 / 3; background: var(--primary-soft); }
+    .service-body { padding: 26px; display: flex; flex-direction: column; flex: 1; }
+    .service-badge { position: absolute; top: 16px; right: 16px; padding: 6px 11px; background: var(--warm); color: var(--ink); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 2; }
+    .service-body p { color: var(--muted); margin-top: 10px; }
+    .service-list { display: grid; gap: 10px; margin-top: 18px; padding: 0; list-style: none; color: var(--fg); }
+    .service-list li { border-top: 1px solid var(--border); padding-top: 10px; font-size: 14px; }
+    .dark-band { background: var(--primary); color: var(--surface); }
+    .dark-band .lead, .dark-band .meta { color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .dark-band .section + .section { border-top-color: color-mix(in oklch, var(--surface) 18%, transparent); }
+    .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .quote-card { position: relative; padding: 32px 28px 28px; background: color-mix(in oklch, var(--surface) 8%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); border-left: 3px solid var(--warm); border-radius: var(--radius-lg); }
+    .quote-card::before { content: "\201C"; position: absolute; top: 0; right: 22px; font-family: var(--font-display); font-size: 96px; line-height: 1; color: color-mix(in oklch, var(--warm) 32%, transparent); font-weight: 700; pointer-events: none; }
+    .quote-text { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--surface); position: relative; }
+    .quote-author { margin-top: 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .stars { color: var(--warm); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+    .sample-tag { display: inline-block; margin-left: 10px; padding: 4px 9px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in oklch, var(--warm) 22%, transparent); color: color-mix(in oklch, var(--warm) 80%, black); border: 1px solid color-mix(in oklch, var(--warm) 42%, transparent); border-radius: 4px; vertical-align: middle; font-weight: 800; }
+    .dark-band .sample-tag { background: color-mix(in oklch, var(--warm) 26%, transparent); color: var(--warm); border-color: color-mix(in oklch, var(--warm) 50%, transparent); }
+    .project-frame { display: grid; grid-template-columns: 1.15fr 0.85fr; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+    .project-image { min-height: 520px; }
+    .project-copy { padding: clamp(28px, 5vw, 58px); }
+    .check-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+    .check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 12px; color: var(--muted); }
+    .check-list li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border-radius: 999px; background: var(--accent); }
+    .process { counter-reset: step; }
+    .process-card { border-top: 2px solid var(--fg); padding-top: 22px; }
+    .process-card::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: block; font-family: var(--font-mono); font-size: 28px; line-height: 1; color: var(--accent); margin-bottom: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .process-card p { color: var(--muted); margin-top: 8px; }
+    .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--gap-xl); align-items: start; }
+    details { border-top: 1px solid var(--border); padding: 20px 0; }
+    details:last-child { border-bottom: 1px solid var(--border); }
+    summary { cursor: pointer; font-family: var(--font-display); font-size: 23px; font-weight: 700; }
+    details p { margin-top: 12px; color: var(--muted); max-width: 68ch; }
+    .contact-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(26px, 4vw, 44px); }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label { color: var(--muted); font-size: 13px; }
+    .input, .textarea, .select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--fg); }
+    .textarea { min-height: 118px; resize: vertical; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .wide-field { grid-column: 1 / -1; }
+    .service-area-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 24px; }
+    .suburb-pill { padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; background: var(--surface); }
+    .pagefoot { background: var(--ink); color: color-mix(in oklch, var(--surface) 68%, transparent); padding-block: 68px 36px; }
+    .pagefoot h2, .pagefoot h3 { color: var(--surface); }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: var(--gap-xl); margin-top: 42px; }
+    .footer-list { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 9px; font-size: 14px; }
+    .footer-bottom { border-top: 1px solid color-mix(in oklch, var(--surface) 16%, transparent); margin-top: 48px; padding-top: 22px; display: flex; justify-content: space-between; gap: var(--gap-md); flex-wrap: wrap; }
+    .credit { font-size: 12px; color: color-mix(in oklch, var(--surface) 42%, transparent); }
+    .mobile-call-bar { display: none; }
+
+    @media (max-width: 920px) {
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .project-frame, .faq-grid, .footer-grid, .quote-grid { grid-template-columns: 1fr; }
+      .topnav nav, .nav-actions .btn-secondary, .nav-phone { display: none; }
+      .audit-banner-inner { grid-template-columns: 1fr; text-align: center; gap: 8px; }
+      .audit-findings { grid-template-columns: 1fr; }
+      .audit-score-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .hero { min-height: 720px; }
+      .hero-proof { grid-template-columns: 1fr; }
+      .project-image { min-height: 330px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .service-area-grid { grid-template-columns: repeat(2, 1fr); }
+      .mobile-call-bar { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; background: var(--accent); color: var(--surface); padding: 14px; justify-content: center; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; box-shadow: 0 -6px 24px rgba(0,0,0,0.2); }
+      body { padding-bottom: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <details class="audit-banner" data-od-id="audit-banner" data-od-flexible="content" open>
+    <summary>
+      <div class="container audit-banner-inner">
+        <span class="audit-tag">Site audit</span>
+        <span class="audit-msg">Your current site scored <strong>65/100</strong> — mobile call button missing, chat widget blocking content, quote action not visible on mobile. <strong>This demo shows the fix.</strong></span>
+        <span class="audit-cta">See findings</span>
+      </div>
+    </summary>
+    <div class="audit-drawer">
+      <div class="audit-drawer-inner">
+        <div class="audit-score-row">
+          <span class="audit-score-big">65</span>
+          <span class="audit-score-label">/ 100 · audited 2026-05-11 · 12 dimensions</span>
+        </div>
+        <div class="audit-findings">
+          <div class="audit-finding">
+            <div class="audit-finding-title">No mobile call button above fold</div>
+            <div class="audit-finding-body">Mobile screenshot shows logo and hamburger menu but no visible phone number or call button. Over half of local searches come from mobile — if visitors can't call immediately, they'll click the next company in Google results.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">Chat widget blocks mobile content</div>
+            <div class="audit-finding-body">The 'We're Online!' chat box covers the lower hero image and people cutout on mobile. Visitors judge a site in seconds — blocked content signals poor mobile experience and reduces inquiries.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">Quote action not visible on mobile</div>
+            <div class="audit-finding-body">Desktop has a yellow quote button in the hero, but mobile first screen shows only headline and chat widget with no quote button above the fold. Local customers compare multiple companies simultaneously — no visible action means they leave before engaging.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <header class="topnav" data-od-id="topnav" data-od-locked="true">
+    <div class="container topnav-inner">
+      <a class="brand" href="#top" aria-label="Roof Space Renovators home">
+        <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Roof Space Renovators mark"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">RS</text></svg>
+        <span class="brand-word">Roof Space Renovators</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#trust">Reviews</a>
+        <a href="#process">Process</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-phone" href="tel:0738896688">(07) 3889 6688</a>
+        <a class="btn btn-primary" href="#contact">Free Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="hero" data-od-id="hero">
+      <div class="hero-img"><img src="assets/hero-premium-roof.png" alt="Bright skylight installation transforming a Brisbane roof space into usable living area" /></div>
+      <div class="container">
+        <div class="hero-panel">
+          <p class="eyebrow">Skylights · Attic conversions · Roof windows · Brisbane, Sunshine Coast, Gold Coast &amp; Ipswich</p>
+          <h1>Transform wasted roof space into rooms filled with natural light.</h1>
+          <p class="lead">Roof Space Renovators has installed over 1,000 skylights and attic conversions across South-East Queensland. Fast response, clean crews, and fixed-price quotes within 48 hours.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">Get Free Quote</a>
+            <a class="btn btn-light btn-arrow" href="tel:0738896688">Call (07) 3889 6688</a>
+          </div>
+          <div class="hero-proof" aria-label="Service highlights">
+            <div class="proof-cell"><strong>221 five-star reviews</strong><span>99% are 5-star ratings on Google</span></div>
+            <div class="proof-cell"><strong>48-hour quote</strong><span>Fixed price after free site inspection</span></div>
+            <div class="proof-cell"><strong>QBCC 1305331</strong><span>Licensed, insured, over 9 years serving Brisbane</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services" data-od-id="services">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Services</p>
+          <h2>Three ways to bring light and space to your Brisbane home.</h2>
+          <p class="lead" style="margin-top: 18px;">Every project starts with a free site inspection. We take measurements, assess your roof structure, and show you exactly what's possible — and what it will cost.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card service-card">
+            <span class="service-badge">Most popular</span>
+            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="VELUX opening skylight installed in Brisbane tile roof" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Skylights &amp; roof windows</h3>
+              <p>Fixed, opening, and solar-powered skylights from VELUX, Solatube, and other premium brands. Installed in one day for most homes.</p>
+              <ul class="service-list">
+                <li>Opening roof windows with rain sensors</li>
+                <li>Fixed skylights for natural light and ventilation</li>
+                <li>Solatube systems for rooms without direct roof access</li>
+                <li>Toughened or double-glazed options for storm protection</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="Attic ladder installation in Brisbane home for safe roof space access" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Attic ladders &amp; access</h3>
+              <p>Safe, easy-to-use attic ladders and pull-down stairs. Turn unused ceiling space into accessible storage or a functional room.</p>
+              <ul class="service-list">
+                <li>Timber and aluminium attic ladder options</li>
+                <li>Fire-rated and insulated access hatches</li>
+                <li>Custom sizing for tight ceiling spaces</li>
+                <li>Structural framing and ceiling reinforcement</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Converted Brisbane roof space with skylights creating bright usable living area" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Roof space conversions</h3>
+              <p>Full attic and roof space renovations — framing, insulation, skylights, flooring, and electrical. Turn dark ceiling cavities into home offices, bedrooms, or studios.</p>
+              <ul class="service-list">
+                <li>Structural assessment and council approval support</li>
+                <li>Insulation, ventilation, and weatherproofing</li>
+                <li>Skylight and roof window integration</li>
+                <li>Electrical, lighting, and access staircase installation</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark-band" id="trust" data-od-id="trust">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" style="color: var(--warm);">What homeowners say</p>
+          <h2 style="color: var(--surface);">221 five-star reviews on Google — 99% are 5-star ratings.</h2>
+        </div>
+        <div class="quote-grid">
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">The team were friendly, tidy, and respectful throughout the job, making sure to clean up at the end of each day.</p>
+            <p class="quote-author">Brett · Skylight installation</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">They listened to my concerns about future storm damage risk and were able to future proof my skylight with a toughened glass double glazed product.</p>
+            <p class="quote-author">Wendy · Opening roof window</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">From our initial web enquiry the response was extremely fast and appointment scheduled very quickly.</p>
+            <p class="quote-author">Sean · Attic conversion</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects" data-od-id="projects" data-od-sample="true">
+      <div class="container">
+        <div class="project-frame">
+          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Before-and-after of Brisbane attic space converted with skylights and insulation" loading="lazy" /></div>
+          <div class="project-copy">
+            <p class="eyebrow">Recent project · Lawnton <span class="sample-tag">Sample · editable</span></p>
+            <h2>Dark attic space. Now a bright home office in 4 days.</h2>
+            <p class="lead" style="margin-top: 18px;">The owners wanted to work from home but had no spare bedroom. We showed them how 20 square metres of unused ceiling space could become a functional, naturally lit office for less than adding an extension.</p>
+            <ul class="check-list">
+              <li>Two VELUX solar-powered opening skylights with rain sensors</li>
+              <li>Structural flooring and ceiling lining with acoustic insulation</li>
+              <li>Attic ladder replaced with a fixed timber staircase for daily access</li>
+              <li>Electrical, LED downlights, and power points for desk setup</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section process" id="process" data-od-id="process">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">How a job runs</p>
+          <h2>Four steps from first inquiry to finished skylight or conversion.</h2>
+        </div>
+        <div class="grid-4">
+          <div class="process-card"><h3>You call or submit an online quote</h3><p>Tell us what you want — more natural light, attic storage access, or a full roof space conversion.</p></div>
+          <div class="process-card"><h3>Free site inspection</h3><p>We measure your roof space, assess the structure, and show you what's possible. Takes about 45 minutes.</p></div>
+          <div class="process-card"><h3>Fixed-price written quote</h3><p>Inside 48 hours. Itemised breakdown with photos, material specs, and project timeline. No vague estimates.</p></div>
+          <div class="process-card"><h3>Installation scheduled &amp; completed</h3><p>Most skylight installs take 1 day. Full conversions typically 3–5 days. We clean up daily and leave the site tidy.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="area" data-od-id="service-area">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Service area</p>
+          <h2>Brisbane, Sunshine Coast, Gold Coast and Ipswich.</h2>
+          <p class="lead" style="margin-top: 18px;">Free site inspections across South-East Queensland. We're based in Lawnton and cover all metro and regional areas within 50km.</p>
+        </div>
+        <div class="service-area-grid">
+          <div class="suburb-pill">Lawnton</div>
+          <div class="suburb-pill">Strathpine</div>
+          <div class="suburb-pill">Petrie</div>
+          <div class="suburb-pill">Kallangur</div>
+          <div class="suburb-pill">Murrumba Downs</div>
+          <div class="suburb-pill">North Lakes</div>
+          <div class="suburb-pill">Redcliffe</div>
+          <div class="suburb-pill">Caboolture</div>
+          <div class="suburb-pill">Brisbane CBD</div>
+          <div class="suburb-pill">Chermside</div>
+          <div class="suburb-pill">Aspley</div>
+          <div class="suburb-pill">Albany Creek</div>
+          <div class="suburb-pill">Sunshine Coast</div>
+          <div class="suburb-pill">Gold Coast</div>
+          <div class="suburb-pill">Ipswich</div>
+          <div class="suburb-pill">Logan</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" data-od-id="faq">
+      <div class="container faq-grid">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2>Honest answers to the questions homeowners ask.</h2>
+          <p class="lead" style="margin-top: 18px;">If yours isn't here, call us — we'll tell you straight whether your roof space is suitable and what it will cost.</p>
+        </div>
+        <div>
+          <details open><summary>Do I need council approval for skylights or attic access?</summary><p>Most skylight installs and attic ladders are exempt development in Queensland and don't need council approval. Full roof space conversions with structural changes or habitable rooms typically do. We'll tell you which applies during the site inspection and can help with the paperwork if needed.</p></details>
+          <details><summary>How much does a skylight installation cost in Brisbane?</summary><p>A single fixed skylight including flashing and installation typically costs $1,800–$3,200 depending on size, brand, and roof type. Opening roof windows with remote control or rain sensors are $2,800–$5,500. We give a fixed written price after the site inspection — never an estimate over the phone.</p></details>
+          <details><summary>Can you install skylights in tile and metal roofs?</summary><p>Yes. We work with all roof types — terracotta tile, concrete tile, Colorbond steel, and timber shingle. Each requires different flashing and weatherproofing, which is why we inspect the roof before quoting.</p></details>
+          <details><summary>Will skylights leak or let in water during storms?</summary><p>Not if installed correctly. We use manufacturer-approved flashing kits, flexible sealants, and proper overlapping with existing roof layers. All our skylight installs come with a 10-year workmanship warranty covering leaks and water entry.</p></details>
+          <details><summary>How long does a roof space conversion take?</summary><p>A basic attic ladder and flooring install usually takes 1–2 days. Full conversions with skylights, insulation, electrical, and stairs typically take 3–5 days for standard homes. We'll give you a precise timeline in the written quote.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-od-id="contact">
+      <div class="container grid-1-2">
+        <div class="stack">
+          <p class="eyebrow">Get your free site inspection</p>
+          <h2>Tell us what you want to do with your roof space.</h2>
+          <p class="lead">We'll have someone out usually within 3 working days. The inspection is genuinely free — no obligation, no pressure to commit on the spot.</p>
+          <p class="meta" style="margin-top: 12px;">Or call directly: <a href="tel:0738896688" style="color: var(--accent); font-weight: 700;">(07) 3889 6688</a> · Mon–Sat 7am–5pm</p>
+        </div>
+        <form class="contact-panel" action="#" method="post">
+          <div class="form-grid">
+            <div class="field"><label for="name">Your name</label><input class="input" id="name" name="name" autocomplete="name" /></div>
+            <div class="field"><label for="phone">Best phone number</label><input class="input" id="phone" name="phone" autocomplete="tel" /></div>
+            <div class="field"><label for="suburb">Suburb</label><input class="input" id="suburb" name="suburb" placeholder="e.g. Lawnton" /></div>
+            <div class="field"><label for="service">What are you interested in?</label><select class="select" id="service" name="service"><option>Free site inspection</option><option>Skylight installation quote</option><option>Attic ladder or access</option><option>Full roof space conversion</option><option>Not sure yet</option></select></div>
+            <div class="field wide-field"><label for="message">Tell us about your project (optional)</label><textarea class="textarea" id="message" name="message" placeholder="e.g. Want to add two skylights to dark hallway, or convert attic into home office."></textarea></div>
+          </div>
+          <button class="btn btn-primary" type="submit" style="margin-top: 18px; width: 100%;">Request Free Inspection</button>
+          <p class="meta" style="margin-top: 12px; text-align: center;">We reply within 1 business hour, Mon–Sat.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer" data-od-locked="true">
+    <div class="container">
+      <div class="row-between">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">RS</text></svg>
+          <span class="brand-word" style="color:var(--surface);">Roof Space Renovators</span>
+        </div>
+        <a class="btn btn-light" href="tel:0738896688">Call (07) 3889 6688</a>
+      </div>
+      <div class="footer-grid">
+        <div>
+          <h2>Brisbane skylights and roof space conversions since 2015.</h2>
+          <p style="margin-top: 16px;">Locally owned. QBCC licensed. 10-year workmanship guarantee on every skylight and conversion.</p>
+          <p style="margin-top: 16px;" class="meta">5/53 Lawnton Pocket Rd, Lawnton QLD 4501<br/>QBCC Lic. 1305331</p>
+        </div>
+        <div><h3>Services</h3><ul class="footer-list"><li>Skylights &amp; roof windows</li><li>Attic ladders</li><li>Roof space conversions</li><li>Opening skylights</li><li>Solatube systems</li></ul></div>
+        <div><h3>Service area</h3><ul class="footer-list"><li>Brisbane metro</li><li>Sunshine Coast</li><li>Gold Coast</li><li>Ipswich</li><li>Moreton Bay region</li></ul></div>
+        <div><h3>Contact</h3><ul class="footer-list"><li>(07) 3889 6688</li><li>Mon–Sat 7am–5pm</li><li>Free site inspections</li><li>48-hour fixed-price quotes</li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Roof Space Renovators. All rights reserved.</span>
+        <span class="credit">Adapted from classic-premium-roftix reference · v3 round 1</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="mobile-call-bar" href="tel:0738896688" aria-label="Call Roof Space Renovators">
+    📞 Call (07) 3889 6688
+  </a>
+</body>
+</html>

@@ -1,0 +1,132 @@
+{
+  "overall": "PASS",
+  "total_steps": 11,
+  "passed": 11,
+  "failed": 0,
+  "customer": "roof-space-renovators",
+  "output_html": "/Users/matthew/Developer/google-map-website-v3/clients/roof-space-renovators/v2/concept/reference-adapter/index.html",
+  "ran_at": "2026-05-13T06:23:15.930Z",
+  "took_min": 3.2,
+  "phases": [
+    {
+      "name": "Phase 1 · build payload (no LLM)",
+      "steps": [
+        {
+          "label": "load master.md for roof-space-renovators",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "length": 17520
+          }
+        },
+        {
+          "label": "resolveReferenceSite picks classic-premium-roftix for roofing",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "family": "classic-premium-roftix"
+          }
+        },
+        {
+          "label": "load entity from master.md frontmatter",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "entityKey": "place_chija7rmbn38k2srv29x1ubwqmg",
+            "name": "Roof Space Renovators"
+          }
+        },
+        {
+          "label": "buildAdapterPayload returns prompt + assetsDir + family",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "promptBytes": 63690,
+            "family": "classic-premium-roftix"
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:20:06.217Z"
+    },
+    {
+      "name": "Phase 2 · claude CLI live invocation",
+      "steps": [
+        {
+          "label": "pl:build-from-reference --slug roof-space-renovators",
+          "passed": true,
+          "error": null,
+          "took_ms": 187316,
+          "data": {
+            "outPath": "/Users/matthew/Developer/google-map-website-v3/clients/roof-space-renovators/v2/concept/reference-adapter/index.html",
+            "bytes": 36879
+          }
+        },
+        {
+          "label": "output HTML is valid <!doctype html>",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "firstLine": "<!doctype html>"
+          }
+        },
+        {
+          "label": "output references customer business name (not demo)",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "name": "Roof Space Renovators"
+          }
+        },
+        {
+          "label": "LOCKED tokens preserved (CSS vars unchanged)",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "lockedColors": 4
+          }
+        },
+        {
+          "label": "anti-template phrases not present",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "checked": 4
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:20:06.219Z"
+    },
+    {
+      "name": "Phase 3 · Playwright screenshot",
+      "steps": [
+        {
+          "label": "render desktop screenshot",
+          "passed": true,
+          "error": null,
+          "took_ms": 2394,
+          "data": {
+            "path": "/Users/matthew/Developer/google-map-website-v3/clients/roof-space-renovators/v2/concept/reference-adapter/desktop.png"
+          }
+        },
+        {
+          "label": "screenshot file size reasonable (>50KB)",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "size": 3553763
+          }
+        }
+      ],
+      "started_at": "2026-05-13T06:23:13.536Z"
+    }
+  ]
+}

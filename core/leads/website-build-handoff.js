@@ -1,3 +1,15 @@
+/**
+ * V3 NOTE (2026-05-13): the freeform OD prompt produced by `renderOpenDesignPrompt`
+ * leaves too many free parameters (visual direction, copy tone, image source),
+ * which is why round-0 quality was unstable. The V3 M3 default path is the
+ * reference-HTML adapter — see `core/leads/reference-adapter-handoff.js` +
+ * `scripts/cli/pl-build-from-reference.js`. This module is kept for legacy
+ * callers that produce scorecard / outreach-brief metadata; only the OD prompt
+ * portion is deprecated.
+ *
+ * For new M3 work prefer:
+ *   import { buildAdapterPayload } from './reference-adapter-handoff.js';
+ */
 import { BUILD_MODES } from './intake.js';
 import { inferNicheFamily, familyCoreSections } from '../niches/families.js';
 

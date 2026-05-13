@@ -1,0 +1,48 @@
+{
+  "deliverableId": "reference-adapter-handoff",
+  "overall": "PASS",
+  "total": 6,
+  "passed": 6,
+  "skipped": 0,
+  "failed": 0,
+  "took_ms": 4,
+  "ran_at": "2026-05-13T06:18:48.500Z",
+  "results": [
+    {
+      "name": "exports buildReferenceAdapterPrompt + resolveReferenceSite + buildAdapterPayload",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "resolveReferenceSite roofing → classic-premium-roftix",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "resolveReferenceSite unknown niche → throws helpful error",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "buildReferenceAdapterPrompt embeds reference HTML + boundaries + customer brief",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "buildAdapterPayload returns prompt + assetsDir + family",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "prefers masterMd when provided",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    }
+  ]
+}
