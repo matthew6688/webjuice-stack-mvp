@@ -1,19 +1,42 @@
 {
   "deliverableId": "m2-d4-batch-send",
   "overall": "PASS",
-  "total": 1,
-  "passed": 0,
-  "skipped": 1,
+  "total": 5,
+  "passed": 5,
+  "skipped": 0,
   "failed": 0,
-  "took_ms": 1,
-  "ran_at": "2026-05-13T04:35:29.713Z",
+  "took_ms": 142,
+  "ran_at": "2026-05-13T04:48:22.386Z",
   "results": [
     {
-      "name": "script-exists",
+      "name": "default-dry-run-when-LIVE-unset",
       "passed": true,
-      "skipped": true,
-      "reason": "scripts/cli/pl-c-grade-batch-send.js missing"
+      "error": null,
+      "took_ms": 46
+    },
+    {
+      "name": "limit-flag-respected",
+      "passed": true,
+      "error": null,
+      "took_ms": 47
+    },
+    {
+      "name": "template-renders-no-empty-placeholders",
+      "passed": true,
+      "error": null,
+      "took_ms": 48
+    },
+    {
+      "name": "LIVE-flag-actually-sends",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "queue-status-updated-after-send",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }
