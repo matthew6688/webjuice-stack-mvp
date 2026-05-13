@@ -238,10 +238,79 @@ async function downloadCsv(id) {
 // ---------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------
+// V3 Bug D fix (2026-05-14): pre-flight check the gosom container BEFORE
+// posting a job. Previous behaviour was a confusing "fetch failed" with no
+// context when the container was stopped (Docker Desktop quits frequently).
+// Now: detect docker state · auto-recover via `docker start` · friendly errors.
+const CONTAINER_NAME = process.env.GMAPS_SCRAPER_CONTAINER || 'gmaps-scraper-web';
+
+async function checkContainerHealth() {
+  // 1. Daemon reachable?
+  const dockerInfo = spawnSync('docker', ['info'], { encoding: 'utf8', timeout: 5000 });
+  if (dockerInfo.status !== 0) {
+    return {
+      ok: false,
+      reason: 'docker_daemon_unreachable',
+      friendly: `Docker daemon 没启动 · 启 Docker Desktop: \`open -a Docker\` · 等 10s 后重跑`,
+    };
+  }
+  // 2. Container running?
+  const psR = spawnSync('docker', ['inspect', '--format', '{{.State.Running}}', CONTAINER_NAME], { encoding: 'utf8', timeout: 5000 });
+  if (psR.status !== 0) {
+    return {
+      ok: false,
+      reason: 'container_missing',
+      friendly: `gosom 容器 "${CONTAINER_NAME}" 不存在 · 跑: docker run -d --name ${CONTAINER_NAME} -p 8080:8080 gosom/google-maps-scraper`,
+    };
+  }
+  const running = String(psR.stdout || '').trim() === 'true';
+  if (!running) {
+    // Auto-recover · try to start it
+    console.error(`[pl:scrape-docker] gosom 容器停了 · 尝试重启 ${CONTAINER_NAME}...`);
+    const startR = spawnSync('docker', ['start', CONTAINER_NAME], { encoding: 'utf8', timeout: 30_000 });
+    if (startR.status !== 0) {
+      return {
+        ok: false,
+        reason: 'container_start_failed',
+        friendly: `gosom 容器 "${CONTAINER_NAME}" 启动失败: ${(startR.stderr || '').slice(0, 200)} · 手动跑: docker start ${CONTAINER_NAME}`,
+      };
+    }
+    console.error(`[pl:scrape-docker] ✓ 容器已重启 · 等 3s warmup...`);
+    await new Promise((res) => setTimeout(res, 3000));
+  }
+  // 3. HTTP endpoint reachable?
+  try {
+    const res = await fetch(`${DOCKER_BASE}/api/v1/jobs`, { method: 'GET', signal: AbortSignal.timeout(5000) });
+    if (!res.ok && res.status !== 405 && res.status !== 404) {
+      return {
+        ok: false,
+        reason: 'http_endpoint_unhealthy',
+        friendly: `gosom HTTP API 不健康 · status=${res.status} · 重启: docker restart ${CONTAINER_NAME}`,
+      };
+    }
+  } catch (err) {
+    return {
+      ok: false,
+      reason: 'http_endpoint_unreachable',
+      friendly: `gosom 容器活了但 HTTP API 连不上 (${DOCKER_BASE}): ${err.message} · 等几秒后重跑`,
+    };
+  }
+  return { ok: true };
+}
+
 async function main() {
   if (dryRun) {
     printPlan();
     return;
+  }
+
+  // V3 Bug D fix · pre-flight health check + auto-recover
+  const health = await checkContainerHealth();
+  if (!health.ok) {
+    console.error(`pl:scrape-docker: ❌ container health check failed`);
+    console.error(`  reason: ${health.reason}`);
+    console.error(`  fix:    ${health.friendly}`);
+    process.exit(2);
   }
 
   fs.mkdirSync(runDir, { recursive: true });
