@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>FIX MY ROOF Total Roof Restorations · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">FIX MY ROOF Total Roof Restorations ·
+现状审计与重构提议</h1>
+</header>
+<h1 id="fix-my-roof-total-roof-restorations-现状审计与重构提议">FIX MY
+ROOF Total Roof Restorations · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>51/100</strong> · strong_redesign · 行业：roofing ·
+地区：Brisbane · Google 评价：5★ （127 条）</p>
+</blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>A</code> 全攻 — 完整 OD redesign +
+个性化销售流程</p>
+<p><strong>触发依据：</strong> - strong_redesign + 127 评论 + 5★ -
+数字成熟度 3/6（懂数字营销） - 评论 trust signal 强</p>
+<p><strong>产品档位：</strong> <code>T3</code> 多页站 + 月度运营包</p>
+<ul>
+<li>127★5 强口碑底子</li>
+<li>已投放过广告（懂月度预算）</li>
+<li>评论 trust strong</li>
+<li>Blog 缺失（月度内容包机会）</li>
+</ul>
+<p><strong>建议报价：</strong> 一次性 $5-8K + 月度 $800-1500/月（社媒 +
+内容 + GEO）</p>
+<p><strong>下一步行动：</strong> 跑完整 Open Design redesign brief +
+个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3
+次跟进。报价主推 多页站 + 月度运营包。</p>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=51 → strong_redesign ·
+weakest: technical 40, ux_conversion 45 · fired: no_https,
+high_traction_old_site · 2 critical issues</p>
+<p><strong>已触发的 hard triggers：</strong> <code>no_https</code> ·
+<code>high_traction_old_site</code></p>
+<ul>
+<li>电话：0410 607 076</li>
+<li>地址：29 Darien St, Bridgeman Downs QLD 4035</li>
+<li>网站：<a
+href="http://billdu.me/fixmyrooftotalroofrestorations">http://billdu.me/fixmyrooftotalroofrestorations</a></li>
+<li>网站状态：<code>independent_http_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The design relies on a Google Business Profile-style layout that
+feels like a temporary placeholder rather than a professional business
+website, lacking clear calls to action and visual hierarchy.</p>
+</blockquote>
+<p>新鲜度 <strong>4/10</strong> · 信任度 <strong>5/10</strong> ·
+转化准备度 <strong>3/10</strong> · 设计年代 <code>outdated</code></p>
+<p><strong>值得保留的优点：</strong> - Clear business name and
+specialization in the text. - Operating hours are visible in the hero
+section. - Mention of ‘5 star reviews’ helps build social proof.</p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers overwhelmingly praise Dino for his exceptional integrity,
+punctuality, and high-quality workmanship, with one reviewer
+highlighting his refusal to accept payment as a key trust signal.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong> <code>exceptional integrity</code> ·
+<code>punctual and reliable</code> ·
+<code>high-quality workmanship</code> · <code>clean job site</code> ·
+<code>clear communication</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“What really impressed me was that he wouldn’t accept any payment for
+his work.” — <strong>Neil</strong>, ★★★★★</p>
+<p><em>放哪：Hero section proof of integrity and character</em></p>
+</blockquote>
+<blockquote>
+<p>“He quickly identified the problem, explained the solution clearly,
+and carried out the work to a very high standard.” —
+<strong>Glenn</strong>, ★★★★★</p>
+<p><em>放哪：Testimonial section highlighting expertise and
+process</em></p>
+</blockquote>
+<blockquote>
+<p>“Dino’s work is of an excellent standard and he goes the extra mile
+to ensure the job site is clean.” — <strong>Anthony</strong>, ★★★★★</p>
+<p><em>放哪：Service details section emphasizing professionalism and
+tidiness</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-3-项立刻在伤害成交">关键问题 · 3
+项（立刻在伤害成交）</h3>
+<h3 id="关键-https_enabled">关键 · https_enabled</h3>
+<p><strong>技术事实</strong></p>
+<p>http only</p>
+<p><strong>普通话翻译</strong></p>
+<p>你的网站没有 HTTPS —
+浏览器会在地址栏显示「不安全」标记，部分浏览器（Chrome /
+Firefox）甚至会弹出全屏警告挡住页面。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 早在 2018 年起把 HTTPS 列为搜索排名因素，没有 HTTPS
+直接拉低自然搜索可见度；且超过 80%
+的访客看到「不安全」标识会立刻关掉。对你这种 127 条 Google
+评价积累起来的口碑来说，访客在网址栏就被劝退，等于浪费了所有 GBP
+流量。</p>
+<h3 id="关键-phone_visible_above_fold">关键 ·
+phone_visible_above_fold</h3>
+<p><strong>技术事实</strong></p>
+<p>phone hidden below fold or missing</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 =
+这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。</p>
+<h3 id="关键-no-visible-get-a-quote-button-above-the-fold">关键 · No
+visible ‘Get a Quote’ button above the fold</h3>
+<p><strong>技术事实</strong></p>
+<p>The hero section contains a logo and a small ‘Open 6:30 AM - 7:00 PM’
+badge, but there is no primary button inviting the user to contact the
+business or request a quote.</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站顶部缺少明显的“联系我们”或“获取报价”按钮。访客第一眼看到后，不知道该如何开始合作。</p>
+<p><strong>对客户的影响</strong></p>
+<p>这会导致大量潜在客户流失。研究表明，如果访客在3秒内找不到联系方式，他们很可能会离开。对于急需修屋顶的客户，这直接意味着订单被竞争对手抢走。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A large, high-contrast button (e.g., bright orange or yellow)
+centered below the logo saying ‘Get a Free Quote’ or ‘Call Now’, visible
+without scrolling.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Add a primary Call-to-Action (CTA) button in the hero section
+immediately below the logo. Ensure it links to the phone number or a
+contact form.</p>
+<h3 id="主要问题-4-项影响转化的明显短板">主要问题 · 4
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">主要 · homepage_title_clear</h3>
+<p><strong>技术事实</strong></p>
+<p>title=‘# FIX MY ROOF TOTAL ROOF RESTORATIONS’ contains-name=true
+contains-niche=false</p>
+<p><strong>普通话翻译</strong></p>
+<p>你网站的浏览器标签 title 没把业务名字 +
+服务关键词写清楚（比如该写「FIX MY ROOF Total Roof Restorations -
+roofing Brisbane」，但目前是泛泛一句）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 +
+即使排上来客户也不知道是不是匹配的服务。SEO
+最便宜的修复，但很多本地企业完全没做。</p>
+<h3 id="主要-local_schema_markup">主要 · local_schema_markup</h3>
+<p><strong>技术事实</strong></p>
+<p>no LocalBusiness JSON-LD</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI
+知道你是本地企业、地址、电话、营业时间的标准格式）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google「附近的服务」「Knowledge Panel」「AI
+Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧
+Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT
+引用本地商家时也是基于这些数据。</p>
+<h3
+id="主要-logo-uses-generic-purple-background-instead-of-custom-imagery">主要
+· Logo uses generic purple background instead of custom imagery</h3>
+<p><strong>技术事实</strong></p>
+<p>The top section features a logo placed on a solid, flat purple
+background with a generic house outline graphic.</p>
+<p><strong>普通话翻译</strong></p>
+<p>目前的紫色背景看起来像是一个通用的模板，而不是专业的装修公司网站。它没有展示任何实际的工作成果。</p>
+<p><strong>对客户的影响</strong></p>
+<p>缺乏真实感会降低信任度。客户更倾向于选择那些展示真实案例和团队照片的公司，因为这证明了他们的专业能力。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A high-quality photograph of a restored roof or a team member
+working, with a dark overlay and white text, or a clean white background
+with a professional logo.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Replace the solid purple background with a high-resolution photo of a
+completed roof restoration project or a professional team shot to build
+immediate trust.</p>
+<h3 id="主要-dense-text-block-discourages-reading-on-mobile">主要 ·
+Dense text block discourages reading on mobile</h3>
+<p><strong>技术事实</strong></p>
+<p>The main content area starts with a large block of text describing
+‘DINO from FIX MY ROOF…’ with small font size and tight line
+spacing.</p>
+<p><strong>普通话翻译</strong></p>
+<p>大段文字在手机屏幕上很难阅读，客户通常会直接跳过。这让他们无法快速了解你们提供的具体服务。</p>
+<p><strong>对客户的影响</strong></p>
+<p>如果客户无法在5秒内找到他们需要的服务，他们就会离开。将服务列表化可以提高信息获取效率，从而增加咨询量。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Short, scannable bullet points or icons representing services (e.g.,
+‘Roof Restoration’, ‘Leak Repair’, ‘Colorbond Roofing’) with brief
+descriptions.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Break the text into a grid of service cards with icons and short
+titles. Keep the detailed description for a ‘About Us’ section or
+expandable accordion.</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>[视觉] 1. Add a prominent ‘Get a Free Quote’ button in the hero
+section.</li>
+<li>[视觉] 2. Replace the generic purple background with a high-quality
+image of a roof restoration project.</li>
+<li>[视觉] 3. Convert the dense text block into a scannable list of
+services with icons.</li>
+<li>[评论] Feature the ‘no payment accepted’ story prominently to build
+immediate trust and differentiate from competitors.</li>
+<li>[评论] Highlight ‘punctuality’ and ‘clean job site’ in the service
+guarantees section to address common homeowner anxieties.</li>
+<li>[评论] Use quotes about ‘clear communication’ in the ‘How It Works’
+section to reassure potential clients about the process.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你的网站没有 HTTPS —
+浏览器对来访客户显示「不安全」，直接伤害信任</li>
+<li>你已经有不错的 Google 流量基础（127 条 5★
+评论），但当前网站设计在浪费这些点击</li>
+<li>客户口碑已经强（exceptional integrity / punctual and reliable /
+high-quality workmanship）—
+网站只需要把这份信任承接住，不需要从零建立</li>
+</ul>
+<h2 id="真实速度数据-google-pagespeed-insights">真实速度数据 · Google
+PageSpeed Insights</h2>
+<p>我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是
+<strong>Google 自己</strong>对你网站打的分，包括过去 28 天
+<strong>真实访客</strong>的网络体验数据（CRUX field data）。</p>
+<h3 id="移动端mobile">移动端（mobile）</h3>
+<p><strong>Lighthouse 分数（实验室）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>性能 (Performance)</td>
+<td><strong>28/100</strong></td>
+</tr>
+<tr>
+<td>可访问性 (Accessibility)</td>
+<td>91/100</td>
+</tr>
+<tr>
+<td>最佳实践 (Best Practices)</td>
+<td>100/100</td>
+</tr>
+<tr>
+<td>SEO</td>
+<td>100/100</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab 关键指标：</strong> LCP <code>23.3s</code> · FCP
+<code>8.1s</code> · CLS <code>0.000</code> · TBT <code>1675ms</code></p>
+<p><strong>真实用户体验（过去 28 天 CRUX field data）总评：</strong>
+<code>SLOW</code></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>75% 用户值</th>
+<th>Google 评级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LCP（最大内容绘制 p75）</td>
+<td>5.33s</td>
+<td>SLOW</td>
+</tr>
+<tr>
+<td>FCP（首次内容绘制 p75）</td>
+<td>2.82s</td>
+<td>AVERAGE</td>
+</tr>
+<tr>
+<td>TTFB（服务器响应 p75）</td>
+<td>1.45s</td>
+<td>AVERAGE</td>
+</tr>
+<tr>
+<td>CLS（布局抖动 p75）</td>
+<td>0.000</td>
+<td>FAST</td>
+</tr>
+<tr>
+<td>INP（交互响应 p75）</td>
+<td>211ms</td>
+<td>AVERAGE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>这意味着：</strong> 过去 28 天访问你网站的实际用户里，75%
+的人遇到的体验就是上面这些数字 — 不是我们测的、是 Google 用真实 Chrome
+用户数据统计出来的。</p>
+<p><strong>Google 建议的优化项（按节省时间排序，前 4）：</strong></p>
+<ul>
+<li><strong>Reduce unused JavaScript</strong> — 节省 5700ms · 节省
+1082KB</li>
+<li><strong>Minify JavaScript</strong> — 节省 300ms · 节省 32KB</li>
+<li><strong>Initial server response time was short</strong> — 节省
+194ms</li>
+<li><strong>Reduce unused CSS</strong> — 节省 150ms · 节省 18KB</li>
+</ul>
+<h3 id="桌面端desktop">桌面端（desktop）</h3>
+<p><strong>Lighthouse 分数：</strong> Performance 41 · A11y 91 · Best
+Practices 100 · SEO 100</p>
+<h2 id="seo-迁移评估-与-运营活跃度">SEO 迁移评估 与 运营活跃度</h2>
+<p>客户最常担心的问题：「我重做网站，会不会丢掉 Google
+排名？」这一段直接回答。</p>
+<h3 id="现有页面盘点">现有页面盘点</h3>
+<ul>
+<li><strong>Sitemap 状态：</strong> 未发现 sitemap.xml — 这本身就是个
+SEO 短板（Google 爬虫漏抓页面），redesign 时会一并补上。</li>
+</ul>
+<h3 id="运营活跃度">运营活跃度</h3>
+<ul>
+<li><strong>整体活跃度：</strong> 无法判断</li>
+<li><strong>Blog 板块：</strong> 未发现 — 没有内容营销基础</li>
+<li><strong>社交媒体链接：</strong> 网站上引用了 1 个平台 —
+facebook</li>
+</ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> ⚠ 未配置 —
+客户如果用域名邮箱发邮件，进垃圾箱的概率高</li>
+<li><strong>DKIM (邮件签名)：</strong> ⚠ 常见 selector 未发现 DKIM
+配置（不一定确凿，但提示有问题）</li>
+<li><strong>DMARC (策略)：</strong> ⚠ 未配置 — 域名易被仿冒做钓鱼</li>
+<li><strong>整体邮件投递信誉：</strong> <code>none</code> (全无配置 —
+邮件营销 / cold outreach 几乎不可能投递成功)</li>
+</ul>
+<blockquote>
+<p>这是后续 <strong>「Social Media Management 月度包」</strong> 或
+<strong>「Cold Outreach 启动包」</strong> 的前置条件 —— 邮件 DNS
+没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。</p>
+</blockquote>
+<h2 id="技术栈与营销基建">技术栈与营销基建</h2>
+<p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
+<ul>
+<li><strong>分析工具：</strong> Google Tag Manager</li>
+<li><strong>广告 Pixel：</strong> Meta (Facebook) Pixel —
+客户已经在投放（或投放过）付费广告，对营销预算不陌生</li>
+</ul>
+<p><strong>数字成熟度打分：</strong> 3 / 6 （中 —
+已有基础设施，缺少深度运营）</p>
+<h3 id="redesign-时必须保留-重新安装的追踪代码">Redesign 时必须保留 /
+重新安装的追踪代码</h3>
+<p>客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID
+上面。重做时<strong>必须用同一套 ID
+重新接进新网站</strong>，否则等于清零所有累积。</p>
+<ul>
+<li>Google Tag Manager</li>
+<li>Meta (Facebook) Pixel</li>
+</ul>
+<p>我们 redesign 交付清单会把这些列为「必须 setup 项」。</p>
+<h2 id="ai-时代可发现性-geo-readiness">AI 时代可发现性 · GEO
+Readiness</h2>
+<p>GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI
+Overviews 这些 AI
+搜索产品<strong>不像传统搜索引擎那样按”关键词排名”工作</strong>，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在
+AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。</p>
+<p><strong>AI 可发现性总分：</strong> 0 / 100 — AI agent / ChatGPT
+几乎无法准确引用此网站 — 在生成式搜索时代等于隐身</p>
+<h3 id="还缺的12-项-这些是-redesign-时一并补上的标准动作">还缺的（12 项
+— 这些是 redesign 时一并补上的标准动作）</h3>
+<ul>
+<li>[缺失] <code>llms_txt_present</code> (5 分) — no /llms.txt at
+standard path</li>
+<li>[缺失] <code>ai_bot_robots_policy</code> (5 分) — robots.txt has no
+explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)</li>
+<li>[缺失] <code>localbusiness_schema</code> (15 分) — no LocalBusiness
+or Organization JSON-LD</li>
+<li>[缺失] <code>service_schema</code> (10 分) — no Service JSON-LD</li>
+<li>[缺失] <code>faqpage_schema</code> (10 分) — no FAQPage JSON-LD
+(loses AI Overview / featured snippet eligibility)</li>
+<li>[缺失] <code>aggregaterating_schema</code> (5 分) — no
+AggregateRating JSON-LD (★ rating not shown in search snippets)</li>
+<li>[缺失] <code>breadcrumb_schema</code> (5 分) — no BreadcrumbList
+JSON-LD</li>
+<li>[缺失] <code>semantic_landmarks</code> (10 分) — 2 semantic
+landmarks present: &lt;main, &lt;section</li>
+<li>[缺失] <code>faq_qa_pattern</code> (10 分) — 0 question-style
+heading(s) found (Q&amp;A format helps AI extraction)</li>
+<li>[缺失] <code>eeat_business_credentials</code> (10 分) — only 0/4
+credentials found — need ≥2 of: ABN, license/QBCC, years-in-business,
+insurance</li>
+<li>[缺失] <code>eeat_warranty_trust</code> (5 分) — no
+warranty/guarantee in copy</li>
+<li>[缺失] <code>jsonld_at_least_one</code> (10 分) — 0 JSON-LD block(s)
+detected on page</li>
+</ul>
+<blockquote>
+<p><strong>销售切入：</strong> 「ChatGPT 现在每月 30
+亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI
+回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是
+0/100。」</p>
+</blockquote>
+<h2 id="业务规模信号-内部筛选用">业务规模信号 · 内部筛选用</h2>
+<p><strong>注：这一段只给运营内部看，不进入客户报告。</strong>
+用来判断这个 lead 是不是匹配我们「小网站 / 多批量 /
+快上线」的产品定位。</p>
+<ul>
+<li><strong>规模信号汇总：</strong> 小型客户特征</li>
+<li><strong>客户分级：</strong> <code>small</code> —
+小型，符合我们标准产品包定位</li>
+<li><strong>建议定价档：</strong> 标准包 $3-6K（符合我们核心产品）</li>
+</ul>
+<p><strong>触发依据：</strong> - Google 评价 127 条（≥50，有规模基础） -
+已部署 2 个追踪工具</p>
+<h2 id="upsell-机会-redesign-之外的月度营收">Upsell 机会 · redesign
+之外的月度营收</h2>
+<p>redesign
+是一次性收入。以下是基于这个客户当前现状自动识别的<strong>持续性服务包</strong>机会，可以在
+redesign 提案签字时一并捆绑进去。</p>
+<h3 id="内容写作月度包blog-案例-seo-长尾">内容写作月度包（Blog / 案例 /
+SEO 长尾）</h3>
+<p><strong>触发依据：</strong> 网站没有 blog 板块 —
+没有内容营销基础设施，长尾 SEO 流量为零。</p>
+<p><strong>包内容：</strong> 每月 2 篇 SEO-optimized blog（800-1,200
+字）+ 每季度 1 篇 case study（含 before/after 图）+ 关键词研究报告。</p>
+<p><strong>月度费用区间：</strong> $400-800/月</p>
+<p><strong>销售切入：</strong> 「ChatGPT
+时代搜索引擎更偏爱有「专家深度内容」的网站。你目前的网站只有服务介绍页 —
+AI 可引用的素材几乎为零。」</p>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

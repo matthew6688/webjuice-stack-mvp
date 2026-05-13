@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-electrician-sydney-202605132309",
+  "title": "[Places Pipeline] electrician sydney — 2026-05-13 13:09 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504108315880329406",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504108315880329406",
+  "initial_message_id": "1504108315880329406",
+  "niche": "electrician",
+  "city": "sydney",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "electrician sydney",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T13:09:27.779Z",
+  "finished_at": "2026-05-13T13:09:30.758Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T13:09:28.788Z",
+      "message_id": "1504108320804573245"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijq6p20dc9emsryidtumea3xs, place_chij15jrone5emsrp_lwfs7o_h4",
+      "at": "2026-05-13T13:09:29.687Z",
+      "message_id": "1504108324461744189"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `electrician sydney`\nLeads (first 5): place_chijq6p20dc9emsryidtumea3xs, place_chij15jrone5emsrp_lwfs7o_h4",
+      "at": "2026-05-13T13:09:30.068Z",
+      "message_id": "1504108325690675233"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T13:10:05.586Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 1,
+      "domain": 2
+    },
+    "exit_code": 0
+  }
+}

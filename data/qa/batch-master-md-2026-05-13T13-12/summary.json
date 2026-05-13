@@ -1,0 +1,339 @@
+{
+  "cities": [
+    "brisbane",
+    "sydney"
+  ],
+  "niches": [
+    "roofer",
+    "electrician"
+  ],
+  "sources": [
+    "places",
+    "docker"
+  ],
+  "per_batch": 2,
+  "batch_count": 8,
+  "ok_batches": 8,
+  "failed_batches": 0,
+  "total_new_entities": 33,
+  "total_touched_entities": 39,
+  "master_md_ok": 19,
+  "master_md_missing": 0,
+  "total_seconds": 185,
+  "started_at": "2026-05-13T13:12:39.559Z",
+  "finished_at": "2026-05-13T13:15:44.395Z",
+  "results": [
+    {
+      "source": "places",
+      "city": "brisbane",
+      "niche": "roofer",
+      "ok": true,
+      "took_s": 39,
+      "new_entities": 0,
+      "touched_entities": 2,
+      "fresh_keys": [],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "took_s": 40,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chijm7e_lgq3a0yr9qlpxh9zgoi",
+        "place_chijvvvvvzylmiorhfb7r8uan7q"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 41,
+      "new_entities": 0,
+      "touched_entities": 2,
+      "fresh_keys": [],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 40,
+      "new_entities": 0,
+      "touched_entities": 2,
+      "fresh_keys": [],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "roofer",
+      "ok": true,
+      "took_s": 5,
+      "new_entities": 7,
+      "touched_entities": 7,
+      "fresh_keys": [
+        "domain_aceroofingservice.com.au",
+        "domain_hytekroofing.com.au",
+        "domain_nbmr.com.au",
+        "domain_proroofrestorationbrisbane.com.au",
+        "domain_queenslandroofing.com.au"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "took_s": 5,
+      "new_entities": 12,
+      "touched_entities": 12,
+      "fresh_keys": [
+        "domain_allroofingservices.com.au",
+        "domain_auscityroofing.com.au",
+        "domain_greenfrogroofing.com.au",
+        "domain_jsjroofing.com.au",
+        "domain_nuroofing.com.au"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 5,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "domain_dawsonelectric.com.au",
+        "domain_nascoelectricalandair.com"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 5,
+      "new_entities": 10,
+      "touched_entities": 10,
+      "fresh_keys": [
+        "domain_360sydneyelectrical.com.au",
+        "domain_drsparkselectrical.com.au",
+        "domain_electriciantotherescue.com.au",
+        "domain_hdlevel2electriciansydney.com.au",
+        "domain_helloelectrical.com.au"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    }
+  ],
+  "verification": [
+    {
+      "entityKey": "place_chijm7e_lgq3a0yr9qlpxh9zgoi",
+      "source": "places",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "sydney-roofing-specialists",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/sydney-roofing-specialists/v2/master.md",
+      "lines": 95
+    },
+    {
+      "entityKey": "place_chijvvvvvzylmiorhfb7r8uan7q",
+      "source": "places",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "roofer-near-me-roof-repair-sydney",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/roofer-near-me-roof-repair-sydney/v2/master.md",
+      "lines": 94
+    },
+    {
+      "entityKey": "domain_aceroofingservice.com.au",
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "ace-roofing-service",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_hytekroofing.com.au",
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "hytek-roofing",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/hytek-roofing/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_nbmr.com.au",
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "north-brisbane-metal-roofing-pty-ltd",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_proroofrestorationbrisbane.com.au",
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "pro-roof-restoration-brisbane",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/pro-roof-restoration-brisbane/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_queenslandroofing.com.au",
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "queensland-roofing-pty-ltd",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/queensland-roofing-pty-ltd/v2/master.md",
+      "lines": 85
+    },
+    {
+      "entityKey": "domain_allroofingservices.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "all-roofing-services-pty-ltd",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/all-roofing-services-pty-ltd/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_auscityroofing.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "auscity-roofing",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/auscity-roofing/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_greenfrogroofing.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "green-frog-roofing",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/green-frog-roofing/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_jsjroofing.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "jsj-roofing-alexandria",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/jsj-roofing-alexandria/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_nuroofing.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "nuroofing-services-pty-ltd",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/nuroofing-services-pty-ltd/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_dawsonelectric.com.au",
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "dawson-electric",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/dawson-electric/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_nascoelectricalandair.com",
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "nasco-electrical-air",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/nasco-electrical-air/v2/master.md",
+      "lines": 80
+    },
+    {
+      "entityKey": "domain_360sydneyelectrical.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "360-degrees-sydney-electrical",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/360-degrees-sydney-electrical/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_drsparkselectrical.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "dr-sparks-electrical",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/dr-sparks-electrical/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_electriciantotherescue.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "electrician-to-the-rescue",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/electrician-to-the-rescue/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_hdlevel2electriciansydney.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "high-demand-electrical",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/high-demand-electrical/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_helloelectrical.com.au",
+      "source": "docker",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "hello-electrical-electrician-sydney",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/hello-electrical-electrician-sydney/v2/master.md",
+      "lines": 81
+    }
+  ]
+}

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chijk2kjmcfmkwsrk9yzy9lxa-y",
   "firstSeenAt": "2026-05-13T12:43:49.294Z",
-  "lastSeenAt": "2026-05-13T12:43:49.294Z",
+  "lastSeenAt": "2026-05-13T13:12:42.871Z",
   "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-13T12:43:49.294Z",
+  "lastStatusAt": "2026-05-13T13:12:42.871Z",
   "identifiers": {
     "place_id": "ChIJk2kjmcFmkWsRk9YZY9Lxa-Y",
     "cid": "",
@@ -34,7 +34,7 @@
     "recommendedAction": "audit_candidate",
     "sourceQuery": "roofer brisbane",
     "signals": {},
-    "batch_id": "places-roofer-brisbane-202605132243",
+    "batch_id": "places-roofer-brisbane-202605132312",
     "discovery_rank": 1,
     "google_places_provider": "official_api"
   },
@@ -44,6 +44,14 @@
       "query": "roofer brisbane",
       "runPath": "",
       "at": "2026-05-13T12:43:49.294Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605132312",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-13T13:12:42.871Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
     }
@@ -57,11 +65,21 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-13T13:12:42.871Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605132312",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
     }
   ],
   "notes": [],
   "enrichment_status": "complete",
   "batches": [
-    "places-roofer-brisbane-202605132243"
+    "places-roofer-brisbane-202605132243",
+    "places-roofer-brisbane-202605132312"
   ]
 }

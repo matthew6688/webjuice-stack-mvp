@@ -1,0 +1,300 @@
+{
+  "cities": [
+    "brisbane",
+    "sydney",
+    "melbourne"
+  ],
+  "niches": [
+    "plumber",
+    "electrician"
+  ],
+  "sources": [
+    "places",
+    "docker"
+  ],
+  "per_batch": 2,
+  "batch_count": 12,
+  "ok_batches": 6,
+  "failed_batches": 6,
+  "total_new_entities": 12,
+  "total_touched_entities": 12,
+  "master_md_ok": 0,
+  "master_md_missing": 12,
+  "total_seconds": 256,
+  "started_at": "2026-05-13T13:06:38.297Z",
+  "finished_at": "2026-05-13T13:10:53.846Z",
+  "results": [
+    {
+      "source": "places",
+      "city": "brisbane",
+      "niche": "plumber",
+      "ok": true,
+      "took_s": 42,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chijmbddo0tnkwsroxgwbchuklm",
+        "place_chijxxhsosvnkwsrgryq8wtt2zy"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "sydney",
+      "niche": "plumber",
+      "ok": true,
+      "took_s": 42,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chij13zknceyemsrwh8t7k18mda",
+        "place_chijrdphtgafemsremdh0aahtmg"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "melbourne",
+      "niche": "plumber",
+      "ok": true,
+      "took_s": 42,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chij2_-mwidn1morbm7nhitdza8",
+        "place_chij81alzzdj1mornrttfd9qbzk"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 41,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chijc4toaqtbkwsrw2-2cu2rm_e",
+        "place_chijzy5jyx5lkwsr1qrxxwmeo9s"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 40,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chij15jrone5emsrp_lwfs7o_h4",
+        "place_chijq6p20dc9emsryidtumea3xs"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "melbourne",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 41,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chijkzezk0vj1moryzmeo99yyqk",
+        "place_chijmyvlqrba1morhp9qhfmyl_w"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "plumber",
+      "ok": false,
+      "took_s": 0,
+      "new_entities": 0,
+      "touched_entities": 0,
+      "fresh_keys": [],
+      "exit_code": 1,
+      "stderr_tail": "geocode brisbane → -27.4704528,153.0260341 (cache) · Brisbane QLD, Australia\npl:scrape-docker failed: fetch failed\n"
+    },
+    {
+      "source": "docker",
+      "city": "sydney",
+      "niche": "plumber",
+      "ok": false,
+      "took_s": 1,
+      "new_entities": 0,
+      "touched_entities": 0,
+      "fresh_keys": [],
+      "exit_code": 1,
+      "stderr_tail": "geocode sydney → -33.8622503,151.207684 (api) · Sydney NSW, Australia\npl:scrape-docker failed: fetch failed\n"
+    },
+    {
+      "source": "docker",
+      "city": "melbourne",
+      "niche": "plumber",
+      "ok": false,
+      "took_s": 1,
+      "new_entities": 0,
+      "touched_entities": 0,
+      "fresh_keys": [],
+      "exit_code": 1,
+      "stderr_tail": "geocode melbourne → -37.8136276,144.9630576 (api) · Melbourne VIC, Australia\npl:scrape-docker failed: fetch failed\n"
+    },
+    {
+      "source": "docker",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": false,
+      "took_s": 0,
+      "new_entities": 0,
+      "touched_entities": 0,
+      "fresh_keys": [],
+      "exit_code": 1,
+      "stderr_tail": "geocode brisbane → -27.4704528,153.0260341 (cache) · Brisbane QLD, Australia\npl:scrape-docker failed: fetch failed\n"
+    },
+    {
+      "source": "docker",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": false,
+      "took_s": 0,
+      "new_entities": 0,
+      "touched_entities": 0,
+      "fresh_keys": [],
+      "exit_code": 1,
+      "stderr_tail": "geocode sydney → -33.8622503,151.207684 (cache) · Sydney NSW, Australia\npl:scrape-docker failed: fetch failed\n"
+    },
+    {
+      "source": "docker",
+      "city": "melbourne",
+      "niche": "electrician",
+      "ok": false,
+      "took_s": 0,
+      "new_entities": 0,
+      "touched_entities": 0,
+      "fresh_keys": [],
+      "exit_code": 1,
+      "stderr_tail": "geocode melbourne → -37.8136276,144.9630576 (cache) · Melbourne VIC, Australia\npl:scrape-docker failed: fetch failed\n"
+    }
+  ],
+  "verification": [
+    {
+      "entityKey": "place_chijmbddo0tnkwsroxgwbchuklm",
+      "source": "places",
+      "city": "brisbane",
+      "niche": "plumber",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "brisbane-plumbing-and-drainage"
+    },
+    {
+      "entityKey": "place_chijxxhsosvnkwsrgryq8wtt2zy",
+      "source": "places",
+      "city": "brisbane",
+      "niche": "plumber",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "liqwyd-solutions"
+    },
+    {
+      "entityKey": "place_chij13zknceyemsrwh8t7k18mda",
+      "source": "places",
+      "city": "sydney",
+      "niche": "plumber",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "proximity-plumbing"
+    },
+    {
+      "entityKey": "place_chijrdphtgafemsremdh0aahtmg",
+      "source": "places",
+      "city": "sydney",
+      "niche": "plumber",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "the-clean-plumber"
+    },
+    {
+      "entityKey": "place_chij2_-mwidn1morbm7nhitdza8",
+      "source": "places",
+      "city": "melbourne",
+      "niche": "plumber",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "velaqua-plumbing"
+    },
+    {
+      "entityKey": "place_chij81alzzdj1mornrttfd9qbzk",
+      "source": "places",
+      "city": "melbourne",
+      "niche": "plumber",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "plumb-medic-emergency-plumber-melbourne"
+    },
+    {
+      "entityKey": "place_chijc4toaqtbkwsrw2-2cu2rm_e",
+      "source": "places",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "dawson-electric"
+    },
+    {
+      "entityKey": "place_chijzy5jyx5lkwsr1qrxxwmeo9s",
+      "source": "places",
+      "city": "brisbane",
+      "niche": "electrician",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "powering-brisbane-electrical"
+    },
+    {
+      "entityKey": "place_chij15jrone5emsrp_lwfs7o_h4",
+      "source": "places",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "high-demand-electrical"
+    },
+    {
+      "entityKey": "place_chijq6p20dc9emsryidtumea3xs",
+      "source": "places",
+      "city": "sydney",
+      "niche": "electrician",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "sydney-electrical-service"
+    },
+    {
+      "entityKey": "place_chijkzezk0vj1moryzmeo99yyqk",
+      "source": "places",
+      "city": "melbourne",
+      "niche": "electrician",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "melbourne-wide-electrical-plumbing"
+    },
+    {
+      "entityKey": "place_chijmyvlqrba1morhp9qhfmyl_w",
+      "source": "places",
+      "city": "melbourne",
+      "niche": "electrician",
+      "ok": false,
+      "reason": "master.md missing",
+      "slug": "melbourne-general-electrical-services"
+    }
+  ]
+}

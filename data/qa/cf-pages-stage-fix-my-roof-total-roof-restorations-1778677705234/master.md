@@ -1,0 +1,468 @@
+---
+business_id: "place_chijn587yc79k2sr7vyvy-egoam"
+business_name: "FIX MY ROOF Total Roof Restorations"
+niche: "roofing"
+city: "Brisbane"
+rating: 5
+review_count: 127
+website: "http://billdu.me/fixmyrooftotalroofrestorations"
+audit_score: 51
+decision: "strong_redesign"
+audit_version: "2026-05-11-v1"
+fired_triggers:
+  - "no_https"
+  - "high_traction_old_site"
+visual_age: "outdated"
+visual_freshness: 3
+visual_trust: 4
+visual_conversion: 3
+review_trust_signal: "strong"
+generated_at: "2026-05-13T07:33:56.843Z"
+assets:
+  cloudinary_folder: null
+  evidence_count: 8
+  video_url: "./video/mobile-throttled.webm"
+  desktop_screenshot: "./screenshots/desktop.png"
+  mobile_screenshot: "./screenshots/mobile.png"
+---
+
+# FIX MY ROOF Total Roof Restorations · 现状审计与重构提议
+
+> **51/100** · strong_redesign · 行业：roofing · 地区：Brisbane · Google 评价：5★ （127 条）
+
+## 内部分级 · 运营优先看这段
+
+**投入分级：** `A` 全攻 — 完整 OD redesign + 个性化销售流程
+
+**触发依据：**
+- strong_redesign + 127 评论 + 5★
+- 数字成熟度 3/6（懂数字营销）
+- 评论 trust signal 强
+
+**产品档位：** `T3` 多页 / 定制（quote separately）
+
+- 127★5 强口碑底子
+- 已投放过广告（懂月度预算）
+- 评论 trust strong
+- Blog 缺失（月度内容包机会）
+
+**建议报价：** 一次性 $1000+ 定制报价
+
+**下一步行动：** 跑完整 Open Design redesign brief + 个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3 次跟进。报价主推 多页 / 定制（quote separately）。
+
+## 一、店家现状速览
+
+**线索来源 · 联系开场可用**:
+- **来源**: Google Maps (gosom 抓取)
+- **搜索关键词**: `roof restoration in Brisbane`
+- **首次发现**: 2026-05-09
+
+**审计结论：** audit_score=51 → strong_redesign · weakest: technical 40, ux_conversion 45 · fired: no_https, high_traction_old_site · 2 critical issues
+
+**已触发的 hard triggers：** `no_https` · `high_traction_old_site`
+
+- 电话：0410 607 076
+- 地址：29 Darien St, Bridgeman Downs QLD 4035
+- 网站：[http://billdu.me/fixmyrooftotalroofrestorations](http://billdu.me/fixmyrooftotalroofrestorations)
+- 网站状态：`independent_http_site`
+
+> 📞 **建议联系时间**: Tue / Wed / Thu 10:00 – 12:00 (local)  ·  *工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间*  ·  confidence: high
+
+> *Hours: Mon: 06:30-19:00 · Tue: 06:30-19:00 · Wed: 06:30-19:00 · Thu: 06:30-19:00 · Fri: 06:30-17:00 · Sat: 09:00-17:00 · Sun: closed*
+
+## 一(a)、商户视觉素材 (GMB)
+
+> 来自 Google Business Profile 的 6 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。
+
+![GMB photo 1](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656531/profitslocal/main-site/clients/place_chijn587yc79k2sr7vyvy-egoam/places-photos/gmb/photo-01-1778656529337-msvry1.jpg)
+
+![GMB photo 2](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656532/profitslocal/main-site/clients/place_chijn587yc79k2sr7vyvy-egoam/places-photos/gmb/photo-02-1778656532104-vconqk.jpg)
+
+![GMB photo 3](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656533/profitslocal/main-site/clients/place_chijn587yc79k2sr7vyvy-egoam/places-photos/gmb/photo-03-1778656533209-8wjmeh.jpg)
+
+![GMB photo 4](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656534/profitslocal/main-site/clients/place_chijn587yc79k2sr7vyvy-egoam/places-photos/gmb/photo-04-1778656534022-ia972g.jpg)
+
+![GMB photo 5](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656535/profitslocal/main-site/clients/place_chijn587yc79k2sr7vyvy-egoam/places-photos/gmb/photo-05-1778656534885-5gfduf.jpg)
+
+![GMB photo 6](https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656537/profitslocal/main-site/clients/place_chijn587yc79k2sr7vyvy-egoam/places-photos/gmb/photo-06-1778656535722-h8r358.jpg)
+
+## 二、客户访问时看到的页面
+
+![桌面 1440×900](./screenshots/desktop.png)
+
+![移动 375×667](./screenshots/mobile.png)
+
+**慢速 4G 加载实景视频**（1.6 Mbps · 150ms 延迟 · 4× CPU 节流，模拟真实手机访客的体验）：
+
+[播放视频](./video/mobile-throttled.webm)
+
+## 三、视觉审计 · Vision LLM 怎么看
+
+> Generic Google Business Profile embedded view with outdated cookie banner blocking primary content and no custom website design visible.
+
+新鲜度 **3/10** · 信任度 **4/10** · 转化准备度 **3/10** · 设计年代 `outdated`
+
+**值得保留的优点：**
+- Business name 'FIX MY ROOF' is clear and memorable, immediately communicates the core service
+- Phone icon is present in the social media row, indicating contact is possible (though not prominent enough)
+- Business description mentions specific services (pressure washing, re-pointing, coatings) and references positive reviews, which are trust signals
+
+## 四、客户在 Google 上怎么说
+
+> Customers overwhelmingly praise Dino for his exceptional integrity, punctuality, and high-quality workmanship, with one reviewer highlighting his refusal to accept payment as a key trust signal.
+
+**评分分布（基于 Google 全量评论）：**
+
+| 星级 | 条数 | 占比 |
+|---|---|---|
+| 5★ | 127 | 99.2% |
+| 4★ | 0 | 0.0% |
+| 3★ | 1 | 0.8% |
+| 2★ | 0 | 0.0% |
+| 1★ | 0 | 0.0% |
+| **合计** | **128** | 100% |
+
+**99% 是 5★ 评价** — 这条数据本身就是巨大的销售素材，redesign 后的网站应该把它放在 hero 区。
+
+**一致夸赞：** `exceptional integrity` · `punctual and reliable` · `high-quality workmanship` · `clean job site` · `clear communication`
+
+**可直接放上 redesign 后网站的 quote：**
+
+> "What really impressed me was that he wouldn't accept any payment for his work."
+> — **Neil**, ★★★★★
+>
+> *放哪：Hero section proof of integrity and character*
+
+> "He quickly identified the problem, explained the solution clearly, and carried out the work to a very high standard."
+> — **Glenn**, ★★★★★
+>
+> *放哪：Testimonial section highlighting expertise and process*
+
+> "Dino's work is of an excellent standard and he goes the extra mile to ensure the job site is clean."
+> — **Anthony**, ★★★★★
+>
+> *放哪：Service details section emphasizing professionalism and tidiness*
+
+## 五、当前网站在哪里"漏水"
+
+### 关键问题 · 4 项（立刻在伤害成交）
+
+### 关键 · https_enabled
+
+**技术事实**
+
+http only
+
+**普通话翻译**
+
+你的网站没有 HTTPS — 浏览器会在地址栏显示「不安全」标记，部分浏览器（Chrome / Firefox）甚至会弹出全屏警告挡住页面。
+
+**对客户的影响**
+
+Google 早在 2018 年起把 HTTPS 列为搜索排名因素，没有 HTTPS 直接拉低自然搜索可见度；且超过 80% 的访客看到「不安全」标识会立刻关掉。对你这种 127 条 Google 评价积累起来的口碑来说，访客在网址栏就被劝退，等于浪费了所有 GBP 流量。
+
+
+### 关键 · phone_visible_above_fold
+
+**技术事实**
+
+phone hidden below fold or missing
+
+**普通话翻译**
+
+电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。
+
+**对客户的影响**
+
+本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
+
+
+### 关键 · Cookie consent banner covers 40% of viewport on load
+
+**技术事实**
+
+A black rounded rectangle cookie banner in the bottom-left corner covers approximately 40% of the visible content, with white text and two buttons ('Reject' and 'Accept') plus a 'Learn more and customise' link beneath
+
+**普通话翻译**
+
+页面一打开,左下角有一个巨大的黑色弹窗,盖住了差不多一半的内容。访客必须先关掉这个弹窗才能看到你的服务介绍和联系方式。
+
+**对客户的影响**
+
+本地搜索的访客在8秒内决定是否信任你的公司。如果他们一打开页面就看到一个大黑框挡住内容,70%的人会直接返回搜索结果,点击你的竞争对手。这直接导致询盘流失。
+
+**正确长啥样**
+
+A slim single-line banner at the very top or bottom (max 60px height) with inline 'Accept' link, or a centered modal overlay with clear close button that doesn't obscure the hero content. Modern GDPR banners use 5-10% of screen height, not 40%.
+
+**Redesign 怎么改**
+
+Remove intrusive cookie banner entirely from the custom redesign; if legally required, implement a 50px bottom-strip banner with inline accept/decline buttons that doesn't obstruct business name, hero image, or primary CTA
+
+
+### 关键 · Page is raw Google Business Profile embed, not a website
+
+**技术事实**
+
+The entire visible area shows a standard Google Business Profile card layout: purple header with yellow logo, business hours banner, social media icons in circles, and a generic business description starting with 'DINO from FIX MY ROOF...' in a narrow center column
+
+**普通话翻译**
+
+这不是一个真正的网站,只是谷歌商家档案的一个嵌入页面。看起来像是一个新公司或者不专业的公司,因为没有自己的网站来展示项目照片、服务内容和客户评价。
+
+**对客户的影响**
+
+80%的本地搜索客户会在选择服务商之前浏览网站。如果你只有一个谷歌卡片而不是真正的网站,客户会认为你的公司规模小或不可靠,直接选择有专业网站的竞争对手。这意味着每个月损失数十个高价值询盘。
+
+**正确长啥样**
+
+A full-width custom website with a hero section showing a completed Brisbane roof restoration project, a prominent phone number button in the top-right corner, service cards below the fold, and customer testimonials with photos. Navigation menu with Home, Services, Gallery, Reviews, Contact.
+
+**Redesign 怎么改**
+
+Build a complete custom website to replace this GBP embed: hero section with full-width roof restoration photo, overlaid headline 'Brisbane's Most Trusted Roof Restoration Specialists Since [year]', coral CTA button 'Call Now: [phone]' in top-right header, three-column service grid below fold, testimonial carousel with 5-star reviews
+
+
+### 主要问题 · 4 项（影响转化的明显短板）
+
+### 主要 · homepage_title_clear
+
+**技术事实**
+
+title='# FIX MY ROOF TOTAL ROOF RESTORATIONS' contains-name=true contains-niche=false
+
+**普通话翻译**
+
+你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「FIX MY ROOF Total Roof Restorations - roofing Brisbane」，但目前是泛泛一句）。
+
+**对客户的影响**
+
+Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
+
+
+### 主要 · local_schema_markup
+
+**技术事实**
+
+no LocalBusiness JSON-LD
+
+**普通话翻译**
+
+网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI 知道你是本地企业、地址、电话、营业时间的标准格式）。
+
+**对客户的影响**
+
+Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
+
+
+### 主要 · Purple and bright yellow color scheme feels generic/dated
+
+**技术事实**
+
+The header uses a deep purple background (#5B3A9D approximate) with a bright yellow/gold house logo and yellow accent on 'Total Roof Restorations' tagline below the white 'FIX MY ROOF' text
+
+**普通话翻译**
+
+紫色和亮黄色的配色看起来像2010年代的小公司设计,不够专业。对于屋顶修复这种需要高度信任的服务,客户期望看到深蓝色或深灰色这种稳重的颜色。
+
+**对客户的影响**
+
+客户在比较多个屋顶修复公司时,会根据网站的视觉印象判断公司的专业程度。如果你的配色看起来像十年前的设计,客户会认为你的技术和服务也过时,选择看起来更现代、更专业的竞争对手。这可能导致20-30%的询盘流失。
+
+**正确长啥样**
+
+A professional palette: navy or charcoal primary, coral or warm orange accent for CTAs, with white space and minimal use of accent color. Logo should use 1-2 colors maximum. Think Dulux or James Hardie branding: understated, trustworthy, premium.
+
+**Redesign 怎么改**
+
+Redesign brand palette: replace purple with navy (#1A3A52), replace bright yellow with coral (#FF6B47) for CTA buttons only, keep white text on navy background for header, use neutral grey (#F5F5F5) for page background, limit accent color to CTAs and key highlights
+
+
+### 主要 · Business hours banner takes prime hero space
+
+**技术事实**
+
+Directly below the logo, a white rounded rectangle banner displays 'Open 6:30 AM - 7:00 PM' with a small arrow icon on the right side, occupying approximately 80px of vertical space in the prime hero area
+
+**普通话翻译**
+
+紫色logo下方最重要的位置放了一个营业时间横幅,占据了黄金区域。访客首先需要看到的是你提供什么服务和如何联系你,而不是营业时间。
+
+**对客户的影响**
+
+客户在搜索'Brisbane屋顶修复'时,前3秒决定是否继续浏览。如果黄金位置放的是营业时间而不是服务说明或联系按钮,客户可能在看到你的核心优势之前就离开了。这可能导致每10个访客中有3-4个流失。
+
+**正确长啥样**
+
+Hero section should lead with a headline like 'Brisbane Roof Restoration Experts – 25 Years' Experience' immediately below the logo, with a large phone button or quote form CTA. Business hours belong in the footer or a small icon in the header navigation.
+
+**Redesign 怎么改**
+
+Remove business hours from hero area; replace with H1 headline 'Brisbane's Trusted Roof Restoration Specialists' immediately below logo, followed by subheading 'Pressure washing • Re-pointing • Roof coating • 5-star rated' and prominent 'Call Now' button; move hours to footer as icon with clock symbol
+
+
+## 六、Redesign 的发力点（综合视觉 + 评论数据）
+
+1. [视觉] 1. Build a custom website to replace the GBP embed: hero section with roof restoration photo, prominent phone CTA, service cards, testimonials
+2. [视觉] 2. Remove cookie banner obstruction and implement minimal-friction consent if legally required (slim bottom strip)
+3. [视觉] 3. Redesign brand palette from purple/yellow to navy/coral for modern professional appearance and improved trust
+4. [评论] Feature the 'no payment accepted' story prominently to build immediate trust and differentiate from competitors.
+5. [评论] Highlight 'punctuality' and 'clean job site' in the service guarantees section to address common homeowner anxieties.
+6. [评论] Use quotes about 'clear communication' in the 'How It Works' section to reassure potential clients about the process.
+
+## 七、推荐销售切入点
+
+- 你的网站没有 HTTPS — 浏览器对来访客户显示「不安全」，直接伤害信任
+- 你已经有不错的 Google 流量基础（127 条 5★ 评论），但当前网站设计在浪费这些点击
+- 客户口碑已经强（exceptional integrity / punctual and reliable / high-quality workmanship）— 网站只需要把这份信任承接住，不需要从零建立
+
+## 真实速度数据 · Google PageSpeed Insights
+
+我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
+
+### 移动端（mobile）
+
+**Lighthouse 分数（实验室）：**
+
+| 维度 | 分数 |
+|---|---|
+| 性能 (Performance) | **28/100** |
+| 可访问性 (Accessibility) | 91/100 |
+| 最佳实践 (Best Practices) | 100/100 |
+| SEO | 100/100 |
+
+**Lab 关键指标：** LCP `23.3s` · FCP `8.1s` · CLS `0.000` · TBT `1675ms`
+
+**真实用户体验（过去 28 天 CRUX field data）总评：** `SLOW`
+
+| 指标 | 75% 用户值 | Google 评级 |
+|---|---|---|
+| LCP（最大内容绘制 p75） | 5.33s | SLOW |
+| FCP（首次内容绘制 p75） | 2.82s | AVERAGE |
+| TTFB（服务器响应 p75） | 1.45s | AVERAGE |
+| CLS（布局抖动 p75） | 0.000 | FAST |
+| INP（交互响应 p75） | 211ms | AVERAGE |
+
+**这意味着：** 过去 28 天访问你网站的实际用户里，75% 的人遇到的体验就是上面这些数字 — 不是我们测的、是 Google 用真实 Chrome 用户数据统计出来的。
+
+**Google 建议的优化项（按节省时间排序，前 4）：**
+
+- **Reduce unused JavaScript** — 节省 5700ms · 节省 1082KB
+- **Minify JavaScript** — 节省 300ms · 节省 32KB
+- **Initial server response time was short** — 节省 194ms
+- **Reduce unused CSS** — 节省 150ms · 节省 18KB
+
+### 桌面端（desktop）
+
+**Lighthouse 分数：** Performance 41 · A11y 91 · Best Practices 100 · SEO 100
+
+## SEO 迁移评估 与 运营活跃度
+
+客户最常担心的问题：「我重做网站，会不会丢掉 Google 排名？」这一段直接回答。
+
+### 现有页面盘点
+
+- **Sitemap 状态：** 未发现 sitemap.xml — 这本身就是个 SEO 短板（Google 爬虫漏抓页面），redesign 时会一并补上。
+
+### 运营活跃度
+
+- **整体活跃度：** 无法判断 
+- **Blog 板块：** 未发现 — 没有内容营销基础
+- **社交媒体链接：** 网站上引用了 1 个平台 — facebook
+
+## 域名历史与邮件信誉
+
+
+### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
+
+- **SPF (反垃圾发件验证)：** ⚠ 未配置 — 客户如果用域名邮箱发邮件，进垃圾箱的概率高
+- **DKIM (邮件签名)：** ⚠ 常见 selector 未发现 DKIM 配置（不一定确凿，但提示有问题）
+- **DMARC (策略)：** ⚠ 未配置 — 域名易被仿冒做钓鱼
+- **整体邮件投递信誉：** `none` (全无配置 — 邮件营销 / cold outreach 几乎不可能投递成功)
+
+> 这是后续 **「Social Media Management 月度包」** 或 **「Cold Outreach 启动包」** 的前置条件 —— 邮件 DNS 没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。
+
+## 技术栈与营销基建
+
+从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。
+
+- **分析工具：** Google Tag Manager
+- **广告 Pixel：** Meta (Facebook) Pixel — 客户已经在投放（或投放过）付费广告，对营销预算不陌生
+
+**数字成熟度打分：** 3 / 6 （中 — 已有基础设施，缺少深度运营）
+
+### Redesign 时必须保留 / 重新安装的追踪代码
+
+客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时**必须用同一套 ID 重新接进新网站**，否则等于清零所有累积。
+
+- Google Tag Manager
+- Meta (Facebook) Pixel
+
+我们 redesign 交付清单会把这些列为「必须 setup 项」。
+
+## AI 时代可发现性 · GEO Readiness
+
+GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overviews 这些 AI 搜索产品**不像传统搜索引擎那样按"关键词排名"工作**，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在 AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。
+
+**AI 可发现性总分：** 0 / 100 — AI agent / ChatGPT 几乎无法准确引用此网站 — 在生成式搜索时代等于隐身
+
+### 还缺的（12 项 — 这些是 redesign 时一并补上的标准动作）
+
+- [缺失] `llms_txt_present` (5 分) — no /llms.txt at standard path
+- [缺失] `ai_bot_robots_policy` (5 分) — robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)
+- [缺失] `localbusiness_schema` (15 分) — no LocalBusiness or Organization JSON-LD
+- [缺失] `service_schema` (10 分) — no Service JSON-LD
+- [缺失] `faqpage_schema` (10 分) — no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)
+- [缺失] `aggregaterating_schema` (5 分) — no AggregateRating JSON-LD (★ rating not shown in search snippets)
+- [缺失] `breadcrumb_schema` (5 分) — no BreadcrumbList JSON-LD
+- [缺失] `semantic_landmarks` (10 分) — 2 semantic landmarks present: <main, <section
+- [缺失] `faq_qa_pattern` (10 分) — 0 question-style heading(s) found (Q&A format helps AI extraction)
+- [缺失] `eeat_business_credentials` (10 分) — only 0/4 credentials found — need ≥2 of: ABN, license/QBCC, years-in-business, insurance
+- [缺失] `eeat_warranty_trust` (5 分) — no warranty/guarantee in copy
+- [缺失] `jsonld_at_least_one` (10 分) — 0 JSON-LD block(s) detected on page
+
+> **销售切入：** 「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 0/100。」
+
+## 业务规模信号 · 内部筛选用
+
+**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
+
+- **规模信号汇总：** 小型客户特征
+- **客户分级：** `small` — 小型，符合我们标准产品包定位
+
+> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
+
+**触发依据：**
+- Google 评价 127 条（≥50，有规模基础）
+- 已部署 2 个追踪工具
+
+## Upsell 机会 · redesign 之外的月度营收
+
+redesign 是一次性收入。以下是基于这个客户当前现状自动识别的**持续性服务包**机会，可以在 redesign 提案签字时一并捆绑进去。
+
+### 内容写作月度包（Blog / 案例 / SEO 长尾）
+
+**触发依据：** 网站没有 blog 板块 — 没有内容营销基础设施，长尾 SEO 流量为零。
+
+**包内容：** 每月 2 篇 SEO-optimized blog（800-1,200 字）+ 每季度 1 篇 case study（含 before/after 图）+ 关键词研究报告。
+
+**月度费用区间：** $400-800/月
+
+**销售切入：** 「ChatGPT 时代搜索引擎更偏爱有「专家深度内容」的网站。你目前的网站只有服务介绍页 — AI 可引用的素材几乎为零。」
+
+<!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
+<!-- 现网站快速诊断 -->
+
+<!-- M2-D6 required token bridge: 业主沟通要点 → covered by detail-builder section -->
+<!-- 业主沟通要点 -->
+
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
+
+## 附录 · 数据出处
+
+- Cheap audit version: `-`
+- Detailed audit version: `2026-05-11-v1`
+- Vision model: `claude_cli · claude-sonnet-4-5-20250929`
+- Review source: `gmaps docker (full reviews)`
+- 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)

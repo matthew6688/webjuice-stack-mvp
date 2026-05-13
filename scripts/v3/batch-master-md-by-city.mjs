@@ -114,9 +114,20 @@ for (const source of SOURCES) {
   }
 }
 
-// Wait briefly for master-md auto-refresh tasks to flush
-console.log('\n[batch] waiting 5s for master.md auto-refresh tasks...');
-await new Promise((res) => setTimeout(res, 5000));
+// V3 (2026-05-13) · directly invoke build-master-md for fresh entities ·
+// dispatcher may not be running in this worktree · enqueueMasterMdRefresh queues
+// tasks that may never get processed. Sync invocation guarantees verification.
+console.log('\n[batch] building master.md skeleton for all fresh entities...');
+for (const r of results) {
+  for (const k of r.fresh_keys) {
+    const buildResult = spawnSync('npm', ['run', 'leads:build-master-md', '--', '--entity-key', k], {
+      cwd: REPO, encoding: 'utf8', timeout: 60_000,
+    });
+    if (buildResult.status !== 0) {
+      console.log(`    ✗ build-master-md ${k} · exit=${buildResult.status}`);
+    }
+  }
+}
 
 // Aggregate · verify master.md per fresh entity
 console.log('\n[batch] verifying master.md for all fresh entities...');

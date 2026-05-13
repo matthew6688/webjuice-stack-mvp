@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-plumber-sydney-202605132307",
+  "title": "[Places Pipeline] plumber sydney — 2026-05-13 13:07 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504107786160836619",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504107786160836619",
+  "initial_message_id": "1504107786160836619",
+  "niche": "plumber",
+  "city": "sydney",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "plumber sydney",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T13:07:21.446Z",
+  "finished_at": "2026-05-13T13:07:25.140Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T13:07:22.509Z",
+      "message_id": "1504107790770245633"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chij13zknceyemsrwh8t7k18mda, place_chijrdphtgafemsremdh0aahtmg",
+      "at": "2026-05-13T13:07:24.031Z",
+      "message_id": "1504107797338656808"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `plumber sydney`\nLeads (first 5): place_chij13zknceyemsrwh8t7k18mda, place_chijrdphtgafemsremdh0aahtmg",
+      "at": "2026-05-13T13:07:24.451Z",
+      "message_id": "1504107799225958511"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T13:08:02.346Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 1,
+      "domain": 2
+    },
+    "exit_code": 0
+  }
+}

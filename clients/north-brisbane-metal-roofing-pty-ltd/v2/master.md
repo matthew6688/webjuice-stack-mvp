@@ -1,10 +1,10 @@
 ---
-business_id: "place_chij94nexjfjk2srxwxb4ar4hj4"
+business_id: "domain_nbmr.com.au"
 business_name: "North Brisbane Metal Roofing Pty Ltd"
 niche: "roofer"
 city: "Brisbane"
 rating: 4.8
-review_count: 61
+review_count: 0
 website: "http://www.nbmr.com.au/"
 audit_score: null
 decision: null
@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T12:43:49.969Z"
+generated_at: "2026-05-13T13:15:42.188Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -26,7 +26,7 @@ assets:
 
 # North Brisbane Metal Roofing Pty Ltd · 现状审计与重构提议
 
-> **null/100** · - · 行业：roofer · 地区：Brisbane · Google 评价：4.8★ （61 条）
+> **null/100** · - · 行业：roofer · 地区：Brisbane · Google 评价：4.8★ （0 条）
 
 ## 内部分级 · 运营优先看这段
 
@@ -45,33 +45,20 @@ assets:
 
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Places API (官方搜索)
-- **搜索关键词**: `roofer brisbane`
-- **结果排名**: 第 13 位
+- **来源**: Google Maps (gosom 抓取)
+- **搜索关键词**: `roofer in brisbane`
 - **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-brisbane-202605132243`
 
-- 电话：0498 478 739
-- 地址：3/359 Gympie Rd P.O.B, Unit 50, Kedron QLD 4031, Australia
+- 电话：0498478739
+- 地址：3/359 Gympie Rd P.O.B, Unit 50, Kedron QLD 4031
 - 网站：[http://www.nbmr.com.au/](http://www.nbmr.com.au/)
+- 网站状态：`independent_http_site`
 
 ## 三、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
-
-## 业务规模信号 · 内部筛选用
-
-**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
-
-- **规模信号汇总：** 小型客户特征
-- **客户分级：** `small` — 小型，符合我们标准产品包定位
-
-> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
-
-**触发依据：**
-- Google 评价 61 条（≥50，有规模基础）
 
 ## 现网站快速诊断
 
