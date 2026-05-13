@@ -1,19 +1,36 @@
 {
   "deliverableId": "m2-d1-rescore-all",
   "overall": "PASS",
-  "total": 1,
-  "passed": 0,
-  "skipped": 1,
+  "total": 4,
+  "passed": 4,
+  "skipped": 0,
   "failed": 0,
-  "took_ms": 1,
-  "ran_at": "2026-05-13T04:35:29.542Z",
+  "took_ms": 52,
+  "ran_at": "2026-05-13T04:48:22.104Z",
   "results": [
     {
-      "name": "rescore-script-exists",
+      "name": "--all-niches-flag-supported",
       "passed": true,
-      "skipped": true,
-      "reason": "scripts/scoring/rescore-v2.js missing"
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "niche-normalize-map-applied",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "dry-run-mode",
+      "passed": true,
+      "error": null,
+      "took_ms": 51
+    },
+    {
+      "name": "hermes-cron-registered",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }
