@@ -376,6 +376,10 @@ Bug fixes during this sprint affecting M1:
 
 ---
 
+## 7.9 Operator runbook · 全链路流转
+
+完整 Discord → master.md 端到端流转、汇报格式、节点细节、Hermes 平行入口 → **[SOP-1-FLOW.md](./SOP-1-FLOW.md)**
+
 ## 8. Health Check · `pl:intake-doctor` (V3 · 2026-05-14)
 
 **Goal**: 一行总检 SOP-1 链路（intake → entity → master.md enqueue → dispatcher）是否健康。复用 `pl:sop0-doctor` 结构 · daily cron 09:00 跑 · 失败 → Discord webhook。
