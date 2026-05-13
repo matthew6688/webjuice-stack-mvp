@@ -1,12 +1,12 @@
 {
   "deliverableId": "m1-d4-parseargs",
-  "overall": "FAIL",
+  "overall": "PASS",
   "total": 8,
-  "passed": 7,
+  "passed": 8,
   "skipped": 0,
-  "failed": 1,
+  "failed": 0,
   "took_ms": 3,
-  "ran_at": "2026-05-13T04:35:21.347Z",
+  "ran_at": "2026-05-13T04:44:47.197Z",
   "results": [
     {
       "name": "case-space-syntax",
@@ -52,8 +52,8 @@
     },
     {
       "name": "pl-ingest-image-uses-shared-parseArgs",
-      "passed": false,
-      "error": "pl-ingest-image.js must import from ./_pl-shared",
+      "passed": true,
+      "error": null,
       "took_ms": 0
     }
   ]

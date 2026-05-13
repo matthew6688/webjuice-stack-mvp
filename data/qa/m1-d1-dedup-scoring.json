@@ -2,90 +2,89 @@
   "deliverableId": "m1-d1-dedup-scoring",
   "overall": "PASS",
   "total": 13,
-  "passed": 0,
-  "skipped": 13,
+  "passed": 13,
+  "skipped": 0,
   "failed": 0,
   "took_ms": 3,
-  "ran_at": "2026-05-13T04:35:21.176Z",
+  "ran_at": "2026-05-13T04:44:47.047Z",
   "results": [
     {
-      "name": "module-exists",
+      "name": "case-1-auto-at-intake",
       "passed": true,
-      "skipped": true,
-      "reason": "core/leads/dedup-scorer.js missing or broken — implementation required (not found)"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-1",
+      "name": "case-2-llm",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-2",
+      "name": "case-3-merge",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-3",
+      "name": "case-4-merge",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-4",
+      "name": "case-5-llm",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-5",
+      "name": "case-6-llm",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-6",
+      "name": "case-7-pass",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-7",
+      "name": "case-8-pass",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-8",
+      "name": "case-9-llm",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-9",
+      "name": "case-10-llm",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-10",
+      "name": "case-11-merge",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-11",
+      "name": "case-12-pass",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-12",
+      "name": "thresholds-not-hardcoded",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on dedup-scorer.js"
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }

@@ -10,6 +10,7 @@
 import path from 'path';
 import fs from 'fs';
 import { runImageLeadToV2 } from '../../core/leads/image-lead-discovery-v2.js';
+import { parseArgs } from './_pl-shared.js';
 
 const args = parseArgs(process.argv.slice(2));
 
@@ -72,19 +73,6 @@ console.log(JSON.stringify({
   queueCounts: result.queueCounts ?? null,
   lead: result.lead ?? null,
 }, null, 2));
-
-function parseArgs(argv) {
-  const parsed = {};
-  for (let i = 0; i < argv.length; i += 1) {
-    const token = argv[i];
-    if (!token.startsWith('--')) continue;
-    const key = token.slice(2);
-    const next = argv[i + 1];
-    parsed[key] = next && !next.startsWith('--') ? next : true;
-    if (next && !next.startsWith('--')) i += 1;
-  }
-  return parsed;
-}
 
 function printUsageAndExit(code) {
   console.error('Usage: npm run pl:ingest-image -- \\');

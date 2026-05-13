@@ -1,49 +1,62 @@
 {
   "deliverableId": "m1-d2-discovery-score",
   "overall": "PASS",
-  "total": 6,
-  "passed": 0,
-  "skipped": 6,
+  "total": 7,
+  "passed": 7,
+  "skipped": 0,
   "failed": 0,
-  "took_ms": 2,
-  "ran_at": "2026-05-13T04:35:21.228Z",
+  "took_ms": 3,
+  "ran_at": "2026-05-13T04:44:47.097Z",
   "results": [
     {
       "name": "case-gosom-full",
       "passed": true,
-      "skipped": true,
-      "reason": "discovery-score.js missing (not found)"
+      "error": null,
+      "took_ms": 0
     },
     {
       "name": "case-places-full",
       "passed": true,
-      "skipped": true,
-      "reason": "discovery-score.js missing (not found)"
+      "error": null,
+      "took_ms": 0
     },
     {
       "name": "case-image-min",
       "passed": true,
-      "skipped": true,
-      "reason": "discovery-score.js missing (not found)"
+      "error": null,
+      "took_ms": 0
     },
     {
       "name": "case-single-enrich",
       "passed": true,
-      "skipped": true,
-      "reason": "discovery-score.js missing (not found)"
+      "error": null,
+      "took_ms": 1
     },
     {
       "name": "case-no-website-bonus",
       "passed": true,
-      "skipped": true,
-      "reason": "discovery-score.js missing (not found)"
+      "error": null,
+      "took_ms": 0
     },
     {
       "name": "case-empty-no-crash",
       "passed": true,
-      "skipped": true,
-      "reason": "discovery-score.js missing (not found)"
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "classify-website-status-shared",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
   ],
-  "implementation_present": false
+  "scores": {
+    "gosom-full": 38,
+    "places-full": 38,
+    "image-min": 0,
+    "single-enrich": 35,
+    "no-website-bonus": 55,
+    "empty-no-crash": 0
+  }
 }
