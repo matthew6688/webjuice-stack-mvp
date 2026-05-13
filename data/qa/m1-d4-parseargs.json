@@ -1,0 +1,60 @@
+{
+  "deliverableId": "m1-d4-parseargs",
+  "overall": "FAIL",
+  "total": 8,
+  "passed": 7,
+  "skipped": 0,
+  "failed": 1,
+  "took_ms": 3,
+  "ran_at": "2026-05-13T04:35:21.347Z",
+  "results": [
+    {
+      "name": "case-space-syntax",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "case-equals-syntax",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "case-multi-equals",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "case-bool-flag",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "case-last-wins",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "case-quoted-apostrophe",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "case-positional-separated",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "pl-ingest-image-uses-shared-parseArgs",
+      "passed": false,
+      "error": "pl-ingest-image.js must import from ./_pl-shared",
+      "took_ms": 0
+    }
+  ]
+}

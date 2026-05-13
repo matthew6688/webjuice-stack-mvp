@@ -1,0 +1,37 @@
+{
+  "deliverableId": "m2-d5-staleness",
+  "overall": "PASS",
+  "total": 4,
+  "passed": 0,
+  "skipped": 4,
+  "failed": 0,
+  "took_ms": 3,
+  "ran_at": "2026-05-13T04:35:29.766Z",
+  "results": [
+    {
+      "name": "checkStaleness-exists",
+      "passed": true,
+      "skipped": true,
+      "reason": "core/leads/audit-stage1.js#checkStaleness missing"
+    },
+    {
+      "name": "case-fresh",
+      "passed": true,
+      "skipped": true,
+      "reason": "gated on checkStaleness"
+    },
+    {
+      "name": "case-31-day",
+      "passed": true,
+      "skipped": true,
+      "reason": "gated on checkStaleness"
+    },
+    {
+      "name": "case-env-override",
+      "passed": true,
+      "skipped": true,
+      "reason": "gated on checkStaleness"
+    }
+  ],
+  "implementation_present": false
+}

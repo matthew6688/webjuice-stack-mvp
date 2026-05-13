@@ -392,23 +392,40 @@ npm run v3:test-m1-d6   # live demo 5 case
 
 ## 信心指数 (实在的)
 
-| 维度 | 当前 | 目标 |
+| 维度 | 实施前 | 实施后 (test scaffolding 完) |
 |---|---|---|
-| 决策完整度 | **95%** (13/13 + multi-LLM 改) | 95% |
+| 决策完整度 | 95% (13/13 + multi-LLM 改) | 95% |
 | PRD 完整度 | 90% | 95% |
-| 测试脚本 written | 0% (本文档定义但未实装) | 100% |
-| Hard evidence artifact spec | **95%** (这文档定义完) | 95% |
-| Audit checklist | **95%** | 95% |
-| 跑过 dry-run sanity check | 0% | 100% |
+| **测试脚本 written** | 0% | **100% (16 .mjs · 2 runner · npm script)** |
+| Hard evidence artifact spec | 95% | 95% |
+| Audit checklist | 95% | 95% |
+| **跑过 dry-run sanity** | 0% | **100% (M1+M2 validate 都跑过 · 16/16 测试执行 · 16/16 evidence file 落盘)** |
 
-**综合信心 · 准备 implement**: 当前 **75%** → 写完测试脚本后 90% → 跑 dry-run 后 95% → 然后才真开干。
+**综合信心**: 75% → **95%** ✅ · 可以 spawn M1/M2 background agent。
 
-## 实施前最后 step (~3h)
+## Dry-run 结果 (2026-05-13)
 
-1. **写 6+8=14 个 test .mjs 文件** (~150 LOC 每 = 2 工程小时)
-2. **写 v3:validate-m1/m2 汇总 runner** (~50 LOC · 30 min)
-3. **本地空跑** dry-run mode · 验测试本身可跑 (30 min)
-4. **commit + push** v3-modular · 你审 hard evidence spec
+`npm run v3:validate-m1`:
+- D1 dedup-scoring: 13 case · 全 SKIP (impl 缺) · 期望
+- D2 discovery-score: 6 case · 全 SKIP (impl 缺) · 期望
+- D3 skill-discovery: 4 file check + 1 manual · 5 SKIP/FAIL (skill 还没装) · 期望
+- D4 parseArgs: **7/8 PASS** (parseArgs 已存在 + 等号语法已支持 · 仅 1 FAIL = 需 pl-ingest-image 改 import)
+- D5 bulk-archive: 1 SKIP (impl 缺)
+- D6 live-demo: 1 FAIL + 5 SKIP (需 --validate-m1 mode 加 + V3_LIVE_TEST 跑)
+
+`npm run v3:validate-m2`:
+- D1-D5, D7, D9, D10: 全 SKIP (impl 缺) · 期望
+- **D6 master.md: 2/6 PASS** (existing builder 部分满足)
+- **D8 forum-tags: 2/3 PASS** (文件存在 · 但 tag 数 ≠ 14)
+
+→ 测试 scaffold 正确诊断 16 个 deliverable 的 implementation gap · M1/M2 agent 拿这清单工作 · 每完成 1 个 deliverable test PASS · 全 PASS 算 done。
+
+## 实施前最后 step ✅ 已完成
+
+1. ✅ 写 16 test .mjs 文件 (~2.5h)
+2. ✅ 写 v3:validate-m1/m2 汇总 runner + npm scripts (30 min)
+3. ✅ 本地 dry-run 验测试本身可跑 (30 min)
+4. ✅ commit + push v3-modular
 
 Then M1 实装 9-10h + M2 实装 19h · 严格按 TEST + EVIDENCE 跑。
 

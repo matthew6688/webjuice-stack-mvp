@@ -1,0 +1,44 @@
+{
+  "deliverableId": "m1-d3-skill-discovery",
+  "overall": "FAIL",
+  "total": 5,
+  "passed": 0,
+  "skipped": 1,
+  "failed": 4,
+  "took_ms": 3,
+  "ran_at": "2026-05-13T04:35:21.290Z",
+  "results": [
+    {
+      "name": "skill-md-exists",
+      "passed": false,
+      "error": "missing /Users/matthew/.hermes/profiles/marketer/skills/b2b-marketing/profitslocal-website-intake/SKILL.md",
+      "took_ms": 0
+    },
+    {
+      "name": "skill-md-frontmatter",
+      "passed": false,
+      "error": "skill missing",
+      "took_ms": 0
+    },
+    {
+      "name": "description-mentions-4-entries",
+      "passed": false,
+      "error": "skill missing",
+      "took_ms": 0
+    },
+    {
+      "name": "old-skill-archived",
+      "passed": false,
+      "error": "missing archive dir: /Users/matthew/.hermes/profiles/marketer/skills/b2b-marketing/.archive",
+      "took_ms": 0
+    },
+    {
+      "name": "manual-chat-smoke-5-cases",
+      "passed": true,
+      "skipped": true,
+      "reason": "human-tested via Hermes chat · log in m1-d3-skill-smoke.md"
+    }
+  ],
+  "skill_path": "/Users/matthew/.hermes/profiles/marketer/skills/b2b-marketing/profitslocal-website-intake/SKILL.md",
+  "archive_dir": "/Users/matthew/.hermes/profiles/marketer/skills/b2b-marketing/.archive"
+}

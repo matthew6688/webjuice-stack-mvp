@@ -1,0 +1,49 @@
+{
+  "deliverableId": "m1-d6-live-demo",
+  "overall": "FAIL",
+  "total": 6,
+  "passed": 0,
+  "skipped": 5,
+  "failed": 1,
+  "took_ms": 1,
+  "ran_at": "2026-05-13T04:35:21.451Z",
+  "results": [
+    {
+      "name": "--validate-m1-flag-recognized",
+      "passed": false,
+      "error": "sop1-live-demo.mjs must accept --validate-m1 mode",
+      "took_ms": 0
+    },
+    {
+      "name": "case-batch-maps",
+      "passed": true,
+      "skipped": true,
+      "reason": "V3_LIVE_TEST=1 required for live run"
+    },
+    {
+      "name": "case-places-api",
+      "passed": true,
+      "skipped": true,
+      "reason": "V3_LIVE_TEST=1 required for live run"
+    },
+    {
+      "name": "case-single-enrich",
+      "passed": true,
+      "skipped": true,
+      "reason": "V3_LIVE_TEST=1 required for live run"
+    },
+    {
+      "name": "case-image",
+      "passed": true,
+      "skipped": true,
+      "reason": "V3_LIVE_TEST=1 required for live run"
+    },
+    {
+      "name": "case-dedup",
+      "passed": true,
+      "skipped": true,
+      "reason": "V3_LIVE_TEST=1 required for live run"
+    }
+  ],
+  "live_mode": false
+}

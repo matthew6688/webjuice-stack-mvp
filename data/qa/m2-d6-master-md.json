@@ -1,0 +1,48 @@
+{
+  "deliverableId": "m2-d6-master-md",
+  "overall": "FAIL",
+  "total": 6,
+  "passed": 2,
+  "skipped": 0,
+  "failed": 4,
+  "took_ms": 10,
+  "ran_at": "2026-05-13T04:35:29.828Z",
+  "results": [
+    {
+      "name": "5-required-sections-on-empty-audit",
+      "passed": false,
+      "error": "md.includes is not a function",
+      "took_ms": 2
+    },
+    {
+      "name": "TBD-placeholder-when-audit-incomplete",
+      "passed": false,
+      "error": "md.match is not a function",
+      "took_ms": 0
+    },
+    {
+      "name": "section-7-after-section-1",
+      "passed": false,
+      "error": "md.indexOf is not a function",
+      "took_ms": 0
+    },
+    {
+      "name": "22-conditional-sections-when-full-data",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "od_status-frontmatter-optional",
+      "passed": false,
+      "error": "md.match is not a function",
+      "took_ms": 0
+    },
+    {
+      "name": "regression-real-customer-renders",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    }
+  ]
+}
