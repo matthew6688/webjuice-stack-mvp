@@ -1,19 +1,36 @@
 {
   "deliverableId": "m1-d5-bulk-archive",
   "overall": "PASS",
-  "total": 1,
-  "passed": 0,
-  "skipped": 1,
+  "total": 4,
+  "passed": 4,
+  "skipped": 0,
   "failed": 0,
-  "took_ms": 2,
-  "ran_at": "2026-05-13T04:35:21.400Z",
+  "took_ms": 9,
+  "ran_at": "2026-05-13T04:44:47.251Z",
   "results": [
     {
-      "name": "script-exists",
+      "name": "script-loads",
       "passed": true,
-      "skipped": true,
-      "reason": "scripts/cli/pl-bulk-archive.js missing — implementation required"
+      "error": null,
+      "took_ms": 3
+    },
+    {
+      "name": "dry-run-mode-no-write",
+      "passed": true,
+      "error": null,
+      "took_ms": 5
+    },
+    {
+      "name": "backup-created-before-commit",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "history-event-on-archive",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }
