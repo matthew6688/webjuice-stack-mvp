@@ -77,11 +77,45 @@ export async function fetchReviewsForEntity({ grade, entityKey, __mock, __forceD
   return null;
 }
 
+// V3 (2026-05-13): wire _tryDocker / _tryPlaces to real fetchers · was placeholder.
+// Dynamic import so this module stays test-isolated (test contract uses __mock flag).
 async function _tryDocker(entityKey) {
-  // Placeholder; production wires to scripts/cli/pl-scrape-docker.js fixture path.
-  return { reviews: [], count: 0, entityKey };
+  const entity = await _loadEntity(entityKey);
+  if (!entity) throw new Error(`entity ${entityKey} not found`);
+  const { fetchLeadReviewsLocal, gmapsContainerAvailable } = await import('../reviews/fetch-reviews-local.js');
+  if (!gmapsContainerAvailable()) throw new Error('gosom docker container not running');
+  const out = await fetchLeadReviewsLocal({ entity });
+  if (!out?.ok) throw new Error(out?.reason || 'docker fetch failed');
+  return {
+    reviews: out.reviews,
+    count: out.reviews.length,
+    rating_distribution: out.rating_distribution,
+    review_count: out.review_count,
+    placeId: out.placeId,
+    fetched_at: out.fetched_at,
+  };
 }
 
 async function _tryPlaces(entityKey) {
-  return { reviews: [], count: 0, entityKey };
+  const entity = await _loadEntity(entityKey);
+  if (!entity) throw new Error(`entity ${entityKey} not found`);
+  const { fetchLeadReviews } = await import('../reviews/fetch-reviews.js');
+  const out = await fetchLeadReviews({ entity });
+  if (!out?.ok) throw new Error(out?.reason || 'places fetch failed');
+  return {
+    reviews: out.reviews || [],
+    count: (out.reviews || []).length,
+    rating: out.rating,
+    review_count: out.user_ratings_total,
+    placeId: out.place_id,
+    fetched_at: new Date().toISOString(),
+  };
+}
+
+async function _loadEntity(entityKey) {
+  const fsMod = await import('node:fs');
+  const pathMod = await import('node:path');
+  const fp = pathMod.default.join(process.cwd(), 'data/leads/entities', `${entityKey}.json`);
+  if (!fsMod.default.existsSync(fp)) return null;
+  try { return JSON.parse(fsMod.default.readFileSync(fp, 'utf8')); } catch { return null; }
 }

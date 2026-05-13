@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T07:33:57.765Z"
+generated_at: "2026-05-13T10:41:31.427Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -104,4 +104,4 @@ assets:
 - Detailed audit version: `-`
 - Vision model: `n/a`
 - Review source: `Google Places · most_relevant (max 5)`
-- 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)
+- 完整 audit 报告 HTML：_(待 audit 完成后自动生成)_

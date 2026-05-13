@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-104318-7345f2",
+  "created_at": "2026-05-13T10:43:18.601Z",
+  "updated_at": "2026-05-13T10:43:18.601Z",
+  "kind": "enrich",
+  "status": "pending",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "discovery-store.mergeLeadIntoEntity",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: thin-contact entity place_place_regression_thin_1778668998600 needs enrichment",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:run-enrichment-batch",
+    "args": [
+      "--skip-approval"
+    ],
+    "target_entity_key": "place_place_regression_thin_1778668998600",
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

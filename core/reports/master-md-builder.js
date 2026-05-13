@@ -1133,7 +1133,15 @@ export function buildMasterMdDetailed({
   // V3 bug fix #17 (2026-05-13): reflect actual review source (docker vs places).
   const rsource = reviewBundle?.source === 'gmaps_local_docker' ? 'gmaps docker (full reviews)' : 'Google Places · most_relevant (max 5)';
   sections.push(`- Review source: \`${rsource}\``);
-  sections.push(`- 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)`);
+  // V3 bug fix #12 (2026-05-13): only link to internal-audit-report.html if it
+  // actually exists on disk · skeleton-stage master.md doesn't have it yet.
+  const slugForLink = String(latest.name || entity.entityKey).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const auditHtmlPath = path.join(process.cwd(), 'clients', slugForLink, 'v2', 'internal-audit-report.html');
+  if (fs.existsSync(auditHtmlPath)) {
+    sections.push(`- 完整 audit 报告 HTML：[internal-audit-report](./internal-audit-report.html)`);
+  } else {
+    sections.push(`- 完整 audit 报告 HTML：_(待 audit 完成后自动生成)_`);
+  }
   sections.push('');
 
   const md = `---\n${yamlSerialize(fm)}\n---\n\n${sections.join('\n')}`;

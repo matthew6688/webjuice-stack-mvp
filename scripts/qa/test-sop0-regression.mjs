@@ -109,6 +109,22 @@ console.log('\n=== T21 · push trigger thin-contact → enrich task ===');
 {
   const { upsertDiscoveryRun } = await import(path.join(repoRoot, 'core/leads/discovery-store.js'));
   const { listTasks } = await import(path.join(repoRoot, 'core/tasks/task-store.js'));
+
+  // V3 bug fix (2026-05-13): proactive cleanup of any leftover regression
+  // enrich tasks (from previous test runs that failed mid-way). Without this,
+  // maybeSpawnEnrichTask's debounce sees a pending enrich task already in the
+  // queue and refuses to spawn a new one — making `after === before` and the
+  // test fail flaky. We also fix the post-test cleanup filter below.
+  const orphans = listTasks({ kind: 'enrich', status: 'pending' })
+    .filter((t) => t.input?.text?.includes('place_regression_thin_') || t.input?.text?.includes('Regression thin-contact'));
+  for (const t of orphans) {
+    const src = path.join(repoRoot, 'data/tasks', `${t.task_id}.json`);
+    const archDir = path.join(repoRoot, 'data/tasks/_archive/regression');
+    fs.mkdirSync(archDir, { recursive: true });
+    if (fs.existsSync(src)) fs.renameSync(src, path.join(archDir, `${t.task_id}.json`));
+  }
+  if (orphans.length) console.log(`  (pre-test cleanup: archived ${orphans.length} orphan enrich tasks)`);
+
   const before = listTasks({ kind: 'enrich', status: 'pending' }).length;
   const tmpRoot = `/tmp/sop0-regression-${Date.now()}`;
   upsertDiscoveryRun({
@@ -124,9 +140,14 @@ console.log('\n=== T21 · push trigger thin-contact → enrich task ===');
   check('T21 enrich task created', after.length > before, `before=${before} after=${after.length}`);
   // Cleanup
   fs.rmSync(tmpRoot, { recursive: true, force: true });
-  // Archive any newly-created enrich tasks so we don't pollute prod
+  // Archive any newly-created enrich tasks so we don't pollute prod.
+  // V3 bug fix (2026-05-13): the previous filter looked for the substring
+  // 'thin-contact entity place_regression' but real text has a double prefix
+  // ('place_place_regression_thin_<ts>') because entityKey = 'place_' + safeKey(place_id).
+  // Now matching by entityKey marker instead.
   for (const t of after) {
-    if (t.target?.text?.includes?.('regression') || t.input?.text?.includes('thin-contact entity place_regression')) {
+    const text = t.input?.text || '';
+    if (text.includes('place_regression_thin_') || text.includes('Regression thin-contact')) {
       const src = path.join(repoRoot, 'data/tasks', `${t.task_id}.json`);
       const archDir = path.join(repoRoot, 'data/tasks/_archive/regression');
       fs.mkdirSync(archDir, { recursive: true });
