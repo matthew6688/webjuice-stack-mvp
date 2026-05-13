@@ -211,6 +211,11 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 - [M2-PRD.md](./M2-PRD.md) · audit + 22 章 + grade router
 - [M3-PRD.md](./M3-PRD.md) · reference-adapter + publish (**回填 2026-05-14**)
 
+### Discord 架构 (跨 6 channel · cross-cutting · SoT)
+- [DISCORD-CHANNELS-PRD.md](./DISCORD-CHANNELS-PRD.md) · **6-channel 完整架构** (**新 2026-05-14** · 90% confidence)
+  · website-tasks · lead-discovery-runs · website-leads · website-projects · website-templates · paid-websites
+  · 角色 / tag / graduation / migration / phases
+
 ### Operator runbook (SOP-N-FLOW · 流转 / 节点 / 汇报 / 故障)
 - [SOP-1-FLOW.md](./SOP-1-FLOW.md) · Discord → master.md (**新 2026-05-14**)
 - [SOP-2-FLOW.md](./SOP-2-FLOW.md) · audit pipeline (**新 2026-05-14**)
