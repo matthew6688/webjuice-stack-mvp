@@ -166,7 +166,32 @@ async function handleNewForumThread(thread) {
           `🔍 OCR/extract 完成 · 用时 ${(imagePrep.extracted.latency_ms / 1000).toFixed(1)}s · 商家="${imagePrep.extracted.businessName}" · ${imagePrep.extracted.niche}/${imagePrep.extracted.city}`);
       } else {
         log('image.prep failed: ' + imagePrep.reason);
-        await postThreadReply(thread.id, `⚠ OCR/extract 未完成 · 原因: ${imagePrep.reason}`);
+        // V3 Bug B fix (2026-05-13 · live E2E found UX gap):
+        // When OCR runs but misses niche/city, operator needs to know
+        // exactly what's missing and how to fill it in.
+        const x = imagePrep.extracted || {};
+        const extractedLine = (x.businessName || x.phone || x.address || x.website)
+          ? `· OCR 提取到: ${[
+              x.businessName && `name="${x.businessName}"`,
+              x.phone && `phone=${x.phone}`,
+              x.address && `address="${x.address}"`,
+              x.website && `web=${x.website}`,
+              x.niche && `niche=${x.niche}`,
+              x.city && `city=${x.city}`,
+            ].filter(Boolean).join(' · ')}`
+          : '';
+        const missing = [];
+        if (!x.niche) missing.push('niche');
+        if (!x.city) missing.push('city');
+        if (!x.businessName) missing.push('business-name');
+        const action = missing.length
+          ? `**请补 ${missing.map(m => '`' + m + '`').join(' + ')}**:\n`
+            + `1️⃣ 在 thread 里回贴: \`${missing.map(m => m + '=<value>').join(' ')}\`\n`
+            + `2️⃣ 然后 react ✅ 让任务重试\n`
+            + `(或直接 react 🗑 放弃这条)`
+          : `请人工填入需要的字段后 react ✅ 重试`;
+        await postThreadReply(thread.id,
+          `⚠ 图片识别了 · 但还缺关键信息 · 转人工\n${extractedLine}\n${action}`);
       }
     } catch (err) {
       log('image.prep error', err.message);

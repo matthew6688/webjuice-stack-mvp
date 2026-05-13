@@ -67,6 +67,27 @@ Decision hints (priority order):
 - "find X in Y" / "搜索 X Y" without quotes → intake (gosom)
 - entityKey reference → audit
 
+CRITICAL · args extraction rules (V3 2026-05-13 fix · Bug A):
+
+For kind="intake" (batch-maps via gosom): MUST extract --niche AND --city from query.
+Examples:
+- "find brisbane plumbers"        → args: ["--niche", "plumber",  "--city", "brisbane"]
+- "find brisbane plumbers --count 2" → args: ["--niche", "plumber",  "--city", "brisbane", "--count", "2"]
+- "搜索 melbourne 屋顶"            → args: ["--niche", "roofing",  "--city", "melbourne"]
+- "Sydney roofing companies"      → args: ["--niche", "roofing",  "--city", "sydney"]
+- "find dentists in gold coast"   → args: ["--niche", "dentist",  "--city", "gold-coast"]
+Common niche words: plumber, roofer/roofing, electrician, dentist, restaurant, cafe, lawyer, hairdresser, photographer, accountant.
+Use SINGULAR form ("plumber" not "plumbers"). City: lowercase, hyphenate spaces ("gold-coast").
+
+For kind="places-intake": each quoted string becomes a --query arg.
+Example: '"cafe brisbane" "cafe sydney"' → args: ["--query", "cafe brisbane", "--query", "cafe sydney"]
+
+For kind="single-enrich": extract --business-name / --phone / --city / --niche / --website / --gbp-url from text.
+Example: "Joe's Plumbing 0412345678 Sydney" → args: ["--business-name", "Joe's Plumbing", "--phone", "0412345678", "--city", "sydney", "--niche", "plumber"]
+
+For kind="audit": extract --entity-key.
+Example: "audit place_chij..." → args: ["--entity-key", "place_chij..."]
+
 Input text:
 """
 ${(text || '').slice(0, 1500)}
@@ -76,7 +97,7 @@ JSON schema (all fields required):
 {
   "kind":              <one of the 8 kinds above>,
   "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:scrape-docker" | "pl:places-search-intake" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "leads:build-master-md" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
-  "args":              <array of CLI args; for single-enrich extract --business-name/--phone/--city/--niche/--website/--gbp-url to args>,
+  "args":              <array of CLI args · follow extraction rules above · NEVER pass raw query as positional args>,
   "target_entity_key": <string entityKey if found in input, else null>,
   "confidence":        <float 0..1>,
   "reasoning":         <short string, < 50 chars>
@@ -118,12 +139,40 @@ async function viaPaidCli(name, { text, attachments }) {
 
 function viaRegex({ text, attachments }) {
   const s = String(text || '');
-  // PLACES-INTAKE detection (highest specificity for batch search):
-  // - explicit "places search" / "use places" keyword
-  // - OR 2+ quoted strings (multi-query convention)
+  const lower = s.toLowerCase();
+
+  // 1. IMAGE — defer to legacy classifier when attachments present
+  if (attachments?.length) {
+    return {
+      kind:              'image-extract',
+      target_cli:        'pl:ingest-image',
+      args:              [],
+      target_entity_key: null,
+      confidence:        0.9,
+      provider:          'regex',
+      reasoning:         'regex/has-image-attachment',
+    };
+  }
+
+  // 2. AUDIT (V3 Bug fix · pressure test 2026-05-13) — entityKey reference
+  // matches place_chij... · image_<slug>_<phone> · domain_<...>
+  const entityKey = extractEntityKey(s);
+  if (entityKey && (/\b(audit|run\s+audit)\b/i.test(s) || /审计|跑\s*audit/.test(s))) {
+    return {
+      kind:              'audit',
+      target_cli:        'leads:run-pipeline',
+      args:              ['--entity-key', entityKey],
+      target_entity_key: entityKey,
+      confidence:        0.9,
+      provider:          'regex',
+      reasoning:         'regex/audit-keyword+entityKey',
+    };
+  }
+
+  // 3. PLACES-INTAKE
   const quotedAll = [...s.matchAll(/["“]([^"”\n]{3,80})["”]/g)].map((m) => m[1].trim());
   const hasPlacesKeyword = /\b(places\s+search|use\s+places|官方搜索|places\s+intake)\b/i.test(s);
-  if ((quotedAll.length >= 2 || hasPlacesKeyword) && !attachments?.length) {
+  if (quotedAll.length >= 2 || hasPlacesKeyword) {
     const queries = quotedAll.length ? quotedAll : [s.replace(/places\s+search|use\s+places/ig, '').trim()];
     const args = [];
     for (const q of queries) { args.push('--query', q); }
@@ -137,23 +186,44 @@ function viaRegex({ text, attachments }) {
       reasoning:         hasPlacesKeyword ? 'regex/places-keyword' : 'regex/multi-quoted',
     };
   }
-  // Single-enrich detection
+
+  // 4. SINGLE-ENRICH
   const hasPhone = /(?:\+?\d[\d\s().-]{7,}\d)/.test(s);
   const hasGbpUrl = /(?:maps\.google\.com|goo\.gl\/maps|maps\.app\.goo\.gl)/i.test(s);
   const hasQuotedName = quotedAll.length === 1;
-  if ((hasPhone || hasGbpUrl || hasQuotedName) && !attachments?.length) {
-    // Likely a single business reference, not a batch search
+  if (hasPhone || hasGbpUrl || hasQuotedName) {
     return {
       kind:              'single-enrich',
       target_cli:        'pl:single-enrich',
       args:              buildSingleEnrichArgs(s),
-      target_entity_key: extractEntityKey(text),
+      target_entity_key: entityKey,
       confidence:        0.75,
       provider:          'regex',
       reasoning:         hasGbpUrl ? 'regex/gbp-url' : hasPhone ? 'regex/phone' : 'regex/quoted-name',
     };
   }
-  // Fall through to legacy 5-class classifier
+
+  // 5. INTAKE (batch-maps via gosom) · V3 Bug A fix (2026-05-13 pressure test):
+  // Detect intake intent BEFORE falling through to legacy classifier.
+  // Strong signals: city keyword present, OR niche keyword present, OR
+  // "find/search" verb with industry-like noun.
+  const heuristicArgs = extractArgsFromText(s, 'intake');
+  const hasNiche = heuristicArgs.includes('--niche');
+  const hasCity = heuristicArgs.includes('--city');
+  const hasFindVerb = /\b(find|search\s+for|search|搜索|搜\s*一?批|查找|listing)\b/i.test(s);
+  if (hasNiche || hasCity || (hasFindVerb && /\b(companies|businesses|shops|stores|places)\b/i.test(s))) {
+    return {
+      kind:              'intake',
+      target_cli:        'pl:pipeline-batch-start',
+      args:              heuristicArgs,
+      target_entity_key: null,
+      confidence:        hasNiche && hasCity ? 0.85 : 0.6,
+      provider:          'regex',
+      reasoning:         `regex/intake niche=${hasNiche} city=${hasCity} verb=${hasFindVerb}`,
+    };
+  }
+
+  // 6. Fall through to legacy 5-class classifier
   const message = { content: text || '', attachments: attachments || [] };
   const r = classifyWebsiteTask(message);
   const mapped = REGEX_KIND_MAP[r.kind] || { kind: 'ops', target_cli: null };
@@ -161,7 +231,7 @@ function viaRegex({ text, attachments }) {
     kind:              mapped.kind,
     target_cli:        mapped.target_cli,
     args:              extractArgsFromText(text, mapped.kind),
-    target_entity_key: extractEntityKey(text),
+    target_entity_key: entityKey,
     confidence:        r.confidence || 0.5,
     provider:          'regex',
     reasoning:         `regex/${r.kind}`,
@@ -227,19 +297,134 @@ function extractEntityKey(text) {
   return m ? m[0] : null;
 }
 
+// V3 (2026-05-13 · Bug A fix · pressure test expanded these lists):
+// Singularize-aware niche detection · multi-city support.
+const NICHE_KEYWORDS = [
+  // services
+  ['plumber', 'plumber'], ['plumbers', 'plumber'], ['plumbing', 'plumber'],
+  ['roofer', 'roofer'], ['roofers', 'roofer'], ['roofing', 'roofer'], ['roof restoration', 'roofer'],
+  ['electrician', 'electrician'], ['electricians', 'electrician'], ['electrical', 'electrician'],
+  ['painter', 'painter'], ['painters', 'painter'], ['painting', 'painter'],
+  ['hvac', 'hvac'], ['ac', 'hvac'], ['air conditioning', 'hvac'], ['heating', 'hvac'],
+  ['locksmith', 'locksmith'], ['locksmiths', 'locksmith'],
+  ['carpenter', 'carpenter'], ['carpentry', 'carpenter'],
+  ['landscaper', 'landscaper'], ['landscaping', 'landscaper'], ['gardener', 'landscaper'],
+  ['cleaner', 'cleaner'], ['cleaning', 'cleaner'], ['cleaners', 'cleaner'],
+  ['mechanic', 'mechanic'], ['mechanics', 'mechanic'], ['auto repair', 'mechanic'],
+  ['detailer', 'auto detail'], ['detailing', 'auto detail'], ['auto detail', 'auto detail'],
+  ['panel beater', 'panel beater'], ['panel beaters', 'panel beater'],
+  // hospitality
+  ['restaurant', 'restaurant'], ['restaurants', 'restaurant'],
+  ['cafe', 'cafe'], ['café', 'cafe'], ['cafes', 'cafe'], ['coffee shop', 'cafe'],
+  ['bar', 'bar'], ['pub', 'bar'],
+  ['bakery', 'bakery'], ['bakeries', 'bakery'],
+  // health
+  ['dentist', 'dentist'], ['dentists', 'dentist'], ['dental', 'dentist'],
+  ['doctor', 'doctor'], ['gp', 'doctor'], ['clinic', 'doctor'],
+  ['physio', 'physiotherapist'], ['physiotherapist', 'physiotherapist'],
+  ['chiropractor', 'chiropractor'],
+  ['vet', 'vet'], ['veterinarian', 'vet'], ['veterinary', 'vet'],
+  // beauty / personal
+  ['hairdresser', 'hairdresser'], ['hair salon', 'hairdresser'], ['barber', 'hairdresser'],
+  ['nail salon', 'nail salon'], ['nails', 'nail salon'],
+  ['salon', 'salon'], ['spa', 'spa'], ['massage', 'massage'],
+  ['gym', 'gym'], ['fitness', 'gym'], ['pilates', 'gym'], ['yoga', 'gym'],
+  // professional
+  ['lawyer', 'lawyer'], ['law firm', 'lawyer'], ['solicitor', 'lawyer'], ['attorney', 'lawyer'],
+  ['accountant', 'accountant'], ['accounting', 'accountant'], ['cpa', 'accountant'],
+  ['photographer', 'photographer'], ['photography', 'photographer'],
+  ['real estate', 'real estate'], ['realtor', 'real estate'],
+  // 中文 keywords
+  ['屋顶', 'roofer'], ['屋顶公司', 'roofer'], ['修屋顶', 'roofer'],
+  ['水管', 'plumber'], ['管道工', 'plumber'],
+  ['电工', 'electrician'],
+  ['牙医', 'dentist'], ['牙科', 'dentist'],
+  ['餐厅', 'restaurant'], ['饭店', 'restaurant'],
+  ['咖啡', 'cafe'],
+  ['美发', 'hairdresser'], ['理发', 'hairdresser'],
+  ['律师', 'lawyer'], ['律所', 'lawyer'],
+  ['会计', 'accountant'],
+];
+
+const CITY_KEYWORDS = [
+  ['brisbane', 'brisbane'],
+  ['sydney', 'sydney'],
+  ['melbourne', 'melbourne'],
+  ['perth', 'perth'],
+  ['adelaide', 'adelaide'],
+  ['canberra', 'canberra'],
+  ['hobart', 'hobart'],
+  ['darwin', 'darwin'],
+  ['gold coast', 'gold-coast'],
+  ['sunshine coast', 'sunshine-coast'],
+  ['newcastle', 'newcastle'],
+  ['wollongong', 'wollongong'],
+  ['cairns', 'cairns'],
+  ['townsville', 'townsville'],
+  ['geelong', 'geelong'],
+  ['ipswich', 'ipswich'],
+  ['toowoomba', 'toowoomba'],
+];
+
 function extractArgsFromText(text, kind) {
-  // very conservative heuristic for intake/photos/audit:
-  // detect niche + city keywords and emit --niche X --city Y
   if (kind !== 'intake') return [];
   const lower = String(text || '').toLowerCase();
   const args = [];
-  const niches = ['restaurant', 'roofer', 'roofing', 'plumber', 'hvac', 'dentist', 'salon', 'lawyer', 'law firm', 'photographer'];
-  const niche = niches.find((n) => lower.includes(n));
-  if (niche) args.push('--niche', niche === 'roofing' ? 'roofer' : niche.split(' ')[0]);
-  // city: try to grab a 2nd capitalized word after niche or known city
-  const cities = ['brisbane', 'sydney', 'melbourne', 'perth', 'adelaide', 'gold coast'];
-  const city = cities.find((c) => lower.includes(c));
-  if (city) args.push('--city', city.replace(' ', '-'));
+  // niche: pick the FIRST match (longer phrases checked first via list order)
+  for (const [kw, norm] of NICHE_KEYWORDS) {
+    if (lower.includes(kw)) {
+      args.push('--niche', norm);
+      break;
+    }
+  }
+  // city
+  for (const [kw, norm] of CITY_KEYWORDS) {
+    if (lower.includes(kw)) {
+      args.push('--city', norm);
+      break;
+    }
+  }
+  // count: extract --count N or "N companies/businesses"
+  const countMatch = lower.match(/--count\s+(\d+)|\b(\d{1,3})\s+(companies|businesses|leads|results)\b/);
+  if (countMatch) {
+    const n = countMatch[1] || countMatch[2];
+    if (n) args.push('--count', n);
+  }
+  return args;
+}
+
+// V3 (2026-05-13 · Bug A): post-LLM normalize · enforce niche/city extraction
+// even when the LLM dropped them. LLM args win if present; we only ADD missing.
+function normalizeArgsForKind(args, text, kind) {
+  if (!Array.isArray(args)) args = [];
+  if (kind === 'intake' || kind === 'single-enrich') {
+    const hasNiche = args.some((a, i) => a === '--niche' && args[i + 1]);
+    const hasCity = args.some((a, i) => a === '--city' && args[i + 1]);
+    const heuristic = extractArgsFromText(text, 'intake');
+    if (!hasNiche) {
+      const i = heuristic.indexOf('--niche');
+      if (i >= 0) args = [...args, '--niche', heuristic[i + 1]];
+    }
+    if (!hasCity) {
+      const i = heuristic.indexOf('--city');
+      if (i >= 0) args = [...args, '--city', heuristic[i + 1]];
+    }
+    // Strip any positional args that look like part of the raw query
+    // (heuristic: lowercase word not preceded by a --flag)
+    const cleaned = [];
+    for (let i = 0; i < args.length; i++) {
+      const a = String(args[i]);
+      if (a.startsWith('--')) {
+        cleaned.push(a);
+        if (args[i + 1] !== undefined && !String(args[i + 1]).startsWith('--')) {
+          cleaned.push(args[i + 1]);
+          i++;
+        }
+      }
+      // positional dropped silently
+    }
+    args = cleaned;
+  }
   return args;
 }
 
@@ -253,7 +438,10 @@ export async function routeIntent({ text, attachments = [] } = {}) {
   if (!forced || forced === 'ollama') {
     try {
       const out = await viaOllama({ text, attachments });
-      if (out) return out;
+      if (out) {
+        out.args = normalizeArgsForKind(out.args, text, out.kind);
+        return out;
+      }
       errors.push('ollama: returned null');
     } catch (err) {
       errors.push(`ollama: ${err.message}`);
@@ -266,7 +454,10 @@ export async function routeIntent({ text, attachments = [] } = {}) {
   for (const p of paidChain) {
     try {
       const out = await viaPaidCli(p, { text, attachments });
-      if (out) return out;
+      if (out) {
+        out.args = normalizeArgsForKind(out.args, text, out.kind);
+        return out;
+      }
       errors.push(`${p}: returned null`);
     } catch (err) {
       errors.push(`${p}: ${err.message}`);
@@ -276,5 +467,6 @@ export async function routeIntent({ text, attachments = [] } = {}) {
   // 3. Regex always-on safety net (never fails — even ops/unknown)
   const out = viaRegex({ text, attachments });
   out.upstream_errors = errors.length ? errors : undefined;
+  out.args = normalizeArgsForKind(out.args, text, out.kind);
   return out;
 }

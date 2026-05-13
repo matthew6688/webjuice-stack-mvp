@@ -3,7 +3,7 @@
   "total_steps": 29,
   "passed": 29,
   "failed": 0,
-  "ran_at": "2026-05-13T10:59:09.862Z",
+  "ran_at": "2026-05-13T13:02:15.540Z",
   "phases": [
     {
       "name": "Phase 1 · M1 · Dedup scoring",
@@ -49,7 +49,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.827Z"
+      "started_at": "2026-05-13T13:02:15.506Z"
     },
     {
       "name": "Phase 2 · M1 · Discovery score",
@@ -89,7 +89,7 @@
           "data": null
         }
       ],
-      "started_at": "2026-05-13T10:59:09.830Z"
+      "started_at": "2026-05-13T13:02:15.509Z"
     },
     {
       "name": "Phase 3 · M1 · Entity upsert pipeline",
@@ -98,7 +98,7 @@
           "label": "upsertDiscoveryRun persists synthetic entity",
           "passed": true,
           "error": null,
-          "took_ms": 16,
+          "took_ms": 13,
           "data": {
             "entityKey": "__e2e_m1_m2__",
             "latestName": "E2E Test Roofing"
@@ -114,7 +114,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.831Z"
+      "started_at": "2026-05-13T13:02:15.510Z"
     },
     {
       "name": "Phase 4 · M2 · Audit staleness",
@@ -141,13 +141,13 @@
           "label": "env override AUDIT_STALENESS_DAYS=7",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 3,
           "data": {
             "decision": "refetch"
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.852Z"
+      "started_at": "2026-05-13T13:02:15.527Z"
     },
     {
       "name": "Phase 5 · M2 · Reviews cascade",
@@ -156,7 +156,7 @@
           "label": "normalizeReviews(docker) → places shape",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "count": 2
           }
@@ -180,7 +180,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.853Z"
+      "started_at": "2026-05-13T13:02:15.530Z"
     },
     {
       "name": "Phase 6 · M2 · Grade router",
@@ -189,7 +189,7 @@
           "label": "C-grade opens Discord thread + enqueues",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "thread_opened": true
           }
@@ -207,13 +207,13 @@
           "label": "A-grade NOT in cold-outreach queue",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "ok": true
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.854Z"
+      "started_at": "2026-05-13T13:02:15.530Z"
     },
     {
       "name": "Phase 7 · M2 · master.md",
@@ -243,11 +243,11 @@
           "error": null,
           "took_ms": 0,
           "data": {
-            "real_file_lines": 426
+            "real_file_lines": 428
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.854Z"
+      "started_at": "2026-05-13T13:02:15.532Z"
     },
     {
       "name": "Phase 8 · M2 · v2/ structure",
@@ -256,7 +256,7 @@
           "label": "ensureV2Structure creates 5 subdirs",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "v2_path": "/Users/matthew/Developer/google-map-website-v3/clients/__e2e_m1_m2__/v2"
           }
@@ -271,7 +271,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.855Z"
+      "started_at": "2026-05-13T13:02:15.533Z"
     },
     {
       "name": "Phase 9 · M2 · od-prep",
@@ -280,7 +280,7 @@
           "label": "deriveOdPrep(rich-and-rare) returns sourceUrl/tone/scope/businessType",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "ok": true,
             "entityKey": "rich-and-rare-restaurant",
@@ -307,7 +307,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.856Z"
+      "started_at": "2026-05-13T13:02:15.534Z"
     },
     {
       "name": "Phase 10 · M1 · bulk-archive",
@@ -318,11 +318,11 @@
           "error": null,
           "took_ms": 3,
           "data": {
-            "candidates": 11
+            "candidates": 64
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.857Z"
+      "started_at": "2026-05-13T13:02:15.534Z"
     },
     {
       "name": "Phase 11 · cross-module integration",
@@ -347,7 +347,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T10:59:09.861Z"
+      "started_at": "2026-05-13T13:02:15.539Z"
     }
   ]
 }

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-130202-90fddc",
+  "created_at": "2026-05-13T13:02:02.423Z",
+  "updated_at": "2026-05-13T13:02:02.423Z",
+  "kind": "photos_fetch",
+  "status": "pending",
+  "source": {
+    "platform": "test",
+    "thread_id": null,
+    "author": "pressure-test",
+    "message_id": null
+  },
+  "input": {
+    "text": "pressure test photos kind",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:download-places-photos",
+    "args": [
+      "--entity-key",
+      "__pressure__"
+    ],
+    "target_entity_key": "__pressure__",
+    "timeout_ms": 30000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

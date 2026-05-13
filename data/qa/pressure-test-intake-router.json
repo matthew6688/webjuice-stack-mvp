@@ -1,0 +1,421 @@
+{
+  "deliverableId": "pressure-test-intake-router",
+  "overall": "FAIL",
+  "total": 24,
+  "passed": 22,
+  "skipped": 0,
+  "failed": 2,
+  "took_ms": 132061,
+  "ran_at": "2026-05-13T13:00:38.998Z",
+  "results": [
+    {
+      "name": "route: \"find brisbane plumbers\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 6054
+    },
+    {
+      "name": "route: \"find brisbane plumbers --count 2\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5851
+    },
+    {
+      "name": "route: \"Sydney roofing companies\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5675
+    },
+    {
+      "name": "route: \"search for melbourne dentists\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5721
+    },
+    {
+      "name": "route: \"find dentists in gold coast\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 6082
+    },
+    {
+      "name": "route: \"搜索 brisbane 屋顶公司\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 6159
+    },
+    {
+      "name": "route: \"find perth panel beaters\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5677
+    },
+    {
+      "name": "route: \"cairns auto detail shops\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5823
+    },
+    {
+      "name": "route: \"\"cafe brisbane\" \"cafe sydney\"\" → places-intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5893
+    },
+    {
+      "name": "route: \"\"roofer perth\" \"roofer adelaide\" \"roofer hobart\"\" → places-intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 6344
+    },
+    {
+      "name": "route: \"places search \"panel beater Brisbane\"\" → places-intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5308
+    },
+    {
+      "name": "route: \"use places \"dentist gold coast\"\" → places-intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5344
+    },
+    {
+      "name": "route: \"Joe's Plumbing 0412345678 Sydney\" → single-enrich",
+      "passed": true,
+      "error": null,
+      "took_ms": 7065
+    },
+    {
+      "name": "route: \"Acme Roofing +61 423 999 888 brisbane\" → single-enrich",
+      "passed": true,
+      "error": null,
+      "took_ms": 7257
+    },
+    {
+      "name": "route: \"https://maps.app.goo.gl/abc123def\" → single-enrich",
+      "passed": true,
+      "error": null,
+      "took_ms": 5748
+    },
+    {
+      "name": "route: \"\"Test Business Name\"\" → single-enrich",
+      "passed": false,
+      "error": "kind=intake expected one of single-enrich · provider=ollama",
+      "took_ms": 5591
+    },
+    {
+      "name": "route: \"audit place_chijwdbif2xzkwsrru6lkmu2l0o\" → audit",
+      "passed": true,
+      "error": null,
+      "took_ms": 6429
+    },
+    {
+      "name": "route: \"审计 place_chija7rmbn38k2srv29x1ubwqmg\" → audit",
+      "passed": true,
+      "error": null,
+      "took_ms": 6530
+    },
+    {
+      "name": "route: \"health check\" → ops",
+      "passed": true,
+      "error": null,
+      "took_ms": 4310
+    },
+    {
+      "name": "route: \"system status\" → ops|intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 4310
+    },
+    {
+      "name": "route: \"\" → ops",
+      "passed": false,
+      "error": "kind=intake expected one of ops · provider=ollama",
+      "took_ms": 4487
+    },
+    {
+      "name": "route: \"asdfgh random nonsense\" → ops|intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 4518
+    },
+    {
+      "name": "route: \"find roofers\" → intake",
+      "passed": true,
+      "error": null,
+      "took_ms": 5872
+    },
+    {
+      "name": "no route emits raw query as positional args",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    }
+  ],
+  "summary": {
+    "cases": [
+      {
+        "text": "find brisbane plumbers",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "plumber",
+          "--city",
+          "brisbane"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "find brisbane plumbers --count 2",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "plumber",
+          "--city",
+          "brisbane",
+          "--count",
+          "2"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "Sydney roofing companies",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "roofing",
+          "--city",
+          "sydney"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "search for melbourne dentists",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "dentist",
+          "--city",
+          "melbourne"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "find dentists in gold coast",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "dentist",
+          "--city",
+          "gold-coast"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "搜索 brisbane 屋顶公司",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "roofing",
+          "--city",
+          "brisbane"
+        ],
+        "conf": 0.95
+      },
+      {
+        "text": "find perth panel beaters",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "panel-beater",
+          "--city",
+          "perth"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "cairns auto detail shops",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "auto-detail",
+          "--city",
+          "cairns"
+        ],
+        "conf": 0.95
+      },
+      {
+        "text": "\"cafe brisbane\" \"cafe sydney\"",
+        "kind": "places-intake",
+        "provider": "ollama",
+        "args": [
+          "--query",
+          "cafe brisbane",
+          "--query",
+          "cafe sydney"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "\"roofer perth\" \"roofer adelaide\" \"roofer hobart\"",
+        "kind": "places-intake",
+        "provider": "ollama",
+        "args": [
+          "--query",
+          "roofer perth",
+          "--query",
+          "roofer adelaide",
+          "--query",
+          "roofer hobart"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "places search \"panel beater Brisbane\"",
+        "kind": "places-intake",
+        "provider": "ollama",
+        "args": [
+          "--query",
+          "panel beater Brisbane"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "use places \"dentist gold coast\"",
+        "kind": "places-intake",
+        "provider": "ollama",
+        "args": [
+          "--query",
+          "dentist gold coast"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "Joe's Plumbing 0412345678 Sydney",
+        "kind": "single-enrich",
+        "provider": "ollama",
+        "args": [
+          "--business-name",
+          "Joe's Plumbing",
+          "--phone",
+          "0412345678",
+          "--city",
+          "sydney",
+          "--niche",
+          "plumber"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "Acme Roofing +61 423 999 888 brisbane",
+        "kind": "single-enrich",
+        "provider": "ollama",
+        "args": [
+          "--business-name",
+          "Acme Roofing",
+          "--phone",
+          "+61 423 999 888",
+          "--city",
+          "brisbane",
+          "--niche",
+          "roofer"
+        ],
+        "conf": 0.95
+      },
+      {
+        "text": "https://maps.app.goo.gl/abc123def",
+        "kind": "single-enrich",
+        "provider": "ollama",
+        "args": [
+          "--gbp-url",
+          "https://maps.app.goo.gl/abc123def"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "\"Test Business Name\"",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "business",
+          "--city",
+          "test"
+        ],
+        "conf": 0.5
+      },
+      {
+        "text": "audit place_chijwdbif2xzkwsrru6lkmu2l0o",
+        "kind": "audit",
+        "provider": "ollama",
+        "args": [
+          "--entity-key",
+          "place_chijwdbif2xzkwsrru6lkmu2l0o"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "审计 place_chija7rmbn38k2srv29x1ubwqmg",
+        "kind": "audit",
+        "provider": "ollama",
+        "args": [
+          "--entity-key",
+          "place_chija7rmbn38k2srv29x1ubwqmg"
+        ],
+        "conf": 1
+      },
+      {
+        "text": "health check",
+        "kind": "ops",
+        "provider": "ollama",
+        "args": [],
+        "conf": 1
+      },
+      {
+        "text": "system status",
+        "kind": "ops",
+        "provider": "ollama",
+        "args": [],
+        "conf": 1
+      },
+      {
+        "text": "",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [],
+        "conf": 0
+      },
+      {
+        "text": "asdfgh random nonsense",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [],
+        "conf": 0
+      },
+      {
+        "text": "find roofers",
+        "kind": "intake",
+        "provider": "ollama",
+        "args": [
+          "--niche",
+          "roofer",
+          "--city",
+          "brisbane"
+        ],
+        "conf": 0.95
+      }
+    ],
+    "routerProvider": {
+      "ollama": 23
+    }
+  }
+}

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-13T12:47:02.829Z",
+  "updatedAt": "2026-05-13T13:02:15.525Z",
   "storeRoot": "data/leads",
   "totals": {
-    "entities": 138,
+    "entities": 139,
     "promoted": 4,
     "skipped": 35,
     "needsAudit": 66,
@@ -11,6 +11,7 @@
     "readyForOutreachBrief": 8
   },
   "statusCounts": {
+    "discovered": 1,
     "queued_for_audit": 66,
     "graded": 5,
     "skipped": 35,
@@ -20,12 +21,14 @@
     "promoted": 4
   },
   "actionCounts": {
+    "unknown": 1,
     "audit_candidate": 76,
     "manual_review": 24,
     "skip": 36,
     "starter_candidate": 2
   },
   "websiteStatusCounts": {
+    "https": 1,
     "independent_http_site": 24,
     "unknown": 52,
     "independent_https_site": 58,
@@ -33,6 +36,43 @@
     "social_or_third_party_only": 1
   },
   "entities": [
+    {
+      "entityKey": "__e2e_m1_m2__",
+      "status": "discovered",
+      "firstSeenAt": "2026-05-13T13:02:15.514Z",
+      "lastSeenAt": "2026-05-13T13:02:15.514Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "e2e-test-roofing.test",
+        "phoneDigits": "0412000000"
+      },
+      "latest": {
+        "sourceType": "gosom",
+        "name": "E2E Test Roofing",
+        "category": "",
+        "categories": [],
+        "address": "1 Test St, Brisbane QLD 4000",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0412000000",
+        "website": "https://e2e-test-roofing.test",
+        "google_maps_url": "",
+        "rating": 4.5,
+        "review_count": 10,
+        "websiteStatus": "https",
+        "discoveryScore": 23,
+        "recommendedAction": "",
+        "sourceQuery": "roofing brisbane e2e test",
+        "signals": {},
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
     {
       "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
       "status": "queued_for_audit",

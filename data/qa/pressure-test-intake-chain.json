@@ -1,0 +1,86 @@
+{
+  "deliverableId": "pressure-test-intake-chain",
+  "overall": "PASS",
+  "total": 12,
+  "passed": 12,
+  "skipped": 0,
+  "failed": 0,
+  "took_ms": 1574,
+  "ran_at": "2026-05-13T13:02:03.984Z",
+  "results": [
+    {
+      "name": "A1 · createTask rejects unknown kind",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    },
+    {
+      "name": "A2 · createTask accepts demo_build kind (V3 new)",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "A3 · createTask accepts photos_fetch kind (V3 new)",
+      "passed": true,
+      "error": null,
+      "took_ms": 1
+    },
+    {
+      "name": "B1 · first upsert creates entity + master.md auto-refresh queued",
+      "passed": true,
+      "error": null,
+      "took_ms": 18
+    },
+    {
+      "name": "B2 · re-upsert same place_id merges (no duplicate)",
+      "passed": true,
+      "error": null,
+      "took_ms": 4
+    },
+    {
+      "name": "B3 · thin-contact (no phone, no website) → enrichment_status=pending",
+      "passed": true,
+      "error": null,
+      "took_ms": 8
+    },
+    {
+      "name": "B4 · entity with phone → enrichment_status=complete",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "C1 · city normalized to Title Case",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "C2 · niche preserved (lowercase)",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "C3 · discoveryScore computed (M1-D2 wiring)",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "D1 · 5 concurrent upserts on distinct place_ids · all persisted",
+      "passed": true,
+      "error": null,
+      "took_ms": 20
+    },
+    {
+      "name": "E1 · master-md refresh task queued for new entity",
+      "passed": true,
+      "error": null,
+      "took_ms": 1510
+    }
+  ],
+  "cleaned_entities": 7,
+  "cleaned_tasks": 2
+}
