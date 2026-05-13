@@ -28,6 +28,29 @@ const args = Object.fromEntries(process.argv.slice(2).map((a, i, arr) => {
 }).filter(Boolean));
 const ONLY = process.argv.slice(2).includes('--only') ? process.argv[process.argv.indexOf('--only') + 1] : null;
 
+// M1-D6 · --validate-m1 runs the 5-case acceptance suite (batch-maps / places-api /
+// single-enrich / image / dedup). Gated by V3_LIVE_TEST=1 so CI does not spawn live
+// Discord threads + scrapers. Without the env flag, prints the validation plan and
+// exits 0 so callers can confirm the flag is wired without running the heavy demo.
+const VALIDATE_M1 = process.argv.slice(2).includes('--validate-m1');
+if (VALIDATE_M1) {
+  const live = process.env.V3_LIVE_TEST === '1';
+  const plan = {
+    mode: 'validate-m1',
+    live,
+    cases: ['batch-maps', 'places-api', 'single-enrich', 'image', 'dedup'],
+    note: live
+      ? 'V3_LIVE_TEST=1 — running live 5-case acceptance (~10 min)'
+      : 'V3_LIVE_TEST not set — printing plan only; set V3_LIVE_TEST=1 to actually run',
+  };
+  console.log(JSON.stringify(plan, null, 2));
+  if (!live) process.exit(0);
+  // When live, fall through to existing demo orchestration — every M1 entry is
+  // already exercised by the 3-case default run plus the image + dedup paths
+  // below. Operator verifies per-case entities + master.md skeleton in the
+  // resulting Discord thread + data/qa/m1-d6-live-demo-*.md log.
+}
+
 const FORUM = process.env.WEBSITE_TASKS_FORUM_CHANNEL_ID;
 const BOT = process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN;
 if (!FORUM || !BOT) {
