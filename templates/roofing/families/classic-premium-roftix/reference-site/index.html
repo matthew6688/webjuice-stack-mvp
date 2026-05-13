@@ -122,7 +122,7 @@
     .audit-cta { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--warm); border-bottom: 1px solid var(--warm); padding-bottom: 2px; }
 
     .hero { min-height: calc(100vh - 76px); display: grid; align-items: end; position: relative; isolation: isolate; color: var(--surface); background: var(--primary); overflow: hidden; }
-    .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 86%, black), color-mix(in oklch, var(--primary) 34%, transparent) 58%, transparent), linear-gradient(0deg, color-mix(in oklch, var(--primary) 68%, black), transparent 45%); z-index: -1; }
+    .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 72%, black), color-mix(in oklch, var(--primary) 18%, transparent) 62%, transparent 88%), linear-gradient(0deg, color-mix(in oklch, var(--primary) 56%, black), transparent 50%); z-index: -1; }
     .hero-img { position: absolute; inset: 0; z-index: -2; }
     .hero-panel { width: min(790px, 100%); padding-block: 84px; }
     .hero .lead { color: color-mix(in oklch, var(--surface) 82%, var(--border)); margin-top: 22px; }
@@ -146,6 +146,8 @@
     .quote-text { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--surface); }
     .quote-author { margin-top: 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 72%, transparent); }
     .stars { color: var(--warm); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+    .sample-tag { display: inline-block; margin-left: 8px; padding: 3px 7px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in oklch, var(--warm) 16%, transparent); color: var(--warm); border: 1px solid color-mix(in oklch, var(--warm) 28%, transparent); border-radius: 3px; vertical-align: middle; font-weight: 700; }
+    .dark-band .sample-tag { background: color-mix(in oklch, var(--warm) 22%, transparent); color: var(--warm); }
     .project-frame { display: grid; grid-template-columns: 1.15fr 0.85fr; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
     .project-image { min-height: 520px; }
     .project-copy { padding: clamp(28px, 5vw, 58px); }
@@ -298,11 +300,11 @@
       </div>
     </section>
 
-    <!-- FLEXIBLE · trust/reviews: OD may swap quotes to customer's real reviews (reviewVoice from handoff); 3-card layout LOCKED -->
-    <section class="section dark-band" id="trust" data-od-id="trust">
+    <!-- FLEXIBLE · trust/reviews: OD swaps quotes to real reviewVoice; if customer has NO reviews, AI infers plausible same-niche samples and marks data-od-sample="true" + sample-tag UI -->
+    <section class="section dark-band" id="trust" data-od-id="trust" data-od-sample="true">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" style="color: var(--warm);">What homeowners say</p>
+          <p class="eyebrow" style="color: var(--warm);">What homeowners say <span class="sample-tag">Sample · editable after sign-up</span></p>
           <h2 style="color: var(--surface);">200+ five-star reviews on Google and Product Review.</h2>
         </div>
         <div class="quote-grid">
@@ -325,13 +327,13 @@
       </div>
     </section>
 
-    <!-- FLEXIBLE · project proof: OD may swap image + bullets to customer's real case study; layout LOCKED -->
-    <section class="section" id="projects" data-od-id="projects">
+    <!-- FLEXIBLE · project proof: OD swaps to real case study; if customer has none, AI infers niche-typical sample marked data-od-sample -->
+    <section class="section" id="projects" data-od-id="projects" data-od-sample="true">
       <div class="container">
         <div class="project-frame">
           <div class="project-image"><img src="assets/project-before-after-roof-transformation.jpg" alt="Before-and-after of a restored terracotta tile roof in Hendra, Brisbane" /></div>
           <div class="project-copy">
-            <p class="eyebrow">Recent project · Hendra</p>
+            <p class="eyebrow">Recent project · Hendra <span class="sample-tag">Sample · editable</span></p>
             <h2>1960s terracotta tile roof. Restored in 4 days.</h2>
             <p class="lead" style="margin-top: 18px;">The owners had three quotes ranging from "patch the worst bits" to "rip it all off". We showed them why a full restoration would buy them another 20 years for less than half the replacement cost.</p>
             <ul class="check-list">
@@ -361,11 +363,11 @@
       </div>
     </section>
 
-    <!-- FLEXIBLE · service-area: only shown when customer has confirmed suburb list; OD removes if data missing -->
-    <section class="section" id="area" data-od-id="service-area">
+    <!-- FLEXIBLE · service-area: OD uses real suburb list when available; else infers 5-15km radius suburbs from customer address and marks data-od-sample -->
+    <section class="section" id="area" data-od-id="service-area" data-od-sample="true">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Service area</p>
+          <p class="eyebrow">Service area <span class="sample-tag">Sample · editable</span></p>
           <h2>Brisbane inner-north, west and Moreton Bay.</h2>
           <p class="lead" style="margin-top: 18px;">Free inspections within 30km of Newstead. Outside that radius we still come out, just ask.</p>
         </div>

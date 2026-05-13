@@ -1,125 +1,157 @@
-# Reference-site handoff boundaries · classic-premium-roftix · 2026-05-13
+# Reference-site handoff boundaries · classic-premium-roftix · 2026-05-13 (v2)
 
-> 给 OD 的"能动什么 · 不能动什么"边界 · 用来 round 1 跑 approach C (reference HTML adapter)
+> Matthew 纠正 v2: 客户素材少时 · **不是删 section · 是 AI 补 sample data + 标可改** ·
+> M3 是 demo · 必须看着完整 · 客户买后 M5 revision flow 改真值。
 
-## Demo customer (虚构 · 用作 reference)
+## Demo customer (虚构 · reference 用)
 
 - 商家: **Brisbane Premium Roof Co**
-- 电话: (07) 3185 2440 · tel:0731852440
+- 电话: (07) 3185 2440
 - 地址: 12 Doggett St, Newstead QLD 4006
 - 邮箱: hello@brisbanepremiumroof.com.au
-- 服务: 屋顶 restoration · replacement · leak/storm repair
-- 服务区: Brisbane 内北/内西 + Moreton Bay
-- 资质: QBCC 15234567 · 10-year guarantee · 600+ roofs since 2014
-- 价位指示: $4,800–$8,500 typical restoration (写在 FAQ)
-- 评价 (3 条 mock): Sarah M. Wilston / David L. Ashgrove / Helen&Mark P. Paddington
+- 资质: QBCC 15234567 · 600+ roofs since 2014 · 10-year guarantee
 
-→ round 1 OD adapter 任务: 把以上每一处 swap 成真客户对应数据。
+→ round 1 OD 任务: swap 以上每处成真客户对应数据 (来自 master.md verifiedFacts)。
+
+## 数据分两类 · 关键
+
+### A. **REAL · 必须真 · 不许编**
+
+| 字段 | 来源 |
+|---|---|
+| 商家名 / phone / email / address / website | master.md verifiedFacts |
+| License / ABN / 年份具体数字 | master.md verifiedFacts (有才用 · 没有不显示该 line) |
+| 引用客户业主自己的话 (about/hero copy) | ownerVoice (GMB description / 现网 about) |
+| 引用真客户评价 (姓名+suburb+原话) | reviewVoice (来自 audit reviews fixture) |
+| Audit findings 数字 (score + 痛点) | internal-audit-report.html |
+
+### B. **SAMPLE · AI 推断 · 标 `data-od-sample="true"`**
+
+客户没数据时 · OD 基于 **niche typical** + **商家地址** + **商家服务关键词** 推断:
+
+| 字段 | AI infer 怎么做 |
+|---|---|
+| 服务列表 (客户只列 1 个) | 同 niche 同区域 typical 3-5 服务补 · roofing 默认 restoration/replacement/repair/storm/gutter |
+| 评价 (0 条) | 写 3 条 plausible 同 niche 语气评价 · 用 "Sarah M." / "David L." 这种局部姓名 + 邻近 suburb · 不编完整身份 |
+| Case study (无) | "1960s terracotta restoration" / "Colorbond replacement" 这种 niche typical 项目 |
+| Service area (只有总部) | 商家地址 5km/10km radius suburb · ABS 数据 / Google geocode |
+| FAQ | 同 niche 4-6 个最常见买家问 |
+| Process | 4 步 standard (call → inspect → quote → schedule) · 可加 niche 特有步骤 |
+| Trust/proof 数字 | "200+ five-star reviews" · "10-year guarantee" 等 plausible 但用 vague 量词 · 不编 "exactly 247 reviews" |
+
+**UI 标记**: 每个 `data-od-sample="true"` 的 section · eyebrow 后加小角标 `<span class="sample-tag">Sample · editable after sign-up</span>`:
+- 米橘色 · 9px mono · 不抢眼但能看见
+- 客户看 demo 时知道哪些是占位
+- M5 revision flow: 客户编辑这些 section 不算 revision count (鼓励改真)
+
+### C. **不许 AI 编的具体东西** (即使标 sample 也不行)
+
+- ❌ 具体 license / ABN 号 (没有 → 不显示 license line)
+- ❌ 具体 review 姓名+完整身份 ("Sarah Mitchell, owner of Mitchell Plumbing" 不行 · "Sarah M., Wilston" 可以)
+- ❌ 具体 award / certification name
+- ❌ 具体 price ("$4,800–$8,500" 不行 · "Free fixed-price quote within 48 hours" 可以)
+- ❌ 具体 years ("since 2014" 不行 · "established Brisbane operators" 可以) · 除非有 verifiedFacts
+- ❌ 客户没有的 phone/email/address (即使标 sample 也不能编)
 
 ## LOCKED · OD 不能改
 
-1. **Color tokens** (CSS `:root` 里所有 `--bg / --surface / --fg / --muted / --border / --accent / --primary / --warm / --ink`)
-2. **Font families** (display = Playfair Display · body = Inter · mono = JetBrains Mono)
+1. **Color tokens** (`:root` 里 `--bg / --surface / --fg / --muted / --border / --accent / --primary / --warm / --ink`)
+2. **Font families** (Playfair Display / Inter / JetBrains Mono)
 3. **Type scale** (`--fs-h1` 到 `--fs-meta`)
-4. **Spacing scale** (`--gap-xs` 到 `--gap-2xl` · `--container` · `--gutter` · `--radius`)
-5. **Section 内 styling**: hero gradient · service-card 形态 · quote-card 形态 · form 字段样式 · button 形状 · footer 排版
-6. **`.topnav` 和 `.pagefoot`** 整段 (标 `data-od-locked="true"`) · OD 只 swap 文字内容 · 不动结构
-7. **Mobile breakpoint @ 920px** 和 mobile-call-bar 出现机制
-8. **Audit banner 视觉** (黑底 · 米橘 tag · 米橘 CTA underline) · OD 只换文字内容
+4. **Spacing scale** (`--gap-xs` 到 `--gap-2xl` + container/gutter/radius)
+5. **Section 内部 styling** · hero gradient / service-card / quote-card / form / button / footer
+6. `.topnav` + `.pagefoot` (标 `data-od-locked="true"`) · 只 swap 文字
+7. **Mobile breakpoint @ 920px** + mobile-call-bar 出现机制
+8. **Audit banner 视觉** · 只换文字
 
-## FLEXIBLE · OD 看真客户数据自由调
+## FLEXIBLE · 看真客户数据自由调
 
-每个 section 都标了 `data-od-id="..."` · 标 `data-od-flexible="content"` 的明确允许:
+每 section 标 `data-od-id="..."` · 大多数还标 `data-od-sample="true"`:
 
-| Section (data-od-id) | OD 能做什么 |
-|---|---|
-| `audit-banner` | 完全换内容 (audit score · 3 个 finding · CTA target) · 客户没 audit 则**删掉整个 banner** |
-| `hero` | 改 eyebrow / H1 / lead / 2 个 CTA / 3 个 proof-cell · 图片 swap 为客户对应 hero · **不改 layout** |
-| `services` | 卡片数 3-6 · 每张卡 (img + h3 + p + 3-4 list 项) 内容自由 · 卡片样式不改 |
-| `trust` | 引用 3 条客户真评价 (来自 reviewVoice) · 没评价则**删掉整个 trust section** · 仍想用则改成"为什么选我们"3 卡 |
-| `projects` | 1 张项目图 + 1 段 case study + 4 bullet · 客户没 case study 则换成 "what we typically do" generic 但不编造 |
-| `process` | 步骤数 3-5 (默认 4) · 每步 h3 + p |
-| `service-area` | 4-12 个 suburb pill · 没区域数据**删掉整段** |
-| `faq` | 3-6 条 Q&A · OD 应基于客户业务 + auditPainPoints 生成相关问题 |
-| `contact` | form 字段固定 (name/phone/suburb/service/message) · `<select>` 的 service options 可改 · 联系信息块 swap |
+| Section | OD 能做 | Sample fallback |
+|---|---|---|
+| `audit-banner` | swap audit score + 3 finding | 客户无 audit → 删整个 banner (这个**确实**删 · 因为是销售 overlay · 没 audit 没意义) |
+| `hero` | 改 eyebrow/H1/lead/CTA/3 proof cell · 图片 swap | 必须有 · 用 ownerVoice + niche typical hero angle |
+| `services` | 卡片 3-6 · 内容自由 | 客户只列 1 → AI 补到 3-5 · 标 sample |
+| `trust` | 真 reviewVoice (姓名+suburb+原话) | 客户无 review → AI 写 3 条 plausible · 标 sample |
+| `projects` | 真 case study | 客户无 → niche typical case · 标 sample |
+| `process` | OD 自由生成 4 步 | 同上 |
+| `service-area` | 真 suburb list | 客户无 → 地址 radius 推断 · 标 sample |
+| `faq` | 真 FAQ + auditPainPoints 转化 | 客户无 → niche typical 4-6 Q |
+| `contact` | form 结构固定 · service options 可改 | — |
 
-## ADD-ABLE · OD 真碰到新场景才加
+## ADD-ABLE · 真碰到新场景
 
-如果客户业务 reference site 没覆盖 (e.g. 24/7 emergency hotline · 商业屋顶 · 太阳能集成) · OD 可新建 section · **但必须**:
+客户业务 reference 没覆盖 (24/7 emergency / 商业屋顶 / solar 集成) · OD 可新建 section · 必须:
 
-1. 用 LOCKED 里的 tokens · 不发明新颜色/字号/间距
-2. 复用已有 building block (card / quote-card / process-card / suburb-pill 之一) · 不发明新组件类型
-3. 在 `<section>` 上标 `data-od-new="true" data-od-new-reason="..."` (e.g. `data-od-new-reason="customer has 24/7 emergency line not covered by reference"`)
-4. 放在 services 和 trust 之间 (默认插入点) · 除非 reason 说明该放其它位置
+1. 用 LOCKED tokens · 不发明
+2. 复用已有 building block (card / quote-card / process-card / suburb-pill)
+3. 标 `data-od-new="true" data-od-new-reason="..."`
+4. 默认插在 services 和 trust 之间
 
-## OD 不许做的事 (失败模式黑名单)
+## OD 失败模式黑名单
 
-- ❌ 改 `:root` 任何 token · 包括"我觉得这家客户该用蓝色"
-- ❌ 把 Playfair Display 换成 SaaS 风字体 (Geist / Inter display 等)
-- ❌ 加 hero 上的紫色渐变 / 任何 AI-slop 视觉
-- ❌ 把图片换成 SVG placeholder / picsum / placehold.co / unsplash 链接
-- ❌ 编造客户的 license number · review · address · price · year
-- ❌ 用通用文案: "trusted partner" · "your roof deserves better" · "X years of excellence" · "quality you can count on" · "welcome to"
+- ❌ 改 `:root` 任何 token
+- ❌ 换字体到 SaaS 风 (Geist / Inter display only / etc.)
+- ❌ 加紫色渐变 / 任何 AI-slop 视觉
+- ❌ 图片换成 SVG placeholder / picsum / placehold.co / unsplash
+- ❌ 编 license / 完整 review 身份 / 具体 award / 具体 price / 具体 years
+- ❌ 通用文案: "trusted partner" / "your roof deserves better" / "X years of excellence" /
+  "quality you can count on" / "welcome to" / "we are committed to"
 - ❌ 删 `data-od-locked="true"` 的 section
-- ❌ 拆 mobile-call-bar (这是 conversion 关键)
+- ❌ 拆 mobile-call-bar
+- ❌ 标 `data-od-sample="true"` 的 section 没在 UI 显示 sample-tag (客户看不出哪些可改)
 
-## Round 1 提示词 (给 OD · 等 reference 截图过审后再用)
+## Round 1 提示词草稿
 
 ```
-You are adapting a reference roofing website to a specific real customer.
+You are adapting a reference Brisbane roofing website to a specific real customer.
 
-Reference site: [paste reference-site/index.html source]
-Boundary rules: [paste HANDOFF-BOUNDARIES.md]
+REFERENCE: [paste reference-site/index.html]
+BOUNDARIES: [paste this file]
 
-Real customer data:
-- ownerVoice: [from master.md]
-- reviewVoice: [3-8 review snippets from audit]
-- auditPainPoints: [from internal audit]
-- verifiedFacts: [business name / phone / address / services / suburbs / license]
+REAL DATA (use everywhere applicable · do not invent these):
+  verifiedFacts: { businessName, phone, email, address, website, license? }
+  ownerVoice: [GMB description + current site about (if any)]
+  reviewVoice: [3-8 review snippets with name initials + suburb]
+  auditPainPoints: [audit findings with severity]
+  servicesListed: [explicit services customer mentions]
+  suburbsListed: [explicit service area suburbs]
 
-Your task:
-1. Swap Brisbane Premium Roof Co → real customer everywhere
-2. Adapt copy to real customer's tone, services, and suburbs (use ownerVoice quotes where natural)
-3. Replace trust quotes with reviewVoice (or remove section if no reviews)
-4. Update audit-banner to real customer's audit findings (or remove if no audit)
-5. Add data-od-new section ONLY if real customer has business type not covered (24/7 emergency / commercial / solar)
-6. Output one complete index.html
+SAMPLE DATA (AI infer when customer data missing · mark data-od-sample="true" + sample-tag):
+  servicesInferred: [niche typical for roofing in customer's region]
+  reviewsInferred: [3 plausible same-niche reviews]
+  caseStudyInferred: [niche typical project]
+  suburbsInferred: [5-15km radius from customer address]
+  faqInferred: [4-6 niche typical buyer questions]
 
-Do not change LOCKED tokens, fonts, spacing, or section internal styling.
-Do not invent: license numbers, review quotes, addresses, prices, years in business.
-Do not use any phrase from the failure-mode blacklist.
+OUTPUT: one complete index.html
+  - REAL data wherever available
+  - SAMPLE data filling all other sections (NEVER empty sections · NEVER omit)
+  - sample-tag visible on every data-od-sample section
+  - LOCKED tokens unchanged
+  - No phrases from failure-mode blacklist
 ```
 
-## Images we have vs need (告 Matthew)
+## 图片清单 (告 Matthew)
 
-**Have (current 5 .jpg in `assets/`)**:
-- `hero-premium-roof-blue-hour.jpg` — 用作 hero · 实际看是个 US Victorian 法律事务所 · **不够好 · 需要 swap**
-- `service-roof-repair-flashing-detail.jpg` — service 1 · 还行
-- `service-roof-installation-detail.jpg` — service 2 · 还行
-- `about-roofer-working-roof-frame.jpg` — service 3 · 还行
-- `project-before-after-roof-transformation.jpg` — projects · 不是 before/after · 是单张材料图 · **不够好**
+**Have (`assets/` 5 张)**:
+- `hero-premium-roof-blue-hour.jpg` — US Victorian + 脚手架 · **该换** · 要 Australian Queenslander/brick 黄昏屋顶
+- `service-roof-repair-flashing-detail.jpg` — 屋脊瓦特写 · 还行
+- `service-roof-installation-detail.jpg` — 材料铺装特写 · 还行
+- `about-roofer-working-roof-frame.jpg` — 工人在屋架上 · 还行
+- `project-before-after-roof-transformation.jpg` — 单张材料图 · **该换** · 要真 before/after split
 
-**Need from Matthew (ChatGPT Image / midjourney · 5 张)**:
+**v2 改的 hero gradient 减淡 30%** · 现有 hero 图能看见了 · 但内容仍是错的 (US 建筑 vs Brisbane 屋顶)。
 
-1. **Hero** (1600×900 desktop · 1080×1350 mobile crop · 真 Australian Queenslander 房子 · 黄昏 blue hour · 屋顶 restored 状态 · 红 terracotta tile 或 Colorbond)
-2. **Service 1 · 屋顶 restoration 特写** (re-pointing 或 ridge capping work · 800×600)
-3. **Service 2 · Colorbond 安装** (crew 装新铁皮屋顶 · 800×600 · 已有一张可能够用 · Matthew 看)
-4. **Service 3 · Storm leak inspection** (roofer 拿手电检查瓦片下漏点 · 800×600)
-5. **Project before-after** (split 左右真 before/after · 同一个屋顶 · 1200×800)
-
-或者: Matthew 你说不需要新图 · round 1 用现有 5 张跑 · 看出来效果决定要不要重做。我倾向先用现有跑 · 别把 round 0 卡在等图上。
+→ round 1 跑之前 · Matthew 决定: 用现有跑 (我倾向 · 别等图) · 或先换 hero + project 2 张再跑。
 
 ## 文件清单
 
 ```
 reference-site/
-├── index.html              (这次产出 · 约 350 行 · 完整 polished demo)
-├── HANDOFF-BOUNDARIES.md   (本文件)
-└── assets/                 (copy 自 open-design/assets/ · 5 张 .jpg)
+├── index.html              · v2 · 加 sample-tag + 减淡 hero overlay
+├── HANDOFF-BOUNDARIES.md   · v2 · 这份 · sample data 哲学
+├── desktop.png · mobile.png · 待重截
+└── assets/                 · 5 .jpg
 ```
-
-## 下一步
-
-1. **Matthew 看 reference-site 截图** · 决定 "够 demo-grade 了 / 还要改 X / 图必须换"
-2. 通过后 → round 1 跑 A/B/C 比较 (脚本 + 3 客户截图比较)
-3. 不通过 → 改 reference · 再看
