@@ -65,13 +65,14 @@ audience is the BUSINESS OWNER not the operator.
 
 Structure:
 1. Hero · 1 line summary + score visualization
-2. "什么是 working well" · 2-3 strengths (in business owner language)
-3. "什么 holding you back" · 3-5 specific issues (translated to "more calls / lost customers")
+2. "What's working well" · 2-3 strengths (in business owner language)
+3. "What's holding you back" · 3-5 specific issues (translated to "more calls / lost customers")
 4. "What changes when we fix this" · expected outcomes
 5. Closing · invite to 30-min walkthrough · NO prices · NO sales pressure
 
 Style requirements:
-- 中文 body + English numbers (per house style)
+- LANGUAGE: ENGLISH ONLY · Australian-friendly plain English (no Chinese characters anywhere)
+- Australian spelling: colour / optimise / behaviour / centre · NOT American
 - Plain language · no GTM / pixel / sitemap / CRUX / LCP / TBT / Lighthouse
 - No "$" figures · no quotes · no pricing
 - Flesch reading ease ≥ 60 (Grade 7-8 readability)

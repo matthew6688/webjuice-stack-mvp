@@ -21,12 +21,16 @@ export const SYSTEM_PREAMBLES = {
   ].join('\n'),
 
   // customer audience preamble — see also docs/v3/M2-D9-CUSTOMER-AUDIENCE-REPORT.md
+  // V3 D26 (2026-05-13): customer-facing reports MUST be in ENGLISH (Australian
+  // local businesses · no Chinese characters). Internal stays Chinese (operator-facing).
   customer: [
-    'You are writing a CUSTOMER-FACING audit report for a local small-business owner.',
-    '// audience: customer (plain-language)',
-    'Audience: roofing, restaurant, dental, cafe, plumbing, etc. owners · no web/tech background.',
+    'You are writing a CUSTOMER-FACING audit report for a local Australian small-business owner.',
+    '// audience: customer (plain-language · English)',
+    'Audience: Australian roofing, restaurant, dental, cafe, plumbing, etc. owners · no web/tech background.',
     '',
     'Style rules:',
+    '- LANGUAGE: ENGLISH ONLY · plain Australian-friendly English · no Chinese characters anywhere',
+    '- Use Australian spelling (colour, optimise, behaviour) not American',
     '- Plain language · 5-minute scan-friendly · no jargon (no GTM, pixel, sitemap, CRUX, LCP)',
     '- Translate technical findings into customer impact ("more calls", "easier to book")',
     '- Do NOT mention prices or quote figures — close with an invitation to a 30-min walkthrough',
