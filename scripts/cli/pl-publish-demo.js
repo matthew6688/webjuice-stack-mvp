@@ -186,6 +186,35 @@ proc.on('exit', async (code) => {
   const recordDir = path.join(REPO, 'clients', slug, 'v2', 'concept', 'reference-adapter');
   fs.writeFileSync(path.join(recordDir, 'cf-pages-deploy.json'), JSON.stringify(record, null, 2));
   console.log(`  Record:             ${path.join(recordDir, 'cf-pages-deploy.json')}`);
+
+  // V3 D34 (2026-05-14): auto-graduate to #website-projects channel · idempotent
+  // Find entity by slug → openProjectThread (skips if already open · returns same id)
+  try {
+    const entitiesDir = path.join(REPO, 'data/leads/entities');
+    let foundKey = null;
+    if (fs.existsSync(entitiesDir)) {
+      for (const f of fs.readdirSync(entitiesDir)) {
+        if (!f.endsWith('.json')) continue;
+        try {
+          const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8'));
+          const nm = e?.latest?.name || '';
+          const s = String(nm).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          if (s === slug) { foundKey = f.replace(/\.json$/, ''); break; }
+        } catch { /* skip */ }
+      }
+    }
+    if (foundKey) {
+      const { openProjectThread } = await import('../../core/funnel/lead-thread-sync.js');
+      const r = await openProjectThread(foundKey);
+      if (r.ok) {
+        console.log(`  #website-projects thread: ${r.reused ? 'reused' : 'opened'} ${r.threadId || ''}`);
+      } else {
+        console.log(`  #website-projects thread: skip · ${r.reason}`);
+      }
+    }
+  } catch (err) {
+    console.warn(`  #website-projects hook 失败 (不阻塞 publish): ${err.message}`);
+  }
 });
 
 function parseArgs(argv) {

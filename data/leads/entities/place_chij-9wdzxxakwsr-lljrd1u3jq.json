@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
-  "lastSeenAt": "2026-05-13T12:44:08.008Z",
+  "lastSeenAt": "2026-05-13T13:15:25.091Z",
   "status": "queued_for_audit",
   "lastStatusAt": "2026-05-13T12:44:08.008Z",
   "identifiers": {
@@ -188,6 +188,14 @@
       "at": "2026-05-13T12:44:08.008Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "20260513-231525",
+      "query": "roofer in brisbane",
+      "runPath": "data/maps-scraper/runs/20260513-231525/discovery-run.json",
+      "at": "2026-05-13T13:15:25.091Z",
+      "discoveryScore": 50,
+      "recommendedAction": "skip"
     }
   ],
   "history": [
@@ -253,6 +261,21 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-13T13:15:25.091Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260513-231525",
+      "query": "roofer in brisbane",
+      "score": 50,
+      "action": "skip",
+      "status": "skipped"
+    },
+    {
+      "at": "2026-05-13T23:49:18.615Z",
+      "event": "merged_with",
+      "loser": "domain_queenslandroofing.com.au",
+      "operator": "pl:migrate-to-projects-channel"
     }
   ],
   "notes": [
@@ -272,5 +295,11 @@
   "batches": [
     "places-roofer-brisbane-202605132243",
     "places-roofer-in-brisbane-202605132244"
-  ]
+  ],
+  "merged_from": [
+    "domain_queenslandroofing.com.au"
+  ],
+  "project_thread_id": "1504269344161402920",
+  "project_profile_message_id": "1504269344161402920",
+  "project_thread_opened_at": "2026-05-13T23:49:19.805Z"
 }

@@ -185,6 +185,15 @@
       "at": "2026-05-13T07:14:26.306Z",
       "event": "places_photos_downloaded",
       "count": 6
+    },
+    {
+      "at": "2026-05-13T23:49:18.621Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "D-grade · not worth demo build (V3 D34 migration)",
+      "note": "pl:migrate-to-projects-channel"
     }
   ],
   "notes": [
@@ -201,5 +210,8 @@
       }
     ],
     "graded_at": "2026-05-11T02:09:40.547Z"
-  }
+  },
+  "phase": "archived",
+  "archive_reason": "D-grade · not worth demo build (V3 D34 migration)",
+  "phaseChangedAt": "2026-05-13T23:49:18.621Z"
 }

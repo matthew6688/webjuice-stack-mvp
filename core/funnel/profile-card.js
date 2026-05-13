@@ -10,6 +10,8 @@
  * 16 fields per spec; Discord embeds support up to 25 fields × 6000 chars total.
  */
 
+import fs from 'node:fs';
+import path from 'node:path';
 import { deriveLocale, nowInLocale } from '../leads/locale.js';
 import { readManifest } from '../leads/asset-manifest.js';
 
@@ -74,6 +76,22 @@ function quickLinksField(clientSlug, calendlyUrl) {
 }
 
 /**
+ * Read CF Pages demo URL from cf-pages-deploy.json if available.
+ * V3 D34 (2026-05-14): channel='projects' adds Demo LIVE URL field.
+ */
+function readDemoUrl(clientSlug) {
+  if (!clientSlug) return '';
+  try {
+    const p = path.join('clients', clientSlug, 'v2/concept/reference-adapter/cf-pages-deploy.json');
+    if (!fs.existsSync(p)) return '';
+    const rec = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return rec.demo_url || '';
+  } catch {
+    return '';
+  }
+}
+
+/**
  * Render an entity to a Discord embed representing the lead profile card.
  * Pure function — no I/O except asset manifest read for quick-links field.
  *
@@ -81,9 +99,10 @@ function quickLinksField(clientSlug, calendlyUrl) {
  * @param {object} opts
  * @param {object} [opts.audit] — detailed_audit fixture if available
  * @param {string} [opts.calendlyUrl]
+ * @param {string} [opts.channel] — 'leads' (default · no demo) | 'projects' (with demo URL) | 'paid' (M5 · 加 paid info)
  * @returns {object} Discord embed object
  */
-export function renderProfileCard(entity, { audit = null, calendlyUrl = '' } = {}) {
+export function renderProfileCard(entity, { audit = null, calendlyUrl = '', channel = 'leads' } = {}) {
   const latest = entity.latest || {};
   const grade = entity.grade || {};
   const locale = deriveLocale(entity);
@@ -119,6 +138,29 @@ export function renderProfileCard(entity, { audit = null, calendlyUrl = '' } = {
     // Quick links (1, multi-line)
     { name: '🔗 Quick links', value: quickLinksField(clientSlug, calendlyUrl), inline: false },
   ];
+
+  // V3 D34 (2026-05-14): channel-specific extra fields
+  if (channel === 'projects') {
+    const demoUrl = readDemoUrl(clientSlug);
+    fields.push({
+      name: '🌐 Demo LIVE',
+      value: demoUrl ? demoUrl : '— 还没 publish —',
+      inline: false,
+    });
+  } else if (channel === 'paid') {
+    fields.push({
+      name: '💳 Payment',
+      value: entity.paid_at
+        ? `Paid ${entity.paid_at.slice(0, 10)} · ${entity.subscription_type || 'one-time'}`
+        : '— pending —',
+      inline: true,
+    });
+    fields.push({
+      name: '🔁 Revision',
+      value: `r${entity.current_revision_round || 0} · ${entity.revision_status || 'pending'}`,
+      inline: true,
+    });
+  }
 
   // Validate 25-field / 6000-char Discord limits
   const totalChars = fields.reduce((sum, f) => sum + (f.name.length + f.value.length), 0)

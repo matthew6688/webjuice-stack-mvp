@@ -204,36 +204,85 @@ export function defaultDiscordForumBlueprints() {
       { name: 'failed' },
       { name: 'human' },
     ],
-    // V2 leads tag model — DISCORD_OUTREACH_PRD.md §7.3
-    // Grade (3) + Lifecycle (8) + Modifier (3) = 14 tags; niche moved to thread title prefix.
+    // V3 leads tag model — DISCORD-CHANNELS-PRD.md §4.3 (2026-05-14 D34)
+    // #website-leads = 无 demo 的客户 · 销售用 master.md + audit 冷接触
+    // Grade (3) + Status (4) + Modifier (2) = 9 tags
     leads: [
       { name: 'grade-a' },
       { name: 'grade-b' },
       { name: 'grade-c' },
-      { name: 'awaiting' },
-      { name: 'outreach-active' },
-      { name: 'replied' },
-      { name: 'proposal-sent' },
-      { name: 'nurture' },
-      { name: 'paid' },
-      { name: 'archived' },
-      { name: 'needs-human' },
+      { name: 'awaiting' },         // 默认 · 刚 grade 完
+      { name: 'sales-only' },        // 操作员明确不做 demo · 纯销售
+      { name: 'build-pending' },     // 等算力跑 demo
+      { name: 'archived' },          // closed-lost / cancelled
       { name: 'urgent' },
       { name: 'do-not-contact' },
-      { name: 'nurture-due' },
     ],
+    // V3 projects tag model — DISCORD-CHANNELS-PRD.md §4.4 (2026-05-14 D34)
+    // #website-projects = 有 demo URL 的客户 · 销售用 demo URL · 高转化
+    // **revision 不在这里** (revision 只在 #paid-websites · pre-pay demo 永不变)
+    // Grade (3) + Sales stage (5) + Outcome (3) + Modifier (2) = 13 tags
     projects: [
-      { name: 'restaurant' },
-      { name: 'roofing' },
-      { name: 'open-design' },
-      { name: 'dev-preview' },
-      { name: 'review' },
-      { name: 'revision' },
-      { name: 'approved' },
-      { name: 'live' },
-      { name: 'domain-blocked' },
+      { name: 'grade-a' },
+      { name: 'grade-b' },
+      { name: 'grade-c' },
+      { name: 'demo-ready' },        // demo URL live · 待发外联
+      { name: 'outreach-sent' },     // 冷邮件已发
+      { name: 'client-reviewing' },  // 客户点开 demo (track 或人工标)
+      { name: 'interested' },        // 客户回信表达兴趣
+      { name: 'proposal-sent' },     // 报价已发
+      { name: 'closed-won' },        // 付款 · 即将 graduate paid
+      { name: 'closed-lost' },       // 拒绝 / 长时间无回应
+      { name: 'nurture' },           // 长期 drip
+      { name: 'urgent' },
       { name: 'waiting-customer' },
-      { name: 'waiting-us' },
+    ],
+    // V3 paid-websites tag model — DISCORD-CHANNELS-PRD.md §4.6 (2026-05-14 D34)
+    // M5 启动后用 · 现在 env 预配 · channel 已存在
+    // Stage (5) + Revision (4) + Health (3) = 12 tags
+    paidWebsites: [
+      { name: 'paid-new' },
+      { name: 'in-build' },
+      { name: 'live' },
+      { name: 'maintenance' },
+      { name: 'churned' },
+      { name: 'in-revision' },
+      { name: 'revision-done' },
+      { name: 'extra-revision-paid' },
+      { name: 'approved' },
+      { name: 'healthy' },
+      { name: 'attention-needed' },
+      { name: 'escalated' },
+    ],
+    // V3 templates tag model — DISCORD-CHANNELS-PRD.md §4.5 (2026-05-14 D34)
+    // Niche template 库 · 1 family = 1 thread
+    templates: [
+      { name: 'roofing' },
+      { name: 'restaurant' },
+      { name: 'plumber' },
+      { name: 'electrician' },
+      { name: 'custom' },
+      { name: 'draft' },
+      { name: 'qa-pass' },
+      { name: 'published' },
+      { name: 'deprecated' },
+      { name: 'classic' },
+      { name: 'editorial' },
+      { name: 'productized' },
+      { name: 'lead-capture' },
+    ],
+    // V3 lead-discovery-runs tag model — DISCORD-CHANNELS-PRD.md §4.2 (2026-05-14 D34)
+    // 1 batch = 1 thread · P3 实装时启用
+    leadDiscoveryRuns: [
+      { name: 'places-intake' },
+      { name: 'docker-scrape' },
+      { name: 'image-extract' },
+      { name: 'single-enrich' },
+      { name: 'in-progress' },
+      { name: 'batch-done' },
+      { name: 'batch-partial' },
+      { name: 'batch-failed' },
+      { name: 'batch-aborted' },
     ],
   };
 }
@@ -480,6 +529,8 @@ export async function updateDiscordThread({
   botToken,
   name = '',
   appliedTagIds = null,
+  archived = undefined,      // V3 D34: true → archived (Discord thread 标"已归档")
+  locked = undefined,         // V3 D34: true → no new messages allowed
   fetchImpl = fetch,
   retryOnRateLimit = true,
 }) {
@@ -488,6 +539,8 @@ export async function updateDiscordThread({
   const body = {};
   if (name) body.name = name;
   if (Array.isArray(appliedTagIds)) body.applied_tags = appliedTagIds;
+  if (archived === true || archived === false) body.archived = archived;
+  if (locked === true || locked === false) body.locked = locked;
   const response = await fetchImpl(`https://discord.com/api/v10/channels/${threadId}`, {
     method: 'PATCH',
     headers: {
@@ -515,6 +568,8 @@ export async function updateDiscordThread({
         botToken,
         name,
         appliedTagIds,
+        archived,
+        locked,
         fetchImpl,
         retryOnRateLimit: false,
       });

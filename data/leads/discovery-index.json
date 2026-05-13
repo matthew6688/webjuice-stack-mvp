@@ -1,19 +1,20 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-13T22:46:19.642Z",
+  "updatedAt": "2026-05-13T23:49:38.322Z",
   "storeRoot": "data/leads",
   "totals": {
     "entities": 11,
     "promoted": 0,
-    "skipped": 3,
+    "skipped": 2,
     "needsAudit": 4,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 0
   },
   "statusCounts": {
     "queued_for_audit": 4,
-    "skipped": 3,
-    "graded": 4
+    "merged": 1,
+    "graded": 4,
+    "skipped": 2
   },
   "actionCounts": {
     "audit_candidate": 5,
@@ -178,7 +179,7 @@
     },
     {
       "entityKey": "domain_queenslandroofing.com.au",
-      "status": "skipped",
+      "status": "merged",
       "firstSeenAt": "2026-05-13T13:15:25.091Z",
       "lastSeenAt": "2026-05-13T13:15:25.091Z",
       "runCount": 1,
@@ -226,8 +227,8 @@
       "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
       "status": "queued_for_audit",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
-      "lastSeenAt": "2026-05-13T12:44:08.008Z",
-      "runCount": 5,
+      "lastSeenAt": "2026-05-13T13:15:25.091Z",
+      "runCount": 6,
       "promotedClientSlug": "",
       "identifiers": {
         "place_id": "ChIJ-9wdZxxakWsR-llJRD1U3JQ",

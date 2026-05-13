@@ -33,6 +33,11 @@ function leadsChannelId() {
   return process.env.WEBSITE_LEADS_DISCORD_CHANNEL_ID || '';
 }
 
+// V3 D34 (2026-05-14): #website-projects channel
+function projectsChannelId() {
+  return process.env.WEBSITE_PROJECTS_DISCORD_CHANNEL_ID || '';
+}
+
 function readEntity(entityKey) {
   const p = path.join(ENTITIES_DIR, `${entityKey}.json`);
   if (!fs.existsSync(p)) return null;
@@ -80,6 +85,39 @@ async function resolveTagIds(tagNames, { fetchImpl = fetch } = {}) {
     fetchImpl,
   });
   return tagNames.map((n) => config.tagsByName[n]).filter(Boolean);
+}
+
+// V3 D34: resolve tag IDs for #website-projects channel
+async function resolveProjectsTagIds(tagNames, { fetchImpl = fetch } = {}) {
+  const channelId = projectsChannelId();
+  if (!channelId || !botToken()) return [];
+  const blueprints = defaultDiscordForumBlueprints();
+  const config = await syncDiscordForumTags({
+    channelId,
+    botToken: botToken(),
+    tags: blueprints.projects || [],
+    fetchImpl,
+  });
+  return tagNames.map((n) => config.tagsByName[n]).filter(Boolean);
+}
+
+// V3 D34: compute tag set for projects channel (different from leads)
+function tagsForProjectsThread(entity) {
+  const tags = [];
+  const level = entity.grade?.investment_level || entity.scoring?.grade;
+  if (level === 'A') tags.push('grade-a');
+  else if (level === 'B') tags.push('grade-b');
+  else if (level === 'C') tags.push('grade-c');
+  // Sales stage tag · default demo-ready (just opened)
+  // Operator manually swaps to outreach-sent / interested / etc as sale progresses
+  const stage = entity.sales_stage || 'demo-ready';
+  if (['demo-ready', 'outreach-sent', 'client-reviewing', 'interested', 'proposal-sent',
+       'closed-won', 'closed-lost', 'nurture'].includes(stage)) {
+    tags.push(stage);
+  }
+  if (entity.urgent) tags.push('urgent');
+  if (entity.waiting_customer) tags.push('waiting-customer');
+  return tags;
 }
 
 /**
@@ -246,4 +284,153 @@ export async function upsertProfileCard(entityKey, { fetchImpl = fetch } = {}) {
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
   return { ok: true, threadId: entity.discord_thread_id, messageId: entity.discord_profile_message_id };
+}
+
+/**
+ * V3 D34 (2026-05-14): Open a new forum post in #website-projects for an entity
+ * that has a live demo URL. Idempotent: if entity.project_thread_id already set, returns it.
+ *
+ * This is called by pl:publish-demo hook + pl:migrate-to-projects-channel script.
+ */
+export async function openProjectThread(entityKey, { fetchImpl = fetch } = {}) {
+  const entity = readEntity(entityKey);
+  if (!entity) return { ok: false, reason: 'entity_not_found', entityKey };
+  if (entity.project_thread_id) {
+    return { ok: true, reused: true, threadId: entity.project_thread_id, messageId: entity.project_profile_message_id || null };
+  }
+  const channelId = projectsChannelId();
+  if (!channelId) return { ok: false, reason: 'WEBSITE_PROJECTS_DISCORD_CHANNEL_ID not set' };
+
+  const audit = readDetailedAudit(entityKey)?.detailed_audit || null;
+  const embed = renderProfileCard(entity, { audit, channel: 'projects' });
+  const threadName = buildLeadThreadName(entity);
+  const tags = tagsForProjectsThread(entity);
+
+  if (isDryRun()) {
+    return {
+      ok: true,
+      dry_run: true,
+      intended: {
+        endpoint: `POST ${DISCORD_API}/channels/${channelId}/threads`,
+        threadName,
+        tags,
+        channel: 'projects',
+        embed_field_count: embed.fields.length,
+        embed_title: embed.title,
+      },
+    };
+  }
+
+  const tagIds = await resolveProjectsTagIds(tags, { fetchImpl });
+  const response = await fetchImpl(`${DISCORD_API}/channels/${channelId}/threads`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bot ${botToken()}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-lead-thread-sync',
+    },
+    body: JSON.stringify({
+      name: threadName,
+      auto_archive_duration: 10080,
+      applied_tags: tagIds,
+      message: { embeds: [embed] },
+    }),
+  });
+  const text = await response.text();
+  if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
+  const data = JSON.parse(text);
+  const threadId = String(data.id || '');
+  const messageId = String(data.last_message_id || '');
+
+  const fresh = readEntity(entityKey);
+  fresh.project_thread_id = threadId;
+  fresh.project_profile_message_id = messageId;
+  fresh.project_thread_opened_at = new Date().toISOString();
+  writeEntity(fresh);
+
+  return { ok: true, threadId, messageId, threadName, tags };
+}
+
+/**
+ * V3 D34 (2026-05-14): Archive + lock a thread.
+ * Posts a final "closed" message, then PATCHes archived=true + locked=true.
+ * Idempotent.
+ */
+export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = fetch } = {}) {
+  if (!threadId) return { ok: false, reason: 'no_thread_id' };
+  if (isDryRun()) {
+    return {
+      ok: true,
+      dry_run: true,
+      intended: {
+        endpoint: `PATCH ${DISCORD_API}/channels/${threadId}`,
+        body: { archived: true, locked: true, reason },
+      },
+    };
+  }
+  // Optional: post closing message before archive
+  if (reason) {
+    try {
+      await fetchImpl(`${DISCORD_API}/channels/${threadId}/messages`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bot ${botToken()}`,
+          'Content-Type': 'application/json',
+          'User-Agent': 'profitslocal-lead-thread-sync',
+        },
+        body: JSON.stringify({ content: `🗄 Thread archived · ${reason}` }),
+      });
+    } catch { /* non-blocking */ }
+  }
+  // PATCH archived + locked (Discord API · same endpoint as updateDiscordThread)
+  const response = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bot ${botToken()}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-lead-thread-sync',
+    },
+    body: JSON.stringify({ archived: true, locked: true }),
+  });
+  const text = await response.text();
+  if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
+  return { ok: true, threadId, archived: true, locked: true };
+}
+
+/**
+ * V3 D34: Edit projects thread's pinned profile card in place.
+ * Like upsertProfileCard but for project_thread_id + channel='projects'.
+ */
+export async function upsertProjectProfileCard(entityKey, { fetchImpl = fetch } = {}) {
+  const entity = readEntity(entityKey);
+  if (!entity) return { ok: false, reason: 'entity_not_found' };
+  if (!entity.project_thread_id || !entity.project_profile_message_id) {
+    return { ok: false, reason: 'no_project_thread_or_message' };
+  }
+  const audit = readDetailedAudit(entityKey)?.detailed_audit || null;
+  const embed = renderProfileCard(entity, { audit, channel: 'projects' });
+
+  if (isDryRun()) {
+    return {
+      ok: true,
+      dry_run: true,
+      intended: {
+        endpoint: `PATCH ${DISCORD_API}/channels/${entity.project_thread_id}/messages/${entity.project_profile_message_id}`,
+        embed_field_count: embed.fields.length,
+      },
+    };
+  }
+
+  const response = await fetchImpl(`${DISCORD_API}/channels/${entity.project_thread_id}/messages/${entity.project_profile_message_id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bot ${botToken()}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-lead-thread-sync',
+    },
+    body: JSON.stringify({ embeds: [embed] }),
+  });
+  const text = await response.text();
+  if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
+  return { ok: true, threadId: entity.project_thread_id, messageId: entity.project_profile_message_id };
 }

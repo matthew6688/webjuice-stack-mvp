@@ -546,3 +546,64 @@ node -e "import('./core/leads/discovery-store.js').then(m => m.rebuildDiscoveryI
 - finance/ledger 成本审计保留
 
 
+---
+
+## D34 · 6-channel Discord 架构落地 · #website-leads → #website-projects 分流 (2026-05-14)
+
+**Decision**: 完整实装 [DISCORD-CHANNELS-PRD.md](./DISCORD-CHANNELS-PRD.md) Phase 1 · 把"无 demo"和"有 demo"两类销售物理分到不同 channel。
+
+**Why · 销售流程清晰化**:
+- 旧版: 所有客户都在 `#website-leads` · 看不出谁 demo 已 build 谁没
+- 新版: channel 本身就是分类
+  - `#website-leads` = 无 demo · 销售用 master.md + audit 冷接触
+  - `#website-projects` = 有 demo URL · 销售用 demo URL 冷接触 (高转化)
+  - `#paid-websites` = 已付款 · 唯一允许 revision 的 channel
+- **核心规则**: pre-pay demo 永不变 · 想改 → 付款 → 进 paid → r1 开始
+
+**Implementation** (commit pending):
+- `core/funnel/discord.js` · 5 个 blueprint 重写 (leads 9 tag · projects 13 tag · paidWebsites 12 · templates 13 · leadDiscoveryRuns 9)
+- `core/funnel/discord.js#updateDiscordThread` · 加 `archived` + `locked` 参数 (Discord API PATCH body 扩展)
+- `core/funnel/profile-card.js` · 加 `channel` 参数 · projects mode 加 🌐 Demo LIVE URL field
+- `core/funnel/lead-thread-sync.js` · 新 `openProjectThread` · `archiveAndLockThread` · `upsertProjectProfileCard` · `tagsForProjectsThread`
+- `scripts/cli/pl-migrate-to-projects-channel.js` · 新 · 一键迁移 11 keepers
+- `scripts/cli/pl-publish-demo.js` · 末尾 hook · 自动调 `openProjectThread` (idempotent)
+- `.env.local` · 加 `WEBSITE_TEMPLATES_DISCORD_CHANNEL_ID` + `PAID_WEBSITES_DISCORD_CHANNEL_ID`
+
+**Migration Apply** (2026-05-14 实测 0 fail):
+- 4 个旧 `#website-leads` thread archive+lock (Gutter / FIX MY ROOF / Brisbane Roofing Solutions / WeatherpRoof)
+- Queensland Roofing 2 entity dedup-merge → 1 (via pl:dedup-merge)
+- Roof Space Renovators (D-grade) → phase=archived (不开 projects)
+- Hurricane Digital (pre-archived) · skip
+- **8 个新 `#website-projects` thread 全部开成功**:
+  - 1504269344161402920 (Queensland Roofing)
+  - 1504269350436077720 (Roofshield)
+  - 1504269356236935259 (Gutter and Roof Repairs)
+  - 1504269364684390552 (FIX MY ROOF)
+  - 1504269370778587226 (Brisbane Roofing Solutions)
+  - 1504269376487161937 (Diamond Roof Tiling)
+  - 1504269382304530583 (Brisbane Roof Restoration Experts)
+  - 1504269388377886885 (WeatherpRoof)
+
+**Open Questions 答案 (per Matthew)**:
+- Q1 archive vs close → archive (swap-tag + lock · 保留 thread 历史)
+- Q2 Queensland 2 entities → dedup merge ✓
+- Q3 Roof Space → archive ✓
+- Q4 Hurricane → no change ✓
+- Q5 PAID_WEBSITES env → add ✓
+- Q6 TEMPLATES env → add ✓
+- Q7 lead-discovery-runs P3 → 后做
+- Q8 open-design tag → delete ✓
+- Q9 nurture auto-archive → P4
+- Q10 Stripe webhook → M5
+
+**Manifest**: `data/leads/_archive/migration-d34-2026-05-13T23-49-30.json`
+
+**未来 (TODO)**:
+- SOP-4-FLOW.md · #website-leads operator runbook
+- SOP-5-FLOW.md · #website-projects operator runbook
+- `pl:channels-doctor` · 6 channel health check
+- P3 · #lead-discovery-runs batch thread 接通
+- P4 · M5 Stripe webhook + #paid-websites
+- `tagsForEntity` 拓展 · `sales_stage` 字段 + ✅ reaction swap workflow
+
+

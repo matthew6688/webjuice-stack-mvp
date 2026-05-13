@@ -185,6 +185,7 @@ npm run pl:bulk-publish-demo -- --all
 | D31 | 显式 `DESIGN_READY` phase · 干掉隐性 ready 判断 | M1+M2 boundary |
 | D32 | `pl:lead-journey-doctor` · 10 invariant + funnel 快照 | M1+M2 |
 | D33 | 归档非真客户 entity · clean state (240→11) | data hygiene |
+| D34 | 6-channel Discord 架构落地 · leads→projects 自动分流 · revision 只在 paid | M3 + 销售 |
 
 完整: [DECISIONS-LOG.md](./DECISIONS-LOG.md)
 
