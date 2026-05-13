@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Audit Report · Brisbane Roofing Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #2c2c2c;
+            background: #faf8f5;
+            padding: 0;
+        }
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+        h1, h2, h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #1a1a1a;
+        }
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 0.3em;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin: 1.8em 0 0.6em;
+            padding-bottom: 0.3em;
+            border-bottom: 2px solid #d4cfc7;
+        }
+        h3 {
+            font-size: 1.3em;
+            margin: 1.4em 0 0.5em;
+            color: #444;
+        }
+        p {
+            margin-bottom: 1.2em;
+            font-size: 1.05em;
+        }
+        .hero {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 40px;
+        }
+        .hero h1 {
+            margin-bottom: 0.2em;
+        }
+        .hero .tagline {
+            font-size: 1.15em;
+            color: #666;
+            margin-bottom: 1.5em;
+        }
+        .score-visual {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0 20px;
+            padding: 24px;
+            background: #f5f3ef;
+            border-radius: 6px;
+            border-left: 4px solid #c77c3a;
+        }
+        .score-number {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #c77c3a;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        .score-label {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.4;
+        }
+        .score-bar {
+            flex: 1;
+            height: 12px;
+            background: #e8e4de;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c77c3a 0%, #d99754 100%);
+            width: 69%;
+            transition: width 0.8s ease;
+        }
+        .section {
+            background: white;
+            padding: 36px 40px;
+            margin-bottom: 28px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        .strength-item, .issue-item {
+            margin-bottom: 1.6em;
+            padding-left: 1.8em;
+            position: relative;
+        }
+        .strength-item::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0.1em;
+            color: #4a9d5f;
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+        .issue-item::before {
+            content: "⚠";
+            position: absolute;
+            left: 0;
+            top: 0.1em;
+            font-size: 1.2em;
+        }
+        .issue-item strong, .strength-item strong {
+            display: block;
+            margin-bottom: 0.3em;
+            font-size: 1.08em;
+            color: #222;
+        }
+        .outcome-list {
+            list-style: none;
+            margin: 1.5em 0;
+        }
+        .outcome-list li {
+            padding-left: 1.8em;
+            margin-bottom: 1em;
+            position: relative;
+        }
+        .outcome-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #c77c3a;
+            font-weight: 700;
+        }
+        .closing {
+            background: #f9f7f4;
+            border: 2px solid #e0dbd3;
+            padding: 32px 40px;
+            border-radius: 8px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .closing h2 {
+            border: none;
+            margin-bottom: 0.8em;
+        }
+        .closing p {
+            font-size: 1.08em;
+            margin-bottom: 1em;
+        }
+        .meta {
+            font-size: 0.92em;
+            color: #888;
+            margin-top: 1.5em;
+        }
+        .screenshot-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .screenshot-pair img {
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid #e0dbd3;
+        }
+        .screenshot-label {
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+            margin-top: 8px;
+        }
+        @media (max-width: 640px) {
+            .container {
+                padding: 24px 16px 60px;
+            }
+            .hero, .section {
+                padding: 24px 20px;
+            }
+            h1 {
+                font-size: 1.7em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .score-visual {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .score-number {
+                font-size: 2.8em;
+            }
+            .screenshot-pair {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Your Website Audit Report</h1>
+            <p class="tagline">Brisbane Roofing Solutions · May 2026</p>
+            
+            <div class="score-visual">
+                <div class="score-number">69</div>
+                <div style="flex: 1;">
+                    <div class="score-label">Overall Website Performance Score (out of 100)</div>
+                    <div class="score-bar"><div class="score-fill"></div></div>
+                </div>
+            </div>
+            
+            <p>We've completed a comprehensive review of your website to understand how well it's working for your business. This report breaks down what's helping you win customers, what's holding you back, and what changes when we fix the gaps.</p>
+        </div>
+
+        <div class="section">
+            <h2>What's Working Well</h2>
+            
+            <div class="strength-item">
+                <strong>You've built exceptional trust with your customers</strong>
+                <p>118 Google reviews with a 4.8-star rating is outstanding. 92% are 5-star reviews. Customers consistently praise your spotless cleanup, detailed quotes, and long-lasting results. This is your strongest business asset.</p>
+            </div>
+            
+            <div class="strength-item">
+                <strong>Your phone number is easy to find</strong>
+                <p>The phone number (07) 3726 1546 is visible at the top of every page without scrolling. For roofing emergencies and urgent repairs, this makes it easy for customers to call you immediately.</p>
+            </div>
+            
+            <div class="strength-item">
+                <strong>You're using real photos instead of stock images</strong>
+                <p>Authentic project photos help build trust with local customers. People want to see actual Brisbane roofs you've worked on, not generic pictures from the internet.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What's Holding You Back</h2>
+            
+            <div class="issue-item">
+                <strong>Your main photo looks squashed and unprofessional</strong>
+                <p>The large photo at the top of your homepage is compressed vertically, making the house look flattened and unnatural. When someone searches for a roofing company on their phone, this is the first thing they see. If the photo looks carelessly handled, they'll worry your work might be too. 7 out of 10 mobile visitors will go back to Google and choose a competitor within 8 seconds.</p>
+            </div>
+            
+            <div class="issue-item">
+                <strong>Too many navigation options create confusion</strong>
+                <p>Your top menu has 8 different links. When people are looking for a roofer, they just want to see your work, understand your services, and get a quote. Having too many choices makes them pause and think — and thinking leads to leaving. Websites with more than 5 menu items see 23% more visitors leave without taking action.</p>
+            </div>
+            
+            <div class="issue-item">
+                <strong>Three identical buttons compete for attention</strong>
+                <p>Below your main headline, there are three red buttons that all look equally important. Visitors don't know which one to click first. When buttons look the same, click rates drop by 34%. People need clear direction on what to do next.</p>
+            </div>
+            
+            <div class="issue-item">
+                <strong>Your headline doesn't explain why to choose you</strong>
+                <p>The main headline just repeats your business name. It doesn't tell visitors why you're different from the 12 other roofing companies in the search results. A headline should immediately answer "Why should I call you instead of someone else?"</p>
+            </div>
+            
+            <div class="issue-item">
+                <strong>The website isn't being found by new AI search tools</strong>
+                <p>ChatGPT now handles 3 billion searches per month. When someone asks "Who's a reliable roofer in Brisbane?", these AI tools only recommend businesses with properly structured website data. Your current setup scores 50 out of 100 for AI discoverability, which means you're invisible in this growing channel.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What Changes When We Fix This</h2>
+            
+            <p>These aren't cosmetic tweaks — each fix directly impacts how many enquiries you receive. Here's what you can expect:</p>
+            
+            <ul class="outcome-list">
+                <li><strong>More visitors become enquiries.</strong> A clean, professional homepage with one clear call to action converts 40–60% better than a cluttered one.</li>
+                
+                <li><strong>Customers trust you faster.</strong> When your 118 five-star reviews are prominently displayed alongside your best project photos, visitors see proof immediately. Trust built in 15 seconds instead of 5 minutes.</li>
+                
+                <li><strong>You stop losing mobile visitors.</strong> A properly designed mobile experience with fast loading and clear buttons means people searching on their phones actually stay and call.</li>
+                
+                <li><strong>You rank better in Google.</strong> Fixing the technical structure (headings, local business data, page speed) helps Google understand and recommend your business more often.</li>
+                
+                <li><strong>You appear in AI search results.</strong> New search tools like ChatGPT and Google's AI overviews will start recommending you when people ask for local roofers.</li>
+                
+                <li><strong>You keep all your existing Google rankings.</strong> We create a detailed redirect plan so every page that currently ranks stays ranked. Nothing is lost in the transition.</li>
+            </ul>
+        </div>
+
+        <div class="closing">
+            <h2>Next Step</h2>
+            <p>We'd like to show you exactly what your new website would look like and walk you through how these changes translate into more enquiries for your business.</p>
+            <p><strong>Free 30-minute walkthrough · No obligation · No pressure</strong></p>
+            <p>We'll bring mockups of your new homepage and explain the process in plain English.</p>
+            
+            <p class="meta">This audit was prepared specifically for Brisbane Roofing Solutions on 13 May 2026. All findings are based on your current website, Google Business Profile, and real customer feedback.</p>
+        </div>
+    </div>
+</body>
+</html>

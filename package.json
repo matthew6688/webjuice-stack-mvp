@@ -37,6 +37,7 @@
     "v3:test-m3-demo-hook": "node scripts/v3/test-m3-demo-hook.mjs",
     "pl:build-from-reference": "node --env-file-if-exists=.env.local scripts/cli/pl-build-from-reference.js",
     "pl:build-customer-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-build-customer-audit.js",
+    "pl:publish-demo": "node --env-file-if-exists=.env.local scripts/cli/pl-publish-demo.js",
     "v3:validate-all": "npm run v3:validate-m1 && npm run v3:validate-m2 && npm run v3:e2e",
     "dokobot:smoke": "node scripts/dokobot/smoke.js",
     "check:links": "node scripts/check-links.js",

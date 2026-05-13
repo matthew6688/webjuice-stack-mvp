@@ -70,7 +70,7 @@
 
 | Section | OD 能做 | Sample fallback |
 |---|---|---|
-| `audit-banner` | swap audit score + 3 finding | 客户无 audit → 删整个 banner (这个**确实**删 · 因为是销售 overlay · 没 audit 没意义) |
+| `audit-banner` | swap audit score + 3 finding · 含"Read full report"链接到 ../customer-facing-audit.html (English plain版) | 客户无 audit → 删整个 banner (销售 overlay · 没 audit 没意义) |
 | `hero` | 改 eyebrow/H1/lead/CTA/3 proof cell · 图片 swap | 必须有 · 用 ownerVoice + niche typical hero angle |
 | `services` | 卡片 3-6 · 内容自由 | 客户只列 1 → AI 补到 3-5 · 标 sample |
 | `trust` | 真 reviewVoice (姓名+suburb+原话) | 客户无 review → AI 写 3 条 plausible · 标 sample |
