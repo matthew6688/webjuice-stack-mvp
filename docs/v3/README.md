@@ -143,6 +143,7 @@ npm run leads:build-internal-report -- --entity-key <key> # internal HTML + 捕�
 | [MASTER-MD-AUDIT-V2-2026-05-13.md](./MASTER-MD-AUDIT-V2-2026-05-13.md) | 19 bug 完整状态 + Matthew 4 问题答案 |
 | [CUSTOMER-FOLDER-STRUCTURE.md](./CUSTOMER-FOLDER-STRUCTURE.md) | Pattern A (flat) vs Pattern B (v2/) 结构 |
 | [M2-D9-CUSTOMER-AUDIENCE-REPORT.md](./M2-D9-CUSTOMER-AUDIENCE-REPORT.md) | autoresearch loop customer-audience integration |
+| [SOP-DISCORD-HERMES-FLOW.md](./SOP-DISCORD-HERMES-FLOW.md) | **NEW** · Discord ↔ Hermes 信息流 + 通知人话化设计 + 4 phase 实施 plan |
 | [WEBSITE-QUALITY-RND.md](./WEBSITE-QUALITY-RND.md) | website R&D 重排 · 撤回 prescribing framework |
 | [WEBSITE-AUTORESEARCH-DESIGN.md](./WEBSITE-AUTORESEARCH-DESIGN.md) | 撤回的 288-variant 方案 (历史档案) |
 
