@@ -88,6 +88,34 @@ if (fs.existsSync(customerAudit)) {
   console.log(`[pl:publish-demo] included customer-facing-audit.html`);
 }
 
+// V3 D28 (2026-05-13) · 把 master.md (internal source-of-truth) + master.report.html
+// 也部署到 CF Pages · 操作员/Matthew 能远程查任意 entity 完整 audit (含 Chinese version)
+const masterMd = path.join(REPO, 'clients', slug, 'v2', 'master.md');
+const masterReportHtml = path.join(REPO, 'clients', slug, 'v2', 'master.report.html');
+const internalAuditHtml = path.join(REPO, 'clients', slug, 'v2', 'internal-audit-report.html');
+if (fs.existsSync(masterMd)) {
+  fs.copyFileSync(masterMd, path.join(stageDir, 'master.md'));
+  console.log(`[pl:publish-demo] included master.md`);
+}
+if (fs.existsSync(masterReportHtml)) {
+  fs.copyFileSync(masterReportHtml, path.join(stageDir, 'master.report.html'));
+  console.log(`[pl:publish-demo] included master.report.html`);
+}
+if (fs.existsSync(internalAuditHtml)) {
+  fs.copyFileSync(internalAuditHtml, path.join(stageDir, 'internal-audit-report.html'));
+  console.log(`[pl:publish-demo] included internal-audit-report.html`);
+}
+// Also copy screenshots/evidence/video dirs so they render inline
+for (const sub of ['screenshots', 'evidence', 'video']) {
+  const srcDir = path.join(REPO, 'clients', slug, 'v2', sub);
+  if (!fs.existsSync(srcDir)) continue;
+  const destDir = path.join(stageDir, sub);
+  fs.mkdirSync(destDir, { recursive: true });
+  for (const f of fs.readdirSync(srcDir)) {
+    fs.copyFileSync(path.join(srcDir, f), path.join(destDir, f));
+  }
+}
+
 // 4. Try to create project (idempotent · ignore if exists)
 console.log(`\n[pl:publish-demo] ensuring project exists...`);
 const createRes = await fetch(
@@ -134,12 +162,17 @@ proc.on('exit', async (code) => {
   console.log(`\n[pl:publish-demo] ✅ DONE`);
   console.log(`  Demo URL:           ${url}`);
   console.log(`  Customer audit URL: ${url}/customer-facing-audit.html`);
+  console.log(`  master.md URL:      ${url}/master.md`);
+  console.log(`  Internal HTML URL:  ${url}/internal-audit-report.html`);
   // Persist deploy record
   const record = {
     slug, projectName,
     deployed_at: new Date().toISOString(),
     demo_url: url,
     audit_url: `${url}/customer-facing-audit.html`,
+    master_md_url: `${url}/master.md`,
+    internal_audit_url: `${url}/internal-audit-report.html`,
+    master_report_url: `${url}/master.report.html`,
     stage_dir: stageDir,
   };
   const recordDir = path.join(REPO, 'clients', slug, 'v2', 'concept', 'reference-adapter');

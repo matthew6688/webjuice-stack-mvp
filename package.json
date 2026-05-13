@@ -37,6 +37,7 @@
     "v3:test-m3-demo-hook": "node scripts/v3/test-m3-demo-hook.mjs",
     "v3:pressure-intake-router": "node scripts/v3/pressure-test-intake-router.mjs",
     "v3:pressure-intake-chain": "node scripts/v3/pressure-test-intake-chain.mjs",
+    "v3:batch-master-md": "node --env-file-if-exists=.env.local scripts/v3/batch-master-md-by-city.mjs",
     "pl:build-from-reference": "node --env-file-if-exists=.env.local scripts/cli/pl-build-from-reference.js",
     "pl:build-customer-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-build-customer-audit.js",
     "pl:publish-demo": "node --env-file-if-exists=.env.local scripts/cli/pl-publish-demo.js",

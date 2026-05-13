@@ -4,17 +4,22 @@
  * Classifies a free-text task input (with optional attachments) into a SOP-0
  * task spec: { kind, target_cli, args, target_entity_key, confidence }.
  *
- * Provider chain (per Matthew · 2026-05-12 · "local cheap, paid don't auto-fire"):
+ * Provider chain (V3 D27 · 2026-05-13 · Matthew: "paid CLI 优先 quality > free"):
  *
- *   default cascade  : ollama (T0 local) → regex (T0 local, always-on safety net)
- *   opt-in cascade   : if INTENT_ROUTER_PAID_FALLBACK set, paid CLIs slot in BEFORE
- *                       regex but AFTER ollama (operator explicitly consents to $)
+ *   default cascade  : codex_cli → claude_cli → ollama → regex
+ *                       (paid CLIs use Matthew's subscription · no per-call $$$ ·
+ *                        ollama T0 local fallback · regex always-on safety net)
  *
- *   Examples:
- *     (default)                                  ollama → regex
- *     INTENT_ROUTER_PAID_FALLBACK=claude_cli     ollama → claude_cli → regex
- *     INTENT_ROUTER_PAID_FALLBACK=codex_cli      ollama → codex_cli → regex
- *     TEXT_PROVIDER=ollama  (env force)          ollama only
+ *   env overrides:
+ *     INTENT_ROUTER_CASCADE=claude_cli,ollama    explicit chain
+ *     INTENT_ROUTER_CASCADE=ollama               ollama only (fastest · cheap)
+ *     TEXT_PROVIDER=ollama  (legacy force)       ollama only
+ *
+ * Why this order (live E2E + pressure test 2026-05-13 findings):
+ *   - ollama (qwen3.5:9b) got 22/24 router tests correct · 2 edge case misses
+ *   - Live Discord E2E showed ollama dropped --niche/--city args → CLI exit 1
+ *   - codex_cli + claude_cli are smarter at args extraction + edge cases
+ *   - Matthew confirmed paid-first preferred when quality matters
  *
  * Owner: SOP-0 §3 (docs/SOP_0_TASK_SYSTEM.md)
  *
@@ -430,41 +435,46 @@ function normalizeArgsForKind(args, text, kind) {
 
 /* ─── Main entry ──────────────────────────────────────────────────── */
 
+// V3 D27 (2026-05-13): default cascade · paid CLIs first · ollama T0 fallback
+const DEFAULT_CASCADE = 'codex_cli,claude_cli,ollama';
+
 export async function routeIntent({ text, attachments = [] } = {}) {
   const errors = [];
 
-  // 1. Try Ollama (T0 local) — unless TEXT_PROVIDER explicitly forces another single provider
-  const forced = process.env.TEXT_PROVIDER;
-  if (!forced || forced === 'ollama') {
+  // Build cascade · respect explicit env override, legacy TEXT_PROVIDER, or default
+  let cascade;
+  if (process.env.INTENT_ROUTER_CASCADE) {
+    cascade = process.env.INTENT_ROUTER_CASCADE.split(',').map((s) => s.trim()).filter(Boolean);
+  } else if (process.env.TEXT_PROVIDER && process.env.TEXT_PROVIDER !== 'auto') {
+    cascade = [process.env.TEXT_PROVIDER];
+  } else {
+    cascade = DEFAULT_CASCADE.split(',');
+  }
+
+  // Walk cascade · first success wins
+  for (const provider of cascade) {
     try {
-      const out = await viaOllama({ text, attachments });
+      let out = null;
+      if (provider === 'ollama') {
+        out = await viaOllama({ text, attachments });
+      } else if (provider === 'claude_cli' || provider === 'codex_cli') {
+        out = await viaPaidCli(provider, { text, attachments });
+      } else {
+        errors.push(`${provider}: unknown provider · skipped`);
+        continue;
+      }
       if (out) {
         out.args = normalizeArgsForKind(out.args, text, out.kind);
+        out.upstream_errors = errors.length ? errors : undefined;
         return out;
       }
-      errors.push('ollama: returned null');
+      errors.push(`${provider}: returned null`);
     } catch (err) {
-      errors.push(`ollama: ${err.message}`);
+      errors.push(`${provider}: ${err.message}`);
     }
   }
 
-  // 2. Optional paid CLI fallback (env opt-in, default empty)
-  const paidChain = (process.env.INTENT_ROUTER_PAID_FALLBACK || '')
-    .split(',').map((s) => s.trim()).filter(Boolean);
-  for (const p of paidChain) {
-    try {
-      const out = await viaPaidCli(p, { text, attachments });
-      if (out) {
-        out.args = normalizeArgsForKind(out.args, text, out.kind);
-        return out;
-      }
-      errors.push(`${p}: returned null`);
-    } catch (err) {
-      errors.push(`${p}: ${err.message}`);
-    }
-  }
-
-  // 3. Regex always-on safety net (never fails — even ops/unknown)
+  // Final fallback · regex always-on safety net
   const out = viaRegex({ text, attachments });
   out.upstream_errors = errors.length ? errors : undefined;
   out.args = normalizeArgsForKind(out.args, text, out.kind);

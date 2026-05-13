@@ -1,0 +1,44 @@
+{
+  "batch_id": "places-plumber-brisbane-202605132306",
+  "title": "[Places Pipeline] plumber brisbane — 2026-05-13 13:06 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504107609823907966",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504107609823907966",
+  "initial_message_id": "1504107609823907966",
+  "niche": "plumber",
+  "city": "brisbane",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "plumber brisbane",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T13:06:39.304Z",
+  "finished_at": null,
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T13:06:40.600Z",
+      "message_id": "1504107614655479879"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijmbddo0tnkwsroxgwbchuklm, place_chijxxhsosvnkwsrgryq8wtt2zy",
+      "at": "2026-05-13T13:06:41.617Z",
+      "message_id": "1504107619617607781"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `plumber brisbane`\nLeads (first 5): place_chijmbddo0tnkwsroxgwbchuklm, place_chijxxhsosvnkwsrgryq8wtt2zy",
+      "at": "2026-05-13T13:06:41.993Z",
+      "message_id": "1504107621177888778"
+    }
+  ],
+  "issues": [],
+  "leads": []
+}

@@ -1,18 +1,17 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-13T13:02:15.525Z",
+  "updatedAt": "2026-05-13T13:06:41.245Z",
   "storeRoot": "data/leads",
   "totals": {
-    "entities": 139,
+    "entities": 140,
     "promoted": 4,
     "skipped": 35,
-    "needsAudit": 66,
+    "needsAudit": 68,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 8
   },
   "statusCounts": {
-    "discovered": 1,
-    "queued_for_audit": 66,
+    "queued_for_audit": 68,
     "graded": 5,
     "skipped": 35,
     "manual_review": 18,
@@ -21,56 +20,99 @@
     "promoted": 4
   },
   "actionCounts": {
-    "unknown": 1,
-    "audit_candidate": 76,
+    "audit_candidate": 78,
     "manual_review": 24,
     "skip": 36,
     "starter_candidate": 2
   },
   "websiteStatusCounts": {
-    "https": 1,
+    "unknown": 54,
     "independent_http_site": 24,
-    "unknown": 52,
     "independent_https_site": 58,
     "no_website": 3,
     "social_or_third_party_only": 1
   },
   "entities": [
     {
-      "entityKey": "__e2e_m1_m2__",
-      "status": "discovered",
-      "firstSeenAt": "2026-05-13T13:02:15.514Z",
-      "lastSeenAt": "2026-05-13T13:02:15.514Z",
+      "entityKey": "place_chijmbddo0tnkwsroxgwbchuklm",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T13:06:41.234Z",
+      "lastSeenAt": "2026-05-13T13:06:41.234Z",
       "runCount": 1,
       "promotedClientSlug": "",
       "identifiers": {
-        "place_id": "",
+        "place_id": "ChIJmbdDO0tnkWsRoxGWBcHuKLM",
         "cid": "",
         "data_id": "",
-        "websiteDomain": "e2e-test-roofing.test",
-        "phoneDigits": "0412000000"
+        "websiteDomain": "brisbaneplumbinganddrainage.com.au",
+        "phoneDigits": "0735237145"
       },
       "latest": {
-        "sourceType": "gosom",
-        "name": "E2E Test Roofing",
+        "sourceType": "places_search",
+        "name": "Brisbane Plumbing and Drainage",
         "category": "",
-        "categories": [],
-        "address": "1 Test St, Brisbane QLD 4000",
+        "categories": [
+          "establishment",
+          "plumber",
+          "point_of_interest"
+        ],
+        "address": "Unit 9-11/23 Breene Pl, Morningside QLD 4170, Australia",
         "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "0412000000",
-        "website": "https://e2e-test-roofing.test",
-        "google_maps_url": "",
-        "rating": 4.5,
-        "review_count": 10,
-        "websiteStatus": "https",
-        "discoveryScore": 23,
-        "recommendedAction": "",
-        "sourceQuery": "roofing brisbane e2e test",
+        "niche": "plumber",
+        "phone": "(07) 3523 7145",
+        "website": "https://www.brisbaneplumbinganddrainage.com.au/?utm_source=google&utm_medium=business_profile&utm_campaign=tradius&utm_content=website_button",
+        "google_maps_url": "https://maps.google.com/?cid=12909830844647346595",
+        "rating": 4.8,
+        "review_count": 3437,
+        "websiteStatus": "",
+        "discoveryScore": 37,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "plumber brisbane",
         "signals": {},
-        "batch_id": "",
-        "discovery_rank": null,
-        "google_places_provider": null
+        "batch_id": "places-plumber-brisbane-202605132306",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijxxhsosvnkwsrgryq8wtt2zy",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T13:06:41.234Z",
+      "lastSeenAt": "2026-05-13T13:06:41.234Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJXxHSosVnkWsRgRyQ8WTT2zY",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "liqwyd.com.au",
+        "phoneDigits": "0423659163"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Liqwyd Solutions",
+        "category": "",
+        "categories": [
+          "establishment",
+          "plumber",
+          "point_of_interest"
+        ],
+        "address": "5 Jessie Cl, Thornlands QLD 4164, Australia",
+        "city": "Brisbane",
+        "niche": "plumber",
+        "phone": "0423 659 163",
+        "website": "https://liqwyd.com.au/?utm_source=organic&utm_medium=google_my_business&utm_id=google",
+        "google_maps_url": "https://maps.google.com/?cid=3952985528450686081",
+        "rating": 5,
+        "review_count": 288,
+        "websiteStatus": "",
+        "discoveryScore": 42,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "plumber brisbane",
+        "signals": {},
+        "batch_id": "places-plumber-brisbane-202605132306",
+        "discovery_rank": 2,
+        "google_places_provider": "official_api"
       }
     },
     {

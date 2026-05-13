@@ -105,6 +105,33 @@
         "place_id",
         "entityKey"
       ]
+    },
+    {
+      "at": "2026-05-13T13:07:00.469Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.9,
+      "reasoning": "电话、网站域名、名称及业态完全一致，属同一家企业不同办公点或换牌。地址差异为不同经营地点，非不同商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0752305802"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "name",
+        "website",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id",
+        "entityKey"
+      ]
     }
   ]
 }
