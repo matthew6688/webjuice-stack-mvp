@@ -1,87 +1,75 @@
 {
-  "deliverableId": "m1-d1-dedup-scoring",
+  "deliverableId": "discord-humanize",
   "overall": "PASS",
-  "total": 13,
-  "passed": 13,
+  "total": 11,
+  "passed": 11,
   "skipped": 0,
   "failed": 0,
   "took_ms": 4,
-  "ran_at": "2026-05-13T10:50:34.589Z",
+  "ran_at": "2026-05-13T10:50:26.356Z",
   "results": [
     {
-      "name": "case-1-auto-at-intake",
+      "name": "kindLabel returns label for known kinds",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-2-llm",
+      "name": "kindLabel fallback for unknown kind",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-3-merge",
+      "name": "cliHuman returns human label",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-4-merge",
+      "name": "explainFailure recognizes docker not running",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-5-llm",
+      "name": "explainFailure recognizes quota cap",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-6-llm",
+      "name": "explainFailure fallback shows exit code + stderr tail",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-7-pass",
+      "name": "adminUrls.task returns valid URL",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-8-pass",
+      "name": "renderTaskCreatedMessage has emoji + label + admin link",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-9-llm",
+      "name": "renderDoneMessage includes business summary + technical fold",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-10-llm",
+      "name": "renderFailedMessage explains failure in human terms",
       "passed": true,
       "error": null,
       "took_ms": 0
     },
     {
-      "name": "case-11-merge",
-      "passed": true,
-      "error": null,
-      "took_ms": 0
-    },
-    {
-      "name": "case-12-pass",
-      "passed": true,
-      "error": null,
-      "took_ms": 0
-    },
-    {
-      "name": "thresholds-not-hardcoded",
+      "name": "renderTimeoutMessage gives retry action",
       "passed": true,
       "error": null,
       "took_ms": 0

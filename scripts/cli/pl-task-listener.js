@@ -222,14 +222,10 @@ async function handleNewForumThread(thread) {
   const [kindTag, statusTag] = appliedTagsFor(pendingKind, pendingStatus);
   await patchThreadTags(thread.id, [kindTag, statusTag]);
 
-  // Status message reply (pinned-style — listener owns the initial post, dispatcher edits later)
-  const lines = [
-    `✅ **任务已创建** \`${task.task_id}\``,
-    `类型 kind: \`${route.kind}\` · 状态 status: \`${pendingStatus}\` · 路由提供方 provider: \`${route.provider}\``,
-    route.target_cli ? `执行命令 cli: \`${route.target_cli}\`${finalArgs.length ? ' ' + finalArgs.join(' ') : ''}` : `执行命令 cli: _(暂无 — 需要人工介入)_`,
-    route.target_entity_key ? `目标实体 entity_key: \`${route.target_entity_key}\`` : null,
-  ].filter(Boolean);
-  const msgId = await postThreadReply(thread.id, lines.join('\n'));
+  // Status message reply · V3 D25 (2026-05-13): 人话版 · business-first · 技术细节折叠
+  const { renderTaskCreatedMessage } = await import('../../core/discord-tasks/humanize.js');
+  const humanRoute = { ...route, args: finalArgs };
+  const msgId = await postThreadReply(thread.id, renderTaskCreatedMessage({ task, route: humanRoute }));
   if (msgId) {
     const t = readTask(task.task_id);
     if (t) {

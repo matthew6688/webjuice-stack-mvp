@@ -322,27 +322,29 @@ async function runTask(taskId) {
       }
     } catch { /* xref best-effort */ }
 
+    // V3 D25 (2026-05-13): 人话通知 · business-first · 技术细节折叠 in <details>
+    const { renderTimeoutMessage, renderDoneMessage, renderFailedMessage } = await import('../../core/discord-tasks/humanize.js');
     if (killedByTimeout) {
       log('timeout', taskId, `(${timeoutMs}ms)`);
       transitionStatus(taskId, 'human', { reason: `timeout after ${timeoutMs}ms` });
       appendProgress(taskId, 'cli.timeout', `signal=${signal} code=${code}`);
       const [k, t] = appliedTagsFor(task.kind, 'human');
       await patchThreadTags(threadId, [k, t]);
-      await postThreadReply(threadId, `⏳ 任务 **${taskId}** 执行超时 · 已运行 ${Math.round(timeoutMs/1000)}s 后被终止 · 已转交人工处理\n\`\`\`\n${tail.slice(-1200)}\n\`\`\``);
+      await postThreadReply(threadId, renderTimeoutMessage({ task, timeoutMs, tail }));
     } else if (code === 0) {
       log('done', taskId, `(${durationMs}ms exit=0)`);
       transitionStatus(taskId, 'done', { result: { exit_code: 0, duration_ms: durationMs } });
       appendProgress(taskId, 'cli.complete', `exit=0 dur=${durationMs}ms`);
       const [k, t] = appliedTagsFor(task.kind, 'done');
       await patchThreadTags(threadId, [k, t]);
-      await postThreadReply(threadId, `✅ 任务 **${taskId}** 完成 · 用时 ${(durationMs/1000).toFixed(1)}s${xref}\n\`\`\`\n${tail.slice(-1500 + xref.length)}\n\`\`\``);
+      await postThreadReply(threadId, renderDoneMessage({ task, durationMs, tail, xref }));
     } else {
       log('failed', taskId, `(exit=${code} sig=${signal})`);
       transitionStatus(taskId, 'failed', { reason: `exit=${code} signal=${signal}`, result: { exit_code: code, duration_ms: durationMs } });
       appendProgress(taskId, 'cli.failed', `exit=${code} signal=${signal} dur=${durationMs}ms`);
       const [k, t] = appliedTagsFor(task.kind, 'failed');
       await patchThreadTags(threadId, [k, t]);
-      await postThreadReply(threadId, `❌ 任务 **${taskId}** 执行失败 · CLI 退出码 exit=${code}\n\`\`\`\n${tail.slice(-1500)}\n\`\`\``);
+      await postThreadReply(threadId, renderFailedMessage({ task, exitCode: code, stderr: tail, tail }));
     }
     inFlight.delete(taskId);
   });
@@ -354,7 +356,8 @@ async function runTask(taskId) {
     appendProgress(taskId, 'cli.spawn_error', err.message);
     const [k, t] = appliedTagsFor(task.kind, 'failed');
     await patchThreadTags(threadId, [k, t]);
-    await postThreadReply(threadId, `❌ 任务 **${taskId}** 启动失败 · 子进程 spawn 错误: ${err.message}`);
+    const { renderFailedMessage } = await import('../../core/discord-tasks/humanize.js');
+    await postThreadReply(threadId, renderFailedMessage({ task, exitCode: -1, stderr: `spawn error: ${err.message}`, tail: '' }));
     inFlight.delete(taskId);
   });
 }
