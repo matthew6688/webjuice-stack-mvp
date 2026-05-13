@@ -1,37 +1,30 @@
 {
   "deliverableId": "m2-d5-staleness",
   "overall": "PASS",
-  "total": 4,
-  "passed": 0,
-  "skipped": 4,
+  "total": 3,
+  "passed": 3,
+  "skipped": 0,
   "failed": 0,
-  "took_ms": 3,
-  "ran_at": "2026-05-13T04:35:29.766Z",
+  "took_ms": 2,
+  "ran_at": "2026-05-13T04:48:22.434Z",
   "results": [
     {
-      "name": "checkStaleness-exists",
+      "name": "fresh-fixture-reused",
       "passed": true,
-      "skipped": true,
-      "reason": "core/leads/audit-stage1.js#checkStaleness missing"
+      "error": null,
+      "took_ms": 1
     },
     {
-      "name": "case-fresh",
+      "name": "31-day-old-fixture-refetched",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on checkStaleness"
+      "error": null,
+      "took_ms": 0
     },
     {
-      "name": "case-31-day",
+      "name": "env-override-AUDIT_STALENESS_DAYS",
       "passed": true,
-      "skipped": true,
-      "reason": "gated on checkStaleness"
-    },
-    {
-      "name": "case-env-override",
-      "passed": true,
-      "skipped": true,
-      "reason": "gated on checkStaleness"
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }
