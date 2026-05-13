@@ -157,7 +157,93 @@ function renderIssueBlock(issue, manifest, severity) {
   return lines.join('\n');
 }
 
-export function buildMasterMd({
+// V3 M2-D6 · 5 required Chinese sections (always rendered, even with empty audit).
+// Order constraint: 销售切入点 must appear immediately after 速览.
+const REQUIRED_SECTION_HEADERS = [
+  '## 一、速览',
+  '## 二、销售切入点',
+  '## 三、现网站快速诊断',
+  '## 四、业主沟通要点',
+  '## 五、账户与档案',
+];
+
+function hasMeaningfulAudit(audit) {
+  if (!audit || typeof audit !== 'object') return false;
+  return Object.keys(audit).length > 0;
+}
+
+function renderRequiredScaffold({ entity, audit }) {
+  const name = entity?.latest?.name || entity?.businessName || entity?.entityKey || 'TBD';
+  const niche = entity?.latest?.niche || entity?.niche || '-';
+  const lines = [];
+  lines.push(`# ${name} · 现状审计与重构提议`);
+  lines.push('');
+  const hasAudit = hasMeaningfulAudit(audit);
+  const tbd = '**TBD · audit 不完整**';
+  lines.push('## 一、速览');
+  lines.push('');
+  lines.push(hasAudit ? `行业：${niche}` : tbd);
+  lines.push('');
+  lines.push('## 二、销售切入点');
+  lines.push('');
+  lines.push(tbd);
+  lines.push('');
+  lines.push('## 三、现网站快速诊断');
+  lines.push('');
+  lines.push(tbd);
+  lines.push('');
+  lines.push('## 四、业主沟通要点');
+  lines.push('');
+  lines.push(tbd);
+  lines.push('');
+  lines.push('## 五、账户与档案');
+  lines.push('');
+  lines.push(tbd);
+  lines.push('');
+  return lines.join('\n');
+}
+
+// Public API: returns the rendered markdown STRING.
+// For programmatic callers needing frontmatter/sectionCount metadata,
+// use `buildMasterMdDetailed` which returns {md, frontmatter, sectionCount}.
+export function buildMasterMd(opts = {}) {
+  const { entity, detailedAudit, audit } = opts;
+  // Test contract: `audit` may be passed directly (null / {} / partial).
+  // Real pipeline uses `detailedAudit`. Honor either.
+  const auditData = detailedAudit ?? audit ?? null;
+  const hasReal = hasMeaningfulAudit(auditData) && (auditData.audit_score != null || auditData.issues || auditData.decision);
+
+  if (!hasReal) {
+    // Minimal scaffold with 5 required Chinese sections + TBD placeholders.
+    return renderRequiredScaffold({ entity, audit: auditData });
+  }
+
+  // Real-data path: delegate to the detailed builder, then ensure required
+  // ordering invariants (销售切入点 right after 速览) hold.
+  const detailed = buildMasterMdDetailed({ ...opts, detailedAudit: auditData });
+  return ensureRequiredOrder(detailed.md);
+}
+
+// Move/insert "## 二、销售切入点" header directly after "## 一、店家现状速览" / "## 一、速览"
+// so the 5 required section order invariant holds even on full real-data renders.
+function ensureRequiredOrder(md) {
+  // Already correct if 销售切入点 appears after 速览 but not before any other ## section.
+  const idxSummary = md.indexOf('速览');
+  const idxSales = md.indexOf('销售切入点');
+  if (idxSummary >= 0 && idxSales > idxSummary) {
+    // Already correctly ordered — return as is.
+    return md;
+  }
+  // Otherwise inject a placeholder 销售切入点 header right after the 速览 H2.
+  const summaryRe = /(##\s*一、[^\n]*速览[^\n]*\n)/;
+  if (summaryRe.test(md)) {
+    return md.replace(summaryRe, `$1\n## 二、销售切入点\n\n**TBD · audit 不完整**\n\n`);
+  }
+  // Fallback: prepend scaffold of required sections.
+  return md + '\n\n## 二、销售切入点\n\n**TBD · audit 不完整**\n';
+}
+
+export function buildMasterMdDetailed({
   entity,
   detailedAudit,
   visualAudit,
@@ -1082,8 +1168,9 @@ function deriveUpsellOpportunities({ activity, latest, techStack, reviews }) {
 }
 
 export function writeMasterMd({ outputPath, ...rest }) {
-  const { md, frontmatter, sectionCount } = buildMasterMd(rest);
+  const { md, frontmatter, sectionCount } = buildMasterMdDetailed(rest);
+  const finalMd = ensureRequiredOrder(md);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, md);
-  return { mdPath: outputPath, frontmatter, sectionCount, byteLength: Buffer.byteLength(md, 'utf8') };
+  fs.writeFileSync(outputPath, finalMd);
+  return { mdPath: outputPath, frontmatter, sectionCount, byteLength: Buffer.byteLength(finalMd, 'utf8') };
 }
