@@ -350,3 +350,26 @@ npm run pl:bulk-archive-stale -- --filter v2-stale --commit   # 真做
 5. **bulk-archive 跑前先 backup entity store (zip)** · OK?
 
 回完我开干 M1 实装。
+
+---
+
+## Post-implementation update · 2026-05-13
+
+✅ **M1 IMPLEMENTED** · all 6 deliverables PASS.
+
+| Deliverable | Status | Files |
+|---|---|---|
+| M1-D1 dedup-scorer | ✅ PASS 13/13 | `core/leads/dedup-scorer.js` |
+| M1-D2 discovery-score (unified 4 entries) | ✅ PASS 7/7 | `core/leads/discovery-score.js` + 4 entry CLIs wired |
+| M1-D3 Hermes skill profitslocal-website-intake | ✅ PASS 4/5 (1 manual) | `~/.hermes/profiles/marketer/skills/b2b-marketing/profitslocal-website-intake/SKILL.md` |
+| M1-D4 pl:ingest-image shared parseArgs | ✅ PASS 8/8 | `scripts/cli/pl-ingest-image.js` (imports `_pl-shared.js`) |
+| M1-D5 pl-bulk-archive | ✅ PASS 4/4 | `scripts/cli/pl-bulk-archive.js` |
+| M1-D6 sop1-live-demo --validate-m1 | ✅ PASS 1/6 (5 SKIP gated `V3_LIVE_TEST=1`) | `scripts/qa/sop1-live-demo.mjs` |
+
+Bug fixes during this sprint affecting M1:
+- Bug 3 · pl:single-enrich query 错 ("Brisbane" → city geo) → query 逻辑 fix + accept --name alias
+- Bug 6 · niche 空 (places-search) → `normalizeNiche()` fallback chain
+- Bug 9 · city 大小写 → `normalizeCity()` Title Case
+
+完整 audit: [MASTER-MD-AUDIT-V2-2026-05-13.md](./MASTER-MD-AUDIT-V2-2026-05-13.md)
+完整决策: [DECISIONS-LOG.md](./DECISIONS-LOG.md) (decisions 14-23)

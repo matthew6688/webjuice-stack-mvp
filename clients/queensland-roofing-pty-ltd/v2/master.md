@@ -18,11 +18,11 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-13T07:18:23.617Z"
+generated_at: "2026-05-13T07:33:57.023Z"
 assets:
   cloudinary_folder: null
   evidence_count: 10
-  video_url: null
+  video_url: "./video/mobile-throttled.webm"
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"
 ---
@@ -90,6 +90,10 @@ assets:
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
+
+**慢速 4G 加载实景视频**（1.6 Mbps · 150ms 延迟 · 4× CPU 节流，模拟真实手机访客的体验）：
+
+[播放视频](./video/mobile-throttled.webm)
 
 ## 三、视觉审计 · Vision LLM 怎么看
 

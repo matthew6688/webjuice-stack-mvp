@@ -196,3 +196,92 @@ Matthew 反对任一决策 · 一句话改即可:
 2. M1 PRD §12 改成 "see DECISIONS-LOG.md"
 3. M2 PRD §12 改成 "see DECISIONS-LOG.md"
 4. 等 Matthew 一句 "开干 M1" 或反对任一决策
+
+---
+
+## Post-implementation decisions · 2026-05-13 (M1 + M2 done)
+
+实装跑通后 · 通过 E2E + 全量 audit 又做了 13 个补充决策。完整说明见
+[MASTER-MD-AUDIT-V2-2026-05-13.md](./MASTER-MD-AUDIT-V2-2026-05-13.md).
+
+### D14 · M3 default OD handoff = reference HTML adapter
+
+**决定**: V3 M3 用"reference HTML adapter"模式 · 不用 freeform OD prompt。
+- 1 个 polished reference site per niche (`templates/<niche>/families/<family>/reference-site/`)
+- LOCKED tokens (色 / 字 / 间距 / 图) · OD 只 swap content
+- 缺数据 → AI infer plausible sample + 标 `data-od-sample="true"`
+- 验证: 5 真客户 (A/B/C/D grade) 都跑通 · 同一设计 · 不同 hero angle
+
+实装: `core/leads/reference-adapter-handoff.js` + `pl:build-from-reference`。
+
+### D15 · Required Chinese section tokens 用 alias bridge
+
+**决定**: ensureAllRequiredSections 检查 token OR alias。
+- 详细 builder 用 `## 七、推荐销售切入点` · M2-D6 要求 token `销售切入点` 出现
+- 不重号 · 不重段 · 用 alias map: e.g. `现网站快速诊断` ↔ `当前网站在哪里` ↔ `漏水`
+- 若 alias 存在 → 注入 HTML comment bridge (token 可 grep 到) · 不加 visible header
+
+### D16 · evidence_count + video_url 走 disk fallback (M3 cloudinary 之前)
+
+**决定**: master-md-builder 同时检查 cloudinary manifest 和本地 `clients/<slug>/v2/`. cloudinary OR disk · 取大者 / 取存在者。
+- evidence_count: `Math.max(manifest count, fs.readdirSync ev_dir count)`
+- video_url: `manifest.videoUrl || './video/mobile-throttled.webm'` (if exists)
+- 解释为何 9/10 客户之前 evidence_count=0 但 evidence dir 有 5-10 图
+
+### D17 · city + niche 统一 normalize (在 mergeLeadIntoEntity)
+
+**决定**: 入库时跑 `normalizeCity()` (Title Case · 空格) + `normalizeNiche()` (fallback chain: explicit → GMB categories → sourceQuery first 2 words)。
+- 之前: `brisbane / gold-coast / Brisbane` 不统一
+- places-search 入库 niche=""·`MotorOne` 正确 fallback 到 `car_repair` (from GMB categories)
+
+### D18 · Vision audit 真实 provider/model 写 master.md 附录
+
+**决定**: 不再写死 `ollama-qwen3.6-27b-nothink`. 从 visual fixture 读 `provider` + `model` · 写实际:
+- 5 客户 `claude_cli · claude-sonnet-4-5-20250929`
+- 2 客户 `codex_cli` (claude 失败 fallback)
+- 0 客户实际跑 ollama (cascade 都没掉到这层)
+
+VISION_CAND_ID 路径标签保留 (历史兼容) · 只 master.md 显示层改。
+
+### D19 · Reviews 走 docker (8+) · Places (5) 仅 fallback
+
+**决定**: A/B grade 客户用 `gmaps_local_docker` 完整 review history。
+- gosom docker `-extra-reviews` 拿全 35-221 条 + rating distribution + 头像 + 时间
+- Places API 5 条仅作 docker 失败 fallback
+- 修复脚本: `scripts/v3/refit-docker-reviews.mjs --all-stale` (可复用)
+- 1/9 客户 docker 解析失败 (parse position 16138) · 保留 places 5 · TODO: fix NDJSON parser
+
+### D20 · GMB photos 入 places-enrich + download-places-photos
+
+**决定**: 任何 place_* entity (有 place_id) 应该自动跑:
+1. `pl:places-enrich` → 填 `latest.places_enrichment.photo_references[]`
+2. `pl:download-places-photos --limit 6` → 下载 jpg 到 `data/v2/fixtures/places-photos/<key>/`
+- 现在: 13 entity 已有 photos (6/各) · was 1
+- 未来: hook 进 audit pipeline · 入库即自动跑 (M3 任务)
+- 还要 photo classification (vision LLM 标 type) · M3 任务
+
+### D21 · 修复脚本作为 maintenance tool 保留
+
+**决定**: `scripts/v3/refit-docker-reviews.mjs` 和 `scripts/v3/enrich-photos-for-all.mjs` 不删 · 当 maintenance script。任何老客户 / 新批量 / 数据漂移都能跑一次刷一次。
+
+### D22 · 留 sprint bugs · 不是死 bug · 是优先级
+
+未修 1 cosmetic + 几个 M3 tasks:
+- Bug 12 附录链接到不存在 HTML (cosmetic · 10min)
+- T21 测试 orphan cleanup 永久 fix (~30min)
+- reviews-adapter `_tryDocker/_tryPlaces` 真实现 (placeholder · M3 audit pipeline 调用前修)
+- Photo classification (M3 vision task)
+- places-enrich + photos 自动 hook 进 audit pipeline (M3)
+
+### D23 · 文档跟代码同步
+
+**决定**: 每次 sprint 结尾必须更新:
+- README.md 模块状态表 + assertion 数
+- DECISIONS-LOG.md 追加新决策
+- 影响的 PRD 文档 (M1-PRD / M2-PRD) 加 "post-impl note"
+
+不允许 doc-code drift。
+
+---
+
+**Total decisions**: 23 (13 pre-impl + 10 post-impl) · 全部 documented · 无 dangling question。

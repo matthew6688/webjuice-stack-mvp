@@ -466,3 +466,51 @@ Day 4 (后):
 ```
 
 总: ~4 工作日完成 M1+M2 闭环。
+
+---
+
+## Post-implementation update · 2026-05-13
+
+✅ **M2 IMPLEMENTED** · all 10 deliverables PASS.
+
+| Deliverable | Status | Files |
+|---|---|---|
+| M2-D1 rescore-v2 --all-niches + cron | ✅ PASS 4/4 | `scripts/scoring/rescore-v2.js` + Hermes cron |
+| M2-D2 reviews-adapter (docker → places cascade) | ✅ PASS 6/6 | `core/leads/reviews-adapter.js` |
+| M2-D3 grade-router (C → Discord + cold queue) | ✅ PASS 5/5 | `core/leads/grade-router.js` |
+| M2-D4 pl-c-grade-batch-send (LIVE env gated) | ✅ PASS 5/5 | `scripts/cli/pl-c-grade-batch-send.js` |
+| M2-D5 audit-stage1 staleness check | ✅ PASS 3/3 | `core/leads/audit-stage1.js` |
+| M2-D6 master.md 5 required Chinese sections + reorder | ✅ PASS 6/6 | `core/reports/master-md-builder.js` |
+| M2-D7 pl-od-invoke-prep (4-flag from master.md) | ✅ PASS 6/6 | `scripts/cli/pl-od-invoke-prep.js` |
+| M2-D8 Discord forum 14 tags | ✅ PASS 3/3 | `data/discord/website-tasks-forum-tags.json` |
+| M2-D9 customer-audience autoresearch loop | ✅ PASS 3/4 (1 live SKIP) | `core/reports/autoresearch-loop.js` + `core/reports/generator.js` + Stage 4b hook |
+| M2-D10 ensureV2Structure | ✅ PASS 5/5 | `scripts/cli/pl-ensure-v2-structure.js` |
+
+Bug fixes during this sprint affecting M2 master.md:
+- Bug 1 · 10 客户缺 3 必出 section → 全量 regen 后 fixed
+- Bug 4 · evidence_count 0 → `countEvidenceOnDisk()` disk fallback
+- Bug 7+10+14 · duplicate `## 二/三/四/五、` → `ensureRequiredOrder` renumber + alias bridge
+- Bug 8 · 必出 section 出现在附录后 → anchor regex
+- Bug 11 · "未明确决策类型: undefined" → 改写 fallback message
+- Bug 13+16 · Vision model 字段写死 → 实际 provider/model
+- Bug 17 · reviews 卡 5 条 → docker refit (scripts/v3/refit-docker-reviews.mjs)
+- Bug 18 · GMB photos 缺 → places-enrich + download (scripts/v3/enrich-photos-for-all.mjs)
+- Bug 19 · video_url=null → `localVideoPath()` fallback
+
+完整 audit: [MASTER-MD-AUDIT-V2-2026-05-13.md](./MASTER-MD-AUDIT-V2-2026-05-13.md)
+完整决策: [DECISIONS-LOG.md](./DECISIONS-LOG.md) (decisions 14-23)
+
+## 真客户 master.md 状态 · 10 个 audit 完整
+
+| Customer | audit | visual | evidence | reviews | photos |
+|---|---|---|---|---|---|
+| brisbane-roof-restoration-experts | 70 | 4 | 6 | 5 | 6 |
+| brisbane-roofing-solutions-... | 69 | 4 | 8 | 119 (docker) | 6 |
+| diamond-roof-tiling-restoration | 55 | 3 | 7 | 65 | 6 |
+| fix-my-roof-total-roof-restorations | 51 | 3 | 8 | 128 | 6 |
+| gutter-and-roof-repairs | 69 | 4 | 7 | 150 | 6 |
+| hurricane-digital-seo-brisbane | 64 | 6 | 9 | 181 | 6 |
+| queensland-roofing-pty-ltd | 23 | 4 | 10 | 35 | 6 |
+| roof-space-renovators | 65 | 5 | 5 | 221 | 6 |
+| roofshield-roof-restorations | 53 | 4 | 6 | 51 | 6 |
+| weatherproof-restorations | 61 | 7 | 7 | 136 | 6 |

@@ -3,7 +3,7 @@
   "total_steps": 29,
   "passed": 29,
   "failed": 0,
-  "ran_at": "2026-05-13T07:07:12.129Z",
+  "ran_at": "2026-05-13T07:37:36.804Z",
   "phases": [
     {
       "name": "Phase 1 · M1 · Dedup scoring",
@@ -12,7 +12,7 @@
           "label": "scoreDedup contract: phone + name fuzzy → 30-60 LLM band",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "score": 53.5,
             "verdict": "llm-decide"
@@ -49,7 +49,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.095Z"
+      "started_at": "2026-05-13T07:37:36.772Z"
     },
     {
       "name": "Phase 2 · M1 · Discovery score",
@@ -58,7 +58,7 @@
           "label": "full gosom entity → score ≥ 25",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "score": 38
           }
@@ -89,7 +89,7 @@
           "data": null
         }
       ],
-      "started_at": "2026-05-13T07:07:12.099Z"
+      "started_at": "2026-05-13T07:37:36.776Z"
     },
     {
       "name": "Phase 3 · M1 · Entity upsert pipeline",
@@ -108,13 +108,13 @@
           "label": "entity.latest.discoveryScore set by mergeLeadIntoEntity (M1-D2 wiring)",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "discoveryScore": 23
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.100Z"
+      "started_at": "2026-05-13T07:37:36.776Z"
     },
     {
       "name": "Phase 4 · M2 · Audit staleness",
@@ -147,7 +147,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.115Z"
+      "started_at": "2026-05-13T07:37:36.792Z"
     },
     {
       "name": "Phase 5 · M2 · Reviews cascade",
@@ -180,7 +180,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.120Z"
+      "started_at": "2026-05-13T07:37:36.796Z"
     },
     {
       "name": "Phase 6 · M2 · Grade router",
@@ -189,7 +189,7 @@
           "label": "C-grade opens Discord thread + enqueues",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "thread_opened": true
           }
@@ -213,7 +213,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.120Z"
+      "started_at": "2026-05-13T07:37:36.796Z"
     },
     {
       "name": "Phase 7 · M2 · master.md",
@@ -243,11 +243,11 @@
           "error": null,
           "took_ms": 0,
           "data": {
-            "real_file_lines": 402
+            "real_file_lines": 426
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.121Z"
+      "started_at": "2026-05-13T07:37:36.796Z"
     },
     {
       "name": "Phase 8 · M2 · v2/ structure",
@@ -271,7 +271,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.122Z"
+      "started_at": "2026-05-13T07:37:36.797Z"
     },
     {
       "name": "Phase 9 · M2 · od-prep",
@@ -307,7 +307,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.123Z"
+      "started_at": "2026-05-13T07:37:36.798Z"
     },
     {
       "name": "Phase 10 · M1 · bulk-archive",
@@ -322,7 +322,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.124Z"
+      "started_at": "2026-05-13T07:37:36.799Z"
     },
     {
       "name": "Phase 11 · cross-module integration",
@@ -343,11 +343,11 @@
           "error": null,
           "took_ms": 2,
           "data": {
-            "md_length": 1652
+            "md_length": 1623
           }
         }
       ],
-      "started_at": "2026-05-13T07:07:12.127Z"
+      "started_at": "2026-05-13T07:37:36.802Z"
     }
   ]
 }

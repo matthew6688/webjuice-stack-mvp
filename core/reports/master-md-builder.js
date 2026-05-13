@@ -48,6 +48,16 @@ function countEvidenceOnDisk(entityKey, latestName) {
   } catch { return 0; }
 }
 
+// V3 bug fix #19 (2026-05-13): same pattern for the video — fall back to
+// local relative path when no Cloudinary upload happened.
+function localVideoPath(entityKey, latestName) {
+  if (!entityKey && !latestName) return null;
+  const slug = String(latestName || entityKey).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const videoFile = path.join(process.cwd(), 'clients', slug, 'v2', 'video', 'mobile-throttled.webm');
+  if (!fs.existsSync(videoFile)) return null;
+  return './video/mobile-throttled.webm';
+}
+
 function buildFrontmatter({ entity, detailedAudit, visualAudit, reviewAnalysis, manifest, screenshotDir }) {
   const latest = entity.latest || {};
   const audit = detailedAudit || {};
@@ -77,7 +87,7 @@ function buildFrontmatter({ entity, detailedAudit, visualAudit, reviewAnalysis, 
         fmtAssetCount(manifest).count,
         countEvidenceOnDisk(entity.entityKey, latest.name),
       ),
-      video_url: manifest?.videoUrl || null,
+      video_url: manifest?.videoUrl || localVideoPath(entity.entityKey, latest.name),
       desktop_screenshot: manifest?.screenshotUrls?.desktop || `${screenshotDir}/desktop.png`,
       mobile_screenshot: manifest?.screenshotUrls?.mobile || `${screenshotDir}/mobile.png`,
     },
