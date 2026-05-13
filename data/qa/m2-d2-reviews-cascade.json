@@ -1,19 +1,48 @@
 {
   "deliverableId": "m2-d2-reviews-cascade",
   "overall": "PASS",
-  "total": 1,
-  "passed": 0,
-  "skipped": 1,
+  "total": 6,
+  "passed": 6,
+  "skipped": 0,
   "failed": 0,
-  "took_ms": 2,
-  "ran_at": "2026-05-13T04:35:29.597Z",
+  "took_ms": 1,
+  "ran_at": "2026-05-13T04:48:22.150Z",
   "results": [
     {
-      "name": "adapter-module-exists",
+      "name": "adapter-converts-docker-to-places-shape",
       "passed": true,
-      "skipped": true,
-      "reason": "core/leads/reviews-adapter.js missing (not found)"
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "a-grade-fetches-reviews",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "c-grade-skips-reviews",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "docker-fail-falls-back-to-places",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "fixture-format-master-md-compatible",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
+    },
+    {
+      "name": "timeout-under-5min",
+      "passed": true,
+      "error": null,
+      "took_ms": 0
     }
-  ],
-  "implementation_present": false
+  ]
 }
