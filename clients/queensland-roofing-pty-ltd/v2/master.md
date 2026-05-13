@@ -18,10 +18,10 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-13T06:37:25.186Z"
+generated_at: "2026-05-13T07:07:02.298Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 0
+  evidence_count: 10
   video_url: null
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"

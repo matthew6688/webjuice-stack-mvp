@@ -35,7 +35,11 @@ const DRY_RUN = !!args['dry-run'];
 const NO_CHAIN = !!args['no-chain'];
 
 const signals = {
-  businessName: args['business-name'] || args.businessName || null,
+  // V3 bug fix #3 (2026-05-13): accept --name as alias for --business-name.
+  // Without it, --name landed at args.name unused; signals.businessName=null;
+  // resolver fell back to bare city ("Brisbane") which matched Brisbane the
+  // city — not the business. Created a junk `place_chijm9k...` entity.
+  businessName: args['business-name'] || args.businessName || args.name || null,
   phone:        args.phone || null,
   email:        args.email || null,
   website:      args.website || null,
@@ -45,7 +49,7 @@ const signals = {
 };
 
 if (!signals.businessName && !signals.phone && !signals.website && !signals.gbpUrl) {
-  die('Need at least one of --business-name / --phone / --website / --gbp-url');
+  die('Need at least one of --business-name (or --name) / --phone / --website / --gbp-url');
 }
 
 const t0 = Date.now();

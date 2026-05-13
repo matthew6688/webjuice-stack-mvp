@@ -1,0 +1,109 @@
+{
+  "provider": "codex_cli",
+  "model": null,
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 67337,
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 5,
+    "conversion_score": 6,
+    "design_age_estimate": "outdated",
+    "summary": "The page makes the phone number visible, but the dated visual style and heavy quote form make the business feel less current than a local roofing customer would expect.",
+    "issues": [
+      {
+        "id": "dated_logo_and_header",
+        "severity": "major",
+        "title": "Dated logo weakens first impression",
+        "what_observed": "The header logo uses a thin black roof outline, red uppercase 'BRISBANE' text, and small underlined 'roof restoration experts' text that looks like an old clip-art style mark.",
+        "why_problem": "A Google-searching local customer often judges whether a trades business is real and current within seconds. This logo makes the business look older and less established, even before the visitor reads the page.",
+        "what_correct_looks_like": "A crisp wordmark with one strong roof icon, heavier readable typography, and consistent red/charcoal branding that still works clearly on mobile.",
+        "how_to_fix_in_redesign": "Replace the existing logo treatment with a simplified roofing wordmark, remove the underline, use a professional sans-serif typeface, and size it consistently across desktop and mobile headers.",
+        "plain_explanation": "网站最上面的标志看起来像很多年前做的简单图形，不像一家现在还在认真经营的专业屋顶公司。",
+        "customer_impact": "本地客户通常会在几秒内判断一家公司靠不靠谱。标志显旧，会让一部分从 Google 商家资料点进来的客户直接返回去看下一家公司。"
+      },
+      {
+        "id": "busy_hero_with_heavy_shadow_text",
+        "severity": "major",
+        "title": "Hero image makes text feel dated",
+        "what_observed": "The hero section uses a full-width house photo with a dark overlay, large white headline text, and heavy grey drop shadows behind the words.",
+        "why_problem": "The shadowed text and darkened image feel older and less polished. A homeowner looking for roof work may read this as a low-budget website and become less confident about calling.",
+        "what_correct_looks_like": "A brighter hero with a high-quality roof restoration image, clean white or dark text without heavy shadows, and a clear headline area separated from the busy parts of the photo.",
+        "how_to_fix_in_redesign": "Use a sharper roofing project photo, apply a subtle flat overlay only where text sits, remove the thick text shadow, and set the headline in a cleaner 44-56px desktop type scale with tighter line spacing.",
+        "plain_explanation": "首页大图和标题的阴影让页面显得旧，文字不像专业公司网站那样干净利落。",
+        "customer_impact": "屋顶修复是高客单价服务，客户会用网站外观判断施工是否专业。视觉显旧会降低信任，导致更多人不打电话。"
+      },
+      {
+        "id": "quote_form_too_demanding_above_fold",
+        "severity": "critical",
+        "title": "Quote form asks too much too soon",
+        "what_observed": "The desktop hero form asks for name, phone, email, location, roof type, scope of work, work type, roof age, and a description before the red 'REQUEST QUOTE' button.",
+        "why_problem": "A cold visitor from Google may not be ready to answer that many questions immediately. The form feels like work, so some people will choose an easier competitor or just call later and forget.",
+        "what_correct_looks_like": "A short first-step form with name, phone, suburb, and service need, plus an optional details field after the visitor starts the quote process.",
+        "how_to_fix_in_redesign": "Convert the hero form into a 4-field quick quote form: name, phone, suburb, service type. Move roof age, scope, and extra details into a second step or follow-up call.",
+        "plain_explanation": "报价表一上来要填太多信息，客户还没决定联系你，就已经觉得麻烦了。",
+        "customer_impact": "表单字段越多，放弃的人通常越多。对从 Google 商家资料来的客户来说，少填几项能明显提高询盘数量。"
+      },
+      {
+        "id": "mobile_quote_path_hidden",
+        "severity": "major",
+        "title": "Mobile quote form is not visible",
+        "what_observed": "On the mobile screenshot, the visible first screen shows the logo, hamburger icon, search icon, headline, supporting text, and red phone button, but no quote form or 'request quote' option.",
+        "why_problem": "Many local roofing searches happen on phones. If a visitor wants a written quote instead of calling immediately, they have no visible path in the first screen and may leave.",
+        "what_correct_looks_like": "Mobile first screen with the phone button and a second 'Get quote' button stacked below it, both visible without scrolling.",
+        "how_to_fix_in_redesign": "Add a secondary mobile CTA directly under the red call button: 'Get Free Quote'. Link it to a short mobile-optimized quote form placed immediately below the hero.",
+        "plain_explanation": "手机首屏只有打电话按钮，看不到获取报价的入口。",
+        "customer_impact": "很多本地搜索来自手机，且不少客户在上班或公共场合不方便马上打电话。看不到报价入口，会损失这部分潜在客户。"
+      },
+      {
+        "id": "generic_trust_signals_missing",
+        "severity": "major",
+        "title": "No proof visible above fold",
+        "what_observed": "The visible desktop and mobile hero areas do not show review stars, years in business, licence details, warranty wording, before-and-after work, or Brisbane suburb proof.",
+        "why_problem": "Roofing is a high-trust purchase. A local customer comparing several Brisbane roofers wants quick proof that the business is reputable before sharing contact details.",
+        "what_correct_looks_like": "A compact trust row under the headline or CTA showing Google rating, years of experience, warranty, insured/licensed wording, and Brisbane service area.",
+        "how_to_fix_in_redesign": "Add a trust strip above the fold with review stars, 'Brisbane owned', warranty/insurance claim, and one short line about local roof restoration experience.",
+        "plain_explanation": "首屏没有显示评价、保修、保险、从业年限或本地服务证明，客户需要自己去猜这家公司是否可靠。",
+        "customer_impact": "屋顶项目金额高，客户会先找证据再联系。缺少信任信息，会让来自 Google 的客户更容易点回去比较其他商家。"
+      },
+      {
+        "id": "desktop_form_visual_clutter",
+        "severity": "minor",
+        "title": "Form area feels visually crowded",
+        "what_observed": "The right side of the desktop hero has many white input boxes, radio buttons, yellow section labels, and fine-print legal links placed over the house photo.",
+        "why_problem": "The busy form competes with the hero message and makes the page feel harder to scan. A visitor may hesitate because the action looks more complicated than it needs to be.",
+        "what_correct_looks_like": "A quiet white form panel with clear spacing, one label style, larger touch targets, and only essential fields visible.",
+        "how_to_fix_in_redesign": "Place the form inside a simple white panel with 24px padding, remove yellow labels, group radio choices into clean segmented options, and move legal text below the form in smaller muted type.",
+        "plain_explanation": "右侧表单信息太密，颜色和控件太多，看起来有点乱。",
+        "customer_impact": "页面越乱，客户越不愿意填写。尤其是第一次访问的人，会倾向选择看起来更简单、更省心的公司。"
+      }
+    ],
+    "positive_observations": [
+      "The phone number is visible in both desktop and mobile hero areas.",
+      "The red call buttons stand out clearly against the background.",
+      "The headline clearly states the core service and location."
+    ],
+    "redesign_priorities": [
+      "1. Simplify the quote form into a short mobile-friendly first step.",
+      "2. Add visible trust proof above the fold: reviews, warranty, insurance, and Brisbane locality.",
+      "3. Refresh the logo, hero image treatment, typography, and form styling so the site feels current and professional."
+    ],
+    "confidence": 0.88
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 90375,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 67337
+    }
+  ],
+  "tokensIn": 84579,
+  "tokensOut": 2445,
+  "theoreticalCostUsd": 0.2358975
+}

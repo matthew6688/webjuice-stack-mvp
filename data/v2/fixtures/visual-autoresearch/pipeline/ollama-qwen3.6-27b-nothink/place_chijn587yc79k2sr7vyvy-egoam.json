@@ -1,0 +1,103 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-sonnet-4-5-20250929",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 88802,
+  "parsedJson": {
+    "freshness_score": 3,
+    "trust_score": 4,
+    "conversion_score": 3,
+    "design_age_estimate": "outdated",
+    "summary": "Generic Google Business Profile embedded view with outdated cookie banner blocking primary content and no custom website design visible.",
+    "issues": [
+      {
+        "id": "cookie_banner_blocking",
+        "severity": "critical",
+        "title": "Cookie consent banner covers 40% of viewport on load",
+        "what_observed": "A black rounded rectangle cookie banner in the bottom-left corner covers approximately 40% of the visible content, with white text and two buttons ('Reject' and 'Accept') plus a 'Learn more and customise' link beneath",
+        "why_problem": "A visitor searching 'roofing Brisbane' lands on this page and immediately sees a large dark box blocking the business description and key information. Within the 8-second decision window, they cannot read what services are offered or see contact details without first dismissing an obstruction. This creates friction at the exact moment trust needs to be established.",
+        "what_correct_looks_like": "A slim single-line banner at the very top or bottom (max 60px height) with inline 'Accept' link, or a centered modal overlay with clear close button that doesn't obscure the hero content. Modern GDPR banners use 5-10% of screen height, not 40%.",
+        "how_to_fix_in_redesign": "Remove intrusive cookie banner entirely from the custom redesign; if legally required, implement a 50px bottom-strip banner with inline accept/decline buttons that doesn't obstruct business name, hero image, or primary CTA",
+        "plain_explanation": "页面一打开,左下角有一个巨大的黑色弹窗,盖住了差不多一半的内容。访客必须先关掉这个弹窗才能看到你的服务介绍和联系方式。",
+        "customer_impact": "本地搜索的访客在8秒内决定是否信任你的公司。如果他们一打开页面就看到一个大黑框挡住内容,70%的人会直接返回搜索结果,点击你的竞争对手。这直接导致询盘流失。"
+      },
+      {
+        "id": "no_custom_website",
+        "severity": "critical",
+        "title": "Page is raw Google Business Profile embed, not a website",
+        "what_observed": "The entire visible area shows a standard Google Business Profile card layout: purple header with yellow logo, business hours banner, social media icons in circles, and a generic business description starting with 'DINO from FIX MY ROOF...' in a narrow center column",
+        "why_problem": "This is not a website—it's an embedded GBP listing. A local searcher expects a professional roofing company to have a real website with project photos, service pages, and clear calls-to-action. Seeing only a Google card signals either a new/unestablished business or one that doesn't invest in its online presence. Competitors with actual websites immediately appear more credible.",
+        "what_correct_looks_like": "A full-width custom website with a hero section showing a completed Brisbane roof restoration project, a prominent phone number button in the top-right corner, service cards below the fold, and customer testimonials with photos. Navigation menu with Home, Services, Gallery, Reviews, Contact.",
+        "how_to_fix_in_redesign": "Build a complete custom website to replace this GBP embed: hero section with full-width roof restoration photo, overlaid headline 'Brisbane's Most Trusted Roof Restoration Specialists Since [year]', coral CTA button 'Call Now: [phone]' in top-right header, three-column service grid below fold, testimonial carousel with 5-star reviews",
+        "plain_explanation": "这不是一个真正的网站,只是谷歌商家档案的一个嵌入页面。看起来像是一个新公司或者不专业的公司,因为没有自己的网站来展示项目照片、服务内容和客户评价。",
+        "customer_impact": "80%的本地搜索客户会在选择服务商之前浏览网站。如果你只有一个谷歌卡片而不是真正的网站,客户会认为你的公司规模小或不可靠,直接选择有专业网站的竞争对手。这意味着每个月损失数十个高价值询盘。"
+      },
+      {
+        "id": "purple_yellow_brand_clash",
+        "severity": "major",
+        "title": "Purple and bright yellow color scheme feels generic/dated",
+        "what_observed": "The header uses a deep purple background (#5B3A9D approximate) with a bright yellow/gold house logo and yellow accent on 'Total Roof Restorations' tagline below the white 'FIX MY ROOF' text",
+        "why_problem": "Purple-and-yellow is a high-contrast combination commonly seen in 2010-era small business branding (think Aussie sports clubs or budget services). For a premium roofing restoration business targeting Brisbane homeowners, this palette doesn't convey the trust and craftsmanship expected. Local searchers comparing multiple roofers will perceive this as less established than competitors using navy, charcoal, or earth tones.",
+        "what_correct_looks_like": "A professional palette: navy or charcoal primary, coral or warm orange accent for CTAs, with white space and minimal use of accent color. Logo should use 1-2 colors maximum. Think Dulux or James Hardie branding: understated, trustworthy, premium.",
+        "how_to_fix_in_redesign": "Redesign brand palette: replace purple with navy (#1A3A52), replace bright yellow with coral (#FF6B47) for CTA buttons only, keep white text on navy background for header, use neutral grey (#F5F5F5) for page background, limit accent color to CTAs and key highlights",
+        "plain_explanation": "紫色和亮黄色的配色看起来像2010年代的小公司设计,不够专业。对于屋顶修复这种需要高度信任的服务,客户期望看到深蓝色或深灰色这种稳重的颜色。",
+        "customer_impact": "客户在比较多个屋顶修复公司时,会根据网站的视觉印象判断公司的专业程度。如果你的配色看起来像十年前的设计,客户会认为你的技术和服务也过时,选择看起来更现代、更专业的竞争对手。这可能导致20-30%的询盘流失。"
+      },
+      {
+        "id": "business_hours_banner",
+        "severity": "major",
+        "title": "Business hours banner takes prime hero space",
+        "what_observed": "Directly below the logo, a white rounded rectangle banner displays 'Open 6:30 AM - 7:00 PM' with a small arrow icon on the right side, occupying approximately 80px of vertical space in the prime hero area",
+        "why_problem": "The most valuable screen real estate—the area immediately below the business name—is occupied by operational hours rather than a compelling value proposition or contact CTA. A local searcher with an urgent roof leak doesn't need to know you're open 6:30-7pm before they know what you do or how to reach you. This pushes the actual business description further down the fold.",
+        "what_correct_looks_like": "Hero section should lead with a headline like 'Brisbane Roof Restoration Experts – 25 Years' Experience' immediately below the logo, with a large phone button or quote form CTA. Business hours belong in the footer or a small icon in the header navigation.",
+        "how_to_fix_in_redesign": "Remove business hours from hero area; replace with H1 headline 'Brisbane's Trusted Roof Restoration Specialists' immediately below logo, followed by subheading 'Pressure washing • Re-pointing • Roof coating • 5-star rated' and prominent 'Call Now' button; move hours to footer as icon with clock symbol",
+        "plain_explanation": "紫色logo下方最重要的位置放了一个营业时间横幅,占据了黄金区域。访客首先需要看到的是你提供什么服务和如何联系你,而不是营业时间。",
+        "customer_impact": "客户在搜索'Brisbane屋顶修复'时,前3秒决定是否继续浏览。如果黄金位置放的是营业时间而不是服务说明或联系按钮,客户可能在看到你的核心优势之前就离开了。这可能导致每10个访客中有3-4个流失。"
+      },
+      {
+        "id": "social_media_icon_row",
+        "severity": "minor",
+        "title": "Five social media icons in prominent position above description",
+        "what_observed": "A horizontal row of five circular icons (phone, Facebook, Instagram, website link, and another platform) sits directly below the business name heading, above the text description, in dark circles with white symbols",
+        "why_problem": "Social media links in a prominent position create decision paralysis and leak traffic away from the primary conversion goal (phone call or quote form). A local searcher with a roof problem doesn't want to browse Instagram—they want to call or get a quote. Prioritizing social icons above the business description signals this is a brand focused on social presence rather than direct customer service.",
+        "what_correct_looks_like": "Primary CTA (phone button) should be large and standalone in the top-right corner of the header. Social media icons, if included at all, should be small (20px) and tucked into the footer. The hero area should guide visitors to one clear action: call or submit a quote request.",
+        "how_to_fix_in_redesign": "Remove all social media icons from the hero section; place a single large 'Call Now: 07 XXXX XXXX' button in the top-right header (desktop) and sticky bottom bar (mobile); if social links are desired, add small 20px icons to the footer only; ensure the primary visible CTA is always phone or quote form",
+        "plain_explanation": "在公司名称下方放了五个社交媒体图标,占据了重要位置。客户想要修屋顶时不会去看你的Instagram,他们想要的是直接打电话或填表询价。这些图标分散了注意力。",
+        "customer_impact": "当客户有紧急屋顶问题时,你给他们5个选择(电话、Facebook、Instagram等),而不是1个明确的行动按钮,会导致决策瘫痪。研究显示,每增加一个非关键选项,转化率下降5-10%。应该只给客户一个清晰的路径:打电话。"
+      },
+      {
+        "id": "text_wall_description",
+        "severity": "minor",
+        "title": "Business description is a dense text paragraph with no visual breaks",
+        "what_observed": "Below the icons, a solid block of text starts with 'DINO from FIX MY ROOF TOTAL ROOF RESTORATIONS specializes in roof restorations...' and continues for approximately 10-12 lines in a narrow center column with no line breaks, bullet points, or visual hierarchy beyond the all-caps business name",
+        "why_problem": "Local searchers scan websites in an F-pattern, not reading full paragraphs. A dense text block with no formatting makes it impossible to extract key information quickly. Visitors won't read about pressure washing, re-pointing, and industrial coatings buried in a paragraph—they'll bounce to a competitor with clear service bullets or cards.",
+        "what_correct_looks_like": "Services should be presented as scannable elements: either a bulleted list with icons (✓ Roof restoration • ✓ Pressure washing • ✓ Re-pointing) or three visual cards with a small icon, service name, and 1-line description. Testimonial quotes should be in a separate formatted section with quote marks and star ratings.",
+        "how_to_fix_in_redesign": "Break the text wall into three sections: (1) short intro sentence 'We specialize in roof restoration for Brisbane Qld homes and businesses', (2) bulleted service list with checkmark icons for each service (pressure washing, re-pointing, re-bedging, etc.), (3) separate testimonial card below with quoted text and 5-star visual; use 18px line height and ample white space",
+        "plain_explanation": "服务介绍是一大段没有分段的文字,客户很难快速找到关键信息。应该用项目符号或卡片的方式列出服务项目,让客户一眼就能看清楚你提供哪些服务。",
+        "customer_impact": "网站访客不会逐字阅读,他们会快速扫描。如果你的服务介绍是一大段文字,客户可能在找到他们需要的信息之前就离开了。使用清晰的项目符号或卡片布局可以提高15-25%的页面停留时间和询盘转化率。"
+      }
+    ],
+    "positive_observations": [
+      "Business name 'FIX MY ROOF' is clear and memorable, immediately communicates the core service",
+      "Phone icon is present in the social media row, indicating contact is possible (though not prominent enough)",
+      "Business description mentions specific services (pressure washing, re-pointing, coatings) and references positive reviews, which are trust signals"
+    ],
+    "redesign_priorities": [
+      "1. Build a custom website to replace the GBP embed: hero section with roof restoration photo, prominent phone CTA, service cards, testimonials",
+      "2. Remove cookie banner obstruction and implement minimal-friction consent if legally required (slim bottom strip)",
+      "3. Redesign brand palette from purple/yellow to navy/coral for modern professional appearance and improved trust"
+    ],
+    "confidence": 0.95
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 88802
+    }
+  ],
+  "tokensIn": 10,
+  "tokensOut": 3666,
+  "theoreticalCostUsd": 0.13123525
+}

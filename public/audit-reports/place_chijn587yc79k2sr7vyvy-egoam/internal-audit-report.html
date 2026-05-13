@@ -194,7 +194,7 @@
         <span>★ 5 (127 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/11 07:23</span>
+        <span>generated 2026/05/11 09:05</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -484,89 +484,121 @@
     <section class="section">
       <p class="eyebrow">视觉审计 · Vision LLM</p>
       <h2>设计观感的整体诊断</h2>
-      <p class="lead-summary">The design relies heavily on a Google Business Profile-style layout with a dense text block that fails to guide the user toward taking action.</p>
+      <p class="lead-summary">Generic Google Business Profile embedded view with outdated cookie banner blocking primary content and no custom website design visible.</p>
       <div class="visual-scores">
-        <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
-        <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>新鲜度</span><strong>3</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>4</strong><small>/10</small></div>
         <div class="vs"><span>转化准备度</span><strong>3</strong><small>/10</small></div>
-        <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
+        <div class="vs vs-text"><span>设计年代</span><strong class="age">outdated</strong></div>
       </div>
       <div class="issues-grid">
         
     <div class="issue-card issue-critical">
       <div class="issue-head">
         <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">missing_primary_cta</code>
+        <code class="issue-id">cookie_banner_blocking</code>
       </div>
-      <div class="issue-title">No visible &#39;Call Now&#39; or &#39;Get Quote&#39; button</div>
-      <p class="issue-row"><span class="lab">观察到</span>The screenshot shows a business profile view with a logo, hours, and a text description, but there is no visible &#39;Call Now&#39;, &#39;Book Online&#39;, or &#39;Get a Quote&#39; button in the viewport.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A local customer searching for a roofer usually has an immediate need (leak, storm damage). If they have to scroll or hunt for a phone number, they will likely bounce to the next competitor who has a big, obvious button.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A sticky &#39;Call Now&#39; button at the bottom of the screen on mobile, or a large, high-contrast &#39;Get a Free Quote&#39; button immediately below the logo in the hero section.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Implement a sticky bottom navigation bar on mobile containing a &#39;Call&#39; and &#39;Message&#39; button, and place a primary CTA button in the top hero area.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Desktop 800px region</p>
-      <img src="evidence/issue-missing-primary-cta.png" alt="evidence for Desktop 800px region" loading="lazy" />
-    </div>
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">dense_text_block</code>
-      </div>
-      <div class="issue-title">Large paragraph of text blocks quick scanning</div>
-      <p class="issue-row"><span class="lab">观察到</span>The main content area consists of a single, large paragraph of text describing &#39;DINO&#39; and the services, with no bullet points, bolding, or visual breaks.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Users scan websites; they don&#39;t read them. A wall of text looks intimidating and boring. A customer wants to know &#39;Can you fix my roof?&#39; and &#39;How much?&#39;, not read a biography.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Short, punchy headlines (e.g., &#39;Expert Roof Restorations&#39;) followed by 3-4 bullet points highlighting key benefits (e.g., &#39;10-Year Warranty&#39;, &#39;Free Inspection&#39;).</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Break the text into a &#39;Services&#39; section with icons and bullet points. Highlight key selling points in bold text.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-dense-text-block.png" alt="evidence for Full desktop" loading="lazy" />
-    </div>
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">cookie_banner_interference</code>
-      </div>
-      <div class="issue-title">Intrusive cookie banner blocks content</div>
-      <p class="issue-row"><span class="lab">观察到</span>A large black cookie consent banner covers the bottom-left corner of the screen, obscuring part of the content and requiring interaction before the user can focus on the business.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>This creates friction. Before the user even sees the value proposition, they are forced to deal with legal compliance. It makes the site feel cluttered and untrustworthy.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A slim, non-intrusive banner at the very bottom or a simple &#39;Accept&#39; link in the footer that doesn&#39;t block the main view.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the modal popup with a slim, fixed footer bar that only appears after the user scrolls or interacts, or use a simple &#39;Accept&#39; button that doesn&#39;t cover content.</p>
+      <div class="issue-title">Cookie consent banner covers 40% of viewport on load</div>
+      <p class="issue-row"><span class="lab">观察到</span>A black rounded rectangle cookie banner in the bottom-left corner covers approximately 40% of the visible content, with white text and two buttons (&#39;Reject&#39; and &#39;Accept&#39;) plus a &#39;Learn more and customise&#39; link beneath</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor searching &#39;roofing Brisbane&#39; lands on this page and immediately sees a large dark box blocking the business description and key information. Within the 8-second decision window, they cannot read what services are offered or see contact details without first dismissing an obstruction. This creates friction at the exact moment trust needs to be established.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A slim single-line banner at the very top or bottom (max 60px height) with inline &#39;Accept&#39; link, or a centered modal overlay with clear close button that doesn&#39;t obscure the hero content. Modern GDPR banners use 5-10% of screen height, not 40%.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove intrusive cookie banner entirely from the custom redesign; if legally required, implement a 50px bottom-strip banner with inline accept/decline buttons that doesn&#39;t obstruct business name, hero image, or primary CTA</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-cookie-banner-interference.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <img src="evidence/issue-cookie-banner-blocking.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">no_custom_website</code>
+      </div>
+      <div class="issue-title">Page is raw Google Business Profile embed, not a website</div>
+      <p class="issue-row"><span class="lab">观察到</span>The entire visible area shows a standard Google Business Profile card layout: purple header with yellow logo, business hours banner, social media icons in circles, and a generic business description starting with &#39;DINO from FIX MY ROOF...&#39; in a narrow center column</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>This is not a website—it&#39;s an embedded GBP listing. A local searcher expects a professional roofing company to have a real website with project photos, service pages, and clear calls-to-action. Seeing only a Google card signals either a new/unestablished business or one that doesn&#39;t invest in its online presence. Competitors with actual websites immediately appear more credible.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A full-width custom website with a hero section showing a completed Brisbane roof restoration project, a prominent phone number button in the top-right corner, service cards below the fold, and customer testimonials with photos. Navigation menu with Home, Services, Gallery, Reviews, Contact.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Build a complete custom website to replace this GBP embed: hero section with full-width roof restoration photo, overlaid headline &#39;Brisbane&#39;s Most Trusted Roof Restoration Specialists Since [year]&#39;, coral CTA button &#39;Call Now: [phone]&#39; in top-right header, three-column service grid below fold, testimonial carousel with 5-star reviews</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-no-custom-website.png" alt="evidence for Full desktop" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">purple_yellow_brand_clash</code>
+      </div>
+      <div class="issue-title">Purple and bright yellow color scheme feels generic/dated</div>
+      <p class="issue-row"><span class="lab">观察到</span>The header uses a deep purple background (#5B3A9D approximate) with a bright yellow/gold house logo and yellow accent on &#39;Total Roof Restorations&#39; tagline below the white &#39;FIX MY ROOF&#39; text</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Purple-and-yellow is a high-contrast combination commonly seen in 2010-era small business branding (think Aussie sports clubs or budget services). For a premium roofing restoration business targeting Brisbane homeowners, this palette doesn&#39;t convey the trust and craftsmanship expected. Local searchers comparing multiple roofers will perceive this as less established than competitors using navy, charcoal, or earth tones.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A professional palette: navy or charcoal primary, coral or warm orange accent for CTAs, with white space and minimal use of accent color. Logo should use 1-2 colors maximum. Think Dulux or James Hardie branding: understated, trustworthy, premium.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Redesign brand palette: replace purple with navy (#1A3A52), replace bright yellow with coral (#FF6B47) for CTA buttons only, keep white text on navy background for header, use neutral grey (#F5F5F5) for page background, limit accent color to CTAs and key highlights</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-purple-yellow-brand-clash.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">business_hours_banner</code>
+      </div>
+      <div class="issue-title">Business hours banner takes prime hero space</div>
+      <p class="issue-row"><span class="lab">观察到</span>Directly below the logo, a white rounded rectangle banner displays &#39;Open 6:30 AM - 7:00 PM&#39; with a small arrow icon on the right side, occupying approximately 80px of vertical space in the prime hero area</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The most valuable screen real estate—the area immediately below the business name—is occupied by operational hours rather than a compelling value proposition or contact CTA. A local searcher with an urgent roof leak doesn&#39;t need to know you&#39;re open 6:30-7pm before they know what you do or how to reach you. This pushes the actual business description further down the fold.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Hero section should lead with a headline like &#39;Brisbane Roof Restoration Experts – 25 Years&#39; Experience&#39; immediately below the logo, with a large phone button or quote form CTA. Business hours belong in the footer or a small icon in the header navigation.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove business hours from hero area; replace with H1 headline &#39;Brisbane&#39;s Trusted Roof Restoration Specialists&#39; immediately below logo, followed by subheading &#39;Pressure washing • Re-pointing • Roof coating • 5-star rated&#39; and prominent &#39;Call Now&#39; button; move hours to footer as icon with clock symbol</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-business-hours-banner.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">generic_hero_visual</code>
+        <code class="issue-id">social_media_icon_row</code>
       </div>
-      <div class="issue-title">Logo-only hero lacks emotional connection</div>
-      <p class="issue-row"><span class="lab">观察到</span>The top section (hero) only displays the company logo and hours on a purple background, with no image of a roof, a team member, or a completed project.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Visuals build trust. A logo alone doesn&#39;t prove competence. Seeing a real roof or a friendly face makes the business feel real and capable.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A high-quality photo of a restored roof or the team at work, with the logo overlaid or placed beside it.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the solid purple background with a high-resolution image of a roof restoration project, adding a dark overlay for text readability.</p>
+      <div class="issue-title">Five social media icons in prominent position above description</div>
+      <p class="issue-row"><span class="lab">观察到</span>A horizontal row of five circular icons (phone, Facebook, Instagram, website link, and another platform) sits directly below the business name heading, above the text description, in dark circles with white symbols</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Social media links in a prominent position create decision paralysis and leak traffic away from the primary conversion goal (phone call or quote form). A local searcher with a roof problem doesn&#39;t want to browse Instagram—they want to call or get a quote. Prioritizing social icons above the business description signals this is a brand focused on social presence rather than direct customer service.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Primary CTA (phone button) should be large and standalone in the top-right corner of the header. Social media icons, if included at all, should be small (20px) and tucked into the footer. The hero area should guide visitors to one clear action: call or submit a quote request.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove all social media icons from the hero section; place a single large &#39;Call Now: 07 XXXX XXXX&#39; button in the top-right header (desktop) and sticky bottom bar (mobile); if social links are desired, add small 20px icons to the footer only; ensure the primary visible CTA is always phone or quote form</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-generic-hero-visual.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-social-media-icon-row.png" alt="evidence for Full desktop" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-minor">
+      <div class="issue-head">
+        <span class="issue-severity">MINOR</span>
+        <code class="issue-id">text_wall_description</code>
+      </div>
+      <div class="issue-title">Business description is a dense text paragraph with no visual breaks</div>
+      <p class="issue-row"><span class="lab">观察到</span>Below the icons, a solid block of text starts with &#39;DINO from FIX MY ROOF TOTAL ROOF RESTORATIONS specializes in roof restorations...&#39; and continues for approximately 10-12 lines in a narrow center column with no line breaks, bullet points, or visual hierarchy beyond the all-caps business name</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Local searchers scan websites in an F-pattern, not reading full paragraphs. A dense text block with no formatting makes it impossible to extract key information quickly. Visitors won&#39;t read about pressure washing, re-pointing, and industrial coatings buried in a paragraph—they&#39;ll bounce to a competitor with clear service bullets or cards.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Services should be presented as scannable elements: either a bulleted list with icons (✓ Roof restoration • ✓ Pressure washing • ✓ Re-pointing) or three visual cards with a small icon, service name, and 1-line description. Testimonial quotes should be in a separate formatted section with quote marks and star ratings.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Break the text wall into three sections: (1) short intro sentence &#39;We specialize in roof restoration for Brisbane Qld homes and businesses&#39;, (2) bulleted service list with checkmark icons for each service (pressure washing, re-pointing, re-bedging, etc.), (3) separate testimonial card below with quoted text and 5-star visual; use 18px line height and ample white space</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-text-wall-description.png" alt="evidence for Full desktop" loading="lazy" />
     </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>Clear business name and tagline (&#39;Total Roof Restorations&#39;)</li><li>Operating hours are visible and clear</li><li>Mention of &#39;5 star reviews&#39; in the text (though buried)</li></ul>
+          <ul><li>Business name &#39;FIX MY ROOF&#39; is clear and memorable, immediately communicates the core service</li><li>Phone icon is present in the social media row, indicating contact is possible (though not prominent enough)</li><li>Business description mentions specific services (pressure washing, re-pointing, coatings) and references positive reviews, which are trust signals</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Add a sticky &#39;Call Now&#39; button and a prominent &#39;Get Quote&#39; CTA above the fold.</li><li>2. Replace the wall of text with scannable bullet points and service icons.</li><li>3. Add a high-quality hero image of a roof project to build immediate trust.</li></ol>
+          <ol><li>1. Build a custom website to replace the GBP embed: hero section with roof restoration photo, prominent phone CTA, service cards, testimonials</li><li>2. Remove cookie banner obstruction and implement minimal-friction consent if legally required (slim bottom strip)</li><li>3. Redesign brand palette from purple/yellow to navy/coral for modern professional appearance and improved trust</li></ol>
         </div>
     </section>
 

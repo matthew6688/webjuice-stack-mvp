@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T06:37:23.791Z"
+generated_at: "2026-05-13T07:07:00.929Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -33,7 +33,7 @@ assets:
 **投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- 未明确决策类型: undefined
+- audit 未运行 · 默认 C 等待 audit 后重新分级
 
 **下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 

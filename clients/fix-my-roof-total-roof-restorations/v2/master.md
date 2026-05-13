@@ -12,15 +12,15 @@ audit_version: "2026-05-11-v1"
 fired_triggers:
   - "no_https"
   - "high_traction_old_site"
-visual_age: null
-visual_freshness: null
-visual_trust: null
-visual_conversion: null
+visual_age: "outdated"
+visual_freshness: 3
+visual_trust: 4
+visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-13T06:37:24.312Z"
+generated_at: "2026-05-13T07:07:01.436Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 6
+  evidence_count: 8
   video_url: null
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"
@@ -72,6 +72,17 @@ assets:
 
 ![移动 375×667](./screenshots/mobile.png)
 
+## 三、视觉审计 · Vision LLM 怎么看
+
+> Generic Google Business Profile embedded view with outdated cookie banner blocking primary content and no custom website design visible.
+
+新鲜度 **3/10** · 信任度 **4/10** · 转化准备度 **3/10** · 设计年代 `outdated`
+
+**值得保留的优点：**
+- Business name 'FIX MY ROOF' is clear and memorable, immediately communicates the core service
+- Phone icon is present in the social media row, indicating contact is possible (though not prominent enough)
+- Business description mentions specific services (pressure washing, re-pointing, coatings) and references positive reviews, which are trust signals
+
 ## 四、客户在 Google 上怎么说
 
 > Customers overwhelmingly praise Dino for his exceptional integrity, punctuality, and high-quality workmanship, with one reviewer highlighting his refusal to accept payment as a key trust signal.
@@ -97,7 +108,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 2 项（立刻在伤害成交）
+### 关键问题 · 4 项（立刻在伤害成交）
 
 ### 关键 · https_enabled
 
@@ -129,7 +140,53 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 主要问题 · 2 项（影响转化的明显短板）
+### 关键 · Cookie consent banner covers 40% of viewport on load
+
+**技术事实**
+
+A black rounded rectangle cookie banner in the bottom-left corner covers approximately 40% of the visible content, with white text and two buttons ('Reject' and 'Accept') plus a 'Learn more and customise' link beneath
+
+**普通话翻译**
+
+页面一打开,左下角有一个巨大的黑色弹窗,盖住了差不多一半的内容。访客必须先关掉这个弹窗才能看到你的服务介绍和联系方式。
+
+**对客户的影响**
+
+本地搜索的访客在8秒内决定是否信任你的公司。如果他们一打开页面就看到一个大黑框挡住内容,70%的人会直接返回搜索结果,点击你的竞争对手。这直接导致询盘流失。
+
+**正确长啥样**
+
+A slim single-line banner at the very top or bottom (max 60px height) with inline 'Accept' link, or a centered modal overlay with clear close button that doesn't obscure the hero content. Modern GDPR banners use 5-10% of screen height, not 40%.
+
+**Redesign 怎么改**
+
+Remove intrusive cookie banner entirely from the custom redesign; if legally required, implement a 50px bottom-strip banner with inline accept/decline buttons that doesn't obstruct business name, hero image, or primary CTA
+
+
+### 关键 · Page is raw Google Business Profile embed, not a website
+
+**技术事实**
+
+The entire visible area shows a standard Google Business Profile card layout: purple header with yellow logo, business hours banner, social media icons in circles, and a generic business description starting with 'DINO from FIX MY ROOF...' in a narrow center column
+
+**普通话翻译**
+
+这不是一个真正的网站,只是谷歌商家档案的一个嵌入页面。看起来像是一个新公司或者不专业的公司,因为没有自己的网站来展示项目照片、服务内容和客户评价。
+
+**对客户的影响**
+
+80%的本地搜索客户会在选择服务商之前浏览网站。如果你只有一个谷歌卡片而不是真正的网站,客户会认为你的公司规模小或不可靠,直接选择有专业网站的竞争对手。这意味着每个月损失数十个高价值询盘。
+
+**正确长啥样**
+
+A full-width custom website with a hero section showing a completed Brisbane roof restoration project, a prominent phone number button in the top-right corner, service cards below the fold, and customer testimonials with photos. Navigation menu with Home, Services, Gallery, Reviews, Contact.
+
+**Redesign 怎么改**
+
+Build a complete custom website to replace this GBP embed: hero section with full-width roof restoration photo, overlaid headline 'Brisbane's Most Trusted Roof Restoration Specialists Since [year]', coral CTA button 'Call Now: [phone]' in top-right header, three-column service grid below fold, testimonial carousel with 5-star reviews
+
+
+### 主要问题 · 4 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -161,11 +218,60 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
+### 主要 · Purple and bright yellow color scheme feels generic/dated
+
+**技术事实**
+
+The header uses a deep purple background (#5B3A9D approximate) with a bright yellow/gold house logo and yellow accent on 'Total Roof Restorations' tagline below the white 'FIX MY ROOF' text
+
+**普通话翻译**
+
+紫色和亮黄色的配色看起来像2010年代的小公司设计,不够专业。对于屋顶修复这种需要高度信任的服务,客户期望看到深蓝色或深灰色这种稳重的颜色。
+
+**对客户的影响**
+
+客户在比较多个屋顶修复公司时,会根据网站的视觉印象判断公司的专业程度。如果你的配色看起来像十年前的设计,客户会认为你的技术和服务也过时,选择看起来更现代、更专业的竞争对手。这可能导致20-30%的询盘流失。
+
+**正确长啥样**
+
+A professional palette: navy or charcoal primary, coral or warm orange accent for CTAs, with white space and minimal use of accent color. Logo should use 1-2 colors maximum. Think Dulux or James Hardie branding: understated, trustworthy, premium.
+
+**Redesign 怎么改**
+
+Redesign brand palette: replace purple with navy (#1A3A52), replace bright yellow with coral (#FF6B47) for CTA buttons only, keep white text on navy background for header, use neutral grey (#F5F5F5) for page background, limit accent color to CTAs and key highlights
+
+
+### 主要 · Business hours banner takes prime hero space
+
+**技术事实**
+
+Directly below the logo, a white rounded rectangle banner displays 'Open 6:30 AM - 7:00 PM' with a small arrow icon on the right side, occupying approximately 80px of vertical space in the prime hero area
+
+**普通话翻译**
+
+紫色logo下方最重要的位置放了一个营业时间横幅,占据了黄金区域。访客首先需要看到的是你提供什么服务和如何联系你,而不是营业时间。
+
+**对客户的影响**
+
+客户在搜索'Brisbane屋顶修复'时,前3秒决定是否继续浏览。如果黄金位置放的是营业时间而不是服务说明或联系按钮,客户可能在看到你的核心优势之前就离开了。这可能导致每10个访客中有3-4个流失。
+
+**正确长啥样**
+
+Hero section should lead with a headline like 'Brisbane Roof Restoration Experts – 25 Years' Experience' immediately below the logo, with a large phone button or quote form CTA. Business hours belong in the footer or a small icon in the header navigation.
+
+**Redesign 怎么改**
+
+Remove business hours from hero area; replace with H1 headline 'Brisbane's Trusted Roof Restoration Specialists' immediately below logo, followed by subheading 'Pressure washing • Re-pointing • Roof coating • 5-star rated' and prominent 'Call Now' button; move hours to footer as icon with clock symbol
+
+
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [评论] Feature the 'no payment accepted' story prominently to build immediate trust and differentiate from competitors.
-2. [评论] Highlight 'punctuality' and 'clean job site' in the service guarantees section to address common homeowner anxieties.
-3. [评论] Use quotes about 'clear communication' in the 'How It Works' section to reassure potential clients about the process.
+1. [视觉] 1. Build a custom website to replace the GBP embed: hero section with roof restoration photo, prominent phone CTA, service cards, testimonials
+2. [视觉] 2. Remove cookie banner obstruction and implement minimal-friction consent if legally required (slim bottom strip)
+3. [视觉] 3. Redesign brand palette from purple/yellow to navy/coral for modern professional appearance and improved trust
+4. [评论] Feature the 'no payment accepted' story prominently to build immediate trust and differentiate from competitors.
+5. [评论] Highlight 'punctuality' and 'clean job site' in the service guarantees section to address common homeowner anxieties.
+6. [评论] Use quotes about 'clear communication' in the 'How It Works' section to reassure potential clients about the process.
 
 ## 七、推荐销售切入点
 

@@ -3,7 +3,7 @@
   "total_steps": 29,
   "passed": 29,
   "failed": 0,
-  "ran_at": "2026-05-13T06:38:39.959Z",
+  "ran_at": "2026-05-13T07:07:12.129Z",
   "phases": [
     {
       "name": "Phase 1 · M1 · Dedup scoring",
@@ -49,7 +49,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.929Z"
+      "started_at": "2026-05-13T07:07:12.095Z"
     },
     {
       "name": "Phase 2 · M1 · Discovery score",
@@ -58,7 +58,7 @@
           "label": "full gosom entity → score ≥ 25",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "score": 38
           }
@@ -89,7 +89,7 @@
           "data": null
         }
       ],
-      "started_at": "2026-05-13T06:38:39.932Z"
+      "started_at": "2026-05-13T07:07:12.099Z"
     },
     {
       "name": "Phase 3 · M1 · Entity upsert pipeline",
@@ -114,7 +114,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.933Z"
+      "started_at": "2026-05-13T07:07:12.100Z"
     },
     {
       "name": "Phase 4 · M2 · Audit staleness",
@@ -123,7 +123,7 @@
           "label": "fresh fixture → reuse",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "decision": "reuse"
           }
@@ -141,13 +141,13 @@
           "label": "env override AUDIT_STALENESS_DAYS=7",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 4,
           "data": {
             "decision": "refetch"
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.949Z"
+      "started_at": "2026-05-13T07:07:12.115Z"
     },
     {
       "name": "Phase 5 · M2 · Reviews cascade",
@@ -180,7 +180,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.950Z"
+      "started_at": "2026-05-13T07:07:12.120Z"
     },
     {
       "name": "Phase 6 · M2 · Grade router",
@@ -189,7 +189,7 @@
           "label": "C-grade opens Discord thread + enqueues",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "thread_opened": true
           }
@@ -213,7 +213,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.951Z"
+      "started_at": "2026-05-13T07:07:12.120Z"
     },
     {
       "name": "Phase 7 · M2 · master.md",
@@ -243,11 +243,11 @@
           "error": null,
           "took_ms": 0,
           "data": {
-            "real_file_lines": 344
+            "real_file_lines": 402
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.951Z"
+      "started_at": "2026-05-13T07:07:12.121Z"
     },
     {
       "name": "Phase 8 · M2 · v2/ structure",
@@ -256,7 +256,7 @@
           "label": "ensureV2Structure creates 5 subdirs",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
             "v2_path": "/Users/matthew/Developer/google-map-website-v3/clients/__e2e_m1_m2__/v2"
           }
@@ -271,7 +271,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.953Z"
+      "started_at": "2026-05-13T07:07:12.122Z"
     },
     {
       "name": "Phase 9 · M2 · od-prep",
@@ -280,7 +280,7 @@
           "label": "deriveOdPrep(rich-and-rare) returns sourceUrl/tone/scope/businessType",
           "passed": true,
           "error": null,
-          "took_ms": 0,
+          "took_ms": 1,
           "data": {
             "ok": true,
             "entityKey": "rich-and-rare-restaurant",
@@ -307,7 +307,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.954Z"
+      "started_at": "2026-05-13T07:07:12.123Z"
     },
     {
       "name": "Phase 10 · M1 · bulk-archive",
@@ -318,11 +318,11 @@
           "error": null,
           "took_ms": 2,
           "data": {
-            "candidates": 12
+            "candidates": 11
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.954Z"
+      "started_at": "2026-05-13T07:07:12.124Z"
     },
     {
       "name": "Phase 11 · cross-module integration",
@@ -341,13 +341,13 @@
           "label": "build master.md from real persisted entity",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 2,
           "data": {
             "md_length": 1652
           }
         }
       ],
-      "started_at": "2026-05-13T06:38:39.958Z"
+      "started_at": "2026-05-13T07:07:12.127Z"
     }
   ]
 }

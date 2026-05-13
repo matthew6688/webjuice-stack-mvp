@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-09T10:53:53.252Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-11T02:09:40.555Z",
+  "lastStatusAt": "2026-05-13T06:53:53.329Z",
   "identifiers": {
     "place_id": "ChIJn587YC79k2sR7VYVY-EGoaM",
     "cid": "11790712864532420333",
@@ -225,6 +225,22 @@
       "sub_status": null,
       "archive_reason": null,
       "note": "Reply class=unclear; flag_for_operator"
+    },
+    {
+      "at": "2026-05-13T06:53:53.329Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded A / T3"
+    },
+    {
+      "at": "2026-05-13T06:53:53.339Z",
+      "event": "phase_changed",
+      "from": "needs-human",
+      "to": "awaiting",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded A / T3"
     }
   ],
   "notes": [
@@ -235,14 +251,16 @@
     "investment_level": "A",
     "product_tier": "T3",
     "recommended_pricing": {
-      "one_time": "$5-8K",
-      "monthly": "$800-1500/月（社媒 + 内容 + GEO）"
+      "one_time": "$1000+ 定制报价",
+      "monthly": null,
+      "annual": null,
+      "note": "Multi-page / custom build — quote separately. Profitslocal.com FAQ anchor."
     },
     "skip_reasons": [],
-    "graded_at": "2026-05-11T02:09:40.555Z"
+    "graded_at": "2026-05-13T06:53:53.328Z"
   },
-  "phase": "needs-human",
-  "phaseChangedAt": "2026-05-11T07:11:43.983Z",
+  "phase": "awaiting",
+  "phaseChangedAt": "2026-05-13T06:53:53.339Z",
   "signals": {
     "sent": 3,
     "replied": 3

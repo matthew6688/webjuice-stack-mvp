@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:47.515Z",
   "lastSeenAt": "2026-05-09T06:20:00.519Z",
   "status": "skipped",
-  "lastStatusAt": "2026-05-11T02:09:40.564Z",
+  "lastStatusAt": "2026-05-13T06:58:46.373Z",
   "identifiers": {
     "place_id": "ChIJYwYPvHJZkWsR6cLfDdPq0nc",
     "cid": "8634221627814429417",
@@ -89,6 +89,22 @@
       "status": "skipped",
       "clientSlug": "",
       "note": "Auto-archived: too_many_pages, too_many_categories"
+    },
+    {
+      "at": "2026-05-13T06:58:46.373Z",
+      "event": "status_updated",
+      "status": "skipped",
+      "clientSlug": "",
+      "note": "Auto-archived: too_many_pages, too_many_categories"
+    },
+    {
+      "at": "2026-05-13T06:58:46.390Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "too_many_pages,too_many_categories",
+      "note": "Auto-archived: too_many_pages, too_many_categories"
     }
   ],
   "notes": [
@@ -108,6 +124,9 @@
         "reason": "GBP 多元业务分类 ≥ 5 个 — 需求复杂度超出标准产品包"
       }
     ],
-    "graded_at": "2026-05-11T02:09:40.564Z"
-  }
+    "graded_at": "2026-05-13T06:58:46.373Z"
+  },
+  "phase": "archived",
+  "archive_reason": "too_many_pages,too_many_categories",
+  "phaseChangedAt": "2026-05-13T06:58:46.390Z"
 }

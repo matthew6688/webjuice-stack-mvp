@@ -194,7 +194,7 @@
         <span>★ 4.9 (21 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/11 07:41</span>
+        <span>generated 2026/05/11 09:23</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -429,89 +429,121 @@
     <section class="section">
       <p class="eyebrow">视觉审计 · Vision LLM</p>
       <h2>设计观感的整体诊断</h2>
-      <p class="lead-summary">The site has a functional layout with a clear lead capture form, but the visual presentation feels dated due to the use of drop shadows, generic stock photography, and a lack of authentic business imagery.</p>
+      <p class="lead-summary">The page makes the phone number visible, but the dated visual style and heavy quote form make the business feel less current than a local roofing customer would expect.</p>
       <div class="visual-scores">
-        <div class="vs"><span>新鲜度</span><strong>5</strong><small>/10</small></div>
-        <div class="vs"><span>信任度</span><strong>6</strong><small>/10</small></div>
-        <div class="vs"><span>转化准备度</span><strong>7</strong><small>/10</small></div>
-        <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
+        <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>6</strong><small>/10</small></div>
+        <div class="vs vs-text"><span>设计年代</span><strong class="age">outdated</strong></div>
       </div>
       <div class="issues-grid">
         
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">hero_image_authenticity</code>
+        <code class="issue-id">dated_logo_and_header</code>
       </div>
-      <div class="issue-title">Generic stock photo hurts local trust</div>
-      <p class="issue-row"><span class="lab">观察到</span>The hero background image is a generic stock photo of a house with a blue roof, overlaid with a heavy dark gradient. It does not appear to be a photo of the business owner, their team, or a specific job site in Brisbane.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Local service customers are skeptical of &#39;faceless&#39; companies. A generic image suggests a national franchise or a scam rather than a local expert. It fails to build the personal connection required for high-ticket home services.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A high-quality, authentic photo of the actual business owner or a team member standing in front of a branded van or a completed roof project in a recognizable Brisbane suburb.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the stock photo with a professional headshot of the owner or a &#39;before and after&#39; split image of a real local project. Remove the heavy dark overlay to let the image breathe.</p>
+      <div class="issue-title">Dated logo weakens first impression</div>
+      <p class="issue-row"><span class="lab">观察到</span>The header logo uses a thin black roof outline, red uppercase &#39;BRISBANE&#39; text, and small underlined &#39;roof restoration experts&#39; text that looks like an old clip-art style mark.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A Google-searching local customer often judges whether a trades business is real and current within seconds. This logo makes the business look older and less established, even before the visitor reads the page.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A crisp wordmark with one strong roof icon, heavier readable typography, and consistent red/charcoal branding that still works clearly on mobile.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the existing logo treatment with a simplified roofing wordmark, remove the underline, use a professional sans-serif typeface, and size it consistently across desktop and mobile headers.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-hero-image-authenticity.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-dated-logo-and-header.png" alt="evidence for Full desktop" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">form_visual_weight</code>
+        <code class="issue-id">busy_hero_with_heavy_shadow_text</code>
       </div>
-      <div class="issue-title">Form looks like a pop-up overlay</div>
-      <p class="issue-row"><span class="lab">观察到</span>The contact form is placed inside a semi-transparent dark box with a drop shadow, floating on top of the hero image. It looks like a modal or a pop-up rather than part of the page structure.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Users are trained to ignore or close pop-ups. By making the form look like an intrusive overlay, you are subconsciously telling the user to dismiss it. It also creates visual clutter and makes the text harder to read.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A clean, white, solid background form integrated into the layout (e.g., a two-column layout with text on the left and form on the right), or a distinct section below the fold with a clear heading.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the semi-transparent background and drop shadow. Use a solid white card with a subtle border or a distinct background color that contrasts with the hero image, ensuring the form feels like a permanent part of the page.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Element: form</p>
-      <img src="evidence/issue-form-visual-weight.png" alt="evidence for Element: form" loading="lazy" />
-    </div>
-    </div>
-    <div class="issue-card issue-minor">
-      <div class="issue-head">
-        <span class="issue-severity">MINOR</span>
-        <code class="issue-id">typography_hierarchy</code>
-      </div>
-      <div class="issue-title">Weak headline hierarchy and font choice</div>
-      <p class="issue-row"><span class="lab">观察到</span>The main headline &#39;Brisbane Roof Restoration Specialists&#39; uses a generic sans-serif font with a heavy drop shadow. The sub-headline is also white text on a dark background, making it hard to distinguish from the main title.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>The drop shadow on the text gives it a &#39;Web 2.0&#39; (circa 2010) feel, which makes the business look outdated. The lack of clear hierarchy means the visitor doesn&#39;t immediately know what the unique selling point is.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Clean, bold typography without drop shadows. The main headline should be large and clear, with a sub-headline that highlights a specific benefit (e.g., &#39;10-Year Warranty&#39; or &#39;Free Inspections&#39;) in a contrasting color.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove all text shadows. Use a modern, readable font. Increase the contrast between the headline and sub-headline by using size and weight differences rather than just color.</p>
+      <div class="issue-title">Hero image makes text feel dated</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero section uses a full-width house photo with a dark overlay, large white headline text, and heavy grey drop shadows behind the words.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The shadowed text and darkened image feel older and less polished. A homeowner looking for roof work may read this as a low-budget website and become less confident about calling.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A brighter hero with a high-quality roof restoration image, clean white or dark text without heavy shadows, and a clear headline area separated from the busy parts of the photo.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Use a sharper roofing project photo, apply a subtle flat overlay only where text sits, remove the thick text shadow, and set the headline in a cleaner 44-56px desktop type scale with tighter line spacing.</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-typography-hierarchy.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <img src="evidence/issue-busy-hero-with-heavy-shadow-text.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">quote_form_too_demanding_above_fold</code>
+      </div>
+      <div class="issue-title">Quote form asks too much too soon</div>
+      <p class="issue-row"><span class="lab">观察到</span>The desktop hero form asks for name, phone, email, location, roof type, scope of work, work type, roof age, and a description before the red &#39;REQUEST QUOTE&#39; button.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A cold visitor from Google may not be ready to answer that many questions immediately. The form feels like work, so some people will choose an easier competitor or just call later and forget.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A short first-step form with name, phone, suburb, and service need, plus an optional details field after the visitor starts the quote process.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Convert the hero form into a 4-field quick quote form: name, phone, suburb, service type. Move roof age, scope, and extra details into a second step or follow-up call.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-quote-form-too-demanding-above-fold.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">mobile_quote_path_hidden</code>
+      </div>
+      <div class="issue-title">Mobile quote form is not visible</div>
+      <p class="issue-row"><span class="lab">观察到</span>On the mobile screenshot, the visible first screen shows the logo, hamburger icon, search icon, headline, supporting text, and red phone button, but no quote form or &#39;request quote&#39; option.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Many local roofing searches happen on phones. If a visitor wants a written quote instead of calling immediately, they have no visible path in the first screen and may leave.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Mobile first screen with the phone button and a second &#39;Get quote&#39; button stacked below it, both visible without scrolling.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Add a secondary mobile CTA directly under the red call button: &#39;Get Free Quote&#39;. Link it to a short mobile-optimized quote form placed immediately below the hero.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="screenshots/mobile.png" alt="mobile evidence" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">generic_trust_signals_missing</code>
+      </div>
+      <div class="issue-title">No proof visible above fold</div>
+      <p class="issue-row"><span class="lab">观察到</span>The visible desktop and mobile hero areas do not show review stars, years in business, licence details, warranty wording, before-and-after work, or Brisbane suburb proof.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Roofing is a high-trust purchase. A local customer comparing several Brisbane roofers wants quick proof that the business is reputable before sharing contact details.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A compact trust row under the headline or CTA showing Google rating, years of experience, warranty, insured/licensed wording, and Brisbane service area.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Add a trust strip above the fold with review stars, &#39;Brisbane owned&#39;, warranty/insurance claim, and one short line about local roof restoration experience.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-generic-trust-signals-missing.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">cta_button_redundancy</code>
+        <code class="issue-id">desktop_form_visual_clutter</code>
       </div>
-      <div class="issue-title">Redundant phone number buttons</div>
-      <p class="issue-row"><span class="lab">观察到</span>There is a red &#39;Call (07) 3132 1605&#39; button in the top navigation, and another identical red button in the hero section below the text.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>While having multiple CTAs is good, having two identical buttons in the same visual area creates visual noise. The user&#39;s eye doesn&#39;t know where to focus first.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>One primary CTA in the hero section (e.g., &#39;Get a Free Quote&#39;) and a clear phone number in the header. The hero button should focus on the form, while the header focuses on immediate calls.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Keep the phone number in the header as a text link or small button. In the hero section, use a single, prominent button that says &#39;Get Your Free Quote&#39; to drive form submissions, or &#39;Call Now&#39; if calls are the primary goal, but not both in the same spot.</p>
+      <div class="issue-title">Form area feels visually crowded</div>
+      <p class="issue-row"><span class="lab">观察到</span>The right side of the desktop hero has many white input boxes, radio buttons, yellow section labels, and fine-print legal links placed over the house photo.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The busy form competes with the hero message and makes the page feel harder to scan. A visitor may hesitate because the action looks more complicated than it needs to be.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A quiet white form panel with clear spacing, one label style, larger touch targets, and only essential fields visible.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Place the form inside a simple white panel with 24px padding, remove yellow labels, group radio choices into clean segmented options, and move legal text below the form in smaller muted type.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Desktop 800px region</p>
-      <img src="evidence/issue-cta-button-redundancy.png" alt="evidence for Desktop 800px region" loading="lazy" />
+      <p class="ev-lab">证据截图 · Element: form</p>
+      <img src="evidence/issue-desktop-form-visual-clutter.png" alt="evidence for Element: form" loading="lazy" />
     </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>The form fields are comprehensive and relevant to the roofing industry (roof type, scope, age), which helps qualify leads.</li><li>The phone number is clearly visible in the header, which is crucial for local service businesses.</li><li>The layout is structured logically with a clear hero section and form placement.</li></ul>
+          <ul><li>The phone number is visible in both desktop and mobile hero areas.</li><li>The red call buttons stand out clearly against the background.</li><li>The headline clearly states the core service and location.</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Replace the generic stock photo with an authentic image of the team or a local project to build immediate trust.</li><li>2. Redesign the contact form to look like a permanent part of the page (solid background, no drop shadows) rather than a pop-up overlay.</li><li>3. Update the typography by removing drop shadows and improving the hierarchy between the headline and sub-headline.</li></ol>
+          <ol><li>1. Simplify the quote form into a short mobile-friendly first step.</li><li>2. Add visible trust proof above the fold: reviews, warranty, insurance, and Brisbane locality.</li><li>3. Refresh the logo, hero image treatment, typography, and form styling so the site feels current and professional.</li></ol>
         </div>
     </section>
 

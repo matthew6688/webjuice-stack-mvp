@@ -72,12 +72,19 @@ export async function extractPlaceIdFromUrl(url, { fetchImpl = globalThis.fetch 
 /* ─── Best search query from signals ──────────────────────────────── */
 
 function buildSearchQuery(signals) {
+  // V3 bug fix #3 (2026-05-13): never return city-only query. Bare city
+  // ("Brisbane") matches the city geo entity, not a business. Require a
+  // strong identifier first; city is only a disambiguator.
   const parts = [];
-  if (signals.businessName) parts.push(signals.businessName);
-  if (signals.city) parts.push(signals.city);
-  // niche helps disambiguate but isn't always needed
-  if (parts.length === 0 && signals.phone) parts.push(signals.phone);
-  if (parts.length === 0 && signals.website) parts.push(signals.website);
+  if (signals.businessName) {
+    parts.push(signals.businessName);
+    if (signals.city) parts.push(signals.city);
+  } else if (signals.phone) {
+    parts.push(signals.phone);
+    if (signals.city) parts.push(signals.city);
+  } else if (signals.website) {
+    parts.push(signals.website);
+  }
   return parts.join(' ').trim();
 }
 

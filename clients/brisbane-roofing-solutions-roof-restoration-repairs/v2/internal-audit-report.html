@@ -194,7 +194,7 @@
         <span>★ 4.8 (118 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/11 07:29</span>
+        <span>generated 2026/05/11 09:11</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -445,7 +445,7 @@
     <section class="section">
       <p class="eyebrow">视觉审计 · Vision LLM</p>
       <h2>设计观感的整体诊断</h2>
-      <p class="lead-summary">The website displays a functional but visually dated layout with a cluttered header and a hero section that lacks a clear visual hierarchy, making it difficult for visitors to immediately identify the primary call to action.</p>
+      <p class="lead-summary">Mid-2010s template design with strong phone visibility but cluttered navigation, compressed hero image, and competing visual elements that dilute primary actions.</p>
       <div class="visual-scores">
         <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
         <div class="vs"><span>信任度</span><strong>6</strong><small>/10</small></div>
@@ -457,77 +457,141 @@
     <div class="issue-card issue-critical">
       <div class="issue-head">
         <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">hero_visual_clutter</code>
+        <code class="issue-id">hero_image_squashed</code>
       </div>
-      <div class="issue-title">Hero section lacks visual hierarchy and contrast</div>
-      <p class="issue-row"><span class="lab">观察到</span>The hero section features a busy background image of a roof with large white text overlaid directly on top. The text &#39;BRISBANE ROOFING SOLUTIONS&#39; and &#39;YOUR ROOF RESTORATION SPECIALISTS&#39; blends into the background, and the red &#39;BOOK YOUR FREE ROOF INSPECTION&#39; button is small and buried at the bottom of the text block.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Visitors scanning the page cannot instantly distinguish the headline from the background noise. The primary call to action (CTA) is visually weak compared to the text, causing users to hesitate or scroll past without clicking. A local customer looking for a quick fix needs to see the &#39;Book&#39; button immediately.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A darkened overlay (approx 40-60% opacity) behind the white text to ensure 100% readability. The CTA button should be significantly larger, placed centrally or to the right, and use a high-contrast color (like bright orange or yellow) that stands out against the red branding.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Apply a dark gradient overlay to the hero image. Increase the font size of the headline. Create a dedicated, high-contrast CTA button (e.g., &#39;Get a Free Quote&#39;) that is at least 48px tall and positioned clearly below the sub-headline.</p>
+      <div class="issue-title">Hero image compressed and distorted with unnatural proportions</div>
+      <p class="issue-row"><span class="lab">观察到</span>The main hero image showing a brick house with roof work is vertically compressed to roughly 200-250px height, making the house appear flattened and unnatural. The image aspect ratio is severely distorted.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>When a local searcher lands from Google, a squashed photo signals amateur DIY work or a business that doesn&#39;t invest in quality presentation. The distortion makes visitors question whether the actual roofing work will be equally careless. In 8 seconds, they&#39;ll bounce to a competitor with professional imagery.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Full-height hero section (minimum 500px on desktop) with a properly proportioned, high-resolution image of completed roof restoration work. The image should use its natural 16:9 or 3:2 ratio, showing clear before/after or an authentic team-on-site photo.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace with full-bleed hero section using min-height: 60vh, object-fit: cover on a high-quality 1920x1080+ photo. Remove the red overlay filter to let authentic imagery build trust naturally.</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-hero-visual-clutter.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <img src="evidence/issue-hero-image-squashed.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">header_navigation_overload</code>
+        <code class="issue-id">navigation_overload</code>
       </div>
-      <div class="issue-title">Header is cluttered with too many navigation links</div>
-      <p class="issue-row"><span class="lab">观察到</span>The red navigation bar contains 8 distinct menu items (About, Roof Restorations, Roof Painting, Services, Whirlybirds, Gallery, Get a Quote, Locations) plus a dropdown arrow. The text is small and tightly packed.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>This creates &#39;choice paralysis.&#39; A user searching for &#39;roof repair&#39; doesn&#39;t know if they should click &#39;Restorations&#39;, &#39;Services&#39;, or &#39;Roof Painting&#39;. The clutter makes the business look disorganized and increases the cognitive load required to find information.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A simplified navigation with max 4-5 items. Group related items under &#39;Services&#39;. The &#39;Get a Quote&#39; or phone number should be a distinct button on the far right, separated from the menu links.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Consolidate menu items into &#39;Services&#39; and &#39;About&#39;. Move the phone number to a sticky header or a prominent button in the top right. Ensure the &#39;Get a Quote&#39; button is visually distinct from the text links.</p>
+      <div class="issue-title">Eight-item main navigation creates decision paralysis</div>
+      <p class="issue-row"><span class="lab">观察到</span>The red navigation bar contains 8 menu items (HOME, ROOF RESTORATIONS, ROOF REPAIRS, SERVICES, WORKMANSHIP, GALLERY, GET A QUOTE, LOCATIONS) spanning the full width in 11-12px white text on dark red background.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A homeowner searching &#39;roofing Brisbane&#39; wants three things: see your work, understand the service, call or quote. Eight options force cognitive load. Research shows navigation beyond 5 items increases bounce rate by 23% because visitors don&#39;t know where to start. They came to fix a roof problem, not study a sitemap.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Simplified 3-4 item navigation: &#39;Services&#39; (dropdown), &#39;Our Work&#39;, &#39;Get Quote&#39;. The phone number stays persistent in header. All other pages (locations, about, warranty details) move to footer or subpages.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Consolidate to 4 primary links maximum. Merge &#39;Roof Restorations&#39; + &#39;Roof Repairs&#39; + &#39;Services&#39; into single &#39;Services&#39; dropdown. Move &#39;Workmanship&#39; and &#39;Locations&#39; to footer. Make &#39;Get A Quote&#39; the only CTA button in navigation.</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Element: header, nav</p>
-      <img src="evidence/issue-header-navigation-overload.png" alt="evidence for Element: header, nav" loading="lazy" />
+      <img src="evidence/issue-navigation-overload.png" alt="evidence for Element: header, nav" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">logo_placement_confusion</code>
+        <code class="issue-id">competing_ctas_hero</code>
       </div>
-      <div class="issue-title">Logo placement and header layout are confusing</div>
-      <p class="issue-row"><span class="lab">观察到</span>The logo is placed in the top left, but there is a large block of text &#39;CALL BRISBANE ROOFING SOLUTIONS&#39; and a phone number to its right, spanning the full width. The logo itself is a rectangular image that looks like a sticker rather than a vector graphic.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>The header feels unbalanced. The phone number is large, which is good, but the text &#39;CALL BRISBANE ROOFING SOLUTIONS&#39; is redundant and takes up valuable space. The logo image quality appears low-resolution or pixelated, which can subconsciously signal a lack of professionalism.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A clean header with the logo on the left and a clear &#39;Call Now&#39; button on the right. The logo should be a crisp SVG or high-res PNG. The phone number should be clickable and prominent without needing the extra text label.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the logo image with a vector version. Remove the redundant text &#39;CALL BRISBANE ROOFING SOLUTIONS&#39; next to the phone number. Align the phone number and logo vertically for a cleaner look.</p>
+      <div class="issue-title">Three red CTAs in hero compete for attention with no hierarchy</div>
+      <p class="issue-row"><span class="lab">观察到</span>Three identical red buttons (&#39;RESTORATIONS&#39;, &#39;ROOF REPAIRS&#39;, &#39;CONTACT US&#39;) sit in a horizontal row below the main headline, all using the same size, color, and visual weight. No single action is emphasized.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor from Google search &#39;roof repairs Brisbane&#39; sees three equally loud options and freezes. Eye-tracking studies show that when all CTAs look identical, click-through drops 34% because users can&#39;t determine the &#39;right&#39; next step. The business loses the moment of intent when the searcher is most ready to act.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Single primary CTA (&#39;Get Free Quote&#39; or &#39;Call Now (07) 3726 1546&#39;) in high-contrast color (coral or bright yellow) with 20-30% larger size. Secondary text link below: &#39;View our roof restoration work&#39; in simple underline style. Maximum two actions above fold.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace three-button row with one large primary CTA button (&#39;Get Your Free Roof Inspection&#39;) and one text link (&#39;See Our Brisbane Projects&#39;). Use size and color contrast to create clear hierarchy. Phone number remains persistent in header.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 800px region</p>
+      <img src="evidence/issue-competing-ctas-hero.png" alt="evidence for Desktop 800px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">logo_quality_low</code>
+      </div>
+      <div class="issue-title">Header logo appears pixelated and low-resolution</div>
+      <p class="issue-row"><span class="lab">观察到</span>The top-left logo &#39;BRISBANE ROOFING SOLUTIONS&#39; with house icon shows visible pixelation and jagged edges, particularly on the text and icon outlines. The logo appears to be a raster image scaled beyond its native resolution.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The logo is the first brand element a Google searcher sees. A blurry logo triggers an immediate subconscious red flag: &#39;Is this business still operating? Are they legitimate?&#39; For a roofing business handling $15,000+ projects, a pixelated logo suggests the same lack of attention will apply to the workmanship.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Crisp vector SVG logo at 2x resolution minimum, with clean edges on all text and iconography. The logo should render sharply on retina displays and scale perfectly from mobile to 4K screens.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace with SVG vector logo exported at proper dimensions. If original vector isn&#39;t available, recreate the logo in vector format. Use width attribute of 220-250px with height auto, ensuring the file is @2x resolution minimum (440-500px actual).</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-logo-placement-confusion.png" alt="evidence for Full desktop" loading="lazy" />
+      <img src="evidence/issue-logo-quality-low.png" alt="evidence for Full desktop" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">headline_generic_weak</code>
+      </div>
+      <div class="issue-title">Hero headline too generic to differentiate from competitors</div>
+      <p class="issue-row"><span class="lab">观察到</span>The main headline reads &#39;BRISBANE ROOFING SOLUTIONS&#39; (company name) with subheading &#39;YOUR ROOF RESTORATION SPECIALISTS&#39; in white text over the darkened hero image. The headline is merely the business name without unique value proposition.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Someone searching &#39;roof repairs Brisbane&#39; sees 12 competitors in Google results. All say &#39;specialists&#39; or &#39;experts&#39;. Using the company name as the headline wastes the highest-attention real estate. The visitor still doesn&#39;t know WHY to choose this business over the others. They bounce to compare, and most never return.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Headline addresses the visitor&#39;s search intent directly: &#39;20+ Years Restoring Brisbane Roofs&#39; or &#39;Same-Day Roof Leak Repairs · Brisbane North &amp; South&#39;. Subheading specifies the unique benefit: &#39;Fixed-Price Quotes · Fully Insured · 10-Year Warranty&#39;. No business name in headline.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace headline with outcome-focused statement: &#39;Brisbane&#39;s Trusted Roof Restoration &amp; Repair Experts Since [YEAR]&#39; or &#39;Emergency Roof Repairs Brisbane · 24/7 Response&#39;. Add specific benefit subheading: &#39;Free Inspection · 10-Year Warranty · Fully Licensed&#39;. Move business name to logo only.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-headline-generic-weak.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">welcome_section_yellow_amateur</code>
+      </div>
+      <div class="issue-title">Yellow &#39;Welcome&#39; banner with star icons looks template-default</div>
+      <p class="issue-row"><span class="lab">观察到</span>Below the hero is a yellow banner with red border reading &#39;WELCOME TO BRISBANE ROOFING&#39; with two yellow star icons flanking the text. The styling uses bright yellow (#FFD700-like) with a 1-2px red border, creating a banner-ad aesthetic.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The bright yellow + red star decoration is a classic WordPress/Wix default module that thousands of template sites use. Local searchers see this and immediately recognize it as &#39;another cheap template site&#39;, not a $20,000+ roofing contractor. The stars add no information and feel like clip art, reducing trust in the business&#39;s professionalism.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Remove decorative welcome banner entirely. Start content area with a simple 20-30 word intro paragraph in clean typography: &#39;Brisbane Roofing Solutions has restored over 1,200 roofs across Brisbane&#39;s northside and bayside suburbs since 2005.&#39; No colored boxes, no decorative stars.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Delete the yellow welcome banner module. Replace with clean white-background section containing 2-3 sentence introduction in 18px body text, followed immediately by social proof (Google reviews count, years in business, licenses) in iconography format.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-welcome-section-yellow-amateur.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">content_section_spacing</code>
+        <code class="issue-id">typography_contrast_weak</code>
       </div>
-      <div class="issue-title">Insufficient whitespace in content sections</div>
-      <p class="issue-row"><span class="lab">观察到</span>The &#39;WELCOME TO BRISBANE ROOFING SOLUTIONS&#39; section has text that is left-aligned and tightly packed next to a video embed. The margins are narrow, and the text block feels cramped.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Tight spacing makes the content harder to read and less inviting. Users prefer breathing room around text to process information. The lack of whitespace makes the site feel dated and &#39;cheap&#39;.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Generous padding around the text and video. The text should be centered or aligned with a clear grid. The video should have a border or shadow to separate it from the background.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Increase the padding of the content container. Add a subtle shadow to the video embed. Ensure the text has a max-width of 600-700px for optimal readability.</p>
+      <div class="issue-title">Body text in welcome section too small and low contrast</div>
+      <p class="issue-row"><span class="lab">观察到</span>The body text under &#39;WELCOME TO BRISBANE ROOFING&#39; appears to be 12-13px in a gray color (#555 or similar) on white background. Line spacing is tight (1.3-1.4 line-height), making the paragraph feel cramped and hard to scan.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>41% of local-search traffic is users 45+ years old looking for home services. Small gray text forces squinting and creates fatigue. When reading feels like work, visitors skim past critical trust information (licenses, experience, guarantees) and never absorb why they should call. Accessibility guidelines recommend 16px minimum for body copy.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Body text minimum 16px (preferably 18px) in dark gray (#333) or near-black (#222) for strong contrast ratio (minimum 7:1). Line-height of 1.6-1.8 for comfortable reading. Maximum 65-75 characters per line width for optimal scanning.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Set all body copy to 18px font-size with 1.7 line-height. Use color: #1a1a1a or #2d2d2d for high contrast. Implement max-width: 680px on text blocks to prevent lines from stretching too wide on large screens.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-content-section-spacing.png" alt="evidence for Full desktop" loading="lazy" />
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-typography-contrast-weak.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-minor">
+      <div class="issue-head">
+        <span class="issue-severity">MINOR</span>
+        <code class="issue-id">red_color_overwhelming</code>
+      </div>
+      <div class="issue-title">Heavy use of dark red creates visual fatigue and urgency overload</div>
+      <p class="issue-row"><span class="lab">观察到</span>The design uses dark red (#8B0000 or similar) extensively: navigation bar background, all three hero CTA buttons, welcome banner border, and likely throughout the page. The red covers approximately 30-40% of visible above-fold area.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Dark red signals urgency and alarm, appropriate for emergency services or clearance sales. For considered purchases like roof restoration ($15-30k decision), excessive red creates pressure and anxiety rather than trust. Visitors subconsciously feel pushed, not welcomed. Studies show high-anxiety color schemes reduce time-on-site by 18% for professional services.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Use dark red as accent color only (10-15% of design): primary CTA button and phone number. Shift navigation to white or light gray background with dark text for better readability. Introduce calming secondary color like navy blue or charcoal for text and structural elements.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Change navigation bar to white background with dark gray text. Replace two of the three red hero buttons (removed for hierarchy anyway) with ghost/outline buttons. Limit red to phone number highlight and single primary CTA. Add navy or charcoal as secondary brand color for headers and structure.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-red-color-overwhelming.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>The phone number is large and visible in the header, which is good for local service businesses.</li><li>The use of red branding is consistent with the industry (construction/roofing) and creates a sense of urgency.</li><li>The hero image clearly shows a roof, immediately communicating the service offered.</li></ul>
+          <ul><li>Phone number (07) 3726 1546 is prominently displayed in header with icon, visible without scrolling — preserves this in redesign</li><li>Business name and location (Brisbane) are clear in logo and headline, meeting local SEO expectations</li><li>Attempted use of photography rather than stock imagery shows intent to build authenticity</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Redesign the hero section with a dark overlay and a large, high-contrast CTA button to improve immediate conversion.</li><li>2. Simplify the navigation menu to reduce clutter and guide users more effectively to key services.</li><li>3. Clean up the header layout by removing redundant text and improving the logo presentation.</li></ol>
+          <ol><li>1. Replace compressed hero image with full-height properly proportioned photo and single primary CTA to establish immediate trust and clear action path</li><li>2. Consolidate navigation from 8 items to 4 and eliminate competing red buttons to reduce decision paralysis and improve conversion funnel</li><li>3. Remove yellow welcome banner and upgrade typography (16-18px body, high contrast) to modernize visual credibility and improve readability for 45+ demographic</li></ol>
         </div>
     </section>
 

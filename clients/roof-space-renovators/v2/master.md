@@ -16,7 +16,7 @@ visual_freshness: 5
 visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-13T06:37:25.362Z"
+generated_at: "2026-05-13T07:07:02.475Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5

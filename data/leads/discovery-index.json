@@ -1,38 +1,78 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-13T06:38:58.015Z",
-  "storeRoot": "/Users/matthew/Developer/google-map-website-v3/data/leads",
+  "updatedAt": "2026-05-13T07:07:12.114Z",
+  "storeRoot": "data/leads",
   "totals": {
     "entities": 91,
     "promoted": 4,
     "skipped": 39,
-    "needsAudit": 12,
+    "needsAudit": 11,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 8
   },
   "statusCounts": {
+    "discovered": 1,
     "manual_review": 18,
     "skipped": 39,
-    "queued_for_audit": 12,
+    "queued_for_audit": 11,
     "ready_for_outreach_brief": 8,
     "scored": 2,
     "graded": 8,
     "promoted": 4
   },
   "actionCounts": {
+    "unknown": 1,
     "manual_review": 25,
     "skip": 43,
-    "audit_candidate": 21,
+    "audit_candidate": 20,
     "starter_candidate": 2
   },
   "websiteStatusCounts": {
+    "https": 1,
     "no_website": 3,
     "independent_https_site": 58,
-    "unknown": 5,
+    "unknown": 4,
     "independent_http_site": 24,
     "social_or_third_party_only": 1
   },
   "entities": [
+    {
+      "entityKey": "__e2e_m1_m2__",
+      "status": "discovered",
+      "firstSeenAt": "2026-05-13T07:07:12.104Z",
+      "lastSeenAt": "2026-05-13T07:07:12.104Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "e2e-test-roofing.test",
+        "phoneDigits": "0412000000"
+      },
+      "latest": {
+        "sourceType": "gosom",
+        "name": "E2E Test Roofing",
+        "category": "",
+        "categories": [],
+        "address": "1 Test St, Brisbane QLD 4000",
+        "city": "Brisbane",
+        "niche": "roofing",
+        "phone": "0412000000",
+        "website": "https://e2e-test-roofing.test",
+        "google_maps_url": "",
+        "rating": 4.5,
+        "review_count": 10,
+        "websiteStatus": "https",
+        "discoveryScore": 23,
+        "recommendedAction": "",
+        "sourceQuery": "roofing brisbane e2e test",
+        "signals": {},
+        "batch_id": "",
+        "discovery_rank": null,
+        "google_places_provider": null
+      }
+    },
     {
       "entityKey": "image_e2e-image-lead-roofing_0419876543",
       "status": "manual_review",
@@ -209,43 +249,6 @@
           "hasPopularTimes": true,
           "hasAboutAttributes": false
         },
-        "batch_id": "",
-        "discovery_rank": null,
-        "google_places_provider": null
-      }
-    },
-    {
-      "entityKey": "place_chijm9ktrjpxkwsrqk_e81qjagq",
-      "status": "queued_for_audit",
-      "firstSeenAt": "2026-05-13T06:09:39.713Z",
-      "lastSeenAt": "2026-05-13T06:38:52.083Z",
-      "runCount": 6,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJM9KTrJpXkWsRQK_e81qjAgQ",
-        "cid": "",
-        "data_id": "",
-        "websiteDomain": "",
-        "phoneDigits": "0731234567"
-      },
-      "latest": {
-        "sourceType": "single_enrich",
-        "name": "Brisbane",
-        "category": "",
-        "categories": [],
-        "address": "Brisbane QLD, Australia",
-        "city": "Brisbane",
-        "niche": "roofer",
-        "phone": "0731234567",
-        "website": "",
-        "google_maps_url": "https://maps.google.com/?cid=288972937138974528",
-        "rating": null,
-        "review_count": 0,
-        "websiteStatus": "",
-        "discoveryScore": 15,
-        "recommendedAction": "audit_candidate",
-        "sourceQuery": "Brisbane",
-        "signals": {},
         "batch_id": "",
         "discovery_rank": null,
         "google_places_provider": null

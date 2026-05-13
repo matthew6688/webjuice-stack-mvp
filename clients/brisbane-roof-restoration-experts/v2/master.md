@@ -10,15 +10,15 @@ audit_score: 70
 decision: "low_priority"
 audit_version: "2026-05-11-v1"
 fired_triggers: []
-visual_age: "slightly_outdated"
+visual_age: "outdated"
 visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-13T06:37:23.260Z"
+generated_at: "2026-05-13T07:07:00.597Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 5
+  evidence_count: 6
   video_url: null
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"
@@ -59,14 +59,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The site uses a functional but dated layout with a cluttered form and low-contrast text that undermines the professional quality expected of a restoration specialist.
+> The page makes the phone number visible, but the dated visual style and heavy quote form make the business feel less current than a local roofing customer would expect.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `slightly_outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- The phone number is prominent and repeated in the hero section, which is excellent for local intent.
-- The background image is relevant (shows a roof), providing immediate context.
-- The 'Call' button uses a high-contrast red color that stands out against the background.
+- The phone number is visible in both desktop and mobile hero areas.
+- The red call buttons stand out clearly against the background.
+- The headline clearly states the core service and location.
 
 ## 四、客户在 Google 上怎么说
 
@@ -100,26 +100,30 @@ assets:
 
 ### 关键问题 · 1 项（立刻在伤害成交）
 
-### 关键 · Low contrast white text on light background
+### 关键 · Quote form asks too much too soon
 
 **技术事实**
 
-The main headline 'Brisbane Roof Restoration Specialists' is white text overlaid on a light blue sky background. The text has a drop shadow, but the contrast is low, making it look washed out.
+The desktop hero form asks for name, phone, email, location, roof type, scope of work, work type, roof age, and a description before the red 'REQUEST QUOTE' button.
 
-**为什么是问题**
+**普通话翻译**
 
-A visitor scanning the page on a bright phone screen will struggle to read the headline instantly. If they can't read it easily, they assume the business is unprofessional or the site is broken.
+报价表一上来要填太多信息，客户还没决定联系你，就已经觉得麻烦了。
+
+**对客户的影响**
+
+表单字段越多，放弃的人通常越多。对从 Google 商家资料来的客户来说，少填几项能明显提高询盘数量。
 
 **正确长啥样**
 
-Dark charcoal or navy text on the light background, or a dark semi-transparent overlay behind the text to ensure high contrast.
+A short first-step form with name, phone, suburb, and service need, plus an optional details field after the visitor starts the quote process.
 
 **Redesign 怎么改**
 
-Change headline color to #1a1a1a (dark grey) or add a dark overlay (opacity 0.4) behind the text block.
+Convert the hero form into a 4-field quick quote form: name, phone, suburb, service type. Move roof age, scope, and extra details into a second step or follow-up call.
 
 
-### 主要问题 · 3 项（影响转化的明显短板）
+### 主要问题 · 5 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -136,49 +140,103 @@ title='# Brisbane Roof Restoration Specialists' contains-name=true contains-nich
 Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
 
 
-### 主要 · Overwhelming form layout with radio buttons
+### 主要 · Dated logo weakens first impression
 
 **技术事实**
 
-The desktop form is a dense grid of inputs, followed by four distinct sections of radio buttons (Roof type, Scope, Work Type, Roof age) with yellow labels.
+The header logo uses a thin black roof outline, red uppercase 'BRISBANE' text, and small underlined 'roof restoration experts' text that looks like an old clip-art style mark.
 
-**为什么是问题**
+**普通话翻译**
 
-This looks like a data entry task rather than a conversation. A local customer just wants a quote; asking them to categorize their roof type and age before speaking to a human creates friction and anxiety.
+网站最上面的标志看起来像很多年前做的简单图形，不像一家现在还在认真经营的专业屋顶公司。
+
+**对客户的影响**
+
+本地客户通常会在几秒内判断一家公司靠不靠谱。标志显旧，会让一部分从 Google 商家资料点进来的客户直接返回去看下一家公司。
 
 **正确长啥样**
 
-A simplified 'Get a Quote' form with only Name, Phone, and Suburb. The technical details should be handled by the sales team later.
+A crisp wordmark with one strong roof icon, heavier readable typography, and consistent red/charcoal branding that still works clearly on mobile.
 
 **Redesign 怎么改**
 
-Remove the radio button sections. Replace with a single 'Tell us about your roof' text area or remove the form entirely in favor of a 'Call Now' button.
+Replace the existing logo treatment with a simplified roofing wordmark, remove the underline, use a professional sans-serif typeface, and size it consistently across desktop and mobile headers.
 
 
-### 主要 · Hidden navigation on mobile
+### 主要 · Hero image makes text feel dated
 
 **技术事实**
 
-The mobile screenshot shows a hamburger menu icon in the top right, hiding all navigation links.
+The hero section uses a full-width house photo with a dark overlay, large white headline text, and heavy grey drop shadows behind the words.
 
-**为什么是问题**
+**普通话翻译**
 
-Local searchers often look for specific services (e.g., 'roof cleaning' vs 'restoration') or social proof (reviews). Hiding this behind a click adds friction and hides trust signals.
+首页大图和标题的阴影让页面显得旧，文字不像专业公司网站那样干净利落。
+
+**对客户的影响**
+
+屋顶修复是高客单价服务，客户会用网站外观判断施工是否专业。视觉显旧会降低信任，导致更多人不打电话。
 
 **正确长啥样**
 
-A sticky bottom bar or a visible top bar with the most critical link (e.g., 'Services' or 'Reviews') visible without clicking.
+A brighter hero with a high-quality roof restoration image, clean white or dark text without heavy shadows, and a clear headline area separated from the busy parts of the photo.
 
 **Redesign 怎么改**
 
-Implement a sticky bottom navigation bar on mobile with 'Call', 'Services', and 'Reviews' buttons permanently visible.
+Use a sharper roofing project photo, apply a subtle flat overlay only where text sits, remove the thick text shadow, and set the headline in a cleaner 44-56px desktop type scale with tighter line spacing.
+
+
+### 主要 · Mobile quote form is not visible
+
+**技术事实**
+
+On the mobile screenshot, the visible first screen shows the logo, hamburger icon, search icon, headline, supporting text, and red phone button, but no quote form or 'request quote' option.
+
+**普通话翻译**
+
+手机首屏只有打电话按钮，看不到获取报价的入口。
+
+**对客户的影响**
+
+很多本地搜索来自手机，且不少客户在上班或公共场合不方便马上打电话。看不到报价入口，会损失这部分潜在客户。
+
+**正确长啥样**
+
+Mobile first screen with the phone button and a second 'Get quote' button stacked below it, both visible without scrolling.
+
+**Redesign 怎么改**
+
+Add a secondary mobile CTA directly under the red call button: 'Get Free Quote'. Link it to a short mobile-optimized quote form placed immediately below the hero.
+
+
+### 主要 · No proof visible above fold
+
+**技术事实**
+
+The visible desktop and mobile hero areas do not show review stars, years in business, licence details, warranty wording, before-and-after work, or Brisbane suburb proof.
+
+**普通话翻译**
+
+首屏没有显示评价、保修、保险、从业年限或本地服务证明，客户需要自己去猜这家公司是否可靠。
+
+**对客户的影响**
+
+屋顶项目金额高，客户会先找证据再联系。缺少信任信息，会让来自 Google 的客户更容易点回去比较其他商家。
+
+**正确长啥样**
+
+A compact trust row under the headline or CTA showing Google rating, years of experience, warranty, insured/licensed wording, and Brisbane service area.
+
+**Redesign 怎么改**
+
+Add a trust strip above the fold with review stars, 'Brisbane owned', warranty/insurance claim, and one short line about local roof restoration experience.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Fix text contrast in the hero section to ensure the headline is instantly readable.
-2. [视觉] 2. Simplify the contact form to reduce friction and remove the intimidating radio buttons.
-3. [视觉] 3. Improve the logo and typography to establish a more professional, high-ticket brand identity.
+1. [视觉] 1. Simplify the quote form into a short mobile-friendly first step.
+2. [视觉] 2. Add visible trust proof above the fold: reviews, warranty, insurance, and Brisbane locality.
+3. [视觉] 3. Refresh the logo, hero image treatment, typography, and form styling so the site feels current and professional.
 4. [评论] Feature the '24-hour quote' metric prominently in the header to address urgency.
 5. [评论] Use Loren's review to create a dedicated 'Minor Repairs' section to capture leads who feel ignored by larger competitors.
 6. [评论] Highlight the 'home value' improvement in before/after gallery captions.

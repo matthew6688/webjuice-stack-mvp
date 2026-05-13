@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-09T10:53:53.252Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-11T02:09:40.566Z",
+  "lastStatusAt": "2026-05-13T07:00:04.005Z",
   "identifiers": {
     "place_id": "ChIJzffLvfb3k2sRldcXRdV26p4",
     "cid": "11451095660902209429",
@@ -119,19 +119,43 @@
       "status": "graded",
       "clientSlug": "",
       "note": "Graded B / T3"
+    },
+    {
+      "at": "2026-05-13T07:00:04.005Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded B / T2"
+    },
+    {
+      "at": "2026-05-13T07:00:04.030Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "awaiting",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded B / T2"
     }
   ],
   "notes": [
-    "Graded B / T3"
+    "Graded B / T3",
+    "Graded B / T2"
   ],
   "grade": {
     "investment_level": "B",
-    "product_tier": "T3",
+    "product_tier": "T2",
     "recommended_pricing": {
-      "one_time": "$5-8K",
-      "monthly": "$800-1500/月（社媒 + 内容 + GEO）"
+      "one_time": null,
+      "annual": "$799/年",
+      "monthly": null,
+      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
     },
     "skip_reasons": [],
-    "graded_at": "2026-05-11T02:09:40.566Z"
-  }
+    "graded_at": "2026-05-13T07:00:04.005Z"
+  },
+  "phase": "awaiting",
+  "phaseChangedAt": "2026-05-13T07:00:04.030Z",
+  "discord_thread_id": "1504015361526468671",
+  "discord_profile_message_id": "1504015361526468671",
+  "discord_thread_opened_at": "2026-05-13T07:00:05.595Z"
 }

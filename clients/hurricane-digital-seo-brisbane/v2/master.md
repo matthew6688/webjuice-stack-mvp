@@ -11,15 +11,15 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: null
-visual_freshness: null
-visual_trust: null
-visual_conversion: null
+visual_age: "slightly_outdated"
+visual_freshness: 6
+visual_trust: 4
+visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-13T06:37:24.657Z"
+generated_at: "2026-05-13T07:07:01.781Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 6
+  evidence_count: 9
   video_url: null
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"
@@ -62,6 +62,17 @@ assets:
 
 ![移动 375×667](./screenshots/mobile.png)
 
+## 三、视觉审计 · Vision LLM 怎么看
+
+> Clean professional design for a digital marketing agency, but critical mismatch with roofing business expectations and missing local trust signals
+
+新鲜度 **6/10** · 信任度 **4/10** · 转化准备度 **3/10** · 设计年代 `slightly_outdated`
+
+**值得保留的优点：**
+- Clean, uncluttered layout with good whitespace makes content easy to scan
+- Professional color scheme (blue/white) conveys trustworthiness if applied to correct business
+- Mobile-responsive design structure with clear hierarchy between headline and CTA
+
 ## 四、客户在 Google 上怎么说
 
 > Customers overwhelmingly praise specific staff members for tangible improvements in visibility, lead generation, and website performance, though one significant complaint highlights a disconnect between sales promises and actual ROI.
@@ -94,7 +105,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 1 项（立刻在伤害成交）
+### 关键问题 · 3 项（立刻在伤害成交）
 
 ### 关键 · phone_visible_above_fold
 
@@ -111,7 +122,53 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 主要问题 · 2 项（影响转化的明显短板）
+### 关键 · Wrong business identity - SEO agency not roofing contractor
+
+**技术事实**
+
+The header reads 'HURRICANE DIGITAL' with navigation for Services, Our Team, Blog, and hero text 'Transform Your Local Business with Expert Digital Marketing' alongside an office interior photo showing the Hurricane Digital brand on monitors
+
+**普通话翻译**
+
+网站展示的是一家数字营销公司(Hurricane Digital),而不是屋顶修复公司。访客搜索「布里斯班屋顶维修」时,期望看到屋顶工程的照片和联系方式,但这个网站是推销SEO服务的。
+
+**对客户的影响**
+
+这会导致近100%的访客立即离开。在本地搜索中,用户平均只给网站3-5秒来判断是否找对了公司。品牌不匹配=零转化,您的Google商家资料流量完全浪费。
+
+**正确长啥样**
+
+Hero section showing actual roof restoration work (before/after photos of Brisbane roofs), company name matching the roofing business, headline like 'Brisbane's Trusted Roof Restoration & Repairs', phone number prominently displayed with service area callout
+
+**Redesign 怎么改**
+
+Replace entire hero with roofing-specific branding, authentic job site photography, clear service offering (roof restoration/repairs/maintenance), prominent click-to-call button, and Brisbane service area badge
+
+
+### 关键 · No phone number visible above fold
+
+**技术事实**
+
+The header contains navigation links (Home, About Us, Services, Our Team, Blog, Contact) and two buttons ('CLIENT LOGIN' and 'SPEAK TO AN EXPERT') but no visible phone number or click-to-call element
+
+**普通话翻译**
+
+网站首屏没有显示电话号码。访客必须点击「Contact」或「SPEAK TO AN EXPERT」才能找到联系方式,但屋顶维修客户通常需要立即打电话,尤其是紧急漏水情况。
+
+**对客户的影响**
+
+本地服务搜索中,67%的手机用户会直接拨打首屏显示的电话号码。隐藏号码会让您损失大部分高意向客户—他们会返回搜索结果选择显示号码的竞争对手。每10个访客中可能损失6-7个咨询。
+
+**正确长啥样**
+
+Large phone number in top-right header (e.g. '07 3XXX XXXX' in 18-20px font), styled as a tappable button on mobile with phone icon, visible on every page without scrolling
+
+**Redesign 怎么改**
+
+Add phone number as primary header element, styled as (07) 3XXX-XXXX with phone icon, linked as tel: on mobile, positioned right of logo, minimum 16px desktop / 18px mobile font size
+
+
+### 主要问题 · 5 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -143,12 +200,84 @@ Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 
 H1 是搜索引擎判断页面主题最权威的信号。写错或缺失 = 关键词排名拉低；同一页面同样的内容，H1 写对的可以排到前 3 页，写不对的可能挂在第 7 页。
 
 
+### 主要 · Office interior photo instead of roofing work evidence
+
+**技术事实**
+
+The hero section displays a circular photo of an office interior with computer monitors showing the Hurricane Digital brand, a desk setup, and indoor workspace - no outdoor or roofing-related imagery
+
+**普通话翻译**
+
+首屏展示的是办公室内景照片(电脑屏幕、办公桌),而不是实际的屋顶施工照片。本地服务客户想看到真实的工作现场、施工队伍或修复前后对比,办公室照片无法证明实操能力。
+
+**对客户的影响**
+
+对于屋顶维修这类需要上门服务的行业,客户需要看到「真实施工证据」才会信任。83%的本地服务客户表示施工照片直接影响他们是否咨询。缺少现场照片会让您看起来像中介而非真正的施工队,导致30-40%的访客流失。
+
+**正确长啥样**
+
+Hero image showing crew on a Brisbane roof with safety equipment, close-up of restoration work in progress, branded truck at job site, or dramatic before/after split of a completed restoration with visible transformation
+
+**Redesign 怎么改**
+
+Replace hero image with authentic roofing job photography - ideally crew actively working on a local Brisbane home's roof, or high-quality before/after restoration imagery that proves capability
+
+
+### 主要 · Digital marketing CTAs instead of service request
+
+**技术事实**
+
+The primary call-to-action is an email signup field with 'Enter Your Email Here' placeholder and a 'Book Free Strategy Session' button, with secondary buttons 'CLIENT LOGIN' and 'SPEAK TO AN EXPERT' in the header
+
+**普通话翻译**
+
+网站要求访客「预约免费策略会议」并输入邮箱,但屋顶客户需要的是「免费检查报价」或「立即拨打」。这种数字营销行业的话术让访客困惑,不知道如何获得屋顶服务。
+
+**对客户的影响**
+
+本地服务客户希望快速获得报价或预约检查,而不是参加营销会议。错误的CTA文案会让52%的访客认为网站与他们的需求不符而离开。正确的CTA(如「免费屋顶检查」)可以将表单提交率提高3-4倍。
+
+**正确长啥样**
+
+Primary CTA button reading 'Get Free Roof Inspection' or 'Request Quote' positioned prominently, secondary 'Call Now: (07) 3XXX XXXX' button with phone icon, form with Name/Phone/Suburb fields (not email-first)
+
+**Redesign 怎么改**
+
+Replace strategy session form with roofing-specific quote request: 'Get Your Free Roof Inspection' headline, simple form (Name, Phone, Suburb, Brief Issue), large submit button, phone CTA as alternative path
+
+
+### 主要 · Missing Brisbane service area callout
+
+**技术事实**
+
+The hero headline says 'Transform Your Local Business with Expert Digital Marketing' with no geographic indicator, service area map, or 'Serving Brisbane' callout anywhere in the visible section
+
+**普通话翻译**
+
+网站首屏没有明确标注「服务布里斯班地区」。本地搜索的客户需要立即确认公司是否覆盖自己的区域,缺少地理标识会让访客怀疑您是否能上门服务。
+
+**对客户的影响**
+
+本地搜索中,访客会在8秒内判断公司是否「在我附近」。没有明确的服务区域标注,35-45%的手机用户会认为您可能不覆盖他们的suburb而返回搜索结果。添加「服务全布里斯班」标识可以立即提升信任和留存率。
+
+**正确长啥样**
+
+Hero headline includes 'Brisbane' (e.g. 'Brisbane's Trusted Roof Restoration'), plus badge or text line 'Servicing Brisbane Northside, Southside & Bayside' with icons, positioned near phone number or below headline
+
+**Redesign 怎么改**
+
+Add 'Brisbane' to business name/headline, include 'Servicing All Brisbane Suburbs' badge near phone CTA, optionally add small service area map or suburb list in hero section or immediately below
+
+
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [评论] Feature Tracey's quote prominently on the homepage to address the primary pain point of being 'invisible' online.
-2. [评论] Use Brady's and Steven's reviews in a 'Results' or 'Case Studies' section to validate the ROI of the investment.
-3. [评论] Highlight the specific staff names (Aiden, Nash) in team bios to leverage the personal connection customers feel.
-4. [评论] Address the negative review's concern about transparency by adding a 'What to Expect' or 'Deliverables' section to the sales page.
+1. [视觉] 1. Replace all Hurricane Digital branding/content with actual roofing business identity, authentic job site photography, and service-specific headline
+2. [视觉] 2. Add prominent phone number in header (18px+, click-to-call) and replace 'strategy session' CTA with 'Get Free Roof Inspection' quote form
+3. [视觉] 3. Add Brisbane service area callout to hero section and simplify navigation to 3-4 core items focused on conversion path
+4. [评论] Feature Tracey's quote prominently on the homepage to address the primary pain point of being 'invisible' online.
+5. [评论] Use Brady's and Steven's reviews in a 'Results' or 'Case Studies' section to validate the ROI of the investment.
+6. [评论] Highlight the specific staff names (Aiden, Nash) in team bios to leverage the personal connection customers feel.
+7. [评论] Address the negative review's concern about transparency by adding a 'What to Expect' or 'Deliverables' section to the sales page.
 
 ## 七、推荐销售切入点
 

@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T06:38:58.185Z"
+generated_at: "2026-05-13T07:07:01.259Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
