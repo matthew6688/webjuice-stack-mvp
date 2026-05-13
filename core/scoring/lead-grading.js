@@ -327,8 +327,8 @@ export function persistLeadGrade({
   });
 
   // V2 phase hook — DISCORD_OUTREACH_PRD.md §9 + Block 4.4
-  // D → archived (auto). A/B → awaiting (waits for first outreach).
-  // C → no phase set (batch outreach handled separately, not via lead thread).
+  // D → archived (auto). A/B/C → design-ready (V3 D31 · audit 全 + grade ABC + master.md 22章 → M3 可 build).
+  // 旧版 A/B → awaiting + C 不变 phase 已废弃 · 替代为显式 DESIGN_READY (LEAD-JOURNEY §2).
   let phaseResult = null;
   if (isD) {
     phaseResult = setEntityPhase({
@@ -338,10 +338,10 @@ export function persistLeadGrade({
       storeRoot,
       note,
     });
-  } else if (grade.investment_level === 'A' || grade.investment_level === 'B') {
+  } else if (['A', 'B', 'C'].includes(grade.investment_level)) {
     phaseResult = setEntityPhase({
       entityKey,
-      phase: ENTITY_PHASE.AWAITING,
+      phase: ENTITY_PHASE.DESIGN_READY,
       storeRoot,
       note,
     });

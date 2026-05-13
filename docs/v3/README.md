@@ -141,6 +141,8 @@ npm run v3:batch-master-md                # 批量 intake by city
 npm run pl:sop0-doctor                    # SOP-0 5 check
 npm run pl:intake-doctor                  # SOP-1 5 check (D29)
 npm run pl:intake-doctor -- --json        # JSON cron 模式
+npm run pl:lead-journey-doctor            # 10 entity invariant + funnel (D32)
+npm run pl:lead-journey-doctor -- --json  # JSON 含 by_phase/by_grade
 npm run pl:ops-health-check               # 综合
 
 # M1 intake
@@ -180,6 +182,8 @@ npm run pl:bulk-publish-demo -- --all
 | D28 | master.md + audit bundle on V3 publish | M3 |
 | D29 | `pl:intake-doctor` health check · daily live | M1 |
 | D30 | per-worktree task-dispatcher (v3 plist) | M1 (Bug C 根因) |
+| D31 | 显式 `DESIGN_READY` phase · 干掉隐性 ready 判断 | M1+M2 boundary |
+| D32 | `pl:lead-journey-doctor` · 10 invariant + funnel 快照 | M1+M2 |
 
 完整: [DECISIONS-LOG.md](./DECISIONS-LOG.md)
 
@@ -191,6 +195,7 @@ npm run pl:bulk-publish-demo -- --all
 |---|---|---|---|
 | `pl:sop0-doctor` | manual / on-demand | — | 5 daemon + tunnel + listener + ollama + stuck |
 | `pl:intake-doctor` | **daily 09:00** (live) | `ai.profitslocal.intake-doctor-daily` | entities / docker / API key / build-md backlog / regex router |
+| **`pl:lead-journey-doctor`** (**D32 新**) | on-demand | — | 10 entity-level invariant + funnel 快照 |
 | **(缺)** `pl:audit-doctor` | TODO | — | Stage 1-4 健康 (Playwright / vision / Hermes cron) |
 | **(缺)** `pl:publish-doctor` | TODO | — | CF token / wrangler / reference files / live URL spot |
 

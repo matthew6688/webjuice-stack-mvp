@@ -56,6 +56,7 @@ export const DISCOVERY_ENTITY_STATUS = {
 // implicitly from status.
 export const ENTITY_PHASE = {
   AWAITING: 'awaiting',
+  DESIGN_READY: 'design-ready',     // V3 D31 (2026-05-14): grade=A/B/C + audit done + master.md 22章 + 截图齐 → M3 可立即 build
   OUTREACH_ACTIVE: 'outreach-active',
   REPLIED: 'replied',
   PROPOSAL_SENT: 'proposal-sent',

@@ -108,6 +108,7 @@
     "pl:task-retention": "node scripts/cli/pl-task-retention.js",
     "pl:sop0-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-sop0-doctor.js",
     "pl:intake-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-intake-doctor.js",
+    "pl:lead-journey-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-lead-journey-doctor.js",
     "qa:test-intake-channels": "node scripts/qa/test-intake-channels.mjs",
     "qa:test-sop1-doc-sync": "node scripts/qa/test-sop1-doc-sync.mjs",
     "qa:test-dedup-llm": "node scripts/qa/test-dedup-llm-decider.mjs",

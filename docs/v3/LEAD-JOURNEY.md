@@ -282,19 +282,24 @@ trust / mobile / form / cta / speed / typography / visual-hierarchy / content-de
 - 首条 message: audit score + decision + top 3 issues + master.md 链接 + audit URL
 - Tags: `[graded, <grade>, <tier>]`
 
-### Stage 12 · 网站就绪 · DESIGN_READY 隐性状态
+### Stage 12 · 网站就绪 · DESIGN_READY phase ✅ (V3 D31 · 2026-05-14 显式化)
 
-**注**: 当前 ENTITY_PHASE 没有显式 `DESIGN_READY` 值 · A/B/C 在 Stage 11 后 phase 仍为 AWAITING · 但实际**已可以触发 M3 demo build**。
+**位置**: `ENTITY_PHASE.DESIGN_READY = 'design-ready'`
 
-**显式触发器**: `pl:build-from-reference --slug <slug>` 任何时刻可对 phase=AWAITING + grade=A/B/C 的 entity 跑。
+**何时进入**:
+- `core/scoring/lead-grading.js#persistLeadGrade` 在 grade=A/B/C 时调 `setEntityPhase('design-ready')`
+- D 仍走 ARCHIVED
+- 旧版 "A/B → awaiting · C 不变 phase" 行为已废弃 (D31)
 
-**判断 ready 标准**:
-- ✅ `clients/<slug>/v2/master.md` 22 章满
-- ✅ `screenshots/desktop.png` 存在
-- ✅ `entity.scoring.grade` ∈ {A, B, C}
-- ✅ `entity.scoring.tier` 不为 null
+**判断 ready 完整 invariant**:
+1. ✅ `entity.phase === 'design-ready'`
+2. ✅ `entity.scoring.grade ∈ {A, B, C}`
+3. ✅ `entity.scoring.tier ∈ {T1, T2, T3}` (非 null)
+4. ✅ `clients/<slug>/v2/master.md` 22 章满
+5. ✅ `clients/<slug>/v2/screenshots/desktop.png` 存在
 
-**M3 触发后**: 出 `<slug>-dev.pages.dev` live URL (SOP-3-FLOW)。
+**M3 触发**: `pl:build-from-reference --slug <slug>` → SOP-3-FLOW。
+**Doctor 守**: `pl:lead-journey-doctor` invariant #7 验证 DESIGN_READY → grade A/B/C。
 
 ---
 
@@ -366,7 +371,8 @@ trust / mobile / form / cta / speed / typography / visual-hierarchy / content-de
 | Stage 8 hard-skip `recent_redesign` | Wayback Machine API 不稳 · false negative | 加 retry + cache (TODO) |
 | Stage 9 grade A/B 区分 | 边界靠 audit_score · 没 sales feedback loop | 加 sales 反馈表单 (TODO · 需 admin UI 配合) |
 | Stage 11 C → cold queue | M4 还没建 · queue 累积但不消化 | M4 启动 (优先级 TBD) |
-| Stage 12 DESIGN_READY | 没显式 phase · 看 grade+master.md+截图 共 3 个字段 | 加 `setEntityPhase('design-ready')` after Stage 11 (TODO) |
+| Stage 12 DESIGN_READY | ~~没显式 phase~~ | ✅ D31 已修 · A/B/C → setEntityPhase('design-ready') |
+| ⚠️ 240 entity 中 234 个 no-phase + 240 个 no-grade (现状 audit 还没批量回跑) | 真问题 · 已 doctor 监控 (pl:lead-journey-doctor §funnel) | 跑 `npm run scoring:rescore-v2 -- --all-niches` 批量重 grade · 看 funnel 是否 ABC 分布合理 |
 | 整体 | 没 funnel dashboard · 漏斗指标手算 | admin UI 加 funnel page (TODO) |
 
 ---
@@ -433,4 +439,15 @@ trust / mobile / form / cta / speed / typography / visual-hierarchy / content-de
 | 每个 thread 至少一个 tag (kind 或 graded) | Discord listener patchThreadTags |
 | 每次 dedup 决策都 append 到 dedup-decisions.json | discovery-store.upsertDiscoveryRun 内部 |
 
-未来 `pl:lead-journey-doctor` 可一行验证以上 (TODO)。
+✅ **`pl:lead-journey-doctor` 已实装 · 10/10 invariant 验证 + funnel 快照** (V3 D32 · 2026-05-14)
+
+用法:
+```bash
+npm run pl:lead-journey-doctor            # 彩色 · 10 check + funnel by phase + by grade
+npm run pl:lead-journey-doctor -- --json  # JSON 机器读 · 含 entities_count / by_phase / by_grade
+```
+
+输出含 funnel 快照 (phase 分布 + grade 分布) · 5/14 首跑暴露真发现:
+- 240 entity 中 234 no-phase · 240 no-grade → 必须批量跑 rescore + grade 才能填满。
+
+Heartbeat: `data/heartbeats/lead-journey-doctor.txt`。
