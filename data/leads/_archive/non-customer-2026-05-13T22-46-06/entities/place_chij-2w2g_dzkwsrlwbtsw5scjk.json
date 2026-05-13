@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chij-2w2g_dzkwsrlwbtsw5scjk",
+  "firstSeenAt": "2026-05-09T04:36:05.407Z",
+  "lastSeenAt": "2026-05-12T07:33:16.890Z",
+  "status": "manual_review",
+  "lastStatusAt": "2026-05-09T04:36:05.407Z",
+  "identifiers": {
+    "place_id": "ChIJ-2W2g_dZkWsRLwbTSW5scjk",
+    "cid": "4139490228447675951",
+    "data_id": "0x6b9159f783b665fb:0x39726c6e49d3062f",
+    "websiteDomain": "johnnygiospizza.com.au",
+    "phoneDigits": "0721417725"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "Johnny Gio's Pizza New Farm",
+    "category": "Pizza takeaway",
+    "categories": [
+      "Pizza takeaway"
+    ],
+    "address": "5/84 Merthyr Rd, New Farm QLD 4005",
+    "city": "Brisbane",
+    "niche": "restaurant",
+    "phone": "(07) 2141 7725",
+    "website": "https://www.johnnygiospizza.com.au/",
+    "google_maps_url": "https://www.google.com/maps/place/Johnny+Gio%27s+Pizza+New+Farm/data=!4m7!3m6!1s0x6b9159f783b665fb:0x39726c6e49d3062f!8m2!3d-27.4671799!4d153.0459308!16s%2Fg%2F11mt2f47s9!19sChIJ-2W2g_dZkWsRLwbTSW5scjk?authuser=0&hl=en&rclk=1",
+    "rating": 4.7,
+    "review_count": 115,
+    "websiteStatus": "independent_https_site",
+    "discoveryScore": 46,
+    "recommendedAction": "manual_review",
+    "sourceQuery": "restaurants in New Farm Brisbane",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": false,
+      "hasReservationLink": false,
+      "hasOrderOnlineLink": false,
+      "imageCount": 9,
+      "hasPopularTimes": true,
+      "hasAboutAttributes": true
+    },
+    "places_enrichment": {
+      "fetched_at": "2026-05-12T07:33:16.890Z",
+      "sku": "details_basic",
+      "types": [
+        "establishment",
+        "food",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "international_phone": "",
+      "google_canonical_url": "https://maps.google.com/?cid=4139490228447675951",
+      "rating_verified": 4.7,
+      "user_ratings_total": null,
+      "photo_references": [],
+      "opening_hours_verified": null,
+      "quota_at_call": {
+        "keyId": "primary",
+        "month": "2026-05",
+        "used": 2,
+        "limit": 11000,
+        "pct": 0.0001818181818181818,
+        "capped": false
+      }
+    }
+  },
+  "runs": [
+    {
+      "runId": "20260509-1221-new-farm-store-check",
+      "query": "restaurants in New Farm Brisbane",
+      "runPath": "data/maps-scraper/runs/20260509-1221-new-farm-store-check/discovery-run.json",
+      "at": "2026-05-09T04:36:05.407Z",
+      "discoveryScore": 46,
+      "recommendedAction": "manual_review"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-09T04:36:05.407Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260509-1221-new-farm-store-check",
+      "query": "restaurants in New Farm Brisbane",
+      "score": 46,
+      "action": "manual_review",
+      "status": "manual_review"
+    },
+    {
+      "at": "2026-05-12T03:20:24.648Z",
+      "event": "places_enrichment_added",
+      "photo_count": 0,
+      "types_count": 5
+    },
+    {
+      "at": "2026-05-12T07:33:16.890Z",
+      "event": "places_enrichment_added",
+      "photo_count": 0,
+      "types_count": 5
+    }
+  ],
+  "notes": []
+}

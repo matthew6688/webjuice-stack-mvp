@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chij15jrone5emsrp_lwfs7o_h4",
+  "firstSeenAt": "2026-05-13T13:09:29.326Z",
+  "lastSeenAt": "2026-05-13T13:14:43.133Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-13T13:14:43.133Z",
+  "identifiers": {
+    "place_id": "ChIJ15JrOne5EmsRp_lwFs7o_H4",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "hdlevel2electriciansydney.com.au",
+    "phoneDigits": "0402559777"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "High Demand Electrical",
+    "category": "",
+    "categories": [
+      "electrician",
+      "establishment",
+      "general_contractor",
+      "point_of_interest"
+    ],
+    "address": "Level 36/1 Macquarie Pl, Sydney NSW 2000, Australia",
+    "city": "Sydney",
+    "niche": "electrician",
+    "phone": "0402 559 777",
+    "website": "https://www.hdlevel2electriciansydney.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=9150444514747414951",
+    "rating": 5,
+    "review_count": 317,
+    "websiteStatus": "",
+    "discoveryScore": 42,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "electrician sydney",
+    "signals": {},
+    "batch_id": "places-electrician-sydney-202605132314",
+    "discovery_rank": 2,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-electrician-sydney-202605132309",
+      "query": "electrician sydney",
+      "runPath": "",
+      "at": "2026-05-13T13:09:29.326Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-electrician-sydney-202605132314",
+      "query": "electrician sydney",
+      "runPath": "",
+      "at": "2026-05-13T13:14:43.133Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-13T13:09:29.326Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-electrician-sydney-202605132309",
+      "query": "electrician sydney",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-13T13:14:43.133Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-electrician-sydney-202605132314",
+      "query": "electrician sydney",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-electrician-sydney-202605132309",
+    "places-electrician-sydney-202605132314"
+  ]
+}

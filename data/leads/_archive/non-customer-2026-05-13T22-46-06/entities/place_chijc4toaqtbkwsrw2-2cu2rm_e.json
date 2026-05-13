@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijc4toaqtbkwsrw2-2cu2rm_e",
+  "firstSeenAt": "2026-05-13T13:08:48.626Z",
+  "lastSeenAt": "2026-05-13T13:14:02.070Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-13T13:14:02.070Z",
+  "identifiers": {
+    "place_id": "ChIJc4ToaqtbkWsRw2-2cu2Rm_E",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "dawsonelectric.com.au",
+    "phoneDigits": "0733241447"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Dawson Electric",
+    "category": "",
+    "categories": [
+      "electrician",
+      "establishment",
+      "general_contractor",
+      "point_of_interest"
+    ],
+    "address": "7/25 Lerna St, Woolloongabba QLD 4102, Australia",
+    "city": "Brisbane",
+    "niche": "electrician",
+    "phone": "(07) 3324 1447",
+    "website": "https://www.dawsonelectric.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=17409669233548619715",
+    "rating": 4.9,
+    "review_count": 380,
+    "websiteStatus": "",
+    "discoveryScore": 42,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "electrician brisbane",
+    "signals": {},
+    "batch_id": "places-electrician-brisbane-202605132313",
+    "discovery_rank": 2,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-electrician-brisbane-202605132308",
+      "query": "electrician brisbane",
+      "runPath": "",
+      "at": "2026-05-13T13:08:48.626Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-electrician-brisbane-202605132313",
+      "query": "electrician brisbane",
+      "runPath": "",
+      "at": "2026-05-13T13:14:02.070Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-13T13:08:48.626Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-electrician-brisbane-202605132308",
+      "query": "electrician brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-13T13:14:02.070Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-electrician-brisbane-202605132313",
+      "query": "electrician brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-electrician-brisbane-202605132308",
+    "places-electrician-brisbane-202605132313"
+  ]
+}

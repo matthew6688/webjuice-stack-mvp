@@ -184,6 +184,7 @@ npm run pl:bulk-publish-demo -- --all
 | D30 | per-worktree task-dispatcher (v3 plist) | M1 (Bug C 根因) |
 | D31 | 显式 `DESIGN_READY` phase · 干掉隐性 ready 判断 | M1+M2 boundary |
 | D32 | `pl:lead-journey-doctor` · 10 invariant + funnel 快照 | M1+M2 |
+| D33 | 归档非真客户 entity · clean state (240→11) | data hygiene |
 
 完整: [DECISIONS-LOG.md](./DECISIONS-LOG.md)
 
