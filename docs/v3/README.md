@@ -211,6 +211,10 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 - [SOP-3-FLOW.md](./SOP-3-FLOW.md) · publish pipeline (**新 2026-05-14**)
 - [SOP-DISCORD-HERMES-FLOW.md](./SOP-DISCORD-HERMES-FLOW.md) · Discord ↔ Hermes 协同
 
+### Lead 旅程 (跨 M1+M2 · lifecycle 视角)
+- [LEAD-JOURNEY.md](./LEAD-JOURNEY.md) · **每个 lead 从进入到网站就绪的 12 阶段** (**新 2026-05-14**)
+  · 分类 / 评分 / 分级 / 决策矩阵 / 漏斗 bleed points / Operator 一日流程
+
 ### 设计 + 研究
 - [WEBSITE-QUALITY-RND.md](./WEBSITE-QUALITY-RND.md) · website quality R&D
 - [WEBSITE-AUTORESEARCH-DESIGN.md](./WEBSITE-AUTORESEARCH-DESIGN.md) · 撤回的 288-variant 方案 (历史)
