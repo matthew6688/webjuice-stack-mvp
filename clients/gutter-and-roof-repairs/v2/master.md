@@ -1,7 +1,7 @@
 ---
 business_id: "place_chijl3ph8wbbkwsrlheky2pl5pm"
 business_name: "Gutter and Roof Repairs"
-niche: "roofing"
+niche: "roofer"
 city: "Brisbane"
 rating: 4.6
 review_count: 150
@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-13T07:33:56.482Z"
+generated_at: "2026-05-13T12:43:50.013Z"
 assets:
   cloudinary_folder: null
   evidence_count: 7
@@ -27,7 +27,7 @@ assets:
 
 # Gutter and Roof Repairs · 现状审计与重构提议
 
-> **69/100** · moderate_candidate · 行业：roofing · 地区：Brisbane · Google 评价：4.6★ （150 条）
+> **69/100** · moderate_candidate · 行业：roofer · 地区：Brisbane · Google 评价：4.6★ （150 条）
 
 ## 内部分级 · 运营优先看这段
 
@@ -50,16 +50,18 @@ assets:
 ## 一、店家现状速览
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Maps (gosom 抓取)
-- **搜索关键词**: `roof restoration New Farm Brisbane`
+- **来源**: Google Places API (官方搜索)
+- **搜索关键词**: `roofer brisbane`
+- **结果排名**: 第 9 位
 - **首次发现**: 2026-05-09
+- **Batch**: `places-roofer-brisbane-202605132243`
 
 **审计结论：** audit_score=69 → moderate_candidate · weakest: seo 31, visual 50 · fired: high_traction_old_site
 
 **已触发的 hard triggers：** `high_traction_old_site`
 
 - 电话：0421 460 580
-- 地址：1/41 Steel Pl, Morningside QLD 4170
+- 地址：1/41 Steel Pl, Morningside QLD 4170, Australia
 - 网站：[https://gutterandroofrepairs.com.au/](https://gutterandroofrepairs.com.au/)
 - 网站状态：`independent_https_site`
 

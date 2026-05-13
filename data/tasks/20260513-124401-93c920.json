@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124401-93c920",
+  "created_at": "2026-05-13T12:44:01.092Z",
+  "updated_at": "2026-05-13T12:44:01.645Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijk4n9magakwsrm-bx0ywyqcq (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijk4n9magakwsrm-bx0ywyqcq"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 298,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:44:01.346Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijk4n9magakwsrm-bx0ywyqcq"
+    },
+    {
+      "at": "2026-05-13T12:44:01.645Z",
+      "step": "cli.stream",
+      "detail": ": [\n    {\n      \"entityKey\": \"place_chijk4n9magakwsrm-bx0ywyqcq\",\n      \"slug\": \"gc-roof-tiling-solutions\",\n      \"md\": \"clients/gc-roof-tiling-solutions/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:44:01.645Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=298ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

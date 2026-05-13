@@ -1,0 +1,192 @@
+
+> webjuice-mvp@0.0.1 pl:task-dispatcher
+> node --env-file=.env.local scripts/cli/pl-task-dispatcher.js
+
+[2026-05-13T12:41:00.550Z] dispatcher starting · tick= 60000 ms · timeout= 300000 ms
+[2026-05-13T12:41:00.552Z] fs.watch active on /Users/matthew/Developer/google-map-website-v3/data/tasks
+[2026-05-13T12:42:11.105Z] fs.watch fired · maybe-pending 20260513-124210-455da2
+[2026-05-13T12:42:11.107Z] claim 20260513-124210-455da2 → running · cli= pl:single-enrich args= --business-name Joe's Plumbing --phone 0412345678 --city Sydney
+[2026-05-13T12:42:14.002Z] done 20260513-124210-455da2 (2416ms exit=0)
+[2026-05-13T12:42:14.205Z] fs.watch fired · maybe-pending 20260513-124213-643735
+[2026-05-13T12:42:14.205Z] claim 20260513-124213-643735 → running · cli= leads:run-pipeline args= --entity-key place_chijkbdhae7ld4grsrwyf1yah7c
+[2026-05-13T12:42:14.208Z] fs.watch fired · maybe-pending 20260513-124213-b3ca6c
+[2026-05-13T12:42:14.208Z] claim 20260513-124213-b3ca6c → running · cli= leads:build-master-md args= --entity-key place_chijkbdhae7ld4grsrwyf1yah7c
+[2026-05-13T12:42:14.398Z] done 20260513-124213-b3ca6c (188ms exit=0)
+[2026-05-13T12:42:18.309Z] fs.watch fired · maybe-pending 20260513-124218-17b52e
+[2026-05-13T12:42:18.310Z] claim 20260513-124218-17b52e → running · cli= pl:places-search-intake args= cafe brisbane cafe sydney
+[2026-05-13T12:42:25.511Z] fs.watch fired · maybe-pending 20260513-124225-22b2e1
+[2026-05-13T12:42:25.511Z] claim 20260513-124225-22b2e1 → running · cli= pl:pipeline-batch-start args= find brisbane plumbers --count 2
+[2026-05-13T12:42:26.150Z] failed 20260513-124225-22b2e1 (exit=1 sig=null)
+[2026-05-13T12:42:26.292Z] fs.watch fired · maybe-pending 20260513-124226-77fbfa
+[2026-05-13T12:42:26.293Z] claim 20260513-124226-77fbfa → running · cli= leads:build-master-md args= --entity-key place_chijw76y3bpakwsrxyeqwsvjp4k
+[2026-05-13T12:42:26.344Z] fs.watch fired · maybe-pending 20260513-124226-9017f0
+[2026-05-13T12:42:26.344Z] claim 20260513-124226-9017f0 → running · cli= leads:build-master-md args= --entity-key place_chij4z5hqhvakwsrrmrstaqa1gw
+[2026-05-13T12:42:26.346Z] fs.watch fired · maybe-pending 20260513-124226-fb52b4
+[2026-05-13T12:42:26.346Z] claim 20260513-124226-fb52b4 → running · cli= leads:build-master-md args= --entity-key place_chij3zqz8khbkwsra0y5j6repla
+[2026-05-13T12:42:26.347Z] fs.watch fired · maybe-pending 20260513-124226-078ac1
+[2026-05-13T12:42:26.348Z] claim 20260513-124226-078ac1 → running · cli= leads:build-master-md args= --entity-key place_chijkyekiwrakwsru0nfzhvbkxu
+[2026-05-13T12:42:26.350Z] fs.watch fired · maybe-pending 20260513-124226-28cfc7
+[2026-05-13T12:42:26.350Z] claim 20260513-124226-28cfc7 → running · cli= leads:build-master-md args= --entity-key place_chijx8ito69zkwsr5m-dnizoiu0
+[2026-05-13T12:42:26.352Z] fs.watch fired · maybe-pending 20260513-124226-cf60f3
+[2026-05-13T12:42:26.352Z] claim 20260513-124226-cf60f3 → running · cli= leads:build-master-md args= --entity-key place_chijrz5yz7hbkwsrycjbtqvb8rc
+[2026-05-13T12:42:26.354Z] fs.watch fired · maybe-pending 20260513-124226-a3283c
+[2026-05-13T12:42:26.355Z] claim 20260513-124226-a3283c → running · cli= leads:build-master-md args= --entity-key place_chijz3ixegrakwsry-ejbzd5w70
+[2026-05-13T12:42:26.356Z] fs.watch fired · maybe-pending 20260513-124226-b1fa46
+[2026-05-13T12:42:26.356Z] claim 20260513-124226-b1fa46 → running · cli= leads:build-master-md args= --entity-key place_chijbw1scfvbkwsrf7vpzoh35i0
+[2026-05-13T12:42:26.358Z] fs.watch fired · maybe-pending 20260513-124226-e30575
+[2026-05-13T12:42:26.358Z] claim 20260513-124226-e30575 → running · cli= leads:build-master-md args= --entity-key place_chij16hj0otzkwsryqutw9b0uk8
+[2026-05-13T12:42:26.360Z] fs.watch fired · maybe-pending 20260513-124226-32f31d
+[2026-05-13T12:42:26.360Z] claim 20260513-124226-32f31d → running · cli= leads:build-master-md args= --entity-key place_chijbvf9jwrakwsrdm1u-wiwi_m
+[2026-05-13T12:42:26.363Z] fs.watch fired · maybe-pending 20260513-124226-856f2c
+[2026-05-13T12:42:26.364Z] claim 20260513-124226-856f2c → running · cli= leads:build-master-md args= --entity-key place_chijye5lzttykwsrfohd-68pnzq
+[2026-05-13T12:42:26.366Z] fs.watch fired · maybe-pending 20260513-124226-2d3f26
+[2026-05-13T12:42:26.367Z] claim 20260513-124226-2d3f26 → running · cli= leads:build-master-md args= --entity-key place_chije8u4nbdbkwsrkovozefdox0
+[2026-05-13T12:42:26.371Z] fs.watch fired · maybe-pending 20260513-124226-14273b
+[2026-05-13T12:42:26.372Z] claim 20260513-124226-14273b → running · cli= leads:build-master-md args= --entity-key place_chijmqtvedvbkwsrj4vrmfjbpio
+[2026-05-13T12:42:26.374Z] fs.watch fired · maybe-pending 20260513-124226-a12b09
+[2026-05-13T12:42:26.375Z] claim 20260513-124226-a12b09 → running · cli= leads:build-master-md args= --entity-key place_chijmw1elgnakwsrwxjushml-kk
+[2026-05-13T12:42:26.378Z] fs.watch fired · maybe-pending 20260513-124226-f3898e
+[2026-05-13T12:42:26.380Z] claim 20260513-124226-f3898e → running · cli= leads:build-master-md args= --entity-key place_chijzdb8hm5bkwsryabtflt7dy0
+[2026-05-13T12:42:26.385Z] fs.watch fired · maybe-pending 20260513-124226-ef9125
+[2026-05-13T12:42:26.386Z] claim 20260513-124226-ef9125 → running · cli= leads:build-master-md args= --entity-key place_chije9sp3grakwsrxgr5ikld6uq
+[2026-05-13T12:42:26.396Z] fs.watch fired · maybe-pending 20260513-124226-177cf4
+[2026-05-13T12:42:26.397Z] claim 20260513-124226-177cf4 → running · cli= leads:build-master-md args= --entity-key place_chijp89zrzhakwsrvqo8himyoie
+[2026-05-13T12:42:26.406Z] fs.watch fired · maybe-pending 20260513-124226-9144dc
+[2026-05-13T12:42:26.407Z] claim 20260513-124226-9144dc → running · cli= leads:build-master-md args= --entity-key place_chij9_evwhtakwsrs-bz0cpxeno
+[2026-05-13T12:42:26.422Z] fs.watch fired · maybe-pending 20260513-124226-5320de
+[2026-05-13T12:42:26.422Z] claim 20260513-124226-5320de → running · cli= leads:build-master-md args= --entity-key place_chijxam_ukfbkwsroehelotwqra
+[2026-05-13T12:42:26.439Z] fs.watch fired · maybe-pending 20260513-124226-4f046c
+[2026-05-13T12:42:26.440Z] claim 20260513-124226-4f046c → running · cli= leads:build-master-md args= --entity-key place_chijjxrdbtpbkwsrb6nkvrzq9si
+[2026-05-13T12:42:26.786Z] done 20260513-124226-f3898e (401ms exit=0)
+[2026-05-13T12:42:26.790Z] done 20260513-124226-77fbfa (496ms exit=0)
+[2026-05-13T12:42:26.791Z] done 20260513-124226-e30575 (431ms exit=0)
+[2026-05-13T12:42:26.794Z] done 20260513-124226-2d3f26 (423ms exit=0)
+[2026-05-13T12:42:26.798Z] done 20260513-124226-078ac1 (448ms exit=0)
+[2026-05-13T12:42:26.807Z] done 20260513-124226-fb52b4 (460ms exit=0)
+[2026-05-13T12:42:26.813Z] done 20260513-124226-b1fa46 (455ms exit=0)
+[2026-05-13T12:42:26.815Z] done 20260513-124226-14273b (441ms exit=0)
+[2026-05-13T12:42:26.819Z] done 20260513-124226-28cfc7 (467ms exit=0)
+[2026-05-13T12:42:26.821Z] done 20260513-124226-32f31d (458ms exit=0)
+[2026-05-13T12:42:26.825Z] done 20260513-124226-cf60f3 (471ms exit=0)
+[2026-05-13T12:42:26.831Z] done 20260513-124226-9017f0 (485ms exit=0)
+[2026-05-13T12:42:26.836Z] done 20260513-124226-856f2c (471ms exit=0)
+[2026-05-13T12:42:26.840Z] done 20260513-124226-4f046c (388ms exit=0)
+[2026-05-13T12:42:26.844Z] done 20260513-124226-a12b09 (466ms exit=0)
+[2026-05-13T12:42:26.862Z] done 20260513-124226-a3283c (506ms exit=0)
+[2026-05-13T12:42:26.884Z] done 20260513-124226-9144dc (462ms exit=0)
+[2026-05-13T12:42:26.897Z] done 20260513-124226-177cf4 (492ms exit=0)
+[2026-05-13T12:42:26.898Z] done 20260513-124226-ef9125 (502ms exit=0)
+[2026-05-13T12:42:26.898Z] done 20260513-124226-5320de (459ms exit=0)
+[2026-05-13T12:42:45.034Z] fs.watch fired · maybe-pending 20260513-124244-d39472
+[2026-05-13T12:42:45.036Z] claim 20260513-124244-d39472 → running · cli= leads:build-master-md args= --entity-key place_chijoahraxkuemsrijoniunkozy
+[2026-05-13T12:42:45.308Z] done 20260513-124244-d39472 (246ms exit=0)
+[2026-05-13T12:42:50.231Z] done 20260513-124218-17b52e (31482ms exit=0)
+[2026-05-13T12:43:35.784Z] fs.watch fired · maybe-pending 20260513-124335-5750d3
+[2026-05-13T12:43:35.786Z] claim 20260513-124335-5750d3 → running · cli= pl:single-enrich args= --business-name=Joe's plumbing --phone=0412345678 --city=Melbourne
+[2026-05-13T12:43:38.007Z] done 20260513-124335-5750d3 (1741ms exit=0)
+[2026-05-13T12:43:38.208Z] fs.watch fired · maybe-pending 20260513-124337-c88e25
+[2026-05-13T12:43:38.210Z] claim 20260513-124337-c88e25 → running · cli= leads:run-pipeline args= --entity-key place_chijkbdhae7ld4grsrwyf1yah7c
+[2026-05-13T12:43:38.213Z] fs.watch fired · maybe-pending 20260513-124337-8da3e0
+[2026-05-13T12:43:38.214Z] claim 20260513-124337-8da3e0 → running · cli= leads:build-master-md args= --entity-key place_chijkbdhae7ld4grsrwyf1yah7c
+[2026-05-13T12:43:38.402Z] done 20260513-124337-8da3e0 (186ms exit=0)
+[2026-05-13T12:43:42.789Z] fs.watch fired · maybe-pending 20260513-124342-67a699
+[2026-05-13T12:43:42.790Z] claim 20260513-124342-67a699 → running · cli= pl:places-search-intake args= roofer brisbane roofer gold coast
+[2026-05-13T12:43:49.512Z] fs.watch fired · maybe-pending 20260513-124349-5fb109
+[2026-05-13T12:43:49.512Z] claim 20260513-124349-5fb109 → running · cli= leads:build-master-md args= --entity-key place_chijk2kjmcfmkwsrk9yzy9lxa-y
+[2026-05-13T12:43:49.514Z] fs.watch fired · maybe-pending 20260513-124349-9f175b
+[2026-05-13T12:43:49.514Z] claim 20260513-124349-9f175b → running · cli= leads:build-master-md args= --entity-key place_chijwuwifvzdkwsrtpd0wdmszdo
+[2026-05-13T12:43:49.516Z] fs.watch fired · maybe-pending 20260513-124349-c39735
+[2026-05-13T12:43:49.516Z] claim 20260513-124349-c39735 → running · cli= leads:build-master-md args= --entity-key place_chijo3rniu9fkwsr8jworgytgmy
+[2026-05-13T12:43:49.518Z] fs.watch fired · maybe-pending 20260513-124349-114673
+[2026-05-13T12:43:49.518Z] claim 20260513-124349-114673 → running · cli= leads:build-master-md args= --entity-key place_chijueqfkybdkwsrfvocbb3ybs8
+[2026-05-13T12:43:49.562Z] fs.watch fired · maybe-pending 20260513-124349-fd264e
+[2026-05-13T12:43:49.563Z] claim 20260513-124349-fd264e → running · cli= leads:build-master-md args= --entity-key place_chijeritxj9nkwsr2dg7xhqvqn4
+[2026-05-13T12:43:49.566Z] fs.watch fired · maybe-pending 20260513-124349-4b4cfd
+[2026-05-13T12:43:49.566Z] claim 20260513-124349-4b4cfd → running · cli= leads:build-master-md args= --entity-key place_chijrq6qulnbkwsruettr7eegyc
+[2026-05-13T12:43:49.568Z] fs.watch fired · maybe-pending 20260513-124349-fa1638
+[2026-05-13T12:43:49.568Z] claim 20260513-124349-fa1638 → running · cli= leads:build-master-md args= --entity-key place_chijnylrm_znzkario5qkvfr5vo
+[2026-05-13T12:43:49.570Z] fs.watch fired · maybe-pending 20260513-124349-f199f0
+[2026-05-13T12:43:49.570Z] claim 20260513-124349-f199f0 → running · cli= leads:build-master-md args= --entity-key place_chijv-giozdakwsrr3uzcww7y8s
+[2026-05-13T12:43:49.572Z] fs.watch fired · maybe-pending 20260513-124349-b7771e
+[2026-05-13T12:43:49.572Z] claim 20260513-124349-b7771e → running · cli= leads:build-master-md args= --entity-key place_chijl3ph8wbbkwsrlheky2pl5pm
+[2026-05-13T12:43:49.574Z] fs.watch fired · maybe-pending 20260513-124349-c1303c
+[2026-05-13T12:43:49.574Z] claim 20260513-124349-c1303c → running · cli= leads:build-master-md args= --entity-key place_chijhbplvr5bkwsrgufsdwb6css
+[2026-05-13T12:43:49.575Z] fs.watch fired · maybe-pending 20260513-124349-877866
+[2026-05-13T12:43:49.577Z] claim 20260513-124349-877866 → running · cli= leads:build-master-md args= --entity-key place_chijwdbif2xzkwsrru6lkmu2l0o
+[2026-05-13T12:43:49.598Z] fs.watch fired · maybe-pending 20260513-124349-dfd614
+[2026-05-13T12:43:49.598Z] claim 20260513-124349-dfd614 → running · cli= leads:build-master-md args= --entity-key place_chijutib72nzkwsrbyxejwlcviw
+[2026-05-13T12:43:49.607Z] fs.watch fired · maybe-pending 20260513-124349-ace064
+[2026-05-13T12:43:49.608Z] claim 20260513-124349-ace064 → running · cli= leads:build-master-md args= --entity-key place_chij94nexjfjk2srxwxb4ar4hj4
+[2026-05-13T12:43:49.611Z] fs.watch fired · maybe-pending 20260513-124349-fa55c1
+[2026-05-13T12:43:49.611Z] claim 20260513-124349-fa55c1 → running · cli= leads:build-master-md args= --entity-key place_chijkf8sq8jgkwsrqcac2p6iqpc
+[2026-05-13T12:43:49.615Z] fs.watch fired · maybe-pending 20260513-124349-dc1a80
+[2026-05-13T12:43:49.616Z] claim 20260513-124349-dc1a80 → running · cli= leads:build-master-md args= --entity-key place_chij-9wdzxxakwsr-lljrd1u3jq
+[2026-05-13T12:43:49.629Z] fs.watch fired · maybe-pending 20260513-124349-f951d6
+[2026-05-13T12:43:49.629Z] claim 20260513-124349-f951d6 → running · cli= leads:build-master-md args= --entity-key place_chijsypmtxxakwsrj5ytlt8t_pe
+[2026-05-13T12:43:49.640Z] fs.watch fired · maybe-pending 20260513-124349-016045
+[2026-05-13T12:43:49.641Z] claim 20260513-124349-016045 → running · cli= leads:build-master-md args= --entity-key place_chij3tc-hgbnkwsrl7mawfatgri
+[2026-05-13T12:43:49.665Z] fs.watch fired · maybe-pending 20260513-124349-2cc814
+[2026-05-13T12:43:49.666Z] claim 20260513-124349-2cc814 → running · cli= leads:build-master-md args= --entity-key place_chij6wsd-kzbkwsryzke1ejotjs
+[2026-05-13T12:43:49.859Z] done 20260513-124349-c39735 (341ms exit=0)
+[2026-05-13T12:43:49.860Z] done 20260513-124349-114673 (341ms exit=0)
+[2026-05-13T12:43:49.873Z] fs.watch fired · maybe-pending 20260513-124349-384db2
+[2026-05-13T12:43:49.873Z] claim 20260513-124349-384db2 → running · cli= pl:pipeline-batch-start args= find brisbane plumbers
+[2026-05-13T12:43:49.879Z] done 20260513-124349-5fb109 (365ms exit=0)
+[2026-05-13T12:43:49.911Z] done 20260513-124349-9f175b (395ms exit=0)
+[2026-05-13T12:43:49.967Z] done 20260513-124349-4b4cfd (399ms exit=0)
+[2026-05-13T12:43:49.968Z] done 20260513-124349-c1303c (393ms exit=0)
+[2026-05-13T12:43:49.971Z] done 20260513-124349-877866 (374ms exit=0)
+[2026-05-13T12:43:49.972Z] done 20260513-124349-fd264e (406ms exit=0)
+[2026-05-13T12:43:49.973Z] done 20260513-124349-fa1638 (403ms exit=0)
+[2026-05-13T12:43:49.973Z] done 20260513-124349-f199f0 (401ms exit=0)
+[2026-05-13T12:43:49.974Z] done 20260513-124349-dfd614 (367ms exit=0)
+[2026-05-13T12:43:49.979Z] done 20260513-124349-ace064 (369ms exit=0)
+[2026-05-13T12:43:50.023Z] done 20260513-124349-b7771e (449ms exit=0)
+[2026-05-13T12:43:50.031Z] done 20260513-124349-fa55c1 (416ms exit=0)
+[2026-05-13T12:43:50.038Z] done 20260513-124349-dc1a80 (409ms exit=0)
+[2026-05-13T12:43:50.042Z] done 20260513-124349-f951d6 (402ms exit=0)
+[2026-05-13T12:43:50.059Z] done 20260513-124349-016045 (394ms exit=0)
+[2026-05-13T12:43:50.074Z] done 20260513-124349-2cc814 (402ms exit=0)
+[2026-05-13T12:43:50.510Z] failed 20260513-124349-384db2 (exit=1 sig=null)
+[2026-05-13T12:44:01.284Z] fs.watch fired · maybe-pending 20260513-124401-9f86f6
+[2026-05-13T12:44:01.285Z] claim 20260513-124401-9f86f6 → running · cli= leads:build-master-md args= --entity-key place_chijbanphusfkwsrht2xw3qnio0
+[2026-05-13T12:44:01.286Z] fs.watch fired · maybe-pending 20260513-124401-2da7ac
+[2026-05-13T12:44:01.287Z] claim 20260513-124401-2da7ac → running · cli= leads:build-master-md args= --entity-key place_chijg1qde8urkwsrp4t41zhih64
+[2026-05-13T12:44:01.288Z] fs.watch fired · maybe-pending 20260513-124401-d76955
+[2026-05-13T12:44:01.289Z] claim 20260513-124401-d76955 → running · cli= leads:build-master-md args= --entity-key place_chijes0nvk0dkwsrl_are9igcf8
+[2026-05-13T12:44:01.333Z] fs.watch fired · maybe-pending 20260513-124401-01fd8f
+[2026-05-13T12:44:01.334Z] claim 20260513-124401-01fd8f → running · cli= leads:build-master-md args= --entity-key place_chijbwkegeqfkwsrcih6mkenmim
+[2026-05-13T12:44:01.336Z] fs.watch fired · maybe-pending 20260513-124401-1f6f3b
+[2026-05-13T12:44:01.336Z] claim 20260513-124401-1f6f3b → running · cli= leads:build-master-md args= --entity-key place_chijne_lqnsfkwsry_wvtam9q8g
+[2026-05-13T12:44:01.338Z] fs.watch fired · maybe-pending 20260513-124401-bda403
+[2026-05-13T12:44:01.338Z] claim 20260513-124401-bda403 → running · cli= pl:places-search-intake args= roofer in brisbane roofer in gold coast
+[2026-05-13T12:44:01.339Z] fs.watch fired · maybe-pending 20260513-124401-be51de
+[2026-05-13T12:44:01.340Z] claim 20260513-124401-be51de → running · cli= leads:build-master-md args= --entity-key place_chijk7qvysgtkwsrblsvv3-zzdo
+[2026-05-13T12:44:01.341Z] fs.watch fired · maybe-pending 20260513-124401-9fc6b7
+[2026-05-13T12:44:01.342Z] claim 20260513-124401-9fc6b7 → running · cli= leads:build-master-md args= --entity-key place_chijrwsoxaspkwsrxt5lbzyuihm
+[2026-05-13T12:44:01.343Z] fs.watch fired · maybe-pending 20260513-124401-e6679e
+[2026-05-13T12:44:01.344Z] claim 20260513-124401-e6679e → running · cli= leads:build-master-md args= --entity-key place_chijp2cszoadkwsrxl6zzwfqy9s
+[2026-05-13T12:44:01.345Z] fs.watch fired · maybe-pending 20260513-124401-93c920
+[2026-05-13T12:44:01.346Z] claim 20260513-124401-93c920 → running · cli= leads:build-master-md args= --entity-key place_chijk4n9magakwsrm-bx0ywyqcq
+[2026-05-13T12:44:01.347Z] fs.watch fired · maybe-pending 20260513-124401-6301a3
+[2026-05-13T12:44:01.347Z] claim 20260513-124401-6301a3 → running · cli= leads:build-master-md args= --entity-key place_chijyea4nogtkwsrmguykw1tdyg
+[2026-05-13T12:44:01.349Z] fs.watch fired · maybe-pending 20260513-124401-0e994f
+[2026-05-13T12:44:01.350Z] claim 20260513-124401-0e994f → running · cli= leads:build-master-md args= --entity-key place_chiju1qudf0rkwsrfigoacw6r6i
+[2026-05-13T12:44:01.351Z] fs.watch fired · maybe-pending 20260513-124401-8c1540
+[2026-05-13T12:44:01.351Z] claim 20260513-124401-8c1540 → running · cli= leads:build-master-md args= --entity-key place_chij43aeaqmrkwsrbfvggrkjdvk
+[2026-05-13T12:44:01.354Z] fs.watch fired · maybe-pending 20260513-124401-e1ac02
+[2026-05-13T12:44:01.354Z] claim 20260513-124401-e1ac02 → running · cli= leads:build-master-md args= --entity-key place_chij-53ktvqfkwsry4aktq8tiuy
+[2026-05-13T12:44:01.582Z] done 20260513-124401-d76955 (292ms exit=0)
+[2026-05-13T12:44:01.584Z] done 20260513-124401-2da7ac (296ms exit=0)
+[2026-05-13T12:44:01.588Z] done 20260513-124401-9f86f6 (302ms exit=0)
+[2026-05-13T12:44:01.610Z] done 20260513-124401-01fd8f (274ms exit=0)
+[2026-05-13T12:44:01.614Z] done 20260513-124401-be51de (273ms exit=0)
+[2026-05-13T12:44:01.628Z] done 20260513-124401-1f6f3b (290ms exit=0)
+[2026-05-13T12:44:01.638Z] done 20260513-124401-e1ac02 (270ms exit=0)
+[2026-05-13T12:44:01.645Z] done 20260513-124401-93c920 (298ms exit=0)
+[2026-05-13T12:44:01.646Z] done 20260513-124401-6301a3 (297ms exit=0)
+[2026-05-13T12:44:01.648Z] done 20260513-124401-9fc6b7 (305ms exit=0)
+[2026-05-13T12:44:01.649Z] done 20260513-124401-8c1540 (296ms exit=0)
+[2026-05-13T12:44:01.649Z] done 20260513-124401-e6679e (304ms exit=0)
+[2026-05-13T12:44:01.653Z] done 20260513-124401-0e994f (302ms exit=0)
+[2026-05-13T12:44:06.655Z] SIGTERM

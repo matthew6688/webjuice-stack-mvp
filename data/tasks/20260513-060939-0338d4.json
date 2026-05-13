@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "task_id": "20260513-060939-0338d4",
   "created_at": "2026-05-13T06:09:39.727Z",
-  "updated_at": "2026-05-13T06:09:39.727Z",
+  "updated_at": "2026-05-13T12:29:40.749Z",
   "kind": "ops",
-  "status": "pending",
+  "status": "done",
   "source": {
     "platform": "internal",
     "thread_id": null,
@@ -26,11 +26,27 @@
   },
   "result": {
     "entity_keys": [],
-    "exit_code": null,
-    "duration_ms": null,
+    "exit_code": 0,
+    "duration_ms": 398,
     "cost_usd": null
   },
-  "progress": [],
+  "progress": [
+    {
+      "at": "2026-05-13T12:29:40.342Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijm9ktrjpxkwsrqk_e81qjagq"
+    },
+    {
+      "at": "2026-05-13T12:29:40.749Z",
+      "step": "cli.stream",
+      "detail": "--entity-key place_chijm9ktrjpxkwsrqk_e81qjagq\n\n[build-master-md] targets=1 theme=article html=false\n  ✗ no entity: place_chijm9ktrjpxkwsrqk_e81qjagq\n\n{\n  \"ok\": true,\n  \"count\": 0,\n  \"results\": []\n}"
+    },
+    {
+      "at": "2026-05-13T12:29:40.749Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=398ms"
+    }
+  ],
   "error": null,
   "discord": {
     "thread_id": null,

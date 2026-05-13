@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124401-9f86f6",
+  "created_at": "2026-05-13T12:44:01.077Z",
+  "updated_at": "2026-05-13T12:44:01.589Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijbanphusfkwsrht2xw3qnio0 (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijbanphusfkwsrht2xw3qnio0"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 302,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:44:01.285Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijbanphusfkwsrht2xw3qnio0"
+    },
+    {
+      "at": "2026-05-13T12:44:01.588Z",
+      "step": "cli.stream",
+      "detail": "\"entityKey\": \"place_chijbanphusfkwsrht2xw3qnio0\",\n      \"slug\": \"radiant-roof-repairs-gold-coast\",\n      \"md\": \"clients/radiant-roof-repairs-gold-coast/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:44:01.589Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=302ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

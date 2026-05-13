@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-cafe-brisbane-202605132242",
+  "title": "[Places Pipeline] cafe brisbane — 2026-05-13 12:42 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504101488279158825",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504101488279158825",
+  "initial_message_id": "1504101488279158825",
+  "niche": "cafe",
+  "city": "brisbane",
+  "count": 20,
+  "runFlags": {
+    "source": "places_search",
+    "query": "cafe brisbane",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T12:42:19.823Z",
+  "finished_at": "2026-05-13T12:42:27.616Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "20 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T12:42:21.458Z",
+      "message_id": "1504101495157559428"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "20 entities written to store · keys (first 3): place_chijw76y3bpakwsrxyeqwsvjp4k, place_chij4z5hqhvakwsrrmrstaqa1gw, place_chij3zqz8khbkwsra0y5j6repla",
+      "at": "2026-05-13T12:42:26.526Z",
+      "message_id": "1504101516217417882"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 20 leads from Places API**\n\nQuery: `cafe brisbane`\nLeads (first 5): place_chijw76y3bpakwsrxyeqwsvjp4k, place_chij4z5hqhvakwsrrmrstaqa1gw, place_chij3zqz8khbkwsra0y5j6repla, place_chijkyekiwrakwsru0nfzhvbkxu, place_chijx8ito69zkwsr5m-dnizoiu0 …",
+      "at": "2026-05-13T12:42:26.934Z",
+      "message_id": "1504101518280884374"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T12:42:41.929Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 0,
+      "domain": 2
+    },
+    "exit_code": 0
+  }
+}

@@ -1,7 +1,7 @@
 ---
 business_id: "place_chijwdbif2xzkwsrru6lkmu2l0o"
 business_name: "Brisbane Roof Restoration Experts"
-niche: "roofing"
+niche: "roofer"
 city: "Brisbane"
 rating: 4.9
 review_count: 21
@@ -15,7 +15,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-13T10:41:22.740Z"
+generated_at: "2026-05-13T12:43:49.951Z"
 assets:
   cloudinary_folder: null
   evidence_count: 6
@@ -26,7 +26,7 @@ assets:
 
 # Brisbane Roof Restoration Experts · 现状审计与重构提议
 
-> **70/100** · low_priority · 行业：roofing · 地区：Brisbane · Google 评价：4.9★ （21 条）
+> **70/100** · low_priority · 行业：roofer · 地区：Brisbane · Google 评价：4.9★ （21 条）
 
 ## 内部分级 · 运营优先看这段
 
@@ -40,14 +40,16 @@ assets:
 ## 一、店家现状速览
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Maps (gosom 抓取)
-- **搜索关键词**: `roof restoration in Brisbane`
+- **来源**: Google Places API (官方搜索)
+- **搜索关键词**: `roofer brisbane`
+- **结果排名**: 第 11 位
 - **首次发现**: 2026-05-09
+- **Batch**: `places-roofer-brisbane-202605132243`
 
 **审计结论：** audit_score=70 → low_priority · weakest: gbp 48, visual 50
 
 - 电话：(07) 3132 1605
-- 地址：Unit 22/104 Barwon St, Morningside QLD 4170
+- 地址：Unit 22/104 Barwon St, Morningside QLD 4170, Australia
 - 网站：[https://brisbaneroofrestorationexperts.com.au/](https://brisbaneroofrestorationexperts.com.au/)
 - 网站状态：`independent_https_site`
 

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
-  "lastSeenAt": "2026-05-13T07:15:08.974Z",
-  "status": "graded",
-  "lastStatusAt": "2026-05-13T06:57:11.448Z",
+  "lastSeenAt": "2026-05-13T12:44:08.008Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-13T12:44:08.008Z",
   "identifiers": {
     "place_id": "ChIJL3pH8WBbkWsRlHeKy2pl5pM",
     "cid": "10657317077574645652",
@@ -13,24 +13,26 @@
     "phoneDigits": "0421460580"
   },
   "latest": {
-    "sourceType": "maps_scraper",
+    "sourceType": "places_search",
     "name": "Gutter and Roof Repairs",
     "category": "Roofing contractor",
     "categories": [
-      "Roofing contractor"
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor"
     ],
-    "address": "1/41 Steel Pl, Morningside QLD 4170",
+    "address": "1/41 Steel Pl, Morningside QLD 4170, Australia",
     "city": "Brisbane",
-    "niche": "roofing",
+    "niche": "roofer",
     "phone": "0421 460 580",
     "website": "https://gutterandroofrepairs.com.au/",
-    "google_maps_url": "https://www.google.com/maps/place/Gutter+and+Roof+Repairs/data=!4m7!3m6!1s0x6b915b60f1477a2f:0x93e6656acb8a7794!8m2!3d-27.4528275!4d153.0810395!16s%2Fg%2F11h54g8z24!19sChIJL3pH8WBbkWsRlHeKy2pl5pM?authuser=0&hl=en&rclk=1",
+    "google_maps_url": "https://maps.google.com/?cid=10657317077574645652",
     "rating": 4.6,
     "review_count": 150,
     "websiteStatus": "independent_https_site",
     "discoveryScore": 38,
-    "recommendedAction": "skip",
-    "sourceQuery": "roof restoration New Farm Brisbane",
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in brisbane",
     "signals": {
       "hasPhone": true,
       "hasWebsite": true,
@@ -141,7 +143,10 @@
         "source": "places_api.opening_hours.weekday_text",
         "computed_at": "2026-05-13T07:15:08.975Z"
       }
-    }
+    },
+    "batch_id": "places-roofer-in-brisbane-202605132244",
+    "discovery_rank": 14,
+    "google_places_provider": "official_api"
   },
   "runs": [
     {
@@ -167,6 +172,22 @@
       "at": "2026-05-09T06:20:00.519Z",
       "discoveryScore": 38,
       "recommendedAction": "skip"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605132243",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-13T12:43:49.294Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-in-brisbane-202605132244",
+      "query": "roofer in brisbane",
+      "runPath": "",
+      "at": "2026-05-13T12:44:08.008Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
     }
   ],
   "history": [
@@ -239,6 +260,24 @@
       "at": "2026-05-13T07:15:22.393Z",
       "event": "places_photos_downloaded",
       "count": 6
+    },
+    {
+      "at": "2026-05-13T12:43:49.294Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605132243",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-13T12:44:08.008Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-brisbane-202605132244",
+      "query": "roofer in brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
     }
   ],
   "notes": [
@@ -268,5 +307,10 @@
   "phaseChangedAt": "2026-05-13T06:57:11.461Z",
   "discord_thread_id": "1504014636960317500",
   "discord_profile_message_id": "1504014636960317500",
-  "discord_thread_opened_at": "2026-05-13T06:57:12.755Z"
+  "discord_thread_opened_at": "2026-05-13T06:57:12.755Z",
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-brisbane-202605132243",
+    "places-roofer-in-brisbane-202605132244"
+  ]
 }

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124335-5750d3",
+  "created_at": "2026-05-13T12:43:35.571Z",
+  "updated_at": "2026-05-13T12:43:38.008Z",
+  "kind": "single-enrich",
+  "status": "done",
+  "source": {
+    "platform": "discord",
+    "thread_id": "1503873799920287985",
+    "author": "matthewfromuchat",
+    "message_id": "1503873799920287985"
+  },
+  "input": {
+    "text": "\" Joe's plumbing\"   \"0412345678 \" Melbourne",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:single-enrich",
+    "args": [
+      "--business-name=Joe's plumbing",
+      "--phone=0412345678",
+      "--city=Melbourne"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 300000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1741,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:43:35.572Z",
+      "step": "router.resolved",
+      "detail": "kind=single-enrich provider=ollama cli=pl:single-enrich conf=0.95"
+    },
+    {
+      "at": "2026-05-13T12:43:36.262Z",
+      "step": "cli.spawning",
+      "detail": "pl:single-enrich --business-name=Joe's plumbing --phone=0412345678 --city=Melbourne"
+    },
+    {
+      "at": "2026-05-13T12:43:38.007Z",
+      "step": "cli.stream",
+      "detail": "venue, 7125 W Gunnison St #212, Harwood Heights, IL 60706, USA\",\n  \"niche\": null,\n  \"city\": \"Melbourne\",\n  \"audit_chained\": \"20260513-124337-c88e25\",\n  \"duration_ms\": 1533,\n  \"cost_estimate\": 0.017\n}"
+    },
+    {
+      "at": "2026-05-13T12:43:38.008Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1741ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1503873799920287985",
+    "status_message_id": "1504101810804359208"
+  }
+}

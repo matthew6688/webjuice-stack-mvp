@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124337-c88e25",
+  "created_at": "2026-05-13T12:43:37.996Z",
+  "updated_at": "2026-05-13T12:43:43.333Z",
+  "kind": "audit",
+  "status": "running",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "pl:single-enrich auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: audit place_chijkbdhae7ld4grsrwyf1yah7c from single-enrich resolve",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijkbdhae7ld4grsrwyf1yah7c"
+    ],
+    "target_entity_key": "place_chijkbdhae7ld4grsrwyf1yah7c",
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:43:38.210Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijkbdhae7ld4grsrwyf1yah7c"
+    },
+    {
+      "at": "2026-05-13T12:43:43.333Z",
+      "step": "cli.stream",
+      "detail": "reviews=false  cloudinary=false  profile=normal (concurrent_leads=1)\n\n══════════ place_chijkbdhae7ld4grsrwyf1yah7c ══════════\n  [stage 1/4] detailed audit — fetching http://www.plumberjoechicago.com/"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

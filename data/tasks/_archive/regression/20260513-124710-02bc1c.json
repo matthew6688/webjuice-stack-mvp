@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124710-02bc1c",
+  "created_at": "2026-05-13T12:47:10.138Z",
+  "updated_at": "2026-05-13T12:47:10.138Z",
+  "kind": "ops",
+  "status": "pending",
+  "source": {
+    "platform": "test",
+    "thread_id": null,
+    "author": "e2e-chain-mock",
+    "message_id": null
+  },
+  "input": {
+    "text": "e2e chain mock · health check sim",
+    "attachments": []
+  },
+  "target": {
+    "cli": "ops:health-check",
+    "args": [],
+    "target_entity_key": null,
+    "timeout_ms": 30000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

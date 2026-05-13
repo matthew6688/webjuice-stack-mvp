@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124226-32f31d",
+  "created_at": "2026-05-13T12:42:26.096Z",
+  "updated_at": "2026-05-13T12:42:26.821Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijbvf9jwrakwsrdm1u-wiwi_m (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijbvf9jwrakwsrdm1u-wiwi_m"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 458,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:42:26.360Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijbvf9jwrakwsrdm1u-wiwi_m"
+    },
+    {
+      "at": "2026-05-13T12:42:26.821Z",
+      "step": "cli.stream",
+      "detail": "\"results\": [\n    {\n      \"entityKey\": \"place_chijbvf9jwrakwsrdm1u-wiwi_m\",\n      \"slug\": \"brew-cafe-wine-bar\",\n      \"md\": \"clients/brew-cafe-wine-bar/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:42:26.821Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=458ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

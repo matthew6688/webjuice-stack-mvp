@@ -52,6 +52,9 @@ export function cliHuman(cli) {
 const FAILURE_PATTERNS = [
   { match: /docker.*not running|ECONNREFUSED.*8080/i, human: 'gosom Docker 容器没启动 · 跑 `docker start gmaps-scraper-web` 后 ✅ 重试这条' },
   { match: /quota.*exceeded|PlacesQuotaCap/i, human: '今天 Google Places API 额度用完 · 等明天 0:00 重置 · 或用 docker 抓取代替' },
+  // V3 (2026-05-13): Discord live E2E found Bug A · router 不抽 niche/city → CLI args 错
+  { match: /--niche required/i, human: '搜索词没识别到行业 · 试更简洁: `find brisbane plumber` (单数行业词) 或加 niche: `--niche plumber --city brisbane`' },
+  { match: /--city required/i, human: '搜索词没识别到城市 · 加 `--city <city>` 或在 query 里明确城市名' },
   { match: /GOOGLE_PLACES_API_KEY missing/i, human: 'Google API key 未配置 · 检查 .env.local 的 GOOGLE_PLACES_API_KEY' },
   { match: /ENOTFOUND|getaddrinfo/i, human: '网络问题 · 域名解析失败 · 检查 internet · ✅ 重试' },
   { match: /ECONNREFUSED/i, human: '连接被拒 · 目标网站可能挂了 / DNS 错 / 防火墙 · 暂时跳过' },

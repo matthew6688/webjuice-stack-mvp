@@ -1,48 +1,48 @@
 {
   "deliverableId": "e2e-discord-chain-mock",
-  "overall": "PASS",
+  "overall": "FAIL",
   "total": 11,
-  "passed": 11,
+  "passed": 10,
   "skipped": 0,
-  "failed": 0,
-  "took_ms": 26701,
-  "ran_at": "2026-05-13T10:59:36.730Z",
+  "failed": 1,
+  "took_ms": 32861,
+  "ran_at": "2026-05-13T12:47:10.142Z",
   "results": [
     {
       "name": "route: \"find brisbane roofers\" → intake",
       "passed": true,
       "error": null,
-      "took_ms": 4018
+      "took_ms": 6923
     },
     {
       "name": "route: \"\"cafe brisbane\" \"cafe melbourne\"\" → places-intake",
       "passed": true,
       "error": null,
-      "took_ms": 5352
+      "took_ms": 6458
     },
     {
       "name": "route: \"Joe's Plumbing 0412345678 Sydney\" → single-enrich",
       "passed": true,
       "error": null,
-      "took_ms": 6409
+      "took_ms": 6391
     },
     {
       "name": "route: \"audit place_chijwdbif2xzkwsrru6lkmu2l0o\" → audit",
-      "passed": true,
-      "error": null,
-      "took_ms": 5377
+      "passed": false,
+      "error": "kind=ops expected=audit",
+      "took_ms": 6485
     },
     {
       "name": "listener post for intake task is human-readable",
       "passed": true,
       "error": null,
-      "took_ms": 5527
+      "took_ms": 6580
     },
     {
       "name": "dispatcher done message extracts business summary",
       "passed": true,
       "error": null,
-      "took_ms": 1
+      "took_ms": 0
     },
     {
       "name": "failed message gives human-readable docker hint",
@@ -54,7 +54,7 @@
       "name": "createTask writes pending task",
       "passed": true,
       "error": null,
-      "took_ms": 3
+      "took_ms": 4
     },
     {
       "name": "readTask retrieves what was written",

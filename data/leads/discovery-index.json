@@ -1,76 +1,2864 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-13T10:59:09.848Z",
+  "updatedAt": "2026-05-13T12:47:02.829Z",
   "storeRoot": "data/leads",
   "totals": {
-    "entities": 91,
+    "entities": 138,
     "promoted": 4,
-    "skipped": 39,
-    "needsAudit": 11,
+    "skipped": 35,
+    "needsAudit": 66,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 8
   },
   "statusCounts": {
-    "discovered": 1,
-    "graded": 8,
-    "skipped": 39,
-    "queued_for_audit": 11,
+    "queued_for_audit": 66,
+    "graded": 5,
+    "skipped": 35,
     "manual_review": 18,
     "ready_for_outreach_brief": 8,
     "scored": 2,
     "promoted": 4
   },
   "actionCounts": {
-    "unknown": 1,
-    "manual_review": 25,
-    "skip": 43,
-    "audit_candidate": 20,
+    "audit_candidate": 76,
+    "manual_review": 24,
+    "skip": 36,
     "starter_candidate": 2
   },
   "websiteStatusCounts": {
-    "https": 1,
-    "independent_https_site": 58,
     "independent_http_site": 24,
-    "unknown": 4,
+    "unknown": 52,
+    "independent_https_site": 58,
     "no_website": 3,
     "social_or_third_party_only": 1
   },
   "entities": [
     {
-      "entityKey": "__e2e_m1_m2__",
-      "status": "discovered",
-      "firstSeenAt": "2026-05-13T10:59:09.837Z",
-      "lastSeenAt": "2026-05-13T10:59:09.837Z",
+      "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T06:17:12.131Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 5,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ-9wdZxxakWsR-llJRD1U3JQ",
+        "cid": "10726541034605074938",
+        "data_id": "0x6b915a1c671ddcfb:0x94dc543d444959fa",
+        "websiteDomain": "queenslandroofing.com.au",
+        "phoneDigits": "0489263653"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Queensland Roofing Pty Ltd",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "19/10 Eagle St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0489 263 653",
+        "website": "http://www.queenslandroofing.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=10726541034605074938",
+        "rating": 4.5,
+        "review_count": 35,
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 43,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-13T07:13:52.519Z",
+          "sku": "details_basic",
+          "types": [
+            "establishment",
+            "point_of_interest",
+            "roofing_contractor"
+          ],
+          "international_phone": "0489 263 653",
+          "google_canonical_url": "https://maps.google.com/?cid=10726541034605074938",
+          "rating_verified": 4.5,
+          "user_ratings_total": 35,
+          "photo_references": [
+            "Ab43m-s9pDHu2eaNY3N9CHq7D84CSLNn1yUt37bYFBrcgqGIkzuxF9aHf3lScV_N1poZtkUpjSQmFvLyyIE2Batzk5HzicJM_qHO9lZRXTFv0lxgsSk3n7iqawdPqIf5gI2OTzOJaa6NdvMQ3JSfUundAPUZbgjev58OrKR8bnygVXeTGQ3misjZUHj8UvA8N34R05-JhQtURoZu8uUShYfthka6z-uEeQRtqeOrci9ri8Z_VXGlWVY774a3ilMEq9qUOSuenON7B8jHQcrrG0ihw7_xImHUeS8VWBe6zToyxx0Xtg",
+            "Ab43m-uhrAuu-w_aIsJ05UgQA1HVFTBcbIttvxU8wX3-BobuCoLJUzY4hQ9VuKlHUmUkbHkAUZMy2cl6g7Y9X96k9sH8008J_PP3hkuXFNAvucSHMaMUM1EP85qzyP-Kkx2k_N4G6R5ayE_-8Z-FJ9OiLWqX_j7v_lVpS0k9Z2dTEtiIcsMFY3gcl661YyHtu-e5jaBzKoORsx0bHZXg3cNeDE-Yaj7KJqMx0lRlEWvLoHg2R5tSpucv-foZw-z1BEKf_1GVF1afIhcCAlA6zbB7gzm8Tq9n_PPZK6nEj6wFtP4fkawDxXWJpd-gNR15Sr2cW5GymyIOsWM5up4gPwhlHw6g0jOJVfz-PpWEvIatRPx8h4NEezle7vaBBDT7l3q8YAOpnMJfFObTtoC2yMxH2TTAnymYKuVxld6auQvtYqgNwg",
+            "Ab43m-vEdiaG6Fkwu70QdeNVqGPlRcMUWgdpna0g-EyftgZbI4lDjeGNMYHaTN_nd2TXFNfKpbztp4mANB7E8G8pToyEwARXV2oZTaBLwIzKu3sDBBneF5kd2Yah6eEARiccVSfCV3-m3-o1hF3psSnyrXcvLDejPCQd4rh4bEKAQfT3aVsXrnPUIW-ildztH-bQludCMS9EhMt75TKuXWR8JSKR3rwPHpcQnfZCWCa3d4LhR_TiLujaaLDhuB3K11yWytZnXWXUVLuFgegrZ1ED90QnKkzSYg69_8peyOsVy8EcEPA1TiruuizfXS7k2la9NnJZojFxof11fitfglLK10X5diZ4jQbmwJuPIGd-8uLh00ptqZeiLPoOoL3OX0netWRBdH1TzlhPS-UYomqhQwA47aQ8P_dVl-4joFhL5TfR3dnt",
+            "Ab43m-teYmlHoBhyKoutk0YbVPRQwrzAbXq68WQo3a0i72Ag-2Q2nj8yDVUZnZ0-k13zBSPRRdqCcd9puqDi0dBbJUnD1s89rFn1UFZjBSwruMcZtg6p1fIjMhTfPOaj33sjLRuznADWse_75dNXmi3u6tj8La7IrrWqt9YdoMgucQg8ey-UT5e_-8-O2uN5Mrzhl5rlzVeamqTIyJhRUGqneYsmApW9kDNOo9RvFyI5Pm4WrCVp3r9z47E3eHawJqMdjGeK5a2y4He2OeWd8C2njBkvtUTKucMuQVHf19WK7BuwBH-bOQJTTmkXUKvwoZmpd0T2ERAINg2I2YHkBo9mf6rde_ui6Qx6k5D15q-xeQ_0TOfPvBXtom_alNIWYU5QrYnknW9VdrvUVihR-tloAYzq1M4pfu26BficSRVmw6LZKg",
+            "Ab43m-vQ5zxMkoqdR6Ir8TUvaBbr3k9FT1RWnOLBOsIadcP5FpinV7SCK8ZCmoTynISEu8zdaYvJTNmtP9nBqtx9vPwTEWyu8HZbLrTRbsVW9o4_1nZmB6yfnFYvddRDSzlrYzMVQ6eHb3b-heU5okthUXg_4nce5jHab8_7GIk2c_Ucz4TMvZ_GnPT79cX5_1M4xZt0BTSL5un5OCOIfCyUPfv7S5TcJQSI6IQDZfprXBpWVBfc4sho57CBAOkoWQd0ndtpoGtwhEX4uxBItgWskA6pm6dS1gggBQtDHVlKGTU31RqgKHaup3it-XYF7EMfo2Zz2hOp2x_K4m_-VJ9Wwhtn3ypJvs59wLrNpqF-mFhP-ne9tb0yCE1t54XwPF6JC4AB1GD-I3iL9iYfNV7swsuWwKK6h8A2ryDDWGC5LdDDmtFr",
+            "Ab43m-t3ikH3vapGSRZBEa69yWaGxEfHCrZYFTc5H3_PeSdHcUDwDdrbrSYtYk8zvau4RuUoY_GNpDm6yg7HQCsV0X2VAvrvpYTBLur7brj8C8C7UdmIYT0NLg5n8NEoFQ64QaEPk2PGvith_tXfw4yfMMHt07TUOYsjZojrG_LsP6vQrG74-tWdPVf6ggSWufRcDOwoS1l6IteudQkP6B37RPyJ4ZhFVQx96oh7mvbx-ugQnkrolW6pLrZfp2YXZ5agsxIS_wsUHCfV-AUYmXikKg6iEpfmJtoA0zizJhgcDSAGCia62gcNTm3Z9KVclXQ7gicGPABw-3TP6S2cyHSu-sFm7uq2n8DUjMdTdD6vwRSirEO_ytc5E20sZT1KFKXmJROa9gKAL6wn2OkHPEEYnryUWBUNr18LOZSZnVrn7Kg",
+            "Ab43m-smH4mKOVaN5QmMwp-4tuNB6gvAB47t_sWYQozcdlKZdPviEIFR9VdGXtiCt1ufzmstLf7fdI4quqfmbKRk9vB3-RLy4MoSAFX1p8NPX0DAzFzDTuVRP0H_TKJS4vDi3RBEj1Zyt3i2n0lEqVFlMnqqXRzWZUDMxcSiDPtEtSPuB0jw5XE-zjprQm5yk_ZGBrSg9GDl16BkrqRJ4pPRJgQNd070M0dhr9x-PL9cxXTG6aIFg0EvyvjbV0AYIQ4g_MauR3RVt_gRLgOlFEyyBfSF9PIY7082ovrCfkm4UmyF9jyGsGYzN1RyPG5xcQckdav6FwvOknfnNr2GkAJXS7ybohhsPZJxsPf2nTCYzlNhvs3oZ2cCspQEskSOYLIq2Jh0gBM5dILfje674PLMvv4EG8kM2pt_n1zAsZTolGtmTbg",
+            "Ab43m-tKhnehtAztkkUInd5l5ZXPGdLkaydEYJFGfxfHMmcDBS6Y3LJL3CjbiVcfQlrhzpE31rEhYjCAOq6j75V4-X5zZcZHpXqu4W19ZfETBBPsSsJt2mGEYKAZzHLfSYowQvIakwqTA8Vq8xpAhlT_XOpvfO8A83WUyy6Ix3gTVc2_Qy8TGAOI1Yka8_ussmA-uHTKID7m9_4-hwmOBNdSw_jyKraPGqr9OwNt8zncuS4fygJM3pFshLyjmR4o5mZ5OPVFFw0DRfsNJZ0d2bMPANWSKxu5w4X3_B7QHBZyiDuMjwcP6olesnQJwqkBcg0kwqtFrgj6bcs088NuGp_PbJ3tPhA8PE2b7GgfVqWj9HnZDXGX0kdvbmFrMYCw96MmOFragiHKH0oeIRtzlCmX-kuEUsnqADLWQd8cm2I",
+            "Ab43m-tZtCayomC9_Mt2QT4Y3SrbqDQsolhhOja5YyzcDJQzjeKJEcahymE6PIg7YIlmPYEOodY5B99oZOwSmy3wpYOmJwqwsIOmOakDgmxKQKtZX7t28zee8EOmshYRVURB40PIuv29t9glq34oNwslMWAFktLsfCHkRg9Y9VuzmP3FQrfrg5NNSVLBg4wwwgmSFVa84QTTYita-CiroDABd-tvbgaJrUH_z9oxKI51igma1YnoDy7McKvIaTC89tS_W2SwdyAgUalwm8cfYZtKRnvIRCq0rIoaeujgfiemnaXjcw",
+            "Ab43m-ubB0jcfs87khrtgLxZFlvV9v7EdQ210otgegTp__kdQ09XCfI3qxaTFHl8PgqOIkpFTC969_2AgRPAInh4vH5CORnwBsCLpV6tyxRck-HE9kbE6JpbL8f3HxK0ihW1JHU0KiM9edCBJu9y4D599VEV6yp19gh-TDCXM96S-pCA-BbpWcjBKgjjfCkJavC1DMTD60K6ISo-Ee6VfrnOo4IaGUaozqr6akKZsG4Koq0xzgTeSe_CXt-KPyqb_ZxcFGyWt5XYGsvfZfc4rmvc-DKOtChmrZK624HBiZ3bsn1_0Q"
+          ],
+          "opening_hours_verified": {
+            "weekday_text": [
+              "Monday: 6:00 AM – 11:30 PM",
+              "Tuesday: 6:00 AM – 11:30 PM",
+              "Wednesday: 6:00 AM – 11:30 PM",
+              "Thursday: 6:00 AM – 11:30 PM",
+              "Friday: 6:00 AM – 11:30 PM",
+              "Saturday: 6:00 AM – 11:30 PM",
+              "Sunday: 6:00 AM – 11:30 PM"
+            ]
+          },
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 51,
+            "limit": 11000,
+            "pct": 0.004636363636363636,
+            "capped": false
+          },
+          "photo_urls": [
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656440/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-01-1778656438586-iwtyuc.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-01-1778656438586-iwtyuc",
+              "bytes": 134358,
+              "index": 1,
+              "photo_reference": "Ab43m-s9pDHu2eaNY3N9CHq7D84CSLNn1yUt37bYFBrcgqGIkzuxF9aHf3lScV_N1poZtkUpjSQmFvLyyIE2Batzk5HzicJM_qHO9lZRXTFv0lxgsSk3n7iqawdPqIf5gI2OTzOJaa6NdvMQ3JSfUundAPUZbgjev58OrKR8bnygVXeTGQ3misjZUHj8UvA8N34R05-JhQtURoZu8uUShYfthka6z-uEeQRtqeOrci9ri8Z_VXGlWVY774a3ilMEq9qUOSuenON7B8jHQcrrG0ihw7_xImHUeS8VWBe6zToyxx0Xtg"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656441/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-02-1778656440774-ezxbz3.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-02-1778656440774-ezxbz3",
+              "bytes": 707925,
+              "index": 2,
+              "photo_reference": "Ab43m-uhrAuu-w_aIsJ05UgQA1HVFTBcbIttvxU8wX3-BobuCoLJUzY4hQ9VuKlHUmUkbHkAUZMy2cl6g7Y9X96k9sH8008J_PP3hkuXFNAvucSHMaMUM1EP85qzyP-Kkx2k_N4G6R5ayE_-8Z-FJ9OiLWqX_j7v_lVpS0k9Z2dTEtiIcsMFY3gcl661YyHtu-e5jaBzKoORsx0bHZXg3cNeDE-Yaj7KJqMx0lRlEWvLoHg2R5tSpucv-foZw-z1BEKf_1GVF1afIhcCAlA6zbB7gzm8Tq9n_PPZK6nEj6wFtP4fkawDxXWJpd-gNR15Sr2cW5GymyIOsWM5up4gPwhlHw6g0jOJVfz-PpWEvIatRPx8h4NEezle7vaBBDT7l3q8YAOpnMJfFObTtoC2yMxH2TTAnymYKuVxld6auQvtYqgNwg"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656443/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-03-1778656442416-2xko44.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-03-1778656442416-2xko44",
+              "bytes": 153434,
+              "index": 3,
+              "photo_reference": "Ab43m-vEdiaG6Fkwu70QdeNVqGPlRcMUWgdpna0g-EyftgZbI4lDjeGNMYHaTN_nd2TXFNfKpbztp4mANB7E8G8pToyEwARXV2oZTaBLwIzKu3sDBBneF5kd2Yah6eEARiccVSfCV3-m3-o1hF3psSnyrXcvLDejPCQd4rh4bEKAQfT3aVsXrnPUIW-ildztH-bQludCMS9EhMt75TKuXWR8JSKR3rwPHpcQnfZCWCa3d4LhR_TiLujaaLDhuB3K11yWytZnXWXUVLuFgegrZ1ED90QnKkzSYg69_8peyOsVy8EcEPA1TiruuizfXS7k2la9NnJZojFxof11fitfglLK10X5diZ4jQbmwJuPIGd-8uLh00ptqZeiLPoOoL3OX0netWRBdH1TzlhPS-UYomqhQwA47aQ8P_dVl-4joFhL5TfR3dnt"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656444/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-04-1778656443593-zzvc40.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-04-1778656443593-zzvc40",
+              "bytes": 215027,
+              "index": 4,
+              "photo_reference": "Ab43m-teYmlHoBhyKoutk0YbVPRQwrzAbXq68WQo3a0i72Ag-2Q2nj8yDVUZnZ0-k13zBSPRRdqCcd9puqDi0dBbJUnD1s89rFn1UFZjBSwruMcZtg6p1fIjMhTfPOaj33sjLRuznADWse_75dNXmi3u6tj8La7IrrWqt9YdoMgucQg8ey-UT5e_-8-O2uN5Mrzhl5rlzVeamqTIyJhRUGqneYsmApW9kDNOo9RvFyI5Pm4WrCVp3r9z47E3eHawJqMdjGeK5a2y4He2OeWd8C2njBkvtUTKucMuQVHf19WK7BuwBH-bOQJTTmkXUKvwoZmpd0T2ERAINg2I2YHkBo9mf6rde_ui6Qx6k5D15q-xeQ_0TOfPvBXtom_alNIWYU5QrYnknW9VdrvUVihR-tloAYzq1M4pfu26BficSRVmw6LZKg"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656445/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-05-1778656444937-pqtx8w.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-05-1778656444937-pqtx8w",
+              "bytes": 174673,
+              "index": 5,
+              "photo_reference": "Ab43m-vQ5zxMkoqdR6Ir8TUvaBbr3k9FT1RWnOLBOsIadcP5FpinV7SCK8ZCmoTynISEu8zdaYvJTNmtP9nBqtx9vPwTEWyu8HZbLrTRbsVW9o4_1nZmB6yfnFYvddRDSzlrYzMVQ6eHb3b-heU5okthUXg_4nce5jHab8_7GIk2c_Ucz4TMvZ_GnPT79cX5_1M4xZt0BTSL5un5OCOIfCyUPfv7S5TcJQSI6IQDZfprXBpWVBfc4sho57CBAOkoWQd0ndtpoGtwhEX4uxBItgWskA6pm6dS1gggBQtDHVlKGTU31RqgKHaup3it-XYF7EMfo2Zz2hOp2x_K4m_-VJ9Wwhtn3ypJvs59wLrNpqF-mFhP-ne9tb0yCE1t54XwPF6JC4AB1GD-I3iL9iYfNV7swsuWwKK6h8A2ryDDWGC5LdDDmtFr"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656446/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-06-1778656445805-lnsilx.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-06-1778656445805-lnsilx",
+              "bytes": 184439,
+              "index": 6,
+              "photo_reference": "Ab43m-t3ikH3vapGSRZBEa69yWaGxEfHCrZYFTc5H3_PeSdHcUDwDdrbrSYtYk8zvau4RuUoY_GNpDm6yg7HQCsV0X2VAvrvpYTBLur7brj8C8C7UdmIYT0NLg5n8NEoFQ64QaEPk2PGvith_tXfw4yfMMHt07TUOYsjZojrG_LsP6vQrG74-tWdPVf6ggSWufRcDOwoS1l6IteudQkP6B37RPyJ4ZhFVQx96oh7mvbx-ugQnkrolW6pLrZfp2YXZ5agsxIS_wsUHCfV-AUYmXikKg6iEpfmJtoA0zizJhgcDSAGCia62gcNTm3Z9KVclXQ7gicGPABw-3TP6S2cyHSu-sFm7uq2n8DUjMdTdD6vwRSirEO_ytc5E20sZT1KFKXmJROa9gKAL6wn2OkHPEEYnryUWBUNr18LOZSZnVrn7Kg"
+            }
+          ],
+          "photos_downloaded_at": "2026-05-13T07:14:06.725Z"
+        },
+        "sales_signals": {
+          "best_contact_time": {
+            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
+            "confidence": "high",
+            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
+            "weekday_summary": "Mon: 06:00-23:30 · Tue: 06:00-23:30 · Wed: 06:00-23:30 · Thu: 06:00-23:30 · Fri: 06:00-23:30 · Sat: 06:00-23:30 · Sun: 06:00-23:30",
+            "days_open": 7,
+            "days_closed": 0,
+            "source": "places_api.opening_hours.weekday_text",
+            "computed_at": "2026-05-13T07:13:52.520Z"
+          }
+        },
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 10,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij-uiplihdkwsrikix7beebkc",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:08.008Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
       "runCount": 1,
       "promotedClientSlug": "",
       "identifiers": {
-        "place_id": "",
+        "place_id": "ChIJ-UiPLIhdkWsRikIx7Beebkc",
         "cid": "",
         "data_id": "",
-        "websiteDomain": "e2e-test-roofing.test",
-        "phoneDigits": "0412000000"
+        "websiteDomain": "certifiedroofing.com.au",
+        "phoneDigits": "0738236888"
       },
       "latest": {
-        "sourceType": "gosom",
-        "name": "E2E Test Roofing",
+        "sourceType": "places_search",
+        "name": "Certified Roofing",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor",
+          "store"
+        ],
+        "address": "Unit 2/8 India St, Capalaba QLD 4157, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3823 6888",
+        "website": "https://www.certifiedroofing.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=5147225249715143306",
+        "rating": 4.8,
+        "review_count": 30,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 9,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij3tc-hgbnkwsrl7mawfatgri",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ3TC-HgBnkWsRL7MAWfAtGrI",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "thehandyroofer.com.au",
+        "phoneDigits": ""
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "The Handy Roofer",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "Shop 3/112-116 Bloomfield St, Cleveland QLD 4163, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "",
+        "website": "https://www.thehandyroofer.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=12833620598454268719",
+        "rating": 5,
+        "review_count": 1,
+        "websiteStatus": "",
+        "discoveryScore": 12,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 17,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij6wsd-kzbkwsryzke1ejotjs",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ6WSd-kZbkWsRYZKE1ejOTjs",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "viproofingbrisbane.com.au",
+        "phoneDigits": "0730627779"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "VIP Roofing Brisbane",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "39/71 Eagle St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3062 7779",
+        "website": "https://www.viproofingbrisbane.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=4273580595831149153",
+        "rating": 5,
+        "review_count": 25,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 5,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ94Nexjfjk2sRxwXB4AR4Hj4",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "nbmr.com.au",
+        "phoneDigits": "0498478739"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "North Brisbane Metal Roofing Pty Ltd",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "3/359 Gympie Rd P.O.B, Unit 50, Kedron QLD 4031, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0498 478 739",
+        "website": "http://www.nbmr.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=4476147041998800327",
+        "rating": 4.8,
+        "review_count": 61,
+        "websiteStatus": "",
+        "discoveryScore": 47,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 13,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijdqinok2ylmsrkx6x9pchdtc",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:08.008Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJDQiNOK2ylmsRkx6x9pchdTc",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "proroofingbrisbane.com.au",
+        "phoneDigits": "0730627711"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Pro Roofing Brisbane",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "1/16 McDougall St, Milton QLD 4064, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3062 7711",
+        "website": "https://www.proroofingbrisbane.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=3996137180923764371",
+        "rating": 5,
+        "review_count": 9,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 15,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJERiTxJ9nkWsR2DG7xHQVQN4",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "trustedroofing.com.au",
+        "phoneDigits": "0432254975"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Trusted Roof Restorations",
+        "category": "",
+        "categories": [
+          "establishment",
+          "general_contractor",
+          "painter",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "Mount Cotton Rd, Mount Cotton QLD 4165, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0432 254 975",
+        "website": "http://trustedroofing.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=16014823866190475736",
+        "rating": 5,
+        "review_count": 128,
+        "websiteStatus": "",
+        "discoveryScore": 62,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 7,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJhbplvR5bkWsRgufsdwb6Css",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "vantagepointroofing.com.au",
+        "phoneDigits": "0735062534"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Vantage Point Roofing",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "4/288-292 Newmarket Rd, Wilston QLD 4051, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3506 2534",
+        "website": "https://vantagepointroofing.com.au/?utm_campaign=gmb",
+        "google_maps_url": "https://maps.google.com/?cid=14630781245155239810",
+        "rating": 4.6,
+        "review_count": 138,
+        "websiteStatus": "",
+        "discoveryScore": 38,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 6,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijkf8sq8jgkwsrqcac2p6iqpc",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJkf8Sq8JgkWsRqCaC2p6iQPc",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0419677226"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "NP Roof Repairs",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "27 Sylvania St, Wellington Point QLD 4161, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0419 677 226",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=17816418929032177320",
+        "rating": 4.6,
+        "review_count": 19,
+        "websiteStatus": "",
+        "discoveryScore": 23,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 16,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T06:17:12.131Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 5,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJL3pH8WBbkWsRlHeKy2pl5pM",
+        "cid": "10657317077574645652",
+        "data_id": "0x6b915b60f1477a2f:0x93e6656acb8a7794",
+        "websiteDomain": "gutterandroofrepairs.com.au",
+        "phoneDigits": "0421460580"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Gutter and Roof Repairs",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "1/41 Steel Pl, Morningside QLD 4170, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0421 460 580",
+        "website": "https://gutterandroofrepairs.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=10657317077574645652",
+        "rating": 4.6,
+        "review_count": 150,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 38,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-13T07:15:08.974Z",
+          "sku": "details_basic",
+          "types": [
+            "establishment",
+            "point_of_interest",
+            "roofing_contractor"
+          ],
+          "international_phone": "0421 460 580",
+          "google_canonical_url": "https://maps.google.com/?cid=10657317077574645652",
+          "rating_verified": 4.6,
+          "user_ratings_total": 150,
+          "photo_references": [
+            "Ab43m-tOaW4gHPm_La43Qd-D09PVNAQ7953rivM4PEPC443eWXL8HAq94wRfNnrgi1ItJNj5scuI7K82rEsEfk-VUJPnc-nxwmeuhPfxiao6z-uBGadImKC3wLov-4r3yLVvdYtQPyHC0uOOKoviQLbTzFY7fCuDLlODd5CtV35abdwjcMSzVeC60JgdYbs2xyLhEPSJMinQhEg5l44I1uG5tpLYGaEeU4FmXzKSVejd9SFGKfKRCzkWUrLA-rjt696tdLLPsp1xP4L80c31meLlBhGf2oU4Z-5ZmqhYBF-OsNpMBA",
+            "Ab43m-uGipbeeKNSc8tmQlePuTJz92gHQq_pGrFU-n8f-AMzjyikwk_DO_Tn4d9SXd0Rzk0DrorPjs1In0QIv0qMXzprWZsFs9ekCUgCgMDyM7Gb-NcaIKfi3Cs7DAuXyEvMLdJFRizjoyxcmy5SkzuT7egGSp1yzplhI0wC3vTQdLaXOZ42Ceou54EvE6ol-qS_bvfp3KeEJ4lv3y-MJyXhbmxWA28W6k28ZtWDNjfKkcTxuY-7FdOh1h24aCcOwax5GRCI41PtBOrg_V7vXBTVFvwOgD6N72Y1tp29eldC-eWI-w",
+            "Ab43m-tMY2YeI2q0w9ChMeA95-feC8hS8bSUb9fH53RxdzvX9W2J_LryC5SsVIjKyFoDQ9V9IcznV4Zjn5ydRvezJw5uYzoPbmUgZ7G-31iLevk5QPR5k9l_QSvuM_MFnkMaAldvIypQ8D2E5ufjicJ3mhu_8r67of_LcMhkmLFV6o-Guid4w7iuuZ9BtO8al0rxlHQ5h-FKL7meIr7gNqxcqWR_e3JWFLs6d9DJoGrfxEwmYI7mUUuWUFQ6Eb4I_kNOjGFuoxvO0ELMpUvJN4RM5QblhxqN30_K7AJ9LXWz2_yL5g",
+            "Ab43m-t2kIZ_EMPJ0tWPijhE94CRoFHs2lgJa2u07c9KUGd0Q5sgBEkIxrEXzPoWUSaYdKZ9OFHOyDvrSMCyvbUdqB_u0lknPXwXZuIYS7FhPtNyDTnVBzY-lSiyI2VaM_GBJEERSNhIuJcZZfrkE3GfgDPTVPCCxVKvkz9D9uQMkw4RPdf7FOldu1OH4HBU_SjC6KW49akZsJ4fYAj71q3EpSLI8IPtbNCjggXIQJ2Zf_LKS9za-uZtd6m6vxSElmPp4s8ftDYgr3oepQU2tvc_ALrBAuNQEp97SskasRaedQlt9g",
+            "Ab43m-s4v0V25lDIq98YmhLZYv6lSrzR-z893VU1UFNmyqIWpBKzgfWZFO0C6XZ_mD8d16RzBYZyqsehOpMC25MEiLOyQUpgFW8hSFdI3zIbpr-jm3SUL-gUzP007pzupUlpGaC4sr_hKZDvggdnsewaAH2Vk90RngP6l48WmKie-0Mzu10dZXSsMvstViGMJGUfAZ25RtGo3h2EOydP6pVyrXuHbTDQcPbSvFYtRBLsFEZsm7iiT3WdiE_KcFnMi4Fo5c2mYZWoXzUa_ZadSCD3ysJ4MLhD8OknXlPEdkQycmilGA",
+            "Ab43m-tgtI8LW0SXgNzVWiamgu_6lHZzfVTQ_QJ_Zt2u9a5C9XflaFqWfxnXi0e_LHrkfYz4_VrUlsdbTHBACPxZtEFKKr182T57XPA_3h2-MRZeq2AWpAEYzZl7yjRC_eWDBh7mcH8WyUGVsnZ729_tErTJXvQ0N3XPCcjUwsVFXd51Je24coMemIM1QUtLe3MiOvIugyW44Gn8WwoAosG-QqVsLbLkIEFBWeKdGB5QWO3KJbI7N0AiAHEnGJOUDBefCnKOUY3XaPKX6hzsUU3JkKPl6f5URTCJ5rzT_1hoYMkfLBb4IwnBFrIpvNtQJs4URr4p4ZwaJm0h8UnSCNsZUCpsa5fLjMOjBjlz7cNP_xToZdJDO3MMhiYlFnk7eSxDSuKruGYgHwcmRCwDAAQVkKG1LiuU2aX88ZzchB7XkeuDNJhJ",
+            "Ab43m-uDl3EAs9yq5gbAKN4U3qeqS_kmj8woQVY9_qLGIOZac191Xv3Lne7rxP8TKt8EJLrII4B7r4mOaQ8hpBVkNoH8XYP5d7lguug6TyzSzDV2vYgUSWJEGloX6EHGPyadSilCfiutfsihArLJ8EQ_Z0A33DOdCPQs6iM6B7qqGifRKbAydftpkhWRMrKRoqNnWL1qkZFQ7HSx1-jRauBhztxV-WCuiC7PCqzwEdkplLA2InMo8qHMLOsvAtJFfjWEFLtNkvva9UgCVyzs_mqOf5BCiVwU-Ers6cKwA4Yznx-o1A",
+            "Ab43m-upLU0W4CK4ujGNBo2Ih1rQ9Fd3qn-V2NEVddGGlTai27DE8readvh_Hl8BsEV02xCdT4Hr4OLGfGQp354UnqQima05X3-oYb7Rx4Nq7zIJxNuXdUGT2LCp5eSMJz-lSatuwbGzKWye9WW6hZ870ZVyv8eFov8dCR0jviGpcDM9jYRr2NLiw7Yyj8U005NwmYkITQe0hAiymFDcYqlUu34rwScKHvN5i_sGPtjpVV4lDfY5q0jOwgkkaI-JvxG8DVXE1yalFImvLV1gTznw_EoPB5jktpf64nN5orCYEkXZaeNMckmt09uR77tbVnzvTSyoB4ivJZQVc7rlFcIp7PbM4t2XCJ0QD7Ecwbg6mxDQILpCS0IJHHrVsgIhiNYot5RkP1xqVp9gldJjEYPkzxXPI6EXfvbVCTJMrbCN7_c",
+            "Ab43m-sRy2UJBVblDENsfLj70kCGHM2FCwOMQWbsCSgl6s82FTSPb9-5mRcee6Kh5YKMC_vTLyLCqeMaSWRKR0KlsFY0Ar45xsSCM9UT8ajd0XTi_LAGw2-Ux639Fclcotbooq2jkghMV2EqRpJWkYKHOz7CN_3IuiW0salZgp5S62funZjC9vehqZjvuTe0LM_cfP_p2mx82H8kkri4pDgBwfsfzYNniE2q7PhMmVn0wT6gm3_q3Z3xHwsZqclXQbKgEEKuTLtswOtMw6me_WBQn22xWjdCqO34J6JQ9nXDHLgrFHRw-UMUDVfYpS_3vVWJye0w6MDCcH4TLvKDcVdS5wuCP8iNkyLpkyetIK3bkb8byOGfzN7nrlHLiTp30mXDPNl3fhOZlP9SU659ev5RpX54nBDKiFNIAfmJRvyRysA",
+            "Ab43m-u3SRGpP1lAvoUYQmElv-jtPsvHVpAwWThz7joae8sZHvop98Z02jfDJuTPEydHkfT78z9s45Jq_29CqL1YnQ48p77FwvQvxoheEs5MD2A-yIMd5r6vi_NzuwybtrbXg9SBsCF4vHcZbcbwZHHhQb3JXTEvs0kN27JaPEOnVjo5Fzr1O_BvsVhBp3umMooQosCflBT1YDpMW_EYrkiV4Ad6JVvvMv7eS5qg3rYFO4v-lF9Zbz4TE2KhNcCs12312LTd-Nk-iTeEzmtCUqtoWGNAGkPmBoikVGsvxA3bPxGfrw"
+          ],
+          "opening_hours_verified": {
+            "weekday_text": [
+              "Monday: 8:00 AM – 4:00 PM",
+              "Tuesday: 8:00 AM – 4:00 PM",
+              "Wednesday: 8:00 AM – 4:00 PM",
+              "Thursday: 8:00 AM – 4:00 PM",
+              "Friday: 8:00 AM – 4:00 PM",
+              "Saturday: Closed",
+              "Sunday: Closed"
+            ]
+          },
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 76,
+            "limit": 11000,
+            "pct": 0.006909090909090909,
+            "capped": false
+          },
+          "photo_urls": [
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656517/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-01-1778656515278-zrjf5k.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-01-1778656515278-zrjf5k",
+              "bytes": 262053,
+              "index": 1,
+              "photo_reference": "Ab43m-tOaW4gHPm_La43Qd-D09PVNAQ7953rivM4PEPC443eWXL8HAq94wRfNnrgi1ItJNj5scuI7K82rEsEfk-VUJPnc-nxwmeuhPfxiao6z-uBGadImKC3wLov-4r3yLVvdYtQPyHC0uOOKoviQLbTzFY7fCuDLlODd5CtV35abdwjcMSzVeC60JgdYbs2xyLhEPSJMinQhEg5l44I1uG5tpLYGaEeU4FmXzKSVejd9SFGKfKRCzkWUrLA-rjt696tdLLPsp1xP4L80c31meLlBhGf2oU4Z-5ZmqhYBF-OsNpMBA"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656518/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-02-1778656517771-6rekgl.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-02-1778656517771-6rekgl",
+              "bytes": 281361,
+              "index": 2,
+              "photo_reference": "Ab43m-uGipbeeKNSc8tmQlePuTJz92gHQq_pGrFU-n8f-AMzjyikwk_DO_Tn4d9SXd0Rzk0DrorPjs1In0QIv0qMXzprWZsFs9ekCUgCgMDyM7Gb-NcaIKfi3Cs7DAuXyEvMLdJFRizjoyxcmy5SkzuT7egGSp1yzplhI0wC3vTQdLaXOZ42Ceou54EvE6ol-qS_bvfp3KeEJ4lv3y-MJyXhbmxWA28W6k28ZtWDNjfKkcTxuY-7FdOh1h24aCcOwax5GRCI41PtBOrg_V7vXBTVFvwOgD6N72Y1tp29eldC-eWI-w"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656519/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-03-1778656518880-gs0z9n.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-03-1778656518880-gs0z9n",
+              "bytes": 276734,
+              "index": 3,
+              "photo_reference": "Ab43m-tMY2YeI2q0w9ChMeA95-feC8hS8bSUb9fH53RxdzvX9W2J_LryC5SsVIjKyFoDQ9V9IcznV4Zjn5ydRvezJw5uYzoPbmUgZ7G-31iLevk5QPR5k9l_QSvuM_MFnkMaAldvIypQ8D2E5ufjicJ3mhu_8r67of_LcMhkmLFV6o-Guid4w7iuuZ9BtO8al0rxlHQ5h-FKL7meIr7gNqxcqWR_e3JWFLs6d9DJoGrfxEwmYI7mUUuWUFQ6Eb4I_kNOjGFuoxvO0ELMpUvJN4RM5QblhxqN30_K7AJ9LXWz2_yL5g"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656520/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-04-1778656520113-uczx6f.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-04-1778656520113-uczx6f",
+              "bytes": 239193,
+              "index": 4,
+              "photo_reference": "Ab43m-t2kIZ_EMPJ0tWPijhE94CRoFHs2lgJa2u07c9KUGd0Q5sgBEkIxrEXzPoWUSaYdKZ9OFHOyDvrSMCyvbUdqB_u0lknPXwXZuIYS7FhPtNyDTnVBzY-lSiyI2VaM_GBJEERSNhIuJcZZfrkE3GfgDPTVPCCxVKvkz9D9uQMkw4RPdf7FOldu1OH4HBU_SjC6KW49akZsJ4fYAj71q3EpSLI8IPtbNCjggXIQJ2Zf_LKS9za-uZtd6m6vxSElmPp4s8ftDYgr3oepQU2tvc_ALrBAuNQEp97SskasRaedQlt9g"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656521/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-05-1778656520895-xscrn5.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-05-1778656520895-xscrn5",
+              "bytes": 159962,
+              "index": 5,
+              "photo_reference": "Ab43m-s4v0V25lDIq98YmhLZYv6lSrzR-z893VU1UFNmyqIWpBKzgfWZFO0C6XZ_mD8d16RzBYZyqsehOpMC25MEiLOyQUpgFW8hSFdI3zIbpr-jm3SUL-gUzP007pzupUlpGaC4sr_hKZDvggdnsewaAH2Vk90RngP6l48WmKie-0Mzu10dZXSsMvstViGMJGUfAZ25RtGo3h2EOydP6pVyrXuHbTDQcPbSvFYtRBLsFEZsm7iiT3WdiE_KcFnMi4Fo5c2mYZWoXzUa_ZadSCD3ysJ4MLhD8OknXlPEdkQycmilGA"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656522/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-06-1778656521601-att9om.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-06-1778656521601-att9om",
+              "bytes": 440200,
+              "index": 6,
+              "photo_reference": "Ab43m-tgtI8LW0SXgNzVWiamgu_6lHZzfVTQ_QJ_Zt2u9a5C9XflaFqWfxnXi0e_LHrkfYz4_VrUlsdbTHBACPxZtEFKKr182T57XPA_3h2-MRZeq2AWpAEYzZl7yjRC_eWDBh7mcH8WyUGVsnZ729_tErTJXvQ0N3XPCcjUwsVFXd51Je24coMemIM1QUtLe3MiOvIugyW44Gn8WwoAosG-QqVsLbLkIEFBWeKdGB5QWO3KJbI7N0AiAHEnGJOUDBefCnKOUY3XaPKX6hzsUU3JkKPl6f5URTCJ5rzT_1hoYMkfLBb4IwnBFrIpvNtQJs4URr4p4ZwaJm0h8UnSCNsZUCpsa5fLjMOjBjlz7cNP_xToZdJDO3MMhiYlFnk7eSxDSuKruGYgHwcmRCwDAAQVkKG1LiuU2aX88ZzchB7XkeuDNJhJ"
+            }
+          ],
+          "photos_downloaded_at": "2026-05-13T07:15:22.393Z"
+        },
+        "sales_signals": {
+          "best_contact_time": {
+            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
+            "confidence": "high",
+            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
+            "weekday_summary": "Mon: 08:00-16:00 · Tue: 08:00-16:00 · Wed: 08:00-16:00 · Thu: 08:00-16:00 · Fri: 08:00-16:00 · Sat: closed · Sun: closed",
+            "days_open": 5,
+            "days_closed": 2,
+            "source": "places_api.opening_hours.weekday_text",
+            "computed_at": "2026-05-13T07:15:08.975Z"
+          }
+        },
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 14,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijo3rniu9fkwsr8jworgytgmy",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T10:53:53.252Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 3,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJo3rniu9FkWsR8jWorGYtgmY",
+        "cid": "7386516257847653874",
+        "data_id": "0x6b9145ef8ae77aa3:0x66822d66aca835f2",
+        "websiteDomain": "brisbaneroofingsolutions.com.au",
+        "phoneDigits": "0732761546"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "101 Kulcha St, Algester QLD 4115, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3276 1546",
+        "website": "https://brisbaneroofingsolutions.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=7386516257847653874",
+        "rating": 4.8,
+        "review_count": 119,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 45,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": true,
+          "imageCount": 8,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-13T07:15:38.687Z",
+          "sku": "details_basic",
+          "types": [
+            "establishment",
+            "point_of_interest",
+            "roofing_contractor"
+          ],
+          "international_phone": "(07) 3276 1546",
+          "google_canonical_url": "https://maps.google.com/?cid=7386516257847653874",
+          "rating_verified": 4.8,
+          "user_ratings_total": 119,
+          "photo_references": [
+            "Ab43m-t9znwcSE3UgVZaUmxqPHhLkn9sdDc0rpN1zEGSqkPpx-J4BfYDEElfPRW0hIf_gfB1Tzh1h-tQU5LsbW_YIXyEu2iu-d0J9m9l4ITx_O_6x7OU5wFMn6q3GJbYNWIng4OikDshS6vZ0w_3uVUsyGsCSX_TV_P21EE4V_cQLkFVu3R8fK5Xgk2egA9UYQ2ytuS3Cs0PTc244IiJuLt_WOQgQz5V7QhXqiSy5rB02Mt0P4GepUAGI9qa2d5OZHkEHGxTAZ0uD-j47cs0KO8ptNffPQvZen4Q0ZRvQKxTosRTcw",
+            "Ab43m-twxQgbN8-zZ8RNvwWtcf5TckmUkPhDpqJwAbLK-3yXnLfMVIK6ZIwbns7Uynn0gdo9fDgj6W7AHSBQUJHLHtl0bW-B1RNJjEUFsRDjXWfNGZtcmlJ_st_n6bBP4fOv51fWBDboMB_jqsdyC86z_1pt8M3hE5J98X68CVMbkmCyn3kHEaICJEeVjPUCJs-m88USFTUgopqRhi8OoxWhnjA0vGgm8kXZOWbN0cENdzPxzh9qskKWTlxNcz6aJFqMThIPTi8o_pgiVOH8BgQg2wecp_9DQE7zY-89y_FYzQ3XmoBHFxYKTQt4OYyLTn6FdZ4ewmgbeh9kL3LzLGcuB_4alNwVFc7Kai1FXfLUolWxztDEU4r_rbobtV-wLsiD0MKSYD_1ELTx37ao6TioTU0RbYicIuv1IsTVoUbr3B8zybrOGbhpuL401Tso_tTp",
+            "Ab43m-syFP_RzK3-w0vHqFTry7k69pGi1uw58-YjHG9U4ZUGNqStR8s5fSW98FQHglEuXRwgfyCgP0g1wZ_2pgVAeigM0zsGJl9LKn_CoOTTagRS9-ANBKSRu1UPX0aIzhesAa5iO9ctDPE5-9e4FbJxJhvcEnYDn0Zukj4xxy-Wcg1BWOA1fqpkEmZ6xeg5nGAClwrJJibh5MC-RFnCPJ86YgHmZuI4oZ5gaq5iIWDesK8rWpHPeukJFbeBhtcIdx53u7lSl9kx1Ucmg4KCbxaaNvqkP4TO8_1FcsTG9ZxJhwOeZQ",
+            "Ab43m-urpfNHMiPtFTXyz6gmttz4Sx_Ej0af9MLPStQLhmqs3e__LSvdTFixgRpYUNKYBBMfWXvy3zuade6PtRLkUgcYSr6f3_XldnjZeiMnZINh2v9Y6pEpF1IOzBvYAEmOwXGc3cg1T6SyiV7MLIHVjBRCE1-9SdxOmO7sJwl00xDXXnsMQ48TwphFNHxIECE4S1wejwsvItD0oIpPoGJWvgdQXzYx-J_XS4boGfHvwUxzSPxwFueEv0Zfl5ZzzD_R0zrdtTZE8orQTx-xyC8UNyH-r5MnX3_FtKscbjE31KTcbg",
+            "Ab43m-sg-RNvQNi_BOhBR7FtyE_bxpzXI1Gznb6CZRrvzWCC17NctSJhYRQ03IF76iVuahbqLZj4HMmfttAwD4ECpUjkplSBlNSSu1tKulEH1cwjUp1_AsF0oL_bkIyCPbdsu6Cifd98pnbd8q4uLWTXgORzg_hVHE8oA8TiIrkSrtQJndWzEaXgeKPjchGAEuyUUCubujaKTiI2Pf_PJ5f620vHpzX0rpGqWhWOKMyhPxsX7S7JgmmvWnS096J_I73AAJ9wwY2coYcUf6GqlRm_p77EMbS4LcGBFVwK7GmjUUShh65I_RSEdt3bMqol1jAeNaEAc3Jx0L_FGbesJnHKxk7hQZysVGYlxKtT8tV6kyn3qjtLc6JDZFq2bAuSS9skDbE1vMqSd5XaZEQra3PpXIiO7GqxBPz52kChDk0aT2i1c7yqnJKLiDfkMmdfEu6v",
+            "Ab43m-ulSX8eHWMND92dy78OTxyCSyigX_uGxUwNww31z0bdfCa52lUigGET1XduNnreGA8pBieTtc0wYSovQUjwT83xeehHK7WGTl55jFBD5ufr3Ug95aXXuU0otaw5DxKD3XhkUJUYktYlLFZcqXOzTqZhzsCm_9VNIndpqYIpBeJUGsQZcZENbKCDM1fWcDErV7gYm4lF2R5hBcJCqcnKWFxDRDB8d4HInXEm7qcBgnv7NzgDLJsp1W_5VZZifu0L2LDqdk9smo6zMvGjiCmvaHxUDs5rvN3lyBvnR-_R2nCmWg",
+            "Ab43m-sWEOfLoEwaD4iCn5fl6U7X-ZGT4Gc1uLmx6lctOpji_Gh-zemwRofYLaZgdFUmiSD2uDlapN6EaC69SUMFB-GBdeJFw-5BMftTUvDww4m0M2Ii89J0ATNSiV2GVKqUbtzhxfwvehNeGgiEB5yzIYKwOqzAMD8IjMot_ITiQtwGXd6lbn2o8EIYwLZ2GGiLKB9n8XGSvG4x5KROo_YK_f0LPxs7Bg_j00t3RH8P3N08AcBsj_6oX77SzSiSUyakrFm1V47fG30i_1YojbQVIsa29ZiK8uXuuntjVM2XgaP0pg",
+            "Ab43m-sJSt66f9BhXOREmyzNPYk8jBa6Iq6oocVG_Jt0O0hHha9emNq1Nh6SLI8I6QbpKizVBP8GrWnvoaxxG76-shF5v4-ejH-f99Rgjuj4WCZB5ZP940JRRqHH408CQUXuPEkMupk0Tf6l23uNSfmFRG8YxWMKbIIfKNS32-tJFL7gAlArER9w9bdiXU6JnHvDfdKFULOR9ECE5Aq_wBU9YauGfWBjGRLFxvt9Ct1VTXgR4uhEycEYRhkYqLrZ1k_APl5oV87uQWUrgbrR5UnWertj8qF0ui2z6X00Js4LFmAN_Q",
+            "Ab43m-tC66ehlOjjCAi2b6Kk5Rea4a7sWdho0THuYXJE7yWZif1OMSb858pZ4nCh19F41b6sxyCLrbxxqOaNqA3-v8xoHW0GHnsJz-ELvsIkod_UK0Iwv-ZR3jX34-kGbYVs2vLb4VL1f2TDVSAhIPzqOHik2N_pLkBB96rEwAWyr4lYbNW5TdijHosfiIxcHtS0VNdukufZLCnWlt10W8BHnnwZFlJGxgyhTjnjRsSYDZYirBMY3vrNXtUO7nEQJltifM8ijnqtgf8CBMcNv6Yke7KqqeUGCr43ppaGCy_jKHt1kA",
+            "Ab43m-vsxaRdqSVKJbL7w86E2Ekvv8Nh2rWk4vTnL2kHN7TA3Dgr4H6ayC2JUIhImOVxMcvjTzLal6My9dMmCF0nuhJFBmPGETLAvUw8RbXbOLHowHkIfLtUNv9xFeLoj1brAHnMopjBiQa84z0PW9x-ubEdJ-6h2ohpb8ZyjrvA0vrEVPyPdpUJehxF-ZSGtEF7l9-iCemzWGb4VSEIw15orFr2oh7b3fd0YEJIQB25DDSkPI4s3VJFm8kUtfrVaRE50uatkIGAAF4zWs-mx3ivgAeDdpwW9B53_cOZIzV19f9z-A"
+          ],
+          "opening_hours_verified": {
+            "weekday_text": [
+              "Monday: 8:00 AM – 5:00 PM",
+              "Tuesday: 8:00 AM – 5:00 PM",
+              "Wednesday: 8:00 AM – 5:00 PM",
+              "Thursday: 8:00 AM – 5:00 PM",
+              "Friday: 8:00 AM – 5:00 PM",
+              "Saturday: Closed",
+              "Sunday: Closed"
+            ]
+          },
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 90,
+            "limit": 11000,
+            "pct": 0.008181818181818182,
+            "capped": false
+          },
+          "photo_urls": [
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656548/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-01-1778656546945-5taqwk.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-01-1778656546945-5taqwk",
+              "bytes": 65696,
+              "index": 1,
+              "photo_reference": "Ab43m-t9znwcSE3UgVZaUmxqPHhLkn9sdDc0rpN1zEGSqkPpx-J4BfYDEElfPRW0hIf_gfB1Tzh1h-tQU5LsbW_YIXyEu2iu-d0J9m9l4ITx_O_6x7OU5wFMn6q3GJbYNWIng4OikDshS6vZ0w_3uVUsyGsCSX_TV_P21EE4V_cQLkFVu3R8fK5Xgk2egA9UYQ2ytuS3Cs0PTc244IiJuLt_WOQgQz5V7QhXqiSy5rB02Mt0P4GepUAGI9qa2d5OZHkEHGxTAZ0uD-j47cs0KO8ptNffPQvZen4Q0ZRvQKxTosRTcw"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656550/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-02-1778656548862-clili3.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-02-1778656548862-clili3",
+              "bytes": 735582,
+              "index": 2,
+              "photo_reference": "Ab43m-twxQgbN8-zZ8RNvwWtcf5TckmUkPhDpqJwAbLK-3yXnLfMVIK6ZIwbns7Uynn0gdo9fDgj6W7AHSBQUJHLHtl0bW-B1RNJjEUFsRDjXWfNGZtcmlJ_st_n6bBP4fOv51fWBDboMB_jqsdyC86z_1pt8M3hE5J98X68CVMbkmCyn3kHEaICJEeVjPUCJs-m88USFTUgopqRhi8OoxWhnjA0vGgm8kXZOWbN0cENdzPxzh9qskKWTlxNcz6aJFqMThIPTi8o_pgiVOH8BgQg2wecp_9DQE7zY-89y_FYzQ3XmoBHFxYKTQt4OYyLTn6FdZ4ewmgbeh9kL3LzLGcuB_4alNwVFc7Kai1FXfLUolWxztDEU4r_rbobtV-wLsiD0MKSYD_1ELTx37ao6TioTU0RbYicIuv1IsTVoUbr3B8zybrOGbhpuL401Tso_tTp"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656551/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-03-1778656550530-46q0ef.png",
+              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-03-1778656550530-46q0ef",
+              "bytes": 477662,
+              "index": 3,
+              "photo_reference": "Ab43m-syFP_RzK3-w0vHqFTry7k69pGi1uw58-YjHG9U4ZUGNqStR8s5fSW98FQHglEuXRwgfyCgP0g1wZ_2pgVAeigM0zsGJl9LKn_CoOTTagRS9-ANBKSRu1UPX0aIzhesAa5iO9ctDPE5-9e4FbJxJhvcEnYDn0Zukj4xxy-Wcg1BWOA1fqpkEmZ6xeg5nGAClwrJJibh5MC-RFnCPJ86YgHmZuI4oZ5gaq5iIWDesK8rWpHPeukJFbeBhtcIdx53u7lSl9kx1Ucmg4KCbxaaNvqkP4TO8_1FcsTG9ZxJhwOeZQ"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656552/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-04-1778656551625-pgo9x0.png",
+              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-04-1778656551625-pgo9x0",
+              "bytes": 1661929,
+              "index": 4,
+              "photo_reference": "Ab43m-urpfNHMiPtFTXyz6gmttz4Sx_Ej0af9MLPStQLhmqs3e__LSvdTFixgRpYUNKYBBMfWXvy3zuade6PtRLkUgcYSr6f3_XldnjZeiMnZINh2v9Y6pEpF1IOzBvYAEmOwXGc3cg1T6SyiV7MLIHVjBRCE1-9SdxOmO7sJwl00xDXXnsMQ48TwphFNHxIECE4S1wejwsvItD0oIpPoGJWvgdQXzYx-J_XS4boGfHvwUxzSPxwFueEv0Zfl5ZzzD_R0zrdtTZE8orQTx-xyC8UNyH-r5MnX3_FtKscbjE31KTcbg"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656555/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-05-1778656552981-dn8y89.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-05-1778656552981-dn8y89",
+              "bytes": 673276,
+              "index": 5,
+              "photo_reference": "Ab43m-sg-RNvQNi_BOhBR7FtyE_bxpzXI1Gznb6CZRrvzWCC17NctSJhYRQ03IF76iVuahbqLZj4HMmfttAwD4ECpUjkplSBlNSSu1tKulEH1cwjUp1_AsF0oL_bkIyCPbdsu6Cifd98pnbd8q4uLWTXgORzg_hVHE8oA8TiIrkSrtQJndWzEaXgeKPjchGAEuyUUCubujaKTiI2Pf_PJ5f620vHpzX0rpGqWhWOKMyhPxsX7S7JgmmvWnS096J_I73AAJ9wwY2coYcUf6GqlRm_p77EMbS4LcGBFVwK7GmjUUShh65I_RSEdt3bMqol1jAeNaEAc3Jx0L_FGbesJnHKxk7hQZysVGYlxKtT8tV6kyn3qjtLc6JDZFq2bAuSS9skDbE1vMqSd5XaZEQra3PpXIiO7GqxBPz52kChDk0aT2i1c7yqnJKLiDfkMmdfEu6v"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656556/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-06-1778656555524-y3dnxb.png",
+              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-06-1778656555524-y3dnxb",
+              "bytes": 1513450,
+              "index": 6,
+              "photo_reference": "Ab43m-ulSX8eHWMND92dy78OTxyCSyigX_uGxUwNww31z0bdfCa52lUigGET1XduNnreGA8pBieTtc0wYSovQUjwT83xeehHK7WGTl55jFBD5ufr3Ug95aXXuU0otaw5DxKD3XhkUJUYktYlLFZcqXOzTqZhzsCm_9VNIndpqYIpBeJUGsQZcZENbKCDM1fWcDErV7gYm4lF2R5hBcJCqcnKWFxDRDB8d4HInXEm7qcBgnv7NzgDLJsp1W_5VZZifu0L2LDqdk9smo6zMvGjiCmvaHxUDs5rvN3lyBvnR-_R2nCmWg"
+            }
+          ],
+          "photos_downloaded_at": "2026-05-13T07:15:56.782Z"
+        },
+        "sales_signals": {
+          "best_contact_time": {
+            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
+            "confidence": "high",
+            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
+            "weekday_summary": "Mon: 08:00-17:00 · Tue: 08:00-17:00 · Wed: 08:00-17:00 · Thu: 08:00-17:00 · Fri: 08:00-17:00 · Sat: closed · Sun: closed",
+            "days_open": 5,
+            "days_closed": 2,
+            "source": "places_api.opening_hours.weekday_text",
+            "computed_at": "2026-05-13T07:15:38.688Z"
+          }
+        },
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijrq6qulnbkwsruettr7eegyc",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T10:53:53.252Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 3,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJrQ6qULNbkWsRUEttr7eeGYc",
+        "cid": "9734986581297417040",
+        "data_id": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+        "websiteDomain": "aceroofingservice.com.au",
+        "phoneDigits": "0449168985"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Ace Roofing Service",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "72 Queen St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0449 168 985",
+        "website": "https://aceroofingservice.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=9734986581297417040",
+        "rating": 5,
+        "review_count": 37,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": false
+        },
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 8,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T06:17:12.131Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 6,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJSypmTxxakWsRj5ytLt8t_PE",
+        "cid": "17436862293855804559",
+        "data_id": "0x6b915a1c4f662a4b:0xf1fc2ddf2ead9c8f",
+        "websiteDomain": "proroofrestorationbrisbane.com.au",
+        "phoneDigits": "0730628404"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Pro Roof Restoration Brisbane",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "Riparian Plaza, 36/71 Eagle St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3062 8404",
+        "website": "https://www.proroofrestorationbrisbane.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=17436862293855804559",
+        "rating": 5,
+        "review_count": 17,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 11,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chiju0_hxrpbkwsrvpc5xlr4vog",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:08.008Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJu0_hXRpbkWsRvPC5XLr4vOg",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "youcovered.com.au",
+        "phoneDigits": "0415593305"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Werschmann Roofing",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "16 Stanley Terrace, East Brisbane QLD 4169, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0415 593 305",
+        "website": "http://youcovered.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=16770552591724179644",
+        "rating": 4.9,
+        "review_count": 27,
+        "websiteStatus": "",
+        "discoveryScore": 47,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 18,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijueqfkybdkwsrfvocbb3ybs8",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJUeQfkYBDkWsRFvOCbb3YbS8",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "briscoroofing.net.au",
+        "phoneDigits": "1300166209"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Brisco Roofing",
+        "category": "",
+        "categories": [
+          "establishment",
+          "general_contractor",
+          "painter",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "58 Belford Dr, Wellington Point QLD 4160, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "1300 166 209",
+        "website": "https://briscoroofing.net.au/",
+        "google_maps_url": "https://maps.google.com/?cid=3417626000341791510",
+        "rating": 4.9,
+        "review_count": 147,
+        "websiteStatus": "",
+        "discoveryScore": 42,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 3,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijutib72nzkwsrbyxejwlcviw",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T06:17:12.131Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 5,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJUTib72NZkWsRByXEJwLCViw",
+        "cid": "3194954300178834695",
+        "data_id": "0x6b915963ef9b3851:0x2c56c20227c42507",
+        "websiteDomain": "thebrisbaneroofrepairers.com",
+        "phoneDigits": "0736081803"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Brisbane Roofing - Brisbane Roof Repairers",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "28/135c Macquarie St, Teneriffe QLD 4005, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3608 1803",
+        "website": "https://www.thebrisbaneroofrepairers.com/?utm_campaign=gmb",
+        "google_maps_url": "https://maps.google.com/?cid=3194954300178834695",
+        "rating": 5,
+        "review_count": 9,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 4,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 12,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T06:17:12.131Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 5,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJV-gIozdakWsRr3uZCWW7y8s",
+        "cid": "14685037052598778799",
+        "data_id": "0x6b915a37a308e857:0xcbcbbb6509997baf",
+        "websiteDomain": "rooroofing.com.au",
+        "phoneDigits": "1300734148"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Roo Roofing",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "79 Cambridge St, Coorparoo QLD 4151, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "1300 734 148",
+        "website": "http://www.rooroofing.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=14685037052598778799",
+        "rating": 4.6,
+        "review_count": 40,
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 46,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": true,
+          "imageCount": 6,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 4,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijwuwifvzdkwsrtpd0wdmszdo",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:44:08.008Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJwUwIFvZdkWsRtpd0wDmSZdo",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "amjmetalroofing.com.au",
+        "phoneDigits": "1300127663"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "A.M.J Metal Roofing Brisbane",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "1/15 Natasha St, Capalaba QLD 4157, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "1300 127 663",
+        "website": "https://www.amjmetalroofing.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=15737145249655723958",
+        "rating": 4.8,
+        "review_count": 71,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer in brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-in-brisbane-202605132244",
+        "discovery_rank": 2,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij-53ktvqfkwsry4aktq8tiuy",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ-53kTvQFkWsRy4aKTQ8tiuY",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "dlroofing.com.au",
+        "phoneDigits": "0410322737"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "D & L Roofing",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "28 Launch Rd, Mermaid Waters QLD 4218, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "0410 322 737",
+        "website": "https://www.dlroofing.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=16612139719258179275",
+        "rating": 4.8,
+        "review_count": 23,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 13,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij43aeaqmrkwsrbfvggrkjdvk",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ43AeaqMRkWsRBFVGGRkJdvk",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "highendroofingqld.com.au",
+        "phoneDigits": "0756328312"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "High End Roofing - Roof Repairs | Colorbond | Metal Roofing Gold Coast",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "42 Audrey Ave, Helensvale QLD 4212, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "(07) 5632 8312",
+        "website": "https://www.highendroofingqld.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=17975564966098785540",
+        "rating": 5,
+        "review_count": 1,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 12,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijbanphusfkwsrht2xw3qnio0",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJbaNpHUsFkWsRHt2xW3qNio0",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "radiantroofrepairs.com.au",
+        "phoneDigits": "0410683065"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Radiant Roof Repairs Gold Coast",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "4/6 Dunlop Ct, Mermaid Waters QLD 4218, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "0410 683 065",
+        "website": "https://www.radiantroofrepairs.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=10199119862797819166",
+        "rating": 4.7,
+        "review_count": 123,
+        "websiteStatus": "",
+        "discoveryScore": 42,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijbwkegeqfkwsrcih6mkenmim",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJBwkeGeQFkWsRCiH6MKeNMiM",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "goldcoastlocalroofers.com.au",
+        "phoneDigits": "0752305802"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Gold Coast Local Roofers",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "193 Sunshine Blvd, Mermaid Waters QLD 4218, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "(07) 5230 5802",
+        "website": "https://goldcoastlocalroofers.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=2536245289383764234",
+        "rating": 5,
+        "review_count": 18,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 4,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJeS0NVK0DkWsRl_Are9IgCf8",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "goldcoastlocalroofers.com.au",
+        "phoneDigits": "0752305802"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Gold Coast Local Roofers",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "26 K P McGrath Dr, Elanora QLD 4221, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "(07) 5230 5802",
+        "website": "https://goldcoastlocalroofers.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=18377255842843717783",
+        "rating": 5,
+        "review_count": 14,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 3,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijg1qde8urkwsrp4t41zhih64",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJg1QdE8URkWsRp4t41ZhIH64",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "cleanspaceco.com.au",
+        "phoneDigits": "0436298928"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Clean Space Co Pty ltd | Roof Restoration Gold Coast",
+        "category": "",
+        "categories": [
+          "establishment",
+          "painter",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "29 Fallow Ct, Upper Coomera QLD 4209, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "0436 298 928",
+        "website": "https://cleanspaceco.com.au/?utm_source=Google+My+Business&utm_campaign=Clean+Space+Co.",
+        "google_maps_url": "https://maps.google.com/?cid=12546826908131167143",
+        "rating": 5,
+        "review_count": 279,
+        "websiteStatus": "",
+        "discoveryScore": 42,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 2,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijk4n9magakwsrm-bx0ywyqcq",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJK4n9magakWsRm-BX0YWyQcQ",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "gcrooftilingsolutions.com.au",
+        "phoneDigits": "0755645370"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "GC Roof Tiling Solutions",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "4/513 Olsen Ave, Southport QLD 4215, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "(07) 5564 5370",
+        "website": "http://gcrooftilingsolutions.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=14141780592732659867",
+        "rating": 4.6,
+        "review_count": 41,
+        "websiteStatus": "",
+        "discoveryScore": 43,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 9,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijk7qvysgtkwsrblsvv3-zzdo",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJK7qVysgTkWsRBLSVv3-zZdo",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "roofrepairsgoldcoast.com",
+        "phoneDigits": "0731300400"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "The Gold Coast Roof Repairers",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "Unit 9/19 Santa Barbara Rd, Hope Island QLD 4212, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "(07) 3130 0400",
+        "website": "https://www.roofrepairsgoldcoast.com/",
+        "google_maps_url": "https://maps.google.com/?cid=15737181834172544004",
+        "rating": 5,
+        "review_count": 8,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 6,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijne_lqnsfkwsry_wvtam9q8g",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJNe_lQnsFkWsRy_Wvtam9Q8g",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "roofrepairgoldcoast.com",
+        "phoneDigits": "0738726730"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Roof Repair Gold Coast",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "2810 Gold Coast Hwy, Surfers Paradise QLD 4217, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "(07) 3872 6730",
+        "website": "http://roofrepairgoldcoast.com/",
+        "google_maps_url": "https://maps.google.com/?cid=14430586167620531659",
+        "rating": 4.7,
+        "review_count": 36,
+        "websiteStatus": "",
+        "discoveryScore": 47,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 5,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJp2cSZOADkWsRXl6ZZwFqY9s",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "goldcoastlocalroofers.com.au",
+        "phoneDigits": "0752305802"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Gold Coast Local Roofers",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "10A Hibiscus Haven, Burleigh Heads QLD 4220, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "(07) 5230 5802",
+        "website": "https://goldcoastlocalroofers.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=15808595671266188894",
+        "rating": 4.7,
+        "review_count": 15,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 8,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijrwsoxaspkwsrxt5lbzyuihm",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJrwsoXasPkWsRXT5lbzYuiHM",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0484621090"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Ultra Roof Restorations",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "Unit 12/2 Twenty Eighth Ave, Palm Beach QLD 4221, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "0484 621 090",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=8324954722526379613",
+        "rating": 5,
+        "review_count": 93,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 7,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chiju1qudf0rkwsrfigoacw6r6i",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJU1qUdf0RkWsRfigOacw6R6I",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0411717162"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Prime Roof Restorations",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "13/461 Pine Ridge Rd, Runaway Bay QLD 4216, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "0411 717 162",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=11693379607101057150",
+        "rating": 4.8,
+        "review_count": 29,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 11,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijyea4nogtkwsrmguykw1tdyg",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:44:01.057Z",
+      "lastSeenAt": "2026-05-13T12:44:01.057Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJyea4NOgTkWsRmGuykw1TdYg",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "qldroofsolutions.com.au",
+        "phoneDigits": "0460048669"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "QLD Roof Solutions",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "29 Pendragon Dr, Coomera QLD 4209, Australia",
+        "city": "Gold Coast",
+        "niche": "roofer",
+        "phone": "0460 048 669",
+        "website": "https://www.qldroofsolutions.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=9832856679210970008",
+        "rating": 5,
+        "review_count": 85,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer gold coast",
+        "signals": {},
+        "batch_id": "places-roofer-gold-coast-202605132243",
+        "discovery_rank": 10,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijk2kjmcfmkwsrk9yzy9lxa-y",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:43:49.294Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJk2kjmcFmkWsRk9YZY9Lxa-Y",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "1300023230"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Mr Roof Solutions",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "104 Wynyard St, Cleveland QLD 4163, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "1300 023 230",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=16603630337139529363",
+        "rating": 4.9,
+        "review_count": 65,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-brisbane-202605132243",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijnylrm_znzkario5qkvfr5vo",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:43:49.294Z",
+      "lastSeenAt": "2026-05-13T12:43:49.294Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJNYlRm_ZnZkARIo5QKvfr5vo",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "weatherite.com.au",
+        "phoneDigits": "0412686071"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Weatherite",
+        "category": "",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "3 Sandune Pl, Thornlands QLD 4164, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "0412 686 071",
+        "website": "https://www.weatherite.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=18079397200924806690",
+        "rating": 5,
+        "review_count": 4,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer brisbane",
+        "signals": {},
+        "batch_id": "places-roofer-brisbane-202605132243",
+        "discovery_rank": 7,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-09T06:17:12.131Z",
+      "lastSeenAt": "2026-05-13T12:43:49.294Z",
+      "runCount": 5,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
+        "cid": "5345551503130488494",
+        "data_id": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
+        "websiteDomain": "brisbaneroofrestorationexperts.com.au",
+        "phoneDigits": "0731321605"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Brisbane Roof Restoration Experts",
+        "category": "Roofing contractor",
+        "categories": [
+          "establishment",
+          "point_of_interest",
+          "roofing_contractor"
+        ],
+        "address": "Unit 22/104 Barwon St, Morningside QLD 4170, Australia",
+        "city": "Brisbane",
+        "niche": "roofer",
+        "phone": "(07) 3132 1605",
+        "website": "https://brisbaneroofrestorationexperts.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=5345551503130488494",
+        "rating": 4.9,
+        "review_count": 21,
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "roofer brisbane",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": false,
+          "hasReservationLink": false,
+          "hasOrderOnlineLink": false,
+          "imageCount": 5,
+          "hasPopularTimes": false,
+          "hasAboutAttributes": true
+        },
+        "places_enrichment": {
+          "fetched_at": "2026-05-13T07:16:33.335Z",
+          "sku": "details_basic",
+          "types": [
+            "establishment",
+            "point_of_interest",
+            "roofing_contractor"
+          ],
+          "international_phone": "(07) 3132 1605",
+          "google_canonical_url": "https://maps.google.com/?cid=5345551503130488494",
+          "rating_verified": 4.9,
+          "user_ratings_total": 21,
+          "photo_references": [
+            "Ab43m-vcnDQQmwOn3ao7shHR91OWFmuRh84Xhi1VUaZf3MbLuyCQc3q1EyRVtw9QYaXRZJbtvh68-sJG7n2PQzz7-M0exOL3E0NqSAtiTaxpgZFhb6VC0dlrXKALpylT0WJvgVXJVJoVkdntKtSxdLPSi8DpDAJSfrV2AbQb2w_XFnhcwLgGr2517jYq2zGE97J1Q7YBCsAA6zTHbdYU5kpZgLvLFeaFWJRBI52H1ezV3P7aUq7sI4HsLf8jXRwaqK8Bewpcgna92RKmTgv5idTekFfwkk1Wnv9WpSujhB_mAMxjWg",
+            "Ab43m-sSmkfHGz5_tvSD_7yIrtoTSM20OveexI6pFZwEqOfNfoAtseF743yDd--8ON5j25A0nohy2wHouQlimAwZsseQ9db1clDsCUx7-s2v6obo6u5ysO3AA8BHYkg970sprq9H6e2E9w1e3iDoLaN4oKRGrgrv4tQtk0BMXi8d4J1eLcsMxz1uTBR_jWwCJqn6_W4RPf32SqoCSKamnsV6wGYFnTOf26doUAnLjc08fnjSL5T1n8mFUVw_KqviHvfnoZEWjrkCDi10TXg3edU7e__dJ3DCb7MD40QiOdc8uy7wLw",
+            "Ab43m-urWsFxPqcllk6k81gIGfXWG8TD8naRbA59ZOQCaC7zc_5X0RasZ2EPJWXj8iGvb_ioXPATYJS5cEemYqLLx9Wo6kutFx473ywu7G3QqFW6vSan6eVeefuKUD3Z5DB0bE2O7VXPEDZSaC3RgqUPgVOVDPznpIPP9mtdQaZjLVpFr7r1ZGjvNOXNMvdPU4UQl5Xm6IG3t0vneLqo85VY-lizf7OO_WbO23Rjr07oj2zttCvcdxIF-BQkK6ntWWMI1XKd4rjCHxQ65FAwvId0JuaUoW-6trM2IGvJP1UhySvdhQ",
+            "Ab43m-vgcqxbVAUahGC0eWeBxMsQHVggosNZRG2zMHscJC3y8nVLDOkI6osfssig4JSYnVmBNkq_Ny7hOe-yn9PYUBv5PRRAIMxDtxZEYrLf14PXJ_uowLxDth0TI8Q9VzxUDbtQALNmBkymTmDImZsBFZ6ha6x7q-bNnwm08xWJn2aNnyPjNJnmypnEFh-urIc4OOQzon7y5AIsANOhd6DKWOuVuxdiiWKXqC-iq7NxrBuGfNSu6rMxJAcSiBWpAcrczlf5DZ-iV3j-ZYeaWMl9VNbqhOVhmuaLaKr3mskNpyu0Xni-m2Jvu50gsrRHQwUbK6SrIdSo_OnSeuSI7BjjwJ0zINzfc1a7IjMfUnzRPfCxWN8wlPP7ALSr_SPgrXY3asVMS5XyjSkXeU9kjbANABEg9ZEfRmgmoTfno6DE-LEIRcek1LXObWvsQNrIw5A_",
+            "Ab43m-sDNuZNs_Ga9HMTsOBrMTHPKnUY9c1gK25x6PfttnbSwTd7vvCO1BsuCY-Ui92GCUPhDYTmA8YgfbVkdQ5olmQrvY613JOuiDEdSj_5OJffDjFoZCuKy37iTRgGV2Ou_3MCnvz6RL8cDYgKfqX_AtrpKmEGZtklxZjZAGWhFq1Vn7QjxxFZZZFCx2ZAL8qR4Uj7ccfr5cfghLSPaDuLpZNzuox4y914Lt1JrHBcGHZQfd3I9LNjCF3Q4TfJ08-AaiiUv57xDGE5vYntLrVrEOV51H1GUFMltvE72jWxplbuZFG1FP7SDc6NJmiJrGLHTT_yxwWDnftnosOQrI3uETs0dTKKc0YwwPis7ROFwD7KhClrodFkGcbfETgz5Yp2Z8SrW6v_yk-du8LQvQwdQCIJ425fBGdd06grNkFV3jJH3FQlnbwg_O3a9ReSd_Bp",
+            "Ab43m-vT_R6R8zllDNWCClP3CmfMH66hFixloiJ6L9_oHRzlP27HlGeZ1QhUgLFvIRn94803cr6j4YTGVKP5-EozMfGaE3BWAEonO7eg0Qn8v9zFBmb7MVabAa0mutjG8udFPvl5FQFHnZrTCukqnncP-aAwGe5Msk88yyzArbVJOvQA5uLA_UdA-dgJWesbG7ewvnY7vcU6bhUU8d2RufusPX8geq0m9KjHFajb9Oo-f5hIAtciRngljGZqQaqdnRmh0EHSYF-woX3GNJMovWtwRAYiebHKf5UbmwMYMxbBiWh9Hw",
+            "Ab43m-uOHqnCHBHzkFU0QKFDHUmuZg6GLuDHjUVjLo9njyCpzalFs-atpU6XGBKJi3oyEQ2kmcBDfjGAi0Muv7z32-fl2v083NPFkBI0zhQPUEgiSVb_s-OV0YAzhGyYUZnCEXw3i7dCWHm6Q0AeCIHgEdbsaEALFYdtko9g270Mi5gfd3knQz4c_m2Xh9OPrejK9hi6X6ZqACgvAG22YTbe5dkAO8IWPe_44moT9rlY2Xx5RzGTohKIYrbCILwaY6fWMLgI7na1iFo__oVkSndhsKoq0pe2-8FgFDGtxIqYEoWEWw",
+            "Ab43m-t7rtu8IYnNj57srcIMXnkKWqHZ8zCw8oKU-nRHZ0JW-qTXFiylgTgoS8yzU5gbk03FDdQ5f_AoAl2l12J4ntPLJaRrPq5yJgV3HztsqFajEjZDhoKEvPvTIK7OWXezUHSe8Wol-VQVE3Cw2iysT-p0dF9uMeGKhtO5RJxjH2SQ4LVySWx3P4XSblFkJSQVjCn_x9YkdKSgqtZlT-Xq0j2DXFSg9fkYC7pOmDuR0V-3Z2YJHJxZB4Sf_qr4j3-jYUrEtj2Ptj5aiZX7ML9a-W5oIzsLSgXva6od4RbpCU1SXw",
+            "Ab43m-srXsYShB_Zk642V0H5qnVAjyqEXt8jxoYN7TS8sU-xvhUHjA8T5QPDkM2tXxeXNAnkHMF7D8DiMH6yPKtEsTFgXsJYNtI9I1AcFcZfZk6_rc1cpN8F9j6hNMj5ZYF8JWRj-pUoWViXxRXHDBE9-OFp33K8gS3j93rmtChsCMYylzXKol5T7MEntMX4QMsPxux4m911xRJ3QFH5HV0pl28zM_-mcPOW6t_YPrkYSL-UlA8jjelM9djW7_jFOGQjuNMnfjYIp0N2aLE4YYUCxAfQv2_d5r8J7-8nXRF7QD13VJYy6twFjhUtwuSXcalXFNFJuta2Ylv7lVtLoJTJiXrIZ0HNHhCtemzuCwfOtLVquHPB1Pi7taEK8cephA5_YRoHkQZlmQRZFA9j04YqkFO2Ram3vVg4iy17LENfXvWBi_vN",
+            "Ab43m-vgyYMQ9mcLtqfS7Rigz_Nm-xtWqgjZ3NB-_BFbV4CMQL5KXQH7Y1T2HnycP9DKoHiQCq51_6jT65jpVn0vJ44ryuGTDva9PRyLNUMASiNdYjGk4KFj9TVFET29z7NGc01_tFubiEqGiyugSZZQU1ywMsAYQAtr0HYeixB1KKy2Oi6iDUJIfQFJh771N3WvD8Ep3fiMmhQYMaZrCNEVohoDQpedMoWg62jtTRoRg40_iGa8_cL2-EoAhlGRy84AMfVwuyzgcjAf_uFpimx_NTAo0v6O_61QMfltaLX8jI_0KA"
+          ],
+          "opening_hours_verified": {
+            "weekday_text": [
+              "Monday: 7:00 AM – 5:00 PM",
+              "Tuesday: 7:00 AM – 5:00 PM",
+              "Wednesday: 7:00 AM – 5:00 PM",
+              "Thursday: 7:00 AM – 5:00 PM",
+              "Friday: 7:00 AM – 5:00 PM",
+              "Saturday: Closed",
+              "Sunday: Closed"
+            ]
+          },
+          "quota_at_call": {
+            "keyId": "primary",
+            "month": "2026-05",
+            "used": 111,
+            "limit": 11000,
+            "pct": 0.010090909090909091,
+            "capped": false
+          },
+          "photo_urls": [
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656600/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-01-1778656599072-6w96vz.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-01-1778656599072-6w96vz",
+              "bytes": 143531,
+              "index": 1,
+              "photo_reference": "Ab43m-vcnDQQmwOn3ao7shHR91OWFmuRh84Xhi1VUaZf3MbLuyCQc3q1EyRVtw9QYaXRZJbtvh68-sJG7n2PQzz7-M0exOL3E0NqSAtiTaxpgZFhb6VC0dlrXKALpylT0WJvgVXJVJoVkdntKtSxdLPSi8DpDAJSfrV2AbQb2w_XFnhcwLgGr2517jYq2zGE97J1Q7YBCsAA6zTHbdYU5kpZgLvLFeaFWJRBI52H1ezV3P7aUq7sI4HsLf8jXRwaqK8Bewpcgna92RKmTgv5idTekFfwkk1Wnv9WpSujhB_mAMxjWg"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656601/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-02-1778656601415-c6szud.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-02-1778656601415-c6szud",
+              "bytes": 49671,
+              "index": 2,
+              "photo_reference": "Ab43m-sSmkfHGz5_tvSD_7yIrtoTSM20OveexI6pFZwEqOfNfoAtseF743yDd--8ON5j25A0nohy2wHouQlimAwZsseQ9db1clDsCUx7-s2v6obo6u5ysO3AA8BHYkg970sprq9H6e2E9w1e3iDoLaN4oKRGrgrv4tQtk0BMXi8d4J1eLcsMxz1uTBR_jWwCJqn6_W4RPf32SqoCSKamnsV6wGYFnTOf26doUAnLjc08fnjSL5T1n8mFUVw_KqviHvfnoZEWjrkCDi10TXg3edU7e__dJ3DCb7MD40QiOdc8uy7wLw"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656602/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-03-1778656602093-8v08kj.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-03-1778656602093-8v08kj",
+              "bytes": 218489,
+              "index": 3,
+              "photo_reference": "Ab43m-urWsFxPqcllk6k81gIGfXWG8TD8naRbA59ZOQCaC7zc_5X0RasZ2EPJWXj8iGvb_ioXPATYJS5cEemYqLLx9Wo6kutFx473ywu7G3QqFW6vSan6eVeefuKUD3Z5DB0bE2O7VXPEDZSaC3RgqUPgVOVDPznpIPP9mtdQaZjLVpFr7r1ZGjvNOXNMvdPU4UQl5Xm6IG3t0vneLqo85VY-lizf7OO_WbO23Rjr07oj2zttCvcdxIF-BQkK6ntWWMI1XKd4rjCHxQ65FAwvId0JuaUoW-6trM2IGvJP1UhySvdhQ"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656603/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-04-1778656603008-6bt48y.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-04-1778656603008-6bt48y",
+              "bytes": 85894,
+              "index": 4,
+              "photo_reference": "Ab43m-vgcqxbVAUahGC0eWeBxMsQHVggosNZRG2zMHscJC3y8nVLDOkI6osfssig4JSYnVmBNkq_Ny7hOe-yn9PYUBv5PRRAIMxDtxZEYrLf14PXJ_uowLxDth0TI8Q9VzxUDbtQALNmBkymTmDImZsBFZ6ha6x7q-bNnwm08xWJn2aNnyPjNJnmypnEFh-urIc4OOQzon7y5AIsANOhd6DKWOuVuxdiiWKXqC-iq7NxrBuGfNSu6rMxJAcSiBWpAcrczlf5DZ-iV3j-ZYeaWMl9VNbqhOVhmuaLaKr3mskNpyu0Xni-m2Jvu50gsrRHQwUbK6SrIdSo_OnSeuSI7BjjwJ0zINzfc1a7IjMfUnzRPfCxWN8wlPP7ALSr_SPgrXY3asVMS5XyjSkXeU9kjbANABEg9ZEfRmgmoTfno6DE-LEIRcek1LXObWvsQNrIw5A_"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656605/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-05-1778656605392-xkcloe.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-05-1778656605392-xkcloe",
+              "bytes": 56464,
+              "index": 5,
+              "photo_reference": "Ab43m-sDNuZNs_Ga9HMTsOBrMTHPKnUY9c1gK25x6PfttnbSwTd7vvCO1BsuCY-Ui92GCUPhDYTmA8YgfbVkdQ5olmQrvY613JOuiDEdSj_5OJffDjFoZCuKy37iTRgGV2Ou_3MCnvz6RL8cDYgKfqX_AtrpKmEGZtklxZjZAGWhFq1Vn7QjxxFZZZFCx2ZAL8qR4Uj7ccfr5cfghLSPaDuLpZNzuox4y914Lt1JrHBcGHZQfd3I9LNjCF3Q4TfJ08-AaiiUv57xDGE5vYntLrVrEOV51H1GUFMltvE72jWxplbuZFG1FP7SDc6NJmiJrGLHTT_yxwWDnftnosOQrI3uETs0dTKKc0YwwPis7ROFwD7KhClrodFkGcbfETgz5Yp2Z8SrW6v_yk-du8LQvQwdQCIJ425fBGdd06grNkFV3jJH3FQlnbwg_O3a9ReSd_Bp"
+            },
+            {
+              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656606/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-06-1778656606189-cctvc4.jpg",
+              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-06-1778656606189-cctvc4",
+              "bytes": 203902,
+              "index": 6,
+              "photo_reference": "Ab43m-vT_R6R8zllDNWCClP3CmfMH66hFixloiJ6L9_oHRzlP27HlGeZ1QhUgLFvIRn94803cr6j4YTGVKP5-EozMfGaE3BWAEonO7eg0Qn8v9zFBmb7MVabAa0mutjG8udFPvl5FQFHnZrTCukqnncP-aAwGe5Msk88yyzArbVJOvQA5uLA_UdA-dgJWesbG7ewvnY7vcU6bhUU8d2RufusPX8geq0m9KjHFajb9Oo-f5hIAtciRngljGZqQaqdnRmh0EHSYF-woX3GNJMovWtwRAYiebHKf5UbmwMYMxbBiWh9Hw"
+            }
+          ],
+          "photos_downloaded_at": "2026-05-13T07:16:47.220Z"
+        },
+        "sales_signals": {
+          "best_contact_time": {
+            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
+            "confidence": "high",
+            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
+            "weekday_summary": "Mon: 07:00-17:00 · Tue: 07:00-17:00 · Wed: 07:00-17:00 · Thu: 07:00-17:00 · Fri: 07:00-17:00 · Sat: closed · Sun: closed",
+            "days_open": 5,
+            "days_closed": 2,
+            "source": "places_api.opening_hours.weekday_text",
+            "computed_at": "2026-05-13T07:16:33.336Z"
+          }
+        },
+        "batch_id": "places-roofer-brisbane-202605132243",
+        "discovery_rank": 11,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijkbdhae7ld4grsrwyf1yah7c",
+      "status": "graded",
+      "firstSeenAt": "2026-05-13T12:42:13.973Z",
+      "lastSeenAt": "2026-05-13T12:43:37.969Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJKbDhAE7LD4gRsRwyf1yah7c",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "plumberjoechicago.com",
+        "phoneDigits": "7736889242"
+      },
+      "latest": {
+        "sourceType": "single_enrich",
+        "name": "Joe's Plumbing, Inc",
         "category": "",
         "categories": [],
-        "address": "1 Test St, Brisbane QLD 4000",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "0412000000",
-        "website": "https://e2e-test-roofing.test",
-        "google_maps_url": "",
-        "rating": 4.5,
-        "review_count": 10,
-        "websiteStatus": "https",
-        "discoveryScore": 23,
-        "recommendedAction": "",
-        "sourceQuery": "roofing brisbane e2e test",
+        "address": "Avenue, 7125 W Gunnison St #212, Harwood Heights, IL 60706, USA",
+        "city": "Melbourne",
+        "niche": "joe's plumbing",
+        "phone": "(773) 688-9242",
+        "website": "http://www.plumberjoechicago.com/",
+        "google_maps_url": "https://maps.google.com/?cid=13224708552858410161",
+        "rating": 4.9,
+        "review_count": 231,
+        "websiteStatus": "",
+        "discoveryScore": 62,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "Joe's plumbing Melbourne",
         "signals": {},
         "batch_id": "",
         "discovery_rank": null,
         "google_places_provider": null
+      }
+    },
+    {
+      "entityKey": "place_chijoahraxkuemsrijoniunkozy",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:44.801Z",
+      "lastSeenAt": "2026-05-13T12:42:44.801Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJOahrAxKuEmsRiJOniUNkOZY",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "cafesydney.com",
+        "phoneDigits": "0292518683"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Cafe Sydney Restaurant",
+        "category": "",
+        "categories": [
+          "bar",
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant"
+        ],
+        "address": "Level 5 Customs House, 31 Alfred St, Sydney NSW 2000, Australia",
+        "city": "Sydney",
+        "niche": "cafe",
+        "phone": "(02) 9251 8683",
+        "website": "http://www.cafesydney.com/",
+        "google_maps_url": "https://maps.google.com/?cid=10824793420596745096",
+        "rating": 4.5,
+        "review_count": 4001,
+        "websiteStatus": "",
+        "discoveryScore": 68,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe sydney",
+        "signals": {},
+        "batch_id": "places-cafe-sydney-202605132242",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij16hj0otzkwsryqutw9b0uk8",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ16HJ0otZkWsRYQuTW9B0uk8",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "deathbeforedecaf.com.au",
+        "phoneDigits": ""
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Death Before Decaf",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest"
+        ],
+        "address": "3/760-766 Brunswick St, New Farm QLD 4005, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "",
+        "website": "http://www.deathbeforedecaf.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=5745032712902871905",
+        "rating": 4.7,
+        "review_count": 1525,
+        "websiteStatus": "",
+        "discoveryScore": 57,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 9,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij3zqz8khbkwsra0y5j6repla",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ3zqZ8KhbkWsRa0y5J6replA",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "clovenhoney.square.site",
+        "phoneDigits": "0411713206"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Clove n' Honey",
+        "category": "",
+        "categories": [
+          "bar",
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant"
+        ],
+        "address": "25/405 Logan Rd, Stones Corner QLD 4120, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0411 713 206",
+        "website": "https://clovenhoney.square.site/",
+        "google_maps_url": "https://maps.google.com/?cid=5811577191560465515",
+        "rating": 4.8,
+        "review_count": 2219,
+        "websiteStatus": "",
+        "discoveryScore": 37,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 3,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij4z5hqhvakwsrrmrstaqa1gw",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ4z5hQhVakWsRRMrStaQA1Gw",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "pawpawcafe.com.au",
+        "phoneDigits": "0738915100"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Pawpaw Cafe",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "meal_delivery",
+          "meal_takeaway",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "898 Stanley St E, Woolloongabba QLD 4102, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "(07) 3891 5100",
+        "website": "https://pawpawcafe.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=7841893558584003140",
+        "rating": 4.7,
+        "review_count": 3624,
+        "websiteStatus": "",
+        "discoveryScore": 37,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 2,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chij9_evwhtakwsrs-bz0cpxeno",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ9_EvWhtakWsRs-bz0cPXENo",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "strausscafe.com.au",
+        "phoneDigits": "0732365232"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Strauss",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "189 Elizabeth St, Laneway, Brisbane City QLD 4002, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "(07) 3236 5232",
+        "website": "http://www.strausscafe.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=15713296335936677555",
+        "rating": 4.6,
+        "review_count": 475,
+        "websiteStatus": "",
+        "discoveryScore": 58,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 18,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijbvf9jwrakwsrdm1u-wiwi_m",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJbVf9jwRakWsRDM1U-WiwI_M",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "brewcafewinebar.com.au",
+        "phoneDigits": "0732114242"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Brew Cafe & Wine Bar",
+        "category": "",
+        "categories": [
+          "bar",
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "Lower Burnett Ln, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "(07) 3211 4242",
+        "website": "https://www.brewcafewinebar.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=17520040940307533068",
+        "rating": 4.6,
+        "review_count": 2165,
+        "websiteStatus": "",
+        "discoveryScore": 33,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 10,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijbw1scfvbkwsrf7vpzoh35i0",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJbw1scFVbkWsRf7vPzOH35I0",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "joeys.com.au",
+        "phoneDigits": "0731852945"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Joey's",
+        "category": "",
+        "categories": [
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant"
+        ],
+        "address": "29 River Terrace, Kangaroo Point QLD 4169, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "(07) 3185 2945",
+        "website": "http://www.joeys.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=10224569603213736831",
+        "rating": 4.4,
+        "review_count": 2490,
+        "websiteStatus": "",
+        "discoveryScore": 68,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 8,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chije8u4nbdbkwsrkovozefdox0",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJE8u4NBdbkWsRKoVozEfdox0",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "littleblackpug.com.au",
+        "phoneDigits": "0435259677"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Little Black Pug",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "6/1297 Logan Rd, Mount Gravatt QLD 4122, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0435 259 677",
+        "website": "http://www.littleblackpug.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=2135793948745565482",
+        "rating": 4.8,
+        "review_count": 1573,
+        "websiteStatus": "",
+        "discoveryScore": 72,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 12,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chije9sp3grakwsrxgr5ikld6uq",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJe9Sp3gRakWsRxGr5IkLd6uQ",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0434064349"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "John Mills Himself",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "store"
+        ],
+        "address": "40 Charlotte St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0434 064 349",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=16495239861322214084",
+        "rating": 4.8,
+        "review_count": 1068,
+        "websiteStatus": "",
+        "discoveryScore": 52,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 16,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijjxrdbtpbkwsrb6nkvrzq9si",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJJXrDBTpbkWsRB6NKVrzq9sI",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "florence-cafe.com.au",
+        "phoneDigits": "0436469611"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Florence Cafe",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "54 Martha St, Camp Hill QLD 4152, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0436 469 611",
+        "website": "http://florence-cafe.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=14048674182251324167",
+        "rating": 4.3,
+        "review_count": 778,
+        "websiteStatus": "",
+        "discoveryScore": 68,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 20,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijkyekiwrakwsru0nfzhvbkxu",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJkyEKiwRakWsRu0NFZHvbKxU",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "felixforgoodness.com",
+        "phoneDigits": "0731617966"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Felix For Goodness",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "50 Burnett Ln, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "(07) 3161 7966",
+        "website": "http://felixforgoodness.com/",
+        "google_maps_url": "https://maps.google.com/?cid=1525554221804766139",
+        "rating": 4.4,
+        "review_count": 1498,
+        "websiteStatus": "",
+        "discoveryScore": 68,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 4,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijmqtvedvbkwsrj4vrmfjbpio",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJmQtVeDVbkWsRJ4VrmFjbpio",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "facebook.com",
+        "phoneDigits": "0493311253"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Double Maker Coffee",
+        "category": "",
+        "categories": [
+          "bakery",
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "126 Margaret St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0493 311 253",
+        "website": "https://www.facebook.com/DoubleMakerCoffee/",
+        "google_maps_url": "https://maps.google.com/?cid=3073384969287730471",
+        "rating": 4.7,
+        "review_count": 416,
+        "websiteStatus": "",
+        "discoveryScore": 77,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 13,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijmw1elgnakwsrwxjushml-kk",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJmw1ELgNakWsRwxjuShml-kk",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0732212222"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Sugar 'N Spice Cafe",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "store"
+        ],
+        "address": "210 Adelaide St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "(07) 3221 2222",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=5330754636996286659",
+        "rating": 4.7,
+        "review_count": 614,
+        "websiteStatus": "",
+        "discoveryScore": 52,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 14,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijp89zrzhakwsrvqo8himyoie",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJP89zRzhakWsRVqO8hIMYoiE",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "smugfig.com",
+        "phoneDigits": "0427460631"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "The Smug Fig Kitchen & Social",
+        "category": "",
+        "categories": [
+          "bar",
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant"
+        ],
+        "address": "7 Jeavons Ln, Stones Corner QLD 4120, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0427 460 631",
+        "website": "http://www.smugfig.com/",
+        "google_maps_url": "https://maps.google.com/?cid=2423526502625485654",
+        "rating": 4.3,
+        "review_count": 1074,
+        "websiteStatus": "",
+        "discoveryScore": 68,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 17,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijrz5yz7hbkwsrycjbtqvb8rc",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJRZ5YZ7hbkWsRYCJBTQvb8rc",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "dovetailsocial.com.au",
+        "phoneDigits": "0474253678"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Dovetail Social",
+        "category": "",
+        "categories": [
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant"
+        ],
+        "address": "49 Laura St, Highgate Hill QLD 4101, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0474 253 678",
+        "website": "https://dovetailsocial.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=13254897494892028512",
+        "rating": 4.8,
+        "review_count": 480,
+        "websiteStatus": "",
+        "discoveryScore": 42,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 6,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijw76y3bpakwsrxyeqwsvjp4k",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJw76Y3BpakWsRXyeQwsvJP4k",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "intersectionfd.com.au",
+        "phoneDigits": ""
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Coffee Anthology",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "155 Charlotte St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "",
+        "website": "http://www.intersectionfd.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=9889845183708669791",
+        "rating": 4.3,
+        "review_count": 1847,
+        "websiteStatus": "",
+        "discoveryScore": 53,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijx8ito69zkwsr5m-dnizoiu0",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJX8ItO69ZkWsR5M-dniZoiU0",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "bluebearcoffeehouse.squarespace.com",
+        "phoneDigits": ""
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Blue Bear Coffeehouse",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest"
+        ],
+        "address": "92 James St, New Farm QLD 4005, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "",
+        "website": "https://bluebearcoffeehouse.squarespace.com/",
+        "google_maps_url": "https://maps.google.com/?cid=5587111327808999396",
+        "rating": 4.7,
+        "review_count": 708,
+        "websiteStatus": "",
+        "discoveryScore": 37,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 5,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijxam_ukfbkwsroehelotwqra",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJxaM_ukFbkWsROehelotWQRA",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "intersectionfd.com.au",
+        "phoneDigits": ""
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "FIKA",
+        "category": "",
+        "categories": [
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant"
+        ],
+        "address": "155 Charlotte St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "",
+        "website": "https://www.intersectionfd.com.au/#vendors",
+        "google_maps_url": "https://maps.google.com/?cid=1171312535616284729",
+        "rating": 4.4,
+        "review_count": 108,
+        "websiteStatus": "",
+        "discoveryScore": 23,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 19,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijye5lzttykwsrfohd-68pnzq",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJye5lzTtYkWsRFohd-68PnZQ",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "farmhousekedron.com.au",
+        "phoneDigits": "0738611956"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Farmhouse, Kedron Cafe",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "9 Somerset Rd, Kedron QLD 4031, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "(07) 3861 1956",
+        "website": "https://www.farmhousekedron.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=10708732737467811862",
+        "rating": 4.7,
+        "review_count": 2832,
+        "websiteStatus": "",
+        "discoveryScore": 37,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 11,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijz3ixegrakwsry-ejbzd5w70",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJz3IXEgRakWsRY-ejbZd5w70",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "facebook.com",
+        "phoneDigits": "0485588246"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Coffee Iconic",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "restaurant",
+          "store"
+        ],
+        "address": "340 George St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "0485 588 246",
+        "website": "https://www.facebook.com/coffeeiconic.au",
+        "google_maps_url": "https://maps.google.com/?cid=13673906584913438563",
+        "rating": 4.6,
+        "review_count": 1434,
+        "websiteStatus": "",
+        "discoveryScore": 83,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 7,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
+      "entityKey": "place_chijzdb8hm5bkwsryabtflt7dy0",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T12:42:26.080Z",
+      "lastSeenAt": "2026-05-13T12:42:26.080Z",
+      "runCount": 1,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJzdB8HM5bkWsRyAbTflt7dy0",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "themaillardproject.com.au",
+        "phoneDigits": ""
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "The Maillard Project",
+        "category": "",
+        "categories": [
+          "cafe",
+          "establishment",
+          "food",
+          "point_of_interest",
+          "store"
+        ],
+        "address": "119 Charlotte St, Brisbane City QLD 4000, Australia",
+        "city": "Brisbane",
+        "niche": "cafe",
+        "phone": "",
+        "website": "https://themaillardproject.com.au/",
+        "google_maps_url": "https://maps.google.com/?cid=3276222886835324616",
+        "rating": 4.6,
+        "review_count": 561,
+        "websiteStatus": "",
+        "discoveryScore": 33,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "cafe brisbane",
+        "signals": {},
+        "batch_id": "places-cafe-brisbane-202605132242",
+        "discovery_rank": 15,
+        "google_places_provider": "official_api"
       }
     },
     {
@@ -367,152 +3155,6 @@
       }
     },
     {
-      "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
-      "status": "graded",
-      "firstSeenAt": "2026-05-09T06:17:12.131Z",
-      "lastSeenAt": "2026-05-13T07:16:33.335Z",
-      "runCount": 4,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
-        "cid": "5345551503130488494",
-        "data_id": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
-        "websiteDomain": "brisbaneroofrestorationexperts.com.au",
-        "phoneDigits": "0731321605"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Brisbane Roof Restoration Experts",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor"
-        ],
-        "address": "Unit 22/104 Barwon St, Morningside QLD 4170",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "(07) 3132 1605",
-        "website": "https://brisbaneroofrestorationexperts.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roof+Restoration+Experts/data=!4m7!3m6!1s0x6b91596c1762d0c1:0x4a2f36c528a5eeae!8m2!3d-27.4577712!4d153.0780826!16s%2Fg%2F11lmhqwqq0!19sChIJwdBiF2xZkWsRru6lKMU2L0o?authuser=0&hl=en&rclk=1",
-        "rating": 4.9,
-        "review_count": 21,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 27,
-        "recommendedAction": "skip",
-        "sourceQuery": "roof restoration in Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 5,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        },
-        "places_enrichment": {
-          "fetched_at": "2026-05-13T07:16:33.335Z",
-          "sku": "details_basic",
-          "types": [
-            "establishment",
-            "point_of_interest",
-            "roofing_contractor"
-          ],
-          "international_phone": "(07) 3132 1605",
-          "google_canonical_url": "https://maps.google.com/?cid=5345551503130488494",
-          "rating_verified": 4.9,
-          "user_ratings_total": 21,
-          "photo_references": [
-            "Ab43m-vcnDQQmwOn3ao7shHR91OWFmuRh84Xhi1VUaZf3MbLuyCQc3q1EyRVtw9QYaXRZJbtvh68-sJG7n2PQzz7-M0exOL3E0NqSAtiTaxpgZFhb6VC0dlrXKALpylT0WJvgVXJVJoVkdntKtSxdLPSi8DpDAJSfrV2AbQb2w_XFnhcwLgGr2517jYq2zGE97J1Q7YBCsAA6zTHbdYU5kpZgLvLFeaFWJRBI52H1ezV3P7aUq7sI4HsLf8jXRwaqK8Bewpcgna92RKmTgv5idTekFfwkk1Wnv9WpSujhB_mAMxjWg",
-            "Ab43m-sSmkfHGz5_tvSD_7yIrtoTSM20OveexI6pFZwEqOfNfoAtseF743yDd--8ON5j25A0nohy2wHouQlimAwZsseQ9db1clDsCUx7-s2v6obo6u5ysO3AA8BHYkg970sprq9H6e2E9w1e3iDoLaN4oKRGrgrv4tQtk0BMXi8d4J1eLcsMxz1uTBR_jWwCJqn6_W4RPf32SqoCSKamnsV6wGYFnTOf26doUAnLjc08fnjSL5T1n8mFUVw_KqviHvfnoZEWjrkCDi10TXg3edU7e__dJ3DCb7MD40QiOdc8uy7wLw",
-            "Ab43m-urWsFxPqcllk6k81gIGfXWG8TD8naRbA59ZOQCaC7zc_5X0RasZ2EPJWXj8iGvb_ioXPATYJS5cEemYqLLx9Wo6kutFx473ywu7G3QqFW6vSan6eVeefuKUD3Z5DB0bE2O7VXPEDZSaC3RgqUPgVOVDPznpIPP9mtdQaZjLVpFr7r1ZGjvNOXNMvdPU4UQl5Xm6IG3t0vneLqo85VY-lizf7OO_WbO23Rjr07oj2zttCvcdxIF-BQkK6ntWWMI1XKd4rjCHxQ65FAwvId0JuaUoW-6trM2IGvJP1UhySvdhQ",
-            "Ab43m-vgcqxbVAUahGC0eWeBxMsQHVggosNZRG2zMHscJC3y8nVLDOkI6osfssig4JSYnVmBNkq_Ny7hOe-yn9PYUBv5PRRAIMxDtxZEYrLf14PXJ_uowLxDth0TI8Q9VzxUDbtQALNmBkymTmDImZsBFZ6ha6x7q-bNnwm08xWJn2aNnyPjNJnmypnEFh-urIc4OOQzon7y5AIsANOhd6DKWOuVuxdiiWKXqC-iq7NxrBuGfNSu6rMxJAcSiBWpAcrczlf5DZ-iV3j-ZYeaWMl9VNbqhOVhmuaLaKr3mskNpyu0Xni-m2Jvu50gsrRHQwUbK6SrIdSo_OnSeuSI7BjjwJ0zINzfc1a7IjMfUnzRPfCxWN8wlPP7ALSr_SPgrXY3asVMS5XyjSkXeU9kjbANABEg9ZEfRmgmoTfno6DE-LEIRcek1LXObWvsQNrIw5A_",
-            "Ab43m-sDNuZNs_Ga9HMTsOBrMTHPKnUY9c1gK25x6PfttnbSwTd7vvCO1BsuCY-Ui92GCUPhDYTmA8YgfbVkdQ5olmQrvY613JOuiDEdSj_5OJffDjFoZCuKy37iTRgGV2Ou_3MCnvz6RL8cDYgKfqX_AtrpKmEGZtklxZjZAGWhFq1Vn7QjxxFZZZFCx2ZAL8qR4Uj7ccfr5cfghLSPaDuLpZNzuox4y914Lt1JrHBcGHZQfd3I9LNjCF3Q4TfJ08-AaiiUv57xDGE5vYntLrVrEOV51H1GUFMltvE72jWxplbuZFG1FP7SDc6NJmiJrGLHTT_yxwWDnftnosOQrI3uETs0dTKKc0YwwPis7ROFwD7KhClrodFkGcbfETgz5Yp2Z8SrW6v_yk-du8LQvQwdQCIJ425fBGdd06grNkFV3jJH3FQlnbwg_O3a9ReSd_Bp",
-            "Ab43m-vT_R6R8zllDNWCClP3CmfMH66hFixloiJ6L9_oHRzlP27HlGeZ1QhUgLFvIRn94803cr6j4YTGVKP5-EozMfGaE3BWAEonO7eg0Qn8v9zFBmb7MVabAa0mutjG8udFPvl5FQFHnZrTCukqnncP-aAwGe5Msk88yyzArbVJOvQA5uLA_UdA-dgJWesbG7ewvnY7vcU6bhUU8d2RufusPX8geq0m9KjHFajb9Oo-f5hIAtciRngljGZqQaqdnRmh0EHSYF-woX3GNJMovWtwRAYiebHKf5UbmwMYMxbBiWh9Hw",
-            "Ab43m-uOHqnCHBHzkFU0QKFDHUmuZg6GLuDHjUVjLo9njyCpzalFs-atpU6XGBKJi3oyEQ2kmcBDfjGAi0Muv7z32-fl2v083NPFkBI0zhQPUEgiSVb_s-OV0YAzhGyYUZnCEXw3i7dCWHm6Q0AeCIHgEdbsaEALFYdtko9g270Mi5gfd3knQz4c_m2Xh9OPrejK9hi6X6ZqACgvAG22YTbe5dkAO8IWPe_44moT9rlY2Xx5RzGTohKIYrbCILwaY6fWMLgI7na1iFo__oVkSndhsKoq0pe2-8FgFDGtxIqYEoWEWw",
-            "Ab43m-t7rtu8IYnNj57srcIMXnkKWqHZ8zCw8oKU-nRHZ0JW-qTXFiylgTgoS8yzU5gbk03FDdQ5f_AoAl2l12J4ntPLJaRrPq5yJgV3HztsqFajEjZDhoKEvPvTIK7OWXezUHSe8Wol-VQVE3Cw2iysT-p0dF9uMeGKhtO5RJxjH2SQ4LVySWx3P4XSblFkJSQVjCn_x9YkdKSgqtZlT-Xq0j2DXFSg9fkYC7pOmDuR0V-3Z2YJHJxZB4Sf_qr4j3-jYUrEtj2Ptj5aiZX7ML9a-W5oIzsLSgXva6od4RbpCU1SXw",
-            "Ab43m-srXsYShB_Zk642V0H5qnVAjyqEXt8jxoYN7TS8sU-xvhUHjA8T5QPDkM2tXxeXNAnkHMF7D8DiMH6yPKtEsTFgXsJYNtI9I1AcFcZfZk6_rc1cpN8F9j6hNMj5ZYF8JWRj-pUoWViXxRXHDBE9-OFp33K8gS3j93rmtChsCMYylzXKol5T7MEntMX4QMsPxux4m911xRJ3QFH5HV0pl28zM_-mcPOW6t_YPrkYSL-UlA8jjelM9djW7_jFOGQjuNMnfjYIp0N2aLE4YYUCxAfQv2_d5r8J7-8nXRF7QD13VJYy6twFjhUtwuSXcalXFNFJuta2Ylv7lVtLoJTJiXrIZ0HNHhCtemzuCwfOtLVquHPB1Pi7taEK8cephA5_YRoHkQZlmQRZFA9j04YqkFO2Ram3vVg4iy17LENfXvWBi_vN",
-            "Ab43m-vgyYMQ9mcLtqfS7Rigz_Nm-xtWqgjZ3NB-_BFbV4CMQL5KXQH7Y1T2HnycP9DKoHiQCq51_6jT65jpVn0vJ44ryuGTDva9PRyLNUMASiNdYjGk4KFj9TVFET29z7NGc01_tFubiEqGiyugSZZQU1ywMsAYQAtr0HYeixB1KKy2Oi6iDUJIfQFJh771N3WvD8Ep3fiMmhQYMaZrCNEVohoDQpedMoWg62jtTRoRg40_iGa8_cL2-EoAhlGRy84AMfVwuyzgcjAf_uFpimx_NTAo0v6O_61QMfltaLX8jI_0KA"
-          ],
-          "opening_hours_verified": {
-            "weekday_text": [
-              "Monday: 7:00 AM – 5:00 PM",
-              "Tuesday: 7:00 AM – 5:00 PM",
-              "Wednesday: 7:00 AM – 5:00 PM",
-              "Thursday: 7:00 AM – 5:00 PM",
-              "Friday: 7:00 AM – 5:00 PM",
-              "Saturday: Closed",
-              "Sunday: Closed"
-            ]
-          },
-          "quota_at_call": {
-            "keyId": "primary",
-            "month": "2026-05",
-            "used": 111,
-            "limit": 11000,
-            "pct": 0.010090909090909091,
-            "capped": false
-          },
-          "photo_urls": [
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656600/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-01-1778656599072-6w96vz.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-01-1778656599072-6w96vz",
-              "bytes": 143531,
-              "index": 1,
-              "photo_reference": "Ab43m-vcnDQQmwOn3ao7shHR91OWFmuRh84Xhi1VUaZf3MbLuyCQc3q1EyRVtw9QYaXRZJbtvh68-sJG7n2PQzz7-M0exOL3E0NqSAtiTaxpgZFhb6VC0dlrXKALpylT0WJvgVXJVJoVkdntKtSxdLPSi8DpDAJSfrV2AbQb2w_XFnhcwLgGr2517jYq2zGE97J1Q7YBCsAA6zTHbdYU5kpZgLvLFeaFWJRBI52H1ezV3P7aUq7sI4HsLf8jXRwaqK8Bewpcgna92RKmTgv5idTekFfwkk1Wnv9WpSujhB_mAMxjWg"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656601/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-02-1778656601415-c6szud.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-02-1778656601415-c6szud",
-              "bytes": 49671,
-              "index": 2,
-              "photo_reference": "Ab43m-sSmkfHGz5_tvSD_7yIrtoTSM20OveexI6pFZwEqOfNfoAtseF743yDd--8ON5j25A0nohy2wHouQlimAwZsseQ9db1clDsCUx7-s2v6obo6u5ysO3AA8BHYkg970sprq9H6e2E9w1e3iDoLaN4oKRGrgrv4tQtk0BMXi8d4J1eLcsMxz1uTBR_jWwCJqn6_W4RPf32SqoCSKamnsV6wGYFnTOf26doUAnLjc08fnjSL5T1n8mFUVw_KqviHvfnoZEWjrkCDi10TXg3edU7e__dJ3DCb7MD40QiOdc8uy7wLw"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656602/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-03-1778656602093-8v08kj.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-03-1778656602093-8v08kj",
-              "bytes": 218489,
-              "index": 3,
-              "photo_reference": "Ab43m-urWsFxPqcllk6k81gIGfXWG8TD8naRbA59ZOQCaC7zc_5X0RasZ2EPJWXj8iGvb_ioXPATYJS5cEemYqLLx9Wo6kutFx473ywu7G3QqFW6vSan6eVeefuKUD3Z5DB0bE2O7VXPEDZSaC3RgqUPgVOVDPznpIPP9mtdQaZjLVpFr7r1ZGjvNOXNMvdPU4UQl5Xm6IG3t0vneLqo85VY-lizf7OO_WbO23Rjr07oj2zttCvcdxIF-BQkK6ntWWMI1XKd4rjCHxQ65FAwvId0JuaUoW-6trM2IGvJP1UhySvdhQ"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656603/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-04-1778656603008-6bt48y.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-04-1778656603008-6bt48y",
-              "bytes": 85894,
-              "index": 4,
-              "photo_reference": "Ab43m-vgcqxbVAUahGC0eWeBxMsQHVggosNZRG2zMHscJC3y8nVLDOkI6osfssig4JSYnVmBNkq_Ny7hOe-yn9PYUBv5PRRAIMxDtxZEYrLf14PXJ_uowLxDth0TI8Q9VzxUDbtQALNmBkymTmDImZsBFZ6ha6x7q-bNnwm08xWJn2aNnyPjNJnmypnEFh-urIc4OOQzon7y5AIsANOhd6DKWOuVuxdiiWKXqC-iq7NxrBuGfNSu6rMxJAcSiBWpAcrczlf5DZ-iV3j-ZYeaWMl9VNbqhOVhmuaLaKr3mskNpyu0Xni-m2Jvu50gsrRHQwUbK6SrIdSo_OnSeuSI7BjjwJ0zINzfc1a7IjMfUnzRPfCxWN8wlPP7ALSr_SPgrXY3asVMS5XyjSkXeU9kjbANABEg9ZEfRmgmoTfno6DE-LEIRcek1LXObWvsQNrIw5A_"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656605/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-05-1778656605392-xkcloe.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-05-1778656605392-xkcloe",
-              "bytes": 56464,
-              "index": 5,
-              "photo_reference": "Ab43m-sDNuZNs_Ga9HMTsOBrMTHPKnUY9c1gK25x6PfttnbSwTd7vvCO1BsuCY-Ui92GCUPhDYTmA8YgfbVkdQ5olmQrvY613JOuiDEdSj_5OJffDjFoZCuKy37iTRgGV2Ou_3MCnvz6RL8cDYgKfqX_AtrpKmEGZtklxZjZAGWhFq1Vn7QjxxFZZZFCx2ZAL8qR4Uj7ccfr5cfghLSPaDuLpZNzuox4y914Lt1JrHBcGHZQfd3I9LNjCF3Q4TfJ08-AaiiUv57xDGE5vYntLrVrEOV51H1GUFMltvE72jWxplbuZFG1FP7SDc6NJmiJrGLHTT_yxwWDnftnosOQrI3uETs0dTKKc0YwwPis7ROFwD7KhClrodFkGcbfETgz5Yp2Z8SrW6v_yk-du8LQvQwdQCIJ425fBGdd06grNkFV3jJH3FQlnbwg_O3a9ReSd_Bp"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656606/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-06-1778656606189-cctvc4.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-06-1778656606189-cctvc4",
-              "bytes": 203902,
-              "index": 6,
-              "photo_reference": "Ab43m-vT_R6R8zllDNWCClP3CmfMH66hFixloiJ6L9_oHRzlP27HlGeZ1QhUgLFvIRn94803cr6j4YTGVKP5-EozMfGaE3BWAEonO7eg0Qn8v9zFBmb7MVabAa0mutjG8udFPvl5FQFHnZrTCukqnncP-aAwGe5Msk88yyzArbVJOvQA5uLA_UdA-dgJWesbG7ewvnY7vcU6bhUU8d2RufusPX8geq0m9KjHFajb9Oo-f5hIAtciRngljGZqQaqdnRmh0EHSYF-woX3GNJMovWtwRAYiebHKf5UbmwMYMxbBiWh9Hw"
-            }
-          ],
-          "photos_downloaded_at": "2026-05-13T07:16:47.220Z"
-        },
-        "sales_signals": {
-          "best_contact_time": {
-            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
-            "confidence": "high",
-            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
-            "weekday_summary": "Mon: 07:00-17:00 · Tue: 07:00-17:00 · Wed: 07:00-17:00 · Thu: 07:00-17:00 · Fri: 07:00-17:00 · Sat: closed · Sun: closed",
-            "days_open": 5,
-            "days_closed": 2,
-            "source": "places_api.opening_hours.weekday_text",
-            "computed_at": "2026-05-13T07:16:33.336Z"
-          }
-        }
-      }
-    },
-    {
       "entityKey": "place_chijvvvvvbxekwsrjeoqjzdbkoi",
       "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
@@ -799,153 +3441,6 @@
       }
     },
     {
-      "entityKey": "place_chijo3rniu9fkwsr8jworgytgmy",
-      "status": "graded",
-      "firstSeenAt": "2026-05-09T10:53:53.252Z",
-      "lastSeenAt": "2026-05-13T07:15:38.687Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJo3rniu9FkWsR8jWorGYtgmY",
-        "cid": "7386516257847653874",
-        "data_id": "0x6b9145ef8ae77aa3:0x66822d66aca835f2",
-        "websiteDomain": "brisbaneroofingsolutions.com.au",
-        "phoneDigits": "0732761546"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Brisbane Roofing Solutions | Roof Restoration & Repairs",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor",
-          "Repair service"
-        ],
-        "address": "101 Kulcha St, Algester QLD 4115",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "(07) 3276 1546",
-        "website": "https://brisbaneroofingsolutions.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roofing+Solutions+%7C+Roof+Restoration+%26+Repairs/data=!4m7!3m6!1s0x6b9145ef8ae77aa3:0x66822d66aca835f2!8m2!3d-27.626822!4d153.0280723!16s%2Fg%2F1tjxfv0t!19sChIJo3rniu9FkWsR8jWorGYtgmY?authuser=0&hl=en&rclk=1",
-        "rating": 4.8,
-        "review_count": 118,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 49,
-        "recommendedAction": "manual_review",
-        "sourceQuery": "roof restoration in Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": true,
-          "imageCount": 8,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        },
-        "places_enrichment": {
-          "fetched_at": "2026-05-13T07:15:38.687Z",
-          "sku": "details_basic",
-          "types": [
-            "establishment",
-            "point_of_interest",
-            "roofing_contractor"
-          ],
-          "international_phone": "(07) 3276 1546",
-          "google_canonical_url": "https://maps.google.com/?cid=7386516257847653874",
-          "rating_verified": 4.8,
-          "user_ratings_total": 119,
-          "photo_references": [
-            "Ab43m-t9znwcSE3UgVZaUmxqPHhLkn9sdDc0rpN1zEGSqkPpx-J4BfYDEElfPRW0hIf_gfB1Tzh1h-tQU5LsbW_YIXyEu2iu-d0J9m9l4ITx_O_6x7OU5wFMn6q3GJbYNWIng4OikDshS6vZ0w_3uVUsyGsCSX_TV_P21EE4V_cQLkFVu3R8fK5Xgk2egA9UYQ2ytuS3Cs0PTc244IiJuLt_WOQgQz5V7QhXqiSy5rB02Mt0P4GepUAGI9qa2d5OZHkEHGxTAZ0uD-j47cs0KO8ptNffPQvZen4Q0ZRvQKxTosRTcw",
-            "Ab43m-twxQgbN8-zZ8RNvwWtcf5TckmUkPhDpqJwAbLK-3yXnLfMVIK6ZIwbns7Uynn0gdo9fDgj6W7AHSBQUJHLHtl0bW-B1RNJjEUFsRDjXWfNGZtcmlJ_st_n6bBP4fOv51fWBDboMB_jqsdyC86z_1pt8M3hE5J98X68CVMbkmCyn3kHEaICJEeVjPUCJs-m88USFTUgopqRhi8OoxWhnjA0vGgm8kXZOWbN0cENdzPxzh9qskKWTlxNcz6aJFqMThIPTi8o_pgiVOH8BgQg2wecp_9DQE7zY-89y_FYzQ3XmoBHFxYKTQt4OYyLTn6FdZ4ewmgbeh9kL3LzLGcuB_4alNwVFc7Kai1FXfLUolWxztDEU4r_rbobtV-wLsiD0MKSYD_1ELTx37ao6TioTU0RbYicIuv1IsTVoUbr3B8zybrOGbhpuL401Tso_tTp",
-            "Ab43m-syFP_RzK3-w0vHqFTry7k69pGi1uw58-YjHG9U4ZUGNqStR8s5fSW98FQHglEuXRwgfyCgP0g1wZ_2pgVAeigM0zsGJl9LKn_CoOTTagRS9-ANBKSRu1UPX0aIzhesAa5iO9ctDPE5-9e4FbJxJhvcEnYDn0Zukj4xxy-Wcg1BWOA1fqpkEmZ6xeg5nGAClwrJJibh5MC-RFnCPJ86YgHmZuI4oZ5gaq5iIWDesK8rWpHPeukJFbeBhtcIdx53u7lSl9kx1Ucmg4KCbxaaNvqkP4TO8_1FcsTG9ZxJhwOeZQ",
-            "Ab43m-urpfNHMiPtFTXyz6gmttz4Sx_Ej0af9MLPStQLhmqs3e__LSvdTFixgRpYUNKYBBMfWXvy3zuade6PtRLkUgcYSr6f3_XldnjZeiMnZINh2v9Y6pEpF1IOzBvYAEmOwXGc3cg1T6SyiV7MLIHVjBRCE1-9SdxOmO7sJwl00xDXXnsMQ48TwphFNHxIECE4S1wejwsvItD0oIpPoGJWvgdQXzYx-J_XS4boGfHvwUxzSPxwFueEv0Zfl5ZzzD_R0zrdtTZE8orQTx-xyC8UNyH-r5MnX3_FtKscbjE31KTcbg",
-            "Ab43m-sg-RNvQNi_BOhBR7FtyE_bxpzXI1Gznb6CZRrvzWCC17NctSJhYRQ03IF76iVuahbqLZj4HMmfttAwD4ECpUjkplSBlNSSu1tKulEH1cwjUp1_AsF0oL_bkIyCPbdsu6Cifd98pnbd8q4uLWTXgORzg_hVHE8oA8TiIrkSrtQJndWzEaXgeKPjchGAEuyUUCubujaKTiI2Pf_PJ5f620vHpzX0rpGqWhWOKMyhPxsX7S7JgmmvWnS096J_I73AAJ9wwY2coYcUf6GqlRm_p77EMbS4LcGBFVwK7GmjUUShh65I_RSEdt3bMqol1jAeNaEAc3Jx0L_FGbesJnHKxk7hQZysVGYlxKtT8tV6kyn3qjtLc6JDZFq2bAuSS9skDbE1vMqSd5XaZEQra3PpXIiO7GqxBPz52kChDk0aT2i1c7yqnJKLiDfkMmdfEu6v",
-            "Ab43m-ulSX8eHWMND92dy78OTxyCSyigX_uGxUwNww31z0bdfCa52lUigGET1XduNnreGA8pBieTtc0wYSovQUjwT83xeehHK7WGTl55jFBD5ufr3Ug95aXXuU0otaw5DxKD3XhkUJUYktYlLFZcqXOzTqZhzsCm_9VNIndpqYIpBeJUGsQZcZENbKCDM1fWcDErV7gYm4lF2R5hBcJCqcnKWFxDRDB8d4HInXEm7qcBgnv7NzgDLJsp1W_5VZZifu0L2LDqdk9smo6zMvGjiCmvaHxUDs5rvN3lyBvnR-_R2nCmWg",
-            "Ab43m-sWEOfLoEwaD4iCn5fl6U7X-ZGT4Gc1uLmx6lctOpji_Gh-zemwRofYLaZgdFUmiSD2uDlapN6EaC69SUMFB-GBdeJFw-5BMftTUvDww4m0M2Ii89J0ATNSiV2GVKqUbtzhxfwvehNeGgiEB5yzIYKwOqzAMD8IjMot_ITiQtwGXd6lbn2o8EIYwLZ2GGiLKB9n8XGSvG4x5KROo_YK_f0LPxs7Bg_j00t3RH8P3N08AcBsj_6oX77SzSiSUyakrFm1V47fG30i_1YojbQVIsa29ZiK8uXuuntjVM2XgaP0pg",
-            "Ab43m-sJSt66f9BhXOREmyzNPYk8jBa6Iq6oocVG_Jt0O0hHha9emNq1Nh6SLI8I6QbpKizVBP8GrWnvoaxxG76-shF5v4-ejH-f99Rgjuj4WCZB5ZP940JRRqHH408CQUXuPEkMupk0Tf6l23uNSfmFRG8YxWMKbIIfKNS32-tJFL7gAlArER9w9bdiXU6JnHvDfdKFULOR9ECE5Aq_wBU9YauGfWBjGRLFxvt9Ct1VTXgR4uhEycEYRhkYqLrZ1k_APl5oV87uQWUrgbrR5UnWertj8qF0ui2z6X00Js4LFmAN_Q",
-            "Ab43m-tC66ehlOjjCAi2b6Kk5Rea4a7sWdho0THuYXJE7yWZif1OMSb858pZ4nCh19F41b6sxyCLrbxxqOaNqA3-v8xoHW0GHnsJz-ELvsIkod_UK0Iwv-ZR3jX34-kGbYVs2vLb4VL1f2TDVSAhIPzqOHik2N_pLkBB96rEwAWyr4lYbNW5TdijHosfiIxcHtS0VNdukufZLCnWlt10W8BHnnwZFlJGxgyhTjnjRsSYDZYirBMY3vrNXtUO7nEQJltifM8ijnqtgf8CBMcNv6Yke7KqqeUGCr43ppaGCy_jKHt1kA",
-            "Ab43m-vsxaRdqSVKJbL7w86E2Ekvv8Nh2rWk4vTnL2kHN7TA3Dgr4H6ayC2JUIhImOVxMcvjTzLal6My9dMmCF0nuhJFBmPGETLAvUw8RbXbOLHowHkIfLtUNv9xFeLoj1brAHnMopjBiQa84z0PW9x-ubEdJ-6h2ohpb8ZyjrvA0vrEVPyPdpUJehxF-ZSGtEF7l9-iCemzWGb4VSEIw15orFr2oh7b3fd0YEJIQB25DDSkPI4s3VJFm8kUtfrVaRE50uatkIGAAF4zWs-mx3ivgAeDdpwW9B53_cOZIzV19f9z-A"
-          ],
-          "opening_hours_verified": {
-            "weekday_text": [
-              "Monday: 8:00 AM – 5:00 PM",
-              "Tuesday: 8:00 AM – 5:00 PM",
-              "Wednesday: 8:00 AM – 5:00 PM",
-              "Thursday: 8:00 AM – 5:00 PM",
-              "Friday: 8:00 AM – 5:00 PM",
-              "Saturday: Closed",
-              "Sunday: Closed"
-            ]
-          },
-          "quota_at_call": {
-            "keyId": "primary",
-            "month": "2026-05",
-            "used": 90,
-            "limit": 11000,
-            "pct": 0.008181818181818182,
-            "capped": false
-          },
-          "photo_urls": [
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656548/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-01-1778656546945-5taqwk.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-01-1778656546945-5taqwk",
-              "bytes": 65696,
-              "index": 1,
-              "photo_reference": "Ab43m-t9znwcSE3UgVZaUmxqPHhLkn9sdDc0rpN1zEGSqkPpx-J4BfYDEElfPRW0hIf_gfB1Tzh1h-tQU5LsbW_YIXyEu2iu-d0J9m9l4ITx_O_6x7OU5wFMn6q3GJbYNWIng4OikDshS6vZ0w_3uVUsyGsCSX_TV_P21EE4V_cQLkFVu3R8fK5Xgk2egA9UYQ2ytuS3Cs0PTc244IiJuLt_WOQgQz5V7QhXqiSy5rB02Mt0P4GepUAGI9qa2d5OZHkEHGxTAZ0uD-j47cs0KO8ptNffPQvZen4Q0ZRvQKxTosRTcw"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656550/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-02-1778656548862-clili3.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-02-1778656548862-clili3",
-              "bytes": 735582,
-              "index": 2,
-              "photo_reference": "Ab43m-twxQgbN8-zZ8RNvwWtcf5TckmUkPhDpqJwAbLK-3yXnLfMVIK6ZIwbns7Uynn0gdo9fDgj6W7AHSBQUJHLHtl0bW-B1RNJjEUFsRDjXWfNGZtcmlJ_st_n6bBP4fOv51fWBDboMB_jqsdyC86z_1pt8M3hE5J98X68CVMbkmCyn3kHEaICJEeVjPUCJs-m88USFTUgopqRhi8OoxWhnjA0vGgm8kXZOWbN0cENdzPxzh9qskKWTlxNcz6aJFqMThIPTi8o_pgiVOH8BgQg2wecp_9DQE7zY-89y_FYzQ3XmoBHFxYKTQt4OYyLTn6FdZ4ewmgbeh9kL3LzLGcuB_4alNwVFc7Kai1FXfLUolWxztDEU4r_rbobtV-wLsiD0MKSYD_1ELTx37ao6TioTU0RbYicIuv1IsTVoUbr3B8zybrOGbhpuL401Tso_tTp"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656551/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-03-1778656550530-46q0ef.png",
-              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-03-1778656550530-46q0ef",
-              "bytes": 477662,
-              "index": 3,
-              "photo_reference": "Ab43m-syFP_RzK3-w0vHqFTry7k69pGi1uw58-YjHG9U4ZUGNqStR8s5fSW98FQHglEuXRwgfyCgP0g1wZ_2pgVAeigM0zsGJl9LKn_CoOTTagRS9-ANBKSRu1UPX0aIzhesAa5iO9ctDPE5-9e4FbJxJhvcEnYDn0Zukj4xxy-Wcg1BWOA1fqpkEmZ6xeg5nGAClwrJJibh5MC-RFnCPJ86YgHmZuI4oZ5gaq5iIWDesK8rWpHPeukJFbeBhtcIdx53u7lSl9kx1Ucmg4KCbxaaNvqkP4TO8_1FcsTG9ZxJhwOeZQ"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656552/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-04-1778656551625-pgo9x0.png",
-              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-04-1778656551625-pgo9x0",
-              "bytes": 1661929,
-              "index": 4,
-              "photo_reference": "Ab43m-urpfNHMiPtFTXyz6gmttz4Sx_Ej0af9MLPStQLhmqs3e__LSvdTFixgRpYUNKYBBMfWXvy3zuade6PtRLkUgcYSr6f3_XldnjZeiMnZINh2v9Y6pEpF1IOzBvYAEmOwXGc3cg1T6SyiV7MLIHVjBRCE1-9SdxOmO7sJwl00xDXXnsMQ48TwphFNHxIECE4S1wejwsvItD0oIpPoGJWvgdQXzYx-J_XS4boGfHvwUxzSPxwFueEv0Zfl5ZzzD_R0zrdtTZE8orQTx-xyC8UNyH-r5MnX3_FtKscbjE31KTcbg"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656555/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-05-1778656552981-dn8y89.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-05-1778656552981-dn8y89",
-              "bytes": 673276,
-              "index": 5,
-              "photo_reference": "Ab43m-sg-RNvQNi_BOhBR7FtyE_bxpzXI1Gznb6CZRrvzWCC17NctSJhYRQ03IF76iVuahbqLZj4HMmfttAwD4ECpUjkplSBlNSSu1tKulEH1cwjUp1_AsF0oL_bkIyCPbdsu6Cifd98pnbd8q4uLWTXgORzg_hVHE8oA8TiIrkSrtQJndWzEaXgeKPjchGAEuyUUCubujaKTiI2Pf_PJ5f620vHpzX0rpGqWhWOKMyhPxsX7S7JgmmvWnS096J_I73AAJ9wwY2coYcUf6GqlRm_p77EMbS4LcGBFVwK7GmjUUShh65I_RSEdt3bMqol1jAeNaEAc3Jx0L_FGbesJnHKxk7hQZysVGYlxKtT8tV6kyn3qjtLc6JDZFq2bAuSS9skDbE1vMqSd5XaZEQra3PpXIiO7GqxBPz52kChDk0aT2i1c7yqnJKLiDfkMmdfEu6v"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656556/profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-06-1778656555524-y3dnxb.png",
-              "publicId": "profitslocal/main-site/clients/place_chijo3rniu9fkwsr8jworgytgmy/places-photos/gmb/photo-06-1778656555524-y3dnxb",
-              "bytes": 1513450,
-              "index": 6,
-              "photo_reference": "Ab43m-ulSX8eHWMND92dy78OTxyCSyigX_uGxUwNww31z0bdfCa52lUigGET1XduNnreGA8pBieTtc0wYSovQUjwT83xeehHK7WGTl55jFBD5ufr3Ug95aXXuU0otaw5DxKD3XhkUJUYktYlLFZcqXOzTqZhzsCm_9VNIndpqYIpBeJUGsQZcZENbKCDM1fWcDErV7gYm4lF2R5hBcJCqcnKWFxDRDB8d4HInXEm7qcBgnv7NzgDLJsp1W_5VZZifu0L2LDqdk9smo6zMvGjiCmvaHxUDs5rvN3lyBvnR-_R2nCmWg"
-            }
-          ],
-          "photos_downloaded_at": "2026-05-13T07:15:56.782Z"
-        },
-        "sales_signals": {
-          "best_contact_time": {
-            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
-            "confidence": "high",
-            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
-            "weekday_summary": "Mon: 08:00-17:00 · Tue: 08:00-17:00 · Wed: 08:00-17:00 · Thu: 08:00-17:00 · Fri: 08:00-17:00 · Sat: closed · Sun: closed",
-            "days_open": 5,
-            "days_closed": 2,
-            "source": "places_api.opening_hours.weekday_text",
-            "computed_at": "2026-05-13T07:15:38.688Z"
-          }
-        }
-      }
-    },
-    {
       "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
       "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
@@ -1090,152 +3585,6 @@
             "days_closed": 1,
             "source": "places_api.opening_hours.weekday_text",
             "computed_at": "2026-05-13T07:15:22.970Z"
-          }
-        }
-      }
-    },
-    {
-      "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
-      "status": "graded",
-      "firstSeenAt": "2026-05-09T06:17:12.131Z",
-      "lastSeenAt": "2026-05-13T07:15:08.974Z",
-      "runCount": 3,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJL3pH8WBbkWsRlHeKy2pl5pM",
-        "cid": "10657317077574645652",
-        "data_id": "0x6b915b60f1477a2f:0x93e6656acb8a7794",
-        "websiteDomain": "gutterandroofrepairs.com.au",
-        "phoneDigits": "0421460580"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Gutter and Roof Repairs",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor"
-        ],
-        "address": "1/41 Steel Pl, Morningside QLD 4170",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "0421 460 580",
-        "website": "https://gutterandroofrepairs.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Gutter+and+Roof+Repairs/data=!4m7!3m6!1s0x6b915b60f1477a2f:0x93e6656acb8a7794!8m2!3d-27.4528275!4d153.0810395!16s%2Fg%2F11h54g8z24!19sChIJL3pH8WBbkWsRlHeKy2pl5pM?authuser=0&hl=en&rclk=1",
-        "rating": 4.6,
-        "review_count": 150,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 38,
-        "recommendedAction": "skip",
-        "sourceQuery": "roof restoration New Farm Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 5,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        },
-        "places_enrichment": {
-          "fetched_at": "2026-05-13T07:15:08.974Z",
-          "sku": "details_basic",
-          "types": [
-            "establishment",
-            "point_of_interest",
-            "roofing_contractor"
-          ],
-          "international_phone": "0421 460 580",
-          "google_canonical_url": "https://maps.google.com/?cid=10657317077574645652",
-          "rating_verified": 4.6,
-          "user_ratings_total": 150,
-          "photo_references": [
-            "Ab43m-tOaW4gHPm_La43Qd-D09PVNAQ7953rivM4PEPC443eWXL8HAq94wRfNnrgi1ItJNj5scuI7K82rEsEfk-VUJPnc-nxwmeuhPfxiao6z-uBGadImKC3wLov-4r3yLVvdYtQPyHC0uOOKoviQLbTzFY7fCuDLlODd5CtV35abdwjcMSzVeC60JgdYbs2xyLhEPSJMinQhEg5l44I1uG5tpLYGaEeU4FmXzKSVejd9SFGKfKRCzkWUrLA-rjt696tdLLPsp1xP4L80c31meLlBhGf2oU4Z-5ZmqhYBF-OsNpMBA",
-            "Ab43m-uGipbeeKNSc8tmQlePuTJz92gHQq_pGrFU-n8f-AMzjyikwk_DO_Tn4d9SXd0Rzk0DrorPjs1In0QIv0qMXzprWZsFs9ekCUgCgMDyM7Gb-NcaIKfi3Cs7DAuXyEvMLdJFRizjoyxcmy5SkzuT7egGSp1yzplhI0wC3vTQdLaXOZ42Ceou54EvE6ol-qS_bvfp3KeEJ4lv3y-MJyXhbmxWA28W6k28ZtWDNjfKkcTxuY-7FdOh1h24aCcOwax5GRCI41PtBOrg_V7vXBTVFvwOgD6N72Y1tp29eldC-eWI-w",
-            "Ab43m-tMY2YeI2q0w9ChMeA95-feC8hS8bSUb9fH53RxdzvX9W2J_LryC5SsVIjKyFoDQ9V9IcznV4Zjn5ydRvezJw5uYzoPbmUgZ7G-31iLevk5QPR5k9l_QSvuM_MFnkMaAldvIypQ8D2E5ufjicJ3mhu_8r67of_LcMhkmLFV6o-Guid4w7iuuZ9BtO8al0rxlHQ5h-FKL7meIr7gNqxcqWR_e3JWFLs6d9DJoGrfxEwmYI7mUUuWUFQ6Eb4I_kNOjGFuoxvO0ELMpUvJN4RM5QblhxqN30_K7AJ9LXWz2_yL5g",
-            "Ab43m-t2kIZ_EMPJ0tWPijhE94CRoFHs2lgJa2u07c9KUGd0Q5sgBEkIxrEXzPoWUSaYdKZ9OFHOyDvrSMCyvbUdqB_u0lknPXwXZuIYS7FhPtNyDTnVBzY-lSiyI2VaM_GBJEERSNhIuJcZZfrkE3GfgDPTVPCCxVKvkz9D9uQMkw4RPdf7FOldu1OH4HBU_SjC6KW49akZsJ4fYAj71q3EpSLI8IPtbNCjggXIQJ2Zf_LKS9za-uZtd6m6vxSElmPp4s8ftDYgr3oepQU2tvc_ALrBAuNQEp97SskasRaedQlt9g",
-            "Ab43m-s4v0V25lDIq98YmhLZYv6lSrzR-z893VU1UFNmyqIWpBKzgfWZFO0C6XZ_mD8d16RzBYZyqsehOpMC25MEiLOyQUpgFW8hSFdI3zIbpr-jm3SUL-gUzP007pzupUlpGaC4sr_hKZDvggdnsewaAH2Vk90RngP6l48WmKie-0Mzu10dZXSsMvstViGMJGUfAZ25RtGo3h2EOydP6pVyrXuHbTDQcPbSvFYtRBLsFEZsm7iiT3WdiE_KcFnMi4Fo5c2mYZWoXzUa_ZadSCD3ysJ4MLhD8OknXlPEdkQycmilGA",
-            "Ab43m-tgtI8LW0SXgNzVWiamgu_6lHZzfVTQ_QJ_Zt2u9a5C9XflaFqWfxnXi0e_LHrkfYz4_VrUlsdbTHBACPxZtEFKKr182T57XPA_3h2-MRZeq2AWpAEYzZl7yjRC_eWDBh7mcH8WyUGVsnZ729_tErTJXvQ0N3XPCcjUwsVFXd51Je24coMemIM1QUtLe3MiOvIugyW44Gn8WwoAosG-QqVsLbLkIEFBWeKdGB5QWO3KJbI7N0AiAHEnGJOUDBefCnKOUY3XaPKX6hzsUU3JkKPl6f5URTCJ5rzT_1hoYMkfLBb4IwnBFrIpvNtQJs4URr4p4ZwaJm0h8UnSCNsZUCpsa5fLjMOjBjlz7cNP_xToZdJDO3MMhiYlFnk7eSxDSuKruGYgHwcmRCwDAAQVkKG1LiuU2aX88ZzchB7XkeuDNJhJ",
-            "Ab43m-uDl3EAs9yq5gbAKN4U3qeqS_kmj8woQVY9_qLGIOZac191Xv3Lne7rxP8TKt8EJLrII4B7r4mOaQ8hpBVkNoH8XYP5d7lguug6TyzSzDV2vYgUSWJEGloX6EHGPyadSilCfiutfsihArLJ8EQ_Z0A33DOdCPQs6iM6B7qqGifRKbAydftpkhWRMrKRoqNnWL1qkZFQ7HSx1-jRauBhztxV-WCuiC7PCqzwEdkplLA2InMo8qHMLOsvAtJFfjWEFLtNkvva9UgCVyzs_mqOf5BCiVwU-Ers6cKwA4Yznx-o1A",
-            "Ab43m-upLU0W4CK4ujGNBo2Ih1rQ9Fd3qn-V2NEVddGGlTai27DE8readvh_Hl8BsEV02xCdT4Hr4OLGfGQp354UnqQima05X3-oYb7Rx4Nq7zIJxNuXdUGT2LCp5eSMJz-lSatuwbGzKWye9WW6hZ870ZVyv8eFov8dCR0jviGpcDM9jYRr2NLiw7Yyj8U005NwmYkITQe0hAiymFDcYqlUu34rwScKHvN5i_sGPtjpVV4lDfY5q0jOwgkkaI-JvxG8DVXE1yalFImvLV1gTznw_EoPB5jktpf64nN5orCYEkXZaeNMckmt09uR77tbVnzvTSyoB4ivJZQVc7rlFcIp7PbM4t2XCJ0QD7Ecwbg6mxDQILpCS0IJHHrVsgIhiNYot5RkP1xqVp9gldJjEYPkzxXPI6EXfvbVCTJMrbCN7_c",
-            "Ab43m-sRy2UJBVblDENsfLj70kCGHM2FCwOMQWbsCSgl6s82FTSPb9-5mRcee6Kh5YKMC_vTLyLCqeMaSWRKR0KlsFY0Ar45xsSCM9UT8ajd0XTi_LAGw2-Ux639Fclcotbooq2jkghMV2EqRpJWkYKHOz7CN_3IuiW0salZgp5S62funZjC9vehqZjvuTe0LM_cfP_p2mx82H8kkri4pDgBwfsfzYNniE2q7PhMmVn0wT6gm3_q3Z3xHwsZqclXQbKgEEKuTLtswOtMw6me_WBQn22xWjdCqO34J6JQ9nXDHLgrFHRw-UMUDVfYpS_3vVWJye0w6MDCcH4TLvKDcVdS5wuCP8iNkyLpkyetIK3bkb8byOGfzN7nrlHLiTp30mXDPNl3fhOZlP9SU659ev5RpX54nBDKiFNIAfmJRvyRysA",
-            "Ab43m-u3SRGpP1lAvoUYQmElv-jtPsvHVpAwWThz7joae8sZHvop98Z02jfDJuTPEydHkfT78z9s45Jq_29CqL1YnQ48p77FwvQvxoheEs5MD2A-yIMd5r6vi_NzuwybtrbXg9SBsCF4vHcZbcbwZHHhQb3JXTEvs0kN27JaPEOnVjo5Fzr1O_BvsVhBp3umMooQosCflBT1YDpMW_EYrkiV4Ad6JVvvMv7eS5qg3rYFO4v-lF9Zbz4TE2KhNcCs12312LTd-Nk-iTeEzmtCUqtoWGNAGkPmBoikVGsvxA3bPxGfrw"
-          ],
-          "opening_hours_verified": {
-            "weekday_text": [
-              "Monday: 8:00 AM – 4:00 PM",
-              "Tuesday: 8:00 AM – 4:00 PM",
-              "Wednesday: 8:00 AM – 4:00 PM",
-              "Thursday: 8:00 AM – 4:00 PM",
-              "Friday: 8:00 AM – 4:00 PM",
-              "Saturday: Closed",
-              "Sunday: Closed"
-            ]
-          },
-          "quota_at_call": {
-            "keyId": "primary",
-            "month": "2026-05",
-            "used": 76,
-            "limit": 11000,
-            "pct": 0.006909090909090909,
-            "capped": false
-          },
-          "photo_urls": [
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656517/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-01-1778656515278-zrjf5k.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-01-1778656515278-zrjf5k",
-              "bytes": 262053,
-              "index": 1,
-              "photo_reference": "Ab43m-tOaW4gHPm_La43Qd-D09PVNAQ7953rivM4PEPC443eWXL8HAq94wRfNnrgi1ItJNj5scuI7K82rEsEfk-VUJPnc-nxwmeuhPfxiao6z-uBGadImKC3wLov-4r3yLVvdYtQPyHC0uOOKoviQLbTzFY7fCuDLlODd5CtV35abdwjcMSzVeC60JgdYbs2xyLhEPSJMinQhEg5l44I1uG5tpLYGaEeU4FmXzKSVejd9SFGKfKRCzkWUrLA-rjt696tdLLPsp1xP4L80c31meLlBhGf2oU4Z-5ZmqhYBF-OsNpMBA"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656518/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-02-1778656517771-6rekgl.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-02-1778656517771-6rekgl",
-              "bytes": 281361,
-              "index": 2,
-              "photo_reference": "Ab43m-uGipbeeKNSc8tmQlePuTJz92gHQq_pGrFU-n8f-AMzjyikwk_DO_Tn4d9SXd0Rzk0DrorPjs1In0QIv0qMXzprWZsFs9ekCUgCgMDyM7Gb-NcaIKfi3Cs7DAuXyEvMLdJFRizjoyxcmy5SkzuT7egGSp1yzplhI0wC3vTQdLaXOZ42Ceou54EvE6ol-qS_bvfp3KeEJ4lv3y-MJyXhbmxWA28W6k28ZtWDNjfKkcTxuY-7FdOh1h24aCcOwax5GRCI41PtBOrg_V7vXBTVFvwOgD6N72Y1tp29eldC-eWI-w"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656519/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-03-1778656518880-gs0z9n.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-03-1778656518880-gs0z9n",
-              "bytes": 276734,
-              "index": 3,
-              "photo_reference": "Ab43m-tMY2YeI2q0w9ChMeA95-feC8hS8bSUb9fH53RxdzvX9W2J_LryC5SsVIjKyFoDQ9V9IcznV4Zjn5ydRvezJw5uYzoPbmUgZ7G-31iLevk5QPR5k9l_QSvuM_MFnkMaAldvIypQ8D2E5ufjicJ3mhu_8r67of_LcMhkmLFV6o-Guid4w7iuuZ9BtO8al0rxlHQ5h-FKL7meIr7gNqxcqWR_e3JWFLs6d9DJoGrfxEwmYI7mUUuWUFQ6Eb4I_kNOjGFuoxvO0ELMpUvJN4RM5QblhxqN30_K7AJ9LXWz2_yL5g"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656520/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-04-1778656520113-uczx6f.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-04-1778656520113-uczx6f",
-              "bytes": 239193,
-              "index": 4,
-              "photo_reference": "Ab43m-t2kIZ_EMPJ0tWPijhE94CRoFHs2lgJa2u07c9KUGd0Q5sgBEkIxrEXzPoWUSaYdKZ9OFHOyDvrSMCyvbUdqB_u0lknPXwXZuIYS7FhPtNyDTnVBzY-lSiyI2VaM_GBJEERSNhIuJcZZfrkE3GfgDPTVPCCxVKvkz9D9uQMkw4RPdf7FOldu1OH4HBU_SjC6KW49akZsJ4fYAj71q3EpSLI8IPtbNCjggXIQJ2Zf_LKS9za-uZtd6m6vxSElmPp4s8ftDYgr3oepQU2tvc_ALrBAuNQEp97SskasRaedQlt9g"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656521/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-05-1778656520895-xscrn5.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-05-1778656520895-xscrn5",
-              "bytes": 159962,
-              "index": 5,
-              "photo_reference": "Ab43m-s4v0V25lDIq98YmhLZYv6lSrzR-z893VU1UFNmyqIWpBKzgfWZFO0C6XZ_mD8d16RzBYZyqsehOpMC25MEiLOyQUpgFW8hSFdI3zIbpr-jm3SUL-gUzP007pzupUlpGaC4sr_hKZDvggdnsewaAH2Vk90RngP6l48WmKie-0Mzu10dZXSsMvstViGMJGUfAZ25RtGo3h2EOydP6pVyrXuHbTDQcPbSvFYtRBLsFEZsm7iiT3WdiE_KcFnMi4Fo5c2mYZWoXzUa_ZadSCD3ysJ4MLhD8OknXlPEdkQycmilGA"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656522/profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-06-1778656521601-att9om.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chijl3ph8wbbkwsrlheky2pl5pm/places-photos/gmb/photo-06-1778656521601-att9om",
-              "bytes": 440200,
-              "index": 6,
-              "photo_reference": "Ab43m-tgtI8LW0SXgNzVWiamgu_6lHZzfVTQ_QJ_Zt2u9a5C9XflaFqWfxnXi0e_LHrkfYz4_VrUlsdbTHBACPxZtEFKKr182T57XPA_3h2-MRZeq2AWpAEYzZl7yjRC_eWDBh7mcH8WyUGVsnZ729_tErTJXvQ0N3XPCcjUwsVFXd51Je24coMemIM1QUtLe3MiOvIugyW44Gn8WwoAosG-QqVsLbLkIEFBWeKdGB5QWO3KJbI7N0AiAHEnGJOUDBefCnKOUY3XaPKX6hzsUU3JkKPl6f5URTCJ5rzT_1hoYMkfLBb4IwnBFrIpvNtQJs4URr4p4ZwaJm0h8UnSCNsZUCpsa5fLjMOjBjlz7cNP_xToZdJDO3MMhiYlFnk7eSxDSuKruGYgHwcmRCwDAAQVkKG1LiuU2aX88ZzchB7XkeuDNJhJ"
-            }
-          ],
-          "photos_downloaded_at": "2026-05-13T07:15:22.393Z"
-        },
-        "sales_signals": {
-          "best_contact_time": {
-            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
-            "confidence": "high",
-            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
-            "weekday_summary": "Mon: 08:00-16:00 · Tue: 08:00-16:00 · Wed: 08:00-16:00 · Thu: 08:00-16:00 · Fri: 08:00-16:00 · Sat: closed · Sun: closed",
-            "days_open": 5,
-            "days_closed": 2,
-            "source": "places_api.opening_hours.weekday_text",
-            "computed_at": "2026-05-13T07:15:08.975Z"
           }
         }
       }
@@ -1649,153 +3998,6 @@
             "days_closed": 2,
             "source": "places_api.opening_hours.weekday_text",
             "computed_at": "2026-05-13T07:14:07.311Z"
-          }
-        }
-      }
-    },
-    {
-      "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
-      "status": "graded",
-      "firstSeenAt": "2026-05-09T06:17:12.131Z",
-      "lastSeenAt": "2026-05-13T07:13:52.519Z",
-      "runCount": 3,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJ-9wdZxxakWsR-llJRD1U3JQ",
-        "cid": "10726541034605074938",
-        "data_id": "0x6b915a1c671ddcfb:0x94dc543d444959fa",
-        "websiteDomain": "queenslandroofing.com.au",
-        "phoneDigits": "0489263653"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Queensland Roofing Pty Ltd",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor",
-          "Tradesmen"
-        ],
-        "address": "19/10 Eagle St, Brisbane City QLD 4000",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "0489 263 653",
-        "website": "http://www.queenslandroofing.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Queensland+Roofing+Pty+Ltd/data=!4m7!3m6!1s0x6b915a1c671ddcfb:0x94dc543d444959fa!8m2!3d-27.469195!4d153.029861!16s%2Fg%2F1td5lwbz!19sChIJ-9wdZxxakWsR-llJRD1U3JQ?authuser=0&hl=en&rclk=1",
-        "rating": 4.5,
-        "review_count": 35,
-        "websiteStatus": "independent_http_site",
-        "discoveryScore": 43,
-        "recommendedAction": "skip",
-        "sourceQuery": "roof restoration New Farm Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 5,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        },
-        "places_enrichment": {
-          "fetched_at": "2026-05-13T07:13:52.519Z",
-          "sku": "details_basic",
-          "types": [
-            "establishment",
-            "point_of_interest",
-            "roofing_contractor"
-          ],
-          "international_phone": "0489 263 653",
-          "google_canonical_url": "https://maps.google.com/?cid=10726541034605074938",
-          "rating_verified": 4.5,
-          "user_ratings_total": 35,
-          "photo_references": [
-            "Ab43m-s9pDHu2eaNY3N9CHq7D84CSLNn1yUt37bYFBrcgqGIkzuxF9aHf3lScV_N1poZtkUpjSQmFvLyyIE2Batzk5HzicJM_qHO9lZRXTFv0lxgsSk3n7iqawdPqIf5gI2OTzOJaa6NdvMQ3JSfUundAPUZbgjev58OrKR8bnygVXeTGQ3misjZUHj8UvA8N34R05-JhQtURoZu8uUShYfthka6z-uEeQRtqeOrci9ri8Z_VXGlWVY774a3ilMEq9qUOSuenON7B8jHQcrrG0ihw7_xImHUeS8VWBe6zToyxx0Xtg",
-            "Ab43m-uhrAuu-w_aIsJ05UgQA1HVFTBcbIttvxU8wX3-BobuCoLJUzY4hQ9VuKlHUmUkbHkAUZMy2cl6g7Y9X96k9sH8008J_PP3hkuXFNAvucSHMaMUM1EP85qzyP-Kkx2k_N4G6R5ayE_-8Z-FJ9OiLWqX_j7v_lVpS0k9Z2dTEtiIcsMFY3gcl661YyHtu-e5jaBzKoORsx0bHZXg3cNeDE-Yaj7KJqMx0lRlEWvLoHg2R5tSpucv-foZw-z1BEKf_1GVF1afIhcCAlA6zbB7gzm8Tq9n_PPZK6nEj6wFtP4fkawDxXWJpd-gNR15Sr2cW5GymyIOsWM5up4gPwhlHw6g0jOJVfz-PpWEvIatRPx8h4NEezle7vaBBDT7l3q8YAOpnMJfFObTtoC2yMxH2TTAnymYKuVxld6auQvtYqgNwg",
-            "Ab43m-vEdiaG6Fkwu70QdeNVqGPlRcMUWgdpna0g-EyftgZbI4lDjeGNMYHaTN_nd2TXFNfKpbztp4mANB7E8G8pToyEwARXV2oZTaBLwIzKu3sDBBneF5kd2Yah6eEARiccVSfCV3-m3-o1hF3psSnyrXcvLDejPCQd4rh4bEKAQfT3aVsXrnPUIW-ildztH-bQludCMS9EhMt75TKuXWR8JSKR3rwPHpcQnfZCWCa3d4LhR_TiLujaaLDhuB3K11yWytZnXWXUVLuFgegrZ1ED90QnKkzSYg69_8peyOsVy8EcEPA1TiruuizfXS7k2la9NnJZojFxof11fitfglLK10X5diZ4jQbmwJuPIGd-8uLh00ptqZeiLPoOoL3OX0netWRBdH1TzlhPS-UYomqhQwA47aQ8P_dVl-4joFhL5TfR3dnt",
-            "Ab43m-teYmlHoBhyKoutk0YbVPRQwrzAbXq68WQo3a0i72Ag-2Q2nj8yDVUZnZ0-k13zBSPRRdqCcd9puqDi0dBbJUnD1s89rFn1UFZjBSwruMcZtg6p1fIjMhTfPOaj33sjLRuznADWse_75dNXmi3u6tj8La7IrrWqt9YdoMgucQg8ey-UT5e_-8-O2uN5Mrzhl5rlzVeamqTIyJhRUGqneYsmApW9kDNOo9RvFyI5Pm4WrCVp3r9z47E3eHawJqMdjGeK5a2y4He2OeWd8C2njBkvtUTKucMuQVHf19WK7BuwBH-bOQJTTmkXUKvwoZmpd0T2ERAINg2I2YHkBo9mf6rde_ui6Qx6k5D15q-xeQ_0TOfPvBXtom_alNIWYU5QrYnknW9VdrvUVihR-tloAYzq1M4pfu26BficSRVmw6LZKg",
-            "Ab43m-vQ5zxMkoqdR6Ir8TUvaBbr3k9FT1RWnOLBOsIadcP5FpinV7SCK8ZCmoTynISEu8zdaYvJTNmtP9nBqtx9vPwTEWyu8HZbLrTRbsVW9o4_1nZmB6yfnFYvddRDSzlrYzMVQ6eHb3b-heU5okthUXg_4nce5jHab8_7GIk2c_Ucz4TMvZ_GnPT79cX5_1M4xZt0BTSL5un5OCOIfCyUPfv7S5TcJQSI6IQDZfprXBpWVBfc4sho57CBAOkoWQd0ndtpoGtwhEX4uxBItgWskA6pm6dS1gggBQtDHVlKGTU31RqgKHaup3it-XYF7EMfo2Zz2hOp2x_K4m_-VJ9Wwhtn3ypJvs59wLrNpqF-mFhP-ne9tb0yCE1t54XwPF6JC4AB1GD-I3iL9iYfNV7swsuWwKK6h8A2ryDDWGC5LdDDmtFr",
-            "Ab43m-t3ikH3vapGSRZBEa69yWaGxEfHCrZYFTc5H3_PeSdHcUDwDdrbrSYtYk8zvau4RuUoY_GNpDm6yg7HQCsV0X2VAvrvpYTBLur7brj8C8C7UdmIYT0NLg5n8NEoFQ64QaEPk2PGvith_tXfw4yfMMHt07TUOYsjZojrG_LsP6vQrG74-tWdPVf6ggSWufRcDOwoS1l6IteudQkP6B37RPyJ4ZhFVQx96oh7mvbx-ugQnkrolW6pLrZfp2YXZ5agsxIS_wsUHCfV-AUYmXikKg6iEpfmJtoA0zizJhgcDSAGCia62gcNTm3Z9KVclXQ7gicGPABw-3TP6S2cyHSu-sFm7uq2n8DUjMdTdD6vwRSirEO_ytc5E20sZT1KFKXmJROa9gKAL6wn2OkHPEEYnryUWBUNr18LOZSZnVrn7Kg",
-            "Ab43m-smH4mKOVaN5QmMwp-4tuNB6gvAB47t_sWYQozcdlKZdPviEIFR9VdGXtiCt1ufzmstLf7fdI4quqfmbKRk9vB3-RLy4MoSAFX1p8NPX0DAzFzDTuVRP0H_TKJS4vDi3RBEj1Zyt3i2n0lEqVFlMnqqXRzWZUDMxcSiDPtEtSPuB0jw5XE-zjprQm5yk_ZGBrSg9GDl16BkrqRJ4pPRJgQNd070M0dhr9x-PL9cxXTG6aIFg0EvyvjbV0AYIQ4g_MauR3RVt_gRLgOlFEyyBfSF9PIY7082ovrCfkm4UmyF9jyGsGYzN1RyPG5xcQckdav6FwvOknfnNr2GkAJXS7ybohhsPZJxsPf2nTCYzlNhvs3oZ2cCspQEskSOYLIq2Jh0gBM5dILfje674PLMvv4EG8kM2pt_n1zAsZTolGtmTbg",
-            "Ab43m-tKhnehtAztkkUInd5l5ZXPGdLkaydEYJFGfxfHMmcDBS6Y3LJL3CjbiVcfQlrhzpE31rEhYjCAOq6j75V4-X5zZcZHpXqu4W19ZfETBBPsSsJt2mGEYKAZzHLfSYowQvIakwqTA8Vq8xpAhlT_XOpvfO8A83WUyy6Ix3gTVc2_Qy8TGAOI1Yka8_ussmA-uHTKID7m9_4-hwmOBNdSw_jyKraPGqr9OwNt8zncuS4fygJM3pFshLyjmR4o5mZ5OPVFFw0DRfsNJZ0d2bMPANWSKxu5w4X3_B7QHBZyiDuMjwcP6olesnQJwqkBcg0kwqtFrgj6bcs088NuGp_PbJ3tPhA8PE2b7GgfVqWj9HnZDXGX0kdvbmFrMYCw96MmOFragiHKH0oeIRtzlCmX-kuEUsnqADLWQd8cm2I",
-            "Ab43m-tZtCayomC9_Mt2QT4Y3SrbqDQsolhhOja5YyzcDJQzjeKJEcahymE6PIg7YIlmPYEOodY5B99oZOwSmy3wpYOmJwqwsIOmOakDgmxKQKtZX7t28zee8EOmshYRVURB40PIuv29t9glq34oNwslMWAFktLsfCHkRg9Y9VuzmP3FQrfrg5NNSVLBg4wwwgmSFVa84QTTYita-CiroDABd-tvbgaJrUH_z9oxKI51igma1YnoDy7McKvIaTC89tS_W2SwdyAgUalwm8cfYZtKRnvIRCq0rIoaeujgfiemnaXjcw",
-            "Ab43m-ubB0jcfs87khrtgLxZFlvV9v7EdQ210otgegTp__kdQ09XCfI3qxaTFHl8PgqOIkpFTC969_2AgRPAInh4vH5CORnwBsCLpV6tyxRck-HE9kbE6JpbL8f3HxK0ihW1JHU0KiM9edCBJu9y4D599VEV6yp19gh-TDCXM96S-pCA-BbpWcjBKgjjfCkJavC1DMTD60K6ISo-Ee6VfrnOo4IaGUaozqr6akKZsG4Koq0xzgTeSe_CXt-KPyqb_ZxcFGyWt5XYGsvfZfc4rmvc-DKOtChmrZK624HBiZ3bsn1_0Q"
-          ],
-          "opening_hours_verified": {
-            "weekday_text": [
-              "Monday: 6:00 AM – 11:30 PM",
-              "Tuesday: 6:00 AM – 11:30 PM",
-              "Wednesday: 6:00 AM – 11:30 PM",
-              "Thursday: 6:00 AM – 11:30 PM",
-              "Friday: 6:00 AM – 11:30 PM",
-              "Saturday: 6:00 AM – 11:30 PM",
-              "Sunday: 6:00 AM – 11:30 PM"
-            ]
-          },
-          "quota_at_call": {
-            "keyId": "primary",
-            "month": "2026-05",
-            "used": 51,
-            "limit": 11000,
-            "pct": 0.004636363636363636,
-            "capped": false
-          },
-          "photo_urls": [
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656440/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-01-1778656438586-iwtyuc.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-01-1778656438586-iwtyuc",
-              "bytes": 134358,
-              "index": 1,
-              "photo_reference": "Ab43m-s9pDHu2eaNY3N9CHq7D84CSLNn1yUt37bYFBrcgqGIkzuxF9aHf3lScV_N1poZtkUpjSQmFvLyyIE2Batzk5HzicJM_qHO9lZRXTFv0lxgsSk3n7iqawdPqIf5gI2OTzOJaa6NdvMQ3JSfUundAPUZbgjev58OrKR8bnygVXeTGQ3misjZUHj8UvA8N34R05-JhQtURoZu8uUShYfthka6z-uEeQRtqeOrci9ri8Z_VXGlWVY774a3ilMEq9qUOSuenON7B8jHQcrrG0ihw7_xImHUeS8VWBe6zToyxx0Xtg"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656441/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-02-1778656440774-ezxbz3.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-02-1778656440774-ezxbz3",
-              "bytes": 707925,
-              "index": 2,
-              "photo_reference": "Ab43m-uhrAuu-w_aIsJ05UgQA1HVFTBcbIttvxU8wX3-BobuCoLJUzY4hQ9VuKlHUmUkbHkAUZMy2cl6g7Y9X96k9sH8008J_PP3hkuXFNAvucSHMaMUM1EP85qzyP-Kkx2k_N4G6R5ayE_-8Z-FJ9OiLWqX_j7v_lVpS0k9Z2dTEtiIcsMFY3gcl661YyHtu-e5jaBzKoORsx0bHZXg3cNeDE-Yaj7KJqMx0lRlEWvLoHg2R5tSpucv-foZw-z1BEKf_1GVF1afIhcCAlA6zbB7gzm8Tq9n_PPZK6nEj6wFtP4fkawDxXWJpd-gNR15Sr2cW5GymyIOsWM5up4gPwhlHw6g0jOJVfz-PpWEvIatRPx8h4NEezle7vaBBDT7l3q8YAOpnMJfFObTtoC2yMxH2TTAnymYKuVxld6auQvtYqgNwg"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656443/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-03-1778656442416-2xko44.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-03-1778656442416-2xko44",
-              "bytes": 153434,
-              "index": 3,
-              "photo_reference": "Ab43m-vEdiaG6Fkwu70QdeNVqGPlRcMUWgdpna0g-EyftgZbI4lDjeGNMYHaTN_nd2TXFNfKpbztp4mANB7E8G8pToyEwARXV2oZTaBLwIzKu3sDBBneF5kd2Yah6eEARiccVSfCV3-m3-o1hF3psSnyrXcvLDejPCQd4rh4bEKAQfT3aVsXrnPUIW-ildztH-bQludCMS9EhMt75TKuXWR8JSKR3rwPHpcQnfZCWCa3d4LhR_TiLujaaLDhuB3K11yWytZnXWXUVLuFgegrZ1ED90QnKkzSYg69_8peyOsVy8EcEPA1TiruuizfXS7k2la9NnJZojFxof11fitfglLK10X5diZ4jQbmwJuPIGd-8uLh00ptqZeiLPoOoL3OX0netWRBdH1TzlhPS-UYomqhQwA47aQ8P_dVl-4joFhL5TfR3dnt"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656444/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-04-1778656443593-zzvc40.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-04-1778656443593-zzvc40",
-              "bytes": 215027,
-              "index": 4,
-              "photo_reference": "Ab43m-teYmlHoBhyKoutk0YbVPRQwrzAbXq68WQo3a0i72Ag-2Q2nj8yDVUZnZ0-k13zBSPRRdqCcd9puqDi0dBbJUnD1s89rFn1UFZjBSwruMcZtg6p1fIjMhTfPOaj33sjLRuznADWse_75dNXmi3u6tj8La7IrrWqt9YdoMgucQg8ey-UT5e_-8-O2uN5Mrzhl5rlzVeamqTIyJhRUGqneYsmApW9kDNOo9RvFyI5Pm4WrCVp3r9z47E3eHawJqMdjGeK5a2y4He2OeWd8C2njBkvtUTKucMuQVHf19WK7BuwBH-bOQJTTmkXUKvwoZmpd0T2ERAINg2I2YHkBo9mf6rde_ui6Qx6k5D15q-xeQ_0TOfPvBXtom_alNIWYU5QrYnknW9VdrvUVihR-tloAYzq1M4pfu26BficSRVmw6LZKg"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656445/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-05-1778656444937-pqtx8w.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-05-1778656444937-pqtx8w",
-              "bytes": 174673,
-              "index": 5,
-              "photo_reference": "Ab43m-vQ5zxMkoqdR6Ir8TUvaBbr3k9FT1RWnOLBOsIadcP5FpinV7SCK8ZCmoTynISEu8zdaYvJTNmtP9nBqtx9vPwTEWyu8HZbLrTRbsVW9o4_1nZmB6yfnFYvddRDSzlrYzMVQ6eHb3b-heU5okthUXg_4nce5jHab8_7GIk2c_Ucz4TMvZ_GnPT79cX5_1M4xZt0BTSL5un5OCOIfCyUPfv7S5TcJQSI6IQDZfprXBpWVBfc4sho57CBAOkoWQd0ndtpoGtwhEX4uxBItgWskA6pm6dS1gggBQtDHVlKGTU31RqgKHaup3it-XYF7EMfo2Zz2hOp2x_K4m_-VJ9Wwhtn3ypJvs59wLrNpqF-mFhP-ne9tb0yCE1t54XwPF6JC4AB1GD-I3iL9iYfNV7swsuWwKK6h8A2ryDDWGC5LdDDmtFr"
-            },
-            {
-              "url": "https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656446/profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-06-1778656445805-lnsilx.jpg",
-              "publicId": "profitslocal/main-site/clients/place_chij-9wdzxxakwsr-lljrd1u3jq/places-photos/gmb/photo-06-1778656445805-lnsilx",
-              "bytes": 184439,
-              "index": 6,
-              "photo_reference": "Ab43m-t3ikH3vapGSRZBEa69yWaGxEfHCrZYFTc5H3_PeSdHcUDwDdrbrSYtYk8zvau4RuUoY_GNpDm6yg7HQCsV0X2VAvrvpYTBLur7brj8C8C7UdmIYT0NLg5n8NEoFQ64QaEPk2PGvith_tXfw4yfMMHt07TUOYsjZojrG_LsP6vQrG74-tWdPVf6ggSWufRcDOwoS1l6IteudQkP6B37RPyJ4ZhFVQx96oh7mvbx-ugQnkrolW6pLrZfp2YXZ5agsxIS_wsUHCfV-AUYmXikKg6iEpfmJtoA0zizJhgcDSAGCia62gcNTm3Z9KVclXQ7gicGPABw-3TP6S2cyHSu-sFm7uq2n8DUjMdTdD6vwRSirEO_ytc5E20sZT1KFKXmJROa9gKAL6wn2OkHPEEYnryUWBUNr18LOZSZnVrn7Kg"
-            }
-          ],
-          "photos_downloaded_at": "2026-05-13T07:14:06.725Z"
-        },
-        "sales_signals": {
-          "best_contact_time": {
-            "suggested_window": "Tue / Wed / Thu 10:00 – 12:00 (local)",
-            "confidence": "high",
-            "rationale": "工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间",
-            "weekday_summary": "Mon: 06:00-23:30 · Tue: 06:00-23:30 · Wed: 06:00-23:30 · Thu: 06:00-23:30 · Fri: 06:00-23:30 · Sat: 06:00-23:30 · Sun: 06:00-23:30",
-            "days_open": 7,
-            "days_closed": 0,
-            "source": "places_api.opening_hours.weekday_text",
-            "computed_at": "2026-05-13T07:13:52.520Z"
           }
         }
       }
@@ -3745,51 +5947,6 @@
       }
     },
     {
-      "entityKey": "place_chijrq6qulnbkwsruettr7eegyc",
-      "status": "skipped",
-      "firstSeenAt": "2026-05-09T10:53:53.252Z",
-      "lastSeenAt": "2026-05-09T10:53:53.252Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJrQ6qULNbkWsRUEttr7eeGYc",
-        "cid": "9734986581297417040",
-        "data_id": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
-        "websiteDomain": "aceroofingservice.com.au",
-        "phoneDigits": "0449168985"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Ace Roofing Service",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor"
-        ],
-        "address": "72 Queen St, Brisbane City QLD 4000",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "0449 168 985",
-        "website": "https://aceroofingservice.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Ace+Roofing+Service/data=!4m7!3m6!1s0x6b915bb350aa0ead:0x87199eb7af6d4b50!8m2!3d-27.4701995!4d153.023841!16s%2Fg%2F11lmp8hp4y!19sChIJrQ6qULNbkWsRUEttr7eeGYc?authuser=0&hl=en&rclk=1",
-        "rating": 5,
-        "review_count": 36,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 27,
-        "recommendedAction": "skip",
-        "sourceQuery": "roof restoration in Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 5,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": false
-        }
-      }
-    },
-    {
       "entityKey": "place_chijs5iymfbxkwsrupfzt6iwdyy",
       "status": "skipped",
       "firstSeenAt": "2026-05-09T10:53:53.252Z",
@@ -3830,52 +5987,6 @@
           "hasReservationLink": false,
           "hasOrderOnlineLink": false,
           "imageCount": 5,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
-      "entityKey": "place_chijsypmtxxakwsrj5ytlt8t_pe",
-      "status": "skipped",
-      "firstSeenAt": "2026-05-09T06:17:12.131Z",
-      "lastSeenAt": "2026-05-09T10:53:53.252Z",
-      "runCount": 4,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJSypmTxxakWsRj5ytLt8t_PE",
-        "cid": "17436862293855804559",
-        "data_id": "0x6b915a1c4f662a4b:0xf1fc2ddf2ead9c8f",
-        "websiteDomain": "proroofrestorationbrisbane.com.au",
-        "phoneDigits": "0730628404"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Pro Roof Restoration Brisbane",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor",
-          "Building restoration service"
-        ],
-        "address": "Riparian Plaza, 36/71 Eagle St, Brisbane City QLD 4000",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "(07) 3062 8404",
-        "website": "https://www.proroofrestorationbrisbane.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Pro+Roof+Restoration+Brisbane/data=!4m7!3m6!1s0x6b915a1c4f662a4b:0xf1fc2ddf2ead9c8f!8m2!3d-27.46817!4d153.0304744!16s%2Fg%2F11gy6jvjlh!19sChIJSypmTxxakWsRj5ytLt8t_PE?authuser=0&hl=en&rclk=1",
-        "rating": 5,
-        "review_count": 16,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 27,
-        "recommendedAction": "skip",
-        "sourceQuery": "roof restoration in Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 4,
           "hasPopularTimes": false,
           "hasAboutAttributes": true
         }
@@ -4759,96 +6870,6 @@
           "hasReservationLink": false,
           "hasOrderOnlineLink": false,
           "imageCount": 5,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
-      "entityKey": "place_chijutib72nzkwsrbyxejwlcviw",
-      "status": "skipped",
-      "firstSeenAt": "2026-05-09T06:17:12.131Z",
-      "lastSeenAt": "2026-05-09T06:20:00.519Z",
-      "runCount": 3,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJUTib72NZkWsRByXEJwLCViw",
-        "cid": "3194954300178834695",
-        "data_id": "0x6b915963ef9b3851:0x2c56c20227c42507",
-        "websiteDomain": "thebrisbaneroofrepairers.com",
-        "phoneDigits": "0736081803"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Brisbane Roofing - Brisbane Roof Repairers",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor"
-        ],
-        "address": "28/135c Macquarie St, Teneriffe QLD 4005",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "(07) 3608 1803",
-        "website": "https://www.thebrisbaneroofrepairers.com/?utm_campaign=gmb",
-        "google_maps_url": "https://www.google.com/maps/place/Brisbane+Roofing+-+Brisbane+Roof+Repairers/data=!4m7!3m6!1s0x6b915963ef9b3851:0x2c56c20227c42507!8m2!3d-27.4565109!4d153.0502189!16s%2Fg%2F11rtsskmsd!19sChIJUTib72NZkWsRByXEJwLCViw?authuser=0&hl=en&rclk=1",
-        "rating": 5,
-        "review_count": 9,
-        "websiteStatus": "independent_https_site",
-        "discoveryScore": 27,
-        "recommendedAction": "skip",
-        "sourceQuery": "roof restoration New Farm Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": false,
-          "imageCount": 4,
-          "hasPopularTimes": false,
-          "hasAboutAttributes": true
-        }
-      }
-    },
-    {
-      "entityKey": "place_chijv-giozdakwsrr3uzcww7y8s",
-      "status": "skipped",
-      "firstSeenAt": "2026-05-09T06:17:12.131Z",
-      "lastSeenAt": "2026-05-09T06:20:00.519Z",
-      "runCount": 3,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "ChIJV-gIozdakWsRr3uZCWW7y8s",
-        "cid": "14685037052598778799",
-        "data_id": "0x6b915a37a308e857:0xcbcbbb6509997baf",
-        "websiteDomain": "rooroofing.com.au",
-        "phoneDigits": "1300734148"
-      },
-      "latest": {
-        "sourceType": "maps_scraper",
-        "name": "Roo Roofing",
-        "category": "Roofing contractor",
-        "categories": [
-          "Roofing contractor"
-        ],
-        "address": "79 Cambridge St, Coorparoo QLD 4151",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "1300 734 148",
-        "website": "http://www.rooroofing.com.au/",
-        "google_maps_url": "https://www.google.com/maps/place/Roo+Roofing/data=!4m7!3m6!1s0x6b915a37a308e857:0xcbcbbb6509997baf!8m2!3d-27.4888792!4d153.05235!16s%2Fg%2F1v8j0m0n!19sChIJV-gIozdakWsRr3uZCWW7y8s?authuser=0&hl=en&rclk=1",
-        "rating": 4.6,
-        "review_count": 40,
-        "websiteStatus": "independent_http_site",
-        "discoveryScore": 46,
-        "recommendedAction": "skip",
-        "sourceQuery": "roof restoration New Farm Brisbane",
-        "signals": {
-          "hasPhone": true,
-          "hasWebsite": true,
-          "hasMenuLink": false,
-          "hasReservationLink": false,
-          "hasOrderOnlineLink": true,
-          "imageCount": 6,
           "hasPopularTimes": false,
           "hasAboutAttributes": true
         }

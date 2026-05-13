@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "task_id": "20260513-061422-7f359d",
   "created_at": "2026-05-13T06:14:22.257Z",
-  "updated_at": "2026-05-13T06:14:22.257Z",
+  "updated_at": "2026-05-13T12:29:40.652Z",
   "kind": "audit",
-  "status": "pending",
+  "status": "done",
   "source": {
     "platform": "internal",
     "thread_id": null,
@@ -26,11 +26,27 @@
   },
   "result": {
     "entity_keys": [],
-    "exit_code": null,
-    "duration_ms": null,
+    "exit_code": 0,
+    "duration_ms": 331,
     "cost_usd": null
   },
-  "progress": [],
+  "progress": [
+    {
+      "at": "2026-05-13T12:29:40.319Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijm9ktrjpxkwsrqk_e81qjagq"
+    },
+    {
+      "at": "2026-05-13T12:29:40.651Z",
+      "step": "cli.stream",
+      "detail": "───────┴───────┴─────────────┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"place_chijm9ktrjpxkwsrqk_e81qjagq\",\n      \"ok\": false,\n      \"reason\": \"no entity\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:29:40.652Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=331ms"
+    }
+  ],
   "error": null,
   "discord": {
     "thread_id": null,

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "task_id": "20260513-060936-b0b878",
   "created_at": "2026-05-13T06:09:36.023Z",
-  "updated_at": "2026-05-13T06:09:36.023Z",
+  "updated_at": "2026-05-13T12:29:40.752Z",
   "kind": "ops",
-  "status": "pending",
+  "status": "done",
   "source": {
     "platform": "internal",
     "thread_id": null,
@@ -26,11 +26,27 @@
   },
   "result": {
     "entity_keys": [],
-    "exit_code": null,
-    "duration_ms": null,
+    "exit_code": 0,
+    "duration_ms": 383,
     "cost_usd": null
   },
-  "progress": [],
+  "progress": [
+    {
+      "at": "2026-05-13T12:29:40.356Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijaq1hdcrmkwsrjmh902vjk-m"
+    },
+    {
+      "at": "2026-05-13T12:29:40.751Z",
+      "step": "cli.stream",
+      "detail": "{\n      \"entityKey\": \"place_chijaq1hdcrmkwsrjmh902vjk-m\",\n      \"slug\": \"motorone-autobody-cleveland\",\n      \"md\": \"clients/motorone-autobody-cleveland/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:29:40.752Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=383ms"
+    }
+  ],
   "error": null,
   "discord": {
     "thread_id": null,

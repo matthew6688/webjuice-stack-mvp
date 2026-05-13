@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "task_id": "20260513-061222-cfd9c2",
   "created_at": "2026-05-13T06:12:22.269Z",
-  "updated_at": "2026-05-13T06:12:22.269Z",
+  "updated_at": "2026-05-13T12:29:40.653Z",
   "kind": "ops",
-  "status": "pending",
+  "status": "done",
   "source": {
     "platform": "internal",
     "thread_id": null,
@@ -26,11 +26,27 @@
   },
   "result": {
     "entity_keys": [],
-    "exit_code": null,
-    "duration_ms": null,
+    "exit_code": 0,
+    "duration_ms": 330,
     "cost_usd": null
   },
-  "progress": [],
+  "progress": [
+    {
+      "at": "2026-05-13T12:29:40.321Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_elitedetailco.com.au"
+    },
+    {
+      "at": "2026-05-13T12:29:40.652Z",
+      "step": "cli.stream",
+      "detail": "\"count\": 1,\n  \"results\": [\n    {\n      \"entityKey\": \"domain_elitedetailco.com.au\",\n      \"slug\": \"elite-detail-co\",\n      \"md\": \"clients/elite-detail-co/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:29:40.653Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=330ms"
+    }
+  ],
   "error": null,
   "discord": {
     "thread_id": null,

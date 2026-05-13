@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124226-77fbfa",
+  "created_at": "2026-05-13T12:42:26.091Z",
+  "updated_at": "2026-05-13T12:42:26.790Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijw76y3bpakwsrxyeqwsvjp4k (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijw76y3bpakwsrxyeqwsvjp4k"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 496,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:42:26.293Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijw76y3bpakwsrxyeqwsvjp4k"
+    },
+    {
+      "at": "2026-05-13T12:42:26.790Z",
+      "step": "cli.stream",
+      "detail": ": 1,\n  \"results\": [\n    {\n      \"entityKey\": \"place_chijw76y3bpakwsrxyeqwsvjp4k\",\n      \"slug\": \"coffee-anthology\",\n      \"md\": \"clients/coffee-anthology/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:42:26.790Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=496ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

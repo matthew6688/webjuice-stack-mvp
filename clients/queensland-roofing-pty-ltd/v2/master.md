@@ -1,7 +1,7 @@
 ---
 business_id: "place_chij-9wdzxxakwsr-lljrd1u3jq"
 business_name: "Queensland Roofing Pty Ltd"
-niche: "roofing"
+niche: "roofer"
 city: "Brisbane"
 rating: 4.5
 review_count: 35
@@ -18,7 +18,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-13T07:33:57.023Z"
+generated_at: "2026-05-13T12:43:50.029Z"
 assets:
   cloudinary_folder: null
   evidence_count: 10
@@ -29,7 +29,7 @@ assets:
 
 # Queensland Roofing Pty Ltd · 现状审计与重构提议
 
-> **23/100** · strong_redesign · 行业：roofing · 地区：Brisbane · Google 评价：4.5★ （35 条）
+> **23/100** · strong_redesign · 行业：roofer · 地区：Brisbane · Google 评价：4.5★ （35 条）
 
 ## 内部分级 · 运营优先看这段
 
@@ -43,7 +43,7 @@ assets:
 
 - 中等口碑 / 多业务分类 / 想要月度维护关系 — T2 annual maintenance 合适
 - 35 评论 = 中等规模运营
-- 2 个业务分类 = 多服务线 → 维护包合适
+- 3 个业务分类 = 多服务线 → 维护包合适
 
 **建议报价：** 一次性 null
 
@@ -52,16 +52,18 @@ assets:
 ## 一、店家现状速览
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Maps (gosom 抓取)
-- **搜索关键词**: `roof restoration New Farm Brisbane`
+- **来源**: Google Places API (官方搜索)
+- **搜索关键词**: `roofer brisbane`
+- **结果排名**: 第 15 位
 - **首次发现**: 2026-05-09
+- **Batch**: `places-roofer-brisbane-202605132243`
 
 **审计结论：** audit_score=23 → strong_redesign · weakest: ux_conversion 0, content 10 · fired: mobile_broken, no_https, no_visible_cta_or_phone · 3 critical issues
 
 **已触发的 hard triggers：** `mobile_broken` · `no_https` · `no_visible_cta_or_phone`
 
 - 电话：0489 263 653
-- 地址：19/10 Eagle St, Brisbane City QLD 4000
+- 地址：19/10 Eagle St, Brisbane City QLD 4000, Australia
 - 网站：[http://www.queenslandroofing.com.au/](http://www.queenslandroofing.com.au/)
 - 网站状态：`independent_http_site`
 

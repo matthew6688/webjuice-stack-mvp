@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124401-0e994f",
+  "created_at": "2026-05-13T12:44:01.095Z",
+  "updated_at": "2026-05-13T12:44:01.653Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chiju1qudf0rkwsrfigoacw6r6i (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chiju1qudf0rkwsrfigoacw6r6i"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 302,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:44:01.350Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chiju1qudf0rkwsrfigoacw6r6i"
+    },
+    {
+      "at": "2026-05-13T12:44:01.653Z",
+      "step": "cli.stream",
+      "detail": "s\": [\n    {\n      \"entityKey\": \"place_chiju1qudf0rkwsrfigoacw6r6i\",\n      \"slug\": \"prime-roof-restorations\",\n      \"md\": \"clients/prime-roof-restorations/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:44:01.653Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=302ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

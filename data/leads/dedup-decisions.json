@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "decisions": [
+    {
+      "at": "2026-05-13T12:42:32.618Z",
+      "k1": "place_chijmqtvedvbkwsrj4vrmfjbpio",
+      "k2": "place_chijz3ixegrakwsry-ejbzd5w70",
+      "decision": "different",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两家店电话、地址及名称均不同，虽同属 Brisbane 且域名相似，但实体关键信息无重合，判定为不同商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "facebook.com"
+      },
+      "fields_supporting_same": [
+        "website_domain",
+        "city",
+        "niche"
+      ],
+      "fields_supporting_different": [
+        "name",
+        "phone",
+        "address",
+        "place_id",
+        "entityKey"
+      ]
+    },
+    {
+      "at": "2026-05-13T12:44:31.544Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网站域名、名称及业态完全一致，属同一家企业不同办公点。地址差异符合商家多址经营特征，判定为重复。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0752305802"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "name",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": [
+        "address"
+      ]
+    },
+    {
+      "at": "2026-05-13T12:44:54.831Z",
+      "k1": "place_chijbwkegeqfkwsrcih6mkenmim",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.9,
+      "reasoning": "名称、电话、域名及业务类型完全一致，地址同属 Gold Coast 区域，极可能为同一商家不同办公点或数据录入差异。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "niche",
+        "city"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id",
+        "entityKey"
+      ]
+    },
+    {
+      "at": "2026-05-13T12:45:03.568Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、店名完全一致，业态均为屋顶工程。地址差异属办公与施工点分离，非不同商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "name",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id",
+        "entityKey"
+      ]
+    }
+  ]
+}

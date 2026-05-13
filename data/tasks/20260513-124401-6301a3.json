@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124401-6301a3",
+  "created_at": "2026-05-13T12:44:01.093Z",
+  "updated_at": "2026-05-13T12:44:01.646Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijyea4nogtkwsrmguykw1tdyg (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijyea4nogtkwsrmguykw1tdyg"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 297,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:44:01.347Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijyea4nogtkwsrmguykw1tdyg"
+    },
+    {
+      "at": "2026-05-13T12:44:01.646Z",
+      "step": "cli.stream",
+      "detail": "\"results\": [\n    {\n      \"entityKey\": \"place_chijyea4nogtkwsrmguykw1tdyg\",\n      \"slug\": \"qld-roof-solutions\",\n      \"md\": \"clients/qld-roof-solutions/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:44:01.646Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=297ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

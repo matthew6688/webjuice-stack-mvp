@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260513-124226-4f046c",
+  "created_at": "2026-05-13T12:42:26.102Z",
+  "updated_at": "2026-05-13T12:42:26.840Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijjxrdbtpbkwsrb6nkvrzq9si (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijjxrdbtpbkwsrb6nkvrzq9si"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 388,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-13T12:42:26.440Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijjxrdbtpbkwsrb6nkvrzq9si"
+    },
+    {
+      "at": "2026-05-13T12:42:26.839Z",
+      "step": "cli.stream",
+      "detail": "count\": 1,\n  \"results\": [\n    {\n      \"entityKey\": \"place_chijjxrdbtpbkwsrb6nkvrzq9si\",\n      \"slug\": \"florence-cafe\",\n      \"md\": \"clients/florence-cafe/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-13T12:42:26.840Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=388ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}
