@@ -488,8 +488,15 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
     category: clean(lead.category || entity.latest?.category),
     categories: Array.isArray(lead.categories) ? lead.categories : entity.latest?.categories || [],
     address: clean(lead.address || entity.latest?.address),
-    city: clean(lead.city || run.city || entity.latest?.city),
-    niche: clean(lead.niche || run.niche || entity.latest?.niche),
+    // V3 bug fix #9: normalize city to Title Case (was inconsistent:
+    // gold-coast / brisbane / Brisbane depending on entry). Hyphens → spaces.
+    city: normalizeCity(clean(lead.city || run.city || entity.latest?.city)),
+    // V3 bug fix #6: places-search-intake leaves niche empty. Fallback to
+    // sourceQuery first word + GMB categories before giving up.
+    niche: normalizeNiche(
+      clean(lead.niche || run.niche || entity.latest?.niche),
+      { categories: lead.categories || entity.latest?.categories, sourceQuery: lead.sourceQuery || run.query }
+    ),
     phone: clean(lead.phone || entity.latest?.phone),
     website: clean(lead.website || entity.latest?.website),
     google_maps_url: clean(lead.google_maps_url || entity.latest?.google_maps_url),
@@ -656,6 +663,38 @@ function countBy(items, getKey) {
 
 function clean(value) {
   return String(value || '').trim();
+}
+
+// V3 bug fix #9: normalize city across 4 entry points.
+// Examples: "brisbane" → "Brisbane" · "gold-coast" → "Gold Coast" · "Brisbane" → "Brisbane"
+function normalizeCity(value) {
+  const s = String(value || '').trim();
+  if (!s) return '';
+  // Replace hyphens/underscores with spaces, then Title Case each word.
+  return s.replace(/[-_]+/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ');
+}
+
+// V3 bug fix #6: niche fallback chain — explicit lead.niche → GMB categories
+// first word → sourceQuery first 2 words minus the city. Catches places-search
+// case where lead has no niche field but search was for "panel beater Brisbane".
+function normalizeNiche(value, { categories, sourceQuery } = {}) {
+  const s = String(value || '').trim();
+  if (s) return s;
+  if (Array.isArray(categories) && categories.length) {
+    const first = String(categories[0] || '').trim();
+    if (first) return first.toLowerCase();
+  }
+  const q = String(sourceQuery || '').trim();
+  if (q) {
+    // Strip common city words; take first 1-2 meaningful tokens
+    const tokens = q.toLowerCase().split(/\s+/).filter(t => t && !['brisbane', 'sydney', 'melbourne', 'perth', 'adelaide', 'gold', 'coast', 'sunshine', 'in', 'near', 'the'].includes(t));
+    if (tokens.length) return tokens.slice(0, 2).join(' ');
+  }
+  return '';
 }
 
 function hostname(value) {

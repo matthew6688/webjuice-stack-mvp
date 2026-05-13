@@ -1,0 +1,221 @@
+{
+  "overall": "PASS",
+  "total_steps": 18,
+  "passed": 18,
+  "failed": 0,
+  "ran_at": "2026-05-13T06:38:58.191Z",
+  "output_dir": "/Users/matthew/Developer/google-map-website-v3/data/qa/e2e-4-entry-e2e-2026-05-13T06-38",
+  "entries": [
+    {
+      "name": "Entry 1 · pl:places-search-intake",
+      "steps": [
+        {
+          "label": "search \"panel beater Brisbane\" · limit 2",
+          "passed": true,
+          "error": null,
+          "took_ms": 6120,
+          "data": {
+            "stdout_len": 1116
+          }
+        },
+        {
+          "label": "at least 1 entity touched (new or updated)",
+          "passed": true,
+          "error": null,
+          "took_ms": 2,
+          "data": {
+            "touched_count": 2,
+            "sample": "place_chijaq1hdcrmkwsrjmh902vjk-m"
+          }
+        },
+        {
+          "label": "entity has discoveryScore + name",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "name": "MotorOne Autobody - Cleveland",
+            "score": 23
+          }
+        },
+        {
+          "label": "build master.md",
+          "passed": true,
+          "error": null,
+          "took_ms": 179,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md exists with 5 required Chinese sections",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "slug": "motorone-autobody-cleveland",
+            "path": "/Users/matthew/Developer/google-map-website-v3/clients/motorone-autobody-cleveland/v2/master.md",
+            "length": 2075
+          }
+        }
+      ],
+      "entityKeys": [
+        "place_chijaq1hdcrmkwsrjmh902vjk-m",
+        "place_chij1chyvdbmkwsrmwnwsnerldy"
+      ],
+      "started_at": "2026-05-13T06:38:44.663Z"
+    },
+    {
+      "name": "Entry 2 · pl:single-enrich",
+      "steps": [
+        {
+          "label": "single-enrich \"Sky High Roofing\"",
+          "passed": true,
+          "error": null,
+          "took_ms": 1143,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "at least 1 entity touched",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "touched_count": 1,
+            "sample": "place_chijm9ktrjpxkwsrqk_e81qjagq"
+          }
+        },
+        {
+          "label": "build master.md for single-enriched entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 167,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "slug": "brisbane",
+            "length": 1515
+          }
+        }
+      ],
+      "entityKeys": [
+        "place_chijm9ktrjpxkwsrqk_e81qjagq"
+      ],
+      "started_at": "2026-05-13T06:38:50.965Z"
+    },
+    {
+      "name": "Entry 3 · pl:scrape-docker (gosom)",
+      "steps": [
+        {
+          "label": "scrape \"auto detail brisbane\" · 2 results",
+          "passed": true,
+          "error": null,
+          "took_ms": 5406,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "at least 1 entity touched by gosom",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "touched_count": 3,
+            "sample": "domain_obsidiandetailing.com.au"
+          }
+        },
+        {
+          "label": "entity has discoveryScore",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "score": 34,
+            "name": "Obsidian Mobile Car Detailing Brisbane"
+          }
+        },
+        {
+          "label": "build master.md for scraped entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 165,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "slug": "obsidian-mobile-car-detailing-brisbane",
+            "length": 1762
+          }
+        }
+      ],
+      "entityKeys": [
+        "domain_obsidiandetailing.com.au",
+        "domain_elitedetailco.com.au"
+      ],
+      "started_at": "2026-05-13T06:38:52.277Z"
+    },
+    {
+      "name": "Entry 4 · pl:ingest-image",
+      "steps": [
+        {
+          "label": "ingest fake image lead",
+          "passed": true,
+          "error": null,
+          "took_ms": 179,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "image_* entity touched",
+          "passed": true,
+          "error": null,
+          "took_ms": 1,
+          "data": {
+            "touched_count": 1,
+            "sample": "image_e2e-image-lead-roofing_0419876543"
+          }
+        },
+        {
+          "label": "build master.md for image entity",
+          "passed": true,
+          "error": null,
+          "took_ms": 163,
+          "data": {
+            "ok": true
+          }
+        },
+        {
+          "label": "master.md present + required sections",
+          "passed": true,
+          "error": null,
+          "took_ms": 0,
+          "data": {
+            "slug": "e2e-image-lead-roofing",
+            "length": 1531
+          }
+        }
+      ],
+      "entityKeys": [
+        "image_e2e-image-lead-roofing_0419876543"
+      ],
+      "started_at": "2026-05-13T06:38:57.848Z"
+    }
+  ]
+}

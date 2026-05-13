@@ -140,8 +140,12 @@ function classifyInvestment(ctx) {
     return { level: 'C', factors };
   }
 
-  // Default fallback
-  factors.push(`未明确决策类型: ${decision}`);
+  // Default fallback · audit 还没跑 / decision 为空时
+  if (decision == null || decision === '' || decision === 'undefined') {
+    factors.push('audit 未运行 · 默认 C 等待 audit 后重新分级');
+  } else {
+    factors.push(`未明确决策类型: ${decision}`);
+  }
   return { level: 'C', factors };
 }
 

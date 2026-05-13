@@ -1,0 +1,26 @@
+
+> webjuice-mvp@0.0.1 pl:single-enrich
+> node --env-file-if-exists=.env.local scripts/cli/pl-single-enrich.js --name Sky High Roofing Brisbane --phone 0731234567 --city Brisbane --niche roofer
+
+[pl:single-enrich] signals: {"businessName":null,"phone":"0731234567","email":null,"website":null,"niche":"roofer","city":"Brisbane","gbpUrl":null}
+  · places.text_search · Brisbane
+  · places.top_pick · ChIJM9KTrJpXkWsRQK_e81qjAgQ from 1 candidates
+  · places.details_start · ChIJM9KTrJpXkWsRQK_e81qjAgQ
+  · places.details_done · Brisbane
+[pl:single-enrich] ✓ Places resolved · place_id=ChIJM9KTrJpXkWsRQK_e81qjAgQ · "Brisbane"
+[pl:single-enrich] entity: place_chijm9ktrjpxkwsrqk_e81qjagq
+[pl:single-enrich] ✓ chained audit task: 20260513-063852-5dab00
+{
+  "ok": true,
+  "place_id": "ChIJM9KTrJpXkWsRQK_e81qjAgQ",
+  "entity_key": "place_chijm9ktrjpxkwsrqk_e81qjagq",
+  "name": "Brisbane",
+  "phone": "0731234567",
+  "website": null,
+  "address": "Brisbane QLD, Australia",
+  "niche": "roofer",
+  "city": "Brisbane",
+  "audit_chained": "20260513-063852-5dab00",
+  "duration_ms": 978,
+  "cost_estimate": 0.017
+}

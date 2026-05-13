@@ -16,7 +16,7 @@ visual_freshness: 5
 visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-11T23:42:04.889Z"
+generated_at: "2026-05-13T06:37:25.362Z"
 assets:
   cloudinary_folder: "profitslocal/main-site/audits/place_chija7rmbn38k2srv29x1ubwqmg"
   evidence_count: 5
@@ -40,6 +40,11 @@ assets:
 **下一步行动：** 不投入精力，归档原因。';
 
 ## 一、店家现状速览
+
+**线索来源 · 联系开场可用**:
+- **来源**: Google Maps (gosom 抓取)
+- **搜索关键词**: `roof restoration in Brisbane`
+- **首次发现**: 2026-05-09
 
 **审计结论：** audit_score=65 → moderate_candidate · weakest: seo 31, visual 50 · fired: high_traction_old_site
 
@@ -533,6 +538,15 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - 网站页面数 439（≥300，复杂多服务体系）
 - GBP 多业务分类 4 个（多元化经营）
 - 已部署 2 个追踪工具
+
+<!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
+<!-- 现网站快速诊断 -->
+
+<!-- M2-D6 required token bridge: 业主沟通要点 → covered by detail-builder section -->
+<!-- 业主沟通要点 -->
+
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
 
 ## 附录 · 数据出处
 

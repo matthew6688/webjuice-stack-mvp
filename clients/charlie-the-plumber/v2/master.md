@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-12T22:02:55.265Z"
+generated_at: "2026-05-13T06:37:23.791Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -39,6 +39,11 @@ assets:
 
 ## 一、店家现状速览
 
+## 二、销售切入点
+
+**TBD · audit 不完整**
+
+
 **线索来源 · 联系开场可用**:
 - **来源**: 指定客户解析 (single-enrich)
 - **搜索关键词**: `Charlie The Plumber gold-coast`
@@ -48,7 +53,7 @@ assets:
 - 地址：Servicing the Gold Coast for 40 Years, 2/11 Hinde St, Ashmore QLD 4214, Australia
 - 网站：[https://charlietheplumber.com.au/](https://charlietheplumber.com.au/)
 
-## 二、客户访问时看到的页面
+## 三、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
 
@@ -65,6 +70,17 @@ assets:
 
 **触发依据：**
 - Google 评价 165 条（≥50，有规模基础）
+
+## 现网站快速诊断
+
+**TBD · audit 不完整**
+
+## 业主沟通要点
+
+**TBD · audit 不完整**
+
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
 
 ## 附录 · 数据出处
 

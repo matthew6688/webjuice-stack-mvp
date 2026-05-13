@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chijaq1hdcrmkwsrjmh902vjk-m",
   "firstSeenAt": "2026-05-13T06:09:36.005Z",
-  "lastSeenAt": "2026-05-13T06:14:19.149Z",
+  "lastSeenAt": "2026-05-13T06:38:48.721Z",
   "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-13T06:14:19.149Z",
+  "lastStatusAt": "2026-05-13T06:38:48.721Z",
   "identifiers": {
     "place_id": "ChIJAQ1HdcRmkWsRjMH902vJK-M",
     "cid": "",
@@ -22,8 +22,8 @@
       "point_of_interest"
     ],
     "address": "123 Russell St, Cleveland QLD 4163, Australia",
-    "city": "brisbane",
-    "niche": "",
+    "city": "Brisbane",
+    "niche": "car_repair",
     "phone": "(07) 3286 1996",
     "website": "https://motoroneautobody.com/",
     "google_maps_url": "https://maps.google.com/?cid=16369398735563506060",
@@ -34,7 +34,7 @@
     "recommendedAction": "audit_candidate",
     "sourceQuery": "panel beater Brisbane",
     "signals": {},
-    "batch_id": "places-panel-beater-brisbane-202605131614",
+    "batch_id": "places-panel-beater-brisbane-202605131638",
     "discovery_rank": 2,
     "google_places_provider": "official_api"
   },
@@ -68,6 +68,22 @@
       "query": "panel beater Brisbane",
       "runPath": "",
       "at": "2026-05-13T06:14:19.149Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-panel-beater-brisbane-202605131635",
+      "query": "panel beater Brisbane",
+      "runPath": "",
+      "at": "2026-05-13T06:35:14.973Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-panel-beater-brisbane-202605131638",
+      "query": "panel beater Brisbane",
+      "runPath": "",
+      "at": "2026-05-13T06:38:48.721Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
     }
@@ -108,6 +124,24 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-13T06:35:14.973Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-panel-beater-brisbane-202605131635",
+      "query": "panel beater Brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-13T06:38:48.721Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-panel-beater-brisbane-202605131638",
+      "query": "panel beater Brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
     }
   ],
   "notes": [],
@@ -116,6 +150,8 @@
     "places-panel-beater-brisbane-202605131609",
     "places-panel-beater-brisbane-202605131610",
     "places-panel-beater-brisbane-202605131612",
-    "places-panel-beater-brisbane-202605131614"
+    "places-panel-beater-brisbane-202605131614",
+    "places-panel-beater-brisbane-202605131635",
+    "places-panel-beater-brisbane-202605131638"
   ]
 }

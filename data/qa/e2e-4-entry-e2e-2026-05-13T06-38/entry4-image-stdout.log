@@ -1,0 +1,20 @@
+
+> webjuice-mvp@0.0.1 pl:ingest-image
+> node --env-file-if-exists=.env.local scripts/cli/pl-ingest-image.js --image /Users/matthew/Developer/google-map-website-v3/data/qa/e2e-4-entry-e2e-2026-05-13T06-38/fake-lead.png --business-name E2E Image Lead Roofing --phone 0419876543 --niche roofer --city Brisbane
+
+{
+  "ok": true,
+  "dryRun": false,
+  "entityKey": "image_e2e-image-lead-roofing_0419876543",
+  "action": "upserted",
+  "entityPath": "data/leads/entities/image_e2e-image-lead-roofing_0419876543.json",
+  "runId": "image-2026-05-13T06-38-58-005Z",
+  "indexed": 1,
+  "uniqueEntities": 91,
+  "queueCounts": {
+    "cheapSiteAudit": 10,
+    "enrichment": 2,
+    "outreachBrief": 12
+  },
+  "lead": null
+}

@@ -1,84 +1,44 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-13T06:14:35.592Z",
-  "storeRoot": "data/leads",
+  "updatedAt": "2026-05-13T06:38:58.015Z",
+  "storeRoot": "/Users/matthew/Developer/google-map-website-v3/data/leads",
   "totals": {
     "entities": 91,
     "promoted": 4,
     "skipped": 39,
-    "needsAudit": 11,
+    "needsAudit": 12,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 8
   },
   "statusCounts": {
-    "discovered": 1,
     "manual_review": 18,
     "skipped": 39,
-    "queued_for_audit": 11,
+    "queued_for_audit": 12,
     "ready_for_outreach_brief": 8,
     "scored": 2,
     "graded": 8,
     "promoted": 4
   },
   "actionCounts": {
-    "unknown": 1,
     "manual_review": 25,
     "skip": 43,
-    "audit_candidate": 20,
+    "audit_candidate": 21,
     "starter_candidate": 2
   },
   "websiteStatusCounts": {
-    "https": 1,
     "no_website": 3,
     "independent_https_site": 58,
-    "unknown": 4,
+    "unknown": 5,
     "independent_http_site": 24,
     "social_or_third_party_only": 1
   },
   "entities": [
     {
-      "entityKey": "__e2e_m1_m2__",
-      "status": "discovered",
-      "firstSeenAt": "2026-05-13T06:14:35.582Z",
-      "lastSeenAt": "2026-05-13T06:14:35.582Z",
-      "runCount": 1,
-      "promotedClientSlug": "",
-      "identifiers": {
-        "place_id": "",
-        "cid": "",
-        "data_id": "",
-        "websiteDomain": "e2e-test-roofing.test",
-        "phoneDigits": "0412000000"
-      },
-      "latest": {
-        "sourceType": "gosom",
-        "name": "E2E Test Roofing",
-        "category": "",
-        "categories": [],
-        "address": "1 Test St, Brisbane QLD 4000",
-        "city": "Brisbane",
-        "niche": "roofing",
-        "phone": "0412000000",
-        "website": "https://e2e-test-roofing.test",
-        "google_maps_url": "",
-        "rating": 4.5,
-        "review_count": 10,
-        "websiteStatus": "https",
-        "discoveryScore": 23,
-        "recommendedAction": "",
-        "sourceQuery": "roofing brisbane e2e test",
-        "signals": {},
-        "batch_id": "",
-        "discovery_rank": null,
-        "google_places_provider": null
-      }
-    },
-    {
       "entityKey": "image_e2e-image-lead-roofing_0419876543",
       "status": "manual_review",
       "firstSeenAt": "2026-05-13T06:09:40.413Z",
-      "lastSeenAt": "2026-05-13T06:14:28.188Z",
-      "runCount": 4,
+      "lastSeenAt": "2026-05-13T06:38:58.005Z",
+      "runCount": 6,
       "promotedClientSlug": "",
       "identifiers": {
         "place_id": "",
@@ -109,7 +69,7 @@
           "hasWebsite": false,
           "hasImage": true,
           "imageUrl": "",
-          "imagePath": "/Users/matthew/Developer/google-map-website-v3/data/qa/e2e-4-entry-e2e-2026-05-13T06-14/fake-lead.png"
+          "imagePath": "/Users/matthew/Developer/google-map-website-v3/data/qa/e2e-4-entry-e2e-2026-05-13T06-38/fake-lead.png"
         },
         "batch_id": "",
         "discovery_rank": null,
@@ -120,8 +80,8 @@
       "entityKey": "domain_elitedetailco.com.au",
       "status": "skipped",
       "firstSeenAt": "2026-05-13T06:12:22.249Z",
-      "lastSeenAt": "2026-05-13T06:14:27.839Z",
-      "runCount": 2,
+      "lastSeenAt": "2026-05-13T06:38:57.651Z",
+      "runCount": 4,
       "promotedClientSlug": "",
       "identifiers": {
         "place_id": "",
@@ -166,8 +126,8 @@
       "entityKey": "domain_fullydetailed.au",
       "status": "skipped",
       "firstSeenAt": "2026-05-13T06:12:22.249Z",
-      "lastSeenAt": "2026-05-13T06:14:27.839Z",
-      "runCount": 2,
+      "lastSeenAt": "2026-05-13T06:38:57.651Z",
+      "runCount": 4,
       "promotedClientSlug": "",
       "identifiers": {
         "place_id": "",
@@ -212,8 +172,8 @@
       "entityKey": "domain_obsidiandetailing.com.au",
       "status": "skipped",
       "firstSeenAt": "2026-05-13T06:12:22.249Z",
-      "lastSeenAt": "2026-05-13T06:14:27.839Z",
-      "runCount": 2,
+      "lastSeenAt": "2026-05-13T06:38:57.651Z",
+      "runCount": 4,
       "promotedClientSlug": "",
       "identifiers": {
         "place_id": "",
@@ -258,8 +218,8 @@
       "entityKey": "place_chijm9ktrjpxkwsrqk_e81qjagq",
       "status": "queued_for_audit",
       "firstSeenAt": "2026-05-13T06:09:39.713Z",
-      "lastSeenAt": "2026-05-13T06:14:22.240Z",
-      "runCount": 4,
+      "lastSeenAt": "2026-05-13T06:38:52.083Z",
+      "runCount": 6,
       "promotedClientSlug": "",
       "identifiers": {
         "place_id": "ChIJM9KTrJpXkWsRQK_e81qjAgQ",
@@ -292,11 +252,52 @@
       }
     },
     {
+      "entityKey": "place_chij1chyvdbmkwsrmwnwsnerldy",
+      "status": "queued_for_audit",
+      "firstSeenAt": "2026-05-13T06:35:14.973Z",
+      "lastSeenAt": "2026-05-13T06:38:48.721Z",
+      "runCount": 2,
+      "promotedClientSlug": "",
+      "identifiers": {
+        "place_id": "ChIJ1cHyvdBmkWsRmWNwsnErLdY",
+        "cid": "",
+        "data_id": "",
+        "websiteDomain": "",
+        "phoneDigits": "0738214881"
+      },
+      "latest": {
+        "sourceType": "places_search",
+        "name": "Trade St Smash Repairs",
+        "category": "",
+        "categories": [
+          "car_repair",
+          "establishment",
+          "point_of_interest"
+        ],
+        "address": "3 Trade St, Ormiston QLD 4160, Australia",
+        "city": "Brisbane",
+        "niche": "car_repair",
+        "phone": "(07) 3821 4881",
+        "website": "",
+        "google_maps_url": "https://maps.google.com/?cid=15433039265393566617",
+        "rating": 4.8,
+        "review_count": 24,
+        "websiteStatus": "",
+        "discoveryScore": 27,
+        "recommendedAction": "audit_candidate",
+        "sourceQuery": "panel beater Brisbane",
+        "signals": {},
+        "batch_id": "places-panel-beater-brisbane-202605131638",
+        "discovery_rank": 1,
+        "google_places_provider": "official_api"
+      }
+    },
+    {
       "entityKey": "place_chijaq1hdcrmkwsrjmh902vjk-m",
       "status": "queued_for_audit",
       "firstSeenAt": "2026-05-13T06:09:36.005Z",
-      "lastSeenAt": "2026-05-13T06:14:19.149Z",
-      "runCount": 4,
+      "lastSeenAt": "2026-05-13T06:38:48.721Z",
+      "runCount": 6,
       "promotedClientSlug": "",
       "identifiers": {
         "place_id": "ChIJAQ1HdcRmkWsRjMH902vJK-M",
@@ -315,8 +316,8 @@
           "point_of_interest"
         ],
         "address": "123 Russell St, Cleveland QLD 4163, Australia",
-        "city": "brisbane",
-        "niche": "",
+        "city": "Brisbane",
+        "niche": "car_repair",
         "phone": "(07) 3286 1996",
         "website": "https://motoroneautobody.com/",
         "google_maps_url": "https://maps.google.com/?cid=16369398735563506060",
@@ -327,7 +328,7 @@
         "recommendedAction": "audit_candidate",
         "sourceQuery": "panel beater Brisbane",
         "signals": {},
-        "batch_id": "places-panel-beater-brisbane-202605131614",
+        "batch_id": "places-panel-beater-brisbane-202605131638",
         "discovery_rank": 2,
         "google_places_provider": "official_api"
       }

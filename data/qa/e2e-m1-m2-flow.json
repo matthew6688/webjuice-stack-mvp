@@ -3,7 +3,7 @@
   "total_steps": 29,
   "passed": 29,
   "failed": 0,
-  "ran_at": "2026-05-13T06:14:35.603Z",
+  "ran_at": "2026-05-13T06:38:39.959Z",
   "phases": [
     {
       "name": "Phase 1 · M1 · Dedup scoring",
@@ -49,7 +49,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.574Z"
+      "started_at": "2026-05-13T06:38:39.929Z"
     },
     {
       "name": "Phase 2 · M1 · Discovery score",
@@ -89,7 +89,7 @@
           "data": null
         }
       ],
-      "started_at": "2026-05-13T06:14:35.577Z"
+      "started_at": "2026-05-13T06:38:39.932Z"
     },
     {
       "name": "Phase 3 · M1 · Entity upsert pipeline",
@@ -114,7 +114,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.578Z"
+      "started_at": "2026-05-13T06:38:39.933Z"
     },
     {
       "name": "Phase 4 · M2 · Audit staleness",
@@ -147,7 +147,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.593Z"
+      "started_at": "2026-05-13T06:38:39.949Z"
     },
     {
       "name": "Phase 5 · M2 · Reviews cascade",
@@ -180,7 +180,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.594Z"
+      "started_at": "2026-05-13T06:38:39.950Z"
     },
     {
       "name": "Phase 6 · M2 · Grade router",
@@ -213,7 +213,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.594Z"
+      "started_at": "2026-05-13T06:38:39.951Z"
     },
     {
       "name": "Phase 7 · M2 · master.md",
@@ -241,13 +241,13 @@
           "label": "full real-customer master.md (regression: brisbane-roof renders)",
           "passed": true,
           "error": null,
-          "took_ms": 1,
+          "took_ms": 0,
           "data": {
-            "real_file_lines": 330
+            "real_file_lines": 344
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.595Z"
+      "started_at": "2026-05-13T06:38:39.951Z"
     },
     {
       "name": "Phase 8 · M2 · v2/ structure",
@@ -271,7 +271,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.597Z"
+      "started_at": "2026-05-13T06:38:39.953Z"
     },
     {
       "name": "Phase 9 · M2 · od-prep",
@@ -307,7 +307,7 @@
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.598Z"
+      "started_at": "2026-05-13T06:38:39.954Z"
     },
     {
       "name": "Phase 10 · M1 · bulk-archive",
@@ -318,11 +318,11 @@
           "error": null,
           "took_ms": 2,
           "data": {
-            "candidates": 11
+            "candidates": 12
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.598Z"
+      "started_at": "2026-05-13T06:38:39.954Z"
     },
     {
       "name": "Phase 11 · cross-module integration",
@@ -343,11 +343,11 @@
           "error": null,
           "took_ms": 1,
           "data": {
-            "md_length": 1593
+            "md_length": 1652
           }
         }
       ],
-      "started_at": "2026-05-13T06:14:35.602Z"
+      "started_at": "2026-05-13T06:38:39.958Z"
     }
   ]
 }

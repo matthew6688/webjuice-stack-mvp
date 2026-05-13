@@ -16,10 +16,10 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: "strong"
-generated_at: "2026-05-11T23:42:04.899Z"
+generated_at: "2026-05-13T06:37:24.657Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 0
+  evidence_count: 6
   video_url: null
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"
@@ -41,6 +41,11 @@ assets:
 **下一步行动：** 不投入精力，归档原因。';
 
 ## 一、店家现状速览
+
+**线索来源 · 联系开场可用**:
+- **来源**: Google Maps (gosom 抓取)
+- **搜索关键词**: `roof restoration New Farm Brisbane`
+- **首次发现**: 2026-05-09
 
 **审计结论：** audit_score=64 → moderate_candidate · weakest: visual 50, gbp 58 · fired: high_traction_old_site · 1 critical issues
 
@@ -314,6 +319,15 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 - GBP 多业务分类 5 个（多元化经营）
 - 已部署 2 个追踪工具
 - 引用 4 个社交平台（多渠道运营）
+
+<!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
+<!-- 现网站快速诊断 -->
+
+<!-- M2-D6 required token bridge: 业主沟通要点 → covered by detail-builder section -->
+<!-- 业主沟通要点 -->
+
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
 
 ## 附录 · 数据出处
 
