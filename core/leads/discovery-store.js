@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { createTask, listTasks } from '../tasks/task-store.js';
+import { computeDiscoveryScore } from './discovery-score.js';
 
 /**
  * SOP-0 P5 · spawn an `enrich` task on first thin-contact write.
@@ -495,7 +496,10 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
     rating: lead.rating ?? entity.latest?.rating ?? null,
     review_count: lead.review_count ?? entity.latest?.review_count ?? null,
     websiteStatus: clean(lead.websiteStatus || entity.latest?.websiteStatus),
-    discoveryScore: lead.discoveryScore ?? entity.latest?.discoveryScore ?? null,
+    // M1-D2/D7 · unified discoveryScore. Prefer caller-supplied score (gosom
+    // already computed one), else derive from entity shape so all 4 entry
+    // points produce a consistent score for the same business.
+    discoveryScore: lead.discoveryScore ?? computeUnifiedDiscoveryScore(lead, entity),
     recommendedAction: clean(lead.recommendedAction || entity.latest?.recommendedAction),
     sourceQuery: clean(lead.sourceQuery || run.query || entity.latest?.sourceQuery),
     signals: lead.signals || entity.latest?.signals || {},
@@ -536,6 +540,28 @@ function mergeLeadIntoEntity(entity, lead, run, { runPath, generatedAt }) {
       status: entity.status,
     },
   ].slice(-100);
+}
+
+// M1-D2/D7 · unified-score helper. Build a flat entity-shaped object from the
+// merged lead + existing entity.latest so computeDiscoveryScore is fed the most
+// complete view available at merge time. Returns null when nothing can be scored
+// (matches prior null-when-absent behaviour).
+function computeUnifiedDiscoveryScore(lead, entity) {
+  try {
+    const latest = entity?.latest || {};
+    const merged = {
+      websiteStatus: lead.websiteStatus || latest.websiteStatus || '',
+      website: lead.website || latest.website || '',
+      phone: lead.phone || latest.phone || '',
+      review_count: lead.review_count ?? latest.review_count ?? 0,
+      rating: lead.rating ?? latest.rating ?? 0,
+      signals: lead.signals || latest.signals || {},
+    };
+    const score = computeDiscoveryScore(merged);
+    return Number.isFinite(score) ? score : null;
+  } catch {
+    return null;
+  }
 }
 
 function statusForLead(lead) {
