@@ -172,6 +172,131 @@ JSON only, no prose:`;
   };
 }
 
+/* ─── Public · intake results plausibility (GR6 · D43) ──────────── */
+
+/**
+ * Judge whether intake (gosom / batch search) results look like genuine
+ * niche businesses, not generic noise.
+ *
+ * Catches:
+ *   · Generic listings (e.g. "Yellow Pages") leaking through niche search
+ *   · Wrong-city contamination (Brisbane query → Sydney results)
+ *   · Suspicious volume (1 candidate when --count=10 asked · likely scrape failure)
+ *
+ * @param {object} ctx · {query, niche, city, expected_count, candidates}
+ * @returns {{verdict, confidence, reason, suspicious_picks: string[]}}
+ */
+export async function judgeIntakeResults(ctx) {
+  const prompt = `You are a quality gate for batch lead intake (Google Maps / Places API scrape).
+
+USER QUERY: ${JSON.stringify({ query: ctx.query, niche: ctx.niche, city: ctx.city, expected_count: ctx.expected_count })}
+
+CANDIDATES (first 15):
+${JSON.stringify((ctx.candidates || []).slice(0, 15), null, 2)}
+
+QUESTION: Are these candidates actually ${ctx.niche || 'the requested niche'} businesses in ${ctx.city || 'the requested area'}?
+
+Common contamination to catch:
+- Generic directory listings ("Yellow Pages", "Local Listings") · not real businesses
+- Wrong-niche results (asked plumber · got general handyman / hardware store)
+- Wrong-city (asked Brisbane · got Sydney/Melbourne by mistake)
+- Suspicious volume (1 result when 10 expected · likely partial scrape)
+
+Return JSON only:
+{
+  "verdict":          "proceed" | "human-gate" | "reject",
+  "confidence":       <float 0..1>,
+  "reason":           <short string>,
+  "suspicious_picks": <array of business names that look off · empty if all good>
+}
+
+Decision rule:
+- proceed (≥0.85): ≥80% of candidates look like real niche+city matches
+- human-gate (0.5..0.85): 1-3 sus picks · operator should eyeball before downstream
+- reject (<0.5): mostly noise · re-run with different query
+
+JSON only:`;
+
+  const result = await runCascade(prompt);
+  const j = extractJson(result.text);
+  if (!j) {
+    return { verdict: 'human-gate', confidence: 0, reason: `judge unparseable (${result.provider})`, suspicious_picks: [], provider: result.provider, latency_ms: result.latency_ms };
+  }
+  return {
+    verdict: ['proceed', 'human-gate', 'reject'].includes(j.verdict) ? j.verdict : 'human-gate',
+    confidence: typeof j.confidence === 'number' ? j.confidence : 0.5,
+    reason: String(j.reason || '').slice(0, 200),
+    suspicious_picks: Array.isArray(j.suspicious_picks) ? j.suspicious_picks.map(String).slice(0, 10) : [],
+    provider: result.provider,
+    latency_ms: result.latency_ms,
+  };
+}
+
+/* ─── Public · audit conclusion plausibility check (GR6 · D43) ──── */
+
+/**
+ * Judge whether an audit's final scorecard makes sense given the inputs.
+ *
+ * Catches:
+ *   · Score 95/100 on a 1-page site (probably scorecard bug)
+ *   · Score 30/100 with all gates PASSED (inconsistency)
+ *   · Phase=ready-to-build but missing core fields (data hole)
+ *
+ * @param {object} ctx · {entity, crawl_summary, scorecard, verdict, hard_gates}
+ * @returns {{verdict, confidence, reason, anomalies: string[]}}
+ */
+export async function judgeAuditConclusion(ctx) {
+  const prompt = `You are a quality gate for website audit conclusions.
+
+AUDIT RESULT:
+${JSON.stringify({
+  entity_name: ctx.entity?.latest?.name,
+  pages_crawled: ctx.crawl_summary?.pages_crawled,
+  sitemap_source: ctx.crawl_summary?.sitemap_source,
+  hard_gates_passed: ctx.hard_gates?.every?.((g) => g.passed),
+  scorecard: ctx.scorecard,
+  verdict: ctx.verdict,
+}, null, 2)}
+
+QUESTION: Does this conclusion make sense given the inputs?
+
+Anomalies to catch:
+- Score ≥85 with pages_crawled=1 (suspicious · scorecard might be hallucinating)
+- Score <50 with all hard_gates passed (rare · usually 5 dim doesn't hit floor unless crawl thin)
+- verdict=ready-to-build but core_info dim < 15 (missing fundamentals)
+- verdict=qa-pending but all dims ≥80% max (should be ready-to-build instead)
+- pages_crawled=0 but verdict assigned (crawl failed · audit invalid)
+
+Return JSON only:
+{
+  "verdict":    "trust" | "review" | "redo",
+  "confidence": <float 0..1>,
+  "reason":     <short string>,
+  "anomalies":  <array of specific concerns · empty if no issues>
+}
+
+Decision rule:
+- trust (≥0.85): consistent · use the audit
+- review (0.5..0.85): minor anomalies · operator should glance
+- redo (<0.5): inconsistent · re-run audit with bigger crawl
+
+JSON only:`;
+
+  const result = await runCascade(prompt);
+  const j = extractJson(result.text);
+  if (!j) {
+    return { verdict: 'review', confidence: 0, reason: `judge unparseable (${result.provider})`, anomalies: [], provider: result.provider, latency_ms: result.latency_ms };
+  }
+  return {
+    verdict: ['trust', 'review', 'redo'].includes(j.verdict) ? j.verdict : 'review',
+    confidence: typeof j.confidence === 'number' ? j.confidence : 0.5,
+    reason: String(j.reason || '').slice(0, 200),
+    anomalies: Array.isArray(j.anomalies) ? j.anomalies.map(String).slice(0, 10) : [],
+    provider: result.provider,
+    latency_ms: result.latency_ms,
+  };
+}
+
 /* ─── Public · image-extract sufficiency check ────────────────────── */
 
 /**

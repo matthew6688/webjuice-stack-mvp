@@ -48,7 +48,16 @@ function appendEventLog(entry) {
   } catch { /* never throw from logger */ }
 }
 
-async function postRaw(channelOrThreadId, content) {
+// V3 D43 P0 fix · per-channel rate-limit queue · Discord 限制 ~5 msg / 5s per channel
+// Master.md fanout burst (Run #4 实测) 触发 429 · 此处 token-bucket serial 化:
+//   每个 channel 维护一个 promise chain · 最小间隔 250ms (4 msg/sec) ·
+//   429 时 honor Retry-After header (Discord 通常 0.5-2s)
+const channelQueue = new Map(); // channelId → Promise tail
+const MIN_INTERVAL_MS = parseInt(process.env.DISCORD_EMIT_MIN_INTERVAL_MS || '250', 10);
+
+function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+async function postRawNoQueue(channelOrThreadId, content, attempt = 0) {
   const tok = botToken();
   if (!tok || !channelOrThreadId) {
     return { ok: false, status: 0, error: tok ? 'no_target' : 'no_token' };
@@ -63,15 +72,38 @@ async function postRaw(channelOrThreadId, content) {
       },
       body: JSON.stringify({ content: String(content).slice(0, 2000) }),
     });
+    if (r.status === 429 && attempt < 3) {
+      // Rate-limited · respect Retry-After
+      const retryAfter = parseFloat(r.headers.get('Retry-After') || r.headers.get('retry-after') || '1');
+      const waitMs = Math.min(Math.max(retryAfter * 1000, 500), 10_000);
+      await sleep(waitMs);
+      return postRawNoQueue(channelOrThreadId, content, attempt + 1);
+    }
     if (!r.ok) {
       const text = await r.text().catch(() => '');
       return { ok: false, status: r.status, error: text.slice(0, 200) };
     }
     const data = await r.json().catch(() => null);
-    return { ok: true, status: r.status, message_id: data?.id || null };
+    return { ok: true, status: r.status, message_id: data?.id || null, retried: attempt > 0 };
   } catch (err) {
     return { ok: false, status: 0, error: err.message?.slice(0, 200) };
   }
+}
+
+async function postRaw(channelOrThreadId, content) {
+  if (!channelOrThreadId) return postRawNoQueue(channelOrThreadId, content);
+  // Serialize per channel · enforce min interval between posts
+  const prev = channelQueue.get(channelOrThreadId) || Promise.resolve();
+  let lastFireResolve;
+  const myTurn = new Promise((res) => { lastFireResolve = res; });
+  channelQueue.set(channelOrThreadId, prev.then(() => myTurn));
+  await prev;
+  const result = await postRawNoQueue(channelOrThreadId, content);
+  // Sleep min interval BEFORE releasing next caller (so next post is at least
+  // MIN_INTERVAL_MS later · prevents burst)
+  await sleep(MIN_INTERVAL_MS);
+  lastFireResolve();
+  return result;
 }
 
 function lookupEntity(entityKey) {

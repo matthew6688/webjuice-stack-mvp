@@ -169,10 +169,28 @@ for (const query of queries) {
     totalLeads += leads.length;
     console.log(`    ✓ upserted ${leads.length} entities`);
 
+    // V3 D43 GR6 · LLM judge intake plausibility · 异常时 stage 标 warn 不阻塞
+    let judgeIntake = null;
+    if (!args['no-judge'] && leads.length > 0) {
+      try {
+        const { judgeIntakeResults } = await import('../../core/llm/match-judge.js');
+        judgeIntake = await judgeIntakeResults({
+          query, niche, city, expected_count: LIMIT,
+          candidates: leads.map((l) => ({ name: l.name, address: l.address, category: l.category })),
+        });
+        console.log(`    · llm-judge intake · verdict=${judgeIntake.verdict} conf=${judgeIntake.confidence} sus=${judgeIntake.suspicious_picks?.length || 0}`);
+      } catch (err) {
+        console.warn(`    · llm-judge intake skipped: ${err.message}`);
+      }
+    }
+
     // V3 D43 · 人话版 · 显商家名字 (前 3) · 不显 place_id 哈希
     const top3Names = leads.slice(0, 3).map((l) => l.name).filter(Boolean);
-    await postStageUpdate({ batchId, stage: '📥 写入实体', status: 'ok',
-      summary: `**${leads.length}** 个商家入库${top3Names.length ? ' · 前 3: ' + top3Names.map((n) => `**${n}**`).join(' · ') : ''}` });
+    const judgeNote = judgeIntake && judgeIntake.verdict !== 'proceed'
+      ? `\n⚠️ LLM 校验: **${judgeIntake.verdict}** · ${judgeIntake.reason}${judgeIntake.suspicious_picks?.length ? ' · 可疑: ' + judgeIntake.suspicious_picks.slice(0, 3).join(', ') : ''}`
+      : '';
+    await postStageUpdate({ batchId, stage: '📥 写入实体', status: judgeIntake?.verdict === 'reject' ? 'fail' : 'ok',
+      summary: `**${leads.length}** 个商家入库${top3Names.length ? ' · 前 3: ' + top3Names.map((n) => `**${n}**`).join(' · ') : ''}${judgeNote}` });
 
     const top5Names = leads.slice(0, 5).map((l) => l.name).filter(Boolean);
     await finalizeBatch({ batchId, terminalTag: 'completed',

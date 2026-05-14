@@ -139,10 +139,14 @@ async function handleNewForumThread(thread) {
     log('skip: no starter message for thread', thread.id);
     return;
   }
-  // Bot-authored threads skipped by default (avoid self-loops). Override with
-  // LISTENER_ALLOW_BOTS=1 for E2E smoke tests where we create test threads
-  // via a sibling bot token.
-  if (starter.author?.bot && process.env.LISTENER_ALLOW_BOTS !== '1') {
+  // Bot-authored threads skipped by default (avoid self-loops).
+  // V3 D43: 三种 override:
+  //   1. LISTENER_ALLOW_BOTS=1 全允许 (老 flag · 不推荐生产)
+  //   2. thread title starts with 🧪 (test marker · 窄 allowlist · 安全)
+  //   3. starter content starts with [E2E] (explicit operator marker)
+  const isTestThread = /^🧪/.test(thread.name || '') || /^\[E2E/.test(starter.content || '');
+  const allowBotOverride = process.env.LISTENER_ALLOW_BOTS === '1';
+  if (starter.author?.bot && !allowBotOverride && !isTestThread) {
     log('skip: starter authored by bot', thread.id, starter.author.username);
     return;
   }

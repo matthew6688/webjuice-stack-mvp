@@ -98,6 +98,24 @@ async function processEntity(key) {
     console.log(`     → verdict: ${verdict.verdict}`);
   }
 
+  // V3 D43 GR6 · LLM judge audit conclusion · 异常时不阻塞 · 把结果写进 entity 让 operator 看
+  let judgeAudit = null;
+  if (verdict.scorecard) {
+    try {
+      const { judgeAuditConclusion } = await import(path.join(REPO, 'core/llm/match-judge.js'));
+      judgeAudit = await judgeAuditConclusion({
+        entity,
+        crawl_summary: { pages_crawled: crawl.pages_crawled, sitemap_source: crawl.sitemap_source },
+        scorecard: verdict.scorecard,
+        verdict: verdict.verdict,
+        hard_gates: verdict.hard_gates,
+      });
+      console.log(`     → llm-judge audit · verdict=${judgeAudit.verdict} conf=${judgeAudit.confidence}${judgeAudit.anomalies?.length ? ' · anomalies: ' + judgeAudit.anomalies.slice(0, 2).join('; ') : ''}`);
+    } catch (err) {
+      console.warn(`     · llm-judge audit skipped: ${err.message}`);
+    }
+  }
+
   // 4. Persist · setEntityPhase + write qualification record
   console.log(`  [4/5] persist verdict...`);
   const { setEntityPhase, ENTITY_PHASE } = await import(path.join(REPO, 'core/leads/discovery-store.js'));
@@ -124,6 +142,13 @@ async function processEntity(key) {
       cost: crawl.cost_estimate,
     },
     ai_provider: briefResult.provider,
+    llm_judge_audit: judgeAudit ? {
+      verdict: judgeAudit.verdict,
+      confidence: judgeAudit.confidence,
+      reason: judgeAudit.reason,
+      anomalies: judgeAudit.anomalies,
+      provider: judgeAudit.provider,
+    } : null,
   };
   fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
 
