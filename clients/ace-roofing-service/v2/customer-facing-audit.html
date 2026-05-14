@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Audit Report – Ace Roofing Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: #2c2c2c;
+            background: #faf8f4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 50px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 25px;
+            }
+        }
+        
+        h1, h2, h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: 600;
+            color: #1a1a1a;
+            line-height: 1.3;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 0.3em;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 2em;
+            margin-bottom: 0.8em;
+            padding-bottom: 0.3em;
+            border-bottom: 3px solid #f0ebe3;
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #c44536;
+        }
+        
+        p {
+            margin-bottom: 1em;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3em;
+            padding-bottom: 2em;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 2em;
+        }
+        
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f4a261 0%, #e76f51 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5em auto;
+            box-shadow: 0 4px 15px rgba(231, 111, 81, 0.3);
+        }
+        
+        .score-number {
+            font-size: 3em;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .score-label {
+            font-size: 0.85em;
+            opacity: 0.95;
+            margin-top: 0.2em;
+        }
+        
+        .score-context {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 0.5em;
+        }
+        
+        .positive {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1em 1.2em;
+            margin: 1em 0;
+        }
+        
+        .issue {
+            background: #fff8f0;
+            border-left: 4px solid #ff9800;
+            padding: 1.2em;
+            margin: 1.5em 0;
+        }
+        
+        .issue-title {
+            font-weight: 600;
+            color: #d97706;
+            margin-bottom: 0.5em;
+            font-size: 1.05em;
+        }
+        
+        .issue-impact {
+            color: #555;
+            margin-top: 0.5em;
+            font-style: italic;
+        }
+        
+        .screenshot {
+            margin: 2em 0;
+            text-align: center;
+        }
+        
+        .screenshot img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .screenshot-label {
+            display: block;
+            margin-top: 0.8em;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .outcomes {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5em;
+            margin: 2em 0;
+        }
+        
+        .outcomes ul {
+            list-style: none;
+            margin-top: 1em;
+        }
+        
+        .outcomes li {
+            padding-left: 1.5em;
+            margin-bottom: 0.8em;
+            position: relative;
+        }
+        
+        .outcomes li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        
+        .closing {
+            background: #faf8f4;
+            padding: 2em;
+            margin-top: 3em;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .closing h2 {
+            border: none;
+            margin-top: 0;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 0.1em 0.3em;
+            border-radius: 2px;
+        }
+        
+        strong {
+            color: #1a1a1a;
+        }
+        
+        .video-container {
+            margin: 2em 0;
+            text-align: center;
+        }
+        
+        video {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Your Website Audit</h1>
+            <p class="subtitle">Ace Roofing Service</p>
+            
+            <div class="score-circle">
+                <div class="score-number">52</div>
+                <div class="score-label">out of 100</div>
+            </div>
+            
+            <p class="score-context">Room for improvement – and opportunity to stand out from competitors</p>
+        </div>
+
+        <p>We've taken a close look at your website to see how it's working for your business. This report breaks down what's helping you win customers, what might be costing you jobs, and what changes would make the biggest difference.</p>
+
+        <h2>What's Working Well</h2>
+        
+        <div class="positive">
+            <p><strong>Your branding is clear.</strong> Visitors immediately understand you're a roofing business in Brisbane. The business name and service category come through clearly on both desktop and mobile.</p>
+        </div>
+        
+        <div class="positive">
+            <p><strong>You're showing trust signals.</strong> Your site mentions you're licensed, insured, family-owned, and have been around since 2004. These are exactly the details local customers look for when choosing a tradie.</p>
+        </div>
+        
+        <div class="positive">
+            <p><strong>Your site loads quickly.</strong> Google scored your mobile site 95 out of 100 for speed. That's excellent – fast sites keep visitors from bouncing to competitors.</p>
+        </div>
+
+        <h2>What's Holding You Back</h2>
+
+        <p>Here's where potential customers are slipping through the cracks:</p>
+
+        <div class="issue">
+            <div class="issue-title">Mobile visitors can't find your phone number</div>
+            <p>On a mobile phone, your contact number isn't visible when the page first loads. People have to scroll down to find it.</p>
+            <p class="issue-impact"><strong>Why this matters:</strong> Most roofing searches happen on mobile phones, and 60-70% of local service customers prefer to ring rather than fill in a form. If they can't see your number straight away, many will hit the back button and call the next business on the list.</p>
+        </div>
+
+        <div class="screenshot">
+            <img src="./screenshots/mobile.png" alt="Mobile screenshot of Ace Roofing Service website">
+            <span class="screenshot-label">Mobile view – contact details are below the fold</span>
+        </div>
+
+        <div class="issue">
+            <div class="issue-title">Your phone number looks broken on desktop</div>
+            <p>On a computer screen, the phone number in your header is cut off with dots (0426 366 7...). The last digits aren't showing.</p>
+            <p class="issue-impact"><strong>Why this matters:</strong> It looks unfinished and makes people second-guess whether the site is properly maintained. Some visitors won't bother trying to find the full number elsewhere.</p>
+        </div>
+
+        <div class="issue">
+            <div class="issue-title">Mobile users have to copy and paste your number</div>
+            <p>Your phone number isn't set up as a tap-to-call link. People viewing your site on their phone have to manually copy the number, switch to their phone app, and paste it in.</p>
+            <p class="issue-impact"><strong>Why this matters:</strong> Every extra step loses customers. A simple one-tap dial button would make it effortless for mobile visitors to contact you – and you'd see more enquiry calls as a result.</p>
+        </div>
+
+        <div class="issue">
+            <div class="issue-title">You're competing with zero Google reviews</div>
+            <p>Your Google Business Profile shows 0 reviews. Meanwhile, competitors with 10, 20, or 50 reviews appear higher in search results.</p>
+            <p class="issue-impact"><strong>Why this matters:</strong> Review count is one of Google's strongest ranking signals for local search. It's not just about the star rating – the <em>number</em> of reviews matters too. Asking every completed job for a quick review would help you climb the rankings.</p>
+        </div>
+
+        <div class="issue">
+            <div class="issue-title">Your main background photo is too dark</div>
+            <p>The hero image – the large photo at the top of your homepage – is very dark, making it hard to see the actual roofing work.</p>
+            <p class="issue-impact"><strong>Why this matters:</strong> Customers want to see examples of quality work. A dark or generic photo doesn't build confidence. A bright, clear photo of a real Brisbane roof project would help visitors trust you're the right choice.</p>
+        </div>
+
+        <div class="issue">
+            <div class="issue-title">Google can't tell what you do</div>
+            <p>Your website's title tag (the text that appears in Google search results and browser tabs) doesn't clearly state your business name or that you're a roofer in Brisbane.</p>
+            <p class="issue-impact"><strong>Why this matters:</strong> Google uses the title tag to decide when to show your site in search results. A clear title like "Ace Roofing Service – Roof Repairs & Restoration Brisbane" would help you rank for the right searches and get more clicks.</p>
+        </div>
+
+        <h2>What You're Missing from Search</h2>
+
+        <p>Your website doesn't have structured data (the code that tells Google exactly who you are, where you're located, and what you do). Without it:</p>
+
+        <ul style="margin-left: 2em; margin-bottom: 1.5em;">
+            <li style="margin-bottom: 0.5em;">You won't appear in Google's "near me" results or map cards</li>
+            <li style="margin-bottom: 0.5em;">Your business won't show up in the knowledge panel on the right side of search results</li>
+            <li style="margin-bottom: 0.5em;">AI tools like ChatGPT and Google's AI summaries won't be able to recommend you when people ask for Brisbane roofers</li>
+        </ul>
+
+        <p>This is all fixable with the right setup, and it makes a substantial difference to how much search traffic you receive.</p>
+
+        <div class="video-container">
+            <video controls width="100%" poster="./screenshots/mobile.png">
+                <source src="./video/mobile-throttled.webm" type="video/webm">
+                Your browser doesn't support video playback.
+            </video>
+            <span class="screenshot-label">How your site loads on a real mobile connection</span>
+        </div>
+
+        <h2>What Changes When We Fix This</h2>
+
+        <div class="outcomes">
+            <p><strong>Here's what you can expect:</strong></p>
+            <ul>
+                <li><strong>More phone enquiries.</strong> A visible tap-to-call button on mobile means fewer people leave without contacting you.</li>
+                <li><strong>Better Google rankings.</strong> Proper structured data and optimised page titles help Google understand and rank your site for local searches.</li>
+                <li><strong>Stronger first impression.</strong> A clean, bright design with visible contact details and real project photos builds trust immediately.</li>
+                <li><strong>You show up in AI search.</strong> When someone asks ChatGPT or Google's AI for Brisbane roofers, you'll be in the mix instead of invisible.</li>
+                <li><strong>No more technical rough edges.</strong> A complete phone number, working contact forms, and a professional mobile experience make it easy for customers to choose you.</li>
+            </ul>
+        </div>
+
+        <p>None of these issues are expensive to fix – but together, they're likely costing you jobs every week.</p>
+
+        <div class="closing">
+            <h2>Next Step</h2>
+            <p>We'd like to walk you through these findings in a 30-minute conversation – no sales pitch, just a clear explanation of what we found and how each fix would help your business.</p>
+            <p style="margin-top: 1.5em;">If you'd like to chat, reply to the email this came with or give us a call. We'll keep it straightforward.</p>
+        </div>
+
+        <p style="margin-top: 3em; padding-top: 2em; border-top: 1px solid #e5e5e5; color: #666; font-size: 0.9em; text-align: center;">
+            Report generated 14 May 2026<br>
+            Audit version: 2026-05-11-v1
+        </p>
+    </div>
+</body>
+</html>

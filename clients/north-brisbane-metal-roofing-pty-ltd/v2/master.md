@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-14T11:20:44.191Z"
+generated_at: "2026-05-14T12:45:16.435Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -48,7 +48,7 @@ assets:
 - **来源**: Google Maps (gosom 抓取)
 - **搜索关键词**: `roofing in brisbane`
 - **首次发现**: 2026-05-14
-- **Batch**: `pipe-roofing-brisbane-202605142119`
+- **Batch**: `pipe-roofing-brisbane-202605142244`
 
 - 电话：0498478739
 - 地址：3/359 Gympie Rd P.O.B, Unit 50, Kedron QLD 4031

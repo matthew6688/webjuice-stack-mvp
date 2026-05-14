@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-124423-91f063",
+  "created_at": "2026-05-14T12:44:23.754Z",
+  "updated_at": "2026-05-14T12:44:25.251Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cycle-14-entry-1",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-14 entry-1 · roofing brisbane limit 1",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:pipeline-batch-start",
+    "args": [
+      "--niche",
+      "roofing",
+      "--city",
+      "brisbane",
+      "--limit",
+      "1"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1220,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T12:44:24.023Z",
+      "step": "cli.spawning",
+      "detail": "pl:pipeline-batch-start --niche roofing --city brisbane --limit 1"
+    },
+    {
+      "at": "2026-05-14T12:44:25.248Z",
+      "step": "cli.stream",
+      "detail": "1504464401518825502\",\n  \"state_path\": \"/Users/matthew/Developer/google-map-website-v3/data/v2/pipeline-batches/pipe-roofing-brisbane-202605142244.json\",\n  \"scrape_chained\": \"20260514-124425-5cd337\"\n}"
+    },
+    {
+      "at": "2026-05-14T12:44:25.251Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1220ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

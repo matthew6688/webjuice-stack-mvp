@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-125054-538003",
+  "created_at": "2026-05-14T12:50:54.882Z",
+  "updated_at": "2026-05-14T12:54:23.576Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_aceroofingservice.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_aceroofingservice.com.au"
+    ],
+    "target_entity_key": "domain_aceroofingservice.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 208427,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T12:50:55.147Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_aceroofingservice.com.au"
+    },
+    {
+      "at": "2026-05-14T12:51:00.290Z",
+      "step": "cli.stream",
+      "detail": "age 1/4] detailed audit — reuse cached fixture\n  [stage 2/4] visual audit — reuse cached fixture\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T12:51:21.360Z",
+      "step": "cli.stream",
+      "detail": "}\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_aceroofingservice.com.au ══════════\n  [1/5] multi-page crawl https://aceroofingservice.com.au/..."
+    },
+    {
+      "at": "2026-05-14T12:51:33.908Z",
+      "step": "cli.stream",
+      "detail": "s · 11.7s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T12:52:41.036Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 67.1s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 65/100 (A24 B5 C22 D11 E3)\n     → verdict: ready-to-build"
+    },
+    {
+      "at": "2026-05-14T12:53:07.637Z",
+      "step": "cli.stream",
+      "detail": "13796 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  16151 chars"
+    },
+    {
+      "at": "2026-05-14T12:54:23.556Z",
+      "step": "cli.stream",
+      "detail": "────────────────────────────┴───────────────────────┴──────┴─────────────┴──────────────────────┴───────────────┴───────┴─────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T12:54:23.575Z",
+      "step": "cli.stream",
+      "detail": ": 52,\n      \"decision\": \"moderate_candidate\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_aceroofingservice.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T12:54:23.576Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=208427ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

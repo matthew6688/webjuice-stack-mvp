@@ -43,9 +43,21 @@ const ENTITIES_DIR = path.join(REPO, 'data/leads/entities');
 const DEDUP_LOG = path.join(REPO, 'data/leads/dedup-decisions.json');
 const DISCOVERY_INDEX = path.join(REPO, 'data/leads/discovery-index.json');
 
+// V3 D43 cycle-14 (Matthew 2026-05-14): D39 added qa-pending + ready-to-build
+// to ENTITY_PHASE but this doctor's allowlist was never updated → false-fails
+// on legitimate phase values. Sync with core/leads/discovery-store.js ENTITY_PHASE.
 const VALID_PHASES = new Set([
-  'awaiting', 'design-ready', 'outreach-active', 'replied',
-  'proposal-sent', 'nurture', 'paid', 'archived', 'needs-human',
+  'awaiting',
+  'design-ready',
+  'qa-pending',           // D39
+  'ready-to-build',       // D39
+  'outreach-active',
+  'replied',
+  'proposal-sent',
+  'nurture',
+  'paid',
+  'archived',
+  'needs-human',
 ]);
 
 const VALID_GRADES = new Set(['A', 'B', 'C', 'D']);

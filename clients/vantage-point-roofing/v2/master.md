@@ -15,7 +15,7 @@ visual_freshness: 6
 visual_trust: 7
 visual_conversion: 5
 review_trust_signal: null
-generated_at: "2026-05-14T12:32:33.667Z"
+generated_at: "2026-05-14T12:45:16.433Z"
 assets:
   cloudinary_folder: null
   evidence_count: 4
@@ -43,7 +43,7 @@ assets:
 - **来源**: Google Maps (gosom 抓取)
 - **搜索关键词**: `roofing in brisbane`
 - **首次发现**: 2026-05-14
-- **Batch**: `pipe-roofing-brisbane-202605142119`
+- **Batch**: `pipe-roofing-brisbane-202605142244`
 
 **审计结论：** audit_score=68 → low_priority · weakest: gbp 20, visual 50
 

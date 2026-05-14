@@ -63,23 +63,32 @@ function findEntityByThreadId(threadId) {
   return null;
 }
 
-function classifyEntityState(entity) {
-  if (!entity) return 'unknown';
-  const realGrade = entity.grade?.investment_level;
-  const predict = entity.predict_grade?.grade;
-  const auditDone = !!entity.detailed_audit?.at || !!entity.grade?.graded_at;
-  if (auditDone && realGrade) return `audited_${realGrade}`;
-  if (predict === 'D') return 'predict_D';
-  if (predict === 'A' || predict === 'B') return `predict_${predict}`;
-  if (predict === 'C') return 'predict_C';
-  return 'no_predict';
+// V3 D43 cycle-14 (Matthew 2026-05-14): classify by THREAD content + TITLE
+// 不再依赖 entity.grade · 因为 entity 可能有历史 grade 但 thread 刚开（无 stage 消息）。
+// Source of truth = 这个 thread 当前显示什么 · 应该等于什么。
+function classifyByThread(threadName, msgs, entity) {
+  // Title 决定 visual state · message features 决定 audit state
+  const titleHasYuC = threadName.includes('[预C]');
+  const titleHasYuB = threadName.includes('[预B]');
+  const titleHasYuA = threadName.includes('[预A]');
+  const titleHasC = threadName.includes('[C]') && !titleHasYuC;
+  const titleHasB = threadName.includes('[B]') && !titleHasYuB;
+  const titleHasA = threadName.includes('[A]') && !titleHasYuA;
+
+  if (titleHasYuC) return 'predict_C';
+  if (titleHasYuB) return 'predict_B';
+  if (titleHasYuA) return 'predict_A';
+  if (titleHasC) return 'audited_C';
+  if (titleHasB) return 'audited_B';
+  if (titleHasA) return 'audited_A';
+  return 'unknown';
 }
 
 function expectedForState(state) {
-  // [minMessages, titlePattern, requireFields]
   switch (state) {
     case 'predict_D': return { mustHaveThread: false };
-    case 'predict_C': return { mustHaveThread: true, minMessages: 3, titleContains: '[预C]', expectedFeatures: ['profile_card', 'cheap_summary', 'emoji_guide'] };
+    // emoji guide baked into cheap_summary message · 所以 cheap_summary alone covers both features
+    case 'predict_C': return { mustHaveThread: true, minMessages: 2, titleContains: '[预C]', expectedFeatures: ['profile_card', 'cheap_summary', 'emoji_guide'] };
     case 'predict_B': return { mustHaveThread: true, minMessages: 2, titleContains: '[预B]', expectedFeatures: ['profile_card', 'cheap_summary'] };
     case 'predict_A': return { mustHaveThread: true, minMessages: 2, titleContains: '[预A]', expectedFeatures: ['profile_card', 'cheap_summary'] };
     case 'audited_A':
@@ -195,11 +204,13 @@ function slugifyName(s) {
 async function checkThread(threadInfo) {
   const { id, name, parent_id } = threadInfo;
   const entity = findEntityByThreadId(id);
-  const state = classifyEntityState(entity);
-  const expected = expectedForState(state);
 
   let msgs = [];
   try { msgs = await discordGet(`/channels/${id}/messages?limit=50`); } catch (err) { msgs = []; }
+
+  // V3 D43 cycle-14: classify by title + thread content (not entity history)
+  const state = classifyByThread(name, msgs, entity);
+  const expected = expectedForState(state);
 
   const features = detectFeatures(msgs);
 

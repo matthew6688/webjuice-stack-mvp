@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-124425-5cd337",
+  "created_at": "2026-05-14T12:44:25.218Z",
+  "updated_at": "2026-05-14T12:46:03.640Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504464401518825502",
+    "author": "pl:pipeline-batch-start auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: gosom scrape · niche=roofing · city=brisbane · count=10 · batch=pipe-roofing-brisbane-202605142244",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:scrape-docker",
+    "args": [
+      "--niche",
+      "roofing",
+      "--city",
+      "brisbane",
+      "--count",
+      "10",
+      "--batch-id",
+      "pipe-roofing-brisbane-202605142244"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 97692,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T12:44:25.943Z",
+      "step": "cli.spawning",
+      "detail": "pl:scrape-docker --niche roofing --city brisbane --count 10 --batch-id pipe-roofing-brisbane-202605142244"
+    },
+    {
+      "at": "2026-05-14T12:44:31.088Z",
+      "step": "cli.stream",
+      "detail": "ofing-brisbane-202605142244\n\ngeocode brisbane → -27.4704528,153.0260341 (cache) · Brisbane QLD, Australia\njob_id=a62799b4-b633-4d1c-ab84-916208a3599f\npolling job a62799b4-b633-4d1c-ab84-916208a3599f ."
+    },
+    {
+      "at": "2026-05-14T12:44:36.290Z",
+      "step": "cli.stream",
+      "detail": "aper/webdata/a62799b4-b633-4d1c-ab84-916208a3599f.csv\nwrote 5 leads → /Users/matthew/Developer/google-map-website-v3/data/maps-scraper/runs/roofing-brisbane-2026-05-14T12-44-26-138Z/results.maps.json"
+    },
+    {
+      "at": "2026-05-14T12:45:15.974Z",
+      "step": "cli.stream",
+      "detail": "\"recommendedAction\": \"audit_candidate\",\n      \"phone\": \"(07)35062534\",\n      \"website\": \"https://vantagepointroofing.com.au/?utm_campaign=gmb\",\n      \"rating\": 4.6,\n      \"reviewCount\": 0\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T12:45:48.161Z",
+      "step": "cli.stream",
+      "detail": "action=manual_review · predict=C · priority=0 · audit_now=false\n[cheap-audit-queue] domain_nbmr.com.au · thread opened (predict-C)\n[cheap-audit-queue] domain_nbmr.com.au · predict-C · 留 backlog · 等触发"
+    },
+    {
+      "at": "2026-05-14T12:45:54.798Z",
+      "step": "cli.stream",
+      "detail": "LM verdict: true (codex_cli cached) · 企业名称明确包含 Metal Roofing，属于 roofing 行业。\n[cheap-audit-queue] domain_aceroofingservice.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=false"
+    },
+    {
+      "at": "2026-05-14T12:46:00.626Z",
+      "step": "cli.stream",
+      "detail": "t_now=false\n[cheap-audit-queue] domain_brisbaneroofrestorationexperts.com.au · thread opened (predict-C)\n[cheap-audit-queue] domain_brisbaneroofrestorationexperts.com.au · predict-C · 留 backlog · 等触发"
+    },
+    {
+      "at": "2026-05-14T12:46:03.640Z",
+      "step": "cli.stream",
+      "detail": "ll 5 addresses resolve to Brisbane-area roofing or roof restoration businesses; categories were blank but external matches indicate niche and city fit.\",\"suspicious_picks\":[],\"provider\":\"codex_cli\"}}"
+    },
+    {
+      "at": "2026-05-14T12:46:03.640Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=97692ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504464401518825502",
+    "status_message_id": null
+  }
+}
