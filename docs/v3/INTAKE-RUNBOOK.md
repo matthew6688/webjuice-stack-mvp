@@ -67,8 +67,16 @@ M3 (manual or auto-hook):
 ### 2.1 Daemon 状态
 ```bash
 launchctl list | grep ai.profitslocal
-# 期望: 5 daemon (listener · dispatcher · api · tunnel · v3.task-dispatcher · intake-doctor-daily)
-# 全 pid > 0 (intake-doctor-daily 因 calendar interval · pid 可能 -)
+# V3 D43 期望 daemon set (全 v3 路径 · V2 已 retire):
+#   ai.profitslocal.v3.task-listener        PID > 0  KeepAlive
+#   ai.profitslocal.v3.task-dispatcher      PID > 0  KeepAlive
+#   ai.profitslocal.v3.task-api             PID > 0  KeepAlive
+#   ai.profitslocal.v3.task-retention       cron 03:30
+#   ai.profitslocal.v3.daemon-doctor        cron 04:00   (D43 GR3)
+#   ai.profitslocal.v3.cascade-doctor       cron 04:15   (D43 GR4)
+#   ai.profitslocal.intake-doctor-daily     cron
+#   ai.profitslocal.sop0-tunnel             PID > 0  (cloudflared)
+#   ai.profitslocal.open-design             manual
 ```
 
 ### 2.2 Doctor 全绿
@@ -76,6 +84,17 @@ launchctl list | grep ai.profitslocal
 npm run pl:sop0-doctor             # 5/5 ✅
 npm run pl:intake-doctor           # 5/5 ✅
 npm run pl:lead-journey-doctor     # 10/10 ✅
+
+# V3 D43 · 新增 5 个 doctor (3 个 daily cron · 2 个 ad-hoc)
+npm run pl:cost-doctor             # daily API 用量 · ledger.jsonl + Places quota
+npm run pl:audit-doctor            # audit pipeline 健康 · 卡 24h + 失败率
+npm run pl:publish-doctor          # demo publish · cf-pages-deploy 新鲜度
+npm run pl:daemon-doctor           # launchd 状态巡检 · 测试 flag 检测 · V2 残留
+npm run pl:cascade-doctor          # LLM cascade 静默降级检测
+
+# V3 D43 · QA + 防御
+npm run qa:lint-discord-messages   # Discord 消息违规扫描 (place_id 哈希 · admin URL · 双语 mix)
+npm run pl:e2e-smoke               # E2E 4-scenario regression · baseline diff
 ```
 
 ### 2.3 Discord channels env

@@ -282,3 +282,75 @@ Phase: design-ready
 - [DISCORD-CHANNELS-PRD.md](./DISCORD-CHANNELS-PRD.md) · 6 channel 架构 (D34)
 - [LEAD-JOURNEY.md](./LEAD-JOURNEY.md) · 跨 channel lead lifecycle
 - [DECISIONS-LOG.md](./DECISIONS-LOG.md) · D34 6-channel · D35 显示规范 (本)
+
+---
+
+## 7. V3 D43 · Unified emit + bot-log fallback (强制)
+
+**Per Matthew (2026-05-14)**:
+> "所有的阶段转接, 流转 discord 都有记录和 notification, 如果不能 update 对应的
+>  thread, 或者没有 thread, 请更新到 bot-log channel."
+
+### 7.1 入口 (single source of truth)
+
+**所有 Discord post 必须走** `core/funnel/discord-emit.js` 的 `emitDiscord`:
+
+```js
+import { emitDiscord, emitPhaseTransition, emitTaskTransition } from '../funnel/discord-emit.js';
+
+await emitDiscord({
+  threadId,        // 优先级 1 · explicit thread (e.g. batch thread)
+  entityKey,       // 优先级 2 · resolve from entity.discord_thread_id
+  channelId,       // 优先级 3 · explicit channel
+  content,         // required
+  event,           // structured event name (audit log)
+  context,         // metadata (audit log)
+});
+// → { ok, target, fallback: 'bot-log'|null, message_id, error? }
+```
+
+**禁止** 直接 `fetch(/channels/.../messages)` 调 Discord API · 必须走 emitter。
+
+### 7.2 Fallback 链
+
+| 步骤 | 行为 |
+|---|---|
+| 1 | 试 explicit threadId → POST |
+| 2 | thread 不存在 / 删了 / 失败 → fallback bot-log + prefix `_(fallback · target X failed)_` |
+| 3 | 完全没 thread + 没 entity thread → bot-log + prefix `_(fallback · no thread for entity Y)_` |
+| ALL | 写 `data/heartbeats/discord-events.jsonl` audit trail |
+
+bot-log channel: `1493926218574200942` (env override: `BOT_LOG_DISCORD_CHANNEL_ID`)
+
+### 7.3 自动 emit 的事件 (写一次代码 · 所有调用方都受益)
+
+| 事件 | 触发 | content 模板 |
+|---|---|---|
+| `task.transition` | `transitionStatus(taskId, newStatus)` 自动 | `<kindLabel> · status: from → to · reason?` |
+| `phase.transition` | `setEntityPhase({entityKey, phase})` 自动 | `🔄 **<name>** · phase: from → to · note?` |
+| `batch.stage` | `postStageUpdate({batchId, stage, status, summary})` 自动 | (stage 自定义) |
+| `dispatcher.post` | dispatcher `postThreadReply` 包装层 | (caller 自定义) |
+
+### 7.4 Audit log
+
+每次 emit 都 append 一行到 `data/heartbeats/discord-events.jsonl`:
+
+```jsonc
+{
+  "at": "2026-05-14T07:57:24.105Z",
+  "event": "batch.stage",
+  "ok": true,
+  "target": "1504392165852450867",
+  "target_type": "thread",      // thread | entity-thread | channel | bot-log
+  "entityKey": null,
+  "entityName": null,
+  "message_id": "1504392171825008710",
+  "context": { /* arbitrary */ }
+}
+```
+
+operator 可以 `tail -f data/heartbeats/discord-events.jsonl | jq .` 看实时流。
+
+### 7.5 已知 follow-up
+
+- Discord API 429 rate limit · burst emit 时部分 ok=false。修法见 BACKLOG.md "Emit rate-limit 队列"。
