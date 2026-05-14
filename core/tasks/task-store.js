@@ -296,6 +296,7 @@ export function appendProgress(taskId, step, detail = '') {
 export function reapStaleRunningTasks({ defaultTimeoutMs = 900_000, now = Date.now() } = {}) {
   const running = listTasks({ status: 'running' });
   const reaped = [];
+  const failed = []; // tasks we tried to reap but writeTask rejected (schema/format issues)
   for (const task of running) {
     const timeoutMs = task.target?.timeout_ms || defaultTimeoutMs;
     // started_at was never persisted explicitly; running tasks have updated_at
@@ -313,8 +314,13 @@ export function reapStaleRunningTasks({ defaultTimeoutMs = 900_000, now = Date.n
       task.result = { ...task.result, reaper: { age_ms: ageMs, timeout_ms: timeoutMs } };
       writeTask(task);
       reaped.push({ task_id: task.task_id, age_ms: ageMs, timeout_ms: timeoutMs });
-    } catch { /* skip — best-effort */ }
+    } catch (err) {
+      // V3 D43 cycle-3 · don't silently swallow · log so legacy/malformed tasks surface.
+      // Common causes: schemaVersion missing (pre-D43), invalid task_id format.
+      failed.push({ task_id: task.task_id, age_ms: ageMs, error: err.message });
+    }
   }
+  reaped._unreapable = failed; // attach for dispatcher to log
   return reaped;
 }
 

@@ -414,6 +414,15 @@ try {
   } else {
     console.error('[reaper] no orphaned running tasks');
   }
+  // V3 D43 cycle-3 · surface unreapable (writeTask rejected) so legacy/malformed
+  // tasks don't hide forever behind a silent catch.
+  const unreapable = reaped._unreapable || [];
+  if (unreapable.length) {
+    console.error(`[reaper] WARNING · ${unreapable.length} stale running task(s) could NOT be reaped (schema/format invalid):`);
+    for (const u of unreapable) {
+      console.error(`  · ${u.task_id} · age=${u.age_ms}ms · err=${u.error}`);
+    }
+  }
 } catch (err) {
   console.error('[reaper] error:', err.message);
 }
