@@ -32,6 +32,23 @@ function listEvidence(slug) {
   } catch { return []; }
 }
 
+/** Detect if local evidence files are newer than last CF deploy.
+ *  Returns true 时 hyperlinks 会 404 · 需 republish 才 live。 */
+function isEvidenceStale(slug, deploy) {
+  if (!slug || !deploy?.deployed_at) return false;
+  try {
+    const deployTs = new Date(deploy.deployed_at).getTime();
+    const evidenceDir = path.join('clients', slug, 'v2/evidence');
+    if (!fs.existsSync(evidenceDir)) return false;
+    for (const f of fs.readdirSync(evidenceDir)) {
+      if (!/\.png$/i.test(f)) continue;
+      const mtime = fs.statSync(path.join(evidenceDir, f)).mtimeMs;
+      if (mtime > deployTs) return true;
+    }
+    return false;
+  } catch { return false; }
+}
+
 function prettyEvidenceName(filename) {
   return filename
     .replace(/\.(png|jpg)$/i, '')
@@ -64,52 +81,69 @@ export function stage1Message({ entity, audit, fetchPayload, contact, durationSe
     lines.push(`总分: ${audit.audit_score}/100 · ${audit.decision || ''}`);
   }
 
-  // 12 维最弱 3 项 (from audit.issues · sorted by severity)
-  const issues = audit?.issues || [];
-  if (issues.length) {
-    lines.push(`12 维最弱 ${Math.min(3, issues.length)} 项:`);
-    const sorted = [...issues].sort((a, b) => (b.severity || 0) - (a.severity || 0)).slice(0, 3);
-    for (const i of sorted) {
-      const title = i.title || i.id || i.rule || '?';
-      const detail = i.details || i.evidence_short || '';
-      lines.push(`- ${title}${detail ? ` (${String(detail).slice(0, 80)})` : ''}`);
+  // 12 维最弱 3 项 (issues 是 {critical, major, minor} 对象 · 不是 flat 数组)
+  const issuesObj = audit?.issues || {};
+  const flatIssues = [
+    ...(issuesObj.critical || []).map((i) => ({ ...i, sev: 3 })),
+    ...(issuesObj.major || []).map((i) => ({ ...i, sev: 2 })),
+    ...(issuesObj.minor || []).map((i) => ({ ...i, sev: 1 })),
+  ];
+  if (flatIssues.length) {
+    lines.push(`12 维最弱 ${Math.min(3, flatIssues.length)} 项:`);
+    for (const i of flatIssues.slice(0, 3)) {
+      const id = i.id || i.title || '?';
+      const detail = i.plain_language || i.rationale || '';
+      lines.push(`- ${id}${detail ? ` (${String(detail).slice(0, 80)})` : ''}`);
     }
   }
 
-  // Tech stack
+  // Tech stack · objects with .name not strings (cms / analytics / pixels)
   const tech = fetchPayload?.tech_stack;
   if (tech) {
     const parts = [];
-    if (tech.cms) parts.push(tech.cms);
-    if (Array.isArray(tech.analytics) && tech.analytics.length) parts.push(...tech.analytics.slice(0, 2));
-    if (Array.isArray(tech.pixels) && tech.pixels.length) parts.push(...tech.pixels.slice(0, 2));
+    if (tech.cms?.name) parts.push(tech.cms.name);
+    else if (typeof tech.cms === 'string') parts.push(tech.cms);
+    if (Array.isArray(tech.analytics) && tech.analytics.length) {
+      parts.push(...tech.analytics.slice(0, 2).map((a) => a?.name || a).filter(Boolean));
+    }
+    if (Array.isArray(tech.pixels) && tech.pixels.length) {
+      parts.push(...tech.pixels.slice(0, 2).map((p) => p?.name || p).filter(Boolean));
+    }
     if (parts.length) lines.push(`Tech: ${parts.join(' · ')}`);
   }
 
-  // Sitemap
+  // Sitemap · has_sitemap=false 时显示 "no sitemap"
   const sm = fetchPayload?.sitemap_analysis;
-  if (sm && sm.total_urls != null) {
-    lines.push(`Sitemap: ${sm.total_urls} pages · ${sm.migration_complexity || 'unknown'} migration complexity`);
+  if (sm) {
+    if (sm.has_sitemap === false) {
+      lines.push(`Sitemap: 没找到 (standard paths 无 sitemap.xml)`);
+    } else if (sm.total_urls != null) {
+      lines.push(`Sitemap: ${sm.total_urls} pages · ${sm.migration_complexity || '?'} migration`);
+    }
   }
 
-  // Speed (LCP / FCP / CWV)
-  const perf = fetchPayload?.performance;
-  if (perf) {
+  // Speed · 用 pagespeed.results.mobile.lab_metrics (lcp_ms / fcp_ms / cls / tbt_ms)
+  const mobMetrics = fetchPayload?.pagespeed?.results?.mobile?.lab_metrics;
+  const mobScores = fetchPayload?.pagespeed?.results?.mobile?.scores;
+  if (mobMetrics || mobScores) {
     const parts = [];
-    if (perf.lcp != null) parts.push(`LCP ${(perf.lcp / 1000).toFixed(1)}s`);
-    if (perf.fcp != null) parts.push(`FCP ${(perf.fcp / 1000).toFixed(1)}s`);
-    if (perf.cwv) parts.push(`CWV ${perf.cwv}`);
-    if (parts.length) lines.push(`Speed: ${parts.join(' · ')}`);
+    if (mobScores?.performance != null) parts.push(`perf ${mobScores.performance}/100`);
+    if (mobMetrics?.lcp_ms != null) parts.push(`LCP ${(mobMetrics.lcp_ms / 1000).toFixed(1)}s`);
+    if (mobMetrics?.fcp_ms != null) parts.push(`FCP ${(mobMetrics.fcp_ms / 1000).toFixed(1)}s`);
+    if (mobMetrics?.cls != null) parts.push(`CLS ${mobMetrics.cls.toFixed(2)}`);
+    if (parts.length) lines.push(`Speed (mobile): ${parts.join(' · ')}`);
   }
 
-  // Contact info (just extracted)
+  // Contact info
   if (contact) {
     lines.push('');
     lines.push('联系信息:');
     if (contact.emails?.length) {
       lines.push(`- email: ${contact.emails[0]}${contact.contact_us_url ? ` (from [/contact/](${contact.contact_us_url}))` : ''}`);
+    } else if (contact.contact_us_url) {
+      lines.push(`- email: — (已抓 [/contact/](${contact.contact_us_url}) · 网站未公开)`);
     } else {
-      lines.push(`- email: —${contact.contact_us_url ? ` (try [contact 页](${contact.contact_us_url}))` : ''}`);
+      lines.push(`- email: —`);
     }
     if (entity?.latest?.phone) lines.push(`- phone: ${entity.latest.phone}`);
     const social = contact.social_links || {};
@@ -237,23 +271,25 @@ export function stage4Message({ entity, slug, htmlSize }) {
 
   const deploy = readDeploy(slug);
   const evidence = listEvidence(slug);
+  const stale = isEvidenceStale(slug, deploy);
 
-  // Report link · live if published · else local filename
-  if (deploy?.internal_audit_url) {
+  // Report link · 已 publish 且未 stale 时 hyperlink
+  const canHyperlink = deploy?.demo_url && !stale;
+  if (canHyperlink && deploy.internal_audit_url) {
     lines.push(`[internal audit](${deploy.internal_audit_url})${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''} · ${evidence.length} evidence PNG`);
   } else {
-    lines.push(`internal-audit-report.html${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''} · ${evidence.length} evidence PNG (待 publish)`);
+    lines.push(`internal-audit-report.html${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''} · ${evidence.length} evidence PNG${stale ? ' (本地新于 CF · 需 republish)' : ' (待 publish)'}`);
   }
 
   // master.md link
-  if (deploy?.master_md_url) {
+  if (canHyperlink && deploy.master_md_url) {
     lines.push(`[master.md](${deploy.master_md_url}) updated · 22 sections`);
   } else {
-    lines.push(`master.md updated (本地 · 待 publish)`);
+    lines.push(`master.md updated${stale ? ' (本地 · 需 republish 同步 CF)' : ' (本地 · 待 publish)'}`);
   }
 
-  // Evidence hyperlinks (per Matthew: "evidence 的时候 · 列表 hyperlink 显示")
-  if (evidence.length && deploy?.demo_url) {
+  // Evidence list · 仅 deploy 在且非 stale 时 hyperlink (否则 link 404)
+  if (evidence.length && canHyperlink) {
     const base = deploy.demo_url.replace(/\/$/, '');
     lines.push('');
     lines.push(`Evidence:`);
@@ -262,9 +298,8 @@ export function stage4Message({ entity, slug, htmlSize }) {
     }
     if (evidence.length > 10) lines.push(`- _(+${evidence.length - 10} 张更多)_`);
   } else if (evidence.length) {
-    // 本地 · 无 live URL · 只列名
     lines.push('');
-    lines.push(`Evidence (${evidence.length} · 本地 · 待 publish 后 link):`);
+    lines.push(`Evidence (${evidence.length}${stale ? ' · 本地新于 CF · 需 `npm run pl:publish-demo` 同步' : ' · 本地 · 待 publish'}):`);
     for (const f of evidence.slice(0, 6)) {
       lines.push(`- ${prettyEvidenceName(f)}`);
     }
@@ -272,7 +307,11 @@ export function stage4Message({ entity, slug, htmlSize }) {
   }
 
   lines.push('');
-  lines.push(`Audit pipeline 完整 · phase=design-ready · ready for M3 demo build`);
+  if (stale) {
+    lines.push(`Audit pipeline 完整 · ⚠️ evidence 本地更新 · 跑 \`npm run pl:publish-demo -- --slug ${slug}\` 同步到 CF Pages`);
+  } else {
+    lines.push(`Audit pipeline 完整 · phase=design-ready · ready for M3 demo build`);
+  }
 
   return lines.join('\n');
 }

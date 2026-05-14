@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-14T02:47:11.849Z",
+  "generatedAt": "2026-05-14T02:54:19.791Z",
   "entity_input": {
     "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "latest": {
@@ -309,19 +309,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 41,
+          "performance": 71,
           "accessibility": 95,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 17477.324800635964,
-          "fcp_ms": 1964.8921470182354,
+          "lcp_ms": 13951.14298960911,
+          "fcp_ms": 1955.1059136403665,
           "cls": 0,
-          "tbt_ms": 1405,
-          "tti_ms": 17514.82550980766,
-          "speed_index_ms": 7949.361778804598,
-          "transfer_size_bytes": 3013856
+          "tbt_ms": 103,
+          "tti_ms": 13951.14298960911,
+          "speed_index_ms": 3697.936239767635,
+          "transfer_size_bytes": 3013929
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -336,33 +336,27 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 1350,
-            "savings_bytes": 237288
-          },
-          {
-            "id": "server-response-time",
-            "title": "Initial server response time was short",
-            "savings_ms": 61,
-            "savings_bytes": null
+            "savings_ms": 300,
+            "savings_bytes": 238026
           }
         ]
       },
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 60,
+          "performance": 84,
           "accessibility": 92,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 3461.237559036263,
-          "fcp_ms": 525.6111938797968,
-          "cls": 0.10049,
-          "tbt_ms": 284,
-          "tti_ms": 3471.2382618736483,
-          "speed_index_ms": 2963.8036022580013,
-          "transfer_size_bytes": 3438792
+          "lcp_ms": 2521.153485761758,
+          "fcp_ms": 525.6097179520272,
+          "cls": 0.006332,
+          "tbt_ms": 80.99999999999989,
+          "tti_ms": 2521.153485761758,
+          "speed_index_ms": 1650.0038598199912,
+          "transfer_size_bytes": 3438940
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -375,22 +369,22 @@
         "crux_origin_overall": null,
         "opportunities": [
           {
-            "id": "unused-javascript",
-            "title": "Reduce unused JavaScript",
-            "savings_ms": 400,
-            "savings_bytes": 430206
-          },
-          {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 86,
+            "savings_ms": 93,
             "savings_bytes": null
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 80,
+            "savings_bytes": 431770
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 85234
+    "latency_ms": 42207
   },
   "form_audit": {
     "ok": true,
@@ -716,7 +710,7 @@
     "registrar": "GoDaddy.com LLC trading as GoDaddy.com",
     "wayback": {
       "snapshot_count": 0,
-      "error": "The operation was aborted due to timeout"
+      "error": "wayback 503"
     },
     "days_since_last_wayback_snapshot": null,
     "days_since_first_wayback_snapshot": null,
@@ -871,24 +865,24 @@
     "first_party_count": 28,
     "first_party_bytes": 2368408,
     "third_party_count": 29,
-    "third_party_bytes": 804722,
+    "third_party_bytes": 804748,
     "third_party_pct_of_bytes": 25,
     "tracker_count": 2,
-    "tracker_bytes": 151716,
+    "tracker_bytes": 151744,
     "tracker_summary": [
       {
         "id": "gtm",
         "name": "Google Tag Manager",
         "kind": "analytics",
         "request_count": 1,
-        "bytes": 149494
+        "bytes": 149496
       },
       {
         "id": "doubleclick",
         "name": "DoubleClick",
         "kind": "ad_serving",
         "request_count": 1,
-        "bytes": 2222
+        "bytes": 2248
       }
     ],
     "heaviest_third_party": [
@@ -910,7 +904,7 @@
         "domain": "googletagmanager.com",
         "first_party": false,
         "resource_type": "script",
-        "size_bytes": 149494,
+        "size_bytes": 149496,
         "tracker_id": "gtm",
         "tracker_name": "Google Tag Manager",
         "tracker_kind": "analytics",
@@ -1017,7 +1011,7 @@
   "detailed_audit": {
     "business_id": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-14T02:47:11.849Z",
+    "audited_at": "2026-05-14T02:54:19.791Z",
     "audit_score": 70,
     "dimension_scores": {
       "gbp": 48,

@@ -325,6 +325,26 @@ async function processLead(entityKey) {
     htmlSize,
   }));
 
+  // V3 D38 bug fix · auto-republish to CF Pages if entity was previously published.
+  // 否则 Stage 4 message 的 evidence hyperlinks 会 404 (CF 还停在旧文件名)
+  // pl:publish-demo 仅 wrangler deploy · ~30s · $0 · 不调 LLM
+  try {
+    const deployPath = path.join('clients', slug, 'v2/concept/reference-adapter/cf-pages-deploy.json');
+    if (fs.existsSync(deployPath)) {
+      console.log(`  [auto-republish] entity previously published · re-deploying to CF Pages...`);
+      const rep = spawnSync('npm', ['run', 'pl:publish-demo', '--', '--slug', slug], {
+        cwd: repoRoot,
+        stdio: 'inherit',
+        timeout: 120_000,
+      });
+      if (rep.status !== 0) {
+        console.warn(`  [auto-republish] failed exit=${rep.status} · evidence links 可能 stale`);
+      }
+    }
+  } catch (err) {
+    console.warn(`  [auto-republish] err: ${err.message}`);
+  }
+
   return {
     entityKey,
     name: entity.latest?.name,
