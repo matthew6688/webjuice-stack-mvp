@@ -297,13 +297,26 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
       });
     }
   } else if (channel === 'leads') {
-    const parts = [];
-    if (assets.evidence.length) parts.push(`证据 ${assets.evidence.length}`);
-    if (assets.screenshots.length) parts.push(`截图 ${assets.screenshots.length}`);
-    if (assets.videos.length) parts.push(`视频 ${assets.videos.length}`);
-    if (parts.length) {
-      fields.push({ name: '本地资产 (未 publish)', value: parts.join(' · '), inline: false });
+    // V3 D43 cycle-8 (Matthew 2026-05-14): slug-collision means two entities
+    // with same business name share a client folder. predict-only entity would
+    // inherit a previously-audited entity's assets — that's bullshit.
+    // Only show 本地资产 when THIS entity itself was detail-audited
+    // (entity.grade.investment_level set · or entity.detailed_audit.at set).
+    // Note: master.md's business_id field is NOT reliable proof of ownership —
+    // master-md-refresh fires for any entity, and the last-writer wins.
+    const thisEntityAudited = !!entity.grade?.investment_level
+      || !!entity.detailed_audit?.at
+      || !!entity.audit?.at;
+    if (thisEntityAudited) {
+      const parts = [];
+      if (assets.evidence.length) parts.push(`证据 ${assets.evidence.length}`);
+      if (assets.screenshots.length) parts.push(`截图 ${assets.screenshots.length}`);
+      if (assets.videos.length) parts.push(`视频 ${assets.videos.length}`);
+      if (parts.length) {
+        fields.push({ name: '本地资产 (未 publish)', value: parts.join(' · '), inline: false });
+      }
     }
+    // else: predict-only entity → no assets shown (don't inherit from same-name audited entity)
   }
 
   // ═══════ Section 6 · 线索来源 ═══════

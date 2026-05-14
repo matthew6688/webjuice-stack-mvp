@@ -86,8 +86,34 @@ export function predictGradePreaudit({ entity, cheapAudit }) {
   }
 
   // ── C: niche-relevant 但 GBP 信号薄 · cold queue 路径 · 不立刻 audit
-  reasons.push(`predict-C · ${rc} 评论 · ${rating}★ · ${action} · GBP 弱 · 留 cold queue · 销售触发再 audit`);
-  return { predict_grade: 'C', priority: Math.min(50, rc), audit_now: false, reasons };
+  // V3 D43 cycle-8 (Matthew 2026-05-14): 具体说明 vs A/B 阈值哪条不及格 · 不要 vague
+  const cActionOk = action === 'audit_candidate' || action === 'starter_candidate';
+  const failedB = [];
+  if (rc < B_REVIEWS_MIN) failedB.push(`reviews ${rc} < B 阈值 ${B_REVIEWS_MIN}`);
+  if (rating < B_RATING_MIN) failedB.push(`rating ${rating}★ < B 阈值 ${B_RATING_MIN}★`);
+  if (!cActionOk) failedB.push(`cheap action ${action} 不在 [audit_candidate, starter_candidate]`);
+  const failedA = [];
+  if (rc < A_REVIEWS_MIN) failedA.push(`reviews ${rc} < A 阈值 ${A_REVIEWS_MIN}`);
+  if (rating < A_RATING_MIN) failedA.push(`rating ${rating}★ < A 阈值 ${A_RATING_MIN}★`);
+  if (!hasWebsite) failedA.push(`无独立网站 (websiteStatus=${ws || '?'}) · A 必须有 website`);
+  if (!cActionOk) failedA.push(`cheap action ${action} 不在 [audit_candidate, starter_candidate]`);
+  reasons.push(`predict-C · 不达 B 标准:`);
+  for (const r of failedB) reasons.push(`  ✗ ${r}`);
+  reasons.push(`(同时不达 A 标准: ${failedA.length} 项)`);
+  return {
+    predict_grade: 'C',
+    priority: Math.min(50, rc),
+    audit_now: false,
+    reasons,
+    // V3 D43 cycle-8: structured threshold report for UI · machine-readable
+    threshold_report: {
+      actual: { reviews: rc, rating, has_website: hasWebsite, cheap_action: action },
+      B_required: { reviews_min: B_REVIEWS_MIN, rating_min: B_RATING_MIN, cheap_action_in: ['audit_candidate', 'starter_candidate'] },
+      A_required: { reviews_min: A_REVIEWS_MIN, rating_min: A_RATING_MIN, requires_has_website: true, cheap_action_in: ['audit_candidate', 'starter_candidate'] },
+      failed_B_criteria: failedB,
+      failed_A_criteria: failedA,
+    },
+  };
 }
 
 /**
