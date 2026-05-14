@@ -80,7 +80,7 @@ const EXTRACT_PROMPT = `You are extracting business listing data from an image (
 
 Return ONLY a JSON object with these fields (use null for unknown):
 {
-  "businessName": <string · the business name>,
+  "businessName": <string · the business name · see CRITICAL rule below>,
   "niche":        <string · category lowercase: "restaurant"|"cafe"|"plumber"|"roofer"|"electrician"|"dentist"|"hairdresser"|"law-firm"|"photographer"|"other">,
   "city":         <string · city lowercase, hyphenated>,
   "address":      <string · full address if visible>,
@@ -88,6 +88,22 @@ Return ONLY a JSON object with these fields (use null for unknown):
   "website":      <string · domain or URL>,
   "category":     <string · category as shown in image, freeform>
 }
+
+CRITICAL · businessName rules (avoid phantom names):
+- Only fill businessName if a real, identifiable company name is visible
+  (e.g. "ABC Plumbing", "Joe's Roofing Co", "Smith & Sons").
+- DO NOT use service category text as business name. Examples that are NOT
+  business names · return null instead:
+    × "Roofing Tile/Metal"     (service description)
+    × "Tile/Metal Roofing"      (service description)
+    × "Restorations Repairs"    (service list)
+    × "ROOFING"                 (single category word)
+    × "Plumber"                 (single category word)
+- Tradie signs without a company name often have ONLY: services + phone + years
+  experience. In that case businessName MUST be null. The phone number alone
+  is enough to identify the business downstream via Places lookup.
+- A real business name typically has at least one of: proper noun (person/place
+  name), "Pty Ltd", "Co", "Inc", "& Sons", "Brothers", possessive ('s).
 
 Be strict. Don't guess fields not visible. JSON only, no prose.`;
 
