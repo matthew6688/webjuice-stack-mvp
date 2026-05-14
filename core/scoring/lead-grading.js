@@ -357,20 +357,44 @@ export function persistLeadGrade({
     });
   }
 
-  // Async Discord thread open — fire-and-forget. Errors surface in lead-thread
-  // log, but never block the grading pipeline. Skip in test/dry contexts via
-  // SKIP_LEAD_THREAD_OPEN=true (used by unit tests that don't want network).
-  if ((grade.investment_level === 'A' || grade.investment_level === 'B')
-      && !process.env.SKIP_LEAD_THREAD_OPEN) {
-    // Lazy-import to avoid circular dep with lead-thread-sync → profile-card → manifest
-    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread }) => {
+  // V3 D43 (Matthew 2026-05-14): 入库后已经 auto-open thread (discovery-store)
+  // 这里 grade 完后 · 只在 thread 还没开 (e.g. 测试 / SOP1_DISABLE_AUTO_OPEN_LEADS=1)
+  // 时 fallback 打开 · 否则 refreshThreadAndPost 刷 card 反映 grade
+  if (!process.env.SKIP_LEAD_THREAD_OPEN) {
+    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread, upsertProfileCard }) => {
       try {
-        const result = await openLeadThread(entityKey);
-        if (!result.ok) console.warn(`[persistLeadGrade] openLeadThread failed: ${result.reason}`);
+        const entityPath = path.join(storeRoot, 'entities', `${entityKey}.json`);
+        const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+        if (!fresh.discord_thread_id) {
+          // A/B/C: open. D: don't open (auto-archive flow handles it elsewhere)
+          if (['A', 'B', 'C'].includes(grade.investment_level)) {
+            await openLeadThread(entityKey);
+          }
+        } else if (['A', 'B', 'C', 'D'].includes(grade.investment_level)) {
+          await upsertProfileCard(entityKey);
+        }
       } catch (err) {
-        console.warn(`[persistLeadGrade] openLeadThread threw: ${err.message}`);
+        console.warn(`[persistLeadGrade] thread open/refresh failed: ${err.message}`);
       }
     }).catch((err) => console.warn(`[persistLeadGrade] lead-thread-sync import failed: ${err.message}`));
+  }
+
+  // V3 D43 · D-grade → archive thread (swap-archive tag + lock)
+  if (isD && !process.env.SKIP_LEAD_THREAD_OPEN) {
+    import('../funnel/lead-thread-sync.js').then(async ({ archiveAndLockThread }) => {
+      try {
+        const entityPath = path.join(storeRoot, 'entities', `${entityKey}.json`);
+        const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+        const threadId = fresh.discord_thread_id;
+        if (threadId) {
+          const reason = `D-grade · ${(grade.skip_reasons || []).map((r) => r.id).join(',') || 'd_grade'}`;
+          await archiveAndLockThread(threadId, { reason });
+          console.error(`[persistLeadGrade] D · archived thread ${threadId} (${reason})`);
+        }
+      } catch (err) {
+        console.warn(`[persistLeadGrade] D-archive thread failed: ${err.message}`);
+      }
+    }).catch((err) => console.warn(`[persistLeadGrade] archive import failed: ${err.message}`));
   }
 
   return { ...statusResult, phaseResult };

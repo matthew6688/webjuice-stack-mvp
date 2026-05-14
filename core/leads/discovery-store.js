@@ -165,9 +165,35 @@ export function upsertDiscoveryRun(run, {
       .catch((err) => console.error(`[discovery-store] master-md enqueue err: ${err.message}`));
   }
 
-  // V3 D43 ROLLBACK (Matthew 2026-05-14): 之前我加了"入库就开 #website-leads thread"
-  // 反 SOP-DISCORD-CHANNELS-PRD §4.3 + LEAD-JOURNEY §11 (entry = grade A/B/C 后才开)。
-  // 移回 grade-router.persistLeadGrade · 那里 A/B/C 时才 openLeadThread。
+  // V3 D43 (Matthew 2026-05-14 · 改变主意): 入库后 **直接** 开 #website-leads thread
+  // + 自动 chain cheap-audit (throttled · 不让 mac 烧) · 不等 cron。
+  // SOP 重新解读: #website-leads = "全 lead pool 可视化" · tag 反映 pipeline 状态
+  //   audit-pending → audit-running → grade-{a,b,c} → archived (D)
+  if (!process.env.SOP1_DISABLE_AUTO_OPEN_LEADS && entityKeys.length > 0) {
+    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread }) => {
+      let opened = 0, reused = 0, failed = 0;
+      for (const key of entityKeys) {
+        try {
+          const r = await openLeadThread(key);
+          if (r.ok && r.reused) reused += 1;
+          else if (r.ok) opened += 1;
+          else failed += 1;
+        } catch { failed += 1; }
+        // pace · respect Discord rate-limit (50 threads / 10min per guild) · ~13s
+        await new Promise((res) => setTimeout(res, 13000));
+      }
+      if (opened + failed > 0) console.error(`[discovery-store] auto-open-leads · opened=${opened} reused=${reused} failed=${failed} of ${entityKeys.length}`);
+    }).catch((err) => console.error(`[discovery-store] auto-open-leads import failed: ${err.message}`));
+  }
+
+  // V3 D43 · auto-enqueue cheap-audit · throttled queue · chains detailedAudit for predict A/B
+  if (!process.env.SOP1_DISABLE_AUTO_CHEAP_AUDIT && entityKeys.length > 0) {
+    import('./cheap-audit-queue.js').then(({ enqueueCheapAudit }) => {
+      for (const key of entityKeys) {
+        try { enqueueCheapAudit(key, { reason: 'intake' }); } catch { /* fire-and-forget */ }
+      }
+    }).catch((err) => console.error(`[discovery-store] cheap-audit enqueue import failed: ${err.message}`));
+  }
 
   return {
     ok: true,

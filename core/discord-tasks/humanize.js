@@ -170,15 +170,24 @@ function parseLastStage(tail) {
 function extractBusinessSummary(kind, tail) {
   const t = String(tail || '');
   if (kind === 'intake' || kind === 'places-intake' || kind === 'scrape') {
-    // 找 lead_keys + business names from CLI JSON output
+    // V3 D43 (Matthew 2026-05-14): 多商家显完整 list · 不截到前 10
     const names = extractBusinessNames(t);
     if (names.length > 0) {
       const lines = [`找到 ${names.length} 个商家:`];
-      names.slice(0, 10).forEach((n) => lines.push(`- ${n}`));
-      if (names.length > 10) lines.push(`_(+${names.length - 10} 个更多)_`);
+      // Discord content limit 2000 chars · `- name\n` 平均 30 char · 留 200 char buffer
+      const LIMIT = 1800;
+      let acc = lines[0].length;
+      let shown = 0;
+      for (const n of names) {
+        const line = `- ${n}`;
+        if (acc + line.length + 1 > LIMIT) break;
+        lines.push(line);
+        acc += line.length + 1;
+        shown += 1;
+      }
+      if (shown < names.length) lines.push(`_(+${names.length - shown} 个更多 · 完整 list 见 entity store)_`);
       return lines.join('\n');
     }
-    // fallback to count
     const m = t.match(/(?:found|rows?|leads?|entities?|lead_count)[:\s]+(\d+)/i);
     if (m) return `找到 ${m[1]} 个商家`;
     return '抓取完成';
