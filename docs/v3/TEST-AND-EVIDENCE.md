@@ -159,6 +159,31 @@ react ✅ 重试 / 🗑 放弃
      - `finished_at != null`
      - `leads.length === lead_count`
 
+### 排除式筛选 期望 (cycle-23 起 · LEAD-FILTERING-DESIGN.md)
+
+替换 predict-grade 硬阈值 · 3 层 deterministic filter:
+
+| Layer | 触发条件 | 行为 |
+|-------|---------|------|
+| 1 数据质量 | phone+email+website 全 NULL · enrich 后仍 NULL / business_status≠OPERATIONAL / name 含 test/demo | archive (no thread) |
+| 2 业务类型不对 | review_count > niche_max / category 含 government/school · web design/SEO · LLM niche=false | archive (no thread) |
+| 3 时机不对 | review_count < niche_min / rating <3.0 AND reviews≥5 | archive (no thread) |
+
+**survivor 全部** = predict_grade=C · audit_now=true → 直接进 detail audit。真 grade 由 audit 后 `lead-grading.js` 出。
+
+**Niche-aware 阈值** (niche-config.json):
+- roofing/plumbing/electrical: max 200 / min 5
+- dental: max 400 / min 5
+- restaurant/cafe: max 1000 / min 10
+- 其他见 niche-config.json
+
+**Entity 字段新增**: `entity.exclusion_filter = { excluded, layer, reason, exclusions[], thresholds }` · 可观测。
+
+**Layer 1 needs_enrichment 自动 chain**: phone+email+website 全 NULL · 第一次 → 触发 `pl:run-enrichment-batch` task · 不直接 exclude · 等 enrich 跑完 entity refresh 重判。
+`entity.enrichment_attempted_at` timestamp 防止循环。
+
+**对比 cycle-22 D-grade behavior**: cycle-23 起 D-grade = filter excluded · 不再走 predict-D 硬阈值路径。
+
 ### 测试节奏 (cycle-14 起强制)
 
 - **一次只 1 entry** · 不允许并发投 A/B/C/D

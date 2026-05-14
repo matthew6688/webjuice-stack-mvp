@@ -1,8 +1,15 @@
 # Lead Filtering Design v1 · 排除式筛选
 
 > Matthew 2026-05-14: "先排除，再精选 · 比正向打分效率高得多"
-> 状态: **PLAN ONLY · 等 Matthew sign-off 才实施**
-> 取代 cycle-17 的 `LEAD-SCORING-DESIGN.md`（5 维评分 · 太复杂）
+> 状态: **IMPLEMENTED cycle-23 (2026-05-15)** · Matthew sign-off · 3 个决定 (a)(a)(a)
+> 取代 cycle-17 的 `LEAD-SCORING-DESIGN.md`（5 维评分 · 太复杂 · 已 archived）
+>
+> 实现文件:
+> - `core/leads/exclusion-filter.js` · 3 层 filter + niche-aware
+> - `core/leads/niche-config.json` · 阈值配置 (niche 上限 + 下限)
+> - `core/leads/cheap-audit-queue.js` · wire filter 替换 predict-grade 硬阈值
+>
+> Tinyfish lite homepage fetch · **不实施** (Matthew: 排除式不需要 · Stage 1 Playwright 已经给所需信号)
 
 ---
 

@@ -146,11 +146,31 @@ async function processOne(entityKey) {
     return;
   }
 
-  // Predict grade
+  // V3 D43 cycle-23 (Matthew 2026-05-15): 排除式筛选取代 predict-grade 硬阈值.
+  // LEAD-FILTERING-DESIGN.md 3 层 (data quality · 业务类型 · 时机) · 命中任一 → exclude.
+  const { runExclusionFilter, formatExclusionReport } = await import('./exclusion-filter.js');
+  const exclusion = runExclusionFilter({
+    entity,
+    cheapAudit: cheapResult,
+    nicheVerdict: entity.niche_relevance,
+  });
+
+  // Predict grade (legacy compat · 全 survivor = C · 全 excluded = D)
   const { predictGradePreaudit } = await import('./predict-grade.js');
   const predict = predictGradePreaudit({ entity, cheapAudit: cheapResult });
+  // Cycle-23: 排除式覆盖 predict-grade 决定
+  if (exclusion.excluded) {
+    predict.predict_grade = 'D';
+    predict.audit_now = false;
+    predict.reasons = [`exclusion-filter Layer ${exclusion.layer}: ${exclusion.reason}`];
+  } else if (!exclusion.needs_enrichment) {
+    // Survivor · 不再硬分 A/B/C · 全部 C · audit_now=true (audit 后 lead-grading 出真 grade)
+    predict.predict_grade = 'C';
+    predict.audit_now = true;
+    predict.reasons = ['exclusion-filter survived all 3 layers · 进 audit'];
+  }
 
-  // Write cheap-audit + prediction to entity
+  // Write cheap-audit + prediction + exclusion to entity
   try {
     const fresh = JSON.parse(fs2.readFileSync(entityPath, 'utf8'));
     fresh.cheap_audit = {
@@ -170,23 +190,53 @@ async function processOne(entityKey) {
       reasons: predict.reasons,
       at: new Date().toISOString(),
     };
+    fresh.exclusion_filter = {
+      excluded: exclusion.excluded,
+      needs_enrichment: exclusion.needs_enrichment,
+      layer: exclusion.layer,
+      reason: exclusion.reason,
+      exclusions: exclusion.exclusions,
+      thresholds: exclusion.thresholds_used,
+      at: new Date().toISOString(),
+    };
     fs2.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
-    console.error(`[cheap-audit-queue] ${entityKey} · cheap.action=${cheapResult.action} · predict=${predict.predict_grade} · priority=${predict.priority} · audit_now=${predict.audit_now}`);
+    console.error(`[cheap-audit-queue] ${entityKey} · ${exclusion.excluded ? 'EXCLUDED L'+exclusion.layer : exclusion.needs_enrichment ? 'NEEDS_ENRICH' : 'SURVIVED'} · ${exclusion.reason}`);
   } catch (err) {
     console.error(`[cheap-audit-queue] write entity failed ${entityKey}: ${err.message}`);
     return;
   }
 
-  // Branch by predict_grade
-  if (predict.predict_grade === 'D') {
-    // D · setEntityPhase archived · NO thread opened (cycle-4 fix: D never gets a thread)
+  // V3 D43 cycle-23 · Layer 1 needs enrichment · trigger enrichment task & defer
+  if (exclusion.needs_enrichment) {
+    try {
+      const { createTask } = await import('../tasks/task-store.js');
+      const enrichTask = createTask({
+        kind: 'enrich',
+        source: { platform: 'internal', thread_id: null, author: 'cheap-audit-queue auto-enrich (no contact)', message_id: null },
+        input: { text: `auto-enrich ${entityKey} · phone/email/website 全空 · 跑 Tinyfish + DDG 搜索`, attachments: [] },
+        target: { cli: 'pl:run-enrichment-batch', args: ['--limit', '1', '--entity-key', entityKey], timeout_ms: 300_000 },
+      });
+      console.error(`[cheap-audit-queue] ${entityKey} · enqueued enrichment task ${enrichTask.task_id}`);
+      // Mark entity enrichment_attempted_at so re-run (after enrich done) wouldn't loop
+      const fresh = JSON.parse(fs2.readFileSync(entityPath, 'utf8'));
+      fresh.enrichment_attempted_at = new Date().toISOString();
+      fs2.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+    } catch (err) {
+      console.error(`[cheap-audit-queue] enrich enqueue failed ${entityKey}: ${err.message}`);
+    }
+    return;
+  }
+
+  // Branch by exclusion verdict
+  if (exclusion.excluded) {
+    // 排除 · setEntityPhase archived · NO thread opened
     try {
       const { setEntityPhase, ENTITY_PHASE } = await import('./discovery-store.js');
       setEntityPhase({
         entityKey,
         phase: ENTITY_PHASE.ARCHIVED,
-        archive_reason: `predict-D · ${predict.reasons.join(' · ')}`,
-        note: 'cheap-audit-queue auto-archive (predict-D · no thread)',
+        archive_reason: exclusion.archive_reason,
+        note: 'cheap-audit-queue exclusion-filter L' + exclusion.layer,
       });
     } catch (err) {
       console.error(`[cheap-audit-queue] setEntityPhase archived failed ${entityKey}: ${err.message}`);

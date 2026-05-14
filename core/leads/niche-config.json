@@ -1,0 +1,41 @@
+{
+  "_comment": "V3 D43 cycle-23 (Matthew 2026-05-15) · niche-aware review_count 阈值 (排除式筛选).",
+  "_schema": {
+    "max_reviews": "review_count > 此值 → exclude (大企业/连锁 · 不是目标客户)",
+    "min_reviews": "review_count < 此值 → archive (太小 · 没改版预算)"
+  },
+  "niches": {
+    "roofing":       { "max_reviews": 200,  "min_reviews": 5 },
+    "roofer":        { "max_reviews": 200,  "min_reviews": 5 },
+    "plumbing":      { "max_reviews": 200,  "min_reviews": 5 },
+    "plumber":       { "max_reviews": 200,  "min_reviews": 5 },
+    "electrical":    { "max_reviews": 200,  "min_reviews": 5 },
+    "electrician":   { "max_reviews": 200,  "min_reviews": 5 },
+    "painting":      { "max_reviews": 200,  "min_reviews": 5 },
+    "painter":       { "max_reviews": 200,  "min_reviews": 5 },
+    "hvac":          { "max_reviews": 200,  "min_reviews": 5 },
+    "heating":       { "max_reviews": 200,  "min_reviews": 5 },
+    "cooling":       { "max_reviews": 200,  "min_reviews": 5 },
+    "dental":        { "max_reviews": 400,  "min_reviews": 5 },
+    "dentist":       { "max_reviews": 400,  "min_reviews": 5 },
+    "restaurant":    { "max_reviews": 1000, "min_reviews": 10 },
+    "cafe":          { "max_reviews": 1000, "min_reviews": 10 },
+    "hair":          { "max_reviews": 500,  "min_reviews": 5 },
+    "salon":         { "max_reviews": 500,  "min_reviews": 5 },
+    "barber":        { "max_reviews": 500,  "min_reviews": 5 },
+    "auto":          { "max_reviews": 300,  "min_reviews": 5 },
+    "panelbeater":   { "max_reviews": 300,  "min_reviews": 5 },
+    "mechanic":      { "max_reviews": 300,  "min_reviews": 5 },
+    "solar":         { "max_reviews": 300,  "min_reviews": 5 },
+    "pet":           { "max_reviews": 400,  "min_reviews": 5 },
+    "vet":           { "max_reviews": 400,  "min_reviews": 5 },
+    "beauty":        { "max_reviews": 300,  "min_reviews": 5 },
+    "spa":           { "max_reviews": 300,  "min_reviews": 5 },
+    "landscape":     { "max_reviews": 200,  "min_reviews": 5 },
+    "garden":        { "max_reviews": 200,  "min_reviews": 5 },
+    "cleaning":      { "max_reviews": 200,  "min_reviews": 5 },
+    "default":       { "max_reviews": 300,  "min_reviews": 5 }
+  },
+  "rating_min": 3.0,
+  "rating_min_min_reviews": 5
+}
