@@ -30,19 +30,31 @@ const HARD_GATES = [
   },
   {
     id: 'multi_business',
-    test: (ctx) => (ctx.entity?.latest?.categories || []).length >= 4
-      || (ctx.brief?.qualification_flags?.scope_pages_estimate || 0) >= 5
-        && (ctx.brief?.core_info?.service_list || []).length >= 8,
-    reason: '多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)',
+    // V3 D43 cycle-21 (Matthew 2026-05-15): 收严 · 仅 GBP categories ≥ 4 才 hard pass.
+    // 跨 niche 服务页判断 LLM 容易误杀 (Roofing 站列 8 个 roofing 服务 ≠ 多业务) ·
+    // 降级为 warning · 不直接 archive. 实际做法: 后续 review 这条 LLM 信号 ·
+    // 列出具体 GBP categories 让 operator 评判 (Matthew "列出具体 niche 人工评判").
+    test: (ctx) => (ctx.entity?.latest?.categories || []).length >= 4,
+    reason: '多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)',
   },
   {
     id: 'ecommerce',
+    // V3 D43 cycle-21 (Matthew 2026-05-15): 收严 · 必须 (CMS 是 Shopify/Woo/Magento)
+    // AND (实际能在 sitemap/url 找 cart|checkout|product 路径). LLM 单独说 "ecommerce_detected"
+    // 容易误杀 (WeatherpRoof case: WordPress + 一个 Colour Visualiser 工具 → LLM 误以为 ecommerce).
     test: (ctx) => {
       const techCms = ctx.audit?.tech_stack?.cms?.name?.toLowerCase() || '';
-      if (/shopify|woocommerce|magento|bigcommerce/.test(techCms)) return true;
-      return !!ctx.brief?.qualification_flags?.ecommerce_detected;
+      const cmsIsEcom = /shopify|woocommerce|magento|bigcommerce/.test(techCms);
+      // 不再单独信 LLM brief flag · 必须 CMS 也确认。
+      if (cmsIsEcom) {
+        // Cross-verify · sitemap 有真 cart/checkout URL
+        const urls = (ctx.audit?.sitemap_analysis?.urls_by_pattern || {});
+        const hasCartCheckout = (urls.cart || 0) > 0 || (urls.checkout || 0) > 0 || (urls.product || 0) > 2;
+        return hasCartCheckout;
+      }
+      return false;
     },
-    reason: '现网是 e-commerce (Shopify/WooCommerce/Magento) · 不在 V3 产品包',
+    reason: '现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包',
   },
   {
     id: 'member_portal',
