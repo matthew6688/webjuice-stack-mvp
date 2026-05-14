@@ -6,35 +6,15 @@
 
 ## ✅ Done (2026-05-14)
 
-- **GR1 pl:e2e-smoke** · code shipped (`scripts/qa/pl-e2e-smoke.mjs`) · plist 待装
+- **GR1 pl:e2e-smoke** · code + plist · daily 02:00 cron (commit `65f6cf06`)
 - **GR2 qa:lint-discord-messages** · live · 抓 31 真违规 (commit `2cb9ce0c`)
 - **GR3 pl:daemon-doctor** · live · daily 04:00 cron · 抓 LISTENER_ALLOW_BOTS=1
 - **GR4 pl:cascade-doctor** · live · daily 04:15 cron · `cascade-trace.jsonl` 写起来
 - **GR5 entity-schema validate** · live · wired into `pl:single-enrich`
+- **GR6 LLM judge 扩范围** · intake + audit · `judgeIntakeResults` + `judgeAuditConclusion` (commit `65f6cf06`)
 - **Discord unified emit 层** · `core/funnel/discord-emit.js` · 接入 4 处 (commit `c67e978c`) · 实测 bot-log fallback ✓
-
----
-
-## P0 · 剩下的 guard rails
-
-### GR1 plist 装 cron
-`scripts/qa/pl-e2e-smoke.mjs` code 已就绪 · 装 launchd plist 每天 02:00 跑 (避开 dispatcher 高峰):
-```
-ai.profitslocal.v3.e2e-smoke.plist
-```
-建议先手跑几天 verify baseline 稳了再装 cron。
-
-### GR6 · LLM judge 扩范围 (~30min)
-当前只有 single-enrich + image-extract 走 judge。扩到:
-- **intake** (find ...) · LLM 看 returned candidates 是不是真 niche 商家还是 generic 噪声
-- **audit** 完成时 · LLM 判 "audit 结论合理吗" · 防 score 异常
-- **deliverable**: 扩 `core/llm/match-judge.js` 加 `judgeIntakeResults` + `judgeAuditConclusion`
-
-### Emit rate-limit 队列 (~30min · 新发现 2026-05-14 Run #4)
-Run #4 实测 · master.md fanout burst 让 emit 同时 hit bot-log 触发 Discord 429。
-audit log 显示部分 `ok:false`。
-- **修法**: emit 加 token-bucket queue · 同时只 emit ≤ 4 条/秒
-- **deliverable**: `core/funnel/discord-emit.js` 加内部 queue
+- **Emit rate-limit queue** · per-channel serialize · 429 retry · 实测 10 burst ok (commit `65f6cf06`)
+- **Narrow test allowlist** · listener accepts 🧪 / [E2E prefix · 不再需要 LISTENER_ALLOW_BOTS=1 永久开
 
 ---
 
