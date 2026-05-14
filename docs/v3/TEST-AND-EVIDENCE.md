@@ -38,6 +38,56 @@
 
 ---
 
+## ⚠ Hard Evidence 强制规则 v3 (cycle-13 加严 · Matthew 2026-05-14)
+
+凡修改影响 Discord 可视化的 deliverable，PASS 必须满足**全部 6 项**：
+
+### Hard Evidence 6 必要条件 (任缺一项 = FAIL)
+
+1. **自动化脚本输出** · 必须用 `npm run pl:discord-snapshot` · 禁止手动 sample 单 thread
+2. **0 stupid sample** · 必须扫**全 channel** · 不是挑 1 个看着 OK 就通过
+3. **per-state 期望矩阵命中** · 每个 thread 的 message count + features 必须满足其状态期望（§2.5 矩阵）
+4. **0 title `[?]`** · 全 channel 扫描无 `[?]`
+5. **per-field accuracy 0 mismatch** · 每个 embed field 的显示值必须等于 entity source-of-truth (§2.4)
+   - 联系方式: 电话 / 邮箱 / 网站 全部 ==  `entity.latest.*`
+   - 基本信息: rating + review_count == entity
+   - 审计结论: 总分 == master.md `audit_score`
+   - 在线资源: cf-pages-deploy.json 4 hyperlinks 全在 field value · field 名禁止含「未 publish」
+6. **dispatcher log 无 silent fail** · 最近 1h 不能有 `fell back to bot-log` / `discord_404` / `silent skipped`
+
+### 测试节奏 (cycle-14 起强制)
+
+- **一次只 1 entry** · 不允许并发投 A/B/C/D
+- 每 entry 跑完必须：
+  - (a) 等队列 drain (dispatcher log: scan: pending=0 inflight=0)
+  - (b) `npm run pl:discord-snapshot` exit 0
+  - (c) 把 stdout + 1 个相关 thread 的 raw embed dump 贴出来
+  - (d) **停下来等 Matthew 拍板** · 才能进下一 entry
+- 任何 entry 失败 = 整个 batch fail · 不允许「8 个中过 7 个就 PASS」
+
+### 报 PASS 格式 (强制)
+
+```
+PASS · entry-N · entity=<key> · grade=<X>
+
+Snapshot stdout:
+<paste exit-0 output of npm run pl:discord-snapshot>
+
+Thread embed (raw API fetch):
+<paste fields dump of the entity's thread>
+
+Field accuracy:
+fields_checked: N
+accuracy_mismatches: []
+
+Doctor:
+[6 lines · all exit=0]
+```
+
+任何 PASS 报告**不含**以上四块 raw output = 不算 PASS · Matthew 可以直接 reject。
+
+---
+
 ## M1 验收标准 (6 deliverable)
 
 ### M1-D1 · text similarity + 5-key dedup scoring
