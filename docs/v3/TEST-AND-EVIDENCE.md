@@ -42,7 +42,7 @@
 
 凡修改影响 Discord 可视化的 deliverable，PASS 必须满足**全部 6 项**：
 
-### Hard Evidence 6 必要条件 (任缺一项 = FAIL)
+### Hard Evidence 7 必要条件 (任缺一项 = FAIL)
 
 1. **自动化脚本输出** · 必须用 `npm run pl:discord-snapshot` · 禁止手动 sample 单 thread
 2. **0 stupid sample** · 必须扫**全 channel** · 不是挑 1 个看着 OK 就通过
@@ -52,8 +52,17 @@
    - 联系方式: 电话 / 邮箱 / 网站 全部 ==  `entity.latest.*`
    - 基本信息: rating + review_count == entity
    - 审计结论: 总分 == master.md `audit_score`
-   - 在线资源: cf-pages-deploy.json 4 hyperlinks 全在 field value · field 名禁止含「未 publish」
+   - 在线资源: cf-pages-deploy.json 4 hyperlinks 全在 field value · field 名禁止含「未 publish」(若已 publish)
 6. **dispatcher log 无 silent fail** · 最近 1h 不能有 `fell back to bot-log` / `discord_404` / `silent skipped`
+7. **Batch milestone messages 完整** (cycle-16 加严 · Matthew 2026-05-14 "之前是有步骤的")
+   - `#lead-discovery-runs` batch thread 必须有:
+     - `🚀 批次流水线已启动` (start)
+     - `Stage 0 · Discovery` 或 `🔎 搜索` done · 含 lead 数量 + **每个商家具体 name**
+     - `🏁 批次完成` (finalize) · 含最终状态 + 后续动作说明
+   - 批次 state 文件 `data/v2/pipeline-batches/<batchId>.json`:
+     - `stages.length >= 2` (start + final)
+     - `finished_at != null`
+     - `leads.length === lead_count`
 
 ### 测试节奏 (cycle-14 起强制)
 

@@ -375,6 +375,48 @@ async function main() {
   // dispatcher's renderDoneMessage shows "找到 N 个商家:\n - X\n - Y" instead of "抓取完成".
   const leadKeys = leads.map((l) => l.entityKey || l.place_id || l.leadId).filter(Boolean);
   const leadNames = leads.map((l) => l.name || l.title || l.business_name).filter(Boolean);
+
+  // V3 D43 cycle-16 (Matthew 2026-05-14): post milestone updates to the batch
+  // thread in #lead-discovery-runs · 之前 batch start 后再没消息 · operator
+  // 不知道 stage 0 跑完没 · 抓到几个 · 哪几家. 现在 post stage 0 done +
+  // finalize batch with full lead list.
+  if (batchId) {
+    try {
+      const { postStageUpdate, finalizeBatch } = await import(path.join(REPO_ROOT, 'core/funnel/pipeline-batch-thread.js'));
+      const namesList = leadNames.length
+        ? leadNames.map((n) => `- ${n}`).join('\n')
+        : '(0 leads · 检查 docker scraper 输出)';
+      const stage0Body = [
+        `Docker scraper: ${leadNames.length} leads`,
+        `LLM judge: ${intakeJudge?.verdict || 'n/a'} (conf ${intakeJudge?.confidence ?? 'n/a'})`,
+        '',
+        '抓到的商家:',
+        namesList,
+      ].join('\n');
+      await postStageUpdate({
+        batchId,
+        stage: 'Stage 0 · Discovery (docker scraper)',
+        status: leadNames.length > 0 ? 'ok' : 'fail',
+        summary: stage0Body,
+      });
+      const finalBody = [
+        `${leadNames.length} entities ingested · cheap-audit queue 处理中`,
+        '',
+        '→ 每个 entity 跑 cheap-audit + LLM niche judge + predict grade',
+        '→ predict-A/B 立刻 detail audit · predict-C 进 cold backlog · predict-D archive',
+        '→ 看 #website-leads 各 thread 进度',
+      ].join('\n');
+      await finalizeBatch({
+        batchId,
+        terminalTag: leadNames.length > 0 ? 'completed' : 'partial-failed',
+        summary: finalBody,
+        skipDedupAudit: true, // dedup happens via discovery-store dedup automatically
+      });
+    } catch (err) {
+      console.error(`[pl:scrape-docker] batch thread update failed: ${err.message}`);
+    }
+  }
+
   const summary = {
     ok: true,
     job_id: jobId,

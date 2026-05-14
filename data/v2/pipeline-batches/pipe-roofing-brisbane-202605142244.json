@@ -17,9 +17,26 @@
     "outreach": false
   },
   "started_at": "2026-05-14T12:44:25.216Z",
-  "finished_at": null,
-  "current_tag": "in-progress",
-  "stages": [],
+  "finished_at": "2026-05-14T13:19:10.680Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Discovery (docker scraper)",
+      "status": "ok",
+      "summary": "Docker scraper: 5 leads\n\n抓到的商家:\n- North Brisbane Metal Roofing Pty Ltd\n- Queensland Roofing Pty Ltd\n- Ace Roofing Service\n- Brisbane Roof Restoration Experts\n- Vantage Point Roofing",
+      "at": "2026-05-14T13:19:09.601Z",
+      "message_id": "1504473144562548956",
+      "fallback": null
+    },
+    {
+      "stage": "🏁 批次完成",
+      "status": "ok",
+      "summary": "5 entities ingested · cheap-audit + predict + thread 已开\n\n→ 4 entities · predict-C · cold backlog (NBMR, Queensland, Ace, Brisbane Roof Restoration)\n→ 1 entity · 历史 qualification gate (Vantage Point · pages > 50)\n→ Ace 因 Matthew 🚀 触发 detail audit · 现 ready-to-build · build task 跑中\n\n看 #website-leads 各 thread 进度",
+      "at": "2026-05-14T13:19:09.960Z",
+      "message_id": "1504473146210914345",
+      "fallback": null
+    }
+  ],
   "issues": [],
   "leads": []
 }
