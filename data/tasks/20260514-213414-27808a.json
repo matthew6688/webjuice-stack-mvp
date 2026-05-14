@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-213414-27808a",
+  "created_at": "2026-05-14T21:34:14.894Z",
+  "updated_at": "2026-05-14T21:38:23.963Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504595689068429373",
+    "author": "qualification auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: build demo for domain_gcrooftilingsolutions.com.au (verdict=ready-to-build · publish auto-chains)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "gc-roof-tiling-solutions",
+      "--entity-key",
+      "domain_gcrooftilingsolutions.com.au"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 248304,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:34:15.658Z",
+      "step": "cli.spawning",
+      "detail": "pl:build-from-reference --slug gc-roof-tiling-solutions --entity-key domain_gcrooftilingsolutions.com.au"
+    },
+    {
+      "at": "2026-05-14T21:34:20.755Z",
+      "step": "cli.stream",
+      "detail": ":build-from-reference] out:     /Users/matthew/Developer/google-map-website-v3/clients/gc-roof-tiling-solutions/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] prompt:  60396 chars"
+    },
+    {
+      "at": "2026-05-14T21:38:23.962Z",
+      "step": "cli.stream",
+      "detail": "-v3/clients/gc-roof-tiling-solutions/v2/concept/reference-adapter/index.html\n[stage6] post failed: slugArg is not defined\n[pl:build-from-reference] auto-publish enqueue failed: slugArg is not defined"
+    },
+    {
+      "at": "2026-05-14T21:38:23.963Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=248304ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504595689068429373",
+    "status_message_id": null
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212607-0b630e",
+  "created_at": "2026-05-14T21:26:07.141Z",
+  "updated_at": "2026-05-14T21:35:37.344Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_gcrooftilingsolutions.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_gcrooftilingsolutions.com.au"
+    ],
+    "target_entity_key": "domain_gcrooftilingsolutions.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 569990,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:26:07.353Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_gcrooftilingsolutions.com.au"
+    },
+    {
+      "at": "2026-05-14T21:26:12.454Z",
+      "step": "cli.stream",
+      "detail": "mal (concurrent_leads=1)\n\n══════════ domain_gcrooftilingsolutions.com.au ══════════\n  [thread] reusing 1504595689068429373\n  [stage 1/4] detailed audit — fetching http://gcrooftilingsolutions.com.au/"
+    },
+    {
+      "at": "2026-05-14T21:28:12.172Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=60/100 decision=strong_redesign\n     → contact: emails=1 · contact_url=no · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T21:31:32.616Z",
+      "step": "cli.stream",
+      "detail": "→ 6 visual issues via codex_cli, latency=56.5s (in=93162 out=2219 ~$0.2551)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T21:32:27.561Z",
+      "step": "cli.stream",
+      "detail": "}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_gcrooftilingsolutions.com.au ══════════\n  [1/5] multi-page crawl http://gcrooftilingsolutions.com.au/..."
+    },
+    {
+      "at": "2026-05-14T21:32:34.866Z",
+      "step": "cli.stream",
+      "detail": "fs · 5.7s · ~$0.015\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T21:33:50.270Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 75.4s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 71/100 (A27 B9 C20 D12 E3)\n     → verdict: ready-to-build"
+    },
+    {
+      "at": "2026-05-14T21:34:19.056Z",
+      "step": "cli.stream",
+      "detail": "bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/gc-roof-tiling-solutions/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  15707 chars"
+    },
+    {
+      "at": "2026-05-14T21:35:37.323Z",
+      "step": "cli.stream",
+      "detail": "──────────────────────┴────────────────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴─────────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T21:35:37.343Z",
+      "step": "cli.stream",
+      "detail": "60,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_gcrooftilingsolutions.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:35:37.344Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=569990ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

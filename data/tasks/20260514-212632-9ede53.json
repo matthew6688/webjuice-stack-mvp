@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212632-9ede53",
+  "created_at": "2026-05-14T21:26:32.429Z",
+  "updated_at": "2026-05-14T21:28:01.789Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_goldcoastlocalroofers.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_goldcoastlocalroofers.com.au"
+    ],
+    "target_entity_key": "domain_goldcoastlocalroofers.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 89146,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:26:32.642Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_goldcoastlocalroofers.com.au"
+    },
+    {
+      "at": "2026-05-14T21:26:37.746Z",
+      "step": "cli.stream",
+      "detail": "al (concurrent_leads=1)\n\n══════════ domain_goldcoastlocalroofers.com.au ══════════\n  [thread] reusing 1504595791736475902\n  [stage 1/4] detailed audit — fetching https://goldcoastlocalroofers.com.au/"
+    },
+    {
+      "at": "2026-05-14T21:28:01.788Z",
+      "step": "cli.stream",
+      "detail": "{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_goldcoastlocalroofers.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 96)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:28:01.789Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=89146ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

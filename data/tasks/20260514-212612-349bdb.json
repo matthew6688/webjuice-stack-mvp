@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212612-349bdb",
+  "created_at": "2026-05-14T21:26:12.235Z",
+  "updated_at": "2026-05-14T21:27:13.597Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_ryanroofing.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_ryanroofing.com.au"
+    ],
+    "target_entity_key": "domain_ryanroofing.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 61150,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:26:12.447Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_ryanroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T21:26:17.548Z",
+      "step": "cli.stream",
+      "detail": "lse  profile=normal (concurrent_leads=1)\n\n══════════ domain_ryanroofing.com.au ══════════\n  [thread] reusing 1504595709125591091\n  [stage 1/4] detailed audit — fetching http://www.ryanroofing.com.au/"
+    },
+    {
+      "at": "2026-05-14T21:27:13.594Z",
+      "step": "cli.stream",
+      "detail": "────────┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_ryanroofing.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 11)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:27:13.597Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=61150ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

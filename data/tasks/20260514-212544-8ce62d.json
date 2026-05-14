@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212544-8ce62d",
+  "created_at": "2026-05-14T21:25:44.640Z",
+  "updated_at": "2026-05-14T21:25:46.356Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for phone_0434517831 (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "phone_0434517831",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1438,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:25:44.910Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key phone_0434517831 --theme report --html"
+    },
+    {
+      "at": "2026-05-14T21:25:46.355Z",
+      "step": "cli.stream",
+      "detail": "\"slug\": \"gold-coast-tiled-roof-repairs\",\n      \"md\": \"clients/gold-coast-tiled-roof-repairs/v2/master.md\",\n      \"html\": \"clients/gold-coast-tiled-roof-repairs/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:25:46.356Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1438ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

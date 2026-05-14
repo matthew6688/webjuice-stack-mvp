@@ -1,0 +1,114 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-haiku-4-5-20251001",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 112155,
+  "parsedJson": {
+    "freshness_score": 5,
+    "trust_score": 2,
+    "conversion_score": 2,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The desktop site returns a 403 Forbidden error blocking all visitors, while the mobile site shows a clean product-category layout but lacks every trust and contact element a local-search customer needs to act.",
+    "issues": [
+      {
+        "id": "desktop_403_fatal",
+        "severity": "critical",
+        "title": "Desktop site shows 403 Forbidden — site unreachable",
+        "what_observed": "The desktop screenshot renders a light-blue error page with a padlock icon on a monitor graphic, bold teal text reading '403 - Forbidden', and a subtitle 'Access to this page is forbidden.' No business content is visible at all.",
+        "why_problem": "Any customer who finds this business on Google Maps or runs a desktop search and clicks the website link sees an error page, not the business. They will assume the business has closed down or is disreputable and immediately search for a competitor. Desktop accounts for roughly 40–50% of local commercial searches.",
+        "what_correct_looks_like": "A live, loading homepage with the business name, phone number, and at least one category of products or services visible within 2 seconds on any modern browser on desktop.",
+        "how_to_fix_in_redesign": "Resolve the server 403 at origin (check Cloudflare or hosting IP allow-lists, .htaccess deny rules, or CDN geo-blocking). Confirm desktop access before launch. Add an uptime monitor (e.g. UptimeRobot) so outages are caught in minutes.",
+        "plain_explanation": "电脑用户打开你的网站，看到的是一个「403 禁止访问」的错误页面，完全看不到任何业务内容。",
+        "customer_impact": "大约有40–50%的客户会用电脑搜索本地服务商。这些人点进你的网站后会立刻看到错误页面，99%会直接关掉并选择竞争对手。每天都有潜在客户就这样流失。"
+      },
+      {
+        "id": "no_phone_above_fold_mobile",
+        "severity": "critical",
+        "title": "No phone number visible anywhere on mobile above fold",
+        "what_observed": "The mobile header contains four icons only: hamburger menu, search magnifier, person/account icon, and a shopping cart icon. There is no phone number, no 'Call Us' button, and no click-to-call link visible in the header or the hero section.",
+        "why_problem": "A customer who has just searched 'roofing Gold Coast' and landed on this site on their phone wants to call immediately to ask about stock, pricing, or whether the store is open. If there is no phone number visible, many will bounce back to Google and call a competitor who shows their number prominently. Studies show 60–70% of local mobile searchers call directly from the search results or a website within minutes of landing.",
+        "what_correct_looks_like": "A sticky mobile header with the phone number formatted as a tappable tel: link (e.g. '07 XXXX XXXX' in white text) pinned to the top bar so it is always visible when scrolling, alongside the logo.",
+        "how_to_fix_in_redesign": "Add a tappable phone number as a persistent element in the mobile header bar (right-aligned or below the logo). Style it as a high-contrast button (e.g. orange or yellow on black) so it reads as an action item, not a label.",
+        "plain_explanation": "手机版网站的顶部没有任何电话号码，客户想打电话过来问问库存或营业时间，根本找不到联系方式。",
+        "customer_impact": "本地搜索中有70%是在手机上完成的，而这类客户往往在看到网站后30秒内就决定是否打电话。没有显眼的电话号码，大量冲动型咨询客户会直接流失给竞争对手。"
+      },
+      {
+        "id": "no_location_or_suburb_visible",
+        "severity": "critical",
+        "title": "No Gold Coast suburb or address shown on mobile",
+        "what_observed": "The mobile hero section shows a photo of a warehouse building with 'ROOFING DEPOT' text and a single CTA button. No street address, suburb name, or map reference appears anywhere in the visible portion of the page.",
+        "why_problem": "A trade customer or walk-in buyer searching for a Gold Coast roofing supply store needs to verify the business is local before committing to a visit. Without seeing 'Burleigh, Molendinar, Nerang' or a suburb name, they cannot confirm it is actually on the Gold Coast. They will go back to Google to check the Maps listing instead of converting.",
+        "what_correct_looks_like": "Suburb name and full address displayed in the header or directly below the hero (e.g. 'Serving the Gold Coast — 12 Example St, Molendinar QLD 4214'), with a tap-to-map link.",
+        "how_to_fix_in_redesign": "Add a thin location bar below the main header ('📍 Molendinar, Gold Coast — Open Mon–Fri 7am–5pm') or embed the suburb prominently in the hero headline. Link it to Google Maps.",
+        "plain_explanation": "网站上完全没有显示地址或所在区域，客户不知道你是否真的在黄金海岸，更不知道怎么来找你。",
+        "customer_impact": "本地客户在决定上门前一定要先确认地点。没有地址信息，客户只能返回谷歌地图查询，这一步骤会让至少30%的潜在访客中途放弃，转而联系已显示地址的竞争对手。"
+      },
+      {
+        "id": "zero_trust_signals_mobile",
+        "severity": "major",
+        "title": "No reviews, credentials, or social proof visible on mobile",
+        "what_observed": "The entire visible mobile page — header, hero, and three product category cards — contains no star ratings, Google review count, years in business, supplier accreditations, or any other social-proof element.",
+        "why_problem": "A first-time customer from a Google search has no reason yet to trust this business over a competitor. Without a review count or badge ('★ 4.8 — 120 Google Reviews'), they cannot quickly verify the business is reputable. Trade buyers especially will hesitate before placing an order with an unknown supplier.",
+        "what_correct_looks_like": "A trust bar immediately below the hero (or within it) showing Google star rating + review count, years trading, and any brand partnerships (e.g. Colorbond, BlueScope logos). On mobile this can be a horizontally scrolling strip of 3 trust pills.",
+        "how_to_fix_in_redesign": "Add a three-item trust bar below the hero: [★ 4.x Google Rating | XX Years in Business | Authorised [Brand] Supplier]. Pull the star rating dynamically from Google or hardcode the current verified figure.",
+        "plain_explanation": "整个手机首页上看不到任何客户评价、星级评分或资质认证，新客户没有理由相信你比其他供应商更靠谱。",
+        "customer_impact": "超过90%的消费者在选择本地商家前会查看网络评价。评价和信任标志缺失会让转化率降低约25–35%，因为客户会直接选择那些有明显好评的竞争对手。"
+      },
+      {
+        "id": "weak_hero_cta",
+        "severity": "major",
+        "title": "Hero CTA 'Check Out Our Products' is passive browse language",
+        "what_observed": "The sole call-to-action button in the mobile hero reads 'Check Out Our Products' in white text inside a dark rounded rectangle, overlaid on the warehouse photo.",
+        "why_problem": "The phrase 'Check Out' frames the visit as casual browsing, not purposeful action. A tradesperson who needs materials urgently or a homeowner looking for a specific panel type does not want to browse — they want to find their item fast or speak to someone. This language creates no urgency and does not address what the customer actually needs.",
+        "what_correct_looks_like": "Two CTAs in the hero: a primary high-contrast button ('Shop by Category' or 'Find Your Materials') and a secondary link ('Call to Check Stock — 07 XXXX XXXX'). The primary button should be a solid accent color (orange, yellow) so it reads as an action, not a label.",
+        "how_to_fix_in_redesign": "Replace 'Check Out Our Products' with 'Shop All Categories' (orange fill) and add a secondary ghost button 'Call to Check Stock' that links to the phone number. Position both buttons stacked vertically so they are thumb-reachable on mobile.",
+        "plain_explanation": "首页上唯一的按钮写的是「看看我们的产品」，这种说法让人感觉是随便逛逛，没有引导客户去下单或打电话。",
+        "customer_impact": "行动号召（CTA）的措辞直接影响点击率。使用明确、有紧迫感的按钮文字（如「立即选购」或「致电查库存」）相比被动措辞，点击率通常可提升20–40%。"
+      },
+      {
+        "id": "all_nav_hidden_hamburger",
+        "severity": "major",
+        "title": "All navigation buried behind hamburger menu — contact inaccessible",
+        "what_observed": "The mobile header has a hamburger (three horizontal lines) icon as the only navigation trigger. No top-level links to 'Contact', 'Location', or 'About' are visible without tapping the menu.",
+        "why_problem": "A customer who needs to find the store address, trading hours, or a phone number must perform an extra tap, then scan a hidden menu, before finding any contact path. Each friction step loses a percentage of visitors, especially older trade customers who may not be confident with hamburger menus.",
+        "what_correct_looks_like": "A sticky header with the phone number visible at all times and, at minimum, a visible 'Contact / Find Us' link or button. The hamburger can remain for secondary navigation but contact must never be hidden.",
+        "how_to_fix_in_redesign": "Keep the hamburger for the full menu but pin a phone button (tap-to-call) and a location link permanently in the header bar. On mobile, right-align a phone icon that opens a tel: link immediately.",
+        "plain_explanation": "手机上所有的导航菜单都藏在一个「三条线」的图标里，客户想找联系方式或地址必须多点一步才能看到，很多人等不了就走了。",
+        "customer_impact": "每增加一个操作步骤，页面流失率约上升10–20%。把联系方式藏在菜单里意味着许多急需联系你的客户会在找到电话之前就放弃，转而拨打竞争对手的号码。"
+      },
+      {
+        "id": "cramped_three_column_mobile_grid",
+        "severity": "minor",
+        "title": "Three-column product cards on mobile cause cramped, small text",
+        "what_observed": "Below the hero, three category cards (Tools, Consumables, Architectural Panels) are displayed in a three-column grid on a ~375px wide mobile screen. Category titles are bold but the sub-item lists ('Seaming, Measuring, Snips, Hammers, & Scribers') render at approximately 10–11px in the leftmost column, which is visibly smaller than comfortable reading size.",
+        "why_problem": "Small text on mobile forces users to pinch-zoom or squint to read the product sub-categories. Tradespeople scanning quickly for a specific product type (e.g. silicone accessories) may miss it entirely and assume the business doesn't stock it.",
+        "what_correct_looks_like": "A two-column card layout on mobile with 14px+ body text, a clear product image, category name in 18px bold, and a concise 2–3 item sub-list. Three columns work on tablet (768px+) but not on phone screens.",
+        "how_to_fix_in_redesign": "Change the product category grid to two columns on screens below 600px. Increase sub-item font size to minimum 14px. Consider removing the sub-item list entirely on mobile and replacing with a single strong sub-headline (e.g. 'Hand tools for every roofing job').",
+        "plain_explanation": "手机屏幕上把三个产品分类并排显示，导致文字非常小，客户需要眯起眼睛才能看清楚里面写的是什么。",
+        "customer_impact": "手机用户通常在嘈杂的户外或驾车途中快速浏览网站，难以阅读的小字会让他们直接跳过，错过你实际提供的产品，并对网站留下「不专业」的印象。"
+      }
+    ],
+    "positive_observations": [
+      "Mobile header is clean and dark with good contrast — the logo is legible and the overall color palette (black/white) is professional and consistent with a trade-supply brand.",
+      "The hero image of the actual physical warehouse builds authenticity — real-place photography is more trustworthy than stock photos and should be preserved.",
+      "Product category cards use real product photography which grounds the offering and helps trade customers quickly identify what the business stocks."
+    ],
+    "redesign_priorities": [
+      "1. Fix the desktop 403 immediately — every day it is broken, all desktop-sourced leads are going to competitors.",
+      "2. Add a visible, tappable phone number and suburb/address to the mobile header so local search visitors can verify and contact the business without hunting.",
+      "3. Insert a trust bar (Google star rating, years trading, brand accreditations) directly below the hero to give first-time visitors a reason to stay and buy."
+    ],
+    "confidence": 0.82
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 112155
+    }
+  ],
+  "tokensIn": 6,
+  "tokensOut": 5381,
+  "theoreticalCostUsd": 0.14161475
+}

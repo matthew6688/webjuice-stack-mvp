@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212557-49cb27",
+  "created_at": "2026-05-14T21:25:57.486Z",
+  "updated_at": "2026-05-14T21:34:16.035Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_roofingdepot.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_roofingdepot.com.au"
+    ],
+    "target_entity_key": "domain_roofingdepot.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 498332,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:25:57.701Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_roofingdepot.com.au"
+    },
+    {
+      "at": "2026-05-14T21:26:02.846Z",
+      "step": "cli.stream",
+      "detail": "e  profile=normal (concurrent_leads=1)\n\n══════════ domain_roofingdepot.com.au ══════════\n  [thread] reusing 1504595644604612618\n  [stage 1/4] detailed audit — fetching http://www.roofingdepot.com.au/"
+    },
+    {
+      "at": "2026-05-14T21:27:37.395Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=23/100 decision=strong_redesign\n     → contact: emails=0 · contact_url=no · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T21:29:30.456Z",
+      "step": "cli.stream",
+      "detail": "→ 7 visual issues via claude_cli, latency=112.2s (in=6 out=5381 ~$0.1416)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T21:29:55.750Z",
+      "step": "cli.stream",
+      "detail": "true\n    }\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_roofingdepot.com.au ══════════\n  [1/5] multi-page crawl http://www.roofingdepot.com.au/..."
+    },
+    {
+      "at": "2026-05-14T21:31:54.394Z",
+      "step": "cli.stream",
+      "detail": "· 117.7s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T21:33:11.156Z",
+      "step": "cli.stream",
+      "detail": "r.md: 15661 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/roofing-depot/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  18010 chars"
+    },
+    {
+      "at": "2026-05-14T21:34:16.025Z",
+      "step": "cli.stream",
+      "detail": "└─────────┴──────────────────────────────┴─────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T21:34:16.034Z",
+      "step": "cli.stream",
+      "detail": "t_score\": 23,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 7,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_roofingdepot.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:34:16.035Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=498332ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

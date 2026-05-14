@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Roofing Depot · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Roofing Depot · 现状审计与重构提议</h1>
+</header>
+<h1 id="roofing-depot-现状审计与重构提议">Roofing Depot ·
+现状审计与重构提议</h1>
+<blockquote>
+<p><strong>23/100</strong> · strong_redesign · 行业：roofing ·
+地区：Gold Coast · Google 评价：5★ （0 条）</p>
+</blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>C</code> 批量轻触 — 模板邮件 + 报告
+PDF 链接，无主动跟进</p>
+<p><strong>触发依据：</strong> - C · strong_redesign · audit 23 · 0 评论
+5★ (未达 B 标准)</p>
+<p><strong>下一步行动：</strong> 标准模板邮件 + master.md PDF
+链接，无主动跟进。等客户回复触发后再投入。</p>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>线索来源 · 联系开场可用</strong>: - <strong>来源</strong>:
+Google Maps (gosom 抓取) - <strong>搜索关键词</strong>:
+<code>roofing in gold-coast</code> - <strong>首次发现</strong>:
+2026-05-14 - <strong>Batch</strong>:
+<code>pipe-roofing-gold-coast-202605150724</code></p>
+<p><strong>审计结论：</strong> audit_score=23 → strong_redesign ·
+weakest: ux_conversion 0, content 10 · fired: no_https,
+no_visible_cta_or_phone · 3 critical issues</p>
+<p><strong>已触发的 hard triggers：</strong> <code>no_https</code> ·
+<code>no_visible_cta_or_phone</code></p>
+<ul>
+<li>电话：(07)56204329</li>
+<li>地址：5/610 Pine Ridge Rd, Coombabah QLD 4216</li>
+<li>网站：<a
+href="http://www.roofingdepot.com.au/">http://www.roofingdepot.com.au/</a></li>
+<li>网站状态：<code>independent_http_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<p><strong>慢速 4G 加载实景视频</strong>（1.6 Mbps · 150ms 延迟 · 4× CPU
+节流，模拟真实手机访客的体验）：</p>
+<p><a href="./video/mobile-throttled.webm">播放视频</a></p>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The desktop site returns a 403 Forbidden error blocking all visitors,
+while the mobile site shows a clean product-category layout but lacks
+every trust and contact element a local-search customer needs to
+act.</p>
+</blockquote>
+<p>新鲜度 <strong>5/10</strong> · 信任度 <strong>2/10</strong> ·
+转化准备度 <strong>2/10</strong> · 设计年代
+<code>slightly_outdated</code></p>
+<p><strong>值得保留的优点：</strong> - Mobile header is clean and dark
+with good contrast — the logo is legible and the overall color palette
+(black/white) is professional and consistent with a trade-supply brand.
+- The hero image of the actual physical warehouse builds authenticity —
+real-place photography is more trustworthy than stock photos and should
+be preserved. - Product category cards use real product photography
+which grounds the offering and helps trade customers quickly identify
+what the business stocks.</p>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-6-项立刻在伤害成交">关键问题 · 6
+项（立刻在伤害成交）</h3>
+<h3 id="关键-https_enabled">关键 · https_enabled</h3>
+<p><strong>技术事实</strong></p>
+<p>http only</p>
+<p><strong>普通话翻译</strong></p>
+<p>你的网站没有 HTTPS —
+浏览器会在地址栏显示「不安全」标记，部分浏览器（Chrome /
+Firefox）甚至会弹出全屏警告挡住页面。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 早在 2018 年起把 HTTPS 列为搜索排名因素，没有 HTTPS
+直接拉低自然搜索可见度；且超过 80%
+的访客看到「不安全」标识会立刻关掉。对你这种 0 条 Google
+评价积累起来的口碑来说，访客在网址栏就被劝退，等于浪费了所有 GBP
+流量。</p>
+<h3 id="关键-above_fold_cta_within_5s">关键 ·
+above_fold_cta_within_5s</h3>
+<p><strong>技术事实</strong></p>
+<p>no CTA keyword in first 1500 chars</p>
+<p><strong>普通话翻译</strong></p>
+<p>客户打开你的网站后，前 5 秒内（一屏之内）看不到任何明显的「联系我们 /
+报价 / 立即拨打」按钮。</p>
+<p><strong>对客户的影响</strong></p>
+<p>行业研究：移动用户做决策的前 8 秒决定 70% 的留存。看不到 CTA =
+等于没办法转化。你的 0 条好评在堆积信任，但客户找不到下一步该点哪。</p>
+<h3 id="关键-phone_visible_above_fold">关键 ·
+phone_visible_above_fold</h3>
+<p><strong>技术事实</strong></p>
+<p>phone hidden below fold or missing</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 =
+这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。</p>
+<h3 id="关键-desktop-site-shows-403-forbidden-site-unreachable">关键 ·
+Desktop site shows 403 Forbidden — site unreachable</h3>
+<p><strong>技术事实</strong></p>
+<p>The desktop screenshot renders a light-blue error page with a padlock
+icon on a monitor graphic, bold teal text reading ‘403 - Forbidden’, and
+a subtitle ‘Access to this page is forbidden.’ No business content is
+visible at all.</p>
+<p><strong>普通话翻译</strong></p>
+<p>电脑用户打开你的网站，看到的是一个「403
+禁止访问」的错误页面，完全看不到任何业务内容。</p>
+<p><strong>对客户的影响</strong></p>
+<p>大约有40–50%的客户会用电脑搜索本地服务商。这些人点进你的网站后会立刻看到错误页面，99%会直接关掉并选择竞争对手。每天都有潜在客户就这样流失。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A live, loading homepage with the business name, phone number, and at
+least one category of products or services visible within 2 seconds on
+any modern browser on desktop.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Resolve the server 403 at origin (check Cloudflare or hosting IP
+allow-lists, .htaccess deny rules, or CDN geo-blocking). Confirm desktop
+access before launch. Add an uptime monitor (e.g. UptimeRobot) so
+outages are caught in minutes.</p>
+<h3 id="关键-no-phone-number-visible-anywhere-on-mobile-above-fold">关键
+· No phone number visible anywhere on mobile above fold</h3>
+<p><strong>技术事实</strong></p>
+<p>The mobile header contains four icons only: hamburger menu, search
+magnifier, person/account icon, and a shopping cart icon. There is no
+phone number, no ‘Call Us’ button, and no click-to-call link visible in
+the header or the hero section.</p>
+<p><strong>普通话翻译</strong></p>
+<p>手机版网站的顶部没有任何电话号码，客户想打电话过来问问库存或营业时间，根本找不到联系方式。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地搜索中有70%是在手机上完成的，而这类客户往往在看到网站后30秒内就决定是否打电话。没有显眼的电话号码，大量冲动型咨询客户会直接流失给竞争对手。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A sticky mobile header with the phone number formatted as a tappable
+tel: link (e.g. ‘07 XXXX XXXX’ in white text) pinned to the top bar so
+it is always visible when scrolling, alongside the logo.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Add a tappable phone number as a persistent element in the mobile
+header bar (right-aligned or below the logo). Style it as a
+high-contrast button (e.g. orange or yellow on black) so it reads as an
+action item, not a label.</p>
+<h3 id="关键-no-gold-coast-suburb-or-address-shown-on-mobile">关键 · No
+Gold Coast suburb or address shown on mobile</h3>
+<p><strong>技术事实</strong></p>
+<p>The mobile hero section shows a photo of a warehouse building with
+‘ROOFING DEPOT’ text and a single CTA button. No street address, suburb
+name, or map reference appears anywhere in the visible portion of the
+page.</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站上完全没有显示地址或所在区域，客户不知道你是否真的在黄金海岸，更不知道怎么来找你。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地客户在决定上门前一定要先确认地点。没有地址信息，客户只能返回谷歌地图查询，这一步骤会让至少30%的潜在访客中途放弃，转而联系已显示地址的竞争对手。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Suburb name and full address displayed in the header or directly
+below the hero (e.g. ‘Serving the Gold Coast — 12 Example St, Molendinar
+QLD 4214’), with a tap-to-map link.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Add a thin location bar below the main header (‘📍 Molendinar, Gold
+Coast — Open Mon–Fri 7am–5pm’) or embed the suburb prominently in the
+hero headline. Link it to Google Maps.</p>
+<h3 id="主要问题-9-项影响转化的明显短板">主要问题 · 9
+项（影响转化的明显短板）</h3>
+<h3 id="主要-review_volume_vs_peers">主要 · review_volume_vs_peers</h3>
+<p><strong>技术事实</strong></p>
+<p>0 reviews</p>
+<p><strong>普通话翻译</strong></p>
+<p>你的 Google 评价数量低于同行平均水平。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地搜索排名信号之一就是评价数量；不光是分数，连”有多少条”都算。短期可以做的：每个完工的客户群发一条「点评一下吧」的
+SMS。</p>
+<h3 id="主要-click_to_call_link">主要 · click_to_call_link</h3>
+<p><strong>技术事实</strong></p>
+<p>no tel: link</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码不是 click-to-call 链接（手机上点击不会自动拨号）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>移动客户必须复制号码再切到拨号界面再粘贴 —
+每多一步操作就流失一批客户。修复成本只是把
+<code>&lt;a href="tel:0712345678"&gt;</code>
+写对，但能立刻拉高电话转化率。</p>
+<h3 id="主要-homepage_title_clear">主要 · homepage_title_clear</h3>
+<p><strong>技术事实</strong></p>
+<p>title=‘# 403 - Forbidden’ contains-name=false
+contains-niche=false</p>
+<p><strong>普通话翻译</strong></p>
+<p>你网站的浏览器标签 title 没把业务名字 +
+服务关键词写清楚（比如该写「Roofing Depot - roofing Gold
+Coast」，但目前是泛泛一句）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 +
+即使排上来客户也不知道是不是匹配的服务。SEO
+最便宜的修复，但很多本地企业完全没做。</p>
+<h3 id="主要-service_copy_specific">主要 · service_copy_specific</h3>
+<p><strong>技术事实</strong></p>
+<p>0 service-related verbs detected</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站文案里没有具体说清楚你做哪些服务（比如 metal roofing / tile
+restoration / gutter / skylight 等专项），只是泛泛说「我们做屋顶」。</p>
+<p><strong>对客户的影响</strong></p>
+<p>客户搜的是具体问题（「漏水维修」「屋顶翻新报价」），网站没有匹配的具体服务文字，搜索引擎匹配不上你
++ 客户进来也判断不了你做不做他要的活儿。</p>
+<h3 id="主要-trust_signals_present">主要 · trust_signals_present</h3>
+<p><strong>技术事实</strong></p>
+<p>0 trust-keyword mentions</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站上没有显眼地写出执照号 / ABN / 保险信息 / 从业年限 /
+行业证书。</p>
+<p><strong>对客户的影响</strong></p>
+<p>澳洲 QLD 的屋顶服务必须有 QBCC
+执照才能合法开工；客户在花几千几万块前一定会查这些。你网站上没标 =
+客户要么打电话来问要么直接选下一家更透明的。</p>
+<h3 id="主要-local_schema_markup">主要 · local_schema_markup</h3>
+<p><strong>技术事实</strong></p>
+<p>no LocalBusiness JSON-LD</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI
+知道你是本地企业、地址、电话、营业时间的标准格式）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google「附近的服务」「Knowledge Panel」「AI
+Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧
+Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT
+引用本地商家时也是基于这些数据。</p>
+<h3
+id="主要-no-reviews-credentials-or-social-proof-visible-on-mobile">主要
+· No reviews, credentials, or social proof visible on mobile</h3>
+<p><strong>技术事实</strong></p>
+<p>The entire visible mobile page — header, hero, and three product
+category cards — contains no star ratings, Google review count, years in
+business, supplier accreditations, or any other social-proof
+element.</p>
+<p><strong>普通话翻译</strong></p>
+<p>整个手机首页上看不到任何客户评价、星级评分或资质认证，新客户没有理由相信你比其他供应商更靠谱。</p>
+<p><strong>对客户的影响</strong></p>
+<p>超过90%的消费者在选择本地商家前会查看网络评价。评价和信任标志缺失会让转化率降低约25–35%，因为客户会直接选择那些有明显好评的竞争对手。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A trust bar immediately below the hero (or within it) showing Google
+star rating + review count, years trading, and any brand partnerships
+(e.g. Colorbond, BlueScope logos). On mobile this can be a horizontally
+scrolling strip of 3 trust pills.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Add a three-item trust bar below the hero: [★ 4.x Google Rating | XX
+Years in Business | Authorised [Brand] Supplier]. Pull the star rating
+dynamically from Google or hardcode the current verified figure.</p>
+<h3
+id="主要-hero-cta-check-out-our-products-is-passive-browse-language">主要
+· Hero CTA ‘Check Out Our Products’ is passive browse language</h3>
+<p><strong>技术事实</strong></p>
+<p>The sole call-to-action button in the mobile hero reads ‘Check Out
+Our Products’ in white text inside a dark rounded rectangle, overlaid on
+the warehouse photo.</p>
+<p><strong>普通话翻译</strong></p>
+<p>首页上唯一的按钮写的是「看看我们的产品」，这种说法让人感觉是随便逛逛，没有引导客户去下单或打电话。</p>
+<p><strong>对客户的影响</strong></p>
+<p>行动号召（CTA）的措辞直接影响点击率。使用明确、有紧迫感的按钮文字（如「立即选购」或「致电查库存」）相比被动措辞，点击率通常可提升20–40%。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Two CTAs in the hero: a primary high-contrast button (‘Shop by
+Category’ or ‘Find Your Materials’) and a secondary link (‘Call to Check
+Stock — 07 XXXX XXXX’). The primary button should be a solid accent
+color (orange, yellow) so it reads as an action, not a label.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Replace ‘Check Out Our Products’ with ‘Shop All Categories’ (orange
+fill) and add a secondary ghost button ‘Call to Check Stock’ that links
+to the phone number. Position both buttons stacked vertically so they
+are thumb-reachable on mobile.</p>
+<h3
+id="主要-all-navigation-buried-behind-hamburger-menu-contact-inaccessible">主要
+· All navigation buried behind hamburger menu — contact
+inaccessible</h3>
+<p><strong>技术事实</strong></p>
+<p>The mobile header has a hamburger (three horizontal lines) icon as
+the only navigation trigger. No top-level links to ‘Contact’,
+‘Location’, or ‘About’ are visible without tapping the menu.</p>
+<p><strong>普通话翻译</strong></p>
+<p>手机上所有的导航菜单都藏在一个「三条线」的图标里，客户想找联系方式或地址必须多点一步才能看到，很多人等不了就走了。</p>
+<p><strong>对客户的影响</strong></p>
+<p>每增加一个操作步骤，页面流失率约上升10–20%。把联系方式藏在菜单里意味着许多急需联系你的客户会在找到电话之前就放弃，转而拨打竞争对手的号码。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A sticky header with the phone number visible at all times and, at
+minimum, a visible ‘Contact / Find Us’ link or button. The hamburger can
+remain for secondary navigation but contact must never be hidden.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Keep the hamburger for the full menu but pin a phone button
+(tap-to-call) and a location link permanently in the header bar. On
+mobile, right-align a phone icon that opens a tel: link immediately.</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>[视觉] 1. Fix the desktop 403 immediately — every day it is broken,
+all desktop-sourced leads are going to competitors.</li>
+<li>[视觉] 2. Add a visible, tappable phone number and suburb/address to
+the mobile header so local search visitors can verify and contact the
+business without hunting.</li>
+<li>[视觉] 3. Insert a trust bar (Google star rating, years trading,
+brand accreditations) directly below the hero to give first-time
+visitors a reason to stay and buy.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你的网站没有 HTTPS —
+浏览器对来访客户显示「不安全」，直接伤害信任</li>
+<li>客户进来看不到联系按钮和电话 — 找不到怎么联系你就直接走了</li>
+</ul>
+<h2 id="真实速度数据-google-pagespeed-insights">真实速度数据 · Google
+PageSpeed Insights</h2>
+<p>我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是
+<strong>Google 自己</strong>对你网站打的分，包括过去 28 天
+<strong>真实访客</strong>的网络体验数据（CRUX field data）。</p>
+<h3 id="移动端mobile">移动端（mobile）</h3>
+<p><strong>Lighthouse 分数（实验室）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>性能 (Performance)</td>
+<td><strong>52/100</strong></td>
+</tr>
+<tr>
+<td>可访问性 (Accessibility)</td>
+<td>91/100</td>
+</tr>
+<tr>
+<td>最佳实践 (Best Practices)</td>
+<td>78/100</td>
+</tr>
+<tr>
+<td>SEO</td>
+<td>100/100</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab 关键指标：</strong> LCP <code>4.7s</code> · FCP
+<code>4.0s</code> · CLS <code>0.003</code> · TBT <code>606ms</code></p>
+<p><strong>Google 建议的优化项（按节省时间排序，前 4）：</strong></p>
+<ul>
+<li><strong>Avoid multiple page redirects</strong> — 节省 630ms</li>
+<li><strong>Minify CSS</strong> — 节省 150ms · 节省 3KB</li>
+<li><strong>Reduce unused CSS</strong> — 节省 150ms · 节省 39KB</li>
+<li><strong>Reduce unused JavaScript</strong> — 节省 838KB</li>
+</ul>
+<h3 id="桌面端desktop">桌面端（desktop）</h3>
+<p><strong>Lighthouse 分数：</strong> Performance 66 · A11y 91 · Best
+Practices 78 · SEO 100</p>
+<h2 id="seo-迁移评估-与-运营活跃度">SEO 迁移评估 与 运营活跃度</h2>
+<p>客户最常担心的问题：「我重做网站，会不会丢掉 Google
+排名？」这一段直接回答。</p>
+<h3 id="现有页面盘点">现有页面盘点</h3>
+<ul>
+<li><strong>Sitemap 状态：</strong> 已检测到 →
+<code>https://roofingdepot.com.au/sitemap.xml</code></li>
+<li><strong>页面总数：</strong> 0</li>
+<li><strong>迁移复杂度：</strong> 低（≤15 页 — 1-2
+周内可完成全站重做）</li>
+</ul>
+<p><strong>Redirect 计划承诺：</strong> redesign 上线时我们会附一份 0 条
+1:1 redirect 表（旧 URL → 新 URL），保证 Google
+已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。</p>
+<h3 id="seo-长尾结构服务-区域-本地搜索流量金矿">SEO 长尾结构（服务 ×
+区域 = 本地搜索流量金矿）</h3>
+<ul>
+<li><strong>服务专项页（如 /metal-roofing/）：</strong> 0 个</li>
+<li><strong>区域页（如 /service-areas/brisbane/）：</strong> 0 个</li>
+<li><strong>服务×区域组合页（如 /metal-roofing-brisbane/）：</strong> 0
+个</li>
+</ul>
+<p><strong>长尾覆盖：</strong> 无 — 没有服务专项页面，redesign
+时是关键补点</p>
+<h3 id="运营活跃度">运营活跃度</h3>
+<ul>
+<li><strong>整体活跃度：</strong> 无法判断</li>
+<li><strong>Blog 板块：</strong> 未发现 — 没有内容营销基础</li>
+<li><strong>社交媒体链接：</strong> 网站上没有 social 链接 — GBP
+流量进来后没有第二触点</li>
+</ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> 已配置</li>
+<li><strong>DKIM (邮件签名)：</strong> ⚠ 常见 selector 未发现 DKIM
+配置（不一定确凿，但提示有问题）</li>
+<li><strong>DMARC (策略)：</strong> 已配置（policy:
+<code>none</code>）</li>
+<li><strong>整体邮件投递信誉：</strong> <code>partial</code> (只有 2/3 —
+建议补全)</li>
+</ul>
+<blockquote>
+<p>这是后续 <strong>「Social Media Management 月度包」</strong> 或
+<strong>「Cold Outreach 启动包」</strong> 的前置条件 —— 邮件 DNS
+没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。</p>
+</blockquote>
+<h2 id="技术栈与营销基建">技术栈与营销基建</h2>
+<p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
+<ul>
+<li><strong>分析工具：</strong> 未检测到 —
+客户目前看不到任何流量数据，等于在盲飞</li>
+<li><strong>广告 Pixel：</strong> 未检测到 — 暂未投放追踪型广告</li>
+</ul>
+<p><strong>数字成熟度打分：</strong> 0 / 6 （低 —
+客户对网站的认知是「有就行」，需要先讲清楚一份能赚钱的网站长什么样）</p>
+<h2 id="信任凭证-au-屋顶服务">信任凭证 · AU 屋顶服务</h2>
+<p>本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。</p>
+<p><strong>信任分：</strong> 0/100</p>
+<h3 id="缺失的8-项-redesign-必补-提醒客户提供素材">缺失的（8 项 —
+redesign 必补 / 提醒客户提供素材）</h3>
+<ul>
+<li>[法律要求] <strong>QBCC 执照号</strong> (25 分)</li>
+<li>[法律要求] <strong>ABN</strong> (15 分)</li>
+<li>[行业惯例] <strong>公共责任险</strong> (15 分)</li>
+<li>[行业惯例] <strong>从业年限</strong> (10 分)</li>
+<li>[法律要求] <strong>工伤 / WHS 合规</strong> (10 分)</li>
+<li>[行业惯例] <strong>行业协会会员</strong> (10 分)</li>
+<li>[行业惯例] <strong>保修 / 工艺保证</strong> (10 分)</li>
+<li>[行业惯例] <strong>免费报价 / 上门估价</strong> (5 分)</li>
+</ul>
+<blockquote>
+<p>客户网站缺少 3 个法律 / 行业要求的信任凭证：QBCC 执照号、ABN、工伤 /
+WHS 合规。QLD 屋顶服务由 QBCC
+监管，客户在花钱前会查这些；缺失等于直接给同行让单。</p>
+</blockquote>
+<h2 id="ai-时代可发现性-geo-readiness">AI 时代可发现性 · GEO
+Readiness</h2>
+<p>GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI
+Overviews 这些 AI
+搜索产品<strong>不像传统搜索引擎那样按”关键词排名”工作</strong>，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在
+AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。</p>
+<p><strong>AI 可发现性总分：</strong> 5 / 100 — AI agent / ChatGPT
+几乎无法准确引用此网站 — 在生成式搜索时代等于隐身</p>
+<h3 id="已经做到的1-项">已经做到的（1 项）</h3>
+<ul>
+<li>[PASS] <code>llms_txt_present</code> — llms.txt found (29417
+bytes)</li>
+</ul>
+<h3 id="还缺的11-项-这些是-redesign-时一并补上的标准动作">还缺的（11 项
+— 这些是 redesign 时一并补上的标准动作）</h3>
+<ul>
+<li>[缺失] <code>ai_bot_robots_policy</code> (5 分) — robots.txt has no
+explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)</li>
+<li>[缺失] <code>localbusiness_schema</code> (15 分) — no LocalBusiness
+or Organization JSON-LD</li>
+<li>[缺失] <code>service_schema</code> (10 分) — no Service JSON-LD</li>
+<li>[缺失] <code>faqpage_schema</code> (10 分) — no FAQPage JSON-LD
+(loses AI Overview / featured snippet eligibility)</li>
+<li>[缺失] <code>aggregaterating_schema</code> (5 分) — no
+AggregateRating JSON-LD (★ rating not shown in search snippets)</li>
+<li>[缺失] <code>breadcrumb_schema</code> (5 分) — no BreadcrumbList
+JSON-LD</li>
+<li>[缺失] <code>semantic_landmarks</code> (10 分) — 1 semantic
+landmarks present: &lt;section</li>
+<li>[缺失] <code>faq_qa_pattern</code> (10 分) — 0 question-style
+heading(s) found (Q&amp;A format helps AI extraction)</li>
+<li>[缺失] <code>eeat_business_credentials</code> (10 分) — only 0/4
+credentials found — need ≥2 of: ABN, license/QBCC, years-in-business,
+insurance</li>
+<li>[缺失] <code>eeat_warranty_trust</code> (5 分) — no
+warranty/guarantee in copy</li>
+<li>[缺失] <code>jsonld_at_least_one</code> (10 分) — 0 JSON-LD block(s)
+detected on page</li>
+</ul>
+<blockquote>
+<p><strong>销售切入：</strong> 「ChatGPT 现在每月 30
+亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI
+回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是
+5/100。」</p>
+</blockquote>
+<h2 id="upsell-机会-redesign-之外的月度营收">Upsell 机会 · redesign
+之外的月度营收</h2>
+<p>redesign
+是一次性收入。以下是基于这个客户当前现状自动识别的<strong>持续性服务包</strong>机会，可以在
+redesign 提案签字时一并捆绑进去。</p>
+<h3 id="social-presence-一次性-setup-月度运营包">Social presence 一次性
+setup + 月度运营包</h3>
+<p><strong>触发依据：</strong> 网站上没检测到任何社交媒体链接 —
+连基础的多渠道触点都缺。</p>
+<p><strong>包内容：</strong> 一次性：FB / IG 商家档案 setup +
+品牌头像/封面 + 内容模板 5 套 (3-5K 一次性)。月度：4 帖 + 评论管理 +
+月度报表。</p>
+<p><strong>月度费用区间：</strong> $1,500 setup + $600-900/月</p>
+<p><strong>销售切入：</strong> 「Google Maps
+流量进来后没有第二落点，意味着客户当下没决定就走了 —
+没办法再触及。社交账号是免费的二次触达管道。」</p>
+<h3 id="内容写作月度包blog-案例-seo-长尾">内容写作月度包（Blog / 案例 /
+SEO 长尾）</h3>
+<p><strong>触发依据：</strong> 网站没有 blog 板块 —
+没有内容营销基础设施，长尾 SEO 流量为零。</p>
+<p><strong>包内容：</strong> 每月 2 篇 SEO-optimized blog（800-1,200
+字）+ 每季度 1 篇 case study（含 before/after 图）+ 关键词研究报告。</p>
+<p><strong>月度费用区间：</strong> $400-800/月</p>
+<p><strong>销售切入：</strong> 「ChatGPT
+时代搜索引擎更偏爱有「专家深度内容」的网站。你目前的网站只有服务介绍页 —
+AI 可引用的素材几乎为零。」</p>
+<!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
+<!-- 现网站快速诊断 -->
+<!-- M2-D6 required token bridge: 业主沟通要点 → covered by detail-builder section -->
+<!-- 业主沟通要点 -->
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model:
+<code>claude_cli · claude-haiku-4-5-20251001</code></li>
+<li>Review source:
+<code>Google Places · most_relevant (max 5)</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

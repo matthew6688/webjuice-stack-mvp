@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GC Roof Tiling Solutions · Roof Restoration, Repair & Replacement · Gold Coast</title>
+  <meta name="description" content="GC Roof Tiling Solutions restores, repairs and replaces residential roofs across Gold Coast. Trusted since 1992. QBCC 899153. Call (07) 5564 5370." />
+  <!--
+    ADAPTED FROM REFERENCE SITE · classic-premium-roftix · v3 round 0 · 2026-05-13
+    Real business: GC Roof Tiling Solutions · Gold Coast QLD
+    OD-BOUNDARY rules:
+      LOCKED   = color tokens, font families, type scale, spacing, button/card/form/section internal styling
+      FLEXIBLE = which sections appear · section order · how many cards per grid · banner content · pages
+      ADD-ABLE = new section types ONLY if built from existing tokens & marked data-od-new="true"
+  -->
+  <style>
+    :root {
+      /* LOCKED · color tokens */
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --fg: #212121;
+      --muted: #51606F;
+      --border: #E3DFD6;
+      --accent: #0E6B4F;        /* CTA green */
+      --primary: #0B2F57;       /* deep navy */
+      --warm: #FF6F3C;          /* audit banner accent */
+      --ink: #101417;
+      --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
+      --primary-soft: color-mix(in oklch, var(--primary) 12%, transparent);
+      --warm-soft: color-mix(in oklch, var(--warm) 14%, transparent);
+      /* LOCKED · font families */
+      --font-display: "Playfair Display", "Iowan Old Style", "Charter", Georgia, serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+      /* LOCKED · type scale */
+      --fs-h1: clamp(48px, 7vw, 92px);
+      --fs-h2: clamp(34px, 4vw, 58px);
+      --fs-h3: 24px;
+      --fs-lead: 19px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      /* LOCKED · spacing scale */
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 64px;
+      --gap-2xl: 104px;
+      --container: 1180px;
+      --gutter: 28px;
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    p { margin: 0; text-wrap: pretty; }
+    h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(56px, 8vw, var(--gap-2xl)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; gap: var(--gap-md); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700; line-height: 0.95; letter-spacing: 0; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; line-height: 1.05; }
+    .h3, h3 { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.2; font-weight: 700; }
+    .lead { font-size: var(--fs-lead); line-height: 1.62; color: var(--muted); max-width: 58ch; }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 800; margin: 0 0 var(--gap-md); }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .topnav { position: sticky; top: 0; z-index: 20; background: color-mix(in oklch, var(--surface) 88%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .topnav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: var(--gap-lg); }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.02em; }
+    .brand-mark { width: 54px; height: 36px; color: var(--accent); }
+    .brand-mark .house { fill: var(--primary); }
+    .brand-word { font-size: 18px; color: var(--fg); }
+    .topnav nav { display: flex; gap: 28px; color: var(--muted); font-size: 14px; }
+    .topnav nav a:hover { color: var(--fg); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-phone { font-family: var(--font-mono); font-size: 13px; color: var(--fg); padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 12px 20px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease; }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-light { background: var(--surface); color: var(--primary); border-color: var(--surface); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 8px; }
+    .btn-arrow::after { content: "→"; transition: transform 0.15s ease; }
+    .btn-arrow:hover::after { transform: translateX(2px); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .card-flat { background: transparent; border: 0; padding: 0; }
+    .rule { border-top: 1px solid var(--border); }
+
+    /* Audit banner · M3 sales overlay · expandable */
+    .audit-banner { background: var(--ink); color: var(--surface); border-bottom: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); }
+    .audit-banner > summary { padding-block: 14px; cursor: pointer; list-style: none; }
+    .audit-banner > summary::-webkit-details-marker { display: none; }
+    .audit-banner-inner { display: grid; grid-template-columns: auto 1fr auto; gap: var(--gap-md); align-items: center; }
+    .audit-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; background: var(--warm); color: var(--ink); font-weight: 800; }
+    .audit-msg { font-size: 14px; color: color-mix(in oklch, var(--surface) 92%, transparent); }
+    .audit-msg strong { color: var(--surface); }
+    .audit-cta { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--warm); border-bottom: 1px solid var(--warm); padding-bottom: 2px; transition: transform 0.15s ease; }
+    .audit-banner[open] .audit-cta::after { content: " ↑"; }
+    .audit-banner:not([open]) .audit-cta::after { content: " ↓"; }
+    .audit-drawer { padding: 0 var(--gutter) 28px; }
+    .audit-drawer-inner { max-width: var(--container); margin-inline: auto; }
+    .audit-score-row { display: flex; align-items: baseline; gap: 14px; padding-block: 18px; border-top: 1px dashed color-mix(in oklch, var(--surface) 20%, transparent); }
+    .audit-score-big { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--warm); font-weight: 700; }
+    .audit-score-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 60%, transparent); }
+    .audit-findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-md); margin-top: 10px; }
+    .audit-finding { padding: 16px; background: color-mix(in oklch, var(--surface) 6%, transparent); border-left: 3px solid var(--warm); border-radius: 4px; }
+    .audit-finding-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--surface); }
+    .audit-finding-body { font-size: 13px; color: color-mix(in oklch, var(--surface) 78%, transparent); margin-top: 6px; line-height: 1.5; }
+
+    .hero { min-height: calc(100vh - 76px); display: grid; align-items: end; position: relative; isolation: isolate; color: var(--surface); background: var(--primary); overflow: hidden; }
+    .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 72%, black), color-mix(in oklch, var(--primary) 18%, transparent) 62%, transparent 88%), linear-gradient(0deg, color-mix(in oklch, var(--primary) 56%, black), transparent 50%); z-index: -1; }
+    .hero-img { position: absolute; inset: 0; z-index: -2; }
+    .hero-panel { width: min(790px, 100%); padding-block: 84px; }
+    .hero .lead { color: color-mix(in oklch, var(--surface) 82%, var(--border)); margin-top: 22px; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+    .hero-proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; width: min(760px, 100%); margin-top: 54px; background: color-mix(in oklch, var(--surface) 24%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 28%, transparent); }
+    .proof-cell { padding: 18px; background: color-mix(in oklch, var(--primary) 74%, transparent); }
+    .proof-cell strong { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1; }
+    .proof-cell span { display: block; margin-top: 8px; color: color-mix(in oklch, var(--surface) 74%, transparent); font-size: 13px; }
+    .section-head { max-width: 680px; margin-bottom: 48px; }
+    .service-card { overflow: hidden; padding: 0; position: relative; display: flex; flex-direction: column; }
+    .service-img { aspect-ratio: 4 / 3; background: var(--primary-soft); }
+    .service-body { padding: 26px; display: flex; flex-direction: column; flex: 1; }
+    .service-badge { position: absolute; top: 16px; right: 16px; padding: 6px 11px; background: var(--warm); color: var(--ink); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 2; }
+    .service-body p { color: var(--muted); margin-top: 10px; }
+    .service-list { display: grid; gap: 10px; margin-top: 18px; padding: 0; list-style: none; color: var(--fg); }
+    .service-list li { border-top: 1px solid var(--border); padding-top: 10px; font-size: 14px; }
+    .dark-band { background: var(--primary); color: var(--surface); }
+    .dark-band .lead, .dark-band .meta { color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .dark-band .section + .section { border-top-color: color-mix(in oklch, var(--surface) 18%, transparent); }
+    .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .quote-card { position: relative; padding: 32px 28px 28px; background: color-mix(in oklch, var(--surface) 8%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); border-left: 3px solid var(--warm); border-radius: var(--radius-lg); }
+    .quote-card::before { content: "\201C"; position: absolute; top: 0; right: 22px; font-family: var(--font-display); font-size: 96px; line-height: 1; color: color-mix(in oklch, var(--warm) 32%, transparent); font-weight: 700; pointer-events: none; }
+    .quote-text { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--surface); position: relative; }
+    .quote-author { margin-top: 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .stars { color: var(--warm); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+    .sample-tag { display: inline-block; margin-left: 10px; padding: 4px 9px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in oklch, var(--warm) 22%, transparent); color: color-mix(in oklch, var(--warm) 80%, black); border: 1px solid color-mix(in oklch, var(--warm) 42%, transparent); border-radius: 4px; vertical-align: middle; font-weight: 800; }
+    .dark-band .sample-tag { background: color-mix(in oklch, var(--warm) 26%, transparent); color: var(--warm); border-color: color-mix(in oklch, var(--warm) 50%, transparent); }
+    .project-frame { display: grid; grid-template-columns: 1.15fr 0.85fr; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+    .project-image { min-height: 520px; }
+    .project-copy { padding: clamp(28px, 5vw, 58px); }
+    .check-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+    .check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 12px; color: var(--muted); }
+    .check-list li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border-radius: 999px; background: var(--accent); }
+    .process { counter-reset: step; }
+    .process-card { border-top: 2px solid var(--fg); padding-top: 22px; }
+    .process-card::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: block; font-family: var(--font-mono); font-size: 28px; line-height: 1; color: var(--accent); margin-bottom: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .process-card p { color: var(--muted); margin-top: 8px; }
+    .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--gap-xl); align-items: start; }
+    details { border-top: 1px solid var(--border); padding: 20px 0; }
+    details:last-child { border-bottom: 1px solid var(--border); }
+    summary { cursor: pointer; font-family: var(--font-display); font-size: 23px; font-weight: 700; }
+    details p { margin-top: 12px; color: var(--muted); max-width: 68ch; }
+    .contact-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(26px, 4vw, 44px); }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label { color: var(--muted); font-size: 13px; }
+    .input, .textarea, .select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--fg); }
+    .textarea { min-height: 118px; resize: vertical; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .wide-field { grid-column: 1 / -1; }
+    .service-area-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 24px; }
+    .suburb-pill { padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; background: var(--surface); }
+    .pagefoot { background: var(--ink); color: color-mix(in oklch, var(--surface) 68%, transparent); padding-block: 68px 36px; }
+    .pagefoot h2, .pagefoot h3 { color: var(--surface); }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: var(--gap-xl); margin-top: 42px; }
+    .footer-list { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 9px; font-size: 14px; }
+    .footer-bottom { border-top: 1px solid color-mix(in oklch, var(--surface) 16%, transparent); margin-top: 48px; padding-top: 22px; display: flex; justify-content: space-between; gap: var(--gap-md); flex-wrap: wrap; }
+    .credit { font-size: 12px; color: color-mix(in oklch, var(--surface) 42%, transparent); }
+    .mobile-call-bar { display: none; }
+
+    @media (max-width: 920px) {
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .project-frame, .faq-grid, .footer-grid, .quote-grid { grid-template-columns: 1fr; }
+      .topnav nav, .nav-actions .btn-secondary, .nav-phone { display: none; }
+      .audit-banner-inner { grid-template-columns: 1fr; text-align: center; gap: 8px; }
+      .audit-findings { grid-template-columns: 1fr; }
+      .audit-score-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .hero { min-height: 720px; }
+      .hero-proof { grid-template-columns: 1fr; }
+      .project-image { min-height: 330px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .service-area-grid { grid-template-columns: repeat(2, 1fr); }
+      .mobile-call-bar { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; background: var(--accent); color: var(--surface); padding: 14px; justify-content: center; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; box-shadow: 0 -6px 24px rgba(0,0,0,0.2); }
+      body { padding-bottom: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <details class="audit-banner" data-od-id="audit-banner" data-od-flexible="content" open>
+    <summary>
+      <div class="container audit-banner-inner">
+        <span class="audit-tag">Site audit · 2026-05-11</span>
+        <span class="audit-msg">Your current site scored <strong>60/100</strong> — no HTTPS security, phone hidden on mobile, builder watermark visible. <strong>This demo shows the fix.</strong></span>
+        <span class="audit-cta">See findings</span>
+      </div>
+    </summary>
+    <div class="audit-drawer">
+      <div class="audit-drawer-inner">
+        <div class="audit-score-row">
+          <span class="audit-score-big">60</span>
+          <span class="audit-score-label">/ 100 · audited 2026-05-11 · 12 dimensions</span>
+        </div>
+        <div class="audit-findings">
+          <div class="audit-finding">
+            <div class="audit-finding-title">No HTTPS — browsers show "not secure"</div>
+            <div class="audit-finding-body">Your site has no HTTPS security certificate. Browsers display "Not Secure" warnings in the address bar, and Google penalises HTTP-only sites in search rankings. Over 80% of visitors leave when they see security warnings.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">Phone hidden on mobile first screen</div>
+            <div class="audit-finding-body">Mobile visitors can't see your phone number without scrolling. Most roofing leads call within 8 seconds of landing — if they can't find contact quickly, they return to Google and call the next company.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">Builder watermark damages credibility</div>
+            <div class="audit-finding-body">"Made with Manus" badge visible in corner makes the site look unfinished. For high-trust roofing services, any sign of incomplete work causes customers to doubt professionalism — one less call is one lost quote opportunity.</div>
+          </div>
+        </div>
+        <div class="audit-full-report-link" style="margin-top: 22px; text-align: center;">
+          <a href="../customer-facing-audit.html" style="display: inline-block; padding: 12px 22px; background: var(--warm); color: var(--ink); border-radius: var(--radius); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; text-decoration: none;">Read the full audit report →</a>
+          <p style="margin-top: 10px; font-size: 12px; color: color-mix(in oklch, var(--surface) 60%, transparent);">12 dimensions audited · plain English · 5-minute read</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <header class="topnav" data-od-id="topnav" data-od-locked="true">
+    <div class="container topnav-inner">
+      <a class="brand" href="#top" aria-label="GC Roof Tiling Solutions home">
+        <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GC Roof Tiling Solutions mark"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">GC</text></svg>
+        <span class="brand-word">GC Roof Tiling Solutions</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#trust">Reviews</a>
+        <a href="#process">Process</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-phone" href="tel:0755645370">(07) 5564 5370</a>
+        <a class="btn btn-primary" href="#contact">Free Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="hero" data-od-id="hero">
+      <div class="hero-img"><img src="assets/hero-premium-roof.png" alt="Premium residential home with professionally restored tile roof on Gold Coast" /></div>
+      <div class="container">
+        <div class="hero-panel">
+          <p class="eyebrow">Roof tiling · restoration · repair · Gold Coast · Trusted since 1992</p>
+          <h1>Roof tile supplies and services. Over 34 years serving Gold Coast homes.</h1>
+          <p class="lead">GC Roof Tiling Solutions has been restoring and repairing residential roofs across the Gold Coast since 1992. QBCC licensed 899153. Free quote, fixed price, no surprises.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">Get Free Quote</a>
+            <a class="btn btn-light btn-arrow" href="tel:0755645370">Call (07) 5564 5370</a>
+          </div>
+          <div class="hero-proof" aria-label="Service highlights">
+            <div class="proof-cell"><strong>34+ years</strong><span>Serving Gold Coast homes since 1992</span></div>
+            <div class="proof-cell"><strong>QBCC 899153</strong><span>Fully licensed &amp; insured</span></div>
+            <div class="proof-cell"><strong>Free quotes</strong><span>Fixed-price written quotes</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services" data-od-id="services">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Services</p>
+          <h2>Three core roofing services for Gold Coast homes.</h2>
+          <p class="lead" style="margin-top: 18px;">Every job starts with an inspection: we walk the roof, assess the tile condition, identify problem areas, then provide a clear written quote with no hidden costs.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card service-card">
+            <span class="service-badge">Most requested</span>
+            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="Close-up of roof tile restoration work on Gold Coast residential property" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Roof restoration</h3>
+              <p>Re-bedding, re-pointing and repainting for tile roofs that are structurally sound but showing age and weathering.</p>
+              <ul class="service-list">
+                <li>Replace broken or cracked roof tiles</li>
+                <li>Re-bed and re-point ridge capping</li>
+                <li>High-pressure clean and membrane coating</li>
+                <li>Valley and flashing repairs</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="New roof tile installation on Gold Coast home" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Roof replacement</h3>
+              <p>Complete roof replacement when existing tiles are beyond repair. Colorbond or terracotta tile options available.</p>
+              <ul class="service-list">
+                <li>Full structural assessment included</li>
+                <li>Colorbond or terracotta tile options</li>
+                <li>Sarking and insulation upgrades</li>
+                <li>New gutters and downpipes available</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Roofer inspecting and repairing leak on Gold Coast residential roof" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Leak repair &amp; maintenance</h3>
+              <p>Fast response for roof leaks, storm damage, and emergency repairs. Direct insurance claim support available.</p>
+              <ul class="service-list">
+                <li>Same-week emergency call-out</li>
+                <li>Leak detection and repair</li>
+                <li>Storm damage assessment</li>
+                <li>Photo reports for insurance claims</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark-band" id="trust" data-od-id="trust" data-od-sample="true">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" style="color: var(--warm);">What homeowners say <span class="sample-tag">Sample · editable after sign-up</span></p>
+          <h2 style="color: var(--surface);">Serving Gold Coast families for over three decades.</h2>
+          <p class="lead" style="margin-top: 18px;">These sample reviews represent the kind of feedback we hear from roofing clients in this area. Your actual reviews will replace these once you sign up.</p>
+        </div>
+        <div class="quote-grid">
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">"Came out quickly after we noticed water stains. Found the cracked tiles, showed us photos, and had it fixed within the week. No run-around, just good honest work."</p>
+            <p class="quote-author">Karen M. · Southport · Leak repair</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">"Our roof was nearly 30 years old and looking tired. They re-bedded the ridge capping, replaced broken tiles and gave it a proper clean and coat. Looks brand new."</p>
+            <p class="quote-author">David L. · Bundall · Restoration</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">"Got three quotes for a full re-roof. These guys were thorough, showed me exactly what needed doing, and the price was fair. Job done in four days, no mess left behind."</p>
+            <p class="quote-author">Helen &amp; Rob P. · Surfers Paradise · Replacement</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects" data-od-id="projects" data-od-sample="true">
+      <div class="container">
+        <div class="project-frame">
+          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Before-and-after of a restored terracotta tile roof in Broadbeach, Gold Coast" loading="lazy" /></div>
+          <div class="project-copy">
+            <p class="eyebrow">Recent project · Broadbeach <span class="sample-tag">Sample · editable</span></p>
+            <h2>1980s terracotta tile roof. Full restoration in 5 days.</h2>
+            <p class="lead" style="margin-top: 18px;">The homeowners had multiple quotes ranging from "patch it" to "replace everything". We showed them why a proper restoration would give them another 15-20 years at a fraction of replacement cost.</p>
+            <ul class="check-list">
+              <li>64 cracked or slipped terracotta tiles replaced with colour-matched stock</li>
+              <li>All ridge capping re-bedded with flexible cement and re-pointed</li>
+              <li>High-pressure roof clean and two-coat membrane seal</li>
+              <li>Valley irons replaced and new gutter guard installed</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section process" id="process" data-od-id="process">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">How a job runs</p>
+          <h2>Four steps from first call to finished roof.</h2>
+        </div>
+        <div class="grid-4">
+          <div class="process-card"><h3>You call or contact us</h3><p>Tell us what you've noticed — a leak, storm damage, tiles lifting, or a roof that just looks tired.</p></div>
+          <div class="process-card"><h3>Free roof inspection</h3><p>We walk the roof, take photos, assess tile condition, and identify problem areas. No obligation.</p></div>
+          <div class="process-card"><h3>Fixed-price written quote</h3><p>Clear itemised quote with photos showing exactly what needs doing. No vague estimates or hidden costs.</p></div>
+          <div class="process-card"><h3>Work scheduled &amp; completed</h3><p>Most jobs done within 3-5 days. We clean up thoroughly and leave your gutters clear before we leave.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="area" data-od-id="service-area" data-od-sample="true">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Service area <span class="sample-tag">Sample · editable</span></p>
+          <h2>Gold Coast and surrounding suburbs.</h2>
+          <p class="lead" style="margin-top: 18px;">Free quotes within 20km of Southport. We also service outer areas — just ask.</p>
+        </div>
+        <div class="service-area-grid">
+          <div class="suburb-pill">Southport</div>
+          <div class="suburb-pill">Surfers Paradise</div>
+          <div class="suburb-pill">Main Beach</div>
+          <div class="suburb-pill">Broadbeach</div>
+          <div class="suburb-pill">Bundall</div>
+          <div class="suburb-pill">Benowa</div>
+          <div class="suburb-pill">Ashmore</div>
+          <div class="suburb-pill">Molendinar</div>
+          <div class="suburb-pill">Labrador</div>
+          <div class="suburb-pill">Biggera Waters</div>
+          <div class="suburb-pill">Arundel</div>
+          <div class="suburb-pill">Parkwood</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" data-od-id="faq">
+      <div class="container faq-grid">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2>Common questions from Gold Coast homeowners.</h2>
+          <p class="lead" style="margin-top: 18px;">If your question isn't here, give us a call — we'll give you a straight answer.</p>
+        </div>
+        <div>
+          <details open><summary>Should I restore my roof or replace it completely?</summary><p>It depends on the tile condition and structural integrity. Tiles with surface wear, minor cracks, and fading usually only need restoration — re-bedding, re-pointing, and membrane coating. Tiles that are crumbling, have widespread breakage, or a roof structure showing rot typically needs replacement. Our inspection report shows you which path makes sense.</p></details>
+          <details><summary>What does a roof restoration typically cost on the Gold Coast?</summary><p>A standard single-storey home is typically $3,500–$7,500 depending on roof size, tile condition, and access. We provide fixed written quotes after inspection — never phone estimates.</p></details>
+          <details><summary>I think I have a roof leak — can you come out quickly?</summary><p>Yes. Call us on (07) 5564 5370 and we'll schedule a same-week inspection. For urgent leaks causing active water damage, we prioritise emergency call-outs.</p></details>
+          <details><summary>Are you licensed and insured?</summary><p>Yes — QBCC licence 899153 shown on every quote. Fully insured with public liability and workers compensation. We provide copies before you sign anything.</p></details>
+          <details><summary>Can you work with my insurance company for storm damage?</summary><p>Yes. We provide detailed photo reports, itemised quotes, and scope-of-works documentation that insurance companies require for storm damage and accidental roof damage claims.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-od-id="contact">
+      <div class="container grid-1-2">
+        <div class="stack">
+          <p class="eyebrow">Get your free quote</p>
+          <h2>Tell us what's happening with your roof.</h2>
+          <p class="lead">We'll schedule a free inspection — usually within 3 working days. No obligation, no pressure, just honest advice and a clear written quote.</p>
+          <p class="meta" style="margin-top: 12px;">Or call directly: <a href="tel:0755645370" style="color: var(--accent); font-weight: 700;">(07) 5564 5370</a> · Mon–Sat 7am–5pm</p>
+        </div>
+        <form class="contact-panel" action="#" method="post">
+          <div class="form-grid">
+            <div class="field"><label for="name">Your name</label><input class="input" id="name" name="name" autocomplete="name" /></div>
+            <div class="field"><label for="phone">Best phone number</label><input class="input" id="phone" name="phone" autocomplete="tel" /></div>
+            <div class="field"><label for="suburb">Suburb</label><input class="input" id="suburb" name="suburb" placeholder="e.g. Southport" /></div>
+            <div class="field"><label for="service">What do you need?</label><select class="select" id="service" name="service"><option>Free roof inspection</option><option>Roof restoration quote</option><option>Full roof replacement quote</option><option>Leak / storm damage repair</option><option>Roof tile supplies</option><option>Not sure yet</option></select></div>
+            <div class="field wide-field"><label for="message">What have you noticed? (optional)</label><textarea class="textarea" id="message" name="message" placeholder="e.g. Noticed broken tiles after recent storms, roof is around 25 years old."></textarea></div>
+          </div>
+          <button class="btn btn-primary" type="submit" style="margin-top: 18px; width: 100%;">Request Free Quote</button>
+          <p class="meta" style="margin-top: 12px; text-align: center;">We reply within 1 business day, Mon–Sat.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer" data-od-locked="true">
+    <div class="container">
+      <div class="row-between">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">GC</text></svg>
+          <span class="brand-word" style="color:var(--surface);">GC Roof Tiling Solutions</span>
+        </div>
+        <a class="btn btn-light" href="tel:0755645370">Call (07) 5564 5370</a>
+      </div>
+      <div class="footer-grid">
+        <div>
+          <h2>Gold Coast roofing specialists since 1992.</h2>
+          <p style="margin-top: 16px;">Family-owned. QBCC licensed. Over 34 years serving residential and commercial properties across the Gold Coast.</p>
+          <p style="margin-top: 16px;" class="meta">4/513 Olsen Ave, Southport QLD 4215<br/>QBCC Lic. 899153</p>
+        </div>
+        <div><h3>Services</h3><ul class="footer-list"><li>Roof restoration</li><li>Roof replacement</li><li>Roof tile supplies</li><li>Leak repair</li><li>Storm damage repair</li><li>Re-bedding &amp; re-pointing</li></ul></div>
+        <div><h3>Service area</h3><ul class="footer-list"><li>Southport</li><li>Surfers Paradise</li><li>Broadbeach</li><li>Bundall</li><li>Main Beach</li><li>All Gold Coast suburbs</li></ul></div>
+        <div><h3>Contact</h3><ul class="footer-list"><li>(07) 5564 5370</li><li>Mon–Sat 7am–5pm</li><li>Free quotes</li><li>Emergency call-outs available</li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 GC Roof Tiling Solutions. All rights reserved.</span>
+        <span class="credit">Adapted from classic-premium-roftix reference site · v3</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="mobile-call-bar" href="tel:0755645370" aria-label="Call GC Roof Tiling Solutions">
+    📞 Call (07) 5564 5370
+  </a>
+</body>
+</html>

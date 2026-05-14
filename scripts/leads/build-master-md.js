@@ -137,6 +137,17 @@ for (const entityKey of targets) {
   try {
     const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
     for (const r of results) {
+      // V3 D43 cycle-22 (Matthew 2026-05-15): skip Discord post if entity is
+      // D-grade or archived (避免 D thread 收 noise · 22.B fix).
+      try {
+        const ep = path.join(repoRoot, 'data/leads/entities', `${r.entityKey}.json`);
+        if (fs.existsSync(ep)) {
+          const e = JSON.parse(fs.readFileSync(ep, 'utf8'));
+          if (e.grade?.investment_level === 'D' || e.phase === 'archived') {
+            continue;
+          }
+        }
+      } catch { /* read fail · proceed conservatively */ }
       const score = r.frontmatter?.audit_score;
       const decision = r.frontmatter?.decision;
       const msg = `📄 **master.md 已重建** · ${(r.byteLength / 1024).toFixed(1)}KB · ${r.sectionCount} sections${

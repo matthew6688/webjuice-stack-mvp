@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-213232-2cc875",
+  "created_at": "2026-05-14T21:32:32.124Z",
+  "updated_at": "2026-05-14T21:36:22.080Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504595668726055012",
+    "author": "qualification auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: build demo for domain_roofrepairgoldcoast.com (verdict=ready-to-build · publish auto-chains)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "roof-repair-gold-coast",
+      "--entity-key",
+      "domain_roofrepairgoldcoast.com"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 229267,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:32:32.812Z",
+      "step": "cli.spawning",
+      "detail": "pl:build-from-reference --slug roof-repair-gold-coast --entity-key domain_roofrepairgoldcoast.com"
+    },
+    {
+      "at": "2026-05-14T21:32:37.918Z",
+      "step": "cli.stream",
+      "detail": "pl:build-from-reference] out:     /Users/matthew/Developer/google-map-website-v3/clients/roof-repair-gold-coast/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] prompt:  63750 chars"
+    },
+    {
+      "at": "2026-05-14T21:36:22.080Z",
+      "step": "cli.stream",
+      "detail": "te-v3/clients/roof-repair-gold-coast/v2/concept/reference-adapter/index.html\n[stage6] post failed: slugArg is not defined\n[pl:build-from-reference] auto-publish enqueue failed: slugArg is not defined"
+    },
+    {
+      "at": "2026-05-14T21:36:22.080Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=229267ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504595668726055012",
+    "status_message_id": null
+  }
+}

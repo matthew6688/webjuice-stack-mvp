@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212826-e96fa0",
+  "created_at": "2026-05-14T21:28:26.083Z",
+  "updated_at": "2026-05-14T21:28:27.703Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_n1roofrestorations.com.au (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_n1roofrestorations.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1395,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:28:26.300Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_n1roofrestorations.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T21:28:27.702Z",
+      "step": "cli.stream",
+      "detail": "frestorations.com.au\",\n      \"slug\": \"n-1-roof-restorations\",\n      \"md\": \"clients/n-1-roof-restorations/v2/master.md\",\n      \"html\": \"clients/n-1-roof-restorations/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:28:27.703Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1395ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212445-86cdba",
+  "created_at": "2026-05-14T21:24:45.612Z",
+  "updated_at": "2026-05-14T21:24:47.100Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cycle-21 verify · fresh intake",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-21 verify · pl:pipeline-batch-start --niche roofing --city gold-coast --count 5",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:pipeline-batch-start",
+    "args": [
+      "--niche",
+      "roofing",
+      "--city",
+      "gold-coast",
+      "--count",
+      "5"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1216,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:24:45.880Z",
+      "step": "cli.spawning",
+      "detail": "pl:pipeline-batch-start --niche roofing --city gold-coast --count 5"
+    },
+    {
+      "at": "2026-05-14T21:24:47.098Z",
+      "step": "cli.stream",
+      "detail": "04595355906478251\",\n  \"state_path\": \"/Users/matthew/Developer/google-map-website-v3/data/v2/pipeline-batches/pipe-roofing-gold-coast-202605150724.json\",\n  \"scrape_chained\": \"20260514-212447-df1777\"\n}"
+    },
+    {
+      "at": "2026-05-14T21:24:47.100Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1216ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

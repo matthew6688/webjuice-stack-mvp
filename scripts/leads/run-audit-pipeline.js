@@ -333,6 +333,25 @@ async function processLead(entityKey) {
     console.warn(`     ⚠ grading failed: ${err.message}`);
   }
 
+  // V3 D43 cycle-22 (Matthew 2026-05-15) · 22.A · D-grade 立刻 bail · skip Stage 4/5
+  // + master.md/customer-audit rebuild. Pro Master case: D-grade 还跑完 4/5/post ·
+  // 浪费 ~3 min + Tinyfish quota. Now: D → archive entity (persistLeadGrade 已做) ·
+  // run-audit-pipeline 直接 return.
+  if (leadGrade?.investment_level === 'D') {
+    console.log(`  [bail] grade=D · skip Stage 4-5 + master.md/customer-audit rebuild`);
+    return {
+      entityKey,
+      name: entity.latest?.name,
+      ok: true,
+      audit_score: detailedFixture.detailed_audit?.audit_score,
+      decision: detailedFixture.detailed_audit?.decision,
+      visual_issues: visualFixture?.parsedJson?.issues?.length || 0,
+      grade: 'D',
+      report_url: null,
+      bailed_at: 'stage_3_d_grade',
+    };
+  }
+
   // ── Stage 3b (optional): review mining ────────────────────────────────
   // Delegate to build-internal-report --with-reviews; cached fixture.
 

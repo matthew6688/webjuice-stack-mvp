@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Audit Report — Roofing Depot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: #2c2c2c;
+            background: #faf8f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 50px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        h1, h2, h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 2.4em;
+            margin-bottom: 0.3em;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 2em;
+            margin-bottom: 0.8em;
+            padding-bottom: 0.3em;
+            border-bottom: 2px solid #e8e4df;
+        }
+        
+        h3 {
+            font-size: 1.3em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #3a3a3a;
+        }
+        
+        p {
+            margin-bottom: 1em;
+            font-size: 1.05em;
+        }
+        
+        .hero {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #e8e4df;
+            margin-bottom: 40px;
+        }
+        
+        .business-name {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .score-container {
+            margin: 30px 0;
+        }
+        
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+        }
+        
+        .score-label {
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #666;
+        }
+        
+        .summary {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+        
+        .issue-box, .strength-box {
+            background: #f9f9f9;
+            border-left: 4px solid #e0e0e0;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .issue-box {
+            border-left-color: #f44336;
+            background: #fff5f5;
+        }
+        
+        .strength-box {
+            border-left-color: #4caf50;
+            background: #f1f8f4;
+        }
+        
+        .issue-title, .strength-title {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .issue-impact, .strength-detail {
+            color: #555;
+            font-size: 0.98em;
+        }
+        
+        .outcome-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .outcome-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.05em;
+        }
+        
+        .outcome-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .closing {
+            background: #faf8f5;
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .closing p {
+            font-size: 1.1em;
+            margin-bottom: 0.8em;
+        }
+        
+        .contact-detail {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 1.05em;
+        }
+        
+        .screenshot {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .screenshot img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .screenshot-caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        .critical-badge {
+            display: inline-block;
+            background: #d32f2f;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 25px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .score-circle {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div class="business-name">Roofing Depot · Gold Coast</div>
+            <h1>Your Website Audit</h1>
+            
+            <div class="score-container">
+                <div class="score-circle">23</div>
+                <div class="score-label">out of 100</div>
+            </div>
+            
+            <p class="summary">
+                Your website has a handful of good elements, but right now it's actively losing you customers every day—especially anyone visiting from a computer.
+            </p>
+        </div>
+
+        <h2>What's Working Well</h2>
+        
+        <div class="strength-box">
+            <div class="strength-title">You're showing the real business</div>
+            <div class="strength-detail">
+                The photo of your actual warehouse builds trust. Real-place photography is far more effective than stock images—customers can see you're a legitimate, established operation.
+            </div>
+        </div>
+        
+        <div class="strength-box">
+            <div class="strength-title">Clean, professional look on mobile</div>
+            <div class="strength-detail">
+                Your mobile header has good contrast and the colour scheme (black and white) suits a trade business. The product photography is real, which helps customers quickly identify what you stock.
+            </div>
+        </div>
+
+        <h2>What's Holding You Back</h2>
+        
+        <div class="issue-box">
+            <div class="issue-title">Your desktop site is completely broken <span class="critical-badge">Critical</span></div>
+            <div class="issue-impact">
+                Right now, anyone visiting your website from a computer or laptop sees a "403 Forbidden" error page—no business information, no products, nothing. Around 40–50% of customers search for local suppliers on a desktop. Every single one of those visitors is leaving immediately and calling your competitors instead. This issue alone is probably costing you multiple enquiries every single day.
+            </div>
+        </div>
+        
+        <div class="screenshot">
+            <img src="./screenshots/desktop.png" alt="Desktop view showing 403 error">
+            <div class="screenshot-caption">What desktop visitors see right now—a dead end</div>
+        </div>
+        
+        <div class="issue-box">
+            <div class="issue-title">Browsers warn customers your site is "not secure" <span class="critical-badge">Critical</span></div>
+            <div class="issue-impact">
+                Your website doesn't have HTTPS security. This means Chrome, Firefox, and Safari display a "Not Secure" warning in the address bar. More than 80% of visitors will close the page immediately when they see that warning. Google also ranks sites without HTTPS lower in search results, so you're losing visibility and customers at the same time.
+            </div>
+        </div>
+        
+        <div class="issue-box">
+            <div class="issue-title">No phone number visible on mobile</div>
+            <div class="issue-impact">
+                Over 70% of local searches happen on mobile, and most of those customers want to call straight away. Your phone number isn't visible in the top section of your mobile site—customers have to hunt for it. Every extra step loses a chunk of potential calls. A tap-to-call phone number at the top would fix this in minutes and immediately increase your enquiry rate.
+            </div>
+        </div>
+        
+        <div class="screenshot">
+            <img src="./screenshots/mobile.png" alt="Mobile view with no contact details">
+            <div class="screenshot-caption">Mobile view—no phone number, no location, no way to contact you quickly</div>
+        </div>
+        
+        <div class="issue-box">
+            <div class="issue-title">No trust signals anywhere</div>
+            <div class="issue-impact">
+                Customers want to know they're dealing with a legitimate, qualified business before they spend thousands of dollars. Your site doesn't show any credentials—no QBCC licence number, no ABN, no insurance details, no "years in business" statement. In Queensland, roofing work legally requires a QBCC licence, and customers know it. If they can't see yours, many will simply move on to a competitor who displays theirs upfront.
+            </div>
+        </div>
+        
+        <div class="issue-box">
+            <div class="issue-title">No address or suburb shown</div>
+            <div class="issue-impact">
+                Local customers need to know where you're based before they'll contact you. Your website doesn't display your address or even mention Gold Coast or Coombabah in the visible area. This makes customers unsure whether you actually service their area, and many will go back to Google Maps to double-check—at which point about 30% will just call someone else instead.
+            </div>
+        </div>
+
+        <h2>What Changes When We Fix This</h2>
+        
+        <p>A properly built website does three things really well: it proves you're trustworthy, it makes contacting you effortless, and it shows up when people search. Here's what improves once these issues are resolved:</p>
+        
+        <ul class="outcome-list">
+            <li><strong>Desktop visitors can actually see your site</strong>—fixing the 403 error means you stop losing half your traffic immediately.</li>
+            <li><strong>More calls from mobile</strong>—a visible, tappable phone number at the top means customers don't have to hunt, so more of them will call.</li>
+            <li><strong>Customers trust you faster</strong>—displaying your QBCC licence, ABN, insurance, and years in business upfront builds confidence and reduces the "maybe I'll check someone else first" hesitation.</li>
+            <li><strong>Better placement in Google search</strong>—HTTPS security and proper structured data help Google understand and rank your business, so you appear higher when locals search for roofing supplies.</li>
+            <li><strong>You stop leaking customers at every step</strong>—faster load times, clearer calls-to-action, and a visible address all reduce the number of people who leave before contacting you.</li>
+        </ul>
+
+        <h2>Next Steps</h2>
+        
+        <div class="closing">
+            <p>
+                We've put together a full breakdown of what's working, what's not, and exactly how to fix it. 
+            </p>
+            <p>
+                If you'd like to walk through the findings and discuss what a rebuilt site would look like for Roofing Depot, we'd be happy to schedule a 30-minute call at a time that suits you.
+            </p>
+            <p>
+                No pressure, no hard sell—just a clear explanation of where the opportunities are.
+            </p>
+            <p class="contact-detail">
+                Reply to this email or give us a call to book a time.
+            </p>
+        </div>
+        
+    </div>
+</body>
+</html>

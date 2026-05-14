@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Master – Website Audit Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: #faf8f5;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid #e8e4dc;
+        }
+        
+        h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .score-container {
+            display: inline-block;
+            margin: 30px 0;
+        }
+        
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f5a623 0%, #e89400 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(245, 166, 35, 0.3);
+        }
+        
+        .score-number {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            margin-top: 5px;
+        }
+        
+        h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #1a1a1a;
+            margin: 50px 0 25px 0;
+            padding-top: 20px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .strength-list, .issue-list, .outcome-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .strength-list li, .issue-list li, .outcome-list li {
+            margin-bottom: 25px;
+            padding-left: 35px;
+            position: relative;
+        }
+        
+        .strength-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #4caf50;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .issue-list li:before {
+            content: "!";
+            position: absolute;
+            left: 8px;
+            top: 0;
+            color: #f5a623;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .outcome-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #5472d3;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .issue-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .issue-impact {
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .closing {
+            background: white;
+            border: 2px solid #e8e4dc;
+            border-radius: 8px;
+            padding: 35px;
+            margin-top: 60px;
+            text-align: center;
+        }
+        
+        .closing h2 {
+            margin-top: 0;
+            padding-top: 0;
+            font-size: 1.5rem;
+        }
+        
+        .closing p {
+            margin: 20px 0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .contact-details {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e8e4dc;
+            font-size: 0.95rem;
+            color: #666;
+        }
+        
+        .screenshot-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .screenshot-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #e8e4dc;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .screenshot-label {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: #444;
+        }
+        
+        strong {
+            color: #1a1a1a;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .score-number {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pro Master</h1>
+            <p class="subtitle">Website Performance Review – May 2026</p>
+            
+            <div class="score-container">
+                <div class="score-circle">
+                    <div class="score-number">55</div>
+                    <div class="score-label">out of 100</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="section">
+            <p>We've completed a detailed review of your website at <strong>promasterau.com</strong>. This report explains what's working well, what's holding you back from getting more enquiries, and what changes when these issues are fixed.</p>
+            
+            <p>Everything below is written in plain language – no jargon, just the impact on your business.</p>
+        </section>
+
+        <section class="section">
+            <h2>What's Working Well</h2>
+            
+            <ul class="strength-list">
+                <li>
+                    <strong>Your phone number is front and centre.</strong> On both desktop and mobile, visitors can see 0423 638 119 immediately. This is exactly the right instinct – when someone needs a roofer, they want to call now.
+                </li>
+                
+                <li>
+                    <strong>You show your starting price upfront.</strong> 'Roofs Painted from $3500' gives visitors a clear sense of your pricing. Most roofing companies hide this, so your transparency is a genuine competitive advantage.
+                </li>
+                
+                <li>
+                    <strong>Your site has proper security.</strong> The TrustedSite badge shows visitors that your website is safe and legitimate. This matters more than most people realise.
+                </li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>What's Holding You Back</h2>
+            
+            <p>Here are the specific things that are costing you enquiries right now:</p>
+            
+            <ul class="issue-list">
+                <li>
+                    <span class="issue-title">A pop-up blocks your entire page</span>
+                    <span class="issue-impact">The moment someone opens your website, a large cookie consent box covers everything – your services, your pricing, your contact details. Research shows that visitors decide whether to stay or leave within 8 seconds. If they can't see what you do in that time, they click back to Google and try the next company. This pop-up is silently turning away potential customers every single day.</span>
+                </li>
+                
+                <li>
+                    <span class="issue-title">There's no clear 'next step' button</span>
+                    <span class="issue-impact">Your phone number is visible, but it's just text – not a button people can tap to call. On mobile especially, visitors expect a big, obvious 'Call Now' or 'Get a Free Quote' button. Without one, you're making people work too hard. Industry data shows that sites with a clear call-to-action button get 40% more phone calls than sites with just text.</span>
+                </li>
+                
+                <li>
+                    <span class="issue-title">No reviews or testimonials are visible</span>
+                    <span class="issue-impact">88% of people read reviews before choosing a local service provider. Your website doesn't show any customer feedback, star ratings, or testimonials on the first screen. Even though you have a 4.8-star rating on Google, visitors to your website don't see that trust signal. They're left wondering: "Has anyone actually used this company before?" Many will simply choose a competitor whose website shows reviews.</span>
+                </li>
+                
+                <li>
+                    <span class="issue-title">Your logo looks home-made</span>
+                    <span class="issue-impact">Right now, your 'PRO MASTER' branding is text laid over a photo of roof tiles – it looks like it was put together in Microsoft Word. First impressions matter enormously in the trades. If your website looks amateur, people assume your work might be too. About 70% of visitors judge a company's professionalism based on the website design alone.</span>
+                </li>
+                
+                <li>
+                    <span class="issue-title">The main section of your page is just a logo</span>
+                    <span class="issue-impact">The biggest, most important part of your website – the first thing people see – is taken up entirely by that composite logo image. There's no headline explaining what you do, no reason why someone should choose you over the four other roofers they have open in tabs. Visitors spend 3–5 seconds looking at this space. If they don't learn anything useful in that time, they leave.</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>What Changes When We Fix This</h2>
+            
+            <p>When these issues are resolved, here's what you can expect:</p>
+            
+            <ul class="outcome-list">
+                <li>
+                    <strong>More phone calls.</strong> When visitors can see your page immediately (no pop-up), understand what you do (clear headline), and tap a button to call (not copy-paste a number), you'll get more enquiries. It's that simple.
+                </li>
+                
+                <li>
+                    <strong>Better first impressions.</strong> A professional logo and a well-designed homepage tell visitors you're a legitimate, established business. That trust translates directly into more people choosing to contact you instead of a competitor.
+                </li>
+                
+                <li>
+                    <strong>Easier for customers to choose you.</strong> When your Google reviews are displayed prominently on your website, fence-sitters will feel more confident picking up the phone. Social proof is one of the most powerful trust signals in the local service industry.
+                </li>
+                
+                <li>
+                    <strong>You'll show up better in local search.</strong> Right now, your website is missing important technical elements that tell Google and other search engines you're a local Gold Coast business. Adding these (it's behind-the-scenes work) means you're more likely to appear in map results and answer boxes when people search for roofers near them.
+                </li>
+                
+                <li>
+                    <strong>Your website will work on slow connections.</strong> Many of your potential customers will visit your site on their phone while they're out and about, often on patchy mobile data. Right now, your site is slow to load in those conditions. A faster site means fewer people give up waiting.
+                </li>
+            </ul>
+        </section>
+
+        <div class="closing">
+            <h2>Next Step – A 30-Minute Walkthrough</h2>
+            
+            <p>We'd like to walk you through these findings in more detail, show you exactly what we saw, and explain what a redesigned site would look like for Pro Master.</p>
+            
+            <p>There's no obligation and no sales pressure – this is a genuine opportunity to see your website through the eyes of a potential customer and understand what's working and what's not.</p>
+            
+            <p><strong>If you'd like to book a time to chat, reply to this email or give us a call.</strong></p>
+            
+            <div class="contact-details">
+                This audit was prepared for Pro Master on 15 May 2026.<br>
+                All findings are based on a detailed technical review and industry benchmarks for Australian roofing companies.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

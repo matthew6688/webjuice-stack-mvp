@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212546-ed889c",
+  "created_at": "2026-05-14T21:25:46.718Z",
+  "updated_at": "2026-05-14T21:25:48.557Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for phone_0411717162 (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "phone_0411717162"
+    ],
+    "target_entity_key": "phone_0411717162",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1615,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:25:46.938Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key phone_0411717162"
+    },
+    {
+      "at": "2026-05-14T21:25:48.555Z",
+      "step": "cli.stream",
+      "detail": "─┴────────────────────┴───────┴──────────────┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"phone_0411717162\",\n      \"ok\": false,\n      \"reason\": \"no website\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:25:48.557Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1615ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

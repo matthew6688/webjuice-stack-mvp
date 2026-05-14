@@ -1,0 +1,42 @@
+{
+  "batch_id": "pipe-roofing-gold-coast-202605150724",
+  "title": "[Pipeline] roofing / gold-coast / 5 leads — 2026-05-14 21:24 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504595355906478251",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504595355906478251",
+  "initial_message_id": "1504595355906478251",
+  "niche": "roofing",
+  "city": "gold-coast",
+  "count": 5,
+  "runFlags": {
+    "refetch": true,
+    "with_reviews": true,
+    "with_gbp_extras": false,
+    "skip_gbp": true,
+    "precreate_threads_all_grades": false,
+    "outreach": false
+  },
+  "started_at": "2026-05-14T21:24:47.078Z",
+  "finished_at": "2026-05-14T21:26:33.793Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Discovery (docker scraper)",
+      "status": "ok",
+      "summary": "Docker scraper: 10 leads\nLLM judge: human-gate (conf 0.82)\n\n抓到的商家:\n- GC Roof Tiling Solutions\n- Pro Master\n- N.1 Roof Restorations\n- Roofing Depot\n- Roof Repair Gold Coast\n- Prime Roof Restorations\n- GOLD COAST tiled roof repairs\n- Ryan Roofing Australia\n- Radiant Roof Repairs Gold Coast\n- Gold Coast Local Roofers",
+      "at": "2026-05-14T21:26:32.768Z",
+      "message_id": "1504595799726620722",
+      "fallback": null
+    },
+    {
+      "stage": "🏁 批次完成",
+      "status": "ok",
+      "summary": "10 entities ingested · cheap-audit queue 处理中\n\n→ 每个 entity 跑 cheap-audit + LLM niche judge + predict grade\n→ predict-A/B 立刻 detail audit · predict-C 进 cold backlog · predict-D archive\n→ 看 #website-leads 各 thread 进度",
+      "at": "2026-05-14T21:26:33.090Z",
+      "message_id": "1504595801064865924",
+      "fallback": null
+    }
+  ],
+  "issues": [],
+  "leads": []
+}

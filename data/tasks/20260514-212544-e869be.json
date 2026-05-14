@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212544-e869be",
+  "created_at": "2026-05-14T21:25:44.643Z",
+  "updated_at": "2026-05-14T21:25:46.349Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_roofrepairgoldcoast.com (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_roofrepairgoldcoast.com",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1404,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:25:44.931Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_roofrepairgoldcoast.com --theme report --html"
+    },
+    {
+      "at": "2026-05-14T21:25:46.348Z",
+      "step": "cli.stream",
+      "detail": "pairgoldcoast.com\",\n      \"slug\": \"roof-repair-gold-coast\",\n      \"md\": \"clients/roof-repair-gold-coast/v2/master.md\",\n      \"html\": \"clients/roof-repair-gold-coast/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:25:46.349Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1404ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

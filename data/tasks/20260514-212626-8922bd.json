@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212626-8922bd",
+  "created_at": "2026-05-14T21:26:26.911Z",
+  "updated_at": "2026-05-14T21:28:25.972Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_radiantroofrepairs.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_radiantroofrepairs.com.au"
+    ],
+    "target_entity_key": "domain_radiantroofrepairs.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 118849,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:26:27.123Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_radiantroofrepairs.com.au"
+    },
+    {
+      "at": "2026-05-14T21:26:32.230Z",
+      "step": "cli.stream",
+      "detail": "rmal (concurrent_leads=1)\n\n══════════ domain_radiantroofrepairs.com.au ══════════\n  [thread] reusing 1504595771679576195\n  [stage 1/4] detailed audit — fetching https://www.radiantroofrepairs.com.au/"
+    },
+    {
+      "at": "2026-05-14T21:28:25.971Z",
+      "step": "cli.stream",
+      "detail": "┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_radiantroofrepairs.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 634)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:28:25.972Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=118849ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

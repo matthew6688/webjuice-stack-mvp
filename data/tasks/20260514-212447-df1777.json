@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-212447-df1777",
+  "created_at": "2026-05-14T21:24:47.079Z",
+  "updated_at": "2026-05-14T21:26:33.803Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504595355906478251",
+    "author": "pl:pipeline-batch-start auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: gosom scrape · niche=roofing · city=gold-coast · count=5 · batch=pipe-roofing-gold-coast-202605150724",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:scrape-docker",
+    "args": [
+      "--niche",
+      "roofing",
+      "--city",
+      "gold-coast",
+      "--count",
+      "5",
+      "--batch-id",
+      "pipe-roofing-gold-coast-202605150724"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 106099,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:24:47.699Z",
+      "step": "cli.spawning",
+      "detail": "pl:scrape-docker --niche roofing --city gold-coast --count 5 --batch-id pipe-roofing-gold-coast-202605150724"
+    },
+    {
+      "at": "2026-05-14T21:24:52.844Z",
+      "step": "cli.stream",
+      "detail": "ng-gold-coast-202605150724\n\ngeocode gold-coast → -27.9769248,153.380936 (api) · Gold Coast QLD, Australia\njob_id=13fdc092-a501-4abe-a4a0-867736edbe45\npolling job 13fdc092-a501-4abe-a4a0-867736edbe45 ."
+    },
+    {
+      "at": "2026-05-14T21:24:58.494Z",
+      "step": "cli.stream",
+      "detail": "r/webdata/13fdc092-a501-4abe-a4a0-867736edbe45.csv\nwrote 10 leads → /Users/matthew/Developer/google-map-website-v3/data/maps-scraper/runs/roofing-gold-coast-2026-05-14T21-24-47-893Z/results.maps.json"
+    },
+    {
+      "at": "2026-05-14T21:25:44.635Z",
+      "step": "cli.stream",
+      "detail": "ryScore\": 34,\n      \"recommendedAction\": \"audit_candidate\",\n      \"phone\": \"0429047629\",\n      \"website\": \"https://n1roofrestorations.com.au/\",\n      \"rating\": 4.9,\n      \"reviewCount\": 0\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:25:54.726Z",
+      "step": "cli.stream",
+      "detail": "iority=0 · audit_now=true\n[cheap-audit-queue] phone_0434517831 · thread opened (predict-C)\n[detailed-audit-queue] enqueued phone_0434517831 → task 20260514-212551-2c87d2 (priority=0 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T21:25:59.737Z",
+      "step": "cli.stream",
+      "detail": "=true\n[cheap-audit-queue] domain_roofingdepot.com.au · thread opened (predict-C)\n[detailed-audit-queue] enqueued domain_roofingdepot.com.au → task 20260514-212557-49cb27 (priority=0 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T21:26:05.492Z",
+      "step": "cli.stream",
+      "detail": "verdict: true (codex_cli cached) · 企业名称明确包含 Metal Roofing，属于 roofing 行业。\n[cheap-audit-queue] domain_gcrooftilingsolutions.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T21:26:11.470Z",
+      "step": "cli.stream",
+      "detail": "fing 行业。\n[cheap-audit-queue] domain_ryanroofing.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=true\n[cheap-audit-queue] domain_ryanroofing.com.au · thread opened (predict-C)"
+    },
+    {
+      "at": "2026-05-14T21:26:17.236Z",
+      "step": "cli.stream",
+      "detail": "udit_now=true\n[cheap-audit-queue] domain_promasterau.com · thread opened (predict-C)\n[detailed-audit-queue] enqueued domain_promasterau.com → task 20260514-212617-98ba7d (priority=0 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T21:26:25.163Z",
+      "step": "cli.stream",
+      "detail": "LM verdict: true (codex_cli cached) · 企业名称明确包含 Metal Roofing，属于 roofing 行业。\n[cheap-audit-queue] domain_radiantroofrepairs.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T21:26:31.124Z",
+      "step": "cli.stream",
+      "detail": "t-queue] domain_goldcoastlocalroofers.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=true\n[cheap-audit-queue] domain_goldcoastlocalroofers.com.au · thread opened (predict-C)"
+    },
+    {
+      "at": "2026-05-14T21:26:33.802Z",
+      "step": "cli.stream",
+      "detail": ",\"suspicious_picks\":[\"Central St, Arundel QLD 4214 (unknown/no specific business found)\",\"78 Santa Cruz Blvd, Clear Island Waters QLD 4226 (appears residential/not roofing)\"],\"provider\":\"codex_cli\"}}"
+    },
+    {
+      "at": "2026-05-14T21:26:33.803Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=106099ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504595355906478251",
+    "status_message_id": null
+  }
+}

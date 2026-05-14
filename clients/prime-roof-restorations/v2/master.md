@@ -1,10 +1,10 @@
 ---
-business_id: "place_chiju1qudf0rkwsrfigoacw6r6i"
+business_id: "phone_0411717162"
 business_name: "Prime Roof Restorations"
-niche: "roofer"
+niche: "roofing"
 city: "Gold Coast"
 rating: 4.8
-review_count: 29
+review_count: 0
 website: null
 audit_score: null
 decision: null
@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T12:44:01.646Z"
+generated_at: "2026-05-14T21:25:45.193Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -26,14 +26,14 @@ assets:
 
 # Prime Roof Restorations · 现状审计与重构提议
 
-> **null/100** · - · 行业：roofer · 地区：Gold Coast · Google 评价：4.8★ （29 条）
+> **null/100** · - · 行业：roofing · 地区：Gold Coast · Google 评价：4.8★ （0 条）
 
 ## 内部分级 · 运营优先看这段
 
 **投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- audit 未运行 · 默认 C 等待 audit 后重新分级
+- audit 未运行 · 默认 C
 
 **下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
@@ -45,14 +45,14 @@ assets:
 
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Places API (官方搜索)
-- **搜索关键词**: `roofer gold coast`
-- **结果排名**: 第 11 位
-- **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-gold-coast-202605132243`
+- **来源**: Google Maps (gosom 抓取)
+- **搜索关键词**: `roofing in gold-coast`
+- **首次发现**: 2026-05-14
+- **Batch**: `pipe-roofing-gold-coast-202605150724`
 
-- 电话：0411 717 162
-- 地址：13/461 Pine Ridge Rd, Runaway Bay QLD 4216, Australia
+- 电话：0411717162
+- 地址：13/461 Pine Ridge Rd, Runaway Bay QLD 4216
+- 网站状态：`no_website`
 
 ## 三、客户访问时看到的页面
 
