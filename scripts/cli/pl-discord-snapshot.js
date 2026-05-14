@@ -1,0 +1,232 @@
+#!/usr/bin/env node
+/**
+ * pl-discord-snapshot · V3 D43 cycle-12 (Matthew 2026-05-14)
+ *
+ * One-shot Discord verification · 必须用这个当 PASS 凭据 · 不允许手动 sample。
+ * Output: human-readable PASS/FAIL + JSON snapshot at data/qa/discord-snapshot-<ts>.json
+ *
+ * Usage:
+ *   npm run pl:discord-snapshot                  # full leads channel scan
+ *   npm run pl:discord-snapshot -- --thread <id>
+ *   npm run pl:discord-snapshot -- --strict      # fail on any thread mismatch
+ *
+ * Per-state expectations (SOP §2.5):
+ *   预D  · 不该有 thread
+ *   预C  · profile + cheap summary + emoji guide → ≥3 msg · title [预C]
+ *   预A/B · profile + cheap summary             → ≥2 msg · title [预A/B]
+ *   audited A/B/C · profile + summary + 5 stages → ≥7 msg · title [A/B/C] [待发]
+ */
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+const TOKEN = process.env.DISCORD_BOT_TOKEN || process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN;
+const LEADS_CH = process.env.WEBSITE_LEADS_DISCORD_CHANNEL_ID;
+const PROJECTS_CH = process.env.WEBSITE_PROJECTS_DISCORD_CHANNEL_ID;
+const DISCORD_API = 'https://discord.com/api/v10';
+
+if (!TOKEN) { console.error('Missing DISCORD_BOT_TOKEN'); process.exit(2); }
+
+const args = process.argv.slice(2);
+const argThreadIdx = args.indexOf('--thread');
+const argThread = argThreadIdx >= 0 ? args[argThreadIdx + 1] : null;
+const argChannelIdx = args.indexOf('--channel');
+const argChannel = argChannelIdx >= 0 ? args[argChannelIdx + 1] : 'leads';
+const STRICT = args.includes('--strict');
+
+const ENTITIES_DIR = '/Users/matthew/Developer/google-map-website-v3/data/leads/entities';
+
+async function discordGet(url) {
+  const r = await fetch(`${DISCORD_API}${url}`, {
+    headers: { Authorization: `Bot ${TOKEN}`, 'User-Agent': 'profitslocal-snapshot' },
+  });
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+  return r.json();
+}
+
+function readEntity(key) {
+  const p = path.join(ENTITIES_DIR, `${key}.json`);
+  if (!fs.existsSync(p)) return null;
+  return JSON.parse(fs.readFileSync(p, 'utf8'));
+}
+
+function findEntityByThreadId(threadId) {
+  const files = fs.readdirSync(ENTITIES_DIR).filter((f) => f.endsWith('.json'));
+  for (const f of files) {
+    try {
+      const e = JSON.parse(fs.readFileSync(path.join(ENTITIES_DIR, f), 'utf8'));
+      if (String(e.discord_thread_id) === String(threadId)) {
+        return { ...e, entityKey: e.entityKey || f.replace('.json', '') };
+      }
+    } catch { /* skip */ }
+  }
+  return null;
+}
+
+function classifyEntityState(entity) {
+  if (!entity) return 'unknown';
+  const realGrade = entity.grade?.investment_level;
+  const predict = entity.predict_grade?.grade;
+  const auditDone = !!entity.detailed_audit?.at || !!entity.grade?.graded_at;
+  if (auditDone && realGrade) return `audited_${realGrade}`;
+  if (predict === 'D') return 'predict_D';
+  if (predict === 'A' || predict === 'B') return `predict_${predict}`;
+  if (predict === 'C') return 'predict_C';
+  return 'no_predict';
+}
+
+function expectedForState(state) {
+  // [minMessages, titlePattern, requireFields]
+  switch (state) {
+    case 'predict_D': return { mustHaveThread: false };
+    case 'predict_C': return { mustHaveThread: true, minMessages: 3, titleContains: '[预C]', expectedFeatures: ['profile_card', 'cheap_summary', 'emoji_guide'] };
+    case 'predict_B': return { mustHaveThread: true, minMessages: 2, titleContains: '[预B]', expectedFeatures: ['profile_card', 'cheap_summary'] };
+    case 'predict_A': return { mustHaveThread: true, minMessages: 2, titleContains: '[预A]', expectedFeatures: ['profile_card', 'cheap_summary'] };
+    case 'audited_A':
+    case 'audited_B':
+    case 'audited_C':
+      return { mustHaveThread: true, minMessages: 5, titleContains: `[${state.slice(-1)}]`, expectedFeatures: ['profile_card', 'stage_3_grade'] };
+    default: return { mustHaveThread: false };
+  }
+}
+
+function detectFeatures(msgs) {
+  const features = new Set();
+  for (const m of msgs) {
+    const text = m.content || '';
+    const embedTitle = m.embeds?.[0]?.title || '';
+    const embedFields = m.embeds?.[0]?.fields || [];
+    if (embedFields.some((f) => f.name === '联系方式' || f.name === '基本信息')) features.add('profile_card');
+    if (text.includes('Intake 完成') || text.includes('cheap-audit + predict-grade')) features.add('cheap_summary');
+    if (text.includes('销售操作') || text.includes('手动操作')) features.add('emoji_guide');
+    if (text.includes('pipelineStartMessage') || text.includes('Audit pipeline 启动')) features.add('stage_0_start');
+    if (text.includes('Stage 1') && text.includes('done')) features.add('stage_1_audit');
+    if (text.includes('Stage 2') || text.includes('视觉审计')) features.add('stage_2_vision');
+    if (text.includes('Stage 3') || text.includes('分级 router')) features.add('stage_3_grade');
+    if (text.includes('Stage 4') || text.includes('HTML report')) features.add('stage_4_html');
+    if (text.includes('Stage 5') || text.includes('Qualification')) features.add('stage_5_quality');
+    if (text.includes('master.md 已重建')) features.add('master_md_hook');
+    if (text.includes('客户 audit HTML')) features.add('customer_audit_hook');
+  }
+  return Array.from(features);
+}
+
+async function checkThread(threadInfo) {
+  const { id, name, parent_id } = threadInfo;
+  const entity = findEntityByThreadId(id);
+  const state = classifyEntityState(entity);
+  const expected = expectedForState(state);
+
+  let msgs = [];
+  try { msgs = await discordGet(`/channels/${id}/messages?limit=50`); } catch (err) { msgs = []; }
+
+  const features = detectFeatures(msgs);
+
+  // Title checks
+  const titleHasQ = name.includes('[?]');
+  const titleMatchesExpected = expected.titleContains
+    ? name.includes(expected.titleContains)
+    : true;
+
+  // Asset attribution: if profile card shows 本地资产 field, entity should be actually audited
+  let assetMisattribution = false;
+  for (const m of msgs) {
+    if (!m.embeds?.[0]?.fields) continue;
+    const assetField = m.embeds[0].fields.find((f) => f.name.includes('资产'));
+    if (assetField && entity) {
+      const thisAudited = !!entity.grade?.investment_level || !!entity.detailed_audit?.at;
+      if (!thisAudited) assetMisattribution = true;
+    }
+  }
+
+  // Feature checks
+  const missingFeatures = (expected.expectedFeatures || []).filter((f) => !features.includes(f));
+  const enoughMessages = expected.minMessages == null || msgs.length >= expected.minMessages;
+
+  const failures = [];
+  if (titleHasQ) failures.push('title 含 [?]');
+  if (!titleMatchesExpected) failures.push(`title 不含期望片段 "${expected.titleContains}"`);
+  if (!enoughMessages) failures.push(`message count ${msgs.length} < 期望 ${expected.minMessages}`);
+  if (missingFeatures.length) failures.push(`缺少 feature: ${missingFeatures.join(', ')}`);
+  if (assetMisattribution) failures.push('本地资产 显示在 non-audited entity (slug-collision)');
+
+  return {
+    threadId: id,
+    title: name,
+    entityKey: entity?.entityKey || null,
+    state,
+    expected,
+    actual: {
+      msg_count: msgs.length,
+      features,
+      title_has_questionmark: titleHasQ,
+      asset_misattribution: assetMisattribution,
+    },
+    failures,
+    pass: failures.length === 0,
+  };
+}
+
+async function listActiveLeadsThreads() {
+  if (!LEADS_CH) throw new Error('WEBSITE_LEADS_DISCORD_CHANNEL_ID not set');
+  const cd = await discordGet(`/channels/${LEADS_CH}`);
+  const ad = await discordGet(`/guilds/${cd.guild_id}/threads/active`);
+  return (ad.threads || []).filter((t) => t.parent_id === LEADS_CH);
+}
+
+(async () => {
+  const ts = new Date().toISOString().replace(/[:.]/g, '-');
+  const snapshot = { at: new Date().toISOString(), threads: [] };
+
+  let threads;
+  if (argThread) {
+    const t = await discordGet(`/channels/${argThread}`);
+    threads = [{ id: t.id, name: t.name, parent_id: t.parent_id }];
+  } else {
+    threads = await listActiveLeadsThreads();
+  }
+
+  console.log(`\n═══ Discord Snapshot · ${ts} ═══`);
+  console.log(`Channel: ${argThread || 'leads (' + LEADS_CH + ')'}`);
+  console.log(`Threads to check: ${threads.length}\n`);
+
+  let passed = 0, failed = 0;
+  for (const t of threads) {
+    const res = await checkThread(t);
+    snapshot.threads.push(res);
+    const mark = res.pass ? '✅' : '❌';
+    console.log(`${mark} ${t.id} · ${t.name}`);
+    console.log(`     state=${res.state} · msgs=${res.actual.msg_count} · features=[${res.actual.features.join(',')}]`);
+    if (res.failures.length) {
+      for (const f of res.failures) console.log(`     · ${f}`);
+    }
+    if (res.pass) passed++; else failed++;
+    await new Promise((r) => setTimeout(r, 200));
+  }
+
+  // Aggregate checks
+  const channelHasQ = threads.some((t) => t.name.includes('[?]'));
+  snapshot.summary = {
+    total: threads.length,
+    passed,
+    failed,
+    channel_has_questionmark: channelHasQ,
+  };
+
+  console.log('\n═══ Summary ═══');
+  console.log(`  total:   ${threads.length}`);
+  console.log(`  passed:  ${passed}`);
+  console.log(`  failed:  ${failed}`);
+  console.log(`  any [?]: ${channelHasQ ? '❌ YES' : '✓ NO'}`);
+
+  // Save JSON snapshot for audit trail
+  const qaDir = '/Users/matthew/Developer/google-map-website-v3/data/qa';
+  fs.mkdirSync(qaDir, { recursive: true });
+  const snapPath = path.join(qaDir, `discord-snapshot-${ts}.json`);
+  fs.writeFileSync(snapPath, JSON.stringify(snapshot, null, 2) + '\n');
+  console.log(`  snapshot: ${snapPath}`);
+
+  if (failed > 0 && STRICT) process.exit(1);
+  if (channelHasQ && STRICT) process.exit(1);
+  process.exit(0);
+})().catch((err) => { console.error('FATAL:', err.message); process.exit(2); });

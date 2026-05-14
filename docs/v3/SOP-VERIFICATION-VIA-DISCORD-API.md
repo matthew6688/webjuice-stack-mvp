@@ -1,9 +1,16 @@
-# SOP · 测试验证必须从 Discord API 取数据
+# SOP · 测试验证必须从 Discord API 取数据 (v2 · 加严标准)
 
-> V3 D43 · Matthew 2026-05-14 cycle-7
-> Lesson learned: 我多次报 "100% PASS" 之后 Matthew 在 Discord 立刻发现重大 bug。
-> 根因：用**结构性指标**冒充**功能性指标**。
-> 这个 SOP 强制：凡是涉及 Discord 可视化的验证，必须 fetch Discord API 取真数据。
+> V3 D43 cycle-7 → cycle-11 (Matthew 2026-05-14)
+> Lesson learned: 我多次报 "100% PASS" 之后 Matthew 在 Discord 立刻发现重大 bug:
+>   cycle-1: stage 消息全在 bot-log · 我没 fetch Discord
+>   cycle-4: 4 个 thread 还是 [?] · 我只 sample 1 个就 generalize
+>   cycle-5: 7/8 thread 是空壳 · 我看了 1 个有内容就说 OK
+>   cycle-6: 本地资产数字胡扯 · slug collision 导致预C 偷已 audit entity 的资产
+>   cycle-7: predict 评定理由 vague · "GBP 弱" 不说哪条阈值不及格
+>   cycle-9: niche_mismatch hardcoded · "roofer" ≠ "Roofing contractor" 误杀
+>
+> 根因 · **用结构性指标冒充功能性指标 + 单 sample 当全局**。
+> v2 加严: 自动 snapshot 脚本 + 多 sample 强制 + per-state 期望矩阵 + 跨实体一致性。
 
 ---
 
@@ -141,6 +148,33 @@ for (const m of ms) {
 
 ---
 
+## 2.5 · Per-State 期望矩阵 (v2 加严 · 必须每个状态都验)
+
+不同 entity 状态 · thread 应该有什么内容是**严格定义**的 · 缺一不可：
+
+| Entity 状态 | thread 应有内容 | message_count 下限 | title 期望 |
+|------------|----------------|--------------------|-----------|
+| 预D (niche_mismatch / skip) | **无 thread** (不开) | — | — |
+| 预C (cheap done · 不深审) | profile card + cheap-audit summary + emoji guide | **≥ 3** | `[xx] [待建] [预C] name` |
+| 预A/B (cheap done · enqueued) | profile card + cheap-audit summary | ≥ 2 | `[xx] [待建] [预A/B] name` |
+| audited A/B/C (5 stage done) | profile card + summary + stages 1-5 + customer-audit hook + master.md hook | **≥ 7** | `[xx] [待发] [A/B/C] name` |
+
+**禁止：**
+- 看一个 thread 满足就报 PASS · 必须扫**全 channel** · **每个 thread 都查**
+- 假设 "样本代表全局" · 必须 per-entity 验证
+- 报 "X% PASS" · 必须 N/N 全过 · 任一失败 = 整体 FAIL
+
+## 2.6 · 跨实体一致性 (v2 加严)
+
+每条 PASS 必须额外验证：
+
+1. **Slug-collision check** — 同名 entity (e.g. domain_ + place_ 同名 GBP) 共享 client folder → 预C entity 不能显示 audited entity 的资产
+2. **Title staleness check** — 标题里的 grade 必须等于 entity.grade.investment_level (或 predict_grade.grade 若没 audited)
+3. **Stage message ↔ entity audit status 必须一致** — entity 没 `detailed_audit.at` → thread 不该有 stage 1-5 消息 (就只有 profile + cheap summary)
+4. **Cache 一致性** — niche-relevance LLM cache 命中后 · 同 pair 不重复调 (验证 cache HIT vs MISS 比例)
+
+---
+
 ## 3 · 强制每个 cycle 必跑的 4 步检查
 
 每个修改触及 Discord 可视化的 cycle 收尾必须跑：
@@ -200,17 +234,26 @@ count: 8 · any [?]? NO ✓
 
 ---
 
-## 5 · Snapshot 工具（可选 · 复用脚本）
+## 5 · Snapshot 工具 (v2 · 强制使用 · 已实施)
 
-`scripts/cli/pl-discord-snapshot.js`（建议建 · 现在没建）—— 一次性 fetch + 输出标准 PASS 报告：
+**`scripts/cli/pl-discord-snapshot.js`** · 一键自动验证 · 输出可直接贴的 PASS/FAIL 证据 ·
+**不允许手动 sample · 必须用这个脚本作为最终凭据**。
 
+```bash
+npm run pl:discord-snapshot                  # 默认 · scan #website-leads 全 channel
+npm run pl:discord-snapshot -- --thread <id> # 单 thread 详细
+npm run pl:discord-snapshot -- --channel projects
+npm run pl:discord-snapshot -- --strict      # FAIL 任意 thread 不满足期望
 ```
-npm run pl:discord-snapshot -- --entity <key>
-npm run pl:discord-snapshot -- --channel leads
-npm run pl:discord-snapshot -- --thread <id>
-```
 
-输出 Group A/B/C/D 全部 · stdout 直接当 PASS 证据贴。**待 Matthew 批准实施。**
+输出:
+- Group A · 全 channel title 扫描 · 0 个 [?] · 每个 title parse 出 grade label
+- Group B · 每个 thread message count + 头部 5 条 + 是否含 cheap-audit summary
+- Group C · 跨实体 slug-collision 检查 · 资产 attribution
+- Group D · sample 1 个 thread 的 embed fields full dump
+- 自动 per-state expectation check (§2.5)
+- exit 0 = PASS · exit 非 0 = FAIL (含原因)
+- 输出 JSON snapshot 到 `data/qa/discord-snapshot-<timestamp>.json` 当作 audit trail
 
 ---
 

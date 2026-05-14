@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-14T11:47:12.963Z",
+  "updatedAt": "2026-05-14T12:31:19.559Z",
   "storeRoot": "data/leads",
   "totals": {
     "entities": 103,
     "promoted": 0,
     "skipped": 44,
-    "needsAudit": 52,
+    "needsAudit": 51,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 0
   },
   "statusCounts": {
-    "queued_for_audit": 52,
+    "queued_for_audit": 51,
+    "graded": 6,
     "skipped": 44,
     "scored": 1,
-    "graded": 5,
     "manual_review": 1
   },
   "actionCounts": {
@@ -216,7 +216,7 @@
     },
     {
       "entityKey": "domain_vantagepointroofing.com.au",
-      "status": "queued_for_audit",
+      "status": "graded",
       "firstSeenAt": "2026-05-14T06:18:38.966Z",
       "lastSeenAt": "2026-05-14T11:20:43.694Z",
       "runCount": 7,
@@ -257,7 +257,16 @@
         },
         "batch_id": "pipe-roofing-brisbane-202605142119",
         "discovery_rank": null,
-        "google_places_provider": null
+        "google_places_provider": null,
+        "email": "info@vantagepointroofing.com.au",
+        "contact_us_url": "https://vantagepointroofing.com.au/contact/",
+        "social_links": {
+          "facebook": "https://www.facebook.com/VantagePointRoofing",
+          "instagram": "https://www.instagram.com/vantagepointroofing",
+          "linkedin": "https://www.linkedin.com/company/vantage-point-roofing",
+          "youtube": "https://www.youtube.com/@VantagePointRoofingAu",
+          "twitter": "https://x.com/vantagepointqld"
+        }
       }
     },
     {
