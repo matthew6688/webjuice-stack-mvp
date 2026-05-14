@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220342-deb89e",
+  "created_at": "2026-05-14T22:03:42.695Z",
+  "updated_at": "2026-05-14T22:04:46.085Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_auscityroofing.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_auscityroofing.com.au"
+    ],
+    "target_entity_key": "domain_auscityroofing.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 63174,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:03:42.909Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_auscityroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T22:03:48.023Z",
+      "step": "cli.stream",
+      "detail": "profile=normal (concurrent_leads=1)\n\n══════════ domain_auscityroofing.com.au ══════════\n  [thread] reusing 1504605144363569203\n  [stage 1/4] detailed audit — fetching https://auscityroofing.com.au/"
+    },
+    {
+      "at": "2026-05-14T22:04:46.084Z",
+      "step": "cli.stream",
+      "detail": "───┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_auscityroofing.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 1448)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:04:46.085Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=63174ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-215903-2fb6d3",
+  "created_at": "2026-05-14T21:59:03.773Z",
+  "updated_at": "2026-05-14T21:59:04.484Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_nuroofing.com.au (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_nuroofing.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 450,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:59:04.027Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_nuroofing.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T21:59:04.483Z",
+      "step": "cli.stream",
+      "detail": "om.au\",\n      \"slug\": \"nuroofing-services-pty-ltd\",\n      \"md\": \"clients/nuroofing-services-pty-ltd/v2/master.md\",\n      \"html\": \"clients/nuroofing-services-pty-ltd/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:59:04.484Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=450ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

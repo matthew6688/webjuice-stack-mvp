@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220357-ea5eea",
+  "created_at": "2026-05-14T22:03:57.767Z",
+  "updated_at": "2026-05-14T22:05:39.452Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_nuroofing.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_nuroofing.com.au"
+    ],
+    "target_entity_key": "domain_nuroofing.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 101472,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:03:57.980Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_nuroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T22:04:03.083Z",
+      "step": "cli.stream",
+      "detail": "y=false  profile=normal (concurrent_leads=1)\n\n══════════ domain_nuroofing.com.au ══════════\n  [thread] reusing 1504605212055179398\n  [stage 1/4] detailed audit — fetching http://www.nuroofing.com.au/"
+    },
+    {
+      "at": "2026-05-14T22:05:39.451Z",
+      "step": "cli.stream",
+      "detail": "──────────┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_nuroofing.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 15)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:05:39.452Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=101472ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

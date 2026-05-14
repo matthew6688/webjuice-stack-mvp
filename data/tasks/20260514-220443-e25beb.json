@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220443-e25beb",
+  "created_at": "2026-05-14T22:04:43.483Z",
+  "updated_at": "2026-05-14T22:04:45.035Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_auscityroofing.com.au (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_auscityroofing.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1332,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:04:43.699Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_auscityroofing.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T22:04:45.034Z",
+      "step": "cli.stream",
+      "detail": "ityKey\": \"domain_auscityroofing.com.au\",\n      \"slug\": \"auscity-roofing\",\n      \"md\": \"clients/auscity-roofing/v2/master.md\",\n      \"html\": \"clients/auscity-roofing/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:04:45.035Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1332ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

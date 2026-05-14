@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220407-17df7e",
+  "created_at": "2026-05-14T22:04:07.617Z",
+  "updated_at": "2026-05-14T22:05:29.562Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_sydneylocalroofers.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_sydneylocalroofers.com.au"
+    ],
+    "target_entity_key": "domain_sydneylocalroofers.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 81730,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:04:07.831Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_sydneylocalroofers.com.au"
+    },
+    {
+      "at": "2026-05-14T22:04:12.937Z",
+      "step": "cli.stream",
+      "detail": "e=normal (concurrent_leads=1)\n\n══════════ domain_sydneylocalroofers.com.au ══════════\n  [thread] reusing 1504605253071405108\n  [stage 1/4] detailed audit — fetching https://sydneylocalroofers.com.au/"
+    },
+    {
+      "at": "2026-05-14T22:05:29.560Z",
+      "step": "cli.stream",
+      "detail": "┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_sydneylocalroofers.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 293)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:05:29.562Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=81730ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

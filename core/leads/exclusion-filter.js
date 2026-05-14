@@ -136,12 +136,20 @@ export function runExclusionFilter({ entity, cheapAudit = null, nicheVerdict = n
   }
 
   // ───── Layer 3 · 时机不对 ─────
-  if (reviewCount < thr.min_reviews) {
+  // V3 D43 cycle-23b (Matthew 2026-05-15 test feedback): review_count === 0 + rating > 0
+  // 是 "未知/缺数据" 状态 · 不是 "真 0"。gosom scraper 经常漏抓 review_count ·
+  // 但 rating 4.9★ 说明肯定有 reviews. 不可信任 → 让它过 audit · 后续 enrich/audit 重判.
+  // 只在 review_count > 0 AND < min 才算 truly too_few.
+  if (reviewCount > 0 && reviewCount < thr.min_reviews) {
     exclusions.push({
       layer: 3,
       id: 'too_few_reviews',
       reason: `${reviewCount} reviews < ${niche} 阈值 ${thr.min_reviews} (业务太小/刚开业)`,
     });
+  }
+  // review_count === 0 但 rating > 0 · 数据可疑 · 不 exclude · 但记 warning
+  if (reviewCount === 0 && rating > 0) {
+    // 让它通过 · 不进 exclusions[] · 但 audit 后 lead-grading 会再次判
   }
 
   if (rating > 0 && rating < cfg.rating_min && reviewCount >= cfg.rating_min_min_reviews) {

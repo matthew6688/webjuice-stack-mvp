@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220417-5a6ed3",
+  "created_at": "2026-05-14T22:04:17.656Z",
+  "updated_at": "2026-05-14T22:05:26.707Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_sydneyroofingandgutters.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_sydneyroofingandgutters.com.au"
+    ],
+    "target_entity_key": "domain_sydneyroofingandgutters.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 68842,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:04:17.865Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_sydneyroofingandgutters.com.au"
+    },
+    {
+      "at": "2026-05-14T22:04:22.972Z",
+      "step": "cli.stream",
+      "detail": "concurrent_leads=1)\n\n══════════ domain_sydneyroofingandgutters.com.au ══════════\n  [thread] reusing 1504605295576617035\n  [stage 1/4] detailed audit — fetching https://sydneyroofingandgutters.com.au/"
+    },
+    {
+      "at": "2026-05-14T22:05:26.706Z",
+      "step": "cli.stream",
+      "detail": "\"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_sydneyroofingandgutters.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 556)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:05:26.707Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=68842ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

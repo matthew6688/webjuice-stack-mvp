@@ -1,30 +1,30 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-14T21:25:44.634Z",
+  "generatedAt": "2026-05-14T21:59:03.768Z",
   "totals": {
-    "entities": 113,
+    "entities": 116,
     "promoted": 0,
-    "skipped": 43,
-    "needsAudit": 39,
+    "skipped": 35,
+    "needsAudit": 47,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 0
   },
   "statusCounts": {
-    "queued_for_audit": 39,
-    "skipped": 43,
+    "queued_for_audit": 47,
+    "graded": 30,
+    "skipped": 35,
     "scored": 3,
-    "graded": 27,
     "manual_review": 1
   },
   "actionCounts": {
-    "audit_candidate": 65,
-    "skip": 42,
+    "audit_candidate": 76,
+    "skip": 34,
     "starter_candidate": 3,
     "manual_review": 3
   },
   "websiteStatusCounts": {
-    "independent_http_site": 25,
-    "independent_https_site": 49,
+    "independent_http_site": 27,
+    "independent_https_site": 50,
     "no_website": 4,
     "unknown": 35
   },
@@ -120,8 +120,53 @@
       "lastSeenAt": "2026-05-14T07:57:28.273Z"
     },
     {
-      "entityKey": "domain_roofingdepot.com.au",
+      "entityKey": "domain_allroofingservices.com.au",
       "status": "queued_for_audit",
+      "name": "All Roofing Services Pty Ltd",
+      "city": "Sydney",
+      "niche": "roofing",
+      "phone": "(02)80862059",
+      "website": "http://www.allroofingservices.com.au/",
+      "googleMapsUrl": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "recommendedAction": "audit_candidate",
+      "promotedClientSlug": "",
+      "lastSeenAt": "2026-05-14T21:59:03.744Z"
+    },
+    {
+      "entityKey": "domain_nuroofing.com.au",
+      "status": "queued_for_audit",
+      "name": "Nuroofing services pty ltd",
+      "city": "Sydney",
+      "niche": "roofing",
+      "phone": "0412650007",
+      "website": "http://www.nuroofing.com.au/",
+      "googleMapsUrl": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "recommendedAction": "audit_candidate",
+      "promotedClientSlug": "",
+      "lastSeenAt": "2026-05-14T21:59:03.744Z"
+    },
+    {
+      "entityKey": "domain_sydneyroofingspecialists.com",
+      "status": "queued_for_audit",
+      "name": "Sydney Roofing Specialists",
+      "city": "Sydney",
+      "niche": "roofing",
+      "phone": "0427364223",
+      "website": "http://www.sydneyroofingspecialists.com/",
+      "googleMapsUrl": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "recommendedAction": "audit_candidate",
+      "promotedClientSlug": "",
+      "lastSeenAt": "2026-05-14T21:59:03.744Z"
+    },
+    {
+      "entityKey": "domain_roofingdepot.com.au",
+      "status": "graded",
       "name": "Roofing Depot",
       "city": "Gold Coast",
       "niche": "roofing",
@@ -136,7 +181,7 @@
     },
     {
       "entityKey": "domain_roofrepairgoldcoast.com",
-      "status": "queued_for_audit",
+      "status": "graded",
       "name": "Roof Repair Gold Coast",
       "city": "Gold Coast",
       "niche": "roofing",
@@ -270,21 +315,6 @@
       "lastSeenAt": "2026-05-14T08:30:08.789Z"
     },
     {
-      "entityKey": "domain_sydneyroofingspecialists.com",
-      "status": "skipped",
-      "name": "Sydney Roofing Specialists",
-      "city": "Sydney",
-      "niche": "roofer",
-      "phone": "0427364223",
-      "website": "http://www.sydneyroofingspecialists.com/",
-      "googleMapsUrl": "",
-      "websiteStatus": "independent_http_site",
-      "discoveryScore": 54,
-      "recommendedAction": "skip",
-      "promotedClientSlug": "",
-      "lastSeenAt": "2026-05-14T08:30:08.789Z"
-    },
-    {
       "entityKey": "domain_melbourneroofrepair.com.au",
       "status": "skipped",
       "name": "Melbourne Roof Repairs",
@@ -298,36 +328,6 @@
       "recommendedAction": "skip",
       "promotedClientSlug": "",
       "lastSeenAt": "2026-05-14T08:23:17.244Z"
-    },
-    {
-      "entityKey": "domain_roofrite.com.au",
-      "status": "skipped",
-      "name": "Roofrite - Melbourne’s Roof Plumbing Experts",
-      "city": "Melbourne",
-      "niche": "roofing",
-      "phone": "(03)94998059",
-      "website": "http://www.roofrite.com.au/",
-      "googleMapsUrl": "",
-      "websiteStatus": "independent_http_site",
-      "discoveryScore": 54,
-      "recommendedAction": "skip",
-      "promotedClientSlug": "",
-      "lastSeenAt": "2026-05-14T05:49:25.615Z"
-    },
-    {
-      "entityKey": "domain_brisbaneroofrestorations.net.au",
-      "status": "skipped",
-      "name": "Hillhouse Roof Rescue / Restoration",
-      "city": "Redland Brisbane",
-      "niche": "roofer",
-      "phone": "0404430463",
-      "website": "http://www.brisbaneroofrestorations.net.au/",
-      "googleMapsUrl": "",
-      "websiteStatus": "independent_http_site",
-      "discoveryScore": 54,
-      "recommendedAction": "skip",
-      "promotedClientSlug": "",
-      "lastSeenAt": "2026-05-14T05:45:32.594Z"
     }
   ],
   "nextActions": [

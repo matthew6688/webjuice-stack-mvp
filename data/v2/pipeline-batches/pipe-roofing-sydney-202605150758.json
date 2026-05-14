@@ -1,0 +1,42 @@
+{
+  "batch_id": "pipe-roofing-sydney-202605150758",
+  "title": "[Pipeline] roofing / sydney / 5 leads — 2026-05-14 21:58 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504603733051310170",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504603733051310170",
+  "initial_message_id": "1504603733051310170",
+  "niche": "roofing",
+  "city": "sydney",
+  "count": 5,
+  "runFlags": {
+    "refetch": true,
+    "with_reviews": true,
+    "with_gbp_extras": false,
+    "skip_gbp": true,
+    "precreate_threads_all_grades": false,
+    "outreach": false
+  },
+  "started_at": "2026-05-14T21:58:04.269Z",
+  "finished_at": "2026-05-14T21:59:36.573Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Discovery (docker scraper)",
+      "status": "ok",
+      "summary": "Docker scraper: 15 leads\nLLM judge: human-gate (conf 0.82)\n\n抓到的商家:\n- Nuroofing services pty ltd\n- Sydney Roofing and Gutters\n- Sydney Local Roofers\n- Sydney Roofers\n- JSJ Roofing - Alexandria\n- Sydney Roofers\n- All Roofing Services Pty Ltd\n- Sydney Roofers\n- Auscity Roofing\n- Sydney Local Roofers\n- Sydney Roofing Specialists\n- Roofer Near Me - Roof Repair Sydney\n- Sydney Roofing Company Pty Ltd\n- Sydney Local Roofers\n- Hookys Roofing | Professional Roofing Service Sydney",
+      "at": "2026-05-14T21:59:34.751Z",
+      "message_id": "1504604112472506530",
+      "fallback": null
+    },
+    {
+      "stage": "🏁 批次完成",
+      "status": "ok",
+      "summary": "15 entities ingested · cheap-audit queue 处理中\n\n→ 每个 entity 跑 cheap-audit + LLM niche judge + predict grade\n→ predict-A/B 立刻 detail audit · predict-C 进 cold backlog · predict-D archive\n→ 看 #website-leads 各 thread 进度",
+      "at": "2026-05-14T21:59:35.838Z",
+      "message_id": "1504604116859748403",
+      "fallback": null
+    }
+  ],
+  "issues": [],
+  "leads": []
+}

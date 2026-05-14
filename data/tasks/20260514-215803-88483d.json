@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-215803-88483d",
+  "created_at": "2026-05-14T21:58:03.050Z",
+  "updated_at": "2026-05-14T21:58:04.300Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cycle-23 e2e · sydney roofing",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-23 e2e · 排除式筛选验证",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:pipeline-batch-start",
+    "args": [
+      "--niche",
+      "roofing",
+      "--city",
+      "sydney",
+      "--count",
+      "5"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1021,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:58:03.270Z",
+      "step": "cli.spawning",
+      "detail": "pl:pipeline-batch-start --niche roofing --city sydney --count 5"
+    },
+    {
+      "at": "2026-05-14T21:58:04.297Z",
+      "step": "cli.stream",
+      "detail": "6/1504603733051310170\",\n  \"state_path\": \"/Users/matthew/Developer/google-map-website-v3/data/v2/pipeline-batches/pipe-roofing-sydney-202605150758.json\",\n  \"scrape_chained\": \"20260514-215804-b4b8a5\"\n}"
+    },
+    {
+      "at": "2026-05-14T21:58:04.300Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1021ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

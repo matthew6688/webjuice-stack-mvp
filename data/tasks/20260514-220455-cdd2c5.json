@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220455-cdd2c5",
+  "created_at": "2026-05-14T22:04:55.179Z",
+  "updated_at": "2026-05-14T22:04:56.671Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_jsjroofing.com.au (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_jsjroofing.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1271,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:04:55.397Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_jsjroofing.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T22:04:56.670Z",
+      "step": "cli.stream",
+      "detail": "jsjroofing.com.au\",\n      \"slug\": \"jsj-roofing-alexandria\",\n      \"md\": \"clients/jsj-roofing-alexandria/v2/master.md\",\n      \"html\": \"clients/jsj-roofing-alexandria/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:04:56.671Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1271ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

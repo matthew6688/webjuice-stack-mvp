@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-215804-b4b8a5",
+  "created_at": "2026-05-14T21:58:04.270Z",
+  "updated_at": "2026-05-14T21:59:36.595Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504603733051310170",
+    "author": "pl:pipeline-batch-start auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: gosom scrape · niche=roofing · city=sydney · count=5 · batch=pipe-roofing-sydney-202605150758",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:scrape-docker",
+    "args": [
+      "--niche",
+      "roofing",
+      "--city",
+      "sydney",
+      "--count",
+      "5",
+      "--batch-id",
+      "pipe-roofing-sydney-202605150758"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 91733,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T21:58:04.860Z",
+      "step": "cli.spawning",
+      "detail": "pl:scrape-docker --niche roofing --city sydney --count 5 --batch-id pipe-roofing-sydney-202605150758"
+    },
+    {
+      "at": "2026-05-14T21:58:09.969Z",
+      "step": "cli.stream",
+      "detail": "pipe-roofing-sydney-202605150758\n\ngeocode sydney → -33.8622503,151.207684 (cache) · Sydney NSW, Australia\njob_id=3533fa2d-90c6-4f2f-be59-d5fbafbbf61e\npolling job 3533fa2d-90c6-4f2f-be59-d5fbafbbf61e ."
+    },
+    {
+      "at": "2026-05-14T21:58:15.161Z",
+      "step": "cli.stream",
+      "detail": "raper/webdata/3533fa2d-90c6-4f2f-be59-d5fbafbbf61e.csv\nwrote 15 leads → /Users/matthew/Developer/google-map-website-v3/data/maps-scraper/runs/roofing-sydney-2026-05-14T21-58-05-017Z/results.maps.json"
+    },
+    {
+      "at": "2026-05-14T21:59:03.769Z",
+      "step": "cli.stream",
+      "detail": "\"discoveryScore\": 34,\n      \"recommendedAction\": \"audit_candidate\",\n      \"phone\": \"0435848688\",\n      \"website\": \"https://jsjroofing.com.au/\",\n      \"rating\": 5,\n      \"reviewCount\": 0\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T21:59:14.814Z",
+      "step": "cli.stream",
+      "detail": "iche-relevance LLM verdict: true (codex_cli cached) · 企业名称明确包含 Metal Roofing，属于 roofing 行业。\n[cheap-audit-queue] domain_sydneyroofingspecialists.com · EXCLUDED L3 · 0 reviews < roofing 阈值 5 (业务太小/刚开业)"
+    },
+    {
+      "at": "2026-05-14T21:59:20.828Z",
+      "step": "cli.stream",
+      "detail": "· niche-relevance LLM verdict: true (codex_cli cached) · 企业名称明确包含 Metal Roofing，属于 roofing 行业。\n[cheap-audit-queue] domain_sydneylocalroofers.com.au · EXCLUDED L3 · 0 reviews < roofing 阈值 5 (业务太小/刚开业)"
+    },
+    {
+      "at": "2026-05-14T21:59:26.851Z",
+      "step": "cli.stream",
+      "detail": ".au · niche-relevance LLM verdict: true (codex_cli cached) · 企业名称明确包含 Metal Roofing，属于 roofing 行业。\n[cheap-audit-queue] domain_auscityroofing.com.au · EXCLUDED L3 · 0 reviews < roofing 阈值 5 (业务太小/刚开业)"
+    },
+    {
+      "at": "2026-05-14T21:59:32.862Z",
+      "step": "cli.stream",
+      "detail": "niche-relevance LLM verdict: true (codex_cli cached) · 企业名称明确包含 Metal Roofing，属于 roofing 行业。\n[cheap-audit-queue] domain_sydneyroofingcompany.com.au · EXCLUDED L3 · 0 reviews < roofing 阈值 5 (业务太小/刚开业)"
+    },
+    {
+      "at": "2026-05-14T21:59:36.592Z",
+      "step": "cli.stream",
+      "detail": "es, but 2 addresses look wrong-niche or unverifiable and categories are blank.\",\"suspicious_picks\":[\"43 Ridge St / North Sydney Council Ridge St Gallery\",\"E C Constructions\"],\"provider\":\"codex_cli\"}}"
+    },
+    {
+      "at": "2026-05-14T21:59:36.595Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=91733ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504603733051310170",
+    "status_message_id": null
+  }
+}

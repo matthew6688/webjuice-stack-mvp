@@ -1,0 +1,986 @@
+{
+  "generatedAt": "2026-05-14T22:05:30.220Z",
+  "entity_input": {
+    "entityKey": "domain_sydneyroofingspecialists.com",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Sydney Roofing Specialists",
+      "category": "",
+      "categories": [],
+      "address": "55 Day St, Marrickville NSW 2204",
+      "city": "Sydney",
+      "niche": "roofing",
+      "phone": "0427364223",
+      "website": "http://www.sydneyroofingspecialists.com/",
+      "google_maps_url": "",
+      "rating": 5,
+      "review_count": 0,
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "recommendedAction": "audit_candidate",
+      "sourceQuery": "roofing in sydney",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "batch_id": "pipe-roofing-sydney-202605150758",
+      "discovery_rank": null,
+      "google_places_provider": null
+    },
+    "identifiers": {
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x466bb70a96bfb733:0x821a737f5ce902f5",
+      "websiteDomain": "sydneyroofingspecialists.com",
+      "phoneDigits": "0427364223"
+    }
+  },
+  "fetch_summary": {
+    "url": "http://www.sydneyroofingspecialists.com/",
+    "markdown_length": 173
+  },
+  "tech_stack": {
+    "ok": true,
+    "cms": null,
+    "cms_alternatives": [],
+    "analytics": [],
+    "pixels": [],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": null,
+    "sophistication_score": 0,
+    "has_paid_ads_evidence": false,
+    "has_measurement": false,
+    "final_url": "http://www.sydneyroofingspecialists.com/"
+  },
+  "sitemap_analysis": {
+    "ok": true,
+    "has_sitemap": true,
+    "has_robots": true,
+    "sitemap_url": "https://sydneyroofingspecialists.com/wp-sitemap.xml",
+    "total_urls": 5,
+    "urls_by_pattern": {
+      "inner_page": 3,
+      "home": 1,
+      "contact": 1
+    },
+    "last_mod_summary": {
+      "newest": "2023-12-04",
+      "oldest": "2022-08-10",
+      "distribution_by_year": {
+        "2022": 1,
+        "2023": 2
+      }
+    },
+    "redirect_plan": [
+      {
+        "from": "/uncategorized/hello-world/",
+        "suggested_to": "/uncategorized/hello-world/",
+        "kind": "inner_page"
+      },
+      {
+        "from": "/",
+        "suggested_to": "/",
+        "kind": "home"
+      },
+      {
+        "from": "/quote/",
+        "suggested_to": "/quote/",
+        "kind": "contact"
+      },
+      {
+        "from": "/category/uncategorized/",
+        "suggested_to": "/category/uncategorized/",
+        "kind": "inner_page"
+      },
+      {
+        "from": "/author/admin/",
+        "suggested_to": "/author/admin/",
+        "kind": "inner_page"
+      }
+    ],
+    "migration_complexity": "low",
+    "seo_structure": {
+      "service_page_count": 0,
+      "area_page_count": 0,
+      "service_area_page_count": 0,
+      "service_page_samples": [],
+      "area_page_samples": [],
+      "service_area_page_samples": [],
+      "long_tail_coverage": "none"
+    },
+    "robots_excerpt": "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n\n# START WPFORMS BLOCK\n# ---------------------------\nUser-agent: *\nDisallow: https://sydneyroofingspecialists.com/wp-content/uploads/wpforms/\n# ---------------------------\n# END WPFORMS BLOCK\n\nSitemap: https://sydneyroofingspecialists.com/wp-sitemap.xml\n"
+  },
+  "activity": {
+    "ok": true,
+    "base_url": "http://www.sydneyroofingspecialists.com/",
+    "last_modified_header": null,
+    "days_since_last_modified": null,
+    "newest_sitemap_lastmod": "2023-12-04",
+    "days_since_newest_sitemap": 893,
+    "blog_section_present": false,
+    "blog_post_count": 0,
+    "blog_newest_lastmod": null,
+    "days_since_newest_blog": null,
+    "blog_freshness": "unknown",
+    "social_links": {},
+    "overall_freshness": "dormant",
+    "days_since_any_update": 893
+  },
+  "ai_geo": {
+    "ok": true,
+    "dimension_score": 0,
+    "rules": [
+      {
+        "id": "llms_txt_present",
+        "max": 5,
+        "hit": false,
+        "rationale": "no /llms.txt at standard path"
+      },
+      {
+        "id": "ai_bot_robots_policy",
+        "max": 5,
+        "hit": false,
+        "rationale": "robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)"
+      },
+      {
+        "id": "localbusiness_schema",
+        "max": 15,
+        "hit": false,
+        "rationale": "no LocalBusiness or Organization JSON-LD"
+      },
+      {
+        "id": "service_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no Service JSON-LD"
+      },
+      {
+        "id": "faqpage_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)"
+      },
+      {
+        "id": "aggregaterating_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no AggregateRating JSON-LD (★ rating not shown in search snippets)"
+      },
+      {
+        "id": "breadcrumb_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no BreadcrumbList JSON-LD"
+      },
+      {
+        "id": "semantic_landmarks",
+        "max": 10,
+        "hit": false,
+        "rationale": "1 semantic landmarks present: <section"
+      },
+      {
+        "id": "faq_qa_pattern",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 question-style heading(s) found (Q&A format helps AI extraction)"
+      },
+      {
+        "id": "eeat_business_credentials",
+        "max": 10,
+        "hit": false,
+        "rationale": "only 0/4 credentials found — need ≥2 of: ABN, license/QBCC, years-in-business, insurance"
+      },
+      {
+        "id": "eeat_warranty_trust",
+        "max": 5,
+        "hit": false,
+        "rationale": "no warranty/guarantee in copy"
+      },
+      {
+        "id": "jsonld_at_least_one",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 JSON-LD block(s) detected on page"
+      }
+    ],
+    "summary": "AI agent / ChatGPT 几乎无法准确引用此网站 — 在生成式搜索时代等于隐身",
+    "detail": {
+      "llms_txt": false,
+      "ai_bot_mentions": [],
+      "jsonld_block_count": 0,
+      "jsonld_types": [],
+      "semantic_landmarks": [
+        "<section"
+      ],
+      "faq_q_headings": 0,
+      "eeat": {
+        "has_abn": false,
+        "has_qbcc": false,
+        "has_license": false,
+        "has_years": false,
+        "has_insurance": false,
+        "has_warranty": false
+      }
+    }
+  },
+  "pagespeed": {
+    "ok": true,
+    "results": {
+      "mobile": {
+        "strategy": "mobile",
+        "scores": {
+          "performance": 64,
+          "accessibility": 88,
+          "best_practices": 81,
+          "seo": 92
+        },
+        "lab_metrics": {
+          "lcp_ms": 7957.703773903751,
+          "fcp_ms": 3335.207687846018,
+          "cls": 0,
+          "tbt_ms": 91,
+          "tti_ms": 8565.669883745999,
+          "speed_index_ms": 5946.428337000163,
+          "transfer_size_bytes": 1189398
+        },
+        "crux_overall": null,
+        "crux_field_data": {
+          "lcp_p75_ms": null,
+          "fcp_p75_ms": null,
+          "cls_p75": null,
+          "inp_p75_ms": null,
+          "ttfb_p75_ms": null
+        },
+        "crux_origin_overall": null,
+        "opportunities": [
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 900,
+            "savings_bytes": 162251
+          },
+          {
+            "id": "redirects",
+            "title": "Avoid multiple page redirects",
+            "savings_ms": 630,
+            "savings_bytes": null
+          }
+        ]
+      },
+      "desktop": {
+        "strategy": "desktop",
+        "scores": {
+          "performance": 77,
+          "accessibility": 88,
+          "best_practices": 81,
+          "seo": 92
+        },
+        "lab_metrics": {
+          "lcp_ms": 1900.0072496426508,
+          "fcp_ms": 915.210554846452,
+          "cls": 0.000637,
+          "tbt_ms": 247.5000000000001,
+          "tti_ms": 1936.007249642651,
+          "speed_index_ms": 2100.761100613567,
+          "transfer_size_bytes": 1189427
+        },
+        "crux_overall": null,
+        "crux_field_data": {
+          "lcp_p75_ms": null,
+          "fcp_p75_ms": null,
+          "cls_p75": null,
+          "inp_p75_ms": null,
+          "ttfb_p75_ms": null
+        },
+        "crux_origin_overall": null,
+        "opportunities": [
+          {
+            "id": "redirects",
+            "title": "Avoid multiple page redirects",
+            "savings_ms": 190,
+            "savings_bytes": null
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "savings_ms": 180,
+            "savings_bytes": 162799
+          },
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
+            "savings_ms": 0,
+            "savings_bytes": 11873
+          }
+        ]
+      }
+    },
+    "failures": [],
+    "latency_ms": 48413
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 0,
+    "contact_form_count": 0,
+    "forms": [],
+    "captchas_detected": [],
+    "has_any_captcha": false,
+    "has_any_anti_spam": false,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "未发现联系/报价表单 — 客户只能通过电话或邮件触达，转化路径单一"
+      },
+      {
+        "severity": "medium",
+        "text": "表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "sydneyroofingspecialists.com",
+    "is_au_domain": false,
+    "domain_age_days": 15109,
+    "domain_age_years": 41,
+    "domain_age_source": "whois_creation_date",
+    "domain_created_iso": "1985-01-01T00:00:00.000Z",
+    "au_last_modified_iso": null,
+    "registrar": null,
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "fetch failed"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1 include:_spf.google.com ~all",
+      "dmarc_present": false,
+      "dmarc_record": null,
+      "dmarc_policy": null,
+      "dkim_selectors_found": [
+        "s1",
+        "s2"
+      ],
+      "posture": "partial"
+    }
+  },
+  "image_optimization": {
+    "ok": true,
+    "total_images": 0,
+    "picture_elements": 0,
+    "optimized_count": 0,
+    "optimized_pct": 0,
+    "formats": {
+      "webp": 0,
+      "avif": 0,
+      "jpg": 0,
+      "png": 0,
+      "svg": 0,
+      "gif": 0,
+      "other_image_path": 0,
+      "other": 0
+    },
+    "has_srcset_pct": 0,
+    "lazy_load_pct": 0,
+    "alt_present_pct": 0,
+    "alt_nonempty_pct": 0,
+    "dimensions_pct": 0,
+    "verdict": "no_images",
+    "sample_unoptimized": [],
+    "issues": []
+  },
+  "trust_signals": {
+    "ok": true,
+    "industry_label": "AU 屋顶服务",
+    "score": 0,
+    "signals": [
+      {
+        "id": "qbcc_license",
+        "name": "QBCC 执照号",
+        "present": false,
+        "weight": 25,
+        "required_by_law": true,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "abn",
+        "name": "ABN",
+        "present": false,
+        "weight": 15,
+        "required_by_law": true,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "public_liability",
+        "name": "公共责任险",
+        "present": false,
+        "weight": 15,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "years_in_business",
+        "name": "从业年限",
+        "present": false,
+        "weight": 10,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "whs_workers_comp",
+        "name": "工伤 / WHS 合规",
+        "present": false,
+        "weight": 10,
+        "required_by_law": true,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "industry_membership",
+        "name": "行业协会会员",
+        "present": false,
+        "weight": 10,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "warranty_guarantee",
+        "name": "保修 / 工艺保证",
+        "present": false,
+        "weight": 10,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "free_quote",
+        "name": "免费报价 / 上门估价",
+        "present": false,
+        "weight": 5,
+        "required_by_law": false,
+        "evidence_excerpt": null
+      }
+    ],
+    "required_missing": [
+      "QBCC 执照号",
+      "ABN",
+      "工伤 / WHS 合规"
+    ],
+    "notes": [
+      "客户网站缺少 3 个法律 / 行业要求的信任凭证：QBCC 执照号、ABN、工伤 / WHS 合规。QLD 屋顶服务由 QBCC 监管，客户在花钱前会查这些；缺失等于直接给同行让单。"
+    ]
+  },
+  "third_party_weight": {
+    "ok": true,
+    "primary_domain": "sydneyroofingspecialists.com",
+    "total_requests": 2,
+    "first_party_count": 1,
+    "first_party_bytes": 0,
+    "third_party_count": 1,
+    "third_party_bytes": 0,
+    "third_party_pct_of_bytes": null,
+    "tracker_count": 0,
+    "tracker_bytes": 0,
+    "tracker_summary": [],
+    "heaviest_third_party": [
+      {
+        "url": "https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CRoboto:400,700",
+        "hostname": "fonts.googleapis.com",
+        "domain": "googleapis.com",
+        "first_party": false,
+        "resource_type": "stylesheet",
+        "size_bytes": 0,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      }
+    ]
+  },
+  "detailed_audit": {
+    "business_id": "domain_sydneyroofingspecialists.com",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-14T22:05:30.220Z",
+    "audit_score": 23,
+    "dimension_scores": {
+      "gbp": 20,
+      "technical": 30,
+      "ux_conversion": 0,
+      "content": 10,
+      "seo": 54,
+      "visual": 50
+    },
+    "decision": "strong_redesign",
+    "qualification_reason": "audit_score=23 → strong_redesign · weakest: ux_conversion 0, content 10 · fired: no_https, no_visible_cta_or_phone · 3 critical issues",
+    "hard_triggers": [
+      "no_https",
+      "no_visible_cta_or_phone"
+    ],
+    "issues": {
+      "critical": [
+        {
+          "id": "https_enabled",
+          "rationale": "http only",
+          "max": 20,
+          "plain_language": "你的网站没有 HTTPS — 浏览器会在地址栏显示「不安全」标记，部分浏览器（Chrome / Firefox）甚至会弹出全屏警告挡住页面。",
+          "customer_impact": "Google 早在 2018 年起把 HTTPS 列为搜索排名因素，没有 HTTPS 直接拉低自然搜索可见度；且超过 80% 的访客看到「不安全」标识会立刻关掉。对你这种 0 条 Google 评价积累起来的口碑来说，访客在网址栏就被劝退，等于浪费了所有 GBP 流量。"
+        },
+        {
+          "id": "above_fold_cta_within_5s",
+          "rationale": "no CTA keyword in first 1500 chars",
+          "max": 30,
+          "plain_language": "客户打开你的网站后，前 5 秒内（一屏之内）看不到任何明显的「联系我们 / 报价 / 立即拨打」按钮。",
+          "customer_impact": "行业研究：移动用户做决策的前 8 秒决定 70% 的留存。看不到 CTA = 等于没办法转化。你的 0 条好评在堆积信任，但客户找不到下一步该点哪。"
+        },
+        {
+          "id": "phone_visible_above_fold",
+          "rationale": "phone hidden below fold or missing",
+          "max": 20,
+          "plain_language": "电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。",
+          "customer_impact": "本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。"
+        }
+      ],
+      "major": [
+        {
+          "id": "review_volume_vs_peers",
+          "rationale": "0 reviews",
+          "max": 25,
+          "plain_language": "你的 Google 评价数量低于同行平均水平。",
+          "customer_impact": "本地搜索排名信号之一就是评价数量；不光是分数，连\"有多少条\"都算。短期可以做的：每个完工的客户群发一条「点评一下吧」的 SMS。"
+        },
+        {
+          "id": "click_to_call_link",
+          "rationale": "no tel: link",
+          "max": 10,
+          "plain_language": "电话号码不是 click-to-call 链接（手机上点击不会自动拨号）。",
+          "customer_impact": "移动客户必须复制号码再切到拨号界面再粘贴 — 每多一步操作就流失一批客户。修复成本只是把 `<a href=\"tel:0712345678\">` 写对，但能立刻拉高电话转化率。"
+        },
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='# 403 - Forbidden' contains-name=false contains-niche=false",
+          "max": 20,
+          "plain_language": "你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Sydney Roofing Specialists - roofing Sydney」，但目前是泛泛一句）。",
+          "customer_impact": "Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。"
+        },
+        {
+          "id": "service_copy_specific",
+          "rationale": "0 service-related verbs detected",
+          "max": 20,
+          "plain_language": "网站文案里没有具体说清楚你做哪些服务（比如 metal roofing / tile restoration / gutter / skylight 等专项），只是泛泛说「我们做屋顶」。",
+          "customer_impact": "客户搜的是具体问题（「漏水维修」「屋顶翻新报价」），网站没有匹配的具体服务文字，搜索引擎匹配不上你 + 客户进来也判断不了你做不做他要的活儿。"
+        },
+        {
+          "id": "trust_signals_present",
+          "rationale": "0 trust-keyword mentions",
+          "max": 20,
+          "plain_language": "网站上没有显眼地写出执照号 / ABN / 保险信息 / 从业年限 / 行业证书。",
+          "customer_impact": "澳洲 QLD 的屋顶服务必须有 QBCC 执照才能合法开工；客户在花几千几万块前一定会查这些。你网站上没标 = 客户要么打电话来问要么直接选下一家更透明的。"
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20,
+          "plain_language": "网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI 知道你是本地企业、地址、电话、营业时间的标准格式）。",
+          "customer_impact": "Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。"
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5,
+          "plain_language": "GBP 上没有完整的营业时间。",
+          "customer_impact": "客户搜「现在还在营业的 roofer」时你不会被显示。"
+        },
+        {
+          "id": "image_count",
+          "rationale": "0 images",
+          "max": 10,
+          "plain_language": "GBP 上图片数量低于行业建议（一般 ≥ 10 张完工图 + 团队照 + 设备照）。",
+          "customer_impact": "图片数量直接影响 GBP 在地图卡片里的展示效果。"
+        },
+        {
+          "id": "has_business_description",
+          "rationale": "no description",
+          "max": 10,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "no_console_errors",
+          "rationale": "1 console errors",
+          "max": 5,
+          "plain_language": "你的网站在浏览器控制台里有报错。访客看不到这些错误，但报错的脚本通常就是导致按钮点不动 / 表单提交不了 / 图片加载失败的原因。",
+          "customer_impact": "一个失败的 click-to-call 按钮等于这次访问完全白来。每月成百上千次访问，哪怕只有 1% 受影响也是几十次失之交臂的咨询。"
+        },
+        {
+          "id": "favicon_and_meta",
+          "rationale": "favicon: no, meta: no",
+          "max": 5,
+          "plain_language": "你的网站缺少 favicon（浏览器标签页上的小图标）或基本的 meta 标签。",
+          "customer_impact": "客户在多 tab 浏览时找不到你的网站；Facebook / WhatsApp 分享时缩略图会拉错图甚至没有图，链接显得不专业。"
+        },
+        {
+          "id": "quote_or_booking_form",
+          "rationale": "no form",
+          "max": 20,
+          "plain_language": "你的网站没有 quote / booking 表单 — 客户只能打电话或发邮件。",
+          "customer_impact": "工作时间外（晚上 / 周末）的访客没办法联系你，只能等。家庭装修客户经常在晚上做决策；你正在错过非营业时间的转化窗口。"
+        },
+        {
+          "id": "has_gallery",
+          "rationale": "no gallery",
+          "max": 5,
+          "plain_language": "没有项目作品集 / before-after 图库。",
+          "customer_impact": "屋顶 / renovation 行业，「眼见为实」是关键决策因素之一。没有作品集 = 客户没法判断你的工艺水准 = 比起有图库的同行落后一截。"
+        },
+        {
+          "id": "has_testimonials",
+          "rationale": "no testimonials",
+          "max": 5,
+          "plain_language": "网站上没有客户评价 / 推荐 — 即使你 Google 上有 0 条 5★ 评价。",
+          "customer_impact": "客户进了你的网站不会回过头去看 Google Maps；网站上没有评价就等于你的口碑资产没被网站这块阵地利用。把 5-8 条 5★ 真实 quote 直接放上去，转化率提升 30-50% 是行业基准。"
+        },
+        {
+          "id": "localized_content",
+          "rationale": "no local mention",
+          "max": 15,
+          "plain_language": "网站文案没明确提到服务的城市 / 区域（比如 Brisbane / Sunshine Coast / Lawnton 等具体地名）。",
+          "customer_impact": "本地搜索 SEO 的核心信号之一就是地理关键词。「Sydney roofing」这类搜索流量直接跟你网站里的本地化文案挂钩；不写具体地区 = 把流量让给写得清楚的同行。"
+        },
+        {
+          "id": "evidence_of_recent_update",
+          "rationale": "no recent year (≤ 1 year ago)",
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "title_meta_present",
+          "rationale": "title=yes meta=no",
+          "max": 25,
+          "plain_language": "页面缺少 SEO 用的 title 标签或 meta description。",
+          "customer_impact": "Google 搜索结果里显示的就是这两块。没写 = Google 自己截一段（往往不重点），客户看到不是吸引人的描述就不会点进来。"
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 20,
+        "earned": 20,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: http://www.sydneyroofingspecialists.com/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "rationale": "0 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★5"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "0 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "no description"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 30,
+        "earned": 30,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "http only"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "form submit not tested"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "1 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "favicon: no, meta: no"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 0,
+        "earned": 0,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 0,
+            "max": 30,
+            "hit": false,
+            "rationale": "no CTA keyword in first 1500 chars"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "phone hidden below fold or missing"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "no tel: link"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no form"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no gallery"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no testimonials"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 10,
+        "earned": 10,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='# 403 - Forbidden' contains-name=false contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "0 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "0 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no local mention"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no recent year (≤ 1 year ago)"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 54,
+        "earned": 54,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 14,
+            "max": 25,
+            "hit": false,
+            "rationale": "title=yes meta=no"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "1 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no LocalBusiness JSON-LD"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "0 images, 100% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

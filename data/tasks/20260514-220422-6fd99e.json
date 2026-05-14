@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220422-6fd99e",
+  "created_at": "2026-05-14T22:04:22.672Z",
+  "updated_at": "2026-05-14T22:04:28.000Z",
+  "kind": "audit",
+  "status": "running",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_sydneyroofingcompany.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_sydneyroofingcompany.com.au"
+    ],
+    "target_entity_key": "domain_sydneyroofingcompany.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:04:22.885Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_sydneyroofingcompany.com.au"
+    },
+    {
+      "at": "2026-05-14T22:04:28.000Z",
+      "step": "cli.stream",
+      "detail": "(concurrent_leads=1)\n\n══════════ domain_sydneyroofingcompany.com.au ══════════\n  [thread] reusing 1504605316422045728\n  [stage 1/4] detailed audit — fetching https://www.sydneyroofingcompany.com.au/"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

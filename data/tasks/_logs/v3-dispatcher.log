@@ -2176,3 +2176,133 @@
 [2026-05-14T21:35:37.763Z] postThreadReply fell back to bot-log null
 [2026-05-14T21:36:22.080Z] done 20260514-213232-2cc875 (229267ms exit=0)
 [2026-05-14T21:38:23.963Z] done 20260514-213414-27808a (248304ms exit=0)
+[2026-05-14T21:57:58.888Z] SIGTERM
+[2026-05-14T21:57:59.003Z] dispatcher starting · tick= 60000 ms · timeout= 300000 ms
+[2026-05-14T21:57:59.004Z] fs.watch active on /Users/matthew/Developer/google-map-website-v3/data/tasks
+[2026-05-14T21:58:03.265Z] fs.watch fired · maybe-pending 20260514-215803-88483d
+[2026-05-14T21:58:03.269Z] claim 20260514-215803-88483d → running · cli= pl:pipeline-batch-start args= --niche roofing --city sydney --count 5
+[2026-05-14T21:58:04.299Z] done 20260514-215803-88483d (1021ms exit=0)
+[2026-05-14T21:58:04.484Z] fs.watch fired · maybe-pending 20260514-215804-b4b8a5
+[2026-05-14T21:58:04.485Z] claim 20260514-215804-b4b8a5 → running · cli= pl:scrape-docker args= --niche roofing --city sydney --count 5 --batch-id pipe-roofing-sydney-202605150758
+[2026-05-14T21:58:04.780Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:04.024Z] fs.watch fired · maybe-pending 20260514-215903-2fb6d3
+[2026-05-14T21:59:04.027Z] claim 20260514-215903-2fb6d3 → running · cli= leads:build-master-md args= --entity-key domain_nuroofing.com.au --theme report --html
+[2026-05-14T21:59:04.033Z] fs.watch fired · maybe-pending 20260514-215903-76665c
+[2026-05-14T21:59:04.036Z] claim 20260514-215903-76665c → running · cli= leads:build-master-md args= --entity-key domain_allroofingservices.com.au --theme report --html
+[2026-05-14T21:59:04.038Z] fs.watch fired · maybe-pending 20260514-215903-72f3d6
+[2026-05-14T21:59:04.039Z] claim 20260514-215903-72f3d6 → running · cli= leads:build-master-md args= --entity-key domain_sydneyroofers.net.au --theme report --html
+[2026-05-14T21:59:04.041Z] fs.watch fired · maybe-pending 20260514-215903-5bfabe
+[2026-05-14T21:59:04.042Z] claim 20260514-215903-5bfabe → running · cli= leads:build-master-md args= --entity-key domain_sydneyroofingspecialists.com --theme report --html
+[2026-05-14T21:59:04.044Z] fs.watch fired · maybe-pending 20260514-215903-2558b4
+[2026-05-14T21:59:04.044Z] claim 20260514-215903-2558b4 → running · cli= leads:build-master-md args= --entity-key domain_sydneyroofingandgutters.com.au --theme report --html
+[2026-05-14T21:59:04.046Z] fs.watch fired · maybe-pending 20260514-215903-f14e08
+[2026-05-14T21:59:04.047Z] claim 20260514-215903-f14e08 → running · cli= leads:build-master-md args= --entity-key domain_sydneylocalroofers.com.au --theme report --html
+[2026-05-14T21:59:04.049Z] fs.watch fired · maybe-pending 20260514-215903-a38d4c
+[2026-05-14T21:59:04.049Z] claim 20260514-215903-a38d4c → running · cli= leads:build-master-md args= --entity-key domain_jsjroofing.com.au --theme report --html
+[2026-05-14T21:59:04.050Z] fs.watch fired · maybe-pending 20260514-215903-cdfb81
+[2026-05-14T21:59:04.051Z] claim 20260514-215903-cdfb81 → running · cli= leads:build-master-md args= --entity-key domain_auscityroofing.com.au --theme report --html
+[2026-05-14T21:59:04.052Z] fs.watch fired · maybe-pending 20260514-215903-bf89a7
+[2026-05-14T21:59:04.053Z] claim 20260514-215903-bf89a7 → running · cli= leads:build-master-md args= --entity-key domain_roofernearme.com.au --theme report --html
+[2026-05-14T21:59:04.054Z] fs.watch fired · maybe-pending 20260514-215903-0e5da6
+[2026-05-14T21:59:04.056Z] claim 20260514-215903-0e5da6 → running · cli= leads:build-master-md args= --entity-key domain_sydneyroofingcompany.com.au --theme report --html
+[2026-05-14T21:59:04.057Z] fs.watch fired · maybe-pending 20260514-215903-353930
+[2026-05-14T21:59:04.058Z] claim 20260514-215903-353930 → running · cli= leads:build-master-md args= --entity-key domain_hookysroofing.sydney --theme report --html
+[2026-05-14T21:59:04.483Z] done 20260514-215903-2fb6d3 (450ms exit=0)
+[2026-05-14T21:59:04.908Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:04.944Z] done 20260514-215903-5bfabe (900ms exit=0)
+[2026-05-14T21:59:04.946Z] done 20260514-215903-f14e08 (896ms exit=0)
+[2026-05-14T21:59:04.947Z] done 20260514-215903-76665c (909ms exit=0)
+[2026-05-14T21:59:04.950Z] done 20260514-215903-72f3d6 (909ms exit=0)
+[2026-05-14T21:59:04.957Z] done 20260514-215903-0e5da6 (900ms exit=0)
+[2026-05-14T21:59:04.959Z] done 20260514-215903-a38d4c (908ms exit=0)
+[2026-05-14T21:59:04.965Z] done 20260514-215903-bf89a7 (911ms exit=0)
+[2026-05-14T21:59:04.977Z] done 20260514-215903-2558b4 (931ms exit=0)
+[2026-05-14T21:59:04.979Z] done 20260514-215903-353930 (920ms exit=0)
+[2026-05-14T21:59:05.166Z] done 20260514-215903-cdfb81 (1114ms exit=0)
+[2026-05-14T21:59:11.010Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:11.411Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:11.935Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:12.335Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:12.772Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:13.149Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:13.660Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:20.338Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:20.732Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:21.089Z] postThreadReply fell back to bot-log null
+[2026-05-14T21:59:36.594Z] done 20260514-215804-b4b8a5 (91733ms exit=0)
+[2026-05-14T22:03:36.860Z] fs.watch fired · maybe-pending 20260514-220336-a6e0ba
+[2026-05-14T22:03:36.863Z] claim 20260514-220336-a6e0ba → running · cli= leads:run-pipeline args= --entity-key domain_allroofingservices.com.au
+[2026-05-14T22:03:42.908Z] fs.watch fired · maybe-pending 20260514-220342-deb89e
+[2026-05-14T22:03:42.909Z] claim 20260514-220342-deb89e → running · cli= leads:run-pipeline args= --entity-key domain_auscityroofing.com.au
+[2026-05-14T22:03:47.783Z] fs.watch fired · maybe-pending 20260514-220347-e78984
+[2026-05-14T22:03:47.784Z] claim 20260514-220347-e78984 → running · cli= leads:run-pipeline args= --entity-key domain_hookysroofing.sydney
+[2026-05-14T22:03:53.149Z] fs.watch fired · maybe-pending 20260514-220352-3c9ee9
+[2026-05-14T22:03:53.150Z] claim 20260514-220352-3c9ee9 → running · cli= leads:run-pipeline args= --entity-key domain_jsjroofing.com.au
+[2026-05-14T22:03:57.979Z] fs.watch fired · maybe-pending 20260514-220357-ea5eea
+[2026-05-14T22:03:57.980Z] claim 20260514-220357-ea5eea → running · cli= leads:run-pipeline args= --entity-key domain_nuroofing.com.au
+[2026-05-14T22:04:02.880Z] fs.watch fired · maybe-pending 20260514-220402-58965e
+[2026-05-14T22:04:02.880Z] claim 20260514-220402-58965e → running · cli= leads:run-pipeline args= --entity-key domain_roofernearme.com.au
+[2026-05-14T22:04:07.830Z] fs.watch fired · maybe-pending 20260514-220407-17df7e
+[2026-05-14T22:04:07.831Z] claim 20260514-220407-17df7e → running · cli= leads:run-pipeline args= --entity-key domain_sydneylocalroofers.com.au
+[2026-05-14T22:04:12.992Z] fs.watch fired · maybe-pending 20260514-220412-8972b1
+[2026-05-14T22:04:12.993Z] claim 20260514-220412-8972b1 → running · cli= leads:run-pipeline args= --entity-key domain_sydneyroofers.net.au
+[2026-05-14T22:04:17.864Z] fs.watch fired · maybe-pending 20260514-220417-5a6ed3
+[2026-05-14T22:04:17.865Z] claim 20260514-220417-5a6ed3 → running · cli= leads:run-pipeline args= --entity-key domain_sydneyroofingandgutters.com.au
+[2026-05-14T22:04:22.883Z] fs.watch fired · maybe-pending 20260514-220422-6fd99e
+[2026-05-14T22:04:22.885Z] claim 20260514-220422-6fd99e → running · cli= leads:run-pipeline args= --entity-key domain_sydneyroofingcompany.com.au
+[2026-05-14T22:04:28.087Z] fs.watch fired · maybe-pending 20260514-220427-02d661
+[2026-05-14T22:04:28.088Z] claim 20260514-220427-02d661 → running · cli= leads:run-pipeline args= --entity-key domain_sydneyroofingspecialists.com
+[2026-05-14T22:04:43.696Z] fs.watch fired · maybe-pending 20260514-220443-e25beb
+[2026-05-14T22:04:43.699Z] claim 20260514-220443-e25beb → running · cli= leads:build-master-md args= --entity-key domain_auscityroofing.com.au --theme report --html
+[2026-05-14T22:04:45.034Z] done 20260514-220443-e25beb (1332ms exit=0)
+[2026-05-14T22:04:45.482Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:04:46.084Z] done 20260514-220342-deb89e (63174ms exit=0)
+[2026-05-14T22:04:46.404Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:04:55.392Z] fs.watch fired · maybe-pending 20260514-220455-cdd2c5
+[2026-05-14T22:04:55.396Z] claim 20260514-220455-cdd2c5 → running · cli= leads:build-master-md args= --entity-key domain_jsjroofing.com.au --theme report --html
+[2026-05-14T22:04:56.671Z] done 20260514-220455-cdd2c5 (1271ms exit=0)
+[2026-05-14T22:04:57.129Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:04:57.417Z] done 20260514-220352-3c9ee9 (64267ms exit=0)
+[2026-05-14T22:04:57.786Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:20.298Z] fs.watch fired · maybe-pending 20260514-220520-9bf405
+[2026-05-14T22:05:20.298Z] claim 20260514-220520-9bf405 → running · cli= leads:build-master-md args= --entity-key domain_hookysroofing.sydney --theme report --html
+[2026-05-14T22:05:20.505Z] fs.watch fired · maybe-pending 20260514-220520-89bb63
+[2026-05-14T22:05:20.505Z] claim 20260514-220520-89bb63 → running · cli= leads:build-master-md args= --entity-key domain_roofernearme.com.au --theme report --html
+[2026-05-14T22:05:21.609Z] done 20260514-220520-9bf405 (1309ms exit=0)
+[2026-05-14T22:05:21.764Z] done 20260514-220520-89bb63 (1258ms exit=0)
+[2026-05-14T22:05:22.037Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:22.133Z] done 20260514-220347-e78984 (94347ms exit=0)
+[2026-05-14T22:05:22.430Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:22.627Z] done 20260514-220402-58965e (79746ms exit=0)
+[2026-05-14T22:05:22.900Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:23.251Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:23.912Z] fs.watch fired · maybe-pending 20260514-220523-9ea953
+[2026-05-14T22:05:23.914Z] claim 20260514-220523-9ea953 → running · cli= leads:build-master-md args= --entity-key domain_sydneyroofingandgutters.com.au --theme report --html
+[2026-05-14T22:05:25.055Z] done 20260514-220523-9ea953 (1138ms exit=0)
+[2026-05-14T22:05:25.430Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:26.707Z] done 20260514-220417-5a6ed3 (68842ms exit=0)
+[2026-05-14T22:05:27.245Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:27.528Z] fs.watch fired · maybe-pending 20260514-220527-136857
+[2026-05-14T22:05:27.530Z] claim 20260514-220527-136857 → running · cli= leads:build-master-md args= --entity-key domain_sydneylocalroofers.com.au --theme report --html
+[2026-05-14T22:05:28.843Z] done 20260514-220527-136857 (1310ms exit=0)
+[2026-05-14T22:05:29.166Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:29.561Z] done 20260514-220407-17df7e (81730ms exit=0)
+[2026-05-14T22:05:29.977Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:37.636Z] fs.watch fired · maybe-pending 20260514-220537-58423c
+[2026-05-14T22:05:37.639Z] claim 20260514-220537-58423c → running · cli= leads:build-master-md args= --entity-key domain_nuroofing.com.au --theme report --html
+[2026-05-14T22:05:38.787Z] done 20260514-220537-58423c (1144ms exit=0)
+[2026-05-14T22:05:39.297Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:39.452Z] done 20260514-220357-ea5eea (101472ms exit=0)
+[2026-05-14T22:05:39.816Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:46.479Z] fs.watch fired · maybe-pending 20260514-220546-ebdc04
+[2026-05-14T22:05:46.483Z] claim 20260514-220546-ebdc04 → running · cli= leads:build-master-md args= --entity-key domain_allroofingservices.com.au --theme report --html
+[2026-05-14T22:05:47.812Z] done 20260514-220546-ebdc04 (1326ms exit=0)
+[2026-05-14T22:05:48.249Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:05:48.554Z] done 20260514-220336-a6e0ba (131687ms exit=0)
+[2026-05-14T22:05:49.111Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:06:24.083Z] fs.watch fired · maybe-pending 20260514-220623-091be2
+[2026-05-14T22:06:24.085Z] claim 20260514-220623-091be2 → running · cli= leads:build-master-md args= --entity-key domain_sydneyroofers.net.au --theme report --html
+[2026-05-14T22:06:25.238Z] done 20260514-220623-091be2 (1150ms exit=0)
+[2026-05-14T22:06:25.694Z] postThreadReply fell back to bot-log null
+[2026-05-14T22:06:26.064Z] done 20260514-220412-8972b1 (133070ms exit=0)
+[2026-05-14T22:06:26.407Z] postThreadReply fell back to bot-log null

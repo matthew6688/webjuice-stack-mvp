@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-220336-a6e0ba",
+  "created_at": "2026-05-14T22:03:36.598Z",
+  "updated_at": "2026-05-14T22:05:48.554Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_allroofingservices.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_allroofingservices.com.au"
+    ],
+    "target_entity_key": "domain_allroofingservices.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 131687,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T22:03:36.863Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_allroofingservices.com.au"
+    },
+    {
+      "at": "2026-05-14T22:03:42.009Z",
+      "step": "cli.stream",
+      "detail": "ormal (concurrent_leads=1)\n\n══════════ domain_allroofingservices.com.au ══════════\n  [thread] reusing 1504605123161231400\n  [stage 1/4] detailed audit — fetching http://www.allroofingservices.com.au/"
+    },
+    {
+      "at": "2026-05-14T22:05:48.553Z",
+      "step": "cli.stream",
+      "detail": "┘\n{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_allroofingservices.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 313)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:05:48.554Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=131687ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}
