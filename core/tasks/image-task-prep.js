@@ -269,9 +269,8 @@ export async function prepareImageTask({ taskId, attachments }) {
         // non-blocking
       }
     }
-    if (!extracted.businessName) {
-      return { ok: false, reason: 'vision returned no businessName', local_attachments: local, extracted };
-    }
+    // V3 D43 N2 fix: 不再 early-return on businessName=null · 让 LLM judge 决定
+    // (e.g. tradie sign 招牌没 name 但有 phone · 之前规则判 fail · 现在 judge 判 proceed)
   }
 
   // V3 D40 · Multi-angle Places enrich · 即使 OCR 拿到 business_name 也跑 · 拿 place_id 升级

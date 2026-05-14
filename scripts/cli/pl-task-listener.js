@@ -247,7 +247,9 @@ async function handleNewForumThread(thread) {
   // Apply forum tags [kind, pending|human]
   let pendingKind = route.kind;
   let pendingStatus = 'pending';
-  if (!route.target_cli && route.kind !== 'ops') {
+  // V3 D43 N1 fix: 包括 ops kind · 没 cli 一律走 human (P3 fix 把 ops:health-check 杀掉
+  // 后 · ops 大概率都 null cli · 不能让它躺 pending 永久 orphan)
+  if (!route.target_cli) {
     pendingStatus = 'human';
     appendProgress(task.task_id, 'router.no_cli', `kind=${route.kind} but no target_cli; needs operator triage`);
     transitionStatus(task.task_id, 'human', { reason: 'router resolved kind but no target_cli mapping' });

@@ -138,9 +138,13 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
   if (!state) throw new Error(`no batch state for ${batchId}`);
   if (!state.thread_id) throw new Error('batch has no thread_id');
 
+  // V3 D43 · 简化 · stage label 已经够说明状态 (✅ on stage = success implicit) ·
+  // 不再追加 _成功_ / _失败_ 后缀 · 不再加时间(thread 自带 timestamp)
   const emoji = { ok: '✅', fail: '❌', skip: '⏭️', paused: '⏸️', info: '📝' }[status] || 'ℹ️';
-  const statusLabelCn = { ok: '成功', fail: '失败', skip: '跳过', paused: '已暂停', info: '信息' }[status] || status;
-  const body = `${emoji} **${stage}** — _${statusLabelCn}_ · ${new Date().toLocaleTimeString('en-AU', { hour12: false })}\n\n${summary}`;
+  const head = status === 'ok' ? `${emoji} **${stage}**`
+              : status === 'fail' ? `${emoji} **${stage}** · 失败`
+              : `${emoji} **${stage}**`;
+  const body = `${head}\n${summary}`;
 
   const r = await fetch(`${DISCORD_API}/channels/${state.thread_id}/messages`, {
     method: 'POST',
@@ -181,7 +185,7 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
 export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAudit = false }) {
   const r = await postStageUpdate({
     batchId,
-    stage: '批次收尾 Batch finalize',
+    stage: '🏁 批次完成',
     status: terminalTag === 'completed' ? 'ok' : 'info',
     summary,
     swapTag: terminalTag,
@@ -216,11 +220,12 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
       };
       // Post a thread update so operators see dedup ran
       if (out.status === 0 && parsed) {
+        // V3 D43 · 去 dedup-audit 英文 + admin URL (admin 已弃) · 中文人话
         const dedupSummary = parsed.total_suspects > 0
-          ? `🔍 去重审核 dedup-audit · 发现 **${parsed.total_suspects} 组疑似重复线索** · 请到 /admin/v2-leads/dedup-review 复核`
-          : `🔍 去重审核 dedup-audit · 0 组疑似重复 · 数据库无重复`;
+          ? `发现 **${parsed.total_suspects}** 组疑似重复 · 在 #website-leads 人工复核`
+          : `0 组重复 · 数据库干净`;
         try {
-          await postStageUpdate({ batchId, stage: '自动去重审核 Auto dedup-audit', status: 'ok', summary: dedupSummary });
+          await postStageUpdate({ batchId, stage: '🔍 去重审核', status: 'ok', summary: dedupSummary });
         } catch {}
       }
     } catch (err) {

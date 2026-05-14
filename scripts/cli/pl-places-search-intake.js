@@ -105,14 +105,14 @@ for (const query of queries) {
     await guard.checkAndCharge(1, { skuLabel: 'text_search', keyId }).catch(() => {});
 
     if (!candidates || candidates.length === 0) {
-      await postStageUpdate({ batchId, stage: 'Stage 0 · Places search', status: 'fail',
-        summary: `0 results from textsearch for "${query}"`, swapTag: 'completed' });
+      await postStageUpdate({ batchId, stage: '🔎 搜索', status: 'fail',
+        summary: `没找到 · 查询: \`${query}\``, swapTag: 'completed' });
       results.push({ query, batch_id: batchId, thread_id: thread.thread_id, thread_url: thread.thread_url, lead_count: 0 });
       continue;
     }
     console.log(`    ✓ Places returned ${candidates.length} candidates`);
-    await postStageUpdate({ batchId, stage: 'Stage 0 · Places search', status: 'ok',
-      summary: `${candidates.length} candidates from textsearch · fetching details: ${WITH_DETAILS}` });
+    await postStageUpdate({ batchId, stage: '🔎 搜索', status: 'ok',
+      summary: `查询 \`${query}\` · 找到 **${candidates.length}** 个商家${WITH_DETAILS ? ' · 正在拉详细信息' : ''}` });
 
     // 3. Optionally enrich with details
     const leads = [];
@@ -169,11 +169,14 @@ for (const query of queries) {
     totalLeads += leads.length;
     console.log(`    ✓ upserted ${leads.length} entities`);
 
-    await postStageUpdate({ batchId, stage: 'Stage 1 · Upsert entities', status: 'ok',
-      summary: `${leads.length} entities written to store · keys (first 3): ${leadKeys.slice(0, 3).join(', ')}` });
+    // V3 D43 · 人话版 · 显商家名字 (前 3) · 不显 place_id 哈希
+    const top3Names = leads.slice(0, 3).map((l) => l.name).filter(Boolean);
+    await postStageUpdate({ batchId, stage: '📥 写入实体', status: 'ok',
+      summary: `**${leads.length}** 个商家入库${top3Names.length ? ' · 前 3: ' + top3Names.map((n) => `**${n}**`).join(' · ') : ''}` });
 
+    const top5Names = leads.slice(0, 5).map((l) => l.name).filter(Boolean);
     await finalizeBatch({ batchId, terminalTag: 'completed',
-      summary: `**Done · ${leads.length} leads from Places API**\n\nQuery: \`${query}\`\nLeads (first 5): ${leadKeys.slice(0, 5).join(', ')}${leadKeys.length > 5 ? ' …' : ''}` });
+      summary: `查询 \`${query}\` · ${leads.length} 个商家入库${top5Names.length ? '\n前 5: ' + top5Names.map((n) => `**${n}**`).join(' · ') + (leadKeys.length > 5 ? ' …' : '') : ''}` });
 
     results.push({
       query, batch_id: batchId, thread_id: thread.thread_id, thread_url: thread.thread_url,
