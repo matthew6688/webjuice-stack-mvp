@@ -32,6 +32,26 @@ function listEvidence(slug) {
   } catch { return []; }
 }
 
+/** V3 D41: list screenshots (desktop / mobile) · for 现状证据 */
+function listScreenshots(slug) {
+  if (!slug) return [];
+  try {
+    const d = path.join('clients', slug, 'v2/screenshots');
+    if (!fs.existsSync(d)) return [];
+    return fs.readdirSync(d).filter((f) => /\.(png|jpg)$/i.test(f));
+  } catch { return []; }
+}
+
+/** V3 D41: list videos (mobile throttled walkthrough) · for 现状证据 */
+function listVideos(slug) {
+  if (!slug) return [];
+  try {
+    const d = path.join('clients', slug, 'v2/video');
+    if (!fs.existsSync(d)) return [];
+    return fs.readdirSync(d).filter((f) => /\.(webm|mp4)$/i.test(f));
+  } catch { return []; }
+}
+
 /** Detect if local evidence files are newer than last CF deploy.
  *  Returns true 时 hyperlinks 会 404 · 需 republish 才 live。 */
 function isEvidenceStale(slug, deploy) {
@@ -164,6 +184,8 @@ export function stage1Message({ entity, audit, fetchPayload, contact, durationSe
     lines.push(`Hard triggers: passed (无触发)`);
   }
 
+  lines.push('');
+  lines.push('━━━');
   return lines.join('\n');
 }
 
@@ -209,6 +231,8 @@ export function stage2Message({ visual, provider, model, latencyMs, costUsd }) {
     lines.push(parts.join(' · '));
   }
 
+  lines.push('');
+  lines.push('━━━');
   return lines.join('\n');
 }
 
@@ -258,6 +282,9 @@ export function stage3Message({ leadGrade, audit, entity }) {
       : '即将 open #website-leads (后续 publish 后自动 graduate)';
   lines.push(`phase: ${phase} (set) · thread: ${channelInfo}`);
 
+  lines.push('');
+  lines.push('━━━');
+
   return lines.join('\n');
 }
 
@@ -272,43 +299,77 @@ export function stage4Message({ entity, slug, htmlSize }) {
   const deploy = readDeploy(slug);
   const evidence = listEvidence(slug);
   const stale = isEvidenceStale(slug, deploy);
-
-  // Report link · 已 publish 且未 stale 时 hyperlink
   const canHyperlink = deploy?.demo_url && !stale;
+  const base = deploy?.demo_url ? deploy.demo_url.replace(/\/$/, '') : null;
+
+  // ━━━━━━━━━━ 在线资源 (只留 文档 + Demo URL) ━━━━━━━━━━
+  lines.push('━━━ 在线资源 ━━━');
+  if (deploy?.demo_url) {
+    // Demo URL · 裸 URL · 销售复制粘贴用
+    lines.push(`Demo: ${deploy.demo_url}`);
+  }
+  if (canHyperlink && deploy.audit_url) {
+    lines.push(`[客户 audit](${deploy.audit_url})`);
+  } else if (deploy?.audit_url) {
+    lines.push(`客户 audit (待 republish)`);
+  } else {
+    lines.push(`客户 audit (本地 · 待 publish)`);
+  }
   if (canHyperlink && deploy.internal_audit_url) {
-    lines.push(`[internal audit](${deploy.internal_audit_url})${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''} · ${evidence.length} evidence PNG`);
+    lines.push(`[内部 audit](${deploy.internal_audit_url})${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''}`);
   } else {
-    lines.push(`internal-audit-report.html${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''} · ${evidence.length} evidence PNG${stale ? ' (本地新于 CF · 需 republish)' : ' (待 publish)'}`);
+    lines.push(`内部 audit (本地${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''}${stale ? ' · 待 republish' : ' · 待 publish'})`);
   }
-
-  // master.md link
   if (canHyperlink && deploy.master_md_url) {
-    lines.push(`[master.md](${deploy.master_md_url}) updated · 22 sections`);
+    lines.push(`[master.md](${deploy.master_md_url})`);
   } else {
-    lines.push(`master.md updated${stale ? ' (本地 · 需 republish 同步 CF)' : ' (本地 · 待 publish)'}`);
+    lines.push(`master.md (本地)`);
   }
 
-  // Evidence list · 仅 deploy 在且非 stale 时 hyperlink (否则 link 404)
-  if (evidence.length && canHyperlink) {
-    const base = deploy.demo_url.replace(/\/$/, '');
+  // ━━━━━━━━━━ 现状证据 (截图 + 录屏 + 标注证据 · 全列 · 每条 1 行) ━━━━━━━━━━
+  const screenshots = listScreenshots(slug);
+  const videos = listVideos(slug);
+  const totalEvidence = screenshots.length + videos.length + evidence.length;
+  if (totalEvidence > 0) {
     lines.push('');
-    lines.push(`Evidence:`);
-    for (const f of evidence.slice(0, 10)) {
-      lines.push(`- [${prettyEvidenceName(f)}](${base}/evidence/${f})`);
+    lines.push(`━━━ 现状证据 (${totalEvidence}) ━━━`);
+    // Screenshots
+    for (const f of screenshots) {
+      const label = f.replace(/\.[^.]+$/, '').replace(/^./, (c) => c.toUpperCase());
+      if (canHyperlink) {
+        lines.push(`[${label} 截图](${base}/screenshots/${f})`);
+      } else {
+        lines.push(`${label} 截图 (本地)`);
+      }
     }
-    if (evidence.length > 10) lines.push(`- _(+${evidence.length - 10} 张更多)_`);
-  } else if (evidence.length) {
-    lines.push('');
-    lines.push(`Evidence (${evidence.length}${stale ? ' · 本地新于 CF · 需 `npm run pl:publish-demo` 同步' : ' · 本地 · 待 publish'}):`);
-    for (const f of evidence.slice(0, 6)) {
-      lines.push(`- ${prettyEvidenceName(f)}`);
+    // Videos
+    for (const f of videos) {
+      const label = f.replace(/\.[^.]+$/, '').replace(/-/g, ' ');
+      if (canHyperlink) {
+        lines.push(`[${label} 录屏](${base}/video/${f})`);
+      } else {
+        lines.push(`${label} 录屏 (本地)`);
+      }
     }
-    if (evidence.length > 6) lines.push(`- _(+${evidence.length - 6} 张更多)_`);
+    // Evidence PNGs · 每条 1 行
+    if (evidence.length) {
+      const evToShow = evidence.slice(0, 10);
+      for (const f of evToShow) {
+        if (canHyperlink) {
+          lines.push(`[${prettyEvidenceName(f)}](${base}/evidence/${f})`);
+        } else {
+          lines.push(`${prettyEvidenceName(f)} (本地)`);
+        }
+      }
+      if (evidence.length > 10) lines.push(`_(+${evidence.length - 10} 张更多)_`);
+    }
   }
 
+  // ━━━━━━━━━━ 结尾 ━━━━━━━━━━
   lines.push('');
+  lines.push('━━━');
   if (stale) {
-    lines.push(`Audit pipeline 完整 · ⚠️ evidence 本地更新 · 跑 \`npm run pl:publish-demo -- --slug ${slug}\` 同步到 CF Pages`);
+    lines.push(`Audit pipeline 完整 · evidence 本地更新 · 跑 \`npm run pl:publish-demo -- --slug ${slug}\` 同步到 CF Pages`);
   } else {
     lines.push(`Audit pipeline 完整 · phase=design-ready · ready for M3 demo build`);
   }
