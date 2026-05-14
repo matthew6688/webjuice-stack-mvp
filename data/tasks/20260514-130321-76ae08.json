@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-130321-76ae08",
+  "created_at": "2026-05-14T13:03:21.286Z",
+  "updated_at": "2026-05-14T13:03:22.199Z",
+  "kind": "ops",
+  "status": "failed",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504464780453482558",
+    "author": "manual cycle-15 retro",
+    "message_id": null
+  },
+  "input": {
+    "text": "manual cycle-15: publish Ace demo",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:publish-demo",
+    "args": [
+      "--slug",
+      "ace-roofing-service"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 300000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 1,
+    "duration_ms": 199,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T13:03:21.997Z",
+      "step": "cli.spawning",
+      "detail": "pl:publish-demo --slug ace-roofing-service"
+    },
+    {
+      "at": "2026-05-14T13:03:22.199Z",
+      "step": "cli.stream",
+      "detail": "HTML not found: /Users/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/concept/reference-adapter/index.html\n  run: npm run pl:build-from-reference -- --slug ace-roofing-service"
+    },
+    {
+      "at": "2026-05-14T13:03:22.199Z",
+      "step": "cli.failed",
+      "detail": "exit=1 signal=null dur=199ms"
+    }
+  ],
+  "error": "exit=1 signal=null",
+  "discord": {
+    "thread_id": "1504464780453482558",
+    "status_message_id": null
+  }
+}

@@ -371,10 +371,16 @@ async function main() {
     die(`leads:maps-scrape exited with code ${proc.status}`);
   }
 
+  // V3 D43 cycle-15 (Matthew 2026-05-14): include lead_keys + lead_names so
+  // dispatcher's renderDoneMessage shows "找到 N 个商家:\n - X\n - Y" instead of "抓取完成".
+  const leadKeys = leads.map((l) => l.entityKey || l.place_id || l.leadId).filter(Boolean);
+  const leadNames = leads.map((l) => l.name || l.title || l.business_name).filter(Boolean);
   const summary = {
     ok: true,
     job_id: jobId,
     lead_count: leads.length,
+    lead_keys: leadKeys,
+    lead_names: leadNames,
     run_path: path.relative(REPO_ROOT, runOutputPath),
     niche,
     city,

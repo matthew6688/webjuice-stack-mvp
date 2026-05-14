@@ -1656,3 +1656,12 @@
 [2026-05-14T12:50:55.147Z] claim 20260514-125054-538003 → running · cli= leads:run-pipeline args= --entity-key domain_aceroofingservice.com.au
 [2026-05-14T12:54:23.576Z] done 20260514-125054-538003 (208427ms exit=0)
 [2026-05-14T12:54:24.185Z] postThreadReply fell back to bot-log null
+[2026-05-14T13:03:21.548Z] fs.watch fired · maybe-pending 20260514-130321-6dc18c
+[2026-05-14T13:03:21.550Z] claim 20260514-130321-6dc18c → running · cli= pl:build-from-reference args= --slug ace-roofing-service --entity-key domain_aceroofingservice.com.au
+[2026-05-14T13:03:21.550Z] runTask error 20260514-130321-6dc18c Unknown kind tag: demo_build
+[2026-05-14T13:03:21.550Z] fs.watch fired · maybe-pending 20260514-130321-76ae08
+[2026-05-14T13:03:21.552Z] claim 20260514-130321-76ae08 → running · cli= pl:publish-demo args= --slug ace-roofing-service
+[2026-05-14T13:03:22.199Z] failed 20260514-130321-76ae08 (exit=1 sig=null)
+[2026-05-14T13:11:41.157Z] fs.watch fired · maybe-pending 20260514-131140-a663ef
+[2026-05-14T13:11:41.159Z] claim 20260514-131140-a663ef → running · cli= pl:publish-demo args= --slug ace-roofing-service
+[2026-05-14T13:11:41.732Z] failed 20260514-131140-a663ef (exit=1 sig=null)

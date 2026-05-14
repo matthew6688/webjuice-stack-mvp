@@ -209,6 +209,42 @@ async function processEntity(key) {
     console.warn(`     ⚠ Discord post failed: ${err.message}`);
   }
 
+  // V3 D43 cycle-15 (Matthew 2026-05-14): "stage 5 says 自动 chain build + publish ·
+  // 但代码里根本没接" — actually wire the chain so profile updates + reference
+  // links become clickable.
+  if (verdict.verdict === 'ready-to-build') {
+    try {
+      const { createTask } = await import(path.join(REPO, 'core/tasks/task-store.js'));
+      const buildTask = createTask({
+        kind: 'demo_build',
+        source: { platform: 'internal', thread_id: entity.discord_thread_id || null, author: 'qualification auto-chain', message_id: null },
+        input: { text: `auto: build demo for ${key} (verdict=ready-to-build)`, attachments: [] },
+        target: {
+          cli: 'pl:build-from-reference',
+          args: ['--slug', slug, '--entity-key', key],
+          timeout_ms: 600_000,
+        },
+      });
+      console.log(`     → chained demo build task: ${buildTask.task_id}`);
+      // pl:build-from-reference writes the M3 site · operator's pl:publish-demo
+      // will then deploy it. We chain publish AFTER build via the dispatcher
+      // hook below (build task completion triggers publish).
+      const publishTask = createTask({
+        kind: 'ops',
+        source: { platform: 'internal', thread_id: entity.discord_thread_id || null, author: 'qualification auto-chain', message_id: null },
+        input: { text: `auto: publish demo for ${key} (after build)`, attachments: [] },
+        target: {
+          cli: 'pl:publish-demo',
+          args: ['--slug', slug],
+          timeout_ms: 300_000,
+        },
+      });
+      console.log(`     → chained publish task: ${publishTask.task_id}`);
+    } catch (err) {
+      console.warn(`     ⚠ auto-chain build+publish failed: ${err.message}`);
+    }
+  }
+
   console.log(`✓ ${key} · ${verdict.verdict}`);
   return { key, status: 'ok', verdict: verdict.verdict, score: verdict.scorecard?.total };
 }

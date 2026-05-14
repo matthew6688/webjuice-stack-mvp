@@ -9,21 +9,22 @@
  */
 import fs from 'node:fs';
 
-// 8 task kinds → 业务术语 + emoji
+// 8 task kinds → 业务术语 (Matthew 2026-05-14 cycle-15: 不要 emoji · "我不需要 emoji")
 const KIND_LABELS = {
-  scrape:          { emoji: '🔎', label: '批量抓客户', verb: '抓取' },
-  'places-intake': { emoji: '🔎', label: '精准搜客户', verb: '搜索' },
-  'single-enrich': { emoji: '🎯', label: '查 1 个具体客户', verb: '解析' },
-  audit:           { emoji: '🔬', label: '客户网站审计', verb: '审计' },
-  dedup:           { emoji: '🧹', label: '判重 + 合并', verb: '查重' },
-  'image-extract': { emoji: '🖼', label: '从图片提取客户信息', verb: 'OCR + 提取' },
-  enrich:          { emoji: '➕', label: '补全客户联系方式', verb: '补全' },
-  ops:             { emoji: '⚙️', label: '系统任务', verb: '执行' },
-  demo_build:      { emoji: '🎨', label: '生成 M3 demo 网站', verb: '生成' },
-  photos_fetch:    { emoji: '📷', label: '拉 GMB 照片', verb: '下载' },
+  intake:          { emoji: '', label: '批量抓客户', verb: '抓取' },  // pl:pipeline-batch-start auto-chain → 'intake'
+  scrape:          { emoji: '', label: '批量抓客户', verb: '抓取' },
+  'places-intake': { emoji: '', label: '精准搜客户', verb: '搜索' },
+  'single-enrich': { emoji: '', label: '查 1 个具体客户', verb: '解析' },
+  audit:           { emoji: '', label: '客户网站审计', verb: '审计' },
+  dedup:           { emoji: '', label: '判重 + 合并', verb: '查重' },
+  'image-extract': { emoji: '', label: '从图片提取客户信息', verb: 'OCR + 提取' },
+  enrich:          { emoji: '', label: '补全客户联系方式', verb: '补全' },
+  ops:             { emoji: '', label: '系统任务', verb: '执行' },
+  demo_build:      { emoji: '', label: '生成 M3 demo 网站', verb: '生成' },
+  photos_fetch:    { emoji: '', label: '拉 GMB 照片', verb: '下载' },
 };
 
-const FALLBACK = { emoji: '⚙️', label: '后台任务', verb: '执行' };
+const FALLBACK = { emoji: '', label: '后台任务', verb: '执行' };
 
 export function kindLabel(kind) {
   return KIND_LABELS[kind] || FALLBACK;
@@ -235,14 +236,26 @@ function extractBusinessNames(tail) {
   const t = String(tail || '');
   const names = [];
 
+  // V3 D43 cycle-15 (Matthew 2026-05-14): Pattern 0 · 直接读 pl:scrape-docker emit 的 lead_names[]
+  const leadNamesMatch = t.match(/"lead_names"\s*:\s*\[([^\]]+)\]/);
+  if (leadNamesMatch) {
+    const ns = leadNamesMatch[1].match(/"([^"]+)"/g) || [];
+    for (const ns1 of ns) {
+      const n = ns1.replace(/"/g, '');
+      if (n && !names.includes(n)) names.push(n);
+    }
+  }
+
   // Pattern 1: JSON has "lead_keys": ["place_xxx", ...] · lookup each entity
-  const leadKeysMatch = t.match(/"lead_keys"\s*:\s*\[([^\]]+)\]/);
-  if (leadKeysMatch) {
-    const keys = leadKeysMatch[1].match(/"(place_[a-z0-9_]+|domain_[^"]+|phone_[^"]+|image_[^"]+|manual_[^"]+)"/g) || [];
-    for (const keyStr of keys) {
-      const key = keyStr.replace(/"/g, '');
-      const name = lookupEntityName(key);
-      if (name) names.push(name);
+  if (names.length === 0) {
+    const leadKeysMatch = t.match(/"lead_keys"\s*:\s*\[([^\]]+)\]/);
+    if (leadKeysMatch) {
+      const keys = leadKeysMatch[1].match(/"(place_[a-z0-9_]+|domain_[^"]+|phone_[^"]+|image_[^"]+|manual_[^"]+)"/g) || [];
+      for (const keyStr of keys) {
+        const key = keyStr.replace(/"/g, '');
+        const name = lookupEntityName(key);
+        if (name) names.push(name);
+      }
     }
   }
 

@@ -26,7 +26,8 @@ const args = parseArgs(process.argv.slice(2));
 
 const niche = args.niche || die('--niche required');
 const city = args.city || die('--city required');
-const count = parseInt(args.count || '10', 10);
+// V3 D43 cycle-15 (Matthew 2026-05-14): honor --limit as alias for --count
+const count = parseInt(args.count || args.limit || '10', 10);
 
 function pad(n) { return String(n).padStart(2, '0'); }
 const now = new Date();

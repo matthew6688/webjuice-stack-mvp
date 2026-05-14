@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-130321-6dc18c",
+  "created_at": "2026-05-14T13:03:21.284Z",
+  "updated_at": "2026-05-14T13:03:21.549Z",
+  "kind": "demo_build",
+  "status": "running",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504464780453482558",
+    "author": "manual cycle-15 retro",
+    "message_id": null
+  },
+  "input": {
+    "text": "manual cycle-15: build Ace demo",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "ace-roofing-service",
+      "--entity-key",
+      "domain_aceroofingservice.com.au"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": null,
+    "duration_ms": null,
+    "cost_usd": null
+  },
+  "progress": [],
+  "error": null,
+  "discord": {
+    "thread_id": "1504464780453482558",
+    "status_message_id": null
+  }
+}
