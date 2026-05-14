@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-134605-8c4654",
+  "created_at": "2026-05-14T13:46:05.009Z",
+  "updated_at": "2026-05-14T13:46:05.925Z",
+  "kind": "ops",
+  "status": "failed",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504464734165139506",
+    "author": "cycle-18 debug",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-18: debug publish via dispatcher",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:publish-demo",
+    "args": [
+      "--slug",
+      "north-brisbane-metal-roofing-pty-ltd"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 300000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 1,
+    "duration_ms": 193,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T13:46:05.728Z",
+      "step": "cli.spawning",
+      "detail": "pl:publish-demo --slug north-brisbane-metal-roofing-pty-ltd"
+    },
+    {
+      "at": "2026-05-14T13:46:05.924Z",
+      "step": "cli.stream",
+      "detail": "eloper/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/concept/reference-adapter/index.html\n  run: npm run pl:build-from-reference -- --slug north-brisbane-metal-roofing-pty-ltd"
+    },
+    {
+      "at": "2026-05-14T13:46:05.925Z",
+      "step": "cli.failed",
+      "detail": "exit=1 signal=null dur=193ms"
+    }
+  ],
+  "error": "exit=1 signal=null",
+  "discord": {
+    "thread_id": "1504464734165139506",
+    "status_message_id": null
+  }
+}

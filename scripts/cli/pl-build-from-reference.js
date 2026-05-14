@@ -71,7 +71,7 @@ const start = Date.now();
 const proc = spawn('claude', ['-p', payload.prompt, '--model', model], { stdio: ['ignore', 'pipe', 'inherit'] });
 let buf = '';
 proc.stdout.on('data', (chunk) => { buf += chunk.toString(); process.stderr.write('.'); });
-proc.on('exit', (code) => {
+proc.on('exit', async (code) => {
   process.stderr.write('\n');
   if (code !== 0) {
     console.error(`claude CLI exit ${code}`);
@@ -82,6 +82,25 @@ proc.on('exit', (code) => {
   fs.writeFileSync(outHtml, cleaned);
   const took = Math.round((Date.now() - start) / 1000);
   console.log(`\n[pl:build-from-reference] DONE · ${cleaned.length} bytes · ${took}s · ${outHtml}`);
+
+  // V3 D43 cycle-18 (Matthew 2026-05-14): auto-chain publish-demo AFTER build done.
+  // Previously cycle-15 chained build + publish in parallel · publish raced ahead
+  // and failed (no index.html yet). Now serialize: build script enqueues publish
+  // at its own end · guaranteed sequential.
+  if (process.env.SKIP_AUTO_PUBLISH !== '1') {
+    try {
+      const { createTask } = await import('../../core/tasks/task-store.js');
+      const t = createTask({
+        kind: 'ops',
+        source: { platform: 'internal', thread_id: process.env.PL_PARENT_THREAD_ID || null, author: 'pl:build-from-reference auto-chain', message_id: null },
+        input: { text: `auto: publish demo for ${slugArg} (after build)`, attachments: [] },
+        target: { cli: 'pl:publish-demo', args: ['--slug', slugArg], timeout_ms: 300_000 },
+      });
+      console.log(`[pl:build-from-reference] ✓ chained publish task: ${t.task_id}`);
+    } catch (err) {
+      console.error(`[pl:build-from-reference] auto-publish enqueue failed: ${err.message}`);
+    }
+  }
 });
 
 function pickEntityFile(slugArg) {

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-134839-48a6a6",
+  "created_at": "2026-05-14T13:48:39.579Z",
+  "updated_at": "2026-05-14T13:49:03.544Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504464780453482558",
+    "author": "cycle-18 PATH fix verify",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-18 verify: ace publish via dispatcher",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:publish-demo",
+    "args": [
+      "--slug",
+      "ace-roofing-service"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 300000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 23219,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T13:48:40.314Z",
+      "step": "cli.spawning",
+      "detail": "pl:publish-demo --slug ace-roofing-service"
+    },
+    {
+      "at": "2026-05-14T13:48:45.453Z",
+      "step": "cli.stream",
+      "detail": "tion file for now, and proceeding with project deploy.\n\n\n✨ Compiled Worker successfully\nUploading... (19/19)\n✨ Success! Uploaded 0 files (19 already uploaded) (0.55 sec)\n\n✨ Uploading Functions bundle"
+    },
+    {
+      "at": "2026-05-14T13:48:51.005Z",
+      "step": "cli.stream",
+      "detail": "🌎 Deploying..."
+    },
+    {
+      "at": "2026-05-14T13:49:03.538Z",
+      "step": "cli.stream",
+      "detail": "le-map-website-v3/clients/ace-roofing-service/v2/concept/reference-adapter/cf-pages-deploy.json\n  #website-projects thread: reused 1504478622113857536\n  profile card refreshed\n  update message posted"
+    },
+    {
+      "at": "2026-05-14T13:49:03.544Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=23219ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504464780453482558",
+    "status_message_id": null
+  }
+}
