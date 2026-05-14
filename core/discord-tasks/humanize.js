@@ -107,22 +107,24 @@ export function renderTaskCreatedMessage({ task, route }) {
   if (argsPreview) bodyLines.push(`· 参数: \`${argsPreview}\``);
   if (entityRef) bodyLines.push(`· ${entityRef}`);
   bodyLines.push(`· 预计 1-3 分钟出结果 · 完了我会回这里告诉你`);
-  const techFold = `_技术细节: task=${task.task_id} · kind=${route.kind} · routed-by=${route.provider}_`;
-
-  return [head, ...bodyLines, '', techFold].join('\n');
+  // V3 D43 (2026-05-14): 不再追加 "_技术细节: task=... · kind=... · routed-by=..._"
+  // Matthew: "提示信息还是很多专业的内容" · operator 不需要 task_id/kind/provider
+  // raw 字符串 · 可看 thread tag 或 data/tasks/<id>.json
+  return [head, ...bodyLines].join('\n');
 }
 
 // 渲染 "完成" 通知
+// V3 D43 (2026-05-14): 去掉 `<details>技术细节</details>` block
+// Matthew: "提示信息还是很多专业的内容" · raw CLI stdout 在 data/tasks/<id>.json
 export function renderDoneMessage({ task, durationMs, tail, xref }) {
   const { emoji, label } = kindLabel(task.kind);
   const secs = (durationMs / 1000).toFixed(1);
 
-  const head = `**${label}** · 完成 · 用时 ${secs}s`;
+  const head = `${emoji ? emoji + ' ' : ''}**${label}** · 完成 · 用时 ${secs}s`;
   const summary = extractBusinessSummary(task.kind, tail);
-  const cross = xref ? `后续: ${xref}` : '';
-  const tech = '\n<details><summary>技术细节</summary>\n\n```\n' + (tail || '').slice(-1200) + '\n```\n</details>';
+  const cross = xref ? xref : '';
 
-  return [head, summary, cross].filter(Boolean).join('\n') + tech;
+  return [head, summary, cross].filter(Boolean).join('\n');
 }
 
 // 渲染 "失败" 通知
@@ -132,10 +134,8 @@ export function renderFailedMessage({ task, exitCode, stderr, tail }) {
 
   const head = `❌ **${label}** · 失败`;
   const why = `原因: ${human}`;
-  const taskInfo = `task: \`${task.task_id}\` · 详细见上面 thread message`;
-  const tech = '\n<details><summary>技术细节</summary>\n\n```\n' + (tail || stderr || '').slice(-1200) + '\n```\n</details>';
-
-  return [head, why, taskInfo].join('\n') + tech;
+  const action = `react ✅ 重试 / 🗑 放弃`;
+  return [head, why, action].join('\n');
 }
 
 // 渲染 "超时" 通知
@@ -144,10 +144,8 @@ export function renderTimeoutMessage({ task, timeoutMs, tail }) {
   const secs = Math.round(timeoutMs / 1000);
 
   const head = `⏳ **${label}** · 超时 · 跑了 ${secs}s 后被终止`;
-  const action = `已转人工 · react ✅ 重试 / 🗑 放弃 (task: \`${task.task_id}\`)`;
-  const tech = '\n<details><summary>技术细节</summary>\n\n```\n' + (tail || '').slice(-1200) + '\n```\n</details>';
-
-  return [head, action].join('\n') + tech;
+  const action = `已转人工 · react ✅ 重试 / 🗑 放弃`;
+  return [head, action].join('\n');
 }
 
 // 试图从 CLI stdout 抽业务摘要 (kind-specific)
@@ -169,10 +167,19 @@ function extractBusinessSummary(kind, tail) {
     return '抓取完成';
   }
   if (kind === 'single-enrich') {
-    // single-enrich JSON 含 "name": "..."
-    const nameMatch = t.match(/"name"[:\s]*"([^"]+)"/);
-    if (nameMatch) return `匹配商家: **${nameMatch[1]}**`;
-    return '商家解析完成';
+    // V3 D43: 人话版 · 显示 name + phone + city/address (不显 place_id)
+    const name = t.match(/"name"[:\s]*"([^"]+)"/)?.[1];
+    const phone = t.match(/"phone"[:\s]*"([^"]+)"/)?.[1];
+    const city = t.match(/"city"[:\s]*"([^"]+)"/)?.[1];
+    const address = t.match(/"address"[:\s]*"([^"]+)"/)?.[1];
+    if (name) {
+      const lines = [`· 找到: **${name}**`];
+      if (phone) lines.push(`· 电话: ${phone}`);
+      if (address) lines.push(`· 地址: ${address}`);
+      else if (city) lines.push(`· 城市: ${city}`);
+      return lines.join('\n');
+    }
+    return '· 客户已入库';
   }
   if (kind === 'image-extract') {
     // OCR 结果通常含 businessName
@@ -183,17 +190,13 @@ function extractBusinessSummary(kind, tail) {
   }
   if (kind === 'audit') {
     const m = t.match(/audit_score[:\s]+(\d+)/i);
-    if (m) return `audit 完成 · 得分 ${m[1]}/100`;
-    return '· audit 4 阶段都跑完';
+    if (m) return `· audit 完成 · 得分 ${m[1]}/100`;
+    return '· audit 4 个阶段都跑完';
   }
-  if (kind === 'single-enrich') {
-    return '· 客户已入库 + master.md skeleton 已建';
-  }
-  if (kind === 'image-extract') {
-    return '· 图片解析完 · 商家信息已入库';
-  }
+  // (V3 D43 删除 unreachable single-enrich / image-extract 重复分支 ·
+  //  上面 single-enrich / image-extract 已 return)
   if (kind === 'demo_build') {
-    return '· demo 网站生成完 · 在 clients/<slug>/v2/concept/reference-adapter/';
+    return '· demo 网站生成完';
   }
   return '';
 }

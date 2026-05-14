@@ -299,26 +299,22 @@ async function runTask(taskId) {
     //   - thread_id / thread_url (intake → batch thread in #lead-discovery-runs)
     //   - batch_id (intake → SOP-1 batch state file)
     //   - entity_key (single-enrich resolved entity)
+    // V3 D43 (2026-05-14): 人话版 xref · 去掉 entity_key 哈希 / admin URL / batch_id 等
+    // Matthew: "提示信息还是很多专业的内容"
     let xref = '';
     try {
       const lastJson = parseLastJson(stdout);
       if (lastJson && typeof lastJson === 'object') {
         const lines = [];
         if (lastJson.audit_chained) {
-          lines.push(`🔗 已链式触发 audit 任务: \`${lastJson.audit_chained}\` ([后台查看](/admin/tasks/#${lastJson.audit_chained}))`);
+          lines.push(`· 正在为客户网站做 audit · 完了再发这里`);
         }
         if (lastJson.thread_url) {
-          lines.push(`🔗 批次讨论串: ${lastJson.thread_url}`);
+          lines.push(`· 批次讨论串: ${lastJson.thread_url}`);
         } else if (lastJson.thread_id) {
-          lines.push(`🔗 批次讨论串: <#${lastJson.thread_id}>`);
+          lines.push(`· 批次讨论串: <#${lastJson.thread_id}>`);
         }
-        if (lastJson.batch_id) {
-          lines.push(`📦 批次 batch_id: \`${lastJson.batch_id}\``);
-        }
-        if (lastJson.entity_key) {
-          lines.push(`👤 实体 entity_key: \`${lastJson.entity_key}\` ([后台查看](/admin/v2-leads/${lastJson.entity_key}))`);
-        }
-        if (lines.length) xref = '\n\n' + lines.join('\n');
+        if (lines.length) xref = lines.join('\n');
       }
     } catch { /* xref best-effort */ }
 
