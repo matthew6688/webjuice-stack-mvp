@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-114711-44f855",
+  "created_at": "2026-05-14T11:47:11.297Z",
+  "updated_at": "2026-05-14T11:51:31.355Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cycle-5b-final-e2e",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-5b final E2E (post 404-cleanup)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chij-9wdzxxakwsr-lljrd1u3jq"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 1200000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 259781,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T11:47:11.567Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chij-9wdzxxakwsr-lljrd1u3jq"
+    },
+    {
+      "at": "2026-05-14T11:47:16.691Z",
+      "step": "cli.stream",
+      "detail": "age 1/4] detailed audit — reuse cached fixture\n  [stage 2/4] visual audit — reuse cached fixture\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T11:48:16.834Z",
+      "step": "cli.stream",
+      "detail": "]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chij-9wdzxxakwsr-lljrd1u3jq ══════════\n  [1/5] multi-page crawl http://www.queenslandroofing.com.au/..."
+    },
+    {
+      "at": "2026-05-14T11:48:31.102Z",
+      "step": "cli.stream",
+      "detail": "→ 10 pages · 10 Firecrawl + 0 direct · sitemap=/sitemap.xml · 13.3s · ~$0.150\n  [2/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T11:49:45.167Z",
+      "step": "cli.stream",
+      "detail": "ytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/queensland-roofing-pty-ltd/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  20783 chars"
+    },
+    {
+      "at": "2026-05-14T11:51:31.319Z",
+      "step": "cli.stream",
+      "detail": "d-roofing-pty-ltd-dev',\n    '--branch',\n    'main',\n    '--commit-dirty=true',\n    '--commit-message',\n    'pl-publish-demo queensland-roofing-pty-ltd 2026-05-14T11:51:31.313Z'\n  ]\n}\n\nNode.js v25.6.1"
+    },
+    {
+      "at": "2026-05-14T11:51:31.345Z",
+      "step": "cli.stream",
+      "detail": "──────────────────────┴──────────────────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T11:51:31.354Z",
+      "step": "cli.stream",
+      "detail": "\": 61,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 5,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/place_chij-9wdzxxakwsr-lljrd1u3jq/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T11:51:31.355Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=259781ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -130,7 +130,11 @@ export function buildThreadTitle(entity, channel = 'projects') {
   const latest = entity.latest || {};
   const niche = nicheLabel(latest.niche || latest.category);
   const stage = stageLabel(entity.sales_stage || defaultStageForChannel(channel));
-  const grade = entity.grade?.investment_level || entity.scoring?.grade || '?';
+  // V3 D43 cycle-5c (Matthew 2026-05-14): no [?] in titles. Use real grade if
+  // present, else predict_grade (preliminary), else "未审" (pending audit) — never '?'.
+  const realGrade = entity.grade?.investment_level || entity.scoring?.grade;
+  const predict = entity.predict_grade?.grade;
+  const grade = realGrade || (predict ? `预${predict}` : '未审');
   const name = latest.name || entity.entityKey || '?';
   const emoji = attentionEmoji(entity);
   const emojiSuffix = emoji ? ` ${emoji}` : '';
