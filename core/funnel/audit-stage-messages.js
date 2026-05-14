@@ -89,6 +89,52 @@ export function pipelineStartMessage() {
 }
 
 // ─────────────────────────────────────────────────────────
+// Cheap-audit + predict summary · V3 D43 cycle-7
+// Matthew 2026-05-14: thread 不能是空壳 · 即使 predict-C 不跑 detail audit
+// 也要立刻 post 一条 summary 让人看到「为什么这样判 · 下一步」
+// ─────────────────────────────────────────────────────────
+export function cheapAuditPredictMessage({ entity, cheapAudit, predict }) {
+  const latest = entity?.latest || {};
+  const rc = latest.review_count || 0;
+  const rating = latest.rating || 0;
+  const ws = latest.websiteStatus || '?';
+  const wsLabel = ws === 'independent_https_site' ? '独立 HTTPS' :
+                  ws === 'independent_http_site' ? '独立 HTTP' :
+                  ws === 'no_website' ? '无网站' :
+                  ws === 'social_or_third_party_only' ? '社媒/三方' : ws;
+  const action = cheapAudit?.action || '?';
+  const actionLabel = action === 'audit_candidate' ? '可深审' :
+                      action === 'starter_candidate' ? '可建站' :
+                      action === 'manual_review' ? '操作员复核' :
+                      action === 'skip' ? '跳过' :
+                      action === 'queued_for_enrichment' ? '待补 contact' : action;
+  const g = predict?.predict_grade || '?';
+  const nextStep =
+    g === 'A' ? '→ 立刻 detailedAudit (高优先 · 优先 100)' :
+    g === 'B' ? '→ 进 detailedAudit 队列 (优先 75)' :
+    g === 'C' ? '→ cold backlog · 销售触发或周期任务再 audit' :
+    g === 'D' ? '→ archive · 不深审' : '→ ?';
+
+  const lines = [];
+  lines.push(`**Intake 完成 · cheap-audit + predict-grade**`);
+  lines.push('');
+  lines.push(`▸ **GBP 信号**: ${rating}★ · ${rc} 条评论 · 网站 ${wsLabel}`);
+  lines.push(`▸ **Cheap-audit 判定**: \`${action}\` (${actionLabel}) · gbp_quality ${cheapAudit?.gbp_quality ?? '?'}/100`);
+  if (cheapAudit?.reason) lines.push(`▸ Cheap-audit 原因: ${cheapAudit.reason}`);
+  if (cheapAudit?.fired_triggers?.length) {
+    lines.push(`▸ Fired triggers: ${cheapAudit.fired_triggers.join(', ')}`);
+  }
+  lines.push(`▸ **Predict grade**: \`${g}\` ${g === 'A' || g === 'B' ? '· 立刻深审' : g === 'C' ? '· 暂缓深审' : ''}`);
+  if (predict?.reasons?.length) {
+    lines.push(`▸ Predict 原因: ${predict.reasons[0]}`);
+  }
+  lines.push('');
+  lines.push(`**下一步**: ${nextStep}`);
+
+  return lines.join('\n');
+}
+
+// ─────────────────────────────────────────────────────────
 // Stage 1 · 网站审计 · 12 dim + tech + sitemap + speed + contact
 // ─────────────────────────────────────────────────────────
 export function stage1Message({ entity, audit, fetchPayload, contact, durationSec }) {

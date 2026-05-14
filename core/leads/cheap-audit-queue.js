@@ -172,12 +172,23 @@ async function processOne(entityKey) {
   // Title will be accurate because predict-grade is set on entity before thread create.
   if (!process.env.SOP1_DISABLE_AUTO_OPEN_LEADS) {
     try {
-      const { openLeadThread } = await import('../funnel/lead-thread-sync.js');
+      const { openLeadThread, refreshThreadAndPost } = await import('../funnel/lead-thread-sync.js');
       const r = await openLeadThread(entityKey);
       if (r?.ok) {
         console.error(`[cheap-audit-queue] ${entityKey} · thread ${r.reused ? 'reused' : 'opened'} (predict-${predict.predict_grade})`);
+        // V3 D43 cycle-7 (Matthew 2026-05-14): post cheap-audit + predict summary
+        // immediately so thread isn't empty for predict-C entities (no detail audit).
+        try {
+          const { cheapAuditPredictMessage } = await import('../funnel/audit-stage-messages.js');
+          // Read fresh entity (has new cheap_audit + predict_grade just written)
+          const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+          const summary = cheapAuditPredictMessage({ entity: fresh, cheapAudit: cheapResult, predict });
+          await refreshThreadAndPost(entityKey, summary, { skipCard: true });
+        } catch (err) {
+          console.error(`[cheap-audit-queue] ${entityKey} · post cheap-summary failed: ${err.message}`);
+        }
       } else {
-        console.error(`[cheap-audit-queue] ${entityKey} · openLeadThread failed: ${r?.error || 'unknown'}`);
+        console.error(`[cheap-audit-queue] ${entityKey} · openLeadThread failed: ${r?.reason || 'unknown'}`);
       }
     } catch (err) {
       console.error(`[cheap-audit-queue] ${entityKey} · openLeadThread error: ${err.message}`);
