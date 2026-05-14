@@ -68,6 +68,17 @@ if (args.all || args['all-audit-candidates']) {
 
 console.log(`[run-pipeline] targets=${targets.length}  refetch=${refetch}  reviews=${withReviews}  cloudinary=${uploadCloudinary}  profile=${PROFILE} (concurrent_leads=${CONCURRENT_LEADS})`);
 
+// V3 D37 (2026-05-14) · per-stage Discord update helper
+// Fire-and-forget · errors logged but never throw · 不阻塞 pipeline
+async function postStage(entityKey, message) {
+  try {
+    const mod = await import('../../core/funnel/lead-thread-sync.js');
+    await mod.refreshThreadAndPost(entityKey, message, { skipCard: false });
+  } catch (err) {
+    console.warn(`  [discord-hook] ${err.message}`);
+  }
+}
+
 async function processLead(entityKey) {
   console.log(`\n══════════ ${entityKey} ══════════`);
   const entityPath = path.join(entitiesDir, `${entityKey}.json`);
@@ -78,6 +89,9 @@ async function processLead(entityKey) {
   const entity = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
   const url = entity.latest?.website;
   const slug = slugifyName(entity.latest?.name || entityKey);
+
+  // V3 D37 · audit start
+  await postStage(entityKey, `🔍 **Audit pipeline 启动** · 4 stages · 预计 2-5 min`);
 
   // ── Stage 1: detailed audit (Playwright fetch + scoring) ─────────────
   const detailedPath = path.join(detailedDir, `${entityKey}.json`);
@@ -120,6 +134,32 @@ async function processLead(entityKey) {
     };
     fs.writeFileSync(detailedPath, JSON.stringify(detailedFixture, null, 2) + '\n');
     console.log(`     → audit_score=${audit.audit_score}/100 decision=${audit.decision}`);
+
+    // V3 D37 · Contact info extraction · 从 fetchPayload.rawHtml 抽 email + contact_us_url + social_links
+    // 写回 entity.latest · 供 profile card 联系方式 section 显示
+    if (fetchPayload?.rawHtml) {
+      try {
+        const { extractContactInfo } = await import('../../core/audit/contact-extraction.js');
+        const contact = extractContactInfo(fetchPayload);
+        // Read-merge-write to preserve other writers
+        const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+        fresh.latest = fresh.latest || {};
+        if (contact.emails.length && !fresh.latest.email) fresh.latest.email = contact.emails[0];
+        if (contact.emails.length > 1 && !fresh.latest.backup_email) fresh.latest.backup_email = contact.emails[1];
+        if (contact.contact_us_url && !fresh.latest.contact_us_url) fresh.latest.contact_us_url = contact.contact_us_url;
+        if (Object.keys(contact.social_links).length) {
+          fresh.latest.social_links = { ...(fresh.latest.social_links || {}), ...contact.social_links };
+        }
+        fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+        console.log(`     → contact: emails=${contact.emails.length} · contact_url=${contact.contact_us_url ? 'yes' : 'no'} · social=${Object.keys(contact.social_links).join(',') || 'none'}`);
+      } catch (err) {
+        console.warn(`     ⚠ contact extraction failed: ${err.message}`);
+      }
+    }
+
+    // V3 D37 · Stage 1 done hook
+    await postStage(entityKey,
+      `✅ **Stage 1/4 · detailedAudit done** · 总分 ${audit.audit_score}/100 · ${audit.decision || ''} · ${(audit.issues || []).length} issues`);
 
     // Matthew 2026-05-13: audit 完自动 refresh master.md · 把审计字段填进 frontmatter + 报告段
     // fire-and-forget · 去重 + 失败兜底在 enqueueMasterMdRefresh
@@ -175,6 +215,10 @@ async function processLead(entityKey) {
       fs.writeFileSync(visualPath, JSON.stringify(visualFixture, null, 2));
       const issues = out.parsedJson?.issues?.length || 0;
       console.log(`     → ${issues} visual issues via ${out.provider}, latency=${(out.latencyMs / 1000).toFixed(1)}s${out.tokensIn ? ` (in=${out.tokensIn} out=${out.tokensOut} ~$${(out.theoreticalCostUsd||0).toFixed(4)})` : ''}`);
+      // V3 D37 · Stage 2 done hook
+      const fresh = out.parsedJson?.visual_freshness ?? out.parsedJson?.freshness ?? null;
+      await postStage(entityKey,
+        `✅ **Stage 2/4 · visual audit done** · provider ${out.provider}${fresh != null ? ` · 新鲜度 ${fresh}/10` : ''} · ${issues} issues · ${(out.latencyMs / 1000).toFixed(1)}s`);
     } catch (err) {
       console.warn(`     ⚠ vision failed: ${err.message}`);
     }
@@ -200,6 +244,9 @@ async function processLead(entityKey) {
     });
     const persistResult = persistLeadGrade({ entityKey, grade: leadGrade });
     console.log(`  [stage 3a/4] graded: ${leadGrade.investment_level}${leadGrade.product_tier ? '/' + leadGrade.product_tier : ''} ${persistResult.ok ? '✓ persisted' : '⚠ ' + persistResult.reason}`);
+    // V3 D37 · Stage 3 done hook · grade-router 触发 thread 开 / 改 stage
+    await postStage(entityKey,
+      `✅ **Stage 3/4 · grade router done** · ${leadGrade.investment_level}${leadGrade.product_tier ? ' / ' + leadGrade.product_tier : ''}${leadGrade.skip_reasons?.length ? ` · skip: ${leadGrade.skip_reasons.map((r) => r.id).join(', ')}` : ''}`);
   } catch (err) {
     console.warn(`     ⚠ grading failed: ${err.message}`);
   }
@@ -216,8 +263,14 @@ async function processLead(entityKey) {
     cwd: repoRoot, stdio: 'inherit',
   });
   if (r.status !== 0) {
+    // V3 D37 · Stage 4 fail hook
+    await postStage(entityKey,
+      `❌ **Stage 4/4 · HTML report 失败** · exit ${r.status}`);
     return { entityKey, ok: false, reason: `build-report exit ${r.status}` };
   }
+  // V3 D37 · Stage 4 done hook
+  await postStage(entityKey,
+    `✅ **Stage 4/4 · internal HTML report 生成** · audit pipeline 完整 · 进入 design-ready 阶段`);
 
   return {
     entityKey,
@@ -252,24 +305,8 @@ console.log('\n══════════ Pipeline summary ═════�
 console.table(summary);
 console.log(JSON.stringify({ ok: summary.every((s) => s.ok), targets: summary.length, summary }, null, 2));
 
-// V3 D35 hook · refresh Discord thread + post summary message for each entity
-// Fire-and-forget · 不阻塞 process exit
-(async () => {
-  try {
-    const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
-    for (const s of summary) {
-      if (!s.entityKey) continue;
-      const auditScore = s.audit_score ?? s.score ?? null;
-      const visualScore = s.visual_freshness ?? null;
-      const decision = s.decision || '';
-      const ok = s.ok;
-      const msg = `${ok ? '✅' : '⚠️'} **Audit pipeline ${ok ? '完成' : '失败'}**${
-        auditScore != null ? ` · 总分 ${auditScore}` : ''
-      }${visualScore != null ? ` · 视觉 ${visualScore}/10` : ''}${decision ? ` · ${decision}` : ''}`;
-      await refreshThreadAndPost(s.entityKey, msg);
-    }
-  } catch { /* non-blocking */ }
-})();
+// V3 D37 · per-stage hook 替代 D35 end-of-pipeline 整体 summary
+// 每个 entity 已通过 postStage() 在 4 个 stage 节点发了消息 · 不再 batch summary 重复
 
 function listAuditCandidateEntityKeys() {
   const rescoreDir = path.join(repoRoot, 'data/v2/fixtures/rescore');

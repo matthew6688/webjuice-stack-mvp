@@ -220,6 +220,54 @@ trust / mobile / form / cta / speed / typography / visual-hierarchy / content-de
 **成本**: $0.003-0.005 (claude/codex) · $0 (ollama 兜底)
 **输出**: `visual_freshness` 0-10 + `visual_reasoning` 一段
 
+### Stage 7.5 · websiteStatus 分流 · "有网站" vs "无网站" lead
+
+**`entity.latest.websiteStatus`** 4 个值 · audit 流程基于此分两类客户:
+
+| websiteStatus | 含义 | 走向 |
+|---|---|---|
+| `independent_https_site` | 独立域名 HTTPS (主流) | **常规 audit** (12 dim) · grade 按 audit_score |
+| `independent_http_site` | 独立但 HTTP (没续 SSL / 老) | 同上 · audit 会降分 |
+| `third_party_landing_page` | 用 Wix/Facebook Page/Linktree | **starter_candidate** path · 走 B-高口碑 / T1-低口碑 |
+| `no_website` | 完全没网 | 同上 · starter_candidate |
+
+#### 「有网站」客户路径 (常规)
+
+```
+entity 有 website → Stage 6 detailedAudit 跑 (Playwright fetch · 12 dim)
+                  → Stage 7 visualAudit (vision LLM 看 desktop screenshot)
+                  → Stage 8 hard-skip 8 规则 (recent_redesign · enterprise · too_many_pages · etc.)
+                  → Stage 9 grade ABCD by audit_score + signals
+                  → Stage 10 tier T1/T2/T3
+                  → Stage 11 grade-router → Discord channel
+                  → Stage 12 DESIGN_READY → M3 build demo
+```
+
+#### 「无网站」客户路径 (starter_candidate)
+
+```
+entity 无 website (或 third_party) → no_website 是 detailedAudit hard_trigger
+                                   → 跳过 12 dim audit (没站可审)
+                                   → 进入 lead-grading.js 的 starter_candidate 分支:
+                                       if review_count >= 30 → grade B (口碑强 · 直接销售)
+                                       else if t1Signals >= 3 → C/T1 ($399 一次性)
+                                   → Discord channel:
+                                       grade B → #website-leads (无 demo · 用 GBP 数据冷接触)
+                                       grade C → #website-leads + cold-outreach-queue
+                                       grade D → archived
+```
+
+**关键**: `no_website` **不在 8 hard-skip 规则里** · 不直接 D archive。无网站 + 强口碑 = 优质 starter customer · 我们卖 $399 一次性 site (T1 product)。
+
+#### M3 demo build 时怎么处理这两类
+
+- 有网站客户: M3 `pl:build-from-reference` 用客户现网 audit 数据 (痛点 / 评价 / 视觉对比) 喂 prompt
+- 无网站客户: M3 用 GBP-only 数据 (评论 / 营业时间 / 类目) + reference site 默认 sample 内容 · `data-od-sample="true"` 标记 · 客户买后 M5 revision 补真值
+
+详细 SOP: [SOP-2-FLOW.md](./SOP-2-FLOW.md) §4 grade-router
+
+---
+
 ### Stage 8 · 分类 3 · 8 个 hard-skip 规则 ✅ Gate (D auto-archive)
 
 **位置**: `core/scoring/lead-grading.js#HARD_SKIP_RULES`

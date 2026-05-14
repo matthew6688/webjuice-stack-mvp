@@ -23,6 +23,7 @@ const NICHE_MAP = {
   hair: '美发', salon: '美发', barber: '美发',
   // 汽修
   auto: '汽修', panelbeater: '汽修', mechanic: '汽修', autoshop: '汽修',
+  car_repair: '汽修', auto_repair: '汽修', smash_repair: '汽修',
   // 油漆
   painter: '油漆', painting: '油漆',
   // 暖通
@@ -44,7 +45,19 @@ const NICHE_MAP = {
 export function nicheLabel(niche) {
   if (!niche) return '其他';
   const k = String(niche).toLowerCase().trim();
-  return NICHE_MAP[k] || '其他';
+  // Direct match
+  if (NICHE_MAP[k]) return NICHE_MAP[k];
+  // Underscore variant
+  const usVariant = k.replace(/[\s-]+/g, '_');
+  if (NICHE_MAP[usVariant]) return NICHE_MAP[usVariant];
+  // First word match (e.g. "plumbing services" → "plumbing" → 水管)
+  const firstWord = k.split(/[\s_-]/)[0];
+  if (NICHE_MAP[firstWord]) return NICHE_MAP[firstWord];
+  // Substring match (e.g. "general roofing contractor" → 屋顶)
+  for (const [key, label] of Object.entries(NICHE_MAP)) {
+    if (k.includes(key)) return label;
+  }
+  return '其他';
 }
 
 // Stage 2 字中文 · per-channel

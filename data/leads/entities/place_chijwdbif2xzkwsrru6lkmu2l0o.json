@@ -3,8 +3,8 @@
   "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-13T12:43:49.294Z",
-  "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-13T12:43:49.294Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-14T02:25:55.539Z",
   "identifiers": {
     "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
     "cid": "5345551503130488494",
@@ -146,7 +146,8 @@
     },
     "batch_id": "places-roofer-brisbane-202605132243",
     "discovery_rank": 11,
-    "google_places_provider": "official_api"
+    "google_places_provider": "official_api",
+    "contact_us_url": "https://brisbaneroofrestorationexperts.com.au/contact/"
   },
   "runs": [
     {
@@ -260,6 +261,29 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T02:18:43.659Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T02:18:43.662Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T02:25:55.539Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
     }
   ],
   "notes": [
@@ -270,7 +294,7 @@
     "product_tier": null,
     "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-13T06:52:24.249Z"
+    "graded_at": "2026-05-14T02:25:55.538Z"
   },
   "enrichment_status": "complete",
   "batches": [
@@ -279,5 +303,7 @@
   "project_thread_id": "1504269382304530583",
   "project_profile_message_id": "1504269382304530583",
   "project_thread_opened_at": "2026-05-13T23:49:28.894Z",
-  "sales_stage": "demo-ready"
+  "sales_stage": "demo-ready",
+  "phase": "design-ready",
+  "phaseChangedAt": "2026-05-14T02:25:55.545Z"
 }

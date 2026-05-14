@@ -345,21 +345,52 @@ Resolved:
 
 ---
 
-## 9. 实测记录 (跑完填)
+## 9. 实测记录 (Round 1 · 2026-05-14)
 
-### Round 1 · 2026-05-14 · (待跑)
+### Test #1 · intake (docker) · `--niche electrician --city devonport --count 1`
+- ✅ docker daemon up · gmaps-scraper-web running
+- ✅ Returned 12 leads (depth=1 of "electrician in devonport")
+- ✅ Entity count: 14 → 26 (+12)
+- ✅ Each entity has phone · website · rating · location
 
-#### Test #1 · intake · "find canberra plumbers --count 1"
-*(待跑)*
+### Test #2 · places-intake · `"panelbeater hobart" --limit 2`
+- ✅ Places API 调通 · 2 candidates returned
+- ✅ Duration 4.9s
+- ✅ Auto-opened batch thread in `#lead-discovery-runs` (URL: https://discord.com/channels/.../1504298672920334527)
+- ✅ 2 new entities + 2 master.md skeleton built (v3 dispatcher 消化)
+- ⚠️ Bug G1 fixed in this round: `display-vocab.js` 加 `car_repair` → `汽修` 映射
 
-#### Test #2 · places-intake · `places search "electrician canberra"`
-*(待跑)*
+### Test #3 · single-enrich · `--name "Sydney Plumbing Services" --phone +61 2 9876 5432`
+- ✅ Places find · resolved to "Sydney Plumbing and Drainage" (different biz · API found best match)
+- ✅ Duration 1.3s · cost ~$0.017
+- ✅ Entity created · phone + website + address 全
+- ✅ **Auto-chained audit task** spawned + completed (task_id 20260514-015412-b450c1 · 7 progress events)
+- ⚠️ Bug G2 fixed in this round: `nicheLabel()` 加 4 层容错 (direct · underscore · first-word · substring) · "plumbing services" 现 → 水管
 
-#### Test #3 · single-enrich · phone
-*(待跑)*
+### Test #4 · image-extract
+- ⏭ 跳过 (需手动上传图片)
+- ✅ 提供 sample dir: `data/qa/sample-images/` · 有 README + roofing-flyer-1.notes.md
+- 待 Matthew drag 实际 jpg 进 · 然后 `npm run pl:ingest-image -- --image-path data/qa/sample-images/roofing-flyer-1.jpg`
 
-#### Test #4 · image-extract
-*(待跑 · 需手动上传图)*
+### Audit pipeline · per-stage Discord 验证 · brisbane-roof
+- ✅ `npm run leads:run-pipeline -- --entity-key place_chijwdbif... --refetch`
+- ✅ 5 stage messages posted (1 启动 + Stage 1/2/3/4 各 1)
+- ✅ Stage 1 · contact extraction wired: `contact_us_url` 抽到 (`/contact/`) · email/social 空 (homepage 数据有限 · 需 crawl /contact 页面才全 · backlog P2 多页 scrape 时一起做)
+- ✅ Stage 3 · grade router 改 grade C (re-grade · 触发 D35 refreshThreadAndPost)
+- ✅ Stage 4 · internal HTML report 重建
+
+### Bugs found + fixed in Round 1
+| # | Bug | Status |
+|---|---|---|
+| G1 | display-vocab 缺 car_repair · auto_repair · smash_repair niche | ✅ fixed |
+| G2 | nicheLabel "plumbing services" → "其他" 漏 (要单词 key) | ✅ fixed (4 层容错) |
+| D37-1 | audit pipeline 只发 1 条 summary 而非 4 stage 单独 | ✅ fixed (per-stage hook) |
+| D37-2 | email/contact_us/social_links 不写回 entity | ✅ fixed (contact-extraction.js) |
+
+### 待办 Round 2 (backlog)
+- Test #4 image-extract · Matthew 提供图片后跑
+- 多页 scrape (about / services / contact 页 fetch + extract logo + page copy)
+- 跨多个 entity 跑 audit pipeline · 确认 batch 模式 Discord 不刷屏
 
 ---
 

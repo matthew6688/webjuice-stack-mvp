@@ -548,6 +548,73 @@ node -e "import('./core/leads/discovery-store.js').then(m => m.rebuildDiscoveryI
 
 ---
 
+## D37 · Audit per-stage Discord hook + contact 抓取 + niche 容错 (2026-05-14)
+
+**Decision**: 4 改进:
+1. Audit pipeline 每 stage 单独发 Discord (per Matthew "audit 进展没每个步骤回报吗")
+2. Stage 1 自动抓 email + contact_us_url + social_links 写回 entity (per Matthew "为什么没邮箱/contact us/social? audit 没 scrape 吗?")
+3. `nicheLabel()` 加容错匹配 (4 层 · 解 Bug G2 "plumbing services" → "其他")
+4. display-vocab 加 car_repair 等 niche key (解 Bug G1)
+
+**Why**: 
+- 单一 summary 消息看不到中间进展 · operator 不知 audit 卡在哪 stage
+- profile card 联系方式 section 永远 "—" 占位 · 没用
+- "plumbing services" 等 multi-word niche 显示 "其他" · 销售看板不准
+- car_repair (panelbeater 实测产生) 显示 "其他" · 同上
+
+**Implementation**:
+
+### 1. Per-stage Discord hook (`scripts/leads/run-audit-pipeline.js`)
+- 新加 `postStage(entityKey, message)` helper · fire-and-forget · 调 `refreshThreadAndPost`
+- 5 个 hook 点:
+  - Audit pipeline 启动 · "🔍 Audit pipeline 启动 · 4 stages · 预计 2-5 min"
+  - Stage 1 done · "✅ Stage 1/4 · detailedAudit done · 总分 X · decision · N issues"
+  - Stage 2 done · "✅ Stage 2/4 · visual audit done · provider X · 新鲜度 N/10 · M issues"
+  - Stage 3 done · "✅ Stage 3/4 · grade router done · A/B/C/D · skip_reasons"
+  - Stage 4 done · "✅ Stage 4/4 · internal HTML 生成 · audit pipeline 完整"
+- 替换 D35 末尾 batch summary (避免重复)
+
+### 2. Contact extraction (`core/audit/contact-extraction.js` 新)
+- `extractEmails(rawHtml)` · 优先 mailto: · 过滤占位 (jsmith@email.com / @example.com / @yourdomain · 等)
+- `extractContactUsUrl(rawHtml, baseUrl)` · 正则 `/contact` `/contact-us` 链接 · resolve relative URL
+- `extractSocialLinks(rawHtml)` · 6 platform · 容忍裸 URL · 过滤 share button (path 太短)
+- Wire 进 Stage 1 后 · 读 fetchPayload.rawHtml · 写回 entity.latest.email / backup_email / contact_us_url / social_links
+- 不覆盖已有字段 · only fill blanks
+- Profile card 联系方式 section 自动反映
+
+### 3. nicheLabel 4 层容错 (`core/funnel/display-vocab.js`)
+```
+direct → underscore variant → first-word → substring match → fallback "其他"
+```
+测试: plumbing services → 水管 · Roofing contractor → 屋顶 · car_repair → 汽修
+
+### 4. display-vocab 加 car_repair (G1 fix)
+加 `car_repair · auto_repair · smash_repair` → `汽修`
+
+**Verification (brisbane-roof re-audit · --refetch)**:
+- ✅ 5 stage Discord 消息发出 (target thread 1504269382304530583)
+- ✅ entity.latest.contact_us_url = "https://brisbaneroofrestorationexperts.com.au/contact/"
+- ⚠️ email/social_links 仍空 (brisbane-roof homepage 没 mailto · 没 specific social path · 需 P2 多页 scrape 抓 /contact 页才完整)
+- ✅ niche "Roofing contractor" 现 → "屋顶" (substring match)
+
+**新 backlog (per Matthew · 转 #website-leads → 实际做网站时需要的进一步工作)**:
+- P2 · 多页 site crawl (Firecrawl about/services/contact/各 service 页 · 抓 logo + page copy)
+- P3 · 域名年龄 + WHOIS history (paid DomainTools OR Wayback retry · .au 域 auDA 限制)
+
+**Sample images dir** (per Matthew · "测试 run · 不要因为没图片不知道往下推进"):
+- `data/qa/sample-images/` 新目录
+- `README.md` · 4 类 sample 命名规范 + 测试用法
+- `roofing-flyer-1.notes.md` · Matthew 提供的传单 · OCR 期望输出 + 测试 verifies
+
+**LEAD-JOURNEY.md updates**:
+- 新 Stage 7.5 · websiteStatus 4 种值分流 ("有网站" vs "无网站")
+- 有网站客户走常规 12 dim audit + grade
+- 无网站客户走 starter_candidate path (评论 ≥30 → B · 否则 → T1)
+- `no_website` **不在 8 hard-skip 规则** (不直接 archive)
+
+
+---
+
 ## D36 · Skill 清理 + 工具索引 + 入口 runbook (2026-05-14)
 
 **Decision**: V3 主线只维护与 V3 项目相关的 skill · 其他 V2 leftover 全部 archive。新增 3 个 SoT 文档。
