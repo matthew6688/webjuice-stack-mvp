@@ -281,20 +281,27 @@ export function setEntityPhase({
     note: note || '',
   }]);
 
-  // V2 Discord sync hook — DISCORD_OUTREACH_PRD.md §9 + Block 4.5
-  // Async fire-and-forget. Skipped when entity has no thread (C-grade / pre-V2)
-  // or when SKIP_LEAD_THREAD_SYNC=true (test mode).
-  if (!isNoOp && entity.discord_thread_id && !process.env.SKIP_LEAD_THREAD_SYNC) {
-    import('../funnel/lead-thread-sync.js').then(async ({ swapPhaseTag, appendThreadMessage, upsertProfileCard }) => {
-      try {
-        await swapPhaseTag(entityKey);
-        const msg = `🔄 Phase ${prevPhase || '(none)'} → **${phase}**${entity.sub_status ? ` (${entity.sub_status})` : ''}${note ? ` — ${note}` : ''}`;
-        await appendThreadMessage(entityKey, msg);
-        await upsertProfileCard(entityKey);
-      } catch (err) {
-        console.warn(`[setEntityPhase] thread sync failed: ${err.message}`);
-      }
-    }).catch((err) => console.warn(`[setEntityPhase] thread sync import failed: ${err.message}`));
+  // V3 D43 Discord sync · per Matthew "所有的阶段转接...如果不能 update 对应的 thread,
+  // 或者没有 thread, 请更新到 bot-log channel"
+  // Always emit phase transition (no longer skips when entity has no thread —
+  // emitter handles fallback to bot-log automatically).
+  if (!isNoOp && !process.env.SKIP_LEAD_THREAD_SYNC && !process.env.SKIP_DISCORD_EMIT) {
+    // Fire-and-forget · two concurrent flows:
+    //   A. emitDiscord (phase transition · always · fallback bot-log)
+    //   B. lead-thread-sync (swap tag · upsert card · only if entity has thread)
+    import('../funnel/discord-emit.js').then(({ emitPhaseTransition }) =>
+      emitPhaseTransition(entity, prevPhase, phase, note).catch(() => {})
+    ).catch(() => {});
+    if (entity.discord_thread_id) {
+      import('../funnel/lead-thread-sync.js').then(async ({ swapPhaseTag, upsertProfileCard }) => {
+        try {
+          await swapPhaseTag(entityKey);
+          await upsertProfileCard(entityKey);
+        } catch (err) {
+          console.warn(`[setEntityPhase] thread sync failed: ${err.message}`);
+        }
+      }).catch((err) => console.warn(`[setEntityPhase] thread sync import failed: ${err.message}`));
+    }
   }
 
   return {

@@ -147,23 +147,19 @@ async function patchThreadTags(threadId, tagIds) {
 }
 
 async function postThreadReply(threadId, content) {
-  if (!TOKEN || !threadId) return null;
-  const res = await fetch(`${DISCORD_API}/channels/${threadId}/messages`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bot ${TOKEN}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'sop0-task-dispatcher',
-    },
-    body: JSON.stringify({ content: content.slice(0, 1900), allowed_mentions: { parse: [] } }),
+  // V3 D43 · 走 unified emit · thread 失败 / 没 thread → bot-log fallback + audit log
+  const { emitDiscord } = await import('../../core/funnel/discord-emit.js');
+  const r = await emitDiscord({
+    threadId,
+    content: content.slice(0, 1900),
+    event: 'dispatcher.post',
   });
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    log('postThreadReply FAIL', threadId, res.status, text.slice(0, 200));
+  if (!r.ok) {
+    log('postThreadReply FAIL · emit + bot-log both failed', threadId, r.error);
     return null;
   }
-  const data = await res.json().catch(() => null);
-  return data?.id || null;
+  if (r.fallback) log('postThreadReply fell back to bot-log', threadId);
+  return r.message_id || null;
 }
 
 /* ─── Core: spawn a task's target CLI ─────────────────────────────── */

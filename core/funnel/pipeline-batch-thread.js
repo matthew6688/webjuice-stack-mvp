@@ -146,18 +146,22 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
               : `${emoji} **${stage}**`;
   const body = `${head}\n${summary}`;
 
-  const r = await fetch(`${DISCORD_API}/channels/${state.thread_id}/messages`, {
-    method: 'POST',
-    headers: { Authorization: `Bot ${botToken()}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content: body }),
+  // V3 D43 · 通过 unified emit (fallback bot-log on thread fail) + audit log
+  const { emitDiscord } = await import('./discord-emit.js');
+  const emitRes = await emitDiscord({
+    threadId: state.thread_id,
+    content: body,
+    event: 'batch.stage',
+    context: { batchId, stage, status },
   });
-  const data = await r.json();
-  if (!r.ok) throw new Error(`stage post failed: ${r.status} ${JSON.stringify(data)}`);
+  if (!emitRes.ok) throw new Error(`stage post failed: ${emitRes.error || 'unknown'}`);
+  const data = { id: emitRes.message_id };
 
   state.stages.push({
     stage, status, summary,
     at: new Date().toISOString(),
     message_id: data.id,
+    fallback: emitRes.fallback || null,
   });
 
   if (swapTag) {
