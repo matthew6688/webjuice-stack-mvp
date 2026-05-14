@@ -11,12 +11,12 @@ decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
-visual_age: "slightly_outdated"
-visual_freshness: 7
-visual_trust: 8
+visual_age: "outdated"
+visual_freshness: 4
+visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-13T07:33:58.302Z"
+generated_at: "2026-05-14T04:38:31.789Z"
 assets:
   cloudinary_folder: null
   evidence_count: 7
@@ -95,14 +95,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> Professional roofing site with strong hero image and visible form, but cluttered header navigation and competing CTAs dilute focus
+> The site uses an outdated teal/black color scheme with busy hero imagery and multiple conflicting CTAs that reduce clarity for mobile visitors.
 
-新鲜度 **7/10** · 信任度 **8/10** · 转化准备度 **6/10** · 设计年代 `slightly_outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- Strong authentic hero image showing actual worker on corrugated roof builds trust and industry relevance — preserve this real-work photography approach
-- Quote form is positioned above the fold and immediately visible, capturing visitors who prefer forms over calls
-- Brand name 'WeatherpRoof Restorations' clearly communicates service category and specialty positioning
+- The headline 'EXPERIENCE THE WEATHERPROOF DIFFERENCE. QUALITY YOU CAN TRUST' clearly communicates the value proposition and brand name
+- The site displays a real worker photo (even if generic) which is better than pure stock imagery and shows an actual person doing roofing work
+- Mobile version is responsive and text is legible at standard zoom levels
 
 ## 四、客户在 Google 上怎么说
 
@@ -144,7 +144,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 1 项（立刻在伤害成交）
+### 关键问题 · 2 项（立刻在伤害成交）
 
 ### 关键 · phone_visible_above_fold
 
@@ -159,6 +159,29 @@ phone hidden below fold or missing
 **对客户的影响**
 
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
+
+
+### 关键 · Phone number not displayed on mobile or desktop
+
+**技术事实**
+
+Neither screenshot shows an actual phone number anywhere — only 'Call Us Today!' buttons; the top navigation on desktop has a 'CONTACT' link but no visible click-to-call number in the header or hero area
+
+**普通话翻译**
+
+网站上没有显示电话号码,访客必须点按钮才能打电话,这会流失很多着急的客户。
+
+**对客户的影响**
+
+移动端搜索'Brisbane 屋顶维修'的人,80%是遇到紧急问题(漏水、风暴损坏),他们想立刻打电话。如果看不到号码,60-70%会直接返回搜索结果打给下一家。您每个月可能因此损失20-40个电话咨询。
+
+**正确长啥样**
+
+Phone number displayed in the top-right of desktop header and directly below the logo on mobile (e.g. '07 3XXX XXXX' or '1300 XXX XXX') so it's tap-to-call without any extra steps
+
+**Redesign 怎么改**
+
+Add the business phone number in the desktop header top-right in a large, bold font; on mobile, place it directly below the logo in a tap-to-call format; keep it visible on scroll (sticky header)
 
 
 ### 主要问题 · 6 项（影响转化的明显短板）
@@ -193,103 +216,103 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Seven navigation items crowd header reducing clarity
+### 主要 · 2010s-era teal/cyan accent color throughout
 
 **技术事实**
 
-The header contains seven navigation items ('WHAT WE DO', 'OUR WORK', 'ABOUT', 'COLOUR VISUALISER', 'CONTACT', plus 'REQUEST A QUOTE' button and phone number) all competing for attention in a narrow horizontal strip above the hero
+The primary accent color is a bright teal/cyan (#00CED1 range) used for all buttons, the top banner text '30+ YEARS OF EXPERIENCE', and overlay text like 'TRUSTED ROOFING EXPERTS IN BRISBANE'
 
 **普通话翻译**
 
-网站顶部导航栏塞了 7 个选项,访客需要花时间辨认哪个是他们要的,容易错过电话号码或报价按钮
+网站用的青绿色(teal)是2012-2016年流行的颜色,现在看起来过时了,会让访客觉得公司可能也不是最新的专业水平。
 
 **对客户的影响**
 
-本地搜索访客在 8 秒内决定是否信任网站,导航越复杂流失率越高。简化导航可提升 15-25% 的咨询转化,因为访客能立即找到电话或报价入口
+访客在8秒内会判断一个公司是否可信。过时的颜色会让人觉得这是一家老旧公司,可能技术和服务也跟不上,导致30-40%的访客直接离开去找看起来更现代的竞争对手。
 
 **正确长啥样**
 
-Simplified header with 3-4 core items (Services, Work, Contact) and a single prominent phone number in the top-right corner with high contrast. Secondary tools like colour visualiser belong in a sub-menu or later in the customer journey
+A 2025 roofing site would use a deep charcoal or navy base with a warm accent like coral, terracotta, or gold — colors that evoke trust, permanence, and Australian roofing heritage
 
 **Redesign 怎么改**
 
-Reduce navigation to 'Services', 'Our Work', 'Contact' plus large clickable phone number (07-XXXX-XXXX) in top-right. Move 'Colour Visualiser' into Services dropdown or separate tools section below fold
+Replace all teal/cyan (#00CED1) with a warm coral or terracotta accent (#FF6B4A, #E07856); update all button backgrounds, banner backgrounds, and overlay text to use the new palette
 
 
-### 主要 · Three CTAs compete: header button, hero button, form submit
+### 主要 · Three different CTAs on mobile confuse the visitor
 
 **技术事实**
 
-The page presents three conversion paths simultaneously: 'REQUEST A QUOTE' button in top-right header (teal), 'Contact Us' button in hero text area (bright teal), and 'Get Free Quote' form submission button on the right (same bright teal). All three are visible above the fold
+On mobile, there are three teal buttons: 'Call Us Today!' appears twice (once mid-hero, once at bottom), plus an 'Enquire Now' button at the bottom — all identical in style with no hierarchy
 
 **普通话翻译**
 
-页面同时出现 3 个行动按钮(顶部报价、主区联系按钮、右侧表单),访客不知道该点哪个,造成选择困难
+手机页面上有三个一模一样的按钮,访客不知道该点哪个,造成混乱。
 
 **对客户的影响**
 
-多个 CTA 会降低 20-35% 的转化率,因为访客不确定哪个是'正确'的下一步。统一为单一主要行动(电话或表单)可显著提升咨询量,特别是移动端访客更需要明确指引
+移动端访客占本地搜索的70%以上,他们平均只会在页面停留10秒。如果CTA按钮不清晰,50%的访客会直接离开。一个清晰的'立即致电'按钮可以让电话咨询增加2-3倍。
 
 **正确长啥样**
 
-One primary conversion path above the fold: either a prominent phone number with click-to-call on mobile, OR a single quote form. Secondary actions (email contact, viewing work) appear below fold or in footer. Example: large phone button top-right, hero text supports it, form integrated into hero or immediately below
+A single prominent phone CTA above the fold ('Call Now' with the actual phone number visible) and one secondary form button below, with clear visual hierarchy — primary is larger/bolder, secondary is outlined or smaller
 
 **Redesign 怎么改**
 
-Make phone number the primary CTA in header (large, high-contrast, click-to-call on mobile). Remove 'Contact Us' button from hero text. Keep form on right but reduce visual weight slightly, positioning it as secondary option. Ensure mobile version stacks phone-first, form-second
+Remove duplicate CTAs; show one primary 'Call [phone number]' button above fold in a warm accent color, make it tap-to-call; add one secondary 'Get Free Quote' button lower down in outlined style
 
 
-### 主要 · Right-side form has 8 fields creating overwhelming appearance
+### 主要 · Busy corrugated iron background reduces text legibility
 
 **技术事实**
 
-The quote form on the right side displays 8 input fields vertically: Name, Email, Phone Number, Property Address checkbox group (3 items), Roof Cleaning, Roof Painting, and a text area for 'Briefly tell us about your roofing roof', all stacked in a dark semi-transparent overlay box
+The hero image shows a worker on a corrugated metal roof with strong vertical line patterns; white text is overlaid with a dark semi-transparent overlay, but the corrugation ridges create visual noise behind 'EXPERIENCE THE WEATHERPROOF DIFFERENCE'
 
 **普通话翻译**
 
-报价表单要填 8 个格子,看起来很麻烦,很多访客还没开始就放弃了。表单还有拼写错误('roofing roof'),显得不专业
+英雄区的波纹铁皮背景太花了,白色文字不够清晰,访客需要费力才能看清主标题。
 
 **对客户的影响**
 
-每多一个表单字段,完成率下降 5-10%。8 个字段的表单比 3 个字段的少 40-50% 提交率。简化表单可立即提升线索量,特别是手机访客更不愿意打字填长表单
+如果访客在3秒内看不清您的核心卖点,他们会按返回键去找下一个搜索结果。特别是50岁以上的房主(屋顶修复的主要客户群),对低对比度文字更不耐烦,会直接流失掉20-30%的潜在客户。
 
 **正确长啥样**
 
-3-field minimal form: Name, Phone, and optional brief message. Collect address and service details via phone call after initial contact. Form heading 'Get Your Free Quote Today!' should promise speed. Example: 'Call you back in 15 minutes' builds urgency without friction
+A hero image with a simpler background (e.g. a finished roof against sky, a clean roofline) or a solid color block behind the text so white letters have clean contrast without competing patterns
 
 **Redesign 怎么改**
 
-Reduce form to Name, Phone, and 'What do you need?' (single text field). Remove email field (phone is faster for trades), remove checkbox clutter, remove typo. Add trust signal below submit button: 'Average response time: 2 hours' or '127 Brisbane homeowners quoted this month'
+Either use a different hero image with a less busy background (blue sky, clean facade), or add a solid 80% black rectangle behind the headline text to ensure crisp legibility on all screens
 
 
-### 主要 · Phone number in header is too small and low contrast
+### 主要 · Desktop quote form asks for 7 fields above the fold
 
 **技术事实**
 
-The phone number '07 3040 5980' appears in the top-right corner of the header in white text on a dark teal background. The text size is smaller than the navigation items, approximately 12-13px, and the number is not visually emphasized compared to the adjacent 'REQUEST A QUOTE' button
+The right-side form on desktop labeled 'Get Your Free Quote Today!' contains 7 input fields (Name, Email, Phone Number, Service Type dropdown with 4 options including 'Roof Cleaning', 'Roof Painting', plus 'How long have you had your roofing for?' and 'Body text message box') all visible before scrolling
 
 **普通话翻译**
 
-电话号码字体太小,颜色对比度不够,访客很容易错过。很多本地客户想直接打电话而不是填表单
+桌面版的报价表单要求填7个字段,对于刚找到网站的访客来说太多了,会让人觉得麻烦而放弃。
 
 **对客户的影响**
 
-60% 的手机搜索用户更愿意直接打电话而不是填表。电话号码不明显会流失这部分高意向客户。把电话号码放大加粗可提升 30-40% 的直接来电量,这些来电的成交率通常比表单线索高 2-3 倍
+研究显示,表单每增加一个字段,完成率就下降10-15%。7个字段的表单只有5-8%的人会填完,而3个字段的表单有25-30%的人会提交。简化表单可以让您的询盘量翻3倍。
 
 **正确长啥样**
 
-Phone number should be the largest, highest-contrast element in the header: 18-20px minimum, bold weight, with a phone icon to the left. On mobile, it becomes a full-width click-to-call button at the top. The number should visually dominate the 'Request a Quote' button, not compete with it
+A 2-3 field micro-form above the fold: Name, Phone, and a single-line 'What do you need?' text box, with a prominent submit button; or just a big 'Call Now' button with the phone number visible
 
 **Redesign 怎么改**
 
-Increase phone number to 20px bold with phone icon (📞), change 'REQUEST A QUOTE' to smaller secondary button or link. On desktop, number stays top-right but enlarged; on mobile, it becomes sticky header bar with tap-to-call. Ensure contrast ratio exceeds 4.5:1
+Replace the 7-field form with a 3-field form: Name, Phone, and 'Tell us briefly what you need' (single line); move all other fields to a secondary detailed form on a separate 'Get Quote' page
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Simplify header to 3-4 nav items and make phone number 2x larger with high contrast and click-to-call on mobile
-2. [视觉] 2. Reduce form fields from 8 to 3 (Name, Phone, Message), fix typo, add response-time trust signal
-3. [视觉] 3. Eliminate competing CTAs — make phone primary, form secondary, remove redundant hero 'Contact Us' button
+1. [视觉] 1. Replace teal/cyan accent with a warm modern color (coral/terracotta) and simplify to one primary CTA above fold with visible phone number
+2. [视觉] 2. Reduce desktop form from 7 fields to 3 fields (Name, Phone, Brief description) and display phone number prominently in header on all devices
+3. [视觉] 3. Replace hero image with a recognizable Brisbane Queenslander roof project and add a solid text background for clean legibility
 4. [评论] Feature Joe Lin's review prominently to counter 'scam' fears common in roofing by highlighting honest, no-upsell inspections.
 5. [评论] Use Sam Pengelly's quote in a 'Why Choose Us' section to demonstrate proactive problem-solving and trustworthiness.
 6. [评论] Highlight the peer endorsement from Elizabeth High to establish industry credibility and quality assurance.
@@ -309,20 +332,58 @@ Increase phone number to 20px bold with phone icon (📞), change 'REQUEST A QUO
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **99/100** |
+| 性能 (Performance) | **92/100** |
 | 可访问性 (Accessibility) | 88/100 |
 | 最佳实践 (Best Practices) | 96/100 |
 | SEO | 85/100 |
 
-**Lab 关键指标：** LCP `2.0s` · FCP `1.4s` · CLS `0.002` · TBT `0ms`
+**Lab 关键指标：** LCP `2.9s` · FCP `1.4s` · CLS `0.002` · TBT `0ms`
 
-**Google 建议的优化项（按节省时间排序，前 1）：**
+**Google 建议的优化项（按节省时间排序，前 2）：**
 
 - **Reduce unused CSS** — 节省 150ms · 节省 49KB
+- **Initial server response time was short** — 节省 148ms
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 99 · A11y 88 · Best Practices 96 · SEO 85
+**Lighthouse 分数：** Performance 98 · A11y 88 · Best Practices 96 · SEO 85
+
+## 图片优化与第三方脚本体重
+
+PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker 脚本。
+
+### 图片优化（共 19 张）
+
+- **优化率：** 21%（4/19 使用 WebP/AVIF/SVG）
+- **响应式 srcset：** 89%
+- **Lazy load：** 89%
+- **Alt 文字（非空）：** 0%
+- **显式 width/height：** 11%（防止 CLS 布局抖动）
+
+**总评：** 部分优化 — 还有空间
+
+**具体问题：**
+- [minor] 14 张图仍是 JPG/PNG，建议转 WebP
+- [major] 19/19 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取
+- [minor] 17/19 张图无显式 width/height — 加重 CLS 布局抖动
+
+### 第三方脚本占用情况
+
+- **总请求数：** 111（76 自有 + 35 第三方）
+- **第三方占总下载量：** 55%（2700 KB / 4938 KB）
+- **Tracker 脚本数：** 11（合计 620 KB）
+
+**已识别的 tracker：**
+
+| 工具 | 类型 | 请求数 | 字节 |
+|---|---|---|---|
+| Google Tag Manager | analytics | 3 | 475.4 KB |
+| Meta Pixel | ad_pixel | 2 | 142.0 KB |
+| DoubleClick | ad_serving | 1 | 2.2 KB |
+| Microsoft Clarity | analytics | 4 | 0.7 KB |
+| Google Analytics | analytics | 1 | 0.0 KB |
+
+> **观察：** 11 个 tracker 合计加载了 620 KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -338,8 +399,11 @@ Increase phone number to 20px bold with phone icon (📞), change 'REQUEST A QUO
 
 | 类型 | 数量 |
 |---|---|
-| 顶层页面 | 27 |
-| 内页 | 4 |
+| 顶层页面 | 11 |
+| 服务详情页 | 10 |
+| service_area_page | 5 |
+| 内页 | 3 |
+| area_page | 2 |
 | 首页 | 1 |
 | Blog 文章 | 1 |
 | 关于 / 团队 | 1 |
@@ -349,9 +413,21 @@ Increase phone number to 20px bold with phone icon (📞), change 'REQUEST A QUO
 
 **Redirect 计划承诺：** redesign 上线时我们会附一份 35 条 1:1 redirect 表（旧 URL → 新 URL），保证 Google 已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。
 
+### SEO 长尾结构（服务 × 区域 = 本地搜索流量金矿）
+
+- **服务专项页（如 /metal-roofing/）：** 10 个
+- **区域页（如 /service-areas/brisbane/）：** 2 个
+- **服务×区域组合页（如 /metal-roofing-brisbane/）：** 5 个
+
+**长尾覆盖：** 强 — 已有 5+ 服务×区域页，长尾流量基础在
+
+**现有服务页样本：** `/all-you-need-to-know-about-our-full-roof-restorations/` · `/9-signs-your-roof-needs-repair/` · `/what-is-a-green-roof-are-they-a-good-idea/` · `/planning-to-sell-hows-your-roof/` · `/why-choose-weatherproof-restorations/`
+
+**现有服务×区域页样本：** `/top-signs-your-roof-needs-immediate-attention/` · `/why-brisbanes-climate-affects-your-roof-more-than-you-think/` · `/dont-diy-your-roof-restoration/` · `/why-is-roof-maintenance-important/` · `/roof-painting/`
+
 ### 运营活跃度
 
-- **整体活跃度：** 停滞（超过 3 个月没动） （最近一次更新 160 天前）
+- **整体活跃度：** 停滞（超过 3 个月没动） （最近一次更新 163 天前）
 - **Blog 板块：** 有，共 1 篇文章 
 - **社交媒体链接：** 网站上引用了 2 个平台 — facebook, instagram
 
@@ -396,6 +472,8 @@ Increase phone number to 20px bold with phone icon (📞), change 'REQUEST A QUO
 
 ## 域名历史与邮件信誉
 
+- **域名"在线已"约：** 4 年（Wayback 首次快照 2021-12-28 起算（.au 域名无公开创建日期））— 中等年龄
+- **Wayback Machine 快照：** 33 条（2021-12-28 → 2026-03-10）
 
 ### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
 
@@ -425,6 +503,28 @@ Increase phone number to 20px bold with phone icon (📞), change 'REQUEST A QUO
 - Google Ads Conversion
 
 我们 redesign 交付清单会把这些列为「必须 setup 项」。
+
+## 信任凭证 · AU 屋顶服务
+
+本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。
+
+**信任分：** 25/100
+
+### 已显示的（3 项）
+
+- **从业年限** (10 分) — "25 Years Of Experience"
+- **保修 / 工艺保证** (10 分) — "20-YEAR WARRANTY"
+- **免费报价 / 上门估价** (5 分) — "Free Quote"
+
+### 缺失的（5 项 — redesign 必补 / 提醒客户提供素材）
+
+- [法律要求] **QBCC 执照号** (25 分)
+- [法律要求] **ABN** (15 分)
+- [行业惯例] **公共责任险** (15 分)
+- [法律要求] **工伤 / WHS 合规** (10 分)
+- [行业惯例] **行业协会会员** (10 分)
+
+> 客户网站缺少 3 个法律 / 行业要求的信任凭证：QBCC 执照号、ABN、工伤 / WHS 合规。QLD 屋顶服务由 QBCC 监管，客户在花钱前会查这些；缺失等于直接给同行让单。
 
 ## AI 时代可发现性 · GEO Readiness
 
@@ -478,7 +578,7 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 
 **月度费用区间：** $800-1,500/月（视平台数量与内容深度）
 
-**销售切入：** 「你 Google 上的 134 条好评是金矿，但你的 Facebook 已经 160 天没动过 — 这等于你把口碑资产堆在仓库里没拿去卖。我们月度包就是把这部分自动化跑起来。」
+**销售切入：** 「你 Google 上的 134 条好评是金矿，但你的 Facebook 已经 163 天没动过 — 这等于你把口碑资产堆在仓库里没拿去卖。我们月度包就是把这部分自动化跑起来。」
 
 <!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
 <!-- 现网站快速诊断 -->

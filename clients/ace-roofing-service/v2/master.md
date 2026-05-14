@@ -1,10 +1,10 @@
 ---
-business_id: "domain_aceroofingservice.com.au"
+business_id: "place_chijrq6qulnbkwsruettr7eegyc"
 business_name: "Ace Roofing Service"
 niche: "roofer"
 city: "Brisbane"
 rating: 5
-review_count: 0
+review_count: 37
 website: "https://aceroofingservice.com.au/"
 audit_score: null
 decision: null
@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T13:15:41.879Z"
+generated_at: "2026-05-13T21:16:22.025Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -26,7 +26,7 @@ assets:
 
 # Ace Roofing Service · 现状审计与重构提议
 
-> **null/100** · - · 行业：roofer · 地区：Brisbane · Google 评价：5★ （0 条）
+> **null/100** · - · 行业：roofer · 地区：Brisbane · Google 评价：5★ （37 条）
 
 ## 内部分级 · 运营优先看这段
 
@@ -45,12 +45,14 @@ assets:
 
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Maps (gosom 抓取)
+- **来源**: Google Places API (官方搜索)
 - **搜索关键词**: `roofer in brisbane`
-- **首次发现**: 2026-05-13
+- **结果排名**: 第 8 位
+- **首次发现**: 2026-05-09
+- **Batch**: `places-roofer-in-brisbane-202605132244`
 
-- 电话：0449168985
-- 地址：72 Queen St, Brisbane City QLD 4000
+- 电话：0449 168 985
+- 地址：72 Queen St, Brisbane City QLD 4000, Australia
 - 网站：[https://aceroofingservice.com.au/](https://aceroofingservice.com.au/)
 - 网站状态：`independent_https_site`
 

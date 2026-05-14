@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T12:43:49.900Z"
+generated_at: "2026-05-13T21:16:22.183Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -49,7 +49,7 @@ assets:
 - **搜索关键词**: `roofer brisbane`
 - **结果排名**: 第 2 位
 - **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-brisbane-202605132243`
+- **Batch**: `places-roofer-brisbane-202605132312`
 
 - 电话：1300 127 663
 - 地址：1/15 Natasha St, Capalaba QLD 4157, Australia

@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T13:15:41.568Z"
+generated_at: "2026-05-13T21:16:22.177Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -49,7 +49,7 @@ assets:
 - **搜索关键词**: `roofer sydney`
 - **结果排名**: 第 2 位
 - **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-sydney-202605132313`
+- **Batch**: `places-roofer-sydney-202605140029`
 
 - 电话：0427 364 223
 - 地址：55 Day St, Marrickville NSW 2204, Australia

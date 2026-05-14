@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-13T07:15:22.970Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-13T06:53:53.329Z",
+  "lastStatusAt": "2026-05-14T04:38:34.108Z",
   "identifiers": {
     "place_id": "ChIJn587YC79k2sR7VYVY-EGoaM",
     "cid": "11790712864532420333",
@@ -144,6 +144,9 @@
         "source": "places_api.opening_hours.weekday_text",
         "computed_at": "2026-05-13T07:15:22.970Z"
       }
+    },
+    "social_links": {
+      "facebook": "https://www.facebook.com/tr"
     }
   },
   "runs": [
@@ -354,6 +357,22 @@
       "at": "2026-05-13T07:15:38.115Z",
       "event": "places_photos_downloaded",
       "count": 6
+    },
+    {
+      "at": "2026-05-14T04:38:34.108Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded A / T3"
+    },
+    {
+      "at": "2026-05-14T04:38:34.111Z",
+      "event": "phase_changed",
+      "from": "awaiting",
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded A / T3"
     }
   ],
   "notes": [
@@ -370,10 +389,10 @@
       "note": "Multi-page / custom build — quote separately. Profitslocal.com FAQ anchor."
     },
     "skip_reasons": [],
-    "graded_at": "2026-05-13T06:53:53.328Z"
+    "graded_at": "2026-05-14T04:38:34.108Z"
   },
-  "phase": "awaiting",
-  "phaseChangedAt": "2026-05-13T06:53:53.339Z",
+  "phase": "design-ready",
+  "phaseChangedAt": "2026-05-14T04:38:34.111Z",
   "signals": {
     "sent": 3,
     "replied": 3

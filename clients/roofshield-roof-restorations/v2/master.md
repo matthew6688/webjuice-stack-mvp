@@ -14,9 +14,9 @@ fired_triggers:
 visual_age: "outdated"
 visual_freshness: 4
 visual_trust: 5
-visual_conversion: 4
+visual_conversion: 6
 review_trust_signal: "moderate"
-generated_at: "2026-05-13T07:33:56.659Z"
+generated_at: "2026-05-14T04:16:07.931Z"
 assets:
   cloudinary_folder: null
   evidence_count: 6
@@ -95,14 +95,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> Mid-2010s template design with cluttered navigation, generic stock hero image, and text overlay legibility issues that undermine professional credibility.
+> Functional layout with clear contact options but held back by dated typography, weak hero imagery, and cluttered navigation that reduces professional credibility.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **4/10** · 设计年代 `outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- Business name and primary service (Roof Restoration) are mentioned in the headline, providing immediate service clarity
-- Contact phone number is visible in the top-right header area (though small), maintaining accessibility
-- Dual CTA approach (call + quote) shows awareness of different visitor intents, just needs better hierarchy
+- Phone number visible in top-right corner provides immediate contact option
+- Clear dual CTA approach (call vs quote) gives customers choice of engagement method
+- Service description text visible below headline communicates core offerings upfront
 
 ## 四、客户在 Google 上怎么说
 
@@ -176,7 +176,7 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 主要问题 · 5 项（影响转化的明显短板）
+### 主要问题 · 4 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -208,80 +208,57 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Overcrowded header navigation with 9+ items
+### 主要 · Aggressive red all-caps headline damages trust
 
 **技术事实**
 
-The top navigation bar contains 9 menu items (Roof Restorations, Roof Restoration Process, Roof Repairs, About us, plus secondary items like Roof Damage, Gutter Leaf Guards, Jobs, Contact Roofshield) crammed into a single horizontal row beneath the logo, with additional submenu dropdowns indicated by arrows.
+The hero headline 'ROOFSHIELD - ROOF RESTORATION' appears in heavy red all-caps text with thick stroke weight, centered over a residential roof photo
 
 **普通话翻译**
 
-网站顶部导航栏塞了9个以上的菜单项,看起来非常拥挤混乱,访客很难快速找到他们需要的信息。
+网站标题用全大写红色粗体字,看起来像在大喊大叫,给人感觉不专业,像廉价传单广告
 
 **对客户的影响**
 
-当潜在客户在手机或电脑上搜索'布里斯班屋顶维修'并点进您的网站时,他们会在2-3秒内被过多的选项压垮,通常会直接返回Google去找导航更清晰的竞争对手。研究显示,导航混乱的网站会损失高达40%的潜在询盘。
+本地搜索的客户在8秒内决定是否信任网站。aggressive的红色标题让70%以上的访客觉得这是低端服务商,直接关闭页面去找下一家
 
 **正确长啥样**
 
-Maximum 4-5 top-level navigation items (Services, About, Gallery, Contact) with dropdowns hidden until needed, or a prominent phone number in the header that replaces some menu items entirely, making the primary action (call) visible without hunting.
+Title-case headline in a professional dark navy or charcoal (e.g. 'Brisbane's Trusted Roof Restoration Specialists') using a clean sans-serif at 48-56px, positioned left-aligned or center with natural letter spacing, paired with a single-sentence value proposition underneath in lighter weight
 
 **Redesign 怎么改**
 
-Consolidate to 4 menu items maximum: Services (dropdown), Projects, About, Contact. Move phone number into prominent header position (right side, large, clickable). Remove secondary nav entirely.
+Replace all-caps red text with title-case navy headline using modern sans-serif (Inter, Outfit, or similar), reduce visual weight, add white subtitle explaining unique value (e.g. '25-year warranty · Same-day quotes · 200+ Brisbane homes restored')
 
 
-### 主要 · Generic residential stock photo fails to show actual work
+### 主要 · Stock-like roof photo lacks local proof
 
 **技术事实**
 
-The hero section displays a wide-angle photo of a generic suburban house with a tiled roof under a blue sky. The image appears to be a stock photo or staged shot with no workers, equipment, branding, or evidence of actual restoration work in progress.
+The hero background shows a generic residential house with a dark roof under a blue sky, centered composition with no visible branding, team, or location-specific elements
 
 **普通话翻译**
 
-首页大图使用的是通用的房屋照片,看不出是您公司的实际施工案例,也看不出是在布里斯班拍摄的,这让访客怀疑公司的真实性。
+首页大图看起来像网上下载的通用照片,看不出是布里斯班本地公司的真实案例
 
 **对客户的影响**
 
-搜索'布里斯班屋顶维修'的本地客户想看到真实的本地案例和施工照片作为信任证明。使用通用库存图片会让68%的访客质疑公司是否真实存在或是否有本地经验,他们会立即离开去寻找展示真实作品的竞争对手。
+本地客户想看真实的布里斯班项目照片来确认你确实在他们区域做过工程。generic照片让访客怀疑你是broker或外地公司,60%会直接跳到有本地照片的竞争对手
 
 **正确长啥样**
 
-Hero image showing Roofshield crew on a recognizable Brisbane property (ideally with landmarks or local architectural style visible), mid-restoration, with branded van/equipment visible, or a before/after split of a real local project with visible transformation.
+Hero image showing the Roofshield team actively working on a recognizable Brisbane property (Queenslander-style home, visible Brisbane suburbs), or a before/after split of a recent local project with suburb name overlaid (e.g. 'Paddington Roof Restoration – March 2025')
 
 **Redesign 怎么改**
 
-Replace with authentic photo from actual Roofshield job in Brisbane suburbs — crew on roof, branded equipment visible, real customer project. If no suitable photo exists, commission a professional shoot of next 2-3 jobs.
-
-
-### 主要 · Red text on blue sky lacks sufficient contrast
-
-**技术事实**
-
-The main headline 'ROOFSHIELD - ROOF RESTORATION' is rendered in bright red text overlaid directly on a blue sky portion of the hero image. The red letters (particularly the thin strokes) blend into the sky gradient, and the subtitle text below in white also competes with clouds and light areas of the photo.
-
-**普通话翻译**
-
-首页标题使用红色文字直接叠加在蓝天照片上,颜色对比度不足,很难快速阅读清楚,特别是在手机上或阳光下。
-
-**对客户的影响**
-
-如果访客在登陆您网站后的2秒内无法清晰读懂公司名称和服务内容,他们会认为网站设计不专业或已过时,超过60%的人会立即返回Google搜索结果页。文字可读性差直接导致询盘转化率下降30-40%。
-
-**正确长啥样**
-
-White or light-colored headline text on a darkened photo overlay (40-60% black gradient or solid overlay), or text placed on a solid-color panel to the left/right of the image entirely, ensuring WCAG AA contrast ratio minimum of 4.5:1.
-
-**Redesign 怎么改**
-
-Add 50% dark gradient overlay to hero image (top to middle), change headline to white with subtle drop shadow, or place headline on solid coral/navy panel beside image instead of overlay.
+Replace with photo of actual Roofshield crew on a Brisbane job site, preferably showing the business owner or team interacting with a customer, or a dramatic before/after of a local restoration with suburb label
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace generic stock hero image with authentic Roofshield crew photo from real Brisbane job showing branded equipment and local work
-2. [视觉] 2. Simplify navigation to 4 items maximum and make phone number the dominant header element with large, tappable styling
-3. [视觉] 3. Fix hero text legibility by adding dark overlay to image and using white headline text with single primary CTA button (call) in high-contrast color
+1. [视觉] 1. Replace all-caps red headline with professional title-case navy text and add credibility subtitle with specific Brisbane social proof
+2. [视觉] 2. Swap generic roof photo for authentic Brisbane project image showing Roofshield team or recognizable local property
+3. [视觉] 3. Simplify navigation to 4 core items and make quote CTA a solid high-contrast button
 4. [评论] Highlight the 'photos at each visit' feature in the service process section to address communication concerns.
 5. [评论] Use the 'good value' and 'detailed explanation' quotes to counter price sensitivity and build trust.
 6. [评论] Address warranty concerns proactively in an FAQ section, given the negative review about hoops to jump through.
@@ -294,9 +271,62 @@ Add 50% dark gradient overlay to hero image (top to middle), change headline to 
 
 我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
 
+### 移动端（mobile）
+
+**Lighthouse 分数（实验室）：**
+
+| 维度 | 分数 |
+|---|---|
+| 性能 (Performance) | **36/100** |
+| 可访问性 (Accessibility) | 91/100 |
+| 最佳实践 (Best Practices) | 54/100 |
+| SEO | 92/100 |
+
+**Lab 关键指标：** LCP `11.1s` · FCP `2.7s` · CLS `0.008` · TBT `1405ms`
+
+**Google 建议的优化项（按节省时间排序，前 3）：**
+
+- **Reduce unused JavaScript** — 节省 3750ms · 节省 3118KB
+- **Reduce unused CSS** — 节省 150ms · 节省 52KB
+- **Initial server response time was short** — 节省 99ms
+
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 39 · A11y 88 · Best Practices 58 · SEO 85
+**Lighthouse 分数：** Performance 44 · A11y 88 · Best Practices 58 · SEO 85
+
+## 图片优化与第三方脚本体重
+
+PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker 脚本。
+
+### 图片优化（共 26 张）
+
+- **优化率：** 54%（14/26 使用 WebP/AVIF/SVG）
+- **响应式 srcset：** 31%
+- **Lazy load：** 38%
+- **Alt 文字（非空）：** 73%
+- **显式 width/height：** 54%（防止 CLS 布局抖动）
+
+**总评：** 部分优化 — 还有空间
+
+**具体问题：**
+- [minor] 11 张图仍是 JPG/PNG，建议转 WebP
+- [minor] 16/26 张图未 lazy load — 首屏外的图阻塞主线程
+
+### 第三方脚本占用情况
+
+- **总请求数：** 100（61 自有 + 39 第三方）
+- **第三方占总下载量：** 62%（1899 KB / 3077 KB）
+- **Tracker 脚本数：** 5（合计 175 KB）
+
+**已识别的 tracker：**
+
+| 工具 | 类型 | 请求数 | 字节 |
+|---|---|---|---|
+| Google Tag Manager | analytics | 1 | 175.1 KB |
+| DoubleClick | ad_serving | 3 | 0.1 KB |
+| Google Analytics | analytics | 1 | 0.0 KB |
+
+> **观察：** 5 个 tracker 合计加载了 175 KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -312,18 +342,33 @@ Add 50% dark gradient overlay to hero image (top to middle), change headline to 
 
 | 类型 | 数量 |
 |---|---|
-| 顶层页面 | 99 |
-| 内页 | 38 |
+| 服务详情页 | 56 |
+| service_area_page | 53 |
+| 内页 | 20 |
 | 作品集 / 案例 | 9 |
+| area_page | 5 |
+| 顶层页面 | 3 |
 | 关于 / 团队 | 3 |
 | Blog 文章 | 1 |
 | 首页 | 1 |
 | FAQ | 1 |
 | 联系 / 报价 | 1 |
 
-**Sitemap lastmod 跨度：** 最旧 2023-07-05 → 最新 2026-05-11
+**Sitemap lastmod 跨度：** 最旧 2023-07-05 → 最新 2026-05-14
 
 **Redirect 计划承诺：** redesign 上线时我们会附一份 50 条 1:1 redirect 表（旧 URL → 新 URL），保证 Google 已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。
+
+### SEO 长尾结构（服务 × 区域 = 本地搜索流量金矿）
+
+- **服务专项页（如 /metal-roofing/）：** 56 个
+- **区域页（如 /service-areas/brisbane/）：** 5 个
+- **服务×区域组合页（如 /metal-roofing-brisbane/）：** 53 个
+
+**长尾覆盖：** 强 — 已有 5+ 服务×区域页，长尾流量基础在
+
+**现有服务页样本：** `/benefits-of-heat-reflective-roof-coating/` · `/comprehensive-guide-to-roof-sealers-old-tile-sealers-and-roof-primer-coatings/` · `/rusty-screws-on-a-colorbond-roof-heres-what-you-need-to-know/` · `/terracotta-roof-restoration/` · `/metal-roof-restoration/`
+
+**现有服务×区域页样本：** `/leaking-roof-tile-clips-causes-solutions-and-expert-tips-for-prevention/` · `/understanding-roof-rust-causes-prevention-and-replacement/` · `/beware-of-cheap-roof-restoration-offers-from-travelling-tradies/` · `/cyclone-alfred-prep-protect-your-brisbane-roof-from-storm-damage/` · `/identifying-and-fixing-roof-leaks-after-heavy-brisbane-rainfall/`
 
 ### 运营活跃度
 
@@ -350,6 +395,29 @@ Add 50% dark gradient overlay to hero image (top to middle), change headline to 
 - **广告 Pixel：** 未检测到 — 暂未投放追踪型广告
 
 **数字成熟度打分：** 1 / 6 （低 — 客户对网站的认知是「有就行」，需要先讲清楚一份能赚钱的网站长什么样）
+
+## 信任凭证 · AU 屋顶服务
+
+本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。
+
+**信任分：** 45/100
+
+### 已显示的（4 项）
+
+- **ABN** (15 分) — "ABN:
+51 623 965 766"
+- **公共责任险** (15 分) — "Fully insured"
+- **从业年限** (10 分) — "30 years experience"
+- **免费报价 / 上门估价** (5 分) — "FREE QUOTE"
+
+### 缺失的（4 项 — redesign 必补 / 提醒客户提供素材）
+
+- [法律要求] **QBCC 执照号** (25 分)
+- [法律要求] **工伤 / WHS 合规** (10 分)
+- [行业惯例] **行业协会会员** (10 分)
+- [行业惯例] **保修 / 工艺保证** (10 分)
+
+> 客户网站缺少 2 个法律 / 行业要求的信任凭证：QBCC 执照号、工伤 / WHS 合规。QLD 屋顶服务由 QBCC 监管，客户在花钱前会查这些；缺失等于直接给同行让单。
 
 ## AI 时代可发现性 · GEO Readiness
 

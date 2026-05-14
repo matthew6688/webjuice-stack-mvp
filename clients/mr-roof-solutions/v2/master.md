@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T12:43:49.846Z"
+generated_at: "2026-05-13T21:16:21.732Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -49,7 +49,7 @@ assets:
 - **搜索关键词**: `roofer brisbane`
 - **结果排名**: 第 1 位
 - **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-brisbane-202605132243`
+- **Batch**: `places-roofer-brisbane-202605140026`
 
 - 电话：1300 023 230
 - 地址：104 Wynyard St, Cleveland QLD 4163, Australia

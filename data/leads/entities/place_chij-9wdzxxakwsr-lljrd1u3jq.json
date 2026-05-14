@@ -3,8 +3,8 @@
   "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-13T13:15:25.091Z",
-  "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-13T12:44:08.008Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-14T04:37:29.609Z",
   "identifiers": {
     "place_id": "ChIJ-9wdZxxakWsR-llJRD1U3JQ",
     "cid": "10726541034605074938",
@@ -146,7 +146,9 @@
     },
     "batch_id": "places-roofer-in-brisbane-202605132244",
     "discovery_rank": 10,
-    "google_places_provider": "official_api"
+    "google_places_provider": "official_api",
+    "email": "sales@queenslandroofing.com.au",
+    "contact_us_url": "https://queenslandroofing.com.au/contact-us/"
   },
   "runs": [
     {
@@ -276,6 +278,22 @@
       "event": "merged_with",
       "loser": "domain_queenslandroofing.com.au",
       "operator": "pl:migrate-to-projects-channel"
+    },
+    {
+      "at": "2026-05-14T04:37:29.609Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded A / T2"
+    },
+    {
+      "at": "2026-05-14T04:37:29.618Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded A / T2"
     }
   ],
   "notes": [
@@ -285,11 +303,13 @@
     "investment_level": "A",
     "product_tier": "T2",
     "recommended_pricing": {
-      "one_time": "$3-6K",
-      "monthly": null
+      "one_time": null,
+      "annual": "$799/年",
+      "monthly": null,
+      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
     },
     "skip_reasons": [],
-    "graded_at": "2026-05-11T02:09:40.536Z"
+    "graded_at": "2026-05-14T04:37:29.608Z"
   },
   "enrichment_status": "complete",
   "batches": [
@@ -302,5 +322,10 @@
   "project_thread_id": "1504269344161402920",
   "project_profile_message_id": "1504269344161402920",
   "project_thread_opened_at": "2026-05-13T23:49:19.805Z",
-  "sales_stage": "demo-ready"
+  "sales_stage": "demo-ready",
+  "phase": "design-ready",
+  "phaseChangedAt": "2026-05-14T04:37:29.618Z",
+  "discord_thread_id": "1504341868027056249",
+  "discord_profile_message_id": "1504341868027056249",
+  "discord_thread_opened_at": "2026-05-14T04:38:25.573Z"
 }

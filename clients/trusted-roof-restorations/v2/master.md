@@ -1,10 +1,10 @@
 ---
-business_id: "place_chijeritxj9nkwsr2dg7xhqvqn4"
+business_id: "domain_trustedroofing.com.au"
 business_name: "Trusted Roof Restorations"
 niche: "roofer"
-city: "Brisbane"
+city: "Redland Brisbane"
 rating: 5
-review_count: 128
+review_count: 0
 website: "http://trustedroofing.com.au/"
 audit_score: null
 decision: null
@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T12:43:49.955Z"
+generated_at: "2026-05-14T05:45:33.080Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -26,16 +26,16 @@ assets:
 
 # Trusted Roof Restorations · 现状审计与重构提议
 
-> **null/100** · - · 行业：roofer · 地区：Brisbane · Google 评价：5★ （128 条）
+> **null/100** · - · 行业：roofer · 地区：Redland Brisbane · Google 评价：5★ （0 条）
 
 ## 内部分级 · 运营优先看这段
 
-**投入分级：** `D` 跳过 — 不投入精力
+**投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- [hard skip · too_many_categories] GBP 多元业务分类 ≥ 5 个 — 需求复杂度超出标准产品包
+- audit 未运行 · 默认 C 等待 audit 后重新分级
 
-**下一步行动：** 不投入精力，归档原因。';
+**下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
 ## 一、店家现状速览
 
@@ -45,34 +45,20 @@ assets:
 
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Places API (官方搜索)
-- **搜索关键词**: `roofer brisbane`
-- **结果排名**: 第 5 位
-- **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-brisbane-202605132243`
+- **来源**: Google Maps (gosom 抓取)
+- **搜索关键词**: `roofer in redland-brisbane`
+- **首次发现**: 2026-05-14
 
-- 电话：0432 254 975
-- 地址：Mount Cotton Rd, Mount Cotton QLD 4165, Australia
+- 电话：0432254975
+- 地址：Mount Cotton Rd, Mount Cotton QLD 4165
 - 网站：[http://trustedroofing.com.au/](http://trustedroofing.com.au/)
+- 网站状态：`independent_http_site`
 
 ## 三、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
-
-## 业务规模信号 · 内部筛选用
-
-**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
-
-- **规模信号汇总：** 小型客户特征
-- **客户分级：** `small` — 小型，符合我们标准产品包定位
-
-> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
-
-**触发依据：**
-- Google 评价 128 条（≥50，有规模基础）
-- GBP 多业务分类 5 个（多元化经营）
 
 ## 现网站快速诊断
 

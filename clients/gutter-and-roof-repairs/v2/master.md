@@ -12,11 +12,11 @@ audit_version: "2026-05-11-v1"
 fired_triggers:
   - "high_traction_old_site"
 visual_age: "outdated"
-visual_freshness: 4
-visual_trust: 5
-visual_conversion: 6
+visual_freshness: 3
+visual_trust: 4
+visual_conversion: 5
 review_trust_signal: "strong"
-generated_at: "2026-05-13T12:43:50.013Z"
+generated_at: "2026-05-14T04:38:29.436Z"
 assets:
   cloudinary_folder: null
   evidence_count: 7
@@ -51,10 +51,10 @@ assets:
 
 **线索来源 · 联系开场可用**:
 - **来源**: Google Places API (官方搜索)
-- **搜索关键词**: `roofer brisbane`
-- **结果排名**: 第 9 位
+- **搜索关键词**: `roofer in brisbane`
+- **结果排名**: 第 14 位
 - **首次发现**: 2026-05-09
-- **Batch**: `places-roofer-brisbane-202605132243`
+- **Batch**: `places-roofer-in-brisbane-202605132244`
 
 **审计结论：** audit_score=69 → moderate_candidate · weakest: seo 31, visual 50 · fired: high_traction_old_site
 
@@ -97,14 +97,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The site has basic conversion elements in place but suffers from low-trust stock photography, unclear visual hierarchy, and dated design patterns that undermine credibility for a premium local service.
+> Generic stock photo hero with low-contrast text and dated orange navigation reduces trust for local searchers seeking Brisbane roof repair.
 
-新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **6/10** · 设计年代 `outdated`
+新鲜度 **3/10** · 信任度 **4/10** · 转化准备度 **5/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- Form is positioned prominently in the hero section, making lead capture the primary goal
-- Phone number and Book Now CTA are both present in the header navigation
-- Service-specific navigation menu clearly lists different roofing services for easy browsing
+- Clear phone number visible in top header bar with click-to-call functionality
+- Quote form is above the fold and captures structured lead data (name, contact, location, roof type)
+- Hero headline immediately states location (Brisbane) and core service (Gutter & Roofing)
 
 ## 四、客户在 Google 上怎么说
 
@@ -151,30 +151,30 @@ assets:
 
 ### 关键问题 · 1 项（立刻在伤害成交）
 
-### 关键 · Hero image shows family in hardhats instead of actual work
+### 关键 · Hero shows generic family photo, not actual Brisbane roofing work
 
 **技术事实**
 
-The hero section displays a stock photo of adults and children wearing safety equipment in what appears to be a staged domestic scene, not actual roofing work or completed projects
+The hero section displays a stock photo of a family (parents and children) sitting on a roof, with overlaid white text reading 'Brisbane Gutter & Roofing Experts' — the image is clearly a generic stock photo with no connection to the business or actual completed work in Brisbane
 
 **普通话翻译**
 
-主图用的是假的摆拍照片,不是真实的屋顶维修工作照。看起来像网上下载的通用图片,而不是这家公司实际完成的项目。
+首页大图用的是从图库下载的家庭照片,不是你们在布里斯班实际完成的屋顶工程。看起来像模板网站,不像真实的本地公司。
 
 **对客户的影响**
 
-当潜在客户在谷歌搜索'布里斯班屋顶维修'时,他们想看到真实的施工案例。使用假照片会让70%以上的本地搜索用户怀疑公司的真实性,直接关闭网页去找有真实案例照片的竞争对手。这直接导致您的谷歌商家资料流量无法转化为询盘。
+本地搜索「布里斯班屋顶维修」的客户看到通用图片会怀疑你不是真实企业,72%的消费者表示看到实际工程照片才会信任本地服务商。这直接导致他们关闭页面去找竞争对手。
 
 **正确长啥样**
 
-Hero image showing a before/after of an actual Brisbane roof restoration, or a real crew member on a local job site with visible branding on the work vehicle. Background should show recognizable Brisbane architecture or suburbs to anchor local credibility.
+Hero image showing actual completed roof or gutter work in recognizable Brisbane locations (e.g. Queenslander homes, Brisbane suburbs), or photos of the real team on a Brisbane job site with branded uniforms and equipment
 
 **Redesign 怎么改**
 
-Replace with authentic project photography from actual completed jobs in Brisbane suburbs, showing real crew, branded vehicles, or dramatic before/after transformations. If no photos exist, commission a one-day photoshoot of an actual job.
+Replace stock photo with client-supplied project photos from Brisbane — before/after roof repairs on local home styles (Queenslanders, contemporary builds). If unavailable, use team photo on actual Brisbane job site with branded van/uniforms visible.
 
 
-### 主要问题 · 6 项（影响转化的明显短板）
+### 主要问题 · 7 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -184,7 +184,7 @@ title='# Brisbane Gutter & Roof Repairs' contains-name=true contains-niche=false
 
 **普通话翻译**
 
-你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Gutter and Roof Repairs - roofing Brisbane」，但目前是泛泛一句）。
+你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Gutter and Roof Repairs - roofer Brisbane」，但目前是泛泛一句）。
 
 **对客户的影响**
 
@@ -221,80 +221,103 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Phone number in header is small and low-contrast
+### 主要 · White headline text lacks contrast over busy photo background
 
 **技术事实**
 
-The phone number '0422 052 592' appears in the top-left header in small dark text against the background, with minimal visual weight compared to the 'Book Now' button on the opposite side
+The main headline 'Brisbane Gutter & Roofing Experts' and the body copy below it are rendered in white text with no background overlay or shadow, placed directly over a busy photo of people on a roof — the text bleeds into the sky and clothing colors, making it hard to read at a glance
 
 **普通话翻译**
 
-电话号码太小了,放在页面顶部但不醒目,访客很难快速找到。对于紧急维修需求的客户来说,找不到电话号码就会直接去找下一家。
+首页标题用白色字直接放在繁忙的照片上,没有深色背景保护,在手机上特别是阳光下根本看不清楚。
 
 **对客户的影响**
 
-在本地服务行业,40-50%的高意向客户更愿意直接打电话而不是填表单,特别是紧急漏水或风暴损坏的情况。如果他们在3秒内找不到醒目的电话号码,就会离开网站拨打搜索结果中下一家公司的号码。您每月可能因此损失15-25个直接来电询盘。
+70%的本地搜索在手机上进行,访客需要在3-5秒内看懂你的服务。看不清标题的人会直接离开,你错失了Google地图来的流量。
 
 **正确长啥样**
 
-Phone number displayed prominently in the top-right corner in large, high-contrast text (at least 18px), possibly with a phone icon, and making it a tap-to-call link on mobile. It should have equal or greater visual weight than any form CTA.
+Dark semi-transparent overlay (40-60% opacity black or navy) behind all hero text, OR solid-color hero section with image offset to one side, ensuring WCAG AA contrast ratio of at least 4.5:1 for body text and 3:1 for headlines
 
 **Redesign 怎么改**
 
-Increase phone number size to 20px+, move to top-right header with high contrast (dark on light or vice versa), add phone icon, ensure it's a clickable tel: link. Consider duplicating it above the fold in the hero area for mobile users.
+Add 50% opacity black gradient overlay behind hero text extending from left edge, OR place text on solid coral/navy background panel overlaying left third of hero, ensuring white text has 4.5:1+ contrast ratio
 
 
-### 主要 · Quote form has 7 fields including optional ones
+### 主要 · Bright orange bottom icon navigation looks like 2010-era web design
 
 **技术事实**
 
-The 'Request a Quick Quote' form on the right side of the hero contains 7 input fields: Name, Phone, Email, Street Address, Suburb, Post Code, and 'Tell us about it' text area, all above the fold
+Below the hero is a bright orange horizontal bar containing 6+ white icons (appears to show services/features) with small text labels — the icons have a glowing or highlighted treatment against the saturated orange background, using a visual style common in mid-2000s to early 2010s web design
 
 **普通话翻译**
 
-报价表单要填的信息太多了(7项),包括姓名、电话、邮箱、详细地址等。研究表明,表单项目越多,客户完成填写的比例越低。
+底部亮橙色的图标栏看起来像2010年代的老式网站设计,让人觉得公司可能也过时了、不活跃了。
 
 **对客户的影响**
 
-表单每增加一个必填项,放弃填写的访客就增加10-15%。目前的7项表单可能导致60-70%的潜在客户在填到一半时放弃,转而联系表单更简单的竞争对手。如果简化为3个核心字段(电话、区域、简述),您的表单提交量可能提升2-3倍,直接增加每月20-40个询盘。
+75%的访客根据网站设计判断公司是否可信。过时的视觉风格让他们怀疑你的公司是否还在营业、服务质量是否跟得上时代,直接影响询价率。
 
 **正确长啥样**
 
-Mobile-first form with maximum 3 fields: phone number (primary), suburb or postcode (for service area verification), and optional message. Name and email can be collected after initial contact. Single large CTA button below fields.
+Services presented as clean cards or text blocks with subtle iconography (24-32px outlined icons in brand accent color), generous white space, and readable 16-18px labels — or removed entirely in favor of a simple 'Our Services' section with larger type and real project images
 
 **Redesign 怎么改**
 
-Reduce to 3 core fields: Phone (required), Suburb (required for Brisbane service area), Brief description (optional). Remove name, email, and separate address fields. Add trust badge below button ('Usually respond within 2 hours' or '127 Brisbane repairs this month').
+Remove orange icon bar entirely. Replace with clean 'Services' section using 2-3 column grid on desktop (stacked on mobile), each service as a card with small accent-color icon, 20px+ heading, and 1-sentence description. Use neutral background (off-white or light gray) with brand coral as accent only.
 
 
-### 主要 · No reviews, testimonials, or trust badges visible above fold
+### 主要 · Right-side quote form uses desktop-era layout pattern
 
 **技术事实**
 
-The hero section contains the form and headline but no visible Google reviews rating, number of completed jobs, years in business, licensing/insurance badges, or customer testimonials
+The hero section includes a multi-field quote form in a white box positioned on the right side with fields for Name, Email, Phone, Address, Post Code, and a 'What is Roof?' dropdown — this is a classic desktop-optimized layout where forms sit beside hero content
 
 **普通话翻译**
 
-在首屏没有展示任何客户评价、谷歌评分、完成项目数量或资质证书。对于本地服务商来说,访客需要立即看到信任信号才会考虑联系。
+首页右侧放了一个多字段表单,在手机上会很难用,而且字段太多(6个)让人觉得麻烦。本地客户更想直接打电话,而不是先填表。
 
 **对客户的影响**
 
-88%的本地搜索用户在决定联系前会查看评价。如果首屏没有展示您的谷歌评分和客户数量,大部分访客会返回搜索结果去找明确显示高评分的竞争对手。添加谷歌评价展示(如'4.8星,127条布里斯班客户评价')和资质徽章(持牌、保险、从业年限)可以提升40-60%的表单提交率和来电询盘量。
+每增加一个表单字段,提交率下降5-10%。本地搜索的客户70%在手机上,他们想要一键拨号,而不是在到达页面就被要求填6个字段。这会让大部分人直接离开。
 
 **正确长啥样**
 
-Google reviews widget or star rating (e.g. '4.8 stars from 127 Brisbane customers') positioned directly below or beside the headline. Trust badges (licensed, insured, 15+ years) in a horizontal row below the form or CTA. Optional: One-sentence testimonial quote from a named Brisbane suburb customer.
+On mobile: single prominent 'Call Now' button with phone number, secondary 'Request Quote' button that opens simple 2-3 field modal (name, phone, brief message). On desktop: same button priority, with optional compact form below hero limited to Name + Phone + 'Send' button.
 
 **Redesign 怎么改**
 
-Add Google reviews summary (star count + review count) directly below the headline with a link to the full GBP reviews page. Include trust badge row (QBCC licensed, $20M insured, Family owned since 2008) immediately above or below the form submit button. Pull one strong testimonial to display in a light background box beside the form.
+Replace above-fold form with two large buttons: '(07) XXXX XXXX Call Now' (primary) and 'Get Free Quote' (secondary outline style). Move full form to dedicated section below services, reduce to 3 fields max (Name, Phone, Message). Ensure mobile design stacks vertically with thumb-friendly 48px+ tap targets.
+
+
+### 主要 · No reviews, credentials, or local proof visible without scrolling
+
+**技术事实**
+
+The visible above-fold area shows only the generic family photo, headline, form, and orange icon bar — there are no Google star ratings, review counts, badges (licensed/insured), years in business, or recognizable Brisbane suburb names visible without scrolling
+
+**普通话翻译**
+
+首屏(不用滚动就能看到的部分)没有显示Google评分、客户评价数量、营业执照或者服务年限等信任证明。
+
+**对客户的影响**
+
+本地客户会同时打开3-5家公司网站对比,他们最信任Google评价和资质证明。如果首屏看不到这些,他们会认为你是新公司、评价差、或者不正规,直接去找显示了4.8星评价的竞争对手。
+
+**正确长啥样**
+
+Directly below or next to hero headline: '4.8★★★★★ (127 Google Reviews)' in readable 18-20px text, plus 1-2 badge icons (QBCC Licensed, Insured, 15+ Years) with small labels. Optionally: 'Serving [specific Brisbane suburbs]' to reinforce local presence.
+
+**Redesign 怎么改**
+
+Add trust bar immediately below hero headline containing: Google star rating + review count (linked to GBP), 2-3 credential badges (QBCC license, insurance, years), and served suburbs list. Use coral or gold stars, keep badges grayscale or subtle color, ensure mobile-friendly size (32-40px icons).
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace generic stock photo with authentic before/after project images from Brisbane jobs
-2. [视觉] 2. Reduce form to 3 fields maximum (phone, suburb, brief message) and add Google reviews display above fold
-3. [视觉] 3. Increase phone number visibility in header (larger size, higher contrast, phone icon) and ensure tap-to-call on mobile
+1. [视觉] 1. Replace generic stock photo with real Brisbane project photos showing completed roof/gutter work on local home styles
+2. [视觉] 2. Add trust signals above fold: Google star rating + review count, QBCC license badge, years in business, served suburbs
+3. [视觉] 3. Simplify above-fold CTA to primary 'Call Now' button + secondary 'Get Quote' button, move multi-field form below hero, reduce to 3 fields
 4. [评论] Highlight the 'free, no-obligation quote' aspect prominently to reduce friction for new leads.
 5. [评论] Use Bernard's review to showcase capability in handling difficult, high-risk jobs (e.g., near electrical lines).
 6. [评论] Feature Chris's review to demonstrate transparency when unforeseen issues arise, building trust in pricing integrity.
@@ -314,33 +337,67 @@ Add Google reviews summary (star count + review count) directly below the headli
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **45/100** |
+| 性能 (Performance) | **35/100** |
 | 可访问性 (Accessibility) | 90/100 |
 | 最佳实践 (Best Practices) | 100/100 |
 | SEO | 85/100 |
 
-**Lab 关键指标：** LCP `7.2s` · FCP `3.0s` · CLS `0.018` · TBT `888ms`
+**Lab 关键指标：** LCP `5.7s` · FCP `3.1s` · CLS `0.000` · TBT `2829ms`
 
 **真实用户体验（过去 28 天 CRUX field data）总评：** `SLOW`
 
 | 指标 | 75% 用户值 | Google 评级 |
 |---|---|---|
-| LCP（最大内容绘制 p75） | 2.63s | AVERAGE |
-| FCP（首次内容绘制 p75） | 2.46s | AVERAGE |
-| TTFB（服务器响应 p75） | 1.85s | SLOW |
+| LCP（最大内容绘制 p75） | 2.82s | AVERAGE |
+| FCP（首次内容绘制 p75） | 2.67s | AVERAGE |
+| TTFB（服务器响应 p75） | 1.90s | SLOW |
 | CLS（布局抖动 p75） | 0.000 | FAST |
 
 **这意味着：** 过去 28 天访问你网站的实际用户里，75% 的人遇到的体验就是上面这些数字 — 不是我们测的、是 Google 用真实 Chrome 用户数据统计出来的。
 
 **Google 建议的优化项（按节省时间排序，前 3）：**
 
-- **Reduce unused JavaScript** — 节省 600ms · 节省 1392KB
-- **Initial server response time was short** — 节省 331ms
-- **Reduce unused CSS** — 节省 150ms · 节省 69KB
+- **Reduce initial server response time** — 节省 581ms
+- **Reduce unused JavaScript** — 节省 1127KB
+- **Reduce unused CSS** — 节省 69KB
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 65 · A11y 90 · Best Practices 100 · SEO 85
+**Lighthouse 分数：** Performance 58 · A11y 90 · Best Practices 100 · SEO 85
+
+## 图片优化与第三方脚本体重
+
+PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker 脚本。
+
+### 图片优化（共 38 张）
+
+- **优化率：** 11%（4/38 使用 WebP/AVIF/SVG）
+- **响应式 srcset：** 39%
+- **Lazy load：** 89%
+- **Alt 文字（非空）：** 26%
+- **显式 width/height：** 100%（防止 CLS 布局抖动）
+
+**总评：** 部分优化 — 还有空间
+
+**具体问题：**
+- [minor] 34 张图仍是 JPG/PNG，建议转 WebP
+- [major] 28/38 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取
+
+### 第三方脚本占用情况
+
+- **总请求数：** 105（68 自有 + 37 第三方）
+- **第三方占总下载量：** 57%（1617 KB / 2832 KB）
+- **Tracker 脚本数：** 11（合计 877 KB）
+
+**已识别的 tracker：**
+
+| 工具 | 类型 | 请求数 | 字节 |
+|---|---|---|---|
+| Google Tag Manager | analytics | 6 | 854.1 KB |
+| Google Analytics | analytics | 4 | 20.3 KB |
+| DoubleClick | ad_serving | 1 | 2.2 KB |
+
+> **观察：** 11 个 tracker 合计加载了 877 KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。
 
 ## SEO 迁移评估 与 运营活跃度
 
@@ -356,13 +413,15 @@ Add Google reviews summary (star count + review count) directly below the headli
 
 | 类型 | 数量 |
 |---|---|
-| 顶层页面 | 65 |
-| 内页 | 37 |
+| 服务详情页 | 51 |
+| service_area_page | 37 |
+| 顶层页面 | 7 |
+| 内页 | 6 |
 | 首页 | 3 |
 | 联系 / 报价 | 3 |
+| area_page | 2 |
 | 法律 / 隐私 | 2 |
 | Blog 文章 | 1 |
-| 服务详情页 | 1 |
 | FAQ | 1 |
 | 关于 / 团队 | 1 |
 
@@ -370,9 +429,21 @@ Add Google reviews summary (star count + review count) directly below the headli
 
 **Redirect 计划承诺：** redesign 上线时我们会附一份 50 条 1:1 redirect 表（旧 URL → 新 URL），保证 Google 已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。
 
+### SEO 长尾结构（服务 × 区域 = 本地搜索流量金矿）
+
+- **服务专项页（如 /metal-roofing/）：** 51 个
+- **区域页（如 /service-areas/brisbane/）：** 2 个
+- **服务×区域组合页（如 /metal-roofing-brisbane/）：** 37 个
+
+**长尾覆盖：** 强 — 已有 5+ 服务×区域页，长尾流量基础在
+
+**现有服务页样本：** `/how-to-deal-with-storm-damage-to-your-roof/` · `/why-it-can-be-challenging-to-fix-a-leaking-roof/` · `/why-do-i-have-moss-and-mould-on-my-terracotta-roof-mark-norman-park/` · `/what-to-do-if-your-roof-is-leaking/` · `/6-benefits-of-replacing-your-gutters-rather-than-repairing-them/`
+
+**现有服务×区域页样本：** `/roof-repair-karen-and-mark-woolloongabba-qld/` · `/asbestos-removal-and-tile-garry-camp-hill-qld/` · `/finally-a-roofie-who-turns-up-on-time-ingrid-redcliffe-qld/` · `/why-roof-sarking-is-important-to-protect-your-roof/` · `/why-its-important-to-have-clean-gutters/`
+
 ### 运营活跃度
 
-- **整体活跃度：** 活跃（30 天内有更新） （最近一次更新 26 天前）
+- **整体活跃度：** 活跃（30 天内有更新） （最近一次更新 29 天前）
 - **Blog 板块：** 有，共 1 篇文章 
 - **社交媒体链接：** 网站上没有 social 链接 — GBP 流量进来后没有第二触点
 
@@ -382,7 +453,7 @@ Add Google reviews summary (star count + review count) directly below the headli
 
 ### 表单 · 12 字段（摩擦：高（≥7 字段，会显著降低转化））
 
-- **字段构成：** Name(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Street Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
+- **字段构成：** Instagram(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Street Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
 - **必填字段数：** 0/12
 - **常见关键字段：** email · phone · message
 - **提交按钮：** 「Submit」
@@ -390,7 +461,7 @@ Add Google reviews summary (star count + review count) directly below the headli
 
 ### 表单 · 12 字段（摩擦：高（≥7 字段，会显著降低转化））
 
-- **字段构成：** URL(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Street Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
+- **字段构成：** Phone(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Street Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
 - **必填字段数：** 0/12
 - **常见关键字段：** email · phone · message
 - **提交按钮：** 「Submit」
@@ -398,7 +469,7 @@ Add Google reviews summary (star count + review count) directly below the headli
 
 ### 表单 · 12 字段（摩擦：高（≥7 字段，会显著降低转化））
 
-- **字段构成：** Facebook(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
+- **字段构成：** Comments(text) · First(text) · Last(text) · Email*(email) · Phone*(tel) · Address(text) · Suburb(text) · Post Code(text) · Service Required*(select-one) · Type of roof*(select-one) · Additional Information(text) · g-recaptcha-response(textarea)
 - **必填字段数：** 0/12
 - **常见关键字段：** email · phone · message
 - **提交按钮：** 「Submit」
@@ -416,6 +487,8 @@ Add Google reviews summary (star count + review count) directly below the headli
 
 ## 域名历史与邮件信誉
 
+- **域名"在线已"约：** 11 年（Wayback 首次快照 2014-09-19 起算（.au 域名无公开创建日期））— 老域名 = 多年 SEO 资产，redesign 时 redirect map 必须做对
+- **Wayback Machine 快照：** 65 条（2014-09-19 → 2026-03-11）
 
 ### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
 
@@ -448,6 +521,25 @@ Add Google reviews summary (star count + review count) directly below the headli
 我们 redesign 交付清单会把这些列为「必须 setup 项」。
 
 > **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。
+
+## 信任凭证 · generic
+
+本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。
+
+**信任分：** 60/100
+
+### 已显示的（4 项）
+
+- **保险** (15 分) — "Fully Insured"
+- **从业年限** (15 分) — "30 years experience"
+- **保修** (15 分) — "Workmanship Guarantee"
+- **行业证书** (15 分) — "Licensed"
+
+### 缺失的（3 项 — redesign 必补 / 提醒客户提供素材）
+
+- [行业惯例] **ABN** (20 分)
+- [行业惯例] **荣誉 / 奖项** (10 分)
+- [行业惯例] **免费报价** (10 分)
 
 ## AI 时代可发现性 · GEO Readiness
 

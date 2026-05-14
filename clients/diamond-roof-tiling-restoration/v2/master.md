@@ -11,12 +11,12 @@ decision: "strong_redesign"
 audit_version: "2026-05-11-v1"
 fired_triggers:
   - "no_https"
-visual_age: "outdated"
-visual_freshness: 3
-visual_trust: 4
-visual_conversion: 3
+visual_age: "severely_outdated"
+visual_freshness: 2
+visual_trust: 3
+visual_conversion: 2
 review_trust_signal: "strong"
-generated_at: "2026-05-13T07:33:58.119Z"
+generated_at: "2026-05-14T04:16:52.965Z"
 assets:
   cloudinary_folder: null
   evidence_count: 7
@@ -95,14 +95,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> Dark design with low-contrast navigation and outdated beveled graphics undermines professionalism and makes contact actions harder to find.
+> A 2008-era website with excessive visual clutter, dark background, multiple competing logos, and no clear call-to-action above the fold.
 
-新鲜度 **3/10** · 信任度 **4/10** · 转化准备度 **3/10** · 设计年代 `outdated`
+新鲜度 **2/10** · 信任度 **3/10** · 转化准备度 **2/10** · 设计年代 `severely_outdated`
 
 **值得保留的优点：**
-- Business name and branding are clearly visible in the logo and hero section, establishing identity
-- The page layout appears to have a logical structure with distinct sections (hero, services, content below fold)
-- Navigation menu includes key pages like Services, About Us, and Contact, covering essential visitor needs
+- Business has legitimate industry awards (MBA Award, Roofing Project of the Year) which are valuable trust signals—they just need better placement and presentation
+- High-quality photography of completed commercial project (Tingalpa Hotel) demonstrates capability for significant work
+- Relationships with recognized manufacturers (Stratco, Bondor) indicate established industry presence
 
 ## 四、客户在 Google 上怎么说
 
@@ -147,7 +147,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 4 项（立刻在伤害成交）
+### 关键问题 · 5 项（立刻在伤害成交）
 
 ### 关键 · https_enabled
 
@@ -179,53 +179,76 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · Black background reduces text legibility and trust
+### 关键 · Black background makes site feel like a portfolio, not a business
 
 **技术事实**
 
-The entire hero section uses a solid black background (#000000) with white text overlaid on a faded roof image, creating a dark, heavy appearance that dominates the above-fold area.
+The entire page uses a black background with content arranged as floating elements, similar to a Flash-era portfolio website from 2008-2012
 
 **普通话翻译**
 
-整个网站使用黑色背景,看起来像夜店而不是专业的屋顶维修公司。文字很难看清,特别是在手机上户外光线下。
+整个网站使用黑色背景，看起来像2008年的个人作品集网站，而不是专业的屋顶维修公司网站。本地客户期望看到干净明亮的商业网站。
 
 **对客户的影响**
 
-本地搜索的访客在8秒内决定是否信任一个网站。黑色背景让您看起来不像正规的Brisbane本地生意,70%的手机访客会立即离开去找看起来更专业的竞争对手。
+当客户在谷歌搜索「Brisbane 屋顶维修」时，他们会在8秒内决定是否信任您的网站。黑色背景的设计让网站看起来过时或不专业，导致70-80%的访客立即离开，直接选择竞争对手。
 
 **正确长啥样**
 
-A light background (white or soft neutral) with high-quality, well-lit photos of completed Brisbane roof projects. Text in dark gray or navy on light backgrounds. The hero image should showcase real work, not be obscured by overlays. Navigation and contact information should be immediately legible without eye strain.
+Clean white or very light grey background with a full-width hero section showing a recent Brisbane roof project, company name prominently displayed, phone number in large text (18px+), and a single primary CTA button in a contrasting color above the fold
 
 **Redesign 怎么改**
 
-Replace the black hero background with a full-width, high-quality photo of a recently completed Brisbane roof restoration (preferably a recognizable local suburb). Use a subtle gradient overlay (white to transparent, 60% opacity max) only if needed for text contrast. Set body text and navigation in dark colors on light backgrounds.
+Replace black background with white (#FFFFFF) base, implement standard single-column layout with hero section at top containing business name, value proposition, phone number, and primary CTA
 
 
-### 关键 · Navigation links have insufficient contrast on dark header
+### 关键 · Multiple competing logos create visual chaos and dilute brand
 
 **技术事实**
 
-The top navigation menu displays light gray text links ('Home', 'About Us', 'Services', etc.) on a dark gray/black header bar. The contrast ratio appears to be around 3:1 or lower, well below accessibility standards.
+At least 8-10 different logos visible in the top right area including 'Relosheet', 'SafetyQuip', 'STRATCO', 'BONDOR', and multiple award/certification badges arranged in a crowded cluster
 
 **普通话翻译**
 
-顶部导航菜单的文字太浅,在深色背景上几乎看不见。年长的客户(您的主要客户群)无法快速找到联系方式或报价按钮。
+网站顶部堆满了至少8-10个不同的标志（供应商、认证徽章等），访客无法快速识别哪个是您公司的标志。这让网站看起来混乱不专业。
 
 **对客户的影响**
 
-如果访客在3秒内找不到电话号码或联系方式,82%会直接关闭网站去找竞争对手。导航不清晰直接导致您失去高意向的潜在客户。
+品牌识别混乱会让访客在3秒内失去信任。当客户看到太多标志时，他们不知道该联系谁，导致50-60%的人直接关闭页面。您的公司名称应该是唯一醒目的品牌。
 
 **正确长啥样**
 
-Navigation text should be dark navy or black on a white or very light gray background, achieving at least 7:1 contrast. The active page should be indicated with an accent color underline or bold weight. Phone number and 'Get a Quote' CTA should be visually distinct (button treatment) in the top-right corner.
+Single company logo top-left (max 180px wide), manufacturer/partner logos moved to a separate 'Our Partners' section lower on the page as small monochrome icons (30-40px height) in a single horizontal row
 
 **Redesign 怎么改**
 
-Redesign the header with a white background. Set navigation links in dark gray (#333333 or darker) with the business logo on the left. Place a high-contrast phone button (coral or orange background, white text, phone icon) in the top-right, always visible on desktop. On mobile, use a hamburger menu with the phone button persistently visible.
+Keep only Diamond Roof Tiling & Restoration logo in header, move all manufacturer logos (Stratco, Bondor, etc.) to footer or dedicated 'Trusted Brands We Use' section with reduced size and desaturated treatment
 
 
-### 主要问题 · 5 项（影响转化的明显短板）
+### 关键 · No visible phone number or call-to-action in the hero area
+
+**技术事实**
+
+The top section shows a building photo (Tingalpa Hotel project) with navigation elements and logos, but no prominent phone number, 'Get Quote' button, or clear next-step action visible without scrolling
+
+**普通话翻译**
+
+网站首屏（不滚动就能看到的部分）没有显示电话号码或明显的「获取报价」按钮。访客需要寻找联系方式。
+
+**对客户的影响**
+
+86%的本地搜索客户会在移动设备上直接点击拨打电话。如果他们在首屏看不到电话号码，60-70%会立即离开并拨打下一家竞争对手的电话。每个月您可能因此损失20-30个询盘。
+
+**正确长啥样**
+
+Phone number displayed in top-right at minimum 18px font size with phone icon, plus a high-contrast CTA button (e.g. coral or orange against white) saying 'Get Free Quote' positioned prominently in hero section, both visible without any scrolling
+
+**Redesign 怎么改**
+
+Add click-to-call phone number in header (07) XXXX XXXX, place prominent 'Request Free Inspection' button (48px height, coral #FF6B4A) in hero area overlaying or adjacent to main image
+
+
+### 主要问题 · 6 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -272,57 +295,80 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Beveled graphics and gradients signal outdated design
+### 主要 · Layout prioritizes past projects over customer action
 
 **技术事实**
 
-The service icons and graphical elements use heavy drop shadows, beveled edges, and glossy gradient effects (visible in the circular icons below the hero section). These design patterns were popular in 2008-2012 but are now strongly associated with outdated or abandoned websites.
+The main hero area displays a large project photo labeled 'TINGALPA HOTEL' with project badges (MBA Award, Roofing Project of the Year), presenting the site as a portfolio showcase rather than a service booking page
 
 **普通话翻译**
 
-网站上的图标和图形使用了过时的渐变和立体效果,这种设计风格是2008-2012年流行的,现在看起来像十多年没更新的网站。
+网站首屏展示的是过往工程项目照片和奖项，而不是优先告诉客户「我们能为您做什么」和「如何联系我们」。
 
 **对客户的影响**
 
-访客会怀疑:这家公司还在营业吗?他们用的是现代材料和技术吗?过时的设计让您看起来不可靠,导致访客选择看起来更专业、更现代的竞争对手。即使您的服务很好,第一印象已经失去了50%的潜在客户。
+本地搜索的客户有紧急需求（漏水、破损等），他们首先想知道您能否帮助他们，而不是您获得过什么奖。优先展示项目而非服务会让40-50%的访客觉得网站不适合他们的需求。
 
 **正确长啥样**
 
-Flat or subtly-shadowed icons in a consistent accent color (e.g., a single coral or Brisbane-sky-blue). Simple line icons or solid fills, no gradients or bevels. Icons should support text, not dominate. Modern approach: use real project photos in a grid layout instead of generic iconography.
+Hero section leads with customer-focused headline (e.g. 'Brisbane's Trusted Roof Restoration Since 1998'), subheadline addressing pain point ('Fix Leaks, Restore Tiles, Extend Your Roof's Life'), phone + CTA buttons, with project showcase moved to second or third section
 
 **Redesign 怎么改**
 
-Remove all beveled and gradient icon treatments. Replace service icons with flat, monochrome line icons in a single accent color, or better: replace the icon section entirely with a 3-column grid of recent project photos (before/after, or completed Brisbane roofs) with brief captions. This builds trust through proof, not decoration.
+Restructure hero to prioritize value proposition and contact CTAs first, move award-winning projects to 'Our Recent Work' section below the fold with smaller thumbnails in a 3-column grid
 
 
-### 主要 · Hero section lacks clear value proposition and urgency
+### 主要 · Navigation bar uses tiny text on dark background
 
 **技术事实**
 
-The main hero heading reads 'Diamond Roof Tiling & Restoration' (the business name) with a subheading that is not immediately legible due to the dark overlay. There is no clear offer, benefit statement, or call-to-action button visible in the top 600 pixels of the desktop viewport.
+The horizontal navigation menu below the logo area uses very small white text (appears ~11-12px) on dark blue/black background with items like 'ROOFING SERVICES', 'MORE SOLUTIONS', 'PRODUCTS'
 
 **普通话翻译**
 
-首页大标题只显示公司名称,没有告诉访客为什么选择您,也没有明显的报价按钮或电话号码。访客不知道下一步该做什么。
+导航菜单的文字非常小（大约11-12像素），白色文字在深色背景上很难阅读，特别是对于45岁以上的房主。
 
 **对客户的影响**
 
-Google搜索来的访客平均只在首页停留8秒。如果他们在这8秒内看不到清晰的价值主张和行动按钮,90%会返回搜索结果找下一家。您的点击成本被浪费了,因为设计没有引导他们联系您。
+如果访客无法轻松找到「服务」或「联系方式」菜单，他们不会费力去寻找。研究显示，导航困难会导致35-40%的潜在客户放弃网站。
 
 **正确长啥样**
 
-Hero headline should be benefit-focused: 'Brisbane's 5-Star Roof Restoration Specialists – Free Quote in 24 Hours' or 'Roof Leaks Fixed Fast – Lifetime Warranty on All Work'. Below that, a single-sentence subheading reinforcing trust: 'Locally owned, fully insured, 500+ Brisbane roofs restored since 2010'. A high-contrast CTA button ('Get Your Free Quote') should be centered or left-aligned, above the fold, with the phone number immediately adjacent.
+Navigation menu with 16px minimum font size, dark grey (#333333) or black text on white/light background, 5-6 clearly labeled items maximum (Home, Services, Gallery, About, Contact), adequate spacing (40-50px between items)
 
 **Redesign 怎么改**
 
-Rewrite the hero headline to lead with the customer benefit and location: '[Benefit] – [Trust Signal] in Brisbane'. Add a coral-colored CTA button ('Get Free Quote' or 'Call Now for Fast Service') centered below the headline, minimum 48px tall for mobile tap targets. Place the phone number in large, tappable text immediately next to or below the button. Remove or minimize the business name in the hero; it belongs in the logo and footer.
+Increase nav font size to 16px, use dark text on white header background, reduce menu items to essential 5 (Home, Roofing Services, Our Work, About, Contact), implement sticky header so nav remains accessible while scrolling
+
+
+### 主要 · Company name not immediately clear among competing elements
+
+**技术事实**
+
+The business name 'Diamond Roof Tiling' appears in stylized logo form in upper left, but is competing visually with larger project labels ('TINGALPA HOTEL'), manufacturer logos, and award badges—making it unclear which entity the website represents
+
+**普通话翻译**
+
+公司名称「Diamond Roof Tiling」被其他更大的项目标签、制造商标志和奖章淹没，访客无法快速识别这是哪家公司的网站。
+
+**对客户的影响**
+
+从谷歌点击进入的访客需要在2-3秒内确认他们到达了正确的网站。如果他们无法立即看到清晰的公司名称，30-40%会认为点错了链接并返回搜索结果。
+
+**正确长啥样**
+
+Company name 'Diamond Roof Tiling & Restoration' displayed prominently in readable text (not just logo) at top of page, minimum 24px font size, with location subtitle 'Serving Brisbane Since [YEAR]' directly beneath at 16px
+
+**Redesign 怎么改**
+
+Place text version of business name 'Diamond Roof Tiling & Restoration' in header at 28px next to or below simplified logo, add 'Brisbane Roofing Specialists' tagline at 14px, ensure both are in dark text on light background for maximum readability
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Replace black background with light theme and high-contrast navigation; place phone CTA in top-right header
-2. [视觉] 2. Redesign hero section with benefit-driven headline, prominent 'Get Free Quote' button, and real Brisbane project photo
-3. [视觉] 3. Add trust signals above fold (Google star rating, QBCC license, insurance badge) and remove outdated beveled icon graphics
+1. [视觉] 1. Replace black background with white, implement standard clean layout with clear company name, phone number, and 'Get Quote' CTA above the fold
+2. [视觉] 2. Reduce logo clutter—keep only Diamond company logo in header, move all manufacturer/partner logos to footer or dedicated section as small monochrome icons
+3. [视觉] 3. Restructure hero section to prioritize customer value proposition and contact options over project showcase, move awards gallery to secondary section
 4. [评论] Feature the 'honest advice' quote prominently to address common customer fears of upselling in the roofing industry.
 5. [评论] Use the 'less heat in' benefit in the hero section to appeal to energy-conscious homeowners.
 6. [评论] Highlight the owner's hands-on involvement in a 'Why Choose Us' section to differentiate from larger, impersonal competitors.
@@ -355,24 +401,24 @@ Google Maps 上客户除了看星级，也会看商家有没有发 post（最新
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **29/100** |
+| 性能 (Performance) | **28/100** |
 | 可访问性 (Accessibility) | 73/100 |
 | 最佳实践 (Best Practices) | 65/100 |
 | SEO | 85/100 |
 
-**Lab 关键指标：** LCP `49.8s` · FCP `4.9s` · CLS `0.024` · TBT `1647ms`
+**Lab 关键指标：** LCP `47.1s` · FCP `5.0s` · CLS `0.024` · TBT `2169ms`
 
 **Google 建议的优化项（按节省时间排序，前 5）：**
 
-- **Reduce unused JavaScript** — 节省 19690ms · 节省 2326KB
-- **Reduce unused CSS** — 节省 2550ms · 节省 265KB
-- **Initial server response time was short** — 节省 283ms
-- **Minify CSS** — 节省 21KB
-- **Minify JavaScript** — 节省 15KB
+- **Reduce unused JavaScript** — 节省 17110ms · 节省 2326KB
+- **Reduce unused CSS** — 节省 1800ms · 节省 265KB
+- **Minify JavaScript** — 节省 150ms · 节省 15KB
+- **Minify CSS** — 节省 150ms · 节省 21KB
+- **Initial server response time was short** — 节省 122ms
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 34 · A11y 77 · Best Practices 65 · SEO 85
+**Lighthouse 分数：** Performance 36 · A11y 77 · Best Practices 65 · SEO 85
 
 ## 图片优化与第三方脚本体重
 
@@ -398,19 +444,19 @@ PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tra
 ### 第三方脚本占用情况
 
 - **总请求数：** 168（120 自有 + 48 第三方）
-- **第三方占总下载量：** 27%（1714 KB / 6272 KB）
-- **Tracker 脚本数：** 15（合计 298 KB）
+- **第三方占总下载量：** 27%（1716 KB / 6273 KB）
+- **Tracker 脚本数：** 15（合计 300 KB）
 
 **已识别的 tracker：**
 
 | 工具 | 类型 | 请求数 | 字节 |
 |---|---|---|---|
-| Google Tag Manager | analytics | 2 | 259.6 KB |
+| Google Tag Manager | analytics | 2 | 262.2 KB |
 | Google Analytics | analytics | 5 | 37.2 KB |
-| Microsoft Clarity | analytics | 5 | 0.7 KB |
+| Microsoft Clarity | analytics | 5 | 0.8 KB |
 | DoubleClick | ad_serving | 3 | 0.1 KB |
 
-> **观察：** 15 个 tracker 合计加载了 298 KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。
+> **观察：** 15 个 tracker 合计加载了 300 KB —— 这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign 时可以建议清理不再使用的 tracker。
 
 ## SEO 迁移评估 与 运营活跃度
 
