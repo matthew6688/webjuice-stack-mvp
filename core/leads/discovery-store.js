@@ -165,6 +165,28 @@ export function upsertDiscoveryRun(run, {
       .catch((err) => console.error(`[discovery-store] master-md enqueue err: ${err.message}`));
   }
 
+  // V3 D43 (Matthew 2026-05-14): "你抓到的 lead 不进入 website leads 吗?"
+  // 自动给每个新 entity 在 #website-leads 开 thread · 之前只有 grade-router (post-audit)
+  // 才开 thread · 改成入库就开 · operator 在 Discord 直接看到所有新 lead。
+  // idempotent (openLeadThread 检测 entity.discord_thread_id 存在则 reused)。
+  // fire-and-forget · 失败 fallback bot-log 经由 emit 层。
+  if (process.env.SOP1_DISABLE_AUTO_OPEN_LEADS !== '1' && entityKeys.length > 0) {
+    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread }) => {
+      let opened = 0, reused = 0, failed = 0;
+      for (const key of entityKeys) {
+        try {
+          const r = await openLeadThread(key);
+          if (r.ok && r.reused) reused += 1;
+          else if (r.ok) opened += 1;
+          else failed += 1;
+        } catch { failed += 1; }
+        // small breath to avoid Discord burst (~150ms · ≤7/sec well under guild limit)
+        await new Promise((res) => setTimeout(res, 150));
+      }
+      if (opened + failed > 0) console.error(`[discovery-store] auto-open-leads · opened=${opened} reused=${reused} failed=${failed} (of ${entityKeys.length})`);
+    }).catch((err) => console.error(`[discovery-store] auto-open-leads import failed: ${err.message}`));
+  }
+
   return {
     ok: true,
     storeRoot,

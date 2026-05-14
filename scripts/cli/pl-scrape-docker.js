@@ -332,6 +332,31 @@ async function main() {
   fs.writeFileSync(runOutputPath, jsonl);
   console.error(`wrote ${leads.length} leads → ${runOutputPath}`);
 
+  // V3 D43 GR6 · LLM judge intake plausibility · 不阻塞 · 写 audit log + bot-log
+  let intakeJudge = null;
+  if (leads.length > 0) {
+    try {
+      const { judgeIntakeResults } = await import(path.join(REPO_ROOT, 'core/llm/match-judge.js'));
+      intakeJudge = await judgeIntakeResults({
+        query: keywords.join(' | '), niche, city, expected_count: leads.length,
+        candidates: leads.map((l) => ({ name: l.name, address: l.address, category: l.category })),
+      });
+      console.error(`llm-judge intake · verdict=${intakeJudge.verdict} conf=${intakeJudge.confidence}${intakeJudge.suspicious_picks?.length ? ' sus=' + intakeJudge.suspicious_picks.length : ''} (${intakeJudge.provider} ${intakeJudge.latency_ms}ms)`);
+      // Surface to bot-log audit trail
+      if (intakeJudge.verdict !== 'proceed' && batchId) {
+        try {
+          const { emitGenericEvent } = await import(path.join(REPO_ROOT, 'core/funnel/discord-emit.js'));
+          const susList = intakeJudge.suspicious_picks?.slice(0, 5).join(', ') || '';
+          await emitGenericEvent('intake.judge.warn',
+            `⚠️ Intake judge (${niche}/${city}) verdict=**${intakeJudge.verdict}** conf=${intakeJudge.confidence}\nreason: ${intakeJudge.reason}${susList ? '\n可疑: ' + susList : ''}`,
+            { context: { batchId, query: keywords.join(' | '), verdict: intakeJudge.verdict } });
+        } catch {}
+      }
+    } catch (err) {
+      console.error(`llm-judge intake skipped: ${err.message}`);
+    }
+  }
+
   const npmArgs = [
     'run', 'leads:maps-scrape', '--',
     '--input', runOutputPath,
@@ -356,6 +381,13 @@ async function main() {
     keywords,
     batch_id: batchId,
     queues_path: 'data/leads/queues/',
+    llm_judge: intakeJudge ? {
+      verdict: intakeJudge.verdict,
+      confidence: intakeJudge.confidence,
+      reason: intakeJudge.reason,
+      suspicious_picks: intakeJudge.suspicious_picks,
+      provider: intakeJudge.provider,
+    } : null,
   };
   console.log(JSON.stringify(summary));
 }

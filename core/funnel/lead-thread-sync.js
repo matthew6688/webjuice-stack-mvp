@@ -180,21 +180,29 @@ export async function openLeadThread(entityKey, { fetchImpl = fetch } = {}) {
   }
 
   const tagIds = await resolveTagIds(tags, { fetchImpl });
-  const response = await fetchImpl(`${DISCORD_API}/channels/${channelId}/threads`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bot ${botToken()}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'profitslocal-lead-thread-sync',
-    },
-    body: JSON.stringify({
-      name: threadName,
-      auto_archive_duration: 10080,
-      applied_tags: tagIds,
-      message: { embeds: [embed] },
-    }),
-  });
-  const text = await response.text();
+  // V3 D43 · Discord 限 50 threads/10min per guild · 429 时 honor Retry-After
+  let response, text;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    response = await fetchImpl(`${DISCORD_API}/channels/${channelId}/threads`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bot ${botToken()}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'profitslocal-lead-thread-sync',
+      },
+      body: JSON.stringify({
+        name: threadName,
+        auto_archive_duration: 10080,
+        applied_tags: tagIds,
+        message: { embeds: [embed] },
+      }),
+    });
+    text = await response.text();
+    if (response.status !== 429) break;
+    const m = text.match(/"retry_after":\s*([0-9.]+)/);
+    const retrySec = m ? Math.min(parseFloat(m[1]), 200) : 30;
+    await new Promise((r) => setTimeout(r, (retrySec + 1) * 1000));
+  }
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
   const data = JSON.parse(text);
   const threadId = String(data.id || '');

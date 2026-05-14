@@ -273,14 +273,29 @@ function relevanceRulesFor({ niche = '', query = '' } = {}) {
 }
 
 function recommendDiscoveryAction({ score, websiteStatus, phone, reviewCount, relevance }) {
+  // V3 D43 fix (Matthew 2026-05-14): "目标条数是 3, 最后只有找到 1 个商家"
+  // 之前 HTTPS 网站需 score ≥ 60 · gosom 返回的 review_count 经常是 0 · score 算下来 ~27
+  // 全部落到 SKIP。但 V3 业务就是给现网 redesign · HTTPS 网站正是我们的目标!
+  // 改: relevant niche + 有 phone(或 website) → AUDIT_CANDIDATE · 别再瞎 SKIP。
   if (relevance && relevance.relevant === false) return RECOMMENDED_DISCOVERY_ACTION.SKIP;
-  if (!phone && websiteStatus === WEBSITE_STATUS.NO_WEBSITE) return RECOMMENDED_DISCOVERY_ACTION.MANUAL_REVIEW;
-  if (websiteStatus === WEBSITE_STATUS.NO_WEBSITE && score >= 55) return RECOMMENDED_DISCOVERY_ACTION.STARTER_CANDIDATE;
-  if (websiteStatus === WEBSITE_STATUS.SOCIAL_OR_THIRD_PARTY && score >= 55) return RECOMMENDED_DISCOVERY_ACTION.STARTER_CANDIDATE;
-  if (websiteStatus === WEBSITE_STATUS.INDEPENDENT_HTTP && score >= 55) return RECOMMENDED_DISCOVERY_ACTION.AUDIT_CANDIDATE;
-  if (websiteStatus === WEBSITE_STATUS.INDEPENDENT_HTTPS && score >= 60) return RECOMMENDED_DISCOVERY_ACTION.AUDIT_CANDIDATE;
-  if (reviewCount >= 100 && score >= 40) return RECOMMENDED_DISCOVERY_ACTION.MANUAL_REVIEW;
-  return RECOMMENDED_DISCOVERY_ACTION.SKIP;
+  const hasContact = !!phone;
+  const hasWebsite = websiteStatus && websiteStatus !== WEBSITE_STATUS.NO_WEBSITE;
+  if (!hasContact && !hasWebsite) return RECOMMENDED_DISCOVERY_ACTION.MANUAL_REVIEW;
+  // No website · phone only → starter candidate (build a site for them · M5 path)
+  if (websiteStatus === WEBSITE_STATUS.NO_WEBSITE && hasContact) {
+    return score >= 55 ? RECOMMENDED_DISCOVERY_ACTION.STARTER_CANDIDATE : RECOMMENDED_DISCOVERY_ACTION.MANUAL_REVIEW;
+  }
+  // Social or third-party (Facebook page · Yellow Pages listing only) → starter candidate
+  if (websiteStatus === WEBSITE_STATUS.SOCIAL_OR_THIRD_PARTY) {
+    return RECOMMENDED_DISCOVERY_ACTION.STARTER_CANDIDATE;
+  }
+  // Has own website (HTTP or HTTPS) AND niche relevant → audit candidate (V3 default)
+  // 不再要求 score ≥ 60 · 评分公式跟 gosom 返回字段不匹配 (review_count 经常 0 拉低)
+  if (websiteStatus === WEBSITE_STATUS.INDEPENDENT_HTTP || websiteStatus === WEBSITE_STATUS.INDEPENDENT_HTTPS) {
+    return RECOMMENDED_DISCOVERY_ACTION.AUDIT_CANDIDATE;
+  }
+  // Catch-all · don't drop legit leads
+  return RECOMMENDED_DISCOVERY_ACTION.MANUAL_REVIEW;
 }
 
 function hostname(url) {

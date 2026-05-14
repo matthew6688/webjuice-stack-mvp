@@ -48,14 +48,38 @@ function appendEventLog(entry) {
   } catch { /* never throw from logger */ }
 }
 
-// V3 D43 P0 fix · per-channel rate-limit queue · Discord 限制 ~5 msg / 5s per channel
-// Master.md fanout burst (Run #4 实测) 触发 429 · 此处 token-bucket serial 化:
-//   每个 channel 维护一个 promise chain · 最小间隔 250ms (4 msg/sec) ·
-//   429 时 honor Retry-After header (Discord 通常 0.5-2s)
-const channelQueue = new Map(); // channelId → Promise tail
-const MIN_INTERVAL_MS = parseInt(process.env.DISCORD_EMIT_MIN_INTERVAL_MS || '250', 10);
+// V3 D43 P0 fix v2 · per-channel rate-limit queue + 429 cooldown
+// Discord per-channel limit: ~5 msg / 5s sustained. Bot global: 50/sec.
+// Token bucket: burst 5 messages, refill 1/1.2s.
+// + Channel cooldown: 429 sets cooldownUntil[channel] · queue blocks until expires.
+const channelQueue = new Map();    // channelId → Promise tail
+const channelBucket = new Map();   // channelId → { tokens, lastRefillMs }
+const channelCooldown = new Map(); // channelId → cooldownUntilMs (timestamp)
+const BUCKET_CAP = parseInt(process.env.DISCORD_EMIT_BUCKET_CAP || '5', 10);
+const REFILL_INTERVAL_MS = parseInt(process.env.DISCORD_EMIT_REFILL_MS || '1200', 10);
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+function takeBucketToken(cid) {
+  const now = Date.now();
+  const b = channelBucket.get(cid) || { tokens: BUCKET_CAP, lastRefillMs: now };
+  // Refill
+  const elapsed = now - b.lastRefillMs;
+  const refilled = Math.floor(elapsed / REFILL_INTERVAL_MS);
+  if (refilled > 0) {
+    b.tokens = Math.min(BUCKET_CAP, b.tokens + refilled);
+    b.lastRefillMs = b.lastRefillMs + refilled * REFILL_INTERVAL_MS;
+  }
+  if (b.tokens > 0) {
+    b.tokens -= 1;
+    channelBucket.set(cid, b);
+    return 0; // no wait needed
+  }
+  // No tokens · compute wait until next refill
+  const waitMs = REFILL_INTERVAL_MS - (now - b.lastRefillMs);
+  channelBucket.set(cid, b);
+  return Math.max(waitMs, 100);
+}
 
 async function postRawNoQueue(channelOrThreadId, content, attempt = 0) {
   const tok = botToken();
@@ -72,10 +96,11 @@ async function postRawNoQueue(channelOrThreadId, content, attempt = 0) {
       },
       body: JSON.stringify({ content: String(content).slice(0, 2000) }),
     });
-    if (r.status === 429 && attempt < 3) {
-      // Rate-limited · respect Retry-After
+    if (r.status === 429 && attempt < 5) {
       const retryAfter = parseFloat(r.headers.get('Retry-After') || r.headers.get('retry-after') || '1');
-      const waitMs = Math.min(Math.max(retryAfter * 1000, 500), 10_000);
+      const waitMs = Math.min(Math.max(retryAfter * 1000 + 200, 800), 15_000);
+      // Set channel cooldown · NEXT caller in queue will also wait
+      channelCooldown.set(channelOrThreadId, Date.now() + waitMs);
       await sleep(waitMs);
       return postRawNoQueue(channelOrThreadId, content, attempt + 1);
     }
@@ -92,17 +117,21 @@ async function postRawNoQueue(channelOrThreadId, content, attempt = 0) {
 
 async function postRaw(channelOrThreadId, content) {
   if (!channelOrThreadId) return postRawNoQueue(channelOrThreadId, content);
-  // Serialize per channel · enforce min interval between posts
+  // Serialize per channel
   const prev = channelQueue.get(channelOrThreadId) || Promise.resolve();
-  let lastFireResolve;
-  const myTurn = new Promise((res) => { lastFireResolve = res; });
-  channelQueue.set(channelOrThreadId, prev.then(() => myTurn));
+  let myDone;
+  const next = new Promise((res) => { myDone = res; });
+  channelQueue.set(channelOrThreadId, prev.then(() => next));
   await prev;
+  // Wait for cooldown if a recent 429 set one
+  const cooldownUntil = channelCooldown.get(channelOrThreadId) || 0;
+  const cooldownWait = cooldownUntil - Date.now();
+  if (cooldownWait > 0) await sleep(cooldownWait);
+  // Wait for bucket token (channel-rate-limit floor)
+  const bucketWait = takeBucketToken(channelOrThreadId);
+  if (bucketWait > 0) await sleep(bucketWait);
   const result = await postRawNoQueue(channelOrThreadId, content);
-  // Sleep min interval BEFORE releasing next caller (so next post is at least
-  // MIN_INTERVAL_MS later · prevents burst)
-  await sleep(MIN_INTERVAL_MS);
-  lastFireResolve();
+  myDone();
   return result;
 }
 
