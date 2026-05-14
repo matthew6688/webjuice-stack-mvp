@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-14T02:23:25.282Z",
+  "generatedAt": "2026-05-14T02:47:11.849Z",
   "entity_input": {
     "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "latest": {
@@ -136,7 +136,8 @@
       },
       "batch_id": "places-roofer-brisbane-202605132243",
       "discovery_rank": 11,
-      "google_places_provider": "official_api"
+      "google_places_provider": "official_api",
+      "contact_us_url": "https://brisbaneroofrestorationexperts.com.au/contact/"
     },
     "identifiers": {
       "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
@@ -308,19 +309,19 @@
       "mobile": {
         "strategy": "mobile",
         "scores": {
-          "performance": 67,
+          "performance": 41,
           "accessibility": 95,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 17230.212068266297,
-          "fcp_ms": 1955.1075863649714,
+          "lcp_ms": 17477.324800635964,
+          "fcp_ms": 1964.8921470182354,
           "cls": 0,
-          "tbt_ms": 110,
-          "tti_ms": 17245.212270093445,
-          "speed_index_ms": 5951.016704544338,
-          "transfer_size_bytes": 3014114
+          "tbt_ms": 1405,
+          "tti_ms": 17514.82550980766,
+          "speed_index_ms": 7949.361778804598,
+          "transfer_size_bytes": 3013856
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -335,13 +336,13 @@
           {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 1200,
-            "savings_bytes": 237325
+            "savings_ms": 1350,
+            "savings_bytes": 237288
           },
           {
             "id": "server-response-time",
             "title": "Initial server response time was short",
-            "savings_ms": 98,
+            "savings_ms": 61,
             "savings_bytes": null
           }
         ]
@@ -349,19 +350,19 @@
       "desktop": {
         "strategy": "desktop",
         "scores": {
-          "performance": 75,
+          "performance": 60,
           "accessibility": 92,
           "best_practices": 100,
           "seo": 100
         },
         "lab_metrics": {
-          "lcp_ms": 2361.300794805959,
-          "fcp_ms": 525.2025469494206,
-          "cls": 0.006332,
-          "tbt_ms": 266,
-          "tti_ms": 2361.3007948059594,
-          "speed_index_ms": 1812.9802051740517,
-          "transfer_size_bytes": 3438939
+          "lcp_ms": 3461.237559036263,
+          "fcp_ms": 525.6111938797968,
+          "cls": 0.10049,
+          "tbt_ms": 284,
+          "tti_ms": 3471.2382618736483,
+          "speed_index_ms": 2963.8036022580013,
+          "transfer_size_bytes": 3438792
         },
         "crux_overall": null,
         "crux_field_data": {
@@ -374,22 +375,22 @@
         "crux_origin_overall": null,
         "opportunities": [
           {
-            "id": "server-response-time",
-            "title": "Initial server response time was short",
-            "savings_ms": 109,
-            "savings_bytes": null
-          },
-          {
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
-            "savings_ms": 0,
-            "savings_bytes": 430761
+            "savings_ms": 400,
+            "savings_bytes": 430206
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 86,
+            "savings_bytes": null
           }
         ]
       }
     },
     "failures": [],
-    "latency_ms": 45063
+    "latency_ms": 85234
   },
   "form_audit": {
     "ok": true,
@@ -707,24 +708,18 @@
     "ok": true,
     "host": "brisbaneroofrestorationexperts.com.au",
     "is_au_domain": true,
-    "domain_age_days": 641,
-    "domain_age_years": 1,
-    "domain_age_source": "wayback_first_snapshot_proxy",
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
     "domain_created_iso": null,
     "au_last_modified_iso": "2026-04-24T02:02:16.000Z",
     "registrar": "GoDaddy.com LLC trading as GoDaddy.com",
     "wayback": {
-      "snapshot_count": 16,
-      "first_snapshot": "2024-08-11",
-      "last_snapshot": "2026-03-12",
-      "snapshots_per_year": {
-        "2024": 4,
-        "2025": 10,
-        "2026": 2
-      }
+      "snapshot_count": 0,
+      "error": "The operation was aborted due to timeout"
     },
-    "days_since_last_wayback_snapshot": 63,
-    "days_since_first_wayback_snapshot": 641,
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
     "recent_redesign_signal": null,
     "email_dns": {
       "spf_present": true,
@@ -876,24 +871,24 @@
     "first_party_count": 28,
     "first_party_bytes": 2368408,
     "third_party_count": 29,
-    "third_party_bytes": 804726,
+    "third_party_bytes": 804722,
     "third_party_pct_of_bytes": 25,
     "tracker_count": 2,
-    "tracker_bytes": 151722,
+    "tracker_bytes": 151716,
     "tracker_summary": [
       {
         "id": "gtm",
         "name": "Google Tag Manager",
         "kind": "analytics",
         "request_count": 1,
-        "bytes": 149496
+        "bytes": 149494
       },
       {
         "id": "doubleclick",
         "name": "DoubleClick",
         "kind": "ad_serving",
         "request_count": 1,
-        "bytes": 2226
+        "bytes": 2222
       }
     ],
     "heaviest_third_party": [
@@ -915,7 +910,7 @@
         "domain": "googletagmanager.com",
         "first_party": false,
         "resource_type": "script",
-        "size_bytes": 149496,
+        "size_bytes": 149494,
         "tracker_id": "gtm",
         "tracker_name": "Google Tag Manager",
         "tracker_kind": "analytics",
@@ -1022,7 +1017,7 @@
   "detailed_audit": {
     "business_id": "place_chijwdbif2xzkwsrru6lkmu2l0o",
     "audit_version": "2026-05-11-v1",
-    "audited_at": "2026-05-14T02:23:25.282Z",
+    "audited_at": "2026-05-14T02:47:11.849Z",
     "audit_score": 70,
     "dimension_scores": {
       "gbp": 48,

@@ -69,6 +69,7 @@ if (args.all || args['all-audit-candidates']) {
 console.log(`[run-pipeline] targets=${targets.length}  refetch=${refetch}  reviews=${withReviews}  cloudinary=${uploadCloudinary}  profile=${PROFILE} (concurrent_leads=${CONCURRENT_LEADS})`);
 
 // V3 D37 (2026-05-14) · per-stage Discord update helper
+// V3 D38 (2026-05-14) · upgraded to use richer message builders
 // Fire-and-forget · errors logged but never throw · 不阻塞 pipeline
 async function postStage(entityKey, message) {
   try {
@@ -77,6 +78,11 @@ async function postStage(entityKey, message) {
   } catch (err) {
     console.warn(`  [discord-hook] ${err.message}`);
   }
+}
+
+// V3 D38 · stage message builders (centralized · per SOP-AUDIT-STAGE-NOTIFICATIONS.md)
+async function loadStageMessages() {
+  return await import('../../core/funnel/audit-stage-messages.js');
 }
 
 async function processLead(entityKey) {
@@ -90,8 +96,10 @@ async function processLead(entityKey) {
   const url = entity.latest?.website;
   const slug = slugifyName(entity.latest?.name || entityKey);
 
-  // V3 D37 · audit start
-  await postStage(entityKey, `🔍 **Audit pipeline 启动** · 4 stages · 预计 2-5 min`);
+  // V3 D38 · audit start (使用 message builder)
+  const stageMsgs = await loadStageMessages();
+  await postStage(entityKey, stageMsgs.pipelineStartMessage());
+  const stage1StartTs = Date.now();
 
   // ── Stage 1: detailed audit (Playwright fetch + scoring) ─────────────
   const detailedPath = path.join(detailedDir, `${entityKey}.json`);
@@ -136,30 +144,58 @@ async function processLead(entityKey) {
     console.log(`     → audit_score=${audit.audit_score}/100 decision=${audit.decision}`);
 
     // V3 D37 · Contact info extraction · 从 fetchPayload.rawHtml 抽 email + contact_us_url + social_links
-    // 写回 entity.latest · 供 profile card 联系方式 section 显示
+    // V3 D38 · 加 2 页 crawl · 抓 /contact/ 页提升 email/social 覆盖率
+    let contactInfo = { emails: [], contact_us_url: null, social_links: {} };
     if (fetchPayload?.rawHtml) {
       try {
         const { extractContactInfo } = await import('../../core/audit/contact-extraction.js');
-        const contact = extractContactInfo(fetchPayload);
-        // Read-merge-write to preserve other writers
+        contactInfo = extractContactInfo(fetchPayload);
+
+        // D38 · 2-page crawl: if /contact/ URL found · fetch + re-extract · merge
+        if (contactInfo.contact_us_url) {
+          try {
+            const { fetchContactPage } = await import('../../core/audit/contact-page-fetch.js');
+            const contactPagePayload = await fetchContactPage(contactInfo.contact_us_url);
+            if (contactPagePayload?.rawHtml) {
+              const contactPageInfo = extractContactInfo(contactPagePayload);
+              // Merge: dedupe emails · prefer richer social
+              for (const e of contactPageInfo.emails) {
+                if (!contactInfo.emails.includes(e)) contactInfo.emails.push(e);
+              }
+              contactInfo.social_links = { ...contactInfo.social_links, ...contactPageInfo.social_links };
+              console.log(`     → contact-page crawl ok · +${contactPageInfo.emails.length} emails · +${Object.keys(contactPageInfo.social_links).length} social`);
+            }
+          } catch (err) {
+            console.warn(`     ⚠ contact-page crawl failed (non-blocking): ${err.message}`);
+          }
+        }
+
+        // Write back to entity (read-merge-write to preserve other writers)
         const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
         fresh.latest = fresh.latest || {};
-        if (contact.emails.length && !fresh.latest.email) fresh.latest.email = contact.emails[0];
-        if (contact.emails.length > 1 && !fresh.latest.backup_email) fresh.latest.backup_email = contact.emails[1];
-        if (contact.contact_us_url && !fresh.latest.contact_us_url) fresh.latest.contact_us_url = contact.contact_us_url;
-        if (Object.keys(contact.social_links).length) {
-          fresh.latest.social_links = { ...(fresh.latest.social_links || {}), ...contact.social_links };
+        if (contactInfo.emails.length && !fresh.latest.email) fresh.latest.email = contactInfo.emails[0];
+        if (contactInfo.emails.length > 1 && !fresh.latest.backup_email) fresh.latest.backup_email = contactInfo.emails[1];
+        if (contactInfo.contact_us_url && !fresh.latest.contact_us_url) fresh.latest.contact_us_url = contactInfo.contact_us_url;
+        if (Object.keys(contactInfo.social_links).length) {
+          fresh.latest.social_links = { ...(fresh.latest.social_links || {}), ...contactInfo.social_links };
         }
         fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
-        console.log(`     → contact: emails=${contact.emails.length} · contact_url=${contact.contact_us_url ? 'yes' : 'no'} · social=${Object.keys(contact.social_links).join(',') || 'none'}`);
+        console.log(`     → contact: emails=${contactInfo.emails.length} · contact_url=${contactInfo.contact_us_url ? 'yes' : 'no'} · social=${Object.keys(contactInfo.social_links).join(',') || 'none'}`);
       } catch (err) {
         console.warn(`     ⚠ contact extraction failed: ${err.message}`);
       }
     }
 
-    // V3 D37 · Stage 1 done hook
-    await postStage(entityKey,
-      `✅ **Stage 1/4 · detailedAudit done** · 总分 ${audit.audit_score}/100 · ${audit.decision || ''} · ${(audit.issues || []).length} issues`);
+    // V3 D38 · Stage 1 done hook (rich message)
+    const stage1Sec = Math.round((Date.now() - stage1StartTs) / 1000);
+    const entityFresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+    await postStage(entityKey, stageMsgs.stage1Message({
+      entity: entityFresh,
+      audit,
+      fetchPayload,
+      contact: contactInfo,
+      durationSec: stage1Sec,
+    }));
 
     // Matthew 2026-05-13: audit 完自动 refresh master.md · 把审计字段填进 frontmatter + 报告段
     // fire-and-forget · 去重 + 失败兜底在 enqueueMasterMdRefresh
@@ -215,10 +251,14 @@ async function processLead(entityKey) {
       fs.writeFileSync(visualPath, JSON.stringify(visualFixture, null, 2));
       const issues = out.parsedJson?.issues?.length || 0;
       console.log(`     → ${issues} visual issues via ${out.provider}, latency=${(out.latencyMs / 1000).toFixed(1)}s${out.tokensIn ? ` (in=${out.tokensIn} out=${out.tokensOut} ~$${(out.theoreticalCostUsd||0).toFixed(4)})` : ''}`);
-      // V3 D37 · Stage 2 done hook
-      const fresh = out.parsedJson?.visual_freshness ?? out.parsedJson?.freshness ?? null;
-      await postStage(entityKey,
-        `✅ **Stage 2/4 · visual audit done** · provider ${out.provider}${fresh != null ? ` · 新鲜度 ${fresh}/10` : ''} · ${issues} issues · ${(out.latencyMs / 1000).toFixed(1)}s`);
+      // V3 D38 · Stage 2 done hook (rich message)
+      await postStage(entityKey, stageMsgs.stage2Message({
+        visual: visualFixture,
+        provider: out.provider,
+        model: out.model,
+        latencyMs: out.latencyMs,
+        costUsd: out.theoreticalCostUsd,
+      }));
     } catch (err) {
       console.warn(`     ⚠ vision failed: ${err.message}`);
     }
@@ -244,9 +284,13 @@ async function processLead(entityKey) {
     });
     const persistResult = persistLeadGrade({ entityKey, grade: leadGrade });
     console.log(`  [stage 3a/4] graded: ${leadGrade.investment_level}${leadGrade.product_tier ? '/' + leadGrade.product_tier : ''} ${persistResult.ok ? '✓ persisted' : '⚠ ' + persistResult.reason}`);
-    // V3 D37 · Stage 3 done hook · grade-router 触发 thread 开 / 改 stage
-    await postStage(entityKey,
-      `✅ **Stage 3/4 · grade router done** · ${leadGrade.investment_level}${leadGrade.product_tier ? ' / ' + leadGrade.product_tier : ''}${leadGrade.skip_reasons?.length ? ` · skip: ${leadGrade.skip_reasons.map((r) => r.id).join(', ')}` : ''}`);
+    // V3 D38 · Stage 3 done hook (rich message)
+    const entityForStage3 = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+    await postStage(entityKey, stageMsgs.stage3Message({
+      leadGrade,
+      audit: detailedFixture.detailed_audit,
+      entity: entityForStage3,
+    }));
   } catch (err) {
     console.warn(`     ⚠ grading failed: ${err.message}`);
   }
@@ -263,14 +307,23 @@ async function processLead(entityKey) {
     cwd: repoRoot, stdio: 'inherit',
   });
   if (r.status !== 0) {
-    // V3 D37 · Stage 4 fail hook
-    await postStage(entityKey,
-      `❌ **Stage 4/4 · HTML report 失败** · exit ${r.status}`);
+    // V3 D38 · Stage 4 fail
+    await postStage(entityKey, stageMsgs.stageFailMessage({
+      stage: 4,
+      reason: `build-internal-report exit ${r.status}`,
+      retryHint: '检查 internal-audit-report.html 生成日志',
+    }));
     return { entityKey, ok: false, reason: `build-report exit ${r.status}` };
   }
-  // V3 D37 · Stage 4 done hook
-  await postStage(entityKey,
-    `✅ **Stage 4/4 · internal HTML report 生成** · audit pipeline 完整 · 进入 design-ready 阶段`);
+  // V3 D38 · Stage 4 done hook (rich message · evidence hyperlinks)
+  const reportPath = path.join('clients', slug, 'v2', 'internal-audit-report.html');
+  let htmlSize = null;
+  try { htmlSize = fs.statSync(reportPath).size; } catch {}
+  await postStage(entityKey, stageMsgs.stage4Message({
+    entity: JSON.parse(fs.readFileSync(entityPath, 'utf8')),
+    slug,
+    htmlSize,
+  }));
 
   return {
     entityKey,

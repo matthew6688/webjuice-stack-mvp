@@ -189,6 +189,7 @@ npm run pl:bulk-publish-demo -- --all
 | D35 | Discord 显示规范 · 7-section card + 中文 thread title + 5 lifecycle hooks | SOP-DISCORD-DISPLAY |
 | D36 | Skill 清理 (7 V2 archive) + 3 SoT 新文档 (SKILLS-INDEX / TOOL-STACK-PRD / INTAKE-RUNBOOK) | cross-module |
 | D37 | Audit per-stage Discord hook + contact 抓取 (email/contact_us/social) + niche 容错 + Bug G1/G2 | M2 + 显示 |
+| D38 | Audit stage 富信息消息 builder + 2-page crawl (homepage + /contact/) + evidence hyperlinks + enrichment thread post | SOP-AUDIT-STAGE-NOTIFICATIONS |
 
 完整: [DECISIONS-LOG.md](./DECISIONS-LOG.md)
 
@@ -223,6 +224,7 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 - [SKILLS-INDEX.md](./SKILLS-INDEX.md) · 所有 Hermes/Claude skills · V3 active + V2 archived
 - [TOOL-STACK-PRD.md](./TOOL-STACK-PRD.md) · 20+ 第三方 API + 7 LLM cascade + quota + daily cost SOP
 - [INTAKE-RUNBOOK.md](./INTAKE-RUNBOOK.md) · 4 入口 × 8 checkpoint 端到端测试 runbook
+- [SOP-AUDIT-STAGE-NOTIFICATIONS.md](./SOP-AUDIT-STAGE-NOTIFICATIONS.md) · audit pipeline 4 stage 通知规范 (D38 · 富信息 + hyperlink evidence)
 
 ### Operator runbook (SOP-N-FLOW · 流转 / 节点 / 汇报 / 故障)
 - [SOP-1-FLOW.md](./SOP-1-FLOW.md) · Discord → master.md (**新 2026-05-14**)

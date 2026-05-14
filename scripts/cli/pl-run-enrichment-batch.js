@@ -220,6 +220,20 @@ async function main() {
       const icon = entity.enrichment_status === 'complete' ? `${GREEN}✓${RESET}` :
                    entity.enrichment_status === 'partial' ? `${YELLOW}~${RESET}` : `${RED}✗${RESET}`;
       console.log(`${icon} ${entity.enrichment_status.padEnd(13)} ${DIM}${profile.enrichment_trace.queries_succeeded}/${profile.enrichment_trace.queries_run} routes · ${elapsed}ms${RESET}`);
+
+      // V3 D38 · per-entity Discord update · enrich 结果发 entity thread (如已存在)
+      // Fire-and-forget · 不阻塞 batch
+      try {
+        const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
+        const got = [];
+        if (profile.contact?.phone) got.push(`phone ${profile.contact.phone}`);
+        if (profile.contact?.website) got.push(`website ${profile.contact.website.replace(/^https?:\/\//, '').slice(0, 40)}`);
+        if (profile.contact?.email) got.push(`email ${profile.contact.email}`);
+        if (profile.contact?.address) got.push(`address ${profile.contact.address.slice(0, 40)}`);
+        const msg = `**Enrichment ${entity.enrichment_status}** · ${profile.enrichment_trace.queries_succeeded}/${profile.enrichment_trace.queries_run} routes · ${(elapsed / 1000).toFixed(1)}s\n\n` +
+          (got.length ? `补全: ${got.join(' · ')}` : '没补到新字段');
+        await refreshThreadAndPost(entity.entityKey, msg);
+      } catch { /* non-blocking */ }
     } catch (err) {
       results.errored += 1;
       console.log(`${RED}✗${RESET} error           ${DIM}${err.message}${RESET}`);

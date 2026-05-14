@@ -548,6 +548,58 @@ node -e "import('./core/leads/discovery-store.js').then(m => m.rebuildDiscoveryI
 
 ---
 
+## D38 · Audit 富信息 stage 通知 + 2-page crawl + evidence hyperlinks (2026-05-14)
+
+**Decision**: 每 stage Discord 消息从 1 行 summary → 富信息 (400-600 字符)。加 2-page crawl (homepage + /contact/) 提升 email/social 覆盖。
+
+**Why · per Matthew**:
+- "看到 stage 的通知了 · 需要把阶段的详细内容也发过来"
+- "evidence 列表 hyperlink 显示"
+- "audit 只爬 homepage? 至少得爬 contact us · 两个页面"
+- 风格: 少 emoji · hyperlink
+
+**Implementation**:
+
+### 1. Message builders (`core/funnel/audit-stage-messages.js` 新)
+- 6 个 fn: pipelineStart · stage1/2/3/4 · stageFail
+- 每 stage 包含规范信息 (see SOP-AUDIT-STAGE-NOTIFICATIONS §1)
+- 链接策略: live URL hyperlink · 本地路径只显名
+- 失败 ❌ 唯一 emoji marker
+
+### 2. 2-page crawl (`core/audit/contact-page-fetch.js` 新)
+- 轻量 fetch (no Playwright) · 抓 `/contact/` 页 rawHtml
+- Stage 1 末尾自动 trigger · 合并 email + social
+- 失败 try/catch · 不阻塞 audit
+
+### 3. Pipeline 改造 (`scripts/leads/run-audit-pipeline.js`)
+- 5 个 hook 改用 message builder
+- Stage 1 末尾 contact 页 follow-up extraction
+- Stage 4 evidence hyperlink list
+
+### 4. Enrichment 也发 thread (`scripts/cli/pl-run-enrichment-batch.js`)
+- per-entity enrich 后 refreshThreadAndPost
+- "Enrichment {status} · {N}/{M} routes · 补全: phone / website / email / address"
+
+**Documentation**:
+- `docs/v3/SOP-AUDIT-STAGE-NOTIFICATIONS.md` 新 · 完整规范 + 字段来源 + 维护契约
+- README SoT 索引加链接
+
+**Verification (brisbane-roof re-audit · --refetch · PID 85749)**:
+- ✅ Audit pipeline 完整 · ok=true · grade C · audit_score 70 · 6 visual issues
+- ✅ Contact-page crawl 跑成功 (`/contact/` fetched · +0 emails this time · brisbane-roof 数据有限 · 机制 work)
+- ✅ 5 Discord rich messages 应到 thread 1504269382304530583
+
+**风格**:
+```
+默认成功: **Stage X/4 · description** done · Ns
+仅失败: ❌ **Stage X/4 · 失败**
+hyperlink: [label](url) · 仅有 live URL 时
+本地: 只显文件名
+```
+
+
+---
+
 ## D37 · Audit per-stage Discord hook + contact 抓取 + niche 容错 (2026-05-14)
 
 **Decision**: 4 改进:
