@@ -371,9 +371,10 @@ async function processLead(entityKey) {
     console.warn(`  [post] master-md rebuild err: ${err.message}`);
   }
   try {
-    console.log(`  [post] rebuild customer-facing-audit.html...`);
-    const cRes = spawnSync('npm', ['run', 'pl:build-customer-audit', '--', '--entity-key', entityKey], {
-      cwd: repoRoot, stdio: 'inherit', timeout: 120_000,
+    console.log(`  [post] rebuild customer-facing-audit.html (slug=${slug})...`);
+    // pl:build-customer-audit takes --slug not --entity-key. ~2min · uses claude CLI.
+    const cRes = spawnSync('npm', ['run', 'pl:build-customer-audit', '--', '--slug', slug], {
+      cwd: repoRoot, stdio: 'inherit', timeout: 300_000,
     });
     if (cRes.status !== 0) console.warn(`  [post] customer-audit build exit=${cRes.status}`);
   } catch (err) {

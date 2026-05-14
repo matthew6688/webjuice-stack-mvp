@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-14T11:25:14.358Z",
+  "updatedAt": "2026-05-14T11:38:08.665Z",
   "storeRoot": "data/leads",
   "totals": {
     "entities": 103,
     "promoted": 0,
     "skipped": 44,
-    "needsAudit": 53,
+    "needsAudit": 52,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 0
   },
   "statusCounts": {
-    "queued_for_audit": 53,
+    "queued_for_audit": 52,
     "skipped": 44,
     "scored": 1,
-    "manual_review": 1,
-    "graded": 4
+    "graded": 5,
+    "manual_review": 1
   },
   "actionCounts": {
     "audit_candidate": 54,
@@ -2480,7 +2480,7 @@
     },
     {
       "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
-      "status": "queued_for_audit",
+      "status": "graded",
       "firstSeenAt": "2026-05-09T06:17:12.131Z",
       "lastSeenAt": "2026-05-14T07:57:28.273Z",
       "runCount": 10,

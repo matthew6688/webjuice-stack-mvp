@@ -3,8 +3,8 @@
   "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-14T07:57:28.273Z",
-  "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-14T07:57:28.273Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-14T11:38:08.651Z",
   "identifiers": {
     "place_id": "ChIJ-9wdZxxakWsR-llJRD1U3JQ",
     "cid": "10726541034605074938",
@@ -362,22 +362,34 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T11:38:08.651Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T11:40:48.038Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+      "note": ""
     }
   ],
   "notes": [
-    "Graded A / T2"
+    "Graded A / T2",
+    "Graded C / -"
   ],
   "grade": {
-    "investment_level": "A",
-    "product_tier": "T2",
-    "recommended_pricing": {
-      "one_time": null,
-      "annual": "$799/年",
-      "monthly": null,
-      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
-    },
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-14T04:37:29.608Z"
+    "graded_at": "2026-05-14T11:38:08.650Z"
   },
   "enrichment_status": "complete",
   "batches": [
@@ -395,6 +407,61 @@
   "project_profile_message_id": "1504269344161402920",
   "project_thread_opened_at": "2026-05-13T23:49:19.805Z",
   "sales_stage": "demo-ready",
-  "phase": "design-ready",
-  "phaseChangedAt": "2026-05-14T04:37:29.618Z"
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-14T11:40:48.038Z",
+  "discord_thread_id": "1504447719392022683",
+  "discord_profile_message_id": "1504447719392022683",
+  "discord_thread_opened_at": "2026-05-14T11:38:07.932Z",
+  "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+  "qualification": {
+    "computed_at": "2026-05-14T11:40:48.043Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": false,
+        "reason": "页面 > 50 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": false,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网是 e-commerce (Shopify/WooCommerce/Magento) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": null,
+    "verdict": "archived",
+    "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+    "redesign_brief_path": "clients/queensland-roofing-pty-ltd/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 10,
+      "sitemap_source": "/sitemap.xml",
+      "cost": 0.15
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": null
+  }
 }

@@ -416,40 +416,66 @@ export async function openProjectThread(entityKey, { fetchImpl = fetch } = {}) {
  * Idempotent: skip if title already matches.
  */
 export async function renameThreadToCurrentTitle(entityKey, { fetchImpl = fetch } = {}) {
-  const entity = readEntity(entityKey);
-  if (!entity) return { ok: false, reason: 'entity_not_found' };
-  const threadId = entity.project_thread_id || entity.discord_thread_id;
-  if (!threadId) return { ok: false, reason: 'no_thread_id' };
-  const channel = entity.project_thread_id ? 'projects' : 'leads';
-  const newTitle = buildLeadThreadName(entity, channel);
-  if (isDryRun()) {
-    return { ok: true, dry_run: true, intended: { endpoint: `PATCH ${DISCORD_API}/channels/${threadId}`, name: newTitle } };
-  }
-  try {
-    const cur = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
-      headers: { Authorization: `Bot ${botToken()}`, 'User-Agent': 'profitslocal-lead-thread-sync' },
-    });
-    if (cur.ok) {
-      const data = await cur.json();
-      if (data.name === newTitle) return { ok: true, unchanged: true, threadId, title: newTitle };
+  async function tryRename(threadId, channel) {
+    const entity = readEntity(entityKey);
+    if (!entity) return { ok: false, reason: 'entity_not_found' };
+    const newTitle = buildLeadThreadName(entity, channel);
+    if (isDryRun()) {
+      return { ok: true, dry_run: true, intended: { endpoint: `PATCH ${DISCORD_API}/channels/${threadId}`, name: newTitle } };
     }
-    const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bot ${botToken()}`,
-        'Content-Type': 'application/json',
-        'User-Agent': 'profitslocal-lead-thread-sync',
-      },
-      body: JSON.stringify({ name: newTitle }),
-    });
-    if (!r.ok) {
-      const t = await r.text();
-      return { ok: false, reason: `discord_${r.status}`, body: t };
+    try {
+      const cur = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+        headers: { Authorization: `Bot ${botToken()}`, 'User-Agent': 'profitslocal-lead-thread-sync' },
+      });
+      if (cur.status === 404) return { ok: false, dead: true };
+      if (cur.ok) {
+        const data = await cur.json();
+        if (data.name === newTitle) return { ok: true, unchanged: true, threadId, title: newTitle };
+      }
+      const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bot ${botToken()}`,
+          'Content-Type': 'application/json',
+          'User-Agent': 'profitslocal-lead-thread-sync',
+        },
+        body: JSON.stringify({ name: newTitle }),
+      });
+      if (r.status === 404) return { ok: false, dead: true };
+      if (!r.ok) {
+        const t = await r.text();
+        return { ok: false, reason: `discord_${r.status}`, body: t };
+      }
+      return { ok: true, threadId, title: newTitle };
+    } catch (err) {
+      return { ok: false, reason: err.message };
     }
-    return { ok: true, threadId, title: newTitle };
-  } catch (err) {
-    return { ok: false, reason: err.message };
   }
+
+  // V3 D43 cycle-5: try projects first; if dead, clear + try leads
+  const e0 = readEntity(entityKey);
+  if (!e0) return { ok: false, reason: 'entity_not_found' };
+
+  if (e0.project_thread_id) {
+    const r = await tryRename(e0.project_thread_id, 'projects');
+    if (r.ok || r.unchanged) return r;
+    if (r.dead) {
+      try {
+        const p = path.join(ENTITIES_DIR, `${entityKey}.json`);
+        const fresh = JSON.parse(fs.readFileSync(p, 'utf8'));
+        fresh.project_thread_id = null;
+        fresh.project_thread_id_cleared_at = new Date().toISOString();
+        fs.writeFileSync(p, JSON.stringify(fresh, null, 2) + '\n');
+        console.error(`[lead-thread-sync] rename: cleared dead project_thread_id from ${entityKey}`);
+      } catch { /* best-effort */ }
+    }
+  }
+
+  const e1 = readEntity(entityKey);
+  if (e1.discord_thread_id) {
+    return await tryRename(e1.discord_thread_id, 'leads');
+  }
+  return { ok: false, reason: 'no_thread_id' };
 }
 
 /**
@@ -517,18 +543,63 @@ export async function refreshThreadAndPost(entityKey, message, { skipCard = fals
     const entity = readEntity(entityKey);
     if (!entity) return { ok: false, reason: 'entity_not_found' };
 
-    const inProjects = !!entity.project_thread_id;
-    const inLeads = !!entity.discord_thread_id;
     const results = { card: null, msg: null, channel: null };
 
-    if (inProjects) {
-      results.channel = 'projects';
+    // V3 D43 cycle-5 (Matthew 2026-05-14): try projects first; if 404 (thread
+    // deleted upstream), CLEAR stale id + retry in leads. Stale project_thread_id
+    // was silently swallowing all 5 stage messages.
+    async function tryPost(threadId, channelLabel) {
+      const r = await appendThreadMessage(threadId, message);
+      if (r.ok) return { ok: true, msg: r, channel: channelLabel };
+      // Discord channel-not-found → return signal so caller can fall back
+      if (r.reason === 'discord_404') return { ok: false, dead: true, msg: r, channel: channelLabel };
+      return { ok: false, msg: r, channel: channelLabel };
+    }
+
+    function clearStaleId(key) {
+      try {
+        const p = path.join(ENTITIES_DIR, `${entityKey}.json`);
+        const fresh = JSON.parse(fs.readFileSync(p, 'utf8'));
+        if (fresh[key]) {
+          fresh[key] = null;
+          fresh[`${key}_cleared_at`] = new Date().toISOString();
+          fs.writeFileSync(p, JSON.stringify(fresh, null, 2) + '\n');
+          console.error(`[lead-thread-sync] cleared stale ${key} from ${entityKey} (was 404)`);
+        }
+      } catch { /* best-effort */ }
+    }
+
+    if (entity.project_thread_id) {
       if (!skipCard) results.card = await upsertProjectProfileCard(entityKey);
-      if (!skipMessage && message) results.msg = await appendThreadMessage(entity.project_thread_id, message);
-    } else if (inLeads) {
-      results.channel = 'leads';
+      if (!skipMessage && message) {
+        const r = await tryPost(entity.project_thread_id, 'projects');
+        if (r.ok) { results.msg = r.msg; results.channel = 'projects'; }
+        else if (r.dead) {
+          clearStaleId('project_thread_id');
+          // Fall through to leads if available
+          if (entity.discord_thread_id) {
+            const r2 = await tryPost(entity.discord_thread_id, 'leads');
+            if (r2.ok) { results.msg = r2.msg; results.channel = 'leads_after_projects_dead'; }
+            else if (r2.dead) { clearStaleId('discord_thread_id'); results.msg = await sendBotLogFallback(entityKey, message); results.channel = 'bot-log-fallback-after-both-dead'; }
+            else { results.msg = r2.msg; results.channel = 'leads_error_after_projects_dead'; }
+          } else {
+            results.msg = await sendBotLogFallback(entityKey, message);
+            results.channel = 'bot-log-fallback-after-projects-dead';
+          }
+        } else { results.msg = r.msg; results.channel = 'projects_error'; }
+      } else if (!skipCard) {
+        results.channel = 'projects';
+      }
+    } else if (entity.discord_thread_id) {
       if (!skipCard) results.card = await upsertProfileCard(entityKey);
-      if (!skipMessage && message) results.msg = await appendThreadMessage(entity.discord_thread_id, message);
+      if (!skipMessage && message) {
+        const r = await tryPost(entity.discord_thread_id, 'leads');
+        if (r.ok) { results.msg = r.msg; results.channel = 'leads'; }
+        else if (r.dead) { clearStaleId('discord_thread_id'); results.msg = await sendBotLogFallback(entityKey, message); results.channel = 'bot-log-fallback-after-leads-dead'; }
+        else { results.msg = r.msg; results.channel = 'leads_error'; }
+      } else if (!skipCard) {
+        results.channel = 'leads';
+      }
     } else {
       // V3 D40 · 没 thread · fallback 发 bot-log channel
       results.channel = 'bot-log-fallback';
