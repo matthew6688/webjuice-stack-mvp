@@ -48,13 +48,18 @@ export function loadForumTags() {
   return _tagsCache;
 }
 
-/** Return [kindTagId, statusTagId] for a task (Discord PATCH applied_tags array). */
+/** Return [kindTagId, statusTagId] for a task (Discord PATCH applied_tags array).
+ * V3 D43 cycle-17 (Matthew 2026-05-14): graceful — missing tag returns null in
+ * its slot instead of throwing. callers must filter nulls when patching
+ * Discord tags. Prevents new KINDS (demo_build / photos_fetch · not yet in
+ * Discord forum) from breaking the entire dispatcher claim path.
+ */
 export function appliedTagsFor(kind, status) {
   const tags = loadForumTags();
-  const k = tags.kind?.[kind];
-  const s = tags.status?.[status];
-  if (!k) throw new Error(`Unknown kind tag: ${kind}`);
-  if (!s) throw new Error(`Unknown status tag: ${status}`);
+  const k = tags.kind?.[kind] || null;
+  const s = tags.status?.[status] || null;
+  if (!k) console.warn(`[task-store] kind tag missing for "${kind}" · proceeding without tag (run discord:sync-forums to add)`);
+  if (!s) console.warn(`[task-store] status tag missing for "${status}"`);
   return [k, s];
 }
 

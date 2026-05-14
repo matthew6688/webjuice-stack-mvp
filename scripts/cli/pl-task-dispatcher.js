@@ -131,6 +131,9 @@ function parseLastJson(stdout) {
 
 async function patchThreadTags(threadId, tagIds) {
   if (!TOKEN || !threadId) return false;
+  // V3 D43 cycle-17 (Matthew 2026-05-14): filter nulls (appliedTagsFor may
+  // return [null, statusTag] for kinds not yet in Discord forum tag map)
+  const cleanTags = (tagIds || []).filter(Boolean);
   const res = await fetch(`${DISCORD_API}/channels/${threadId}`, {
     method: 'PATCH',
     headers: {
@@ -138,7 +141,7 @@ async function patchThreadTags(threadId, tagIds) {
       'Content-Type': 'application/json',
       'User-Agent': 'sop0-task-dispatcher',
     },
-    body: JSON.stringify({ applied_tags: tagIds }),
+    body: JSON.stringify({ applied_tags: cleanTags }),
   });
   if (!res.ok) {
     const text = await res.text().catch(() => '');

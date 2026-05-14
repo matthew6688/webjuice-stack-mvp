@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "task_id": "20260514-130321-6dc18c",
   "created_at": "2026-05-14T13:03:21.284Z",
-  "updated_at": "2026-05-14T13:03:21.549Z",
+  "updated_at": "2026-05-14T13:32:59.469Z",
   "kind": "demo_build",
-  "status": "running",
+  "status": "failed",
   "source": {
     "platform": "internal",
     "thread_id": "1504464780453482558",
@@ -30,12 +30,17 @@
     "entity_keys": [],
     "exit_code": null,
     "duration_ms": null,
-    "cost_usd": null
+    "cost_usd": null,
+    "reaper": {
+      "age_ms": 1777919,
+      "timeout_ms": 600000
+    }
   },
   "progress": [],
-  "error": null,
+  "error": "reaper: orphaned at startup (dispatcher restart)",
   "discord": {
     "thread_id": "1504464780453482558",
     "status_message_id": null
-  }
+  },
+  "failed_at": "2026-05-14T13:32:59.468Z"
 }

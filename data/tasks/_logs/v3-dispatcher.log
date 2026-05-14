@@ -1665,3 +1665,12 @@
 [2026-05-14T13:11:41.157Z] fs.watch fired · maybe-pending 20260514-131140-a663ef
 [2026-05-14T13:11:41.159Z] claim 20260514-131140-a663ef → running · cli= pl:publish-demo args= --slug ace-roofing-service
 [2026-05-14T13:11:41.732Z] failed 20260514-131140-a663ef (exit=1 sig=null)
+[2026-05-14T13:32:59.370Z] SIGTERM
+[2026-05-14T13:32:59.470Z] dispatcher starting · tick= 60000 ms · timeout= 300000 ms
+[2026-05-14T13:32:59.471Z] fs.watch active on /Users/matthew/Developer/google-map-website-v3/data/tasks
+[2026-05-14T13:33:03.657Z] fs.watch fired · maybe-pending 20260514-133303-290dab
+[2026-05-14T13:33:03.660Z] claim 20260514-133303-290dab → running · cli= pl:build-from-reference args= --slug ace-roofing-service --entity-key domain_aceroofingservice.com.au
+[2026-05-14T13:37:36.004Z] done 20260514-133303-290dab (271744ms exit=0)
+[2026-05-14T13:38:13.644Z] fs.watch fired · maybe-pending 20260514-133813-3e681f
+[2026-05-14T13:38:13.647Z] claim 20260514-133813-3e681f → running · cli= pl:publish-demo args= --slug ace-roofing-service
+[2026-05-14T13:38:16.671Z] failed 20260514-133813-3e681f (exit=1 sig=null)

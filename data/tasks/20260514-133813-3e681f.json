@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-133813-3e681f",
+  "created_at": "2026-05-14T13:38:13.379Z",
+  "updated_at": "2026-05-14T13:38:16.671Z",
+  "kind": "ops",
+  "status": "failed",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504464780453482558",
+    "author": "cycle-17 publish ace",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-17: publish Ace demo",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:publish-demo",
+    "args": [
+      "--slug",
+      "ace-roofing-service"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 300000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 1,
+    "duration_ms": 2651,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T13:38:14.017Z",
+      "step": "cli.spawning",
+      "detail": "pl:publish-demo --slug ace-roofing-service"
+    },
+    {
+      "at": "2026-05-14T13:38:16.671Z",
+      "step": "cli.stream",
+      "detail": "'ace-roofing-service-dev',\n    '--branch',\n    'main',\n    '--commit-dirty=true',\n    '--commit-message',\n    'pl-publish-demo ace-roofing-service 2026-05-14T13:38:16.623Z'\n  ]\n}\n\nNode.js v25.6.1"
+    },
+    {
+      "at": "2026-05-14T13:38:16.671Z",
+      "step": "cli.failed",
+      "detail": "exit=1 signal=null dur=2651ms"
+    }
+  ],
+  "error": "exit=1 signal=null",
+  "discord": {
+    "thread_id": "1504464780453482558",
+    "status_message_id": null
+  }
+}
