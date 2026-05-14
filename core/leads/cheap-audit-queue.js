@@ -209,7 +209,9 @@ async function processOne(entityKey) {
           // Read fresh entity (has new cheap_audit + predict_grade just written)
           const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
           const summary = cheapAuditPredictMessage({ entity: fresh, cheapAudit: cheapResult, predict });
-          await refreshThreadAndPost(entityKey, summary, { skipCard: true });
+          // V3 D43 cycle-21 (Matthew 2026-05-15): Q1 每 stage 强制 refresh card
+          // (profile card = single source of truth) · 不再 skipCard.
+          await refreshThreadAndPost(entityKey, summary, { skipCard: false });
         } catch (err) {
           console.error(`[cheap-audit-queue] ${entityKey} · post cheap-summary failed: ${err.message}`);
         }

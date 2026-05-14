@@ -228,12 +228,14 @@ proc.on('exit', async (code) => {
       }
     }
     if (foundKey) {
-      const { openProjectThread, upsertProjectProfileCard, appendThreadMessage } =
+      const { openProjectThread, upsertProjectProfileCard, appendThreadMessage, archiveAndLockThread } =
         await import('../../core/funnel/lead-thread-sync.js');
+      const entity = JSON.parse(fs.readFileSync(path.join(entitiesDir, foundKey + '.json'), 'utf8'));
+      const oldLeadThreadId = entity.discord_thread_id;
+
       const r = await openProjectThread(foundKey);
       if (r.ok) {
         console.log(`  #website-projects thread: ${r.reused ? 'reused' : 'opened'} ${r.threadId || ''}`);
-        // V3 D34: 若 reused (entity 已有 project thread) · 刷新 profile card + 发更新消息
         if (r.reused) {
           try { await upsertProjectProfileCard(foundKey); console.log('  profile card refreshed'); } catch {}
           try {
@@ -241,6 +243,20 @@ proc.on('exit', async (code) => {
               `🌐 **Demo 已重新发布** · ${new Date().toISOString().slice(0, 19).replace('T', ' ')} UTC\n${url}`);
             console.log('  update message posted');
           } catch {}
+        }
+
+        // V3 D43 cycle-21 (Matthew 2026-05-15): 1 entity = 1 active thread.
+        // Graduate 到 #website-projects 后 · archive 旧 #website-leads thread (避免噪音).
+        if (oldLeadThreadId && oldLeadThreadId !== r.threadId) {
+          try {
+            const projUrl = `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${r.threadId}`;
+            await archiveAndLockThread(oldLeadThreadId, {
+              reason: `Graduated to #website-projects · 后续看 ${projUrl}`,
+            });
+            console.log(`  archived old leads thread ${oldLeadThreadId} · graduated to projects`);
+          } catch (err) {
+            console.warn(`  archive old leads thread failed: ${err.message}`);
+          }
         }
       } else {
         console.log(`  #website-projects thread: skip · ${r.reason}`);
