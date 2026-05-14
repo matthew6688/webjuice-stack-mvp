@@ -42,6 +42,101 @@
 
 凡修改影响 Discord 可视化的 deliverable，PASS 必须满足**全部 6 项**：
 
+### 📋 任务 thread 期望消息序列 (cycle-17 · Matthew 2026-05-14 拍板)
+
+**对不上 = bug**。任一缺失 / 顺序错 / 格式错 = FAIL。
+
+**触发场景**: 用户在 `#website-tasks` 投 intake 命令（如 `pl:pipeline-batch-start --niche X --city Y --limit N` 或 "搜索 brisbane roofers"）
+
+**Message 1 · 任务收到** (listener · 立刻)
+```
+**批量抓客户** · 已收到
+· 在做: 抓取 → 本地 gosom 抓 Google Maps
+· 参数: --niche roofing --city brisbane --count 10
+· 批次 batch_id: pipe-roofing-brisbane-202605142244
+· #lead-discovery-runs 批次 thread: <#thread_id>
+· 预计 2-3 分钟出结果 · 完了我会回这里告诉你
+```
+
+**Message 2 · Stage 0 开始** (dispatcher claim 后)
+```
+**Stage 0 / Discovery** 开始
+· 本地 gosom Docker 启动中
+· 抓 Google Maps · 预计 90-120s
+· 完了在这里报抓到的商家列表
+```
+
+**Message 3 · Stage 0 完成** (docker 跑完 · ~97s)
+```
+**Stage 0 / Discovery** 完成 · 用时 97.7s
+
+找到 5 个商家:
+- [North Brisbane Metal Roofing Pty Ltd](<thread_url>)
+- [Queensland Roofing Pty Ltd](<thread_url>)
+- [Ace Roofing Service](<thread_url>)
+- [Brisbane Roof Restoration Experts](<thread_url>)
+- [Vantage Point Roofing](<thread_url>)
+
+→ 5 个 entity 已入库 · 入 cheap-audit queue 排队 (3s 间隔)
+→ 每个 entity 单独 thread 见 #website-leads
+```
+
+**Message 4 · Stage 1 / Cheap-audit + Predict 开始**
+```
+**Stage 1 / Cheap-audit + Predict-grade** 开始
+· 5 entity 排队中 · 3s/entity 间隔
+· LLM niche judge (codex/claude/ollama cascade · 命中 cache 50ms · miss 30s)
+```
+
+**Message 5 · Stage 1 完成**
+```
+**Stage 1 / Cheap-audit + Predict-grade** 完成
+
+分级汇总 (5 entity):
+· audit-A: 0   (立刻 detail audit)
+· audit-B: 0   (排队 detail audit)
+· audit-C: 4   (cold backlog · 等销售 🚀 推进)
+· audit-D: 0   (archive · 不深审)
+· 已 archive (历史 qualification fail): 1 (Vantage Point · pages > 50)
+
+各 lead thread:
+- [North Brisbane Metal Roofing Pty Ltd](<thread_url>)
+- [Queensland Roofing Pty Ltd](<thread_url>)
+- [Ace Roofing Service](<thread_url>)
+- [Brisbane Roof Restoration Experts](<thread_url>)
+
+→ 0 进 detail audit 队列 (无 A/B)
+→ 4 等销售触发 (对 lead thread 加 🚀)
+```
+
+**Message 6 · 任务最终完成** (dispatcher done · 替换旧的 "抓取完成")
+```
+**批量抓客户** · 任务完成 · 总用时 ~3 min
+
+· 5 entity 入库
+· 4 cold backlog · 1 历史 archived
+· 0 自动 detail audit
+· 总成本: ~$0.05 (LLM niche judge × 5 + Tinyfish 0)
+· batch state: data/v2/pipeline-batches/pipe-roofing-brisbane-202605142244.json
+· 批次 thread: <#thread_id>
+```
+
+**失败 case** (任一 stage fail · emoji 仅用于操作员手动 react)
+```
+**Stage X / Y** 失败 · 用时 Ns
+原因: <人话解释>
+进度: 已抓 3 / 5 · 入库 0
+
+react ✅ 重试 / 🗑 放弃
+```
+
+**Emoji 规则** (Matthew 拍板):
+- 标题禁止 emoji
+- 仅人工操作场景用 emoji: 🚀 推进 · 💤 archive · 🔁 重跑 · ✅ retry · 🗑 abandon
+- 分级标签用 `audit-A/B/C/D` (不是 `预A/B/C/D` · 也不是 `[A]`)
+
+---
+
 ### Hard Evidence 7 必要条件 (任缺一项 = FAIL)
 
 1. **自动化脚本输出** · 必须用 `npm run pl:discord-snapshot` · 禁止手动 sample 单 thread
