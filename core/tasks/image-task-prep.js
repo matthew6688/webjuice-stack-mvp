@@ -298,9 +298,37 @@ export async function prepareImageTask({ taskId, attachments }) {
     extracted.enrich_error = err.message;
   }
 
-  if (!extracted.niche || !extracted.city) {
-    return { ok: false, reason: 'vision + Places enrich 仍缺 niche/city — operator should fill', local_attachments: local, extracted };
+  // V3 D43 P1/Matthew: LLM judge instead of rule-based "must have city+niche".
+  // Pure rule fails for tradie signs with phone-only (no name) where Places phone-lookup
+  // already filled the gaps. Judge sees the merged OCR + Places state and decides.
+  try {
+    const { judgeImageExtractSufficiency } = await import('../llm/match-judge.js');
+    const judge = await judgeImageExtractSufficiency(extracted);
+    extracted.judge = { verdict: judge.verdict, confidence: judge.confidence, reason: judge.reason, suggested_next: judge.suggested_next, required_followup: judge.required_followup, provider: judge.provider };
+    if (judge.verdict === 'reject') {
+      return { ok: false, reason: `llm_judge_rejected: ${judge.reason}`, local_attachments: local, extracted };
+    }
+    if (judge.verdict === 'human-gate') {
+      const missing = judge.required_followup?.length ? ` (缺: ${judge.required_followup.join(', ')})` : '';
+      return { ok: false, reason: `llm_judge_human_gate: ${judge.reason}${missing}`, local_attachments: local, extracted };
+    }
+    // verdict === 'proceed': continue · fallback rule still applies for required CLI args
+  } catch (err) {
+    // Judge failed · fall back to old rule
+    if (!extracted.niche || !extracted.city) {
+      return { ok: false, reason: `judge unavailable + missing niche/city: ${err.message}`, local_attachments: local, extracted };
+    }
   }
+
+  // CLI requires niche + city + business-name · fill from extracted (judge approved overall but specific fields may still be null)
+  if (!extracted.businessName) {
+    // Judge said proceed without a name (phone-only tradie sign + Places matched) ·
+    // synthesize from Places match name as the businessName argument
+    extracted.businessName = extracted.enrich_match_name || extracted.phone || 'unknown';
+  }
+  if (!extracted.niche) extracted.niche = 'other';
+  if (!extracted.city)  extracted.city = 'unknown';
+
   const args = ['--image', local[0].local_path, '--niche', extracted.niche, '--city', extracted.city, '--business-name', extracted.businessName];
   if (extracted.phone)    args.push('--phone',    extracted.phone);
   if (extracted.address)  args.push('--address',  extracted.address);

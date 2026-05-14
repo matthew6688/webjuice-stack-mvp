@@ -139,13 +139,30 @@ export function renderFailedMessage({ task, exitCode, stderr, tail }) {
 }
 
 // 渲染 "超时" 通知
+// V3 D43 · 加入业务上下文(target 名字 + 进度 hint) · 不然 operator 不知道哪个 audit 失败
 export function renderTimeoutMessage({ task, timeoutMs, tail }) {
   const { emoji, label } = kindLabel(task.kind);
   const secs = Math.round(timeoutMs / 1000);
-
   const head = `⏳ **${label}** · 超时 · 跑了 ${secs}s 后被终止`;
-  const action = `已转人工 · react ✅ 重试 / 🗑 放弃`;
-  return [head, action].join('\n');
+  const lines = [head];
+  // 拿 entity name (从 extracted 或 args) · 让 operator 知道是哪个客户
+  const targetName = task.target?.target_entity_key
+    ? lookupEntityName(task.target.target_entity_key)
+    : null;
+  if (targetName) lines.push(`· 客户: **${targetName}**`);
+  // 进度 hint · 看 tail 里最后跑到哪个 stage
+  const stage = parseLastStage(tail);
+  if (stage) lines.push(`· 跑到: ${stage}`);
+  lines.push(`· 已转人工 · react ✅ 重试 / 🗑 放弃`);
+  return lines.join('\n');
+}
+
+// 从 tail (CLI stdout) 抓最后一个 stage 名字 · 给 operator 一个 hint
+function parseLastStage(tail) {
+  if (!tail) return null;
+  const m = String(tail).match(/\[(\d+\/\d+)\][^\n]+|stage\s*(\d+)|Stage\s*(\d+)/gi);
+  if (!m) return null;
+  return m[m.length - 1].slice(0, 80);
 }
 
 // 试图从 CLI stdout 抽业务摘要 (kind-specific)

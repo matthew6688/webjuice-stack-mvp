@@ -56,6 +56,17 @@ const client = new Client({
 
 /* ─── Helpers ─────────────────────────────────────────────────────── */
 
+// V3 D43 P2 fix · per-kind dispatch timeout · audit 实测 10-15min
+function kindTimeoutMs(kind) {
+  switch (kind) {
+    case 'audit':         return 900_000; // 15min · 4-stage pipeline + visual codex
+    case 'image-extract': return 480_000; // 8min · vision cascade
+    case 'places-intake':
+    case 'intake':        return 600_000; // 10min · batch upserts
+    default:              return 300_000; // 5min default
+  }
+}
+
 function log(...args) {
   console.log(`[${new Date().toISOString()}]`, ...args);
 }
@@ -219,6 +230,9 @@ async function handleNewForumThread(thread) {
       cli:               route.target_cli,
       args:              finalArgs,
       target_entity_key: route.target_entity_key,
+      // V3 D43 P2 fix: per-kind timeout · audit pipeline 实际 10-15min · 默认 5min 会半路砍 (浪费 codex $0.23/run)
+      // intake / single-enrich / ops 默认 5min 够 · image-extract 给 8min (vision cascade 慢)
+      timeout_ms: kindTimeoutMs(route.kind),
     },
   });
   appendProgress(task.task_id, 'router.resolved',

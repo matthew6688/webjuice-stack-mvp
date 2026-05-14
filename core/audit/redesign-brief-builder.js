@@ -125,7 +125,8 @@ async function runAiCascade(prompt) {
   const errs = [];
   // Try codex CLI
   try {
-    const r = await runCli('codex', ['exec', '--model', 'gpt-4o'], prompt, 240_000);
+    // V3 D43 P5: gpt-4o 不支持 ChatGPT 账号 · 用默认 (gpt-5) · 跟 image-task-prep cascade 一致
+    const r = await runCli('codex', ['exec'], prompt, 240_000);
     return { text: r.stdout, provider: 'codex_cli' };
   } catch (err) { errs.push(`codex: ${err.message}`); }
   // Try claude CLI

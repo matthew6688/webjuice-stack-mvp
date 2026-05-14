@@ -101,7 +101,9 @@ ${(text || '').slice(0, 1500)}
 JSON schema (all fields required):
 {
   "kind":              <one of the 8 kinds above>,
-  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:scrape-docker" | "pl:places-search-intake" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "leads:build-master-md" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | "ops:health-check" | null>,
+  "target_cli":        <one of: "pl:pipeline-batch-start" | "pl:scrape-docker" | "pl:places-search-intake" | "pl:run-enrichment-batch" | "pl:single-enrich" | "leads:run-pipeline" | "leads:build-master-md" | "pl:dedup-audit" | "pl:download-places-photos" | "pl:ingest-image" | null>,
+  // V3 D43 P3: 不要 ops:health-check · 那是 cron 专用 · 用户随口一句不该触发系统健康检查
+  // 模糊请求 → target_cli = null · status=human · 操作员处理
   "args":              <array of CLI args · follow extraction rules above · NEVER pass raw query as positional args>,
   "target_entity_key": <string entityKey if found in input, else null>,
   "confidence":        <float 0..1>,
@@ -283,9 +285,12 @@ function normalizeLlmOutput(raw, provider, latencyMs) {
   if (!raw || typeof raw !== 'object') return null;
   const kind = KINDS.includes(raw.kind) ? raw.kind : null;
   if (!kind) return null;
+  // V3 D43 P3: 即使 LLM 返回 ops:health-check (老 prompt 可能 cache) · 强制 null · 走人工
+  let cli = typeof raw.target_cli === 'string' ? raw.target_cli : null;
+  if (cli === 'ops:health-check') cli = null;
   return {
     kind,
-    target_cli:        typeof raw.target_cli === 'string' ? raw.target_cli : null,
+    target_cli:        cli,
     args:              Array.isArray(raw.args) ? raw.args.map(String) : [],
     target_entity_key: typeof raw.target_entity_key === 'string' ? raw.target_entity_key : null,
     confidence:        typeof raw.confidence === 'number' ? raw.confidence : 0.7,

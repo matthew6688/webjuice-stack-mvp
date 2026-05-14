@@ -210,10 +210,16 @@ async function runTask(taskId) {
   appendProgress(taskId, 'cli.spawning', `${cli} ${args.join(' ')}`);
 
   // Spawn via npm run (so package.json env-file pre-flags apply correctly)
+  // V3 D43 · pass parent thread_id + task_id through env so chained tasks (e.g.
+  // pl:single-enrich → audit) can post to the SAME Discord thread
   const npmArgs = ['run', cli, '--', ...args];
   const child = spawn('npm', npmArgs, {
     cwd: process.cwd(),
-    env: process.env,
+    env: {
+      ...process.env,
+      PL_PARENT_TASK_ID:    taskId,
+      PL_PARENT_THREAD_ID:  threadId || '',
+    },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   const start = Date.now();

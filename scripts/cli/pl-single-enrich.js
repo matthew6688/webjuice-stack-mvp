@@ -76,6 +76,41 @@ if (!result.ok) {
 
 console.log(`[pl:single-enrich] ✓ Places resolved · place_id=${result.place_id} · "${result.lead.name}"`);
 
+// V3 D43 P1 fix · LLM-judge whether Places result actually matches user intent
+// (catches Brisbane → Sydney city mismatch & similar wrong matches).
+// Skip judge if --no-judge or no businessName provided (phone-only lookup is usually safe).
+let judge = null;
+if (!args['no-judge'] && signals.businessName) {
+  try {
+    const { judgeSingleEnrichMatch } = await import('../../core/llm/match-judge.js');
+    console.log(`  · llm-judge · verifying Places match...`);
+    judge = await judgeSingleEnrichMatch(
+      { businessName: signals.businessName, phone: signals.phone, city: signals.city, niche: signals.niche, website: signals.website },
+      { name: result.lead.name, address: result.lead.address, phone: result.lead.phone, city: result.lead.city, category: result.lead.category },
+    );
+    console.log(`  · llm-judge · verdict=${judge.verdict} conf=${judge.confidence} reason="${judge.reason}" (${judge.provider} ${judge.latency_ms}ms)`);
+    if (judge.verdict === 'reject') {
+      console.error(`[pl:single-enrich] ✗ LLM judge rejected match: ${judge.reason}`);
+      emit({
+        ok: false,
+        reason: `llm_judge_rejected: ${judge.reason}`,
+        suggested_next: judge.suggested_next,
+        candidates: result.candidates,
+        judge,
+        signals,
+        duration_ms: Date.now() - t0,
+      });
+      process.exit(3);
+    }
+    // If human-gate: still write entity but mark for review · also skip auto-chain
+    if (judge.verdict === 'human-gate') {
+      console.warn(`[pl:single-enrich] ⚠ judge says human-gate · entity will be written but NOT auto-chained`);
+    }
+  } catch (err) {
+    console.warn(`[pl:single-enrich] judge skipped (${err.message}) · proceeding without verification`);
+  }
+}
+
 // Build a run + upsert (this triggers SOP-0 P5 push enrich-task if entity is thin)
 const storeRoot = defaultDiscoveryStoreRoot();
 const run = {
@@ -92,15 +127,16 @@ upsertDiscoveryRun(run, { storeRoot });
 const entityKey = discoveryEntityKey(result.lead);
 console.log(`[pl:single-enrich] entity: ${entityKey}`);
 
-// Auto-chain audit task unless --no-chain
+// Auto-chain audit task unless --no-chain · also skip if judge said human-gate
 let chainedTask = null;
-if (!NO_CHAIN) {
+if (!NO_CHAIN && judge?.verdict !== 'human-gate') {
   try {
     chainedTask = createTask({
       kind: 'audit',
       source: {
+        // V3 D43: 链 parent thread · 让 audit progress 也回报到 single-enrich 同一个 thread
         platform:  'internal',
-        thread_id: null,
+        thread_id: process.env.PL_PARENT_THREAD_ID || null,
         author:    'pl:single-enrich auto-chain',
         message_id: null,
       },
@@ -132,6 +168,7 @@ emit({
   niche:           result.lead.niche,
   city:            result.lead.city,
   audit_chained:   chainedTask?.task_id || null,
+  judge:           judge ? { verdict: judge.verdict, confidence: judge.confidence, reason: judge.reason, provider: judge.provider } : null,
   duration_ms:     Date.now() - t0,
   cost_estimate:   result.cost_estimate,
 });

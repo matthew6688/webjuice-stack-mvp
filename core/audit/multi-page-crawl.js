@@ -69,23 +69,45 @@ function normalizeUrl(base, p) {
   } catch { return null; }
 }
 
+/** Parse <loc> entries from sitemap XML · return URL list */
+function parseLocs(xml) {
+  return (xml.match(/<loc>([^<]+)<\/loc>/g) || [])
+    .map((m) => m.replace(/<\/?loc>/g, '').trim())
+    .filter((u) => u.startsWith('http'));
+}
+
+/** Fetch + parse single sitemap file. If it's a sitemap-index (<sitemapindex>),
+ *  recursively fetch child sitemaps (1 level deep · cap 5 children to avoid runaway).
+ *  V3 D43 P4 fix: previously treated sitemap-index URLs as page URLs, so Firecrawl
+ *  crawled the .xml file itself, giving pages_crawled=1 (the sitemap XML, not a page). */
+async function fetchOneSitemap(url, depth = 0) {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
+    const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT }, signal: ctrl.signal });
+    clearTimeout(t);
+    if (!res.ok) return [];
+    const xml = await res.text();
+    const isIndex = /<sitemapindex[\s>]/i.test(xml);
+    const locs = parseLocs(xml);
+    if (!isIndex) return locs;
+    if (depth >= 1) return []; // don't recurse > 1 level
+    const all = [];
+    for (const childUrl of locs.slice(0, 5)) {
+      const child = await fetchOneSitemap(childUrl, depth + 1);
+      all.push(...child);
+    }
+    return all;
+  } catch { return []; }
+}
+
 /** Try fetch sitemap from common paths · return URL list */
 async function fetchSitemap(baseUrl) {
   for (const pathTry of COMMON_SITEMAP_PATHS) {
     const url = normalizeUrl(baseUrl, pathTry);
     if (!url) continue;
-    try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
-      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT }, signal: ctrl.signal });
-      clearTimeout(t);
-      if (!res.ok) continue;
-      const xml = await res.text();
-      const urls = (xml.match(/<loc>([^<]+)<\/loc>/g) || [])
-        .map((m) => m.replace(/<\/?loc>/g, '').trim())
-        .filter((u) => u.startsWith('http'));
-      if (urls.length > 0) return { urls, source: pathTry };
-    } catch { /* try next */ }
+    const urls = await fetchOneSitemap(url);
+    if (urls.length > 0) return { urls, source: pathTry };
   }
   return null;
 }
@@ -136,17 +158,28 @@ async function bfsFromHomepage(baseUrl) {
   } catch { return null; }
 }
 
-/** Discover URLs · free Layer 1 (sitemap.xml → robots → BFS) */
+/** Discover URLs · free Layer 1 (sitemap.xml → robots → BFS) ·
+ *  V3 D43 P4 fix: even if sitemap returns urls, supplement with BFS when count < 3
+ *  (thin sitemap sites often have hidden pages reachable from homepage anchors) */
 export async function discoverPageUrls(baseUrl) {
   // 1. Try common sitemap paths
   let result = await fetchSitemap(baseUrl);
-  if (result) return result;
+  if (result && result.urls.length >= 3) return result;
   // 2. Try robots.txt
-  result = await fetchRobotsSitemap(baseUrl);
-  if (result) return result;
-  // 3. BFS from homepage
-  result = await bfsFromHomepage(baseUrl);
-  if (result) return result;
+  const robotsR = await fetchRobotsSitemap(baseUrl);
+  if (robotsR && robotsR.urls.length >= 3) return robotsR;
+  // 3. BFS from homepage (always run if we're here · sitemap thin or missing)
+  const bfsR = await bfsFromHomepage(baseUrl);
+  // Merge sitemap (thin) + BFS
+  if (result || robotsR || bfsR) {
+    const sitemapUrls = result?.urls || robotsR?.urls || [];
+    const bfsUrls = bfsR?.urls || [];
+    const merged = Array.from(new Set([...sitemapUrls, ...bfsUrls]));
+    const source = result ? (result.source + '+bfs') : robotsR ? 'robots.txt+bfs' : 'bfs';
+    if (merged.length > 0) return { urls: merged, source };
+  }
+  let result2 = result || robotsR || bfsR;
+  if (result2) return result2;
   // 4. Fallback: hard-coded common pages
   return {
     urls: PAGES_TO_CRAWL.map((p) => normalizeUrl(baseUrl, p)).filter(Boolean),
