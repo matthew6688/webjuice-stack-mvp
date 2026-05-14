@@ -186,6 +186,8 @@ npm run pl:bulk-publish-demo -- --all
 | D32 | `pl:lead-journey-doctor` · 10 invariant + funnel 快照 | M1+M2 |
 | D33 | 归档非真客户 entity · clean state (240→11) | data hygiene |
 | D34 | 6-channel Discord 架构落地 · leads→projects 自动分流 · revision 只在 paid | M3 + 销售 |
+| D35 | Discord 显示规范 · 7-section card + 中文 thread title + 5 lifecycle hooks | SOP-DISCORD-DISPLAY |
+| D36 | Skill 清理 (7 V2 archive) + 3 SoT 新文档 (SKILLS-INDEX / TOOL-STACK-PRD / INTAKE-RUNBOOK) | cross-module |
 
 完整: [DECISIONS-LOG.md](./DECISIONS-LOG.md)
 
@@ -214,8 +216,12 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 
 ### Discord 架构 (跨 6 channel · cross-cutting · SoT)
 - [DISCORD-CHANNELS-PRD.md](./DISCORD-CHANNELS-PRD.md) · **6-channel 完整架构** (**新 2026-05-14** · 90% confidence)
-  · website-tasks · lead-discovery-runs · website-leads · website-projects · website-templates · paid-websites
-  · 角色 / tag / graduation / migration / phases
+- [SOP-DISCORD-DISPLAY.md](./SOP-DISCORD-DISPLAY.md) · Thread title + Profile card 显示规范 (D35)
+
+### V3 SoT 索引 (D36 2026-05-14 新增 · 维护契约)
+- [SKILLS-INDEX.md](./SKILLS-INDEX.md) · 所有 Hermes/Claude skills · V3 active + V2 archived
+- [TOOL-STACK-PRD.md](./TOOL-STACK-PRD.md) · 20+ 第三方 API + 7 LLM cascade + quota + daily cost SOP
+- [INTAKE-RUNBOOK.md](./INTAKE-RUNBOOK.md) · 4 入口 × 8 checkpoint 端到端测试 runbook
 
 ### Operator runbook (SOP-N-FLOW · 流转 / 节点 / 汇报 / 故障)
 - [SOP-1-FLOW.md](./SOP-1-FLOW.md) · Discord → master.md (**新 2026-05-14**)
@@ -335,8 +341,9 @@ git -C /Users/matthew/Developer/google-map-website-v3 branch --show-current  # �
 |---|---|---|
 | ⏰ followup-due 自动加 emoji (daily cron 监测 stage 超时) | 1.5h | thread 自动标记跟进 due |
 | 🔥 reaction listener (operator 在 thread react 🔥 / 📋 / 💬 自动 swap stage / 加 emoji) | 2h | 销售一键改状态 |
-| 5 个 hook 给 audit / build-master-md / customer-audit / optimize / grade-router | 2h | 每个 pipeline 步骤完成都通知 thread |
-| grade-router fix: 已有 project_thread_id 时不重开 leads thread | 30 min | 防重复 thread |
+| ~~5 个 hook 给 audit / build-master-md / customer-audit / optimize / grade-router~~ | ✅ DONE (caa5ddb8) | — |
+| ~~grade-router fix: 已有 project_thread_id 时不重开 leads thread~~ | ✅ DONE (caa5ddb8) | — |
+| **`pl:cost-doctor` daily 付费 API usage + cost 报告** (D36 新 · per Matthew) | 1.5h | API quota / 月度成本 可视化 · 接近 quota 上限 alert |
 
 ### 🟡 P3 · 健康检查 + 文档强制
 | 项 | 工作量 | 价值 |

@@ -548,6 +548,45 @@ node -e "import('./core/leads/discovery-store.js').then(m => m.rebuildDiscoveryI
 
 ---
 
+## D36 · Skill 清理 + 工具索引 + 入口 runbook (2026-05-14)
+
+**Decision**: V3 主线只维护与 V3 项目相关的 skill · 其他 V2 leftover 全部 archive。新增 3 个 SoT 文档。
+
+**Why · per Matthew**: V2 skill (餐厅 niche / opa-bar-mezze 一次性 / lead-ops V2 docs 引用) 跟 V3 主线 (roofer + reference-adapter + entity-based) 不一致 · 操作员选错容易混乱。
+
+**Actions**:
+
+1. **Archive 7 V2 skills** → `~/.hermes/_archive-v2-skills-2026-05-14/`:
+   - profitslocal-lead-ops (V2 entity 流程 · V3 替代)
+   - profitslocal-restaurant-website-handoff (restaurant niche)
+   - profitslocal-opa-bar-mezze-handoff (单客户 一次性)
+   - b2b-restaurant-menu-outreach (restaurant)
+   - local-business-preview-site-outreach (V2 auto-gen · reference-adapter 替代)
+   - restaurant-menu-outreach-pipeline (重复)
+   - b2b-local-business-outreach-pipeline (V2 base)
+
+2. **Mark 2 stale-but-kept** (M4/M5 重写参考):
+   - `outbound-b2b-website-agency` + `ARCHIVED-V3-D36.md`
+   - `b2b-website-cloudflare-astro` + `ARCHIVED-V3-D36.md`
+
+3. **3 个新 SoT 文档**:
+   - `docs/v3/SKILLS-INDEX.md` · 所有 skills 索引 + V3 维护契约
+   - `docs/v3/TOOL-STACK-PRD.md` · 20+ 第三方 API + 7 LLM cascade + daily cost SOP
+   - `docs/v3/INTAKE-RUNBOOK.md` · 4 入口 × 8 checkpoint 端到端验证 runbook
+
+4. **新 backlog (per Matthew)**:
+   - `pl:cost-doctor` daily 报付费 API usage + cost (P2)
+   - 月度审计 stale skill (TODO add to cron)
+
+**Verification**:
+- ls `~/.hermes/_archive-v2-skills-2026-05-14/` · 7 directories + MANIFEST.json
+- find `~/.hermes/profiles -name "profitslocal-*"` → 只剩 `profitslocal-website-intake` (V3 active)
+
+**Recovery**: per MANIFEST.json · `mv <name> back to original profile path`
+
+
+---
+
 ## D34 · 6-channel Discord 架构落地 · #website-leads → #website-projects 分流 (2026-05-14)
 
 **Decision**: 完整实装 [DISCORD-CHANNELS-PRD.md](./DISCORD-CHANNELS-PRD.md) Phase 1 · 把"无 demo"和"有 demo"两类销售物理分到不同 channel。
