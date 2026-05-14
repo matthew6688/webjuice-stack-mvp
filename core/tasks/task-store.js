@@ -261,21 +261,14 @@ export function transitionStatus(taskId, newStatus, { reason = null, result = nu
   if (!canTransition(task.status, newStatus)) {
     throw new Error(`Illegal transition ${task.status} → ${newStatus} for task ${taskId}`);
   }
-  const fromStatus = task.status;
   task.status = newStatus;
   if (reason) task.error = reason;
   if (result) task.result = { ...task.result, ...result };
-  const written = writeTask(task);
-  // V3 D43 · Discord emit on EVERY transition · fallback to bot-log if thread fails
-  // Skip running → done/failed/human (dispatcher already posts user-facing message
-  // via humanize.js · this would duplicate). Emit terminal-to-terminal too · catch race.
-  // Skip when SKIP_DISCORD_EMIT=1 (for test mode).
-  if (!process.env.SKIP_DISCORD_EMIT && fromStatus !== newStatus) {
-    import('../funnel/discord-emit.js').then(({ emitTaskTransition }) =>
-      emitTaskTransition(task, fromStatus, newStatus, reason).catch(() => {})
-    ).catch(() => {});
-  }
-  return written;
+  return writeTask(task);
+  // V3 D43 fix (Matthew clarified): NO auto Discord emit on every transition.
+  // Dispatcher's postThreadReply (which uses emitDiscord · bot-log fallback when
+  // no thread) already covers the operator-visible case. Auto-emit per transition
+  // was noisy (e.g. each master.md fanout task got an emit · burst hits 429).
 }
 
 export function appendProgress(taskId, step, detail = '') {

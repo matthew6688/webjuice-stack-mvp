@@ -165,27 +165,9 @@ export function upsertDiscoveryRun(run, {
       .catch((err) => console.error(`[discovery-store] master-md enqueue err: ${err.message}`));
   }
 
-  // V3 D43 (Matthew 2026-05-14): "你抓到的 lead 不进入 website leads 吗?"
-  // 自动给每个新 entity 在 #website-leads 开 thread · 之前只有 grade-router (post-audit)
-  // 才开 thread · 改成入库就开 · operator 在 Discord 直接看到所有新 lead。
-  // idempotent (openLeadThread 检测 entity.discord_thread_id 存在则 reused)。
-  // fire-and-forget · 失败 fallback bot-log 经由 emit 层。
-  if (process.env.SOP1_DISABLE_AUTO_OPEN_LEADS !== '1' && entityKeys.length > 0) {
-    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread }) => {
-      let opened = 0, reused = 0, failed = 0;
-      for (const key of entityKeys) {
-        try {
-          const r = await openLeadThread(key);
-          if (r.ok && r.reused) reused += 1;
-          else if (r.ok) opened += 1;
-          else failed += 1;
-        } catch { failed += 1; }
-        // small breath to avoid Discord burst (~150ms · ≤7/sec well under guild limit)
-        await new Promise((res) => setTimeout(res, 150));
-      }
-      if (opened + failed > 0) console.error(`[discovery-store] auto-open-leads · opened=${opened} reused=${reused} failed=${failed} (of ${entityKeys.length})`);
-    }).catch((err) => console.error(`[discovery-store] auto-open-leads import failed: ${err.message}`));
-  }
+  // V3 D43 ROLLBACK (Matthew 2026-05-14): 之前我加了"入库就开 #website-leads thread"
+  // 反 SOP-DISCORD-CHANNELS-PRD §4.3 + LEAD-JOURNEY §11 (entry = grade A/B/C 后才开)。
+  // 移回 grade-router.persistLeadGrade · 那里 A/B/C 时才 openLeadThread。
 
   return {
     ok: true,
@@ -303,18 +285,31 @@ export function setEntityPhase({
     note: note || '',
   }]);
 
-  // V3 D43 Discord sync · per Matthew "所有的阶段转接...如果不能 update 对应的 thread,
-  // 或者没有 thread, 请更新到 bot-log channel"
-  // Always emit phase transition (no longer skips when entity has no thread —
-  // emitter handles fallback to bot-log automatically).
+  // V3 D43 Discord sync · per Matthew clarified 2026-05-14:
+  // "只捕捉那些没有 thread 记录的大的状态和我需要知道的事情, 不需要那么细节"
+  //
+  // 规则:
+  //   有 thread → swapPhaseTag + upsertProfileCard (在原 thread 内更新 · 不 bot-log)
+  //   没 thread + BIG phase → bot-log emit (operator 否则看不到)
+  //   没 thread + 小 phase (awaiting 默认/nurture) → 静默 · 不 emit (噪音)
+  //
+  // BIG phases = 业务阶段切换 operator 必看的
+  const BIG_PHASES = new Set([
+    'design-ready',      // M2 audit done · sales 接手
+    'qa-pending',        // D39 qualification 部分缺 · operator 补
+    'ready-to-build',    // M3 即将 build
+    'archived',          // 终态 · 显示死因
+    'outreach-active',   // M4 外联启动
+    'replied',           // 客户回信 (M4)
+    'proposal-sent',     // 报价已发
+    'paid',              // M5 入口
+    'needs-human',       // 卡住 · 操作员介入
+  ]);
+
   if (!isNoOp && !process.env.SKIP_LEAD_THREAD_SYNC && !process.env.SKIP_DISCORD_EMIT) {
-    // Fire-and-forget · two concurrent flows:
-    //   A. emitDiscord (phase transition · always · fallback bot-log)
-    //   B. lead-thread-sync (swap tag · upsert card · only if entity has thread)
-    import('../funnel/discord-emit.js').then(({ emitPhaseTransition }) =>
-      emitPhaseTransition(entity, prevPhase, phase, note).catch(() => {})
-    ).catch(() => {});
-    if (entity.discord_thread_id) {
+    const hasThread = !!(entity.discord_thread_id || entity.project_thread_id);
+    if (hasThread) {
+      // Has thread · swap tag + upsert card in place · no Discord emit (avoid duplicate)
       import('../funnel/lead-thread-sync.js').then(async ({ swapPhaseTag, upsertProfileCard }) => {
         try {
           await swapPhaseTag(entityKey);
@@ -323,7 +318,13 @@ export function setEntityPhase({
           console.warn(`[setEntityPhase] thread sync failed: ${err.message}`);
         }
       }).catch((err) => console.warn(`[setEntityPhase] thread sync import failed: ${err.message}`));
+    } else if (BIG_PHASES.has(phase)) {
+      // No thread + BIG phase · operator 否则看不到 · emit bot-log
+      import('../funnel/discord-emit.js').then(({ emitPhaseTransition }) =>
+        emitPhaseTransition(entity, prevPhase, phase, note).catch(() => {})
+      ).catch(() => {});
     }
+    // else: 没 thread + 小 phase (e.g. awaiting) · 静默
   }
 
   return {
