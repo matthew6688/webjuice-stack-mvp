@@ -24,11 +24,16 @@ V3 直接相关 · 1 个 active (profitslocal-website-intake)
 
 #### `profitslocal-website-intake`
 - **Path**: `~/.hermes/profiles/marketer/skills/b2b-marketing/profitslocal-website-intake/`
-- **Version**: 3.0 (May 13)
+- **Version**: **4.0** (D40 · 2026-05-14)
 - **作用**: SOP-1 intake 入口 · 4 路 CLI 选择 (pipeline-batch-start / places-search-intake / single-enrich / ingest-image)
 - **触发**: User 说 "find {niche} in {city}" · 贴 Maps URL · 上传名片 · 等
-- **V3 状态**: SOP-1 主入口 · Matthew 命令 Hermes 时这个 skill 接
-- **维护**: 加新入口时更新此 skill
+- **V3 状态**: SOP-1 主入口 · 但 Discord listener 99% 直接走 intent-router · 不调本 skill · 仅 Hermes 自然对话时加载
+- **同步内容** (D40 update):
+  - D37 contact extraction (audit 后自动抓 email/social/contact_us)
+  - D38 audit 富信息 stage 消息 + 2-page crawl + auto-republish
+  - D40 图片入口自动 multi-angle Places enrich + AI judgment
+  - D40 admin URL 删除 + webhook fallback + business name display
+- **维护契约 (强制)**: 加新 V3 decision 必须更新本 skill metadata.current_d + 加 "V3 DXX 自动行为" 节。代码改了 skill 不改 = Hermes 行为脱节。
 
 ### 1.2 ⚠️ Stale · keep for M4/M5 reference
 
