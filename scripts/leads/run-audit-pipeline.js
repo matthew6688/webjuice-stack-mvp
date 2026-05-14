@@ -252,6 +252,25 @@ console.log('\n══════════ Pipeline summary ═════�
 console.table(summary);
 console.log(JSON.stringify({ ok: summary.every((s) => s.ok), targets: summary.length, summary }, null, 2));
 
+// V3 D35 hook · refresh Discord thread + post summary message for each entity
+// Fire-and-forget · 不阻塞 process exit
+(async () => {
+  try {
+    const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
+    for (const s of summary) {
+      if (!s.entityKey) continue;
+      const auditScore = s.audit_score ?? s.score ?? null;
+      const visualScore = s.visual_freshness ?? null;
+      const decision = s.decision || '';
+      const ok = s.ok;
+      const msg = `${ok ? '✅' : '⚠️'} **Audit pipeline ${ok ? '完成' : '失败'}**${
+        auditScore != null ? ` · 总分 ${auditScore}` : ''
+      }${visualScore != null ? ` · 视觉 ${visualScore}/10` : ''}${decision ? ` · ${decision}` : ''}`;
+      await refreshThreadAndPost(s.entityKey, msg);
+    }
+  } catch { /* non-blocking */ }
+})();
+
 function listAuditCandidateEntityKeys() {
   const rescoreDir = path.join(repoRoot, 'data/v2/fixtures/rescore');
   if (!fs.existsSync(rescoreDir)) return [];

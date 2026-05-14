@@ -414,6 +414,46 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
 }
 
 /**
+ * V3 D35 · refreshThreadAndPost · 5 hook 用的统一接口.
+ *
+ * Auto-detects which channel an entity is in (project_thread_id 或 discord_thread_id),
+ * refreshes the profile card (upsert), and appends an update message.
+ *
+ * Fire-and-forget · try/catch · errors 返回 ok:false 不 throw · 不阻塞主链.
+ *
+ * @param {string} entityKey
+ * @param {string} message — Discord thread message content (markdown OK · max 2000 chars)
+ * @param {object} [opts]
+ * @param {boolean} [opts.skipCard=false] — 跳过 profile card 刷新 (transient ack)
+ * @param {boolean} [opts.skipMessage=false] — 只刷新 card · 不发消息
+ */
+export async function refreshThreadAndPost(entityKey, message, { skipCard = false, skipMessage = false } = {}) {
+  try {
+    const entity = readEntity(entityKey);
+    if (!entity) return { ok: false, reason: 'entity_not_found' };
+
+    const inProjects = !!entity.project_thread_id;
+    const inLeads = !!entity.discord_thread_id;
+    const results = { card: null, msg: null, channel: null };
+
+    if (inProjects) {
+      results.channel = 'projects';
+      if (!skipCard) results.card = await upsertProjectProfileCard(entityKey);
+      if (!skipMessage && message) results.msg = await appendThreadMessage(entity.project_thread_id, message);
+    } else if (inLeads) {
+      results.channel = 'leads';
+      if (!skipCard) results.card = await upsertProfileCard(entityKey);
+      if (!skipMessage && message) results.msg = await appendThreadMessage(entity.discord_thread_id, message);
+    } else {
+      results.channel = 'none';
+    }
+    return { ok: true, ...results };
+  } catch (err) {
+    return { ok: false, reason: err.message };
+  }
+}
+
+/**
  * V3 D34: Edit projects thread's pinned profile card in place.
  * Like upsertProfileCard but for project_thread_id + channel='projects'.
  */

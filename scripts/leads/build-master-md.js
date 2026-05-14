@@ -128,8 +128,24 @@ for (const entityKey of targets) {
     }
   }
 
-  results.push({ entityKey, slug: slugRoot, mdPath: outputMd, htmlPath, frontmatter: built.frontmatter });
+  results.push({ entityKey, slug: slugRoot, mdPath: outputMd, htmlPath, frontmatter: built.frontmatter, byteLength: built.byteLength, sectionCount: built.sectionCount });
 }
+
+// V3 D35 hook · refresh Discord thread profile card + append update message
+// Fire-and-forget · 不阻塞 stdout 输出
+(async () => {
+  try {
+    const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
+    for (const r of results) {
+      const score = r.frontmatter?.audit_score;
+      const decision = r.frontmatter?.decision;
+      const msg = `📄 **master.md 已重建** · ${(r.byteLength / 1024).toFixed(1)}KB · ${r.sectionCount} sections${
+        score != null ? ` · audit_score ${score}` : ''
+      }${decision ? ` · ${decision}` : ''}`;
+      await refreshThreadAndPost(r.entityKey, msg);
+    }
+  } catch { /* non-blocking */ }
+})();
 
 console.log('\n' + JSON.stringify({ ok: true, count: results.length, results: results.map((r) => ({ entityKey: r.entityKey, slug: r.slug, md: path.relative(repoRoot, r.mdPath), html: r.htmlPath ? path.relative(repoRoot, r.htmlPath) : null })) }, null, 2));
 

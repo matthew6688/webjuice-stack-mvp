@@ -95,7 +95,7 @@ const start = Date.now();
 const proc = spawn('claude', ['-p', prompt, '--model', model], { stdio: ['ignore', 'pipe', 'inherit'] });
 let buf = '';
 proc.stdout.on('data', (chunk) => { buf += chunk.toString(); process.stderr.write('.'); });
-proc.on('exit', (code) => {
+proc.on('exit', async (code) => {
   process.stderr.write('\n');
   if (code !== 0) {
     console.error(`claude CLI exit ${code}`);
@@ -106,6 +106,25 @@ proc.on('exit', (code) => {
   fs.writeFileSync(outPath, cleaned);
   const took = Math.round((Date.now() - start) / 1000);
   console.log(`\n[pl:build-customer-audit] DONE · ${cleaned.length} bytes · ${took}s · ${outPath}`);
+
+  // V3 D35 hook · refresh Discord thread + post update
+  try {
+    const entitiesDir = path.join(REPO, 'data/leads/entities');
+    let foundKey = null;
+    for (const f of fs.readdirSync(entitiesDir)) {
+      if (!f.endsWith('.json')) continue;
+      try {
+        const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8'));
+        const s = String(e?.latest?.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        if (s === slug) { foundKey = f.replace(/\.json$/, ''); break; }
+      } catch {}
+    }
+    if (foundKey) {
+      const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
+      await refreshThreadAndPost(foundKey,
+        `📋 **客户 audit HTML 已重建** · ${(cleaned.length / 1024).toFixed(1)}KB · ${took}s`);
+    }
+  } catch { /* non-blocking */ }
 });
 
 function parseArgs(argv) {

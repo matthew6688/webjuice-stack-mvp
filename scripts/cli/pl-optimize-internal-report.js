@@ -226,6 +226,27 @@ console.log(`\n[pl:optimize-internal-report] ✅ DONE`);
 console.log(`  Final HTML: ${outHtml} (${finalHtml.length} bytes)`);
 console.log(`  History:    ${historyJson}`);
 
+// V3 D35 hook · refresh Discord thread + post update
+(async () => {
+  try {
+    const entitiesDir = path.join(REPO, 'data/leads/entities');
+    let foundKey = null;
+    for (const f of fs.readdirSync(entitiesDir)) {
+      if (!f.endsWith('.json')) continue;
+      try {
+        const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8'));
+        const s = String(e?.latest?.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        if (s === slug) { foundKey = f.replace(/\.json$/, ''); break; }
+      } catch {}
+    }
+    if (foundKey) {
+      const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
+      await refreshThreadAndPost(foundKey,
+        `📊 **内部 audit (优化版) 已生成** · ${ROUNDS} 轮 · ${(finalHtml.length / 1024).toFixed(1)}KB`);
+    }
+  } catch { /* non-blocking */ }
+})();
+
 // ─── helpers ─────────────────────────────────────────────────
 async function runRound(roundN, prompt, critique) {
   console.log(`\n━━━ Round ${roundN}/${ROUNDS} · writing HTML ━━━`);

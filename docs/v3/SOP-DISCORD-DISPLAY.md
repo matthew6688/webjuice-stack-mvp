@@ -247,12 +247,33 @@ Phase: design-ready
 ## 5. 验收
 
 - [x] SOP 文档落盘 (本文档)
-- [ ] niche-vocab + stage-vocab 实装
-- [ ] profile card 7 section 渲染
-- [ ] thread title 新格式生效
-- [ ] 8 keepers rename + pin 完成
-- [ ] doctor 5/5 + 10/10 仍绿
-- [ ] commit + push
+- [x] niche-vocab + stage-vocab 实装 (`core/funnel/display-vocab.js`)
+- [x] profile card 7 section 渲染 (`core/funnel/profile-card.js`)
+- [x] thread title 新格式生效 (`buildThreadTitle`)
+- [x] 8 keepers rename + pin 完成 (`pl:rename-keepers-titles`)
+- [x] doctor 5/5 + 10/10 仍绿
+- [x] **5 lifecycle hooks 已实装** (D35 follow-up):
+  - `core/leads/grade-router.js` · 已有 project_thread_id 不重开 leads thread
+  - `scripts/leads/build-master-md.js` · master.md 重建 → refresh card + 发消息
+  - `scripts/cli/pl-build-customer-audit.js` · 客户 audit HTML 重建 → refresh
+  - `scripts/cli/pl-optimize-internal-report.js` · 多轮 optimize → refresh
+  - `scripts/leads/run-audit-pipeline.js` · 4 stage audit 完 → refresh (per entity)
+- [x] `refreshThreadAndPost(entityKey, message)` 统一工具 (`core/funnel/lead-thread-sync.js`)
+- [x] commit + push
+
+## 6. Lifecycle hook 触发表
+
+| CLI / 模块 | Discord 反应 | 实装位置 |
+|---|---|---|
+| `pl:publish-demo` 成功 | 开 thread (idempotent) + refresh card + 发 demo URL | `pl-publish-demo.js` 末尾 |
+| `leads:build-master-md` 完 | refresh card + `📄 master.md 已重建 + audit score` | `build-master-md.js` 末尾 |
+| `pl:build-customer-audit` 完 | refresh card + `📋 客户 audit HTML 已重建` | `pl-build-customer-audit.js` 末尾 |
+| `pl:optimize-internal-report` 完 | refresh card + `📊 内部 audit 优化版 N 轮` | `pl-optimize-internal-report.js` 末尾 |
+| `leads:run-pipeline` 完 (per entity) | refresh card + audit summary | `run-audit-pipeline.js` 末尾 |
+| `grade-router` (re-grade · 已有 project thread) | 不开新 leads thread · 直接 refresh projects + 发 grade 变更 | `grade-router.js` |
+| (未来) operator react 🔥 | swap title emoji | 待 reaction listener |
+| (未来) M4 inbound · 客户回信 | swap stage [有意] + 💬 | M4 |
+| (未来) M4 link tracker · 客户看 demo | swap stage [在看] + 👀 | M4 |
 
 ---
 

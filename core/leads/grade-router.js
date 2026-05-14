@@ -54,15 +54,30 @@ export async function persistLeadGrade({ entityKey, grade, __mockDiscord } = {})
   if (!entityKey) throw new Error('entityKey required');
   const g = String(grade || '').toUpperCase();
 
+  // V3 D35 fix: if entity already has project_thread_id (graduated to #website-projects),
+  // 不重开 leads thread · 而是刷新 projects thread profile card 反映新 grade.
+  // Avoids dupe thread when grade re-runs on entity that already has demo built.
   let thread = null;
   if (['A', 'B', 'C'].includes(g)) {
     if (__mockDiscord?.openLeadThread) {
       thread = await __mockDiscord.openLeadThread({ entityKey, grade: g });
     } else {
-      // Production path — defer to real Discord client; best-effort.
       try {
+        // Check if entity already in projects channel (has demo URL · graduated)
+        const fs = await import('node:fs');
+        const path = await import('node:path');
+        const entityPath = path.join('data/leads/entities', `${entityKey}.json`);
+        let alreadyInProjects = false;
+        if (fs.existsSync(entityPath)) {
+          const e = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+          alreadyInProjects = !!e.project_thread_id;
+        }
         const mod = await import('../funnel/lead-thread-sync.js');
-        if (typeof mod.openLeadThread === 'function') {
+        if (alreadyInProjects && typeof mod.refreshThreadAndPost === 'function') {
+          // Just refresh projects thread · don't open new leads thread (D35)
+          thread = await mod.refreshThreadAndPost(entityKey,
+            `📊 **Grade 更新** → \`${g}\` · ${new Date().toISOString().slice(0, 19)} UTC`);
+        } else if (typeof mod.openLeadThread === 'function') {
           thread = await mod.openLeadThread({ entityKey, grade: g });
         }
       } catch (err) {
