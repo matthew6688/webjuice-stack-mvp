@@ -4,6 +4,10 @@
 > **不在范围**: master.md 之后的 audit (M2 · SOP-2) · 网站生成 (M3 · SOP-3)。
 > **owner**: M1 PRD owns intake mechanics · 本 doc 是 Operator-facing runbook (节点 / 汇报格式 / 日志位置)。
 > **status**: 当前生产实装 · 2026-05-14 verified live 5/5 doctor green。
+>
+> **⚠ 测试验证强制规则**: 任何涉及 Discord 可视化的修改，验证必须 fetch Discord API 取真数据。
+> 详见 [`SOP-VERIFICATION-VIA-DISCORD-API.md`](SOP-VERIFICATION-VIA-DISCORD-API.md) ·
+> 禁止用 `task.status=done` / `doctor exit 0` / Entity JSON 字段 当 PASS 凭据。
 
 ---
 

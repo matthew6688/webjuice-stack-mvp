@@ -22,6 +22,22 @@
 
 ---
 
+## ⚠ Discord 可视化的修改 · 额外强制规则
+
+凡 deliverable 涉及 Discord channel / thread title / 消息内容 / profile card 的可视化变化，
+**4 项 hard evidence 之外**还必须 fetch Discord API 验证（Group A/B/C/D 见 SOP-VERIFICATION-VIA-DISCORD-API）。
+
+明确**禁止当作 PASS 凭据**：
+- `task.status === 'done'`
+- `doctor exit 0`（doctor 不查 UI）
+- Entity JSON 字段（写"已发"≠真发了）
+- `refreshThreadAndPost ok:true`（必须深入到 `.msg.ok`）
+- 我自己 render 的 mock（≠ Discord 实际显示）
+
+详见 [`SOP-VERIFICATION-VIA-DISCORD-API.md`](SOP-VERIFICATION-VIA-DISCORD-API.md)。
+
+---
+
 ## M1 验收标准 (6 deliverable)
 
 ### M1-D1 · text similarity + 5-key dedup scoring

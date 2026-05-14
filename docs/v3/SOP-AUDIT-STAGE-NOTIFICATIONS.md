@@ -3,6 +3,9 @@
 > **作用域**: V3 audit pipeline (`leads:run-pipeline`) 每 stage 发到 Discord thread 的消息格式 + 内容规范。
 > **owner**: Cross-cutting · M2 audit + Discord display。
 > **status**: D38 (2026-05-14) 第一版 · 实装在 `core/funnel/audit-stage-messages.js`。
+>
+> **⚠ 测试验证强制规则**: 任何涉及 Discord 可视化的修改，验证必须 fetch Discord API 取真数据。
+> 详见 [`SOP-VERIFICATION-VIA-DISCORD-API.md`](SOP-VERIFICATION-VIA-DISCORD-API.md)。
 
 ---
 

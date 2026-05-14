@@ -4,6 +4,9 @@
 > **目的**: 销售扫一眼 channel 列表就懂漏斗状态 · 打开 thread 第一眼就看到完整客户档案。
 > **owner**: 跨 #website-leads / #website-projects / #paid-websites 三个 channel 的 cross-cutting display layer。
 > **status**: D35 (2026-05-14) 第一版 · 实装后随 sales 反馈迭代。
+>
+> **⚠ 测试验证强制规则**: 任何涉及 Discord 可视化的修改，验证必须 fetch Discord API 取真数据。
+> 详见 [`SOP-VERIFICATION-VIA-DISCORD-API.md`](SOP-VERIFICATION-VIA-DISCORD-API.md)。
 
 ---
 

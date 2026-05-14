@@ -5,6 +5,9 @@
 > **owner**: M2-PRD owns 设计 · 本 doc 是 Operator-facing runbook (4 stage / cron / 触发 / 汇报 / asset)。
 > **status**: 当前生产实装 · 10 个真客户 audit 完整。
 > **依赖**: SOP-1 已跑过 (master.md skeleton 已在)。
+>
+> **⚠ 测试验证强制规则**: 任何涉及 Discord 可视化的修改，验证必须 fetch Discord API 取真数据。
+> 详见 [`SOP-VERIFICATION-VIA-DISCORD-API.md`](SOP-VERIFICATION-VIA-DISCORD-API.md)。
 
 ---
 
