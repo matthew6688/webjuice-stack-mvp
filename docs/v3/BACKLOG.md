@@ -16,8 +16,8 @@
 - **Emit rate-limit queue** · per-channel serialize · 429 retry · 实测 10 burst ok (commit `65f6cf06`)
 - **Narrow test allowlist** · listener accepts 🧪 / [E2E prefix · 不再需要 LISTENER_ALLOW_BOTS=1 永久开
 - **Cycle test 1 · D43 · doctor schema fixes** · `pl-lead-journey-doctor.js` 改 `scoring.grade` → `grade.investment_level` · `pl-intake-doctor.js` 加 defensive .env.local loader (see DECISIONS-LOG D43 cycle test 1)
-- **Cycle 2 · D43 · dispatcher reaper** · `core/tasks/task-store.js` `reapStaleRunningTasks()` · dispatcher startup 扫 running 任务 · 超 `target.timeout_ms` (默认 15min) → failed + `error=reaper: orphaned at startup (dispatcher restart)` · 实测 reap 1 fake (commit `__CYCLE2_HASH__`)
-- **Cycle 2 · D43 · single-enrich audit dedup** · 若 `entity.cheap_audit.at` 在 24h 内 · 跳 auto-chain audit · log `[single-enrich] audit skipped · already audited at <ts>` · 实测 Brisbane Roof Restoration Experts 重跑 → `audit_chained=null` (commit `__CYCLE2_HASH__`)
+- **Cycle 2 · D43 · dispatcher reaper** · `core/tasks/task-store.js` `reapStaleRunningTasks()` · dispatcher startup 扫 running 任务 · 超 `target.timeout_ms` (默认 15min) → failed + `error=reaper: orphaned at startup (dispatcher restart)` · 实测 reap 1 fake (commit `08e72180`)
+- **Cycle 2 · D43 · single-enrich audit dedup** · 若 `entity.cheap_audit.at` 在 24h 内 · 跳 auto-chain audit · log `[single-enrich] audit skipped · already audited at <ts>` · 实测 Brisbane Roof Restoration Experts 重跑 → `audit_chained=null` (commit `08e72180`)
 
 ---
 
