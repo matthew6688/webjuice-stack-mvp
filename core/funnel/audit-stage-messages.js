@@ -157,8 +157,13 @@ export function cheapAuditPredictMessage({ entity, cheapAudit, predict }) {
   lines.push('');
   lines.push(`**下一步**: ${nextStep}`);
 
-  // V3 D43 cycle-11 (Matthew 2026-05-14): 销售手动表情指令 · 用在 thread 任意 message 上
-  if (g === 'C') {
+  // V3 D43 cycle-13 (Matthew 2026-05-14): emoji 指南是 DEFAULT · 所有需要 human
+  // review 或处于 backlog 的 lead 都显示 (predict-A/B/C + manual_review +
+  // queued_for_enrichment + needs human). 只有 predict-D (archive · 永不深审)
+  // 跳过 (反正不在 #website-leads)。
+  const showEmojiGuide = g === 'A' || g === 'B' || g === 'C'
+    || action === 'manual_review' || action === 'queued_for_enrichment';
+  if (showEmojiGuide) {
     lines.push('');
     lines.push('**手动操作 (对本帖加表情即可):**');
     lines.push('· 🚀 / ⚡ / 🔥 → 推进 → detailedAudit (priority 100)');

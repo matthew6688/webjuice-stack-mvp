@@ -249,17 +249,25 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   }
   if (lines.length) fields.push({ name: '审计结论', value: lines.join('\n'), inline: false });
 
-  // ═══════ Section 5 · 在线资源 (拆为 2 个 field · Discord 1024 字段上限) ═══════
+  // ═══════ Section 5 · 在线资源 / 本地资产 ═══════
+  // V3 D43 cycle-13 (Matthew 2026-05-14): "有些链接丢失了"
+  // 旧 bug: 5 个发布后链接只在 channel='projects' 渲染 · #website-leads 看不到 demo/audit/master.md URL。
+  // 修: 不管哪个 channel · 只要 cf-pages-deploy.json 存在就显示 5 个 hyperlinks。
   lines.length = 0;
-  if (channel === 'projects' && deploy?.demo_url) {
+  const thisEntityAudited = !!entity.grade?.investment_level
+    || !!entity.detailed_audit?.at
+    || !!entity.audit?.at;
+
+  if (deploy?.demo_url && thisEntityAudited) {
     const base = deploy.demo_url.replace(/\/$/, '');
-    // Demo · RAW URL
+    // Demo · RAW URL (操作员复制粘贴用)
     lines.push(`Demo: ${deploy.demo_url}`);
-    // 文档 · hyperlink
+    // 文档 · hyperlink (5 个 deploy URL: demo / customer-audit / internal-audit / master.md / master.report)
     const docs = [];
     if (deploy.audit_url) docs.push(`[客户 audit](${deploy.audit_url})`);
     if (deploy.internal_audit_url) docs.push(`[内部 audit](${deploy.internal_audit_url})`);
     if (deploy.master_md_url) docs.push(`[master.md](${deploy.master_md_url})`);
+    if (deploy.master_report_url) docs.push(`[master.report.html](${deploy.master_report_url})`);
     if (docs.length) lines.push(docs.join('  ·  '));
     // 截图 + 录屏 · hyperlink
     const media = [];
@@ -272,7 +280,8 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
       media.push(`[${label} 录屏](${base}/video/${f})`);
     }
     if (media.length) lines.push(media.join('  ·  '));
-    fields.push({ name: '在线资源', value: lines.join('\n'), inline: false });
+    if (deploy.deployed_at) lines.push(`_(发布于 <t:${Math.floor(new Date(deploy.deployed_at).getTime()/1000)}:R>)_`);
+    fields.push({ name: '在线资源 (已发布)', value: lines.join('\n'), inline: false });
 
     // 现状证据 · 单独 field · hyperlink · 累积至 Discord 1024 字段上限
     if (assets.evidence.length) {
@@ -280,7 +289,7 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
       const allLines = assets.evidence.map((f) => `• [${prettyEvidenceName(f)}](${base}/evidence/${f})`);
       const kept = [];
       let chars = 0;
-      const LIMIT = 980; // 留 ~40 字符给 "+N more" tail
+      const LIMIT = 980;
       for (const line of allLines) {
         if (chars + line.length + 1 > LIMIT) break;
         kept.push(line);
@@ -290,34 +299,19 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
       if (kept.length < total) {
         evValue += `\n_(+${total - kept.length} 条 · 完整在 internal-audit-report)_`;
       }
-      fields.push({
-        name: `现状证据 (${total})`,
-        value: evValue,
-        inline: false,
-      });
+      fields.push({ name: `现状证据 (${total})`, value: evValue, inline: false });
     }
-  } else if (channel === 'leads') {
-    // V3 D43 cycle-8 (Matthew 2026-05-14): slug-collision means two entities
-    // with same business name share a client folder. predict-only entity would
-    // inherit a previously-audited entity's assets — that's bullshit.
-    // Only show 本地资产 when THIS entity itself was detail-audited
-    // (entity.grade.investment_level set · or entity.detailed_audit.at set).
-    // Note: master.md's business_id field is NOT reliable proof of ownership —
-    // master-md-refresh fires for any entity, and the last-writer wins.
-    const thisEntityAudited = !!entity.grade?.investment_level
-      || !!entity.detailed_audit?.at
-      || !!entity.audit?.at;
-    if (thisEntityAudited) {
-      const parts = [];
-      if (assets.evidence.length) parts.push(`证据 ${assets.evidence.length}`);
-      if (assets.screenshots.length) parts.push(`截图 ${assets.screenshots.length}`);
-      if (assets.videos.length) parts.push(`视频 ${assets.videos.length}`);
-      if (parts.length) {
-        fields.push({ name: '本地资产 (未 publish)', value: parts.join(' · '), inline: false });
-      }
+  } else if (thisEntityAudited) {
+    // Audited but not published yet · show local asset counts (没 hyperlinks · 因为没 CF URL)
+    const parts = [];
+    if (assets.evidence.length) parts.push(`证据 ${assets.evidence.length}`);
+    if (assets.screenshots.length) parts.push(`截图 ${assets.screenshots.length}`);
+    if (assets.videos.length) parts.push(`视频 ${assets.videos.length}`);
+    if (parts.length) {
+      fields.push({ name: '本地资产 (未 publish · 等 demo 部署)', value: parts.join(' · '), inline: false });
     }
-    // else: predict-only entity → no assets shown (don't inherit from same-name audited entity)
   }
+  // else: predict-only entity · 没 audit 没资产 · 不显示这个 field
 
   // ═══════ Section 6 · 线索来源 ═══════
   lines.length = 0;

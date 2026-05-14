@@ -148,6 +148,26 @@ for (const m of ms) {
 
 ---
 
+## 2.4 · 字段值真实性验证 (v2 cycle-13 · Matthew 强制)
+
+**Matthew 2026-05-14**: "通过 Discord API 读具体的数据 · 核对数据的真实性和准确性 · 这个才是 hard evidence"
+
+**禁止**: 只看 message count / feature 命中 / title 含 `[?]`。
+**强制**: 每个 embed field 的**实际显示值** vs **entity source-of-truth** 必须一致。
+
+`pl-discord-snapshot` 内置以下字段对照（每 audited entity 检查 4 项 · predict-C 2 项）:
+
+| Field 名 | 验证内容 |
+|---------|---------|
+| 联系方式 | 电话 `tel:` 数字 === `entity.latest.phone` (normalize) · 邮箱 === `entity.latest.email` · 网站 === `entity.latest.website` |
+| 基本信息 | rating === `entity.latest.rating` · review_count === `entity.latest.review_count` |
+| 审计结论 | 总分 === `clients/<slug>/v2/master.md` frontmatter audit_score |
+| 在线资源 / 本地资产 | cf-pages-deploy.json 存在 → field 名必须是「在线资源 (已发布)」(不是「未 publish」) · 4 个 hyperlink (audit_url · internal_audit_url · master_md_url · master_report_url) 全部在 field value 里 |
+
+任何字段不匹配 → snapshot `accuracy_mismatches[]` · 算 FAIL · 必须修。
+
+---
+
 ## 2.5 · Per-State 期望矩阵 (v2 加严 · 必须每个状态都验)
 
 不同 entity 状态 · thread 应该有什么内容是**严格定义**的 · 缺一不可：

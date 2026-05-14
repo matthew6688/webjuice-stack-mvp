@@ -111,6 +111,87 @@ function detectFeatures(msgs) {
   return Array.from(features);
 }
 
+// V3 D43 cycle-13 (Matthew 2026-05-14): per-field accuracy verification.
+// Hard evidence is NOT message count — it's "shown value matches entity source-of-truth".
+function verifyFieldAccuracy(embed, entity, slug) {
+  if (!embed?.fields || !entity) return { checked: 0, mismatches: [] };
+  const latest = entity.latest || {};
+  const mismatches = [];
+  let checked = 0;
+  for (const f of embed.fields) {
+    const v = f.value || '';
+    if (f.name === '联系方式') {
+      checked++;
+      // Phone: should appear as [number](tel:...)
+      if (latest.phone) {
+        const phoneNorm = String(latest.phone).replace(/[^\d+]/g, '');
+        if (!v.includes(`tel:${phoneNorm}`) && !v.includes(latest.phone)) {
+          mismatches.push(`电话: entity has "${latest.phone}" but field doesn't show it`);
+        }
+      }
+      // Email
+      if (latest.email && !v.includes(latest.email)) {
+        mismatches.push(`邮箱: entity has "${latest.email}" but field doesn't show it`);
+      }
+      // Website
+      if (latest.website && !v.includes(latest.website)) {
+        mismatches.push(`网站: entity has "${latest.website}" but field doesn't show it`);
+      }
+    }
+    if (f.name === '基本信息') {
+      checked++;
+      if (latest.rating != null && !v.includes(String(latest.rating))) {
+        mismatches.push(`Google rating: entity=${latest.rating} not in field`);
+      }
+      if (latest.review_count != null && !v.includes(String(latest.review_count))) {
+        mismatches.push(`reviews: entity=${latest.review_count} not in field`);
+      }
+    }
+    if (f.name === '审计结论' && entity.grade?.investment_level) {
+      checked++;
+      const auditScore = (() => {
+        try {
+          const mdPath = path.join('/Users/matthew/Developer/google-map-website-v3/clients', slug, 'v2/master.md');
+          if (!fs.existsSync(mdPath)) return null;
+          const m = fs.readFileSync(mdPath, 'utf8').match(/^audit_score:\s*(\d+)/m);
+          return m ? Number(m[1]) : null;
+        } catch { return null; }
+      })();
+      if (auditScore != null && !v.includes(`${auditScore}/100`)) {
+        mismatches.push(`审计总分: master.md=${auditScore}/100 not in field`);
+      }
+    }
+    if (f.name.includes('在线资源') || f.name.includes('本地资产')) {
+      checked++;
+      // Verify cf-pages-deploy.json links match
+      try {
+        const dp = path.join('/Users/matthew/Developer/google-map-website-v3/clients', slug, 'v2/concept/reference-adapter/cf-pages-deploy.json');
+        if (fs.existsSync(dp)) {
+          const deploy = JSON.parse(fs.readFileSync(dp, 'utf8'));
+          // If deploy exists, field SHOULD be "在线资源 (已发布)" not "本地资产 (未 publish)"
+          if (f.name.includes('未 publish') || f.name.includes('未发布')) {
+            mismatches.push(`链接丢失: cf-pages-deploy.json 存在但 field 名是 "${f.name}" · 应是 "在线资源 (已发布)"`);
+          }
+          // Verify all 4 hyperlinks present
+          for (const linkKey of ['audit_url', 'internal_audit_url', 'master_md_url', 'master_report_url']) {
+            if (deploy[linkKey] && !v.includes(deploy[linkKey])) {
+              mismatches.push(`链接丢失: deploy.${linkKey}=${deploy[linkKey]} 不在 field`);
+            }
+          }
+        }
+      } catch { /* skip */ }
+    }
+  }
+  return { checked, mismatches };
+}
+
+function slugifyName(s) {
+  return String(s || '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+}
+
 async function checkThread(threadInfo) {
   const { id, name, parent_id } = threadInfo;
   const entity = findEntityByThreadId(id);
@@ -128,16 +209,25 @@ async function checkThread(threadInfo) {
     ? name.includes(expected.titleContains)
     : true;
 
-  // Asset attribution: if profile card shows 本地资产 field, entity should be actually audited
+  // V3 D43 cycle-13: per-field accuracy verification
+  const slug = entity?.promotedClientSlug || slugifyName(entity?.latest?.name || '');
+  let accuracyMismatches = [];
+  let fieldsChecked = 0;
   let assetMisattribution = false;
   for (const m of msgs) {
-    if (!m.embeds?.[0]?.fields) continue;
+    if (!m.embeds?.[0]?.fields || !entity) continue;
+    const a = verifyFieldAccuracy(m.embeds[0], entity, slug);
+    accuracyMismatches.push(...a.mismatches);
+    fieldsChecked += a.checked;
+    // Legacy slug-collision check
     const assetField = m.embeds[0].fields.find((f) => f.name.includes('资产'));
-    if (assetField && entity) {
+    if (assetField) {
       const thisAudited = !!entity.grade?.investment_level || !!entity.detailed_audit?.at;
       if (!thisAudited) assetMisattribution = true;
     }
+    break; // verify only the latest profile card embed
   }
+  accuracyMismatches = [...new Set(accuracyMismatches)];
 
   // Feature checks
   const missingFeatures = (expected.expectedFeatures || []).filter((f) => !features.includes(f));
@@ -149,11 +239,14 @@ async function checkThread(threadInfo) {
   if (!enoughMessages) failures.push(`message count ${msgs.length} < 期望 ${expected.minMessages}`);
   if (missingFeatures.length) failures.push(`缺少 feature: ${missingFeatures.join(', ')}`);
   if (assetMisattribution) failures.push('本地资产 显示在 non-audited entity (slug-collision)');
+  // V3 D43 cycle-13: accuracy mismatches are hard FAILs
+  for (const am of accuracyMismatches) failures.push(`字段 mismatch: ${am}`);
 
   return {
     threadId: id,
     title: name,
     entityKey: entity?.entityKey || null,
+    slug,
     state,
     expected,
     actual: {
@@ -161,6 +254,8 @@ async function checkThread(threadInfo) {
       features,
       title_has_questionmark: titleHasQ,
       asset_misattribution: assetMisattribution,
+      fields_checked: fieldsChecked,
+      accuracy_mismatches: accuracyMismatches,
     },
     failures,
     pass: failures.length === 0,
