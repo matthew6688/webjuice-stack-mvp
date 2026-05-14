@@ -281,6 +281,43 @@ export function appendProgress(taskId, step, detail = '') {
   return writeTask(task);
 }
 
+/* ─── Reaper (orphaned running tasks) ─────────────────────────────── */
+
+/**
+ * Scan all `status=running` tasks and mark as `failed` any whose `started_at`
+ * (falling back to `updated_at`) is older than `target.timeout_ms` (or
+ * `defaultTimeoutMs`). Intended to run on dispatcher startup so that tasks
+ * orphaned by SIGKILL / launchd restart / crash don't stay running forever.
+ *
+ * Returns array of reaped { task_id, age_ms, timeout_ms } objects.
+ *
+ * V3 D43 cycle-2 · BACKLOG P1 fix.
+ */
+export function reapStaleRunningTasks({ defaultTimeoutMs = 900_000, now = Date.now() } = {}) {
+  const running = listTasks({ status: 'running' });
+  const reaped = [];
+  for (const task of running) {
+    const timeoutMs = task.target?.timeout_ms || defaultTimeoutMs;
+    // started_at was never persisted explicitly; running tasks have updated_at
+    // set when tryClaim() flipped them pending → running. Use updated_at.
+    const startedAtIso = task.started_at || task.updated_at;
+    if (!startedAtIso) continue;
+    const startedAt = Date.parse(startedAtIso);
+    if (!Number.isFinite(startedAt)) continue;
+    const ageMs = now - startedAt;
+    if (ageMs <= timeoutMs) continue;
+    try {
+      task.status = 'failed';
+      task.error = 'reaper: orphaned at startup (dispatcher restart)';
+      task.failed_at = new Date(now).toISOString();
+      task.result = { ...task.result, reaper: { age_ms: ageMs, timeout_ms: timeoutMs } };
+      writeTask(task);
+      reaped.push({ task_id: task.task_id, age_ms: ageMs, timeout_ms: timeoutMs });
+    } catch { /* skip — best-effort */ }
+  }
+  return reaped;
+}
+
 /* ─── Claim (atomic pending → running) ────────────────────────────── */
 
 /**

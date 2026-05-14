@@ -994,3 +994,58 @@ crash point (intake CLI drained queue before SIGKILL window). Verified by code i
 
 **Known limitation**: dispatcher has no stale-`running`-task reaper. If dispatcher crashes
 mid-task the task file is stuck in status=running until manual intervention. Backlog item.
+
+---
+
+## D43 · cycle test 2 · dispatcher reaper + single-enrich audit dedup (2026-05-14)
+
+**Context**: 2 P1 backlog items from D43 cycle-1 (dispatcher reaper, single-enrich audit dedup)
+fixed in one pass. Both block 3500-query bulk runs.
+
+**Bugs fixed**:
+
+1. **Dispatcher has no stale-running-task reaper** (P1)
+   - SIGKILL / launchd restart → child orphaned → task file stuck `status=running` forever.
+   - At 3500-query scale this WILL happen and silently corrupt the pipeline state.
+   - Fix: `reapStaleRunningTasks({ defaultTimeoutMs })` in `core/tasks/task-store.js`.
+     Scans `status=running`, compares `started_at || updated_at` against
+     `target.timeout_ms` (fallback default 15min), marks stale ones `failed` with
+     `error='reaper: orphaned at startup (dispatcher restart)'` and stamps `failed_at`
+     plus `result.reaper = { age_ms, timeout_ms }`.
+   - Dispatcher startup (both daemon + one-shot paths) calls it and logs reap count
+     to stderr.
+   - **Verified**: wrote fake `20260513-000000-deadbe` task with `updated_at` 30min
+     ago + `timeout_ms=300000`. `launchctl kickstart -k gui/$UID/ai.profitslocal.v3.task-dispatcher`.
+     stderr log: `[reaper] orphaned 1 running task(s) → failed · 20260513-000000-deadbe · age=1804373ms timeout=300000ms`.
+     Task file post-reap: `status=failed`, `error="reaper: orphaned at startup (dispatcher restart)"`.
+
+2. **`pl:single-enrich` always auto-chains audit, even just-audited entities** (P1)
+   - Operator re-runs single-enrich on a known entity → fresh audit task spawned →
+     redundant ~100s pipeline run + Discord noise + LLM cost.
+   - Fix: before `createTask({ kind: 'audit' })`, read entity file from
+     `data/leads/entities/<entityKey>.json`. If `cheap_audit.at` is within 24h →
+     skip chain, log `[single-enrich] audit skipped · already audited at <ts> (<N>min ago)`,
+     emit `audit_skipped` reason in final JSON (`audit_chained` stays `null`).
+   - Existing behavior preserved when no recent audit.
+   - **Verified**: re-ran `pl:single-enrich --business-name "Brisbane Roof Restoration Experts" --phone 0731321605 --niche roofer --city brisbane`
+     against entity `place_chijwdbif2xzkwsrru6lkmu2l0o` (cycle-1 cheap_audit.at=2026-05-14T10:32:52).
+     Log: `[single-enrich] audit skipped · already audited at 2026-05-14T10:32:52.042Z (13min ago)`.
+     emit: `audit_chained: null`, `audit_skipped: "already audited at … (13min ago)"`.
+
+**Doctor results · post-fix** (all 6 exit 0):
+
+```
+daemon-doctor          ✓ 3/3 V3 daemons alive
+lead-journey-doctor    ✓ 10/10
+intake-doctor          ✓ 5/5
+audit-doctor           ✓
+cascade-doctor         ✓ codex_cli last 24h
+publish-doctor         ✓ 200 spot-check
+```
+
+**Files touched**: `core/tasks/task-store.js` (+38 lines), `scripts/cli/pl-task-dispatcher.js`
+(+18 lines), `scripts/cli/pl-single-enrich.js` (+22 lines).
+
+**No schema migration**: reaper writes optional fields (`failed_at`, `result.reaper`) — task
+files predating this change validate unchanged. single-enrich dedup is read-only against
+entity files.

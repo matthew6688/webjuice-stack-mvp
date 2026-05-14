@@ -151,7 +151,27 @@ console.log(`[pl:single-enrich] entity: ${entityKey}`);
 
 // Auto-chain audit task unless --no-chain · also skip if judge said human-gate
 let chainedTask = null;
+let auditSkippedReason = null;
+// V3 D43 cycle-2 · BACKLOG P1 fix · skip auto-chain if entity was just audited (<24h)
 if (!NO_CHAIN && judge?.verdict !== 'human-gate') {
+  try {
+    const entityPath = path.join(storeRoot, 'entities', `${entityKey}.json`);
+    if (fs.existsSync(entityPath)) {
+      const entity = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+      const auditAtIso = entity.cheap_audit?.at;
+      if (auditAtIso) {
+        const ageMs = Date.now() - Date.parse(auditAtIso);
+        if (Number.isFinite(ageMs) && ageMs >= 0 && ageMs < 24 * 60 * 60 * 1000) {
+          auditSkippedReason = `already audited at ${auditAtIso} (${Math.round(ageMs / 60000)}min ago)`;
+          console.log(`[single-enrich] audit skipped · ${auditSkippedReason}`);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn(`[single-enrich] dedup check skipped: ${err.message}`);
+  }
+}
+if (!NO_CHAIN && judge?.verdict !== 'human-gate' && !auditSkippedReason) {
   try {
     chainedTask = createTask({
       kind: 'audit',
@@ -190,6 +210,7 @@ emit({
   niche:           result.lead.niche,
   city:            result.lead.city,
   audit_chained:   chainedTask?.task_id || null,
+  audit_skipped:   auditSkippedReason,
   judge:           judge ? { verdict: judge.verdict, confidence: judge.confidence, reason: judge.reason, provider: judge.provider } : null,
   duration_ms:     Date.now() - t0,
   cost_estimate:   result.cost_estimate,

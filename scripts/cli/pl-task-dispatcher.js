@@ -43,6 +43,7 @@ import {
   transitionStatus,
   appendProgress,
   appliedTagsFor,
+  reapStaleRunningTasks,
 } from '../../core/tasks/task-store.js';
 
 const ONE_SHOT = process.argv.includes('tick');
@@ -398,6 +399,23 @@ function startFsWatch() {
 if (!acquireProcessLock()) {
   console.error(`Another dispatcher is already running (lock owner ${fs.readFileSync(LOCK_FILE, 'utf8').toString()}); refusing to start.`);
   process.exit(1);
+}
+
+// V3 D43 cycle-2 · BACKLOG P1 fix
+// Reap orphaned running tasks (SIGKILL / launchd restart leaves status=running forever).
+// Default 15min timeout when task target.timeout_ms missing.
+try {
+  const reaped = reapStaleRunningTasks({ defaultTimeoutMs: 15 * 60_000 });
+  if (reaped.length) {
+    console.error(`[reaper] orphaned ${reaped.length} running task(s) → failed:`);
+    for (const r of reaped) {
+      console.error(`  · ${r.task_id} · age=${r.age_ms}ms timeout=${r.timeout_ms}ms`);
+    }
+  } else {
+    console.error('[reaper] no orphaned running tasks');
+  }
+} catch (err) {
+  console.error('[reaper] error:', err.message);
 }
 
 process.on('SIGTERM', () => { log('SIGTERM'); releaseProcessLock(); process.exit(0); });
