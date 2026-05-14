@@ -261,17 +261,28 @@ tail -f data/tasks/_logs/v3-dispatcher.log
 
 **期望产出**: 1 entity (place_id 或 phone_*)
 
-### 4.4 Test #4 · image-extract (名片图)
+### 4.4 Test #4 · image-extract (名片图 / 招牌 / 卡车贴纸)
+
+**Sample fixtures (永久路径 · 不要再问 Matthew):**
+- `data/fixtures/image-extract/tradie-sign-roofing-0424-371-622.png`
+  · 蓝底 sign · 40 YEARS EXP · TILE/METAL ROOFING · phone 0424 371 622 · **无 business name**(典型 tradie 难度)
+- 完整 ground truth + 命名约定见 `data/fixtures/image-extract/README.md`
+
+**新样本规则**: Matthew 发图 → 直接落到 `data/fixtures/image-extract/<sign-type>-<niche>-<phone>.png` · 更新 README · commit · 后续测试沿用。
 
 **步骤**:
 ```bash
-# Discord forum thread · 上传名片图 + 任意 text (例 "Sydney plumber")
+# A. 直接跑 image-extract 单测 (CLI 路径)
+npm run qa:test-image-extract -- data/fixtures/image-extract/tradie-sign-roofing-0424-371-622.png
+
+# B. 端到端 (Discord listener 入口) · 上传名片图 + 任意 text (例 "Sydney plumber")
 ```
 
 **期望产出**:
-- vision LLM OCR 抽 niche + city + business name
-- 如果全抽到 → entity 创建 · phase=AWAITING_AUDIT
-- 如果缺关键字段 → human gate · thread 改 `human` tag · 提示操作员补字段 (Bug B fixed)
+- vision LLM OCR 抽 niche + services + phone(+ business name if 有)
+- 5-angle Places search · 高 confidence(≥80) 自动 pick · 50-80 AI judge · <50 human pick
+- 如果命中 → entity 创建 · phase=AWAITING_AUDIT
+- 如果缺关键字段 + Places 0 match → human gate · thread 改 `human` tag · 提示操作员补字段 (Bug B fixed)
 
 ---
 

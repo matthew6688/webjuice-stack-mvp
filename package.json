@@ -116,6 +116,7 @@
     "pl:cost-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-cost-doctor.js",
     "pl:audit-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-audit-doctor.js",
     "pl:publish-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-publish-doctor.js",
+    "qa:test-image-extract": "node --env-file-if-exists=.env.local scripts/qa/test-image-extract.mjs",
     "qa:test-intake-channels": "node scripts/qa/test-intake-channels.mjs",
     "qa:test-sop1-doc-sync": "node scripts/qa/test-sop1-doc-sync.mjs",
     "qa:test-dedup-llm": "node scripts/qa/test-dedup-llm-decider.mjs",
