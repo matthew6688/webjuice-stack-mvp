@@ -297,6 +297,84 @@ JSON only:`;
   };
 }
 
+/* ─── Public · enrichment search-result match verification (D43 · Q3) ─ */
+
+/**
+ * Per Matthew 2026-05-14:
+ *   "用 google 去搜索一下 · 至于搜索的结果要不要大模型去判断一下是不是
+ *    相关或者 match 的?"
+ *
+ * enrichment.js 跑 5-6 个 Tinyfish/DDG 搜索 (discover_official · social_*
+ * · reviews_thirdparty · reverse_phone) · 用正则 host 匹配分类。但是不验
+ * 证 "这个 facebook page 真是这家店吗" · 可能 false match (同名连锁 /
+ * 同名 SEO agency / etc)。
+ *
+ * 给每个 candidate URL 一个 LLM 判断:
+ *   yes (>= 0.8 confidence) → 写 entity.latest
+ *   maybe (0.4..0.8) → 写 entity.latest.maybe_X (operator 复核)
+ *   no (< 0.4) → 丢
+ *
+ * @param {object} input
+ * @param {object} input.entity · { name, niche, city, phone, address }
+ * @param {Array}  input.candidates · [{ type, url, title, snippet? }]
+ * @returns {Promise<Array>} per candidate: { url, matches, confidence, reason }
+ */
+export async function judgeEnrichmentMatches({ entity, candidates }) {
+  if (!candidates?.length) return [];
+  const prompt = `You are a data quality verifier for a lead enrichment pipeline.
+
+TARGET BUSINESS:
+${JSON.stringify(entity, null, 2)}
+
+SEARCH CANDIDATES (URLs found from web search):
+${JSON.stringify(candidates.slice(0, 12), null, 2)}
+
+QUESTION: For EACH candidate · is this URL really the OFFICIAL profile / website /
+social presence of the TARGET BUSINESS · or a false match (same-name competitor ·
+generic directory · franchise sibling · unrelated)?
+
+For each candidate, return verdict:
+- "yes" (>= 0.8 confidence): clearly the same business
+- "maybe" (0.4..0.8): partial signal · could be · operator review
+- "no" (< 0.4): wrong match · skip
+
+Common false-match patterns:
+- Same business name in different city (e.g. "Joe's Roofing" Sydney vs Brisbane)
+- Same name but different niche (e.g. "ABC Plumbing" target vs "ABC Plumbing Supplies")
+- Generic directory page (Yellow Pages / hipages) listing many businesses
+- Franchise / chain sibling not the actual target
+
+Return JSON array · one entry per candidate:
+[
+  { "url": "...", "matches": "yes"|"maybe"|"no", "confidence": <float>, "reason": "<short>" },
+  ...
+]
+
+JSON only:`;
+
+  const result = await runCascade(prompt);
+  const j = extractJson(result.text);
+  if (!Array.isArray(j)) {
+    // LLM didn't return array · fallback: mark all as maybe (operator review)
+    return candidates.map((c) => ({
+      url: c.url, matches: 'maybe', confidence: 0,
+      reason: `LLM unparseable (${result.provider})`,
+      provider: result.provider,
+    }));
+  }
+  // Map LLM verdicts back to candidates (by URL match)
+  return candidates.map((c) => {
+    const verdict = j.find((v) => v.url === c.url) || {};
+    return {
+      url: c.url,
+      matches: ['yes', 'maybe', 'no'].includes(verdict.matches) ? verdict.matches : 'maybe',
+      confidence: typeof verdict.confidence === 'number' ? verdict.confidence : 0,
+      reason: String(verdict.reason || '').slice(0, 150),
+      provider: result.provider,
+    };
+  });
+}
+
 /* ─── Public · image-extract sufficiency check ────────────────────── */
 
 /**

@@ -280,5 +280,66 @@ export async function enrichLead({
   profile.leadId = leadId;
   if (clientSlug) profile.clientSlug = clientSlug;
 
+  // V3 D43 Q3 · LLM judge each enriched URL against target business
+  // (catches same-name false matches · generic directories · etc.)
+  if (process.env.SKIP_ENRICH_JUDGE !== '1') {
+    try {
+      const candidates = [];
+      // Add socials
+      for (const [platform, url] of Object.entries(profile.contact.social || {})) {
+        candidates.push({ type: `social_${platform}`, url, title: '' });
+      }
+      // Add 3rd-party reviews
+      for (const tp of profile.third_party_reviews || []) {
+        candidates.push({ type: `review_${tp.source}`, url: tp.url, title: tp.title || '' });
+      }
+      // Add discovered website if maps payload was empty
+      if (!entity.latest?.website && profile.contact.website) {
+        candidates.push({ type: 'website', url: profile.contact.website, title: '' });
+      }
+      if (candidates.length > 0) {
+        const { judgeEnrichmentMatches } = await import('../llm/match-judge.js');
+        const verdicts = await judgeEnrichmentMatches({
+          entity: {
+            name: entity.latest?.name,
+            niche: entity.latest?.niche,
+            city: entity.latest?.city,
+            phone: entity.latest?.phone,
+            address: entity.latest?.address,
+          },
+          candidates,
+        });
+        // Apply verdicts: drop 'no' candidates · move 'maybe' to maybe_* fields
+        profile.enrichment_judge = {
+          ran: true,
+          verdicts,
+          dropped: verdicts.filter((v) => v.matches === 'no').map((v) => v.url),
+          maybe: verdicts.filter((v) => v.matches === 'maybe').map((v) => v.url),
+        };
+        const dropSet = new Set(profile.enrichment_judge.dropped);
+        const maybeSet = new Set(profile.enrichment_judge.maybe);
+        // Filter socials
+        for (const [platform, url] of Object.entries(profile.contact.social || {})) {
+          if (dropSet.has(url)) {
+            delete profile.contact.social[platform];
+          } else if (maybeSet.has(url)) {
+            profile.contact.maybe_social = profile.contact.maybe_social || {};
+            profile.contact.maybe_social[platform] = url;
+            delete profile.contact.social[platform];
+          }
+        }
+        // Filter third-party reviews
+        profile.third_party_reviews = (profile.third_party_reviews || []).filter((tp) => !dropSet.has(tp.url));
+        // Filter discovered website
+        if (profile.contact.website && dropSet.has(profile.contact.website)) {
+          profile.contact.website = '';
+          profile.identifiers.website_domain = '';
+        }
+      }
+    } catch (err) {
+      profile.enrichment_judge = { ran: false, error: err.message };
+    }
+  }
+
   return { profile, routes };
 }
