@@ -198,8 +198,15 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   if (lines.length) fields.push({ name: '基本信息', value: lines.join('\n'), inline: false });
 
   // ═══════ Section 3 · 联系方式 ═══════
+  // V3 D43 cycle-6 (Matthew 2026-05-14): phone/email as clickable tel:/mailto:
+  // links. Discord supports these in embed values · works on desktop + mobile.
   lines.length = 0;
-  lines.push(`电话: ${latest.phone || '—'}`);
+  if (latest.phone) {
+    const tel = String(latest.phone).replace(/[^\d+]/g, '');
+    lines.push(`电话: [${latest.phone}](tel:${tel})`);
+  } else {
+    lines.push('电话: —');
+  }
   if (latest.website) {
     const status = latest.websiteStatus === 'independent_https_site' ? '独立 HTTPS' :
                    latest.websiteStatus === 'directory_listing' ? '目录站' :
@@ -209,7 +216,11 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   } else {
     lines.push('网站: —');
   }
-  lines.push(`邮箱: ${latest.email || '—'}`);
+  if (latest.email) {
+    lines.push(`邮箱: [${latest.email}](mailto:${latest.email})`);
+  } else {
+    lines.push('邮箱: —');
+  }
   lines.push(`表单页: ${latest.contact_us_url || '—'}`);
   // 社媒 (Facebook / Instagram / LinkedIn)
   const socials = latest.social_links || latest.socials || {};
@@ -306,15 +317,20 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
     if (latest.discovery_rank) parts.push(`第 ${latest.discovery_rank} 位`);
     lines.push(parts.join(' · '));
   }
+  // V3 D43 cycle-6 (Matthew 2026-05-14): use Discord native dynamic timestamp
+  // <t:UNIX:R> = "5 days ago" rendered live in viewer's clock. No more stale strings.
   if (entity.firstSeenAt) {
-    const firstAgo = fmtDaysAgo(entity.firstSeenAt);
-    lines.push(`首次发现: ${entity.firstSeenAt.slice(0, 10)}${firstAgo ? ` (${firstAgo})` : ''}`);
-  }
-  if (locale?.timezone) {
-    const localTime = nowInLocale(locale);
-    if (localTime) {
-      lines.push(`客户本地: ${localTime} · ${locale.timezone}${locale.state ? `, ${locale.state}` : ''}`);
+    const ts = Math.floor(new Date(entity.firstSeenAt).getTime() / 1000);
+    if (Number.isFinite(ts) && ts > 0) {
+      lines.push(`首次发现: <t:${ts}:D> (<t:${ts}:R>)`);
     }
+  }
+  // V3 D43 cycle-6 (Matthew 2026-05-14): customer local time was statically
+  // computed at render time → stale forever. Discord can only render in
+  // viewer's tz not customer's tz. Removed the live-time line; kept the static
+  // timezone label since that's a fact that doesn't expire.
+  if (locale?.timezone) {
+    lines.push(`时区: ${locale.timezone}${locale.state ? ` · ${locale.state}` : ''}`);
   }
   if (lines.length) fields.push({ name: '线索来源', value: lines.join('\n'), inline: false });
 
@@ -340,12 +356,17 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   }
 
   if (entity.lastSeenAt) {
-    const lastAgo = fmtDaysAgo(entity.lastSeenAt);
-    lines.push(`最近更新: ${entity.lastSeenAt.slice(0, 10)}${lastAgo ? ` (${lastAgo})` : ''}`);
+    const ts = Math.floor(new Date(entity.lastSeenAt).getTime() / 1000);
+    if (Number.isFinite(ts) && ts > 0) {
+      lines.push(`最近更新: <t:${ts}:D> (<t:${ts}:R>)`);
+    }
   }
   // 销售进程字段 · M4 启动后填
   if (entity.last_outreach_at) {
-    lines.push(`上次外联: ${entity.last_outreach_at.slice(0, 10)} (${fmtDaysAgo(entity.last_outreach_at) || '—'})`);
+    const ts = Math.floor(new Date(entity.last_outreach_at).getTime() / 1000);
+    if (Number.isFinite(ts) && ts > 0) {
+      lines.push(`上次外联: <t:${ts}:D> (<t:${ts}:R>)`);
+    }
   }
   if (entity.signals && (entity.signals.sent || entity.signals.opened)) {
     lines.push(`邮件: 发 ${entity.signals.sent || 0} · 开 ${entity.signals.opened || 0} · 点 ${entity.signals.clicked || 0} · 回 ${entity.signals.replied || 0}`);

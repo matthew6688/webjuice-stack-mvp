@@ -70,8 +70,55 @@ async function processEntity(key) {
   saveCrawlResult(slug, crawl);
   console.log(`     → ${crawl.pages_crawled} pages · ${crawl.pages_via_firecrawl} Firecrawl + ${crawl.pages_via_direct} direct · sitemap=${crawl.sitemap_source} · ${(crawl.duration_ms / 1000).toFixed(1)}s · ~$${crawl.cost_estimate.toFixed(3)}`);
 
-  // 2. AI 分析 raw JSON
-  console.log(`  [2/5] AI 分析 raw JSON · cascade codex → claude → ollama...`);
+  // V3 D43 cycle-6 (Matthew 2026-05-14): pre-gate check on cheap signals BEFORE
+  // running ~$0.5 / 74s LLM brief. 5 of 7 hard gates can be checked without
+  // brief (tech_stack + entity.categories + sitemap from audit). If any of
+  // these fail, archive immediately and skip brief — saves ~$0.5 per archived entity.
+  console.log(`  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...`);
+  const { qualifyEntity } = await import(path.join(REPO, 'core/scoring/qualification-scorecard.js'));
+  const auditPre = loadDetailedAudit(key);
+  const preCtx = {
+    entity,
+    audit: auditPre ? { ...auditPre, detailed_audit: auditPre.detailed_audit, sitemap_analysis: auditPre.sitemap_analysis, tech_stack: auditPre.tech_stack } : null,
+    brief: null, // 故意为空 · pre-gate 只 check 不依赖 brief 的 gates
+    sitemap: auditPre?.sitemap_analysis || null,
+  };
+  const preVerdict = qualifyEntity(preCtx);
+  if (!preVerdict.gates_passed && preVerdict.archive_reason) {
+    // Only short-circuit if the failed gate is brief-independent. Member-portal
+    // and active-blog-heavy gates need brief flags, so they'd false-fail here.
+    const failedGateId = preVerdict.archive_reason.match(/^gate_(\w+):/)?.[1];
+    const BRIEF_INDEPENDENT = new Set(['too_many_pages', 'ecommerce', 'third_party_booking', 'too_many_pixels']);
+    // multi_business: partially brief-independent (entity.categories>=4 branch is)
+    const multiBusinessByCategories = failedGateId === 'multi_business'
+      && (entity.latest?.categories || []).length >= 4;
+    if (BRIEF_INDEPENDENT.has(failedGateId) || multiBusinessByCategories) {
+      console.log(`     ✗ PRE-GATE FAILED · ${preVerdict.archive_reason} · 跳过 brief LLM ($0.5/74s 省了)`);
+      // Persist archive directly · skip brief + final qualifyEntity
+      const { setEntityPhase, ENTITY_PHASE } = await import(path.join(REPO, 'core/leads/discovery-store.js'));
+      setEntityPhase({ entityKey: key, phase: ENTITY_PHASE.ARCHIVED, archive_reason: preVerdict.archive_reason });
+      const entityPath = path.join(REPO, 'data/leads/entities', `${key}.json`);
+      const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+      fresh.qualification = {
+        computed_at: new Date().toISOString(),
+        hard_gates: preVerdict.hard_gates,
+        scorecard: null,
+        verdict: 'archived',
+        archive_reason: preVerdict.archive_reason,
+        brief_skipped: true,
+        brief_skipped_reason: 'pre-gate failed on brief-independent signal',
+        crawl_summary: { pages_crawled: crawl.pages_crawled, sitemap_source: crawl.sitemap_source },
+      };
+      fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+      return { key, status: 'archived', verdict: 'archived', archive_reason: preVerdict.archive_reason, brief_skipped: true };
+    }
+    console.log(`     · pre-gate ${preVerdict.archive_reason} needs brief to confirm · running brief...`);
+  } else {
+    console.log(`     ✓ pre-gates passed · running brief...`);
+  }
+
+  // 3. AI 分析 raw JSON (only reached if pre-gate didn't short-circuit)
+  console.log(`  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama...`);
   const { buildRedesignBrief, saveBrief } = await import(path.join(REPO, 'core/audit/redesign-brief-builder.js'));
   const briefResult = await buildRedesignBrief(crawl);
   if (briefResult.error || !briefResult.brief) {
@@ -81,9 +128,8 @@ async function processEntity(key) {
   saveBrief(slug, briefResult);
   console.log(`     → provider=${briefResult.provider} · ${(briefResult.duration_ms / 1000).toFixed(1)}s · ~$${briefResult.cost_estimate}`);
 
-  // 3. Qualification scorecard
-  console.log(`  [3/5] qualification scorecard...`);
-  const { qualifyEntity } = await import(path.join(REPO, 'core/scoring/qualification-scorecard.js'));
+  // 4. Full qualification scorecard with brief
+  console.log(`  [4/5] qualification scorecard (with brief)...`);
   const audit = loadDetailedAudit(key);
   const ctx = {
     entity,
