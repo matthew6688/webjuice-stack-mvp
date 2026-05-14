@@ -189,10 +189,55 @@ export async function prepareImageTask({ taskId, attachments }) {
     return { ok: false, reason: `vision extract failed: ${err.message}`, local_attachments: local };
   }
   if (!extracted || !extracted.businessName) {
-    return { ok: false, reason: 'vision returned no businessName', local_attachments: local, extracted };
+    // V3 D40 · 没 business name 时 · 也尝试用 phone 做 Places enrich (有时 OCR 只抽到 phone)
+    if (extracted?.phone) {
+      try {
+        const { enrichFromOCR } = await import('../leads/image-enrich.js');
+        const result = await enrichFromOCR(extracted);
+        if (result.match) {
+          extracted.businessName = result.match.name;
+          extracted.address = extracted.address || result.match.address;
+          extracted.niche = extracted.niche || result.match.niche;
+          extracted.city = extracted.city || result.match.city;
+          extracted.website = extracted.website || result.match.website;
+          extracted.enrich_method = result.method;
+          extracted.enrich_score = result.score;
+        }
+      } catch (err) {
+        // non-blocking
+      }
+    }
+    if (!extracted.businessName) {
+      return { ok: false, reason: 'vision returned no businessName', local_attachments: local, extracted };
+    }
   }
+
+  // V3 D40 · Multi-angle Places enrich · 即使 OCR 拿到 business_name 也跑 · 拿 place_id 升级
+  // (image_xxx → place_xxx) + 补缺 city/address/website
+  try {
+    const { enrichFromOCR } = await import('../leads/image-enrich.js');
+    const result = await enrichFromOCR(extracted);
+    if (result.match) {
+      // 用 Places 数据覆盖缺失字段 (OCR 字段优先 · Places 兜底)
+      extracted.place_id = result.match.place_id;
+      extracted.address = extracted.address || result.match.address;
+      extracted.niche = extracted.niche || result.match.niche;
+      extracted.city = extracted.city || result.match.city;
+      extracted.website = extracted.website || result.match.website;
+      extracted.enrich_method = result.method;
+      extracted.enrich_score = result.score;
+      extracted.enrich_match_name = result.match.name;
+    } else {
+      extracted.enrich_method = 'no_match';
+      extracted.enrich_candidates = result.candidates;
+    }
+  } catch (err) {
+    extracted.enrich_method = 'enrich_failed';
+    extracted.enrich_error = err.message;
+  }
+
   if (!extracted.niche || !extracted.city) {
-    return { ok: false, reason: 'vision missing niche/city — operator should fill', local_attachments: local, extracted };
+    return { ok: false, reason: 'vision + Places enrich 仍缺 niche/city — operator should fill', local_attachments: local, extracted };
   }
   const args = ['--image', local[0].local_path, '--niche', extracted.niche, '--city', extracted.city, '--business-name', extracted.businessName];
   if (extracted.phone)    args.push('--phone',    extracted.phone);

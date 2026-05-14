@@ -1,11 +1,13 @@
 /**
- * Human-readable labels + admin URL deep links for Discord task notifications.
+ * Human-readable labels for Discord task notifications.
  * V3 D25 (2026-05-13): Discord 通知必须人话 · 业务事件 > 技术细节。
+ * V3 D40 (2026-05-14): 删 admin URL · 加 business name lookup · 删 emoji from done/failed.
  *
  * Used by:
  *   - scripts/cli/pl-task-listener.js (task-created reply)
  *   - scripts/cli/pl-task-dispatcher.js (running / done / failed / timeout replies)
  */
+import fs from 'node:fs';
 
 // 8 task kinds → 业务术语 + emoji
 const KIND_LABELS = {
@@ -98,13 +100,13 @@ export function renderTaskCreatedMessage({ task, route }) {
   const argsPreview = (route.args || []).slice(0, 6).join(' ');
   const entityRef = route.target_entity_key ? `客户: \`${route.target_entity_key}\`` : '';
 
-  const head = `${emoji} **${label}** · 已收到`;
-  const body = `· 在做: ${verb} → \`${cliHum}\`${argsPreview ? `\n· 参数: \`${argsPreview}\`` : ''}${entityRef ? `\n· ${entityRef}` : ''}`;
-  const expect = `· 预计 1-3 分钟出结果 · 完了我会回这里告诉你`;
-  const link = `· 进度详情: ${adminUrls.task(task.task_id)}`;
+  // V3 D40 (2026-05-14): 删 admin URL · Discord thread 本身就是 real-time 进度
+  const head = `**${label}** · 已收到`;
+  const body = `在做: ${verb} → \`${cliHum}\`${argsPreview ? `\n参数: \`${argsPreview}\`` : ''}${entityRef ? `\n${entityRef}` : ''}`;
+  const expect = `预计 1-3 分钟出结果 · 完了在本 thread 回 (后续 stage 消息会接着发到这里 OR 跨 channel 时给链接)`;
   const techFold = `_技术细节: task=${task.task_id} · kind=${route.kind} · routed-by=${route.provider}_`;
 
-  return [head, body, expect, link, '', techFold].join('\n');
+  return [head, body, expect, '', techFold].join('\n');
 }
 
 // 渲染 "完成" 通知
@@ -112,9 +114,9 @@ export function renderDoneMessage({ task, durationMs, tail, xref }) {
   const { emoji, label } = kindLabel(task.kind);
   const secs = (durationMs / 1000).toFixed(1);
 
-  const head = `✅ **${label}** · 完成 · 用时 ${secs}s`;
+  const head = `**${label}** · 完成 · 用时 ${secs}s`;
   const summary = extractBusinessSummary(task.kind, tail);
-  const cross = xref ? `· 后续: ${xref}` : '';
+  const cross = xref ? `后续: ${xref}` : '';
   const tech = '\n<details><summary>技术细节</summary>\n\n```\n' + (tail || '').slice(-1200) + '\n```\n</details>';
 
   return [head, summary, cross].filter(Boolean).join('\n') + tech;
@@ -126,11 +128,11 @@ export function renderFailedMessage({ task, exitCode, stderr, tail }) {
   const human = explainFailure(stderr || tail, exitCode);
 
   const head = `❌ **${label}** · 失败`;
-  const why = `· 原因: ${human}`;
-  const link = `· 详情: ${adminUrls.task(task.task_id)}`;
+  const why = `原因: ${human}`;
+  const taskInfo = `task: \`${task.task_id}\` · 详细见上面 thread message`;
   const tech = '\n<details><summary>技术细节</summary>\n\n```\n' + (tail || stderr || '').slice(-1200) + '\n```\n</details>';
 
-  return [head, why, link].join('\n') + tech;
+  return [head, why, taskInfo].join('\n') + tech;
 }
 
 // 渲染 "超时" 通知
@@ -139,24 +141,46 @@ export function renderTimeoutMessage({ task, timeoutMs, tail }) {
   const secs = Math.round(timeoutMs / 1000);
 
   const head = `⏳ **${label}** · 超时 · 跑了 ${secs}s 后被终止`;
-  const action = `· 已转人工 · 看 ${adminUrls.task(task.task_id)} 决定 ✅ 重试 / 🗑 放弃`;
+  const action = `已转人工 · react ✅ 重试 / 🗑 放弃 (task: \`${task.task_id}\`)`;
   const tech = '\n<details><summary>技术细节</summary>\n\n```\n' + (tail || '').slice(-1200) + '\n```\n</details>';
 
   return [head, action].join('\n') + tech;
 }
 
 // 试图从 CLI stdout 抽业务摘要 (kind-specific)
+// V3 D40 (2026-05-14): 显商家名字 · 不显 place_id
 function extractBusinessSummary(kind, tail) {
   const t = String(tail || '');
-  if (kind === 'scrape' || kind === 'places-intake') {
-    // 抓取类 · 找 "N rows" / "found N" / "lead_count"
-    const m = t.match(/(?:found|rows?|leads?|entities?)[:\s]+(\d+)/i);
-    if (m) return `· 找到 ${m[1]} 个客户 · 看清单: ${adminUrls.discovery('')}`;
-    return '· 抓取完成 · 看清单: ' + adminUrls.discovery('');
+  if (kind === 'intake' || kind === 'places-intake' || kind === 'scrape') {
+    // 找 lead_keys + business names from CLI JSON output
+    const names = extractBusinessNames(t);
+    if (names.length > 0) {
+      const lines = [`找到 ${names.length} 个商家:`];
+      names.slice(0, 10).forEach((n) => lines.push(`- ${n}`));
+      if (names.length > 10) lines.push(`_(+${names.length - 10} 个更多)_`);
+      return lines.join('\n');
+    }
+    // fallback to count
+    const m = t.match(/(?:found|rows?|leads?|entities?|lead_count)[:\s]+(\d+)/i);
+    if (m) return `找到 ${m[1]} 个商家`;
+    return '抓取完成';
+  }
+  if (kind === 'single-enrich') {
+    // single-enrich JSON 含 "name": "..."
+    const nameMatch = t.match(/"name"[:\s]*"([^"]+)"/);
+    if (nameMatch) return `匹配商家: **${nameMatch[1]}**`;
+    return '商家解析完成';
+  }
+  if (kind === 'image-extract') {
+    // OCR 结果通常含 businessName
+    const nameMatch = t.match(/"businessName"[:\s]*"([^"]+)"/i)
+      || t.match(/business[_-]?name[=:\s]+"?([^"\n]+)"?/i);
+    if (nameMatch) return `识别商家: **${nameMatch[1]}**`;
+    return '图片识别完成';
   }
   if (kind === 'audit') {
     const m = t.match(/audit_score[:\s]+(\d+)/i);
-    if (m) return `· audit 完成 · 得分 ${m[1]}/100`;
+    if (m) return `audit 完成 · 得分 ${m[1]}/100`;
     return '· audit 4 阶段都跑完';
   }
   if (kind === 'single-enrich') {
@@ -169,4 +193,45 @@ function extractBusinessSummary(kind, tail) {
     return '· demo 网站生成完 · 在 clients/<slug>/v2/concept/reference-adapter/';
   }
   return '';
+}
+
+/**
+ * V3 D40 · Extract business names from CLI stdout JSON.
+ * Handles: places-intake batches[].lead_keys array · entity name lookup.
+ */
+function extractBusinessNames(tail) {
+  const t = String(tail || '');
+  const names = [];
+
+  // Pattern 1: JSON has "lead_keys": ["place_xxx", ...] · lookup each entity
+  const leadKeysMatch = t.match(/"lead_keys"\s*:\s*\[([^\]]+)\]/);
+  if (leadKeysMatch) {
+    const keys = leadKeysMatch[1].match(/"(place_[a-z0-9_]+|domain_[^"]+|phone_[^"]+|image_[^"]+|manual_[^"]+)"/g) || [];
+    for (const keyStr of keys) {
+      const key = keyStr.replace(/"/g, '');
+      const name = lookupEntityName(key);
+      if (name) names.push(name);
+    }
+  }
+
+  // Pattern 2: docker scrape stdout has "name": "..." per result
+  if (names.length === 0) {
+    const nameMatches = t.matchAll(/"name"\s*:\s*"([^"]{3,80})"/g);
+    for (const m of nameMatches) {
+      if (!names.includes(m[1])) names.push(m[1]);
+      if (names.length >= 15) break;
+    }
+  }
+
+  return names;
+}
+
+/** Read entity name from data/leads/entities/<key>.json · cheap lookup */
+function lookupEntityName(entityKey) {
+  try {
+    const p = `data/leads/entities/${entityKey}.json`;
+    if (!fs.existsSync(p)) return null;
+    const e = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return e.latest?.name || null;
+  } catch { return null; }
 }

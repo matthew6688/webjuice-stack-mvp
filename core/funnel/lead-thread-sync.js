@@ -38,6 +38,33 @@ function projectsChannelId() {
   return process.env.WEBSITE_PROJECTS_DISCORD_CHANNEL_ID || '';
 }
 
+// V3 D40 (2026-05-14): bot-log channel · fallback when no thread exists
+const BOT_LOG_CHANNEL_ID = '1493926218574200942';
+function botLogChannelId() {
+  return process.env.BOT_LOG_DISCORD_CHANNEL_ID || BOT_LOG_CHANNEL_ID;
+}
+
+async function sendBotLogFallback(entityKey, message, fetchImpl = fetch) {
+  const channelId = botLogChannelId();
+  if (!channelId || !botToken()) return { ok: false, reason: 'no_botlog_channel_or_token' };
+  try {
+    const content = `[no thread fallback · entity \`${entityKey}\`]\n${message}`.slice(0, 2000);
+    const r = await fetchImpl(`${DISCORD_API}/channels/${channelId}/messages`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bot ${botToken()}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'profitslocal-bot-log-fallback',
+      },
+      body: JSON.stringify({ content }),
+    });
+    if (!r.ok) return { ok: false, reason: `discord_${r.status}` };
+    return { ok: true, fallback: 'bot-log', channel: channelId };
+  } catch (err) {
+    return { ok: false, reason: err.message };
+  }
+}
+
 function readEntity(entityKey) {
   const p = path.join(ENTITIES_DIR, `${entityKey}.json`);
   if (!fs.existsSync(p)) return null;
@@ -445,7 +472,11 @@ export async function refreshThreadAndPost(entityKey, message, { skipCard = fals
       if (!skipCard) results.card = await upsertProfileCard(entityKey);
       if (!skipMessage && message) results.msg = await appendThreadMessage(entity.discord_thread_id, message);
     } else {
-      results.channel = 'none';
+      // V3 D40 · 没 thread · fallback 发 bot-log channel
+      results.channel = 'bot-log-fallback';
+      if (!skipMessage && message) {
+        results.msg = await sendBotLogFallback(entityKey, message);
+      }
     }
     return { ok: true, ...results };
   } catch (err) {
