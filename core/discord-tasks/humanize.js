@@ -100,13 +100,16 @@ export function renderTaskCreatedMessage({ task, route }) {
   const argsPreview = (route.args || []).slice(0, 6).join(' ');
   const entityRef = route.target_entity_key ? `客户: \`${route.target_entity_key}\`` : '';
 
-  // V3 D40 (2026-05-14): 删 admin URL · Discord thread 本身就是 real-time 进度
-  const head = `**${label}** · 已收到`;
-  const body = `在做: ${verb} → \`${cliHum}\`${argsPreview ? `\n参数: \`${argsPreview}\`` : ''}${entityRef ? `\n${entityRef}` : ''}`;
-  const expect = `预计 1-3 分钟出结果 · 完了在本 thread 回 (后续 stage 消息会接着发到这里 OR 跨 channel 时给链接)`;
+  // V3 D43 (2026-05-14): 对齐 SOP-1/SOP-2 spec · bullet 格式 · 无 admin URL
+  // (旧 admin URL 'https://tasks.profitslocal.com/tasks?id=...' 已删 · 链接打不开)
+  const head = `${emoji ? emoji + ' ' : ''}**${label}** · 已收到`;
+  const bodyLines = [`· 在做: ${verb} → \`${cliHum}\``];
+  if (argsPreview) bodyLines.push(`· 参数: \`${argsPreview}\``);
+  if (entityRef) bodyLines.push(`· ${entityRef}`);
+  bodyLines.push(`· 预计 1-3 分钟出结果 · 完了我会回这里告诉你`);
   const techFold = `_技术细节: task=${task.task_id} · kind=${route.kind} · routed-by=${route.provider}_`;
 
-  return [head, body, expect, '', techFold].join('\n');
+  return [head, ...bodyLines, '', techFold].join('\n');
 }
 
 // 渲染 "完成" 通知

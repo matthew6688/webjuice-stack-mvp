@@ -19,19 +19,24 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 import { visionOllama } from '../llm/vision-ollama.js';
 
 const INBOX_DIR = path.resolve(process.cwd(), 'data/inbox');
 
 // Multi-model fallback chain (per Matthew 2026-05-12: "所有文字识别都是一系列模型，
-// 前面解决不了就按顺序 fallback").
-// Default chain: qwen3.6:27b → gemma3:27b (both T0 local Ollama, vision-capable).
-// To extend: SOP0_IMAGE_VISION_CHAIN=qwen3.6:27b,gemma3:27b,<more>
-// Single override: SOP0_IMAGE_VISION_MODEL (back-compat).
+// 前面解决不了就按顺序 fallback"; D43 2026-05-14: 加 codex_cli 当头牌 vision
+// provider — 比 ollama 准很多 · 解决 phantom-name 问题).
+// Default chain: codex_cli (T3 GPT-5o vision) → qwen3.6:27b → gemma3:27b (T0).
+// 标识符:
+//   codex_cli           · 通过 `codex exec -i <file>` 调 OpenAI vision
+//   <ollama-model-name> · 调本地 ollama (vision-capable)
+// To extend: SOP0_IMAGE_VISION_CHAIN=codex_cli,qwen3.6:27b,gemma3:27b,<more>
+// Disable codex: SOP0_IMAGE_VISION_CHAIN=qwen3.6:27b,gemma3:27b
 const VISION_CHAIN = (process.env.SOP0_IMAGE_VISION_CHAIN
   || process.env.SOP0_IMAGE_VISION_MODEL
   || process.env.VISION_OLLAMA_MODEL
-  || 'qwen3.6:27b,gemma3:27b')
+  || 'codex_cli,qwen3.6:27b,gemma3:27b')
   .split(',').map((s) => s.trim()).filter(Boolean);
 
 /* ─── Download Discord attachment ─────────────────────────────────── */
@@ -89,6 +94,7 @@ Be strict. Don't guess fields not visible. JSON only, no prose.`;
 /** Try one model. Return normalized object or null. */
 async function extractWithModel(model, localPath) {
   try {
+    if (model === 'codex_cli') return await extractWithCodex(localPath);
     const out = await visionOllama({
       model,
       prompt: EXTRACT_PROMPT,
@@ -107,6 +113,46 @@ async function extractWithModel(model, localPath) {
   } catch (err) {
     return null;
   }
+}
+
+/** Codex CLI vision · `echo <prompt> | codex exec -i <file>` · ChatGPT-account compatible.
+ *  CLI quirks (D43 实测 2026-05-14):
+ *   · prompt 必须通过 stdin · 不能当 positional arg
+ *   · --model gpt-4o 在 ChatGPT-account 模式下不支持 · 用默认(gpt-5)
+ *   · 输出有 session 头 + "user\n<prompt>\ncodex\n<answer>\ntokens used\n<n>" 格式
+ *  Override: SOP0_IMAGE_CODEX_MODEL=<model> (only if account supports it)
+ */
+function extractWithCodex(localPath) {
+  return new Promise((resolve) => {
+    const start = Date.now();
+    const timeoutMs = parseInt(process.env.SOP0_IMAGE_CODEX_TIMEOUT_MS || '180000', 10);
+    const codexModel = process.env.SOP0_IMAGE_CODEX_MODEL || '';
+    const finalArgs = codexModel
+      ? ['exec', '--model', codexModel, '-i', localPath]
+      : ['exec', '-i', localPath];
+    const proc = spawn('codex', finalArgs, { stdio: ['pipe', 'pipe', 'pipe'] });
+    let stdout = '', stderr = '';
+    proc.stdout.on('data', (d) => { stdout += d.toString(); });
+    proc.stderr.on('data', (d) => { stderr += d.toString(); });
+    const timer = setTimeout(() => { proc.kill('SIGTERM'); resolve(null); }, timeoutMs);
+    proc.on('error', () => { clearTimeout(timer); resolve(null); });
+    proc.on('exit', (code) => {
+      clearTimeout(timer);
+      const latencyMs = Date.now() - start;
+      if (code !== 0 || !stdout) return resolve(null);
+      // Extract `codex\n<answer>\ntokens used` block · or fallback to whole stdout
+      const codexBlock = stdout.match(/\bcodex\b\s*\n([\s\S]+?)(?:\ntokens used|\n--+|$)/i);
+      const raw = (codexBlock ? codexBlock[1] : stdout)
+        .replace(/^```(?:json)?\s*/im, '').replace(/```\s*$/m, '');
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) return resolve(null);
+      try { return resolve(normalize(JSON.parse(m[0]), latencyMs)); }
+      catch { return resolve(null); }
+    });
+    // Send prompt via stdin (codex requires this · positional arg is rejected)
+    proc.stdin.write(EXTRACT_PROMPT);
+    proc.stdin.end();
+  });
 }
 
 /**

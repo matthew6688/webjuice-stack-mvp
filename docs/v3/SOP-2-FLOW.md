@@ -227,7 +227,6 @@ A/B/C grade → `core/funnel/lead-thread-sync.js#openLeadThread`:
 · 在做: 4-stage audit pipeline → `leads:run-pipeline`
 · 参数: `--entity-key place_chij...`
 · 预计 3-8 分钟出结果 · 完了我会回这里告诉你
-· 进度详情: https://admin.profitslocal.com/tasks/<taskId>
 ```
 
 ### 8.2 Stage 进度 (per task progress array)
