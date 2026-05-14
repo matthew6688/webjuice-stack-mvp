@@ -161,27 +161,83 @@ export function gbpTriage(entity, { sourceQuery = '' } = {}) {
  * any local business including off-niche ones (Hurricane Digital — SEO
  * agency in Brisbane — was passing because "brisbane" matched).
  */
+// V3 D43 cycle-9 (Matthew 2026-05-14): niche normalization · 单复数/-er/-ing 都同义
+// Bug: niche="roofer" 不匹配 "Roofing contractor" 因为 expander 只有 roof/roofing。
+// Fix: 把 niche 先归一到 base form · 再 lookup expanders · 同时 expanders 用 stem
+// substring 而不是精确 token includes。
+const NICHE_ALIASES = {
+  // roofing family
+  roof: 'roofing', roofs: 'roofing', roofer: 'roofing', roofers: 'roofing', roofing: 'roofing',
+  // plumbing family
+  plumb: 'plumbing', plumber: 'plumbing', plumbers: 'plumbing', plumbing: 'plumbing',
+  // electrical family
+  electrician: 'electrical', electricians: 'electrical', electrical: 'electrical', electric: 'electrical',
+  // food/restaurant
+  restaurant: 'restaurant', restaurants: 'restaurant', cafe: 'cafe', cafes: 'cafe', coffee: 'cafe',
+  food: 'restaurant', dining: 'restaurant',
+  // dental
+  dental: 'dental', dentist: 'dental', dentists: 'dental',
+  // hair / beauty
+  hair: 'hair', hairdresser: 'hair', hairdressers: 'hair', salon: 'hair', salons: 'hair', barber: 'hair', barbers: 'hair',
+  beauty: 'beauty', spa: 'beauty', spas: 'beauty',
+  // auto
+  auto: 'auto', mechanic: 'auto', mechanics: 'auto', panelbeater: 'auto', panelbeaters: 'auto', smash: 'auto',
+  // painting
+  painter: 'painting', painters: 'painting', painting: 'painting', paint: 'painting',
+  // hvac
+  hvac: 'hvac', heating: 'hvac', cooling: 'hvac', aircon: 'hvac',
+  // solar
+  solar: 'solar',
+  // pet/vet
+  vet: 'pet', vets: 'pet', veterinary: 'pet', pet: 'pet',
+  // landscape / garden
+  landscape: 'landscape', landscaping: 'landscape', garden: 'landscape', gardener: 'landscape', gardeners: 'landscape',
+  // cleaning
+  cleaning: 'cleaning', cleaner: 'cleaning', cleaners: 'cleaning',
+};
+
+// Expanders use SUBSTRING (stem) match · "roof" matches "roofing/roofer/roofed"
+const NICHE_EXPANDERS = {
+  roofing: ['roof', 'gutter', 'tile', 'metal roof', 'skylight', 'restorat', 'colorbond', 'ridge cap'],
+  plumbing: ['plumb', 'drain', 'pipe', 'hot water'],
+  electrical: ['electric', 'sparky', 'wiring'],
+  restaurant: ['restaurant', 'cafe', 'bar', 'pizza', 'food', 'dining', 'bakery', 'noodle', 'eatery'],
+  cafe: ['cafe', 'coffee', 'espresso'],
+  dental: ['dental', 'dentist', 'orthodont', 'endodont', 'oral surg'],
+  hair: ['hair', 'salon', 'barber', 'stylist'],
+  beauty: ['beauty', 'spa', 'wellness', 'cosmetic'],
+  auto: ['auto', 'mechanic', 'panelbeat', 'smash repair', 'car repair', 'tyre', 'mufflers'],
+  painting: ['painter', 'painting'],
+  hvac: ['hvac', 'heating', 'cooling', 'aircon', 'air condition'],
+  solar: ['solar', 'photovoltaic'],
+  pet: ['vet', 'veterinary', 'animal hospital', 'pet'],
+  landscape: ['landscap', 'garden', 'lawn', 'mowing', 'arborist', 'tree care'],
+  cleaning: ['clean'],
+};
+
 function checkRelevance(haystack, niche, _query) {
   if (!haystack) return false;
-  const expanders = {
-    roof: ['roof', 'gutter', 'tile', 'metal', 'skylight', 'tiling', 'restorat'],
-    roofing: ['roof', 'gutter', 'tile', 'metal', 'skylight', 'tiling', 'restorat'],
-    restaurant: ['restaurant', 'cafe', 'bar', 'pizza', 'food', 'dining', 'bakery', 'noodle'],
-    cafe: ['cafe', 'coffee', 'restaurant'],
-    dental: ['dental', 'dentist', 'clinic', 'orthodont'],
-    dentist: ['dental', 'dentist', 'clinic', 'orthodont'],
-    plumber: ['plumb'],
-    plumbing: ['plumb'],
-    electrician: ['electric'],
-  };
-  const nicheTok = String(niche || '').toLowerCase().split(/\W+/).filter(Boolean);
-  const expanded = new Set(nicheTok);
+  const lower = String(niche || '').toLowerCase().trim();
+  if (!lower) return true; // no niche specified · let through
+
+  // 1. Tokenize niche · normalize each token to canonical base via NICHE_ALIASES
+  const nicheTok = lower.split(/\W+/).filter(Boolean);
+  const canonical = new Set();
   for (const t of nicheTok) {
-    for (const ex of (expanders[t] || [])) expanded.add(ex);
+    canonical.add(NICHE_ALIASES[t] || t);
   }
-  for (const t of expanded) {
-    if (t.length < 3) continue;
-    if (haystack.includes(t)) return true;
+
+  // 2. Expand each canonical base to its stems
+  const stems = new Set();
+  for (const c of canonical) {
+    stems.add(c);
+    for (const s of (NICHE_EXPANDERS[c] || [])) stems.add(s);
+  }
+
+  // 3. Substring (stem) match against haystack — "roof" hits "roofing/roofer/roofed/re-roof"
+  for (const s of stems) {
+    if (s.length < 3) continue;
+    if (haystack.includes(s)) return true;
   }
   return false;
 }

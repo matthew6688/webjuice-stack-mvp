@@ -190,21 +190,26 @@
     "fired_triggers": [],
     "relevance_pass": true,
     "priority": 57,
-    "at": "2026-05-14T11:20:57.351Z"
+    "at": "2026-05-14T12:18:49.385Z"
   },
   "predict_grade": {
     "grade": "C",
     "priority": 0,
     "audit_now": false,
     "reasons": [
-      "predict-C · 0 评论 · 4.6★ · manual_review · GBP 弱 · 留 cold queue · 销售触发再 audit"
+      "predict-C · 不达 B 标准:",
+      "  ✗ reviews 0 < B 阈值 30",
+      "  ✗ cheap action manual_review 不在 [audit_candidate, starter_candidate]",
+      "(同时不达 A 标准: 2 项)"
     ],
-    "at": "2026-05-14T11:20:57.351Z"
+    "at": "2026-05-14T12:18:49.385Z"
   },
-  "phase": "archived",
-  "archive_reason": "predict-D · cheap-audit skip · category \"?\" does not match niche \"roofers\" — wrong industry",
+  "phase": null,
+  "archive_reason": null,
   "phaseChangedAt": "2026-05-14T10:32:09.912Z",
   "discord_thread_id": "1504431267847082114",
   "discord_profile_message_id": "1504431267847082114",
-  "discord_thread_opened_at": "2026-05-14T10:32:45.340Z"
+  "discord_thread_opened_at": "2026-05-14T10:32:45.340Z",
+  "archive_reason_prior": "predict-D · cheap-audit skip · category \"?\" does not match niche \"roofers\" — wrong industry",
+  "archive_reason_cleared_at": "2026-05-14T12:18:49.385Z"
 }

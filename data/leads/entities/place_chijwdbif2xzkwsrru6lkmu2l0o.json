@@ -544,7 +544,7 @@
   "project_profile_message_id": "1504269382304530583",
   "project_thread_opened_at": "2026-05-13T23:49:28.894Z",
   "sales_stage": "demo-ready",
-  "phase": "archived",
+  "phase": null,
   "phaseChangedAt": "2026-05-14T10:48:14.526Z",
   "qualification": {
     "computed_at": "2026-05-14T10:36:59.815Z",
@@ -601,26 +601,28 @@
   "discord_profile_message_id": "1504430897443770531",
   "discord_thread_opened_at": "2026-05-14T10:31:40.440Z",
   "cheap_audit": {
-    "action": "skip",
-    "reason": "category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry",
-    "gbp_quality": 58,
-    "final_score": 58,
-    "fired_triggers": [
-      "niche_mismatch"
-    ],
-    "relevance_pass": false,
-    "priority": 58,
-    "at": "2026-05-14T10:48:14.525Z"
+    "action": "audit_candidate",
+    "reason": "Strong V2 candidate — proceed to detailed audit",
+    "gbp_quality": 78,
+    "final_score": 78,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 78,
+    "at": "2026-05-14T12:18:10.006Z"
   },
   "predict_grade": {
-    "grade": "D",
-    "priority": 0,
+    "grade": "C",
+    "priority": 21,
     "audit_now": false,
     "reasons": [
-      "cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry"
+      "predict-C · 不达 B 标准:",
+      "  ✗ reviews 21 < B 阈值 30",
+      "(同时不达 A 标准: 1 项)"
     ],
-    "at": "2026-05-14T10:48:14.526Z"
+    "at": "2026-05-14T12:18:10.006Z"
   },
-  "archive_reason": "predict-D · cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry",
-  "project_thread_id_cleared_at": "2026-05-14T12:05:35.491Z"
+  "archive_reason": null,
+  "project_thread_id_cleared_at": "2026-05-14T12:05:35.491Z",
+  "archive_reason_cleared_at": "2026-05-14T12:18:10.006Z",
+  "archive_reason_prior": "predict-D · cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry"
 }
