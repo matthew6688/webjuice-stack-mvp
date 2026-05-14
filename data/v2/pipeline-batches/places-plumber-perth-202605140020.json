@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-plumber-perth-202605140020",
+  "title": "[Places Pipeline] plumber perth — 2026-05-13 14:20 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504126079194107915",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504126079194107915",
+  "initial_message_id": "1504126079194107915",
+  "niche": "plumber",
+  "city": "perth",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "plumber perth",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T14:20:02.723Z",
+  "finished_at": "2026-05-13T14:20:06.269Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T14:20:04.045Z",
+      "message_id": "1504126084583788758"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijz7_jb4hamiorp3qbeqr2_6u, place_chijxxlp4sslmiorp4t_efburbo",
+      "at": "2026-05-13T14:20:05.103Z",
+      "message_id": "1504126088991740075"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `plumber perth`\nLeads (first 5): place_chijz7_jb4hamiorp3qbeqr2_6u, place_chijxxlp4sslmiorp4t_efburbo",
+      "at": "2026-05-13T14:20:05.526Z",
+      "message_id": "1504126090417799309"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T14:22:20.843Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 12,
+      "domain": 13
+    },
+    "exit_code": 0
+  }
+}

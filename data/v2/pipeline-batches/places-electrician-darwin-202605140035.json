@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-electrician-darwin-202605140035",
+  "title": "[Places Pipeline] electrician darwin — 2026-05-13 14:35 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504130082170601492",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504130082170601492",
+  "initial_message_id": "1504130082170601492",
+  "niche": "electrician",
+  "city": "darwin",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "electrician darwin",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T14:35:57.181Z",
+  "finished_at": "2026-05-13T14:36:01.495Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T14:35:58.980Z",
+      "message_id": "1504130089871474718"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijb6cdh-otf2srdm6pfm58yti, place_chijg3lxlde9wcwrsgbxqq81c94",
+      "at": "2026-05-13T14:36:00.402Z",
+      "message_id": "1504130095714144289"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `electrician darwin`\nLeads (first 5): place_chijb6cdh-otf2srdm6pfm58yti, place_chijg3lxlde9wcwrsgbxqq81c94",
+      "at": "2026-05-13T14:36:00.755Z",
+      "message_id": "1504130097446260746"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T14:38:11.453Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 12,
+      "domain": 13
+    },
+    "exit_code": 0
+  }
+}

@@ -64,8 +64,11 @@ export async function enqueueMasterMdRefresh(entityKey, opts = {}) {
       },
       target: {
         cli: 'leads:build-master-md',
-        args: ['--entity-key', entityKey],
-        timeout_ms: 120_000,
+        // V3 D43 cycle-5 (Matthew 2026-05-14): also generate master.report.html
+        // via huashu-md-html with report theme. Otherwise master.report.html
+        // is never refreshed after audit.
+        args: ['--entity-key', entityKey, '--theme', 'report', '--html'],
+        timeout_ms: 180_000,
       },
     });
     return task;

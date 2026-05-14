@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>Internal Audit · Sydney Plumbing and Drainage</title>
+<style>
+  :root {
+    --cream: #fff6ec; --paper: #fffcf7; --ink: #17191c; --line: #17191c;
+    --muted: #5e6268; --coral: #ff5a3d; --coral-soft: #ffb39f;
+    --peach: #ffe1ce; --citrus: #ffd45a; --mint: #cdeccf;
+    --green: #47b86a; --sky: #8bd3f7; --lilac: #eadcfb;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-weight: 600; }
+  body { background-image: linear-gradient(rgba(23,25,28,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(23,25,28,0.04) 1px, transparent 1px); background-size: 54px 54px; }
+  .doc { max-width: 920px; margin: 32px auto; background: var(--paper); border: 2px solid var(--line); box-shadow: 6px 6px 0 var(--line); }
+  .cover { padding: 36px 36px 28px; border-bottom: 2px solid var(--line); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; }
+  .cover .eyebrow { margin: 0; font-size: 11px; font-weight: 950; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); }
+  .cover h1 { font-family: var(--serif); font-size: 44px; font-weight: 900; line-height: 1.05; margin: 8px 0 8px; max-width: 600px; word-break: break-word; }
+  .cover .subline { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; font-size: 14px; font-weight: 800; color: var(--muted); margin: 0; }
+  .cover .subline strong { color: var(--coral); }
+  .cover .meta-line { margin-top: 12px; font-size: 11px; font-weight: 800; color: var(--muted); display: flex; gap: 8px; }
+  .cover .meta-line code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+  .score-tile { background: var(--citrus); border: 2px solid var(--line); padding: 18px 22px; text-align: center; min-width: 180px; box-shadow: 4px 4px 0 var(--line); }
+  .score-tile .label { font-size: 10px; font-weight: 950; letter-spacing: 0.1em; color: var(--ink); text-transform: uppercase; }
+  .score-tile .num { font-family: var(--serif); font-size: 64px; font-weight: 950; line-height: 1; margin: 6px 0 4px; color: var(--ink); }
+  .score-tile .num small { font-size: 14px; color: var(--ink); opacity: 0.75; font-weight: 800; }
+  .score-tile .decision { font-family: var(--mono); font-size: 12px; font-weight: 950; color: var(--ink); }
+
+  .section { padding: 28px 36px; border-top: 2px solid var(--line); }
+  .section .eyebrow { margin: 0 0 6px; font-size: 11px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); }
+  .section h2 { font-family: var(--serif); font-size: 30px; font-weight: 900; line-height: 1.1; margin: 4px 0 16px; max-width: none; word-break: break-word; }
+  .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
+
+  .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .lead-summary { margin: 0 0 14px; padding: 14px 18px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 14.5px; font-weight: 700; line-height: 1.65; max-width: 760px; word-break: break-word; font-family: var(--sans); }
+  .dim-meta { margin: -8px 0 16px; font-size: 12.5px; font-weight: 800; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+  .dim-meta strong { color: var(--coral); font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .triggers-block { margin-top: 22px; }
+  .triggers-block .eyebrow { margin: 0 0 8px; }
+  .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); }
+  .contact-cell { padding: 14px 18px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+  .contact-cell:nth-child(2n) { border-right: 0; }
+  .contact-cell:nth-last-child(-n+2) { border-bottom: 0; }
+  .contact-cell .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .contact-cell .val { font-size: 14px; font-weight: 800; word-break: break-word; }
+
+  .dim-grid { display: grid; grid-template-columns: repeat(6, 1fr); border: 2px solid var(--line); margin: 14px 0; }
+  .dim-card { padding: 14px 12px; border-right: 2px solid var(--line); }
+  .dim-card:last-child { border-right: 0; }
+  .dim-card .label { font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+  .dim-card .score { font-family: var(--serif); font-size: 28px; font-weight: 950; line-height: 1; margin: 6px 0 6px; }
+  .dim-card .bar { height: 5px; background: rgba(23,25,28,0.08); border: 1.5px solid var(--line); overflow: hidden; margin-bottom: 4px; }
+  .dim-card .fill { height: 100%; background: var(--coral); }
+  .dim-card .weight { font-size: 9.5px; font-weight: 800; color: var(--muted); }
+
+  .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 12px 0; }
+  .screenshots figure { margin: 0; padding: 14px; border-right: 2px solid var(--line); }
+  .screenshots figure:last-child { border-right: 0; }
+  .screenshots img { width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .screenshots figcaption { margin-top: 10px; font-size: 11px; font-weight: 800; color: var(--muted); }
+
+  .perf-strip { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin-top: 12px; }
+  .perf-cell { padding: 12px; border-right: 2px solid var(--line); }
+  .perf-cell:last-child { border-right: 0; }
+  .perf-cell .lab { font-size: 9.5px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .perf-cell .val { font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1; margin-top: 4px; }
+  .perf-cell .val.ok { color: var(--green); }
+  .perf-cell .val.bad { color: var(--coral); }
+
+  .issue-card { padding: 14px 18px; border: 2px solid var(--line); background: var(--paper); margin: 10px 0; box-shadow: 3px 3px 0 var(--line); }
+  .issue-card.issue-critical { background: color-mix(in srgb, var(--coral-soft) 30%, var(--paper)); }
+  .issue-card.issue-major { background: color-mix(in srgb, var(--citrus) 18%, var(--paper)); }
+  .issue-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .issue-severity { font-family: var(--mono); font-size: 10.5px; font-weight: 950; padding: 2px 8px; background: var(--coral); color: white; border: 1.5px solid var(--line); }
+  .issue-major .issue-severity { background: var(--citrus); color: var(--ink); }
+  .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
+  .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
+  .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+  .issue-row { margin: 10px 0 0; font-size: 13px; line-height: 1.6; font-weight: 700; }
+  .issue-row .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 3px; }
+  .issue-row.fix { padding-top: 8px; margin-top: 12px; border-top: 1.5px dashed rgba(23,25,28,0.18); }
+  .issue-row.fix .lab { color: var(--coral); }
+
+  details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
+  details.dim-detail summary { cursor: pointer; padding: 10px 16px; display: flex; gap: 14px; align-items: center; list-style: none; font-weight: 850; }
+  details.dim-detail summary::-webkit-details-marker { display: none; }
+  details.dim-detail summary::before { content: '▶'; color: var(--coral); font-size: 10px; transition: transform 0.2s; }
+  details.dim-detail[open] summary::before { transform: rotate(90deg); }
+  .dim-summary-label { flex: 1; font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .dim-summary-score { font-family: var(--serif); font-size: 18px; font-weight: 950; }
+  .dim-summary-rules { font-size: 11px; font-weight: 800; color: var(--muted); }
+  .dim-detail .rule-table { border-top: 2px solid var(--line); }
+
+  .rule-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+  .rule-table th { background: color-mix(in srgb, var(--citrus) 50%, var(--paper)); padding: 10px 12px; font-size: 10.5px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; border-bottom: 2px solid var(--line); }
+  .rule-table td { padding: 9px 12px; border-bottom: 1.5px solid rgba(23,25,28,0.08); vertical-align: top; font-weight: 700; }
+  .rule-table tr:last-child td { border-bottom: 0; }
+  .rule-table td.mark { text-align: center; font-weight: 950; font-size: 14px; }
+  .rule-table tr.hit td.mark { color: var(--green); }
+  .rule-table tr.miss td.mark { color: rgba(23,25,28,0.35); }
+  .rule-table tr.na td.mark { color: rgba(23,25,28,0.25); }
+  .rule-table td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 950; }
+  .rule-table td.why { color: var(--muted); font-weight: 700; }
+  .rule-table code { background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); font-size: 11px; font-weight: 800; }
+
+  .visual-scores { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin: 12px 0 18px; }
+  .vs { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .vs:last-child { border-right: 0; }
+  .vs span { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .vs strong { display: block; font-family: var(--serif); font-size: 32px; font-weight: 950; line-height: 1; margin-top: 6px; }
+  .vs small { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .vs.vs-text strong.age { font-size: 16px; line-height: 1.3; padding-top: 4px; display: inline-block; }
+
+  .issues-grid { display: flex; flex-direction: column; gap: 0; }
+  .positives, .priorities { padding: 14px 16px; border: 2px solid var(--line); background: var(--paper); margin-top: 14px; }
+  .positives ul, .priorities ol { margin: 6px 0 0 18px; padding: 0; line-height: 1.55; font-weight: 700; }
+  .accent-mint { color: var(--green); }
+  .accent-coral { color: var(--coral); }
+
+  .issue-evidence { margin-top: 10px; padding-top: 10px; border-top: 1.5px dashed rgba(23,25,28,0.25); }
+  .issue-evidence .ev-lab { margin: 0 0 6px; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  .issue-evidence img { max-width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .issue-evidence-html { margin-top: 8px; border: 1.5px solid var(--line); padding: 8px 10px; background: var(--cream); }
+  .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
+  .issue-row.ev-ref { color: var(--muted); }
+  .broken-evidence { background: color-mix(in srgb, var(--coral-soft) 35%, var(--paper)); border: 2px dashed var(--coral); padding: 12px 14px; margin-top: 10px; }
+  .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
+  .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .review-overview { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--line); margin: 14px 0 8px; }
+  .review-stat { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .review-stat:last-child { border-right: 0; }
+  .review-stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .review-stat strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1.1; margin-top: 4px; }
+  .review-stat small { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-top: 3px; }
+  .review-stat.trust-mint { background: var(--mint); }
+  .review-stat.trust-citrus { background: var(--citrus); }
+  .review-stat.trust-coral-soft { background: var(--coral-soft); }
+  .theme-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .theme-pill { padding: 4px 10px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .theme-pill.pos { background: var(--mint); }
+  .theme-pill.neg { background: var(--coral-soft); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 8px 0 14px; }
+  .review-quote { margin: 0; padding: 14px 16px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--paper); }
+  .review-quote:nth-child(2n) { border-right: 0; }
+  .review-quote:nth-last-child(-n+2) { border-bottom: 0; }
+  .review-quote .quote-text { font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.45; margin: 0 0 8px; }
+  .review-quote .quote-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .review-quote .quote-rating { color: var(--coral); letter-spacing: 0.08em; }
+  .review-quote .quote-why { font-size: 12px; font-weight: 700; line-height: 1.45; color: var(--muted); margin: 6px 0 0; padding-top: 8px; border-top: 1.5px dashed rgba(23,25,28,0.2); }
+  .review-quote .quote-why .lab { display: inline-block; font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); margin-right: 6px; }
+  .review-row { font-size: 13.5px; font-weight: 700; line-height: 1.5; }
+  .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
+  .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
+
+  .sales-strip { padding: 16px 18px; background: var(--peach); border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); margin-top: 8px; }
+  .sales-strip ul { margin: 6px 0 0 22px; padding: 0; font-size: 14px; line-height: 1.55; font-weight: 800; }
+
+  .appendix { padding: 22px 36px; border-top: 2px solid var(--line); background: color-mix(in srgb, white 50%, var(--paper)); }
+  .appendix h2 { font-size: 14px; font-weight: 950; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .appendix .meta-row { font-size: 11.5px; font-weight: 800; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+  .appendix code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+
+  @media print {
+    html, body { background: white; }
+    body { background-image: none; }
+    .doc { box-shadow: none; margin: 0 auto; }
+    details.dim-detail { break-inside: avoid; }
+    details.dim-detail[open] summary { break-after: avoid; }
+    .issue-card, .perf-strip, .visual-scores, .dim-grid, .contact-grid, .screenshots { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="cover">
+    <div>
+      <p class="eyebrow">Internal Audit Report · ProfitsLocal</p>
+      <h1>Sydney Plumbing and Drainage</h1>
+      <p class="subline">
+        <span><strong>plumbing services</strong></span>
+        <span>·</span><span>Sydney</span>
+        <span>·</span>
+        <span>★ 4.9 (91 reviews)</span>
+      </p>
+      <p class="meta-line">
+        <span>generated 2026/05/14 11:55</span>
+        <span>·</span>
+        <span>config <code>2026-05-11-v1</code></span>
+        <span>·</span>
+        <span>entity <code>place_chij9vrkx5hbvoqrdvqdk5uxg9u</code></span>
+      </p>
+    </div>
+    <div class="score-tile">
+      <span class="label">Audit Score</span>
+      <div class="num">63<small>/100</small></div>
+      <span class="decision">MODERATE CANDIDATE</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <p class="eyebrow">总体判断</p>
+    <h2>审计概览</h2>
+    <p class="lead-summary">audit_score=63 → moderate_candidate · weakest: gbp 37, seo 46</p>
+    
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">联系方式 + GBP 快照</p>
+    <h2>商家档案</h2>
+    <div class="contact-grid">
+      <div class="contact-cell"><span class="lab">电话</span><span class="val">0468 515 933</span></div>
+      <div class="contact-cell"><span class="lab">网址</span><span class="val"><a href="https://www.sydneypd.com.au/" target="_blank">https://www.sydneypd.com.au/</a></span></div>
+      <div class="contact-cell"><span class="lab">地址</span><span class="val">57 Alt St, Ashfield NSW 2131, Australia</span></div>
+      <div class="contact-cell"><span class="lab">类目</span><span class="val">plumbing services</span></div>
+      <div class="contact-cell"><span class="lab">Google Maps</span><span class="val"><a href="https://maps.google.com/?cid=15356034047155591693" target="_blank">打开</a></span></div>
+      <div class="contact-cell"><span class="lab">网站状态</span><span class="val"><code>—</code></span></div>
+      <div class="contact-cell"><span class="lab">来源</span><span class="val">Sydney Plumbing Services Sydney</span></div>
+      <div class="contact-cell"><span class="lab">图片数 / 抓取分</span><span class="val">— · 27</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">六维度评分总览</p>
+    <h2>每个维度的强弱在哪</h2>
+    <p class="dim-meta"><strong>63/100</strong> · MODERATE CANDIDATE</p>
+    <div class="dim-grid">
+      
+        <div class="dim-card">
+          <span class="label">Google Business Profile</span>
+          <div class="score">37<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:37%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Technical</span>
+          <div class="score">63<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:63%"></div></div>
+          <span class="weight">权重 20%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">UX &amp; Conversion</span>
+          <div class="score">85<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:85%"></div></div>
+          <span class="weight">权重 25%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Content</span>
+          <div class="score">77<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:77%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">SEO</span>
+          <div class="score">46<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:46%"></div></div>
+          <span class="weight">权重 10%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Visual</span>
+          <div class="score">50<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:50%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">现场证据 · 桌面 + 移动</p>
+    <h2>客户访问时看到的页面</h2>
+    <div class="screenshots">
+      <figure>
+        <img src="screenshots/desktop.png" alt="desktop screenshot" />
+        <figcaption>桌面 1440×900 · 来源：Playwright headless Chromium</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/mobile.png" alt="mobile screenshot" />
+        <figcaption>移动 375×667 · iPhone 12 viewport</figcaption>
+      </figure>
+    </div>
+    <div class="perf-strip">
+      <div class="perf-cell">
+        <span class="lab">LCP</span>
+        <span class="val ">—</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">HTTPS</span>
+        <span class="val ok">YES</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Mobile Lighthouse</span>
+        <span class="val">80</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Console Errors</span>
+        <span class="val ok">0</span>
+      </div>
+    </div>
+  </section>
+
+  
+
+  
+  <section class="section">
+    <p class="eyebrow">主要问题 · 2 项</p>
+    <h2>影响转化的明显短板</h2>
+    <div class="issues-grid">
+      
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">homepage_title_clear</code>
+      </div>
+      <div class="issue-title">homepage_title_clear</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>title=&#39;# 24/7 Emergency Plumbing &amp; Maintenance&#39; contains-name=false contains-niche=true</p>
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 600px region</p>
+      <img src="evidence/issue-homepage-title-clear.png" alt="evidence for Desktop 600px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">local_schema_markup</code>
+      </div>
+      <div class="issue-title">local_schema_markup</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>no LocalBusiness JSON-LD</p>
+      <p class="issue-row"><span class="lab">证据</span>0 JSON-LD block(s) found</p>
+    </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">规则细节 · 39 项明细</p>
+    <h2>每条规则的命中与失分原因</h2>
+    
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Google Business Profile</span>
+            <span class="dim-summary-score">37/100</span>
+            <span class="dim-summary-rules">8 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>has_website_link</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">website: https://www.sydneypd.com.au/</td></tr><tr class="hit"><td><code>review_volume_vs_peers</code></td><td class="mark">✓</td><td class="num">17/25</td><td class="why">91 reviews</td></tr><tr class="hit"><td><code>average_rating</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">★4.9</td></tr><tr class="miss"><td><code>has_hours</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">no hours</td></tr><tr class="miss"><td><code>image_count</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">0 images</td></tr><tr class="miss"><td><code>has_business_description</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">no description</td></tr><tr class="miss"><td><code>has_service_area</code></td><td class="mark">✗</td><td class="num">0/15</td><td class="why">no service area</td></tr><tr class="na"><td><code>owner_replies_to_reviews</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">reply rate not enriched</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Technical</span>
+            <span class="dim-summary-score">63/100</span>
+            <span class="dim-summary-rules">7 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>https_enabled</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">https</td></tr><tr class="na"><td><code>first_paint_under_3s</code></td><td class="mark">—</td><td class="num">0/25</td><td class="why">LCP not measured (need Playwright/Lighthouse)</td></tr><tr class="hit"><td><code>mobile_responsive</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">lighthouse mobile 80</td></tr><tr class="na"><td><code>core_web_vitals_pass</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">CWV not measured</td></tr><tr class="hit"><td><code>form_submittable</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">form submits</td></tr><tr class="hit"><td><code>no_console_errors</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">0 console errors</td></tr><tr class="miss"><td><code>favicon_and_meta</code></td><td class="mark">✗</td><td class="num">3/5</td><td class="why">favicon: yes, meta: no</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">UX &amp; Conversion</span>
+            <span class="dim-summary-score">85/100</span>
+            <span class="dim-summary-rules">7 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>above_fold_cta_within_5s</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">CTA keyword found above fold</td></tr><tr class="hit"><td><code>phone_visible_above_fold</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">phone digits above fold</td></tr><tr class="hit"><td><code>click_to_call_link</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">tel: link present</td></tr><tr class="hit"><td><code>quote_or_booking_form</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">&lt;form&gt; element present</td></tr><tr class="na"><td><code>contact_path_short</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">click-depth not measured</td></tr><tr class="miss"><td><code>has_gallery</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">no gallery</td></tr><tr class="hit"><td><code>has_testimonials</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">testimonials section present</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Content</span>
+            <span class="dim-summary-score">77/100</span>
+            <span class="dim-summary-rules">6 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="miss"><td><code>homepage_title_clear</code></td><td class="mark">✗</td><td class="num">12/20</td><td class="why">title=&#39;# 24/7 Emergency Plumbing &amp; Maintenance&#39; contains-name=false contains-niche=true</td></tr><tr class="hit"><td><code>service_copy_specific</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">22 service-related verbs detected</td></tr><tr class="hit"><td><code>trust_signals_present</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">3 trust-keyword mentions</td></tr><tr class="hit"><td><code>localized_content</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">mentions sydney</td></tr><tr class="miss"><td><code>evidence_of_recent_update</code></td><td class="mark">✗</td><td class="num">0/15</td><td class="why">no recent year (≤ 1 year ago)</td></tr><tr class="hit"><td><code>non_ai_filler_copy</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">no obvious AI-filler</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">SEO</span>
+            <span class="dim-summary-score">46/100</span>
+            <span class="dim-summary-rules">5 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="miss"><td><code>title_meta_present</code></td><td class="mark">✗</td><td class="num">14/25</td><td class="why">title=yes meta=no</td></tr><tr class="hit"><td><code>h1_unique</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">1 &lt;h1&gt; tags</td></tr><tr class="miss"><td><code>local_schema_markup</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">no LocalBusiness JSON-LD</td></tr><tr class="miss"><td><code>image_alt_present</code></td><td class="mark">✗</td><td class="num">12/20</td><td class="why">52 images, 54% with alt</td></tr><tr class="na"><td><code>sitemap_robots</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">/sitemap.xml + /robots.txt probe not run (need Playwright)</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Visual</span>
+            <span class="dim-summary-score">50/100</span>
+            <span class="dim-summary-rules">1 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="na"><td><code>visual_dimension_stub</code></td><td class="mark">—</td><td class="num">50/100</td><td class="why">visual dimension is filled by Block E (vision LLM autoresearch)</td></tr>
+      </tbody>
+    </table>
+        </details>
+  </section>
+
+  
+    <section class="section">
+      <p class="eyebrow">视觉审计 · Vision LLM</p>
+      <h2>设计观感的整体诊断</h2>
+      <p class="lead-summary">The site leads with strong 24/7 emergency messaging and a prominent phone number, but a 5-field lead form, a hidden mobile submit button, vague CTA copy, and absent social proof collectively prevent local-search visitors from taking action.</p>
+      <div class="visual-scores">
+        <div class="vs"><span>新鲜度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>4</strong><small>/10</small></div>
+        <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
+      </div>
+      <div class="issues-grid">
+        
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">mobile_cta_below_fold</code>
+      </div>
+      <div class="issue-title">Form submit button invisible on mobile without scrolling</div>
+      <p class="issue-row"><span class="lab">观察到</span>On mobile, the &#39;Get a FREE Quote&#39; form displays Name, Phone, Email, and Subject fields that consume the full screen height; the &#39;Message&#39; field and the submit button are cut off below the bottom edge of the viewport at initial load.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A local customer with a burst pipe or blocked drain is in distress and expects an immediate action button on load. If the next step requires scrolling past multiple form fields they haven&#39;t filled in yet, most people abandon the page and go back to Google to call a competitor who makes it easier.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A full-width &#39;Call Now — 0468 515 933&#39; tap-to-call button (minimum 52px height) pinned above the fold as the primary CTA, with a secondary &#39;Get a Free Quote&#39; link that reveals a shortened 2-field form below it. The submit button must be visible without any scrolling.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>On mobile: pin a sticky &#39;Call Now&#39; button to the bottom of the viewport. Replace the 5-field inline form with a 2-field version (Name + Phone only) that fits entirely on screen with the submit button visible. Move Email, Subject, and Message to a non-urgent enquiry page.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="screenshots/mobile.png" alt="mobile evidence" />
+    </div>
+    </div>
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">no_social_proof_above_fold</code>
+      </div>
+      <div class="issue-title">Zero reviews, ratings, or trust badges in hero section</div>
+      <p class="issue-row"><span class="lab">观察到</span>The entire visible hero area on both desktop and mobile contains only the headline, the dashed &#39;$50 off&#39; button, the lead form, and a starburst badge. No Google star rating, review count, years in business, or plumber&#39;s licence number appears anywhere in the above-fold area.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor who arrived from a Google Maps search has already seen a star rating on the listing. When they land on the site and find no confirmation that other customers have had good experiences, they have to take the business&#39;s claims on faith. Most don&#39;t — they go back to a listing that shows proof.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A one-line trust strip directly below the H1 reading: ★★★★★ 4.8 · 120+ Google Reviews | Licensed &amp; Insured | 15+ Years in Sydney. Small text (12–13px) in a contrasting colour is sufficient; it does not need to be large.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Add a trust bar between the headline and the form on both desktop and mobile. Pull the real Google review count and average rating from the GBP listing. Include a Licensed Plumber badge and the number of years in business. Render it in one horizontal line on desktop, two stacked lines on mobile.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-no-social-proof-above-fold.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">vague_cta_label</code>
+      </div>
+      <div class="issue-title">Form submit button reads &#39;GET A JOB DONE&#39; — unclear intent</div>
+      <p class="issue-row"><span class="lab">观察到</span>The pink submit button at the bottom of the lead form displays the label &#39;GET A JOB DONE&#39; in uppercase white text.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor filling out a plumbing quote form expects the button to confirm what happens next — &#39;Send My Request&#39;, &#39;Book a Plumber&#39;, or &#39;Get My Free Quote&#39;. &#39;Get a Job Done&#39; sounds like a project-management app, not a service booking. Ambiguous button labels create a moment of hesitation that reduces form completions.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A button label that mirrors the visitor&#39;s intent: &#39;Book My Plumber Now&#39;, &#39;Send My Quote Request&#39;, or &#39;Get My Free Quote&#39;. One clear verb, under 5 words, same hot-pink colour for brand consistency.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Rename the submit button to &#39;Book My Plumber Now&#39;. No other styling change required — the colour and size are fine.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 800px region</p>
+      <img src="evidence/issue-vague-cta-label.png" alt="evidence for Desktop 800px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">five_field_form_too_much_friction</code>
+      </div>
+      <div class="issue-title">5-field lead form creates excessive friction for emergency intent</div>
+      <p class="issue-row"><span class="lab">观察到</span>The &#39;Get a FREE Quote&#39; hero form has five sequential input fields: Name, Phone, Email, Subject, and Message — all required before reaching the submit button.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A customer with a burst pipe is not in the mindset to write a message and provide a subject line. Each additional field is a reason to give up. Emergency-intent visitors want to provide a phone number and be called back; they are not filling out a detailed enquiry.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A two-field form — Name and Phone — with a visible &#39;Book My Plumber Now&#39; button. A note below the form: &#39;We&#39;ll call you within 15 minutes.&#39; Move detailed enquiry fields to a separate non-urgent page form.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Strip the hero form to Name + Phone only. Remove Email, Subject, and Message from this form entirely. Add a promise of callback speed (&#39;We&#39;ll call within 15 min&#39;) beneath the submit button.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Element: form</p>
+      <img src="evidence/issue-five-field-form-too-much-friction.png" alt="evidence for Element: form" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">dashed_button_looks_dated</code>
+      </div>
+      <div class="issue-title">Dashed-border &#39;$50 off&#39; pill reads as unfinished design</div>
+      <p class="issue-row"><span class="lab">观察到</span>A pill-shaped button with a white dashed border and no fill displays the text &#39;$50 off online bookings&#39; in the left portion of the hero on both desktop and mobile screenshots.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Dashed borders on interactive elements were a visual trend circa 2012–2016. Today they read as an unstyled HTML element or a placeholder, not a deliberate design choice. Visitors may not recognize it as clickable, and its dated look signals that the website — and by extension the business — may not be current or professional.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A solid-fill badge or pill in a secondary brand colour (e.g., white text on a semi-transparent dark background, or a yellow/amber badge) with clean typography. Positioned as a supporting discount callout, not a button. No dashed border.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the dashed-border pill with a flat solid badge (white background, dark text, or amber) reading &#39;$50 Off — Online Bookings&#39;. Position it as a small tag below the headline, not as a primary interactive element.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-dashed-button-looks-dated.png" alt="evidence for Full desktop" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-minor">
+      <div class="issue-head">
+        <span class="issue-severity">MINOR</span>
+        <code class="issue-id">starburst_badge_looks_spammy</code>
+      </div>
+      <div class="issue-title">Pink starburst badge undermines professional credibility</div>
+      <p class="issue-row"><span class="lab">观察到</span>A hot-pink starburst/sunburst graphic overlaps the top-right corner of the lead form on desktop, and the bottom-right of the hero on mobile, reading &#39;We&#39;re available 24 HRS 7 DAYS&#39; in small white text.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Starburst badges are strongly associated with discount flyers, infomercials, and clearance promotions. On a professional trade services website they signal &#39;promotional&#39; rather than &#39;credible and established&#39;, which is the opposite of what a distressed customer looking for a reliable plumber needs to feel.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>The same information expressed as a clean pill badge with a clock icon, or incorporated into the headline as it already is (&#39;24/7 Emergency&#39;). A simple rounded chip with &#39;⏱ 24/7 Emergency&#39; in white on a dark or teal background would carry the message without the promotional feel.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the starburst graphic entirely. The &#39;24/7 Emergency&#39; headline already communicates availability. If a badge is needed, replace it with a small rounded chip: a clock icon + &#39;24/7 Emergency Response&#39; in the trust bar below the headline.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-starburst-badge-looks-spammy.png" alt="evidence for Full desktop" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-minor">
+      <div class="issue-head">
+        <span class="issue-severity">MINOR</span>
+        <code class="issue-id">pink_accent_color_trade_mismatch</code>
+      </div>
+      <div class="issue-title">Hot-pink brand accent is unusual for a trade services business</div>
+      <p class="issue-row"><span class="lab">观察到</span>The dominant accent colour across the site is a bright hot-pink/magenta, applied to the logo mark, the header &#39;GET A FREE QUOTE!&#39; button, the form submit button, and the starburst badge.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Hot pink is strongly associated with beauty, fashion, and lifestyle brands. For a plumbing and drainage trade business, it creates a subtle cognitive dissonance — the colour doesn&#39;t match the visitor&#39;s mental model of a professional trades company — which can erode confidence in the brand&#39;s expertise before a word is read.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A bold, energetic accent that still differentiates: deep orange (#FF6B35), a vivid teal (#00B4D8), or electric blue paired with the existing dark background. These colours carry the same energy as hot pink while fitting the trades industry context.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>A/B test swapping all hot-pink accent instances to a bold orange (#FF6B35). Keep the dark hero background and bold typography unchanged — those are strong. The logo mark may need a minor recolour.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-pink-accent-color-trade-mismatch.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+      </div>
+      
+        <div class="positives">
+          <p class="eyebrow accent-mint">需要保留的优点</p>
+          <ul><li>Phone number (0468 515 933) is displayed prominently in the header on both desktop and mobile, readable without scrolling and easy to tap</li><li>Bold &#39;24/7 Emergency Plumbing &amp; Maintenance&#39; headline immediately communicates the core value proposition to a distressed visitor — no guessing what this business does</li><li>The lead form is embedded directly in the hero section on desktop, eliminating the need to navigate to a separate contact page to enquire</li></ul>
+        </div>
+      
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 优先级</p>
+          <ol><li>1. On mobile, add a full-width sticky &#39;Call Now — 0468 515 933&#39; button above the fold and reduce the hero form to Name + Phone with the submit button visible without scrolling</li><li>2. Add a social proof trust bar below the hero headline showing Google star rating, review count, and licensed-plumber badge on both desktop and mobile</li><li>3. Rename &#39;GET A JOB DONE&#39; to &#39;Book My Plumber Now&#39;, replace the dashed &#39;$50 off&#39; pill with a solid badge, and remove the starburst graphic</li></ol>
+        </div>
+    </section>
+
+  
+    <section class="section section-placeholder">
+      <h2>客户评论分析</h2>
+      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑，加 <code>--with-reviews</code> 触发）。会补充：</p>
+      <ul class="placeholder-list">
+        <li>5 条 Google 「最相关」评论 + 商家整体评分概览</li>
+        <li>常见好评 / 差评 themes（Ollama 本地提取）</li>
+        <li>quotable 评论 — 可直接放到 redesign 后网站</li>
+        <li>redesign hooks — 哪些主题该在网站哪些位置呈现</li>
+      </ul>
+    </section>
+
+  
+    <section class="section">
+      <p class="eyebrow">加载速度证据 · 慢速 4G 移动网络</p>
+      <h2>客户在手机上看到的真实加载体验</h2>
+      <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
+      <video class="speed-video" controls preload="metadata" playsinline>
+        <source src="video/mobile-throttled.webm" type="video/webm" />
+      </video>
+      <p class="placeholder-note" style="margin-top:14px">⏳ Mockup 站点对比视频 — 等 ProfitsLocal 真实 mockup 上线后录制 side-by-side 对比。</p>
+    </section>
+
+  
+  <section class="section">
+    <p class="eyebrow accent-coral">销售切入点</p>
+    <h2>从 audit 数据自动推导的开场话术</h2>
+    <div class="sales-strip">
+      <ul>
+        <li>你的最大短板是 Google Business Profile（得分 37/100）</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="appendix">
+    <h2>Appendix</h2>
+    <p class="meta-row">
+      <span>Cheap audit version: <code>2026-05-10-v1</code></span>
+      <span>Detailed audit version: <code>2026-05-11-v1</code></span>
+      
+    </p>
+    <p class="meta-row" style="margin-top:8px">
+      <span>Visual auditor: ✓ filled (Block E)</span>
+      <span>Review analysis: ⏳ on-demand for high-value leads</span>
+      <span>Speed video: ⏳ post-mockup</span>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

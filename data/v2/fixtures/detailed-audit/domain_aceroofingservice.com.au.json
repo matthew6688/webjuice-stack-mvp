@@ -1,0 +1,1155 @@
+{
+  "generatedAt": "2026-05-14T06:25:24.240Z",
+  "entity_input": {
+    "entityKey": "domain_aceroofingservice.com.au",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Ace Roofing Service",
+      "category": "",
+      "categories": [],
+      "address": "72 Queen St, Brisbane City QLD 4000",
+      "city": "Brisbane",
+      "niche": "roofer",
+      "phone": "0449168985",
+      "website": "https://aceroofingservice.com.au/",
+      "google_maps_url": "",
+      "rating": 5,
+      "review_count": 0,
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 34,
+      "recommendedAction": "skip",
+      "sourceQuery": "roofer in brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "batch_id": "",
+      "discovery_rank": null,
+      "google_places_provider": null
+    },
+    "identifiers": {
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+      "websiteDomain": "aceroofingservice.com.au",
+      "phoneDigits": "0449168985"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://aceroofingservice.com.au/",
+    "markdown_length": 3898
+  },
+  "tech_stack": {
+    "ok": true,
+    "cms": {
+      "id": "wordpress",
+      "name": "WordPress",
+      "evidence": "wp-content/uploads"
+    },
+    "cms_alternatives": [],
+    "analytics": [
+      {
+        "id": "gtm",
+        "name": "Google Tag Manager",
+        "evidence": "googletagmanager.com/gtm.js?id=GTM-"
+      },
+      {
+        "id": "ga4",
+        "name": "Google Analytics 4",
+        "evidence": "googletagmanager.com/gtag/js?id=G-"
+      }
+    ],
+    "pixels": [],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": null,
+    "sophistication_score": 2,
+    "has_paid_ads_evidence": false,
+    "has_measurement": true,
+    "final_url": "https://aceroofingservice.com.au/"
+  },
+  "sitemap_analysis": {
+    "ok": true,
+    "has_sitemap": true,
+    "has_robots": true,
+    "sitemap_url": "https://aceroofingservice.com.au/sitemap_index.xml",
+    "total_urls": 1,
+    "urls_by_pattern": {
+      "home": 1
+    },
+    "last_mod_summary": {
+      "newest": "2024-10-14",
+      "oldest": "2024-10-14",
+      "distribution_by_year": {
+        "2024": 1
+      }
+    },
+    "redirect_plan": [
+      {
+        "from": "/",
+        "suggested_to": "/",
+        "kind": "home"
+      }
+    ],
+    "migration_complexity": "low",
+    "seo_structure": {
+      "service_page_count": 0,
+      "area_page_count": 0,
+      "service_area_page_count": 0,
+      "service_page_samples": [],
+      "area_page_samples": [],
+      "service_area_page_samples": [],
+      "long_tail_coverage": "none"
+    },
+    "robots_excerpt": "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n\nSitemap: https://aceroofingservice.com.au/sitemap_index.xml\n"
+  },
+  "activity": {
+    "ok": true,
+    "base_url": "https://aceroofingservice.com.au/",
+    "last_modified_header": null,
+    "days_since_last_modified": null,
+    "newest_sitemap_lastmod": "2024-10-14",
+    "days_since_newest_sitemap": 577,
+    "blog_section_present": false,
+    "blog_post_count": 0,
+    "blog_newest_lastmod": null,
+    "days_since_newest_blog": null,
+    "blog_freshness": "unknown",
+    "social_links": {},
+    "overall_freshness": "dormant",
+    "days_since_any_update": 577
+  },
+  "ai_geo": {
+    "ok": true,
+    "dimension_score": 30,
+    "rules": [
+      {
+        "id": "llms_txt_present",
+        "max": 5,
+        "hit": false,
+        "rationale": "no /llms.txt at standard path"
+      },
+      {
+        "id": "ai_bot_robots_policy",
+        "max": 5,
+        "hit": false,
+        "rationale": "robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)"
+      },
+      {
+        "id": "localbusiness_schema",
+        "max": 15,
+        "hit": true,
+        "rationale": "Organization JSON-LD present (LocalBusiness preferred for local services)"
+      },
+      {
+        "id": "service_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no Service JSON-LD"
+      },
+      {
+        "id": "faqpage_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)"
+      },
+      {
+        "id": "aggregaterating_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no AggregateRating JSON-LD (★ rating not shown in search snippets)"
+      },
+      {
+        "id": "breadcrumb_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no BreadcrumbList JSON-LD"
+      },
+      {
+        "id": "semantic_landmarks",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 semantic landmarks present: none"
+      },
+      {
+        "id": "faq_qa_pattern",
+        "max": 10,
+        "hit": false,
+        "rationale": "1 question-style heading(s) found (Q&A format helps AI extraction)"
+      },
+      {
+        "id": "eeat_business_credentials",
+        "max": 10,
+        "hit": false,
+        "rationale": "only 1/4 credentials found (license/QBCC) — need ≥2 of: ABN, license/QBCC, years-in-business, insurance"
+      },
+      {
+        "id": "eeat_warranty_trust",
+        "max": 5,
+        "hit": true,
+        "rationale": "warranty/guarantee mentioned"
+      },
+      {
+        "id": "jsonld_at_least_one",
+        "max": 10,
+        "hit": true,
+        "rationale": "6 JSON-LD block(s) detected on page"
+      }
+    ],
+    "summary": "AI agent / ChatGPT 几乎无法准确引用此网站 — 在生成式搜索时代等于隐身",
+    "detail": {
+      "llms_txt": false,
+      "ai_bot_mentions": [],
+      "jsonld_block_count": 6,
+      "jsonld_types": [
+        "Organization",
+        "WebSite",
+        "ImageObject",
+        "WebPage",
+        "Person",
+        "Article"
+      ],
+      "semantic_landmarks": [],
+      "faq_q_headings": 1,
+      "eeat": {
+        "has_abn": false,
+        "has_qbcc": false,
+        "has_license": true,
+        "has_years": false,
+        "has_insurance": false,
+        "has_warranty": true
+      }
+    }
+  },
+  "pagespeed": {
+    "ok": true,
+    "results": {
+      "mobile": {
+        "strategy": "mobile",
+        "scores": {
+          "performance": 95,
+          "accessibility": 89,
+          "best_practices": 100,
+          "seo": 100
+        },
+        "lab_metrics": {
+          "lcp_ms": 1670,
+          "fcp_ms": 1445,
+          "cls": 0,
+          "tbt_ms": 0,
+          "tti_ms": 1677.5,
+          "speed_index_ms": 5566.951520001144,
+          "transfer_size_bytes": 275271
+        },
+        "crux_overall": null,
+        "crux_field_data": {
+          "lcp_p75_ms": null,
+          "fcp_p75_ms": null,
+          "cls_p75": null,
+          "inp_p75_ms": null,
+          "ttfb_p75_ms": null
+        },
+        "crux_origin_overall": null,
+        "opportunities": [
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
+            "savings_ms": 280,
+            "savings_bytes": 40851
+          },
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 144,
+            "savings_bytes": null
+          }
+        ]
+      },
+      "desktop": {
+        "strategy": "desktop",
+        "scores": {
+          "performance": 93,
+          "accessibility": 89,
+          "best_practices": 100,
+          "seo": 100
+        },
+        "lab_metrics": {
+          "lcp_ms": 655,
+          "fcp_ms": 620,
+          "cls": 0.000054,
+          "tbt_ms": 0,
+          "tti_ms": 658.5,
+          "speed_index_ms": 2870.467182799891,
+          "transfer_size_bytes": 275627
+        },
+        "crux_overall": null,
+        "crux_field_data": {
+          "lcp_p75_ms": null,
+          "fcp_p75_ms": null,
+          "cls_p75": null,
+          "inp_p75_ms": null,
+          "ttfb_p75_ms": null
+        },
+        "crux_origin_overall": null,
+        "opportunities": [
+          {
+            "id": "server-response-time",
+            "title": "Initial server response time was short",
+            "savings_ms": 190,
+            "savings_bytes": null
+          },
+          {
+            "id": "unused-css-rules",
+            "title": "Reduce unused CSS",
+            "savings_ms": 0,
+            "savings_bytes": 45241
+          }
+        ]
+      }
+    },
+    "failures": [],
+    "latency_ms": 55259
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 1,
+    "contact_form_count": 1,
+    "forms": [
+      {
+        "action": "https://aceroofingservice.com.au/",
+        "method": "post",
+        "field_count": 6,
+        "inputs": [
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "form_fields[field_3b34204]",
+            "required": true,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "First Name"
+          },
+          {
+            "tag": "input",
+            "type": "text",
+            "name": "form_fields[field_5922ed1]",
+            "required": true,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Last Name"
+          },
+          {
+            "tag": "input",
+            "type": "tel",
+            "name": "form_fields[field_5fb4bff]",
+            "required": true,
+            "placeholder": null,
+            "pattern": "[0-9()#&+*-=.]+",
+            "autocomplete": null,
+            "labelText": "Phone Number"
+          },
+          {
+            "tag": "input",
+            "type": "email",
+            "name": "form_fields[field_ecade35]",
+            "required": true,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Email Address"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "form_fields[field_881f45c]",
+            "required": true,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": "Message"
+          },
+          {
+            "tag": "textarea",
+            "type": "textarea",
+            "name": "g-recaptcha-response",
+            "required": false,
+            "placeholder": null,
+            "pattern": null,
+            "autocomplete": null,
+            "labelText": null
+          }
+        ],
+        "required_count": 5,
+        "has_email_field": true,
+        "has_phone_field": true,
+        "has_message_field": true,
+        "has_submit_button": true,
+        "submit_label": "Submit",
+        "honeypot_present": false,
+        "role": "contact",
+        "friction_level": "moderate"
+      }
+    ],
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      },
+      {
+        "id": "recaptcha_v3",
+        "name": "reCAPTCHA v3 (invisible)",
+        "friction": "low"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "aceroofingservice.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2025-09-15T06:39:46.000Z",
+    "registrar": "Web Address Registration Pty Ltd",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "wayback 503"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": true,
+      "spf_record": "v=spf1  include:relay.hosting-cloud.net -all",
+      "dmarc_present": true,
+      "dmarc_record": "v=DMARC1;p=quarantine; adkim=s; aspf=s",
+      "dmarc_policy": "quarantine",
+      "dkim_selectors_found": [],
+      "posture": "partial"
+    }
+  },
+  "image_optimization": {
+    "ok": true,
+    "total_images": 11,
+    "picture_elements": 0,
+    "optimized_count": 0,
+    "optimized_pct": 0,
+    "formats": {
+      "webp": 0,
+      "avif": 0,
+      "jpg": 2,
+      "png": 9,
+      "svg": 0,
+      "gif": 0,
+      "other_image_path": 0,
+      "other": 0
+    },
+    "has_srcset_pct": 45,
+    "lazy_load_pct": 64,
+    "alt_present_pct": 100,
+    "alt_nonempty_pct": 18,
+    "dimensions_pct": 100,
+    "verdict": "partial",
+    "sample_unoptimized": [
+      {
+        "src": "https://aceroofingservice.com.au/wp-content/uploads/2024/09/blank-2000-x-2000-3-",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "未 lazy load",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "https://aceroofingservice.com.au/wp-content/uploads/2024/09/new-roof-of-a-family",
+        "format": "jpg",
+        "issues": [
+          "未用 WebP/AVIF",
+          "未 lazy load"
+        ]
+      },
+      {
+        "src": "https://aceroofingservice.com.au/wp-content/uploads/2024/09/brown-metal-roof-til",
+        "format": "jpg",
+        "issues": [
+          "未用 WebP/AVIF",
+          "未 lazy load"
+        ]
+      },
+      {
+        "src": "https://aceroofingservice.com.au/wp-content/uploads/2024/09/Screenshot_8.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "https://aceroofingservice.com.au/wp-content/uploads/2024/09/Screenshot_1.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "https://aceroofingservice.com.au/wp-content/uploads/2024/09/Screenshot_3.png",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "无 alt"
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "severity": "minor",
+        "msg": "11 张图仍是 JPG/PNG，建议转 WebP"
+      },
+      {
+        "severity": "major",
+        "msg": "9/11 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取"
+      }
+    ]
+  },
+  "trust_signals": {
+    "ok": true,
+    "industry_label": "generic",
+    "score": 40,
+    "signals": [
+      {
+        "id": "abn",
+        "name": "ABN",
+        "present": false,
+        "weight": 20,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "insurance",
+        "name": "保险",
+        "present": false,
+        "weight": 15,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "years",
+        "name": "从业年限",
+        "present": true,
+        "weight": 15,
+        "evidence_excerpt": "Since 2004"
+      },
+      {
+        "id": "warranty",
+        "name": "保修",
+        "present": false,
+        "weight": 15,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "certifications",
+        "name": "行业证书",
+        "present": true,
+        "weight": 15,
+        "evidence_excerpt": "Licensed"
+      },
+      {
+        "id": "awards",
+        "name": "荣誉 / 奖项",
+        "present": false,
+        "weight": 10,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "free_quote",
+        "name": "免费报价",
+        "present": true,
+        "weight": 10,
+        "evidence_excerpt": "Free Quote"
+      }
+    ],
+    "required_missing": [],
+    "notes": []
+  },
+  "third_party_weight": {
+    "ok": true,
+    "primary_domain": "aceroofingservice.com.au",
+    "total_requests": 77,
+    "first_party_count": 66,
+    "first_party_bytes": 769427,
+    "third_party_count": 11,
+    "third_party_bytes": 724735,
+    "third_party_pct_of_bytes": 49,
+    "tracker_count": 3,
+    "tracker_bytes": 307378,
+    "tracker_summary": [
+      {
+        "id": "gtm",
+        "name": "Google Tag Manager",
+        "kind": "analytics",
+        "request_count": 2,
+        "bytes": 307378
+      },
+      {
+        "id": "ga",
+        "name": "Google Analytics",
+        "kind": "analytics",
+        "request_count": 1,
+        "bytes": 0
+      }
+    ],
+    "heaviest_third_party": [
+      {
+        "url": "https://www.gstatic.com/recaptcha/releases/U5VsmTDhJM1iOJUyw4DEUTYv/recaptcha__en.js",
+        "hostname": "www.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 372549,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-DZHJWFB9SY&cx=c&gtm=4e65c1h2",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 179293,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtm.js?id=GTM-TR3J7CJH",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 128085,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://www.gstatic.com/recaptcha/releases/U5VsmTDhJM1iOJUyw4DEUTYv/styles__ltr.css",
+        "hostname": "www.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "stylesheet",
+        "size_bytes": 42538,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+        "hostname": "www.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "image",
+        "size_bytes": 2228,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com.au/ads/ga-audiences?v=1&t=sr&slf_rd=1&_r=4&tid=G-DZHJWFB9SY&cid=771714611.1778739850&gtm=45je65c1h2v9193643304z89195191811za20gzb9195191811zd9195191811&rcb=16&aip=1&dma=0&gcd=13",
+        "hostname": "www.google.com.au",
+        "domain": "google.com.au",
+        "first_party": false,
+        "resource_type": "image",
+        "size_bytes": 42,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://fonts.googleapis.com/css?family=Outfit%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C9",
+        "hostname": "fonts.googleapis.com",
+        "domain": "googleapis.com",
+        "first_party": false,
+        "resource_type": "stylesheet",
+        "size_bytes": 0,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/recaptcha/api.js?render=explicit&ver=3.24.1",
+        "hostname": "www.google.com",
+        "domain": "google.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 0,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LcnZU8qAAAAANrTWEqK_96mQXlWW2EsGdBRg8gJ&co=aHR0cHM6Ly9hY2Vyb29maW5nc2VydmljZS5jb20uYXU6NDQz&hl=en&type=v3&v=U5VsmTDhJM1iOJUyw4DEUTYv&size=invisible",
+        "hostname": "www.google.com",
+        "domain": "google.com",
+        "first_party": false,
+        "resource_type": "document",
+        "size_bytes": 0,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://analytics.google.com/g/collect?v=2&tid=G-DZHJWFB9SY&gtm=45je65c1h2v9193643304z89195191811za20gzb9195191811zd9195191811&_p=1778739849086&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&ecid=1280651411&_eu=",
+        "hostname": "analytics.google.com",
+        "domain": "google.com",
+        "first_party": false,
+        "resource_type": "fetch",
+        "size_bytes": 0,
+        "tracker_id": "ga",
+        "tracker_name": "Google Analytics",
+        "tracker_kind": "analytics",
+        "status": 204
+      }
+    ]
+  },
+  "detailed_audit": {
+    "business_id": "domain_aceroofingservice.com.au",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-14T06:25:24.240Z",
+    "audit_score": 52,
+    "dimension_scores": {
+      "gbp": 20,
+      "technical": 63,
+      "ux_conversion": 60,
+      "content": 65,
+      "seo": 45,
+      "visual": 50
+    },
+    "decision": "moderate_candidate",
+    "qualification_reason": "audit_score=52 → moderate_candidate · weakest: gbp 20, seo 45 · 1 critical issues",
+    "hard_triggers": [],
+    "issues": {
+      "critical": [
+        {
+          "id": "phone_visible_above_fold",
+          "rationale": "phone hidden below fold or missing",
+          "max": 20,
+          "plain_language": "电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。",
+          "customer_impact": "本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。"
+        }
+      ],
+      "major": [
+        {
+          "id": "review_volume_vs_peers",
+          "rationale": "0 reviews",
+          "max": 25,
+          "plain_language": "你的 Google 评价数量低于同行平均水平。",
+          "customer_impact": "本地搜索排名信号之一就是评价数量；不光是分数，连\"有多少条\"都算。短期可以做的：每个完工的客户群发一条「点评一下吧」的 SMS。"
+        },
+        {
+          "id": "click_to_call_link",
+          "rationale": "no tel: link",
+          "max": 10,
+          "plain_language": "电话号码不是 click-to-call 链接（手机上点击不会自动拨号）。",
+          "customer_impact": "移动客户必须复制号码再切到拨号界面再粘贴 — 每多一步操作就流失一批客户。修复成本只是把 `<a href=\"tel:0712345678\">` 写对，但能立刻拉高电话转化率。"
+        },
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='# \"Feel Safe Under a Roof That Lasts – Brisbane Roof Restora' contains-name=false contains-niche=false",
+          "max": 20,
+          "plain_language": "你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Ace Roofing Service - roofer Brisbane」，但目前是泛泛一句）。",
+          "customer_impact": "Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。"
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20,
+          "plain_language": "网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI 知道你是本地企业、地址、电话、营业时间的标准格式）。",
+          "customer_impact": "Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。"
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5,
+          "plain_language": "GBP 上没有完整的营业时间。",
+          "customer_impact": "客户搜「现在还在营业的 roofer」时你不会被显示。"
+        },
+        {
+          "id": "image_count",
+          "rationale": "0 images",
+          "max": 10,
+          "plain_language": "GBP 上图片数量低于行业建议（一般 ≥ 10 张完工图 + 团队照 + 设备照）。",
+          "customer_impact": "图片数量直接影响 GBP 在地图卡片里的展示效果。"
+        },
+        {
+          "id": "has_business_description",
+          "rationale": "no description",
+          "max": 10,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "favicon_and_meta",
+          "rationale": "favicon: no, meta: yes",
+          "max": 5,
+          "plain_language": "你的网站缺少 favicon（浏览器标签页上的小图标）或基本的 meta 标签。",
+          "customer_impact": "客户在多 tab 浏览时找不到你的网站；Facebook / WhatsApp 分享时缩略图会拉错图甚至没有图，链接显得不专业。"
+        },
+        {
+          "id": "evidence_of_recent_update",
+          "rationale": "no recent year (≤ 1 year ago)",
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "image_alt_present",
+          "rationale": "11 images, 18% with alt",
+          "max": 20,
+          "plain_language": "图片没有 alt 文字描述。",
+          "customer_impact": "影响两件事：① 视障用户的可访问性（在澳洲是法律风险）；② Google 图片搜索流量（屋顶项目图片是极强的 SEO 资产，但没 alt 等于没标）。"
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 20,
+        "earned": 20,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: https://aceroofingservice.com.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "rationale": "0 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★5"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "0 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "no description"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 63,
+        "earned": 63,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "https"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "form submits"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "0 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 3,
+            "max": 5,
+            "hit": false,
+            "rationale": "favicon: no, meta: yes"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 60,
+        "earned": 60,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "phone hidden below fold or missing"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "no tel: link"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "<form> element present"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "gallery mentioned"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "testimonials section present"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 65,
+        "earned": 65,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='# \"Feel Safe Under a Roof That Lasts – Brisbane Roof Restora' contains-name=false contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "33 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "7 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "mentions brisbane"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no recent year (≤ 1 year ago)"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 45,
+        "earned": 45,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 25,
+            "max": 25,
+            "hit": true,
+            "rationale": "title=yes meta=yes"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "1 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no LocalBusiness JSON-LD"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "11 images, 18% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

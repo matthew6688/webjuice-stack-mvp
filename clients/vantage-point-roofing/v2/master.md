@@ -1,10 +1,10 @@
 ---
-business_id: "place_chijhbplvr5bkwsrgufsdwb6css"
+business_id: "domain_vantagepointroofing.com.au"
 business_name: "Vantage Point Roofing"
-niche: "roofer"
+niche: "roofing"
 city: "Brisbane"
 rating: 4.6
-review_count: 138
+review_count: 0
 website: "https://vantagepointroofing.com.au/?utm_campaign=gmb"
 audit_score: null
 decision: null
@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T21:16:22.143Z"
+generated_at: "2026-05-14T11:20:44.218Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -26,14 +26,14 @@ assets:
 
 # Vantage Point Roofing · 现状审计与重构提议
 
-> **null/100** · - · 行业：roofer · 地区：Brisbane · Google 评价：4.6★ （138 条）
+> **null/100** · - · 行业：roofing · 地区：Brisbane · Google 评价：4.6★ （0 条）
 
 ## 内部分级 · 运营优先看这段
 
 **投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- audit 未运行 · 默认 C 等待 audit 后重新分级
+- audit 未运行 · 默认 C
 
 **下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
@@ -45,33 +45,21 @@ assets:
 
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Places API (官方搜索)
-- **搜索关键词**: `roofer in brisbane`
-- **结果排名**: 第 6 位
-- **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-in-brisbane-202605132244`
+- **来源**: Google Maps (gosom 抓取)
+- **搜索关键词**: `roofing in brisbane`
+- **首次发现**: 2026-05-14
+- **Batch**: `pipe-roofing-brisbane-202605142119`
 
-- 电话：(07) 3506 2534
-- 地址：4/288-292 Newmarket Rd, Wilston QLD 4051, Australia
+- 电话：(07)35062534
+- 地址：4/288-292 Newmarket Rd, Wilston QLD 4051
 - 网站：[https://vantagepointroofing.com.au/?utm_campaign=gmb](https://vantagepointroofing.com.au/?utm_campaign=gmb)
+- 网站状态：`independent_https_site`
 
 ## 三、客户访问时看到的页面
 
 ![桌面 1440×900](./screenshots/desktop.png)
 
 ![移动 375×667](./screenshots/mobile.png)
-
-## 业务规模信号 · 内部筛选用
-
-**注：这一段只给运营内部看，不进入客户报告。** 用来判断这个 lead 是不是匹配我们「小网站 / 多批量 / 快上线」的产品定位。
-
-- **规模信号汇总：** 小型客户特征
-- **客户分级：** `small` — 小型，符合我们标准产品包定位
-
-> 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
-
-**触发依据：**
-- Google 评价 138 条（≥50，有规模基础）
 
 ## 现网站快速诊断
 

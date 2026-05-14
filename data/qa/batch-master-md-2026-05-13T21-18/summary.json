@@ -1,0 +1,130 @@
+{
+  "cities": [
+    "canberra"
+  ],
+  "niches": [
+    "roofer"
+  ],
+  "sources": [
+    "places",
+    "docker"
+  ],
+  "per_batch": 2,
+  "batch_count": 2,
+  "ok_batches": 2,
+  "failed_batches": 0,
+  "total_new_entities": 9,
+  "total_touched_entities": 9,
+  "master_md_ok": 7,
+  "master_md_missing": 0,
+  "total_seconds": 179,
+  "started_at": "2026-05-13T21:18:11.245Z",
+  "finished_at": "2026-05-13T21:21:10.441Z",
+  "results": [
+    {
+      "source": "places",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "took_s": 172,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chijgeywhxfvfmsr_8uuddpxpdc",
+        "place_chijntnnnrutf2srtgzcsxbgpwg"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "took_s": 6,
+      "new_entities": 7,
+      "touched_entities": 7,
+      "fresh_keys": [
+        "domain_agileroofing.com.au",
+        "domain_canberralocalroofers.com.au",
+        "domain_canberraroofrepairs.au",
+        "domain_clearcutroofing.com.au",
+        "domain_leakyroof.com.au"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    }
+  ],
+  "verification": [
+    {
+      "entityKey": "place_chijgeywhxfvfmsr_8uuddpxpdc",
+      "source": "places",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "act-roofer-painter-pty-ltd",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/act-roofer-painter-pty-ltd/v2/master.md",
+      "lines": 95
+    },
+    {
+      "entityKey": "place_chijntnnnrutf2srtgzcsxbgpwg",
+      "source": "places",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "clear-cut-roofing",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/clear-cut-roofing/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_agileroofing.com.au",
+      "source": "docker",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "agile-roofing-canberra",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/agile-roofing-canberra/v2/master.md",
+      "lines": 80
+    },
+    {
+      "entityKey": "domain_canberralocalroofers.com.au",
+      "source": "docker",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "canberra-local-roofers",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/canberra-local-roofers/v2/master.md",
+      "lines": 80
+    },
+    {
+      "entityKey": "domain_canberraroofrepairs.au",
+      "source": "docker",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "canberra-roof-repairs",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/canberra-roof-repairs/v2/master.md",
+      "lines": 80
+    },
+    {
+      "entityKey": "domain_clearcutroofing.com.au",
+      "source": "docker",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "clear-cut-roofing",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/clear-cut-roofing/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_leakyroof.com.au",
+      "source": "docker",
+      "city": "canberra",
+      "niche": "roofer",
+      "ok": true,
+      "slug": "leaky-roof",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/leaky-roof/v2/master.md",
+      "lines": 80
+    }
+  ]
+}

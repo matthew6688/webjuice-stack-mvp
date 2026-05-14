@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "domain_newlookroofingau.com",
   "firstSeenAt": "2026-05-14T05:49:25.615Z",
-  "lastSeenAt": "2026-05-14T05:49:25.615Z",
+  "lastSeenAt": "2026-05-14T08:23:17.244Z",
   "status": "skipped",
-  "lastStatusAt": "2026-05-14T05:49:25.615Z",
+  "lastStatusAt": "2026-05-14T08:23:17.244Z",
   "identifiers": {
     "place_id": "",
     "cid": "",
@@ -19,7 +19,7 @@
     "categories": [],
     "address": "115 Collins St, Melbourne VIC 3000",
     "city": "Melbourne",
-    "niche": "roofing",
+    "niche": "roofer",
     "phone": "0410997446",
     "website": "https://www.newlookroofingau.com/",
     "google_maps_url": "",
@@ -28,7 +28,7 @@
     "websiteStatus": "independent_https_site",
     "discoveryScore": 34,
     "recommendedAction": "skip",
-    "sourceQuery": "roofing in melbourne",
+    "sourceQuery": "roofer in melbourne",
     "signals": {
       "hasPhone": true,
       "hasWebsite": true,
@@ -51,6 +51,22 @@
       "at": "2026-05-14T05:49:25.615Z",
       "discoveryScore": 34,
       "recommendedAction": "skip"
+    },
+    {
+      "runId": "20260514-182150",
+      "query": "roofer in melbourne",
+      "runPath": "data/maps-scraper/runs/20260514-182150/discovery-run.json",
+      "at": "2026-05-14T08:21:50.766Z",
+      "discoveryScore": 34,
+      "recommendedAction": "skip"
+    },
+    {
+      "runId": "20260514-182317",
+      "query": "roofer in melbourne",
+      "runPath": "data/maps-scraper/runs/20260514-182317/discovery-run.json",
+      "at": "2026-05-14T08:23:17.244Z",
+      "discoveryScore": 34,
+      "recommendedAction": "skip"
     }
   ],
   "history": [
@@ -59,6 +75,24 @@
       "event": "seen_in_discovery_run",
       "runId": "20260514-154925",
       "query": "roofing in melbourne",
+      "score": 34,
+      "action": "skip",
+      "status": "skipped"
+    },
+    {
+      "at": "2026-05-14T08:21:50.766Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260514-182150",
+      "query": "roofer in melbourne",
+      "score": 34,
+      "action": "skip",
+      "status": "skipped"
+    },
+    {
+      "at": "2026-05-14T08:23:17.244Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260514-182317",
+      "query": "roofer in melbourne",
       "score": 34,
       "action": "skip",
       "status": "skipped"

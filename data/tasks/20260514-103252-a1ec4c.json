@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-103252-a1ec4c",
+  "created_at": "2026-05-14T10:32:52.040Z",
+  "updated_at": "2026-05-14T10:32:53.345Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijwdbif2xzkwsrru6lkmu2l0o (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijwdbif2xzkwsrru6lkmu2l0o"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1039,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T10:32:52.304Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijwdbif2xzkwsrru6lkmu2l0o"
+    },
+    {
+      "at": "2026-05-14T10:32:53.343Z",
+      "step": "cli.stream",
+      "detail": "ntityKey\": \"place_chijwdbif2xzkwsrru6lkmu2l0o\",\n      \"slug\": \"brisbane-roof-restoration-experts\",\n      \"md\": \"clients/brisbane-roof-restoration-experts/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T10:32:53.345Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1039ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

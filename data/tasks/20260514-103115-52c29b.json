@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-103115-52c29b",
+  "created_at": "2026-05-14T10:31:15.944Z",
+  "updated_at": "2026-05-14T10:32:58.356Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504430892708532254",
+    "author": "pl:pipeline-batch-start auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: gosom scrape · niche=roofers · city=brisbane · count=10 · batch=pipe-roofers-brisbane-202605142031",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:scrape-docker",
+    "args": [
+      "--niche",
+      "roofers",
+      "--city",
+      "brisbane",
+      "--count",
+      "10",
+      "--batch-id",
+      "pipe-roofers-brisbane-202605142031"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 101750,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T10:31:16.603Z",
+      "step": "cli.spawning",
+      "detail": "pl:scrape-docker --niche roofers --city brisbane --count 10 --batch-id pipe-roofers-brisbane-202605142031"
+    },
+    {
+      "at": "2026-05-14T10:31:21.736Z",
+      "step": "cli.stream",
+      "detail": "ofers-brisbane-202605142031\n\ngeocode brisbane → -27.4704528,153.0260341 (cache) · Brisbane QLD, Australia\njob_id=e8d3dedc-26d4-44ba-9b6e-fe5e41b4bb07\npolling job e8d3dedc-26d4-44ba-9b6e-fe5e41b4bb07 ."
+    },
+    {
+      "at": "2026-05-14T10:31:27.364Z",
+      "step": "cli.stream",
+      "detail": "aper/webdata/e8d3dedc-26d4-44ba-9b6e-fe5e41b4bb07.csv\nwrote 4 leads → /Users/matthew/Developer/google-map-website-v3/data/maps-scraper/runs/roofers-brisbane-2026-05-14T10-31-16-788Z/results.maps.json"
+    },
+    {
+      "at": "2026-05-14T10:32:00.840Z",
+      "step": "cli.stream",
+      "detail": "\"recommendedAction\": \"audit_candidate\",\n      \"phone\": \"(07)35062534\",\n      \"website\": \"https://vantagepointroofing.com.au/?utm_campaign=gmb\",\n      \"rating\": 4.6,\n      \"reviewCount\": 0\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T10:32:11.903Z",
+      "step": "cli.stream",
+      "detail": "ofingservice.com.au · cheap.action=skip · predict=D · priority=0 · audit_now=false\n[cheap-audit-queue] domain_vantagepointroofing.com.au · cheap.action=skip · predict=D · priority=0 · audit_now=false"
+    },
+    {
+      "at": "2026-05-14T10:32:58.355Z",
+      "step": "cli.stream",
+      "detail": "ceed\",\"confidence\":0.9,\"reason\":\"All 4 candidates resolve to roofing businesses in Brisbane/Kedron/Wilston; no wrong-city or wrong-niche pattern found.\",\"suspicious_picks\":[],\"provider\":\"codex_cli\"}}"
+    },
+    {
+      "at": "2026-05-14T10:32:58.356Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=101750ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504430892708532254",
+    "status_message_id": null
+  }
+}

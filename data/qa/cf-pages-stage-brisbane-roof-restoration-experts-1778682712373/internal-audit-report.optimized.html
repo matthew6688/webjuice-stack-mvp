@@ -1,0 +1,1254 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brisbane Roof Restoration Experts · 内部审计报告</title>
+<style>
+:root {
+  --cream: #faf8f5;
+  --orange: #e87b4e;
+  --navy: #1e3a5f;
+  --grey: #6b7280;
+  --light-grey: #f3f4f6;
+  --border: #e5e7eb;
+  --red: #dc2626;
+  --amber: #f59e0b;
+  --orange-light: #fff4e6;
+  --orange-glow: #fef3c7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  color: var(--navy);
+  background: var(--cream);
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--grey);
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 1.875rem;
+  margin: 3rem 0 1.5rem 0;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border);
+}
+
+h2:first-of-type {
+  margin-top: 2rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin: 2rem 0 1rem 0;
+  color: var(--orange);
+}
+
+h4 {
+  font-size: 1.125rem;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.score-hero {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 0;
+}
+
+.score-number {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.score-meta {
+  flex: 1;
+}
+
+.meta-row {
+  display: flex;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.decision-strip {
+  background: white;
+  border: 3px solid var(--red);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 1.25rem 2rem;
+  margin-bottom: 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.decision-strip .weakest {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.revenue-strip {
+  background: var(--orange-glow);
+  border: 2px dashed #f59e0b;
+  border-radius: 8px;
+  padding: 1.25rem 2rem;
+  margin: 1.5rem 0;
+  font-size: 1.0rem;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.revenue-strip .arr-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.grade-card {
+  background: var(--orange-light);
+  border-left: 5px solid var(--orange);
+  padding: 1.5rem;
+  margin: 2.5rem 0;
+  border-radius: 4px;
+}
+
+.grade-title {
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  color: var(--navy);
+}
+
+.grade-content {
+  margin-left: 1rem;
+}
+
+.grade-content li {
+  margin-bottom: 0.75rem;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.stat-tile {
+  background: var(--light-grey);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-top: 3px solid var(--orange);
+}
+
+.stat-tile.critical {
+  border-top: 3px solid var(--red);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.25rem;
+}
+
+.stat-tile.critical .stat-value {
+  color: var(--red);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--grey);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.contact-info {
+  background: var(--cream);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.contact-info p {
+  margin-bottom: 0.5rem;
+}
+
+.contact-info strong {
+  color: var(--navy);
+  display: inline-block;
+  min-width: 80px;
+}
+
+.screenshot {
+  margin: 2rem 0;
+}
+
+.screenshot img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: 1rem;
+}
+
+.screenshot figcaption {
+  text-align: center;
+  color: var(--grey);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.video-container {
+  margin: 2rem 0;
+  background: var(--navy);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.video-container video {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.vision-score {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.vision-metric {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: var(--light-grey);
+  border-radius: 8px;
+}
+
+.vision-metric.critical {
+  background: #fee2e2;
+  border: 2px solid var(--red);
+}
+
+.vision-metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.vision-metric.critical .vision-metric-value {
+  color: var(--red);
+}
+
+.vision-metric-label {
+  font-size: 0.875rem;
+  color: var(--grey);
+  margin-top: 0.25rem;
+}
+
+.vision-interpretation {
+  font-size: 0.875rem;
+  color: var(--grey);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+blockquote {
+  border-left: 3px solid var(--orange);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  background: var(--light-grey);
+  position: relative;
+  font-style: italic;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.quote-author {
+  font-weight: 700;
+  color: var(--navy);
+  font-style: normal;
+  margin-top: 0.5rem;
+}
+
+.quote-usage {
+  font-size: 0.875rem;
+  color: var(--grey);
+  font-style: normal;
+  margin-top: 0.25rem;
+}
+
+.issue-card {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+}
+
+.issue-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.issue-badge {
+  background: var(--red);
+  color: white;
+  padding: 0.375rem 0.875rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.issue-badge.major {
+  background: var(--amber);
+}
+
+.issue-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  flex: 1;
+}
+
+.issue-section {
+  margin: 1rem 0;
+}
+
+.issue-section-title {
+  font-weight: 700;
+  color: var(--orange);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.issue-section-content {
+  color: var(--navy);
+  line-height: 1.7;
+}
+
+.recommendation-list {
+  list-style: none;
+  counter-reset: rec-counter;
+}
+
+.recommendation-list li {
+  counter-increment: rec-counter;
+  padding-left: 2rem;
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.recommendation-list li::before {
+  content: counter(rec-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--orange);
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.insight-box {
+  background: #fef3c7;
+  border-left: 3px solid #f59e0b;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.insight-box strong {
+  color: #92400e;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+thead {
+  background: var(--navy);
+  color: white;
+}
+
+th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+  background: var(--light-grey);
+}
+
+.checklist {
+  list-style: none;
+  margin: 1rem 0;
+}
+
+.checklist li {
+  padding-left: 2rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.checklist li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.checklist.missing li::before {
+  content: '✗';
+  color: #ef4444;
+}
+
+.upsell-card {
+  background: white;
+  border-left: 3px dashed #f59e0b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.upsell-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 1rem;
+}
+
+.upsell-revenue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #92400e;
+  margin: 0.5rem 0;
+}
+
+.upsell-pitch {
+  background: var(--light-grey);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.footer-meta {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--grey);
+}
+
+.gmb-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.gmb-photo-item {
+  position: relative;
+}
+
+.gmb-photos img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.photo-label {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  background: rgba(30, 58, 95, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.875rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .score-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .decision-strip {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Brisbane Roof Restoration Experts</h1>
+<p class="subtitle">内部审计报告 · ProfitsLocal 销售/运营专用 · 生成时间：2026-05-13</p>
+
+<div class="score-hero">
+  <div>
+    <div class="score-number">70</div>
+    <div class="score-label">Audit Score</div>
+  </div>
+  <div class="score-meta">
+    <div class="meta-row">
+      <div class="meta-item">Brisbane</div>
+      <div class="meta-item">roofer</div>
+      <div class="meta-item">4.9★ (21 条评价)</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><a href="https://brisbaneroofrestorationexperts.com.au/" style="color: white;">brisbaneroofrestorationexperts.com.au</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="decision-strip">
+  决策：low_priority · 最弱项：<span class="weakest">GBP 48 分、Visual 50 分</span>
+</div>
+
+<h2>一、内部分级 · 运营优先看这段</h2>
+
+<div class="grade-card">
+  <div class="grade-title">投入分级：C 批量轻触</div>
+  <div class="grade-content">
+    <p><strong>策略：</strong>模板邮件 + 报告 PDF 链接，无主动跟进</p>
+    <ul>
+      <li><strong>触发依据：</strong>low_priority audit decision (score 70)</li>
+      <li><strong>下一步行动：</strong>标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。</li>
+    </ul>
+  </div>
+</div>
+
+<div class="revenue-strip">
+  Upsell 预估月度 ARR: <span class="arr-value">$1,000–1,700</span> · Setup 一次性: <span class="arr-value">$4,500–8,000</span>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-tile">
+    <div class="stat-value">70/100</div>
+    <div class="stat-label">审计总分</div>
+  </div>
+  <div class="stat-tile critical">
+    <div class="stat-value">48</div>
+    <div class="stat-label">GBP 得分（最弱）</div>
+  </div>
+  <div class="stat-tile">
+    <div class="stat-value">50</div>
+    <div class="stat-label">Visual 得分</div>
+  </div>
+  <div class="stat-tile">
+    <div class="stat-value">4.9★</div>
+    <div class="stat-label">Google 评分</div>
+  </div>
+</div>
+
+<h2>二、店家现状速览</h2>
+
+<div class="contact-info">
+  <p><strong>电话：</strong>(07) 3132 1605</p>
+  <p><strong>地址：</strong>Unit 22/104 Barwon St, Morningside QLD 4170, Australia</p>
+  <p><strong>网站：</strong><a href="https://brisbaneroofrestorationexperts.com.au/">https://brisbaneroofrestorationexperts.com.au/</a></p>
+  <p><strong>网站状态：</strong>independent_https_site</p>
+  <p><strong>营业时间：</strong>Mon-Fri: 07:00-17:00 · Sat-Sun: closed</p>
+</div>
+
+<div class="insight-box">
+  <p><strong>建议联系时间：</strong>Tue / Wed / Thu 10:00 – 12:00 (local) · 工作日中段开门 + 避免周一开机 / 周五下班 / 午餐时间 · confidence: high</p>
+</div>
+
+<h3>线索来源 · 联系开场可用</h3>
+<ul>
+  <li><strong>来源：</strong>Google Places API (官方搜索)</li>
+  <li><strong>搜索关键词：</strong>roofer brisbane</li>
+  <li><strong>结果排名：</strong>第 11 位</li>
+  <li><strong>首次发现：</strong>2026-05-09</li>
+  <li><strong>Batch：</strong>places-roofer-brisbane-202605132243</li>
+</ul>
+
+<h3>商户视觉素材 (GMB)</h3>
+<p>来自 Google Business Profile 的 6 张商户照片（店面 / 作品 / 产品 / 团队等）。这是商户自己挑出来给客户看的素材，销售可以挑作为提案背景图、redesign hero、social media 内容。</p>
+
+<div class="gmb-photos">
+  <div class="gmb-photo-item">
+    <img src="https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656600/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-01-1778656599072-6w96vz.jpg" alt="GMB photo 1">
+    <div class="photo-label">Hero 可用</div>
+  </div>
+  <div class="gmb-photo-item">
+    <img src="https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656601/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-02-1778656601415-c6szud.jpg" alt="GMB photo 2">
+    <div class="photo-label">Before-after 可用</div>
+  </div>
+  <div class="gmb-photo-item">
+    <img src="https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656602/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-03-1778656602093-8v08kj.jpg" alt="GMB photo 3">
+    <div class="photo-label">作品展示</div>
+  </div>
+  <div class="gmb-photo-item">
+    <img src="https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656603/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-04-1778656603008-6bt48y.jpg" alt="GMB photo 4">
+    <div class="photo-label">施工现场</div>
+  </div>
+  <div class="gmb-photo-item">
+    <img src="https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656605/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-05-1778656605392-xkcloe.jpg" alt="GMB photo 5">
+    <div class="photo-label">Social proof 可用</div>
+  </div>
+  <div class="gmb-photo-item">
+    <img src="https://res.cloudinary.com/dm1hroqlg/image/upload/v1778656606/profitslocal/main-site/clients/place_chijwdbif2xzkwsrru6lkmu2l0o/places-photos/gmb/photo-06-1778656606189-cctvc4.jpg" alt="GMB photo 6">
+    <div class="photo-label">作品细节</div>
+  </div>
+</div>
+
+<h2>三、客户访问时看到的页面</h2>
+
+<div class="screenshot">
+  <img src="./screenshots/desktop.png" alt="桌面视图">
+  <figcaption>桌面 1440×900</figcaption>
+</div>
+
+<div class="screenshot">
+  <img src="./screenshots/mobile.png" alt="移动视图">
+  <figcaption>移动 375×667</figcaption>
+</div>
+
+<h3>慢速 4G 加载实景视频</h3>
+<p>1.6 Mbps · 150ms 延迟 · 4× CPU 节流，模拟真实手机访客的体验：</p>
+
+<div class="video-container">
+  <video controls>
+    <source src="./video/mobile-throttled.webm" type="video/webm">
+    您的浏览器不支持视频播放。
+  </video>
+</div>
+
+<h2>四、视觉审计 · Vision LLM 怎么看</h2>
+
+<blockquote>
+  <p>The page makes the phone number visible, but the dated visual style and heavy quote form make the business feel less current than a local roofing customer would expect.</p>
+</blockquote>
+
+<div class="vision-score">
+  <div class="vision-metric critical">
+    <div class="vision-metric-value">4/10</div>
+    <div class="vision-metric-label">新鲜度</div>
+    <div class="vision-interpretation">= 客户会觉得网站是 5 年前做的</div>
+  </div>
+  <div class="vision-metric">
+    <div class="vision-metric-value">5/10</div>
+    <div class="vision-metric-label">信任度</div>
+  </div>
+  <div class="vision-metric">
+    <div class="vision-metric-value">6/10</div>
+    <div class="vision-metric-label">转化准备度</div>
+  </div>
+</div>
+
+<p><strong>设计年代：</strong>outdated</p>
+
+<h3>值得保留的优点</h3>
+<ul class="checklist">
+  <li>The phone number is visible in both desktop and mobile hero areas.</li>
+  <li>The red call buttons stand out clearly against the background.</li>
+  <li>The headline clearly states the core service and location.</li>
+</ul>
+
+<h2>五、客户在 Google 上怎么说</h2>
+
+<blockquote>
+  <p>Customers consistently praise the business for exceptional responsiveness, reliability, and high-quality workmanship on both large restorations and small repairs. The reviews highlight a personal touch with quick quoting and professional execution, resulting in strong recommendations.</p>
+</blockquote>
+
+<p><strong>一致夸赞：</strong>fast response times · high quality workmanship · reliable and punctual · honest and transparent · flexible for small jobs</p>
+
+<h3>可直接放上 redesign 后网站的 quote</h3>
+
+<blockquote>
+  <p>Aron gave us outstanding customer service. He quoted within 24 hours of my enquiry and began work the next day.</p>
+  <p class="quote-author">— Dave, ★★★★★</p>
+  <p class="quote-usage">放哪：Hero section proof of speed and service quality</p>
+</blockquote>
+
+<blockquote>
+  <p>The result has dramatically improved our street appeal and home value.</p>
+  <p class="quote-author">— Dave, ★★★★★</p>
+  <p class="quote-usage">放哪：Value proposition section highlighting ROI</p>
+</blockquote>
+
+<blockquote>
+  <p>Aaron answered my phone call message, promptly, arranged to meet and see the job, and turned up on time.</p>
+  <p class="quote-author">— Loren, ★★★★★</p>
+  <p class="quote-usage">放哪：Trust section emphasizing reliability and communication</p>
+</blockquote>
+
+<blockquote>
+  <p>Most want to restore your entire roof... My job was a smaller job... Aaron... turned up on time.</p>
+  <p class="quote-author">— Loren, ★★★★★</p>
+  <p class="quote-usage">放哪：Service page highlighting flexibility for minor repairs</p>
+</blockquote>
+
+<h2>六、当前网站在哪里"漏水"</h2>
+
+<h3>关键问题 · 1 项（立刻在伤害成交）</h3>
+
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-badge">关键</span>
+    <div class="issue-title">Quote form asks too much too soon</div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">技术事实</div>
+    <div class="issue-section-content">
+      The desktop hero form asks for name, phone, email, location, roof type, scope of work, work type, roof age, and a description before the red 'REQUEST QUOTE' button.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">普通话翻译</div>
+    <div class="issue-section-content">
+      报价表一上来要填太多信息，客户还没决定联系你，就已经觉得麻烦了。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">对客户的影响</div>
+    <div class="issue-section-content">
+      表单字段越多，放弃的人通常越多。对从 Google 商家资料来的客户来说，少填几项能明显提高询盘数量。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">正确长啥样</div>
+    <div class="issue-section-content">
+      A short first-step form with name, phone, suburb, and service need, plus an optional details field after the visitor starts the quote process.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">Redesign 怎么改</div>
+    <div class="issue-section-content">
+      Convert the hero form into a 4-field quick quote form: name, phone, suburb, service type. Move roof age, scope, and extra details into a second step or follow-up call.
+    </div>
+  </div>
+</div>
+
+<h3>主要问题 · 5 项（影响转化的明显短板）</h3>
+
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-badge major">主要</span>
+    <div class="issue-title">homepage_title_clear</div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">技术事实</div>
+    <div class="issue-section-content">
+      title='# Brisbane Roof Restoration Specialists' contains-name=true contains-niche=false
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">普通话翻译</div>
+    <div class="issue-section-content">
+      你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Brisbane Roof Restoration Experts - roofing Brisbane」，但目前是泛泛一句）。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">对客户的影响</div>
+    <div class="issue-section-content">
+      Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
+    </div>
+  </div>
+</div>
+
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-badge major">主要</span>
+    <div class="issue-title">Dated logo weakens first impression</div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">技术事实</div>
+    <div class="issue-section-content">
+      The header logo uses a thin black roof outline, red uppercase 'BRISBANE' text, and small underlined 'roof restoration experts' text that looks like an old clip-art style mark.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">普通话翻译</div>
+    <div class="issue-section-content">
+      网站最上面的标志看起来像很多年前做的简单图形，不像一家现在还在认真经营的专业屋顶公司。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">对客户的影响</div>
+    <div class="issue-section-content">
+      本地客户通常会在几秒内判断一家公司靠不靠谱。标志显旧，会让一部分从 Google 商家资料点进来的客户直接返回去看下一家公司。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">正确长啥样</div>
+    <div class="issue-section-content">
+      A crisp wordmark with one strong roof icon, heavier readable typography, and consistent red/charcoal branding that still works clearly on mobile.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">Redesign 怎么改</div>
+    <div class="issue-section-content">
+      Replace the existing logo treatment with a simplified roofing wordmark, remove the underline, use a professional sans-serif typeface, and size it consistently across desktop and mobile headers.
+    </div>
+  </div>
+</div>
+
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-badge major">主要</span>
+    <div class="issue-title">Hero image makes text feel dated</div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">技术事实</div>
+    <div class="issue-section-content">
+      The hero section uses a full-width house photo with a dark overlay, large white headline text, and heavy grey drop shadows behind the words.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">普通话翻译</div>
+    <div class="issue-section-content">
+      首页大图和标题的阴影让页面显得旧，文字不像专业公司网站那样干净利落。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">对客户的影响</div>
+    <div class="issue-section-content">
+      屋顶修复是高客单价服务，客户会用网站外观判断施工是否专业。视觉显旧会降低信任，导致更多人不打电话。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">正确长啥样</div>
+    <div class="issue-section-content">
+      A brighter hero with a high-quality roof restoration image, clean white or dark text without heavy shadows, and a clear headline area separated from the busy parts of the photo.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">Redesign 怎么改</div>
+    <div class="issue-section-content">
+      Use a sharper roofing project photo, apply a subtle flat overlay only where text sits, remove the thick text shadow, and set the headline in a cleaner 44-56px desktop type scale with tighter line spacing.
+    </div>
+  </div>
+</div>
+
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-badge major">主要</span>
+    <div class="issue-title">Mobile quote form is not visible</div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">技术事实</div>
+    <div class="issue-section-content">
+      On the mobile screenshot, the visible first screen shows the logo, hamburger icon, search icon, headline, supporting text, and red phone button, but no quote form or 'request quote' option.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">普通话翻译</div>
+    <div class="issue-section-content">
+      手机首屏只有打电话按钮，看不到获取报价的入口。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">对客户的影响</div>
+    <div class="issue-section-content">
+      很多本地搜索来自手机，且不少客户在上班或公共场合不方便马上打电话。看不到报价入口，会损失这部分潜在客户。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">正确长啥样</div>
+    <div class="issue-section-content">
+      Mobile first screen with the phone button and a second 'Get quote' button stacked below it, both visible without scrolling.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">Redesign 怎么改</div>
+    <div class="issue-section-content">
+      Add a secondary mobile CTA directly under the red call button: 'Get Free Quote'. Link it to a short mobile-optimized quote form placed immediately below the hero.
+    </div>
+  </div>
+</div>
+
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-badge major">主要</span>
+    <div class="issue-title">No proof visible above fold</div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">技术事实</div>
+    <div class="issue-section-content">
+      The visible desktop and mobile hero areas do not show review stars, years in business, licence details, warranty wording, before-and-after work, or Brisbane suburb proof.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">普通话翻译</div>
+    <div class="issue-section-content">
+      首屏没有显示评价、保修、保险、从业年限或本地服务证明，客户需要自己去猜这家公司是否可靠。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">对客户的影响</div>
+    <div class="issue-section-content">
+      屋顶项目金额高，客户会先找证据再联系。缺少信任信息，会让来自 Google 的客户更容易点回去比较其他商家。
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">正确长啥样</div>
+    <div class="issue-section-content">
+      A compact trust row under the headline or CTA showing Google rating, years of experience, warranty, insured/licensed wording, and Brisbane service area.
+    </div>
+  </div>
+  
+  <div class="issue-section">
+    <div class="issue-section-title">Redesign 怎么改</div>
+    <div class="issue-section-content">
+      Add a trust strip above the fold with review stars, 'Brisbane owned', warranty/insurance claim, and one short line about local roof restoration experience.
+    </div>
+  </div>
+</div>
+
+<h2>七、Redesign 发力点（综合视觉 + 评论数据）</h2>
+
+<ol class="recommendation-list">
+  <li>[视觉] Simplify the quote form into a short mobile-friendly first step.</li>
+  <li>[视觉] Add visible trust proof above the fold: reviews, warranty, insurance, and Brisbane locality.</li>
+  <li>[视觉] Refresh the logo, hero image treatment, typography, and form styling so the site feels current and professional.</li>
+  <li>[评论] Feature the '24-hour quote' metric prominently in the header to address urgency.</li>
+  <li>[评论] Use Loren's review to create a dedicated 'Minor Repairs' section to capture leads who feel ignored by larger competitors.</li>
+  <li>[评论] Highlight the 'home value' improvement in before/after gallery captions.</li>
+</ol>
+
+<h2>八、推荐销售切入点</h2>
+
+<div class="insight-box">
+  <p><strong>客户口碑已经强</strong>（fast response times / high quality workmanship / reliable and punctual）— 网站只需要把这份信任承接住，不需要从零建立</p>
+</div>
+
+<h2>九、真实速度数据 · Google PageSpeed Insights</h2>
+
+<p>我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 <strong>Google 自己</strong>对你网站打的分，包括过去 28 天 <strong>真实访客</strong>的网络体验数据（CRUX field data）。</p>
+
+<h3>移动端（mobile）</h3>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th>分数</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>性能 (Performance)</td>
+        <td><strong>64/100</strong></td>
+      </tr>
+      <tr>
+        <td>可访问性 (Accessibility)</td>
+        <td>95/100</td>
+      </tr>
+      <tr>
+        <td>最佳实践 (Best Practices)</td>
+        <td>100/100</td>
+      </tr>
+      <tr>
+        <td>SEO</td>
+        <td>100/100</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p><strong>Lab 关键指标：</strong>LCP 15.6s · FCP 2.0s · CLS 0.000 · TBT 154ms</p>
+
+<h4>Google 建议的优化项（按节省时间排序，前 2）</h4>
+<ul>
+  <li><strong>Reduce unused JavaScript</strong> — 节省 300ms · 节省 55KB</li>
+  <li><strong>Initial server response time was short</strong> — 节省 79ms</li>
+</ul>
+
+<h3>桌面端（desktop）</h3>
+
+<p><strong>Lighthouse 分数：</strong>Performance 84 · A11y 92 · Best Practices 100 · SEO 100</p>
+
+<h2>十、SEO 迁移评估 与 运营活跃度</h2>
+
+<p>客户最常担心的问题：「我重做网站，会不会丢掉 Google 排名？」这一段直接回答。</p>
+
+<h3>现有页面盘点</h3>
+<ul>
+  <li><strong>Sitemap 状态：</strong>未发现 sitemap.xml — 这本身就是个 SEO 短板（Google 爬虫漏抓页面），redesign 时会一并补上。</li>
+</ul>
+
+<h3>运营活跃度</h3>
+<ul>
+  <li><strong>整体活跃度：</strong>无法判断</li>
+  <li><strong>Blog 板块：</strong>未发现 — 没有内容营销基础</li>
+  <li><strong>社交媒体链接：</strong>网站上没有 social 链接 — GBP 流量进来后没有第二触点</li>
+</ul>
+
+<h2>十一、联系表单与防垃圾设置</h2>
+
+<p>客户能不能 <em>方便地</em> 把信息留下来 = 直接的转化路径。这一段审视所有 &lt;form&gt; 元素的可用性 + 防 spam 配置。</p>
+
+<h3>表单 · 18 字段（摩擦：高（≥7 字段，会显著降低转化））</h3>
+
+<ul>
+  <li><strong>字段构成：</strong>Name:*(text,必填) · Phone:*(tel,必填) · Email:*(email,必填) · Location:*(text,必填) · Tile Roof(radio) · Metal Roof(radio) · Other(radio) · Full roof(radio) · Partial area(radio) · Other(radio) · Full restoration(radio) · Repairs only(radio) · Not sure(radio) · Under 10 yrs(radio) · 10–20 yrs(radio) · 20+ yrs(radio) · Not sure(radio) · Description:*(textarea,必填)</li>
+  <li><strong>必填字段数：</strong>5/18</li>
+  <li><strong>提交按钮：</strong>「Request Quote」</li>
+  <li><strong>Honeypot 防 spam：</strong>未检测到</li>
+</ul>
+
+<p><strong>未检测到任何 anti-spam 措施</strong>（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 表单极容易被自动机器人灌爆，垃圾询盘会让客户对真实询盘麻木。redesign 时建议加 Cloudflare Turnstile（不可见，免费）。</p>
+
+<div class="insight-box">
+  <p><strong>Audit 总结：</strong></p>
+  <ul>
+    <li>[关键] 表单字段数 18 — 远超行业标准 3-4 字段，会显著降低转化率</li>
+    <li>[中等] 表单未检测到任何 anti-spam 措施（reCAPTCHA / hCaptcha / Turnstile / honeypot 都没有）— 高 spam 风险</li>
+  </ul>
+</div>
+
+<h2>十二、域名历史与邮件信誉</h2>
+
+<h3>邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+
+<ul class="checklist">
+  <li><strong>SPF (反垃圾发件验证)：</strong>已配置</li>
+  <li><strong>DKIM (邮件签名)：</strong>已配置（selectors: mail）</li>
+  <li><strong>DMARC (策略)：</strong>已配置（policy: none）</li>
+  <li><strong>整体邮件投递信誉：</strong>strong (SPF + DKIM + DMARC 齐全)</li>
+</ul>
+
+<h2>十三、技术栈与营销基建</h2>
+
+<p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
+
+<ul>
+  <li><strong>网站平台 (CMS)：</strong>WordPress（迁移复杂度参考；WordPress / Wix / Squarespace 这类有标准导出工具，custom-coded 会复杂）</li>
+  <li><strong>分析工具：</strong>未检测到 — 客户目前看不到任何流量数据，等于在盲飞</li>
+  <li><strong>广告 Pixel：</strong>Google Ads Conversion — 客户已经在投放（或投放过）付费广告，对营销预算不陌生</li>
+  <li><strong>托管 / CDN 线索：</strong>Cloudflare-fronted</li>
+</ul>
+
+<p><strong>数字成熟度打分：</strong>3 / 6 （中 — 已有基础设施，缺少深度运营）</p>
+
+<h3>Redesign 时必须保留 / 重新安装的追踪代码</h3>
+
+<p>客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID 上面。重做时<strong>必须用同一套 ID 重新接进新网站</strong>，否则等于清零所有累积。</p>
+
+<ul>
+  <li>Google Ads Conversion</li>
+</ul>
+
+<p>我们 redesign 交付清单会把这些列为「必须 setup 项」。</p>
+
+<h2>十四、AI 时代可发现性 · GEO Readiness</h2>
+
+<p>GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overviews 这些 AI 搜索产品<strong>不像传统搜索引擎那样按"关键词排名"工作</strong>，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在 AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。</p>
+
+<div class="stat-grid">
+  <div class="stat-tile">
+    <div class="stat-value">40/100</div>
+    <div class="stat-label">AI 可发现性总分</div>
+  </div>
+</div>
+
+<p>AI agent 抓取部分支持，但关键 schema / 凭证 / FAQ 缺失</p>
+
+<h3>已经做到的（4 项）</h3>
+<ul class="checklist">
+  <li>llms_txt_present — llms.txt found (159153 bytes)</li>
+  <li>localbusiness_schema — LocalBusiness JSON-LD present</li>
+  <li>semantic_landmarks — 6 semantic landmarks present: &lt;main, &lt;nav, &lt;header, &lt;footer, &lt;article, &lt;section</li>
+  <li>jsonld_at_least_one — 1 JSON-LD block(s) detected on page</li>
+</ul>
+
+<h3>还缺的（8 项 — 这些是 redesign 时一并补上的标准动作）</h3>
+<ul class="checklist missing">
+  <li>[缺失] ai_bot_robots_policy (5 分) — robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)</li>
+  <li>[缺失] service_schema (10 分) — no Service JSON-LD</li>
+  <li>[缺失] faqpage_schema (10 分) — no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)</li>
+  <li>[缺失] aggregaterating_schema (5 分) — no AggregateRating JSON-LD (★ rating not shown in search snippets)</li>
+  <li>[缺失] breadcrumb_schema (5 分) — no BreadcrumbList JSON-LD</li>
+  <li>[缺失] faq_qa_pattern (10 分) — 0 question-style heading(s) found (Q&A format helps AI extraction)</li>
+  <li>[缺失] eeat_business_credentials (10 分) — only 1/4 credentials found (insurance) — need ≥2 of: ABN, license/QBCC, years-in-business, insurance</li>
+  <li>[缺失] eeat_warranty_trust (5 分) — no warranty/guarantee in copy</li>
+</ul>
+
+<div class="insight-box">
+  <p><strong>销售切入：</strong>「ChatGPT 现在每月 30 亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI 回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是 40/100。」</p>
+</div>
+
+<h2>十五、Upsell 机会 · redesign 之外的月度营收</h2>
+
+<p>redesign 是一次性收入。以下是基于这个客户当前现状自动识别的<strong>持续性服务包</strong>机会，可以在 redesign 提案签字时一并捆绑进去。</p>
+
+<div class="upsell-card">
+  <div class="upsell-title">Social presence 一次性 setup + 月度运营包</div>
+  <p><strong>触发依据：</strong>网站上没检测到任何社交媒体链接 — 连基础的多渠道触点都缺。</p>
+  <p><strong>包内容：</strong>一次性：FB / IG 商家档案 setup + 品牌头像/封面 + 内容模板 5 套 (3-5K 一次性)。月度：4 帖 + 评论管理 + 月度报表。</p>
+  <div class="upsell-revenue">$1,500 setup + $600-900/月</div>
+  <div class="upsell-pitch">
+    <p><strong>销售切入：</strong>「Google Maps 流量进来后没有第二落点，意味着客户当下没决定就走了 — 没办法再触及。社交账号是免费的二次触达管道。」</p>
+  </div>
+</div>
+
+<div class="upsell-card">
+  <div class="upsell-title">内容写作月度包（Blog / 案例 / SEO 长尾）</div>
+  <p><strong>触发依据：</strong>网站没有 blog 板块 — 没有内容营销基础设施，长尾 SEO 流量为零。</p>
+  <p><strong>包内容：</strong>每月 2 篇 SEO-optimized blog（800-1,200 字）+ 每季度 1 篇 case study（含 before/after 图）+ 关键词研究报告。</p>
+  <div class="upsell-revenue">$400-800/月</div>
+  <div class="upsell-pitch">
+    <p><strong>销售切入：</strong>「ChatGPT 时代搜索引擎更偏爱有「专家深度内容」的网站。你目前的网站只有服务介绍页 — AI 可引用的素材几乎为零。」</p>
+  </div>
+</div>
+
+<h2>附录 · 数据出处</h2>
+
+<div class="footer-meta">
+  <ul>
+    <li>Cheap audit version: -</li>
+    <li>Detailed audit version: 2026-05-11-v1</li>
+    <li>Vision model: codex_cli</li>
+    <li>Review source: Google Places · most_relevant (max 5)</li>
+    <li>完整 audit 报告 HTML：<a href="./internal-audit-report.html">internal-audit-report</a></li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>

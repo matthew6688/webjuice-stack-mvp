@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
-  "lastSeenAt": "2026-05-13T12:43:49.294Z",
-  "status": "graded",
-  "lastStatusAt": "2026-05-14T04:28:36.921Z",
+  "lastSeenAt": "2026-05-14T10:48:14.503Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-14T10:48:14.503Z",
   "identifiers": {
     "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
     "cid": "5345551503130488494",
@@ -13,14 +13,10 @@
     "phoneDigits": "0731321605"
   },
   "latest": {
-    "sourceType": "places_search",
+    "sourceType": "single_enrich",
     "name": "Brisbane Roof Restoration Experts",
     "category": "Roofing contractor",
-    "categories": [
-      "establishment",
-      "point_of_interest",
-      "roofing_contractor"
-    ],
+    "categories": [],
     "address": "Unit 22/104 Barwon St, Morningside QLD 4170, Australia",
     "city": "Brisbane",
     "niche": "roofer",
@@ -32,7 +28,7 @@
     "websiteStatus": "independent_https_site",
     "discoveryScore": 27,
     "recommendedAction": "audit_candidate",
-    "sourceQuery": "roofer brisbane",
+    "sourceQuery": "Brisbane Roof Restoration Experts brisbane",
     "signals": {
       "hasPhone": true,
       "hasWebsite": true,
@@ -144,8 +140,8 @@
         "computed_at": "2026-05-13T07:16:33.336Z"
       }
     },
-    "batch_id": "places-roofer-brisbane-202605132243",
-    "discovery_rank": 11,
+    "batch_id": "places-roofer-brisbane-202605141757",
+    "discovery_rank": 17,
     "google_places_provider": "official_api",
     "contact_us_url": "https://brisbaneroofrestorationexperts.com.au/contact/"
   },
@@ -187,6 +183,62 @@
       "query": "roofer brisbane",
       "runPath": "",
       "at": "2026-05-13T12:43:49.294Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141617",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T06:17:10.121Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141655",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T06:55:22.754Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141744",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T07:44:32.825Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141757",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T07:57:28.273Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "single-enrich-1778754772018",
+      "query": "Brisbane Roof Restoration Experts brisbane",
+      "runPath": "",
+      "at": "2026-05-14T10:32:52.019Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "single-enrich-1778755532954",
+      "query": "Brisbane Roof Restoration Experts brisbane",
+      "runPath": "",
+      "at": "2026-05-14T10:45:32.955Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "single-enrich-1778755694503",
+      "query": "Brisbane Roof Restoration Experts brisbane",
+      "runPath": "",
+      "at": "2026-05-14T10:48:14.503Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
     }
@@ -321,6 +373,153 @@
       "sub_status": null,
       "archive_reason": null,
       "note": ""
+    },
+    {
+      "at": "2026-05-14T06:17:10.121Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141617",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T06:55:22.754Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141655",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T07:44:32.825Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141744",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T07:57:28.273Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141757",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T10:31:15.836Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T10:31:15.857Z",
+      "event": "phase_changed",
+      "from": "ready-to-build",
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T10:32:52.019Z",
+      "event": "seen_in_discovery_run",
+      "runId": "single-enrich-1778754772018",
+      "query": "Brisbane Roof Restoration Experts brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T10:32:52.042Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "predict-D · cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry",
+      "note": "cheap-audit-queue auto-archive (predict-D)"
+    },
+    {
+      "at": "2026-05-14T10:32:53.372Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T10:32:53.381Z",
+      "event": "phase_changed",
+      "from": "archived",
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": "predict-D · cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T10:33:07.678Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+      "note": ""
+    },
+    {
+      "at": "2026-05-14T10:35:09.761Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T10:35:09.781Z",
+      "event": "phase_changed",
+      "from": "archived",
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T10:36:59.811Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+      "note": ""
+    },
+    {
+      "at": "2026-05-14T10:45:32.955Z",
+      "event": "seen_in_discovery_run",
+      "runId": "single-enrich-1778755532954",
+      "query": "Brisbane Roof Restoration Experts brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T10:45:32.972Z",
+      "event": "phase_changed",
+      "from": "archived",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "predict-D · cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry",
+      "note": "cheap-audit-queue auto-archive (predict-D)"
+    },
+    {
+      "at": "2026-05-14T10:48:14.503Z",
+      "event": "seen_in_discovery_run",
+      "runId": "single-enrich-1778755694503",
+      "query": "Brisbane Roof Restoration Experts brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
     }
   ],
   "notes": [
@@ -331,20 +530,24 @@
     "product_tier": null,
     "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-14T04:28:36.920Z"
+    "graded_at": "2026-05-14T10:35:09.760Z"
   },
   "enrichment_status": "complete",
   "batches": [
-    "places-roofer-brisbane-202605132243"
+    "places-roofer-brisbane-202605132243",
+    "places-roofer-brisbane-202605141617",
+    "places-roofer-brisbane-202605141655",
+    "places-roofer-brisbane-202605141744",
+    "places-roofer-brisbane-202605141757"
   ],
   "project_thread_id": "1504269382304530583",
   "project_profile_message_id": "1504269382304530583",
   "project_thread_opened_at": "2026-05-13T23:49:28.894Z",
   "sales_stage": "demo-ready",
-  "phase": "ready-to-build",
-  "phaseChangedAt": "2026-05-14T05:30:15.661Z",
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-14T10:48:14.526Z",
   "qualification": {
-    "computed_at": "2026-05-14T05:30:15.663Z",
+    "computed_at": "2026-05-14T10:36:59.815Z",
     "hard_gates": [
       {
         "id": "too_many_pages",
@@ -353,7 +556,7 @@
       },
       {
         "id": "multi_business",
-        "passed": true,
+        "passed": false,
         "reason": "多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)"
       },
       {
@@ -382,69 +585,41 @@
         "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
       }
     ],
-    "scorecard": {
-      "A_core_info": {
-        "score": 27,
-        "max": 30,
-        "items": [
-          "name",
-          "phone",
-          "email",
-          "address",
-          "hours",
-          "services",
-          "founded"
-        ]
-      },
-      "B_brand": {
-        "score": 15,
-        "max": 15,
-        "items": [
-          "logo",
-          "color",
-          "font",
-          "photos-10",
-          "21-reviews",
-          "voice"
-        ]
-      },
-      "C_scope": {
-        "score": 14,
-        "max": 25,
-        "items": [
-          "no-booking",
-          "single-lang",
-          "complexity-simple",
-          "no-heavy-layout"
-        ]
-      },
-      "D_tech": {
-        "score": 7,
-        "max": 15,
-        "items": [
-          "https",
-          "1-pixels"
-        ]
-      },
-      "E_solvability": {
-        "score": 3,
-        "max": 15,
-        "items": [
-          "only 0% design/ux",
-          "no-infra-issues"
-        ]
-      },
-      "total": 66,
-      "threshold": 60
-    },
-    "verdict": "ready-to-build",
-    "archive_reason": null,
+    "scorecard": null,
+    "verdict": "archived",
+    "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
     "redesign_brief_path": "clients/brisbane-roof-restoration-experts/v2/redesign-brief.json",
     "crawl_summary": {
       "pages_crawled": 10,
       "sitemap_source": "bfs",
       "cost": 0.15
     },
-    "ai_provider": "ollama"
-  }
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": null
+  },
+  "discord_thread_id": "1504430897443770531",
+  "discord_profile_message_id": "1504430897443770531",
+  "discord_thread_opened_at": "2026-05-14T10:31:40.440Z",
+  "cheap_audit": {
+    "action": "skip",
+    "reason": "category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry",
+    "gbp_quality": 58,
+    "final_score": 58,
+    "fired_triggers": [
+      "niche_mismatch"
+    ],
+    "relevance_pass": false,
+    "priority": 58,
+    "at": "2026-05-14T10:48:14.525Z"
+  },
+  "predict_grade": {
+    "grade": "D",
+    "priority": 0,
+    "audit_now": false,
+    "reasons": [
+      "cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry"
+    ],
+    "at": "2026-05-14T10:48:14.526Z"
+  },
+  "archive_reason": "predict-D · cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry"
 }

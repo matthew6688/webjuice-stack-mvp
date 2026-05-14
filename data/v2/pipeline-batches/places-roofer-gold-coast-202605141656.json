@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-roofer-gold-coast-202605141656",
+  "title": "[Places Pipeline] roofer gold coast — 2026-05-14 06:56 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504376940231135393",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504376940231135393",
+  "initial_message_id": "1504376940231135393",
+  "niche": "roofer",
+  "city": "gold-coast",
+  "count": 20,
+  "runFlags": {
+    "source": "places_search",
+    "query": "roofer gold coast",
+    "with_details": true
+  },
+  "started_at": "2026-05-14T06:56:52.769Z",
+  "finished_at": "2026-05-14T06:56:58.616Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "12 candidates from textsearch · fetching details: true",
+      "at": "2026-05-14T06:56:53.951Z",
+      "message_id": "1504376945473749053"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "12 entities written to store · keys (first 3): place_chijbanphusfkwsrht2xw3qnio0, place_chijes0nvk0dkwsrl_are9igcf8, place_chijg1qde8urkwsrp4t41zhih64",
+      "at": "2026-05-14T06:56:57.554Z",
+      "message_id": "1504376960065863703"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 12 leads from Places API**\n\nQuery: `roofer gold coast`\nLeads (first 5): place_chijbanphusfkwsrht2xw3qnio0, place_chijes0nvk0dkwsrl_are9igcf8, place_chijg1qde8urkwsrp4t41zhih64, place_chijbwkegeqfkwsrcih6mkenmim, place_chijne_lqnsfkwsry_wvtam9q8g …",
+      "at": "2026-05-14T06:56:57.941Z",
+      "message_id": "1504376961928007751"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-14T06:58:23.979Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 7,
+      "domain": 7
+    },
+    "exit_code": 0
+  }
+}

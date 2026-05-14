@@ -2,102 +2,102 @@
   "provider": "claude_cli",
   "model": "claude-sonnet-4-5-20250929",
   "candidateId": "ollama-qwen3.6-27b-nothink",
-  "latencyMs": 87196,
+  "latencyMs": 92606,
   "parsedJson": {
-    "freshness_score": 4,
-    "trust_score": 5,
-    "conversion_score": 6,
+    "freshness_score": 3,
+    "trust_score": 4,
+    "conversion_score": 5,
     "design_age_estimate": "outdated",
-    "summary": "The site has basic conversion elements in place but suffers from low-trust stock photography, unclear visual hierarchy, and dated design patterns that undermine credibility for a premium local service.",
+    "summary": "Generic stock photo hero with low-contrast text and dated orange navigation reduces trust for local searchers seeking Brisbane roof repair.",
     "issues": [
       {
-        "id": "generic_hero_stock_photo",
+        "id": "generic_family_stock_photo",
         "severity": "critical",
-        "title": "Hero image shows family in hardhats instead of actual work",
-        "what_observed": "The hero section displays a stock photo of adults and children wearing safety equipment in what appears to be a staged domestic scene, not actual roofing work or completed projects",
-        "why_problem": "When someone searches 'gutter repair Brisbane' they want proof this business does real work. A generic stock photo with children in hardhats signals the business can't show their actual projects, making visitors question if they're legitimate or just reselling leads. Real local customers immediately bounce when they can't see evidence of actual work.",
-        "what_correct_looks_like": "Hero image showing a before/after of an actual Brisbane roof restoration, or a real crew member on a local job site with visible branding on the work vehicle. Background should show recognizable Brisbane architecture or suburbs to anchor local credibility.",
-        "how_to_fix_in_redesign": "Replace with authentic project photography from actual completed jobs in Brisbane suburbs, showing real crew, branded vehicles, or dramatic before/after transformations. If no photos exist, commission a one-day photoshoot of an actual job.",
-        "plain_explanation": "主图用的是假的摆拍照片,不是真实的屋顶维修工作照。看起来像网上下载的通用图片,而不是这家公司实际完成的项目。",
-        "customer_impact": "当潜在客户在谷歌搜索'布里斯班屋顶维修'时,他们想看到真实的施工案例。使用假照片会让70%以上的本地搜索用户怀疑公司的真实性,直接关闭网页去找有真实案例照片的竞争对手。这直接导致您的谷歌商家资料流量无法转化为询盘。"
+        "title": "Hero shows generic family photo, not actual Brisbane roofing work",
+        "what_observed": "The hero section displays a stock photo of a family (parents and children) sitting on a roof, with overlaid white text reading 'Brisbane Gutter & Roofing Experts' — the image is clearly a generic stock photo with no connection to the business or actual completed work in Brisbane",
+        "why_problem": "A local searcher looking for 'roofer Brisbane' wants proof this business has done real work in their area. The generic family photo signals this could be a template site or lead-gen funnel, not a real local business. Visitors distrust businesses that don't show their actual work, team, or service area — 72% of consumers say photos of actual work increase their trust in a local service provider.",
+        "what_correct_looks_like": "Hero image showing actual completed roof or gutter work in recognizable Brisbane locations (e.g. Queenslander homes, Brisbane suburbs), or photos of the real team on a Brisbane job site with branded uniforms and equipment",
+        "how_to_fix_in_redesign": "Replace stock photo with client-supplied project photos from Brisbane — before/after roof repairs on local home styles (Queenslanders, contemporary builds). If unavailable, use team photo on actual Brisbane job site with branded van/uniforms visible.",
+        "plain_explanation": "首页大图用的是从图库下载的家庭照片,不是你们在布里斯班实际完成的屋顶工程。看起来像模板网站,不像真实的本地公司。",
+        "customer_impact": "本地搜索「布里斯班屋顶维修」的客户看到通用图片会怀疑你不是真实企业,72%的消费者表示看到实际工程照片才会信任本地服务商。这直接导致他们关闭页面去找竞争对手。"
       },
       {
-        "id": "phone_number_visibility",
+        "id": "white_text_low_contrast",
         "severity": "major",
-        "title": "Phone number in header is small and low-contrast",
-        "what_observed": "The phone number '0422 052 592' appears in the top-left header in small dark text against the background, with minimal visual weight compared to the 'Book Now' button on the opposite side",
-        "why_problem": "For emergency gutter or roof repairs, many Brisbane customers want to call immediately, especially older demographics or urgent situations (storm damage, leaks). If they have to hunt for the phone number, they'll hit back and call the next search result where the number is obvious. Mobile users especially won't squint at small header text.",
-        "what_correct_looks_like": "Phone number displayed prominently in the top-right corner in large, high-contrast text (at least 18px), possibly with a phone icon, and making it a tap-to-call link on mobile. It should have equal or greater visual weight than any form CTA.",
-        "how_to_fix_in_redesign": "Increase phone number size to 20px+, move to top-right header with high contrast (dark on light or vice versa), add phone icon, ensure it's a clickable tel: link. Consider duplicating it above the fold in the hero area for mobile users.",
-        "plain_explanation": "电话号码太小了,放在页面顶部但不醒目,访客很难快速找到。对于紧急维修需求的客户来说,找不到电话号码就会直接去找下一家。",
-        "customer_impact": "在本地服务行业,40-50%的高意向客户更愿意直接打电话而不是填表单,特别是紧急漏水或风暴损坏的情况。如果他们在3秒内找不到醒目的电话号码,就会离开网站拨打搜索结果中下一家公司的号码。您每月可能因此损失15-25个直接来电询盘。"
+        "title": "White headline text lacks contrast over busy photo background",
+        "what_observed": "The main headline 'Brisbane Gutter & Roofing Experts' and the body copy below it are rendered in white text with no background overlay or shadow, placed directly over a busy photo of people on a roof — the text bleeds into the sky and clothing colors, making it hard to read at a glance",
+        "why_problem": "Mobile and desktop visitors scanning the page need to understand the core offer within 3-5 seconds. Low-contrast text forces them to squint or skip the message entirely. This is especially problematic on phones in sunlight (70% of local searches happen on mobile). Visitors won't struggle to read — they'll leave.",
+        "what_correct_looks_like": "Dark semi-transparent overlay (40-60% opacity black or navy) behind all hero text, OR solid-color hero section with image offset to one side, ensuring WCAG AA contrast ratio of at least 4.5:1 for body text and 3:1 for headlines",
+        "how_to_fix_in_redesign": "Add 50% opacity black gradient overlay behind hero text extending from left edge, OR place text on solid coral/navy background panel overlaying left third of hero, ensuring white text has 4.5:1+ contrast ratio",
+        "plain_explanation": "首页标题用白色字直接放在繁忙的照片上,没有深色背景保护,在手机上特别是阳光下根本看不清楚。",
+        "customer_impact": "70%的本地搜索在手机上进行,访客需要在3-5秒内看懂你的服务。看不清标题的人会直接离开,你错失了Google地图来的流量。"
       },
       {
-        "id": "form_field_overload",
+        "id": "dated_orange_icon_nav",
         "severity": "major",
-        "title": "Quote form has 7 fields including optional ones",
-        "what_observed": "The 'Request a Quick Quote' form on the right side of the hero contains 7 input fields: Name, Phone, Email, Street Address, Suburb, Post Code, and 'Tell us about it' text area, all above the fold",
-        "why_problem": "Local search visitors are comparison shopping across 3-5 businesses. Each additional form field exponentially increases friction. Research shows forms with more than 3 fields see 20-40% drop in completion rates. Asking for street address and postcode separately (when postcode alone works for quote estimation) signals bureaucracy, not speed.",
-        "what_correct_looks_like": "Mobile-first form with maximum 3 fields: phone number (primary), suburb or postcode (for service area verification), and optional message. Name and email can be collected after initial contact. Single large CTA button below fields.",
-        "how_to_fix_in_redesign": "Reduce to 3 core fields: Phone (required), Suburb (required for Brisbane service area), Brief description (optional). Remove name, email, and separate address fields. Add trust badge below button ('Usually respond within 2 hours' or '127 Brisbane repairs this month').",
-        "plain_explanation": "报价表单要填的信息太多了(7项),包括姓名、电话、邮箱、详细地址等。研究表明,表单项目越多,客户完成填写的比例越低。",
-        "customer_impact": "表单每增加一个必填项,放弃填写的访客就增加10-15%。目前的7项表单可能导致60-70%的潜在客户在填到一半时放弃,转而联系表单更简单的竞争对手。如果简化为3个核心字段(电话、区域、简述),您的表单提交量可能提升2-3倍,直接增加每月20-40个询盘。"
+        "title": "Bright orange bottom icon navigation looks like 2010-era web design",
+        "what_observed": "Below the hero is a bright orange horizontal bar containing 6+ white icons (appears to show services/features) with small text labels — the icons have a glowing or highlighted treatment against the saturated orange background, using a visual style common in mid-2000s to early 2010s web design",
+        "why_problem": "Modern consumers associate outdated visual design with outdated business practices, poor mobile experience, or inactive businesses. A 2023 Stanford study found 75% of users judge a company's credibility based on website design. The loud orange icon bar signals 'this site hasn't been updated in 10+ years', undermining trust before the visitor reads the content.",
+        "what_correct_looks_like": "Services presented as clean cards or text blocks with subtle iconography (24-32px outlined icons in brand accent color), generous white space, and readable 16-18px labels — or removed entirely in favor of a simple 'Our Services' section with larger type and real project images",
+        "how_to_fix_in_redesign": "Remove orange icon bar entirely. Replace with clean 'Services' section using 2-3 column grid on desktop (stacked on mobile), each service as a card with small accent-color icon, 20px+ heading, and 1-sentence description. Use neutral background (off-white or light gray) with brand coral as accent only.",
+        "plain_explanation": "底部亮橙色的图标栏看起来像2010年代的老式网站设计,让人觉得公司可能也过时了、不活跃了。",
+        "customer_impact": "75%的访客根据网站设计判断公司是否可信。过时的视觉风格让他们怀疑你的公司是否还在营业、服务质量是否跟得上时代,直接影响询价率。"
       },
       {
-        "id": "orange_color_inconsistency",
+        "id": "desktop_form_on_mobile_pattern",
+        "severity": "major",
+        "title": "Right-side quote form uses desktop-era layout pattern",
+        "what_observed": "The hero section includes a multi-field quote form in a white box positioned on the right side with fields for Name, Email, Phone, Address, Post Code, and a 'What is Roof?' dropdown — this is a classic desktop-optimized layout where forms sit beside hero content",
+        "why_problem": "This layout pattern breaks on mobile (forces scrolling past form to see content, or makes form too small). Even on desktop, multi-field forms above the fold signal 'work required before I get help', increasing bounce rate. Local searchers want one-click contact (call button) first, form as secondary option. Research shows each additional form field reduces conversion by 5-10%.",
+        "what_correct_looks_like": "On mobile: single prominent 'Call Now' button with phone number, secondary 'Request Quote' button that opens simple 2-3 field modal (name, phone, brief message). On desktop: same button priority, with optional compact form below hero limited to Name + Phone + 'Send' button.",
+        "how_to_fix_in_redesign": "Replace above-fold form with two large buttons: '(07) XXXX XXXX Call Now' (primary) and 'Get Free Quote' (secondary outline style). Move full form to dedicated section below services, reduce to 3 fields max (Name, Phone, Message). Ensure mobile design stacks vertically with thumb-friendly 48px+ tap targets.",
+        "plain_explanation": "首页右侧放了一个多字段表单,在手机上会很难用,而且字段太多(6个)让人觉得麻烦。本地客户更想直接打电话,而不是先填表。",
+        "customer_impact": "每增加一个表单字段,提交率下降5-10%。本地搜索的客户70%在手机上,他们想要一键拨号,而不是在到达页面就被要求填6个字段。这会让大部分人直接离开。"
+      },
+      {
+        "id": "vague_business_name_disconnect",
         "severity": "minor",
-        "title": "Bottom orange navigation bar clashes with blue brand CTA",
-        "what_observed": "The bottom navigation bar is bright orange with white icons, while the primary 'Book Now' button in the header and the 'Submit' button in the form are both bright blue, creating competing color schemes",
-        "why_problem": "Inconsistent accent colors fragment visual attention and make the site feel cobbled together from different templates. For a premium service where trust matters, this signals lack of professional design oversight. Visitors subconsciously wonder if the business is equally inconsistent in their workmanship.",
-        "what_correct_looks_like": "Single primary accent color (either the blue or orange, not both) used consistently for all CTAs, buttons, and interactive elements. Secondary brand color reserved for backgrounds or supporting elements only.",
-        "how_to_fix_in_redesign": "Choose blue as primary CTA color (more trustworthy for service businesses), replace orange navigation bar with white or light gray, use orange sparingly as an accent (hover states, icons). Maintain visual consistency across all interactive elements.",
-        "plain_explanation": "网站底部的橙色导航栏和主要的蓝色按钮颜色不协调,看起来像是从不同模板拼凑的。颜色方案不统一会让网站显得不专业。",
-        "customer_impact": "品牌颜色不一致会让25-35%的访客在潜意识中对公司的专业度产生怀疑。对于屋顶维修这种需要信任的高价服务(通常5000-15000澳元),视觉不专业直接影响客户是否愿意索取报价。统一的品牌设计能提升15-20%的信任度和询盘转化率。"
+        "title": "Logo text 'Gutter Roofing' doesn't match headline 'Brisbane Gutter & Roofing Experts'",
+        "what_observed": "The top-left logo shows an orange house icon with text that appears to read 'Gutter Roofing' (or similar abbreviated name), while the hero headline reads 'Brisbane Gutter & Roofing Experts' — the two don't match, and neither clearly states the business name 'Gutter and Roof Repairs'",
+        "why_problem": "Brand consistency builds trust. When the logo, headline, and stated business name don't align, visitors question if they're on the right site or if this is a legitimate business. Local searchers coming from Google Business Profile expect the site to immediately confirm the business name they clicked on. Confusion = bounce.",
+        "what_correct_looks_like": "Logo displays the actual registered business name 'Gutter and Roof Repairs' in readable type (not just an icon), with 'Brisbane' or location subtitle if needed. Hero headline reinforces the same name plus core service, e.g. 'Gutter and Roof Repairs — Brisbane's Trusted Roof Specialists Since [year]'",
+        "how_to_fix_in_redesign": "Update logo to include full business name 'Gutter and Roof Repairs' in 18-20px readable font alongside (or below) icon. Ensure logo text color has 4.5:1 contrast against header background. Match hero headline to business name for consistency.",
+        "plain_explanation": "左上角logo显示的名字和首页大标题显示的名字不一致,都和您的注册企业名「Gutter and Roof Repairs」对不上,让人困惑。",
+        "customer_impact": "从Google地图点进来的客户期望立刻看到他们点击的企业名称。名称不一致会让人怀疑是否进错网站或者这是否是正规企业,导致他们直接关闭页面。"
       },
       {
-        "id": "hero_text_contrast",
-        "severity": "minor",
-        "title": "White hero text over busy photo background lacks readability",
-        "what_observed": "The headline 'Brisbane Gutter & Roofing Experts' and body text are white, overlaid directly on the stock photo background where the image has varying brightness levels, making some words harder to read",
-        "why_problem": "If a visitor can't instantly read your value proposition in the first 2 seconds, they assume the site isn't relevant and hit back. Poor text contrast especially hurts older demographics (common for homeowners needing roof repairs) and mobile users viewing in bright sunlight.",
-        "what_correct_looks_like": "Hero text placed over a dark semi-transparent overlay (40-60% opacity black or dark blue gradient) that covers the background image, ensuring consistent high contrast. Alternatively, position text in a solid-color sidebar box separate from the image area.",
-        "how_to_fix_in_redesign": "Add a dark gradient overlay (top-to-bottom or left-to-right) over the hero image, starting at 70% opacity where text sits, fading to 20% at edges. This maintains image visibility while guaranteeing text readability across all devices and lighting conditions.",
-        "plain_explanation": "标题和文字是白色的,直接放在照片上,因为照片背景明暗不一,有些文字不够清晰,特别是在手机上或强光下查看时。",
-        "customer_impact": "如果访客在2秒内看不清您的主标题,会认为网站与他们的需求无关而直接离开。文字对比度不足会让20-30%的移动用户(特别是户外阳光下使用手机的用户)难以阅读,直接导致跳出率增加。这对于70%来自移动设备的本地搜索流量影响很大。"
-      },
-      {
-        "id": "no_social_proof_above_fold",
+        "id": "no_trust_proof_above_fold",
         "severity": "major",
-        "title": "No reviews, testimonials, or trust badges visible above fold",
-        "what_observed": "The hero section contains the form and headline but no visible Google reviews rating, number of completed jobs, years in business, licensing/insurance badges, or customer testimonials",
-        "why_problem": "Local service customers are risk-averse because they're inviting strangers to their property for expensive work. Without immediate social proof, they have no reason to trust this business over the 4 other roofing companies in the search results. They'll back out to check reviews elsewhere or call a competitor who displays their 4.8-star rating prominently.",
-        "what_correct_looks_like": "Google reviews widget or star rating (e.g. '4.8 stars from 127 Brisbane customers') positioned directly below or beside the headline. Trust badges (licensed, insured, 15+ years) in a horizontal row below the form or CTA. Optional: One-sentence testimonial quote from a named Brisbane suburb customer.",
-        "how_to_fix_in_redesign": "Add Google reviews summary (star count + review count) directly below the headline with a link to the full GBP reviews page. Include trust badge row (QBCC licensed, $20M insured, Family owned since 2008) immediately above or below the form submit button. Pull one strong testimonial to display in a light background box beside the form.",
-        "plain_explanation": "在首屏没有展示任何客户评价、谷歌评分、完成项目数量或资质证书。对于本地服务商来说,访客需要立即看到信任信号才会考虑联系。",
-        "customer_impact": "88%的本地搜索用户在决定联系前会查看评价。如果首屏没有展示您的谷歌评分和客户数量,大部分访客会返回搜索结果去找明确显示高评分的竞争对手。添加谷歌评价展示(如'4.8星,127条布里斯班客户评价')和资质徽章(持牌、保险、从业年限)可以提升40-60%的表单提交率和来电询盘量。"
+        "title": "No reviews, credentials, or local proof visible without scrolling",
+        "what_observed": "The visible above-fold area shows only the generic family photo, headline, form, and orange icon bar — there are no Google star ratings, review counts, badges (licensed/insured), years in business, or recognizable Brisbane suburb names visible without scrolling",
+        "why_problem": "Local searchers are comparing 3-5 businesses in separate tabs. They trust reviews and credentials more than any marketing copy. Showing '4.8★ from 127 Google reviews' or 'Licensed Master Builders QLD' above the fold immediately signals legitimacy. Without it, visitors assume you're new, unproven, or hiding poor reviews, and they move to a competitor who displays trust signals prominently.",
+        "what_correct_looks_like": "Directly below or next to hero headline: '4.8★★★★★ (127 Google Reviews)' in readable 18-20px text, plus 1-2 badge icons (QBCC Licensed, Insured, 15+ Years) with small labels. Optionally: 'Serving [specific Brisbane suburbs]' to reinforce local presence.",
+        "how_to_fix_in_redesign": "Add trust bar immediately below hero headline containing: Google star rating + review count (linked to GBP), 2-3 credential badges (QBCC license, insurance, years), and served suburbs list. Use coral or gold stars, keep badges grayscale or subtle color, ensure mobile-friendly size (32-40px icons).",
+        "plain_explanation": "首屏(不用滚动就能看到的部分)没有显示Google评分、客户评价数量、营业执照或者服务年限等信任证明。",
+        "customer_impact": "本地客户会同时打开3-5家公司网站对比,他们最信任Google评价和资质证明。如果首屏看不到这些,他们会认为你是新公司、评价差、或者不正规,直接去找显示了4.8星评价的竞争对手。"
       }
     ],
     "positive_observations": [
-      "Form is positioned prominently in the hero section, making lead capture the primary goal",
-      "Phone number and Book Now CTA are both present in the header navigation",
-      "Service-specific navigation menu clearly lists different roofing services for easy browsing"
+      "Clear phone number visible in top header bar with click-to-call functionality",
+      "Quote form is above the fold and captures structured lead data (name, contact, location, roof type)",
+      "Hero headline immediately states location (Brisbane) and core service (Gutter & Roofing)"
     ],
     "redesign_priorities": [
-      "1. Replace generic stock photo with authentic before/after project images from Brisbane jobs",
-      "2. Reduce form to 3 fields maximum (phone, suburb, brief message) and add Google reviews display above fold",
-      "3. Increase phone number visibility in header (larger size, higher contrast, phone icon) and ensure tap-to-call on mobile"
+      "1. Replace generic stock photo with real Brisbane project photos showing completed roof/gutter work on local home styles",
+      "2. Add trust signals above fold: Google star rating + review count, QBCC license badge, years in business, served suburbs",
+      "3. Simplify above-fold CTA to primary 'Call Now' button + secondary 'Get Quote' button, move multi-field form below hero, reduce to 3 fields"
     ],
-    "confidence": 0.92
+    "confidence": 0.95
   },
   "rawText": null,
   "attempts": [
     {
       "provider": "claude_cli",
       "ok": true,
-      "latencyMs": 87196
+      "latencyMs": 92606
     }
   ],
   "tokensIn": 10,
-  "tokensOut": 3458,
-  "theoreticalCostUsd": 0.131438
+  "tokensOut": 3487,
+  "theoreticalCostUsd": 0.1854845
 }

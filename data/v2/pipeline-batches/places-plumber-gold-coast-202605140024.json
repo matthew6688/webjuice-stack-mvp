@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-plumber-gold-coast-202605140024",
+  "title": "[Places Pipeline] plumber gold-coast — 2026-05-13 14:24 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504127244363235409",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504127244363235409",
+  "initial_message_id": "1504127244363235409",
+  "niche": "plumber",
+  "city": null,
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "plumber gold-coast",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T14:24:40.667Z",
+  "finished_at": "2026-05-13T14:24:44.933Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T14:24:42.506Z",
+      "message_id": "1504127252458111018"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijvyfzsbsdkwsr1wdfhkgp3pg, place_chijxrdfjweokwsr17ayfkwbrou",
+      "at": "2026-05-13T14:24:43.668Z",
+      "message_id": "1504127257663246427"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `plumber gold-coast`\nLeads (first 5): place_chijvyfzsbsdkwsr1wdfhkgp3pg, place_chijxrdfjweokwsr17ayfkwbrou",
+      "at": "2026-05-13T14:24:44.160Z",
+      "message_id": "1504127259488030730"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T14:26:53.411Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 12,
+      "domain": 13
+    },
+    "exit_code": 0
+  }
+}

@@ -96,6 +96,19 @@ async function processLead(entityKey) {
   const url = entity.latest?.website;
   const slug = slugifyName(entity.latest?.name || entityKey);
 
+  // V3 D43 cycle-5 (Matthew 2026-05-14): ensure #website-leads thread exists BEFORE
+  // posting stage messages, so they don't fall back to bot-log. openLeadThread is
+  // idempotent (returns existing thread if already set). Skips for archived/predict-D.
+  try {
+    const { openLeadThread } = await import('../../core/funnel/lead-thread-sync.js');
+    const r = await openLeadThread(entityKey);
+    if (r.ok && !r.reused) console.log(`  [thread] opened #website-leads thread ${r.threadId}`);
+    else if (r.ok && r.reused) console.log(`  [thread] reusing ${r.threadId}`);
+    else console.log(`  [thread] skipped: ${r.reason}`);
+  } catch (err) {
+    console.warn(`  [thread] openLeadThread error: ${err.message}`);
+  }
+
   // V3 D38 · audit start (使用 message builder)
   const stageMsgs = await loadStageMessages();
   await postStage(entityKey, stageMsgs.pipelineStartMessage());
@@ -342,6 +355,29 @@ async function processLead(entityKey) {
     } catch (err) {
       console.warn(`  [stage 5/5] qualification err: ${err.message}`);
     }
+  }
+
+  // V3 D43 cycle-5 (Matthew 2026-05-14): synchronously regenerate master.md
+  // + master.report.html + customer-facing-audit.html so all three are fresh
+  // after audit completes (the fire-and-forget enqueue at stage 1 races + uses
+  // pre-grade entity data; this final pass picks up grade + qualification).
+  try {
+    console.log(`  [post] rebuild master.md + master.report.html (grade-aware)...`);
+    const mRes = spawnSync('npm', ['run', 'leads:build-master-md', '--', '--entity-key', entityKey, '--theme', 'report', '--html'], {
+      cwd: repoRoot, stdio: 'inherit', timeout: 180_000,
+    });
+    if (mRes.status !== 0) console.warn(`  [post] master-md rebuild exit=${mRes.status}`);
+  } catch (err) {
+    console.warn(`  [post] master-md rebuild err: ${err.message}`);
+  }
+  try {
+    console.log(`  [post] rebuild customer-facing-audit.html...`);
+    const cRes = spawnSync('npm', ['run', 'pl:build-customer-audit', '--', '--entity-key', entityKey], {
+      cwd: repoRoot, stdio: 'inherit', timeout: 120_000,
+    });
+    if (cRes.status !== 0) console.warn(`  [post] customer-audit build exit=${cRes.status}`);
+  } catch (err) {
+    console.warn(`  [post] customer-audit build err: ${err.message}`);
   }
 
   // V3 D38 bug fix · auto-republish to CF Pages if entity was previously published.

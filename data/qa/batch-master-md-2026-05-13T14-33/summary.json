@@ -1,0 +1,234 @@
+{
+  "cities": [
+    "hobart",
+    "darwin"
+  ],
+  "niches": [
+    "electrician"
+  ],
+  "sources": [
+    "places",
+    "docker"
+  ],
+  "per_batch": 2,
+  "batch_count": 4,
+  "ok_batches": 4,
+  "failed_batches": 0,
+  "total_new_entities": 32,
+  "total_touched_entities": 32,
+  "master_md_ok": 14,
+  "master_md_missing": 0,
+  "total_seconds": 323,
+  "started_at": "2026-05-13T14:33:03.143Z",
+  "finished_at": "2026-05-13T14:38:26.236Z",
+  "results": [
+    {
+      "source": "places",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 173,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chij1yboigp1bqor1if12db76se",
+        "place_chijt50acyn1bqorlghctfty5kc"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "places",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 136,
+      "new_entities": 2,
+      "touched_entities": 2,
+      "fresh_keys": [
+        "place_chijb6cdh-otf2srdm6pfm58yti",
+        "place_chijg3lxlde9wcwrsgbxqq81c94"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 6,
+      "new_entities": 18,
+      "touched_entities": 18,
+      "fresh_keys": [
+        "domain_ajbelectrics.com.au",
+        "domain_bryceelectrics.com.au",
+        "domain_bs-tech.com.au",
+        "domain_egstas.com",
+        "domain_farrelectrical.au"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    },
+    {
+      "source": "docker",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "took_s": 6,
+      "new_entities": 10,
+      "touched_entities": 10,
+      "fresh_keys": [
+        "domain_cannonelectrical.net.au",
+        "domain_esnt.com.au",
+        "domain_johnnycool.com.au",
+        "domain_nc-electrical.com.au",
+        "domain_netnt.com.au"
+      ],
+      "exit_code": 0,
+      "stderr_tail": null
+    }
+  ],
+  "verification": [
+    {
+      "entityKey": "place_chij1yboigp1bqor1if12db76se",
+      "source": "places",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "heerey-electrical",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/heerey-electrical/v2/master.md",
+      "lines": 94
+    },
+    {
+      "entityKey": "place_chijt50acyn1bqorlghctfty5kc",
+      "source": "places",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "jb-electrical",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/jb-electrical/v2/master.md",
+      "lines": 94
+    },
+    {
+      "entityKey": "place_chijb6cdh-otf2srdm6pfm58yti",
+      "source": "places",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "sparks-fly-electrical-darwin",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/sparks-fly-electrical-darwin/v2/master.md",
+      "lines": 94
+    },
+    {
+      "entityKey": "place_chijg3lxlde9wcwrsgbxqq81c94",
+      "source": "places",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "no-hassall-s-electrical-air-conditioning-and-solar",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/no-hassall-s-electrical-air-conditioning-and-solar/v2/master.md",
+      "lines": 95
+    },
+    {
+      "entityKey": "domain_ajbelectrics.com.au",
+      "source": "docker",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "ajb-electrical-contracting",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/ajb-electrical-contracting/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_bryceelectrics.com.au",
+      "source": "docker",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "bryce-electrics",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/bryce-electrics/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_bs-tech.com.au",
+      "source": "docker",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "bs-tech-electrical-services",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/bs-tech-electrical-services/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_egstas.com",
+      "source": "docker",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "egs-electric-gas-solar",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/egs-electric-gas-solar/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_farrelectrical.au",
+      "source": "docker",
+      "city": "hobart",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "a-s-farr-electrical-contractor",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/a-s-farr-electrical-contractor/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_cannonelectrical.net.au",
+      "source": "docker",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "cannon-electrical-contracting",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/cannon-electrical-contracting/v2/master.md",
+      "lines": 80
+    },
+    {
+      "entityKey": "domain_esnt.com.au",
+      "source": "docker",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "electrical-services-nt",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/electrical-services-nt/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_johnnycool.com.au",
+      "source": "docker",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "johnny-cool-darwin-pty-ltd",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/johnny-cool-darwin-pty-ltd/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_nc-electrical.com.au",
+      "source": "docker",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "nc-electrical-air-conditioning-pty-ltd",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/nc-electrical-air-conditioning-pty-ltd/v2/master.md",
+      "lines": 81
+    },
+    {
+      "entityKey": "domain_netnt.com.au",
+      "source": "docker",
+      "city": "darwin",
+      "niche": "electrician",
+      "ok": true,
+      "slug": "neptune-electrical-technology",
+      "mdPath": "/Users/matthew/Developer/google-map-website-v3/clients/neptune-electrical-technology/v2/master.md",
+      "lines": 81
+    }
+  ]
+}

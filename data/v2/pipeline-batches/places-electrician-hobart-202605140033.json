@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-electrician-hobart-202605140033",
+  "title": "[Places Pipeline] electrician hobart — 2026-05-13 14:33 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504129356828512476",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504129356828512476",
+  "initial_message_id": "1504129356828512476",
+  "niche": "electrician",
+  "city": "hobart",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "electrician hobart",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T14:33:04.234Z",
+  "finished_at": "2026-05-13T14:33:08.677Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T14:33:05.947Z",
+      "message_id": "1504129363803901997"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijt50acyn1bqorlghctfty5kc, place_chij1yboigp1bqor1if12db76se",
+      "at": "2026-05-13T14:33:07.455Z",
+      "message_id": "1504129370644545730"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `electrician hobart`\nLeads (first 5): place_chijt50acyn1bqorlghctfty5kc, place_chij1yboigp1bqor1if12db76se",
+      "at": "2026-05-13T14:33:07.810Z",
+      "message_id": "1504129372158824620"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T14:35:55.463Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 12,
+      "domain": 13
+    },
+    "exit_code": 0
+  }
+}

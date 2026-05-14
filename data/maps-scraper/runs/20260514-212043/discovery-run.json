@@ -1,0 +1,490 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-14T11:20:43.694Z",
+  "runId": "20260514-212043",
+  "query": "roofing in brisbane",
+  "niche": "roofing",
+  "city": "brisbane",
+  "batchId": "pipe-roofing-brisbane-202605142119",
+  "costPolicy": {
+    "googlePlacesApi": "not_used_in_discovery",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis",
+    "proxy": "none",
+    "notes": [
+      "Use maps scraper for cheap broad discovery.",
+      "Use Google Places API only after a candidate is selected for official verification/evidence.",
+      "Use Tinyfish/site-audit only for selected website audit candidates.",
+      "The upstream scraper may return small default review samples; this workflow strips review/email payloads before analysis storage unless explicitly overridden."
+    ]
+  },
+  "toolLog": {
+    "tool": "gosom/google-maps-scraper",
+    "toolVersion": "docker:gosom/google-maps-scraper:latest",
+    "command": "",
+    "rawPath": "data/maps-scraper/runs/20260514-212043/results.maps.json",
+    "proxy": "none",
+    "googlePlacesApi": "not_used",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis",
+    "docker": null
+  },
+  "totals": {
+    "rawRows": 5,
+    "leads": 5,
+    "withWebsite": 5,
+    "withPhone": 5,
+    "actionCounts": {
+      "audit_candidate": 5
+    },
+    "websiteStatusCounts": {
+      "independent_http_site": 2,
+      "independent_https_site": 3
+    }
+  },
+  "queue": {
+    "starterCandidates": [],
+    "auditCandidates": [
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x6b93e337c65e83f7:0x3e1e7804e0c105c7",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b93e337c65e83f7:0x3e1e7804e0c105c7",
+        "name": "North Brisbane Metal Roofing Pty Ltd",
+        "category": "",
+        "categories": [],
+        "address": "3/359 Gympie Rd P.O.B, Unit 50, Kedron QLD 4031",
+        "city": "brisbane",
+        "niche": "roofing",
+        "phone": "0498478739",
+        "website": "http://www.nbmr.com.au/",
+        "google_maps_url": "",
+        "rating": 4.8,
+        "review_count": 0,
+        "latitude": -27.404361,
+        "longitude": 153.032363,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 54,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "metal"
+          ]
+        },
+        "recommendedAction": "audit_candidate",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofing in brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x6b915a1c671ddcfb:0x94dc543d444959fa",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b915a1c671ddcfb:0x94dc543d444959fa",
+        "name": "Queensland Roofing Pty Ltd",
+        "category": "",
+        "categories": [],
+        "address": "19/10 Eagle St, Brisbane City QLD 4000",
+        "city": "brisbane",
+        "niche": "roofing",
+        "phone": "0489263653",
+        "website": "http://www.queenslandroofing.com.au/",
+        "google_maps_url": "",
+        "rating": 4.5,
+        "review_count": 0,
+        "latitude": -27.469195,
+        "longitude": 153.029861,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 50,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "audit_candidate",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofing in brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+        "name": "Ace Roofing Service",
+        "category": "",
+        "categories": [],
+        "address": "72 Queen St, Brisbane City QLD 4000",
+        "city": "brisbane",
+        "niche": "roofing",
+        "phone": "0449168985",
+        "website": "https://aceroofingservice.com.au/",
+        "google_maps_url": "",
+        "rating": 5,
+        "review_count": 0,
+        "latitude": -27.470199,
+        "longitude": 153.023841,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 34,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "audit_candidate",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofing in brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
+        "name": "Brisbane Roof Restoration Experts",
+        "category": "",
+        "categories": [],
+        "address": "Unit 22/104 Barwon St, Morningside QLD 4170",
+        "city": "brisbane",
+        "niche": "roofing",
+        "phone": "(07)31321605",
+        "website": "https://brisbaneroofrestorationexperts.com.au/",
+        "google_maps_url": "",
+        "rating": 4.9,
+        "review_count": 0,
+        "latitude": -27.457771,
+        "longitude": 153.078083,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 34,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "audit_candidate",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofing in brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x6b915b1ebd65ba85:0xcb0afa0677ece782",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b915b1ebd65ba85:0xcb0afa0677ece782",
+        "name": "Vantage Point Roofing",
+        "category": "",
+        "categories": [],
+        "address": "4/288-292 Newmarket Rd, Wilston QLD 4051",
+        "city": "brisbane",
+        "niche": "roofing",
+        "phone": "(07)35062534",
+        "website": "https://vantagepointroofing.com.au/?utm_campaign=gmb",
+        "google_maps_url": "",
+        "rating": 4.6,
+        "review_count": 0,
+        "latitude": -27.436106,
+        "longitude": 153.014686,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_https_site",
+        "discoveryScore": 30,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "audit_candidate",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofing in brisbane"
+      }
+    ],
+    "manualReview": [],
+    "skipped": []
+  },
+  "leads": [
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x6b93e337c65e83f7:0x3e1e7804e0c105c7",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b93e337c65e83f7:0x3e1e7804e0c105c7",
+      "name": "North Brisbane Metal Roofing Pty Ltd",
+      "category": "",
+      "categories": [],
+      "address": "3/359 Gympie Rd P.O.B, Unit 50, Kedron QLD 4031",
+      "city": "brisbane",
+      "niche": "roofing",
+      "phone": "0498478739",
+      "website": "http://www.nbmr.com.au/",
+      "google_maps_url": "",
+      "rating": 4.8,
+      "review_count": 0,
+      "latitude": -27.404361,
+      "longitude": 153.032363,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "metal"
+        ]
+      },
+      "recommendedAction": "audit_candidate",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofing in brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x6b915a1c671ddcfb:0x94dc543d444959fa",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b915a1c671ddcfb:0x94dc543d444959fa",
+      "name": "Queensland Roofing Pty Ltd",
+      "category": "",
+      "categories": [],
+      "address": "19/10 Eagle St, Brisbane City QLD 4000",
+      "city": "brisbane",
+      "niche": "roofing",
+      "phone": "0489263653",
+      "website": "http://www.queenslandroofing.com.au/",
+      "google_maps_url": "",
+      "rating": 4.5,
+      "review_count": 0,
+      "latitude": -27.469195,
+      "longitude": 153.029861,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 50,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "audit_candidate",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofing in brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b915bb350aa0ead:0x87199eb7af6d4b50",
+      "name": "Ace Roofing Service",
+      "category": "",
+      "categories": [],
+      "address": "72 Queen St, Brisbane City QLD 4000",
+      "city": "brisbane",
+      "niche": "roofing",
+      "phone": "0449168985",
+      "website": "https://aceroofingservice.com.au/",
+      "google_maps_url": "",
+      "rating": 5,
+      "review_count": 0,
+      "latitude": -27.470199,
+      "longitude": 153.023841,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 34,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "audit_candidate",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofing in brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b91596c1762d0c1:0x4a2f36c528a5eeae",
+      "name": "Brisbane Roof Restoration Experts",
+      "category": "",
+      "categories": [],
+      "address": "Unit 22/104 Barwon St, Morningside QLD 4170",
+      "city": "brisbane",
+      "niche": "roofing",
+      "phone": "(07)31321605",
+      "website": "https://brisbaneroofrestorationexperts.com.au/",
+      "google_maps_url": "",
+      "rating": 4.9,
+      "review_count": 0,
+      "latitude": -27.457771,
+      "longitude": 153.078083,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 34,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "audit_candidate",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofing in brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x6b915b1ebd65ba85:0xcb0afa0677ece782",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b915b1ebd65ba85:0xcb0afa0677ece782",
+      "name": "Vantage Point Roofing",
+      "category": "",
+      "categories": [],
+      "address": "4/288-292 Newmarket Rd, Wilston QLD 4051",
+      "city": "brisbane",
+      "niche": "roofing",
+      "phone": "(07)35062534",
+      "website": "https://vantagepointroofing.com.au/?utm_campaign=gmb",
+      "google_maps_url": "",
+      "rating": 4.6,
+      "review_count": 0,
+      "latitude": -27.436106,
+      "longitude": 153.014686,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 30,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "audit_candidate",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofing in brisbane"
+    }
+  ]
+}

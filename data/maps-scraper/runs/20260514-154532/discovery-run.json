@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-14T05:45:32.594Z",
+  "runId": "20260514-154532",
+  "query": "roofer in redland-brisbane",
+  "niche": "roofer",
+  "city": "redland-brisbane",
+  "batchId": "",
+  "costPolicy": {
+    "googlePlacesApi": "not_used_in_discovery",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis",
+    "proxy": "none",
+    "notes": [
+      "Use maps scraper for cheap broad discovery.",
+      "Use Google Places API only after a candidate is selected for official verification/evidence.",
+      "Use Tinyfish/site-audit only for selected website audit candidates.",
+      "The upstream scraper may return small default review samples; this workflow strips review/email payloads before analysis storage unless explicitly overridden."
+    ]
+  },
+  "toolLog": {
+    "tool": "gosom/google-maps-scraper",
+    "toolVersion": "docker:gosom/google-maps-scraper:latest",
+    "command": "",
+    "rawPath": "data/maps-scraper/runs/20260514-154532/results.maps.json",
+    "proxy": "none",
+    "googlePlacesApi": "not_used",
+    "emailExtraction": "disabled",
+    "reviewBodyExtraction": "disabled",
+    "reviewPayloadStorage": "stripped_before_analysis",
+    "docker": null
+  },
+  "totals": {
+    "rawRows": 3,
+    "leads": 3,
+    "withWebsite": 3,
+    "withPhone": 3,
+    "actionCounts": {
+      "skip": 3
+    },
+    "websiteStatusCounts": {
+      "independent_http_site": 3
+    }
+  },
+  "queue": {
+    "starterCandidates": [],
+    "auditCandidates": [],
+    "manualReview": [],
+    "skipped": [
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x4f3145cab4504d2f:0x646927be0ed81799",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x4f3145cab4504d2f:0x646927be0ed81799",
+        "name": "Trusst Roofing Pty Ltd",
+        "category": "",
+        "categories": [],
+        "address": "Valley Way, Mount Cotton QLD 4165",
+        "city": "redland-brisbane",
+        "niche": "roofer",
+        "phone": "0480396909",
+        "website": "http://www.trusstroofing.com.au/",
+        "google_maps_url": "",
+        "rating": 5,
+        "review_count": 0,
+        "latitude": -27.636568,
+        "longitude": 153.248458,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 54,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofer in redland-brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x6b91679fc4931811:0xde401574c4bb31d8",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b91679fc4931811:0xde401574c4bb31d8",
+        "name": "Trusted Roof Restorations",
+        "category": "",
+        "categories": [],
+        "address": "Mount Cotton Rd, Mount Cotton QLD 4165",
+        "city": "redland-brisbane",
+        "niche": "roofer",
+        "phone": "0432254975",
+        "website": "http://trustedroofing.com.au/",
+        "google_maps_url": "",
+        "rating": 5,
+        "review_count": 0,
+        "latitude": -27.636437,
+        "longitude": 153.238745,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 54,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofer in redland-brisbane"
+      },
+      {
+        "sourceType": "maps_scraper",
+        "leadId": "0x6b916f2e58dbd8bf:0x58d37f6994166853",
+        "place_id": "",
+        "cid": "",
+        "data_id": "0x6b916f2e58dbd8bf:0x58d37f6994166853",
+        "name": "Hillhouse Roof Rescue / Restoration",
+        "category": "",
+        "categories": [],
+        "address": "7 Cyan Pl, Redland Bay QLD 4165",
+        "city": "redland-brisbane",
+        "niche": "roofer",
+        "phone": "0404430463",
+        "website": "http://www.brisbaneroofrestorations.net.au/",
+        "google_maps_url": "",
+        "rating": 5,
+        "review_count": 0,
+        "latitude": -27.643805,
+        "longitude": 153.30531,
+        "timezone": "Australia/Brisbane",
+        "price_range": "",
+        "websiteStatus": "independent_http_site",
+        "discoveryScore": 54,
+        "relevance": {
+          "relevant": true,
+          "reason": "matched_category_or_name",
+          "matched": [
+            "roof",
+            "restoration"
+          ]
+        },
+        "recommendedAction": "skip",
+        "signals": {
+          "hasPhone": true,
+          "hasWebsite": true,
+          "hasMenuLink": true,
+          "hasReservationLink": true,
+          "hasOrderOnlineLink": true,
+          "imageCount": 0,
+          "hasPopularTimes": true,
+          "hasAboutAttributes": false
+        },
+        "sourceQuery": "roofer in redland-brisbane"
+      }
+    ]
+  },
+  "leads": [
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x4f3145cab4504d2f:0x646927be0ed81799",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x4f3145cab4504d2f:0x646927be0ed81799",
+      "name": "Trusst Roofing Pty Ltd",
+      "category": "",
+      "categories": [],
+      "address": "Valley Way, Mount Cotton QLD 4165",
+      "city": "redland-brisbane",
+      "niche": "roofer",
+      "phone": "0480396909",
+      "website": "http://www.trusstroofing.com.au/",
+      "google_maps_url": "",
+      "rating": 5,
+      "review_count": 0,
+      "latitude": -27.636568,
+      "longitude": 153.248458,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofer in redland-brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x6b91679fc4931811:0xde401574c4bb31d8",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b91679fc4931811:0xde401574c4bb31d8",
+      "name": "Trusted Roof Restorations",
+      "category": "",
+      "categories": [],
+      "address": "Mount Cotton Rd, Mount Cotton QLD 4165",
+      "city": "redland-brisbane",
+      "niche": "roofer",
+      "phone": "0432254975",
+      "website": "http://trustedroofing.com.au/",
+      "google_maps_url": "",
+      "rating": 5,
+      "review_count": 0,
+      "latitude": -27.636437,
+      "longitude": 153.238745,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofer in redland-brisbane"
+    },
+    {
+      "sourceType": "maps_scraper",
+      "leadId": "0x6b916f2e58dbd8bf:0x58d37f6994166853",
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x6b916f2e58dbd8bf:0x58d37f6994166853",
+      "name": "Hillhouse Roof Rescue / Restoration",
+      "category": "",
+      "categories": [],
+      "address": "7 Cyan Pl, Redland Bay QLD 4165",
+      "city": "redland-brisbane",
+      "niche": "roofer",
+      "phone": "0404430463",
+      "website": "http://www.brisbaneroofrestorations.net.au/",
+      "google_maps_url": "",
+      "rating": 5,
+      "review_count": 0,
+      "latitude": -27.643805,
+      "longitude": 153.30531,
+      "timezone": "Australia/Brisbane",
+      "price_range": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "relevance": {
+        "relevant": true,
+        "reason": "matched_category_or_name",
+        "matched": [
+          "roof",
+          "restoration"
+        ]
+      },
+      "recommendedAction": "skip",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "sourceQuery": "roofer in redland-brisbane"
+    }
+  ]
+}

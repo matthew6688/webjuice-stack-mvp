@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-112043-7070c3",
+  "created_at": "2026-05-14T11:20:43.718Z",
+  "updated_at": "2026-05-14T11:20:45.140Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_aceroofingservice.com.au (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_aceroofingservice.com.au"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1142,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T11:20:43.996Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_aceroofingservice.com.au"
+    },
+    {
+      "at": "2026-05-14T11:20:45.139Z",
+      "step": "cli.stream",
+      "detail": "\"results\": [\n    {\n      \"entityKey\": \"domain_aceroofingservice.com.au\",\n      \"slug\": \"ace-roofing-service\",\n      \"md\": \"clients/ace-roofing-service/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T11:20:45.140Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1142ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

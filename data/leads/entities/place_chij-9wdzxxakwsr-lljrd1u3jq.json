@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
-  "lastSeenAt": "2026-05-13T13:15:25.091Z",
-  "status": "graded",
-  "lastStatusAt": "2026-05-14T04:37:29.609Z",
+  "lastSeenAt": "2026-05-14T07:57:28.273Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-14T07:57:28.273Z",
   "identifiers": {
     "place_id": "ChIJ-9wdZxxakWsR-llJRD1U3JQ",
     "cid": "10726541034605074938",
@@ -32,7 +32,7 @@
     "websiteStatus": "independent_http_site",
     "discoveryScore": 43,
     "recommendedAction": "audit_candidate",
-    "sourceQuery": "roofer in brisbane",
+    "sourceQuery": "roofer brisbane",
     "signals": {
       "hasPhone": true,
       "hasWebsite": true,
@@ -144,7 +144,7 @@
         "computed_at": "2026-05-13T07:13:52.520Z"
       }
     },
-    "batch_id": "places-roofer-in-brisbane-202605132244",
+    "batch_id": "places-roofer-brisbane-202605141757",
     "discovery_rank": 10,
     "google_places_provider": "official_api",
     "email": "sales@queenslandroofing.com.au",
@@ -198,6 +198,38 @@
       "at": "2026-05-13T13:15:25.091Z",
       "discoveryScore": 50,
       "recommendedAction": "skip"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141617",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T06:17:10.121Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141655",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T06:55:22.754Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141744",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T07:44:32.825Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605141757",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T07:57:28.273Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
     }
   ],
   "history": [
@@ -294,6 +326,42 @@
       "sub_status": null,
       "archive_reason": null,
       "note": "Graded A / T2"
+    },
+    {
+      "at": "2026-05-14T06:17:10.121Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141617",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T06:55:22.754Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141655",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T07:44:32.825Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141744",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T07:57:28.273Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605141757",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
     }
   ],
   "notes": [
@@ -314,7 +382,11 @@
   "enrichment_status": "complete",
   "batches": [
     "places-roofer-brisbane-202605132243",
-    "places-roofer-in-brisbane-202605132244"
+    "places-roofer-in-brisbane-202605132244",
+    "places-roofer-brisbane-202605141617",
+    "places-roofer-brisbane-202605141655",
+    "places-roofer-brisbane-202605141744",
+    "places-roofer-brisbane-202605141757"
   ],
   "merged_from": [
     "domain_queenslandroofing.com.au"
@@ -324,8 +396,5 @@
   "project_thread_opened_at": "2026-05-13T23:49:19.805Z",
   "sales_stage": "demo-ready",
   "phase": "design-ready",
-  "phaseChangedAt": "2026-05-14T04:37:29.618Z",
-  "discord_thread_id": "1504341868027056249",
-  "discord_profile_message_id": "1504341868027056249",
-  "discord_thread_opened_at": "2026-05-14T04:38:25.573Z"
+  "phaseChangedAt": "2026-05-14T04:37:29.618Z"
 }

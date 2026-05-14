@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherpRoof Restorations – Website Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.7;
+            color: #2c2c2c;
+            background: #faf8f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 50px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        h1, h2, h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #444;
+        }
+        
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+        
+        .hero {
+            text-align: center;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid #e5e5e5;
+            margin-bottom: 3rem;
+        }
+        
+        .business-name {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 2rem 0;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+        
+        .score-label {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            color: #555;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .strength-item, .issue-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .strength-item::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        
+        .issue-item::before {
+            content: "!";
+            position: absolute;
+            left: 0;
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.3rem;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        
+        .issue-title {
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 0.3rem;
+        }
+        
+        .issue-impact {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .quote-box {
+            background: #f8f8f8;
+            border-left: 4px solid #3498db;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .outcome-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .outcome-list li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .outcome-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .closing {
+            background: #f0f7ff;
+            border: 2px solid #3498db;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            border-radius: 8px;
+        }
+        
+        .closing p {
+            margin-bottom: 0.8rem;
+        }
+        
+        .contact-info {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c2c2c;
+        }
+        
+        strong {
+            color: #1a1a1a;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 25px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .score-circle {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div class="business-name">WeatherpRoof Restorations</div>
+            <h1>Your Website Review</h1>
+            
+            <div class="score-container">
+                <div class="score-circle">61</div>
+                <div class="score-label">out of 100</div>
+            </div>
+            
+            <p class="tagline">You've built a brilliant reputation—but your website isn't keeping up</p>
+        </div>
+
+        <div class="section">
+            <h2>What's Working Well</h2>
+            
+            <div class="strength-item">
+                <p><strong>Your reputation is exceptional.</strong> With 134 reviews averaging 4.9 stars, you've earned the trust of Brisbane homeowners. Customers consistently praise your honesty, professionalism, and clear communication—especially your willingness to give transparent assessments without upselling unnecessary work.</p>
+            </div>
+            
+            <div class="strength-item">
+                <p><strong>Your website loads quickly.</strong> On both mobile and desktop, your site performs well technically. Fast loading times mean visitors don't bounce before seeing what you offer.</p>
+            </div>
+            
+            <div class="strength-item">
+                <p><strong>You're using real imagery.</strong> The photo of your team member working on a roof builds immediate trust. It shows you're a legitimate, experienced operation—not a lead-generation site pretending to be a roofing company.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What's Holding You Back</h2>
+            
+            <div class="issue-item">
+                <div class="issue-title">Your phone number is hard to find</div>
+                <div class="issue-impact">Most people searching for roof repairs want to call, not fill out a form. Your phone number is tucked away in small text at the top of the page—easy to miss, especially on a mobile. When people can't find your number quickly, they click back and call the next company on Google.</div>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">Your quote form asks for too much information</div>
+                <div class="issue-impact">Right now visitors see eight separate fields to fill in, plus checkboxes and a text area with a typo. Research shows that every extra field you ask for reduces the number of people who'll complete it. Most folks just want to give you their name, number, and a quick description—they'll happily provide the rest when you call them back.</div>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">Too many buttons compete for attention</div>
+                <div class="issue-impact">Your homepage shows three different ways to contact you: a "Request a Quote" button in the header, a "Contact Us" button in the hero section, and the quote form on the right. When visitors see multiple options, they often freeze and pick none. One clear path—like a prominent phone number—gets better results.</div>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">Search engines can't read your business details</div>
+                <div class="issue-impact">When someone searches for "roof restoration near me," Google (and increasingly, ChatGPT and other AI tools) look for structured information about local businesses—your address, opening hours, services, and reviews. Your site doesn't include this in the format they expect, which means you're missing out on appearing in map results, knowledge panels, and AI-generated recommendations.</div>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">Your navigation is crowded</div>
+                <div class="issue-impact">Seven items across the top of your site make it harder for visitors to quickly find what they need. Simpler navigation—three or four clear options plus a standout phone number—helps people take action faster.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What Changes When We Fix This</h2>
+            
+            <p>Your reputation deserves a website that converts as well as you do. Here's what you can expect when we address these issues:</p>
+            
+            <ul class="outcome-list">
+                <li><strong>More phone calls from ready-to-book customers</strong> when your number is large, prominent, and tap-to-call on mobile</li>
+                <li><strong>Higher quote request completions</strong> when your form asks for just three simple fields instead of eight</li>
+                <li><strong>Better Google rankings and visibility</strong> when search engines can properly read and display your business information</li>
+                <li><strong>Increased trust</strong> when your 134 five-star reviews are featured prominently on the homepage, not buried</li>
+                <li><strong>Less confusion, faster decisions</strong> when visitors see one clear path to contact you instead of three competing options</li>
+                <li><strong>Visibility in AI search results</strong> when ChatGPT, Google AI, and other tools can accurately recommend you to local homeowners</li>
+            </ul>
+            
+            <div class="quote-box">
+                "Weatherproof Restoration was the only one that responded... I really appreciated his honesty and professionalism." — Joe (5 stars)
+            </div>
+            
+            <p>This is the kind of testimonial that should greet every visitor to your site. Your work speaks for itself—your website just needs to speak as clearly.</p>
+        </div>
+
+        <div class="closing">
+            <h2 style="margin-top: 0; border: none; font-size: 1.6rem;">Let's Talk About Your Website</h2>
+            <p>We'd love to show you exactly what we'd do for WeatherpRoof Restorations—no sales pressure, just a practical walkthrough of the improvements and what they'd mean for your business.</p>
+            <p><strong>Book a 30-minute website review call.</strong></p>
+            <p class="contact-info">We'll walk through your current site together, answer your questions, and show you what's possible.</p>
+        </div>
+    </div>
+</body>
+</html>

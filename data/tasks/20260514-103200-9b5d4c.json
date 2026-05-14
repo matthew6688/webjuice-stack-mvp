@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-103200-9b5d4c",
+  "created_at": "2026-05-14T10:32:00.876Z",
+  "updated_at": "2026-05-14T10:32:01.902Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_vantagepointroofing.com.au (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_vantagepointroofing.com.au"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 120000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 732,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T10:32:01.160Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_vantagepointroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T10:32:01.901Z",
+      "step": "cli.stream",
+      "detail": "sults\": [\n    {\n      \"entityKey\": \"domain_vantagepointroofing.com.au\",\n      \"slug\": \"vantage-point-roofing\",\n      \"md\": \"clients/vantage-point-roofing/v2/master.md\",\n      \"html\": null\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T10:32:01.902Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=732ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -1,7 +1,7 @@
 ---
 business_id: "domain_nbmr.com.au"
 business_name: "North Brisbane Metal Roofing Pty Ltd"
-niche: "roofer"
+niche: "roofing"
 city: "Brisbane"
 rating: 4.8
 review_count: 0
@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T21:16:22.174Z"
+generated_at: "2026-05-14T11:20:44.191Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -26,14 +26,14 @@ assets:
 
 # North Brisbane Metal Roofing Pty Ltd · 现状审计与重构提议
 
-> **null/100** · - · 行业：roofer · 地区：Brisbane · Google 评价：4.8★ （0 条）
+> **null/100** · - · 行业：roofing · 地区：Brisbane · Google 评价：4.8★ （0 条）
 
 ## 内部分级 · 运营优先看这段
 
 **投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- audit 未运行 · 默认 C 等待 audit 后重新分级
+- audit 未运行 · 默认 C
 
 **下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
@@ -46,8 +46,9 @@ assets:
 
 **线索来源 · 联系开场可用**:
 - **来源**: Google Maps (gosom 抓取)
-- **搜索关键词**: `roofer in brisbane`
-- **首次发现**: 2026-05-13
+- **搜索关键词**: `roofing in brisbane`
+- **首次发现**: 2026-05-14
+- **Batch**: `pipe-roofing-brisbane-202605142119`
 
 - 电话：0498478739
 - 地址：3/359 Gympie Rd P.O.B, Unit 50, Kedron QLD 4031

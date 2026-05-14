@@ -410,6 +410,49 @@ export async function openProjectThread(entityKey, { fetchImpl = fetch } = {}) {
 }
 
 /**
+ * V3 D43 cycle-5 (2026-05-14 · Matthew): Rename the entity's Discord thread title
+ * to the current entity state. Used after grade lands to replace [?] with [A/B/C/D].
+ *
+ * Idempotent: skip if title already matches.
+ */
+export async function renameThreadToCurrentTitle(entityKey, { fetchImpl = fetch } = {}) {
+  const entity = readEntity(entityKey);
+  if (!entity) return { ok: false, reason: 'entity_not_found' };
+  const threadId = entity.project_thread_id || entity.discord_thread_id;
+  if (!threadId) return { ok: false, reason: 'no_thread_id' };
+  const channel = entity.project_thread_id ? 'projects' : 'leads';
+  const newTitle = buildLeadThreadName(entity, channel);
+  if (isDryRun()) {
+    return { ok: true, dry_run: true, intended: { endpoint: `PATCH ${DISCORD_API}/channels/${threadId}`, name: newTitle } };
+  }
+  try {
+    const cur = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+      headers: { Authorization: `Bot ${botToken()}`, 'User-Agent': 'profitslocal-lead-thread-sync' },
+    });
+    if (cur.ok) {
+      const data = await cur.json();
+      if (data.name === newTitle) return { ok: true, unchanged: true, threadId, title: newTitle };
+    }
+    const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bot ${botToken()}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'profitslocal-lead-thread-sync',
+      },
+      body: JSON.stringify({ name: newTitle }),
+    });
+    if (!r.ok) {
+      const t = await r.text();
+      return { ok: false, reason: `discord_${r.status}`, body: t };
+    }
+    return { ok: true, threadId, title: newTitle };
+  } catch (err) {
+    return { ok: false, reason: err.message };
+  }
+}
+
+/**
  * V3 D34 (2026-05-14): Archive + lock a thread.
  * Posts a final "closed" message, then PATCHes archived=true + locked=true.
  * Idempotent.

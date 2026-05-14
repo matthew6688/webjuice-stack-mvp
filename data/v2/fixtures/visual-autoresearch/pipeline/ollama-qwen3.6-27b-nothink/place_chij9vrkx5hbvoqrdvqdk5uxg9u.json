@@ -1,0 +1,114 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-haiku-4-5-20251001",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 172829,
+  "parsedJson": {
+    "freshness_score": 5,
+    "trust_score": 5,
+    "conversion_score": 4,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The site leads with strong 24/7 emergency messaging and a prominent phone number, but a 5-field lead form, a hidden mobile submit button, vague CTA copy, and absent social proof collectively prevent local-search visitors from taking action.",
+    "issues": [
+      {
+        "id": "mobile_cta_below_fold",
+        "severity": "critical",
+        "title": "Form submit button invisible on mobile without scrolling",
+        "what_observed": "On mobile, the 'Get a FREE Quote' form displays Name, Phone, Email, and Subject fields that consume the full screen height; the 'Message' field and the submit button are cut off below the bottom edge of the viewport at initial load.",
+        "why_problem": "A local customer with a burst pipe or blocked drain is in distress and expects an immediate action button on load. If the next step requires scrolling past multiple form fields they haven't filled in yet, most people abandon the page and go back to Google to call a competitor who makes it easier.",
+        "what_correct_looks_like": "A full-width 'Call Now — 0468 515 933' tap-to-call button (minimum 52px height) pinned above the fold as the primary CTA, with a secondary 'Get a Free Quote' link that reveals a shortened 2-field form below it. The submit button must be visible without any scrolling.",
+        "how_to_fix_in_redesign": "On mobile: pin a sticky 'Call Now' button to the bottom of the viewport. Replace the 5-field inline form with a 2-field version (Name + Phone only) that fits entirely on screen with the submit button visible. Move Email, Subject, and Message to a non-urgent enquiry page.",
+        "plain_explanation": "在手机上打开网站后，'提交'按钮被挤到了屏幕下方看不见的地方，用户需要向下滚动很长才能找到它。",
+        "customer_impact": "超过70%的本地搜索来自手机。如果'立即联系'的按钮藏在屏幕底部，大多数人会直接返回Google拨打竞争对手的电话，每天可能流失多个有意向的客户。"
+      },
+      {
+        "id": "no_social_proof_above_fold",
+        "severity": "critical",
+        "title": "Zero reviews, ratings, or trust badges in hero section",
+        "what_observed": "The entire visible hero area on both desktop and mobile contains only the headline, the dashed '$50 off' button, the lead form, and a starburst badge. No Google star rating, review count, years in business, or plumber's licence number appears anywhere in the above-fold area.",
+        "why_problem": "A visitor who arrived from a Google Maps search has already seen a star rating on the listing. When they land on the site and find no confirmation that other customers have had good experiences, they have to take the business's claims on faith. Most don't — they go back to a listing that shows proof.",
+        "what_correct_looks_like": "A one-line trust strip directly below the H1 reading: ★★★★★ 4.8 · 120+ Google Reviews | Licensed & Insured | 15+ Years in Sydney. Small text (12–13px) in a contrasting colour is sufficient; it does not need to be large.",
+        "how_to_fix_in_redesign": "Add a trust bar between the headline and the form on both desktop and mobile. Pull the real Google review count and average rating from the GBP listing. Include a Licensed Plumber badge and the number of years in business. Render it in one horizontal line on desktop, two stacked lines on mobile.",
+        "plain_explanation": "网站首屏完全没有显示客户评价或Google星级评分，新访客无法快速判断这家公司是否值得信任。",
+        "customer_impact": "88%的消费者认为在线评价与亲友推荐同等可信。没有评价展示，访客很可能跳回Google搜索有评价的竞争对手，直接造成询价流失。"
+      },
+      {
+        "id": "vague_cta_label",
+        "severity": "major",
+        "title": "Form submit button reads 'GET A JOB DONE' — unclear intent",
+        "what_observed": "The pink submit button at the bottom of the lead form displays the label 'GET A JOB DONE' in uppercase white text.",
+        "why_problem": "A visitor filling out a plumbing quote form expects the button to confirm what happens next — 'Send My Request', 'Book a Plumber', or 'Get My Free Quote'. 'Get a Job Done' sounds like a project-management app, not a service booking. Ambiguous button labels create a moment of hesitation that reduces form completions.",
+        "what_correct_looks_like": "A button label that mirrors the visitor's intent: 'Book My Plumber Now', 'Send My Quote Request', or 'Get My Free Quote'. One clear verb, under 5 words, same hot-pink colour for brand consistency.",
+        "how_to_fix_in_redesign": "Rename the submit button to 'Book My Plumber Now'. No other styling change required — the colour and size are fine.",
+        "plain_explanation": "表单上的提交按钮写着'完成工作'，客户看了会困惑，不确定点击后会发生什么事情。",
+        "customer_impact": "不清晰的按钮文字会让用户犹豫是否点击，研究显示使用明确行动号召的按钮可以将表单提交率提升25-40%。"
+      },
+      {
+        "id": "five_field_form_too_much_friction",
+        "severity": "major",
+        "title": "5-field lead form creates excessive friction for emergency intent",
+        "what_observed": "The 'Get a FREE Quote' hero form has five sequential input fields: Name, Phone, Email, Subject, and Message — all required before reaching the submit button.",
+        "why_problem": "A customer with a burst pipe is not in the mindset to write a message and provide a subject line. Each additional field is a reason to give up. Emergency-intent visitors want to provide a phone number and be called back; they are not filling out a detailed enquiry.",
+        "what_correct_looks_like": "A two-field form — Name and Phone — with a visible 'Book My Plumber Now' button. A note below the form: 'We'll call you within 15 minutes.' Move detailed enquiry fields to a separate non-urgent page form.",
+        "how_to_fix_in_redesign": "Strip the hero form to Name + Phone only. Remove Email, Subject, and Message from this form entirely. Add a promise of callback speed ('We'll call within 15 min') beneath the submit button.",
+        "plain_explanation": "联系表格有5个填写项，对于需要紧急修水管的客户来说太繁琐了，大多数人会中途放弃。",
+        "customer_impact": "表格每多一个字段，完成率平均下降约11%。从5个字段减少到2个，潜在询价提交量预计可增加30-40%。"
+      },
+      {
+        "id": "dashed_button_looks_dated",
+        "severity": "major",
+        "title": "Dashed-border '$50 off' pill reads as unfinished design",
+        "what_observed": "A pill-shaped button with a white dashed border and no fill displays the text '$50 off online bookings' in the left portion of the hero on both desktop and mobile screenshots.",
+        "why_problem": "Dashed borders on interactive elements were a visual trend circa 2012–2016. Today they read as an unstyled HTML element or a placeholder, not a deliberate design choice. Visitors may not recognize it as clickable, and its dated look signals that the website — and by extension the business — may not be current or professional.",
+        "what_correct_looks_like": "A solid-fill badge or pill in a secondary brand colour (e.g., white text on a semi-transparent dark background, or a yellow/amber badge) with clean typography. Positioned as a supporting discount callout, not a button. No dashed border.",
+        "how_to_fix_in_redesign": "Replace the dashed-border pill with a flat solid badge (white background, dark text, or amber) reading '$50 Off — Online Bookings'. Position it as a small tag below the headline, not as a primary interactive element.",
+        "plain_explanation": "网站上的'优惠50元'按钮用了虚线边框，看起来像是未完成或临时占位的设计，显得不够专业。",
+        "customer_impact": "75%的用户会根据视觉设计判断企业是否可信。过时的设计细节会让首次访问的用户在点击咨询之前产生疑虑，降低询价意愿。"
+      },
+      {
+        "id": "starburst_badge_looks_spammy",
+        "severity": "minor",
+        "title": "Pink starburst badge undermines professional credibility",
+        "what_observed": "A hot-pink starburst/sunburst graphic overlaps the top-right corner of the lead form on desktop, and the bottom-right of the hero on mobile, reading 'We're available 24 HRS 7 DAYS' in small white text.",
+        "why_problem": "Starburst badges are strongly associated with discount flyers, infomercials, and clearance promotions. On a professional trade services website they signal 'promotional' rather than 'credible and established', which is the opposite of what a distressed customer looking for a reliable plumber needs to feel.",
+        "what_correct_looks_like": "The same information expressed as a clean pill badge with a clock icon, or incorporated into the headline as it already is ('24/7 Emergency'). A simple rounded chip with '⏱ 24/7 Emergency' in white on a dark or teal background would carry the message without the promotional feel.",
+        "how_to_fix_in_redesign": "Remove the starburst graphic entirely. The '24/7 Emergency' headline already communicates availability. If a badge is needed, replace it with a small rounded chip: a clock icon + '24/7 Emergency Response' in the trust bar below the headline.",
+        "plain_explanation": "网站上的粉红色星形徽章写着'24小时7天服务'，这种设计风格让人联想到超市促销传单，显得不够专业。",
+        "customer_impact": "视觉上过于'促销化'的设计会降低品牌专业度感知，可能让首次访问的客户对服务质量产生疑虑，从而选择看起来更专业的竞争对手。"
+      },
+      {
+        "id": "pink_accent_color_trade_mismatch",
+        "severity": "minor",
+        "title": "Hot-pink brand accent is unusual for a trade services business",
+        "what_observed": "The dominant accent colour across the site is a bright hot-pink/magenta, applied to the logo mark, the header 'GET A FREE QUOTE!' button, the form submit button, and the starburst badge.",
+        "why_problem": "Hot pink is strongly associated with beauty, fashion, and lifestyle brands. For a plumbing and drainage trade business, it creates a subtle cognitive dissonance — the colour doesn't match the visitor's mental model of a professional trades company — which can erode confidence in the brand's expertise before a word is read.",
+        "what_correct_looks_like": "A bold, energetic accent that still differentiates: deep orange (#FF6B35), a vivid teal (#00B4D8), or electric blue paired with the existing dark background. These colours carry the same energy as hot pink while fitting the trades industry context.",
+        "how_to_fix_in_redesign": "A/B test swapping all hot-pink accent instances to a bold orange (#FF6B35). Keep the dark hero background and bold typography unchanged — those are strong. The logo mark may need a minor recolour.",
+        "plain_explanation": "网站的主要强调色是亮粉红色，虽然醒目，但对于水管服务企业来说颜色选择有些不寻常，可能让部分客户对其专业性产生疑问。",
+        "customer_impact": "颜色会潜意识影响信任感。对于水管等服务行业，使用蓝色、橙色或深色系更容易让客户产生专业感，有助于提高询价转化率。"
+      }
+    ],
+    "positive_observations": [
+      "Phone number (0468 515 933) is displayed prominently in the header on both desktop and mobile, readable without scrolling and easy to tap",
+      "Bold '24/7 Emergency Plumbing & Maintenance' headline immediately communicates the core value proposition to a distressed visitor — no guessing what this business does",
+      "The lead form is embedded directly in the hero section on desktop, eliminating the need to navigate to a separate contact page to enquire"
+    ],
+    "redesign_priorities": [
+      "1. On mobile, add a full-width sticky 'Call Now — 0468 515 933' button above the fold and reduce the hero form to Name + Phone with the submit button visible without scrolling",
+      "2. Add a social proof trust bar below the hero headline showing Google star rating, review count, and licensed-plumber badge on both desktop and mobile",
+      "3. Rename 'GET A JOB DONE' to 'Book My Plumber Now', replace the dashed '$50 off' pill with a solid badge, and remove the starburst graphic"
+    ],
+    "confidence": 0.85
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 172829
+    }
+  ],
+  "tokensIn": 6,
+  "tokensOut": 9195,
+  "theoreticalCostUsd": 0.19280785
+}

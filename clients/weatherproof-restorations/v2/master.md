@@ -16,7 +16,7 @@ visual_freshness: 4
 visual_trust: 5
 visual_conversion: 6
 review_trust_signal: "strong"
-generated_at: "2026-05-14T04:38:31.789Z"
+generated_at: "2026-05-14T11:34:12.098Z"
 assets:
   cloudinary_folder: null
   evidence_count: 7
@@ -31,21 +31,12 @@ assets:
 
 ## 内部分级 · 运营优先看这段
 
-**投入分级：** `B` 预览试探 — ChatGPT 生成 mockup hero 图 + 短邮件试反应
+**投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- moderate_candidate + 134 评论 + audit 61（仍有改进空间）
+- C · moderate_candidate · audit 61 · 134 评论 4.9★ (未达 B 标准)
 
-**产品档位：** `T3` 多页 / 定制（quote separately）
-
-- 134★4.9 强口碑底子
-- 已投放过广告（懂月度预算）
-- 数字成熟度 4/6
-- 评论 trust strong
-
-**建议报价：** 一次性 $1000+ 定制报价
-
-**下一步行动：** 用 ChatGPT Image / Gemini Imagen 生成 hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1 次跟进。回应后升级到 A 档处理。
+**下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
 ## 一、店家现状速览
 

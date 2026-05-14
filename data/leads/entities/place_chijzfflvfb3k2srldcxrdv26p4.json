@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-13T07:17:47.417Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-14T04:38:32.209Z",
+  "lastStatusAt": "2026-05-14T11:25:14.335Z",
   "identifiers": {
     "place_id": "ChIJzffLvfb3k2sRldcXRdV26p4",
     "cid": "11451095660902209429",
@@ -269,31 +269,95 @@
       "sub_status": null,
       "archive_reason": null,
       "note": "Graded B / T2"
+    },
+    {
+      "at": "2026-05-14T11:25:14.335Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T11:28:58.639Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+      "note": ""
     }
   ],
   "notes": [
     "Graded B / T3",
-    "Graded B / T2"
+    "Graded B / T2",
+    "Graded C / -"
   ],
   "grade": {
-    "investment_level": "B",
-    "product_tier": "T2",
-    "recommended_pricing": {
-      "one_time": null,
-      "annual": "$799/年",
-      "monthly": null,
-      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
-    },
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-14T04:38:32.209Z"
+    "graded_at": "2026-05-14T11:25:14.333Z"
   },
-  "phase": "design-ready",
-  "phaseChangedAt": "2026-05-14T04:38:32.212Z",
-  "discord_thread_id": "1504015361526468671",
-  "discord_profile_message_id": "1504015361526468671",
-  "discord_thread_opened_at": "2026-05-13T07:00:05.595Z",
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-14T11:28:58.639Z",
   "project_thread_id": "1504269388377886885",
   "project_profile_message_id": "1504269388377886885",
   "project_thread_opened_at": "2026-05-13T23:49:30.319Z",
-  "sales_stage": "demo-ready"
+  "sales_stage": "demo-ready",
+  "discord_thread_id": "1504444704140562525",
+  "discord_profile_message_id": "1504444704140562525",
+  "discord_thread_opened_at": "2026-05-14T11:26:08.958Z",
+  "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+  "qualification": {
+    "computed_at": "2026-05-14T11:28:58.647Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 50 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": false,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": false,
+        "reason": "现网是 e-commerce (Shopify/WooCommerce/Magento) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": null,
+    "verdict": "archived",
+    "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+    "redesign_brief_path": "clients/weatherproof-restorations/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 10,
+      "sitemap_source": "/sitemap.xml",
+      "cost": 0.15
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": null
+  }
 }

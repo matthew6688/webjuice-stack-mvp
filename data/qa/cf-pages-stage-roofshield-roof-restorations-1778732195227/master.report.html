@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Roofshield Roof Restorations · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Roofshield Roof Restorations · 现状审计与重构提议</h1>
+</header>
+<h1 id="roofshield-roof-restorations-现状审计与重构提议">Roofshield Roof
+Restorations · 现状审计与重构提议</h1>
+<blockquote>
+<p><strong>52/100</strong> · strong_redesign · 行业：roofing ·
+地区：Brisbane · Google 评价：4.4★ （51 条）</p>
+</blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>A</code> 全攻 — 完整 OD redesign +
+个性化销售流程</p>
+<p><strong>触发依据：</strong> - strong_redesign + 51 评论 + 4.4★</p>
+<p><strong>产品档位：</strong> <code>T2</code> 多页站</p>
+<ul>
+<li>业务中等复杂度 / 中等口碑 / 中等数字成熟度 — 多页架构合适</li>
+<li>51 评论 = 中等规模运营</li>
+<li>现有 153 页内容可迁移</li>
+<li>2 个业务分类 = 需要多页面分流</li>
+</ul>
+<p><strong>建议报价：</strong> 一次性 $3-6K</p>
+<p><strong>下一步行动：</strong> 跑完整 Open Design redesign brief +
+个性化 cold email（突出 audit 中最强论据）+ 报告/视频外发 + 3
+次跟进。报价主推 多页站。</p>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>审计结论：</strong> audit_score=52 → strong_redesign ·
+weakest: technical 35, gbp 37 · fired: no_https · 2 critical issues</p>
+<p><strong>已触发的 hard triggers：</strong> <code>no_https</code></p>
+<ul>
+<li>电话：1800 173 885</li>
+<li>地址：Unit 9/52 Aquarium Ave, Hemmant QLD 4174</li>
+<li>网站：<a
+href="http://www.roofshield.com.au/">http://www.roofshield.com.au/</a></li>
+<li>网站状态：<code>independent_http_site</code></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The website uses a standard, slightly dated template with a generic
+stock photo and a cluttered navigation menu that distracts from the
+primary call to action.</p>
+</blockquote>
+<p>新鲜度 <strong>4/10</strong> · 信任度 <strong>5/10</strong> ·
+转化准备度 <strong>6/10</strong> · 设计年代 <code>outdated</code></p>
+<p><strong>值得保留的优点：</strong> - The logo is clear and legible,
+establishing brand identity. - The value proposition text (‘Roof
+Restorations | Roof Painting…’) clearly lists the services offered. -
+The ‘Get Your Free Quote’ button is present and visible above the
+fold.</p>
+<h2 id="四客户在-google-上怎么说">四、客户在 Google 上怎么说</h2>
+<blockquote>
+<p>Customers are polarized, with many praising the professionalism,
+communication, and quality of work, while others report severe issues
+with warranty enforcement, poor project management, and unfinished
+jobs.</p>
+</blockquote>
+<p><strong>一致夸赞：</strong> <code>excellent communication</code> ·
+<code>friendly and respectful staff</code> ·
+<code>detailed process explanation</code> ·
+<code>high-quality workmanship</code> ·
+<code>prompt assistance</code></p>
+<p><strong>抱怨 / 短板：</strong>
+<code>warranty enforcement difficulties</code> ·
+<code>poor project management</code> ·
+<code>messy work site cleanup</code> ·
+<code>substandard paint application</code></p>
+<p><strong>可直接放上 redesign 后网站的 quote：</strong></p>
+<blockquote>
+<p>“Rich was informative and helpful and worked to get us good value. He
+explained the entire process in detail.” — <strong>Deidre</strong>,
+★★★★★</p>
+<p><em>放哪：Testimonials section highlighting transparency and
+value</em></p>
+</blockquote>
+<blockquote>
+<p>“Great contact throughout and photos sent to me at each visit to help
+me understand the issues and resolutions.” — <strong>Paul</strong>,
+★★★★★</p>
+<p><em>放哪：Trust section emphasizing communication and customer
+care</em></p>
+</blockquote>
+<blockquote>
+<p>“We could not be happier with the workmanship, attention to detail
+and politeness of all staff and tradespeople.” —
+<strong>Christine</strong>, ★★★★★</p>
+<p><em>放哪：Hero section proof of quality and professionalism</em></p>
+</blockquote>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-3-项立刻在伤害成交">关键问题 · 3
+项（立刻在伤害成交）</h3>
+<h3 id="关键-https_enabled">关键 · https_enabled</h3>
+<p><strong>技术事实</strong></p>
+<p>http only</p>
+<p><strong>普通话翻译</strong></p>
+<p>你的网站没有 HTTPS —
+浏览器会在地址栏显示「不安全」标记，部分浏览器（Chrome /
+Firefox）甚至会弹出全屏警告挡住页面。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 早在 2018 年起把 HTTPS 列为搜索排名因素，没有 HTTPS
+直接拉低自然搜索可见度；且超过 80%
+的访客看到「不安全」标识会立刻关掉。对你这种 51 条 Google
+评价积累起来的口碑来说，访客在网址栏就被劝退，等于浪费了所有 GBP
+流量。</p>
+<h3 id="关键-phone_visible_above_fold">关键 ·
+phone_visible_above_fold</h3>
+<p><strong>技术事实</strong></p>
+<p>phone hidden below fold or missing</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 =
+这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。</p>
+<h3 id="关键-hero-text-is-hard-to-read-against-background">关键 · Hero
+text is hard to read against background</h3>
+<p><strong>技术事实</strong></p>
+<p>The large red headline ‘ROOFSHIELD - ROOF RESTORATION’ and the white
+subtext are placed directly over a busy aerial photo of a house. The red
+text blends with the reddish tones of the roof tiles, and the white text
+lacks sufficient contrast against the bright sky and white walls.</p>
+<p><strong>普通话翻译</strong></p>
+<p>大标题文字直接压在复杂的背景图上，导致文字颜色（红色和白色）与背景（屋顶和天空）混在一起，很难看清。</p>
+<p><strong>对客户的影响</strong></p>
+<p>访客在几秒钟内无法看清您提供什么服务，会直接关闭网页。这会导致高达
+40-60% 的潜在访客流失，因为他们觉得网站看起来不专业或难以阅读。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A dark semi-transparent overlay (e.g., black at 40% opacity) behind
+the text, or a solid dark background section for the headline to ensure
+the white text pops. The red accent should be reserved for buttons, not
+large body text.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Apply a dark gradient overlay to the hero image to ensure the white
+headline text has a contrast ratio of at least 7:1. Move the red color
+to the CTA buttons instead of the headline.</p>
+<h3 id="主要问题-5-项影响转化的明显短板">主要问题 · 5
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">主要 · homepage_title_clear</h3>
+<p><strong>技术事实</strong></p>
+<p>title=‘# ROOFSHIELD - ROOF RESTORATION’ contains-name=true
+contains-niche=false</p>
+<p><strong>普通话翻译</strong></p>
+<p>你网站的浏览器标签 title 没把业务名字 +
+服务关键词写清楚（比如该写「Roofshield Roof Restorations - roofing
+Brisbane」，但目前是泛泛一句）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 +
+即使排上来客户也不知道是不是匹配的服务。SEO
+最便宜的修复，但很多本地企业完全没做。</p>
+<h3 id="主要-local_schema_markup">主要 · local_schema_markup</h3>
+<p><strong>技术事实</strong></p>
+<p>no LocalBusiness JSON-LD</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI
+知道你是本地企业、地址、电话、营业时间的标准格式）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google「附近的服务」「Knowledge Panel」「AI
+Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧
+Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT
+引用本地商家时也是基于这些数据。</p>
+<h3 id="主要-generic-stock-photo-lacks-local-relevance">主要 · Generic
+stock photo lacks local relevance</h3>
+<p><strong>技术事实</strong></p>
+<p>The main banner image is a generic aerial shot of a suburban house
+with a metal roof. It looks like a stock photo rather than a real
+project completed by Roofshield in Brisbane.</p>
+<p><strong>普通话翻译</strong></p>
+<p>首页的大图看起来像是网上下载的通用素材，而不是你们在布里斯班实际做过的工程案例。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地客户更信任有真实案例展示的公司。使用通用图片会让客户怀疑你们是否是本地公司，从而降低信任度，导致他们选择竞争对手。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A high-quality photo of a real Roofshield team member working on a
+roof in a recognizable Brisbane suburb, or a ‘Before &amp; After’ slider
+of a local restoration project.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Replace the stock image with a real photo of a recent job site in
+Brisbane. Add a caption like ‘Restoring roofs in [Suburb Name]’ to
+anchor the location.</p>
+<h3 id="主要-navigation-menu-is-too-crowded-and-distracting">主要 ·
+Navigation menu is too crowded and distracting</h3>
+<p><strong>技术事实</strong></p>
+<p>The top navigation bar contains 8-9 menu items (Roofshield, Process,
+Repairs, About, Case studies, Gallery, Blog, Contact) spread across two
+rows, plus a ‘Get Quote’ button. The text is small and dense.</p>
+<p><strong>普通话翻译</strong></p>
+<p>顶部的导航菜单选项太多，排成了两行，显得非常拥挤，让用户不知道该点哪里。</p>
+<p><strong>对客户的影响</strong></p>
+<p>过多的选项会让访客感到困惑，分散他们对‘获取报价’这一核心目标的注意力。简化菜单可以引导用户更快地联系您。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A simplified menu with max 4-5 items (Services, About, Gallery,
+Contact). Secondary items like ‘Blog’ or ‘Process’ should be hidden in a
+dropdown or footer.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Consolidate the menu. Keep only ‘Services’, ‘Gallery’, ‘About’, and
+‘Contact’. Move ‘Blog’ and ‘Process’ to the footer or a dropdown under
+Services.</p>
+<h3 id="主要-call-to-action-buttons-lack-visual-hierarchy">主要 ·
+Call-to-action buttons lack visual hierarchy</h3>
+<p><strong>技术事实</strong></p>
+<p>There are two buttons in the hero section: ‘CALL US TODAY’ and ‘GET
+YOUR FREE QUOTE’. Both are identical in style (white outline, white
+text). There is no visual distinction between the primary and secondary
+action.</p>
+<p><strong>普通话翻译</strong></p>
+<p>两个按钮长得一模一样，用户无法一眼看出哪个是最重要的操作。</p>
+<p><strong>对客户的影响</strong></p>
+<p>缺乏视觉引导会让用户犹豫不决。突出主要按钮（如获取报价）可以显著提高转化率，预计可提升
+10-20% 的点击率。</p>
+<p><strong>正确长啥样</strong></p>
+<p>One solid, high-contrast button (e.g., bright red or orange) for the
+primary action (‘Get Free Quote’), and a secondary outlined button for
+the less critical action (‘Call Us’).</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Make the ‘Get Your Free Quote’ button a solid red/orange fill with
+white text to make it pop. Keep ‘Call Us Today’ as an outlined
+button.</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>[视觉] 1. Improve hero text legibility by adding a dark overlay to
+the background image.</li>
+<li>[视觉] 2. Replace the generic stock photo with a real local project
+image to build trust.</li>
+<li>[视觉] 3. Simplify the navigation menu and create a clear visual
+hierarchy for the CTA buttons.</li>
+<li>[评论] Highlight the ‘photos at each visit’ feature in the service
+process section to address communication concerns.</li>
+<li>[评论] Use the ‘good value’ and ‘detailed explanation’ quotes to
+counter price sensitivity and build trust.</li>
+<li>[评论] Address warranty concerns proactively in an FAQ section,
+given the negative review about hoops to jump through.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>你的网站没有 HTTPS —
+浏览器对来访客户显示「不安全」，直接伤害信任</li>
+</ul>
+<h2 id="真实速度数据-google-pagespeed-insights">真实速度数据 · Google
+PageSpeed Insights</h2>
+<p>我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是
+<strong>Google 自己</strong>对你网站打的分，包括过去 28 天
+<strong>真实访客</strong>的网络体验数据（CRUX field data）。</p>
+<h3 id="移动端mobile">移动端（mobile）</h3>
+<p><strong>Lighthouse 分数（实验室）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>性能 (Performance)</td>
+<td><strong>43/100</strong></td>
+</tr>
+<tr>
+<td>可访问性 (Accessibility)</td>
+<td>91/100</td>
+</tr>
+<tr>
+<td>最佳实践 (Best Practices)</td>
+<td>54/100</td>
+</tr>
+<tr>
+<td>SEO</td>
+<td>92/100</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab 关键指标：</strong> LCP <code>10.6s</code> · FCP
+<code>2.7s</code> · CLS <code>0.008</code> · TBT <code>769ms</code></p>
+<p><strong>Google 建议的优化项（按节省时间排序，前 2）：</strong></p>
+<ul>
+<li><strong>Reduce unused JavaScript</strong> — 节省 3600ms · 节省
+4194KB</li>
+<li><strong>Reduce unused CSS</strong> — 节省 150ms · 节省 52KB</li>
+</ul>
+<h3 id="桌面端desktop">桌面端（desktop）</h3>
+<p><strong>Lighthouse 分数：</strong> Performance 42 · A11y 88 · Best
+Practices 58 · SEO 92</p>
+<h2 id="seo-迁移评估-与-运营活跃度">SEO 迁移评估 与 运营活跃度</h2>
+<p>客户最常担心的问题：「我重做网站，会不会丢掉 Google
+排名？」这一段直接回答。</p>
+<h3 id="现有页面盘点">现有页面盘点</h3>
+<ul>
+<li><strong>Sitemap 状态：</strong> 已检测到 →
+<code>https://roofshield.com.au/sitemap_index.xml</code></li>
+<li><strong>页面总数：</strong> 153</li>
+<li><strong>迁移复杂度：</strong> 高（&gt;80 页 — 需要分阶段迁移 + 完整
+redirect map）</li>
+</ul>
+<p><strong>页面分类：</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>顶层页面</td>
+<td>99</td>
+</tr>
+<tr>
+<td>内页</td>
+<td>38</td>
+</tr>
+<tr>
+<td>作品集 / 案例</td>
+<td>9</td>
+</tr>
+<tr>
+<td>关于 / 团队</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Blog 文章</td>
+<td>1</td>
+</tr>
+<tr>
+<td>首页</td>
+<td>1</td>
+</tr>
+<tr>
+<td>FAQ</td>
+<td>1</td>
+</tr>
+<tr>
+<td>联系 / 报价</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sitemap lastmod 跨度：</strong> 最旧 2023-07-05 → 最新
+2026-05-10</p>
+<p><strong>Redirect 计划承诺：</strong> redesign 上线时我们会附一份 50
+条 1:1 redirect 表（旧 URL → 新 URL），保证 Google
+已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。</p>
+<h3 id="运营活跃度">运营活跃度</h3>
+<ul>
+<li><strong>整体活跃度：</strong> 活跃（30 天内有更新） （最近一次更新 1
+天前）</li>
+<li><strong>Blog 板块：</strong> 有，共 1 篇文章</li>
+<li><strong>社交媒体链接：</strong> 网站上引用了 2 个平台 — facebook,
+linkedin</li>
+</ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<ul>
+<li><strong>域名”在线已”约：</strong> 23 年（Wayback 首次快照 2003-03-24
+起算（.au 域名无公开创建日期））— 老域名 = 多年 SEO 资产，redesign 时
+redirect map 必须做对</li>
+<li><strong>Wayback Machine 快照：</strong> 149 条（2003-03-24 →
+2026-03-05）</li>
+</ul>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> 已配置</li>
+<li><strong>DKIM (邮件签名)：</strong> 已配置（selectors: default,
+selector1, s1, s2）</li>
+<li><strong>DMARC (策略)：</strong> 已配置（policy:
+<code>none</code>）</li>
+<li><strong>整体邮件投递信誉：</strong> <code>strong</code> (SPF + DKIM
++ DMARC 齐全)</li>
+</ul>
+<h2 id="技术栈与营销基建">技术栈与营销基建</h2>
+<p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
+<ul>
+<li><strong>网站平台 (CMS)：</strong>
+WordPress（迁移复杂度参考；WordPress / Wix / Squarespace
+这类有标准导出工具，custom-coded 会复杂）</li>
+<li><strong>分析工具：</strong> 未检测到 —
+客户目前看不到任何流量数据，等于在盲飞</li>
+<li><strong>广告 Pixel：</strong> 未检测到 — 暂未投放追踪型广告</li>
+</ul>
+<p><strong>数字成熟度打分：</strong> 1 / 6 （低 —
+客户对网站的认知是「有就行」，需要先讲清楚一份能赚钱的网站长什么样）</p>
+<h2 id="ai-时代可发现性-geo-readiness">AI 时代可发现性 · GEO
+Readiness</h2>
+<p>GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI
+Overviews 这些 AI
+搜索产品<strong>不像传统搜索引擎那样按”关键词排名”工作</strong>，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在
+AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。</p>
+<p><strong>AI 可发现性总分：</strong> 55 / 100 — AI agent
+抓取部分支持，但关键 schema / 凭证 / FAQ 缺失</p>
+<h3 id="已经做到的6-项">已经做到的（6 项）</h3>
+<ul>
+<li>[PASS] <code>localbusiness_schema</code> — Organization JSON-LD
+present (LocalBusiness preferred for local services)</li>
+<li>[PASS] <code>breadcrumb_schema</code> — BreadcrumbList JSON-LD
+present</li>
+<li>[PASS] <code>semantic_landmarks</code> — 6 semantic landmarks
+present: &lt;main, &lt;nav, &lt;header, &lt;footer, &lt;article,
+&lt;section</li>
+<li>[PASS] <code>eeat_business_credentials</code> — 4/4 credentials in
+copy: ABN, license/QBCC, years-in-business, insurance</li>
+<li>[PASS] <code>eeat_warranty_trust</code> — warranty/guarantee
+mentioned</li>
+<li>[PASS] <code>jsonld_at_least_one</code> — 6 JSON-LD block(s)
+detected on page</li>
+</ul>
+<h3 id="还缺的6-项-这些是-redesign-时一并补上的标准动作">还缺的（6 项 —
+这些是 redesign 时一并补上的标准动作）</h3>
+<ul>
+<li>[缺失] <code>llms_txt_present</code> (5 分) — no /llms.txt at
+standard path</li>
+<li>[缺失] <code>ai_bot_robots_policy</code> (5 分) — robots.txt has no
+explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)</li>
+<li>[缺失] <code>service_schema</code> (10 分) — no Service JSON-LD</li>
+<li>[缺失] <code>faqpage_schema</code> (10 分) — no FAQPage JSON-LD
+(loses AI Overview / featured snippet eligibility)</li>
+<li>[缺失] <code>aggregaterating_schema</code> (5 分) — no
+AggregateRating JSON-LD (★ rating not shown in search snippets)</li>
+<li>[缺失] <code>faq_qa_pattern</code> (10 分) — 0 question-style
+heading(s) found (Q&amp;A format helps AI extraction)</li>
+</ul>
+<blockquote>
+<p><strong>销售切入：</strong> 「ChatGPT 现在每月 30
+亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI
+回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是
+55/100。」</p>
+</blockquote>
+<h2 id="业务规模信号-内部筛选用">业务规模信号 · 内部筛选用</h2>
+<p><strong>注：这一段只给运营内部看，不进入客户报告。</strong>
+用来判断这个 lead 是不是匹配我们「小网站 / 多批量 /
+快上线」的产品定位。</p>
+<ul>
+<li><strong>规模信号汇总：</strong> 小型客户特征</li>
+<li><strong>客户分级：</strong> <code>small</code> —
+小型，符合我们标准产品包定位</li>
+<li><strong>建议定价档：</strong> 标准包 $3-6K（符合我们核心产品）</li>
+</ul>
+<p><strong>触发依据：</strong> - Google 评价 51 条（≥50，有规模基础） -
+网站页面数 153（≥100，中等复杂度）</p>
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>ollama-qwen3.6-27b-nothink</code></li>
+<li>Review source:
+<code>Google Places Place Details · most_relevant</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

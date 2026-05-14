@@ -1,1 +1,1748 @@
-{}
+{
+  "decisions": [
+    {
+      "at": "2026-05-14T06:17:21.404Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网站域名、地址核心信息完全一致，业态均为屋顶修复，仅地址格式与城市描述略有差异，属同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0432254975"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "address",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:17:25.451Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、网站域名及业态完全一致，仅地址格式略有差异，属于同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "trustedroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:17:37.791Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、地址及业态完全一致，仅地址格式与城市描述略有差异，属同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0432254975"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:17:56.896Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、网址及地址核心信息完全一致，业态均为屋顶修复，仅地址格式略有差异，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "trustedroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:18:06.637Z",
+      "k1": "place_chijbwkegeqfkwsrcih6mkenmim",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、店名完全一致，业态相同。地址差异可能因搬迁或注册地与实际经营地不同，属同一家店。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "name",
+        "website",
+        "niche",
+        "business_type"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T06:18:11.470Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、名称及业态完全一致，属同一家。地址差异可能因搬迁或注册信息未同步导致，非不同商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "name",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T06:55:31.866Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站完全一致，业态均为屋顶服务，仅地址格式略有差异，判定为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0449168985"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:55:36.391Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站完全一致，业态均为屋顶工程，仅地址格式与 place_id 存在数据源差异，判定为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0498478739"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:55:40.791Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶修复，属同一家商家，仅地址格式略有差异。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0730628404"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:55:45.242Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、网站域名及商户名称完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "1300734148"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "name",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:55:49.570Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、地址核心信息完全一致，业态均为屋顶修复，仅地址格式与城市描述略有差异，属同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0432254975"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "address",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:55:53.853Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、域名及商户名称完全一致，业态相同，仅地址格式微调，确认为同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0735062534"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "name",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:56:13.576Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，业态均为屋顶服务，仅地址格式略有差异，判定为同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "aceroofingservice.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:56:18.428Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，业态均为屋顶安装，仅地址格式与 place_id 存在数据源差异，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "nbmr.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:56:23.001Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，仅地址格式与 place_id 存在数据源差异，属同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "proroofrestorationbrisbane.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:56:27.829Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、网址及地址完全一致，且触发域名为同一网站，虽 place_id 仅 B 有，但核心实体特征高度重合，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "rooroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:56:32.131Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、域名及业态完全一致，仅地址格式略有差异，确认为同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "trustedroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:56:36.580Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、域名及业务类型完全一致，仅地址格式略有差异，属同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "vantagepointroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:56:46.573Z",
+      "k1": "place_chijbwkegeqfkwsrcih6mkenmim",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、网站及行业完全一致，均位于 Gold Coast 地区。地址差异可能因搬迁或登记点不同导致，非核心区分因素。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "niche",
+        "city"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id",
+        "entityKey"
+      ]
+    },
+    {
+      "at": "2026-05-14T06:56:51.514Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、名称及业态完全一致，属同一家。地址差异可能因搬迁或注册信息未同步导致，非不同商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "name",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T06:57:03.054Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站完全一致，业态均为屋顶服务，仅地址格式略有差异，属于同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0449168985"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:07.731Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶工程，place_id 虽 A 缺失但 B 存在且匹配，属同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0498478739"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:12.409Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶修复，虽 ABN 缺失但不影响判断，确认为同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0730628404"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:16.964Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、网站域名及商户名称完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "1300734148"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "name",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:21.409Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网站域名、地址核心信息完全一致，业态均为屋顶修复，虽地址格式略有差异但不影响判定为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0432254975"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "address",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:25.914Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 1,
+      "reasoning": "电话、地址、域名及业务类型完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0735062534"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website_domain",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:45.972Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，业态均为屋顶服务，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "aceroofingservice.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:50.820Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，业态均为屋顶安装，place_id 虽不同但属数据源差异，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "nbmr.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:57:55.453Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶修复，属于同一家商家，仅地址格式略有差异。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "proroofrestorationbrisbane.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:58:00.340Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、网址及地址完全一致，且域名匹配。虽 place_id 仅 B 有，但核心实体信息高度重合，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "rooroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address",
+        "website_domain"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:58:04.634Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、网址及地址核心信息完全一致，且 niche 均为屋顶修复，属于同一商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "trustedroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T06:58:09.245Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、地址及域名完全一致，仅地址格式与 place_id 存在差异，属于同一商家数据源不同。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "vantagepointroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": [
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T06:58:23.969Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、店名完全一致，业态均为屋顶工程。地址差异属多门店或搬迁，非不同商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "name",
+        "niche",
+        "business_type"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "entityKey",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:44:44.304Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、网址及地址完全一致，仅格式差异。虽无 ABN 与坐标，但核心标识符高度匹配，判定为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0449168985"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:44:48.854Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站完全一致，业态均为屋顶安装，仅地址格式与 place_id 存在数据源差异，确认为同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0498478739"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:44:53.249Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站完全一致，仅地址格式与 place_id 存在差异，属同一商家数据源不同。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0730628404"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:44:57.709Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、网站域名及商户名称完全一致，虽 place_id 仅 B 有但非强区分项，判定为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "1300734148"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "name",
+        "website",
+        "website_domain"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:02.040Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网址、地址核心信息完全一致，业态均为屋顶修复，仅地址格式与城市描述略有差异，属同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0432254975"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "address",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:06.261Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、域名及商户名称完全一致，业态相同，属于同一商家在不同数据源中的记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0735062534"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "name",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:24.815Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址、网站及行业完全一致。电话号码格式差异不影响实质匹配，地址细节略有不同但不影响判定。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "aceroofingservice.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:29.422Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，业态均为屋顶工程，place_id 虽不同但属数据源差异，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "nbmr.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:33.865Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "proroofrestorationbrisbane.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:38.943Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、网站域名及地址完全一致，且 niche 均为 roofer。虽 place_id 不同，但极可能是同一实体在不同数据源中的记录，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "rooroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": [
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:45:43.673Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两家商家名称、电话、网站及地址核心信息完全一致，且均从事屋顶修复业务。地址差异仅为格式不同，无实质冲突，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "trustedroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:48.496Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、地址及域名完全一致，业态均为屋顶工程，仅地址格式与 place_id 存在数据源差异，确认为同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "vantagepointroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:45:58.671Z",
+      "k1": "place_chijbwkegeqfkwsrcih6mkenmim",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、域名及业务类型完全一致，均为 Gold Coast 本地屋顶商。地址差异可能因搬迁或登记地址不同，属同一家企业。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "niche",
+        "business_type"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:46:03.832Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网站域名及商家名称完全一致，业态均为屋顶维修。地址差异可能因搬迁或注册与实际经营地不同，核心标识高度重合。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "name",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "entityKey",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:46:13.963Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、网址及地址完全一致，业态均为屋顶服务，仅地址格式略有差异，属同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0449168985"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:46:18.565Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶工程，place_id 虽不同但属数据源差异，判定为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0498478739"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:46:23.081Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶修复，属于同一商家在不同数据源中的记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0730628404"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:46:27.702Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、网站域名及商户名称完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "1300734148"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "name",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:46:32.487Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网站域名、地址核心信息完全一致，业态均为屋顶修复，place_id 虽不同但极可能为数据源差异，判定为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0432254975"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:46:36.836Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、网站域名及商户名称完全一致，业态均为屋顶工程，属于同一商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0735062534"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "name",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:46:46.446Z",
+      "k1": "place_chijbwkegeqfkwsrcih6mkenmim",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.9,
+      "reasoning": "电话、网站域名、店名完全一致，业态均为屋顶维修。地址差异可能因搬迁或注册与实际经营地不同，属同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0752305802"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "name",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:46:56.547Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶服务，仅地址格式与 place_id 存在差异，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "aceroofingservice.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:47:01.324Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，业态均为屋顶工程，place_id 虽格式不同但指向同一实体，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "nbmr.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:47:05.863Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "proroofrestorationbrisbane.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:47:10.665Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、网址及地址完全一致，且触发域名为同一网站，虽 place_id 仅 B 有但核心实体特征高度重合，判定为同一家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "rooroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "website",
+        "address",
+        "website_domain"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:47:15.045Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、地址及业态完全一致，仅地址格式与城市描述略有差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "trustedroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:47:19.787Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、地址及域名完全一致，业态均为屋顶工程，仅地址格式与 place_id 存在数据源差异，确认为同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "vantagepointroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:47:34.532Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、域名、店名及业态完全一致，属同一家。地址差异可能因搬迁或登记点不同，非重复商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "goldcoastlocalroofers.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "name",
+        "niche",
+        "website_domain"
+      ],
+      "fields_supporting_different": [
+        "address",
+        "entityKey",
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:57:39.715Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站完全一致，业态均为屋顶服务，仅地址格式与 place_id 存在数据源差异，确认为同一家商家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0449168985"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:57:44.237Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站完全一致，业态均为屋顶安装，仅地址格式与 place_id 存在数据源差异，确认为同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0498478739"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:57:48.565Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及网站域名完全一致，业态均为屋顶修复，属于同一商家在不同数据源中的记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0730628404"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:57:53.052Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、网站域名及业务类型完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "1300734148"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": [
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:57:57.360Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网站域名、地址核心信息完全一致，业态均为屋顶修复，仅地址格式与城市描述略有差异，属同一家。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0432254975"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "website",
+        "address",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:58:01.666Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、域名及商户名称完全一致，业态均为屋顶工程，属于同一商家在不同数据源中的记录。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0735062534"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "name",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:58:16.483Z",
+      "k1": "place_chijes0nvk0dkwsrl_are9igcf8",
+      "k2": "place_chijp2cszoadkwsrxl6zzwfqy9s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、网站域名、商家名称及业态完全一致，均为同一品牌。地址差异可能源于总部与分店或搬迁，属同一家企业。",
+      "trigger": {
+        "reason": "phone-match",
+        "matched_value": "0752305802"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "name",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": [
+        "address"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:58:20.733Z",
+      "k1": "domain_aceroofingservice.com.au",
+      "k2": "place_chijrq6qulnbkwsruettr7eegyc",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址、网站及行业完全一致，仅地址格式略有差异，属同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "aceroofingservice.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:58:25.339Z",
+      "k1": "domain_nbmr.com.au",
+      "k2": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址、网站及行业完全一致，仅地址格式与 place_id 存在数据源差异，属同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "nbmr.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:58:29.982Z",
+      "k1": "domain_proroofrestorationbrisbane.com.au",
+      "k2": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "名称、电话、地址及域名完全一致，仅地址格式与 place_id 存在差异，属同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "proroofrestorationbrisbane.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:58:34.752Z",
+      "k1": "domain_rooroofing.com.au",
+      "k2": "place_chijv-giozdakwsrr3uzcww7y8s",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、地址、网站及行业完全一致，仅地址格式与 place_id 存在差异，属于同一商家不同数据源记录。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "rooroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website",
+        "niche"
+      ],
+      "fields_supporting_different": [
+        "place_id"
+      ]
+    },
+    {
+      "at": "2026-05-14T07:58:39.157Z",
+      "k1": "domain_trustedroofing.com.au",
+      "k2": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "电话、地址、域名及业态完全一致，仅地址格式与城市描述略有差异，属同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "trustedroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "phone",
+        "address",
+        "website",
+        "niche",
+        "name"
+      ],
+      "fields_supporting_different": []
+    },
+    {
+      "at": "2026-05-14T07:58:44.098Z",
+      "k1": "domain_vantagepointroofing.com.au",
+      "k2": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "decision": "same",
+      "operator": "llm-auto",
+      "source": "llm",
+      "model": "qwen3.5:9b",
+      "confidence": 0.95,
+      "reasoning": "两者名称、电话、地址及域名完全一致，业态均为屋顶工程，仅地址格式与 place_id 存在数据源差异，确认为同一家商家。",
+      "trigger": {
+        "reason": "domain-match",
+        "matched_value": "vantagepointroofing.com.au"
+      },
+      "fields_supporting_same": [
+        "name",
+        "phone",
+        "address",
+        "website_domain",
+        "niche"
+      ],
+      "fields_supporting_different": []
+    }
+  ]
+}

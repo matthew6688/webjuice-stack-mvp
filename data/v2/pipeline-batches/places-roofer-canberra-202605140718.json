@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-roofer-canberra-202605140718",
+  "title": "[Places Pipeline] roofer canberra — 2026-05-13 21:18 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504231312553152692",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504231312553152692",
+  "initial_message_id": "1504231312553152692",
+  "niche": "roofer",
+  "city": "canberra",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "roofer canberra",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T21:18:12.421Z",
+  "finished_at": "2026-05-13T21:18:15.897Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T21:18:13.624Z",
+      "message_id": "1504231318295285830"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijgeywhxfvfmsr_8uuddpxpdc, place_chijntnnnrutf2srtgzcsxbgpwg",
+      "at": "2026-05-13T21:18:14.803Z",
+      "message_id": "1504231323370524932"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `roofer canberra`\nLeads (first 5): place_chijgeywhxfvfmsr_8uuddpxpdc, place_chijntnnnrutf2srtgzcsxbgpwg",
+      "at": "2026-05-13T21:18:15.150Z",
+      "message_id": "1504231324645327089"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T21:21:02.481Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 15,
+      "domain": 16
+    },
+    "exit_code": 0
+  }
+}

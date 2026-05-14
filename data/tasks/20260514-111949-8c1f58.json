@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-111949-8c1f58",
+  "created_at": "2026-05-14T11:19:49.438Z",
+  "updated_at": "2026-05-14T11:20:57.390Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504443112225771560",
+    "author": "pl:pipeline-batch-start auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: gosom scrape · niche=roofing · city=brisbane · count=10 · batch=pipe-roofing-brisbane-202605142119",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:scrape-docker",
+    "args": [
+      "--niche",
+      "roofing",
+      "--city",
+      "brisbane",
+      "--count",
+      "10",
+      "--batch-id",
+      "pipe-roofing-brisbane-202605142119"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 67274,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T11:19:50.113Z",
+      "step": "cli.spawning",
+      "detail": "pl:scrape-docker --niche roofing --city brisbane --count 10 --batch-id pipe-roofing-brisbane-202605142119"
+    },
+    {
+      "at": "2026-05-14T11:19:55.247Z",
+      "step": "cli.stream",
+      "detail": "ofing-brisbane-202605142119\n\ngeocode brisbane → -27.4704528,153.0260341 (cache) · Brisbane QLD, Australia\njob_id=7c9a551e-81cd-4827-8f4b-5988a345c855\npolling job 7c9a551e-81cd-4827-8f4b-5988a345c855 ."
+    },
+    {
+      "at": "2026-05-14T11:20:00.452Z",
+      "step": "cli.stream",
+      "detail": "aper/webdata/7c9a551e-81cd-4827-8f4b-5988a345c855.csv\nwrote 5 leads → /Users/matthew/Developer/google-map-website-v3/data/maps-scraper/runs/roofing-brisbane-2026-05-14T11-19-50-300Z/results.maps.json"
+    },
+    {
+      "at": "2026-05-14T11:20:43.716Z",
+      "step": "cli.stream",
+      "detail": "\"recommendedAction\": \"audit_candidate\",\n      \"phone\": \"(07)35062534\",\n      \"website\": \"https://vantagepointroofing.com.au/?utm_campaign=gmb\",\n      \"rating\": 4.6,\n      \"reviewCount\": 0\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T11:20:54.732Z",
+      "step": "cli.stream",
+      "detail": "t_now=false\n[cheap-audit-queue] domain_brisbaneroofrestorationexperts.com.au · thread opened (predict-C)\n[cheap-audit-queue] domain_brisbaneroofrestorationexperts.com.au · predict-C · 留 backlog · 等触发"
+    },
+    {
+      "at": "2026-05-14T11:20:57.389Z",
+      "step": "cli.stream",
+      "detail": "\"llm_judge\":{\"verdict\":\"proceed\",\"confidence\":0.92,\"reason\":\"All 5 addresses resolve to Brisbane-area roofing businesses; count matches expected_count.\",\"suspicious_picks\":[],\"provider\":\"codex_cli\"}}"
+    },
+    {
+      "at": "2026-05-14T11:20:57.390Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=67274ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504443112225771560",
+    "status_message_id": null
+  }
+}

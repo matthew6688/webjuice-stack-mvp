@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-roofer-melbourne-202605140031",
+  "title": "[Places Pipeline] roofer melbourne — 2026-05-13 14:31 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504128955412644114",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504128955412644114",
+  "initial_message_id": "1504128955412644114",
+  "niche": "roofer",
+  "city": "melbourne",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "roofer melbourne",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T14:31:28.604Z",
+  "finished_at": "2026-05-13T14:31:32.613Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T14:31:29.982Z",
+      "message_id": "1504128961657966652"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijg5eecrvd1mor16uy4-rxlqy, place_chijzqs_zh8x1moraygdea-qlow",
+      "at": "2026-05-13T14:31:31.512Z",
+      "message_id": "1504128967345574028"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `roofer melbourne`\nLeads (first 5): place_chijg5eecrvd1mor16uy4-rxlqy, place_chijzqs_zh8x1moraygdea-qlow",
+      "at": "2026-05-13T14:31:31.948Z",
+      "message_id": "1504128969379942553"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T14:34:15.561Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 12,
+      "domain": 13
+    },
+    "exit_code": 0
+  }
+}

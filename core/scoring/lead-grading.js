@@ -361,7 +361,7 @@ export function persistLeadGrade({
   // 这里 grade 完后 · 只在 thread 还没开 (e.g. 测试 / SOP1_DISABLE_AUTO_OPEN_LEADS=1)
   // 时 fallback 打开 · 否则 refreshThreadAndPost 刷 card 反映 grade
   if (!process.env.SKIP_LEAD_THREAD_OPEN) {
-    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread, upsertProfileCard }) => {
+    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread, upsertProfileCard, renameThreadToCurrentTitle }) => {
       try {
         const entityPath = path.join(storeRoot, 'entities', `${entityKey}.json`);
         const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
@@ -372,6 +372,10 @@ export function persistLeadGrade({
           }
         } else if (['A', 'B', 'C', 'D'].includes(grade.investment_level)) {
           await upsertProfileCard(entityKey);
+          // V3 D43 cycle-5 (Matthew 2026-05-14): rename thread so [?] → [A/B/C/D]
+          if (typeof renameThreadToCurrentTitle === 'function') {
+            await renameThreadToCurrentTitle(entityKey);
+          }
         }
       } catch (err) {
         console.warn(`[persistLeadGrade] thread open/refresh failed: ${err.message}`);

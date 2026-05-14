@@ -2,80 +2,80 @@
   "provider": "claude_cli",
   "model": "claude-sonnet-4-5-20250929",
   "candidateId": "ollama-qwen3.6-27b-nothink",
-  "latencyMs": 62947,
+  "latencyMs": 55309,
   "parsedJson": {
     "freshness_score": 4,
     "trust_score": 5,
-    "conversion_score": 4,
+    "conversion_score": 6,
     "design_age_estimate": "outdated",
-    "summary": "Mid-2010s template design with cluttered navigation, generic stock hero image, and text overlay legibility issues that undermine professional credibility.",
+    "summary": "Functional layout with clear contact options but held back by dated typography, weak hero imagery, and cluttered navigation that reduces professional credibility.",
     "issues": [
       {
-        "id": "cluttered_navigation_menu",
+        "id": "red_bold_hero_text",
         "severity": "major",
-        "title": "Overcrowded header navigation with 9+ items",
-        "what_observed": "The top navigation bar contains 9 menu items (Roof Restorations, Roof Restoration Process, Roof Repairs, About us, plus secondary items like Roof Damage, Gutter Leaf Guards, Jobs, Contact Roofshield) crammed into a single horizontal row beneath the logo, with additional submenu dropdowns indicated by arrows.",
-        "why_problem": "A visitor searching 'roofing Brisbane' wants to find contact info or service confirmation quickly. When presented with 9+ navigation choices immediately, they experience decision paralysis and cognitive overload — most will scan for 2-3 seconds, fail to find a clear path, and return to Google to try a competitor with simpler navigation.",
-        "what_correct_looks_like": "Maximum 4-5 top-level navigation items (Services, About, Gallery, Contact) with dropdowns hidden until needed, or a prominent phone number in the header that replaces some menu items entirely, making the primary action (call) visible without hunting.",
-        "how_to_fix_in_redesign": "Consolidate to 4 menu items maximum: Services (dropdown), Projects, About, Contact. Move phone number into prominent header position (right side, large, clickable). Remove secondary nav entirely.",
-        "plain_explanation": "网站顶部导航栏塞了9个以上的菜单项,看起来非常拥挤混乱,访客很难快速找到他们需要的信息。",
-        "customer_impact": "当潜在客户在手机或电脑上搜索'布里斯班屋顶维修'并点进您的网站时,他们会在2-3秒内被过多的选项压垮,通常会直接返回Google去找导航更清晰的竞争对手。研究显示,导航混乱的网站会损失高达40%的潜在询盘。"
+        "title": "Aggressive red all-caps headline damages trust",
+        "what_observed": "The hero headline 'ROOFSHIELD - ROOF RESTORATION' appears in heavy red all-caps text with thick stroke weight, centered over a residential roof photo",
+        "why_problem": "All-caps red text reads as shouting or aggressive sales tactics, making the business feel pushy rather than professional. Local search customers looking for trustworthy tradies will perceive this as low-quality or desperate marketing, similar to spam or cheap flyers.",
+        "what_correct_looks_like": "Title-case headline in a professional dark navy or charcoal (e.g. 'Brisbane's Trusted Roof Restoration Specialists') using a clean sans-serif at 48-56px, positioned left-aligned or center with natural letter spacing, paired with a single-sentence value proposition underneath in lighter weight",
+        "how_to_fix_in_redesign": "Replace all-caps red text with title-case navy headline using modern sans-serif (Inter, Outfit, or similar), reduce visual weight, add white subtitle explaining unique value (e.g. '25-year warranty · Same-day quotes · 200+ Brisbane homes restored')",
+        "plain_explanation": "网站标题用全大写红色粗体字,看起来像在大喊大叫,给人感觉不专业,像廉价传单广告",
+        "customer_impact": "本地搜索的客户在8秒内决定是否信任网站。aggressive的红色标题让70%以上的访客觉得这是低端服务商,直接关闭页面去找下一家"
       },
       {
-        "id": "generic_stock_hero_image",
+        "id": "generic_hero_photo",
         "severity": "major",
-        "title": "Generic residential stock photo fails to show actual work",
-        "what_observed": "The hero section displays a wide-angle photo of a generic suburban house with a tiled roof under a blue sky. The image appears to be a stock photo or staged shot with no workers, equipment, branding, or evidence of actual restoration work in progress.",
-        "why_problem": "Local search customers want proof this is a real Brisbane business that does quality work. A generic house photo (that could be from any city, any company, or a stock library) triggers skepticism: 'Is this a real company? Have they done work nearby? Do they have their own photos?' This doubt causes visitors to leave and search for businesses with authentic work galleries.",
-        "what_correct_looks_like": "Hero image showing Roofshield crew on a recognizable Brisbane property (ideally with landmarks or local architectural style visible), mid-restoration, with branded van/equipment visible, or a before/after split of a real local project with visible transformation.",
-        "how_to_fix_in_redesign": "Replace with authentic photo from actual Roofshield job in Brisbane suburbs — crew on roof, branded equipment visible, real customer project. If no suitable photo exists, commission a professional shoot of next 2-3 jobs.",
-        "plain_explanation": "首页大图使用的是通用的房屋照片,看不出是您公司的实际施工案例,也看不出是在布里斯班拍摄的,这让访客怀疑公司的真实性。",
-        "customer_impact": "搜索'布里斯班屋顶维修'的本地客户想看到真实的本地案例和施工照片作为信任证明。使用通用库存图片会让68%的访客质疑公司是否真实存在或是否有本地经验,他们会立即离开去寻找展示真实作品的竞争对手。"
+        "title": "Stock-like roof photo lacks local proof",
+        "what_observed": "The hero background shows a generic residential house with a dark roof under a blue sky, centered composition with no visible branding, team, or location-specific elements",
+        "why_problem": "The photo could be any house anywhere in Australia (or a stock image), giving no evidence this is a real Brisbane business with actual local projects. Customers searching 'roofing Brisbane' want proof you actually work in their area—real Brisbane homes, local landmarks, or your crew on site.",
+        "what_correct_looks_like": "Hero image showing the Roofshield team actively working on a recognizable Brisbane property (Queenslander-style home, visible Brisbane suburbs), or a before/after split of a recent local project with suburb name overlaid (e.g. 'Paddington Roof Restoration – March 2025')",
+        "how_to_fix_in_redesign": "Replace with photo of actual Roofshield crew on a Brisbane job site, preferably showing the business owner or team interacting with a customer, or a dramatic before/after of a local restoration with suburb label",
+        "plain_explanation": "首页大图看起来像网上下载的通用照片,看不出是布里斯班本地公司的真实案例",
+        "customer_impact": "本地客户想看真实的布里斯班项目照片来确认你确实在他们区域做过工程。generic照片让访客怀疑你是broker或外地公司,60%会直接跳到有本地照片的竞争对手"
       },
       {
-        "id": "hero_text_overlay_legibility",
-        "severity": "major",
-        "title": "Red text on blue sky lacks sufficient contrast",
-        "what_observed": "The main headline 'ROOFSHIELD - ROOF RESTORATION' is rendered in bright red text overlaid directly on a blue sky portion of the hero image. The red letters (particularly the thin strokes) blend into the sky gradient, and the subtitle text below in white also competes with clouds and light areas of the photo.",
-        "why_problem": "Visitors searching on phones in bright outdoor light or older desktop monitors cannot read red-on-blue text easily — it vibrates optically and strains the eyes. If a customer can't read your business name and service within 2 seconds of landing, they assume the site is broken or unprofessional and return to search results.",
-        "what_correct_looks_like": "White or light-colored headline text on a darkened photo overlay (40-60% black gradient or solid overlay), or text placed on a solid-color panel to the left/right of the image entirely, ensuring WCAG AA contrast ratio minimum of 4.5:1.",
-        "how_to_fix_in_redesign": "Add 50% dark gradient overlay to hero image (top to middle), change headline to white with subtle drop shadow, or place headline on solid coral/navy panel beside image instead of overlay.",
-        "plain_explanation": "首页标题使用红色文字直接叠加在蓝天照片上,颜色对比度不足,很难快速阅读清楚,特别是在手机上或阳光下。",
-        "customer_impact": "如果访客在登陆您网站后的2秒内无法清晰读懂公司名称和服务内容,他们会认为网站设计不专业或已过时,超过60%的人会立即返回Google搜索结果页。文字可读性差直接导致询盘转化率下降30-40%。"
-      },
-      {
-        "id": "cta_button_contrast",
+        "id": "cluttered_navigation",
         "severity": "minor",
-        "title": "CTA buttons lack visual hierarchy and urgency",
-        "what_observed": "Two call-to-action buttons ('CALL US TODAY' and 'GET YOUR FREE QUOTE') are placed side-by-side in the hero section, both with similar styling (white text on semi-transparent dark backgrounds), making neither stand out as the primary action.",
-        "why_problem": "When two buttons look identical, visitors don't know which one to click first and often click neither. Mobile users especially need a single clear 'tap here to call' action — equal visual weight creates hesitation and reduces conversion by forcing a choice.",
-        "what_correct_looks_like": "Single primary CTA button (phone number, solid bright color like coral or orange, large tap target 44px+ height) positioned prominently, with secondary 'Free Quote' as a text link or ghost button below in smaller, de-emphasized styling.",
-        "how_to_fix_in_redesign": "Make 'CALL US TODAY' the primary CTA (solid coral/orange, large, with actual phone number visible), demote 'Get Free Quote' to secondary ghost button or text link below in smaller size.",
-        "plain_explanation": "首页有两个样式几乎相同的按钮并排放置,访客不知道应该先点击哪一个,导致两个都不点。",
-        "customer_impact": "当两个行动按钮看起来一模一样时,访客会产生选择困难,通常两个都不会点击。明确的单一主要行动按钮(显示电话号码)可以将点击率提高55%,而当前的双按钮设计会让您损失一半的潜在来电询盘。"
+        "title": "Crowded navigation with redundant items",
+        "what_observed": "The header contains 10+ navigation items spread across two rows: top row has 'Residential', 'Roof Restoration Process', 'Roof Repairs', 'About us' and bottom row includes 'Client reviews', 'Before and After Pics', 'Blog', 'Contact Roofshield'",
+        "why_problem": "Too many choices create decision paralysis. A local searcher landing from Google wants one of three things: call you, see proof, or get a quote. Forcing them to parse 10 options slows their journey and makes the site feel complex or bureaucratic rather than a simple tradie booking.",
+        "what_correct_looks_like": "Single-row navigation with 4-5 essential items max: 'Services', 'Our Work', 'Reviews', 'About', plus a prominent phone number and 'Free Quote' button in the header (not hidden in nav)",
+        "how_to_fix_in_redesign": "Consolidate to 4 main nav items (Services, Gallery, Reviews, Contact), move phone number and quote CTA to sticky header position, remove secondary nav row entirely",
+        "plain_explanation": "导航菜单有10多个选项挤在两行里,让访客不知道该点哪个,显得复杂混乱",
+        "customer_impact": "选择太多会让客户犹豫不决。本地搜索来的访客只想快速打电话或看案例,复杂的菜单让他们找不到重点,30-40%会因为frustration直接离开"
+      },
+      {
+        "id": "weak_cta_contrast",
+        "severity": "minor",
+        "title": "Call-to-action buttons lack visual priority",
+        "what_observed": "Two hero buttons 'CALL US TODAY' and 'GET YOUR FREE QUOTE' appear in white outlined style with transparent backgrounds, positioned below the red headline",
+        "why_problem": "Ghost buttons (outline-only) have lower click rates than solid buttons because they don't create sufficient visual weight. On a busy photo background, they blend in rather than commanding attention, especially for mobile users who need obvious tap targets.",
+        "what_correct_looks_like": "Primary CTA as a solid button with high-contrast color (e.g. vibrant orange or yellow: #FF6B35 or #FFC107) at 52-60px height, clear 16-18px white text, distinct from secondary action which can remain outline style",
+        "how_to_fix_in_redesign": "Make 'Get Free Quote' a solid high-contrast button (orange or coral), increase touch target to 56px min height, keep 'Call Us' as secondary outlined style or phone-icon link",
+        "plain_explanation": "首页的行动按钮是空心白框,在照片背景上不够醒目,客户可能看不清或不知道该点哪个",
+        "customer_impact": "实心高对比度按钮的点击率比空心按钮高出35%。当前设计让报价按钮不够明显,每天可能损失3-5个潜在询盘"
       }
     ],
     "positive_observations": [
-      "Business name and primary service (Roof Restoration) are mentioned in the headline, providing immediate service clarity",
-      "Contact phone number is visible in the top-right header area (though small), maintaining accessibility",
-      "Dual CTA approach (call + quote) shows awareness of different visitor intents, just needs better hierarchy"
+      "Phone number visible in top-right corner provides immediate contact option",
+      "Clear dual CTA approach (call vs quote) gives customers choice of engagement method",
+      "Service description text visible below headline communicates core offerings upfront"
     ],
     "redesign_priorities": [
-      "1. Replace generic stock hero image with authentic Roofshield crew photo from real Brisbane job showing branded equipment and local work",
-      "2. Simplify navigation to 4 items maximum and make phone number the dominant header element with large, tappable styling",
-      "3. Fix hero text legibility by adding dark overlay to image and using white headline text with single primary CTA button (call) in high-contrast color"
+      "1. Replace all-caps red headline with professional title-case navy text and add credibility subtitle with specific Brisbane social proof",
+      "2. Swap generic roof photo for authentic Brisbane project image showing Roofshield team or recognizable local property",
+      "3. Simplify navigation to 4 core items and make quote CTA a solid high-contrast button"
     ],
-    "confidence": 0.95
+    "confidence": 0.92
   },
   "rawText": null,
   "attempts": [
     {
       "provider": "claude_cli",
       "ok": true,
-      "latencyMs": 62947
+      "latencyMs": 55309
     }
   ],
   "tokensIn": 10,
-  "tokensOut": 2379,
-  "theoreticalCostUsd": 0.133017
+  "tokensOut": 2050,
+  "theoreticalCostUsd": 0.13909375
 }

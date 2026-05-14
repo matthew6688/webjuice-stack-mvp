@@ -1,0 +1,55 @@
+{
+  "batch_id": "places-roofer-brisbane-202605140026",
+  "title": "[Places Pipeline] roofer brisbane — 2026-05-13 14:26 UTC",
+  "channel_id": "1503513633756283070",
+  "thread_id": "1504127807733629179",
+  "thread_url": "https://discord.com/channels/1493925728570310756/1504127807733629179",
+  "initial_message_id": "1504127807733629179",
+  "niche": "roofer",
+  "city": "brisbane",
+  "count": 2,
+  "runFlags": {
+    "source": "places_search",
+    "query": "roofer brisbane",
+    "with_details": true
+  },
+  "started_at": "2026-05-13T14:26:54.889Z",
+  "finished_at": "2026-05-13T14:26:59.565Z",
+  "current_tag": "completed",
+  "stages": [
+    {
+      "stage": "Stage 0 · Places search",
+      "status": "ok",
+      "summary": "2 candidates from textsearch · fetching details: true",
+      "at": "2026-05-13T14:26:56.597Z",
+      "message_id": "1504127815082311700"
+    },
+    {
+      "stage": "Stage 1 · Upsert entities",
+      "status": "ok",
+      "summary": "2 entities written to store · keys (first 3): place_chijk2kjmcfmkwsrk9yzy9lxa-y, place_chijo3rniu9fkwsr8jworgytgmy",
+      "at": "2026-05-13T14:26:58.124Z",
+      "message_id": "1504127821478367424"
+    },
+    {
+      "stage": "批次收尾 Batch finalize",
+      "status": "ok",
+      "summary": "**Done · 2 leads from Places API**\n\nQuery: `roofer brisbane`\nLeads (first 5): place_chijk2kjmcfmkwsrk9yzy9lxa-y, place_chijo3rniu9fkwsr8jworgytgmy",
+      "at": "2026-05-13T14:26:58.614Z",
+      "message_id": "1504127822749372447"
+    }
+  ],
+  "issues": [],
+  "leads": [],
+  "dedup_audit": {
+    "ok": true,
+    "ran_at": "2026-05-13T14:29:08.298Z",
+    "total_suspects": null,
+    "summary": {
+      "place_id": 0,
+      "phone": 12,
+      "domain": 13
+    },
+    "exit_code": 0
+  }
+}
