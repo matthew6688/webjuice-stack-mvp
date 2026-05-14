@@ -66,20 +66,20 @@ const missingDemo = [];
 const staleDeploys = [];
 
 for (const e of entities) {
-  const slug = slugify(e.latest?.name || e.entity_key);
-  const deployPath = path.join(REPO, 'clients', slug, 'v2/cf-pages-deploy.json');
+  const slug = slugify(e.latest?.name || (e.entityKey || e.entity_key));
+  const deployPath = path.join(REPO, 'clients', slug, 'v2/concept/reference-adapter/cf-pages-deploy.json');
   if (!fs.existsSync(deployPath)) continue;
   let deploy;
   try { deploy = JSON.parse(fs.readFileSync(deployPath, 'utf8')); } catch { continue; }
   const deployedAt = new Date(deploy.deployed_at || deploy.created_on || 0).getTime();
   const ageDays = (now - deployedAt) / (24 * 3600 * 1000);
-  const url = deploy.url || deploy.deployment_url;
-  published.push({ key: e.entity_key, slug, url, ageDays, deployedAt });
+  const url = deploy.demo_url || deploy.url || deploy.deployment_url;
+  published.push({ key: (e.entityKey || e.entity_key), slug, url, ageDays, deployedAt });
 
-  const masterPath = path.join(REPO, 'clients', slug, 'master.md');
-  if (!fs.existsSync(masterPath)) missingMaster.push(e.entity_key);
-  if (!url) missingDemo.push(e.entity_key);
-  if (ageDays > 30) staleDeploys.push({ key: e.entity_key, ageDays: Math.round(ageDays) });
+  const masterPath = path.join(REPO, 'clients', slug, 'v2/master.md');
+  if (!fs.existsSync(masterPath)) missingMaster.push((e.entityKey || e.entity_key));
+  if (!url) missingDemo.push((e.entityKey || e.entity_key));
+  if (ageDays > 30) staleDeploys.push({ key: (e.entityKey || e.entity_key), ageDays: Math.round(ageDays) });
 }
 
 // Sample-check 5 recent URLs

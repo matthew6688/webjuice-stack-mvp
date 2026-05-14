@@ -68,7 +68,7 @@ for (const e of entities) {
     if (t >= last24h) audits24h.push({ e, r });
     if (r.started_at && !r.completed_at) {
       const startedAt = new Date(r.started_at).getTime();
-      if (now - startedAt > 24 * 60 * 60 * 1000) stuck.push({ key: e.entity_key, ageH: Math.round((now - startedAt) / 3600000) });
+      if (now - startedAt > 24 * 60 * 60 * 1000) stuck.push({ key: (e.entityKey || e.entity_key), ageH: Math.round((now - startedAt) / 3600000) });
     }
   }
 

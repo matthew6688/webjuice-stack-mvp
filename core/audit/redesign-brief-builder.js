@@ -122,24 +122,25 @@ function runCli(cmd, args, input, timeoutMs = 300_000) {
 
 /** Try codex_cli first · then claude_cli · then ollama (per D39 cascade) */
 async function runAiCascade(prompt) {
+  const errs = [];
   // Try codex CLI
   try {
     const r = await runCli('codex', ['exec', '--model', 'gpt-4o'], prompt, 240_000);
     return { text: r.stdout, provider: 'codex_cli' };
-  } catch { /* fallthrough */ }
+  } catch (err) { errs.push(`codex: ${err.message}`); }
   // Try claude CLI
   try {
     const r = await runCli('claude', ['-p', prompt, '--model', 'claude-sonnet-4-5'], '', 240_000);
     return { text: r.stdout, provider: 'claude_cli' };
-  } catch { /* fallthrough */ }
+  } catch (err) { errs.push(`claude: ${err.message}`); }
   // Try ollama
   try {
     const { textOllama } = await import('../llm/text-ollama.js');
-    const r = await textOllama({ prompt, maxTokens: 4000 });
+    const model = process.env.OLLAMA_TEXT_MODEL || 'qwen3.5:9b';
+    const r = await textOllama({ model, prompt, maxTokens: 4000, think: false });
     return { text: r.text || r.content || String(r), provider: 'ollama' };
-  } catch (err) {
-    throw new Error(`All providers failed: ${err.message}`);
-  }
+  } catch (err) { errs.push(`ollama: ${err.message}`); }
+  throw new Error(`All providers failed: ${errs.join(' · ')}`);
 }
 
 /** Extract JSON object from LLM output (handle prefixes/suffixes) */
