@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-13T07:17:47.417Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-14T12:30:38.904Z",
+  "lastStatusAt": "2026-05-14T14:04:40.944Z",
   "identifiers": {
     "place_id": "ChIJzffLvfb3k2sRldcXRdV26p4",
     "cid": "11451095660902209429",
@@ -310,6 +310,31 @@
       "sub_status": null,
       "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
       "note": ""
+    },
+    {
+      "at": "2026-05-14T14:04:40.944Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T14:04:40.964Z",
+      "event": "phase_changed",
+      "from": "archived",
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T14:07:32.385Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+      "note": ""
     }
   ],
   "notes": [
@@ -322,20 +347,20 @@
     "product_tier": null,
     "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-14T12:30:38.903Z"
+    "graded_at": "2026-05-14T14:04:40.942Z"
   },
   "phase": "archived",
-  "phaseChangedAt": "2026-05-14T12:33:36.746Z",
-  "project_thread_id": null,
-  "project_profile_message_id": "1504269388377886885",
-  "project_thread_opened_at": "2026-05-13T23:49:30.319Z",
+  "phaseChangedAt": "2026-05-14T14:07:32.385Z",
+  "project_thread_id": "1504485712655810672",
+  "project_profile_message_id": "1504485712655810672",
+  "project_thread_opened_at": "2026-05-14T14:09:06.139Z",
   "sales_stage": "demo-ready",
-  "discord_thread_id": null,
-  "discord_profile_message_id": null,
-  "discord_thread_opened_at": "2026-05-14T11:26:08.958Z",
+  "discord_thread_id": "1504484819717984447",
+  "discord_profile_message_id": "1504484819717984447",
+  "discord_thread_opened_at": "2026-05-14T14:09:06.605Z",
   "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
   "qualification": {
-    "computed_at": "2026-05-14T12:33:36.953Z",
+    "computed_at": "2026-05-14T14:07:32.387Z",
     "hard_gates": [
       {
         "id": "too_many_pages",
@@ -349,7 +374,7 @@
       },
       {
         "id": "ecommerce",
-        "passed": false,
+        "passed": true,
         "reason": "现网是 e-commerce (Shopify/WooCommerce/Magento) · 不在 V3 产品包"
       },
       {

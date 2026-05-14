@@ -79,7 +79,7 @@ Open Design 网站预制 (SOP-3, 待写)
 | SOP-1 | 客户发现 + Dedup + Enrichment | ✅ v1.0 | [`SOP_1_INTAKE_DISCOVERY.md`](SOP_1_INTAKE_DISCOVERY.md) |
 | SOP-2 | 筛选 + 审计 Screening & Audit | ✅ v1.0 | [`SOP_2_LEAD_DISCOVERY_PIPELINE.md`](SOP_2_LEAD_DISCOVERY_PIPELINE.md) |
 | SOP-3 | Open Design 网站预制 | ⚪ 待写 | **(TODO)** |
-| SOP-4 | 销售对接 Sales Engagement | ⚪ 待写 | **(TODO)** |
+| SOP-4 | Cold Outreach Ops & Deliverability | ✅ v1.0 | [`SOP_4_COLD_OUTREACH_OPS.md`](SOP_4_COLD_OUTREACH_OPS.md) |
 | SOP-5 | 交付维护 Delivery & Maintenance | ⚪ 待写 | **(TODO)** |
 
 ### Layer 2 · Per-Lead Artifact (3 个)

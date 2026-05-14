@@ -103,7 +103,9 @@ export function predictGradePreaudit({ entity, cheapAudit }) {
   return {
     predict_grade: 'C',
     priority: Math.min(50, rc),
-    audit_now: false,
+    // V3 D43 cycle-19 (Matthew 2026-05-15): A/B/C 都进 audit (跳过 predict 过滤)
+    // 临时方案 · 等 LEAD-FILTERING-DESIGN 实施后切换到排除式 + 直接 audit.
+    audit_now: true,
     reasons,
     // V3 D43 cycle-8: structured threshold report for UI · machine-readable
     threshold_report: {

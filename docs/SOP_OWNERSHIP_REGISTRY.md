@@ -146,13 +146,41 @@
 | 维护协议 (单源原则 §5.1) | SOP_OVERVIEW.md §5 |
 | 全局 TODO 优先级列表 | SOP_OVERVIEW.md §7 |
 
-### 1.9 SOP-3 / SOP-4 / SOP-5 (待写)
+### 1.9 SOP-4 Cold Outreach Operations 拥有（v1.0 · 2026-05-15）
+
+**SOP-4 出口承诺**：把 SOP-2 出口的 qualified entity，从专用发件域名 + warmup 过的 Workspace 邮箱、按 deliverability + AU 合规规则发出去，事件回流到 sales-agent。
+
+| 概念 | Owner | 引用方式 |
+|---|---|---|
+| 5 发件域名群配置（getprofitslocal.com 等） | SOP-4 §4.1 | 他 SOP: "见 [SOP-4 §4]" |
+| Google Workspace 邮箱配置 + DNS 五件套 | SOP-4 §4.2-4.3 | 同上 |
+| Provider 选型决策（Smartlead 主 / Instantly fallback / Plunk 不入场）| SOP-4 §3 | 同上 |
+| 14 天 warmup 协议 + 每邮箱日发量上限 | SOP-4 §5 | 同上 |
+| Deliverability 监控栈（Postmaster Tools / GlockApps / MXToolbox / DMARC）| SOP-4 §6.1 | 同上 |
+| Bounce / spam complaint / reputation 阈值 + 自动停发触发器 | SOP-4 §6.2, §12 | 同上 |
+| List hygiene + MillionVerifier 清洗协议 | SOP-4 §7 | 同上 |
+| `pl:outreach-clean` CLI 用法 | SOP-4 §7.2 | 同上 |
+| 内容规则（spintax / 链接 / 附件 / 主题行 / 签名）| SOP-4 §8 | 同上 |
+| 发件时间窗口（AU 业务客户 Tue–Thu 9–11 / 14–16）| SOP-4 §8.5 | 同上 |
+| AU Spam Act 2003 三条强制（consent / identify / unsubscribe）| SOP-4 §9 | 同上 |
+| Privacy Act 1988 客户数据规则 | SOP-4 §9.2 | 同上 |
+| `/api/outreach-webhook` ingest 入口 + secret 校验 | SOP-4 §10 | provider state 归一详见 PROVIDER_INTEGRATION |
+| `pl:outreach-health-check` daily cron + Discord 告警 | SOP-4 §11.1 | 同上 |
+| 周 / 月 / 季运维节奏 | SOP-4 §11 | 同上 |
+| 域名级 / 邮箱级停发恢复路径 | SOP-4 §12 | 同上 |
+| 首次上线交付 / 验收清单 | SOP-4 §14 | 同上 |
+
+**SOP-4 不拥有**（引用 owner）：
+- Provider 抽象 + 内部 state schema → [`COLD_OUTREACH_PROVIDER_INTEGRATION.md`](COLD_OUTREACH_PROVIDER_INTEGRATION.md)
+- 入站回信 AI 起草 + MCP → [`AGENTIC_INBOX.md`](AGENTIC_INBOX.md)
+- Entity / `outreach_status` 字段 schema → [`SOP_HANDOFF_CONTRACT.md`](SOP_HANDOFF_CONTRACT.md)
+- 第三方工具 tier / cost → [`SOP_X_TOOLING.md`](SOP_X_TOOLING.md)
+
+### 1.10 SOP-3 / SOP-5 (待写)
 
 | 范围 | Owner (未来) |
 |---|---|
 | Open Design 网站预制 | SOP-3 |
-| 销售对接 + multi-touch outreach | SOP-4 |
-| C-grade Hermes auto-outreach | SOP-4 |
 | 付费 → 交付 → 维护 | SOP-5 |
 
 ---

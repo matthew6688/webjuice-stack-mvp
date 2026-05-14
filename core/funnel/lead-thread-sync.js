@@ -154,10 +154,11 @@ function tagsForProjectsThread(entity) {
 export async function openLeadThread(entityKey, { fetchImpl = fetch } = {}) {
   const entity = readEntity(entityKey);
   if (!entity) return { ok: false, reason: 'entity_not_found', entityKey };
-  // V3 D43 cycle-4 · 防御：archived / predict-D 不开 thread (#website-leads 不污染)
-  if (entity.phase === 'archived') {
-    return { ok: false, reason: 'archived_entity_skip', entityKey };
-  }
+  // V3 D43 cycle-4 · 防御：predict-D 不开 thread (#website-leads 不污染)
+  // V3 D43 cycle-19 (Matthew 2026-05-15): REMOVED phase=archived check ·
+  // operator 手动 re-audit archived entity 时这条会挡 openLeadThread · 导致
+  // run-audit-pipeline 的 stage messages 全 fall back 到 bot-log。
+  // 现状 · 只 predict-D (从未 audit · 明确不该有 thread) 才挡。
   if (entity.predict_grade?.grade === 'D') {
     return { ok: false, reason: 'predict_d_skip', entityKey };
   }
