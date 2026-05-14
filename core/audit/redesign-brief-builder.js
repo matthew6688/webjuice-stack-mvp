@@ -137,8 +137,8 @@ async function runAiCascade(prompt) {
   try {
     const { textOllama } = await import('../llm/text-ollama.js');
     const model = process.env.OLLAMA_TEXT_MODEL || 'qwen3.5:9b';
-    const r = await textOllama({ model, prompt, maxTokens: 4000, think: false });
-    return { text: r.text || r.content || String(r), provider: 'ollama' };
+    const r = await textOllama({ model, prompt, think: false });
+    return { text: r.rawText || '', provider: 'ollama' };
   } catch (err) { errs.push(`ollama: ${err.message}`); }
   throw new Error(`All providers failed: ${errs.join(' · ')}`);
 }
