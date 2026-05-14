@@ -112,6 +112,7 @@
     "pl:archive-non-customer-entities": "node --env-file-if-exists=.env.local scripts/cli/pl-archive-non-customer-entities.js",
     "pl:migrate-to-projects-channel": "node --env-file-if-exists=.env.local scripts/cli/pl-migrate-to-projects-channel.js",
     "pl:rename-keepers-titles": "node --env-file-if-exists=.env.local scripts/cli/pl-rename-keepers-titles.js",
+    "pl:check-qualification": "node --env-file-if-exists=.env.local scripts/cli/pl-check-qualification.js",
     "qa:test-intake-channels": "node scripts/qa/test-intake-channels.mjs",
     "qa:test-sop1-doc-sync": "node scripts/qa/test-sop1-doc-sync.mjs",
     "qa:test-dedup-llm": "node scripts/qa/test-dedup-llm-decider.mjs",

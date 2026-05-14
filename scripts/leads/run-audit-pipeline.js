@@ -325,6 +325,25 @@ async function processLead(entityKey) {
     htmlSize,
   }));
 
+  // V3 D39 · Stage 5 · Qualification check (M2 → M3 gate)
+  // 仅 grade A/B/C 跑 qualification (D 直接 archived)
+  if (leadGrade && ['A', 'B', 'C'].includes(leadGrade.investment_level)) {
+    try {
+      console.log(`  [stage 5/5] qualification check...`);
+      const qRes = spawnSync('node', ['--env-file-if-exists=.env.local', 'scripts/cli/pl-check-qualification.js', '--entity-key', entityKey], {
+        cwd: repoRoot,
+        encoding: 'utf8',
+        timeout: 600_000,
+        stdio: 'inherit',
+      });
+      if (qRes.status !== 0) {
+        console.warn(`  [stage 5/5] qualification exit ${qRes.status}`);
+      }
+    } catch (err) {
+      console.warn(`  [stage 5/5] qualification err: ${err.message}`);
+    }
+  }
+
   // V3 D38 bug fix · auto-republish to CF Pages if entity was previously published.
   // 否则 Stage 4 message 的 evidence hyperlinks 会 404 (CF 还停在旧文件名)
   // pl:publish-demo 仅 wrangler deploy · ~30s · $0 · 不调 LLM

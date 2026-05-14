@@ -56,7 +56,10 @@ export const DISCOVERY_ENTITY_STATUS = {
 // implicitly from status.
 export const ENTITY_PHASE = {
   AWAITING: 'awaiting',
-  DESIGN_READY: 'design-ready',     // V3 D31 (2026-05-14): grade=A/B/C + audit done + master.md 22章 + 截图齐 → M3 可立即 build
+  DESIGN_READY: 'design-ready',     // V3 D31 (2026-05-14): grade=A/B/C + audit done + master.md 22章 + 截图齐
+  // V3 D39 (2026-05-14): M2 → M3 qualification gate · 经 multi-page crawl + AI 分析 + 7 hard gate + 5 维 scorecard
+  QA_PENDING: 'qa-pending',         // hard gates 全过 · scorecard < 60 · operator review 补字段
+  READY_TO_BUILD: 'ready-to-build', // hard gates 全过 · scorecard >= 60 · 触发 M3 build
   OUTREACH_ACTIVE: 'outreach-active',
   REPLIED: 'replied',
   PROPOSAL_SENT: 'proposal-sent',

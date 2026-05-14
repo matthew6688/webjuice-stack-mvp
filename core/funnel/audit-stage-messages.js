@@ -378,6 +378,70 @@ export function stage4Message({ entity, slug, htmlSize }) {
 }
 
 // ─────────────────────────────────────────────────────────
+// Stage 5 · Qualification check (D39 · M2 → M3 gate)
+// ─────────────────────────────────────────────────────────
+export function stage5Message({ entity, verdict, crawl, briefResult }) {
+  const lines = [];
+  lines.push(`**Stage 5/5 · Qualification check** done${crawl?.duration_ms ? ` · ${(crawl.duration_ms / 1000).toFixed(1)}s` : ''}`);
+  lines.push('');
+
+  // ━━━ 数据采集 ━━━
+  if (crawl) {
+    lines.push('━━━ 数据采集 ━━━');
+    lines.push(`Multi-page crawl: ${crawl.pages_crawled || 0} 页 · sitemap=${crawl.sitemap_source || '?'}`);
+    lines.push(`Firecrawl: ${crawl.pages_via_firecrawl || 0} · Direct fetch: ${crawl.pages_via_direct || 0} · ~$${(crawl.cost_estimate || 0).toFixed(3)}`);
+  }
+  if (briefResult) {
+    lines.push(`AI 分析: ${briefResult.provider} · ${(briefResult.duration_ms / 1000).toFixed(1)}s · ~$${briefResult.cost_estimate || 0}`);
+  }
+
+  // ━━━ Hard Gates ━━━
+  lines.push('');
+  lines.push('━━━ Hard Gates ━━━');
+  const failedGates = verdict.hard_gates.filter((g) => !g.passed);
+  if (failedGates.length === 0) {
+    lines.push(`${verdict.hard_gates.length}/${verdict.hard_gates.length} passed · 全过`);
+  } else {
+    lines.push(`${verdict.hard_gates.length - failedGates.length}/${verdict.hard_gates.length} passed`);
+    for (const g of failedGates) {
+      lines.push(`❌ ${g.id}: ${g.reason}`);
+    }
+  }
+
+  // ━━━ Scorecard ━━━
+  if (verdict.scorecard) {
+    lines.push('');
+    lines.push('━━━ Scorecard ━━━');
+    const sc = verdict.scorecard;
+    lines.push(`A 核心信息: ${sc.A_core_info.score}/${sc.A_core_info.max} (${(sc.A_core_info.items || []).join(', ')})`);
+    lines.push(`B 品牌素材: ${sc.B_brand.score}/${sc.B_brand.max} (${(sc.B_brand.items || []).join(', ')})`);
+    lines.push(`C 范围可行: ${sc.C_scope.score}/${sc.C_scope.max} (${(sc.C_scope.items || []).join(', ')})`);
+    lines.push(`D 技术风险: ${sc.D_tech.score}/${sc.D_tech.max} (${(sc.D_tech.items || []).join(', ')})`);
+    lines.push(`E 解决性: ${sc.E_solvability.score}/${sc.E_solvability.max} (${(sc.E_solvability.items || []).join(', ')})`);
+    lines.push('');
+    lines.push(`**总分: ${sc.total}/100** · 阈值 ${sc.threshold}`);
+  }
+
+  // ━━━ Verdict ━━━
+  lines.push('');
+  lines.push('━━━ Verdict ━━━');
+  if (verdict.verdict === 'ready-to-build') {
+    lines.push(`Phase: \`ready-to-build\` (set)`);
+    lines.push(`下一步: 自动 chain pl:build-from-reference + pl:publish-demo`);
+  } else if (verdict.verdict === 'qa-pending') {
+    lines.push(`Phase: \`qa-pending\` (set)`);
+    lines.push(`下一步: operator 看 scorecard 弱项 · 补缺字段 · 跑 \`npm run pl:check-qualification -- --entity-key ${entity.entityKey}\` 重评`);
+  } else if (verdict.verdict === 'archived') {
+    lines.push(`Phase: \`archived\` (set)`);
+    lines.push(`原因: ${verdict.archive_reason}`);
+  }
+
+  lines.push('');
+  lines.push('━━━');
+  return lines.join('\n');
+}
+
+// ─────────────────────────────────────────────────────────
 // Stage failure (异常 · 唯一 emoji)
 // ─────────────────────────────────────────────────────────
 export function stageFailMessage({ stage, reason, retryHint }) {
