@@ -194,7 +194,7 @@
         <span>★ 4.9 (21 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/14 12:54</span>
+        <span>generated 2026/05/14 14:27</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
@@ -429,121 +429,105 @@
     <section class="section">
       <p class="eyebrow">视觉审计 · Vision LLM</p>
       <h2>设计观感的整体诊断</h2>
-      <p class="lead-summary">Outdated visual styling with heavy text shadows and busy hero image reduces trust, while form demands too much information above the fold.</p>
+      <p class="lead-summary">Desktop design has strong service-specific imagery and visible contact options, but suffers from dated heavy text shadows, a cramped quote form with 13+ checkboxes, and no trust proof above the fold.</p>
       <div class="visual-scores">
-        <div class="vs"><span>新鲜度</span><strong>3</strong><small>/10</small></div>
-        <div class="vs"><span>信任度</span><strong>4</strong><small>/10</small></div>
+        <div class="vs"><span>新鲜度</span><strong>4</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>5</strong><small>/10</small></div>
         <div class="vs"><span>转化准备度</span><strong>4</strong><small>/10</small></div>
         <div class="vs vs-text"><span>设计年代</span><strong class="age">outdated</strong></div>
       </div>
       <div class="issues-grid">
         
-    <div class="issue-card issue-critical">
+    <div class="issue-card issue-major">
       <div class="issue-head">
-        <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">hero_text_shadow_illegibility</code>
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">dated_shadowed_hero_text</code>
       </div>
-      <div class="issue-title">Hero headline text has heavy shadow making it hard to read</div>
-      <p class="issue-row"><span class="lab">观察到</span>The main headline &#39;Brisbane&#39;s Trusted Roof Restoration Experts&#39; appears in white text with a dark semi-transparent shadow/stroke effect overlaid on a busy background image showing roof tiles and sky, creating significant legibility issues especially on the word &#39;Trusted&#39;</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>When a local searcher lands on the page, they cannot quickly read the core value proposition because the text blends into the busy photographic background. Within 3-5 seconds they&#39;ll bounce to a competitor whose message is clear. The cognitive load of deciphering shadowed text on a complex image pattern triggers distrust—it feels like an amateur website from 2012.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Headline text should sit on a solid color block or semi-transparent overlay (e.g. dark navy rectangle at 85% opacity) that provides consistent contrast, with clean sans-serif type at 40-48px, no text shadow, ensuring WCAG AA contrast ratio of 4.5:1 minimum. Alternative: place headline below hero image on a white background.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace hero section with a flat colored background (brand navy or white) and overlaid high-contrast headline with no text effects, or use a darkened image overlay at 60% opacity with white text on top, ensuring all text is instantly readable without eye strain.</p>
+      <div class="issue-title">Heavy text shadow on hero makes it feel 2012-era</div>
+      <p class="issue-row"><span class="lab">观察到</span>The white hero text &#39;Brisbane Roof Restoration Specialists&#39; has a thick dark shadow/stroke that creates a heavy outline effect, particularly visible around each letter</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Text shadows this prominent immediately date the design to 2008-2014 web aesthetics; modern local-search customers unconsciously associate this visual style with outdated or neglected businesses, reducing perceived credibility before reading any content</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Clean white or dark text on a semi-transparent overlay (rgba background) without stroke effects, or a solid color band behind the text with no shadow at all — similar to how Google Business Profile layouts handle text over images</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove all text-shadow CSS from h1 hero text; if contrast is insufficient, add a 60-70% opacity dark overlay to the hero image section rather than shadowing individual letters</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-hero-text-shadow-illegibility.png" alt="evidence for Desktop 700px region" loading="lazy" />
-    </div>
-    </div>
-    <div class="issue-card issue-critical">
-      <div class="issue-head">
-        <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">desktop_form_13_checkboxes</code>
-      </div>
-      <div class="issue-title">Quote form shows 13 service checkboxes above the fold</div>
-      <p class="issue-row"><span class="lab">观察到</span>The right sidebar quote form displays 13 small checkboxes for different roofing services (Roof Restoration, Roof Repairs, Roof Replacement, Roof Cleaning, Tile Roof Restoration, Metal Roof Restoration, Colorbond Roofing, Roof Painting, Roof Leak Repairs, Gutter Cleaning, Gutter Repairs, Gutter Replacement, Solar Panel Cleaning) with a purple background box, occupying roughly 40% of the visible screen width</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Asking a first-time visitor to parse and select from 13 technical options before they&#39;ve even read about the business creates decision paralysis. Most homeowners searching &#39;roofer Brisbane&#39; just know &#39;my roof leaks&#39; or &#39;my roof looks old&#39;—they don&#39;t know if they need restoration vs replacement. This wall of checkboxes signals &#39;complicated&#39; and &#39;expensive&#39; before trust is established, causing visitors to abandon the form. Industry data shows forms with &gt;5 fields see 40-60% lower completion rates.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A single-field form above the fold asking for phone number only, or name + phone with a single line &#39;What can we help with?&#39; text area (optional). Service selection should happen during the phone call consultation after rapport is built, or pushed below fold as an optional &#39;Tell us more&#39; accordion.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the 13-checkbox list with a 2-field form: &#39;Your Phone Number&#39; and &#39;Your Name&#39; with a prominent &#39;Get Free Quote&#39; button. Add one optional text area below labeled &#39;Briefly describe your roof issue (optional)&#39;. Move detailed service checkboxes to a second page or remove entirely—let the phone consultation handle scoping.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Element: form</p>
-      <img src="evidence/issue-desktop-form-13-checkboxes.png" alt="evidence for Element: form" loading="lazy" />
+      <img src="evidence/issue-dated-shadowed-hero-text.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">desktop_form_purple_box_contrast</code>
+        <code class="issue-id">desktop_form_feels_cramped</code>
       </div>
-      <div class="issue-title">Quote form uses low-contrast purple background box</div>
-      <p class="issue-row"><span class="lab">观察到</span>The entire quote form sits inside a light purple/lavender rectangular box (#E8E0F5 approximate) with white form fields, creating minimal visual separation between the form container and individual input fields, especially visible in the checkbox section</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>The purple tint adds visual noise without aiding usability—it makes the form feel like a separate widget rather than an integrated part of the page, reducing trust. The low contrast between purple background and white fields can cause eye strain, and purple is not a standard color for professional trades in Australia (typically blue, green, or neutral grays). It looks like a generic template element, not a custom-designed conversion point.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Form should sit on white or very light gray background (#F9F9F9) with subtle border or drop shadow to define edges, using the brand&#39;s primary color (navy or teal) only for the submit button and focus states. Each input field should have a light gray border (#D0D0D0) that turns to brand color on focus.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Remove the purple background entirely; place form on white with a 1px light gray border or very subtle shadow. Use brand navy/teal only for the CTA button and input focus states. Ensure form fields have clear #E0E0E0 borders that are visible without the colored container.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Element: form</p>
-      <img src="evidence/issue-desktop-form-purple-box-contrast.png" alt="evidence for Element: form" loading="lazy" />
-    </div>
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">dated_logo_simple_icon</code>
-      </div>
-      <div class="issue-title">Logo uses basic house-with-roof icon from 2010s template era</div>
-      <p class="issue-row"><span class="lab">观察到</span>The company logo in the top-left header consists of a simple line-drawn house icon with a triangular roof outline next to the text &#39;Brisbane Roof Restoration Experts&#39; in a standard sans-serif font, resembling generic real-estate or home-services clipart from the early 2010s</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>This generic icon communicates &#39;cheap template&#39; rather than &#39;established professional business.&#39; When competing against roofers with custom photography-based branding or modern lettermark logos, this immediately positions the business as lower-tier. Local searchers—especially for a high-value service like roof restoration ($5,000-$15,000 jobs)—judge credibility in seconds, and a stock icon logo triggers &#39;is this a real company or a lead-gen site?&#39; skepticism.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A custom wordmark logo featuring the business name in a distinctive sans-serif or serif typeface with a subtle roof-related visual element (e.g., a single roofline forming the top of the &#39;B&#39; or &#39;R&#39;), or a photographic emblem showing actual Brisbane roof work. Should feel 2024-current, not 2012-template. Reference: modern trade logos like Service Today, Jim&#39;s Roofing use bold type + minimal iconography.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Commission a custom logo: either a strong typographic wordmark (thick sans-serif with roof peak detail) in navy + coral, or a circular badge containing a high-quality photo of Brisbane roofline with the business name wrapping around it. Avoid generic house clipart entirely.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-dated-logo-simple-icon.png" alt="evidence for Full desktop" loading="lazy" />
-    </div>
-    </div>
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">desktop_no_trust_signals_above_fold</code>
-      </div>
-      <div class="issue-title">No trust signals visible above the fold on desktop</div>
-      <p class="issue-row"><span class="lab">观察到</span>The visible above-the-fold area shows only the hero image, headline text, and the quote form—there are no visible customer reviews, star ratings, years-in-business badge, licensing/insurance mentions, before/after photo thumbnails, or recognizable third-party badges (Google reviews, Master Builders, etc.) in the top 900px of viewport</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A local searcher arriving from Google has never heard of this business and needs immediate social proof to justify engaging. With roof work costing $5,000-$15,000, trust must be established within 5 seconds or they&#39;ll return to search results to find a roofer with visible 5-star reviews or recognizable badges. The absence of trust signals makes the page feel like a lead-generation landing page rather than a real business, especially when competitors often display &#39;4.9 stars, 127 reviews&#39; in their header.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A trust bar immediately below or integrated into the header showing: &#39;4.8★ (94 Google Reviews) • 15+ Years in Brisbane • Fully Licensed &amp; Insured&#39; with small badge icons (Google, MBA, insurance logo). Alternatively, a small testimonial snippet or before/after image pair in the hero area sidebar, positioned above the form.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Add a horizontal trust bar below the navigation header displaying Google star rating + review count, years in business, key certifications (QBCC license, insurance) with small badge icons. Alternatively, replace the top 1/3 of the form area with a mini testimonial card (&#39;John S., Paddington: Best roof team in Brisbane! ★★★★★&#39;) before the form fields begin.</p>
+      <div class="issue-title">Quote form has 13+ checkboxes crammed into hero space</div>
+      <p class="issue-row"><span class="lab">观察到</span>The &#39;Get a FREE Quote Today!&#39; form on the right shows two text input fields at top, then a dense grid of 13+ small checkboxes for services (Metal Roof, Tile Roof, Roof Repair, etc.) with tiny text labels, making the form feel visually cluttered and overwhelming</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A local customer searching for roof restoration wants to quickly request a quote, but this form demands they process 13 service options before even submitting — creating decision fatigue and abandonment. The visual density signals &#39;work&#39; rather than &#39;quick help,&#39; especially compared to competitors with simple name/phone/message forms</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A simple 3-4 field form above the fold: Name, Phone, Service Type (single dropdown or optional), and a large &#39;Get Quote&#39; button — no checkboxes. Optionally add &#39;or call (07) 3152 1900&#39; directly below for phone-first customers</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace checkbox grid with a single optional dropdown for service type (pre-selected to &#39;General Roof Restoration&#39;) or remove service selection entirely and let the business qualify during the phone call; prioritize fast submission over data collection</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-desktop-no-trust-signals-above-fold.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <img src="evidence/issue-desktop-form-feels-cramped.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">generic_roof_photo_not_specific</code>
+      </div>
+      <div class="issue-title">Hero image is a generic residential roof, not Brisbane-specific</div>
+      <p class="issue-row"><span class="lab">观察到</span>The background hero image shows a generic Queenslander-style house with a tiled roof, trees, and blue sky — it could be any suburb in Brisbane or Queensland, with no identifying landmarks, company branding on a van, or crew in action</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Local-search customers want proof they&#39;re hiring a real local business, not a lead-gen site or franchise template; a generic stock-looking photo doesn&#39;t build the same trust as seeing actual company trucks, Brisbane landmarks, or recognizable local architecture with before/after context</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A hero image showing the company&#39;s branded truck or crew working on a Brisbane roof (ideally Queenslander or Brisbane-suburb home), or a before/after split of a real local project — anything that signals &#39;we are actually here in Brisbane doing this work&#39;</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace hero background with a high-quality photo of the team or truck at a Brisbane job site; if no photos exist, commission a half-day shoot capturing truck arrival, crew setup, and work in progress on a recognizable Brisbane-style home</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-generic-roof-photo-not-specific.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">no_visible_trust_proof_above_fold</code>
+      </div>
+      <div class="issue-title">No reviews, years in business, or certification logos visible above fold</div>
+      <p class="issue-row"><span class="lab">观察到</span>The desktop hero section shows the company name, service list checkboxes, and a phone number, but no Google star rating, &#39;Est. 20XX&#39;, industry certifications (QBCC, Master Builders), or customer testimonial count — trust signals are either below the fold or absent</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A local-search customer comparing 3-5 roofer tabs wants instant social proof that this is an established, reviewed business; without visible trust markers in the first screen, they have no reason to choose this site over a competitor showing &#39;4.9★ · 127 reviews · QBCC Licensed&#39; in the hero</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Directly below or next to the main headline, show: Google star rating + review count (&#39;4.8★ from 89 reviews&#39;), years in business (&#39;Serving Brisbane since 2008&#39;), and 2-3 certification/insurance logos (QBCC, MBA, insured) — all in the first viewport</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Add a trust badge row immediately under the h1 or above the form: Google rating widget, &#39;X+ years in Brisbane&#39;, and 2-3 certification icons; link review count to Google Business Profile reviews to show transparency</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-no-visible-trust-proof-above-fold.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">desktop_red_cta_button_small</code>
+        <code class="issue-id">red_cta_button_lacks_prominence</code>
       </div>
-      <div class="issue-title">Primary CTA button is undersized and uses red color</div>
-      <p class="issue-row"><span class="lab">观察到</span>The main call-to-action button labeled &#39;Get Your Free Quote&#39; at the bottom of the quote form is rendered in a red/crimson color (#D32F2F approximate) and appears to be roughly 200px wide by 40px tall, smaller than modern conversion-optimized buttons and using a color typically associated with warnings or errors rather than positive action</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Red is psychologically associated with &#39;stop,&#39; &#39;error,&#39; or &#39;danger&#39; in UI design—most high-converting sites use green, blue, or orange for primary CTAs. The small button size (appears ~40px tall) makes it harder to tap on mobile and reduces visual prominence, causing some visitors to overlook it or perceive it as a secondary action. Conversion research shows CTA buttons should be 48-56px tall minimum for easy thumb-tapping on mobile.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A large coral, teal, or bright orange button spanning nearly the full width of the form (at least 90% of form width), minimum 50px tall, with rounded corners (8px radius), white text, and a subtle hover state (darkens 10%). Color should align with the brand palette and signal &#39;go&#39; rather than &#39;stop.&#39; Example: #FF6B35 coral or #00ACC1 teal.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace red button with a brand-aligned color (coral #FF6B35 or teal #00ACC1), increase height to 52px, expand width to 100% of form container, add 2px of subtle shadow to lift it off the page, ensure white text at 18px bold. Test hover state that darkens 15%.</p>
+      <div class="issue-title">Red &#39;Call (07) 3152 1900&#39; button is small and lower contrast than form</div>
+      <p class="issue-row"><span class="lab">观察到</span>The bright red &#39;Call (07) 3152 1900&#39; button sits below the hero text on the left side, but it&#39;s relatively small compared to the large purple &#39;Get a FREE Quote Today!&#39; form on the right, and the red-on-dark-overlay contrast is lower than the white form background</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Many local-search customers (especially older homeowners or time-pressed property managers) prefer to call immediately rather than fill a form; if the phone CTA is visually secondary to a complex form, call-preferred customers may miss it or assume the business prioritizes web leads over phone contact</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>The phone button should be equal or greater visual weight than the form: larger size (min 48px height for mobile tap), higher contrast (white or bright yellow on dark), and positioned prominently — ideally both a click-to-call button AND the number displayed as text</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Increase phone CTA button size to match form submit button, use a higher-contrast color (white text on red, or coral background), and add &#39;Click to Call&#39; icon + text label; display the number in large readable type (24-28px) directly under or inside the button for desktop users who want to dial manually</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Desktop 800px region</p>
-      <img src="evidence/issue-desktop-red-cta-button-small.png" alt="evidence for Desktop 800px region" loading="lazy" />
+      <img src="evidence/issue-red-cta-button-lacks-prominence.png" alt="evidence for Desktop 800px region" loading="lazy" />
     </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>Clear headline communicates both service (roof restoration) and location (Brisbane) for strong local SEO relevance</li><li>Quote form is prominently placed above the fold on desktop, showing conversion intent</li><li>Phone number appears to be visible in header area for direct contact option</li></ul>
+          <ul><li>Hero image shows an actual Brisbane Queenslander-style home with roof work, which is industry-appropriate and locally recognizable architecture</li><li>Phone number is visible in both the header top-right AND as a CTA button in the hero, giving multiple contact paths</li><li>Service checkbox list clearly communicates the full range of roof restoration services offered, which helps set expectations</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Simplify quote form to 2 fields maximum (name + phone) and remove 13-checkbox service selection</li><li>2. Fix hero text legibility by placing headline on solid background or high-contrast overlay instead of busy image with shadow</li><li>3. Add trust signals above fold (Google star rating, review count, years in business, licensing badges)</li></ol>
+          <ol><li>1. Simplify quote form to 3-4 fields (name, phone, optional service dropdown) and remove the 13-checkbox grid to reduce abandonment</li><li>2. Add visible trust proof above fold: Google star rating + review count, years in business, and QBCC/certification logos near the headline</li><li>3. Remove heavy text shadows from hero headline and replace with a clean semi-transparent overlay for a modern 2025 aesthetic</li></ol>
         </div>
     </section>
 

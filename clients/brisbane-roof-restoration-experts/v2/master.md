@@ -11,14 +11,14 @@ decision: "low_priority"
 audit_version: "2026-05-11-v1"
 fired_triggers: []
 visual_age: "outdated"
-visual_freshness: 3
-visual_trust: 4
+visual_freshness: 4
+visual_trust: 5
 visual_conversion: 4
 review_trust_signal: "strong"
-generated_at: "2026-05-14T02:55:57.216Z"
+generated_at: "2026-05-14T04:28:36.644Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 7
+  evidence_count: 5
   video_url: "./video/mobile-throttled.webm"
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"
@@ -85,14 +85,14 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> Outdated visual styling with heavy text shadows and busy hero image reduces trust, while form demands too much information above the fold.
+> Desktop design has strong service-specific imagery and visible contact options, but suffers from dated heavy text shadows, a cramped quote form with 13+ checkboxes, and no trust proof above the fold.
 
-新鲜度 **3/10** · 信任度 **4/10** · 转化准备度 **4/10** · 设计年代 `outdated`
+新鲜度 **4/10** · 信任度 **5/10** · 转化准备度 **4/10** · 设计年代 `outdated`
 
 **值得保留的优点：**
-- Clear headline communicates both service (roof restoration) and location (Brisbane) for strong local SEO relevance
-- Quote form is prominently placed above the fold on desktop, showing conversion intent
-- Phone number appears to be visible in header area for direct contact option
+- Hero image shows an actual Brisbane Queenslander-style home with roof work, which is industry-appropriate and locally recognizable architecture
+- Phone number is visible in both the header top-right AND as a CTA button in the hero, giving multiple contact paths
+- Service checkbox list clearly communicates the full range of roof restoration services offered, which helps set expectations
 
 ## 四、客户在 Google 上怎么说
 
@@ -124,55 +124,7 @@ assets:
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 2 项（立刻在伤害成交）
-
-### 关键 · Hero headline text has heavy shadow making it hard to read
-
-**技术事实**
-
-The main headline 'Brisbane's Trusted Roof Restoration Experts' appears in white text with a dark semi-transparent shadow/stroke effect overlaid on a busy background image showing roof tiles and sky, creating significant legibility issues especially on the word 'Trusted'
-
-**普通话翻译**
-
-网站顶部的大标题文字加了很重的阴影效果,叠在复杂的屋顶照片上,导致访客很难快速看清楚您的公司名称和服务内容。
-
-**对客户的影响**
-
-本地搜索用户在手机上3到5秒内就会决定是否信任这个网站。如果标题看不清,70%的访客会直接返回Google选择竞争对手。这相当于每10个潜在客户就流失7个。
-
-**正确长啥样**
-
-Headline text should sit on a solid color block or semi-transparent overlay (e.g. dark navy rectangle at 85% opacity) that provides consistent contrast, with clean sans-serif type at 40-48px, no text shadow, ensuring WCAG AA contrast ratio of 4.5:1 minimum. Alternative: place headline below hero image on a white background.
-
-**Redesign 怎么改**
-
-Replace hero section with a flat colored background (brand navy or white) and overlaid high-contrast headline with no text effects, or use a darkened image overlay at 60% opacity with white text on top, ensuring all text is instantly readable without eye strain.
-
-
-### 关键 · Quote form shows 13 service checkboxes above the fold
-
-**技术事实**
-
-The right sidebar quote form displays 13 small checkboxes for different roofing services (Roof Restoration, Roof Repairs, Roof Replacement, Roof Cleaning, Tile Roof Restoration, Metal Roof Restoration, Colorbond Roofing, Roof Painting, Roof Leak Repairs, Gutter Cleaning, Gutter Repairs, Gutter Replacement, Solar Panel Cleaning) with a purple background box, occupying roughly 40% of the visible screen width
-
-**普通话翻译**
-
-报价表单要求访客勾选13种不同的屋顶服务选项。大多数房主根本不知道自己需要'屋顶修复'还是'屋顶更换',这么多选项让他们感到困惑和压力,直接放弃填表。
-
-**对客户的影响**
-
-表单字段超过5个时,完成率会下降40-60%。这意味着每10个本来想咨询的客户,有4到6个因为表单太复杂而直接离开,您损失了近一半的潜在询盘。
-
-**正确长啥样**
-
-A single-field form above the fold asking for phone number only, or name + phone with a single line 'What can we help with?' text area (optional). Service selection should happen during the phone call consultation after rapport is built, or pushed below fold as an optional 'Tell us more' accordion.
-
-**Redesign 怎么改**
-
-Replace the 13-checkbox list with a 2-field form: 'Your Phone Number' and 'Your Name' with a prominent 'Get Free Quote' button. Add one optional text area below labeled 'Briefly describe your roof issue (optional)'. Move detailed service checkboxes to a second page or remove entirely—let the phone consultation handle scoping.
-
-
-### 主要问题 · 4 项（影响转化的明显短板）
+### 主要问题 · 5 项（影响转化的明显短板）
 
 ### 主要 · homepage_title_clear
 
@@ -189,80 +141,103 @@ title='# Brisbane Roof Restoration Specialists' contains-name=true contains-nich
 Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
 
 
-### 主要 · Quote form uses low-contrast purple background box
+### 主要 · Heavy text shadow on hero makes it feel 2012-era
 
 **技术事实**
 
-The entire quote form sits inside a light purple/lavender rectangular box (#E8E0F5 approximate) with white form fields, creating minimal visual separation between the form container and individual input fields, especially visible in the checkbox section
+The white hero text 'Brisbane Roof Restoration Specialists' has a thick dark shadow/stroke that creates a heavy outline effect, particularly visible around each letter
 
 **普通话翻译**
 
-报价表单使用了淡紫色背景框,在澳洲本地服务行业中显得不够专业(通常应该用蓝色、绿色或灰色)。这种颜色让表单看起来像是从模板网站复制过来的,降低信任感。
+网站标题文字周围有很粗的黑色阴影边框,这种设计风格看起来像十年前的老网站,会让客户觉得公司可能不够专业或者网站长期没有更新维护。
 
 **对客户的影响**
 
-网站的视觉专业度直接影响客户的信任决策。非标准配色会让访客在潜意识中怀疑'这是个正规公司吗?'研究表明,信任度低的网站转化率会下降30-50%。
+本地搜索的客户在8秒内决定是否信任一个网站。过时的视觉风格会让30-40%的访客直接关闭页面去看竞争对手,尤其是年轻一代的房主和物业经理,他们更看重现代化的呈现方式。
 
 **正确长啥样**
 
-Form should sit on white or very light gray background (#F9F9F9) with subtle border or drop shadow to define edges, using the brand's primary color (navy or teal) only for the submit button and focus states. Each input field should have a light gray border (#D0D0D0) that turns to brand color on focus.
+Clean white or dark text on a semi-transparent overlay (rgba background) without stroke effects, or a solid color band behind the text with no shadow at all — similar to how Google Business Profile layouts handle text over images
 
 **Redesign 怎么改**
 
-Remove the purple background entirely; place form on white with a 1px light gray border or very subtle shadow. Use brand navy/teal only for the CTA button and input focus states. Ensure form fields have clear #E0E0E0 borders that are visible without the colored container.
+Remove all text-shadow CSS from h1 hero text; if contrast is insufficient, add a 60-70% opacity dark overlay to the hero image section rather than shadowing individual letters
 
 
-### 主要 · Logo uses basic house-with-roof icon from 2010s template era
+### 主要 · Quote form has 13+ checkboxes crammed into hero space
 
 **技术事实**
 
-The company logo in the top-left header consists of a simple line-drawn house icon with a triangular roof outline next to the text 'Brisbane Roof Restoration Experts' in a standard sans-serif font, resembling generic real-estate or home-services clipart from the early 2010s
+The 'Get a FREE Quote Today!' form on the right shows two text input fields at top, then a dense grid of 13+ small checkboxes for services (Metal Roof, Tile Roof, Roof Repair, etc.) with tiny text labels, making the form feel visually cluttered and overwhelming
 
 **普通话翻译**
 
-Logo使用了一个非常简单的'房子+屋顶'图标,看起来像是2010年代模板网站的通用剪贴画。这会让潜在客户怀疑'这是一家真正的公司还是一个引流网站?'
+报价表单里塞了13个以上的小勾选框,让客户感觉要填很多信息才能提交,看起来很麻烦。大部分人只想快速留个电话号码就行,不想在还没联系你之前就做这么多选择。
 
 **对客户的影响**
 
-屋顶修复是高价值服务(通常5000到15000澳元),客户会在几秒钟内判断公司是否可信。模板化的Logo会让您看起来不如使用专业摄影或定制设计的竞争对手,直接影响客户是否愿意打电话咨询。
+表单复杂度每增加一个字段,放弃率会上升10-20%。13个勾选框的表单会让50-60%的访客直接放弃,转而拨打电话或者去找看起来更简单的竞争对手网站。手机端的用户放弃率会更高。
 
 **正确长啥样**
 
-A custom wordmark logo featuring the business name in a distinctive sans-serif or serif typeface with a subtle roof-related visual element (e.g., a single roofline forming the top of the 'B' or 'R'), or a photographic emblem showing actual Brisbane roof work. Should feel 2024-current, not 2012-template. Reference: modern trade logos like Service Today, Jim's Roofing use bold type + minimal iconography.
+A simple 3-4 field form above the fold: Name, Phone, Service Type (single dropdown or optional), and a large 'Get Quote' button — no checkboxes. Optionally add 'or call (07) 3152 1900' directly below for phone-first customers
 
 **Redesign 怎么改**
 
-Commission a custom logo: either a strong typographic wordmark (thick sans-serif with roof peak detail) in navy + coral, or a circular badge containing a high-quality photo of Brisbane roofline with the business name wrapping around it. Avoid generic house clipart entirely.
+Replace checkbox grid with a single optional dropdown for service type (pre-selected to 'General Roof Restoration') or remove service selection entirely and let the business qualify during the phone call; prioritize fast submission over data collection
 
 
-### 主要 · No trust signals visible above the fold on desktop
+### 主要 · Hero image is a generic residential roof, not Brisbane-specific
 
 **技术事实**
 
-The visible above-the-fold area shows only the hero image, headline text, and the quote form—there are no visible customer reviews, star ratings, years-in-business badge, licensing/insurance mentions, before/after photo thumbnails, or recognizable third-party badges (Google reviews, Master Builders, etc.) in the top 900px of viewport
+The background hero image shows a generic Queenslander-style house with a tiled roof, trees, and blue sky — it could be any suburb in Brisbane or Queensland, with no identifying landmarks, company branding on a van, or crew in action
 
 **普通话翻译**
 
-网站顶部屏幕范围内没有显示任何客户评价、星级评分、从业年限或资质证书。访客无法快速判断这是不是一家值得信赖的真实公司。
+背景图片是一张普通的房子照片,看不出是你公司的实际项目,也看不出是布里斯班本地的工作现场。客户会怀疑这是不是一个模板网站或者外包的销售线索公司,而不是真正在本地做屋顶的施工队。
 
 **对客户的影响**
 
-屋顶工程动辄花费5000到15000澳元,客户必须在5秒内建立信任感,否则会返回Google选择有明显好评的竞争对手。没有信任标志的网站看起来像引流页面而非真实企业,询盘率会降低40-60%。
+67%的本地服务搜索客户会优先选择能看到真实本地工作证据的公司。没有公司车辆、团队照片或者本地项目实景的网站,会让25-35%的访客跳出去找能证明'真实本地存在'的竞争对手,尤其是高价值的屋顶修复项目(客户更谨慎)。
 
 **正确长啥样**
 
-A trust bar immediately below or integrated into the header showing: '4.8★ (94 Google Reviews) • 15+ Years in Brisbane • Fully Licensed & Insured' with small badge icons (Google, MBA, insurance logo). Alternatively, a small testimonial snippet or before/after image pair in the hero area sidebar, positioned above the form.
+A hero image showing the company's branded truck or crew working on a Brisbane roof (ideally Queenslander or Brisbane-suburb home), or a before/after split of a real local project — anything that signals 'we are actually here in Brisbane doing this work'
 
 **Redesign 怎么改**
 
-Add a horizontal trust bar below the navigation header displaying Google star rating + review count, years in business, key certifications (QBCC license, insurance) with small badge icons. Alternatively, replace the top 1/3 of the form area with a mini testimonial card ('John S., Paddington: Best roof team in Brisbane! ★★★★★') before the form fields begin.
+Replace hero background with a high-quality photo of the team or truck at a Brisbane job site; if no photos exist, commission a half-day shoot capturing truck arrival, crew setup, and work in progress on a recognizable Brisbane-style home
+
+
+### 主要 · No reviews, years in business, or certification logos visible above fold
+
+**技术事实**
+
+The desktop hero section shows the company name, service list checkboxes, and a phone number, but no Google star rating, 'Est. 20XX', industry certifications (QBCC, Master Builders), or customer testimonial count — trust signals are either below the fold or absent
+
+**普通话翻译**
+
+网站首屏看不到任何Google评分、营业年限或者行业认证标志,客户无法快速判断你是不是一家可靠的老牌本地公司,还是新开的或者不靠谱的承包商。
+
+**对客户的影响**
+
+本地服务搜索中,88%的客户会参考在线评价。如果首屏看不到星级评分和评论数量,35-45%的访客会直接返回Google搜索结果,去点击那些在网站上明确展示'4.8星·127条评论·持证经营'的竞争对手。
+
+**正确长啥样**
+
+Directly below or next to the main headline, show: Google star rating + review count ('4.8★ from 89 reviews'), years in business ('Serving Brisbane since 2008'), and 2-3 certification/insurance logos (QBCC, MBA, insured) — all in the first viewport
+
+**Redesign 怎么改**
+
+Add a trust badge row immediately under the h1 or above the form: Google rating widget, 'X+ years in Brisbane', and 2-3 certification icons; link review count to Google Business Profile reviews to show transparency
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Simplify quote form to 2 fields maximum (name + phone) and remove 13-checkbox service selection
-2. [视觉] 2. Fix hero text legibility by placing headline on solid background or high-contrast overlay instead of busy image with shadow
-3. [视觉] 3. Add trust signals above fold (Google star rating, review count, years in business, licensing badges)
+1. [视觉] 1. Simplify quote form to 3-4 fields (name, phone, optional service dropdown) and remove the 13-checkbox grid to reduce abandonment
+2. [视觉] 2. Add visible trust proof above fold: Google star rating + review count, years in business, and QBCC/certification logos near the headline
+3. [视觉] 3. Remove heavy text shadows from hero headline and replace with a clean semi-transparent overlay for a modern 2025 aesthetic
 4. [评论] Feature the '24-hour quote' metric prominently in the header to address urgency.
 5. [评论] Use Loren's review to create a dedicated 'Minor Repairs' section to capture leads who feel ignored by larger competitors.
 6. [评论] Highlight the 'home value' improvement in before/after gallery captions.
@@ -281,20 +256,21 @@ Add a horizontal trust bar below the navigation header displaying Google star ra
 
 | 维度 | 分数 |
 |---|---|
-| 性能 (Performance) | **71/100** |
+| 性能 (Performance) | **64/100** |
 | 可访问性 (Accessibility) | 95/100 |
 | 最佳实践 (Best Practices) | 100/100 |
 | SEO | 100/100 |
 
-**Lab 关键指标：** LCP `14.0s` · FCP `2.0s` · CLS `0.000` · TBT `103ms`
+**Lab 关键指标：** LCP `14.7s` · FCP `2.0s` · CLS `0.000` · TBT `300ms`
 
-**Google 建议的优化项（按节省时间排序，前 1）：**
+**Google 建议的优化项（按节省时间排序，前 2）：**
 
-- **Reduce unused JavaScript** — 节省 300ms · 节省 232KB
+- **Reduce unused JavaScript** — 节省 590ms · 节省 232KB
+- **Initial server response time was short** — 节省 94ms
 
 ### 桌面端（desktop）
 
-**Lighthouse 分数：** Performance 84 · A11y 92 · Best Practices 100 · SEO 100
+**Lighthouse 分数：** Performance 73 · A11y 92 · Best Practices 100 · SEO 100
 
 ## 图片优化与第三方脚本体重
 

@@ -321,6 +321,24 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   // ═══════ Section 7 · 销售进程 ═══════
   lines.length = 0;
   lines.push(`Phase: \`${phase}\``);
+
+  // V3 D42 (2026-05-14) · 跨 channel 流转历史 · hyperlinks 到之前 archived thread
+  // entity 字段: discord_thread_id (#website-leads) · project_thread_id (#website-projects) · paid_thread_id (#paid-websites future)
+  const GUILD_ID = process.env.DISCORD_GUILD_ID || '1493925728570310756';
+  const history = [];
+  if (entity.discord_thread_id && channel !== 'leads') {
+    history.push(`[#website-leads](https://discord.com/channels/${GUILD_ID}/${entity.discord_thread_id}) (archived)`);
+  }
+  if (entity.project_thread_id && channel !== 'projects') {
+    history.push(`[#website-projects](https://discord.com/channels/${GUILD_ID}/${entity.project_thread_id}) (archived)`);
+  }
+  if (entity.paid_thread_id && channel !== 'paid') {
+    history.push(`[#paid-websites](https://discord.com/channels/${GUILD_ID}/${entity.paid_thread_id})`);
+  }
+  if (history.length) {
+    lines.push(`旧 thread: ${history.join(' · ')}`);
+  }
+
   if (entity.lastSeenAt) {
     const lastAgo = fmtDaysAgo(entity.lastSeenAt);
     lines.push(`最近更新: ${entity.lastSeenAt.slice(0, 10)}${lastAgo ? ` (${lastAgo})` : ''}`);

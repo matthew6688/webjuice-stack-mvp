@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-13T07:16:15.985Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-11T02:09:40.560Z",
+  "lastStatusAt": "2026-05-14T04:16:53.293Z",
   "identifiers": {
     "place_id": "ChIJVVVVVbxekWsRjEOQJzDBkOI",
     "cid": "16325761061784404876",
@@ -143,6 +143,11 @@
         "source": "places_api.opening_hours.weekday_text",
         "computed_at": "2026-05-13T07:16:15.986Z"
       }
+    },
+    "social_links": {
+      "facebook": "https://www.facebook.com/diamondrooftiling",
+      "youtube": "https://www.youtube.com/channel/UCPvmH6-uUGxiIMRrElqWwbw",
+      "twitter": "https://twitter.com/DiamondRoofTile"
     }
   },
   "runs": [
@@ -233,6 +238,22 @@
       "at": "2026-05-13T07:16:32.759Z",
       "event": "places_photos_downloaded",
       "count": 6
+    },
+    {
+      "at": "2026-05-14T04:16:53.293Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded A / T2"
+    },
+    {
+      "at": "2026-05-14T04:16:53.299Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded A / T2"
     }
   ],
   "notes": [
@@ -242,14 +263,21 @@
     "investment_level": "A",
     "product_tier": "T2",
     "recommended_pricing": {
-      "one_time": "$3-6K",
-      "monthly": null
+      "one_time": null,
+      "annual": "$799/年",
+      "monthly": null,
+      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
     },
     "skip_reasons": [],
-    "graded_at": "2026-05-11T02:09:40.559Z"
+    "graded_at": "2026-05-14T04:16:53.293Z"
   },
   "project_thread_id": "1504269376487161937",
   "project_profile_message_id": "1504269376487161937",
   "project_thread_opened_at": "2026-05-13T23:49:27.496Z",
-  "sales_stage": "demo-ready"
+  "sales_stage": "demo-ready",
+  "phase": "design-ready",
+  "phaseChangedAt": "2026-05-14T04:16:53.299Z",
+  "discord_thread_id": "1504336682718068821",
+  "discord_profile_message_id": "1504336682718068821",
+  "discord_thread_opened_at": "2026-05-14T04:17:45.728Z"
 }

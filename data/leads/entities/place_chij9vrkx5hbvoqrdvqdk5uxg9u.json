@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chij9vrkx5hbvoqrdvqdk5uxg9u",
+  "firstSeenAt": "2026-05-14T01:54:12.033Z",
+  "lastSeenAt": "2026-05-14T01:54:12.033Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-14T01:58:38.353Z",
+  "identifiers": {
+    "place_id": "ChIJ9VrKx5hBVoQRDVqDK5uXG9U",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "sydneypd.com.au",
+    "phoneDigits": "0468515933"
+  },
+  "latest": {
+    "sourceType": "single_enrich",
+    "name": "Sydney Plumbing and Drainage",
+    "category": "",
+    "categories": [],
+    "address": "57 Alt St, Ashfield NSW 2131, Australia",
+    "city": "Sydney",
+    "niche": "plumbing services",
+    "phone": "0468 515 933",
+    "website": "https://www.sydneypd.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=15356034047155591693",
+    "rating": 4.9,
+    "review_count": 91,
+    "websiteStatus": "",
+    "discoveryScore": 27,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "Sydney Plumbing Services Sydney",
+    "signals": {},
+    "batch_id": "",
+    "discovery_rank": null,
+    "google_places_provider": null
+  },
+  "runs": [
+    {
+      "runId": "single-enrich-1778723652032",
+      "query": "Sydney Plumbing Services Sydney",
+      "runPath": "",
+      "at": "2026-05-14T01:54:12.033Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-14T01:54:12.033Z",
+      "event": "seen_in_discovery_run",
+      "runId": "single-enrich-1778723652032",
+      "query": "Sydney Plumbing Services Sydney",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T01:58:38.353Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded B / T2"
+    },
+    {
+      "at": "2026-05-14T01:58:38.365Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded B / T2"
+    }
+  ],
+  "notes": [
+    "Graded B / T2"
+  ],
+  "enrichment_status": "complete",
+  "grade": {
+    "investment_level": "B",
+    "product_tier": "T2",
+    "recommended_pricing": {
+      "one_time": null,
+      "annual": "$799/年",
+      "monthly": null,
+      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
+    },
+    "skip_reasons": [],
+    "graded_at": "2026-05-14T01:58:38.353Z"
+  },
+  "phase": "design-ready",
+  "phaseChangedAt": "2026-05-14T01:58:38.365Z",
+  "discord_thread_id": "1504302036899074070",
+  "discord_profile_message_id": "1504302036899074070",
+  "discord_thread_opened_at": "2026-05-14T01:59:14.582Z"
+}

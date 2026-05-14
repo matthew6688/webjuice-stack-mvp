@@ -4,7 +4,7 @@
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
   "lastSeenAt": "2026-05-13T07:14:34.893Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-11T02:09:40.550Z",
+  "lastStatusAt": "2026-05-14T04:16:08.209Z",
   "identifiers": {
     "place_id": "ChIJi0wDvdhekWsRSYzPzJOW1Uw",
     "cid": "5536496878462405705",
@@ -143,6 +143,11 @@
         "source": "places_api.opening_hours.weekday_text",
         "computed_at": "2026-05-13T07:14:34.893Z"
       }
+    },
+    "email": "office@roofshield.com.au",
+    "social_links": {
+      "facebook": "https://www.facebook.com/RoofshieldRoofRestoration",
+      "linkedin": "https://www.linkedin.com/company/roofshield-roof-restoration"
     }
   },
   "runs": [
@@ -216,6 +221,22 @@
       "at": "2026-05-13T07:15:08.379Z",
       "event": "places_photos_downloaded",
       "count": 6
+    },
+    {
+      "at": "2026-05-14T04:16:08.209Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded A / T2"
+    },
+    {
+      "at": "2026-05-14T04:16:08.216Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded A / T2"
     }
   ],
   "notes": [
@@ -225,14 +246,21 @@
     "investment_level": "A",
     "product_tier": "T2",
     "recommended_pricing": {
-      "one_time": "$3-6K",
-      "monthly": null
+      "one_time": null,
+      "annual": "$799/年",
+      "monthly": null,
+      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
     },
     "skip_reasons": [],
-    "graded_at": "2026-05-11T02:09:40.550Z"
+    "graded_at": "2026-05-14T04:16:08.208Z"
   },
   "project_thread_id": "1504269350436077720",
   "project_profile_message_id": "1504269350436077720",
   "project_thread_opened_at": "2026-05-13T23:49:21.306Z",
-  "sales_stage": "demo-ready"
+  "sales_stage": "demo-ready",
+  "phase": "design-ready",
+  "phaseChangedAt": "2026-05-14T04:16:08.216Z",
+  "discord_thread_id": "1504336493135790090",
+  "discord_profile_message_id": "1504336493135790090",
+  "discord_thread_opened_at": "2026-05-14T04:16:34.272Z"
 }
