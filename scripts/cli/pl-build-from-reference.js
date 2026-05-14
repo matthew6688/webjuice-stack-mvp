@@ -83,6 +83,17 @@ proc.on('exit', async (code) => {
   const took = Math.round((Date.now() - start) / 1000);
   console.log(`\n[pl:build-from-reference] DONE · ${cleaned.length} bytes · ${took}s · ${outHtml}`);
 
+  // V3 D43 cycle-21 (Matthew 2026-05-15): post Stage 6 message to entity thread.
+  const entityKeyForMsg = entity?.entityKey;
+  if (entityKeyForMsg) {
+    try {
+      const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
+      const { stage6Message } = await import('../../core/funnel/audit-stage-messages.js');
+      const msg = stage6Message({ slug: slugArg, indexHtmlPath: outHtml.replace(REPO + '/', ''), sizeBytes: cleaned.length });
+      await refreshThreadAndPost(entityKeyForMsg, msg);
+    } catch (err) { console.warn(`[stage6] post failed: ${err.message}`); }
+  }
+
   // V3 D43 cycle-18 (Matthew 2026-05-14): auto-chain publish-demo AFTER build done.
   // Previously cycle-15 chained build + publish in parallel · publish raced ahead
   // and failed (no index.html yet). Now serialize: build script enqueues publish

@@ -234,37 +234,37 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
 
   if (deploy?.demo_url && thisEntityAudited) {
     const base = deploy.demo_url.replace(/\/$/, '');
-    // Demo · RAW URL (操作员复制粘贴用)
+    // V3 D43 cycle-21 (Matthew 2026-05-15): 在线资源 只 Demo + 4 docs hyperlinks
+    // 截图 + 录屏 + evidence 全部 move 到 现状证据 section (Matthew "格式 like 现状证据").
     lines.push(`Demo: ${deploy.demo_url}`);
-    // 文档 · hyperlink (5 个 deploy URL: demo / customer-audit / internal-audit / master.md / master.report)
     const docs = [];
-    if (deploy.audit_url) docs.push(`[客户 audit](${deploy.audit_url})`);
-    if (deploy.internal_audit_url) docs.push(`[内部 audit](${deploy.internal_audit_url})`);
-    if (deploy.master_md_url) docs.push(`[master.md](${deploy.master_md_url})`);
-    if (deploy.master_report_url) docs.push(`[master.report.html](${deploy.master_report_url})`);
-    if (docs.length) lines.push(docs.join('  ·  '));
-    // 截图 + 录屏 · hyperlink
-    const media = [];
-    for (const f of assets.screenshots) {
-      const label = f.replace(/\.[^.]+$/, '').replace(/^./, (c) => c.toUpperCase());
-      media.push(`[${label} 截图](${base}/screenshots/${f})`);
-    }
-    for (const f of assets.videos) {
-      const label = f.replace(/\.[^.]+$/, '').replace(/-/g, ' ');
-      media.push(`[${label} 录屏](${base}/video/${f})`);
-    }
-    if (media.length) lines.push(media.join('  ·  '));
+    if (deploy.audit_url) docs.push(`• [客户 audit](${deploy.audit_url})`);
+    if (deploy.internal_audit_url) docs.push(`• [内部 audit](${deploy.internal_audit_url})`);
+    if (deploy.master_md_url) docs.push(`• [master.md](${deploy.master_md_url})`);
+    if (deploy.master_report_url) docs.push(`• [master.report.html](${deploy.master_report_url})`);
+    if (docs.length) lines.push(docs.join('\n'));
     if (deploy.deployed_at) lines.push(`发布于: ${String(deploy.deployed_at).slice(0, 10)}`);
     flush('在线资源 (已发布)');
 
-    // 现状证据 (审计后 hyperlinks)
-    if (assets.evidence.length) {
-      const total = assets.evidence.length;
-      const allLines = assets.evidence.map((f) => `• [${prettyEvidenceName(f)}](${base}/evidence/${f})`);
+    // 现状证据 = 截图 + 录屏 + evidence PNG · 每行单独 hyperlink (Matthew "每个证据单独一行")
+    const evLines = [];
+    for (const f of assets.screenshots) {
+      const label = f.replace(/\.[^.]+$/, '').replace(/^./, (c) => c.toUpperCase());
+      evLines.push(`• [${label} 截图](${base}/screenshots/${f})`);
+    }
+    for (const f of assets.videos) {
+      const label = f.replace(/\.[^.]+$/, '').replace(/-/g, ' ');
+      evLines.push(`• [${label} 录屏](${base}/video/${f})`);
+    }
+    for (const f of assets.evidence) {
+      evLines.push(`• [${prettyEvidenceName(f)}](${base}/evidence/${f})`);
+    }
+    if (evLines.length) {
+      const total = evLines.length;
       const kept = [];
       let chars = 0;
-      const LIMIT = 980;
-      for (const line of allLines) {
+      const LIMIT = 1500;
+      for (const line of evLines) {
         if (chars + line.length + 1 > LIMIT) break;
         kept.push(line);
         chars += line.length + 1;

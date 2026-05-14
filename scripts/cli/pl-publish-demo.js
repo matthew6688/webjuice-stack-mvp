@@ -187,6 +187,30 @@ proc.on('exit', async (code) => {
   fs.writeFileSync(path.join(recordDir, 'cf-pages-deploy.json'), JSON.stringify(record, null, 2));
   console.log(`  Record:             ${path.join(recordDir, 'cf-pages-deploy.json')}`);
 
+  // V3 D43 cycle-21 (Matthew 2026-05-15): post Stage 7 to lead thread BEFORE
+  // graduate-to-projects (so #website-leads thread gets a final "published" msg).
+  try {
+    const entitiesDir = path.join(REPO, 'data/leads/entities');
+    let foundKeyEarly = null;
+    if (fs.existsSync(entitiesDir)) {
+      for (const f of fs.readdirSync(entitiesDir)) {
+        if (!f.endsWith('.json')) continue;
+        try {
+          const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8'));
+          const nm = e?.latest?.name || '';
+          const s = String(nm).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          if (s === slug) { foundKeyEarly = f.replace(/\.json$/, ''); break; }
+        } catch { /* skip */ }
+      }
+    }
+    if (foundKeyEarly) {
+      const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
+      const { stage7Message } = await import('../../core/funnel/audit-stage-messages.js');
+      const msg = stage7Message({ slug, deployUrl: url, deployedAt: record.deployed_at });
+      await refreshThreadAndPost(foundKeyEarly, msg);
+    }
+  } catch (err) { console.warn(`[stage7] post failed: ${err.message}`); }
+
   // V3 D34 (2026-05-14): auto-graduate to #website-projects channel · idempotent
   // Find entity by slug → openProjectThread (skips if already open · returns same id)
   try {
