@@ -204,10 +204,20 @@ proc.on('exit', async (code) => {
       }
     }
     if (foundKey) {
-      const { openProjectThread } = await import('../../core/funnel/lead-thread-sync.js');
+      const { openProjectThread, upsertProjectProfileCard, appendThreadMessage } =
+        await import('../../core/funnel/lead-thread-sync.js');
       const r = await openProjectThread(foundKey);
       if (r.ok) {
         console.log(`  #website-projects thread: ${r.reused ? 'reused' : 'opened'} ${r.threadId || ''}`);
+        // V3 D34: 若 reused (entity 已有 project thread) · 刷新 profile card + 发更新消息
+        if (r.reused) {
+          try { await upsertProjectProfileCard(foundKey); console.log('  profile card refreshed'); } catch {}
+          try {
+            await appendThreadMessage(r.threadId,
+              `🌐 **Demo 已重新发布** · ${new Date().toISOString().slice(0, 19).replace('T', ' ')} UTC\n${url}`);
+            console.log('  update message posted');
+          } catch {}
+        }
       } else {
         console.log(`  #website-projects thread: skip · ${r.reason}`);
       }

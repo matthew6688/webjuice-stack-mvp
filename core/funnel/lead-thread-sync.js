@@ -348,6 +348,22 @@ export async function openProjectThread(entityKey, { fetchImpl = fetch } = {}) {
   fresh.project_thread_opened_at = new Date().toISOString();
   writeEntity(fresh);
 
+  // V3 D35 (2026-05-14): PIN the profile card · 钉到 thread pin 栏方便快速跳转
+  // Forum starter message is always at top (chronological) · but PIN adds it
+  // to Discord's pin bar (📌) for one-click access from anywhere in thread.
+  try {
+    await fetchImpl(`${DISCORD_API}/channels/${threadId}/pins/${messageId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bot ${botToken()}`,
+        'User-Agent': 'profitslocal-lead-thread-sync',
+        'X-Audit-Log-Reason': 'pin profile card · V3 D35',
+      },
+    });
+  } catch {
+    // Pin failed · not blocking · profile card still visible as starter
+  }
+
   return { ok: true, threadId, messageId, threadName, tags };
 }
 
