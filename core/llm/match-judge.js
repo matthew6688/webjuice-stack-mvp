@@ -109,6 +109,117 @@ function appendCascadeTrace(entry) {
   } catch {}
 }
 
+/* ─── Public · niche relevance (industry match) ──────────────────── */
+
+/**
+ * V3 D43 cycle-10 (Matthew 2026-05-14):
+ * Judge whether a business's GBP signal (category / name / categories[]) is in
+ * the same industry as the searched niche. Replaces string-match hardcoded
+ * niche aliases which Matthew correctly called "傻 · 后面还是会遇到同样的问题
+ * · 让我们错过多少 lead".
+ *
+ * Why LLM: niche normalization (roofer/roofers/roofing/re-roof/roof restoration)
+ * is endless · LLM handles ANY new niche/variation/typo with 0 code change.
+ *
+ * Cache · per <niche, primary_category> pair · same pair never re-queries LLM.
+ * Cost · margin $0 (codex + claude CLI 是订阅 · ollama 本地).
+ *
+ * @param {object} ctx · { niche, category, categories?, name? }
+ * @returns {{ relevant: boolean, confidence: number, reason: string, provider: string, cached: boolean }}
+ */
+const NICHE_CACHE_PATH = '/Users/matthew/Developer/google-map-website-v3/data/leads/niche-relevance-cache.jsonl';
+const _nicheCache = new Map();
+let _nicheCacheLoaded = false;
+
+function loadNicheCache() {
+  if (_nicheCacheLoaded) return;
+  _nicheCacheLoaded = true;
+  try {
+    if (!fs.existsSync(NICHE_CACHE_PATH)) return;
+    const lines = fs.readFileSync(NICHE_CACHE_PATH, 'utf8').trim().split('\n').filter(Boolean);
+    for (const l of lines) {
+      try {
+        const r = JSON.parse(l);
+        if (r.key) _nicheCache.set(r.key, r);
+      } catch { /* skip */ }
+    }
+  } catch { /* fine */ }
+}
+
+function saveNicheCache(entry) {
+  try {
+    fs.appendFileSync(NICHE_CACHE_PATH, JSON.stringify(entry) + '\n');
+  } catch { /* best-effort */ }
+}
+
+function nicheCacheKey(niche, category) {
+  return `${String(niche || '').toLowerCase().trim()}||${String(category || '').toLowerCase().trim()}`;
+}
+
+export async function judgeNicheRelevance({ niche, category, categories = [], name = '' } = {}) {
+  loadNicheCache();
+  const key = nicheCacheKey(niche, category);
+  if (_nicheCache.has(key)) {
+    return { ..._nicheCache.get(key), cached: true };
+  }
+  if (!niche) {
+    return { relevant: true, confidence: 0, reason: 'no niche specified', provider: 'rule', cached: false };
+  }
+
+  const prompt = `You are a data classification verifier. Decide if a business is in the same industry as a searched niche.
+
+SEARCHED NICHE: ${niche}
+
+BUSINESS:
+  GBP primary category: ${category || '(empty)'}
+  Other categories:     ${(categories || []).join(', ') || '(none)'}
+  Business name:        ${name || '(unknown)'}
+
+QUESTION: Is this business in the same industry as the searched niche?
+
+Be generous on variations (roofer / roofers / roofing / re-roofing / roof restoration are ALL the same industry).
+Be strict on actual mismatch (SEO agency, marketing, real estate are NOT roofing).
+
+Return JSON only:
+{
+  "relevant": true | false,
+  "confidence": 0.0 to 1.0,
+  "reason": "1 short sentence in 中文"
+}
+Output ONLY the JSON · no commentary.`;
+
+  let result;
+  try {
+    const cascade = await runCascade(prompt);
+    const parsed = extractJson(cascade.text);
+    if (!parsed || typeof parsed.relevant !== 'boolean') {
+      throw new Error('LLM did not return valid JSON');
+    }
+    result = {
+      key,
+      relevant: parsed.relevant,
+      confidence: Number(parsed.confidence) || 0.5,
+      reason: parsed.reason || '',
+      provider: cascade.provider,
+      at: new Date().toISOString(),
+    };
+  } catch (err) {
+    // Fallback · substring stem match (the hardcoded checkRelevance) → conservative pass
+    // (better to over-include than wrongly archive · we'd rather review than miss)
+    result = {
+      key,
+      relevant: true,
+      confidence: 0.2,
+      reason: `LLM cascade failed (${err.message.slice(0,80)}) · 保守 pass · 走人工 review`,
+      provider: 'fallback_conservative',
+      at: new Date().toISOString(),
+    };
+  }
+  _nicheCache.set(key, result);
+  saveNicheCache(result);
+  return { ...result, cached: false };
+}
+
 /* ─── Public · single-enrich Places match verification ────────────── */
 
 /**

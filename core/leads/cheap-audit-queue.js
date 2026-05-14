@@ -105,6 +105,32 @@ async function processOne(entityKey) {
     return;
   }
 
+  // V3 D43 cycle-10 (Matthew 2026-05-14): LLM judge niche relevance BEFORE
+  // cheap-audit. Replaces hardcoded string-matching ('roofer' ≠ 'Roofing
+  // contractor' bug). LLM cascade · cached per <niche,category> pair · 边际 $0.
+  // Skip if cheap-audit already verified niche this session (entity.niche_relevance set).
+  if (!entity.niche_relevance || !entity.niche_relevance.at) {
+    try {
+      const { judgeNicheRelevance } = await import('../llm/match-judge.js');
+      const verdict = await judgeNicheRelevance({
+        niche: entity.latest?.niche,
+        category: entity.latest?.category,
+        categories: entity.latest?.categories || [],
+        name: entity.latest?.name,
+      });
+      entity.niche_relevance = verdict;
+      // Persist immediately so subsequent gbpTriage sees it
+      try {
+        const fresh = JSON.parse(fs2.readFileSync(entityPath, 'utf8'));
+        fresh.niche_relevance = verdict;
+        fs2.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+      } catch { /* best-effort */ }
+      console.error(`[cheap-audit-queue] ${entityKey} · niche-relevance LLM verdict: ${verdict.relevant} (${verdict.provider}${verdict.cached ? ' cached' : ''}) · ${verdict.reason?.slice(0, 80) || ''}`);
+    } catch (err) {
+      console.warn(`[cheap-audit-queue] ${entityKey} · niche-relevance LLM failed: ${err.message} · falling back to stem match`);
+    }
+  }
+
   // Run cheap-audit-v2 (Stage 1 only · skip Stage 2 site-fetch here to keep fast;
   // detailedAudit will do its own full fetch later if predict-A/B)
   const { cheapAuditV2 } = await import('../scoring/cheap-audit-v2.js');

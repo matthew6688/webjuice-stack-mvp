@@ -122,19 +122,30 @@ export function gbpTriage(entity, { sourceQuery = '' } = {}) {
       case 'category_relevant': {
         const niche = String(latest.niche || '').toLowerCase();
         const query = String(sourceQuery || latest.sourceQuery || '').toLowerCase();
-        // Look at primary category, all secondary categories, AND the
-        // business name. Roof Space Renovators has primary
-        // "Home improvement store" but name contains "Roof" — clearly
-        // a roofer; should not be excluded by primary-only check.
         const haystack = [
           latest.category || '',
           ...(latest.categories || []),
           latest.name || '',
         ].join(' ').toLowerCase();
-        const relevant = checkRelevance(haystack, niche, query);
+        // V3 D43 cycle-10 (Matthew 2026-05-14): LLM judge is authoritative if
+        // pre-computed (entity.niche_relevance set by cheap-audit-queue before
+        // gbpTriage). Sync stem match is fallback (covers tests + edge cases
+        // where LLM step was skipped).
+        // Matthew: "hardcode 是傻方案 · 后面还是会遇到同样的问题"
+        let relevant;
+        let rationale_extra = '';
+        if (entity.niche_relevance && typeof entity.niche_relevance.relevant === 'boolean') {
+          relevant = entity.niche_relevance.relevant;
+          rationale_extra = ` · LLM judge (${entity.niche_relevance.provider}, conf ${entity.niche_relevance.confidence})`;
+        } else {
+          relevant = checkRelevance(haystack, niche, query);
+          rationale_extra = ' · stem match (LLM not run)';
+        }
         earned = relevant ? rule.max : 0;
         hit = relevant;
-        rationale = relevant ? `relevance match in cat/categories/name` : `cat="${latest.category}" + categories/name had no niche overlap`;
+        rationale = relevant
+          ? `relevance match${rationale_extra}`
+          : `cat="${latest.category}" + categories/name no niche overlap${rationale_extra}`;
         break;
       }
       default:
