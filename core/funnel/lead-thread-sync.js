@@ -154,6 +154,13 @@ function tagsForProjectsThread(entity) {
 export async function openLeadThread(entityKey, { fetchImpl = fetch } = {}) {
   const entity = readEntity(entityKey);
   if (!entity) return { ok: false, reason: 'entity_not_found', entityKey };
+  // V3 D43 cycle-4 · 防御：archived / predict-D 不开 thread (#website-leads 不污染)
+  if (entity.phase === 'archived') {
+    return { ok: false, reason: 'archived_entity_skip', entityKey };
+  }
+  if (entity.predict_grade?.grade === 'D') {
+    return { ok: false, reason: 'predict_d_skip', entityKey };
+  }
   if (entity.discord_thread_id) {
     return { ok: true, reused: true, threadId: entity.discord_thread_id, messageId: entity.discord_profile_message_id || null };
   }

@@ -153,19 +153,35 @@ async function processOne(entityKey) {
 
   // Branch by predict_grade
   if (predict.predict_grade === 'D') {
-    // D · setEntityPhase archived · grade-router will archive thread on next pass · or do it here
+    // D · setEntityPhase archived · NO thread opened (cycle-4 fix: D never gets a thread)
     try {
       const { setEntityPhase, ENTITY_PHASE } = await import('./discovery-store.js');
       setEntityPhase({
         entityKey,
         phase: ENTITY_PHASE.ARCHIVED,
         archive_reason: `predict-D · ${predict.reasons.join(' · ')}`,
-        note: 'cheap-audit-queue auto-archive (predict-D)',
+        note: 'cheap-audit-queue auto-archive (predict-D · no thread)',
       });
     } catch (err) {
       console.error(`[cheap-audit-queue] setEntityPhase archived failed ${entityKey}: ${err.message}`);
     }
     return;
+  }
+
+  // Predict A/B/C · NOW open #website-leads thread (cycle-4 · deferred from intake)
+  // Title will be accurate because predict-grade is set on entity before thread create.
+  if (!process.env.SOP1_DISABLE_AUTO_OPEN_LEADS) {
+    try {
+      const { openLeadThread } = await import('../funnel/lead-thread-sync.js');
+      const r = await openLeadThread(entityKey);
+      if (r?.ok) {
+        console.error(`[cheap-audit-queue] ${entityKey} · thread ${r.reused ? 'reused' : 'opened'} (predict-${predict.predict_grade})`);
+      } else {
+        console.error(`[cheap-audit-queue] ${entityKey} · openLeadThread failed: ${r?.error || 'unknown'}`);
+      }
+    } catch (err) {
+      console.error(`[cheap-audit-queue] ${entityKey} · openLeadThread error: ${err.message}`);
+    }
   }
 
   if (cheapResult.action === 'queued_for_enrichment') {

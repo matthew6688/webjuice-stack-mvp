@@ -165,26 +165,10 @@ export function upsertDiscoveryRun(run, {
       .catch((err) => console.error(`[discovery-store] master-md enqueue err: ${err.message}`));
   }
 
-  // V3 D43 (Matthew 2026-05-14 · 改变主意): 入库后 **直接** 开 #website-leads thread
-  // + 自动 chain cheap-audit (throttled · 不让 mac 烧) · 不等 cron。
-  // SOP 重新解读: #website-leads = "全 lead pool 可视化" · tag 反映 pipeline 状态
-  //   audit-pending → audit-running → grade-{a,b,c} → archived (D)
-  if (!process.env.SOP1_DISABLE_AUTO_OPEN_LEADS && entityKeys.length > 0) {
-    import('../funnel/lead-thread-sync.js').then(async ({ openLeadThread }) => {
-      let opened = 0, reused = 0, failed = 0;
-      for (const key of entityKeys) {
-        try {
-          const r = await openLeadThread(key);
-          if (r.ok && r.reused) reused += 1;
-          else if (r.ok) opened += 1;
-          else failed += 1;
-        } catch { failed += 1; }
-        // pace · respect Discord rate-limit (50 threads / 10min per guild) · ~13s
-        await new Promise((res) => setTimeout(res, 13000));
-      }
-      if (opened + failed > 0) console.error(`[discovery-store] auto-open-leads · opened=${opened} reused=${reused} failed=${failed} of ${entityKeys.length}`);
-    }).catch((err) => console.error(`[discovery-store] auto-open-leads import failed: ${err.message}`));
-  }
+  // V3 D43 cycle-4 (Matthew 2026-05-14): NO auto-open at intake. Thread is opened later
+  // in cheap-audit-queue AFTER predict-grade, ONLY when predict ≠ D. This prevents
+  // D-grade / archived threads from polluting #website-leads with "[?]" titles.
+  // SOP 重新解读: #website-leads = "可建/在建/已建 lead pool" · D 直接 archive entity 不开 thread
 
   // V3 D43 · auto-enqueue cheap-audit · throttled queue · chains detailedAudit for predict A/B
   if (!process.env.SOP1_DISABLE_AUTO_CHEAP_AUDIT && entityKeys.length > 0) {
