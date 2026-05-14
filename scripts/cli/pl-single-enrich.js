@@ -111,6 +111,28 @@ if (!args['no-judge'] && signals.businessName) {
   }
 }
 
+// V3 D43 GR5: schema validation before write · belt-and-braces with LLM judge
+try {
+  const { validateEntity } = await import('../../core/leads/entity-schema.js');
+  const v = validateEntity({
+    name: result.lead.name,
+    phone: result.lead.phone,
+    address: result.lead.address,
+    city: result.lead.city,
+    niche: result.lead.niche,
+    place_id: result.lead.place_id,
+    website: result.lead.website,
+  });
+  if (!v.ok) {
+    console.error(`[pl:single-enrich] ✗ schema validation failed: ${v.errors.join(' · ')}`);
+    emit({ ok: false, reason: `schema_invalid: ${v.errors.join(' · ')}`, signals, validation: v, duration_ms: Date.now() - t0 });
+    process.exit(4);
+  }
+  if (v.warnings.length) console.warn(`[pl:single-enrich] ⚠ schema warnings: ${v.warnings.join(' · ')}`);
+} catch (err) {
+  console.warn(`[pl:single-enrich] schema check skipped: ${err.message}`);
+}
+
 // Build a run + upsert (this triggers SOP-0 P5 push enrich-task if entity is thin)
 const storeRoot = defaultDiscoveryStoreRoot();
 const run = {

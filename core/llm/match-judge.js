@@ -15,6 +15,7 @@
  */
 
 import { spawn } from 'node:child_process';
+import fs from 'node:fs';
 
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 const OLLAMA_MODEL = process.env.MATCH_JUDGE_OLLAMA_MODEL || 'qwen3.5:9b';
@@ -69,25 +70,43 @@ async function ollamaJson(prompt) {
 }
 
 /**
- * Run cascade · return {text, provider, latency_ms}
+ * Run cascade · return {text, provider, latency_ms, trace[]}
  * codex → claude → ollama
+ *
+ * Trace records every provider attempt with success/failure · used by
+ * pl:cascade-doctor to detect silent degradation (e.g. codex always failing
+ * → ollama is doing all the work silently)
  */
 async function runCascade(prompt) {
   const start = Date.now();
-  const errs = [];
+  const trace = [];
+  let result = null;
+  for (const tier of ['codex_cli', 'claude_cli', 'ollama']) {
+    const tStart = Date.now();
+    try {
+      if (tier === 'codex_cli')      result = { text: (await runCli('codex', ['exec'], prompt, 90_000)).stdout, provider: tier };
+      else if (tier === 'claude_cli') result = { text: (await runCli('claude', ['-p', prompt], '', 90_000)).stdout, provider: tier };
+      else                            result = { text: await ollamaJson(prompt), provider: tier };
+      trace.push({ tier, ok: true, latency_ms: Date.now() - tStart });
+      break;
+    } catch (err) {
+      trace.push({ tier, ok: false, latency_ms: Date.now() - tStart, error: err.message.slice(0, 150) });
+    }
+  }
+  if (!result) throw new Error(`All judges failed: ${trace.map((t) => `${t.tier}: ${t.error}`).join(' · ')}`);
+  result.latency_ms = Date.now() - start;
+  result.trace = trace;
+  // Persist trace into ledger-like cascade log for daily aggregation
+  appendCascadeTrace({ scope: 'match-judge', trace, final_provider: result.provider });
+  return result;
+}
+
+function appendCascadeTrace(entry) {
   try {
-    const r = await runCli('codex', ['exec'], prompt, 90_000);
-    return { text: r.stdout, provider: 'codex_cli', latency_ms: Date.now() - start };
-  } catch (err) { errs.push(`codex: ${err.message}`); }
-  try {
-    const r = await runCli('claude', ['-p', prompt], '', 90_000);
-    return { text: r.stdout, provider: 'claude_cli', latency_ms: Date.now() - start };
-  } catch (err) { errs.push(`claude: ${err.message}`); }
-  try {
-    const t = await ollamaJson(prompt);
-    return { text: t, provider: 'ollama', latency_ms: Date.now() - start };
-  } catch (err) { errs.push(`ollama: ${err.message}`); }
-  throw new Error(`All judges failed: ${errs.join(' · ')}`);
+    const p = '/Users/matthew/Developer/google-map-website-v3/data/finance/cascade-trace.jsonl';
+    const line = JSON.stringify({ at: new Date().toISOString(), ...entry }) + '\n';
+    fs.appendFileSync(p, line);
+  } catch {}
 }
 
 /* ─── Public · single-enrich Places match verification ────────────── */
