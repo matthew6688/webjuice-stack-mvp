@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160528-09e1a6",
+  "created_at": "2026-05-14T16:05:28.917Z",
+  "updated_at": "2026-05-14T16:05:30.516Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijrq6qulnbkwsruettr7eegyc (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijrq6qulnbkwsruettr7eegyc",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1391,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:05:29.124Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijrq6qulnbkwsruettr7eegyc --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:05:30.515Z",
+      "step": "cli.stream",
+      "detail": "hijrq6qulnbkwsruettr7eegyc\",\n      \"slug\": \"ace-roofing-service\",\n      \"md\": \"clients/ace-roofing-service/v2/master.md\",\n      \"html\": \"clients/ace-roofing-service/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:05:30.516Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1391ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160358-d04fa1",
+  "created_at": "2026-05-14T16:03:58.263Z",
+  "updated_at": "2026-05-14T16:11:12.812Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_rapidroofsolutions.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_rapidroofsolutions.com.au"
+    ],
+    "target_entity_key": "domain_rapidroofsolutions.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 434335,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:58.476Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_rapidroofsolutions.com.au"
+    },
+    {
+      "at": "2026-05-14T16:04:03.588Z",
+      "step": "cli.stream",
+      "detail": "e=normal (concurrent_leads=1)\n\n══════════ domain_rapidroofsolutions.com.au ══════════\n  [thread] reusing 1504514618796544133\n  [stage 1/4] detailed audit — fetching https://rapidroofsolutions.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:05:54.788Z",
+      "step": "cli.stream",
+      "detail": "→ contact-page crawl ok · +1 emails · +2 social\n     → contact: emails=1 · contact_url=yes · social=facebook,instagram\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:08:04.324Z",
+      "step": "cli.stream",
+      "detail": "ead-thread-sync] cleared stale discord_thread_id from domain_rapidroofsolutions.com.au (was 404)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:08:28.398Z",
+      "step": "cli.stream",
+      "detail": "}\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_rapidroofsolutions.com.au ══════════\n  [1/5] multi-page crawl https://rapidroofsolutions.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:08:53.844Z",
+      "step": "cli.stream",
+      "detail": "l · 25.0s · ~$0.075\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:10:08.370Z",
+      "step": "cli.stream",
+      "detail": "1630 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/rapid-roof-solutions/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  13986 chars"
+    },
+    {
+      "at": "2026-05-14T16:11:12.800Z",
+      "step": "cli.stream",
+      "detail": "──────────────────────────┴────────────────────────┴──────┴─────────────┴──────────────────────┴───────────────┴───────┴──────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:11:12.812Z",
+      "step": "cli.stream",
+      "detail": "57,\n      \"decision\": \"moderate_candidate\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_rapidroofsolutions.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:11:12.812Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=434335ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

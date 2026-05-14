@@ -144,43 +144,20 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   // Title · per SOP-DISCORD-DISPLAY §1.1 · [niche-中文] [stage-中文] [grade] name [emoji?]
   const title = buildThreadTitle(entity, channel);
 
-  // V3 D35 (2026-05-14 · 终版 per Matthew):
-  //   - 顺序: 行业 · 电话 · 现有网站 · Google · 营业
-  //           → 审计总分 · 视觉评分 · 分级 · 最佳联系
-  //           → 在线资源
-  //           → 流转 · 客户本地 · 线索来源
-  //           → 时间线 (全宽 · 末尾 · 单独)
-  //   - 无 emoji (field 名)
-  //   - Demo + 客户网站 = 裸 URL · 其他 = hyperlink
-  //   - 7 section · 每 section = 1 field (inline:false 全宽)
-  //   - section name = Discord 自动 bold · 无 emoji 装饰
-  //   - 联系方式占位字段 (email/表单页/社媒) · 数据缺时显示 — (反向提醒销售要补)
-  //   - 链接: 客户网站 + Demo URL = 裸 URL · 其他 hyperlink
-  //   - 证据 = 每条单独 hyperlink (不数量统计)
-  const fields = [];
+  // V3 D43 cycle-20 (Matthew 2026-05-15): 用 ━━━ section divider 格式 (对标
+  // stage4Message 样式 · "看起来很清爽") · 替换 Discord embed fields[]。
+  // 所有 section 合并到 1 个 description text · 渲染更紧凑。
+  // 删 <t:R> 相对时间 · 只 plain YYYY-MM-DD 绝对日期。
+  const sections = [];   // [{ name: '基本信息', body: '...' }, ...]
   const lines = [];
 
-  // ═══════ Section 1 · 销售阶段 ═══════
-  lines.length = 0;
-  if (level) {
-    const tierLabel = tier === 'T1' ? 'T1 $399 一次性' :
-                      tier === 'T2' ? 'T2 +年维护' :
-                      tier === 'T3' ? 'T3 定制月度' : null;
-    const action = level === 'A' ? '直接销售投入 · 电话/见面' :
-                   level === 'B' ? '直接销售 · 邮件+demo URL' :
-                   level === 'C' ? '批量轻触 · 模板邮件 + demo URL' :
-                   level === 'D' ? '不追 · archived' : '';
-    lines.push(`分级: ${level}${tier ? ` / ${tier}` : ''} · ${action}`);
-    if (tierLabel) lines.push(tierLabel);
+  // Helper · 把累积的 lines 提交为 1 个 section
+  function flush(name) {
+    if (lines.length) sections.push({ name, body: lines.join('\n') });
+    lines.length = 0;
   }
-  if (salesTime?.suggested_window) {
-    lines.push(`最佳联系: ${salesTime.suggested_window} · ${salesTime.confidence || 'medium'}`);
-    if (salesTime.rationale) lines.push(salesTime.rationale);
-  }
-  if (lines.length) fields.push({ name: '销售阶段', value: lines.join('\n'), inline: false });
 
-  // ═══════ Section 2 · 基本信息 ═══════
-  lines.length = 0;
+  // Section · 基本信息
   if (latest.category || (latest.categories && latest.categories.length)) {
     const cats = latest.categories?.length
       ? `${latest.category || latest.categories[0]} (+${latest.categories.length - 1})`
@@ -195,12 +172,10 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
                   mdFm?.review_trust_signal === 'mixed' ? '信任度混合' : null;
     lines.push(`Google: ${latest.rating || '?'}★ · ${latest.review_count || 0} 条${trust ? ` · ${trust}` : ''}`);
   }
-  if (lines.length) fields.push({ name: '基本信息', value: lines.join('\n'), inline: false });
+  flush('基本信息');
 
-  // ═══════ Section 3 · 联系方式 ═══════
-  // V3 D43 cycle-6 (Matthew 2026-05-14): phone/email as clickable tel:/mailto:
-  // links. Discord supports these in embed values · works on desktop + mobile.
-  lines.length = 0;
+  // Section · 联系方式
+  // V3 D43 cycle-6: phone/email clickable tel:/mailto: (Discord 支持)
   if (latest.phone) {
     const tel = String(latest.phone).replace(/[^\d+]/g, '');
     lines.push(`电话: [${latest.phone}](tel:${tel})`);
@@ -230,10 +205,9 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   } else {
     lines.push('社媒: —');
   }
-  fields.push({ name: '联系方式', value: lines.join('\n'), inline: false });
+  flush('联系方式');
 
-  // ═══════ Section 4 · 审计结论 ═══════
-  lines.length = 0;
+  // Section · 审计结论
   if (mdFm?.audit_score != null) {
     lines.push(`总分: ${mdFm.audit_score}/100${mdFm.decision ? ` · ${mdFm.decision}` : ''}`);
   }
@@ -247,9 +221,9 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   if (mdFm?.fired_triggers && Array.isArray(mdFm.fired_triggers)) {
     lines.push(`Hard triggers: ${mdFm.fired_triggers.length ? mdFm.fired_triggers.join(' · ') : 'passed (无触发)'}`);
   }
-  if (lines.length) fields.push({ name: '审计结论', value: lines.join('\n'), inline: false });
+  flush('审计结论');
 
-  // ═══════ Section 5 · 在线资源 / 本地资产 ═══════
+  // Section · 在线资源 / 本地资产
   // V3 D43 cycle-13 (Matthew 2026-05-14): "有些链接丢失了"
   // 旧 bug: 5 个发布后链接只在 channel='projects' 渲染 · #website-leads 看不到 demo/audit/master.md URL。
   // 修: 不管哪个 channel · 只要 cf-pages-deploy.json 存在就显示 5 个 hyperlinks。
@@ -280,10 +254,10 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
       media.push(`[${label} 录屏](${base}/video/${f})`);
     }
     if (media.length) lines.push(media.join('  ·  '));
-    if (deploy.deployed_at) lines.push(`_(发布于 <t:${Math.floor(new Date(deploy.deployed_at).getTime()/1000)}:R>)_`);
-    fields.push({ name: '在线资源 (已发布)', value: lines.join('\n'), inline: false });
+    if (deploy.deployed_at) lines.push(`发布于: ${String(deploy.deployed_at).slice(0, 10)}`);
+    flush('在线资源 (已发布)');
 
-    // 现状证据 · 单独 field · hyperlink · 累积至 Discord 1024 字段上限
+    // 现状证据 (审计后 hyperlinks)
     if (assets.evidence.length) {
       const total = assets.evidence.length;
       const allLines = assets.evidence.map((f) => `• [${prettyEvidenceName(f)}](${base}/evidence/${f})`);
@@ -295,26 +269,25 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
         kept.push(line);
         chars += line.length + 1;
       }
-      let evValue = kept.join('\n');
+      let evBody = kept.join('\n');
       if (kept.length < total) {
-        evValue += `\n_(+${total - kept.length} 条 · 完整在 internal-audit-report)_`;
+        evBody += `\n_(+${total - kept.length} 条 · 完整在 internal-audit-report)_`;
       }
-      fields.push({ name: `现状证据 (${total})`, value: evValue, inline: false });
+      sections.push({ name: `现状证据 (${total})`, body: evBody });
     }
   } else if (thisEntityAudited) {
-    // Audited but not published yet · show local asset counts (没 hyperlinks · 因为没 CF URL)
+    // Audited 但未 publish · 显示本地资产 counts
     const parts = [];
     if (assets.evidence.length) parts.push(`证据 ${assets.evidence.length}`);
     if (assets.screenshots.length) parts.push(`截图 ${assets.screenshots.length}`);
     if (assets.videos.length) parts.push(`视频 ${assets.videos.length}`);
     if (parts.length) {
-      fields.push({ name: '本地资产 (未 publish · 等 demo 部署)', value: parts.join(' · '), inline: false });
+      lines.push(parts.join(' · '));
+      flush('本地资产 (未 publish · 等 demo 部署)');
     }
   }
-  // else: predict-only entity · 没 audit 没资产 · 不显示这个 field
 
-  // ═══════ Section 6 · 线索来源 ═══════
-  lines.length = 0;
+  // Section · 线索来源
   if (latest.sourceQuery || latest.discovery_rank) {
     const src = latest.google_places_provider === 'official_api' ? 'Places API' :
                 latest.sourceType === 'maps_scraper' ? 'Maps Scraper' :
@@ -324,25 +297,30 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
     if (latest.discovery_rank) parts.push(`第 ${latest.discovery_rank} 位`);
     lines.push(parts.join(' · '));
   }
-  // V3 D43 cycle-6 (Matthew 2026-05-14): use Discord native dynamic timestamp
-  // <t:UNIX:R> = "5 days ago" rendered live in viewer's clock. No more stale strings.
+  // V3 D43 cycle-20 (Matthew 2026-05-15): 只 plain YYYY-MM-DD · 不要 <t:R> 相对时间
   if (entity.firstSeenAt) {
-    const ts = Math.floor(new Date(entity.firstSeenAt).getTime() / 1000);
-    if (Number.isFinite(ts) && ts > 0) {
-      lines.push(`首次发现: <t:${ts}:D> (<t:${ts}:R>)`);
-    }
+    lines.push(`首次发现: ${entity.firstSeenAt.slice(0, 10)}`);
   }
-  // V3 D43 cycle-6 (Matthew 2026-05-14): customer local time was statically
-  // computed at render time → stale forever. Discord can only render in
-  // viewer's tz not customer's tz. Removed the live-time line; kept the static
-  // timezone label since that's a fact that doesn't expire.
   if (locale?.timezone) {
     lines.push(`时区: ${locale.timezone}${locale.state ? ` · ${locale.state}` : ''}`);
   }
-  if (lines.length) fields.push({ name: '线索来源', value: lines.join('\n'), inline: false });
+  flush('线索来源');
 
-  // ═══════ Section 7 · 销售进程 ═══════
-  lines.length = 0;
+  // Section · 销售进程
+  if (level) {
+    const tierLabel = tier === 'T1' ? 'T1 $399 一次性' :
+                      tier === 'T2' ? 'T2 +年维护' :
+                      tier === 'T3' ? 'T3 定制月度' : null;
+    const action = level === 'A' ? '直接销售投入 · 电话/见面' :
+                   level === 'B' ? '直接销售 · 邮件+demo URL' :
+                   level === 'C' ? '批量轻触 · 模板邮件 + demo URL' :
+                   level === 'D' ? '不追 · archived' : '';
+    lines.push(`分级: ${level}${tier ? ` / ${tier}` : ''} · ${action}`);
+    if (tierLabel) lines.push(tierLabel);
+  }
+  if (salesTime?.suggested_window) {
+    lines.push(`最佳联系: ${salesTime.suggested_window} · ${salesTime.confidence || 'medium'}`);
+  }
   lines.push(`Phase: \`${phase}\``);
 
   // V3 D42 (2026-05-14) · 跨 channel 流转历史 · hyperlinks 到之前 archived thread
@@ -363,17 +341,11 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   }
 
   if (entity.lastSeenAt) {
-    const ts = Math.floor(new Date(entity.lastSeenAt).getTime() / 1000);
-    if (Number.isFinite(ts) && ts > 0) {
-      lines.push(`最近更新: <t:${ts}:D> (<t:${ts}:R>)`);
-    }
+    lines.push(`最近更新: ${entity.lastSeenAt.slice(0, 10)}`);
   }
   // 销售进程字段 · M4 启动后填
   if (entity.last_outreach_at) {
-    const ts = Math.floor(new Date(entity.last_outreach_at).getTime() / 1000);
-    if (Number.isFinite(ts) && ts > 0) {
-      lines.push(`上次外联: <t:${ts}:D> (<t:${ts}:R>)`);
-    }
+    lines.push(`上次外联: ${entity.last_outreach_at.slice(0, 10)}`);
   }
   if (entity.signals && (entity.signals.sent || entity.signals.opened)) {
     lines.push(`邮件: 发 ${entity.signals.sent || 0} · 开 ${entity.signals.opened || 0} · 点 ${entity.signals.clicked || 0} · 回 ${entity.signals.replied || 0}`);
@@ -390,22 +362,19 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
     if (entity.paid_at) lines.push(`付款: ${entity.paid_at.slice(0, 10)} · ${entity.subscription_type || 'one-time'}`);
     if (entity.current_revision_round != null) lines.push(`改稿: r${entity.current_revision_round} · ${entity.revision_status || 'pending'}`);
   }
-  fields.push({ name: '销售进程', value: lines.join('\n'), inline: false });
+  flush('销售进程');
 
-  // Discord embed limits (truncate longest field if overflow)
-  const totalChars = fields.reduce((sum, f) => sum + (f.name.length + (f.value || '').length), 0)
-    + (title || '').length;
-  if (totalChars > 5500) {
-    let longest = 0, idx = 0;
-    fields.forEach((f, i) => { if ((f.value || '').length > longest) { longest = f.value.length; idx = i; } });
-    fields[idx].value = (fields[idx].value || '').slice(0, 900);
-  }
+  // V3 D43 cycle-20 (Matthew 2026-05-15): render description with ━━━ section dividers
+  // (对标 stage4Message 样式 · 清爽统一)。embed.description max 4096 chars · 截断兜底.
+  const addrLine = latest.address ? `${latest.address}\n` : '';
+  let body = addrLine + sections.map((s) => `━━━ ${s.name} ━━━\n${s.body}`).join('\n\n');
+  if (body.length > 4000) body = body.slice(0, 3950) + '\n_(...truncated)_';
 
   return {
     title,
-    description: latest.address || '',
+    description: body,
     color: COLORS[level] || COLORS.default,
-    fields,
+    // V3 D43 cycle-20: fields[] 弃用 · 全部进 description (Matthew 拍板 ━━━ 格式)
     footer: { text: `entityKey: ${entity.entityKey}` },
     timestamp: new Date().toISOString(),
   };

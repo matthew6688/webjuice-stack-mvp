@@ -15,7 +15,7 @@ visual_freshness: null
 visual_trust: null
 visual_conversion: null
 review_trust_signal: null
-generated_at: "2026-05-13T21:16:22.001Z"
+generated_at: "2026-05-14T16:00:46.340Z"
 assets:
   cloudinary_folder: null
   evidence_count: 0
@@ -33,7 +33,7 @@ assets:
 **投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- audit 未运行 · 默认 C 等待 audit 后重新分级
+- audit 未运行 · 默认 C
 
 **下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
@@ -46,10 +46,10 @@ assets:
 
 **线索来源 · 联系开场可用**:
 - **来源**: Google Places API (官方搜索)
-- **搜索关键词**: `roofer in brisbane`
-- **结果排名**: 第 16 位
-- **首次发现**: 2026-05-13
-- **Batch**: `places-roofer-in-brisbane-202605132244`
+- **搜索关键词**: `roofer brisbane`
+- **结果排名**: 第 14 位
+- **首次发现**: 2026-05-14
+- **Batch**: `places-roofer-brisbane-202605150200`
 
 - 电话：0419 677 226
 - 地址：27 Sylvania St, Wellington Point QLD 4161, Australia

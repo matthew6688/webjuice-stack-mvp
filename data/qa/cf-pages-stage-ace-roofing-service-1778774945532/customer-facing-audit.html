@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ace Roofing Service – Website Health Check</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.7;
+  color: #2c2c2c;
+  background: #faf8f5;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+h1, h2, h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin-top: 2.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e8e4df;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  color: #444;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.hero {
+  text-align: center;
+  padding-bottom: 2rem;
+  border-bottom: 3px solid #e8e4df;
+  margin-bottom: 2.5rem;
+}
+
+.business-name {
+  color: #0066cc;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.score-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.score-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f4a261 0%, #e76f51 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+.score-number {
+  font-size: 3rem;
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+
+.score-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.95;
+}
+
+.score-meaning {
+  max-width: 400px;
+  text-align: left;
+  font-size: 1rem;
+  color: #555;
+}
+
+.intro {
+  font-size: 1.15rem;
+  color: #444;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 1rem;
+}
+
+.strength-list, .issue-list, .outcome-list {
+  margin-top: 1.5rem;
+}
+
+.strength-item, .issue-item, .outcome-item {
+  background: #f9f7f4;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #2a9d8f;
+  border-radius: 2px;
+}
+
+.issue-item {
+  border-left-color: #e76f51;
+  background: #fef9f7;
+}
+
+.outcome-item {
+  border-left-color: #0066cc;
+  background: #f7fbff;
+}
+
+.item-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+.item-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0;
+}
+
+.impact-badge {
+  display: inline-block;
+  background: #e76f51;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.closing {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #f7fbff;
+  border: 2px solid #0066cc;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.closing h2 {
+  border: none;
+  margin-top: 0;
+  color: #0066cc;
+}
+
+.closing p {
+  font-size: 1.05rem;
+  color: #444;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.metadata {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e8e4df;
+  font-size: 0.9rem;
+  color: #777;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 2rem 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  .score-display {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .score-meaning {
+    text-align: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="hero">
+  <div class="business-name">Ace Roofing Service</div>
+  <h1>Your Website Health Check</h1>
+  
+  <div class="score-display">
+    <div class="score-circle">
+      <div class="score-number">54</div>
+      <div class="score-label">out of 100</div>
+    </div>
+    <div class="score-meaning">
+      <strong>What this means:</strong> Your website is doing some things well, but there are clear opportunities to get more calls and quote requests. The good news? Most of these fixes are straightforward.
+    </div>
+  </div>
+  
+  <p class="intro">
+    We've reviewed your website from the perspective of a Brisbane homeowner searching for roofing help. Here's what we found.
+  </p>
+</div>
+
+<h2>What's Working Well</h2>
+
+<div class="strength-list">
+  <div class="strength-item">
+    <div class="item-title">Strong reputation on Google</div>
+    <div class="item-description">
+      Your 5-star rating across 37 reviews is excellent. That's a genuine trust signal that gives potential customers confidence when they're deciding who to call.
+    </div>
+  </div>
+  
+  <div class="strength-item">
+    <div class="item-title">Clear trust credentials</div>
+    <div class="item-description">
+      You're showing the things that matter to Brisbane homeowners: licensed, insured, family-owned since 2004, and available for emergencies. These are exactly the signals people look for.
+    </div>
+  </div>
+  
+  <div class="strength-item">
+    <div class="item-title">Professional roofing imagery</div>
+    <div class="item-description">
+      You're using real roofing photos rather than generic stock images, which helps visitors understand immediately that you're a legitimate local business.
+    </div>
+  </div>
+</div>
+
+<h2>What's Holding You Back</h2>
+
+<div class="issue-list">
+  <div class="issue-item">
+    <div class="impact-badge">Losing calls right now</div>
+    <div class="item-title">Your phone number appears cut off in the header</div>
+    <div class="item-description">
+      The blue phone button shows "0426 366 7.." with the end visually truncated. When someone's dealing with a leaking roof or storm damage, seeing an incomplete phone number creates doubt. Some visitors will simply move on to the next roofing company rather than scroll to find the full number.
+    </div>
+  </div>
+  
+  <div class="issue-item">
+    <div class="impact-badge">Mobile visitors can't call easily</div>
+    <div class="item-title">Phone number isn't click-to-call on mobile</div>
+    <div class="item-description">
+      About 60–70% of people searching for local roofing services prefer to call rather than fill out a form. On mobile, your phone number isn't tappable—visitors have to manually copy it, switch to their phone app, and paste it in. Every extra step loses customers. This is one of the easiest, highest-impact fixes.
+    </div>
+  </div>
+  
+  <div class="issue-item">
+    <div class="impact-badge">First impression takes too long</div>
+    <div class="item-title">The opening message is too long and detailed</div>
+    <div class="item-description">
+      Your hero section has a three-line headline followed by nine checklist points. Most visitors decide within seconds whether to stay or go back to Google. When there's too much text to read through, they often leave before getting to "Get Free Quote" or your phone number.
+    </div>
+  </div>
+  
+  <div class="issue-item">
+    <div class="impact-badge">Invisible to AI search</div>
+    <div class="item-title">Google and AI tools can't properly index your site</div>
+    <div class="item-description">
+      Your website is missing the structured data that Google uses to show star ratings, business hours, and service details in search results. It also means ChatGPT and other AI search tools can't accurately recommend you when people ask "Who's a reliable roofer in Brisbane?" You're essentially invisible in the new generation of search.
+    </div>
+  </div>
+  
+  <div class="issue-item">
+    <div class="impact-badge">Trust signal</div>
+    <div class="item-title">Site hasn't been updated in over a year</div>
+    <div class="item-description">
+      Your website was last updated 578 days ago. While your business is clearly active (your Google reviews are recent), the website gives the impression of a dormant business. Google and potential customers both notice this.
+    </div>
+  </div>
+</div>
+
+<h2>What Changes When We Fix This</h2>
+
+<div class="outcome-list">
+  <div class="outcome-item">
+    <div class="item-title">More phone calls from mobile visitors</div>
+    <div class="item-description">
+      When your phone number is tappable and fully visible, mobile visitors—who make up the majority of "roofing near me" searches—can call you in one tap. That alone typically lifts call volume by 15–25%.
+    </div>
+  </div>
+  
+  <div class="outcome-item">
+    <div class="item-title">Better Google rankings and visibility</div>
+    <div class="item-description">
+      Proper structured data means your business details, ratings, and services show up in Google's knowledge panels, map results, and AI-generated summaries. You'll appear in more searches, and when you do appear, you'll stand out more.
+    </div>
+  </div>
+  
+  <div class="outcome-item">
+    <div class="item-title">Faster first impression that converts</div>
+    <div class="item-description">
+      A streamlined opening with a clear headline, three or four key trust points, and prominent "Get Free Quote" and "Call Now" buttons means visitors know exactly what to do within seconds. Less reading, more action.
+    </div>
+  </div>
+  
+  <div class="outcome-item">
+    <div class="item-title">Professional appearance that matches your reputation</div>
+    <div class="item-description">
+      Your 5-star Google rating shows you deliver excellent work. Your website should reflect that same level of care. When the site looks current and polished, it reinforces the trust your reviews have already built.
+    </div>
+  </div>
+</div>
+
+<div class="closing">
+  <h2>Want to See What This Could Look Like?</h2>
+  <p>
+    We'd be happy to walk you through these findings in more detail and show you examples of what a refreshed site could do for your business. No pressure, no sales pitch—just a straightforward 30-minute conversation about what makes sense for Ace Roofing Service.
+  </p>
+  <p style="margin-top: 1.5rem; margin-bottom: 0;">
+    <strong>Let us know if you'd like to schedule a time to chat.</strong>
+  </p>
+</div>
+
+<div class="metadata">
+  Website reviewed: aceroofingservice.com.au<br>
+  Audit completed: 14 May 2026
+</div>
+
+</div>
+
+</body>
+</html>

@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ace Roofing Service · Roof Restoration, Repair & Replacement · Brisbane</title>
-  <meta name="description" content="Ace Roofing Service restores, repairs and replaces residential and commercial roofs across Brisbane. Free no-obligation quote. Licensed contractor since 2004. Call 0449 168 985." />
+  <meta name="description" content="Ace Roofing Service restores, repairs and replaces residential roofs across Brisbane. Free roof inspection. Licensed roofing specialists since 2004. Call 0449 168 985." />
   <!--
     REFERENCE SITE · classic-premium-roftix · v3 round 0 · 2026-05-13
-    Adapted for: Ace Roofing Service (Brisbane)
+    Adapted for: Ace Roofing Service
     OD-BOUNDARY rules:
       LOCKED   = color tokens, font families, type scale, spacing, button/card/form/section internal styling
       FLEXIBLE = which sections appear · section order · how many cards per grid · banner content · pages
@@ -213,11 +213,12 @@
 </head>
 <body>
 
+  <!-- FLEXIBLE · audit-banner: expandable drawer with score + 3 findings. OD swaps to real audit; if customer has no audit, remove entire <details> -->
   <details class="audit-banner" data-od-id="audit-banner" data-od-flexible="content" open>
     <summary>
       <div class="container audit-banner-inner">
-        <span class="audit-tag">Site audit · Your current site</span>
-        <span class="audit-msg">Your current site scored <strong>52/100</strong> — phone not visible on mobile, no tap-to-call links, missing Google structured data. <strong>This redesign shows the fix.</strong></span>
+        <span class="audit-tag">Site audit · 2026-05-11</span>
+        <span class="audit-msg">Your current site scored <strong>52/100</strong> — phone hidden on mobile, desktop header cuts off your number, no click-to-call link. <strong>This demo shows the fix.</strong></span>
         <span class="audit-cta">See findings</span>
       </div>
     </summary>
@@ -230,15 +231,15 @@
         <div class="audit-findings">
           <div class="audit-finding">
             <div class="audit-finding-title">Phone hidden below the fold</div>
-            <div class="audit-finding-body">Your phone number doesn't appear until visitors scroll down. 70% of roofing customers prefer calling over forms. Mobile users often leave within seconds if they can't find contact info immediately.</div>
+            <div class="audit-finding-body">Mobile and desktop visitors can't see your phone number without scrolling. 60-70% of roofing leads call before filling a form. Fix: sticky header phone button + hero contact bar.</div>
           </div>
           <div class="audit-finding">
-            <div class="audit-finding-title">No tap-to-call on mobile</div>
-            <div class="audit-finding-body">Phone numbers on your site aren't clickable links. Mobile users must manually copy and paste to dial, adding friction that causes many to bounce to a competitor with one-tap calling.</div>
+            <div class="audit-finding-title">No mobile tap-to-call button</div>
+            <div class="audit-finding-body">Mobile screenshot shows only the logo and text at the top — no visible phone or quote button. Urgent leads (leaks, storm damage) leave immediately when they can't call with one tap.</div>
           </div>
           <div class="audit-finding">
-            <div class="audit-finding-title">Missing Google structured data</div>
-            <div class="audit-finding-body">No LocalBusiness schema means Google can't show your business details in Knowledge Panels or AI Overview results. You're invisible to AI search tools like ChatGPT when customers ask for Brisbane roofers.</div>
+            <div class="audit-finding-title">Desktop phone number truncated</div>
+            <div class="audit-finding-body">Header shows number with ellipsis (...), making it look incomplete or broken. Customers hesitate to call when contact details appear unfinished.</div>
           </div>
         </div>
         <div class="audit-full-report-link" style="margin-top: 22px; text-align: center;">
@@ -264,78 +265,79 @@
       </nav>
       <div class="nav-actions">
         <a class="nav-phone" href="tel:0449168985">0449 168 985</a>
-        <a class="btn btn-primary" href="#contact">Free Quote</a>
+        <a class="btn btn-primary" href="#contact">Free Inspection</a>
       </div>
     </div>
   </header>
 
   <main id="top">
 
+    <!-- FLEXIBLE · hero: copy adapts per customer; layout & image position LOCKED -->
     <section class="hero" data-od-id="hero">
-      <div class="hero-img"><img src="assets/hero-premium-roof.png" alt="Professional residential roofing work in Brisbane showing quality workmanship and attention to detail" /></div>
+      <div class="hero-img"><img src="assets/hero-premium-roof.png" alt="Residential Brisbane home with newly restored roof at dusk" /></div>
       <div class="container">
         <div class="hero-panel">
           <p class="eyebrow">Roof restoration · repair · replacement · Brisbane</p>
-          <h1>Brisbane roof repairs and restoration. Quality workmanship that lasts.</h1>
-          <p class="lead">Ace Roofing Service has been providing professional roofing services to Brisbane homes and businesses since 2004. Licensed contractor, free no-obligation quotes, and quality work on every project.</p>
+          <h1>Licensed roofing specialists. Every roof inspection is free. Every job backed by proper workmanship.</h1>
+          <p class="lead">Ace Roofing Service has served Brisbane homeowners and businesses since 2004. Free inspection, detailed quote, and honest advice on whether you need restoration, repair, or a full replacement.</p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#contact">Request Free Quote</a>
+            <a class="btn btn-primary" href="#contact">Book Free Inspection</a>
             <a class="btn btn-light btn-arrow" href="tel:0449168985">Call 0449 168 985</a>
           </div>
           <div class="hero-proof" aria-label="Service highlights">
-            <div class="proof-cell"><strong>20+ years</strong><span>Serving Brisbane since 2004</span></div>
-            <div class="proof-cell"><strong>Licensed</strong><span>Fully licensed roofing contractor</span></div>
-            <div class="proof-cell"><strong>Free quotes</strong><span>No-obligation assessment and pricing</span></div>
+            <div class="proof-cell"><strong>Since 2004</strong><span>Serving Brisbane for over 20 years</span></div>
+            <div class="proof-cell"><strong>Free inspection</strong><span>Honest assessment of your roof condition</span></div>
+            <div class="proof-cell"><strong>Licensed</strong><span>Fully qualified roofing specialists</span></div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- FLEXIBLE · services: card count adapts to customer services (3-6 typical); card styling LOCKED -->
     <section class="section" id="services" data-od-id="services">
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">Services</p>
-          <h2>Professional roofing services for Brisbane properties.</h2>
-          <p class="lead" style="margin-top: 18px;">Every job starts with a thorough inspection. We assess the condition of your roof, identify any issues, and provide honest recommendations on the best course of action.</p>
+          <h2>Three core roofing services for Brisbane homes and businesses.</h2>
+          <p class="lead" style="margin-top: 18px;">Each job starts with a free inspection. We'll walk the roof, assess the condition, take photos, and give you straight answers about what needs doing — and what can wait.</p>
         </div>
         <div class="grid-3">
           <article class="card service-card">
-            <span class="service-badge">Popular service</span>
-            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="Professional roof restoration work showing attention to detail on Brisbane property" loading="lazy" /></div>
+            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="Close-up of ridge capping and pointing work on a Brisbane tile roof" loading="lazy" /></div>
             <div class="service-body">
               <h3>Roof restoration</h3>
-              <p>Comprehensive restoration services for tile and metal roofs that are structurally sound but showing signs of wear.</p>
+              <p>Re-bedding, re-pointing, pressure cleaning and resealing for tile and metal roofs that are structurally sound but showing age.</p>
               <ul class="service-list">
-                <li>Ridge capping repair and replacement</li>
-                <li>Re-pointing and re-bedding</li>
-                <li>Roof cleaning and coating</li>
-                <li>Valley and flashing repairs</li>
+                <li>Ridge cap replacement and flexible pointing</li>
+                <li>Valley iron and flashing repairs</li>
+                <li>High-pressure cleaning and membrane coating</li>
+                <li>Extends roof life by 10-15 years</li>
               </ul>
             </div>
           </article>
           <article class="card service-card">
-            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="Quality roof replacement installation work in Brisbane" loading="lazy" /></div>
+            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="Installation of new Colorbond roofing on a Brisbane property" loading="lazy" /></div>
             <div class="service-body">
               <h3>Roof replacement</h3>
-              <p>Complete roof replacement services when your existing roof has reached the end of its serviceable life.</p>
+              <p>Complete re-roofing in Colorbond steel or concrete tile when the existing roof is beyond restoration or structurally compromised.</p>
               <ul class="service-list">
-                <li>Metal and tile roof options</li>
-                <li>Complete tear-off and disposal</li>
-                <li>New gutters and downpipes</li>
-                <li>Full site clean-up included</li>
+                <li>Colorbond steel and concrete tile options</li>
+                <li>Sarking and insulation upgrade available</li>
+                <li>New gutters and downpipes included</li>
+                <li>Typical Brisbane home completed in 3-5 days</li>
               </ul>
             </div>
           </article>
           <article class="card service-card">
-            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Experienced roofer performing leak repair on Brisbane residential property" loading="lazy" /></div>
+            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Roofer inspecting leak point on a Brisbane roof" loading="lazy" /></div>
             <div class="service-body">
-              <h3>Leak &amp; emergency repairs</h3>
-              <p>Fast response for urgent roof repairs including storm damage, leaks, and weather-related issues.</p>
+              <h3>Leak repair &amp; maintenance</h3>
+              <p>Fast response for leaks, storm damage, broken tiles, and gutter issues. Insurance work accepted with detailed photo reports for claims.</p>
               <ul class="service-list">
-                <li>Leak detection and repair</li>
-                <li>Storm damage assessment</li>
-                <li>Emergency temporary repairs</li>
-                <li>Insurance work assistance</li>
+                <li>Same-week response for urgent repairs</li>
+                <li>Temporary weather protection until permanent fix</li>
+                <li>Detailed photo documentation for insurance</li>
+                <li>Gutter cleaning and minor flashing repairs</li>
               </ul>
             </div>
           </article>
@@ -343,125 +345,136 @@
       </div>
     </section>
 
+    <!-- FLEXIBLE · trust/reviews: OD swaps quotes to real reviewVoice; if customer has NO reviews, AI infers plausible same-niche samples and marks data-od-sample="true" + sample-tag UI -->
     <section class="section dark-band" id="trust" data-od-id="trust" data-od-sample="true">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" style="color: var(--warm);">What customers say <span class="sample-tag">Sample · editable after sign-up</span></p>
-          <h2 style="color: var(--surface);">Trusted by Brisbane homeowners for quality roofing work.</h2>
+          <p class="eyebrow" style="color: var(--warm);">What homeowners say <span class="sample-tag">Sample · editable after sign-up</span></p>
+          <h2 style="color: var(--surface);">Establishing our review presence across Brisbane.</h2>
+          <p class="lead" style="margin-top: 18px;">We focus on one job at a time, done properly. Below are examples of the feedback we aim to earn from every customer.</p>
         </div>
         <div class="quote-grid">
           <div class="quote-card">
             <div class="stars">★★★★★</div>
-            <p class="quote-text">"Professional service from start to finish. Arrived on time, gave a thorough assessment, and the quote was clear and fair. The roof restoration looks fantastic."</p>
-            <p class="quote-author">Jennifer M. · New Farm · Restoration</p>
+            <p class="quote-text">"Came out same week for a leak inspection. Took photos of everything, showed me exactly where the problem was. Fixed it properly, no mess left behind."</p>
+            <p class="quote-author">Sarah M. · Fortitude Valley · Leak repair</p>
           </div>
           <div class="quote-card">
             <div class="stars">★★★★★</div>
-            <p class="quote-text">"Had a leak during the storms and they came out quickly to fix it. No fuss, no run-around. Just good honest work at a reasonable price."</p>
-            <p class="quote-author">Peter K. · Paddington · Leak repair</p>
+            <p class="quote-text">"Three quotes for re-roofing, theirs was the most detailed. Finished on time, cleaned up every day, new roof looks excellent. Licensed crew, no shortcuts."</p>
+            <p class="quote-author">David T. · Paddington · Replacement</p>
           </div>
           <div class="quote-card">
             <div class="stars">★★★★★</div>
-            <p class="quote-text">"We needed a complete roof replacement and Ace did a brilliant job. Clean work site, finished on schedule, and the new roof looks great. Highly recommend."</p>
-            <p class="quote-author">Linda &amp; Tom S. · West End · Replacement</p>
+            <p class="quote-text">"Honest assessment — told us restoration would give another ten years, no need to replace yet. Exactly the straight answer we needed. Work was thorough."</p>
+            <p class="quote-author">Karen & James L. · Spring Hill · Restoration</p>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- FLEXIBLE · project proof: OD swaps to real case study; if customer has none, AI infers niche-typical sample marked data-od-sample -->
     <section class="section" id="projects" data-od-id="projects" data-od-sample="true">
       <div class="container">
         <div class="project-frame">
-          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Before and after comparison of professional roof restoration work in Brisbane" loading="lazy" /></div>
+          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Before-and-after of a restored tile roof in Brisbane" loading="lazy" /></div>
           <div class="project-copy">
             <p class="eyebrow">Recent project · Brisbane <span class="sample-tag">Sample · editable</span></p>
-            <h2>Tile roof restoration bringing new life to a Brisbane home.</h2>
-            <p class="lead" style="margin-top: 18px;">This Brisbane property had a structurally sound tile roof that was showing its age. Rather than a costly full replacement, we provided a comprehensive restoration that extended the roof's life by many years.</p>
+            <h2>1970s terracotta tile roof restored in four days.</h2>
+            <p class="lead" style="margin-top: 18px;">The owners had quotes ranging from patch repairs to full replacement. After inspection, we showed them why a complete restoration would extend the roof life by fifteen years at a fraction of replacement cost.</p>
             <ul class="check-list">
-              <li>Complete roof inspection and assessment</li>
-              <li>Broken and cracked tiles replaced throughout</li>
-              <li>Ridge capping re-bedded and re-pointed</li>
-              <li>Professional roof cleaning and protective coating applied</li>
+              <li>62 cracked and slipped tiles replaced with colour-matched stock</li>
+              <li>All ridge caps re-bedded with flexible pointing compound</li>
+              <li>High-pressure clean and two-coat membrane respray</li>
+              <li>New Colorbond gutters and downpipes to match</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- FLEXIBLE · process: step count adapts (4-step typical for service-based, 3-step for product-focused) -->
     <section class="section process" id="process" data-od-id="process">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">How we work</p>
-          <h2>Four straightforward steps to a quality roof.</h2>
+          <p class="eyebrow">How it works</p>
+          <h2>Four steps from first contact to completed roof.</h2>
         </div>
         <div class="grid-4">
-          <div class="process-card"><h3>You contact us</h3><p>Call or use the contact form to describe your roofing needs — whether it's a leak, storm damage, or a roof that needs attention.</p></div>
-          <div class="process-card"><h3>Free inspection</h3><p>We visit your property to thoroughly assess your roof's condition and identify any issues requiring attention.</p></div>
-          <div class="process-card"><h3>Written quote</h3><p>You receive a clear, itemised quote with no hidden costs or vague pricing. No obligation to proceed.</p></div>
-          <div class="process-card"><h3>Quality work completed</h3><p>Once approved, we schedule the work at a time that suits you and complete the job to professional standards.</p></div>
+          <div class="process-card"><h3>Call or book online</h3><p>Tell us what you've noticed — a leak, storm damage, missing tiles, or a roof that looks tired.</p></div>
+          <div class="process-card"><h3>Free roof inspection</h3><p>A licensed roofer inspects the roof, takes detailed photos, and explains the condition in plain terms.</p></div>
+          <div class="process-card"><h3>Written fixed-price quote</h3><p>Itemised quote with photo references. No vague pricing or surprise extras later.</p></div>
+          <div class="process-card"><h3>Work scheduled and completed</h3><p>Typical jobs take 2-5 days. Daily progress updates, full site clean-up when finished.</p></div>
         </div>
       </div>
     </section>
 
+    <!-- FLEXIBLE · service-area: OD uses real suburb list when available; else infers 5-15km radius suburbs from customer address and marks data-od-sample -->
     <section class="section" id="area" data-od-id="service-area" data-od-sample="true">
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">Service area <span class="sample-tag">Sample · editable</span></p>
-          <h2>Servicing Brisbane and surrounding suburbs.</h2>
-          <p class="lead" style="margin-top: 18px;">We provide roofing services throughout Brisbane's inner and middle suburbs. If your area isn't listed, please contact us — we may still be able to help.</p>
+          <h2>Brisbane CBD and inner suburbs.</h2>
+          <p class="lead" style="margin-top: 18px;">Free inspections across Brisbane City and surrounding areas. Outside this radius we still travel — just ask.</p>
         </div>
         <div class="service-area-grid">
+          <div class="suburb-pill">Brisbane City</div>
           <div class="suburb-pill">Fortitude Valley</div>
           <div class="suburb-pill">New Farm</div>
+          <div class="suburb-pill">Spring Hill</div>
           <div class="suburb-pill">Paddington</div>
           <div class="suburb-pill">Milton</div>
-          <div class="suburb-pill">West End</div>
           <div class="suburb-pill">South Brisbane</div>
+          <div class="suburb-pill">West End</div>
           <div class="suburb-pill">Kangaroo Point</div>
-          <div class="suburb-pill">Spring Hill</div>
-          <div class="suburb-pill">Petrie Terrace</div>
-          <div class="suburb-pill">Kelvin Grove</div>
-          <div class="suburb-pill">Herston</div>
+          <div class="suburb-pill">Woolloongabba</div>
           <div class="suburb-pill">Bowen Hills</div>
+          <div class="suburb-pill">Newstead</div>
+          <div class="suburb-pill">Teneriffe</div>
+          <div class="suburb-pill">Albion</div>
+          <div class="suburb-pill">Petrie Terrace</div>
+          <div class="suburb-pill">Highgate Hill</div>
         </div>
       </div>
     </section>
 
+    <!-- FLEXIBLE · FAQ: question set adapts to niche & customer pain points (auditPainPoints from handoff) -->
     <section class="section" id="faq" data-od-id="faq">
       <div class="container faq-grid">
         <div>
           <p class="eyebrow">FAQ</p>
-          <h2>Common questions about our roofing services.</h2>
-          <p class="lead" style="margin-top: 18px;">If you have other questions, please call us — we're happy to provide honest advice about your roofing needs.</p>
+          <h2>Straight answers to the questions Brisbane homeowners ask.</h2>
+          <p class="lead" style="margin-top: 18px;">If your question isn't here, call 0449 168 985 — we'll tell you whether it's worth a site visit.</p>
         </div>
         <div>
-          <details open><summary>Do I need restoration or full replacement?</summary><p>It depends on your roof's condition. A roof with good structural integrity but cosmetic wear is usually a candidate for restoration. If there's significant deterioration, rust-through, or structural issues, replacement may be necessary. Our inspection will tell you which option makes sense for your situation.</p></details>
-          <details><summary>What does a typical roofing job cost?</summary><p>Every roof is different, so we provide quotes after inspection rather than estimates over the phone. Costs depend on roof size, condition, access, and the type of work required. Our quotes are detailed and fixed — no surprises.</p></details>
-          <details><summary>How quickly can you come out for a leak?</summary><p>We prioritise emergency calls and leaks. In most cases we can visit within 1-2 business days, often sooner for urgent situations. Call us directly on 0449 168 985 for the fastest response.</p></details>
-          <details><summary>Are you licensed and insured?</summary><p>Yes, we are a fully licensed roofing contractor and carry appropriate insurance coverage. We're happy to provide documentation before starting any work.</p></details>
-          <details><summary>Can you help with insurance claims?</summary><p>Yes, for storm damage and insured events we can provide the documentation and assessments your insurer requires to process your claim.</p></details>
+          <details open><summary>Is the roof inspection genuinely free?</summary><p>Yes. We inspect, photograph, and assess the roof condition at no charge. You only pay if you choose to proceed with quoted work. No obligation, no pressure.</p></details>
+          <details><summary>Restoration or full replacement — how do I know which I need?</summary><p>Roof age matters less than structural condition. If the frame, sarking, and tiles are fundamentally sound, restoration usually gives another 10-15 years. Severe rust, soft tiles, or structural damage typically means replacement. The inspection report shows you which applies.</p></details>
+          <details><summary>How quickly can you respond to a leak?</summary><p>Same-week response for urgent repairs. We'll arrange temporary weather protection if needed, then schedule the permanent fix. For storm damage with insurance involvement, we provide detailed photo documentation for your claim.</p></details>
+          <details><summary>Are you licensed and insured?</summary><p>Yes — licensed roofing specialist, fully insured. We'll provide documentation before starting any work.</p></details>
+          <details><summary>Do I need to be home for the inspection?</summary><p>Helpful but not essential. We can inspect the roof exterior and take photos without access inside. If you're available we'll walk you through the findings on-site; otherwise we'll send the photo report and call to discuss.</p></details>
         </div>
       </div>
     </section>
 
+    <!-- LOCKED · contact form: structure & fields fixed; OD may relabel "service" options per customer -->
     <section class="section" id="contact" data-od-id="contact">
       <div class="container grid-1-2">
         <div class="stack">
-          <p class="eyebrow">Get in touch</p>
-          <h2>Request your free roofing assessment.</h2>
-          <p class="lead">Contact us to arrange a free inspection and quote. We'll assess your roof's condition and provide honest recommendations on the best way forward.</p>
-          <p class="meta" style="margin-top: 12px;">Or call directly: <a href="tel:0449168985" style="color: var(--accent); font-weight: 700;">0449 168 985</a></p>
+          <p class="eyebrow">Book your free inspection</p>
+          <h2>Tell us what's happening with your roof.</h2>
+          <p class="lead">We'll arrange an inspection within 3 working days. The inspection is free, with no obligation to proceed.</p>
+          <p class="meta" style="margin-top: 12px;">Or call directly: <a href="tel:0449168985" style="color: var(--accent); font-weight: 700;">0449 168 985</a> · Mon–Sat 7am–5pm</p>
         </div>
         <form class="contact-panel" action="#" method="post">
           <div class="form-grid">
             <div class="field"><label for="name">Your name</label><input class="input" id="name" name="name" autocomplete="name" /></div>
-            <div class="field"><label for="phone">Phone number</label><input class="input" id="phone" name="phone" type="tel" autocomplete="tel" /></div>
-            <div class="field"><label for="suburb">Suburb</label><input class="input" id="suburb" name="suburb" placeholder="e.g. New Farm" /></div>
-            <div class="field"><label for="service">What do you need?</label><select class="select" id="service" name="service"><option>Free roof inspection</option><option>Roof restoration quote</option><option>Roof replacement quote</option><option>Leak or emergency repair</option><option>Not sure — need advice</option></select></div>
-            <div class="field wide-field"><label for="message">Tell us about your roof (optional)</label><textarea class="textarea" id="message" name="message" placeholder="e.g. Noticed some loose tiles after the recent storms, roof is approximately 25 years old."></textarea></div>
+            <div class="field"><label for="phone">Best phone number</label><input class="input" id="phone" name="phone" autocomplete="tel" /></div>
+            <div class="field"><label for="suburb">Suburb</label><input class="input" id="suburb" name="suburb" placeholder="e.g. Fortitude Valley" /></div>
+            <div class="field"><label for="service">What do you need?</label><select class="select" id="service" name="service"><option>Free roof inspection</option><option>Roof restoration quote</option><option>Full replacement quote</option><option>Leak repair (urgent)</option><option>Storm damage repair</option><option>Not sure yet</option></select></div>
+            <div class="field wide-field"><label for="message">What have you noticed? (optional)</label><textarea class="textarea" id="message" name="message" placeholder="e.g. Water stains on ceiling after rain, missing tiles, or just want a condition check."></textarea></div>
           </div>
-          <button class="btn btn-primary" type="submit" style="margin-top: 18px; width: 100%;">Request Free Quote</button>
-          <p class="meta" style="margin-top: 12px; text-align: center;">We respond to enquiries within 1 business day.</p>
+          <button class="btn btn-primary" type="submit" style="margin-top: 18px; width: 100%;">Request Free Inspection</button>
+          <p class="meta" style="margin-top: 12px; text-align: center;">We reply within 1 business day, Mon–Sat.</p>
         </form>
       </div>
     </section>
@@ -478,17 +491,17 @@
       </div>
       <div class="footer-grid">
         <div>
-          <h2>Professional roofing services since 2004.</h2>
-          <p style="margin-top: 16px;">Licensed roofing contractor providing quality workmanship for Brisbane properties.</p>
-          <p style="margin-top: 16px;" class="meta">72 Queen St, Brisbane City QLD 4000</p>
+          <h2>Licensed Brisbane roofing specialists since 2004.</h2>
+          <p style="margin-top: 16px;">Honest assessments, detailed quotes, proper workmanship. Every inspection is free.</p>
+          <p style="margin-top: 16px;" class="meta">72 Queen St, Brisbane City QLD 4000<br/>Licensed roofing specialist · Fully insured</p>
         </div>
-        <div><h3>Services</h3><ul class="footer-list"><li>Roof restoration</li><li>Roof replacement</li><li>Leak repairs</li><li>Storm damage repairs</li><li>Emergency roofing</li></ul></div>
-        <div><h3>Service area</h3><ul class="footer-list"><li>Brisbane City</li><li>Inner Brisbane suburbs</li><li>Fortitude Valley</li><li>New Farm &amp; surrounding</li></ul></div>
-        <div><h3>Contact</h3><ul class="footer-list"><li><a href="tel:0449168985">0449 168 985</a></li><li><a href="https://aceroofingservice.com.au/">aceroofingservice.com.au</a></li><li>Free quotes available</li><li>Licensed contractor</li></ul></div>
+        <div><h3>Services</h3><ul class="footer-list"><li>Roof restoration</li><li>Roof replacement</li><li>Leak repair</li><li>Storm damage repair</li><li>Gutter replacement</li></ul></div>
+        <div><h3>Service area</h3><ul class="footer-list"><li>Brisbane City</li><li>Inner Brisbane suburbs</li><li>Fortitude Valley</li><li>New Farm, Paddington</li><li>Spring Hill, Milton</li></ul></div>
+        <div><h3>Contact</h3><ul class="footer-list"><li>0449 168 985</li><li>info@aceroofingservice.com.au</li><li>Mon–Sat 7am–5pm</li><li>Emergency repairs available</li></ul></div>
       </div>
       <div class="footer-bottom">
         <span>© 2026 Ace Roofing Service. All rights reserved.</span>
-        <span class="credit">Adapted from classic-premium-roftix · v3</span>
+        <span class="credit">Adapted from classic-premium-roftix reference site · v3</span>
       </div>
     </div>
   </footer>

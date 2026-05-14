@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-161031-f03104",
+  "created_at": "2026-05-14T16:10:31.714Z",
+  "updated_at": "2026-05-14T16:14:50.497Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "qualification auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: build demo for domain_nbmr.com.au (verdict=ready-to-build · publish auto-chains)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "north-brisbane-metal-roofing-pty-ltd",
+      "--entity-key",
+      "domain_nbmr.com.au"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 258569,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:10:31.927Z",
+      "step": "cli.spawning",
+      "detail": "pl:build-from-reference --slug north-brisbane-metal-roofing-pty-ltd --entity-key domain_nbmr.com.au"
+    },
+    {
+      "at": "2026-05-14T16:10:37.037Z",
+      "step": "cli.stream",
+      "detail": "reference] out:     /Users/matthew/Developer/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] prompt:  59033 chars"
+    },
+    {
+      "at": "2026-05-14T16:14:50.496Z",
+      "step": "cli.stream",
+      "detail": "thew/Developer/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] auto-publish enqueue failed: slugArg is not defined"
+    },
+    {
+      "at": "2026-05-14T16:14:50.497Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=258569ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

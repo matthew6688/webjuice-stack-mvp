@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Audit Report – Rapid Roof Solutions</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.7;
+  color: #2c2c2c;
+  background: #faf8f5;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 3rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+h1, h2, h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e8e4df;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #444;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.hero {
+  text-align: center;
+  padding: 2rem 0 3rem;
+  border-bottom: 1px solid #e8e4df;
+}
+
+.business-name {
+  color: #666;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.score-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 8px solid #e8e4df;
+  margin: 2rem auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #d97706;
+  position: relative;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: normal;
+}
+
+.summary {
+  font-size: 1.15rem;
+  color: #555;
+  max-width: 600px;
+  margin: 1.5rem auto 0;
+  line-height: 1.6;
+}
+
+.strength-item, .issue-item {
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.strength-item:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #16a34a;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.issue-item:before {
+  content: "!";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #dc2626;
+  font-weight: bold;
+  font-size: 1.2rem;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #dc2626;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.issue-title {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.3rem;
+}
+
+.issue-impact {
+  color: #555;
+  font-size: 1rem;
+}
+
+.outcome-list {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+.outcome-list li {
+  padding-left: 2rem;
+  margin-bottom: 0.8rem;
+  position: relative;
+  font-size: 1.05rem;
+}
+
+.outcome-list li:before {
+  content: "→";
+  position: absolute;
+  left: 0.5rem;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.closing {
+  background: #f9fafb;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-left: 4px solid #2563eb;
+}
+
+.closing p {
+  margin-bottom: 0.8rem;
+}
+
+.closing strong {
+  color: #1a1a1a;
+}
+
+.screenshot {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.screenshot img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #e8e4df;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.screenshot-caption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.highlight {
+  background: #fef3c7;
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.4rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="hero">
+  <div class="business-name">Rapid Roof Solutions</div>
+  <h1>Your Website Audit</h1>
+  
+  <div class="score-circle">
+    57<span style="font-size: 1.2rem; color: #999;">/100</span>
+  </div>
+  
+  <p class="summary">
+    Your website does some things well, but it's losing you phone calls and enquiries every week. The good news? Most of what's holding you back can be fixed quickly.
+  </p>
+</div>
+
+<h2>What's Working Well</h2>
+
+<div class="strength-item">
+  <h3>Your message is clear</h3>
+  <p>Visitors immediately understand you do roof installations and repairs. The headline works, and your quote buttons are visible on both desktop and mobile.</p>
+</div>
+
+<div class="strength-item">
+  <h3>Mobile layout keeps the call button handy</h3>
+  <p>The sticky quote button at the bottom of the mobile screen makes it easy for people to get in touch while they're scrolling.</p>
+</div>
+
+<div class="strength-item">
+  <h3>You're displaying your licence and ABN</h3>
+  <p>Showing your credentials is important in the roofing industry, and you've got the basics covered.</p>
+</div>
+
+<h2>What's Holding You Back</h2>
+
+<div class="issue-item">
+  <div class="issue-title">Your phone number is hidden on mobile</div>
+  <p class="issue-impact">
+    Most Brisbane locals search for roof repairs on their phone. When they land on your site, they see a "Call Now" button but not your actual number. Many people prefer to see the number before tapping — and if they don't, they'll hit the back button and call your competitor instead. <span class="highlight">This is costing you calls every single day.</span>
+  </p>
+</div>
+
+<div class="issue-item">
+  <div class="issue-title">No Google reviews yet</div>
+  <p class="issue-impact">
+    You've got a 5-star rating, but zero reviews showing. Google's local search ranking depends heavily on review count — not just the star rating. Right now, every roofing company with even a handful of reviews will rank higher than you. The fix is simple: ask every happy customer to leave a quick review when the job's done.
+  </p>
+</div>
+
+<div class="issue-item">
+  <div class="issue-title">Google can't see what you do</div>
+  <p class="issue-impact">
+    Your website's title tag (the bit that shows up in Google search results) doesn't mention roofing or Brisbane. And the behind-the-scenes code that tells Google you're a local business is missing. Result? You're nearly invisible in local searches, and you won't show up in those handy map listings or knowledge panels on the right side of Google.
+  </p>
+</div>
+
+<div class="issue-item">
+  <div class="issue-title">No trust signals above the fold</div>
+  <p class="issue-impact">
+    When someone lands on your homepage, they don't see your Google rating, how long you've been in business, or proof that you're insured. Roof work is expensive and risky — people look for these trust markers in the first 8 seconds. Without them, fewer visitors will bother requesting a quote.
+  </p>
+</div>
+
+<div class="issue-item">
+  <div class="issue-title">The hero image feels too distant</div>
+  <p class="issue-impact">
+    Your main homepage image is a dark aerial shot of a large commercial roof. It's hard to see the quality of your work, and it doesn't feel like the kind of home most Brisbane residents live in. A brighter, closer shot of a finished residential roof would connect better with your core customers.
+  </p>
+</div>
+
+<h2>What Changes When We Fix This</h2>
+
+<p>When your website is rebuilt with these issues addressed, here's what you can expect:</p>
+
+<ul class="outcome-list">
+  <li><strong>More phone calls from mobile visitors</strong> — your number will be front and centre, impossible to miss</li>
+  <li><strong>Higher Google rankings</strong> — proper titles, local business markup, and a review strategy will push you up the search results</li>
+  <li><strong>More quote requests</strong> — trust signals like insurance proof, years in business, and customer reviews displayed right at the top</li>
+  <li><strong>Better first impressions</strong> — a modern, bright design with sharp project photos that show off your work</li>
+  <li><strong>Visibility in AI search</strong> — ChatGPT, Google's AI overviews, and other tools will actually find and recommend you when locals ask for roofing help</li>
+  <li><strong>Protection of your existing Google rankings</strong> — we'll create a redirect plan so any search traffic you already have stays intact</li>
+</ul>
+
+<p style="margin-top: 1.5rem;">
+  And because your current site only has five pages, the turnaround is fast. This isn't a six-month project — it's a focused two-week rebuild that keeps what's working and fixes what's broken.
+</p>
+
+<div class="closing">
+  <p><strong>Next step: a 30-minute walkthrough</strong></p>
+  <p>
+    We'll show you exactly what we'd change, walk through a couple of design directions, and answer any questions you have. No sales pressure, no surprise fees — just a clear plan and an honest conversation about whether it makes sense for your business.
+  </p>
+  <p style="margin-top: 1.5rem; margin-bottom: 0;">
+    If you'd like to see what a rebuilt Rapid Roof Solutions site could look like, let's book a time to talk.
+  </p>
+</div>
+
+</div>
+
+</body>
+</html>

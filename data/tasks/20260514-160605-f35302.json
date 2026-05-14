@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160605-f35302",
+  "created_at": "2026-05-14T16:06:05.836Z",
+  "updated_at": "2026-05-14T16:10:31.321Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504514579344916600",
+    "author": "qualification auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: build demo for domain_aceroofingservice.com.au (verdict=ready-to-build · publish auto-chains)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "ace-roofing-service",
+      "--entity-key",
+      "domain_aceroofingservice.com.au"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 264823,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:06:06.495Z",
+      "step": "cli.spawning",
+      "detail": "pl:build-from-reference --slug ace-roofing-service --entity-key domain_aceroofingservice.com.au"
+    },
+    {
+      "at": "2026-05-14T16:06:11.616Z",
+      "step": "cli.stream",
+      "detail": "x\n[pl:build-from-reference] out:     /Users/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] prompt:  59686 chars"
+    },
+    {
+      "at": "2026-05-14T16:10:31.320Z",
+      "step": "cli.stream",
+      "detail": "265s · /Users/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] auto-publish enqueue failed: slugArg is not defined"
+    },
+    {
+      "at": "2026-05-14T16:10:31.321Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=264823ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504514579344916600",
+    "status_message_id": null
+  }
+}

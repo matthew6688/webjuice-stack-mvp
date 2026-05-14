@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160329-3bc6be",
+  "created_at": "2026-05-14T16:03:29.331Z",
+  "updated_at": "2026-05-14T16:03:31.635Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_aceroofingservice.com.au (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_aceroofingservice.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 2049,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:29.585Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_aceroofingservice.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:03:31.635Z",
+      "step": "cli.stream",
+      "detail": "]\n}\n[lead-thread-sync] cleared stale project_thread_id from domain_aceroofingservice.com.au (was 404)\n[lead-thread-sync] cleared stale discord_thread_id from domain_aceroofingservice.com.au (was 404)"
+    },
+    {
+      "at": "2026-05-14T16:03:31.635Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=2049ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

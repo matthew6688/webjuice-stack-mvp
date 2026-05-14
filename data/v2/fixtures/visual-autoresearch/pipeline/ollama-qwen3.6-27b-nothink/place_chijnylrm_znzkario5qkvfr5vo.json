@@ -1,0 +1,114 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-haiku-4-5-20251001",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 171495,
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 5,
+    "conversion_score": 3,
+    "design_age_estimate": "outdated",
+    "summary": "A functional but visually dated WordPress-template site where the mobile layout buries the CTA below fold, no phone number is displayed on screen, and zero social proof appears above the fold — three compounding conversion barriers for local-search visitors.",
+    "issues": [
+      {
+        "id": "mobile_cta_below_fold",
+        "severity": "critical",
+        "title": "Mobile: CTA button not visible above fold",
+        "what_observed": "On mobile, the hero headline ('Your Roofing & Guttering Maintenance & Restoration Specialists in The Redlands') fills the entire viewport in large white bold text against the roof-tile photo. The 'Contact Us Today' orange button seen on desktop is not visible — only a small floating 'Contact' bar appears at the very bottom edge of the screen, partially cropped.",
+        "why_problem": "A visitor arriving from a Google search on their phone sees only a block of text and a background photo. There is no obvious next step visible without scrolling. Most people will leave within 8 seconds if they cannot find how to act immediately — this site gives them nothing to tap in the first screen.",
+        "what_correct_looks_like": "Hero headline limited to 2–3 lines at ~28px on mobile, followed immediately by a full-width tappable phone button (min 48px tall, showing the actual digits) — all visible within the first 600px of the mobile viewport without any scrolling.",
+        "how_to_fix_in_redesign": "Reduce the hero H1 font size on mobile to 26–28px so the headline fits in 3 lines maximum. Place a full-width 'Call Jason: 04XX XXX XXX' tel: button in high-contrast orange directly below the headline, inside the hero section, above the fold.",
+        "plain_explanation": "在手机上打开网站时，整个屏幕被大标题占满，客户看不到任何联系按钮，必须往下滑才能找到如何联系你。",
+        "customer_impact": "超过70%的本地服务搜索来自手机。研究显示手机用户在8秒内找不到行动按钮就会离开。这意味着你可能正在流失大多数通过谷歌找到你的客户——他们甚至还没有看到你的服务内容就已经离开了。"
+      },
+      {
+        "id": "phone_number_hidden_behind_click",
+        "severity": "critical",
+        "title": "Phone number not displayed on screen — hidden behind button click",
+        "what_observed": "On both the desktop and mobile screenshots, the top-right shows an orange 'Call Jason' button but no actual phone number digits appear anywhere on the visible page. The number is hidden behind a click interaction.",
+        "why_problem": "Local customers comparing several roofing businesses want to see a real phone number immediately — it signals the business is reachable and established. Hiding the number behind a button creates friction and doubt. Many people also copy the number to call later from a different device and cannot do so if it is never shown.",
+        "what_correct_looks_like": "On desktop: 'Call Jason · 0412 345 678' displayed in the header so the number is readable at a glance without clicking. On mobile: a full-width tap-to-call button that displays the complete number as text, e.g. 'Call Now: 04XX XXX XXX'.",
+        "how_to_fix_in_redesign": "Replace the 'Call Jason' button label on desktop with 'Call Jason · 04XX XXX XXX' (actual number) in the header. On mobile, the floating Contact button should show the full number as text on the button face. Use a tel: href so it dials directly.",
+        "plain_explanation": "网站上看不到电话号码——客户必须点击按钮才能看到，很多人不会这样做，他们会直接去找下一家公司。",
+        "customer_impact": "显示真实电话号码是建立即时信任的最简单方式之一。在比较几家屋顶公司时，看不到你的号码的客户会优先选择电话显示在页面上的竞争对手——这让你直接在第一印象阶段就输掉了竞争。"
+      },
+      {
+        "id": "no_social_proof_above_fold",
+        "severity": "major",
+        "title": "No reviews or star ratings visible anywhere above fold",
+        "what_observed": "The hero section on both desktop and mobile shows only the business name, the tagline, the 'Free Quotes and Sensible Pricing' subtext, and a CTA button. There are no star ratings, Google review counts, or customer testimonial snippets visible anywhere in the hero or the navigation bar.",
+        "why_problem": "Roofing is a high-cost, high-stakes purchase — homeowners are trusting a stranger with their home. Without a visible review count or star rating in the first screen, a visitor has no independent evidence the business is trustworthy. They will click Back and check the next Google result that shows social proof.",
+        "what_correct_looks_like": "A '4.9 ★ — 93 Google Reviews' badge placed directly under the hero headline, or a one-line customer quote ('They replaced our whole roof — done in 2 days, brilliant job — Sarah, Capalaba') in smaller text beneath the CTA button.",
+        "how_to_fix_in_redesign": "Add a Google review summary component inside the hero section below the headline: star icons (SVG), review score, and review count. Link it to the Google Maps profile. Optionally add one short rotating testimonial quote beneath the CTA.",
+        "plain_explanation": "英雄区域没有任何客户评价或星级评分，新客户无法立刻知道这家公司是否值得信赖。",
+        "customer_impact": "88%的消费者在联系本地服务商之前会先看评论。在屋顶修缮这种动辄数千元的高价服务领域，没有立即可见的评价意味着大量潜在客户会直接跳过你，选择在页面上展示了星级评分的竞争对手。"
+      },
+      {
+        "id": "geographic_targeting_redlands_not_brisbane",
+        "severity": "major",
+        "title": "Headline targets 'The Redlands' — excludes broader Brisbane searchers",
+        "what_observed": "The hero H1 on both desktop and mobile reads 'Your Roofing & Guttering Maintenance & Restoration Specialists in The Redlands'. There is no mention of Brisbane anywhere in the hero section or the visible navigation.",
+        "why_problem": "A visitor searching 'roofer Brisbane' who lands on this page immediately reads 'The Redlands' and may assume the business does not service their suburb. Even if the business covers all of Brisbane, the headline actively creates geographic doubt and can cause visitors from Wynnum, Capalaba, Manly, or the wider Bayside area to leave before reading further.",
+        "what_correct_looks_like": "A headline that leads with the broader metro area: 'Brisbane's Trusted Roofing & Guttering Specialists' with a secondary line 'Proudly Serving The Redlands, Bayside & South-East Brisbane' to keep local specificity without excluding the wider market.",
+        "how_to_fix_in_redesign": "Rewrite the hero H1 to lead with 'Brisbane' as the primary location identifier. Demote 'The Redlands' to a supporting descriptor line beneath the headline or in the subtext. This broadens appeal without losing the local signal.",
+        "plain_explanation": "网站首页只提到了'雷德兰兹'，在布里斯班其他区域搜索屋顶维修的客户可能会以为你们不服务他们的地区，然后直接去找别家。",
+        "customer_impact": "布里斯班大都会的搜索量远大于雷德兰兹单一区域。如果页面标题只强调一个小区域，你每天都在错过大量来自周边郊区的潜在客户——这些人看到'雷德兰兹'就认为你不在他们的服务范围内，直接离开页面。"
+      },
+      {
+        "id": "dated_visual_design",
+        "severity": "major",
+        "title": "Visual design reads as a 2016–2017 WordPress template",
+        "what_observed": "The overall layout — a full-width hero photo with a heavy red/dark colour overlay on the left half, an orange rounded-corner gradient CTA button, a flat red navigation bar, and a small icon-beside-text logo — matches the aesthetic of generic WordPress themes popular in 2015–2017.",
+        "why_problem": "When a homeowner is about to spend thousands on a roof restoration, they subconsciously assess whether a business is current and successful. A website that looks decade-old signals that the business may not be investing in quality, which extends to how they perceive the quality of the work itself.",
+        "what_correct_looks_like": "A clean, high-contrast layout with a natural (un-tinted) photo of a completed roof job as the hero background, a white or charcoal header, one strong accent colour consistently applied, and modern sans-serif type at 18px+ body size.",
+        "how_to_fix_in_redesign": "Replace the heavy red photo overlay with a natural full-bleed image of a completed roof. Switch the nav background from flat red to white or dark charcoal. Use a single accent colour (deep slate blue or forest green) for buttons. Remove the gradient bevel from all button styles. Set body font to Inter or similar at 18px.",
+        "plain_explanation": "这个网站的外观设计很老旧，看起来像是十年前建的，给新访客一种'这家公司还在营业吗'的第一印象。",
+        "customer_impact": "研究表明用户在0.05秒内就会对网站形成第一印象。一个看起来过时的网站会让潜在客户认为公司不够专业，从而选择视觉更现代的竞争对手——即使你的实际服务质量更好、价格更合理。"
+      },
+      {
+        "id": "logo_too_small_unreadable",
+        "severity": "minor",
+        "title": "Logo is too small to read on desktop and mobile",
+        "what_observed": "In the top-left corner of both screenshots, a small house/roof icon sits beside the text 'Weatherite Pty Ltd'. The icon appears to be approximately 30px tall and the accompanying text is rendered at roughly 11–12px — illegible without zooming in.",
+        "why_problem": "The logo is the primary brand identity signal on the page. If visitors cannot read the business name at a glance, it reduces brand memorability and professionalism. For a local business that depends on repeat and referral customers, being unmemorable is a real cost.",
+        "what_correct_looks_like": "Logo icon at minimum 40px tall in the desktop header, with 'Weatherite' wordmark in clear text at 16px+. On mobile, show only the icon and 'Weatherite' (drop 'Pty Ltd') at 40px to save horizontal space.",
+        "how_to_fix_in_redesign": "Increase the header logo height to 56px on desktop and 44px on mobile. Remove 'Pty Ltd' from the mobile logo display — show 'Weatherite' only. Ensure the logo has sufficient contrast against both the white header and any dark background variants.",
+        "plain_explanation": "网站左上角的公司标志非常小，几乎看不清楚，客户连公司名字都难以辨认。",
+        "customer_impact": "一个清晰可读的标志是建立品牌印象的第一步。如果客户记不住你的公司名字，他们就无法向邻居或朋友推荐你——而口碑介绍是本地服务企业最宝贵的新客户来源，通常占到总业务量的30%以上。"
+      },
+      {
+        "id": "nav_overcrowded",
+        "severity": "minor",
+        "title": "Navigation bar has 7 items — too many for a local service site",
+        "what_observed": "The desktop navigation bar contains seven separate items: Home, Roofing Restorations, Roof Maintenance & Repairs, Gutters, Gallery, Contact Us, Blog — with at least two of those items showing dropdown chevrons.",
+        "why_problem": "A local-search visitor has one primary goal: decide if this business can help them and contact them. Seven navigation options and nested dropdowns create unnecessary decision friction and pull the eye away from the CTA button. The more choices presented, the less likely visitors are to take any action.",
+        "what_correct_looks_like": "Five or fewer top-level navigation items: Services (dropdown consolidating the three service pages), Gallery, About, Contact — with the phone CTA button always visible in the top-right, visually distinct from the nav links.",
+        "how_to_fix_in_redesign": "Consolidate 'Roofing Restorations', 'Roof Maintenance & Repairs', and 'Gutters' under a single 'Services' dropdown. Move Blog to the footer. Keep the phone CTA visually distinct from navigation with a contrasting background colour.",
+        "plain_explanation": "导航栏有7个选项加上下拉菜单，选项太多会让客户不知道该点哪里，很多人会直接感到困惑而放弃。",
+        "customer_impact": "选择越多，决策越难——这是经过验证的消费者行为规律。简化导航可以减少访客的'选择疲劳'，让更多人直接找到联系方式，而不是在菜单里迷失，这直接影响到每天有多少人最终拨打你的电话。"
+      }
+    ],
+    "positive_observations": [
+      "The named 'Call Jason' CTA in the top-right is correctly positioned and creates approachability — a named contact point is more compelling than a generic 'Contact Us' label and should be preserved in the redesign.",
+      "The hero photography shows actual roof tiles in good condition, giving immediate visual context for the service type — it is a strong foundation for the redesign photo direction.",
+      "The subtext 'Free Quotes and Sensible Pricing' directly addresses the visitor's primary concern (cost and fairness) with plain language — this copy is effective and should be carried into the redesign."
+    ],
+    "redesign_priorities": [
+      "1. Fix the mobile above-fold experience: shrink the hero headline to 2–3 lines and add a full-width tap-to-call button showing the actual phone number digits — both visible without scrolling on any modern smartphone.",
+      "2. Display the phone number on screen at all times on both desktop (in the header text) and mobile (on the CTA button face) — never hide it behind a click.",
+      "3. Add a Google star rating badge and review count directly beneath the hero headline to give first-time visitors immediate, independent trust evidence before they decide whether to call."
+    ],
+    "confidence": 0.88
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 171495
+    }
+  ],
+  "tokensIn": 6,
+  "tokensOut": 9625,
+  "theoreticalCostUsd": 0.19937225
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160613-405e25",
+  "created_at": "2026-05-14T16:06:13.922Z",
+  "updated_at": "2026-05-14T16:06:15.481Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijv-giozdakwsrr3uzcww7y8s (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijv-giozdakwsrr3uzcww7y8s",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1354,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:06:14.126Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijv-giozdakwsrr3uzcww7y8s --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:06:15.480Z",
+      "step": "cli.stream",
+      "detail": "\"entityKey\": \"place_chijv-giozdakwsrr3uzcww7y8s\",\n      \"slug\": \"roo-roofing\",\n      \"md\": \"clients/roo-roofing/v2/master.md\",\n      \"html\": \"clients/roo-roofing/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:06:15.481Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1354ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160157-52e077",
+  "created_at": "2026-05-14T16:01:57.997Z",
+  "updated_at": "2026-05-14T16:09:06.013Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chijhbplvr5bkwsrgufsdwb6css (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijhbplvr5bkwsrgufsdwb6css"
+    ],
+    "target_entity_key": "place_chijhbplvr5bkwsrgufsdwb6css",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 427802,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:01:58.211Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijhbplvr5bkwsrgufsdwb6css"
+    },
+    {
+      "at": "2026-05-14T16:02:03.319Z",
+      "step": "cli.stream",
+      "detail": "t_leads=1)\n\n══════════ place_chijhbplvr5bkwsrgufsdwb6css ══════════\n  [thread] reusing 1504514113605337150\n  [stage 1/4] detailed audit — fetching https://vantagepointroofing.com.au/?utm_campaign=gmb"
+    },
+    {
+      "at": "2026-05-14T16:04:08.500Z",
+      "step": "cli.stream",
+      "detail": "k · +1 emails · +5 social\n     → contact: emails=1 · contact_url=yes · social=facebook,instagram,linkedin,youtube,twitter\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:07:05.755Z",
+      "step": "cli.stream",
+      "detail": "ad-thread-sync] cleared stale discord_thread_id from place_chijhbplvr5bkwsrgufsdwb6css (was 404)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:07:31.408Z",
+      "step": "cli.stream",
+      "detail": "5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chijhbplvr5bkwsrgufsdwb6css ══════════\n  [1/5] multi-page crawl https://vantagepointroofing.com.au/?utm_campaign=gmb..."
+    },
+    {
+      "at": "2026-05-14T16:07:58.227Z",
+      "step": "cli.stream",
+      "detail": "611 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/vantage-point-roofing/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  14968 chars"
+    },
+    {
+      "at": "2026-05-14T16:09:05.997Z",
+      "step": "cli.stream",
+      "detail": "────────────────────────┴─────────────────────────┴──────┴─────────────┴──────────────────────┴───────────────┴───────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:09:06.012Z",
+      "step": "cli.stream",
+      "detail": "70,\n      \"decision\": \"moderate_candidate\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/place_chijhbplvr5bkwsrgufsdwb6css/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:09:06.013Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=427802ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

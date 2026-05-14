@@ -1,0 +1,92 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-haiku-4-5-20251001",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 88065,
+  "parsedJson": {
+    "freshness_score": 1,
+    "trust_score": 1,
+    "conversion_score": 1,
+    "design_age_estimate": "severely_outdated",
+    "summary": "The domain viproofingbrisbane.com.au is a parked/for-sale page with zero business content — any visitor from Google Maps or search is immediately sent to a competitor-referral page with no way to contact VIP Roofing Brisbane.",
+    "issues": [
+      {
+        "id": "domain_parked_no_website",
+        "severity": "critical",
+        "title": "No real website — domain is parked for sale",
+        "what_observed": "The full viewport on both desktop and mobile shows a black banner reading 'viproofingbrisbane.com.au may be for sale, click to inquire', followed by the domain name in large white text and a list of 'Related Searches' buttons. There is no business content anywhere on the page.",
+        "why_problem": "A customer who finds VIP Roofing Brisbane on Google Maps, clicks the website link, and lands here will immediately conclude the business is closed, scammy, or defunct. The 'for sale' banner is the single most trust-destroying thing a local business can show a warm prospect. That visitor will hit the back button within 3 seconds and call a competitor instead.",
+        "what_correct_looks_like": "A single-page site (even a simple one) with: business name + tagline above the fold, a large tap-to-call phone button, suburb coverage, one or two real photos of completed roofing jobs, and a Google review count/rating badge.",
+        "how_to_fix_in_redesign": "Register or reclaim an active domain and deploy a live landing page immediately. Even a one-page site built in an afternoon with a hero photo, phone CTA, and suburb list eliminates this failure mode entirely. If the domain is truly lost, redirect all GBP links to a working URL before any redesign work begins.",
+        "plain_explanation": "这个网址现在显示的是一个'域名待售'的停放页面，根本不是真正的公司网站。客户点进来只会看到一个待售广告页面，完全找不到您公司的任何信息。",
+        "customer_impact": "研究显示，88%的本地搜索用户在24小时内会打电话给找到的商家。但如果网站显示'域名待售'，访客会立刻认为这家公司已经倒闭或者是诈骗，100%会离开并联系竞争对手。这意味着所有通过谷歌地图或搜索点击进来的客户全部流失。"
+      },
+      {
+        "id": "competitor_referral_links",
+        "severity": "critical",
+        "title": "Parking page actively sends visitors to competitors",
+        "what_observed": "Both screenshots show large clickable buttons labeled 'TOP METAL ROOFING COMPANIES NEAR ME', 'SHEET METAL ROOFERS', 'COMMERCIAL METAL ROOFING NEAR ME', 'ROOF FIXING SERVICES', 'RESIDENTIAL ROOF REPAIR'. These are paid domain-parking ad links that route traffic to competitor search results.",
+        "why_problem": "The current page does not just fail to convert — it actively monetizes VIP Roofing's own visitors by handing them to competitors. Every click on one of these buttons is a potential customer delivered directly to a rival roofer. The business is paying for Google Maps presence and then funding competitor clicks from its own domain.",
+        "what_correct_looks_like": "A landing page where every clickable element (phone button, contact form, service pages) keeps the visitor inside the VIP Roofing brand experience and drives toward a quote or call.",
+        "how_to_fix_in_redesign": "Remove all third-party parking links. Every interactive element on the redesigned site must be a first-party action: call now, request a quote, view services, read reviews.",
+        "plain_explanation": "页面上这些大按钮（比如'附近最好的金属屋顶公司'）不是您公司的服务链接，而是把客户引导到您竞争对手那里去的广告链接。",
+        "customer_impact": "每一个点击这些按钮的访客，都是被您自己的网站送到竞争对手手中的潜在客户。一个月下来，可能有数十个询价电话因此流失给了其他屋顶公司。"
+      },
+      {
+        "id": "zero_contact_information",
+        "severity": "critical",
+        "title": "No phone number, address, or contact method anywhere",
+        "what_observed": "Scrolling the entire visible page on both desktop and mobile reveals no phone number, no email address, no physical address, no contact form, and no social media links. The only actionable elements are the competitor-referral buttons.",
+        "why_problem": "A local-search customer has one primary intent: to call or message a roofer quickly. With no phone number visible, even a visitor who recognises the business name and wants to engage has no path forward. They cannot act even if they want to.",
+        "what_correct_looks_like": "Phone number in the top-right on desktop, sticky at the bottom of the screen on mobile, formatted as a tap-to-call link (tel:). Ideally duplicated in a hero CTA button: 'Call now — free quote'.",
+        "how_to_fix_in_redesign": "Place a tap-to-call button in the first 100px of the mobile layout and in the navigation bar on desktop. Make it the highest-contrast element on the page using a bold accent color (e.g. bright orange or red on dark background).",
+        "plain_explanation": "整个页面上没有任何联系方式——没有电话号码、没有邮箱、没有地址。客户就算想联系您，也完全找不到方法。",
+        "customer_impact": "超过70%的本地搜索发生在手机上，而手机用户最常见的行为就是直接点击电话号码拨打。没有电话号码意味着这些客户的联系意愿全部被浪费，直接流失。"
+      },
+      {
+        "id": "zero_trust_signals",
+        "severity": "critical",
+        "title": "No reviews, photos, credentials, or proof of work",
+        "what_observed": "The page contains no business photography, no customer review quotes or star ratings, no licence numbers, no years-in-business claim, no insurance mention, and no team or company description of any kind.",
+        "why_problem": "Local roofing customers are making a high-stakes purchasing decision — they're inviting someone onto their home. Without any social proof or credentialing, there is nothing to distinguish VIP Roofing from a random person with a van. Even if a visitor somehow decided to search for a phone number, they would have no reason to trust this business over a competitor whose site shows reviews and work photos.",
+        "what_correct_looks_like": "Hero section includes: a real before/after job photo, a Google review count badge (e.g. '127 reviews — 4.9 stars'), and one specific trust line ('Licensed Queensland roofer — 15 years in Brisbane'). These can fit in a single above-the-fold section.",
+        "how_to_fix_in_redesign": "Source 3–5 completed-job photos (even from the owner's phone). Pull the Google review count and star rating and display it prominently near the headline. Add licence number and suburb coverage list in a single trust bar below the hero.",
+        "plain_explanation": "页面上没有任何证明您是一家真实可靠公司的内容——没有客户评价、没有施工照片、没有从业资质，什么都没有。",
+        "customer_impact": "研究表明，93%的消费者在选择本地服务商时会先查看在线评价。没有任何信任信号，访客会立刻转向其他有评价展示的竞争对手，您将损失几乎所有来自搜索的潜在客户。"
+      },
+      {
+        "id": "mobile_irrelevant_search_links",
+        "severity": "major",
+        "title": "Mobile parking page shows completely off-topic ads",
+        "what_observed": "The mobile screenshot shows 'Related Searches' buttons including 'BOOK YOUR OWN APPOINTMENT ONLINE' and 'WALK-IN SHOWERS FOR BATHROOMS' — completely unrelated to roofing. These are generic domain-parking ad rotations.",
+        "why_problem": "Beyond the core problem of having no real website, these irrelevant links make the page appear broken or fraudulent to a mobile visitor. A customer searching for a roofer who sees bathroom shower links will conclude they have landed on the wrong page entirely, or that the business listing is fake.",
+        "what_correct_looks_like": "All above-fold mobile content is specific to the business: business name, roofing service keywords, Brisbane location, and a phone button.",
+        "how_to_fix_in_redesign": "Resolved entirely by replacing the parked domain with a real site. No other fix applies.",
+        "plain_explanation": "手机版页面上甚至出现了'淋浴间改造'这样完全无关的广告链接，让客户以为自己点错了地方，或者认为这是个假冒网站。",
+        "customer_impact": "手机用户的注意力极短，平均只给一个页面3到5秒时间判断是否相关。看到'浴室淋浴间'这样无关内容，用户会立刻关闭页面，您彻底失去这个客户。"
+      }
+    ],
+    "positive_observations": [
+      "The domain name 'viproofingbrisbane.com.au' is keyword-rich and location-specific — it is a strong commercial asset worth reclaiming or renewing rather than abandoning.",
+      "The dark navy color palette used by the parking page could be adapted as a professional brand base color if the business builds a real site.",
+      "The business appears to have an established Google Maps presence that is actively sending traffic — the infrastructure for local discovery exists, it just has nowhere to land."
+    ],
+    "redesign_priorities": [
+      "1. Immediately restore or replace the domain with a live page — this is not a design problem, it is an existential business problem that makes every other improvement irrelevant.",
+      "2. Place a tap-to-call phone button and Google review badge above the fold on mobile as the single most important conversion element.",
+      "3. Add 3–5 real job photos and a one-line trust statement (licence, years in business, Brisbane suburbs served) to give warm traffic a reason to choose VIP Roofing over a competitor."
+    ],
+    "confidence": 0.97
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 88065
+    }
+  ],
+  "tokensIn": 6,
+  "tokensOut": 3764,
+  "theoreticalCostUsd": 0.1177981
+}

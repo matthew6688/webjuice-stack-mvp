@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160348-849409",
+  "created_at": "2026-05-14T16:03:48.793Z",
+  "updated_at": "2026-05-14T16:07:50.867Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_aceroofingservice.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_aceroofingservice.com.au"
+    ],
+    "target_entity_key": "domain_aceroofingservice.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 241866,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:49.001Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_aceroofingservice.com.au"
+    },
+    {
+      "at": "2026-05-14T16:03:54.107Z",
+      "step": "cli.stream",
+      "detail": "age 1/4] detailed audit — reuse cached fixture\n  [stage 2/4] visual audit — reuse cached fixture\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:04:15.321Z",
+      "step": "cli.stream",
+      "detail": "}\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_aceroofingservice.com.au ══════════\n  [1/5] multi-page crawl https://aceroofingservice.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:04:27.529Z",
+      "step": "cli.stream",
+      "detail": "s · 11.3s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:05:37.977Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 70.4s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 60/100 (A24 B5 C17 D11 E3)\n     → verdict: ready-to-build"
+    },
+    {
+      "at": "2026-05-14T16:06:09.890Z",
+      "step": "cli.stream",
+      "detail": "n_aceroofingservice.com.au\",\n      \"slug\": \"ace-roofing-service\",\n      \"md\": \"clients/ace-roofing-service/v2/master.md\",\n      \"html\": \"clients/ace-roofing-service/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:06:17.410Z",
+      "step": "cli.stream",
+      "detail": "13793 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  16148 chars"
+    },
+    {
+      "at": "2026-05-14T16:07:40.160Z",
+      "step": "cli.stream",
+      "detail": "ct, please use \"pages_build_output_dir\" to specify the directory of static files to upload.\n  Ignoring configuration file for now, and proceeding with project deploy.\n\n\n✨ Compiled Worker successfully"
+    },
+    {
+      "at": "2026-05-14T16:07:45.443Z",
+      "step": "cli.stream",
+      "detail": "Uploading... (14/20)\nUploading... (16/20)\nUploading... (18/20)\nUploading... (20/20)\n✨ Success! Uploaded 6 files (14 already uploaded) (2.45 sec)\n\n✨ Uploading Functions bundle\n🌎 Deploying..."
+    },
+    {
+      "at": "2026-05-14T16:07:50.858Z",
+      "step": "cli.stream",
+      "detail": "────────────────────────────┴───────────────────────┴──────┴─────────────┴──────────────────────┴───────────────┴───────┴─────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:07:50.867Z",
+      "step": "cli.stream",
+      "detail": ": 52,\n      \"decision\": \"moderate_candidate\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_aceroofingservice.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:07:50.867Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=241866ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

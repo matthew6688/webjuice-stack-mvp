@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160419-1ceff9",
+  "created_at": "2026-05-14T16:04:19.073Z",
+  "updated_at": "2026-05-14T16:04:53.608Z",
+  "kind": "single-enrich",
+  "status": "failed",
+  "source": {
+    "platform": "discord",
+    "thread_id": "1504514655505223781",
+    "author": "ProfitsLocal Handoff",
+    "message_id": "1504514655505223781"
+  },
+  "input": {
+    "text": "Topline Roofing Brisbane 07 3160 6044",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:single-enrich",
+    "args": [
+      "--business-name",
+      "Topline Roofing",
+      "--phone",
+      "07 3160 6044",
+      "--city",
+      "brisbane",
+      "--niche",
+      "roofing"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 300000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 3,
+    "duration_ms": 33841,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:04:19.074Z",
+      "step": "router.resolved",
+      "detail": "kind=single-enrich provider=codex_cli cli=pl:single-enrich conf=0.96"
+    },
+    {
+      "at": "2026-05-14T16:04:19.766Z",
+      "step": "cli.spawning",
+      "detail": "pl:single-enrich --business-name Topline Roofing --phone 07 3160 6044 --city brisbane --niche roofing"
+    },
+    {
+      "at": "2026-05-14T16:04:24.871Z",
+      "step": "cli.stream",
+      "detail": "x2tVkbW2lNI\n  · places.details_done · AUS Topline Roofing\n[pl:single-enrich] ✓ Places resolved · place_id=ChIJ5-WgNOy9EmsRx2tVkbW2lNI · \"AUS Topline Roofing\"\n  · llm-judge · verifying Places match..."
+    },
+    {
+      "at": "2026-05-14T16:04:53.600Z",
+      "step": "cli.stream",
+      "detail": "businessName\": \"Topline Roofing\",\n    \"phone\": \"07 3160 6044\",\n    \"email\": null,\n    \"website\": null,\n    \"niche\": \"roofing\",\n    \"city\": \"brisbane\",\n    \"gbpUrl\": null\n  },\n  \"duration_ms\": 33676\n}"
+    },
+    {
+      "at": "2026-05-14T16:04:53.608Z",
+      "step": "cli.failed",
+      "detail": "exit=3 signal=null dur=33841ms"
+    }
+  ],
+  "error": "exit=3 signal=null",
+  "discord": {
+    "thread_id": "1504514655505223781",
+    "status_message_id": "1504514711620943992"
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-haiku-4-5-20251001",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 130563,
+  "parsedJson": {
+    "freshness_score": 3,
+    "trust_score": 5,
+    "conversion_score": 4,
+    "design_age_estimate": "outdated",
+    "summary": "Queensland Roofing's website carries a 2012-era aesthetic — gradient navigation, split hero with no headline, and a high-friction lead form — that will undermine trust and reduce quote requests from Google-searching Brisbane homeowners.",
+    "issues": [
+      {
+        "id": "dated_gradient_nav_and_3d_logo",
+        "severity": "critical",
+        "title": "2012-era gradient nav bar and embossed logo erode credibility",
+        "what_observed": "The horizontal navigation bar uses a dark teal-to-near-black gradient fill typical of early-2010s web design. The 'Queensland ROOFING' logo text uses a heavy drop-shadow/emboss effect on the lettering. Both elements together immediately signal an unmaintained, aging website.",
+        "why_problem": "A homeowner about to spend $5,000–$15,000 on a new roof is deciding whether to trust this company with their biggest asset. A design that looks a decade old signals the business hasn't invested in itself — raising doubts about whether they're still active, professional, or worth calling. Competitors with modern sites win the comparison.",
+        "what_correct_looks_like": "A flat white or off-white header with clean sans-serif logo type and a single roof icon. Navigation as flat text links in a single color with one visually distinct 'Get Free Quote' button. Zero gradients, zero emboss effects.",
+        "how_to_fix_in_redesign": "Replace gradient nav with a flat #FFFFFF or #F8F8F8 header. Redesign logo as flat text (e.g. Montserrat Bold) + simple roof outline icon in brand color. Remove all drop shadows from all type elements site-wide.",
+        "plain_explanation": "网站的导航栏有明显的深色渐变效果，标志文字有浮雕阴影，这是2012年左右流行的设计风格。整个网站看上去已经十年没有更新过了。",
+        "customer_impact": "访客在8秒内判断一个网站是否可信。过时的外观会让大约40%的首次访客直接关闭页面，转而点击Google搜索结果中下一家公司的网站，即使您的服务更好、价格更合理。"
+      },
+      {
+        "id": "lead_form_too_many_fields",
+        "severity": "critical",
+        "title": "Lead form demands full address and 6+ fields up front",
+        "what_observed": "The right-side form under the teal 'CONTACT US NOW FOR IMMEDIATE RESPONSE AND SAVE 10%!' header contains at minimum: Name, Phone, a 'Please give us your full address' label, a 'Your Street Address' text field, Email, radio buttons (Repair / Replacement / Other), and a 'Details or questions?' textarea — all presented to a cold visitor who has not yet read a single word about the business.",
+        "why_problem": "A visitor from Google is still in 'should I trust this company?' mode. Asking for their full street address before they've read anything about the business feels invasive. Most people will abandon rather than fill in 6+ fields for a company they don't yet know. The ask-for-everything form also signals the business prioritises its own data collection over the customer's time.",
+        "what_correct_looks_like": "A 2–3 field form: Name, Phone, and a one-line 'What do you need?' dropdown (Repair / Replacement / Restoration). The address and email can be collected by the salesperson when they call back.",
+        "how_to_fix_in_redesign": "Reduce the primary contact form to Name + Mobile + Service Type (dropdown). Remove the street address field and email field entirely from this form. Add a single submit button labelled 'Get My Free Quote'. Collect remaining details by phone after initial contact.",
+        "plain_explanation": "您的联系表单要求访客一开始就填写姓名、电话、完整地址、电子邮件等六个以上的栏位，让人感觉很麻烦，大多数人会直接放弃。",
+        "customer_impact": "研究显示每增加一个表单字段，填写完成率下降约11%。一个有6个栏位的表单，与只有2个栏位的表单相比，潜在客户提交量可能减少50%以上——这意味着每个月可能有几十个询盘白白流失。"
+      },
+      {
+        "id": "no_social_proof_above_fold",
+        "severity": "major",
+        "title": "No Google reviews or star rating visible above the fold",
+        "what_observed": "The entire above-fold area — header, hero, and right-side form — contains no Google review star rating, review count, or customer testimonial quote. The only trust signal present is the small tagline 'A family of roofers since 1975' in the logo area.",
+        "why_problem": "Homeowners choosing a roofer are making a high-stakes, high-spend decision. When they land on a page with no visible social proof, they go back to Google to check reviews there — and may click a competitor whose listing shows 4.9 stars. The longer-established claim ('since 1975') is not enough on its own for a first-time visitor.",
+        "what_correct_looks_like": "A row of 5 gold stars + '4.9 ★ — 143 Google Reviews' displayed in the header bar next to the phone number, plus a single customer quote ('They re-roofed our Paddington home in one day — highly recommend — Sarah M., Paddington') placed directly below the hero.",
+        "how_to_fix_in_redesign": "Add a Google review badge (auto-synced widget or static image with star count) to the header beside the phone number. Place one featured testimonial with customer first name and Brisbane suburb immediately below the hero section, before the three-column features block.",
+        "plain_explanation": "整个首屏区域看不到任何客户评价或星级评分，新访客无法快速判断这家公司是否值得信任。",
+        "customer_impact": "超过90%的消费者在预约本地服务商之前会查看在线评价。把Google评分放在首屏可以让询盘量增加20-30%，因为访客不需要离开页面去单独搜索您的口碑，减少了流失到竞争对手的机会。"
+      },
+      {
+        "id": "hero_split_no_headline",
+        "severity": "major",
+        "title": "Split 50/50 hero has no H1 headline to confirm relevance",
+        "what_observed": "The hero area is divided 50/50: the left half shows a roofer worker against a teal/blue-tinted background, the right half shows a residential house photo. There is no large overlaid headline text anywhere in the hero — the closest headline copy is the small nav tagline and the body text in the three-column block below.",
+        "why_problem": "A visitor arriving from 'roofer Brisbane' on Google needs to confirm within 3 seconds: 'yes, this is a Brisbane roofer who can help me.' Without a headline on the hero they have to read and scan to confirm the basics, burning the critical first seconds of trust-building on navigation rather than conviction.",
+        "what_correct_looks_like": "A single full-width hero image (roofer working on a Brisbane residential roof, bright daylight) with a white 36–42px headline overlaid: 'Brisbane's Trusted Roofer Since 1975' and a sub-line 'Roof Repairs, Restoration & Replacement — Free Quotes, Same-Day Response'. A large high-contrast CTA button directly below.",
+        "how_to_fix_in_redesign": "Replace the 50/50 split layout with one full-bleed hero photo. Overlay an H1 headline in white, minimum 36px, naming Brisbane specifically. Add a large primary CTA button (orange, 18px white text, 'Call for Your Free Quote') directly beneath the headline, above the fold on 1280px desktop.",
+        "plain_explanation": "网站主图区域被分成两半，左边是工人照片，右边是房屋照片，但没有任何大标题文字，访客很难在3秒内确认这家公司能解决他们的问题。",
+        "customer_impact": "访客平均在一个页面上停留不到15秒。如果没有清晰的大标题，许多人会因为找不到明确信息而立刻离开。加上清晰的首屏标题，访客停留时间通常可以提高约30%，大幅增加询价机会。"
+      },
+      {
+        "id": "phone_number_no_button_treatment",
+        "severity": "major",
+        "title": "Phone number is plain text, not a visually dominant button",
+        "what_observed": "The 'CALL FOR FREE QUOTE NOW' label and '0489 263 653' number in the top-right corner appear as styled text in a small block without a colored button background, border, or clear interactive affordance. It is visually similar weight to the nav links.",
+        "why_problem": "For a local service business, the phone number is the primary conversion action on desktop. If it doesn't look like a button — with strong color contrast — a significant proportion of visitors won't register it as the most important action on the page, especially when scanning quickly after a Google search.",
+        "what_correct_looks_like": "A high-contrast button in the header: solid orange (#FF6B00) or green (#28A745) background, white 18px bold text, rounded corners (4–6px), a phone handset icon to the left, reading 'Call 0489 263 653'. It should be the heaviest visual element in the header.",
+        "how_to_fix_in_redesign": "Wrap the phone number in a proper button element with a high-contrast solid background color (orange or green), white text, padding 12px 20px, and a phone icon. Make it the largest interactive element in the header, visually outweighing all nav links.",
+        "plain_explanation": "页面右上角的电话号码只是普通文字样式，没有按钮的外观，很容易被访客忽视，不够显眼。",
+        "customer_impact": "对于本地服务类网站，电话是最重要的转化方式。没有明显的按钮样式，大约30-40%的访客可能不会注意到或点击电话号码，每个月可能因此损失数十个潜在询盘。"
+      },
+      {
+        "id": "cluttered_eight_item_navigation",
+        "severity": "minor",
+        "title": "Eight nav items at equal weight overwhelm first-time visitors",
+        "what_observed": "The gradient navigation bar contains 8 items at roughly equal visual weight: Roof Repairs, Roof Replacement, Roof Restoration, Home Improvements, Gallery, Employment, Blog, Contact — plus a search icon. None is highlighted or differentiated as a primary action.",
+        "why_problem": "A homeowner who searched 'roofer Brisbane' is not looking to browse 8 categories of content. Too many navigation items without a visual hierarchy creates decision paralysis and dilutes attention away from the primary goal: requesting a quote. 'Employment' and 'Blog' compete visually with 'Contact'.",
+        "what_correct_looks_like": "Five or fewer nav items: Home | Services (dropdown: Repairs, Replacement, Restoration) | Gallery | About | Contact — plus a visually distinct 'Free Quote' button in brand color that stands out from the text links. Employment and Blog moved to footer.",
+        "how_to_fix_in_redesign": "Consolidate nav to 5 items max. Group Roof Repairs, Roof Replacement, Roof Restoration, and Home Improvements under a single 'Services' hover-dropdown. Move Employment and Blog to footer navigation. Add a single 'Free Quote' CTA button in the nav with a solid background color.",
+        "plain_explanation": "导航栏有8个链接，对于只想询价的访客来说选项太多，他们容易感到迷茫，不知道该点哪里。",
+        "customer_impact": "导航选项过多会产生'选择悖论'，让访客不知所措。简化导航通常能将访客点击询价按钮的比例提高15-20%，因为他们能更快找到想要的行动路径。"
+      }
+    ],
+    "positive_observations": [
+      "'A family of roofers since 1975' tagline communicates genuine longevity and local roots — preserve this messaging prominently in the redesign, ideally in the hero headline",
+      "The lead capture form is correctly positioned above the fold on the right side of the page — the placement strategy is sound, only the form length and styling need to change",
+      "Phone number is placed in the top-right header where desktop users expect to find it — the location is correct, only the visual treatment needs upgrading to a button"
+    ],
+    "redesign_priorities": [
+      "1. Replace split hero with a full-width Brisbane roofing photo + 36px H1 headline naming the city + high-contrast orange 'Call for Free Quote' button visible above the fold without scrolling",
+      "2. Reduce lead form to 3 fields (Name, Mobile, Service Type dropdown) and add a Google star rating badge next to the form header to provide immediate social proof",
+      "3. Modernise the visual shell: flat white header, flat logo, remove all gradients and drop shadows, style phone number as a high-contrast button — this alone will meaningfully increase perceived trustworthiness"
+    ],
+    "confidence": 0.82
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 130563
+    }
+  ],
+  "tokensIn": 4,
+  "tokensOut": 8202,
+  "theoreticalCostUsd": 0.16306560000000003
+}

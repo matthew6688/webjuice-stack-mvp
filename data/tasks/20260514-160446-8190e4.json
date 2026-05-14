@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160446-8190e4",
+  "created_at": "2026-05-14T16:04:46.283Z",
+  "updated_at": "2026-05-14T16:04:47.987Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chij6wsd-kzbkwsryzke1ejotjs (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chij6wsd-kzbkwsryzke1ejotjs",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1494,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:04:46.492Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chij6wsd-kzbkwsryzke1ejotjs --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:04:47.986Z",
+      "step": "cli.stream",
+      "detail": "6wsd-kzbkwsryzke1ejotjs\",\n      \"slug\": \"vip-roofing-brisbane\",\n      \"md\": \"clients/vip-roofing-brisbane/v2/master.md\",\n      \"html\": \"clients/vip-roofing-brisbane/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:04:47.987Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1494ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

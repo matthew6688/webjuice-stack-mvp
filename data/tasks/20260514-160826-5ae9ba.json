@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160826-5ae9ba",
+  "created_at": "2026-05-14T16:08:26.905Z",
+  "updated_at": "2026-05-14T16:08:28.709Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_nbmr.com.au (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_nbmr.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1600,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:08:27.107Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_nbmr.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:08:28.708Z",
+      "step": "cli.stream",
+      "detail": "risbane-metal-roofing-pty-ltd\",\n      \"md\": \"clients/north-brisbane-metal-roofing-pty-ltd/v2/master.md\",\n      \"html\": \"clients/north-brisbane-metal-roofing-pty-ltd/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:08:28.709Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1600ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160353-b8f3d5",
+  "created_at": "2026-05-14T16:03:53.286Z",
+  "updated_at": "2026-05-14T16:12:47.520Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_proroofrestorationbrisbane.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_proroofrestorationbrisbane.com.au"
+    ],
+    "target_entity_key": "domain_proroofrestorationbrisbane.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 534019,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:53.499Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_proroofrestorationbrisbane.com.au"
+    },
+    {
+      "at": "2026-05-14T16:03:58.605Z",
+      "step": "cli.stream",
+      "detail": "_leads=1)\n\n══════════ domain_proroofrestorationbrisbane.com.au ══════════\n  [thread] reusing 1504514598093459656\n  [stage 1/4] detailed audit — fetching https://www.proroofrestorationbrisbane.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:05:32.352Z",
+      "step": "cli.stream",
+      "detail": "k · +0 emails · +5 social\n     → contact: emails=0 · contact_url=yes · social=facebook,instagram,linkedin,youtube,twitter\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:08:07.471Z",
+      "step": "cli.stream",
+      "detail": "ad-sync] cleared stale discord_thread_id from domain_proroofrestorationbrisbane.com.au (was 404)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:08:54.082Z",
+      "step": "cli.stream",
+      "detail": "] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_proroofrestorationbrisbane.com.au ══════════\n  [1/5] multi-page crawl https://www.proroofrestorationbrisbane.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:10:05.692Z",
+      "step": "cli.stream",
+      "detail": "l · 71.2s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:11:25.192Z",
+      "step": "cli.stream",
+      "detail": "s\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/pro-roof-restoration-brisbane/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  18158 chars"
+    },
+    {
+      "at": "2026-05-14T16:12:47.506Z",
+      "step": "cli.stream",
+      "detail": "─────────┴─────────────────────────────────┴──────┴─────────────┴──────────────────────┴───────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:12:47.519Z",
+      "step": "cli.stream",
+      "detail": "\"decision\": \"moderate_candidate\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_proroofrestorationbrisbane.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:12:47.520Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=534019ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

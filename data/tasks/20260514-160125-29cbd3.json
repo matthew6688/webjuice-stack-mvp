@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160125-29cbd3",
+  "created_at": "2026-05-14T16:01:25.712Z",
+  "updated_at": "2026-05-14T16:06:05.826Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chijo3rniu9fkwsr8jworgytgmy (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijo3rniu9fkwsr8jworgytgmy"
+    ],
+    "target_entity_key": "place_chijo3rniu9fkwsr8jworgytgmy",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 279896,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:01:25.927Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijo3rniu9fkwsr8jworgytgmy"
+    },
+    {
+      "at": "2026-05-14T16:01:31.049Z",
+      "step": "cli.stream",
+      "detail": "age 1/4] detailed audit — reuse cached fixture\n  [stage 2/4] visual audit — reuse cached fixture\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:01:54.188Z",
+      "step": "cli.stream",
+      "detail": "[stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chijo3rniu9fkwsr8jworgytgmy ══════════\n  [1/5] multi-page crawl https://brisbaneroofingsolutions.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:04:31.899Z",
+      "step": "cli.stream",
+      "detail": "dit] master.md: 17447 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/brisbane-roofing-solutions-roof-restoration-repairs/v2/customer-facing-audit.html"
+    },
+    {
+      "at": "2026-05-14T16:05:55.539Z",
+      "step": "cli.stream",
+      "detail": "ation file to deploy your project, please use \"pages_build_output_dir\" to specify the directory of static files to upload.\n  Ignoring configuration file for now, and proceeding with project deploy."
+    },
+    {
+      "at": "2026-05-14T16:06:03.538Z",
+      "step": "cli.stream",
+      "detail": "essfully\nUploading... (14/18)\nUploading... (15/18)\nUploading... (16/18)\nUploading... (18/18)\n✨ Success! Uploaded 4 files (14 already uploaded) (2.29 sec)\n\n✨ Uploading Functions bundle\n🌎 Deploying..."
+    },
+    {
+      "at": "2026-05-14T16:06:05.811Z",
+      "step": "cli.stream",
+      "detail": "──────────────────────────────────────────────────┴──────┴─────────────┴──────────────────────┴───────────────┴───────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:06:05.825Z",
+      "step": "cli.stream",
+      "detail": "68,\n      \"decision\": \"moderate_candidate\",\n      \"visual_issues\": 5,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/place_chijo3rniu9fkwsr8jworgytgmy/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:06:05.826Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=279896ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

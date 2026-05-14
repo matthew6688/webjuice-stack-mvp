@@ -1,0 +1,109 @@
+{
+  "provider": "codex_cli",
+  "model": null,
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 62239,
+  "parsedJson": {
+    "freshness_score": 3,
+    "trust_score": 5,
+    "conversion_score": 4,
+    "design_age_estimate": "outdated",
+    "summary": "The site shows the business name and phone number clearly, but the mobile header, dated navigation, generic hero treatment, and weak visible proof make it feel older than a current local roofing provider.",
+    "issues": [
+      {
+        "id": "mobile_phone_not_actionable",
+        "severity": "critical",
+        "title": "Mobile phone number is not a clear action",
+        "what_observed": "On the mobile screenshot, the phone number appears as grey centered text under the logo and wraps onto two lines: “Call Us Today: 07 3062 8404”.",
+        "why_problem": "A Google-searching customer on their phone wants to call quickly. When the phone number looks like plain text instead of a large tap-to-call button, some visitors will hesitate, miss it, or choose another roofer with an easier contact path.",
+        "what_correct_looks_like": "A sticky mobile header with two clear buttons: a blue “Call 07 3062 8404” button and an orange “Get Quote” button, both large enough to tap with one thumb.",
+        "how_to_fix_in_redesign": "Replace the grey phone text on mobile with a full-width tap-to-call button directly below the logo or in a sticky bottom bar; keep the quote button beside it or directly underneath.",
+        "plain_explanation": "手机上电话号码只是灰色文字，还换成了两行，看起来不像可以直接点击拨打。",
+        "customer_impact": "很多本地屋顶维修客户是在手机上比较商家，访客通常几秒内决定打给谁。电话不明显会让急着找人的客户直接回到 Google 地图点下一家公司。"
+      },
+      {
+        "id": "dated_mobile_navigation",
+        "severity": "major",
+        "title": "Old-style mobile menu lowers confidence",
+        "what_observed": "The mobile screenshot shows a thin grey navigation bar with “Go to...” on the left and a pale hamburger icon boxed on the right.",
+        "why_problem": "This looks like an older website template rather than a current trade business. A homeowner comparing roofers may read that as a sign the company has not updated its online presence or may be less professional.",
+        "what_correct_looks_like": "A simple mobile header with the logo, phone button, quote button, and a clean hamburger icon; no “Go to...” placeholder text.",
+        "how_to_fix_in_redesign": "Remove the old select-style navigation and build a modern mobile menu with clear links: Services, Roof Restoration, Roof Repairs, Reviews, Gallery, Contact.",
+        "plain_explanation": "手机菜单像很多年前的网站模板，那个“Go to...”会让网站显得旧。",
+        "customer_impact": "客户找屋顶公司时会用网站外观判断公司是否靠谱。页面一眼显旧，信任感会下降，尤其是第一次从 Google 进来的陌生客户。"
+      },
+      {
+        "id": "desktop_social_share_rail",
+        "severity": "major",
+        "title": "Social share bar distracts from calling",
+        "what_observed": "On the desktop screenshot, a vertical social sharing rail sits on the far left with “48 Shares” and stacked Facebook, Twitter, Google+, Pinterest, Reddit, LinkedIn and other icons.",
+        "why_problem": "A homeowner looking for a roofer is not trying to share the page; they are trying to check credibility and make contact. The floating icons add clutter and make the site feel like an old blog rather than a serious local service provider.",
+        "what_correct_looks_like": "No floating share rail; the left edge should be clean, with attention directed to the phone number, service promise, reviews, and quote form.",
+        "how_to_fix_in_redesign": "Remove the social sharing rail entirely and use that visual attention for local trust signals such as star rating, suburbs served, years in business, licence or warranty messaging.",
+        "plain_explanation": "左边一排分享按钮和“48 Shares”会让网站像旧博客，不像专业屋顶公司官网。",
+        "customer_impact": "客户的注意力应该被电话、报价和可信证明吸引。无关按钮越多，越容易分散客户，导致他们没有完成拨打电话或提交表单。"
+      },
+      {
+        "id": "generic_hero_and_banner",
+        "severity": "major",
+        "title": "Hero area feels generic",
+        "what_observed": "The desktop hero uses a pale roof-and-sky image with a large dark blue banner reading “FREE ADVICE & QUOTES” and the phone number in oversized white type.",
+        "why_problem": "The image does not show completed local work, people, vehicles, or proof that this is an active Brisbane roofing company. It communicates contact information, but not enough trust for a homeowner about to spend serious money.",
+        "what_correct_looks_like": "A real Brisbane roof restoration photo or crew-on-site photo, with a short promise, visible phone button, quote button, and one proof line such as rating, warranty, or years of experience.",
+        "how_to_fix_in_redesign": "Replace the generic roof-sky banner with a real project photo; overlay a concise headline such as “Roof Restoration Brisbane” plus two CTAs and one concrete trust proof.",
+        "plain_explanation": "首页大图只是普通屋顶背景，没有真实施工、案例或团队，看不出这家公司实际做得怎么样。",
+        "customer_impact": "屋顶工程金额高，客户会先找证据。没有真实案例和可信证明，客户更可能去看有评价、照片和本地证明的竞争对手。"
+      },
+      {
+        "id": "quote_form_below_action_point",
+        "severity": "major",
+        "title": "Quote form lacks visible completion",
+        "what_observed": "On the desktop screenshot, the right-side orange “Request a Quote” form shows input fields, but the submit button is not visible above the fold.",
+        "why_problem": "Visitors need to understand immediately that the form is quick and easy. If they only see a stack of fields with no visible finish point, the form feels longer and more effortful.",
+        "what_correct_looks_like": "A compact quote panel with 3 to 4 fields and a visible high-contrast submit button above the fold, such as “Get My Free Quote”.",
+        "how_to_fix_in_redesign": "Shorten the above-fold form to name, phone, suburb, and job type; place a full-width blue or white submit button visible without scrolling.",
+        "plain_explanation": "报价表单上半部分只看到输入框，看不到提交按钮，会让人觉得表单很长。",
+        "customer_impact": "表单看起来越麻烦，客户越容易放弃。对从 Google 商家资料点进来的客户来说，多一步犹豫就可能少一个询盘。"
+      },
+      {
+        "id": "weak_above_fold_trust_signals",
+        "severity": "major",
+        "title": "Few trust signals above the fold",
+        "what_observed": "The visible desktop and mobile areas show logo, phone number, menu, headline, promotion text and quote form, but no visible star rating, customer review snippet, warranty, licence, insurance, or project gallery.",
+        "why_problem": "A local-search visitor is comparing multiple roofers and needs fast reassurance that this company is real and reliable. Without visible proof, the page depends mostly on claims.",
+        "what_correct_looks_like": "Above the fold should show at least two trust signals: Google rating or review count, years serving Brisbane, warranty wording, insurance/licence badge, or before-and-after project thumbnails.",
+        "how_to_fix_in_redesign": "Add a trust strip directly under the hero or beside the CTA with “Brisbane owned”, “Warranty backed”, “Google rating”, and “Before & after results” using concise labels and real supporting detail.",
+        "plain_explanation": "首屏没有明显评价、保修、资质或真实案例，客户只能看到公司自己说自己好。",
+        "customer_impact": "陌生客户通常会同时比较3到5家公司。没有评价和证明时，即使价格合适，也更容易输给看起来更可靠的同行。"
+      }
+    ],
+    "positive_observations": [
+      "The business name and logo are clear and easy to recognize.",
+      "The phone number is present near the top on both desktop and mobile.",
+      "There is a quote form on the desktop first screen, which is useful to preserve."
+    ],
+    "redesign_priorities": [
+      "1. Make mobile contact immediate with large tap-to-call and quote buttons.",
+      "2. Replace dated navigation and social clutter with a cleaner local-service header.",
+      "3. Rebuild the hero around real roofing proof: project photos, reviews, warranty, and clear CTAs."
+    ],
+    "confidence": 0.92
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 91731,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 62239
+    }
+  ],
+  "tokensIn": 84630,
+  "tokensOut": 2689,
+  "theoreticalCostUsd": 0.23846499999999998
+}

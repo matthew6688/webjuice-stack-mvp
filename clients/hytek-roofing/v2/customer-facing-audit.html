@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Audit Report · Hytek Roofing</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #faf8f5;
+  color: #2d2d2d;
+  line-height: 1.7;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  background: white;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+h1, h2, h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e8e4df;
+}
+
+h3 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.5rem;
+  color: #444;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+.hero {
+  margin-bottom: 2.5rem;
+}
+
+.business-name {
+  font-size: 0.95rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.score-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: #fef9f3;
+  border-left: 4px solid #d97706;
+  border-radius: 4px;
+}
+
+.score-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #d97706;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.strength-list, .issue-list, .outcome-list {
+  margin: 1rem 0 1.5rem;
+}
+
+.strength-item, .issue-item, .outcome-item {
+  margin-bottom: 1.25rem;
+  padding-left: 1.75rem;
+  position: relative;
+}
+
+.strength-item:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #16a34a;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.issue-item:before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  font-size: 1rem;
+}
+
+.outcome-item:before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.issue-title {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.25rem;
+}
+
+.issue-impact {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.screenshot {
+  margin: 1.5rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.screenshot img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.screenshot-caption {
+  font-size: 0.85rem;
+  color: #777;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.cta-box {
+  margin: 2.5rem 0 0;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.cta-box h3 {
+  margin-top: 0;
+  color: #1a1a1a;
+}
+
+.cta-box p {
+  margin-bottom: 0.75rem;
+}
+
+.cta-box p:last-child {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 2rem 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.65rem;
+  }
+  
+  .score-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .score-number {
+    font-size: 3rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="hero">
+    <div class="business-name">Hytek Roofing</div>
+    <h1>Your Website Health Check</h1>
+    
+    <div class="score-container">
+      <div class="score-number">46<span style="font-size:1.5rem;color:#999">/100</span></div>
+      <div class="score-label">Your website is missing opportunities to turn visitors into customers. The good news? These are fixable issues that don't require starting from scratch.</div>
+    </div>
+  </div>
+
+  <h2>What's Working Well</h2>
+  
+  <div class="strength-list">
+    <div class="strength-item">
+      <strong>You're using real photos.</strong> Your hero image shows actual roofing work, not generic stock photos. That's more trustworthy than most competitors.
+    </div>
+    
+    <div class="strength-item">
+      <strong>Your service promise is clear.</strong> Visitors immediately understand you handle roof repairs, guttering, and leak fixes in Brisbane.
+    </div>
+    
+    <div class="strength-item">
+      <strong>You mention the right credentials.</strong> Licensing, insurance, workmanship guarantee, and quick quote turnaround are all present—they just need to be displayed more prominently.
+    </div>
+  </div>
+
+  <h2>What's Holding You Back</h2>
+  
+  <p>Here are the specific issues costing you enquiries right now:</p>
+  
+  <div class="issue-list">
+    <div class="issue-item">
+      <div class="issue-title">Your site shows "Not Secure" warnings</div>
+      <div class="issue-impact">Because your website doesn't use HTTPS, browsers display a "Not Secure" warning in the address bar. Some browsers even block the page entirely. Most visitors close the tab immediately when they see this warning. This also hurts your Google ranking—sites without HTTPS have been penalised since 2018.</div>
+    </div>
+    
+    <div class="issue-item">
+      <div class="issue-title">Your phone number is hard to find</div>
+      <div class="issue-impact">On both desktop and mobile, visitors have to scroll or hunt through menus to find how to call you. For roofing emergencies, most customers want to phone straight away. If they can't find your number in 3 seconds, they'll go back to Google and call the next business.</div>
+    </div>
+    
+    <div class="issue-item">
+      <div class="issue-title">You have zero Google reviews showing</div>
+      <div class="issue-impact">Google ranks businesses partly on review volume—not just the star rating, but how many reviews you have. With zero reviews visible, you're starting behind competitors who actively collect them. A simple post-job SMS asking customers to leave a review would fix this.</div>
+    </div>
+    
+    <div class="issue-item">
+      <div class="issue-title">The text is hard to read on mobile</div>
+      <div class="issue-impact">White text over a pale roof photo blends in, especially on phones in sunlight. If visitors can't quickly read what you do, where you work, or how to contact you, they leave. First impressions matter—and mobile is where most local searches happen.</div>
+    </div>
+    
+    <div class="issue-item">
+      <div class="issue-title">Google can't understand your business properly</div>
+      <div class="issue-impact">Your site is missing the structured data that tells Google (and AI tools like ChatGPT) who you are, where you're located, and what services you offer. That means you're invisible in Google's "near me" results and knowledge panels—the high-conversion spots where customers click to call.</div>
+    </div>
+  </div>
+
+  <div class="screenshot">
+    <img src="./screenshots/mobile.png" alt="Current mobile website screenshot">
+    <div class="screenshot-caption">Your current mobile site—phone number isn't visible without scrolling</div>
+  </div>
+
+  <h2>What Changes When We Fix This</h2>
+  
+  <div class="outcome-list">
+    <div class="outcome-item">
+      <strong>More phone calls.</strong> When your number is visible at the top of every page and in a sticky mobile button, customers can call you the moment they're ready.
+    </div>
+    
+    <div class="outcome-item">
+      <strong>Higher Google rankings.</strong> Fixing HTTPS, adding structured data, and improving page speed all directly boost where you appear in search results.
+    </div>
+    
+    <div class="outcome-item">
+      <strong>Better first impression.</strong> Clean design with strong contrast, visible trust signals (licensing, insurance, reviews), and a clear call-to-action make you look more professional than competitors still running outdated sites.
+    </div>
+    
+    <div class="outcome-item">
+      <strong>You'll know what's working.</strong> Right now you're flying blind—no analytics, no tracking. After the rebuild, you'll see exactly how many people visit, where they come from, and which pages lead to enquiries.
+    </div>
+    
+    <div class="outcome-item">
+      <strong>Future-proofed for AI search.</strong> ChatGPT and Google's AI overviews are changing how people find local businesses. Sites with proper structured data get cited; sites without it stay invisible.
+    </div>
+  </div>
+
+  <h2>Next Step</h2>
+  
+  <div class="cta-box">
+    <h3>Let's walk through this together</h3>
+    <p>This report gives you the overview, but the details matter. In a 30-minute screen-share, I'll show you exactly what visitors see now, which issues are costing you the most business, and what a rebuilt site would look like.</p>
+    <p>No pressure, no obligations—just a clear picture of where you stand and what's possible.</p>
+    <p style="margin-top:1.5rem"><strong>Matthew Kiata</strong><br>matthewkiata@gmail.com</p>
+  </div>
+
+</div>
+</body>
+</html>

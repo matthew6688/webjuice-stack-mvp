@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brisbane Roof Restoration Experts · Roof Restoration, Repair & Replacement · Brisbane</title>
+  <meta name="description" content="Brisbane Roof Restoration Experts restores, repairs and replaces residential roofs across Brisbane and Moreton Bay. Fast quotes, quality work. Call (07) 3132 1605." />
+  <!--
+    REFERENCE SITE · classic-premium-roftix · v3 round 0 · 2026-05-13
+    Adapted for: Brisbane Roof Restoration Experts
+    Real business: Unit 22/104 Barwon St, Morningside QLD 4170
+    OD-BOUNDARY rules:
+      LOCKED   = color tokens, font families, type scale, spacing, button/card/form/section internal styling
+      FLEXIBLE = which sections appear · section order · how many cards per grid · banner content · pages
+      ADD-ABLE = new section types ONLY if built from existing tokens & marked data-od-new="true"
+    See ./HANDOFF-BOUNDARIES.md for full rules.
+  -->
+  <style>
+    :root {
+      /* LOCKED · color tokens */
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --fg: #212121;
+      --muted: #51606F;
+      --border: #E3DFD6;
+      --accent: #0E6B4F;        /* CTA green */
+      --primary: #0B2F57;       /* deep navy */
+      --warm: #FF6F3C;          /* audit banner accent */
+      --ink: #101417;
+      --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
+      --primary-soft: color-mix(in oklch, var(--primary) 12%, transparent);
+      --warm-soft: color-mix(in oklch, var(--warm) 14%, transparent);
+      /* LOCKED · font families */
+      --font-display: "Playfair Display", "Iowan Old Style", "Charter", Georgia, serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+      /* LOCKED · type scale */
+      --fs-h1: clamp(48px, 7vw, 92px);
+      --fs-h2: clamp(34px, 4vw, 58px);
+      --fs-h3: 24px;
+      --fs-lead: 19px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      /* LOCKED · spacing scale */
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 64px;
+      --gap-2xl: 104px;
+      --container: 1180px;
+      --gutter: 28px;
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    p { margin: 0; text-wrap: pretty; }
+    h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(56px, 8vw, var(--gap-2xl)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; gap: var(--gap-md); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700; line-height: 0.95; letter-spacing: 0; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; line-height: 1.05; }
+    .h3, h3 { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.2; font-weight: 700; }
+    .lead { font-size: var(--fs-lead); line-height: 1.62; color: var(--muted); max-width: 58ch; }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 800; margin: 0 0 var(--gap-md); }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .topnav { position: sticky; top: 0; z-index: 20; background: color-mix(in oklch, var(--surface) 88%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .topnav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: var(--gap-lg); }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.02em; }
+    .brand-mark { width: 54px; height: 36px; color: var(--accent); }
+    .brand-mark .house { fill: var(--primary); }
+    .brand-word { font-size: 18px; color: var(--fg); }
+    .topnav nav { display: flex; gap: 28px; color: var(--muted); font-size: 14px; }
+    .topnav nav a:hover { color: var(--fg); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-phone { font-family: var(--font-mono); font-size: 13px; color: var(--fg); padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 12px 20px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease; }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-light { background: var(--surface); color: var(--primary); border-color: var(--surface); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 8px; }
+    .btn-arrow::after { content: "→"; transition: transform 0.15s ease; }
+    .btn-arrow:hover::after { transform: translateX(2px); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .card-flat { background: transparent; border: 0; padding: 0; }
+    .rule { border-top: 1px solid var(--border); }
+
+    /* Audit banner · M3 sales overlay · expandable */
+    .audit-banner { background: var(--ink); color: var(--surface); border-bottom: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); }
+    .audit-banner > summary { padding-block: 14px; cursor: pointer; list-style: none; }
+    .audit-banner > summary::-webkit-details-marker { display: none; }
+    .audit-banner-inner { display: grid; grid-template-columns: auto 1fr auto; gap: var(--gap-md); align-items: center; }
+    .audit-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; background: var(--warm); color: var(--ink); font-weight: 800; }
+    .audit-msg { font-size: 14px; color: color-mix(in oklch, var(--surface) 92%, transparent); }
+    .audit-msg strong { color: var(--surface); }
+    .audit-cta { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--warm); border-bottom: 1px solid var(--warm); padding-bottom: 2px; transition: transform 0.15s ease; }
+    .audit-banner[open] .audit-cta::after { content: " ↑"; }
+    .audit-banner:not([open]) .audit-cta::after { content: " ↓"; }
+    .audit-drawer { padding: 0 var(--gutter) 28px; }
+    .audit-drawer-inner { max-width: var(--container); margin-inline: auto; }
+    .audit-score-row { display: flex; align-items: baseline; gap: 14px; padding-block: 18px; border-top: 1px dashed color-mix(in oklch, var(--surface) 20%, transparent); }
+    .audit-score-big { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--warm); font-weight: 700; }
+    .audit-score-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 60%, transparent); }
+    .audit-findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-md); margin-top: 10px; }
+    .audit-finding { padding: 16px; background: color-mix(in oklch, var(--surface) 6%, transparent); border-left: 3px solid var(--warm); border-radius: 4px; }
+    .audit-finding-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--surface); }
+    .audit-finding-body { font-size: 13px; color: color-mix(in oklch, var(--surface) 78%, transparent); margin-top: 6px; line-height: 1.5; }
+
+    .hero { min-height: calc(100vh - 76px); display: grid; align-items: end; position: relative; isolation: isolate; color: var(--surface); background: var(--primary); overflow: hidden; }
+    .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklch, var(--primary) 72%, black), color-mix(in oklch, var(--primary) 18%, transparent) 62%, transparent 88%), linear-gradient(0deg, color-mix(in oklch, var(--primary) 56%, black), transparent 50%); z-index: -1; }
+    .hero-img { position: absolute; inset: 0; z-index: -2; }
+    .hero-panel { width: min(790px, 100%); padding-block: 84px; }
+    .hero .lead { color: color-mix(in oklch, var(--surface) 82%, var(--border)); margin-top: 22px; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+    .hero-proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; width: min(760px, 100%); margin-top: 54px; background: color-mix(in oklch, var(--surface) 24%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 28%, transparent); }
+    .proof-cell { padding: 18px; background: color-mix(in oklch, var(--primary) 74%, transparent); }
+    .proof-cell strong { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1; }
+    .proof-cell span { display: block; margin-top: 8px; color: color-mix(in oklch, var(--surface) 74%, transparent); font-size: 13px; }
+    .section-head { max-width: 680px; margin-bottom: 48px; }
+    .service-card { overflow: hidden; padding: 0; position: relative; display: flex; flex-direction: column; }
+    .service-img { aspect-ratio: 4 / 3; background: var(--primary-soft); }
+    .service-body { padding: 26px; display: flex; flex-direction: column; flex: 1; }
+    .service-badge { position: absolute; top: 16px; right: 16px; padding: 6px 11px; background: var(--warm); color: var(--ink); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 2; }
+    .service-body p { color: var(--muted); margin-top: 10px; }
+    .service-list { display: grid; gap: 10px; margin-top: 18px; padding: 0; list-style: none; color: var(--fg); }
+    .service-list li { border-top: 1px solid var(--border); padding-top: 10px; font-size: 14px; }
+    .dark-band { background: var(--primary); color: var(--surface); }
+    .dark-band .lead, .dark-band .meta { color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .dark-band .section + .section { border-top-color: color-mix(in oklch, var(--surface) 18%, transparent); }
+    .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .quote-card { position: relative; padding: 32px 28px 28px; background: color-mix(in oklch, var(--surface) 8%, transparent); border: 1px solid color-mix(in oklch, var(--surface) 14%, transparent); border-left: 3px solid var(--warm); border-radius: var(--radius-lg); }
+    .quote-card::before { content: "\201C"; position: absolute; top: 0; right: 22px; font-family: var(--font-display); font-size: 96px; line-height: 1; color: color-mix(in oklch, var(--warm) 32%, transparent); font-weight: 700; pointer-events: none; }
+    .quote-text { font-family: var(--font-display); font-size: 19px; line-height: 1.4; color: var(--surface); position: relative; }
+    .quote-author { margin-top: 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .stars { color: var(--warm); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+    .sample-tag { display: inline-block; margin-left: 10px; padding: 4px 9px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in oklch, var(--warm) 22%, transparent); color: color-mix(in oklch, var(--warm) 80%, black); border: 1px solid color-mix(in oklch, var(--warm) 42%, transparent); border-radius: 4px; vertical-align: middle; font-weight: 800; }
+    .dark-band .sample-tag { background: color-mix(in oklch, var(--warm) 26%, transparent); color: var(--warm); border-color: color-mix(in oklch, var(--warm) 50%, transparent); }
+    .project-frame { display: grid; grid-template-columns: 1.15fr 0.85fr; background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+    .project-image { min-height: 520px; }
+    .project-copy { padding: clamp(28px, 5vw, 58px); }
+    .check-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+    .check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 12px; color: var(--muted); }
+    .check-list li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border-radius: 999px; background: var(--accent); }
+    .process { counter-reset: step; }
+    .process-card { border-top: 2px solid var(--fg); padding-top: 22px; }
+    .process-card::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: block; font-family: var(--font-mono); font-size: 28px; line-height: 1; color: var(--accent); margin-bottom: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .process-card p { color: var(--muted); margin-top: 8px; }
+    .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--gap-xl); align-items: start; }
+    details { border-top: 1px solid var(--border); padding: 20px 0; }
+    details:last-child { border-bottom: 1px solid var(--border); }
+    summary { cursor: pointer; font-family: var(--font-display); font-size: 23px; font-weight: 700; }
+    details p { margin-top: 12px; color: var(--muted); max-width: 68ch; }
+    .contact-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(26px, 4vw, 44px); }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label { color: var(--muted); font-size: 13px; }
+    .input, .textarea, .select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--fg); }
+    .textarea { min-height: 118px; resize: vertical; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .wide-field { grid-column: 1 / -1; }
+    .service-area-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 24px; }
+    .suburb-pill { padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; background: var(--surface); }
+    .pagefoot { background: var(--ink); color: color-mix(in oklch, var(--surface) 68%, transparent); padding-block: 68px 36px; }
+    .pagefoot h2, .pagefoot h3 { color: var(--surface); }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: var(--gap-xl); margin-top: 42px; }
+    .footer-list { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 9px; font-size: 14px; }
+    .footer-bottom { border-top: 1px solid color-mix(in oklch, var(--surface) 16%, transparent); margin-top: 48px; padding-top: 22px; display: flex; justify-content: space-between; gap: var(--gap-md); flex-wrap: wrap; }
+    .credit { font-size: 12px; color: color-mix(in oklch, var(--surface) 42%, transparent); }
+    .mobile-call-bar { display: none; }
+
+    @media (max-width: 920px) {
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .project-frame, .faq-grid, .footer-grid, .quote-grid { grid-template-columns: 1fr; }
+      .topnav nav, .nav-actions .btn-secondary, .nav-phone { display: none; }
+      .audit-banner-inner { grid-template-columns: 1fr; text-align: center; gap: 8px; }
+      .audit-findings { grid-template-columns: 1fr; }
+      .audit-score-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .hero { min-height: 720px; }
+      .hero-proof { grid-template-columns: 1fr; }
+      .project-image { min-height: 330px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .service-area-grid { grid-template-columns: repeat(2, 1fr); }
+      .mobile-call-bar { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; background: var(--accent); color: var(--surface); padding: 14px; justify-content: center; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; box-shadow: 0 -6px 24px rgba(0,0,0,0.2); }
+      body { padding-bottom: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <details class="audit-banner" data-od-id="audit-banner" data-od-flexible="content" open>
+    <summary>
+      <div class="container audit-banner-inner">
+        <span class="audit-tag">Site audit</span>
+        <span class="audit-msg">Your current site scored <strong>70/100</strong> — quote form asks too much, no proof visible above fold, dated visuals. <strong>This demo shows the fix.</strong></span>
+        <span class="audit-cta">See findings</span>
+      </div>
+    </summary>
+    <div class="audit-drawer">
+      <div class="audit-drawer-inner">
+        <div class="audit-score-row">
+          <span class="audit-score-big">70</span>
+          <span class="audit-score-label">/ 100 · audited 2026-05-11 · 12 dimensions</span>
+        </div>
+        <div class="audit-findings">
+          <div class="audit-finding">
+            <div class="audit-finding-title">Quote form asks too much too soon</div>
+            <div class="audit-finding-body">Desktop hero form asks for name, phone, email, location, roof type, scope, work type, age, and description before the CTA. More fields = more abandonment. Roofing leads need fast phone + suburb + service type only.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">No proof visible above fold</div>
+            <div class="audit-finding-body">Desktop and mobile hero show no review stars, years in business, licence, warranty, or before-after work. High-ticket customers look for trust signals before contacting. Missing proof = lost Google traffic.</div>
+          </div>
+          <div class="audit-finding">
+            <div class="audit-finding-title">Dated logo weakens first impression</div>
+            <div class="audit-finding-body">Header logo uses thin black roof outline, red uppercase text, and small underlined tagline — looks like old clip-art. Local customers judge credibility in seconds. Dated brand mark sends visitors back to search.</div>
+          </div>
+        </div>
+        <div class="audit-full-report-link" style="margin-top: 22px; text-align: center;">
+          <a href="./customer-facing-audit.html" style="display: inline-block; padding: 12px 22px; background: var(--warm); color: var(--ink); border-radius: var(--radius); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; text-decoration: none;">Read the full audit report →</a>
+          <p style="margin-top: 10px; font-size: 12px; color: color-mix(in oklch, var(--surface) 60%, transparent);">12 dimensions audited · plain English · 5-minute read</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <header class="topnav" data-od-id="topnav" data-od-locked="true">
+    <div class="container topnav-inner">
+      <a class="brand" href="#top" aria-label="Brisbane Roof Restoration Experts home">
+        <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Brisbane Roof Restoration Experts mark"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">BR</text></svg>
+        <span class="brand-word">Brisbane Roof Restoration Experts</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#trust">Reviews</a>
+        <a href="#process">Process</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-phone" href="tel:0731321605">(07) 3132 1605</a>
+        <a class="btn btn-primary" href="#contact">Free Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="hero" data-od-id="hero">
+      <div class="hero-img"><img src="assets/hero-premium-roof.png" alt="Brisbane residential home with restored tile roof" /></div>
+      <div class="container">
+        <div class="hero-panel">
+          <p class="eyebrow">Roof restoration · repair · replacement · Brisbane &amp; Moreton Bay</p>
+          <h1>Fast quotes. Clean work. Roofs that last another twenty years.</h1>
+          <p class="lead">Brisbane Roof Restoration Experts restores tile and metal roofs across Brisbane. Quote within 24 hours. Reliable crews who show up on time and finish the job properly.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">Get Free Quote</a>
+            <a class="btn btn-light btn-arrow" href="tel:0731321605">Call (07) 3132 1605</a>
+          </div>
+          <div class="hero-proof" aria-label="Service highlights">
+            <div class="proof-cell"><strong>4.9★ Google</strong><span>21 five-star reviews from Brisbane homeowners</span></div>
+            <div class="proof-cell"><strong>24-hour quotes</strong><span>Fast response, clear pricing, no pressure</span></div>
+            <div class="proof-cell"><strong>Insured</strong><span>Full public liability &amp; workers comp coverage</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services" data-od-id="services" data-od-sample="true">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Services <span class="sample-tag">Sample · editable after sign-up</span></p>
+          <h2>Three things we do properly for Brisbane roofs.</h2>
+          <p class="lead" style="margin-top: 18px;">Each job starts the same way: inspect the roof, take photos, then sit down and explain exactly what needs doing — and what can wait.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card service-card">
+            <span class="service-badge">Most requested</span>
+            <div class="service-img"><img src="assets/service-roof-repair-flashing-detail.png" alt="Close-up of replaced ridge capping on a Brisbane tile roof" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Roof restoration</h3>
+              <p>Re-bedding, re-pointing, repainting and sealing for tile and metal roofs that are structurally sound but need refreshing.</p>
+              <ul class="service-list">
+                <li>Replace broken ridge caps &amp; valleys</li>
+                <li>Flexible pointing in matched colour</li>
+                <li>Premium membrane respray</li>
+                <li>Written workmanship guarantee</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/service-roof-installation-detail.png" alt="Crew installing new roof sheeting on a Brisbane home" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Roof replacement</h3>
+              <p>Full re-roof in Colorbond or tile when the existing roof is beyond restoration. Most homes done in 3–5 days.</p>
+              <ul class="service-list">
+                <li>Colorbond or terracotta tile options</li>
+                <li>Insulation &amp; sarking upgrade available</li>
+                <li>New gutters &amp; downpipes included</li>
+                <li>Full site clean-up &amp; rubbish removal</li>
+              </ul>
+            </div>
+          </article>
+          <article class="card service-card">
+            <div class="service-img"><img src="assets/about-roofer-working-roof-frame.png" alt="Roofer inspecting a leak point on a Brisbane residential roof" loading="lazy" /></div>
+            <div class="service-body">
+              <h3>Leak &amp; minor repairs</h3>
+              <p>Targeted repairs for lifted tiles, ceiling stains, gutter overflow, or water entry around chimneys and skylights. We handle small jobs too.</p>
+              <ul class="service-list">
+                <li>Same-week call-out available</li>
+                <li>Photo evidence for insurance claims</li>
+                <li>Temporary tarp until permanent fix</li>
+                <li>No job too small</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark-band" id="trust" data-od-id="trust">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" style="color: var(--warm);">What Brisbane homeowners say</p>
+          <h2 style="color: var(--surface);">4.9 stars on Google. 21 five-star reviews.</h2>
+        </div>
+        <div class="quote-grid">
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">Aron gave us outstanding customer service. He quoted within 24 hours of my enquiry and began work the next day.</p>
+            <p class="quote-author">Dave · Brisbane</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">Aaron answered my phone call message promptly, arranged to meet and see the job, and turned up on time.</p>
+            <p class="quote-author">Loren · Brisbane</p>
+          </div>
+          <div class="quote-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote-text">The result has dramatically improved our street appeal and home value.</p>
+            <p class="quote-author">Dave · Brisbane</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects" data-od-id="projects" data-od-sample="true">
+      <div class="container">
+        <div class="project-frame">
+          <div class="project-image"><img src="assets/project-before-after-roof-transformation.png" alt="Before-and-after of a restored terracotta tile roof in Brisbane" loading="lazy" /></div>
+          <div class="project-copy">
+            <p class="eyebrow">Recent project <span class="sample-tag">Sample · editable after sign-up</span></p>
+            <h2>Terracotta tile roof restored in 4 days.</h2>
+            <p class="lead" style="margin-top: 18px;">Homeowners had three quotes ranging from patch repairs to full replacement. We showed them why a full restoration would buy them another 20 years for less than half the replacement cost.</p>
+            <ul class="check-list">
+              <li>Cracked and slipped tiles replaced with colour-matched stock</li>
+              <li>All ridge capping re-bedded with flexible cement and re-pointed</li>
+              <li>Two-coat premium membrane respray in original terracotta red</li>
+              <li>New gutters and downpipes to match</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section process" id="process" data-od-id="process" data-od-sample="true">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">How a job runs <span class="sample-tag">Sample · editable after sign-up</span></p>
+          <h2>Four steps from first phone call to finished roof.</h2>
+        </div>
+        <div class="grid-4">
+          <div class="process-card"><h3>You call or enquire online</h3><p>Tell us what you have seen — a leak, damage, or a roof that just looks tired.</p></div>
+          <div class="process-card"><h3>Roof inspection</h3><p>We walk the roof, take photos, and show you what is happening up there.</p></div>
+          <div class="process-card"><h3>Written quote within 24 hours</h3><p>Clear pricing, photo-referenced, no vague allowances or hidden extras.</p></div>
+          <div class="process-card"><h3>Work scheduled &amp; completed</h3><p>2–5 days for most jobs. Progress photos. Clean gutters before we leave site.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="area" data-od-id="service-area" data-od-sample="true">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Service area <span class="sample-tag">Sample · editable after sign-up</span></p>
+          <h2>Brisbane and Moreton Bay.</h2>
+          <p class="lead" style="margin-top: 18px;">We service roofing jobs across Brisbane metro and nearby Moreton Bay suburbs.</p>
+        </div>
+        <div class="service-area-grid">
+          <div class="suburb-pill">Morningside</div>
+          <div class="suburb-pill">Balmoral</div>
+          <div class="suburb-pill">Hawthorne</div>
+          <div class="suburb-pill">Bulimba</div>
+          <div class="suburb-pill">Norman Park</div>
+          <div class="suburb-pill">Cannon Hill</div>
+          <div class="suburb-pill">Murarrie</div>
+          <div class="suburb-pill">Tingalpa</div>
+          <div class="suburb-pill">Carindale</div>
+          <div class="suburb-pill">Coorparoo</div>
+          <div class="suburb-pill">Camp Hill</div>
+          <div class="suburb-pill">Seven Hills</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" data-od-id="faq" data-od-sample="true">
+      <div class="container faq-grid">
+        <div>
+          <p class="eyebrow">FAQ <span class="sample-tag">Sample · editable after sign-up</span></p>
+          <h2>Honest answers to the questions homeowners actually ask.</h2>
+          <p class="lead" style="margin-top: 18px;">If yours is not here, call us — we'll tell you straight whether it is worth a visit.</p>
+        </div>
+        <div>
+          <details open><summary>Do you handle small repair jobs?</summary><p>Yes. Many roofers only want full restoration jobs. We handle minor repairs — a few lifted tiles, small leak points, gutter fixes. If it is a small job, we will quote it fairly and fit it in quickly.</p></details>
+          <details><summary>How fast can you quote?</summary><p>Most quotes within 24 hours of inspection. We inspect, take photos, and send a clear written quote — no vague estimates over the phone.</p></details>
+          <details><summary>What does a roof restoration cost in Brisbane?</summary><p>A standard 3-bedroom home is typically in the range of several thousand dollars depending on tile condition and access. We give a fixed written price after inspection — never an estimate over the phone.</p></details>
+          <details><summary>Are you insured?</summary><p>Yes — full public liability and workers compensation. We will send copies before you sign anything.</p></details>
+          <details><summary>Can you work with my insurance company for storm damage?</summary><p>Yes — we provide the photo report, itemised quote, and scope of works your insurer needs.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-od-id="contact">
+      <div class="container grid-1-2">
+        <div class="stack">
+          <p class="eyebrow">Get a free quote</p>
+          <h2>Tell us what is going on with your roof.</h2>
+          <p class="lead">We will have a roofer out usually within 3 working days. The inspection is free — no obligation, no high-pressure quote on the spot.</p>
+          <p class="meta" style="margin-top: 12px;">Or call directly: <a href="tel:0731321605" style="color: var(--accent); font-weight: 700;">(07) 3132 1605</a> · Mon–Fri 7am–5pm</p>
+        </div>
+        <form class="contact-panel" action="#" method="post">
+          <div class="form-grid">
+            <div class="field"><label for="name">Your name</label><input class="input" id="name" name="name" autocomplete="name" /></div>
+            <div class="field"><label for="phone">Best phone number</label><input class="input" id="phone" name="phone" autocomplete="tel" /></div>
+            <div class="field"><label for="suburb">Suburb</label><input class="input" id="suburb" name="suburb" placeholder="e.g. Morningside" /></div>
+            <div class="field"><label for="service">What do you need?</label><select class="select" id="service" name="service"><option>Free roof inspection</option><option>Roof restoration quote</option><option>Full replacement quote</option><option>Leak / repair (urgent)</option><option>Not sure yet</option></select></div>
+            <div class="field wide-field"><label for="message">What have you noticed? (optional)</label><textarea class="textarea" id="message" name="message" placeholder="e.g. Water stains on ceiling after recent rain, roof looks tired."></textarea></div>
+          </div>
+          <button class="btn btn-primary" type="submit" style="margin-top: 18px; width: 100%;">Request Free Quote</button>
+          <p class="meta" style="margin-top: 12px; text-align: center;">We reply within 1 business day, Mon–Fri.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer" data-od-locked="true">
+    <div class="container">
+      <div class="row-between">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">BR</text></svg>
+          <span class="brand-word" style="color:var(--surface);">Brisbane Roof Restoration Experts</span>
+        </div>
+        <a class="btn btn-light" href="tel:0731321605">Call (07) 3132 1605</a>
+      </div>
+      <div class="footer-grid">
+        <div>
+          <h2>Brisbane roofs, restored properly.</h2>
+          <p style="margin-top: 16px;">Fast quotes. Reliable crews. Roofs that last.</p>
+          <p style="margin-top: 16px;" class="meta">Unit 22/104 Barwon St, Morningside QLD 4170<br/>Fully insured · Public liability &amp; workers comp</p>
+        </div>
+        <div><h3>Services</h3><ul class="footer-list"><li>Roof restoration</li><li>Roof replacement</li><li>Leak repair</li><li>Minor repairs</li><li>Gutter work</li></ul></div>
+        <div><h3>Service area</h3><ul class="footer-list"><li>Brisbane metro</li><li>Moreton Bay</li><li>Inner east Brisbane</li><li>Morningside &amp; surrounds</li></ul></div>
+        <div><h3>Contact</h3><ul class="footer-list"><li>(07) 3132 1605</li><li>Mon–Fri 7am–5pm</li><li>Same-week quotes</li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Brisbane Roof Restoration Experts. All rights reserved.</span>
+        <span class="credit">Built on classic-premium-roftix reference · v3</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="mobile-call-bar" href="tel:0731321605" aria-label="Call Brisbane Roof Restoration Experts">
+    📞 Call (07) 3132 1605
+  </a>
+</body>
+</html>

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chijwdbif2xzkwsrru6lkmu2l0o",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
-  "lastSeenAt": "2026-05-14T10:48:14.503Z",
-  "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-14T10:48:14.503Z",
+  "lastSeenAt": "2026-05-14T16:00:45.624Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-14T16:02:08.954Z",
   "identifiers": {
     "place_id": "ChIJwdBiF2xZkWsRru6lKMU2L0o",
     "cid": "5345551503130488494",
@@ -13,10 +13,14 @@
     "phoneDigits": "0731321605"
   },
   "latest": {
-    "sourceType": "single_enrich",
+    "sourceType": "places_search",
     "name": "Brisbane Roof Restoration Experts",
     "category": "Roofing contractor",
-    "categories": [],
+    "categories": [
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor"
+    ],
     "address": "Unit 22/104 Barwon St, Morningside QLD 4170, Australia",
     "city": "Brisbane",
     "niche": "roofer",
@@ -28,7 +32,7 @@
     "websiteStatus": "independent_https_site",
     "discoveryScore": 27,
     "recommendedAction": "audit_candidate",
-    "sourceQuery": "Brisbane Roof Restoration Experts brisbane",
+    "sourceQuery": "roofer brisbane",
     "signals": {
       "hasPhone": true,
       "hasWebsite": true,
@@ -140,8 +144,8 @@
         "computed_at": "2026-05-13T07:16:33.336Z"
       }
     },
-    "batch_id": "places-roofer-brisbane-202605141757",
-    "discovery_rank": 17,
+    "batch_id": "places-roofer-brisbane-202605150200",
+    "discovery_rank": 12,
     "google_places_provider": "official_api",
     "contact_us_url": "https://brisbaneroofrestorationexperts.com.au/contact/"
   },
@@ -239,6 +243,14 @@
       "query": "Brisbane Roof Restoration Experts brisbane",
       "runPath": "",
       "at": "2026-05-14T10:48:14.503Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T16:00:45.624Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
     }
@@ -520,6 +532,40 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T16:00:45.624Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T16:02:08.954Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T16:02:08.965Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T16:04:12.406Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
+      "note": ""
     }
   ],
   "notes": [
@@ -530,7 +576,7 @@
     "product_tier": null,
     "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-14T10:35:09.760Z"
+    "graded_at": "2026-05-14T16:02:08.954Z"
   },
   "enrichment_status": "complete",
   "batches": [
@@ -538,16 +584,17 @@
     "places-roofer-brisbane-202605141617",
     "places-roofer-brisbane-202605141655",
     "places-roofer-brisbane-202605141744",
-    "places-roofer-brisbane-202605141757"
+    "places-roofer-brisbane-202605141757",
+    "places-roofer-brisbane-202605150200"
   ],
   "project_thread_id": null,
-  "project_profile_message_id": "1504269382304530583",
+  "project_profile_message_id": null,
   "project_thread_opened_at": "2026-05-13T23:49:28.894Z",
   "sales_stage": "demo-ready",
-  "phase": null,
-  "phaseChangedAt": "2026-05-14T10:48:14.526Z",
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-14T16:04:12.406Z",
   "qualification": {
-    "computed_at": "2026-05-14T10:36:59.815Z",
+    "computed_at": "2026-05-14T16:04:12.407Z",
     "hard_gates": [
       {
         "id": "too_many_pages",
@@ -599,7 +646,7 @@
   },
   "discord_thread_id": null,
   "discord_profile_message_id": null,
-  "discord_thread_opened_at": "2026-05-14T10:31:40.440Z",
+  "discord_thread_opened_at": "2026-05-14T16:02:07.110Z",
   "cheap_audit": {
     "action": "audit_candidate",
     "reason": "Strong V2 candidate — proceed to detailed audit",
@@ -608,22 +655,32 @@
     "fired_triggers": [],
     "relevance_pass": true,
     "priority": 78,
-    "at": "2026-05-14T12:18:10.006Z"
+    "at": "2026-05-14T16:02:05.953Z"
   },
   "predict_grade": {
     "grade": "C",
     "priority": 21,
-    "audit_now": false,
+    "audit_now": true,
     "reasons": [
       "predict-C · 不达 B 标准:",
       "  ✗ reviews 21 < B 阈值 30",
       "(同时不达 A 标准: 1 项)"
     ],
-    "at": "2026-05-14T12:18:10.006Z"
+    "at": "2026-05-14T16:02:05.953Z"
   },
-  "archive_reason": null,
+  "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)",
   "project_thread_id_cleared_at": "2026-05-14T12:05:35.491Z",
   "archive_reason_cleared_at": "2026-05-14T12:18:10.006Z",
   "archive_reason_prior": "predict-D · cheap-audit skip · category \"Roofing contractor\" does not match niche \"roofer\" — wrong industry",
-  "discord_thread_id_cleared_at": "2026-05-14T12:42:42.706Z"
+  "discord_thread_id_cleared_at": "2026-05-14T12:42:42.706Z",
+  "niche_relevance": {
+    "key": "roofer||roofing contractor",
+    "relevant": true,
+    "confidence": 1,
+    "reason": "该商家的类别和名称都明确属于屋顶施工与修复行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T12:22:26.062Z",
+    "cached": true
+  },
+  "thread_cleared_at": "2026-05-14T19:53:27.386Z"
 }

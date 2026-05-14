@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160202-85eb3a",
+  "created_at": "2026-05-14T16:02:02.951Z",
+  "updated_at": "2026-05-14T16:10:32.226Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chij94nexjfjk2srxwxb4ar4hj4 (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chij94nexjfjk2srxwxb4ar4hj4"
+    ],
+    "target_entity_key": "place_chij94nexjfjk2srxwxb4ar4hj4",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 509063,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:02:03.163Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chij94nexjfjk2srxwxb4ar4hj4"
+    },
+    {
+      "at": "2026-05-14T16:02:08.301Z",
+      "step": "cli.stream",
+      "detail": "se  profile=normal (concurrent_leads=1)\n\n══════════ place_chij94nexjfjk2srxwxb4ar4hj4 ══════════\n  [thread] reusing 1504514133842985123\n  [stage 1/4] detailed audit — fetching http://www.nbmr.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:04:21.447Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=59/100 decision=strong_redesign\n     → contact: emails=1 · contact_url=no · social=facebook,instagram\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:07:21.214Z",
+      "step": "cli.stream",
+      "detail": "thread-sync] cleared stale discord_thread_id from place_chij94nexjfjk2srxwxb4ar4hj4 (was 404)\n  [stage 3a/4] graded: B/T2 ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:07:33.150Z",
+      "step": "cli.stream",
+      "detail": "true\n    }\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chij94nexjfjk2srxwxb4ar4hj4 ══════════\n  [1/5] multi-page crawl http://www.nbmr.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:07:47.150Z",
+      "step": "cli.stream",
+      "detail": "s · 13.3s · ~$0.030\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:08:44.955Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 57.8s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 71/100 (A24 B11 C25 D8 E3)\n     → verdict: ready-to-build"
+    },
+    {
+      "at": "2026-05-14T16:09:15.565Z",
+      "step": "cli.stream",
+      "detail": "uild-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  13340 chars"
+    },
+    {
+      "at": "2026-05-14T16:10:32.213Z",
+      "step": "cli.stream",
+      "detail": "───────────┴────────────────────────────────────────┴──────┴─────────────┴───────────────────┴───────────────┴────────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:10:32.226Z",
+      "step": "cli.stream",
+      "detail": "59,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 6,\n      \"grade\": \"B/T2\",\n      \"report_url\": \"/audit-reports/place_chij94nexjfjk2srxwxb4ar4hj4/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:10:32.226Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=509063ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

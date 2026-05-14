@@ -1,0 +1,120 @@
+{
+  "provider": "codex_cli",
+  "model": null,
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 64970,
+  "parsedJson": {
+    "freshness_score": 3,
+    "trust_score": 5,
+    "conversion_score": 5,
+    "design_age_estimate": "outdated",
+    "summary": "The site shows the business name and contact icons clearly, but the heavy dark styling, weak trust proof, and unclear mobile actions make it feel older than a current Brisbane roofing business.",
+    "issues": [
+      {
+        "id": "dated_dark_roof_texture",
+        "severity": "major",
+        "title": "Heavy dark background feels dated",
+        "what_observed": "Both screenshots use a black roof-tile texture behind the header and content, with white text sitting directly on the dark image.",
+        "why_problem": "A Google-searching local customer may read the dark textured layout as old or low-budget, especially when comparing roofers side by side. It makes the business feel less current even if the work is legitimate.",
+        "what_correct_looks_like": "A light, clean page background with dark readable text, one strong orange accent color, and real project photography used in framed sections rather than as a repeated texture.",
+        "how_to_fix_in_redesign": "Replace the black texture background with a white or very light grey layout, keep orange for primary actions, and use roof photos only as hero or gallery images.",
+        "plain_explanation": "现在页面大面积黑色屋顶纹理，看起来像很多年前的网站模板，不像一家正在活跃接单的本地公司。",
+        "customer_impact": "客户从 Google 点进来后通常几秒内判断靠不靠谱。视觉显旧会让一部分人直接返回搜索结果，去点看起来更新、更专业的竞争对手。"
+      },
+      {
+        "id": "mobile_no_visible_phone_number",
+        "severity": "critical",
+        "title": "Mobile phone number is hidden",
+        "what_observed": "On mobile, the top area shows a round orange phone icon but no visible phone number next to it.",
+        "why_problem": "Many local roofing customers want to call quickly, especially for leaks or urgent repairs. If they cannot see the number immediately, some will hesitate or tap back to another roofer.",
+        "what_correct_looks_like": "A sticky mobile header with a visible phone number or a full-width 'Call 0432 254 975' button that stays easy to tap.",
+        "how_to_fix_in_redesign": "Add a persistent mobile call bar showing 'Call 0432 254 975' with the phone icon, and keep it visible at the top or bottom of the screen.",
+        "plain_explanation": "手机页面只有电话图标，没有直接显示电话号码，客户要先猜这个按钮能不能打电话。",
+        "customer_impact": "本地服务客户很多是在手机上找人，约70%的本地搜索会发生在移动端。电话不够明显，会减少马上来电的机会，尤其是漏水这类急单。"
+      },
+      {
+        "id": "missing_quote_cta",
+        "severity": "major",
+        "title": "No clear quote action above fold",
+        "what_observed": "The desktop header shows a phone number and two round icons, but there is no visible 'Get a Quote' or 'Request Inspection' button in the first screen.",
+        "why_problem": "Not every visitor is ready to call. A Brisbane homeowner comparing roofers may prefer to request a quote quietly, and the page does not give them an obvious next step.",
+        "what_correct_looks_like": "A prominent orange button reading 'Get a Free Roof Quote' beside the phone number on desktop and below the hero headline on mobile.",
+        "how_to_fix_in_redesign": "Add a primary CTA button above the fold: 'Get a Free Roof Quote', linking to a short contact form, with phone as the secondary action.",
+        "plain_explanation": "页面顶部没有清楚的“获取报价”按钮，只能打电话或点图标。",
+        "customer_impact": "有些客户上班或晚上看网站，不方便马上打电话。没有报价入口，会让这些潜在客户流失到提供表单报价的同行那里。"
+      },
+      {
+        "id": "thin_trust_proof",
+        "severity": "major",
+        "title": "Trust proof is not visible",
+        "what_observed": "The visible first screen shows the logo, phone, menu, hero image, and text, but no Google rating, review count, licence, insurance, warranty, or local suburb proof.",
+        "why_problem": "Roof restoration is a high-trust purchase. A homeowner searching 'roofer Brisbane' wants quick proof that the business is real, reviewed, insured, and local before contacting them.",
+        "what_correct_looks_like": "Above-fold trust row with Google star rating, '13+ years experience', licence/insured badge, service area, and a workmanship warranty statement.",
+        "how_to_fix_in_redesign": "Place a compact trust strip under the hero or header with review rating, years in business, Brisbane service area, warranty, and licence/insurance details.",
+        "plain_explanation": "首屏没有看到评分、评价数量、执照、保险、质保这些能让客户放心的信息。",
+        "customer_impact": "修屋顶金额高、风险高，客户会更谨慎。缺少信任证明会让他们不敢提交信息或打电话，特别是从 Google 商家资料第一次进来的陌生客户。"
+      },
+      {
+        "id": "desktop_nav_looks_sparse",
+        "severity": "minor",
+        "title": "Navigation feels sparse",
+        "what_observed": "The desktop orange navigation bar contains only 'About', 'Gallery', and 'Contact' spread widely across the full page.",
+        "why_problem": "A visitor looking for roof repairs, roof painting, tile replacement, or restoration details cannot immediately see whether the business handles their exact job.",
+        "what_correct_looks_like": "A concise service-led navigation with 'Roof Restoration', 'Roof Repairs', 'Roof Painting', 'Gallery', and 'Contact' plus a quote button.",
+        "how_to_fix_in_redesign": "Replace the broad three-item nav with service-specific links and a right-aligned quote CTA on desktop.",
+        "plain_explanation": "导航只有三个很空的栏目，没有直接列出客户最关心的屋顶服务。",
+        "customer_impact": "客户如果看不到自己需要的服务，会以为你不做这项工作。这样会减少继续浏览和询价的机会。"
+      },
+      {
+        "id": "mobile_orange_empty_bar",
+        "severity": "minor",
+        "title": "Mobile has an empty orange strip",
+        "what_observed": "On mobile, a solid orange horizontal bar appears below the three round header icons with no text or visible purpose.",
+        "why_problem": "An empty colored strip takes valuable mobile space and creates confusion. Local customers on phones need every top-screen element to help them act quickly.",
+        "what_correct_looks_like": "That space should either be removed or turned into a meaningful call-to-action bar such as 'Free Brisbane Roof Quote'.",
+        "how_to_fix_in_redesign": "Convert the empty orange strip into a tappable CTA bar or remove it and move the hero content higher.",
+        "plain_explanation": "手机顶部有一条橙色横条，但没有文字，看起来像空白或未完成的设计。",
+        "customer_impact": "手机屏幕空间很宝贵。无用元素占掉首屏，会把真正能带来电话和询价的信息往下挤。"
+      },
+      {
+        "id": "hero_image_lacks_message",
+        "severity": "major",
+        "title": "Hero image lacks a selling message",
+        "what_observed": "The main house photo appears as a wide image with no overlaid headline, service promise, suburb relevance, or call button.",
+        "why_problem": "The image shows a nice roof, but it does not immediately tell a new visitor why this roofer is the right choice or what to do next.",
+        "what_correct_looks_like": "Hero section with a real roof restoration image, headline like 'Brisbane Roof Restoration & Repairs', a short trust line, and call/quote buttons visible on top or directly below.",
+        "how_to_fix_in_redesign": "Rebuild the hero with a service-specific headline, Brisbane location cue, Google rating or warranty proof, and two actions: call and request quote.",
+        "plain_explanation": "首图只是展示房子，没有告诉客户你具体做什么、为什么值得信任、下一步该点哪里。",
+        "customer_impact": "访客进入页面后需要马上确认“这家公司能解决我的问题”。信息不够直接，会增加离开的概率，减少来自 Google 流量的询盘。"
+      }
+    ],
+    "positive_observations": [
+      "The business name and logo are clearly visible in both desktop and mobile screenshots.",
+      "The orange accent color is memorable and can be reused for calls to action.",
+      "The visible phone number on desktop is easy to find in the header."
+    ],
+    "redesign_priorities": [
+      "1. Add a visible mobile call bar and desktop/mobile quote CTA above the fold.",
+      "2. Replace the dark textured layout with a lighter, more professional service-business design.",
+      "3. Add above-fold trust proof: Google rating, warranty, licence/insurance, and Brisbane service area."
+    ],
+    "confidence": 0.91
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 117716,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 64970
+    }
+  ],
+  "tokensIn": 93385,
+  "tokensOut": 2778,
+  "theoreticalCostUsd": 0.2612425
+}

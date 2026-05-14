@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160622-83e1fa",
+  "created_at": "2026-05-14T16:06:22.875Z",
+  "updated_at": "2026-05-14T16:06:24.713Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijeritxj9nkwsr2dg7xhqvqn4 (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijeritxj9nkwsr2dg7xhqvqn4",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1633,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:06:23.080Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijeritxj9nkwsr2dg7xhqvqn4 --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:06:24.713Z",
+      "step": "cli.stream",
+      "detail": "7xhqvqn4\",\n      \"slug\": \"trusted-roof-restorations\",\n      \"md\": \"clients/trusted-roof-restorations/v2/master.md\",\n      \"html\": \"clients/trusted-roof-restorations/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:06:24.713Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1633ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

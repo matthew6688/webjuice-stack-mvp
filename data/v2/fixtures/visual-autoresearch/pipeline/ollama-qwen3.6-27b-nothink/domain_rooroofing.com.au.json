@@ -1,0 +1,120 @@
+{
+  "provider": "codex_cli",
+  "model": null,
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 58429,
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 5,
+    "conversion_score": 6,
+    "design_age_estimate": "outdated",
+    "summary": "The site shows the service and phone number clearly, but the dated visual style and weak trust proof make it feel less current than a Brisbane roofing customer would expect.",
+    "issues": [
+      {
+        "id": "dated_hero_overlay",
+        "severity": "major",
+        "title": "Hero design feels dated",
+        "what_observed": "The desktop hero uses a pale washed-out roof photo with a large angled translucent white overlay cutting through the middle of the image.",
+        "why_problem": "A local customer comparing roofers may read this as an older website that has not been refreshed in years, which can make the business feel less active or less premium.",
+        "what_correct_looks_like": "A sharp real roofing project photo with a simple dark or light overlay, clear headline, visible service area, and one strong phone or quote button above the fold.",
+        "how_to_fix_in_redesign": "Replace the faded angled hero treatment with a high-resolution Brisbane roof project image, flat overlay for text contrast, and a single primary CTA block.",
+        "plain_explanation": "首页大图看起来有点旧，透明斜块和发白的照片让网站不像最近更新过。",
+        "customer_impact": "客户通常会在几秒内判断这家公司靠不靠谱。如果第一眼显旧，从 Google 商家资料点进来的客户可能会直接回去看下一家。"
+      },
+      {
+        "id": "weak_trust_above_fold",
+        "severity": "major",
+        "title": "Trust proof is missing above fold",
+        "what_observed": "The first desktop screen shows the logo, phone number, menu, hero headline, and buttons, but no review rating, licence detail, years in business, or completed-job proof.",
+        "why_problem": "Roofing is a high-cost, high-trust service. A Google-searching visitor wants quick reassurance that the business is legitimate before calling.",
+        "what_correct_looks_like": "Above the fold should include 3-4 compact trust markers such as star rating, insured/licensed wording, Brisbane service area, and number of roofs completed.",
+        "how_to_fix_in_redesign": "Add a trust strip directly under the header or inside the hero with Google rating, licensed and insured claim, local Brisbane coverage, and a proof metric.",
+        "plain_explanation": "首屏没有马上告诉客户“我们值得信任”，比如评价、资质、保险或本地案例。",
+        "customer_impact": "屋顶工程金额高，客户会更谨慎。缺少信任信息会让本来准备打电话的人先去比较别家公司，尤其是从 GBP 进来的冷流量。"
+      },
+      {
+        "id": "desktop_cta_competes",
+        "severity": "minor",
+        "title": "CTA labels compete",
+        "what_observed": "The desktop header has a wide coral bar saying “BOOK YOUR FREE ROOF CONSULTATION” while the hero button below says “BOOK A FREE CONSULTATION”.",
+        "why_problem": "Two similar calls to action in different places make the page feel repetitive and less deliberate, instead of guiding the visitor to one obvious next step.",
+        "what_correct_looks_like": "One primary action should dominate, with the phone number as the immediate alternative for urgent roof problems.",
+        "how_to_fix_in_redesign": "Use one consistent primary CTA label across header and hero, such as “Get a Free Roof Quote”, and pair it with a click-to-call phone button.",
+        "plain_explanation": "页面上有两个很像的预约按钮，文字也不完全一样，看起来不够统一。",
+        "customer_impact": "客户越需要思考点哪里，越容易退出。小的犹豫会减少来电和询盘，特别是手机用户。"
+      },
+      {
+        "id": "mobile_no_phone_number",
+        "severity": "critical",
+        "title": "Mobile hides the phone number",
+        "what_observed": "On mobile, the top bar shows only a phone icon and hamburger icon; the actual number “1300 734 148” is not visible.",
+        "why_problem": "A phone-searching customer with a leaking or damaged roof often wants to call immediately. Hiding the number behind an icon adds doubt and friction.",
+        "what_correct_looks_like": "Mobile header should show a tappable phone button with either the full number or a clear “Call 1300 734 148” label visible without scrolling.",
+        "how_to_fix_in_redesign": "Replace the standalone phone icon with a visible click-to-call control reading “Call 1300 734 148” or add a sticky bottom call bar.",
+        "plain_explanation": "手机顶部只有电话图标，没有直接显示电话号码。",
+        "customer_impact": "本地搜索很多发生在手机上。客户想马上打电话时，如果看不到号码，可能会返回 Google 选择另一个更容易联系的屋顶公司。"
+      },
+      {
+        "id": "mobile_hero_text_crowded",
+        "severity": "major",
+        "title": "Mobile hero text is cramped",
+        "what_observed": "The mobile hero stacks “BRISBANE ROOF REPLACEMENTS” and “AND BUILDING PROFESSIONALS” over a busy roof image, with divider lines and a large angled overlay taking much of the space.",
+        "why_problem": "On a small screen, the message takes effort to read and does not quickly answer what the company does, where it works, and why to trust it.",
+        "what_correct_looks_like": "Mobile should use a single-column hero with a short headline, one supporting line, readable 16px+ text, and a primary call button visible immediately.",
+        "how_to_fix_in_redesign": "Simplify the mobile hero to “Brisbane Roof Replacement & Repairs” with one support line, stronger contrast, and remove decorative divider lines.",
+        "plain_explanation": "手机首屏文字和图片挤在一起，重点不够直接。",
+        "customer_impact": "手机访客通常滑动很快。如果前 8 秒看不懂你做什么、能不能服务 Brisbane，他们很容易离开。"
+      },
+      {
+        "id": "mobile_service_list_overwhelms",
+        "severity": "major",
+        "title": "Service list dominates mobile",
+        "what_observed": "Immediately under the mobile “QUICK QUOTE” bar, six dark service rows fill the screen with icons, uppercase labels, and chevrons.",
+        "why_problem": "The list is useful, but it pushes trust proof, reviews, photos, and contact reassurance out of view. A visitor may see options before feeling confident to act.",
+        "what_correct_looks_like": "Mobile should show the main CTA, then a compact trust row, then 3-4 top services with a “View all services” option.",
+        "how_to_fix_in_redesign": "Keep only the highest-intent services near the top, add review/licence proof above the list, and move the full service menu lower on the page.",
+        "plain_explanation": "手机上很快就进入一长串服务菜单，但还没先建立信任。",
+        "customer_impact": "客户不是只想看菜单，他们要先确认这家公司靠谱。信任信息太晚出现，会降低从 GBP 进入后的来电意愿。"
+      },
+      {
+        "id": "desktop_social_sidebar_noise",
+        "severity": "minor",
+        "title": "Social sidebar feels old",
+        "what_observed": "The desktop screenshot shows a small vertical social media bar floating on the right edge with Facebook, Twitter, and YouTube icons.",
+        "why_problem": "For an urgent local roofing decision, these icons distract from calling or requesting a quote and make the interface feel like an older template.",
+        "what_correct_looks_like": "Social links should be placed quietly in the footer, while the right side or sticky area is reserved for phone and quote actions.",
+        "how_to_fix_in_redesign": "Remove the floating social sidebar and use that attention for a sticky call/quote control or leave the hero visually cleaner.",
+        "plain_explanation": "右侧浮动社交图标看起来像旧模板，也不是客户最需要的操作。",
+        "customer_impact": "屋顶客户最有价值的动作是打电话或询价。任何分散注意力的按钮都会让有效线索少一点。"
+      }
+    ],
+    "positive_observations": [
+      "The business name and phone number are prominent on desktop.",
+      "The coral quote button stands out clearly against the muted page colors.",
+      "The mobile service rows make the main roofing services easy to scan."
+    ],
+    "redesign_priorities": [
+      "1. Make mobile contact immediate with a visible click-to-call number and sticky quote/call action.",
+      "2. Rebuild the hero with sharper roofing imagery, clearer Brisbane service wording, and stronger text contrast.",
+      "3. Add trust proof above the fold: reviews, licence/insurance wording, local proof, and project credibility."
+    ],
+    "confidence": 0.88
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 107504,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 58429
+    }
+  ],
+  "tokensIn": 92139,
+  "tokensOut": 2533,
+  "theoreticalCostUsd": 0.2556775
+}

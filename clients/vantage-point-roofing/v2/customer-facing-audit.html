@@ -1,247 +1,312 @@
 <!doctype html>
 <html lang="en-AU">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Website Audit Report – Vantage Point Roofing</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Health Check · Vantage Point Roofing</title>
 <style>
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
   color: #2c2c2c;
-  background: #faf8f3;
+  background: #faf8f5;
   padding: 20px;
 }
+
 .container {
-  max-width: 780px;
+  max-width: 800px;
   margin: 0 auto;
   background: white;
-  padding: 48px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-@media (max-width: 640px) {
-  .container {
-    padding: 32px 24px;
-  }
-  body {
-    padding: 0;
-  }
-}
+
 h1, h2, h3 {
   font-family: Georgia, serif;
-  font-weight: 600;
   color: #1a1a1a;
+  margin-bottom: 16px;
   line-height: 1.3;
 }
+
 h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 2.2em;
+  margin-bottom: 8px;
 }
+
 h2 {
-  font-size: 1.5rem;
-  margin: 2.5rem 0 1rem;
-  padding-top: 1.5rem;
-  border-top: 2px solid #e8e4d9;
+  font-size: 1.6em;
+  margin-top: 40px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e8e4df;
 }
-h2:first-of-type {
-  border-top: none;
-  padding-top: 0;
-}
+
 h3 {
-  font-size: 1.125rem;
-  margin: 1.5rem 0 0.75rem;
+  font-size: 1.2em;
+  margin-top: 24px;
   color: #444;
 }
+
 p {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
+  font-size: 1.05em;
 }
-ul, ol {
-  margin: 1rem 0 1rem 1.5rem;
-}
-li {
-  margin-bottom: 0.75rem;
-}
-strong {
-  font-weight: 600;
-  color: #1a1a1a;
-}
+
 .hero {
   text-align: center;
-  padding: 2rem 0 2.5rem;
-  border-bottom: 2px solid #e8e4d9;
-  margin-bottom: 2rem;
+  padding: 30px 0;
+  border-bottom: 2px solid #e8e4df;
+  margin-bottom: 40px;
 }
-.hero p {
-  font-size: 1.125rem;
-  color: #555;
-  margin-top: 0.5rem;
-}
-.score-display {
-  display: inline-block;
-  margin: 1.5rem 0;
-  padding: 1.25rem 2rem;
-  background: linear-gradient(135deg, #f9f7f1 0%, #ebe8dd 100%);
-  border-radius: 8px;
-  border: 2px solid #d4cdb8;
-}
-.score-number {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #d97706;
-  font-family: Georgia, serif;
-}
-.score-label {
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+
+.business-name {
+  font-size: 1.1em;
   color: #666;
-  margin-top: 0.25rem;
+  margin-bottom: 12px;
+  font-weight: 500;
 }
-.issue-box {
+
+.score-container {
+  margin: 30px 0;
+}
+
+.score-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 8px solid #e8e4df;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3em;
+  font-weight: bold;
+  color: #d97706;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.score-label {
+  font-size: 0.95em;
+  color: #666;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+.stars {
+  color: #f59e0b;
+  font-size: 1.2em;
+}
+
+.review-count {
+  color: #666;
+  font-size: 0.95em;
+}
+
+.strength-list, .issue-list, .outcome-list {
+  list-style: none;
+  margin: 20px 0;
+}
+
+.strength-list li, .outcome-list li {
+  padding: 16px;
+  margin-bottom: 12px;
+  background: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  border-radius: 4px;
+}
+
+.issue-list li {
+  padding: 16px;
+  margin-bottom: 16px;
   background: #fef9f3;
-  border-left: 4px solid #d97706;
-  padding: 1rem 1.25rem;
-  margin: 1.25rem 0;
+  border-left: 4px solid #f59e0b;
+  border-radius: 4px;
 }
-.issue-box h3 {
-  margin-top: 0;
+
+.issue-title {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  font-size: 1.05em;
+}
+
+.issue-impact {
+  color: #666;
+  font-size: 0.98em;
+}
+
+.critical-badge {
+  display: inline-block;
+  background: #dc2626;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 0.75em;
+  font-weight: 600;
+  margin-left: 8px;
+  text-transform: uppercase;
+}
+
+.highlight-box {
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  padding: 20px;
+  border-radius: 6px;
+  margin: 24px 0;
+}
+
+.highlight-box strong {
   color: #d97706;
 }
-.strength-box {
-  background: #f0f9f4;
-  border-left: 4px solid #059669;
-  padding: 1rem 1.25rem;
-  margin: 1.25rem 0;
-}
-.strength-box h3 {
-  margin-top: 0;
-  color: #059669;
-}
-.outcome-list {
-  background: #f8fafc;
-  padding: 1.5rem;
-  border-radius: 6px;
-  margin: 1.5rem 0;
-}
-.outcome-list li {
-  margin-bottom: 0.875rem;
-}
-.closing {
-  background: #faf8f3;
-  padding: 2rem;
+
+.cta-section {
+  margin-top: 50px;
+  padding: 30px;
+  background: #f9fafb;
   border-radius: 8px;
-  margin-top: 3rem;
   text-align: center;
 }
-.closing p {
-  margin-bottom: 0.75rem;
-  font-size: 1.0625rem;
+
+.cta-section h2 {
+  border: none;
+  margin-top: 0;
 }
-.meta {
-  font-size: 0.875rem;
-  color: #666;
-  margin-top: 0.25rem;
-}
-.badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background: #e8e4d9;
+
+.data-void {
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+  padding: 16px;
+  margin: 20px 0;
   border-radius: 4px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #555;
-  margin: 0.25rem;
+}
+
+.data-void strong {
+  color: #dc2626;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 24px;
+  }
+  
+  h1 {
+    font-size: 1.6em;
+  }
+  
+  h2 {
+    font-size: 1.3em;
+  }
 }
 </style>
 </head>
 <body>
+
 <div class="container">
+  
+  <div class="hero">
+    <div class="business-name">Vantage Point Roofing</div>
+    <h1>Your Website Health Check</h1>
+    <p style="color: #666; font-size: 1.1em; max-width: 600px; margin: 16px auto;">You've built strong trust with 138 Google reviews, but your website is quietly turning away people who are ready to call.</p>
+    
+    <div class="score-container">
+      <div class="score-circle">70</div>
+      <div class="score-label">Current Website Score (out of 100)</div>
+    </div>
+    
+    <div class="rating-bar">
+      <span class="stars">★★★★★</span>
+      <span style="font-weight: 600; color: #1a1a1a;">4.6</span>
+      <span class="review-count">· 138 Google reviews</span>
+    </div>
+  </div>
 
-<div class="hero">
-<h1>Vantage Point Roofing</h1>
-<p>Website Health Check – May 2026</p>
-<div class="score-display">
-<div class="score-number">68<span style="font-size: 2rem; color: #999;">/100</span></div>
-<div class="score-label">Current Website Score</div>
+  <h2>What's Working Well</h2>
+  
+  <ul class="strength-list">
+    <li>
+      <strong>You've earned serious trust.</strong> 138 Google reviews at 4.6 stars is exactly what local customers look for. That social proof is worth its weight in gold.
+    </li>
+    <li>
+      <strong>Your branding looks professional.</strong> The logo is clear, the hero message mentions your 10-year workmanship guarantee, and desktop visitors can see your phone number straight away.
+    </li>
+    <li>
+      <strong>You've built real search presence.</strong> With 161 pages covering different services and Brisbane suburbs, you've done the legwork to show up when people search for specific roofing work in specific areas.
+    </li>
+  </ul>
+
+  <h2>What's Holding You Back</h2>
+
+  <ul class="issue-list">
+    <li>
+      <div class="issue-title">Your mobile visitors can't easily ring you<span class="critical-badge">Urgent</span></div>
+      <div class="issue-impact">On a phone, your header only shows a small phone icon—no visible number. Most Brisbane roofing searches happen on mobile, and if people can't see your number in the first three seconds, they'll tap back to Google and call the next company.</div>
+    </li>
+    
+    <li>
+      <div class="issue-title">No clear "next step" button when people land on your site</div>
+      <div class="issue-impact">Your homepage has good information, but there's no obvious "Get a Quote" or "Call Now" button in the first screen—especially on mobile. People who are ready to act right now don't know where to click, so they leave.</div>
+    </li>
+    
+    <li>
+      <div class="issue-title">Your enquiry form asks for too much</div>
+      <div class="issue-impact">The quote form has 10 fields. Industry testing shows that anything over 4 fields cuts your conversion rate in half. People start filling it out, get tired, and abandon it halfway through.</div>
+    </li>
+    
+    <li>
+      <div class="issue-title">Your site loads slowly on phones</div>
+      <div class="issue-impact">You're carrying 10 tracking scripts that add up to nearly half a megabyte. On a real 4G connection, that means a 5–8 second wait before people see anything useful. Every extra second of load time loses roughly 10% of your visitors.</div>
+    </li>
+  </ul>
+
+  <div class="data-void">
+    <strong>You haven't had website data for two years.</strong> Your site still has Google's old Universal Analytics installed, which stopped collecting information in July 2023. That means you've been flying blind—no idea which pages work, where people drop off, or whether your Google Ads are actually bringing in calls.
+  </div>
+
+  <h2>What Changes When We Fix This</h2>
+
+  <ul class="outcome-list">
+    <li>
+      <strong>More phone calls from Google.</strong> A visible tap-to-call button on mobile means people who are standing in front of a leaking roof can reach you in one tap, not three.
+    </li>
+    <li>
+      <strong>More quote requests.</strong> A shorter form (name, suburb, phone, job type) gets filled out 2–3× more often than a long one. You'll hear from people who would have given up halfway before.
+    </li>
+    <li>
+      <strong>Faster site, fewer people bouncing.</strong> Clean up the tracking scripts, optimise your images for mobile, and the site loads in under 2 seconds. That keeps people around long enough to see why you're worth calling.
+    </li>
+    <li>
+      <strong>You'll know what's actually working.</strong> Proper analytics setup means you can see which services get the most interest, which suburbs send you traffic, and whether your marketing spend is paying off.
+    </li>
+    <li>
+      <strong>Better Google rankings over time.</strong> Google's started using page speed and mobile experience as ranking factors. A faster, cleaner site doesn't just convert better—it shows up higher in search results.
+    </li>
+  </ul>
+
+  <div class="highlight-box">
+    <p style="margin-bottom: 0;"><strong>The bottom line:</strong> You've done the hard work of building a trusted roofing business with real customers and real reviews. Your website just needs to get out of the way and let people contact you.</p>
+  </div>
+
+  <div class="cta-section">
+    <h2>See Exactly What We'd Change</h2>
+    <p style="max-width: 560px; margin: 16px auto 0;">We've put together a 30-minute walkthrough that shows you the specific fixes, what they'd look like on your site, and what kind of results to expect.</p>
+    <p style="margin-top: 20px; color: #666; font-size: 0.95em;">No sales pitch. No obligation. Just a clear picture of what's possible.</p>
+  </div>
+
 </div>
-<p class="meta">Brisbane · Metal Roofing Specialists · 11 years online</p>
-</div>
 
-<h2>What's Working Well</h2>
-
-<div class="strength-box">
-<h3>Strong professional brand and established online presence</h3>
-<p>Your website has been online for 11 years, which tells Google (and your customers) that you're an established, trusted business. Your logo is clean and professional, and you're using real project photos rather than generic stock images – that authenticity matters when people are choosing who to trust with their roof.</p>
-</div>
-
-<div class="strength-box">
-<h3>Comprehensive service coverage across Brisbane</h3>
-<p>You've built out 161 pages covering different roofing services and Brisbane suburbs – that's strong groundwork for local search. When someone in Wilston searches "metal roof replacement near me," you have the content foundation to show up. This isn't easy to build and puts you ahead of many competitors who only have a basic 5-page site.</p>
-</div>
-
-<div class="strength-box">
-<h3>Key Queensland trade credentials on display</h3>
-<p>Your QBCC licence number (1184283), HIA membership, and workmanship guarantee are visible – these are exactly the trust signals Queensland homeowners look for before they pick up the phone. You're ticking the right boxes that separate legitimate trades from fly-by-night operators.</p>
-</div>
-
-<h2>What's Holding You Back</h2>
-
-<div class="issue-box">
-<h3>Mobile visitors can't easily contact you</h3>
-<p><strong>The problem:</strong> When someone visits your site on their phone, there's no clear "Call Now" or "Get a Quote" button visible on the first screen. They see your logo, a menu icon, and a lot of text – but the action button is hidden.</p>
-<p><strong>Why it matters:</strong> Most people find local roofers on their phone, often while they're comparing multiple businesses. If they can't immediately see how to contact you, they'll hit the back button and call the next roofing company instead. You're losing ready-to-buy customers at the first hurdle.</p>
-</div>
-
-<div class="issue-box">
-<h3>Your contact form asks for too much information</h3>
-<p><strong>The problem:</strong> Your quote form has 10 fields to fill out, with 7 of them marked as required. That's a lot to ask before someone's even spoken to you.</p>
-<p><strong>Why it matters:</strong> Industry data shows that every extra form field drops completion rates. Someone who's ready to get a quote right now will often abandon a long form and try a competitor with a simpler one. Three to four fields (name, phone, suburb, brief message) is the sweet spot for roofing quotes.</p>
-</div>
-
-<div class="issue-box">
-<h3>Missing credentials that Queensland customers expect</h3>
-<p><strong>The problem:</strong> While you're showing your QBCC licence, your website doesn't display your ABN, public liability insurance details, how many years you've been in business, or workers compensation compliance.</p>
-<p><strong>Why it matters:</strong> These aren't optional nice-to-haves – Queensland homeowners actively look for these before hiring a tradie. When they're comparing you against another roofer who does show all this information, they'll often choose the business that feels more transparent and legitimate, even if your work is just as good.</p>
-</div>
-
-<div class="issue-box">
-<h3>You haven't been able to see your website data for over two years</h3>
-<p><strong>The problem:</strong> Your site is still running Google's old "Universal Analytics," which stopped collecting data in July 2023. That means for more than two years, you've had no visibility into how many people visit your site, which pages they look at, or where your leads come from.</p>
-<p><strong>Why it matters:</strong> You're flying blind. If you're spending money on Google Ads, Facebook, or any other marketing, you have no way to know if it's working. You can't see if people are bouncing off your contact form, or which service pages get the most interest. You're leaving money on the table because you can't optimise what you can't measure.</p>
-</div>
-
-<div class="issue-box">
-<h3>Desktop visitors have to hunt for the quote button</h3>
-<p><strong>The problem:</strong> On desktop computers, your main "Get a Quote" button sits in the far top-right corner of the navigation bar, while your headline and service description are in a large panel on the left. People read your value proposition but then have to search for what to do next.</p>
-<p><strong>Why it matters:</strong> The easier you make it to take action, the more people will. When someone's convinced and ready to get a quote, every extra second of hunting around the page is a chance for them to get distracted or change their mind. The button should be right where they're already looking.</p>
-</div>
-
-<h2>What Changes When We Fix This</h2>
-
-<div class="outcome-list">
-<p><strong>Here's what you can expect from a redesigned site that fixes these issues:</strong></p>
-<ul>
-<li><strong>More phone calls and quote requests</strong> – when mobile visitors can tap "Call Now" or "Get Quote" without scrolling, and your form only asks for the essentials, conversion rates typically increase by 30–50%.</li>
-<li><strong>Higher trust and fewer comparisons</strong> – when all your credentials (ABN, insurance, years in business, workers comp) are clearly displayed, customers feel confident choosing you without needing to check three other roofers.</li>
-<li><strong>Marketing you can actually measure</strong> – with properly configured analytics, you'll know exactly which lead sources are worth your money and which aren't, so you can double down on what works.</li>
-<li><strong>Better Google rankings</strong> – Google prioritises mobile-friendly sites with clear calls-to-action and fast load times. Fixing mobile usability isn't just good for customers; it's good for your search visibility.</li>
-<li><strong>You keep everything you've built</strong> – all 161 pages, your 11 years of domain age, and your existing Google rankings get carefully migrated so you don't lose any of the equity you've already earned.</li>
-</ul>
-</div>
-
-<p>Your website has a solid foundation – good content coverage, established domain authority, and the right trade credentials. What's missing are the conversion elements that turn visitors into customers, and the visibility to know what's working. Those are fixable problems, not fundamental ones.</p>
-
-<div class="closing">
-<p><strong>Want to see exactly what a redesign would look like for your business?</strong></p>
-<p>We can walk you through a 30-minute screen share showing specific mockups, the migration plan for your existing pages, and realistic timelines.</p>
-<p style="margin-top: 1.5rem; margin-bottom: 0; color: #666;">No pressure, no obligation – just a clear picture of what's possible.</p>
-</div>
-
-</div>
 </body>
 </html>

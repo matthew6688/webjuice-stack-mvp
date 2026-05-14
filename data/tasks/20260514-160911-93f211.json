@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160911-93f211",
+  "created_at": "2026-05-14T16:09:11.383Z",
+  "updated_at": "2026-05-14T16:12:52.917Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": "1504515502620278895",
+    "author": "qualification auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: build demo for place_chij94nexjfjk2srxwxb4ar4hj4 (verdict=ready-to-build · publish auto-chains)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "north-brisbane-metal-roofing-pty-ltd",
+      "--entity-key",
+      "place_chij94nexjfjk2srxwxb4ar4hj4"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 220849,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:09:12.066Z",
+      "step": "cli.spawning",
+      "detail": "pl:build-from-reference --slug north-brisbane-metal-roofing-pty-ltd --entity-key place_chij94nexjfjk2srxwxb4ar4hj4"
+    },
+    {
+      "at": "2026-05-14T16:09:17.191Z",
+      "step": "cli.stream",
+      "detail": "reference] out:     /Users/matthew/Developer/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] prompt:  59033 chars"
+    },
+    {
+      "at": "2026-05-14T16:12:52.916Z",
+      "step": "cli.stream",
+      "detail": "thew/Developer/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] auto-publish enqueue failed: slugArg is not defined"
+    },
+    {
+      "at": "2026-05-14T16:12:52.917Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=220849ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504515502620278895",
+    "status_message_id": null
+  }
+}

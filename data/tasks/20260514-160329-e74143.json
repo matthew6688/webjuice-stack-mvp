@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160329-e74143",
+  "created_at": "2026-05-14T16:03:29.332Z",
+  "updated_at": "2026-05-14T16:03:30.562Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_proroofrestorationbrisbane.com.au (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_proroofrestorationbrisbane.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 974,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:29.587Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_proroofrestorationbrisbane.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:03:30.561Z",
+      "step": "cli.stream",
+      "detail": "\"slug\": \"pro-roof-restoration-brisbane\",\n      \"md\": \"clients/pro-roof-restoration-brisbane/v2/master.md\",\n      \"html\": \"clients/pro-roof-restoration-brisbane/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:03:30.562Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=974ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

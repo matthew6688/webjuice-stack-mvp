@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Audit – Trusted Roof Restorations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: #2c2c2c;
+            background: #faf8f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        h1, h2, h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.8em;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            line-height: 1.2;
+            margin-bottom: 0.3em;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 1.8em;
+            padding-top: 0.8em;
+            border-top: 2px solid #f0ebe3;
+        }
+        
+        h3 {
+            font-size: 1.3em;
+            margin-top: 1.5em;
+            color: #d97239;
+        }
+        
+        p {
+            margin-bottom: 1.2em;
+            font-size: 1.05em;
+        }
+        
+        .hero {
+            text-align: center;
+            padding-bottom: 2em;
+            border-bottom: 2px solid #f0ebe3;
+            margin-bottom: 2em;
+        }
+        
+        .business-name {
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            margin-bottom: 0.5em;
+        }
+        
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin: 2em 0;
+        }
+        
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5bb 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .score-number {
+            font-size: 3em;
+            font-weight: 700;
+            color: #d97239;
+            line-height: 1;
+        }
+        
+        .score-label {
+            font-size: 0.75em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.3em;
+        }
+        
+        .tagline {
+            font-size: 1.15em;
+            color: #555;
+            font-style: italic;
+            margin-top: 1em;
+        }
+        
+        .strength-list, .issue-list {
+            list-style: none;
+            margin: 1.5em 0;
+        }
+        
+        .strength-list li, .issue-list li {
+            padding: 1.2em 0;
+            border-bottom: 1px solid #f0ebe3;
+        }
+        
+        .strength-list li:last-child, .issue-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .item-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5em;
+            font-size: 1.1em;
+        }
+        
+        .strength-list .item-title {
+            color: #2d7a3e;
+        }
+        
+        .issue-list .item-title {
+            color: #d97239;
+        }
+        
+        .item-description {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .outcome-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2em;
+            margin: 2em 0;
+        }
+        
+        .outcome-card {
+            background: #faf8f5;
+            padding: 1.5em;
+            border-left: 4px solid #d97239;
+        }
+        
+        .outcome-card strong {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #1a1a1a;
+        }
+        
+        .closing {
+            background: #f5f3ef;
+            padding: 2.5em;
+            margin-top: 3em;
+            text-align: center;
+            border-radius: 4px;
+        }
+        
+        .closing h2 {
+            border: none;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        
+        .contact-info {
+            font-size: 1.1em;
+            margin-top: 1.5em;
+            color: #555;
+        }
+        
+        .highlight {
+            background: linear-gradient(180deg, transparent 60%, #ffe9c9 60%);
+            padding: 0 4px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 25px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .score-number {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div class="business-name">Trusted Roof Restorations</div>
+            <h1>Your Website Audit</h1>
+            <div class="score-container">
+                <div class="score-circle">
+                    <div class="score-number">53</div>
+                    <div class="score-label">out of 100</div>
+                </div>
+            </div>
+            <p class="tagline">Your excellent reputation is being held back by an outdated website</p>
+        </div>
+
+        <section>
+            <h2>What's Working Well</h2>
+            
+            <ul class="strength-list">
+                <li>
+                    <div class="item-title">You've built an outstanding reputation</div>
+                    <div class="item-description">128 five-star Google reviews is excellent. Most roofing businesses struggle to get even 20 reviews. This shows customers trust you and are happy to recommend you.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">Your phone number is visible on desktop</div>
+                    <div class="item-description">People searching on a computer can find your number easily in the header, which makes it simple for them to call you directly.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">Your branding is clear</div>
+                    <div class="item-description">Your business name and logo are easy to spot, and the orange colour you use is memorable and professional.</div>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>What's Holding You Back</h2>
+            
+            <ul class="issue-list">
+                <li>
+                    <div class="item-title">Your website shows a "Not Secure" warning</div>
+                    <div class="item-description">Every visitor sees a security warning in their browser. Google research shows that over 80% of people close the page immediately when they see this. You're losing roughly 8 out of every 10 potential customers before they even read your page. This also hurts your Google ranking directly.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">Mobile visitors can't easily see your phone number</div>
+                    <div class="item-description">About 7 out of 10 people searching for roofing services are on their phone. Your mobile site shows an orange icon, but no actual phone number next to it. People have to guess whether it's a call button. Many will simply go back to Google and call a competitor whose number is clearly visible.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">The design looks dated</div>
+                    <div class="item-description">The heavy black background and overall style look like a website from 5–10 years ago. When customers are deciding who to trust with a $5,000–$15,000 roofing job, first impressions matter. An outdated website makes people wonder if you're still actively in business.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">There's no "Get a Quote" button</div>
+                    <div class="item-description">Many people browse your website during work hours or in the evening when they can't call. Without a quote form, you're losing these leads to competitors who make it easy to request a quote online. You can only capture people who are ready to call right now.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">Your trust signals are buried</div>
+                    <div class="item-description">Your 5-star rating, licence, insurance, and warranty aren't visible when someone first lands on your page. Roofing is expensive and risky—people need to feel confident immediately. Right now, they have to scroll and hunt for proof that you're legitimate.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">The page loads very slowly</div>
+                    <div class="item-description">On a typical mobile connection, your website takes 8–9 seconds to show content. Most people leave after 3 seconds. Google's data shows that 53% of mobile visitors abandon a site if it takes longer than 3 seconds to load. Slow speed is costing you enquiries every single day.</div>
+                </li>
+                
+                <li>
+                    <div class="item-title">Google and AI search engines can't understand your site</div>
+                    <div class="item-description">Modern search engines (including ChatGPT and Google's AI) rely on structured information to recommend businesses. Your website is missing this layer entirely, which means you're invisible when people ask AI "Who's a trusted roofer in Brisbane?" You're losing a growing share of searches.</div>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>What Changes When We Fix This</h2>
+            
+            <div class="outcome-grid">
+                <div class="outcome-card">
+                    <strong>More phone calls from mobile customers</strong>
+                    <p>A clear, always-visible phone number on mobile means people can call you with one tap—no hunting, no guessing.</p>
+                </div>
+                
+                <div class="outcome-card">
+                    <strong>More quote requests after hours</strong>
+                    <p>A simple quote form captures leads when people are browsing at night or during lunch breaks—times when calling isn't convenient.</p>
+                </div>
+                
+                <div class="outcome-card">
+                    <strong>People trust you immediately</strong>
+                    <p>When your 5-star rating, licence, insurance, and warranty are front and centre, customers feel confident within seconds of landing on your page.</p>
+                </div>
+                
+                <div class="outcome-card">
+                    <strong>Higher Google rankings</strong>
+                    <p>Fixing the security warning, adding structured data, and improving load speed all signal to Google that your site deserves to rank higher.</p>
+                </div>
+                
+                <div class="outcome-card">
+                    <strong>Fewer people bounce back to Google</strong>
+                    <p>A fast, modern, trustworthy-looking site keeps people on the page long enough to call or request a quote, instead of clicking back to choose a competitor.</p>
+                </div>
+                
+                <div class="outcome-card">
+                    <strong>Your reputation works harder for you</strong>
+                    <p>You've earned 128 five-star reviews. A modern website makes sure every visitor sees that social proof and feels the credibility you've built.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="closing">
+            <h2>Next Step</h2>
+            <p>We've prepared a detailed walkthrough of exactly how we'd redesign your site to fix these issues and turn more of your Google traffic into paying customers.</p>
+            <p>The walkthrough takes about 30 minutes, and there's no obligation.</p>
+            <p class="contact-info">If you'd like to see what a modern, high-converting website could do for your business, let us know and we'll schedule a time that suits you.</p>
+        </div>
+    </div>
+</body>
+</html>

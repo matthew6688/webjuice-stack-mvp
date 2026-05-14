@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-161032-aebba0",
+  "created_at": "2026-05-14T16:10:32.834Z",
+  "updated_at": "2026-05-14T16:15:47.015Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "qualification auto-chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: build demo for place_chij6wsd-kzbkwsryzke1ejotjs (verdict=ready-to-build · publish auto-chains)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:build-from-reference",
+    "args": [
+      "--slug",
+      "vip-roofing-brisbane",
+      "--entity-key",
+      "place_chij6wsd-kzbkwsryzke1ejotjs"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 313964,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:10:33.049Z",
+      "step": "cli.spawning",
+      "detail": "pl:build-from-reference --slug vip-roofing-brisbane --entity-key place_chij6wsd-kzbkwsryzke1ejotjs"
+    },
+    {
+      "at": "2026-05-14T16:10:38.149Z",
+      "step": "cli.stream",
+      "detail": "[pl:build-from-reference] out:     /Users/matthew/Developer/google-map-website-v3/clients/vip-roofing-brisbane/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] prompt:  61043 chars"
+    },
+    {
+      "at": "2026-05-14T16:15:47.014Z",
+      "step": "cli.stream",
+      "detail": "14s · /Users/matthew/Developer/google-map-website-v3/clients/vip-roofing-brisbane/v2/concept/reference-adapter/index.html\n[pl:build-from-reference] auto-publish enqueue failed: slugArg is not defined"
+    },
+    {
+      "at": "2026-05-14T16:15:47.015Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=313964ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

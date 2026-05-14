@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160339-87b93d",
+  "created_at": "2026-05-14T16:03:39.738Z",
+  "updated_at": "2026-05-14T16:11:05.114Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_queenslandroofing.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_queenslandroofing.com.au"
+    ],
+    "target_entity_key": "domain_queenslandroofing.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 445163,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:39.950Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_queenslandroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T16:03:45.052Z",
+      "step": "cli.stream",
+      "detail": "=normal (concurrent_leads=1)\n\n══════════ domain_queenslandroofing.com.au ══════════\n  [thread] reusing 1504514540337893467\n  [stage 1/4] detailed audit — fetching http://www.queenslandroofing.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:05:47.853Z",
+      "step": "cli.stream",
+      "detail": "ng_redesign\n     → contact-page crawl ok · +1 emails · +0 social\n     → contact: emails=1 · contact_url=yes · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:08:00.850Z",
+      "step": "cli.stream",
+      "detail": "lead-thread-sync] cleared stale discord_thread_id from domain_queenslandroofing.com.au (was 404)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:08:57.756Z",
+      "step": "cli.stream",
+      "detail": "]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_queenslandroofing.com.au ══════════\n  [1/5] multi-page crawl http://www.queenslandroofing.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:09:32.046Z",
+      "step": "cli.stream",
+      "detail": "ytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/queensland-roofing-pty-ltd/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  20533 chars"
+    },
+    {
+      "at": "2026-05-14T16:10:57.036Z",
+      "step": "cli.stream",
+      "detail": "_build_output_dir\" to specify the directory of static files to upload.\n  Ignoring configuration file for now, and proceeding with project deploy.\n\n\n✨ Compiled Worker successfully\nUploading... (13/19)"
+    },
+    {
+      "at": "2026-05-14T16:11:02.852Z",
+      "step": "cli.stream",
+      "detail": "Uploading... (15/19)\nUploading... (17/19)\nUploading... (19/19)\n✨ Success! Uploaded 6 files (13 already uploaded) (2.29 sec)\n\n✨ Uploading Functions bundle\n🌎 Deploying..."
+    },
+    {
+      "at": "2026-05-14T16:11:05.093Z",
+      "step": "cli.stream",
+      "detail": "────────────────────────┴──────────────────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴─────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:11:05.113Z",
+      "step": "cli.stream",
+      "detail": "re\": 57,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_queenslandroofing.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:11:05.114Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=445163ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

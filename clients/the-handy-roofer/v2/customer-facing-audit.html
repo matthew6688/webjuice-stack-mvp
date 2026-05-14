@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Audit Report – The Handy Roofer</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+  color: #2c2c2c;
+  background: #faf8f5;
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1a1a1a;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin-top: 56px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e8e4dc;
+  padding-bottom: 12px;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: #444;
+}
+
+p {
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+}
+
+ul, ol {
+  margin-left: 24px;
+  margin-bottom: 20px;
+}
+
+li {
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+}
+
+strong {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.hero {
+  text-align: center;
+  padding: 40px 0 48px;
+  border-bottom: 3px solid #d4cfc4;
+  margin-bottom: 40px;
+}
+
+.hero-title {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: #666;
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+
+.score-display {
+  display: inline-block;
+  background: linear-gradient(135deg, #f4f1eb 0%, #e8e4dc 100%);
+  border: 3px solid #d4cfc4;
+  border-radius: 12px;
+  padding: 24px 40px;
+  margin: 20px 0;
+}
+
+.score-number {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #d97706;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+  margin-top: 8px;
+}
+
+.section-intro {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 28px;
+  line-height: 1.8;
+}
+
+.issue-box {
+  background: #fff;
+  border-left: 4px solid #d97706;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.issue-title {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.issue-impact {
+  color: #c2410c;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 12px;
+  display: block;
+}
+
+.strength-box {
+  background: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.outcome-box {
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.closing {
+  background: #fff;
+  border: 2px solid #d4cfc4;
+  border-radius: 8px;
+  padding: 32px;
+  margin-top: 56px;
+  text-align: center;
+}
+
+.closing h2 {
+  margin-top: 0;
+  border: none;
+  padding: 0;
+}
+
+.screenshot {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.screenshot img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #d4cfc4;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.screenshot-caption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 32px 20px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .score-number {
+    font-size: 3rem;
+  }
+  
+  h2 {
+    font-size: 1.4rem;
+    margin-top: 40px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="hero">
+<h1 class="hero-title">The Handy Roofer</h1>
+<p class="hero-subtitle">Website Performance Audit – May 2026</p>
+
+<div class="score-display">
+<div class="score-number">53<span style="font-size: 2.5rem; color: #999;">/100</span></div>
+<div class="score-label">Current Performance Score</div>
+</div>
+
+<p style="max-width: 560px; margin: 24px auto 0; color: #555;">Your website has some good foundations, but a few key issues are costing you enquiries every week.</p>
+</div>
+
+<h2>What's Working Well</h2>
+
+<p class="section-intro">Let's start with what you're doing right. These are strengths worth keeping:</p>
+
+<div class="strength-box">
+<div class="issue-title">Your phone number is easy to find</div>
+<p style="margin: 0;">Your phone number shows up clearly on both desktop and mobile without visitors needing to scroll. That's important – most local customers prefer to call rather than fill out a form.</p>
+</div>
+
+<div class="strength-box">
+<div class="issue-title">Your roofing photos show the right work</div>
+<p style="margin: 0;">The roof photography on your site is relevant and immediately shows the type of work you do. Visitors can see you're a real roofing business right away.</p>
+</div>
+
+<div class="strength-box">
+<div class="issue-title">You're actively updating your website</div>
+<p style="margin: 0;">Your site was last updated just 14 days ago, and you have 13 blog posts. That tells Google you're an active business, which helps with search rankings.</p>
+</div>
+
+<div class="strength-box">
+<div class="issue-title">You're showing experience and warranty</div>
+<p style="margin: 0;">Mentioning your 20+ years of experience and workmanship warranty helps build trust with potential customers.</p>
+</div>
+
+<h2>What's Holding You Back</h2>
+
+<p class="section-intro">Now let's look at the specific issues that are likely costing you enquiries. These are fixable, and the impact of fixing them can be significant.</p>
+
+<div class="issue-box">
+<div class="issue-title">Mobile visitors can't easily request a quote</div>
+<p>On mobile phones, only the heading "Request a Free Quote" is visible when someone first lands on your site. The actual form fields are hidden below – visitors have to scroll down to find them.</p>
+<span class="issue-impact">Impact: Most local searches happen on mobile. If someone can't immediately call you or start a quote, they'll often just go back to Google and click on the next roofer.</span>
+</div>
+
+<div class="issue-box">
+<div class="issue-title">Your quote form asks for too much information upfront</div>
+<p>The quote form on the right side of your desktop site asks for name, email, phone, job address, description, and file upload all at once – before someone has even decided if they want to work with you.</p>
+<span class="issue-impact">Impact: Local customers often just want to ask about pricing or confirm you service their area. Long forms discourage people from filling them out, especially mobile visitors coming from Google.</span>
+</div>
+
+<div class="issue-box">
+<div class="issue-title">The first screen feels crowded and overwhelming</div>
+<p>Your homepage hero area uses two large orange text boxes over the roof photo, with oversized text taking up much of the screen. It's a lot to take in at first glance.</p>
+<span class="issue-impact">Impact: Customers make a snap judgement in the first few seconds about whether a company looks professional. If the first screen feels cluttered or hard to read, many will click back to Google and try the next business.</span>
+</div>
+
+<div class="issue-box">
+<div class="issue-title">Trust signals aren't visible enough</div>
+<p>While you show your Google rating, visitors can't see your licence details, insurance information, or project examples in the first screen. For a big decision like roof replacement, people need reassurance.</p>
+<span class="issue-impact">Impact: Roofing is a major expense. When comparing three to five companies at once, customers will choose the one that makes them feel most confident – and visible proof of licensing, insurance, and past work makes a real difference.</span>
+</div>
+
+<div class="issue-box">
+<div class="issue-title">Google can't tell what your pages are about</div>
+<p>Your pages are missing the heading tags that help Google understand what each page is focused on. Without these signals, Google has a harder time showing your site for the right searches.</p>
+<span class="issue-impact">Impact: Two identical pages, one with proper headings and one without, can rank five or ten positions apart. That's the difference between page one and page three in search results.</span>
+</div>
+
+<div class="issue-box">
+<div class="issue-title">Your site loads slowly on mobile</div>
+<p>Google's own testing tool gives your site a performance score of 54 out of 100 on desktop. About 90% of your site's download size comes from tracking tools rather than your actual content. Many of your images are still in older formats that take longer to load.</p>
+<span class="issue-impact">Impact: Slow sites lose visitors. Google's research shows that when load time goes from one second to three seconds, the chance of someone leaving jumps by 32%.</span>
+</div>
+
+<h2>What Changes When We Fix This</h2>
+
+<p class="section-intro">Here's what you can expect when these issues are addressed:</p>
+
+<div class="outcome-box">
+<strong>More mobile enquiries:</strong> A simplified mobile experience with a prominent call button and shorter quote form means fewer people will bounce back to Google. More visitors will become leads.
+</div>
+
+<div class="outcome-box">
+<strong>Better first impressions:</strong> A cleaner, less crowded homepage with visible trust signals (licence, insurance, warranty, project photos) will make visitors feel more confident reaching out.
+</div>
+
+<div class="outcome-box">
+<strong>Higher Google rankings:</strong> Proper heading structure, faster load times, and optimised images will help Google understand and rank your pages better for local roofing searches.
+</div>
+
+<div class="outcome-box">
+<strong>Stronger trust and credibility:</strong> Displaying your credentials clearly – ABN, insurance, certifications, before-and-after photos – separates you from competitors who don't show this information.
+</div>
+
+<div class="outcome-box">
+<strong>Future-proofed for AI search:</strong> As more people use ChatGPT and Google's AI features to find local services, having the right technical structure means you'll appear in AI-generated recommendations, not just traditional search results.
+</div>
+
+<div class="closing">
+<h2>Next Step: A 30-Minute Walkthrough</h2>
+<p>We've prepared a detailed plan for addressing each of these issues, along with visual examples of what the changes would look like for The Handy Roofer.</p>
+<p>If you'd like to see the recommendations in detail and understand exactly how we'd approach the rebuild, we're happy to walk you through it – no obligation, no pressure.</p>
+<p style="margin-top: 24px; margin-bottom: 0;"><strong>The conversation typically takes about 30 minutes.</strong> You'll leave with a clear picture of what's possible and what it would take to get there.</p>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chijeritxj9nkwsr2dg7xhqvqn4",
   "firstSeenAt": "2026-05-14T06:17:10.121Z",
-  "lastSeenAt": "2026-05-14T07:57:28.273Z",
-  "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-14T07:57:28.273Z",
+  "lastSeenAt": "2026-05-14T16:00:45.624Z",
+  "status": "skipped",
+  "lastStatusAt": "2026-05-14T16:06:23.603Z",
   "identifiers": {
     "place_id": "ChIJERiTxJ9nkWsR2DG7xHQVQN4",
     "cid": "",
@@ -36,9 +36,16 @@
     "recommendedAction": "audit_candidate",
     "sourceQuery": "roofer brisbane",
     "signals": {},
-    "batch_id": "places-roofer-brisbane-202605141757",
-    "discovery_rank": 6,
-    "google_places_provider": "official_api"
+    "batch_id": "places-roofer-brisbane-202605150200",
+    "discovery_rank": 5,
+    "google_places_provider": "official_api",
+    "email": "pjs@trustedroofing.com.au",
+    "contact_us_url": "https://www.trustedroofing.com.au/contact/",
+    "social_links": {
+      "facebook": "https://www.facebook.com/trustedroofrestorations",
+      "instagram": "https://www.instagram.com/trustedroofrestorations",
+      "linkedin": "https://www.linkedin.com/in/patrick-symes-65260254"
+    }
   },
   "runs": [
     {
@@ -70,6 +77,14 @@
       "query": "roofer brisbane",
       "runPath": "",
       "at": "2026-05-14T07:57:28.273Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T16:00:45.624Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
     }
@@ -110,14 +125,94 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T16:00:45.624Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T16:06:23.603Z",
+      "event": "status_updated",
+      "status": "skipped",
+      "clientSlug": "",
+      "note": "Auto-archived: too_many_categories"
+    },
+    {
+      "at": "2026-05-14T16:06:23.613Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "too_many_categories",
+      "note": "Auto-archived: too_many_categories"
     }
   ],
-  "notes": [],
+  "notes": [
+    "Auto-archived: too_many_categories"
+  ],
   "enrichment_status": "complete",
   "batches": [
     "places-roofer-brisbane-202605141617",
     "places-roofer-brisbane-202605141655",
     "places-roofer-brisbane-202605141744",
-    "places-roofer-brisbane-202605141757"
-  ]
+    "places-roofer-brisbane-202605141757",
+    "places-roofer-brisbane-202605150200"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "audit_candidate",
+    "reason": "Strong V2 candidate — proceed to detailed audit",
+    "gbp_quality": 75,
+    "final_score": 75,
+    "fired_triggers": [
+      "high_traction_old_site"
+    ],
+    "relevance_pass": true,
+    "priority": 75,
+    "at": "2026-05-14T16:01:33.286Z"
+  },
+  "predict_grade": {
+    "grade": "B",
+    "priority": 75,
+    "audit_now": true,
+    "reasons": [
+      "predict-B · 128 评论≥30 · 5★≥4 · audit_candidate"
+    ],
+    "at": "2026-05-14T16:01:33.286Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-14T16:01:34.354Z",
+  "grade": {
+    "investment_level": "D",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [
+      {
+        "id": "too_many_categories",
+        "reason": "GBP 多元业务分类 ≥ 5 个 — 需求复杂度超出标准产品包"
+      }
+    ],
+    "graded_at": "2026-05-14T16:06:23.602Z"
+  },
+  "phase": "archived",
+  "archive_reason": "too_many_categories",
+  "phaseChangedAt": "2026-05-14T16:06:23.613Z",
+  "discord_thread_id_cleared_at": "2026-05-14T16:07:06.791Z",
+  "project_thread_id": null,
+  "project_profile_message_id": null,
+  "thread_cleared_at": "2026-05-14T19:53:27.383Z"
 }

@@ -250,3 +250,23 @@
 [2026-05-14T14:04:37.796Z] logged in as ProfitsLocal Handoff#5263 · listening forum 1503702990761099419
 [2026-05-14T14:04:37.799Z] boot catch-up: scanning active forum threads…
 [2026-05-14T14:04:38.448Z] catch-up complete · backfilled=0
+[2026-05-14T16:00:25.764Z] routing thread 1504513727431446528 · "roofer brisbane" 
+[2026-05-14T16:00:38.117Z] route → kind=places-intake provider=codex_cli cli=pl:places-search-intake conf=0.99
+[2026-05-14T16:00:38.915Z] task 20260514-160038-f882fa created · status= pending
+[2026-05-14T16:02:42.215Z] routing thread 1504514300306264136 · find brisbane roofers --count 2 
+[2026-05-14T16:02:51.586Z] route → kind=intake provider=codex_cli cli=pl:scrape-docker conf=0.98
+[2026-05-14T16:02:52.535Z] task 20260514-160251-2e831d created · status= pending
+[2026-05-14T16:04:07.025Z] routing thread 1504514655505223781 · Topline Roofing Brisbane 07 3160 6044 
+[2026-05-14T16:04:19.073Z] route → kind=single-enrich provider=codex_cli cli=pl:single-enrich conf=0.96
+[2026-05-14T16:04:19.897Z] task 20260514-160419-1ceff9 created · status= pending
+[2026-05-14T16:04:59.575Z] routing thread 1504514876364820642 · please look into this random thing 
+[2026-05-14T16:05:09.205Z] route → kind=ops provider=codex_cli cli=null conf=0.38
+[2026-05-14T16:05:09.978Z] task 20260514-160509-4ca7ec created · status= human
+[2026-05-14T19:53:13.571Z] SIGTERM · disconnecting
+[2026-05-14T19:53:15.754Z] logged in as ProfitsLocal Handoff#5263 · listening forum 1503702990761099419
+[2026-05-14T19:53:15.757Z] boot catch-up: scanning active forum threads…
+[2026-05-14T19:53:16.358Z] catch-up complete · backfilled=0
+[2026-05-14T20:08:01.507Z] SIGTERM · disconnecting
+[2026-05-14T20:08:03.380Z] logged in as ProfitsLocal Handoff#5263 · listening forum 1503702990761099419
+[2026-05-14T20:08:03.383Z] boot catch-up: scanning active forum threads…
+[2026-05-14T20:08:03.959Z] catch-up complete · backfilled=0

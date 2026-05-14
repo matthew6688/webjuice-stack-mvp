@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160045-cea29b",
+  "created_at": "2026-05-14T16:00:45.710Z",
+  "updated_at": "2026-05-14T16:00:47.417Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (intake)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijsypmtxxakwsrj5ytlt8t_pe (trigger=intake)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1445,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:00:45.970Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijsypmtxxakwsrj5ytlt8t_pe --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:00:47.417Z",
+      "step": "cli.stream",
+      "detail": "\"slug\": \"pro-roof-restoration-brisbane\",\n      \"md\": \"clients/pro-roof-restoration-brisbane/v2/master.md\",\n      \"html\": \"clients/pro-roof-restoration-brisbane/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:00:47.417Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1445ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

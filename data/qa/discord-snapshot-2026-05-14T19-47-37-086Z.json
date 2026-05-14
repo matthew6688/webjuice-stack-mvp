@@ -1,0 +1,403 @@
+{
+  "at": "2026-05-14T19:47:37.086Z",
+  "threads": [
+    {
+      "threadId": "1504515910566678630",
+      "title": "[屋顶] [待建] [C] Pro Roof Restoration Brisbane",
+      "entityKey": "place_chijsypmtxxakwsrj5ytlt8t_pe",
+      "slug": "pro-roof-restoration-brisbane",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 1,
+        "features": [
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 1 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515899707887776",
+      "title": "[屋顶] [待建] [C] Roo Roofing",
+      "entityKey": "domain_rooroofing.com.au",
+      "slug": "roo-roofing",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 4,
+        "features": [
+          "customer_audit_hook",
+          "master_md_hook",
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 4 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515888634794014",
+      "title": "[屋顶] [待建] [C] Hytek Roofing",
+      "entityKey": "domain_hytekroofing.com.au",
+      "slug": "hytek-roofing",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 1,
+        "features": [
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 3,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 1 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515857525772412",
+      "title": "[屋顶] [待建] [C] Queensland Roofing Pty Ltd",
+      "entityKey": "domain_queenslandroofing.com.au",
+      "slug": "queensland-roofing-pty-ltd",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 3,
+        "features": [
+          "customer_audit_hook",
+          "master_md_hook",
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 3 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515841784414380",
+      "title": "[屋顶] [待建] [C] Pro Roof Restoration Brisbane",
+      "entityKey": "domain_proroofrestorationbrisbane.com.au",
+      "slug": "pro-roof-restoration-brisbane",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 1,
+        "features": [
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 3,
+        "accuracy_mismatches": [
+          "审计总分: master.md=65/100 not in field"
+        ]
+      },
+      "failures": [
+        "message count 1 < 期望 5",
+        "缺少 feature: stage_3_grade",
+        "字段 mismatch: 审计总分: master.md=65/100 not in field"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515803267989525",
+      "title": "[屋顶] [待建] [C] North Brisbane Metal Roofing Pty Ltd",
+      "entityKey": "domain_nbmr.com.au",
+      "slug": "north-brisbane-metal-roofing-pty-ltd",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 1,
+        "features": [
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 1 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515734049521697",
+      "title": "[屋顶] [待建] [C] Rapid Roof Solutions",
+      "entityKey": "domain_rapidroofsolutions.com.au",
+      "slug": "rapid-roof-solutions",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 1,
+        "features": [
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 3,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 1 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515648997560371",
+      "title": "[屋顶] [待建] [C] The Handy Roofer",
+      "entityKey": "place_chij3tc-hgbnkwsrl7mawfatgri",
+      "slug": "the-handy-roofer",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 4,
+        "features": [
+          "customer_audit_hook",
+          "master_md_hook",
+          "stage_5_quality",
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 4 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515502620278895",
+      "title": "[屋顶] [待建] [B] North Brisbane Metal Roofing Pty Ltd",
+      "entityKey": "place_chij94nexjfjk2srxwxb4ar4hj4",
+      "slug": "north-brisbane-metal-roofing-pty-ltd",
+      "state": "audited_B",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[B]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 4,
+        "features": [
+          "master_md_hook",
+          "stage_5_quality",
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": [
+          "审计总分: master.md=56/100 not in field"
+        ]
+      },
+      "failures": [
+        "message count 4 < 期望 5",
+        "缺少 feature: stage_3_grade",
+        "字段 mismatch: 审计总分: master.md=56/100 not in field"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515495439634644",
+      "title": "[屋顶] [待建] [C] Vantage Point Roofing",
+      "entityKey": "place_chijhbplvr5bkwsrgufsdwb6css",
+      "slug": "vantage-point-roofing",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 1,
+        "features": [
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 1 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515484974841919",
+      "title": "[屋顶] [待建] [C] A.M.J Metal Roofing Brisbane",
+      "entityKey": "place_chijwuwifvzdkwsrtpd0wdmszdo",
+      "slug": "a-m-j-metal-roofing-brisbane",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 3,
+        "features": [
+          "customer_audit_hook",
+          "master_md_hook",
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 3 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    },
+    {
+      "threadId": "1504515372869484745",
+      "title": "[屋顶] [待建] [C] Brisbane Roofing - Brisbane Roof Repairers",
+      "entityKey": "place_chijutib72nzkwsrbyxejwlcviw",
+      "slug": "brisbane-roofing-brisbane-roof-repairers",
+      "state": "audited_C",
+      "expected": {
+        "mustHaveThread": true,
+        "minMessages": 5,
+        "titleContains": "[C]",
+        "expectedFeatures": [
+          "profile_card",
+          "stage_3_grade"
+        ]
+      },
+      "actual": {
+        "msg_count": 4,
+        "features": [
+          "customer_audit_hook",
+          "master_md_hook",
+          "stage_5_quality",
+          "profile_card"
+        ],
+        "title_has_questionmark": false,
+        "asset_misattribution": false,
+        "fields_checked": 4,
+        "accuracy_mismatches": []
+      },
+      "failures": [
+        "message count 4 < 期望 5",
+        "缺少 feature: stage_3_grade"
+      ],
+      "pass": false
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "passed": 0,
+    "failed": 12,
+    "channel_has_questionmark": false
+  }
+}

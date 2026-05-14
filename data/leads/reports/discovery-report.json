@@ -1,32 +1,32 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-14T12:45:15.973Z",
+  "generatedAt": "2026-05-14T16:03:29.322Z",
   "totals": {
     "entities": 103,
     "promoted": 0,
-    "skipped": 44,
-    "needsAudit": 52,
+    "skipped": 40,
+    "needsAudit": 53,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 0
   },
   "statusCounts": {
-    "queued_for_audit": 52,
-    "skipped": 44,
+    "queued_for_audit": 53,
+    "graded": 8,
+    "skipped": 40,
     "scored": 1,
-    "graded": 5,
     "manual_review": 1
   },
   "actionCounts": {
-    "audit_candidate": 54,
-    "skip": 45,
+    "audit_candidate": 58,
+    "skip": 41,
     "starter_candidate": 1,
     "manual_review": 3
   },
   "websiteStatusCounts": {
     "independent_https_site": 45,
     "independent_http_site": 21,
-    "no_website": 2,
-    "unknown": 35
+    "unknown": 35,
+    "no_website": 2
   },
   "topCandidates": [
     {
@@ -72,7 +72,7 @@
       "discoveryScore": 62,
       "recommendedAction": "audit_candidate",
       "promotedClientSlug": "",
-      "lastSeenAt": "2026-05-14T07:57:28.273Z"
+      "lastSeenAt": "2026-05-14T16:00:45.624Z"
     },
     {
       "entityKey": "place_chijn587yc79k2sr7vyvy-egoam",
@@ -90,11 +90,26 @@
       "lastSeenAt": "2026-05-14T07:57:28.273Z"
     },
     {
+      "entityKey": "domain_hytekroofing.com.au",
+      "status": "queued_for_audit",
+      "name": "Hytek Roofing",
+      "city": "Brisbane",
+      "niche": "roofer",
+      "phone": "0434136338",
+      "website": "http://hytekroofing.com.au/",
+      "googleMapsUrl": "",
+      "websiteStatus": "independent_http_site",
+      "discoveryScore": 54,
+      "recommendedAction": "audit_candidate",
+      "promotedClientSlug": "",
+      "lastSeenAt": "2026-05-14T16:03:29.298Z"
+    },
+    {
       "entityKey": "domain_nbmr.com.au",
       "status": "queued_for_audit",
       "name": "North Brisbane Metal Roofing Pty Ltd",
       "city": "Brisbane",
-      "niche": "roofing",
+      "niche": "roofer",
       "phone": "0498478739",
       "website": "http://www.nbmr.com.au/",
       "googleMapsUrl": "",
@@ -102,7 +117,7 @@
       "discoveryScore": 54,
       "recommendedAction": "audit_candidate",
       "promotedClientSlug": "",
-      "lastSeenAt": "2026-05-14T12:45:15.950Z"
+      "lastSeenAt": "2026-05-14T16:03:29.298Z"
     },
     {
       "entityKey": "domain_hindmarshroofing.com.au",
@@ -148,21 +163,6 @@
       "recommendedAction": "audit_candidate",
       "promotedClientSlug": "",
       "lastSeenAt": "2026-05-14T08:46:01.866Z"
-    },
-    {
-      "entityKey": "domain_hytekroofing.com.au",
-      "status": "skipped",
-      "name": "Hytek Roofing",
-      "city": "Brisbane",
-      "niche": "roofer",
-      "phone": "0434136338",
-      "website": "http://hytekroofing.com.au/",
-      "googleMapsUrl": "",
-      "websiteStatus": "independent_http_site",
-      "discoveryScore": 54,
-      "recommendedAction": "skip",
-      "promotedClientSlug": "",
-      "lastSeenAt": "2026-05-14T08:31:31.675Z"
     },
     {
       "entityKey": "domain_promptroofing.com.au",

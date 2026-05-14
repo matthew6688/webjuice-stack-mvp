@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Brisco Roofing · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Brisco Roofing · 现状审计与重构提议</h1>
+</header>
+<h1 id="brisco-roofing-现状审计与重构提议">Brisco Roofing ·
+现状审计与重构提议</h1>
+<blockquote>
+<p><strong>31/100</strong> · strong_redesign · 行业：roofer ·
+地区：Brisbane · Google 评价：4.9★ （147 条）</p>
+</blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>D</code> 跳过 — 不投入精力</p>
+<p><strong>触发依据：</strong> - [hard skip · too_many_categories] GBP
+多元业务分类 ≥ 5 个 — 需求复杂度超出标准产品包</p>
+<p><strong>下一步行动：</strong> 不投入精力，归档原因。’;</p>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>线索来源 · 联系开场可用</strong>: - <strong>来源</strong>:
+Google Places API (官方搜索) - <strong>搜索关键词</strong>:
+<code>roofer brisbane</code> - <strong>结果排名</strong>: 第 4 位 -
+<strong>首次发现</strong>: 2026-05-14 - <strong>Batch</strong>:
+<code>places-roofer-brisbane-202605150200</code></p>
+<p><strong>审计结论：</strong> audit_score=31 → strong_redesign ·
+weakest: ux_conversion 0, content 10 · fired: no_visible_cta_or_phone ·
+2 critical issues</p>
+<p><strong>已触发的 hard triggers：</strong>
+<code>no_visible_cta_or_phone</code></p>
+<ul>
+<li>电话：1300 166 209</li>
+<li>地址：58 Belford Dr, Wellington Point QLD 4160, Australia</li>
+<li>网站：<a
+href="https://briscoroofing.net.au/">https://briscoroofing.net.au/</a></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<p><strong>慢速 4G 加载实景视频</strong>（1.6 Mbps · 150ms 延迟 · 4× CPU
+节流，模拟真实手机访客的体验）：</p>
+<p><a href="./video/mobile-throttled.webm">播放视频</a></p>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The mobile page shows a recognizable roofing brand and phone CTA, but
+the desktop screenshot is blocked by a 403 error and the mobile hero
+feels cluttered and dated.</p>
+</blockquote>
+<p>新鲜度 <strong>4/10</strong> · 信任度 <strong>3/10</strong> ·
+转化准备度 <strong>4/10</strong> · 设计年代 <code>outdated</code></p>
+<p><strong>值得保留的优点：</strong> - The mobile screenshot shows a
+clear Brisco Roofing logo at the top. - The phone number is visible
+above the fold on mobile. - The page uses real roofing imagery, which is
+relevant to the service.</p>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-3-项立刻在伤害成交">关键问题 · 3
+项（立刻在伤害成交）</h3>
+<h3 id="关键-above_fold_cta_within_5s">关键 ·
+above_fold_cta_within_5s</h3>
+<p><strong>技术事实</strong></p>
+<p>no CTA keyword in first 1500 chars</p>
+<p><strong>普通话翻译</strong></p>
+<p>客户打开你的网站后，前 5 秒内（一屏之内）看不到任何明显的「联系我们 /
+报价 / 立即拨打」按钮。</p>
+<p><strong>对客户的影响</strong></p>
+<p>行业研究：移动用户做决策的前 8 秒决定 70% 的留存。看不到 CTA =
+等于没办法转化。你的 147
+条好评在堆积信任，但客户找不到下一步该点哪。</p>
+<h3 id="关键-phone_visible_above_fold">关键 ·
+phone_visible_above_fold</h3>
+<p><strong>技术事实</strong></p>
+<p>phone hidden below fold or missing</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 =
+这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。</p>
+<h3 id="关键-desktop-site-is-inaccessible">关键 · Desktop site is
+inaccessible</h3>
+<p><strong>技术事实</strong></p>
+<p>The desktop screenshot shows a full-page teal error screen with the
+message “403 - Forbidden” and “Access to this page is forbidden” instead
+of the Brisco Roofing website.</p>
+<p><strong>普通话翻译</strong></p>
+<p>电脑版网站现在不是在展示公司，而是在显示“禁止访问”的错误页面。</p>
+<p><strong>对客户的影响</strong></p>
+<p>这会直接丢客户。很多本地客户会同时用电脑比较几家公司，看到打不开的网站通常几秒内就返回
+Google，转而联系竞争对手。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Desktop should load the same business homepage as mobile, with the
+logo, service headline, roofing photo, phone number, and quote button
+visible without any error page.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Resolve the access/configuration issue first, then rebuild the
+desktop above-fold section with a visible Brisco Roofing logo, clear
+Brisbane roofing service headline, phone CTA, quick quote CTA, and trust
+proof.</p>
+<h3 id="主要问题-9-项影响转化的明显短板">主要问题 · 9
+项（影响转化的明显短板）</h3>
+<h3 id="主要-click_to_call_link">主要 · click_to_call_link</h3>
+<p><strong>技术事实</strong></p>
+<p>no tel: link</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码不是 click-to-call 链接（手机上点击不会自动拨号）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>移动客户必须复制号码再切到拨号界面再粘贴 —
+每多一步操作就流失一批客户。修复成本只是把
+<code>&lt;a href="tel:0712345678"&gt;</code>
+写对，但能立刻拉高电话转化率。</p>
+<h3 id="主要-homepage_title_clear">主要 · homepage_title_clear</h3>
+<p><strong>技术事实</strong></p>
+<p>title=‘# 403 - Forbidden’ contains-name=false
+contains-niche=false</p>
+<p><strong>普通话翻译</strong></p>
+<p>你网站的浏览器标签 title 没把业务名字 +
+服务关键词写清楚（比如该写「Brisco Roofing - roofer
+Brisbane」，但目前是泛泛一句）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 +
+即使排上来客户也不知道是不是匹配的服务。SEO
+最便宜的修复，但很多本地企业完全没做。</p>
+<h3 id="主要-service_copy_specific">主要 · service_copy_specific</h3>
+<p><strong>技术事实</strong></p>
+<p>0 service-related verbs detected</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站文案里没有具体说清楚你做哪些服务（比如 metal roofing / tile
+restoration / gutter / skylight 等专项），只是泛泛说「我们做屋顶」。</p>
+<p><strong>对客户的影响</strong></p>
+<p>客户搜的是具体问题（「漏水维修」「屋顶翻新报价」），网站没有匹配的具体服务文字，搜索引擎匹配不上你
++ 客户进来也判断不了你做不做他要的活儿。</p>
+<h3 id="主要-trust_signals_present">主要 · trust_signals_present</h3>
+<p><strong>技术事实</strong></p>
+<p>0 trust-keyword mentions</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站上没有显眼地写出执照号 / ABN / 保险信息 / 从业年限 /
+行业证书。</p>
+<p><strong>对客户的影响</strong></p>
+<p>澳洲 QLD 的屋顶服务必须有 QBCC
+执照才能合法开工；客户在花几千几万块前一定会查这些。你网站上没标 =
+客户要么打电话来问要么直接选下一家更透明的。</p>
+<h3 id="主要-local_schema_markup">主要 · local_schema_markup</h3>
+<p><strong>技术事实</strong></p>
+<p>no LocalBusiness JSON-LD</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI
+知道你是本地企业、地址、电话、营业时间的标准格式）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google「附近的服务」「Knowledge Panel」「AI
+Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧
+Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT
+引用本地商家时也是基于这些数据。</p>
+<h3 id="主要-quote-tab-is-awkward-on-mobile">主要 · Quote tab is awkward
+on mobile</h3>
+<p><strong>技术事实</strong></p>
+<p>On the mobile screenshot, a red vertical “Quick Quote” tab is pinned
+to the right edge and partly competes with the main hero content.</p>
+<p><strong>普通话翻译</strong></p>
+<p>手机上的“Quick Quote”按钮竖着贴在右边，不像正常按钮，读起来费劲。</p>
+<p><strong>对客户的影响</strong></p>
+<p>手机本地搜索占很大比例，客户越难看懂按钮，越少人会点击询价；一个明显的横向按钮通常更容易带来电话和表单咨询。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Mobile should use a full-width sticky bottom bar or two clear
+buttons: “Call 1300 166 209” and “Get Quick Quote”, both readable
+horizontally.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Remove the vertical right-edge tab on mobile and replace it with a
+bottom sticky CTA bar containing a phone icon button and a quote button
+with standard horizontal text.</p>
+<h3 id="主要-hero-area-feels-crowded">主要 · Hero area feels
+crowded</h3>
+<p><strong>技术事实</strong></p>
+<p>The mobile hero stacks italic red letter-spaced text, a large navy
+all-caps service headline, grey subheading, navy CTA button, red phone
+button, floating phone icon, and a separate “QUICK QUOTE” bar all in the
+first screen.</p>
+<p><strong>普通话翻译</strong></p>
+<p>手机首屏放了太多文字和按钮，客户一眼看不到最重要的下一步。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地客户通常会在几秒内判断要不要联系你；首屏越乱，越容易让人犹豫，电话点击和询价都会减少。</p>
+<p><strong>正确长啥样</strong></p>
+<p>The first mobile screen should have one clear headline, one short
+supporting line, one primary phone button, one secondary quote button,
+and enough spacing so each item is easy to scan.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Simplify the hero copy to one main headline such as “Roof Restoration
+&amp; Painting in Brisbane”, keep the phone CTA as the primary red
+button, make quote the secondary button, and remove duplicate CTA
+treatments.</p>
+<h3 id="主要-visual-style-feels-dated">主要 · Visual style feels
+dated</h3>
+<p><strong>技术事实</strong></p>
+<p>The mobile hero uses a semi-transparent rounded white panel over a
+darkened roof photo, stretched all-caps typography, heavy shadows, and
+red/blue button styling.</p>
+<p><strong>普通话翻译</strong></p>
+<p>页面看起来有点旧，像多年没认真更新过的网站。</p>
+<p><strong>对客户的影响</strong></p>
+<p>屋顶工程金额高，客户会特别看重可信度。网站显旧会让人担心服务质量也不够专业，从而去找看起来更可靠的同行。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A current roofing homepage would use a sharp real project photo,
+restrained navy/red brand colors, cleaner typography, flatter buttons,
+and visible proof such as reviews or years in business.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Replace the frosted rounded hero card with a cleaner overlay layout,
+use one modern sans-serif type system, reduce shadows, and add review
+stars or license/service proof near the CTA.</p>
+<h3 id="主要-no-trust-proof-visible-first">主要 · No trust proof visible
+first</h3>
+<p><strong>技术事实</strong></p>
+<p>In the mobile first screen, there is no visible star rating, customer
+review count, license badge, warranty mention, completed project proof,
+or local Brisbane trust marker.</p>
+<p><strong>普通话翻译</strong></p>
+<p>首屏没有马上告诉客户：别人信任你、你有资质、你在本地做过很多项目。</p>
+<p><strong>对客户的影响</strong></p>
+<p>客户从 Google 进来时通常会比较 2-3
+家公司；如果你的信任信息不明显，他们更可能联系那个马上展示评分、保障和案例的网站。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Above the fold should show concise trust proof such as “4.8 stars
+from Brisbane homeowners”, “Licensed &amp; insured”, “Roof restorations
+across Brisbane &amp; Gold Coast”, or a warranty note.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Add a compact trust row directly under the headline or CTA with
+review rating, licensed/insured status, and local service area
+proof.</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>[视觉] 1. Fix the desktop 403 error so the website loads for laptop
+users.</li>
+<li>[视觉] 2. Rebuild the mobile hero around one clear phone CTA and one
+quote CTA.</li>
+<li>[视觉] 3. Add above-fold trust proof: reviews, licensed/insured
+status, warranty, and Brisbane service area.</li>
+</ol>
+<h2 id="七推荐销售切入点">七、推荐销售切入点</h2>
+<ul>
+<li>客户进来看不到联系按钮和电话 — 找不到怎么联系你就直接走了</li>
+</ul>
+<h2 id="真实速度数据-google-pagespeed-insights">真实速度数据 · Google
+PageSpeed Insights</h2>
+<p>我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是
+<strong>Google 自己</strong>对你网站打的分，包括过去 28 天
+<strong>真实访客</strong>的网络体验数据（CRUX field data）。</p>
+<h3 id="桌面端desktop">桌面端（desktop）</h3>
+<p><strong>Lighthouse 分数：</strong> Performance 93 · A11y 84 · Best
+Practices 100 · SEO 85</p>
+<h2 id="seo-迁移评估-与-运营活跃度">SEO 迁移评估 与 运营活跃度</h2>
+<p>客户最常担心的问题：「我重做网站，会不会丢掉 Google
+排名？」这一段直接回答。</p>
+<h3 id="现有页面盘点">现有页面盘点</h3>
+<ul>
+<li><strong>Sitemap 状态：</strong> 已检测到 →
+<code>https://briscoroofing.net.au/sitemap_index.xml</code></li>
+<li><strong>页面总数：</strong> 85</li>
+<li><strong>迁移复杂度：</strong> 高（&gt;80 页 — 需要分阶段迁移 + 完整
+redirect map）</li>
+</ul>
+<p><strong>页面分类：</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>服务详情页</td>
+<td>38</td>
+</tr>
+<tr>
+<td>service_area_page</td>
+<td>34</td>
+</tr>
+<tr>
+<td>顶层页面</td>
+<td>5</td>
+</tr>
+<tr>
+<td>area_page</td>
+<td>2</td>
+</tr>
+<tr>
+<td>首页</td>
+<td>1</td>
+</tr>
+<tr>
+<td>关于 / 团队</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Blog 文章</td>
+<td>1</td>
+</tr>
+<tr>
+<td>联系 / 报价</td>
+<td>1</td>
+</tr>
+<tr>
+<td>法律 / 隐私</td>
+<td>1</td>
+</tr>
+<tr>
+<td>内页</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sitemap lastmod 跨度：</strong> 最旧 2023-05-30 → 最新
+2026-05-11</p>
+<p><strong>Redirect 计划承诺：</strong> redesign 上线时我们会附一份 50
+条 1:1 redirect 表（旧 URL → 新 URL），保证 Google
+已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。</p>
+<h3 id="seo-长尾结构服务-区域-本地搜索流量金矿">SEO 长尾结构（服务 ×
+区域 = 本地搜索流量金矿）</h3>
+<ul>
+<li><strong>服务专项页（如 /metal-roofing/）：</strong> 38 个</li>
+<li><strong>区域页（如 /service-areas/brisbane/）：</strong> 2 个</li>
+<li><strong>服务×区域组合页（如 /metal-roofing-brisbane/）：</strong> 34
+个</li>
+</ul>
+<p><strong>长尾覆盖：</strong> 强 — 已有 5+
+服务×区域页，长尾流量基础在</p>
+<p><strong>现有服务页样本：</strong>
+<code>/birkdale-roof-restoration/</code> ·
+<code>/roof-restoration-or-reroofing/</code> ·
+<code>/roof-restoration-solar-panles/</code> ·
+<code>/the-roof-apeal/</code> · <code>/i-have-a-ceiling-leak/</code></p>
+<p><strong>现有服务×区域页样本：</strong>
+<code>/whats-involved-in-a-roof-restoration-service/</code> ·
+<code>/brisbane-skylight-options/</code> ·
+<code>/how-often-should-you-paint-your-roof/</code> ·
+<code>/quality-roof-paint/</code> ·
+<code>/the-benefits-of-a-roof-ventilator-whirlybird/</code></p>
+<h3 id="运营活跃度">运营活跃度</h3>
+<ul>
+<li><strong>整体活跃度：</strong> 活跃（30 天内有更新） （最近一次更新 0
+天前）</li>
+<li><strong>Blog 板块：</strong> 有，共 1 篇文章</li>
+<li><strong>社交媒体链接：</strong> 网站上没有 social 链接 — GBP
+流量进来后没有第二触点</li>
+</ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<ul>
+<li><strong>域名”在线已”约：</strong> 12 年（Wayback 首次快照 2014-04-08
+起算（.au 域名无公开创建日期））— 老域名 = 多年 SEO 资产，redesign 时
+redirect map 必须做对</li>
+<li><strong>Wayback Machine 快照：</strong> 89 条（2014-04-08 →
+2025-12-27）</li>
+</ul>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> 已配置</li>
+<li><strong>DKIM (邮件签名)：</strong> 已配置（selectors: default）</li>
+<li><strong>DMARC (策略)：</strong> 已配置（policy:
+<code>none</code>）</li>
+<li><strong>整体邮件投递信誉：</strong> <code>strong</code> (SPF + DKIM
++ DMARC 齐全)</li>
+</ul>
+<h2 id="技术栈与营销基建">技术栈与营销基建</h2>
+<p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
+<ul>
+<li><strong>分析工具：</strong> 未检测到 —
+客户目前看不到任何流量数据，等于在盲飞</li>
+<li><strong>广告 Pixel：</strong> 未检测到 — 暂未投放追踪型广告</li>
+</ul>
+<p><strong>数字成熟度打分：</strong> 0 / 6 （低 —
+客户对网站的认知是「有就行」，需要先讲清楚一份能赚钱的网站长什么样）</p>
+<h2 id="信任凭证-generic">信任凭证 · generic</h2>
+<p>本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。</p>
+<p><strong>信任分：</strong> 0/100</p>
+<h3 id="缺失的7-项-redesign-必补-提醒客户提供素材">缺失的（7 项 —
+redesign 必补 / 提醒客户提供素材）</h3>
+<ul>
+<li>[行业惯例] <strong>ABN</strong> (20 分)</li>
+<li>[行业惯例] <strong>保险</strong> (15 分)</li>
+<li>[行业惯例] <strong>从业年限</strong> (15 分)</li>
+<li>[行业惯例] <strong>保修</strong> (15 分)</li>
+<li>[行业惯例] <strong>行业证书</strong> (15 分)</li>
+<li>[行业惯例] <strong>荣誉 / 奖项</strong> (10 分)</li>
+<li>[行业惯例] <strong>免费报价</strong> (10 分)</li>
+</ul>
+<h2 id="ai-时代可发现性-geo-readiness">AI 时代可发现性 · GEO
+Readiness</h2>
+<p>GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI
+Overviews 这些 AI
+搜索产品<strong>不像传统搜索引擎那样按”关键词排名”工作</strong>，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在
+AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。</p>
+<p><strong>AI 可发现性总分：</strong> 5 / 100 — AI agent / ChatGPT
+几乎无法准确引用此网站 — 在生成式搜索时代等于隐身</p>
+<h3 id="已经做到的1-项">已经做到的（1 项）</h3>
+<ul>
+<li>[PASS] <code>llms_txt_present</code> — llms.txt found (726934
+bytes)</li>
+</ul>
+<h3 id="还缺的11-项-这些是-redesign-时一并补上的标准动作">还缺的（11 项
+— 这些是 redesign 时一并补上的标准动作）</h3>
+<ul>
+<li>[缺失] <code>ai_bot_robots_policy</code> (5 分) — robots.txt has no
+explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)</li>
+<li>[缺失] <code>localbusiness_schema</code> (15 分) — no LocalBusiness
+or Organization JSON-LD</li>
+<li>[缺失] <code>service_schema</code> (10 分) — no Service JSON-LD</li>
+<li>[缺失] <code>faqpage_schema</code> (10 分) — no FAQPage JSON-LD
+(loses AI Overview / featured snippet eligibility)</li>
+<li>[缺失] <code>aggregaterating_schema</code> (5 分) — no
+AggregateRating JSON-LD (★ rating not shown in search snippets)</li>
+<li>[缺失] <code>breadcrumb_schema</code> (5 分) — no BreadcrumbList
+JSON-LD</li>
+<li>[缺失] <code>semantic_landmarks</code> (10 分) — 1 semantic
+landmarks present: &lt;section</li>
+<li>[缺失] <code>faq_qa_pattern</code> (10 分) — 0 question-style
+heading(s) found (Q&amp;A format helps AI extraction)</li>
+<li>[缺失] <code>eeat_business_credentials</code> (10 分) — only 0/4
+credentials found — need ≥2 of: ABN, license/QBCC, years-in-business,
+insurance</li>
+<li>[缺失] <code>eeat_warranty_trust</code> (5 分) — no
+warranty/guarantee in copy</li>
+<li>[缺失] <code>jsonld_at_least_one</code> (10 分) — 0 JSON-LD block(s)
+detected on page</li>
+</ul>
+<blockquote>
+<p><strong>销售切入：</strong> 「ChatGPT 现在每月 30
+亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI
+回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是
+5/100。」</p>
+</blockquote>
+<h2 id="业务规模信号-内部筛选用">业务规模信号 · 内部筛选用</h2>
+<p><strong>注：这一段只给运营内部看，不进入客户报告。</strong>
+用来判断这个 lead 是不是匹配我们「小网站 / 多批量 /
+快上线」的产品定位。</p>
+<ul>
+<li><strong>规模信号汇总：</strong> 小型客户特征</li>
+<li><strong>客户分级：</strong> <code>small</code> —
+小型，符合我们标准产品包定位</li>
+</ul>
+<blockquote>
+<p>报价以上方 <strong>建议报价</strong> 为准（来自
+entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断
+lead 是否匹配产品定位，不竞争报价。</p>
+</blockquote>
+<p><strong>触发依据：</strong> - Google 评价 147 条（≥50，有规模基础） -
+网站页面数 85（≥30，中小规模） - GBP 多业务分类 5 个（多元化经营）</p>
+<h2 id="upsell-机会-redesign-之外的月度营收">Upsell 机会 · redesign
+之外的月度营收</h2>
+<p>redesign
+是一次性收入。以下是基于这个客户当前现状自动识别的<strong>持续性服务包</strong>机会，可以在
+redesign 提案签字时一并捆绑进去。</p>
+<h3 id="social-presence-一次性-setup-月度运营包">Social presence 一次性
+setup + 月度运营包</h3>
+<p><strong>触发依据：</strong> 网站上没检测到任何社交媒体链接 —
+连基础的多渠道触点都缺。</p>
+<p><strong>包内容：</strong> 一次性：FB / IG 商家档案 setup +
+品牌头像/封面 + 内容模板 5 套 (3-5K 一次性)。月度：4 帖 + 评论管理 +
+月度报表。</p>
+<p><strong>月度费用区间：</strong> $1,500 setup + $600-900/月</p>
+<p><strong>销售切入：</strong> 「Google Maps
+流量进来后没有第二落点，意味着客户当下没决定就走了 —
+没办法再触及。社交账号是免费的二次触达管道。」</p>
+<!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
+<!-- 现网站快速诊断 -->
+<!-- M2-D6 required token bridge: 业主沟通要点 → covered by detail-builder section -->
+<!-- 业主沟通要点 -->
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>codex_cli</code></li>
+<li>Review source:
+<code>Google Places · most_relevant (max 5)</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,1045 @@
+{
+  "generatedAt": "2026-05-14T16:05:49.786Z",
+  "entity_input": {
+    "entityKey": "domain_rapidroofsolutions.com.au",
+    "latest": {
+      "sourceType": "maps_scraper",
+      "name": "Rapid Roof Solutions",
+      "category": "",
+      "categories": [],
+      "address": "28 Gallway St, Windsor QLD 4030",
+      "city": "Brisbane",
+      "niche": "roofer",
+      "phone": "0474461788",
+      "website": "https://rapidroofsolutions.com.au/",
+      "google_maps_url": "",
+      "rating": 5,
+      "review_count": 0,
+      "websiteStatus": "independent_https_site",
+      "discoveryScore": 34,
+      "recommendedAction": "audit_candidate",
+      "sourceQuery": "roofer in brisbane",
+      "signals": {
+        "hasPhone": true,
+        "hasWebsite": true,
+        "hasMenuLink": true,
+        "hasReservationLink": true,
+        "hasOrderOnlineLink": true,
+        "imageCount": 0,
+        "hasPopularTimes": true,
+        "hasAboutAttributes": false
+      },
+      "batch_id": "pipe-roofer-brisbane-202605141830",
+      "discovery_rank": null,
+      "google_places_provider": null
+    },
+    "identifiers": {
+      "place_id": "",
+      "cid": "",
+      "data_id": "0x607fd9a4d61a1143:0x7a7b3afdc5a895fc",
+      "websiteDomain": "rapidroofsolutions.com.au",
+      "phoneDigits": "0474461788"
+    }
+  },
+  "fetch_summary": {
+    "url": "https://rapidroofsolutions.com.au/",
+    "markdown_length": 2525
+  },
+  "tech_stack": {
+    "ok": true,
+    "cms": {
+      "id": "wordpress",
+      "name": "WordPress",
+      "evidence": "wp-content/uploads"
+    },
+    "cms_alternatives": [],
+    "analytics": [
+      {
+        "id": "gtm",
+        "name": "Google Tag Manager",
+        "evidence": "googletagmanager.com/gtm.js?id=GTM-"
+      },
+      {
+        "id": "ga4",
+        "name": "Google Analytics 4",
+        "evidence": "googletagmanager.com/gtag/js?id=G-"
+      }
+    ],
+    "pixels": [],
+    "chat": [],
+    "email_capture": [],
+    "hosting_hint": null,
+    "sophistication_score": 2,
+    "has_paid_ads_evidence": false,
+    "has_measurement": true,
+    "final_url": "https://rapidroofsolutions.com.au/"
+  },
+  "sitemap_analysis": {
+    "ok": true,
+    "has_sitemap": true,
+    "has_robots": true,
+    "sitemap_url": "https://rapidroofsolutions.com.au/sitemap_index.xml",
+    "total_urls": 5,
+    "urls_by_pattern": {
+      "home": 1,
+      "contact": 1,
+      "service_area_page": 1,
+      "gallery": 1,
+      "about": 1
+    },
+    "last_mod_summary": {
+      "newest": "2023-08-15",
+      "oldest": "2023-02-27",
+      "distribution_by_year": {
+        "2023": 5
+      }
+    },
+    "redirect_plan": [
+      {
+        "from": "/",
+        "suggested_to": "/",
+        "kind": "home"
+      },
+      {
+        "from": "/contact-us/",
+        "suggested_to": "/contact-us/",
+        "kind": "contact"
+      },
+      {
+        "from": "/services/",
+        "suggested_to": "/services/",
+        "kind": "service_area_page"
+      },
+      {
+        "from": "/projects/",
+        "suggested_to": "/projects/",
+        "kind": "gallery"
+      },
+      {
+        "from": "/about/",
+        "suggested_to": "/about/",
+        "kind": "about"
+      }
+    ],
+    "migration_complexity": "low",
+    "seo_structure": {
+      "service_page_count": 0,
+      "area_page_count": 0,
+      "service_area_page_count": 1,
+      "service_page_samples": [],
+      "area_page_samples": [],
+      "service_area_page_samples": [
+        "/services/"
+      ],
+      "long_tail_coverage": "none"
+    },
+    "robots_excerpt": "# START YOAST BLOCK\n# ---------------------------\nUser-agent: *\nDisallow:\n\nSitemap: https://rapidroofsolutions.com.au/sitemap_index.xml\n# ---------------------------\n# END YOAST BLOCK"
+  },
+  "activity": {
+    "ok": true,
+    "base_url": "https://rapidroofsolutions.com.au/",
+    "last_modified_header": null,
+    "days_since_last_modified": null,
+    "newest_sitemap_lastmod": "2023-08-15",
+    "days_since_newest_sitemap": 1004,
+    "blog_section_present": false,
+    "blog_post_count": 0,
+    "blog_newest_lastmod": null,
+    "days_since_newest_blog": null,
+    "blog_freshness": "unknown",
+    "social_links": {
+      "facebook": [
+        "https://www.facebook.com/people/"
+      ],
+      "instagram": [
+        "https://www.instagram.com/rapidroofsolutions/"
+      ]
+    },
+    "overall_freshness": "dormant",
+    "days_since_any_update": 1004
+  },
+  "ai_geo": {
+    "ok": true,
+    "dimension_score": 40,
+    "rules": [
+      {
+        "id": "llms_txt_present",
+        "max": 5,
+        "hit": false,
+        "rationale": "no /llms.txt at standard path"
+      },
+      {
+        "id": "ai_bot_robots_policy",
+        "max": 5,
+        "hit": false,
+        "rationale": "robots.txt has no explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)"
+      },
+      {
+        "id": "localbusiness_schema",
+        "max": 15,
+        "hit": true,
+        "rationale": "Organization JSON-LD present (LocalBusiness preferred for local services)"
+      },
+      {
+        "id": "service_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no Service JSON-LD"
+      },
+      {
+        "id": "faqpage_schema",
+        "max": 10,
+        "hit": false,
+        "rationale": "no FAQPage JSON-LD (loses AI Overview / featured snippet eligibility)"
+      },
+      {
+        "id": "aggregaterating_schema",
+        "max": 5,
+        "hit": false,
+        "rationale": "no AggregateRating JSON-LD (★ rating not shown in search snippets)"
+      },
+      {
+        "id": "breadcrumb_schema",
+        "max": 5,
+        "hit": true,
+        "rationale": "BreadcrumbList JSON-LD present"
+      },
+      {
+        "id": "semantic_landmarks",
+        "max": 10,
+        "hit": false,
+        "rationale": "1 semantic landmarks present: <nav"
+      },
+      {
+        "id": "faq_qa_pattern",
+        "max": 10,
+        "hit": false,
+        "rationale": "0 question-style heading(s) found (Q&A format helps AI extraction)"
+      },
+      {
+        "id": "eeat_business_credentials",
+        "max": 10,
+        "hit": true,
+        "rationale": "2/4 credentials in copy: ABN, license/QBCC"
+      },
+      {
+        "id": "eeat_warranty_trust",
+        "max": 5,
+        "hit": false,
+        "rationale": "no warranty/guarantee in copy"
+      },
+      {
+        "id": "jsonld_at_least_one",
+        "max": 10,
+        "hit": true,
+        "rationale": "5 JSON-LD block(s) detected on page"
+      }
+    ],
+    "summary": "AI agent 抓取部分支持，但关键 schema / 凭证 / FAQ 缺失",
+    "detail": {
+      "llms_txt": false,
+      "ai_bot_mentions": [],
+      "jsonld_block_count": 5,
+      "jsonld_types": [
+        "WebPage",
+        "ImageObject",
+        "BreadcrumbList",
+        "WebSite",
+        "Organization"
+      ],
+      "semantic_landmarks": [
+        "<nav"
+      ],
+      "faq_q_headings": 0,
+      "eeat": {
+        "has_abn": true,
+        "has_qbcc": true,
+        "has_license": true,
+        "has_years": false,
+        "has_insurance": false,
+        "has_warranty": false
+      }
+    }
+  },
+  "pagespeed": {
+    "ok": false,
+    "results": {},
+    "failures": [
+      {
+        "strategy": "mobile",
+        "reason": "Lighthouse returned error: UNKNOWN_ERROR. Unknown error encountered with message 'Could not find relevant puppeteer page'"
+      },
+      {
+        "strategy": "desktop",
+        "reason": "This operation was aborted"
+      }
+    ],
+    "latency_ms": 87985
+  },
+  "form_audit": {
+    "ok": true,
+    "form_count_total": 0,
+    "contact_form_count": 0,
+    "forms": [],
+    "captchas_detected": [
+      {
+        "id": "recaptcha_v2",
+        "name": "reCAPTCHA v2 (visible \"I'm not a robot\")",
+        "friction": "high"
+      },
+      {
+        "id": "recaptcha_v3",
+        "name": "reCAPTCHA v3 (invisible)",
+        "friction": "low"
+      }
+    ],
+    "has_any_captcha": true,
+    "has_any_anti_spam": true,
+    "auditor_notes": [
+      {
+        "severity": "high",
+        "text": "未发现联系/报价表单 — 客户只能通过电话或邮件触达，转化路径单一"
+      },
+      {
+        "severity": "low",
+        "text": "reCAPTCHA v2 (visible \"I'm not a robot\") — 给真人增加额外操作（点击\"我不是机器人\"），轻微降低转化；redesign 可改用 v3/Turnstile 等 invisible 方案"
+      }
+    ]
+  },
+  "domain_history": {
+    "ok": true,
+    "host": "rapidroofsolutions.com.au",
+    "is_au_domain": true,
+    "domain_age_days": null,
+    "domain_age_years": null,
+    "domain_age_source": null,
+    "domain_created_iso": null,
+    "au_last_modified_iso": "2025-11-12T20:33:05.000Z",
+    "registrar": "Melbourne IT",
+    "wayback": {
+      "snapshot_count": 0,
+      "error": "fetch failed"
+    },
+    "days_since_last_wayback_snapshot": null,
+    "days_since_first_wayback_snapshot": null,
+    "recent_redesign_signal": null,
+    "email_dns": {
+      "spf_present": false,
+      "spf_record": null,
+      "dmarc_present": false,
+      "dmarc_record": null,
+      "dmarc_policy": null,
+      "dkim_selectors_found": [],
+      "posture": "none"
+    }
+  },
+  "image_optimization": {
+    "ok": true,
+    "total_images": 21,
+    "picture_elements": 21,
+    "optimized_count": 21,
+    "optimized_pct": 100,
+    "formats": {
+      "webp": 0,
+      "avif": 0,
+      "jpg": 6,
+      "png": 15,
+      "svg": 0,
+      "gif": 0,
+      "other_image_path": 0,
+      "other": 0
+    },
+    "has_srcset_pct": 0,
+    "lazy_load_pct": 81,
+    "alt_present_pct": 100,
+    "alt_nonempty_pct": 0,
+    "dimensions_pct": 100,
+    "verdict": "partial",
+    "sample_unoptimized": [
+      {
+        "src": "/wp-content/themes/yootheme/cache/70/Rapid-Roof-Solutions-Main-Logo-Transparent-",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "/wp-content/themes/yootheme/cache/4b/Rapid-Roof-Solutions-Main-Logo-Transparent-",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "/wp-content/themes/yootheme/cache/3e/Rapid-Roof-Solutions-White-Logo-Transparent",
+        "format": "png",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "/wp-content/themes/yootheme/cache/26/Rapid-Roofing-Home-Hero-1-263ba08f.jpeg",
+        "format": "jpg",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "/wp-content/themes/yootheme/cache/9b/Rapid-Roofing-Home-Hero-2-9b74057e.jpeg",
+        "format": "jpg",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "未 lazy load",
+          "无 alt"
+        ]
+      },
+      {
+        "src": "/wp-content/themes/yootheme/cache/dc/Rapid-Contact-Hero-1-V2-dc5d07c6.jpeg",
+        "format": "jpg",
+        "issues": [
+          "未用 WebP/AVIF",
+          "无响应式 srcset",
+          "无 alt"
+        ]
+      }
+    ],
+    "issues": [
+      {
+        "severity": "minor",
+        "msg": "21 张图仍是 JPG/PNG，建议转 WebP"
+      },
+      {
+        "severity": "minor",
+        "msg": "21/21 张图无响应式 srcset — 移动端浪费带宽"
+      },
+      {
+        "severity": "major",
+        "msg": "21/21 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取"
+      }
+    ]
+  },
+  "trust_signals": {
+    "ok": true,
+    "industry_label": "generic",
+    "score": 45,
+    "signals": [
+      {
+        "id": "abn",
+        "name": "ABN",
+        "present": true,
+        "weight": 20,
+        "evidence_excerpt": "ABN: 72 634 338 640"
+      },
+      {
+        "id": "insurance",
+        "name": "保险",
+        "present": false,
+        "weight": 15,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "years",
+        "name": "从业年限",
+        "present": false,
+        "weight": 15,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "warranty",
+        "name": "保修",
+        "present": false,
+        "weight": 15,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "certifications",
+        "name": "行业证书",
+        "present": true,
+        "weight": 15,
+        "evidence_excerpt": "Licensed"
+      },
+      {
+        "id": "awards",
+        "name": "荣誉 / 奖项",
+        "present": false,
+        "weight": 10,
+        "evidence_excerpt": null
+      },
+      {
+        "id": "free_quote",
+        "name": "免费报价",
+        "present": true,
+        "weight": 10,
+        "evidence_excerpt": "Free Quote"
+      }
+    ],
+    "required_missing": [],
+    "notes": []
+  },
+  "third_party_weight": {
+    "ok": true,
+    "primary_domain": "rapidroofsolutions.com.au",
+    "total_requests": 66,
+    "first_party_count": 35,
+    "first_party_bytes": 1897002,
+    "third_party_count": 31,
+    "third_party_bytes": 1439088,
+    "third_party_pct_of_bytes": 43,
+    "tracker_count": 6,
+    "tracker_bytes": 642605,
+    "tracker_summary": [
+      {
+        "id": "gtm",
+        "name": "Google Tag Manager",
+        "kind": "analytics",
+        "request_count": 4,
+        "bytes": 642605
+      },
+      {
+        "id": "ga",
+        "name": "Google Analytics",
+        "kind": "analytics",
+        "request_count": 2,
+        "bytes": 0
+      }
+    ],
+    "heaviest_third_party": [
+      {
+        "url": "https://www.gstatic.com/recaptcha/releases/U5VsmTDhJM1iOJUyw4DEUTYv/recaptcha__en.js",
+        "hostname": "www.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 372549,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-4M493KHCTK",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 180938,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-4M493KHCTK&cx=c&gtm=4e65c0",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 180938,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-GKJ7YJ877Z&cx=c&gtm=4e65c0",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 160266,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://www.googletagmanager.com/gtm.js?id=GTM-N2ZCX3W",
+        "hostname": "www.googletagmanager.com",
+        "domain": "googletagmanager.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 120463,
+        "tracker_id": "gtm",
+        "tracker_name": "Google Tag Manager",
+        "tracker_kind": "analytics",
+        "status": 200
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/64/12d/main.js",
+        "hostname": "maps.googleapis.com",
+        "domain": "googleapis.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 85006,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://maps.gstatic.com/maps-api-v3/embed/js/64/12d/init_embed.js",
+        "hostname": "maps.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 73628,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/64/12d/util.js",
+        "hostname": "maps.googleapis.com",
+        "domain": "googleapis.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 71056,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/64/12d/places.js",
+        "hostname": "maps.googleapis.com",
+        "domain": "googleapis.com",
+        "first_party": false,
+        "resource_type": "script",
+        "size_bytes": 65679,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      },
+      {
+        "url": "https://www.gstatic.com/recaptcha/releases/U5VsmTDhJM1iOJUyw4DEUTYv/styles__ltr.css",
+        "hostname": "www.gstatic.com",
+        "domain": "gstatic.com",
+        "first_party": false,
+        "resource_type": "stylesheet",
+        "size_bytes": 42538,
+        "tracker_id": null,
+        "tracker_name": null,
+        "tracker_kind": null,
+        "status": 200
+      }
+    ]
+  },
+  "detailed_audit": {
+    "business_id": "domain_rapidroofsolutions.com.au",
+    "audit_version": "2026-05-11-v1",
+    "audited_at": "2026-05-14T16:05:49.786Z",
+    "audit_score": 57,
+    "dimension_scores": {
+      "gbp": 20,
+      "technical": 58,
+      "ux_conversion": 70,
+      "content": 92,
+      "seo": 34,
+      "visual": 50
+    },
+    "decision": "moderate_candidate",
+    "qualification_reason": "audit_score=57 → moderate_candidate · weakest: gbp 20, seo 34",
+    "hard_triggers": [],
+    "issues": {
+      "critical": [],
+      "major": [
+        {
+          "id": "review_volume_vs_peers",
+          "rationale": "0 reviews",
+          "max": 25,
+          "plain_language": "你的 Google 评价数量低于同行平均水平。",
+          "customer_impact": "本地搜索排名信号之一就是评价数量；不光是分数，连\"有多少条\"都算。短期可以做的：每个完工的客户群发一条「点评一下吧」的 SMS。"
+        },
+        {
+          "id": "homepage_title_clear",
+          "rationale": "title='## Rapid Roof Solutions' contains-name=true contains-niche=false",
+          "max": 20,
+          "plain_language": "你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Rapid Roof Solutions - roofer Brisbane」，但目前是泛泛一句）。",
+          "customer_impact": "Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。"
+        },
+        {
+          "id": "local_schema_markup",
+          "rationale": "no LocalBusiness JSON-LD",
+          "max": 20,
+          "plain_language": "网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI 知道你是本地企业、地址、电话、营业时间的标准格式）。",
+          "customer_impact": "Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。"
+        }
+      ],
+      "minor": [
+        {
+          "id": "has_hours",
+          "rationale": "no hours",
+          "max": 5,
+          "plain_language": "GBP 上没有完整的营业时间。",
+          "customer_impact": "客户搜「现在还在营业的 roofer」时你不会被显示。"
+        },
+        {
+          "id": "image_count",
+          "rationale": "0 images",
+          "max": 10,
+          "plain_language": "GBP 上图片数量低于行业建议（一般 ≥ 10 张完工图 + 团队照 + 设备照）。",
+          "customer_impact": "图片数量直接影响 GBP 在地图卡片里的展示效果。"
+        },
+        {
+          "id": "has_business_description",
+          "rationale": "no description",
+          "max": 10,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "has_service_area",
+          "rationale": "no service area",
+          "max": 15,
+          "plain_language": null,
+          "customer_impact": null
+        },
+        {
+          "id": "favicon_and_meta",
+          "rationale": "favicon: yes, meta: no",
+          "max": 5,
+          "plain_language": "你的网站缺少 favicon（浏览器标签页上的小图标）或基本的 meta 标签。",
+          "customer_impact": "客户在多 tab 浏览时找不到你的网站；Facebook / WhatsApp 分享时缩略图会拉错图甚至没有图，链接显得不专业。"
+        },
+        {
+          "id": "quote_or_booking_form",
+          "rationale": "no form",
+          "max": 20,
+          "plain_language": "你的网站没有 quote / booking 表单 — 客户只能打电话或发邮件。",
+          "customer_impact": "工作时间外（晚上 / 周末）的访客没办法联系你，只能等。家庭装修客户经常在晚上做决策；你正在错过非营业时间的转化窗口。"
+        },
+        {
+          "id": "title_meta_present",
+          "rationale": "title=yes meta=no",
+          "max": 25,
+          "plain_language": "页面缺少 SEO 用的 title 标签或 meta description。",
+          "customer_impact": "Google 搜索结果里显示的就是这两块。没写 = Google 自己截一段（往往不重点），客户看到不是吸引人的描述就不会点进来。"
+        },
+        {
+          "id": "image_alt_present",
+          "rationale": "21 images, 0% with alt",
+          "max": 20,
+          "plain_language": "图片没有 alt 文字描述。",
+          "customer_impact": "影响两件事：① 视障用户的可访问性（在澳洲是法律风险）；② Google 图片搜索流量（屋顶项目图片是极强的 SEO 资产，但没 alt 等于没标）。"
+        }
+      ]
+    },
+    "dimensions": {
+      "gbp": {
+        "dimension": "gbp",
+        "score": 20,
+        "earned": 20,
+        "max": 100,
+        "rules": [
+          {
+            "id": "has_website_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "website: https://rapidroofsolutions.com.au/"
+          },
+          {
+            "id": "review_volume_vs_peers",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "rationale": "0 reviews"
+          },
+          {
+            "id": "average_rating",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "★5"
+          },
+          {
+            "id": "has_hours",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "rationale": "no hours"
+          },
+          {
+            "id": "image_count",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "0 images"
+          },
+          {
+            "id": "has_business_description",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "rationale": "no description"
+          },
+          {
+            "id": "has_service_area",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "rationale": "no service area"
+          },
+          {
+            "id": "owner_replies_to_reviews",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "reply rate not enriched"
+          }
+        ]
+      },
+      "technical": {
+        "dimension": "technical",
+        "score": 58,
+        "earned": 58,
+        "max": 100,
+        "rules": [
+          {
+            "id": "https_enabled",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "https"
+          },
+          {
+            "id": "first_paint_under_3s",
+            "earned": 0,
+            "max": 25,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "LCP not measured (need Playwright/Lighthouse)"
+          },
+          {
+            "id": "mobile_responsive",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "lighthouse mobile 80"
+          },
+          {
+            "id": "core_web_vitals_pass",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "CWV not measured"
+          },
+          {
+            "id": "form_submittable",
+            "earned": 0,
+            "max": 5,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "form submit not tested"
+          },
+          {
+            "id": "no_console_errors",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "0 console errors"
+          },
+          {
+            "id": "favicon_and_meta",
+            "earned": 3,
+            "max": 5,
+            "hit": false,
+            "rationale": "favicon: yes, meta: no"
+          }
+        ]
+      },
+      "ux_conversion": {
+        "dimension": "ux_conversion",
+        "score": 70,
+        "earned": 70,
+        "max": 100,
+        "rules": [
+          {
+            "id": "above_fold_cta_within_5s",
+            "earned": 30,
+            "max": 30,
+            "hit": true,
+            "rationale": "CTA keyword found above fold"
+          },
+          {
+            "id": "phone_visible_above_fold",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "phone digits above fold"
+          },
+          {
+            "id": "click_to_call_link",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "tel: link present"
+          },
+          {
+            "id": "quote_or_booking_form",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no form"
+          },
+          {
+            "id": "contact_path_short",
+            "earned": 0,
+            "max": 10,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "click-depth not measured"
+          },
+          {
+            "id": "has_gallery",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "gallery mentioned"
+          },
+          {
+            "id": "has_testimonials",
+            "earned": 5,
+            "max": 5,
+            "hit": true,
+            "rationale": "testimonials section present"
+          }
+        ]
+      },
+      "content": {
+        "dimension": "content",
+        "score": 92,
+        "earned": 92,
+        "max": 100,
+        "rules": [
+          {
+            "id": "homepage_title_clear",
+            "earned": 12,
+            "max": 20,
+            "hit": false,
+            "rationale": "title='## Rapid Roof Solutions' contains-name=true contains-niche=false"
+          },
+          {
+            "id": "service_copy_specific",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "15 service-related verbs detected"
+          },
+          {
+            "id": "trust_signals_present",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "4 trust-keyword mentions"
+          },
+          {
+            "id": "localized_content",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "mentions brisbane"
+          },
+          {
+            "id": "evidence_of_recent_update",
+            "earned": 15,
+            "max": 15,
+            "hit": true,
+            "rationale": "fresh year mentioned"
+          },
+          {
+            "id": "non_ai_filler_copy",
+            "earned": 10,
+            "max": 10,
+            "hit": true,
+            "rationale": "no obvious AI-filler"
+          }
+        ]
+      },
+      "seo": {
+        "dimension": "seo",
+        "score": 34,
+        "earned": 34,
+        "max": 100,
+        "rules": [
+          {
+            "id": "title_meta_present",
+            "earned": 14,
+            "max": 25,
+            "hit": false,
+            "rationale": "title=yes meta=no"
+          },
+          {
+            "id": "h1_unique",
+            "earned": 20,
+            "max": 20,
+            "hit": true,
+            "rationale": "1 <h1> tags"
+          },
+          {
+            "id": "local_schema_markup",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "no LocalBusiness JSON-LD"
+          },
+          {
+            "id": "image_alt_present",
+            "earned": 0,
+            "max": 20,
+            "hit": false,
+            "rationale": "21 images, 0% with alt"
+          },
+          {
+            "id": "sitemap_robots",
+            "earned": 0,
+            "max": 15,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "/sitemap.xml + /robots.txt probe not run (need Playwright)"
+          }
+        ]
+      },
+      "visual": {
+        "dimension": "visual",
+        "score": 50,
+        "earned": 50,
+        "max": 100,
+        "rules": [
+          {
+            "id": "visual_dimension_stub",
+            "earned": 50,
+            "max": 100,
+            "hit": false,
+            "data_missing": true,
+            "rationale": "visual dimension is filled by Block E (vision LLM autoresearch)"
+          }
+        ]
+      }
+    },
+    "inputs_present": {
+      "entity": true,
+      "business_profile": false,
+      "fetch_payload": true,
+      "raw_html": true,
+      "lighthouse": true,
+      "visual_score_provided": false
+    }
+  }
+}

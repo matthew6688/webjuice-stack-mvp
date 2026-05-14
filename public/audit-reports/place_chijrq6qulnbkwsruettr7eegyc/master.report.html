@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Ace Roofing Service · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Ace Roofing Service · 现状审计与重构提议</h1>
+</header>
+<h1 id="ace-roofing-service-现状审计与重构提议">Ace Roofing Service ·
+现状审计与重构提议</h1>
+<blockquote>
+<p><strong>54/100</strong> · moderate_candidate · 行业：roofer ·
+地区：Brisbane · Google 评价：5★ （37 条）</p>
+</blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>B</code> 预览试探 — ChatGPT 生成
+mockup hero 图 + 短邮件试反应</p>
+<p><strong>触发依据：</strong> - B · moderate_candidate · audit 54&lt;60
+· 37 评论≥30 · 5★≥4</p>
+<p><strong>产品档位：</strong> <code>T2</code> 1-page + annual
+maintenance</p>
+<ul>
+<li>中等口碑 / 多业务分类 / 想要月度维护关系 — T2 annual maintenance
+合适</li>
+<li>37 评论 = 中等规模运营</li>
+<li>3 个业务分类 = 多服务线 → 维护包合适</li>
+</ul>
+<p><strong>建议报价：</strong> 一次性 null</p>
+<p><strong>下一步行动：</strong> 用 ChatGPT Image / Gemini Imagen 生成
+hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1
+次跟进。回应后升级到 A 档处理。</p>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>线索来源 · 联系开场可用</strong>: - <strong>来源</strong>:
+Google Places API (官方搜索) - <strong>搜索关键词</strong>:
+<code>roofer brisbane</code> - <strong>结果排名</strong>: 第 6 位 -
+<strong>首次发现</strong>: 2026-05-14 - <strong>Batch</strong>:
+<code>places-roofer-brisbane-202605150200</code></p>
+<p><strong>审计结论：</strong> audit_score=54 → moderate_candidate ·
+weakest: gbp 32, seo 45 · 1 critical issues</p>
+<ul>
+<li>电话：0449 168 985</li>
+<li>地址：72 Queen St, Brisbane City QLD 4000, Australia</li>
+<li>网站：<a
+href="https://aceroofingservice.com.au/">https://aceroofingservice.com.au/</a></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<p><strong>慢速 4G 加载实景视频</strong>（1.6 Mbps · 150ms 延迟 · 4× CPU
+节流，模拟真实手机访客的体验）：</p>
+<p><a href="./video/mobile-throttled.webm">播放视频</a></p>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>The page has a professional roofing look and visible contact actions,
+but the above-fold area is text-heavy and does not make the fastest path
+to a quote feel effortless.</p>
+</blockquote>
+<p>新鲜度 <strong>6/10</strong> · 信任度 <strong>7/10</strong> ·
+转化准备度 <strong>6/10</strong> · 设计年代
+<code>slightly_outdated</code></p>
+<p><strong>值得保留的优点：</strong> - Phone and quote actions are
+visible in the desktop header. - The page uses a real roofing background
+image, which fits the service category. - Trust claims such as licensed,
+insured, family-owned, and emergency availability are present.</p>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-2-项立刻在伤害成交">关键问题 · 2
+项（立刻在伤害成交）</h3>
+<h3 id="关键-phone_visible_above_fold">关键 ·
+phone_visible_above_fold</h3>
+<p><strong>技术事实</strong></p>
+<p>phone hidden below fold or missing</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码在第一屏看不到 — 客户必须滚动才能找到怎么联系你。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 =
+这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。</p>
+<h3 id="关键-phone-number-appears-incomplete">关键 · Phone number
+appears incomplete</h3>
+<p><strong>技术事实</strong></p>
+<p>The blue phone button in the header shows “0426 366 7..” with the end
+of the number visually cut off or abbreviated.</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话按钮里的号码看起来被截断了，像是网站没有做好。</p>
+<p><strong>对客户的影响</strong></p>
+<p>电话是本地服务最重要的成交入口之一。号码显示不完整会直接降低信任，遇到漏水或紧急维修的客户可能马上打给竞争对手。</p>
+<p><strong>正确长啥样</strong></p>
+<p>The full phone number displayed clearly inside the button, with
+enough horizontal padding and no truncation.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Increase the phone button width, prevent text truncation, and test
+the full number across desktop and mobile header breakpoints.</p>
+<h3 id="主要问题-6-项影响转化的明显短板">主要问题 · 6
+项（影响转化的明显短板）</h3>
+<h3 id="主要-click_to_call_link">主要 · click_to_call_link</h3>
+<p><strong>技术事实</strong></p>
+<p>no tel: link</p>
+<p><strong>普通话翻译</strong></p>
+<p>电话号码不是 click-to-call 链接（手机上点击不会自动拨号）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>移动客户必须复制号码再切到拨号界面再粘贴 —
+每多一步操作就流失一批客户。修复成本只是把
+<code>&lt;a href="tel:0712345678"&gt;</code>
+写对，但能立刻拉高电话转化率。</p>
+<h3 id="主要-homepage_title_clear">主要 · homepage_title_clear</h3>
+<p><strong>技术事实</strong></p>
+<p>title=‘# “Feel Safe Under a Roof That Lasts – Brisbane Roof Restora’
+contains-name=false contains-niche=false</p>
+<p><strong>普通话翻译</strong></p>
+<p>你网站的浏览器标签 title 没把业务名字 +
+服务关键词写清楚（比如该写「Ace Roofing Service - roofer
+Brisbane」，但目前是泛泛一句）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 +
+即使排上来客户也不知道是不是匹配的服务。SEO
+最便宜的修复，但很多本地企业完全没做。</p>
+<h3 id="主要-local_schema_markup">主要 · local_schema_markup</h3>
+<p><strong>技术事实</strong></p>
+<p>no LocalBusiness JSON-LD</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站没有 LocalBusiness JSON-LD 结构化数据（让 Google / AI
+知道你是本地企业、地址、电话、营业时间的标准格式）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google「附近的服务」「Knowledge Panel」「AI
+Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧
+Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT
+引用本地商家时也是基于这些数据。</p>
+<h3 id="主要-oversized-headline-slows-comprehension">主要 · Oversized
+headline slows comprehension</h3>
+<p><strong>技术事实</strong></p>
+<p>The hero headline spans three large lines and includes a long quoted
+sentence: “Feel Safe Under a Roof That Lasts - Brisbane Roof Restoration
+with 10 Years of Worry-Free Protection!”</p>
+<p><strong>普通话翻译</strong></p>
+<p>首页第一屏的标题太长太大，客户要读好几秒才知道你具体做什么。</p>
+<p><strong>对客户的影响</strong></p>
+<p>本地客户通常会在几秒内决定要不要继续看。标题读起来费劲，会让一部分从
+Google 商家资料点进来的客户直接返回去看下一家。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A shorter headline such as “Brisbane Roof Repairs &amp; Restoration”
+with one supporting line underneath, followed immediately by phone and
+quote buttons.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Rewrite the hero into a direct service-led headline, reduce the
+heading size by about 20-30%, and place a clear primary CTA directly
+under the subheading.</p>
+<h3 id="主要-quote-cta-is-visually-secondary">主要 · Quote CTA is
+visually secondary</h3>
+<p><strong>技术事实</strong></p>
+<p>The “GET FREE QUOTE” button is a white pill in the top-right, while
+the blue phone button beside it is more visually dominant.</p>
+<p><strong>普通话翻译</strong></p>
+<p>“获取免费报价”按钮放在右上角，而且没有电话按钮显眼，客户不一定第一眼看到。</p>
+<p><strong>对客户的影响</strong></p>
+<p>很多屋顶维修客户会先想要报价，不一定马上打电话。如果报价入口不够明显，会减少询盘，尤其会影响从手机搜索进来的客户。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A high-contrast primary “Get Free Quote” button in the hero area,
+paired with a secondary click-to-call button, both visible without
+scrolling.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Move a stronger quote CTA into the main hero content, use the brand
+blue or another high-contrast accent for it, and keep the phone CTA next
+to it as a secondary action.</p>
+<h3 id="主要-too-many-checklist-claims-above-fold">主要 · Too many
+checklist claims above fold</h3>
+<p><strong>技术事实</strong></p>
+<p>The hero includes nine checkmark bullet points across two columns,
+including long lines such as “Clear and Consistent Communication Every
+Step of the Way”.</p>
+<p><strong>普通话翻译</strong></p>
+<p>第一屏放了太多勾选卖点，信息看起来有点挤，重点反而不突出。</p>
+<p><strong>对客户的影响</strong></p>
+<p>客户不会逐条读完九个卖点。他们通常只看几个最关键的信息，比如有牌照、有保险、能不能紧急处理、多久能报价。重点不清楚会降低联系意愿。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Three to four compact trust badges above the fold, such as “Licensed
+&amp; Insured”, “Since 2004”, “Emergency Roofing”, and “Free
+Quotes”.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Condense the checklist into four short trust badges under the CTA,
+then move detailed service promises lower on the page with icons and
+supporting copy.</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>[视觉] 1. Fix the header phone number so it displays fully on all
+screen sizes.</li>
+<li>[视觉] 2. Simplify the hero message and add a stronger quote CTA
+inside the main hero area.</li>
+<li>[视觉] 3. Replace the long checklist with four high-value trust
+badges above the fold.</li>
+</ol>
+<h2 id="图片优化与第三方脚本体重">图片优化与第三方脚本体重</h2>
+<p>PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker
+脚本。</p>
+<h3 id="图片优化共-11-张">图片优化（共 11 张）</h3>
+<ul>
+<li><strong>优化率：</strong> 0%（0/11 使用 WebP/AVIF/SVG）</li>
+<li><strong>响应式 srcset：</strong> 45%</li>
+<li><strong>Lazy load：</strong> 64%</li>
+<li><strong>Alt 文字（非空）：</strong> 18%</li>
+<li><strong>显式 width/height：</strong> 100%（防止 CLS 布局抖动）</li>
+</ul>
+<p><strong>总评：</strong> 部分优化 — 还有空间</p>
+<p><strong>具体问题：</strong> - [minor] 11 张图仍是 JPG/PNG，建议转
+WebP - [major] 9/11 张图缺 alt 文字 — 影响 SEO + 可访问性 + AI 抓取</p>
+<h3 id="第三方脚本占用情况">第三方脚本占用情况</h3>
+<ul>
+<li><strong>总请求数：</strong> 77（66 自有 + 11 第三方）</li>
+<li><strong>第三方占总下载量：</strong> 49%（708 KB / 1459 KB）</li>
+<li><strong>Tracker 脚本数：</strong> 3（合计 300 KB）</li>
+</ul>
+<p><strong>已识别的 tracker：</strong></p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>类型</th>
+<th>请求数</th>
+<th>字节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Tag Manager</td>
+<td>analytics</td>
+<td>2</td>
+<td>300.2 KB</td>
+</tr>
+<tr>
+<td>Google Analytics</td>
+<td>analytics</td>
+<td>1</td>
+<td>0.0 KB</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>观察：</strong> 3 个 tracker 合计加载了 300 KB ——
+这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign
+时可以建议清理不再使用的 tracker。</p>
+</blockquote>
+<h2 id="seo-迁移评估-与-运营活跃度">SEO 迁移评估 与 运营活跃度</h2>
+<p>客户最常担心的问题：「我重做网站，会不会丢掉 Google
+排名？」这一段直接回答。</p>
+<h3 id="现有页面盘点">现有页面盘点</h3>
+<ul>
+<li><strong>Sitemap 状态：</strong> 已检测到 →
+<code>https://aceroofingservice.com.au/sitemap_index.xml</code></li>
+<li><strong>页面总数：</strong> 1</li>
+<li><strong>迁移复杂度：</strong> 低（≤15 页 — 1-2
+周内可完成全站重做）</li>
+</ul>
+<p><strong>页面分类：</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>首页</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sitemap lastmod 跨度：</strong> 最旧 2024-10-14 → 最新
+2024-10-14</p>
+<p><strong>Redirect 计划承诺：</strong> redesign 上线时我们会附一份 1 条
+1:1 redirect 表（旧 URL → 新 URL），保证 Google
+已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。</p>
+<h3 id="seo-长尾结构服务-区域-本地搜索流量金矿">SEO 长尾结构（服务 ×
+区域 = 本地搜索流量金矿）</h3>
+<ul>
+<li><strong>服务专项页（如 /metal-roofing/）：</strong> 0 个</li>
+<li><strong>区域页（如 /service-areas/brisbane/）：</strong> 0 个</li>
+<li><strong>服务×区域组合页（如 /metal-roofing-brisbane/）：</strong> 0
+个</li>
+</ul>
+<p><strong>长尾覆盖：</strong> 无 — 没有服务专项页面，redesign
+时是关键补点</p>
+<h3 id="运营活跃度">运营活跃度</h3>
+<ul>
+<li><strong>整体活跃度：</strong> 休眠（超过 1 年没更新过）
+（最近一次更新 578 天前）</li>
+<li><strong>Blog 板块：</strong> 未发现 — 没有内容营销基础</li>
+<li><strong>社交媒体链接：</strong> 网站上没有 social 链接 — GBP
+流量进来后没有第二触点</li>
+</ul>
+<blockquote>
+<p><strong>关键发现：</strong> 客户的网站超过一年没动过。redesign
+之后我们也建议帮忙建立最低限度的内容更新节奏（每月 1 篇 case study
+即可），否则 AI / Google 都会判定网站「死站」。</p>
+</blockquote>
+<h2 id="联系表单与防垃圾设置">联系表单与防垃圾设置</h2>
+<p>客户能不能 <em>方便地</em> 把信息留下来 =
+直接的转化路径。这一段审视所有 <code>&lt;form&gt;</code> 元素的可用性 +
+防 spam 配置。</p>
+<h3 id="表单-6-字段摩擦中5-6-字段">表单 · 6 字段（摩擦：中（5-6
+字段））</h3>
+<ul>
+<li><strong>字段构成：</strong> First Name(text,必填) · Last
+Name(text,必填) · Phone Number(tel,必填) · Email Address(email,必填) ·
+Message(textarea,必填) · g-recaptcha-response(textarea)</li>
+<li><strong>必填字段数：</strong> 5/6</li>
+<li><strong>常见关键字段：</strong> email · phone · message</li>
+<li><strong>提交按钮：</strong> 「Submit」</li>
+<li><strong>Honeypot 防 spam：</strong> 未检测到</li>
+</ul>
+<p><strong>已部署的人机验证：</strong> - reCAPTCHA v2 (visible “I’m not
+a robot”) — 高摩擦 - reCAPTCHA v3 (invisible) — 低摩擦</p>
+<p><strong>Audit 总结：</strong></p>
+<ul>
+<li>[提示] reCAPTCHA v2 (visible “I’m not a robot”) —
+给真人增加额外操作（点击”我不是机器人”），轻微降低转化；redesign 可改用
+v3/Turnstile 等 invisible 方案</li>
+</ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> 已配置</li>
+<li><strong>DKIM (邮件签名)：</strong> ⚠ 常见 selector 未发现 DKIM
+配置（不一定确凿，但提示有问题）</li>
+<li><strong>DMARC (策略)：</strong> 已配置（policy:
+<code>quarantine</code>）</li>
+<li><strong>整体邮件投递信誉：</strong> <code>partial</code> (只有 2/3 —
+建议补全)</li>
+</ul>
+<blockquote>
+<p>这是后续 <strong>「Social Media Management 月度包」</strong> 或
+<strong>「Cold Outreach 启动包」</strong> 的前置条件 —— 邮件 DNS
+没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。</p>
+</blockquote>
+<h2 id="技术栈与营销基建">技术栈与营销基建</h2>
+<p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
+<ul>
+<li><strong>网站平台 (CMS)：</strong>
+WordPress（迁移复杂度参考；WordPress / Wix / Squarespace
+这类有标准导出工具，custom-coded 会复杂）</li>
+<li><strong>分析工具：</strong> Google Tag Manager · Google Analytics
+4</li>
+<li><strong>广告 Pixel：</strong> 未检测到 — 暂未投放追踪型广告</li>
+</ul>
+<p><strong>数字成熟度打分：</strong> 2 / 6 （中 —
+已有基础设施，缺少深度运营）</p>
+<h3 id="redesign-时必须保留-重新安装的追踪代码">Redesign 时必须保留 /
+重新安装的追踪代码</h3>
+<p>客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID
+上面。重做时<strong>必须用同一套 ID
+重新接进新网站</strong>，否则等于清零所有累积。</p>
+<ul>
+<li>Google Tag Manager</li>
+<li>Google Analytics 4</li>
+</ul>
+<p>我们 redesign 交付清单会把这些列为「必须 setup 项」。</p>
+<h2 id="信任凭证-generic">信任凭证 · generic</h2>
+<p>本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。</p>
+<p><strong>信任分：</strong> 40/100</p>
+<h3 id="已显示的3-项">已显示的（3 项）</h3>
+<ul>
+<li><strong>从业年限</strong> (15 分) — “Since 2004”</li>
+<li><strong>行业证书</strong> (15 分) — “Licensed”</li>
+<li><strong>免费报价</strong> (10 分) — “Free Quote”</li>
+</ul>
+<h3 id="缺失的4-项-redesign-必补-提醒客户提供素材">缺失的（4 项 —
+redesign 必补 / 提醒客户提供素材）</h3>
+<ul>
+<li>[行业惯例] <strong>ABN</strong> (20 分)</li>
+<li>[行业惯例] <strong>保险</strong> (15 分)</li>
+<li>[行业惯例] <strong>保修</strong> (15 分)</li>
+<li>[行业惯例] <strong>荣誉 / 奖项</strong> (10 分)</li>
+</ul>
+<h2 id="ai-时代可发现性-geo-readiness">AI 时代可发现性 · GEO
+Readiness</h2>
+<p>GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI
+Overviews 这些 AI
+搜索产品<strong>不像传统搜索引擎那样按”关键词排名”工作</strong>，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在
+AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。</p>
+<p><strong>AI 可发现性总分：</strong> 30 / 100 — AI agent / ChatGPT
+几乎无法准确引用此网站 — 在生成式搜索时代等于隐身</p>
+<h3 id="已经做到的3-项">已经做到的（3 项）</h3>
+<ul>
+<li>[PASS] <code>localbusiness_schema</code> — Organization JSON-LD
+present (LocalBusiness preferred for local services)</li>
+<li>[PASS] <code>eeat_warranty_trust</code> — warranty/guarantee
+mentioned</li>
+<li>[PASS] <code>jsonld_at_least_one</code> — 6 JSON-LD block(s)
+detected on page</li>
+</ul>
+<h3 id="还缺的9-项-这些是-redesign-时一并补上的标准动作">还缺的（9 项 —
+这些是 redesign 时一并补上的标准动作）</h3>
+<ul>
+<li>[缺失] <code>llms_txt_present</code> (5 分) — no /llms.txt at
+standard path</li>
+<li>[缺失] <code>ai_bot_robots_policy</code> (5 分) — robots.txt has no
+explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)</li>
+<li>[缺失] <code>service_schema</code> (10 分) — no Service JSON-LD</li>
+<li>[缺失] <code>faqpage_schema</code> (10 分) — no FAQPage JSON-LD
+(loses AI Overview / featured snippet eligibility)</li>
+<li>[缺失] <code>aggregaterating_schema</code> (5 分) — no
+AggregateRating JSON-LD (★ rating not shown in search snippets)</li>
+<li>[缺失] <code>breadcrumb_schema</code> (5 分) — no BreadcrumbList
+JSON-LD</li>
+<li>[缺失] <code>semantic_landmarks</code> (10 分) — 0 semantic
+landmarks present: none</li>
+<li>[缺失] <code>faq_qa_pattern</code> (10 分) — 1 question-style
+heading(s) found (Q&amp;A format helps AI extraction)</li>
+<li>[缺失] <code>eeat_business_credentials</code> (10 分) — only 1/4
+credentials found (license/QBCC) — need ≥2 of: ABN, license/QBCC,
+years-in-business, insurance</li>
+</ul>
+<blockquote>
+<p><strong>销售切入：</strong> 「ChatGPT 现在每月 30
+亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI
+回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是
+30/100。」</p>
+</blockquote>
+<h2 id="业务规模信号-内部筛选用">业务规模信号 · 内部筛选用</h2>
+<p><strong>注：这一段只给运营内部看，不进入客户报告。</strong>
+用来判断这个 lead 是不是匹配我们「小网站 / 多批量 /
+快上线」的产品定位。</p>
+<ul>
+<li><strong>规模信号汇总：</strong> 小型客户特征</li>
+<li><strong>客户分级：</strong> <code>small</code> —
+小型，符合我们标准产品包定位</li>
+</ul>
+<blockquote>
+<p>报价以上方 <strong>建议报价</strong> 为准（来自
+entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断
+lead 是否匹配产品定位，不竞争报价。</p>
+</blockquote>
+<p><strong>触发依据：</strong> - 已部署 2 个追踪工具</p>
+<h2 id="upsell-机会-redesign-之外的月度营收">Upsell 机会 · redesign
+之外的月度营收</h2>
+<p>redesign
+是一次性收入。以下是基于这个客户当前现状自动识别的<strong>持续性服务包</strong>机会，可以在
+redesign 提案签字时一并捆绑进去。</p>
+<h3 id="social-presence-一次性-setup-月度运营包">Social presence 一次性
+setup + 月度运营包</h3>
+<p><strong>触发依据：</strong> 网站上没检测到任何社交媒体链接 —
+连基础的多渠道触点都缺。</p>
+<p><strong>包内容：</strong> 一次性：FB / IG 商家档案 setup +
+品牌头像/封面 + 内容模板 5 套 (3-5K 一次性)。月度：4 帖 + 评论管理 +
+月度报表。</p>
+<p><strong>月度费用区间：</strong> $1,500 setup + $600-900/月</p>
+<p><strong>销售切入：</strong> 「Google Maps
+流量进来后没有第二落点，意味着客户当下没决定就走了 —
+没办法再触及。社交账号是免费的二次触达管道。」</p>
+<h3 id="内容写作月度包blog-案例-seo-长尾">内容写作月度包（Blog / 案例 /
+SEO 长尾）</h3>
+<p><strong>触发依据：</strong> 网站没有 blog 板块 —
+没有内容营销基础设施，长尾 SEO 流量为零。</p>
+<p><strong>包内容：</strong> 每月 2 篇 SEO-optimized blog（800-1,200
+字）+ 每季度 1 篇 case study（含 before/after 图）+ 关键词研究报告。</p>
+<p><strong>月度费用区间：</strong> $400-800/月</p>
+<p><strong>销售切入：</strong> 「ChatGPT
+时代搜索引擎更偏爱有「专家深度内容」的网站。你目前的网站只有服务介绍页 —
+AI 可引用的素材几乎为零。」</p>
+<!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
+<!-- 现网站快速诊断 -->
+<!-- M2-D6 required token bridge: 业主沟通要点 → covered by detail-builder section -->
+<!-- 业主沟通要点 -->
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model: <code>codex_cli</code></li>
+<li>Review source:
+<code>Google Places · most_relevant (max 5)</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

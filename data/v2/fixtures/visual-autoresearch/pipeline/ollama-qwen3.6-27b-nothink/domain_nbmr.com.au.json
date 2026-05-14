@@ -1,0 +1,109 @@
+{
+  "provider": "codex_cli",
+  "model": null,
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 63012,
+  "parsedJson": {
+    "freshness_score": 7,
+    "trust_score": 6,
+    "conversion_score": 6,
+    "design_age_estimate": "modern",
+    "summary": "The site looks visually polished and premium, but the first screen underuses phone contact, proof, and service clarity for a Brisbane roofing customer ready to act.",
+    "issues": [
+      {
+        "id": "mobile_phone_number_hidden",
+        "severity": "critical",
+        "title": "Mobile phone number is not visible",
+        "what_observed": "On the mobile screenshot, the header shows a green circular phone icon but no visible phone number next to it.",
+        "why_problem": "A local-search customer on their phone often wants to call immediately; if they cannot see the number before tapping, it adds doubt and friction at the exact moment they are ready to contact a roofer.",
+        "what_correct_looks_like": "A mobile header with a visible tap-to-call button showing both the phone icon and '0498 478 739', or a sticky bottom bar with 'Call' and 'Get Quote'.",
+        "how_to_fix_in_redesign": "Replace the icon-only mobile phone button with a compact tap-to-call button that displays the phone number, and keep it visible in the header or sticky bottom action bar.",
+        "plain_explanation": "手机版顶部只有电话图标，没有直接显示电话号码，客户要先猜这个按钮能不能打电话。",
+        "customer_impact": "本地找屋顶工的人很多是在手机上马上比较和拨号；如果电话号码不明显，客户可能直接返回 Google 选择下一个商家。即使只流失 10%-20% 的来电，也会直接减少报价机会。"
+      },
+      {
+        "id": "no_visible_trust_proof_above_fold",
+        "severity": "major",
+        "title": "No proof points in first screen",
+        "what_observed": "The desktop and mobile hero areas show the headline, service sentence, and quote button, but no visible reviews, licence details, insurance mention, years in business, or completed-project count.",
+        "why_problem": "Roofing is a high-cost, high-trust job; a Brisbane customer comparing roofers needs quick reassurance that the company is legitimate before requesting a quote.",
+        "what_correct_looks_like": "The first screen includes 3-4 compact proof points such as 'QBCC licensed', 'North Brisbane based', 'Metal roofing specialists', and a visible Google rating or review count.",
+        "how_to_fix_in_redesign": "Add a proof strip directly under the hero headline or above the quote button with licence, insurance, local area, and review/rating signals.",
+        "plain_explanation": "首屏看起来漂亮，但没有马上告诉客户“我们有资质、靠谱、别人用过并认可”。",
+        "customer_impact": "屋顶工程金额高，客户通常会在几秒内判断是否可信。缺少评价、牌照和本地证明，会让一部分客户不敢提交报价，尤其是从 Google 商家资料点进来的陌生客户。"
+      },
+      {
+        "id": "hero_targets_builders_not_local_homeowners",
+        "severity": "major",
+        "title": "Headline may exclude local homeowners",
+        "what_observed": "The main hero headline says 'Trusted by Queensland's Premium Builders' and the smaller line says the business specialises in new build roofing for builders and developers.",
+        "why_problem": "Someone searching 'roofer Brisbane' may be a homeowner needing repairs, replacement, or a quote; the message can make them think the company only works with builders and not with regular local customers.",
+        "what_correct_looks_like": "A headline that clearly covers the main buying intent, such as 'Metal Roofing Specialists in North Brisbane' with service chips for new roofs, replacements, repairs, and commercial work.",
+        "how_to_fix_in_redesign": "Rewrite the hero to lead with local roofing service clarity, then support it with the premium builder positioning as a trust proof lower on the page.",
+        "plain_explanation": "现在的主标题更像是在对建筑商说话，不像是在对普通需要屋顶服务的本地客户说话。",
+        "customer_impact": "如果 Google 进来的客户以为“这家公司不接我这种活”，他们不会继续研究。服务范围不清楚会让原本有需求的人提前离开，减少询盘。"
+      },
+      {
+        "id": "mobile_cta_competes_with_cutoff_secondary_button",
+        "severity": "major",
+        "title": "Mobile lower button is cut off",
+        "what_observed": "On the mobile screenshot, the green 'GET A FREE QUOTE' button is visible, but the secondary outlined button below it is partially hidden by the diagonal white section at the bottom of the screenshot.",
+        "why_problem": "A partially cut-off button makes the page feel unfinished and can confuse visitors about whether there is another action they should take.",
+        "what_correct_looks_like": "On mobile, the primary quote button sits fully visible with comfortable spacing, and secondary actions either stack clearly below it or move lower on the page.",
+        "how_to_fix_in_redesign": "Adjust the mobile hero height and diagonal divider so all hero buttons are fully visible, or remove the secondary button from the mobile hero and keep one clear quote action.",
+        "plain_explanation": "手机版底部有一个按钮被斜线区域切掉了，看起来像页面没有排好。",
+        "customer_impact": "移动端细节出错会降低信任感。客户会把这种视觉问题联想到施工是否也不够细致，特别是屋顶这种高价服务，几秒内的不信任就可能损失一次报价。"
+      },
+      {
+        "id": "desktop_header_takes_too_much_vertical_space",
+        "severity": "minor",
+        "title": "Desktop header feels oversized",
+        "what_observed": "On desktop, the top contact bar plus large white navigation area take up roughly the top quarter of the screenshot before the hero content begins.",
+        "why_problem": "The large header delays the main message and quote action, making the first impression feel less direct for a visitor who wants quick confirmation and contact options.",
+        "what_correct_looks_like": "A slimmer desktop header with the logo, navigation, phone number, and quote button in one tighter band, leaving more first-screen space for service proof and CTA content.",
+        "how_to_fix_in_redesign": "Consolidate the contact bar and navigation into a more compact header, reduce vertical padding, and keep phone and quote actions prominent on the right.",
+        "plain_explanation": "电脑版顶部导航区域占了太多高度，真正说明业务和引导报价的内容被往下推了。",
+        "customer_impact": "客户进站后的前 8 秒很关键。顶部空间被导航占太多，会减少他们第一眼看到服务、信任证明和报价按钮的机会。"
+      },
+      {
+        "id": "navigation_text_hard_to_scan",
+        "severity": "minor",
+        "title": "Navigation labels are over-spaced",
+        "what_observed": "The desktop navigation uses very wide letter spacing on items like 'SERVICES', 'LOCATIONS', 'OUR PROJECTS', and 'QUOTE REQUEST'.",
+        "why_problem": "Over-spaced labels take longer to read, especially for older homeowners or people scanning quickly on a laptop.",
+        "what_correct_looks_like": "Navigation labels with normal or lightly spaced text, clear word shapes, and strong contrast, while keeping the active page simple and obvious.",
+        "how_to_fix_in_redesign": "Reduce navigation letter spacing, use clearer label sizing, and make the main actions 'Call' and 'Get Quote' easier to recognise at a glance.",
+        "plain_explanation": "导航文字字母间距太大，虽然有设计感，但不如普通文字好读。",
+        "customer_impact": "客户不是来欣赏导航的，他们是在快速找服务、案例和联系方式。越难扫读，越容易让人放弃继续点击。"
+      }
+    ],
+    "positive_observations": [
+      "The hero photography immediately shows premium metal roofing work and supports the business category.",
+      "The green accent colour is consistent with the logo and makes the main quote button stand out.",
+      "The desktop header includes both email and phone contact, which should be preserved."
+    ],
+    "redesign_priorities": [
+      "1. Make mobile contact immediate with a visible tap-to-call phone number and sticky quote/call actions.",
+      "2. Add above-fold trust proof: licence, insurance, local area, reviews, and metal roofing specialization.",
+      "3. Rework the hero message so Brisbane homeowners and builders both understand the services offered."
+    ],
+    "confidence": 0.92
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 125188,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 63012
+    }
+  ],
+  "tokensIn": 84391,
+  "tokensOut": 2467,
+  "theoreticalCostUsd": 0.23564749999999998
+}

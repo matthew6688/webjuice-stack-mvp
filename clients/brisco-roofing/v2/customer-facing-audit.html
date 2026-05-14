@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Audit – Brisco Roofing</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  line-height: 1.7;
+  color: #2c2416;
+  background: #faf8f3;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 46rem;
+  margin: 0 auto;
+  background: white;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+h1, h2, h3 {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: 600;
+  color: #1a1410;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 2.5rem 0 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e8e4dc;
+}
+
+h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+h3 {
+  font-size: 1.125rem;
+  margin: 1.5rem 0 0.75rem;
+  color: #3d3024;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+.hero {
+  text-align: center;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e8e4dc;
+  margin-bottom: 2rem;
+}
+
+.business-name {
+  font-size: 1.125rem;
+  color: #6b5d4f;
+  margin-bottom: 0.25rem;
+}
+
+.score-container {
+  margin: 2rem 0 1.5rem;
+}
+
+.score-circle {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 8px solid #e8e4dc;
+  position: relative;
+  margin: 0 auto;
+}
+
+.score-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #c54a28;
+  font-family: Georgia, serif;
+}
+
+.score-label {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6b5d4f;
+}
+
+.summary {
+  font-size: 1.125rem;
+  color: #4a3f32;
+  margin-top: 1.5rem;
+}
+
+.rating-badge {
+  display: inline-block;
+  background: #f0ede5;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #4a3f32;
+}
+
+.star {
+  color: #f5a623;
+}
+
+ul {
+  margin: 1rem 0 1.5rem 1.5rem;
+}
+
+li {
+  margin-bottom: 0.75rem;
+}
+
+.issue-card {
+  background: #faf8f3;
+  border-left: 3px solid #c54a28;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0;
+}
+
+.issue-title {
+  font-weight: 600;
+  color: #1a1410;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.issue-impact {
+  color: #4a3f32;
+  font-size: 0.95rem;
+}
+
+.strength-card {
+  background: #f0ede5;
+  border-left: 3px solid #5a8a5c;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0;
+}
+
+.strength-title {
+  font-weight: 600;
+  color: #1a1410;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.outcome-list {
+  background: #faf8f3;
+  padding: 1.5rem 2rem;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+}
+
+.outcome-list li {
+  margin-bottom: 1rem;
+}
+
+.closing {
+  background: #f0ede5;
+  padding: 2rem;
+  border-radius: 4px;
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.closing p {
+  margin-bottom: 0.75rem;
+}
+
+.closing p:last-child {
+  margin-bottom: 0;
+}
+
+.screenshot {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.screenshot img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #e8e4dc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.screenshot-caption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b5d4f;
+  font-style: italic;
+}
+
+strong {
+  color: #1a1410;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 1rem 0.5rem;
+  }
+  
+  .container {
+    padding: 2rem 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.625rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="hero">
+<div class="business-name">Website Audit</div>
+<h1>Brisco Roofing</h1>
+
+<div class="score-container">
+<div class="score-circle">
+<span class="score-number">31</span>
+</div>
+<span class="score-label">out of 100</span>
+</div>
+
+<p class="summary">Your website has a strong foundation, but critical gaps are costing you calls and jobs every week.</p>
+
+<div class="rating-badge">
+<span class="star">★★★★★</span> 4.9 from 147 Google reviews
+</div>
+</div>
+
+<h2>What's working well</h2>
+
+<div class="strength-card">
+<div class="strength-title">You've built real trust with Brisbane customers</div>
+<p class="issue-impact">147 five-star reviews is a powerful asset. People trust you—that's the hardest part of the business, and you've nailed it.</p>
+</div>
+
+<div class="strength-card">
+<div class="strength-title">You have a solid web presence</div>
+<p class="issue-impact">Your domain has been online for 12 years, and you've built up 85 pages of content covering different roofing services and local areas. That's real search engine value.</p>
+</div>
+
+<div class="strength-card">
+<div class="strength-title">Your phone number is visible on mobile</div>
+<p class="issue-impact">On mobile phones, people can see your 1300 number on the first screen—that's a good start for getting calls.</p>
+</div>
+
+<h2>What's holding you back</h2>
+
+<p>Right now, your website has a few problems that are directly costing you customers. Here's what we found:</p>
+
+<div class="issue-card">
+<div class="issue-title">Desktop visitors see an error page instead of your business</div>
+<p class="issue-impact">When someone opens your website on a laptop or computer, they see a "403 - Forbidden" error message instead of your roofing company. Many Brisbane homeowners research on their computer first, comparing a few companies side-by-side. When they hit an error, they go straight back to Google and call your competitor instead.</p>
+</div>
+
+<div class="issue-card">
+<div class="issue-title">People can't find how to contact you in the first five seconds</div>
+<p class="issue-impact">Research shows that 70% of mobile visitors decide whether to stay or leave within 8 seconds. If they don't immediately see a clear "Get a quote" or "Call us" button, most will close the tab. You've earned 147 great reviews, but if visitors can't quickly work out how to reach you, that trust doesn't turn into calls.</p>
+</div>
+
+<div class="issue-card">
+<div class="issue-title">Your phone number isn't tap-to-call on mobile</div>
+<p class="issue-impact">On a smartphone, your phone number appears as plain text. Customers have to copy it, switch to their phone app, paste it, then dial. Most won't bother—they'll just tap the back button and call the next roofer whose number works with one tap.</p>
+</div>
+
+<div class="issue-card">
+<div class="issue-title">No licence or insurance details visible</div>
+<p class="issue-impact">Before spending thousands on a roof job, Queensland homeowners want to see your QBCC licence, insurance coverage, and how long you've been in business. When that information isn't front and centre, people either ring to ask (extra friction) or move on to a competitor who displays it clearly.</p>
+</div>
+
+<div class="issue-card">
+<div class="issue-title">The site looks dated</div>
+<p class="issue-impact">Roofing is a big investment, and customers pay close attention to whether a business looks professional and current. When a website feels a few years behind, people worry the quality of work might be behind too—and they choose someone whose site feels more modern and trustworthy.</p>
+</div>
+
+<div class="issue-card">
+<div class="issue-title">Google can't understand your site properly</div>
+<p class="issue-impact">Your website is missing the behind-the-scenes code that helps Google show you in map results, knowledge panels, and AI-generated answers. Even if you rank well for searches, you're invisible in the high-conversion spots where customers make quick decisions. With ChatGPT and Google AI now answering "who's a good roofer in Brisbane?", sites without this structure simply don't get mentioned.</p>
+</div>
+
+<h2>What changes when we fix this</h2>
+
+<p>Here's what happens when these issues are resolved:</p>
+
+<div class="outcome-list">
+<ul>
+<li><strong>More phone calls.</strong> When your contact details and call button are impossible to miss, and people can dial with one tap, you'll get more enquiries from the same amount of traffic.</li>
+
+<li><strong>Higher trust, faster decisions.</strong> When visitors immediately see your licence, insurance, years in business, and those 147 five-star reviews, they feel confident. That means less "I'll think about it" and more "Let's book the quote."</li>
+
+<li><strong>Desktop visitors actually see your business.</strong> Fixing the error page means laptop and computer users—often homeowners doing serious research—can evaluate your services instead of bouncing straight back to Google.</li>
+
+<li><strong>Better visibility in search and AI.</strong> Adding the right technical structure means Google can feature you in map packs, knowledge panels, and AI overviews—the places where customers make decisions without clicking through to five different websites.</li>
+
+<li><strong>A site that reflects the quality of your work.</strong> A modern, professional design tells customers that you care about details and run a tight operation. It reinforces the trust your reviews have already built.</li>
+</ul>
+</div>
+
+<div class="closing">
+<p><strong>We'd love to walk you through these findings in detail.</strong></p>
+
+<p>We can show you exactly where customers are getting stuck, what a redesigned site would look like, and how the changes would work for your business.</p>
+
+<p>No pressure, no obligation—just a 30-minute conversation about what's possible.</p>
+
+<p style="margin-top: 1.5rem; color: #6b5d4f;">Reach out when you're ready, and we'll get it booked in.</p>
+</div>
+
+</div>
+
+</body>
+</html>

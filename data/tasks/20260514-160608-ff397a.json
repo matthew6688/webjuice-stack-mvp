@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160608-ff397a",
+  "created_at": "2026-05-14T16:06:08.207Z",
+  "updated_at": "2026-05-14T16:06:09.830Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for place_chijnylrm_znzkario5qkvfr5vo (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "place_chijnylrm_znzkario5qkvfr5vo",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1408,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:06:08.420Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key place_chijnylrm_znzkario5qkvfr5vo --theme report --html"
+    },
+    {
+      "at": "2026-05-14T16:06:09.829Z",
+      "step": "cli.stream",
+      "detail": "\"entityKey\": \"place_chijnylrm_znzkario5qkvfr5vo\",\n      \"slug\": \"weatherite\",\n      \"md\": \"clients/weatherite/v2/master.md\",\n      \"html\": \"clients/weatherite/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:06:09.830Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1408ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

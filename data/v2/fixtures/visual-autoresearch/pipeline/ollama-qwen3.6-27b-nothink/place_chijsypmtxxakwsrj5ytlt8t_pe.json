@@ -1,0 +1,131 @@
+{
+  "provider": "codex_cli",
+  "model": null,
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 77708,
+  "parsedJson": {
+    "freshness_score": 3,
+    "trust_score": 5,
+    "conversion_score": 5,
+    "design_age_estimate": "outdated",
+    "summary": "The site clearly shows the business name and phone number, but the dated layout, weak mobile first screen, and distracting visual elements make it feel less current than a professional Brisbane roofing company should.",
+    "issues": [
+      {
+        "id": "mobile_above_fold_no_service_context",
+        "severity": "critical",
+        "title": "Mobile first screen lacks roofing proof",
+        "what_observed": "On the mobile screenshot, the first visible area is mostly social icons, a blue 'REQUEST A QUOTE' button, the large PRO logo, phone number, and a grey 'Go to...' navigation bar; no roof photo, completed work, reviews, or service proof is visible before the welcome heading.",
+        "why_problem": "A local customer searching for a roofer on their phone wants to quickly confirm this is a real roofing business that can solve their problem. Seeing only branding and a generic welcome section makes them work harder before they trust the company enough to call.",
+        "what_correct_looks_like": "Mobile should open with a compact header showing logo, tap-to-call button, and a hero area with a real roof restoration photo, a short Brisbane-specific promise, star rating or review count, and one clear quote button visible without scrolling.",
+        "how_to_fix_in_redesign": "Replace the mobile top stack with a 56px sticky header containing logo and phone CTA, then add a first-screen hero with a real completed roof image, headline 'Roof Restoration Brisbane', review/trust line, and two actions: 'Call Now' and 'Get Free Quote'.",
+        "plain_explanation": "手机版打开后，客户先看到的是标志和菜单，但看不到屋顶案例、评价或为什么该找你。",
+        "customer_impact": "本地找屋顶维修的人很多是在手机上临时比较商家，通常会在前 5-8 秒决定要不要继续看。第一屏没有信任证据，会让一部分来自 Google 商家资料的访客直接返回去点竞争对手。"
+      },
+      {
+        "id": "desktop_social_share_bar_distracts",
+        "severity": "major",
+        "title": "Floating share bar distracts",
+        "what_observed": "On the desktop screenshot, a vertical social sharing strip sits on the far left edge with '48 Shares' and stacked Facebook, Twitter, Google+, Pinterest, Reddit, LinkedIn, and other icons.",
+        "why_problem": "A person looking for a roofer is not trying to share the page; they are trying to decide who to call. The share bar feels like an old blog plugin and visually competes with the actual contact actions.",
+        "what_correct_looks_like": "The page should have no floating share toolbar; trust elements should be focused on reviews, licences, service areas, workmanship guarantees, and contact options.",
+        "how_to_fix_in_redesign": "Remove the floating social share plugin entirely and replace that trust space with visible Google rating, years in business, warranty badge, and Brisbane service-area proof near the hero and quote form.",
+        "plain_explanation": "左边那排分享按钮看起来像旧博客插件，和找屋顶工人的需求无关。",
+        "customer_impact": "客户是来打电话或要报价的，不是来分享页面的。无关按钮越多，注意力越分散，尤其会削弱主要电话和报价按钮的点击。"
+      },
+      {
+        "id": "hero_banner_looks_like_old_ad",
+        "severity": "major",
+        "title": "Hero banner feels dated",
+        "what_observed": "The desktop hero uses a pale roof-and-sky image with a large dark blue rectangle containing all-caps text 'FREE ADVICE & QUOTES' and the phone number in white.",
+        "why_problem": "The banner looks like an old static advertisement rather than a polished local trade website. Customers may question whether the business is still active or whether the workmanship will feel as dated as the website.",
+        "what_correct_looks_like": "A current roofer site should use a sharp real project photo, readable live text over a controlled overlay, and a clear hierarchy: service headline, trust proof, phone CTA, and quote CTA.",
+        "how_to_fix_in_redesign": "Replace the image-with-text banner with a high-resolution Brisbane roof restoration project photo and HTML text overlay: 'Roof Restoration Brisbane', 'Free roof inspection and quote', review/trust badge, phone button, and quote button.",
+        "plain_explanation": "首页大图像一张旧广告横幅，不像现在专业公司的网站。",
+        "customer_impact": "屋顶工程客单价高，客户会用网站外观判断公司是否靠谱。页面显旧会让客户担心服务也不够专业，从而降低来电和询价。"
+      },
+      {
+        "id": "quote_form_below_fold_desktop",
+        "severity": "major",
+        "title": "Quote form starts too low",
+        "what_observed": "On desktop, the 'Request a Quote' form is visible on the right, but the form fields begin low on the page and are partly cut off at the bottom of the screenshot.",
+        "why_problem": "The quote form is one of the most important actions, but it is not fully visible when the page first loads. A local-search visitor may miss it or feel the page is asking for effort before giving enough reason to engage.",
+        "what_correct_looks_like": "The desktop first screen should show the full quote module or a shorter version with name, phone, suburb, and roof issue visible above the fold, beside clear trust proof.",
+        "how_to_fix_in_redesign": "Move a compact quote form into the hero area or immediately beside it, reduce fields to the essentials, and keep a sticky phone CTA in the header for users who prefer calling.",
+        "plain_explanation": "电脑端的报价表单位置偏低，客户第一眼不能完整看到怎么提交。",
+        "customer_impact": "需要滚动或找入口会减少询价。对于从 Google 点进来的客户，竞争对手只差一个返回按钮，表单越明显越容易拿到线索。"
+      },
+      {
+        "id": "mobile_navigation_feels_broken",
+        "severity": "major",
+        "title": "Mobile menu looks unfinished",
+        "what_observed": "The mobile navigation appears as a thin grey bar with placeholder text 'Go to...' and a separate pale hamburger icon inside a bordered box.",
+        "why_problem": "This looks like an old responsive template rather than a deliberate mobile menu. It can make visitors wonder whether the site is maintained and whether tapping the menu will work properly.",
+        "what_correct_looks_like": "Mobile navigation should be a clean header with a recognizable menu icon, clear tap targets, and priority actions like Call and Quote always easy to reach.",
+        "how_to_fix_in_redesign": "Replace the 'Go to...' select-style menu with a modern sticky mobile header: logo left, phone icon button, quote button, and a hamburger opening a full-screen menu with Services, Reviews, Areas, and Contact.",
+        "plain_explanation": "手机菜单像旧模板里的默认控件，显示“Go to...”，不像精心设计过的导航。",
+        "customer_impact": "手机用户占本地搜索的大部分。菜单看起来不可靠，会让客户减少继续浏览服务、案例和联系方式的意愿。"
+      },
+      {
+        "id": "trust_signals_not_visible_early",
+        "severity": "major",
+        "title": "Trust proof is missing early",
+        "what_observed": "In both screenshots, the visible top sections show logo, phone number, navigation, welcome text, and promotional copy, but no star rating, customer review snippet, licence, warranty, insurance, or completed project proof is visible.",
+        "why_problem": "Roofing is expensive and high-risk for homeowners. Without visible proof, a Google-searching visitor has to take the business at its word instead of seeing evidence that other Brisbane customers trust them.",
+        "what_correct_looks_like": "Above the fold should include a Google rating badge, review count or testimonial snippet, warranty/insurance/licence indicators, and at least one real before-and-after roof image.",
+        "how_to_fix_in_redesign": "Add a trust strip directly under the hero headline with Google rating, number of local jobs or years in business if available, warranty badge, insured/licensed badge, and a small review quote.",
+        "plain_explanation": "页面前面没有马上展示评价、保障、保险、资质或真实案例。",
+        "customer_impact": "屋顶服务不是小消费，客户通常会先看别人是否信任你。缺少评价和保障，会让来自 Google 商家资料的流量更容易流失到证据更充分的同行。"
+      },
+      {
+        "id": "visual_hierarchy_overcrowded",
+        "severity": "major",
+        "title": "Too many competing calls to action",
+        "what_observed": "Desktop shows a top-right 'REQUEST A QUOTE' button, a large phone number in the header, a hero banner phone number, navigation links, search icon, and a separate quote form all competing in the same first page area.",
+        "why_problem": "When several contact prompts fight for attention, visitors have to decide where to look first. That slows down action for someone who simply wants a roofer to call or quote quickly.",
+        "what_correct_looks_like": "The page should have one dominant phone action and one quote action, repeated consistently with the same labels, colors, and placement.",
+        "how_to_fix_in_redesign": "Create a simpler action system: sticky header with 'Call 07 3062 8404' and 'Get Free Quote', hero repeats the same two actions, and remove duplicate phone graphics inside static images.",
+        "plain_explanation": "页面同时出现很多电话和报价入口，视觉上有点乱。",
+        "customer_impact": "客户选择越多，反而越容易犹豫。把主要动作固定成“打电话”和“获取免费报价”，可以减少流失，让访客更快行动。"
+      },
+      {
+        "id": "typography_and_colors_feel_old",
+        "severity": "minor",
+        "title": "Text styling feels dated",
+        "what_observed": "The page uses heavy dark blue headings, bright orange subheadings, red all-caps promotional text, and large bold banner lettering across the visible desktop and mobile sections.",
+        "why_problem": "The mix of strong colors and all-caps text feels promotional instead of calm and professional. For a homeowner comparing roofers, that can reduce the sense of quality and care.",
+        "what_correct_looks_like": "A professional trade site should use a restrained palette with navy as the base, one warm accent color for buttons, clear 16px+ body type, and sentence-case headings with consistent spacing.",
+        "how_to_fix_in_redesign": "Define a tighter type and color system: navy headings, orange only for primary CTAs, neutral body text, no red all-caps offer text, and consistent heading sizes across desktop and mobile.",
+        "plain_explanation": "蓝色、橙色、红色和全大写文字混在一起，像促销传单，不够稳重。",
+        "customer_impact": "屋顶客户更在意可靠、专业和放心。视觉太像促销，会让部分客户怀疑质量，尤其是准备花几千到上万澳元的客户。"
+      }
+    ],
+    "positive_observations": [
+      "The business name and phone number are visible near the top on both desktop and mobile.",
+      "The brand colors are consistent enough to reuse in a more restrained redesign.",
+      "There is already a quote action and quote form, so the redesign can improve placement rather than inventing a new contact path."
+    ],
+    "redesign_priorities": [
+      "1. Rebuild the mobile first screen around tap-to-call, quote CTA, real roof imagery, and immediate trust proof.",
+      "2. Replace the dated desktop hero and floating share bar with a high-quality project photo, concise service headline, review proof, and clear actions.",
+      "3. Simplify the quote journey with fewer fields, consistent CTA styling, and visible Google reviews, warranty, and local Brisbane credibility."
+    ],
+    "confidence": 0.92
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 160179,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 77708
+    }
+  ],
+  "tokensIn": 91541,
+  "tokensOut": 3404,
+  "theoreticalCostUsd": 0.2628925
+}

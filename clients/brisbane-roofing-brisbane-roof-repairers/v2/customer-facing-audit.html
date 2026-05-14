@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Audit Report · Brisbane Roofing - Brisbane Roof Repairers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: #faf8f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        h1, h2, h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8e5df;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #444;
+        }
+        
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 2rem 0 3rem;
+            border-bottom: 3px solid #e8e5df;
+            margin-bottom: 3rem;
+        }
+        
+        .business-name {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .score-container {
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        .score-circle {
+            display: inline-block;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #f0ad4e 0%, #f0ad4e 64%, #e8e5df 64%);
+            position: relative;
+            margin: 1rem auto;
+        }
+        
+        .score-inner {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            font-family: Georgia, serif;
+        }
+        
+        .score-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .score-context {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+        
+        .section {
+            margin: 3rem 0;
+        }
+        
+        .strength-item, .issue-item {
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .strength-item::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #5cb85c;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .issue-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .issue-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .issue-impact {
+            color: #555;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .outcome-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .outcome-list li {
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .outcome-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #5cb85c;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .closing {
+            margin-top: 4rem;
+            padding: 2.5rem;
+            background: #f8f6f3;
+            border-left: 4px solid #5cb85c;
+        }
+        
+        .closing p {
+            margin-bottom: 1rem;
+        }
+        
+        .closing .cta {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 1.1rem;
+        }
+        
+        .meta {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e8e5df;
+            font-size: 0.9rem;
+            color: #888;
+            text-align: center;
+        }
+        
+        strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .score-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div class="business-name">Website Audit Report</div>
+            <h1>Brisbane Roofing<br>Brisbane Roof Repairers</h1>
+            
+            <div class="score-container">
+                <div class="score-circle">
+                    <div class="score-inner">
+                        <div class="score-number">64</div>
+                        <div class="score-label">out of 100</div>
+                    </div>
+                </div>
+                <div class="score-context">Your website has solid foundations but is losing calls every day</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What's Working Well</h2>
+            
+            <div class="strength-item">
+                <h3>You've earned trust with real customers</h3>
+                <p>Your 5-star Google rating from 9 reviews shows you're doing great work. That's the hardest part — you've got happy customers who took the time to recommend you.</p>
+            </div>
+            
+            <div class="strength-item">
+                <h3>You're already ranking for local searches</h3>
+                <p>Your website shows up in Brisbane roofing searches, and you've built out service pages covering different areas around Brisbane. That's the right foundation for local visibility.</p>
+            </div>
+            
+            <div class="strength-item">
+                <h3>Desktop visitors can see your phone number</h3>
+                <p>On desktop computers, your phone number (07 3608 1803) appears at the top of the page — so people on laptops and desktop PCs can call you straight away.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What's Holding You Back</h2>
+            
+            <div class="issue-item">
+                <div class="issue-title">Your homepage looks unfinished</div>
+                <div class="issue-impact">First impressions matter — and right now, visitors aren't sure if you're a real business.</div>
+                <p>The main headline on your site says "YOUR COMPANY FOR ROOF REPAIRS BRISBANE" instead of your actual business name. It looks like placeholder text that was never replaced. When someone lands on your site from Google, they make a snap judgement in about 3 seconds — and if it looks like a template, many will click back and call your competitor instead.</p>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">Mobile visitors can't easily call you</div>
+                <div class="issue-impact">More than half your visitors are on phones — and they're struggling to find your number.</div>
+                <p>On mobile, there's only a small phone icon at the top with no visible number next to it. People have to guess that tapping it will call you. Most roofing enquiries happen on mobile (someone spots a leak and Googles "roof repairs near me" on their phone). If they can't see your number clearly, they'll call the next company on the list.</p>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">Nothing tells visitors why they should trust you</div>
+                <div class="issue-impact">Roof repairs are expensive and risky — customers need proof you're legitimate before they call.</div>
+                <p>When someone first lands on your homepage, they see buttons asking them to contact you, but no proof of why they should. Your 5-star Google rating isn't shown. There's no mention of being licensed or insured, how long you've been in business, or what areas you cover. Customers shopping for roof repairs are cautious — they want to see credentials, guarantees, and social proof before picking up the phone.</p>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">Your site loads slowly on mobile</div>
+                <div class="issue-impact">Slow loading times mean lost customers — especially on phones with poor reception.</div>
+                <p>Your mobile site takes over 8 seconds to fully load. Most people will give up after 3 seconds and go back to Google. The main culprit is unoptimised images — you're serving large JPG files that could be 30-50% smaller in modern formats. Every extra second of loading time costs you enquiries.</p>
+            </div>
+            
+            <div class="issue-item">
+                <div class="issue-title">You're invisible to AI search</div>
+                <div class="issue-impact">More people are asking ChatGPT and Google's AI for local recommendations — and your site isn't showing up.</div>
+                <p>When someone asks an AI assistant "Who's a good roofing company in Brisbane?", the AI can only recommend businesses whose websites have the right technical setup. Your site scores 30 out of 100 on AI discoverability — which means you're missing out on a fast-growing search channel. This includes missing structured data for your services, ratings, and business credentials.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What Changes When We Fix This</h2>
+            
+            <p>These aren't just cosmetic improvements — each fix translates directly into more calls and jobs:</p>
+            
+            <ul class="outcome-list">
+                <li><strong>Professional first impression:</strong> Replace the placeholder headline with your real business name and a clear local offer. Visitors instantly see you're a legitimate Brisbane roofing company, not a template site.</li>
+                
+                <li><strong>More mobile calls:</strong> Add a visible "Call 07 3608 1803" button that stays at the top on mobile. People won't have to hunt for your number — they'll tap and call immediately when they spot a leak.</li>
+                
+                <li><strong>Trust before the call:</strong> Show your 5-star Google rating, licensed/insured status, and service guarantee right at the top. Customers will feel confident calling you instead of shopping around.</li>
+                
+                <li><strong>Faster loading, fewer bounces:</strong> Optimise all images into modern formats and add lazy loading. Your site will load in under 3 seconds on mobile, keeping more visitors on the page long enough to call.</li>
+                
+                <li><strong>Visible in AI search:</strong> Add the technical structure that ChatGPT and Google AI need. When people ask for Brisbane roofing recommendations, you'll be in the answer.</li>
+                
+                <li><strong>Keep your Google rankings:</strong> We'll create a redirect map for all 15 existing pages so you don't lose any of the search visibility you've already built up. Your current rankings stay intact.</li>
+            </ul>
+        </div>
+
+        <div class="closing">
+            <p class="cta">Want to see exactly what we'd change?</p>
+            <p>We'd love to walk you through this audit in a quick 30-minute call — no sales pressure, just a practical conversation about what's costing you calls right now and what it would look like to fix it.</p>
+            <p>We'll show you:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Side-by-side examples of the specific changes we'd make</li>
+                <li>How the redirect plan works to protect your Google rankings</li>
+                <li>A realistic timeline for getting the new site live</li>
+            </ul>
+            <p style="margin-top: 1.5rem;">If it's a good fit, great. If not, you'll still walk away with a clearer picture of what's holding your website back.</p>
+            <p style="margin-top: 1.5rem;"><strong>Ready to chat?</strong> Reply to the email that sent you this report, or give us a call.</p>
+        </div>
+
+        <div class="meta">
+            Report generated 15 May 2026<br>
+            Brisbane Roofing - Brisbane Roof Repairers · thebrisbaneroofrepairers.com
+        </div>
+    </div>
+</body>
+</html>

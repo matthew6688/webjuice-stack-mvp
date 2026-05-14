@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160139-597b20",
+  "created_at": "2026-05-14T16:01:39.528Z",
+  "updated_at": "2026-05-14T16:09:14.744Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chijrq6qulnbkwsruettr7eegyc (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijrq6qulnbkwsruettr7eegyc"
+    ],
+    "target_entity_key": "place_chijrq6qulnbkwsruettr7eegyc",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 455001,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:01:39.741Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijrq6qulnbkwsruettr7eegyc"
+    },
+    {
+      "at": "2026-05-14T16:01:44.844Z",
+      "step": "cli.stream",
+      "detail": "e=normal (concurrent_leads=1)\n\n══════════ place_chijrq6qulnbkwsruettr7eegyc ══════════\n  [thread] reusing 1504514037109620886\n  [stage 1/4] detailed audit — fetching https://aceroofingservice.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:03:00.090Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=54/100 decision=moderate_candidate\n     → contact: emails=0 · contact_url=no · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:05:33.919Z",
+      "step": "cli.stream",
+      "detail": "→ 5 visual issues via codex_cli, latency=42.7s (in=40971 out=1696 ~$0.1194)\n  [stage 3a/4] graded: B/T2 ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:05:55.410Z",
+      "step": "cli.stream",
+      "detail": "}\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chijrq6qulnbkwsruettr7eegyc ══════════\n  [1/5] multi-page crawl https://aceroofingservice.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:06:07.114Z",
+      "step": "cli.stream",
+      "detail": "s · 10.8s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:07:08.355Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 61.2s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 66/100 (A24 B7 C17 D15 E3)\n     → verdict: ready-to-build"
+    },
+    {
+      "at": "2026-05-14T16:07:42.405Z",
+      "step": "cli.stream",
+      "detail": "12637 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  14992 chars"
+    },
+    {
+      "at": "2026-05-14T16:09:08.860Z",
+      "step": "cli.stream",
+      "detail": "ct, please use \"pages_build_output_dir\" to specify the directory of static files to upload.\n  Ignoring configuration file for now, and proceeding with project deploy.\n\n\n✨ Compiled Worker successfully"
+    },
+    {
+      "at": "2026-05-14T16:09:14.223Z",
+      "step": "cli.stream",
+      "detail": "s/matthew/Developer/google-map-website-v3/clients/ace-roofing-service/v2/concept/reference-adapter/cf-pages-deploy.json\n  #website-projects thread: reused 1504515594123477023\n  profile card refreshed"
+    },
+    {
+      "at": "2026-05-14T16:09:14.724Z",
+      "step": "cli.stream",
+      "detail": "\"decision\": \"moderate_candidate\",\n      \"visual_issues\": 5,\n      \"grade\": \"B/T2\",\n      \"report_url\": \"/audit-reports/place_chijrq6qulnbkwsruettr7eegyc/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:09:14.744Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=455001ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

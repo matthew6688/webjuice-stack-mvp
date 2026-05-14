@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Weatherite · 现状审计与重构提议</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="/Users/matthew/.claude/skills/.agents/skills/huashu-md-html/templates/report/theme.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Weatherite · 现状审计与重构提议</h1>
+</header>
+<h1 id="weatherite-现状审计与重构提议">Weatherite ·
+现状审计与重构提议</h1>
+<blockquote>
+<p><strong>58/100</strong> · moderate_candidate · 行业：roofer ·
+地区：Brisbane · Google 评价：5★ （4 条）</p>
+</blockquote>
+<h2 id="内部分级-运营优先看这段">内部分级 · 运营优先看这段</h2>
+<p><strong>投入分级：</strong> <code>C</code> 批量轻触 — 模板邮件 + 报告
+PDF 链接，无主动跟进</p>
+<p><strong>触发依据：</strong> - C · moderate_candidate · audit 58 · 4
+评论 5★ (未达 B 标准)</p>
+<p><strong>下一步行动：</strong> 标准模板邮件 + master.md PDF
+链接，无主动跟进。等客户回复触发后再投入。</p>
+<h2 id="一店家现状速览">一、店家现状速览</h2>
+<p><strong>线索来源 · 联系开场可用</strong>: - <strong>来源</strong>:
+Google Places API (官方搜索) - <strong>搜索关键词</strong>:
+<code>roofer brisbane</code> - <strong>结果排名</strong>: 第 7 位 -
+<strong>首次发现</strong>: 2026-05-14 - <strong>Batch</strong>:
+<code>places-roofer-brisbane-202605150200</code></p>
+<p><strong>审计结论：</strong> audit_score=58 → moderate_candidate ·
+weakest: gbp 24, visual 50</p>
+<ul>
+<li>电话：0412 686 071</li>
+<li>地址：3 Sandune Pl, Thornlands QLD 4164, Australia</li>
+<li>网站：<a
+href="https://www.weatherite.com.au/">https://www.weatherite.com.au/</a></li>
+</ul>
+<h2 id="二客户访问时看到的页面">二、客户访问时看到的页面</h2>
+<figure>
+<img src="./screenshots/desktop.png" alt="桌面 1440×900" />
+<figcaption aria-hidden="true">桌面 1440×900</figcaption>
+</figure>
+<figure>
+<img src="./screenshots/mobile.png" alt="移动 375×667" />
+<figcaption aria-hidden="true">移动 375×667</figcaption>
+</figure>
+<p><strong>慢速 4G 加载实景视频</strong>（1.6 Mbps · 150ms 延迟 · 4× CPU
+节流，模拟真实手机访客的体验）：</p>
+<p><a href="./video/mobile-throttled.webm">播放视频</a></p>
+<h2 id="三视觉审计-vision-llm-怎么看">三、视觉审计 · Vision LLM
+怎么看</h2>
+<blockquote>
+<p>A functional but visually dated WordPress-template site where the
+mobile layout buries the CTA below fold, no phone number is displayed on
+screen, and zero social proof appears above the fold — three compounding
+conversion barriers for local-search visitors.</p>
+</blockquote>
+<p>新鲜度 <strong>4/10</strong> · 信任度 <strong>5/10</strong> ·
+转化准备度 <strong>3/10</strong> · 设计年代 <code>outdated</code></p>
+<p><strong>值得保留的优点：</strong> - The named ‘Call Jason’ CTA in the
+top-right is correctly positioned and creates approachability — a named
+contact point is more compelling than a generic ‘Contact Us’ label and
+should be preserved in the redesign. - The hero photography shows actual
+roof tiles in good condition, giving immediate visual context for the
+service type — it is a strong foundation for the redesign photo
+direction. - The subtext ‘Free Quotes and Sensible Pricing’ directly
+addresses the visitor’s primary concern (cost and fairness) with plain
+language — this copy is effective and should be carried into the
+redesign.</p>
+<h2 id="五当前网站在哪里漏水">五、当前网站在哪里”漏水”</h2>
+<h3 id="关键问题-2-项立刻在伤害成交">关键问题 · 2
+项（立刻在伤害成交）</h3>
+<h3 id="关键-mobile-cta-button-not-visible-above-fold">关键 · Mobile:
+CTA button not visible above fold</h3>
+<p><strong>技术事实</strong></p>
+<p>On mobile, the hero headline (‘Your Roofing &amp; Guttering
+Maintenance &amp; Restoration Specialists in The Redlands’) fills the
+entire viewport in large white bold text against the roof-tile photo.
+The ‘Contact Us Today’ orange button seen on desktop is not visible —
+only a small floating ‘Contact’ bar appears at the very bottom edge of
+the screen, partially cropped.</p>
+<p><strong>普通话翻译</strong></p>
+<p>在手机上打开网站时，整个屏幕被大标题占满，客户看不到任何联系按钮，必须往下滑才能找到如何联系你。</p>
+<p><strong>对客户的影响</strong></p>
+<p>超过70%的本地服务搜索来自手机。研究显示手机用户在8秒内找不到行动按钮就会离开。这意味着你可能正在流失大多数通过谷歌找到你的客户——他们甚至还没有看到你的服务内容就已经离开了。</p>
+<p><strong>正确长啥样</strong></p>
+<p>Hero headline limited to 2–3 lines at ~28px on mobile, followed
+immediately by a full-width tappable phone button (min 48px tall,
+showing the actual digits) — all visible within the first 600px of the
+mobile viewport without any scrolling.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Reduce the hero H1 font size on mobile to 26–28px so the headline
+fits in 3 lines maximum. Place a full-width ‘Call Jason: 04XX XXX XXX’
+tel: button in high-contrast orange directly below the headline, inside
+the hero section, above the fold.</p>
+<h3
+id="关键-phone-number-not-displayed-on-screen-hidden-behind-button-click">关键
+· Phone number not displayed on screen — hidden behind button click</h3>
+<p><strong>技术事实</strong></p>
+<p>On both the desktop and mobile screenshots, the top-right shows an
+orange ‘Call Jason’ button but no actual phone number digits appear
+anywhere on the visible page. The number is hidden behind a click
+interaction.</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站上看不到电话号码——客户必须点击按钮才能看到，很多人不会这样做，他们会直接去找下一家公司。</p>
+<p><strong>对客户的影响</strong></p>
+<p>显示真实电话号码是建立即时信任的最简单方式之一。在比较几家屋顶公司时，看不到你的号码的客户会优先选择电话显示在页面上的竞争对手——这让你直接在第一印象阶段就输掉了竞争。</p>
+<p><strong>正确长啥样</strong></p>
+<p>On desktop: ‘Call Jason · 0412 345 678’ displayed in the header so
+the number is readable at a glance without clicking. On mobile: a
+full-width tap-to-call button that displays the complete number as text,
+e.g. ‘Call Now: 04XX XXX XXX’.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Replace the ‘Call Jason’ button label on desktop with ‘Call Jason ·
+04XX XXX XXX’ (actual number) in the header. On mobile, the floating
+Contact button should show the full number as text on the button face.
+Use a tel: href so it dials directly.</p>
+<h3 id="主要问题-4-项影响转化的明显短板">主要问题 · 4
+项（影响转化的明显短板）</h3>
+<h3 id="主要-homepage_title_clear">主要 · homepage_title_clear</h3>
+<p><strong>技术事实</strong></p>
+<p>title=‘# Your Roofing &amp; Guttering Maintenance &amp; Restoration
+Special’ contains-name=false contains-niche=false</p>
+<p><strong>普通话翻译</strong></p>
+<p>你网站的浏览器标签 title 没把业务名字 +
+服务关键词写清楚（比如该写「Weatherite - roofer
+Brisbane」，但目前是泛泛一句）。</p>
+<p><strong>对客户的影响</strong></p>
+<p>Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 +
+即使排上来客户也不知道是不是匹配的服务。SEO
+最便宜的修复，但很多本地企业完全没做。</p>
+<h3
+id="主要-no-reviews-or-star-ratings-visible-anywhere-above-fold">主要 ·
+No reviews or star ratings visible anywhere above fold</h3>
+<p><strong>技术事实</strong></p>
+<p>The hero section on both desktop and mobile shows only the business
+name, the tagline, the ‘Free Quotes and Sensible Pricing’ subtext, and a
+CTA button. There are no star ratings, Google review counts, or customer
+testimonial snippets visible anywhere in the hero or the navigation
+bar.</p>
+<p><strong>普通话翻译</strong></p>
+<p>英雄区域没有任何客户评价或星级评分，新客户无法立刻知道这家公司是否值得信赖。</p>
+<p><strong>对客户的影响</strong></p>
+<p>88%的消费者在联系本地服务商之前会先看评论。在屋顶修缮这种动辄数千元的高价服务领域，没有立即可见的评价意味着大量潜在客户会直接跳过你，选择在页面上展示了星级评分的竞争对手。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A ‘4.9 ★ — 93 Google Reviews’ badge placed directly under the hero
+headline, or a one-line customer quote (‘They replaced our whole roof —
+done in 2 days, brilliant job — Sarah, Capalaba’) in smaller text
+beneath the CTA button.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Add a Google review summary component inside the hero section below
+the headline: star icons (SVG), review score, and review count. Link it
+to the Google Maps profile. Optionally add one short rotating
+testimonial quote beneath the CTA.</p>
+<h3
+id="主要-headline-targets-the-redlands-excludes-broader-brisbane-searchers">主要
+· Headline targets ‘The Redlands’ — excludes broader Brisbane
+searchers</h3>
+<p><strong>技术事实</strong></p>
+<p>The hero H1 on both desktop and mobile reads ‘Your Roofing &amp;
+Guttering Maintenance &amp; Restoration Specialists in The Redlands’.
+There is no mention of Brisbane anywhere in the hero section or the
+visible navigation.</p>
+<p><strong>普通话翻译</strong></p>
+<p>网站首页只提到了’雷德兰兹’，在布里斯班其他区域搜索屋顶维修的客户可能会以为你们不服务他们的地区，然后直接去找别家。</p>
+<p><strong>对客户的影响</strong></p>
+<p>布里斯班大都会的搜索量远大于雷德兰兹单一区域。如果页面标题只强调一个小区域，你每天都在错过大量来自周边郊区的潜在客户——这些人看到’雷德兰兹’就认为你不在他们的服务范围内，直接离开页面。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A headline that leads with the broader metro area: ‘Brisbane’s
+Trusted Roofing &amp; Guttering Specialists’ with a secondary line
+‘Proudly Serving The Redlands, Bayside &amp; South-East Brisbane’ to
+keep local specificity without excluding the wider market.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Rewrite the hero H1 to lead with ‘Brisbane’ as the primary location
+identifier. Demote ‘The Redlands’ to a supporting descriptor line
+beneath the headline or in the subtext. This broadens appeal without
+losing the local signal.</p>
+<h3 id="主要-visual-design-reads-as-a-20162017-wordpress-template">主要
+· Visual design reads as a 2016–2017 WordPress template</h3>
+<p><strong>技术事实</strong></p>
+<p>The overall layout — a full-width hero photo with a heavy red/dark
+colour overlay on the left half, an orange rounded-corner gradient CTA
+button, a flat red navigation bar, and a small icon-beside-text logo —
+matches the aesthetic of generic WordPress themes popular in
+2015–2017.</p>
+<p><strong>普通话翻译</strong></p>
+<p>这个网站的外观设计很老旧，看起来像是十年前建的，给新访客一种’这家公司还在营业吗’的第一印象。</p>
+<p><strong>对客户的影响</strong></p>
+<p>研究表明用户在0.05秒内就会对网站形成第一印象。一个看起来过时的网站会让潜在客户认为公司不够专业，从而选择视觉更现代的竞争对手——即使你的实际服务质量更好、价格更合理。</p>
+<p><strong>正确长啥样</strong></p>
+<p>A clean, high-contrast layout with a natural (un-tinted) photo of a
+completed roof job as the hero background, a white or charcoal header,
+one strong accent colour consistently applied, and modern sans-serif
+type at 18px+ body size.</p>
+<p><strong>Redesign 怎么改</strong></p>
+<p>Replace the heavy red photo overlay with a natural full-bleed image
+of a completed roof. Switch the nav background from flat red to white or
+dark charcoal. Use a single accent colour (deep slate blue or forest
+green) for buttons. Remove the gradient bevel from all button styles.
+Set body font to Inter or similar at 18px.</p>
+<h2 id="六redesign-的发力点综合视觉-评论数据">六、Redesign
+的发力点（综合视觉 + 评论数据）</h2>
+<ol type="1">
+<li>[视觉] 1. Fix the mobile above-fold experience: shrink the hero
+headline to 2–3 lines and add a full-width tap-to-call button showing
+the actual phone number digits — both visible without scrolling on any
+modern smartphone.</li>
+<li>[视觉] 2. Display the phone number on screen at all times on both
+desktop (in the header text) and mobile (on the CTA button face) — never
+hide it behind a click.</li>
+<li>[视觉] 3. Add a Google star rating badge and review count directly
+beneath the hero headline to give first-time visitors immediate,
+independent trust evidence before they decide whether to call.</li>
+</ol>
+<h2 id="真实速度数据-google-pagespeed-insights">真实速度数据 · Google
+PageSpeed Insights</h2>
+<p>我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是
+<strong>Google 自己</strong>对你网站打的分，包括过去 28 天
+<strong>真实访客</strong>的网络体验数据（CRUX field data）。</p>
+<h3 id="移动端mobile">移动端（mobile）</h3>
+<p><strong>Lighthouse 分数（实验室）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>性能 (Performance)</td>
+<td><strong>56/100</strong></td>
+</tr>
+<tr>
+<td>可访问性 (Accessibility)</td>
+<td>84/100</td>
+</tr>
+<tr>
+<td>最佳实践 (Best Practices)</td>
+<td>96/100</td>
+</tr>
+<tr>
+<td>SEO</td>
+<td>85/100</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab 关键指标：</strong> LCP <code>9.6s</code> · FCP
+<code>3.3s</code> · CLS <code>0.000</code> · TBT <code>402ms</code></p>
+<p><strong>Google 建议的优化项（按节省时间排序，前 2）：</strong></p>
+<ul>
+<li><strong>Reduce unused JavaScript</strong> — 节省 1510ms · 节省
+395KB</li>
+<li><strong>Reduce unused CSS</strong> — 节省 48KB</li>
+</ul>
+<h3 id="桌面端desktop">桌面端（desktop）</h3>
+<p><strong>Lighthouse 分数：</strong> Performance 51 · A11y 85 · Best
+Practices 96 · SEO 85</p>
+<h2 id="图片优化与第三方脚本体重">图片优化与第三方脚本体重</h2>
+<p>PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tracker
+脚本。</p>
+<h3 id="图片优化共-62-张">图片优化（共 62 张）</h3>
+<ul>
+<li><strong>优化率：</strong> 0%（0/62 使用 WebP/AVIF/SVG）</li>
+<li><strong>响应式 srcset：</strong> 0%</li>
+<li><strong>Lazy load：</strong> 0%</li>
+<li><strong>Alt 文字（非空）：</strong> 95%</li>
+<li><strong>显式 width/height：</strong> 13%（防止 CLS 布局抖动）</li>
+</ul>
+<p><strong>总评：</strong> 基本未优化 — redesign
+可显著降低图片下载量</p>
+<p><strong>具体问题：</strong> - [major] 62 张图几乎全是 JPG/PNG，未用
+WebP/AVIF — 估算可节省 30-50% 图片下载量 - [minor] 62/62 张图无响应式
+srcset — 移动端浪费带宽 - [minor] 62/62 张图未 lazy load —
+首屏外的图阻塞主线程 - [minor] 54/62 张图无显式 width/height — 加重 CLS
+布局抖动</p>
+<h3 id="第三方脚本占用情况">第三方脚本占用情况</h3>
+<ul>
+<li><strong>总请求数：</strong> 65（1 自有 + 64 第三方）</li>
+<li><strong>第三方占总下载量：</strong> 99%（3334 KB / 3375 KB）</li>
+<li><strong>Tracker 脚本数：</strong> 6（合计 446 KB）</li>
+</ul>
+<p><strong>已识别的 tracker：</strong></p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>类型</th>
+<th>请求数</th>
+<th>字节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Tag Manager</td>
+<td>analytics</td>
+<td>3</td>
+<td>446.2 KB</td>
+</tr>
+<tr>
+<td>Google Analytics</td>
+<td>analytics</td>
+<td>3</td>
+<td>0.0 KB</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>观察：</strong> 6 个 tracker 合计加载了 446 KB ——
+这些都是阻塞主线程的脚本，是性能 + 隐私双角度的销售切入点。redesign
+时可以建议清理不再使用的 tracker。</p>
+</blockquote>
+<h2 id="seo-迁移评估-与-运营活跃度">SEO 迁移评估 与 运营活跃度</h2>
+<p>客户最常担心的问题：「我重做网站，会不会丢掉 Google
+排名？」这一段直接回答。</p>
+<h3 id="现有页面盘点">现有页面盘点</h3>
+<ul>
+<li><strong>Sitemap 状态：</strong> 已检测到 →
+<code>https://www.weatherite.com.au/sitemap.xml</code></li>
+<li><strong>页面总数：</strong> 10</li>
+<li><strong>迁移复杂度：</strong> 低（≤15 页 — 1-2
+周内可完成全站重做）</li>
+</ul>
+<p><strong>页面分类：</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>service_area_page</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Blog 文章</td>
+<td>3</td>
+</tr>
+<tr>
+<td>服务详情页</td>
+<td>1</td>
+</tr>
+<tr>
+<td>联系 / 报价</td>
+<td>1</td>
+</tr>
+<tr>
+<td>首页</td>
+<td>1</td>
+</tr>
+<tr>
+<td>作品集 / 案例</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sitemap lastmod 跨度：</strong> 最旧 2024-07-09 → 最新
+2026-03-26</p>
+<p><strong>Redirect 计划承诺：</strong> redesign 上线时我们会附一份 10
+条 1:1 redirect 表（旧 URL → 新 URL），保证 Google
+已经索引的页面权重无损迁移。已经在 Google 第一二页的关键词不会丢。</p>
+<h3 id="seo-长尾结构服务-区域-本地搜索流量金矿">SEO 长尾结构（服务 ×
+区域 = 本地搜索流量金矿）</h3>
+<ul>
+<li><strong>服务专项页（如 /metal-roofing/）：</strong> 1 个</li>
+<li><strong>区域页（如 /service-areas/brisbane/）：</strong> 0 个</li>
+<li><strong>服务×区域组合页（如 /metal-roofing-brisbane/）：</strong> 3
+个</li>
+</ul>
+<p><strong>长尾覆盖：</strong> 中等 — 有 2-4 个组合页，可扩充</p>
+<p><strong>现有服务页样本：</strong>
+<code>/roofing-restorations</code></p>
+<p><strong>现有服务×区域页样本：</strong>
+<code>/roofing-maintenance-repairs</code> ·
+<code>/gutter-maintenance-replacement</code> ·
+<code>/roof-repair-services-near-birkdale</code></p>
+<h3 id="运营活跃度">运营活跃度</h3>
+<ul>
+<li><strong>整体活跃度：</strong> 近期（90 天内有更新） （最近一次更新
+50 天前）</li>
+<li><strong>Blog 板块：</strong> 有，共 3 篇文章</li>
+<li><strong>社交媒体链接：</strong> 网站上没有 social 链接 — GBP
+流量进来后没有第二触点</li>
+</ul>
+<h2 id="域名历史与邮件信誉">域名历史与邮件信誉</h2>
+<h3 id="邮件-dns-配置影响未来邮件营销-冷邮件投递率">邮件 DNS
+配置（影响未来邮件营销 / 冷邮件投递率）</h3>
+<ul>
+<li><strong>SPF (反垃圾发件验证)：</strong> ⚠ 未配置 —
+客户如果用域名邮箱发邮件，进垃圾箱的概率高</li>
+<li><strong>DKIM (邮件签名)：</strong> ⚠ 常见 selector 未发现 DKIM
+配置（不一定确凿，但提示有问题）</li>
+<li><strong>DMARC (策略)：</strong> 已配置（policy:
+<code>none</code>）</li>
+<li><strong>整体邮件投递信誉：</strong> <code>weak</code> (只有 1/3 —
+邮件营销前必须修)</li>
+</ul>
+<blockquote>
+<p>这是后续 <strong>「Social Media Management 月度包」</strong> 或
+<strong>「Cold Outreach 启动包」</strong> 的前置条件 —— 邮件 DNS
+没修好，发出去的邮件全进垃圾箱。redesign 时一并处理。</p>
+</blockquote>
+<h2 id="技术栈与营销基建">技术栈与营销基建</h2>
+<p>从网站源码识别出来的工具，能帮我们判断这位客户的数字成熟度。</p>
+<ul>
+<li><strong>网站平台 (CMS)：</strong> Duda（迁移复杂度参考；WordPress /
+Wix / Squarespace 这类有标准导出工具，custom-coded 会复杂）</li>
+<li><strong>分析工具：</strong> Google Tag Manager · Google Analytics
+4</li>
+<li><strong>广告 Pixel：</strong> 未检测到 — 暂未投放追踪型广告</li>
+</ul>
+<p><strong>数字成熟度打分：</strong> 2 / 6 （中 —
+已有基础设施，缺少深度运营）</p>
+<h3 id="redesign-时必须保留-重新安装的追踪代码">Redesign 时必须保留 /
+重新安装的追踪代码</h3>
+<p>客户可能有数月 / 数年的历史数据 + 广告投放受众 sit 在这些 ID
+上面。重做时<strong>必须用同一套 ID
+重新接进新网站</strong>，否则等于清零所有累积。</p>
+<ul>
+<li>Google Tag Manager</li>
+<li>Google Analytics 4</li>
+</ul>
+<p>我们 redesign 交付清单会把这些列为「必须 setup 项」。</p>
+<h2 id="信任凭证-generic">信任凭证 · generic</h2>
+<p>本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。</p>
+<p><strong>信任分：</strong> 30/100</p>
+<h3 id="已显示的2-项">已显示的（2 项）</h3>
+<ul>
+<li><strong>ABN</strong> (20 分) — “ABN: 35 079 353 209”</li>
+<li><strong>免费报价</strong> (10 分) — “free quote”</li>
+</ul>
+<h3 id="缺失的5-项-redesign-必补-提醒客户提供素材">缺失的（5 项 —
+redesign 必补 / 提醒客户提供素材）</h3>
+<ul>
+<li>[行业惯例] <strong>保险</strong> (15 分)</li>
+<li>[行业惯例] <strong>从业年限</strong> (15 分)</li>
+<li>[行业惯例] <strong>保修</strong> (15 分)</li>
+<li>[行业惯例] <strong>行业证书</strong> (15 分)</li>
+<li>[行业惯例] <strong>荣誉 / 奖项</strong> (10 分)</li>
+</ul>
+<h2 id="ai-时代可发现性-geo-readiness">AI 时代可发现性 · GEO
+Readiness</h2>
+<p>GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI
+Overviews 这些 AI
+搜索产品<strong>不像传统搜索引擎那样按”关键词排名”工作</strong>，它们直接抓取结构化数据并把答案合成给用户。如果你的网站在
+AI 抓取这一块做得不到位，等于在生成式搜索时代隐身。</p>
+<p><strong>AI 可发现性总分：</strong> 40 / 100 — AI agent
+抓取部分支持，但关键 schema / 凭证 / FAQ 缺失</p>
+<h3 id="已经做到的4-项">已经做到的（4 项）</h3>
+<ul>
+<li>[PASS] <code>llms_txt_present</code> — llms.txt found (2198
+bytes)</li>
+<li>[PASS] <code>localbusiness_schema</code> — LocalBusiness JSON-LD
+present</li>
+<li>[PASS] <code>eeat_business_credentials</code> — 2/4 credentials in
+copy: ABN, license/QBCC</li>
+<li>[PASS] <code>jsonld_at_least_one</code> — 2 JSON-LD block(s)
+detected on page</li>
+</ul>
+<h3 id="还缺的8-项-这些是-redesign-时一并补上的标准动作">还缺的（8 项 —
+这些是 redesign 时一并补上的标准动作）</h3>
+<ul>
+<li>[缺失] <code>ai_bot_robots_policy</code> (5 分) — robots.txt has no
+explicit policy for AI crawlers (GPTBot/ClaudeBot/etc)</li>
+<li>[缺失] <code>service_schema</code> (10 分) — no Service JSON-LD</li>
+<li>[缺失] <code>faqpage_schema</code> (10 分) — no FAQPage JSON-LD
+(loses AI Overview / featured snippet eligibility)</li>
+<li>[缺失] <code>aggregaterating_schema</code> (5 分) — no
+AggregateRating JSON-LD (★ rating not shown in search snippets)</li>
+<li>[缺失] <code>breadcrumb_schema</code> (5 分) — no BreadcrumbList
+JSON-LD</li>
+<li>[缺失] <code>semantic_landmarks</code> (10 分) — 1 semantic
+landmarks present: &lt;nav</li>
+<li>[缺失] <code>faq_qa_pattern</code> (10 分) — 0 question-style
+heading(s) found (Q&amp;A format helps AI extraction)</li>
+<li>[缺失] <code>eeat_warranty_trust</code> (5 分) — no
+warranty/guarantee in copy</li>
+</ul>
+<blockquote>
+<p><strong>销售切入：</strong> 「ChatGPT 现在每月 30
+亿次搜索，本地服务用户问『Brisbane 哪家屋顶公司靠谱』，AI
+回答时只引用结构化数据完整的网站。你目前在这个新阵地的得分是
+40/100。」</p>
+</blockquote>
+<h2 id="业务规模信号-内部筛选用">业务规模信号 · 内部筛选用</h2>
+<p><strong>注：这一段只给运营内部看，不进入客户报告。</strong>
+用来判断这个 lead 是不是匹配我们「小网站 / 多批量 /
+快上线」的产品定位。</p>
+<ul>
+<li><strong>规模信号汇总：</strong> 小型客户特征</li>
+<li><strong>客户分级：</strong> <code>small</code> —
+小型，符合我们标准产品包定位</li>
+</ul>
+<blockquote>
+<p>报价以上方 <strong>建议报价</strong> 为准（来自
+entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断
+lead 是否匹配产品定位，不竞争报价。</p>
+</blockquote>
+<p><strong>触发依据：</strong> - 已部署 2 个追踪工具</p>
+<h2 id="upsell-机会-redesign-之外的月度营收">Upsell 机会 · redesign
+之外的月度营收</h2>
+<p>redesign
+是一次性收入。以下是基于这个客户当前现状自动识别的<strong>持续性服务包</strong>机会，可以在
+redesign 提案签字时一并捆绑进去。</p>
+<h3 id="social-presence-一次性-setup-月度运营包">Social presence 一次性
+setup + 月度运营包</h3>
+<p><strong>触发依据：</strong> 网站上没检测到任何社交媒体链接 —
+连基础的多渠道触点都缺。</p>
+<p><strong>包内容：</strong> 一次性：FB / IG 商家档案 setup +
+品牌头像/封面 + 内容模板 5 套 (3-5K 一次性)。月度：4 帖 + 评论管理 +
+月度报表。</p>
+<p><strong>月度费用区间：</strong> $1,500 setup + $600-900/月</p>
+<p><strong>销售切入：</strong> 「Google Maps
+流量进来后没有第二落点，意味着客户当下没决定就走了 —
+没办法再触及。社交账号是免费的二次触达管道。」</p>
+<!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
+<!-- 现网站快速诊断 -->
+<!-- M2-D6 required token bridge: 业主沟通要点 → covered by detail-builder section -->
+<!-- 业主沟通要点 -->
+<!-- M2-D6 required token bridge: 账户与档案 → covered by detail-builder section -->
+<!-- 账户与档案 -->
+<h2 id="附录-数据出处">附录 · 数据出处</h2>
+<ul>
+<li>Cheap audit version: <code>-</code></li>
+<li>Detailed audit version: <code>2026-05-11-v1</code></li>
+<li>Vision model:
+<code>claude_cli · claude-haiku-4-5-20251001</code></li>
+<li>Review source:
+<code>Google Places · most_relevant (max 5)</code></li>
+<li>完整 audit 报告 HTML：<a
+href="./internal-audit-report.html">internal-audit-report</a></li>
+</ul>
+</body>
+</html>

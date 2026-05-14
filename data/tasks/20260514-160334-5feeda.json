@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160334-5feeda",
+  "created_at": "2026-05-14T16:03:34.944Z",
+  "updated_at": "2026-05-14T16:12:03.752Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_hytekroofing.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_hytekroofing.com.au"
+    ],
+    "target_entity_key": "domain_hytekroofing.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 508603,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:35.148Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_hytekroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T16:03:40.282Z",
+      "step": "cli.stream",
+      "detail": "false  profile=normal (concurrent_leads=1)\n\n══════════ domain_hytekroofing.com.au ══════════\n  [thread] reusing 1504514520876454038\n  [stage 1/4] detailed audit — fetching http://hytekroofing.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:05:50.933Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=46/100 decision=strong_redesign\n     → contact: emails=0 · contact_url=no · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:08:09.816Z",
+      "step": "cli.stream",
+      "detail": "45)\n[lead-thread-sync] cleared stale discord_thread_id from domain_hytekroofing.com.au (was 404)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:09:05.111Z",
+      "step": "cli.stream",
+      "detail": "l\": true\n    }\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_hytekroofing.com.au ══════════\n  [1/5] multi-page crawl http://hytekroofing.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:09:23.907Z",
+      "step": "cli.stream",
+      "detail": "s · 18.3s · ~$0.030\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:10:23.598Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 59.7s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 57/100 (A21 B5 C20 D8 E3)\n     → verdict: qa-pending"
+    },
+    {
+      "at": "2026-05-14T16:10:53.204Z",
+      "step": "cli.stream",
+      "detail": "r.md: 12710 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/hytek-roofing/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  15059 chars"
+    },
+    {
+      "at": "2026-05-14T16:12:03.739Z",
+      "step": "cli.stream",
+      "detail": "└─────────┴──────────────────────────────┴─────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:12:03.752Z",
+      "step": "cli.stream",
+      "detail": "t_score\": 46,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 7,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_hytekroofing.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:12:03.752Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=508603ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

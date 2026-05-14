@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160134-7e995e",
+  "created_at": "2026-05-14T16:01:34.879Z",
+  "updated_at": "2026-05-14T16:08:20.367Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chijeritxj9nkwsr2dg7xhqvqn4 (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijeritxj9nkwsr2dg7xhqvqn4"
+    ],
+    "target_entity_key": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 405272,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:01:35.094Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijeritxj9nkwsr2dg7xhqvqn4"
+    },
+    {
+      "at": "2026-05-14T16:01:40.195Z",
+      "step": "cli.stream",
+      "detail": "ofile=normal (concurrent_leads=1)\n\n══════════ place_chijeritxj9nkwsr2dg7xhqvqn4 ══════════\n  [thread] reusing 1504514016935018638\n  [stage 1/4] detailed audit — fetching http://trustedroofing.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:03:23.606Z",
+      "step": "cli.stream",
+      "detail": "act-page crawl ok · +1 emails · +3 social\n     → contact: emails=1 · contact_url=yes · social=facebook,instagram,linkedin\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:06:27.878Z",
+      "step": "cli.stream",
+      "detail": "→ 7 visual issues via codex_cli, latency=65.0s (in=93385 out=2778 ~$0.2612)\n  [stage 3a/4] graded: D ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:07:08.274Z",
+      "step": "cli.stream",
+      "detail": "ions\n[pl:build-customer-audit] master.md: 12990 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/trusted-roof-restorations/v2/customer-facing-audit.html"
+    },
+    {
+      "at": "2026-05-14T16:08:20.351Z",
+      "step": "cli.stream",
+      "detail": "───────────────────────┴─────────────────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:08:20.367Z",
+      "step": "cli.stream",
+      "detail": "\": 53,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 7,\n      \"grade\": \"D\",\n      \"report_url\": \"/audit-reports/place_chijeritxj9nkwsr2dg7xhqvqn4/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:08:20.367Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=405272ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

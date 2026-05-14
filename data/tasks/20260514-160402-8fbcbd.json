@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160402-8fbcbd",
+  "created_at": "2026-05-14T16:04:02.823Z",
+  "updated_at": "2026-05-14T16:06:05.824Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_vantagepointroofing.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_vantagepointroofing.com.au"
+    ],
+    "target_entity_key": "domain_vantagepointroofing.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 122785,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:04:03.037Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_vantagepointroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T16:04:08.149Z",
+      "step": "cli.stream",
+      "detail": "age 1/4] detailed audit — reuse cached fixture\n  [stage 2/4] visual audit — reuse cached fixture\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:04:34.269Z",
+      "step": "cli.stream",
+      "detail": "5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_vantagepointroofing.com.au ══════════\n  [1/5] multi-page crawl https://vantagepointroofing.com.au/?utm_campaign=gmb..."
+    },
+    {
+      "at": "2026-05-14T16:04:49.518Z",
+      "step": "cli.stream",
+      "detail": "390 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/vantage-point-roofing/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  14747 chars"
+    },
+    {
+      "at": "2026-05-14T16:06:05.811Z",
+      "step": "cli.stream",
+      "detail": "ore\": 68,\n      \"decision\": \"low_priority\",\n      \"visual_issues\": 5,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_vantagepointroofing.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:06:05.824Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=122785ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

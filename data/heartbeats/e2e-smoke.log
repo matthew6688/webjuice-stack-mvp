@@ -1,0 +1,56 @@
+{
+  "generated_at": "2026-05-14T16:00:05.331Z",
+  "duration_s": 357,
+  "scenarios": [
+    {
+      "id": "places-intake",
+      "kind": "places-intake",
+      "thread_id": "1504513727431446528",
+      "wait_terminal": true,
+      "elapsed_s": 136,
+      "task_status": "done",
+      "task_exit": "exit=0 dur=116053ms",
+      "pass": true
+    },
+    {
+      "id": "intake",
+      "kind": "intake",
+      "thread_id": "1504514300306264136",
+      "wait_terminal": true,
+      "elapsed_s": 84,
+      "task_status": "done",
+      "task_exit": "exit=0 dur=70569ms",
+      "pass": true
+    },
+    {
+      "id": "single-enrich-reject",
+      "kind": "single-enrich",
+      "thread_id": "1504514655505223781",
+      "wait_terminal": true,
+      "elapsed_s": 52,
+      "task_status": "failed",
+      "task_exit": "exit=3 signal=null dur=33841ms",
+      "pass": true
+    },
+    {
+      "id": "ops-human",
+      "kind": "ops",
+      "thread_id": "1504514876364820642",
+      "wait_terminal": false,
+      "elapsed_s": 60,
+      "task_status": "done",
+      "task_exit": "exit=0 dur=1391ms",
+      "pass": false
+    }
+  ],
+  "passed": 3,
+  "failed": 1,
+  "total": 4,
+  "wiped_threads": {
+    "website-tasks": 0,
+    "website-leads": 5,
+    "website-projects": 2,
+    "lead-discovery-runs": 3
+  },
+  "regressions": []
+}

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160038-f882fa",
+  "created_at": "2026-05-14T16:00:38.118Z",
+  "updated_at": "2026-05-14T16:02:34.890Z",
+  "kind": "places-intake",
+  "status": "done",
+  "source": {
+    "platform": "discord",
+    "thread_id": "1504513727431446528",
+    "author": "ProfitsLocal Handoff",
+    "message_id": "1504513727431446528"
+  },
+  "input": {
+    "text": "\"roofer brisbane\"",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:places-search-intake",
+    "args": [
+      "--query",
+      "roofer brisbane"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 116053,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:00:38.120Z",
+      "step": "router.resolved",
+      "detail": "kind=places-intake provider=codex_cli cli=pl:places-search-intake conf=0.99"
+    },
+    {
+      "at": "2026-05-14T16:00:38.829Z",
+      "step": "cli.spawning",
+      "detail": "pl:places-search-intake --query roofer brisbane"
+    },
+    {
+      "at": "2026-05-14T16:00:44.005Z",
+      "step": "cli.stream",
+      "detail": "1 · limit=20/q · with_details=true · dry=false\n  · query=\"roofer brisbane\"\n    ✓ batch thread: https://discord.com/channels/1493925728570310756/1504513789444362453\n    ✓ Places returned 18 candidates"
+    },
+    {
+      "at": "2026-05-14T16:00:50.693Z",
+      "step": "cli.stream",
+      "detail": "\"thread_id\": \"1504513789444362453\",\n      \"thread_url\": \"https://discord.com/channels/1493925728570310756/1504513789444362453\",\n      \"error\": \"args is not defined\"\n    }\n  ],\n  \"duration_ms\": 6637\n}"
+    },
+    {
+      "at": "2026-05-14T16:01:19.203Z",
+      "step": "cli.stream",
+      "detail": "i cached) · 类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。\n[cheap-audit-queue] place_chijwuwifvzdkwsrtpd0wdmszdo · cheap.action=manual_review · predict=C · priority=50 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T16:01:25.375Z",
+      "step": "cli.stream",
+      "detail": "t-queue] place_chijo3rniu9fkwsr8jworgytgmy · cheap.action=audit_candidate · predict=A · priority=100 · audit_now=true\n[cheap-audit-queue] place_chijo3rniu9fkwsr8jworgytgmy · thread opened (predict-A)"
+    },
+    {
+      "at": "2026-05-14T16:01:30.714Z",
+      "step": "cli.stream",
+      "detail": "dit-queue] place_chijueqfkybdkwsrfvocbb3ybs8 · thread opened (predict-B)\n[detailed-audit-queue] enqueued place_chijueqfkybdkwsrfvocbb3ybs8 → task 20260514-160130-f04e20 (priority=75 reason=predict-B)"
+    },
+    {
+      "at": "2026-05-14T16:01:38.288Z",
+      "step": "cli.stream",
+      "detail": "i cached) · 类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。\n[cheap-audit-queue] place_chijrq6qulnbkwsruettr7eegyc · cheap.action=manual_review · predict=C · priority=37 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T16:01:44.141Z",
+      "step": "cli.stream",
+      "detail": "udit-queue] place_chijnylrm_znzkario5qkvfr5vo · thread opened (predict-C)\n[detailed-audit-queue] enqueued place_chijnylrm_znzkario5qkvfr5vo → task 20260514-160144-63afaa (priority=4 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T16:01:52.075Z",
+      "step": "cli.stream",
+      "detail": "evance LLM verdict: true (codex_cli cached) · 该商家的类别和名称都明确属于屋顶施工与修复行业。\n[cheap-audit-queue] place_chijl3ph8wbbkwsrlheky2pl5pm · cheap.action=audit_candidate · predict=A · priority=100 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T16:01:57.934Z",
+      "step": "cli.stream",
+      "detail": "it-queue] place_chijhbplvr5bkwsrgufsdwb6css · cheap.action=audit_candidate · predict=B · priority=75 · audit_now=true\n[cheap-audit-queue] place_chijhbplvr5bkwsrgufsdwb6css · thread opened (predict-B)"
+    },
+    {
+      "at": "2026-05-14T16:02:02.998Z",
+      "step": "cli.stream",
+      "detail": "dit-queue] place_chij94nexjfjk2srxwxb4ar4hj4 · thread opened (predict-C)\n[detailed-audit-queue] enqueued place_chij94nexjfjk2srxwxb4ar4hj4 → task 20260514-160202-85eb3a (priority=50 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T16:02:10.954Z",
+      "step": "cli.stream",
+      "detail": "li cached) · 类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。\n[cheap-audit-queue] place_chijutib72nzkwsrbyxejwlcviw · cheap.action=manual_review · predict=C · priority=9 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T16:02:16.541Z",
+      "step": "cli.stream",
+      "detail": "dit-queue] place_chijkf8sq8jgkwsrqcac2p6iqpc · thread opened (predict-C)\n[detailed-audit-queue] enqueued place_chijkf8sq8jgkwsrqcac2p6iqpc → task 20260514-160216-3e5e8c (priority=19 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T16:02:24.533Z",
+      "step": "cli.stream",
+      "detail": "i cached) · 类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。\n[cheap-audit-queue] place_chijsypmtxxakwsrj5ytlt8t_pe · cheap.action=manual_review · predict=C · priority=17 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T16:02:30.227Z",
+      "step": "cli.stream",
+      "detail": "dit-queue] place_chij-9wdzxxakwsr-lljrd1u3jq · thread opened (predict-B)\n[detailed-audit-queue] enqueued place_chij-9wdzxxakwsr-lljrd1u3jq → task 20260514-160230-0f89f7 (priority=75 reason=predict-B)"
+    },
+    {
+      "at": "2026-05-14T16:02:34.889Z",
+      "step": "cli.stream",
+      "detail": "udit-queue] place_chij3tc-hgbnkwsrl7mawfatgri · thread opened (predict-C)\n[detailed-audit-queue] enqueued place_chij3tc-hgbnkwsrl7mawfatgri → task 20260514-160234-a3e92f (priority=1 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T16:02:34.890Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=116053ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504513727431446528",
+    "status_message_id": "1504513784260071510"
+  }
+}

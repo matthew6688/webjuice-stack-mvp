@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160130-f04e20",
+  "created_at": "2026-05-14T16:01:30.281Z",
+  "updated_at": "2026-05-14T16:06:50.129Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chijueqfkybdkwsrfvocbb3ybs8 (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijueqfkybdkwsrfvocbb3ybs8"
+    ],
+    "target_entity_key": "place_chijueqfkybdkwsrfvocbb3ybs8",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 319631,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:01:30.496Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijueqfkybdkwsrfvocbb3ybs8"
+    },
+    {
+      "at": "2026-05-14T16:01:35.598Z",
+      "step": "cli.stream",
+      "detail": "ofile=normal (concurrent_leads=1)\n\n══════════ place_chijueqfkybdkwsrfvocbb3ybs8 ══════════\n  [thread] reusing 1504513998198935582\n  [stage 1/4] detailed audit — fetching https://briscoroofing.net.au/"
+    },
+    {
+      "at": "2026-05-14T16:02:24.865Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=31/100 decision=strong_redesign\n     → contact: emails=0 · contact_url=no · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:04:52.534Z",
+      "step": "cli.stream",
+      "detail": "→ 5 visual issues via codex_cli, latency=49.1s (in=84539 out=1943 ~$0.2308)\n  [stage 3a/4] graded: D ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:05:35.180Z",
+      "step": "cli.stream",
+      "detail": ".md: 12996 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/brisco-roofing/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  15346 chars"
+    },
+    {
+      "at": "2026-05-14T16:06:50.114Z",
+      "step": "cli.stream",
+      "detail": "──────────────────────────────────┴──────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:06:50.128Z",
+      "step": "cli.stream",
+      "detail": "\": 31,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 5,\n      \"grade\": \"D\",\n      \"report_url\": \"/audit-reports/place_chijueqfkybdkwsrfvocbb3ybs8/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:06:50.129Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=319631ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

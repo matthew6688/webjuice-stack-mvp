@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160251-2e831d",
+  "created_at": "2026-05-14T16:02:51.587Z",
+  "updated_at": "2026-05-14T16:04:02.842Z",
+  "kind": "intake",
+  "status": "done",
+  "source": {
+    "platform": "discord",
+    "thread_id": "1504514300306264136",
+    "author": "ProfitsLocal Handoff",
+    "message_id": "1504514300306264136"
+  },
+  "input": {
+    "text": "find brisbane roofers --count 2",
+    "attachments": []
+  },
+  "target": {
+    "cli": "pl:scrape-docker",
+    "args": [
+      "--niche",
+      "roofer",
+      "--city",
+      "brisbane",
+      "--count",
+      "2"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 600000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 70569,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:02:51.587Z",
+      "step": "router.resolved",
+      "detail": "kind=intake provider=codex_cli cli=pl:scrape-docker conf=0.98"
+    },
+    {
+      "at": "2026-05-14T16:02:52.272Z",
+      "step": "cli.spawning",
+      "detail": "pl:scrape-docker --niche roofer --city brisbane --count 2"
+    },
+    {
+      "at": "2026-05-14T16:02:57.375Z",
+      "step": "cli.stream",
+      "detail": "r --city brisbane --count 2\n\ngeocode brisbane → -27.4704528,153.0260341 (cache) · Brisbane QLD, Australia\njob_id=31cacc9f-06e1-4cab-8f48-593ded432b65\npolling job 31cacc9f-06e1-4cab-8f48-593ded432b65 ."
+    },
+    {
+      "at": "2026-05-14T16:03:02.642Z",
+      "step": "cli.stream",
+      "detail": "raper/webdata/31cacc9f-06e1-4cab-8f48-593ded432b65.csv\nwrote 8 leads → /Users/matthew/Developer/google-map-website-v3/data/maps-scraper/runs/roofer-brisbane-2026-05-14T16-02-52-422Z/results.maps.json"
+    },
+    {
+      "at": "2026-05-14T16:03:29.323Z",
+      "step": "cli.stream",
+      "detail": "\"recommendedAction\": \"audit_candidate\",\n      \"phone\": \"(07)35062534\",\n      \"website\": \"https://vantagepointroofing.com.au/?utm_campaign=gmb\",\n      \"rating\": 4.6,\n      \"reviewCount\": 0\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:03:39.536Z",
+      "step": "cli.stream",
+      "detail": "eap-audit-queue] domain_queenslandroofing.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=true\n[cheap-audit-queue] domain_queenslandroofing.com.au · thread opened (predict-C)"
+    },
+    {
+      "at": "2026-05-14T16:03:44.741Z",
+      "step": "cli.stream",
+      "detail": "_now=true\n[cheap-audit-queue] domain_rooroofing.com.au · thread opened (predict-C)\n[detailed-audit-queue] enqueued domain_rooroofing.com.au → task 20260514-160344-be50c8 (priority=0 reason=predict-C)"
+    },
+    {
+      "at": "2026-05-14T16:03:52.312Z",
+      "step": "cli.stream",
+      "detail": "ed) · 类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。\n[cheap-audit-queue] domain_proroofrestorationbrisbane.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=true"
+    },
+    {
+      "at": "2026-05-14T16:03:57.919Z",
+      "step": "cli.stream",
+      "detail": "p-audit-queue] domain_rapidroofsolutions.com.au · cheap.action=manual_review · predict=C · priority=0 · audit_now=true\n[cheap-audit-queue] domain_rapidroofsolutions.com.au · thread opened (predict-C)"
+    },
+    {
+      "at": "2026-05-14T16:04:02.841Z",
+      "step": "cli.stream",
+      "detail": "ofer businesses.\",\"suspicious_picks\":[\"72 Queen St, Brisbane City QLD 4000\",\"19/10 Eagle St, Brisbane City QLD 4000\",\"Riparian Plaza, 36/71 Eagle St, Brisbane City QLD 4000\"],\"provider\":\"codex_cli\"}}"
+    },
+    {
+      "at": "2026-05-14T16:04:02.842Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=70569ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": "1504514300306264136",
+    "status_message_id": "1504514344816480277"
+  }
+}

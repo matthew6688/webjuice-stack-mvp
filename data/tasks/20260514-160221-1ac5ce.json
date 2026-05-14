@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160221-1ac5ce",
+  "created_at": "2026-05-14T16:02:21.174Z",
+  "updated_at": "2026-05-14T16:11:54.634Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chij6wsd-kzbkwsryzke1ejotjs (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chij6wsd-kzbkwsryzke1ejotjs"
+    ],
+    "target_entity_key": "place_chij6wsd-kzbkwsryzke1ejotjs",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 573245,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:02:21.388Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chij6wsd-kzbkwsryzke1ejotjs"
+    },
+    {
+      "at": "2026-05-14T16:02:26.489Z",
+      "step": "cli.stream",
+      "detail": "mal (concurrent_leads=1)\n\n══════════ place_chij6wsd-kzbkwsryzke1ejotjs ══════════\n  [thread] reusing 1504514210938228776\n  [stage 1/4] detailed audit — fetching https://www.viproofingbrisbane.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:03:22.319Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=27/100 decision=strong_redesign\n     → contact: emails=0 · contact_url=no · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:04:51.282Z",
+      "step": "cli.stream",
+      "detail": "→ 5 visual issues via claude_cli, latency=88.1s (in=6 out=3764 ~$0.1178)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:06:56.444Z",
+      "step": "cli.stream",
+      "detail": "4)\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chij6wsd-kzbkwsryzke1ejotjs ══════════\n  [1/5] multi-page crawl https://www.viproofingbrisbane.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:09:21.002Z",
+      "step": "cli.stream",
+      "detail": "· 143.5s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:10:07.928Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 46.9s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 62/100 (A18 B5 C25 D11 E3)\n     → verdict: ready-to-build"
+    },
+    {
+      "at": "2026-05-14T16:10:37.359Z",
+      "step": "cli.stream",
+      "detail": "to-build: 1\n{\n  \"ok\": true,\n  \"total\": 1,\n  \"results\": [\n    {\n      \"key\": \"place_chij6wsd-kzbkwsryzke1ejotjs\",\n      \"status\": \"ok\",\n      \"verdict\": \"ready-to-build\",\n      \"score\": 62\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:10:43.459Z",
+      "step": "cli.stream",
+      "detail": "4158 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/vip-roofing-brisbane/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  16514 chars"
+    },
+    {
+      "at": "2026-05-14T16:11:54.622Z",
+      "step": "cli.stream",
+      "detail": "────────────────────────────┴────────────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:11:54.633Z",
+      "step": "cli.stream",
+      "detail": "\": 27,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 5,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/place_chij6wsd-kzbkwsryzke1ejotjs/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:11:54.634Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=573245ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

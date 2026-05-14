@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160207-762342",
+  "created_at": "2026-05-14T16:02:07.490Z",
+  "updated_at": "2026-05-14T16:05:49.161Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for place_chijwdbif2xzkwsrru6lkmu2l0o (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijwdbif2xzkwsrru6lkmu2l0o"
+    ],
+    "target_entity_key": "place_chijwdbif2xzkwsrru6lkmu2l0o",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 221465,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:02:07.695Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijwdbif2xzkwsrru6lkmu2l0o"
+    },
+    {
+      "at": "2026-05-14T16:02:12.800Z",
+      "step": "cli.stream",
+      "detail": "age 1/4] detailed audit — reuse cached fixture\n  [stage 2/4] visual audit — reuse cached fixture\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:02:38.631Z",
+      "step": "cli.stream",
+      "detail": "age 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chijwdbif2xzkwsrru6lkmu2l0o ══════════\n  [1/5] multi-page crawl https://brisbaneroofrestorationexperts.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:03:08.057Z",
+      "step": "cli.stream",
+      "detail": "s · 28.3s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:04:17.404Z",
+      "step": "cli.stream",
+      "detail": "l:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/brisbane-roof-restoration-experts/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  19104 chars"
+    },
+    {
+      "at": "2026-05-14T16:05:38.084Z",
+      "step": "cli.stream",
+      "detail": "ation file to deploy your project, please use \"pages_build_output_dir\" to specify the directory of static files to upload.\n  Ignoring configuration file for now, and proceeding with project deploy."
+    },
+    {
+      "at": "2026-05-14T16:05:46.421Z",
+      "step": "cli.stream",
+      "detail": "v.pages.dev/internal-audit-report.html\n  Record:             /Users/matthew/Developer/google-map-website-v3/clients/brisbane-roof-restoration-experts/v2/concept/reference-adapter/cf-pages-deploy.json"
+    },
+    {
+      "at": "2026-05-14T16:05:49.151Z",
+      "step": "cli.stream",
+      "detail": "──────────────────┴─────────────────────────────────────┴──────┴─────────────┴────────────────┴───────────────┴───────┴───────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:05:49.160Z",
+      "step": "cli.stream",
+      "detail": "ore\": 70,\n      \"decision\": \"low_priority\",\n      \"visual_issues\": 5,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/place_chijwdbif2xzkwsrru6lkmu2l0o/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:05:49.161Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=221465ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

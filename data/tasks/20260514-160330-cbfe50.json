@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160330-cbfe50",
+  "created_at": "2026-05-14T16:03:30.216Z",
+  "updated_at": "2026-05-14T16:11:48.846Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_nbmr.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_nbmr.com.au"
+    ],
+    "target_entity_key": "domain_nbmr.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 498416,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:30.429Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_nbmr.com.au"
+    },
+    {
+      "at": "2026-05-14T16:03:35.547Z",
+      "step": "cli.stream",
+      "detail": "ofile=normal (concurrent_leads=1)\n\n══════════ domain_nbmr.com.au ══════════\n  [thread] opened #website-leads thread 1504514510382436663\n  [stage 1/4] detailed audit — fetching http://www.nbmr.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:05:22.548Z",
+      "step": "cli.stream",
+      "detail": "→ audit_score=56/100 decision=strong_redesign\n     → contact: emails=1 · contact_url=no · social=facebook,instagram\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:08:31.907Z",
+      "step": "cli.stream",
+      "detail": "7 ~$0.2356)\n[lead-thread-sync] cleared stale discord_thread_id from domain_nbmr.com.au (was 404)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:08:44.866Z",
+      "step": "cli.stream",
+      "detail": "\"hasVisual\": true\n    }\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_nbmr.com.au ══════════\n  [1/5] multi-page crawl http://www.nbmr.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:08:57.517Z",
+      "step": "cli.stream",
+      "detail": "s · 12.2s · ~$0.030\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T16:10:02.052Z",
+      "step": "cli.stream",
+      "detail": "→ provider=codex_cli · 64.5s · ~$0.5\n  [4/5] qualification scorecard (with brief)...\n     → gates: PASSED\n     → scorecard: 68/100 (A24 B8 C25 D8 E3)\n     → verdict: ready-to-build"
+    },
+    {
+      "at": "2026-05-14T16:10:36.131Z",
+      "step": "cli.stream",
+      "detail": "uild-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/north-brisbane-metal-roofing-pty-ltd/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  14356 chars"
+    },
+    {
+      "at": "2026-05-14T16:11:48.833Z",
+      "step": "cli.stream",
+      "detail": "────┴──────────────────────┴────────────────────────────────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:11:48.846Z",
+      "step": "cli.stream",
+      "detail": "\"audit_score\": 56,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_nbmr.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:11:48.846Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=498416ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

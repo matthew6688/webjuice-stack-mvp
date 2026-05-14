@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chijl3ph8wbbkwsrlheky2pl5pm",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
-  "lastSeenAt": "2026-05-14T07:57:28.273Z",
-  "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-14T07:57:28.273Z",
+  "lastSeenAt": "2026-05-14T16:00:45.624Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-14T16:01:54.536Z",
   "identifiers": {
     "place_id": "ChIJL3pH8WBbkWsRlHeKy2pl5pM",
     "cid": "10657317077574645652",
@@ -144,7 +144,7 @@
         "computed_at": "2026-05-13T07:15:08.975Z"
       }
     },
-    "batch_id": "places-roofer-brisbane-202605141757",
+    "batch_id": "places-roofer-brisbane-202605150200",
     "discovery_rank": 9,
     "google_places_provider": "official_api",
     "email": "info@gutterandroofrepairs.com.au",
@@ -220,6 +220,14 @@
       "query": "roofer brisbane",
       "runPath": "",
       "at": "2026-05-14T07:57:28.273Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T16:00:45.624Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
     }
@@ -364,23 +372,44 @@
       "score": null,
       "action": "audit_candidate",
       "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T16:00:45.624Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T16:01:54.536Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T16:03:30.766Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+      "note": ""
     }
   ],
   "notes": [
     "Graded B / T3",
-    "Graded B / T2"
+    "Graded B / T2",
+    "Graded C / -"
   ],
   "grade": {
-    "investment_level": "B",
-    "product_tier": "T2",
-    "recommended_pricing": {
-      "one_time": null,
-      "annual": "$799/年",
-      "monthly": null,
-      "note": "1-page · 12 revisions/yr · monthly maintenance · local SEO cleanup"
-    },
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-14T04:38:29.609Z"
+    "graded_at": "2026-05-14T16:01:54.535Z"
   },
   "last_reply_class": "objection-price",
   "last_reply_at": "2026-05-11T07:11:58.151Z",
@@ -389,8 +418,8 @@
     "replied": 3
   },
   "last_contact_at": "2026-05-11T07:11:58.152Z",
-  "phase": "design-ready",
-  "phaseChangedAt": "2026-05-14T04:38:29.616Z",
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-14T16:03:30.766Z",
   "enrichment_status": "complete",
   "batches": [
     "places-roofer-brisbane-202605132243",
@@ -398,11 +427,96 @@
     "places-roofer-brisbane-202605141617",
     "places-roofer-brisbane-202605141655",
     "places-roofer-brisbane-202605141744",
-    "places-roofer-brisbane-202605141757"
+    "places-roofer-brisbane-202605141757",
+    "places-roofer-brisbane-202605150200"
   ],
   "project_thread_id": null,
   "project_profile_message_id": null,
-  "project_thread_opened_at": "2026-05-13T23:49:22.967Z",
+  "project_thread_opened_at": "2026-05-14T16:05:05.629Z",
   "sales_stage": "demo-ready",
-  "project_thread_id_cleared_at": "2026-05-14T12:02:51.604Z"
+  "project_thread_id_cleared_at": "2026-05-14T12:02:51.604Z",
+  "niche_relevance": {
+    "key": "roofer||roofing contractor",
+    "relevant": true,
+    "confidence": 1,
+    "reason": "该商家的类别和名称都明确属于屋顶施工与修复行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T12:22:26.062Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "audit_candidate",
+    "reason": "Strong V2 candidate — proceed to detailed audit",
+    "gbp_quality": 86,
+    "final_score": 86,
+    "fired_triggers": [
+      "high_traction_old_site"
+    ],
+    "relevance_pass": true,
+    "priority": 86,
+    "at": "2026-05-14T16:01:51.521Z"
+  },
+  "predict_grade": {
+    "grade": "A",
+    "priority": 100,
+    "audit_now": true,
+    "reasons": [
+      "predict-A · 150 评论≥100 · 4.6★≥4.3 · audit_candidate · has_website"
+    ],
+    "at": "2026-05-14T16:01:51.522Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-14T16:01:52.933Z",
+  "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+  "qualification": {
+    "computed_at": "2026-05-14T16:03:30.768Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": false,
+        "reason": "页面 > 50 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网是 e-commerce (Shopify/WooCommerce/Magento) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": null,
+    "verdict": "archived",
+    "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+    "brief_skipped": true,
+    "brief_skipped_reason": "pre-gate failed on brief-independent signal",
+    "crawl_summary": {
+      "pages_crawled": 10,
+      "sitemap_source": "/sitemap.xml"
+    }
+  },
+  "thread_cleared_at": "2026-05-14T19:53:27.384Z"
 }

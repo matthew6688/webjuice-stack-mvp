@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-160344-be50c8",
+  "created_at": "2026-05-14T16:03:44.307Z",
+  "updated_at": "2026-05-14T16:10:50.842Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cheap-audit-queue → predict A/B chain",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: detailedAudit for domain_rooroofing.com.au (predict-A/B)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_rooroofing.com.au"
+    ],
+    "target_entity_key": "domain_rooroofing.com.au",
+    "timeout_ms": 900000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 426320,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T16:03:44.521Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_rooroofing.com.au"
+    },
+    {
+      "at": "2026-05-14T16:03:49.630Z",
+      "step": "cli.stream",
+      "detail": "false  profile=normal (concurrent_leads=1)\n\n══════════ domain_rooroofing.com.au ══════════\n  [thread] reusing 1504514560613159034\n  [stage 1/4] detailed audit — fetching http://www.rooroofing.com.au/"
+    },
+    {
+      "at": "2026-05-14T16:05:47.110Z",
+      "step": "cli.stream",
+      "detail": "→ contact-page crawl ok · +1 emails · +2 social\n     → contact: emails=1 · contact_url=yes · social=facebook,twitter\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T16:08:34.482Z",
+      "step": "cli.stream",
+      "detail": "2557)\n[lead-thread-sync] cleared stale discord_thread_id from domain_rooroofing.com.au (was 404)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T16:09:07.805Z",
+      "step": "cli.stream",
+      "detail": "l\": true\n    }\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_rooroofing.com.au ══════════\n  [1/5] multi-page crawl http://www.rooroofing.com.au/..."
+    },
+    {
+      "at": "2026-05-14T16:09:37.599Z",
+      "step": "cli.stream",
+      "detail": "ter.md: 14476 bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/roo-roofing/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  16823 chars"
+    },
+    {
+      "at": "2026-05-14T16:10:50.830Z",
+      "step": "cli.stream",
+      "detail": "tml' │\n└─────────┴────────────────────────────┴───────────────┴──────┴─────────────┴───────────────────┴───────────────┴───────┴──────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T16:10:50.841Z",
+      "step": "cli.stream",
+      "detail": "dit_score\": 60,\n      \"decision\": \"strong_redesign\",\n      \"visual_issues\": 7,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_rooroofing.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T16:10:50.842Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=426320ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

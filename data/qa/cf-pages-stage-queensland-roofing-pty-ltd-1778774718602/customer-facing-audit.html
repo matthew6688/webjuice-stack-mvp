@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Audit Report · Queensland Roofing Pty Ltd</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: #2c2c2c;
+            background: #f9f6f1;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a4d6d 0%, #2d6a8f 100%);
+            color: white;
+            padding: 48px 40px 40px;
+        }
+        
+        h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+        }
+        
+        .score-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .score-number {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .score-label {
+            font-size: 14px;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .score-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: #ffd166;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        
+        main {
+            padding: 48px 40px;
+        }
+        
+        section {
+            margin-bottom: 56px;
+        }
+        
+        h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            color: #1a4d6d;
+        }
+        
+        h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 12px;
+            color: #2c2c2c;
+        }
+        
+        p {
+            margin-bottom: 16px;
+            font-size: 17px;
+        }
+        
+        .strength-item, .issue-item, .outcome-item {
+            margin-bottom: 24px;
+            padding-left: 32px;
+            position: relative;
+        }
+        
+        .strength-item::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 24px;
+            height: 24px;
+            background: #06d6a0;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .issue-item::before {
+            content: '!';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 24px;
+            height: 24px;
+            background: #ef476f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .outcome-item::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 24px;
+            height: 24px;
+            background: #118ab2;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .issue-title, .strength-title, .outcome-title {
+            font-weight: 600;
+            color: #1a4d6d;
+            margin-bottom: 4px;
+            font-size: 18px;
+        }
+        
+        .issue-description, .strength-description, .outcome-description {
+            color: #4a4a4a;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .highlight-box {
+            background: #fef7e6;
+            border-left: 4px solid #ffd166;
+            padding: 20px 24px;
+            margin: 24px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 16px;
+        }
+        
+        .quote-block {
+            background: #f0f8ff;
+            border-left: 4px solid #118ab2;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-style: italic;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .quote-text {
+            font-size: 18px;
+            color: #2c2c2c;
+            margin-bottom: 8px;
+        }
+        
+        .quote-author {
+            font-size: 14px;
+            color: #666;
+            font-style: normal;
+        }
+        
+        .closing {
+            background: #f9f6f1;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .closing h2 {
+            margin-bottom: 16px;
+        }
+        
+        .closing p {
+            font-size: 17px;
+            color: #4a4a4a;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+        
+        .cta-text {
+            font-size: 15px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        footer {
+            padding: 32px 40px;
+            background: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .stat-card {
+            background: #f9f6f1;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a4d6d;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        @media (max-width: 600px) {
+            header, main {
+                padding: 32px 24px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            h2 {
+                font-size: 22px;
+            }
+            
+            .score-number {
+                font-size: 42px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Queensland Roofing Pty Ltd</h1>
+            <p class="subtitle">Website Performance Audit · May 2026</p>
+            
+            <div class="score-card">
+                <div class="score-number">61<span style="font-size: 32px; opacity: 0.7;">/100</span></div>
+                <div class="score-label">Overall Website Score</div>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: 61%;"></div>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <section>
+                <p style="font-size: 19px; color: #1a4d6d; font-weight: 500;">Your website is holding back a business with genuinely strong customer trust. You've built a solid reputation over the years, but the site doesn't reflect that quality.</p>
+            </section>
+            
+            <section>
+                <h2>What's Working Well</h2>
+                
+                <div class="strength-item">
+                    <div class="strength-title">Outstanding customer reviews</div>
+                    <div class="strength-description">You have 4.5 stars from 35 Google reviews, with 74% being 5-star ratings. Customers consistently praise your professionalism, speed, and thoroughness. This is genuine trust that took years to build.</div>
+                </div>
+                
+                <div class="quote-block">
+                    <div class="quote-text">"Stunned by how fast and efficiently they work with our whole roof replaced in 3 days"</div>
+                    <div class="quote-author">— David, ★★★★★</div>
+                </div>
+                
+                <div class="strength-item">
+                    <div class="strength-title">Established local presence</div>
+                    <div class="strength-description">Your business has been operating since 1978, and your website has been online since 2010. This longevity gives you an advantage in Google search that newer competitors don't have.</div>
+                </div>
+                
+                <div class="strength-item">
+                    <div class="strength-title">Quote form is visible</div>
+                    <div class="strength-description">You have a contact form right on the homepage, making it easy for customers to reach out. The placement is good—it just needs design refinement to work even better.</div>
+                </div>
+            </section>
+            
+            <section>
+                <h2>What's Holding You Back</h2>
+                
+                <div class="issue-item">
+                    <div class="issue-title">Your site shows a "Not Secure" warning</div>
+                    <div class="issue-description">Your website doesn't have HTTPS security, so browsers display a "Not Secure" label in the address bar. Some browsers even show a full-screen warning before visitors can see your site. Research shows that over 80% of people will leave immediately when they see this warning. You're losing potential customers before they even read about your services.</div>
+                </div>
+                
+                <div class="highlight-box">
+                    <p><strong>Impact:</strong> Google has penalised sites without HTTPS in search rankings since 2018. This is directly reducing how many people find you through Google search.</p>
+                </div>
+                
+                <div class="issue-item">
+                    <div class="issue-title">The phone number is too hard to find</div>
+                    <div class="issue-description">Your phone number appears as small white text in the blue header bar—easy to miss. About 70% of people searching for local services want to call directly rather than fill out a form. If they can't find your number quickly, they'll call the next company on the list.</div>
+                </div>
+                
+                <div class="issue-item">
+                    <div class="issue-title">The site looks dated and generic</div>
+                    <div class="issue-description">The bright blue header bar and stock photography make the site look like a 10-year-old template. The hero image appears to be generic stock photography—there's no visible Queensland Roofing branding or recognisable Brisbane locations. This makes visitors wonder if you're actually a local Brisbane company or just a template site.</div>
+                </div>
+                
+                <div class="highlight-box">
+                    <p><strong>First impressions matter:</strong> Visitors form their opinion about your business within 8 seconds. An outdated design makes 40% of people question whether you're still operating or whether your work methods are current.</p>
+                </div>
+                
+                <div class="issue-item">
+                    <div class="issue-title">The quote form asks for too much information</div>
+                    <div class="issue-description">Your contact form has 10 fields to fill out. Industry research shows that forms with more than 4 fields see a significant drop in completions—people start filling it out, get frustrated, and leave. You're losing leads who were ready to contact you.</div>
+                </div>
+                
+                <div class="issue-item">
+                    <div class="issue-title">Google can't showcase you properly</div>
+                    <div class="issue-description">Your website is missing the technical markers that tell Google you're a local business (business hours, service areas, contact details in a format search engines understand). This means you're missing out on appearing in Google's special local business features—the Knowledge Panel, map cards, and AI-generated answers. These high-visibility spots go to competitors who have this information set up correctly.</div>
+                </div>
+                
+                <div class="issue-item">
+                    <div class="issue-title">Mobile visitors have a frustrating experience</div>
+                    <div class="issue-description">Google's performance test scored your mobile site 51 out of 100. Pages take over 18 seconds to fully load on a typical phone connection. Most visitors will leave after 3 seconds. You're losing the majority of mobile traffic—and these days, more than half of all searches happen on phones.</div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">24</span>
+                        <span class="stat-label">Unoptimised Images</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">18.6s</span>
+                        <span class="stat-label">Mobile Load Time</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">67</span>
+                        <span class="stat-label">Pages to Migrate</span>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h2>What Changes When We Fix This</h2>
+                
+                <div class="outcome-item">
+                    <div class="outcome-title">More phone calls from ready-to-buy customers</div>
+                    <div class="outcome-description">A large, prominent click-to-call button on both desktop and mobile means customers can reach you instantly. No hunting for the number, no friction—just one tap to call.</div>
+                </div>
+                
+                <div class="outcome-item">
+                    <div class="outcome-title">Visitors trust you immediately</div>
+                    <div class="outcome-description">A secure site (HTTPS), modern design, and authentic photos of your actual Brisbane projects and crew make a strong first impression. We'll feature your best customer quotes prominently—like "whole roof replaced in 3 days"—so new visitors immediately see proof of your quality.</div>
+                </div>
+                
+                <div class="outcome-item">
+                    <div class="outcome-title">Better visibility in Google search</div>
+                    <div class="outcome-description">Proper technical setup means Google can display your business properly in search results, maps, and AI-generated answers. Your 4.5-star rating will show up in search snippets. You'll appear in the local business features that your competitors currently occupy.</div>
+                </div>
+                
+                <div class="outcome-item">
+                    <div class="outcome-title">More completed quote requests</div>
+                    <div class="outcome-description">A simplified form (3-4 essential fields instead of 10) means more people will complete it. We keep the form visible but make the phone number the star—because we know most of your customers prefer to call.</div>
+                </div>
+                
+                <div class="outcome-item">
+                    <div class="outcome-title">Fast mobile experience</div>
+                    <div class="outcome-description">Optimised images, modern code, and streamlined design mean your site loads in under 3 seconds on a phone. Mobile visitors stay, browse your services, and contact you—instead of leaving out of frustration.</div>
+                </div>
+                
+                <div class="highlight-box">
+                    <p><strong>Your existing Google rankings are safe:</strong> We'll provide a complete redirect plan for all 67 pages, ensuring that any keywords you currently rank for transfer seamlessly to the new site. You keep all the search authority you've built since 2010.</p>
+                </div>
+            </section>
+            
+            <section class="closing">
+                <h2>Next Step</h2>
+                <p>We've identified the specific issues holding back your website. The good news? Every single one is fixable, and the foundation is already strong—your reputation and customer trust are genuine.</p>
+                <p>We'd like to walk you through these findings in detail, show you examples of what the improvements would look like, and answer any questions you have.</p>
+                <p class="cta-text">No sales pressure. No obligation. Just a clear picture of what's possible.</p>
+            </section>
+        </main>
+        
+        <footer>
+            <p>This audit was generated on 15 May 2026 using Google's official performance tools and live customer review data.</p>
+            <p style="margin-top: 8px;">Queensland Roofing Pty Ltd · www.queenslandroofing.com.au</p>
+        </footer>
+    </div>
+</body>
+</html>

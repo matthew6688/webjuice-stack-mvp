@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>Internal Audit · Ace Roofing Service</title>
+<style>
+  :root {
+    --cream: #fff6ec; --paper: #fffcf7; --ink: #17191c; --line: #17191c;
+    --muted: #5e6268; --coral: #ff5a3d; --coral-soft: #ffb39f;
+    --peach: #ffe1ce; --citrus: #ffd45a; --mint: #cdeccf;
+    --green: #47b86a; --sky: #8bd3f7; --lilac: #eadcfb;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-weight: 600; }
+  body { background-image: linear-gradient(rgba(23,25,28,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(23,25,28,0.04) 1px, transparent 1px); background-size: 54px 54px; }
+  .doc { max-width: 920px; margin: 32px auto; background: var(--paper); border: 2px solid var(--line); box-shadow: 6px 6px 0 var(--line); }
+  .cover { padding: 36px 36px 28px; border-bottom: 2px solid var(--line); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; }
+  .cover .eyebrow { margin: 0; font-size: 11px; font-weight: 950; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); }
+  .cover h1 { font-family: var(--serif); font-size: 44px; font-weight: 900; line-height: 1.05; margin: 8px 0 8px; max-width: 600px; word-break: break-word; }
+  .cover .subline { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; font-size: 14px; font-weight: 800; color: var(--muted); margin: 0; }
+  .cover .subline strong { color: var(--coral); }
+  .cover .meta-line { margin-top: 12px; font-size: 11px; font-weight: 800; color: var(--muted); display: flex; gap: 8px; }
+  .cover .meta-line code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+  .score-tile { background: var(--citrus); border: 2px solid var(--line); padding: 18px 22px; text-align: center; min-width: 180px; box-shadow: 4px 4px 0 var(--line); }
+  .score-tile .label { font-size: 10px; font-weight: 950; letter-spacing: 0.1em; color: var(--ink); text-transform: uppercase; }
+  .score-tile .num { font-family: var(--serif); font-size: 64px; font-weight: 950; line-height: 1; margin: 6px 0 4px; color: var(--ink); }
+  .score-tile .num small { font-size: 14px; color: var(--ink); opacity: 0.75; font-weight: 800; }
+  .score-tile .decision { font-family: var(--mono); font-size: 12px; font-weight: 950; color: var(--ink); }
+
+  .section { padding: 28px 36px; border-top: 2px solid var(--line); }
+  .section .eyebrow { margin: 0 0 6px; font-size: 11px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); }
+  .section h2 { font-family: var(--serif); font-size: 30px; font-weight: 900; line-height: 1.1; margin: 4px 0 16px; max-width: none; word-break: break-word; }
+  .section h3 { font-size: 14px; font-weight: 950; margin: 18px 0 8px; }
+
+  .reason-line { padding: 12px 16px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 13.5px; font-weight: 800; line-height: 1.45; word-break: break-word; }
+  .lead-summary { margin: 0 0 14px; padding: 14px 18px; background: var(--cream); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); font-size: 14.5px; font-weight: 700; line-height: 1.65; max-width: 760px; word-break: break-word; font-family: var(--sans); }
+  .dim-meta { margin: -8px 0 16px; font-size: 12.5px; font-weight: 800; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
+  .dim-meta strong { color: var(--coral); font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .triggers-block { margin-top: 22px; }
+  .triggers-block .eyebrow { margin: 0 0 8px; }
+  .trigger-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .trigger-pill { background: var(--coral); color: white; padding: 4px 12px; font-family: var(--mono); font-size: 11px; font-weight: 950; border: 1.5px solid var(--line); }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); }
+  .contact-cell { padding: 14px 18px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+  .contact-cell:nth-child(2n) { border-right: 0; }
+  .contact-cell:nth-last-child(-n+2) { border-bottom: 0; }
+  .contact-cell .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .contact-cell .val { font-size: 14px; font-weight: 800; word-break: break-word; }
+
+  .dim-grid { display: grid; grid-template-columns: repeat(6, 1fr); border: 2px solid var(--line); margin: 14px 0; }
+  .dim-card { padding: 14px 12px; border-right: 2px solid var(--line); }
+  .dim-card:last-child { border-right: 0; }
+  .dim-card .label { font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+  .dim-card .score { font-family: var(--serif); font-size: 28px; font-weight: 950; line-height: 1; margin: 6px 0 6px; }
+  .dim-card .bar { height: 5px; background: rgba(23,25,28,0.08); border: 1.5px solid var(--line); overflow: hidden; margin-bottom: 4px; }
+  .dim-card .fill { height: 100%; background: var(--coral); }
+  .dim-card .weight { font-size: 9.5px; font-weight: 800; color: var(--muted); }
+
+  .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 12px 0; }
+  .screenshots figure { margin: 0; padding: 14px; border-right: 2px solid var(--line); }
+  .screenshots figure:last-child { border-right: 0; }
+  .screenshots img { width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .screenshots figcaption { margin-top: 10px; font-size: 11px; font-weight: 800; color: var(--muted); }
+
+  .perf-strip { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin-top: 12px; }
+  .perf-cell { padding: 12px; border-right: 2px solid var(--line); }
+  .perf-cell:last-child { border-right: 0; }
+  .perf-cell .lab { font-size: 9.5px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .perf-cell .val { font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1; margin-top: 4px; }
+  .perf-cell .val.ok { color: var(--green); }
+  .perf-cell .val.bad { color: var(--coral); }
+
+  .issue-card { padding: 14px 18px; border: 2px solid var(--line); background: var(--paper); margin: 10px 0; box-shadow: 3px 3px 0 var(--line); }
+  .issue-card.issue-critical { background: color-mix(in srgb, var(--coral-soft) 30%, var(--paper)); }
+  .issue-card.issue-major { background: color-mix(in srgb, var(--citrus) 18%, var(--paper)); }
+  .issue-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .issue-severity { font-family: var(--mono); font-size: 10.5px; font-weight: 950; padding: 2px 8px; background: var(--coral); color: white; border: 1.5px solid var(--line); }
+  .issue-major .issue-severity { background: var(--citrus); color: var(--ink); }
+  .issue-minor .issue-severity { background: var(--paper); color: var(--ink); }
+  .issue-id { font-family: var(--mono); font-size: 11px; background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; }
+  .issue-title { font-family: var(--serif); font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+  .issue-row { margin: 10px 0 0; font-size: 13px; line-height: 1.6; font-weight: 700; }
+  .issue-row .lab { display: block; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 3px; }
+  .issue-row.fix { padding-top: 8px; margin-top: 12px; border-top: 1.5px dashed rgba(23,25,28,0.18); }
+  .issue-row.fix .lab { color: var(--coral); }
+
+  details.dim-detail { border: 2px solid var(--line); margin: 8px 0; background: var(--paper); }
+  details.dim-detail summary { cursor: pointer; padding: 10px 16px; display: flex; gap: 14px; align-items: center; list-style: none; font-weight: 850; }
+  details.dim-detail summary::-webkit-details-marker { display: none; }
+  details.dim-detail summary::before { content: '▶'; color: var(--coral); font-size: 10px; transition: transform 0.2s; }
+  details.dim-detail[open] summary::before { transform: rotate(90deg); }
+  .dim-summary-label { flex: 1; font-family: var(--serif); font-size: 16px; font-weight: 950; }
+  .dim-summary-score { font-family: var(--serif); font-size: 18px; font-weight: 950; }
+  .dim-summary-rules { font-size: 11px; font-weight: 800; color: var(--muted); }
+  .dim-detail .rule-table { border-top: 2px solid var(--line); }
+
+  .rule-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+  .rule-table th { background: color-mix(in srgb, var(--citrus) 50%, var(--paper)); padding: 10px 12px; font-size: 10.5px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; border-bottom: 2px solid var(--line); }
+  .rule-table td { padding: 9px 12px; border-bottom: 1.5px solid rgba(23,25,28,0.08); vertical-align: top; font-weight: 700; }
+  .rule-table tr:last-child td { border-bottom: 0; }
+  .rule-table td.mark { text-align: center; font-weight: 950; font-size: 14px; }
+  .rule-table tr.hit td.mark { color: var(--green); }
+  .rule-table tr.miss td.mark { color: rgba(23,25,28,0.35); }
+  .rule-table tr.na td.mark { color: rgba(23,25,28,0.25); }
+  .rule-table td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 950; }
+  .rule-table td.why { color: var(--muted); font-weight: 700; }
+  .rule-table code { background: var(--cream); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); font-size: 11px; font-weight: 800; }
+
+  .visual-scores { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--line); margin: 12px 0 18px; }
+  .vs { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .vs:last-child { border-right: 0; }
+  .vs span { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .vs strong { display: block; font-family: var(--serif); font-size: 32px; font-weight: 950; line-height: 1; margin-top: 6px; }
+  .vs small { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .vs.vs-text strong.age { font-size: 16px; line-height: 1.3; padding-top: 4px; display: inline-block; }
+
+  .issues-grid { display: flex; flex-direction: column; gap: 0; }
+  .positives, .priorities { padding: 14px 16px; border: 2px solid var(--line); background: var(--paper); margin-top: 14px; }
+  .positives ul, .priorities ol { margin: 6px 0 0 18px; padding: 0; line-height: 1.55; font-weight: 700; }
+  .accent-mint { color: var(--green); }
+  .accent-coral { color: var(--coral); }
+
+  .issue-evidence { margin-top: 10px; padding-top: 10px; border-top: 1.5px dashed rgba(23,25,28,0.25); }
+  .issue-evidence .ev-lab { margin: 0 0 6px; font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+  .issue-evidence img { max-width: 100%; height: auto; display: block; border: 1.5px solid var(--line); }
+  .issue-evidence-html { margin-top: 8px; border: 1.5px solid var(--line); padding: 8px 10px; background: var(--cream); }
+  .issue-evidence-html summary { cursor: pointer; font-size: 11px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .issue-evidence-html pre { margin: 8px 0 0; padding: 8px; background: var(--paper); border: 1.5px solid var(--line); font-size: 11px; line-height: 1.4; overflow: auto; max-height: 240px; white-space: pre-wrap; word-break: break-all; }
+  .issue-row.ev-ref { color: var(--muted); }
+  .broken-evidence { background: color-mix(in srgb, var(--coral-soft) 35%, var(--paper)); border: 2px dashed var(--coral); padding: 12px 14px; margin-top: 10px; }
+  .broken-evidence .broken-lab { color: var(--coral); margin: 0 0 6px; font-size: 11.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; }
+  .broken-evidence .broken-reason { margin: 0; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .speed-video { width: 100%; max-width: 420px; display: block; margin: 14px auto 0; border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); background: black; }
+  .review-overview { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--line); margin: 14px 0 8px; }
+  .review-stat { padding: 14px 16px; border-right: 2px solid var(--line); }
+  .review-stat:last-child { border-right: 0; }
+  .review-stat .lab { font-size: 10px; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .review-stat strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 950; line-height: 1.1; margin-top: 4px; }
+  .review-stat small { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-top: 3px; }
+  .review-stat.trust-mint { background: var(--mint); }
+  .review-stat.trust-citrus { background: var(--citrus); }
+  .review-stat.trust-coral-soft { background: var(--coral-soft); }
+  .theme-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .theme-pill { padding: 4px 10px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .theme-pill.pos { background: var(--mint); }
+  .theme-pill.neg { background: var(--coral-soft); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); margin: 8px 0 14px; }
+  .review-quote { margin: 0; padding: 14px 16px; border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--paper); }
+  .review-quote:nth-child(2n) { border-right: 0; }
+  .review-quote:nth-last-child(-n+2) { border-bottom: 0; }
+  .review-quote .quote-text { font-family: var(--serif); font-size: 15px; font-weight: 700; line-height: 1.45; margin: 0 0 8px; }
+  .review-quote .quote-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .review-quote .quote-rating { color: var(--coral); letter-spacing: 0.08em; }
+  .review-quote .quote-why { font-size: 12px; font-weight: 700; line-height: 1.45; color: var(--muted); margin: 6px 0 0; padding-top: 8px; border-top: 1.5px dashed rgba(23,25,28,0.2); }
+  .review-quote .quote-why .lab { display: inline-block; font-size: 9.5px; font-weight: 950; letter-spacing: 0.06em; text-transform: uppercase; color: var(--coral); margin-right: 6px; }
+  .review-row { font-size: 13.5px; font-weight: 700; line-height: 1.5; }
+  .ev-caption { font-size: 13px; font-weight: 700; color: var(--muted); line-height: 1.5; margin: 0; }
+  .placeholder-note { background: var(--cream); border: 2px dashed var(--line); padding: 14px 16px; font-size: 13px; font-weight: 800; line-height: 1.5; }
+  .placeholder-list { margin: 10px 0 0 22px; padding: 0; line-height: 1.6; font-weight: 700; color: var(--muted); }
+
+  .sales-strip { padding: 16px 18px; background: var(--peach); border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--line); margin-top: 8px; }
+  .sales-strip ul { margin: 6px 0 0 22px; padding: 0; font-size: 14px; line-height: 1.55; font-weight: 800; }
+
+  .appendix { padding: 22px 36px; border-top: 2px solid var(--line); background: color-mix(in srgb, white 50%, var(--paper)); }
+  .appendix h2 { font-size: 14px; font-weight: 950; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .appendix .meta-row { font-size: 11.5px; font-weight: 800; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+  .appendix code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
+
+  @media print {
+    html, body { background: white; }
+    body { background-image: none; }
+    .doc { box-shadow: none; margin: 0 auto; }
+    details.dim-detail { break-inside: avoid; }
+    details.dim-detail[open] summary { break-after: avoid; }
+    .issue-card, .perf-strip, .visual-scores, .dim-grid, .contact-grid, .screenshots { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="cover">
+    <div>
+      <p class="eyebrow">Internal Audit Report · ProfitsLocal</p>
+      <h1>Ace Roofing Service</h1>
+      <p class="subline">
+        <span><strong>roofer</strong></span>
+        <span>·</span><span>Brisbane</span>
+        <span>·</span>
+        <span>★ 5 (37 reviews)</span>
+      </p>
+      <p class="meta-line">
+        <span>generated 2026/05/15 02:02</span>
+        <span>·</span>
+        <span>config <code>2026-05-11-v1</code></span>
+        <span>·</span>
+        <span>entity <code>place_chijrq6qulnbkwsruettr7eegyc</code></span>
+      </p>
+    </div>
+    <div class="score-tile">
+      <span class="label">Audit Score</span>
+      <div class="num">54<small>/100</small></div>
+      <span class="decision">MODERATE CANDIDATE</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <p class="eyebrow">总体判断</p>
+    <h2>审计概览</h2>
+    <p class="lead-summary">audit_score=54 → moderate_candidate · weakest: gbp 32, seo 45 · 1 critical issues</p>
+    
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">联系方式 + GBP 快照</p>
+    <h2>商家档案</h2>
+    <div class="contact-grid">
+      <div class="contact-cell"><span class="lab">电话</span><span class="val">0449 168 985</span></div>
+      <div class="contact-cell"><span class="lab">网址</span><span class="val"><a href="https://aceroofingservice.com.au/" target="_blank">https://aceroofingservice.com.au/</a></span></div>
+      <div class="contact-cell"><span class="lab">地址</span><span class="val">72 Queen St, Brisbane City QLD 4000, Australia</span></div>
+      <div class="contact-cell"><span class="lab">类目</span><span class="val">roofer</span></div>
+      <div class="contact-cell"><span class="lab">Google Maps</span><span class="val"><a href="https://maps.google.com/?cid=9734986581297417040" target="_blank">打开</a></span></div>
+      <div class="contact-cell"><span class="lab">网站状态</span><span class="val"><code>—</code></span></div>
+      <div class="contact-cell"><span class="lab">来源</span><span class="val">roofer brisbane</span></div>
+      <div class="contact-cell"><span class="lab">图片数 / 抓取分</span><span class="val">— · 27</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">六维度评分总览</p>
+    <h2>每个维度的强弱在哪</h2>
+    <p class="dim-meta"><strong>54/100</strong> · MODERATE CANDIDATE</p>
+    <div class="dim-grid">
+      
+        <div class="dim-card">
+          <span class="label">Google Business Profile</span>
+          <div class="score">32<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:32%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Technical</span>
+          <div class="score">63<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:63%"></div></div>
+          <span class="weight">权重 20%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">UX &amp; Conversion</span>
+          <div class="score">60<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:60%"></div></div>
+          <span class="weight">权重 25%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Content</span>
+          <div class="score">65<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:65%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">SEO</span>
+          <div class="score">45<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:45%"></div></div>
+          <span class="weight">权重 10%</span>
+        </div>
+        <div class="dim-card">
+          <span class="label">Visual</span>
+          <div class="score">50<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:50%"></div></div>
+          <span class="weight">权重 15%</span>
+        </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">现场证据 · 桌面 + 移动</p>
+    <h2>客户访问时看到的页面</h2>
+    <div class="screenshots">
+      <figure>
+        <img src="screenshots/desktop.png" alt="desktop screenshot" />
+        <figcaption>桌面 1440×900 · 来源：Playwright headless Chromium</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/mobile.png" alt="mobile screenshot" />
+        <figcaption>移动 375×667 · iPhone 12 viewport</figcaption>
+      </figure>
+    </div>
+    <div class="perf-strip">
+      <div class="perf-cell">
+        <span class="lab">LCP</span>
+        <span class="val ">—</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">HTTPS</span>
+        <span class="val ok">YES</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Mobile Lighthouse</span>
+        <span class="val">80</span>
+      </div>
+      <div class="perf-cell">
+        <span class="lab">Console Errors</span>
+        <span class="val ok">0</span>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section">
+    <p class="eyebrow accent-coral">关键问题 · 1 项</p>
+    <h2>立刻在伤害成交的硬伤</h2>
+    <div class="issues-grid">
+      
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">phone_visible_above_fold</code>
+      </div>
+      <div class="issue-title">phone_visible_above_fold</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>phone hidden below fold or missing</p>
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 800px region</p>
+      <img src="evidence/issue-phone-visible-above-fold.png" alt="evidence for Desktop 800px region" loading="lazy" />
+    </div>
+    </div>
+    </div>
+  </section>
+
+  
+  <section class="section">
+    <p class="eyebrow">主要问题 · 3 项</p>
+    <h2>影响转化的明显短板</h2>
+    <div class="issues-grid">
+      
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">click_to_call_link</code>
+      </div>
+      <div class="issue-title">click_to_call_link</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>no tel: link</p>
+      <div class="issue-evidence">
+      <p class="ev-lab">证据 · 移动端截图</p>
+      <img src="screenshots/mobile.png" alt="mobile evidence" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">homepage_title_clear</code>
+      </div>
+      <div class="issue-title">homepage_title_clear</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>title=&#39;# &quot;Feel Safe Under a Roof That Lasts – Brisbane Roof Restora&#39; contains-name=false contains-niche=false</p>
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 600px region</p>
+      <img src="evidence/issue-homepage-title-clear.png" alt="evidence for Desktop 600px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">local_schema_markup</code>
+      </div>
+      <div class="issue-title">local_schema_markup</div>
+      
+      
+      
+      
+      <p class="issue-row"><span class="lab">命中原因</span>no LocalBusiness JSON-LD</p>
+      <details class="issue-evidence-html"><summary>证据 · 1 JSON-LD block(s) found</summary><pre><code>{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@graph&quot;:[{&quot;@type&quot;:&quot;Organization&quot;,&quot;@id&quot;:&quot;https://aceroofingservice.com.au/#organization&quot;,&quot;name&quot;:&quot;Ace Roofing Services&quot;,&quot;url&quot;:&quot;https://aceroofingservice.com.au&quot;,&quot;logo&quot;:{&quot;@type&quot;:&quot;ImageObject&quot;,&quot;@id&quot;:&quot;https://aceroofingservice.com.au/#logo&quot;,&quot;url&quot;:&quot;https://aceroofingservice.com.au/wp-content/uploads/2024/09/blank-2000-x-2000-3-removebg-preview.png&quot;,&quot;contentUrl&quot;:&quot;https://aceroofingservice.com.au/wp-content/uploads/2024/09/blank-2000-x-2000-3-removebg-preview.png&quot;,&quot;caption&quot;:&quot;Ace Roofing Services&quot;,&quot;inLanguage&quot;:&quot;en-US&quot;,&quot;width&quot;:&quot;529&quot;,&quot;height&quot;:&quot;226&quot;}},{&quot;@type&quot;:&quot;WebSite&quot;,&quot;@id&quot;:&quot;https://aceroofingservice.com.au/#website&quot;,&quot;url&quot;:&quot;https://aceroofingservice.com.au&quot;,&quot;name&quot;:&quot;Ace Roofing Services&quot;,&quot;publisher&quot;:{&quot;@id&quot;:&quot;https://aceroofingservice.com.au/#organization&quot;},&quot;inLanguage&quot;:&quot;en-US&quot;,&quot;potentialAction&quot;:{&quot;@type&quot;:&quot;SearchAction&quot;,&quot;target&quot;:&quot;https://aceroofingservice.com.au/?s={search_term_string}&quot;,&quot;query-input&quot;:&quot;required name=search_term_string&quot;}},{&quot;@type&quot;:&quot;ImageObject&quot;,&quot;@id&quot;:&quot;https://aceroofingservice.com.au/wp-content/uploads/2024/09/new-roof-of-a-family-house-a-roofer-builds-a-roof-made-of-ceramic-tiles-1024x682.jpg&quot;,&quot;url&quot;:&quot;https://aceroofingservice.com.au/wp-content/uploads/2024/09/new-roof-of-a-family-house-a-roofer-builds-a-roof-made-of-ceramic-tiles-1024x682.jpg&quot;,&quot;width&quot;:&quot;200&quot;,&quot;height&quot;:&quot;200&quot;,&quot;inLanguage&quot;:&quot;en-US&quot;},{&quot;@type&quot;:&quot;WebPage&quot;,&quot;@id&quot;:&quot;https://aceroofingservice.com.au/#webpage&quot;,&quot;url&quot;:&quot;https://aceroofingservice.com.au/&quot;,&quot;name&quot;:&quot;Home - Ace Roofing Services&quot;,&quot;</code></pre></details>
+    </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">规则细节 · 39 项明细</p>
+    <h2>每条规则的命中与失分原因</h2>
+    
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Google Business Profile</span>
+            <span class="dim-summary-score">32/100</span>
+            <span class="dim-summary-rules">8 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>has_website_link</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">website: https://aceroofingservice.com.au/</td></tr><tr class="hit"><td><code>review_volume_vs_peers</code></td><td class="mark">✓</td><td class="num">12/25</td><td class="why">37 reviews</td></tr><tr class="hit"><td><code>average_rating</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">★5</td></tr><tr class="miss"><td><code>has_hours</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">no hours</td></tr><tr class="miss"><td><code>image_count</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">0 images</td></tr><tr class="miss"><td><code>has_business_description</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">no description</td></tr><tr class="miss"><td><code>has_service_area</code></td><td class="mark">✗</td><td class="num">0/15</td><td class="why">no service area</td></tr><tr class="na"><td><code>owner_replies_to_reviews</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">reply rate not enriched</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Technical</span>
+            <span class="dim-summary-score">63/100</span>
+            <span class="dim-summary-rules">7 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>https_enabled</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">https</td></tr><tr class="na"><td><code>first_paint_under_3s</code></td><td class="mark">—</td><td class="num">0/25</td><td class="why">LCP not measured (need Playwright/Lighthouse)</td></tr><tr class="hit"><td><code>mobile_responsive</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">lighthouse mobile 80</td></tr><tr class="na"><td><code>core_web_vitals_pass</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">CWV not measured</td></tr><tr class="hit"><td><code>form_submittable</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">form submits</td></tr><tr class="hit"><td><code>no_console_errors</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">0 console errors</td></tr><tr class="miss"><td><code>favicon_and_meta</code></td><td class="mark">✗</td><td class="num">3/5</td><td class="why">favicon: no, meta: yes</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">UX &amp; Conversion</span>
+            <span class="dim-summary-score">60/100</span>
+            <span class="dim-summary-rules">7 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>above_fold_cta_within_5s</code></td><td class="mark">✓</td><td class="num">30/30</td><td class="why">CTA keyword found above fold</td></tr><tr class="miss"><td><code>phone_visible_above_fold</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">phone hidden below fold or missing</td></tr><tr class="miss"><td><code>click_to_call_link</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">no tel: link</td></tr><tr class="hit"><td><code>quote_or_booking_form</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">&lt;form&gt; element present</td></tr><tr class="na"><td><code>contact_path_short</code></td><td class="mark">—</td><td class="num">0/10</td><td class="why">click-depth not measured</td></tr><tr class="hit"><td><code>has_gallery</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">gallery mentioned</td></tr><tr class="hit"><td><code>has_testimonials</code></td><td class="mark">✓</td><td class="num">5/5</td><td class="why">testimonials section present</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Content</span>
+            <span class="dim-summary-score">65/100</span>
+            <span class="dim-summary-rules">6 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="miss"><td><code>homepage_title_clear</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">title=&#39;# &quot;Feel Safe Under a Roof That Lasts – Brisbane Roof Restora&#39; contains-name=false contains-niche=false</td></tr><tr class="hit"><td><code>service_copy_specific</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">33 service-related verbs detected</td></tr><tr class="hit"><td><code>trust_signals_present</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">7 trust-keyword mentions</td></tr><tr class="hit"><td><code>localized_content</code></td><td class="mark">✓</td><td class="num">15/15</td><td class="why">mentions brisbane</td></tr><tr class="miss"><td><code>evidence_of_recent_update</code></td><td class="mark">✗</td><td class="num">0/15</td><td class="why">no recent year (≤ 1 year ago)</td></tr><tr class="hit"><td><code>non_ai_filler_copy</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">no obvious AI-filler</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">SEO</span>
+            <span class="dim-summary-score">45/100</span>
+            <span class="dim-summary-rules">5 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td><code>title_meta_present</code></td><td class="mark">✓</td><td class="num">25/25</td><td class="why">title=yes meta=yes</td></tr><tr class="hit"><td><code>h1_unique</code></td><td class="mark">✓</td><td class="num">20/20</td><td class="why">1 &lt;h1&gt; tags</td></tr><tr class="miss"><td><code>local_schema_markup</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">no LocalBusiness JSON-LD</td></tr><tr class="miss"><td><code>image_alt_present</code></td><td class="mark">✗</td><td class="num">0/20</td><td class="why">11 images, 18% with alt</td></tr><tr class="na"><td><code>sitemap_robots</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">/sitemap.xml + /robots.txt probe not run (need Playwright)</td></tr>
+      </tbody>
+    </table>
+        </details>
+        <details class="dim-detail">
+          <summary>
+            <span class="dim-summary-label">Visual</span>
+            <span class="dim-summary-score">50/100</span>
+            <span class="dim-summary-rules">1 规则</span>
+          </summary>
+          
+    <table class="rule-table">
+      <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr class="na"><td><code>visual_dimension_stub</code></td><td class="mark">—</td><td class="num">50/100</td><td class="why">visual dimension is filled by Block E (vision LLM autoresearch)</td></tr>
+      </tbody>
+    </table>
+        </details>
+  </section>
+
+  
+    <section class="section">
+      <p class="eyebrow">视觉审计 · Vision LLM</p>
+      <h2>设计观感的整体诊断</h2>
+      <p class="lead-summary">The page has a professional roofing look and visible contact actions, but the above-fold area is text-heavy and does not make the fastest path to a quote feel effortless.</p>
+      <div class="visual-scores">
+        <div class="vs"><span>新鲜度</span><strong>6</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>7</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>6</strong><small>/10</small></div>
+        <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
+      </div>
+      <div class="issues-grid">
+        
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">headline_too_large_and_long</code>
+      </div>
+      <div class="issue-title">Oversized headline slows comprehension</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero headline spans three large lines and includes a long quoted sentence: &quot;Feel Safe Under a Roof That Lasts - Brisbane Roof Restoration with 10 Years of Worry-Free Protection!&quot;</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A local customer comparing roofers from Google has to work too hard to understand the offer quickly. The most important action, getting help or a quote, competes with a very large block of marketing text.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A shorter headline such as &quot;Brisbane Roof Repairs &amp; Restoration&quot; with one supporting line underneath, followed immediately by phone and quote buttons.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Rewrite the hero into a direct service-led headline, reduce the heading size by about 20-30%, and place a clear primary CTA directly under the subheading.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-headline-too-large-and-long.png" alt="evidence for Full desktop" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">quote_button_not_primary_enough</code>
+      </div>
+      <div class="issue-title">Quote CTA is visually secondary</div>
+      <p class="issue-row"><span class="lab">观察到</span>The &quot;GET FREE QUOTE&quot; button is a white pill in the top-right, while the blue phone button beside it is more visually dominant.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Visitors who are not ready to call may miss the quote path because it does not stand out as the main next step. That matters for roofing customers who may want pricing before speaking to someone.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A high-contrast primary &quot;Get Free Quote&quot; button in the hero area, paired with a secondary click-to-call button, both visible without scrolling.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Move a stronger quote CTA into the main hero content, use the brand blue or another high-contrast accent for it, and keep the phone CTA next to it as a secondary action.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 800px region</p>
+      <img src="evidence/issue-quote-button-not-primary-enough.png" alt="evidence for Desktop 800px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-critical">
+      <div class="issue-head">
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">phone_number_truncated</code>
+      </div>
+      <div class="issue-title">Phone number appears incomplete</div>
+      <p class="issue-row"><span class="lab">观察到</span>The blue phone button in the header shows &quot;0426 366 7..&quot; with the end of the number visually cut off or abbreviated.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>An incomplete-looking phone number can immediately reduce trust. A customer with an urgent roof issue may wonder whether the site is broken or whether the business details are reliable.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>The full phone number displayed clearly inside the button, with enough horizontal padding and no truncation.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Increase the phone button width, prevent text truncation, and test the full number across desktop and mobile header breakpoints.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-phone-number-truncated.png" alt="evidence for Full desktop" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-minor">
+      <div class="issue-head">
+        <span class="issue-severity">MINOR</span>
+        <code class="issue-id">hero_background_too_dark</code>
+      </div>
+      <div class="issue-title">Roof image is heavily darkened</div>
+      <p class="issue-row"><span class="lab">观察到</span>The roof photo behind the hero is covered by a very dark overlay, making the actual roofing work hard to inspect.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The dark treatment helps white text stand out, but it also hides the real work quality. Roofing customers want visual proof that the company does solid, current work.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A brighter, sharper roof image with a controlled dark gradient only behind the text area, leaving part of the roof clearly visible.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the full dark overlay with a left-side gradient behind the copy and use a clearer project photo that shows roof material and workmanship.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-hero-background-too-dark.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+    <div class="issue-card issue-major">
+      <div class="issue-head">
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">benefit_list_overloaded</code>
+      </div>
+      <div class="issue-title">Too many checklist claims above fold</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero includes nine checkmark bullet points across two columns, including long lines such as &quot;Clear and Consistent Communication Every Step of the Way&quot;.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The long checklist makes the first screen feel busy and forces visitors to scan a lot before acting. Important trust points like licensed, insured, emergency availability, and years in business do not stand out.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Three to four compact trust badges above the fold, such as &quot;Licensed &amp; Insured&quot;, &quot;Since 2004&quot;, &quot;Emergency Roofing&quot;, and &quot;Free Quotes&quot;.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Condense the checklist into four short trust badges under the CTA, then move detailed service promises lower on the page with icons and supporting copy.</p>
+      
+      <div class="issue-evidence">
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-benefit-list-overloaded.png" alt="evidence for Desktop 700px region" loading="lazy" />
+    </div>
+    </div>
+      </div>
+      
+        <div class="positives">
+          <p class="eyebrow accent-mint">需要保留的优点</p>
+          <ul><li>Phone and quote actions are visible in the desktop header.</li><li>The page uses a real roofing background image, which fits the service category.</li><li>Trust claims such as licensed, insured, family-owned, and emergency availability are present.</li></ul>
+        </div>
+      
+        <div class="priorities">
+          <p class="eyebrow accent-coral">Redesign 优先级</p>
+          <ol><li>1. Fix the header phone number so it displays fully on all screen sizes.</li><li>2. Simplify the hero message and add a stronger quote CTA inside the main hero area.</li><li>3. Replace the long checklist with four high-value trust badges above the fold.</li></ol>
+        </div>
+    </section>
+
+  
+    <section class="section section-placeholder">
+      <h2>客户评论分析</h2>
+      <p class="placeholder-note">⏳ 评论挖掘按需生成（仅高价值 lead 跑，加 <code>--with-reviews</code> 触发）。会补充：</p>
+      <ul class="placeholder-list">
+        <li>5 条 Google 「最相关」评论 + 商家整体评分概览</li>
+        <li>常见好评 / 差评 themes（Ollama 本地提取）</li>
+        <li>quotable 评论 — 可直接放到 redesign 后网站</li>
+        <li>redesign hooks — 哪些主题该在网站哪些位置呈现</li>
+      </ul>
+    </section>
+
+  
+    <section class="section">
+      <p class="eyebrow">加载速度证据 · 慢速 4G 移动网络</p>
+      <h2>客户在手机上看到的真实加载体验</h2>
+      <p class="ev-caption">下方视频在 1.6 Mbps 下行 / 150ms 延迟 / 4× CPU 节流条件下录制 — 这是大多数本地搜索访客在手机上真实看到的体验。</p>
+      <video class="speed-video" controls preload="metadata" playsinline>
+        <source src="video/mobile-throttled.webm" type="video/webm" />
+      </video>
+      <p class="placeholder-note" style="margin-top:14px">⏳ Mockup 站点对比视频 — 等 ProfitsLocal 真实 mockup 上线后录制 side-by-side 对比。</p>
+    </section>
+
+  
+  <section class="section">
+    <p class="eyebrow accent-coral">销售切入点</p>
+    <h2>从 audit 数据自动推导的开场话术</h2>
+    <div class="sales-strip">
+      <ul>
+        <li>你的最大短板是 Google Business Profile（得分 32/100）</li><li>有 1 个 critical 级问题正在直接伤害成交</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="appendix">
+    <h2>Appendix</h2>
+    <p class="meta-row">
+      <span>Cheap audit version: <code>2026-05-10-v1</code></span>
+      <span>Detailed audit version: <code>2026-05-11-v1</code></span>
+      
+    </p>
+    <p class="meta-row" style="margin-top:8px">
+      <span>Visual auditor: ✓ filled (Block E)</span>
+      <span>Review analysis: ⏳ on-demand for high-value leads</span>
+      <span>Speed video: ⏳ post-mockup</span>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

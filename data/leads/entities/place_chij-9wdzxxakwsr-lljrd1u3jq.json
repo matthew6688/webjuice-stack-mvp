@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "entityKey": "place_chij-9wdzxxakwsr-lljrd1u3jq",
   "firstSeenAt": "2026-05-09T06:17:12.131Z",
-  "lastSeenAt": "2026-05-14T07:57:28.273Z",
+  "lastSeenAt": "2026-05-14T16:00:45.624Z",
   "status": "graded",
-  "lastStatusAt": "2026-05-14T11:47:12.948Z",
+  "lastStatusAt": "2026-05-14T16:02:31.435Z",
   "identifiers": {
     "place_id": "ChIJ-9wdZxxakWsR-llJRD1U3JQ",
     "cid": "10726541034605074938",
@@ -144,8 +144,8 @@
         "computed_at": "2026-05-13T07:13:52.520Z"
       }
     },
-    "batch_id": "places-roofer-brisbane-202605141757",
-    "discovery_rank": 10,
+    "batch_id": "places-roofer-brisbane-202605150200",
+    "discovery_rank": 17,
     "google_places_provider": "official_api",
     "email": "sales@queenslandroofing.com.au",
     "contact_us_url": "https://queenslandroofing.com.au/contact-us/"
@@ -228,6 +228,14 @@
       "query": "roofer brisbane",
       "runPath": "",
       "at": "2026-05-14T07:57:28.273Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-14T16:00:45.624Z",
       "discoveryScore": null,
       "recommendedAction": "audit_candidate"
     }
@@ -403,6 +411,40 @@
       "sub_status": null,
       "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
       "note": ""
+    },
+    {
+      "at": "2026-05-14T16:00:45.624Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605150200",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-14T16:02:31.435Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T16:02:31.445Z",
+      "event": "phase_changed",
+      "from": "archived",
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T16:03:44.515Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
+      "note": ""
     }
   ],
   "notes": [
@@ -414,7 +456,7 @@
     "product_tier": null,
     "recommended_pricing": null,
     "skip_reasons": [],
-    "graded_at": "2026-05-14T11:47:12.947Z"
+    "graded_at": "2026-05-14T16:02:31.434Z"
   },
   "enrichment_status": "complete",
   "batches": [
@@ -423,23 +465,24 @@
     "places-roofer-brisbane-202605141617",
     "places-roofer-brisbane-202605141655",
     "places-roofer-brisbane-202605141744",
-    "places-roofer-brisbane-202605141757"
+    "places-roofer-brisbane-202605141757",
+    "places-roofer-brisbane-202605150200"
   ],
   "merged_from": [
     "domain_queenslandroofing.com.au"
   ],
   "project_thread_id": null,
-  "project_profile_message_id": "1504269344161402920",
+  "project_profile_message_id": null,
   "project_thread_opened_at": "2026-05-13T23:49:19.805Z",
   "sales_stage": "demo-ready",
   "phase": "archived",
-  "phaseChangedAt": "2026-05-14T11:49:40.175Z",
+  "phaseChangedAt": "2026-05-14T16:03:44.515Z",
   "discord_thread_id": null,
   "discord_profile_message_id": null,
-  "discord_thread_opened_at": "2026-05-14T11:38:07.932Z",
+  "discord_thread_opened_at": "2026-05-14T16:02:29.831Z",
   "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
   "qualification": {
-    "computed_at": "2026-05-14T11:49:40.179Z",
+    "computed_at": "2026-05-14T16:03:44.517Z",
     "hard_gates": [
       {
         "id": "too_many_pages",
@@ -448,7 +491,7 @@
       },
       {
         "id": "multi_business",
-        "passed": false,
+        "passed": true,
         "reason": "多业务复杂 (GBP ≥ 4 类目 OR 跨 niche 服务页 ≥ 5)"
       },
       {
@@ -480,15 +523,42 @@
     "scorecard": null,
     "verdict": "archived",
     "archive_reason": "gate_too_many_pages: 页面 > 50 · 迁移成本失控",
-    "redesign_brief_path": "clients/queensland-roofing-pty-ltd/v2/redesign-brief.json",
+    "brief_skipped": true,
+    "brief_skipped_reason": "pre-gate failed on brief-independent signal",
     "crawl_summary": {
       "pages_crawled": 10,
-      "sitemap_source": "/sitemap.xml",
-      "cost": 0.15
-    },
-    "ai_provider": "codex_cli",
-    "llm_judge_audit": null
+      "sitemap_source": "/sitemap.xml"
+    }
   },
   "project_thread_id_cleared_at": "2026-05-14T11:47:12.583Z",
-  "discord_thread_id_cleared_at": "2026-05-14T12:42:42.705Z"
+  "discord_thread_id_cleared_at": "2026-05-14T12:42:42.705Z",
+  "niche_relevance": {
+    "key": "roofer||roofing contractor",
+    "relevant": true,
+    "confidence": 1,
+    "reason": "该商家的类别和名称都明确属于屋顶施工与修复行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T12:22:26.062Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "audit_candidate",
+    "reason": "Strong V2 candidate — proceed to detailed audit",
+    "gbp_quality": 73,
+    "final_score": 73,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 73,
+    "at": "2026-05-14T16:02:28.683Z"
+  },
+  "predict_grade": {
+    "grade": "B",
+    "priority": 75,
+    "audit_now": true,
+    "reasons": [
+      "predict-B · 35 评论≥30 · 4.5★≥4 · audit_candidate"
+    ],
+    "at": "2026-05-14T16:02:28.683Z"
+  },
+  "thread_cleared_at": "2026-05-14T19:53:27.382Z"
 }

@@ -1,24 +1,25 @@
 ---
-business_id: "domain_vantagepointroofing.com.au"
+business_id: "place_chijhbplvr5bkwsrgufsdwb6css"
 business_name: "Vantage Point Roofing"
-niche: "roofing"
+niche: "roofer"
 city: "Brisbane"
 rating: 4.6
-review_count: 0
+review_count: 138
 website: "https://vantagepointroofing.com.au/?utm_campaign=gmb"
-audit_score: 68
-decision: "low_priority"
+audit_score: 70
+decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
-fired_triggers: []
+fired_triggers:
+  - "high_traction_old_site"
 visual_age: "slightly_outdated"
 visual_freshness: 6
 visual_trust: 7
 visual_conversion: 5
 review_trust_signal: null
-generated_at: "2026-05-14T12:45:16.433Z"
+generated_at: "2026-05-14T16:07:53.919Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 4
+  evidence_count: 5
   video_url: "./video/mobile-throttled.webm"
   desktop_screenshot: "./screenshots/desktop.png"
   mobile_screenshot: "./screenshots/mobile.png"
@@ -26,31 +27,33 @@ assets:
 
 # Vantage Point Roofing · 现状审计与重构提议
 
-> **68/100** · low_priority · 行业：roofing · 地区：Brisbane · Google 评价：4.6★ （0 条）
+> **70/100** · moderate_candidate · 行业：roofer · 地区：Brisbane · Google 评价：4.6★ （138 条）
 
 ## 内部分级 · 运营优先看这段
 
 **投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
 
 **触发依据：**
-- C · low_priority · audit 68 · 0 评论 4.6★ (未达 B 标准)
+- C · moderate_candidate · audit 70 · 138 评论 4.6★ (未达 B 标准)
 
 **下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
 
 ## 一、店家现状速览
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Maps (gosom 抓取)
-- **搜索关键词**: `roofing in brisbane`
+- **来源**: Google Places API (官方搜索)
+- **搜索关键词**: `roofer brisbane`
+- **结果排名**: 第 10 位
 - **首次发现**: 2026-05-14
-- **Batch**: `pipe-roofing-brisbane-202605142244`
+- **Batch**: `places-roofer-brisbane-202605150200`
 
-**审计结论：** audit_score=68 → low_priority · weakest: gbp 20, visual 50
+**审计结论：** audit_score=70 → moderate_candidate · weakest: gbp 45, visual 50 · fired: high_traction_old_site
 
-- 电话：(07)35062534
-- 地址：4/288-292 Newmarket Rd, Wilston QLD 4051
+**已触发的 hard triggers：** `high_traction_old_site`
+
+- 电话：(07) 3506 2534
+- 地址：4/288-292 Newmarket Rd, Wilston QLD 4051, Australia
 - 网站：[https://vantagepointroofing.com.au/?utm_campaign=gmb](https://vantagepointroofing.com.au/?utm_campaign=gmb)
-- 网站状态：`independent_https_site`
 
 ## 二、客户访问时看到的页面
 
@@ -64,125 +67,145 @@ assets:
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The site looks like a legitimate local roofer, but the first screen makes it harder than necessary for mobile and desktop visitors to call or request a quote.
+> The site looks legitimate and established, but the above-the-fold experience makes it harder than necessary for a Brisbane roofing customer to call or request a quote quickly.
 
 新鲜度 **6/10** · 信任度 **7/10** · 转化准备度 **5/10** · 设计年代 `slightly_outdated`
 
 **值得保留的优点：**
-- The logo is clear and professional, and the green brand color fits the roofing/trade category.
-- The site shows a phone number on desktop and references 100+ 5-star reviews, which are useful trust signals.
-- The hero uses a real roof/project image rather than a generic abstract background.
+- The logo is clear and professional in both desktop and mobile headers.
+- The phone number is visible on desktop and paired with a free quote message.
+- The hero copy includes useful trust proof, including '100+ 5 Star Reviews' and a 10-year workmanship guarantee.
 
 ## 五、当前网站在哪里"漏水"
 
 ### 关键问题 · 1 项（立刻在伤害成交）
 
-### 关键 · No quote button visible on mobile
+### 关键 · Mobile phone number is hidden
 
 **技术事实**
 
-On the mobile screenshot, the top bar shows the logo, a phone icon, and a green hamburger menu, but there is no visible 'Get a Quote' button or phone number in the first screen.
+On the mobile header, there is only a black phone icon beside the logo, with no visible phone number or call text.
 
 **普通话翻译**
 
-手机页面顶部只有电话图标，没有清楚写出“立即致电”或“获取报价”。
+手机页面顶部只看到一个电话图标，看不到电话号码，客户不一定知道能不能点。
 
 **对客户的影响**
 
-很多本地客户是在手机上从 Google 商家资料点进来的，通常几秒内就决定要不要联系。如果看不到明确按钮，客户可能直接返回去点下一家屋顶公司。
+本地找屋顶维修的人很多是在手机上直接比较商家；如果电话不够明显，客户可能在几秒内返回 Google，点下一家公司。
 
 **正确长啥样**
 
-Mobile header with a clearly labelled 'Call' or 'Get Quote' button visible without scrolling, using a tap-sized button of at least 44px height and a phone number or quote action in plain text.
+A mobile sticky header with a clearly labeled tap-to-call button such as 'Call 07 3506 2534' or a prominent green phone button with supporting text visible without scrolling.
 
 **Redesign 怎么改**
 
-Replace the icon-only mobile contact control with a sticky mobile action bar or header buttons: 'Call Now' and 'Get Quote', keeping the hamburger as a secondary control.
+Replace the lone phone icon with a high-contrast sticky call button showing the number or 'Call Now', and keep it visible at the top of the mobile viewport.
 
 
 ### 主要问题 · 4 项（影响转化的明显短板）
-
-### 主要 · review_volume_vs_peers
-
-**技术事实**
-
-0 reviews
-
-**普通话翻译**
-
-你的 Google 评价数量低于同行平均水平。
-
-**对客户的影响**
-
-本地搜索排名信号之一就是评价数量；不光是分数，连"有多少条"都算。短期可以做的：每个完工的客户群发一条「点评一下吧」的 SMS。
-
 
 ### 主要 · homepage_title_clear
 
 **技术事实**
 
-title='# Metal Roofing Specialists in Brisbane & Gold Coast' contains-name=false contains-niche=true
+title='# Metal Roofing Specialists in Brisbane & Gold Coast' contains-name=false contains-niche=false
 
 **普通话翻译**
 
-你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Vantage Point Roofing - roofing Brisbane」，但目前是泛泛一句）。
+你网站的浏览器标签 title 没把业务名字 + 服务关键词写清楚（比如该写「Vantage Point Roofing - roofer Brisbane」，但目前是泛泛一句）。
 
 **对客户的影响**
 
 Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
 
 
-### 主要 · Main CTA is away from the hero message
+### 主要 · No quote button above fold on mobile
 
 **技术事实**
 
-On desktop, the orange 'GET A QUOTE' button sits in the navigation bar on the far right, while the main headline and service benefits are inside a large white hero panel on the left with no quote button inside that panel.
+The mobile screenshot shows the headline, intro copy, review claim, and offer list, but no visible 'Get a Quote' or call-to-action button in the first screen.
 
 **普通话翻译**
 
-桌面版的报价按钮离主标题太远，客户看完介绍后没有马上看到下一步。
+手机首屏有很多介绍文字，但没有马上让客户联系你的按钮。
 
 **对客户的影响**
 
-客户越需要寻找按钮，越容易分心或离开。服务类网站通常要在首屏直接给出联系电话和报价入口，否则会流失准备询价的人。
+访客通常在前 8 秒决定要不要继续看；没有明显按钮，会让已经有需求的人少一步行动，询盘和电话都会流失。
 
 **正确长啥样**
 
-Hero section with the headline, one short trust line, and a primary 'Get a Free Roofing Quote' button directly beneath the offer, plus a secondary 'Call 07 3506 2534' action.
+Below the mobile headline, show two large buttons: 'Call Now' and 'Get a Free Quote', followed by the review proof and service bullets.
 
 **Redesign 怎么改**
 
-Add a high-contrast quote button and phone CTA inside the hero text block, directly below the trust statement and before the service list.
+Move a primary quote button and secondary call button directly under the hero headline on mobile, before the 'What we offer' list.
 
 
-### 主要 · Mobile first screen is text-heavy
+### 主要 · Hero lacks direct action
 
 **技术事实**
 
-The mobile screenshot shows a large centered headline, two lines of italic subtext, a review sentence, and the beginning of a bullet list before any image, form, quote button, or phone number text appears.
+On desktop, the main hero card contains the large 'Metal Roofing Specialists' headline, review text, and bullet list, but no quote or call button inside the hero card.
 
 **普通话翻译**
 
-手机首屏文字太多，客户要先读很多内容，才可能找到下一步。
+电脑页面主视觉区域讲得很清楚，但客户看到重点后没有立刻可以点的报价按钮。
 
 **对客户的影响**
 
-本地搜索客户经常边比较边快速浏览，首屏如果不能马上说明“可信”和“怎么联系”，询盘会被更直接的网站抢走。
+客户越需要找按钮，越容易分心或离开；对从 Google 进来的流量来说，每多一步都会减少来电和报价表单。
 
 **正确长啥样**
 
-Mobile hero with a shorter headline, one trust line such as '100+ 5-star reviews', and two clear action buttons above the fold, followed by the service list lower down.
+The hero card should include a large primary 'Get a Free Quote' button and a secondary 'Call (07) 3506 2534' link directly below the trust text.
 
 **Redesign 怎么改**
 
-Condense the mobile hero copy to headline plus one supporting line, move the benefits list below the first CTA row, and keep 'Call Now' and 'Get Free Quote' visible before scrolling.
+Add two clear hero actions inside the white card: an orange or green quote button and a phone action, placed before the service bullet list.
+
+
+### 主要 · Navigation feels crowded
+
+**技术事实**
+
+The desktop navigation contains multiple dropdown items, Projects, Testimonials, Contact, a large orange 'Get a Quote' button, and a search icon all in one row.
+
+**普通话翻译**
+
+电脑顶部菜单东西太多，客户不知道应该先点哪里。
+
+**对客户的影响**
+
+选择太多会让人犹豫；本地服务客户通常只想确认你靠谱、看案例、然后打电话，菜单复杂会降低行动速度。
+
+**正确长啥样**
+
+A simpler header with Services, Projects, Reviews, Contact, plus one dominant 'Get a Quote' button and the phone number.
+
+**Redesign 怎么改**
+
+Condense the header navigation into 4 core links, remove or de-emphasize the search icon, and keep quote plus phone as the visual priority.
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Add visible mobile 'Call Now' and 'Get Quote' actions above the fold.
-2. [视觉] 2. Put the primary quote CTA directly inside the desktop and mobile hero area.
-3. [视觉] 3. Shorten the mobile hero copy and move the benefits list below the first action row.
+1. [视觉] 1. Add a visible sticky mobile call/quote action above the fold.
+2. [视觉] 2. Place primary quote and phone buttons directly inside the hero area.
+3. [视觉] 3. Simplify the desktop navigation so phone, reviews, projects, and quote are the main path.
+
+## 七、推荐销售切入点
+
+- 你已经有不错的 Google 流量基础（138 条 4.6★ 评论），但当前网站设计在浪费这些点击
+
+## 真实速度数据 · Google PageSpeed Insights
+
+我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
+
+### 桌面端（desktop）
+
+**Lighthouse 分数：** Performance 72 · A11y 90 · Best Practices 100 · SEO 92
 
 ## 图片优化与第三方脚本体重
 
@@ -205,7 +228,7 @@ PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tra
 
 ### 第三方脚本占用情况
 
-- **总请求数：** 152（130 自有 + 22 第三方）
+- **总请求数：** 151（129 自有 + 22 第三方）
 - **第三方占总下载量：** 25%（639 KB / 2537 KB）
 - **Tracker 脚本数：** 10（合计 426 KB）
 
@@ -288,8 +311,6 @@ PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tra
 
 ## 域名历史与邮件信誉
 
-- **域名"在线已"约：** 11 年（Wayback 首次快照 2014-10-18 起算（.au 域名无公开创建日期））— 老域名 = 多年 SEO 资产，redesign 时 redirect map 必须做对
-- **Wayback Machine 快照：** 70 条（2014-10-18 → 2026-03-18）
 
 ### 邮件 DNS 配置（影响未来邮件营销 / 冷邮件投递率）
 
@@ -322,27 +343,24 @@ PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tra
 
 > **关键发现：客户网站还装着 Universal Analytics**，这套工具 Google 已于 2023 年 7 月停止收集数据。也就是说，**他们至少 2 年没有看过任何真实的网站访客数据**。这是销售切入的强角度。
 
-## 信任凭证 · AU 屋顶服务
+## 信任凭证 · generic
 
 本地服务的客户在掏钱之前会查这些凭证。缺失 = 客户跳到下一家。
 
-**信任分：** 50/100
+**信任分：** 25/100
 
-### 已显示的（4 项）
+### 已显示的（2 项）
 
-- **QBCC 执照号** (25 分) — "QBCC LIC # 1184283"
-- **行业协会会员** (10 分) — "HIA"
-- **保修 / 工艺保证** (10 分) — "Workmanship Guarantee"
-- **免费报价 / 上门估价** (5 分) — "free quote"
+- **保修** (15 分) — "Workmanship Guarantee"
+- **免费报价** (10 分) — "free quote"
 
-### 缺失的（4 项 — redesign 必补 / 提醒客户提供素材）
+### 缺失的（5 项 — redesign 必补 / 提醒客户提供素材）
 
-- [法律要求] **ABN** (15 分)
-- [行业惯例] **公共责任险** (15 分)
-- [行业惯例] **从业年限** (10 分)
-- [法律要求] **工伤 / WHS 合规** (10 分)
-
-> 客户网站缺少 2 个法律 / 行业要求的信任凭证：ABN、工伤 / WHS 合规。QLD 屋顶服务由 QBCC 监管，客户在花钱前会查这些；缺失等于直接给同行让单。
+- [行业惯例] **ABN** (20 分)
+- [行业惯例] **保险** (15 分)
+- [行业惯例] **从业年限** (15 分)
+- [行业惯例] **行业证书** (15 分)
+- [行业惯例] **荣誉 / 奖项** (10 分)
 
 ## AI 时代可发现性 · GEO Readiness
 
@@ -352,7 +370,7 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 
 ### 已经做到的（7 项）
 
-- [PASS] `llms_txt_present` — llms.txt found (162997 bytes)
+- [PASS] `llms_txt_present` — llms.txt found (162970 bytes)
 - [PASS] `localbusiness_schema` — LocalBusiness JSON-LD present
 - [PASS] `service_schema` — Service JSON-LD present
 - [PASS] `semantic_landmarks` — 5 semantic landmarks present: <nav, <header, <footer, <article, <section
@@ -380,6 +398,7 @@ GEO = Generative Engine Optimization。ChatGPT、Perplexity、Google AI Overview
 > 报价以上方 **建议报价** 为准（来自 entity.grade.recommended_pricing / PRODUCT_TIER_TABLE）。本段只用来判断 lead 是否匹配产品定位，不竞争报价。
 
 **触发依据：**
+- Google 评价 138 条（≥50，有规模基础）
 - 网站页面数 161（≥100，中等复杂度）
 - 已部署 5 个分析 / pixel 工具（高数字成熟度）
 - 引用 5 个社交平台（多渠道运营）

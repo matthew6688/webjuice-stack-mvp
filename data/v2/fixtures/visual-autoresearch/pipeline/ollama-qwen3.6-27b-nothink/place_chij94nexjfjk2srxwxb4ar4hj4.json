@@ -1,0 +1,109 @@
+{
+  "provider": "codex_cli",
+  "model": null,
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 60385,
+  "parsedJson": {
+    "freshness_score": 7,
+    "trust_score": 6,
+    "conversion_score": 6,
+    "design_age_estimate": "slightly_outdated",
+    "summary": "The site looks professionally styled, but the above-fold experience underuses proof, local reassurance, and mobile contact clarity.",
+    "issues": [
+      {
+        "id": "mobile_phone_number_hidden",
+        "severity": "major",
+        "title": "Mobile phone number is not visible",
+        "what_observed": "On the mobile header, the contact option is a green circular phone icon only; the number itself is not shown.",
+        "why_problem": "A local customer comparing roofers on their phone may want to confirm the number before tapping, especially for a high-value trade job. Hiding the number makes the business feel less immediately reachable.",
+        "what_correct_looks_like": "A sticky mobile header with the logo, a visible phone number or 'Call 0498 478 739' button, and a quote button accessible within one tap.",
+        "how_to_fix_in_redesign": "Replace the standalone green phone icon with a compact visible call button reading 'Call 0498 478 739' or add a sticky bottom bar with 'Call' and 'Get Quote'.",
+        "plain_explanation": "手机页面上只有一个电话图标，看不到电话号码，客户不知道点了会发生什么。",
+        "customer_impact": "本地找屋顶服务的人大多数会用手机搜索，很多人会直接打电话比较几家公司。号码不直接显示，会让一部分客户转去联系下一家。"
+      },
+      {
+        "id": "above_fold_missing_trust_proof",
+        "severity": "major",
+        "title": "No proof shown above the fold",
+        "what_observed": "The hero area shows a large roof photo, headline, paragraph, and quote/service buttons, but no review rating, license, warranty, years in business, or completed-project proof is visible.",
+        "why_problem": "Roofing is expensive and risky for homeowners and builders. A visitor from Google needs quick proof that the company is legitimate before asking for a quote.",
+        "what_correct_looks_like": "The first screen includes 2-4 compact proof points such as star rating, QBCC/license detail, insured status, warranty, and 'Brisbane-based metal roofing specialists'.",
+        "how_to_fix_in_redesign": "Add a proof strip directly under the headline or CTA with icons and short labels: 'QBCC licensed', 'Brisbane owned', 'Metal roof specialists', and review rating if available.",
+        "plain_explanation": "首屏看起来漂亮，但没有马上告诉客户“我们可靠、有资质、有人推荐”。",
+        "customer_impact": "访客通常在几秒内决定要不要继续看。没有资质、评价或保障信息，会让客户不敢把几万澳元的屋顶项目交给你。"
+      },
+      {
+        "id": "headline_targets_builders_not_homeowners",
+        "severity": "major",
+        "title": "Headline may exclude local homeowners",
+        "what_observed": "The main headline says 'Trusted by Queensland's Premium Builders' and the paragraph focuses on builders and developers.",
+        "why_problem": "Someone searching 'roofer Brisbane' may be a homeowner with a repair, replacement, or new roof need. The wording can make them think the business only works with builders.",
+        "what_correct_looks_like": "A headline that still signals premium work but names the service and location, such as 'Metal Roofing Specialists in North Brisbane' with subtext for homes, new builds, and commercial projects.",
+        "how_to_fix_in_redesign": "Rewrite the hero copy to lead with service and area, then mention builder trust as proof: 'North Brisbane Metal Roofing for New Builds, Re-roofs and Commercial Projects'.",
+        "plain_explanation": "标题主要在对建筑商说话，普通房主可能会觉得这家公司不是服务自己的。",
+        "customer_impact": "从 Google 商家资料点进来的客户需求很多样，如果第一句话让他们觉得“不适合我”，他们很可能在 8 秒内离开并联系竞争对手。"
+      },
+      {
+        "id": "desktop_cta_competes_with_quote_button",
+        "severity": "minor",
+        "title": "Quote actions are split",
+        "what_observed": "On desktop there is a dark 'Quote Request' button in the navigation and a green 'Get a Free Quote' button in the hero.",
+        "why_problem": "Two differently styled quote actions can make the page feel less focused. A visitor may not instantly know which button is the main path.",
+        "what_correct_looks_like": "One consistent primary quote style repeated across header and hero, with phone as the secondary action.",
+        "how_to_fix_in_redesign": "Use the same green primary CTA styling for both quote buttons, label them consistently as 'Get a Free Quote', and reserve dark styling for secondary navigation.",
+        "plain_explanation": "页面上有两个报价按钮，样式和文字不一样，看起来不像同一个重点动作。",
+        "customer_impact": "客户越需要思考下一步，越容易犹豫。对本地服务网站来说，按钮越统一清楚，询盘机会越高。"
+      },
+      {
+        "id": "mobile_secondary_button_cut_off",
+        "severity": "minor",
+        "title": "Mobile secondary button is cropped",
+        "what_observed": "At the bottom of the mobile screenshot, a bordered secondary button is partially hidden by the diagonal white section.",
+        "why_problem": "A cropped button makes the page feel unfinished and can frustrate users who try to understand what else they can tap.",
+        "what_correct_looks_like": "Mobile hero buttons stack cleanly with full labels visible and at least 16px spacing before the next section shape.",
+        "how_to_fix_in_redesign": "Stack the hero buttons vertically on mobile, remove the diagonal overlap from the button area, and keep both CTA labels fully visible above the fold or move the secondary button below the fold.",
+        "plain_explanation": "手机首屏底部的第二个按钮被斜切的白色区域挡住了一部分。",
+        "customer_impact": "这种细节会让客户觉得网站没有认真检查过，从而降低对施工质量和专业度的信任。"
+      },
+      {
+        "id": "desktop_header_takes_large_vertical_space",
+        "severity": "minor",
+        "title": "Desktop header is oversized",
+        "what_observed": "The desktop header uses a tall white navigation area with a large logo block, pushing the hero content lower on the screen.",
+        "why_problem": "The first screen has less room for trust proof, service clarity, and contact options, so visitors must work harder to decide whether to act.",
+        "what_correct_looks_like": "A slimmer desktop header around 80-96px tall with logo, nav, phone, and quote action aligned in one clear row.",
+        "how_to_fix_in_redesign": "Reduce desktop header height, scale the logo slightly smaller, keep phone and quote CTA prominent, and use the freed space for proof points under the hero copy.",
+        "plain_explanation": "电脑版顶部导航占了太多高度，真正说服客户的内容被挤下去了。",
+        "customer_impact": "首屏空间很宝贵。顶部太高会减少客户马上看到电话、资质、评价和服务范围的机会，影响询盘。"
+      }
+    ],
+    "positive_observations": [
+      "The logo is clear and memorable across desktop and mobile.",
+      "The dark roof hero image matches the premium metal roofing positioning.",
+      "The green primary CTA is visually strong and easy to notice."
+    ],
+    "redesign_priorities": [
+      "1. Make mobile contact immediate with a visible call button and sticky quote action.",
+      "2. Add above-fold trust proof: license, reviews, warranty, service area, and specialist credentials.",
+      "3. Rewrite the hero to clearly serve Brisbane roofing customers while preserving the premium-builder positioning."
+    ],
+    "confidence": 0.88
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 118524,
+      "note": "no parseable JSON in response"
+    },
+    {
+      "provider": "codex_cli",
+      "ok": true,
+      "latencyMs": 60385
+    }
+  ],
+  "tokensIn": 63377,
+  "tokensOut": 2435,
+  "theoreticalCostUsd": 0.18279250000000002
+}

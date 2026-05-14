@@ -104,8 +104,12 @@ function detectFeatures(msgs) {
   for (const m of msgs) {
     const text = m.content || '';
     const embedTitle = m.embeds?.[0]?.title || '';
+    const embedDesc = m.embeds?.[0]?.description || '';
     const embedFields = m.embeds?.[0]?.fields || [];
-    if (embedFields.some((f) => f.name === '联系方式' || f.name === '基本信息')) features.add('profile_card');
+    // V3 D43 cycle-20: profile card now uses ━━━ section divider in description (not fields)
+    // Detect via section markers OR legacy fields
+    if (embedDesc.includes('━━━ 基本信息') || embedDesc.includes('━━━ 联系方式')
+        || embedFields.some((f) => f.name === '联系方式' || f.name === '基本信息')) features.add('profile_card');
     if (text.includes('Intake 完成') || text.includes('cheap-audit + predict-grade')) features.add('cheap_summary');
     if (text.includes('销售操作') || text.includes('手动操作')) features.add('emoji_guide');
     if (text.includes('pipelineStartMessage') || text.includes('Audit pipeline 启动')) features.add('stage_0_start');
@@ -123,11 +127,25 @@ function detectFeatures(msgs) {
 // V3 D43 cycle-13 (Matthew 2026-05-14): per-field accuracy verification.
 // Hard evidence is NOT message count — it's "shown value matches entity source-of-truth".
 function verifyFieldAccuracy(embed, entity, slug) {
-  if (!embed?.fields || !entity) return { checked: 0, mismatches: [] };
+  if (!embed || !entity) return { checked: 0, mismatches: [] };
   const latest = entity.latest || {};
   const mismatches = [];
   let checked = 0;
-  for (const f of embed.fields) {
+
+  // V3 D43 cycle-20: parse description into virtual sections (━━━ name ━━━)
+  // for accuracy verification · backward compat with old fields[] format.
+  let fields = embed.fields || [];
+  if (!fields.length && embed.description) {
+    const parts = embed.description.split(/━━━ ([^━]+) ━━━\n/);
+    // parts: [address_or_empty, name1, body1, name2, body2, ...]
+    for (let i = 1; i < parts.length; i += 2) {
+      const name = (parts[i] || '').trim();
+      const value = (parts[i + 1] || '').trim();
+      if (name) fields.push({ name, value });
+    }
+  }
+
+  for (const f of fields) {
     const v = f.value || '';
     if (f.name === '联系方式') {
       checked++;
