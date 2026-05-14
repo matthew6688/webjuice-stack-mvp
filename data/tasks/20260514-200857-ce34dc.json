@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-200857-ce34dc",
+  "created_at": "2026-05-14T20:08:57.754Z",
+  "updated_at": "2026-05-14T20:13:08.223Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cycle-20 stability test",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-20 stability test · place_chijzfflvfb3k2srldcxrdv26p4",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "place_chijzfflvfb3k2srldcxrdv26p4"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 1200000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 250184,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T20:08:58.037Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key place_chijzfflvfb3k2srldcxrdv26p4"
+    },
+    {
+      "at": "2026-05-14T20:09:03.200Z",
+      "step": "cli.stream",
+      "detail": "age 1/4] detailed audit — reuse cached fixture\n  [stage 2/4] visual audit — reuse cached fixture\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T20:09:58.017Z",
+      "step": "cli.stream",
+      "detail": "}\n  ]\n}\n  [stage 5/5] qualification check...\n[pl:check-qualification] targets: 1\n\n══════════ place_chijzfflvfb3k2srldcxrdv26p4 ══════════\n  [1/5] multi-page crawl https://weatherproof.net.au/..."
+    },
+    {
+      "at": "2026-05-14T20:10:13.890Z",
+      "step": "cli.stream",
+      "detail": "l · 13.1s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T20:11:34.936Z",
+      "step": "cli.stream",
+      "detail": "bytes\n[pl:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/weatherproof-restorations/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  22752 chars"
+    },
+    {
+      "at": "2026-05-14T20:13:00.438Z",
+      "step": "cli.stream",
+      "detail": "ct, please use \"pages_build_output_dir\" to specify the directory of static files to upload.\n  Ignoring configuration file for now, and proceeding with project deploy.\n\n\n✨ Compiled Worker successfully"
+    },
+    {
+      "at": "2026-05-14T20:13:05.999Z",
+      "step": "cli.stream",
+      "detail": "Uploading... (17/20)\nUploading... (18/20)\nUploading... (19/20)\nUploading... (20/20)\n✨ Success! Uploaded 3 files (17 already uploaded) (2.38 sec)\n\n✨ Uploading Functions bundle\n🌎 Deploying..."
+    },
+    {
+      "at": "2026-05-14T20:13:08.203Z",
+      "step": "cli.stream",
+      "detail": "61,\n      \"decision\": \"moderate_candidate\",\n      \"visual_issues\": 7,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/place_chijzfflvfb3k2srldcxrdv26p4/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T20:13:08.223Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=250184ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

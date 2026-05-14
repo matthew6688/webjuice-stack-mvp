@@ -346,7 +346,10 @@ export async function openProjectThread(entityKey, { fetchImpl = fetch } = {}) {
 
   const audit = readDetailedAudit(entityKey)?.detailed_audit || null;
   const embed = renderProfileCard(entity, { audit, channel: 'projects' });
-  const threadName = buildLeadThreadName(entity);
+  // V3 D43 cycle-21 (Matthew 2026-05-15): pass channel='projects' so default
+  // stage label is 'demo-ready' (待发) · 不是 'build-pending' (待建)。
+  // Bug 表现: #website-projects 4/5 thread 标题用了 leads 默认 [待建].
+  const threadName = buildLeadThreadName(entity, 'projects');
   const tags = tagsForProjectsThread(entity);
 
   if (isDryRun()) {

@@ -22,8 +22,11 @@
 const HARD_GATES = [
   {
     id: 'too_many_pages',
-    test: (ctx) => (ctx.sitemap?.total_urls || 0) > 50,
-    reason: '页面 > 50 · 迁移成本失控',
+    // V3 D43 cycle-21 (Matthew 2026-05-15): 阈值 50 → 10 · 大多数中小企业站 ≤ 10 页 ·
+    // 超过 10 通常是 enterprise · 不在 V3 产品包。早 hard-pass 在 run-audit-pipeline 已 catch ·
+    // qualification 这层是 safety net.
+    test: (ctx) => (ctx.sitemap?.total_urls || 0) > 10,
+    reason: '页面 > 10 · 迁移成本失控',
   },
   {
     id: 'multi_business',

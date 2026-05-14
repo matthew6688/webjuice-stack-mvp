@@ -1,0 +1,103 @@
+{
+  "provider": "claude_cli",
+  "model": "claude-haiku-4-5-20251001",
+  "candidateId": "ollama-qwen3.6-27b-nothink",
+  "latencyMs": 60495,
+  "parsedJson": {
+    "freshness_score": 4,
+    "trust_score": 4,
+    "conversion_score": 5,
+    "design_age_estimate": "outdated",
+    "summary": "The site has a visible phone number and quote form above the fold, but the dark overlay hero, cramped checkbox form layout, and dated typography undermine trust for a local visitor who is deciding in seconds.",
+    "issues": [
+      {
+        "id": "hero_overlay_dark_unreadable",
+        "severity": "critical",
+        "title": "Dark hero overlay obscures house photo and headline",
+        "what_observed": "A dark semi-transparent overlay covers the entire left-side hero image of a house, making the photo nearly black and reducing the headline 'Brisbane Roof Restoration Specialists' to low contrast white text on dark grey.",
+        "why_problem": "A local homeowner searching 'roof restoration Brisbane' wants to instantly see work that looks like their own home. When the hero photo is almost entirely blacked out, the site looks broken or unprofessional — the visitor loses confidence before reading a single word.",
+        "what_correct_looks_like": "A bright, high-resolution before/after photo of a restored Brisbane roof (no overlay or a subtle bottom gradient only), with the headline rendered in a bold sans-serif at 40px+ on a clean background area so it reads instantly without straining.",
+        "how_to_fix_in_redesign": "Remove the dark overlay entirely. Use a photo with the sky in the upper third and the roof prominent. Place the headline text over a semi-opaque white card on the left side rather than directly on the image, ensuring WCAG AA contrast.",
+        "plain_explanation": "网站主图被一层深色滤镜盖住，房屋照片几乎看不清，标题文字也很难辨认。",
+        "customer_impact": "访客在8秒内决定是否留下。主图看起来像加载失败，70%的用户会直接离开，转而点击竞争对手的网站。"
+      },
+      {
+        "id": "form_checkbox_overload",
+        "severity": "major",
+        "title": "Quote form has 20+ checkboxes visible above fold",
+        "what_observed": "The right-side 'Get a FREE Quote Today!' panel contains at least three separate checkbox groups — Services, Scope of Work, Work Type, and Roof Age — all visible in a single vertical scroll. The checkboxes are small (approx 12px targets) and tightly spaced.",
+        "why_problem": "A visitor who just wants a quick quote is immediately confronted with a survey. Research shows every additional form field reduces completion. Presenting 20+ micro-decisions before they have even read the business's credentials causes decision fatigue and form abandonment.",
+        "what_correct_looks_like": "A three-field form: Name, Phone, and a single open textarea for 'Describe your roof issue'. A bold 'Get My Free Quote' button. Additional service detail can be collected after contact is made.",
+        "how_to_fix_in_redesign": "Reduce the quote form to Name + Phone + optional message. Move checkbox detail collection to a secondary step or the follow-up phone call. Make the CTA button full-width and red/orange to match the nav button colour.",
+        "plain_explanation": "询价表单有超过20个勾选框，访客还没看到你的资质，就要回答一大堆问题，很容易直接放弃。",
+        "customer_impact": "每增加一个表单字段，提交率平均下降约11%。20个以上的选项可能导致超过一半的潜在客户在填写完成前离开，意味着大量询价直接流失。"
+      },
+      {
+        "id": "logo_illegible_small",
+        "severity": "major",
+        "title": "Logo text is too small and difficult to read",
+        "what_observed": "The top-left logo reads 'BRISBANE roof restoration experts' but the lower text lines are rendered at approximately 8–9px, making the business name effectively illegible without zooming in.",
+        "why_problem": "A local visitor who found this site via Google Maps or a search ad needs to immediately confirm they are on the right business's website. An unreadable logo creates uncertainty — 'is this the right company?' — and signals an amateur build.",
+        "what_correct_looks_like": "A two-line logo: 'Brisbane Roof Restoration' at 18–20px bold, 'Experts' or tagline at 13–14px. Minimum logo height 40px with clear whitespace. Alternatively, a simple wordmark at one font size that reads at arm's length.",
+        "how_to_fix_in_redesign": "Redesign logo as a single-weight wordmark at minimum 18px for the primary text. Use a roofline or house icon at 32px if icon is desired. Ensure it reads clearly on both white and dark backgrounds.",
+        "plain_explanation": "导航栏左上角的公司名称字体太小，几乎无法阅读，访客不确定自己是否在对的网站上。",
+        "customer_impact": "品牌辨识度差会降低用户信任感，尤其是从谷歌地图点进来的访客——他们需要立刻确认这是他们要找的公司，否则会返回搜索结果。"
+      },
+      {
+        "id": "no_trust_signals_above_fold",
+        "severity": "major",
+        "title": "No reviews, licences, or years-in-business above the fold",
+        "what_observed": "The visible above-fold area contains only the dark hero with headline and a quote form. There are no star ratings, review counts, licence badge, insurance logo, 'X years in Brisbane' text, or any third-party credibility markers anywhere in the viewport.",
+        "why_problem": "A homeowner hiring a tradie to work on their roof is making a high-stakes decision. They need social proof immediately — a Google review count, a QBCC licence number, or a 'Trusted by 500+ Brisbane homeowners' line — before they'll take any action. Without it, the site could be anyone.",
+        "what_correct_looks_like": "A trust bar directly below the nav or overlaid on the hero containing: Google star rating + review count (e.g. '4.9 ★ 127 Google Reviews'), QBCC licence number, and 'Serving Brisbane for X years' — all visible without scrolling.",
+        "how_to_fix_in_redesign": "Add a horizontal trust strip below the nav: Google Reviews badge (pulled via API or screenshot), QBCC licence badge, and a '15+ years experience' stat. Keep it to one row, white background, dark text, 14px.",
+        "plain_explanation": "网站首屏没有显示任何客户好评、营业执照或从业年限，访客无法判断这是否是一家靠谱的公司。",
+        "customer_impact": "88%的消费者在联系本地服务商之前会查看评价。没有信任标志，潜在客户更可能返回谷歌，选择显示了好评数量的竞争对手。"
+      },
+      {
+        "id": "cta_button_color_clash",
+        "severity": "minor",
+        "title": "Nav phone button red does not match page CTA hierarchy",
+        "what_observed": "The nav bar has a red 'Call (07) 3132 1605' button. The hero section has a separate grey-blue 'Call (07) 3132 1605' button in a different colour and style. The form submit button is not visible in the screenshot.",
+        "why_problem": "Two different button styles for the same action (calling the business) confuses the visual hierarchy. A visitor scanning the page can't instantly identify the single most important action. The grey-blue hero CTA looks secondary or disabled compared to the red nav button.",
+        "what_correct_looks_like": "One consistent CTA colour across all phone call buttons — red or orange to convey urgency. The hero CTA button should be the largest version of that same button, not a different colour/style.",
+        "how_to_fix_in_redesign": "Standardise all call-to-action buttons to a single brand colour (the existing nav red is fine). Remove the grey-blue variant. Make the hero CTA button at minimum 48px tall and full-width on mobile.",
+        "plain_explanation": "页面上有两个电话按钮，但颜色和样式不一样，让人搞不清楚该点哪个，看起来不专业。",
+        "customer_impact": "视觉混乱会让用户犹豫，延迟行动。统一的按钮颜色可以将点击率提高15-25%，因为用户不需要思考该做什么。"
+      },
+      {
+        "id": "generic_stock_photo_feel",
+        "severity": "minor",
+        "title": "Hero background photo appears generic rather than showing local work",
+        "what_observed": "The hero background shows a residential house with a dark overlay. The house appears to be a generic stock-photo-style suburban home rather than a clearly identified Brisbane property or a before/after restoration shot.",
+        "why_problem": "Local service customers respond to proof that the business has worked in their neighbourhood. A generic house photo — especially one so dark it's hard to see — provides no evidence of quality or local presence.",
+        "what_correct_looks_like": "A crisp, bright photograph of an actual completed Brisbane roof restoration job, ideally a terracotta or Colorbond roof with blue sky, with a caption like 'Sunnybank Hills, Brisbane — 2024 restoration'.",
+        "how_to_fix_in_redesign": "Source 3–5 real job photos from the client. Use the clearest one as the hero background with no overlay. Add a small caption in the bottom-left corner naming the Brisbane suburb.",
+        "plain_explanation": "主页的背景图看起来像网上下载的通用图片，而不是你们在布里斯班做过的真实工程。",
+        "customer_impact": "真实工程照片比库存图片能让用户在页面上停留时间增加约40%，因为潜在客户会寻找与自己房屋相似的案例作为参考。"
+      }
+    ],
+    "positive_observations": [
+      "Phone number is prominently displayed in the nav bar as a red call-to-action button — one of the most important conversion elements for a local tradie site.",
+      "The quote form is positioned above the fold on desktop so a motivated visitor can immediately start an enquiry without scrolling.",
+      "Navigation is simple and flat (Home / About / Services / Contact) — easy to scan and not overwhelming."
+    ],
+    "redesign_priorities": [
+      "1. Replace dark hero overlay with a bright real-job photo and add a one-row trust strip (Google reviews + QBCC licence) directly below the nav.",
+      "2. Reduce the quote form to 3 fields (Name, Phone, Message) and standardise the CTA button colour to the existing nav red.",
+      "3. Increase logo legibility to minimum 18px and ensure business name reads clearly on both light and dark backgrounds."
+    ],
+    "confidence": 0.82
+  },
+  "rawText": null,
+  "attempts": [
+    {
+      "provider": "claude_cli",
+      "ok": true,
+      "latencyMs": 60495
+    }
+  ],
+  "tokensIn": 4,
+  "tokensOut": 2971,
+  "theoreticalCostUsd": 0.08471785000000001
+}

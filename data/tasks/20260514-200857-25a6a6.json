@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-200857-25a6a6",
+  "created_at": "2026-05-14T20:08:57.754Z",
+  "updated_at": "2026-05-14T20:14:19.674Z",
+  "kind": "audit",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "cycle-20 stability test",
+    "message_id": null
+  },
+  "input": {
+    "text": "cycle-20 stability test · domain_brisbaneroofrestorationexperts.com.au",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:run-pipeline",
+    "args": [
+      "--entity-key",
+      "domain_brisbaneroofrestorationexperts.com.au"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 1200000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 321637,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T20:08:58.033Z",
+      "step": "cli.spawning",
+      "detail": "leads:run-pipeline --entity-key domain_brisbaneroofrestorationexperts.com.au"
+    },
+    {
+      "at": "2026-05-14T20:09:03.200Z",
+      "step": "cli.stream",
+      "detail": "ain_brisbaneroofrestorationexperts.com.au ══════════\n  [thread] opened #website-leads thread 1504576282136940555\n  [stage 1/4] detailed audit — fetching https://brisbaneroofrestorationexperts.com.au/"
+    },
+    {
+      "at": "2026-05-14T20:10:09.672Z",
+      "step": "cli.stream",
+      "detail": "ow_priority\n     → contact-page crawl ok · +0 emails · +0 social\n     → contact: emails=0 · contact_url=yes · social=none\n  [stage 2/4] visual audit — provider: auto (claude_cli → codex_cli → ollama)"
+    },
+    {
+      "at": "2026-05-14T20:11:11.423Z",
+      "step": "cli.stream",
+      "detail": "→ 6 visual issues via claude_cli, latency=60.5s (in=4 out=2971 ~$0.0847)\n  [stage 3a/4] graded: C ✓ persisted\n  [stage 4/4] build HTML report\n[build-internal-report] targets=1"
+    },
+    {
+      "at": "2026-05-14T20:11:37.670Z",
+      "step": "cli.stream",
+      "detail": "alification check...\n[pl:check-qualification] targets: 1\n\n══════════ domain_brisbaneroofrestorationexperts.com.au ══════════\n  [1/5] multi-page crawl https://brisbaneroofrestorationexperts.com.au/..."
+    },
+    {
+      "at": "2026-05-14T20:11:52.205Z",
+      "step": "cli.stream",
+      "detail": "s · 13.6s · ~$0.150\n  [2/5] pre-gate check (cheap signals · skip brief if obviously archived)...\n     ✓ pre-gates passed · running brief...\n  [3/5] AI 分析 raw JSON · cascade codex → claude → ollama..."
+    },
+    {
+      "at": "2026-05-14T20:12:58.849Z",
+      "step": "cli.stream",
+      "detail": "l:build-customer-audit] output:  /Users/matthew/Developer/google-map-website-v3/clients/brisbane-roof-restoration-experts/v2/customer-facing-audit.html\n[pl:build-customer-audit] prompt:  15906 chars"
+    },
+    {
+      "at": "2026-05-14T20:14:10.952Z",
+      "step": "cli.stream",
+      "detail": "_build_output_dir\" to specify the directory of static files to upload.\n  Ignoring configuration file for now, and proceeding with project deploy.\n\n\n✨ Compiled Worker successfully\nUploading... (16/21)"
+    },
+    {
+      "at": "2026-05-14T20:14:16.994Z",
+      "step": "cli.stream",
+      "detail": "Uploading... (17/21)\nUploading... (19/21)\nUploading... (21/21)\n✨ Success! Uploaded 5 files (16 already uploaded) (1.85 sec)\n\n✨ Uploading Functions bundle\n🌎 Deploying..."
+    },
+    {
+      "at": "2026-05-14T20:14:19.659Z",
+      "step": "cli.stream",
+      "detail": "───────┴─────────────────────────────────────┴──────┴─────────────┴────────────────┴───────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────┘"
+    },
+    {
+      "at": "2026-05-14T20:14:19.673Z",
+      "step": "cli.stream",
+      "detail": "\"decision\": \"low_priority\",\n      \"visual_issues\": 6,\n      \"grade\": \"C\",\n      \"report_url\": \"/audit-reports/domain_brisbaneroofrestorationexperts.com.au/internal-audit-report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T20:14:19.674Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=321637ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

@@ -120,6 +120,11 @@ async function processLead(entityKey) {
   if (!refetch && fs.existsSync(detailedPath)) {
     console.log(`  [stage 1/4] detailed audit — reuse cached fixture`);
     try { detailedFixture = JSON.parse(fs.readFileSync(detailedPath, 'utf8')); } catch {}
+    // V3 D43 cycle-21 (Matthew 2026-05-15): cached path 也 emit Stage 1 message ·
+    // 让 thread 显示完整 5 stage · 不能直接跳到 Stage 3.
+    if (detailedFixture) {
+      await postStage(entityKey, `**Stage 1/5 · 网站审计 (cached)** · 复用上次结果 · audit_score ${detailedFixture.detailed_audit?.audit_score ?? '?'}/100 · decision ${detailedFixture.detailed_audit?.decision ?? '?'}`);
+    }
   }
   if (!detailedFixture && url) {
     console.log(`  [stage 1/4] detailed audit — fetching ${url}`);
@@ -222,6 +227,21 @@ async function processLead(entityKey) {
     return { entityKey, ok: false, reason: 'no website' };
   }
 
+  // ── V3 D43 cycle-21 (Matthew 2026-05-15) · 早 hard-pass · sitemap > 10 立刻 archive
+  // 不浪费 Stage 2 vision + Stage 3 grade + Stage 4 HTML + Stage 5 qualification 的钱。
+  // 阈值 10 (Matthew 拍板 · 原 50 太宽松)。
+  const TOO_MANY_PAGES_THRESHOLD = parseInt(process.env.HARD_GATE_MAX_PAGES || '10', 10);
+  const sitemapTotal = detailedFixture?.sitemap_analysis?.total_urls || 0;
+  if (sitemapTotal > TOO_MANY_PAGES_THRESHOLD) {
+    const reason = `sitemap ${sitemapTotal} pages > ${TOO_MANY_PAGES_THRESHOLD} · 不在 V3 产品包 (迁移成本失控)`;
+    await postStage(entityKey, `**Early Hard-Gate Fail · sitemap pages > ${TOO_MANY_PAGES_THRESHOLD}**\n· ${reason}\n· archived · 跳过 Stage 2-5 (省 vision + LLM + qualification 成本)`);
+    try {
+      const { setEntityPhase, ENTITY_PHASE } = await import('../../core/leads/discovery-store.js');
+      setEntityPhase({ entityKey, phase: ENTITY_PHASE.ARCHIVED, archive_reason: `early_gate_too_many_pages: ${reason}` });
+    } catch (err) { console.warn(`[early-gate] setEntityPhase failed: ${err.message}`); }
+    return { entityKey, ok: false, reason: `early_gate_too_many_pages (sitemap ${sitemapTotal})` };
+  }
+
   // ── Stage 2: visual audit (Ollama vision on desktop screenshot) ──────
   const desktopShot = path.join(screenshotsRoot, entityKey, 'desktop.png');
   const visualRunDir = path.join(visualDir, 'pipeline', VISION_CAND_ID);
@@ -230,6 +250,11 @@ async function processLead(entityKey) {
   if (!refetch && fs.existsSync(visualPath)) {
     console.log(`  [stage 2/4] visual audit — reuse cached fixture`);
     try { visualFixture = JSON.parse(fs.readFileSync(visualPath, 'utf8')); } catch {}
+    // V3 D43 cycle-21 · cached Stage 2 也 emit (Matthew 2026-05-15)
+    if (visualFixture) {
+      const issues = visualFixture.parsedJson?.issues?.length || 0;
+      await postStage(entityKey, `**Stage 2/5 · 视觉审计 (cached)** · 复用上次 vision 结果 · ${issues} 个视觉问题 · provider ${visualFixture.provider || '?'}`);
+    }
   }
   if (!visualFixture && fs.existsSync(desktopShot)) {
     const forcedProvider = process.env.VISION_PROVIDER || 'auto (claude_cli → codex_cli → ollama)';

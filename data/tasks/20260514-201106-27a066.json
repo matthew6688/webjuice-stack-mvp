@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "task_id": "20260514-201106-27a066",
+  "created_at": "2026-05-14T20:11:06.433Z",
+  "updated_at": "2026-05-14T20:11:07.983Z",
+  "kind": "ops",
+  "status": "done",
+  "source": {
+    "platform": "internal",
+    "thread_id": null,
+    "author": "master-md-refresh (audit)",
+    "message_id": null
+  },
+  "input": {
+    "text": "auto: refresh master.md for domain_brisbaneroofrestorationexperts.com.au (trigger=audit)",
+    "attachments": []
+  },
+  "target": {
+    "cli": "leads:build-master-md",
+    "args": [
+      "--entity-key",
+      "domain_brisbaneroofrestorationexperts.com.au",
+      "--theme",
+      "report",
+      "--html"
+    ],
+    "target_entity_key": null,
+    "timeout_ms": 180000
+  },
+  "result": {
+    "entity_keys": [],
+    "exit_code": 0,
+    "duration_ms": 1327,
+    "cost_usd": null
+  },
+  "progress": [
+    {
+      "at": "2026-05-14T20:11:06.650Z",
+      "step": "cli.spawning",
+      "detail": "leads:build-master-md --entity-key domain_brisbaneroofrestorationexperts.com.au --theme report --html"
+    },
+    {
+      "at": "2026-05-14T20:11:07.980Z",
+      "step": "cli.stream",
+      "detail": "\"brisbane-roof-restoration-experts\",\n      \"md\": \"clients/brisbane-roof-restoration-experts/v2/master.md\",\n      \"html\": \"clients/brisbane-roof-restoration-experts/v2/master.report.html\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T20:11:07.983Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=1327ms"
+    }
+  ],
+  "error": null,
+  "discord": {
+    "thread_id": null,
+    "status_message_id": null
+  }
+}

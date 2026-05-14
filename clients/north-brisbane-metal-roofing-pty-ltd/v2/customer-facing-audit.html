@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website Audit Report – North Brisbane Metal Roofing</title>
+    <title>Website Audit — North Brisbane Metal Roofing</title>
     <style>
         * {
             margin: 0;
@@ -13,190 +13,176 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.7;
+            line-height: 1.6;
             color: #2c2c2c;
             background: #faf8f5;
             padding: 20px;
         }
         
         .container {
-            max-width: 760px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 48px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 60px 50px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         h1, h2, h3 {
             font-family: Georgia, 'Times New Roman', serif;
             font-weight: 600;
             color: #1a1a1a;
-            line-height: 1.3;
         }
         
         h1 {
             font-size: 2.2em;
-            margin-bottom: 12px;
+            margin-bottom: 0.3em;
+            line-height: 1.2;
         }
         
         h2 {
             font-size: 1.6em;
-            margin-top: 48px;
-            margin-bottom: 20px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e8e5e0;
+            margin-top: 2em;
+            margin-bottom: 0.8em;
+            padding-bottom: 0.3em;
+            border-bottom: 2px solid #e5e5e5;
         }
         
         h3 {
             font-size: 1.2em;
-            margin-top: 28px;
-            margin-bottom: 12px;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
             color: #3a3a3a;
         }
         
         p {
-            margin-bottom: 16px;
+            margin-bottom: 1.2em;
             font-size: 1.05em;
         }
         
         .hero {
             text-align: center;
-            padding: 32px 0 40px;
-            border-bottom: 1px solid #e8e5e0;
+            padding: 40px 0;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 40px;
         }
         
-        .subtitle {
+        .business-name {
             font-size: 1.1em;
             color: #666;
-            margin-bottom: 32px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .score-container {
-            display: inline-block;
-            margin: 24px 0;
+            margin: 30px 0;
         }
         
         .score-circle {
             width: 140px;
             height: 140px;
             border-radius: 50%;
-            border: 8px solid #f0ebe3;
-            display: flex;
+            background: #f5f5f5;
+            border: 8px solid #e74c3c;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            margin: 0 auto;
-            background: linear-gradient(to bottom, #fff9f0 0%, #fef8ed 100%);
-        }
-        
-        .score-number {
-            font-size: 3em;
-            font-weight: 700;
-            color: #d97706;
-            line-height: 1;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #e74c3c;
+            font-family: Georgia, serif;
         }
         
         .score-label {
-            font-size: 0.85em;
-            color: #888;
-            margin-top: 4px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #666;
         }
         
-        .issue-list {
-            margin: 24px 0;
-        }
-        
-        .issue-item {
-            margin-bottom: 32px;
-            padding-left: 0;
-        }
-        
-        .issue-title {
-            font-weight: 600;
-            font-size: 1.1em;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-        
-        .issue-impact {
+        .tagline {
+            font-size: 1.15em;
             color: #555;
-            font-size: 1.02em;
-            line-height: 1.7;
+            margin-top: 20px;
+            font-style: italic;
         }
         
-        .strength-list {
-            margin: 20px 0;
+        ul {
+            margin: 1em 0 1.5em 0;
             padding-left: 0;
             list-style: none;
         }
         
-        .strength-list li {
-            margin-bottom: 16px;
-            padding-left: 28px;
+        li {
+            padding: 12px 0 12px 30px;
             position: relative;
             font-size: 1.05em;
+            line-height: 1.6;
+        }
+        
+        li:before {
+            content: "•";
+            position: absolute;
+            left: 10px;
+            color: #4a90e2;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .issue-list li:before {
+            color: #e74c3c;
         }
         
         .strength-list li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #059669;
-            font-weight: 700;
-            font-size: 1.2em;
-        }
-        
-        .outcome-list {
-            margin: 20px 0;
-            padding-left: 0;
-            list-style: none;
-        }
-        
-        .outcome-list li {
-            margin-bottom: 16px;
-            padding-left: 28px;
-            position: relative;
-            font-size: 1.05em;
+            color: #27ae60;
         }
         
         .outcome-list li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: #2563eb;
-            font-weight: 700;
-            font-size: 1.2em;
+            color: #4a90e2;
+        }
+        
+        strong {
+            color: #1a1a1a;
+            font-weight: 600;
         }
         
         .closing {
-            margin-top: 48px;
-            padding: 32px;
-            background: #f9fafb;
-            border-left: 4px solid #2563eb;
-        }
-        
-        .closing p {
-            margin-bottom: 12px;
+            margin-top: 50px;
+            padding: 30px;
+            background: #f9f9f9;
+            border-left: 4px solid #4a90e2;
         }
         
         .closing p:last-child {
             margin-bottom: 0;
         }
         
-        .emphasis {
-            font-weight: 600;
-            color: #1a1a1a;
+        .screenshot-container {
+            margin: 30px 0;
+            text-align: center;
         }
         
-        @media (max-width: 640px) {
+        .screenshot-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .screenshot-label {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+        
+        @media (max-width: 600px) {
             .container {
-                padding: 32px 24px;
+                padding: 40px 25px;
             }
             
             h1 {
-                font-size: 1.75em;
+                font-size: 1.8em;
             }
             
             h2 {
@@ -208,86 +194,80 @@
 <body>
     <div class="container">
         <div class="hero">
-            <h1>Your Website Audit Report</h1>
-            <p class="subtitle">North Brisbane Metal Roofing Pty Ltd</p>
+            <div class="business-name">North Brisbane Metal Roofing Pty Ltd</div>
+            <h1>Your Website Audit</h1>
             
             <div class="score-container">
-                <div class="score-circle">
-                    <div class="score-number">56</div>
-                    <div class="score-label">out of 100</div>
-                </div>
+                <div class="score-circle">56</div>
+                <div class="score-label">out of 100</div>
             </div>
             
-            <p style="margin-top: 24px; color: #666;">Your website has a strong foundation, but several fixable issues are costing you phone calls and quote requests every week.</p>
+            <p class="tagline">Your website looks professional, but several fixable issues are costing you calls and enquiries every week.</p>
         </div>
 
         <h2>What's Working Well</h2>
         
-        <p>Before we dive into improvements, let's recognise what your website does right:</p>
+        <p>Before we get into what needs fixing, let's recognise what you're already doing right:</p>
         
         <ul class="strength-list">
-            <li><span class="emphasis">Professional appearance.</span> Your site looks polished and premium. The hero photography immediately shows the quality of your metal roofing work, and the green colour scheme is consistent with your branding.</li>
+            <li><strong>Your site looks modern and professional.</strong> The photography immediately shows quality metal roofing work, and the green branding is clean and consistent. First impressions matter, and visually you're ahead of many competitors.</li>
             
-            <li><span class="emphasis">Contact details are present.</span> On desktop, your phone number and email are visible in the header, which helps visitors reach you quickly.</li>
+            <li><strong>You've got the right contact information on desktop.</strong> Email and phone number are both visible in the header when someone visits from a computer, which makes it easy for customers to reach you.</li>
             
-            <li><span class="emphasis">Clear quote button.</span> The green "Get a Free Quote" button stands out and gives visitors an obvious next step.</li>
+            <li><strong>Your quote button stands out.</strong> The green call-to-action is prominent and matches your branding, which helps guide visitors toward getting in touch.</li>
         </ul>
 
         <h2>What's Holding You Back</h2>
         
-        <p>These are the specific issues that are likely costing you business right now. Each one translates directly to fewer phone calls or lost customers who chose a competitor instead.</p>
-        
-        <div class="issue-list">
-            <div class="issue-item">
-                <div class="issue-title">1. Your site shows "Not Secure" warnings</div>
-                <div class="issue-impact">Your website doesn't have HTTPS security enabled. This means browsers display a "Not Secure" warning in the address bar, and some browsers even show a full-screen warning that blocks your page. More than 80% of visitors will close the tab when they see this. Google also penalises sites without HTTPS in search rankings, which means fewer people find you in the first place. For a business with zero Google reviews, this warning is driving away visitors before they even read about your services.</div>
-            </div>
+        <p>Here are the specific issues that are costing you customers right now:</p>
+
+        <ul class="issue-list">
+            <li><strong>Your website shows "Not Secure" in the browser.</strong> Your site doesn't have HTTPS security, which means when someone visits, their browser displays a warning that your site is not secure. Many people will close the tab immediately when they see this. It's also hurting your Google rankings — Google has penalised sites without HTTPS since 2018. For a business with zero Google reviews, this warning is driving away the exact customers you need most.</li>
             
-            <div class="issue-item">
-                <div class="issue-title">2. Mobile visitors can't easily call you</div>
-                <div class="issue-impact">On mobile phones, your header shows a green phone icon but doesn't display your actual phone number. Visitors have to guess whether the button works or hunt for the number elsewhere. Most people searching for roofing services on mobile want to call immediately and compare quotes from several businesses. If your number isn't obvious, they'll simply go back to Google and try the next company. Even losing 10–20% of potential calls adds up quickly.</div>
-            </div>
+            <li><strong>Mobile visitors can't see your phone number.</strong> On a mobile phone, your header shows a green phone icon but no actual number. People have to guess whether tapping it will work. When someone's comparing roofers on their phone and ready to call, they'll often just go back to Google and ring the next business instead. Even losing 10-20% of potential calls this way adds up fast.</li>
             
-            <div class="issue-item">
-                <div class="issue-title">3. No trust signals in the first five seconds</div>
-                <div class="issue-impact">When someone lands on your homepage, they see a beautiful photo and a quote button, but no immediate proof that you're licenced, insured, or trusted by other customers. Roofing is a high-value service, and customers make snap judgements about trust. Without visible reviews, licence details, or local proof points in the first screen, some visitors won't even scroll down or submit a quote request.</div>
-            </div>
+            <li><strong>You have zero Google reviews.</strong> Review count isn't just about trust — it's a major factor in how high you appear in local search results. Google ranks businesses with more reviews higher than those with few or none. Every completed job where you don't ask for a review is a missed opportunity to climb the rankings.</li>
             
-            <div class="issue-item">
-                <div class="issue-title">4. The headline may confuse homeowners</div>
-                <div class="issue-impact">Your main headline says "Trusted by Queensland's Premium Builders" and focuses on new builds for builders and developers. If a local homeowner who needs roof repairs or replacement sees this, they might assume you don't take their type of job. Unclear messaging means people leave even when they're a perfect fit for your services.</div>
-            </div>
+            <li><strong>Your first screen doesn't prove you're trustworthy.</strong> When someone lands on your site, they see a nice photo and a quote button, but nothing that says "we're licensed, insured, and other people have used us successfully." For high-value work like roofing, customers make trust decisions in seconds. Without visible proof — reviews, licence details, years in business — some visitors won't feel confident enough to enquire.</li>
             
-            <div class="issue-item">
-                <div class="issue-title">5. Google can't understand your site properly</div>
-                <div class="issue-impact">Your website is missing the technical markers that help Google (and newer AI search tools like ChatGPT) understand that you're a local Brisbane roofing business. There's no structured business information, your page title doesn't include your business name and service type, and the heading structure confuses search engines. This means lower rankings, missed opportunities to appear in Google's local map results, and complete invisibility when someone asks an AI assistant "Who's a trusted roofer in North Brisbane?"</div>
-            </div>
-        </div>
+            <li><strong>Your headline might be confusing homeowners.</strong> Your main message says "Trusted by Queensland's Premium Builders" and talks about working with builders and developers. If a local homeowner needs their roof replaced or repaired, they might think you don't do residential work and leave. Being unclear about who you serve costs you enquiries from people who actually need your services.</li>
+            
+            <li><strong>Google can't properly index your site.</strong> Your website is missing the technical setup (called "schema markup") that tells Google and AI search engines like ChatGPT what services you offer, where you're located, and how to contact you. Without it, even if you rank well, you won't appear in the map results, knowledge panels, or AI-generated answers that are increasingly how people find local businesses.</li>
+        </ul>
 
         <h2>What Changes When We Fix This</h2>
         
-        <p>Here's what you can expect when these issues are addressed:</p>
+        <p>When these issues are addressed, here's what you can expect:</p>
         
         <ul class="outcome-list">
-            <li><span class="emphasis">More phone calls.</span> A visible tap-to-call number on mobile and removal of the "Not Secure" warning will stop visitors from bouncing. You'll convert more of the traffic you're already getting.</li>
+            <li><strong>More people will actually call.</strong> A secure site with visible phone numbers and clear trust signals converts more visitors into phone calls. Even a 15-20% improvement in conversion means several extra enquiries per month from the traffic you already have.</li>
             
-            <li><span class="emphasis">Higher Google rankings.</span> Proper HTTPS, correct page structure, and business information that Google can read will improve your position in local search results. Better rankings mean more people find you before they find your competitors.</li>
+            <li><strong>You'll rank higher in local search.</strong> Fixing the technical foundations (HTTPS, proper page titles, schema markup) plus building up your review count will improve where you appear when someone searches "roofer near me" or "metal roofing Brisbane."</li>
             
-            <li><span class="emphasis">More quote requests from the right customers.</span> Clear messaging that speaks to both homeowners and commercial clients, combined with visible trust signals (licence, insurance, reviews), will increase the number of qualified enquiries you receive.</li>
+            <li><strong>Customers will trust you faster.</strong> When visitors immediately see you're licensed, insured, local, and have happy customers, they move from "researching" to "ready to book" much more quickly. That means shorter sales cycles and less back-and-forth.</li>
             
-            <li><span class="emphasis">Visibility in the new AI search era.</span> ChatGPT and similar tools now handle billions of searches each month. When someone asks "Who should I hire for metal roofing in Brisbane?", properly structured website information means you'll actually be recommended.</li>
+            <li><strong>You'll be visible in the AI search era.</strong> ChatGPT now handles billions of searches per month. When someone asks "who's a reliable roofer in North Brisbane," AI tools only recommend businesses with proper structured data. Getting this right now means you won't be invisible as search behaviour shifts.</li>
             
-            <li><span class="emphasis">Faster load times and better mobile experience.</span> Optimised images and a properly designed mobile layout make your site feel more professional and trustworthy, which directly impacts whether someone picks up the phone.</li>
+            <li><strong>Mobile visitors will have a better experience.</strong> A properly optimised mobile site with visible contact info, fast loading, and clear calls-to-action means you capture more of the growing number of people searching and booking from their phones.</li>
         </ul>
 
+        <h2>Quick Look at Your Current Site</h2>
+        
+        <div class="screenshot-container">
+            <img src="./screenshots/desktop.png" alt="Desktop screenshot of current website">
+            <span class="screenshot-label">Your site on desktop — looks good but missing trust signals</span>
+        </div>
+        
+        <div class="screenshot-container">
+            <img src="./screenshots/mobile.png" alt="Mobile screenshot of current website">
+            <span class="screenshot-label">Your site on mobile — phone number not visible, button partially hidden</span>
+        </div>
+
         <div class="closing">
-            <p><span class="emphasis">What's next?</span></p>
-            
-            <p>This audit shows where you're losing opportunities, but every issue is fixable. If you'd like to understand exactly how these changes would work for your business—and see what's involved—we're happy to walk you through it in detail.</p>
-            
-            <p>We can organise a 30-minute call where we'll go through the findings together, answer your questions, and show you what a renewed website could look like for North Brisbane Metal Roofing. No pressure, no hard sell—just a clear explanation of what's possible.</p>
-            
-            <p style="margin-top: 20px;">If that sounds useful, simply reply to the email this came with or give us a call. We'll find a time that works for you.</p>
+            <h3>Next Step: 30-Minute Walkthrough</h3>
+            <p>This audit shows where the opportunities are. In a 30-minute call, we can walk through exactly what changes would have the biggest impact for your business, show you examples of what the fixes look like, and answer any questions you have.</p>
+            <p>No pressure, no obligation — just a clear conversation about whether fixing these issues makes sense for you right now.</p>
+            <p><strong>Ready to talk?</strong> Reply to this email or give us a call to find a time that works.</p>
         </div>
     </div>
 </body>

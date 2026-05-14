@@ -110,6 +110,30 @@ async function processEntity(key) {
         crawl_summary: { pages_crawled: crawl.pages_crawled, sitemap_source: crawl.sitemap_source },
       };
       fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+
+      // V3 D43 cycle-21 (Matthew 2026-05-15): pre-gate short-circuit 之前直接 return ·
+      // 跳过 Stage 5 Discord post · 导致 thread 缺这条消息。现 emit 简化版 Stage 5.
+      try {
+        const { refreshThreadAndPost } = await import(path.join(REPO, 'core/funnel/lead-thread-sync.js'));
+        const gateList = (preVerdict.hard_gates || []).map(g => `${g.passed ? '✅' : '❌'} ${g.id}${!g.passed ? ' · ' + (g.reason || '').slice(0,60) : ''}`).join('\n');
+        const stage5Msg = [
+          `**Stage 5/5 · Qualification check (pre-gate fail · brief 跳过)**`,
+          '',
+          `━━━ Hard Gates ━━━`,
+          gateList,
+          '',
+          `━━━ Verdict ━━━`,
+          `Phase: archived (set)`,
+          `archive_reason: ${preVerdict.archive_reason}`,
+          '',
+          `━━━ 节省 ━━━`,
+          `brief LLM 跳过 (~\$0.5 + ~74s 省了 · pre-gate brief-independent 已 fail)`,
+        ].join('\n');
+        await refreshThreadAndPost(key, stage5Msg);
+      } catch (err) {
+        console.warn(`     ⚠ Stage 5 Discord post failed: ${err.message}`);
+      }
+
       return { key, status: 'archived', verdict: 'archived', archive_reason: preVerdict.archive_reason, brief_skipped: true };
     }
     console.log(`     · pre-gate ${preVerdict.archive_reason} needs brief to confirm · running brief...`);

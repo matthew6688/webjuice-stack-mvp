@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-14T19:53:48.132Z",
+  "updatedAt": "2026-05-14T20:11:07.434Z",
   "storeRoot": "data/leads",
   "totals": {
     "entities": 103,
     "promoted": 0,
     "skipped": 42,
-    "needsAudit": 33,
+    "needsAudit": 32,
     "needsEnrichment": 0,
     "readyForOutreachBrief": 0
   },
   "statusCounts": {
-    "graded": 26,
+    "graded": 27,
     "skipped": 42,
-    "queued_for_audit": 33,
+    "queued_for_audit": 32,
     "scored": 1,
     "manual_review": 1
   },
@@ -1677,7 +1677,7 @@
     },
     {
       "entityKey": "domain_brisbaneroofrestorationexperts.com.au",
-      "status": "queued_for_audit",
+      "status": "graded",
       "firstSeenAt": "2026-05-14T11:20:43.694Z",
       "lastSeenAt": "2026-05-14T12:45:15.950Z",
       "runCount": 2,
@@ -1718,7 +1718,8 @@
         },
         "batch_id": "pipe-roofing-brisbane-202605142244",
         "discovery_rank": null,
-        "google_places_provider": null
+        "google_places_provider": null,
+        "contact_us_url": "https://brisbaneroofrestorationexperts.com.au/contact/"
       }
     },
     {

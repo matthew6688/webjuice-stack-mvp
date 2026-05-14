@@ -3,7 +3,7 @@
     "core_info": {
       "business_name": "Ace Roofing Services",
       "phone": [],
-      "phone_unverified_or_masked": [
+      "phone_unverified_masked": [
         "0426 366 7••"
       ],
       "email": [],
@@ -11,33 +11,41 @@
       "license_numbers": [],
       "founded_year": {
         "value": "2004",
-        "source_text": "Proudly Family-Owned and Operated Since 2004"
+        "evidence": "Proudly Family-Owned and Operated Since 2004"
       },
       "owner_name": null,
       "service_list": [
         {
           "name": "Roof Restoration",
-          "brief": "Repair, clean, and repaint roofs to extend roof life and improve the property's appearance."
+          "brief": "Repairs, cleans, and repaints roofs to extend roof life and improve property appearance."
         },
         {
           "name": "Roof Leak Repairs",
-          "brief": "Fix small leaks and structural roof damage quickly and efficiently."
+          "brief": "Fixes small leaks and structural roof damage quickly and efficiently."
         },
         {
           "name": "Roof Repointing",
-          "brief": "Strengthen and seal roofs to help prevent leaks and maintain structural integrity."
+          "brief": "Strengthens and seals roof pointing to help prevent leaks and maintain structural integrity."
         },
         {
           "name": "Roof Inspections",
-          "brief": "Inspect roofs to identify potential issues early and help avoid costly repairs."
+          "brief": "Identifies potential roof issues early to help avoid costly repairs."
         },
         {
           "name": "Guttering & Downpipes",
-          "brief": "Maintain proper water flow and protect homes from water damage with guttering services."
+          "brief": "Supports proper water flow and protects homes from water damage."
         },
         {
           "name": "Roof Cleaning",
-          "brief": "Remove moss and debris to keep roofs looking good and reduce long-term damage."
+          "brief": "Removes moss and debris to keep roofs looking good and reduce long-term damage."
+        },
+        {
+          "name": "Emergency Roofing",
+          "brief": "Provides 24/7 roofing support for urgent issues such as leaks or storm damage."
+        },
+        {
+          "name": "Residential and Commercial Roofing",
+          "brief": "Offers roofing services for both homeowners and businesses."
         }
       ],
       "testimonials": [],
@@ -48,7 +56,7 @@
       "primary_color": null,
       "accent_color": null,
       "font_family": null,
-      "voice_tone": "professional",
+      "voice_tone": "professional, friendly, expert",
       "key_messaging": [
         "Feel Safe Under a Roof That Lasts",
         "10 Years of Worry-Free Protection",
@@ -58,88 +66,96 @@
       ]
     },
     "extensions": {
-      "improved_hero_copy": {
-        "source": "ai",
-        "options": [
-          {
-            "h1": "Brisbane Roof Repairs & Restorations Backed by a 10-Year Guarantee",
-            "subhead": "From urgent leak repairs to full roof restorations, Ace Roofing Services helps protect homes and businesses with licensed, insured roofing work."
-          },
-          {
-            "h1": "Feel Safe Under a Roof Built to Last",
-            "subhead": "Family-owned since 2004, we handle roof restorations, leaks, repointing, inspections, guttering, and cleaning across Brisbane."
-          },
-          {
-            "h1": "Fast, Professional Roofing Help When Your Roof Needs Attention",
-            "subhead": "Get a clear quote from experienced Brisbane roofers offering repairs, restorations, and emergency roofing support."
-          }
-        ]
-      },
-      "improved_service_descriptions": {
-        "source": "ai",
-        "items": [
-          {
-            "name": "Roof Restoration",
-            "description": "Refresh and protect your roof with a complete restoration that repairs damage, cleans the surface, and repaints it for longer life and better street appeal."
-          },
-          {
-            "name": "Roof Leak Repairs",
-            "description": "Stop leaks before they spread with fast diagnosis and practical repairs for minor leaks, storm damage, and structural roof issues."
-          },
-          {
-            "name": "Roof Repointing",
-            "description": "Restore ridge capping strength and weather protection with professional repointing that helps prevent water entry and roof movement."
-          },
-          {
-            "name": "Roof Inspections",
-            "description": "Find roof problems early with a detailed inspection that gives you a clearer picture before small issues become expensive repairs."
-          },
-          {
-            "name": "Guttering & Downpipes",
-            "description": "Keep rainwater moving away from your home with guttering and downpipe services designed to reduce overflow, leaks, and water damage."
-          },
-          {
-            "name": "Roof Cleaning",
-            "description": "Remove moss, debris, and buildup to improve your roof’s appearance and reduce avoidable long-term wear."
-          }
-        ]
-      },
-      "meta_descriptions": {
-        "source": "ai",
-        "items": [
-          {
-            "url": "https://aceroofingservice.com.au/",
-            "description": "Ace Roofing Services provides Brisbane roof restorations, leak repairs, repointing, inspections, guttering, and roof cleaning, backed by 20 years of experience."
-          },
-          {
-            "url": "https://aceroofingservice.com.au/#Quote",
-            "description": "Request a free quote from Ace Roofing Services for Brisbane roof repairs, restorations, inspections, guttering, and emergency roofing needs."
-          }
-        ]
-      },
-      "cta_suggestions": {
-        "source": "ai",
-        "items": [
-          "Get a Free Quote",
-          "Request a Roof Inspection",
-          "Call for Emergency Repairs",
-          "Book a Roof Assessment",
-          "Fix My Roof Leak"
-        ]
-      },
-      "trust_signals_to_emphasize": {
-        "source": "ai",
-        "items": [
-          "Fully licensed and insured",
-          "10-year written guarantee",
-          "Family-owned and operated since 2004",
-          "20 years of roofing expertise",
-          "Residential and commercial roofing",
-          "Available 24/7 for emergency roofing needs"
-        ]
-      }
+      "source": "ai",
+      "improved_hero_copy": [
+        {
+          "h1": "Brisbane Roof Restoration Backed by a 10-Year Written Guarantee",
+          "subhead": "From leak repairs to full restorations, Ace Roofing Services helps protect homes and businesses with licensed, insured roofing work."
+        },
+        {
+          "h1": "Feel Safe Under a Roof Built to Last",
+          "subhead": "Family-owned since 2004, we handle roof restorations, repairs, inspections, cleaning, guttering, and urgent roofing needs across Brisbane."
+        },
+        {
+          "h1": "Fast, Reliable Roofing Services for Brisbane Homes and Businesses",
+          "subhead": "Get clear communication, quality materials, and experienced roofers for everything from small leaks to complete restorations."
+        }
+      ],
+      "improved_service_descriptions": [
+        {
+          "name": "Roof Restoration",
+          "description": "Restore the look, strength, and weather protection of your roof with cleaning, repairs, repainting, and long-lasting workmanship."
+        },
+        {
+          "name": "Roof Leak Repairs",
+          "description": "Stop leaks quickly before they cause ceiling damage, mould, or bigger structural problems."
+        },
+        {
+          "name": "Roof Repointing",
+          "description": "Refresh cracked or worn pointing to improve roof sealing, stability, and resistance to water entry."
+        },
+        {
+          "name": "Roof Inspections",
+          "description": "Find roof issues early with a professional inspection before they become expensive repairs."
+        },
+        {
+          "name": "Guttering & Downpipes",
+          "description": "Improve drainage around your property with guttering and downpipe work that helps prevent water damage."
+        },
+        {
+          "name": "Roof Cleaning",
+          "description": "Remove moss, debris, and buildup to improve street appeal and reduce roof deterioration."
+        },
+        {
+          "name": "Emergency Roofing",
+          "description": "Get urgent help for leaks, storm damage, and roofing problems that need fast attention."
+        },
+        {
+          "name": "Residential and Commercial Roofing",
+          "description": "Reliable roofing support for homes, businesses, and property owners who need practical, professional service."
+        }
+      ],
+      "meta_descriptions": [
+        {
+          "url": "https://aceroofingservice.com.au/",
+          "description": "Ace Roofing Services provides Brisbane roof restoration, leak repairs, repointing, inspections, cleaning, guttering and emergency roofing. Family-owned since 2004."
+        },
+        {
+          "url": "https://aceroofingservice.com.au/#about",
+          "description": "Learn about Ace Roofing Services, a family-owned Brisbane roofing team with over two decades of experience, licensed roofers and quality workmanship."
+        },
+        {
+          "url": "https://aceroofingservice.com.au/#service",
+          "description": "Explore roof restoration, roof leak repairs, repointing, inspections, guttering, downpipes and roof cleaning from Ace Roofing Services."
+        },
+        {
+          "url": "https://aceroofingservice.com.au/#choose",
+          "description": "Choose Ace Roofing Services for licensed and insured Brisbane roofers, transparent quotes, 24/7 emergency support and a 10-year written guarantee."
+        },
+        {
+          "url": "https://aceroofingservice.com.au/#Quote",
+          "description": "Request a free, no-obligation roofing quote from Ace Roofing Services for roof repairs, restoration, cleaning, guttering or inspections in Brisbane."
+        }
+      ],
+      "cta_suggestions": [
+        "Get a Free Quote",
+        "Request a Roof Inspection",
+        "Call for Emergency Roofing",
+        "Book a Roofing Assessment",
+        "Fix My Roof Leak"
+      ],
+      "trust_signals_to_emphasize": [
+        "Fully licensed and insured",
+        "10-year written guarantee",
+        "Family-owned and operated since 2004",
+        "Backed by 20 years of expertise",
+        "24/7 emergency roofing availability",
+        "Residential and commercial roofing",
+        "Clear and consistent communication",
+        "High-quality materials"
+      ]
     },
-    "redesign_brief": "Keep the strongest existing proof points: family-owned since 2004, licensed and insured roofers, 20 years of expertise, 10-year written guarantee, emergency availability, and the clear roofing service list. Improve the site by fixing the vague and awkward hero copy, making the phone number fully visible, adding missing address/email/licence details, using stronger real project imagery, clarifying the quote flow, and separating services into scan-friendly sections. The redesign matters because roofing customers are often urgent, risk-aware, and comparing trust quickly, so the page needs to make credibility, service coverage, and next action obvious in the first few seconds.",
+    "redesign_brief": "Keep the strongest existing trust signals: family-owned since 2004, licensed and insured roofers, 20 years of expertise, 10-year written guarantee, emergency availability, and the clear service list. Improve the site by replacing the awkward hero copy, exposing a complete phone number, adding service-area and contact details, showing real project photos, adding testimonials, clarifying the quote form, and giving each service a stronger conversion-focused section. The redesign matters because the current site has useful proof points but presents them repetitively and with missing business details, which weakens trust for homeowners comparing roofers in Brisbane.",
     "qualification_flags": {
       "scope_pages_estimate": 1,
       "complexity": "simple",
@@ -151,22 +167,22 @@
       "blog_active": false,
       "third_party_pixels_count": 0,
       "ready_to_build_concerns": [
-        "Phone number is masked in the scrape and cannot be verified as a complete AU mobile number.",
+        "Phone number is masked in scrape and cannot be verified in full AU mobile format.",
         "No email address found.",
-        "No physical address found.",
-        "No ABN, QBCC, or licence number found.",
-        "No real testimonials found despite a customer satisfaction section.",
-        "No owner name or team member details found.",
-        "Quote/contact section appears truncated in the scrape.",
-        "Primary and accent colours could not be reliably extracted from the provided CSS excerpt.",
-        "Font family could not be reliably extracted from the provided font metadata.",
-        "Crawled URLs are mostly duplicate homepage anchors rather than separate content pages."
+        "No physical address or service-area suburb list found.",
+        "No ABN, QBCC, or licence number found despite licensed claims.",
+        "No owner name found.",
+        "No real customer testimonials found.",
+        "No team member details found.",
+        "Primary and accent colours are not extractable from the provided scrape excerpt.",
+        "Font family is not extractable from the provided scrape excerpt.",
+        "Most crawled URLs are duplicate homepage anchors rather than separate pages."
       ]
     }
   },
-  "raw_response": "{\n  \"core_info\": {\n    \"business_name\": \"Ace Roofing Services\",\n    \"phone\": [],\n    \"phone_unverified_or_masked\": [\n      \"0426 366 7••\"\n    ],\n    \"email\": [],\n    \"address\": null,\n    \"license_numbers\": [],\n    \"founded_year\": {\n      \"value\": \"2004\",\n      \"source_text\": \"Proudly Family-Owned and Operated Since 2004\"\n    },\n    \"owner_name\": null,\n    \"service_list\": [\n      {\n        \"name\": \"Roof Restoration\",\n        \"brief\": \"Repair, clean, and repaint roofs to extend roof life and improve the property's appearance.\"\n      },\n      {\n        \"name\": \"Roof Leak Repairs\",\n        \"brief\": \"Fix small leaks and structural roof damage quickly and efficiently.\"\n      },\n      {\n        \"name\": \"Roof Repointing\",\n        \"brief\": \"Strengthen and seal roofs to help prevent leaks and maintain structural integrity.\"\n      },\n      {\n        \"name\": \"Roof Inspections\",\n        \"brief\": \"Inspect roofs to identify potential issues early and help avoid costly repairs.\"\n      },\n      {\n        \"name\": \"Guttering & Downpipes\",\n        \"brief\": \"Maintain proper water flow and protect homes from water damage with guttering services.\"\n      },\n      {\n        \"name\": \"Roof Cleaning\",\n        \"brief\": \"Remove moss and debris to keep roofs looking good and reduce long-term damage.\"\n      }\n    ],\n    \"testimonials\": [],\n    \"team_members\": []\n  },\n  \"brand_assets\": {\n    \"logo_url\": \"https://aceroofingservice.com.au/wp-content/uploads/2024/09/blank-2000-x-2000-3-removebg-preview.png\",\n    \"primary_color\": null,\n    \"accent_color\": null,\n    \"font_family\": null,\n    \"voice_tone\": \"professional\",\n    \"key_messaging\": [\n      \"Feel Safe Under a Roof That Lasts\",\n      \"10 Years of Worry-Free Protection\",\n      \"Fully Licensed & Insured\",\n      \"Backed by 20 Years of Expertise\",\n      \"Proudly Family-Owned and Operated Since 2004\"\n    ]\n  },\n  \"extensions\": {\n    \"improved_hero_copy\": {\n      \"source\": \"ai\",\n      \"options\": [\n        {\n          \"h1\": \"Brisbane Roof Repairs & Restorations Backed by a 10-Year Guarantee\",\n          \"subhead\": \"From urgent leak repairs to full roof restorations, Ace Roofing Services helps protect homes and businesses with licensed, insured roofing work.\"\n        },\n        {\n          \"h1\": \"Feel Safe Under a Roof Built to Last\",\n          \"subhead\": \"Family-owned since 2004, we handle roof restorations, leaks, repointing, inspections, guttering, and cleaning across Brisbane.\"\n        },\n        {\n          \"h1\": \"Fast, Professional Roofing Help When Your Roof Needs Attention\",\n          \"subhead\": \"Get a clear quote from experienced Brisbane roofers offering repairs, restorations, and emergency roofing support.\"\n        }\n      ]\n    },\n    \"improved_service_descriptions\": {\n      \"source\": \"ai\",\n      \"items\": [\n        {\n          \"name\": \"Roof Restoration\",\n          \"description\": \"Refresh and protect your roof with a complete restoration that repairs damage, cleans the surface, and repaints it for longer life and better street appeal.\"\n        },\n        {\n          \"name\": \"Roof Leak Repairs\",\n          \"description\": \"Stop leaks before they spread with fast diagnosis and practical repairs for minor leaks, storm damage, and structural roof issues.\"\n        },\n        {\n          \"name\": \"Roof Repointing\",\n          \"description\": \"Restore ridge capping strength and weather protection with professional repointing that helps prevent water entry and roof movement.\"\n        },\n        {\n          \"name\": \"Roof Inspections\",\n          \"description\": \"Find roof problems early with a detailed inspection that gives you a clearer picture before small issues become expensive repairs.\"\n        },\n        {\n          \"name\": \"Guttering & Downpipes\",\n          \"description\": \"Keep rainwater moving away from your home with guttering and downpipe services designed to reduce overflow, leaks, and water damage.\"\n        },\n        {\n          \"name\": \"Roof Cleaning\",\n          \"description\": \"Remove moss, debris, and buildup to improve your roof’s appearance and reduce avoidable long-term wear.\"\n        }\n      ]\n    },\n    \"meta_descriptions\": {\n      \"source\": \"ai\",\n      \"items\": [\n        {\n          \"url\": \"https://aceroofingservice.com.au/\",\n          \"description\": \"Ace Roofing Services provides Brisbane roof restorations, leak repairs, repointing, inspections, guttering, and roof cleaning, backed by 20 years of experience.\"\n        },\n        {\n          \"url\": \"https://aceroofingservice.com.au/#Quote\",\n          \"description\": \"Request a free quote from Ace Roofing Services for Brisbane roof repairs, restorations, inspections, guttering, and emergency roofing needs.\"\n        }\n      ]\n    },\n    \"cta_suggestions\": {\n      \"source\": \"ai\",\n      \"items\": [\n        \"Get a Free Quote\",\n        \"Request a Roof Inspection\",\n        \"Call for Emergency Repairs\",\n        \"Book a Roof Assessment\",\n        \"Fix My Roof Leak\"\n      ]\n    },\n    \"trust_signals_to_emphasize\": {\n      \"source\": \"ai\",\n      ",
+  "raw_response": "{\n  \"core_info\": {\n    \"business_name\": \"Ace Roofing Services\",\n    \"phone\": [],\n    \"phone_unverified_masked\": [\n      \"0426 366 7••\"\n    ],\n    \"email\": [],\n    \"address\": null,\n    \"license_numbers\": [],\n    \"founded_year\": {\n      \"value\": \"2004\",\n      \"evidence\": \"Proudly Family-Owned and Operated Since 2004\"\n    },\n    \"owner_name\": null,\n    \"service_list\": [\n      {\n        \"name\": \"Roof Restoration\",\n        \"brief\": \"Repairs, cleans, and repaints roofs to extend roof life and improve property appearance.\"\n      },\n      {\n        \"name\": \"Roof Leak Repairs\",\n        \"brief\": \"Fixes small leaks and structural roof damage quickly and efficiently.\"\n      },\n      {\n        \"name\": \"Roof Repointing\",\n        \"brief\": \"Strengthens and seals roof pointing to help prevent leaks and maintain structural integrity.\"\n      },\n      {\n        \"name\": \"Roof Inspections\",\n        \"brief\": \"Identifies potential roof issues early to help avoid costly repairs.\"\n      },\n      {\n        \"name\": \"Guttering & Downpipes\",\n        \"brief\": \"Supports proper water flow and protects homes from water damage.\"\n      },\n      {\n        \"name\": \"Roof Cleaning\",\n        \"brief\": \"Removes moss and debris to keep roofs looking good and reduce long-term damage.\"\n      },\n      {\n        \"name\": \"Emergency Roofing\",\n        \"brief\": \"Provides 24/7 roofing support for urgent issues such as leaks or storm damage.\"\n      },\n      {\n        \"name\": \"Residential and Commercial Roofing\",\n        \"brief\": \"Offers roofing services for both homeowners and businesses.\"\n      }\n    ],\n    \"testimonials\": [],\n    \"team_members\": []\n  },\n  \"brand_assets\": {\n    \"logo_url\": \"https://aceroofingservice.com.au/wp-content/uploads/2024/09/blank-2000-x-2000-3-removebg-preview.png\",\n    \"primary_color\": null,\n    \"accent_color\": null,\n    \"font_family\": null,\n    \"voice_tone\": \"professional, friendly, expert\",\n    \"key_messaging\": [\n      \"Feel Safe Under a Roof That Lasts\",\n      \"10 Years of Worry-Free Protection\",\n      \"Fully Licensed & Insured\",\n      \"Backed by 20 Years of Expertise\",\n      \"Proudly Family-Owned and Operated Since 2004\"\n    ]\n  },\n  \"extensions\": {\n    \"source\": \"ai\",\n    \"improved_hero_copy\": [\n      {\n        \"h1\": \"Brisbane Roof Restoration Backed by a 10-Year Written Guarantee\",\n        \"subhead\": \"From leak repairs to full restorations, Ace Roofing Services helps protect homes and businesses with licensed, insured roofing work.\"\n      },\n      {\n        \"h1\": \"Feel Safe Under a Roof Built to Last\",\n        \"subhead\": \"Family-owned since 2004, we handle roof restorations, repairs, inspections, cleaning, guttering, and urgent roofing needs across Brisbane.\"\n      },\n      {\n        \"h1\": \"Fast, Reliable Roofing Services for Brisbane Homes and Businesses\",\n        \"subhead\": \"Get clear communication, quality materials, and experienced roofers for everything from small leaks to complete restorations.\"\n      }\n    ],\n    \"improved_service_descriptions\": [\n      {\n        \"name\": \"Roof Restoration\",\n        \"description\": \"Restore the look, strength, and weather protection of your roof with cleaning, repairs, repainting, and long-lasting workmanship.\"\n      },\n      {\n        \"name\": \"Roof Leak Repairs\",\n        \"description\": \"Stop leaks quickly before they cause ceiling damage, mould, or bigger structural problems.\"\n      },\n      {\n        \"name\": \"Roof Repointing\",\n        \"description\": \"Refresh cracked or worn pointing to improve roof sealing, stability, and resistance to water entry.\"\n      },\n      {\n        \"name\": \"Roof Inspections\",\n        \"description\": \"Find roof issues early with a professional inspection before they become expensive repairs.\"\n      },\n      {\n        \"name\": \"Guttering & Downpipes\",\n        \"description\": \"Improve drainage around your property with guttering and downpipe work that helps prevent water damage.\"\n      },\n      {\n        \"name\": \"Roof Cleaning\",\n        \"description\": \"Remove moss, debris, and buildup to improve street appeal and reduce roof deterioration.\"\n      },\n      {\n        \"name\": \"Emergency Roofing\",\n        \"description\": \"Get urgent help for leaks, storm damage, and roofing problems that need fast attention.\"\n      },\n      {\n        \"name\": \"Residential and Commercial Roofing\",\n        \"description\": \"Reliable roofing support for homes, businesses, and property owners who need practical, professional service.\"\n      }\n    ],\n    \"meta_descriptions\": [\n      {\n        \"url\": \"https://aceroofingservice.com.au/\",\n        \"description\": \"Ace Roofing Services provides Brisbane roof restoration, leak repairs, repointing, inspections, cleaning, guttering and emergency roofing. Family-owned since 2004.\"\n      },\n      {\n        \"url\": \"https://aceroofingservice.com.au/#about\",\n        \"description\": \"Learn about Ace Roofing Services, a family-owned Brisbane roofing team with over two decades of experience, licensed roofers and quality workmanship.\"\n      },\n      {\n        \"url\"",
   "provider": "codex_cli",
   "cost_estimate": 0.5,
-  "duration_ms": 64852,
+  "duration_ms": 67955,
   "prompt_length": 93370
 }
