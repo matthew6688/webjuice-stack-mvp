@@ -32,6 +32,69 @@
 
 ---
 
+## 2a · Docker scraper 单 query 产量（实测 + 调参）
+
+**关键事实**: `--count` 参数名误导 · 实际映射 gosom 的 `-depth` (scroll 深度) · **不是** 结果硬上限。
+
+### 默认配置 (scripts/cli/pl-scrape-docker.js)
+```
+count → depth = 10
+zoom = 15 (街区级)
+max_time = 240s (4 min)
+exit-on-inactivity = 3 min
+```
+
+### 实测 (data/maps-scraper/runs/ · 2026-05-14)
+| 关键词 + 城市 | 传入 count | 实际返回 leads |
+|--------------|------------|----------------|
+| roofing brisbane | 10 | 5 |
+| roofers brisbane | 10 | 4 |
+| roofer adelaide | 10 | 9 |
+| roofer brisbane | 10 | 7 |
+
+→ 单 query **典型 5-9 leads** · 而非以为的 10。
+
+### Google Maps 自身硬上限
+**~120 markers / search** · 滚到底也不再加。即使 depth=20 也拿不到第 121 个。要更多必须**换 query** (附近 suburb / 不同 keyword)。
+
+### 调参（要拿更多 leads/query · 不建议默认上调）
+| 调 | 效果 | 副作用 |
+|----|------|--------|
+| `zoom=12-13` | 视野扩到 city 级 · 40-80 leads/query | 边界外可能进结果 · 跨 suburb |
+| `max_time=900s` | 给 gosom 慢慢 scroll · ~80-120 | 单 query 慢 15min · 串行很慢 |
+| `--proxies` (env `MAPS_SCRAPER_PROXIES`) | 多 IP 并发 + 不撞 Google 封禁 | 要钱 (residential proxy) 或自建池 |
+
+### 正确的 scaling 方式 · profitslocal-leads 仓库设计
+仓库 `search_queue.csv` 用 **city × suburb × service_keyword 笛卡尔积** · 不是想办法从单 query 榨 120 个：
+- "roofing contractor Brisbane QLD"
+- "metal roofing Brisbane QLD"
+- "roof repair Gold Coast QLD"
+- ...
+
+3517 QLD roofing query × 5-9 leads/query ≈ **~30K raw leads** (matches our pipeline target)。
+
+### 命名歧义 (待后续修)
+`--count 10` 实际是 `depth=10` · 当下 docs 注释承认歧义但没改。
+未来:
+- rename `--count` → `--scroll-depth` (明确语义)
+- 新增 `--target-leads N` (循环 query · 累积到 N 停 · 真正按数量)
+- 或保持现状 · 接受 "1 query = 5-20 leads · 数量靠 query 数 scale"
+
+### 对 bulk pipeline 的影响
+
+| 参数 | 数值 |
+|------|------|
+| Daily docker cap | 50 query/day |
+| 单 query 实测产量 | ~5-9 leads |
+| 每日 raw leads | 250-450 |
+| 排除式 filter 后 (LEAD-FILTERING-DESIGN ~50%) | 125-225 survivors/day |
+| Detail audit 容量 (5-10 min/entity · 单线程) | ~144-288/day |
+| 瓶颈 | **detail audit · 不是 docker scrape** |
+
+→ docker 50/day 配 detail audit 单线程 · 容量基本匹配 · 不需要并发 audit (保 mac 凉)。
+
+---
+
 ## 3. 查询源（external）
 
 **Repo:** `https://github.com/matthew6688/profitslocal-leads`
