@@ -157,6 +157,15 @@ export function cheapAuditPredictMessage({ entity, cheapAudit, predict }) {
   lines.push('');
   lines.push(`**下一步**: ${nextStep}`);
 
+  // V3 D43 cycle-11 (Matthew 2026-05-14): 销售手动表情指令 · 用在 thread 任意 message 上
+  if (g === 'C') {
+    lines.push('');
+    lines.push('**手动操作 (对本帖加表情即可):**');
+    lines.push('· 🚀 / ⚡ / 🔥 → 推进 → detailedAudit (priority 100)');
+    lines.push('· 💤 / 😴 → 直接 archive (不再深审)');
+    lines.push('· 🔁 / 🔄 → 重跑 cheap-audit');
+  }
+
   return lines.join('\n');
 }
 

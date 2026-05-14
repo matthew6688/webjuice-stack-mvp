@@ -18,6 +18,7 @@
  * SOP-0 §5.2.
  */
 
+import fs from 'node:fs';
 import { Client, GatewayIntentBits, Partials, Events, ChannelType } from 'discord.js';
 import {
   createTask,
@@ -287,6 +288,86 @@ async function handleNewForumThread(thread) {
 }
 
 /* ─── Reaction handler: ✅ retry / 🗑 abandon for `human`-tagged threads ─ */
+/* V3 D43 cycle-11 also: 🚀 (#website-leads) → promote 预C 进 detail-audit · 💤 archive · 🔁 re-cheap-audit */
+
+const WEBSITE_LEADS_CH = process.env.WEBSITE_LEADS_DISCORD_CHANNEL_ID;
+
+async function handleLeadsReaction(reaction, user, threadId) {
+  const emoji = reaction.emoji.name;
+  log('leads-reaction', emoji, '· user=' + user.username, '· thread=' + threadId);
+
+  // Find entity by discord_thread_id
+  const entitiesDir = '/Users/matthew/Developer/google-map-website-v3/data/leads/entities';
+  let entity = null, entityKey = null;
+  try {
+    const files = fs.readdirSync(entitiesDir).filter((f) => f.endsWith('.json'));
+    for (const f of files) {
+      try {
+        const e = JSON.parse(fs.readFileSync(`${entitiesDir}/${f}`, 'utf8'));
+        if (String(e.discord_thread_id) === String(threadId)) {
+          entity = e;
+          entityKey = e.entityKey || f.replace('.json', '');
+          break;
+        }
+      } catch { /* skip */ }
+    }
+  } catch { /* no dir */ }
+  if (!entity) {
+    log('leads-reaction no entity for thread', threadId);
+    return;
+  }
+
+  // 🚀 / ⬆️ / ⚡ · 推进 预C → detail audit (manual operator override)
+  const PROMOTE = new Set(['🚀', '⬆️', '⬆', '⚡', '🔥']);
+  // 💤 / 😴 / ⏬ · push to archive backlog (manual deprioritize)
+  const DEMOTE = new Set(['💤', '😴', '⏬', '⬇️', '⬇']);
+  // 🔁 / 🔄 · re-run cheap-audit (in case data refreshed)
+  const RECHEAP = new Set(['🔁', '🔄']);
+
+  if (PROMOTE.has(emoji)) {
+    // Predict-C or no-grade entity: enqueue detail audit explicitly
+    try {
+      const { enqueueDetailedAudit } = await import('../../core/leads/detailed-audit-queue.js');
+      enqueueDetailedAudit(entityKey, { reason: `manual promote by ${user.username}`, priority: 100 });
+      await postThreadReply(threadId,
+        `🚀 ${user.username} 手动推进 → detailedAudit 队列 (priority 100 · 预 5-10 min)\n` +
+        `_(reason: predict 是 ${entity.predict_grade?.grade || '?'} · 销售判断值得深审)_`);
+      log('leads-reaction PROMOTE entity', entityKey);
+    } catch (err) {
+      await postThreadReply(threadId, `⚠ 推进失败: ${err.message}`);
+    }
+    return;
+  }
+  if (DEMOTE.has(emoji)) {
+    try {
+      const { setEntityPhase, ENTITY_PHASE } = await import('../../core/leads/discovery-store.js');
+      setEntityPhase({
+        entityKey,
+        phase: ENTITY_PHASE.ARCHIVED,
+        archive_reason: `manual demote by ${user.username} via ${emoji}`,
+      });
+      await postThreadReply(threadId,
+        `💤 ${user.username} 手动 archive · 不再深审 (entity.phase = archived)`);
+      log('leads-reaction DEMOTE entity', entityKey);
+    } catch (err) {
+      await postThreadReply(threadId, `⚠ archive 失败: ${err.message}`);
+    }
+    return;
+  }
+  if (RECHEAP.has(emoji)) {
+    try {
+      const { enqueueCheapAudit } = await import('../../core/leads/cheap-audit-queue.js');
+      enqueueCheapAudit(entityKey, { reason: `manual recheck by ${user.username}` });
+      await postThreadReply(threadId,
+        `🔁 ${user.username} 触发重跑 cheap-audit (queue · 3s 间隔)`);
+      log('leads-reaction RECHEAP entity', entityKey);
+    } catch (err) {
+      await postThreadReply(threadId, `⚠ 重跑失败: ${err.message}`);
+    }
+    return;
+  }
+  // Other emojis silently logged (bookmarks)
+}
 
 async function handleReaction(reaction, user, type) {
   if (user.bot) return;
@@ -294,7 +375,15 @@ async function handleReaction(reaction, user, type) {
     try { await reaction.fetch(); } catch { return; }
   }
   const channel = reaction.message?.channel;
-  if (!channel || !channel.parentId || channel.parentId !== FORUM_ID) return;
+  if (!channel || !channel.parentId) return;
+
+  // V3 D43 cycle-11 · #website-leads thread reactions = operator overrides on entity
+  if (WEBSITE_LEADS_CH && channel.parentId === WEBSITE_LEADS_CH) {
+    return handleLeadsReaction(reaction, user, channel.id);
+  }
+
+  // Existing path: #website-tasks forum reactions = task control (retry/abandon)
+  if (channel.parentId !== FORUM_ID) return;
   const threadId = channel.id;
   const task = findByThreadId(threadId);
   const emoji = reaction.emoji.name;
