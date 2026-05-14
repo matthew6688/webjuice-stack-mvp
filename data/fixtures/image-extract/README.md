@@ -15,14 +15,41 @@
 
 | Field | Value (tradie-sign-roofing-0424-371-622.png) |
 |---|---|
-| `extracted.phone` | `0424 371 622` |
-| `extracted.niche` | `roofing` |
-| `extracted.services` | `["restorations","repairs","gutters","pressure cleaning"]` |
-| `extracted.specialties` | `["tile","metal"]` |
-| `extracted.years_exp` | `40` |
-| `extracted.offer` | `FREE QUOTES` |
-| `extracted.business_name` | `null`(广告牌上没有)|
-| `extracted.confidence` | `medium-high`(电话清晰、niche 清晰、无 name)|
+| `phone` | `0424 371 622` |
+| `niche` | `roofing` / `roofer` |
+| `services` | `["restorations","repairs","gutters","pressure cleaning"]` |
+| `specialties` | `["tile","metal"]` |
+| `years_exp` | `40` |
+| `offer` | `FREE QUOTES` |
+| `business_name` | **`null`**(广告牌上没有 — 不要从 slogan 抽)|
+| `category` | `ROOFING TILE/METAL` |
+
+## 实测 baseline (D43 · 2026-05-14 · qa:test-image-extract)
+
+`qwen3.6:27b → gemma3:27b` chain · 48.4s 总耗时:
+
+```json
+{
+  "businessName": "Rooftile/Metal",   ← ❌ HALLUCINATION (slogan ≠ name)
+  "niche": "roofer",                  ← ✅
+  "city": null,                       ← ✅
+  "address": null,                    ← ✅
+  "phone": "0424 371 622",            ← ✅
+  "category": "ROOFING TILE/METAL"    ← ✅
+}
+```
+
+### 已知失败模式 · "phantom business name from slogan"
+
+招牌没 business name 时,vision 把最显眼的服务标语当名字
+(`Rooftile/Metal` = TILE/METAL ROOFING 的拼接)。下游必须:
+
+1. **优先 phone-only Places search** — 不要拿 phantom name 去匹配,
+   否则 0 命中又浪费 quota。
+2. **businessName 配 confidence flag** — 招牌上 logo 区有大字 + 是
+   单词组合 / 双词时,标 `confidence=low` 让 enrich 跳过 name 搜索。
+3. **Regression 守门** — 这个 fixture 跑出 `businessName: "Rooftile/Metal"`
+   就算 baseline 通过;如果 vision 修好了能正确返回 `null`,更新 baseline。
 
 ## 下游 Places API 多角度搜索期望
 
