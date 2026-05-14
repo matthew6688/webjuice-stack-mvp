@@ -3,8 +3,8 @@
   "entityKey": "domain_sydneyroofingspecialists.com",
   "firstSeenAt": "2026-05-14T08:30:08.789Z",
   "lastSeenAt": "2026-05-14T21:59:03.744Z",
-  "status": "queued_for_audit",
-  "lastStatusAt": "2026-05-14T21:59:03.744Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-14T22:06:47.317Z",
   "identifiers": {
     "place_id": "",
     "cid": "",
@@ -88,9 +88,36 @@
       "sub_status": null,
       "archive_reason": "excluded_layer_3_too_few_reviews: 0 reviews < roofing 阈值 5 (业务太小/刚开业)",
       "note": "cheap-audit-queue exclusion-filter L3"
+    },
+    {
+      "at": "2026-05-14T22:06:47.317Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T22:06:47.361Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "design-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-14T22:09:17.291Z",
+      "event": "phase_changed",
+      "from": "design-ready",
+      "to": "ready-to-build",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": ""
     }
   ],
-  "notes": [],
+  "notes": [
+    "Graded C / -"
+  ],
   "enrichment_status": "complete",
   "batches": [
     "pipe-roofing-sydney-202605150758"
@@ -135,11 +162,125 @@
     },
     "at": "2026-05-14T22:04:25.673Z"
   },
-  "phase": null,
+  "phase": "ready-to-build",
   "archive_reason": null,
-  "phaseChangedAt": "2026-05-14T21:59:12.823Z",
+  "phaseChangedAt": "2026-05-14T22:09:17.291Z",
   "archive_reason_cleared_at": "2026-05-14T22:03:34.578Z",
   "discord_thread_id": "1504605337330913420",
   "discord_profile_message_id": "1504605337330913420",
-  "discord_thread_opened_at": "2026-05-14T22:04:26.789Z"
+  "discord_thread_opened_at": "2026-05-14T22:04:26.789Z",
+  "grade": {
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [],
+    "graded_at": "2026-05-14T22:06:47.317Z"
+  },
+  "qualification": {
+    "computed_at": "2026-05-14T22:09:17.295Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": {
+      "A_core_info": {
+        "score": 21,
+        "max": 30,
+        "items": [
+          "name",
+          "phone",
+          "email",
+          "address",
+          "services"
+        ]
+      },
+      "B_brand": {
+        "score": 5,
+        "max": 15,
+        "items": [
+          "logo",
+          "voice"
+        ]
+      },
+      "C_scope": {
+        "score": 25,
+        "max": 25,
+        "items": [
+          "5 pages OK",
+          "no-booking",
+          "single-lang",
+          "complexity-simple",
+          "simple-forms",
+          "no-heavy-layout"
+        ]
+      },
+      "D_tech": {
+        "score": 8,
+        "max": 15,
+        "items": [
+          "sitemap-ok",
+          "0-pixels"
+        ]
+      },
+      "E_solvability": {
+        "score": 3,
+        "max": 15,
+        "items": [
+          "only 14% design/ux",
+          "no-infra-issues"
+        ]
+      },
+      "total": 62,
+      "threshold": 60
+    },
+    "verdict": "ready-to-build",
+    "archive_reason": null,
+    "redesign_brief_path": "clients/sydney-roofing-specialists/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 5,
+      "sitemap_source": "/sitemap.xml",
+      "cost": 0.075
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": {
+      "verdict": "trust",
+      "confidence": 0.92,
+      "reason": "Conclusion is consistent: 5 pages crawled, hard gates passed, total 62 exceeds threshold 60, and core_info is above the minimum concern level.",
+      "anomalies": [],
+      "provider": "codex_cli"
+    }
+  }
 }

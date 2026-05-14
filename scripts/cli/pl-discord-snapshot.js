@@ -244,12 +244,15 @@ async function checkThread(threadInfo) {
   let fieldsChecked = 0;
   let assetMisattribution = false;
   for (const m of msgs) {
-    if (!m.embeds?.[0]?.fields || !entity) continue;
+    // V3 D43 cycle-23c (Matthew 2026-05-15): cycle-20 把 profile card 改成 description
+    // 格式 · fields[] 是空. 这里要 accept description-only embed.
+    if (!m.embeds?.[0] || !entity) continue;
+    if (!m.embeds[0].fields?.length && !m.embeds[0].description) continue;
     const a = verifyFieldAccuracy(m.embeds[0], entity, slug);
     accuracyMismatches.push(...a.mismatches);
     fieldsChecked += a.checked;
     // Legacy slug-collision check
-    const assetField = m.embeds[0].fields.find((f) => f.name.includes('资产'));
+    const assetField = (m.embeds[0].fields || []).find((f) => f.name.includes('资产'));
     if (assetField) {
       const thisAudited = !!entity.grade?.investment_level || !!entity.detailed_audit?.at;
       if (!thisAudited) assetMisattribution = true;

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "task_id": "20260514-220422-6fd99e",
   "created_at": "2026-05-14T22:04:22.672Z",
-  "updated_at": "2026-05-14T22:04:28.000Z",
+  "updated_at": "2026-05-14T22:06:41.994Z",
   "kind": "audit",
-  "status": "running",
+  "status": "done",
   "source": {
     "platform": "internal",
     "thread_id": null,
@@ -26,8 +26,8 @@
   },
   "result": {
     "entity_keys": [],
-    "exit_code": null,
-    "duration_ms": null,
+    "exit_code": 0,
+    "duration_ms": 139107,
     "cost_usd": null
   },
   "progress": [
@@ -40,6 +40,16 @@
       "at": "2026-05-14T22:04:28.000Z",
       "step": "cli.stream",
       "detail": "(concurrent_leads=1)\n\n══════════ domain_sydneyroofingcompany.com.au ══════════\n  [thread] reusing 1504605316422045728\n  [stage 1/4] detailed audit — fetching https://www.sydneyroofingcompany.com.au/"
+    },
+    {
+      "at": "2026-05-14T22:06:41.991Z",
+      "step": "cli.stream",
+      "detail": "{\n  \"ok\": false,\n  \"targets\": 1,\n  \"summary\": [\n    {\n      \"entityKey\": \"domain_sydneyroofingcompany.com.au\",\n      \"ok\": false,\n      \"reason\": \"early_gate_too_many_pages (sitemap 17)\"\n    }\n  ]\n}"
+    },
+    {
+      "at": "2026-05-14T22:06:41.994Z",
+      "step": "cli.complete",
+      "detail": "exit=0 dur=139107ms"
     }
   ],
   "error": null,

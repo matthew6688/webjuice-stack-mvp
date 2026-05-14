@@ -41,7 +41,8 @@
     },
     "batch_id": "pipe-roofing-sydney-202605150758",
     "discovery_rank": null,
-    "google_places_provider": null
+    "google_places_provider": null,
+    "email": "gavin@sydneyroofingcompany.com.au"
   },
   "runs": [
     {
@@ -88,6 +89,15 @@
       "sub_status": null,
       "archive_reason": "excluded_layer_3_too_few_reviews: 0 reviews < roofing 阈值 5 (业务太小/刚开业)",
       "note": "cheap-audit-queue exclusion-filter L3"
+    },
+    {
+      "at": "2026-05-14T22:06:40.565Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "archived",
+      "sub_status": null,
+      "archive_reason": "early_gate_too_many_pages: sitemap 17 pages > 10 · 不在 V3 产品包 (迁移成本失控)",
+      "note": ""
     }
   ],
   "notes": [],
@@ -135,9 +145,9 @@
     },
     "at": "2026-05-14T22:04:20.659Z"
   },
-  "phase": null,
-  "archive_reason": null,
-  "phaseChangedAt": "2026-05-14T21:59:30.866Z",
+  "phase": "archived",
+  "archive_reason": "early_gate_too_many_pages: sitemap 17 pages > 10 · 不在 V3 产品包 (迁移成本失控)",
+  "phaseChangedAt": "2026-05-14T22:06:40.565Z",
   "archive_reason_cleared_at": "2026-05-14T22:03:34.578Z",
   "discord_thread_id": "1504605316422045728",
   "discord_profile_message_id": "1504605316422045728",
