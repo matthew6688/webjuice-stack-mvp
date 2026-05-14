@@ -252,50 +252,44 @@ export function decideAction({ final_score, gbp_quality, redesign_need, entity, 
   // billdu.me, sites.google.com, etc — they don't have a real website,
   // they have a billing/directory profile. Treat as no_website with a
   // stronger pitch ("we'd give you an actual site").
+  // V3 D43 (Matthew 2026-05-14): manual_review + starter_candidate 合并 ·
+  // 都给他建站 · 不同的只是 priority (gbp_quality 决定排序)。
   const thirdParty = detectThirdPartyHost(latest.website);
   if (thirdParty) {
     fired.push('third_party_landing_page');
-    if (reachable && gbp_quality >= 30) {
+    if (reachable) {
       return {
         action: 'starter_candidate',
-        reason: `"website" is on ${thirdParty} — not a real site; reachable + gbp_quality ${gbp_quality} → strong starter pitch`,
+        priority: gbp_quality, // gbp_quality 直接做 priority · 越高越先建
+        reason: `"website" is on ${thirdParty} — not a real site; reachable · gbp_quality ${gbp_quality} → 给建站 (priority ${gbp_quality})`,
         fired_triggers: fired, threshold_used: null,
       };
     }
+    // 没 phone/email · 必须先 enrichment
     return {
-      action: 'manual_review',
-      reason: `"website" is on ${thirdParty} — not a real site; gbp_quality ${gbp_quality} too low for auto-starter`,
+      action: 'queued_for_enrichment',
+      reason: `"website" is on ${thirdParty} · 没 phone/email · 先补联系方式再建站`,
       fired_triggers: fired, threshold_used: null,
     };
   }
 
-  // ─── No-website starter path (bypass redesign_need scoring) ───
+  // ─── No-website starter path ───
+  // V3 D43: reachable 一律 starter_candidate · 不分 gbp≥30 / <30
+  // 优先级用 gbp_quality 排 · 销售看 priority desc
   if (ws === 'no_website') {
-    if (reachable && gbp_quality >= 30) {
+    if (reachable) {
       fired.push('no_website_with_contact');
       return {
         action: 'starter_candidate',
-        reason: 'no_website + reachable + gbp_quality ≥ 30 — easiest V2 win',
+        priority: gbp_quality,
+        reason: `no_website + reachable (phone/email) · 给建站 (priority ${gbp_quality})`,
         fired_triggers: fired, threshold_used: null,
       };
     }
-    if (!reachable) {
-      // SOP-1/SOP-2 layered enrichment model (2026-05-12):
-      //   - PRIMARY trigger: SOP-1 thin-contact predicate (entity.enrichment_status='pending')
-      //     processed by `npm run pl:run-enrichment-batch` BEFORE this audit runs.
-      //   - FALLBACK (this line): if an entity slipped past SOP-1 (manual creation,
-      //     old import, etc.) and still has !reachable, output queued_for_enrichment
-      //     so it's caught downstream. The two are NOT redundant — SOP-1 is preventive,
-      //     this is the safety net. See SOP_HANDOFF_CONTRACT.md §1.1.
-      return {
-        action: 'queued_for_enrichment',
-        reason: 'no_website + no contact — SOP-1 fallback safety net (primary trigger is SOP-1 thin-contact pre-audit)',
-        fired_triggers: [], threshold_used: null,
-      };
-    }
+    // 没联系方式 · 必须 enrichment 补
     return {
-      action: 'manual_review',
-      reason: 'no_website + reachable but gbp_quality < 30 — operator decides',
+      action: 'queued_for_enrichment',
+      reason: 'no_website + no contact · 先补 phone/email 再决定 (enrichment 自动跑)',
       fired_triggers: [], threshold_used: null,
     };
   }

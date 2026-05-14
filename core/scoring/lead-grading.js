@@ -88,6 +88,20 @@ function isHardSkip(ctx) {
 
 // ─── Investment level for non-skipped leads ──────────────────────────────
 
+// V3 D43 (Matthew 2026-05-14) · 收紧 A/B 标准 · 让 A 真稀缺
+// 之前 A 门槛 (audit<50 + reviews≥30 + rating≥3.5) 太松 · 10 个真客户全 A/B
+// 销售投入 ROI 不够 · 现在严格化:
+//   A · audit<40 + reviews≥100 + rating≥4.3  (强口碑差网站 · 全力投)
+//   B · audit<60 + reviews≥30 + rating≥4.0   (中等基础值得试 · 预览触达)
+//   C · 其他符合 audit_candidate / starter_candidate 的       (批量轻触)
+//   D · hard-skip                            (不追)
+const A_AUDIT_MAX = 40;
+const A_REVIEWS_MIN = 100;
+const A_RATING_MIN = 4.3;
+const B_AUDIT_MAX = 60;
+const B_REVIEWS_MIN = 30;
+const B_RATING_MIN = 4.0;
+
 function classifyInvestment(ctx) {
   const decision = ctx.detailedAudit?.decision;
   const reviewCount = Number(ctx.entity?.latest?.review_count || 0);
@@ -98,53 +112,49 @@ function classifyInvestment(ctx) {
 
   const factors = [];
 
-  // ── A 全攻 ──
-  // strong_redesign + 中型规模 + 一定口碑底子 + 不是全管型客户
-  if (decision === 'strong_redesign') {
-    if (reviewCount >= 30 && rating >= 3.5) {
-      factors.push(`strong_redesign + ${reviewCount} 评论 + ${rating}★`);
-      if (sophistication >= 3) factors.push(`数字成熟度 ${sophistication}/6（懂数字营销）`);
-      if (trustStrong) factors.push('评论 trust signal 强');
-      return { level: 'A', factors };
-    }
-    // strong_redesign 但口碑底子薄 → 降为 B 预览试探
-    factors.push(`strong_redesign 但口碑底子薄（${reviewCount} 评论）`);
+  // ── A 全力投 (严标准 · audit<40 + reviews≥100 + rating≥4.3) ──
+  // strong_redesign(audit<50) 或 hard-trigger 命中 (no_website/mobile-broken/no-https/no-cta)
+  // 但只有强 GBP 底子才升 A
+  if (decision === 'strong_redesign' && auditScore < A_AUDIT_MAX
+      && reviewCount >= A_REVIEWS_MIN && rating >= A_RATING_MIN) {
+    factors.push(`A · strong_redesign · audit ${auditScore}<${A_AUDIT_MAX} · ${reviewCount} 评论≥${A_REVIEWS_MIN} · ${rating}★≥${A_RATING_MIN}`);
+    if (sophistication >= 3) factors.push(`数字成熟度 ${sophistication}/6`);
+    if (trustStrong) factors.push('评论 trust strong');
+    return { level: 'A', factors };
+  }
+
+  // ── B 预览试探 (中标准 · audit<60 + reviews≥30 + rating≥4.0) ──
+  // strong_redesign 但 GBP 没到 A · OR moderate_candidate + 不错 GBP
+  // OR starter_candidate(无网站) + reviews≥30
+  if ((decision === 'strong_redesign' || decision === 'moderate_candidate')
+      && auditScore < B_AUDIT_MAX
+      && reviewCount >= B_REVIEWS_MIN && rating >= B_RATING_MIN) {
+    factors.push(`B · ${decision} · audit ${auditScore}<${B_AUDIT_MAX} · ${reviewCount} 评论≥${B_REVIEWS_MIN} · ${rating}★≥${B_RATING_MIN}`);
     return { level: 'B', factors };
   }
 
-  // ── starter_candidate （no_website or third_party）──
-  // 都没正经网站 = 强切入点，但客户成熟度未知，进 B 档先试探
+  // starter_candidate (无网站 · 高 GBP) 也走 B · 不需要 audit_score
   if (decision === 'starter_candidate' || ctx.cheapAudit?.action === 'starter_candidate') {
-    factors.push('现状无独立网站（no_website 或 third_party_landing_page）');
-    if (reviewCount >= 30) {
-      factors.push(`${reviewCount} 评论 = 有客户基础`);
+    if (reviewCount >= B_REVIEWS_MIN && rating >= B_RATING_MIN) {
+      factors.push(`B · starter_candidate (无 website) · ${reviewCount} 评论≥${B_REVIEWS_MIN} · ${rating}★`);
       return { level: 'B', factors };
     }
-    factors.push('口碑数据薄');
+    // starter 但 GBP 薄 → C 批量 (M5 path · 卖 T1 cheap)
+    factors.push(`C · starter_candidate 但 GBP 薄 · ${reviewCount} 评论 ${rating}★`);
     return { level: 'C', factors };
   }
 
-  // ── moderate_candidate ──
-  if (decision === 'moderate_candidate') {
-    if (reviewCount >= 30 && auditScore < 75) {
-      factors.push(`moderate_candidate + ${reviewCount} 评论 + audit ${auditScore}（仍有改进空间）`);
-      return { level: 'B', factors };
-    }
-    factors.push(`moderate_candidate 但口碑/差距不明显`);
+  // ── C 批量轻触 (其他能投入但 ROI 不够强的) ──
+  if (decision === 'strong_redesign' || decision === 'moderate_candidate' || decision === 'low_priority') {
+    factors.push(`C · ${decision} · audit ${auditScore} · ${reviewCount} 评论 ${rating}★ (未达 B 标准)`);
     return { level: 'C', factors };
   }
 
-  // ── low_priority ──
-  if (decision === 'low_priority') {
-    factors.push(`low_priority audit decision (score ${auditScore})`);
-    return { level: 'C', factors };
-  }
-
-  // Default fallback · audit 还没跑 / decision 为空时
+  // ── 默认 fallback (audit 没跑 / decision 空) → C
   if (decision == null || decision === '' || decision === 'undefined') {
-    factors.push('audit 未运行 · 默认 C 等待 audit 后重新分级');
+    factors.push('audit 未运行 · 默认 C');
   } else {
-    factors.push(`未明确决策类型: ${decision}`);
+    factors.push(`未明确决策类型: ${decision} · 默认 C`);
   }
   return { level: 'C', factors };
 }
