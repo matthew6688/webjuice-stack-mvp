@@ -15,10 +15,14 @@
 - **Discord unified emit 层** · `core/funnel/discord-emit.js` · 接入 4 处 (commit `c67e978c`) · 实测 bot-log fallback ✓
 - **Emit rate-limit queue** · per-channel serialize · 429 retry · 实测 10 burst ok (commit `65f6cf06`)
 - **Narrow test allowlist** · listener accepts 🧪 / [E2E prefix · 不再需要 LISTENER_ALLOW_BOTS=1 永久开
+- **Cycle test 1 · D43 · doctor schema fixes** · `pl-lead-journey-doctor.js` 改 `scoring.grade` → `grade.investment_level` · `pl-intake-doctor.js` 加 defensive .env.local loader (see DECISIONS-LOG D43 cycle test 1)
 
 ---
 
 ## P1 · 杂项 backlog
+
+- **dispatcher stale-running reaper** · 如 dispatcher SIGKILL · 子进程 orphan · task 永远 status=running · 加 1min poll + last-heartbeat-mtime check
+- **`pl:single-enrich` auto-chain dedup** · 若 entity 已 phase=archived 或 24h 内 audit · 跳过 auto-chained audit · 现在每次 single-enrich 都强制重跑 audit · 浪费
 
 - 3 doctors cron (cost / audit / publish) → launchd plist · daily ✅ done (commit 5f6ce0b0)
 - `pl:check-qualification --all-design-ready` 跑剩余 design-ready entities

@@ -929,3 +929,68 @@ ai.profitslocal.open-design             -           manual
 ```
 
 `pl:e2e-smoke` plist 待装 (Matthew 看完 Run #4 verify 后)。
+
+---
+
+## D43 · cycle test 1 · doctor schema fixes (2026-05-14)
+
+**Context**: autonomous E2E cycle test injected 4 entries (A intake / B audit / C single-enrich / D skip);
+A+B+C all done; doctors revealed 2 latent bugs.
+
+**Bugs found & fixed**:
+
+1. **lead-journey-doctor reads stale grade schema** (P2 · pre-existing)
+   - Doctor read `e.data.scoring.grade` (string `A/B/C/D`) — pre-D31 schema
+   - Actual schema (post-D31): `e.data.grade = { investment_level, product_tier, ... }`
+   - All entities silently passed checks #3/#4 (old path returned `undefined`)
+   - Check #7 ("design-ready needs grade ∈ A/B/C") then failed for 7 entities
+   - Fix: read `e.data.grade.investment_level`; updated check #5 to `null iff grade ∈ {C, D, null}`
+     (`product_tier` is only set for A/B grades · C and D both return null)
+
+2. **intake-doctor false negative without `--env-file=.env.local`** (P2)
+   - Operators commonly invoke `node scripts/cli/pl-intake-doctor.js` directly
+   - Without `--env-file`, `GOOGLE_PLACES_API_KEY` is unset → false-fail
+   - Fix: defensive `.env.local` loader at top of script — only fills missing vars
+
+3. **CYCLE_TEST_PLAN.md spec bug** (P3 · doc-only)
+   - Entry C used `--slug brisbane-roof-restoration-experts` but `pl:single-enrich` rejects
+     anything without `--business-name / --phone / --website / --gbp-url`
+   - The slug is the *output* of resolving signals, never an input
+   - Workaround used: `--business-name "Brisbane Roof Restoration Experts" --phone 0731321605`
+
+**Non-bugs (clarified)**:
+
+- Task-system re-inject for same entity is *not* a dedup violation. Operators may force
+  re-audit. Real dedup lives in `core/leads/cheap-audit-queue.js` (`enqueuedKeys` Set).
+- `pl:single-enrich` auto-chains an audit task — this is intended per the script comment.
+  Causes parallel audit runs if a B-style audit task is also queued for the same entity.
+
+**Doctor results · post-fix** (all 6 exit 0):
+
+```
+daemon-doctor          ✓ 3/3 V3 daemons alive
+lead-journey-doctor    ✓ 10/10 (was 9/10)
+intake-doctor          ✓ 5/5  (was 4/5)
+audit-doctor           ✓
+cascade-doctor         ✓ 2/2 codex_cli last 24h
+publish-doctor         ✓ 5/5 URL spot-check (200)
+```
+
+**7-PASS evidence · 4 entries**:
+
+| ID | task_id | kind | exit | dur(ms) | result |
+|----|---------|------|------|---------|--------|
+| A | `20260514-103114-7d3ac5` + chain `52c29b` | intake | 0 | 1.2k + 101.7k | 4 new entities (domain_vantagepoint/ace/queensland/nbmr) |
+| B | `20260514-103114-40465b` | audit | 0 | 115.4k | entity → phase=archived · grade=C · master.md + customer-facing-audit |
+| C | `20260514-103220-1bcee6` (retry · valid args) | single-enrich | 0 | 44.4k | entity resolved · auto-chained audit `c573eb` done in 113s |
+| D | — | image-extract | — | — | SKIP · no image fixture · KNOWN-LIMITATION |
+
+Dedup re-inject (`20260514-103508-3e82a8`) for the same entity-key ran to completion in 114s
+as expected — task system permits re-runs.
+
+**Crash-resume**: not exercised — `cheap-audit-pending.jsonl` was empty at the candidate
+crash point (intake CLI drained queue before SIGKILL window). Verified by code inspection:
+`loadQueueOnStart` in `core/leads/cheap-audit-queue.js` rehydrates from the JSONL on import.
+
+**Known limitation**: dispatcher has no stale-`running`-task reaper. If dispatcher crashes
+mid-task the task file is stuck in status=running until manual intervention. Backlog item.

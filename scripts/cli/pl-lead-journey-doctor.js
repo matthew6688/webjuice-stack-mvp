@@ -12,7 +12,7 @@
  *   2. phase ∈ ENTITY_PHASE 9 个值 (含 D31 新增 design-ready)
  *   3. grade ∈ {A,B,C,D} 或 null
  *   4. D-grade 必带 archive_reason
- *   5. tier 为 null iff grade ∈ {D, null}
+ *   5. tier 为 null iff grade ∈ {C, D, null}
  *   6. ARCHIVED entity 必有 archive_reason
  *   7. DESIGN_READY entity 必有 grade ∈ {A,B,C} (V3 D31 新)
  *   8. master.md 存在的 entity · phase 必 ≥ AWAITING (即不能 NEEDS_HUMAN)
@@ -100,23 +100,26 @@ const entities = loadEntities();
 }
 
 // ---------- 3. grade 值合法 ----------
+// V3 D43 fix (2026-05-14): grade schema is { investment_level, product_tier, ... }
+// Old path was e.data.scoring.grade (string) — that was the pre-D31 schema.
+// Doctor was silently passing because all entities had grade=null on the stale path.
 {
   const bad = entities.filter((e) => {
-    const g = e.data?.scoring?.grade;
+    const g = e.data?.grade?.investment_level;
     return g != null && !VALID_GRADES.has(g);
   });
   record(
     '3. grade ∈ {A,B,C,D} 或 null',
     bad.length === 0,
-    bad.length === 0 ? '全部合法' : `${bad.length} 非法 · 例: ${bad.slice(0, 3).map((b) => `${b.key}=${b.data.scoring.grade}`).join(', ')}`,
+    bad.length === 0 ? '全部合法' : `${bad.length} 非法 · 例: ${bad.slice(0, 3).map((b) => `${b.key}=${b.data.grade.investment_level}`).join(', ')}`,
     bad.length ? '看 core/scoring/lead-grading.js · 可能 LLM 返了非 ABCD 字符' : null
   );
 }
 
 // ---------- 4. D-grade 必带 archive_reason ----------
 {
-  const dGraded = entities.filter((e) => e.data?.scoring?.grade === 'D');
-  const missing = dGraded.filter((e) => !e.data?.archive_reason && !e.data?.scoring?.skip_reasons?.length);
+  const dGraded = entities.filter((e) => e.data?.grade?.investment_level === 'D');
+  const missing = dGraded.filter((e) => !e.data?.archive_reason && !e.data?.grade?.skip_reasons?.length);
   record(
     '4. D-grade 必带 archive_reason 或 skip_reasons',
     missing.length === 0,
@@ -125,19 +128,23 @@ const entities = loadEntities();
   );
 }
 
-// ---------- 5. tier null iff grade ∈ {D, null} ----------
+// ---------- 5. tier null iff grade ∈ {C, D, null} ----------
+// V3 D43 fix (2026-05-14): per lead-grading.js gradeLead(),
+// product_tier is only set for A and B (recommendProductTier gated on level==='A'||'B').
+// C and D both return null tier. Doctor previously read scoring.grade (always null
+// under old schema) so the violator filter never matched anyone.
 {
   const violators = entities.filter((e) => {
-    const g = e.data?.scoring?.grade;
-    const t = e.data?.scoring?.tier;
-    const isUngraded = !g || g === 'D';
-    return isUngraded ? (t != null) : (t == null);
+    const g = e.data?.grade?.investment_level;
+    const t = e.data?.grade?.product_tier;
+    const noTierExpected = !g || g === 'C' || g === 'D';
+    return noTierExpected ? (t != null) : (t == null);
   });
   record(
-    '5. tier null iff grade ∈ {D, null}',
+    '5. tier null iff grade ∈ {C, D, null}',
     violators.length === 0,
-    `${violators.length} 个违反 · 例: ${violators.slice(0, 3).map((b) => `${b.key} g=${b.data.scoring?.grade} t=${b.data.scoring?.tier}`).join(' · ')}`,
-    violators.length ? '看 core/scoring/lead-grading.js#computeProductTier · D 时应返 null' : null
+    `${violators.length} 个违反 · 例: ${violators.slice(0, 3).map((b) => `${b.key} g=${b.data.grade?.investment_level} t=${b.data.grade?.product_tier}`).join(' · ')}`,
+    violators.length ? '看 core/scoring/lead-grading.js#recommendProductTier · A/B 应有 tier · C/D 应 null' : null
   );
 }
 
@@ -156,7 +163,7 @@ const entities = loadEntities();
 // ---------- 7. DESIGN_READY 必有 grade ∈ {A,B,C} (V3 D31) ----------
 {
   const designReady = entities.filter((e) => e.data?.phase === 'design-ready');
-  const bad = designReady.filter((e) => !['A', 'B', 'C'].includes(e.data?.scoring?.grade));
+  const bad = designReady.filter((e) => !['A', 'B', 'C'].includes(e.data?.grade?.investment_level));
   record(
     '7. DESIGN_READY entity grade ∈ {A,B,C} (D31)',
     bad.length === 0,
@@ -247,7 +254,7 @@ if (JSON_MODE) {
     ok: allOk, passed, total,
     entities_count: entities.length,
     by_phase: groupBy(entities, (e) => e.data?.phase || 'no-phase'),
-    by_grade: groupBy(entities, (e) => e.data?.scoring?.grade || 'no-grade'),
+    by_grade: groupBy(entities, (e) => e.data?.grade?.investment_level || 'no-grade'),
     checks,
   }, null, 2));
 } else {
@@ -264,7 +271,7 @@ if (JSON_MODE) {
 
   // 简要 funnel 快照
   const byPhase = groupBy(entities, (e) => e.data?.phase || 'no-phase');
-  const byGrade = groupBy(entities, (e) => e.data?.scoring?.grade || 'no-grade');
+  const byGrade = groupBy(entities, (e) => e.data?.grade?.investment_level || 'no-grade');
   console.log(c('funnel:', D));
   console.log(c(`  phase: ${Object.entries(byPhase).map(([k, v]) => `${k}=${v}`).join(' · ')}`, D));
   console.log(c(`  grade: ${Object.entries(byGrade).map(([k, v]) => `${k}=${v}`).join(' · ')}`, D));

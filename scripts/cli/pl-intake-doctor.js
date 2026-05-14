@@ -20,6 +20,20 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
+// V3 D43 fix (2026-05-14): defensive .env.local loader.
+// Operators invoke `node scripts/cli/pl-intake-doctor.js` directly (without
+// --env-file=.env.local) all the time. Without it, GOOGLE_PLACES_API_KEY is
+// missing → false negative. Load .env.local at the repo root if no key set.
+if (!process.env.GOOGLE_PLACES_API_KEY) {
+  const envPath = path.resolve(process.cwd(), '.env.local');
+  if (fs.existsSync(envPath)) {
+    for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
+      const m = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*?)\s*$/);
+      if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+    }
+  }
+}
+
 const ARGS = process.argv.slice(2);
 const JSON_MODE = ARGS.includes('--json');
 
