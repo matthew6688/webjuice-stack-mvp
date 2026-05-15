@@ -386,8 +386,12 @@ async function main() {
       const namesList = leadNames.length
         ? leadNames.map((n) => `- ${n}`).join('\n')
         : '(0 leads · 检查 docker scraper 输出)';
+      const requested = Number.parseInt(args.count || '5', 10);
+      const countNote = leadNames.length < requested
+        ? ` (要求 ${requested} · 实际 ${leadNames.length} · gosom depth=${count} · Google Maps 该地区数据上限)`
+        : '';
       const stage0Body = [
-        `Docker scraper: ${leadNames.length} leads`,
+        `Docker scraper: ${leadNames.length} leads${countNote}`,
         `LLM judge: ${intakeJudge?.verdict || 'n/a'} (conf ${intakeJudge?.confidence ?? 'n/a'})`,
         '',
         '抓到的商家:',
@@ -402,8 +406,8 @@ async function main() {
       const finalBody = [
         `${leadNames.length} entities ingested · cheap-audit queue 处理中`,
         '',
-        '→ 每个 entity 跑 cheap-audit + LLM niche judge + predict grade',
-        '→ predict-A/B 立刻 detail audit · predict-C 进 cold backlog · predict-D archive',
+        '→ 每个 entity 跑 cheap-audit + LLM niche judge + 排除筛选',
+        '→ 通过 = 立即进 detail audit · 排除 = archive (grade=D)',
         '→ 看 #website-leads 各 thread 进度',
       ].join('\n');
       await finalizeBatch({

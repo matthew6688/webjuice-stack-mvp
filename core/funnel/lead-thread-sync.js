@@ -432,8 +432,10 @@ export async function renameThreadToCurrentTitle(entityKey, { fetchImpl = fetch 
         headers: { Authorization: `Bot ${botToken()}`, 'User-Agent': 'profitslocal-lead-thread-sync' },
       });
       if (cur.status === 404) return { ok: false, dead: true };
+      let oldTitle = null;
       if (cur.ok) {
         const data = await cur.json();
+        oldTitle = data.name;
         if (data.name === newTitle) return { ok: true, unchanged: true, threadId, title: newTitle };
       }
       const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
@@ -450,7 +452,21 @@ export async function renameThreadToCurrentTitle(entityKey, { fetchImpl = fetch 
         const t = await r.text();
         return { ok: false, reason: `discord_${r.status}`, body: t };
       }
-      return { ok: true, threadId, title: newTitle };
+      // cycle-26: post title change record into thread (so history is in-thread, not just in Discord system events).
+      if (oldTitle && oldTitle !== newTitle) {
+        try {
+          await fetchImpl(`${DISCORD_API}/channels/${threadId}/messages`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bot ${botToken()}`,
+              'Content-Type': 'application/json',
+              'User-Agent': 'profitslocal-lead-thread-sync',
+            },
+            body: JSON.stringify({ content: `🔖 标题更改\n旧: \`${oldTitle}\`\n新: \`${newTitle}\`` }),
+          });
+        } catch { /* non-blocking */ }
+      }
+      return { ok: true, threadId, title: newTitle, oldTitle };
     } catch (err) {
       return { ok: false, reason: err.message };
     }

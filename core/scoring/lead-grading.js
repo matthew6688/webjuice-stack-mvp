@@ -336,22 +336,22 @@ export function persistLeadGrade({
     storeRoot,
   });
 
-  // V2 phase hook — DISCORD_OUTREACH_PRD.md §9 + Block 4.4
-  // D → archived (auto). A/B/C → design-ready (V3 D31 · audit 全 + grade ABC + master.md 22章 → M3 可 build).
-  // 旧版 A/B → awaiting + C 不变 phase 已废弃 · 替代为显式 DESIGN_READY (LEAD-JOURNEY §2).
+  // cycle-26 · D → unified archiveLeadAsRejected (async · fire-and-forget) · A/B/C → audit-ready (renamed)
   let phaseResult = null;
   if (isD) {
-    phaseResult = setEntityPhase({
-      entityKey,
-      phase: ENTITY_PHASE.ARCHIVED,
-      archive_reason: (grade.skip_reasons || []).map((r) => r.id).join(',') || 'd_grade',
-      storeRoot,
-      note,
-    });
+    // persistLeadGrade is sync; defer terminal archive via promise chain (matches other archive call pattern)
+    import('../leads/terminal-archive.js').then(({ archiveLeadAsRejected }) =>
+      archiveLeadAsRejected(entityKey, {
+        reason: (grade.skip_reasons || []).map((r) => r.id).join(',') || 'd_grade',
+        pathId: 'stage4_grade_d',
+        layer: 'Stage 4',
+        storeRoot,
+      }).catch((err) => console.error(`[lead-grading] archiveLeadAsRejected failed for ${entityKey}: ${err.message}`)),
+    ).catch((err) => console.error(`[lead-grading] terminal-archive import failed: ${err.message}`));
   } else if (['A', 'B', 'C'].includes(grade.investment_level)) {
     phaseResult = setEntityPhase({
       entityKey,
-      phase: ENTITY_PHASE.DESIGN_READY,
+      phase: ENTITY_PHASE.AUDIT_READY,
       storeRoot,
       note,
     });

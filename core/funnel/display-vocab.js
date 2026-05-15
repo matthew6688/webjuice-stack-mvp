@@ -1,11 +1,11 @@
 /**
- * V3 D35 (2026-05-14) · Discord display vocabulary · niche / stage / emoji.
- * Per SOP-DISCORD-DISPLAY.md.
+ * V3 D35 (2026-05-14 · cycle-26 update 2026-05-15) · Discord display vocabulary.
  *
- * Used by:
- *   - lead-thread-sync.js#buildThreadName (title generation)
- *   - profile-card.js (rendering · indirectly via title)
+ * cycle-26: Title format now driven by entity.phase via PHASE_TO_STATE map ·
+ * STATE_TAGS / GRADE_TAGS from core/contracts/discord-messages.js.
+ * No more 预A/B/C tags · pre-audit C = [审中] · post-audit = [待建]/[待补]/[待发]/[已发]/[D].
  */
+import { STATE_TAGS, GRADE_TAGS, PHASE_TO_STATE } from '../contracts/discord-messages.js';
 
 // 16 niche → 2 字中文
 const NICHE_MAP = {
@@ -62,7 +62,7 @@ export function nicheLabel(niche) {
 
 // Stage 2 字中文 · per-channel
 const STAGE_LABELS = {
-  // #website-projects · 8 stages
+  // #website-projects · 8 sales stages (separate from audit pipeline)
   'demo-ready': '待发',
   'outreach-sent': '已发',
   'client-reviewing': '在看',
@@ -119,8 +119,19 @@ export function attentionEmoji(entity) {
 }
 
 /**
- * Build thread title per SOP-DISCORD-DISPLAY.md §1.1
- *   [niche] [stage] [grade] business-name [emoji?]
+ * Build thread title · cycle-26 format
+ *   [niche] [state] [grade?] business-name [emoji?]
+ *
+ * State comes from PHASE_TO_STATE(entity.phase) → STATE_TAGS:
+ *   awaiting / audit-ready → [审中]
+ *   ready-to-build         → [待建]
+ *   qa-pending             → [待补]
+ *   outreach-active (projects) → [待发]
+ *   replied/proposal-sent/paid → [已发]
+ *   archived               → omitted · GRADE_TAGS.D used instead → [D]
+ *
+ * Grade: real grade.grade or grade.investment_level if A/B/C/D · else omitted (no more 预X)
+ *   D entities → title has [D] · usually thread also archived
  *
  * @param {object} entity
  * @param {'leads'|'projects'|'paid'} channel
@@ -129,15 +140,31 @@ export function attentionEmoji(entity) {
 export function buildThreadTitle(entity, channel = 'projects') {
   const latest = entity.latest || {};
   const niche = nicheLabel(latest.niche || latest.category);
-  const stage = stageLabel(entity.sales_stage || defaultStageForChannel(channel));
-  // V3 D43 cycle-5c (Matthew 2026-05-14): no [?] in titles. Use real grade if
-  // present, else predict_grade (preliminary), else "未审" (pending audit) — never '?'.
-  const realGrade = entity.grade?.investment_level || entity.scoring?.grade;
-  const predict = entity.predict_grade?.grade;
-  const grade = realGrade || (predict ? `预${predict}` : '未审');
+
+  // cycle-26 · grade: real grade only · no 预X
+  const realGradeStr = typeof entity.grade === 'string' ? entity.grade
+    : (entity.grade?.grade || entity.grade?.investment_level || entity.scoring?.grade || null);
+  const gradeTag = realGradeStr && GRADE_TAGS[realGradeStr] ? GRADE_TAGS[realGradeStr] : null;
+
+  // cycle-26 · state from phase
+  const phase = entity.phase || 'awaiting';
+  let stateTag;
+  if (phase === 'archived') {
+    // archived entity · use [D] tag only (no separate state tag)
+    stateTag = null;
+  } else {
+    const stateKey = PHASE_TO_STATE[phase];
+    stateTag = stateKey ? STATE_TAGS[stateKey] : STATE_TAGS.auditing;
+  }
+
   const name = latest.name || entity.entityKey || '?';
   const emoji = attentionEmoji(entity);
   const emojiSuffix = emoji ? ` ${emoji}` : '';
-  const title = `[${niche}] [${stage}] [${grade}] ${name}${emojiSuffix}`;
+
+  const parts = [`[${niche}]`];
+  if (stateTag) parts.push(stateTag);
+  if (gradeTag) parts.push(gradeTag);
+  parts.push(name);
+  const title = parts.join(' ') + emojiSuffix;
   return title.length <= 100 ? title : title.slice(0, 97) + '…';
 }

@@ -205,7 +205,7 @@ export async function emitDiscord({ threadId, channelId, entityKey, content, eve
   };
 }
 
-/** Phase transition · entity flow (e.g. awaiting → design-ready → qa-pending → ready-to-build → archived) */
+/** Phase transition · entity flow (e.g. awaiting → audit-ready → qa-pending → ready-to-build → archived) */
 export async function emitPhaseTransition(entity, fromPhase, toPhase, note = '') {
   const name = entity?.latest?.name || entity?.entityKey || '(unknown)';
   const noteSuffix = note ? ` · ${note}` : '';

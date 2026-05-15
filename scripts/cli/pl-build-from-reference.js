@@ -89,7 +89,7 @@ proc.on('exit', async (code) => {
     try {
       const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
       const { stage6Message } = await import('../../core/funnel/audit-stage-messages.js');
-      const msg = stage6Message({ slug: slugArg, indexHtmlPath: outHtml.replace(REPO + '/', ''), sizeBytes: cleaned.length });
+      const msg = stage6Message({ slug, indexHtmlPath: outHtml.replace(REPO + '/', ''), sizeBytes: cleaned.length });
       await refreshThreadAndPost(entityKeyForMsg, msg);
     } catch (err) { console.warn(`[stage6] post failed: ${err.message}`); }
   }
@@ -104,8 +104,8 @@ proc.on('exit', async (code) => {
       const t = createTask({
         kind: 'ops',
         source: { platform: 'internal', thread_id: process.env.PL_PARENT_THREAD_ID || null, author: 'pl:build-from-reference auto-chain', message_id: null },
-        input: { text: `auto: publish demo for ${slugArg} (after build)`, attachments: [] },
-        target: { cli: 'pl:publish-demo', args: ['--slug', slugArg], timeout_ms: 300_000 },
+        input: { text: `auto: publish demo for ${slug} (after build)`, attachments: [] },
+        target: { cli: 'pl:publish-demo', args: ['--slug', slug], timeout_ms: 300_000 },
       });
       console.log(`[pl:build-from-reference] ✓ chained publish task: ${t.task_id}`);
     } catch (err) {

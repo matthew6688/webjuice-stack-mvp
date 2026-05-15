@@ -56,7 +56,7 @@ export const DISCOVERY_ENTITY_STATUS = {
 // implicitly from status.
 export const ENTITY_PHASE = {
   AWAITING: 'awaiting',
-  DESIGN_READY: 'design-ready',     // V3 D31 (2026-05-14): grade=A/B/C + audit done + master.md 22章 + 截图齐
+  AUDIT_READY: 'audit-ready',      // cycle-26 · grade=A/B/C + audit done + master.md 22章 + 截图齐
   // V3 D39 (2026-05-14): M2 → M3 qualification gate · 经 multi-page crawl + AI 分析 + 7 hard gate + 5 维 scorecard
   QA_PENDING: 'qa-pending',         // hard gates 全过 · scorecard < 60 · operator review 补字段
   READY_TO_BUILD: 'ready-to-build', // hard gates 全过 · scorecard >= 60 · 触发 M3 build
@@ -166,7 +166,7 @@ export function upsertDiscoveryRun(run, {
   }
 
   // V3 D43 cycle-4 (Matthew 2026-05-14): NO auto-open at intake. Thread is opened later
-  // in cheap-audit-queue AFTER predict-grade, ONLY when predict ≠ D. This prevents
+  // in cheap-audit-queue AFTER exclusion-filter, ONLY when not excluded. This prevents
   // D-grade / archived threads from polluting #website-leads with "[?]" titles.
   // SOP 重新解读: #website-leads = "可建/在建/已建 lead pool" · D 直接 archive entity 不开 thread
 
@@ -305,7 +305,7 @@ export function setEntityPhase({
   //
   // BIG phases = 业务阶段切换 operator 必看的
   const BIG_PHASES = new Set([
-    'design-ready',      // M2 audit done · sales 接手
+    'audit-ready',       // M2 audit done · sales 接手 (cycle-26 rename)
     'qa-pending',        // D39 qualification 部分缺 · operator 补
     'ready-to-build',    // M3 即将 build
     'archived',          // 终态 · 显示死因
@@ -319,15 +319,21 @@ export function setEntityPhase({
   if (!isNoOp && !process.env.SKIP_LEAD_THREAD_SYNC && !process.env.SKIP_DISCORD_EMIT) {
     const hasThread = !!(entity.discord_thread_id || entity.project_thread_id);
     if (hasThread) {
-      // Has thread · swap tag + upsert card in place · no Discord emit (avoid duplicate)
-      import('../funnel/lead-thread-sync.js').then(async ({ swapPhaseTag, upsertProfileCard }) => {
+      // cycle-26: phase change → rename title (审中 → 待建 / 待补 / 待发 / [D])
+      // + swap forum tag chips + refresh profile card + post to batch thread.
+      import('../funnel/lead-thread-sync.js').then(async ({ renameThreadToCurrentTitle, swapPhaseTag, upsertProfileCard }) => {
         try {
+          await renameThreadToCurrentTitle(entityKey);
           await swapPhaseTag(entityKey);
           await upsertProfileCard(entityKey);
         } catch (err) {
           console.warn(`[setEntityPhase] thread sync failed: ${err.message}`);
         }
       }).catch((err) => console.warn(`[setEntityPhase] thread sync import failed: ${err.message}`));
+      // cycle-26: post per-entity phase line to parent batch thread
+      import('../funnel/batch-progress.js').then(({ emitBatchProgress }) =>
+        emitBatchProgress(entityKey, { event: 'phase_change', from: prevPhase, to: phase }).catch(() => {})
+      ).catch(() => {});
     } else if (BIG_PHASES.has(phase)) {
       // No thread + BIG phase · operator 否则看不到 · emit bot-log
       import('../funnel/discord-emit.js').then(({ emitPhaseTransition }) =>
@@ -668,8 +674,38 @@ function readEntity(storeRoot, entityKey) {
   return readJson(path.join(storeRoot, 'entities', `${safeKey(entityKey)}.json`));
 }
 
-function writeEntity(storeRoot, entity) {
+// cycle-26: writeEntity fires card-refresh scheduler (injected at boot/test time)
+// so any entity field change → profile card refresh. Defense-in-depth · no caller
+// can forget to call upsertProfileCard.
+let _cardRefreshScheduler = null;
+let _autoInstallAttempted = false;
+
+export function setCardRefreshScheduler(fn) {
+  _cardRefreshScheduler = (typeof fn === 'function') ? fn : null;
+}
+
+function tryAutoInstall() {
+  if (_autoInstallAttempted || _cardRefreshScheduler) return;
+  _autoInstallAttempted = true;
+  // Skip in tests (test files set their own scheduler explicitly)
+  if (process.env.NODE_ENV === 'test' || process.env.SKIP_AUTO_CARD_REFRESH === '1') return;
+  // Skip in dry-run
+  if (process.env.LEAD_THREAD_DRY_RUN === 'true') return;
+  // Async install · doesn't block writeEntity
+  import('../funnel/card-refresh-scheduler.js').then(({ scheduleCardRefresh }) => {
+    if (!_cardRefreshScheduler) _cardRefreshScheduler = scheduleCardRefresh;
+  }).catch(() => { /* non-blocking */ });
+}
+
+export function writeEntity(storeRoot, entity) {
   writeJson(path.join(storeRoot, 'entities', `${safeKey(entity.entityKey)}.json`), entity);
+  if (!_cardRefreshScheduler) tryAutoInstall();
+  // Fire card-refresh ONLY if entity has thread to refresh
+  if (_cardRefreshScheduler && (entity.discord_thread_id || entity.project_thread_id)) {
+    try { _cardRefreshScheduler(entity.entityKey); } catch (err) {
+      console.warn(`[writeEntity] card-refresh scheduler error: ${err.message}`);
+    }
+  }
 }
 
 function appendEvents(storeRoot, events) {

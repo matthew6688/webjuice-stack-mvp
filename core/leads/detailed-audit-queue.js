@@ -55,7 +55,7 @@ function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 /**
  * Enqueue an entity for detailedAudit. Priority desc.
  */
-export function enqueueDetailedAudit(entityKey, { reason = 'predict-grade', priority = 50 } = {}) {
+export function enqueueDetailedAudit(entityKey, { reason = 'exclusion-survivor', priority = 50 } = {}) {
   if (!entityKey) return false;
   if (enqueuedKeys.has(entityKey)) return false;
   inMemQueue.push({ entityKey, reason, priority, enqueued_at: new Date().toISOString() });

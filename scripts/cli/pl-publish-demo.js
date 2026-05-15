@@ -172,7 +172,8 @@ proc.on('exit', async (code) => {
   console.log(`  Customer audit URL: ${url}/customer-facing-audit.html`);
   console.log(`  master.md URL:      ${url}/master.md`);
   console.log(`  Internal HTML URL:  ${url}/internal-audit-report.html`);
-  // Persist deploy record
+  // Persist deploy record · cf-pages-deploy.json (legacy disk file for back-compat)
+  // AND entity.deploy field (cycle-26 source-of-truth · triggers card refresh)
   const record = {
     slug, projectName,
     deployed_at: new Date().toISOString(),
@@ -233,9 +234,51 @@ proc.on('exit', async (code) => {
       const entity = JSON.parse(fs.readFileSync(path.join(entitiesDir, foundKey + '.json'), 'utf8'));
       const oldLeadThreadId = entity.discord_thread_id;
 
+      // cycle-26 · write entity.deploy (source-of-truth · triggers writeEntity → card refresh)
+      // + transition phase → outreach-active (also triggers card refresh).
+      try {
+        const entityPath = path.join(entitiesDir, foundKey + '.json');
+        const e = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+        e.deploy = {
+          demo_url: url,
+          audit_url: `${url}/customer-facing-audit.html`,
+          internal_audit_url: `${url}/internal-audit-report.html`,
+          master_md_url: `${url}/master.md`,
+          master_report_url: `${url}/master.report.html`,
+          deployed_at: record.deployed_at,
+        };
+        const { writeEntity: writeE } = await import('../../core/leads/discovery-store.js');
+        const { defaultDiscoveryStoreRoot } = await import('../../core/leads/discovery-store.js');
+        writeE(defaultDiscoveryStoreRoot(), e);
+        const { setEntityPhase, ENTITY_PHASE } = await import('../../core/leads/discovery-store.js');
+        const pr = setEntityPhase({
+          entityKey: foundKey,
+          phase: ENTITY_PHASE.OUTREACH_ACTIVE,
+          note: 'cycle-26 publish-done · graduate to #website-projects',
+        });
+        if (!pr.ok) console.warn(`[publish] setEntityPhase outreach-active failed: ${pr.reason}`);
+      } catch (err) {
+        console.warn(`[publish] entity.deploy write or setEntityPhase failed: ${err.message}`);
+      }
+
+      // cycle-26 · emit batch progress: published
+      try {
+        const { emitBatchProgress } = await import('../../core/funnel/batch-progress.js');
+        await emitBatchProgress(foundKey, { event: 'published', deployUrl: url });
+      } catch { /* non-blocking */ }
+
       const r = await openProjectThread(foundKey);
       if (r.ok) {
         console.log(`  #website-projects thread: ${r.reused ? 'reused' : 'opened'} ${r.threadId || ''}`);
+        // cycle-26 · post Stage 9 publish-done message to PROJECTS thread (not just leads)
+        // so customer-facing channel has the live URL + 4 hyperlinks visible.
+        try {
+          const { stage7Message } = await import('../../core/funnel/audit-stage-messages.js');
+          await appendThreadMessage(
+            r.threadId,
+            stage7Message({ slug, deployUrl: url, deployedAt: record.deployed_at }),
+          );
+        } catch (err) { console.warn(`[publish] stage9 → projects failed: ${err.message}`); }
         if (r.reused) {
           try { await upsertProjectProfileCard(foundKey); console.log('  profile card refreshed'); } catch {}
           try {
@@ -264,6 +307,75 @@ proc.on('exit', async (code) => {
     }
   } catch (err) {
     console.warn(`  #website-projects hook 失败 (不阻塞 publish): ${err.message}`);
+  }
+
+  // cycle-26 · pipeline-end summary message · fix-of-record
+  // Posts comprehensive checklist to BOTH old leads thread (before archive)
+  // and new projects thread. operator trusts THIS message · not profile card.
+  try {
+    const { buildPipelineSummary } = await import('../../core/funnel/pipeline-summary.js');
+    const { verifyAssetsRemote } = await import('../../core/reports/asset-integrity.js');
+    const entitiesDir = path.join(REPO, 'data/leads/entities');
+    let foundKey = null;
+    for (const f of fs.readdirSync(entitiesDir)) {
+      if (!f.endsWith('.json')) continue;
+      try {
+        const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, f), 'utf8'));
+        const s = String(e?.latest?.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        if (s === slug) { foundKey = f.replace(/\.json$/, ''); break; }
+      } catch {}
+    }
+    if (foundKey) {
+      const e = JSON.parse(fs.readFileSync(path.join(entitiesDir, foundKey + '.json'), 'utf8'));
+      // Asset stats from disk
+      const clientV2 = path.join(REPO, 'clients', slug, 'v2');
+      function fileBytes(p) { try { return fs.statSync(p).size; } catch { return 0; } }
+      function countFiles(dir, ext) {
+        try { return fs.readdirSync(dir).filter((f) => f.endsWith(ext)).length; } catch { return 0; }
+      }
+      const assets = {
+        master_md_bytes: fileBytes(path.join(clientV2, 'master.md')),
+        master_md_sections: ((fs.readFileSync(path.join(clientV2, 'master.md'), 'utf8').match(/^## /gm) || []).length) || 0,
+        master_report_bytes: fileBytes(path.join(clientV2, 'master.report.html')),
+        internal_audit_bytes: fileBytes(path.join(clientV2, 'internal-audit-report.html')),
+        customer_audit_bytes: fileBytes(path.join(clientV2, 'customer-facing-audit.html')),
+        screenshot_count: countFiles(path.join(clientV2, 'screenshots'), '.png'),
+        evidence_count: countFiles(path.join(clientV2, 'evidence'), '.png'),
+        video_present: fs.existsSync(path.join(clientV2, 'video', 'mobile-throttled.webm')),
+        cloudinary_upload_count: 0,
+      };
+      try {
+        const cm = JSON.parse(fs.readFileSync(path.join(clientV2, 'cloudinary-manifest.json'), 'utf8'));
+        assets.cloudinary_upload_count = Object.keys(cm.evidenceUrls || {}).length + (cm.videoUrl ? 1 : 0) + Object.keys(cm.screenshotUrls || {}).length;
+      } catch {}
+
+      // Integrity check (remote HTTP HEAD)
+      let integrity = null;
+      try {
+        const md = fs.readFileSync(path.join(clientV2, 'master.md'), 'utf8');
+        integrity = await verifyAssetsRemote({ md, baseUrl: url });
+      } catch (err) {
+        console.warn(`[pipeline-summary] integrity check failed: ${err.message}`);
+      }
+
+      const summary = buildPipelineSummary({
+        entity: e,
+        assets,
+        integrity,
+        cost: { firecrawl_usd: 0, vision_llm_usd: 0, ai_brief_usd: 0 },
+        duration_sec: null,
+      });
+
+      // Post to project thread (graduated) AND old leads thread (before archive)
+      const { appendThreadMessage } = await import('../../core/funnel/lead-thread-sync.js');
+      const targets = [e.project_thread_id, e.discord_thread_id].filter(Boolean);
+      for (const tid of targets) {
+        try { await appendThreadMessage(tid, summary); } catch {}
+      }
+      console.log(`  pipeline summary posted to ${targets.length} thread(s)`);
+    }
+  } catch (err) {
+    console.warn(`  pipeline summary post failed: ${err.message}`);
   }
 });
 

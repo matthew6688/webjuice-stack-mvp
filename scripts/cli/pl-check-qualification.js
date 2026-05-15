@@ -2,7 +2,7 @@
 /**
  * pl:check-qualification · D39 · M2 → M3 gate
  *
- * For 1 entity (or all with phase=design-ready):
+ * For 1 entity (or all with phase=audit-ready):
  *   1. multi-page crawl (Firecrawl + fallback)
  *   2. AI 分析 raw JSON → redesign-brief.json
  *   3. qualification scorecard (7 hard gates + 5 dim)
@@ -11,7 +11,7 @@
  *
  * Usage:
  *   npm run pl:check-qualification -- --entity-key place_xxx
- *   npm run pl:check-qualification -- --all-design-ready    (cron friendly · 跑所有 design-ready)
+ *   npm run pl:check-qualification -- --all-audit-ready     (cron friendly · 跑所有 audit-ready)
  *
  * Cost: ~$1-2 per entity (Firecrawl + AI)
  */
@@ -30,10 +30,11 @@ const args = Object.fromEntries(process.argv.slice(2).reduce((acc, a, i, arr) =>
 }, []));
 
 const entityKey = args['entity-key'];
-const allDesignReady = !!args['all-design-ready'];
+// cycle-26 · flag rename audit-ready (was design-ready) · accept both for back-compat
+const allAuditReady = !!(args['all-audit-ready'] || args['all-design-ready']);
 
-if (!entityKey && !allDesignReady) {
-  console.error('Usage: pl:check-qualification -- --entity-key <key> | --all-design-ready');
+if (!entityKey && !allAuditReady) {
+  console.error('Usage: pl:check-qualification -- --entity-key <key> | --all-audit-ready');
   process.exit(2);
 }
 
@@ -264,13 +265,14 @@ async function processEntity(key) {
   const targets = [];
   if (entityKey) {
     targets.push(entityKey);
-  } else if (allDesignReady) {
+  } else if (allAuditReady) {
     const dir = path.join(REPO, 'data/leads/entities');
     for (const f of fs.readdirSync(dir)) {
       if (!f.endsWith('.json')) continue;
       try {
         const e = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-        if (e.phase === 'design-ready') targets.push(f.replace(/\.json$/, ''));
+        // cycle-26 · accept both old + new value for transitional period
+        if (e.phase === 'audit-ready' || e.phase === 'design-ready') targets.push(f.replace(/\.json$/, ''));
       } catch { /* skip */ }
     }
   }

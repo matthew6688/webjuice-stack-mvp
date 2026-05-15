@@ -1,31 +1,30 @@
 #!/usr/bin/env node
 /**
- * pl-discord-snapshot · V3 D43 cycle-12 (Matthew 2026-05-14)
+ * pl-discord-snapshot · cycle-26 (Matthew 2026-05-15)
  *
- * One-shot Discord verification · 必须用这个当 PASS 凭据 · 不允许手动 sample。
- * Output: human-readable PASS/FAIL + JSON snapshot at data/qa/discord-snapshot-<ts>.json
+ * One-shot Discord verification · 用 STATE_TAGS/GRADE_TAGS contract (no more 预A/B/C).
  *
- * Usage:
- *   npm run pl:discord-snapshot                  # full leads channel scan
- *   npm run pl:discord-snapshot -- --thread <id>
- *   npm run pl:discord-snapshot -- --strict      # fail on any thread mismatch
- *
- * Per-state expectations (SOP §2.5):
- *   预D  · 不该有 thread
- *   预C  · profile + cheap summary + emoji guide → ≥3 msg · title [预C]
- *   预A/B · profile + cheap summary             → ≥2 msg · title [预A/B]
- *   audited A/B/C · profile + summary + 5 stages → ≥7 msg · title [A/B/C] [待发]
+ * 7 states (cycle-26):
+ *   - auditing         · [审中] · no grade · Stage 0-3 in flight
+ *   - auditing_graded  · [审中] [A|B|C] · Stage 4 done · pre-qualification
+ *   - ready_to_build   · [待建] [A|B|C] · Stage 6 pass
+ *   - qa_pending       · [待补] [A|B|C] · Stage 6 fail · operator补
+ *   - pending_publish  · [待发] [A|B|C] · #website-projects · Stage 7 done
+ *   - published        · [已发] [A|B|C] · sales_stage advanced
+ *   - rejected_d       · [D] · thread.archived=true · grade=D
+ *   - archived         · any · thread.archived=true (legacy threads)
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { STATE_TAGS, GRADE_TAGS, DEPRECATED_TERMS } from '../../core/contracts/discord-messages.js';
 
 const TOKEN = process.env.DISCORD_BOT_TOKEN || process.env.WEBSITE_TASKS_DISCORD_BOT_TOKEN;
 const LEADS_CH = process.env.WEBSITE_LEADS_DISCORD_CHANNEL_ID;
 const PROJECTS_CH = process.env.WEBSITE_PROJECTS_DISCORD_CHANNEL_ID;
 const DISCORD_API = 'https://discord.com/api/v10';
 
-if (!TOKEN) { console.error('Missing DISCORD_BOT_TOKEN'); process.exit(2); }
+// cycle-26 · TDD-friendly · token check moved inside main IIFE so test imports work
 
 const args = process.argv.slice(2);
 const argThreadIdx = args.indexOf('--thread');
@@ -63,45 +62,46 @@ function findEntityByThreadId(threadId) {
   return null;
 }
 
-// V3 D43 cycle-14 (Matthew 2026-05-14): classify by THREAD content + TITLE
-// 不再依赖 entity.grade · 因为 entity 可能有历史 grade 但 thread 刚开（无 stage 消息）。
-// Source of truth = 这个 thread 当前显示什么 · 应该等于什么。
-function classifyByThread(threadName, msgs, entity) {
-  // Title 决定 visual state · message features 决定 audit state
-  const titleHasYuC = threadName.includes('[预C]');
-  const titleHasYuB = threadName.includes('[预B]');
-  const titleHasYuA = threadName.includes('[预A]');
-  const titleHasD = threadName.includes('[D]');
-  const titleHasC = threadName.includes('[C]') && !titleHasYuC;
-  const titleHasB = threadName.includes('[B]') && !titleHasYuB;
-  const titleHasA = threadName.includes('[A]') && !titleHasYuA;
+// cycle-26 · classify by TITLE state tag + grade tag + thread metadata
+// Contract: STATE_TAGS + GRADE_TAGS + 'rejected_d' (grade D · archived)
+export function classifyByThread(threadName, msgs = [], entity = null, metadata = null) {
+  const archived = metadata?.archived === true;
 
-  if (titleHasYuC) return 'predict_C';
-  if (titleHasYuB) return 'predict_B';
-  if (titleHasYuA) return 'predict_A';
-  if (titleHasD) return 'audited_D';
-  if (titleHasC) return 'audited_C';
-  if (titleHasB) return 'audited_B';
-  if (titleHasA) return 'audited_A';
+  const has = (tag) => threadName.includes(tag);
+  const titleHasD = has(GRADE_TAGS.D);
+  const titleHasC = has(GRADE_TAGS.C);
+  const titleHasB = has(GRADE_TAGS.B);
+  const titleHasA = has(GRADE_TAGS.A);
+
+  // rejected_d takes priority · grade=D + (usually) thread archived
+  if (titleHasD) return 'rejected_d';
+
+  // archived legacy thread without [D]
+  if (archived) return 'archived';
+
+  // Active threads · check state tag
+  if (has(STATE_TAGS.auditing)) {
+    return (titleHasA || titleHasB || titleHasC) ? 'auditing_graded' : 'auditing';
+  }
+  if (has(STATE_TAGS.ready_to_build)) return 'ready_to_build';
+  if (has(STATE_TAGS.qa_pending))     return 'qa_pending';
+  if (has(STATE_TAGS.pending_publish)) return 'pending_publish';
+  if (has(STATE_TAGS.published))       return 'published';
+
   return 'unknown';
 }
 
 function expectedForState(state) {
   switch (state) {
-    case 'predict_D': return { mustHaveThread: false };
-    // V3 D43 cycle-24 (Matthew 2026-05-15): audited_D 应该 archived (cycle-22 22.A bail
-    // + persistLeadGrade archiveAndLockThread). Pre-cycle-22 留下的 active [D] thread
-    // 视为 legacy · 期望被 archive · snapshot caller 必须读 thread_metadata.archived.
-    case 'audited_D': return { mustHaveThread: true, minMessages: 1, titleContains: '[D]', expectedFeatures: ['profile_card'], expectArchived: true };
-    // emoji guide baked into cheap_summary message · 所以 cheap_summary alone covers both features
-    case 'predict_C': return { mustHaveThread: true, minMessages: 2, titleContains: '[预C]', expectedFeatures: ['profile_card', 'cheap_summary', 'emoji_guide'] };
-    case 'predict_B': return { mustHaveThread: true, minMessages: 2, titleContains: '[预B]', expectedFeatures: ['profile_card', 'cheap_summary'] };
-    case 'predict_A': return { mustHaveThread: true, minMessages: 2, titleContains: '[预A]', expectedFeatures: ['profile_card', 'cheap_summary'] };
-    case 'audited_A':
-    case 'audited_B':
-    case 'audited_C':
-      return { mustHaveThread: true, minMessages: 5, titleContains: `[${state.slice(-1)}]`, expectedFeatures: ['profile_card', 'stage_3_grade'] };
-    default: return { mustHaveThread: false };
+    case 'auditing':         return { mustHaveThread: true, minMessages: 2, expectedFeatures: ['profile_card'] };
+    case 'auditing_graded':  return { mustHaveThread: true, minMessages: 4, expectedFeatures: ['profile_card', 'stage_3_grade'] };
+    case 'ready_to_build':   return { mustHaveThread: true, minMessages: 5, expectedFeatures: ['profile_card', 'stage_3_grade'] };
+    case 'qa_pending':       return { mustHaveThread: true, minMessages: 5, expectedFeatures: ['profile_card', 'stage_3_grade'] };
+    case 'pending_publish':  return { mustHaveThread: true, minMessages: 1, expectedFeatures: ['profile_card'] };
+    case 'published':        return { mustHaveThread: true, minMessages: 1, expectedFeatures: ['profile_card'] };
+    case 'rejected_d':       return { mustHaveThread: true, minMessages: 1, expectedFeatures: ['profile_card'], expectArchived: true };
+    case 'archived':         return { mustHaveThread: true, expectArchived: true };
+    default:                 return { mustHaveThread: false };
   }
 }
 
@@ -116,7 +116,8 @@ function detectFeatures(msgs) {
     // Detect via section markers OR legacy fields
     if (embedDesc.includes('━━━ 基本信息') || embedDesc.includes('━━━ 联系方式')
         || embedFields.some((f) => f.name === '联系方式' || f.name === '基本信息')) features.add('profile_card');
-    if (text.includes('Intake 完成') || text.includes('cheap-audit + predict-grade')) features.add('cheap_summary');
+    // cycle-26 · accept new "排除筛选" + legacy "Intake 完成" header as cheap_summary marker
+    if (text.includes('Intake 完成') || text.includes('排除筛选')) features.add('cheap_summary');
     if (text.includes('销售操作') || text.includes('手动操作')) features.add('emoji_guide');
     if (text.includes('pipelineStartMessage') || text.includes('Audit pipeline 启动')) features.add('stage_0_start');
     if (text.includes('Stage 1') && text.includes('done')) features.add('stage_1_audit');
@@ -194,14 +195,15 @@ function verifyFieldAccuracy(embed, entity, slug) {
         mismatches.push(`审计总分: master.md=${auditScore}/100 not in field`);
       }
     }
-    if (f.name.includes('在线资源') || f.name.includes('本地资产')) {
+    // cycle-26 · accept both 在线资源 and 现状证据 (new unified pre-publish section)
+    if (f.name.includes('在线资源') || f.name.includes('现状证据')) {
       checked++;
       // Verify cf-pages-deploy.json links match
       try {
         const dp = path.join('/Users/matthew/Developer/google-map-website-v3/clients', slug, 'v2/concept/reference-adapter/cf-pages-deploy.json');
         if (fs.existsSync(dp)) {
           const deploy = JSON.parse(fs.readFileSync(dp, 'utf8'));
-          // If deploy exists, field SHOULD be "在线资源 (已发布)" not "本地资产 (未 publish)"
+          // If deploy exists, field name should be "在线资源 (已发布)"
           if (f.name.includes('未 publish') || f.name.includes('未发布')) {
             mismatches.push(`链接丢失: cf-pages-deploy.json 存在但 field 名是 "${f.name}" · 应是 "在线资源 (已发布)"`);
           }
@@ -281,7 +283,7 @@ async function checkThread(threadInfo) {
   if (!titleMatchesExpected) failures.push(`title 不含期望片段 "${expected.titleContains}"`);
   if (!enoughMessages) failures.push(`message count ${msgs.length} < 期望 ${expected.minMessages}`);
   if (missingFeatures.length) failures.push(`缺少 feature: ${missingFeatures.join(', ')}`);
-  if (assetMisattribution) failures.push('本地资产 显示在 non-audited entity (slug-collision)');
+  if (assetMisattribution) failures.push('现状证据 显示在 non-audited entity (slug-collision)');
   // V3 D43 cycle-13: accuracy mismatches are hard FAILs
   for (const am of accuracyMismatches) failures.push(`字段 mismatch: ${am}`);
   // V3 D43 cycle-24 (Matthew 2026-05-15): audited_D 必须 archived
@@ -317,7 +319,10 @@ async function listActiveLeadsThreads() {
   return (ad.threads || []).filter((t) => t.parent_id === LEADS_CH);
 }
 
-(async () => {
+// CLI entry · only runs when invoked directly (not when imported by tests)
+const isMain = import.meta.url === `file://${process.argv[1]}`;
+if (isMain) (async () => {
+  if (!TOKEN) { console.error('Missing DISCORD_BOT_TOKEN'); process.exit(2); }
   const ts = new Date().toISOString().replace(/[:.]/g, '-');
   const snapshot = { at: new Date().toISOString(), threads: [] };
 

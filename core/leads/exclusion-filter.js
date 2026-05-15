@@ -1,7 +1,7 @@
 /**
  * V3 D43 cycle-23 (Matthew 2026-05-15) · 排除式筛选 (3 layer · LEAD-FILTERING-DESIGN.md)
  *
- * 取代 predict-grade.js 硬阈值。逻辑：先排除明显不是客户的 · 剩下的进 audit。
+ * 取代旧硬阈值评分逻辑。先排除明显不是客户的 · 剩下的进 audit。
  *
  * Layer 1 · 数据质量
  *   - phone + email + website 全 NULL · enrich 后仍 NULL → exclude

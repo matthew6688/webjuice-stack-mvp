@@ -288,6 +288,10 @@ function normalizeLlmOutput(raw, provider, latencyMs) {
   // V3 D43 P3: 即使 LLM 返回 ops:health-check (老 prompt 可能 cache) · 强制 null · 走人工
   let cli = typeof raw.target_cli === 'string' ? raw.target_cli : null;
   if (cli === 'ops:health-check') cli = null;
+  // V3 cycle-25 (2026-05-15 · Matthew clean-slate test): intake 入口必须走
+  // pl:pipeline-batch-start (开 #lead-discovery-runs batch thread) · 不允许
+  // LLM 直接选 pl:scrape-docker (内层 step · 缺 batchId 时不 post 进度).
+  if (kind === 'intake' && cli === 'pl:scrape-docker') cli = 'pl:pipeline-batch-start';
   return {
     kind,
     target_cli:        cli,

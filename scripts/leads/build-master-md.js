@@ -150,6 +150,12 @@ for (const entityKey of targets) {
       } catch { /* read fail · proceed conservatively */ }
       const score = r.frontmatter?.audit_score;
       const decision = r.frontmatter?.decision;
+      // cycle-26: skip Discord noise for "tiny" pre-audit rebuilds
+      // (intake creates initial 2KB/4-section master.md before audit data lands · operator
+      // doesn't need a thread message for that). Only post once content has audit_score.
+      if (score == null || r.byteLength < 5000 || r.sectionCount < 5) {
+        continue;
+      }
       const msg = `📄 **master.md 已重建** · ${(r.byteLength / 1024).toFixed(1)}KB · ${r.sectionCount} sections${
         score != null ? ` · audit_score ${score}` : ''
       }${decision ? ` · ${decision}` : ''}`;

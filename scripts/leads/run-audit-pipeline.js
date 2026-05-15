@@ -120,14 +120,14 @@ async function processLead(entityKey) {
   if (!refetch && fs.existsSync(detailedPath)) {
     console.log(`  [stage 1/4] detailed audit — reuse cached fixture`);
     try { detailedFixture = JSON.parse(fs.readFileSync(detailedPath, 'utf8')); } catch {}
-    // V3 D43 cycle-21 (Matthew 2026-05-15): cached path 也 emit Stage 1 message ·
-    // 让 thread 显示完整 5 stage · 不能直接跳到 Stage 3.
+    // cycle-26: cached path 也 emit stage message · 让 thread 显示完整 9 stage
     if (detailedFixture) {
-      await postStage(entityKey, `**Stage 1/5 · 网站审计 (cached)** · 复用上次结果 · audit_score ${detailedFixture.detailed_audit?.audit_score ?? '?'}/100 · decision ${detailedFixture.detailed_audit?.decision ?? '?'}`);
+      const { STAGE_LABELS: SL } = await import('../../core/contracts/discord-messages.js');
+      await postStage(entityKey, `**${SL[3]} (cached)** · 复用上次结果 · audit_score ${detailedFixture.detailed_audit?.audit_score ?? '?'}/100 · decision ${detailedFixture.detailed_audit?.decision ?? '?'}`);
     }
   }
   if (!detailedFixture && url) {
-    console.log(`  [stage 1/4] detailed audit — fetching ${url}`);
+    console.log(`  [audit] detailed audit — fetching ${url}`);
     const screenshotDir = path.join(screenshotsRoot, entityKey);
     const ledgerPath = path.join(detailedDir, `ledger-${stamp()}.jsonl`);
     let fetchPayload = null;
@@ -234,12 +234,17 @@ async function processLead(entityKey) {
   const sitemapTotal = detailedFixture?.sitemap_analysis?.total_urls || 0;
   if (sitemapTotal > TOO_MANY_PAGES_THRESHOLD) {
     const reason = `sitemap ${sitemapTotal} pages > ${TOO_MANY_PAGES_THRESHOLD} · 不在 V3 产品包 (迁移成本失控)`;
-    await postStage(entityKey, `**Early Hard-Gate Fail · sitemap pages > ${TOO_MANY_PAGES_THRESHOLD}**\n· ${reason}\n· archived · 跳过 Stage 2-5 (省 vision + LLM + qualification 成本)`);
+    await postStage(entityKey, `**Early Hard-Gate Fail · sitemap pages > ${TOO_MANY_PAGES_THRESHOLD}**\n· ${reason}\n· archived · 跳过后续 stages (省 vision + LLM + qualification 成本)`);
+    // cycle-26: archiveLeadAsRejected unifier · sets grade=D · title → [D] · archive thread
     try {
-      const { setEntityPhase, ENTITY_PHASE } = await import('../../core/leads/discovery-store.js');
-      setEntityPhase({ entityKey, phase: ENTITY_PHASE.ARCHIVED, archive_reason: `early_gate_too_many_pages: ${reason}` });
-    } catch (err) { console.warn(`[early-gate] setEntityPhase failed: ${err.message}`); }
-    return { entityKey, ok: false, reason: `early_gate_too_many_pages (sitemap ${sitemapTotal})` };
+      const { archiveLeadAsRejected } = await import('../../core/leads/terminal-archive.js');
+      await archiveLeadAsRejected(entityKey, {
+        reason,
+        pathId: 'stage2_sitemap_too_large',
+        layer: 'Stage 2',
+      });
+    } catch (err) { console.warn(`[early-gate] archiveLeadAsRejected failed: ${err.message}`); }
+    return { entityKey, ok: false, reason: `stage2_sitemap_too_large (sitemap ${sitemapTotal})` };
   }
 
   // ── Stage 2: visual audit (Ollama vision on desktop screenshot) ──────
@@ -253,12 +258,13 @@ async function processLead(entityKey) {
     // V3 D43 cycle-21 · cached Stage 2 也 emit (Matthew 2026-05-15)
     if (visualFixture) {
       const issues = visualFixture.parsedJson?.issues?.length || 0;
-      await postStage(entityKey, `**Stage 2/5 · 视觉审计 (cached)** · 复用上次 vision 结果 · ${issues} 个视觉问题 · provider ${visualFixture.provider || '?'}`);
+      const { STAGE_LABELS: SL } = await import('../../core/contracts/discord-messages.js');
+      await postStage(entityKey, `**${SL[4]} (cached)** · 复用上次 vision 结果 · ${issues} 个视觉问题 · provider ${visualFixture.provider || '?'}`);
     }
   }
   if (!visualFixture && fs.existsSync(desktopShot)) {
     const forcedProvider = process.env.VISION_PROVIDER || 'auto (claude_cli → codex_cli → ollama)';
-    console.log(`  [stage 2/4] visual audit — provider: ${forcedProvider}`);
+    console.log(`  [vision] visual audit — provider: ${forcedProvider}`);
     fs.mkdirSync(visualRunDir, { recursive: true });
     const prompt = buildVisualAuditPrompt({
       businessName: entity.latest?.name,
@@ -333,7 +339,7 @@ async function processLead(entityKey) {
     console.warn(`     ⚠ grading failed: ${err.message}`);
   }
 
-  // V3 D43 cycle-22 (Matthew 2026-05-15) · 22.A · D-grade 立刻 bail · skip Stage 4/5
+  // V3 D43 cycle-22 (Matthew 2026-05-15) · 22.A · D-grade 立刻 bail · skip 后续 stages
   // + master.md/customer-audit rebuild. Pro Master case: D-grade 还跑完 4/5/post ·
   // 浪费 ~3 min + Tinyfish quota. Now: D → archive entity (persistLeadGrade 已做) ·
   // run-audit-pipeline 直接 return.

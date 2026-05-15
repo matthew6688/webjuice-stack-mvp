@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+/**
+ * cycle-26 · TDD runner · runs all 5 tests · reports pass/fail per file.
+ * Exit 0 only when all 5 pass.
+ */
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const TESTS = [
+  'scripts/test/test-cycle26-stage-messages.mjs',
+  'scripts/test/test-cycle26-profile-card.mjs',
+  'scripts/test/test-cycle26-terminal-unifier.mjs',
+  'scripts/test/test-cycle26-snapshot-classifier.mjs',
+  'scripts/test/test-cycle26-migrate-phase.mjs',
+  // cycle-26 expanded TDD (after E2E surfacing) · 4 added
+  'scripts/test/test-cycle26-title-state-machine.mjs',
+  'scripts/test/test-cycle26-batch-progress.mjs',
+  'scripts/test/test-cycle26-stage7-format.mjs',
+  'scripts/test/test-cycle26-cross-file-integrity.mjs',
+  // cycle-26 master.md data lineage (covers SOP-MASTER-MD-DATA-LINEAGE.md spec)
+  'scripts/test/test-cycle26-master-md-data-lineage.mjs',
+  // cycle-26 asset integrity (publish 后 master.md + assets 必须 live)
+  'scripts/test/test-cycle26-asset-integrity.mjs',
+  // cycle-26 pipeline-end summary message (fix-of-record · 7 sections)
+  'scripts/test/test-cycle26-pipeline-summary.mjs',
+  // cycle-26 profile-card realtime refresh (writeEntity hook · 11 state-change paths)
+  'scripts/test/test-cycle26-profile-card-realtime.mjs',
+  // cycle-26 master.md frontmatter accuracy (entity values fidelity)
+  'scripts/test/test-cycle26-master-md-accuracy.mjs',
+  // cycle-26 master.md FULL population w/ real Ace Roofing production fixture
+  'scripts/test/test-cycle26-master-md-full-population.mjs',
+  // cycle-26 huashu HTML render fidelity (master.md → master.report.html structure parity)
+  'scripts/test/test-cycle26-html-render-fidelity.mjs',
+  // cycle-26 customer-facing audit · internal data isolation
+  'scripts/test/test-cycle26-customer-audit-isolation.mjs',
+  // cycle-26 internal audit report · completeness
+  'scripts/test/test-cycle26-internal-audit-completeness.mjs',
+  // cycle-26 3-way report consistency (master.md / customer / internal · same data)
+  'scripts/test/test-cycle26-three-report-consistency.mjs',
+];
+
+const results = [];
+for (const t of TESTS) {
+  console.log(`\n══════════════════════════════════════════`);
+  console.log(`  ${t}`);
+  console.log(`══════════════════════════════════════════`);
+  const r = spawnSync('node', ['--env-file-if-exists=.env.local', t], { cwd: ROOT, stdio: 'inherit' });
+  results.push({ test: t, code: r.status });
+}
+
+console.log('\n══════════════════════════════════════════');
+console.log('  cycle-26 TDD summary');
+console.log('══════════════════════════════════════════');
+let pass = 0, fail = 0;
+for (const r of results) {
+  console.log(`  ${r.code === 0 ? '✓ PASS' : '✗ FAIL'}  ${r.test}`);
+  if (r.code === 0) pass++; else fail++;
+}
+console.log(`\n${pass}/${results.length} test files passed`);
+process.exit(fail === 0 ? 0 : 1);

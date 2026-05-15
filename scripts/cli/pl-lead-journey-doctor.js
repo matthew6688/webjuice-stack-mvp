@@ -9,12 +9,12 @@
  *
  * 检查 (per LEAD-JOURNEY.md §10):
  *   1. 每个 entity 必有 .key (place_/domain_/image_/manual_)
- *   2. phase ∈ ENTITY_PHASE 9 个值 (含 D31 新增 design-ready)
+ *   2. phase ∈ ENTITY_PHASE 9 个值 (含 D31 新增 audit-ready)
  *   3. grade ∈ {A,B,C,D} 或 null
  *   4. D-grade 必带 archive_reason
  *   5. tier 为 null iff grade ∈ {C, D, null}
  *   6. ARCHIVED entity 必有 archive_reason
- *   7. DESIGN_READY entity 必有 grade ∈ {A,B,C} (V3 D31 新)
+ *   7. AUDIT_READY entity 必有 grade ∈ {A,B,C} (V3 D31 新)
  *   8. master.md 存在的 entity · phase 必 ≥ AWAITING (即不能 NEEDS_HUMAN)
  *   9. dedup-decisions.json append-only · 最近 1000 条记录格式合规
  *  10. 整 entity store 无重复 key (file system + index 一致)
@@ -48,7 +48,7 @@ const DISCOVERY_INDEX = path.join(REPO, 'data/leads/discovery-index.json');
 // on legitimate phase values. Sync with core/leads/discovery-store.js ENTITY_PHASE.
 const VALID_PHASES = new Set([
   'awaiting',
-  'design-ready',
+  'audit-ready',
   'qa-pending',           // D39
   'ready-to-build',       // D39
   'outreach-active',
@@ -172,15 +172,15 @@ const entities = loadEntities();
   );
 }
 
-// ---------- 7. DESIGN_READY 必有 grade ∈ {A,B,C} (V3 D31) ----------
+// ---------- 7. AUDIT_READY 必有 grade ∈ {A,B,C} (V3 D31) ----------
 {
-  const designReady = entities.filter((e) => e.data?.phase === 'design-ready');
+  const designReady = entities.filter((e) => e.data?.phase === 'audit-ready');
   const bad = designReady.filter((e) => !['A', 'B', 'C'].includes(e.data?.grade?.investment_level));
   record(
-    '7. DESIGN_READY entity grade ∈ {A,B,C} (D31)',
+    '7. AUDIT_READY entity grade ∈ {A,B,C} (D31)',
     bad.length === 0,
-    `design-ready=${designReady.length} · 异常=${bad.length}`,
-    bad.length ? `仅 A/B/C 应该进 design-ready · 看 lead-grading.js setEntityPhase 逻辑` : null
+    `audit-ready=${designReady.length} · 异常=${bad.length}`,
+    bad.length ? `仅 A/B/C 应该进 audit-ready · 看 lead-grading.js setEntityPhase 逻辑` : null
   );
 }
 

@@ -135,9 +135,9 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   const tier = grade.product_tier || null;
   const niche = latest.niche || latest.category || '';
 
-  // Load enrich data
+  // cycle-26: prefer entity.deploy (source-of-truth · realtime) · fallback to disk file
   const mdFm = readMasterMdFrontmatter(clientSlug);
-  const deploy = readDeployRecord(clientSlug);
+  const deploy = entity?.deploy || readDeployRecord(clientSlug);
   const assets = listAssets(clientSlug);
   const salesTime = latest.sales_signals?.best_contact_time || null;
 
@@ -223,7 +223,7 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   }
   flush('审计结论');
 
-  // Section · 在线资源 / 本地资产
+  // Section · 在线资源 / 现状证据 (cycle-26 · 统一 section 名 "现状证据")
   // V3 D43 cycle-13 (Matthew 2026-05-14): "有些链接丢失了"
   // 旧 bug: 5 个发布后链接只在 channel='projects' 渲染 · #website-leads 看不到 demo/audit/master.md URL。
   // 修: 不管哪个 channel · 只要 cf-pages-deploy.json 存在就显示 5 个 hyperlinks。
@@ -275,16 +275,19 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
       }
       sections.push({ name: `现状证据 (${total})`, body: evBody });
     }
-  } else if (thisEntityAudited) {
-    // Audited 但未 publish · 显示本地资产 counts
+  } else {
+    // cycle-26 · pre-publish (audited or in-flight) · 用 "现状证据" 同一 section 名
+    // pre-publish 时显示 counts · publish 后 hyperlinks。
     const parts = [];
     if (assets.evidence.length) parts.push(`证据 ${assets.evidence.length}`);
     if (assets.screenshots.length) parts.push(`截图 ${assets.screenshots.length}`);
     if (assets.videos.length) parts.push(`视频 ${assets.videos.length}`);
     if (parts.length) {
-      lines.push(parts.join(' · '));
-      flush('本地资产 (未 publish · 等 demo 部署)');
+      lines.push(parts.join(' · ') + ' (本地 · 等发布)');
+    } else {
+      lines.push('— (尚未生成 · audit 跑完后出现)');
     }
+    flush('现状证据');
   }
 
   // Section · 线索来源

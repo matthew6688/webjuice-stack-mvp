@@ -1,18 +1,19 @@
 /**
- * V3 D38 (2026-05-14) · Audit pipeline per-stage Discord message builders
+ * V3 cycle-26 (2026-05-15) · Audit pipeline per-stage Discord message builders
  *
- * 按 SOP-AUDIT-STAGE-NOTIFICATIONS.md 规范:
- *   - 默认 stage 成功: 无 emoji · 用 **Stage X/4 · done** bold 当锚
- *   - 失败保留: ❌ 唯一异常 marker
- *   - URL hyperlink (contact_us_url · social · live demo URL 等)
- *   - 本地路径 (audit 报告未 publish): 只显文件名
- *   - publish 后 (cf-pages-deploy.json 存在): live URL hyperlink
+ * Stage labels are imported from core/contracts/discord-messages.js
+ * (DO NOT hardcode "Stage X/Y" strings · linter will reject).
+ *
+ * 9-stage pipeline (Stage 0-8):
+ *   0 抓客户 · 1 排除筛选 · 2 网站审计 · 3 视觉审计 · 4 打分定级
+ *   5 内部审计报告 · 6 资格复核 · 7 建 demo · 8 发布上线
  *
  * Called from scripts/leads/run-audit-pipeline.js postStage().
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { STAGE_LABELS, PIPELINE_INTRO } from '../contracts/discord-messages.js';
 
 function readDeploy(slug) {
   if (!slug) return null;
@@ -82,17 +83,32 @@ function slugifyName(s) {
 }
 
 // ─────────────────────────────────────────────────────────
-// Pipeline start
+// Pipeline start (cycle-26 · 9 stages)
 // ─────────────────────────────────────────────────────────
 export function pipelineStartMessage() {
-  return `**Audit pipeline 启动** · 4 stages · 预计 2-5 min`;
+  return PIPELINE_INTRO;
 }
 
 // ─────────────────────────────────────────────────────────
-// Cheap-audit + predict summary · V3 D43 cycle-7 (cycle-8 explicit thresholds)
-// Matthew 2026-05-14: thread 不能是空壳 + 阈值要具体 · 不要 vague "GBP 弱"
+// Stage 0 · 抓客户 done (scraper produced N entities)
+// Posted to the #website-tasks task thread (not per-entity thread).
 // ─────────────────────────────────────────────────────────
-export function cheapAuditPredictMessage({ entity, cheapAudit, predict }) {
+export function stage0Message({ leadCount = 0, durationSec = null, leadNames = [] } = {}) {
+  const lines = [];
+  lines.push(`**${STAGE_LABELS[1]}** done${durationSec ? ` · ${durationSec}s` : ''}`);
+  lines.push('');
+  lines.push(`抓到 ${leadCount} 个 entity${leadNames.length ? ':' : ''}`);
+  for (const n of leadNames.slice(0, 10)) lines.push(`- ${n}`);
+  lines.push('');
+  lines.push('━━━');
+  return lines.join('\n');
+}
+
+// ─────────────────────────────────────────────────────────
+// Stage 1 · 排除筛选 done (cycle-26 · replaces cheap-audit + old grade table)
+// Per-entity message posted right after exclusion-filter verdict.
+// ─────────────────────────────────────────────────────────
+export function cheapAuditPredictMessage({ entity, exclusion = null, cheapAudit = null } = {}) {
   const latest = entity?.latest || {};
   const rc = latest.review_count || 0;
   const rating = latest.rating || 0;
@@ -101,85 +117,55 @@ export function cheapAuditPredictMessage({ entity, cheapAudit, predict }) {
                   ws === 'independent_http_site' ? '独立 HTTP' :
                   ws === 'no_website' ? '无网站' :
                   ws === 'social_or_third_party_only' ? '社媒/三方' : ws;
-  const hasWebsite = /^independent_(http|https)_site$/.test(ws);
-  const action = cheapAudit?.action || '?';
-  const actionLabel = action === 'audit_candidate' ? '可深审' :
-                      action === 'starter_candidate' ? '可建站' :
-                      action === 'manual_review' ? '操作员复核' :
-                      action === 'skip' ? '跳过' :
-                      action === 'queued_for_enrichment' ? '待补 contact' : action;
-  const g = predict?.predict_grade || '?';
-  const nextStep =
-    g === 'A' ? '→ 立刻 detailedAudit (高优先 · 优先 100)' :
-    g === 'B' ? '→ 进 detailedAudit 队列 (优先 75)' :
-    g === 'C' ? '→ cold backlog · 销售触发或周期任务再 audit' :
-    g === 'D' ? '→ archive · 不深审' : '→ ?';
-
-  // V3 D43 cycle-8 · 具体阈值对照（A/B/C/D 评定标准 + 这家是怎么判的）
-  // 阈值与 core/leads/predict-grade.js 同步
-  const A_REVIEWS_MIN = 100, A_RATING_MIN = 4.3;
-  const B_REVIEWS_MIN = 30,  B_RATING_MIN = 4.0;
-  const cActionOk = action === 'audit_candidate' || action === 'starter_candidate';
-  const tick = (ok) => ok ? '✓' : '✗';
 
   const lines = [];
-  lines.push(`**Intake 完成 · cheap-audit + predict-grade**`);
+  lines.push(`**${STAGE_LABELS[2]}** done`);
   lines.push('');
-  lines.push(`▸ **GBP 信号**: ${rating}★ · ${rc} 条评论 · 网站 ${wsLabel}`);
-  lines.push(`▸ **Cheap-audit 判定**: \`${action}\` (${actionLabel}) · gbp_quality ${cheapAudit?.gbp_quality ?? '?'}/100`);
-  if (cheapAudit?.reason) lines.push(`▸ Cheap-audit 原因: ${cheapAudit.reason}`);
-  if (cheapAudit?.fired_triggers?.length) {
-    lines.push(`▸ Fired triggers: ${cheapAudit.fired_triggers.join(', ')}`);
-  }
-  lines.push('');
-  lines.push(`**Predict grade**: \`${g}\``);
-  lines.push('');
-  // 具体阈值对照表（每行: 实际值 vs B/A 阈值）
-  lines.push('```');
-  lines.push('维度        本家       预B 阈值       预A 阈值');
-  lines.push(`reviews     ${String(rc).padEnd(10)} ≥${B_REVIEWS_MIN.toString().padEnd(13)}≥${A_REVIEWS_MIN}`);
-  lines.push(`           ${tick(rc >= B_REVIEWS_MIN).padEnd(11)}${tick(rc >= A_REVIEWS_MIN)}`);
-  lines.push(`rating      ${String(rating + '★').padEnd(10)} ≥${(B_RATING_MIN + '★').padEnd(13)}≥${A_RATING_MIN}★`);
-  lines.push(`           ${tick(rating >= B_RATING_MIN).padEnd(11)}${tick(rating >= A_RATING_MIN)}`);
-  lines.push(`website     ${(hasWebsite ? '有' : '无').padEnd(10)} 不强制       必须`);
-  lines.push(`           ✓          ${tick(hasWebsite)}`);
-  lines.push(`cheap       ${action.padEnd(10)} ∈[audit/starter]`);
-  lines.push(`           ${tick(cActionOk).padEnd(11)}${tick(cActionOk)}`);
-  lines.push('```');
-  // 显式原因
-  if (predict?.reasons?.length) {
-    lines.push('');
-    lines.push('**为什么这样判:**');
-    for (const r of predict.reasons) {
-      lines.push(r.startsWith('  ✗') ? r : `· ${r}`);
-    }
-  }
-  lines.push('');
-  lines.push(`**下一步**: ${nextStep}`);
+  lines.push(`▸ GBP 信号: ${rating}★ · ${rc} 条 · 网站 ${wsLabel}`);
 
-  // V3 D43 cycle-13 (Matthew 2026-05-14): emoji 指南是 DEFAULT · 所有需要 human
-  // review 或处于 backlog 的 lead 都显示 (predict-A/B/C + manual_review +
-  // queued_for_enrichment + needs human). 只有 predict-D (archive · 永不深审)
-  // 跳过 (反正不在 #website-leads)。
-  const showEmojiGuide = g === 'A' || g === 'B' || g === 'C'
-    || action === 'manual_review' || action === 'queued_for_enrichment';
-  if (showEmojiGuide) {
+  // exclusion-filter verdict (cycle-23 排除式 · 替代旧硬阈值)
+  if (exclusion) {
+    if (exclusion.excluded) {
+      lines.push(`▸ 排除筛: ❌ Layer ${exclusion.layer} · ${exclusion.reason}`);
+      lines.push('');
+      lines.push(`**下一步**: → archive · 不深审 (grade=D · phase=archived)`);
+    } else if (exclusion.needs_enrichment) {
+      lines.push(`▸ 排除筛: ⏳ 缺 contact · enrich 后重判`);
+      lines.push('');
+      lines.push(`**下一步**: → pl:run-enrichment-batch 自动触发 · 完成后回流 cheap-audit`);
+    } else {
+      lines.push(`▸ 排除筛: ✓ 通过 3 层 · 阈值 ${exclusion.thresholds?.min_reviews || '?'}-${exclusion.thresholds?.max_reviews || '?'} reviews`);
+      lines.push('');
+      lines.push(`**下一步**: → 立即进 detailedAudit (audit_now=true)`);
+    }
+  } else {
+    lines.push(`▸ 排除筛: (无数据 · upstream 未调 exclusion-filter)`);
+  }
+
+  // qa-pending / D-grade still get a reaction guide (operator action needed)
+  // Survivors auto-chain to audit · no reaction needed.
+  const showReactionGuide = exclusion?.excluded === false && exclusion?.needs_enrichment;
+  if (showReactionGuide) {
     lines.push('');
     lines.push('**手动操作 (对本帖加表情即可):**');
-    lines.push('· 🚀 / ⚡ / 🔥 → 推进 → detailedAudit (priority 100)');
-    lines.push('· 💤 / 😴 → 直接 archive (不再深审)');
-    lines.push('· 🔁 / 🔄 → 重跑 cheap-audit');
+    lines.push('· 🚀 推进 (跳过 enrich · 直接 audit)');
+    lines.push('· 💤 archive (不要这家)');
   }
 
+  lines.push('');
+  lines.push('━━━');
   return lines.join('\n');
 }
+
+// cycle-26 alias · clearer name (callers should migrate)
+export const exclusionFilterMessage = cheapAuditPredictMessage;
 
 // ─────────────────────────────────────────────────────────
 // Stage 1 · 网站审计 · 12 dim + tech + sitemap + speed + contact
 // ─────────────────────────────────────────────────────────
 export function stage1Message({ entity, audit, fetchPayload, contact, durationSec }) {
   const lines = [];
-  lines.push(`**Stage 1/4 · 网站审计** done${durationSec ? ` · ${durationSec}s` : ''}`);
+  lines.push(`**${STAGE_LABELS[3]}** done${durationSec ? ` · ${durationSec}s` : ''}`);
   lines.push('');
 
   // 总分 + decision
@@ -280,7 +266,7 @@ export function stage1Message({ entity, audit, fetchPayload, contact, durationSe
 // ─────────────────────────────────────────────────────────
 export function stage2Message({ visual, provider, model, latencyMs, costUsd }) {
   const lines = [];
-  lines.push(`**Stage 2/4 · 视觉审计** · ${provider || '?'} · ${latencyMs ? (latencyMs / 1000).toFixed(1) + 's' : '?'}`);
+  lines.push(`**${STAGE_LABELS[4]}** · ${provider || '?'} · ${latencyMs ? (latencyMs / 1000).toFixed(1) + 's' : '?'}`);
   lines.push('');
 
   // 3 visual scores
@@ -327,7 +313,7 @@ export function stage2Message({ visual, provider, model, latencyMs, costUsd }) {
 // ─────────────────────────────────────────────────────────
 export function stage3Message({ leadGrade, audit, entity }) {
   const lines = [];
-  lines.push(`**Stage 3/4 · 分级 router** done`);
+  lines.push(`**${STAGE_LABELS[5]}** done`);
   lines.push('');
 
   const grade = leadGrade?.investment_level || '?';
@@ -359,7 +345,7 @@ export function stage3Message({ leadGrade, audit, entity }) {
 
   // Phase + thread channel
   lines.push('');
-  const phase = entity?.phase || (grade === 'D' ? 'archived' : 'design-ready');
+  const phase = entity?.phase || (grade === 'D' ? 'archived' : 'audit-ready');
   const hasProjectThread = !!entity?.project_thread_id;
   const channelInfo = hasProjectThread
     ? '#website-projects 已开'
@@ -378,47 +364,45 @@ export function stage3Message({ leadGrade, audit, entity }) {
 // Stage 4 · 内部审计报告
 // ─────────────────────────────────────────────────────────
 export function stage4Message({ entity, slug, htmlSize }) {
-  // V3 D43 cycle-21 (Matthew 2026-05-15): Stage 4 = 仅 LOCAL audit report build ·
-  // 不 mention demo URL (那是 Stage 6 publish 才有的事 · 现在 mention 容易让人
-  // 以为 stage 4 就发布了)。
+  // cycle-26 · 内部审计报告 (本地) · 仅 LOCAL
+  // 仅 LOCAL · 不 mention demo URL (Stage 9 publish 才有)
   const lines = [];
-  lines.push(`**Stage 4/5 · 内部审计报告 (本地)** done`);
+  lines.push(`**${STAGE_LABELS[6]}** done`);
   lines.push('');
 
   const evidence = listEvidence(slug);
   const screenshots = listScreenshots(slug);
   const videos = listVideos(slug);
-  const totalEvidence = screenshots.length + videos.length + evidence.length;
 
-  lines.push('━━━ 本地资产 ━━━');
+  lines.push('━━━ 现状证据 (本地 · 等发布) ━━━');
   lines.push(`内部 audit HTML: 本地${htmlSize ? ` · ${(htmlSize / 1024).toFixed(1)} KB` : ''}`);
   lines.push(`master.md: 本地`);
   lines.push(`截图: ${screenshots.length} · 录屏: ${videos.length} · evidence PNG: ${evidence.length}`);
   lines.push('');
-  lines.push(`下一步: Stage 5 qualification check · 通过后 chain build + publish (Stage 6/7)`);
+  lines.push(`下一步: 资格复核 · 通过后 chain build + publish`);
   lines.push('');
   lines.push('━━━');
 
   return lines.join('\n');
 }
 
-// V3 D43 cycle-21 (Matthew 2026-05-15): Stage 6 · demo build done · 在 pl-build-from-reference 触发
+// cycle-26 · demo build done (STAGE_LABELS[8]) · 在 pl-build-from-reference 触发
 export function stage6Message({ slug, indexHtmlPath, sizeBytes }) {
   const lines = [];
-  lines.push(`**Stage 6/7 · M3 Demo build done**`);
+  lines.push(`**${STAGE_LABELS[8]}** done`);
   lines.push('');
   lines.push(`build output: ${indexHtmlPath} (${sizeBytes ? (sizeBytes / 1024).toFixed(1) + ' KB' : '?'})`);
   lines.push('');
-  lines.push(`下一步: Stage 7 publish 到 CF Pages`);
+  lines.push(`下一步: 发布到 CF Pages`);
   lines.push('');
   lines.push('━━━');
   return lines.join('\n');
 }
 
-// V3 D43 cycle-21 (Matthew 2026-05-15): Stage 7 · publish done · 在 pl-publish-demo 触发
+// cycle-26 · publish to CF Pages (STAGE_LABELS[9]) · 在 pl-publish-demo 触发
 export function stage7Message({ slug, deployUrl, deployedAt }) {
   const lines = [];
-  lines.push(`**Stage 7/7 · Publish to CF Pages done**`);
+  lines.push(`**${STAGE_LABELS[9]}** done`);
   lines.push('');
   lines.push('━━━ 在线资源 ━━━');
   lines.push(`Demo: ${deployUrl}`);
@@ -439,33 +423,33 @@ export function stage7Message({ slug, deployUrl, deployedAt }) {
 // ─────────────────────────────────────────────────────────
 export function stage5Message({ entity, verdict, crawl, briefResult }) {
   const lines = [];
-  lines.push(`**Stage 5/5 · Qualification check** done${crawl?.duration_ms ? ` · ${(crawl.duration_ms / 1000).toFixed(1)}s` : ''}`);
+  lines.push(`**${STAGE_LABELS[7]}** done${crawl?.duration_ms ? ` · ${(crawl.duration_ms / 1000).toFixed(1)}s` : ''}`);
   lines.push('');
 
-  // ━━━ 数据采集 ━━━
-  if (crawl) {
-    lines.push('━━━ 数据采集 ━━━');
-    lines.push(`Multi-page crawl: ${crawl.pages_crawled || 0} 页 · sitemap=${crawl.sitemap_source || '?'}`);
-    lines.push(`Firecrawl: ${crawl.pages_via_firecrawl || 0} · Direct fetch: ${crawl.pages_via_direct || 0} · ~$${(crawl.cost_estimate || 0).toFixed(3)}`);
-  }
-  if (briefResult) {
-    lines.push(`AI 分析: ${briefResult.provider} · ${(briefResult.duration_ms / 1000).toFixed(1)}s · ~$${briefResult.cost_estimate || 0}`);
+  // cycle-26 reorder: VERDICT 在最前 · operator 一眼看结果 · 然后 Hard Gates per-gate · Scorecard · 数据采集 末尾
+  // ━━━ Verdict (摘要) ━━━
+  lines.push('━━━ Verdict ━━━');
+  if (verdict.verdict === 'ready-to-build') {
+    lines.push(`✅ **ready-to-build** · 总分 ${verdict.scorecard?.total ?? '?'}/100 ≥ 阈值 ${verdict.scorecard?.threshold ?? 60}`);
+    lines.push(`下一步: 自动 chain pl:build-from-reference + pl:publish-demo`);
+  } else if (verdict.verdict === 'qa-pending') {
+    lines.push(`⚠️ **qa-pending** · 总分 ${verdict.scorecard?.total ?? '?'}/100 < 阈值 ${verdict.scorecard?.threshold ?? 60}`);
+    lines.push(`下一步: operator 看 scorecard 弱项 · 补字段 · 跑 \`npm run pl:check-qualification -- --entity-key ${entity.entityKey}\` 重评`);
+  } else if (verdict.verdict === 'archived') {
+    lines.push(`❌ **archived** · ${verdict.archive_reason}`);
   }
 
-  // ━━━ Hard Gates ━━━
+  // ━━━ Hard Gates · 逐项 (logic 顺序 · 通过先列 · 失败后列) ━━━
   lines.push('');
   lines.push('━━━ Hard Gates ━━━');
-  const failedGates = verdict.hard_gates.filter((g) => !g.passed);
-  if (failedGates.length === 0) {
-    lines.push(`${verdict.hard_gates.length}/${verdict.hard_gates.length} passed · 全过`);
-  } else {
-    lines.push(`${verdict.hard_gates.length - failedGates.length}/${verdict.hard_gates.length} passed`);
-    for (const g of failedGates) {
-      lines.push(`❌ ${g.id}: ${g.reason}`);
-    }
-  }
+  const allGates = verdict.hard_gates || [];
+  const passed = allGates.filter((g) => g.passed);
+  const failed = allGates.filter((g) => !g.passed);
+  for (const g of passed) lines.push(`✓ ${g.id}`);
+  for (const g of failed) lines.push(`❌ ${g.id}: ${g.reason}`);
+  lines.push(`(${passed.length}/${allGates.length} passed)`);
 
-  // ━━━ Scorecard ━━━
+  // ━━━ Scorecard · 5 维度 ━━━
   if (verdict.scorecard) {
     lines.push('');
     lines.push('━━━ Scorecard ━━━');
@@ -475,22 +459,18 @@ export function stage5Message({ entity, verdict, crawl, briefResult }) {
     lines.push(`C 范围可行: ${sc.C_scope.score}/${sc.C_scope.max} (${(sc.C_scope.items || []).join(', ')})`);
     lines.push(`D 技术风险: ${sc.D_tech.score}/${sc.D_tech.max} (${(sc.D_tech.items || []).join(', ')})`);
     lines.push(`E 解决性: ${sc.E_solvability.score}/${sc.E_solvability.max} (${(sc.E_solvability.items || []).join(', ')})`);
-    lines.push('');
     lines.push(`**总分: ${sc.total}/100** · 阈值 ${sc.threshold}`);
   }
 
-  // ━━━ Verdict ━━━
-  lines.push('');
-  lines.push('━━━ Verdict ━━━');
-  if (verdict.verdict === 'ready-to-build') {
-    lines.push(`Phase: \`ready-to-build\` (set)`);
-    lines.push(`下一步: 自动 chain pl:build-from-reference + pl:publish-demo`);
-  } else if (verdict.verdict === 'qa-pending') {
-    lines.push(`Phase: \`qa-pending\` (set)`);
-    lines.push(`下一步: operator 看 scorecard 弱项 · 补缺字段 · 跑 \`npm run pl:check-qualification -- --entity-key ${entity.entityKey}\` 重评`);
-  } else if (verdict.verdict === 'archived') {
-    lines.push(`Phase: \`archived\` (set)`);
-    lines.push(`原因: ${verdict.archive_reason}`);
+  // ━━━ 数据采集 (末尾 · 透明度) ━━━
+  if (crawl) {
+    lines.push('');
+    lines.push('━━━ 数据采集 ━━━');
+    lines.push(`Multi-page crawl: ${crawl.pages_crawled || 0} 页 · sitemap=${crawl.sitemap_source || '?'}`);
+    lines.push(`Firecrawl: ${crawl.pages_via_firecrawl || 0} · Direct fetch: ${crawl.pages_via_direct || 0} · ~$${(crawl.cost_estimate || 0).toFixed(3)}`);
+    if (briefResult) {
+      lines.push(`AI 分析: ${briefResult.provider} · ${(briefResult.duration_ms / 1000).toFixed(1)}s · ~$${briefResult.cost_estimate || 0}`);
+    }
   }
 
   lines.push('');
@@ -502,5 +482,7 @@ export function stage5Message({ entity, verdict, crawl, briefResult }) {
 // Stage failure (异常 · 唯一 emoji)
 // ─────────────────────────────────────────────────────────
 export function stageFailMessage({ stage, reason, retryHint }) {
-  return `❌ **Stage ${stage}/4 · 失败**\n\nreason: ${reason}${retryHint ? `\nretry: ${retryHint}` : ''}\n\naudit 终止`;
+  // cycle-26 · 9-stage · stage is 0-8
+  const label = STAGE_LABELS[stage] || `Stage ${stage}/9`;
+  return `❌ **${label} · 失败**\n\nreason: ${reason}${retryHint ? `\nretry: ${retryHint}` : ''}\n\naudit 终止`;
 }

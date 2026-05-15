@@ -87,7 +87,7 @@ export function enqueueCheapAudit(entityKey, { reason = 'intake' } = {}) {
 }
 
 /**
- * Process one entity through cheap-audit + predict-grade + branch.
+ * Process one entity through cheap-audit + exclusion-filter + branch.
  */
 async function processOne(entityKey) {
   const fs2 = await import('node:fs');
@@ -146,7 +146,7 @@ async function processOne(entityKey) {
     return;
   }
 
-  // V3 D43 cycle-23 (Matthew 2026-05-15): 排除式筛选取代 predict-grade 硬阈值.
+  // V3 D43 cycle-23: 排除式筛选取代旧硬阈值评分.
   // LEAD-FILTERING-DESIGN.md 3 层 (data quality · 业务类型 · 时机) · 命中任一 → exclude.
   const { runExclusionFilter, formatExclusionReport } = await import('./exclusion-filter.js');
   const exclusion = runExclusionFilter({
@@ -155,10 +155,9 @@ async function processOne(entityKey) {
     nicheVerdict: entity.niche_relevance,
   });
 
-  // Predict grade (legacy compat · 全 survivor = C · 全 excluded = D)
-  const { predictGradePreaudit } = await import('./predict-grade.js');
-  const predict = predictGradePreaudit({ entity, cheapAudit: cheapResult });
-  // Cycle-23: 排除式覆盖 predict-grade 决定
+  // cycle-26 · 'predict' object kept for thread title back-compat (= initial pre-audit grade tag)
+  // 全 survivor = C (audit_now=true) · 全 excluded = D (archived)
+  const predict = { predict_grade: null, audit_now: false, reasons: [], priority: 0 };
   if (exclusion.excluded) {
     predict.predict_grade = 'D';
     predict.audit_now = false;
@@ -228,30 +227,35 @@ async function processOne(entityKey) {
   }
 
   // Branch by exclusion verdict
+  // cycle-26: 所有 9 条 D-equivalent 终端退出走 archiveLeadAsRejected() 统一函数
   if (exclusion.excluded) {
-    // 排除 · setEntityPhase archived · NO thread opened
     try {
-      const { setEntityPhase, ENTITY_PHASE } = await import('./discovery-store.js');
-      setEntityPhase({
-        entityKey,
-        phase: ENTITY_PHASE.ARCHIVED,
-        archive_reason: exclusion.archive_reason,
-        note: 'cheap-audit-queue exclusion-filter L' + exclusion.layer,
+      const { archiveLeadAsRejected } = await import('./terminal-archive.js');
+      // exclusion.exclusions[0] gives the primary path id (e.g. 'layer1_no_contact_after_enrich')
+      const primary = exclusion.exclusions?.[0];
+      const pathId = primary ? `layer${primary.layer}_${primary.id}` : null;
+      await archiveLeadAsRejected(entityKey, {
+        reason: exclusion.reason,
+        pathId,
+        layer: `Stage 1 · Layer ${exclusion.layer}`,
       });
     } catch (err) {
-      console.error(`[cheap-audit-queue] setEntityPhase archived failed ${entityKey}: ${err.message}`);
+      console.error(`[cheap-audit-queue] archiveLeadAsRejected failed ${entityKey}: ${err.message}`);
     }
     return;
   }
 
-  // Predict A/B/C · NOW open #website-leads thread (cycle-4 · deferred from intake)
-  // Title will be accurate because predict-grade is set on entity before thread create.
+  // Survivor (C-tagged) · NOW open #website-leads thread (cycle-4 · deferred from intake)
+  // Title will be accurate because grade tag is set on entity before thread create.
   if (!process.env.SOP1_DISABLE_AUTO_OPEN_LEADS) {
     try {
       const { openLeadThread, refreshThreadAndPost } = await import('../funnel/lead-thread-sync.js');
       const r = await openLeadThread(entityKey);
       if (r?.ok) {
         console.error(`[cheap-audit-queue] ${entityKey} · thread ${r.reused ? 'reused' : 'opened'} (predict-${predict.predict_grade})`);
+        // cycle-26 B4: suppress 🆕 thread_opened batch emit · ordering races with
+        // scrape-docker Stage 0 finalize. Operator sees thread links in subsequent
+        // 🔄 phase_change / 🚀 published / 🗄️ archived events (each linked).
         // V3 D43 cycle-7 (Matthew 2026-05-14): post cheap-audit + predict summary
         // immediately so thread isn't empty for predict-C entities (no detail audit).
         try {
