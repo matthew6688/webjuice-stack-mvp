@@ -73,6 +73,7 @@
     "cycle:doctor": "node --env-file=.env.local scripts/cli/pl-cycle-doctor.js",
     "pl:asset-integrity-doctor": "node --env-file=.env.local scripts/cli/pl-asset-integrity-doctor.js",
     "pl:profile-card-heartbeat": "node --env-file=.env.local scripts/cli/pl-profile-card-heartbeat.js",
+    "pl:system-doctor": "node --env-file=.env.local scripts/cli/pl-system-doctor.js",
     "test:cycle26": "node scripts/test/run-cycle26-tests.mjs",
     "pl:cleanup-archived-threads": "node --env-file=.env.local scripts/cli/pl-cleanup-archived-threads.js",
     "pl:rename-stale-thread-titles": "node --env-file=.env.local scripts/cli/pl-rename-stale-thread-titles.js",

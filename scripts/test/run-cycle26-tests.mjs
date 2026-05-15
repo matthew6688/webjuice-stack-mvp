@@ -47,6 +47,10 @@ const TESTS = [
   'scripts/test/test-cycle26-skip-archived-post.mjs',
   // cycle-26 P5 · KPI dashboard message (replaces per-entity batch noise)
   'scripts/test/test-cycle26-kpi-dashboard.mjs',
+  // cycle-26 P7 · system-doctor CLI (6-section health check)
+  'scripts/test/test-cycle26-system-doctor.mjs',
+  // cycle-26 P8 · build-assets extractor (logo/photos/colors/content prep for redesign)
+  'scripts/test/test-cycle26-build-assets-extractor.mjs',
 ];
 
 const results = [];
