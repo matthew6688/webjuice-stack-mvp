@@ -51,6 +51,8 @@ const TESTS = [
   'scripts/test/test-cycle26-system-doctor.mjs',
   // cycle-26 P8 · build-assets extractor (logo/photos/colors/content prep for redesign)
   'scripts/test/test-cycle26-build-assets-extractor.mjs',
+  // cycle-26 P9b · no zombie threads invariant (1 entity = 1 visible thread)
+  'scripts/test/test-cycle26-no-zombie-threads.mjs',
 ];
 
 const results = [];

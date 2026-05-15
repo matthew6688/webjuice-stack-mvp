@@ -27,6 +27,25 @@
 
 pre-commit hook 自动检查 1+2 · 想 bypass 必须 `--no-verify` (紧急情况才 OK · 否则违规)。
 
+### Rule 13 · 每个 bug-fix 必须有 RED test (强制 · cycle-26 Matthew 2026-05-15)
+
+修 bug 时必须:
+1. 先写测试 · 它会因为 bug 存在而 FAIL (RED)
+2. 修代码 · 测试由 RED → GREEN
+3. 测试加入 `test:cycle26` runner · 永远防回归
+
+违反案例 (cycle-26 P9b · 2026-05-15):
+- 发现 zombie thread (locked=true · archived=false) · 直接修 archiveAndLockThread
+  + 写 pl:rearchive-zombies CLI · **但没加 TDD test**
+- Matthew 抓住: "为什么不能把这要求加到 TDD · 才能 100% validate?"
+- 补救: test 26 · 9 assertions
+
+**违反流程不允许 commit**:
+- 修 bug ≠ 写新代码 (新代码可以先 spec 再 test 再 impl · 这是 Rule 12)
+- 修 bug = 第一步必须有 test 复现 bug · 然后再修
+
+报告 bug fix 必须贴出对应 test 文件名 + assertion 数 + 之前 RED / 之后 GREEN.
+
 ### Rule 12 · TDD 节奏 (强制 · cycle-26)
 
 新功能 / 大重构 (≥ 5 文件改动) 必须按以下顺序:
