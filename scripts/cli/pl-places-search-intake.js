@@ -212,6 +212,22 @@ for (const query of queries) {
   }
 }
 
+// cycle-27 (Matthew 2026-05-15 multi-niche batch):
+// Wait for cheap-audit-queue worker to drain before exit. Without this,
+// Node's event loop can exit while items still in queue → entities
+// stranded (no thread · no chain) until next process boot.
+try {
+  const { waitForQueueDrain, queueStatus } = await import('../../core/leads/cheap-audit-queue.js');
+  const status0 = queueStatus();
+  if (status0.pending > 0 || status0.running) {
+    console.error(`[pl:places-search-intake] waiting cheap-audit queue drain · ${status0.pending} pending · running=${status0.running}`);
+    const r = await waitForQueueDrain({ pollMs: 1000, maxMs: 600_000 });
+    console.error(`[pl:places-search-intake] queue drain: ${r.drained ? 'OK' : 'TIMEOUT'} · waited ${r.waited_ms}ms${r.drained ? '' : ` · still pending: ${r.pending}`}`);
+  }
+} catch (err) {
+  console.error(`[pl:places-search-intake] queue drain wait failed: ${err.message}`);
+}
+
 // emit final JSON for dispatcher xref
 const totalQueries = results.length;
 const totalThreads = results.filter((r) => r.thread_id).length;

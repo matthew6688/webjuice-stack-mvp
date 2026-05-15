@@ -453,6 +453,21 @@ async function main() {
     }
   }
 
+  // cycle-27 (Matthew 2026-05-15 multi-niche Places batch · same root cause):
+  // Wait for cheap-audit-queue worker to drain before exit · prevents stranding
+  // entities (no thread · no chain) when Node event loop exits early.
+  try {
+    const { waitForQueueDrain, queueStatus } = await import('../../core/leads/cheap-audit-queue.js');
+    const s0 = queueStatus();
+    if (s0.pending > 0 || s0.running) {
+      console.error(`[pl:scrape-docker] waiting cheap-audit queue drain · ${s0.pending} pending · running=${s0.running}`);
+      const r = await waitForQueueDrain({ pollMs: 1000, maxMs: 600_000 });
+      console.error(`[pl:scrape-docker] queue drain: ${r.drained ? 'OK' : 'TIMEOUT'} · waited ${r.waited_ms}ms${r.drained ? '' : ` · still pending: ${r.pending}`}`);
+    }
+  } catch (err) {
+    console.error(`[pl:scrape-docker] queue drain wait failed: ${err.message}`);
+  }
+
   const summary = {
     ok: true,
     job_id: jobId,

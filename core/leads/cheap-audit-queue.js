@@ -324,6 +324,27 @@ export async function drainQueue() {
   await runWorker();
 }
 
+/**
+ * cycle-27 (Matthew 2026-05-15): Block caller until worker is idle AND queue
+ * is empty. Used by intake CLIs to keep the process alive until the chain
+ * has at least opened all survivor threads + enqueued detailed-audit tasks.
+ * Without this, intake CLI exits while items still in queue → entities
+ * stranded (no thread · no chain) until next module import.
+ *
+ * Returns { drained: true, waited_ms } when done.
+ * Safe to call concurrently · polls instead of starting another worker.
+ */
+export async function waitForQueueDrain({ pollMs = 1000, maxMs = 600_000 } = {}) {
+  const t0 = Date.now();
+  while (Date.now() - t0 < maxMs) {
+    if (!workerRunning && inMemQueue.length === 0) {
+      return { drained: true, waited_ms: Date.now() - t0 };
+    }
+    await sleep(pollMs);
+  }
+  return { drained: false, waited_ms: Date.now() - t0, pending: inMemQueue.length };
+}
+
 export function queueStatus() {
   return {
     pending: inMemQueue.length,

@@ -59,6 +59,8 @@ const TESTS = [
   'scripts/test/test-cycle27-archive-without-thread.mjs',
   // cycle-27 · geo AU + multi-country router (full AU city coverage · future-proof)
   'scripts/test/test-cycle27-geo-au.mjs',
+  // cycle-27 · intake CLI waits for cheap-audit queue to drain before exit
+  'scripts/test/test-cycle27-queue-drain.mjs',
 ];
 
 const results = [];
