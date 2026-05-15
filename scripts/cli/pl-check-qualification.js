@@ -116,9 +116,10 @@ async function processEntity(key) {
       // 跳过 Stage 5 Discord post · 导致 thread 缺这条消息。现 emit 简化版 Stage 5.
       try {
         const { refreshThreadAndPost } = await import(path.join(REPO, 'core/funnel/lead-thread-sync.js'));
+        const { STAGE_LABELS } = await import(path.join(REPO, 'core/contracts/discord-messages.js'));
         const gateList = (preVerdict.hard_gates || []).map(g => `${g.passed ? '✅' : '❌'} ${g.id}${!g.passed ? ' · ' + (g.reason || '').slice(0,60) : ''}`).join('\n');
         const stage5Msg = [
-          `**Stage 5/5 · Qualification check (pre-gate fail · brief 跳过)**`,
+          `**${STAGE_LABELS[7]} (pre-gate fail · brief 跳过)**`,
           '',
           `━━━ Hard Gates ━━━`,
           gateList,

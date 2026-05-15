@@ -288,10 +288,18 @@ proc.on('exit', async (code) => {
           } catch {}
         }
 
-        // V3 D43 cycle-21 (Matthew 2026-05-15): 1 entity = 1 active thread.
-        // Graduate 到 #website-projects 后 · archive 旧 #website-leads thread (避免噪音).
+        // V3 D43 cycle-21 + cycle-26 race fix · 1 entity = 1 active thread.
+        // BEFORE archive+lock the old leads thread · await renameThreadToCurrentTitle
+        // so its title reflects current phase (otherwise locked thread can't rename).
+        // Also await upsertProfileCard to flush the deferred hook.
         if (oldLeadThreadId && oldLeadThreadId !== r.threadId) {
           try {
+            const { renameThreadToCurrentTitle, upsertProfileCard } =
+              await import('../../core/funnel/lead-thread-sync.js');
+            // Explicitly flush rename + card refresh BEFORE lock
+            await renameThreadToCurrentTitle(foundKey).catch((e) =>
+              console.warn(`  rename before lock failed (non-blocking): ${e.message}`));
+            await upsertProfileCard(foundKey).catch(() => {});
             const projUrl = `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${r.threadId}`;
             await archiveAndLockThread(oldLeadThreadId, {
               reason: `Graduated to #website-projects · 后续看 ${projUrl}`,

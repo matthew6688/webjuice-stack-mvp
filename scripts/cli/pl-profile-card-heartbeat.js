@@ -57,6 +57,22 @@ async function checkEntity(entityKey, dryRun) {
   const messageId = e.discord_profile_message_id;
   if (!threadId || !messageId) return { entityKey, ok: true, skipped: 'no_thread_or_message' };
 
+  // cycle-26: skip archived / locked / D-grade · those are terminal state · drift OK + Discord rejects PATCH on locked
+  if (e.phase === 'archived') return { entityKey, ok: true, skipped: 'archived' };
+  const gradeStr = typeof e.grade === 'string' ? e.grade : e.grade?.grade;
+  if (gradeStr === 'D') return { entityKey, ok: true, skipped: 'grade_d' };
+
+  // Check thread metadata · skip if Discord-side archived/locked (legacy threads · same reason)
+  try {
+    const cr = await fetch(`${DISCORD_API}/channels/${threadId}`, { headers: { Authorization: `Bot ${TOKEN}` } });
+    if (cr.ok) {
+      const cd = await cr.json();
+      if (cd.thread_metadata?.archived || cd.thread_metadata?.locked) {
+        return { entityKey, ok: true, skipped: 'thread_locked_or_archived' };
+      }
+    }
+  } catch { /* best-effort · proceed */ }
+
   // Build expected
   const audit = readDetailedAudit(entityKey)?.detailed_audit || null;
   const expectedEmbed = renderProfileCard(e, { audit });
