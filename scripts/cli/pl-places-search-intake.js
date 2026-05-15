@@ -171,7 +171,7 @@ for (const query of queries) {
 
     // V3 D43 GR6 · LLM judge intake plausibility · 异常时 stage 标 warn 不阻塞
     let judgeIntake = null;
-    if (!args['no-judge'] && leads.length > 0) {
+    if (!flat['no-judge'] && leads.length > 0) {
       try {
         const { judgeIntakeResults } = await import('../../core/llm/match-judge.js');
         judgeIntake = await judgeIntakeResults({
@@ -243,7 +243,17 @@ function guessFromQuery(q, field) {
     return m ? (m[0] === 'roofing' ? 'roofer' : m[0].split(' ')[0]) : null;
   }
   if (field === 'city') {
-    const cities = ['brisbane', 'sydney', 'melbourne', 'perth', 'adelaide', 'gold coast', 'newcastle', 'wollongong', 'canberra', 'darwin', 'hobart', 'redland'];
+    const cities = [
+      // QLD
+      'brisbane', 'gold coast', 'sunshine coast', 'toowoomba', 'cairns', 'townsville',
+      'mackay', 'rockhampton', 'bundaberg', 'ipswich', 'logan', 'redland',
+      // NSW
+      'sydney', 'newcastle', 'wollongong', 'central coast', 'tweed heads',
+      // VIC
+      'melbourne', 'geelong', 'ballarat', 'bendigo',
+      // Others
+      'perth', 'adelaide', 'canberra', 'darwin', 'hobart',
+    ];
     const c = cities.find((x) => lc.includes(x));
     return c ? c.replace(' ', '-') : null;
   }

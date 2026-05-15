@@ -55,6 +55,8 @@ const TESTS = [
   'scripts/test/test-cycle26-no-zombie-threads.mjs',
   // cycle-26 cycle-27 · batch.entities terminal-state recorder (KPI gate · Matthew 2026-05-15 E2E)
   'scripts/test/test-cycle26-batch-terminal-recorder.mjs',
+  // cycle-27 · archive without thread records batch.entities (Places L2 exclusion invariant)
+  'scripts/test/test-cycle27-archive-without-thread.mjs',
 ];
 
 const results = [];

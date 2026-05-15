@@ -112,42 +112,36 @@ export async function archiveLeadAsRejected(entityKey, opts = {}) {
       // 4. Archive + lock (must be last · Discord rejects rename on locked threads)
       const a = await archiveAndLockThread(entity.discord_thread_id, { reason: tag, fetchImpl });
       threadAction = a;
-      // cycle-26 P5: append archive outcome to batch state · trigger KPI if all done
-      try {
-        const { readBatchState, writeBatchState } = await import('../funnel/pipeline-batch-thread.js');
-        const batches = entity.batches || [];
-        const batchId = batches[batches.length - 1];
-        if (batchId) {
-          const bs = readBatchState(batchId);
-          if (bs) {
-            bs.entities = bs.entities || [];
-            const idx = bs.entities.findIndex((x) => x.entityKey === entityKey);
-            const entry = {
-              entityKey,
-              name: entity.latest?.name,
-              threadUrl: entity.discord_thread_id ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${entity.discord_thread_id}` : null,
-              phase: 'archived',
-              grade: 'D',
-              archive_reason: entity.archive_reason || tag,
-            };
-            if (idx >= 0) bs.entities[idx] = entry; else bs.entities.push(entry);
-            bs.finalized_at = new Date().toISOString();
-            writeBatchState(bs);
-            // KPI dashboard gate · post once all expected entities accounted for
-            const expected = bs.expected_total || bs.lead_count || 0;
-            if (expected > 0 && bs.entities.length >= expected) {
-              const { buildKpiDashboard } = await import('../funnel/kpi-dashboard.js');
-              const { appendThreadMessage } = await import('../funnel/lead-thread-sync.js');
-              const dashboard = buildKpiDashboard({ batchState: bs, entities: bs.entities });
-              if (bs.thread_id) await appendThreadMessage(bs.thread_id, dashboard, { force: true }).catch(() => {});
-              if (process.env.PL_PARENT_THREAD_ID) await appendThreadMessage(process.env.PL_PARENT_THREAD_ID, dashboard, { force: true }).catch(() => {});
-            }
-          }
-        }
-      } catch { /* non-blocking */ }
     } catch (err) {
       threadAction = { ok: false, reason: err.message };
     }
+  }
+
+  // cycle-27 (Matthew 2026-05-15 Places E2E):
+  // Record batch terminal state OUTSIDE the thread branch · L2 / L3 exclusions
+  // archive entity BEFORE a thread is opened (cheap-audit-queue defers thread
+  // open to survivors). Previously this block was nested inside `if (entity.
+  // discord_thread_id)` → entities without threads never got recorded into
+  // batch.entities · KPI gate never fired for Places intake L2 exclusions.
+  try {
+    const { recordEntityTerminal } = await import('../funnel/pipeline-batch-thread.js');
+    const batches = entity.batches || [];
+    const batchId = batches[batches.length - 1];
+    if (batchId) {
+      await recordEntityTerminal({
+        batchId,
+        entityKey,
+        name: entity.latest?.name || null,
+        threadUrl: entity.discord_thread_id
+          ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${entity.discord_thread_id}`
+          : null,
+        phase: 'archived',
+        grade: 'D',
+        archive_reason: entity.archive_reason || tag,
+      });
+    }
+  } catch (err) {
+    console.warn(`[archiveLeadAsRejected] batch record failed: ${err.message}`);
   }
 
   return { ok: true, entity, threadAction };
