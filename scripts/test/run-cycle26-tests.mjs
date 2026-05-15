@@ -79,6 +79,8 @@ const TESTS = [
   'scripts/test/test-cycle27-cheap-audit-terminal.mjs',
   // cycle-27 · publish idempotency (Stage 9 no dupes) + history replay completeness (VIP Roofing)
   'scripts/test/test-cycle27-publish-idempotent.mjs',
+  // cycle-27 · profile card shows live URLs when entity.deploy.demo_url (Brisbane Roof Restoration)
+  'scripts/test/test-cycle27-profile-card-deploy.mjs',
 ];
 
 const results = [];

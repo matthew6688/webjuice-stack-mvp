@@ -228,11 +228,12 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   // 旧 bug: 5 个发布后链接只在 channel='projects' 渲染 · #website-leads 看不到 demo/audit/master.md URL。
   // 修: 不管哪个 channel · 只要 cf-pages-deploy.json 存在就显示 5 个 hyperlinks。
   lines.length = 0;
-  const thisEntityAudited = !!entity.grade?.investment_level
-    || !!entity.detailed_audit?.at
-    || !!entity.audit?.at;
-
-  if (deploy?.demo_url && thisEntityAudited) {
+  // cycle-27 (Matthew 2026-05-15 Brisbane Roof Restoration 1504878217448657029):
+  // Removed `thisEntityAudited` gate · V2-era manually-published entities have
+  // deploy.demo_url but no grade · card was hiding live URLs · "为什么没有更新".
+  // Rule: if entity is published (deploy.demo_url) · show 在线资源 · regardless
+  // of audit completion.
+  if (deploy?.demo_url) {
     const base = deploy.demo_url.replace(/\/$/, '');
     // V3 D43 cycle-21 (Matthew 2026-05-15): 在线资源 只 Demo + 4 docs hyperlinks
     // 截图 + 录屏 + evidence 全部 move 到 现状证据 section (Matthew "格式 like 现状证据").
