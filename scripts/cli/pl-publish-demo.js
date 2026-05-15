@@ -366,13 +366,20 @@ proc.on('exit', async (code) => {
         duration_sec: null,
       });
 
-      // Post to project thread (graduated) AND old leads thread (before archive)
+      // Post to project thread + old leads thread + ORIGINAL task thread (#website-tasks)
+      // so operator who launched the task sees the fix-of-record summary too.
       const { appendThreadMessage } = await import('../../core/funnel/lead-thread-sync.js');
-      const targets = [e.project_thread_id, e.discord_thread_id].filter(Boolean);
-      for (const tid of targets) {
+      const targets = [
+        e.project_thread_id,
+        e.discord_thread_id,
+        process.env.PL_PARENT_THREAD_ID, // original task thread in #website-tasks
+      ].filter(Boolean);
+      // de-dup (no point posting twice)
+      const uniq = [...new Set(targets)];
+      for (const tid of uniq) {
         try { await appendThreadMessage(tid, summary); } catch {}
       }
-      console.log(`  pipeline summary posted to ${targets.length} thread(s)`);
+      console.log(`  pipeline summary posted to ${uniq.length} thread(s) · ${uniq.join(', ')}`);
     }
   } catch (err) {
     console.warn(`  pipeline summary post failed: ${err.message}`);
