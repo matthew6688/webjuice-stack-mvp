@@ -67,6 +67,10 @@ const TESTS = [
   'scripts/test/test-cycle27-batch-thread-messages.mjs',
   // cycle-27 · audit-stage-content typography helpers (v2 primitives)
   'scripts/test/test-cycle27-rich-stage-helpers.mjs',
+  // cycle-27 Phase 4 · Stage 8 build-summary.json + stage6Message rich content
+  'scripts/test/test-cycle27-build-summary.mjs',
+  // cycle-27 Phase 5 · Stage 6 + Stage 8 retro-edit (editThreadMessage + entity.discord_stage_message_ids)
+  'scripts/test/test-cycle27-retro-edit.mjs',
 ];
 
 const results = [];

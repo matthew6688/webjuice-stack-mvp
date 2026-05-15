@@ -220,10 +220,35 @@ proc.on('exit', async (code) => {
       }
     }
     if (foundKeyEarly) {
-      const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
-      const { stage7Message } = await import('../../core/funnel/audit-stage-messages.js');
+      const { refreshThreadAndPost, editThreadMessage } = await import('../../core/funnel/lead-thread-sync.js');
+      const { stage7Message, stage4Message, stage6Message } = await import('../../core/funnel/audit-stage-messages.js');
       const msg = stage7Message({ slug, deployUrl: url, deployedAt: record.deployed_at });
       await refreshThreadAndPost(foundKeyEarly, msg);
+
+      // cycle-27 Phase 5 (Matthew 2026-05-15): retro-edit Stage 6 + Stage 8
+      // messages with live URLs · entity records discord_stage_message_ids[6,8].
+      try {
+        const ent = JSON.parse(fs.readFileSync(path.join(REPO, 'data/leads/entities', foundKeyEarly + '.json'), 'utf8'));
+        const ids = ent.discord_stage_message_ids || {};
+        const threadId = ent.discord_thread_id;
+        const deploy = { demo_url: url, deployed_at: record.deployed_at };
+        if (threadId && ids[6]) {
+          let htmlSize = null;
+          try { htmlSize = fs.statSync(path.join(REPO, 'clients', slug, 'v2', 'internal-audit-report.html')).size; } catch {}
+          const new6 = stage4Message({ entity: ent, slug, htmlSize, deploy });
+          const r6 = await editThreadMessage(threadId, ids[6], new6);
+          console.log(`[retro-edit] Stage 6 message ${ids[6]} · ${r6.ok ? 'OK' : 'FAIL · ' + r6.reason}`);
+        }
+        if (threadId && ids[8]) {
+          let sizeBytes = null;
+          try { sizeBytes = fs.statSync(path.join(REPO, 'clients', slug, 'v2/concept/reference-adapter/index.html')).size; } catch {}
+          const new8 = stage6Message({ slug, sizeBytes, deploy });
+          const r8 = await editThreadMessage(threadId, ids[8], new8);
+          console.log(`[retro-edit] Stage 8 message ${ids[8]} · ${r8.ok ? 'OK' : 'FAIL · ' + r8.reason}`);
+        }
+      } catch (err) {
+        console.warn(`[retro-edit] failed: ${err.message}`);
+      }
     }
   } catch (err) { console.warn(`[stage7] post failed: ${err.message}`); }
 

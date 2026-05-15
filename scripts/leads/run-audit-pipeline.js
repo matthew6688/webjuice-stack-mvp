@@ -71,10 +71,23 @@ console.log(`[run-pipeline] targets=${targets.length}  refetch=${refetch}  revie
 // V3 D37 (2026-05-14) · per-stage Discord update helper
 // V3 D38 (2026-05-14) · upgraded to use richer message builders
 // Fire-and-forget · errors logged but never throw · 不阻塞 pipeline
-async function postStage(entityKey, message) {
+async function postStage(entityKey, message, { stageNum = null } = {}) {
   try {
     const mod = await import('../../core/funnel/lead-thread-sync.js');
-    await mod.refreshThreadAndPost(entityKey, message, { skipCard: false });
+    const r = await mod.refreshThreadAndPost(entityKey, message, { skipCard: false });
+    // cycle-27 Phase 5 (Matthew 2026-05-15): persist Stage 6 message_id so
+    // Stage 9 publish can retro-edit it with live URLs · entity field
+    // `discord_stage_message_ids[stageNum] = messageId`.
+    if (stageNum && r?.msg?.messageId) {
+      try {
+        const entityPath = path.join(entitiesDir, `${entityKey}.json`);
+        const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+        fresh.discord_stage_message_ids = fresh.discord_stage_message_ids || {};
+        fresh.discord_stage_message_ids[stageNum] = r.msg.messageId;
+        fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+      } catch { /* best-effort · don't block pipeline */ }
+    }
+    return r;
   } catch (err) {
     console.warn(`  [discord-hook] ${err.message}`);
   }
@@ -386,7 +399,7 @@ async function processLead(entityKey) {
     entity: JSON.parse(fs.readFileSync(entityPath, 'utf8')),
     slug,
     htmlSize,
-  }));
+  }), { stageNum: 6 });
 
   // V3 D39 · Stage 5 · Qualification check (M2 → M3 gate)
   // 仅 grade A/B/C 跑 qualification (D 直接 archived)

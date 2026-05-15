@@ -402,8 +402,9 @@ export function stage3Message({ leadGrade, audit, entity }) {
 
 // ─────────────────────────────────────────────────────────
 // Stage 6 · 内部审计报告 (per-entity)
+// cycle-27 Phase 5: optional `deploy` for retro-edit at Stage 9.
 // ─────────────────────────────────────────────────────────
-export function stage4Message({ entity, slug, htmlSize }) {
+export function stage4Message({ entity, slug, htmlSize, deploy = null } = {}) {
   const evidence = listEvidence(slug);
   const screenshots = listScreenshots(slug);
   const videos = listVideos(slug);
@@ -411,7 +412,7 @@ export function stage4Message({ entity, slug, htmlSize }) {
 
   // Header + 产物
   sections.push([
-    fmtStageHeader(6, '本地生成'),
+    fmtStageHeader(6, deploy?.demo_url ? '本地 + 已发布' : '本地生成'),
     '',
     '',
     fmtSubHeader('生成产物'),
@@ -425,13 +426,23 @@ export function stage4Message({ entity, slug, htmlSize }) {
     ]),
   ].join('\n'));
 
-  // 下一步
-  sections.push([
-    '**下一步**',
-    '- 资格复核 · 通过后 chain build + publish',
-    '',
-    fmtSubtext('Stage 9 publish 后 · 本消息将自动 retro-edit 加入 live URL'),
-  ].join('\n'));
+  if (deploy?.demo_url) {
+    // Retro-edit form · live URLs appended after Stage 9 publish
+    sections.push([
+      fmtSubHeader('已发布 · 在线访问', 'Stage 9 retro-edit'),
+      '',
+      `- master.md: ${fmtLink('master.md', `${deploy.demo_url}/master.md`)}`,
+      `- 客户面 audit: ${fmtLink('customer-facing-audit.html', `${deploy.demo_url}/customer-facing-audit.html`)}`,
+      `- 内部 audit: ${fmtLink('internal-audit-report.html', `${deploy.demo_url}/internal-audit-report.html`)}`,
+    ].join('\n'));
+  } else {
+    sections.push([
+      '**下一步**',
+      '- 资格复核 · 通过后 chain build + publish',
+      '',
+      fmtSubtext('Stage 9 publish 后 · 本消息将自动 retro-edit 加入 live URL'),
+    ].join('\n'));
+  }
 
   return joinSections(sections);
 }
@@ -509,28 +520,63 @@ export function stage5Message({ entity, verdict, crawl, briefResult }) {
 
 // ─────────────────────────────────────────────────────────
 // Stage 8 · 建 demo (per-entity)
+// cycle-27 (Matthew 2026-05-15):
+//   - Reads `clients/<slug>/v2/build-summary.json` if available (Phase 4 ·
+//     written by pl-build-from-reference at end of build). Surfaces
+//     reference family + duration + assets count.
+//   - Optional `deploy` (Phase 5 retro-edit): when set · Stage 9 has run ·
+//     append live URL section · the previous Stage 8 message is PATCHed
+//     to this new form.
 // ─────────────────────────────────────────────────────────
-export function stage6Message({ slug, indexHtmlPath, sizeBytes }) {
+function readBuildSummary(slug) {
+  if (!slug) return null;
+  try {
+    const p = path.join('clients', slug, 'v2', 'build-summary.json');
+    if (!fs.existsSync(p)) return null;
+    return JSON.parse(fs.readFileSync(p, 'utf8'));
+  } catch { return null; }
+}
+
+export function stage6Message({ slug, indexHtmlPath, sizeBytes, deploy = null } = {}) {
+  const summary = readBuildSummary(slug);
   const sections = [];
+
+  // Build output
   sections.push([
-    fmtStageHeader(8),
+    fmtStageHeader(8, summary?.duration_sec ? `${summary.duration_sec}s` : null),
     '',
     '',
     fmtSubHeader('Build output'),
     '',
     fmtRows([
       ['Slug', slug ? fmtCode(slug) : null],
-      ['index.html', indexHtmlPath || null],
-      ['Size', sizeBytes ? `${(sizeBytes / 1024).toFixed(1)} KB` : null],
+      ['Reference family', summary?.family ? fmtCode(summary.family) : null],
+      ['index.html', indexHtmlPath || summary?.index_html_path || null],
+      ['Size', sizeBytes ? `${(sizeBytes / 1024).toFixed(1)} KB` :
+        (summary?.html_bytes ? `${(summary.html_bytes / 1024).toFixed(1)} KB` : null)],
+      ['Assets copied', summary?.assets_copied != null ? summary.assets_copied : null],
+      ['Built at', summary?.built_at || null],
     ]),
   ].join('\n'));
 
-  sections.push([
-    '**下一步**',
-    '- 自动触发 Stage 9 · 发布到 CF Pages',
-    '',
-    fmtSubtext('Stage 9 publish 后 · 本消息将自动 retro-edit 加入 live URL'),
-  ].join('\n'));
+  // Live deploy section (only set during retro-edit · Phase 5)
+  if (deploy?.demo_url) {
+    sections.push([
+      fmtSubHeader('已发布', 'Stage 9 publish 完成 · retro-edit'),
+      '',
+      fmtRows([
+        ['Live URL', fmtLink(deploy.demo_url, deploy.demo_url)],
+        ['发布时间', deploy.deployed_at ? String(deploy.deployed_at).slice(0, 19).replace('T', ' ') : null],
+      ]),
+    ].join('\n'));
+  } else {
+    sections.push([
+      '**下一步**',
+      '- 自动触发 Stage 9 · 发布到 CF Pages',
+      '',
+      fmtSubtext('Stage 9 publish 后 · 本消息将自动 retro-edit 加入 live URL'),
+    ].join('\n'));
+  }
 
   return joinSections(sections);
 }

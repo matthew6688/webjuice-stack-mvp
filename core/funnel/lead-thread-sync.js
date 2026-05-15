@@ -258,6 +258,43 @@ export async function swapPhaseTag(entityKey, { fetchImpl = fetch } = {}) {
 /**
  * Append a text message to a lead thread.
  */
+/**
+ * cycle-27 Phase 5 (Matthew 2026-05-15): edit an existing message in a thread.
+ * Used for retro-edit at Stage 9 publish · adds live URLs into the
+ * previously-posted Stage 6 + Stage 8 messages.
+ *
+ * Uses Discord PATCH /channels/<channelId>/messages/<messageId>.
+ *
+ * @param {string} threadId · numeric thread id (where the message lives)
+ * @param {string} messageId · numeric message id to edit
+ * @param {string} content · new message body
+ */
+export async function editThreadMessage(threadId, messageId, content, { fetchImpl = fetch } = {}) {
+  if (!threadId || !messageId) return { ok: false, reason: 'missing_threadId_or_messageId' };
+  if (isDryRun()) {
+    return { ok: true, dry_run: true, intended: {
+      endpoint: `PATCH ${DISCORD_API}/channels/${threadId}/messages/${messageId}`,
+      content: String(content).slice(0, 200),
+    } };
+  }
+  const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}/messages/${messageId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bot ${botToken()}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-lead-thread-sync',
+    },
+    body: JSON.stringify({ content: String(content).slice(0, 2000) }),
+  });
+  const text = await r.text();
+  if (!r.ok) {
+    if (r.status === 404) return { ok: false, reason: 'discord_404_message_not_found', threadId, messageId };
+    if (r.status === 403) return { ok: false, reason: 'discord_403_forbidden', threadId, messageId };
+    return { ok: false, reason: `discord_${r.status}`, threadId, messageId, body: text };
+  }
+  return { ok: true, threadId, messageId };
+}
+
 export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchImpl = fetch, force = false } = {}) {
   let threadId = entityKeyOrThreadId;
   if (entityKeyOrThreadId && !/^\d+$/.test(entityKeyOrThreadId)) {

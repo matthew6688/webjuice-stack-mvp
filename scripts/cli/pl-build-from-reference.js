@@ -83,15 +83,48 @@ proc.on('exit', async (code) => {
   const took = Math.round((Date.now() - start) / 1000);
   console.log(`\n[pl:build-from-reference] DONE · ${cleaned.length} bytes · ${took}s · ${outHtml}`);
 
-  // V3 D43 cycle-21 (Matthew 2026-05-15): post Stage 6 message to entity thread.
+  // cycle-27 Phase 4 (Matthew 2026-05-15): write build-summary.json for
+  // Stage 8 message · surfaces "用哪个 reference 模板改的 + 多大 + 用了多少素材"
+  try {
+    const assetsCopied = (() => {
+      try { return fs.readdirSync(outAssets).length; } catch { return 0; }
+    })();
+    const summary = {
+      slug,
+      entity_key: entity?.entityKey || null,
+      business_name: entity?.latest?.name || null,
+      family: payload?.family || null,
+      html_bytes: cleaned.length,
+      duration_sec: took,
+      assets_copied: assetsCopied,
+      index_html_path: path.relative(REPO, outHtml),
+      built_at: new Date().toISOString(),
+    };
+    fs.writeFileSync(path.join(REPO, 'clients', slug, 'v2', 'build-summary.json'),
+      JSON.stringify(summary, null, 2));
+    console.log(`[pl:build-from-reference] build-summary.json written`);
+  } catch (err) {
+    console.warn(`[pl:build-from-reference] build-summary write failed: ${err.message}`);
+  }
+
+  // V3 D43 cycle-21 (Matthew 2026-05-15): post Stage 8 message to entity thread.
+  // cycle-27 Phase 5: capture message_id + persist to entity for Stage 9 retro-edit.
   const entityKeyForMsg = entity?.entityKey;
   if (entityKeyForMsg) {
     try {
       const { refreshThreadAndPost } = await import('../../core/funnel/lead-thread-sync.js');
       const { stage6Message } = await import('../../core/funnel/audit-stage-messages.js');
       const msg = stage6Message({ slug, indexHtmlPath: outHtml.replace(REPO + '/', ''), sizeBytes: cleaned.length });
-      await refreshThreadAndPost(entityKeyForMsg, msg);
-    } catch (err) { console.warn(`[stage6] post failed: ${err.message}`); }
+      const r = await refreshThreadAndPost(entityKeyForMsg, msg);
+      if (r?.msg?.messageId) {
+        try {
+          const fresh = JSON.parse(fs.readFileSync(entityFile, 'utf8'));
+          fresh.discord_stage_message_ids = fresh.discord_stage_message_ids || {};
+          fresh.discord_stage_message_ids[8] = r.msg.messageId;
+          fs.writeFileSync(entityFile, JSON.stringify(fresh, null, 2) + '\n');
+        } catch { /* best-effort · don't block chain */ }
+      }
+    } catch (err) { console.warn(`[stage8] post failed: ${err.message}`); }
   }
 
   // V3 D43 cycle-18 (Matthew 2026-05-14): auto-chain publish-demo AFTER build done.
