@@ -95,6 +95,34 @@ export async function acquireBatchStateLock(batchId, { maxMs = 10_000, pollMs = 
   throw new Error(`acquireBatchStateLock timeout (${maxMs}ms) for ${batchId}`);
 }
 
+/**
+ * cycle-27 (Matthew 2026-05-15 4-batch silent-miss diagnosis):
+ * Lock-protected read-modify-write helper. All batch state mutations should
+ * go through this · NOT call readBatchState + writeBatchState separately ·
+ * stale snapshots clobber entities[] written by concurrent recordEntityTerminal.
+ *
+ * @param {string} batchId
+ * @param {(bs: object) => object|undefined|Promise<object|undefined>} mutator
+ *   Receives the current batch state (just-read inside the lock).
+ *   May modify in place or return a new object. Falsy return = use mutated input.
+ * @returns Promise<object> the persisted batch state
+ */
+export async function mutateBatchState(batchId, mutator) {
+  if (!batchId) throw new Error('mutateBatchState: batchId required');
+  if (typeof mutator !== 'function') throw new Error('mutateBatchState: mutator must be a function');
+  const release = await acquireBatchStateLock(batchId);
+  try {
+    const bs = readBatchState(batchId);
+    if (!bs) throw new Error(`mutateBatchState: batch state not found for ${batchId}`);
+    const ret = await mutator(bs);
+    const next = ret || bs;
+    writeBatchState(next);
+    return next;
+  } finally {
+    release();
+  }
+}
+
 async function fetchChannelTags() {
   const r = await fetch(`${DISCORD_API}/channels/${channelId()}`, {
     headers: { Authorization: `Bot ${botToken()}` },
@@ -187,6 +215,8 @@ export async function startBatchThread({ batchId, title, summary, niche, city, c
  * @param {string?} opts.swapTag  one of forum tag names to apply (replaces current)
  */
 export async function postStageUpdate({ batchId, stage, status, summary, swapTag = null, rawContent = false }) {
+  // cycle-27 (4-batch silent-miss fix): read OUTSIDE lock to do Discord I/O
+  // (network) without holding the lock. Only the STATE WRITE goes under lock.
   const state = readBatchState(batchId);
   if (!state) throw new Error(`no batch state for ${batchId}`);
   if (!state.thread_id) throw new Error('batch has no thread_id');
@@ -216,13 +246,7 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
   if (!emitRes.ok) throw new Error(`stage post failed: ${emitRes.error || 'unknown'}`);
   const data = { id: emitRes.message_id };
 
-  state.stages.push({
-    stage, status, summary,
-    at: new Date().toISOString(),
-    message_id: data.id,
-    fallback: emitRes.fallback || null,
-  });
-
+  // tag swap (Discord I/O · outside lock)
   if (swapTag) {
     const tagIds = await resolveTagIds([swapTag]);
     await fetch(`${DISCORD_API}/channels/${state.thread_id}`, {
@@ -230,15 +254,25 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
       headers: { Authorization: `Bot ${botToken()}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ applied_tags: tagIds }),
     });
-    state.current_tag = swapTag;
   }
 
-  writeBatchState(state);
+  // cycle-27 fix: state mutation MUST be inside lock · otherwise concurrent
+  // recordEntityTerminal writes get clobbered by our stale snapshot.
+  const persisted = await mutateBatchState(batchId, (bs) => {
+    bs.stages = bs.stages || [];
+    bs.stages.push({
+      stage, status, summary,
+      at: new Date().toISOString(),
+      message_id: data.id,
+      fallback: emitRes.fallback || null,
+    });
+    if (swapTag) bs.current_tag = swapTag;
+  });
 
   return {
     message_id: data.id,
-    message_url: state.thread_url ? `${state.thread_url}/${data.id}` : '',
-    current_tag: state.current_tag,
+    message_url: persisted.thread_url ? `${persisted.thread_url}/${data.id}` : '',
+    current_tag: persisted.current_tag,
   };
 }
 
@@ -264,8 +298,10 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
       summary: v2body, swapTag: terminalTag, rawContent: true,
     });
   }
-  const state = readBatchState(batchId);
-  state.finished_at = new Date().toISOString();
+  // cycle-27 fix (4-batch silent-miss): mark finished_at via mutateBatchState
+  // (lock-protected) · NOT via raw read+write. Otherwise our stale snapshot
+  // would later clobber recordEntityTerminal's entity additions.
+  await mutateBatchState(batchId, (bs) => { bs.finished_at = new Date().toISOString(); });
 
   // SOP-X-Dedup hook · auto-run dedup-audit after EVERY batch that finalizes
   // with terminalTag === 'completed'. Previously only fired from
@@ -274,6 +310,7 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
   // Suspects land in data/leads/dedup-review-queue.json → operator visits
   // /admin/v2-leads/dedup-review. Set skipDedupAudit:true to bypass.
   if (!skipDedupAudit && terminalTag === 'completed') {
+    let dedupResult;
     try {
       const { spawnSync } = await import('node:child_process');
       const out = spawnSync('node', [
@@ -285,7 +322,7 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
         const jsonMatch = (out.stdout || '').match(/\{[\s\S]*?\n\}/);
         if (jsonMatch) parsed = JSON.parse(jsonMatch[0]);
       } catch {}
-      state.dedup_audit = {
+      dedupResult = {
         ok: out.status === 0,
         ran_at: new Date().toISOString(),
         total_suspects: parsed?.total_suspects ?? null,
@@ -304,11 +341,12 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
         } catch {}
       }
     } catch (err) {
-      state.dedup_audit = { ok: false, error: err.message };
+      dedupResult = { ok: false, error: err.message };
     }
+    // persist dedup_audit field via lock-protected mutate
+    await mutateBatchState(batchId, (bs) => { bs.dedup_audit = dedupResult; });
   }
 
-  writeBatchState(state);
   return r;
 }
 

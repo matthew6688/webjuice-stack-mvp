@@ -73,6 +73,8 @@ const TESTS = [
   'scripts/test/test-cycle27-retro-edit.mjs',
   // cycle-27 · graduate-history replay (#website-projects thread keeps full timeline)
   'scripts/test/test-cycle27-graduate-history.mjs',
+  // cycle-27 · mutateBatchState lock-protected helper (fixes 4-batch silent-miss race)
+  'scripts/test/test-cycle27-batch-state-mutate.mjs',
 ];
 
 const results = [];
