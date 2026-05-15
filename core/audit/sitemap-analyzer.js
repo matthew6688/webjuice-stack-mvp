@@ -75,6 +75,43 @@ const ROOFING_SERVICE_KEYWORDS = [
   'storm-damage', 'storm-repair', 'emergency',
 ];
 
+/**
+ * cycle-27 (Matthew 2026-05-15 "前端看到的链接和页面并不多 · 这个差距是为什么"):
+ * Filter sitemap URLs to "real content pages" · excludes CMS noise that
+ * inflates raw total_urls. Used by hard-gate threshold check (Stage 2)
+ * AND surfaced in profile card so operator sees "real" page count.
+ *
+ * Excluded patterns:
+ *   - WordPress taxonomy: /tag/* /category/* /author/*
+ *   - Pagination: /page/N/
+ *   - WP internals: /wp-* /feed/ /comments/ /attachment/* /?p=N
+ *   - Assets: .jpg / .png / .pdf etc (already classified separately)
+ */
+const CMS_NOISE_PATTERNS = [
+  /\/tag\//i,
+  /\/category\//i,
+  /\/author\//i,
+  /\/page\/\d+\/?$/i,        // /page/2/
+  /\/wp-(content|admin|includes|json)/i,
+  /\/feed\/?$/i,
+  /\/comments\/?$/i,
+  /\/attachment\//i,
+  /\?p=\d+/i,                 // /?p=123 preview
+  /\.(jpg|jpeg|png|gif|webp|svg|pdf|xml|ico|css|js)(\?|$)/i,
+];
+
+export function countContentUrls(urls) {
+  if (!Array.isArray(urls)) return 0;
+  let count = 0;
+  for (const u of urls) {
+    const loc = typeof u === 'string' ? u : u?.loc || '';
+    if (!loc) continue;
+    if (CMS_NOISE_PATTERNS.some((re) => re.test(loc))) continue;
+    count++;
+  }
+  return count;
+}
+
 function classifyUrl(urlPath, opts = {}) {
   const p = urlPath.toLowerCase();
   if (p === '/' || p === '') return 'home';
@@ -243,12 +280,16 @@ export async function analyzeSitemap({ baseUrl, niche, fetchImpl = globalThis.fe
       : 'none',
   };
 
+  // cycle-27 bug · "前端页面少 · sitemap 报很多" · content_url_count filters CMS noise
+  const contentUrlCount = countContentUrls(allUrls);
+
   return {
     ok: true,
     has_sitemap: true,
     has_robots: hasRobots,
     sitemap_url: sitemapUrl,
     total_urls: allUrls.length,
+    content_url_count: contentUrlCount,  // filtered · used for threshold checks
     urls_by_pattern: urlsByPattern,
     last_mod_summary: lastModSummary,
     redirect_plan: redirectPlan,

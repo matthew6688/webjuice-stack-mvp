@@ -42,7 +42,7 @@ async function rearchive(threadId) {
       Authorization: `Bot ${TOKEN}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 60 }),
+    body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 10080 }),
   });
   return { ok: r.ok, status: r.status };
 }

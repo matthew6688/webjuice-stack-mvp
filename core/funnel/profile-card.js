@@ -221,6 +221,22 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   if (mdFm?.fired_triggers && Array.isArray(mdFm.fired_triggers)) {
     lines.push(`Hard triggers: ${mdFm.fired_triggers.length ? mdFm.fired_triggers.join(' · ') : 'passed (无触发)'}`);
   }
+  // cycle-27 (Matthew 2026-05-15 "我需要 sitemap 链接 · 前端页面少 sitemap 报很多 ·
+  // 这个差距是为什么"): surface real-content count + raw count + sitemap link.
+  const sm = audit?.sitemap_analysis;
+  if (sm?.sitemap_url) {
+    const content = sm.content_url_count;
+    const total = sm.total_urls;
+    let line = `Sitemap: [${sm.sitemap_url}](${sm.sitemap_url})`;
+    if (content != null && total != null) {
+      const noise = total - content;
+      line += ` · 真实页 ${content}${noise > 0 ? ` (+${noise} 噪音 · tag/分类/分页)` : ''}`;
+    } else if (total != null) {
+      line += ` · ${total} URL`;
+    }
+    if (sm.migration_complexity) line += ` · 迁移 ${sm.migration_complexity}`;
+    lines.push(line);
+  }
   flush('审计结论');
 
   // Section · 在线资源 / 现状证据 (cycle-26 · 统一 section 名 "现状证据")

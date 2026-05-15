@@ -513,6 +513,27 @@ export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt
     'User-Agent': 'profitslocal-lead-thread-sync',
   };
 
+  // cycle-27 (Matthew 2026-05-15 "即使 archived 的 lead · profile card 也要更新"):
+  // Discord 400 code 50083 "Thread is archived" blocks PATCH on archived threads.
+  // Pre-check: if archived · briefly unarchive → edit → re-archive (with 7-day duration).
+  let wasArchivedBeforeEdit = false;
+  try {
+    const checkR = await fetchImpl(`${DISCORD_API}/channels/${entity.discord_thread_id}`, {
+      headers: { Authorization: `Bot ${botToken()}` },
+    });
+    if (checkR.ok) {
+      const meta = await checkR.json();
+      if (meta.thread_metadata?.archived) {
+        wasArchivedBeforeEdit = true;
+        // Unarchive · don't unlock (keep locked = no new posts allowed during edit)
+        await fetchImpl(`${DISCORD_API}/channels/${entity.discord_thread_id}`, {
+          method: 'PATCH', headers,
+          body: JSON.stringify({ archived: false }),
+        }).catch(() => {});
+      }
+    }
+  } catch { /* best-effort · proceed to PATCH attempt */ }
+
   // ── Retry loop · 429 (Retry-After) + 5xx (exponential backoff) · max 3 attempts
   let response = null;
   let retried_429 = false;
@@ -558,6 +579,16 @@ export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt
     }
   } catch { /* verify is best-effort */ }
 
+  // cycle-27: re-archive if we unarchived briefly · 7-day duration
+  if (wasArchivedBeforeEdit) {
+    try {
+      await fetchImpl(`${DISCORD_API}/channels/${entity.discord_thread_id}`, {
+        method: 'PATCH', headers,
+        body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 10080 }),
+      });
+    } catch { /* best-effort */ }
+  }
+
   return {
     ok: true,
     threadId: entity.discord_thread_id,
@@ -565,6 +596,7 @@ export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt
     verified,
     drift,
     retried_429,
+    re_archived: wasArchivedBeforeEdit,
   };
 }
 
@@ -777,8 +809,11 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
       'User-Agent': 'profitslocal-lead-thread-sync',
     },
     // cycle-26 P9: add auto_archive_duration so Discord respects archive flag for forum threads
+    // cycle-27 (Matthew 2026-05-15 "set up 7 days archive is fine"): use 10080
+    // (Discord max · 7 days) instead of 60 · prevents Discord from purging
+    // archived threads · operator can revisit history.
     // (without this · POST to thread after archive auto-unarchives · zombie thread)
-    body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 60 }),
+    body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 10080 }),
   });
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };

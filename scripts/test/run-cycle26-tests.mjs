@@ -83,6 +83,10 @@ const TESTS = [
   'scripts/test/test-cycle27-profile-card-deploy.mjs',
   // cycle-27 · Rule 14 · pl:goals-doctor (6 core goals validator · pre-commit gate)
   'scripts/test/test-cycle27-goals-doctor.mjs',
+  // cycle-27 · archive auto_archive_duration = 7 days (10080) · prevent Discord auto-purge
+  'scripts/test/test-cycle27-archive-7day.mjs',
+  // cycle-27 · sitemap content_url_count filters CMS noise (matches frontend page count)
+  'scripts/test/test-cycle27-sitemap-content-count.mjs',
 ];
 
 const results = [];

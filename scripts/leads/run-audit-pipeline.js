@@ -245,9 +245,13 @@ async function processLead(entityKey) {
   // 不浪费 Stage 2 vision + Stage 3 grade + Stage 4 HTML + Stage 5 qualification 的钱。
   // 阈值 10 (Matthew 拍板 · 原 50 太宽松)。
   const TOO_MANY_PAGES_THRESHOLD = parseInt(process.env.HARD_GATE_MAX_PAGES || '10', 10);
-  const sitemapTotal = detailedFixture?.sitemap_analysis?.total_urls || 0;
+  // cycle-27 (Matthew 2026-05-15 "前端页面少 sitemap 报很多"): use filtered
+  // content_url_count (excludes WP taxonomy / pagination / internals) ·
+  // fallback to total_urls if filter unavailable on old fixtures.
+  const sitemapAnalysis = detailedFixture?.sitemap_analysis || {};
+  const sitemapTotal = sitemapAnalysis.content_url_count ?? sitemapAnalysis.total_urls ?? 0;
   if (sitemapTotal > TOO_MANY_PAGES_THRESHOLD) {
-    const reason = `sitemap ${sitemapTotal} pages > ${TOO_MANY_PAGES_THRESHOLD} · 不在 V3 产品包 (迁移成本失控)`;
+    const reason = `sitemap ${sitemapTotal} content pages > ${TOO_MANY_PAGES_THRESHOLD} · 不在 V3 产品包 (迁移成本失控)`;
     await postStage(entityKey, `**Early Hard-Gate Fail · sitemap pages > ${TOO_MANY_PAGES_THRESHOLD}**\n· ${reason}\n· archived · 跳过后续 stages (省 vision + LLM + qualification 成本)`);
     // cycle-26: archiveLeadAsRejected unifier · sets grade=D · title → [D] · archive thread
     try {

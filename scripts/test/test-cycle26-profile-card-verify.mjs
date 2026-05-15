@@ -60,21 +60,31 @@ fs.writeFileSync(path.join(TMP, 'data/leads/entities/fx_verify_1.json'), JSON.st
 await ta('PATCH 200 + GET-back matches → ok=true verified=true', async () => {
   const calls = [];
   let patchedEmbed = null;
+  // cycle-27: upsertProfileCard now does pre-check GET on /channels/<id> to
+  // detect archived threads (then unarchive → edit → re-archive). For active
+  // thread · the pre-check returns archived:false · no extra unarchive ·
+  // PATCH proceeds normally. Test mock must return thread_metadata for the
+  // channel GET path.
   const fetchImpl = async (url, opts = {}) => {
     calls.push({ url, method: opts.method || 'GET' });
     if (opts.method === 'PATCH') {
       patchedEmbed = JSON.parse(opts.body).embeds[0];
       return { ok: true, status: 200, text: async () => '{}', json: async () => ({ id: '3000', embeds: [patchedEmbed] }) };
     }
-    // GET (verify)
+    // GET · could be archived-check (returns thread metadata) OR verify-after-PATCH
+    if (/\/channels\/[^/]+$/.test(url)) {
+      // archived-check on channel itself
+      return { ok: true, status: 200, json: async () => ({ thread_metadata: { archived: false, locked: false } }) };
+    }
+    // verify-after-PATCH (GET on message)
     return { ok: true, status: 200, text: async () => '{}', json: async () => ({ id: '3000', embeds: [patchedEmbed] }) };
   };
   const r = await upsertProfileCard('fx_verify_1', { fetchImpl });
   assert.ok(r.ok, `expected ok · got: ${JSON.stringify(r)}`);
   assert.equal(r.verified, true, 'must set verified=true after GET match');
-  // 1 PATCH + 1 GET = 2 fetches
+  // 1 PATCH + 2 GET (archived-check + verify) = 3 fetches
   assert.equal(calls.filter((c) => c.method === 'PATCH').length, 1);
-  assert.equal(calls.filter((c) => c.method === 'GET').length, 1);
+  assert.equal(calls.filter((c) => c.method === 'GET').length, 2);
 });
 
 // ─── T2 · PATCH then GET-back stale (mismatch) → retry → drift reported ──
