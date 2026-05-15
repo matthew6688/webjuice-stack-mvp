@@ -39,6 +39,10 @@ const TESTS = [
   'scripts/test/test-cycle26-internal-audit-completeness.mjs',
   // cycle-26 3-way report consistency (master.md / customer / internal · same data)
   'scripts/test/test-cycle26-three-report-consistency.mjs',
+  // cycle-26 P2 · profile-card verify-after-PATCH + retry on 429 / 5xx
+  'scripts/test/test-cycle26-profile-card-verify.mjs',
+  // cycle-26 P2.3 · heartbeat doctor static (drift-detection CLI exists)
+  'scripts/test/test-cycle26-heartbeat-doctor.mjs',
 ];
 
 const results = [];

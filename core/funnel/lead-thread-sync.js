@@ -293,7 +293,27 @@ export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchI
 /**
  * Edit the pinned profile card in place. Uses Discord PATCH on the message.
  */
-export async function upsertProfileCard(entityKey, { fetchImpl = fetch } = {}) {
+// cycle-26: retry + verify-after-PATCH defense for profile-card invariant
+// "card 永远实时 + 跟 entity 状态一致".
+async function sleep(ms) { return new Promise((r) => setTimeout(r, Math.max(0, ms))); }
+
+function getRetryAfterMs(response) {
+  try {
+    const v = response?.headers?.get?.('retry-after');
+    if (!v) return 1000;
+    const n = parseFloat(v);
+    return isNaN(n) ? 1000 : Math.max(50, n * 1000);
+  } catch { return 1000; }
+}
+
+function hashEmbed(embed) {
+  // Lightweight content hash for drift detection (title + description prefix)
+  if (!embed) return null;
+  const desc = String(embed.description || '');
+  return `${embed.title || ''}|${desc.length}|${desc.slice(0, 200)}`;
+}
+
+export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt = 0 } = {}) {
   const entity = readEntity(entityKey);
   if (!entity) return { ok: false, reason: 'entity_not_found' };
   if (!entity.discord_thread_id || !entity.discord_profile_message_id) {
@@ -309,24 +329,73 @@ export async function upsertProfileCard(entityKey, { fetchImpl = fetch } = {}) {
       intended: {
         endpoint: `PATCH ${DISCORD_API}/channels/${entity.discord_thread_id}/messages/${entity.discord_profile_message_id}`,
         method: 'PATCH',
-        embed_field_count: embed.fields.length,
+        embed_field_count: embed.fields?.length || 0,
         embed_title: embed.title,
       },
     };
   }
 
-  const response = await fetchImpl(`${DISCORD_API}/channels/${entity.discord_thread_id}/messages/${entity.discord_profile_message_id}`, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Bot ${botToken()}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'profitslocal-lead-thread-sync',
-    },
-    body: JSON.stringify({ embeds: [embed] }),
-  });
-  const text = await response.text();
-  if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
-  return { ok: true, threadId: entity.discord_thread_id, messageId: entity.discord_profile_message_id };
+  const url = `${DISCORD_API}/channels/${entity.discord_thread_id}/messages/${entity.discord_profile_message_id}`;
+  const body = JSON.stringify({ embeds: [embed] });
+  const headers = {
+    Authorization: `Bot ${botToken()}`,
+    'Content-Type': 'application/json',
+    'User-Agent': 'profitslocal-lead-thread-sync',
+  };
+
+  // ── Retry loop · 429 (Retry-After) + 5xx (exponential backoff) · max 3 attempts
+  let response = null;
+  let retried_429 = false;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    response = await fetchImpl(url, { method: 'PATCH', headers, body });
+    if (response.ok) break;
+    const status = response.status;
+    if (status === 429) {
+      retried_429 = true;
+      await sleep(getRetryAfterMs(response));
+      continue;
+    }
+    if (status >= 500 && status < 600) {
+      // Exponential backoff: 100ms · 400ms · 1.6s
+      await sleep(100 * (4 ** attempt));
+      continue;
+    }
+    // Other 4xx (404 dead thread · 403 perm) · no retry
+    break;
+  }
+  const text = response?.text ? await response.text() : '';
+  if (!response.ok) {
+    return { ok: false, reason: `discord_${response.status}`, body: text, retried_429 };
+  }
+
+  // ── Verify-after-PATCH: fetch back, compare hash
+  let verified = false;
+  let drift = false;
+  try {
+    const verifyRes = await fetchImpl(url, { headers, method: 'GET' });
+    if (verifyRes?.ok) {
+      const data = await verifyRes.json();
+      const actualEmbed = data?.embeds?.[0];
+      if (hashEmbed(actualEmbed) === hashEmbed(embed)) {
+        verified = true;
+      } else {
+        drift = true;
+        // Retry once (avoid infinite recursion via _attempt)
+        if (_attempt < 1) {
+          return upsertProfileCard(entityKey, { fetchImpl, _attempt: _attempt + 1 });
+        }
+      }
+    }
+  } catch { /* verify is best-effort */ }
+
+  return {
+    ok: true,
+    threadId: entity.discord_thread_id,
+    messageId: entity.discord_profile_message_id,
+    verified,
+    drift,
+    retried_429,
+  };
 }
 
 /**
