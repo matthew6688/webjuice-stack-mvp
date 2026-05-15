@@ -25,6 +25,7 @@ import { GooglePlacesExtractor } from '../../core/extractors/google-places.js';
 import { PlacesQuotaGuard, PlacesQuotaCapExceeded } from '../../core/extractors/places-quota-guard.js';
 import { upsertDiscoveryRun, defaultDiscoveryStoreRoot, discoveryEntityKey } from '../../core/leads/discovery-store.js';
 import { startBatchThread, finalizeBatch, postStageUpdate } from '../../core/funnel/pipeline-batch-thread.js';
+import { parseCityFromQuery as parseCityGeo } from '../../core/geo/index.js';
 import path from 'node:path';
 
 // parseArgs returns last value for repeated --key — need raw argv for multi-query.
@@ -243,19 +244,10 @@ function guessFromQuery(q, field) {
     return m ? (m[0] === 'roofing' ? 'roofer' : m[0].split(' ')[0]) : null;
   }
   if (field === 'city') {
-    const cities = [
-      // QLD
-      'brisbane', 'gold coast', 'sunshine coast', 'toowoomba', 'cairns', 'townsville',
-      'mackay', 'rockhampton', 'bundaberg', 'ipswich', 'logan', 'redland',
-      // NSW
-      'sydney', 'newcastle', 'wollongong', 'central coast', 'tweed heads',
-      // VIC
-      'melbourne', 'geelong', 'ballarat', 'bendigo',
-      // Others
-      'perth', 'adelaide', 'canberra', 'darwin', 'hobart',
-    ];
-    const c = cities.find((x) => lc.includes(x));
-    return c ? c.replace(' ', '-') : null;
+    // cycle-27 (Matthew 2026-05-15): delegated to core/geo · multi-country
+    // ready · greedy multi-word match · word-boundary aware.
+    const hit = parseCityGeo(q);
+    return hit ? hit.city.replace(/\s+/g, '-') : null;
   }
   return null;
 }

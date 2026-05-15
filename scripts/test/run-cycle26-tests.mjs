@@ -57,6 +57,8 @@ const TESTS = [
   'scripts/test/test-cycle26-batch-terminal-recorder.mjs',
   // cycle-27 · archive without thread records batch.entities (Places L2 exclusion invariant)
   'scripts/test/test-cycle27-archive-without-thread.mjs',
+  // cycle-27 · geo AU + multi-country router (full AU city coverage · future-proof)
+  'scripts/test/test-cycle27-geo-au.mjs',
 ];
 
 const results = [];
