@@ -71,6 +71,7 @@ function classifyByThread(threadName, msgs, entity) {
   const titleHasYuC = threadName.includes('[预C]');
   const titleHasYuB = threadName.includes('[预B]');
   const titleHasYuA = threadName.includes('[预A]');
+  const titleHasD = threadName.includes('[D]');
   const titleHasC = threadName.includes('[C]') && !titleHasYuC;
   const titleHasB = threadName.includes('[B]') && !titleHasYuB;
   const titleHasA = threadName.includes('[A]') && !titleHasYuA;
@@ -78,6 +79,7 @@ function classifyByThread(threadName, msgs, entity) {
   if (titleHasYuC) return 'predict_C';
   if (titleHasYuB) return 'predict_B';
   if (titleHasYuA) return 'predict_A';
+  if (titleHasD) return 'audited_D';
   if (titleHasC) return 'audited_C';
   if (titleHasB) return 'audited_B';
   if (titleHasA) return 'audited_A';
@@ -87,6 +89,10 @@ function classifyByThread(threadName, msgs, entity) {
 function expectedForState(state) {
   switch (state) {
     case 'predict_D': return { mustHaveThread: false };
+    // V3 D43 cycle-24 (Matthew 2026-05-15): audited_D 应该 archived (cycle-22 22.A bail
+    // + persistLeadGrade archiveAndLockThread). Pre-cycle-22 留下的 active [D] thread
+    // 视为 legacy · 期望被 archive · snapshot caller 必须读 thread_metadata.archived.
+    case 'audited_D': return { mustHaveThread: true, minMessages: 1, titleContains: '[D]', expectedFeatures: ['profile_card'], expectArchived: true };
     // emoji guide baked into cheap_summary message · 所以 cheap_summary alone covers both features
     case 'predict_C': return { mustHaveThread: true, minMessages: 2, titleContains: '[预C]', expectedFeatures: ['profile_card', 'cheap_summary', 'emoji_guide'] };
     case 'predict_B': return { mustHaveThread: true, minMessages: 2, titleContains: '[预B]', expectedFeatures: ['profile_card', 'cheap_summary'] };
@@ -226,6 +232,11 @@ async function checkThread(threadInfo) {
   let msgs = [];
   try { msgs = await discordGet(`/channels/${id}/messages?limit=50`); } catch (err) { msgs = []; }
 
+  // V3 D43 cycle-24 (Matthew 2026-05-15): fetch thread metadata for audited_D archived check
+  let threadMeta = null;
+  try { threadMeta = await discordGet(`/channels/${id}`); } catch (err) { /* skip */ }
+  const isArchived = !!threadMeta?.thread_metadata?.archived;
+
   // V3 D43 cycle-14: classify by title + thread content (not entity history)
   const state = classifyByThread(name, msgs, entity);
   const expected = expectedForState(state);
@@ -273,6 +284,10 @@ async function checkThread(threadInfo) {
   if (assetMisattribution) failures.push('本地资产 显示在 non-audited entity (slug-collision)');
   // V3 D43 cycle-13: accuracy mismatches are hard FAILs
   for (const am of accuracyMismatches) failures.push(`字段 mismatch: ${am}`);
+  // V3 D43 cycle-24 (Matthew 2026-05-15): audited_D 必须 archived
+  if (expected.expectArchived && !isArchived) {
+    failures.push('audited_D thread 应被 archived (cycle-22 D-grade auto-archive)');
+  }
 
   return {
     threadId: id,
@@ -288,6 +303,7 @@ async function checkThread(threadInfo) {
       asset_misattribution: assetMisattribution,
       fields_checked: fieldsChecked,
       accuracy_mismatches: accuracyMismatches,
+      thread_archived: isArchived,
     },
     failures,
     pass: failures.length === 0,

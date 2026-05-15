@@ -72,3 +72,40 @@
     }
   ]
 }
+{
+  "ok": true,
+  "passed": 5,
+  "total": 5,
+  "checks": [
+    {
+      "name": "intake 活着 (entities/ 24h 新文件)",
+      "ok": true,
+      "detail": "116 个 24h 内更新 · total=116",
+      "fix": null
+    },
+    {
+      "name": "Docker scraper 健康",
+      "ok": true,
+      "detail": "daemon ok · container running · HTTP 200",
+      "fix": null
+    },
+    {
+      "name": "GOOGLE_PLACES_API_KEY 配置",
+      "ok": true,
+      "detail": "primary set · 无 backup key",
+      "fix": null
+    },
+    {
+      "name": "master.md refresh 积压 < 10",
+      "ok": true,
+      "detail": "pending/running build-master-md = 0",
+      "fix": null
+    },
+    {
+      "name": "intent-router regex 保底",
+      "ok": true,
+      "detail": "kind=intake · niche=plumber · city=brisbane · 0ms",
+      "fix": null
+    }
+  ]
+}
