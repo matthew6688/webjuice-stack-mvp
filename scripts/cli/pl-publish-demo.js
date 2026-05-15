@@ -308,6 +308,22 @@ proc.on('exit', async (code) => {
       const r = await openProjectThread(foundKey);
       if (r.ok) {
         console.log(`  #website-projects thread: ${r.reused ? 'reused' : 'opened'} ${r.threadId || ''}`);
+
+        // cycle-27 (Matthew 2026-05-15 "保留之前的 stage 信息"):
+        // Replay bot history from leads thread INTO project thread · so
+        // operator sees the full 9-stage timeline (not just Stage 9).
+        // Only when fresh-opened · skip if reused (history already there).
+        if (!r.reused && oldLeadThreadId && oldLeadThreadId !== r.threadId) {
+          try {
+            const { copyLeadHistoryToProjectThread } = await import('../../core/funnel/lead-thread-sync.js');
+            const cp = await copyLeadHistoryToProjectThread(oldLeadThreadId, r.threadId);
+            if (cp.ok) console.log(`  history replayed · ${cp.posted}/${cp.total} messages copied to projects`);
+            else console.warn(`  history replay failed: ${cp.reason}`);
+          } catch (err) {
+            console.warn(`  history replay threw: ${err.message}`);
+          }
+        }
+
         // cycle-26 · post Stage 9 publish-done message to PROJECTS thread (not just leads)
         // so customer-facing channel has the live URL + 4 hyperlinks visible.
         try {

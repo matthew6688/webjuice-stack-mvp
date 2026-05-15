@@ -259,6 +259,74 @@ export async function swapPhaseTag(entityKey, { fetchImpl = fetch } = {}) {
  * Append a text message to a lead thread.
  */
 /**
+ * cycle-27 (Matthew 2026-05-15 "保留之前的 stage 信息"):
+ * Replay bot-posted history from a lead thread into a newly-opened project
+ * thread. Called at graduate · so #website-projects thread becomes self-
+ * contained · operator sees full 9-stage timeline · not just Stage 9.
+ *
+ * - Paginates Discord GET /messages (oldest-first via sort + before-cursor)
+ * - Filters: bot-authored + content present (skip embed-only / operator msgs)
+ * - Posts each in original order · throttled to avoid 429
+ *
+ * @returns { ok, total, posted, skipped, reason? }
+ */
+export async function copyLeadHistoryToProjectThread(leadThreadId, projectThreadId, {
+  fetchImpl = fetch, throttleMs = 200, maxMessages = 200,
+} = {}) {
+  if (!leadThreadId || !projectThreadId) return { ok: false, reason: 'missing_thread_id' };
+  if (isDryRun()) return { ok: true, dry_run: true, total: 0, posted: 0, skipped: 0 };
+
+  // Fetch all (paginated)
+  const all = [];
+  let beforeId = null;
+  for (let page = 0; page < 4 && all.length < maxMessages; page++) {
+    const url = `${DISCORD_API}/channels/${leadThreadId}/messages?limit=100${beforeId ? `&before=${beforeId}` : ''}`;
+    let resp;
+    try {
+      resp = await fetchImpl(url, { headers: { Authorization: `Bot ${botToken()}` } });
+    } catch (err) {
+      return { ok: false, reason: `fetch_threw: ${err.message}` };
+    }
+    if (!resp.ok) return { ok: false, reason: `fetch_${resp.status}` };
+    const batch = await resp.json();
+    if (!Array.isArray(batch) || batch.length === 0) break;
+    all.push(...batch);
+    if (batch.length < 100) break;
+    beforeId = batch[batch.length - 1].id;
+  }
+
+  // Discord returns newest-first · sort by id ascending = oldest-first
+  all.sort((a, b) => {
+    try { return BigInt(a.id) < BigInt(b.id) ? -1 : 1; }
+    catch { return String(a.id).localeCompare(String(b.id)); }
+  });
+
+  let posted = 0;
+  let skipped = 0;
+  for (const m of all) {
+    // Filter: bot-authored + has text content
+    if (!m.author?.bot || !m.content) { skipped++; continue; }
+    try {
+      const postResp = await fetchImpl(`${DISCORD_API}/channels/${projectThreadId}/messages`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bot ${botToken()}`,
+          'Content-Type': 'application/json',
+          'User-Agent': 'profitslocal-lead-thread-sync',
+        },
+        body: JSON.stringify({ content: String(m.content).slice(0, 2000) }),
+      });
+      if (postResp.ok) posted++;
+      else skipped++;
+    } catch {
+      skipped++;
+    }
+    if (throttleMs > 0) await new Promise((r) => setTimeout(r, throttleMs));
+  }
+  return { ok: true, total: all.length, posted, skipped };
+}
+
+/**
  * cycle-27 Phase 5 (Matthew 2026-05-15): edit an existing message in a thread.
  * Used for retro-edit at Stage 9 publish · adds live URLs into the
  * previously-posted Stage 6 + Stage 8 messages.

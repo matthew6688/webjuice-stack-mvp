@@ -71,6 +71,8 @@ const TESTS = [
   'scripts/test/test-cycle27-build-summary.mjs',
   // cycle-27 Phase 5 · Stage 6 + Stage 8 retro-edit (editThreadMessage + entity.discord_stage_message_ids)
   'scripts/test/test-cycle27-retro-edit.mjs',
+  // cycle-27 · graduate-history replay (#website-projects thread keeps full timeline)
+  'scripts/test/test-cycle27-graduate-history.mjs',
 ];
 
 const results = [];
