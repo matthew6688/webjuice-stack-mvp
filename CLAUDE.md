@@ -46,6 +46,36 @@ pre-commit hook 自动检查 1+2 · 想 bypass 必须 `--no-verify` (紧急情�
 
 报告 bug fix 必须贴出对应 test 文件名 + assertion 数 + 之前 RED / 之后 GREEN.
 
+### Rule 14 · 6 个核心 goal 永远 validate (强制 · cycle-27 · Matthew 2026-05-15)
+
+不能再让你点出 bug 我才发现 · 不能再 react。每次 commit / 更新都必须自动 self-check 6 个 goal:
+
+```
+G1 · master.md 在线可访问 (HTTP 200)
+G2 · audit HTML 可访问 (customer-facing + internal-audit)
+G3 · profile card 数据是最新的 (含 grade · phase · deploy URL)
+G4 · Stage 1-9 message 在 lead/project thread 都在
+G5 · 不重复 thread (1 entity = 1 active visible thread) + 不重复 entity (V2/V3 dup)
+G6 · 所有 deploy URL 真 HTTP 200 (no dead link)
+```
+
+**强制流程**:
+1. 任何 commit 涉及 entity / Discord / build / publish 路径必须跑 `npm run pl:goals-doctor`
+2. exit 0 才能 commit (pre-commit hook 强制)
+3. `--quick` 模式 (file-only) 跑得快 · 当 pre-commit gate
+4. 不带 flag 跑全 mode (含 Discord + HTTP 网检) · 当 post-deploy 验证
+5. 任何 0 → N violation 必须在 commit 前修
+
+**违反案例** (cycle-27 · 2026-05-15 Matthew):
+- profile-card audit-gate bug · Brisbane Roof Restoration 看上去「card 没更新」· 我没主动发现
+- V2/V3 dup entity · North Brisbane Metal Roofing 同名两个 entity · 我没主动发现
+- project thread Stage 1-8 history 丢失 · VIP Roofing · 我没主动发现
+- Stage 9 message 重复 3 次 · 我没主动发现
+
+每个都是 react · 不 proactive。Rule 14 强制要求每次 commit 必跑 6 goal 检查 · 防止再犯。
+
+报告 commit 必须贴 `pl:goals-doctor` 输出 (per-goal pass/fail + entity count).
+
 ### Rule 12 · TDD 节奏 (强制 · cycle-26)
 
 新功能 / 大重构 (≥ 5 文件改动) 必须按以下顺序:

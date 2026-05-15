@@ -81,6 +81,8 @@ const TESTS = [
   'scripts/test/test-cycle27-publish-idempotent.mjs',
   // cycle-27 · profile card shows live URLs when entity.deploy.demo_url (Brisbane Roof Restoration)
   'scripts/test/test-cycle27-profile-card-deploy.mjs',
+  // cycle-27 · Rule 14 · pl:goals-doctor (6 core goals validator · pre-commit gate)
+  'scripts/test/test-cycle27-goals-doctor.mjs',
 ];
 
 const results = [];

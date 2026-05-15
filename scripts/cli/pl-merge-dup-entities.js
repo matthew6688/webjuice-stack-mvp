@@ -62,7 +62,17 @@ for (const { name, domain, place } of pairs) {
 
   if (!v3HasAudit) { console.log('      skip · V3 has no audit'); continue; }
   if (alreadyMerged) { console.log('      skip · already merged'); continue; }
-  if (!v2MissingGrade) { console.log('      skip · V2 already has grade'); continue; }
+  // cycle-27 Rule 14: even if V2 has grade · mark dup as resolved (else
+  // pl:goals-doctor keeps flagging). Set merged_from_v3_key marker only.
+  if (!v2MissingGrade) {
+    if (DRY_RUN) { console.log('      [dry-run] would mark V2 as merged (already-in-sync)'); merged++; continue; }
+    domain.data.merged_from_v3_key = place.key;
+    domain.data.merged_at = new Date().toISOString();
+    fs.writeFileSync(path.join(DIR, domain.file), JSON.stringify(domain.data, null, 2) + '\n');
+    merged++;
+    console.log('      ✓ marked merged · V2 already had grade');
+    continue;
+  }
 
   if (DRY_RUN) { console.log('      [dry-run] would merge V3 → V2'); merged++; continue; }
 
