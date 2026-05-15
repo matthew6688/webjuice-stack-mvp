@@ -47,6 +47,54 @@ export function writeBatchState(state) {
   return p;
 }
 
+/**
+ * cycle-27 (Matthew 2026-05-15 roofer gold-coast batch race):
+ * Cross-process file lock on batch state. dispatcher spawns 1 audit task per
+ * entity in parallel processes · each calls recordEntityTerminal → read-
+ * modify-write of <batchId>.json. Without locking the writes clobber each
+ * other · entities go missing from bs.entities[] · KPI gate never fires.
+ *
+ * Lock file: `<batchStatePath>.lock` containing PID. Atomic via `flag: 'wx'`
+ * (fails if exists). Stale lock detection via `process.kill(pid, 0)`.
+ *
+ * Returns a release function. Caller MUST call release() (use try/finally).
+ */
+export async function acquireBatchStateLock(batchId, { maxMs = 10_000, pollMs = 30 } = {}) {
+  const statePath = batchStatePath(batchId);
+  const lockPath = statePath + '.lock';
+  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
+
+  const t0 = Date.now();
+  while (Date.now() - t0 < maxMs) {
+    try {
+      // Atomic create-if-not-exists · throws EEXIST if held
+      fs.writeFileSync(lockPath, String(process.pid), { flag: 'wx' });
+      return function release() {
+        try { fs.unlinkSync(lockPath); } catch { /* already gone · OK */ }
+      };
+    } catch (err) {
+      if (err.code !== 'EEXIST') throw err;
+      // Stale-lock check: if holder PID not alive, remove lock + retry
+      try {
+        const raw = fs.readFileSync(lockPath, 'utf8').trim();
+        const pid = parseInt(raw, 10);
+        if (!isNaN(pid) && pid !== process.pid) {
+          try {
+            process.kill(pid, 0); // throws ESRCH if dead
+          } catch (killErr) {
+            if (killErr.code === 'ESRCH') {
+              try { fs.unlinkSync(lockPath); } catch {}
+              continue; // retry immediately
+            }
+          }
+        }
+      } catch { /* lock file disappeared mid-check · retry */ }
+      await new Promise((r) => setTimeout(r, pollMs));
+    }
+  }
+  throw new Error(`acquireBatchStateLock timeout (${maxMs}ms) for ${batchId}`);
+}
+
 async function fetchChannelTags() {
   const r = await fetch(`${DISCORD_API}/channels/${channelId()}`, {
     headers: { Authorization: `Bot ${botToken()}` },
@@ -277,20 +325,42 @@ export async function recordEntityTerminal({
   if (!batchId || !entityKey || !phase) {
     return { ok: false, reason: 'missing required fields (batchId / entityKey / phase)' };
   }
-  const bs = readBatchState(batchId);
-  if (!bs) return { ok: false, reason: `batch state not found: ${batchId}` };
 
-  bs.entities = bs.entities || [];
-  const entry = { entityKey, name, threadUrl, phase, grade, archive_reason };
-  const idx = bs.entities.findIndex((x) => x.entityKey === entityKey);
-  if (idx >= 0) bs.entities[idx] = entry; else bs.entities.push(entry);
-  bs.finalized_at = new Date().toISOString();
-  writeBatchState(bs);
+  // cycle-27 (race fix): acquire cross-process lock around read-modify-write
+  // BUT release it BEFORE any Discord I/O. The lock window must be short ·
+  // KPI fire (network HTTP) can happen outside lock with a snapshot copy.
+  let bs;
+  let mustFireKpi = false;
+  let release;
+  try {
+    release = await acquireBatchStateLock(batchId);
+  } catch (err) {
+    return { ok: false, reason: `lock acquire failed: ${err.message}` };
+  }
+  try {
+    bs = readBatchState(batchId);
+    if (!bs) return { ok: false, reason: `batch state not found: ${batchId}` };
 
-  // KPI dashboard gate · fire once when all expected entities accounted for
-  const expected = bs.expected_total || bs.lead_count || 0;
+    bs.entities = bs.entities || [];
+    const entry = { entityKey, name, threadUrl, phase, grade, archive_reason };
+    const idx = bs.entities.findIndex((x) => x.entityKey === entityKey);
+    if (idx >= 0) bs.entities[idx] = entry; else bs.entities.push(entry);
+    bs.finalized_at = new Date().toISOString();
+
+    const expected = bs.expected_total || bs.lead_count || 0;
+    if (expected > 0 && bs.entities.length >= expected && !bs.kpi_dashboard_posted_at) {
+      // Claim KPI ownership atomically inside the lock · only one process fires
+      bs.kpi_dashboard_posted_at = new Date().toISOString();
+      mustFireKpi = true;
+    }
+    writeBatchState(bs);
+  } finally {
+    release();
+  }
+
+  // KPI fire AFTER lock release · network I/O must not block other writers
   let kpiFired = false;
-  if (expected > 0 && bs.entities.length >= expected && !bs.kpi_dashboard_posted_at) {
+  if (mustFireKpi) {
     try {
       const { buildKpiDashboard } = await import('./kpi-dashboard.js');
       const { appendThreadMessage } = await import('./lead-thread-sync.js');
@@ -300,12 +370,11 @@ export async function recordEntityTerminal({
       if (process.env.PL_PARENT_THREAD_ID) {
         await appendThreadMessage(process.env.PL_PARENT_THREAD_ID, dashboard, opts).catch(() => {});
       }
-      bs.kpi_dashboard_posted_at = new Date().toISOString();
-      writeBatchState(bs);
       kpiFired = true;
     } catch (err) {
       console.warn(`[recordEntityTerminal] KPI fire failed: ${err.message}`);
     }
   }
+  const expected = bs.expected_total || bs.lead_count || 0;
   return { ok: true, count: bs.entities.length, expected, kpiFired };
 }

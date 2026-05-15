@@ -61,6 +61,8 @@ const TESTS = [
   'scripts/test/test-cycle27-geo-au.mjs',
   // cycle-27 · intake CLI waits for cheap-audit queue to drain before exit
   'scripts/test/test-cycle27-queue-drain.mjs',
+  // cycle-27 · batch state file lock (concurrent recordEntityTerminal race)
+  'scripts/test/test-cycle27-batch-state-lock.mjs',
 ];
 
 const results = [];
