@@ -191,8 +191,11 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
 /**
  * Finalize batch — apply terminal tag, record finished_at.
  */
-export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAudit = false }) {
-  const r = await postStageUpdate({
+export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAudit = false, skipPost = false }) {
+  // cycle-26 P9: skipPost lets caller (scrape-docker) update batch state without
+  // posting "🏁 批次完成" · the real KPI dashboard fires later from publish-demo /
+  // terminal-archive when all expected entities are accounted for.
+  const r = skipPost ? { message_id: null } : await postStageUpdate({
     batchId,
     stage: '🏁 批次完成',
     status: terminalTag === 'completed' ? 'ok' : 'info',

@@ -439,11 +439,14 @@ async function main() {
         '→ 通过 = 立即进 detail audit · 排除 = archive (grade=D)',
         '→ 看 #website-leads 各 thread 进度',
       ].join('\n');
+      // cycle-26 P9: don't post "🏁 批次完成" here · KPI dashboard at the END
+      // (after all entities done) is the authoritative finalize. Just mark batch tag.
       await finalizeBatch({
         batchId,
-        terminalTag: leadNames.length > 0 ? 'completed' : 'partial-failed',
-        summary: finalBody,
-        skipDedupAudit: true, // dedup happens via discovery-store dedup automatically
+        terminalTag: leadNames.length > 0 ? 'in-progress' : 'partial-failed',
+        summary: leadNames.length > 0 ? finalBody : 'no leads · check gosom output',
+        skipDedupAudit: true,
+        skipPost: leadNames.length > 0, // suppress duplicate finalize msg when pipeline continues
       });
     } catch (err) {
       console.error(`[pl:scrape-docker] batch thread update failed: ${err.message}`);

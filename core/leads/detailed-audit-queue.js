@@ -80,12 +80,14 @@ export function enqueueDetailedAudit(entityKey, { reason = 'exclusion-survivor',
 async function spawnAuditTask(entityKey) {
   try {
     const { createTask } = await import('../tasks/task-store.js');
+    // cycle-26 P9: propagate PL_PARENT_THREAD_ID through chain so KPI dashboard can echo to #website-tasks
+    const parentThreadId = process.env.PL_PARENT_THREAD_ID || null;
     const task = createTask({
       kind: 'audit',
       source: {
         platform: 'internal',
-        thread_id: null,  // 没 thread · dispatcher 会 fallback bot-log if needed
-        author: 'cheap-audit-queue → predict A/B chain',
+        thread_id: parentThreadId,  // propagate original task thread for KPI echo
+        author: 'cheap-audit-queue → audit chain',
         message_id: null,
       },
       input: {

@@ -276,11 +276,9 @@ proc.on('exit', async (code) => {
         console.warn(`[publish] entity.deploy write or setEntityPhase failed: ${err.message}`);
       }
 
-      // cycle-26 · emit batch progress: published
-      try {
-        const { emitBatchProgress } = await import('../../core/funnel/batch-progress.js');
-        await emitBatchProgress(foundKey, { event: 'published', deployUrl: url });
-      } catch { /* non-blocking */ }
+      // cycle-26 P9: removed per-entity 'published' emit to batch thread (Matthew:
+      // "noise · prefer single KPI dashboard at batch end"). The KPI dashboard
+      // captures publish status via entity.deploy_url in batch state.
 
       const r = await openProjectThread(foundKey);
       if (r.ok) {
