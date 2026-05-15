@@ -248,3 +248,64 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
   writeBatchState(state);
   return r;
 }
+
+/**
+ * cycle-26 cycle-27 (Matthew 2026-05-15 E2E retest):
+ * Record an entity reaching a terminal-eligible state into batch.entities[].
+ * Fires KPI dashboard once entities.length >= expected_total.
+ *
+ * Idempotent · upserts by entityKey. Call sites:
+ *   - terminal-archive.js · archived (D-grade or any stage-fail)
+ *   - pl-check-qualification.js · ready-to-build / qa-pending verdicts
+ *   - pl-publish-demo.js · outreach-active (published)
+ *
+ * Why centralized: previously each call site had its own copy of the
+ * append-and-fire block. pl-check-qualification.js never had one ·
+ * KPI gate never fired in plumbers/gold-coast E2E (BCV stuck at
+ * ready-to-build · batch.entities stayed at 2/3).
+ */
+export async function recordEntityTerminal({
+  batchId,
+  entityKey,
+  name = null,
+  threadUrl = null,
+  phase,
+  grade = null,
+  archive_reason = null,
+  fetchImpl = null,
+}) {
+  if (!batchId || !entityKey || !phase) {
+    return { ok: false, reason: 'missing required fields (batchId / entityKey / phase)' };
+  }
+  const bs = readBatchState(batchId);
+  if (!bs) return { ok: false, reason: `batch state not found: ${batchId}` };
+
+  bs.entities = bs.entities || [];
+  const entry = { entityKey, name, threadUrl, phase, grade, archive_reason };
+  const idx = bs.entities.findIndex((x) => x.entityKey === entityKey);
+  if (idx >= 0) bs.entities[idx] = entry; else bs.entities.push(entry);
+  bs.finalized_at = new Date().toISOString();
+  writeBatchState(bs);
+
+  // KPI dashboard gate · fire once when all expected entities accounted for
+  const expected = bs.expected_total || bs.lead_count || 0;
+  let kpiFired = false;
+  if (expected > 0 && bs.entities.length >= expected && !bs.kpi_dashboard_posted_at) {
+    try {
+      const { buildKpiDashboard } = await import('./kpi-dashboard.js');
+      const { appendThreadMessage } = await import('./lead-thread-sync.js');
+      const dashboard = buildKpiDashboard({ batchState: bs, entities: bs.entities });
+      const opts = fetchImpl ? { force: true, fetchImpl } : { force: true };
+      if (bs.thread_id) await appendThreadMessage(bs.thread_id, dashboard, opts).catch(() => {});
+      if (process.env.PL_PARENT_THREAD_ID) {
+        await appendThreadMessage(process.env.PL_PARENT_THREAD_ID, dashboard, opts).catch(() => {});
+      }
+      bs.kpi_dashboard_posted_at = new Date().toISOString();
+      writeBatchState(bs);
+      kpiFired = true;
+    } catch (err) {
+      console.warn(`[recordEntityTerminal] KPI fire failed: ${err.message}`);
+    }
+  }
+  return { ok: true, count: bs.entities.length, expected, kpiFired };
+}

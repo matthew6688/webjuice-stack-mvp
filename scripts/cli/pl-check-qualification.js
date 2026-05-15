@@ -202,6 +202,36 @@ async function processEntity(key) {
   } else if (verdict.verdict === 'ready-to-build') {
     setEntityPhase({ entityKey: key, phase: ENTITY_PHASE.READY_TO_BUILD });
   }
+
+  // cycle-26 cycle-27 (Matthew 2026-05-15 E2E retest):
+  // Record terminal-eligible verdict ('ready-to-build' / 'qa-pending' /
+  // 'archived') into batch.entities[] for KPI dashboard gate. Previously
+  // only archive path (terminal-archive.js) did this; ready-to-build /
+  // qa-pending verdicts were missed → KPI dashboard never fired in BCV
+  // E2E (plumbers / gold coast / 3).
+  if (['ready-to-build', 'qa-pending', 'archived'].includes(verdict.verdict)) {
+    try {
+      const { recordEntityTerminal } = await import(path.join(REPO, 'core/funnel/pipeline-batch-thread.js'));
+      const batches = entity.batches || [];
+      const batchId = batches[batches.length - 1];
+      if (batchId) {
+        await recordEntityTerminal({
+          batchId,
+          entityKey: key,
+          name: entity.latest?.name || entity.name || null,
+          threadUrl: entity.discord_thread_id
+            ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${entity.discord_thread_id}`
+            : null,
+          phase: verdict.verdict,
+          grade: entity.grade?.investment_level || null,
+          archive_reason: verdict.archive_reason || null,
+        });
+      }
+    } catch (err) {
+      console.warn(`     ⚠ recordEntityTerminal failed: ${err.message}`);
+    }
+  }
+
   // Write qualification record on entity
   const entityPath = path.join(REPO, 'data/leads/entities', `${key}.json`);
   const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));

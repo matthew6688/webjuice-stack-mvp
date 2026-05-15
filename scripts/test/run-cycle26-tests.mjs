@@ -53,6 +53,8 @@ const TESTS = [
   'scripts/test/test-cycle26-build-assets-extractor.mjs',
   // cycle-26 P9b · no zombie threads invariant (1 entity = 1 visible thread)
   'scripts/test/test-cycle26-no-zombie-threads.mjs',
+  // cycle-26 cycle-27 · batch.entities terminal-state recorder (KPI gate · Matthew 2026-05-15 E2E)
+  'scripts/test/test-cycle26-batch-terminal-recorder.mjs',
 ];
 
 const results = [];
