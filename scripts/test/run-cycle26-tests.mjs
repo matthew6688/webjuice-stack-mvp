@@ -75,6 +75,8 @@ const TESTS = [
   'scripts/test/test-cycle27-graduate-history.mjs',
   // cycle-27 · mutateBatchState lock-protected helper (fixes 4-batch silent-miss race)
   'scripts/test/test-cycle27-batch-state-mutate.mjs',
+  // cycle-27 bug #7 · cheap-audit survivors record into batch.entities (predict-C / enrich)
+  'scripts/test/test-cycle27-cheap-audit-terminal.mjs',
 ];
 
 const results = [];

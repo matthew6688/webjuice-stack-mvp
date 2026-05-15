@@ -77,6 +77,9 @@ export const GRADE_TAGS = Object.freeze({
 // Source of truth for entity.phase values. discovery-store.js MUST import.
 export const ENTITY_PHASE = Object.freeze({
   AWAITING:        'awaiting',
+  // cycle-27 bug #7: cheap-audit settled but not yet terminal · KPI counts them
+  ENRICH_PENDING:  'enrich-pending',   // 无 contact · 等 enrichment
+  AUDIT_PENDING:   'audit-pending',    // predict-C · 进 cold backlog · 等触发
   AUDIT_READY:     'audit-ready',     // cycle-26 (was design-ready) · audit 完成 · 等 design start
   QA_PENDING:      'qa-pending',      // scorecard < 60 · operator 补
   READY_TO_BUILD:  'ready-to-build',  // scorecard ≥ 60 · 触发 build
@@ -194,6 +197,7 @@ export const TERMINAL_FAIL_PATHS = Object.freeze([
   { id: 'stage4_grade_d',                 stage: 'Stage 4', file: 'core/scoring/lead-grading.js', handler: 'archiveLeadAsRejected' },
   // cycle-26 P5: Stage 7 pre-gate fail (qualification hard_gate brief-independent fail)
   { id: 'stage7_pregate_fail',            stage: 'Stage 7', file: 'scripts/cli/pl-check-qualification.js', handler: 'archiveLeadAsRejected' },
+  { id: 'stage8_build_failed',            stage: 'Stage 8', file: 'scripts/cli/pl-build-from-reference.js', handler: 'archiveLeadAsRejected' },
 ]);
 
 // ─── Helpers ────────────────────────────────────────────────────────────────

@@ -349,6 +349,8 @@ async function runTask(taskId) {
       await postThreadReply(threadId, renderFailedMessage({ task, exitCode: code, stderr: tail, tail }));
     }
     inFlight.delete(taskId);
+    // cycle-27 bug #1: re-scan after a slot frees · prevents queue stall
+    setImmediate(() => scanAndDispatch().catch(() => {}));
   });
 
   child.on('error', async (err) => {
@@ -361,18 +363,29 @@ async function runTask(taskId) {
     const { renderFailedMessage } = await import('../../core/discord-tasks/humanize.js');
     await postThreadReply(threadId, renderFailedMessage({ task, exitCode: -1, stderr: `spawn error: ${err.message}`, tail: '' }));
     inFlight.delete(taskId);
+    setImmediate(() => scanAndDispatch().catch(() => {}));
   });
 }
 
 /* ─── Scan loop ───────────────────────────────────────────────────── */
 
+// cycle-27 bug #1 (Matthew 2026-05-15): cap concurrent tasks · prevent
+// dispatcher from spawning 50 parallel claude -p / Playwright processes
+// when a 10-lead batch lands. Each task is heavy (LLM + browser).
+// Default 4 · override via env PL_DISPATCHER_MAX_CONCURRENT.
+const MAX_CONCURRENT = Math.max(1, parseInt(process.env.PL_DISPATCHER_MAX_CONCURRENT || '4', 10));
+
 async function scanAndDispatch() {
   const pending = listTasks({ status: 'pending' });
   if (pending.length === 0) return;
-  log('scan: pending=', pending.length, '· inflight=', inFlight.size);
+  log('scan: pending=', pending.length, '· inflight=', inFlight.size, '· cap=', MAX_CONCURRENT);
   for (const t of pending) {
     if (!t.target?.cli) continue;
     if (inFlight.has(t.task_id)) continue;
+    if (inFlight.size >= MAX_CONCURRENT) {
+      log('queue · inflight at cap', MAX_CONCURRENT, '· deferring', t.task_id);
+      break; // wait for next tick / task completion
+    }
     runTask(t.task_id).catch((err) => log('runTask error', t.task_id, err.message));
   }
 }

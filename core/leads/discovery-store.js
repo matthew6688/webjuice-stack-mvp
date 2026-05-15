@@ -706,6 +706,68 @@ export function writeEntity(storeRoot, entity) {
   }
 }
 
+/**
+ * cycle-27 bug #5 (Matthew 2026-05-15): Cross-process lock for entity file ·
+ * prevents writeEntity from clobbering concurrent partial-writes
+ * (e.g. discord_stage_message_ids set by one process while another writes
+ * cheap_audit at the same time).
+ *
+ * Used by: pl-build-from-reference (Stage 8 msg ID write) ·
+ * run-audit-pipeline (Stage 6 msg ID write) · any caller that does
+ * read-modify-write on the entity JSON.
+ */
+export async function acquireEntityLock(entityKey, { maxMs = 5000, pollMs = 30 } = {}) {
+  const storeRoot = defaultDiscoveryStoreRoot();
+  const entityPath = path.join(storeRoot, 'entities', `${safeKey(entityKey)}.json`);
+  const lockPath = entityPath + '.lock';
+  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
+  const t0 = Date.now();
+  while (Date.now() - t0 < maxMs) {
+    try {
+      fs.writeFileSync(lockPath, String(process.pid), { flag: 'wx' });
+      return function release() {
+        try { fs.unlinkSync(lockPath); } catch {}
+      };
+    } catch (err) {
+      if (err.code !== 'EEXIST') throw err;
+      // Stale-lock check
+      try {
+        const pid = parseInt(fs.readFileSync(lockPath, 'utf8').trim(), 10);
+        if (!isNaN(pid) && pid !== process.pid) {
+          try { process.kill(pid, 0); } catch (killErr) {
+            if (killErr.code === 'ESRCH') {
+              try { fs.unlinkSync(lockPath); } catch {}
+              continue;
+            }
+          }
+        }
+      } catch {}
+      await new Promise((r) => setTimeout(r, pollMs));
+    }
+  }
+  throw new Error(`acquireEntityLock timeout (${maxMs}ms) for ${entityKey}`);
+}
+
+/**
+ * Lock-protected entity mutation · read-mod-write all inside the lock.
+ * Mutator receives the latest entity · returns updated (or undefined to use mutated input).
+ */
+export async function mutateEntity(entityKey, mutator) {
+  const storeRoot = defaultDiscoveryStoreRoot();
+  const release = await acquireEntityLock(entityKey);
+  try {
+    const entityPath = path.join(storeRoot, 'entities', `${safeKey(entityKey)}.json`);
+    if (!fs.existsSync(entityPath)) throw new Error(`mutateEntity: entity not found · ${entityKey}`);
+    const entity = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+    const ret = await mutator(entity);
+    const next = ret || entity;
+    writeEntity(storeRoot, next);
+    return next;
+  } finally {
+    release();
+  }
+}
+
 function appendEvents(storeRoot, events) {
   if (!events.length) return;
   fs.mkdirSync(storeRoot, { recursive: true });

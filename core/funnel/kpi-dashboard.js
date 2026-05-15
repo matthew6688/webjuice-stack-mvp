@@ -34,6 +34,12 @@ function categorize(entity) {
       || entity.phase === 'proposal-sent' || entity.phase === 'nurture'
       || entity.phase === 'paid' || entity.deploy_url) return 'published';
   if (entity.phase === 'ready-to-build') return 'ready_to_build_not_published';
+  // cycle-27 bug #7 (Matthew 2026-05-15): cheap-audit-queue survivors that
+  // didn't auto-chain detailed-audit (predict-C cold queue) OR need enrich
+  // first · they're "accounted for" but not terminal · KPI gate needs them
+  // counted so it can fire at expected_total.
+  if (entity.phase === 'audit-pending') return 'audit_pending';
+  if (entity.phase === 'enrich-pending') return 'enrich_pending';
   return 'in_progress';
 }
 
@@ -63,6 +69,9 @@ export function buildKpiDashboard({ batchState = {}, entities = [] } = {}) {
   const qas = entities.filter((e) => categorize(e) === 'qa_pending');
   const arcs = entities.filter((e) => categorize(e) === 'archived');
   const rtbs = entities.filter((e) => categorize(e) === 'ready_to_build_not_published');
+  // cycle-27 bug #7: cheap-audit-queue cold-queue + enrich-pending survivors
+  const auditPend = entities.filter((e) => categorize(e) === 'audit_pending');
+  const enrichPend = entities.filter((e) => categorize(e) === 'enrich_pending');
   const ips = entities.filter((e) => categorize(e) === 'in_progress');
 
   // Grade distribution (across all)
@@ -80,6 +89,8 @@ export function buildKpiDashboard({ batchState = {}, entities = [] } = {}) {
   lines.push(`Published live: ${pubs.length}`);
   lines.push(`QA-pending:     ${qas.length}`);
   lines.push(`Ready unpub:    ${rtbs.length}`);
+  lines.push(`Audit-pending:  ${auditPend.length}`);
+  lines.push(`Enrich-pending: ${enrichPend.length}`);
   lines.push(`Archived:       ${arcs.length}`);
   lines.push('');
 

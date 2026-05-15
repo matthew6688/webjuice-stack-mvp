@@ -69,12 +69,38 @@ console.log(`[pl:build-from-reference] prompt:  ${payload.prompt.length} chars\n
 const model = args.model || process.env.PL_REFERENCE_ADAPTER_MODEL || 'claude-sonnet-4-5';
 const start = Date.now();
 const proc = spawn('claude', ['-p', payload.prompt, '--model', model], { stdio: ['ignore', 'pipe', 'inherit'] });
+
+// cycle-27 bug #2 (Matthew 2026-05-15): hard timeout for claude -p · prevents
+// entity stuck in ready-to-build · KPI gate stalls. If timeout hits · archive
+// entity as terminal failure so KPI can fire + operator sees the failure.
+const BUILD_TIMEOUT_MS = parseInt(process.env.PL_BUILD_TIMEOUT_MS || (10 * 60 * 1000), 10);
+let timedOut = false;
+const buildTimer = setTimeout(() => {
+  timedOut = true;
+  console.error(`[pl:build-from-reference] BUILD TIMEOUT (${BUILD_TIMEOUT_MS}ms) · killing claude -p`);
+  try { proc.kill('SIGKILL'); } catch {}
+}, BUILD_TIMEOUT_MS);
+
 let buf = '';
 proc.stdout.on('data', (chunk) => { buf += chunk.toString(); process.stderr.write('.'); });
 proc.on('exit', async (code) => {
+  clearTimeout(buildTimer);
   process.stderr.write('\n');
-  if (code !== 0) {
-    console.error(`claude CLI exit ${code}`);
+  if (timedOut || code !== 0) {
+    console.error(`claude CLI ${timedOut ? 'TIMED OUT' : `exit ${code}`} · archiving entity as build-failed`);
+    // cycle-27 bug #2: archive entity so chain doesn't stall
+    try {
+      if (entity?.entityKey) {
+        const { archiveLeadAsRejected } = await import('../../core/leads/terminal-archive.js');
+        await archiveLeadAsRejected(entity.entityKey, {
+          reason: timedOut ? `claude -p timed out after ${BUILD_TIMEOUT_MS}ms` : `claude -p exit ${code}`,
+          pathId: 'stage8_build_failed',
+          layer: 'Stage 8',
+        });
+      }
+    } catch (err) {
+      console.error(`[pl:build-from-reference] archive on build-fail failed: ${err.message}`);
+    }
     process.exit(code || 1);
   }
   const docIdx = buf.toLowerCase().indexOf('<!doctype html');
@@ -118,10 +144,12 @@ proc.on('exit', async (code) => {
       const r = await refreshThreadAndPost(entityKeyForMsg, msg);
       if (r?.msg?.messageId) {
         try {
-          const fresh = JSON.parse(fs.readFileSync(entityFile, 'utf8'));
-          fresh.discord_stage_message_ids = fresh.discord_stage_message_ids || {};
-          fresh.discord_stage_message_ids[8] = r.msg.messageId;
-          fs.writeFileSync(entityFile, JSON.stringify(fresh, null, 2) + '\n');
+          // cycle-27 bug #5: lock-protected r-m-w on entity file
+          const { mutateEntity } = await import('../../core/leads/discovery-store.js');
+          await mutateEntity(entityKeyForMsg, (e) => {
+            e.discord_stage_message_ids = e.discord_stage_message_ids || {};
+            e.discord_stage_message_ids[8] = r.msg.messageId;
+          });
         } catch { /* best-effort · don't block chain */ }
       }
     } catch (err) { console.warn(`[stage8] post failed: ${err.message}`); }

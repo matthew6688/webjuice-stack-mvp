@@ -78,13 +78,14 @@ async function postStage(entityKey, message, { stageNum = null } = {}) {
     // cycle-27 Phase 5 (Matthew 2026-05-15): persist Stage 6 message_id so
     // Stage 9 publish can retro-edit it with live URLs · entity field
     // `discord_stage_message_ids[stageNum] = messageId`.
+    // cycle-27 bug #5: use mutateEntity for lock-protected r-m-w.
     if (stageNum && r?.msg?.messageId) {
       try {
-        const entityPath = path.join(entitiesDir, `${entityKey}.json`);
-        const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
-        fresh.discord_stage_message_ids = fresh.discord_stage_message_ids || {};
-        fresh.discord_stage_message_ids[stageNum] = r.msg.messageId;
-        fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+        const { mutateEntity } = await import('../../core/leads/discovery-store.js');
+        await mutateEntity(entityKey, (e) => {
+          e.discord_stage_message_ids = e.discord_stage_message_ids || {};
+          e.discord_stage_message_ids[stageNum] = r.msg.messageId;
+        });
       } catch { /* best-effort · don't block pipeline */ }
     }
     return r;

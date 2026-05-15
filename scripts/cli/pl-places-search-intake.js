@@ -212,6 +212,20 @@ for (const query of queries) {
     if (err instanceof PlacesQuotaCapExceeded) {
       console.error(`    ✗ Places quota cap: ${err.message}`);
       results.push({ query, batch_id: batchId, thread_id: thread.thread_id, thread_url: thread.thread_url, error: 'places_quota_exceeded' });
+      // cycle-27 bug #3 (Matthew 2026-05-15): surface quota cap in batch state
+      // so KPI dashboard / cycle-doctor can alert · not silent skip.
+      try {
+        const { mutateBatchState } = await import('../../core/funnel/pipeline-batch-thread.js');
+        await mutateBatchState(batchId, (bs) => {
+          bs.quota_warning = { source: 'places_api', message: err.message, at: new Date().toISOString() };
+        });
+        await postStageUpdate({
+          batchId, stage: 'Places API quota cap',
+          status: 'fail',
+          summary: `## Places API 配额耗尽\n\n\n> ${err.message}\n\n\n-# 等下个 reset window 或换 API key`,
+          rawContent: true,
+        });
+      } catch { /* non-blocking */ }
     } else {
       console.error(`    ✗ ${err.message}`);
       results.push({ query, batch_id: batchId, thread_id: thread.thread_id, thread_url: thread.thread_url, error: err.message });

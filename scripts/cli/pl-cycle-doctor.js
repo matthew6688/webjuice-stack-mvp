@@ -161,6 +161,32 @@ async function checkC_PhaseConsistency() {
   }
 }
 
+// ─── Check E · Batch state · entities[] completeness vs expected_total ────
+// cycle-27 bug #6 (Matthew 2026-05-15): when entities[].length < expected_total
+// AND finalized_at > 30 min ago · operator missed a silent recordEntityTerminal
+// miss (race / clobber bug). Flag for manual backfill review.
+function checkE_BatchEntitiesCompleteness() {
+  const batchDir = path.join(ROOT, 'data/v2/pipeline-batches');
+  if (!fs.existsSync(batchDir)) return;
+  const now = Date.now();
+  const STALE_THRESHOLD_MS = 30 * 60 * 1000;
+  for (const f of fs.readdirSync(batchDir)) {
+    if (!f.endsWith('.json') || f.endsWith('.lock')) continue;
+    let bs;
+    try { bs = JSON.parse(fs.readFileSync(path.join(batchDir, f), 'utf8')); } catch { continue; }
+    const expected = bs.expected_total || 0;
+    const recorded = (bs.entities || []).length;
+    const finalizedAt = bs.finalized_at ? new Date(bs.finalized_at).getTime() : null;
+    if (!finalizedAt) continue; // batch still running · skip
+    if (now - finalizedAt < STALE_THRESHOLD_MS) continue; // give 30 min grace
+    if (expected > 0 && recorded < expected && !bs.kpi_dashboard_posted_at) {
+      violate('E.batch_incomplete',
+        `batch ${bs.batch_id} · entities ${recorded}/${expected} · KPI never fired · operator should backfill or investigate`,
+        `state file: data/v2/pipeline-batches/${f}`);
+    }
+  }
+}
+
 // ─── Check D · Terminal-fail handler coverage ───────────────────────────────
 function checkD_TerminalHandlers() {
   for (const p of TERMINAL_FAIL_PATHS) {
@@ -183,11 +209,12 @@ function checkD_TerminalHandlers() {
   const threads = await checkB_DiscordContract();
   await checkC_PhaseConsistency();
   checkD_TerminalHandlers();
+  checkE_BatchEntitiesCompleteness();
 
   const byCat = {};
   for (const v of violations) (byCat[v.category] ??= []).push(v);
 
-  console.log(`Checks run: A.lint · B.discord (${threads.length} threads) · C.phase · D.terminal\n`);
+  console.log(`Checks run: A.lint · B.discord (${threads.length} threads) · C.phase · D.terminal · E.batch\n`);
 
   if (violations.length === 0) {
     console.log('✓ cycle-doctor: 0 violations · contract clean · OK to ship');

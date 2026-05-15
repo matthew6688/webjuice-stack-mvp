@@ -19,6 +19,29 @@ import { renderProfileCard, buildLeadThreadName } from './profile-card.js';
 import { readDetailedAudit } from './lead-thread-helpers.js';
 
 const DISCORD_API = 'https://discord.com/api/v10';
+
+/**
+ * cycle-27 bug #4 (Matthew 2026-05-15): Discord 429 rate-limit backoff.
+ * Wraps fetchImpl · retries 429 up to `maxRetries` times with `Retry-After`
+ * header delay (falls back to exponential backoff if header absent).
+ *
+ * Used by all bot-initiated Discord API calls in this module. Bulk history
+ * replay + parallel batch retro-edits hit 429 readily without this.
+ */
+export async function discordFetch(url, opts = {}, { fetchImpl = fetch, maxRetries = 5 } = {}) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const r = await fetchImpl(url, opts);
+    if (r.status !== 429) return r;
+    // 429: read retry-after if available
+    const retryAfter = parseFloat(r.headers?.get?.('retry-after') || '');
+    let waitMs = !isNaN(retryAfter) && retryAfter > 0 ? Math.ceil(retryAfter * 1000) : Math.min(2 ** attempt * 250, 8000);
+    waitMs = Math.min(waitMs, 30_000);
+    if (attempt === maxRetries) return r; // give up · let caller see 429
+    console.warn(`[discord] 429 rate limit · retry ${attempt + 1}/${maxRetries} in ${waitMs}ms · ${url.slice(0, 60)}`);
+    await new Promise((res) => setTimeout(res, waitMs));
+  }
+  // unreachable · final return above
+}
 const ENTITIES_DIR = path.join('data', 'leads', 'entities');
 
 function isDryRun() {
@@ -345,7 +368,8 @@ export async function editThreadMessage(threadId, messageId, content, { fetchImp
       content: String(content).slice(0, 200),
     } };
   }
-  const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}/messages/${messageId}`, {
+  // cycle-27 bug #4: 429 backoff via discordFetch wrapper
+  const r = await discordFetch(`${DISCORD_API}/channels/${threadId}/messages/${messageId}`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bot ${botToken()}`,
@@ -353,7 +377,7 @@ export async function editThreadMessage(threadId, messageId, content, { fetchImp
       'User-Agent': 'profitslocal-lead-thread-sync',
     },
     body: JSON.stringify({ content: String(content).slice(0, 2000) }),
-  });
+  }, { fetchImpl });
   const text = await r.text();
   if (!r.ok) {
     if (r.status === 404) return { ok: false, reason: 'discord_404_message_not_found', threadId, messageId };
@@ -395,7 +419,8 @@ export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchI
       }
     } catch { /* check best-effort · fall through to POST */ }
   }
-  const response = await fetchImpl(`${DISCORD_API}/channels/${threadId}/messages`, {
+  // cycle-27 bug #4: 429 backoff via discordFetch wrapper
+  const response = await discordFetch(`${DISCORD_API}/channels/${threadId}/messages`, {
     method: 'POST',
     headers: {
       Authorization: `Bot ${botToken()}`,
@@ -403,7 +428,7 @@ export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchI
       'User-Agent': 'profitslocal-lead-thread-sync',
     },
     body: JSON.stringify({ content: String(content).slice(0, 2000) }),
-  });
+  }, { fetchImpl });
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
   const data = JSON.parse(text);

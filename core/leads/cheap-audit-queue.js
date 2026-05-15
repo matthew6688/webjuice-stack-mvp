@@ -284,7 +284,7 @@ async function processOne(entityKey) {
   }
 
   if (predict.audit_now) {
-    // Predict A/B · enqueue detailedAudit
+    // Predict A/B · enqueue detailedAudit · don't record terminal · detailed-audit will
     try {
       const { enqueueDetailedAudit } = await import('./detailed-audit-queue.js');
       enqueueDetailedAudit(entityKey, { reason: `predict-${predict.predict_grade}`, priority: predict.priority });
@@ -295,10 +295,40 @@ async function processOne(entityKey) {
     return;
   }
 
-  // Predict C · 不立刻 audit · 进 cold queue · 等触发
-  // (LEAD-JOURNEY: cold-outreach-queue 已有 file at data/leads/cold-outreach-queue.json)
-  // 这里只标记 entity 状态 · 不主动开队列(grade-router 在 detailedAudit 后才 enqueue)
+  // cycle-27 bug #7 (Matthew 2026-05-15): Predict-C cold + queued_for_enrichment
+  // survivors must record into batch.entities[] · KPI gate otherwise stalls
+  // waiting for them. Phase reflects WHAT state they settled into · NOT terminal
+  // archive · so KPI categorizes separately (audit_pending vs enrich_pending).
   console.error(`[cheap-audit-queue] ${entityKey} · predict-C · 留 backlog · 等触发`);
+  try {
+    const settledPhase = (cheapResult.action === 'queued_for_enrichment') ? 'enrich-pending' : 'audit-pending';
+    // setEntityPhase so categorize() picks it up
+    try {
+      const { setEntityPhase, ENTITY_PHASE } = await import('./discovery-store.js');
+      const phaseEnum = settledPhase === 'enrich-pending'
+        ? (ENTITY_PHASE.ENRICH_PENDING || 'enrich-pending')
+        : (ENTITY_PHASE.AUDIT_PENDING || 'audit-pending');
+      setEntityPhase({ entityKey, phase: phaseEnum, note: `cheap-audit settled · ${settledPhase}` });
+    } catch { /* discovery-store enum may not have these · fall through */ }
+    const fresh2 = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/leads/entities', `${entityKey}.json`), 'utf8'));
+    const { recordEntityTerminal } = await import('../funnel/pipeline-batch-thread.js');
+    const batches = fresh2.batches || [];
+    const batchId = batches[batches.length - 1];
+    if (batchId) {
+      await recordEntityTerminal({
+        batchId, entityKey,
+        name: fresh2.latest?.name || null,
+        threadUrl: fresh2.discord_thread_id
+          ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${fresh2.discord_thread_id}`
+          : null,
+        phase: settledPhase,
+        grade: predict.predict_grade || null,
+        archive_reason: null,
+      });
+    }
+  } catch (err) {
+    console.warn(`[cheap-audit-queue] settled-record failed for ${entityKey}: ${err.message}`);
+  }
 }
 
 async function runWorker() {
