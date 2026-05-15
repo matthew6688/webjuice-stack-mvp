@@ -100,6 +100,21 @@ const CMS_NOISE_PATTERNS = [
   /\.(jpg|jpeg|png|gif|webp|svg|pdf|xml|ico|css|js)(\?|$)/i,
 ];
 
+// cycle-27 (Matthew 2026-05-15): additional skip patterns for "frontend-visible"
+// marketing pages count · portfolio/blog/project items collapse to their parent
+// page (1 Portfolio menu entry · not 22 project detail pages).
+const DETAIL_ITEM_PATTERNS = [
+  /\/portfolio-collections\/[^/]+\/[^/]+/i,  // portfolio detail pages
+  /\/portfolio\/[^/]+\/[^/]+/i,
+  /\/projects?\/[^/]+\/[^/]+/i,                // /projects/x/y · /project/x/y
+  /\/case-stud(y|ies)\/[^/]+\/[^/]+/i,         // case study detail
+  /\/gallery\/[^/]+\/[^/]+/i,                   // gallery item
+  /\/blog\/[^/]+\/[^/]+/i,                      // blog post detail (one item per nested url)
+  /\/news\/[^/]+\/[^/]+/i,
+  /\/post\/[^/]+/i,                             // /post/<slug>
+  /\/article\/[^/]+/i,
+];
+
 export function countContentUrls(urls) {
   if (!Array.isArray(urls)) return 0;
   let count = 0;
@@ -107,6 +122,7 @@ export function countContentUrls(urls) {
     const loc = typeof u === 'string' ? u : u?.loc || '';
     if (!loc) continue;
     if (CMS_NOISE_PATTERNS.some((re) => re.test(loc))) continue;
+    if (DETAIL_ITEM_PATTERNS.some((re) => re.test(loc))) continue;
     count++;
   }
   return count;

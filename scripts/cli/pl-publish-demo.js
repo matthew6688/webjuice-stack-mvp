@@ -334,8 +334,10 @@ proc.on('exit', async (code) => {
           const { stage7Message } = await import('../../core/funnel/audit-stage-messages.js');
           const { editThreadMessage } = await import('../../core/funnel/lead-thread-sync.js');
           const newBody = stage7Message({ slug, deployUrl: url, deployedAt: record.deployed_at });
-          // Read entity for existing Stage 9 message_id (idempotent re-publish)
-          const ePath = path.join(REPO, 'data/leads/entities', foundKeyEarly + '.json');
+          // cycle-27 bug fix (Matthew 2026-05-15): use foundKey (in scope) NOT
+          // foundKeyEarly (inner-scoped to earlier try block · undefined here ·
+          // caused Stage 9 → projects to throw + no message posted).
+          const ePath = path.join(REPO, 'data/leads/entities', foundKey + '.json');
           let entE = {};
           try { entE = JSON.parse(fs.readFileSync(ePath, 'utf8')); } catch {}
           const existingS9 = entE.discord_stage_message_ids?.['9_projects'];
@@ -347,7 +349,7 @@ proc.on('exit', async (code) => {
               const fresh = await appendThreadMessage(r.threadId, newBody);
               if (fresh.ok) {
                 const { mutateEntity } = await import('../../core/leads/discovery-store.js');
-                await mutateEntity(foundKeyEarly, (e) => {
+                await mutateEntity(foundKey, (e) => {
                   e.discord_stage_message_ids = e.discord_stage_message_ids || {};
                   e.discord_stage_message_ids['9_projects'] = fresh.messageId;
                 });
@@ -357,7 +359,7 @@ proc.on('exit', async (code) => {
             const posted = await appendThreadMessage(r.threadId, newBody);
             if (posted.ok && posted.messageId) {
               const { mutateEntity } = await import('../../core/leads/discovery-store.js');
-              await mutateEntity(foundKeyEarly, (e) => {
+              await mutateEntity(foundKey, (e) => {
                 e.discord_stage_message_ids = e.discord_stage_message_ids || {};
                 e.discord_stage_message_ids['9_projects'] = posted.messageId;
               });

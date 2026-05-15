@@ -47,10 +47,14 @@ await ta('archiveAndLockThread PATCH body includes auto_archive_duration (preven
     };
     const r = await archiveAndLockThread('9999', { reason: 'test', fetchImpl });
     assert.ok(r.ok, `expected ok · got ${JSON.stringify(r)}`);
-    const patch = calls.find((c) => c.method === 'PATCH');
-    assert.ok(patch, 'no PATCH call made');
-    const body = JSON.parse(patch.body);
-    assert.equal(body.archived, true, 'archived must be true');
+    // cycle-27 (Nu Roof Tas fix): archiveAndLockThread now does 2-step PATCH.
+    // 1st PATCH: { locked, auto_archive_duration }. 2nd PATCH: { archived, locked, auto_archive_duration }.
+    // The archived:true body is in the SECOND PATCH.
+    const patches = calls.filter((c) => c.method === 'PATCH');
+    assert.ok(patches.length >= 1, 'no PATCH call made');
+    const finalPatch = patches[patches.length - 1];
+    const body = JSON.parse(finalPatch.body);
+    assert.equal(body.archived, true, 'archived must be true (final PATCH)');
     assert.equal(body.locked, true, 'locked must be true');
     assert.ok(body.auto_archive_duration,
       `auto_archive_duration missing · Discord forum threads need it to truly archive`);

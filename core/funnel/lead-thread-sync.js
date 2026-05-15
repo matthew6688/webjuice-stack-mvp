@@ -355,7 +355,10 @@ export async function copyLeadHistoryToProjectThread(leadThreadId, projectThread
     // Filter: bot-authored + has text content
     if (!m.author?.bot || !m.content) { skipped++; continue; }
     try {
-      const postResp = await fetchImpl(`${DISCORD_API}/channels/${projectThreadId}/messages`, {
+      // cycle-27 fix (Matthew 2026-05-15 Roofing Today): use discordFetch 429
+      // backoff · bulk replay hits per-channel rate limit · without backoff
+      // some messages silently dropped to skipped count.
+      const postResp = await discordFetch(`${DISCORD_API}/channels/${projectThreadId}/messages`, {
         method: 'POST',
         headers: {
           Authorization: `Bot ${botToken()}`,
@@ -363,7 +366,7 @@ export async function copyLeadHistoryToProjectThread(leadThreadId, projectThread
           'User-Agent': 'profitslocal-lead-thread-sync',
         },
         body: JSON.stringify({ content: String(m.content).slice(0, 2000) }),
-      });
+      }, { fetchImpl });
       if (postResp.ok) posted++;
       else skipped++;
     } catch {
@@ -709,7 +712,10 @@ export async function renameThreadToCurrentTitle(entityKey, { fetchImpl = fetch 
         oldTitle = data.name;
         if (data.name === newTitle) return { ok: true, unchanged: true, threadId, title: newTitle };
       }
-      const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+      // cycle-27 (Matthew 2026-05-15): use discordFetch for 429 backoff ·
+      // rename is rate-limited (2 per 10 min per channel) · bulk reapply
+      // operations otherwise drop renames silently.
+      const r = await discordFetch(`${DISCORD_API}/channels/${threadId}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bot ${botToken()}`,
@@ -717,7 +723,7 @@ export async function renameThreadToCurrentTitle(entityKey, { fetchImpl = fetch 
           'User-Agent': 'profitslocal-lead-thread-sync',
         },
         body: JSON.stringify({ name: newTitle }),
-      });
+      }, { fetchImpl });
       if (r.status === 404) return { ok: false, dead: true };
       if (!r.ok) {
         const t = await r.text();
@@ -800,8 +806,23 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
       });
     } catch { /* non-blocking */ }
   }
+  // cycle-27 (Matthew 2026-05-15 Nu Roof Tas 1504966771914838149):
+  // Discord ignores `archived: true` when sent in the SAME PATCH as `locked`
+  // sometimes · result: thread ends up locked-but-NOT-archived (visible in
+  // active list · breaks G5 "1 entity = 1 visible thread"). Fix: 2-step
+  // PATCH · lock first · then archive.
+  await discordFetch(`${DISCORD_API}/channels/${threadId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bot ${botToken()}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'profitslocal-lead-thread-sync',
+    },
+    body: JSON.stringify({ locked: true, auto_archive_duration: 10080 }),
+  }, { fetchImpl }).catch(() => {});
+
   // PATCH archived + locked (Discord API · same endpoint as updateDiscordThread)
-  const response = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+  const response = await discordFetch(`${DISCORD_API}/channels/${threadId}`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bot ${botToken()}`,
@@ -814,7 +835,7 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
     // archived threads · operator can revisit history.
     // (without this · POST to thread after archive auto-unarchives · zombie thread)
     body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 10080 }),
-  });
+  }, { fetchImpl });
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
   return { ok: true, threadId, archived: true, locked: true };

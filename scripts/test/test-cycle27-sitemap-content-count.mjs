@@ -50,6 +50,23 @@ t('countContentUrls filters WordPress taxonomy paths', () => {
   assert.equal(count, 5, `expected 5 real content pages · got ${count}`);
 });
 
+t('countContentUrls collapses portfolio/project/blog detail pages', () => {
+  const urls = [
+    { loc: 'https://example.com/' },
+    { loc: 'https://example.com/services/' },
+    { loc: 'https://example.com/portfolio/' },
+    { loc: 'https://example.com/portfolio-collections/residential/project-a' }, // skip · detail
+    { loc: 'https://example.com/portfolio-collections/residential/project-b' }, // skip
+    { loc: 'https://example.com/portfolio-collections/commercial/project-c' },  // skip
+    { loc: 'https://example.com/projects/' },
+    { loc: 'https://example.com/projects/2024/job-1' },  // skip
+    { loc: 'https://example.com/blog/' },
+    { loc: 'https://example.com/blog/category/seo-tips' }, // skip · blog detail nested
+  ];
+  // Real frontend menu: home / services / portfolio / projects / blog · 5 pages
+  assert.equal(mod.countContentUrls(urls), 5);
+});
+
 t('countContentUrls keeps service/area pages', () => {
   const urls = [
     { loc: 'https://example.com/' },
