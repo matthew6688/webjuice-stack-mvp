@@ -95,9 +95,13 @@ async function processEntity(key) {
       && (entity.latest?.categories || []).length >= 4;
     if (BRIEF_INDEPENDENT.has(failedGateId) || multiBusinessByCategories) {
       console.log(`     ✗ PRE-GATE FAILED · ${preVerdict.archive_reason} · 跳过 brief LLM ($0.5/74s 省了)`);
-      // Persist archive directly · skip brief + final qualifyEntity
-      const { setEntityPhase, ENTITY_PHASE } = await import(path.join(REPO, 'core/leads/discovery-store.js'));
-      setEntityPhase({ entityKey: key, phase: ENTITY_PHASE.ARCHIVED, archive_reason: preVerdict.archive_reason });
+      // cycle-26 P5 · use archiveLeadAsRejected unifier · ensures grade=D + thread rename [D] + lock
+      const { archiveLeadAsRejected } = await import(path.join(REPO, 'core/leads/terminal-archive.js'));
+      await archiveLeadAsRejected(key, {
+        reason: preVerdict.archive_reason,
+        pathId: 'stage7_pregate_fail',
+        layer: 'Stage 7 · pre-gate',
+      });
       const entityPath = path.join(REPO, 'data/leads/entities', `${key}.json`);
       const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
       fresh.qualification = {

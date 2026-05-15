@@ -327,10 +327,14 @@ async function main() {
   console.error(`csv saved: ${csvPath}`);
 
   const rows = parseCsv(csvText);
-  const leads = rows.map(csvRowToLead);
+  const allLeads = rows.map(csvRowToLead);
+  // cycle-26 P5 · cap to requested count · gosom `depth` returns 10-20+ but operator asked count=N
+  const requestedCap = Number.parseInt(args.count || '5', 10);
+  const leads = allLeads.slice(0, requestedCap);
+  const overflow = allLeads.length - leads.length;
   const jsonl = leads.map((l) => JSON.stringify(l)).join('\n') + (leads.length ? '\n' : '');
   fs.writeFileSync(runOutputPath, jsonl);
-  console.error(`wrote ${leads.length} leads → ${runOutputPath}`);
+  console.error(`wrote ${leads.length} leads → ${runOutputPath}${overflow > 0 ? ` (capped from ${allLeads.length} · +${overflow} overflow ignored)` : ''}`);
 
   // V3 D43 GR6 · LLM judge intake plausibility · 不阻塞 · 写 audit log + bot-log
   let intakeJudge = null;
@@ -351,6 +355,22 @@ async function main() {
             `⚠️ Intake judge (${niche}/${city}) verdict=**${intakeJudge.verdict}** conf=${intakeJudge.confidence}\nreason: ${intakeJudge.reason}${susList ? '\n可疑: ' + susList : ''}`,
             { context: { batchId, query: keywords.join(' | '), verdict: intakeJudge.verdict } });
         } catch {}
+      }
+      // cycle-26 P5 · short-circuit on CONFIDENT reject (conf ≥ 0.6) · halt downstream chain
+      // Low-conf reject (e.g. 0.18) lets pipeline run · LLM was unsure.
+      if (intakeJudge.verdict === 'reject' && (intakeJudge.confidence || 0) >= 0.6) {
+        console.error(`[pl:scrape-docker] HALT · LLM reject conf=${intakeJudge.confidence} >= 0.6 · skipping entity write + downstream audit`);
+        if (batchId) {
+          const { postStageUpdate, finalizeBatch } = await import(path.join(REPO_ROOT, 'core/funnel/pipeline-batch-thread.js'));
+          await postStageUpdate({
+            batchId,
+            stage: 'Stage 0 · Discovery (HALTED)',
+            status: 'fail',
+            summary: `❌ LLM judge rejected (conf ${intakeJudge.confidence}): ${intakeJudge.reason}\n→ 不入库 · 不 audit · 节省 ~$2-5\noperator review · 修 query 后重投`,
+          });
+          await finalizeBatch({ batchId, terminalTag: 'rejected_by_judge', summary: 'Halted at Stage 0 · operator review', skipDedupAudit: true });
+        }
+        process.exit(0); // Clean exit · task marked done · pipeline stopped
       }
     } catch (err) {
       console.error(`llm-judge intake skipped: ${err.message}`);

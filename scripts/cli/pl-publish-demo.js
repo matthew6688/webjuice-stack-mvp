@@ -47,6 +47,21 @@ if (!fs.existsSync(adapterHtml)) {
   process.exit(1);
 }
 
+// cycle-26 P5 · dedup: skip if recently deployed (< 60s) · prevents chain re-fire double-publish
+const deployRecordPath = path.join(adapterDir, 'cf-pages-deploy.json');
+if (!args.force && fs.existsSync(deployRecordPath)) {
+  try {
+    const prior = JSON.parse(fs.readFileSync(deployRecordPath, 'utf8'));
+    const priorTs = prior.deployed_at ? new Date(prior.deployed_at).getTime() : 0;
+    const ageSec = (Date.now() - priorTs) / 1000;
+    if (ageSec < 60) {
+      console.log(`[pl:publish-demo] ↩ skip · last publish was ${ageSec.toFixed(0)}s ago (use --force to override)`);
+      console.log(`   prior demo: ${prior.demo_url}`);
+      process.exit(0);
+    }
+  } catch { /* malformed record · proceed */ }
+}
+
 // Project name: <slug>-dev. CF Pages requires lowercase, hyphens, ≤58 chars.
 const projectName = `${slug}-dev`.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/^-+|-+$/g, '').slice(0, 58);
 

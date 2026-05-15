@@ -192,6 +192,8 @@ export const TERMINAL_FAIL_PATHS = Object.freeze([
   { id: 'stage2_sitemap_too_large',       stage: 'Stage 2', file: 'scripts/leads/run-audit-pipeline.js', handler: 'archiveLeadAsRejected' },
   // Stage 4 grade=D (was "Stage 3 grade=D" in old labels)
   { id: 'stage4_grade_d',                 stage: 'Stage 4', file: 'core/scoring/lead-grading.js', handler: 'archiveLeadAsRejected' },
+  // cycle-26 P5: Stage 7 pre-gate fail (qualification hard_gate brief-independent fail)
+  { id: 'stage7_pregate_fail',            stage: 'Stage 7', file: 'scripts/cli/pl-check-qualification.js', handler: 'archiveLeadAsRejected' },
 ]);
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
