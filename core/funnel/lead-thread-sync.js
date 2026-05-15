@@ -621,7 +621,9 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
       'Content-Type': 'application/json',
       'User-Agent': 'profitslocal-lead-thread-sync',
     },
-    body: JSON.stringify({ archived: true, locked: true }),
+    // cycle-26 P9: add auto_archive_duration so Discord respects archive flag for forum threads
+    // (without this · POST to thread after archive auto-unarchives · zombie thread)
+    body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 60 }),
   });
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
