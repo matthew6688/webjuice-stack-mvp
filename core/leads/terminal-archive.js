@@ -123,12 +123,24 @@ export async function archiveLeadAsRejected(entityKey, opts = {}) {
   // open to survivors). Previously this block was nested inside `if (entity.
   // discord_thread_id)` → entities without threads never got recorded into
   // batch.entities · KPI gate never fired for Places intake L2 exclusions.
+  //
+  // cycle-27 (2026-05-15 newcastle+adelaide silent-miss):
+  // Re-read entity from disk · `entity` variable can be stale if writeEntityFile
+  // didn't propagate batches[] update (race with cheap-audit-queue writes).
+  // Also log when recordEntityTerminal returns !ok so silent misses surface.
   try {
     const { recordEntityTerminal } = await import('../funnel/pipeline-batch-thread.js');
-    const batches = entity.batches || [];
+    let batches = entity.batches || [];
+    // Re-read entity from disk to pick up any concurrent batches[] updates
+    try {
+      const fresh = JSON.parse(fs.readFileSync(r.path, 'utf8'));
+      if (Array.isArray(fresh.batches) && fresh.batches.length > batches.length) {
+        batches = fresh.batches;
+      }
+    } catch { /* fall back to in-memory entity */ }
     const batchId = batches[batches.length - 1];
     if (batchId) {
-      await recordEntityTerminal({
+      const recResult = await recordEntityTerminal({
         batchId,
         entityKey,
         name: entity.latest?.name || null,
@@ -139,9 +151,14 @@ export async function archiveLeadAsRejected(entityKey, opts = {}) {
         grade: 'D',
         archive_reason: entity.archive_reason || tag,
       });
+      if (!recResult?.ok) {
+        console.warn(`[archiveLeadAsRejected] batch record returned !ok for ${entityKey} batch=${batchId} · ${recResult?.reason || 'unknown'}`);
+      }
+    } else {
+      console.warn(`[archiveLeadAsRejected] entity ${entityKey} has no batches[] · batch.entities NOT recorded`);
     }
   } catch (err) {
-    console.warn(`[archiveLeadAsRejected] batch record failed: ${err.message}`);
+    console.warn(`[archiveLeadAsRejected] batch record threw: ${err.message}`);
   }
 
   return { ok: true, entity, threadAction };
