@@ -1,5 +1,7 @@
 # V3 · Lead 旅程图 · 从进入到网站准备就绪
 
+> **cycle-26 update (2026-05-15)**: `DESIGN_READY` phase 已重命名为 `AUDIT_READY` (audit 完成 = "可以建站"的 ready signal · 命名歧义清理 · 见 `core/contracts/discord-messages.js` ENTITY_PHASE)。Stage label 已统一 9-stage (1/9 抓客户 → 9/9 发布上线 · 不再是 0-indexed 8 stages)。Batch noise 已替换为 KPI dashboard (1 个 summary 替 N 个 per-entity event)。1 entity = 1 visible thread invariant (Discord forum auto-unarchive 已修 · `auto_archive_duration:60`)。详 DECISIONS-LOG cycle-26。
+>
 > **作用域**: 单个 lead 从首次进系统 → 分类 → 评分 → 分级 → 决策 → 网站就绪。
 > **不在范围**: outreach (M4) · 购后 (M5) · M3 网站生成步骤本身。
 > **目的**: Operator 一眼看懂每个 lead 在哪、为什么在那、下一步怎么走。
@@ -240,7 +242,7 @@ entity 有 website → Stage 6 detailedAudit 跑 (Playwright fetch · 12 dim)
                   → Stage 9 grade ABCD by audit_score + signals
                   → Stage 10 tier T1/T2/T3
                   → Stage 11 grade-router → Discord channel
-                  → Stage 12 DESIGN_READY → M3 build demo
+                  → Stage 12 AUDIT_READY → M3 build demo
 ```
 
 #### 「无网站」客户路径 (starter_candidate)
@@ -330,24 +332,24 @@ entity 无 website (或 third_party) → no_website 是 detailedAudit hard_trigg
 - 首条 message: audit score + decision + top 3 issues + master.md 链接 + audit URL
 - Tags: `[graded, <grade>, <tier>]`
 
-### Stage 12 · 网站就绪 · DESIGN_READY phase ✅ (V3 D31 · 2026-05-14 显式化)
+### Stage 12 · 网站就绪 · AUDIT_READY phase ✅ (V3 D31 · 2026-05-14 显式化)
 
-**位置**: `ENTITY_PHASE.DESIGN_READY = 'design-ready'`
+**位置**: `ENTITY_PHASE.AUDIT_READY = 'audit-ready'`
 
 **何时进入**:
-- `core/scoring/lead-grading.js#persistLeadGrade` 在 grade=A/B/C 时调 `setEntityPhase('design-ready')`
+- `core/scoring/lead-grading.js#persistLeadGrade` 在 grade=A/B/C 时调 `setEntityPhase('audit-ready')`
 - D 仍走 ARCHIVED
 - 旧版 "A/B → awaiting · C 不变 phase" 行为已废弃 (D31)
 
 **判断 ready 完整 invariant**:
-1. ✅ `entity.phase === 'design-ready'`
+1. ✅ `entity.phase === 'audit-ready'`
 2. ✅ `entity.scoring.grade ∈ {A, B, C}`
 3. ✅ `entity.scoring.tier ∈ {T1, T2, T3}` (非 null)
 4. ✅ `clients/<slug>/v2/master.md` 22 章满
 5. ✅ `clients/<slug>/v2/screenshots/desktop.png` 存在
 
 **M3 触发**: `pl:build-from-reference --slug <slug>` → SOP-3-FLOW。
-**Doctor 守**: `pl:lead-journey-doctor` invariant #7 验证 DESIGN_READY → grade A/B/C。
+**Doctor 守**: `pl:lead-journey-doctor` invariant #7 验证 AUDIT_READY → grade A/B/C。
 
 ---
 
@@ -419,7 +421,7 @@ entity 无 website (或 third_party) → no_website 是 detailedAudit hard_trigg
 | Stage 8 hard-skip `recent_redesign` | Wayback Machine API 不稳 · false negative | 加 retry + cache (TODO) |
 | Stage 9 grade A/B 区分 | 边界靠 audit_score · 没 sales feedback loop | 加 sales 反馈表单 (TODO · 需 admin UI 配合) |
 | Stage 11 C → cold queue | M4 还没建 · queue 累积但不消化 | M4 启动 (优先级 TBD) |
-| Stage 12 DESIGN_READY | ~~没显式 phase~~ | ✅ D31 已修 · A/B/C → setEntityPhase('design-ready') |
+| Stage 12 AUDIT_READY | ~~没显式 phase~~ | ✅ D31 已修 · A/B/C → setEntityPhase('audit-ready') |
 | ⚠️ 240 entity 中 234 个 no-phase + 240 个 no-grade (现状 audit 还没批量回跑) | 真问题 · 已 doctor 监控 (pl:lead-journey-doctor §funnel) | 跑 `npm run scoring:rescore-v2 -- --all-niches` 批量重 grade · 看 funnel 是否 ABC 分布合理 |
 | 整体 | 没 funnel dashboard · 漏斗指标手算 | admin UI 加 funnel page (TODO) |
 

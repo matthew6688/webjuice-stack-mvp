@@ -2,7 +2,7 @@
 
 > **Branch**: `v3-modular` · worktree `/Users/matthew/Developer/google-map-website-v3/`
 > **GitHub**: https://github.com/matthew6688/webjuice-stack-mvp/tree/v3-modular
-> **Last verified live**: 2026-05-14 · doctor 5/5 green · 10 客户 live URL 200
+> **Last verified live**: 2026-05-15 · cycle-26 done · test:cycle26 26/26 · lint:messages 0 · cycle:doctor 0 · 10 客户 live URL 200
 > **本文是 V3 唯一 source of truth · 任何代码变更必须同步更新本索引及相关 doc**
 
 ---
@@ -50,6 +50,7 @@ npm run v3:doc-sync-audit
 | `ai.profitslocal.task-dispatcher` | `~/Library/LaunchAgents/ai.profitslocal.task-dispatcher.plist` | main worktree | RunAtLoad + KeepAlive | SOP-DISCORD-HERMES-FLOW |
 | **`ai.profitslocal.v3.task-dispatcher`** (**D30 新**) | `~/Library/LaunchAgents/ai.profitslocal.v3.task-dispatcher.plist` | v3 worktree | RunAtLoad + KeepAlive | SOP-1 §5 · D30 |
 | **`ai.profitslocal.intake-doctor-daily`** (**D29 新**) | `~/Library/LaunchAgents/ai.profitslocal.intake-doctor-daily.plist` | v3 worktree | 09:00 daily | M1-PRD §8.1 · D29 |
+| **`ai.profitslocal.v3.profile-card-heartbeat`** (**cycle-26 新**) | `~/Library/LaunchAgents/ai.profitslocal.v3.profile-card-heartbeat.plist` | v3 worktree | 5 min interval | Profile-card drift detect + auto-fix · `pl:profile-card-heartbeat` |
 | `ai.profitslocal.task-api` | … | main worktree | RunAtLoad + KeepAlive | — |
 | `ai.profitslocal.sop0-tunnel` | … | main worktree | RunAtLoad + KeepAlive | — |
 | `ai.profitslocal.task-retention` | … | main worktree | 03:00 daily | — |
@@ -166,6 +167,15 @@ npm run pl:build-internal-audit -- --slug <slug>
 npm run pl:optimize-internal-report -- --slug <slug> [--rounds 3]
 npm run pl:publish-demo -- --slug <slug>
 npm run pl:bulk-publish-demo -- --all
+
+# cycle-26 · contract + TDD + ops
+npm run test:cycle26                       # 26 TDD test files (340+ assertions)
+npm run lint:messages                      # static contract lint (pre-commit gate)
+npm run cycle:doctor                       # end-to-end contract validation
+npm run pl:asset-integrity-doctor          # post-publish HTTP HEAD asset check
+npm run pl:profile-card-heartbeat          # drift detect + auto-fix (cron 5min)
+npm run pl:system-doctor [-- --full --json] # 6-section healthcheck
+npm run pl:rearchive-zombies [-- --dry-run] # clean locked-but-visible threads
 ```
 
 ---
@@ -190,6 +200,7 @@ npm run pl:bulk-publish-demo -- --all
 | D36 | Skill 清理 (7 V2 archive) + 3 SoT 新文档 (SKILLS-INDEX / TOOL-STACK-PRD / INTAKE-RUNBOOK) | cross-module |
 | D37 | Audit per-stage Discord hook + contact 抓取 (email/contact_us/social) + niche 容错 + Bug G1/G2 | M2 + 显示 |
 | D38 | Audit stage 富信息消息 builder + 2-page crawl (homepage + /contact/) + evidence hyperlinks + enrichment thread post | SOP-AUDIT-STAGE-NOTIFICATIONS |
+| **cycle-26 (D26.1-D26.9)** | Contract-first refactor · `core/contracts/discord-messages.js` 单一来源 · 9-stage labels (1-9 not 0-8) · `AUDIT_READY` 替 `DESIGN_READY` · profile-card 5-layer 防御 · KPI dashboard 替 batch noise · 1 entity = 1 visible thread (Discord forum auto-unarchive · `auto_archive_duration:60`) · asset integrity + build-assets extractor · system-doctor 6-section healthcheck · TDD discipline (Rule 12 + 13) | cross-cutting |
 
 完整: [DECISIONS-LOG.md](./DECISIONS-LOG.md)
 

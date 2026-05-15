@@ -1049,3 +1049,200 @@ publish-doctor         ✓ 200 spot-check
 **No schema migration**: reaper writes optional fields (`failed_at`, `result.reaper`) — task
 files predating this change validate unchanged. single-enrich dedup is read-only against
 entity files.
+
+---
+
+## cycle-26 (2026-05-15 · Matthew sign-off)
+
+Goal: stop the bug-cycle pattern (cycle-21..25 reactive patching). Build
+**contract-first** system: every cross-file string lives in one source of
+truth · pre-commit lint enforces · 26 TDD tests guard invariants · doctors
+verify end-to-end.
+
+### Architecture decisions
+
+**D26.1 · Contract module** (`core/contracts/discord-messages.js`):
+Single source of truth for STAGE_LABELS (1-9) · STATE_TAGS · GRADE_TAGS ·
+DEPRECATED_TERMS · TERMINAL_FAIL_PATHS · ENTITY_PHASE · PHASE_TO_STATE.
+Lint rejects any file containing deprecated literals or scope-duplicating
+strings. Prevents cycle-21..25 class of drift (stage label out-of-sync
+across 7 emit sites · predict-grade table leaked into wrong message · etc).
+
+**D26.2 · Terminal-fail unifier** (`core/leads/terminal-archive.js`):
+All 10 D-grade-equivalent exits funnel through `archiveLeadAsRejected(key, opts)`.
+Atomic: grade=D + phase=archived + title swap [D] + thread archive+lock.
+Replaces 10 scattered `setEntityPhase(ARCHIVED)` call sites that were
+inconsistent on whether they locked thread / swapped title.
+
+**D26.3 · Phase rename design-ready → audit-ready**:
+Old name implied "ready to be designed" (= not yet started). True semantic:
+"audit complete · sales decides next". Rename cascade through 10 files +
+migration script (`scripts/ops/migrate-phase-rename.js`) for entity data.
+
+**D26.4 · 9-stage pipeline (Stage 1/9 .. Stage 9/9)**:
+cycle-21 had inconsistent stage numbering across 5 files (Stage 1/5 · Stage
+3/4 · Stage 5/7). Renumbered: 1=抓客户 · 2=排除筛 · 3=网站审计 · 4=视觉 ·
+5=打分 · 6=内部报告 · 7=资格复核 · 8=建demo · 9=发布. Stage messages now
+all import STAGE_LABELS[n] from contract.
+
+**D26.5 · profile card 5-layer defense (Matthew: "永远实时")**:
+1. writeEntity hook (discovery-store) → auto-schedule card refresh on ANY
+   entity write (no caller can forget).
+2. entity.deploy single-source-of-truth (replaces disk cf-pages-deploy.json
+   read · ensures card sees latest deploy state).
+3. Auto-install scheduler (`core/funnel/card-refresh-scheduler.js`) · 500ms
+   debounce · safe even when caller doesn't know about hook.
+4. 429 + 5xx retry policy in upsertProfileCard (Discord rate limit / 5xx
+   no longer silently drops update).
+5. Verify-after-PATCH (fetch back · hash-compare · retry once on drift).
+6. Heartbeat cron (`pl:profile-card-heartbeat`) every 5 min · scans all
+   active threads · auto-fixes drift.
+7. Pipeline-end summary message (`core/funnel/pipeline-summary.js`) ·
+   fix-of-record posted after Stage 9 · operator trusts THIS · not the
+   card.
+
+**D26.6 · KPI dashboard at batch end (Matthew: "discovery run 太乱 · 想 KPI")**:
+Replaced verbose per-entity batch thread events (🔄/🆕/🚀/🗄️ spam) with
+single dashboard at batch finalize. Categorizes entities (published / qa-
+pending / archived / ready-but-unpublished / in-progress). Echoed to
+#website-tasks task thread too · operator sees outcome where they started.
+
+**D26.7 · 1 entity = 1 visible thread (Matthew: "lead 已 graduate · 老 leads
+thread 还可见 · duplicate confusing")**:
+Discord forum thread quirk: POST to archived thread auto-unarchives. Fixes:
+- appendThreadMessage now GET-checks thread.archived BEFORE POST · skips
+  if archived (returns { ok, skipped: 'archived' }).
+- archiveAndLockThread PATCH body adds `auto_archive_duration: 60` ·
+  Discord respects archive flag for forum threads.
+- detailed-audit-queue propagates `process.env.PL_PARENT_THREAD_ID` through
+  chain (cheap-audit → run-pipeline → build → publish) · dispatcher
+  completion msgs land in original task thread instead of entity leads
+  thread.
+- New CLI `pl:rearchive-zombies` · scans both channels · re-archives
+  locked-but-active threads.
+
+**D26.8 · Asset integrity + build-assets**:
+- `core/reports/asset-integrity.js` extractAssetRefs + verify (local +
+  remote HTTP HEAD). `pl:asset-integrity-doctor` post-publish verification.
+- `core/redesign/build-assets-extractor.js` · turns Stage 6 multi-page-
+  crawl into `clients/<slug>/v2/build-assets/` folder (logo URL · photos[]
+  · brand-colors.json · content/<page>.md · voice-samples.md · manifest).
+  Prep for redesign / build phase. Heuristic logo detection · CSS color
+  scan · readable text extraction (strips script/style/tags).
+
+**D26.9 · System healthcheck**:
+`pl:system-doctor` · 6-section dependency check (A daemons · B external
+APIs · C local services · D filesystem · E Discord channels · F internal
+gates). Exit 0/1/2. JSON mode for cron. Live-verified · catches real
+issues (disk 94% · bot-log env missing · etc).
+
+### TDD discipline (Rule 12 + 13)
+
+26 test files · 340+ assertions:
+01 stage-messages · 02 profile-card · 03 terminal-unifier · 04 snapshot-
+classifier · 05 migrate-phase · 06 title-state-machine · 07 batch-progress
+· 08 stage7-format · 09 cross-file-integrity · 10 master-md-data-lineage
+· 11 asset-integrity · 12 pipeline-summary · 13 profile-card-realtime ·
+14 master-md-accuracy · 15 master-md-full-population · 16 html-render-
+fidelity · 17 customer-audit-isolation · 18 internal-audit-completeness
+· 19 three-report-consistency · 20 profile-card-verify · 21 heartbeat-
+doctor · 22 skip-archived-post · 23 kpi-dashboard · 24 system-doctor ·
+25 build-assets-extractor · 26 no-zombie-threads.
+
+Pre-commit hook (`.git/hooks/pre-commit`) gates: lint:messages + test:cycle26.
+Both must pass · `--no-verify` only for emergency.
+
+**Rule 13 (Matthew rebuke after P9b zombie fix shipped without test)**:
+Every bug-fix MUST start with RED test reproducing the bug · then GREEN
+fix · then test joins `test:cycle26` forever as regression guard. Bug-
+fix without test = discipline violation.
+
+### Commit chain (10 commits)
+
+| Commit | Phase | Summary |
+|---|---|---|
+| `447d5694` | base | 排除式筛选 + 9-stage + 19 TDD + SOP + contract |
+| `7772f4ff` | P2 | profile-card 5-layer (verify · retry · heartbeat) |
+| `1e9bb2c8` | P3 | summary echo task thread + heartbeat cron installed |
+| `2493acac` | P4 | 3 E2E bug fixes (Stage 5/5 · race · heartbeat 400) |
+| `a2dc6355` | P5 | 5 residual fixes (publish dedup · pre-gate unifier · gosom cap · LLM short-circuit · contract additions) |
+| `0a407e0e` | P6 | KPI dashboard + skip-archived-post guards |
+| `719742c4` | P7+P8 | system-doctor + build-assets extractor |
+| `3119ceec` | P9 | chain propagate PL_PARENT_THREAD_ID + dedup finalize msg |
+| `09545c06` | P9b | zombie cleanup + auto_archive_duration |
+| `51b7a6a3` | P9c | TDD for zombie + Rule 13 (bug-fix must have RED test) |
+
+### Files touched
+
+New (15):
+- `core/contracts/discord-messages.js`
+- `core/funnel/audit-stage-messages.js` (rewrite)
+- `core/funnel/batch-progress.js`
+- `core/funnel/card-refresh-scheduler.js`
+- `core/funnel/kpi-dashboard.js`
+- `core/funnel/pipeline-summary.js`
+- `core/leads/terminal-archive.js`
+- `core/redesign/build-assets-extractor.js`
+- `core/reports/asset-integrity.js`
+- `scripts/cli/pl-asset-integrity-doctor.js`
+- `scripts/cli/pl-cycle-doctor.js`
+- `scripts/cli/pl-clean-slate.js`
+- `scripts/cli/pl-profile-card-heartbeat.js`
+- `scripts/cli/pl-profile-card-heartbeat.launchd.plist`
+- `scripts/cli/pl-rearchive-zombie-threads.js`
+- `scripts/cli/pl-system-doctor.js`
+- `scripts/cli/pl-thread-audit-deep.js`
+- `scripts/cli/pl-e2e-audit.js`
+- `scripts/ops/lint-message-literals.js`
+- `scripts/ops/migrate-phase-rename.js`
+- `docs/v3/SOP-MASTER-MD-DATA-LINEAGE.md`
+- + 26 test files in `scripts/test/test-cycle26-*.mjs`
+
+Modified (~10):
+- `core/funnel/discord-emit.js` · `display-vocab.js` · `lead-thread-sync.js`
+  · `pipeline-batch-thread.js` · `profile-card.js`
+- `core/leads/cheap-audit-queue.js` · `detailed-audit-queue.js`
+  · `discovery-store.js` · `exclusion-filter.js`
+- `core/reports/master-md-builder.js`
+- `core/scoring/lead-grading.js`
+- `core/tasks/intent-router.js`
+- `scripts/cli/pl-build-from-reference.js` · `pl-check-qualification.js`
+  · `pl-discord-snapshot.js` · `pl-lead-journey-doctor.js`
+  · `pl-publish-demo.js` · `pl-scrape-docker.js`
+- `scripts/leads/build-master-md.js` · `run-audit-pipeline.js`
+- `CLAUDE.md` (Rule 0 · 1 · 8 · 11 · 12 · 13 added/strengthened)
+
+Deleted (1):
+- `core/leads/predict-grade.js` (cycle-23 deprecated · cycle-26 removed all callers)
+
+### Daemons added
+
+| Label | Plist | Schedule | Purpose |
+|---|---|---|---|
+| `ai.profitslocal.v3.profile-card-heartbeat` | `scripts/cli/pl-profile-card-heartbeat.launchd.plist` | 5 min interval | Scans all active threads · diffs entity-derived expected vs Discord-live actual profile card · auto-fixes drift |
+
+### NPM scripts added
+
+```
+lint:messages              · pre-commit static check
+cycle:doctor               · contract validation
+test:cycle26               · 26 file TDD runner
+pl:asset-integrity-doctor  · post-publish HTTP HEAD check
+pl:profile-card-heartbeat  · drift detect + auto-fix
+pl:system-doctor           · 6-section healthcheck (--full / --json)
+pl:rearchive-zombies       · clean locked-but-active threads
+```
+
+### Verification
+
+Final state (2026-05-15 17:25 UTC):
+- test:cycle26 · 26/26 files · 340+ assertions PASS
+- lint:messages · 0 violations across 526 files
+- cycle:doctor · 0 violations
+- profile-card-heartbeat (dry-run) · 23/23 in_sync · 0 drift
+- rearchive-zombies (dry-run) · 0 zombies (cleaned 7 prior · #leads 11→4 active)
+- system-doctor (live) · catches real issues (disk 94% + bot-log env missing)
+
+cycle-26 marks transition from reactive-patching to contract-first
+discipline. Future cycles: bug surfaces → RED test first → GREEN fix →
+test stays · enforces invariant forever.
