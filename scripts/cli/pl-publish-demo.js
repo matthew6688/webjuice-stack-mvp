@@ -309,29 +309,60 @@ proc.on('exit', async (code) => {
       if (r.ok) {
         console.log(`  #website-projects thread: ${r.reused ? 'reused' : 'opened'} ${r.threadId || ''}`);
 
-        // cycle-27 (Matthew 2026-05-15 "保留之前的 stage 信息"):
-        // Replay bot history from leads thread INTO project thread · so
-        // operator sees the full 9-stage timeline (not just Stage 9).
-        // Only when fresh-opened · skip if reused (history already there).
-        if (!r.reused && oldLeadThreadId && oldLeadThreadId !== r.threadId) {
+        // cycle-27 (Matthew 2026-05-15 VIP Roofing 1504878995743707156):
+        // Replay history if project thread missing Stage 1-8 content (catches
+        // reused-thread + no-history case · was previously only checking !reused).
+        if (oldLeadThreadId && oldLeadThreadId !== r.threadId) {
           try {
-            const { copyLeadHistoryToProjectThread } = await import('../../core/funnel/lead-thread-sync.js');
-            const cp = await copyLeadHistoryToProjectThread(oldLeadThreadId, r.threadId);
-            if (cp.ok) console.log(`  history replayed · ${cp.posted}/${cp.total} messages copied to projects`);
-            else console.warn(`  history replay failed: ${cp.reason}`);
+            const { copyLeadHistoryToProjectThread, projectThreadHasLeadHistory } = await import('../../core/funnel/lead-thread-sync.js');
+            const hasHistory = await projectThreadHasLeadHistory(r.threadId);
+            if (!hasHistory) {
+              const cp = await copyLeadHistoryToProjectThread(oldLeadThreadId, r.threadId);
+              if (cp.ok) console.log(`  history replayed · ${cp.posted}/${cp.total} messages copied to projects (reused=${r.reused})`);
+              else console.warn(`  history replay failed: ${cp.reason}`);
+            } else {
+              console.log(`  history present · replay skipped`);
+            }
           } catch (err) {
             console.warn(`  history replay threw: ${err.message}`);
           }
         }
 
-        // cycle-26 · post Stage 9 publish-done message to PROJECTS thread (not just leads)
-        // so customer-facing channel has the live URL + 4 hyperlinks visible.
+        // cycle-26 · post Stage 9 publish-done message to PROJECTS thread (not just leads).
+        // cycle-27 (VIP Roofing): IDEMPOTENT · if Stage 9 already posted · edit instead.
         try {
           const { stage7Message } = await import('../../core/funnel/audit-stage-messages.js');
-          await appendThreadMessage(
-            r.threadId,
-            stage7Message({ slug, deployUrl: url, deployedAt: record.deployed_at }),
-          );
+          const { editThreadMessage } = await import('../../core/funnel/lead-thread-sync.js');
+          const newBody = stage7Message({ slug, deployUrl: url, deployedAt: record.deployed_at });
+          // Read entity for existing Stage 9 message_id (idempotent re-publish)
+          const ePath = path.join(REPO, 'data/leads/entities', foundKeyEarly + '.json');
+          let entE = {};
+          try { entE = JSON.parse(fs.readFileSync(ePath, 'utf8')); } catch {}
+          const existingS9 = entE.discord_stage_message_ids?.['9_projects'];
+          if (existingS9) {
+            const re = await editThreadMessage(r.threadId, existingS9, newBody);
+            if (re.ok) console.log(`  Stage 9 edited (idempotent · msg ${existingS9})`);
+            else {
+              // Edit failed (likely 404 deleted) · post fresh and update id
+              const fresh = await appendThreadMessage(r.threadId, newBody);
+              if (fresh.ok) {
+                const { mutateEntity } = await import('../../core/leads/discovery-store.js');
+                await mutateEntity(foundKeyEarly, (e) => {
+                  e.discord_stage_message_ids = e.discord_stage_message_ids || {};
+                  e.discord_stage_message_ids['9_projects'] = fresh.messageId;
+                });
+              }
+            }
+          } else {
+            const posted = await appendThreadMessage(r.threadId, newBody);
+            if (posted.ok && posted.messageId) {
+              const { mutateEntity } = await import('../../core/leads/discovery-store.js');
+              await mutateEntity(foundKeyEarly, (e) => {
+                e.discord_stage_message_ids = e.discord_stage_message_ids || {};
+                e.discord_stage_message_ids['9_projects'] = posted.messageId;
+              });
+            }
+          }
         } catch (err) { console.warn(`[publish] stage9 → projects failed: ${err.message}`); }
         if (r.reused) {
           try { await upsertProjectProfileCard(foundKey); console.log('  profile card refreshed'); } catch {}

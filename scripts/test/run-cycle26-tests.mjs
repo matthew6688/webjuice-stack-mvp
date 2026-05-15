@@ -77,6 +77,8 @@ const TESTS = [
   'scripts/test/test-cycle27-batch-state-mutate.mjs',
   // cycle-27 bug #7 · cheap-audit survivors record into batch.entities (predict-C / enrich)
   'scripts/test/test-cycle27-cheap-audit-terminal.mjs',
+  // cycle-27 · publish idempotency (Stage 9 no dupes) + history replay completeness (VIP Roofing)
+  'scripts/test/test-cycle27-publish-idempotent.mjs',
 ];
 
 const results = [];

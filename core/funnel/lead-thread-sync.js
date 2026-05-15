@@ -282,6 +282,31 @@ export async function swapPhaseTag(entityKey, { fetchImpl = fetch } = {}) {
  * Append a text message to a lead thread.
  */
 /**
+ * cycle-27 (Matthew 2026-05-15 thread 1504878995743707156 VIP Roofing):
+ * Inspect project thread · return true iff it already has any Stage 1-8 message.
+ * Used by pl-publish-demo to decide whether to replay history · catches the case
+ * where project thread exists (reused=true) BUT has no Stage 1-8 history yet.
+ *
+ * Stage 9 + Pipeline summary are NOT counted as "history" (they're terminal).
+ */
+export async function projectThreadHasLeadHistory(projectThreadId, { fetchImpl = fetch, maxMessages = 100 } = {}) {
+  if (!projectThreadId) return false;
+  if (isDryRun()) return false;
+  try {
+    const r = await fetchImpl(`${DISCORD_API}/channels/${projectThreadId}/messages?limit=${maxMessages}`, {
+      headers: { Authorization: `Bot ${botToken()}` },
+    });
+    if (!r.ok) return false;
+    const arr = await r.json();
+    if (!Array.isArray(arr)) return false;
+    // Any "## Stage [1-8]" pattern means we have lead history
+    return arr.some((m) => /## Stage [1-8]\/9/.test(m.content || ''));
+  } catch {
+    return false;
+  }
+}
+
+/**
  * cycle-27 (Matthew 2026-05-15 "保留之前的 stage 信息"):
  * Replay bot-posted history from a lead thread into a newly-opened project
  * thread. Called at graduate · so #website-projects thread becomes self-
