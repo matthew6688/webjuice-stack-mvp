@@ -78,12 +78,14 @@ t('discovery-store setEntityPhase hook calls renameThreadToCurrentTitle',
       'phase change hook must rename title (title state machine driver)');
   });
 
-// ─── setEntityPhase hook emits batch progress ───────────────────────────────
-t('discovery-store setEntityPhase hook calls emitBatchProgress',
+// ─── setEntityPhase hook does NOT spam batch thread (cycle-26 P5 · KPI dashboard at end instead)
+t('discovery-store setEntityPhase hook does NOT call emitBatchProgress (P5 KPI rework)',
   () => {
     const src = read('core/leads/discovery-store.js');
-    assert.ok(src.includes('emitBatchProgress'),
-      'phase change must emit to batch thread');
+    // Should NOT have emitBatchProgress active call · only comment ref to removed code
+    const callRe = /import\([^)]+batch-progress[^)]+\)\.then\(\s*\(\s*\{\s*emitBatchProgress\s*\}\s*\)\s*=>\s*\n?\s*emitBatchProgress/;
+    assert.ok(!callRe.test(src),
+      'setEntityPhase must NOT spam batch thread per-entity · use KPI dashboard at end instead');
   });
 
 // ─── terminal-archive calls archiveLeadAsRejected + Discord rename + lock ──

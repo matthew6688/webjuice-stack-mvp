@@ -43,6 +43,10 @@ const TESTS = [
   'scripts/test/test-cycle26-profile-card-verify.mjs',
   // cycle-26 P2.3 · heartbeat doctor static (drift-detection CLI exists)
   'scripts/test/test-cycle26-heartbeat-doctor.mjs',
+  // cycle-26 P5 · skip-post on archived thread (prevents Discord auto-unarchive)
+  'scripts/test/test-cycle26-skip-archived-post.mjs',
+  // cycle-26 P5 · KPI dashboard message (replaces per-entity batch noise)
+  'scripts/test/test-cycle26-kpi-dashboard.mjs',
 ];
 
 const results = [];

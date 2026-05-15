@@ -389,20 +389,60 @@ proc.on('exit', async (code) => {
         duration_sec: null,
       });
 
-      // Post to project thread + old leads thread + ORIGINAL task thread (#website-tasks)
-      // so operator who launched the task sees the fix-of-record summary too.
+      // cycle-26 P5: post per-entity summary ONLY to project thread (the live one)
+      // Old leads thread is archived · skip (appendThreadMessage auto-guards now).
+      // task thread + batch thread get the FINAL KPI dashboard instead (built once per batch).
       const { appendThreadMessage } = await import('../../core/funnel/lead-thread-sync.js');
-      const targets = [
-        e.project_thread_id,
-        e.discord_thread_id,
-        process.env.PL_PARENT_THREAD_ID, // original task thread in #website-tasks
-      ].filter(Boolean);
-      // de-dup (no point posting twice)
-      const uniq = [...new Set(targets)];
-      for (const tid of uniq) {
-        try { await appendThreadMessage(tid, summary); } catch {}
+      if (e.project_thread_id) {
+        try { await appendThreadMessage(e.project_thread_id, summary); } catch {}
+        console.log(`  per-entity summary posted to projects thread ${e.project_thread_id}`);
       }
-      console.log(`  pipeline summary posted to ${uniq.length} thread(s) · ${uniq.join(', ')}`);
+
+      // cycle-26 P5: append to batch state · check if all expected entities done → post KPI dashboard
+      try {
+        const { batchStatePath, readBatchState, writeBatchState } = await import('../../core/funnel/pipeline-batch-thread.js');
+        const batchId = (e.batches || []).slice(-1)[0];
+        if (batchId) {
+          const bs = readBatchState(batchId);
+          if (bs) {
+            bs.entities = bs.entities || [];
+            // upsert by entityKey
+            const idx = bs.entities.findIndex((x) => x.entityKey === e.entityKey);
+            const entry = {
+              entityKey: e.entityKey,
+              name: e.latest?.name,
+              threadUrl: e.project_thread_id ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${e.project_thread_id}` : null,
+              phase: e.phase,
+              grade: e.grade?.grade || e.grade?.investment_level,
+              audit_score: e.detailed_audit?.audit_score,
+              qualification_total: e.qualification?.scorecard?.total,
+              qualification_threshold: e.qualification?.scorecard?.threshold,
+              deploy_url: e.deploy?.demo_url,
+              archive_reason: e.archive_reason,
+            };
+            if (idx >= 0) bs.entities[idx] = entry; else bs.entities.push(entry);
+            // Update finalized_at on each completion (KPI may be re-posted if more entities finish later)
+            bs.finalized_at = new Date().toISOString();
+            writeBatchState(bs);
+
+            // If all expected entities are accounted for · post KPI dashboard
+            const expected = bs.expected_total || bs.lead_count || 0;
+            if (expected > 0 && bs.entities.length >= expected) {
+              const { buildKpiDashboard } = await import('../../core/funnel/kpi-dashboard.js');
+              const dashboard = buildKpiDashboard({ batchState: bs, entities: bs.entities });
+              if (bs.thread_id) {
+                try { await appendThreadMessage(bs.thread_id, dashboard); } catch {}
+              }
+              if (process.env.PL_PARENT_THREAD_ID) {
+                try { await appendThreadMessage(process.env.PL_PARENT_THREAD_ID, dashboard); } catch {}
+              }
+              console.log(`  KPI dashboard posted · ${bs.entities.length}/${expected} entities`);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn(`[KPI] dashboard post failed (non-blocking): ${err.message}`);
+      }
     }
   } catch (err) {
     console.warn(`  pipeline summary post failed: ${err.message}`);

@@ -258,7 +258,7 @@ export async function swapPhaseTag(entityKey, { fetchImpl = fetch } = {}) {
 /**
  * Append a text message to a lead thread.
  */
-export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchImpl = fetch } = {}) {
+export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchImpl = fetch, force = false } = {}) {
   let threadId = entityKeyOrThreadId;
   if (entityKeyOrThreadId && !/^\d+$/.test(entityKeyOrThreadId)) {
     const entity = readEntity(entityKeyOrThreadId);
@@ -274,6 +274,21 @@ export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchI
         content: String(content).slice(0, 200),
       },
     };
+  }
+  // cycle-26 P5 · guard: skip POST to archived thread (Discord auto-unarchives on POST · breaks "1 entity = 1 visible thread")
+  if (!force) {
+    try {
+      const cr = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+        headers: { Authorization: `Bot ${botToken()}` },
+      });
+      if (cr.status === 404) return { ok: false, skipped: 'thread_not_found', threadId };
+      if (cr.ok) {
+        const cd = await cr.json();
+        if (cd.thread_metadata?.archived) {
+          return { ok: true, skipped: 'archived', threadId };
+        }
+      }
+    } catch { /* check best-effort · fall through to POST */ }
   }
   const response = await fetchImpl(`${DISCORD_API}/channels/${threadId}/messages`, {
     method: 'POST',

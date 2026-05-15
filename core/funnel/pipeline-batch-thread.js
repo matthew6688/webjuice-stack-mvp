@@ -98,6 +98,7 @@ export async function startBatchThread({ batchId, title, summary, niche, city, c
 
   const state = {
     batch_id: batchId,
+    batchId, // alias for new consumers
     title,
     channel_id: channelId(),
     thread_id: data.id,
@@ -106,10 +107,14 @@ export async function startBatchThread({ batchId, title, summary, niche, city, c
     niche, city, count, runFlags,
     started_at: new Date().toISOString(),
     finished_at: null,
+    finalized_at: null, // set on KPI dashboard post
     current_tag: 'in-progress',
     stages: [],
     issues: [],
-    leads: [], // populated as discovery + audit progresses
+    leads: [],
+    entities: [], // cycle-26 P5: appended by publish-demo per-entity for KPI dashboard
+    expected_total: count, // operator-requested count · KPI gate
+    cost_usd_total: 0, // accumulated by stage emitters
   };
   const statePath = writeBatchState(state);
 

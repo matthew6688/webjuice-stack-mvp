@@ -402,7 +402,16 @@ async function main() {
   // finalize batch with full lead list.
   if (batchId) {
     try {
-      const { postStageUpdate, finalizeBatch } = await import(path.join(REPO_ROOT, 'core/funnel/pipeline-batch-thread.js'));
+      const { postStageUpdate, finalizeBatch, readBatchState, writeBatchState } = await import(path.join(REPO_ROOT, 'core/funnel/pipeline-batch-thread.js'));
+      // cycle-26 P5: update expected_total to actual lead count (after gosom cap · post-filter)
+      // This is the gate KPI dashboard uses to know "all entities done".
+      try {
+        const bs = readBatchState(batchId);
+        if (bs) {
+          bs.expected_total = leadNames.length;
+          writeBatchState(bs);
+        }
+      } catch { /* non-blocking */ }
       const namesList = leadNames.length
         ? leadNames.map((n) => `- ${n}`).join('\n')
         : '(0 leads · 检查 docker scraper 输出)';

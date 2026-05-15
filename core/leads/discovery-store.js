@@ -330,10 +330,8 @@ export function setEntityPhase({
           console.warn(`[setEntityPhase] thread sync failed: ${err.message}`);
         }
       }).catch((err) => console.warn(`[setEntityPhase] thread sync import failed: ${err.message}`));
-      // cycle-26: post per-entity phase line to parent batch thread
-      import('../funnel/batch-progress.js').then(({ emitBatchProgress }) =>
-        emitBatchProgress(entityKey, { event: 'phase_change', from: prevPhase, to: phase }).catch(() => {})
-      ).catch(() => {});
+      // cycle-26 P5: removed per-entity phase_change emit (Matthew: "noise · prefer single KPI dashboard at batch end").
+      // Final KPI dashboard posted via core/funnel/kpi-dashboard.js · triggered from publish-demo / final stages.
     } else if (BIG_PHASES.has(phase)) {
       // No thread + BIG phase · operator 否则看不到 · emit bot-log
       import('../funnel/discord-emit.js').then(({ emitPhaseTransition }) =>
