@@ -161,6 +161,41 @@ async function checkC_PhaseConsistency() {
   }
 }
 
+// ─── Check F · V2/V3 duplicate entities (domain_* + place_* same business) ─
+// cycle-27 (Matthew 2026-05-15 thread 1504878788649943140 North Brisbane Metal):
+// V2 domain-keyed entity owns project_thread · V3 place_id-keyed entity from
+// today's rescrape has fresh grade/audit · BUT they're separate records ·
+// profile card shows V2 (stale grade=null). Flag for merge.
+function checkF_DuplicateEntities() {
+  const dir = path.join(ROOT, 'data/leads/entities');
+  if (!fs.existsSync(dir)) return;
+  const all = fs.readdirSync(dir).filter((f) => f.endsWith('.json'));
+  const byName = new Map();
+  for (const f of all) {
+    let d;
+    try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
+    const name = d.latest?.name?.trim();
+    if (!name) continue;
+    if (!byName.has(name)) byName.set(name, []);
+    byName.get(name).push({ file: f, key: f.replace('.json', ''), data: d });
+  }
+  for (const [name, group] of byName.entries()) {
+    if (group.length < 2) continue;
+    const domain = group.find((e) => e.key.startsWith('domain_'));
+    const place = group.find((e) => e.key.startsWith('place_'));
+    if (!domain || !place) continue;
+    // Only flag if V2 owns thread + V3 has fresher audit
+    const v2HasThread = !!domain.data.project_thread_id;
+    const v3HasAudit = !!(place.data.grade?.investment_level || place.data.qualification);
+    const v2MissingGrade = !domain.data.grade?.investment_level;
+    if (v2HasThread && v3HasAudit && v2MissingGrade && !domain.data.merged_from_v3_key) {
+      violate('F.dup_entity',
+        `business "${name}" has both ${domain.key} (V2 · owns thread) and ${place.key} (V3 · fresh audit) · merge needed`,
+        `run: npm run pl:merge-dup-entities · or use core/leads/dedup-scorer`);
+    }
+  }
+}
+
 // ─── Check E · Batch state · entities[] completeness vs expected_total ────
 // cycle-27 bug #6 (Matthew 2026-05-15): when entities[].length < expected_total
 // AND finalized_at > 30 min ago · operator missed a silent recordEntityTerminal
@@ -210,11 +245,12 @@ function checkD_TerminalHandlers() {
   await checkC_PhaseConsistency();
   checkD_TerminalHandlers();
   checkE_BatchEntitiesCompleteness();
+  checkF_DuplicateEntities();
 
   const byCat = {};
   for (const v of violations) (byCat[v.category] ??= []).push(v);
 
-  console.log(`Checks run: A.lint · B.discord (${threads.length} threads) · C.phase · D.terminal · E.batch\n`);
+  console.log(`Checks run: A.lint · B.discord (${threads.length} threads) · C.phase · D.terminal · E.batch · F.dup\n`);
 
   if (violations.length === 0) {
     console.log('✓ cycle-doctor: 0 violations · contract clean · OK to ship');
