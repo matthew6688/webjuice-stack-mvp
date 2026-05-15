@@ -65,6 +65,8 @@ const TESTS = [
   'scripts/test/test-cycle27-batch-state-lock.mjs',
   // cycle-27 · batch-thread v2 message builders (zero emoji · list businesses · LLM judge blockquote)
   'scripts/test/test-cycle27-batch-thread-messages.mjs',
+  // cycle-27 · audit-stage-content typography helpers (v2 primitives)
+  'scripts/test/test-cycle27-rich-stage-helpers.mjs',
 ];
 
 const results = [];
