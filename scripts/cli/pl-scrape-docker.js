@@ -362,13 +362,24 @@ async function main() {
         console.error(`[pl:scrape-docker] HALT · LLM reject conf=${intakeJudge.confidence} >= 0.6 · skipping entity write + downstream audit`);
         if (batchId) {
           const { postStageUpdate, finalizeBatch } = await import(path.join(REPO_ROOT, 'core/funnel/pipeline-batch-thread.js'));
+          // cycle-27 v2 typography · structured reject body
+          const haltBody = [
+            '## 已中止',
+            '',
+            '',
+            `verdict: \`reject\` · confidence \`${intakeJudge.confidence}\``,
+            '',
+            `> ${intakeJudge.reason}`,
+            '',
+            '',
+            '-# 不入库 · 不 audit · 节省 ~$2-5',
+            '-# operator review · 修 query 后重投',
+          ].join('\n');
           await postStageUpdate({
-            batchId,
-            stage: 'Stage 0 · Discovery (HALTED)',
-            status: 'fail',
-            summary: `❌ LLM judge rejected (conf ${intakeJudge.confidence}): ${intakeJudge.reason}\n→ 不入库 · 不 audit · 节省 ~$2-5\noperator review · 修 query 后重投`,
+            batchId, stage: '已中止', status: 'fail',
+            summary: haltBody, rawContent: true,
           });
-          await finalizeBatch({ batchId, terminalTag: 'rejected_by_judge', summary: 'Halted at Stage 0 · operator review', skipDedupAudit: true });
+          await finalizeBatch({ batchId, terminalTag: 'rejected_by_judge', skipDedupAudit: true });
         }
         process.exit(0); // Clean exit · task marked done · pipeline stopped
       }
@@ -412,39 +423,30 @@ async function main() {
           writeBatchState(bs);
         }
       } catch { /* non-blocking */ }
-      const namesList = leadNames.length
-        ? leadNames.map((n) => `- ${n}`).join('\n')
-        : '(0 leads · 检查 docker scraper 输出)';
+      // cycle-27 v2 typography · use batchEntityWriteMessage builder
+      const { batchEntityWriteMessage } = await import(path.join(REPO_ROOT, 'core/funnel/batch-thread-messages.js'));
       const requested = Number.parseInt(args.count || '5', 10);
-      const countNote = leadNames.length < requested
-        ? ` (要求 ${requested} · 实际 ${leadNames.length} · gosom depth=${count} · Google Maps 该地区数据上限)`
-        : '';
-      const stage0Body = [
-        `Docker scraper: ${leadNames.length} leads${countNote}`,
-        `LLM judge: ${intakeJudge?.verdict || 'n/a'} (conf ${intakeJudge?.confidence ?? 'n/a'})`,
-        '',
-        '抓到的商家:',
-        namesList,
-      ].join('\n');
-      await postStageUpdate({
-        batchId,
-        stage: 'Stage 0 · Discovery (docker scraper)',
-        status: leadNames.length > 0 ? 'ok' : 'fail',
-        summary: stage0Body,
+      const note = leadNames.length === 0
+        ? '0 leads · 检查 docker scraper 输出'
+        : (leadNames.length < requested
+            ? `要求 ${requested} · 实际 ${leadNames.length} · gosom depth=${count} · Google Maps 该地区数据上限`
+            : null);
+      const stage0Body = batchEntityWriteMessage({
+        count: leadNames.length,
+        entityNames: leadNames,
+        llmJudge: intakeJudge && intakeJudge.verdict !== 'proceed' ? intakeJudge : null,
+        note,
       });
-      const finalBody = [
-        `${leadNames.length} entities ingested · cheap-audit queue 处理中`,
-        '',
-        '→ 每个 entity 跑 cheap-audit + LLM niche judge + 排除筛选',
-        '→ 通过 = 立即进 detail audit · 排除 = archive (grade=D)',
-        '→ 看 #website-leads 各 thread 进度',
-      ].join('\n');
-      // cycle-26 P9: don't post "🏁 批次完成" here · KPI dashboard at the END
+      await postStageUpdate({
+        batchId, stage: '写入实体',
+        status: leadNames.length > 0 ? 'ok' : 'fail',
+        summary: stage0Body, rawContent: true,
+      });
+      // cycle-26 P9: don't post finalize here · KPI dashboard at the END
       // (after all entities done) is the authoritative finalize. Just mark batch tag.
       await finalizeBatch({
         batchId,
         terminalTag: leadNames.length > 0 ? 'in-progress' : 'partial-failed',
-        summary: leadNames.length > 0 ? finalBody : 'no leads · check gosom output',
         skipDedupAudit: true,
         skipPost: leadNames.length > 0, // suppress duplicate finalize msg when pipeline continues
       });

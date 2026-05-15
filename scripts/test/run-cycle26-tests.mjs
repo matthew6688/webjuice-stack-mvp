@@ -63,6 +63,8 @@ const TESTS = [
   'scripts/test/test-cycle27-queue-drain.mjs',
   // cycle-27 · batch state file lock (concurrent recordEntityTerminal race)
   'scripts/test/test-cycle27-batch-state-lock.mjs',
+  // cycle-27 · batch-thread v2 message builders (zero emoji · list businesses · LLM judge blockquote)
+  'scripts/test/test-cycle27-batch-thread-messages.mjs',
 ];
 
 const results = [];

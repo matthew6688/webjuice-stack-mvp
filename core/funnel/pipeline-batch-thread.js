@@ -122,14 +122,14 @@ export async function startBatchThread({ batchId, title, summary, niche, city, c
 
   const tagIds = await resolveTagIds(['in-progress']);
 
-  const body = [
-    `🚀 **批次流水线已启动**`,
-    `行业 niche: \`${niche}\` · 城市 city: \`${city}\` · 目标条数 count: \`${count}\``,
-    `启动时间: ${new Date().toISOString()}`,
-    `批次 batch_id: \`${batchId}\``,
-    summary ? `\n${summary}` : '',
-    `\n_运行参数 flags_: ${Object.entries(runFlags).map(([k, v]) => `${k}=${v}`).join(' · ') || '(默认)'}`,
-  ].filter(Boolean).join('\n');
+  // cycle-27 (Matthew 2026-05-15): v2 typography · zero emoji body · structured
+  const { batchStartMessage } = await import('./batch-thread-messages.js');
+  const body = batchStartMessage({
+    batchId, niche, city, count,
+    source: runFlags.source || null,
+    runFlags,
+    startedAt: new Date().toISOString(),
+  });
 
   const r = await fetch(`${DISCORD_API}/channels/${channelId()}/threads`, {
     method: 'POST',
@@ -186,18 +186,24 @@ export async function startBatchThread({ batchId, title, summary, niche, city, c
  * @param {string} opts.summary   markdown body
  * @param {string?} opts.swapTag  one of forum tag names to apply (replaces current)
  */
-export async function postStageUpdate({ batchId, stage, status, summary, swapTag = null }) {
+export async function postStageUpdate({ batchId, stage, status, summary, swapTag = null, rawContent = false }) {
   const state = readBatchState(batchId);
   if (!state) throw new Error(`no batch state for ${batchId}`);
   if (!state.thread_id) throw new Error('batch has no thread_id');
 
-  // V3 D43 · 简化 · stage label 已经够说明状态 (✅ on stage = success implicit) ·
-  // 不再追加 _成功_ / _失败_ 后缀 · 不再加时间(thread 自带 timestamp)
-  const emoji = { ok: '✅', fail: '❌', skip: '⏭️', paused: '⏸️', info: '📝' }[status] || 'ℹ️';
-  const head = status === 'ok' ? `${emoji} **${stage}**`
-              : status === 'fail' ? `${emoji} **${stage}** · 失败`
-              : `${emoji} **${stage}**`;
-  const body = `${head}\n${summary}`;
+  // cycle-27 (Matthew 2026-05-15): rawContent=true → caller pre-formatted the
+  // full message via batch-thread-messages.js v2 builder · zero emoji body ·
+  // no auto-prefix. Legacy callers (rawContent=false) still get ✅/❌/⏭️ prefix.
+  let body;
+  if (rawContent) {
+    body = String(summary || '');
+  } else {
+    const emoji = { ok: '✅', fail: '❌', skip: '⏭️', paused: '⏸️', info: '📝' }[status] || 'ℹ️';
+    const head = status === 'ok' ? `${emoji} **${stage}**`
+                : status === 'fail' ? `${emoji} **${stage}** · 失败`
+                : `${emoji} **${stage}**`;
+    body = `${head}\n${summary}`;
+  }
 
   // V3 D43 · 通过 unified emit (fallback bot-log on thread fail) + audit log
   const { emitDiscord } = await import('./discord-emit.js');
@@ -241,15 +247,23 @@ export async function postStageUpdate({ batchId, stage, status, summary, swapTag
  */
 export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAudit = false, skipPost = false }) {
   // cycle-26 P9: skipPost lets caller (scrape-docker) update batch state without
-  // posting "🏁 批次完成" · the real KPI dashboard fires later from publish-demo /
+  // posting · the real KPI dashboard fires later from publish-demo /
   // terminal-archive when all expected entities are accounted for.
-  const r = skipPost ? { message_id: null } : await postStageUpdate({
-    batchId,
-    stage: '🏁 批次完成',
-    status: terminalTag === 'completed' ? 'ok' : 'info',
-    summary,
-    swapTag: terminalTag,
-  });
+  // cycle-27: v2 typography · use batchFinalizeMessage builder (zero emoji body)
+  let r = { message_id: null };
+  if (!skipPost) {
+    const { batchFinalizeMessage } = await import('./batch-thread-messages.js');
+    const bs = readBatchState(batchId);
+    const v2body = batchFinalizeMessage({
+      query: bs?.runFlags?.query || null,
+      count: (bs?.entities?.length) ?? null,
+      expectedTotal: bs?.expected_total ?? null,
+    });
+    r = await postStageUpdate({
+      batchId, stage: '批次完成', status: terminalTag === 'completed' ? 'ok' : 'info',
+      summary: v2body, swapTag: terminalTag, rawContent: true,
+    });
+  }
   const state = readBatchState(batchId);
   state.finished_at = new Date().toISOString();
 
@@ -278,14 +292,15 @@ export async function finalizeBatch({ batchId, terminalTag, summary, skipDedupAu
         summary: parsed?.summary ?? null,
         exit_code: out.status,
       };
-      // Post a thread update so operators see dedup ran
+      // cycle-27: v2 typography · use batchDedupMessage builder
       if (out.status === 0 && parsed) {
-        // V3 D43 · 去 dedup-audit 英文 + admin URL (admin 已弃) · 中文人话
-        const dedupSummary = parsed.total_suspects > 0
-          ? `发现 **${parsed.total_suspects}** 组疑似重复 · 在 #website-leads 人工复核`
-          : `0 组重复 · 数据库干净`;
         try {
-          await postStageUpdate({ batchId, stage: '🔍 去重审核', status: 'ok', summary: dedupSummary });
+          const { batchDedupMessage } = await import('./batch-thread-messages.js');
+          const v2body = batchDedupMessage({
+            dupGroups: parsed.total_groups ?? parsed.total_suspects ?? 0,
+            suspectCount: parsed.total_suspects ?? null,
+          });
+          await postStageUpdate({ batchId, stage: '去重审核', status: 'ok', summary: v2body, rawContent: true });
         } catch {}
       }
     } catch (err) {
