@@ -10,11 +10,11 @@
 
 ## ⚠ 重要原则: PRESERVE + AUGMENT · 不替换
 
-cycle-28 文档**不是从零设计** · 是在现有 cycle-26 已经成熟的 master.md / internal-audit-report.html 结构上 **PRESERVE 全部段** + **AUGMENT 3-5 新段**。
+V4 文档**不是从零设计** · 是在现有 cycle-26 已经成熟的 master.md / internal-audit-report.html 结构上 **PRESERVE 全部段** + **AUGMENT 3-5 新段**。
 
-| 文档 | cycle-26 现有 | cycle-28 新增 |
+| 文档 | cycle-26 现有 (V3 在用) | V4 新增 |
 |---|---|---|
-| **master.md REDESIGN** | 16 段 (内部分级 / 速览 / 视觉 / 漏水 / Redesign 发力点 / 切入点 / 速度 / 图片 / SEO / 域名 / 技术栈 / 信任凭证 / GEO / Upsell / 附录) | + 客户背景档案 (cycle-28 LLM 9 段) + Handoff 包索引 + Verification 闭环 |
+| **master.md REDESIGN** | 16 段 (内部分级 / 速览 / 视觉 / 漏水 / Redesign 发力点 / 切入点 / 速度 / 图片 / SEO / 域名 / 技术栈 / 信任凭证 / GEO / Upsell / 附录) | + 客户背景档案 (V4 LLM 9 段) + Handoff 包索引 + Verification 闭环 |
 | **internal-audit REDESIGN** | 7 段 (审计概览 / 商家档案 / 5 维度 / 客户看到 / 关键 / 主要 / 每条规则) | + Verification 闭环表 + 销售话术 + Before/After 对比 |
 | **final-handoff.md** | 不存在 (现状用 master.md 当 build 输入) | 新建 · 11 段完整 |
 
@@ -134,28 +134,28 @@ deploy_url: "https://mark-squire-dev.pages.dev"
 
 **PRESERVE 现有 16 段** (cycle-26 已成熟 · 不许丢任何一段):
 
-1. 内部分级 · 运营优先看这段 (投入级别 + 触发依据 · cycle-28 加投资能力评估)
-2. 一、店家现状速览 (含 audit_score · 联系方式 · GMB · cycle-28 加 ABN/QBCC/域名年龄/Wayback)
+1. 内部分级 · 运营优先看这段 (投入级别 + 触发依据 · V4 加投资能力评估)
+2. 一、店家现状速览 (含 audit_score · 联系方式 · GMB · V4 加 ABN/QBCC/域名年龄/Wayback)
 3. 二、客户访问时看到的页面 (screenshots · 慢速 4G 视频)
 4. 三、视觉审计 · Vision LLM (新鲜度/信任/转化 三维 + Vision verbatim 引用 LOCKED + 值得保留的优点)
-5. 五、当前网站在哪里"漏水" (critical/major/minor 每条独立段 + cycle-28 加 verification rule)
+5. 五、当前网站在哪里"漏水" (critical/major/minor 每条独立段 + V4 加 verification rule)
 6. 六、Redesign 的发力点 (综合视觉 + 评论数据)
 7. 七、推荐销售切入点
 8. 八、真实速度数据 (Lighthouse mobile/desktop + CRUX · 所有 ms 数字 LOCKED)
 9. 九、图片优化与第三方脚本体重
-10. 十、SEO 迁移评估 与 运营活跃度 (cycle-28 加 sitemap 3-bucket classify · nav/SEO/project pages)
-11. 十一、域名历史与邮件信誉 (cycle-28 加 WHOIS RDAP + Wayback first snapshot)
+10. 十、SEO 迁移评估 与 运营活跃度 (V4 加 sitemap 3-bucket classify · nav/SEO/project pages)
+11. 十一、域名历史与邮件信誉 (V4 加 WHOIS RDAP + Wayback first snapshot)
 12. 十二、技术栈与营销基建 (CMS · pixels · CDN)
 13. 十三、信任凭证 (niche-aware: QBCC · ABN · PL · WHS · 等 · cycle-28 ABR 补)
 14. 十四、AI 时代可发现性 · GEO Readiness (schema · llms.txt · LocalBusiness)
 15. 十五、Upsell 机会 (SMM · content · ads · 除 redesign 外的月度营收)
-16. 附录 · 数据出处 (cycle-28 加完整 source 标记图例)
+16. 附录 · 数据出处 (V4 加完整 source 标记图例)
 
 **AUGMENT cycle-28 新 3 段** (PRESERVE 上面 16 段不动):
 
-17. **十六、客户背景档案 (cycle-28 新)** · Stage 3 LLM Cascade A 生成 · 双语 9 段 · 中文段在此显示 · English 在 handoff/business-background.full.md
+17. **十六、客户背景档案 (V4 新)** · Stage 3 LLM Cascade A 生成 · 双语 9 段 · 中文段在此显示 · English 在 handoff/business-background.full.md
     - 业务范围 / 经营历史 / 目标客户 / 服务区域 / USP / 规模估算 / 数字化成熟度 / **投资能力评估** / **Outreach 建议** / 数据完整度
-18. **十七、Handoff 包索引 (cycle-28 新)** · 链接到 `handoff/` 目录所有文件 · 给 build 用
+18. **十七、Handoff 包索引 (V4 新)** · 链接到 `handoff/` 目录所有文件 · 给 build 用
 19. **十八、Verification 闭环 (cycle-28 新 · build 后填)** · 表格 · 每条 audit issue × verification check · pass/fail 状态
 
 ---
@@ -172,7 +172,7 @@ business_id: "place_chij..."
 build_target: "classic-premium-roftix"       # reference template family
 route: "STARTER"                              # 或 REDESIGN
 logo_mode: "generated"                        # 或 existing
-handoff_version: "v2-cycle28"
+handoff_version: "v4"
 references: [
   handoff/raw/gbp-full.json,
   handoff/raw/abn-record.json,
@@ -342,10 +342,10 @@ references: [
 **PRESERVE 现有 7 段** (cycle-26 已成熟):
 
 1. 审计概览 (overall score + 5-dim metric tiles)
-2. 商家档案 (cycle-28 加 ABN / QBCC / 域名年龄 / Wayback)
+2. 商家档案 (V4 加 ABN / QBCC / 域名年龄 / Wayback)
 3. 5 维度的强弱在哪 (UX/SEO/Tech/Content/GBP 各维度 score + 关键点)
 4. 客户访问时看到的页面 (screenshots · 慢速 4G 视频)
-5. 立刻在伤害成交的硬伤 (critical issues · 每条带 evidence + cycle-28 加 verification rule)
+5. 立刻在伤害成交的硬伤 (critical issues · 每条带 evidence + V4 加 verification rule)
 6. 影响转化的明显短板 (major issues 表)
 7. 每条规则的命中与失分原因 (30+ rule 表)
 

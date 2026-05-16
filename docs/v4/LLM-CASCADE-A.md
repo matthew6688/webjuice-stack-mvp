@@ -173,7 +173,7 @@ export async function runCascadeA(prompt, { allowedUrls = new Set(), acceptOpts 
 - 发现总 fallback 到 Qwen 27b → 警报 (cloud 全挂 · 调查)
 - 发现 acceptance 拒绝率 > 30% → 警报 (prompt 可能要调)
 
-### A/B 实验 (Phase 2+ · cycle-28 不做)
+### A/B 实验 (Phase 2+ · V4 不做)
 - entityKey hash 50/50 路由两个 cascade profile
 - 比较 build 后 verification pass rate
 - 数据驱动调整 Tier 顺序

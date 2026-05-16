@@ -1,7 +1,10 @@
-# Cycle-28 · Pipeline Redesign · 计划文档
+# V4 · Pipeline Redesign · 将来计划
 
-> 状态: **计划阶段 · 未执行** · Matthew 2026-05-16
-> 目的: 把现有 lead 筛选+审计+建站 pipeline 重构为 **handoff-driven** 架构 · 数据从 Stage 0 开始累积进 `handoff/` 目录 · LLM 只在 build decision 时跑 · 节省 80% LLM 成本
+> **状态**: 计划阶段 · 暂不执行 · Matthew 2026-05-16
+> **重命名说明**: 从 `cycle-28/` → `v4/` · 这是 V4 整体重设计 · 不在 V3 周期内
+> **目的**: 把现有 lead 筛选+审计+建站 pipeline 重构为 **handoff-driven** 架构 · 数据从 Stage 0 开始累积进 `handoff/` 目录 · LLM 只在 build decision 时跑 · 节省 80% LLM 成本
+
+> **当前 V3 立刻要做的工作**: 见 [`docs/v3/HANDOFF-STRUCTURE.md`](../v3/HANDOFF-STRUCTURE.md) (handoff 文档结构 · 已在推进)
 
 ---
 
@@ -111,7 +114,7 @@ Phase 10 (1天) · Cleanup
 
 ---
 
-## 不在 cycle-28 范围内 (deferred)
+## 不在 V4 范围内 (deferred)
 
 - Filter-config Phase 2 · dry-run replay CLI (改完看影响)
 - Filter-config Phase 3 · audit trail (decision profile version)
@@ -119,7 +122,7 @@ Phase 10 (1天) · Cleanup
 - Tinyfish search LLM noise filter (非澳洲结果过滤)
 - 多国扩展 (UK · NZ · 等 ASIC 等价 API)
 
-这些等 cycle-28 上线运行 1-2 周后 · 看 metrics 再做。
+这些等 V4 上线运行 1-2 周后 · 看 metrics 再做。
 
 ---
 

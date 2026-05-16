@@ -225,10 +225,10 @@ P1 + P2 可以并行 · P3 依赖 P1 · P4 独立 · P5 依赖 P3+P4 · P6 依�
 **目的**: master.md / final-handoff.md / internal-audit-report.html 模板按 DOCUMENT-TEMPLATES.md 落地
 
 **工作**:
-1. 更新 `core/reports/master-md-builder.js` · 加 cycle-28 模板段 (优先级 badge · 数据完整度表 · 等)
+1. 更新 `core/reports/master-md-builder.js` · 加 V4 模板段 (优先级 badge · 数据完整度表 · 等)
 2. 更新 internal-audit-report.html 生成器 · 加 STARTER 模式 + verification 闭环段
 3. final-handoff.md 已在 Phase 7 落地
-4. 给 master.md 加 `cycle-28-format-version: 1` 字段 · 老 entity 自动升级
+4. 给 master.md 加 `v4-format-version: 1` 字段 · 老 entity 自动升级
 
 **Validation Gate**:
 - 跑 5 个 entities (含 STARTER + REDESIGN)

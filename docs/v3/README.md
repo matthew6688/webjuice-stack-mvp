@@ -222,13 +222,18 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 
 ## 全 V3 文档索引
 
-### 🆕 Cycle-28 · Pipeline Redesign Plan (2026-05-16 · 计划阶段 · 未执行)
-- [cycle-28/README.md](./cycle-28/README.md) · 执行摘要 + 18-day plan + 决策记录 · **入口**
-- [cycle-28/PIPELINE-ARCHITECTURE.md](./cycle-28/PIPELINE-ARCHITECTURE.md) · Stage 0-5 详细 · routing · handoff/ schema
-- [cycle-28/DOCUMENT-TEMPLATES.md](./cycle-28/DOCUMENT-TEMPLATES.md) · master.md + final-handoff.md + internal-audit.html 模板
-- [cycle-28/LLM-CASCADE-A.md](./cycle-28/LLM-CASCADE-A.md) · 4-tier cascade (Codex→Claude→Qwen27b→Qwen9b)
-- [cycle-28/EXECUTION-PLAN.md](./cycle-28/EXECUTION-PLAN.md) · 10 Phase × validation gate · 依赖链
-- **Live mockup**: https://customer-summaries.pages.dev/mockups/
+### 🚧 V3 立刻推进 · Handoff 文档结构 (build 输入 · 2026-05-16)
+- [HANDOFF-STRUCTURE.md](./HANDOFF-STRUCTURE.md) · **当前 V3 周期 build 阶段的 handoff 文档完整结构定义** · OD 输入 · 14 个文件 schema · 立刻实施
+  · core-facts / design / content / photos / reviews / structure / audit / boundaries / final-prompt
+
+### 🔮 V4 · 将来计划 (2026-05-16 · 暂不执行)
+- [v4/README.md](../v4/README.md) · 执行摘要 + 18-day plan + 决策记录 · **入口**
+- [v4/PIPELINE-ARCHITECTURE.md](../v4/PIPELINE-ARCHITECTURE.md) · Stage 0-5 详细 · routing · handoff/ schema
+- [v4/DOCUMENT-TEMPLATES.md](../v4/DOCUMENT-TEMPLATES.md) · master.md + final-handoff.md + internal-audit.html 模板
+- [v4/DATA-PRESERVATION-CONTRACT.md](../v4/DATA-PRESERVATION-CONTRACT.md) · 防 LLM 吃 base data · 三类字段规则
+- [v4/LLM-CASCADE-A.md](../v4/LLM-CASCADE-A.md) · 4-tier cascade (Codex→Claude→Qwen27b→Qwen9b)
+- [v4/EXECUTION-PLAN.md](../v4/EXECUTION-PLAN.md) · 10 Phase × validation gate · 依赖链
+- **Live mockup**: https://customer-summaries.pages.dev/mockups/ (STARTER) · https://customer-summaries.pages.dev/mockups-v2/ (REDESIGN)
 
 ### 模块 PRD (设计 · 验收标准)
 - [M1-PRD.md](./M1-PRD.md) · intake + dedup + master.md skeleton
