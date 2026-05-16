@@ -197,6 +197,9 @@ export const TERMINAL_FAIL_PATHS = Object.freeze([
   { id: 'stage4_grade_d',                 stage: 'Stage 4', file: 'core/scoring/lead-grading.js', handler: 'archiveLeadAsRejected' },
   // cycle-26 P5: Stage 7 pre-gate fail (qualification hard_gate brief-independent fail)
   { id: 'stage7_pregate_fail',            stage: 'Stage 7', file: 'scripts/cli/pl-check-qualification.js', handler: 'archiveLeadAsRejected' },
+  // cycle-27 Bug D (Matthew 2026-05-16): multi-page crawl returned 0 pages →
+  // buildRedesignBrief no input → terminal archive (not stuck audit-ready)
+  { id: 'stage7_brief_failed',            stage: 'Stage 7', file: 'scripts/cli/pl-check-qualification.js', handler: 'archiveLeadAsRejected' },
   { id: 'stage8_build_failed',            stage: 'Stage 8', file: 'scripts/cli/pl-build-from-reference.js', handler: 'archiveLeadAsRejected' },
 ]);
 

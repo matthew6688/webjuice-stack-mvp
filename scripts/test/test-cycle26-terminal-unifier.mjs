@@ -99,8 +99,8 @@ for (const p of TERMINAL_FAIL_PATHS) {
 }
 
 // ─── C · Contract: TERMINAL_FAIL_PATHS lists exactly 9 paths ─────────────────
-t('TERMINAL_FAIL_PATHS has 11 entries (cycle-27 bug #2 added stage8_build_failed)', () => {
-  assert.equal(TERMINAL_FAIL_PATHS.length, 11, `expected 11 terminal paths, got ${TERMINAL_FAIL_PATHS.length}`);
+t('TERMINAL_FAIL_PATHS has 12 entries (cycle-27 Bug D added stage7_brief_failed)', () => {
+  assert.equal(TERMINAL_FAIL_PATHS.length, 12, `expected 12 terminal paths, got ${TERMINAL_FAIL_PATHS.length}`);
 });
 t('each terminal path has id + handler="archiveLeadAsRejected"', () => {
   for (const p of TERMINAL_FAIL_PATHS) {

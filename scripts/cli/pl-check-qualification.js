@@ -159,11 +159,16 @@ async function processEntity(key) {
     const archive_reason = `brief_failed: ${briefResult.error || 'no crawled pages'}`;
     try {
       const { archiveLeadAsRejected } = await import(path.join(REPO, 'core/leads/terminal-archive.js'));
-      await archiveLeadAsRejected(key, {
+      const ar = await archiveLeadAsRejected(key, {
         reason: archive_reason,
         pathId: 'stage7_brief_failed',
         layer: 'Stage 7 · brief',
       });
+      // cycle-27 Bug D follow-up: if archive helper rejects (invalid_pathId · entity_not_found),
+      // surface it loudly · do NOT pretend we archived (caller checks status='archived').
+      if (!ar?.ok) {
+        console.error(`     ✗ archiveLeadAsRejected refused for ${key}: ${ar?.reason} ${JSON.stringify(ar?.allowed || '')}`);
+      }
       // Persist qualification block w/ verdict=archived so future rerun is idempotent
       const entityPath = path.join(REPO, 'data/leads/entities', `${key}.json`);
       try {
