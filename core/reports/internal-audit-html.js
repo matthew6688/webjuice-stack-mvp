@@ -274,6 +274,109 @@ function renderReviewSection({ reviewAnalysis, reviewSample, entity }) {
     </section>`;
 }
 
+// cycle-V3 enrichment (Matthew 2026-05-16): surface entity.enrichment.* into audit HTML
+// 4-source enrichment 数据 · WHOIS + Wayback + ABR + Tinyfish search/homepage
+// 不破坏现有 sections · 老 entity 无 enrichment 字段 → section 隐藏
+function renderEnrichmentSection({ entity }) {
+  const enr = entity?.enrichment;
+  if (!enr) return '';
+  const has = enr.abn || enr.whois || enr.wayback || enr.tinyfish_search || enr.tinyfish_homepage;
+  if (!has) return '';
+
+  const tag = (label, cls) => `<span class="src src-${cls}">[${label}]</span>`;
+  const meta = enr._meta || {};
+  const succ = meta.sources_succeeded ?? 0;
+  const total = meta.sources_attempted ?? 0;
+  const enrichedAt = (meta.enriched_at || '').slice(0, 19);
+
+  const parts = [];
+
+  // ABR · 公司注册
+  if (enr.abn) {
+    const a = enr.abn;
+    parts.push(`
+    <h3>公司注册 (ABR)</h3>
+    <dl class="enrich-kv">
+      <dt>ABN</dt><dd><code>${escapeHtml(a.abn_formatted || a.abn || '-')}</code> · ${escapeHtml(a.abn_status || '?')} ${tag('ABR', 'abr')}</dd>
+      ${a.entity_name ? `<dt>注册名</dt><dd>${escapeHtml(a.entity_name)} ${tag('ABR', 'abr')}</dd>` : ''}
+      ${a.entity_type_name ? `<dt>实体类型</dt><dd>${escapeHtml(a.entity_type_name)} ${tag('ABR', 'abr')}</dd>` : ''}
+      ${a.acn ? `<dt>ACN</dt><dd><code>${escapeHtml(a.acn)}</code> ${tag('ABR', 'abr')}</dd>` : ''}
+      <dt>GST 注册</dt><dd>${a.gst_registered ? '是' : '否'} ${tag('ABR', 'abr')}</dd>
+      ${(a.address_state || a.address_postcode) ? `<dt>注册地址</dt><dd>${escapeHtml([a.address_state, a.address_postcode].filter(Boolean).join(' '))} ${tag('ABR', 'abr')}</dd>` : ''}
+      ${a.trading_names?.length ? `<dt>Trading names</dt><dd>${a.trading_names.map((n) => escapeHtml(n)).join(' · ')} ${tag('ABR', 'abr')}</dd>` : ''}
+    </dl>`);
+  }
+
+  // WHOIS · 域名
+  if (enr.whois) {
+    const w = enr.whois;
+    parts.push(`
+    <h3>域名 (WHOIS RDAP)</h3>
+    <dl class="enrich-kv">
+      <dt>注册日</dt><dd>${w.registered_at ? escapeHtml(w.registered_at) : `<i>privacy-redacted (.au 隐私保护)</i>`} ${tag('WHOIS', 'whois')}</dd>
+      ${w.expires_at ? `<dt>到期日</dt><dd>${escapeHtml(w.expires_at)} ${tag('WHOIS', 'whois')}</dd>` : ''}
+      ${w.last_changed_at ? `<dt>最近变更</dt><dd>${escapeHtml(w.last_changed_at)} ${tag('WHOIS', 'whois')}</dd>` : ''}
+      ${w.registrar ? `<dt>注册商</dt><dd>${escapeHtml(w.registrar)} ${tag('WHOIS', 'whois')}</dd>` : ''}
+      ${w.domain_age_years != null ? `<dt>域名年龄</dt><dd>${w.domain_age_years} 年 ${tag('WHOIS', 'whois')}</dd>` : ''}
+      ${Array.isArray(w.status) && w.status.length ? `<dt>状态</dt><dd>${w.status.map((s) => `<code>${escapeHtml(s)}</code>`).join(' · ')} ${tag('WHOIS', 'whois')}</dd>` : ''}
+    </dl>`);
+  }
+
+  // Wayback
+  if (enr.wayback) {
+    const wb = enr.wayback;
+    parts.push(`
+    <h3>Wayback Machine 历史</h3>
+    <dl class="enrich-kv">
+      ${wb.first_snapshot_date ? `<dt>第一次上线</dt><dd>${escapeHtml(wb.first_snapshot_date)} ${wb.first_snapshot_url ? `<a href="${escapeHtml(wb.first_snapshot_url)}" target="_blank">[首版截图 ↗]</a>` : ''} ${tag('Wayback', 'wb')}</dd>` : ''}
+      ${wb.last_snapshot_date ? `<dt>最近快照</dt><dd>${escapeHtml(wb.last_snapshot_date)} ${wb.last_snapshot_url ? `<a href="${escapeHtml(wb.last_snapshot_url)}" target="_blank">[最近 ↗]</a>` : ''} ${tag('Wayback', 'wb')}</dd>` : ''}
+      ${wb.years_archived != null ? `<dt>存档年限</dt><dd>${wb.years_archived} 年 ${tag('Wayback', 'wb')}</dd>` : ''}
+    </dl>`);
+  }
+
+  // Derived domain age
+  if (enr._derived?.domain_age_years_effective != null) {
+    parts.push(`
+    <p class="enrich-derived"><strong>综合域名年龄:</strong> ${enr._derived.domain_age_years_effective} 年 (source: <code>${escapeHtml(enr._derived.domain_age_source)}</code>) ${tag('derived', 'llm')}</p>`);
+  }
+
+  // Tinyfish search · external mentions
+  if (enr.tinyfish_search?.external_mentions?.length) {
+    const ts = enr.tinyfish_search;
+    const lis = ts.external_mentions.slice(0, 10).map((m) => `
+      <li><a href="${escapeHtml(m.url)}" target="_blank">${escapeHtml(m.title || m.domain || m.url)}</a> · <code>${escapeHtml(m.domain || '')}</code> ${tag('搜索', 'search')}
+      ${m.description ? `<br><small style="color:#5e6268">${escapeHtml(m.description)}</small>` : ''}</li>`).join('');
+    parts.push(`
+    <h3>外部 mention (Tinyfish search · AU filtered)</h3>
+    <p>找到 <strong>${ts.results_au_filtered}</strong> 个澳洲相关 mention (总 ${ts.results_total} · 过滤后):</p>
+    <ul class="enrich-mentions">${lis}</ul>`);
+  }
+
+  // Tinyfish homepage signals
+  if (enr.tinyfish_homepage?.extracted_signals) {
+    const s = enr.tinyfish_homepage.extracted_signals;
+    parts.push(`
+    <h3>现网首页 signals (Tinyfish fetch + regex)</h3>
+    <dl class="enrich-kv">
+      <dt>markdown 长度</dt><dd>${s.text_length} bytes ${s.text_thin ? '<span style="color:#dc3545">⚠ 过薄</span>' : ''} ${tag('官网', 'site')}</dd>
+      <dt>首屏含电话</dt><dd>${s.phone_present_above_fold ? '✓' : '<span style="color:#dc3545">✗</span>'} ${tag('官网', 'site')}</dd>
+      <dt>首屏含 CTA</dt><dd>${s.cta_present_above_fold ? '✓' : '<span style="color:#dc3545">✗</span>'} ${tag('官网', 'site')}</dd>
+      <dt>城市 mention</dt><dd><strong>${s.city_mentioned_count}</strong> 次 ${tag('官网', 'site')}</dd>
+      ${s.service_keywords_found?.length ? `<dt>服务关键词</dt><dd>${s.service_keywords_found.map((k) => `<code>${escapeHtml(k)}</code>`).join(' · ')} ${tag('官网', 'site')}</dd>` : ''}
+      ${s.trust_keywords_found?.length ? `<dt>信任关键词</dt><dd>${s.trust_keywords_found.map((k) => `<code>${escapeHtml(k)}</code>`).join(' · ')} ${tag('官网', 'site')}</dd>` : ''}
+      ${s.oldest_year_mentioned ? `<dt>文中年份</dt><dd>${s.oldest_year_mentioned}${s.newest_year_mentioned !== s.oldest_year_mentioned ? ` · ${s.newest_year_mentioned}` : ''} ${tag('官网', 'site')}</dd>` : ''}
+    </dl>`);
+  }
+
+  return `
+  <section class="section">
+    <p class="eyebrow">公司硬数据</p>
+    <h2>公司注册 · 域名 · 外部 mention</h2>
+    <p style="font-size:12px;color:#5e6268;margin-bottom:18px">4-source enrichment · 抓取时间 ${escapeHtml(enrichedAt)} · ${succ}/${total} 路成功</p>
+    ${parts.join('\n')}
+  </section>`;
+}
+
 function renderSpeedComparisonSection({ videoUrl } = {}) {
   if (videoUrl) {
     return `
@@ -497,6 +600,23 @@ export function renderInternalAuditHtml({
   .appendix .meta-row { font-size: 11.5px; font-weight: 800; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
   .appendix code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
 
+  /* cycle-V3 enrichment section styling */
+  .enrich-kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 16px; font-size: 13.5px; font-weight: 700; margin: 10px 0 18px; }
+  .enrich-kv dt { color: var(--muted); font-weight: 800; }
+  .enrich-kv dd { margin: 0; color: var(--ink); word-break: break-word; }
+  .enrich-kv code { background: var(--cream); border: 1px solid var(--line); padding: 1px 5px; font-family: var(--mono); font-size: 12px; }
+  .enrich-derived { padding: 10px 14px; background: var(--cream); border: 2px solid var(--line); margin: 12px 0 18px; font-size: 13px; }
+  .enrich-mentions { list-style: none; padding: 0; margin: 8px 0 18px; }
+  .enrich-mentions li { padding: 8px 10px; border-bottom: 1px solid color-mix(in srgb, var(--line) 18%, transparent); font-size: 13px; font-weight: 700; }
+  .enrich-mentions li:last-child { border-bottom: none; }
+  .src { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 3px; margin-left: 4px; font-family: var(--mono); font-weight: 700; vertical-align: 1px; }
+  .src-abr   { background: #fff3e0; color: #e65100; }
+  .src-whois { background: #f3e5f5; color: #6a1b9a; }
+  .src-wb    { background: #e0f2f1; color: #00695c; }
+  .src-site  { background: #f1f8e9; color: #558b2f; }
+  .src-search{ background: #fce4ec; color: #c2185b; }
+  .src-llm   { background: #eef2f7; color: #5a6b80; }
+
   @media print {
     html, body { background: white; }
     body { background-image: none; }
@@ -653,6 +773,8 @@ export function renderInternalAuditHtml({
   ${renderVisualSection({ visualAudit, evidenceById, screenshotDir })}
 
   ${renderReviewSection({ reviewAnalysis, reviewSample, entity })}
+
+  ${renderEnrichmentSection({ entity })}
 
   ${renderSpeedComparisonSection({ videoUrl })}
 
