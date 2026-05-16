@@ -1,6 +1,6 @@
 # V3 · Build + Audit 闭环 · 完整计划
 
-> **状态**: 计划阶段 · 暂不执行
+> **状态**: 计划阶段 · 暂不执行 · v2 修正后 ~92% confidence (v1 误用 "Open Design" 用词)
 > **目的**: 把 handoff → build → 验证 整套闭环建好 · 保证生成的网站满足:
 >   1. 核心商家信息 100% 准确 (LOCKED · 不许错)
 >   2. fix 尽量多的 audit 问题 (按重要性 + hard evidence 对比 list)
@@ -8,6 +8,31 @@
 >   4. 内容真实 + 适当 AI 延伸 (缺数据如 review 时 AI 生成 · 内部用)
 >
 > **背景**: docs/v3/HANDOFF-STRUCTURE.md 定义了 handoff 14 文件 · 本文定义 **整套闭环 + audit 体系**
+
+---
+
+## ⚠ 重要 · Build 流程真相 (v2 修正)
+
+我 v1 误用 "Open Design" 一词 · 实际:
+
+**V3 当前 build 流程** (`pl:build-from-reference`):
+```js
+spawn('claude', ['-p', prompt, '--model', 'claude-sonnet-4-5'])
+```
+**直接调 claude CLI · 不走任何 Open Design daemon**。
+
+`templates/roofing/families/<family>/open-design-prompt.md` 这些文件是 Matthew 当初**手动喂 OD daemon 用的** · V3 build 不读它。
+V3 build 读的是 `reference-adapter-handoff.js::buildReferenceAdapterPrompt()` 拼出来的 28-line prompt + reference-site/index.html + master.md。
+
+所以本计划的 "Path A" 不是 OD daemon · 是 "claude CLI 直接生成 (sonnet-4-5)"。
+
+Matthew 的 weatherproof 模板:
+- ✗ 不在 OD daemon database (`/Users/matthew/Developer/open-design/.od/app.sqlite` · 最新 May 10 greg-sign)
+- ✓ 在 `/Users/matthew/Developer/Roof-website-demo/`:
+  - `weatherproof-roof-restorations.svg` (+ 4 变体 · light/dark/outlined)
+  - `weatherproof-visual-style-contract.md` (17 段 + Website Agent Prompt)
+  - `weatherproof-logo-usage-preview.html` (brand tokens CSS)
+- ✗ HTML 设计本身没在 V3 / Roof-website-demo · 需要拿 visual-contract + logo 输入给 claude 生成一份 reference-site/index.html · 或从 OD UI export
 
 ---
 
@@ -76,6 +101,10 @@ https://<slug>-dev.pages.dev/                            ← 客户看
 
 ## 2. 整体闭环架构 (本计划要建的)
 
+**v2 修正**: 简化 Path 决策 · 不需要"OD vs template-fit vs hybrid" 三选 · 只一条路径 (claude CLI 直接 build · 但 handoff 喂得更丰富)。
+
+
+
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │ Stage 1 · Handoff 生成 (V3-HANDOFF-STRUCTURE · MVP 已落 · Phase B 待升)│
@@ -93,32 +122,35 @@ https://<slug>-dev.pages.dev/                            ← 客户看
 └──────────────────────────────────┬─────────────────────────────────────┘
                                    ↓
 ┌────────────────────────────────────────────────────────────────────────┐
-│ Stage 3 · Build 决策 ← NEW · 本计划                                     │
+│ Stage 3 · Family 决策 (单 path · 选 reference family) ← NEW             │
 │                                                                          │
-│   决策器看以下信号选 build path:                                          │
-│   ┌─────────────────────────────────────────┐                          │
-│   │ A · OD full generate (sonnet · $0.30)   │ → 灵活 · 5 template 不 fit│
-│   │ B · template-fit (现有 family · ~$0)    │ → 80% leads · 快 · 稳     │
-│   │ C · template-fit + OD-edit (混合)       │ → 中间路径 · 微调         │
-│   └─────────────────────────────────────────┘                          │
+│   不是 "OD vs template" 二选 · 都是 claude CLI 跑                        │
+│   决策器只选: 用哪个 reference family 当 base                            │
 │                                                                          │
-│   选择依据 (LLM 综合判断):                                                │
-│   - 客户 niche 匹配现有 family (roofer ✓ / 其他待开发)                   │
-│   - 投资力 (medium+/high · audit critical ≥ 5) → A                      │
-│   - audit findings 多 (≥ 15) · 现网破败 → A 或 C                         │
-│   - 简单 case (新 biz · STARTER · 少 findings) → B                       │
+│   现有 5 family (待加入 weatherproof 后):                                 │
+│   - classic-premium-roftix     · premium 多页 · audit critical 多        │
+│   - editorial-bold-commercial  · B2B / commercial · 高客单              │
+│   - lead-capture-restoration   · 单页 · 强 CTA · 紧迫感                  │
+│   - productized-modern-roofing · 现代 · 固定价 · transparent             │
+│   - weatherproof-restoration   · NEW · trade-service direct (Phase A)   │
+│                                                                          │
+│   决策 (LLM 综合或 rule-based):                                           │
+│   - 看 niche · sub-niche · audit findings · invest tier · STARTER/REDESIGN│
+│   - 输出 chosen_family                                                   │
+│   - 后续 Matthew 加 niche 模板 (electrician/plumber/etc.) · 决策器扩展    │
 └──────────────────────────────────┬─────────────────────────────────────┘
                                    ↓
 ┌────────────────────────────────────────────────────────────────────────┐
-│ Stage 4 · Build 执行                                                    │
+│ Stage 4 · Build 执行 · 单 path · claude CLI sonnet-4-5                  │
 │                                                                          │
-│   Path A · pl:build-from-reference (现有 · 已可用)                       │
-│   Path B · pl:build-from-template-fit (NEW · 本计划)                    │
-│            · 选 family · 套 handoff 内容 · 输出 HTML · 不调 LLM           │
-│   Path C · pl:build-template-with-od-edit (NEW · Phase C)               │
-│            · 先 template-fit · 再 OD edit 调整                            │
+│   现有 pl:build-from-reference 增强:                                      │
+│   - prompt 喂的不再是 master.md · 改读 handoff/final-prompt.md           │
+│   - handoff/audit/findings.json 列每条 issue + fix_prescription          │
+│   - handoff/structure/page-map.json 告 OD 要建哪几页                     │
+│   - handoff/boundaries.md LOCKED 字段列表                                │
 │                                                                          │
 │   输出: clients/<slug>/v2/concept/reference-adapter/index.html          │
+│         (后续可改成 / 加 about.html · services-*.html 多页)             │
 └──────────────────────────────────┬─────────────────────────────────────┘
                                    ↓
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -633,37 +665,47 @@ Stage 5 audit 都跑 (3 audit per build · 45 audit runs)
 
 ---
 
-## 8. 新 weatherproof 模板集成 (Phase A · Task 1)
+## 8. 新 weatherproof 模板集成 (Phase A · Task 1) · v2 修正
 
-### 步骤
+### 现有资产 (实际位置)
 
-1. 从 `/Users/matthew/Developer/open-design/` (你的 OD 项目) 找到 weatherproof restoration 模板文件
-2. 复制到 `templates/roofing/families/weatherproof-restoration/`:
-   ```
-   weatherproof-restoration/
-   ├── reference-site/
-   │   ├── index.html       (你做的模板)
-   │   ├── HANDOFF-BOUNDARIES.md
-   │   ├── desktop.png      (截图)
-   │   ├── mobile.png
-   │   └── assets/
-   ├── design-language.md   (设计风格描述 · 跟现有 4 family 同结构)
-   ├── section-patterns.json
-   ├── template-manifest.json (含 selectedImages)
-   └── open-design-prompt.md
-   ```
-3. 加进 `core/leads/reference-adapter-handoff.js` FAMILY_REGISTRY:
+| 资产 | 路径 | 现状 |
+|---|---|---|
+| Logo SVG × 5 变体 | `/Users/matthew/Developer/Roof-website-demo/weatherproof-roof-restorations*.svg` | ✓ 有 (light/dark/outlined) |
+| Visual style contract | `/Users/matthew/Developer/Roof-website-demo/weatherproof-visual-style-contract.md` | ✓ 17 段 · 含 Website Agent Prompt |
+| Logo usage preview | `/Users/matthew/Developer/Roof-website-demo/weatherproof-logo-usage-preview.html` | ✓ brand tokens CSS |
+| **HTML 设计 (index.html)** | — | ❌ 不在 V3 / Roof-website-demo / OD daemon |
+| Screenshot · desktop/mobile | — | ❌ 没有 · screenshot 是 OD 编辑器 UI 截图 |
+
+### 集成步骤
+
+1. **复制 logo + 资产** · `cp /Users/matthew/Developer/Roof-website-demo/weatherproof-*.{svg,md,html} → templates/roofing/families/weatherproof-restoration/`
+2. **生成 reference-site/index.html** · 两条路:
+   - **A.** 从 OD UI export (Matthew 手动 · 你登录 OD 的那个项目 · "weatherproof-redesign...")
+   - **B.** Claude CLI 一次性生成 · 喂 visual-style-contract.md + logo SVG + niche=roofing-restoration → 生成完整 reference-site/index.html (~$0.30 一次性)
+3. **生成 reference-site/desktop.png + mobile.png** · Playwright 截 index.html
+4. **创建 design-language.md** · 从 visual-style-contract.md 17 段提取 (转 V3 family 标准格式)
+5. **创建 section-patterns.json** · 从 visual contract "Header And Footer Guardrails" / "Cards Forms" 等段抽
+6. **创建 template-manifest.json** · 含 fit/bestFor/factsPolicy/selectedImages
+7. **创建 HANDOFF-BOUNDARIES.md** · 复制 4 family 的格式 + 填 weatherproof 具体 LOCKED 数据
+8. **注册到 FAMILY_REGISTRY** · `core/leads/reference-adapter-handoff.js`:
    ```js
-   roofing_restoration: 'weatherproof-restoration',  // sub-niche: restoration 优先用
+   roofing_restoration: 'weatherproof-restoration',  // sub-niche
+   weatherproof:        'weatherproof-restoration',  // exact match
    ```
-4. 拍照 + 提取 brand tokens (from 你 OD 项目里的 brand-kit.json)
-5. fit · 在 manifest 里写 `bestFor: ['lead capture restoration', '单页 form-heavy']`
 
-### 决策 ·哪些客户用这个 family
+### 决策 · 哪些客户用这个 family
 
 - niche 含 "restoration" / "roof restoration" / "maintenance"
 - audit findings 突出 "no_form" / "no_cta_above_fold"
 - 单页 lead-capture 场景
+- 跟现有 `lead-capture-restoration` family 比 · weatherproof 更 trade-service · less luxurious
+
+### 待 Matthew 确认
+
+- Step 2 选 A (从 OD export) 还是 B (claude CLI 生成)?
+  - A 工作量小 · 但需要你登录 OD UI 找项目 export HTML
+  - B 自动 · 但 reference-site 是 claude 生成的 · 可能跟 OD 编辑器里 visual 不一致 (要靠 visual-style-contract.md 强力约束)
 
 ---
 
@@ -693,11 +735,26 @@ Stage 5 audit 都跑 (3 audit per build · 45 audit runs)
 | AL-7 | Internal-fix-comparison 模板 (上面 § 3.5) 结构 OK | ✅/✗ |
 | AL-8 | AI-generated review 不标 placeholder (内部用 · M5 替换) | ✅/✗ |
 | AL-9 | brand-tokens primary/accent LOCKED · LLM 不能改 · build 时 grep verify | ✅/✗ |
-| AL-10 | OD path A 默认只在 "现有 family 不 fit" 触发 · 多数走 B/C 套模板 | ✅/✗ |
+| AL-10 | ~~OD path A 默认只在 "现有 family 不 fit" 触发~~ → **v2 修正**: 单 path · claude CLI direct · 决策只选 family · 不需 path B/C | ✅/✗ |
+| AL-11 | weatherproof 模板 step 2 · A (OD export 手动) 还是 B (claude CLI 自动生成) | A / B |
+| AL-12 | Matthew 后续加 niche 模板 · electrician/plumber/dental 等 · 同结构 5 文件 (reference-site + design-language + section-patterns + manifest + boundaries) | ✅/✗ |
 
 ---
 
 ## 11. 文档版本
 
-- v1 · 2026-05-16 · Matthew + Claude · 初版完整
-- 状态: 等 Matthew 拍 AL-1 至 AL-10 · 然后开 Phase A
+- v1 · 2026-05-16 · Matthew + Claude · 初版 (75% confidence · 误用 "Open Design" 用词 · path A/B/C 三选过度复杂)
+- v2 · 2026-05-16 · Claude 重新调查 + 修正 (~92% confidence):
+  - V3 build 实际是 `claude CLI direct` · 不走 OD daemon · `open-design-prompt.md` 是历史遗物
+  - 简化为单 build path · 决策器只选 family · 不需 path B/C
+  - weatherproof 资产实际在 `Roof-website-demo/` · HTML 设计本身没在 V3 · 需 export 或 claude 生成
+  - 新增 AL-11 (weatherproof step 2 选 A/B) + AL-12 (niche 扩展同结构)
+- 状态: 等 Matthew 拍 AL-1 至 AL-12 · 然后开 Phase A
+
+## 12. v2 剩余不确定 (~8%)
+
+1. **OD UI export 是否 viable** (AL-11 选 A) · Matthew 那边 OD UI 是 hosted 还是另一个 install? 能否 export HTML 出来?
+2. **多页生成单次 LLM call 够不够** · 现有 reference-adapter 是一次 prompt 出一个 index.html · 多页需要 N 次 call · 每次 ~$0.30 · 或一次 call 出多页 HTML zip (claude 能不能稳定?)
+3. **AI-generated review 法律风险** · 内部开发版没问题 · 但客户 demo URL public · 万一被同行截图 + 投诉编造 review 怎么办? 加 footer disclaimer "demo content · client to verify"?
+4. **Page-map 决策准确率未实测** · 规则树看着合理 · 实际 10 个 lead 跑下来可能误判一半 · 需要 Phase A 先小批验证
+5. **Brand consistency enforce 机制** · brand-tokens.json 设了 primary=#1a3d5c · claude CLI 生成 HTML 时实际颜色不一定 1:1 · Stage 5C aesthetic audit 抓 · 但 fail 后重 build 还是 fail 怎么办
