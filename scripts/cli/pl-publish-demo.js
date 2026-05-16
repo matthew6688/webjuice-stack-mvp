@@ -471,49 +471,28 @@ proc.on('exit', async (code) => {
       }
 
       // cycle-26 P5: append to batch state · check if all expected entities done → post KPI dashboard
+      // cycle-27 (Matthew 2026-05-16 Geelong Roofing Pros): use recordEntityTerminal
+      // (lock-protected + auto KPI fire) instead of inline read-mod-write. Previous
+      // inline code (a) bypassed mutateBatchState lock · race-clobber risk and
+      // (b) never set kpi_dashboard_posted_at marker · duplicate KPI fire possible.
       try {
-        const { batchStatePath, readBatchState, writeBatchState } = await import('../../core/funnel/pipeline-batch-thread.js');
+        const { recordEntityTerminal } = await import('../../core/funnel/pipeline-batch-thread.js');
         const batchId = (e.batches || []).slice(-1)[0];
         if (batchId) {
-          const bs = readBatchState(batchId);
-          if (bs) {
-            bs.entities = bs.entities || [];
-            // upsert by entityKey
-            const idx = bs.entities.findIndex((x) => x.entityKey === e.entityKey);
-            const entry = {
-              entityKey: e.entityKey,
-              name: e.latest?.name,
-              threadUrl: e.project_thread_id ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${e.project_thread_id}` : null,
-              phase: e.phase,
-              grade: e.grade?.grade || e.grade?.investment_level,
-              audit_score: e.detailed_audit?.audit_score,
-              qualification_total: e.qualification?.scorecard?.total,
-              qualification_threshold: e.qualification?.scorecard?.threshold,
-              deploy_url: e.deploy?.demo_url,
-              archive_reason: e.archive_reason,
-            };
-            if (idx >= 0) bs.entities[idx] = entry; else bs.entities.push(entry);
-            // Update finalized_at on each completion (KPI may be re-posted if more entities finish later)
-            bs.finalized_at = new Date().toISOString();
-            writeBatchState(bs);
-
-            // If all expected entities are accounted for · post KPI dashboard
-            const expected = bs.expected_total || bs.lead_count || 0;
-            if (expected > 0 && bs.entities.length >= expected) {
-              const { buildKpiDashboard } = await import('../../core/funnel/kpi-dashboard.js');
-              const dashboard = buildKpiDashboard({ batchState: bs, entities: bs.entities });
-              if (bs.thread_id) {
-                try { await appendThreadMessage(bs.thread_id, dashboard); } catch {}
-              }
-              if (process.env.PL_PARENT_THREAD_ID) {
-                try { await appendThreadMessage(process.env.PL_PARENT_THREAD_ID, dashboard); } catch {}
-              }
-              console.log(`  KPI dashboard posted · ${bs.entities.length}/${expected} entities`);
-            }
-          }
+          await recordEntityTerminal({
+            batchId,
+            entityKey: e.entityKey,
+            name: e.latest?.name,
+            threadUrl: e.project_thread_id
+              ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${e.project_thread_id}`
+              : null,
+            phase: e.phase,
+            grade: e.grade?.grade || e.grade?.investment_level,
+            archive_reason: e.archive_reason,
+          });
         }
       } catch (err) {
-        console.warn(`[KPI] dashboard post failed (non-blocking): ${err.message}`);
+        console.warn(`[KPI] recordEntityTerminal failed (non-blocking): ${err.message}`);
       }
     }
   } catch (err) {
