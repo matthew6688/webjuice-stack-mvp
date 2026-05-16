@@ -25,8 +25,13 @@ const HARD_GATES = [
     // V3 D43 cycle-21 (Matthew 2026-05-15): 阈值 50 → 10 · 大多数中小企业站 ≤ 10 页 ·
     // 超过 10 通常是 enterprise · 不在 V3 产品包。早 hard-pass 在 run-audit-pipeline 已 catch ·
     // qualification 这层是 safety net.
-    test: (ctx) => (ctx.sitemap?.total_urls || 0) > 10,
-    reason: '页面 > 10 · 迁移成本失控',
+    // cycle-27 Bug I (Matthew 2026-05-16): was using total_urls (raw count · includes
+     // WP taxonomy noise tags/categories/pagination · wp-* internals · author archives).
+     // run-audit-pipeline already uses content_url_count for early hard-gate · this gate
+     // was inconsistent · same entity could pass early gate but fail qualification gate
+     // because raw 35 > 10 while filtered content was 8. Now both use content_url_count.
+    test: (ctx) => (ctx.sitemap?.content_url_count ?? ctx.sitemap?.total_urls ?? 0) > 10,
+    reason: '内容页 > 10 · 迁移成本失控',
   },
   {
     id: 'multi_business',
@@ -128,7 +133,8 @@ function scoreC_Scope(ctx) {
   const sitemap = ctx.audit?.sitemap_analysis || {};
   let score = 0;
   const items = [];
-  const pages = sitemap.total_urls || flags.scope_pages_estimate || 5;
+  // cycle-27 Bug I: same fix · use filtered content count not raw
+  const pages = sitemap.content_url_count ?? sitemap.total_urls ?? flags.scope_pages_estimate ?? 5;
   if (pages <= 10) { score += 8; items.push(`${pages} pages OK`); }
   if (!flags.booking_required) { score += 5; items.push('no-booking'); }
   if (!flags.multilingual_required) { score += 3; items.push('single-lang'); }

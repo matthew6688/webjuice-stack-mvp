@@ -20,14 +20,44 @@
 
 const FETCH_TIMEOUT_MS = 12_000;
 
-async function fetchText(url, fetchImpl = globalThis.fetch) {
+// cycle-27 (Matthew 2026-05-16): Geelong Roofing Pros sitemap fetch silently
+// returned null · root cause = expired SSL cert blocks Node fetch. Sitemap
+// content has no security implication (public XML · we only parse <loc>) so
+// we retry with TLS verification disabled when the first attempt fails on
+// cert error. Real-world: small AU SMB sites frequently let certs lapse.
+let _insecureDispatcher = null;
+async function getInsecureDispatcher() {
+  if (_insecureDispatcher) return _insecureDispatcher;
+  try {
+    const { Agent } = await import('undici');
+    _insecureDispatcher = new Agent({ connect: { rejectUnauthorized: false } });
+    return _insecureDispatcher;
+  } catch { return null; }
+}
+
+async function fetchText(url, fetchImpl = globalThis.fetch, { allowInsecure = false } = {}) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
+  const opts = { redirect: 'follow', signal: ctrl.signal, headers: { 'User-Agent': 'Mozilla/5.0 sitemap-audit' } };
+  if (allowInsecure) {
+    const disp = await getInsecureDispatcher();
+    if (disp) opts.dispatcher = disp;
+  }
   try {
-    const r = await fetchImpl(url, { redirect: 'follow', signal: ctrl.signal });
+    const r = await fetchImpl(url, opts);
     if (!r.ok) return null;
     return await r.text();
-  } catch { return null; }
+  } catch (err) {
+    // Node fetch puts cert info on err.cause.code (e.g. CERT_HAS_EXPIRED · UNABLE_TO_VERIFY_LEAF_SIGNATURE)
+    const causeCode = err?.cause?.code || '';
+    const isCertErr = /CERT|SELF_SIGNED|UNABLE_TO_VERIFY/i.test(causeCode)
+      || /CERT|certificate|SSL|self-signed/i.test(err?.message || '');
+    if (!allowInsecure && isCertErr) {
+      clearTimeout(timer);
+      return fetchText(url, fetchImpl, { allowInsecure: true });
+    }
+    return null;
+  }
   finally { clearTimeout(timer); }
 }
 
