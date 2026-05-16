@@ -505,7 +505,16 @@ export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt
   // archived (someone explicitly un-archived for inspection). If archived,
   // skip · trust G7 + explicit backfill CLI for drift recovery.
   // `force=true` overrides (used by manual ops · doctor backfill).
-  if (entity.project_thread_id && !force) {
+  //
+  // cycle-27 Bug G round-2 (Matthew 2026-05-16 R5 PAV recurrence): the race
+  // window opens BEFORE project_thread_id is written (publish-demo writes
+  // entity.deploy.demo_url FIRST, opens project thread SECOND, writes
+  // project_thread_id THIRD). The writeEntity hook fired by step 1 sees
+  // project_thread_id=null · falls through · un-archives. Tighten guard to
+  // also skip when entity.deploy.demo_url is set (post-publish · leads thread
+  // should be frozen archived).
+  const inPublishTransition = !!(entity.project_thread_id || entity.deploy?.demo_url);
+  if (inPublishTransition && !force) {
     try {
       const checkR = await fetchImpl(`${DISCORD_API}/channels/${entity.discord_thread_id}`, {
         headers: { Authorization: `Bot ${botToken()}` },

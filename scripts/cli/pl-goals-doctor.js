@@ -239,7 +239,7 @@ async function checkG8_BatchThreadExists(entity, fetchImpl) {
   // may have rolled-off state files · that's acceptable historical drift.
   const ROOT = process.cwd();
   const latestBatchId = batches[batches.length - 1];
-  const statePath = path.join(ROOT, 'data', 'leads', 'batches', `${latestBatchId}.json`);
+  const statePath = path.join(ROOT, 'data', 'v2', 'pipeline-batches', `${latestBatchId}.json`);
   if (!fs.existsSync(statePath)) {
     // Legacy batch state file pruned · only fail if entity is recent
     if (entity.firstSeenAt < '2026-05-16T05:00:00Z') return;
@@ -259,6 +259,8 @@ async function checkG8_BatchThreadExists(entity, fetchImpl) {
           headers: { Authorization: `Bot ${TOKEN}` },
         });
         if (r.status === 404) {
+          // Legacy carve-out: old batches whose threads were manually deleted/purged.
+          if (entity.firstSeenAt < '2026-05-16T05:00:00Z') return;
           fail('G8', entity.key, `batch ${latestBatchId} thread 404`, threadId);
         } else if (!r.ok) {
           fail('G8', entity.key, `batch ${latestBatchId} thread HTTP ${r.status}`, threadId);
