@@ -415,7 +415,7 @@ export async function editThreadMessage(threadId, messageId, content, { fetchImp
   return { ok: true, threadId, messageId };
 }
 
-export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchImpl = fetch, force = false } = {}) {
+export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchImpl = fetch, force = false, components = null } = {}) {
   let threadId = entityKeyOrThreadId;
   if (entityKeyOrThreadId && !/^\d+$/.test(entityKeyOrThreadId)) {
     const entity = readEntity(entityKeyOrThreadId);
@@ -447,7 +447,10 @@ export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchI
       }
     } catch { /* check best-effort · fall through to POST */ }
   }
-  // cycle-27 bug #4: 429 backoff via discordFetch wrapper
+  // cycle-27 bug #4: 429 backoff via discordFetch wrapper.
+  // cycle-27 button: optional `components` array for action_row buttons.
+  const payload = { content: String(content).slice(0, 2000) };
+  if (Array.isArray(components) && components.length > 0) payload.components = components;
   const response = await discordFetch(`${DISCORD_API}/channels/${threadId}/messages`, {
     method: 'POST',
     headers: {
@@ -455,7 +458,7 @@ export async function appendThreadMessage(entityKeyOrThreadId, content, { fetchI
       'Content-Type': 'application/json',
       'User-Agent': 'profitslocal-lead-thread-sync',
     },
-    body: JSON.stringify({ content: String(content).slice(0, 2000) }),
+    body: JSON.stringify(payload),
   }, { fetchImpl });
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
@@ -852,7 +855,7 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
  * @param {boolean} [opts.skipCard=false] — 跳过 profile card 刷新 (transient ack)
  * @param {boolean} [opts.skipMessage=false] — 只刷新 card · 不发消息
  */
-export async function refreshThreadAndPost(entityKey, message, { skipCard = false, skipMessage = false } = {}) {
+export async function refreshThreadAndPost(entityKey, message, { skipCard = false, skipMessage = false, components = null } = {}) {
   try {
     const entity = readEntity(entityKey);
     if (!entity) return { ok: false, reason: 'entity_not_found' };
@@ -863,7 +866,7 @@ export async function refreshThreadAndPost(entityKey, message, { skipCard = fals
     // deleted upstream), CLEAR stale id + retry in leads. Stale project_thread_id
     // was silently swallowing all 5 stage messages.
     async function tryPost(threadId, channelLabel) {
-      const r = await appendThreadMessage(threadId, message);
+      const r = await appendThreadMessage(threadId, message, { components });
       if (r.ok) return { ok: true, msg: r, channel: channelLabel };
       // Discord channel-not-found → return signal so caller can fall back
       if (r.reason === 'discord_404') return { ok: false, dead: true, msg: r, channel: channelLabel };

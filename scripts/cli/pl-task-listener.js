@@ -421,6 +421,83 @@ async function handleReaction(reaction, user, type) {
   // Other emojis silently ignored (operator can use any non-mapped emoji as bookmark).
 }
 
+/* ─── cycle-27 · Discord component button override (do-button) ────── */
+/* Matthew (2026-05-16): replaces emoji reactions w/ explicit click buttons */
+
+async function findEntityByThreadId(threadId) {
+  const entitiesDir = '/Users/matthew/Developer/google-map-website-v3/data/leads/entities';
+  try {
+    const files = fs.readdirSync(entitiesDir).filter((f) => f.endsWith('.json'));
+    for (const f of files) {
+      try {
+        const e = JSON.parse(fs.readFileSync(`${entitiesDir}/${f}`, 'utf8'));
+        if (String(e.discord_thread_id) === String(threadId)) {
+          return { entity: e, entityKey: e.entityKey || f.replace('.json', '') };
+        }
+      } catch { /* skip */ }
+    }
+  } catch { /* no dir */ }
+  return { entity: null, entityKey: null };
+}
+
+async function handleButtonInteraction(interaction) {
+  const { parseCustomId, BUTTON_ACTIONS } = await import('../../core/contracts/button-actions.js');
+  const parsed = parseCustomId(interaction.customId);
+  if (!parsed) return; // not our button
+  const { action, entityKey: clickedKey } = parsed;
+  const user = interaction.user?.username || 'operator';
+  log('button', action, '· user=' + user, '· entityKey=' + clickedKey, '· thread=' + interaction.channelId);
+
+  // Ack immediately (avoid 3s Discord timeout) · ephemeral so reply only visible to clicker
+  try { await interaction.deferReply({ ephemeral: true }); }
+  catch (err) { log('button defer failed', err.message); return; }
+
+  // Resolve entity: prefer customId-encoded key, fallback to thread lookup
+  let entity = null, entityKey = clickedKey;
+  try {
+    const entitiesDir = '/Users/matthew/Developer/google-map-website-v3/data/leads/entities';
+    const path = `${entitiesDir}/${entityKey}.json`;
+    if (fs.existsSync(path)) entity = JSON.parse(fs.readFileSync(path, 'utf8'));
+  } catch { /* fall through */ }
+  if (!entity) {
+    const found = await findEntityByThreadId(interaction.channelId);
+    entity = found.entity; entityKey = found.entityKey || entityKey;
+  }
+  if (!entity) {
+    await interaction.editReply({ content: `⚠ 找不到 entity (key=\`${clickedKey}\` · thread=${interaction.channelId})` });
+    return;
+  }
+
+  try {
+    if (action === 'approve') {
+      const { setEntityPhase, ENTITY_PHASE } = await import('../../core/leads/discovery-store.js');
+      setEntityPhase({ entityKey, phase: ENTITY_PHASE.READY_TO_BUILD, archive_reason: `manual approve by ${user}` });
+      await interaction.editReply({ content: `🚀 ${user} 推进 · phase=ready-to-build · builder 会自动 pick up` });
+    } else if (action === 'archive') {
+      const { archiveLeadAsRejected } = await import('../../core/leads/terminal-archive.js');
+      await archiveLeadAsRejected(entityKey, { reason: `manual archive by ${user}`, grade: 'D' });
+      await interaction.editReply({ content: `🗄 ${user} 归档 · grade=D · thread 已 lock+archive` });
+    } else if (action === 'reaudit') {
+      const { enqueueDetailedAudit } = await import('../../core/leads/detailed-audit-queue.js');
+      enqueueDetailedAudit(entityKey, { reason: `manual reaudit by ${user}`, priority: 100, force: true });
+      await interaction.editReply({ content: `🔄 ${user} 重审 · 已入 detailedAudit 队列 (priority 100 · force)` });
+    } else if (action === 'upgrade') {
+      const { enqueueDetailedAudit } = await import('../../core/leads/detailed-audit-queue.js');
+      enqueueDetailedAudit(entityKey, { reason: `manual upgrade by ${user}`, priority: 200 });
+      await interaction.editReply({ content: `⬆️ ${user} 升级 · priority=200 · 插队 audit 队列` });
+    } else if (action === 'qa_mark') {
+      const { setEntityPhase, ENTITY_PHASE } = await import('../../core/leads/discovery-store.js');
+      setEntityPhase({ entityKey, phase: ENTITY_PHASE.QA_PENDING, archive_reason: `qa_mark by ${user}` });
+      await interaction.editReply({ content: `📋 ${user} 标 qa-pending · 等 operator 补字段后再推进` });
+    } else {
+      await interaction.editReply({ content: `⚠ 未知 action: ${action}` });
+    }
+  } catch (err) {
+    log('button action failed', action, err.message);
+    try { await interaction.editReply({ content: `⚠ ${action} 失败: ${err.message}` }); } catch {}
+  }
+}
+
 /* ─── Boot catch-up: backfill missed threads ──────────────────────── */
 
 async function catchUp() {
@@ -472,6 +549,14 @@ client.on(Events.ThreadCreate, async (thread) => {
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   try { await handleReaction(reaction, user, 'add'); }
   catch (err) { log('MessageReactionAdd error', err.message); }
+});
+
+// cycle-27 · "do button" · Discord component button manual override
+client.on(Events.InteractionCreate, async (interaction) => {
+  try {
+    if (!interaction.isButton?.()) return;
+    await handleButtonInteraction(interaction);
+  } catch (err) { log('InteractionCreate error', err.message); }
 });
 
 client.on('error', (err) => log('client error', err.message));

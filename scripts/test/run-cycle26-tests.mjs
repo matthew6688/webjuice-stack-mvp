@@ -89,6 +89,8 @@ const TESTS = [
   'scripts/test/test-cycle27-sitemap-content-count.mjs',
   // cycle-27 · no-website entities recorded into batch.entities (KPI gate progresses)
   'scripts/test/test-cycle27-no-website-terminal.mjs',
+  // cycle-27 · "do button" · Discord component buttons replace emoji reactions
+  'scripts/test/test-cycle27-button-actions.mjs',
 ];
 
 const results = [];

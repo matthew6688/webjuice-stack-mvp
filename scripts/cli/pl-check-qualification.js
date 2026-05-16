@@ -263,8 +263,21 @@ async function processEntity(key) {
   try {
     const { refreshThreadAndPost } = await import(path.join(REPO, 'core/funnel/lead-thread-sync.js'));
     const { stage5Message } = await import(path.join(REPO, 'core/funnel/audit-stage-messages.js'));
+    const { buildActionRow } = await import(path.join(REPO, 'core/contracts/button-actions.js'));
     const msg = stage5Message({ entity: fresh, verdict, crawl, briefResult });
-    await refreshThreadAndPost(key, msg);
+    // cycle-27 "do button": attach manual-override buttons on non-auto verdicts.
+    // ready-to-build auto-chains build+publish · no buttons needed.
+    let components = null;
+    try {
+      if (verdict.verdict === 'qa-pending') {
+        const row = buildActionRow(key, ['approve', 'reaudit', 'upgrade', 'archive']);
+        components = row ? [row] : null;
+      } else if (verdict.verdict === 'archived') {
+        const row = buildActionRow(key, ['reaudit', 'qa_mark']);
+        components = row ? [row] : null;
+      }
+    } catch (err) { console.warn(`     ⚠ button row build failed: ${err.message}`); }
+    await refreshThreadAndPost(key, msg, { components });
   } catch (err) {
     console.warn(`     ⚠ Discord post failed: ${err.message}`);
   }
