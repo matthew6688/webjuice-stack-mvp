@@ -355,7 +355,8 @@
     "hermes:smoke-website-agent-handoff": "node scripts/hermes/smoke-website-agent-handoff.js",
     "hermes:smoke-website-agent-approval-loop": "node scripts/hermes/smoke-website-agent-approval-loop.js",
     "hermes:test-website-agent-closure": "node scripts/hermes/test-website-agent-closure.js",
-    "leads:test-site-audit": "node scripts/leads/test-site-audit.js"
+    "leads:test-site-audit": "node scripts/leads/test-site-audit.js",
+    "pl:build-handoff": "node --env-file-if-exists=.env.local scripts/cli/pl-build-handoff.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
