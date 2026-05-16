@@ -100,18 +100,27 @@ export async function whoisLookup(domain, { fetchImpl = globalThis.fetch } = {})
   const last_changed_at = findEvent(data.events, 'last changed');
   const registrar = findRegistrar(data.entities);
 
-  const domain_age_years = registered_at
-    ? Math.floor((Date.now() - Date.parse(registered_at)) / (365.25 * 86400 * 1000))
-    : null;
+  // .au RDAP redacts registration date for privacy (auDA policy).
+  // Use last_changed_at as a fallback signal of domain activity · but flag the source.
+  // True domain age preferred via Wayback first_snapshot in enrichment orchestrator.
+  let domain_age_years = null;
+  let domain_age_source = null;
+  if (registered_at) {
+    domain_age_years = Math.floor((Date.now() - Date.parse(registered_at)) / (365.25 * 86400 * 1000));
+    domain_age_source = 'rdap_registration';
+  }
+  // No fallback to last_changed_at here · misleading (registrars 'last change' could be a renewal · not registration)
 
   return {
     domain: clean,
-    registered_at,
+    registered_at,                                  // may be null for .au (privacy redacted)
     expires_at,
     last_changed_at,
     registrar,
     domain_age_years,
+    domain_age_source,                              // 'rdap_registration' or null
     status: Array.isArray(data.status) ? data.status : [],
+    privacy_redacted: !registered_at && /\.au$/i.test(clean),
     probed_at: new Date().toISOString(),
     _raw_endpoint: endpoint,
   };

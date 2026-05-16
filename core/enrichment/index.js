@@ -102,12 +102,34 @@ export async function enrichEntity(entity, opts = {}) {
 
   await Promise.all(tasks);
 
+  // Synthesize domain_age_years_effective · prefer:
+  //   1. WHOIS registered_at (rdap_registration · gTLD often public)
+  //   2. Wayback first_snapshot (wayback_first_snapshot · proxy · .au redacted RDAP fallback)
+  //   3. null
+  if (enrichment.whois || enrichment.wayback) {
+    const whoisAge = enrichment.whois?.domain_age_years;
+    const waybackFirst = enrichment.wayback?.first_snapshot_date;
+    let effectiveYears = null;
+    let effectiveSource = null;
+    if (typeof whoisAge === 'number') {
+      effectiveYears = whoisAge;
+      effectiveSource = enrichment.whois?.domain_age_source || 'rdap_registration';
+    } else if (waybackFirst) {
+      effectiveYears = Math.floor((Date.now() - Date.parse(waybackFirst)) / (365.25 * 86400 * 1000));
+      effectiveSource = 'wayback_first_snapshot';
+    }
+    enrichment._derived = {
+      domain_age_years_effective: effectiveYears,
+      domain_age_source: effectiveSource,
+    };
+  }
+
   enrichment._meta = {
     enriched_at: new Date().toISOString(),
     total_latency_ms: Date.now() - start,
     trace,
-    sources_attempted: trace.filter((t) => !t.skipped).length + (Object.keys(enrichment).length - 0),
-    sources_succeeded: Object.keys(enrichment).filter((k) => k !== '_meta').length,
+    sources_attempted: trace.length,
+    sources_succeeded: Object.keys(enrichment).filter((k) => k !== '_meta' && k !== '_derived').length,
   };
 
   return { ...entity, enrichment };

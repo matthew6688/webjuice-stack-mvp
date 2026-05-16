@@ -374,6 +374,20 @@ async function processLead(entityKey) {
     });
     const persistResult = persistLeadGrade({ entityKey, grade: leadGrade });
     console.log(`  [stage 3a/4] graded: ${leadGrade.investment_level}${leadGrade.product_tier ? '/' + leadGrade.product_tier : ''} ${persistResult.ok ? '✓ persisted' : '⚠ ' + persistResult.reason}`);
+
+    // V3 cycle-28-prep · enrichment 4-source (Tinyfish summary + WHOIS RDAP + ABR ABN + Wayback)
+    // 不阻塞 · 失败容忍 · 写 entity.enrichment.* 子树 · 见 docs/v3/V3-ENRICHMENT-PLAN.md
+    try {
+      const { enrichEntity } = await import('../../core/enrichment/index.js');
+      const beforeEnrich = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+      const enriched = await enrichEntity(beforeEnrich);
+      fs.writeFileSync(entityPath, JSON.stringify(enriched, null, 2) + '\n');
+      const meta = enriched.enrichment?._meta || {};
+      console.log(`  [enrichment] ${meta.sources_succeeded || 0}/${meta.sources_attempted || 0} sources · ${meta.total_latency_ms || 0}ms`);
+    } catch (err) {
+      console.warn(`  [enrichment] failed (non-blocking): ${err.message}`);
+    }
+
     // V3 D38 · Stage 3 done hook (rich message)
     const entityForStage3 = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
     await postStage(entityKey, stageMsgs.stage3Message({

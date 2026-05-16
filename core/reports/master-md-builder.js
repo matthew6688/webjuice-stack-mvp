@@ -1154,6 +1154,103 @@ export function buildMasterMdDetailed({
     }
   }
 
+  // ── cycle-28-prep · enrichment 段 (entity.enrichment.* · 新加) ──
+  // 不破坏现有段 · 老 entity 无 enrichment → 段隐藏
+  // Source: docs/v3/V3-ENRICHMENT-PLAN.md
+  const enrich = entity?.enrichment;
+  if (enrich && (enrich.abn || enrich.whois || enrich.wayback || enrich.tinyfish_search || enrich.tinyfish_homepage)) {
+    sections.push('## 公司注册 · 域名 · 外部 mention 硬数据');
+    sections.push('');
+    sections.push(`> 4-source enrichment · 抓取时间 ${(enrich._meta?.enriched_at || '').slice(0, 19) || '?'} · ${enrich._meta?.sources_succeeded || 0}/${enrich._meta?.sources_attempted || 0} 路成功`);
+    sections.push('');
+
+    // ABR · 公司注册
+    if (enrich.abn) {
+      sections.push('### 公司注册 (ABR)');
+      sections.push('');
+      const a = enrich.abn;
+      sections.push(`- **ABN**: \`${a.abn_formatted || a.abn || '-'}\` · ${a.abn_status || '?'} \`[ABR]\``);
+      if (a.entity_name) sections.push(`- **注册名**: ${a.entity_name} \`[ABR]\``);
+      if (a.entity_type_name) sections.push(`- **实体类型**: ${a.entity_type_name} \`[ABR]\``);
+      if (a.abn_status_effective_from) sections.push(`- **状态生效**: ${a.abn_status_effective_from} \`[ABR]\``);
+      if (a.acn) sections.push(`- **ACN**: \`${a.acn}\` \`[ABR]\``);
+      sections.push(`- **GST 注册**: ${a.gst_registered ? '是' : '否'} \`[ABR]\``);
+      if (a.address_state || a.address_postcode) sections.push(`- **注册地址**: ${[a.address_state, a.address_postcode].filter(Boolean).join(' ')} \`[ABR]\``);
+      if (a.trading_names?.length) sections.push(`- **Trading names**: ${a.trading_names.join(' · ')} \`[ABR]\``);
+      sections.push('');
+    }
+
+    // WHOIS · 域名注册
+    if (enrich.whois) {
+      sections.push('### 域名 (WHOIS RDAP)');
+      sections.push('');
+      const w = enrich.whois;
+      if (w.registered_at) {
+        sections.push(`- **注册日**: ${w.registered_at} \`[WHOIS]\``);
+      } else if (w.privacy_redacted) {
+        sections.push('- **注册日**: privacy-redacted (.au 域名隐私保护 · 用 Wayback first snapshot 代理) `[WHOIS]`');
+      }
+      if (w.expires_at) sections.push(`- **到期日**: ${w.expires_at} \`[WHOIS]\``);
+      if (w.last_changed_at) sections.push(`- **最近变更**: ${w.last_changed_at} \`[WHOIS]\``);
+      if (w.registrar) sections.push(`- **注册商**: ${w.registrar} \`[WHOIS]\``);
+      if (w.domain_age_years != null) sections.push(`- **域名年龄**: ${w.domain_age_years} 年 \`[WHOIS]\``);
+      if (Array.isArray(w.status) && w.status.length) sections.push(`- **状态**: ${w.status.join(' · ')} \`[WHOIS]\``);
+      sections.push('');
+    }
+
+    // Wayback · 历史
+    if (enrich.wayback) {
+      sections.push('### Wayback Machine 历史');
+      sections.push('');
+      const wb = enrich.wayback;
+      if (wb.first_snapshot_date) {
+        const url = wb.first_snapshot_url ? `[首版截图](${wb.first_snapshot_url})` : '';
+        sections.push(`- **第一次上线**: ${wb.first_snapshot_date} ${url} \`[Wayback]\``);
+      }
+      if (wb.last_snapshot_date) {
+        const url = wb.last_snapshot_url ? `[最近快照](${wb.last_snapshot_url})` : '';
+        sections.push(`- **最近快照**: ${wb.last_snapshot_date} ${url} \`[Wayback]\``);
+      }
+      if (wb.years_archived != null) sections.push(`- **存档年限**: ${wb.years_archived} 年 \`[Wayback]\``);
+      sections.push('');
+    }
+
+    // _derived · effective domain age
+    if (enrich._derived?.domain_age_years_effective != null) {
+      sections.push(`> **综合域名年龄**: ${enrich._derived.domain_age_years_effective} 年 (source: ${enrich._derived.domain_age_source}) \`[derived]\``);
+      sections.push('');
+    }
+
+    // Tinyfish · 外部 mention
+    if (enrich.tinyfish_search?.external_mentions?.length) {
+      sections.push('### 外部 mention (Tinyfish search · AU filtered)');
+      sections.push('');
+      const ts = enrich.tinyfish_search;
+      sections.push(`找到 **${ts.results_au_filtered}** 个澳洲相关 mention (总 ${ts.results_total} · LLM/regex 过滤后):`);
+      sections.push('');
+      for (const m of ts.external_mentions.slice(0, 8)) {
+        sections.push(`- [${m.title || m.domain || m.url}](${m.url}) · \`${m.domain || ''}\` \`[搜索]\``);
+        if (m.description) sections.push(`  > ${m.description}`);
+      }
+      sections.push('');
+    }
+
+    // Tinyfish homepage · 信号
+    if (enrich.tinyfish_homepage?.extracted_signals) {
+      sections.push('### 现网首页 signals (Tinyfish fetch + regex)');
+      sections.push('');
+      const s = enrich.tinyfish_homepage.extracted_signals;
+      sections.push(`- markdown 长度: ${s.text_length} bytes ${s.text_thin ? '⚠ 过薄' : ''} \`[官网]\``);
+      sections.push(`- 首屏含电话: ${s.phone_present_above_fold ? '✓' : '✗'} \`[官网]\``);
+      sections.push(`- 首屏含 CTA 关键词: ${s.cta_present_above_fold ? '✓' : '✗'} \`[官网]\``);
+      sections.push(`- 城市名 mention 数: **${s.city_mentioned_count}** \`[官网]\``);
+      if (s.service_keywords_found?.length) sections.push(`- 服务关键词: ${s.service_keywords_found.join(' · ')} \`[官网]\``);
+      if (s.trust_keywords_found?.length) sections.push(`- 信任关键词: ${s.trust_keywords_found.join(' · ')} \`[官网]\``);
+      if (s.oldest_year_mentioned) sections.push(`- 文中最早年份: ${s.oldest_year_mentioned}${s.newest_year_mentioned !== s.oldest_year_mentioned ? ` · 最新 ${s.newest_year_mentioned}` : ''} \`[官网]\``);
+      sections.push('');
+    }
+  }
+
   // ── 附录 ──
   sections.push('## 附录 · 数据出处');
   sections.push('');

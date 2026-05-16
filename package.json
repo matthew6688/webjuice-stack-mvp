@@ -77,6 +77,7 @@
     "pl:rearchive-zombies": "node --env-file=.env.local scripts/cli/pl-rearchive-zombie-threads.js",
     "pl:merge-dup-entities": "node --env-file=.env.local scripts/cli/pl-merge-dup-entities.js",
     "pl:goals-doctor": "node --env-file=.env.local scripts/cli/pl-goals-doctor.js",
+    "pl:enrich-entity": "node --env-file-if-exists=.env.local scripts/cli/pl-enrich-entity.js",
     "test:cycle26": "node scripts/test/run-cycle26-tests.mjs",
     "pl:cleanup-archived-threads": "node --env-file=.env.local scripts/cli/pl-cleanup-archived-threads.js",
     "pl:rename-stale-thread-titles": "node --env-file=.env.local scripts/cli/pl-rename-stale-thread-titles.js",
