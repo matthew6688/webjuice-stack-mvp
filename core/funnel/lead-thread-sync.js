@@ -586,12 +586,13 @@ export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt
   } catch { /* verify is best-effort */ }
 
   // cycle-27: re-archive if we unarchived briefly · 7-day duration
+  // BUG-FIX (Matthew 2026-05-16 G5 dup w/ Dubbo Terrazzo): Discord ignores `archived:true`
+  // when COMBINED with locked / auto_archive_duration in single PATCH. Use 2-step pattern
+  // via archiveAndLockThread (1st PATCH: lock+duration · 2nd PATCH: archived alone).
+  // Without this fix the lead thread stayed unarchived after profile-card refresh → G5 dup.
   if (wasArchivedBeforeEdit) {
     try {
-      await fetchImpl(`${DISCORD_API}/channels/${entity.discord_thread_id}`, {
-        method: 'PATCH', headers,
-        body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 10080 }),
-      });
+      await archiveAndLockThread(entity.discord_thread_id, { fetchImpl });
     } catch { /* best-effort */ }
   }
 

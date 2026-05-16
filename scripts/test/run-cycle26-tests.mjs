@@ -91,6 +91,8 @@ const TESTS = [
   'scripts/test/test-cycle27-no-website-terminal.mjs',
   // cycle-27 · "do button" · Discord component buttons replace emoji reactions
   'scripts/test/test-cycle27-button-actions.mjs',
+  // cycle-27 · directory-domain blocklist (Dubbo Terrazzo data-contamination fix)
+  'scripts/test/test-cycle27-directory-domain-blocklist.mjs',
 ];
 
 const results = [];

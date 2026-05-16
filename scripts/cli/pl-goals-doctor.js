@@ -9,10 +9,12 @@
  * Core goals (Matthew 2026-05-15 spec):
  *   G1 · master.md exists on disk + accessible online (HTTP 200)
  *   G2 · audit HTML files exist + accessible (customer-audit · internal-audit)
- *   G3 · profile card on Discord matches entity state (grade · phase · deploy)
+ *   G3 · profile card on Discord (project thread) matches entity state
  *   G4 · Stage 1-9 messages present in lead/project thread
  *   G5 · no duplicate thread (1 entity = 1 active thread across leads/projects)
  *   G6 · all linked URLs return HTTP 200 (no dead links)
+ *   G7 · archived lead-thread profile card stays fresh after graduate
+ *        (matches entity grade · deploy URL · phase) · Matthew 2026-05-16
  *
  * Modes:
  *   --quick   (file-only · for pre-commit · skips Discord + HTTP network)
@@ -181,6 +183,41 @@ async function checkG5_NoDuplicateThread(entity, fetchImpl) {
   } catch { /* tolerate · don't fail */ }
 }
 
+// ─── G7 · archived lead-thread profile card stays fresh ─────────────
+// Matthew 2026-05-16: "make sure your goal also check the archieved thread
+// profile card updates" — even after graduate (lead thread archived), the
+// card on that thread must still reflect current entity state (grade · deploy URL).
+async function checkG7_ArchivedLeadCardFresh(entity, fetchImpl) {
+  const leadThreadId = entity.discord_thread_id;
+  const leadCardId = entity.discord_profile_message_id;
+  if (!leadThreadId || !leadCardId) return;
+  // Only relevant if entity has graduated (project_thread_id set) OR is archived
+  const isGraduated = Boolean(entity.project_thread_id);
+  const isPhaseArchived = entity.phase === 'archived';
+  if (!isGraduated && !isPhaseArchived) return;
+  if (!TOKEN) { fail('G7', entity.key, 'no Discord token to verify archived card'); return; }
+  try {
+    // GET works on archived threads · only POST/PATCH is blocked
+    const r = await fetchImpl(`${DISCORD_API}/channels/${leadThreadId}/messages/${leadCardId}`, {
+      headers: { Authorization: `Bot ${TOKEN}` },
+    });
+    if (r.status === 404) { fail('G7', entity.key, 'archived-thread profile card 404'); return; }
+    if (!r.ok) { fail('G7', entity.key, `Discord HTTP ${r.status}`); return; }
+    const m = await r.json();
+    const embed = m.embeds?.[0];
+    if (!embed) { fail('G7', entity.key, 'archived-thread card has no embed'); return; }
+    const grade = entity.grade?.investment_level;
+    if (grade && !embed.title?.includes(`[${grade}]`)) {
+      fail('G7', entity.key, `archived card title missing [${grade}]`, embed.title);
+    }
+    if (entity.deploy?.demo_url && !(embed.description || '').includes(entity.deploy.demo_url)) {
+      fail('G7', entity.key, 'archived card missing live demo URL', entity.deploy.demo_url);
+    }
+  } catch (err) {
+    fail('G7', entity.key, `archived card check threw: ${err.message}`);
+  }
+}
+
 // ─── V2/V3 duplicate detection (separate from G5 thread dup) ──────
 function checkDupEntities() {
   if (!fs.existsSync(ENTITIES_DIR)) return;
@@ -219,16 +256,17 @@ function checkDupEntities() {
       await checkG3_ProfileCardFresh(e, fetch);
       await checkG4_StageHistoryComplete(e, fetch);
       await checkG5_NoDuplicateThread(e, fetch);
+      await checkG7_ArchivedLeadCardFresh(e, fetch);
     }
   }
   checkDupEntities();
 
   // Summary
-  const byGoal = { G1: [], G2: [], G3: [], G4: [], G5: [], G6: [] };
+  const byGoal = { G1: [], G2: [], G3: [], G4: [], G5: [], G6: [], G7: [] };
   for (const v of violations) (byGoal[v.goal] ||= []).push(v);
 
   console.log('━━━ Per-goal summary ━━━');
-  for (const g of ['G1','G2','G3','G4','G5','G6']) {
+  for (const g of ['G1','G2','G3','G4','G5','G6','G7']) {
     const list = byGoal[g] || [];
     const label = {
       G1: 'master.md 在线',
@@ -237,13 +275,14 @@ function checkDupEntities() {
       G4: 'Stage 1-9 message 历史完整',
       G5: '不重复 thread / 不重复 entity',
       G6: '所有 deploy URL HTTP 200',
+      G7: 'archived lead-thread card 同步',
     }[g];
     if (list.length === 0) console.log(`  ✓ ${g} · ${label}`);
     else console.log(`  ✗ ${g} · ${label} · ${list.length} fail`);
   }
 
   if (violations.length === 0) {
-    console.log(`\n✓ goals-doctor: ALL 6 goals pass · ${entities.length} entities clean${QUICK ? ' (quick mode · re-run without --quick for network checks)' : ''}`);
+    console.log(`\n✓ goals-doctor: ALL 7 goals pass · ${entities.length} entities clean${QUICK ? ' (quick mode · re-run without --quick for network checks)' : ''}`);
     process.exit(0);
   }
 

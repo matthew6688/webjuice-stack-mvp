@@ -87,19 +87,44 @@ export function defaultDiscoveryStoreRoot() {
   return path.join('data', 'leads');
 }
 
+// cycle-27 bug-fix (Matthew 2026-05-16 Dubbo Terrazzo): directory listing sites
+// (商家在 localsearch.com.au · yellowpages 等只有 listing 页 · 不是自己的域名).
+// 把这些当 entityKey root cause: 不同商家共用同一目录站 → 后入覆盖前者.
+// 命中黑名单 → 跳过 domain 分支 → fallback 到 data_id / cid / name+location.
+export const DIRECTORY_DOMAINS = new Set([
+  'localsearch.com.au', 'yellowpages.com.au', 'truelocal.com.au', 'hotfrog.com.au',
+  'startlocal.com.au', 'yelp.com', 'yelp.com.au', 'facebook.com', 'm.facebook.com',
+  'instagram.com', 'linkedin.com', 'twitter.com', 'x.com', 'youtube.com',
+  'tiktok.com', 'pinterest.com', 'pinterest.com.au',
+  'google.com', 'goo.gl', 'maps.google.com', 'business.google.com', 'g.page',
+  'wa.me', 'whatsapp.com', 'tripadvisor.com', 'tripadvisor.com.au',
+  'oneflare.com.au', 'hipages.com.au', 'serviceseeking.com.au', 'gumtree.com.au',
+  'whereis.com', 'sensis.com.au', 'wordofmouth.com.au',
+]);
+
+export function isDirectoryDomain(d) {
+  if (!d) return false;
+  const lower = String(d).toLowerCase().replace(/^www\./, '');
+  return DIRECTORY_DOMAINS.has(lower);
+}
+
 export function discoveryEntityKey(lead = {}) {
   if (lead.entityKey) return safeKey(lead.entityKey);
   const placeId = clean(lead.place_id || lead.placeId);
   if (placeId) return `place_${safeKey(placeId)}`;
   const cid = clean(lead.cid);
   if (cid) return `cid_${safeKey(cid)}`;
+  // cycle-27: data_id from maps_scraper (0x...:0x... form) · use BEFORE domain
+  // to avoid directory-domain collision (see DIRECTORY_DOMAINS rationale).
+  const dataId = clean(lead.data_id);
+  if (dataId) return `dataid_${safeKey(dataId)}`;
   if (lead.sourceType === 'image_lead') {
     const name = slugify(lead.name || lead.businessName || 'unknown');
     const phone = digits(lead.phone);
     return `image_${safeKey(`${name}_${phone || 'nophone'}`)}`;
   }
   const domain = hostname(lead.website || lead.websiteUrl);
-  if (domain) return `domain_${safeKey(domain)}`;
+  if (domain && !isDirectoryDomain(domain)) return `domain_${safeKey(domain)}`;
   const phone = digits(lead.phone);
   if (phone) return `phone_${safeKey(phone)}`;
   const name = slugify(lead.name || lead.businessName || lead.company || 'unknown');
