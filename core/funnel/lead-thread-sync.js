@@ -489,11 +489,34 @@ function hashEmbed(embed) {
   return `${embed.title || ''}|${desc.length}|${desc.slice(0, 200)}`;
 }
 
-export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt = 0 } = {}) {
+export async function upsertProfileCard(entityKey, { fetchImpl = fetch, _attempt = 0, force = false } = {}) {
   const entity = readEntity(entityKey);
   if (!entity) return { ok: false, reason: 'entity_not_found' };
   if (!entity.discord_thread_id || !entity.discord_profile_message_id) {
     return { ok: false, reason: 'no_thread_or_no_message' };
+  }
+  // cycle-27 Bug G (Matthew 2026-05-16 G5 dup recurrence): after graduate
+  // (project_thread_id set), the leads thread is supposed to stay archived.
+  // Every writeEntity hook fired post-graduate triggered an unarchive→PATCH→
+  // re-archive cycle that race-condition'd with the publish-flow's explicit
+  // archive · result: thread stuck un-archived (visible) · G5 dup.
+  //
+  // Policy: post-graduate · ONLY update leads card if it's currently NOT
+  // archived (someone explicitly un-archived for inspection). If archived,
+  // skip · trust G7 + explicit backfill CLI for drift recovery.
+  // `force=true` overrides (used by manual ops · doctor backfill).
+  if (entity.project_thread_id && !force) {
+    try {
+      const checkR = await fetchImpl(`${DISCORD_API}/channels/${entity.discord_thread_id}`, {
+        headers: { Authorization: `Bot ${botToken()}` },
+      });
+      if (checkR.ok) {
+        const meta = await checkR.json();
+        if (meta.thread_metadata?.archived) {
+          return { ok: true, skipped: 'post_graduate_archived_thread', threadId: entity.discord_thread_id };
+        }
+      }
+    } catch { /* fall through · attempt edit */ }
   }
   const audit = readDetailedAudit(entityKey)?.detailed_audit || null;
   const embed = renderProfileCard(entity, { audit });
@@ -839,7 +862,36 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
   }, { fetchImpl });
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
-  return { ok: true, threadId, archived: true, locked: true };
+
+  // cycle-27 Bug G (Matthew 2026-05-16): post-graduate G5 dup recurrence.
+  // After 2-step archive PATCH, a CONCURRENT writeEntity hook (upsertProfileCard
+  // for the same lead thread) can unarchive the thread between our step 2 PATCH
+  // landing and Discord's edge cache propagating. Verify-and-retry loop catches
+  // this case · up to 3 attempts · 800ms backoff.
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    await new Promise((r) => setTimeout(r, 800));
+    try {
+      const verifyR = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+        headers: { Authorization: `Bot ${botToken()}` },
+      });
+      if (!verifyR.ok) break;
+      const meta = await verifyR.json();
+      if (meta.thread_metadata?.archived) {
+        return { ok: true, threadId, archived: true, locked: true, verified_attempts: attempt };
+      }
+      // Not archived · re-fire archive PATCH
+      await discordFetch(`${DISCORD_API}/channels/${threadId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bot ${botToken()}`,
+          'Content-Type': 'application/json',
+          'User-Agent': 'profitslocal-lead-thread-sync',
+        },
+        body: JSON.stringify({ archived: true }),
+      }, { fetchImpl }).catch(() => {});
+    } catch { /* tolerate verify failure · best-effort */ }
+  }
+  return { ok: true, threadId, archived: true, locked: true, verified_attempts: 'exhausted' };
 }
 
 /**
