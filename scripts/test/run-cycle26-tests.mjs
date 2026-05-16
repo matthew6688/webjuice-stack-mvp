@@ -87,6 +87,8 @@ const TESTS = [
   'scripts/test/test-cycle27-archive-7day.mjs',
   // cycle-27 · sitemap content_url_count filters CMS noise (matches frontend page count)
   'scripts/test/test-cycle27-sitemap-content-count.mjs',
+  // cycle-27 · no-website entities recorded into batch.entities (KPI gate progresses)
+  'scripts/test/test-cycle27-no-website-terminal.mjs',
 ];
 
 const results = [];

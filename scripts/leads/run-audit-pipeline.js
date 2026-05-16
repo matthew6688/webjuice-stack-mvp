@@ -238,7 +238,35 @@ async function processLead(entityKey) {
     }
   } else if (!detailedFixture) {
     console.warn(`  ✗ no website URL on entity, can't run detailed audit`);
-    return { entityKey, ok: false, reason: 'no website' };
+    // cycle-27 (Matthew 2026-05-16 Bunbury Roofing + JK Murnane · 3rd recurrence):
+    // starter_candidate / manual_review entities with no website previously
+    // stayed phase=None forever · batch.entities never recorded · KPI stalled.
+    // Mark as audit-pending (cold queue · needs new site product · not a fail)
+    // and push to batch.entities so KPI gate progresses.
+    try {
+      const { setEntityPhase, ENTITY_PHASE } = await import('../../core/leads/discovery-store.js');
+      setEntityPhase({ entityKey, phase: ENTITY_PHASE.AUDIT_PENDING || 'audit-pending',
+        note: 'no website · starter_candidate · awaiting build product' });
+      const { recordEntityTerminal } = await import('../../core/funnel/pipeline-batch-thread.js');
+      const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+      const batches = fresh.batches || [];
+      const batchId = batches[batches.length - 1];
+      if (batchId) {
+        await recordEntityTerminal({
+          batchId, entityKey,
+          name: fresh.latest?.name || null,
+          threadUrl: fresh.discord_thread_id
+            ? `https://discord.com/channels/${process.env.DISCORD_GUILD_ID || '1493925728570310756'}/${fresh.discord_thread_id}`
+            : null,
+          phase: 'audit-pending',
+          grade: fresh.predict_grade?.grade || 'C',
+          archive_reason: 'no website · starter_candidate · 等 build 新站产品',
+        });
+      }
+    } catch (err) {
+      console.warn(`  [audit-pending record] failed: ${err.message}`);
+    }
+    return { entityKey, ok: false, reason: 'no website · starter-pending recorded' };
   }
 
   // ── V3 D43 cycle-21 (Matthew 2026-05-15) · 早 hard-pass · sitemap > 10 立刻 archive
