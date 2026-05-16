@@ -67,7 +67,16 @@ const maxTimeRaw = Number.parseInt(args['max-time'] || '240', 10);
 const maxTime = Math.max(180, maxTimeRaw);
 const zoom = Number.parseInt(args.zoom || '15', 10);
 const lang = String(args.lang || 'en');
-const batchId = args['batch-id'] ? String(args['batch-id']) : null;
+// cycle-27 (Matthew 2026-05-16 feedback "看不到 lead-discovery-runs thread"):
+// auto-generate batchId when caller doesn't pass --batch-id, so the docker
+// scraper ALWAYS creates a batch thread (parity with pl:places-search-intake).
+function pad(n) { return String(n).padStart(2, '0'); }
+function slugifyForId(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+const _now = new Date();
+const _stamp = `${_now.getFullYear()}${pad(_now.getMonth()+1)}${pad(_now.getDate())}${pad(_now.getHours())}${pad(_now.getMinutes())}`;
+const batchId = args['batch-id']
+  ? String(args['batch-id'])
+  : `docker-${slugifyForId(niche)}-${slugifyForId(city)}-${_stamp}`;
 const dryRun = Boolean(args['dry-run']);
 
 const isoStamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -317,6 +326,24 @@ async function main() {
   }
 
   fs.mkdirSync(runDir, { recursive: true });
+
+  // cycle-27 (Matthew 2026-05-16 feedback): open batch thread in #lead-discovery-runs
+  // BEFORE the gosom run · so operator sees the batch immediately + downstream stage
+  // updates (写入实体 · 各 entity progress · finalize) post to a visible thread.
+  try {
+    const { startBatchThread } = await import(path.join(REPO_ROOT, 'core/funnel/pipeline-batch-thread.js'));
+    const title = `[Docker Scrape] ${keywords[0]} — ${_now.toISOString().slice(0,16).replace('T',' ')} UTC`;
+    await startBatchThread({
+      batchId, title,
+      summary: `Source: gosom Docker scraper · keywords=${JSON.stringify(keywords)} · zoom=${zoom} · depth=${count}`,
+      niche, city, count,
+      runFlags: { source: 'docker_scrape', keywords, lang, zoom, depth: count },
+    });
+    console.error(`[pl:scrape-docker] batch thread opened · batchId=${batchId}`);
+  } catch (err) {
+    // Non-fatal · scraper still works · just no thread (e.g. discord token missing)
+    console.error(`[pl:scrape-docker] startBatchThread failed (non-blocking): ${err.message}`);
+  }
 
   const jobId = await postJob();
   console.error(`job_id=${jobId}`);

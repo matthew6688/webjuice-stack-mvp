@@ -15,6 +15,10 @@
  *   G6 · all linked URLs return HTTP 200 (no dead links)
  *   G7 · archived lead-thread profile card stays fresh after graduate
  *        (matches entity grade · deploy URL · phase) · Matthew 2026-05-16
+ *   G8 · every entity's batches[] has a corresponding #lead-discovery-runs thread
+ *        (operator can audit which discovery run produced each lead) · Matthew 2026-05-16
+ *   G9 · master.md asset URLs are all absolute https · no relative ./ paths
+ *        (so master.md is self-contained portable) · Matthew 2026-05-16
  *
  * Modes:
  *   --quick   (file-only · for pre-commit · skips Discord + HTTP network)
@@ -218,6 +222,94 @@ async function checkG7_ArchivedLeadCardFresh(entity, fetchImpl) {
   }
 }
 
+// ─── G8 · batch thread exists in #lead-discovery-runs ─────────────────
+// Matthew 2026-05-16: docker scraper was running without creating a batch thread
+// (only Places intake did). Every entity in active-sales should be traceable back
+// to a #lead-discovery-runs forum thread via its batch.
+async function checkG8_BatchThreadExists(entity, fetchImpl) {
+  const batches = entity.batches || [];
+  // Legacy carve-outs: V2-migrated entities + entities pre-dating batch-thread system
+  // don't have batches[] · skip them silently (they can't be retroactively traced).
+  if (batches.length === 0) {
+    if (entity.merged_from_v3_key || entity.firstSeenAt < '2026-05-15') return;
+    fail('G8', entity.key, 'entity has no batches[] · cannot trace to discovery run');
+    return;
+  }
+  // Only enforce the LATEST batch (most recent discovery run). Older batches
+  // may have rolled-off state files · that's acceptable historical drift.
+  const ROOT = process.cwd();
+  const latestBatchId = batches[batches.length - 1];
+  const statePath = path.join(ROOT, 'data', 'leads', 'batches', `${latestBatchId}.json`);
+  if (!fs.existsSync(statePath)) {
+    // Legacy batch state file pruned · only fail if entity is recent
+    if (entity.firstSeenAt < '2026-05-15') return;
+    fail('G8', entity.key, `latest batch state missing on disk · ${latestBatchId}`);
+    return;
+  }
+  try {
+    const bs = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+    const threadId = bs.thread_id || bs.discord_thread_id;
+    if (!threadId) {
+      fail('G8', entity.key, `batch ${latestBatchId} has no thread_id (no #lead-discovery-runs post)`);
+      return;
+    }
+    if (TOKEN) {
+      try {
+        const r = await fetchImpl(`${DISCORD_API}/channels/${threadId}`, {
+          headers: { Authorization: `Bot ${TOKEN}` },
+        });
+        if (r.status === 404) {
+          fail('G8', entity.key, `batch ${latestBatchId} thread 404`, threadId);
+        } else if (!r.ok) {
+          fail('G8', entity.key, `batch ${latestBatchId} thread HTTP ${r.status}`, threadId);
+        }
+      } catch (err) {
+        fail('G8', entity.key, `batch ${latestBatchId} thread check threw: ${err.message}`);
+      }
+    }
+  } catch (err) {
+    fail('G8', entity.key, `batch state parse failed · ${latestBatchId}: ${err.message}`);
+  }
+}
+
+// ─── G9 · master.md asset URLs are absolute · no relative ./ paths ──
+// Matthew 2026-05-16: master.md must be portable · all video/image refs must be
+// fully-qualified https URLs so the doc renders correctly outside the deploy.
+function checkG9_AbsoluteAssetUrls(entity) {
+  const slug = entity.promotedClientSlug
+    || String(entity.latest?.name || entity.entityKey || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  if (!slug) return;
+  const mdPath = path.join(process.cwd(), 'clients', slug, 'v2', 'master.md');
+  if (!fs.existsSync(mdPath)) return; // G1 covers existence
+  let txt;
+  try { txt = fs.readFileSync(mdPath, 'utf8'); } catch { return; }
+  // Collect every asset reference: markdown images ![alt](url) + frontmatter asset fields
+  const violations = [];
+  // Markdown ![alt](url) — match images + linked-media (e.g. [play](video.webm))
+  const mdLinks = [...txt.matchAll(/!\[[^\]]*\]\(([^)\s]+)\)/g), ...txt.matchAll(/\[[^\]]*\]\((\.\/[^)\s]+\.(?:png|jpg|jpeg|webp|gif|webm|mp4|mp3|svg))\)/gi)];
+  for (const m of mdLinks) {
+    const url = m[1];
+    if (!url) continue;
+    if (/^https?:\/\//i.test(url)) continue;
+    // Allow data:image and #anchor refs
+    if (/^data:|^#/.test(url)) continue;
+    violations.push(url);
+  }
+  // Frontmatter asset fields (video_url · desktop_screenshot · mobile_screenshot · evidence)
+  const fmAssetFields = [...txt.matchAll(/^\s*(video_url|desktop_screenshot|mobile_screenshot|evidence_url|logo_url):\s*"?([^"\n]+)"?/gmi)];
+  for (const m of fmAssetFields) {
+    const [, field, raw] = m;
+    const val = (raw || '').trim().replace(/^["']|["']$/g, '');
+    if (!val || val === 'null') continue;
+    if (/^https?:\/\//i.test(val)) continue;
+    violations.push(`${field}=${val}`);
+  }
+  if (violations.length > 0) {
+    fail('G9', entity.key, `master.md has ${violations.length} relative asset ref(s)`,
+      violations.slice(0, 5).join(' · '));
+  }
+}
+
 // ─── V2/V3 duplicate detection (separate from G5 thread dup) ──────
 function checkDupEntities() {
   if (!fs.existsSync(ENTITIES_DIR)) return;
@@ -251,22 +343,24 @@ function checkDupEntities() {
   for (const e of entities) {
     checkG1_MasterMdExists(e);
     checkG2_AuditHtmlExists(e);
+    checkG9_AbsoluteAssetUrls(e);  // file-only · runs in quick mode too
     if (!QUICK) {
       await checkG6_DeployUrlsLive(e, fetch);
       await checkG3_ProfileCardFresh(e, fetch);
       await checkG4_StageHistoryComplete(e, fetch);
       await checkG5_NoDuplicateThread(e, fetch);
       await checkG7_ArchivedLeadCardFresh(e, fetch);
+      await checkG8_BatchThreadExists(e, fetch);
     }
   }
   checkDupEntities();
 
   // Summary
-  const byGoal = { G1: [], G2: [], G3: [], G4: [], G5: [], G6: [], G7: [] };
+  const byGoal = { G1: [], G2: [], G3: [], G4: [], G5: [], G6: [], G7: [], G8: [], G9: [] };
   for (const v of violations) (byGoal[v.goal] ||= []).push(v);
 
   console.log('━━━ Per-goal summary ━━━');
-  for (const g of ['G1','G2','G3','G4','G5','G6','G7']) {
+  for (const g of ['G1','G2','G3','G4','G5','G6','G7','G8','G9']) {
     const list = byGoal[g] || [];
     const label = {
       G1: 'master.md 在线',
@@ -276,13 +370,15 @@ function checkDupEntities() {
       G5: '不重复 thread / 不重复 entity',
       G6: '所有 deploy URL HTTP 200',
       G7: 'archived lead-thread card 同步',
+      G8: '#lead-discovery-runs batch thread 可追溯',
+      G9: 'master.md 资源 URL 全是绝对路径',
     }[g];
     if (list.length === 0) console.log(`  ✓ ${g} · ${label}`);
     else console.log(`  ✗ ${g} · ${label} · ${list.length} fail`);
   }
 
   if (violations.length === 0) {
-    console.log(`\n✓ goals-doctor: ALL 7 goals pass · ${entities.length} entities clean${QUICK ? ' (quick mode · re-run without --quick for network checks)' : ''}`);
+    console.log(`\n✓ goals-doctor: ALL 9 goals pass · ${entities.length} entities clean${QUICK ? ' (quick mode · re-run without --quick for network checks)' : ''}`);
     process.exit(0);
   }
 

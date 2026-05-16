@@ -48,14 +48,38 @@ function countEvidenceOnDisk(entityKey, latestName) {
   } catch { return 0; }
 }
 
-// V3 bug fix #19 (2026-05-13): same pattern for the video — fall back to
-// local relative path when no Cloudinary upload happened.
-function localVideoPath(entityKey, latestName) {
+// cycle-27 (Matthew 2026-05-16 feedback): master.md asset URLs MUST be absolute,
+// not relative · so the doc is self-contained portable (Discord / agent / external
+// readers can render assets without needing the deploy context).
+//
+// Strategy: deterministically build the Cloudflare Pages URL from the slug.
+// `https://<slug>-dev.pages.dev/<rel>` matches our publish convention (verified
+// across 30 live entities at goals-doctor G6). If entity.deploy.demo_url is
+// already set, prefer that (handles future custom domains).
+function deployBaseUrl({ slug, deployDemoUrl = null }) {
+  if (deployDemoUrl) return String(deployDemoUrl).replace(/\/+$/, '');
+  if (!slug) return null;
+  return `https://${slug}-dev.pages.dev`;
+}
+function absoluteAssetUrl({ slug, deployDemoUrl, relPath }) {
+  const base = deployBaseUrl({ slug, deployDemoUrl });
+  if (!base) return relPath;
+  const clean = String(relPath || '').replace(/^\.?\//, '');
+  return `${base}/${clean}`;
+}
+
+function localVideoPath(entityKey, latestName, deployDemoUrl = null) {
   if (!entityKey && !latestName) return null;
   const slug = String(latestName || entityKey).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   const videoFile = path.join(process.cwd(), 'clients', slug, 'v2', 'video', 'mobile-throttled.webm');
   if (!fs.existsSync(videoFile)) return null;
-  return './video/mobile-throttled.webm';
+  return absoluteAssetUrl({ slug, deployDemoUrl, relPath: 'video/mobile-throttled.webm' });
+}
+
+function localScreenshotPath(entityKey, latestName, kind, deployDemoUrl = null) {
+  if (!entityKey && !latestName) return null;
+  const slug = String(latestName || entityKey).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return absoluteAssetUrl({ slug, deployDemoUrl, relPath: `screenshots/${kind}.png` });
 }
 
 function buildFrontmatter({ entity, detailedAudit, visualAudit, reviewAnalysis, manifest, screenshotDir }) {
@@ -87,9 +111,9 @@ function buildFrontmatter({ entity, detailedAudit, visualAudit, reviewAnalysis, 
         fmtAssetCount(manifest).count,
         countEvidenceOnDisk(entity.entityKey, latest.name),
       ),
-      video_url: manifest?.videoUrl || localVideoPath(entity.entityKey, latest.name),
-      desktop_screenshot: manifest?.screenshotUrls?.desktop || `${screenshotDir}/desktop.png`,
-      mobile_screenshot: manifest?.screenshotUrls?.mobile || `${screenshotDir}/mobile.png`,
+      video_url: manifest?.videoUrl || localVideoPath(entity.entityKey, latest.name, entity?.deploy?.demo_url),
+      desktop_screenshot: manifest?.screenshotUrls?.desktop || localScreenshotPath(entity.entityKey, latest.name, 'desktop', entity?.deploy?.demo_url) || `${screenshotDir}/desktop.png`,
+      mobile_screenshot: manifest?.screenshotUrls?.mobile || localScreenshotPath(entity.entityKey, latest.name, 'mobile', entity?.deploy?.demo_url) || `${screenshotDir}/mobile.png`,
     },
   };
   return fm;
@@ -119,14 +143,24 @@ function yamlSerialize(obj, indent = 0) {
   return lines.join('\n');
 }
 
-function renderEvidenceLine(issue, manifest) {
+function renderEvidenceLine(issue, manifest, entity = null) {
   const evId = String(issue.id || '').replace(/_/g, '-');
   const cdn = manifest?.evidenceUrls?.[evId];
   if (cdn) return `\n![${issue.title || issue.id}](${cdn})\n`;
+  // cycle-27 (Matthew 2026-05-16 feedback · absolute URLs): if local evidence
+  // PNG exists, emit absolute Cloudflare Pages URL so master.md is self-contained.
+  if (entity) {
+    const slug = String(entity.latest?.name || entity.entityKey || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const localPath = path.join(process.cwd(), 'clients', slug, 'v2', 'evidence', `issue-${evId}.png`);
+    if (fs.existsSync(localPath)) {
+      const abs = absoluteAssetUrl({ slug, deployDemoUrl: entity?.deploy?.demo_url, relPath: `evidence/issue-${evId}.png` });
+      return `\n![${issue.title || issue.id}](${abs})\n`;
+    }
+  }
   return '';
 }
 
-function renderIssueBlock(issue, manifest, severity) {
+function renderIssueBlock(issue, manifest, severity, entity = null) {
   const tag = severity === 'critical' ? '关键' : '主要';
   const lines = [];
   lines.push(`### ${tag} · ${issue.title || issue.id}`);
@@ -179,7 +213,7 @@ function renderIssueBlock(issue, manifest, severity) {
     lines.push('');
   }
 
-  const ev = renderEvidenceLine(issue, manifest);
+  const ev = renderEvidenceLine(issue, manifest, entity);
   if (ev) lines.push(ev);
   lines.push('');
   return lines.join('\n');
@@ -593,12 +627,12 @@ export function buildMasterMdDetailed({
     if (allCritical.length) {
       sections.push(`### 关键问题 · ${allCritical.length} 项（立刻在伤害成交）`);
       sections.push('');
-      for (const issue of allCritical) sections.push(renderIssueBlock(issue, manifest, 'critical'));
+      for (const issue of allCritical) sections.push(renderIssueBlock(issue, manifest, 'critical', entity));
     }
     if (allMajor.length) {
       sections.push(`### 主要问题 · ${allMajor.length} 项（影响转化的明显短板）`);
       sections.push('');
-      for (const issue of allMajor) sections.push(renderIssueBlock(issue, manifest, 'major'));
+      for (const issue of allMajor) sections.push(renderIssueBlock(issue, manifest, 'major', entity));
     }
   }
 
