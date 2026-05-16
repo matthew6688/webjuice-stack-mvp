@@ -47,17 +47,19 @@ await ta('archiveAndLockThread PATCH body includes auto_archive_duration (preven
     };
     const r = await archiveAndLockThread('9999', { reason: 'test', fetchImpl });
     assert.ok(r.ok, `expected ok · got ${JSON.stringify(r)}`);
-    // cycle-27 (Nu Roof Tas fix): archiveAndLockThread now does 2-step PATCH.
-    // 1st PATCH: { locked, auto_archive_duration }. 2nd PATCH: { archived, locked, auto_archive_duration }.
-    // The archived:true body is in the SECOND PATCH.
+    // cycle-27 (Mackay Roof Restoration fix · 2nd recurrence):
+    // archiveAndLockThread now does 2-step PATCH · across BOTH PATCHes:
+    //   1st PATCH: { locked, auto_archive_duration }
+    //   2nd PATCH: { archived }  (Discord respects archived only when sent alone)
     const patches = calls.filter((c) => c.method === 'PATCH');
-    assert.ok(patches.length >= 1, 'no PATCH call made');
-    const finalPatch = patches[patches.length - 1];
-    const body = JSON.parse(finalPatch.body);
-    assert.equal(body.archived, true, 'archived must be true (final PATCH)');
-    assert.equal(body.locked, true, 'locked must be true');
-    assert.ok(body.auto_archive_duration,
-      `auto_archive_duration missing · Discord forum threads need it to truly archive`);
+    assert.ok(patches.length >= 2, `expected 2-step PATCH · got ${patches.length}`);
+    // Aggregate fields across patches
+    const fields = {};
+    for (const p of patches) Object.assign(fields, JSON.parse(p.body));
+    assert.equal(fields.archived, true, 'archived must be true (set in some PATCH)');
+    assert.equal(fields.locked, true, 'locked must be true (set in some PATCH)');
+    assert.ok(fields.auto_archive_duration,
+      `auto_archive_duration missing · Discord forum threads need it to prevent purge`);
   });
 
 // ─── T2 · Static source assertion on archiveAndLockThread impl ─────────────

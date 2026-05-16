@@ -806,11 +806,14 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
       });
     } catch { /* non-blocking */ }
   }
-  // cycle-27 (Matthew 2026-05-15 Nu Roof Tas 1504966771914838149):
-  // Discord ignores `archived: true` when sent in the SAME PATCH as `locked`
-  // sometimes · result: thread ends up locked-but-NOT-archived (visible in
-  // active list · breaks G5 "1 entity = 1 visible thread"). Fix: 2-step
-  // PATCH · lock first · then archive.
+  // cycle-27 (Matthew 2026-05-15 · 2nd recurrence Mackay Roof Restoration):
+  // Discord ignores `archived: true` when sent COMBINED with other fields
+  // (locked / auto_archive_duration) — even in a separate 2nd PATCH if those
+  // fields were just set by 1st PATCH. Fix: 2-step PATCH · isolated archive.
+  //   1st PATCH: { locked: true, auto_archive_duration: 10080 } (idle policy)
+  //   2nd PATCH: { archived: true }  (ONLY archived · Discord respects this)
+  // Confirmed via direct API testing: archived:true alone returns 200 +
+  // thread_metadata.archived: true.
   await discordFetch(`${DISCORD_API}/channels/${threadId}`, {
     method: 'PATCH',
     headers: {
@@ -821,7 +824,6 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
     body: JSON.stringify({ locked: true, auto_archive_duration: 10080 }),
   }, { fetchImpl }).catch(() => {});
 
-  // PATCH archived + locked (Discord API · same endpoint as updateDiscordThread)
   const response = await discordFetch(`${DISCORD_API}/channels/${threadId}`, {
     method: 'PATCH',
     headers: {
@@ -829,12 +831,7 @@ export async function archiveAndLockThread(threadId, { reason = '', fetchImpl = 
       'Content-Type': 'application/json',
       'User-Agent': 'profitslocal-lead-thread-sync',
     },
-    // cycle-26 P9: add auto_archive_duration so Discord respects archive flag for forum threads
-    // cycle-27 (Matthew 2026-05-15 "set up 7 days archive is fine"): use 10080
-    // (Discord max · 7 days) instead of 60 · prevents Discord from purging
-    // archived threads · operator can revisit history.
-    // (without this · POST to thread after archive auto-unarchives · zombie thread)
-    body: JSON.stringify({ archived: true, locked: true, auto_archive_duration: 10080 }),
+    body: JSON.stringify({ archived: true }),
   }, { fetchImpl });
   const text = await response.text();
   if (!response.ok) return { ok: false, reason: `discord_${response.status}`, body: text };
