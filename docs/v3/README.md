@@ -225,7 +225,8 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 ### 🚧 V3 立刻推进 (2026-05-16)
 - [HANDOFF-STRUCTURE.md](./HANDOFF-STRUCTURE.md) · **当前 V3 周期 build 阶段的 handoff 文档完整结构定义** · OD 输入 · 14 个文件 schema · 立刻实施
   · core-facts / design / content / photos / reviews / structure / audit / boundaries / final-prompt
-- [V3-ENRICHMENT-PLAN.md](./V3-ENRICHMENT-PLAN.md) · **GMB 链接补 master.md + Sitemap 分类 surface + 4 路 enrichment (Tinyfish/WHOIS/ABN/Wayback)** · 2-3 天 · 不破坏现有 pipeline · 全 additive
+- [V3-ENRICHMENT-PLAN.md](./V3-ENRICHMENT-PLAN.md) · **GMB 链接补 master.md + Sitemap 分类 surface + 4 路 enrichment (Tinyfish/WHOIS/ABN/Wayback)** · 2-3 天 · 不破坏现有 pipeline · 全 additive · ✅ **Phase 3A/B/C 已落 (commit a9accff6 / f0a99c29 / e4a89bbd / f6861f75)**
+- [V3-BUILD-AUDIT-LOOP-PLAN.md](./V3-BUILD-AUDIT-LOOP-PLAN.md) · **Build + Audit 闭环完整计划** · pre-handoff audit + 3 类 post-build audit (core-info / fix verification / aesthetic-brand) + 决策器 (OD vs template-fit vs hybrid) + 新 weatherproof 模板集成 · 9-13 天 · 10 AL 决策点等 Matthew 拍
 
 ### 🔮 V4 · 将来计划 (2026-05-16 · 暂不执行)
 - [v4/README.md](../v4/README.md) · 执行摘要 + 18-day plan + 决策记录 · **入口**
