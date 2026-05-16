@@ -93,6 +93,8 @@ const TESTS = [
   'scripts/test/test-cycle27-button-actions.mjs',
   // cycle-27 · directory-domain blocklist (Dubbo Terrazzo data-contamination fix)
   'scripts/test/test-cycle27-directory-domain-blocklist.mjs',
+  // cycle-27 · niche → family fallback (Bug C · electrician hard-crash)
+  'scripts/test/test-cycle27-niche-family-fallback.mjs',
 ];
 
 const results = [];

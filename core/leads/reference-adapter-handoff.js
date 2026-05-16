@@ -36,12 +36,42 @@ const REPO_ROOT = path.resolve(__dirname, '../..');
 const FAMILY_REGISTRY = {
   roofing: 'classic-premium-roftix',
   roofer: 'classic-premium-roftix',
-  // Add restaurant / dental / plumber / etc. once their reference sites land.
+  // cycle-27 (Matthew 2026-05-16 · Bug C): trades fallback. electrician /
+  // plumber / concreter / carpenter all share the "premium trade contractor"
+  // visual archetype the roftix template was built for (hero · services ·
+  // before-after · review wall · service-area · CTA). LLM retexture handles
+  // copy & color swap. Once a dedicated reference site lands for each niche
+  // we override here. Without this map · build hard-crashes at import time
+  // and the entity is stuck in ready-to-build forever.
+  electrician: 'classic-premium-roftix',
+  electrical: 'classic-premium-roftix',
+  plumber: 'classic-premium-roftix',
+  plumbing: 'classic-premium-roftix',
+  concreter: 'classic-premium-roftix',
+  concrete: 'classic-premium-roftix',
+  carpenter: 'classic-premium-roftix',
+  carpentry: 'classic-premium-roftix',
+  builder: 'classic-premium-roftix',
+  builders: 'classic-premium-roftix',
+  painter: 'classic-premium-roftix',
+  painting: 'classic-premium-roftix',
+  landscaper: 'classic-premium-roftix',
+  landscaping: 'classic-premium-roftix',
+  // Add restaurant / dental / etc. once their reference sites land.
 };
 
+// cycle-27 trades default · used when niche is unrecognized but entity has
+// `categories` indicating a service-trade business. Better than hard-crashing.
+const TRADES_DEFAULT_FAMILY = 'classic-premium-roftix';
+
 function defaultFamilyForNiche(niche) {
-  const key = String(niche || '').toLowerCase();
-  return FAMILY_REGISTRY[key] || null;
+  const key = String(niche || '').toLowerCase().trim();
+  if (FAMILY_REGISTRY[key]) return FAMILY_REGISTRY[key];
+  // Substring match · catches "electrical contractor" · "roof restoration" etc.
+  for (const known of Object.keys(FAMILY_REGISTRY)) {
+    if (key.includes(known)) return FAMILY_REGISTRY[known];
+  }
+  return null;
 }
 
 /**
@@ -49,9 +79,13 @@ function defaultFamilyForNiche(niche) {
  * Returns the HTML body, the boundaries spec, and the assets directory path.
  */
 export function resolveReferenceSite({ niche, family, repoRoot = REPO_ROOT } = {}) {
-  const resolvedFamily = family || defaultFamilyForNiche(niche);
+  // cycle-27 Bug C fix: never hard-crash — fall back to trades-default family
+  // (LLM retextures copy + color for any service-trade niche). Log the fallback
+  // so we know which niches need their own dedicated reference site.
+  let resolvedFamily = family || defaultFamilyForNiche(niche);
   if (!resolvedFamily) {
-    throw new Error(`No reference family registered for niche=${niche}. Add one to FAMILY_REGISTRY in reference-adapter-handoff.js.`);
+    console.warn(`[reference-adapter] niche="${niche}" has no registered family · using TRADES_DEFAULT_FAMILY=${TRADES_DEFAULT_FAMILY}`);
+    resolvedFamily = TRADES_DEFAULT_FAMILY;
   }
   const familyRoot = path.join(repoRoot, 'templates', 'roofing', 'families', resolvedFamily, 'reference-site');
   const htmlPath = path.join(familyRoot, 'index.html');
