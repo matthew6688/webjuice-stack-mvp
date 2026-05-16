@@ -222,6 +222,14 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 
 ## 全 V3 文档索引
 
+### 🆕 Cycle-28 · Pipeline Redesign Plan (2026-05-16 · 计划阶段 · 未执行)
+- [cycle-28/README.md](./cycle-28/README.md) · 执行摘要 + 18-day plan + 决策记录 · **入口**
+- [cycle-28/PIPELINE-ARCHITECTURE.md](./cycle-28/PIPELINE-ARCHITECTURE.md) · Stage 0-5 详细 · routing · handoff/ schema
+- [cycle-28/DOCUMENT-TEMPLATES.md](./cycle-28/DOCUMENT-TEMPLATES.md) · master.md + final-handoff.md + internal-audit.html 模板
+- [cycle-28/LLM-CASCADE-A.md](./cycle-28/LLM-CASCADE-A.md) · 4-tier cascade (Codex→Claude→Qwen27b→Qwen9b)
+- [cycle-28/EXECUTION-PLAN.md](./cycle-28/EXECUTION-PLAN.md) · 10 Phase × validation gate · 依赖链
+- **Live mockup**: https://customer-summaries.pages.dev/mockups/
+
 ### 模块 PRD (设计 · 验收标准)
 - [M1-PRD.md](./M1-PRD.md) · intake + dedup + master.md skeleton
 - [M2-PRD.md](./M2-PRD.md) · audit + 22 章 + grade router
