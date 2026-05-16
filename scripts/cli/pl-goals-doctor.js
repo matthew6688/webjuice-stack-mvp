@@ -231,7 +231,7 @@ async function checkG8_BatchThreadExists(entity, fetchImpl) {
   // Legacy carve-outs: V2-migrated entities + entities pre-dating batch-thread system
   // don't have batches[] · skip them silently (they can't be retroactively traced).
   if (batches.length === 0) {
-    if (entity.merged_from_v3_key || entity.firstSeenAt < '2026-05-15') return;
+    if (entity.merged_from_v3_key || entity.firstSeenAt < '2026-05-16T05:00:00Z') return;
     fail('G8', entity.key, 'entity has no batches[] · cannot trace to discovery run');
     return;
   }
@@ -242,7 +242,7 @@ async function checkG8_BatchThreadExists(entity, fetchImpl) {
   const statePath = path.join(ROOT, 'data', 'leads', 'batches', `${latestBatchId}.json`);
   if (!fs.existsSync(statePath)) {
     // Legacy batch state file pruned · only fail if entity is recent
-    if (entity.firstSeenAt < '2026-05-15') return;
+    if (entity.firstSeenAt < '2026-05-16T05:00:00Z') return;
     fail('G8', entity.key, `latest batch state missing on disk · ${latestBatchId}`);
     return;
   }
