@@ -152,8 +152,53 @@ async function processEntity(key) {
   const { buildRedesignBrief, saveBrief } = await import(path.join(REPO, 'core/audit/redesign-brief-builder.js'));
   const briefResult = await buildRedesignBrief(crawl);
   if (briefResult.error || !briefResult.brief) {
-    console.warn(`     ⚠ brief build failed: ${briefResult.error}`);
-    return { key, status: 'fail', reason: `brief_failed: ${briefResult.error}` };
+    // cycle-27 Bug D (Matthew 2026-05-16): brief_failed was leaving entity stuck in
+    // audit-ready forever (2 Newcastle painters · no crawled pages from sitemap).
+    // Treat as terminal archive · grade=D · prevents limbo.
+    console.warn(`     ⚠ brief build failed: ${briefResult.error} · archiving entity`);
+    const archive_reason = `brief_failed: ${briefResult.error || 'no crawled pages'}`;
+    try {
+      const { archiveLeadAsRejected } = await import(path.join(REPO, 'core/leads/terminal-archive.js'));
+      await archiveLeadAsRejected(key, {
+        reason: archive_reason,
+        pathId: 'stage7_brief_failed',
+        layer: 'Stage 7 · brief',
+      });
+      // Persist qualification block w/ verdict=archived so future rerun is idempotent
+      const entityPath = path.join(REPO, 'data/leads/entities', `${key}.json`);
+      try {
+        const fresh = JSON.parse(fs.readFileSync(entityPath, 'utf8'));
+        fresh.qualification = {
+          computed_at: new Date().toISOString(),
+          hard_gates: [],
+          scorecard: null,
+          verdict: 'archived',
+          archive_reason,
+          brief_skipped: true,
+          brief_skipped_reason: 'brief generator returned no usable output (crawl empty or LLM error)',
+          crawl_summary: { pages_crawled: crawl?.pages_crawled || 0, sitemap_source: crawl?.sitemap_source || null },
+        };
+        fs.writeFileSync(entityPath, JSON.stringify(fresh, null, 2) + '\n');
+      } catch (err) { console.warn(`     ⚠ persist qualification.archived failed: ${err.message}`); }
+      // Discord Stage 7 notification (so operator sees terminal state)
+      try {
+        const { refreshThreadAndPost } = await import(path.join(REPO, 'core/funnel/lead-thread-sync.js'));
+        await refreshThreadAndPost(key, [
+          `**Stage 7 · 资格复核 (brief 失败 · 自动归档)**`,
+          '',
+          `━━━ Verdict ━━━`,
+          `Phase: archived (set)`,
+          `archive_reason: ${archive_reason}`,
+          '',
+          `━━━ 说明 ━━━`,
+          `多页抓取返回 0 页 (sitemap 空 · robots block · 或站点防火墙).`,
+          `LLM brief 没素材可用 · 无法继续评分 · 直接归档.`,
+        ].join('\n'));
+      } catch (err) { console.warn(`     ⚠ Stage 7 Discord post failed: ${err.message}`); }
+    } catch (err) {
+      console.warn(`     ⚠ archive on brief_failed failed: ${err.message}`);
+    }
+    return { key, status: 'archived', verdict: 'archived', archive_reason, brief_skipped: true };
   }
   saveBrief(slug, briefResult);
   console.log(`     → provider=${briefResult.provider} · ${(briefResult.duration_ms / 1000).toFixed(1)}s · ~$${briefResult.cost_estimate}`);
