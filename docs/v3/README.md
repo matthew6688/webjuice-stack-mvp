@@ -222,9 +222,10 @@ Heartbeat: `data/heartbeats/intake-doctor.txt` (mtime <25h = 活)
 
 ## 全 V3 文档索引
 
-### 🚧 V3 立刻推进 · Handoff 文档结构 (build 输入 · 2026-05-16)
+### 🚧 V3 立刻推进 (2026-05-16)
 - [HANDOFF-STRUCTURE.md](./HANDOFF-STRUCTURE.md) · **当前 V3 周期 build 阶段的 handoff 文档完整结构定义** · OD 输入 · 14 个文件 schema · 立刻实施
   · core-facts / design / content / photos / reviews / structure / audit / boundaries / final-prompt
+- [V3-ENRICHMENT-PLAN.md](./V3-ENRICHMENT-PLAN.md) · **GMB 链接补 master.md + Sitemap 分类 surface + 4 路 enrichment (Tinyfish/WHOIS/ABN/Wayback)** · 2-3 天 · 不破坏现有 pipeline · 全 additive
 
 ### 🔮 V4 · 将来计划 (2026-05-16 · 暂不执行)
 - [v4/README.md](../v4/README.md) · 执行摘要 + 18-day plan + 决策记录 · **入口**
