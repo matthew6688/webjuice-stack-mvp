@@ -197,6 +197,35 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
     lines.push('邮箱: —');
   }
   lines.push(`表单页: ${latest.contact_us_url || '—'}`);
+  // cycle-27 (Matthew 2026-05-16 feedback): GMB link for operator cross-verification.
+  // Build best-available URL · 4 fallbacks · order = most-canonical first:
+  //   1. latest.google_maps_url (raw URL from maps-scraper · most accurate)
+  //   2. place_id (Google Places API entities)
+  //   3. cid (decimal CID · works with ?cid= param)
+  //   4. data_id (hex form "0xAAA:0xBBB" · derive cid from second half · or ftid)
+  function buildGmbUrl() {
+    if (latest.google_maps_url && /^https?:/.test(latest.google_maps_url)) return latest.google_maps_url;
+    const placeId = entity.identifiers?.place_id || latest.place_id || '';
+    if (placeId) return `https://www.google.com/maps/place/?q=place_id:${placeId}`;
+    const cid = entity.identifiers?.cid || latest.cid || '';
+    if (cid) return `https://maps.google.com/?cid=${cid}`;
+    const dataId = entity.identifiers?.data_id || latest.data_id || '';
+    if (dataId && /0x[0-9a-f]+:0x[0-9a-f]+/i.test(dataId)) {
+      // Convert second hex half → decimal cid (this is how Google constructs maps URLs from data_id)
+      const second = dataId.split(':')[1];
+      try {
+        const cidDec = BigInt(second).toString();
+        return `https://maps.google.com/?cid=${cidDec}`;
+      } catch { return `https://www.google.com/maps/place/?ftid=${dataId}`; }
+    }
+    return null;
+  }
+  const gmbUrl = buildGmbUrl();
+  if (gmbUrl) {
+    lines.push(`GMB: [Google 地图](${gmbUrl})`);
+  } else {
+    lines.push('GMB: —');
+  }
   // 社媒 (Facebook / Instagram / LinkedIn)
   const socials = latest.social_links || latest.socials || {};
   const socialEntries = Object.entries(socials).filter(([, v]) => v);
@@ -295,14 +324,18 @@ export function renderProfileCard(entity, { audit = null, channel = 'leads' } = 
   } else {
     // cycle-26 · pre-publish (audited or in-flight) · 用 "现状证据" 同一 section 名
     // pre-publish 时显示 counts · publish 后 hyperlinks。
+    // cycle-27 (Matthew 2026-05-16 thread 1504988931769368586): archived/D entity
+    // 不再说 "等发布" · 改 "已归档 · 不发布" · 文字诚实。
     const parts = [];
     if (assets.evidence.length) parts.push(`证据 ${assets.evidence.length}`);
     if (assets.screenshots.length) parts.push(`截图 ${assets.screenshots.length}`);
     if (assets.videos.length) parts.push(`视频 ${assets.videos.length}`);
+    const isArchived = phase === 'archived' || level === 'D';
+    const suffix = isArchived ? '已归档 · 不发布' : '本地 · 等发布';
     if (parts.length) {
-      lines.push(parts.join(' · ') + ' (本地 · 等发布)');
+      lines.push(parts.join(' · ') + ` (${suffix})`);
     } else {
-      lines.push('— (尚未生成 · audit 跑完后出现)');
+      lines.push(isArchived ? '— (entity 归档 · 无证据)' : '— (尚未生成 · audit 跑完后出现)');
     }
     flush('现状证据');
   }
