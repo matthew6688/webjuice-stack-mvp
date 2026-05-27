@@ -30,13 +30,15 @@ Do **not** use this skill for: building the demo site, generating outreach email
 
 ## Workflow
 
+> **Scope (2026-05-27 modularization)**: this skill OWNS step 1 (intake + upsert). Steps 2-5 are documented here because the legacy orchestrator CLI chains them, but each is now its own canonical skill — invoke them directly when iterating on a specific stage.
+
 ```text
-1. INTAKE   · Google Places textsearch → upsert entities (one batch thread per query)
-2. ENRICH   · per-entity: places-details + ABN + WHOIS + Wayback + visual audit (gated by budgetMode)
-3. QUALIFY  · A/B/C/D using rule engine (has-website? · audit-score? · grade-router rules)
-4. MASTER   · per-qualified entity: generate master.md (frontmatter + sales SOT + evidence)
-5. HANDOFF  · emit `data/leads/handoffs/<entityKey>.lead-to-research.json` for downstream skill
-6. REPORT   · write batch summary to `data/leads/reports/<run>.json` + post to discovery thread
+1. INTAKE   · Google Places textsearch → upsert entities (one batch thread per query)   ← OWNED by this skill
+2. ENRICH   · paid Places/ABN/WHOIS/Wayback/photos                                     ← profitslocal-entity-enrichment
+3. QUALIFY  · A/B/C/D via cheap-audit + exclusion-filter + grade-router                ← profitslocal-lead-filter
+4. MASTER   · per-qualified entity master.md generation                                ← profitslocal-build-research-pack
+5. HANDOFF  · `data/leads/handoffs/<entityKey>.lead-to-research.json`                  ← profitslocal-build-research-pack
+6. REPORT   · `data/leads/reports/<run>.json` + Discord thread summary                  ← owned by this skill (batch close-out)
 ```
 
 ## Lead types decided here
