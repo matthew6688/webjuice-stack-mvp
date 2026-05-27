@@ -1,6 +1,6 @@
 ---
 name: profitslocal-lead-filter
-description: Use after `profitslocal-lead-discovery` has produced raw entities and before any expensive enrichment runs. This skill is the gate that decides which entities are worth paying for. Runs cheap-audit (T0/T1 only — no premium LLM), niche-relevance match, and the exclusion-filter, then writes the A/B/C/D opportunity grade to the entity. Excluded leads exit as terminal-archive without burning Places/ABN quota.
+description: Use after `profitslocal-lead-discovery` has produced raw entities and before any expensive enrichment runs. This skill is the gate that decides which entities are worth paying for. Runs cheap-audit (T0/T1 only — no premium LLM), niche-relevance match, and the exclusion-filter, then writes a `predict_grade` (predict-C for survivors · predict-D for exclusions) to the entity. Final A/B/C/D sales grade is decided downstream by `profitslocal-entity-enrichment` + audit. Excluded leads exit as terminal-archive without burning Places/ABN quota.
 ---
 
 # ProfitsLocal · Lead Filter
@@ -34,7 +34,7 @@ Do **not** use this skill for: scoring a fully enriched entity (that's done insi
 npm run pl:run-enrichment-batch -- --skip-approval
 ```
 
-Internally this drives `cheap-audit-queue.js`, which runs exclusion-filter → cheap-audit → niche-match → A/B/C/D grade in one pass. No premium LLM calls. No Places-API spend for already-rated entities.
+Internally this drives `cheap-audit-queue.js`, which runs exclusion-filter → cheap-audit → niche-match → `predict_grade` (C or D only) in one pass. No premium LLM calls. No Places-API spend for already-rated entities. **Final A/B/C/D grade lands later** when downstream detailed audit + lead-grading runs.
 
 Force a single entity:
 
@@ -84,16 +84,25 @@ Exit codes:
 }
 ```
 
-## A/B/C/D rules (one-line each · full table in SOP-2 §3)
+## predict_grade rules (this skill emits C or D only · full A/B/C/D table in SOP-2 §3)
 
-| Grade | Rule |
+This skill is a **cheap pre-filter**. It emits:
+
+| predict_grade | When |
+|---|---|
+| **predict-C** | Survived all 3 exclusion-filter layers · `audit_now=true` · enqueue detailed audit |
+| **predict-D** | Excluded at any layer · `audit_now=false` · terminal-archive |
+
+Final **A/B/C/D** is set later by downstream detailed audit + `core/leads/grade-router.js`:
+
+| Final grade | Rule (decided downstream) |
 |---|---|
 | **A** | No website OR website 404/parked. Auto-demo eligible. |
 | **B** | Has site · audit composite ≤ 60 · ≥ 2 high-severity findings. Auto-demo eligible. |
 | **C** | Site composite 61–79. Cold-outreach queue only · no demo. |
 | **D** | Composite ≥ 80 OR not contactable. Terminal archive. |
 
-Override: `--force-grade <A|B|C|D>` records `reason` in entity.
+Override: `--force-grade <A|B|C|D>` records `reason` in entity (manual override · skips this skill's predict).
 
 ## Failure & degrade
 
