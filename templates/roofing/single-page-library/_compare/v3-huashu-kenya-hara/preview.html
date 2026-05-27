@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vicwest Roofing — Ballarat roofing, quietly built to last</title>
+<meta name="description" content="Vicwest Roofing — Ballarat-based, VBA-licensed roofers since 2003. Replacement, restoration, gutters, storm repair. 22 years, 4.1 stars, no subcontractors." />
+<link rel="canonical" href="https://www.vicwestroofing.com.au/" />
+<link rel="alternate" hreflang="en-AU" href="https://www.vicwestroofing.com.au/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Vicwest Roofing — Ballarat roofing, quietly built to last" />
+<meta property="og:description" content="VBA-licensed Ballarat roofers since 2003. Replacement, restoration, gutters, storm repair." />
+<meta property="og:url" content="https://www.vicwestroofing.com.au/" />
+<meta property="og:locale" content="en_AU" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Vicwest Roofing — Ballarat" />
+<meta name="twitter:description" content="VBA-licensed Ballarat roofers since 2003. 22 years, no subcontractors." />
+
+<!-- Google Fonts: Noto Serif JP (the Kenya Hara reference) + Inter at light weights only -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400&family=Inter:wght@200;300;400;500&display=swap" />
+
+<!-- LocalBusiness JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RoofingContractor",
+  "name": "Vicwest Roofing",
+  "description": "VBA-licensed roofing contractor in Ballarat, Victoria. Replacement, restoration, gutters, storm repair, re-pointing, Colorbond installation.",
+  "url": "https://www.vicwestroofing.com.au/",
+  "telephone": "+61403554592",
+  "email": "info@vicwestroofing.com.au",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Shed 3/31 Icon Dr",
+    "addressLocality": "Delacombe",
+    "addressRegion": "VIC",
+    "postalCode": "3356",
+    "addressCountry": "AU"
+  },
+  "areaServed": ["Ballarat", "Sebastopol", "Wendouree", "Buninyong", "Mount Helen", "Alfredton"],
+  "openingHoursSpecification": [
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "07:00", "closes": "17:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00"}
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.1",
+    "reviewCount": "18"
+  },
+  "hasCredential": {
+    "@type": "EducationalOccupationalCredential",
+    "credentialCategory": "license",
+    "name": "VBA CDB-U 65938"
+  },
+  "foundingDate": "2003",
+  "hasMap": "https://maps.google.com/?cid=13188751736585097798"
+}
+</script>
+
+<style>
+/* =========================================================
+   Kenya Hara · 東方極簡 · Vicwest Roofing
+   Philosophy notes baked into the CSS:
+   - Near-white not pure white (paper-like)
+   - Ink is 78-88% black, never #000
+   - One muted accent only (ash) — no colour
+   - Hairlines at 8-12% opacity, never strong
+   - Light weights (200-300), no bold display
+   - Massive vertical breathing (160-200px gaps)
+   - No drop shadows, no gradients, no rounded cards
+   - Tracking generous on small caps, tight on display
+   ========================================================= */
+
+:root {
+  --paper:      #FAFAF8;   /* warm near-white, washi-like */
+  --paper-2:    #F4F2EC;   /* secondary panel, barely visible shift */
+  --ink:        #1A1A1A;   /* primary ink, used at 0.78 opacity */
+  --ink-soft:   rgba(26, 26, 26, 0.62);
+  --ink-faint:  rgba(26, 26, 26, 0.38);
+  --ink-trace:  rgba(26, 26, 26, 0.10);
+  --hairline:   rgba(26, 26, 26, 0.08);
+  --ash:        #8B8780;   /* the one accent, a stone grey */
+  --terracotta: #A8553E;   /* whisper accent for ONE moment only (the dot) */
+
+  --serif: 'Noto Serif JP', 'Source Serif Pro', Georgia, serif;
+  --sans:  'Inter', -apple-system, system-ui, sans-serif;
+
+  --gutter:   clamp(24px, 5vw, 64px);
+  --rhythm:   clamp(120px, 16vw, 200px);  /* the giant section gap */
+  --rhythm-sm: clamp(48px, 7vw, 88px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(26, 26, 26, 0.82);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute; top: -40px; left: 0;
+  background: var(--ink); color: var(--paper);
+  padding: 8px 16px; z-index: 1000;
+  text-decoration: none; font-size: 13px;
+}
+.skip-link:focus { top: 0; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* ----- Typography scale (intentionally narrow) ----- */
+.display {
+  font-family: var(--serif);
+  font-weight: 200;
+  font-size: clamp(36px, 5.4vw, 68px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: rgba(26, 26, 26, 0.92);
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.3;
+  color: rgba(26, 26, 26, 0.88);
+  letter-spacing: -0.005em;
+}
+
+.lede {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+
+p { max-width: 62ch; }
+
+/* ----- Container ----- */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.container--narrow {
+  max-width: 860px;
+}
+
+/* =====================================================
+   Sticky Header — whisper-quiet
+   ===================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 250, 248, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px var(--gutter);
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand__mark {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 19px;
+  letter-spacing: 0.01em;
+  color: rgba(26,26,26,0.92);
+}
+.brand__sub {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+.nav {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+.nav a {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.4s ease;
+}
+.nav a:hover { color: rgba(26,26,26,0.92); }
+
+.header-cta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header-phone {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(26,26,26,0.85);
+  text-decoration: none;
+}
+.header-phone:hover { color: var(--terracotta); }
+
+.btn-ghost {
+  display: inline-block;
+  padding: 10px 22px;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,0.88);
+  background: transparent;
+  border: 1px solid rgba(26,26,26,0.22);
+  text-decoration: none;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  border-color: rgba(26,26,26,0.6);
+  color: rgba(26,26,26,1);
+}
+
+.btn-text {
+  display: inline-block;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: rgba(26,26,26,0.82);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(26,26,26,0.3);
+  transition: all 0.4s ease;
+}
+.btn-text:hover {
+  border-bottom-color: rgba(26,26,26,0.85);
+  color: rgba(26,26,26,1);
+}
+
+@media (max-width: 860px) {
+  .nav { display: none; }
+}
+
+/* =====================================================
+   Hero — vast quiet space
+   ===================================================== */
+.hero {
+  padding: clamp(80px, 12vw, 160px) 0 var(--rhythm);
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(48px, 8vw, 120px);
+  align-items: end;
+}
+
+.hero__text {
+  padding-top: clamp(40px, 6vw, 80px);
+}
+
+.hero__index {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--ink-faint);
+  margin-bottom: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.hero__index::after {
+  content: '';
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: var(--ink-trace);
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-weight: 200;
+  font-size: clamp(38px, 5.6vw, 72px);
+  line-height: 1.12;
+  letter-spacing: -0.012em;
+  color: rgba(26,26,26,0.92);
+  margin-bottom: 36px;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 200;
+  color: var(--ink-soft);
+}
+
+.hero__lede {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.75;
+  color: var(--ink-soft);
+  max-width: 46ch;
+  margin-bottom: 56px;
+}
+
+.hero__cta-row {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.hero__image-frame {
+  position: relative;
+}
+.hero__image-frame img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: saturate(0.85) contrast(0.95);
+}
+.hero__image-caption {
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Quote form — embedded, no panel chrome */
+.quote-aside {
+  margin-top: 32px;
+  padding: 36px 0 0;
+  border-top: 1px solid var(--hairline);
+}
+.quote-aside__title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 16px;
+  color: rgba(26,26,26,0.85);
+  margin-bottom: 20px;
+  letter-spacing: 0.01em;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+.form-field label {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
+.form-field label .req {
+  color: var(--terracotta);
+  margin-left: 4px;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 14px;
+  color: rgba(26,26,26,0.88);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(26,26,26,0.18);
+  padding: 8px 0;
+  outline: none;
+  transition: border-color 0.4s ease;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-bottom-color: rgba(26,26,26,0.65);
+}
+.form-field textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.form-submit {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 12px 28px;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,0.88);
+  background: transparent;
+  border: 1px solid rgba(26,26,26,0.3);
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.form-submit:hover {
+  background: rgba(26,26,26,0.88);
+  color: var(--paper);
+  border-color: rgba(26,26,26,0.88);
+}
+
+@media (max-width: 860px) {
+  .hero__grid { grid-template-columns: 1fr; gap: 56px; }
+  .form-row { grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* =====================================================
+   Trust strip — numbers as poetry, not chips
+   ===================================================== */
+.trust {
+  padding: var(--rhythm-sm) 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.trust__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+}
+.trust__item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.trust__number {
+  font-family: var(--serif);
+  font-weight: 200;
+  font-size: clamp(36px, 4.4vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: rgba(26,26,26,0.92);
+}
+.trust__number .sm {
+  font-size: 0.4em;
+  vertical-align: top;
+  margin-left: 4px;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+.trust__label {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 760px) {
+  .trust__grid { grid-template-columns: repeat(2, 1fr); gap: 36px; }
+}
+
+/* =====================================================
+   Services — restraint over grid
+   ===================================================== */
+.services { padding: var(--rhythm) 0; }
+
+.section-head {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: clamp(40px, 6vw, 100px);
+  align-items: start;
+  margin-bottom: clamp(64px, 9vw, 120px);
+}
+.section-head__left {}
+.section-head .eyebrow { margin-bottom: 20px; display: block; }
+.section-head__right { padding-top: 8px; }
+
+.services__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: clamp(48px, 7vw, 96px);
+  row-gap: clamp(72px, 9vw, 112px);
+}
+
+.service {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.service__num {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--ink-faint);
+  padding-top: 6px;
+  letter-spacing: 0.02em;
+}
+.service__body {}
+.service__title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(20px, 1.8vw, 24px);
+  line-height: 1.3;
+  color: rgba(26,26,26,0.92);
+  margin-bottom: 16px;
+  letter-spacing: -0.005em;
+}
+.service__copy {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  max-width: 42ch;
+}
+
+@media (max-width: 760px) {
+  .section-head { grid-template-columns: 1fr; gap: 24px; }
+  .services__list { grid-template-columns: 1fr; }
+}
+
+/* =====================================================
+   About & Process — image + craft text
+   ===================================================== */
+.about { padding: var(--rhythm) 0; background: var(--paper-2); }
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: clamp(48px, 8vw, 112px);
+  align-items: center;
+}
+
+.about__image img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: saturate(0.85) contrast(0.95);
+}
+
+.about__text .eyebrow { margin-bottom: 20px; display: block; }
+.about__text h2 { margin-bottom: 28px; }
+.about__text p {
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+
+.process {
+  margin-top: clamp(48px, 6vw, 72px);
+  padding-top: 40px;
+  border-top: 1px solid var(--hairline);
+}
+.process__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.process__step {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.process__num {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 13px;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+.process__title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 15px;
+  color: rgba(26,26,26,0.9);
+  line-height: 1.4;
+}
+.process__copy {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 860px) {
+  .about__grid { grid-template-columns: 1fr; }
+  .process__list { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+}
+
+/* =====================================================
+   Reviews — verbatim, calm
+   ===================================================== */
+.reviews { padding: var(--rhythm) 0; }
+.reviews__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(40px, 5vw, 72px);
+}
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.review__quote {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  position: relative;
+}
+.review__quote::before {
+  content: '「';
+  font-family: var(--serif);
+  position: absolute;
+  left: -22px;
+  top: -8px;
+  color: var(--ink-trace);
+  font-size: 28px;
+}
+.review__quote::after {
+  content: '」';
+  font-family: var(--serif);
+  color: var(--ink-trace);
+  font-size: 28px;
+  margin-left: 6px;
+  line-height: 0;
+}
+.review__attr {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hairline);
+}
+.review__author {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 13px;
+  color: rgba(26,26,26,0.85);
+  letter-spacing: 0.01em;
+}
+.review__meta {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 860px) {
+  .reviews__list { grid-template-columns: 1fr; gap: 56px; }
+}
+
+/* =====================================================
+   Gallery — before/after, minimal labels
+   ===================================================== */
+.gallery { padding: var(--rhythm) 0; background: var(--paper-2); }
+.gallery__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+}
+.gallery__pair {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.gallery__images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+.gallery__images figure {
+  position: relative;
+  margin: 0;
+}
+.gallery__images img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: saturate(0.85) contrast(0.95);
+}
+.gallery__images figcaption {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(26,26,26,0.45);
+  padding: 4px 8px;
+}
+.gallery__title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 15px;
+  color: rgba(26,26,26,0.85);
+  line-height: 1.5;
+}
+
+@media (max-width: 860px) {
+  .gallery__list { grid-template-columns: 1fr; }
+}
+
+/* =====================================================
+   Service area
+   ===================================================== */
+.area { padding: var(--rhythm) 0; }
+.area__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(48px, 7vw, 96px);
+  align-items: start;
+}
+.area__suburbs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 36px;
+  margin-top: 32px;
+}
+.area__suburbs li {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--ink-soft);
+  list-style: none;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.area__by-arrangement {
+  margin-top: 32px;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 13px;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+.area__by-arrangement strong {
+  font-weight: 400;
+  color: var(--ink-soft);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 11px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.area__map {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--hairline);
+  filter: saturate(0.4) contrast(0.95);
+}
+
+@media (max-width: 860px) {
+  .area__grid { grid-template-columns: 1fr; }
+}
+
+/* =====================================================
+   Contact
+   ===================================================== */
+.contact { padding: var(--rhythm) 0; background: var(--paper-2); }
+.contact__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(48px, 7vw, 96px);
+}
+.contact__details dl { display: grid; gap: 28px; margin-top: 32px; }
+.contact__details dt {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.contact__details dd {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 17px;
+  color: rgba(26,26,26,0.88);
+  line-height: 1.5;
+}
+.contact__details a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(26,26,26,0.18);
+  transition: border-color 0.4s ease;
+}
+.contact__details a:hover {
+  border-bottom-color: rgba(26,26,26,0.65);
+}
+
+@media (max-width: 860px) {
+  .contact__grid { grid-template-columns: 1fr; gap: 56px; }
+}
+
+/* =====================================================
+   Footer
+   ===================================================== */
+.footer {
+  padding: 64px 0 48px;
+  border-top: 1px solid var(--hairline);
+}
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+.footer__brand {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 16px;
+  color: rgba(26,26,26,0.85);
+}
+.footer__meta {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: 2;
+}
+.footer__meta div { text-align: right; }
+
+@media (max-width: 760px) {
+  .footer__inner { flex-direction: column; align-items: flex-start; }
+  .footer__meta div { text-align: left; }
+}
+
+/* =====================================================
+   Sticky mobile phone CTA — whisper, not shout
+   Required by brief but designed as a quiet bottom rail,
+   monochrome, opacity 0.95. Hidden on desktop.
+   ===================================================== */
+.mobile-cta {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: rgba(26, 26, 26, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 14px 20px;
+  text-align: center;
+}
+.mobile-cta a {
+  color: rgba(250, 250, 248, 0.95);
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.mobile-cta .label {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(250, 250, 248, 0.55);
+}
+@media (max-width: 760px) {
+  .mobile-cta { display: block; }
+  body { padding-bottom: 60px; }
+}
+
+/* small dot accent — the only terracotta moment in the page */
+.dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+::selection { background: rgba(26,26,26,0.88); color: var(--paper); }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ============== HEADER ============== -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="#top" aria-label="Vicwest Roofing home">
+      <span class="brand__mark">Vicwest Roofing</span>
+      <span class="brand__sub">Ballarat · est. 2003</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#area">Service Area</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-cta">
+      <a class="header-phone" href="tel:0403554592">0403 554 592</a>
+      <a class="btn-ghost" href="#quote">Request a quote</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============== HERO ============== -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__text">
+        <div class="hero__index">No. 01 &nbsp;·&nbsp; Ballarat, Victoria</div>
+        <h1>
+          Ballarat roofing,<br />
+          <em>quietly built to last.</em>
+        </h1>
+        <p class="hero__lede">
+          For twenty-two years, Vicwest Roofing has worked across the homes of Ballarat — replacing,
+          restoring, and repairing. No subcontractors. No louder claims than the workmanship can hold.
+        </p>
+        <div class="hero__cta-row">
+          <a class="btn-ghost" href="#quote">Request a quote</a>
+          <a class="btn-text" href="tel:0403554592">Or call 0403 554 592</a>
+        </div>
+
+        <aside class="quote-aside" id="quote" aria-labelledby="quote-title">
+          <h2 class="quote-aside__title" id="quote-title">A quiet enquiry</h2>
+          <form>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="h-name">Name <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="h-name" name="name" required aria-required="true" />
+              </div>
+              <div class="form-field">
+                <label for="h-email">Email <span class="req" aria-hidden="true">*</span></label>
+                <input type="email" id="h-email" name="email" required aria-required="true" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="h-phone">Phone</label>
+                <input type="tel" id="h-phone" name="phone" />
+              </div>
+              <div class="form-field">
+                <label for="h-suburb">Suburb</label>
+                <input type="text" id="h-suburb" name="suburb" />
+              </div>
+            </div>
+            <div class="form-field" style="margin-bottom: 24px;">
+              <label for="h-service">Service</label>
+              <select id="h-service" name="service">
+                <option value="">Select a service</option>
+                <option>Roof replacement</option>
+                <option>Roof restoration</option>
+                <option>Gutters &amp; downpipes</option>
+                <option>Storm &amp; emergency</option>
+                <option>Re-pointing &amp; re-bedding</option>
+                <option>Metal roofing / Colorbond</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <button type="submit" class="form-submit">Send enquiry</button>
+          </form>
+        </aside>
+      </div>
+
+      <div class="hero__image-frame">
+        <img src="../../../stock-library/hero/hero-heritage-slate-detail.png" alt="Detail of restored heritage slate roofing, Ballarat" loading="eager" />
+        <div class="hero__image-caption">Heritage slate · detail study</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== TRUST STRIP ============== -->
+<section class="trust" aria-label="At a glance">
+  <div class="container">
+    <div class="trust__grid">
+      <div class="trust__item">
+        <div class="trust__number">22<span class="sm">years</span></div>
+        <div class="trust__label">Since 2003</div>
+      </div>
+      <div class="trust__item">
+        <div class="trust__number">4.1<span class="sm">★</span></div>
+        <div class="trust__label">18 Google reviews</div>
+      </div>
+      <div class="trust__item">
+        <div class="trust__number">15<span class="sm">+</span></div>
+        <div class="trust__label">Suburbs served</div>
+      </div>
+      <div class="trust__item">
+        <div class="trust__number">0<span class="sm">/</span></div>
+        <div class="trust__label">Subcontractors</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SERVICES ============== -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__left">
+        <span class="eyebrow">Services</span>
+        <h2 class="section-title">Six things,<br />done with care.</h2>
+      </div>
+      <div class="section-head__right">
+        <p class="lede">
+          We do not pretend to be everything. These six are what twenty-two years
+          of Ballarat weather has shaped us into doing well.
+        </p>
+      </div>
+    </div>
+
+    <div class="services__list">
+      <article class="service">
+        <div class="service__num">01</div>
+        <div class="service__body">
+          <h3 class="service__title">Roof Replacement</h3>
+          <p class="service__copy">Tile-to-metal switch or full Colorbond replace. Done in 3-5 days for most Ballarat homes, fully removed and recycled — 10-year written warranty on workmanship.</p>
+        </div>
+      </article>
+
+      <article class="service">
+        <div class="service__num">02</div>
+        <div class="service__body">
+          <h3 class="service__title">Roof Restoration</h3>
+          <p class="service__copy">Pressure clean, re-bed, re-point, and recoat. Adds 10-15 years to an existing terracotta or cement-tile roof at a fraction of replacement cost.</p>
+        </div>
+      </article>
+
+      <article class="service">
+        <div class="service__num">03</div>
+        <div class="service__body">
+          <h3 class="service__title">Gutters &amp; Downpipes</h3>
+          <p class="service__copy">Quad, half-round, or box. Seamless aluminium or Colorbond — fitted with stainless brackets and leaf guard, paired with new PVC or metal downpipes.</p>
+        </div>
+      </article>
+
+      <article class="service">
+        <div class="service__num">04</div>
+        <div class="service__body">
+          <h3 class="service__title">Storm &amp; Emergency Repairs</h3>
+          <p class="service__copy">Hail, wind, or fallen-branch damage — we tarp same-day, photograph for your insurer, and replace tiles or sheeting once the claim's lodged.</p>
+        </div>
+      </article>
+
+      <article class="service">
+        <div class="service__num">05</div>
+        <div class="service__body">
+          <h3 class="service__title">Re-pointing &amp; Re-bedding</h3>
+          <p class="service__copy">Flexible pointing in 6 colours — replaces failed mortar bedding without disturbing tiles below. Stops leaks at the ridge, valleys, and hips.</p>
+        </div>
+      </article>
+
+      <article class="service">
+        <div class="service__num">06</div>
+        <div class="service__body">
+          <h3 class="service__title">Metal Roofing &amp; Colorbond</h3>
+          <p class="service__copy">Surfmist, Monument, Basalt — full Colorbond install over timber battens. Includes anti-condensation blanket, insulation upgrade, and standing-seam detail at all junctions.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ABOUT + PROCESS ============== -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about__grid">
+      <div class="about__image">
+        <img src="../../../stock-library/about/about-worker-surveying.png" alt="A Vicwest roofer surveying a Ballarat rooftop" loading="lazy" />
+      </div>
+      <div class="about__text">
+        <span class="eyebrow">About</span>
+        <h2 class="section-title">A small Ballarat trade, since 2003.</h2>
+        <p>
+          Vicwest Roofing is VBA-licensed and operates out of Delacombe. The crew is in-house —
+          no subcontractors, no franchise overlay. Every job is overseen by someone who will
+          still be on the roof next year.
+        </p>
+        <p>
+          The work is unhurried in the way it ought to be. We quote what we see, write what
+          we will do, and put it in your hands before we leave. A ten-year warranty on workmanship
+          travels with the paperwork.
+        </p>
+
+        <div class="process">
+          <ol class="process__list">
+            <li class="process__step">
+              <span class="process__num">— 01</span>
+              <span class="process__title">Quiet site visit</span>
+              <span class="process__copy">Inspection, photographs, conversation.</span>
+            </li>
+            <li class="process__step">
+              <span class="process__num">— 02</span>
+              <span class="process__title">Written quote</span>
+              <span class="process__copy">Plain language. No surprises.</span>
+            </li>
+            <li class="process__step">
+              <span class="process__num">— 03</span>
+              <span class="process__title">The work</span>
+              <span class="process__copy">Tidy site, daily update.</span>
+            </li>
+            <li class="process__step">
+              <span class="process__num">— 04</span>
+              <span class="process__title">Paperwork handed over</span>
+              <span class="process__copy">Warranty, photos, invoice — the day we leave.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== REVIEWS ============== -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__left">
+        <span class="eyebrow">In their words</span>
+        <h2 class="section-title">Three reviews,<br />unedited.</h2>
+      </div>
+      <div class="section-head__right">
+        <p class="lede">
+          Eighteen Google reviews. We have chosen three to print here as they were written.
+        </p>
+      </div>
+    </div>
+
+    <div class="reviews__list">
+      <article class="review">
+        <p class="review__quote">Brad and the team replaced our tile roof with Colorbond in 4 days. Tidy site, clear daily update, no surprises on price. Ten-year warranty paperwork in our hands the day they left.</p>
+        <div class="review__attr">
+          <div class="review__author">Karen S.</div>
+          <div class="review__meta">Sebastopol &nbsp;·&nbsp; ★★★★★</div>
+        </div>
+      </article>
+
+      <article class="review">
+        <p class="review__quote">Called Tuesday morning about a leak in our ridge. Vicwest had someone here Wednesday, repointed by Friday. Fair quote, friendly crew. Recommended to two neighbours already.</p>
+        <div class="review__attr">
+          <div class="review__author">Mark D.</div>
+          <div class="review__meta">Wendouree &nbsp;·&nbsp; ★★★★★</div>
+        </div>
+      </article>
+
+      <article class="review">
+        <p class="review__quote">After a storm took half our tiles, Vicwest tarped the same day and walked us through the insurance claim. Replacement done within three weeks. Could not fault the communication.</p>
+        <div class="review__attr">
+          <div class="review__author">Janine M.</div>
+          <div class="review__meta">Buninyong &nbsp;·&nbsp; ★★★★★</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== GALLERY ============== -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__left">
+        <span class="eyebrow">Work</span>
+        <h2 class="section-title">Before, after.<br />Nothing in between.</h2>
+      </div>
+      <div class="section-head__right">
+        <p class="lede">Three pairs from recent Ballarat jobs. Photographs are unretouched.</p>
+      </div>
+    </div>
+
+    <div class="gallery__list">
+      <div class="gallery__pair">
+        <div class="gallery__images">
+          <figure>
+            <img src="../../../stock-library/gallery/gallery-07-moss-before.jpg" alt="Roof covered in moss before cleaning" loading="lazy" />
+            <figcaption>Before</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../stock-library/gallery/gallery-07-moss-after.jpg" alt="Roof cleaned of moss after restoration" loading="lazy" />
+            <figcaption>After</figcaption>
+          </figure>
+        </div>
+        <p class="gallery__title">Moss removal &amp; soft-wash restoration — Alfredton</p>
+      </div>
+
+      <div class="gallery__pair">
+        <div class="gallery__images">
+          <figure>
+            <img src="../../../stock-library/gallery/gallery-09-cracked-slate-before.jpg" alt="Cracked slate tile roof before restoration" loading="lazy" />
+            <figcaption>Before</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../stock-library/gallery/gallery-09-restored-slate-after.jpg" alt="Restored slate roof after repair" loading="lazy" />
+            <figcaption>After</figcaption>
+          </figure>
+        </div>
+        <p class="gallery__title">Cracked slate, replaced and re-pointed — Buninyong</p>
+      </div>
+
+      <div class="gallery__pair">
+        <div class="gallery__images">
+          <figure>
+            <img src="../../../stock-library/gallery/gallery-10-storm-tarped-before.jpg" alt="Storm-damaged roof temporarily tarped" loading="lazy" />
+            <figcaption>Before</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../stock-library/gallery/gallery-10-storm-repaired-after.jpg" alt="Roof fully repaired after storm damage" loading="lazy" />
+            <figcaption>After</figcaption>
+          </figure>
+        </div>
+        <p class="gallery__title">Storm damage, tarped same-day, replaced — Wendouree</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SERVICE AREA ============== -->
+<section class="area" id="area">
+  <div class="container">
+    <div class="area__grid">
+      <div>
+        <span class="eyebrow">Service area</span>
+        <h2 class="section-title" style="margin-top: 20px;">Ballarat and surrounds.</h2>
+        <p class="lede" style="margin-top: 20px;">
+          Sixteen suburbs we work in regularly. Two more by arrangement.
+        </p>
+
+        <ul class="area__suburbs">
+          <li>Ballarat Central</li>
+          <li>Sebastopol</li>
+          <li>Wendouree</li>
+          <li>Lake Wendouree</li>
+          <li>Delacombe</li>
+          <li>Buninyong</li>
+          <li>Mount Pleasant</li>
+          <li>Mount Helen</li>
+          <li>Black Hill</li>
+          <li>Alfredton</li>
+          <li>Soldiers Hill</li>
+          <li>Brown Hill</li>
+          <li>Redan</li>
+          <li>Canadian</li>
+          <li>Bonshaw</li>
+          <li>Miners Rest</li>
+        </ul>
+
+        <div class="area__by-arrangement">
+          <strong>By arrangement</strong>
+          Bacchus Marsh &nbsp;·&nbsp; Daylesford
+        </div>
+      </div>
+
+      <div>
+        <iframe class="area__map"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d50296.95!2d143.84!3d-37.5622!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb70f7c8b8aab17c6!2sVicwest%20Roofing!5e0!3m2!1sen!2sau!4v1700000000000"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Vicwest Roofing location — Delacombe, VIC"
+          aria-label="Map showing Vicwest Roofing service area around Ballarat"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CONTACT ============== -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact__grid">
+      <div class="contact__details">
+        <span class="eyebrow">Contact</span>
+        <h2 class="section-title" style="margin-top: 20px;">Get in touch,<br />in your own time.</h2>
+
+        <dl>
+          <div>
+            <dt>Phone</dt>
+            <dd><a href="tel:0403554592">0403 554 592</a></dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd><a href="mailto:info@vicwestroofing.com.au">info@vicwestroofing.com.au</a></dd>
+          </div>
+          <div>
+            <dt>Address</dt>
+            <dd>Shed 3/31 Icon Drive<br />Delacombe, VIC 3356</dd>
+          </div>
+          <div>
+            <dt>Hours</dt>
+            <dd>
+              Monday – Friday &nbsp; 7 am – 5 pm<br />
+              Saturday &nbsp; 9 am – 1 pm<br />
+              <span style="font-size: 13px; color: var(--ink-faint);">After-hours emergency line available</span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div>
+        <span class="eyebrow">Secondary enquiry</span>
+        <form style="margin-top: 28px;">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="c-name">Name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="c-name" name="name" required aria-required="true" />
+            </div>
+            <div class="form-field">
+              <label for="c-email">Email <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="c-email" name="email" required aria-required="true" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="c-phone">Phone</label>
+              <input type="tel" id="c-phone" name="phone" />
+            </div>
+            <div class="form-field">
+              <label for="c-suburb">Suburb</label>
+              <input type="text" id="c-suburb" name="suburb" />
+            </div>
+          </div>
+          <div class="form-field" style="margin-bottom: 20px;">
+            <label for="c-service">Service</label>
+            <select id="c-service" name="service">
+              <option value="">Select a service</option>
+              <option>Roof replacement</option>
+              <option>Roof restoration</option>
+              <option>Gutters &amp; downpipes</option>
+              <option>Storm &amp; emergency</option>
+              <option>Re-pointing &amp; re-bedding</option>
+              <option>Metal roofing / Colorbond</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-field" style="margin-bottom: 24px;">
+            <label for="c-msg">Message</label>
+            <textarea id="c-msg" name="message" rows="3"></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send enquiry</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============== FOOTER ============== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div>
+        <div class="footer__brand">Vicwest Roofing</div>
+        <div class="footer__meta" style="margin-top: 10px;">VBA-licensed · Ballarat, Victoria</div>
+      </div>
+      <div class="footer__meta">
+        <div>© 2026 Vicwest Roofing</div>
+        <div>Shed 3/31 Icon Dr · Delacombe</div>
+        <div><a href="tel:0403554592" style="color: inherit; text-decoration: none;">0403 554 592</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile-only quiet phone bar -->
+<div class="mobile-cta" role="complementary" aria-label="Call Vicwest Roofing">
+  <a href="tel:0403554592">
+    <span class="label">Call</span>
+    <span>0403 554 592</span>
+  </a>
+</div>
+
+</body>
+</html>
