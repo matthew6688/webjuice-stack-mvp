@@ -1,0 +1,80 @@
+# Vicwest Roofing · Single-Page Brief · 2026-05-28
+# Phase A Step 4 fixture · validates clean against core/handoff/single-page-brief-schema.js
+# Codex Round 12 Q-Z-1: primary_segment = planned-upgrade (file-clerk register · 22yr · 4.1★)
+
+business_name: Vicwest Roofing
+phone:
+  display: "0403 554 592"
+  tel_link: "+61403554592"
+address:
+  street: Shed 3/31 Icon Dr
+  suburb: Delacombe
+  state: VIC
+  postcode: "3356"
+state: VIC
+abn: 34 134 811 831
+license:
+  authority: VBA
+  number: CDB-U 65938
+  status: active
+niche: roofing
+primary_segment: planned-upgrade
+secondary_segments:
+  - urgent-repair
+urgency_mix: mixed
+pricing_disclosure_mode: per_quote_only
+emergency_response_sla_hours: 4
+emergency_phone: null
+owner_full_name: null
+owner_photo_url: null
+year_founded: 2003
+service_radius_km: 50
+insurance_amount_aud: null
+entity_review_count: 18
+reviews_count_recent: 6
+canonical_url: https://vicwestroofing.com.au/
+service_area_primary_suburb: Ballarat Central
+brand_tokens_path: clients/vicwest-roofing/v2/brand/brand-tokens.css
+
+suburbs_covered:
+  - Ballarat Central
+  - Sebastopol
+  - Wendouree
+  - Lake Wendouree
+  - Delacombe
+  - Buninyong
+  - Mount Pleasant
+  - Mount Helen
+  - Black Hill
+  - Alfredton
+  - Soldiers Hill
+  - Brown Hill
+  - Redan
+  - Canadian
+  - Bonshaw
+  - Miners Rest
+
+services:
+  - name: Roof restoration
+    short: Tile or Colorbond · clean · re-point · re-bed · seal · 10yr warranty
+  - name: Roof replacement
+    short: Full tear-off + new Colorbond OR re-tile · sarking + battens included
+  - name: Roof repair
+    short: Leak diagnosis · cracked tiles · loose flashing · storm damage · 24hr quote
+  - name: Gutter replacement
+    short: Colorbond gutters + downpipes · matched colour · lifetime metal warranty
+  - name: Storm repair
+    short: Make-safe tarping · permanent repair quoted in writing · insurance compatible
+  - name: Colorbond installation
+    short: BlueScope-supplied · full colour range · ridge sealing + valley sarking
+
+# reviews · entity_review_count >= 5 · so real reviews preferred (no AI_PLACEHOLDER)
+reviews:
+  - name: Sarah K.
+    suburb: Sebastopol
+    service: Colorbond replacement
+    date: 2024-04
+    text: "Vicwest replaced our 1970s tile roof with Colorbond · neat job · written warranty before they left."
+    _provenance: REAL
+
+# before_after_pairs · TBD when photos.json populated (omitted for Step 4 fixture · validator allows absent)

@@ -8,6 +8,7 @@
   "scripts": {
     "skills:build": "node scripts/cli/skills-build.js",
     "skills:check": "node scripts/cli/skills-build.js --check",
+    "pl:validate-single-page-brief": "node --env-file-if-exists=.env.local scripts/cli/pl-validate-single-page-brief.js",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
