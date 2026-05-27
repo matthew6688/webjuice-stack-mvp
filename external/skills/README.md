@@ -11,22 +11,21 @@ Cloned skill repositories from the actual authors (not OD catalogue stubs).
 ```
 external/skills/
 ├── README.md            ← this file (skill → pipeline mapping)
-├── LOCKFILE.md          ← upstream SHAs · update procedure
+├── LOCKFILE.md          ← upstream SHAs · curation rule · dropped/added log
 ├── PULL.sh              ← idempotent re-clone (uses LOCKFILE SHAs)
-├── INTEGRATION-MAP.md   ← (future) which skills we'll wire into pl:audit-v4 + brief-intake
-├── OUR-USAGE.md         ← (future) per-skill notes · what we changed · gotchas
 ├── .gitignore           ← excludes cloned content (regen via PULL.sh)
 │
 ├── marketingskills/             ← github.com/coreyhaines31/marketingskills · 42 skills
 ├── gstack/                       ← github.com/garrytan/gstack · 58 skills
 ├── taste-skill/                  ← github.com/Leonxlnx/taste-skill · 13 skills
 ├── anthropics-skills/            ← github.com/anthropics/skills · 18 skills
-├── openai-skills/                ← github.com/openai/skills · 44 skills (.curated/.system)
-├── vercel-skills/                ← github.com/vercel-labs/skills · 1 skill (find-skills meta)
-└── creative-director-skill/      ← github.com/smixs/creative-director-skill · 1 skill
+├── creative-director-skill/      ← github.com/smixs/creative-director-skill · 1 skill
+└── guizang-ppt-skill/            ← github.com/op7418/guizang-ppt-skill · 1 skill (sales decks)
 ```
 
-**Total clone size**: ~89 MB · gitignored · materialize via `bash PULL.sh`
+**Total clone size**: ~85 MB · gitignored · materialize via `bash PULL.sh` · 6 upstreams · ~133 skills · ~45 P0/P1 fits.
+
+**Curation policy**: an upstream stays only if ≥1 skill maps to our pipeline (see § mapping below). Dropped 2026-05-28: `openai-skills` (dev/CI tools · 0 fit) · `vercel-skills` (meta · 0 fit). See `LOCKFILE.md` for full drop/add log.
 
 ## Getting started
 
@@ -83,7 +82,8 @@ bash external/skills/PULL.sh --force
 
 | skill | what it gives us | replacement for |
 |---|---|---|
-| `anthropics-skills/skills/pptx/SKILL.md` | Real .pptx generation | Slide decks for prospects |
+| **`guizang-ppt-skill/SKILL.md`** | **单文件 HTML 横向翻页 PPT · Style A 电子杂志 (Monocle 范) + Style B 瑞士国际主义 · Claude/Codex 适配 · 直接 cf-pages deploy** | **Sales 演示 deck 主力 · 跟 anthropics pptx 形成 HTML vs binary 互补** |
+| `anthropics-skills/skills/pptx/SKILL.md` | Real .pptx generation | 客户要 .pptx 文件下载时 |
 | `anthropics-skills/skills/docx/SKILL.md` | Word doc generation | Quote / proposal docs |
 | `anthropics-skills/skills/pdf/SKILL.md` | PDF generation | Sealed proposals |
 | `anthropics-skills/skills/web-artifacts-builder/SKILL.md` | React + Tailwind artifact | Interactive proposal previews |
@@ -112,6 +112,7 @@ bash external/skills/PULL.sh --force
 
 | skill | what it gives us | replacement for |
 |---|---|---|
+| **`guizang-ppt-skill/SKILL.md`** | **季度复盘 deck · 月度报告 · 客户感谢卡 · 单文件 HTML** | **retainer 月度交付主力 · 不用每月手做** |
 | `marketingskills/skills/analytics/SKILL.md` | GA4 / pixel implementation guidance | Customer report dashboards |
 | `marketingskills/skills/ai-seo/SKILL.md` | LLM-era SEO playbook | Content strategy for retainer clients |
 | `marketingskills/skills/pricing/SKILL.md` | Pricing psychology / strategy | Tier upgrade conversations |
@@ -130,21 +131,24 @@ bash external/skills/PULL.sh --force
 
 ---
 
-## What we DON'T use (not pipeline-relevant · gitignored but not curated)
+## What we DON'T use (not pipeline-relevant · stays inside curated upstreams)
 
-These exist in the upstreams but aren't on our P0/P1 list. They're available if the niche evolves:
+These exist in the kept upstreams but aren't on our P0/P1 list. They're available if the niche evolves but we don't actively maintain mapping:
 
-**gstack** (58 skills · ~50 not curated for us): autoplan, ios-qa, ios-design-review, pair-agent, benchmark, cso, learn, plan-tune, make-pdf, unfreeze, context-save, setup-deploy · etc.
+**gstack** (58 skills · ~50 unused): autoplan, ios-qa, ios-design-review, pair-agent, benchmark, cso, learn, plan-tune, make-pdf, unfreeze, context-save, setup-deploy · etc. **We keep gstack despite 12% utilization** because design-review + plan-design-review + design-consultation are core to audit-v4.
 
-**openai-skills** (44 · 0 curated): `.curated/render-deploy · gh-fix-ci · notion-spec-to-implementation · cli-creator · yeet · sentry · playwright-interactive · transcribe · gh-address-comments · security-ownership-map · figma-* (4) · migrate-to-codex · security-threat-model`. None match our pipeline.
+**marketingskills** (42 · 27 unused): rest are revops · social · prospecting · cold-email tactics specific to SaaS (not local trade).
 
-**marketingskills** (42 · 26 curated): rest are revops · social · prospecting · cold-email tactics specific to SaaS (not local trade).
+**taste-skill** (13 · 5 unused): rest are platform-specific (gpt-tasteskill · stitch-skill · taste-skill-v1 deprecated).
 
-**taste-skill** (13 · 6 curated): rest are platform-specific (gpt-tasteskill · stitch-skill · taste-skill-v1 deprecated).
+**anthropics-skills** (18 · 5 unused): rest are utilities (xlsx · skill-creator · skill-installer · plugin-creator · openai-docs).
 
-**anthropics-skills** (18 · 10 curated): rest are doc tools (xlsx · skill-creator · skill-installer · plugin-creator · openai-docs).
+## Dropped upstreams (don't re-add without justification)
 
-**vercel-skills** (1): only `find-skills` meta-tool · skip.
+| upstream | reason for drop |
+|---|---|
+| `openai-skills` (44 skills) | dev/CI tooling only · gh-fix-ci · sentry · render-deploy · security-threat-model · transcribe · 0 fit for AU local-trade website + sales pipeline |
+| `vercel-skills` (1 meta skill) | only `find-skills` meta-tool · no actual design/marketing content |
 
 ---
 

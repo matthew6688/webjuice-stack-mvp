@@ -17,14 +17,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # === pinned upstreams (sync with LOCKFILE.md) ===
+# Curation rule: must hit ≥1 pipeline stage P0/P1 skill in our README map.
+# Dropped 2026-05-28: openai-skills (dev/CI only · 0 fit) · vercel-skills (meta only · 0 fit).
 declare -a UPSTREAMS=(
   "marketingskills|https://github.com/coreyhaines31/marketingskills.git|692b76118c6b379f89c0fba987a228a40f58b418"
   "gstack|https://github.com/garrytan/gstack.git|a6fb31726cece1d1bba401fde593db7cb96bc738"
   "taste-skill|https://github.com/Leonxlnx/taste-skill.git|3c7017d636c3a4aad378433ea6d0cfa6c921da4a"
   "anthropics-skills|https://github.com/anthropics/skills.git|690f15cac7f7b4c055c5ab109c79ed9259934081"
-  "openai-skills|https://github.com/openai/skills.git|b0401f07213a66414d84a65cb50c1d226f99485a"
-  "vercel-skills|https://github.com/vercel-labs/skills.git|e4243fbf7d9398722024f62850ece90fa0d5c693"
   "creative-director-skill|https://github.com/smixs/creative-director-skill.git|62b3e827e546335d5445d599df242df5f4f24ae0"
+  "guizang-ppt-skill|https://github.com/op7418/guizang-ppt-skill.git|6bfa520b86ed5a3dffdac0a3323155e2b6f516b6"
 )
 
 FORCE=0
