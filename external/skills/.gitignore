@@ -1,0 +1,13 @@
+# external/skills/ holds cloned upstream skill repos pinned by LOCKFILE.md.
+# Run `bash PULL.sh` to populate. Heavy content NOT committed — only mapping docs.
+
+# ignore everything in here
+*
+
+# except these runtime files
+!.gitignore
+!README.md
+!LOCKFILE.md
+!PULL.sh
+!INTEGRATION-MAP.md
+!OUR-USAGE.md

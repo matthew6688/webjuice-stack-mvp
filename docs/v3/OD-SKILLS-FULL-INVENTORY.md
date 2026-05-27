@@ -3,6 +3,8 @@
 > Source: `/tmp/open-design/skills/*/SKILL.md` (137 subdirectories · AGENTS.md and README.md at top level excluded · the "139" in the brief includes those two top-level files).
 > Date: 2026-05-27 · Owner: Matthew · Project: ProfitsLocal (AU local-trades website + ongoing marketing automation).
 
+> **🟡 ERRATA (2026-05-27 evening)**: This inventory ranks skills based on their OD `SKILL.md` *description*. **The OD descriptions are real · the OD content is not** — each OD `SKILL.md` is a 43-line catalogue stub pointing to an upstream repo. Real methodology lives at the upstream (e.g. `marketingskills/skills/marketing-psychology/SKILL.md` is **455 lines** vs OD's 43-line stub). To actually integrate any skill below, see `external/skills/README.md` + run `bash external/skills/PULL.sh` to materialize the upstreams (~89 MB · 7 repos · ~177 real skills total). Tier rankings in this doc are approximately right for prioritisation; "how to use" implications are wrong (cannot invoke OD stubs · must integrate methodology from upstream into our own prompts).
+
 ---
 
 ## Pipeline stage reference (S1–S9 legend)
