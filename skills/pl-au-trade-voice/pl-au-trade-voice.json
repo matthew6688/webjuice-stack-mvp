@@ -1,0 +1,129 @@
+{
+  "name": "pl-au-trade-voice",
+  "version": "1.0.0",
+  "kind": "voice",
+  "contract": {
+    "inputs_required": [
+      "primary_segment (from brief schema · Step 4)",
+      "niche (from brief · default roofing for Phase A)"
+    ],
+    "outputs_expected": [
+      "AU universal voice rules (§1)",
+      "Segment voice modifiers (§2 merged with persona file)",
+      "Niche addendum data (§3 for roofing · future §s for other niches)"
+    ],
+    "runtime_consumers": [
+      "pl-llm-page-copywriter-site (prompt context)",
+      "core/eval/content-validator.js (forbidden phrase extension · TODO 3.3)",
+      "pl-audit-rubric (voice rule lookup · TODO 3.2)"
+    ]
+  },
+  "constants": {
+    "owner_voice_max_words": 11,
+    "standard_h1_max_words": 10,
+    "au_spelling_required": true,
+    "us_spelling_violations_per_au": [
+      "color",
+      "center",
+      "catalog",
+      "realize",
+      "organize"
+    ]
+  },
+  "rules": [
+    {
+      "id": "AV-1",
+      "severity": "hard",
+      "description": "All copy uses UK spelling (colour/centre/realise · etc.)",
+      "enforced_by": [
+        "content-validator au_spelling check"
+      ]
+    },
+    {
+      "id": "AV-2",
+      "severity": "hard",
+      "description": "Owner-voice H1 ≤11 word exception requires regex match on owner-name OR personal-accountability device OR family device",
+      "enforced_by": [
+        "content-validator mech-H-1"
+      ]
+    },
+    {
+      "id": "AV-3",
+      "severity": "hard",
+      "description": "Hero copy voice MUST match primary_segment voice_modifiers (urgent/planned/commercial/first-buyer)",
+      "enforced_by": [
+        "vision LLM vis-H-2 · pl-audit-rubric T5"
+      ]
+    },
+    {
+      "id": "AV-4",
+      "severity": "hard",
+      "description": "Banned genericisms ~69 terms (53 base + 16 new) NEVER appear in any rendered text",
+      "enforced_by": [
+        "content-validator forbidden_phrases"
+      ]
+    },
+    {
+      "id": "AV-5",
+      "severity": "hard",
+      "description": "License/ABN/insurance phrasing follows state-specific format (§1.3)",
+      "enforced_by": [
+        "content-validator state_authority + trust-signals/<niche>.js regex"
+      ]
+    },
+    {
+      "id": "AV-6",
+      "severity": "hard",
+      "description": "Forbidden niche-specific legal claims NEVER appear (§3.6 for roofing)",
+      "enforced_by": [
+        "content-validator forbidden_claims (niche-overlay) · TODO 3.3"
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "id": "au-universal",
+      "name": "AU Universal Layer",
+      "purpose": "Spelling · trade tone · compliance phrasing · no-obligation pattern · banned genericisms",
+      "hard_rules": [
+        "AV-1",
+        "AV-4",
+        "AV-5"
+      ],
+      "audit_check_ids": [],
+      "anti_patterns": [
+        "AS-trade-7"
+      ]
+    },
+    {
+      "id": "segment-modifiers",
+      "name": "Per-Segment Voice Modifiers",
+      "purpose": "Layered overrides on AU base · merged with personas/*.js voice_modifiers",
+      "hard_rules": [
+        "AV-3"
+      ],
+      "audit_check_ids": [
+        "vis-H-2"
+      ],
+      "anti_patterns": []
+    },
+    {
+      "id": "roofing-addendum",
+      "name": "Roofing Niche Addendum",
+      "purpose": "Fills 8-field niche interface contract for roofing",
+      "hard_rules": [
+        "AV-5",
+        "AV-6"
+      ],
+      "audit_check_ids": [],
+      "anti_patterns": []
+    }
+  ],
+  "anti_patterns": [],
+  "_meta": {
+    "generated_by": "scripts/cli/skills-build.js",
+    "generated_at": null,
+    "source": null,
+    "source_sha256": "cbde779facb6fb91"
+  }
+}

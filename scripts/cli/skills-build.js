@@ -43,10 +43,8 @@ const SKILLS_DIR = path.join(REPO, 'skills');
 // ─── PL skills we manage ────────────────────────────────────────────────
 const PL_SKILLS = [
   { dir: 'pl-local-trade-page-spec', kind: 'page_spec', extractor: extractPageSpec },
-  // TODO Step 3:
-  // { dir: 'pl-au-trade-voice',         kind: 'voice',              extractor: extractVoice },
-  // { dir: 'pl-trade-vocab-roofing',    kind: 'vocab',              extractor: extractVocab },
-  // { dir: 'pl-anti-slop-catalog',      kind: 'anti_slop_catalog',  extractor: extractAntiSlop },
+  { dir: 'pl-au-trade-voice',        kind: 'voice',     extractor: extractVoice },
+  // TODO Step 3.2:
   // { dir: 'pl-audit-rubric',           kind: 'audit_rubric',       extractor: extractRubric },
 ];
 
@@ -193,6 +191,40 @@ function extractPageSpec(md) {
       source_sha256: null, // filled below
     },
   };
+}
+
+// ─── Voice / vocab extractor (generic markdown contract · codex R15 Q-X-5 a) ─
+// Required heading convention:
+//   ## §N · <Section Name>                              ← extracted as sections[]
+//   ### N.M heading + table or list                     ← rule data
+//   `AV-<digit>` / `<niche>V-<digit>` style IDs in §5 build artifact block
+// Voice/vocab skills MUST include a §"Build artifact" block with embedded JSON
+// (under triple-backtick `json` fence) · this extractor reads + validates it.
+function extractVoice(md) {
+  const { fm, body } = parseFrontmatter(md);
+
+  // Read embedded JSON in §"Build artifact" block (canonical · author writes it)
+  const jsonBlockMatch = body.match(/##\s*§\d+\s*·\s*Build artifact[\s\S]+?```json\n([\s\S]+?)\n```/);
+  if (!jsonBlockMatch) {
+    throw new Error('voice/vocab SKILL.md MUST contain a §"Build artifact" block with embedded JSON (```json fence)');
+  }
+  let embedded;
+  try {
+    embedded = JSON.parse(jsonBlockMatch[1]);
+  } catch (e) {
+    throw new Error(`voice/vocab build artifact JSON invalid: ${e.message}`);
+  }
+
+  // Sanity: required top-level keys
+  for (const k of ['name', 'version', 'kind', 'contract', 'constants', 'rules', 'sections']) {
+    if (!(k in embedded)) {
+      throw new Error(`voice/vocab embedded JSON missing required key: ${k}`);
+    }
+  }
+
+  // Stamp _meta (will be added by main loop)
+  embedded._meta = { generated_by: 'scripts/cli/skills-build.js', generated_at: null, source: null, source_sha256: null };
+  return embedded;
 }
 
 // ─── Build / check ──────────────────────────────────────────────────────
