@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijxzcqj-dhmsorqqrhzne9qcg",
+  "firstSeenAt": "2026-05-16T01:35:15.079Z",
+  "lastSeenAt": "2026-05-16T04:16:23.593Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-16T04:16:23.593Z",
+  "identifiers": {
+    "place_id": "ChIJxZcqJ-DhMSoRQqrHznE9QCg",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "roofwest.com.au",
+    "phoneDigits": ""
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Roofwest Roof Restorations",
+    "category": "",
+    "categories": [
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor"
+    ],
+    "address": "51 Albert Rd, East Bunbury WA 6230, Australia",
+    "city": "Bunbury",
+    "niche": "roofer",
+    "phone": "",
+    "website": "https://roofwest.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=2900385719036389954",
+    "rating": 4.8,
+    "review_count": 72,
+    "websiteStatus": "",
+    "discoveryScore": 12,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in bunbury wa",
+    "signals": {},
+    "batch_id": "places-roofer-in-bunbury-wa-202605161416",
+    "discovery_rank": 1,
+    "google_places_provider": "official_api",
+    "email": "reception@roofwest.com.au"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-in-bunbury-202605161135",
+      "query": "roofer in bunbury",
+      "runPath": "",
+      "at": "2026-05-16T01:35:15.079Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-in-bunbury-wa-202605161416",
+      "query": "roofer in bunbury wa",
+      "runPath": "",
+      "at": "2026-05-16T04:16:23.593Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T01:35:15.079Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-bunbury-202605161135",
+      "query": "roofer in bunbury",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T01:36:43.490Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 193 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+    },
+    {
+      "at": "2026-05-16T04:16:23.593Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-bunbury-wa-202605161416",
+      "query": "roofer in bunbury wa",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T04:16:40.993Z",
+      "event": "archived_as_rejected",
+      "from_phase": "archived",
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 193 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-in-bunbury-202605161135",
+    "places-roofer-in-bunbury-wa-202605161416"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 58,
+    "final_score": 58,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 58,
+    "at": "2026-05-16T04:16:23.662Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-16T04:16:23.663Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T04:16:23.663Z"
+  },
+  "discord_thread_id": "1505020780096786434",
+  "discord_profile_message_id": "1505020780096786434",
+  "discord_thread_opened_at": "2026-05-16T01:35:16.217Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 193 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 193 content pages > 20 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-16T04:16:40.993Z"
+}

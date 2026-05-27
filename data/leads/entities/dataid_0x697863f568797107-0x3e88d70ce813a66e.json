@@ -1,0 +1,461 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "dataid_0x697863f568797107-0x3e88d70ce813a66e",
+  "firstSeenAt": "2026-05-16T03:50:22.625Z",
+  "lastSeenAt": "2026-05-16T03:50:22.625Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-16T03:54:06.736Z",
+  "identifiers": {
+    "place_id": "",
+    "cid": "",
+    "data_id": "0x697863f568797107:0x3e88d70ce813a66e",
+    "websiteDomain": "anjroof.com.au",
+    "phoneDigits": "0740356187"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "A & J Roofing Solutions",
+    "category": "",
+    "categories": [],
+    "address": "98 Buchan St, Portsmith QLD 4870",
+    "city": "Cairns",
+    "niche": "roofer",
+    "phone": "(07)40356187",
+    "website": "http://www.anjroof.com.au/",
+    "google_maps_url": "",
+    "rating": 5,
+    "review_count": 0,
+    "websiteStatus": "independent_http_site",
+    "discoveryScore": 54,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in cairns",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 0,
+      "hasPopularTimes": true,
+      "hasAboutAttributes": false
+    },
+    "batch_id": "",
+    "discovery_rank": null,
+    "google_places_provider": null,
+    "email": "admin@anjroofing.com.au",
+    "contact_us_url": "https://www.anjroof.com.au/contact-us/"
+  },
+  "runs": [
+    {
+      "runId": "20260516-135022",
+      "query": "roofer in cairns",
+      "runPath": "data/maps-scraper/runs/20260516-135022/discovery-run.json",
+      "at": "2026-05-16T03:50:22.625Z",
+      "discoveryScore": 54,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T03:50:22.625Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260516-135022",
+      "query": "roofer in cairns",
+      "score": 54,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T03:54:06.736Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-16T03:54:06.799Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-16T03:56:04.707Z",
+      "event": "phase_changed",
+      "from": "audit-ready",
+      "to": "ready-to-build",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": ""
+    },
+    {
+      "at": "2026-05-16T04:00:55.125Z",
+      "event": "phase_changed",
+      "from": "ready-to-build",
+      "to": "outreach-active",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "cycle-26 publish-done · graduate to #website-projects"
+    }
+  ],
+  "notes": [
+    "Graded C / -"
+  ],
+  "enrichment_status": "complete",
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 62,
+    "final_score": 62,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 62,
+    "at": "2026-05-16T03:50:34.782Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-16T03:50:34.783Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T03:50:34.783Z"
+  },
+  "discord_thread_id": "1505054837488750753",
+  "discord_profile_message_id": "1505054837488750753",
+  "discord_thread_opened_at": "2026-05-16T03:50:35.939Z",
+  "grade": {
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [],
+    "graded_at": "2026-05-16T03:54:06.736Z"
+  },
+  "phase": "outreach-active",
+  "phaseChangedAt": "2026-05-16T04:00:55.125Z",
+  "discord_stage_message_ids": {
+    "6": "1505055866854834246",
+    "8": "1505057283695181877",
+    "9_projects": "1505057524297240580"
+  },
+  "qualification": {
+    "computed_at": "2026-05-16T03:56:04.715Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": {
+      "A_core_info": {
+        "score": 21,
+        "max": 30,
+        "items": [
+          "name",
+          "phone",
+          "email",
+          "address",
+          "services"
+        ]
+      },
+      "B_brand": {
+        "score": 5,
+        "max": 15,
+        "items": [
+          "logo",
+          "voice"
+        ]
+      },
+      "C_scope": {
+        "score": 22,
+        "max": 25,
+        "items": [
+          "5 pages OK",
+          "no-booking",
+          "single-lang",
+          "complexity-simple",
+          "no-heavy-layout"
+        ]
+      },
+      "D_tech": {
+        "score": 12,
+        "max": 15,
+        "items": [
+          "sitemap-ok",
+          "low-seo-risk",
+          "0-pixels"
+        ]
+      },
+      "E_solvability": {
+        "score": 3,
+        "max": 15,
+        "items": [
+          "only 0% design/ux",
+          "no-infra-issues"
+        ]
+      },
+      "total": 63,
+      "threshold": 60
+    },
+    "verdict": "ready-to-build",
+    "archive_reason": null,
+    "redesign_brief_path": "clients/a-j-roofing-solutions/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 5,
+      "sitemap_source": "/sitemap.xml",
+      "cost": 0
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": {
+      "verdict": "trust",
+      "confidence": 0.9,
+      "reason": "Conclusion is consistent with the scorecard: hard gates passed, 5 pages crawled, core info is above minimum, and total score clears the threshold.",
+      "anomalies": [],
+      "provider": "codex_cli"
+    }
+  },
+  "deploy": {
+    "demo_url": "https://a-j-roofing-solutions-dev.pages.dev",
+    "audit_url": "https://a-j-roofing-solutions-dev.pages.dev/customer-facing-audit.html",
+    "internal_audit_url": "https://a-j-roofing-solutions-dev.pages.dev/internal-audit-report.html",
+    "master_md_url": "https://a-j-roofing-solutions-dev.pages.dev/master.md",
+    "master_report_url": "https://a-j-roofing-solutions-dev.pages.dev/master.report.html",
+    "deployed_at": "2026-05-16T04:00:52.368Z"
+  },
+  "project_thread_id": "1505057439349997618",
+  "project_profile_message_id": "1505057439349997618",
+  "project_thread_opened_at": "2026-05-16T04:00:56.233Z",
+  "enrichment": {
+    "whois": {
+      "domain": "anjroof.com.au",
+      "registered_at": null,
+      "expires_at": null,
+      "last_changed_at": "2026-04-03",
+      "registrar": "Domain Directors Pty Ltd trading as Instra",
+      "domain_age_years": null,
+      "domain_age_source": null,
+      "status": [
+        "server renew prohibited"
+      ],
+      "privacy_redacted": true,
+      "probed_at": "2026-05-16T11:57:50.423Z",
+      "_raw_endpoint": "https://rdap.cctld.au/rdap/domain/anjroof.com.au"
+    },
+    "tinyfish_search": {
+      "ok": true,
+      "query": "A & J Roofing Solutions Cairns roofer",
+      "location": "Cairns, Australia",
+      "results_total": 10,
+      "results_au_filtered": 7,
+      "external_mentions": [
+        {
+          "title": "A&J Roofing Solutions",
+          "url": "https://www.anjroof.com.au/",
+          "domain": "www.anjroof.com.au",
+          "description": ""
+        },
+        {
+          "title": "A & J Roofing Solutions | Cairns QLD - Facebook",
+          "url": "https://www.facebook.com/anjroof/",
+          "domain": "www.facebook.com",
+          "description": ""
+        },
+        {
+          "title": "A & J Roofing Solutions | Cairns QLD - Facebook",
+          "url": "https://www.facebook.com/anjroof?locale=fr_FR",
+          "domain": "www.facebook.com",
+          "description": ""
+        },
+        {
+          "title": "Commercial Roofing Solutions - A&J Roofing Solutions | Cairns",
+          "url": "https://www.anjroof.com.au/commercial/",
+          "domain": "www.anjroof.com.au",
+          "description": ""
+        },
+        {
+          "title": "A & J Roofing Solutions | Cairns QLD - Facebook",
+          "url": "https://www.facebook.com/anjroof?locale=lt_LT",
+          "domain": "www.facebook.com",
+          "description": ""
+        },
+        {
+          "title": "About Us - A&J Roofing Solutions | Cairns",
+          "url": "https://www.anjroof.com.au/about-us/",
+          "domain": "www.anjroof.com.au",
+          "description": ""
+        },
+        {
+          "title": "A & J Roofing Solutions | Cairns QLD - Facebook",
+          "url": "https://www.facebook.com/anjroof?locale=gl_ES",
+          "domain": "www.facebook.com",
+          "description": ""
+        }
+      ],
+      "latency_ms": 1801,
+      "probed_at": "2026-05-16T11:57:52.040Z"
+    },
+    "tinyfish_homepage": {
+      "ok": true,
+      "url": "https://www.anjroof.com.au/",
+      "title": "Professional Roofing Solutions |",
+      "description": null,
+      "markdown_bytes": 4134,
+      "extracted_signals": {
+        "phone_present_above_fold": false,
+        "cta_present_above_fold": true,
+        "city_mentioned_count": 2,
+        "service_keywords_found": [
+          "roofing",
+          "roof",
+          "gutter"
+        ],
+        "trust_keywords_found": [
+          "QBCC",
+          "licensed",
+          "insured",
+          "warranty"
+        ],
+        "oldest_year_mentioned": null,
+        "newest_year_mentioned": null,
+        "text_length": 4134,
+        "text_thin": false
+      },
+      "latency_ms": 4674,
+      "probed_at": "2026-05-16T11:57:54.914Z"
+    },
+    "wayback": {
+      "domain": "anjroof.com.au",
+      "first_snapshot_date": "2024-08-21",
+      "first_snapshot_url": "http://web.archive.org/web/20240821021201/https://www.anjroof.com.au/",
+      "last_snapshot_date": null,
+      "last_snapshot_url": null,
+      "years_archived": null,
+      "probed_at": "2026-05-16T11:57:56.781Z"
+    },
+    "_derived": {
+      "domain_age_years_effective": 1,
+      "domain_age_source": "wayback_first_snapshot"
+    },
+    "_meta": {
+      "enriched_at": "2026-05-16T11:57:56.781Z",
+      "total_latency_ms": 6581,
+      "trace": [
+        {
+          "source": "abn",
+          "skipped": true,
+          "reason": "ABR_GUID env missing"
+        },
+        {
+          "source": "whois",
+          "ok": true,
+          "latency_ms": 223
+        },
+        {
+          "source": "tinyfish_search",
+          "ok": true,
+          "latency_ms": 1802
+        },
+        {
+          "source": "tinyfish_homepage",
+          "ok": true,
+          "latency_ms": 4676
+        },
+        {
+          "source": "wayback",
+          "ok": true,
+          "latency_ms": 6544
+        }
+      ],
+      "sources_attempted": 5,
+      "sources_succeeded": 4
+    }
+  },
+  "license": {
+    "state": "QLD",
+    "authority": "QBCC",
+    "licence_number": "1161095",
+    "licensee_name": "A & J ROOFING SOLUTIONS PTY LTD",
+    "abn": "34134811831",
+    "acn": "134811831",
+    "address": "98 Buchan St Portsmith QLD 4870",
+    "licence_class": "Roof and Wall Cladding",
+    "licence_type": "Company",
+    "licence_category": "Category 2",
+    "status": "active",
+    "source": "csv-qbcc",
+    "looked_up_at": "2026-05-27T11:22:33.132Z",
+    "lookup_tier": "name_exact_normalized",
+    "candidate_count": 1,
+    "_candidates_top5": [
+      {
+        "state": "QLD",
+        "authority": "QBCC",
+        "licence_number": "1161095",
+        "licensee_name": "A & J ROOFING SOLUTIONS PTY LTD",
+        "abn": "34134811831",
+        "acn": "134811831",
+        "address": "98 Buchan St Portsmith QLD 4870",
+        "licence_class": "Roof and Wall Cladding",
+        "licence_type": "Company",
+        "licence_category": "Category 2",
+        "status": "active",
+        "source": "csv-qbcc",
+        "looked_up_at": "2026-05-27T11:22:33.133Z"
+      }
+    ]
+  }
+}

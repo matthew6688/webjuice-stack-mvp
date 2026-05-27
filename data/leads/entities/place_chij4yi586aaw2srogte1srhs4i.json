@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chij4yi586aaw2srogte1srhs4i",
+  "firstSeenAt": "2026-05-15T08:50:33.005Z",
+  "lastSeenAt": "2026-05-15T08:50:33.005Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T08:50:33.005Z",
+  "identifiers": {
+    "place_id": "ChIJ4YI586AAw2sROgTE1srHs4I",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "darumbal.org.au",
+    "phoneDigits": ""
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "High Quality Lounge, Rug, Upholstery & Carpet Cleaning Surfers Paradise",
+    "category": "",
+    "categories": [
+      "establishment",
+      "point_of_interest"
+    ],
+    "address": "185-187 George St, Rockhampton QLD 4700, Australia",
+    "city": "Rockhampton",
+    "niche": "establishment",
+    "phone": "",
+    "website": "http://www.darumbal.org.au/",
+    "google_maps_url": "https://maps.google.com/?cid=9418090919762330682",
+    "rating": 5,
+    "review_count": 3,
+    "websiteStatus": "",
+    "discoveryScore": 32,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "carpet cleaning in rockhampton",
+    "signals": {},
+    "batch_id": "places-carpet-cleaning-in-rockhampton-202605151850",
+    "discovery_rank": 5,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-carpet-cleaning-in-rockhampton-202605151850",
+      "query": "carpet cleaning in rockhampton",
+      "runPath": "",
+      "at": "2026-05-15T08:50:33.005Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T08:50:33.005Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-carpet-cleaning-in-rockhampton-202605151850",
+      "query": "carpet cleaning in rockhampton",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T08:52:14.583Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "layer3_too_few_reviews",
+      "reason": "3 reviews < establishment 阈值 5 (业务太小/刚开业)"
+    },
+    {
+      "at": "2026-05-15T08:54:17.733Z",
+      "event": "archived_as_rejected",
+      "from_phase": "archived",
+      "pathId": "layer3_too_few_reviews",
+      "reason": "3 reviews < establishment 阈值 5 (业务太小/刚开业)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-carpet-cleaning-in-rockhampton-202605151850"
+  ],
+  "niche_relevance": {
+    "key": "establishment||",
+    "relevant": true,
+    "confidence": 0.85,
+    "reason": "搜索词是通用类别 establishment，该商家的类别包含 establishment，属于同类。",
+    "provider": "claude_cli",
+    "at": "2026-05-15T08:50:37.597Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 42,
+    "final_score": 42,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 42,
+    "at": "2026-05-15T08:54:17.732Z"
+  },
+  "predict_grade": {
+    "grade": "D",
+    "priority": 0,
+    "audit_now": false,
+    "reasons": [
+      "exclusion-filter Layer 3: 3 reviews < establishment 阈值 5 (业务太小/刚开业)"
+    ],
+    "at": "2026-05-15T08:54:17.732Z"
+  },
+  "exclusion_filter": {
+    "excluded": true,
+    "needs_enrichment": false,
+    "layer": 3,
+    "reason": "3 reviews < establishment 阈值 5 (业务太小/刚开业)",
+    "exclusions": [
+      {
+        "layer": 3,
+        "id": "too_few_reviews",
+        "reason": "3 reviews < establishment 阈值 5 (业务太小/刚开业)"
+      }
+    ],
+    "thresholds": {
+      "max_reviews": 300,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T08:54:17.732Z"
+  },
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "3 reviews < establishment 阈值 5 (业务太小/刚开业)"
+  },
+  "archive_reason": "layer3_too_few_reviews: 3 reviews < establishment 阈值 5 (业务太小/刚开业)",
+  "archived_at": "2026-05-15T08:54:17.733Z"
+}

@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijyzs9g95xfkgrfp62afkhvrq",
+  "firstSeenAt": "2026-05-15T09:56:05.705Z",
+  "lastSeenAt": "2026-05-15T09:56:05.705Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T09:56:05.705Z",
+  "identifiers": {
+    "place_id": "ChIJYZs9g95xfkgRFP62afkhvrQ",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "newcastleroofer.co.uk",
+    "phoneDigits": "01913234998"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Newcastle Roofer",
+    "category": "",
+    "categories": [
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor"
+    ],
+    "address": "38 Collingwood St, Newcastle upon Tyne NE1 1JF, UK",
+    "city": "Newcastle",
+    "niche": "roofer",
+    "phone": "0191 323 4998",
+    "website": "https://newcastleroofer.co.uk/",
+    "google_maps_url": "https://maps.google.com/?cid=13023884527506226708",
+    "rating": 5,
+    "review_count": 4,
+    "websiteStatus": "",
+    "discoveryScore": 27,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in newcastle",
+    "signals": {},
+    "batch_id": "places-roofer-in-newcastle-202605151956",
+    "discovery_rank": 4,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-in-newcastle-202605151956",
+      "query": "roofer in newcastle",
+      "runPath": "",
+      "at": "2026-05-15T09:56:05.705Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T09:56:05.705Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-newcastle-202605151956",
+      "query": "roofer in newcastle",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T09:56:20.170Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "layer3_too_few_reviews",
+      "reason": "4 reviews < roofer 阈值 5 (业务太小/刚开业)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-in-newcastle-202605151956"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 52,
+    "final_score": 52,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 52,
+    "at": "2026-05-15T09:56:20.169Z"
+  },
+  "predict_grade": {
+    "grade": "D",
+    "priority": 0,
+    "audit_now": false,
+    "reasons": [
+      "exclusion-filter Layer 3: 4 reviews < roofer 阈值 5 (业务太小/刚开业)"
+    ],
+    "at": "2026-05-15T09:56:20.169Z"
+  },
+  "exclusion_filter": {
+    "excluded": true,
+    "needs_enrichment": false,
+    "layer": 3,
+    "reason": "4 reviews < roofer 阈值 5 (业务太小/刚开业)",
+    "exclusions": [
+      {
+        "layer": 3,
+        "id": "too_few_reviews",
+        "reason": "4 reviews < roofer 阈值 5 (业务太小/刚开业)"
+      }
+    ],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T09:56:20.169Z"
+  },
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "4 reviews < roofer 阈值 5 (业务太小/刚开业)"
+  },
+  "archive_reason": "layer3_too_few_reviews: 4 reviews < roofer 阈值 5 (业务太小/刚开业)",
+  "archived_at": "2026-05-15T09:56:20.170Z"
+}

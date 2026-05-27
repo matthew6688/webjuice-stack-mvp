@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijmrxpvqae2gorn3x8et5je2y",
+  "firstSeenAt": "2026-05-16T04:52:05.579Z",
+  "lastSeenAt": "2026-05-16T04:52:05.579Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-16T04:52:05.579Z",
+  "identifiers": {
+    "place_id": "ChIJmRxpVQaE2GoRn3X8et5JE2Y",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "steeline.com.au",
+    "phoneDigits": "0358311935"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Steeline Roofing Centre Shepparton",
+    "category": "",
+    "categories": [
+      "establishment",
+      "general_contractor",
+      "point_of_interest",
+      "roofing_contractor",
+      "store"
+    ],
+    "address": "62 Mitchell St, Shepparton VIC 3630, Australia",
+    "city": "Shepparton",
+    "niche": "roofer",
+    "phone": "(03) 5831 1935",
+    "website": "https://www.steeline.com.au/locations/steeline-roofing-centre-shepparton/",
+    "google_maps_url": "https://maps.google.com/?cid=7355303836321084831",
+    "rating": 4,
+    "review_count": 9,
+    "websiteStatus": "",
+    "discoveryScore": 15,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in shepparton",
+    "signals": {},
+    "batch_id": "places-roofer-in-shepparton-202605161452",
+    "discovery_rank": 2,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-in-shepparton-202605161452",
+      "query": "roofer in shepparton",
+      "runPath": "",
+      "at": "2026-05-16T04:52:05.579Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T04:52:05.579Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-shepparton-202605161452",
+      "query": "roofer in shepparton",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T04:54:10.653Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 248 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-in-shepparton-202605161452"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 46,
+    "final_score": 46,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 46,
+    "at": "2026-05-16T04:52:08.650Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-16T04:52:08.650Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T04:52:08.650Z"
+  },
+  "discord_thread_id": "1505070330484494488",
+  "discord_profile_message_id": "1505070330484494488",
+  "discord_thread_opened_at": "2026-05-16T04:52:09.870Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 248 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 248 content pages > 20 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-16T04:54:10.653Z"
+}

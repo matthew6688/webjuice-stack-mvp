@@ -20,8 +20,8 @@ assets:
   cloudinary_folder: null
   evidence_count: 0
   video_url: null
-  desktop_screenshot: "./screenshots/desktop.png"
-  mobile_screenshot: "./screenshots/mobile.png"
+  desktop_screenshot: "https://pro-roofing-brisbane-dev.pages.dev/screenshots/desktop.png"
+  mobile_screenshot: "https://pro-roofing-brisbane-dev.pages.dev/screenshots/mobile.png"
 ---
 
 # Pro Roofing Brisbane · 现状审计与重构提议
@@ -57,9 +57,9 @@ assets:
 
 ## 三、客户访问时看到的页面
 
-![桌面 1440×900](./screenshots/desktop.png)
+![桌面 1440×900](https://pro-roofing-brisbane-dev.pages.dev/screenshots/desktop.png)
 
-![移动 375×667](./screenshots/mobile.png)
+![移动 375×667](https://pro-roofing-brisbane-dev.pages.dev/screenshots/mobile.png)
 
 ## 现网站快速诊断
 

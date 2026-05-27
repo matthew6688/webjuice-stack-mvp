@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijq9kru25fkwsrqzzn1fawhz4",
+  "firstSeenAt": "2026-05-22T16:00:28.061Z",
+  "lastSeenAt": "2026-05-22T16:00:28.061Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-22T16:10:22.813Z",
+  "identifiers": {
+    "place_id": "ChIJq9kRU25FkWsRqzzn1faWhz4",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "brisbanequalityroofing.com.au",
+    "phoneDigits": "0427224217"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Brisbane Quality Roofing Restoration",
+    "category": "",
+    "categories": [
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor"
+    ],
+    "address": "16 Nicholson Ave, Salisbury QLD 4107, Australia",
+    "city": "Brisbane",
+    "niche": "roofer",
+    "phone": "0427 224 217",
+    "website": "https://brisbanequalityroofing.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=4505735939102293163",
+    "rating": 4.6,
+    "review_count": 81,
+    "websiteStatus": "",
+    "discoveryScore": 23,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer brisbane",
+    "signals": {},
+    "batch_id": "places-roofer-brisbane-202605230200",
+    "discovery_rank": 10,
+    "google_places_provider": "official_api",
+    "contact_us_url": "https://brisbanequalityroofing.com.au/contact/"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-brisbane-202605230200",
+      "query": "roofer brisbane",
+      "runPath": "",
+      "at": "2026-05-22T16:00:28.061Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-22T16:00:28.061Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-brisbane-202605230200",
+      "query": "roofer brisbane",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-22T16:10:22.813Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded B / T2"
+    },
+    {
+      "at": "2026-05-22T16:10:22.892Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded B / T2"
+    },
+    {
+      "at": "2026-05-22T16:13:55.777Z",
+      "event": "archived_as_rejected",
+      "from_phase": "audit-ready",
+      "pathId": "stage7_pregate_fail",
+      "reason": "gate_too_many_pages: 内容页 > 10 · 迁移成本失控"
+    }
+  ],
+  "notes": [
+    "Graded B / T2"
+  ],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-brisbane-202605230200"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 63,
+    "final_score": 63,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 63,
+    "at": "2026-05-22T16:06:36.603Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-22T16:06:36.603Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-22T16:06:36.603Z"
+  },
+  "discord_thread_id": "1507414393401381067",
+  "discord_profile_message_id": "1507414393401381067",
+  "discord_thread_opened_at": "2026-05-22T16:06:37.939Z",
+  "grade": {
+    "grade": "D",
+    "reason": "gate_too_many_pages: 内容页 > 10 · 迁移成本失控"
+  },
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-22T16:10:22.892Z",
+  "enrichment": {
+    "whois": {
+      "domain": "brisbanequalityroofing.com.au",
+      "registered_at": null,
+      "expires_at": null,
+      "last_changed_at": "2026-02-25",
+      "registrar": "GoDaddy.com LLC trading as GoDaddy.com",
+      "domain_age_years": null,
+      "domain_age_source": null,
+      "status": [
+        "client delete prohibited",
+        "client update prohibited"
+      ],
+      "privacy_redacted": true,
+      "probed_at": "2026-05-22T16:10:23.071Z",
+      "_raw_endpoint": "https://rdap.cctld.au/rdap/domain/brisbanequalityroofing.com.au"
+    },
+    "abn": {
+      "ok": true,
+      "abn": "66090801488",
+      "abn_formatted": "66 090 801 488",
+      "abn_status": "Cancelled",
+      "abn_status_effective_from": "2010-06-14",
+      "acn": "090801488",
+      "entity_name": "BRISBANE QUALITY ROOFING PTY LTD",
+      "entity_type_code": "PRV",
+      "entity_type_name": "Australian Private Company",
+      "gst_registered": false,
+      "gst_effective_from": null,
+      "address_state": "QLD",
+      "address_postcode": "4160",
+      "address_effective_from": "2003-01-16",
+      "trading_names": [],
+      "search_method": "by_name",
+      "search_query": "Brisbane Quality Roofing Restoration",
+      "search_score": 96,
+      "probed_at": "2026-05-22T16:10:23.339Z"
+    },
+    "tinyfish_search": {
+      "ok": true,
+      "query": "Brisbane Quality Roofing Restoration Brisbane roofer",
+      "location": "Brisbane, Australia",
+      "results_total": 10,
+      "results_au_filtered": 10,
+      "external_mentions": [
+        {
+          "title": "Brisbane Quality Roofing – Delivering excellent results",
+          "url": "https://brisbanequalityroofing.com.au/",
+          "domain": "brisbanequalityroofing.com.au",
+          "description": ""
+        },
+        {
+          "title": "Brisbane roof replacement – quotes advice - Reddit",
+          "url": "https://www.reddit.com/r/brisbane/comments/1qdhrs1/brisbane_roof_replacement_quotes_advice/",
+          "domain": "www.reddit.com",
+          "description": ""
+        },
+        {
+          "title": "Brisbane Quality Roofing - Facebook",
+          "url": "https://www.facebook.com/p/Brisbane-Quality-Roofing-61573849470658/",
+          "domain": "www.facebook.com",
+          "description": ""
+        },
+        {
+          "title": "Brisbane Quality Roofing reviews | ProductReview.com.au",
+          "url": "https://www.productreview.com.au/listings/brisbane-quality-roofing",
+          "domain": "www.productreview.com.au",
+          "description": ""
+        },
+        {
+          "title": "Roof Repairs Brisbane | The Brisbane Roof Repairers",
+          "url": "https://www.thebrisbaneroofrepairers.com/",
+          "domain": "www.thebrisbaneroofrepairers.com",
+          "description": ""
+        },
+        {
+          "title": "Top Quality Roof Restoration: HOME",
+          "url": "https://topqualityroofrestoration.com.au/",
+          "domain": "topqualityroofrestoration.com.au",
+          "description": ""
+        },
+        {
+          "title": "Brisbane Roofing Solutions - Roof Restoration Specialists",
+          "url": "https://brisbaneroofingsolutions.com.au/",
+          "domain": "brisbaneroofingsolutions.com.au",
+          "description": ""
+        },
+        {
+          "title": "Roofing Services in Brisbane & Queensland – Trusted",
+          "url": "https://queenslandqualityroofing.com/",
+          "domain": "queenslandqualityroofing.com",
+          "description": ""
+        },
+        {
+          "title": "BRISBANE QUALITY ROOFING - Updated April 2026 - Phone Number",
+          "url": "https://www.yelp.com/biz/brisbane-quality-roofing-brendale",
+          "domain": "www.yelp.com",
+          "description": ""
+        },
+        {
+          "title": "Best Roofers in Brisbane QLD (3 Free Quotes) - hipages",
+          "url": "https://hipages.com.au/find/roofing/qld/brisbane",
+          "domain": "hipages.com.au",
+          "description": ""
+        }
+      ],
+      "latency_ms": 1777,
+      "probed_at": "2026-05-22T16:10:24.679Z"
+    },
+    "_derived": {
+      "domain_age_years_effective": null,
+      "domain_age_source": null
+    },
+    "_meta": {
+      "enriched_at": "2026-05-22T16:12:23.579Z",
+      "total_latency_ms": 120683,
+      "trace": [
+        {
+          "source": "whois",
+          "ok": true,
+          "latency_ms": 173
+        },
+        {
+          "source": "abn",
+          "ok": true,
+          "latency_ms": 439
+        },
+        {
+          "source": "wayback",
+          "ok": false,
+          "reason": "no_data",
+          "latency_ms": 1503
+        },
+        {
+          "source": "tinyfish_search",
+          "ok": true,
+          "latency_ms": 1778
+        },
+        {
+          "source": "tinyfish_homepage",
+          "ok": false,
+          "reason": "tinyfish_fetch: tinyfish fetch failed: HTTP 504",
+          "latency_ms": 120677
+        }
+      ],
+      "sources_attempted": 5,
+      "sources_succeeded": 3
+    }
+  },
+  "discord_stage_message_ids": {
+    "6": "1507416082460180699"
+  },
+  "archive_reason": "stage7_pregate_fail: gate_too_many_pages: 内容页 > 10 · 迁移成本失控",
+  "archived_at": "2026-05-22T16:13:55.777Z",
+  "qualification": {
+    "computed_at": "2026-05-22T16:14:02.328Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": false,
+        "reason": "内容页 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": null,
+    "verdict": "archived",
+    "archive_reason": "gate_too_many_pages: 内容页 > 10 · 迁移成本失控",
+    "brief_skipped": true,
+    "brief_skipped_reason": "pre-gate failed on brief-independent signal",
+    "crawl_summary": {
+      "pages_crawled": 10,
+      "sitemap_source": "/sitemap.xml"
+    }
+  }
+}

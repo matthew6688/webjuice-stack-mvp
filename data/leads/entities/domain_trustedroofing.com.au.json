@@ -65,5 +65,49 @@
     }
   ],
   "notes": [],
-  "enrichment_status": "complete"
+  "enrichment_status": "complete",
+  "grade": {
+    "investment_level": "D",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [
+      {
+        "id": "too_many_categories",
+        "reason": "GBP 多元业务分类 ≥ 5 个 — 需求复杂度超出标准产品包"
+      }
+    ],
+    "graded_at": "2026-05-14T16:06:23.602Z"
+  },
+  "cheap_audit": {
+    "action": "audit_candidate",
+    "reason": "Strong V2 candidate — proceed to detailed audit",
+    "gbp_quality": 75,
+    "final_score": 75,
+    "fired_triggers": [
+      "high_traction_old_site"
+    ],
+    "relevance_pass": true,
+    "priority": 75,
+    "at": "2026-05-14T16:01:33.286Z"
+  },
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "predict_grade": {
+    "grade": "B",
+    "priority": 75,
+    "audit_now": true,
+    "reasons": [
+      "predict-B · 128 评论≥30 · 5★≥4 · audit_candidate"
+    ],
+    "at": "2026-05-14T16:01:33.286Z"
+  },
+  "merged_from_v3_key": "place_chijeritxj9nkwsr2dg7xhqvqn4",
+  "merged_at": "2026-05-27T21:42:55.683Z"
 }

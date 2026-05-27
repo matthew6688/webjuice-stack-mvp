@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijp1qgmucnckorx1asaw7gks4",
+  "firstSeenAt": "2026-05-15T10:48:48.452Z",
+  "lastSeenAt": "2026-05-16T05:14:02.680Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-16T05:14:02.680Z",
+  "identifiers": {
+    "place_id": "ChIJp1QgMUCncKoRx1AsAW7Gks4",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "",
+    "phoneDigits": ""
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Total Roof & Gutter",
+    "category": "",
+    "categories": [
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor"
+    ],
+    "address": "31, 1/31a Gorge Rd, Trevallyn TAS 7250, Australia",
+    "city": "Launceston",
+    "niche": "roofer",
+    "phone": "",
+    "website": "",
+    "google_maps_url": "https://maps.google.com/?cid=14885177894181294279",
+    "rating": 4.5,
+    "review_count": 11,
+    "websiteStatus": "",
+    "discoveryScore": 8,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in launceston",
+    "signals": {},
+    "batch_id": "places-roofer-in-launceston-202605161513",
+    "discovery_rank": 1,
+    "google_places_provider": "official_api",
+    "contact_identity": {
+      "phone": "",
+      "website": "",
+      "social": {
+        "facebook": "",
+        "instagram": "",
+        "linkedin": ""
+      },
+      "decision_maker": null,
+      "third_party_reviews": [
+        {
+          "source": "yellowpages",
+          "url": "https://www.yellowpages.com.au/launceston-tas/bpp/total-roof-gutter-579714170",
+          "title": "Total Roof & Gutter"
+        },
+        {
+          "source": "truelocal",
+          "url": "https://www.truelocal.com.au/tas/launceston/total-roof-gutter-1000001804443",
+          "title": "Total Roof & Gutter"
+        }
+      ],
+      "evidence_sources": [
+        {
+          "field": "third_party_reviews",
+          "source": "tinyfish",
+          "route": "enrich_discover_official",
+          "url": "https://www.yellowpages.com.au/launceston-tas/bpp/total-roof-gutter-579714170",
+          "title": "Total Roof & Gutter"
+        },
+        {
+          "field": "third_party_reviews",
+          "source": "tinyfish",
+          "route": "enrich_discover_official",
+          "url": "https://www.truelocal.com.au/tas/launceston/total-roof-gutter-1000001804443",
+          "title": "Total Roof & Gutter"
+        }
+      ],
+      "enriched_at": "2026-05-15T10:48:53.787Z"
+    }
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-in-launceston-202605152048",
+      "query": "roofer in launceston",
+      "runPath": "",
+      "at": "2026-05-15T10:48:48.452Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-in-launceston-202605152052",
+      "query": "roofer in launceston",
+      "runPath": "",
+      "at": "2026-05-15T10:52:35.817Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-in-launceston-202605160800",
+      "query": "roofer in launceston",
+      "runPath": "",
+      "at": "2026-05-15T22:00:28.919Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    },
+    {
+      "runId": "places-search-places-roofer-in-launceston-202605161513",
+      "query": "roofer in launceston",
+      "runPath": "",
+      "at": "2026-05-16T05:14:02.680Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T10:48:48.452Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-launceston-202605152048",
+      "query": "roofer in launceston",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T10:49:29.356Z",
+      "event": "enrichment_batch_ran",
+      "status": "partial",
+      "routes": 5
+    },
+    {
+      "at": "2026-05-15T10:52:35.817Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-launceston-202605152052",
+      "query": "roofer in launceston",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T10:52:35.921Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "layer1_no_contact_after_enrich",
+      "reason": "无 phone/email/website · enrich 后仍未找到"
+    },
+    {
+      "at": "2026-05-15T22:00:28.919Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-launceston-202605160800",
+      "query": "roofer in launceston",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T22:00:28.971Z",
+      "event": "archived_as_rejected",
+      "from_phase": "archived",
+      "pathId": "layer1_no_contact_after_enrich",
+      "reason": "无 phone/email/website · enrich 后仍未找到"
+    },
+    {
+      "at": "2026-05-16T05:14:02.680Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-launceston-202605161513",
+      "query": "roofer in launceston",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T05:14:02.757Z",
+      "event": "archived_as_rejected",
+      "from_phase": "archived",
+      "pathId": "layer1_no_contact_after_enrich",
+      "reason": "无 phone/email/website · enrich 后仍未找到"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "partial",
+  "batches": [
+    "places-roofer-in-launceston-202605152048",
+    "places-roofer-in-launceston-202605152052",
+    "places-roofer-in-launceston-202605160800",
+    "places-roofer-in-launceston-202605161513"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 41,
+    "final_score": 41,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 41,
+    "at": "2026-05-16T05:14:02.755Z"
+  },
+  "predict_grade": {
+    "grade": "D",
+    "priority": 0,
+    "audit_now": false,
+    "reasons": [
+      "exclusion-filter Layer 1: 无 phone/email/website · enrich 后仍未找到"
+    ],
+    "at": "2026-05-16T05:14:02.756Z"
+  },
+  "exclusion_filter": {
+    "excluded": true,
+    "needs_enrichment": false,
+    "layer": 1,
+    "reason": "无 phone/email/website · enrich 后仍未找到",
+    "exclusions": [
+      {
+        "layer": 1,
+        "id": "no_contact_after_enrich",
+        "reason": "无 phone/email/website · enrich 后仍未找到"
+      }
+    ],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T05:14:02.756Z"
+  },
+  "enrichment_attempted_at": "2026-05-15T10:48:48.540Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "无 phone/email/website · enrich 后仍未找到"
+  },
+  "archive_reason": "layer1_no_contact_after_enrich: 无 phone/email/website · enrich 后仍未找到",
+  "archived_at": "2026-05-16T05:14:02.757Z"
+}

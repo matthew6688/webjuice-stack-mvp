@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "dataid_0x6b0a98cad5732153-0x90222a107413453c",
+  "firstSeenAt": "2026-05-16T02:41:49.292Z",
+  "lastSeenAt": "2026-05-16T02:41:49.292Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-16T02:45:34.822Z",
+  "identifiers": {
+    "place_id": "",
+    "cid": "",
+    "data_id": "0x6b0a98cad5732153:0x90222a107413453c",
+    "websiteDomain": "acaciaelectrical.com.au",
+    "phoneDigits": "0267612267"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "Acacia Electrical Service",
+    "category": "",
+    "categories": [],
+    "address": "98D Piper St, Tamworth NSW 2340",
+    "city": "Tamworth",
+    "niche": "electrician",
+    "phone": "(02)67612267",
+    "website": "http://www.acaciaelectrical.com.au/",
+    "google_maps_url": "",
+    "rating": 5,
+    "review_count": 0,
+    "websiteStatus": "independent_http_site",
+    "discoveryScore": 54,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "electrician in tamworth",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 0,
+      "hasPopularTimes": true,
+      "hasAboutAttributes": false
+    },
+    "batch_id": "",
+    "discovery_rank": null,
+    "google_places_provider": null,
+    "email": "admin@acaciaelectrical.com.au",
+    "backup_email": "sean@acaciaelectrical.com.au"
+  },
+  "runs": [
+    {
+      "runId": "20260516-124149",
+      "query": "electrician in tamworth",
+      "runPath": "data/maps-scraper/runs/20260516-124149/discovery-run.json",
+      "at": "2026-05-16T02:41:49.292Z",
+      "discoveryScore": 54,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T02:41:49.292Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260516-124149",
+      "query": "electrician in tamworth",
+      "score": 54,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T02:45:34.822Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-16T02:45:34.839Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-16T02:47:25.628Z",
+      "event": "phase_changed",
+      "from": "audit-ready",
+      "to": "ready-to-build",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": ""
+    },
+    {
+      "at": "2026-05-16T02:54:52.210Z",
+      "event": "phase_changed",
+      "from": "ready-to-build",
+      "to": "outreach-active",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "cycle-26 publish-done · graduate to #website-projects"
+    }
+  ],
+  "notes": [
+    "Graded C / -"
+  ],
+  "enrichment_status": "complete",
+  "niche_relevance": {
+    "key": "electrician||",
+    "relevant": true,
+    "confidence": 0.95,
+    "reason": "商家名称明确包含Electrical，属于电工/电气服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-15T08:26:27.270Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 62,
+    "final_score": 62,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 62,
+    "at": "2026-05-16T02:41:49.370Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-16T02:41:49.370Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T02:41:49.370Z"
+  },
+  "discord_thread_id": "1505037534433116311",
+  "discord_profile_message_id": "1505037534433116311",
+  "discord_thread_opened_at": "2026-05-16T02:41:50.524Z",
+  "grade": {
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [],
+    "graded_at": "2026-05-16T02:45:34.822Z"
+  },
+  "phase": "outreach-active",
+  "phaseChangedAt": "2026-05-16T02:54:52.210Z",
+  "discord_stage_message_ids": {
+    "6": "1505038554173014126",
+    "8": "1505040714369728623",
+    "9_projects": "1505040890656198736"
+  },
+  "qualification": {
+    "computed_at": "2026-05-16T02:47:25.637Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": {
+      "A_core_info": {
+        "score": 27,
+        "max": 30,
+        "items": [
+          "name",
+          "phone",
+          "email",
+          "address",
+          "services",
+          "licenses",
+          "founded"
+        ]
+      },
+      "B_brand": {
+        "score": 6,
+        "max": 15,
+        "items": [
+          "logo",
+          "font",
+          "voice"
+        ]
+      },
+      "C_scope": {
+        "score": 25,
+        "max": 25,
+        "items": [
+          "7 pages OK",
+          "no-booking",
+          "single-lang",
+          "complexity-simple",
+          "simple-forms",
+          "no-heavy-layout"
+        ]
+      },
+      "D_tech": {
+        "score": 4,
+        "max": 15,
+        "items": [
+          "0-pixels"
+        ]
+      },
+      "E_solvability": {
+        "score": 3,
+        "max": 15,
+        "items": [
+          "only 0% design/ux",
+          "no-infra-issues"
+        ]
+      },
+      "total": 65,
+      "threshold": 60
+    },
+    "verdict": "ready-to-build",
+    "archive_reason": null,
+    "redesign_brief_path": "clients/acacia-electrical-service/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 7,
+      "sitemap_source": "bfs",
+      "cost": 0
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": {
+      "verdict": "trust",
+      "confidence": 0.9,
+      "reason": "Audit is internally consistent: crawl size is adequate, hard gates passed, core info is strong, and total score exceeds threshold for ready-to-build.",
+      "anomalies": [],
+      "provider": "codex_cli"
+    }
+  },
+  "deploy": {
+    "demo_url": "https://acacia-electrical-service-dev.pages.dev",
+    "audit_url": "https://acacia-electrical-service-dev.pages.dev/customer-facing-audit.html",
+    "internal_audit_url": "https://acacia-electrical-service-dev.pages.dev/internal-audit-report.html",
+    "master_md_url": "https://acacia-electrical-service-dev.pages.dev/master.md",
+    "master_report_url": "https://acacia-electrical-service-dev.pages.dev/master.report.html",
+    "deployed_at": "2026-05-16T02:54:49.482Z"
+  },
+  "project_thread_id": "1505040817319055534",
+  "project_profile_message_id": "1505040817319055534",
+  "project_thread_opened_at": "2026-05-16T02:54:53.293Z"
+}

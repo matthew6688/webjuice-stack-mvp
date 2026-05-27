@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijpyw-2opclmsrpoqam1r5-ay",
+  "firstSeenAt": "2026-05-15T08:25:52.149Z",
+  "lastSeenAt": "2026-05-15T08:25:52.149Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T08:25:52.149Z",
+  "identifiers": {
+    "place_id": "ChIJPyW-2OpclmsRPOqAm1r5-aY",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "wiedmanelectrical.com.au",
+    "phoneDigits": "0746337766"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Paul Wiedman Electrical",
+    "category": "",
+    "categories": [
+      "electrician",
+      "establishment",
+      "general_contractor",
+      "point_of_interest"
+    ],
+    "address": "Unit 10/189 Anzac Ave, Harristown QLD 4350, Australia",
+    "city": "",
+    "niche": "electrician",
+    "phone": "(07) 4633 7766",
+    "website": "https://www.wiedmanelectrical.com.au/?utm_source=google&utm_medium=organic&utm_campaign=gmb",
+    "google_maps_url": "https://maps.google.com/?cid=12031922047048280636",
+    "rating": 5,
+    "review_count": 42,
+    "websiteStatus": "",
+    "discoveryScore": 27,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "electrician in toowoomba",
+    "signals": {},
+    "batch_id": "places-electrician-in-toowoomba-202605151825",
+    "discovery_rank": 3,
+    "google_places_provider": "official_api",
+    "email": "enquiries@wiedmanelectrical.com.au",
+    "social_links": {
+      "facebook": "https://www.facebook.com/Paulwiedmanelectrical"
+    }
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-electrician-in-toowoomba-202605151825",
+      "query": "electrician in toowoomba",
+      "runPath": "",
+      "at": "2026-05-15T08:25:52.149Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T08:25:52.149Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-electrician-in-toowoomba-202605151825",
+      "query": "electrician in toowoomba",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T08:28:48.625Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 22 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-electrician-in-toowoomba-202605151825"
+  ],
+  "niche_relevance": {
+    "key": "electrician||",
+    "relevant": true,
+    "confidence": 0.95,
+    "reason": "商家名称明确包含Electrical，属于电工/电气服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-15T08:26:27.270Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 62,
+    "final_score": 62,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 62,
+    "at": "2026-05-15T08:26:36.693Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T08:26:36.693Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T08:26:36.693Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T08:26:38.249Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 22 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 22 pages > 10 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-15T08:28:48.625Z",
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:24.726Z",
+  "discord_thread_id_was": "1504761915799507074"
+}

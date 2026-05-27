@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "domain_probuildroofing.com.au",
+  "firstSeenAt": "2026-05-15T04:43:39.558Z",
+  "lastSeenAt": "2026-05-15T04:43:39.558Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-15T04:46:30.395Z",
+  "identifiers": {
+    "place_id": "",
+    "cid": "",
+    "data_id": "0x6b9157afcdc6642d:0x36626070e61294fa",
+    "websiteDomain": "probuildroofing.com.au",
+    "phoneDigits": "0730627775"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "Pro Build Roofing",
+    "category": "",
+    "categories": [],
+    "address": "level 1/240 Waterworks Rd, Ashgrove QLD 4060",
+    "city": "Indooropilly",
+    "niche": "roofer",
+    "phone": "(07)30627775",
+    "website": "https://www.probuildroofing.com.au/",
+    "google_maps_url": "",
+    "rating": 4.9,
+    "review_count": 0,
+    "websiteStatus": "independent_https_site",
+    "discoveryScore": 34,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in indooropilly",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 0,
+      "hasPopularTimes": true,
+      "hasAboutAttributes": false
+    },
+    "batch_id": "pipe-roofer-indooropilly-202605151442",
+    "discovery_rank": null,
+    "google_places_provider": null
+  },
+  "runs": [
+    {
+      "runId": "20260515-144339",
+      "query": "roofer in indooropilly",
+      "runPath": "data/maps-scraper/runs/20260515-144339/discovery-run.json",
+      "at": "2026-05-15T04:43:39.558Z",
+      "discoveryScore": 34,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T04:43:39.558Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260515-144339",
+      "query": "roofer in indooropilly",
+      "score": 34,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T04:46:30.395Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T04:46:30.408Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T04:48:38.222Z",
+      "event": "phase_changed",
+      "from": "audit-ready",
+      "to": "ready-to-build",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": ""
+    },
+    {
+      "at": "2026-05-15T04:53:44.682Z",
+      "event": "phase_changed",
+      "from": "ready-to-build",
+      "to": "outreach-active",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "cycle-26 publish-done · graduate to #website-projects"
+    }
+  ],
+  "notes": [
+    "Graded C / -"
+  ],
+  "enrichment_status": "complete",
+  "batches": [
+    "pipe-roofer-indooropilly-202605151442"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 62,
+    "final_score": 62,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 62,
+    "at": "2026-05-15T04:44:27.653Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T04:44:27.653Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T04:44:27.653Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T04:44:28.764Z",
+  "grade": {
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [],
+    "graded_at": "2026-05-15T04:46:30.394Z"
+  },
+  "phase": "outreach-active",
+  "phaseChangedAt": "2026-05-15T04:53:44.682Z",
+  "qualification": {
+    "computed_at": "2026-05-15T04:48:38.225Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": {
+      "A_core_info": {
+        "score": 18,
+        "max": 30,
+        "items": [
+          "name",
+          "phone",
+          "email",
+          "address"
+        ]
+      },
+      "B_brand": {
+        "score": 6,
+        "max": 15,
+        "items": [
+          "logo-via-create-logo-skill",
+          "color",
+          "font",
+          "voice"
+        ]
+      },
+      "C_scope": {
+        "score": 25,
+        "max": 25,
+        "items": [
+          "10 pages OK",
+          "no-booking",
+          "single-lang",
+          "complexity-simple",
+          "simple-forms",
+          "no-heavy-layout"
+        ]
+      },
+      "D_tech": {
+        "score": 11,
+        "max": 15,
+        "items": [
+          "low-seo-risk",
+          "https",
+          "0-pixels"
+        ]
+      },
+      "E_solvability": {
+        "score": 3,
+        "max": 15,
+        "items": [
+          "only 14% design/ux",
+          "no-infra-issues"
+        ]
+      },
+      "total": 63,
+      "threshold": 60
+    },
+    "verdict": "ready-to-build",
+    "archive_reason": null,
+    "redesign_brief_path": "clients/pro-build-roofing/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 10,
+      "sitemap_source": "fallback-common-paths",
+      "cost": 0.15
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": {
+      "verdict": "trust",
+      "confidence": 0.9,
+      "reason": "Score is just above threshold, hard gates passed, crawl depth is adequate, and core info is above the minimum concern level.",
+      "anomalies": [],
+      "provider": "codex_cli"
+    }
+  },
+  "deploy": {
+    "demo_url": "https://pro-build-roofing-dev.pages.dev",
+    "audit_url": "https://pro-build-roofing-dev.pages.dev/customer-facing-audit.html",
+    "internal_audit_url": "https://pro-build-roofing-dev.pages.dev/internal-audit-report.html",
+    "master_md_url": "https://pro-build-roofing-dev.pages.dev/master.md",
+    "master_report_url": "https://pro-build-roofing-dev.pages.dev/master.report.html",
+    "deployed_at": "2026-05-15T04:53:43.458Z"
+  },
+  "project_thread_id": null,
+  "project_profile_message_id": null,
+  "project_thread_opened_at": "2026-05-15T04:53:46.913Z",
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:03.754Z",
+  "discord_thread_id_was": "1504706008503681047",
+  "project_thread_id_cleared_at": "2026-05-15T21:20:01.394Z",
+  "project_thread_id_was": "1504708348455420065"
+}

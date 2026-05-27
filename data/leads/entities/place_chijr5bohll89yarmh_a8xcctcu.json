@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijr5bohll89yarmh_a8xcctcu",
+  "firstSeenAt": "2026-05-15T08:50:33.005Z",
+  "lastSeenAt": "2026-05-15T08:50:33.005Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T08:50:33.005Z",
+  "identifiers": {
+    "place_id": "ChIJR5BOhll89YARMh_a8XCCTCU",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "chemdryplatinum.com.au",
+    "phoneDigits": "0498464794"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Chem-Dry Platinum",
+    "category": "",
+    "categories": [
+      "establishment",
+      "laundry",
+      "point_of_interest"
+    ],
+    "address": "2 Highway St, Park Avenue QLD 4701, Australia",
+    "city": "Rockhampton",
+    "niche": "establishment",
+    "phone": "0498 464 794",
+    "website": "https://chemdryplatinum.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=2687666499238895410",
+    "rating": 5,
+    "review_count": 170,
+    "websiteStatus": "",
+    "discoveryScore": 42,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "carpet cleaning in rockhampton",
+    "signals": {},
+    "batch_id": "places-carpet-cleaning-in-rockhampton-202605151850",
+    "discovery_rank": 2,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-carpet-cleaning-in-rockhampton-202605151850",
+      "query": "carpet cleaning in rockhampton",
+      "runPath": "",
+      "at": "2026-05-15T08:50:33.005Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T08:50:33.005Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-carpet-cleaning-in-rockhampton-202605151850",
+      "query": "carpet cleaning in rockhampton",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T08:52:32.590Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 60 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-carpet-cleaning-in-rockhampton-202605151850"
+  ],
+  "niche_relevance": {
+    "key": "establishment||",
+    "relevant": true,
+    "confidence": 0.85,
+    "reason": "搜索词是通用类别 establishment，该商家的类别包含 establishment，属于同类。",
+    "provider": "claude_cli",
+    "at": "2026-05-15T08:50:37.597Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "audit_candidate",
+    "reason": "Strong V2 candidate — proceed to detailed audit",
+    "gbp_quality": 75,
+    "final_score": 75,
+    "fired_triggers": [
+      "high_traction_old_site"
+    ],
+    "relevance_pass": true,
+    "priority": 75,
+    "at": "2026-05-15T08:51:02.662Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T08:51:02.662Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 300,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T08:51:02.662Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T08:51:03.758Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 60 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 60 pages > 10 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-15T08:52:32.590Z",
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:26.701Z",
+  "discord_thread_id_was": "1504768064066031726"
+}

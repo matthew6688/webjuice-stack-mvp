@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "dataid_0x6b0a9923c89ae119-0xa3fa79d337f5c77",
+  "firstSeenAt": "2026-05-16T02:41:49.292Z",
+  "lastSeenAt": "2026-05-16T02:41:49.292Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-16T02:41:49.292Z",
+  "identifiers": {
+    "place_id": "",
+    "cid": "",
+    "data_id": "0x6b0a9923c89ae119:0xa3fa79d337f5c77",
+    "websiteDomain": "ajelec.com.au",
+    "phoneDigits": "0267623900"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "A & J Electrical Contractors",
+    "category": "",
+    "categories": [],
+    "address": "Unit 3/17 Hawker Rd, Tamworth NSW 2340",
+    "city": "Tamworth",
+    "niche": "electrician",
+    "phone": "(02)67623900",
+    "website": "https://ajelec.com.au/?utm_source=google&utm_medium=organic&utm_campaign=gmb",
+    "google_maps_url": "",
+    "rating": 5,
+    "review_count": 0,
+    "websiteStatus": "independent_https_site",
+    "discoveryScore": 34,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "electrician in tamworth",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 0,
+      "hasPopularTimes": true,
+      "hasAboutAttributes": false
+    },
+    "batch_id": "",
+    "discovery_rank": null,
+    "google_places_provider": null
+  },
+  "runs": [
+    {
+      "runId": "20260516-124149",
+      "query": "electrician in tamworth",
+      "runPath": "data/maps-scraper/runs/20260516-124149/discovery-run.json",
+      "at": "2026-05-16T02:41:49.292Z",
+      "discoveryScore": 34,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T02:41:49.292Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260516-124149",
+      "query": "electrician in tamworth",
+      "score": 34,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T02:43:32.240Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 35 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "niche_relevance": {
+    "key": "electrician||",
+    "relevant": true,
+    "confidence": 0.95,
+    "reason": "商家名称明确包含Electrical，属于电工/电气服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-15T08:26:27.270Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 62,
+    "final_score": 62,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 62,
+    "at": "2026-05-16T02:41:55.359Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-16T02:41:55.360Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T02:41:55.360Z"
+  },
+  "discord_thread_id": "1505037560341205102",
+  "discord_profile_message_id": "1505037560341205102",
+  "discord_thread_opened_at": "2026-05-16T02:41:56.670Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 35 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 35 content pages > 20 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-16T02:43:32.240Z"
+}

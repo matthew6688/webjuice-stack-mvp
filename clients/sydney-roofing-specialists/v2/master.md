@@ -21,9 +21,9 @@ generated_at: "2026-05-14T22:09:19.021Z"
 assets:
   cloudinary_folder: null
   evidence_count: 7
-  video_url: "./video/mobile-throttled.webm"
-  desktop_screenshot: "./screenshots/desktop.png"
-  mobile_screenshot: "./screenshots/mobile.png"
+  video_url: "https://sydney-roofing-specialists-dev.pages.dev/video/mobile-throttled.webm"
+  desktop_screenshot: "https://sydney-roofing-specialists-dev.pages.dev/screenshots/desktop.png"
+  mobile_screenshot: "https://sydney-roofing-specialists-dev.pages.dev/screenshots/mobile.png"
 ---
 
 # Sydney Roofing Specialists · 现状审计与重构提议
@@ -58,13 +58,13 @@ assets:
 
 ## 二、客户访问时看到的页面
 
-![桌面 1440×900](./screenshots/desktop.png)
+![桌面 1440×900](https://sydney-roofing-specialists-dev.pages.dev/screenshots/desktop.png)
 
-![移动 375×667](./screenshots/mobile.png)
+![移动 375×667](https://sydney-roofing-specialists-dev.pages.dev/screenshots/mobile.png)
 
 **慢速 4G 加载实景视频**（1.6 Mbps · 150ms 延迟 · 4× CPU 节流，模拟真实手机访客的体验）：
 
-[播放视频](./video/mobile-throttled.webm)
+[播放视频](https://sydney-roofing-specialists-dev.pages.dev/video/mobile-throttled.webm)
 
 ## 三、视觉审计 · Vision LLM 怎么看
 

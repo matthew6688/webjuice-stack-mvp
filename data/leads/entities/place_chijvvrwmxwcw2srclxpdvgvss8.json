@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijvvrwmxwcw2srclxpdvgvss8",
+  "firstSeenAt": "2026-05-15T08:50:33.005Z",
+  "lastSeenAt": "2026-05-15T08:50:33.005Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T08:50:33.005Z",
+  "identifiers": {
+    "place_id": "ChIJVVRWMXwCw2sRCLxPdvgvSs8",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "dynamicservicesrockhampton.com.au",
+    "phoneDigits": "0406303425"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Dynamic Services",
+    "category": "",
+    "categories": [
+      "establishment",
+      "general_contractor",
+      "health",
+      "laundry",
+      "point_of_interest"
+    ],
+    "address": "1 Rattenbury Rd, Limestone Creek QLD 4701, Australia",
+    "city": "Rockhampton",
+    "niche": "establishment",
+    "phone": "0406 303 425",
+    "website": "https://www.dynamicservicesrockhampton.com.au/?utm_source=google&utm_medium=organic&utm_campaign=gmb",
+    "google_maps_url": "https://maps.google.com/?cid=14936803858311003144",
+    "rating": 5,
+    "review_count": 10,
+    "websiteStatus": "",
+    "discoveryScore": 27,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "carpet cleaning in rockhampton",
+    "signals": {},
+    "batch_id": "places-carpet-cleaning-in-rockhampton-202605151850",
+    "discovery_rank": 4,
+    "google_places_provider": "official_api",
+    "email": "dynamic1services@gmail.com",
+    "social_links": {
+      "facebook": "https://www.facebook.com/Dynamicservicesrockhampton"
+    }
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-carpet-cleaning-in-rockhampton-202605151850",
+      "query": "carpet cleaning in rockhampton",
+      "runPath": "",
+      "at": "2026-05-15T08:50:33.005Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T08:50:33.005Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-carpet-cleaning-in-rockhampton-202605151850",
+      "query": "carpet cleaning in rockhampton",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T08:54:02.919Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 16 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+    },
+    {
+      "at": "2026-05-15T08:54:17.705Z",
+      "event": "archived_as_rejected",
+      "from_phase": "archived",
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 16 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-carpet-cleaning-in-rockhampton-202605151850"
+  ],
+  "niche_relevance": {
+    "key": "establishment||",
+    "relevant": true,
+    "confidence": 0.85,
+    "reason": "搜索词是通用类别 establishment，该商家的类别包含 establishment，属于同类。",
+    "provider": "claude_cli",
+    "at": "2026-05-15T08:50:37.597Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 56,
+    "final_score": 56,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 56,
+    "at": "2026-05-15T08:54:13.845Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T08:54:13.845Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 300,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T08:54:13.845Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T08:52:10.169Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 16 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 16 pages > 10 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-15T08:54:17.705Z",
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:29.921Z",
+  "discord_thread_id_was": "1504768342538453083"
+}

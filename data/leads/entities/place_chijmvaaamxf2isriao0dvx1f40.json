@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijmvaaamxf2isriao0dvx1f40",
+  "firstSeenAt": "2026-05-15T13:20:17.211Z",
+  "lastSeenAt": "2026-05-15T13:20:17.211Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T13:20:17.211Z",
+  "identifiers": {
+    "place_id": "ChIJmVAaAMxF2isRiAo0dvX1F40",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "",
+    "phoneDigits": "0899655886"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Geraldton Sheetmetal & Roofing",
+    "category": "",
+    "categories": [
+      "establishment",
+      "general_contractor",
+      "point_of_interest"
+    ],
+    "address": "27 Beaver St, Webberton WA 6530, Australia",
+    "city": "Geraldton",
+    "niche": "roofer",
+    "phone": "(08) 9965 5886",
+    "website": "",
+    "google_maps_url": "https://maps.google.com/?cid=10166865118411098760",
+    "rating": 3.3,
+    "review_count": 7,
+    "websiteStatus": "",
+    "discoveryScore": 15,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in geraldton",
+    "signals": {},
+    "batch_id": "places-roofer-in-geraldton-202605152320",
+    "discovery_rank": 3,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-in-geraldton-202605152320",
+      "query": "roofer in geraldton",
+      "runPath": "",
+      "at": "2026-05-15T13:20:17.211Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T13:20:17.211Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-geraldton-202605152320",
+      "query": "roofer in geraldton",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-in-geraldton-202605152320"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 41,
+    "final_score": 41,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 41,
+    "at": "2026-05-15T13:20:28.676Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T13:20:28.676Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T13:20:28.676Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T13:20:29.746Z",
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:21.715Z",
+  "discord_thread_id_was": "1504835868639101120"
+}

@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijvvdw4rbv1gorqz8sqyveuya",
+  "firstSeenAt": "2026-05-15T09:16:29.686Z",
+  "lastSeenAt": "2026-05-15T09:16:29.686Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-15T09:24:14.483Z",
+  "identifiers": {
+    "place_id": "ChIJvVdw4RBv1GoRQZ8SQYveUYA",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "hightonroofrestoration.com.au",
+    "phoneDigits": "0448666016"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Highton Roof Restoration - Roofing Service",
+    "category": "",
+    "categories": [
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor",
+      "store"
+    ],
+    "address": "7 Craigie Rd, Newtown VIC 3220, Australia",
+    "city": "Geelong",
+    "niche": "roofer",
+    "phone": "0448 666 016",
+    "website": "https://www.hightonroofrestoration.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=9246416199641898817",
+    "rating": 4.2,
+    "review_count": 22,
+    "websiteStatus": "",
+    "discoveryScore": 15,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in geelong",
+    "signals": {},
+    "batch_id": "places-roofer-in-geelong-202605151916",
+    "discovery_rank": 7,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-in-geelong-202605151916",
+      "query": "roofer in geelong",
+      "runPath": "",
+      "at": "2026-05-15T09:16:29.686Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T09:16:29.686Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-geelong-202605151916",
+      "query": "roofer in geelong",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T09:24:14.483Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T09:24:14.553Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T09:24:50.632Z",
+      "event": "archived_as_rejected",
+      "from_phase": "audit-ready",
+      "pathId": "stage7_pregate_fail",
+      "reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+    }
+  ],
+  "notes": [
+    "Graded C / -"
+  ],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-in-geelong-202605151916"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 52,
+    "final_score": 52,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 52,
+    "at": "2026-05-15T09:20:20.490Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T09:20:20.490Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T09:20:20.490Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T09:20:21.595Z",
+  "grade": {
+    "grade": "D",
+    "reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+  },
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-15T09:24:14.553Z",
+  "archive_reason": "stage7_pregate_fail: gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)",
+  "archived_at": "2026-05-15T09:24:50.632Z",
+  "qualification": {
+    "computed_at": "2026-05-15T09:24:54.659Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": false,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": null,
+    "verdict": "archived",
+    "archive_reason": "gate_multi_business: 多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)",
+    "brief_skipped": true,
+    "brief_skipped_reason": "pre-gate failed on brief-independent signal",
+    "crawl_summary": {
+      "pages_crawled": 4,
+      "sitemap_source": "/sitemap.xml"
+    }
+  },
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:29.602Z",
+  "discord_thread_id_was": "1504775436876648500"
+}

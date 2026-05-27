@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "dataid_0x6b73157ec5acc763-0xc275d2219098d202",
+  "firstSeenAt": "2026-05-16T02:57:07.797Z",
+  "lastSeenAt": "2026-05-16T02:57:07.797Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-16T03:01:05.838Z",
+  "identifiers": {
+    "place_id": "",
+    "cid": "",
+    "data_id": "0x6b73157ec5acc763:0xc275d2219098d202",
+    "websiteDomain": "newcastlepainting.com.au",
+    "phoneDigits": "0429552631"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "Newcastle Painting Services",
+    "category": "",
+    "categories": [],
+    "address": "",
+    "city": "Newcastle",
+    "niche": "painter",
+    "phone": "0429552631",
+    "website": "http://www.newcastlepainting.com.au/",
+    "google_maps_url": "",
+    "rating": 4.4,
+    "review_count": 0,
+    "websiteStatus": "independent_http_site",
+    "discoveryScore": 50,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "painter in newcastle",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 0,
+      "hasPopularTimes": true,
+      "hasAboutAttributes": false
+    },
+    "batch_id": "",
+    "discovery_rank": null,
+    "google_places_provider": null
+  },
+  "runs": [
+    {
+      "runId": "20260516-125707",
+      "query": "painter in newcastle",
+      "runPath": "data/maps-scraper/runs/20260516-125707/discovery-run.json",
+      "at": "2026-05-16T02:57:07.797Z",
+      "discoveryScore": 50,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T02:57:07.797Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260516-125707",
+      "query": "painter in newcastle",
+      "score": 50,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T03:01:05.838Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-16T03:01:05.940Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-16T03:24:05.380Z",
+      "event": "archived_as_rejected",
+      "from_phase": "audit-ready",
+      "pathId": "stage7_brief_failed",
+      "reason": "brief_failed: no crawled pages"
+    }
+  ],
+  "notes": [
+    "Graded C / -"
+  ],
+  "enrichment_status": "complete",
+  "niche_relevance": {
+    "key": "painter||",
+    "relevant": true,
+    "confidence": 0.98,
+    "reason": "商家名称明确包含 Painting，与 painter 属于同一行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-16T02:57:33.271Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 52,
+    "final_score": 52,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 52,
+    "at": "2026-05-16T02:57:39.290Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-16T02:57:39.290Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T02:57:39.290Z"
+  },
+  "discord_thread_id": "1505041518409416827",
+  "discord_profile_message_id": "1505041518409416827",
+  "discord_thread_opened_at": "2026-05-16T02:57:40.513Z",
+  "grade": {
+    "grade": "D",
+    "reason": "brief_failed: no crawled pages"
+  },
+  "phase": "archived",
+  "phaseChangedAt": "2026-05-16T03:01:05.940Z",
+  "discord_stage_message_ids": {
+    "6": "1505042918082216011"
+  },
+  "qualification": {
+    "computed_at": "2026-05-16T03:20:33.678Z",
+    "hard_gates": [],
+    "scorecard": null,
+    "verdict": "archived",
+    "archive_reason": "brief_failed: no crawled pages",
+    "brief_skipped": true,
+    "brief_skipped_reason": "brief generator returned no usable output (crawl empty or LLM error)",
+    "crawl_summary": {
+      "pages_crawled": 0,
+      "sitemap_source": "fallback-common-paths"
+    }
+  },
+  "archive_reason": "stage7_brief_failed: brief_failed: no crawled pages",
+  "archived_at": "2026-05-16T03:24:05.380Z"
+}

@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijqxnir2su1gor_cqf2zgqefm",
+  "firstSeenAt": "2026-05-15T09:16:29.686Z",
+  "lastSeenAt": "2026-05-15T09:16:29.686Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-15T09:23:32.602Z",
+  "identifiers": {
+    "place_id": "ChIJqxnir2sU1GoR_CqF2ZgQeFM",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "westcoastroofing.com.au",
+    "phoneDigits": ""
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "West Coast Roofing",
+    "category": "",
+    "categories": [
+      "establishment",
+      "point_of_interest",
+      "roofing_contractor"
+    ],
+    "address": "160 Station St, Norlane VIC 3214, Australia",
+    "city": "Geelong",
+    "niche": "roofer",
+    "phone": "",
+    "website": "http://westcoastroofing.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=6014575551023753980",
+    "rating": 4.7,
+    "review_count": 7,
+    "websiteStatus": "",
+    "discoveryScore": 32,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "roofer in geelong",
+    "signals": {},
+    "batch_id": "places-roofer-in-geelong-202605151916",
+    "discovery_rank": 6,
+    "google_places_provider": "official_api",
+    "email": "smd@pagination.com.au"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-roofer-in-geelong-202605151916",
+      "query": "roofer in geelong",
+      "runPath": "",
+      "at": "2026-05-15T09:16:29.686Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T09:16:29.686Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-roofer-in-geelong-202605151916",
+      "query": "roofer in geelong",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T09:23:32.602Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T09:23:32.665Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T09:26:42.874Z",
+      "event": "phase_changed",
+      "from": "audit-ready",
+      "to": "ready-to-build",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": ""
+    },
+    {
+      "at": "2026-05-15T09:30:36.626Z",
+      "event": "phase_changed",
+      "from": "ready-to-build",
+      "to": "outreach-active",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "cycle-26 publish-done · graduate to #website-projects"
+    }
+  ],
+  "notes": [
+    "Graded C / -"
+  ],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-roofer-in-geelong-202605151916"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 46,
+    "final_score": 46,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 46,
+    "at": "2026-05-15T09:17:01.308Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T09:17:01.308Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T09:17:01.308Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T09:17:02.443Z",
+  "grade": {
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [],
+    "graded_at": "2026-05-15T09:23:32.601Z"
+  },
+  "phase": "outreach-active",
+  "phaseChangedAt": "2026-05-15T09:30:36.626Z",
+  "qualification": {
+    "computed_at": "2026-05-15T09:26:43.325Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": {
+      "A_core_info": {
+        "score": 24,
+        "max": 30,
+        "items": [
+          "name",
+          "phone",
+          "email",
+          "address",
+          "services",
+          "founded"
+        ]
+      },
+      "B_brand": {
+        "score": 8,
+        "max": 15,
+        "items": [
+          "logo",
+          "font",
+          "7-reviews",
+          "voice"
+        ]
+      },
+      "C_scope": {
+        "score": 25,
+        "max": 25,
+        "items": [
+          "10 pages OK",
+          "no-booking",
+          "single-lang",
+          "complexity-medium",
+          "simple-forms",
+          "no-heavy-layout"
+        ]
+      },
+      "D_tech": {
+        "score": 8,
+        "max": 15,
+        "items": [
+          "low-seo-risk",
+          "0-pixels"
+        ]
+      },
+      "E_solvability": {
+        "score": 3,
+        "max": 15,
+        "items": [
+          "only 7% design/ux",
+          "no-infra-issues"
+        ]
+      },
+      "total": 68,
+      "threshold": 60
+    },
+    "verdict": "ready-to-build",
+    "archive_reason": null,
+    "redesign_brief_path": "clients/west-coast-roofing/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 10,
+      "sitemap_source": "bfs",
+      "cost": 0.15
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": {
+      "verdict": "trust",
+      "confidence": 0.91,
+      "reason": "Audit conclusion is consistent with the scorecard: hard gates passed, 10 pages crawled, total score exceeds threshold, and core info is strong enough for ready-to-build.",
+      "anomalies": [],
+      "provider": "codex_cli"
+    }
+  },
+  "deploy": {
+    "demo_url": "https://west-coast-roofing-dev.pages.dev",
+    "audit_url": "https://west-coast-roofing-dev.pages.dev/customer-facing-audit.html",
+    "internal_audit_url": "https://west-coast-roofing-dev.pages.dev/internal-audit-report.html",
+    "master_md_url": "https://west-coast-roofing-dev.pages.dev/master.md",
+    "master_report_url": "https://west-coast-roofing-dev.pages.dev/master.report.html",
+    "deployed_at": "2026-05-15T09:30:34.668Z"
+  },
+  "project_thread_id": null,
+  "project_profile_message_id": null,
+  "project_thread_opened_at": "2026-05-15T09:30:37.709Z",
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:26.062Z",
+  "discord_thread_id_was": "1504774601819951226",
+  "project_thread_id_cleared_at": "2026-05-15T21:20:06.407Z",
+  "project_thread_id_was": "1504778020819439716"
+}

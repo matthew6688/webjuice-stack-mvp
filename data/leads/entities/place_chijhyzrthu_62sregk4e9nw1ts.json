@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijhyzrthu_62sregk4e9nw1ts",
+  "firstSeenAt": "2026-05-15T08:46:55.670Z",
+  "lastSeenAt": "2026-05-15T08:46:55.670Z",
+  "status": "graded",
+  "lastStatusAt": "2026-05-15T08:53:59.424Z",
+  "identifiers": {
+    "place_id": "ChIJhyzRthu_62sREGk4E9NW1Ts",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "lawnhelp.com.au",
+    "phoneDigits": "0478635779"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Lawn Help",
+    "category": "",
+    "categories": [
+      "establishment",
+      "general_contractor",
+      "point_of_interest"
+    ],
+    "address": "81 Kepnock Rd, Kepnock QLD 4670, Australia",
+    "city": "Bundaberg",
+    "niche": "establishment",
+    "phone": "0478 635 779",
+    "website": "https://www.lawnhelp.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=4311447682837670160",
+    "rating": 4.4,
+    "review_count": 7,
+    "websiteStatus": "",
+    "discoveryScore": 23,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "lawn mowing in bundaberg",
+    "signals": {},
+    "batch_id": "places-lawn-mowing-in-bundaberg-202605151846",
+    "discovery_rank": 2,
+    "google_places_provider": "official_api",
+    "email": "%20lawnhelp1969@gmail.com",
+    "backup_email": "lawnhelp1969@gmail.com",
+    "contact_us_url": "https://lawnhelp.com.au/contact-us/"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-lawn-mowing-in-bundaberg-202605151846",
+      "query": "lawn mowing in bundaberg",
+      "runPath": "",
+      "at": "2026-05-15T08:46:55.670Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T08:46:55.670Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-lawn-mowing-in-bundaberg-202605151846",
+      "query": "lawn mowing in bundaberg",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T08:53:59.424Z",
+      "event": "status_updated",
+      "status": "graded",
+      "clientSlug": "",
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T08:53:59.475Z",
+      "event": "phase_changed",
+      "from": null,
+      "to": "audit-ready",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": "Graded C / -"
+    },
+    {
+      "at": "2026-05-15T08:56:17.714Z",
+      "event": "phase_changed",
+      "from": "audit-ready",
+      "to": "ready-to-build",
+      "sub_status": null,
+      "archive_reason": null,
+      "note": ""
+    }
+  ],
+  "notes": [
+    "Graded C / -"
+  ],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-lawn-mowing-in-bundaberg-202605151846"
+  ],
+  "niche_relevance": {
+    "key": "establishment||",
+    "relevant": true,
+    "confidence": 0.85,
+    "reason": "搜索词是通用类别 establishment，该商家的类别包含 establishment，属于同类。",
+    "provider": "claude_cli",
+    "at": "2026-05-15T08:50:37.597Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 51,
+    "final_score": 51,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 51,
+    "at": "2026-05-15T08:50:40.602Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T08:50:40.602Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 300,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T08:50:40.602Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T08:50:41.849Z",
+  "grade": {
+    "investment_level": "C",
+    "product_tier": null,
+    "recommended_pricing": null,
+    "skip_reasons": [],
+    "graded_at": "2026-05-15T08:53:59.419Z"
+  },
+  "phase": "ready-to-build",
+  "phaseChangedAt": "2026-05-15T08:56:17.714Z",
+  "qualification": {
+    "computed_at": "2026-05-15T08:56:17.720Z",
+    "hard_gates": [
+      {
+        "id": "too_many_pages",
+        "passed": true,
+        "reason": "页面 > 10 · 迁移成本失控"
+      },
+      {
+        "id": "multi_business",
+        "passed": true,
+        "reason": "多业务复杂 (GBP ≥ 4 类目 · LLM 服务页推断不直接 hard pass · 降级 warning)"
+      },
+      {
+        "id": "ecommerce",
+        "passed": true,
+        "reason": "现网真是 e-commerce (Shopify/Woo/Magento CMS + sitemap 含 cart/checkout/product) · 不在 V3 产品包"
+      },
+      {
+        "id": "member_portal",
+        "passed": true,
+        "reason": "现网含会员/portal (login/account/dashboard) · 不在产品包"
+      },
+      {
+        "id": "active_blog_heavy",
+        "passed": true,
+        "reason": "活跃 blog > 50 posts · 我们不迁内容"
+      },
+      {
+        "id": "third_party_booking",
+        "passed": true,
+        "reason": "现网内嵌 booking (Mindbody/Calendly/Square 等) · 客户深度依赖 · 重建破坏"
+      },
+      {
+        "id": "too_many_pixels",
+        "passed": true,
+        "reason": "第三方 pixel ≥ 5 · 客户重投广告归因 · 重建破坏 attribution"
+      }
+    ],
+    "scorecard": {
+      "A_core_info": {
+        "score": 21,
+        "max": 30,
+        "items": [
+          "name",
+          "phone",
+          "email",
+          "address",
+          "services"
+        ]
+      },
+      "B_brand": {
+        "score": 7,
+        "max": 15,
+        "items": [
+          "logo",
+          "7-reviews",
+          "voice"
+        ]
+      },
+      "C_scope": {
+        "score": 25,
+        "max": 25,
+        "items": [
+          "8 pages OK",
+          "no-booking",
+          "single-lang",
+          "complexity-medium",
+          "simple-forms",
+          "no-heavy-layout"
+        ]
+      },
+      "D_tech": {
+        "score": 15,
+        "max": 15,
+        "items": [
+          "sitemap-ok",
+          "low-seo-risk",
+          "https",
+          "0-pixels"
+        ]
+      },
+      "E_solvability": {
+        "score": 3,
+        "max": 15,
+        "items": [
+          "only 0% design/ux",
+          "no-infra-issues"
+        ]
+      },
+      "total": 71,
+      "threshold": 60
+    },
+    "verdict": "ready-to-build",
+    "archive_reason": null,
+    "redesign_brief_path": "clients/lawn-help/v2/redesign-brief.json",
+    "crawl_summary": {
+      "pages_crawled": 8,
+      "sitemap_source": "/sitemap.xml",
+      "cost": 0.12
+    },
+    "ai_provider": "codex_cli",
+    "llm_judge_audit": {
+      "verdict": "trust",
+      "confidence": 0.93,
+      "reason": "Conclusion is consistent: hard gates passed, 8 pages crawled, total score exceeds threshold, and core info is above the minimum concern level.",
+      "anomalies": [],
+      "provider": "codex_cli"
+    }
+  },
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:18.368Z",
+  "discord_thread_id_was": "1504767971917172736"
+}

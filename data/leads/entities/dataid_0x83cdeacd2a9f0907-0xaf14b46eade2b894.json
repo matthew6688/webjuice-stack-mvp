@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "dataid_0x83cdeacd2a9f0907-0xaf14b46eade2b894",
+  "firstSeenAt": "2026-05-16T04:17:12.940Z",
+  "lastSeenAt": "2026-05-16T04:17:12.940Z",
+  "status": "skipped",
+  "lastStatusAt": "2026-05-16T04:17:12.940Z",
+  "identifiers": {
+    "place_id": "",
+    "cid": "",
+    "data_id": "0x83cdeacd2a9f0907:0xaf14b46eade2b894",
+    "websiteDomain": "geigersolutions.au",
+    "phoneDigits": "0435337205"
+  },
+  "latest": {
+    "sourceType": "maps_scraper",
+    "name": "Geiger Solutions",
+    "category": "",
+    "categories": [],
+    "address": "160 Wood St, Mackay QLD 4740",
+    "city": "Mackay",
+    "niche": "roofer",
+    "phone": "0435337205",
+    "website": "https://geigersolutions.au/?utm_source=google&utm_medium=organic&utm_campaign=gmb",
+    "google_maps_url": "",
+    "rating": 3.9,
+    "review_count": 0,
+    "websiteStatus": "independent_https_site",
+    "discoveryScore": 22,
+    "recommendedAction": "skip",
+    "sourceQuery": "roofer in mackay",
+    "signals": {
+      "hasPhone": true,
+      "hasWebsite": true,
+      "hasMenuLink": true,
+      "hasReservationLink": true,
+      "hasOrderOnlineLink": true,
+      "imageCount": 0,
+      "hasPopularTimes": true,
+      "hasAboutAttributes": false
+    },
+    "batch_id": "docker-roofer-mackay-202605161416",
+    "discovery_rank": null,
+    "google_places_provider": null,
+    "social_links": {
+      "facebook": "https://www.facebook.com/geigersolutions"
+    }
+  },
+  "runs": [
+    {
+      "runId": "20260516-141712",
+      "query": "roofer in mackay",
+      "runPath": "data/maps-scraper/runs/20260516-141712/discovery-run.json",
+      "at": "2026-05-16T04:17:12.940Z",
+      "discoveryScore": 22,
+      "recommendedAction": "skip"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T04:17:12.940Z",
+      "event": "seen_in_discovery_run",
+      "runId": "20260516-141712",
+      "query": "roofer in mackay",
+      "score": 22,
+      "action": "skip",
+      "status": "skipped"
+    },
+    {
+      "at": "2026-05-16T04:19:47.563Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 22 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "docker-roofer-mackay-202605161416"
+  ],
+  "niche_relevance": {
+    "key": "roofer||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "类别包含 roofing_contractor，且名称为 Mr Roof Solutions，明确属于屋顶/屋面服务行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-14T16:01:14.199Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 52,
+    "final_score": 52,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 52,
+    "at": "2026-05-16T04:17:37.756Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-16T04:17:37.756Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T04:17:37.756Z"
+  },
+  "discord_thread_id": "1505061643867000905",
+  "discord_profile_message_id": "1505061643867000905",
+  "discord_thread_opened_at": "2026-05-16T04:17:38.808Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 22 content pages > 20 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 22 content pages > 20 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-16T04:19:47.563Z"
+}

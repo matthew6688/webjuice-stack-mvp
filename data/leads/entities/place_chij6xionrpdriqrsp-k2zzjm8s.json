@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chij6xionrpdriqrsp-k2zzjm8s",
+  "firstSeenAt": "2026-05-15T08:43:02.444Z",
+  "lastSeenAt": "2026-05-15T08:43:02.444Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T08:43:02.444Z",
+  "identifiers": {
+    "place_id": "ChIJ6XiONRpdRiQRSP-k2ZzJM8s",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "vantagemobilemechanic.com.au",
+    "phoneDigits": "0431979123"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Vantage mobile mechanic",
+    "category": "",
+    "categories": [
+      "car_repair",
+      "establishment",
+      "point_of_interest"
+    ],
+    "address": "21 Prospect St, Mackay QLD 4740, Australia",
+    "city": "Mackay",
+    "niche": "car_repair",
+    "phone": "0431 979 123",
+    "website": "https://www.vantagemobilemechanic.com.au/",
+    "google_maps_url": "https://maps.google.com/?cid=14642268489015164744",
+    "rating": 5,
+    "review_count": 8,
+    "websiteStatus": "",
+    "discoveryScore": 27,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "mobile mechanic in mackay",
+    "signals": {},
+    "batch_id": "places-mobile-mechanic-in-mackay-202605151842",
+    "discovery_rank": 1,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-mobile-mechanic-in-mackay-202605151842",
+      "query": "mobile mechanic in mackay",
+      "runPath": "",
+      "at": "2026-05-15T08:43:02.444Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T08:43:02.444Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-mobile-mechanic-in-mackay-202605151842",
+      "query": "mobile mechanic in mackay",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T08:45:47.511Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "stage2_sitemap_too_large",
+      "reason": "sitemap 93 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-mobile-mechanic-in-mackay-202605151842"
+  ],
+  "niche_relevance": {
+    "key": "car_repair||",
+    "relevant": true,
+    "confidence": 0.99,
+    "reason": "其他类别包含car_repair且名称为移动机械维修，属于汽车维修行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-15T08:43:30.532Z",
+    "cached": false
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Borderline — operator should look",
+    "gbp_quality": 56,
+    "final_score": 56,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 56,
+    "at": "2026-05-15T08:43:30.535Z"
+  },
+  "predict_grade": {
+    "grade": "C",
+    "priority": 0,
+    "audit_now": true,
+    "reasons": [
+      "exclusion-filter survived all 3 layers · 进 audit"
+    ],
+    "at": "2026-05-15T08:43:30.536Z"
+  },
+  "exclusion_filter": {
+    "excluded": false,
+    "needs_enrichment": false,
+    "layer": null,
+    "reason": "survived all 3 layers · proceed to audit",
+    "exclusions": [],
+    "thresholds": {
+      "max_reviews": 300,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T08:43:30.536Z"
+  },
+  "discord_thread_id": null,
+  "discord_profile_message_id": null,
+  "discord_thread_opened_at": "2026-05-15T08:43:33.158Z",
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "sitemap 93 pages > 10 · 不在 V3 产品包 (迁移成本失控)"
+  },
+  "archive_reason": "stage2_sitemap_too_large: sitemap 93 pages > 10 · 不在 V3 产品包 (迁移成本失控)",
+  "archived_at": "2026-05-15T08:45:47.511Z",
+  "discord_thread_id_cleared_at": "2026-05-15T20:54:10.403Z",
+  "discord_thread_id_was": "1504766167422865540"
+}

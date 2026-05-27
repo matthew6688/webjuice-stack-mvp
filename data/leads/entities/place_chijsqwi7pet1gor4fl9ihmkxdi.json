@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chijsqwi7pet1gor4fl9ihmkxdi",
+  "firstSeenAt": "2026-05-16T02:56:32.622Z",
+  "lastSeenAt": "2026-05-16T02:56:32.622Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-16T02:56:32.622Z",
+  "identifiers": {
+    "place_id": "ChIJsQWi7PET1GoR4Fl9IHmKxdI",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "bayplumbingdrainage.com.au",
+    "phoneDigits": "1300625633"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Bay Plumbing & Drainage Geelong",
+    "category": "",
+    "categories": [
+      "establishment",
+      "general_contractor",
+      "home_goods_store",
+      "plumber",
+      "point_of_interest",
+      "store"
+    ],
+    "address": "2 Wesley Pl, Geelong VIC 3220, Australia",
+    "city": "Geelong",
+    "niche": "plumber",
+    "phone": "1300 625 633",
+    "website": "https://bayplumbingdrainage.com.au/?utm_source=google&utm_medium=organic&utm_campaign=gbp-listing-geelong",
+    "google_maps_url": "https://maps.google.com/?cid=15187697571217627616",
+    "rating": 5,
+    "review_count": 397,
+    "websiteStatus": "",
+    "discoveryScore": 42,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "plumber in geelong",
+    "signals": {},
+    "batch_id": "places-plumber-in-geelong-202605161256",
+    "discovery_rank": 3,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-plumber-in-geelong-202605161256",
+      "query": "plumber in geelong",
+      "runPath": "",
+      "at": "2026-05-16T02:56:32.622Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-16T02:56:32.622Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-plumber-in-geelong-202605161256",
+      "query": "plumber in geelong",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-16T02:56:38.791Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "layer2_too_large",
+      "reason": "397 reviews > plumber 阈值 200 (大企业/连锁)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-plumber-in-geelong-202605161256"
+  ],
+  "niche_relevance": {
+    "key": "plumber||",
+    "relevant": true,
+    "confidence": 0.98,
+    "reason": "商家名称明确包含 Plumbing and Drainage，属于水管工行业。",
+    "provider": "codex_cli",
+    "at": "2026-05-15T02:09:57.583Z",
+    "cached": true
+  },
+  "cheap_audit": {
+    "action": "audit_candidate",
+    "reason": "Strong V2 candidate — proceed to detailed audit",
+    "gbp_quality": 75,
+    "final_score": 75,
+    "fired_triggers": [
+      "high_traction_old_site"
+    ],
+    "relevance_pass": true,
+    "priority": 75,
+    "at": "2026-05-16T02:56:38.790Z"
+  },
+  "predict_grade": {
+    "grade": "D",
+    "priority": 0,
+    "audit_now": false,
+    "reasons": [
+      "exclusion-filter Layer 2: 397 reviews > plumber 阈值 200 (大企业/连锁)"
+    ],
+    "at": "2026-05-16T02:56:38.790Z"
+  },
+  "exclusion_filter": {
+    "excluded": true,
+    "needs_enrichment": false,
+    "layer": 2,
+    "reason": "397 reviews > plumber 阈值 200 (大企业/连锁)",
+    "exclusions": [
+      {
+        "layer": 2,
+        "id": "too_large",
+        "reason": "397 reviews > plumber 阈值 200 (大企业/连锁)"
+      }
+    ],
+    "thresholds": {
+      "max_reviews": 200,
+      "min_reviews": 5
+    },
+    "at": "2026-05-16T02:56:38.790Z"
+  },
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "397 reviews > plumber 阈值 200 (大企业/连锁)"
+  },
+  "archive_reason": "layer2_too_large: 397 reviews > plumber 阈值 200 (大企业/连锁)",
+  "archived_at": "2026-05-16T02:56:38.791Z"
+}

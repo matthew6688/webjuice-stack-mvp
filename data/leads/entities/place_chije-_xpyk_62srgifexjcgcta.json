@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "entityKey": "place_chije-_xpyk_62srgifexjcgcta",
+  "firstSeenAt": "2026-05-15T08:46:55.670Z",
+  "lastSeenAt": "2026-05-15T08:46:55.670Z",
+  "status": "queued_for_audit",
+  "lastStatusAt": "2026-05-15T08:46:55.670Z",
+  "identifiers": {
+    "place_id": "ChIJE-_XpYK_62sRgiFExJCGcTA",
+    "cid": "",
+    "data_id": "",
+    "websiteDomain": "",
+    "phoneDigits": "0457345862"
+  },
+  "latest": {
+    "sourceType": "places_search",
+    "name": "Green Thumbs Garden Solutions",
+    "category": "",
+    "categories": [
+      "establishment",
+      "general_contractor",
+      "point_of_interest"
+    ],
+    "address": "16 Gray Ave, Bundaberg South QLD 4670, Australia",
+    "city": "Bundaberg",
+    "niche": "establishment",
+    "phone": "0457 345 862",
+    "website": "",
+    "google_maps_url": "https://maps.google.com/?cid=3490719142515057026",
+    "rating": 5,
+    "review_count": 1,
+    "websiteStatus": "",
+    "discoveryScore": 27,
+    "recommendedAction": "audit_candidate",
+    "sourceQuery": "lawn mowing in bundaberg",
+    "signals": {},
+    "batch_id": "places-lawn-mowing-in-bundaberg-202605151846",
+    "discovery_rank": 1,
+    "google_places_provider": "official_api"
+  },
+  "runs": [
+    {
+      "runId": "places-search-places-lawn-mowing-in-bundaberg-202605151846",
+      "query": "lawn mowing in bundaberg",
+      "runPath": "",
+      "at": "2026-05-15T08:46:55.670Z",
+      "discoveryScore": null,
+      "recommendedAction": "audit_candidate"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-05-15T08:46:55.670Z",
+      "event": "seen_in_discovery_run",
+      "runId": "places-search-places-lawn-mowing-in-bundaberg-202605151846",
+      "query": "lawn mowing in bundaberg",
+      "score": null,
+      "action": "audit_candidate",
+      "status": "queued_for_audit"
+    },
+    {
+      "at": "2026-05-15T08:50:37.599Z",
+      "event": "archived_as_rejected",
+      "from_phase": null,
+      "pathId": "layer3_too_few_reviews",
+      "reason": "1 reviews < establishment 阈值 5 (业务太小/刚开业)"
+    }
+  ],
+  "notes": [],
+  "enrichment_status": "complete",
+  "batches": [
+    "places-lawn-mowing-in-bundaberg-202605151846"
+  ],
+  "niche_relevance": {
+    "key": "establishment||",
+    "relevant": true,
+    "confidence": 0.85,
+    "reason": "搜索词是通用类别 establishment，该商家的类别包含 establishment，属于同类。",
+    "provider": "claude_cli",
+    "at": "2026-05-15T08:50:37.597Z",
+    "cached": false
+  },
+  "cheap_audit": {
+    "action": "manual_review",
+    "reason": "Marginal — likely too thin but worth a glance",
+    "gbp_quality": 52,
+    "final_score": 52,
+    "fired_triggers": [],
+    "relevance_pass": true,
+    "priority": 52,
+    "at": "2026-05-15T08:50:37.599Z"
+  },
+  "predict_grade": {
+    "grade": "D",
+    "priority": 0,
+    "audit_now": false,
+    "reasons": [
+      "exclusion-filter Layer 3: 1 reviews < establishment 阈值 5 (业务太小/刚开业)"
+    ],
+    "at": "2026-05-15T08:50:37.599Z"
+  },
+  "exclusion_filter": {
+    "excluded": true,
+    "needs_enrichment": false,
+    "layer": 3,
+    "reason": "1 reviews < establishment 阈值 5 (业务太小/刚开业)",
+    "exclusions": [
+      {
+        "layer": 3,
+        "id": "too_few_reviews",
+        "reason": "1 reviews < establishment 阈值 5 (业务太小/刚开业)"
+      }
+    ],
+    "thresholds": {
+      "max_reviews": 300,
+      "min_reviews": 5
+    },
+    "at": "2026-05-15T08:50:37.599Z"
+  },
+  "phase": "archived",
+  "grade": {
+    "grade": "D",
+    "reason": "1 reviews < establishment 阈值 5 (业务太小/刚开业)"
+  },
+  "archive_reason": "layer3_too_few_reviews: 1 reviews < establishment 阈值 5 (业务太小/刚开业)",
+  "archived_at": "2026-05-15T08:50:37.599Z"
+}
