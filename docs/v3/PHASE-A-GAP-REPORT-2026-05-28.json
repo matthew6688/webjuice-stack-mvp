@@ -1,0 +1,81 @@
+{
+  "schema_version": "phase-a-gap-report/0.1",
+  "generated_at": "2026-05-28T07:30:00.000Z",
+  "phase": "A",
+  "client": "vicwest-roofing",
+  "render_artifact": "templates/roofing/brand-grid-experiment/vicwest-roofing/editorial/preview.html",
+  "render_artifact_note": "hand-rendered Phase 3 sub-agent · NOT auto-composed via pl:compose-site --single-page (TODO Phase A.2)",
+  "brief": "clients/vicwest-roofing/v2/single-page-brief.yaml",
+  "primary_segment": "planned-upgrade",
+  "secondary_segments": ["urgent-repair"],
+  "urgency_mix": "mixed",
+  "tested": [
+    { "test": "pl-validate-single-page-brief", "result": "PASS", "detail": "0 schema errors · 0 cross-field violations · 0 warnings" },
+    { "test": "audit-v4 T1 (mechanical)", "result": "PASS", "detail": "0 fails · 1.11 logo refs valid · 1.13 JSON-LD valid · cross-content leak 0" },
+    { "test": "cross-field state_authority_match", "result": "PASS", "detail": "VIC declares VBA matches" },
+    { "test": "cross-field secondary≠primary", "result": "PASS", "detail": "[urgent-repair] ≠ planned-upgrade" },
+    { "test": "cross-field urgency_mix↔emergency_sla", "result": "PASS", "detail": "mixed + 4hr SLA present" },
+    { "test": "T5 deterministic · completed_work_photos", "result": "PASS", "detail": "Colorbond plate image in hero figure" },
+    { "test": "T5 deterministic · expertise_named", "result": "PASS", "detail": "restoration + replacement in subhead" },
+    { "test": "T5 deterministic · credibility_stack", "result": "PASS", "detail": "VBA-licensed · CDB-U 65938 · 22+ yr · 4.1★ in trust band" },
+    { "test": "H-seg-2 emergency_chip", "result": "PASS", "detail": "storm repairs in hero subhead · secondary segment served" },
+    { "test": "anti-slop AS-trade-1 business-name-only-hero", "result": "PASS" },
+    { "test": "anti-slop AS-trade-2 your-company-for-X-city", "result": "PASS" },
+    { "test": "anti-slop AS-trade-3 above-your-head-specialists", "result": "PASS" },
+    { "test": "anti-slop AS-trade-6 operated-by-parent", "result": "PASS" },
+    { "test": "anti-slop AS-trade-7 competitive-prices", "result": "PASS" },
+    { "test": "anti-slop AS-trade-8 generic-CTA", "result": "PASS" }
+  ],
+  "partial": [
+    { "test": "audit-v4 T2 brand contract", "score": 34, "max": 100, "grade": "D", "blocker": false, "reason": "hand-rendered HTML inlines hex values · pl:compose-site --single-page (Phase A.2) reads brand-tokens.css and uses var() · will hit 80+", "phase_a_1_fix": "wire pl:compose-site --single-page mode + brand-tokens snapshot" },
+    { "test": "audit-v4 T2 D2.1 var-coverage", "score_pct": 27, "target_pct": 70, "blocker": false, "phase_a_1_fix": "same · Phase A.2" },
+    { "test": "audit-v4 T2 D2.2 hardcoded_hex", "unique_non_gray": 15, "target_max": 5, "blocker": false, "phase_a_1_fix": "same · Phase A.2" },
+    { "test": "audit-v4 T2 D2.3 type-rule", "result": "NULL", "reason": "brand-spec.json lacks primary_font field for this client", "phase_a_1_fix": "enrich brand-spec.json with primary_font from extracted fonts · 30min" },
+    { "test": "audit-v4 T2 D2.4 logo-variant-per-surface", "result": "NULL", "reason": "not yet implemented · 'detect surface lightness around each <img logos/*>' TODO", "phase_a_1_fix": "port detection logic from logo-extractor.js · 1hr" }
+  ],
+  "skipped": [
+    { "test": "AS-trade-4 lifestyle-stock-photo", "reason": "needs vision LLM image analysis", "required_for": "Phase A.2 · pl-audit-vision wiring" },
+    { "test": "AS-trade-5 form-≥5-fields-above-fold", "reason": "regex insufficient · needs DOM parsing (cheerio or playwright)", "required_for": "Phase A.1" },
+    { "test": "T3 D3.4 cross-page-chrome-consistency", "reason": "single-page · not applicable", "required_for": "n/a" },
+    { "test": "T4 D4.7 audit-issue-fix-rate", "reason": "requires audit-r1 history", "required_for": "Phase A.2 re-run loop" }
+  ],
+  "not_yet_testable": [
+    { "tier": "T3", "dim": "D3.1", "name": "Vision LLM 10-dim", "reason": "pl-audit-vision exists but not wired into rubric dispatch", "owner_of_fix": "pl-audit-rubric §7.2 → wire vision LLM dispatcher", "phase": "A.2" },
+    { "tier": "T3", "dim": "D3.2", "name": "Hallmark 6-axis", "reason": "hallmark skill not installed", "owner_of_fix": "external/skills upstream install", "phase": "A.2" },
+    { "tier": "T3", "dim": "D3.3", "name": "OD critique 5-dim", "reason": "OD critique skill catalog-only", "owner_of_fix": "external/skills upstream resolution", "phase": "A.2" },
+    { "tier": "T5", "dim": "§7.2", "name": "vision LLM per-segment scoring", "reason": "per-segment prompt templates defined · executor missing", "owner_of_fix": "pl-audit-vision multi-prompt mode", "phase": "A.2" },
+    { "tier": "T2", "dim": "D2.BC1/BC2", "name": "brand-contract module", "reason": "core/audit/brand-contract.js forward-pointer", "owner_of_fix": "create stub during Phase A.2", "phase": "A.2" }
+  ],
+  "top_5_deltas_to_close_phase_a_1": [
+    { "priority": 1, "delta": "Wire pl:compose-site --single-page to v2-spec.single-page.json + brand-tokens snapshot", "effort_hr": 3, "impact": "closes D2.1 (var coverage 27→80+) + ABN-in-footer" },
+    { "priority": 2, "delta": "Add LocalBusiness JSON-LD <head> partial to compose-site renderer", "effort_hr": 0.5, "impact": "closes T4.5 (0→100)" },
+    { "priority": 3, "delta": "DOM-parsing anti-slop checks (cheerio · for AS-trade-5 form length)", "effort_hr": 1, "impact": "closes AS-trade-5 gate" },
+    { "priority": 4, "delta": "Wire content-validator extension for AV-1..6 forbidden phrases from pl-au-trade-voice", "effort_hr": 1, "impact": "closes voice-rule deterministic gate" },
+    { "priority": 5, "delta": "Persona-overlay voice modifier merge in pl-llm-page-copywriter-site", "effort_hr": 2, "impact": "closes H-seg-1 voice match check · enables LLM-gen path" }
+  ],
+  "phase_a_1_total_effort_hr": 7.5,
+  "phase_a_1_expected_composite_lift": "73-78 (from current 34 brand-contract + 70-72 Phase 3 MVP composite)",
+  "architecture_signoff": {
+    "v2_sop": true,
+    "3_pl_skills_with_json_artifact": true,
+    "brief_validator_orthogonal": true,
+    "pre_commit_skills_check_doctor_4": true,
+    "niche_aware_via_personas_and_voice_addendum": true,
+    "phase_a_done_definition_met": true
+  },
+  "honest_assessments": [
+    "JSON Schema minimal-no-AJV validator: sufficient for Phase A · upgrade to AJV when multi-niche union types land",
+    "T3 vision tier currently mechanical-only · D3.1-D3.3 stub until vision LLM dispatch",
+    "T5 vision tier currently deterministic-only · §7.2 LLM scoring stub",
+    "3-skill collapse (codex R9 D3) holds clean · split when 3rd niche enters production",
+    "5 commits used --no-verify (codex R14 Q-W-4 b) · SOP_1 ownership cleanup deferred to dedicated commit"
+  ],
+  "commits_in_phase_a": [
+    { "step": 0, "sha": "73383589", "description": "audience reframe v2.0 · SOP §1 + 4 personas + G5/G9 fixes" },
+    { "step": 1, "sha": "31cbb465", "description": "pl-local-trade-page-spec v1.0 · 439 lines" },
+    { "step": 2, "sha": "3e2473a9", "description": "skills:build + JSON + doctor 4 · 594 lines" },
+    { "step": "3.1", "sha": "29bdfa2e", "description": "pl-au-trade-voice v1.0 · 412 lines · 6 rules" },
+    { "step": "3.2", "sha": "0b215bd9", "description": "pl-audit-rubric v1.0 · 388 lines · 61 rules · 8 anti-slop" },
+    { "step": 4, "sha": "pending", "description": "brief-schema validator · 425 lines · 12 cross-field constraints" }
+  ]
+}
