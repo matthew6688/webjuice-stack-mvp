@@ -371,6 +371,75 @@ async function runT4DesignerReview(htmlFiles, ctx) {
   };
 }
 
+// ─── T4d · Deterministic voice check (WIRED · ADR §2.4 voice sub-dim · 0 LLM) ──
+// Phase A.1 Step 4 · codex R20 Q-CC-1 (a) sequencing + R21 Q-DD-1 (β) wiring.
+// Reads pl-au-trade-voice/pl-au-trade-voice.json banned_phrases + us_spelling +
+// forbidden_niche_claims_roofing. Applies via cheerio body-text extraction.
+// Scoring: 100 minus penalty per violation (P0:30, P1:10, P2:3). Floor 0.
+function runT4VoiceDeterministic(htmlFiles, ctx) {
+  let voiceJson;
+  try {
+    const voicePath = path.resolve(REPO, 'skills/pl-au-trade-voice/pl-au-trade-voice.json');
+    voiceJson = JSON.parse(fs.readFileSync(voicePath, 'utf8'));
+  } catch (e) {
+    return { status: 'skipped', reason: 'voice.json missing', score: null };
+  }
+  const c = voiceJson.constants || {};
+  const banned = (c.banned_phrases || []).map(p => p.toLowerCase());
+  const usSpelling = (c.us_spelling_violations_per_au || []).map(w => w.toLowerCase());
+  const forbiddenNiche = (c.forbidden_niche_claims_roofing || []).map(p => p.toLowerCase());
+
+  const violations = [];
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    let $;
+    try { $ = cheerioLoad(html); } catch { continue; }
+    // Strip script + style + JSON-LD before extracting text · avoid false-positive matches
+    $('script, style, noscript').remove();
+    const bodyText = ($('body').text() || $.text() || '').toLowerCase();
+    const pageBase = path.basename(f);
+    for (const p of banned) {
+      // Word-boundary-ish · escape regex special chars · allow soft hyphens / spaces
+      const re = new RegExp('\\b' + p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+      const hits = (bodyText.match(re) || []).length;
+      if (hits > 0) violations.push({ page: pageBase, rule: 'AV-4', kind: 'banned_phrase', match: p, count: hits, severity: 'P1' });
+    }
+    for (const w of usSpelling) {
+      const re = new RegExp('\\b' + w + '\\b', 'gi');
+      const hits = (bodyText.match(re) || []).length;
+      if (hits > 0) violations.push({ page: pageBase, rule: 'AV-1', kind: 'us_spelling', match: w, count: hits, severity: 'P1' });
+    }
+    for (const p of forbiddenNiche) {
+      const re = new RegExp('\\b' + p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+      const hits = (bodyText.match(re) || []).length;
+      if (hits > 0) violations.push({ page: pageBase, rule: 'AV-6', kind: 'forbidden_niche_claim', match: p, count: hits, severity: 'P0' });
+    }
+  }
+
+  // Score: 100 - sum(P0:30 + P1:10 + P2:3) · floor 0
+  let penalty = 0;
+  for (const v of violations) {
+    if (v.severity === 'P0') penalty += 30;
+    else if (v.severity === 'P1') penalty += 10;
+    else penalty += 3;
+  }
+  const score = Math.max(0, 100 - penalty);
+
+  return {
+    score,
+    dims: {
+      'D4d.voice_av4_banned_phrases': { weight: 0.5, hits: violations.filter(v => v.kind === 'banned_phrase').length },
+      'D4d.voice_av1_us_spelling':    { weight: 0.3, hits: violations.filter(v => v.kind === 'us_spelling').length },
+      'D4d.voice_av6_forbidden_niche': { weight: 0.2, hits: violations.filter(v => v.kind === 'forbidden_niche_claim').length },
+    },
+    violations: violations.slice(0, 50),
+    rules_checked: ['AV-1', 'AV-4', 'AV-6'],
+    rules_deferred: ['AV-2 owner-voice (mech-H-1)', 'AV-3 segment-voice (vision)', 'AV-5 license phrasing (trust-signals)'],
+    status: 'wired',
+    voice_skill_version: voiceJson.version,
+  };
+}
+
 // ─── T5 · Creative-director (STUB · LLM · ADR §2.5 · premium-only) ──────
 async function runT5CreativeDirector(htmlFiles, ctx) {
   // TODO: adapt /tmp/open-design/skills/creative-director prompt
@@ -475,6 +544,19 @@ function collectIssues(tiers) {
       }
     }
   }
+  // T4d voice violations (codex R21 Q-DD-3 yes · P1)
+  for (const v of (tiers.T4d?.violations || [])) {
+    issues.push({
+      id: nextId(), tier: 'T4d', severity: v.severity || 'P1', dim: v.rule, page: v.page,
+      what: `${v.rule} ${v.kind} · "${v.match}" (${v.count}× hit)`,
+      why: 'Voice-rule violation per pl-au-trade-voice §1 (AU universal layer)',
+      fix: v.kind === 'us_spelling'
+        ? `Replace "${v.match}" with AU spelling (e.g. colour/centre/realise)`
+        : v.kind === 'forbidden_niche_claim'
+          ? `Remove forbidden claim "${v.match}" · breaches ACCC / niche compliance (pl-au-trade-voice §1.3 + §3.6)`
+          : `Replace banned generic "${v.match}" with specific concrete proof (pl-au-trade-voice §1.5)`,
+    });
+  }
   return issues;
 }
 
@@ -507,12 +589,14 @@ async function main() {
   const runT2 = TIER === 't2' || TIER === 'fast' || TIER === 'full' || TIER === 'premium';
   const runT3 = TIER === 'full' || TIER === 'premium';
   const runT4 = TIER === 'full' || TIER === 'premium';
+  const runT4d = TIER === 'fast' || TIER === 'full' || TIER === 'premium'; // deterministic voice · always on for fast+
   const runT5 = TIER === 'premium';
 
   if (runT1) tiers.T1 = runT1Hard(ctx.htmlFiles, ctx.facts || {}, ctx);
   if (runT2) tiers.T2 = runT2BrandContract(ctx.htmlFiles, ctx.brandSpec, ctx);
   if (runT3) tiers.T3 = await runT3VisionAudit(ctx.htmlFiles, ctx);
   if (runT4) tiers.T4 = await runT4DesignerReview(ctx.htmlFiles, ctx);
+  if (runT4d) tiers.T4d = runT4VoiceDeterministic(ctx.htmlFiles, ctx);
   if (runT5) tiers.T5 = await runT5CreativeDirector(ctx.htmlFiles, ctx);
 
   const final = composeFinalScore(tiers, { includePremium: TIER === 'premium' });
@@ -530,6 +614,7 @@ async function main() {
     tier_2: tiers.T2 || null,
     tier_3: tiers.T3 || null,
     tier_4: tiers.T4 || null,
+    tier_4d_voice: tiers.T4d || null,
     tier_5: tiers.T5 || null,
     composite: final.composite,
     grade: final.grade,

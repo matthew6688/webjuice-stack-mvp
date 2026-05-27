@@ -376,7 +376,41 @@ JSON schema (codex R10 + R15 Q-X-5 a generic voice extractor):
     "owner_voice_max_words": 11,
     "standard_h1_max_words": 10,
     "au_spelling_required": true,
-    "us_spelling_violations_per_au": ["color", "center", "catalog", "realize", "organize"]
+    "us_spelling_violations_per_au": ["color", "center", "catalog", "realize", "organize", "favorite", "honor", "fiber", "fulfill", "specialty"],
+    "banned_phrases": [
+      "passionate about",
+      "quality workmanship",
+      "competitive prices",
+      "family-owned and operated",
+      "established reputation",
+      "no job too big or small",
+      "customer satisfaction guaranteed",
+      "trusted name in",
+      "above your head specialists",
+      "feel free to contact us",
+      "industry-leading",
+      "cutting-edge",
+      "tailored to your needs",
+      "second to none",
+      "your one-stop shop",
+      "going above and beyond",
+      "we pride ourselves",
+      "highly skilled team",
+      "wide range of services",
+      "fully qualified and experienced"
+    ],
+    "banned_phrase_examples_keep_only_owner_says": [
+      "the best in"
+    ],
+    "forbidden_niche_claims_roofing": [
+      "lifetime guarantee",
+      "insurance approved",
+      "100% leak-proof",
+      "factory direct",
+      "no middle man",
+      "lifetime warranty on workmanship"
+    ],
+    "owner_voice_exception_regex": "(\\b(?:I|my|me|we)\\b.{0,40}\\b(?:name|on the (?:truck|roof|job|tools)|family|generations|dad|grandfather)\\b)|(\\b[A-Z][a-z]+(?:\\s[A-Z][a-z]+)?'s\\s+(?:roof|plumb|spark|paint))"
   },
   "rules": [
     { "id": "AV-1", "severity": "hard", "description": "All copy uses UK spelling (colour/centre/realise · etc.)", "enforced_by": ["content-validator au_spelling check"] },
