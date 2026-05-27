@@ -5,8 +5,10 @@
  * Usage:
  *   npm run pl:enrich-entity -- --entity-key <key> [--render]
  *   npm run pl:enrich-entity -- --all-active [--render]
+ *   npm run pl:enrich-entity -- --entity-key <key> --dry-run     # plan only · 0 write / 0 paid call
  *
  * `--render` 会调 leads:build-master-md 重生 master.md (含新加的"公司注册 · 域名"段)
+ * `--dry-run` 列出目标 + planned provider · skip enrichEntity() · skip writes (Codex Response 11)
  *
  * 设计原则 (V3-ENRICHMENT-PLAN):
  * - 全 additive · enrichment 失败不阻塞写盘 (entity.enrichment._meta.trace 记录)
@@ -53,13 +55,28 @@ async function run() {
     die('Usage: --entity-key <key> | --all-active  [--render]');
   }
 
-  console.log(`pl:enrich-entity · ${targets.length} target(s) · ABR_GUID=${process.env.ABR_GUID ? 'set' : 'missing'}\n`);
+  const DRY_RUN = !!a['dry-run'];
+  console.log(`pl:enrich-entity · ${targets.length} target(s) · ABR_GUID=${process.env.ABR_GUID ? 'set' : 'missing'}${DRY_RUN ? ' · DRY-RUN (no spend · no writes)' : ''}\n`);
   const summary = [];
 
   for (const key of targets) {
     const filePath = path.join(ENTITIES_DIR, `${key}.json`);
     const before = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     const name = before.latest?.name || key;
+
+    if (DRY_RUN) {
+      // List planned providers based on entity state · DO NOT call enrichEntity()
+      const hasPlaceId = !!before.identifiers?.place_id;
+      const hasDomain = !!before.identifiers?.domain || !!before.latest?.website;
+      const planned = [];
+      if (hasPlaceId) planned.push('places-details');
+      if (hasDomain) planned.push('whois-rdap', 'wayback', 'tinyfish-search', 'abn-lookup');
+      console.log(`▶ ${name} (${key.slice(0, 32)}...) · [DRY-RUN]`);
+      console.log(`    planned providers: ${planned.length ? planned.join(', ') : '(none · no place_id/domain)'}`);
+      summary.push({ key, name, ok: true, dry_run: true, planned });
+      continue;
+    }
+
     process.stdout.write(`▶ ${name} (${key.slice(0, 32)}...) ... `);
     const start = Date.now();
     try {
