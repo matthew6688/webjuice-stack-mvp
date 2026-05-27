@@ -1,0 +1,805 @@
+{
+  "page": "home",
+  "title": "Metal Roof Replacement Ballarat | Vicwest Roofing",
+  "meta_description": "Ballarat-based Vicwest Roofing replaces metal and Colorbond roofs across Western Victoria. Call 0403 554 592 for practical quoting.",
+  "h1_anchor": "Metal Roof Replacement and New Roofs Across Ballarat and Western Victoria",
+  "primary_keyword": "metal roof replacement Ballarat",
+  "page_summary_for_designer": "The home page should feel direct, trade-credible and proof-led, with real roof photography doing the heavy lifting. Copy routes homeowners, builders and commercial buyers into the right next page while keeping phone contact and quote enquiry visible.",
+  "blocks": [
+    {
+      "n": 1,
+      "type": "hero",
+      "variant": "fullbleed-with-form",
+      "purpose": "Pass the five-second test with service, location, phone action and one strong real roof image. The quick form captures low-friction quote enquiries without replacing the phone CTA.",
+      "wireframe_ascii": "'FULL-BLEED ROOF PHOTO + DARK SCRIM'\n'left: eyebrow'\n'left: H1'\n'left: subhead'\n'left: call CTA + quote CTA'\n'left: proof chips'\n'right/bottom: quick quote form'\n'fields: name phone suburb service'\n'mobile: image, copy, form stacked'",
+      "layout_intent": {
+        "section_height": "80-90vh desktop; auto-height stacked on mobile",
+        "container": "full-bleed image with max-width content overlay",
+        "stack_order_desktop": [
+          "copy",
+          "cta row",
+          "proof chips",
+          "quick quote form"
+        ],
+        "stack_order_mobile": [
+          "copy",
+          "cta row",
+          "proof chips",
+          "quick quote form"
+        ],
+        "alignment": "bottom-left copy with form anchored bottom-right",
+        "background_treatment": "genuine completed roof photo with dark left-to-right scrim"
+      },
+      "content": {
+        "eyebrow": "Ballarat-based metal roofing specialists",
+        "headline": "Metal Roof Replacement and New Roofs Across Ballarat and Western Victoria",
+        "subhead": "Vicwest Roofing replaces ageing roofs and installs new Colorbond and metal roofing for homes, builders and commercial projects across Ballarat, Geelong, Bendigo and regional Victoria. Call for a practical measure, quote and timing advice.",
+        "primary_cta_label": "Call 0403 554 592",
+        "primary_cta_href": "tel:0403554592",
+        "secondary_cta_label": "Get a Roof Quote",
+        "secondary_cta_href": "/contact",
+        "proof_chips": [
+          "10-year workmanship warranty",
+          "20+ years' roofing experience",
+          "4.1 Google rating from 18 reviews",
+          "Ballarat-based in Delacombe"
+        ]
+      },
+      "microcopy": {
+        "form_title": "Quick roof quote",
+        "form_intro": "Four details is enough to start the quote conversation.",
+        "fields": [
+          {
+            "name": "name",
+            "label": "Name",
+            "placeholder": "Your name",
+            "required": true
+          },
+          {
+            "name": "phone",
+            "label": "Phone",
+            "placeholder": "Best contact number",
+            "required": true
+          },
+          {
+            "name": "suburb",
+            "label": "Suburb",
+            "placeholder": "e.g. Alfredton",
+            "required": true
+          },
+          {
+            "name": "service_interest",
+            "label": "Service interest",
+            "placeholder": "Roof replacement, new roof, gutters or builder plans",
+            "required": true
+          }
+        ],
+        "submit_label": "Request a Call Back",
+        "privacy_note": "Vicwest will use these details to respond to your roofing enquiry.",
+        "aria_primary": "Call Vicwest Roofing on 0403 554 592",
+        "aria_secondary": "Open Vicwest Roofing quote enquiry page"
+      },
+      "images": [
+        {
+          "ref": "PLACEHOLDER-home-hero-completed-metal-roof.jpg",
+          "role": "hero background",
+          "alt_text": "Completed Colorbond metal roof by Vicwest Roofing in Western Victoria",
+          "treatment": "full-bleed, dark scrim, no crop hiding roof detail"
+        }
+      ],
+      "source_refs": [
+        {
+          "field": "headline",
+          "source": "website-crawl",
+          "note": "Current site positions Vicwest around roof replacement in Ballarat, Geelong, Bendigo and towns within 100km."
+        },
+        {
+          "field": "primary_cta_href",
+          "source": "website-crawl",
+          "note": "Phone listed as 0403 554 592."
+        },
+        {
+          "field": "proof_chips",
+          "source": "customer-brief",
+          "note": "Uses stated 10-year workmanship warranty, 20+ years' roofing experience and Google rating."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "subhead",
+          "type": "verified",
+          "rationale": "Service offer and region are directly supported by the brief and current website."
+        },
+        {
+          "field": "microcopy.form_intro",
+          "type": "ai-completed",
+          "rationale": "Form copy follows the architect's field limit and quote intent."
+        }
+      ],
+      "design_notes_for_handoff": "Keep the phone CTA more visually dominant than the form submit. Use a real completed roof image, not a crew or stock trade photo."
+    },
+    {
+      "n": 2,
+      "type": "trust-bar",
+      "variant": "credential-strip",
+      "purpose": "Surface the strongest trust signals before the visitor scrolls too far. This owns the site-wide trust-bar pattern.",
+      "wireframe_ascii": "'horizontal credential strip'\n'chip 1 licence placeholder'\n'chip 2 warranty'\n'chip 3 years'\n'chip 4 rating'\n'chip 5 ABN'\n'mobile: two-column wrap'",
+      "layout_intent": {
+        "section_height": "compact 88-120px",
+        "container": "max-width strip inside full-width neutral band",
+        "stack_order_desktop": [
+          "credential chips in one row"
+        ],
+        "stack_order_mobile": [
+          "credential chips wrap into two columns"
+        ],
+        "alignment": "centre aligned chips with left-aligned text inside each chip",
+        "background_treatment": "soft grey band with charcoal text and restrained gold accents"
+      },
+      "content": {
+        "items": [
+          {
+            "label": "VBA licence",
+            "sublabel": "Licence number to be supplied before launch",
+            "icon_ref": "badge-check"
+          },
+          {
+            "label": "10-year warranty",
+            "sublabel": "Workmanship warranty on eligible roof replacements",
+            "icon_ref": "shield-check"
+          },
+          {
+            "label": "20+ years",
+            "sublabel": "Roofing experience across metal roofing work",
+            "icon_ref": "calendar-check"
+          },
+          {
+            "label": "4.1 Google rating",
+            "sublabel": "From 18 Google reviews",
+            "icon_ref": "star"
+          },
+          {
+            "label": "ABN 69 622 718 361",
+            "sublabel": "VICWEST GROUP PTY LTD trading as VICWEST ROOFING",
+            "icon_ref": "file-check"
+          }
+        ]
+      },
+      "microcopy": {
+        "licence_placeholder_note": "Replace with confirmed VBA roof plumbing licence number before publishing.",
+        "aria_label": "Vicwest Roofing credentials"
+      },
+      "images": [],
+      "source_refs": [
+        {
+          "field": "content.items",
+          "source": "customer-brief",
+          "note": "ABN, warranty, experience and Google rating supplied in trust signals catalogue."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.items[0].sublabel",
+          "type": "verified",
+          "rationale": "The brief explicitly says the VBA licence number is still to confirm."
+        }
+      ],
+      "design_notes_for_handoff": "Do not imply insurance, memberships or licence numbers until the client supplies them. Licence placeholder should look intentional, not like missing content."
+    },
+    {
+      "n": 3,
+      "type": "services-grid",
+      "variant": "decision-routing-cards",
+      "purpose": "Help visitors self-select into the correct service path. Cards should be concise and visually distinct, not mini service pages.",
+      "wireframe_ascii": "'section headline + short intro'\n'card: old roof'\n'card: new build'\n'card: gutters'\n'card: builder/commercial'\n'card: project proof'\n'each card: icon/photo crop + link'\n'mobile: single column cards'",
+      "layout_intent": {
+        "section_height": "content-led, 5-card grid",
+        "container": "max-width content container",
+        "stack_order_desktop": [
+          "headline",
+          "subhead",
+          "service cards grid"
+        ],
+        "stack_order_mobile": [
+          "headline",
+          "subhead",
+          "cards stacked"
+        ],
+        "alignment": "left aligned copy; cards equal height",
+        "background_treatment": "white section with photo or metal-detail accents per card"
+      },
+      "content": {
+        "headline": "Choose the roofing path that fits the job",
+        "subhead": "Start with the work you need now. Each path gives you the right detail without making you sort through every service on the site.",
+        "services": [
+          {
+            "name": "Roof replacements",
+            "short_desc": "For ageing tile, iron or metal roofs that need a full replacement, clearer quote and 10-year workmanship warranty discussion.",
+            "href": "/roof-replacements"
+          },
+          {
+            "name": "New roofs",
+            "short_desc": "For new homes, extensions and residential builds where plans, estimating and scheduling need to line up with the build.",
+            "href": "/new-roofs"
+          },
+          {
+            "name": "Gutters, fascia and downpipes",
+            "short_desc": "For rusted, leaking or underperforming roof edges, including Colorbond gutters, fascia, downpipes and leaf-guard options.",
+            "href": "/gutters"
+          },
+          {
+            "name": "Builders and commercial",
+            "short_desc": "For builders, developers and project managers needing metal roofing, cladding, fascia, guttering or plan-based estimating.",
+            "href": "/builders-commercial"
+          },
+          {
+            "name": "Projects",
+            "short_desc": "For proof first: browse real Vicwest work across Alfredton, Creswick, Wendouree, Highton, Bendigo and Williamstown.",
+            "href": "/projects"
+          }
+        ]
+      },
+      "microcopy": {
+        "card_cta_label": "View page",
+        "aria_label": "Vicwest Roofing service paths"
+      },
+      "images": [
+        {
+          "ref": "PLACEHOLDER-service-roof-replacement.jpg",
+          "role": "service card image",
+          "alt_text": "Tile to Colorbond roof replacement by Vicwest Roofing",
+          "treatment": "tight crop showing finished roofing and ridge lines"
+        },
+        {
+          "ref": "PLACEHOLDER-service-new-roof.jpg",
+          "role": "service card image",
+          "alt_text": "New metal roof installation on a residential build",
+          "treatment": "clean roof plane crop"
+        },
+        {
+          "ref": "PLACEHOLDER-service-gutters.jpg",
+          "role": "service card image",
+          "alt_text": "Colorbond gutter and fascia replacement detail",
+          "treatment": "detail crop of gutter line"
+        }
+      ],
+      "source_refs": [
+        {
+          "field": "content.services",
+          "source": "customer-brief",
+          "note": "Service scope includes roof replacements, new roofs, gutters, fascia, downpipes, builders, commercial and projects."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.subhead",
+          "type": "ai-completed",
+          "rationale": "Routing language is written to match the architect's home page role."
+        }
+      ],
+      "design_notes_for_handoff": "Make cards feel like decision tiles, not long service summaries. Consider subtle category tags such as Homeowner, Builder and Proof."
+    },
+    {
+      "n": 4,
+      "type": "why-us",
+      "variant": "number-led-differentiators",
+      "purpose": "Explain why Vicwest is different using evidence of capacity, process and regional reach.",
+      "wireframe_ascii": "'headline left'\n'number tiles right/grid'\n'01 speed'\n'02 estimating'\n'03 tidy sites'\n'04 regional reach'\n'05 project proof'\n'mobile: number cards stacked'",
+      "layout_intent": {
+        "section_height": "medium content section",
+        "container": "max-width two-column then grid",
+        "stack_order_desktop": [
+          "headline column",
+          "number-led items grid"
+        ],
+        "stack_order_mobile": [
+          "headline",
+          "items stacked"
+        ],
+        "alignment": "left aligned",
+        "background_treatment": "soft grey with charcoal number typography"
+      },
+      "content": {
+        "headline": "What makes Vicwest practical for bigger roof work",
+        "items": [
+          {
+            "title": "Crew capacity when timing matters",
+            "body": "Reviews describe two teams arriving for a Hamilton replacement and completing old roof removal, battens, sisal, new sheets, caps and flashings in one day on that job.",
+            "number": "2 teams"
+          },
+          {
+            "title": "Plan-ready estimating",
+            "body": "Vicwest uses CAD-trained estimators for new roofs and builder work, so plan sets can move into clearer takeoffs, pricing and scheduling conversations.",
+            "number": "CAD"
+          },
+          {
+            "title": "Fast outcomes on suitable jobs",
+            "body": "Real customers mention same-day and two-day replacement outcomes. Your quote should still confirm timing against roof size, access, weather and materials.",
+            "number": "1-2 days"
+          },
+          {
+            "title": "Regional reach from Ballarat",
+            "body": "The current site names Ballarat, Geelong, Bendigo, Bacchus Marsh, Daylesford, Castlemaine, Creswick, Maryborough and towns within 100km of Ballarat.",
+            "number": "100km"
+          },
+          {
+            "title": "Proof by real locations",
+            "body": "Project and review evidence spans Alfredton, Creswick, Wendouree, Highton, Bendigo, Williamstown and Hamilton, giving visitors suburb-level proof before they enquire.",
+            "number": "6+ locations"
+          }
+        ]
+      },
+      "microcopy": {
+        "section_label": "Why Vicwest",
+        "aria_label": "Vicwest Roofing differentiators"
+      },
+      "images": [],
+      "source_refs": [
+        {
+          "field": "content.items[0]",
+          "source": "reviews",
+          "note": "Roland Peacock review describes two teams and all-in-one-day completion."
+        },
+        {
+          "field": "content.items[1]",
+          "source": "customer-brief",
+          "note": "New roofs page proof includes CAD-trained estimators."
+        },
+        {
+          "field": "content.items[3]",
+          "source": "website-crawl",
+          "note": "Current homepage names towns within 100km of Ballarat."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.items[2].body",
+          "type": "ai-completed",
+          "rationale": "Adds necessary caution that timing depends on job conditions."
+        }
+      ],
+      "design_notes_for_handoff": "Use large numerals as anchors, but keep the body factual. Avoid turning this into values copy."
+    },
+    {
+      "n": 5,
+      "type": "proof-strip",
+      "variant": "review-snippet-ticker-static",
+      "purpose": "Bridge from claims into evidence without adding a full testimonial wall yet.",
+      "wireframe_ascii": "'thin proof strip'\n'quote fragment 1'\n'quote fragment 2'\n'quote fragment 3'\n'quote fragment 4'\n'mobile: stacked fragments'\n'no carousel'",
+      "layout_intent": {
+        "section_height": "compact proof band",
+        "container": "full-width band with max-width row",
+        "stack_order_desktop": [
+          "four proof fragments in row"
+        ],
+        "stack_order_mobile": [
+          "proof fragments stacked"
+        ],
+        "alignment": "centre on desktop; left on mobile",
+        "background_treatment": "charcoal band with white text and gold dividers"
+      },
+      "content": {
+        "items": [
+          {
+            "metric": "\"Hayden promptly gave me quote\"",
+            "label": "Roland Peacock"
+          },
+          {
+            "metric": "\"clearly detailed and explained\"",
+            "label": "Wayne Watson"
+          },
+          {
+            "metric": "\"all in one day\"",
+            "label": "Roland Peacock"
+          },
+          {
+            "metric": "\"very tidy worksite\"",
+            "label": "Helen Hanson"
+          }
+        ]
+      },
+      "microcopy": {
+        "aria_label": "Short customer proof snippets"
+      },
+      "images": [],
+      "source_refs": [
+        {
+          "field": "content.items",
+          "source": "reviews",
+          "note": "Uses short attributed fragments from supplied review evidence."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.items[1]",
+          "type": "verified",
+          "rationale": "Wayne Watson quote wording is supplied in the customer brief."
+        }
+      ],
+      "design_notes_for_handoff": "Keep this static. It should read quickly between sections, not behave like a testimonial carousel."
+    },
+    {
+      "n": 6,
+      "type": "gallery",
+      "variant": "featured-project-teasers",
+      "purpose": "Show real completed work early enough to support trust and visual transformation.",
+      "wireframe_ascii": "'headline + intro + view all link'\n'project tile Alfredton'\n'project tile Creswick'\n'project tile Wendouree'\n'project tile Highton'\n'project tile Bendigo'\n'project tile Williamstown'\n'mobile: 2 then 1 column'",
+      "layout_intent": {
+        "section_height": "image-led sampler",
+        "container": "wide content container",
+        "stack_order_desktop": [
+          "headline row",
+          "six-tile gallery"
+        ],
+        "stack_order_mobile": [
+          "headline",
+          "tiles stacked or two-column"
+        ],
+        "alignment": "left aligned captions over or below image",
+        "background_treatment": "white section with real project images"
+      },
+      "content": {
+        "headline": "Real roof work across Western Victoria",
+        "subhead": "A small sample only. The projects page carries the full visual proof, including more suburbs, roof types and before-and-after context.",
+        "items": [
+          {
+            "caption": "Alfredton tile-to-Colorbond roof replacement in Monument",
+            "ref": "PLACEHOLDER-project-alfredton-monument.jpg"
+          },
+          {
+            "caption": "Creswick cottage roof replacement with Colorbond Pale Eucalypt",
+            "ref": "PLACEHOLDER-project-creswick-pale-eucalypt.jpg"
+          },
+          {
+            "caption": "Wendouree tile-to-tin roof replacement completed in two days",
+            "ref": "PLACEHOLDER-project-wendouree-tile-to-tin.jpg"
+          },
+          {
+            "caption": "Highton asbestos cement roof replacement with Colorbond metal roofing",
+            "ref": "PLACEHOLDER-project-highton-colorbond.jpg"
+          },
+          {
+            "caption": "Bendigo tile-to-Colorbond roof replacement",
+            "ref": "PLACEHOLDER-project-bendigo-colorbond.jpg"
+          },
+          {
+            "caption": "Williamstown tile-to-Colorbond roof built for coastal conditions",
+            "ref": "PLACEHOLDER-project-williamstown-colorbond.jpg"
+          }
+        ]
+      },
+      "microcopy": {
+        "view_all_label": "View Projects",
+        "view_all_href": "/projects",
+        "aria_label": "Featured Vicwest Roofing project gallery"
+      },
+      "images": [
+        {
+          "ref": "PLACEHOLDER-project-alfredton-monument.jpg",
+          "role": "gallery tile",
+          "alt_text": "Alfredton tile-to-Colorbond roof replacement in Monument by Vicwest Roofing",
+          "treatment": "finished roof photo with suburb label"
+        },
+        {
+          "ref": "PLACEHOLDER-project-creswick-pale-eucalypt.jpg",
+          "role": "gallery tile",
+          "alt_text": "Creswick cottage Colorbond Pale Eucalypt roof replacement by Vicwest Roofing",
+          "treatment": "finished roof photo with suburb label"
+        },
+        {
+          "ref": "PLACEHOLDER-project-wendouree-tile-to-tin.jpg",
+          "role": "gallery tile",
+          "alt_text": "Wendouree tile-to-tin roof replacement by Vicwest Roofing",
+          "treatment": "finished roof photo with suburb label"
+        },
+        {
+          "ref": "PLACEHOLDER-project-highton-colorbond.jpg",
+          "role": "gallery tile",
+          "alt_text": "Highton asbestos cement roof replaced with Colorbond metal roofing",
+          "treatment": "finished roof photo with suburb label"
+        },
+        {
+          "ref": "PLACEHOLDER-project-bendigo-colorbond.jpg",
+          "role": "gallery tile",
+          "alt_text": "Bendigo tile-to-Colorbond roof replacement by Vicwest Roofing",
+          "treatment": "finished roof photo with suburb label"
+        },
+        {
+          "ref": "PLACEHOLDER-project-williamstown-colorbond.jpg",
+          "role": "gallery tile",
+          "alt_text": "Williamstown tile-to-Colorbond roof replacement by Vicwest Roofing",
+          "treatment": "finished roof photo with suburb label"
+        }
+      ],
+      "source_refs": [
+        {
+          "field": "content.items",
+          "source": "customer-brief",
+          "note": "Project locations and roof types are named in the brief."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.subhead",
+          "type": "ai-completed",
+          "rationale": "Cross-link copy keeps the home gallery as a sampler per architect direction."
+        }
+      ],
+      "design_notes_for_handoff": "Use 3 to 6 real project images only. Do not mix in lifestyle photos. Captions must stay visible without covering critical roof detail."
+    },
+    {
+      "n": 7,
+      "type": "service-areas",
+      "variant": "regional-routing-map",
+      "purpose": "Confirm coverage across Western Victoria and send location-driven visitors to the service areas page.",
+      "wireframe_ascii": "'left: region copy'\n'right: map/list module'\n'area chips in groups'\n'primary area: Ballarat'\n'route link to service areas'\n'mobile: intro then chips'",
+      "layout_intent": {
+        "section_height": "medium routing section",
+        "container": "max-width split layout",
+        "stack_order_desktop": [
+          "intro copy",
+          "regional map/list"
+        ],
+        "stack_order_mobile": [
+          "headline",
+          "intro",
+          "areas",
+          "service areas link"
+        ],
+        "alignment": "left aligned",
+        "background_treatment": "soft grey or muted map background with clear text"
+      },
+      "content": {
+        "headline": "Ballarat-based, working across Western Victoria",
+        "intro": "Vicwest operates from Delacombe and assesses roof replacements, new roofs, guttering and larger metal roofing work across Ballarat, Geelong, Bendigo and surrounding regional towns. For location-specific proof, head to the service areas page.",
+        "areas": [
+          "Ballarat",
+          "Geelong",
+          "Bendigo",
+          "Bacchus Marsh",
+          "Daylesford",
+          "Castlemaine",
+          "Creswick",
+          "Maryborough"
+        ]
+      },
+      "microcopy": {
+        "cta_label": "View Service Areas",
+        "cta_href": "/service-areas",
+        "aria_label": "Vicwest Roofing service areas"
+      },
+      "images": [
+        {
+          "ref": "PLACEHOLDER-regional-map-western-victoria.svg",
+          "role": "supporting map graphic",
+          "alt_text": "Vicwest Roofing service area overview from Ballarat across Western Victoria",
+          "treatment": "simple regional routing map, not a precise emergency coverage map"
+        }
+      ],
+      "source_refs": [
+        {
+          "field": "content.areas",
+          "source": "website-crawl",
+          "note": "Current site names Ballarat, Geelong, Bendigo, Bacchus Marsh, Daylesford, Castlemaine, Creswick and Maryborough."
+        },
+        {
+          "field": "content.intro",
+          "source": "GBP",
+          "note": "Business location supplied as Shed 3/31 Icon Dr, Delacombe VIC 3356."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.intro",
+          "type": "ai-completed",
+          "rationale": "Uses cautious coverage wording and avoids emergency availability promises."
+        }
+      ],
+      "design_notes_for_handoff": "Map should communicate regional reach without implying every town has immediate response coverage."
+    },
+    {
+      "n": 8,
+      "type": "reviews",
+      "variant": "three-proof-cards",
+      "purpose": "Own the main testimonial block and show real customer language about anxiety, speed, communication and cleanup.",
+      "wireframe_ascii": "'headline + subhead'\n'review card 1 anxiety/cleanup'\n'review card 2 speed/teams'\n'review card 3 older home/tidy site'\n'optional small Google rating chip'\n'mobile: stacked cards'",
+      "layout_intent": {
+        "section_height": "testimonial section with three cards",
+        "container": "max-width content container",
+        "stack_order_desktop": [
+          "headline",
+          "three review cards"
+        ],
+        "stack_order_mobile": [
+          "headline",
+          "subhead",
+          "cards stacked"
+        ],
+        "alignment": "left aligned cards",
+        "background_treatment": "white or very light grey with understated rating icons"
+      },
+      "content": {
+        "headline": "What customers notice after the roof is done",
+        "subhead": "The strongest proof comes from homeowners describing the quote, the crew, the timing and the state of the site at handover.",
+        "items": [
+          {
+            "quote": "Replacing your roof is such an overwhelming thing but Hayden was amazing from first phone call to being on time with appointments, quotes (which was well below what we were expecting ) and getting the job done so quickly!! He and his team were wonderful making quick work of getting the old roof off and new one on and cleaning up as well and it looks unbelievable like a new house! I couldn’t recommend Vicwest Roofing enough!!!",
+            "author": "Rebecca Schultz",
+            "location": "Not specified",
+            "rating": "5"
+          },
+          {
+            "quote": "I was unable to get a roof replacement for 6 months in Hamilton. I saw Vic West add on Facebook so I gave them a call. Hayden promptly gave me quote and came straight away to measure up. Before I knew it 2 teams of trades were here and off with the old roof new battens and sisal new sheets on capped and flashed all in one day. Vic West are a professional team and I highly recommend.",
+            "author": "Roland Peacock",
+            "location": "Hamilton",
+            "rating": "5"
+          },
+          {
+            "quote": "Hayden and his team replaced a rusting old iron roof on my old Creswick cottage with Colorbond ( Pale Eucalypt). Parts of the house were over 100 years old and it wasn’t an easy job. There were solar panels to be removed and replaced as well. The team did a great job, arriving very early each day and working solidly until knock off time. They ran a very tidy worksite and obviously took pride in workmanship, which was good to see. All the debris was removed at the end.",
+            "author": "Helen Hanson",
+            "location": "Creswick",
+            "rating": "5"
+          }
+        ]
+      },
+      "microcopy": {
+        "rating_note": "Google rating: 4.1 from 18 reviews",
+        "aria_label": "Vicwest Roofing customer reviews"
+      },
+      "images": [],
+      "source_refs": [
+        {
+          "field": "content.items[0].quote",
+          "source": "website-crawl",
+          "note": "Verbatim Google review shown on current Vicwest website."
+        },
+        {
+          "field": "content.items[1].quote",
+          "source": "website-crawl",
+          "note": "Verbatim Google review shown on current Vicwest website."
+        },
+        {
+          "field": "content.items[2].quote",
+          "source": "website-crawl",
+          "note": "Verbatim Google review shown on current Vicwest website."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.items[0].location",
+          "type": "verified",
+          "rationale": "No verified location supplied for Rebecca Schultz in the brief or website crawl."
+        },
+        {
+          "field": "content.items[1].location",
+          "type": "verified",
+          "rationale": "Hamilton is named in Roland Peacock's review."
+        },
+        {
+          "field": "content.items[2].location",
+          "type": "verified",
+          "rationale": "Creswick is named in Helen Hanson's review."
+        }
+      ],
+      "design_notes_for_handoff": "Keep these as long-form cards rather than chopping them into slogans. They carry the emotional and practical proof for the home page."
+    },
+    {
+      "n": 9,
+      "type": "cta-band",
+      "variant": "split-homeowner-builder-actions",
+      "purpose": "End the page with two clear paths: call or quote for homeowners, send plans for builders.",
+      "wireframe_ascii": "'wide CTA band'\n'headline'\n'subhead'\n'primary: call'\n'secondary: homeowner quote'\n'builder action: send plans'\n'contact emails beneath'\n'mobile: stacked buttons'",
+      "layout_intent": {
+        "section_height": "compact final conversion band",
+        "container": "max-width split action layout",
+        "stack_order_desktop": [
+          "copy",
+          "homeowner actions",
+          "builder action"
+        ],
+        "stack_order_mobile": [
+          "headline",
+          "subhead",
+          "call button",
+          "quote button",
+          "builder plans link"
+        ],
+        "alignment": "left aligned copy with clear action grouping",
+        "background_treatment": "charcoal band with brass/gold primary action and white secondary links"
+      },
+      "content": {
+        "headline": "Ready to talk through a roof, quote or plan set?",
+        "subhead": "Call Vicwest for the fastest path. Homeowners can request a quote, and builders can send plans straight to estimating.",
+        "primary_cta_label": "Call 0403 554 592",
+        "primary_cta_href": "tel:0403554592",
+        "secondary_cta_label": "Get a Homeowner Quote",
+        "secondary_cta_href": "/contact"
+      },
+      "microcopy": {
+        "builder_cta_label": "Send Plans for Estimating",
+        "builder_cta_href": "mailto:estimating@vicwestroofing.com.au",
+        "info_email_label": "General enquiries: info@vicwestroofing.com.au",
+        "info_email_href": "mailto:info@vicwestroofing.com.au",
+        "estimating_email_label": "Builder plans: estimating@vicwestroofing.com.au",
+        "estimating_email_href": "mailto:estimating@vicwestroofing.com.au",
+        "aria_primary": "Call Vicwest Roofing",
+        "aria_secondary": "Open homeowner quote enquiry"
+      },
+      "images": [],
+      "source_refs": [
+        {
+          "field": "content.primary_cta_href",
+          "source": "website-crawl",
+          "note": "Phone listed as 0403 554 592."
+        },
+        {
+          "field": "microcopy.info_email_href",
+          "source": "website-crawl",
+          "note": "General email listed as info@vicwestroofing.com.au."
+        },
+        {
+          "field": "microcopy.estimating_email_href",
+          "source": "customer-brief",
+          "note": "Builder plans email supplied as estimating@vicwestroofing.com.au."
+        }
+      ],
+      "inference_flags": [
+        {
+          "field": "content.subhead",
+          "type": "ai-completed",
+          "rationale": "Audience split follows the architect's CTA-band direction."
+        }
+      ],
+      "design_notes_for_handoff": "Visually split homeowner and builder paths, but keep the phone as the dominant action."
+    }
+  ],
+  "global_seo": {
+    "canonical_path": "/",
+    "suggested_slug": "home",
+    "schema_suggestions": [
+      "LocalBusiness",
+      "RoofingContractor",
+      "WebPage",
+      "Review",
+      "AggregateRating"
+    ],
+    "og_title": "Metal Roof Replacement Ballarat | Vicwest Roofing",
+    "og_description": "Ballarat-based metal roof replacement, new roofs, guttering and builder roofing across Western Victoria.",
+    "internal_links": [
+      "/roof-replacements",
+      "/new-roofs",
+      "/gutters",
+      "/builders-commercial",
+      "/projects",
+      "/service-areas",
+      "/contact"
+    ],
+    "nap": {
+      "business_name": "Vicwest Roofing",
+      "legal_name": "VICWEST GROUP PTY LTD",
+      "abn": "69 622 718 361",
+      "phone": "0403 554 592",
+      "email": "info@vicwestroofing.com.au",
+      "address": "Shed 3/31 Icon Dr, Delacombe VIC 3356"
+    }
+  },
+  "qa_checklist": [
+    "Confirm VBA licence number before publishing the trust bar.",
+    "Use genuine completed Vicwest roof photos for the hero and gallery placeholders.",
+    "Keep hero form to name, phone, suburb and service interest only.",
+    "Check all phone CTAs use tel:0403554592.",
+    "Confirm exact warranty conditions for the 10-year workmanship warranty.",
+    "Confirm builder plans email is active before launch.",
+    "Do not add extra home page blocks beyond the 9 supplied by the architect.",
+    "Review final rendered copy for banned generic trade phrases and AU spelling."
+  ],
+  "_meta": {
+    "generated_at": "2026-05-27T23:46:52.143Z",
+    "page": "home",
+    "llm_backend": "codex",
+    "model": "codex-default",
+    "duration_seconds": 142,
+    "prompt_kb": 63,
+    "architect_plan_block_count": 9
+  }
+}
