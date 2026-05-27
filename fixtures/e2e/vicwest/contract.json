@@ -1,0 +1,49 @@
+{
+  "schema_version": "e2e-contract/0.1",
+  "fixture_name": "vicwest-roofing-single-page",
+  "created_at": "2026-05-28",
+  "purpose": "Phase A.1 regression contract · locks the 86 composite baseline so subsequent A.1 steps (3-5) and Phase B work cannot accidentally break the renderer + audit-fix combo without surfacing it.",
+  "explicit_non_goal": "This fixture is NOT approval of content quality. It locks regression safety, not Matthew's taste bar for persona voice. Step 5 persona-overlay voice merge is judged separately by human review, not by this contract.",
+  "inputs": {
+    "slug": "vicwest-roofing",
+    "brief": "clients/vicwest-roofing/v2/single-page-brief.yaml",
+    "handoff": "clients/vicwest-roofing/v2/handoff/od-package",
+    "spec_file": "v2-spec.single-page.json"
+  },
+  "pipeline_steps": [
+    { "id": 1, "cli": "pl:validate-single-page-brief", "args": "--slug vicwest-roofing", "expect_exit": 0 },
+    { "id": 2, "cli": "pl:compose-site", "args": "--handoff clients/vicwest-roofing/v2/handoff/od-package --out clients/vicwest-roofing/v2/composed-output-single-page --single-page", "expect_exit": 0 },
+    { "id": 3, "cli": "pl:audit-v4", "args": "--slug vicwest-roofing --output-dir clients/vicwest-roofing/v2/composed-output-single-page --tier fast", "expect_exit": 0 }
+  ],
+  "assertions": {
+    "audit_json_path": "clients/vicwest-roofing/v2/composed-output-single-page/audit-v4-full.json",
+    "rendered_html_path": "clients/vicwest-roofing/v2/composed-output-single-page/index.html",
+    "checks": [
+      { "id": "ASSERT-1", "kind": "audit_field_gte", "path": "composite", "min": 86, "rationale": "Phase A.1 baseline locked after Step 1+2" },
+      { "id": "ASSERT-2", "kind": "audit_field_equals", "path": "tier_1.pass", "value": true, "rationale": "T1 hard mechanical gates must pass" },
+      { "id": "ASSERT-3", "kind": "audit_field_equals", "path": "ship_verdict", "value": "SHIP", "rationale": "v4 verdict must remain SHIP" },
+      { "id": "ASSERT-4", "kind": "audit_field_gte", "path": "tier_2.score", "min": 80, "rationale": "T2 brand contract must stay ≥80" },
+      { "id": "ASSERT-5", "kind": "audit_field_gte", "path": "tier_2.breakdown.D2.1_var_brand_coverage.coverage_pct", "min": 90, "rationale": "D2.1 var coverage must stay ≥90% (renderer using brand tokens)" },
+      { "id": "ASSERT-6", "kind": "audit_field_lte", "path": "tier_2.breakdown.D2.2_hardcoded_hex_count.unique_non_gray_hex", "max": 3, "rationale": "D2.2 hardcoded hex must stay ≤3 unique non-gray (fallback hex stripped)" },
+      { "id": "ASSERT-7", "kind": "html_contains", "needle": "application/ld+json", "rationale": "LocalBusiness JSON-LD must be emitted in <head>" },
+      { "id": "ASSERT-8", "kind": "html_contains_all", "needles": ["ba-slider", "ba-divider", "ba-handle"], "rationale": "R-BA-6 hard rule · draggable-slider DOM signature for before/after section" },
+      { "id": "ASSERT-9", "kind": "html_jsonld_field_equals", "ld_path": "@type", "value": "RoofingContractor", "rationale": "Niche-specific schema.org type (not generic LocalBusiness)" },
+      { "id": "ASSERT-10", "kind": "html_jsonld_field_exists", "ld_path": "aggregateRating", "rationale": "Trust signal · reviews surface in structured data" }
+    ]
+  },
+  "expected_baseline_snapshot": {
+    "captured_at": "2026-05-28T09:30:00Z",
+    "composite": 86,
+    "grade": "A",
+    "ship_verdict": "SHIP",
+    "tier_1_pass": true,
+    "tier_2_score": 86,
+    "d21_coverage_pct": 96,
+    "d22_hardcoded_hex": 0,
+    "jsonld_type": "RoofingContractor"
+  },
+  "regression_policy": {
+    "on_failure": "halt CI / pre-commit · do NOT auto-update baseline · investigate root cause · update fixture only with explicit Matthew approval + codex sign-off",
+    "rationale": "This contract is the load-bearing wall protecting Steps 1+2 wins through the rest of A.1 and into Phase B."
+  }
+}
