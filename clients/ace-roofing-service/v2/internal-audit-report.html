@@ -170,6 +170,23 @@
   .appendix .meta-row { font-size: 11.5px; font-weight: 800; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
   .appendix code { background: var(--paper); border: 1.5px solid var(--line); padding: 1px 6px; font-family: var(--mono); }
 
+  /* cycle-V3 enrichment section styling */
+  .enrich-kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 16px; font-size: 13.5px; font-weight: 700; margin: 10px 0 18px; }
+  .enrich-kv dt { color: var(--muted); font-weight: 800; }
+  .enrich-kv dd { margin: 0; color: var(--ink); word-break: break-word; }
+  .enrich-kv code { background: var(--cream); border: 1px solid var(--line); padding: 1px 5px; font-family: var(--mono); font-size: 12px; }
+  .enrich-derived { padding: 10px 14px; background: var(--cream); border: 2px solid var(--line); margin: 12px 0 18px; font-size: 13px; }
+  .enrich-mentions { list-style: none; padding: 0; margin: 8px 0 18px; }
+  .enrich-mentions li { padding: 8px 10px; border-bottom: 1px solid color-mix(in srgb, var(--line) 18%, transparent); font-size: 13px; font-weight: 700; }
+  .enrich-mentions li:last-child { border-bottom: none; }
+  .src { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 3px; margin-left: 4px; font-family: var(--mono); font-weight: 700; vertical-align: 1px; }
+  .src-abr   { background: #fff3e0; color: #e65100; }
+  .src-whois { background: #f3e5f5; color: #6a1b9a; }
+  .src-wb    { background: #e0f2f1; color: #00695c; }
+  .src-site  { background: #f1f8e9; color: #558b2f; }
+  .src-search{ background: #fce4ec; color: #c2185b; }
+  .src-llm   { background: #eef2f7; color: #5a6b80; }
+
   @media print {
     html, body { background: white; }
     body { background-image: none; }
@@ -191,19 +208,19 @@
         <span><strong>roofer</strong></span>
         <span>·</span><span>Brisbane</span>
         <span>·</span>
-        <span>★ 5 (0 reviews)</span>
+        <span>★ 5 (37 reviews)</span>
       </p>
       <p class="meta-line">
-        <span>generated 2026/05/14 16:25</span>
+        <span>generated 2026/05/15 02:02</span>
         <span>·</span>
         <span>config <code>2026-05-11-v1</code></span>
         <span>·</span>
-        <span>entity <code>domain_aceroofingservice.com.au</code></span>
+        <span>entity <code>place_chijrq6qulnbkwsruettr7eegyc</code></span>
       </p>
     </div>
     <div class="score-tile">
       <span class="label">Audit Score</span>
-      <div class="num">52<small>/100</small></div>
+      <div class="num">54<small>/100</small></div>
       <span class="decision">MODERATE CANDIDATE</span>
     </div>
   </header>
@@ -211,7 +228,7 @@
   <section class="section">
     <p class="eyebrow">总体判断</p>
     <h2>审计概览</h2>
-    <p class="lead-summary">audit_score=52 → moderate_candidate · weakest: gbp 20, seo 45 · 1 critical issues</p>
+    <p class="lead-summary">audit_score=54 → moderate_candidate · weakest: gbp 32, seo 45 · 1 critical issues</p>
     
   </section>
 
@@ -219,27 +236,29 @@
     <p class="eyebrow">联系方式 + GBP 快照</p>
     <h2>商家档案</h2>
     <div class="contact-grid">
-      <div class="contact-cell"><span class="lab">电话</span><span class="val">0449168985</span></div>
+      <div class="contact-cell"><span class="lab">电话</span><span class="val">0449 168 985</span></div>
       <div class="contact-cell"><span class="lab">网址</span><span class="val"><a href="https://aceroofingservice.com.au/" target="_blank">https://aceroofingservice.com.au/</a></span></div>
-      <div class="contact-cell"><span class="lab">地址</span><span class="val">72 Queen St, Brisbane City QLD 4000</span></div>
+      <div class="contact-cell"><span class="lab">地址</span><span class="val">72 Queen St, Brisbane City QLD 4000, Australia</span></div>
       <div class="contact-cell"><span class="lab">类目</span><span class="val">roofer</span></div>
-      <div class="contact-cell"><span class="lab">Google Maps</span><span class="val">—</span></div>
-      <div class="contact-cell"><span class="lab">网站状态</span><span class="val"><code>independent_https_site</code></span></div>
-      <div class="contact-cell"><span class="lab">来源</span><span class="val">roofer in brisbane</span></div>
-      <div class="contact-cell"><span class="lab">图片数 / 抓取分</span><span class="val">0 · 34</span></div>
+      <div class="contact-cell"><span class="lab">Google Maps</span><span class="val"><a href="https://maps.google.com/?cid=9734986581297417040" target="_blank">打开</a></span></div>
+      <div class="contact-cell"><span class="lab">网站状态</span><span class="val"><code>—</code></span></div>
+      <div class="contact-cell"><span class="lab">来源</span><span class="val">roofer brisbane</span></div>
+      <div class="contact-cell"><span class="lab">图片数 / 抓取分</span><span class="val">— · 27</span></div>
     </div>
   </section>
+
+  
 
   <section class="section">
     <p class="eyebrow">六维度评分总览</p>
     <h2>每个维度的强弱在哪</h2>
-    <p class="dim-meta"><strong>52/100</strong> · MODERATE CANDIDATE</p>
+    <p class="dim-meta"><strong>54/100</strong> · MODERATE CANDIDATE</p>
     <div class="dim-grid">
       
         <div class="dim-card">
           <span class="label">Google Business Profile</span>
-          <div class="score">20<small>/100</small></div>
-          <div class="bar"><div class="fill" style="width:20%"></div></div>
+          <div class="score">32<small>/100</small></div>
+          <div class="bar"><div class="fill" style="width:32%"></div></div>
           <span class="weight">权重 15%</span>
         </div>
         <div class="dim-card">
@@ -335,23 +354,10 @@
 
   
   <section class="section">
-    <p class="eyebrow">主要问题 · 4 项</p>
+    <p class="eyebrow">主要问题 · 3 项</p>
     <h2>影响转化的明显短板</h2>
     <div class="issues-grid">
       
-    <div class="issue-card issue-major">
-      <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">review_volume_vs_peers</code>
-      </div>
-      <div class="issue-title">review_volume_vs_peers</div>
-      
-      
-      
-      
-      <p class="issue-row"><span class="lab">命中原因</span>0 reviews</p>
-      <p class="issue-row ev-ref"><span class="lab">证据</span>GBP-side issue, see business profile</p>
-    </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
@@ -407,14 +413,14 @@
         <details class="dim-detail">
           <summary>
             <span class="dim-summary-label">Google Business Profile</span>
-            <span class="dim-summary-score">20/100</span>
+            <span class="dim-summary-score">32/100</span>
             <span class="dim-summary-rules">8 规则</span>
           </summary>
           
     <table class="rule-table">
       <thead><tr><th>规则</th><th>命中</th><th>得分</th><th>原因</th></tr></thead>
       <tbody>
-        <tr class="hit"><td><code>has_website_link</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">website: https://aceroofingservice.com.au/</td></tr><tr class="miss"><td><code>review_volume_vs_peers</code></td><td class="mark">✗</td><td class="num">0/25</td><td class="why">0 reviews</td></tr><tr class="hit"><td><code>average_rating</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">★5</td></tr><tr class="miss"><td><code>has_hours</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">no hours</td></tr><tr class="miss"><td><code>image_count</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">0 images</td></tr><tr class="miss"><td><code>has_business_description</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">no description</td></tr><tr class="miss"><td><code>has_service_area</code></td><td class="mark">✗</td><td class="num">0/15</td><td class="why">no service area</td></tr><tr class="na"><td><code>owner_replies_to_reviews</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">reply rate not enriched</td></tr>
+        <tr class="hit"><td><code>has_website_link</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">website: https://aceroofingservice.com.au/</td></tr><tr class="hit"><td><code>review_volume_vs_peers</code></td><td class="mark">✓</td><td class="num">12/25</td><td class="why">37 reviews</td></tr><tr class="hit"><td><code>average_rating</code></td><td class="mark">✓</td><td class="num">10/10</td><td class="why">★5</td></tr><tr class="miss"><td><code>has_hours</code></td><td class="mark">✗</td><td class="num">0/5</td><td class="why">no hours</td></tr><tr class="miss"><td><code>image_count</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">0 images</td></tr><tr class="miss"><td><code>has_business_description</code></td><td class="mark">✗</td><td class="num">0/10</td><td class="why">no description</td></tr><tr class="miss"><td><code>has_service_area</code></td><td class="mark">✗</td><td class="num">0/15</td><td class="why">no service area</td></tr><tr class="na"><td><code>owner_replies_to_reviews</code></td><td class="mark">—</td><td class="num">0/15</td><td class="why">reply rate not enriched</td></tr>
       </tbody>
     </table>
         </details>
@@ -494,121 +500,105 @@
     <section class="section">
       <p class="eyebrow">视觉审计 · Vision LLM</p>
       <h2>设计观感的整体诊断</h2>
-      <p class="lead-summary">The site has a clear roofing message and some useful trust claims, but the mobile view hides the main contact action and the desktop header makes the phone number hard to read.</p>
+      <p class="lead-summary">The page has a professional roofing look and visible contact actions, but the above-fold area is text-heavy and does not make the fastest path to a quote feel effortless.</p>
       <div class="visual-scores">
         <div class="vs"><span>新鲜度</span><strong>6</strong><small>/10</small></div>
-        <div class="vs"><span>信任度</span><strong>6</strong><small>/10</small></div>
-        <div class="vs"><span>转化准备度</span><strong>5</strong><small>/10</small></div>
+        <div class="vs"><span>信任度</span><strong>7</strong><small>/10</small></div>
+        <div class="vs"><span>转化准备度</span><strong>6</strong><small>/10</small></div>
         <div class="vs vs-text"><span>设计年代</span><strong class="age">slightly_outdated</strong></div>
       </div>
       <div class="issues-grid">
         
-    <div class="issue-card issue-critical">
+    <div class="issue-card issue-major">
       <div class="issue-head">
-        <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">mobile_cta_not_visible</code>
+        <span class="issue-severity">MAJOR</span>
+        <code class="issue-id">headline_too_large_and_long</code>
       </div>
-      <div class="issue-title">No phone or quote button on mobile</div>
-      <p class="issue-row"><span class="lab">观察到</span>In the mobile screenshot, the top of the page shows only the large Ace Roofing Service logo, then the hero text; there is no visible phone button or quote button above the fold.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A Google-searching Brisbane customer is often trying to call quickly, especially for roof leaks or urgent repairs. If they cannot see a tap-to-call action immediately, they may go back to the search results and call another roofer.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Mobile header with a compact logo and a sticky tap-to-call button visible at the top, plus a second quote button directly under the main headline.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Reduce the mobile logo height, add a sticky bottom or top phone CTA reading &#39;Call 0426 366 7xx&#39;, and place a &#39;Get Free Quote&#39; button directly below the hero headline.</p>
-      
-      <div class="issue-evidence">
-      <p class="ev-lab">证据 · 移动端截图</p>
-      <img src="screenshots/mobile.png" alt="mobile evidence" />
-    </div>
-    </div>
-    <div class="issue-card issue-critical">
-      <div class="issue-head">
-        <span class="issue-severity">CRITICAL</span>
-        <code class="issue-id">desktop_phone_number_truncated</code>
-      </div>
-      <div class="issue-title">Phone number appears cut off</div>
-      <p class="issue-row"><span class="lab">观察到</span>In the desktop header, the blue phone button shows &#39;0426 366 7...&#39; with the final digits hidden or cropped.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A visitor may worry the site is unfinished or may not be able to copy the number accurately. For a local trade business, an unclear phone number immediately weakens trust and makes calling harder.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A full phone number displayed in one line with enough button width, strong contrast, and no ellipsis.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Widen the desktop phone button and set the phone text to never truncate; use a clear label such as &#39;Call 0426 366 7xx&#39; with a phone icon.</p>
+      <div class="issue-title">Oversized headline slows comprehension</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero headline spans three large lines and includes a long quoted sentence: &quot;Feel Safe Under a Roof That Lasts - Brisbane Roof Restoration with 10 Years of Worry-Free Protection!&quot;</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>A local customer comparing roofers from Google has to work too hard to understand the offer quickly. The most important action, getting help or a quote, competes with a very large block of marketing text.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A shorter headline such as &quot;Brisbane Roof Repairs &amp; Restoration&quot; with one supporting line underneath, followed immediately by phone and quote buttons.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Rewrite the hero into a direct service-led headline, reduce the heading size by about 20-30%, and place a clear primary CTA directly under the subheading.</p>
       
       <div class="issue-evidence">
       <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-desktop-phone-number-truncated.png" alt="evidence for Full desktop" loading="lazy" />
+      <img src="evidence/issue-headline-too-large-and-long.png" alt="evidence for Full desktop" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">headline_too_large_on_mobile</code>
+        <code class="issue-id">quote_button_not_primary_enough</code>
       </div>
-      <div class="issue-title">Mobile headline overwhelms screen</div>
-      <p class="issue-row"><span class="lab">观察到</span>On mobile, the headline takes most of the visible screen height and wraps into many short lines before any contact action appears.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>A phone visitor has to work through a long sales line before seeing what to do next. This slows down decision-making when the customer mainly wants to know whether the roofer is local, trustworthy, and easy to contact.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A shorter mobile headline in 32-40px type, followed immediately by one sentence of service detail and a visible call or quote button.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Rewrite the mobile hero to &#39;Brisbane Roof Repairs &amp; Restoration&#39; with a smaller support line about licensed, insured service and 10-year protection, then show phone and quote CTAs.</p>
+      <div class="issue-title">Quote CTA is visually secondary</div>
+      <p class="issue-row"><span class="lab">观察到</span>The &quot;GET FREE QUOTE&quot; button is a white pill in the top-right, while the blue phone button beside it is more visually dominant.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>Visitors who are not ready to call may miss the quote path because it does not stand out as the main next step. That matters for roofing customers who may want pricing before speaking to someone.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A high-contrast primary &quot;Get Free Quote&quot; button in the hero area, paired with a secondary click-to-call button, both visible without scrolling.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Move a stronger quote CTA into the main hero content, use the brand blue or another high-contrast accent for it, and keep the phone CTA next to it as a secondary action.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据 · 移动端截图</p>
-      <img src="screenshots/mobile.png" alt="mobile evidence" />
+      <p class="ev-lab">证据截图 · Desktop 800px region</p>
+      <img src="evidence/issue-quote-button-not-primary-enough.png" alt="evidence for Desktop 800px region" loading="lazy" />
     </div>
     </div>
-    <div class="issue-card issue-major">
+    <div class="issue-card issue-critical">
       <div class="issue-head">
-        <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">hero_image_too_dark</code>
+        <span class="issue-severity">CRITICAL</span>
+        <code class="issue-id">phone_number_truncated</code>
       </div>
-      <div class="issue-title">Roof image is overly dark</div>
-      <p class="issue-row"><span class="lab">观察到</span>The hero background is a very dark roof photo with a heavy navy overlay, making the actual roofing work hard to inspect.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>Customers hiring a roofer want visual proof that the business does real, quality work. A dark image feels more like a generic template than evidence of local roofing results.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A brighter real project photo showing a clean Brisbane roof, with the text placed on a controlled dark panel or gradient only where needed for readability.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the current dark hero image with a sharp completed-roof project photo and use a lighter overlay limited to the text area.</p>
+      <div class="issue-title">Phone number appears incomplete</div>
+      <p class="issue-row"><span class="lab">观察到</span>The blue phone button in the header shows &quot;0426 366 7..&quot; with the end of the number visually cut off or abbreviated.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>An incomplete-looking phone number can immediately reduce trust. A customer with an urgent roof issue may wonder whether the site is broken or whether the business details are reliable.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>The full phone number displayed clearly inside the button, with enough horizontal padding and no truncation.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Increase the phone button width, prevent text truncation, and test the full number across desktop and mobile header breakpoints.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Desktop 700px region</p>
-      <img src="evidence/issue-hero-image-too-dark.png" alt="evidence for Desktop 700px region" loading="lazy" />
+      <p class="ev-lab">证据截图 · Full desktop</p>
+      <img src="evidence/issue-phone-number-truncated.png" alt="evidence for Full desktop" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-minor">
       <div class="issue-head">
         <span class="issue-severity">MINOR</span>
-        <code class="issue-id">desktop_header_shape_distracts</code>
+        <code class="issue-id">hero_background_too_dark</code>
       </div>
-      <div class="issue-title">Angled logo block feels dated</div>
-      <p class="issue-row"><span class="lab">观察到</span>The desktop header places the logo inside a large white angled block that cuts diagonally into the hero image.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>The unusual angled shape draws attention away from the phone and quote actions. It can also make the design feel older than the actual business.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>A simple horizontal header with compact logo on the left and phone/quote buttons aligned on the right, using consistent spacing.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the angled white logo panel with a clean sticky header bar, keeping the logo smaller and the contact actions visually dominant.</p>
+      <div class="issue-title">Roof image is heavily darkened</div>
+      <p class="issue-row"><span class="lab">观察到</span>The roof photo behind the hero is covered by a very dark overlay, making the actual roofing work hard to inspect.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The dark treatment helps white text stand out, but it also hides the real work quality. Roofing customers want visual proof that the company does solid, current work.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>A brighter, sharper roof image with a controlled dark gradient only behind the text area, leaving part of the roof clearly visible.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Replace the full dark overlay with a left-side gradient behind the copy and use a clearer project photo that shows roof material and workmanship.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-desktop-header-shape-distracts.png" alt="evidence for Full desktop" loading="lazy" />
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-hero-background-too-dark.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
     <div class="issue-card issue-major">
       <div class="issue-head">
         <span class="issue-severity">MAJOR</span>
-        <code class="issue-id">trust_claims_not_prioritized</code>
+        <code class="issue-id">benefit_list_overloaded</code>
       </div>
-      <div class="issue-title">Trust points are scattered</div>
-      <p class="issue-row"><span class="lab">观察到</span>The desktop hero lists many checkmark claims across two columns, including licensed, insured, family-owned, emergency needs, and 20 years expertise.</p>
-      <p class="issue-row"><span class="lab">为什么是问题</span>The useful proof is present, but it is buried in a long list. A local customer scanning quickly may miss the strongest reasons to trust the business.</p>
-      <p class="issue-row"><span class="lab">正确长啥样</span>Three compact trust badges near the CTA: &#39;Licensed &amp; Insured&#39;, &#39;20+ Years Experience&#39;, and &#39;Emergency Roofing 24/7&#39;, followed by a short service line.</p>
-      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Condense the checklist into three high-priority badges directly under the CTA, then move secondary claims lower on the page.</p>
+      <div class="issue-title">Too many checklist claims above fold</div>
+      <p class="issue-row"><span class="lab">观察到</span>The hero includes nine checkmark bullet points across two columns, including long lines such as &quot;Clear and Consistent Communication Every Step of the Way&quot;.</p>
+      <p class="issue-row"><span class="lab">为什么是问题</span>The long checklist makes the first screen feel busy and forces visitors to scan a lot before acting. Important trust points like licensed, insured, emergency availability, and years in business do not stand out.</p>
+      <p class="issue-row"><span class="lab">正确长啥样</span>Three to four compact trust badges above the fold, such as &quot;Licensed &amp; Insured&quot;, &quot;Since 2004&quot;, &quot;Emergency Roofing&quot;, and &quot;Free Quotes&quot;.</p>
+      <p class="issue-row fix"><span class="lab">redesign 怎么改</span>Condense the checklist into four short trust badges under the CTA, then move detailed service promises lower on the page with icons and supporting copy.</p>
       
       <div class="issue-evidence">
-      <p class="ev-lab">证据截图 · Full desktop</p>
-      <img src="evidence/issue-trust-claims-not-prioritized.png" alt="evidence for Full desktop" loading="lazy" />
+      <p class="ev-lab">证据截图 · Desktop 700px region</p>
+      <img src="evidence/issue-benefit-list-overloaded.png" alt="evidence for Desktop 700px region" loading="lazy" />
     </div>
     </div>
       </div>
       
         <div class="positives">
           <p class="eyebrow accent-mint">需要保留的优点</p>
-          <ul><li>The business name and roofing category are clear in both desktop and mobile screenshots.</li><li>The blue accent color gives the phone and &#39;10 Years&#39; promise strong visibility.</li><li>The page already includes useful trust claims such as licensed, insured, family-owned, and emergency availability.</li></ul>
+          <ul><li>Phone and quote actions are visible in the desktop header.</li><li>The page uses a real roofing background image, which fits the service category.</li><li>Trust claims such as licensed, insured, family-owned, and emergency availability are present.</li></ul>
         </div>
       
         <div class="priorities">
           <p class="eyebrow accent-coral">Redesign 优先级</p>
-          <ol><li>1. Add visible mobile tap-to-call and quote CTAs above the fold.</li><li>2. Fix the desktop header so the full phone number is readable and contact actions dominate.</li><li>3. Replace the dark generic hero treatment with a brighter real roofing project image and three focused trust badges.</li></ol>
+          <ol><li>1. Fix the header phone number so it displays fully on all screen sizes.</li><li>2. Simplify the hero message and add a stronger quote CTA inside the main hero area.</li><li>3. Replace the long checklist with four high-value trust badges above the fold.</li></ol>
         </div>
     </section>
 
@@ -623,6 +613,70 @@
         <li>redesign hooks — 哪些主题该在网站哪些位置呈现</li>
       </ul>
     </section>
+
+  
+  <section class="section">
+    <p class="eyebrow">公司硬数据</p>
+    <h2>公司注册 · 域名 · 外部 mention</h2>
+    <p style="font-size:12px;color:#5e6268;margin-bottom:18px">4-source enrichment · 抓取时间 2026-05-26T16:00:59 · 5/5 路成功</p>
+    
+    <h3>公司注册 (ABR)</h3>
+    <dl class="enrich-kv">
+      <dt>ABN</dt><dd><code>16 873 123 656</code> · Cancelled <span class="src src-abr">[ABR]</span></dd>
+      <dt>注册名</dt><dd>HOMER, ACE TYRONE <span class="src src-abr">[ABR]</span></dd>
+      <dt>实体类型</dt><dd>Individual/Sole Trader <span class="src src-abr">[ABR]</span></dd>
+      
+      <dt>GST 注册</dt><dd>否 <span class="src src-abr">[ABR]</span></dd>
+      <dt>注册地址</dt><dd>QLD 4674 <span class="src src-abr">[ABR]</span></dd>
+      
+    </dl>
+
+    <h3>域名 (WHOIS RDAP)</h3>
+    <dl class="enrich-kv">
+      <dt>注册日</dt><dd><i>privacy-redacted (.au 隐私保护)</i> <span class="src src-whois">[WHOIS]</span></dd>
+      
+      <dt>最近变更</dt><dd>2025-09-15 <span class="src src-whois">[WHOIS]</span></dd>
+      <dt>注册商</dt><dd>Web Address Registration Pty Ltd <span class="src src-whois">[WHOIS]</span></dd>
+      
+      <dt>状态</dt><dd><code>server renew prohibited</code> <span class="src src-whois">[WHOIS]</span></dd>
+    </dl>
+
+    <h3>Wayback Machine 历史</h3>
+    <dl class="enrich-kv">
+      <dt>第一次上线</dt><dd>2024-09-12 <a href="http://web.archive.org/web/20240912172547/http://aceroofingservice.com.au/" target="_blank">[首版截图 ↗]</a> <span class="src src-wb">[Wayback]</span></dd>
+      <dt>最近快照</dt><dd>2025-03-12 <a href="http://web.archive.org/web/20250312043438/https://aceroofingservice.com.au/" target="_blank">[最近 ↗]</a> <span class="src src-wb">[Wayback]</span></dd>
+      <dt>存档年限</dt><dd>0 年 <span class="src src-wb">[Wayback]</span></dd>
+    </dl>
+
+    <p class="enrich-derived"><strong>综合域名年龄:</strong> 1 年 (source: <code>wayback_first_snapshot</code>) <span class="src src-llm">[derived]</span></p>
+
+    <h3>外部 mention (Tinyfish search · AU filtered)</h3>
+    <p>找到 <strong>6</strong> 个澳洲相关 mention (总 10 · 过滤后):</p>
+    <ul class="enrich-mentions">
+      <li><a href="https://aceroofingservice.com.au/" target="_blank">Ace Roofing Services: Home</a> · <code>aceroofingservice.com.au</code> <span class="src src-search">[搜索]</span>
+      </li>
+      <li><a href="https://aceroofingtexas.com/" target="_blank">Ace Roofing Company: Austin Roof Repair &amp; Replacement</a> · <code>aceroofingtexas.com</code> <span class="src src-search">[搜索]</span>
+      </li>
+      <li><a href="https://www.starworks.com.au/score/9644f26b-1eac-41b5-86f9-e4bc13407e2d" target="_blank">Ace Roofing Service Reputation Score — Brisbane, QLD - Starworks</a> · <code>www.starworks.com.au</code> <span class="src src-search">[搜索]</span>
+      </li>
+      <li><a href="https://www.diamondaceroofing.com.au/" target="_blank">Diamond Ace Roofing: Roof Tiler Gold Coast - Tile Roofing Repairs</a> · <code>www.diamondaceroofing.com.au</code> <span class="src src-search">[搜索]</span>
+      </li>
+      <li><a href="https://www.mapquest.com/au/queensland/ace-roofing-services-brisbane-city-795765487" target="_blank">Ace Roofing Services Brisbane City - MapQuest</a> · <code>www.mapquest.com</code> <span class="src src-search">[搜索]</span>
+      </li>
+      <li><a href="https://publishednotices.asic.gov.au/browsesearch-notices/notice-details/ACE-ROOF-REPAIRS-PTY-LTD-635995603/90fa74e6-b1f2-49d8-930d-5dc58b2db842" target="_blank">ACE ROOF REPAIRS PTY LTD 635 995 603 - ASIC Published Notices</a> · <code>publishednotices.asic.gov.au</code> <span class="src src-search">[搜索]</span>
+      </li></ul>
+
+    <h3>现网首页 signals (Tinyfish fetch + regex)</h3>
+    <dl class="enrich-kv">
+      <dt>markdown 长度</dt><dd>3877 bytes  <span class="src src-site">[官网]</span></dd>
+      <dt>首屏含电话</dt><dd>✓ <span class="src src-site">[官网]</span></dd>
+      <dt>首屏含 CTA</dt><dd>✓ <span class="src src-site">[官网]</span></dd>
+      <dt>城市 mention</dt><dd><strong>1</strong> 次 <span class="src src-site">[官网]</span></dd>
+      <dt>服务关键词</dt><dd><code>roofing</code> · <code>roof</code> · <code>gutter</code> <span class="src src-site">[官网]</span></dd>
+      <dt>信任关键词</dt><dd><code>licensed</code> · <code>insured</code> · <code>guarantee</code> <span class="src src-site">[官网]</span></dd>
+      <dt>文中年份</dt><dd>2004 · 2024 <span class="src src-site">[官网]</span></dd>
+    </dl>
+  </section>
 
   
     <section class="section">
@@ -641,7 +695,7 @@
     <h2>从 audit 数据自动推导的开场话术</h2>
     <div class="sales-strip">
       <ul>
-        <li>你的最大短板是 Google Business Profile（得分 20/100）</li><li>有 1 个 critical 级问题正在直接伤害成交</li>
+        <li>你的最大短板是 Google Business Profile（得分 32/100）</li><li>有 1 个 critical 级问题正在直接伤害成交</li>
       </ul>
     </div>
   </section>

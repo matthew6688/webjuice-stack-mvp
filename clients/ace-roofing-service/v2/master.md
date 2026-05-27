@@ -1,81 +1,90 @@
 ---
-business_id: "domain_aceroofingservice.com.au"
+business_id: "place_chijrq6qulnbkwsruettr7eegyc"
+entityKey: "domain_aceroofingservice.com.au"
 business_name: "Ace Roofing Service"
 niche: "roofer"
 city: "Brisbane"
 rating: 5
-review_count: 0
+review_count: 37
 website: "https://aceroofingservice.com.au/"
-audit_score: 52
+audit_score: 54
 decision: "moderate_candidate"
 audit_version: "2026-05-11-v1"
 fired_triggers: []
 visual_age: "slightly_outdated"
 visual_freshness: 6
-visual_trust: 6
-visual_conversion: 5
+visual_trust: 7
+visual_conversion: 6
 review_trust_signal: null
-generated_at: "2026-05-14T20:11:13.734Z"
+generated_at: "2026-05-26T16:03:00.425Z"
 assets:
   cloudinary_folder: null
-  evidence_count: 6
-  video_url: "./video/mobile-throttled.webm"
-  desktop_screenshot: "./screenshots/desktop.png"
-  mobile_screenshot: "./screenshots/mobile.png"
+  evidence_count: 7
+  video_url: "https://ace-roofing-service-dev.pages.dev/video/mobile-throttled.webm"
+  desktop_screenshot: "https://ace-roofing-service-dev.pages.dev/screenshots/desktop.png"
+  mobile_screenshot: "https://ace-roofing-service-dev.pages.dev/screenshots/mobile.png"
 ---
 
 # Ace Roofing Service · 现状审计与重构提议
 
-> **52/100** · moderate_candidate · 行业：roofer · 地区：Brisbane · Google 评价：5★ （0 条）
+> **54/100** · moderate_candidate · 行业：roofer · 地区：Brisbane · Google 评价：5★ （37 条）
 
 ## 内部分级 · 运营优先看这段
 
-**投入分级：** `C` 批量轻触 — 模板邮件 + 报告 PDF 链接，无主动跟进
+**投入分级：** `B` 预览试探 — ChatGPT 生成 mockup hero 图 + 短邮件试反应
 
 **触发依据：**
-- C · moderate_candidate · audit 52 · 0 评论 5★ (未达 B 标准)
+- B · moderate_candidate · audit 54<60 · 37 评论≥30 · 5★≥4
 
-**下一步行动：** 标准模板邮件 + master.md PDF 链接，无主动跟进。等客户回复触发后再投入。
+**产品档位：** `T2` 1-page + annual maintenance
+
+- 中等口碑 / 多业务分类 / 想要月度维护关系 — T2 annual maintenance 合适
+- 37 评论 = 中等规模运营
+- 3 个业务分类 = 多服务线 → 维护包合适
+
+**建议报价：** 一次性 null
+
+**下一步行动：** 用 ChatGPT Image / Gemini Imagen 生成 hero mockup 预览图 + master.md PDF + 1 封 personalized 邮件试探 + 1 次跟进。回应后升级到 A 档处理。
 
 ## 一、店家现状速览
 
 **线索来源 · 联系开场可用**:
-- **来源**: Google Maps (gosom 抓取)
-- **搜索关键词**: `roofer in brisbane`
+- **来源**: Google Places API (官方搜索)
+- **搜索关键词**: `roofer brisbane`
+- **结果排名**: 第 6 位
 - **首次发现**: 2026-05-14
-- **Batch**: `pipe-roofing-brisbane-202605142244`
+- **Batch**: `places-roofer-brisbane-202605270200`
 
-**审计结论：** audit_score=52 → moderate_candidate · weakest: gbp 20, seo 45 · 1 critical issues
+**审计结论：** audit_score=54 → moderate_candidate · weakest: gbp 32, seo 45 · 1 critical issues
 
-- 电话：0449168985
-- 地址：72 Queen St, Brisbane City QLD 4000
+- 电话：0449 168 985
+- 地址：72 Queen St, Brisbane City QLD 4000, Australia
 - 网站：[https://aceroofingservice.com.au/](https://aceroofingservice.com.au/)
-- 网站状态：`independent_https_site`
 
 ## 二、客户访问时看到的页面
 
-![桌面 1440×900](./screenshots/desktop.png)
+![桌面 1440×900](https://ace-roofing-service-dev.pages.dev/screenshots/desktop.png)
 
-![移动 375×667](./screenshots/mobile.png)
+![移动 375×667](https://ace-roofing-service-dev.pages.dev/screenshots/mobile.png)
 
 **慢速 4G 加载实景视频**（1.6 Mbps · 150ms 延迟 · 4× CPU 节流，模拟真实手机访客的体验）：
 
-[播放视频](./video/mobile-throttled.webm)
+[播放视频](https://ace-roofing-service-dev.pages.dev/video/mobile-throttled.webm)
 
 ## 三、视觉审计 · Vision LLM 怎么看
 
-> The site has a clear roofing message and some useful trust claims, but the mobile view hides the main contact action and the desktop header makes the phone number hard to read.
+> The page has a professional roofing look and visible contact actions, but the above-fold area is text-heavy and does not make the fastest path to a quote feel effortless.
 
-新鲜度 **6/10** · 信任度 **6/10** · 转化准备度 **5/10** · 设计年代 `slightly_outdated`
+新鲜度 **6/10** · 信任度 **7/10** · 转化准备度 **6/10** · 设计年代 `slightly_outdated`
 
 **值得保留的优点：**
-- The business name and roofing category are clear in both desktop and mobile screenshots.
-- The blue accent color gives the phone and '10 Years' promise strong visibility.
-- The page already includes useful trust claims such as licensed, insured, family-owned, and emergency availability.
+- Phone and quote actions are visible in the desktop header.
+- The page uses a real roofing background image, which fits the service category.
+- Trust claims such as licensed, insured, family-owned, and emergency availability are present.
 
 ## 五、当前网站在哪里"漏水"
 
-### 关键问题 · 3 项（立刻在伤害成交）
+### 关键问题 · 2 项（立刻在伤害成交）
 
 ### 关键 · phone_visible_above_fold
 
@@ -92,68 +101,36 @@ phone hidden below fold or missing
 本地服务客户 60-70% 倾向打电话沟通（不是填表单）。电话号没在第一屏 = 这部分客户里很多人会直接关掉去搜下一家。这是最便宜的转化优化之一。
 
 
-### 关键 · No phone or quote button on mobile
+![phone_visible_above_fold](https://ace-roofing-service-dev.pages.dev/evidence/issue-phone-visible-above-fold.png)
+
+
+### 关键 · Phone number appears incomplete
 
 **技术事实**
 
-In the mobile screenshot, the top of the page shows only the large Ace Roofing Service logo, then the hero text; there is no visible phone button or quote button above the fold.
+The blue phone button in the header shows "0426 366 7.." with the end of the number visually cut off or abbreviated.
 
 **普通话翻译**
 
-手机版首屏看不到电话号码或报价按钮，客户想联系你时要自己往下找。
+电话按钮里的号码看起来被截断了，像是网站没有做好。
 
 **对客户的影响**
 
-本地搜索很多发生在手机上，常见行为是看几秒就决定打给谁。找不到一键拨号会直接流失急单，尤其是漏水、风暴损坏这类高价值客户。
+电话是本地服务最重要的成交入口之一。号码显示不完整会直接降低信任，遇到漏水或紧急维修的客户可能马上打给竞争对手。
 
 **正确长啥样**
 
-Mobile header with a compact logo and a sticky tap-to-call button visible at the top, plus a second quote button directly under the main headline.
+The full phone number displayed clearly inside the button, with enough horizontal padding and no truncation.
 
 **Redesign 怎么改**
 
-Reduce the mobile logo height, add a sticky bottom or top phone CTA reading 'Call 0426 366 7xx', and place a 'Get Free Quote' button directly below the hero headline.
+Increase the phone button width, prevent text truncation, and test the full number across desktop and mobile header breakpoints.
 
 
-### 关键 · Phone number appears cut off
-
-**技术事实**
-
-In the desktop header, the blue phone button shows '0426 366 7...' with the final digits hidden or cropped.
-
-**普通话翻译**
-
-桌面版顶部电话号码被省略号截断，看起来像网站没做好。
-
-**对客户的影响**
-
-电话号码是本地服务网站最重要的入口之一。号码显示不完整会让客户犹豫或无法拨打，直接减少电话询盘。
-
-**正确长啥样**
-
-A full phone number displayed in one line with enough button width, strong contrast, and no ellipsis.
-
-**Redesign 怎么改**
-
-Widen the desktop phone button and set the phone text to never truncate; use a clear label such as 'Call 0426 366 7xx' with a phone icon.
+![Phone number appears incomplete](https://ace-roofing-service-dev.pages.dev/evidence/issue-phone-number-truncated.png)
 
 
-### 主要问题 · 7 项（影响转化的明显短板）
-
-### 主要 · review_volume_vs_peers
-
-**技术事实**
-
-0 reviews
-
-**普通话翻译**
-
-你的 Google 评价数量低于同行平均水平。
-
-**对客户的影响**
-
-本地搜索排名信号之一就是评价数量；不光是分数，连"有多少条"都算。短期可以做的：每个完工的客户群发一条「点评一下吧」的 SMS。
-
+### 主要问题 · 6 项（影响转化的明显短板）
 
 ### 主要 · click_to_call_link
 
@@ -185,6 +162,9 @@ title='# "Feel Safe Under a Roof That Lasts – Brisbane Roof Restora' contains-
 Google 搜索结果里展示的就是这个 title。写不清楚 = 排名靠后 + 即使排上来客户也不知道是不是匹配的服务。SEO 最便宜的修复，但很多本地企业完全没做。
 
 
+![homepage_title_clear](https://ace-roofing-service-dev.pages.dev/evidence/issue-homepage-title-clear.png)
+
+
 ### 主要 · local_schema_markup
 
 **技术事实**
@@ -200,106 +180,89 @@ no LocalBusiness JSON-LD
 Google「附近的服务」「Knowledge Panel」「AI Overview」都依赖这类结构化数据。没有 = 即使排名上去也不会出现在右侧 Knowledge Panel 或地图卡片里 — 错失高转化的展示位。AI agent / ChatGPT 引用本地商家时也是基于这些数据。
 
 
-### 主要 · Mobile headline overwhelms screen
+### 主要 · Oversized headline slows comprehension
 
 **技术事实**
 
-On mobile, the headline takes most of the visible screen height and wraps into many short lines before any contact action appears.
+The hero headline spans three large lines and includes a long quoted sentence: "Feel Safe Under a Roof That Lasts - Brisbane Roof Restoration with 10 Years of Worry-Free Protection!"
 
 **普通话翻译**
 
-手机版标题太长太大，客户第一眼看到的是一大段字，而不是联系方式。
+首页第一屏的标题太长太大，客户要读好几秒才知道你具体做什么。
 
 **对客户的影响**
 
-访客通常在几秒内判断是否继续看。首屏信息太挤会让人更快离开，特别是从 Google 商家资料点进来的手机用户。
+本地客户通常会在几秒内决定要不要继续看。标题读起来费劲，会让一部分从 Google 商家资料点进来的客户直接返回去看下一家。
 
 **正确长啥样**
 
-A shorter mobile headline in 32-40px type, followed immediately by one sentence of service detail and a visible call or quote button.
+A shorter headline such as "Brisbane Roof Repairs & Restoration" with one supporting line underneath, followed immediately by phone and quote buttons.
 
 **Redesign 怎么改**
 
-Rewrite the mobile hero to 'Brisbane Roof Repairs & Restoration' with a smaller support line about licensed, insured service and 10-year protection, then show phone and quote CTAs.
+Rewrite the hero into a direct service-led headline, reduce the heading size by about 20-30%, and place a clear primary CTA directly under the subheading.
 
 
-### 主要 · Roof image is overly dark
+![Oversized headline slows comprehension](https://ace-roofing-service-dev.pages.dev/evidence/issue-headline-too-large-and-long.png)
+
+
+### 主要 · Quote CTA is visually secondary
 
 **技术事实**
 
-The hero background is a very dark roof photo with a heavy navy overlay, making the actual roofing work hard to inspect.
+The "GET FREE QUOTE" button is a white pill in the top-right, while the blue phone button beside it is more visually dominant.
 
 **普通话翻译**
 
-首页背景图太暗，看不清屋顶，也看不出施工质量。
+“获取免费报价”按钮放在右上角，而且没有电话按钮显眼，客户不一定第一眼看到。
 
 **对客户的影响**
 
-客户花钱修屋顶时很看重真实案例。图片像模板或看不清，会降低信任，让客户更倾向选择看起来更真实的同行。
+很多屋顶维修客户会先想要报价，不一定马上打电话。如果报价入口不够明显，会减少询盘，尤其会影响从手机搜索进来的客户。
 
 **正确长啥样**
 
-A brighter real project photo showing a clean Brisbane roof, with the text placed on a controlled dark panel or gradient only where needed for readability.
+A high-contrast primary "Get Free Quote" button in the hero area, paired with a secondary click-to-call button, both visible without scrolling.
 
 **Redesign 怎么改**
 
-Replace the current dark hero image with a sharp completed-roof project photo and use a lighter overlay limited to the text area.
+Move a stronger quote CTA into the main hero content, use the brand blue or another high-contrast accent for it, and keep the phone CTA next to it as a secondary action.
 
 
-### 主要 · Trust points are scattered
+![Quote CTA is visually secondary](https://ace-roofing-service-dev.pages.dev/evidence/issue-quote-button-not-primary-enough.png)
+
+
+### 主要 · Too many checklist claims above fold
 
 **技术事实**
 
-The desktop hero lists many checkmark claims across two columns, including licensed, insured, family-owned, emergency needs, and 20 years expertise.
+The hero includes nine checkmark bullet points across two columns, including long lines such as "Clear and Consistent Communication Every Step of the Way".
 
 **普通话翻译**
 
-页面有很多可信信息，但排成一长串，重点不够突出。
+第一屏放了太多勾选卖点，信息看起来有点挤，重点反而不突出。
 
 **对客户的影响**
 
-客户不会仔细读完所有项目。把最强的信任点放在按钮旁边，能更快打消顾虑，增加电话和报价请求。
+客户不会逐条读完九个卖点。他们通常只看几个最关键的信息，比如有牌照、有保险、能不能紧急处理、多久能报价。重点不清楚会降低联系意愿。
 
 **正确长啥样**
 
-Three compact trust badges near the CTA: 'Licensed & Insured', '20+ Years Experience', and 'Emergency Roofing 24/7', followed by a short service line.
+Three to four compact trust badges above the fold, such as "Licensed & Insured", "Since 2004", "Emergency Roofing", and "Free Quotes".
 
 **Redesign 怎么改**
 
-Condense the checklist into three high-priority badges directly under the CTA, then move secondary claims lower on the page.
+Condense the checklist into four short trust badges under the CTA, then move detailed service promises lower on the page with icons and supporting copy.
+
+
+![Too many checklist claims above fold](https://ace-roofing-service-dev.pages.dev/evidence/issue-benefit-list-overloaded.png)
 
 
 ## 六、Redesign 的发力点（综合视觉 + 评论数据）
 
-1. [视觉] 1. Add visible mobile tap-to-call and quote CTAs above the fold.
-2. [视觉] 2. Fix the desktop header so the full phone number is readable and contact actions dominate.
-3. [视觉] 3. Replace the dark generic hero treatment with a brighter real roofing project image and three focused trust badges.
-
-## 真实速度数据 · Google PageSpeed Insights
-
-我们前面那段「慢速 4G 加载视频」是我们这边的实验室结果。这一段是 **Google 自己**对你网站打的分，包括过去 28 天 **真实访客**的网络体验数据（CRUX field data）。
-
-### 移动端（mobile）
-
-**Lighthouse 分数（实验室）：**
-
-| 维度 | 分数 |
-|---|---|
-| 性能 (Performance) | **95/100** |
-| 可访问性 (Accessibility) | 89/100 |
-| 最佳实践 (Best Practices) | 100/100 |
-| SEO | 100/100 |
-
-**Lab 关键指标：** LCP `1.7s` · FCP `1.4s` · CLS `0.000` · TBT `0ms`
-
-**Google 建议的优化项（按节省时间排序，前 2）：**
-
-- **Reduce unused CSS** — 节省 280ms · 节省 40KB
-- **Initial server response time was short** — 节省 144ms
-
-### 桌面端（desktop）
-
-**Lighthouse 分数：** Performance 93 · A11y 89 · Best Practices 100 · SEO 100
+1. [视觉] 1. Fix the header phone number so it displays fully on all screen sizes.
+2. [视觉] 2. Simplify the hero message and add a stronger quote CTA inside the main hero area.
+3. [视觉] 3. Replace the long checklist with four high-value trust badges above the fold.
 
 ## 图片优化与第三方脚本体重
 
@@ -364,7 +327,7 @@ PSI 给的是宏观分数，下面是具体可改的两块：图片格式与 tra
 
 ### 运营活跃度
 
-- **整体活跃度：** 休眠（超过 1 年没更新过） （最近一次更新 577 天前）
+- **整体活跃度：** 休眠（超过 1 年没更新过） （最近一次更新 578 天前）
 - **Blog 板块：** 未发现 — 没有内容营销基础
 - **社交媒体链接：** 网站上没有 social 链接 — GBP 流量进来后没有第二触点
 
@@ -501,6 +464,55 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 **月度费用区间：** $400-800/月
 
 **销售切入：** 「ChatGPT 时代搜索引擎更偏爱有「专家深度内容」的网站。你目前的网站只有服务介绍页 — AI 可引用的素材几乎为零。」
+
+## 公司注册 · 域名 · 外部 mention 硬数据
+
+> 4-source enrichment · 抓取时间 2026-05-26T16:00:59 · 5/5 路成功
+
+### 公司注册 (ABR)
+
+- **ABN**: `16 873 123 656` · Cancelled `[ABR]`
+- **注册名**: HOMER, ACE TYRONE `[ABR]`
+- **实体类型**: Individual/Sole Trader `[ABR]`
+- **状态生效**: 2015-09-08 `[ABR]`
+- **GST 注册**: 否 `[ABR]`
+- **注册地址**: QLD 4674 `[ABR]`
+
+### 域名 (WHOIS RDAP)
+
+- **注册日**: privacy-redacted (.au 域名隐私保护 · 用 Wayback first snapshot 代理) `[WHOIS]`
+- **最近变更**: 2025-09-15 `[WHOIS]`
+- **注册商**: Web Address Registration Pty Ltd `[WHOIS]`
+- **状态**: server renew prohibited `[WHOIS]`
+
+### Wayback Machine 历史
+
+- **第一次上线**: 2024-09-12 [首版截图](http://web.archive.org/web/20240912172547/http://aceroofingservice.com.au/) `[Wayback]`
+- **最近快照**: 2025-03-12 [最近快照](http://web.archive.org/web/20250312043438/https://aceroofingservice.com.au/) `[Wayback]`
+- **存档年限**: 0 年 `[Wayback]`
+
+> **综合域名年龄**: 1 年 (source: wayback_first_snapshot) `[derived]`
+
+### 外部 mention (Tinyfish search · AU filtered)
+
+找到 **6** 个澳洲相关 mention (总 10 · LLM/regex 过滤后):
+
+- [Ace Roofing Services: Home](https://aceroofingservice.com.au/) · `aceroofingservice.com.au` `[搜索]`
+- [Ace Roofing Company: Austin Roof Repair & Replacement](https://aceroofingtexas.com/) · `aceroofingtexas.com` `[搜索]`
+- [Ace Roofing Service Reputation Score — Brisbane, QLD - Starworks](https://www.starworks.com.au/score/9644f26b-1eac-41b5-86f9-e4bc13407e2d) · `www.starworks.com.au` `[搜索]`
+- [Diamond Ace Roofing: Roof Tiler Gold Coast - Tile Roofing Repairs](https://www.diamondaceroofing.com.au/) · `www.diamondaceroofing.com.au` `[搜索]`
+- [Ace Roofing Services Brisbane City - MapQuest](https://www.mapquest.com/au/queensland/ace-roofing-services-brisbane-city-795765487) · `www.mapquest.com` `[搜索]`
+- [ACE ROOF REPAIRS PTY LTD 635 995 603 - ASIC Published Notices](https://publishednotices.asic.gov.au/browsesearch-notices/notice-details/ACE-ROOF-REPAIRS-PTY-LTD-635995603/90fa74e6-b1f2-49d8-930d-5dc58b2db842) · `publishednotices.asic.gov.au` `[搜索]`
+
+### 现网首页 signals (Tinyfish fetch + regex)
+
+- markdown 长度: 3877 bytes  `[官网]`
+- 首屏含电话: ✓ `[官网]`
+- 首屏含 CTA 关键词: ✓ `[官网]`
+- 城市名 mention 数: **1** `[官网]`
+- 服务关键词: roofing · roof · gutter `[官网]`
+- 信任关键词: licensed · insured · guarantee `[官网]`
+- 文中最早年份: 2004 · 最新 2024 `[官网]`
 
 <!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
 <!-- 现网站快速诊断 -->
