@@ -57,6 +57,27 @@ const briefSections = (briefMd.match(/^## /gm) || []).length;
 const odFactsRaw = rj(odFactsFile) || {};
 const odFacts = odFactsRaw.locked_facts ? { ...odFactsRaw.locked_facts, ...odFactsRaw } : odFactsRaw;
 
+// ─── License lookup (Phase 1.3 · 2026-05-27) ─────────────────────────────
+// Resolve slug → master.md → business_id → entity → entity.license
+// License is NOT a hard gate (grey zone allowed) · but it MUST be flagged so
+// audit-tier T1 can refuse the customer-facing HTML from claiming a license
+// the customer doesn't have.
+let entityLicense = null;
+try {
+  const mdPath = path.join(v2, 'master.md');
+  if (fs.existsSync(mdPath)) {
+    const md = fs.readFileSync(mdPath, 'utf8');
+    const m = md.match(/business_id:\s*"([^"]+)"/);
+    if (m) {
+      const entityFile = path.join(REPO, 'data/leads/entities', `${m[1]}.json`);
+      if (fs.existsSync(entityFile)) {
+        const e = JSON.parse(fs.readFileSync(entityFile, 'utf8'));
+        entityLicense = e.license || null;
+      }
+    }
+  }
+} catch {}
+
 // ─── Service-content cross-check (Codex follow-up · 2026-05-27) ──────────
 // The downstream handoff/content/services.json is what compose-site actually
 // consumes. Cross-checking it here closes the gap where core-extract reports
@@ -290,6 +311,23 @@ const optional = {
     rating, review_count: reviewCount,
     provenance: 'verified-or-none',
     note: 'optional · doesn\'t block GREEN if absent',
+  },
+  license: {
+    // Phase 1.3 (2026-05-27) · informational only · NOT a gate.
+    // Grey-zone customers (unlicensed) are allowed · we just don't claim
+    // license on their customer-facing site. Audit-tier T1 enforces.
+    ok: entityLicense?.status === 'active',
+    status: entityLicense?.status || 'not_looked_up',
+    authority: entityLicense?.authority || null,
+    licence_number: entityLicense?.licence_number || null,
+    licensee_name: entityLicense?.licensee_name || null,
+    lookup_tier: entityLicense?.lookup_tier || null,
+    looked_up_at: entityLicense?.looked_up_at || null,
+    customer_facing_rule:
+      entityLicense?.status === 'active'
+        ? 'SHOW · trust chip + JSON-LD license field allowed'
+        : 'OMIT · do NOT claim license · audit-tier T1 will fail if HTML mentions license',
+    note: 'License is informational · grey-zone customers OK · network gate via audit-tier T1.',
   },
 };
 

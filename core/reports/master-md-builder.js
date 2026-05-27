@@ -104,6 +104,23 @@ function buildFrontmatter({ entity, detailedAudit, visualAudit, reviewAnalysis, 
     visual_trust: visual.trust_score ?? null,
     visual_conversion: visual.conversion_score ?? null,
     review_trust_signal: reviewAnalysis?.trust_signal_strength || null,
+    // License status (Phase 1.3 · 2026-05-27)
+    // Surfaces verified/unknown to operators so master.md SOT shows state.
+    // Customer-facing HTML must follow `license.customer_facing_rule`:
+    //   active   → trust chip + JSON-LD license allowed
+    //   anything else → OMIT silently (audit-tier T1 will fail if claimed)
+    license: entity.license ? {
+      status: entity.license.status || 'not_looked_up',
+      authority: entity.license.authority || null,
+      licence_number: entity.license.licence_number || null,
+      licensee_name: entity.license.licensee_name || null,
+      lookup_tier: entity.license.lookup_tier || null,
+      looked_up_at: entity.license.looked_up_at || null,
+      customer_facing_rule:
+        entity.license.status === 'active'
+          ? 'SHOW'
+          : 'OMIT',
+    } : { status: 'not_looked_up', customer_facing_rule: 'OMIT' },
     generated_at: new Date().toISOString(),
     assets: {
       cloudinary_folder: manifest?.folderBase || null,
@@ -522,6 +539,53 @@ export function buildMasterMdDetailed({
     for (const photo of placesPhotos) {
       sections.push(`![GMB photo ${photo.index || ''}](${photo.url})`);
       sections.push('');
+    }
+  }
+
+  // ── 一(b)、现有视觉识别 (SOP-3 §6.5) ──
+  // Render the customer's existing logo + brand kit summary if available.
+  // Matthew强制 (2026-05-17): redesign 客户能看到我们注意到了他们品牌。
+  // Resolve slug from: fm.slug · entity.promotedClientSlug · slugify(latest.name)
+  function slugifyName(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+  const slug = fm.slug || latest.promotedClientSlug || entity.promotedClientSlug || (latest.name ? slugifyName(latest.name) : null);
+  if (slug) {
+    const brandDir = path.join('clients', slug, 'v2/handoff/design/brand');
+    const sourceLogoPng = path.join(brandDir, '_source-logo.png');
+    const sourceLogoHarvested = path.join('clients', slug, 'v2/handoff/photos/source/_existing-logo.png');
+    const brandSpecPath = path.join(brandDir, 'brand-spec.json');
+    let existingLogoPath = null;
+    if (fs.existsSync(sourceLogoPng)) existingLogoPath = sourceLogoPng;
+    else if (fs.existsSync(sourceLogoHarvested)) existingLogoPath = sourceLogoHarvested;
+
+    if (existingLogoPath) {
+      sections.push('## 一(b)、现有视觉识别');
+      sections.push('');
+      sections.push(`> 我们抓取了客户现有的 logo / brand 素材作为 redesign 起点。下面的资产从客户在线网站 / 第三方 source 提取，存在 \`${brandDir}/\` 里供 OD / build agent 使用。`);
+      sections.push('');
+      sections.push(`![现有 logo](${existingLogoPath})`);
+      sections.push('');
+      // If brand-spec exists, show palette + fonts
+      if (fs.existsSync(brandSpecPath)) {
+        try {
+          const spec = JSON.parse(fs.readFileSync(brandSpecPath, 'utf8'));
+          const colors = spec.colors || {};
+          sections.push('**提取的品牌色板**：');
+          sections.push('');
+          for (const [k, v] of Object.entries(colors)) {
+            if (typeof v !== 'string') continue;
+            sections.push(`- \`${v}\` · ${k}`);
+          }
+          sections.push('');
+          if (spec.heading_font || spec.body_font) {
+            sections.push(`**字体**: 标题 ${spec.heading_font || '?'} · 正文 ${spec.body_font || '?'}`);
+            sections.push('');
+          }
+          if (spec.personality) {
+            sections.push(`**品牌个性**: ${spec.personality}`);
+            sections.push('');
+          }
+        } catch { /* non-fatal */ }
+      }
     }
   }
 
