@@ -218,12 +218,15 @@ function runT1Hard(htmlFiles, facts, ctx) {
 function runT2BrandContract(htmlFiles, brandSpec, ctx) {
   const dims = {};
 
-  // D2.1 var(--brand-*) coverage % — proxy: count var(--brand-*) refs vs unique color/bg declarations
+  // D2.1 var(--*) coverage % — count ALL CSS custom property refs (brand-tokens.css exposes
+  // --text, --surface, --border, --accent-dark etc. NOT just --brand-*) vs unique color/bg declarations.
+  // Bugfix 2026-05-28 (codex R19): previous version matched only var(--brand-*) producing false-negative
+  // coverage scores against renderers that use the full token namespace.
   let varHits = 0, colorDecls = 0;
   for (const f of htmlFiles) {
     const html = readHtml(f);
     const styleBlocks = (html.match(/<style[\s\S]*?<\/style>/g) || []).join('\n');
-    varHits += (styleBlocks.match(/var\(--brand-[a-z0-9_-]+\)/gi) || []).length;
+    varHits += (styleBlocks.match(/var\(\s*--[a-z0-9_-]+/gi) || []).length;
     colorDecls += (styleBlocks.match(/(?:^|[\s;{])(?:color|background(?:-color)?|border-color|fill|stroke)\s*:/gi) || []).length;
   }
   const coveragePct = colorDecls > 0 ? Math.round(100 * varHits / colorDecls) : 0;
@@ -231,11 +234,15 @@ function runT2BrandContract(htmlFiles, brandSpec, ctx) {
   const d21 = Math.max(0, Math.min(100, Math.round((coveragePct - 25) / (60 - 25) * 100)));
   dims['D2.1_var_brand_coverage'] = { score: d21, weight: 0.30, coverage_pct: coveragePct, var_hits: varHits, color_decls: colorDecls };
 
-  // D2.2 Hardcoded hex count (non-grayscale only)
+  // D2.2 Hardcoded hex count (non-grayscale only · STRIP fallback hex inside var(--*, #hex))
+  // Bugfix 2026-05-28 (codex R19): fallback hex inside var() declarations is GOOD practice (graceful
+  // degradation when CSS custom prop missing) · counting it as "hardcoded" produced false-negatives.
   const uniqueHex = new Set();
   for (const f of htmlFiles) {
     const html = readHtml(f);
-    const styleBlocks = (html.match(/<style[\s\S]*?<\/style>/g) || []).join('\n');
+    let styleBlocks = (html.match(/<style[\s\S]*?<\/style>/g) || []).join('\n');
+    // Strip fallback hex: var(--name, #abc) / var(--name, #abcdef) → var(--name)
+    styleBlocks = styleBlocks.replace(/var\(\s*--[a-z0-9_-]+\s*,\s*#[0-9a-f]{3,8}\s*\)/gi, 'var(--stripped)');
     const hex = (styleBlocks.match(/#[0-9a-f]{3,8}\b/gi) || []).map(h => h.toLowerCase());
     for (const h of hex) {
       // Skip grayscale (R==G==B)

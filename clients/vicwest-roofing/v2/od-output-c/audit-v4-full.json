@@ -1,0 +1,107 @@
+{
+  "schema_version": "audit-v4/0.1",
+  "script_version": "pl-audit-v4/0.1.0-skeleton",
+  "slug": "vicwest-roofing",
+  "mode": "slug",
+  "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/od-output-c",
+  "tier": "t2",
+  "pages_audited": 7,
+  "generated_at": "2026-05-27T23:16:15.765Z",
+  "tier_1": {
+    "pass": false,
+    "checks": {
+      "1.1_business_name": {
+        "pass": true,
+        "pages_with": 7,
+        "total": 7
+      },
+      "1.2_phone_present": {
+        "pass": false,
+        "per_page": [
+          7,
+          12,
+          18,
+          6,
+          6,
+          0,
+          6
+        ]
+      },
+      "1.11_logo_refs_resolve": {
+        "pass": true,
+        "broken": []
+      },
+      "1.13_jsonld_valid": {
+        "pass": true,
+        "parse_errors": 0
+      }
+    },
+    "fails": [
+      "phone \"0403 554 592\" absent from 1 page(s)"
+    ],
+    "composite": 0
+  },
+  "tier_2": {
+    "score": 93,
+    "breakdown": {
+      "D2.1_var_brand_coverage": {
+        "score": 100,
+        "weight": 0.3,
+        "coverage_pct": 107,
+        "var_hits": 105,
+        "color_decls": 98
+      },
+      "D2.2_hardcoded_hex_count": {
+        "score": 100,
+        "weight": 0.25,
+        "unique_non_gray_hex": 2,
+        "sample": [
+          "#0f1115",
+          "#c5a572"
+        ]
+      },
+      "D2.3_type_rule_compliance": {
+        "score": null,
+        "weight": 0.15,
+        "note": "brand-spec has no primary_font · skipped"
+      },
+      "D2.4_logo_variant_per_surface": {
+        "score": null,
+        "weight": 0.15,
+        "todo": "detect surface lightness around each <img logos/*>"
+      },
+      "D2.5_brand_palette_honored": {
+        "score": 67,
+        "weight": 0.15,
+        "expected": [
+          "#0f1115",
+          "#c5a572",
+          "#6d6e71"
+        ],
+        "found": [
+          "#0f1115",
+          "#c5a572"
+        ]
+      }
+    },
+    "total_weight": 0.7000000000000001
+  },
+  "tier_3": null,
+  "tier_4": null,
+  "tier_5": null,
+  "composite": 0,
+  "grade": "F",
+  "ship_verdict": "BLOCKED · T1 hard fail",
+  "issues": [
+    {
+      "id": "I-001",
+      "tier": "T1",
+      "severity": "P0",
+      "dim": "t1_hard",
+      "page": "<sitewide>",
+      "what": "phone \"0403 554 592\" absent from 1 page(s)",
+      "why": "T1 hard fail · ship blocker (contract violation per ADR §2.1)",
+      "fix": "See pl-audit-tier.js docs / SOP-AUDIT-STANDARD.md §1 for per-check remediation"
+    }
+  ]
+}
