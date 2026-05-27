@@ -28,7 +28,8 @@
       { "id": "ASSERT-7", "kind": "html_contains", "needle": "application/ld+json", "rationale": "LocalBusiness JSON-LD must be emitted in <head>" },
       { "id": "ASSERT-8", "kind": "html_contains_all", "needles": ["ba-slider", "ba-divider", "ba-handle"], "rationale": "R-BA-6 hard rule · draggable-slider DOM signature for before/after section" },
       { "id": "ASSERT-9", "kind": "html_jsonld_field_equals", "ld_path": "@type", "value": "RoofingContractor", "rationale": "Niche-specific schema.org type (not generic LocalBusiness)" },
-      { "id": "ASSERT-10", "kind": "html_jsonld_field_exists", "ld_path": "aggregateRating", "rationale": "Trust signal · reviews surface in structured data" }
+      { "id": "ASSERT-10", "kind": "html_jsonld_field_exists", "ld_path": "aggregateRating", "rationale": "Trust signal · reviews surface in structured data" },
+      { "id": "ASSERT-11", "kind": "audit_field_equals", "path": "tier_1.checks.1.14_as_trade_5_form_above_fold.pass", "value": true, "rationale": "AS-trade-5 anti-slop · hero/above-fold form must have ≤4 visible inputs (Phase A.1 Step 3 cheerio DOM check)" }
     ]
   },
   "expected_baseline_snapshot": {

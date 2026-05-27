@@ -42,6 +42,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { load as cheerioLoad } from 'cheerio';
 
 const REPO = process.cwd();
 const SCRIPT_VERSION = 'pl-audit-v4/0.1.0-skeleton';
@@ -205,6 +206,41 @@ function runT1Hard(htmlFiles, facts, ctx) {
   }
   checks['1.13_jsonld_valid'] = { pass: jsonLdErrors === 0, parse_errors: jsonLdErrors };
   if (jsonLdErrors > 0) fails.push(`${jsonLdErrors} invalid JSON-LD block(s)`);
+
+  // 1.14 AS-trade-5 · form field count above fold (DOM-parsing via cheerio)
+  // Anti-slop catalog AS-trade-5: trade sites should have ≤3 visible-input fields above fold.
+  // Quick-quote forms (name/phone/job-type) convert · 5+ fields signal generic SaaS bloat.
+  // "Above fold" heuristic: form appears within first <main> child or in <header>/hero section.
+  // Counts: <input>/<textarea>/<select> EXCLUDING type="hidden"/"submit"/"button"/"image"/"reset".
+  const formViolations = [];
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    let $;
+    try { $ = cheerioLoad(html); } catch { continue; }
+    const heroForms = $('header form, .hero form, [class*="hero"] form, main > section:first-of-type form, main > section:nth-of-type(2) form, main > div:first-of-type form');
+    const seen = new Set();
+    heroForms.each((_, el) => {
+      const $form = $(el);
+      // De-dupe via outerHTML hash (cheerio may double-match nested selectors)
+      const hash = ($form.attr('id') || '') + '|' + ($form.attr('class') || '') + '|' + $form.children().length;
+      if (seen.has(hash)) return; seen.add(hash);
+      const visibleInputs = $form.find('input, textarea, select').filter((_, inp) => {
+        const t = ($(inp).attr('type') || 'text').toLowerCase();
+        return !['hidden', 'submit', 'button', 'image', 'reset'].includes(t);
+      });
+      const count = visibleInputs.length;
+      if (count > 4) {
+        // >4 means 5+ which is the AS-trade-5 threshold
+        formViolations.push({ page: path.basename(f), form_id: $form.attr('id') || $form.attr('class') || '<anon>', field_count: count });
+      }
+    });
+  }
+  checks['1.14_as_trade_5_form_above_fold'] = {
+    pass: formViolations.length === 0,
+    threshold: 'visible-input ≤ 4 in hero/above-fold forms',
+    violations: formViolations.slice(0, 5),
+  };
+  if (formViolations.length > 0) fails.push(`AS-trade-5 · ${formViolations.length} above-fold form(s) with 5+ visible fields`);
 
   // TODO (ADR §2.1): 1.3 address, 1.4 ABN, 1.5 state authority, 1.7b hours, 1.8 stats, 1.9 license — port from pl-audit-tier.js
   // TODO (ADR §2.1): 1.10 cross-client leak (batch-mode only · needs --slugs sibling list)

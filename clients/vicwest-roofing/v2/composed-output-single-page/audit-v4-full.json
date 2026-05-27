@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/composed-output-single-page",
   "tier": "fast",
   "pages_audited": 1,
-  "generated_at": "2026-05-27T23:18:10.878Z",
+  "generated_at": "2026-05-27T23:29:57.273Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -28,6 +28,11 @@
       "1.13_jsonld_valid": {
         "pass": true,
         "parse_errors": 0
+      },
+      "1.14_as_trade_5_form_above_fold": {
+        "pass": true,
+        "threshold": "visible-input ≤ 4 in hero/above-fold forms",
+        "violations": []
       }
     },
     "fails": [],

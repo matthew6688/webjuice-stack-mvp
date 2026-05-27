@@ -74,6 +74,13 @@ function getField(obj, dotPath) {
       remaining = dMatch[2] || '';
       continue;
     }
+    // Match numeric-prefixed keys: 1.14_as_trade_5_form_above_fold (digit + dot + digit + underscore + words)
+    const nMatch = remaining.match(/^(\d+\.\d+_[a-zA-Z0-9_]+)(?:\.(.*))?$/);
+    if (nMatch) {
+      tokens.push(nMatch[1]);
+      remaining = nMatch[2] || '';
+      continue;
+    }
     const dotIdx = remaining.indexOf('.');
     if (dotIdx === -1) { tokens.push(remaining); break; }
     tokens.push(remaining.slice(0, dotIdx));
