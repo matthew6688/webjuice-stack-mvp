@@ -1,0 +1,72 @@
+{
+  "client": "a-j-roofing-solutions",
+  "kit_type": "brand-design",
+  "provenance": "INTERNAL_INFERRED",
+  "generated_at": "2026-05-27T00:00:00Z",
+  "generator": "claude-opus-4-7 (1M context) · manual SVG authoring inline",
+  "rationale": "Customer has no extractable existing logo. anjroof.com.au is a green-CTA template with no logomark. Brand kit synthesized from (a) audit-praised existing green CTA, (b) Cairns FNQ tropical-coast geography (Coral Sea teal + sand-bleached terracotta), (c) verified positioning facts (18+ years, metal roofing & cladding, QBCC 1161095, ABN 34 134 811 831). Type direction (DM Sans) chosen to differentiate from vicwest/mark-squire slab-serif VIC heritage palette and signal FNQ tropical-modern.",
+  "data_checkpoint": {
+    "verdict": "YELLOW",
+    "real_signal_units": 14,
+    "differentiation_signal": true,
+    "missing_for_green": ["testimonials (0/3)", "suburbs_served (3/10)", "owner_name (null)"]
+  },
+  "assets_generated": [
+    "brand-spec.json",
+    "brand-tokens.css",
+    "brand-assets.md",
+    "visual-style-contract.md",
+    "logo-mark.svg",
+    "logo-wordmark.svg",
+    "logo-horizontal.svg",
+    "logo-light.svg",
+    "logo-dark.svg",
+    "logo-mono-dark.svg",
+    "logo-mono-light.svg",
+    "favicon.svg",
+    "social-avatar.svg",
+    "logo-qa-checklist.md",
+    "logo-review.md",
+    "agent-handoff.md"
+  ],
+  "palette_chosen": {
+    "brand_primary": "#1B5E3F",
+    "brand_secondary": "#2A8C8C",
+    "brand_accent": "#D9744A",
+    "tropical_shade": "#0F3D2A",
+    "surface_muted": "#F6F0E4"
+  },
+  "palette_rationale": {
+    "#1B5E3F": "tropical roof green — anchors audit-praised existing green CTA (kept as primary action color)",
+    "#2A8C8C": "Coral Sea teal — Cairns geographic reference, secondary accent, links",
+    "#D9744A": "sun-bleached terracotta — small accent only, ampersand dot",
+    "#0F3D2A": "deep canopy green — dark footer surface",
+    "#F6F0E4": "sand cream — warm tropical surface alternative to white"
+  },
+  "differentiation_from_other_brands": {
+    "vicwest": "VIC navy + amber → a-j tropical green + teal (geographic + chromatic separation)",
+    "mark-squire": "VIC heritage slate + slab serif → a-j FNQ tropical + DM Sans geometric (tonal + typographic separation)"
+  },
+  "llm_budget_ledger": {
+    "tier": "T0_LOCAL_FREE",
+    "tier_rationale": "No external LLM or image-gen API calls. All SVGs hand-authored by the agent inline. All copy written inline. Zero metered cost.",
+    "provider_calls": [],
+    "estimated_cost_usd": 0.00,
+    "tokens_in": null,
+    "tokens_out": null,
+    "image_gen_api_calls": 0,
+    "fal_calls": 0,
+    "imagegen_calls": 0
+  },
+  "review_gate": {
+    "onboarding_required_before_publication": true,
+    "checks_required": [
+      "owner confirms or replaces A&J roof-pitch monogram",
+      "owner confirms green primary or names a different brand color",
+      "owner confirms tropical-coast direction or rejects it",
+      "founding year verified (so EST badge decision can be made)",
+      "ampersand expansion verified (whose initials are A and J?)"
+    ]
+  },
+  "honest_assessment": "Synthetic placeholder. PASS for OD experiment / pipeline parity; not yet a customer-facing deliverable. Rubric score 38/50."
+}

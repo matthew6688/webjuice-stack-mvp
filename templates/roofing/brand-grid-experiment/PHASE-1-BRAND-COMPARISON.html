@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Phase 1 · 3-Client Brand Kit Comparison</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, system-ui, sans-serif; background: #FAFAF7; color: #1F232B; padding: 40px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h1 + .subtitle { font-size: 14px; color: #666; margin-bottom: 32px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1600px; margin: 0 auto; }
+  .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+  .card-header { padding: 18px 20px; border-bottom: 1px solid #eee; }
+  .card-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .card-meta { font-size: 12px; color: #888; font-family: 'SF Mono', Menlo, monospace; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #999; margin: 16px 20px 8px; }
+  .logo-row { display: flex; gap: 8px; padding: 12px 20px; align-items: center; min-height: 90px; }
+  .logo-box { flex: 1; min-height: 80px; display: flex; align-items: center; justify-content: center; padding: 12px; border-radius: 6px; }
+  .logo-box img { max-width: 100%; max-height: 60px; }
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 8px 20px 16px; }
+  .swatch { aspect-ratio: 1; border-radius: 4px; border: 1px solid #eee; position: relative; }
+  .swatch-label { position: absolute; bottom: -16px; left: 0; font-size: 9px; font-family: monospace; color: #666; white-space: nowrap; }
+  .swatch-name { position: absolute; top: 4px; left: 4px; font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.95); mix-blend-mode: difference; }
+  .mockup-row { padding: 16px 20px; border-top: 1px solid #f0f0f0; margin-top: 24px; }
+  .header-mockup { padding: 10px 14px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .header-mockup-nav { font-size: 11px; font-weight: 600; }
+  .cta-btn { display: inline-block; padding: 8px 16px; border-radius: 4px; font-size: 11px; font-weight: 600; margin: 4px 4px 0 0; }
+  .meta-block { padding: 12px 20px 20px; font-size: 12px; color: #666; line-height: 1.5; }
+  .meta-block code { background: #f4f4f5; padding: 1px 4px; border-radius: 3px; font-size: 11px; }
+  .verdict { padding: 12px 20px; background: #f9f7f1; border-top: 1px solid #eee; font-size: 12px; color: #333; }
+  .verdict-label { font-weight: 600; }
+  .badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; }
+  .badge-real { background: #d1fae5; color: #065f46; }
+  .badge-inferred { background: #fef3c7; color: #92400e; }
+  .badge-canonical { background: #dbeafe; color: #1e40af; }
+</style>
+</head>
+<body>
+
+<h1>Phase 1 · 3-Client Brand Kit Comparison</h1>
+<div class="subtitle">Identical structure (mark-squire canonical pattern) · 3 buyer profiles · validates palette + logo diversity before Phase 3 grid render</div>
+
+<div class="grid">
+
+<!-- ============ VICWEST ============ -->
+<div class="card">
+  <div class="card-header" style="background:#0F1115; color:white;">
+    <div class="card-title">Vicwest Roofing</div>
+    <div class="card-meta" style="color:#999;">VIC · Ballarat · 22+ years · 4.1★</div>
+    <div style="margin-top:6px;"><span class="badge badge-real">REAL · extracted</span></div>
+  </div>
+
+  <div class="section-label">Logo lockups</div>
+  <div class="logo-row" style="background:#FFFFFF;">
+    <div class="logo-box"><img src="../../../clients/vicwest-roofing/v2/brand/logo-light.svg" alt="light"></div>
+  </div>
+  <div class="logo-row" style="background:#0F1115;">
+    <div class="logo-box"><img src="../../../clients/vicwest-roofing/v2/brand/logo-dark.svg" alt="dark"></div>
+  </div>
+
+  <div class="section-label">Variants</div>
+  <div class="logo-row">
+    <div class="logo-box" style="background:#FFFFFF;"><img src="../../../clients/vicwest-roofing/v2/brand/logo-mark.svg"></div>
+    <div class="logo-box" style="background:#FFFFFF;"><img src="../../../clients/vicwest-roofing/v2/brand/logo-mono-dark.svg"></div>
+    <div class="logo-box" style="background:#0F1115;"><img src="../../../clients/vicwest-roofing/v2/brand/logo-mono-light.svg"></div>
+  </div>
+
+  <div class="section-label">Palette</div>
+  <div class="palette">
+    <div class="swatch" style="background:#0F1115;"><span class="swatch-name">primary</span><span class="swatch-label">#0F1115</span></div>
+    <div class="swatch" style="background:#6D6E71;"><span class="swatch-name">secondary</span><span class="swatch-label">#6D6E71</span></div>
+    <div class="swatch" style="background:#C5A572;"><span class="swatch-name">accent</span><span class="swatch-label">#C5A572</span></div>
+    <div class="swatch" style="background:#F4F4F5; border:1px solid #ddd;"><span class="swatch-label" style="color:#333;">#F4F4F5</span></div>
+    <div class="swatch" style="background:#FFFFFF; border:1px solid #ddd;"><span class="swatch-label" style="color:#333;">#FFFFFF</span></div>
+  </div>
+
+  <div class="mockup-row">
+    <div class="section-label" style="margin:0 0 8px;">Header mockup</div>
+    <div class="header-mockup" style="background:#0F1115; color:white;">
+      <img src="../../../clients/vicwest-roofing/v2/brand/logo-mono-light.svg" style="height:24px;">
+      <div class="header-mockup-nav" style="color:#C5A572;">SERVICES · WORK · CONTACT</div>
+    </div>
+    <div style="margin-top:12px;">
+      <a class="cta-btn" style="background:#C5A572; color:#0F1115;">Request a Quote</a>
+      <a class="cta-btn" style="border:1px solid #0F1115; color:#0F1115;">Call 0403 554 592</a>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-label">Read</div>
+    Engineer · serious · brass not amber. Heritage tilt without serif. 13 CSS vars · 18 files.
+  </div>
+</div>
+
+<!-- ============ MARK SQUIRE ============ -->
+<div class="card">
+  <div class="card-header" style="background:#1F232B; color:white;">
+    <div class="card-title">Mark Squire Roof Restorations</div>
+    <div class="card-meta" style="color:#999;">VIC · Ballarat · heritage slate · slow-decision</div>
+    <div style="margin-top:6px;"><span class="badge badge-canonical">CANONICAL · reference kit</span></div>
+  </div>
+
+  <div class="section-label">Logo lockups</div>
+  <div class="logo-row" style="background:#FAF6EE;">
+    <div class="logo-box"><img src="../../../clients/mark-squire-roof-restorations/v2/brand/logo-light.svg" alt="light"></div>
+  </div>
+  <div class="logo-row" style="background:#1F232B;">
+    <div class="logo-box"><img src="../../../clients/mark-squire-roof-restorations/v2/brand/logo-dark.svg" alt="dark"></div>
+  </div>
+
+  <div class="section-label">Variants</div>
+  <div class="logo-row">
+    <div class="logo-box" style="background:#FAF6EE;"><img src="../../../clients/mark-squire-roof-restorations/v2/brand/logo-mark.svg"></div>
+    <div class="logo-box" style="background:#FFFFFF;"><img src="../../../clients/mark-squire-roof-restorations/v2/brand/logo-mono-dark.svg"></div>
+    <div class="logo-box" style="background:#1F232B;"><img src="../../../clients/mark-squire-roof-restorations/v2/brand/logo-mono-light.svg"></div>
+  </div>
+
+  <div class="section-label">Palette</div>
+  <div class="palette">
+    <div class="swatch" style="background:#1F232B;"><span class="swatch-name">primary</span><span class="swatch-label">#1F232B</span></div>
+    <div class="swatch" style="background:#3A5A6B;"><span class="swatch-name">secondary</span><span class="swatch-label">#3A5A6B</span></div>
+    <div class="swatch" style="background:#C68C3F;"><span class="swatch-name">accent</span><span class="swatch-label">#C68C3F</span></div>
+    <div class="swatch" style="background:#FAF6EE; border:1px solid #ddd;"><span class="swatch-label" style="color:#333;">#FAF6EE</span></div>
+    <div class="swatch" style="background:#E4DFD2;"><span class="swatch-label">#E4DFD2</span></div>
+  </div>
+
+  <div class="mockup-row">
+    <div class="section-label" style="margin:0 0 8px;">Header mockup</div>
+    <div class="header-mockup" style="background:#FAF6EE; color:#1F232B; border:1px solid #E4DFD2;">
+      <img src="../../../clients/mark-squire-roof-restorations/v2/brand/logo-horizontal.svg" style="height:24px;">
+      <div class="header-mockup-nav">SERVICES · OUR WORK · ABOUT · <span style="color:#C68C3F;">CALL · BALLARAT</span></div>
+    </div>
+    <div style="margin-top:12px;">
+      <a class="cta-btn" style="background:#C68C3F; color:#1F232B;">Request a Quote</a>
+      <a class="cta-btn" style="border:1px solid #1F232B; color:#1F232B;">View Our Work</a>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-label">Read</div>
+    Heritage · slate-blue + warm slab. Editorial register. 8 vars · 28 files. The reference all other kits match.
+  </div>
+</div>
+
+<!-- ============ A&J ROOFING ============ -->
+<div class="card">
+  <div class="card-header" style="background:#1B5E3F; color:white;">
+    <div class="card-title">A &amp; J Roofing Solutions</div>
+    <div class="card-meta" style="color:#a8d4bf;">QLD · Cairns · tropical · suburban</div>
+    <div style="margin-top:6px;"><span class="badge badge-inferred">INFERRED · synthetic</span></div>
+  </div>
+
+  <div class="section-label">Logo lockups</div>
+  <div class="logo-row" style="background:#F6F0E4;">
+    <div class="logo-box"><img src="../../../clients/a-j-roofing-solutions/v2/brand/logo-light.svg" alt="light"></div>
+  </div>
+  <div class="logo-row" style="background:#0F3D2A;">
+    <div class="logo-box"><img src="../../../clients/a-j-roofing-solutions/v2/brand/logo-dark.svg" alt="dark"></div>
+  </div>
+
+  <div class="section-label">Variants</div>
+  <div class="logo-row">
+    <div class="logo-box" style="background:#F6F0E4;"><img src="../../../clients/a-j-roofing-solutions/v2/brand/logo-mark.svg"></div>
+    <div class="logo-box" style="background:#FFFFFF;"><img src="../../../clients/a-j-roofing-solutions/v2/brand/logo-mono-dark.svg"></div>
+    <div class="logo-box" style="background:#0F3D2A;"><img src="../../../clients/a-j-roofing-solutions/v2/brand/logo-mono-light.svg"></div>
+  </div>
+
+  <div class="section-label">Palette</div>
+  <div class="palette">
+    <div class="swatch" style="background:#1B5E3F;"><span class="swatch-name">primary</span><span class="swatch-label">#1B5E3F</span></div>
+    <div class="swatch" style="background:#2A8C8C;"><span class="swatch-name">secondary</span><span class="swatch-label">#2A8C8C</span></div>
+    <div class="swatch" style="background:#D9744A;"><span class="swatch-name">accent</span><span class="swatch-label">#D9744A</span></div>
+    <div class="swatch" style="background:#F6F0E4;"><span class="swatch-label">#F6F0E4</span></div>
+    <div class="swatch" style="background:#0F3D2A;"><span class="swatch-name">tropical</span><span class="swatch-label">#0F3D2A</span></div>
+  </div>
+
+  <div class="mockup-row">
+    <div class="section-label" style="margin:0 0 8px;">Header mockup</div>
+    <div class="header-mockup" style="background:#F6F0E4; color:#1A2421;">
+      <img src="../../../clients/a-j-roofing-solutions/v2/brand/logo-horizontal.svg" style="height:24px;">
+      <div class="header-mockup-nav">SERVICES · WORK · <span style="color:#D9744A;">CALL · CAIRNS</span></div>
+    </div>
+    <div style="margin-top:12px;">
+      <a class="cta-btn" style="background:#1B5E3F; color:#F6F0E4;">Get a Free Quote</a>
+      <a class="cta-btn" style="background:#D9744A; color:white;">07 4035 6187</a>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-label">Read</div>
+    Tropical · canopy green + Coral Sea teal + sun-bleached terracotta. Loud · synthetic · 38/50 rubric. Replace at customer onboarding.
+  </div>
+</div>
+
+</div>
+
+<div style="max-width:1600px; margin: 40px auto 0; padding: 24px; background: white; border-radius: 12px; font-size: 13px; line-height: 1.7;">
+  <h2 style="margin-bottom:12px; font-size:16px;">Phase 1 verdict (3-of-4 clients · 1 RED-gated)</h2>
+  <p><strong>Diversity:</strong> three palettes are genuinely different — engineer near-black/brass (vicwest) · heritage slate/warm slab (mark-squire) · tropical canopy-green/teal/terracotta (a-j). No two read as the same business.</p>
+  <p style="margin-top:8px;"><strong>Structural parity:</strong> all three follow the mark-squire canonical layout (8 logo SVG · brand-tokens.css · spec.json · QA checklist · review.md · handoff.md · provenance JSON).</p>
+  <p style="margin-top:8px;"><strong>Honest provenance:</strong> vicwest is REAL extracted · mark-squire is CANONICAL reference · a-j is INFERRED with explicit synthetic markers. vip got the right RED gate (parked landing page · no real services data).</p>
+  <p style="margin-top:8px;"><strong>Next phase 3:</strong> render 3 clients × 5 OD design-systems = 15 variants. This is where we see whether the brand-tokens contract actually drives the website, or whether OD design-systems hard-code colors and ignore our tokens.</p>
+</div>
+
+</body>
+</html>
