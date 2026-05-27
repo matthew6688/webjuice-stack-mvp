@@ -1,0 +1,325 @@
+{
+  "name": "pl-local-trade-page-spec",
+  "version": "1.0.0",
+  "kind": "page_spec",
+  "contract": {
+    "inputs_required": [
+      "brief schema (TODO Step 4 · core/handoff/single-page-brief-schema.js)",
+      "core/audit/personas/*.js (segment data)",
+      "clients/<slug>/v2/handoff/od-package/brand/ (brand snapshot)"
+    ],
+    "outputs_expected": [
+      "rendered HTML conforming to 11-section sequence",
+      "pl-audit-rubric T1/T2/T5 deterministic gates passable (TODO Step 3)"
+    ],
+    "runtime_consumers": [
+      "pl:compose-site (renderer · TODO --single-page mode)",
+      "pl-validate-single-page-brief (TODO Step 4 · brief schema gate)",
+      "pl-audit-rubric (TODO Step 3 · rule + threshold lookup)",
+      "pl-llm-page-copywriter-site (loads as prompt context)"
+    ]
+  },
+  "constants": {
+    "total_words_min": 1000,
+    "total_words_max": 1400,
+    "hero_h1_max_words": 10,
+    "hero_h1_max_words_owner_voice_exception": 11,
+    "hero_subhead_min_words": 14,
+    "hero_subhead_max_words": 25,
+    "cta_max_words": 5,
+    "paragraph_max_sentences": 4,
+    "sentence_max_words": 24,
+    "phone_min_occurrences": 6,
+    "suburb_chips_min": 8,
+    "ship_gate_t1": "PASS",
+    "ship_gate_composite_min": 73,
+    "ship_gate_t5_primary_min": 75,
+    "ship_gate_t5_secondary_min": 50
+  },
+  "rules": [
+    {
+      "id": "R-AUD-1",
+      "severity": "hard",
+      "description": "`primary_segment` declared (no `mixed-not-allowed` in brief) · enum: `urgent-repair | planned-upgrade | commercial-maintenance | guided-first-time-buyer`",
+      "enforced_by": []
+    },
+    {
+      "id": "R-AUD-2",
+      "severity": "hard",
+      "description": "Hero copy matches `primary_segment` voice (see SOP §3.1 H-seg-1 · enforced by `pl-au-trade-voice` Step 3)",
+      "enforced_by": []
+    },
+    {
+      "id": "R-AUD-3",
+      "severity": "hard",
+      "description": "Emergency-availability chip above-fold when `urgency_mix` ∈ {emergency-heavy, mixed} · regardless of primary segment (see SOP §3.1 H-seg-2)",
+      "enforced_by": []
+    },
+    {
+      "id": "R-AUD-4",
+      "severity": "hard",
+      "description": "Per-segment `critical_signals_5_second` deterministic gates must pass (see persona file · enforced by T5 hard gate · SOP §13.1)",
+      "enforced_by": []
+    },
+    {
+      "id": "R-UNI-1",
+      "severity": "hard",
+      "description": "Visible working `tel:` link inside the first 100vh on mobile 390px viewport (5-second contact path)",
+      "enforced_by": []
+    },
+    {
+      "id": "R-UNI-2",
+      "severity": "hard",
+      "description": "Proof of real local legitimate contractor visible: city/suburb + ABN + state-licence + insurance + real reviews + real job photos (NAP consistency + LBP-1..14 stack · see SOP §15)",
+      "enforced_by": []
+    }
+  ],
+  "sections": [
+    {
+      "id": "hero",
+      "name": "Hero",
+      "purpose": null,
+      "hard_rules": [
+        "D-H-1",
+        "D-H-2",
+        "D-H-3",
+        "D-H-4",
+        "D-H-5",
+        "D-H-6",
+        "D-H-7",
+        "D-H-8",
+        "D-H-9",
+        "C-H-1",
+        "C-H-2",
+        "C-H-3",
+        "C-H-4",
+        "C-H-5",
+        "C-H-6",
+        "C-H-7",
+        "C-H-8",
+        "C-H-9"
+      ],
+      "anti_patterns": [
+        "AS-trade-8",
+        "AS-trade-1",
+        "AS-trade-2",
+        "AS-trade-7"
+      ],
+      "audit_check_ids": [
+        "mech-H-1",
+        "mech-H-2",
+        "mech-H-3",
+        "mech-H-4",
+        "mech-H-5",
+        "mech-H-6",
+        "mech-H-7",
+        "mech-H-8",
+        "vis-H-1",
+        "vis-H-2",
+        "vis-H-3",
+        "vis-H-4",
+        "vis-H-5"
+      ]
+    },
+    {
+      "id": "trust-bar",
+      "name": "Trust Bar",
+      "purpose": "stack credibility chips (years · rating+count · license · ABN · warranty) immediately after hero · before visitor scrolls past",
+      "hard_rules": [
+        "R-TB-1",
+        "R-TB-2",
+        "R-TB-3",
+        "R-TB-4",
+        "R-TB-5"
+      ],
+      "anti_patterns": [
+        "AS-trade-7"
+      ],
+      "audit_check_ids": [
+        "vis-TB-1",
+        "vis-TB-2"
+      ]
+    },
+    {
+      "id": "service-list",
+      "name": "Service List",
+      "purpose": "visitor scans 4-8 services to confirm \"they do what I need\"",
+      "hard_rules": [
+        "R-SL-1",
+        "R-SL-2",
+        "R-SL-3",
+        "R-SL-4",
+        "R-SL-5"
+      ],
+      "anti_patterns": [
+        "AS-trade-4"
+      ],
+      "audit_check_ids": [
+        "vis-SL-1",
+        "vis-SL-2"
+      ]
+    },
+    {
+      "id": "about-story",
+      "name": "About Story",
+      "purpose": "humanise the contractor · build owner-trade-craft trust before scrolling to reviews",
+      "hard_rules": [
+        "R-AS-1",
+        "R-AS-2",
+        "R-AS-3",
+        "R-AS-4",
+        "R-AS-5"
+      ],
+      "anti_patterns": [
+        "AS-trade-6"
+      ],
+      "audit_check_ids": [
+        "vis-AS-1"
+      ]
+    },
+    {
+      "id": "reviews",
+      "name": "Reviews",
+      "purpose": "social proof · third-party validation · segment-tuned review selection",
+      "hard_rules": [
+        "R-RV-1",
+        "R-RV-2",
+        "R-RV-3",
+        "R-RV-4",
+        "R-RV-5"
+      ],
+      "anti_patterns": [],
+      "audit_check_ids": [
+        "vis-RV-1"
+      ]
+    },
+    {
+      "id": "before-after",
+      "name": "Before After",
+      "purpose": "visual transformation proof · planned-upgrade primary's strongest persuasion",
+      "hard_rules": [
+        "R-BA-1",
+        "R-BA-2",
+        "R-BA-3",
+        "R-BA-4",
+        "R-BA-5"
+      ],
+      "anti_patterns": [
+        "AS-trade-4"
+      ],
+      "audit_check_ids": [
+        "vis-BA-1"
+      ]
+    },
+    {
+      "id": "service-area",
+      "name": "Service Area",
+      "purpose": "visitor confirms \"they cover my suburb\" · local SEO authority",
+      "hard_rules": [
+        "R-SA-1",
+        "R-SA-2",
+        "R-SA-3",
+        "R-SA-4",
+        "R-SA-5"
+      ],
+      "anti_patterns": [],
+      "audit_check_ids": [
+        "vis-SA-1"
+      ]
+    },
+    {
+      "id": "process",
+      "name": "Process",
+      "purpose": "reduce buyer anxiety by exposing 3-4 step workflow · address objection \"what happens when I call\"",
+      "hard_rules": [
+        "R-PR-1",
+        "R-PR-2",
+        "R-PR-3",
+        "R-PR-4",
+        "R-PR-5"
+      ],
+      "anti_patterns": [],
+      "audit_check_ids": [
+        "vis-PR-1"
+      ]
+    },
+    {
+      "id": "faq",
+      "name": "Faq",
+      "purpose": "pre-empt buyer objections · segment-tuned Q+A · last-mile trust before CTA-band",
+      "hard_rules": [
+        "R-FAQ-1",
+        "R-FAQ-2",
+        "R-FAQ-3",
+        "R-FAQ-4",
+        "R-FAQ-5"
+      ],
+      "anti_patterns": [],
+      "audit_check_ids": [
+        "vis-FAQ-1"
+      ]
+    },
+    {
+      "id": "cta-band",
+      "name": "Cta Band",
+      "purpose": "last-section conversion push · primary CTA + secondary phone CTA · \"no obligation\" friction-reduce",
+      "hard_rules": [
+        "R-CTA-1",
+        "R-CTA-2",
+        "R-CTA-3",
+        "R-CTA-4",
+        "R-CTA-5"
+      ],
+      "anti_patterns": [
+        "AS-trade-8"
+      ],
+      "audit_check_ids": [
+        "vis-CTA-1",
+        "vis-CTA-2"
+      ]
+    },
+    {
+      "id": "footer",
+      "name": "Footer",
+      "purpose": "NAP repeat · legal/compliance stack · GBP-website hours consistency · last-fold trust",
+      "hard_rules": [
+        "R-FT-1",
+        "R-FT-2",
+        "R-FT-3",
+        "R-FT-4",
+        "R-FT-5",
+        "R-FT-6",
+        "R-FT-7"
+      ],
+      "anti_patterns": [],
+      "audit_check_ids": []
+    },
+    {
+      "id": "sticky-mobile-bar",
+      "name": "Sticky Mobile Bar",
+      "purpose": "persistent contact path on mobile · appears after 200vh scroll",
+      "hard_rules": [
+        "R-SMB-1",
+        "R-SMB-2",
+        "R-SMB-3",
+        "R-SMB-4",
+        "R-SMB-5"
+      ],
+      "anti_patterns": [
+        "AS-trade-1",
+        "AS-trade-2",
+        "AS-trade-7"
+      ],
+      "audit_check_ids": [
+        "vis-SMB-1"
+      ]
+    }
+  ],
+  "anti_patterns": [],
+  "_meta": {
+    "generated_by": "scripts/cli/skills-build.js",
+    "generated_at": "2026-05-27T22:00:44.235Z",
+    "source": "skills/pl-local-trade-page-spec/SKILL.md",
+    "source_sha256": "52470e6b30177c07"
+  }
+}

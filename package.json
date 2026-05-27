@@ -6,6 +6,8 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "skills:build": "node scripts/cli/skills-build.js",
+    "skills:check": "node scripts/cli/skills-build.js --check",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
