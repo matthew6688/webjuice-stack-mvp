@@ -1,7 +1,7 @@
 # SOP · Single-Page AU Local-Trade Website Standard
 
-> **Owner**: Matthew (待签字) · **Author**: Claude (synthesis 2026-05-27)
-> **Status**: v0.1 · DRAFT · awaiting baseline validation against vicwest/mark-squire/a-j
+> **Owner**: Matthew (待签字) · **Author**: Claude (synthesis 2026-05-27) · **Reviewer**: Codex gpt-5.5 (7-question independent review · 3 corrections accepted)
+> **Status**: v0.2 · DRAFT post-codex · awaiting Matthew sign-off → v1.0 canonical
 > **Scope**: 单页面 (single .html) 给 AU 本地 trade 商家 (roofing / plumbing / electrical / etc.)
 > **Parent**: `SOP-AUDIT-STANDARD.md` v3 · 此 SOP 不替换 · 仅添加 single-page 专属规则
 > **Sibling**: `V2-PIPELINE-RECIPE-2026-05-21.md` 管 multi-page recipe · 此 SOP 管 single-page
@@ -80,7 +80,7 @@ SITE-WIDE: sticky mobile bottom-bar (phone+CTA) appears @scroll>200px
 
 | # | Rule | Threshold | Check method |
 |---|---|---|---|
-| **H1** | Headline 字数 (visible viewport) | **≤8 词 / ≤55 chars** mobile · ≤12 desktop | grep + char count on first `<h1>` |
+| **H1** | Headline 字数 (visible viewport) | **≤10 词 strict** · ≤11 仅当 owner-operator voice 触发 (含 owner name OR personal accountability copy) | grep + char count on first `<h1>` + owner-voice regex |
 | **H2** | Subheadline 字数 | **≤25 词 / ≤180 chars** | grep on `<p>` next-sibling-of-h1 |
 | **H3** | Trust signal in fold | **≥1**: VBA/QBCC/NSW-FT 牌号 OR ≥10yr OR ≥30 reviews OR 4.5+★ | regex match patterns |
 | **H4** | Primary CTA above fold | **≥1 `<a href="tel:">` AND ≥1 quote-CTA visible <100vh** | DOM position check via vision OR semantic regex |
@@ -163,8 +163,8 @@ scheduled-heavy (restoration/renovation)   → hero 写质感 · warranty 突出
 
 | 维度 | Single-page 目标 |
 |---|---|
-| 整页总字数 | **1200-1600 字** (≤1200 字密度不够 · ≥1600 mobile 太长) |
-| Hero section 字数 | H1 ≤8 词 + 副本 ≤25 词 + 2 chip + 2 CTA = **≤80 词** |
+| 整页总字数 | **1000-1400 字** (≤1000 SEO-content 嫌疑 · ≥1400 mobile 疲劳 · single-page sweet spot) |
+| Hero section 字数 | H1 ≤10 词 + 副本 ≤25 词 + 2 chip + 2 CTA = **≤80 词** |
 | 每非-hero section | 80-150 字 (≥80 = 实质 content · ≤150 = mobile 不挤) |
 | Section 数 | 9-12 (per §2 sequence · 不能跳 hero / trust / cta) |
 | Reading time (Flesch) | **≥70** (容易读 · 本地业主 ≠ technical 受众) |
@@ -311,18 +311,24 @@ D2.S2 是最重要的 · 单独可让站 PASS/FAIL gate (≥7/9 才 ship)。
 
 ---
 
-## 12 · Open questions for Matthew
+## 12 · Decisions (v0.2 · post-codex review · awaiting Matthew sign-off)
 
-1. **H1 ≤8 词 vs ≤10 词**: 你说 "字多了" · 我建议 ≤8 但 mark-squire 11 词 ("the man whose name is on the truck") 是好 copy。要硬 ≤8 还是允许 ≤10 + 提升 voice quality 优先级？
+Codex (gpt-5.5 · independent review) 跟我 review 后所有 7 题确定。3 处 codex 比我更严更对 · 已采纳。
 
-2. **Italic accent in H1**: a-j 的 "*wet season*" 跟 mark-squire 的整句声明 · 是 voice 还是 violation？
+| Q | Decision | Rationale | Risk if wrong |
+|---|---|---|---|
+| **Q1 H1 字数** | **≤10 词 strict · ≤11 仅 owner-operator voice exception** (含 owner name OR personal accountability copy 如 "name is on the truck") | ≤8 会把 mark-squire 这种 owner-led trades 扁平成 generic SEO headline · ≤10 保留 memorability 但仍快 scan | 太严 = 好 copy 被砍 · 太松 = mobile 8s 决定时间崩 |
+| **Q2 Italic H1** | **允许 · 仅高亮 1 个 scannable 概念** (season name / suburb / trade name / owner name) · 禁止装饰性 italic | Italic 作 visual anchor 加速 meaning · 装饰性 italic 才慢 scan | 全禁 = 失 brand texture · 全允 = AI default 又出来 |
+| **Q3 Suburb chips** | **hard fail upstream** · 不容忍 fabrication · INFERRED 客户必须 onboarding 补 | 编造 suburb = 破坏 anti-fabrication SOP 核心 · 让 pipeline 学会"低 trust lead-gen spam"形态 | 软 render = preview 含未验证 local 声明 · 法律 + 商誉 双风险 |
+| **Q4 Emergency phone** | **required + nullable in brief schema** · `urgency_mix` 决定 null 是否合法 (scheduled-heavy 可 null · emergency/mixed 必须填) | 每客户必须显式答 · 但 scheduled trade 不被迫扯 24/7 | niche-only 自动会 misclassify (roof restoration 也偶有 storm 事) |
+| **Q5 Phone ≥6** | **≥6** (sticky header + mobile bottom + hero secondary + CTA-band + footer + contact area) | AU mobile-first trade · phone-led · 6 不多 | ≥4 = 视觉精美但 buying action 被埋 |
+| **Q6 总字数** | **1000-1400 字** | <1000 SEO-content 嫌疑 · >1400 mobile 疲劳 · 1000-1400 是 single-page sweet spot (codex 纠 v0.1 的 1200-1600) | 太短 = generic · 太长 = SEO content 而非 call-ready trade profile |
+| **Q7 Pre-render gate** | **hard fail pipeline** (memory hard rule "数据不够直接 skip" 一致) | license + suburbs + urgency + phone + ABN + authority 是 source-of-truth · 不让 renderer / audit-loop 编 | soft warn = INFERRED 渗进 preview · normalize 上线 unverifiable local claims |
 
-3. **Suburb chip ≥8 vs honest INFERRED**: a-j brand INFERRED · 没真 suburb 列表 · 该硬 fail 还是 brief 标记 "INFERRED · gather at onboarding"？
-
-4. **24/7 emergency line**: 是 niche-by-niche (roofing storm vs renovation) 还是 site-by-site 决策？应否进 brief schema？
-
-5. **Phone ≥6 出现**: 现 3 站都接近 6-8 次。可以再严？还是 ≥4 即可？
-
-6. **总字数 1200-1600**: V2-RECIPE multi-page 是 home ≥1500。Single-page 1200-1600 可能太重？要 800-1200？我倾向 1200-1600 因 single-page 没 about page 分流。
-
-7. **Pre-render gate vs warn-only**: brief 不满足 §6 schema 时 · 硬阻拦 build 还是 warn + 继续？我倾向硬拦 (memory hard rule "数据不够直接 skip")。
+**v0.3 落地清单 (Matthew 签字后)**:
+1. `core/handoff/single-page-brief-schema.js` — §6 schema · `emergency_phone` required+nullable · `urgency_mix` enum · suburbs ≥8
+2. `scripts/cli/pl-validate-single-page-brief.js` — hard-fail gate · `--slug` mode
+3. `scripts/cli/pl-audit-v4.js` 扩展 D2.S1-S4 (含 H1 owner-voice exception 检测)
+4. `core/eval/content-validator.js` 加 9 new forbidden + 1 句 ≤24 词 rule
+5. Validation: 跑 3 站 · 看真分 · iterate
+6. Update memory: 加 lesson "OD skills/ 全是 catalog-only · 不是 bundled · upstream-only" 防下次再误判
