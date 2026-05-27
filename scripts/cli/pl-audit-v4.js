@@ -208,12 +208,16 @@ function runT1Hard(htmlFiles, facts, ctx) {
   if (jsonLdErrors > 0) fails.push(`${jsonLdErrors} invalid JSON-LD block(s)`);
 
   // 1.14 AS-trade-5 · form field count above fold (DOM-parsing via cheerio)
-  // Anti-slop catalog AS-trade-5: trade sites should have ≤3 visible-input fields above fold.
-  // Quick-quote forms (name/phone/job-type) convert · 5+ fields signal generic SaaS bloat.
+  // Anti-slop catalog AS-trade-5: trade sites should have ≤4 visible-input fields above fold
+  // on HOMEPAGE/HERO ONLY. Quick-quote forms (name/phone/job-type) convert · 5+ in hero signal
+  // generic SaaS bloat. Skipped on contact/quote pages (full intake forms are legitimate there).
   // "Above fold" heuristic: form appears within first <main> child or in <header>/hero section.
   // Counts: <input>/<textarea>/<select> EXCLUDING type="hidden"/"submit"/"button"/"image"/"reset".
   const formViolations = [];
   for (const f of htmlFiles) {
+    const base = path.basename(f).toLowerCase();
+    // Skip pages where long forms are legitimate: contact, quote, request, get-quote, book
+    if (/^(contact|quote|request|get-quote|book|appointment|enquiry|inquiry)/.test(base)) continue;
     const html = readHtml(f);
     let $;
     try { $ = cheerioLoad(html); } catch { continue; }

@@ -1,24 +1,29 @@
 {
   "schema_version": "audit-v4/0.1",
   "script_version": "pl-audit-v4/0.1.0-skeleton",
-  "slug": "vicwest-roofing",
+  "slug": "vip-roofing-brisbane",
   "mode": "slug",
-  "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/composed-output-single-page",
+  "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vip-roofing-brisbane/v2/composed-output",
   "tier": "fast",
-  "pages_audited": 1,
-  "generated_at": "2026-05-27T23:31:19.293Z",
+  "pages_audited": 6,
+  "generated_at": "2026-05-27T23:31:19.033Z",
   "tier_1": {
     "pass": true,
     "checks": {
       "1.1_business_name": {
         "pass": true,
-        "pages_with": 1,
-        "total": 1
+        "pages_with": 6,
+        "total": 6
       },
       "1.2_phone_present": {
         "pass": true,
         "per_page": [
-          13
+          6,
+          8,
+          7,
+          6,
+          7,
+          7
         ]
       },
       "1.11_logo_refs_resolve": {
@@ -39,14 +44,14 @@
     "composite": 100
   },
   "tier_2": {
-    "score": 86,
+    "score": 100,
     "breakdown": {
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 96,
-        "var_hits": 94,
-        "color_decls": 98
+        "coverage_pct": 112,
+        "var_hits": 344,
+        "color_decls": 306
       },
       "D2.2_hardcoded_hex_count": {
         "score": 100,
@@ -65,24 +70,17 @@
         "todo": "detect surface lightness around each <img logos/*>"
       },
       "D2.5_brand_palette_honored": {
-        "score": 33,
+        "score": null,
         "weight": 0.15,
-        "expected": [
-          "#0f1115",
-          "#c5a572",
-          "#6d6e71"
-        ],
-        "found": [
-          "#0f1115"
-        ]
+        "note": "no brand-spec · skipped"
       }
     },
-    "total_weight": 0.7000000000000001
+    "total_weight": 0.55
   },
   "tier_3": null,
   "tier_4": null,
   "tier_5": null,
-  "composite": 86,
+  "composite": 100,
   "grade": "A",
   "ship_verdict": "SHIP",
   "issues": []

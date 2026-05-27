@@ -1,26 +1,15 @@
 {
   "schema_version": "audit-v4/0.1",
   "script_version": "pl-audit-v4/0.1.0-skeleton",
-  "slug": "vicwest-roofing",
+  "slug": "mark-squire-roof-restorations",
   "mode": "slug",
-  "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/composed-output-single-page",
+  "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/mark-squire-roof-restorations/v2/composed-output",
   "tier": "fast",
-  "pages_audited": 1,
-  "generated_at": "2026-05-27T23:31:19.293Z",
+  "pages_audited": 4,
+  "generated_at": "2026-05-27T23:31:19.166Z",
   "tier_1": {
     "pass": true,
     "checks": {
-      "1.1_business_name": {
-        "pass": true,
-        "pages_with": 1,
-        "total": 1
-      },
-      "1.2_phone_present": {
-        "pass": true,
-        "per_page": [
-          13
-        ]
-      },
       "1.11_logo_refs_resolve": {
         "pass": true,
         "broken": []
@@ -39,14 +28,14 @@
     "composite": 100
   },
   "tier_2": {
-    "score": 86,
+    "score": 79,
     "breakdown": {
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 96,
-        "var_hits": 94,
-        "color_decls": 98
+        "coverage_pct": 114,
+        "var_hits": 230,
+        "color_decls": 202
       },
       "D2.2_hardcoded_hex_count": {
         "score": 100,
@@ -65,16 +54,14 @@
         "todo": "detect surface lightness around each <img logos/*>"
       },
       "D2.5_brand_palette_honored": {
-        "score": 33,
+        "score": 0,
         "weight": 0.15,
         "expected": [
-          "#0f1115",
-          "#c5a572",
-          "#6d6e71"
+          "#1f232b",
+          "#c68c3f",
+          "#3a5a6b"
         ],
-        "found": [
-          "#0f1115"
-        ]
+        "found": []
       }
     },
     "total_weight": 0.7000000000000001
@@ -82,8 +69,19 @@
   "tier_3": null,
   "tier_4": null,
   "tier_5": null,
-  "composite": 86,
-  "grade": "A",
+  "composite": 79,
+  "grade": "B",
   "ship_verdict": "SHIP",
-  "issues": []
+  "issues": [
+    {
+      "id": "I-001",
+      "tier": "T2",
+      "severity": "P1",
+      "dim": "D2.5_brand_palette_honored",
+      "page": "<sitewide>",
+      "what": "D2.5_brand_palette_honored = 0 (threshold 70)",
+      "why": "Brand-contract token discipline below batch-quality bar (ADR §2.2)",
+      "fix": "See ADR-AUDIT-V4.md §2.2 for per-dim remediation"
+    }
+  ]
 }
