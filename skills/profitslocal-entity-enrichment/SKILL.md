@@ -131,12 +131,17 @@ Every paid field MUST carry `_source` as a sibling key. Centralized `_meta.sourc
 ## Validation
 
 ```bash
-# Dry-run mode (no API spend · checks provenance shape)
-npm run pl:enrich-entity -- --entity-key <key> --dry-run
+# Targeted dry-run (only pl:places-enrich supports --dry-run today · 2026-05-27)
+npm run pl:places-enrich -- --entity-key <key> --dry-run
+
+# Single-axis live run (cheapest validation · pl:enrich-entity does NOT have --dry-run)
+npm run pl:enrich-entity -- --entity-key <key>
 
 # Ledger inspection
 tail -20 data/cost-ledger.jsonl | jq .
 ```
+
+**Note**: `pl:enrich-entity` has no `--dry-run` flag (only `--render` and `--all-active`). For zero-cost validation of provenance shape, use `pl:places-enrich --dry-run` against a single entity.
 
 ## Handoff to next skill
 

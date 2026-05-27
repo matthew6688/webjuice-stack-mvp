@@ -24,14 +24,14 @@ Do **not** use this skill for: pre-build sanity (that's `profitslocal-audit-hand
 
 | File | Required | Notes |
 |------|----------|-------|
-| Built site directory | yes | rendered HTML/CSS/assets; default `clients/<slug>/v2/build/` or `--out` |
+| Built site directory | yes | rendered HTML/CSS/assets; default `clients/<slug>/v2/build/` or `--output-dir` |
 | `clients/<slug>/concept/open-design-seed/facts.json` | yes | for T1 fact cross-check (built site must NOT contradict locked facts) |
 | `clients/<slug>/v2/customer-brief.md` | yes | for T3 content fidelity dimension |
 
 ## Canonical command
 
 ```bash
-npm run pl:audit-tier -- --slug <slug> --out <build-dir>
+npm run pl:audit-tier -- --slug <slug> --output-dirput-dir <build-dir>
 ```
 
 Exit codes:
@@ -86,7 +86,7 @@ If composite is 60-72 (close but not shipping), `pl:iterate-site` reads `_tier-a
 
 | Failure | Behaviour |
 |---------|-----------|
-| Build dir missing | exit 2 · hint: pass `--out` or run `pl:compose-site` first |
+| Build dir missing | exit 2 · hint: pass `--output-dir` or run `pl:compose-site` first |
 | `facts.json` missing | exit 2 · cannot run T1 without locked facts |
 | T1 fails AND T2-T4 score high | still verdict FAIL · T1 is non-negotiable |
 | Composite borderline (71-72) | verdict FAIL · enter iterate-fix loop |
@@ -107,7 +107,7 @@ T3 has a dedicated dimension for AI-fabricated core facts. If the built site sho
 
 ```bash
 # Run on a known-good rendered site
-npm run pl:audit-tier -- --slug vicwest-roofing --out clients/vicwest-roofing/v2/build
+npm run pl:audit-tier -- --slug vicwest-roofing --output-dir clients/vicwest-roofing/v2/build
 # Current state: vicwest ≈ 89 · target ≥ 90 for canonical-build graduation
 ```
 
