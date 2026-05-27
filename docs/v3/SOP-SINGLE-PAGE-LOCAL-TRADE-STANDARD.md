@@ -1,7 +1,7 @@
 # SOP · Single-Page AU Local-Trade Website Standard
 
-> **Owner**: Matthew (待签字) · **Author**: Claude (synthesis 2026-05-27) · **Reviewer**: Codex gpt-5.5 (7-question independent review · 3 corrections accepted)
-> **Status**: v0.2 · DRAFT post-codex · awaiting Matthew sign-off → v1.0 canonical
+> **Owner**: Matthew (canonical sign-off pending) · **Author**: Claude (synthesis 2026-05-27) · **Reviewer**: Codex gpt-5.5 (7-question independent review · 3 corrections accepted) · **PM-approved**: Codex 2026-05-28 v1.0-RC
+> **Status**: **v1.0-RC** (codex-approved · proceed with implementation · Matthew sign for final canonical)
 > **Scope**: 单页面 (single .html) 给 AU 本地 trade 商家 (roofing / plumbing / electrical / etc.)
 > **Parent**: `SOP-AUDIT-STANDARD.md` v3 · 此 SOP 不替换 · 仅添加 single-page 专属规则
 > **Sibling**: `V2-PIPELINE-RECIPE-2026-05-21.md` 管 multi-page recipe · 此 SOP 管 single-page

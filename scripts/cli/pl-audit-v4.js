@@ -1,8 +1,24 @@
 #!/usr/bin/env node
 /**
- * pl:audit-v4 · 5-tier unified audit per ADR-AUDIT-V4.md
+ * pl:audit-v4 · EXPERIMENTAL BRAND-CONTRACT AUDIT
  *
- *   T1 · Hard mechanical    (PASS/FAIL · deterministic · 0 LLM)        [WIRED]
+ * ⚠️  NOT A SHIP GATE (per codex audit 2026-05-28).
+ * Composite scores from this CLI are misleading because T3/T4/T5 are
+ * stubs (return null) and T1 is partial (4/13 ADR checks ported).
+ * The composite renormalises around firing tiers, which means PASS labels
+ * read as success when they only verify what's deterministic.
+ *
+ * Use this for:
+ *   - brand contract compliance (T2 · is brand-tokens.css actually driving design)
+ *   - quick deterministic smoke test before LLM tiers come online
+ *
+ * Do NOT use this for:
+ *   - production ship/no-ship decisions (use docs/v3/SOP-AUDIT-STANDARD v3 + pl-audit-tier instead)
+ *   - composite quality scoring (T3/T4/T5 still stubbed)
+ *
+ * Status: experimental · 2026-05-28
+ * Tiers actually firing:
+ *   T1 · Hard mechanical    (PASS/FAIL · deterministic · 0 LLM)        [PARTIAL 4/13]
  *   T2 · Brand contract     (0-100 · deterministic · 0 LLM)            [WIRED]
  *   T3 · Vision audit       (0-100 · LLM · ~$0.05/page)                [STUB]
  *   T4 · Designer review    (0-100 · LLM · ~$0.10/page)                [STUB]
@@ -47,7 +63,11 @@ function parseArgs(argv) {
 const args = parseArgs(process.argv);
 
 if (args.help) {
-  console.log(`pl:audit-v4 · 5-tier unified audit (ADR-AUDIT-V4.md)
+  console.log(`pl:audit-v4 · EXPERIMENTAL brand-contract audit (ADR-AUDIT-V4.md)
+
+⚠️  NOT A SHIP GATE · T3/T4/T5 stubbed · T1 partial (4/13 checks).
+   For production ship/no-ship use pl:audit-tier (v3 · SOP-AUDIT-STANDARD).
+
 
 Usage:
   pl:audit-v4 --slug <slug> [--tier fast|full|premium]
@@ -354,18 +374,28 @@ function composeFinalScore(tiers, opts = {}) {
   }
   const composite = totalW > 0 ? Math.round(weighted / totalW * 100) / 100 | 0 : null;
 
+  // ⚠️  EXPERIMENTAL: any tier stub (T3/T4/T5 returns null) means composite is
+  // partial · do NOT use as ship gate (per codex audit 2026-05-28).
+  const tierStatuses = ['T1', 'T2', 'T3', 'T4', 'T5'].map(k => ({
+    tier: k, status: tiers[k]?.status || (tiers[k] ? 'wired' : 'skipped'),
+  }));
+  const anyStub = tierStatuses.some(t => t.status === 'stub');
+
   let verdict, grade;
-  if (composite >= 85) { grade = 'A'; verdict = 'SHIP'; }
+  if (anyStub) {
+    grade = 'EXPERIMENTAL';
+    verdict = 'EXPERIMENTAL · do not use as ship gate · T3/T4/T5 stubbed';
+  } else if (composite >= 85) { grade = 'A'; verdict = 'SHIP'; }
   else if (composite >= 73) { grade = 'B'; verdict = 'SHIP'; }
   else if (composite >= 60) { grade = 'C'; verdict = 'FIX_LOOP'; }
   else { grade = 'D'; verdict = 'REJECT'; }
 
   // Hard gates (ADR §3)
-  if (t2s != null && t2s < 70) verdict = verdict === 'SHIP' ? 'FIX_LOOP · T2<70' : verdict;
-  if (t3s != null && t3s < 60) verdict = verdict === 'SHIP' ? 'FIX_LOOP · T3<60' : verdict;
+  if (!anyStub && t2s != null && t2s < 70) verdict = verdict === 'SHIP' ? 'FIX_LOOP · T2<70' : verdict;
+  if (!anyStub && t3s != null && t3s < 60) verdict = verdict === 'SHIP' ? 'FIX_LOOP · T3<60' : verdict;
   if (T4?.ai_slop_score != null && T4.ai_slop_score < 60) verdict = 'FIX_LOOP · ai_slop<60';
 
-  return { composite, ship_verdict: verdict, grade, issues: collectIssues(tiers) };
+  return { composite, ship_verdict: verdict, grade, issues: collectIssues(tiers), tier_statuses: tierStatuses, experimental: anyStub };
 }
 
 function collectIssues(tiers) {
