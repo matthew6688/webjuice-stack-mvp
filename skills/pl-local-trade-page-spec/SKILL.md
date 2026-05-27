@@ -277,7 +277,8 @@ Each stub: id · 1-line purpose · 3-5 hard rules · audit IDs · top-1 anti-pat
 - **R-BA-3** · Stock library fallback allowed in preview mode WITH PREVIEW badge ("Stock photography · representative imagery")
 - **R-BA-4** · `primary_segment = planned-upgrade` → ≥2 pairs strongly preferred (T5 weight 25%)
 - **R-BA-5** · NO AI-generated before/after composites · fabrication ban
-- **Audit IDs**: `mech-BA-1..3` (pair count + caption fields) · `vis-BA-1` photo authenticity
+- **R-BA-6 HARD** · Display MUST use **draggable-slider variant** ONLY (middle-line divider · left/right drag handle · before/after labels) — `modules/before-after/draggable-slider.html` is the canonical implementation · ANY static side-by-side / carousel / fade-transition variant = audit FAIL. This is a Matthew-locked hard rule 2026-05-28: interactive comparison is the only acceptable presentation for transformation proof.
+- **Audit IDs**: `mech-BA-1..4` (pair count + caption fields + draggable-slider DOM signature · `<div class="ba-slider">` + `<div class="ba-divider">` + `<div class="ba-handle">`) · `vis-BA-1` photo authenticity
 - **Top anti-pattern**: AS-trade-4 lifestyle stock vs real trade photo
 - **Owner**: LBP-12 real trade photo · LBP-13 date · SOP §11 banner
 
