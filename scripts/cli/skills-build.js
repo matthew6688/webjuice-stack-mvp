@@ -44,8 +44,7 @@ const SKILLS_DIR = path.join(REPO, 'skills');
 const PL_SKILLS = [
   { dir: 'pl-local-trade-page-spec', kind: 'page_spec', extractor: extractPageSpec },
   { dir: 'pl-au-trade-voice',        kind: 'voice',     extractor: extractVoice },
-  // TODO Step 3.2:
-  // { dir: 'pl-audit-rubric',           kind: 'audit_rubric',       extractor: extractRubric },
+  { dir: 'pl-audit-rubric',          kind: 'audit_rubric', extractor: extractRubric },
 ];
 
 // ─── Helpers ────────────────────────────────────────────────────────────
@@ -223,6 +222,51 @@ function extractVoice(md) {
   }
 
   // Stamp _meta (will be added by main loop)
+  embedded._meta = { generated_by: 'scripts/cli/skills-build.js', generated_at: null, source: null, source_sha256: null };
+  return embedded;
+}
+
+// ─── Audit-rubric extractor (codex R15 Q-X-5 b · OWN extractor · not generic) ─
+// Mirrors voice contract (§"Build artifact" block · embedded ```json fence) but
+// validates audit_rubric-specific keys + asserts ≥60 rules · ≥10 sections · 8
+// anti_patterns. Authors edit the human-readable §3-§10 tables AND the §11 JSON;
+// this extractor reads the JSON (canonical machine form) + sanity-checks shape.
+function extractRubric(md) {
+  const { fm, body } = parseFrontmatter(md);
+
+  const jsonBlockMatch = body.match(/##\s*§\d+\s*·\s*Build artifact[\s\S]+?```json\n([\s\S]+?)\n```/);
+  if (!jsonBlockMatch) {
+    throw new Error('pl-audit-rubric SKILL.md MUST contain a §"Build artifact" block with embedded JSON (```json fence)');
+  }
+  let embedded;
+  try {
+    embedded = JSON.parse(jsonBlockMatch[1]);
+  } catch (e) {
+    throw new Error(`pl-audit-rubric build artifact JSON invalid: ${e.message}`);
+  }
+
+  // Required top-level keys (codex R10 schema)
+  for (const k of ['name', 'version', 'kind', 'contract', 'constants', 'rules', 'sections', 'anti_patterns']) {
+    if (!(k in embedded)) {
+      throw new Error(`pl-audit-rubric embedded JSON missing required key: ${k}`);
+    }
+  }
+
+  // Audit-rubric-specific assertions
+  if (embedded.kind !== 'audit_rubric') {
+    throw new Error(`pl-audit-rubric kind must be "audit_rubric" · got "${embedded.kind}"`);
+  }
+  if (!Array.isArray(embedded.rules) || embedded.rules.length < 60) {
+    throw new Error(`pl-audit-rubric rules must have ≥60 entries · got ${embedded.rules?.length ?? 0}`);
+  }
+  if (!Array.isArray(embedded.sections) || embedded.sections.length < 10) {
+    throw new Error(`pl-audit-rubric sections must have ≥10 entries · got ${embedded.sections?.length ?? 0}`);
+  }
+  if (!Array.isArray(embedded.anti_patterns) || embedded.anti_patterns.length !== 8) {
+    throw new Error(`pl-audit-rubric anti_patterns must have exactly 8 entries (AS-trade-1..8) · got ${embedded.anti_patterns?.length ?? 0}`);
+  }
+
+  // Stamp _meta (filled by main loop)
   embedded._meta = { generated_by: 'scripts/cli/skills-build.js', generated_at: null, source: null, source_sha256: null };
   return embedded;
 }

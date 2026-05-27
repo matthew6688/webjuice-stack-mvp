@@ -1,0 +1,845 @@
+{
+  "name": "pl-audit-rubric",
+  "version": "1.0.0",
+  "kind": "audit_rubric",
+  "contract": {
+    "inputs_required": [
+      "rendered page HTML (single-page · trade niche)",
+      "clients/<slug>/v2/handoff/facts.json (for T1 comparison)",
+      "clients/<slug>/v2/handoff/single-page-brief.json (primary + secondary segments)",
+      "core/audit/personas/<segment>.js (T5 prompts + deterministic checks)"
+    ],
+    "outputs_expected": [
+      "T1 PASS/FAIL with failing dim list",
+      "T2/T3/T4 0-100 scores + composite",
+      "T5 primary + secondary per-segment scores",
+      "ship_ok boolean + failing rule IDs + upstream-fix pointers (§10)"
+    ],
+    "runtime_consumers": [
+      "scripts/cli/pl-audit-tier.js (T1-T4 · current)",
+      "scripts/cli/pl-audit-v4.js (T1+T2 brand contract · EXPERIMENTAL)",
+      "scripts/cli/pl-audit-vision.js (T3 visual + T5 LLM · TODO Phase A.2)",
+      "pl:iterate-site (fix-instructions builder · loops audit → OD → audit)"
+    ]
+  },
+  "constants": {
+    "ship_gate_t1": "PASS",
+    "ship_gate_composite_min": 73,
+    "ship_gate_t5_primary_min": 75,
+    "ship_gate_t5_secondary_min": 50,
+    "composite_formula": "round(0.35*T2 + 0.35*T3 + 0.30*T4)",
+    "t5_composite_formula": "0.50*primary + 0.15*each_secondary + 0.05*unrepresented_floor",
+    "fix_loop_max_iterations": 3,
+    "p0_severity": "hard_fail_blocks_ship",
+    "p1_severity": "deduction_8_to_15",
+    "p2_severity": "warning_no_score_impact"
+  },
+  "rules": [
+    {
+      "id": "T1.1",
+      "severity": "hard",
+      "description": "NAP consistency across page + GBP + schema",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/trust-signals/generic.js",
+        "core/audit/multi-page-crawl.js"
+      ]
+    },
+    {
+      "id": "T1.2",
+      "severity": "hard",
+      "description": "Phone format AU + clickable tel: links",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/form-audit.js"
+      ]
+    },
+    {
+      "id": "T1.3",
+      "severity": "hard",
+      "description": "License authority matches state (no cross-state)",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/trust-signals/roofing-au.js"
+      ]
+    },
+    {
+      "id": "T1.4",
+      "severity": "hard",
+      "description": "ABN format 11-digit",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/trust-signals/generic.js"
+      ]
+    },
+    {
+      "id": "T1.5",
+      "severity": "hard",
+      "description": "Cross-state license = zero-tolerance fail",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/trust-signals/<niche>.js"
+      ]
+    },
+    {
+      "id": "T1.6",
+      "severity": "hard",
+      "description": "Hero H1 ≤10 words (≤11 owner-voice exception)",
+      "enforced_by": [
+        "pl-audit-tier",
+        "pl-audit-v4",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "T1.7",
+      "severity": "hard",
+      "description": "Primary CTA ≤5 words",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "T1.8",
+      "severity": "hard",
+      "description": "Suburb-chip count ≥8 + matches areaServed schema",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/multi-page-crawl.js"
+      ]
+    },
+    {
+      "id": "T1.9",
+      "severity": "hard",
+      "description": "Forbidden legal claims absent",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.1",
+      "severity": "scored",
+      "description": "Total word count 1000-1400",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.2",
+      "severity": "scored",
+      "description": "Paragraph ≤4 sentences · sentence ≤24 words",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.3",
+      "severity": "scored",
+      "description": "Hero subhead 14-25 words + specific outcome",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.4",
+      "severity": "scored",
+      "description": "Trust-bar 5 chips with specific proof",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/trust-signals/<niche>.js"
+      ]
+    },
+    {
+      "id": "D2.5",
+      "severity": "scored",
+      "description": "Service-list 6-10 items · ≤15 word descriptions · active verb",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.6",
+      "severity": "scored",
+      "description": "About-story has founding year + specific person + place",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.7",
+      "severity": "scored",
+      "description": "Reviews ≥3 with reviewer first name + suburb + date",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.8",
+      "severity": "scored",
+      "description": "FAQ 5-8 entries · pre-empts top objections",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.9",
+      "severity": "scored",
+      "description": "Footer NAP + license + ABN + insurance + hours visible",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/trust-signals/generic.js"
+      ]
+    },
+    {
+      "id": "D2.S1",
+      "severity": "scored",
+      "description": "Banned genericisms absent (~69 phrases)",
+      "enforced_by": [
+        "pl-audit-tier",
+        "pl-audit-v4",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.S2",
+      "severity": "scored",
+      "description": "AU spelling strict",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.S3",
+      "severity": "scored",
+      "description": "No-obligation pattern present",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/content-validator.js"
+      ]
+    },
+    {
+      "id": "D2.S4",
+      "severity": "scored",
+      "description": "Per-segment voice match",
+      "enforced_by": [
+        "pl-audit-v4",
+        "core/audit/personas/*.js"
+      ],
+      "todo": "Phase A.2 LLM wiring"
+    },
+    {
+      "id": "D2.BC1",
+      "severity": "scored",
+      "description": "Brand contract: tone consistent with brand-tokens.css",
+      "enforced_by": [
+        "pl-audit-v4",
+        "core/audit/brand-contract.js"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D2.BC2",
+      "severity": "scored",
+      "description": "Brand contract: color/typography references match library",
+      "enforced_by": [
+        "pl-audit-v4",
+        "core/audit/brand-contract.js"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D3.1",
+      "severity": "scored",
+      "description": "Hero composition: H1 + subhead + CTA + trust hierarchy clean",
+      "enforced_by": [
+        "pl-audit-vision"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D3.2",
+      "severity": "scored",
+      "description": "Hero photo: real trade work · not stock · faces visible",
+      "enforced_by": [
+        "pl-audit-vision"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D3.3",
+      "severity": "scored",
+      "description": "Typography scale: clear h1/h2/h3 + body legible",
+      "enforced_by": [
+        "pl-audit-vision"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D3.4",
+      "severity": "scored",
+      "description": "Color contrast WCAG AA · brand-token palette respected",
+      "enforced_by": [
+        "pl-audit-tier",
+        "pl-audit-vision",
+        "core/audit/image-optimization.js"
+      ]
+    },
+    {
+      "id": "D3.5",
+      "severity": "scored",
+      "description": "Spacing rhythm · vertical baseline consistent",
+      "enforced_by": [
+        "pl-audit-vision"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D3.6",
+      "severity": "scored",
+      "description": "Section transitions clear · no wall-of-text",
+      "enforced_by": [
+        "pl-audit-vision"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D3.7",
+      "severity": "scored",
+      "description": "Trust-bar visual weight matches importance",
+      "enforced_by": [
+        "pl-audit-vision"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D3.8",
+      "severity": "scored",
+      "description": "Mobile rendering: phone-first · CTA thumb-reachable",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/pagespeed-insights.js"
+      ]
+    },
+    {
+      "id": "D3.9",
+      "severity": "scored",
+      "description": "Anti-slop visual: no AI-default patterns",
+      "enforced_by": [
+        "pl-audit-vision"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "D4.1",
+      "severity": "scored",
+      "description": "PageSpeed mobile ≥85 · LCP <2.5s · CLS <0.1",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/pagespeed-insights.js"
+      ]
+    },
+    {
+      "id": "D4.2",
+      "severity": "scored",
+      "description": "Schema JSON-LD valid · LocalBusiness subtype matches niche",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/ai-geo-checks.js"
+      ]
+    },
+    {
+      "id": "D4.3",
+      "severity": "scored",
+      "description": "Sitemap + robots + meta tags clean",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/sitemap-analyzer.js"
+      ]
+    },
+    {
+      "id": "D4.4",
+      "severity": "scored",
+      "description": "Image optimization: AVIF/WebP + alt text + lazy-load",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/image-optimization.js"
+      ]
+    },
+    {
+      "id": "D4.5",
+      "severity": "scored",
+      "description": "Third-party weight ≤30% of total bytes",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/third-party-weight.js"
+      ]
+    },
+    {
+      "id": "D4.6",
+      "severity": "scored",
+      "description": "GBP-website consistency (hours/phone/address/category)",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/multi-page-crawl.js"
+      ]
+    },
+    {
+      "id": "D4.7",
+      "severity": "scored",
+      "description": "Tech stack appropriate · CSP headers",
+      "enforced_by": [
+        "pl-audit-tier",
+        "core/audit/tech-stack-detector.js"
+      ]
+    },
+    {
+      "id": "T5.urgent-repair",
+      "severity": "scored",
+      "description": "Urgent-repair deterministic gate + LLM score",
+      "enforced_by": [
+        "pl-audit-vision",
+        "core/audit/personas/urgent-repair.js"
+      ],
+      "todo": "Phase A.2 vision dispatcher"
+    },
+    {
+      "id": "T5.planned-upgrade",
+      "severity": "scored",
+      "description": "Planned-upgrade deterministic gate + LLM score",
+      "enforced_by": [
+        "pl-audit-vision",
+        "core/audit/personas/planned-upgrade.js"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "T5.commercial-maintenance",
+      "severity": "scored",
+      "description": "Commercial-maintenance deterministic gate + LLM score",
+      "enforced_by": [
+        "pl-audit-vision",
+        "core/audit/personas/commercial-maintenance.js"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "T5.guided-first-time-buyer",
+      "severity": "scored",
+      "description": "Guided-first-time-buyer deterministic gate + LLM score",
+      "enforced_by": [
+        "pl-audit-vision",
+        "core/audit/personas/guided-first-time-buyer.js"
+      ],
+      "todo": "Phase A.2"
+    },
+    {
+      "id": "MAP.mech-H-1",
+      "severity": "alias",
+      "description": "page-spec mech-H-1 → T1.6",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.mech-H-2",
+      "severity": "alias",
+      "description": "page-spec mech-H-2 → D2.3",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.mech-H-3",
+      "severity": "alias",
+      "description": "page-spec mech-H-3 → T1.7",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.vis-H-1",
+      "severity": "alias",
+      "description": "page-spec vis-H-1 → D3.1",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.vis-H-2",
+      "severity": "alias",
+      "description": "page-spec vis-H-2 → D2.S4",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.vis-H-3",
+      "severity": "alias",
+      "description": "page-spec vis-H-3 → D3.2",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.mech-TB-1",
+      "severity": "alias",
+      "description": "page-spec mech-TB-1..5 → D2.4",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.mech-FT-1",
+      "severity": "alias",
+      "description": "page-spec mech-FT-1..7 → D2.9",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "MAP.mech-SMB-1",
+      "severity": "alias",
+      "description": "page-spec mech-SMB-1..5 → D4.2",
+      "enforced_by": [
+        "alias-table-§9"
+      ]
+    },
+    {
+      "id": "FIX.T1",
+      "severity": "upstream",
+      "description": "T1 fail → fix data layer (facts.json · enrich-handoff · llm-extract-core)",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    },
+    {
+      "id": "FIX.T2-copy",
+      "severity": "upstream",
+      "description": "T2 copy fail → fix brief OR pl-au-trade-voice §1.5",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    },
+    {
+      "id": "FIX.T2-brand",
+      "severity": "upstream",
+      "description": "T2 brand-contract fail → fix brand-tokens.css OR modules",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    },
+    {
+      "id": "FIX.T3",
+      "severity": "upstream",
+      "description": "T3 fail → fix DESIGN.md OR LLM render prompt",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    },
+    {
+      "id": "FIX.T4",
+      "severity": "upstream",
+      "description": "T4 fail → fix publish pipeline / schema templates",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    },
+    {
+      "id": "FIX.T5-primary",
+      "severity": "upstream",
+      "description": "T5 primary fail → fix brief primary_segment OR renderer hero variant",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    },
+    {
+      "id": "FIX.T5-secondary",
+      "severity": "upstream",
+      "description": "T5 secondary fail → renderer adds secondary-segment surface",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    },
+    {
+      "id": "FIX.AS-trade",
+      "severity": "upstream",
+      "description": "AS-trade P0 fail → DESIGN.md anti-slop guardrails + real photos in facts.json.media[]",
+      "enforced_by": [
+        "pl:iterate-site"
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "id": "tier-1-factual",
+      "name": "Tier 1 · Factual / Brand · PASS/FAIL",
+      "purpose": "Zero-tolerance gates on facts (NAP/license/phone/forbidden claims)",
+      "hard_rules": [
+        "T1.1",
+        "T1.2",
+        "T1.3",
+        "T1.4",
+        "T1.5",
+        "T1.6",
+        "T1.7",
+        "T1.8",
+        "T1.9"
+      ],
+      "audit_check_ids": [
+        "mech-H-1",
+        "mech-H-3"
+      ],
+      "anti_patterns": [
+        "AS-trade-3"
+      ]
+    },
+    {
+      "id": "tier-2-copy-brand-contract",
+      "name": "Tier 2 · Copy Depth & Brand Contract · ≥70",
+      "purpose": "Word budgets · section depth · voice match · banned genericisms · brand contract",
+      "hard_rules": [
+        "D2.1",
+        "D2.2",
+        "D2.3",
+        "D2.4",
+        "D2.5",
+        "D2.6",
+        "D2.7",
+        "D2.8",
+        "D2.9",
+        "D2.S1",
+        "D2.S2",
+        "D2.S3",
+        "D2.S4",
+        "D2.BC1",
+        "D2.BC2"
+      ],
+      "audit_check_ids": [
+        "mech-H-2",
+        "vis-H-2"
+      ],
+      "anti_patterns": [
+        "AS-trade-3",
+        "AS-trade-6",
+        "AS-trade-7"
+      ]
+    },
+    {
+      "id": "tier-3-visual",
+      "name": "Tier 3 · Visual Design · ≥75",
+      "purpose": "Hero composition · typography · spacing · anti-slop visual",
+      "hard_rules": [
+        "D3.1",
+        "D3.2",
+        "D3.3",
+        "D3.4",
+        "D3.5",
+        "D3.6",
+        "D3.7",
+        "D3.8",
+        "D3.9"
+      ],
+      "audit_check_ids": [
+        "vis-H-1",
+        "vis-H-3",
+        "vis-H-4",
+        "vis-H-5",
+        "mech-H-5",
+        "mech-H-6",
+        "mech-H-7",
+        "mech-H-8"
+      ],
+      "anti_patterns": [
+        "AS-trade-1",
+        "AS-trade-2",
+        "AS-trade-4",
+        "AS-trade-5",
+        "AS-trade-8"
+      ]
+    },
+    {
+      "id": "tier-4-tech-seo",
+      "name": "Tier 4 · Tech / SEO / Performance · ≥70",
+      "purpose": "PageSpeed · schema · sitemap · image opt · third-party weight · GBP consistency",
+      "hard_rules": [
+        "D4.1",
+        "D4.2",
+        "D4.3",
+        "D4.4",
+        "D4.5",
+        "D4.6",
+        "D4.7"
+      ],
+      "audit_check_ids": [
+        "mech-SMB-1",
+        "mech-FT-1"
+      ],
+      "anti_patterns": []
+    },
+    {
+      "id": "tier-5-per-segment",
+      "name": "Tier 5 · Per-Segment Serviceability · primary ≥75 + secondaries ≥50",
+      "purpose": "Deterministic gates + vision LLM per-segment scoring (hybrid)",
+      "hard_rules": [
+        "T5.urgent-repair",
+        "T5.planned-upgrade",
+        "T5.commercial-maintenance",
+        "T5.guided-first-time-buyer"
+      ],
+      "audit_check_ids": [
+        "vis-H-2"
+      ],
+      "anti_patterns": []
+    },
+    {
+      "id": "anti-slop-catalog",
+      "name": "Anti-slop Catalog (AS-trade-1..8 inline)",
+      "purpose": "AI-default detection prompts + replace-with guidance for vision LLM dispatch",
+      "hard_rules": [],
+      "audit_check_ids": [],
+      "anti_patterns": [
+        "AS-trade-1",
+        "AS-trade-2",
+        "AS-trade-3",
+        "AS-trade-4",
+        "AS-trade-5",
+        "AS-trade-6",
+        "AS-trade-7",
+        "AS-trade-8"
+      ]
+    },
+    {
+      "id": "check-id-alias",
+      "name": "Audit Check ID → T-number Alias Table",
+      "purpose": "Bi-directional lookup between page-spec section-prefix IDs and T-numbered scheme",
+      "hard_rules": [
+        "MAP.mech-H-1",
+        "MAP.mech-H-2",
+        "MAP.mech-H-3",
+        "MAP.vis-H-1",
+        "MAP.vis-H-2",
+        "MAP.vis-H-3",
+        "MAP.mech-TB-1",
+        "MAP.mech-FT-1",
+        "MAP.mech-SMB-1"
+      ],
+      "audit_check_ids": [],
+      "anti_patterns": []
+    },
+    {
+      "id": "failure-mode-upstream-fix",
+      "name": "Failure Mode → Upstream Fix Table",
+      "purpose": "Which tier fail tells what layer to repair (data/brief/voice/brand/design/render)",
+      "hard_rules": [
+        "FIX.T1",
+        "FIX.T2-copy",
+        "FIX.T2-brand",
+        "FIX.T3",
+        "FIX.T4",
+        "FIX.T5-primary",
+        "FIX.T5-secondary",
+        "FIX.AS-trade"
+      ],
+      "audit_check_ids": [],
+      "anti_patterns": []
+    },
+    {
+      "id": "composite-ship-gate",
+      "name": "Composite & Ship Gate Formula",
+      "purpose": "T1 PASS + composite(T2/T3/T4) ≥73 + T5 primary ≥75 + T5 secondaries ≥50",
+      "hard_rules": [],
+      "audit_check_ids": [],
+      "anti_patterns": []
+    },
+    {
+      "id": "purpose-scope",
+      "name": "Purpose & Scope · Owner Pointers",
+      "purpose": "Rubric is a lookup table · CLIs + core/audit/* modules are the executors",
+      "hard_rules": [],
+      "audit_check_ids": [],
+      "anti_patterns": []
+    }
+  ],
+  "anti_patterns": [
+    {
+      "id": "AS-trade-1",
+      "summary": "Generic stock-hero (no real trade work · staged perfect)",
+      "catalog_pointer": "self-§8",
+      "severity": "P0",
+      "detection": "vision-llm",
+      "replace_with": "Real on-job photo · crew visible · actual job site"
+    },
+    {
+      "id": "AS-trade-2",
+      "summary": "Solutions/Services hero tile grid (interchangeable across niches)",
+      "catalog_pointer": "self-§8",
+      "severity": "P1",
+      "detection": "grep+vision",
+      "replace_with": "Specific service taxonomy · niche material names · before/after thumb"
+    },
+    {
+      "id": "AS-trade-3",
+      "summary": "Niche cliché tagline (above your head specialists · extra mile)",
+      "catalog_pointer": "self-§8",
+      "severity": "P0",
+      "detection": "grep",
+      "replace_with": "Specific number/year/outcome"
+    },
+    {
+      "id": "AS-trade-4",
+      "summary": "Carousel hero (auto-rotating slides)",
+      "catalog_pointer": "self-§8",
+      "severity": "P1",
+      "detection": "dom+vision",
+      "replace_with": "Static single hero · one H1 · one CTA"
+    },
+    {
+      "id": "AS-trade-5",
+      "summary": "Decorative-only trust badges (FB/Insta logos as trust)",
+      "catalog_pointer": "self-§8",
+      "severity": "P1",
+      "detection": "grep+vision",
+      "replace_with": "License # · ABN · insurance $ · industry body · review-star count"
+    },
+    {
+      "id": "AS-trade-6",
+      "summary": "Why choose us 4-up generic value tiles (Quality/Experience/Reliability/Service)",
+      "catalog_pointer": "self-§8",
+      "severity": "P1",
+      "detection": "grep",
+      "replace_with": "Specific guarantees with numbers"
+    },
+    {
+      "id": "AS-trade-7",
+      "summary": "Competitive pricing/Affordable rates without anchor",
+      "catalog_pointer": "self-§8",
+      "severity": "P1",
+      "detection": "grep",
+      "replace_with": "Indicative price band OR 'Free written quote · no surprises'"
+    },
+    {
+      "id": "AS-trade-8",
+      "summary": "AI-generated stock illustration (vector tradies · cartoon icons)",
+      "catalog_pointer": "self-§8",
+      "severity": "P0",
+      "detection": "vision-llm",
+      "replace_with": "Real photography · same crew across page · no vector mascots"
+    }
+  ],
+  "_meta": {
+    "generated_by": "scripts/cli/skills-build.js",
+    "generated_at": null,
+    "source": null,
+    "source_sha256": "9fb36124e987db66"
+  }
+}
