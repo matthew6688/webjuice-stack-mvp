@@ -653,6 +653,69 @@ function runContentRichnessDeterministic(htmlFiles, ctx) {
   return { dims, status: 'wired' };
 }
 
+// ─── T2 LLM Copy Quality (premium · SOP-AUDIT-STANDARD-V2 §9 D2.10) ─────
+// Calls core/eval/codex-deep-audit.js with 6 dims (D1-D5 existing + D6 NEW engagement)
+// D2.10 engagement-persuasion = D6 from codex-deep-audit · positive prose-quality signal
+// Premium tier only · ~$0.30-0.50/page · ~40-60s per page
+async function runT2CopyQualityLLM(htmlFiles, ctx) {
+  let auditModule;
+  try {
+    auditModule = await import(path.resolve(REPO, 'core/eval/codex-deep-audit.js'));
+  } catch (e) {
+    return { status: 'skipped', reason: `codex-deep-audit not available: ${e.message}` };
+  }
+
+  const briefPath = path.resolve(REPO, `clients/${ctx.slug}/v2/single-page-brief.yaml`);
+  const brief = fs.existsSync(briefPath) ? fs.readFileSync(briefPath, 'utf8') : '';
+  const facts = ctx.facts || {};
+
+  const pageResults = [];
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    const start = Date.now();
+    try {
+      const r = await auditModule.auditPage({ pageFile: path.basename(f), html, facts, brief, dims: auditModule.DEFAULT_DIMS, timeoutMs: 4 * 60 * 1000 });
+      pageResults.push({ page: path.basename(f), result: r, duration_s: Math.round((Date.now() - start) / 1000) });
+    } catch (e) {
+      pageResults.push({ page: path.basename(f), error: e.message, duration_s: Math.round((Date.now() - start) / 1000) });
+    }
+  }
+
+  // Aggregate: compute mean D6 + composite copy-quality score across pages
+  let d6Sum = 0, d6Count = 0;
+  let d1d4Sum = 0, d1d4Count = 0;
+  const allHallucinations = [];
+  const allLeakQuotes = [];
+  for (const pr of pageResults) {
+    const scores = pr.result?.parsed?.scores;
+    if (scores?.D6_engagement_persuasion != null) { d6Sum += scores.D6_engagement_persuasion; d6Count++; }
+    for (const k of ['D1_facts_accuracy', 'D2_voice_authentic', 'D3_specificity', 'D4_conversion']) {
+      if (scores?.[k] != null) { d1d4Sum += scores[k]; d1d4Count++; }
+    }
+    for (const h of (pr.result?.parsed?.hallucinations || [])) allHallucinations.push({ page: pr.page, fact: h });
+    for (const l of (pr.result?.parsed?.leak_quotes || [])) allLeakQuotes.push({ page: pr.page, quote: l });
+  }
+  const d6Score = d6Count > 0 ? Math.round((d6Sum / d6Count) * 10) : null;
+  const d1d4Score = d1d4Count > 0 ? Math.round((d1d4Sum / d1d4Count) * 10) : null;
+
+  return {
+    status: 'wired',
+    score: d6Score,  // D2.10 engagement
+    sub_dims: {
+      'D2.10_engagement_persuasion': d6Score,
+      'D2.4_codex_factual_accuracy': pageResults[0]?.result?.parsed?.scores?.D1_facts_accuracy * 10 || null,
+      'D2.5_codex_voice_authentic':  pageResults[0]?.result?.parsed?.scores?.D2_voice_authentic * 10 || null,
+      'D2.6_codex_specificity':       pageResults[0]?.result?.parsed?.scores?.D3_specificity * 10 || null,
+      'D2.X_conversion_clarity':       pageResults[0]?.result?.parsed?.scores?.D4_conversion * 10 || null,
+      'D2.X_leak_free':                pageResults[0]?.result?.parsed?.scores?.D5_leak_free * 10 || null,
+    },
+    hallucinations: allHallucinations,
+    leak_quotes: allLeakQuotes,
+    per_page: pageResults,
+    note: 'SOP-AUDIT-STANDARD-V2 §9 D2.10 · codex-deep-audit 6-dim · premium tier · ~40s/page',
+  };
+}
+
 // ─── M1 · Mobile gate (hybrid · SOP-AUDIT-STANDARD-V2 §4 + §9) ──────────
 // Mechanical vetos (this function): M1.1 overflow-x · M1.2 sticky CTA · M1.3 critical tap targets
 // Vision scored sub-dims (deferred to premium tier): M1.4 hero readability · M1.5 above-fold trust+CTA
@@ -913,6 +976,8 @@ async function main() {
   if (runT4d) tiers.ContentRichness = runContentRichnessDeterministic(ctx.htmlFiles, ctx);
   // M1 mobile gate · mechanical vetos · SOP-AUDIT-STANDARD-V2 §4
   if (runT4d) tiers.M1Mobile = await runM1MobileGate(ctx.htmlFiles, ctx);
+  // T2 LLM Copy Quality (D2.10 engagement + D2.4-D2.6 codex-deep) · premium tier only · SOP §9
+  if (TIER === 'premium') tiers.T2CopyLLM = await runT2CopyQualityLLM(ctx.htmlFiles, ctx);
   if (runT5) tiers.T5 = await runT5CreativeDirector(ctx.htmlFiles, ctx);
 
   const final = composeFinalScore(tiers, { includePremium: TIER === 'premium' });
@@ -933,6 +998,7 @@ async function main() {
     tier_4d_voice: tiers.T4d || null,
     content_richness_deterministic: tiers.ContentRichness || null,
     mobile_gate: tiers.M1Mobile || null,
+    t2_copy_quality_llm: tiers.T2CopyLLM || null,
     tier_5: tiers.T5 || null,
     composite: final.composite,
     grade: final.grade,
