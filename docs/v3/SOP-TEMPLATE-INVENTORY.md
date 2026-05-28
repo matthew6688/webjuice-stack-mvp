@@ -273,27 +273,54 @@ Each template must have AT LEAST ONE form. Pattern:
 ### 4.5.d · AS-trade-5 audit compliance
 Hero form: ≤4 visible `<input>` elements above fold. Include `<select>` if you want · audit treats it lenient. NEVER put `<textarea>` in hero (move to footer/contact section).
 
-### 4.5.e · Deployment + env bootstrap (per client)
-After `pl:compose-editorial` produces editorial-output · the deploy + env steps:
+### 4.5.e · Deploy with form-to-email (per client)
+
+After `pl:compose-editorial` produces `clients/<slug>/v2/editorial-output/` · ship with one command:
 
 ```bash
-# 1. Deploy with functions (whitelisted · only client-contact.ts is bundled)
-npm run pl:publish-dir -- \
-  --dir clients/<slug>/v2/editorial-output \
-  --project <slug>-test \
-  --with-functions
-
-# 2. Bootstrap env (one-time per project)
-npm run pl:cf-env-bootstrap -- \
-  --project <slug>-test \
-  --recipient <client@email>.com.au \
+npm run pl:ship-customer -- \
+  --slug <slug> \
+  --recipient <client@email.com.au> \
   --client-name "<Client Name>"
+```
 
-# 3. Redeploy so functions pick up env
-npm run pl:publish-dir -- \
-  --dir clients/<slug>/v2/editorial-output \
-  --project <slug>-test \
-  --with-functions
+That's it. The command does deploy → set env → redeploy automatically.
+
+**What it does under the hood:**
+1. Deploy with functions (client-contact.ts bundled)
+2. Set RECIPIENT_EMAIL + RESEND_API_KEY + CLIENT_NAME on CF Pages
+3. Redeploy so functions pick up env
+
+**Optional flags:**
+- `--project <name>` — override project name (default: `<slug>-dev`)
+- `--from <email>` — override FROM_EMAIL (default: `Profits Local <leads@profitslocal.com>`)
+- `--dry-run` — print commands without running
+
+**Full pipeline for a new client (3 commands):**
+```bash
+# 1. Generate the site
+npm run pl:compose-editorial -- --slug <slug> --template trade-classic
+
+# 2. Ship with form-to-email (deploy + env + redeploy)
+npm run pl:ship-customer -- --slug <slug> --recipient <client@email> --client-name "<Name>"
+
+# 3. Test (see §4.5.f)
+```
+
+**Update recipient or client name later:**
+```bash
+# Re-run ship-customer — safe to run multiple times
+npm run pl:ship-customer -- --slug <slug> --recipient <new@email> --client-name "<Name>"
+```
+
+**Manual steps (if ship-customer fails):**
+```bash
+# 1. Deploy
+npm run pl:publish-dir -- --dir clients/<slug>/v2/editorial-output --project <slug>-dev --with-functions
+# 2. Set env
+npm run pl:cf-env-bootstrap -- --project <slug>-dev --recipient <email> --client-name "<Name>"
+# 3. Redeploy
+npm run pl:publish-dir -- --dir clients/<slug>/v2/editorial-output --project <slug>-dev --with-functions
 ```
 
 ### 4.5.f · Testing recipe (REQUIRED before declaring template ship-ready)
