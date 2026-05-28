@@ -1526,6 +1526,122 @@ export function buildMasterMdDetailed({
     }
   }
 
+  // ── 内容就位度 · 建站原材料 ──
+  // Shows status of Pipeline A prepared content files (hero-copy.json, services.json,
+  // about.md, faq.json, customer-brief.md) that the composer can read instead of
+  // falling back to core-extract formula copy.
+  // Also reads ctx-snapshot.json (written by pl:compose-editorial) to show what source
+  // was actually used in the last compose run.
+  if (slug) {
+    const v2ContentDir = path.join(process.cwd(), 'clients', slug, 'v2');
+    const odContentDir = path.join(v2ContentDir, 'handoff', 'od-package', 'content');
+
+    // customer-brief.md (at v2/ root, not inside od-package)
+    const briefMdPath = path.join(v2ContentDir, 'customer-brief.md');
+    const briefMdExists = fs.existsSync(briefMdPath);
+    let briefMdStats = '';
+    if (briefMdExists) {
+      try {
+        const briefText = fs.readFileSync(briefMdPath, 'utf8');
+        const sectionCount = (briefText.match(/^##/gm) || []).length;
+        const wordCount = briefText.split(/\s+/).filter(Boolean).length;
+        briefMdStats = ` · ${sectionCount} sections · ~${wordCount} words`;
+      } catch { /* non-fatal */ }
+    }
+
+    // hero-copy.json
+    const heroCopyPath = path.join(odContentDir, 'hero-copy.json');
+    const heroCopyExists = fs.existsSync(heroCopyPath);
+    let heroCopyStats = '';
+    let heroCopyLines = [];
+    if (heroCopyExists) {
+      try {
+        const heroData = JSON.parse(fs.readFileSync(heroCopyPath, 'utf8'));
+        const candidates = heroData.candidates || [];
+        const recIdx = heroData.recommended_index ?? 0;
+        const recHeadline = candidates[recIdx]?.headline || '';
+        // Check for operator approval sidecar
+        const selPath = path.join(odContentDir, 'content-selection.json');
+        let approvalStatus = 'unreviewed';
+        if (fs.existsSync(selPath)) {
+          try {
+            const sel = JSON.parse(fs.readFileSync(selPath, 'utf8'));
+            approvalStatus = sel.hero_approved ? `approved (option ${(sel.hero_index ?? recIdx) + 1})` : 'defaulted';
+          } catch { /* non-fatal */ }
+        }
+        heroCopyStats = ` · ${candidates.length} options · rec #${recIdx + 1} · ${approvalStatus}`;
+        if (recHeadline) {
+          heroCopyLines.push(`  - Headline: "${recHeadline.slice(0, 90)}${recHeadline.length > 90 ? '…' : ''}"`);
+        }
+      } catch { /* non-fatal */ }
+    }
+
+    // services.json
+    const preparedSvcPath = path.join(odContentDir, 'services.json');
+    const preparedSvcExists = fs.existsSync(preparedSvcPath);
+    let preparedSvcStats = '';
+    if (preparedSvcExists) {
+      try {
+        const svcData = JSON.parse(fs.readFileSync(preparedSvcPath, 'utf8'));
+        const items = svcData.services || [];
+        preparedSvcStats = ` · ${items.length} services: ${items.map(s => s.name).join(', ')}`;
+      } catch { /* non-fatal */ }
+    }
+
+    // about.md
+    const preparedAboutPath = path.join(odContentDir, 'about.md');
+    const preparedAboutExists = fs.existsSync(preparedAboutPath);
+    let preparedAboutStats = '';
+    if (preparedAboutExists) {
+      try {
+        const aboutText = fs.readFileSync(preparedAboutPath, 'utf8');
+        const body = aboutText.replace(/^---\n[\s\S]+?\n---\n?/, '');
+        const parasCount = body.split(/\n\n+/).filter(p => p.trim().length > 20).length;
+        const wordCount = body.split(/\s+/).filter(Boolean).length;
+        preparedAboutStats = ` · ${parasCount} paragraphs · ~${wordCount} words`;
+      } catch { /* non-fatal */ }
+    }
+
+    // faq.json
+    const preparedFaqPath = path.join(odContentDir, 'faq.json');
+    const preparedFaqExists = fs.existsSync(preparedFaqPath);
+    let preparedFaqStats = '';
+    if (preparedFaqExists) {
+      try {
+        const faqData = JSON.parse(fs.readFileSync(preparedFaqPath, 'utf8'));
+        const items = faqData.faqs || faqData.items || (Array.isArray(faqData) ? faqData : []);
+        preparedFaqStats = ` · ${items.length} FAQs`;
+      } catch { /* non-fatal */ }
+    }
+
+    sections.push('## 内容就位度 · 建站原材料');
+    sections.push('');
+    sections.push(`- customer-brief.md: ${briefMdExists ? `✅${briefMdStats}` : '❌ 未生成'}`);
+    sections.push(`- hero-copy.json: ${heroCopyExists ? `✅${heroCopyStats}` : '❌ 未生成'}`);
+    if (heroCopyLines.length) sections.push(...heroCopyLines);
+    sections.push(`- services.json: ${preparedSvcExists ? `✅${preparedSvcStats}` : '❌ 未生成'}`);
+    sections.push(`- about.md: ${preparedAboutExists ? `✅${preparedAboutStats}` : '❌ 未生成'}`);
+    sections.push(`- faq.json: ${preparedFaqExists ? `✅${preparedFaqStats}` : '❌ 未生成'}`);
+    sections.push('');
+
+    // ctx-snapshot.json: provenance of the last compose run
+    const ctxSnapshotPath = path.join(v2ContentDir, 'editorial-output', 'ctx-snapshot.json');
+    if (fs.existsSync(ctxSnapshotPath)) {
+      try {
+        const snap = JSON.parse(fs.readFileSync(ctxSnapshotPath, 'utf8'));
+        const src = snap.sources || {};
+        sections.push('**最近一次 compose 数据源 (ctx-snapshot)**:');
+        sections.push(`- Hero: \`${src.hero || 'unknown'}\``);
+        sections.push(`- Services: \`${src.services || 'unknown'}\``);
+        sections.push(`- About: \`${src.about || 'unknown'}\``);
+        if (snap.rendered_at) sections.push(`- 渲染时间: ${snap.rendered_at}`);
+      } catch { /* non-fatal */ }
+    } else {
+      sections.push('_ctx-snapshot.json 不存在 — 跑 `npm run pl:compose-editorial` 后会生成渲染溯源_');
+    }
+    sections.push('');
+  }
+
   // ── 附录 ──
   sections.push('## 附录 · 数据出处');
   sections.push('');

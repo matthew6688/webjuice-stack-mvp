@@ -74,6 +74,78 @@ function readYamlFrontmatter(md) {
   try { return yaml.load(m[1]) || {}; } catch { return {}; }
 }
 
+// ─── Prepared-content adapters (Codex R44) ─────────────────────────────
+// Pipeline A: rich authored content produced by pl:enrich-handoff / pl:llm-enrich.
+// These files sit under handoff/od-package/content/ and are MORE specific than
+// the core-extract fallback. Composer reads them first; falls back to core-extract.
+// Codex R44 refinements: normalizeServiceName for matching, strict comment regex.
+
+function normalizeServiceName(s) {
+  return String(s || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+/** Returns [{name, short_desc, _source}] or null */
+function readPreparedServices(odContentDir) {
+  const p = path.join(odContentDir, 'services.json');
+  try {
+    if (!fs.existsSync(p)) return null;
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    const items = data.services || [];
+    if (!items.length) return null;
+    return items.map(s => ({ name: s.name, short_desc: s.short_desc || '', _source: s._source || 'prepared' }));
+  } catch { return null; }
+}
+
+/** Returns {headline, subhead, chips, angle, approval_status, _source} or null */
+function readPreparedHero(odContentDir) {
+  const p = path.join(odContentDir, 'hero-copy.json');
+  try {
+    if (!fs.existsSync(p)) return null;
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    const candidates = data.candidates || [];
+    if (!candidates.length) return null;
+    let idx = data.recommended_index ?? 0;
+    let approval_status = 'defaulted';
+    // Check operator approval sidecar
+    const selPath = path.join(odContentDir, 'content-selection.json');
+    if (fs.existsSync(selPath)) {
+      try {
+        const sel = JSON.parse(fs.readFileSync(selPath, 'utf8'));
+        if (sel.hero_approved && sel.hero_index != null) {
+          idx = sel.hero_index;
+          approval_status = `approved (option ${idx + 1})`;
+        }
+      } catch { /* non-fatal */ }
+    }
+    const chosen = candidates[idx] || candidates[0];
+    return {
+      headline: chosen.headline || null,
+      subhead: chosen.subheadline || chosen.subhead || null,
+      chips: chosen.proof_chips || [],
+      angle: chosen.angle || null,
+      approval_status,
+      _source: chosen._source || 'prepared:hero-copy.json',
+    };
+  } catch { return null; }
+}
+
+/** Returns [paragraph string, …] or null */
+function readPreparedAbout(odContentDir) {
+  const p = path.join(odContentDir, 'about.md');
+  try {
+    if (!fs.existsSync(p)) return null;
+    let text = fs.readFileSync(p, 'utf8');
+    // Strip YAML frontmatter
+    text = text.replace(/^---\n[\s\S]+?\n---\n?/, '');
+    // Strip source-annotation comments ONLY — use strict regex (Codex R44: not generic <!--)
+    text = text.replace(/<!--\s*source:[\s\S]*?-->/g, '');
+    // Split into non-empty paragraphs ≥ 20 chars
+    const paras = text.split(/\n\n+/).map(p => p.trim()).filter(p => p.length >= 20);
+    if (!paras.length) return null;
+    return paras;
+  } catch { return null; }
+}
+
 // ─── Mustache helpers (verbatim from pl-compose-site.js) ────────────────
 function getPath(obj, p) {
   if (!obj || !p) return null;
@@ -245,6 +317,7 @@ async function main() {
     brief = yaml.load(briefText);
   } catch { /* optional · falls back to core-extract */ }
   const handoffDir = path.join(clientDir, 'handoff/od-package');
+  const odContentDir = path.join(handoffDir, 'content');  // R44 prepared-content adapters
   const facts = readJson(path.join(handoffDir, 'facts.json'))?.locked_facts || {};
   const selected = readJson(path.join(clientDir, 'handoff/photos/selected.json'))?.images || readJson(path.join(clientDir, 'handoff/photos/selected.json'))?.photos || [];
   const masterMd = readText(path.join(clientDir, 'master.md'));
@@ -255,6 +328,11 @@ async function main() {
     if (!checkpoint) die('checkpoint.json missing · run pl:data-checkpoint first', 2);
     if (checkpoint.verdict === 'RED') die(`checkpoint RED · blocked render · see clients/${slug}/v2/checkpoint.json`, 3);
   }
+
+  // ─── R44 Prepared-content reads (Pipeline A · take priority over core-extract fallback) ──
+  const _preparedServices = readPreparedServices(odContentDir);   // [{name, short_desc, _source}] | null
+  const _preparedHero     = readPreparedHero(odContentDir);       // {headline, subhead, chips, ...} | null
+  const _preparedAbout    = readPreparedAbout(odContentDir);      // [string, ...] | null
 
   const realFacts = coreExtract?.brief?.real_facts || {};
   const narrative = coreExtract?.brief?.narrative || {};
@@ -368,7 +446,10 @@ async function main() {
   })();
   // Editorial path uses wireframe override · direct path IGNORES wireframe (voice mismatch)
   // BUGFIX 2026-05-29 (codex R39-followup): direct profile must not inherit editorial wireframe headline
+  // R44: prepared hero-copy.json takes priority for editorial (higher specificity than formula).
+  //      Wireframe (--use-wireframe flag) still overrides when explicitly requested.
   const heroHeadlineEditorial = wireframeHeroBlock?.headline
+    || _preparedHero?.headline
     || (narrative.hero_copy_options && (narrative.hero_copy_options[0]?.headline || narrative.hero_copy_options.headline))
     || `A ${city} roof, done properly — and signed off in writing.`;
   const heroHeadlineDirect = `${_serviceKeywords} roofing across ${city} & ${state === 'VIC' ? 'Western Victoria' : state === 'QLD' ? 'Far North Queensland' : 'surrounds'}.`;
@@ -393,6 +474,8 @@ async function main() {
     if (wireframeHeroBlock?.subhead && String(wireframeHeroBlock.subhead).trim().split(/\s+/).length >= 40) {
       return String(wireframeHeroBlock.subhead).trim();
     }
+    // R44: prepared subhead from hero-copy.json (higher specificity than formula)
+    if (_preparedHero?.subhead) return String(_preparedHero.subhead).trim();
     const candidates = [];
     if (narrative.hero_copy_options) {
       const opts = Array.isArray(narrative.hero_copy_options) ? narrative.hero_copy_options : [narrative.hero_copy_options];
@@ -407,14 +490,25 @@ async function main() {
     return `${licClause} roofers covering ${serviceClause} across ${city}${sinceClause}. Tidy site, daily updates, written workmanship warranty in the client's hands the day we leave. No surprise invoices, no subcontracted crews — we quote on site and stand behind the paperwork.`;
   }
   const heroSubhead = buildSubhead();
-  const heroChips = [];
-  if (_licenseVisibleFinal) heroChips.push(`${licAuthority} ${licNumber}`);
-  if (yearFounded) { const yrs = new Date().getFullYear() - parseInt(yearFounded, 10); if (yrs >= 5) heroChips.push(`${yrs}+ Years Local`); }
-  heroChips.push('10-Year Warranty');
-  if (facts.rating && facts.review_count) heroChips.push(`${facts.rating} · ${facts.review_count} Google reviews`);
+  // R44: use prepared chips when available (editorial profile only · trade uses formula stats)
+  const heroChips = (_preparedHero?.chips?.length && templateProfile === 'editorial')
+    ? [..._preparedHero.chips]
+    : (() => {
+        const chips = [];
+        if (_licenseVisibleFinal) chips.push(`${licAuthority} ${licNumber}`);
+        if (yearFounded) { const yrs = new Date().getFullYear() - parseInt(yearFounded, 10); if (yrs >= 5) chips.push(`${yrs}+ Years Local`); }
+        chips.push('10-Year Warranty');
+        if (facts.rating && facts.review_count) chips.push(`${facts.rating} · ${facts.review_count} Google reviews`);
+        return chips;
+      })();
 
   // Services (4-6 items) · image picker with no-repeat fallback (codex R39 Q-TT-4 b)
-  const serviceList = (realFacts.service_list || []).slice(0, 6);
+  // R44: use prepared services.json list DIRECTLY when available — it's a curated set
+  // with richer copy than core-extract. Names differ intentionally (curated vs scraped).
+  const serviceList = (_preparedServices?.length
+    ? _preparedServices
+    : (realFacts.service_list || [])
+  ).slice(0, 6);
   // Keyword map · CHECKED IN ORDER · most specific keywords FIRST (broad like
   // 'replacement' / 'repair' last) · prevents "Gutter & Pipe Replacement" hitting
   // 'replacement' before 'gutter'
@@ -476,7 +570,9 @@ async function main() {
     number: String(i + 1).padStart(2, '0'),
     category: (s.name.split(/\s+/)[0] || 'Service').slice(0, 16),
     title: s.name,
-    body: s.brief || s.short_desc || '',
+    // R44: prepared services.json provides rich short_desc; core-extract s.brief is usually empty
+    body: s.short_desc || s.brief || '',
+    _source: _preparedServices ? (s._source || 'prepared:services.json') : 'core-extract',
     image_src: `assets/stock/${pickStockForService(s.name, i)}`,
     image_alt: `${s.name} · ${city} roofer`,
   }));
@@ -711,6 +807,11 @@ async function main() {
     ...((brief?.abn || licNum.ABN) ? ['ABN on every invoice'] : []),
     'No subcontractors',
   ];
+  // R44: override about paragraphs with prepared about.md content (richer than formula)
+  // Codex R44: only override .paragraphs, not section headings/eyebrow
+  if (_preparedAbout?.length) {
+    ctx.about.paragraphs = _preparedAbout;
+  }
   // Hero raw-html variant for templates that want italics in headline
   ctx.hero.headline_html = ctx.hero.headline;
   ctx.hero.eyebrow_location = `${city} · ${state}${_licenseVisibleFinal ? ` · ${licAuthority}-licensed` : ''}`;
@@ -746,6 +847,25 @@ async function main() {
   fs.mkdirSync(path.join(outDir, 'assets/brand'), { recursive: true });
   fs.mkdirSync(path.join(outDir, 'assets/stock'), { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'), html);
+
+  // ─── Write ctx-snapshot.json (R44 provenance artifact) ─────────────────
+  // Records which source was used for each content area so master.md can surface it.
+  const ctxSnapshot = {
+    slug,
+    template: templateName,
+    rendered_at: new Date().toISOString(),
+    sources: {
+      hero: _preparedHero ? (_preparedHero._source || 'prepared:hero-copy.json') : 'core-extract:formula',
+      services: _preparedServices ? 'prepared:services.json' : 'core-extract:formula',
+      about: _preparedAbout ? 'prepared:about.md' : 'core-extract:narrative',
+    },
+    prepared_hero_angle: _preparedHero?.angle || null,
+    prepared_hero_approval: _preparedHero?.approval_status || null,
+    services_prepared_count: _preparedServices?.length ?? 0,
+    services_matched_count: servicesItems.filter(s => s._source !== 'core-extract').length,
+    about_paragraphs_count: ctx.about.paragraphs?.length ?? 0,
+  };
+  fs.writeFileSync(path.join(outDir, 'ctx-snapshot.json'), JSON.stringify(ctxSnapshot, null, 2));
 
   // Copy brand assets
   const brandSrc = path.join(handoffDir, 'brand');

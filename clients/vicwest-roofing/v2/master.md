@@ -25,7 +25,7 @@ license:
   lookup_tier: "token_prefix_state(token=\"vicwest\" via \"Vicwest Roofing\")"
   looked_up_at: "2026-05-27T11:24:54.752Z"
   customer_facing_rule: "SHOW"
-generated_at: "2026-05-28T11:39:39.694Z"
+generated_at: "2026-05-28T12:22:15.527Z"
 assets:
   cloudinary_folder: null
   evidence_count: 4
@@ -656,6 +656,21 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 
 **品牌风格**: industrial, straightforward, trade-credible, no-nonsense
 **主色**: `#0F1115` · Accent `#C5A572`
+
+## 内容就位度 · 建站原材料
+
+- customer-brief.md: ✅ · 35 sections · ~5543 words
+- hero-copy.json: ✅ · 3 options · rec #2 · unreviewed
+  - Headline: "10-Year Warranty on Every Colorbond® Roof Replacement in Ballarat"
+- services.json: ✅ · 6 services: Roof Replacement, New Roof Installation, Gutter & Pipe Replacement, Roof Repairs, Colorbond Metal Roofing, Commercial Roofing
+- about.md: ✅ · 13 paragraphs · ~849 words
+- faq.json: ✅ · 6 FAQs
+
+**最近一次 compose 数据源 (ctx-snapshot)**:
+- Hero: `ai-completed:claude:claude-sonnet-4-5`
+- Services: `prepared:services.json`
+- About: `prepared:about.md`
+- 渲染时间: 2026-05-28T12:21:57.509Z
 
 <!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
 <!-- 现网站快速诊断 -->
