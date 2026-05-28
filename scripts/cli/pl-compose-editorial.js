@@ -300,8 +300,10 @@ async function main() {
   if (wkOpen && wkClose) hoursLines.push(`Mon–Fri · ${wkOpen}–${wkClose}`);
   if (satOpen && satClose) hoursLines.push(`Sat · ${satOpen}–${satClose}`);
   hoursLines.push('Sun · closed');
-  hoursLines.push('After-hours emergency');
-  const hoursHtmlMain = `${wkOpen && wkClose ? `Mon–Fri ${wkOpen.replace(' ', '')}–${wkClose.replace(' ', '')}<br/>` : ''}${satOpen && satClose ? `Sat ${satOpen.replace(' ', '')}–${satClose.replace(' ', '')}<br/>` : ''}<span style="color:var(--text-muted);font-size:var(--text-sm);font-family:var(--font-body);">After-hours emergency line</span>`;
+  // R34: only push After-hours line if emergency_phone present in facts (codex Q-OO-3 hallucination strict factual context)
+  const hasEmergency = !!(facts.emergency_phone || realFacts.emergency_phone);
+  if (hasEmergency) hoursLines.push('After-hours emergency by phone');
+  const hoursHtmlMain = `${wkOpen && wkClose ? `Mon–Fri ${wkOpen.replace(' ', '')}–${wkClose.replace(' ', '')}<br/>` : ''}${satOpen && satClose ? `Sat ${satOpen.replace(' ', '')}–${satClose.replace(' ', '')}<br/>` : ''}${hasEmergency ? `<span style="color:var(--text-muted);font-size:var(--text-sm);font-family:var(--font-body);">After-hours emergency by phone</span>` : ''}`;
 
   // Address HTML (split on comma · first 2 parts in main line · rest below)
   const addrFull = realFacts.address || facts.address || '';
@@ -520,7 +522,7 @@ async function main() {
     coverage: {
       eyebrow: 'The Beat',
       headline: 'Where we work.',
-      subhead: `Based out of the ${suburbsList[0] || city} workshop, on ${city} roofs every working day. Most call-outs are local — we'll travel further by arrangement.`,
+      subhead: `Based in ${city}, on ${city} roofs every working day. Most call-outs are local — we'll travel further by arrangement.`,
       suburbs: suburbsList,
       by_arrangement_text: suburbsList.length > 12 ? null : `By arrangement: surrounding ${state} regions.`,
     },

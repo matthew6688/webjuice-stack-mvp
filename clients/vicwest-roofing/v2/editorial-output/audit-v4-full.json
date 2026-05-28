@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output",
   "tier": "premium",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T02:49:36.278Z",
+  "generated_at": "2026-05-28T03:21:00.340Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -174,11 +174,11 @@
     "todo": "adapt OD plan-design-review prompt · render screenshots · enforce JSON schema"
   },
   "tier_4d_voice": {
-    "score": 90,
+    "score": 100,
     "dims": {
       "D4d.voice_av4_banned_phrases": {
         "weight": 0.5,
-        "hits": 1
+        "hits": 0
       },
       "D4d.voice_av1_us_spelling": {
         "weight": 0.3,
@@ -189,16 +189,7 @@
         "hits": 0
       }
     },
-    "violations": [
-      {
-        "page": "index.html",
-        "rule": "AV-4",
-        "kind": "banned_phrase",
-        "match": "quality workmanship",
-        "count": 1,
-        "severity": "P1"
-      }
-    ],
+    "violations": [],
     "rules_checked": [
       "AV-1",
       "AV-4",
@@ -307,18 +298,22 @@
     "sub_dims": {
       "D2.10_engagement_persuasion": 70,
       "D2.4_codex_factual_accuracy": 80,
-      "D2.5_codex_voice_authentic": 50,
-      "D2.6_codex_specificity": 90,
+      "D2.5_codex_voice_authentic": 60,
+      "D2.6_codex_specificity": 80,
       "D2.X_conversion_clarity": 90,
-      "D2.X_leak_free": 100
+      "D2.X_leak_free": 90
     },
-    "hallucinations": [
+    "hallucinations": [],
+    "leak_quotes": [
       {
         "page": "index.html",
-        "fact": "\"Based out of the Ballarat Central workshop\" · contradicts: both sources place the workshop/address at Shed 3/31 Icon Dr, Delacombe VIC 3356; Ballarat Central is listed as a service-area suburb, not the workshop location."
+        "quote": "Send the brief"
+      },
+      {
+        "page": "index.html",
+        "quote": "File No. XXIII · Ballarat Roofing Journal · Vol. III"
       }
     ],
-    "leak_quotes": [],
     "per_page": [
       {
         "page": "index.html",
@@ -328,28 +323,29 @@
             "page": "index.html",
             "scores": {
               "D1_facts_accuracy": 8,
-              "D2_voice_authentic": 5,
-              "D3_specificity": 9,
+              "D2_voice_authentic": 6,
+              "D3_specificity": 8,
               "D4_conversion": 9,
-              "D5_leak_free": 10,
+              "D5_leak_free": 9,
               "D6_engagement_persuasion": 7,
-              "total": 48
+              "total": 47
             },
             "strengths": [
-              "Strong proof density: licence number, ABN, warranty, review count, suburbs, address, hours, and named reviewers are all prominent.",
-              "Conversion path is clear with phone CTAs, written quote CTAs, contact form, service selector, and workshop details."
+              "Strong conversion path with phone, quote CTA, form, licence, warranty, address, and service options all visible.",
+              "Good local specificity through Ballarat suburbs, Hayden references, VBA licence, Google review count, materials, and warranty details."
             ],
             "weaknesses": [
-              "\"File No. XXIII · Ballarat Roofing Journal · Vol. III\" feels stylised and editorial rather than like a working Australian roofing business.",
-              "\"6 trades, one ledger\" is unclear and makes the services section sound more like a concept than a roofer explaining the job."
+              "\"File No. XXIII · Ballarat Roofing Journal · Vol. III\" makes the page feel like a design concept rather than a straightforward trades website.",
+              "\"Send the brief\" is builder-language and weaker than a homeowner-focused CTA like requesting a written roof quote."
             ],
-            "hallucinations": [
-              "\"Based out of the Ballarat Central workshop\" · contradicts: both sources place the workshop/address at Shed 3/31 Icon Dr, Delacombe VIC 3356; Ballarat Central is listed as a service-area suburb, not the workshop location."
-            ],
-            "leak_quotes": []
+            "hallucinations": [],
+            "leak_quotes": [
+              "Send the brief",
+              "File No. XXIII · Ballarat Roofing Journal · Vol. III"
+            ]
           }
         },
-        "duration_s": 38
+        "duration_s": 42
       }
     ],
     "note": "SOP-AUDIT-STANDARD-V2 §9 D2.10 · codex-deep-audit 6-dim · premium tier · ~40s/page"
@@ -370,16 +366,5 @@
   "composite": 91,
   "grade": "EXPERIMENTAL",
   "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T3/T4/T5 stubbed",
-  "issues": [
-    {
-      "id": "I-001",
-      "tier": "T4d",
-      "severity": "P1",
-      "dim": "AV-4",
-      "page": "index.html",
-      "what": "AV-4 banned_phrase · \"quality workmanship\" (1× hit)",
-      "why": "Voice-rule violation per pl-au-trade-voice §1 (AU universal layer)",
-      "fix": "Replace banned generic \"quality workmanship\" with specific concrete proof (pl-au-trade-voice §1.5)"
-    }
-  ]
+  "issues": []
 }
