@@ -3,10 +3,10 @@
   "script_version": "pl-audit-v4/0.1.0-skeleton",
   "slug": "vicwest-roofing",
   "mode": "slug",
-  "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/composed-output-single-page",
+  "output_dir": "/Users/matthew/Developer/google-map-website-v3/templates/roofing/brand-grid-experiment/vicwest-roofing/editorial",
   "tier": "fast",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T02:35:23.946Z",
+  "generated_at": "2026-05-28T02:35:23.003Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -18,7 +18,7 @@
       "1.2_phone_present": {
         "pass": true,
         "per_page": [
-          13
+          19
         ]
       },
       "1.11_logo_refs_resolve": {
@@ -39,20 +39,31 @@
     "composite": 100
   },
   "tier_2": {
-    "score": 65,
+    "score": 91,
     "breakdown": {
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 96,
-        "var_hits": 94,
-        "color_decls": 98
+        "coverage_pct": 374,
+        "var_hits": 344,
+        "color_decls": 92
       },
       "D2.2_hardcoded_hex_count": {
-        "score": 100,
+        "score": 68,
         "weight": 0.25,
-        "unique_non_gray_hex": 0,
-        "sample": []
+        "unique_non_gray_hex": 15,
+        "sample": [
+          "#0f1115",
+          "#6d6e71",
+          "#c5a572",
+          "#f4f4f5",
+          "#1b1d22",
+          "#5a5c61",
+          "#e4e4e7",
+          "#3a3a3c",
+          "#a88a5c",
+          "#8e7148"
+        ]
       },
       "D2.3_type_rule_compliance": {
         "score": null,
@@ -60,22 +71,14 @@
         "note": "brand-spec has no primary_font · skipped"
       },
       "D2.4_logo_variant_per_surface": {
-        "score": 0,
+        "score": 100,
         "weight": 0.15,
-        "logo_checks": 1,
-        "violations": [
-          {
-            "page": "index.html",
-            "src": "brand/logo-dark.svg",
-            "variant": "dark",
-            "surface": "dark",
-            "reason": "logo-dark on DARK surface (footer/colophon · should be logo-light or logo-mono-light)"
-          }
-        ],
+        "logo_checks": 2,
+        "violations": [],
         "note": null
       },
       "D2.5_brand_palette_honored": {
-        "score": 33,
+        "score": 100,
         "weight": 0.15,
         "expected": [
           "#0f1115",
@@ -83,42 +86,44 @@
           "#6d6e71"
         ],
         "found": [
-          "#0f1115"
+          "#0f1115",
+          "#c5a572",
+          "#6d6e71"
         ]
       },
       "D2.BC6_token_coverage_depth": {
-        "score": 16,
+        "score": 90,
         "weight": 0.1,
         "categories": {
           "color": {
-            "score": 81,
-            "coverage_pct": 81,
-            "var_hits": 79,
-            "prop_count": 98
+            "score": 100,
+            "coverage_pct": 182,
+            "var_hits": 167,
+            "prop_count": 92
           },
           "radius": {
-            "score": 0,
-            "coverage_pct": 0,
-            "var_hits": 0,
-            "prop_count": 18
+            "score": 100,
+            "coverage_pct": 100,
+            "var_hits": 17,
+            "prop_count": 17
           },
           "shadow": {
-            "score": 0,
-            "coverage_pct": 0,
-            "var_hits": 0,
-            "prop_count": 5
+            "score": 50,
+            "coverage_pct": 50,
+            "var_hits": 4,
+            "prop_count": 8
           },
           "space": {
-            "score": 0,
-            "coverage_pct": 0,
-            "var_hits": 0,
-            "prop_count": 103
+            "score": 100,
+            "coverage_pct": 111,
+            "var_hits": 91,
+            "prop_count": 82
           },
           "motion": {
-            "score": 0,
-            "coverage_pct": 0,
-            "var_hits": 0,
-            "prop_count": 4
+            "score": 100,
+            "coverage_pct": 700,
+            "var_hits": 14,
+            "prop_count": 2
           }
         },
         "note": "SOP-AUDIT-STANDARD-V2 §9 · split var() coverage by token category · 5-category depth",
@@ -168,31 +173,31 @@
   "content_richness_deterministic": {
     "dims": {
       "D2.14_proof_variety": {
-        "score": 67,
+        "score": 100,
         "types_present": {
           "reviews": true,
           "stats": true,
-          "case_study": false,
+          "case_study": true,
           "expert_quote": true,
           "certifications": true,
-          "photos": false
+          "photos": true
         },
-        "types_count": 4,
+        "types_count": 6,
         "per_page": {
-          "index.html": {
-            "reviews": 19,
-            "stats": 2,
-            "case_study": 0,
-            "expert_quote": 5,
-            "certifications": 5,
-            "photos": 0
+          "preview.html": {
+            "reviews": 16,
+            "stats": 4,
+            "case_study": 6,
+            "expert_quote": 8,
+            "certifications": 9,
+            "photos": 16
           }
         },
         "threshold_pass": true,
         "note": "SOP-AUDIT-STANDARD-V2 §9 · 6 proof types · ≥3 required"
       },
       "D2.11_facts_cross_check": {
-        "score": 60,
+        "score": 80,
         "checks": [
           {
             "field": "business_name",
@@ -212,8 +217,8 @@
           {
             "field": "license_number",
             "brief": "CDB-U 65938",
-            "found": false,
-            "status": "MISSING"
+            "found": true,
+            "status": "MATCH"
           },
           {
             "field": "license_authority",
@@ -228,7 +233,7 @@
             "status": "MISSING"
           }
         ],
-        "matched": 3,
+        "matched": 4,
         "checked": 5,
         "note": "SOP-AUDIT-STANDARD-V2 §9 · brief.yaml vs rendered HTML exact match"
       }
@@ -240,50 +245,50 @@
     "vetos": [
       {
         "check": "M1.3_critical_tap_target",
-        "page": "index.html",
+        "page": "preview.html",
         "severity": "VETO",
         "violations": [
           {
-            "selector": "input",
-            "text": "",
-            "w": 334,
-            "h": 40
+            "selector": "a",
+            "text": "0403 554 592",
+            "w": 109,
+            "h": 25
           },
           {
-            "selector": "input",
-            "text": "",
-            "w": 334,
-            "h": 40
-          },
-          {
-            "selector": "input",
-            "text": "",
-            "w": 334,
-            "h": 40
-          },
-          {
-            "selector": "select",
-            "text": "What service are you looking for?\n      ",
-            "w": 334,
-            "h": 38
+            "selector": "a",
+            "text": "info@vicwestroofing.com.au",
+            "w": 255,
+            "h": 25
           },
           {
             "selector": "a",
             "text": "0403 554 592",
             "w": 94,
             "h": 17
+          },
+          {
+            "selector": "a",
+            "text": "info@vicwestroofing.com.au",
+            "w": 189,
+            "h": 17
+          },
+          {
+            "selector": "a.cta-btn",
+            "text": "Call now",
+            "w": 118,
+            "h": 38
           }
         ],
-        "count": 6
+        "count": 5
       }
     ],
     "warnings": [],
     "per_page": [
       {
-        "page": "index.html",
+        "page": "preview.html",
         "overflow_px": 0,
         "sticky_cta_found": true,
-        "tap_target_violations": 6
+        "tap_target_violations": 5
       }
     ],
     "pass": false,
@@ -294,39 +299,8 @@
     ]
   },
   "tier_5": null,
-  "composite": 65,
-  "grade": "C",
-  "ship_verdict": "FIX_LOOP",
-  "issues": [
-    {
-      "id": "I-001",
-      "tier": "T2",
-      "severity": "P1",
-      "dim": "D2.4_logo_variant_per_surface",
-      "page": "<sitewide>",
-      "what": "D2.4_logo_variant_per_surface = 0 (threshold 70)",
-      "why": "Brand-contract token discipline below batch-quality bar (ADR §2.2)",
-      "fix": "See ADR-AUDIT-V4.md §2.2 for per-dim remediation"
-    },
-    {
-      "id": "I-002",
-      "tier": "T2",
-      "severity": "P1",
-      "dim": "D2.5_brand_palette_honored",
-      "page": "<sitewide>",
-      "what": "D2.5_brand_palette_honored = 33 (threshold 70)",
-      "why": "Brand-contract token discipline below batch-quality bar (ADR §2.2)",
-      "fix": "See ADR-AUDIT-V4.md §2.2 for per-dim remediation"
-    },
-    {
-      "id": "I-003",
-      "tier": "T2",
-      "severity": "P1",
-      "dim": "D2.BC6_token_coverage_depth",
-      "page": "<sitewide>",
-      "what": "D2.BC6_token_coverage_depth = 16 (threshold 70)",
-      "why": "Brand-contract token discipline below batch-quality bar (ADR §2.2)",
-      "fix": "See ADR-AUDIT-V4.md §2.2 for per-dim remediation"
-    }
-  ]
+  "composite": 91,
+  "grade": "A",
+  "ship_verdict": "SHIP",
+  "issues": []
 }

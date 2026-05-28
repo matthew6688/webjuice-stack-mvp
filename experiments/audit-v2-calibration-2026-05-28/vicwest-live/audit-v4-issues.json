@@ -6,9 +6,9 @@
       "id": "I-001",
       "tier": "T2",
       "severity": "P1",
-      "dim": "D2.4_logo_variant_per_surface",
+      "dim": "D2.5_brand_palette_honored",
       "page": "<sitewide>",
-      "what": "D2.4_logo_variant_per_surface = 0 (threshold 70)",
+      "what": "D2.5_brand_palette_honored = 0 (threshold 70)",
       "why": "Brand-contract token discipline below batch-quality bar (ADR §2.2)",
       "fix": "See ADR-AUDIT-V4.md §2.2 for per-dim remediation"
     },
@@ -16,27 +16,17 @@
       "id": "I-002",
       "tier": "T2",
       "severity": "P1",
-      "dim": "D2.5_brand_palette_honored",
-      "page": "<sitewide>",
-      "what": "D2.5_brand_palette_honored = 33 (threshold 70)",
-      "why": "Brand-contract token discipline below batch-quality bar (ADR §2.2)",
-      "fix": "See ADR-AUDIT-V4.md §2.2 for per-dim remediation"
-    },
-    {
-      "id": "I-003",
-      "tier": "T2",
-      "severity": "P1",
       "dim": "D2.BC6_token_coverage_depth",
       "page": "<sitewide>",
-      "what": "D2.BC6_token_coverage_depth = 16 (threshold 70)",
+      "what": "D2.BC6_token_coverage_depth = 2 (threshold 70)",
       "why": "Brand-contract token discipline below batch-quality bar (ADR §2.2)",
       "fix": "See ADR-AUDIT-V4.md §2.2 for per-dim remediation"
     }
   ],
   "summary": {
     "P0": 0,
-    "P1": 3,
+    "P1": 2,
     "P2": 0,
-    "total": 3
+    "total": 2
   }
 }
