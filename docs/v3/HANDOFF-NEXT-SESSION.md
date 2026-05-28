@@ -224,3 +224,38 @@ Don't drift back to deprecated paths (CANONICAL.md §1).
 ```
 
 Last update: 2026-05-28 23:50 AET · session close · canonical v1.0 locked · 37 commits · 12 rounds.
+
+---
+
+## 🔧 Session continuation notes · 2026-05-29 audit pass
+
+A /loop "continue auditing 3 customers" iteration re-verified all baselines and surfaced 2 blockers preventing Task 1 + Task 2 from completing without code changes. **Audit-only state is unchanged** · vicwest 91 · a-j 83 · mark-squire/abc BLOCKED.
+
+### Blocker A · inferred-data.json not wired to compose-editorial (Task 1)
+- `pl:llm-infer-thin-data` ran successfully on a-j · wrote `inferred-data.json` with 3 fields (suburbs_served · testimonials · owner_name)
+- SSOT writer-check: `inferred-data.json` is consumed by `pl-build-od-seed` (deprecated OD path) but **NOT by `pl-compose-editorial`** (V1 canonical render)
+- Therefore re-checkpoint stays YELLOW (signal source unchanged) · re-render would not pick up the back-fill
+- **Fix path** (requires codex consensus): port the inferred-data merge logic from `pl-build-od-seed.js:292-313` into `pl-compose-editorial.js` · tag merged values with `provenance: ai-fabricated|radius-inferred|ai-inferred` so PREVIEW banner logic still fires
+- Anti-pattern to avoid: mutating `core-extract.json` to inject inferred data (breaks SSOT writer rule)
+
+### Blocker B · pl-llm-extract-core.js broken (Task 2)
+- `pl:summarize-external-mentions` ran successfully on mark-squire (5 mentions enriched via Tinyfish + Dokobot · written to `data/leads/entities/place_chijuvpvhm9p0worsjhyqwfhmag.json`)
+- Next step `pl:llm-extract-core` fails with `SyntaxError: does not provide an export named 'buildCoreExtract'`
+- Root cause: `core/audit/redesign-brief-builder.js` exports `buildRedesignBrief`/`saveBrief` (line 161, 202) · `scripts/cli/pl-llm-extract-core.js:16` imports `buildCoreExtract`/`saveCoreExtract`
+- Module-rename without consumer update · small fix (rename imports + verify call sites) but needs codex consensus on whether `buildRedesignBrief` is semantically equivalent to what the CLI expected
+
+### Baseline verification (audit re-run · 2026-05-29)
+```
+vicwest-roofing                · 91 · A · SHIP
+a-j-roofing-solutions          · 83 · B · SHIP (YELLOW + PREVIEW banner)
+mark-squire-roof-restorations  · N/A_BLOCKED · GATE 1 RED (customer_brief · real_business_signal · sources_consumed)
+abc-roof-restoration-brisbane  · N/A_BLOCKED · GATE 1 RED (phone · address · customer_brief)
+```
+
+abc T2=99 / mark-squire T2=93 brand-contract scores confirm the **N/A_BLOCKED anti-gaming rule is working** — under old logic these would have published as SHIP.
+
+### Recommended next session entry point
+1. Brief codex with Blockers A + B above · get consensus on minimal-surgical wire path
+2. Fix Blocker B first (smaller · just imports) · then re-run pl:llm-extract-core → pl:render-customer-brief → pl:data-checkpoint for mark-squire
+3. Fix Blocker A second (port merge logic) · then re-run a-j compose + audit
+4. Both fixes are upstream-canonical · do not bypass with --skip-checkpoint or core-extract mutation
