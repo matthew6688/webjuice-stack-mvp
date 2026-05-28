@@ -61,32 +61,75 @@ DISCOVERY → ENRICHMENT → BRIEF → WIREFRAME → RENDER → AUDIT → OUTREA
 
 ---
 
-## §3 · Quality gates (production ship · per client)
+## §3 · Quality gates (production ship · per client · ORDERED HIERARCHY)
 
-A client website ships if and only if:
+> **Critical update 2026-05-28 (codex R35 Q-PP-1 + Q-PP-5)**: gates are HIERARCHICAL · failures higher in the list HARD-BLOCK · audit-v4 returns `composite: "N/A_BLOCKED"` when any blocker fails. Do NOT show 93/99 scores for empty/RED content (was a real audit-gaming risk discovered when abc-roof-restoration RED scored 99 with 0 services).
+
+### Hierarchical ship gate · stop at first failure
 
 ```
-1. checkpoint.json verdict = GREEN (or YELLOW with PREVIEW banner)
-2. brief.yaml validates (12 cross-field constraints pass)
-3. pl:compose-editorial output exists
-4. pl:audit-v4 --tier fast results:
-   T1 mechanical PASS
-   T2 brand contract ≥ 80
-   T4d voice ≥ 90
-   D2.14 proof variety ≥ 60 (≥3 of 6 types)
-   D2.11 facts cross-check ≥ 90 (when brief.yaml present)
-   M1 mobile gate PASS (0 mechanical vetos)
-   composite ≥ 80
-5. pl:audit-v4 --tier premium results (ship gate · ~$0.40 per audit):
-   D2.10 engagement ≥ 70
-   leak_quotes count = 0
-   hallucinations count = 0
-6. pl:fixture-check PASS (regression contract · per-slug fixture under fixtures/e2e/<slug>/)
+GATE 1 · CHECKPOINT (HARD · cannot bypass for production)
+  checkpoint.json verdict = GREEN → continue
+  checkpoint.json verdict = YELLOW → continue ONLY if rendered HTML has visible PREVIEW banner
+  checkpoint.json verdict = RED → BLOCKED · composite = "N/A_BLOCKED" · DO NOT SHIP
+  --skip-checkpoint flag = DEV/DEBUG ONLY · production renders must not bypass
+
+GATE 2 · BRIEF (HARD when GREEN)
+  single-page-brief.yaml exists AND passes pl:validate-single-page-brief
+  (when checkpoint=GREEN · brief.yaml is required)
+  → continue
+  Fail → composite = "N/A_BLOCKED" · need brief.yaml
+
+GATE 3 · MINIMUM CONTENT SIGNAL (HARD)
+  services_rendered >= 3 (count of services-grid story cards)
+  AND suburbs_rendered >= 5 (count in coverage section)
+  AND (real_review_count >= 1 OR placeholder banner visible AND real_count_referenced_in_disclaimer)
+  Fail → composite = "N/A_BLOCKED" · content too thin · need enrichment
+
+GATE 4 · M1 MOBILE MECHANICAL (HARD · separate from composite)
+  M1.1 viewport overflow-x at 390px = 0
+  M1.2 sticky CTA visible at mobile
+  M1.3 critical tap targets ≥ 44×44px (excludes incidental UI)
+  Any failure → composite = "M1_VETO" · NOT shippable
+
+GATE 5 · FAST-TIER AUDIT
+  T1 mechanical PASS
+  T2 brand contract ≥ 80
+  T4d voice ≥ 90
+  D2.14 proof variety ≥ 60 (≥3 of 6 types)
+  D2.11 facts cross-check ≥ 90 (when brief.yaml present)
+  composite ≥ 80
+  Fail → FIX_LOOP (max 3 iterations via pl:iterate-site)
+
+GATE 6 · PREMIUM-TIER AUDIT (production ship gate · ~$0.40/audit)
+  D2.10 engagement ≥ 70
+  leak_quotes count = 0
+  hallucinations count = 0
+  Fail → FIX_LOOP
+
+GATE 7 · REGRESSION FIXTURE
+  pl:fixture-check --fixture <slug> PASS (all assertions green)
+  Fail → BLOCKED · regression introduced
 ```
 
-Currently locked thresholds (codex R28 Q-II-5 weights):
+### Composite reporting rule (codex R35 Q-PP-5)
+
+When any GATE 1-3 fails:
+```json
+{
+  "composite": "N/A_BLOCKED",
+  "block_reason": "<gate name + specific failure>",
+  "ship_verdict": "BLOCKED",
+  "note": "audit dim scores still computed but composite refused · prevents audit-gaming on thin/empty content"
+}
+```
+
+No more 93/99 composite numbers on thin RED clients. Audit must be honest.
+
+### Weight reference (codex R28 Q-II-5 · when GATE 5+ run)
+
 - accuracy 0.25 · copy 0.25 · brand 0.20 · richness 0.15 · design 0.15
-- Mobile veto = separate ship blocker (NOT averaged into composite)
+- Mobile = veto layer (GATE 4 · NOT in composite)
 
 ---
 

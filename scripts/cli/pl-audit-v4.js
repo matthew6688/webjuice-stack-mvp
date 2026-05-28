@@ -594,6 +594,32 @@ function runContentRichnessDeterministic(htmlFiles, ctx) {
     note: 'SOP-AUDIT-STANDARD-V2 §9 · 6 proof types · ≥3 required',
   };
 
+  // NEW · GATE 3 · minimum_content_signal (codex R35 Q-PP-2)
+  // Catches "audit-gamed by emptiness" · counts rendered services + suburbs + reviews
+  // Required for ship: services ≥ 3 AND suburbs ≥ 5 AND (real_reviews ≥ 1 OR placeholder_banner)
+  let servicesRendered = 0, suburbsRendered = 0, realReviewBlocks = 0, placeholderBanner = false;
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    let $; try { $ = cheerioLoad(html); } catch { continue; }
+    servicesRendered += $('.story, [class*="services-grid"] article, [data-type="service"]').length;
+    suburbsRendered += $('.suburb-list li, [class*="suburb"] li, [class*="coverage"] li').length;
+    realReviewBlocks += $('.review, [class*="review"]:not([class*="reviews-disclaimer"]), blockquote').length;
+    placeholderBanner = placeholderBanner || $('.reviews-disclaimer, [class*="placeholder"], [class*="preview-banner"]').length > 0;
+  }
+  // Threshold tuned per codex R35 + empirical a-j data (3 suburbs · YELLOW · legit thin)
+  // services ≥ 3 (catches abc 0-service empty) · suburbs ≥ 3 (catches abc 2-suburb empty · allows a-j 3) · reviews-or-banner
+  const contentSignalPass = servicesRendered >= 3 && suburbsRendered >= 3 && (realReviewBlocks >= 1 || placeholderBanner);
+  dims['minimum_content_signal'] = {
+    score: contentSignalPass ? 100 : 0,
+    services_rendered: servicesRendered,
+    suburbs_rendered: suburbsRendered,
+    review_blocks: realReviewBlocks,
+    placeholder_banner_present: placeholderBanner,
+    threshold: 'services ≥ 3 AND suburbs ≥ 5 AND (reviews ≥ 1 OR banner)',
+    pass: contentSignalPass,
+    note: 'GATE 3 · prevents audit-gaming on thin/empty content · codex R35 Q-PP-2',
+  };
+
   // D2.11 · facts cross-check · HTML-extracted vs brief.yaml strict match
   let d211 = null;
   try {
@@ -982,6 +1008,32 @@ async function main() {
 
   const final = composeFinalScore(tiers, { includePremium: TIER === 'premium' });
 
+  // ─── N/A_BLOCKED hierarchy (CANONICAL.md §3 · codex R35 Q-PP-5) ──────
+  // GATE 1: checkpoint RED · GATE 3: minimum_content_signal fail · GATE 4: M1 mobile veto
+  // Block composite reporting to prevent audit-gaming on thin/empty content
+  let blockReason = null;
+  // Read checkpoint
+  let checkpoint = null;
+  if (ctx.slug) {
+    try {
+      checkpoint = JSON.parse(fs.readFileSync(path.resolve(REPO, `clients/${ctx.slug}/v2/checkpoint.json`), 'utf8'));
+    } catch { /* no checkpoint · not blocking */ }
+  }
+  if (checkpoint?.verdict === 'RED') {
+    blockReason = `GATE 1 · checkpoint.json verdict = RED (${checkpoint.missing ? checkpoint.missing.slice(0, 3).map(m => m.field || m).join(' · ') : 'see checkpoint.json'})`;
+  } else if (tiers.ContentRichness?.dims?.minimum_content_signal && !tiers.ContentRichness.dims.minimum_content_signal.pass) {
+    const cs = tiers.ContentRichness.dims.minimum_content_signal;
+    blockReason = `GATE 3 · minimum_content_signal · services ${cs.services_rendered} / suburbs ${cs.suburbs_rendered} / reviews ${cs.review_blocks} · need 3/5/(1 or banner)`;
+  } else if (tiers.M1Mobile?.pass === false) {
+    blockReason = `GATE 4 · M1 mobile veto · ${tiers.M1Mobile.vetos.length} mechanical failure(s) · ${tiers.M1Mobile.vetos.map(v => v.check).join(' · ')}`;
+  }
+  if (blockReason) {
+    final.composite = 'N/A_BLOCKED';
+    final.grade = 'BLOCKED';
+    final.ship_verdict = `BLOCKED · ${blockReason}`;
+    final.block_reason = blockReason;
+  }
+
   const report = {
     schema_version: 'audit-v4/0.1',
     script_version: SCRIPT_VERSION,
@@ -1003,6 +1055,7 @@ async function main() {
     composite: final.composite,
     grade: final.grade,
     ship_verdict: final.ship_verdict,
+    block_reason: final.block_reason || null,
     issues: final.issues,
   };
 
