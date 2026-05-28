@@ -3,10 +3,10 @@
  * pl:audit-v4 · EXPERIMENTAL BRAND-CONTRACT AUDIT
  *
  * ⚠️  NOT A SHIP GATE (per codex audit 2026-05-28).
- * Composite scores from this CLI are misleading because T3/T4/T5 are
- * stubs (return null) and T1 is partial (4/13 ADR checks ported).
- * The composite renormalises around firing tiers, which means PASS labels
- * read as success when they only verify what's deterministic.
+ * Composite scores from this CLI are partial because T4/T5 are
+ * still stubs and T1 is partial (4/13 ADR checks ported).
+ * T3 vision audit is now WIRED (pl-audit-vision subprocess).
+ * The composite renormalises around firing tiers.
  *
  * Use this for:
  *   - brand contract compliance (T2 · is brand-tokens.css actually driving design)
@@ -14,13 +14,13 @@
  *
  * Do NOT use this for:
  *   - production ship/no-ship decisions (use docs/v3/SOP-AUDIT-STANDARD v3 + pl-audit-tier instead)
- *   - composite quality scoring (T3/T4/T5 still stubbed)
+ *   - final composite quality scoring (T4/T5 still stubbed)
  *
- * Status: experimental · 2026-05-28
+ * Status: experimental · 2026-05-29
  * Tiers actually firing:
  *   T1 · Hard mechanical    (PASS/FAIL · deterministic · 0 LLM)        [PARTIAL 4/13]
  *   T2 · Brand contract     (0-100 · deterministic · 0 LLM)            [WIRED]
- *   T3 · Vision audit       (0-100 · LLM · ~$0.05/page)                [STUB]
+ *   T3 · Vision audit       (0-100 · pl-audit-vision subprocess · ~$0.05/page) [WIRED]
  *   T4 · Designer review    (0-100 · LLM · ~$0.10/page)                [STUB]
  *   T5 · Creative-director  (0-100 · LLM · ~$0.15/page · premium-only) [STUB]
  *
@@ -42,6 +42,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { spawn } from 'node:child_process';
 import { load as cheerioLoad } from 'cheerio';
 
 const REPO = process.cwd();
@@ -66,7 +67,8 @@ const args = parseArgs(process.argv);
 if (args.help) {
   console.log(`pl:audit-v4 · EXPERIMENTAL brand-contract audit (ADR-AUDIT-V4.md)
 
-⚠️  NOT A SHIP GATE · T3/T4/T5 stubbed · T1 partial (4/13 checks).
+⚠️  NOT A SHIP GATE · T4/T5 stubbed · T1 partial (4/13 checks).
+   T3 vision audit WIRED (2026-05-29). T2 brand contract WIRED.
    For production ship/no-ship use pl:audit-tier (v3 · SOP-AUDIT-STANDARD).
 
 
@@ -83,7 +85,7 @@ Tiers:
   full     T1 + T2 + T3 + T4           (~2min · ~$0.15/page) [default]
   premium  T1 + T2 + T3 + T4 + T5      (~3min · ~$0.30/page)
 
-Status: skeleton (T1+T2 wired · T3/T4/T5 stubbed with TODO markers).
+Status: T1 partial · T2 wired · T3 vision wired (2026-05-29) · T4/T5 stubbed.
 `);
   process.exit(0);
 }
@@ -125,9 +127,10 @@ function resolveInputs() {
     `clients/${slug}/v2/facts.json`,
   ];
   let facts = {};
+  let factsPath = null;
   for (const fp of factsCandidates) {
     const abs = path.resolve(REPO, fp);
-    if (fs.existsSync(abs)) { facts = JSON.parse(fs.readFileSync(abs, 'utf8')); break; }
+    if (fs.existsSync(abs)) { facts = JSON.parse(fs.readFileSync(abs, 'utf8')); factsPath = abs; break; }
   }
 
   // brand-spec.json (optional)
@@ -144,7 +147,7 @@ function resolveInputs() {
   const htmlFiles = fs.readdirSync(outputDir)
     .filter(f => f.endsWith('.html') && !f.includes('preview-old'))
     .map(f => path.join(outputDir, f));
-  return { mode: 'slug', htmlFiles, slug, facts, brandSpec, outputDir };
+  return { mode: 'slug', htmlFiles, slug, facts, factsPath, brandSpec, outputDir };
 }
 
 const ctx = resolveInputs();
@@ -438,22 +441,65 @@ function runT2BrandContract(htmlFiles, brandSpec, ctx) {
   return { score: finalScore, breakdown: dims, total_weight: totalWeight };
 }
 
-// ─── T3 · Vision audit (STUB · LLM · ADR §2.3) ──────────────────────────
+// ─── T3 · Vision audit (WIRED · calls pl-audit-vision subprocess) ────────
 async function runT3VisionAudit(htmlFiles, ctx) {
-  // TODO: call pl-audit-vision (existing v3 wrapper) with temp 0 + seed pinned
-  // TODO: merge codex-deep-audit dims (D3.6) into single composite
-  // TODO: structured-output JSON schema enforcement
-  // TODO: log to audit-v4-trace.md (model · temp · seed · tokens · cost)
+  const { outputDir, factsPath } = ctx;
+
+  if (!factsPath) {
+    console.warn('[T3] No facts.json found — skipping vision audit (need --facts path)');
+    return { score: null, dims: {}, status: 'skipped_no_facts', cost_usd: 0 };
+  }
+
+  const visionOut = path.join(outputDir, '_vision-audit-v4.json');
+  console.log(`[T3] Running pl:audit-vision (screenshots + LLM · ~3 min)...`);
+
+  await new Promise((resolve) => {
+    const p = spawn('npm', ['run', 'pl:audit-vision', '--', '--dir', outputDir, '--facts', factsPath, '--out', visionOut], {
+      stdio: 'pipe',
+      cwd: REPO,
+    });
+    p.stdout.on('data', d => process.stdout.write(`[vision] ${d}`));
+    p.stderr.on('data', d => process.stderr.write(`[vision] ${d}`));
+    p.on('close', resolve);
+  });
+
+  if (!fs.existsSync(visionOut)) {
+    console.warn('[T3] Vision audit produced no output — returning null score');
+    return { score: null, dims: {}, status: 'vision_failed', cost_usd: 0 };
+  }
+
+  const vr = JSON.parse(fs.readFileSync(visionOut, 'utf8'));
+  const composite = parseFloat(vr.composite_score) || null;
+
+  // Map pl-audit-vision dim_means (already averaged across pages) → T3 dims
+  // dim_means keys: D1_core_info_accuracy, D2_logo_brand_consistency, D3_copy_quality,
+  //   D4_header_quality, D5_footer_quality, D6_hero_quality, D7_section_modules,
+  //   D8_design_language, D9_image_quality, D10_audit_fix_integration
+  const dm = vr.dim_means || {};
+  const scale10to100 = (v) => v != null ? Math.round(v * 10) : null;
+
+  const dims = {
+    'D3.1_layout':             scale10to100(dm.D7_section_modules),       // section order + boundaries
+    'D3.2_typography':         scale10to100(dm.D8_design_language),       // typography + spacing coherence
+    'D3.3_color_hierarchy':    scale10to100(dm.D2_logo_brand_consistency), // brand color compliance
+    'D3.4_readability':        scale10to100(dm.D3_copy_quality),          // copy quality / no clichés
+    'D3.5_image_text_balance': scale10to100(dm.D9_image_quality),         // image quality
+    'D3.6_copy_depth':         scale10to100(dm.D3_copy_quality),          // copy specificity
+    'D3.7_chrome_consistency': scale10to100(dm.D4_header_quality),        // header/footer = chrome
+    'D3.8_module_diversity':   scale10to100(dm.D7_section_modules),       // section diversity
+  };
+
+  console.log(`[T3] Vision composite: ${composite}/100`);
   return {
-    score: null,
-    dims: {
-      'D3.1_layout': null, 'D3.2_typography': null, 'D3.3_color_hierarchy': null,
-      'D3.4_readability': null, 'D3.5_image_text_balance': null,
-      'D3.6_copy_depth': null, 'D3.7_chrome_consistency': null, 'D3.8_module_diversity': null,
-    },
-    llm_call_id: null, cost_usd: 0, model: null,
-    status: 'stub',
-    todo: 'wire pl-audit-vision + codex-deep-audit · pin model + temp 0 + seed',
+    score: composite,
+    dims,
+    vision_report_path: visionOut,
+    pages_audited: (vr.vision_results || []).length,
+    top_problems: (vr.all_problems || []).slice(0, 5),
+    fix_priorities: (vr.all_fix_priorities || []).slice(0, 3),
+    status: 'ok',
+    cost_usd: vr.cost_usd || 0,
+    model: vr.model || 'claude-sonnet-4-5',
   };
 }
 
@@ -901,7 +947,7 @@ function composeFinalScore(tiers, opts = {}) {
   let verdict, grade;
   if (anyStub) {
     grade = 'EXPERIMENTAL';
-    verdict = 'EXPERIMENTAL · do not use as ship gate · T3/T4/T5 stubbed';
+    verdict = 'EXPERIMENTAL · do not use as ship gate · T4/T5 stubbed';
   } else if (composite >= 85) { grade = 'A'; verdict = 'SHIP'; }
   else if (composite >= 73) { grade = 'B'; verdict = 'SHIP'; }
   else if (composite >= 60) { grade = 'C'; verdict = 'FIX_LOOP'; }

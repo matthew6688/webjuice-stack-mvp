@@ -4,9 +4,9 @@
   "slug": "vicwest-roofing",
   "mode": "slug",
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output",
-  "tier": "premium",
+  "tier": "full",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T13:52:13.490Z",
+  "generated_at": "2026-05-28T14:27:08.117Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -139,22 +139,34 @@
     "total_weight": 0.9500000000000001
   },
   "tier_3": {
-    "score": null,
+    "score": 52,
     "dims": {
-      "D3.1_layout": null,
-      "D3.2_typography": null,
-      "D3.3_color_hierarchy": null,
-      "D3.4_readability": null,
-      "D3.5_image_text_balance": null,
-      "D3.6_copy_depth": null,
-      "D3.7_chrome_consistency": null,
-      "D3.8_module_diversity": null
+      "D3.1_layout": 50,
+      "D3.2_typography": 45,
+      "D3.3_color_hierarchy": 50,
+      "D3.4_readability": 50,
+      "D3.5_image_text_balance": 50,
+      "D3.6_copy_depth": 50,
+      "D3.7_chrome_consistency": 50,
+      "D3.8_module_diversity": 50
     },
-    "llm_call_id": null,
+    "vision_report_path": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output/_vision-audit-v4.json",
+    "pages_audited": 2,
+    "top_problems": [
+      "Lack of footer",
+      "Poor design language/inconsistent styling",
+      "Low image quality and unclear visual hierarchy",
+      "Generic copy lacking specifics.",
+      "Inconsistent design language and incomplete header/footer."
+    ],
+    "fix_priorities": [
+      "Implement a full footer with contact information and links",
+      "Refine typography and spacing to create a more cohesive design",
+      "Rewrite website copy to include specific details about services, warranties, and materials."
+    ],
+    "status": "ok",
     "cost_usd": 0,
-    "model": null,
-    "status": "stub",
-    "todo": "wire pl-audit-vision + codex-deep-audit · pin model + temp 0 + seed"
+    "model": "claude-sonnet-4-5"
   },
   "tier_4": {
     "score": null,
@@ -302,97 +314,11 @@
       "M1.5 above-fold trust+CTA (vision LLM · premium tier)"
     ]
   },
-  "t2_copy_quality_llm": {
-    "status": "wired",
-    "score": 60,
-    "sub_dims": {
-      "D2.10_engagement_persuasion": 60,
-      "D2.4_codex_factual_accuracy": 60,
-      "D2.5_codex_voice_authentic": 50,
-      "D2.6_codex_specificity": 80,
-      "D2.X_conversion_clarity": 80,
-      "D2.X_leak_free": 80
-    },
-    "hallucinations": [
-      {
-        "page": "index.html",
-        "fact": "\"covering a service area that spans 100km from Ballarat in every direction\" · contradicts: customer-brief.md says service_radius_km is 50"
-      },
-      {
-        "page": "index.html",
-        "fact": "\"Vicwest Roofing services Ballarat, Geelong, Bendigo, Bacchus Marsh, Daylesford, Castlemaine, Creswick, Maryborough, and all towns within 100km of Ballarat\" · contradicts: customer-brief.md says service_radius_km is 50"
-      }
-    ],
-    "leak_quotes": [
-      {
-        "page": "index.html",
-        "quote": "Based on review volume and tenure, the business has likely completed over 500 roof replacements and new installations since inception."
-      },
-      {
-        "page": "index.html",
-        "quote": "A representative selection from our Google reviews."
-      },
-      {
-        "page": "index.html",
-        "quote": "Verbatim — author, suburb, and star count unchanged."
-      }
-    ],
-    "per_page": [
-      {
-        "page": "index.html",
-        "result": {
-          "page": "index.html",
-          "parsed": {
-            "page": "index.html",
-            "scores": {
-              "D1_facts_accuracy": 6,
-              "D2_voice_authentic": 5,
-              "D3_specificity": 8,
-              "D4_conversion": 8,
-              "D5_leak_free": 8,
-              "D6_engagement_persuasion": 6,
-              "total": 41
-            },
-            "strengths": [
-              "Strong proof density with licence number, 2003 founding year, warranty, review count, owner mention, and named service areas.",
-              "Conversion path is clear with phone number, written quote CTA, and quote-process copy repeated near the top and bottom."
-            ],
-            "weaknesses": [
-              "The long Workshop section drifts into consultant-style corporate backstory instead of direct roofer copy.",
-              "\"Based on review volume and tenure, the business has likely completed over 500 roof replacements\" weakens trust because it sounds inferred rather than proven."
-            ],
-            "hallucinations": [
-              "\"covering a service area that spans 100km from Ballarat in every direction\" · contradicts: customer-brief.md says service_radius_km is 50",
-              "\"Vicwest Roofing services Ballarat, Geelong, Bendigo, Bacchus Marsh, Daylesford, Castlemaine, Creswick, Maryborough, and all towns within 100km of Ballarat\" · contradicts: customer-brief.md says service_radius_km is 50"
-            ],
-            "leak_quotes": [
-              "Based on review volume and tenure, the business has likely completed over 500 roof replacements and new installations since inception.",
-              "A representative selection from our Google reviews.",
-              "Verbatim — author, suburb, and star count unchanged."
-            ]
-          }
-        },
-        "duration_s": 39
-      }
-    ],
-    "note": "SOP-AUDIT-STANDARD-V2 §9 D2.10 · codex-deep-audit 6-dim · premium tier · ~40s/page"
-  },
-  "tier_5": {
-    "score": null,
-    "three_axis": {
-      "idea_originality": null,
-      "cultural_relevance": null,
-      "craft": null
-    },
-    "llm_call_id": null,
-    "cost_usd": 0,
-    "model": null,
-    "status": "stub",
-    "todo": "adapt creative-director prompt · gate on T4≥60"
-  },
-  "composite": 91,
+  "t2_copy_quality_llm": null,
+  "tier_5": null,
+  "composite": 60,
   "grade": "EXPERIMENTAL",
-  "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T3/T4/T5 stubbed",
+  "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T4/T5 stubbed",
   "block_reason": null,
   "issues": []
 }
