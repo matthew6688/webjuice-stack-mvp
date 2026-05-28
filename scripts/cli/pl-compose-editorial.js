@@ -98,6 +98,16 @@ function render(tpl, ctx) {
     if (v && typeof v === 'object') return render(inner, { ...ctx, ...v });
     return '';
   });
+  // {{?cond}}...{{/cond}} conditional · render inner if truthy (any type · including primitive string/number/bool)
+  tpl = tpl.replace(/\{\{\?([\w.]+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (m, name, inner) => {
+    const v = getPath(ctx, name);
+    return (v && (!Array.isArray(v) || v.length > 0)) ? render(inner, ctx) : '';
+  });
+  // {{^cond}}...{{/cond}} negated conditional
+  tpl = tpl.replace(/\{\{\^([\w.]+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (m, name, inner) => {
+    const v = getPath(ctx, name);
+    return (!v || (Array.isArray(v) && v.length === 0)) ? render(inner, ctx) : '';
+  });
   // {{{var}}} unescaped
   tpl = tpl.replace(/\{\{\{([\w.@]+)\}\}\}/g, (m, name) => {
     const v = getPath(ctx, name);
@@ -410,7 +420,7 @@ async function main() {
       hours_html: hoursHtmlMain,
       hours_lines: hoursLines,
       year_founded: yearFounded,
-      abn: licNum.ABN || null,
+      abn: brief?.abn || licNum.ABN || null,  // R30: prefer brief.yaml canonical · audit D2.11 caught missing
       license_authority: licAuthority,
       license_number: licNumber,
       license_visible: _licenseVisibleFinal ? {} : null,  // obj=truthy for {{#X}} conditional

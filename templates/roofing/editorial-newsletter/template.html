@@ -236,7 +236,7 @@ p { color: var(--fg-2); }
 .contact-row:first-child { border-top: 1px solid var(--border); }
 .contact-row dt { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--meta); margin-block-end: var(--space-2); font-weight: 700; }
 .contact-row dd { margin: 0; font-size: var(--text-lg); font-family: var(--font-display); color: var(--fg); }
-.contact-row dd a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--border); }
+.contact-row dd a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--border); display: inline-block; min-height: 44px; padding-block: 10px; line-height: 1.4; }
 .contact-row dd a:hover { text-decoration-color: var(--accent); color: var(--accent); }
 
 .form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); box-shadow: var(--elev-raised); }
@@ -252,7 +252,8 @@ p { color: var(--fg-2); }
 
 /* ---------- colophon ---------- */
 .colophon { background: var(--brand-primary); color: var(--surface); padding-block: var(--space-12); }
-.colophon a { color: var(--surface); }
+.colophon a { color: var(--surface); display: inline-block; min-height: 44px; padding-block: 10px; line-height: 1.4; }
+.colophon p a, .colophon-bar a { min-height: 0; padding-block: 0; display: inline; }
 .colophon img.footer-logo { height: 48px; width: auto; display: block; margin-block-end: var(--space-4); }
 .colophon-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-8); }
 @media (max-width: 860px) { .colophon-grid { grid-template-columns: 1fr 1fr; } }
@@ -268,7 +269,8 @@ p { color: var(--fg-2); }
 .mobile-cta a { color: var(--surface); text-decoration: none; }
 .mobile-cta .cta-line { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: #B5B5B7; }
 .mobile-cta .cta-num { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-lg); color: var(--surface); letter-spacing: 0; text-transform: none; }
-.mobile-cta .cta-btn { background: var(--accent); color: var(--brand-primary); padding: 12px var(--space-5); border-radius: var(--radius-md); font: 700 var(--text-sm) / 1 var(--font-sans); text-transform: uppercase; letter-spacing: 0.06em; }
+.mobile-cta .cta-btn { background: var(--accent); color: var(--brand-primary); min-height: 44px; display: inline-flex; align-items: center; padding: 12px var(--space-5); border-radius: var(--radius-md); font: 700 var(--text-sm) / 1 var(--font-sans); text-transform: uppercase; letter-spacing: 0.06em; }
+.mobile-cta .cta-line { min-height: 44px; justify-content: center; padding: 4px 0; }
 @media (max-width: 720px) { .mobile-cta { display: flex; } body { padding-bottom: 80px; } }
 
 /* ---------- section-meta utility ---------- */
@@ -534,7 +536,7 @@ p { color: var(--fg-2); }
       </div>
     </div>
     <div class="colophon-bar">
-      <span>&copy; {{colophon.year}} {{client.business_name}}{{#client.abn}} · ABN {{.}}{{/client.abn}}</span>
+      <span>&copy; {{colophon.year}} {{client.business_name}}{{?client.abn}} · ABN {{client.abn}}{{/client.abn}}</span>
       <span>{{#client.license_visible}}{{client.license_authority}} · {{client.license_number}} · {{/client.license_visible}}Set in Source Serif Pro &amp; Inter Tight</span>
     </div>
   </div>
