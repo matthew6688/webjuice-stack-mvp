@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vicwest Roofing | Roof Replacement & Restoration Ballarat</title>
+  <meta name="description" content="Vicwest Roofing replaces, restores and repairs roofs across Ballarat and nearby suburbs with written quotes, Colorbond options and a 10-year workmanship warranty.">
+  <link rel="canonical" href="https://vicwestroofing.com.au/">
+  <style>
+:root {
+  --brand-primary: #0F1115;
+  --brand-secondary: #6D6E71;
+  --brand-accent: #C5A572;
+  --surface: #FFFFFF;
+  --surface-muted: #F4F4F5;
+  --text: #1B1D22;
+  --text-muted: #5A5C61;
+  --border: #E4E4E7;
+  --source-primary: #000000;
+  --source-secondary: #6D6E71;
+  --source-wordmark: #3A3A3C;
+  --surface-dark: #111111;
+  --roof-shadow: rgba(15, 17, 21, 0.18);
+}
+
+*{box-sizing:border-box}
+html{scroll-behaviour:smooth}
+body{margin:0;background:var(--surface);colour:var(--text);font-family:Inter,Arial,sans-serif;line-height:1.55;overflow-x:hidden}
+body{color:var(--text)}
+a{color:inherit}
+img{max-width:100%;display:block}
+.serif{font-family:Georgia,"Times New Roman",serif}
+.wrap{width:min(1160px,calc(100% - 32px));margin:auto}
+.header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.header-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.logo{width:210px;height:auto}
+.nav{display:flex;gap:22px;font-size:14px;color:var(--text-muted)}
+.nav a{text-decoration:none}
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:6px;border:1px solid var(--brand-primary);background:var(--brand-primary);color:#fff;text-decoration:none;font-weight:700}
+.btn.secondary{background:#fff;color:var(--brand-primary)}
+.mobile-cta{display:none}
+.hero{padding:56px 0 32px;background:linear-gradient(180deg,#fff,var(--surface-muted))}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:36px;align-items:center}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:800;color:var(--brand-accent)}
+h1{font-size:clamp(42px,6vw,76px);line-height:.96;margin:12px 0 18px;letter-spacing:0}
+.subhead{font-size:18px;color:var(--text-muted);max-width:720px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:9px 12px;font-size:13px;font-weight:700}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.hero-photo{border-radius:8px;overflow:hidden;box-shadow:0 20px 60px var(--roof-shadow);background:#ddd;aspect-ratio:4/3}
+.hero-photo img{width:100%;height:100%;object-fit:cover}
+.strap{padding:24px 0;background:var(--brand-primary);color:#fff}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.18)}
+.metric{background:var(--brand-primary);padding:22px}
+.metric strong{display:block;font-size:28px;font-family:Georgia,"Times New Roman",serif}
+.metric span{color:#ddd;font-size:13px}
+section{padding:62px 0}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:26px}
+h2{font-size:clamp(30px,4vw,48px);line-height:1.05;margin:0}
+.kicker{color:var(--text-muted);max-width:560px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:1px solid var(--border);border-radius:8px;padding:22px;background:#fff}
+.card h3{margin:0 0 8px;font-size:21px}
+.card p{margin:0;color:var(--text-muted)}
+.about{background:var(--surface-muted)}
+.about-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:34px;align-items:start}
+.about-text p:first-child:first-letter{float:left;font-family:Georgia,"Times New Roman",serif;font-size:64px;line-height:.85;padding-right:8px;color:var(--brand-accent)}
+.photo-panel{border-radius:8px;overflow:hidden;background:#ccc;min-height:360px}
+.photo-panel img{width:100%;height:100%;object-fit:cover}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.notice{border:1px dashed var(--brand-accent);background:#fffaf0;border-radius:8px;padding:20px;color:#5a4524}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ba-slider{position:relative;overflow:hidden;border-radius:8px;border:1px solid var(--border);aspect-ratio:4/3;background:var(--surface-muted);touch-action:none}
+.ba-before,.ba-after{position:absolute;inset:0;display:grid;place-items:center;padding:18px;text-align:center}
+.ba-before{background:linear-gradient(135deg,#d8d8d8,#f5f5f5)}
+.ba-after{background:linear-gradient(135deg,#20242b,#6d6e71);color:#fff;clip-path:inset(0 0 0 50%)}
+.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.ba-handle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;border:2px solid #fff;background:var(--brand-primary);color:#fff;display:grid;place-items:center;font-weight:800;cursor:ew-resize}
+.coverage{background:var(--surface-muted)}
+.suburbs{display:flex;flex-wrap:wrap;gap:10px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+form{display:grid;gap:12px}
+input,textarea{width:100%;min-height:48px;border:1px solid var(--border);border-radius:6px;padding:12px;font:inherit}
+textarea{min-height:118px;resize:vertical}
+.details{border:1px solid var(--border);border-radius:8px;padding:22px}
+.footer{background:var(--surface-dark);color:#fff;padding:40px 0}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.footer img{width:190px;filter:brightness(0) invert(1)}
+.footer a{color:#fff}
+.small{font-size:13px;color:#d7d7d7}
+@media(max-width:820px){
+  .mobile-cta{display:flex;position:sticky;top:76px;z-index:18;background:var(--brand-primary);padding:8px 16px;gap:8px}
+  .mobile-cta .btn{flex:1;background:#fff;color:var(--brand-primary)}
+  .nav{display:none}
+  .hero-grid,.about-grid,.contact-grid,.footer-grid{grid-template-columns:1fr}
+  .metrics,.cards,.gallery-grid,.review-grid{grid-template-columns:1fr}
+  .header-inner{min-height:70px}
+  .logo{width:178px}
+  section{padding:44px 0}
+}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"RoofingContractor",
+    "name":"Vicwest Roofing",
+    "url":"https://vicwestroofing.com.au/",
+    "telephone":"+61403554592",
+    "email":"info@vicwestroofing.com.au",
+    "address":{
+      "@type":"PostalAddress",
+      "streetAddress":"Shed 3/31 Icon Dr",
+      "addressLocality":"Delacombe",
+      "addressRegion":"VIC",
+      "postalCode":"3356",
+      "addressCountry":"AU"
+    },
+    "areaServed":["Ballarat Central","Sebastopol","Wendouree","Lake Wendouree","Delacombe","Buninyong","Alfredton","Miners Rest"],
+    "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.1","reviewCount":"18"},
+    "hasOfferCatalog":{
+      "@type":"OfferCatalog",
+      "name":"Roofing services",
+      "itemListElement":[
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Roof restoration"}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Roof replacement"}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Roof repair"}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Gutter replacement"}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Colorbond installation"}}
+      ]
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="wrap header-inner">
+      <a href="#top" aria-label="Vicwest Roofing home"><img class="logo" src="brand/logo-horizontal.svg" alt="Vicwest Roofing"></a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#about">Process</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Quote</a>
+      </nav>
+      <a class="btn" href="tel:+61403554592">Call 0403 554 592</a>
+    </div>
+  </header>
+
+  <div class="mobile-cta" aria-label="Quick contact">
+    <a class="btn" href="tel:+61403554592">Call</a>
+    <a class="btn" href="mailto:estimating@vicwestroofing.com.au">Email</a>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Ballarat roof replacements · planned properly</div>
+          <h1 class="serif">Replace the roof once, with the details sorted before work starts.</h1>
+          <p class="subhead">Vicwest Roofing helps homeowners plan a roof replacement, restoration or Colorbond upgrade with a detailed inspection, written quote, named materials and clear warranty handover. Based in Delacombe and working across the Ballarat region, the team holds VBA licence CDB-U 65938.</p>
+          <div class="chips">
+            <span class="chip">VBA CDB-U 65938</span>
+            <span class="chip">10-year workmanship warranty</span>
+            <span class="chip">Founded 2003</span>
+            <span class="chip">4.1★ from 18 reviews</span>
+            <span class="chip">50 km service radius</span>
+          </div>
+          <div class="ctas">
+            <a class="btn" href="tel:+61403554592">Book an inspection</a>
+            <a class="btn secondary" href="mailto:estimating@vicwestroofing.com.au">Request a written quote</a>
+          </div>
+        </div>
+        <figure class="hero-photo" aria-label="Metal roof reference image">
+          <img src="https://images.unsplash.com/photo-1632759145351-1d592919f522?auto=format&fit=crop&w=1200&q=80" alt="Modern metal roofing detail suitable for a Colorbond roof upgrade">
+        </figure>
+      </div>
+    </section>
+
+    <section class="strap" aria-label="Business proof">
+      <div class="wrap metrics">
+        <div class="metric"><strong>2003</strong><span>Year founded</span></div>
+        <div class="metric"><strong>10 yr</strong><span>Workmanship warranty on listed restoration work</span></div>
+        <div class="metric"><strong>VBA</strong><span>CDB-U 65938 active licence</span></div>
+        <div class="metric"><strong>4.1★</strong><span>18 entity reviews</span></div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="serif">Roofing work for planned upgrades.</h2>
+          <p class="kicker">For homeowners comparing roof types, finish, drainage and warranty before committing to a major exterior upgrade.</p>
+        </div>
+        <div class="cards">
+          <article class="card"><h3>Roof replacement</h3><p>Full tear-off with new Colorbond or re-tile options, including sarking and battens.</p></article>
+          <article class="card"><h3>Roof restoration</h3><p>Tile or Colorbond cleaning, re-pointing, re-bedding and sealing with a 10-year warranty.</p></article>
+          <article class="card"><h3>Colorbond installation</h3><p>BlueScope-supplied material, full colour range, ridge sealing and valley sarking.</p></article>
+          <article class="card"><h3>Gutter replacement</h3><p>Colorbond gutters and downpipes matched to the home, with metal warranty noted.</p></article>
+          <article class="card"><h3>Roof repair</h3><p>Leak diagnosis, cracked tiles, loose flashing, storm damage and a 24-hour quote path.</p></article>
+          <article class="card"><h3>Storm repair</h3><p>Make-safe tarping followed by a permanent repair quoted in writing.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="wrap about-grid">
+        <figure class="photo-panel">
+          <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1000&q=80" alt="Roofing materials and exterior renovation planning reference">
+        </figure>
+        <div class="about-text">
+          <h2 class="serif">A roof upgrade should read clearly before the first sheet goes on.</h2>
+          <p>Vicwest Roofing operates from Shed 3/31 Icon Dr, Delacombe, servicing Ballarat Central and surrounding suburbs. The work centres on roof replacement, roof restoration, Colorbond installation, guttering, downpipes and roof repairs for homes that need a proper long-term upgrade.</p>
+          <p>For a planned replacement, the useful detail is in the inspection: roof type, battens, sarking, flashings, drainage, colour selection, access and handover. Vicwest’s offer is built around a written quote and warranty explanation rather than a loose verbal allowance.</p>
+          <p>The business is open Monday to Friday, 8:00 AM to 5:00 PM. Homeowners can call <a href="tel:+61403554592">0403 554 592</a> or email <a href="mailto:estimating@vicwestroofing.com.au">estimating@vicwestroofing.com.au</a> to book the inspection step.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="serif">Review proof.</h2>
+          <p class="kicker">Only supplied review text is shown here.</p>
+        </div>
+        <div class="review-grid">
+          <blockquote class="card">
+            <p>“Vicwest replaced our 1970s tile roof with Colorbond · neat job · written warranty before they left.”</p>
+            <footer class="small">Sarah K. · Sebastopol · Colorbond replacement · 2024-04</footer>
+          </blockquote>
+          <div class="notice">Additional review copy was not supplied in the brief, so this page does not invent testimonials.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="serif">Before and after gallery.</h2>
+          <p class="kicker">Draggable comparison panels are ready for Vicwest project photos when the photo archive is supplied.</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="ba-slider">
+            <div class="ba-before">Before photo pending<br>Tile or metal roof upgrade</div>
+            <div class="ba-after">After photo pending<br>Colorbond or restored finish</div>
+            <div class="ba-divider"></div><div class="ba-handle">↔</div>
+          </div>
+          <div class="ba-slider">
+            <div class="ba-before">Before photo pending<br>Gutter and downpipe condition</div>
+            <div class="ba-after">After photo pending<br>Matched Colorbond drainage</div>
+            <div class="ba-divider"></div><div class="ba-handle">↔</div>
+          </div>
+          <div class="ba-slider">
+            <div class="ba-before">Before photo pending<br>Roof restoration surface</div>
+            <div class="ba-after">After photo pending<br>Cleaned, sealed and finished</div>
+            <div class="ba-divider"></div><div class="ba-handle">↔</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="coverage">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="serif">Ballarat-region coverage.</h2>
+          <p class="kicker">Primary service area: Ballarat Central, with a 50 km service radius from Delacombe.</p>
+        </div>
+        <div class="suburbs">
+          <span class="chip">Ballarat Central</span><span class="chip">Sebastopol</span><span class="chip">Wendouree</span><span class="chip">Lake Wendouree</span><span class="chip">Delacombe</span><span class="chip">Buninyong</span><span class="chip">Mount Pleasant</span><span class="chip">Mount Helen</span><span class="chip">Black Hill</span><span class="chip">Alfredton</span><span class="chip">Soldiers Hill</span><span class="chip">Brown Hill</span><span class="chip">Redan</span><span class="chip">Canadian</span><span class="chip">Bonshaw</span><span class="chip">Miners Rest</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap contact-grid">
+        <div>
+          <h2 class="serif">Book the inspection.</h2>
+          <p class="kicker">Send the roof address and upgrade goal. Vicwest quotes per project after inspection.</p>
+          <form action="mailto:estimating@vicwestroofing.com.au" method="post" enctype="text/plain">
+            <input name="name" autocomplete="name" placeholder="Name" aria-label="Name">
+            <input name="phone" autocomplete="tel" placeholder="Phone" aria-label="Phone">
+            <textarea name="message" placeholder="Roof address and what you want replaced or restored" aria-label="Message"></textarea>
+            <button class="btn" type="submit">Send quote request</button>
+          </form>
+        </div>
+        <div class="details">
+          <h3>Vicwest Roofing</h3>
+          <p>Shed 3/31 Icon Dr, Delacombe VIC 3356, Australia<br><a href="https://www.google.com/maps/search/?api=1&query=Shed%203%2F31%20Icon%20Dr%2C%20Delacombe%20VIC%203356%2C%20Australia">Open map</a></p>
+          <p>Phone: <a href="tel:+61403554592">0403 554 592</a><br>Email: <a href="mailto:info@vicwestroofing.com.au">info@vicwestroofing.com.au</a><br>Estimating: <a href="mailto:estimating@vicwestroofing.com.au">estimating@vicwestroofing.com.au</a></p>
+          <p>Hours: Monday-Friday 8:00 AM-5:00 PM. Saturday-Sunday closed.</p>
+          <p>ABN 34 134 811 831<br>VBA licence CDB-U 65938</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <img src="brand/logo-horizontal.svg" alt="Vicwest Roofing">
+        <p class="small">Roof replacement, restoration, repairs, gutters and Colorbond installation across the Ballarat region.</p>
+      </div>
+      <div class="small">
+        <p>Shed 3/31 Icon Dr, Delacombe VIC 3356, Australia</p>
+        <p><a href="tel:+61403554592">0403 554 592</a><br><a href="mailto:info@vicwestroofing.com.au">info@vicwestroofing.com.au</a></p>
+      </div>
+      <div class="small">
+        <p>ABN 34 134 811 831<br>VBA licence CDB-U 65938</p>
+        <p>Monday-Friday 8:00 AM-5:00 PM<br>Saturday-Sunday closed</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.ba-slider').forEach(function(slider){
+      var after = slider.querySelector('.ba-after');
+      var divider = slider.querySelector('.ba-divider');
+      var handle = slider.querySelector('.ba-handle');
+      function setPosition(clientX){
+        var rect = slider.getBoundingClientRect();
+        var pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+        after.style.clipPath = 'inset(0 0 0 ' + pct + '%)';
+        divider.style.left = pct + '%';
+        handle.style.left = pct + '%';
+      }
+      slider.addEventListener('pointerdown', function(e){
+        slider.setPointerCapture(e.pointerId);
+        setPosition(e.clientX);
+      });
+      slider.addEventListener('pointermove', function(e){
+        if(e.buttons) setPosition(e.clientX);
+      });
+    });
+  </script>
+</body>
+</html>
