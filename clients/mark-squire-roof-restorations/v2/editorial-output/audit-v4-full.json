@@ -6,10 +6,21 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/mark-squire-roof-restorations/v2/editorial-output",
   "tier": "full",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T14:27:18.286Z",
+  "generated_at": "2026-05-28T14:33:06.129Z",
   "tier_1": {
     "pass": true,
     "checks": {
+      "1.1_business_name": {
+        "pass": true,
+        "pages_with": 1,
+        "total": 1
+      },
+      "1.2_phone_present": {
+        "pass": true,
+        "per_page": [
+          16
+        ]
+      },
       "1.11_logo_refs_resolve": {
         "pass": true,
         "broken": []
@@ -128,10 +139,34 @@
     "total_weight": 0.9500000000000001
   },
   "tier_3": {
-    "score": null,
-    "dims": {},
-    "status": "skipped_no_facts",
-    "cost_usd": 0
+    "score": 50.5,
+    "dims": {
+      "D3.1_layout": 50,
+      "D3.2_typography": 50,
+      "D3.3_color_hierarchy": 50,
+      "D3.4_readability": 50,
+      "D3.5_image_text_balance": 55,
+      "D3.6_copy_depth": 50,
+      "D3.7_chrome_consistency": 50,
+      "D3.8_module_diversity": 50
+    },
+    "vision_report_path": "/Users/matthew/Developer/google-map-website-v3/clients/mark-squire-roof-restorations/v2/editorial-output/_vision-audit-v4.json",
+    "pages_audited": 2,
+    "top_problems": [
+      "Missing Footer",
+      "Inconsistent Design Language",
+      "Low-Quality Visual Assets",
+      "Missing footer",
+      "Generic copy lacking specifics"
+    ],
+    "fix_priorities": [
+      "Add a complete, functional footer with contact information and copyright.",
+      "Refine the design language to create a more consistent visual experience with better typography and spacing.",
+      "Implement a complete footer with contact info and links"
+    ],
+    "status": "ok",
+    "cost_usd": 0,
+    "model": "claude-sonnet-4-5"
   },
   "tier_4": {
     "score": null,
@@ -253,7 +288,7 @@
   },
   "t2_copy_quality_llm": null,
   "tier_5": null,
-  "composite": 93,
+  "composite": 59,
   "grade": "EXPERIMENTAL",
   "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T4/T5 stubbed",
   "block_reason": null,

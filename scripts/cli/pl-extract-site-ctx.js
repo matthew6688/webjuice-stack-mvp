@@ -369,6 +369,30 @@ fs.writeFileSync(outPath, JSON.stringify(siteCtx, null, 2));
 
 console.log(`[ok] site-ctx.json written → ${path.relative(ROOT, outPath)}`);
 console.log(`     business: ${siteCtx.business.name} · ${siteCtx.business.city}`);
+
+// ── write v2/facts.json (used by pl:audit-vision + pl:audit-v4 T3) ────────────
+
+const b = siteCtx.business;
+const factsOut = {
+  business_name: b.name || '',
+  trading_entity: b.trading_name || b.name || '',
+  abn: b.abn || '',
+  phone: b.phone_display || '',
+  phone_tel_link: b.phone_display ? 'tel:' + b.phone_display.replace(/\s/g, '') : '',
+  email: b.email || '',
+  address: b.address || '',
+  city: [b.city, b.state].filter(Boolean).join(' '),
+  state: b.state || '',
+  licensing_authority: b.license_authority || '',
+  license_number: b.license_number || '',
+  niche: 'roofing',
+  rating: b.rating || null,
+  review_count: b.review_count || null,
+  _source: 'site-ctx.json:business',
+  _generated_at: siteCtx.generated_at,
+};
+fs.writeFileSync(factsPath, JSON.stringify(factsOut, null, 2));
+console.log(`[ok] facts.json written → ${path.relative(ROOT, factsPath)} (audit-v4 T3 input)`);
 console.log(`     services: ${siteCtx.services.length}`);
 console.log(`     suburbs: ${siteCtx.suburbs.length} (${siteCtx.suburbs.filter(s=>s.source==='verified').length} verified)`);
 console.log(`     reviews: ${siteCtx.reviews.length}`);

@@ -1,0 +1,124 @@
+{
+  "dir": "clients/vicwest-roofing/v2/editorial-output",
+  "pages": 1,
+  "consistency": {
+    "pages_count": 1,
+    "header_unique_count": 1,
+    "footer_unique_count": 1,
+    "header_consistent": true,
+    "footer_consistent": true,
+    "pages_missing_header": 0,
+    "pages_missing_footer": 0
+  },
+  "vision_results": [
+    {
+      "file": "index.html",
+      "viewport": "desktop-fullpage",
+      "path": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output/_audit-screenshots/index-desktop-full.png",
+      "ok": true,
+      "scores": {
+        "D1_core_info_accuracy": 10,
+        "D2_logo_brand_consistency": 5,
+        "D3_copy_quality": 6,
+        "D4_header_quality": 5,
+        "D5_footer_quality": 0,
+        "D6_hero_quality": 5,
+        "D7_section_modules": 5,
+        "D8_design_language": 4,
+        "D9_image_quality": 5,
+        "D10_audit_fix_integration": 5
+      },
+      "evidence": {
+        "D1": "Business name 'Vicwest Roofing', phone number '0403 554 592', and city 'Ballarat' are all clearly visible.",
+        "D2": "Logo is present but appears low resolution and doesn't align with established brand guidelines (needs color checking).",
+        "D3": "Copy mentions '25 years experience' and 'VBA registration', offering some specifics, but lacks detailed warranty information or unique selling propositions.",
+        "D4": "A header is present, but incomplete and visually cluttered.",
+        "D5": "There is no footer present on the page.",
+        "D6": "The hero image appears to be of a real roof, but is low resolution and potentially stock.",
+        "D7": "Section boundaries are poorly defined, leading to a blurred layout and unclear progression.",
+        "D8": "Inconsistent typography, spacing, and visual radii create a disjointed design language.",
+        "D9": "Image quality is generally low and some images appear to be stock photos.",
+        "D10": "Phone number is present, but not prominently displayed above the fold as a clear call to action. Conversion paths are not evident."
+      },
+      "biggest_problems": [
+        "Lack of footer",
+        "Poor design language/inconsistent styling",
+        "Low image quality and unclear visual hierarchy"
+      ],
+      "fix_priorities": [
+        "Implement a full footer with contact information and links",
+        "Refine typography and spacing to create a more cohesive design"
+      ]
+    },
+    {
+      "file": "index.html",
+      "viewport": "mobile-fullpage",
+      "path": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output/_audit-screenshots/index-mobile-full.png",
+      "ok": true,
+      "scores": {
+        "D1_core_info_accuracy": 10,
+        "D2_logo_brand_consistency": 5,
+        "D3_copy_quality": 4,
+        "D4_header_quality": 5,
+        "D5_footer_quality": 5,
+        "D6_hero_quality": 5,
+        "D7_section_modules": 5,
+        "D8_design_language": 5,
+        "D9_image_quality": 5,
+        "D10_audit_fix_integration": 5
+      },
+      "evidence": {
+        "D1": "The business name, phone number (0403 554 592), and city (Ballarat) are all clearly visible on the page.",
+        "D2": "The logo is present but appears to be a simple graphic and lacks detailed branding elements, with brand colors not distinctly clear.",
+        "D3": "The copy consists of generally positive statements such as 'trusted roofing specialists' and 'quality workmanship' rather than specific details like warranty periods or materials.",
+        "D4": "A header exists with some navigation links, but appears incomplete with limited functionality.",
+        "D5": "A footer exists with some contact details and links, but also seems incomplete.",
+        "D6": "The hero image appears to be a real outdoor roof photo, but the quality is somewhat low, and it's not particularly striking.",
+        "D7": "Sections are present but have some visual blurring between them, lacking strong visual separation.",
+        "D8": "The design language feels somewhat inconsistent with typography, spacing, and border radii differing throughout the page.",
+        "D9": "The images present are generally okay, but they have a stock-photo feel and lack a distinct on-brand aesthetic.",
+        "D10": "The phone number is visible but not prominently displayed as a call-to-action above the fold. Conversion paths aren't particularly clear."
+      },
+      "biggest_problems": [
+        "Generic copy lacking specifics.",
+        "Inconsistent design language and incomplete header/footer.",
+        "Poor visual separation between sections and low-quality images."
+      ],
+      "fix_priorities": [
+        "Rewrite website copy to include specific details about services, warranties, and materials.",
+        "Redesign the header and footer to be complete and user-friendly, and improve visual consistency throughout the site."
+      ]
+    }
+  ],
+  "dim_means": {
+    "D1_core_info_accuracy": 10,
+    "D2_logo_brand_consistency": 5,
+    "D3_copy_quality": 5,
+    "D4_header_quality": 5,
+    "D5_footer_quality": 2.5,
+    "D6_hero_quality": 5,
+    "D7_section_modules": 5,
+    "D8_design_language": 4.5,
+    "D9_image_quality": 5,
+    "D10_audit_fix_integration": 5
+  },
+  "vision_mean_raw": "52.0",
+  "cross_page_penalty": 0,
+  "composite_score": "52.0",
+  "all_problems": [
+    "Lack of footer",
+    "Poor design language/inconsistent styling",
+    "Low image quality and unclear visual hierarchy",
+    "Generic copy lacking specifics.",
+    "Inconsistent design language and incomplete header/footer.",
+    "Poor visual separation between sections and low-quality images."
+  ],
+  "all_fix_priorities": [
+    "Implement a full footer with contact information and links",
+    "Refine typography and spacing to create a more cohesive design",
+    "Rewrite website copy to include specific details about services, warranties, and materials.",
+    "Redesign the header and footer to be complete and user-friendly, and improve visual consistency throughout the site."
+  ],
+  "pass_90": false,
+  "generated_at": "2026-05-28T14:27:06.651Z"
+}
