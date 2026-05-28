@@ -948,11 +948,26 @@ async function main() {
   };
   fs.writeFileSync(path.join(outDir, 'ctx-snapshot.json'), JSON.stringify(ctxSnapshot, null, 2));
 
-  // Copy brand assets
-  const brandSrc = path.join(handoffDir, 'brand');
-  if (fs.existsSync(brandSrc)) {
+  // Copy brand assets — check handoff/od-package/brand first, fall back to v2/brand
+  // (some clients have brand kit in v2/brand/ without a full od-package)
+  const brandSrcs = [path.join(handoffDir, 'brand'), path.join(clientDir, 'brand')];
+  for (const brandSrc of brandSrcs) {
+    if (!fs.existsSync(brandSrc)) continue;
     for (const f of fs.readdirSync(brandSrc)) {
-      if (/\.(svg|css)$/.test(f)) fs.copyFileSync(path.join(brandSrc, f), path.join(outDir, 'assets/brand', f));
+      const dest = path.join(outDir, 'assets/brand', f);
+      // Don't overwrite — priority source wins (first in list)
+      if (/\.(svg|css)$/.test(f) && !fs.existsSync(dest)) {
+        fs.copyFileSync(path.join(brandSrc, f), dest);
+      }
+    }
+  }
+  // Ensure logo-horizontal.svg exists — template masthead requires it.
+  // Some brand kits only include logo-wordmark.svg (generated without horizontal variant).
+  const logoHorizontalDest = path.join(outDir, 'assets/brand/logo-horizontal.svg');
+  if (!fs.existsSync(logoHorizontalDest)) {
+    for (const fb of ['logo-wordmark.svg', 'logo-dark.svg', 'logo-light.svg']) {
+      const fbSrc = path.join(outDir, 'assets/brand', fb);
+      if (fs.existsSync(fbSrc)) { fs.copyFileSync(fbSrc, logoHorizontalDest); break; }
     }
   }
 

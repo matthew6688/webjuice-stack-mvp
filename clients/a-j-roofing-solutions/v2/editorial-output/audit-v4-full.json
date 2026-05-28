@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/a-j-roofing-solutions/v2/editorial-output",
   "tier": "full",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T14:29:37.349Z",
+  "generated_at": "2026-05-28T22:05:02.272Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -44,9 +44,9 @@
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 371,
-        "var_hits": 356,
-        "color_decls": 96
+        "coverage_pct": 368,
+        "var_hits": 357,
+        "color_decls": 97
       },
       "D2.2_hardcoded_hex_count": {
         "score": 64,
@@ -97,9 +97,9 @@
         "categories": {
           "color": {
             "score": 100,
-            "coverage_pct": 179,
-            "var_hits": 172,
-            "prop_count": 96
+            "coverage_pct": 178,
+            "var_hits": 173,
+            "prop_count": 97
           },
           "radius": {
             "score": 95,
@@ -139,30 +139,30 @@
     "total_weight": 0.9500000000000001
   },
   "tier_3": {
-    "score": 57.5,
+    "score": 51,
     "dims": {
-      "D3.1_layout": 55,
+      "D3.1_layout": 50,
       "D3.2_typography": 50,
-      "D3.3_color_hierarchy": 70,
-      "D3.4_readability": 40,
-      "D3.5_image_text_balance": 60,
-      "D3.6_copy_depth": 40,
+      "D3.3_color_hierarchy": 60,
+      "D3.4_readability": 50,
+      "D3.5_image_text_balance": 25,
+      "D3.6_copy_depth": 50,
       "D3.7_chrome_consistency": 50,
-      "D3.8_module_diversity": 55
+      "D3.8_module_diversity": 50
     },
     "vision_report_path": "/Users/matthew/Developer/google-map-website-v3/clients/a-j-roofing-solutions/v2/editorial-output/_vision-audit-v4.json",
-    "pages_audited": 2,
+    "pages_audited": 3,
     "top_problems": [
-      "Generic copy prevents establishing trust",
-      "Poor section definition disrupts user experience",
-      "Lack of clear call to action hinders lead generation",
-      "Generic website copy, lacking specific details",
-      "Inconsistent design language and typography"
+      "Lack of a proper footer.",
+      "Poor design language and visual inconsistencies.",
+      "Weak call to action and conversion pathways.",
+      "Generic and unhelpful copy",
+      "Poor visual hierarchy and sectioning"
     ],
     "fix_priorities": [
-      "Rewrite all copy to focus on specific details and benefits",
-      "Improve section boundaries with clear visual separation",
-      "Rewrite website copy with specific services, warranty details, and quantifiable achievements"
+      "Add a complete footer with contact info and copyright.",
+      "Refine typography and spacing for a more consistent and polished look.",
+      "Rewrite copy to include specific services and quantifiable benefits"
     ],
     "status": "ok",
     "cost_usd": 0,
@@ -279,7 +279,7 @@
   },
   "t2_copy_quality_llm": null,
   "tier_5": null,
-  "composite": 64,
+  "composite": 59,
   "grade": "EXPERIMENTAL",
   "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T4/T5 stubbed",
   "block_reason": null,

@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/mark-squire-roof-restorations/v2/editorial-output",
   "tier": "full",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T14:33:06.129Z",
+  "generated_at": "2026-05-28T22:08:22.648Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -44,9 +44,9 @@
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 371,
-        "var_hits": 356,
-        "color_decls": 96
+        "coverage_pct": 368,
+        "var_hits": 357,
+        "color_decls": 97
       },
       "D2.2_hardcoded_hex_count": {
         "score": 77,
@@ -97,9 +97,9 @@
         "categories": {
           "color": {
             "score": 100,
-            "coverage_pct": 179,
-            "var_hits": 172,
-            "prop_count": 96
+            "coverage_pct": 178,
+            "var_hits": 173,
+            "prop_count": 97
           },
           "radius": {
             "score": 95,
@@ -139,30 +139,30 @@
     "total_weight": 0.9500000000000001
   },
   "tier_3": {
-    "score": 50.5,
+    "score": 55.5,
     "dims": {
       "D3.1_layout": 50,
       "D3.2_typography": 50,
-      "D3.3_color_hierarchy": 50,
-      "D3.4_readability": 50,
-      "D3.5_image_text_balance": 55,
-      "D3.6_copy_depth": 50,
+      "D3.3_color_hierarchy": 65,
+      "D3.4_readability": 40,
+      "D3.5_image_text_balance": 50,
+      "D3.6_copy_depth": 40,
       "D3.7_chrome_consistency": 50,
       "D3.8_module_diversity": 50
     },
     "vision_report_path": "/Users/matthew/Developer/google-map-website-v3/clients/mark-squire-roof-restorations/v2/editorial-output/_vision-audit-v4.json",
-    "pages_audited": 2,
+    "pages_audited": 3,
     "top_problems": [
-      "Missing Footer",
-      "Inconsistent Design Language",
-      "Low-Quality Visual Assets",
-      "Missing footer",
-      "Generic copy lacking specifics"
+      "Lack of Footer",
+      "Generic Copy",
+      "Poor Design Consistency",
+      "Generic copy and lack of specific details about services.",
+      "Poor section delineation and limited header/footer functionality."
     ],
     "fix_priorities": [
-      "Add a complete, functional footer with contact information and copyright.",
-      "Refine the design language to create a more consistent visual experience with better typography and spacing.",
-      "Implement a complete footer with contact info and links"
+      "Implement a complete footer with contact details and links.",
+      "Rewrite copy to be specific and benefit-driven, including warranties/guarantees.",
+      "Rewrite website copy to include specific service offerings, warranties, and quantifiable benefits."
     ],
     "status": "ok",
     "cost_usd": 0,
@@ -288,7 +288,7 @@
   },
   "t2_copy_quality_llm": null,
   "tier_5": null,
-  "composite": 59,
+  "composite": 63,
   "grade": "EXPERIMENTAL",
   "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T4/T5 stubbed",
   "block_reason": null,

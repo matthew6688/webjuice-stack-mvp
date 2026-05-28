@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output",
   "tier": "full",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T14:27:08.117Z",
+  "generated_at": "2026-05-28T21:48:05.741Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -44,9 +44,9 @@
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 371,
-        "var_hits": 356,
-        "color_decls": 96
+        "coverage_pct": 368,
+        "var_hits": 357,
+        "color_decls": 97
       },
       "D2.2_hardcoded_hex_count": {
         "score": 68,
@@ -97,9 +97,9 @@
         "categories": {
           "color": {
             "score": 100,
-            "coverage_pct": 179,
-            "var_hits": 172,
-            "prop_count": 96
+            "coverage_pct": 178,
+            "var_hits": 173,
+            "prop_count": 97
           },
           "radius": {
             "score": 95,
@@ -139,30 +139,30 @@
     "total_weight": 0.9500000000000001
   },
   "tier_3": {
-    "score": 52,
+    "score": 56.5,
     "dims": {
       "D3.1_layout": 50,
-      "D3.2_typography": 45,
-      "D3.3_color_hierarchy": 50,
-      "D3.4_readability": 50,
-      "D3.5_image_text_balance": 50,
-      "D3.6_copy_depth": 50,
+      "D3.2_typography": 55,
+      "D3.3_color_hierarchy": 60,
+      "D3.4_readability": 75,
+      "D3.5_image_text_balance": 35,
+      "D3.6_copy_depth": 75,
       "D3.7_chrome_consistency": 50,
       "D3.8_module_diversity": 50
     },
     "vision_report_path": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output/_vision-audit-v4.json",
-    "pages_audited": 2,
+    "pages_audited": 3,
     "top_problems": [
-      "Lack of footer",
-      "Poor design language/inconsistent styling",
-      "Low image quality and unclear visual hierarchy",
-      "Generic copy lacking specifics.",
-      "Inconsistent design language and incomplete header/footer."
+      "Missing footer",
+      "Poor section flow",
+      "Lack of prominent call-to-action",
+      "Poor design consistency and visual hierarchy.",
+      "Low-quality images and lack of brand consistency."
     ],
     "fix_priorities": [
-      "Implement a full footer with contact information and links",
-      "Refine typography and spacing to create a more cohesive design",
-      "Rewrite website copy to include specific details about services, warranties, and materials."
+      "Add a complete footer with contact information and potentially a map.",
+      "Improve section separation with more sophisticated visual cues and transitions.",
+      "Improve image quality and resolution to align with brand standards."
     ],
     "status": "ok",
     "cost_usd": 0,
@@ -316,7 +316,7 @@
   },
   "t2_copy_quality_llm": null,
   "tier_5": null,
-  "composite": 60,
+  "composite": 63,
   "grade": "EXPERIMENTAL",
   "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T4/T5 stubbed",
   "block_reason": null,

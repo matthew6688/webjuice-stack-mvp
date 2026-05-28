@@ -109,6 +109,7 @@ function resolveInputs() {
   // Try common output dirs in priority order
   const candidates = [
     args['output-dir'],
+    `clients/${slug}/v2/editorial-output`,
     `clients/${slug}/v2/od-output-c`,
     `clients/${slug}/v2/od-output`,
     `clients/${slug}/v2/output`,

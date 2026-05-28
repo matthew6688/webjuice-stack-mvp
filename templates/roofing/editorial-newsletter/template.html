@@ -93,6 +93,8 @@ button { font: inherit; cursor: pointer; }
 .container { max-width: var(--container-max); margin-inline: auto; padding-inline: var(--container-gutter-desktop); }
 section { padding-block: var(--section-y-desktop); border-bottom: 1px solid var(--border); }
 section.no-rule { border-bottom: 0; }
+/* Alternating section backgrounds — stronger visual boundaries (D7 section clarity) */
+section:nth-of-type(even) { background: var(--bg-warm); }
 @media (max-width: 1023px) { .container { padding-inline: var(--container-gutter-tablet); } section { padding-block: var(--section-y-tablet); } }
 @media (max-width: 639px) { .container { padding-inline: var(--container-gutter-phone); } section { padding-block: var(--section-y-phone); } }
 
