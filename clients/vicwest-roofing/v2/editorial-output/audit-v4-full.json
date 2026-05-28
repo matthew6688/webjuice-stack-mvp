@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output",
   "tier": "fast",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T01:03:43.243Z",
+  "generated_at": "2026-05-28T02:18:44.865Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -39,7 +39,7 @@
     "composite": 100
   },
   "tier_2": {
-    "score": 89,
+    "score": 91,
     "breakdown": {
       "D2.1_var_brand_coverage": {
         "score": 100,
@@ -71,9 +71,11 @@
         "note": "brand-spec has no primary_font · skipped"
       },
       "D2.4_logo_variant_per_surface": {
-        "score": null,
+        "score": 100,
         "weight": 0.15,
-        "todo": "detect surface lightness around each <img logos/*>"
+        "logo_checks": 2,
+        "violations": [],
+        "note": null
       },
       "D2.5_brand_palette_honored": {
         "score": 100,
@@ -88,9 +90,53 @@
           "#c5a572",
           "#6d6e71"
         ]
+      },
+      "D2.BC6_token_coverage_depth": {
+        "score": 90,
+        "weight": 0.1,
+        "categories": {
+          "color": {
+            "score": 100,
+            "coverage_pct": 179,
+            "var_hits": 172,
+            "prop_count": 96
+          },
+          "radius": {
+            "score": 95,
+            "coverage_pct": 95,
+            "var_hits": 18,
+            "prop_count": 19
+          },
+          "shadow": {
+            "score": 56,
+            "coverage_pct": 56,
+            "var_hits": 5,
+            "prop_count": 9
+          },
+          "space": {
+            "score": 100,
+            "coverage_pct": 116,
+            "var_hits": 94,
+            "prop_count": 81
+          },
+          "motion": {
+            "score": 100,
+            "coverage_pct": 700,
+            "var_hits": 14,
+            "prop_count": 2
+          }
+        },
+        "note": "SOP-AUDIT-STANDARD-V2 §9 · split var() coverage by token category · 5-category depth",
+        "rules_checked": [
+          "color",
+          "radius",
+          "shadow",
+          "space",
+          "motion"
+        ]
       }
     },
-    "total_weight": 0.7000000000000001
+    "total_weight": 0.9500000000000001
   },
   "tier_3": null,
   "tier_4": null,
@@ -133,8 +179,136 @@
     "status": "wired",
     "voice_skill_version": "1.0.0"
   },
+  "content_richness_deterministic": {
+    "dims": {
+      "D2.14_proof_variety": {
+        "score": 100,
+        "types_present": {
+          "reviews": true,
+          "stats": true,
+          "case_study": true,
+          "expert_quote": true,
+          "certifications": true,
+          "photos": true
+        },
+        "types_count": 6,
+        "per_page": {
+          "index.html": {
+            "reviews": 16,
+            "stats": 4,
+            "case_study": 6,
+            "expert_quote": 2,
+            "certifications": 9,
+            "photos": 10
+          }
+        },
+        "threshold_pass": true,
+        "note": "SOP-AUDIT-STANDARD-V2 §9 · 6 proof types · ≥3 required"
+      },
+      "D2.11_facts_cross_check": {
+        "score": 80,
+        "checks": [
+          {
+            "field": "business_name",
+            "brief": "Vicwest Roofing",
+            "found": true,
+            "status": "MATCH"
+          },
+          {
+            "field": "phone",
+            "brief": "display:",
+            "status": "MATCH"
+          },
+          {
+            "field": "email",
+            "status": "NA · not in brief"
+          },
+          {
+            "field": "license_number",
+            "brief": "CDB-U 65938",
+            "found": true,
+            "status": "MATCH"
+          },
+          {
+            "field": "license_authority",
+            "brief": "VBA",
+            "found": true,
+            "status": "MATCH"
+          },
+          {
+            "field": "abn",
+            "brief": "34 134 811 831",
+            "found": false,
+            "status": "MISSING"
+          }
+        ],
+        "matched": 4,
+        "checked": 5,
+        "note": "SOP-AUDIT-STANDARD-V2 §9 · brief.yaml vs rendered HTML exact match"
+      }
+    },
+    "status": "wired"
+  },
+  "mobile_gate": {
+    "status": "wired",
+    "vetos": [
+      {
+        "check": "M1.3_critical_tap_target",
+        "page": "index.html",
+        "severity": "VETO",
+        "violations": [
+          {
+            "selector": "a",
+            "text": "0403 554 592",
+            "w": 109,
+            "h": 25
+          },
+          {
+            "selector": "a",
+            "text": "info@vicwestroofing.com.au",
+            "w": 255,
+            "h": 25
+          },
+          {
+            "selector": "a",
+            "text": "0403 554 592",
+            "w": 94,
+            "h": 17
+          },
+          {
+            "selector": "a",
+            "text": "info@vicwestroofing.com.au",
+            "w": 189,
+            "h": 17
+          },
+          {
+            "selector": "a.cta-btn",
+            "text": "Call now",
+            "w": 118,
+            "h": 38
+          }
+        ],
+        "count": 5
+      }
+    ],
+    "warnings": [],
+    "per_page": [
+      {
+        "page": "index.html",
+        "overflow_px": 0,
+        "sticky_cta_found": true,
+        "tap_target_violations": 5
+      }
+    ],
+    "pass": false,
+    "note": "SOP-AUDIT-STANDARD-V2 §4 + §9 · 3 mechanical vetos · M1.1 overflow · M1.2 sticky CTA · M1.3 critical tap targets ≥44px",
+    "sub_dims_deferred": [
+      "M1.4 hero readability (vision LLM · premium tier)",
+      "M1.5 above-fold trust+CTA (vision LLM · premium tier)"
+    ]
+  },
   "tier_5": null,
-  "composite": 89,
+  "composite": 91,
   "grade": "A",
   "ship_verdict": "SHIP",
   "issues": [

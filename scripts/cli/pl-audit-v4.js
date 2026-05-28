@@ -653,6 +653,105 @@ function runContentRichnessDeterministic(htmlFiles, ctx) {
   return { dims, status: 'wired' };
 }
 
+// ─── M1 · Mobile gate (hybrid · SOP-AUDIT-STANDARD-V2 §4 + §9) ──────────
+// Mechanical vetos (this function): M1.1 overflow-x · M1.2 sticky CTA · M1.3 critical tap targets
+// Vision scored sub-dims (deferred to premium tier): M1.4 hero readability · M1.5 above-fold trust+CTA
+// Renders HTML at 390x812 viewport via Playwright · checks computed styles
+async function runM1MobileGate(htmlFiles, ctx) {
+  if (!htmlFiles.length) return { status: 'skipped', reason: 'no html files' };
+  let playwright;
+  try { playwright = await import('playwright'); }
+  catch { return { status: 'skipped', reason: 'playwright not available · install: npm i -D playwright' }; }
+
+  const browser = await playwright.chromium.launch({ headless: true });
+  const ctx_b = await browser.newContext({ viewport: { width: 390, height: 812 }, isMobile: true });
+  const page = await ctx_b.newPage();
+
+  const vetos = [];
+  const warnings = [];
+  const results = [];
+
+  for (const f of htmlFiles) {
+    const fileUrl = 'file://' + path.resolve(f);
+    try {
+      await page.goto(fileUrl, { waitUntil: 'networkidle', timeout: 10000 });
+    } catch (e) {
+      results.push({ page: path.basename(f), error: e.message });
+      continue;
+    }
+
+    // M1.1 · viewport overflow-x at 390px
+    const overflow = await page.evaluate(() => {
+      const docW = document.documentElement.scrollWidth;
+      const bodyW = document.body.scrollWidth;
+      const vp = window.innerWidth;
+      return { doc_scrollWidth: docW, body_scrollWidth: bodyW, viewport_width: vp, overflow_px: Math.max(docW, bodyW) - vp };
+    });
+    if (overflow.overflow_px > 0) {
+      vetos.push({ check: 'M1.1_viewport_overflow_x', page: path.basename(f), overflow_px: overflow.overflow_px, severity: 'VETO' });
+    }
+
+    // M1.2 · sticky CTA visible · scan for fixed/sticky bottom-aligned element with phone-tel or btn CTA-like content
+    const stickyCta = await page.evaluate(() => {
+      const candidates = [...document.querySelectorAll('[class*="sticky"], [class*="mobile-cta"], aside[class*="cta"]')];
+      for (const el of candidates) {
+        const cs = window.getComputedStyle(el);
+        const pos = cs.position;
+        const rect = el.getBoundingClientRect();
+        if ((pos === 'fixed' || pos === 'sticky') && rect.bottom <= window.innerHeight + 10) {
+          // Check it has phone/btn-like child
+          const hasCta = !!el.querySelector('a[href^="tel:"], .btn, [class*="btn-"]');
+          if (hasCta) return { found: true, class: el.className, position: pos, bottom: rect.bottom, has_tel: !!el.querySelector('a[href^="tel:"]') };
+        }
+      }
+      return { found: false };
+    });
+    if (!stickyCta.found) {
+      vetos.push({ check: 'M1.2_sticky_cta_missing', page: path.basename(f), severity: 'VETO', note: 'no fixed/sticky bottom CTA found · mobile Mike persona expects sticky call/quote' });
+    }
+
+    // M1.3 · critical tap targets ≥ 44x44px (codex R28 Q-II-3 · only critical · not all UI)
+    const tapTargetViolations = await page.evaluate(() => {
+      const critical = [...document.querySelectorAll(
+        'a[href^="tel:"], a[href^="mailto:"], .btn-primary, .btn-secondary, .masthead-cta, ' +
+        'header nav a, nav.nav a, button[type="submit"], input[type="submit"], ' +
+        'form input:not([type="hidden"]), form select, form textarea'
+      )];
+      const violations = [];
+      for (const el of critical) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) continue; // hidden · skip
+        if (rect.width < 44 || rect.height < 44) {
+          violations.push({
+            selector: (el.tagName.toLowerCase() + (el.className ? '.' + el.className.split(/\s+/).slice(0, 2).join('.') : '')).slice(0, 60),
+            text: (el.textContent || '').trim().slice(0, 40),
+            w: Math.round(rect.width),
+            h: Math.round(rect.height),
+          });
+        }
+      }
+      return violations;
+    });
+    if (tapTargetViolations.length > 0) {
+      vetos.push({ check: 'M1.3_critical_tap_target', page: path.basename(f), severity: 'VETO', violations: tapTargetViolations.slice(0, 5), count: tapTargetViolations.length });
+    }
+
+    results.push({ page: path.basename(f), overflow_px: overflow.overflow_px, sticky_cta_found: stickyCta.found, tap_target_violations: tapTargetViolations.length });
+  }
+
+  await browser.close();
+
+  return {
+    status: 'wired',
+    vetos,
+    warnings,
+    per_page: results,
+    pass: vetos.length === 0,
+    note: 'SOP-AUDIT-STANDARD-V2 §4 + §9 · 3 mechanical vetos · M1.1 overflow · M1.2 sticky CTA · M1.3 critical tap targets ≥44px',
+    sub_dims_deferred: ['M1.4 hero readability (vision LLM · premium tier)', 'M1.5 above-fold trust+CTA (vision LLM · premium tier)'],
+  };
+}
+
 // ─── T5 · Creative-director (STUB · LLM · ADR §2.5 · premium-only) ──────
 async function runT5CreativeDirector(htmlFiles, ctx) {
   // TODO: adapt /tmp/open-design/skills/creative-director prompt
@@ -812,6 +911,8 @@ async function main() {
   if (runT4d) tiers.T4d = runT4VoiceDeterministic(ctx.htmlFiles, ctx);
   // Content richness deterministic (D2.14 proof variety + D2.11 facts cross-check) · SOP-AUDIT-STANDARD-V2 §9
   if (runT4d) tiers.ContentRichness = runContentRichnessDeterministic(ctx.htmlFiles, ctx);
+  // M1 mobile gate · mechanical vetos · SOP-AUDIT-STANDARD-V2 §4
+  if (runT4d) tiers.M1Mobile = await runM1MobileGate(ctx.htmlFiles, ctx);
   if (runT5) tiers.T5 = await runT5CreativeDirector(ctx.htmlFiles, ctx);
 
   const final = composeFinalScore(tiers, { includePremium: TIER === 'premium' });
@@ -831,6 +932,7 @@ async function main() {
     tier_4: tiers.T4 || null,
     tier_4d_voice: tiers.T4d || null,
     content_richness_deterministic: tiers.ContentRichness || null,
+    mobile_gate: tiers.M1Mobile || null,
     tier_5: tiers.T5 || null,
     composite: final.composite,
     grade: final.grade,
