@@ -18,6 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { enrichEntity } from '../../core/enrichment/index.js';
+import { lookupLicense } from '../../core/enrichment/license-lookup.js';
 
 const REPO = process.cwd();
 const ENTITIES_DIR = path.join(REPO, 'data/leads/entities');
@@ -82,6 +83,25 @@ async function run() {
     try {
       const enriched = await enrichEntity(before);
       fs.writeFileSync(filePath, JSON.stringify(enriched, null, 2) + '\n');
+
+      // License lookup (Phase 1.3 wire-in · non-blocking)
+      // Only run if entity doesn't already have a fresh license result
+      // (skip if looked_up_at is within 30 days to avoid redundant DB queries)
+      try {
+        const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+        const existingLookup = enriched.license?.looked_up_at;
+        const isStale = !existingLookup || (Date.now() - Date.parse(existingLookup) > thirtyDaysMs);
+        if (isStale) {
+          const licResult = await lookupLicense(enriched, { repoRoot: REPO });
+          if (licResult) {
+            enriched.license = licResult;
+            fs.writeFileSync(filePath, JSON.stringify(enriched, null, 2) + '\n');
+          }
+        }
+      } catch (err) {
+        console.warn(`  ⚠ license lookup failed: ${err.message}`);
+      }
+
       const m = enriched.enrichment?._meta || {};
       const dur = Date.now() - start;
       console.log(`✓ ${m.sources_succeeded || 0}/${m.sources_attempted || 0} sources · ${dur}ms`);

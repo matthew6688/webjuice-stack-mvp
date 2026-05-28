@@ -1225,7 +1225,8 @@ export function buildMasterMdDetailed({
   if (enrich && (enrich.abn || enrich.whois || enrich.wayback || enrich.tinyfish_search || enrich.tinyfish_homepage)) {
     sections.push('## 公司注册 · 域名 · 外部 mention 硬数据');
     sections.push('');
-    sections.push(`> 4-source enrichment · 抓取时间 ${(enrich._meta?.enriched_at || '').slice(0, 19) || '?'} · ${enrich._meta?.sources_succeeded || 0}/${enrich._meta?.sources_attempted || 0} 路成功`);
+    const _enrichSourceCount = [enrich.abn, enrich.whois, enrich.wayback, enrich.tinyfish_search, enrich.tinyfish_homepage].filter(Boolean).length + (entity?.license ? 1 : 0);
+    sections.push(`> ${_enrichSourceCount}-source enrichment · 抓取时间 ${(enrich._meta?.enriched_at || '').slice(0, 19) || '?'} · ${enrich._meta?.sources_succeeded || 0}/${enrich._meta?.sources_attempted || 0} 路成功`);
     sections.push('');
 
     // ABR · 公司注册
@@ -1241,6 +1242,28 @@ export function buildMasterMdDetailed({
       sections.push(`- **GST 注册**: ${a.gst_registered ? '是' : '否'} \`[ABR]\``);
       if (a.address_state || a.address_postcode) sections.push(`- **注册地址**: ${[a.address_state, a.address_postcode].filter(Boolean).join(' ')} \`[ABR]\``);
       if (a.trading_names?.length) sections.push(`- **Trading names**: ${a.trading_names.join(' · ')} \`[ABR]\``);
+      sections.push('');
+    }
+
+    // License Register · entity.license (Phase 1.3)
+    const lic = entity?.license;
+    if (lic) {
+      sections.push('### 行业执照 · License Register');
+      sections.push('');
+      if (lic.status === 'active') {
+        sections.push(`- **执照号**: \`${lic.licence_number}\` · ${lic.authority} · ${lic.state} \`[License]\``);
+        if (lic.licensee_name) sections.push(`- **持牌名称**: ${lic.licensee_name} \`[License]\``);
+        if (lic.licence_class) sections.push(`- **执照类别**: ${lic.licence_class} \`[License]\``);
+        if (lic.licence_type) sections.push(`- **执照类型**: ${lic.licence_type} \`[License]\``);
+        sections.push(`- **状态**: ✅ active · 可在网站上展示执照信息 \`[License]\``);
+        if (lic.lookup_tier) sections.push(`- **匹配方式**: ${lic.lookup_tier} \`[License]\``);
+      } else if (lic.status === 'not_found') {
+        sections.push(`- **查询结果**: 未在 ${['VIC-VBA', 'QLD-QBCC', 'NSW-FairTrading'].join(' / ')} 找到匹配记录`);
+        sections.push(`- **说明**: 未找到不代表无执照 — 可能在其他 state 注册 · 或以关联公司名义持牌`);
+        sections.push(`- **网站规则**: 不可在网站上主动声明执照号 \`[License]\``);
+      } else if (lic.status === 'not_looked_up') {
+        sections.push(`- **状态**: 未查询 — 运行 \`npm run pl:license-lookup -- --entity-key <key>\` 补充`);
+      }
       sections.push('');
     }
 
