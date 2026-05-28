@@ -517,11 +517,12 @@ async function main() {
   // Banner fires if (a) fewer than 3 verified reviews OR (b) any inferred field present
   const reviewsIsPlaceholder = realReviews.length < 3 || hasInferredBackfill;
 
-  // Gallery (3 before/after pairs · R-BA-6 draggable slider · stock library)
+  // Gallery (4 before/after pairs · R-BA-6 draggable slider · 2x2 grid balanced · Matthew 2026-05-29)
   const galleryPairs = [
     { idx: 1, before_src: 'assets/stock/gallery-09-cracked-slate-before.jpg', before_alt: 'Cracked slate roof before restoration', after_src: 'assets/stock/gallery-09-restored-slate-after.jpg', after_alt: 'Same slate roof after restoration', caption: `Heritage slate restoration · ${city}` },
     { idx: 2, before_src: 'assets/stock/gallery-10-storm-tarped-before.jpg', before_alt: 'Storm-damaged roof tarped after emergency call-out', after_src: 'assets/stock/gallery-10-storm-repaired-after.jpg', after_alt: 'Same roof fully repaired after storm', caption: `Storm response & full repair · ${city}` },
     { idx: 3, before_src: 'assets/stock/gallery-12-asbestos-before.jpg', before_alt: 'Old roof sheeting before replacement', after_src: 'assets/stock/gallery-12-modern-metal-after.jpg', after_alt: 'New Colorbond metal roof after replacement', caption: `Full Colorbond replacement · ${city}` },
+    { idx: 4, before_src: 'assets/stock/gallery-07-moss-before.jpg', before_alt: 'Moss-covered terracotta tile roof before pressure clean', after_src: 'assets/stock/gallery-07-moss-after.jpg', after_alt: 'Same tile roof after pressure-clean and recoat', caption: `Pressure clean & recoat · ${city}` },
   ];
 
   // Coverage · priority: brief.yaml.suburbs_covered (canonical) > narrative > facts > real_facts
@@ -771,6 +772,8 @@ async function main() {
     'gallery-10-storm-repaired-after.jpg',
     'gallery-12-asbestos-before.jpg',
     'gallery-12-modern-metal-after.jpg',
+    'gallery-07-moss-before.jpg',
+    'gallery-07-moss-after.jpg',
   ];
   for (const f of stockImgs) {
     // Files might live in flat dir OR subdir

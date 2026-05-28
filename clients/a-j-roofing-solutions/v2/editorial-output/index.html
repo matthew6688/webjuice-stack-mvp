@@ -448,6 +448,7 @@
     .review-card__author strong { color: var(--navy); font-weight: 700; }
 
     /* ─── Gallery ──────────────────────────────────────────────── */
+    /* Gallery · R-BA-6 draggable before/after slider · 4 pairs · 2x2 grid */
     .gallery-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
     @media (min-width: 880px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
     .gallery-pair {
@@ -456,18 +457,51 @@
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
     }
-    .gallery-pair__split { display: grid; grid-template-columns: 1fr 1fr; }
-    .gallery-pair__half { position: relative; aspect-ratio: 4 / 3; }
-    .gallery-pair__half img { width: 100%; height: 100%; object-fit: cover; }
+    /* Draggable slider · before image as background · after image clipped by handle position */
+    .gallery-pair__slider {
+      position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+      cursor: ew-resize; user-select: none; touch-action: none;
+    }
+    .gallery-pair__slider img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      user-select: none; -webkit-user-drag: none; pointer-events: none;
+    }
+    .gallery-pair__img--before { z-index: 1; }
+    /* After image clipped by --pos CSS variable (0 = fully hidden · 100 = fully shown) */
+    .gallery-pair__img--after {
+      z-index: 2;
+      clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0);
+    }
+    /* Draggable handle · vertical line + circular pill */
+    .gallery-pair__handle {
+      position: absolute; top: 0; bottom: 0;
+      left: var(--pos, 50%); transform: translateX(-50%);
+      width: 3px; background: var(--paper);
+      z-index: 3; pointer-events: none;
+      box-shadow: 0 0 0 1px rgba(15, 46, 76, 0.18);
+    }
+    .gallery-pair__handle::before {
+      content: "↔"; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--paper); color: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; font-weight: 900;
+      box-shadow: 0 6px 18px rgba(15, 46, 76, 0.32);
+      letter-spacing: -0.04em;
+    }
     .gallery-pair__label {
-      position: absolute; top: 12px; left: 12px;
+      position: absolute; top: 12px;
       padding: 5px 12px;
       background: var(--navy); color: var(--paper);
       border-radius: 999px;
       font-size: 0.72rem; font-weight: 700;
+      z-index: 4; pointer-events: none;
       text-transform: uppercase; letter-spacing: 0.12em;
     }
-    .gallery-pair__label--after { background: var(--amber); color: var(--navy); }
+    .gallery-pair__label--before { left: 12px; }
+    .gallery-pair__label--after { right: 12px; background: var(--amber); color: var(--navy); }
     .gallery-pair__caption {
       padding: 18px 22px;
       color: var(--paper);
@@ -881,45 +915,47 @@
       <div class="gallery-grid">
         
         <article class="gallery-pair">
-          <div class="gallery-pair__split">
-            <div class="gallery-pair__half">
-              <span class="gallery-pair__label">Before</span>
-              <img src="assets/stock/gallery-09-cracked-slate-before.jpg" alt="Cracked slate roof before restoration" loading="lazy">
-            </div>
-            <div class="gallery-pair__half">
-              <span class="gallery-pair__label gallery-pair__label--after">After</span>
-              <img src="assets/stock/gallery-09-restored-slate-after.jpg" alt="Same slate roof after restoration" loading="lazy">
-            </div>
+          <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-09-cracked-slate-before.jpg" alt="Cracked slate roof before restoration" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-09-restored-slate-after.jpg" alt="Same slate roof after restoration" loading="lazy">
+            <span class="gallery-pair__label gallery-pair__label--before">Before</span>
+            <span class="gallery-pair__label gallery-pair__label--after">After</span>
+            <div class="gallery-pair__handle" aria-hidden="true"></div>
           </div>
           <p class="gallery-pair__caption">Heritage slate restoration · Cairns</p>
         </article>
         
         <article class="gallery-pair">
-          <div class="gallery-pair__split">
-            <div class="gallery-pair__half">
-              <span class="gallery-pair__label">Before</span>
-              <img src="assets/stock/gallery-10-storm-tarped-before.jpg" alt="Storm-damaged roof tarped after emergency call-out" loading="lazy">
-            </div>
-            <div class="gallery-pair__half">
-              <span class="gallery-pair__label gallery-pair__label--after">After</span>
-              <img src="assets/stock/gallery-10-storm-repaired-after.jpg" alt="Same roof fully repaired after storm" loading="lazy">
-            </div>
+          <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-10-storm-tarped-before.jpg" alt="Storm-damaged roof tarped after emergency call-out" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-10-storm-repaired-after.jpg" alt="Same roof fully repaired after storm" loading="lazy">
+            <span class="gallery-pair__label gallery-pair__label--before">Before</span>
+            <span class="gallery-pair__label gallery-pair__label--after">After</span>
+            <div class="gallery-pair__handle" aria-hidden="true"></div>
           </div>
           <p class="gallery-pair__caption">Storm response &amp; full repair · Cairns</p>
         </article>
         
         <article class="gallery-pair">
-          <div class="gallery-pair__split">
-            <div class="gallery-pair__half">
-              <span class="gallery-pair__label">Before</span>
-              <img src="assets/stock/gallery-12-asbestos-before.jpg" alt="Old roof sheeting before replacement" loading="lazy">
-            </div>
-            <div class="gallery-pair__half">
-              <span class="gallery-pair__label gallery-pair__label--after">After</span>
-              <img src="assets/stock/gallery-12-modern-metal-after.jpg" alt="New Colorbond metal roof after replacement" loading="lazy">
-            </div>
+          <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-12-asbestos-before.jpg" alt="Old roof sheeting before replacement" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-12-modern-metal-after.jpg" alt="New Colorbond metal roof after replacement" loading="lazy">
+            <span class="gallery-pair__label gallery-pair__label--before">Before</span>
+            <span class="gallery-pair__label gallery-pair__label--after">After</span>
+            <div class="gallery-pair__handle" aria-hidden="true"></div>
           </div>
           <p class="gallery-pair__caption">Full Colorbond replacement · Cairns</p>
+        </article>
+        
+        <article class="gallery-pair">
+          <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-07-moss-before.jpg" alt="Moss-covered terracotta tile roof before pressure clean" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-07-moss-after.jpg" alt="Same tile roof after pressure-clean and recoat" loading="lazy">
+            <span class="gallery-pair__label gallery-pair__label--before">Before</span>
+            <span class="gallery-pair__label gallery-pair__label--after">After</span>
+            <div class="gallery-pair__handle" aria-hidden="true"></div>
+          </div>
+          <p class="gallery-pair__caption">Pressure clean &amp; recoat · Cairns</p>
         </article>
         
       </div>
@@ -1058,6 +1094,39 @@
       <span>Call A &amp; J Roofing Solutions · 07 4035 6187</span>
     </a>
   </div>
+
+  <!-- ═══════════════ R-BA-6 · Before/After draggable slider · pointer+keyboard ═══════════════ -->
+  <script>
+  (function () {
+    const sliders = document.querySelectorAll('[data-ba-slider]');
+    sliders.forEach((el) => {
+      let dragging = false;
+      const setPos = (clientX) => {
+        const rect = el.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+        el.style.setProperty('--pos', pct + '%');
+      };
+      el.addEventListener('pointerdown', (e) => {
+        dragging = true; el.setPointerCapture(e.pointerId); setPos(e.clientX);
+      });
+      el.addEventListener('pointermove', (e) => { if (dragging) setPos(e.clientX); });
+      el.addEventListener('pointerup', (e) => { dragging = false; try { el.releasePointerCapture(e.pointerId); } catch (_) {} });
+      el.addEventListener('pointercancel', () => { dragging = false; });
+      // Keyboard a11y · ←/→ steps 5% · Home/End jump to ends
+      el.addEventListener('keydown', (e) => {
+        const cur = parseFloat(el.style.getPropertyValue('--pos')) || 50;
+        let next = cur;
+        if (e.key === 'ArrowLeft') next = Math.max(0, cur - 5);
+        else if (e.key === 'ArrowRight') next = Math.min(100, cur + 5);
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = 100;
+        else return;
+        e.preventDefault();
+        el.style.setProperty('--pos', next + '%');
+      });
+    });
+  })();
+  </script>
 
 </body>
 </html>
