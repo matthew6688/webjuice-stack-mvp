@@ -312,8 +312,68 @@ function runT2BrandContract(htmlFiles, brandSpec, ctx) {
   }
   dims['D2.3_type_rule_compliance'] = { score: d23, weight: 0.15, note: d23 == null ? 'brand-spec has no primary_font · skipped' : null };
 
-  // D2.4 logo variant per surface — TODO (heuristic: look for logo-light on dark sections etc · skeleton: stub)
-  dims['D2.4_logo_variant_per_surface'] = { score: null, weight: 0.15, todo: 'detect surface lightness around each <img logos/*>' };
+  // D2.4 / D2.BC7 logo variant per surface · IMPLEMENTED (was stub line 315 · SOP-AUDIT-STANDARD-V2 §9)
+  // Heuristic: parse each <img src="...logo-*.svg"> · find nearest ancestor section/header/footer ·
+  // determine bg lightness (CSS hex extraction · or class names like .footer / .masthead) ·
+  // light bg requires `logo-dark`/`logo-horizontal` · dark bg requires `logo-light`/`logo-mono-light`
+  // mono variants OK on either surface
+  const logoViolations = [];
+  let logoChecks = 0;
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    let $; try { $ = cheerioLoad(html); } catch { continue; }
+    const logoImgs = $('img').filter((_, el) => {
+      const src = $(el).attr('src') || '';
+      return /\blogo[-/](?:dark|light|horizontal|mono-light|mono-dark|mark|wordmark)\.svg\b/i.test(src);
+    });
+    logoImgs.each((_, el) => {
+      logoChecks++;
+      const $el = $(el);
+      const src = $el.attr('src') || '';
+      const variant = (src.match(/logo[-/]([a-z-]+)\.svg/i) || [])[1] || '';
+      // Walk ancestors to find surface context
+      const parents = $el.parents().toArray();
+      let surface = 'unknown';
+      for (const p of parents) {
+        const $p = $(p);
+        const cls = ($p.attr('class') || '').toLowerCase();
+        const tag = (p.tagName || '').toLowerCase();
+        // Dark surface signals (footer · colophon · dark masthead · brand-primary bg)
+        if (tag === 'footer' || /\b(?:footer|colophon|dark|navy|brand-primary|surface-dark)\b/.test(cls)) {
+          surface = 'dark'; break;
+        }
+        // Light surface signals (masthead · header on white · light section)
+        if (tag === 'header' || /\b(?:masthead|header|hero|light|surface(?:-muted|-light)?)\b/.test(cls)) {
+          surface = 'light'; break;
+        }
+      }
+      // Validate variant matches surface
+      const isLightVariant = /^(?:light|mono-light)$/i.test(variant);
+      const isDarkVariant = /^(?:dark|horizontal|wordmark|mono-dark|mark)$/i.test(variant);
+      let valid = true, reason = null;
+      if (surface === 'dark' && isDarkVariant) {
+        valid = false;
+        reason = `logo-${variant} on DARK surface (footer/colophon · should be logo-light or logo-mono-light)`;
+      } else if (surface === 'light' && isLightVariant) {
+        valid = false;
+        reason = `logo-${variant} on LIGHT surface (masthead/header · should be logo-dark or logo-horizontal)`;
+      }
+      // Mono variants are surface-agnostic · pass either
+      if (!valid) {
+        logoViolations.push({ page: path.basename(f), src, variant, surface, reason });
+      }
+    });
+  }
+  const d24Score = logoChecks > 0
+    ? Math.round(100 * (logoChecks - logoViolations.length) / logoChecks)
+    : null;
+  dims['D2.4_logo_variant_per_surface'] = {
+    score: d24Score,
+    weight: 0.15,
+    logo_checks: logoChecks,
+    violations: logoViolations.slice(0, 5),
+    note: logoChecks === 0 ? 'no logo SVG references found in HTML' : null,
+  };
 
   // D2.5 brand palette honored
   let d25 = null;
@@ -327,6 +387,47 @@ function runT2BrandContract(htmlFiles, brandSpec, ctx) {
   } else {
     dims['D2.5_brand_palette_honored'] = { score: null, weight: 0.15, note: 'no brand-spec · skipped' };
   }
+
+  // D2.BC6 token coverage depth · split var() coverage by token category
+  // SOP-AUDIT-STANDARD-V2 §9 · codex R28 Q-II-5 · 5-category coverage (color/radius/shadow/space/motion)
+  // Each category: count var(--<category>-*) hits vs count of related CSS properties
+  // Score = mean of 5 category coverages · cap each at 100
+  const cssBlob = htmlFiles.map(f => (readHtml(f).match(/<style[\s\S]*?<\/style>/g) || []).join('\n')).join('\n');
+  // Strip fallback inside var(--*, fallback) — fallbacks are good practice, don't count or skew
+  const cssClean = cssBlob.replace(/var\(\s*(--[a-z0-9_-]+)\s*,\s*[^)]+\)/gi, 'var($1)');
+
+  function categoryCoverage(varPattern, propPatterns) {
+    const varHits = (cssClean.match(new RegExp(`var\\(\\s*${varPattern}`, 'gi')) || []).length;
+    let propCount = 0;
+    for (const p of propPatterns) {
+      propCount += (cssClean.match(new RegExp(`(?:^|[\\s;{])${p}\\s*:`, 'gi')) || []).length;
+    }
+    if (propCount === 0) return { score: null, var_hits: varHits, prop_count: 0, note: 'no properties to measure' };
+    const pct = Math.round(100 * varHits / propCount);
+    return { score: Math.min(100, pct), coverage_pct: pct, var_hits: varHits, prop_count: propCount };
+  }
+
+  const tokenCats = {
+    color:  categoryCoverage('--(?:brand|surface|text|border|accent|fg|bg|meta|muted|color)[a-z0-9_-]*', ['color', 'background(?:-color)?', 'border-color', 'fill', 'stroke', 'outline-color']),
+    radius: categoryCoverage('--(?:radius|corner)[a-z0-9_-]*', ['border-radius']),
+    shadow: categoryCoverage('--(?:shadow|elev|elevation)[a-z0-9_-]*', ['box-shadow', 'text-shadow', 'filter']),
+    space:  categoryCoverage('--(?:space|spacing|gap|gutter|size|s[0-9]+)[a-z0-9_-]*', ['padding(?:-(?:top|right|bottom|left|inline|block|inline-start|inline-end|block-start|block-end))?', 'margin(?:-(?:top|right|bottom|left|inline|block))?', 'gap', 'row-gap', 'column-gap']),
+    motion: categoryCoverage('--(?:motion|duration|easing|transition|ease|animate)[a-z0-9_-]*', ['transition(?:-duration|-property|-timing-function)?', 'animation(?:-duration|-timing-function)?']),
+  };
+
+  // Compute aggregate score · mean of categories with measurable props
+  const scoredCats = Object.values(tokenCats).filter(c => c.score != null);
+  const bc6Score = scoredCats.length > 0
+    ? Math.round(scoredCats.reduce((a, c) => a + c.score, 0) / scoredCats.length)
+    : null;
+
+  dims['D2.BC6_token_coverage_depth'] = {
+    score: bc6Score,
+    weight: 0.10,
+    categories: tokenCats,
+    note: 'SOP-AUDIT-STANDARD-V2 §9 · split var() coverage by token category · 5-category depth',
+    rules_checked: ['color', 'radius', 'shadow', 'space', 'motion'],
+  };
 
   // Weighted composite (only dims with score != null)
   let score = 0, totalWeight = 0;
@@ -438,6 +539,118 @@ function runT4VoiceDeterministic(htmlFiles, ctx) {
     status: 'wired',
     voice_skill_version: voiceJson.version,
   };
+}
+
+// ─── Content Richness Deterministic (SOP-AUDIT-STANDARD-V2 §9) ──────────
+// D2.14 proof variety · count distinct proof block types · ≥3 of 6 = pass
+// D2.11 facts cross-check · HTML extraction vs single-page-brief.yaml exact match
+// Both fast-tier · 0 LLM cost
+function runContentRichnessDeterministic(htmlFiles, ctx) {
+  const dims = {};
+
+  // D2.14 · proof variety · cheerio selector-based count by type
+  // 6 types: reviews · stats · case_study · expert_quote · certifications · photos
+  const proofTypeSelectors = {
+    reviews: ['blockquote', '.review', '[class*="review"]', '[class*="testimonial"]', '[data-type="review"]'],
+    stats: ['.stat', '[class*="stat-"]', '.strap-cell', '[class*="metric"]', '[class*="counter"]'],
+    case_study: ['.case-study', '[class*="case-"]', '.project', '[class*="project-"]', 'article.story'],
+    expert_quote: ['[class*="quote"]:not(.pull-quote)', 'cite', 'figcaption'],
+    certifications: ['.chip', '[class*="chip"]', '[class*="badge"]', '[class*="certif"]', '[class*="licence"]', '[class*="license"]'],
+    photos: ['figure img', 'img[alt*="photo" i]', '.gallery img', '[class*="hero"] img', '.about-figure img', '.story-img img'],
+  };
+
+  const proofPerPage = {};
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    let $; try { $ = cheerioLoad(html); } catch { continue; }
+    // Strip nav/footer first · proof variety is BODY signal
+    $('nav, header.masthead, footer, .colophon, script, style').remove();
+    const pageBase = path.basename(f);
+    const counts = {};
+    for (const [type, sels] of Object.entries(proofTypeSelectors)) {
+      let n = 0;
+      for (const sel of sels) {
+        try { n += $(sel).length; } catch { /* invalid selector · skip */ }
+      }
+      counts[type] = n;
+    }
+    proofPerPage[pageBase] = counts;
+  }
+
+  // Aggregate · count types present (≥1 occurrence on any page) · 0-6 score
+  const typesPresent = {};
+  for (const t of Object.keys(proofTypeSelectors)) {
+    typesPresent[t] = Object.values(proofPerPage).some(p => (p[t] || 0) >= 1);
+  }
+  const presentCount = Object.values(typesPresent).filter(Boolean).length;
+  // Scoring: 0 types→0 · 3 types→60 · 5 types→90 · 6 types→100
+  const d214Score = Math.min(100, Math.round(presentCount * (100 / 6)));
+  dims['D2.14_proof_variety'] = {
+    score: d214Score,
+    types_present: typesPresent,
+    types_count: presentCount,
+    per_page: proofPerPage,
+    threshold_pass: presentCount >= 3,
+    note: 'SOP-AUDIT-STANDARD-V2 §9 · 6 proof types · ≥3 required',
+  };
+
+  // D2.11 · facts cross-check · HTML-extracted vs brief.yaml strict match
+  let d211 = null;
+  try {
+    const briefPath = path.resolve(REPO, `clients/${ctx.slug}/v2/single-page-brief.yaml`);
+    if (fs.existsSync(briefPath)) {
+      // Use simple YAML extraction (regex · enough for top-level scalar fields)
+      const briefText = fs.readFileSync(briefPath, 'utf8');
+      const briefFacts = {
+        business_name: (briefText.match(/^business_name:\s*"?([^"\n]+)"?/m) || [])[1]?.trim(),
+        phone: (briefText.match(/^phone:\s*"?([^"\n]+)"?/m) || [])[1]?.trim(),
+        email: (briefText.match(/^email:\s*"?([^"\n]+)"?/m) || [])[1]?.trim(),
+        license_number: (briefText.match(/^\s+number:\s*"?([^"\n]+)"?/m) || [])[1]?.trim(),
+        license_authority: (briefText.match(/^\s+authority:\s*"?([^"\n]+)"?/m) || [])[1]?.trim(),
+        abn: (briefText.match(/^abn:\s*"?([^"\n]+)"?/m) || [])[1]?.trim(),
+      };
+
+      // Extract from rendered HTML
+      const htmlBlob = htmlFiles.map(f => readHtml(f)).join('\n');
+      // Strip script/style
+      const htmlText = htmlBlob.replace(/<(script|style|noscript)[\s\S]*?<\/\1>/gi, ' ');
+
+      const checks = [];
+      function checkFact(label, briefValue, htmlContains) {
+        if (!briefValue) { checks.push({ field: label, status: 'NA · not in brief' }); return; }
+        const found = htmlContains;
+        checks.push({ field: label, brief: briefValue, found, status: found ? 'MATCH' : 'MISSING' });
+      }
+      checkFact('business_name', briefFacts.business_name, briefFacts.business_name && htmlText.includes(briefFacts.business_name));
+      // Phone · normalize digits both sides
+      if (briefFacts.phone) {
+        const phoneDigits = briefFacts.phone.replace(/\D/g, '');
+        const htmlPhoneDigits = (htmlText.match(/\d{8,}/g) || []).join('');
+        checks.push({ field: 'phone', brief: briefFacts.phone, status: htmlPhoneDigits.includes(phoneDigits) ? 'MATCH' : 'MISSING' });
+      }
+      checkFact('email', briefFacts.email, briefFacts.email && htmlText.includes(briefFacts.email));
+      checkFact('license_number', briefFacts.license_number, briefFacts.license_number && htmlText.includes(briefFacts.license_number));
+      checkFact('license_authority', briefFacts.license_authority, briefFacts.license_authority && htmlText.includes(briefFacts.license_authority));
+      checkFact('abn', briefFacts.abn, briefFacts.abn && htmlText.includes(briefFacts.abn));
+
+      const checkedCount = checks.filter(c => c.status !== 'NA · not in brief').length;
+      const matchCount = checks.filter(c => c.status === 'MATCH').length;
+      d211 = checkedCount > 0 ? Math.round(100 * matchCount / checkedCount) : null;
+      dims['D2.11_facts_cross_check'] = {
+        score: d211,
+        checks,
+        matched: matchCount,
+        checked: checkedCount,
+        note: 'SOP-AUDIT-STANDARD-V2 §9 · brief.yaml vs rendered HTML exact match',
+      };
+    } else {
+      dims['D2.11_facts_cross_check'] = { score: null, note: `brief.yaml missing at ${briefPath}` };
+    }
+  } catch (e) {
+    dims['D2.11_facts_cross_check'] = { score: null, note: `error: ${e.message}` };
+  }
+
+  return { dims, status: 'wired' };
 }
 
 // ─── T5 · Creative-director (STUB · LLM · ADR §2.5 · premium-only) ──────
@@ -597,6 +810,8 @@ async function main() {
   if (runT3) tiers.T3 = await runT3VisionAudit(ctx.htmlFiles, ctx);
   if (runT4) tiers.T4 = await runT4DesignerReview(ctx.htmlFiles, ctx);
   if (runT4d) tiers.T4d = runT4VoiceDeterministic(ctx.htmlFiles, ctx);
+  // Content richness deterministic (D2.14 proof variety + D2.11 facts cross-check) · SOP-AUDIT-STANDARD-V2 §9
+  if (runT4d) tiers.ContentRichness = runContentRichnessDeterministic(ctx.htmlFiles, ctx);
   if (runT5) tiers.T5 = await runT5CreativeDirector(ctx.htmlFiles, ctx);
 
   const final = composeFinalScore(tiers, { includePremium: TIER === 'premium' });
@@ -615,6 +830,7 @@ async function main() {
     tier_3: tiers.T3 || null,
     tier_4: tiers.T4 || null,
     tier_4d_voice: tiers.T4d || null,
+    content_richness_deterministic: tiers.ContentRichness || null,
     tier_5: tiers.T5 || null,
     composite: final.composite,
     grade: final.grade,
