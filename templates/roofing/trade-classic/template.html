@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="{{brand.primary_hex}}">
+  <title>{{seo.title}}</title>
+  <meta name="description" content="{{seo.meta_description}}">
+  <link rel="canonical" href="{{seo.canonical_url}}">
+
+  <meta property="og:title" content="{{seo.og_title}}">
+  <meta property="og:description" content="{{seo.og_description}}">
+  <meta property="og:image" content="assets/stock/hero/hero-golden-aerial-restored.png">
+  <meta property="og:url" content="{{seo.canonical_url}}">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="{{asset.favicon_path}}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {{{jsonld_localbusiness}}}
+  </script>
+
+  <style>
+  /* === CLIENT BRAND TOKENS (composer-injected · D2.5 brand palette audit reads these hex values from inside <style>) === */
+  {{{brand_tokens_css_inline}}}
+  </style>
+
+  <style>
+    :root {
+      --theme-color: var(--brand-primary);
+      --navy: var(--brand-primary);
+      --navy-dark: #091F36;
+      --amber: var(--brand-accent);
+      --amber-dark: #E89D0E;
+      --paper: var(--brand-paper, #FAFAF7);
+      --slate: #5A6B7A;
+      --slate-light: #94A3AE;
+      --border: #E8EAEC;
+      --shadow: 0 2px 8px rgba(15, 46, 76, 0.08);
+      --shadow-lg: 0 16px 48px rgba(15, 46, 76, 0.15);
+      --container: 1200px;
+      --gutter: clamp(20px, 5vw, 48px);
+      --radius: 8px;
+      --radius-lg: 16px;
+      --font-display: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; padding: 0;
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--navy);
+      background: var(--paper);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 72px;
+    }
+    @media (min-width: 720px) { body { padding-bottom: 0; } }
+
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: var(--navy); text-decoration: none; transition: color 0.15s; }
+    a:hover { color: var(--amber-dark); }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.5em;
+      text-wrap: balance;
+    }
+    p { margin: 0 0 1em; text-wrap: pretty; }
+
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
+
+    /* ─── Header ───────────────────────────────────────────────── */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(250, 250, 247, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .site-header__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; gap: 16px;
+    }
+    .site-header__brand {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.15rem;
+      color: var(--navy); letter-spacing: -0.02em;
+    }
+    .site-header__brand-mark {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--navy); color: var(--amber);
+      display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 800; font-size: 1.05rem;
+    }
+    .site-nav { display: none; gap: 28px; }
+    @media (min-width: 980px) { .site-nav { display: flex; } }
+    .site-nav a { font-weight: 500; color: var(--slate); font-size: 0.95rem; }
+    .site-nav a:hover { color: var(--navy); }
+    .site-header__cta { display: flex; align-items: center; gap: 14px; }
+    .site-header__phone {
+      display: none; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-weight: 700; font-size: 0.95rem;
+    }
+    @media (min-width: 720px) { .site-header__phone { display: inline-flex; } }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: var(--radius);
+      font-family: var(--font-body); font-weight: 600;
+      font-size: 0.95rem; letter-spacing: 0.01em;
+      cursor: pointer; border: none; text-decoration: none; white-space: nowrap;
+      transition: transform 0.15s, background 0.15s, color 0.15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn--primary { background: var(--amber); color: var(--navy); }
+    .btn--primary:hover { background: var(--amber-dark); color: var(--navy); }
+    .btn--ghost { background: transparent; color: var(--navy); border: 2px solid var(--navy); }
+    .btn--ghost:hover { background: var(--navy); color: var(--paper); }
+    .btn--large { padding: 16px 30px; font-size: 1rem; }
+
+    /* ─── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 82vh;
+      display: grid; align-items: center;
+      padding: 80px 0 100px;
+      overflow: hidden; isolation: isolate;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; z-index: -2;
+      background: url('assets/stock/hero/hero-golden-aerial-restored.png') center/cover no-repeat;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(125deg, rgba(15, 46, 76, 0.92) 0%, rgba(15, 46, 76, 0.68) 50%, rgba(15, 46, 76, 0.35) 100%);
+    }
+    .hero__grid {
+      display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center;
+    }
+    @media (min-width: 980px) { .hero__grid { grid-template-columns: 1.4fr 1fr; gap: 60px; } }
+    .hero__content { color: var(--paper); }
+    .hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 7px 16px;
+      background: rgba(255, 182, 39, 0.15);
+      border: 1px solid rgba(255, 182, 39, 0.45);
+      border-radius: 999px;
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--amber);
+      margin-bottom: 24px;
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .hero__headline {
+      color: var(--paper);
+      font-size: clamp(2.5rem, 6vw, 4.4rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      margin-bottom: 20px;
+      line-height: 1.05;
+    }
+    .hero__headline em { color: var(--amber); font-style: normal; }
+    .hero__subhead {
+      font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+      color: var(--paper);
+      max-width: 600px;
+      margin-bottom: 32px;
+      line-height: 1.5;
+      text-shadow: 0 1px 3px rgba(15, 46, 76, 0.5);
+    }
+    .hero__headline { text-shadow: 0 2px 6px rgba(15, 46, 76, 0.4); }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .hero__actions .btn--ghost { color: var(--paper); border-color: rgba(250, 250, 247, 0.5); }
+    .hero__actions .btn--ghost:hover { background: var(--paper); color: var(--navy); border-color: var(--paper); }
+    .hero__phone-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-mono);
+      color: var(--paper); font-weight: 700; font-size: 1.1rem;
+      padding: 14px 24px;
+      border: 2px solid rgba(250, 250, 247, 0.4);
+      border-radius: var(--radius);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .hero__phone-link:hover {
+      background: var(--paper); color: var(--navy);
+      border-color: var(--paper);
+    }
+    .hero__phone-link .icon { width: 20px; height: 20px; }
+
+    /* Quote card */
+    .quote-card {
+      background: var(--paper);
+      padding: 32px 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      color: var(--navy);
+    }
+    .quote-card__eyebrow {
+      display: inline-block;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--amber-dark); margin-bottom: 8px;
+    }
+    .quote-card h3 { font-size: 1.45rem; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .quote-card__sub { color: var(--slate); font-size: 0.95rem; margin: 0 0 22px; line-height: 1.45; }
+    .quote-card__form { display: grid; gap: 12px; }
+    .quote-card__form input, .quote-card__form select {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--border); border-radius: var(--radius);
+      font-family: var(--font-body); font-size: 0.98rem;
+      color: var(--navy); background: var(--paper);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .quote-card__form input:focus, .quote-card__form select:focus {
+      outline: none; border-color: var(--amber);
+      box-shadow: 0 0 0 4px rgba(255, 182, 39, 0.15);
+    }
+    .quote-card__form button { margin-top: 4px; padding: 14px; font-size: 1rem; }
+    .quote-card__trust {
+      margin-top: 14px;
+      font-size: 0.83rem;
+      color: var(--slate);
+      text-align: center;
+    }
+
+    /* ─── Trust bar ────────────────────────────────────────────── */
+    .trust-bar { background: var(--navy); color: var(--paper); padding: 32px 0; }
+    .trust-bar__inner {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+    }
+    @media (min-width: 780px) { .trust-bar__inner { grid-template-columns: repeat(4, 1fr); } }
+    .trust-chip {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 6px;
+    }
+    .trust-chip__value {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
+      font-weight: 800; color: var(--amber);
+      line-height: 1; letter-spacing: -0.02em;
+    }
+    .trust-chip__label { font-size: 0.85rem; color: rgba(250, 250, 247, 0.75); font-weight: 500; }
+
+    /* ─── Section base ─────────────────────────────────────────── */
+    section { padding: 88px 0; }
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--amber-dark);
+      margin-bottom: 14px;
+    }
+    .section-heading {
+      font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .section-lede {
+      max-width: 700px;
+      color: var(--slate);
+      font-size: clamp(1.05rem, 1.4vw, 1.15rem);
+      margin-bottom: 56px;
+      line-height: 1.55;
+    }
+
+    /* ─── Services ─────────────────────────────────────────────── */
+    .services-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 720px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1080px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+    .service-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--amber);
+    }
+    .service-card__media { aspect-ratio: 4 / 3; overflow: hidden; background: var(--border); }
+    .service-card__media img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .service-card:hover .service-card__media img { transform: scale(1.05); }
+    .service-card__body {
+      padding: 26px 26px 30px;
+      flex: 1; display: flex; flex-direction: column;
+    }
+    .service-card__title { font-size: 1.25rem; margin-bottom: 10px; letter-spacing: -0.02em; }
+    .service-card__desc { color: var(--slate); font-size: 0.95rem; line-height: 1.55; flex: 1; }
+    .service-card__link {
+      margin-top: 18px;
+      font-weight: 600; color: var(--amber-dark);
+      font-size: 0.92rem; display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    /* ─── About + Process ──────────────────────────────────────── */
+    .about { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .about__grid {
+      display: grid; grid-template-columns: 1fr; gap: 48px; align-items: start;
+    }
+    @media (min-width: 880px) { .about__grid { grid-template-columns: 1.1fr 1fr; gap: 72px; } }
+    .about__media { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4 / 3; box-shadow: var(--shadow); }
+    .about__media img { width: 100%; height: 100%; object-fit: cover; }
+    .about__chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .about-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 16px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.9rem; font-weight: 500;
+    }
+    .about-chip__dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--amber);
+    }
+    .process { background: var(--paper); border-bottom: 1px solid var(--border); }
+    .process-list { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 48px; }
+    @media (min-width: 720px) { .process-list { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1080px) { .process-list { grid-template-columns: repeat(6, 1fr); } }
+    .process-step {
+      position: relative;
+      padding: 28px 24px 28px 0;
+      border-right: 1px solid var(--border);
+    }
+    .process-step:last-child { border-right: none; }
+    @media (max-width: 1079px) {
+      .process-step { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 0; }
+      .process-step:last-child { border-bottom: none; }
+    }
+    .process-step__num {
+      font-family: var(--font-display);
+      font-size: 3.6rem; font-weight: 800;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 14px;
+      letter-spacing: -0.04em;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .process-step__num::after {
+      content: '';
+      flex: 1; height: 2px;
+      background: var(--amber);
+      opacity: 0.25;
+    }
+    .process-step__title { font-size: 1.1rem; margin: 0 0 10px; letter-spacing: -0.01em; }
+    .process-step__desc { color: var(--slate); font-size: 0.92rem; line-height: 1.55; margin: 0; }
+
+    /* ─── Reviews ──────────────────────────────────────────────── */
+    .reviews { background: white; border-bottom: 1px solid var(--border); }
+    .reviews-disclaimer {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      font-size: 0.92rem;
+      color: var(--slate);
+    }
+    .reviews-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 720px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
+    .review-card {
+      background: var(--paper);
+      padding: 30px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+    .review-card__stars { color: var(--amber); font-size: 1.15rem; letter-spacing: 3px; margin-bottom: 16px; }
+    .review-card__quote {
+      font-size: 1.02rem; line-height: 1.55;
+      color: var(--navy);
+      margin: 0 0 20px;
+      flex: 1;
+      font-style: italic;
+    }
+    .review-card__quote::before { content: '\201C'; }
+    .review-card__quote::after { content: '\201D'; }
+    .review-card__author { font-size: 0.9rem; color: var(--slate); }
+    .review-card__author strong { color: var(--navy); font-weight: 700; }
+
+    /* ─── Gallery ──────────────────────────────────────────────── */
+    .gallery-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
+    @media (min-width: 880px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    .gallery-pair {
+      border-radius: var(--radius-lg); overflow: hidden;
+      background: var(--navy);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .gallery-pair__split { display: grid; grid-template-columns: 1fr 1fr; }
+    .gallery-pair__half { position: relative; aspect-ratio: 4 / 3; }
+    .gallery-pair__half img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-pair__label {
+      position: absolute; top: 12px; left: 12px;
+      padding: 5px 12px;
+      background: var(--navy); color: var(--paper);
+      border-radius: 999px;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .gallery-pair__label--after { background: var(--amber); color: var(--navy); }
+    .gallery-pair__caption {
+      padding: 18px 22px;
+      color: var(--paper);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* ─── Service area ─────────────────────────────────────────── */
+    .service-area { background: var(--navy); color: var(--paper); }
+    .service-area .section-eyebrow { color: var(--amber); }
+    .service-area .section-heading { color: var(--paper); }
+    .service-area .section-lede { color: rgba(250, 250, 247, 0.78); }
+    .service-area__grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: start; }
+    @media (min-width: 880px) { .service-area__grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
+    .suburb-list {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .suburb-pill {
+      display: inline-flex; padding: 9px 16px;
+      background: rgba(250, 250, 247, 0.06);
+      border: 1px solid rgba(250, 250, 247, 0.18);
+      border-radius: 999px;
+      font-size: 0.9rem; color: var(--paper); font-weight: 500;
+    }
+    .suburb-pill:hover { background: var(--amber); color: var(--navy); border-color: var(--amber); cursor: default; }
+    .service-area__map {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(250, 250, 247, 0.18);
+    }
+    .service-area__map iframe { width: 100%; height: 100%; border: 0; }
+
+    /* ─── Contact ──────────────────────────────────────────────── */
+    .contact { background: white; }
+    .contact__grid { display: grid; grid-template-columns: 1fr; gap: 48px; }
+    @media (min-width: 880px) { .contact__grid { grid-template-columns: 1.1fr 1fr; gap: 72px; } }
+    .contact-info { display: grid; gap: 4px; }
+    .contact-info__row {
+      display: flex; gap: 18px; padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-info__row:last-child { border-bottom: none; }
+    .contact-info__icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--navy); color: var(--amber);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+      font-weight: 700; font-size: 1.15rem;
+    }
+    .contact-info__label {
+      font-size: 0.78rem; color: var(--slate);
+      text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    }
+    .contact-info__value {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700; color: var(--navy);
+      margin-top: 4px;
+      letter-spacing: -0.01em;
+    }
+    /* M1.3 tap-target: anchor variant of contact value must be ≥44px tall (codex Q-SS-6) */
+    a.contact-info__value { display: inline-block; min-height: 44px; padding-block: 10px; }
+    .contact-info__sub { font-size: 0.88rem; color: var(--slate); margin-top: 2px; }
+
+    /* ─── Footer ───────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--navy-dark);
+      color: rgba(250, 250, 247, 0.72);
+      padding: 64px 0 28px;
+    }
+    .site-footer__grid {
+      display: grid; grid-template-columns: 1fr; gap: 40px;
+      margin-bottom: 40px;
+    }
+    @media (min-width: 720px) { .site-footer__grid { grid-template-columns: 1.5fr 1fr 1fr; gap: 56px; } }
+    .site-footer h4 {
+      color: var(--paper); font-size: 1rem;
+      margin-bottom: 18px;
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+    .site-footer__brand {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 1.3rem; color: var(--paper);
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .site-footer p { font-size: 0.93rem; line-height: 1.6; margin: 0 0 0.6em; }
+    .site-footer a { color: rgba(250, 250, 247, 0.72); }
+    .site-footer a:hover { color: var(--amber); }
+    /* M1.3 tap-target · footer contact anchors need ≥44px (codex Q-SS-6) */
+    .site-footer p a[href^="tel:"],
+    .site-footer p a[href^="mailto:"] { display: inline-block; min-height: 44px; padding-block: 10px; }
+    .site-footer__list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 0.93rem; }
+    .site-footer__legal {
+      padding-top: 28px;
+      border-top: 1px solid rgba(250, 250, 247, 0.08);
+      font-size: 0.85rem; text-align: center;
+      color: rgba(250, 250, 247, 0.5);
+    }
+
+    /* ─── Sticky mobile phone CTA ──────────────────────────────── */
+    .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; }
+    .sticky-cta__link {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 56px; padding: 12px 16px; text-decoration: none;
+      background: var(--amber); color: var(--navy);
+      font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+    }
+    .sticky-cta__icon { font-size: 1.15rem; }
+    .sticky-cta { box-shadow: 0 -4px 16px rgba(15, 46, 76, 0.18); }
+    @media (min-width: 720px) { .sticky-cta { display: none; } }
+
+    /* ─── Icons (inline SVG sized) ─────────────────────────────── */
+    .icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ─── Accessibility · skip-to-content ──────────────────────── */
+    .skip-link {
+      position: absolute;
+      left: -9999px; top: 0;
+      padding: 12px 20px;
+      background: var(--navy); color: var(--amber);
+      font-weight: 700; z-index: 100;
+      border-radius: 0 0 var(--radius) 0;
+      text-decoration: none;
+    }
+    .skip-link:focus { left: 0; outline: 3px solid var(--amber); }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="#" class="site-header__brand" aria-label="{{client.business_name}} home">
+        <span class="site-header__brand-mark">{{client.short_name}}</span>
+        <span>{{client.business_name}}</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#gallery">Work</a>
+        <a href="#area">Service Area</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="site-header__cta">
+        <a href="tel:{{client.phone_tel}}" class="site-header__phone">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+          {{client.phone_display}}
+        </a>
+        <a href="#contact" class="btn btn--primary">Free Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <main id="main">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__grid">
+        <div class="hero__content">
+          <span class="hero__eyebrow">
+            <span style="width:6px;height:6px;border-radius:50%;background:#FFB627;display:inline-block;"></span>
+            {{hero.eyebrow_location}}
+          </span>
+          <h1 class="hero__headline">{{{hero.headline_html}}}</h1>
+          <p class="hero__subhead">{{hero.subhead}}</p>
+          <div class="hero__actions">
+            <a href="#contact" class="btn btn--primary btn--large">
+              Get Free On-Site Quote
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="tel:{{client.phone_tel}}" class="hero__phone-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+              Or call {{client.phone_display}}
+            </a>
+          </div>
+        </div>
+        <aside class="quote-card">
+          <span class="quote-card__eyebrow">Free quote</span>
+          <h3>Get a same-day response.</h3>
+          <p class="quote-card__sub">Drop your name + email and we'll respond within 2 hours during business hours. Phone optional but speeds things up.</p>
+          <form class="quote-card__form" action="#" method="post" onsubmit="event.preventDefault(); alert('Demo · form would submit');">
+            <input type="text" name="name" placeholder="Your name *" required aria-required="true">
+            <input type="email" name="email" placeholder="Email address *" required aria-required="true">
+            <input type="tel" name="phone" placeholder="Mobile number (optional)">
+            <select name="service">
+              <option value="">What do you need? (optional)</option>
+              <option value="replacement">Roof Replacement</option>
+              <option value="restoration">Roof Restoration</option>
+              <option value="repair">Roof Repair</option>
+              <option value="gutters">Gutter / Pipe</option>
+              <option value="storm">Storm Damage</option>
+              <option value="other">Other</option>
+            </select>
+            <button type="submit" class="btn btn--primary">Request Free Quote</button>
+          </form>
+          <p class="quote-card__trust">No obligation · Free on-site quote · ABN on every invoice</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ TRUST BAR ═══════════════ -->
+  <section class="trust-bar" style="padding: 36px 0;">
+    <div class="container">
+      <div class="trust-bar__inner">
+        {{#trust_bar.chips}}
+        <div class="trust-chip">
+          <span class="trust-chip__value">{{value}}</span>
+          <span class="trust-chip__label">{{label}}</span>
+        </div>
+        {{/trust_bar.chips}}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SERVICES ═══════════════ -->
+  <section id="services">
+    <div class="container">
+      <span class="section-eyebrow">{{services.eyebrow}}</span>
+      <h2 class="section-heading">{{{services.headline}}}</h2>
+      <p class="section-lede">{{services.subhead}}</p>
+      <div class="services-grid">
+        {{#services.items}}
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="{{image_src}}" alt="{{image_alt}}" loading="lazy">
+          </div>
+          <div class="service-card__body">
+            <h3 class="service-card__title">{{title}}</h3>
+            <p class="service-card__desc">{{description}}</p>
+            <a href="{{cta_href}}" class="service-card__link">{{cta_label}} →</a>
+          </div>
+        </article>
+        {{/services.items}}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ABOUT ═══════════════ -->
+  <section id="about" class="about">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__media">
+          <img src="{{about.image_src}}" alt="{{about.image_alt}}" loading="lazy">
+        </div>
+        <div>
+          <span class="section-eyebrow">{{about.eyebrow}}</span>
+          <h2 class="section-heading">{{{about.headline_html}}}</h2>
+          {{#about.paragraphs}}
+          <p style="color: var(--slate); font-size: 1.05rem; line-height: 1.6;">{{.}}</p>
+          {{/about.paragraphs}}
+          <div class="about__chips">
+            {{#about.chips}}
+            <span class="about-chip"><span class="about-chip__dot"></span>{{.}}</span>
+            {{/about.chips}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PROCESS ═══════════════ -->
+  <section class="process">
+    <div class="container">
+      <span class="section-eyebrow">{{process.eyebrow}}</span>
+      <h2 class="section-heading">{{{process.headline_html}}}</h2>
+      <div class="process-list">
+        {{#process.steps}}
+        <div class="process-step">
+          <div class="process-step__num">{{num}}</div>
+          <h3 class="process-step__title">{{title}}</h3>
+          <p class="process-step__desc">{{desc}}</p>
+        </div>
+        {{/process.steps}}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ REVIEWS ═══════════════ -->
+  <section id="reviews" class="reviews">
+    <div class="container">
+      <span class="section-eyebrow">{{reviews.eyebrow}}</span>
+      <h2 class="section-heading">{{reviews.headline}}</h2>
+      <p class="section-lede">{{reviews.subhead}}</p>
+      {{#reviews.is_placeholder}}<div class="reviews-disclaimer" role="note">Preview · reviews shown are representative · client to swap for verified Google reviews before launch.</div>{{/reviews.is_placeholder}}
+      <div class="reviews-grid">
+        {{#reviews.items}}
+        <article class="review-card">
+          <div class="review-card__stars">{{stars_unicode}}</div>
+          <p class="review-card__quote">{{quote}}</p>
+          <p class="review-card__author"><strong>{{author}}</strong> · {{location}}</p>
+        </article>
+        {{/reviews.items}}
+      </div>
+      {{#client.google_maps_url}}
+      <p style="text-align: center; margin-top: 32px;">
+        <a href="{{.}}" class="btn btn--ghost" target="_blank" rel="noopener">
+          Read all {{client.review_count}} reviews on Google →
+        </a>
+      </p>
+      {{/client.google_maps_url}}
+    </div>
+  </section>
+
+  <!-- ═══════════════ GALLERY ═══════════════ -->
+  <section id="gallery" style="background: var(--paper);">
+    <div class="container">
+      <span class="section-eyebrow">{{gallery.eyebrow}}</span>
+      <h2 class="section-heading">{{{gallery.headline_html}}}</h2>
+      <p class="section-lede">{{gallery.subhead}}</p>
+      <div class="gallery-grid">
+        {{#gallery.pairs}}
+        <article class="gallery-pair">
+          <div class="gallery-pair__split">
+            <div class="gallery-pair__half">
+              <span class="gallery-pair__label">Before</span>
+              <img src="{{before_src}}" alt="{{before_alt}}" loading="lazy">
+            </div>
+            <div class="gallery-pair__half">
+              <span class="gallery-pair__label gallery-pair__label--after">After</span>
+              <img src="{{after_src}}" alt="{{after_alt}}" loading="lazy">
+            </div>
+          </div>
+          <p class="gallery-pair__caption">{{caption}}</p>
+        </article>
+        {{/gallery.pairs}}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SERVICE AREA ═══════════════ -->
+  <section id="area" class="service-area">
+    <div class="container">
+      <span class="section-eyebrow">{{coverage.eyebrow}}</span>
+      <h2 class="section-heading">{{{coverage.headline_html}}}</h2>
+      <p class="section-lede">{{coverage.subhead}}</p>
+      <div class="service-area__grid">
+        <div>
+          <ul class="suburb-list">
+            {{#coverage.suburbs}}<li class="suburb-pill">{{.}}</li>{{/coverage.suburbs}}
+          </ul>
+          {{#coverage.by_arrangement_text}}
+          <p style="margin-top: 28px; color: rgba(250, 250, 247, 0.65); font-size: 0.88rem;">{{.}}</p>
+          {{/coverage.by_arrangement_text}}
+        </div>
+        <div class="service-area__map">
+          <iframe src="{{client.maps_embed_url}}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{{client.business_name}} service area map"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CONTACT ═══════════════ -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <span class="section-eyebrow">{{contact.eyebrow}}</span>
+      <h2 class="section-heading">{{{contact.headline_html}}}</h2>
+      <p class="section-lede">{{contact.subhead}}</p>
+      <div class="contact__grid">
+        <div class="contact-info">
+          <div class="contact-info__row">
+            <div class="contact-info__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-info__label">Phone</div>
+              <a href="tel:{{client.phone_tel}}" class="contact-info__value">{{client.phone_display}}</a>
+              <div class="contact-info__sub">Same-day callback Mon-Fri 7am-5pm · Sat 9am-1pm</div>
+            </div>
+          </div>
+          {{#client.email}}
+          <div class="contact-info__row">
+            <div class="contact-info__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-info__label">Email</div>
+              <a href="mailto:{{.}}" class="contact-info__value">{{.}}</a>
+              <div class="contact-info__sub">Reply within 24 hours</div>
+            </div>
+          </div>
+          {{/client.email}}
+          <div class="contact-info__row">
+            <div class="contact-info__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-info__label">Yard / Office</div>
+              <div class="contact-info__value">{{client.address_full}}</div>
+              <div class="contact-info__sub">Visits by appointment</div>
+            </div>
+          </div>
+          <div class="contact-info__row">
+            <div class="contact-info__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="contact-info__label">Hours</div>
+              <div class="contact-info__value">Mon-Fri 7am-5pm</div>
+              <div class="contact-info__sub">Sat 9am-1pm · Emergency callouts after-hours by phone</div>
+            </div>
+          </div>
+        </div>
+        <aside class="quote-card" style="background: var(--paper);">
+          <span class="quote-card__eyebrow">Request quote</span>
+          <h3>Tell us about the job.</h3>
+          <p class="quote-card__sub">We'll email a written quote within 2 hours during business hours.</p>
+          <form class="quote-card__form" action="#" method="post" onsubmit="event.preventDefault(); alert('Demo · form would submit');">
+            <input type="text" name="name" placeholder="Your name *" required aria-required="true">
+            <input type="email" name="email" placeholder="Email address *" required aria-required="true">
+            <input type="tel" name="phone" placeholder="Mobile number (optional)">
+            <input type="text" name="suburb" placeholder="Suburb (optional)">
+            <select name="service">
+              <option value="">What do you need? (optional)</option>
+              <option>Roof Replacement</option>
+              <option>Roof Restoration</option>
+              <option>Roof Repair</option>
+              <option>Gutter / Pipe</option>
+              <option>Storm Damage</option>
+              <option>Other</option>
+            </select>
+            <button type="submit" class="btn btn--primary">Request Quote</button>
+          </form>
+          <p class="quote-card__trust">{{client.license_authority}}-licensed · Fully insured · ABN on every invoice</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div>
+          <div class="site-footer__brand">{{client.business_name}}</div>
+          <p>{{client.city}}'s {{client.license_authority}}-licensed roof replacement, restoration &amp; gutter specialist since {{client.year_founded}}.
+          {{client.years_in_business}} years local. {{client.warranty_years}} written warranty. Free on-site quote.</p>
+          <p style="margin-top: 16px;">
+            <strong style="color: var(--paper);">{{client.address_full}}</strong><br>
+            <a href="tel:{{client.phone_tel}}" style="font-family: var(--font-mono);">{{client.phone_display}}</a>{{#client.email}}<br>
+            <a href="mailto:{{.}}">{{.}}</a>{{/client.email}}
+          </p>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul class="site-footer__list">
+            <li><a href="#services">Roof Replacement</a></li>
+            <li><a href="#services">Roof Restoration</a></li>
+            <li><a href="#services">Gutters &amp; Downpipes</a></li>
+            <li><a href="#services">Storm Damage</a></li>
+            <li><a href="#services">Re-pointing</a></li>
+            <li><a href="#services">Metal &amp; Colorbond</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Service area</h4>
+          <ul class="site-footer__list">
+            {{#coverage.suburbs}}<li>{{.}}</li>{{/coverage.suburbs}}
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__legal">
+        © {{colophon.year}} {{client.business_name}} · {{colophon.tagline}}
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════ STICKY MOBILE PHONE CTA (M1.2 audit pattern · wrapper carries class, anchor child) ═══════════════ -->
+  <div class="sticky-cta">
+    <a href="tel:{{client.phone_tel}}" class="sticky-cta__link">
+      <span class="sticky-cta__icon">📞</span>
+      <span>Call {{client.business_name}} · {{client.phone_display}}</span>
+    </a>
+  </div>
+
+</body>
+</html>

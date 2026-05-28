@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/a-j-roofing-solutions/v2/editorial-output",
   "tier": "fast",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T04:43:24.112Z",
+  "generated_at": "2026-05-28T05:35:26.780Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -39,7 +39,7 @@
     "composite": 100
   },
   "tier_2": {
-    "score": 83,
+    "score": 89,
     "breakdown": {
       "D2.1_var_brand_coverage": {
         "score": 100,
@@ -49,17 +49,20 @@
         "color_decls": 96
       },
       "D2.2_hardcoded_hex_count": {
-        "score": 100,
+        "score": 64,
         "weight": 0.25,
-        "unique_non_gray_hex": 7,
+        "unique_non_gray_hex": 16,
         "sample": [
-          "#a88a5c",
-          "#8e7148",
-          "#4f8a4f",
-          "#c9822f",
-          "#b33a3a",
-          "#b5b5b7",
-          "#8b8b8e"
+          "#1b5e3f",
+          "#2a8c8c",
+          "#d9744a",
+          "#0f3d2a",
+          "#f6f0e4",
+          "#0f1a18",
+          "#1a2421",
+          "#5c645f",
+          "#e1d9c7",
+          "#a88a5c"
         ]
       },
       "D2.3_type_rule_compliance": {
@@ -75,14 +78,18 @@
         "note": null
       },
       "D2.5_brand_palette_honored": {
-        "score": 0,
+        "score": 100,
         "weight": 0.15,
         "expected": [
           "#1b5e3f",
           "#d9744a",
           "#2a8c8c"
         ],
-        "found": []
+        "found": [
+          "#1b5e3f",
+          "#d9744a",
+          "#2a8c8c"
+        ]
       },
       "D2.BC6_token_coverage_depth": {
         "score": 90,
@@ -227,8 +234,8 @@
   },
   "t2_copy_quality_llm": null,
   "tier_5": null,
-  "composite": 83,
-  "grade": "B",
+  "composite": 89,
+  "grade": "A",
   "ship_verdict": "SHIP",
   "block_reason": null,
   "issues": []

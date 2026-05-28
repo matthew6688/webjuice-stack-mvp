@@ -557,14 +557,70 @@ async function main() {
       tagline: `${city} roofers since ${yearFounded}. ${_licenseVisibleFinal ? `${licAuthority}-licensed in ${state === 'VIC' ? 'Victoria' : state} · ${licNumber}. ` : ''}Workshop on ${addrParts[0] || city}.`,
       year: new Date().getFullYear(),
     },
+    // ─── Trade-classic template extensions (R38) · additive · editorial-newsletter ignores these ──
+    // Process steps (universal trade flow · static copy · 6 steps)
+    process: {
+      eyebrow: 'How it works',
+      headline_html: `Six steps from &ldquo;I think we&rsquo;ve got a leak&rdquo;<br>to &ldquo;It&rsquo;s sorted, mate.&rdquo;`,
+      steps: [
+        { num: '01', title: 'Call or form', desc: 'Same-day callback during business hours. We&#39;ll ask what you&#39;re seeing.' },
+        { num: '02', title: 'On-site quote', desc: 'We climb up, photograph, measure. Free, no obligation.' },
+        { num: '03', title: 'Written quote', desc: 'Fixed price, itemised, with materials brand &amp; warranty terms.' },
+        { num: '04', title: 'Schedule', desc: 'Slotted within 2-4 weeks (faster for emergency &amp; insurance).' },
+        { num: '05', title: 'Job', desc: '3-5 days for most replacements. Daily photo update from the site.' },
+        { num: '06', title: 'Handover', desc: 'Walk-around, warranty paperwork, and the same number for callbacks.' },
+      ],
+    },
+    // Trust-bar chips (the 4 stats above-fold)
+    trust_bar: {
+      chips: [
+        { value: `${yearsTrading}+`, label: `Years in ${city}` },
+        ...(facts.rating && facts.review_count
+          ? [{ value: `${facts.rating}★`, label: `${facts.review_count} Google reviews` }]
+          : []),
+        { value: `${suburbsList.length}+`, label: 'Suburbs served' },
+        { value: '0', label: 'Subcontractors used' },
+      ].slice(0, 4),
+    },
     _selected_photos: selected,
   };
+  // About chips (trust signals · brand-agnostic · attach after ctx so we can read brief.abn cleanly)
+  ctx.about.chips = [
+    ...(_licenseVisibleFinal ? [`${licAuthority} Licensed`] : []),
+    'Fully Insured',
+    '10-yr Warranty',
+    ...((brief?.abn || licNum.ABN) ? ['ABN on every invoice'] : []),
+    'No subcontractors',
+  ];
+  // Hero raw-html variant for templates that want italics in headline
+  ctx.hero.headline_html = ctx.hero.headline;
+  ctx.hero.eyebrow_location = `${city} · ${state}${_licenseVisibleFinal ? ` · ${licAuthority}-licensed` : ''}`;
+  // Headline raw-html versions (no <br> by default · trade-classic just uses single line)
+  ctx.about.headline_html = ctx.about.headline;
+  ctx.services.headline_html = ctx.services.headline;
+  ctx.reviews.headline_html = ctx.reviews.headline;
+  ctx.gallery.headline_html = ctx.gallery.headline;
+  ctx.coverage.headline_html = ctx.coverage.headline;
+  ctx.contact.headline_html = ctx.contact.headline;
+  // Additional client fields for trade-classic
+  ctx.client.address_full = addrParts.length >= 2 ? addrParts.join(', ') : (facts.address || '');
+  ctx.client.suburb = facts.suburb || (addrParts[1] || '').split(/\s+/)[0] || city;
+  ctx.client.years_in_business = `${yearsTrading}+`;
+  ctx.client.warranty_years = '10-year';
+  ctx.client.maps_embed_url = facts.maps_embed_url || (facts.google_maps_url
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(ctx.client.address_full || city)}&output=embed`
+    : null);
   ctx.jsonld_localbusiness = buildJsonLd(ctx);
 
   // ─── Render ──────────────────────────────────────────────────────────
-  const templatePath = path.join(REPO, 'templates/roofing/editorial-newsletter/template.html');
+  // Template dispatch (codex R38 Q-SS-2 a) · --template flag · default editorial-newsletter
+  const templateName = args.template || 'editorial-newsletter';
+  const templatePath = path.join(REPO, 'templates/roofing', templateName, 'template.html');
+  if (!fs.existsSync(templatePath)) {
+    die(`template not found: templates/roofing/${templateName}/template.html · check spelling or use --template editorial-newsletter`);
+  }
   const tpl = readText(templatePath);
-  if (!tpl) die('template not found: ' + templatePath);
+  if (!tpl) die('template empty: ' + templatePath);
   const html = render(tpl, ctx);
 
   // ─── Write output ────────────────────────────────────────────────────
