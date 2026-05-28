@@ -1,10 +1,10 @@
-# CANONICAL · ProfitsLocal Production Standard · v1.2 · 2026-05-29
+# CANONICAL · ProfitsLocal Production Standard · v1.3 · 2026-05-29
 
 > **PURPOSE**: single master index of "what is the current best · don't deviate without proof". Future agents read this FIRST · stop drifting into deprecated paths.
 >
 > **TRIGGER**: every new session · every "should I rebuild X?" question · every "what's the canonical Y?" question.
 >
-> **STATUS**: v1.2 · locked by 11 codex consensus rounds (R26-R38) + Matthew approvals.
+> **STATUS**: v1.3 · locked by 13 codex consensus rounds (R26-R40 + R-BA-6 implementation) + Matthew approvals.
 >
 > **RULE**: anything NOT in this doc as "locked" is provisional · explore freely. Anything LOCKED here cannot be replaced without (a) empirical evidence beating it by the re-test trigger threshold AND (b) codex sign-off in a new consensus round.
 
@@ -32,6 +32,9 @@
 | **Composer template dispatch** | `pl:compose-editorial --template <name>` flag · default `editorial-newsletter` · template path `templates/roofing/<name>/template.html` | Codex R38 Q-SS-2 (a) · 2026-05-29 | Promote to template-registry pattern only when ≥1 template needs pre-render hooks (R38 Q-SS-2 c) |
 | **Brand-tokens injection placement** | `{{{brand_tokens_css_inline}}}` MUST be inside `<style>...</style>` block · D2.5 brand palette audit reads hex via `<style>...</style>` regex | Trade-classic 2026-05-29 calibration · D2.5 found=[] when placed outside style | Move outside = audit immediately drops 11+pt |
 | **a-j brand-tokens canonical path** | Every client must have `clients/<slug>/v2/handoff/od-package/brand/brand-tokens.css` · NOT only at `v2/brand/` | a-j fix 2026-05-29 · editorial-newsletter score 83→89 (+6pt) | Composer fallback path = future enhancement |
+| **Copy-builders dispatch** | `core/handoff/copy-builders.js` · `buildCopy(profile, normalizedFacts, extras)` returns section copy per profile (editorial / direct) · pure functions · sentence-grouped paragraphs · NO invented per-client facts | Codex R40 Q-VV-1 B + Q-VV-5 b · 2026-05-29 | Add new profile = add to `buildCopy` dispatch + audit-test fixtures |
+| **Anti-hallucination guards** | `yearFounded` → null when unverified (no '2003' default) · `warranty_years_verified` → null = generic clause (no '10-year' default) · `suburbs_verified` ONLY (not merged inferred) for coverage claims · NO hardcoded client-specific phrasing in copy builders | Codex R40 3rd-pass Q-XX-1+Q-XX-2 SHIP-blocker fixes · 2026-05-29 | Any new claim in copy = MUST derive from normalized facts · violation = release blocker |
+| **Gallery DOM contract (R-BA-6)** | `.gallery-pair__slider` with `[data-ba-slider]` · clip-path on `.gallery-pair__img--after` via `--pos` CSS var · `.gallery-pair__handle` with `↔` icon · 4 pairs in 2×2 grid · pointer + keyboard drag · NOT static 2-column compare | Matthew req 2026-05-29 (R-BA-6 commitment cde3043d finally implemented) | Static compare = ship blocker per §11 anti-pattern 12 |
 
 ---
 
@@ -150,9 +153,9 @@ No more 93/99 composite numbers on thin RED clients. Audit must be honest.
 
 | Client | Status | Composite | Last audit | Notes |
 |---|---|---|---|---|
-| vicwest-roofing | ✓ CANONICAL CLEAN | 91 / A / SHIP | 2026-05-29 | T4d 100 · 0 hallucinations · 0 banned · ABN-clean · M1 PASS · trade-classic alt 84 SHIP |
-| a-j-roofing-solutions | ✓ Cross-client + brand-tokens fix | 89 / A / SHIP | 2026-05-29 | YELLOW + PREVIEW banner · merge-inferred wired · brand-tokens canonical path fixed (83→89 +6pt) · trade-classic alt 82 SHIP |
-| mark-squire-roof-restorations | ✓ Recovered from BLOCKED | 93 / A / SHIP | 2026-05-29 | YELLOW + banner · 1 ai-fabricated review (no GBP review text) · 18 suburbs · 6 services · M1 PASS · trade-classic alt 87 SHIP |
+| vicwest-roofing | ✓ CANONICAL CLEAN | 91 / A / SHIP | 2026-05-29 | T4d 100 · 0 hallucinations · 0 banned · ABN-clean · M1 PASS · trade-classic alt 83B SHIP (v1.3 post-slider) |
+| a-j-roofing-solutions | ✓ Cross-client + brand-tokens fix | 89 / A / SHIP | 2026-05-29 | YELLOW + PREVIEW banner · merge-inferred wired · brand-tokens canonical path fixed (83→89 +6pt) · trade-classic alt 82B SHIP (v1.3) |
+| mark-squire-roof-restorations | ✓ Recovered from BLOCKED | 93 / A / SHIP | 2026-05-29 | YELLOW + banner · 1 ai-fabricated review (no GBP review text) · 18 suburbs · 6 services · M1 PASS · trade-classic alt 86A SHIP (v1.3) |
 | abc-roof-restoration-brisbane | BLOCKED · genuine gap | N/A_BLOCKED | 2026-05-29 | GATE 1 RED · missing phone + address (cannot crawl · cannot enrich) · needs manual data input · do not force |
 
 ---
@@ -171,6 +174,7 @@ History:
 - v1.0 (2026-05-28): initial canonical. Locks Path B composer · 5 P0 audit · editorial-newsletter template · 4 personas · single-page roofing scope.
 - v1.1 (2026-05-29): R37 · 3 SHIP clients (was 2) · mark-squire recovered from BLOCKED. Locks `core/handoff/merge-inferred.js` shared helper · `buildCoreExtract` deep fusion · template empty-contact-row guard. No deprecation. Pure addition.
 - v1.2 (2026-05-29): R38 · 2 templates inventoried (was 1) · trade-classic added at avg 84.3. Old templates fully retired to `_deprecated-2026-05-29/`. Locks: SOP-TEMPLATE-INVENTORY · composer `--template` dispatch · brand-tokens placement rule · a-j brand-tokens path fix (83→89 side-effect). 4 huashu/taste-skill variants V1-V4 deferred to tasks #106-#109.
+- v1.3 (2026-05-29 evening): R39 + R40 + R-BA-6 visual polish round. trade-classic post-visual-QA. Locks: `core/handoff/copy-builders.js` profile dispatch · 4 anti-hallucination guards (yearFounded null · warranty_years_verified null · suburbs_verified split · no invented per-client facts) · R-BA-6 draggable before/after slider · SOP-TEMPLATE-INVENTORY §5.5 visual gate (mechanical + human + Matthew sign-off) · §11 anti-patterns expanded 7→13. Trade-classic re-baseline: vicwest 83B · a-j 82B · mark-squire 86A (within audit noise of R38 84/82/87).
 
 ### When a new agent reads this
 

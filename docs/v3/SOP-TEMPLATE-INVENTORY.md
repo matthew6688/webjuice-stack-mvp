@@ -242,6 +242,43 @@ done
 
 ---
 
+## §7.5 · Stage 5.5 · Visual QA gate (MANDATORY · codex R39 Q-TT-5 c+a)
+
+**Critical**: audit composite ≥ 80 is necessary but NOT sufficient. Audit measures DOM hooks + CSS tokens · misses visual / copy defects. Stage 5.5 is the bridge.
+
+### 5.5.a · Mechanical visual checks (run before human review · cheap)
+
+After all 3 calibration renders pass audit · run via DOM eval:
+- **DOM completeness**: every service-card has non-empty `.service-card__desc` text (catches `{{description}}` vs `{{body}}` mismatch)
+- **Image uniqueness**: 6 services × 6 unique image srcs · no repeats (catches stock keyword fallback fails)
+- **Logo brand-mark**: 2-3 chars max · fits 36px badge (catches `client.short_name` vs `client.brand_mark` mistake)
+- **Empty hrefs**: no `<a href="mailto:">` or `<a href="tel:">` with empty hash (M1.3 tap-target safe)
+- **Section copy presence**: every section eyebrow + heading + lede non-empty
+- **No 1000+ char single paragraph**: about.paragraphs all ≤ 500 chars
+- **Hallucination sentinels**: no rendered text contains "10-year" unless `realFacts.warranty_years` truthy · no "${N}+ years" unless `yearFounded` verified · no editorial magazine metaphors ("The Catalogue/Workshop/Plates/Beat") in direct profile renders
+
+~5 min via `mcp__Claude_Preview__preview_eval`.
+
+### 5.5.b · Human visual review (REQUIRED before §8 Inventory)
+
+Open each of 3 clients in browser (desktop 1280×800 AND mobile 390×812). Check by section:
+- **Hero**: logo readable · headline + subhead match family voice · form ≤ 4 above-fold fields
+- **Services**: 6 cards · unique images · descriptions present
+- **About**: 3 paragraphs · NO wall of text · no invented per-client facts (R40 3rd-pass hallucination guards)
+- **Reviews**: family-correct voice eyebrow · placeholder banner when ai-fabricated
+- **Gallery**: **4 pairs · 2×2 grid · R-BA-6 draggable before/after slider with ↔ handle · NOT static 2-column compare** (Matthew req 2026-05-29 · §11 anti-pattern)
+- **Coverage**: suburbs in `<li>` inside `.suburb-list` · `${city} and surrounds` fallback when verified < 3
+- **Contact**: 4-field form · `{{#client.email}}` guard works
+- **Footer**: tap-target safe · sticky CTA on mobile
+
+### 5.5.c · Matthew sign-off (final gate)
+
+Render to preview server · Matthew opens · go/no-go. Don't §8 inventory broken templates.
+
+This gate is WHY R39+R40+R-BA-6 caught defects audit missed.
+
+---
+
 ## §8 · Stage 6 · Inventory (CANONICAL.md §0 entry)
 
 Add a row to CANONICAL.md §0 master state table:
@@ -294,6 +331,12 @@ Future templates compete against editorial-newsletter average (91). To be best f
 5. **Don't ship a template that scores composite < 80 on any of the 3 clients.** Iterate until it passes OR retire the variant.
 6. **Don't change the canonical editorial-newsletter** to accommodate a new template. Templates conform · composer is SSOT.
 7. **Don't skip the calibration restore** · always re-render with editorial-newsletter after trade-classic testing to restore canonical client outputs.
+8. **Don't trust composite score as visual proof** (R39 lesson) — composite 84 SHIP rendered with broken logo · 1939-char paragraph wall · invented per-client claims. ALWAYS run §5.5 visual gate before §8 inventory.
+9. **Don't hardcode client-specific facts** in copy builders (R40 3rd-pass) · ANY claim ("one ute, one ladder" · "same family" · "We don't subcontract") that wasn't true for all clients = hallucination. If composer/builder writes a per-client claim · it MUST be derived from normalized facts.
+10. **Don't default-fallback critical facts** (R40 3rd-pass) · removed `yearFounded = '2003'` because a-j/mark-squire don't have year_founded · default would fabricate "23+ years" claim. Null → builder shows safer "Local ${city} roofers." Same rule: warranty term · license info · ratings · review counts → null when unverified · NEVER guess.
+11. **Don't render inferred-data as verified-data without disclosure** (R40 Q-XX-2) · `mergeSuburbs(real, inferred)` is OK for visual richness · but "We cover X, Y, Z" coverage claim in about para MUST use verified-only OR show PREVIEW banner. Use `suburbs_verified` not `suburbs` for claims.
+12. **Don't use static 2-column before/after** for gallery (R-BA-6 · Matthew 2026-05-29) · ALWAYS use draggable slider with handle + clip-path. 4 pairs in 2×2 grid · NOT 3 in unbalanced grid. R-BA-6 is canonical DOM contract (CANONICAL §0).
+13. **Don't bypass codex review** (Matthew 2026-05-29) · CLAUDE.md "Codex Review Cadence" rule mandates pre-work consultation + post-work audit for structural changes. SSOT projects · especially profitslocal · are zero-tolerance on this.
 
 ---
 
