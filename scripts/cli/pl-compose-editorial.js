@@ -171,11 +171,28 @@ function readPreparedAbout(odContentDir) {
     let text = fs.readFileSync(p, 'utf8');
     // Strip YAML frontmatter
     text = text.replace(/^---\n[\s\S]+?\n---\n?/, '');
-    // Strip source-annotation comments ONLY — use strict regex (Codex R44: not generic <!--)
+    // Strip HTML source-annotation comments (Codex R44)
     text = text.replace(/<!--\s*source:[\s\S]*?-->/g, '');
+    // Strip "## 备注" dev-note section and everything after it (R46 fix · MVP placeholder leaks)
+    text = text.replace(/##\s*备注[\s\S]*/g, '');
+    // Strip any remaining markdown headings (# ## etc) — they render as raw text in HTML
+    text = text.replace(/^#{1,6}\s+.*/gm, '');
+    // Strip lines that look like dev metadata (Chinese chars + common dev phrase patterns)
+    text = text.replace(/^.*?(MVP 阶段|LLM 综合|niche typical|Phase B|Cascade A|HANDOFF-STRUCTURE).*$/gm, '');
+    // Strip lines containing Chinese characters (MVP placeholder data — not real about copy)
+    text = text.replace(/^.*[一-鿿].*$/gm, '');
+    // Strip "Key: value" data lines (e.g. "Google 评分: 5★ · 0 条评论")
+    text = text.replace(/^[A-Za-z\s]+[:：].+$/gm, (line) => {
+      // Only strip if it looks like a raw data field (short, no sentence structure)
+      const wordCount = line.split(/\s+/).length;
+      return wordCount < 8 ? '' : line;
+    });
     // Split into non-empty paragraphs ≥ 20 chars
     const paras = text.split(/\n\n+/).map(p => p.trim()).filter(p => p.length >= 20);
     if (!paras.length) return null;
+    // Quality gate: reject if total English word count < 40 (MVP placeholder with no real prose)
+    const totalWords = paras.join(' ').replace(/[^\w\s]/g, '').split(/\s+/).filter(Boolean).length;
+    if (totalWords < 40) return null;
     return paras;
   } catch { return null; }
 }

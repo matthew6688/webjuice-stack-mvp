@@ -4,9 +4,9 @@
   "slug": "vicwest-roofing",
   "mode": "slug",
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/vicwest-roofing/v2/editorial-output",
-  "tier": "fast",
+  "tier": "premium",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T13:13:45.490Z",
+  "generated_at": "2026-05-28T13:52:13.490Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -138,8 +138,41 @@
     },
     "total_weight": 0.9500000000000001
   },
-  "tier_3": null,
-  "tier_4": null,
+  "tier_3": {
+    "score": null,
+    "dims": {
+      "D3.1_layout": null,
+      "D3.2_typography": null,
+      "D3.3_color_hierarchy": null,
+      "D3.4_readability": null,
+      "D3.5_image_text_balance": null,
+      "D3.6_copy_depth": null,
+      "D3.7_chrome_consistency": null,
+      "D3.8_module_diversity": null
+    },
+    "llm_call_id": null,
+    "cost_usd": 0,
+    "model": null,
+    "status": "stub",
+    "todo": "wire pl-audit-vision + codex-deep-audit · pin model + temp 0 + seed"
+  },
+  "tier_4": {
+    "score": null,
+    "dims": {
+      "D4.1_philosophy": null,
+      "D4.2_hierarchy": null,
+      "D4.3_detail": null,
+      "D4.4_innovation": null,
+      "D4.5_function": null
+    },
+    "ai_slop_markers": [],
+    "ai_slop_score": null,
+    "llm_call_id": null,
+    "cost_usd": 0,
+    "model": null,
+    "status": "stub",
+    "todo": "adapt OD plan-design-review prompt · render screenshots · enforce JSON schema"
+  },
   "tier_4d_voice": {
     "score": 100,
     "dims": {
@@ -269,11 +302,97 @@
       "M1.5 above-fold trust+CTA (vision LLM · premium tier)"
     ]
   },
-  "t2_copy_quality_llm": null,
-  "tier_5": null,
+  "t2_copy_quality_llm": {
+    "status": "wired",
+    "score": 60,
+    "sub_dims": {
+      "D2.10_engagement_persuasion": 60,
+      "D2.4_codex_factual_accuracy": 60,
+      "D2.5_codex_voice_authentic": 50,
+      "D2.6_codex_specificity": 80,
+      "D2.X_conversion_clarity": 80,
+      "D2.X_leak_free": 80
+    },
+    "hallucinations": [
+      {
+        "page": "index.html",
+        "fact": "\"covering a service area that spans 100km from Ballarat in every direction\" · contradicts: customer-brief.md says service_radius_km is 50"
+      },
+      {
+        "page": "index.html",
+        "fact": "\"Vicwest Roofing services Ballarat, Geelong, Bendigo, Bacchus Marsh, Daylesford, Castlemaine, Creswick, Maryborough, and all towns within 100km of Ballarat\" · contradicts: customer-brief.md says service_radius_km is 50"
+      }
+    ],
+    "leak_quotes": [
+      {
+        "page": "index.html",
+        "quote": "Based on review volume and tenure, the business has likely completed over 500 roof replacements and new installations since inception."
+      },
+      {
+        "page": "index.html",
+        "quote": "A representative selection from our Google reviews."
+      },
+      {
+        "page": "index.html",
+        "quote": "Verbatim — author, suburb, and star count unchanged."
+      }
+    ],
+    "per_page": [
+      {
+        "page": "index.html",
+        "result": {
+          "page": "index.html",
+          "parsed": {
+            "page": "index.html",
+            "scores": {
+              "D1_facts_accuracy": 6,
+              "D2_voice_authentic": 5,
+              "D3_specificity": 8,
+              "D4_conversion": 8,
+              "D5_leak_free": 8,
+              "D6_engagement_persuasion": 6,
+              "total": 41
+            },
+            "strengths": [
+              "Strong proof density with licence number, 2003 founding year, warranty, review count, owner mention, and named service areas.",
+              "Conversion path is clear with phone number, written quote CTA, and quote-process copy repeated near the top and bottom."
+            ],
+            "weaknesses": [
+              "The long Workshop section drifts into consultant-style corporate backstory instead of direct roofer copy.",
+              "\"Based on review volume and tenure, the business has likely completed over 500 roof replacements\" weakens trust because it sounds inferred rather than proven."
+            ],
+            "hallucinations": [
+              "\"covering a service area that spans 100km from Ballarat in every direction\" · contradicts: customer-brief.md says service_radius_km is 50",
+              "\"Vicwest Roofing services Ballarat, Geelong, Bendigo, Bacchus Marsh, Daylesford, Castlemaine, Creswick, Maryborough, and all towns within 100km of Ballarat\" · contradicts: customer-brief.md says service_radius_km is 50"
+            ],
+            "leak_quotes": [
+              "Based on review volume and tenure, the business has likely completed over 500 roof replacements and new installations since inception.",
+              "A representative selection from our Google reviews.",
+              "Verbatim — author, suburb, and star count unchanged."
+            ]
+          }
+        },
+        "duration_s": 39
+      }
+    ],
+    "note": "SOP-AUDIT-STANDARD-V2 §9 D2.10 · codex-deep-audit 6-dim · premium tier · ~40s/page"
+  },
+  "tier_5": {
+    "score": null,
+    "three_axis": {
+      "idea_originality": null,
+      "cultural_relevance": null,
+      "craft": null
+    },
+    "llm_call_id": null,
+    "cost_usd": 0,
+    "model": null,
+    "status": "stub",
+    "todo": "adapt creative-director prompt · gate on T4≥60"
+  },
   "composite": 91,
-  "grade": "A",
-  "ship_verdict": "SHIP",
+  "grade": "EXPERIMENTAL",
+  "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T3/T4/T5 stubbed",
   "block_reason": null,
   "issues": []
 }

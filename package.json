@@ -392,6 +392,7 @@
     "pl:compose-editorial": "node --env-file-if-exists=.env.local scripts/cli/pl-compose-editorial.js",
     "pl:extract-site-ctx": "node --env-file-if-exists=.env.local scripts/cli/pl-extract-site-ctx.js",
     "pl:extract-site-ctx-full": "node --env-file-if-exists=.env.local scripts/cli/pl-extract-site-ctx.js --write-content",
+    "pl:skill-bench": "node --env-file-if-exists=.env.local scripts/cli/pl-skill-bench.js",
     "pl:llm-single-page-copy": "node --env-file-if-exists=.env.local scripts/cli/pl-llm-page-copywriter.js --single-page",
     "pl:render-llm-page": "node --env-file-if-exists=.env.local scripts/cli/pl-render-llm-page.js",
     "pl:gen-narrative-content": "node --env-file-if-exists=.env.local scripts/cli/pl-gen-narrative-content.js",

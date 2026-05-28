@@ -4,9 +4,9 @@
   "slug": "a-j-roofing-solutions",
   "mode": "slug",
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/a-j-roofing-solutions/v2/editorial-output",
-  "tier": "fast",
+  "tier": "premium",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T13:13:51.116Z",
+  "generated_at": "2026-05-28T13:53:00.635Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -138,8 +138,41 @@
     },
     "total_weight": 0.9500000000000001
   },
-  "tier_3": null,
-  "tier_4": null,
+  "tier_3": {
+    "score": null,
+    "dims": {
+      "D3.1_layout": null,
+      "D3.2_typography": null,
+      "D3.3_color_hierarchy": null,
+      "D3.4_readability": null,
+      "D3.5_image_text_balance": null,
+      "D3.6_copy_depth": null,
+      "D3.7_chrome_consistency": null,
+      "D3.8_module_diversity": null
+    },
+    "llm_call_id": null,
+    "cost_usd": 0,
+    "model": null,
+    "status": "stub",
+    "todo": "wire pl-audit-vision + codex-deep-audit · pin model + temp 0 + seed"
+  },
+  "tier_4": {
+    "score": null,
+    "dims": {
+      "D4.1_philosophy": null,
+      "D4.2_hierarchy": null,
+      "D4.3_detail": null,
+      "D4.4_innovation": null,
+      "D4.5_function": null
+    },
+    "ai_slop_markers": [],
+    "ai_slop_score": null,
+    "llm_call_id": null,
+    "cost_usd": 0,
+    "model": null,
+    "status": "stub",
+    "todo": "adapt OD plan-design-review prompt · render screenshots · enforce JSON schema"
+  },
   "tier_4d_voice": {
     "score": 100,
     "dims": {
@@ -232,11 +265,137 @@
       "M1.5 above-fold trust+CTA (vision LLM · premium tier)"
     ]
   },
-  "t2_copy_quality_llm": null,
-  "tier_5": null,
+  "t2_copy_quality_llm": {
+    "status": "wired",
+    "score": 50,
+    "sub_dims": {
+      "D2.10_engagement_persuasion": 50,
+      "D2.4_codex_factual_accuracy": 30,
+      "D2.5_codex_voice_authentic": 40,
+      "D2.6_codex_specificity": 50,
+      "D2.X_conversion_clarity": 80,
+      "D2.X_leak_free": 20
+    },
+    "hallucinations": [
+      {
+        "page": "index.html",
+        "fact": "\"4.8★ · 35 Reviews\" · contradicts: structured facts say rating is 5 and review_count is null; must_not_invent says do not invent reviews."
+      },
+      {
+        "page": "index.html",
+        "fact": "\"10-Year Warranty on Materials\" · contradicts: structured facts say warranty is a 10-year workmanship warranty, not a materials warranty."
+      },
+      {
+        "page": "index.html",
+        "fact": "\"A & J Roofing Solutions 自 2024 在 Cairns 经营 · 至今 1 年。\" · contradicts: structured facts say experience_claim is null and must_not_invent says years in business must use experience_claim or omit."
+      },
+      {
+        "page": "index.html",
+        "fact": "\"Google 评分: 5★ · 0 条评论。\" · contradicts: structured facts say review_count is null, not 0."
+      },
+      {
+        "page": "index.html",
+        "fact": "\"Google review · AI placeholder\" · contradicts: structured facts say use only the verbatim testimonials supplied, and those testimonials are AI-fabricated rather than Google reviews."
+      },
+      {
+        "page": "index.html",
+        "fact": "\"Karen T. Bentley Park\" · contradicts: structured facts provide testimonials from Sarah M. in Portsmith, Dave R. in Manoora, and Helen T. in Edge Hill only."
+      },
+      {
+        "page": "index.html",
+        "fact": "\"Mick R. Portsmith\" · contradicts: structured facts provide testimonials from Sarah M., Dave R., and Helen T. only."
+      },
+      {
+        "page": "index.html",
+        "fact": "\"Leanne P. Parramatta Park\" · contradicts: structured facts provide testimonials from Sarah M., Dave R., and Helen T. only."
+      }
+    ],
+    "leak_quotes": [
+      {
+        "page": "index.html",
+        "quote": "Verbatim Google reviews replace these once published."
+      },
+      {
+        "page": "index.html",
+        "quote": "Google review · AI placeholder"
+      },
+      {
+        "page": "index.html",
+        "quote": "Sample testimonials shown"
+      },
+      {
+        "page": "index.html",
+        "quote": "see all 0 verified Google reviews"
+      },
+      {
+        "page": "index.html",
+        "quote": "[object Object]"
+      }
+    ],
+    "per_page": [
+      {
+        "page": "index.html",
+        "result": {
+          "page": "index.html",
+          "parsed": {
+            "page": "index.html",
+            "scores": {
+              "D1_facts_accuracy": 3,
+              "D2_voice_authentic": 4,
+              "D3_specificity": 5,
+              "D4_conversion": 8,
+              "D5_leak_free": 2,
+              "D6_engagement_persuasion": 5,
+              "total": 27
+            },
+            "strengths": [
+              "The phone number, address, Cairns location, QBCC reference, and written quote CTA are prominent.",
+              "Some copy feels concrete, especially the Portsmith workshop details and on-site written quote process."
+            ],
+            "weaknesses": [
+              "\"A & J Roofing Solutions 自 2024 在 Cairns 经营 · 至今 1 年。\" invents a business age and switches language mid-page.",
+              "\"Verbatim Google reviews replace these once published\" exposes placeholder/build-state language to customers."
+            ],
+            "hallucinations": [
+              "\"4.8★ · 35 Reviews\" · contradicts: structured facts say rating is 5 and review_count is null; must_not_invent says do not invent reviews.",
+              "\"10-Year Warranty on Materials\" · contradicts: structured facts say warranty is a 10-year workmanship warranty, not a materials warranty.",
+              "\"A & J Roofing Solutions 自 2024 在 Cairns 经营 · 至今 1 年。\" · contradicts: structured facts say experience_claim is null and must_not_invent says years in business must use experience_claim or omit.",
+              "\"Google 评分: 5★ · 0 条评论。\" · contradicts: structured facts say review_count is null, not 0.",
+              "\"Google review · AI placeholder\" · contradicts: structured facts say use only the verbatim testimonials supplied, and those testimonials are AI-fabricated rather than Google reviews.",
+              "\"Karen T. Bentley Park\" · contradicts: structured facts provide testimonials from Sarah M. in Portsmith, Dave R. in Manoora, and Helen T. in Edge Hill only.",
+              "\"Mick R. Portsmith\" · contradicts: structured facts provide testimonials from Sarah M., Dave R., and Helen T. only.",
+              "\"Leanne P. Parramatta Park\" · contradicts: structured facts provide testimonials from Sarah M., Dave R., and Helen T. only."
+            ],
+            "leak_quotes": [
+              "Verbatim Google reviews replace these once published.",
+              "Google review · AI placeholder",
+              "Sample testimonials shown",
+              "see all 0 verified Google reviews",
+              "[object Object]"
+            ]
+          }
+        },
+        "duration_s": 46
+      }
+    ],
+    "note": "SOP-AUDIT-STANDARD-V2 §9 D2.10 · codex-deep-audit 6-dim · premium tier · ~40s/page"
+  },
+  "tier_5": {
+    "score": null,
+    "three_axis": {
+      "idea_originality": null,
+      "cultural_relevance": null,
+      "craft": null
+    },
+    "llm_call_id": null,
+    "cost_usd": 0,
+    "model": null,
+    "status": "stub",
+    "todo": "adapt creative-director prompt · gate on T4≥60"
+  },
   "composite": 89,
-  "grade": "A",
-  "ship_verdict": "SHIP",
+  "grade": "EXPERIMENTAL",
+  "ship_verdict": "EXPERIMENTAL · do not use as ship gate · T3/T4/T5 stubbed",
   "block_reason": null,
   "issues": []
 }
