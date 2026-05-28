@@ -205,6 +205,126 @@ ctx.client.address_full = addrParts.join(', ');
 
 ---
 
+## §6.5 · Stage 4.5 · Form-to-email wiring (MANDATORY · added 2026-05-29 R42)
+
+Every new template MUST wire its contact form(s) to `/api/client-contact` so submissions email the customer's lead inbox via Resend. This is non-negotiable · it's why customers pay $399 (working lead capture out of the box).
+
+### 4.5.a · Form contract per template
+Each template must have AT LEAST ONE form. Pattern:
+
+```html
+<form class="pl-client-contact" action="/api/client-contact" method="post" data-pl-form>
+  <input type="text" name="name" placeholder="Your name *" required aria-required="true">
+  <input type="email" name="email" placeholder="Email address *" required aria-required="true">
+  <input type="tel" name="phone" placeholder="Phone *" required aria-required="true">
+  <!-- optional · select dropdown of services -->
+  <select name="service">
+    <option value="">What do you need? (optional)</option>
+    <option value="Roof Replacement">Roof Replacement</option>
+    <!-- ... -->
+  </select>
+  <!-- optional · only on footer/contact form · NOT on hero (AS-trade-5 ≤4 fields) -->
+  <textarea name="message" rows="4" placeholder="Tell us about the job (optional)"></textarea>
+  <button type="submit" class="btn btn-primary">Request Free Quote</button>
+  <p class="pl-form-status" hidden aria-live="polite"></p>
+</form>
+```
+
+### 4.5.b · Submission JS (required · one block per template · before `</body>`)
+
+```html
+<script>
+(function () {
+  document.querySelectorAll('form[data-pl-form]').forEach((form) => {
+    const status = form.querySelector('.pl-form-status');
+    const btn = form.querySelector('button[type="submit"]');
+    const original = btn ? btn.textContent : 'Submit';
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      if (status) { status.hidden = false; status.style.color = ''; status.textContent = 'Sending your enquiry…'; }
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          if (status) { status.style.color = '#1B5E3F'; status.textContent = '✓ Thanks · we will be in touch shortly.'; }
+          form.reset();
+        } else {
+          if (status) { status.style.color = '#A93226'; status.textContent = data.error || 'Could not submit · please call or try again.'; }
+        }
+      } catch (err) {
+        if (status) { status.style.color = '#A93226'; status.textContent = 'Network issue · please call or try again.'; }
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = original; }
+      }
+    });
+  });
+})();
+</script>
+```
+
+### 4.5.c · Field rules
+- **Required**: name · email · phone (trade clients use phone heavily · keep it required)
+- **Optional**: service (select) · message (textarea)
+- **NO hidden tracking fields** (free tier · added later as paid-tier upgrade)
+- **NO honeypot** (defer until spam observed)
+- **NO Cloudinary attachments** (that's official-site only · contact.ts)
+
+### 4.5.d · AS-trade-5 audit compliance
+Hero form: ≤4 visible `<input>` elements above fold. Include `<select>` if you want · audit treats it lenient. NEVER put `<textarea>` in hero (move to footer/contact section).
+
+### 4.5.e · Deployment + env bootstrap (per client)
+After `pl:compose-editorial` produces editorial-output · the deploy + env steps:
+
+```bash
+# 1. Deploy with functions (whitelisted · only client-contact.ts is bundled)
+npm run pl:publish-dir -- \
+  --dir clients/<slug>/v2/editorial-output \
+  --project <slug>-test \
+  --with-functions
+
+# 2. Bootstrap env (one-time per project)
+npm run pl:cf-env-bootstrap -- \
+  --project <slug>-test \
+  --recipient <client@email>.com.au \
+  --client-name "<Client Name>"
+
+# 3. Redeploy so functions pick up env
+npm run pl:publish-dir -- \
+  --dir clients/<slug>/v2/editorial-output \
+  --project <slug>-test \
+  --with-functions
+```
+
+### 4.5.f · Testing recipe (REQUIRED before declaring template ship-ready)
+Three-step test · ~5 min:
+
+```bash
+# Test 1 · curl with full payload (verify Resend + env wiring)
+curl -s -X POST https://<project>.pages.dev/api/client-contact \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test User","email":"matthewkiata@gmail.com","phone":"0400 000 000","service":"Roof Replacement","message":"Test submission · ignore."}'
+# Expect: {"ok":true}
+
+# Test 2 · curl missing field (verify validation)
+curl -s -X POST https://<project>.pages.dev/api/client-contact \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test"}'
+# Expect: 400 {"error":"A valid email is required."}
+
+# Test 3 · browser submit (verify JS UX)
+# Open https://<project>.pages.dev · fill form · submit · status shows "Sending…" → "✓ Thanks · we will be in touch shortly."
+```
+
+Then **verify the email actually arrived** at the recipient inbox (subject "New enquiry · <client-name> · <visitor>" · from `Profits Local <hello@fengtalk.ai>` or `<leads@profitslocal.com>` post-Resend-verify).
+
+### 4.5.g · Email infrastructure background
+- Function: `functions/api/client-contact.ts` (180 lines · Resend-only · documented future SMTP)
+- Env: `RESEND_API_KEY` (ProfitsLocal shared) + `RECIPIENT_EMAIL` (per-client) + `FROM_EMAIL` (default `hello@fengtalk.ai` until profitslocal.com Resend verifies)
+- See `docs/v3/INFRASTRUCTURE-INVENTORY.md` §2 for full env contract
+
+---
+
 ## §7 · Stage 5 · Calibration (3 clients · audit feedback loop)
 
 ```bash

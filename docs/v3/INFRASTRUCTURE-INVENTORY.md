@@ -51,7 +51,7 @@ Schema: `{slug, projectName, deployed_at, demo_url, audit_url, master_md_url, in
 
 ---
 
-## §2 · Email infrastructure · ✅ MOSTLY BUILT · just needs wiring
+## §2 · Email infrastructure · ✅ FULLY WIRED (2026-05-29 R42)
 
 ### Cloudflare Pages Functions (`functions/`) · DISCOVERED 2026-05-29
 
@@ -100,24 +100,24 @@ Fields accepted:
 - **Per-client routing NOT YET BUILT** · all leads currently centralized · works for MVP
 - Future: lookup table `slug → client_email` for routing to paying customers' inboxes
 
-### Form-handler wiring gap (the ACTUAL gap)
-The handler exists · the FORMS don't point at it:
-- `templates/roofing/editorial-newsletter/template.html`: `<form action="#" onsubmit="event.preventDefault();...">`
-- `templates/roofing/trade-classic/template.html`: same `action="#"`
-- **Need**: change action to `/api/contact` · add hidden field `client_slug={{client.slug}}` · `preview_url={{seo.canonical_url}}` · `template={{template_name}}`
+### CLIENT WEBSITE form wiring (R42 · WIRED 2026-05-29)
+Client websites (the products we sell) use a SEPARATE simpler endpoint:
+- **`functions/api/client-contact.ts`** (180 lines · NEW R42) · 5 fields · Resend only · NO Cloudinary · NO tracking
+- Form contract: `<form action="/api/client-contact" method="post" data-pl-form>` · `name+email+phone` required · `service+message` optional
+- Inline JS attached to `[data-pl-form]` · loading state · success/error messages · graceful no-JS POST fallback
+- Both templates (editorial-newsletter + trade-classic) point at this · NOT at official-site `contact.ts`
 
-### Per-client preview deployment gap
-- `pl:publish-dir` does NOT currently copy `functions/` to the stage dir
-- So per-client `<slug>-dev.pages.dev` preview deployments will NOT have `/api/contact` endpoint
-- Options:
-  - (a) Modify `pl:publish-dir` to include `functions/` in stage dir
-  - (b) Form POSTs to absolute URL `https://api.profitslocal.com/api/contact` (CORS-enabled) · single shared endpoint
-  - (c) Deploy editorial-output INTO the main webjuice-stack-mvp project (where functions live) at `/clients/<slug>/` path
+### Deploy + env wire-up (per client · option A from R41)
+- `pl-publish-dir --with-functions` · whitelist-copies `functions/api/client-contact.ts` + `wrangler.toml` (NOT contact.ts NOT cloudinary NOT admin/)
+- `pl-cf-env-bootstrap --recipient <client@email> --client-name "Name"` · PATCHes CF Pages env (RESEND_API_KEY+RECIPIENT_EMAIL+FROM_EMAIL+CLIENT_NAME) on production + preview environments
+- Two-step deploy needed: (1) publish-dir creates project + uploads files (2) cf-env-bootstrap sets env (3) publish-dir again so functions see env
 
-### What's NOT yet built
-- `data/registry/client-registry.json` (only if per-client email routing needed; centralized is current default)
-- Honeypot / CAPTCHA in templates
-- Functions deployment as part of `pl:publish-dir`
+### Future enhancements (NOT in MVP · deferred)
+- SMTP relay (paid-tier upgrade · client uses own domain for FROM · env names already documented in client-contact.ts)
+- Honeypot / CAPTCHA (defer until spam observed)
+- Hidden tracking fields (UTM/click-id) · paid-tier upgrade
+- `data/registry/client-registry.json` (only needed if multi-client routing from single deploy · current model is per-client deploy)
+- profitslocal.com Resend domain verification (DNS records added 2026-05-29 · pending Resend verification · then switch FROM default from `hello@fengtalk.ai` → `leads@profitslocal.com`)
 
 ### `wrangler.toml`
 ```
@@ -325,6 +325,7 @@ anti_patterns: [{ id, why }]
 ## §10 · Update log
 
 - **2026-05-29 (this doc)** · Initial · written after missing pl-publish-* in earlier research · captures CF Pages + Resend + skills + audit modules.
+- **2026-05-29 (R42 evening)** · Lead-capture E2E wired. NEW: `functions/api/client-contact.ts` · `pl-cf-env-bootstrap.js` · `pl-publish-dir --with-functions` flag. Both templates POST forms to /api/client-contact. Verified: vicwest-roofing-test.pages.dev curl POST → Resend → matthewkiata@gmail.com. SOP-TEMPLATE-INVENTORY §6.5 (Stage 4.5) mandatory checklist for future templates. CANONICAL v1.4.
 
 ---
 

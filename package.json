@@ -138,6 +138,7 @@
     "pl:cost-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-cost-doctor.js",
     "pl:audit-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-audit-doctor.js",
     "pl:publish-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-publish-doctor.js",
+    "pl:cf-env-bootstrap": "node --env-file-if-exists=.env.local scripts/cli/pl-cf-env-bootstrap.js",
     "pl:daemon-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-daemon-doctor.js",
     "pl:cascade-doctor": "node --env-file-if-exists=.env.local scripts/cli/pl-cascade-doctor.js",
     "pl:e2e-smoke": "node --env-file-if-exists=.env.local scripts/qa/pl-e2e-smoke.mjs",

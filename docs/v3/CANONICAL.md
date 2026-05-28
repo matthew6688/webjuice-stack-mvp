@@ -1,10 +1,10 @@
-# CANONICAL · ProfitsLocal Production Standard · v1.3 · 2026-05-29
+# CANONICAL · ProfitsLocal Production Standard · v1.4 · 2026-05-29
 
 > **PURPOSE**: single master index of "what is the current best · don't deviate without proof". Future agents read this FIRST · stop drifting into deprecated paths.
 >
 > **TRIGGER**: every new session · every "should I rebuild X?" question · every "what's the canonical Y?" question.
 >
-> **STATUS**: v1.3 · locked by 13 codex consensus rounds (R26-R40 + R-BA-6 implementation) + Matthew approvals.
+> **STATUS**: v1.4 · locked by 15 codex consensus rounds (R26-R42 + R-BA-6) + Matthew approvals. Lead-capture E2E working (vicwest-roofing-test.pages.dev verified).
 >
 > **RULE**: anything NOT in this doc as "locked" is provisional · explore freely. Anything LOCKED here cannot be replaced without (a) empirical evidence beating it by the re-test trigger threshold AND (b) codex sign-off in a new consensus round.
 
@@ -35,6 +35,9 @@
 | **Copy-builders dispatch** | `core/handoff/copy-builders.js` · `buildCopy(profile, normalizedFacts, extras)` returns section copy per profile (editorial / direct) · pure functions · sentence-grouped paragraphs · NO invented per-client facts | Codex R40 Q-VV-1 B + Q-VV-5 b · 2026-05-29 | Add new profile = add to `buildCopy` dispatch + audit-test fixtures |
 | **Anti-hallucination guards** | `yearFounded` → null when unverified (no '2003' default) · `warranty_years_verified` → null = generic clause (no '10-year' default) · `suburbs_verified` ONLY (not merged inferred) for coverage claims · NO hardcoded client-specific phrasing in copy builders | Codex R40 3rd-pass Q-XX-1+Q-XX-2 SHIP-blocker fixes · 2026-05-29 | Any new claim in copy = MUST derive from normalized facts · violation = release blocker |
 | **Gallery DOM contract (R-BA-6)** | `.gallery-pair__slider` with `[data-ba-slider]` · clip-path on `.gallery-pair__img--after` via `--pos` CSS var · `.gallery-pair__handle` with `↔` icon · 4 pairs in 2×2 grid · pointer + keyboard drag · NOT static 2-column compare | Matthew req 2026-05-29 (R-BA-6 commitment cde3043d finally implemented) | Static compare = ship blocker per §11 anti-pattern 12 |
+| **Client form → email** | Every client website MUST have a contact form posting to `/api/client-contact` · `functions/api/client-contact.ts` Resend handler · per-project env `RECIPIENT_EMAIL`+`RESEND_API_KEY`+`FROM_EMAIL` set via `pl:cf-env-bootstrap` · 5 fields (name/email/phone required · service/message optional) · NO Cloudinary · NO hidden tracking (free tier) · SMTP override deferred to paid tier | Codex R42 2026-05-29 + verified test send (Resend ID 025bd657-... + curl test OK) | Hidden fields / SMTP = paid-tier upgrade · don't add free |
+| **CF Pages publish · functions whitelist** | `pl:publish-dir --with-functions` ONLY copies `functions/api/client-contact.ts` + `wrangler.toml` to stage · NEVER `functions/admin/*` or `functions/api/contact.ts` (those are ProfitsLocal main site only) | Codex R41 Q-YY-1 caution · prevent attack surface exposure | Adding new whitelist entry = codex round |
+| **Resend domain status** | `hello@fengtalk.ai` verified (sending OK) · `profitslocal.com` added 2026-05-29 (DKIM/SPF DNS in CF Cloudflare · status pending → verified within 30min) | Resend domain dashboard | When verified · update FROM_EMAIL default to `leads@profitslocal.com` in `pl-cf-env-bootstrap.js` |
 
 ---
 
@@ -175,6 +178,7 @@ History:
 - v1.1 (2026-05-29): R37 · 3 SHIP clients (was 2) · mark-squire recovered from BLOCKED. Locks `core/handoff/merge-inferred.js` shared helper · `buildCoreExtract` deep fusion · template empty-contact-row guard. No deprecation. Pure addition.
 - v1.2 (2026-05-29): R38 · 2 templates inventoried (was 1) · trade-classic added at avg 84.3. Old templates fully retired to `_deprecated-2026-05-29/`. Locks: SOP-TEMPLATE-INVENTORY · composer `--template` dispatch · brand-tokens placement rule · a-j brand-tokens path fix (83→89 side-effect). 4 huashu/taste-skill variants V1-V4 deferred to tasks #106-#109.
 - v1.3 (2026-05-29 evening): R39 + R40 + R-BA-6 visual polish round. trade-classic post-visual-QA. Locks: `core/handoff/copy-builders.js` profile dispatch · 4 anti-hallucination guards (yearFounded null · warranty_years_verified null · suburbs_verified split · no invented per-client facts) · R-BA-6 draggable before/after slider · SOP-TEMPLATE-INVENTORY §5.5 visual gate (mechanical + human + Matthew sign-off) · §11 anti-patterns expanded 7→13. Trade-classic re-baseline: vicwest 83B · a-j 82B · mark-squire 86A (within audit noise of R38 84/82/87).
+- v1.4 (2026-05-29 night): R41 + R42 · Lead-capture E2E wired. `functions/api/client-contact.ts` (minimal · 180 lines · 5 fields · Resend only) · `pl-publish-dir --with-functions` whitelist-copies client-contact.ts + wrangler.toml · `pl-cf-env-bootstrap` sets RECIPIENT_EMAIL+RESEND_API_KEY+FROM_EMAIL+CLIENT_NAME per project · both templates (editorial-newsletter + trade-classic) now POST forms to /api/client-contact · inline JS handles loading/success/error UX. Verified end-to-end: vicwest-roofing-test.pages.dev → curl POST → Resend → matthewkiata@gmail.com lead inbox. Resend `profitslocal.com` domain verification queued (DNS in CF). Audit baselines unchanged: vicwest 91A · a-j 89A · mark-squire 93A (editorial-newsletter). SOP-TEMPLATE-INVENTORY §6.5 (Stage 4.5 form wire-up) MANDATORY for future templates.
 
 ### When a new agent reads this
 

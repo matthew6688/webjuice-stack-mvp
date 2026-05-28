@@ -458,9 +458,9 @@ p { color: var(--fg-2); }
         </dl>
       </aside>
 
-      <form class="form" action="#" method="post" novalidate aria-labelledby="form-h" id="quote-form">
+      <form class="form pl-client-contact" action="/api/client-contact" method="post" novalidate aria-labelledby="form-h" id="quote-form" data-pl-form>
         <h3 id="form-h" style="font-family:var(--font-display);font-size:var(--text-xl);margin-block-end:var(--space-2);">Send the brief</h3>
-        <p class="form-note">Name and email required · phone, suburb and service optional</p>
+        <p class="form-note">Name, email and phone required · suburb, service and message optional</p>
 
         <div class="field-row">
           <div class="field">
@@ -475,8 +475,8 @@ p { color: var(--fg-2); }
 
         <div class="field-row">
           <div class="field">
-            <label for="phone">Phone</label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+            <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-required="true" />
           </div>
           <div class="field">
             <label for="suburb">Suburb</label>
@@ -501,7 +501,37 @@ p { color: var(--fg-2); }
           <button class="btn btn-primary" type="submit">Send the brief</button>
           <a class="btn btn-secondary" href="tel:{{client.phone_tel}}">Or call {{client.phone_display}}</a>
         </div>
+        <p class="pl-form-status" hidden aria-live="polite" style="margin-block-start:var(--space-4);font-size:var(--text-sm);"></p>
       </form>
+
+      <script>
+      (function () {
+        document.querySelectorAll('form[data-pl-form]').forEach((form) => {
+          const status = form.querySelector('.pl-form-status');
+          const btn = form.querySelector('button[type="submit"]');
+          const original = btn ? btn.textContent : 'Submit';
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+            if (status) { status.hidden = false; status.style.color = ''; status.textContent = 'Sending your enquiry…'; }
+            try {
+              const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+              const data = await res.json().catch(() => ({}));
+              if (res.ok && data.ok) {
+                if (status) { status.style.color = '#1B5E3F'; status.textContent = '✓ Thanks · we will be in touch shortly.'; }
+                form.reset();
+              } else {
+                if (status) { status.style.color = '#A93226'; status.textContent = data.error || 'Could not submit · please call or try again.'; }
+              }
+            } catch (err) {
+              if (status) { status.style.color = '#A93226'; status.textContent = 'Network issue · please call or try again.'; }
+            } finally {
+              if (btn) { btn.disabled = false; btn.textContent = original; }
+            }
+          });
+        });
+      })();
+      </script>
     </div>
   </div>
 </section>

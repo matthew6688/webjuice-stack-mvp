@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/mark-squire-roof-restorations/v2/editorial-output",
   "tier": "fast",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T06:44:53.808Z",
+  "generated_at": "2026-05-28T08:06:32.406Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -28,19 +28,19 @@
     "composite": 100
   },
   "tier_2": {
-    "score": 86,
+    "score": 93,
     "breakdown": {
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 136,
-        "var_hits": 143,
-        "color_decls": 105
+        "coverage_pct": 371,
+        "var_hits": 356,
+        "color_decls": 96
       },
       "D2.2_hardcoded_hex_count": {
-        "score": 86,
+        "score": 77,
         "weight": 0.25,
-        "unique_non_gray_hex": 11,
+        "unique_non_gray_hex": 13,
         "sample": [
           "#1f232b",
           "#3a5a6b",
@@ -48,10 +48,10 @@
           "#faf6ee",
           "#5a5c61",
           "#e4dfd2",
-          "#091f36",
-          "#e89d0e",
-          "#5a6b7a",
-          "#94a3ae"
+          "#a88a5c",
+          "#8e7148",
+          "#4f8a4f",
+          "#c9822f"
         ]
       },
       "D2.3_type_rule_compliance": {
@@ -60,11 +60,11 @@
         "note": "brand-spec has no primary_font · skipped"
       },
       "D2.4_logo_variant_per_surface": {
-        "score": null,
+        "score": 100,
         "weight": 0.15,
-        "logo_checks": 0,
+        "logo_checks": 2,
         "violations": [],
-        "note": "no logo SVG references found in HTML"
+        "note": null
       },
       "D2.5_brand_palette_honored": {
         "score": 100,
@@ -81,38 +81,38 @@
         ]
       },
       "D2.BC6_token_coverage_depth": {
-        "score": 24,
+        "score": 90,
         "weight": 0.1,
         "categories": {
           "color": {
-            "score": 18,
-            "coverage_pct": 18,
-            "var_hits": 19,
-            "prop_count": 105
+            "score": 100,
+            "coverage_pct": 179,
+            "var_hits": 172,
+            "prop_count": 96
           },
           "radius": {
-            "score": 58,
-            "coverage_pct": 58,
-            "var_hits": 11,
+            "score": 95,
+            "coverage_pct": 95,
+            "var_hits": 18,
             "prop_count": 19
           },
           "shadow": {
-            "score": 45,
-            "coverage_pct": 45,
+            "score": 56,
+            "coverage_pct": 56,
             "var_hits": 5,
-            "prop_count": 11
+            "prop_count": 9
           },
           "space": {
-            "score": 1,
-            "coverage_pct": 1,
-            "var_hits": 1,
-            "prop_count": 101
+            "score": 100,
+            "coverage_pct": 111,
+            "var_hits": 94,
+            "prop_count": 85
           },
           "motion": {
-            "score": 0,
-            "coverage_pct": 0,
-            "var_hits": 0,
-            "prop_count": 6
+            "score": 100,
+            "coverage_pct": 700,
+            "var_hits": 14,
+            "prop_count": 2
           }
         },
         "note": "SOP-AUDIT-STANDARD-V2 §9 · split var() coverage by token category · 5-category depth",
@@ -125,16 +125,16 @@
         ]
       }
     },
-    "total_weight": 0.8
+    "total_weight": 0.9500000000000001
   },
   "tier_3": null,
   "tier_4": null,
   "tier_4d_voice": {
-    "score": 90,
+    "score": 80,
     "dims": {
       "D4d.voice_av4_banned_phrases": {
         "weight": 0.5,
-        "hits": 0
+        "hits": 1
       },
       "D4d.voice_av1_us_spelling": {
         "weight": 0.3,
@@ -146,6 +146,14 @@
       }
     },
     "violations": [
+      {
+        "page": "index.html",
+        "rule": "AV-4",
+        "kind": "banned_phrase",
+        "match": "quality workmanship",
+        "count": 1,
+        "severity": "P1"
+      },
       {
         "page": "index.html",
         "rule": "AV-1",
@@ -171,24 +179,24 @@
   "content_richness_deterministic": {
     "dims": {
       "D2.14_proof_variety": {
-        "score": 50,
+        "score": 100,
         "types_present": {
           "reviews": true,
-          "stats": false,
-          "case_study": false,
+          "stats": true,
+          "case_study": true,
           "expert_quote": true,
           "certifications": true,
-          "photos": false
+          "photos": true
         },
-        "types_count": 3,
+        "types_count": 6,
         "per_page": {
           "index.html": {
-            "reviews": 15,
-            "stats": 0,
-            "case_study": 0,
-            "expert_quote": 13,
-            "certifications": 16,
-            "photos": 0
+            "reviews": 17,
+            "stats": 4,
+            "case_study": 6,
+            "expert_quote": 2,
+            "certifications": 5,
+            "photos": 10
           }
         },
         "threshold_pass": true,
@@ -198,7 +206,7 @@
         "score": 100,
         "services_rendered": 6,
         "suburbs_rendered": 18,
-        "review_blocks": 14,
+        "review_blocks": 13,
         "placeholder_banner_present": true,
         "threshold": "services ≥ 3 AND suburbs ≥ 5 AND (reviews ≥ 1 OR banner)",
         "pass": true,
@@ -232,13 +240,23 @@
   },
   "t2_copy_quality_llm": null,
   "tier_5": null,
-  "composite": 86,
+  "composite": 93,
   "grade": "A",
   "ship_verdict": "SHIP",
   "block_reason": null,
   "issues": [
     {
       "id": "I-001",
+      "tier": "T4d",
+      "severity": "P1",
+      "dim": "AV-4",
+      "page": "index.html",
+      "what": "AV-4 banned_phrase · \"quality workmanship\" (1× hit)",
+      "why": "Voice-rule violation per pl-au-trade-voice §1 (AU universal layer)",
+      "fix": "Replace banned generic \"quality workmanship\" with specific concrete proof (pl-au-trade-voice §1.5)"
+    },
+    {
+      "id": "I-002",
       "tier": "T4d",
       "severity": "P1",
       "dim": "AV-1",

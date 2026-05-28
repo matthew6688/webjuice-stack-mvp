@@ -642,20 +642,21 @@
           <span class="quote-card__eyebrow">Free quote</span>
           <h3>Get a same-day response.</h3>
           <p class="quote-card__sub">Drop your name + email and we'll respond within 2 hours during business hours. Phone optional but speeds things up.</p>
-          <form class="quote-card__form" action="#" method="post" onsubmit="event.preventDefault(); alert('Demo · form would submit');">
+          <form class="quote-card__form pl-client-contact" action="/api/client-contact" method="post" data-pl-form>
             <input type="text" name="name" placeholder="Your name *" required aria-required="true">
             <input type="email" name="email" placeholder="Email address *" required aria-required="true">
-            <input type="tel" name="phone" placeholder="Mobile number (optional)">
+            <input type="tel" name="phone" placeholder="Mobile number *" required aria-required="true">
             <select name="service">
               <option value="">What do you need? (optional)</option>
-              <option value="replacement">Roof Replacement</option>
-              <option value="restoration">Roof Restoration</option>
-              <option value="repair">Roof Repair</option>
-              <option value="gutters">Gutter / Pipe</option>
-              <option value="storm">Storm Damage</option>
-              <option value="other">Other</option>
+              <option value="Roof Replacement">Roof Replacement</option>
+              <option value="Roof Restoration">Roof Restoration</option>
+              <option value="Roof Repair">Roof Repair</option>
+              <option value="Gutter / Pipe">Gutter / Pipe</option>
+              <option value="Storm Damage">Storm Damage</option>
+              <option value="Other">Other</option>
             </select>
             <button type="submit" class="btn btn--primary">Request Free Quote</button>
+            <p class="pl-form-status" hidden aria-live="polite"></p>
           </form>
           <p class="quote-card__trust">No obligation · Free on-site quote · ABN on every invoice</p>
         </aside>
@@ -866,21 +867,22 @@
           <span class="quote-card__eyebrow">Request quote</span>
           <h3>Tell us about the job.</h3>
           <p class="quote-card__sub">We'll email a written quote within 2 hours during business hours.</p>
-          <form class="quote-card__form" action="#" method="post" onsubmit="event.preventDefault(); alert('Demo · form would submit');">
+          <form class="quote-card__form pl-client-contact" action="/api/client-contact" method="post" data-pl-form>
             <input type="text" name="name" placeholder="Your name *" required aria-required="true">
             <input type="email" name="email" placeholder="Email address *" required aria-required="true">
-            <input type="tel" name="phone" placeholder="Mobile number (optional)">
-            <input type="text" name="suburb" placeholder="Suburb (optional)">
+            <input type="tel" name="phone" placeholder="Mobile number *" required aria-required="true">
             <select name="service">
               <option value="">What do you need? (optional)</option>
-              <option>Roof Replacement</option>
-              <option>Roof Restoration</option>
-              <option>Roof Repair</option>
-              <option>Gutter / Pipe</option>
-              <option>Storm Damage</option>
-              <option>Other</option>
+              <option value="Roof Replacement">Roof Replacement</option>
+              <option value="Roof Restoration">Roof Restoration</option>
+              <option value="Roof Repair">Roof Repair</option>
+              <option value="Gutter / Pipe">Gutter / Pipe</option>
+              <option value="Storm Damage">Storm Damage</option>
+              <option value="Other">Other</option>
             </select>
+            <textarea name="message" rows="4" placeholder="Tell us about the job (optional · suburb, urgency, photos welcome)" style="resize: vertical;"></textarea>
             <button type="submit" class="btn btn--primary">Request Quote</button>
+            <p class="pl-form-status" hidden aria-live="polite"></p>
           </form>
           <p class="quote-card__trust">{{client.license_authority}}-licensed · Fully insured · ABN on every invoice</p>
         </aside>
@@ -935,6 +937,43 @@
       <span>Call {{client.business_name}} · {{client.phone_display}}</span>
     </a>
   </div>
+
+  <!-- ═══════════════ Client contact form · graceful fetch + status (codex R42 Q-ZZ-5) ═══════════════ -->
+  <script>
+  (function () {
+    document.querySelectorAll('form[data-pl-form]').forEach((form) => {
+      const status = form.querySelector('.pl-form-status');
+      const btn = form.querySelector('button[type="submit"]');
+      const originalBtnText = btn ? btn.textContent : 'Submit';
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+        if (status) { status.hidden = false; status.style.color = ''; status.textContent = 'Sending your enquiry…'; }
+        try {
+          const fd = new FormData(form);
+          const res = await fetch(form.action, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.ok) {
+            if (status) { status.style.color = '#1B5E3F'; status.textContent = '✓ Thanks · we will be in touch shortly.'; }
+            form.reset();
+          } else {
+            if (status) { status.style.color = '#A93226'; status.textContent = data.error || 'Could not submit · please call or try again.'; }
+          }
+        } catch (err) {
+          if (status) { status.style.color = '#A93226'; status.textContent = 'Network issue · please call or try again.'; }
+        } finally {
+          if (btn) { btn.disabled = false; btn.textContent = originalBtnText; }
+        }
+      });
+    });
+  })();
+  </script>
+
+  <style>
+    .pl-client-contact textarea { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); font: inherit; background: var(--paper); }
+    .pl-client-contact .pl-form-status { font-size: 0.9rem; margin: 8px 0 0; }
+    .pl-client-contact button[disabled] { opacity: 0.7; cursor: wait; }
+  </style>
 
   <!-- ═══════════════ R-BA-6 · Before/After draggable slider · pointer+keyboard ═══════════════ -->
   <script>
