@@ -1,0 +1,171 @@
+{
+  "slug": "mark-squire-roof-restorations",
+  "verdict": "YELLOW",
+  "recommended_pages": "single",
+  "generated_at": "2026-05-28T04:47:55.218Z",
+  "hard_fields": {
+    "business_name": {
+      "ok": true,
+      "value": "Mark Squire Roof Restorations",
+      "source": "entity.latest / core-extract"
+    },
+    "phone": {
+      "ok": true,
+      "value": "0400 058 842",
+      "source": "entity.latest / GBP / core-extract"
+    },
+    "address": {
+      "ok": true,
+      "value": "4 Eureka Terrace, Ballarat East VIC 3350, Australia",
+      "source": "GBP / core-extract"
+    },
+    "customer_brief": {
+      "ok": true,
+      "words": 5522,
+      "sections": 19,
+      "min_words": 3000,
+      "file": "v2/customer-brief.md"
+    },
+    "real_business_signal": {
+      "ok": true,
+      "real_signal_units": 34,
+      "min_units": 8,
+      "recommended_layout": "single",
+      "recommended_pages": 1,
+      "components": {
+        "real_services": 20,
+        "real_testimonials": 0,
+        "suburbs_div5": 3,
+        "owner": 2,
+        "founded": 2,
+        "experience_claim": 0,
+        "abn": 1,
+        "named_partnerships": 1,
+        "owned_crawl": 0,
+        "tinyfish_summarized": 5
+      },
+      "differentiation_signal": true,
+      "differentiation_sources": {
+        "owner": true,
+        "founded": true,
+        "experience": false,
+        "abn": true,
+        "named_partnerships": 1
+      },
+      "note": "Hard rule: need ≥5 real-source content units + ≥1 differentiation signal. Below = SKIP OD entirely."
+    },
+    "sources_consumed": {
+      "ok": true,
+      "gbp": true,
+      "owned_crawl_pages": 0,
+      "tinyfish_mentions": 5,
+      "abn": false,
+      "whois": false,
+      "wayback": false
+    },
+    "service_content": {
+      "ok": true,
+      "handoff_services_present": true,
+      "handoff_services_healthy": true,
+      "parked_domain_detected": false,
+      "handoff_eval": {
+        "ok": true,
+        "present": true,
+        "count": 5,
+        "parked": false,
+        "notes_excerpt": null,
+        "label": "handoff/content/services.json"
+      },
+      "od_package_eval": {
+        "ok": true,
+        "present": true,
+        "count": 5,
+        "parked": false,
+        "notes_excerpt": null,
+        "label": "handoff/od-package/content/services.json"
+      },
+      "note": "Hard rule (2026-05-27): handoff/content/services.json is what compose-site consumes. If present but empty / parked-domain notes → RED. Closes VIP defect where core-extract reported services but extractor wrote 0 from parked landing page."
+    }
+  },
+  "rich_fields": {
+    "abn": {
+      "ok": true,
+      "value": "49 809 953 319",
+      "entity": null,
+      "provenance": "verified"
+    },
+    "service_list": {
+      "ok": true,
+      "count_real": 20,
+      "count_total": 20,
+      "min": 5,
+      "provenance": "verified"
+    },
+    "testimonials": {
+      "ok": false,
+      "count_real": 0,
+      "count_total": 0,
+      "min": 3,
+      "provenance": "needs-ai-fabricated"
+    },
+    "suburbs_served": {
+      "ok": true,
+      "count": 18,
+      "min": 10,
+      "provenance": "verified"
+    },
+    "owner_name": {
+      "ok": true,
+      "value": "Mark Squire",
+      "provenance": "verified"
+    },
+    "experience": {
+      "ok": true,
+      "value": "1996",
+      "provenance": "verified"
+    }
+  },
+  "optional_fields": {
+    "google_signals": {
+      "ok": false,
+      "rating": {
+        "rating": 5,
+        "review_count": 3
+      },
+      "review_count": null,
+      "provenance": "verified-or-none",
+      "note": "optional · doesn't block GREEN if absent"
+    },
+    "license": {
+      "ok": false,
+      "status": "not_looked_up",
+      "authority": null,
+      "licence_number": null,
+      "licensee_name": null,
+      "lookup_tier": null,
+      "looked_up_at": null,
+      "customer_facing_rule": "OMIT · do NOT claim license · audit-tier T1 will fail if HTML mentions license",
+      "note": "License is informational · grey-zone customers OK · network gate via audit-tier T1."
+    }
+  },
+  "missing": [],
+  "inferred": [
+    {
+      "field": "testimonials",
+      "need": "needs-ai-fabricated",
+      "detail": {
+        "ok": false,
+        "count_real": 0,
+        "count_total": 0,
+        "min": 3,
+        "provenance": "needs-ai-fabricated"
+      }
+    }
+  ],
+  "counts": {
+    "hard_ok": 7,
+    "hard_total": 7,
+    "rich_ok": 5,
+    "rich_total": 6
+  }
+}

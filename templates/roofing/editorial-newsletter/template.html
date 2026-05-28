@@ -450,7 +450,7 @@ p { color: var(--fg-2); }
       <aside aria-label="Contact details">
         <dl class="contact-info">
           <div class="contact-row"><dt>Telephone</dt><dd><a href="tel:{{client.phone_tel}}">{{client.phone_display}}</a></dd></div>
-          <div class="contact-row"><dt>Email</dt><dd><a href="mailto:{{client.email}}">{{client.email}}</a></dd></div>
+          {{#client.email}}<div class="contact-row"><dt>Email</dt><dd><a href="mailto:{{client.email}}">{{client.email}}</a></dd></div>{{/client.email}}
           <div class="contact-row"><dt>Workshop</dt><dd>{{{client.address_html}}}</dd></div>
           <div class="contact-row"><dt>Hours</dt><dd>{{{client.hours_html}}}</dd></div>
           {{#client.license_visible}}<div class="contact-row"><dt>Licence</dt><dd>{{client.license_authority}} · {{client.license_number}}</dd></div>{{/client.license_visible}}
@@ -524,7 +524,7 @@ p { color: var(--fg-2); }
         <h4>Find us</h4>
         <ul>
           <li><a href="tel:{{client.phone_tel}}">{{client.phone_display}}</a></li>
-          <li><a href="mailto:{{client.email}}">{{client.email}}</a></li>
+          {{#client.email}}<li><a href="mailto:{{client.email}}">{{client.email}}</a></li>{{/client.email}}
           {{#client.google_maps_url}}<li><a href="{{.}}" rel="noopener" target="_blank">Google Maps</a></li>{{/client.google_maps_url}}
         </ul>
       </div>

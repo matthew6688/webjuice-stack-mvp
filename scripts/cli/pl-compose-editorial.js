@@ -30,6 +30,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
 import { load as cheerioLoad } from 'cheerio';
+import {
+  loadInferred,
+  mergeSuburbs,
+  mergeTestimonials,
+  mergeOwnerName,
+  hadInference,
+  inferredFieldNames,
+} from '../../core/handoff/merge-inferred.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
@@ -198,6 +206,11 @@ async function main() {
   // ─── Read SSOTs ────────────────────────────────────────────────────────
   const checkpoint = readJson(path.join(clientDir, 'checkpoint.json'));
   const coreExtract = readJson(path.join(clientDir, 'core-extract.json'));
+  // YELLOW back-fill · per codex R37 Q-RR-3 (b) · shared helper · provenance-tagged.
+  // CANONICAL.md §3 anti-gaming: inferred values do NOT promote checkpoint to GREEN.
+  // Composer only uses them to fill rendered HTML · PREVIEW banner stays.
+  const inferredData = loadInferred(slug, REPO);
+  const hasInferredBackfill = hadInference(inferredData);
   // V5 hybrid · codex R32 Q-MM-2 (c) · read wireframe-home-<llm>.json if --use-wireframe set
   // Wireframe is LLM-generated persona-aware copy (Phase A.1 Step 5 output)
   // Use as PRIMARY copy source for hero block · narrative as fallback
@@ -386,23 +399,31 @@ async function main() {
   const aboutPara = narrative.about_us_draft || narrative.company_background || `${businessName} has worked the ${city} region since ${yearFounded}. We run our own crew, scope quotes on site, and put a written warranty in your hands.`;
   const aboutParagraphs = Array.isArray(aboutPara) ? aboutPara.slice(0, 3) : String(aboutPara).split(/\n\n+/).slice(0, 3);
 
-  // Reviews
+  // Reviews · merge real (verified) + inferred (ai-fabricated) per codex R37 Q-RR-3.
+  // Real reviews from core-extract content_assets · inferred from pl:llm-infer-thin-data.
   const realReviews = (coreExtract?.brief?.content_assets?.best_review_quotes || []).slice(0, 3);
-  const reviewsItems = realReviews.length >= 1
-    ? realReviews.map(r => ({
-        stars_aria: `${r.rating || 5} out of 5 stars`,
-        stars_unicode: '★ ★ ★ ★ ★'.slice(0, (r.rating || 5) * 2 - 1),
-        quote: r.quote || r.text || '',
-        author: r.author || 'Verified customer',
-        location: r.location || city,
-        source_label: 'Google review',
-      }))
-    : [
-        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Tidy site, clear daily update, no surprises on price. Ten-year warranty paperwork in our hands the day they left.', author: 'Karen S.', location: 'Sebastopol', source_label: 'Google review · AI placeholder' },
-        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Called Tuesday morning about a leak. Someone here Wednesday, repointed by Friday. Fair quote, friendly crew.', author: 'Mark D.', location: 'Wendouree', source_label: 'Google review · AI placeholder' },
-        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'After a storm took half our tiles, tarped the same day and walked us through the insurance claim. Replacement done within three weeks.', author: 'Janine M.', location: 'Buninyong', source_label: 'Google review · AI placeholder' },
-      ];
-  const reviewsIsPlaceholder = realReviews.length < 3;
+  const mergedTestimonials = mergeTestimonials(realReviews, inferredData, { minReal: 3, cap: 4 });
+  let reviewsItems;
+  if (mergedTestimonials.length >= 1) {
+    reviewsItems = mergedTestimonials.map(t => ({
+      stars_aria: '5 out of 5 stars',
+      stars_unicode: '★ ★ ★ ★ ★',
+      quote: t.quote || '',
+      author: t.author || 'Verified customer',
+      location: t.location || city,
+      // provenance-tagged source_label · transparency for PREVIEW banner
+      source_label: t.provenance === 'verified' ? 'Google review' : 'Google review · AI placeholder',
+    }));
+  } else {
+    // Fallback (no real, no inferred) · in-line placeholders, banner ON
+    reviewsItems = [
+      { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Tidy site, clear daily update, no surprises on price. Ten-year warranty paperwork in our hands the day they left.', author: 'Karen S.', location: 'Sebastopol', source_label: 'Google review · AI placeholder' },
+      { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Called Tuesday morning about a leak. Someone here Wednesday, repointed by Friday. Fair quote, friendly crew.', author: 'Mark D.', location: 'Wendouree', source_label: 'Google review · AI placeholder' },
+      { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'After a storm took half our tiles, tarped the same day and walked us through the insurance claim. Replacement done within three weeks.', author: 'Janine M.', location: 'Buninyong', source_label: 'Google review · AI placeholder' },
+    ];
+  }
+  // Banner fires if (a) fewer than 3 verified reviews OR (b) any inferred field present
+  const reviewsIsPlaceholder = realReviews.length < 3 || hasInferredBackfill;
 
   // Gallery (3 before/after pairs · R-BA-6 draggable slider · stock library)
   const galleryPairs = [
@@ -411,9 +432,10 @@ async function main() {
     { idx: 3, before_src: 'assets/stock/gallery-12-asbestos-before.jpg', before_alt: 'Old roof sheeting before replacement', after_src: 'assets/stock/gallery-12-modern-metal-after.jpg', after_alt: 'New Colorbond metal roof after replacement', caption: `Full Colorbond replacement · ${city}` },
   ];
 
-  // Coverage · priority: brief.yaml.suburbs_covered (canonical) > narrative > facts > fallback
-  const suburbs = brief?.suburbs_covered || narrative.service_area?.suburbs || facts.service_area || coreExtract?.brief?.real_facts?.suburbs_served || [];
-  const suburbsList = (Array.isArray(suburbs) ? suburbs : []).slice(0, 18);
+  // Coverage · priority: brief.yaml.suburbs_covered (canonical) > narrative > facts > real_facts
+  // Then merge inferred suburbs if real < 10 (codex R37 Q-RR-3 · ai-radius-inferred via Nominatim)
+  const realSuburbs = brief?.suburbs_covered || narrative.service_area?.suburbs || facts.service_area || coreExtract?.brief?.real_facts?.suburbs_served || [];
+  const suburbsList = mergeSuburbs(realSuburbs, inferredData, { minReal: 10, cap: 18 });
   if (suburbsList.length === 0 && city) suburbsList.push(city, `${city} Central`);
 
   // SEO

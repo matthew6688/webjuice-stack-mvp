@@ -1,9 +1,9 @@
-# Audit Run · mark-squire-roof-restorations · 2026-05-28T04:02:38.908Z
+# Audit Run · mark-squire-roof-restorations · 2026-05-28T04:49:40.496Z
 
 - Script: pl-audit-v4/0.1.0-skeleton
 - Tier: fast
 - Pages: 1
-- Seed (sha256 of HTML[0]): 3a2b3267eed321e5
+- Seed (sha256 of HTML[0]): b61ba75862422020
 
 ## LLM calls
 

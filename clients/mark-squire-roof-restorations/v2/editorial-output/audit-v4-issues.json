@@ -1,11 +1,32 @@
 {
   "schema_version": "audit-v4-issues/1",
   "slug": "mark-squire-roof-restorations",
-  "issues": [],
+  "issues": [
+    {
+      "id": "I-001",
+      "tier": "T4d",
+      "severity": "P1",
+      "dim": "AV-4",
+      "page": "index.html",
+      "what": "AV-4 banned_phrase · \"quality workmanship\" (1× hit)",
+      "why": "Voice-rule violation per pl-au-trade-voice §1 (AU universal layer)",
+      "fix": "Replace banned generic \"quality workmanship\" with specific concrete proof (pl-au-trade-voice §1.5)"
+    },
+    {
+      "id": "I-002",
+      "tier": "T4d",
+      "severity": "P1",
+      "dim": "AV-1",
+      "page": "index.html",
+      "what": "AV-1 us_spelling · \"specialty\" (2× hit)",
+      "why": "Voice-rule violation per pl-au-trade-voice §1 (AU universal layer)",
+      "fix": "Replace \"specialty\" with AU spelling (e.g. colour/centre/realise)"
+    }
+  ],
   "summary": {
     "P0": 0,
-    "P1": 0,
+    "P1": 2,
     "P2": 0,
-    "total": 0
+    "total": 2
   }
 }
