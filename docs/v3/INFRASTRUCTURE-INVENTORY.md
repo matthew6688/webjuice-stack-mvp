@@ -257,7 +257,15 @@ anti_patterns: [{ id, why }]
 | `handoff/od-package/brand/brand-tokens.css` | `pl:render-brand-kit` | Per-client CSS tokens (R37 a-j fix: must exist at canonical path) |
 | `handoff/od-package/brand/brand-spec.json` | brand-kit pipeline | Brand metadata (hex · fonts · personality) |
 | `handoff/photos/selected.json` | `core/handoff/classify-images.js` | Vision-LLM curated images |
+| **`site-ctx.json`** | **`pl:extract-site-ctx`** (R46 · zero LLM) | **Middle contract: master.md → normalized JSON for all downstream copy tools** |
+| `handoff/od-package/content/hero-copy.json` | `pl:enrich-handoff` | LLM-generated hero copy options (3 angles) |
+| `handoff/od-package/content/services.json` | `pl:enrich-handoff` | LLM-generated service list + descriptions |
+| `handoff/od-package/content/about.md` | `pl:enrich-handoff` | LLM-generated about story paragraphs |
+| `handoff/od-package/content/faq.json` | `pl:enrich-handoff` | LLM-generated FAQ items |
+| **`handoff/od-package/content/reviews.json`** | **`pl:extract-site-ctx --write-content`** (R46) | **Real Google reviews formatted for composer** |
+| **`handoff/od-package/content/coverage.json`** | **`pl:extract-site-ctx --write-content`** (R46) | **Suburb list formatted for composer** |
 | `editorial-output/index.html` | `pl:compose-editorial` (v1 canonical) | Rendered website |
+| `editorial-output/ctx-snapshot.json` | `pl:compose-editorial` (R44+R46) | Provenance: which source was used for each content area |
 | `editorial-output/audit-v4-*.json` | `pl:audit-v4` | Audit results |
 | `concept/reference-adapter/cf-pages-deploy.json` | `pl:publish-demo` | Deploy record |
 
@@ -266,7 +274,21 @@ anti_patterns: [{ id, why }]
 - Templates: `editorial-newsletter` (default · warm editorial) · `trade-classic` (safe AU trade voice)
 - Copy-builders dispatch via `core/handoff/copy-builders.js` (R40 · per profile)
 - YELLOW back-fill via `core/handoff/merge-inferred.js` (R37 · provenance-tagged)
-- Output: `clients/<slug>/v2/editorial-output/index.html` + `assets/`
+- **R44+R46 prepared content priority chain**: reads `handoff/od-package/content/` files first
+  - hero: `hero-copy.json` → formula fallback
+  - services: `services.json` → core-extract fallback
+  - about: `about.md` → formula fallback
+  - reviews: `reviews.json` (≥3 items → real, no placeholder) → testimonials → formula
+  - coverage: `coverage.json` (≥3 suburbs) → mergeSuburbs formula
+- Output: `clients/<slug>/v2/editorial-output/index.html` + `assets/` + `ctx-snapshot.json`
+
+### `pl:extract-site-ctx` (R46 new · `scripts/cli/pl-extract-site-ctx.js`)
+- **Zero LLM · deterministic parse · fast**
+- Input: `master.md` (YAML frontmatter) + `core-extract.json` (real_facts + brand + ai_extensions)
+- Output: `site-ctx.json` — normalized JSON middle contract for all downstream tools
+- `--write-content` flag: also writes `reviews.json` + `coverage.json` to `handoff/od-package/content/`
+- Skip if < 24 hours old (use `--force` to regenerate)
+- Codex R45+R46 consensus: Option B+C hybrid
 
 ### Pipeline orchestrator
 - `scripts/cli/pl-pipeline-all.js` — runs full pipeline (discovery → enrich → extract → checkpoint → render → audit)

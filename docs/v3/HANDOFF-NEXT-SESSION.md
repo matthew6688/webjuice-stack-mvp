@@ -31,11 +31,17 @@ except: print('$slug: NO AUDIT')
 "
 done
 
-# Expected:
-#   vicwest-roofing: 91 · A · SHIP
-#   a-j-roofing-solutions: 83 · B · SHIP
-#   mark-squire-roof-restorations: 93 · A · SHIP        ← NEW (was N/A_BLOCKED)
+# Expected (R46 updated · 2026-05-28):
+#   vicwest-roofing: 91 · A · SHIP      (reviews: REAL 4)
+#   a-j-roofing-solutions: 89 · A · SHIP  ← was 83 · +6pt from coverage.json
+#   mark-squire-roof-restorations: 93 · A · SHIP
 #   abc-roof-restoration-brisbane: N/A_BLOCKED · BLOCKED · GATE 1 RED
+
+# 2b. Verify R46 new files exist
+ls clients/vicwest-roofing/v2/site-ctx.json \
+   clients/vicwest-roofing/v2/handoff/od-package/content/reviews.json \
+   clients/vicwest-roofing/v2/handoff/od-package/content/coverage.json
+# Expected: all 3 files present
 
 # 3. Verify recovered exports still load
 node -e "import('./core/audit/redesign-brief-builder.js').then(m => console.log(Object.keys(m).sort().join('·')))"
@@ -54,6 +60,16 @@ If any of above fails · STOP · investigate before proceeding.
 ---
 
 ## 🎯 Next session priorities (ranked · pick one or more)
+
+### Priority 0 · SHIP vicwest ($399 · Task #66)
+
+vicwest is 91/A/SHIP with 4 real reviews. Pipeline fully connected. Time to deploy and invoice.
+
+```bash
+npm run pl:ship-customer -- --slug vicwest-roofing --recipient <client-email> --client-name "Vicwest Roofing"
+```
+
+Or manual steps: compose → audit → publish-dir → set env vars → Stripe payment link.
 
 ### Priority 1 · Phase B Step 6 · wire pl-audit-rubric (~2 hr)
 

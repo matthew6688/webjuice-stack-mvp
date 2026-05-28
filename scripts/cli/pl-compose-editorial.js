@@ -130,6 +130,40 @@ function readPreparedHero(odContentDir) {
 }
 
 /** Returns [paragraph string, …] or null */
+/** Returns [{quote, author, location, stars_aria, stars_unicode, source_label}] or null */
+function readPreparedReviews(odContentDir) {
+  const p = path.join(odContentDir, 'reviews.json');
+  try {
+    if (!fs.existsSync(p)) return null;
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    const items = data.reviews || [];
+    if (!items.length) return null;
+    return items.map(r => ({
+      stars_aria: r.stars_aria || '5 out of 5 stars',
+      stars_unicode: r.stars_unicode || '★ ★ ★ ★ ★',
+      quote: String(r.quote || '').trim(),
+      author: String(r.author || 'Google Reviewer').trim(),
+      location: String(r.location || '').trim(),
+      source_label: r.source_label || 'Google review',
+    })).filter(r => r.quote.length > 10);
+  } catch { return null; }
+}
+
+/** Returns {suburbs: [...string], by_arrangement_text: string|null} or null */
+function readPreparedCoverage(odContentDir) {
+  const p = path.join(odContentDir, 'coverage.json');
+  try {
+    if (!fs.existsSync(p)) return null;
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    const suburbs = data.suburbs || [];
+    if (!suburbs.length) return null;
+    return {
+      suburbs,
+      by_arrangement_text: data.by_arrangement_text || null,
+    };
+  } catch { return null; }
+}
+
 function readPreparedAbout(odContentDir) {
   const p = path.join(odContentDir, 'about.md');
   try {
@@ -329,10 +363,12 @@ async function main() {
     if (checkpoint.verdict === 'RED') die(`checkpoint RED · blocked render · see clients/${slug}/v2/checkpoint.json`, 3);
   }
 
-  // ─── R44 Prepared-content reads (Pipeline A · take priority over core-extract fallback) ──
+  // ─── R44+R46 Prepared-content reads (Pipeline A · take priority over core-extract fallback) ──
   const _preparedServices = readPreparedServices(odContentDir);   // [{name, short_desc, _source}] | null
   const _preparedHero     = readPreparedHero(odContentDir);       // {headline, subhead, chips, ...} | null
   const _preparedAbout    = readPreparedAbout(odContentDir);      // [string, ...] | null
+  const _preparedReviews  = readPreparedReviews(odContentDir);    // R46: [{quote,author,...}] | null
+  const _preparedCoverage = readPreparedCoverage(odContentDir);   // R46: {suburbs,by_arrangement_text} | null
 
   const realFacts = coreExtract?.brief?.real_facts || {};
   const narrative = coreExtract?.brief?.narrative || {};
@@ -587,31 +623,42 @@ async function main() {
 
   // About paragraphs now built via copy-builders.js (codex R40 Q-VV-3) · removed old split-based code.
 
-  // Reviews · merge real (verified) + inferred (ai-fabricated) per codex R37 Q-RR-3.
-  // Real reviews from core-extract content_assets · inferred from pl:llm-infer-thin-data.
-  const realReviews = (coreExtract?.brief?.content_assets?.best_review_quotes || []).slice(0, 3);
-  const mergedTestimonials = mergeTestimonials(realReviews, inferredData, { minReal: 3, cap: 4 });
+  // Reviews · priority chain (R46):
+  //   1. prepared reviews.json (from pl:extract-site-ctx --write-content · real Google reviews)
+  //   2. core-extract content_assets · best_review_quotes + merged inferred
+  //   3. in-line fallback placeholders
   let reviewsItems;
-  if (mergedTestimonials.length >= 1) {
-    reviewsItems = mergedTestimonials.map(t => ({
-      stars_aria: '5 out of 5 stars',
-      stars_unicode: '★ ★ ★ ★ ★',
-      quote: t.quote || '',
-      author: t.author || 'Verified customer',
-      location: t.location || city,
-      // provenance-tagged source_label · transparency for PREVIEW banner
-      source_label: t.provenance === 'verified' ? 'Google review' : 'Google review · AI placeholder',
-    }));
+  let reviewsIsPlaceholder;
+
+  if (_preparedReviews?.length >= 3) {
+    // R46: prepared reviews.json has real reviews · use directly · no placeholder banner
+    reviewsItems = _preparedReviews.slice(0, 4);
+    reviewsIsPlaceholder = false;
   } else {
-    // Fallback (no real, no inferred) · in-line placeholders, banner ON
-    reviewsItems = [
-      { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Tidy site, clear daily update, no surprises on price. Ten-year warranty paperwork in our hands the day they left.', author: 'Karen S.', location: 'Sebastopol', source_label: 'Google review · AI placeholder' },
-      { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Called Tuesday morning about a leak. Someone here Wednesday, repointed by Friday. Fair quote, friendly crew.', author: 'Mark D.', location: 'Wendouree', source_label: 'Google review · AI placeholder' },
-      { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'After a storm took half our tiles, tarped the same day and walked us through the insurance claim. Replacement done within three weeks.', author: 'Janine M.', location: 'Buninyong', source_label: 'Google review · AI placeholder' },
-    ];
+    // R37 formula fallback
+    const realReviews = (coreExtract?.brief?.content_assets?.best_review_quotes || []).slice(0, 3);
+    // Also try real_facts.testimonials if content_assets is thin
+    const testimonialFallback = (coreExtract?.brief?.real_facts?.testimonials || []).slice(0, 3);
+    const bestReal = realReviews.length >= 3 ? realReviews : testimonialFallback;
+    const mergedTestimonials = mergeTestimonials(bestReal, inferredData, { minReal: 3, cap: 4 });
+    if (mergedTestimonials.length >= 1) {
+      reviewsItems = mergedTestimonials.map(t => ({
+        stars_aria: '5 out of 5 stars',
+        stars_unicode: '★ ★ ★ ★ ★',
+        quote: t.quote || '',
+        author: t.author || 'Verified customer',
+        location: t.location || city,
+        source_label: t.provenance === 'verified' ? 'Google review' : 'Google review · AI placeholder',
+      }));
+    } else {
+      reviewsItems = [
+        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Tidy site, clear daily update, no surprises on price. Ten-year warranty paperwork in our hands the day they left.', author: 'Karen S.', location: 'Sebastopol', source_label: 'Google review · AI placeholder' },
+        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Called Tuesday morning about a leak. Someone here Wednesday, repointed by Friday. Fair quote, friendly crew.', author: 'Mark D.', location: 'Wendouree', source_label: 'Google review · AI placeholder' },
+        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'After a storm took half our tiles, tarped the same day and walked us through the insurance claim. Replacement done within three weeks.', author: 'Janine M.', location: 'Buninyong', source_label: 'Google review · AI placeholder' },
+      ];
+    }
+    reviewsIsPlaceholder = bestReal.length < 3 || hasInferredBackfill;
   }
-  // Banner fires if (a) fewer than 3 verified reviews OR (b) any inferred field present
-  const reviewsIsPlaceholder = realReviews.length < 3 || hasInferredBackfill;
 
   // Gallery (4 before/after pairs · R-BA-6 draggable slider · 2x2 grid balanced · Matthew 2026-05-29)
   const galleryPairs = [
@@ -622,10 +669,20 @@ async function main() {
   ];
 
   // Coverage · priority: brief.yaml.suburbs_covered (canonical) > narrative > facts > real_facts
-  // Then merge inferred suburbs if real < 10 (codex R37 Q-RR-3 · ai-radius-inferred via Nominatim)
+  // Coverage · priority chain (R46):
+  //   1. prepared coverage.json (from pl:extract-site-ctx --write-content)
+  //   2. brief.yaml.suburbs_covered > narrative > facts > real_facts
+  //   3. merge inferred if real < 10
   const realSuburbs = brief?.suburbs_covered || narrative.service_area?.suburbs || facts.service_area || coreExtract?.brief?.real_facts?.suburbs_served || [];
-  const suburbsList = mergeSuburbs(realSuburbs, inferredData, { minReal: 10, cap: 18 });
-  if (suburbsList.length === 0 && city) suburbsList.push(city, `${city} Central`);
+  let suburbsList;
+  let coverageByArrangement = null;
+  if (_preparedCoverage?.suburbs?.length >= 3) {
+    suburbsList = _preparedCoverage.suburbs.slice(0, 18);
+    coverageByArrangement = _preparedCoverage.by_arrangement_text || null;
+  } else {
+    suburbsList = mergeSuburbs(realSuburbs, inferredData, { minReal: 10, cap: 18 });
+    if (suburbsList.length === 0 && city) suburbsList.push(city, `${city} Central`);
+  }
 
   // SEO
   // Codex R40 3rd-pass: SEO clauses drop "Since YYYY" / "23+ years" when year unverified
@@ -761,7 +818,10 @@ async function main() {
     coverage: {
       ...(_copy.coverage),
       suburbs: suburbsList,
-      by_arrangement_text: suburbsList.length > 12 ? null : `By arrangement: surrounding ${state} regions.`,
+      // R46: prefer prepared by_arrangement_text; fallback to formula
+      by_arrangement_text: coverageByArrangement !== null
+        ? coverageByArrangement
+        : (suburbsList.length > 12 ? null : `By arrangement: surrounding ${state} regions.`),
     },
     contact: {
       ..._copy.contact,
@@ -858,12 +918,16 @@ async function main() {
       hero: _preparedHero ? (_preparedHero._source || 'prepared:hero-copy.json') : 'core-extract:formula',
       services: _preparedServices ? 'prepared:services.json' : 'core-extract:formula',
       about: _preparedAbout ? 'prepared:about.md' : 'core-extract:narrative',
+      reviews: _preparedReviews?.length >= 3 ? 'prepared:reviews.json' : 'core-extract:formula',
+      coverage: _preparedCoverage?.suburbs?.length >= 3 ? 'prepared:coverage.json' : 'core-extract:formula',
     },
     prepared_hero_angle: _preparedHero?.angle || null,
     prepared_hero_approval: _preparedHero?.approval_status || null,
     services_prepared_count: _preparedServices?.length ?? 0,
     services_matched_count: servicesItems.filter(s => s._source !== 'core-extract').length,
     about_paragraphs_count: ctx.about.paragraphs?.length ?? 0,
+    reviews_real_count: reviewsIsPlaceholder ? 0 : reviewsItems.length,
+    suburbs_count: suburbsList.length,
   };
   fs.writeFileSync(path.join(outDir, 'ctx-snapshot.json'), JSON.stringify(ctxSnapshot, null, 2));
 

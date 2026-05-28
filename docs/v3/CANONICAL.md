@@ -1,4 +1,4 @@
-# CANONICAL · ProfitsLocal Production Standard · v1.5 · 2026-05-29
+# CANONICAL · ProfitsLocal Production Standard · v1.6 · 2026-05-28
 
 > **PURPOSE**: single master index of "what is the current best · don't deviate without proof". Future agents read this FIRST · stop drifting into deprecated paths.
 >
@@ -25,6 +25,8 @@
 | **Niche scope** | **Roofing only** (Phase B) | Matthew 2026-05-28 lock | Phase C expansion = electrician/plumber after 5+ roofer clients live |
 | **Mobile gate** | Hybrid veto (M1.1-1.3 mechanical = VETO · M1.4-5 vision = scored into design P0) | SOP-AUDIT-STANDARD-V2 §4 | Hard rule for AU local-trade |
 | **Render multi-page** | NOT supported in Phase B · single-page editorial-newsletter only | Matthew 2026-05-28 lock | Phase C+ when single-page market validated |
+| **site-ctx.json** | `pl:extract-site-ctx` (R46 · zero LLM · deterministic) · reads `master.md` YAML + `core-extract.json` → writes `clients/<slug>/v2/site-ctx.json` · middle contract for all downstream copy tools · `--write-content` also writes `reviews.json` + `coverage.json` to content dir | Codex R45+R46 · 2026-05-28 | Schema change = codex round · runs before compose · skip if <24h old |
+| **Composer content priority chain (R46)** | hero→`hero-copy.json`→formula · services→`services.json`→core-extract · about→`about.md`→formula · reviews→`reviews.json`(≥3)→testimonials→formula · coverage→`coverage.json`(≥3)→mergeSuburbs | R46 · 2026-05-28 · vicwest 91/a-j 89/mark-squire 93 | Changing priority = test all 3 calibration clients stay ≥ baseline |
 | **YELLOW back-fill merge** | `core/handoff/merge-inferred.js` (shared helper · provenance-tagged) consumed by `pl-compose-editorial` AND `pl-build-od-seed` | Codex R37 Q-RR-3 (b) · 2026-05-29 | Add new consumer = read this helper · don't fork |
 | **Deep core extract** | `buildCoreExtract` in `core/audit/redesign-brief-builder.js` (fuses GBP + crawl + reviews + tinyfish mentions + images + master.md into 1 core-extract.json) | Recovered from stash 2026-05-29 (R37) · was lost in phaseA-step0 stash | Schema change = codex round |
 | **Empty contact-field rendering** | Template MUST guard `{{#client.email}}…{{/client.email}}` etc · empty hrefs cause M1.3 tap-target vetos | Template lesson 2026-05-29 (R37 side-effect) | Add any new contact-row → wrap in conditional |

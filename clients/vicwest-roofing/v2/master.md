@@ -25,7 +25,7 @@ license:
   lookup_tier: "token_prefix_state(token=\"vicwest\" via \"Vicwest Roofing\")"
   looked_up_at: "2026-05-27T11:24:54.752Z"
   customer_facing_rule: "SHOW"
-generated_at: "2026-05-28T12:22:15.527Z"
+generated_at: "2026-05-28T13:14:14.602Z"
 assets:
   cloudinary_folder: null
   evidence_count: 4
@@ -640,7 +640,7 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 **综合分**: **91/100** · 🟢 等级 **A** · ✅ `SHIP`
 
 - **审计层级**: `fast`
-- **审计时间**: 2026-05-28T08:06:28 UTC
+- **审计时间**: 2026-05-28T13:13:45 UTC
 
 > ✅ **可以发布** — 综合分达标，可以跟进客户展示或收费交付。
 
@@ -670,7 +670,7 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 - Hero: `ai-completed:claude:claude-sonnet-4-5`
 - Services: `prepared:services.json`
 - About: `prepared:about.md`
-- 渲染时间: 2026-05-28T12:21:57.509Z
+- 渲染时间: 2026-05-28T13:13:24.129Z
 
 <!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
 <!-- 现网站快速诊断 -->

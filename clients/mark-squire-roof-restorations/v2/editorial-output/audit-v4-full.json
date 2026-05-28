@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/mark-squire-roof-restorations/v2/editorial-output",
   "tier": "fast",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T08:06:32.406Z",
+  "generated_at": "2026-05-28T13:13:52.657Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -130,39 +130,22 @@
   "tier_3": null,
   "tier_4": null,
   "tier_4d_voice": {
-    "score": 80,
+    "score": 100,
     "dims": {
       "D4d.voice_av4_banned_phrases": {
         "weight": 0.5,
-        "hits": 1
+        "hits": 0
       },
       "D4d.voice_av1_us_spelling": {
         "weight": 0.3,
-        "hits": 1
+        "hits": 0
       },
       "D4d.voice_av6_forbidden_niche": {
         "weight": 0.2,
         "hits": 0
       }
     },
-    "violations": [
-      {
-        "page": "index.html",
-        "rule": "AV-4",
-        "kind": "banned_phrase",
-        "match": "quality workmanship",
-        "count": 1,
-        "severity": "P1"
-      },
-      {
-        "page": "index.html",
-        "rule": "AV-1",
-        "kind": "us_spelling",
-        "match": "specialty",
-        "count": 2,
-        "severity": "P1"
-      }
-    ],
+    "violations": [],
     "rules_checked": [
       "AV-1",
       "AV-4",
@@ -193,10 +176,10 @@
           "index.html": {
             "reviews": 17,
             "stats": 4,
-            "case_study": 6,
+            "case_study": 5,
             "expert_quote": 2,
             "certifications": 5,
-            "photos": 10
+            "photos": 9
           }
         },
         "threshold_pass": true,
@@ -204,7 +187,7 @@
       },
       "minimum_content_signal": {
         "score": 100,
-        "services_rendered": 6,
+        "services_rendered": 5,
         "suburbs_rendered": 18,
         "review_blocks": 13,
         "placeholder_banner_present": true,
@@ -244,26 +227,5 @@
   "grade": "A",
   "ship_verdict": "SHIP",
   "block_reason": null,
-  "issues": [
-    {
-      "id": "I-001",
-      "tier": "T4d",
-      "severity": "P1",
-      "dim": "AV-4",
-      "page": "index.html",
-      "what": "AV-4 banned_phrase · \"quality workmanship\" (1× hit)",
-      "why": "Voice-rule violation per pl-au-trade-voice §1 (AU universal layer)",
-      "fix": "Replace banned generic \"quality workmanship\" with specific concrete proof (pl-au-trade-voice §1.5)"
-    },
-    {
-      "id": "I-002",
-      "tier": "T4d",
-      "severity": "P1",
-      "dim": "AV-1",
-      "page": "index.html",
-      "what": "AV-1 us_spelling · \"specialty\" (2× hit)",
-      "why": "Voice-rule violation per pl-au-trade-voice §1 (AU universal layer)",
-      "fix": "Replace \"specialty\" with AU spelling (e.g. colour/centre/realise)"
-    }
-  ]
+  "issues": []
 }
