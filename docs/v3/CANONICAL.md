@@ -1,16 +1,16 @@
-# CANONICAL · ProfitsLocal Production Standard · v1.0 · 2026-05-28
+# CANONICAL · ProfitsLocal Production Standard · v1.1 · 2026-05-29
 
 > **PURPOSE**: single master index of "what is the current best · don't deviate without proof". Future agents read this FIRST · stop drifting into deprecated paths.
 >
 > **TRIGGER**: every new session · every "should I rebuild X?" question · every "what's the canonical Y?" question.
 >
-> **STATUS**: v1.0 · locked by 9 codex consensus rounds (R26-R34) + Matthew approvals.
+> **STATUS**: v1.1 · locked by 10 codex consensus rounds (R26-R37) + Matthew approvals.
 >
 > **RULE**: anything NOT in this doc as "locked" is provisional · explore freely. Anything LOCKED here cannot be replaced without (a) empirical evidence beating it by the re-test trigger threshold AND (b) codex sign-off in a new consensus round.
 
 ---
 
-## §0 · Master state · 2026-05-28
+## §0 · Master state · 2026-05-29
 
 | Decision | Locked Value | Source-of-truth doc | Re-test trigger |
 |---|---|---|---|
@@ -25,6 +25,9 @@
 | **Niche scope** | **Roofing only** (Phase B) | Matthew 2026-05-28 lock | Phase C expansion = electrician/plumber after 5+ roofer clients live |
 | **Mobile gate** | Hybrid veto (M1.1-1.3 mechanical = VETO · M1.4-5 vision = scored into design P0) | SOP-AUDIT-STANDARD-V2 §4 | Hard rule for AU local-trade |
 | **Render multi-page** | NOT supported in Phase B · single-page editorial-newsletter only | Matthew 2026-05-28 lock | Phase C+ when single-page market validated |
+| **YELLOW back-fill merge** | `core/handoff/merge-inferred.js` (shared helper · provenance-tagged) consumed by `pl-compose-editorial` AND `pl-build-od-seed` | Codex R37 Q-RR-3 (b) · 2026-05-29 | Add new consumer = read this helper · don't fork |
+| **Deep core extract** | `buildCoreExtract` in `core/audit/redesign-brief-builder.js` (fuses GBP + crawl + reviews + tinyfish mentions + images + master.md into 1 core-extract.json) | Recovered from stash 2026-05-29 (R37) · was lost in phaseA-step0 stash | Schema change = codex round |
+| **Empty contact-field rendering** | Template MUST guard `{{#client.email}}…{{/client.email}}` etc · empty hrefs cause M1.3 tap-target vetos | Template lesson 2026-05-29 (R37 side-effect) | Add any new contact-row → wrap in conditional |
 
 ---
 
@@ -137,10 +140,10 @@ No more 93/99 composite numbers on thin RED clients. Audit must be honest.
 
 | Client | Status | Composite | Last audit | Notes |
 |---|---|---|---|---|
-| vicwest-roofing | ✓ CANONICAL CLEAN | 91 / A / SHIP | 2026-05-28 | T4d 100 · 0 hallucinations · 0 banned · ABN-clean · M1 PASS |
-| a-j-roofing-solutions | ✓ Cross-client validated | 83 / B / SHIP | 2026-05-28 | YELLOW data · placeholder reviews · M1 PASS · proves V1 transfers |
-| mark-squire-roof-restorations | RED · needs upstream | — | pending Phase B Step 5 | 0/6 rich · needs enrich-entity + llm-extract-core |
-| abc-roof-restoration-brisbane | RED · needs upstream | — | pending Phase B Step 5 | 2/7 hard (no phone/address) · cross-state QLD/QBCC |
+| vicwest-roofing | ✓ CANONICAL CLEAN | 91 / A / SHIP | 2026-05-29 | T4d 100 · 0 hallucinations · 0 banned · ABN-clean · M1 PASS |
+| a-j-roofing-solutions | ✓ Cross-client validated | 83 / B / SHIP | 2026-05-29 | YELLOW + PREVIEW banner · merge-inferred wired (17 Cairns suburbs · 3 ai-fabricated testimonials · tagged) · M1 PASS |
+| mark-squire-roof-restorations | ✓ Recovered from BLOCKED | 93 / A / SHIP | 2026-05-29 | YELLOW + banner · 1 ai-fabricated review (no GBP review text) · 18 suburbs · 6 services · M1 PASS · proves Tier-1 enrichment recovers RED |
+| abc-roof-restoration-brisbane | BLOCKED · genuine gap | N/A_BLOCKED | 2026-05-29 | GATE 1 RED · missing phone + address (cannot crawl · cannot enrich) · needs manual data input · do not force |
 
 ---
 
@@ -152,10 +155,11 @@ No more 93/99 composite numbers on thin RED clients. Audit must be honest.
 - **Minor (v1.N)**: tightening thresholds · adding dims · refining stage outputs
 - **Patch (v1.0.N)**: typo fixes · clarifications · cross-reference updates
 
-### Current: v1.0 · 2026-05-28
+### Current: v1.1 · 2026-05-29
 
 History:
 - v1.0 (2026-05-28): initial canonical. Locks Path B composer · 5 P0 audit · editorial-newsletter template · 4 personas · single-page roofing scope.
+- v1.1 (2026-05-29): R37 · 3 SHIP clients (was 2) · mark-squire recovered from BLOCKED. Locks `core/handoff/merge-inferred.js` shared helper · `buildCoreExtract` deep fusion · template empty-contact-row guard. No deprecation. Pure addition.
 
 ### When a new agent reads this
 
@@ -251,6 +255,25 @@ Challenger must produce ≥3 vicwest renders ≥85 AND ≥2 cross-client ≥80 A
 
 ---
 
+## §9.5 · 2026-05-29 session highlights (R37)
+
+**1 codex round (R37 Q-RR-1..6) · 1 commit · 3 SHIP clients (up from 2).**
+
+### What got fixed
+- ✅ **Blocker B** · `buildCoreExtract` + `saveCoreExtract` + `runAiSingle` + `DEEP_PROMPT_TEMPLATE` recovered from `stash@{0}` (phaseA-step0-temp-stash). The CLI `pl:llm-extract-core` depended on these but they were never committed · sitting in a stash since 2026-05-18.
+- ✅ **Blocker A** · `core/handoff/merge-inferred.js` shared helper created. Wired into `pl-compose-editorial` for suburbs / testimonials / owner-name back-fill. Pattern ported from `pl-build-od-seed.js:299-321`. Provenance-tagged. Anti-gaming preserved: inferred values do NOT promote checkpoint to GREEN.
+- ✅ **Side-effect** · template `<a href="mailto:{{client.email}}">` now wrapped in `{{#client.email}}…{{/client.email}}` guard · prevents M1.3 tap-target veto when client has no email.
+- ✅ **mark-squire** · N/A_BLOCKED → 93 A SHIP (Tier-1 upstream recovery proves the canonical pipeline works on thin clients · GBP + 5 external mentions + LLM fusion is enough).
+
+### Anti-gaming verification
+- a-j still YELLOW + PREVIEW banner (correct · per codex Q-RR-4 (a)) · render now has Cairns-local testimonials instead of Sebastopol/Ballarat placeholders · transparency tags still ON.
+- abc still N/A_BLOCKED (correct · genuine data gap · no phone/address to crawl).
+
+### Insight to remember (R37)
+**Lost work hides in stashes.** Always check `git stash list` when a CLI references a symbol that doesn't exist. The 2026-05-18 phaseA-step0 stash contained 265 lines of working code that was assumed lost. Codex Q-RR-1 forced surgical recovery rather than full overwrite.
+
+---
+
 ## §10 · Onboarding for future agents
 
 If you are a new Claude / codex / Cursor agent reading this:
@@ -262,7 +285,7 @@ If you are a new Claude / codex / Cursor agent reading this:
 5. **CLAUDE.md §7 existing-work-discovery is MANDATORY** before proposing new artifacts.
 6. **Don't drift back to OD or Path C.** They were tested. They lost. Move forward.
 
-Last review: 2026-05-28 · 9 codex rounds · Matthew approvals throughout.
+Last review: 2026-05-29 · 10 codex rounds (R26-R37) · Matthew approvals throughout.
 
 ---
 

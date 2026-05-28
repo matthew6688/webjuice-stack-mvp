@@ -1,25 +1,26 @@
-# HANDOFF · Next Session · 2026-05-28 → 2026-05-29
+# HANDOFF · Next Session · 2026-05-29 → next
 
 > **Full path**: `/Users/matthew/Developer/google-map-website-v3/docs/v3/HANDOFF-NEXT-SESSION.md`
 >
-> **Opening line for new agent**: "Read `docs/v3/CANONICAL.md` first · then this handoff · then start."
+> **Opening line for new agent**: "Read `docs/v3/CANONICAL.md` v1.1 first · then `SESSION-2026-05-29-SUMMARY.md` · then this handoff · then start."
 
 ---
 
 ## ⏱ First 5 minutes · sanity check
 
-Run these commands to verify session integrity:
-
 ```bash
 cd /Users/matthew/Developer/google-map-website-v3
 
-# 1. State of canonical docs (must exist)
+# 1. Canonical docs (must exist · v1.1)
 ls docs/v3/CANONICAL.md \
    docs/v3/SOP-AUDIT-STANDARD-V2.md \
    docs/v3/CANONICAL-DECISION-RECORD-RENDER-PATH.md \
-   docs/v3/SESSION-2026-05-28-SUMMARY.md
+   docs/v3/SESSION-2026-05-28-SUMMARY.md \
+   docs/v3/SESSION-2026-05-29-SUMMARY.md \
+   core/handoff/merge-inferred.js
+head -1 docs/v3/CANONICAL.md   # must say v1.1
 
-# 2. 4-client audit baselines (must match)
+# 2. 4-client audit baselines (must match · mark-squire now SHIP)
 for slug in vicwest-roofing a-j-roofing-solutions mark-squire-roof-restorations abc-roof-restoration-brisbane; do
   python3 -c "
 import json
@@ -33,89 +34,33 @@ done
 # Expected:
 #   vicwest-roofing: 91 · A · SHIP
 #   a-j-roofing-solutions: 83 · B · SHIP
-#   mark-squire-roof-restorations: N/A_BLOCKED · BLOCKED · GATE 1 RED
+#   mark-squire-roof-restorations: 93 · A · SHIP        ← NEW (was N/A_BLOCKED)
 #   abc-roof-restoration-brisbane: N/A_BLOCKED · BLOCKED · GATE 1 RED
 
-# 3. Verify vicwest editorial output still clean
-node scripts/cli/pl-audit-v4.js --slug vicwest-roofing \
-  --output-dir clients/vicwest-roofing/v2/editorial-output --tier fast 2>&1 | tail -3
+# 3. Verify recovered exports still load
+node -e "import('./core/audit/redesign-brief-builder.js').then(m => console.log(Object.keys(m).sort().join('·')))"
+# Expected: buildCoreExtract·buildRedesignBrief·saveBrief·saveCoreExtract
 
-# 4. Check git state
+node -e "import('./core/handoff/merge-inferred.js').then(m => console.log(Object.keys(m).sort().join('·')))"
+# Expected: hadInference·inferredFieldNames·loadInferred·mergeExperience·mergeOwnerName·mergeServices·mergeSuburbs·mergeTestimonials
+
+# 4. Git state
 git log --oneline -5
-# Last commit should be: 3a0d1d68 SESSION-2026-05-28 summary
+# Recent: doc-refresh · 95aa0373 R37 blocker fixes · 42f9a0fa audit loop · 1673a1aa handoff
 ```
 
 If any of above fails · STOP · investigate before proceeding.
 
 ---
 
-## 🎯 Tomorrow's mission · 3 tasks · ~3 hr total
+## 🎯 Next session priorities (ranked · pick one or more)
 
-### Task 1 · Promote a-j YELLOW → GREEN (~45 min)
+### Priority 1 · Phase B Step 6 · wire pl-audit-rubric (~2 hr)
 
-**Why**: Codex R35 Q-PP-4 (b) · 3 GREEN clients > 2 for canonical evidence strength.
+61 rules in `skills/pl-audit-rubric/pl-audit-rubric.json` are currently **doc-only** · audit-v4 doesn't consume them. Per SOP-AUDIT-STANDARD-V2 §6 mandate · this needs wiring.
 
-**Steps**:
 ```bash
-# 1. Check current a-j checkpoint state
-cat clients/a-j-roofing-solutions/v2/checkpoint.json | python3 -m json.tool | head -30
-
-# 2. Run thin-data infer (existing CLI · fills testimonials + suburbs_served + owner_name)
-npm run pl:llm-infer-thin-data -- --slug a-j-roofing-solutions
-
-# 3. Re-checkpoint · expect verdict = GREEN
-npm run pl:data-checkpoint -- --slug a-j-roofing-solutions
-
-# 4. Re-render
-npm run pl:compose-editorial -- --slug a-j-roofing-solutions
-
-# 5. Re-audit
-npm run pl:audit-v4 -- --slug a-j-roofing-solutions --output-dir clients/a-j-roofing-solutions/v2/editorial-output --tier fast
-
-# Success bar (codex R36 Q-QQ-3 b):
-#   verdict = GREEN
-#   composite ≥ 83 (no regression from current baseline)
-#   M1 mobile PASS · T4d ≥ 90 · D2.14 ≥ 60
-```
-
-**If FAIL**: don't force · investigate. a-j may have limits.
-
----
-
-### Task 2 · mark-squire upstream try (~30 min · single attempt)
-
-**Why**: Codex R35 Q-PP-3 (b) · try once · skip if thin.
-
-**Steps**:
-```bash
-# 1. Try third-party mention enrichment (~$0.20)
-npm run pl:summarize-external-mentions -- --slug mark-squire-roof-restorations
-
-# 2. Re-extract core
-npm run pl:llm-extract-core -- --slug mark-squire-roof-restorations
-
-# 3. Re-render brief
-npm run pl:render-customer-brief -- --slug mark-squire-roof-restorations
-
-# 4. Re-checkpoint · target YELLOW or GREEN
-npm run pl:data-checkpoint -- --slug mark-squire-roof-restorations
-
-# Decision:
-#   If checkpoint = YELLOW or GREEN → proceed compose-editorial + audit
-#   If checkpoint = RED → genuinely thin client · SKIP · mark "deferred · needs manual data"
-```
-
-**Don't force it**: mark-squire has no website + 3 reviews. If external mentions don't lift it · move on.
-
----
-
-### Task 3 · Phase B Step 6 · wire pl-audit-rubric into audit-v4 (~2 hr · if Tasks 1+2 finish early)
-
-**Why**: SOP-AUDIT-STANDARD-V2 §6 mandate · 61 rules in `skills/pl-audit-rubric/pl-audit-rubric.json` are currently **doc-only** · zero CLI consumes them. Wire as runtime config.
-
-**Steps**:
-```bash
-# 1. Read current rubric structure
+# Inspect current rubric structure
 cat skills/pl-audit-rubric/pl-audit-rubric.json | python3 -c "
 import json, sys
 d = json.load(sys.stdin)
@@ -124,57 +69,82 @@ print('sections:', [s.get('id') for s in d.get('sections', [])])
 print('sample rule:', d['rules'][0] if d.get('rules') else 'empty')
 "
 
-# 2. Build runtime loader in audit-v4
+# Build runtime loader in audit-v4
 # - Read rubric on startup · validate schema (codex R26 Q-GG-5)
-# - For each rule_id · dispatch to existing module (T1.1 → check function · etc.)
+# - For each rule_id · dispatch to existing module
 # - Emit rubric_hash + audit_version in every output (CANONICAL §7 hash schema)
 
-# 3. Update SOP-AUDIT-STANDARD-V2 §6 status: "WIRED" not "doc-only"
+# Update SOP-AUDIT-STANDARD-V2 §6 status: "WIRED" not "doc-only"
 
-# 4. Re-audit vicwest to verify · expect composite 91 unchanged
+# Re-audit vicwest to verify · expect composite 91 unchanged
 npm run pl:audit-v4 -- --slug vicwest-roofing --output-dir clients/vicwest-roofing/v2/editorial-output --tier fast
 ```
 
+### Priority 2 · Premium-tier audit on 3 SHIP clients (~$5 · ~30min)
+
+Fast-tier composite is necessary but not sufficient per CANONICAL §3 GATE 6. Premium-tier adds LLM-driven D2.10 engagement-persuasion + leak-quote detection + hallucination check.
+
+```bash
+for slug in vicwest-roofing a-j-roofing-solutions mark-squire-roof-restorations; do
+  npm run pl:audit-v4 -- --slug $slug \
+    --output-dir clients/$slug/v2/editorial-output --tier premium
+done
+```
+
+Expected: vicwest stays ≥85 · a-j and mark-squire show D2.10 LLM scoring. **Don't mix** with fast composite (SOP §5).
+
+### Priority 3 · Phase B Step 7 · pl:site-report CLI (~3 hr)
+
+9-section provenance report · what was real vs AI · which skills consumed · sales material. Builds atop existing audit output. Spec in `docs/v3/SOP-AUDIT-STANDARD-V2.md` §11.
+
+### Priority 4 · abc-roof-restoration-brisbane manual unblock (depends on Matthew)
+
+abc is genuinely BLOCKED — missing phone + address means no crawl is possible. Decision deferred to Matthew. If unblocked, the pipeline is: manual `single-page-brief.yaml` edit → `pl:llm-extract-core` → `pl:render-customer-brief` → `pl:data-checkpoint` → `pl:compose-editorial` → `pl:audit-v4`.
+
 ---
 
-## ⚠️ Things NOT to do tomorrow (canonical anti-drift)
+## ⚠️ Things NOT to do (canonical anti-drift)
 
 | Don't | Why |
 |---|---|
+| Re-stash `buildCoreExtract` | Recovered today (R37) · CANONICAL §0 locked · was lost once already |
+| Add another reader of `inferred-data.json` outside `merge-inferred.js` | Helper is the shared writer · per codex Q-RR-3 (b) |
+| Render `<a href="mailto:{{email}}">` without `{{#client.email}}` guard | M1.3 tap-target veto · today's side-effect fix |
+| Promote a-j or mark-squire to GREEN by counting inferred-as-real | Anti-gaming · CANONICAL §3 GATE 1 · codex Q-RR-4 (a) |
+| Force abc through pipeline without manual data | Genuine blocker · not a pipeline gap |
 | Propose new render path | V1 locked · re-test triggers in CANONICAL §8 must be met first |
 | Re-litigate OD or Path C | Already tested · already lost · evidence in `experiments/3path-experiment-2026-05-28/` |
 | Build new audit dim | 8 dims wired · 3 deferred (D2.13/D3.10/M1.4-5) · don't add unless 3-path experiment retest produces ambiguous winner (codex R30 Q-KK-5) |
 | Multi-page rendering | Phase B = single-page only · Matthew lock 2026-05-28 |
 | Expand to electrician/plumber niche | Phase B = roofing only · need 5+ live paying roofers first |
-| --skip-checkpoint for production renders | Dev/debug only · GATE 1 must pass for ship |
+| `--skip-checkpoint` for production renders | Dev/debug only · GATE 1 must pass for ship |
 | Mix fast-tier and premium-tier composite | SOP §5 separation · different questions |
-| Average D2.10 across pages | Single-page focus · 1 score |
 
 ---
 
 ## 📋 If Matthew drops new images overnight
 
-Per V3 prompts dispatched today (`templates/roofing/stock-library/IMAGE-PROMPTS-V3.md`):
+Per V3 prompts dispatched 2026-05-28 (`templates/roofing/stock-library/IMAGE-PROMPTS-V3.md`):
 - 15 prompts · 18 expected files
 - Drop location: `templates/roofing/stock-library/` root
 - Workflow:
   1. Move files to subdirs (hero/service/about/detail/equipment/gallery) per filename prefix
-  2. Update `_manifest.json` with `added_v3: 2026-05-29` flag
+  2. Update `_manifest.json` with `added_v3: 2026-05-29+` flag
   3. Cross-reference IMAGE-PROMPTS-V1/V2 manifest to avoid duplicates
   4. Commit batch
-  5. Send V4 prompts if Phase B Step 5 reveals more gaps
+  5. Send V4 prompts if any of next-session priorities reveal more gaps
 
 ---
 
 ## 📌 Open questions from Matthew (deferred · NOT blocking)
 
-These need codex consultation when Phase B Step 5+ completes. Don't address tomorrow unless Matthew explicitly asks.
+These need codex consultation when current priorities complete. Don't address unless Matthew explicitly asks.
 
 1. **Lead pipeline orchestration consolidation**
    - Matthew Q (2026-05-28): "我们筛选的标准是什么 · 客户从不同渠道进来 · license · DB integration · photo curation"
    - Multiple CLIs exist · need unified orchestrator + explicit thresholds
    - Goal: modular CLI callable from Hermes Agent
-   - When: after V1 canonical proven on 3+ live clients
+   - When: after V1 canonical proven on 5+ live clients (currently 3 SHIP-ready)
 
 2. **V4 client funnel** (Matthew mentioned · needs re-investigation)
    - Different scoring tiers (A/B/C/D qualification)
@@ -191,71 +161,36 @@ These need codex consultation when Phase B Step 5+ completes. Don't address tomo
 
 ## 🧠 Context · if you need it
 
-**Yesterday (2026-05-28) summary**: 37 commits · 12 codex consensus rounds (R26-R36) · canonical v1.0 locked. V1 `pl:compose-editorial` proven on 2 SHIP clients (vicwest + a-j) · audit 7-gate hierarchy with N/A_BLOCKED rule prevents audit-gaming. Path A (OD) + Path C (LLM whole-page) both archived with re-test triggers.
+**2026-05-28 (yesterday)**: 37 commits · 12 codex consensus rounds (R26-R36). Canonical v1.0 locked. V1 `pl:compose-editorial` proven on 2 SHIP clients (vicwest + a-j). N/A_BLOCKED anti-gaming rule (R35 Q-PP-5).
 
-**Key empirical insight**: less LLM freedom = better quality. Template encodes design SYSTEM · LLM constrained to copy fields. Whole-page LLM render loses -71pt token coverage · 11pt variance · 50% mobile veto rate.
+**2026-05-29 (today)**: 1 codex round (R37) · 2 functional commits + doc refresh. Recovered `buildCoreExtract` from stash · wired `merge-inferred.js` helper · fixed empty-mailto template bug. **3 SHIP clients** (vicwest 91 · a-j 83 · mark-squire 93). abc still genuinely BLOCKED.
 
-**Audit anti-gaming**: empty content (abc 0 services) was scoring composite 99 via absence-of-bad. N/A_BLOCKED rule now prevents that. Checkpoint GATE is the true filter · not composite alone.
-
-**Read order**: CANONICAL.md → CLAUDE.md §7 → this doc → start.
+**Read order**: CANONICAL.md v1.1 → SESSION-2026-05-29-SUMMARY.md → this doc → start.
 
 ---
 
-## ✅ Done-of-tomorrow definition
+## ✅ Done-of-next-session definition
 
 Session is successful if at end of day:
-- **a-j is GREEN with composite ≥83 SHIP** (3rd GREEN client · canonical evidence strengthened)
-- **mark-squire either GREEN/YELLOW SHIP OR explicitly skipped with reason logged**
-- **(stretch) pl-audit-rubric wired into audit-v4** · 61 rules dispatched · rubric_hash in output
+- **Priority 1 done**: pl-audit-rubric 61 rules wired into audit-v4 dispatch · rubric_hash in output · vicwest re-audit holds 91
+- **OR Priority 2 done**: premium-tier audit on 3 SHIP clients · D2.10 LLM scoring captured · scores logged separately from fast composite
+- **OR Priority 3 done**: pl:site-report CLI shipping 9-section provenance per CANONICAL.md §3
 
 If reach those · close session · update CANONICAL.md §4 client roster · write next handoff.
 
-If hit blockers · don't force · document blocker · stop · brief Matthew.
+If hit blockers · don't force · document blocker · stop · brief Matthew (人话 · per CLAUDE.md Communication Style).
 
 ---
 
 ## 🎬 Session start prompt (paste this as new agent input)
 
 ```
-Read /Users/matthew/Developer/google-map-website-v3/docs/v3/HANDOFF-NEXT-SESSION.md
-then start Task 1 (promote a-j YELLOW → GREEN). 
-Discuss with codex if anything is ambiguous. 
-Don't drift back to deprecated paths (CANONICAL.md §1).
+Read /Users/matthew/Developer/google-map-website-v3/docs/v3/CANONICAL.md (v1.1)
+then /Users/matthew/Developer/google-map-website-v3/docs/v3/HANDOFF-NEXT-SESSION.md.
+Pick a priority from §"Next session priorities"
+Discuss with codex if anything is ambiguous.
+Don't drift back to deprecated paths (CANONICAL §1).
+Don't re-stash recovered work (CANONICAL §0 · the merge-inferred + buildCoreExtract rows).
 ```
 
-Last update: 2026-05-28 23:50 AET · session close · canonical v1.0 locked · 37 commits · 12 rounds.
-
----
-
-## 🔧 Session continuation notes · 2026-05-29 audit pass
-
-A /loop "continue auditing 3 customers" iteration re-verified all baselines and surfaced 2 blockers preventing Task 1 + Task 2 from completing without code changes. **Audit-only state is unchanged** · vicwest 91 · a-j 83 · mark-squire/abc BLOCKED.
-
-### Blocker A · inferred-data.json not wired to compose-editorial (Task 1)
-- `pl:llm-infer-thin-data` ran successfully on a-j · wrote `inferred-data.json` with 3 fields (suburbs_served · testimonials · owner_name)
-- SSOT writer-check: `inferred-data.json` is consumed by `pl-build-od-seed` (deprecated OD path) but **NOT by `pl-compose-editorial`** (V1 canonical render)
-- Therefore re-checkpoint stays YELLOW (signal source unchanged) · re-render would not pick up the back-fill
-- **Fix path** (requires codex consensus): port the inferred-data merge logic from `pl-build-od-seed.js:292-313` into `pl-compose-editorial.js` · tag merged values with `provenance: ai-fabricated|radius-inferred|ai-inferred` so PREVIEW banner logic still fires
-- Anti-pattern to avoid: mutating `core-extract.json` to inject inferred data (breaks SSOT writer rule)
-
-### Blocker B · pl-llm-extract-core.js broken (Task 2)
-- `pl:summarize-external-mentions` ran successfully on mark-squire (5 mentions enriched via Tinyfish + Dokobot · written to `data/leads/entities/place_chijuvpvhm9p0worsjhyqwfhmag.json`)
-- Next step `pl:llm-extract-core` fails with `SyntaxError: does not provide an export named 'buildCoreExtract'`
-- Root cause: `core/audit/redesign-brief-builder.js` exports `buildRedesignBrief`/`saveBrief` (line 161, 202) · `scripts/cli/pl-llm-extract-core.js:16` imports `buildCoreExtract`/`saveCoreExtract`
-- Module-rename without consumer update · small fix (rename imports + verify call sites) but needs codex consensus on whether `buildRedesignBrief` is semantically equivalent to what the CLI expected
-
-### Baseline verification (audit re-run · 2026-05-29)
-```
-vicwest-roofing                · 91 · A · SHIP
-a-j-roofing-solutions          · 83 · B · SHIP (YELLOW + PREVIEW banner)
-mark-squire-roof-restorations  · N/A_BLOCKED · GATE 1 RED (customer_brief · real_business_signal · sources_consumed)
-abc-roof-restoration-brisbane  · N/A_BLOCKED · GATE 1 RED (phone · address · customer_brief)
-```
-
-abc T2=99 / mark-squire T2=93 brand-contract scores confirm the **N/A_BLOCKED anti-gaming rule is working** — under old logic these would have published as SHIP.
-
-### Recommended next session entry point
-1. Brief codex with Blockers A + B above · get consensus on minimal-surgical wire path
-2. Fix Blocker B first (smaller · just imports) · then re-run pl:llm-extract-core → pl:render-customer-brief → pl:data-checkpoint for mark-squire
-3. Fix Blocker A second (port merge logic) · then re-run a-j compose + audit
-4. Both fixes are upstream-canonical · do not bypass with --skip-checkpoint or core-extract mutation
+Last update: 2026-05-29 · session close · CANONICAL v1.1 · 1 codex round (R37) · 3 SHIP clients.
