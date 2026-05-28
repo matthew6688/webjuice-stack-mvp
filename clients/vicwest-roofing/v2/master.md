@@ -15,7 +15,17 @@ visual_freshness: 5
 visual_trust: 6
 visual_conversion: 3
 review_trust_signal: "strong"
-generated_at: "2026-05-18T05:06:18.080Z"
+deploy_stage: "dev_preview"
+deploy_url: "https://vicwest-roofing-dev.pages.dev"
+license:
+  status: "active"
+  authority: "VBA"
+  licence_number: "CDB-U 65938"
+  licensee_name: "VICWEST BUILDERS PTY LTD"
+  lookup_tier: "token_prefix_state(token=\"vicwest\" via \"Vicwest Roofing\")"
+  looked_up_at: "2026-05-27T11:24:54.752Z"
+  customer_facing_rule: "SHOW"
+generated_at: "2026-05-28T11:39:39.694Z"
 assets:
   cloudinary_folder: null
   evidence_count: 4
@@ -76,7 +86,7 @@ assets:
 
 > 我们抓取了客户现有的 logo / brand 素材作为 redesign 起点。下面的资产从客户在线网站 / 第三方 source 提取，存在 `clients/vicwest-roofing/v2/handoff/design/brand/` 里供 OD / build agent 使用。
 
-![现有 logo](https://res.cloudinary.com/dm1hroqlg/image/upload/v1779854680/profitslocal/main-site/clients/place_chijkrzfmm9p0worrpl40dpbb7c/brand/source-logo.png)
+![现有 logo](https://vicwest-roofing-dev.pages.dev/handoff/design/brand/_source-logo.png)
 
 **提取的品牌色板**：
 
@@ -546,7 +556,7 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 
 ## 公司注册 · 域名 · 外部 mention 硬数据
 
-> 4-source enrichment · 抓取时间 2026-05-18T05:06:07 · 5/5 路成功
+> 6-source enrichment · 抓取时间 2026-05-18T05:06:07 · 5/5 路成功
 
 ### 公司注册 (ABR)
 
@@ -558,6 +568,15 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 - **GST 注册**: 是 `[ABR]`
 - **注册地址**: VIC 3356 `[ABR]`
 - **Trading names**: VICWEST ROOFING `[ABR]`
+
+### 行业执照 · License Register
+
+- **执照号**: `CDB-U 65938` · VBA · VIC `[License]`
+- **持牌名称**: VICWEST BUILDERS PTY LTD `[License]`
+- **执照类别**: Domestic Builder - Unlimited `[License]`
+- **执照类型**: Company `[License]`
+- **状态**: ✅ active · 可在网站上展示执照信息 `[License]`
+- **匹配方式**: token_prefix_state(token="vicwest" via "Vicwest Roofing") `[License]`
 
 ### 域名 (WHOIS RDAP)
 
@@ -591,6 +610,52 @@ redesign 是一次性收入。以下是基于这个客户当前现状自动识�
 - 城市名 mention 数: **7** `[官网]`
 - 服务关键词: roofing · roof · gutter `[官网]`
 - 信任关键词: licensed · warranty `[官网]`
+
+## 交付与部署状态
+
+**部署阶段**: 🟡 `DEV PREVIEW`
+
+- **CF Pages 预览**: [https://vicwest-roofing-dev.pages.dev](https://vicwest-roofing-dev.pages.dev)
+- **最近部署**: 2026-05-18T18:50:18 UTC
+
+**在线素材链接**: [Master Report](https://vicwest-roofing-dev.pages.dev/master.report.html) · [客户版 Audit](https://vicwest-roofing-dev.pages.dev/customer-facing-audit.html) · [内部 Audit](https://vicwest-roofing-dev.pages.dev/internal-audit-report.html) · [master.md](https://vicwest-roofing-dev.pages.dev/master.md)
+
+**本地已生成文件**:
+- ✅ `pipeline.html` · Data checkpoint (pipeline.html)
+- ✅ `internal-audit-report.html` · 内部 audit 报告
+- ✅ `customer-facing-audit.html` · 客户版 audit 报告
+- ✅ `master.report.html` · Master report HTML
+- ✅ `master.article.html` · Master article HTML
+
+## 建站准备度 · Data Checkpoint
+
+**Checkpoint 结论**: ✅ `GREEN` · 推荐布局: `multi`
+
+- **Hard 字段**: 7/7 ✓
+- **Rich 字段**: 6/6 ✓
+- **检查时间**: 2026-05-28T00:38:43 UTC
+
+## 已建站质量分 · Audit V4
+
+**综合分**: **91/100** · 🟢 等级 **A** · ✅ `SHIP`
+
+- **审计层级**: `fast`
+- **审计时间**: 2026-05-28T08:06:28 UTC
+
+> ✅ **可以发布** — 综合分达标，可以跟进客户展示或收费交付。
+
+## 品牌素材就位度
+
+- Logo 已提取: ✅
+- Brand tokens CSS: ✅
+- Brand spec JSON: ✅
+- OD Package 已组装: ✅ (`handoff/od-package/`)
+- 照片已分类 (selected.json): ✅
+
+**OD Package 内容**: ✅ `content/` · ❌ `design/` · ✅ `facts.json` · ✅ `DESIGN-HANDOFF.md`
+
+**品牌风格**: industrial, straightforward, trade-credible, no-nonsense
+**主色**: `#0F1115` · Accent `#C5A572`
 
 <!-- M2-D6 required token bridge: 现网站快速诊断 → covered by detail-builder section -->
 <!-- 现网站快速诊断 -->

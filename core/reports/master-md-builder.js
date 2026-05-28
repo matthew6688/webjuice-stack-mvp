@@ -104,6 +104,13 @@ function buildFrontmatter({ entity, detailedAudit, visualAudit, reviewAnalysis, 
     visual_trust: visual.trust_score ?? null,
     visual_conversion: visual.conversion_score ?? null,
     review_trust_signal: reviewAnalysis?.trust_signal_strength || null,
+    // Deploy stage (derived from entity.deploy)
+    deploy_stage: (() => {
+      if (entity?.deploy?.live_url)  return 'live';
+      if (entity?.deploy?.demo_url)  return 'dev_preview';
+      return 'not_deployed';
+    })(),
+    deploy_url: entity?.deploy?.live_url || entity?.deploy?.demo_url || null,
     // License status (Phase 1.3 · 2026-05-27)
     // Surfaces verified/unknown to operators so master.md SOT shows state.
     // Customer-facing HTML must follow `license.customer_facing_rule`:
@@ -553,16 +560,19 @@ export function buildMasterMdDetailed({
     const sourceLogoPng = path.join(brandDir, '_source-logo.png');
     const sourceLogoHarvested = path.join('clients', slug, 'v2/handoff/photos/source/_existing-logo.png');
     const brandSpecPath = path.join(brandDir, 'brand-spec.json');
-    let existingLogoPath = null;
-    if (fs.existsSync(sourceLogoPng)) existingLogoPath = sourceLogoPng;
-    else if (fs.existsSync(sourceLogoHarvested)) existingLogoPath = sourceLogoHarvested;
+    // G9 fix (2026-05-28): logo path must be an absolute URL, not a local FS path.
+    // Derive the v2-relative path so absoluteAssetUrl can build a Cloudflare Pages URL.
+    let existingLogoRelPath = null;
+    if (fs.existsSync(sourceLogoPng)) existingLogoRelPath = 'handoff/design/brand/_source-logo.png';
+    else if (fs.existsSync(sourceLogoHarvested)) existingLogoRelPath = 'handoff/photos/source/_existing-logo.png';
 
-    if (existingLogoPath) {
+    if (existingLogoRelPath) {
+      const logoAbsUrl = absoluteAssetUrl({ slug, deployDemoUrl: entity?.deploy?.demo_url, relPath: existingLogoRelPath });
       sections.push('## 一(b)、现有视觉识别');
       sections.push('');
       sections.push(`> 我们抓取了客户现有的 logo / brand 素材作为 redesign 起点。下面的资产从客户在线网站 / 第三方 source 提取，存在 \`${brandDir}/\` 里供 OD / build agent 使用。`);
       sections.push('');
-      sections.push(`![现有 logo](${existingLogoPath})`);
+      sections.push(`![现有 logo](${logoAbsUrl})`);
       sections.push('');
       // If brand-spec exists, show palette + fonts
       if (fs.existsSync(brandSpecPath)) {
@@ -1335,6 +1345,184 @@ export function buildMasterMdDetailed({
       if (s.trust_keywords_found?.length) sections.push(`- 信任关键词: ${s.trust_keywords_found.join(' · ')} \`[官网]\``);
       if (s.oldest_year_mentioned) sections.push(`- 文中最早年份: ${s.oldest_year_mentioned}${s.newest_year_mentioned !== s.oldest_year_mentioned ? ` · 最新 ${s.newest_year_mentioned}` : ''} \`[官网]\``);
       sections.push('');
+    }
+  }
+
+  // ── 交付与部署状态 ──
+  // Source: entity.deploy + disk scan for HTML files in clients/<slug>/v2/
+  // Shows operator exactly where the site lives + which sales materials are ready.
+  {
+    const deploy = entity?.deploy;
+    const clientDir = slug ? path.join(process.cwd(), 'clients', slug, 'v2') : null;
+
+    const knownHtmlFiles = [
+      { file: 'pipeline.html',               label: 'Data checkpoint (pipeline.html)' },
+      { file: 'internal-audit-report.html',  label: '内部 audit 报告' },
+      { file: 'customer-facing-audit.html',  label: '客户版 audit 报告' },
+      { file: 'master.report.html',          label: 'Master report HTML' },
+      { file: 'master.article.html',         label: 'Master article HTML' },
+    ];
+    const existingHtml = clientDir
+      ? knownHtmlFiles.filter(({ file }) => fs.existsSync(path.join(clientDir, file)))
+      : [];
+
+    if (deploy || existingHtml.length > 0) {
+      sections.push('## 交付与部署状态');
+      sections.push('');
+
+      if (deploy) {
+        const stage = deploy.live_url ? 'LIVE' : deploy.demo_url ? 'DEV PREVIEW' : '未部署';
+        const stageEmoji = deploy.live_url ? '🟢' : deploy.demo_url ? '🟡' : '⚪';
+        sections.push(`**部署阶段**: ${stageEmoji} \`${stage}\``);
+        sections.push('');
+        if (deploy.live_url)    sections.push(`- **正式域名**: [${deploy.live_url}](${deploy.live_url})`);
+        if (deploy.demo_url)    sections.push(`- **CF Pages 预览**: [${deploy.demo_url}](${deploy.demo_url})`);
+        if (deploy.deployed_at) sections.push(`- **最近部署**: ${deploy.deployed_at.slice(0, 19)} UTC`);
+        if (deploy.project_name) sections.push(`- **CF 项目名**: \`${deploy.project_name}\``);
+        sections.push('');
+
+        const onlineLinks = [
+          deploy.master_report_url && `[Master Report](${deploy.master_report_url})`,
+          deploy.audit_url         && `[客户版 Audit](${deploy.audit_url})`,
+          deploy.internal_audit_url && `[内部 Audit](${deploy.internal_audit_url})`,
+          deploy.master_md_url     && `[master.md](${deploy.master_md_url})`,
+        ].filter(Boolean);
+        if (onlineLinks.length) {
+          sections.push('**在线素材链接**: ' + onlineLinks.join(' · '));
+          sections.push('');
+        }
+      }
+
+      if (existingHtml.length > 0) {
+        sections.push('**本地已生成文件**:');
+        for (const { file, label } of existingHtml) {
+          sections.push(`- ✅ \`${file}\` · ${label}`);
+        }
+        sections.push('');
+      }
+    }
+  }
+
+  // ── 建站准备度 · Data Checkpoint ──
+  // Source: clients/<slug>/v2/checkpoint.json (written by pl:data-checkpoint)
+  // GREEN = ready to build · YELLOW = single-page OK · RED = blocked
+  if (slug) {
+    const cpPath = path.join(process.cwd(), 'clients', slug, 'v2', 'checkpoint.json');
+    if (fs.existsSync(cpPath)) {
+      try {
+        const cp = JSON.parse(fs.readFileSync(cpPath, 'utf8'));
+        sections.push('## 建站准备度 · Data Checkpoint');
+        sections.push('');
+        const verdictEmoji = cp.verdict === 'GREEN' ? '✅' : cp.verdict === 'YELLOW' ? '⚠' : '🔴';
+        sections.push(`**Checkpoint 结论**: ${verdictEmoji} \`${cp.verdict}\` · 推荐布局: \`${cp.recommended_pages || '?'}\``);
+        sections.push('');
+        if (cp.counts) {
+          sections.push(`- **Hard 字段**: ${cp.counts.hard_ok}/${cp.counts.hard_total} ✓`);
+          sections.push(`- **Rich 字段**: ${cp.counts.rich_ok}/${cp.counts.rich_total} ✓`);
+        }
+        if (cp.missing?.length) {
+          sections.push(`- **缺失字段**: ${cp.missing.join(' · ')}`);
+        }
+        if (cp.inferred?.length) {
+          sections.push(`- **推断/补全字段**: ${cp.inferred.join(' · ')}`);
+        }
+        if (cp.generated_at) sections.push(`- **检查时间**: ${cp.generated_at.slice(0, 19)} UTC`);
+        sections.push('');
+        if (cp.verdict === 'RED') {
+          sections.push('> 🔴 **不建议开始建站** — 关键数据字段缺失，建站结果会非常空洞。先补充数据再跑 `pl:data-checkpoint`。');
+          sections.push('');
+        } else if (cp.verdict === 'YELLOW') {
+          sections.push('> ⚠ **只建议单页版本** — rich 字段不够做多页，但单页 + 补全 banner 可以先试探市场。');
+          sections.push('');
+        }
+      } catch { /* non-fatal */ }
+    }
+  }
+
+  // ── 已建站质量分 · Audit V4 ──
+  // Source: clients/<slug>/v2/editorial-output/audit-v4-summary.json (written by pl:audit-v4)
+  // Only present after a site has been built and audited.
+  if (slug) {
+    const av4Path = path.join(process.cwd(), 'clients', slug, 'v2', 'editorial-output', 'audit-v4-summary.json');
+    if (fs.existsSync(av4Path)) {
+      try {
+        const av4 = JSON.parse(fs.readFileSync(av4Path, 'utf8'));
+        sections.push('## 已建站质量分 · Audit V4');
+        sections.push('');
+        const shipEmoji   = av4.ship_verdict === 'SHIP'   ? '✅' : av4.ship_verdict === 'REVIEW' ? '⚠' : '🔴';
+        const gradeColors = { A: '🟢', B: '🟡', C: '🟠', D: '🔴', F: '🔴' };
+        const gradeEmoji  = gradeColors[av4.grade] || '';
+        sections.push(`**综合分**: **${av4.composite}/100** · ${gradeEmoji} 等级 **${av4.grade}** · ${shipEmoji} \`${av4.ship_verdict}\``);
+        sections.push('');
+        if (av4.tier) sections.push(`- **审计层级**: \`${av4.tier}\``);
+        if (av4.generated_at) sections.push(`- **审计时间**: ${av4.generated_at.slice(0, 19)} UTC`);
+        sections.push('');
+        if (av4.ship_verdict === 'SHIP') {
+          sections.push('> ✅ **可以发布** — 综合分达标，可以跟进客户展示或收费交付。');
+          sections.push('');
+        } else if (av4.ship_verdict === 'REVIEW') {
+          sections.push('> ⚠ **需要检查** — 分数勉强，建议人工审查后再决定是否发布。');
+          sections.push('');
+        }
+      } catch { /* non-fatal */ }
+    }
+  }
+
+  // ── 品牌素材就位度 ──
+  // Source: clients/<slug>/v2/handoff/ directory structure checks
+  // Tells operator which brand assets are available for OD / compose-site.
+  if (slug) {
+    const handoffDir = path.join(process.cwd(), 'clients', slug, 'v2', 'handoff');
+    const designBrandDir  = path.join(handoffDir, 'design', 'brand');
+    const odPkgDir        = path.join(handoffDir, 'od-package');
+    const odBrandDir      = path.join(odPkgDir, 'brand');
+
+    // Logo: check both known locations
+    const logoExists = [
+      path.join(designBrandDir, '_source-logo.png'),
+      path.join(handoffDir, 'photos', 'source', '_existing-logo.png'),
+      path.join(designBrandDir, 'logo-light.svg'),
+      path.join(odBrandDir, 'logo-light.svg'),
+    ].some((p) => fs.existsSync(p));
+
+    const brandTokensExists  = fs.existsSync(path.join(designBrandDir, 'brand-tokens.css')) || fs.existsSync(path.join(odBrandDir, 'brand-tokens.css'));
+    const brandSpecExists    = fs.existsSync(path.join(designBrandDir, 'brand-spec.json')) || fs.existsSync(path.join(odBrandDir, 'brand-spec.json'));
+    const odPkgExists        = fs.existsSync(odPkgDir);
+    const photosClassified   = fs.existsSync(path.join(handoffDir, 'photos', 'selected.json'));
+
+    sections.push('## 品牌素材就位度');
+    sections.push('');
+    sections.push(`- Logo 已提取: ${logoExists ? '✅' : '❌'}`);
+    sections.push(`- Brand tokens CSS: ${brandTokensExists ? '✅' : '❌'}`);
+    sections.push(`- Brand spec JSON: ${brandSpecExists ? '✅' : '❌'}`);
+    sections.push(`- OD Package 已组装: ${odPkgExists ? '✅ (`handoff/od-package/`)' : '❌'}`);
+    sections.push(`- 照片已分类 (selected.json): ${photosClassified ? '✅' : '❌'}`);
+    sections.push('');
+
+    if (odPkgExists) {
+      const odChecks = [
+        { path: path.join(odPkgDir, 'content'),         label: 'content/' },
+        { path: path.join(odPkgDir, 'design'),          label: 'design/' },
+        { path: path.join(odPkgDir, 'facts.json'),      label: 'facts.json' },
+        { path: path.join(odPkgDir, 'DESIGN-HANDOFF.md'), label: 'DESIGN-HANDOFF.md' },
+      ];
+      const odDetails = odChecks.map(({ path: p, label }) => `${fs.existsSync(p) ? '✅' : '❌'} \`${label}\``);
+      sections.push('**OD Package 内容**: ' + odDetails.join(' · '));
+      sections.push('');
+    }
+
+    if (brandSpecExists) {
+      const specPath = fs.existsSync(path.join(designBrandDir, 'brand-spec.json'))
+        ? path.join(designBrandDir, 'brand-spec.json')
+        : path.join(odBrandDir, 'brand-spec.json');
+      try {
+        const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+        if (spec.personality) sections.push(`**品牌风格**: ${spec.personality}`);
+        const colors = spec.colors || {};
+        const colorPrimary = colors.brand_primary || colors.primary;
+        if (colorPrimary) sections.push(`**主色**: \`${colorPrimary}\`${colors.brand_accent ? ` · Accent \`${colors.brand_accent}\`` : ''}`);
+        sections.push('');
+      } catch { /* non-fatal */ }
     }
   }
 
