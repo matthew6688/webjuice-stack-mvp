@@ -1,0 +1,109 @@
+<section class="section reviews-section" id="reviews">
+  <div class="container">
+    <div class="reviews-head">
+      <p class="kicker">Trusted By Many</p>
+      <h2>{{?reviews_heading}}{{reviews_heading}}{{/reviews_heading}}{{^reviews_heading}}What Our Customers Say{{/reviews_heading}}</h2>
+      {{?review_count}}
+      <p class="review-badge">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0l2.4 7.2H20l-6.2 4.5 2.4 7.3L10 14.5l-6.2 4.5 2.4-7.3L0 7.2h7.6z" fill="#FBBC04"/></svg>
+        {{?rating}}{{rating}}★ — {{/rating}}Based on {{review_count}} reviews on Google
+      </p>
+      {{/review_count}}
+    </div>
+    <div class="reviews-grid">
+      {{#reviews}}
+      <div class="review-card">
+        <div class="review-stars" aria-label="{{?stars}}{{stars}}{{/stars}}{{^stars}}5{{/stars}} out of 5 stars">
+          {{?stars}}{{stars}}{{/stars}}{{^stars}}<svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0l2 6h6l-5 3.6 2 6L8 12l-5 3.6 2-6L0 6h6z" fill="#FBBC04"/></svg><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0l2 6h6l-5 3.6 2 6L8 12l-5 3.6 2-6L0 6h6z" fill="#FBBC04"/></svg><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0l2 6h6l-5 3.6 2 6L8 12l-5 3.6 2-6L0 6h6z" fill="#FBBC04"/></svg><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0l2 6h6l-5 3.6 2 6L8 12l-5 3.6 2-6L0 6h6z" fill="#FBBC04"/></svg><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0l2 6h6l-5 3.6 2 6L8 12l-5 3.6 2-6L0 6h6z" fill="#FBBC04"/></svg>{{/stars}}
+        </div>
+        <blockquote>{{?quote}}{{quote}}{{/quote}}{{^quote}}{{body}}{{/quote}}</blockquote>
+        <div class="review-author">
+          <div class="review-avatar">{{?initials}}{{initials}}{{/initials}}{{^initials}}{{author}}{{/initials}}</div>
+          <div><strong>{{?author}}{{author}}{{/author}}{{^author}}Verified customer{{/author}}</strong><span>{{?source}}{{source}}{{/source}}{{^source}}Google Review{{/source}}</span></div>
+        </div>
+      </div>
+      {{/reviews}}
+    </div>
+  </div>
+</section>
+
+<style>
+.reviews-section { padding: clamp(64px, 9vw, 96px) 0; background: var(--surface, #fff); }
+.reviews-section .reviews-head { text-align: center; margin-bottom: 40px; }
+.reviews-section .kicker {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-accent, #b86a47);
+  margin: 0 0 12px;
+}
+.reviews-section h2 {
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: clamp(32px, 4.2vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 12px;
+  color: var(--text, #102b32);
+}
+.reviews-section .review-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(251,188,4,0.10);
+  border: 1px solid rgba(251,188,4,0.30);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text, #102b32);
+  margin: 12px 0 0;
+}
+.reviews-section .reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.reviews-section .review-card {
+  background: var(--surface-muted, #f4f6f5);
+  border: 1px solid var(--border, #dce5e3);
+  border-radius: 8px;
+  padding: 28px;
+}
+.reviews-section .review-stars { display: flex; gap: 2px; margin-bottom: 16px; }
+.reviews-section .review-card blockquote {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text, #102b32);
+  margin: 0 0 24px;
+  font-style: normal;
+  font-family: inherit;
+}
+.reviews-section .review-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border, #dce5e3);
+}
+.reviews-section .review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--brand-accent, #b86a47) 18%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--brand-accent, #b86a47);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.reviews-section .review-author strong { font-size: 14px; display: block; color: var(--text, #102b32); }
+.reviews-section .review-author span { font-size: 12px; color: var(--text-muted, #5c6b70); }
+@media (max-width: 980px) { .reviews-section .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .reviews-section .reviews-grid { grid-template-columns: 1fr; } }
+</style>

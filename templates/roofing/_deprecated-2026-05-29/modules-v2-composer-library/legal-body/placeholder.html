@@ -1,0 +1,31 @@
+<section class="legal-section">
+  <div class="container legal-inner">
+    <p class="eyebrow">Legal</p>
+    <h1>{{page_title}}</h1>
+    <div class="legal-content">
+      <p>This page is a placeholder. {{business_name}} will publish its full {{page_title}} document here. For now, the key terms below apply:</p>
+      <h2>Contact</h2>
+      <p>If you have questions, contact {{business_name}}:</p>
+      <ul>
+        <li>Phone: <a href="{{tel_link}}">{{phone}}</a></li>
+        <li>Email: <a href="{{email_link}}">{{email}}</a></li>
+        <li>Address: {{address}}</li>
+      </ul>
+      <h2>Data we collect</h2>
+      <p>When you submit a quote form on this site, {{business_name}} receives your name, phone, suburb, email, and message. We use this only to respond to your request. We don't sell or share your details.</p>
+      <h2>Licensing & business details</h2>
+      <p>{{business_name}} operates in {{state}}, registered with {{?licensing_authority_full}}{{licensing_authority_full}}{{/licensing_authority_full}}{{^licensing_authority_full}}{{licensing_authority}}{{/licensing_authority_full}}. Full ABN and license number are available on request.</p>
+      <p><em>Last updated: 2026 · Final document pending customer review.</em></p>
+    </div>
+  </div>
+</section>
+<style>
+.legal-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.legal-inner { max-width: 760px; margin: 0 auto; }
+.legal-section h1 { font-family: var(--font-display); font-size: clamp(32px, 4.5vw, 48px); margin: 0 0 32px; font-weight: 700; }
+.legal-section h2 { font-family: var(--font-display); font-size: 22px; margin: 32px 0 12px; font-weight: 700; }
+.legal-content p { font-size: 16px; line-height: 1.7; color: var(--text); margin: 0 0 16px; }
+.legal-content ul { margin: 0 0 16px; padding-left: 20px; }
+.legal-content li { font-size: 16px; line-height: 1.7; margin-bottom: 6px; }
+.legal-content em { color: var(--text-muted); font-size: 14px; }
+</style>

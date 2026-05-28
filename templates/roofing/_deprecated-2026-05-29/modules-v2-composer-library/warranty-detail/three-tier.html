@@ -1,0 +1,59 @@
+<section class="warranty-detail-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">In writing · before we start</p>
+      <h2 class="section-h2">Three warranties on every {{business_name}} roof</h2>
+      <p class="section-lead">Each one independent · each one documented · each one stays with the property if you sell.</p>
+    </div>
+    <div class="warranty-tiers">
+      <div class="warranty-tier">
+        <div class="warranty-years">36<span>years</span></div>
+        <div class="warranty-title">Colorbond® coating</div>
+        <p class="warranty-body">BlueScope Steel manufacturer-backed warranty against perforation, peel, and flake on the painted surface. Issued directly by the steel mill at Port Kembla.</p>
+        <div class="warranty-issuer">Issued by · BlueScope Steel</div>
+      </div>
+      <div class="warranty-tier warranty-tier-feature">
+        <div class="warranty-years">{{warranty_years}}<span>years</span></div>
+        <div class="warranty-title">{{business_name}} workmanship</div>
+        <p class="warranty-body">Every cut, fastener, flashing, valley, ridge, and penetration we install. If it leaks or fails because of how we built it, we come back and fix it. No proportional reduction — full repair.</p>
+        <div class="warranty-issuer">Issued by · {{business_name}}</div>
+      </div>
+      <div class="warranty-tier">
+        <div class="warranty-years">6.6<span>years</span></div>
+        <div class="warranty-title">Statutory implied</div>
+        <p class="warranty-body">Victorian Domestic Building Contracts Act statutory warranty for structural defects · 2 years for non-structural · runs from completion date.</p>
+        <div class="warranty-issuer">Issued by · {{licensing_authority}} regulated</div>
+      </div>
+    </div>
+    <div class="warranty-foot">
+      <div class="warranty-foot-row">
+        <div class="warranty-foot-label">All warranties are</div>
+        <ul class="warranty-foot-list">
+          <li>Transferable to the next property owner</li>
+          <li>Provided in writing on completion · physical copy + PDF</li>
+          <li>Lodged with your insurer on request</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+.warranty-detail-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.warranty-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 48px auto 32px; }
+.warranty-tier { background: var(--surface-muted); padding: 36px 32px; border-radius: 2px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.warranty-tier-feature { background: var(--brand-primary); color: #fff; }
+.warranty-tier-feature .warranty-years, .warranty-tier-feature .warranty-title { color: var(--brand-accent); }
+.warranty-tier-feature .warranty-body { color: rgba(255,255,255,0.92); }
+.warranty-tier-feature .warranty-issuer { color: rgba(255,255,255,0.55); border-color: rgba(255,255,255,0.18); }
+.warranty-years { font-family: var(--font-display); font-size: 72px; font-weight: 800; line-height: 1; color: var(--brand-primary); margin-bottom: 12px; }
+.warranty-years span { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-left: 8px; vertical-align: super; }
+.warranty-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--brand-primary); margin-bottom: 12px; }
+.warranty-body { font-size: 14px; line-height: 1.6; color: var(--text); margin: 0 0 20px; flex-grow: 1; }
+.warranty-issuer { font-family: 'Inter', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding-top: 16px; border-top: 1px solid var(--border); font-weight: 700; }
+.warranty-foot { max-width: 900px; margin: 0 auto; background: var(--surface-muted); padding: 24px 32px; border-radius: 2px; border-left: 3px solid var(--brand-accent); }
+.warranty-foot-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: start; }
+.warranty-foot-label { font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 700; padding-top: 4px; }
+.warranty-foot-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 14px; line-height: 1.5; color: var(--text); }
+.warranty-foot-list li::before { content: '✓ '; color: var(--brand-primary); font-weight: 700; }
+@media (max-width: 900px) { .warranty-tiers { grid-template-columns: 1fr; } .warranty-foot-row { grid-template-columns: 1fr; gap: 12px; } }
+</style>

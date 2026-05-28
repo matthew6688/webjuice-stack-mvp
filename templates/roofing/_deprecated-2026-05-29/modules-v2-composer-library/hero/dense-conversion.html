@@ -1,0 +1,305 @@
+<section class="hero hero--dense" data-od-id="hero">
+  <div class="container hero-content">
+    <div class="hero-text">
+      <div class="hero-badge"><span class="dot"></span> {{city}} Roofing &amp; Restoration Specialists</div>
+      <h1 class="hero-h1">{{hero.headline}}</h1>
+      <p class="hero-desc">{{hero.subheadline}}</p>
+      <div class="hero-actions">
+        <a href="{{hero.primary_cta_href}}" class="btn-primary hero-cta-primary">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M6.2 2.7l-2 2a1 1 0 00-.2.9c.5 1.8 1.6 3.4 3 4.8s3 2.5 4.8 3a1 1 0 00.9-.2l2-2a.5.5 0 000-.7l-2.3-2.3a.5.5 0 00-.7 0l-1 1a.3.3 0 01-.4 0C9 8.3 7.7 7 6.5 5.8a.3.3 0 010-.4l1-1a.5.5 0 000-.7L5.3 1.4a.5.5 0 00-.7 0z"/>
+          </svg>
+          {{hero.primary_cta_label}}
+        </a>
+        <a href="{{hero.secondary_cta_href}}" class="btn-outline hero-cta-secondary">{{hero.secondary_cta_label}}</a>
+      </div>
+      <div class="hero-stats">
+        {{?years_in_business}}
+        <div class="hero-stat">
+          <strong>{{years_in_business}}+</strong>
+          <span>Years Experience</span>
+        </div>
+        {{/years_in_business}}
+        {{?review_count}}
+        <div class="hero-stat">
+          <strong>{{rating}}★</strong>
+          <span>{{review_count}} Google Reviews</span>
+        </div>
+        {{/review_count}}
+        <div class="hero-stat">
+          <strong>{{?warranty_years}}{{warranty_years}}yr{{/warranty_years}}{{^warranty_years}}10yr{{/warranty_years}}</strong>
+          <span>Workmanship Warranty</span>
+        </div>
+        {{?licensing_authority}}
+        <div class="hero-stat">
+          <strong>{{licensing_authority}}</strong>
+          <span>Registered + Insured</span>
+        </div>
+        {{/licensing_authority}}
+      </div>
+    </div>
+    <aside class="hero-form-card" id="quote-form">
+      <h3>Get Your Free Quote Today</h3>
+      <p class="sub">No obligation — we'll get back to you within 24 hours.</p>
+      <form class="quote-form" action="mailto:{{email}}" method="post">
+        <label class="form-field full-width">
+          <span class="form-label">Full name <span class="required-mark" aria-label="required">*</span></span>
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <label class="form-field">
+          <span class="form-label">Phone <span class="required-mark" aria-label="required">*</span></span>
+          <input type="tel" name="phone" autocomplete="tel" required>
+        </label>
+        <label class="form-field">
+          <span class="form-label">Email</span>
+          <input type="email" name="email" autocomplete="email">
+        </label>
+        <label class="form-field full-width">
+          <span class="form-label">Service</span>
+          <select name="service">
+            <option value="">What service are you looking for?</option>
+            {{#services}}<option value="{{name}}">{{name}}</option>{{/services}}
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <button type="submit" class="btn-primary full-width">Send message</button>
+        <p class="hero-form-privacy">{{?licensing_authority}}{{licensing_authority}} licensed · {{/licensing_authority}}we reply within 24 hours · no spam</p>
+      </form>
+    </aside>
+  </div>
+</section>
+
+<style>
+/* Reset the inherited [class*="hero-"] { padding: 96px 0 } from shared.css — that selector
+   accidentally matches every hero-* child (h1, desc, actions, stats) and inflates them. */
+.hero--dense .hero-content,
+.hero--dense .hero-text,
+.hero--dense .hero-badge,
+.hero--dense .hero-h1,
+.hero--dense .hero-desc,
+.hero--dense .hero-actions,
+.hero--dense .hero-stats,
+.hero--dense .hero-stat,
+.hero--dense .hero-form-privacy { padding: 0; }
+.hero--dense .hero-cta-primary { padding: 12px 20px; }
+.hero--dense .hero-cta-secondary { padding: 12px 20px; }
+.hero--dense .hero-form-card { padding: 24px 24px 22px; }
+.hero--dense {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(15,31,36,0.94) 0%, rgba(15,31,36,0.74) 50%, rgba(15,31,36,0.30) 100%),
+    url('{{hero.image}}') center right / cover no-repeat,
+    var(--brand-primary, #102b32);
+  overflow: hidden;
+  padding: 56px 0 48px;
+}
+.hero--dense::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15,31,36,0.12), rgba(15,31,36,0.52)),
+    radial-gradient(ellipse 50% 45% at 74% 34%, color-mix(in oklch, var(--brand-accent, #b86a47) 9%, transparent), transparent);
+  pointer-events: none;
+}
+.hero--dense .hero-content {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 64px;
+  align-items: center;
+}
+.hero--dense .hero-text { color: #fff; position: relative; z-index: 2; }
+.hero--dense .hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+  margin-bottom: 16px;
+}
+.hero--dense .hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand-accent, #b86a47);
+}
+.hero--dense .hero-h1 {
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: clamp(30px, 3.4vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  max-width: 520px;
+  font-weight: 800;
+  color: #fff;
+}
+.hero--dense .hero-h1 em { font-style: normal; color: var(--brand-accent, #b86a47); }
+.hero--dense .hero-desc {
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.82);
+  max-width: 480px;
+  margin: 0 0 22px;
+}
+.hero--dense .hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hero--dense .hero-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--brand-accent, #b86a47);
+  color: var(--brand-accent-ink, #fff);
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .15s ease;
+}
+.hero--dense .hero-cta-primary:hover { background: var(--brand-accent-dark, #8e4f33); }
+.hero--dense .hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.32);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.hero--dense .hero-cta-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+.hero--dense .hero-stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.14);
+  flex-wrap: wrap;
+}
+.hero--dense .hero-stat strong {
+  display: block;
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1;
+}
+.hero--dense .hero-stat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+}
+.hero--dense .hero-stat span {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.02em;
+}
+.hero--dense .hero-form-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px 24px 22px;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.28);
+  position: relative;
+  z-index: 2;
+}
+.hero--dense .hero-form-card h3 {
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: 19px;
+  margin: 0 0 4px;
+  color: var(--brand-primary, #102b32);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.hero--dense .hero-form-card .sub {
+  color: var(--text-muted, #5c6b70);
+  font-size: 13px;
+  margin: 0 0 14px;
+}
+.hero--dense .quote-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.hero--dense .quote-form .form-field { display: flex; flex-direction: column; gap: 4px; }
+.hero--dense .quote-form .form-field.full-width { grid-column: 1 / -1; }
+.hero--dense .quote-form .form-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted, #5c6b70);
+}
+.hero--dense .quote-form .required-mark { color: var(--brand-accent, #b86a47); }
+.hero--dense .quote-form input,
+.hero--dense .quote-form select,
+.hero--dense .quote-form textarea {
+  padding: 9px 12px;
+  border: 1px solid var(--border, #dce5e3);
+  border-radius: 4px;
+  font: inherit;
+  font-size: 13px;
+  background: #fff;
+  color: var(--text, #102b32);
+}
+.hero--dense .quote-form textarea { display: none; }
+.hero--dense .hero-form-privacy { font-size: 11px !important; margin-top: 8px !important; }
+.hero--dense .quote-form input:focus,
+.hero--dense .quote-form select:focus,
+.hero--dense .quote-form textarea:focus {
+  outline: 2px solid var(--brand-accent, #b86a47);
+  border-color: var(--brand-accent, #b86a47);
+}
+.hero--dense .quote-form .btn-primary.full-width {
+  grid-column: 1 / -1;
+  background: var(--brand-accent, #b86a47);
+  color: var(--brand-accent-ink, #fff);
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+.hero--dense .quote-form .btn-primary.full-width:hover { background: var(--brand-accent-dark, #8e4f33); }
+.hero--dense .hero-form-privacy {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--text-muted, #5c6b70);
+  margin: 12px 0 0;
+  line-height: 1.5;
+  text-align: center;
+}
+@media (max-width: 980px) {
+  .hero--dense { min-height: auto; padding: 80px 0 60px; }
+  .hero--dense .hero-content { grid-template-columns: 1fr; gap: 40px; }
+  .hero--dense .hero-form-card { padding: 28px; }
+  .hero--dense .quote-form { grid-template-columns: 1fr; }
+}
+</style>

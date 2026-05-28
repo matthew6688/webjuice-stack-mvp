@@ -1,0 +1,25 @@
+<section class="section value-prop-band">
+  <div class="container">
+    <div class="vp-band-inner">
+      <p class="kicker">{{?value_prop_band.eyebrow}}{{value_prop_band.eyebrow}}{{/value_prop_band.eyebrow}}{{^value_prop_band.eyebrow}}Trusted Specialists{{/value_prop_band.eyebrow}}</p>
+      <h2 class="vp-band-h2">{{?value_prop_band.headline}}{{value_prop_band.headline}}{{/value_prop_band.headline}}{{^value_prop_band.headline}}{{city}}'s Trusted Roof Restoration Specialists{{/value_prop_band.headline}}</h2>
+      <p class="vp-band-body">{{?value_prop_band.body}}{{value_prop_band.body}}{{/value_prop_band.body}}{{^value_prop_band.body}}When it comes to protecting your home, you deserve a roofing team that delivers more than just a quick fix. {{business_name}} has built a reputation across {{city}} for honest advice, careful workmanship, and roofing solutions that last.{{/value_prop_band.body}}</p>
+      <div class="vp-band-actions">
+        <a href="{{tel_link}}" class="btn-white">Call {{phone}}</a>
+        <a href="#quote-form" class="btn-outline-white">Get Free Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.value-prop-band { padding: clamp(72px, 10vw, 120px) 0; background: var(--brand-primary, #102b32); color: #fff; }
+.value-prop-band .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.value-prop-band .vp-band-inner { max-width: 720px; }
+.value-prop-band .kicker { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-accent, #b86a47); margin: 0 0 12px; }
+.value-prop-band .vp-band-h2 { font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif); font-size: clamp(32px, 4.4vw, 48px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 20px; color: #fff; }
+.value-prop-band .vp-band-body { color: rgba(255,255,255,0.78); font-size: 17px; line-height: 1.65; margin: 0 0 32px; }
+.value-prop-band .vp-band-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.value-prop-band .btn-white { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--brand-primary, #102b32); padding: 14px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+.value-prop-band .btn-outline-white { display: inline-flex; align-items: center; background: transparent; border: 1px solid rgba(255,255,255,0.55); color: #fff; padding: 14px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+</style>

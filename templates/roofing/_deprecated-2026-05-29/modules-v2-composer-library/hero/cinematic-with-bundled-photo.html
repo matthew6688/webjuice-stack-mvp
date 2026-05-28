@@ -1,0 +1,27 @@
+<section class="hero-cinematic">
+  <div class="hero-cinematic-bg" style="background-image: linear-gradient(180deg, rgba(15,17,21,0.4) 0%, rgba(15,17,21,0.55) 50%, rgba(15,17,21,0.85) 100%), url('{{?hero.image}}{{hero.image}}{{/hero.image}}{{^hero.image}}{{template_assets}}/hero/cinematic-default.png{{/hero.image}}');"></div>
+  <div class="container hero-cinematic-inner">
+    <div class="hero-cinematic-text">
+      <p class="hero-eyebrow">{{city}} · {{state}} · {{licensing_authority}} Licensed</p>
+      <h1 class="hero-cinematic-h1">{{hero.headline}}</h1>
+      <p class="hero-cinematic-sub">{{hero.subheadline}}</p>
+      <div class="hero-cinematic-cta">
+        <a class="btn-primary hero-cinematic-primary" href="{{hero.primary_cta_href}}">{{hero.primary_cta_label}}</a>
+        <a class="hero-cinematic-secondary" href="#quote-form">{{hero.secondary_cta_label}} →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+.hero-cinematic { position: relative; min-height: 90vh; display: flex; align-items: center; color: #fff; overflow: hidden; }
+.hero-cinematic-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: -1; }
+.hero-cinematic-inner { display: flex; align-items: flex-end; min-height: 90vh; padding: 64px 0; }
+.hero-cinematic-text { max-width: 760px; }
+.hero-cinematic .hero-eyebrow { font-family: 'Inter', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand-accent); margin: 0 0 24px; font-weight: 700; }
+.hero-cinematic-h1 { font-family: var(--font-display); font-size: clamp(48px, 7.5vw, 96px); line-height: 0.96; letter-spacing: -0.03em; margin: 0 0 28px; font-weight: 700; }
+.hero-cinematic-sub { font-size: 21px; line-height: 1.5; max-width: 600px; color: rgba(255,255,255,0.9); margin: 0 0 40px; }
+.hero-cinematic-cta { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.hero-cinematic-primary { padding: 18px 32px; font-size: 16px; }
+.hero-cinematic-secondary { color: #fff; text-decoration: underline; text-underline-offset: 4px; font-weight: 700; font-size: 15px; }
+@media (max-width: 820px) { .hero-cinematic { min-height: 70vh; } .hero-cinematic-inner { min-height: 70vh; } }
+</style>

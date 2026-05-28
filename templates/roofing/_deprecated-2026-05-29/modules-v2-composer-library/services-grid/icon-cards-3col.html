@@ -1,0 +1,36 @@
+<section class="services-grid-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Services</p>
+      <h2 class="section-h2">What we do across {{city}}</h2>
+      <p class="section-lead">Real roofing work, not retail templates. Every service backed by a {{warranty_years}}-year workmanship warranty.</p>
+    </div>
+    <div class="services-grid">
+      {{#services}}
+      <article class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><path d="M3 11 12 4l9 7"/><path d="M5 10v9h14v-9"/><path d="M9 19v-6h6v6"/></svg>
+        </div>
+        <h3 class="service-card-h3">{{name}}</h3>
+        <p class="service-card-desc">{{short_desc}}</p>
+        <a class="service-card-link" href="{{page_slug}}">Learn more →</a>
+      </article>
+      {{/services}}
+    </div>
+  </div>
+</section>
+<style>
+.services-grid-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.section-head { max-width: 680px; margin: 0 auto 56px; text-align: center; }
+.eyebrow { font-family: 'Inter', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand-accent); margin: 0 0 16px; font-weight: 700; }
+.section-h2 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 16px; font-weight: 700; }
+.section-lead { font-size: 18px; line-height: 1.55; color: var(--text-muted); margin: 0; }
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.service-card { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 32px; transition: border-color 0.2s; }
+.service-card:hover { border-color: var(--text); }
+.service-icon { color: var(--brand-accent); margin-bottom: 20px; }
+.service-card-h3 { font-family: var(--font-display); font-size: 22px; line-height: 1.2; margin: 0 0 12px; font-weight: 700; }
+.service-card-desc { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin: 0 0 20px; }
+.service-card-link { color: var(--brand-primary); font-weight: 700; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; }
+.service-card-link:hover { color: var(--brand-accent); }
+</style>

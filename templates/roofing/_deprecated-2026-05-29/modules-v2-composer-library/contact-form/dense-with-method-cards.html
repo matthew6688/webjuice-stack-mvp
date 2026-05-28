@@ -1,0 +1,103 @@
+<section class="section contact-dense-section">
+  <div class="container">
+    <div class="contact-dense-grid">
+      <aside class="contact-method-list">
+        <div class="contact-rail-head">
+          <p class="kicker">Get In Touch</p>
+          <h2 class="contact-rail-h2">Talk to {{business_name}}</h2>
+          <p class="contact-rail-sub">Free site visits across {{city}}. Most enquiries answered within an hour during business hours.</p>
+        </div>
+        <a href="{{google_maps_url}}" target="_blank" rel="noopener" class="contact-method">
+          <div class="contact-method-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <div class="contact-method-body">
+            <div class="contact-method-label">Visit Us</div>
+            <p class="contact-method-text">{{address}}</p>
+            <span class="contact-method-link">Open in Maps →</span>
+          </div>
+        </a>
+        <a href="mailto:{{email}}" class="contact-method">
+          <div class="contact-method-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 7 9-7"/></svg>
+          </div>
+          <div class="contact-method-body">
+            <div class="contact-method-label">Email Us</div>
+            <p class="contact-method-text">{{email}}</p>
+            <span class="contact-method-link">Send a note →</span>
+          </div>
+        </a>
+        <a href="{{tel_link}}" class="contact-method">
+          <div class="contact-method-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 2l3 6-2 1c1 3 3 5 6 6l1-2 6 3v3a2 2 0 01-2 2C10 21 3 14 3 4a2 2 0 012-2z"/></svg>
+          </div>
+          <div class="contact-method-body">
+            <div class="contact-method-label">Call Us</div>
+            <p class="contact-method-text">{{phone}}</p>
+            <span class="contact-method-link">Tap to dial →</span>
+          </div>
+        </a>
+        <div class="contact-method-hours">
+          <div class="contact-method-label">Hours</div>
+          <p class="contact-method-text">{{hours}}</p>
+        </div>
+      </aside>
+      <div class="contact-form-card">
+        <h2 class="contact-form-h2">{{?contact_form.heading}}{{contact_form.heading}}{{/contact_form.heading}}{{^contact_form.heading}}Send Us A Message{{/contact_form.heading}}</h2>
+        <p class="contact-form-sub">{{?contact_form.sub}}{{contact_form.sub}}{{/contact_form.sub}}{{^contact_form.sub}}Fill out the form below and we'll get back to you within 24 hours.{{/contact_form.sub}}</p>
+        <form class="contact-dense-form" action="mailto:{{email}}" method="post">
+          <div class="form-row">
+            <label class="form-field"><span>First Name *</span><input type="text" name="first_name" required></label>
+            <label class="form-field"><span>Last Name *</span><input type="text" name="last_name" required></label>
+          </div>
+          <div class="form-row">
+            <label class="form-field"><span>Email *</span><input type="email" name="email" required></label>
+            <label class="form-field"><span>Phone Number</span><input type="tel" name="phone"></label>
+          </div>
+          <div class="form-row">
+            <label class="form-field"><span>Suburb</span><input type="text" name="suburb"></label>
+            <label class="form-field"><span>Service</span><select name="service"><option>What service are you looking for?</option>{{#services}}<option>{{name}}</option>{{/services}}</select></label>
+          </div>
+          <label class="form-field full-width"><span>Message</span><textarea name="message" rows="5"></textarea></label>
+          <button type="submit" class="btn-primary contact-submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.contact-dense-section { padding: clamp(56px, 8vw, 80px) 0; background: var(--surface-muted, #f4f6f5); }
+.contact-dense-section .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.contact-dense-section .contact-dense-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: start; }
+.contact-dense-section .contact-method-list { display: flex; flex-direction: column; gap: 12px; }
+.contact-dense-section .contact-rail-head { margin-bottom: 8px; }
+.contact-dense-section .contact-rail-head .kicker { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-accent, #b86a47); margin: 0 0 8px; }
+.contact-dense-section .contact-rail-h2 { font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif); font-size: clamp(22px, 2.4vw, 26px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 8px; color: var(--text, #102b32); }
+.contact-dense-section .contact-rail-sub { font-size: 14px; line-height: 1.55; color: var(--text-muted, #5c6b70); margin: 0 0 8px; }
+.contact-dense-section .contact-method { display: flex; align-items: flex-start; gap: 14px; background: var(--surface, #fff); border: 1px solid var(--border, #dce5e3); border-radius: 8px; padding: 18px 16px; text-decoration: none; color: var(--text, #102b32); transition: border-color .2s, transform .2s; }
+.contact-dense-section .contact-method:hover { border-color: var(--brand-accent, #b86a47); transform: translateY(-1px); }
+.contact-dense-section .contact-method-icon { width: 44px; height: 44px; border-radius: 8px; background: color-mix(in srgb, var(--brand-accent, #b86a47) 14%, transparent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-dense-section .contact-method-icon svg { color: var(--brand-accent, #b86a47); }
+.contact-dense-section .contact-method-body { display: flex; flex-direction: column; gap: 2px; }
+.contact-dense-section .contact-method-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted, #5c6b70); }
+.contact-dense-section .contact-method-text { font-size: 15px; line-height: 1.45; color: var(--text, #102b32); margin: 0; font-weight: 600; }
+.contact-dense-section .contact-method-link { font-size: 12px; color: var(--brand-accent, #b86a47); font-weight: 700; letter-spacing: 0.04em; margin-top: 2px; }
+.contact-dense-section .contact-method-hours { background: var(--surface-muted, #f4f6f5); border-radius: 8px; padding: 14px 16px; }
+.contact-dense-section .contact-method-hours .contact-method-text { font-weight: 500; }
+.contact-dense-section .contact-form-card { background: var(--surface, #fff); border-radius: 8px; padding: 32px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.contact-dense-section .contact-form-h2 { font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif); font-size: clamp(22px, 2.6vw, 28px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--text, #102b32); }
+.contact-dense-section .contact-form-sub { color: var(--text-muted, #5c6b70); font-size: 14px; margin: 0 0 24px; }
+.contact-dense-section .contact-dense-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.contact-dense-section .contact-dense-form .form-field { display: flex; flex-direction: column; gap: 6px; }
+.contact-dense-section .contact-dense-form .form-field.full-width { grid-column: 1 / -1; margin-bottom: 14px; }
+.contact-dense-section .contact-dense-form .form-field > span { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text-muted, #5c6b70); text-transform: uppercase; }
+.contact-dense-section .contact-dense-form input,
+.contact-dense-section .contact-dense-form select,
+.contact-dense-section .contact-dense-form textarea { padding: 12px 14px; border: 1px solid var(--border, #dce5e3); border-radius: 4px; font: inherit; font-size: 14px; background: var(--surface, #fff); }
+.contact-dense-section .contact-submit { width: 100%; background: var(--brand-accent, #b86a47); color: #fff; padding: 14px; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; border: 0; border-radius: 4px; cursor: pointer; }
+@media (max-width: 900px) {
+  .contact-dense-section .contact-dense-grid { grid-template-columns: 1fr; }
+  .contact-dense-section .contact-dense-form .form-row { grid-template-columns: 1fr; }
+}
+</style>

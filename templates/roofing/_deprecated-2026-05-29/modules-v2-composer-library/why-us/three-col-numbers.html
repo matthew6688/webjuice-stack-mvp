@@ -1,0 +1,25 @@
+<section class="why-us-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Why choose us</p>
+      <h2 class="section-h2">Concrete, not adjectives</h2>
+    </div>
+    <div class="why-us-grid">
+      {{#why_us}}
+      <div class="why-us-item">
+        <div class="why-us-number">0{{@index}}</div>
+        <h3 class="why-us-title">{{title}}</h3>
+        <p class="why-us-body">{{body}}</p>
+      </div>
+      {{/why_us}}
+    </div>
+  </div>
+</section>
+<style>
+.why-us-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface-muted); }
+.why-us-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
+.why-us-item { padding: 24px 0; }
+.why-us-number { font-family: 'Inter', monospace; font-size: 14px; color: var(--brand-accent); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 12px; }
+.why-us-title { font-family: var(--font-display); font-size: 20px; line-height: 1.25; margin: 0 0 12px; font-weight: 700; }
+.why-us-body { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin: 0; }
+</style>

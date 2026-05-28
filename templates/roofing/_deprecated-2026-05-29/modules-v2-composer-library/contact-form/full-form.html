@@ -1,0 +1,64 @@
+<section class="contact-form-section" id="quote-form">
+  <div class="container contact-form-grid">
+    <div class="contact-form-text">
+      <p class="eyebrow">Request a quote</p>
+      <h2 class="section-h2">Tell us about your roof</h2>
+      <p class="section-lead">Fill in the form or call us — either way, you'll get a written quote within 24 hours. No obligation.</p>
+      <ul class="contact-info-list">
+        <li><strong>Phone</strong><a href="{{tel_link}}">{{phone}}</a></li>
+        <li><strong>Email</strong><a href="{{email_link}}">{{email}}</a></li>
+        <li><strong>Address</strong><a href="{{google_maps_url}}" target="_blank" rel="noopener">{{address}}</a></li>
+        <li><strong>Hours</strong>{{hours}}</li>
+      </ul>
+    </div>
+    <form class="contact-form" action="mailto:{{email}}" method="post">
+      <div class="contact-form-row">
+        <label>Name <input type="text" name="name" required /></label>
+        <label>Phone <input type="tel" name="phone" required /></label>
+      </div>
+      <div class="contact-form-row">
+        <label>Email <input type="email" name="email" required /></label>
+        <label>Suburb <input type="text" name="suburb" required /></label>
+      </div>
+      <label>What do you need?
+        <select name="service">
+          <option value="">Choose a service</option>
+          {{#services}}<option value="{{name}}">{{name}}</option>{{/services}}
+          <option value="other">Something else</option>
+        </select>
+      </label>
+      <label>Message
+        <textarea name="message" rows="5" placeholder="Roof age, materials, what's wrong, when it's convenient..."></textarea>
+      </label>
+      <label>Best time to call
+        <select name="best_time">
+          <option value="">Any time</option>
+          <option>Morning</option>
+          <option>Afternoon</option>
+          <option>After 5pm</option>
+        </select>
+      </label>
+      <button type="submit" class="btn-primary contact-submit">Send my message</button>
+      <p class="contact-form-privacy">We respond within 24 hours · No spam · {{licensing_authority}} licensed</p>
+    </form>
+  </div>
+</section>
+<style>
+.contact-form-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.contact-form-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: start; }
+.contact-form-text { padding-right: 24px; }
+.contact-info-list { list-style: none; padding: 0; margin: 32px 0 0; display: grid; gap: 16px; }
+.contact-info-list li { display: grid; grid-template-columns: 80px 1fr; gap: 12px; align-items: baseline; font-size: 15px; }
+.contact-info-list strong { font-family: 'Inter', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
+.contact-info-list a { color: var(--text); font-weight: 500; }
+.contact-info-list a:hover { color: var(--brand-accent); }
+.contact-form { display: grid; gap: 16px; }
+.contact-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.contact-form label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.contact-form input, .contact-form select, .contact-form textarea { padding: 12px 14px; border: 1px solid var(--border); border-radius: 2px; font: inherit; font-size: 15px; color: var(--text); background: var(--surface); }
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { outline: 2px solid var(--brand-accent); border-color: var(--brand-accent); }
+.contact-form textarea { resize: vertical; line-height: 1.55; }
+.contact-submit { padding: 16px 24px; font-size: 15px; margin-top: 8px; }
+.contact-form-privacy { font-size: 12px; color: var(--text-muted); margin: 8px 0 0; line-height: 1.4; text-align: center; }
+@media (max-width: 820px) { .contact-form-grid { grid-template-columns: 1fr; gap: 32px; } .contact-form-text { padding-right: 0; } .contact-form-row { grid-template-columns: 1fr; } }
+</style>

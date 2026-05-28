@@ -1,0 +1,19 @@
+<section class="service-areas-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Service area</p>
+      <h2 class="section-h2">Suburbs we cover from {{city}}</h2>
+      <p class="section-lead">Free site visits within our area. Outside? Call us — we travel for the right job.</p>
+    </div>
+    <div class="suburbs-grid">
+      {{#service_area}}
+      <span class="suburb-chip">{{.}}</span>
+      {{/service_area}}
+    </div>
+  </div>
+</section>
+<style>
+.service-areas-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface-muted); }
+.suburbs-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 840px; margin: 0 auto; }
+.suburb-chip { padding: 10px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; font-size: 14px; font-weight: 600; color: var(--text); }
+</style>

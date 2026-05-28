@@ -1,0 +1,71 @@
+<section class="section faq-section" id="faqs">
+  <div class="container faq-container">
+    <div class="faq-head">
+      <p class="kicker">FAQ</p>
+      <h2>{{?faqs_heading}}{{faqs_heading}}{{/faqs_heading}}{{^faqs_heading}}Frequently Asked Questions{{/faqs_heading}}</h2>
+      <p class="muted-text">Find answers to the most common questions from our customers.</p>
+    </div>
+    {{#faqs}}
+    <details class="faq-item-refined">
+      <summary class="faq-question-refined">
+        <span>{{q}}</span>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>
+      </summary>
+      <div class="faq-answer-refined">{{{a}}}</div>
+    </details>
+    {{/faqs}}
+  </div>
+</section>
+
+<style>
+.faq-section { padding: clamp(64px, 9vw, 96px) 0; background: var(--surface, #fff); }
+.faq-section .faq-container { max-width: 800px; }
+.faq-section .faq-head { text-align: center; margin-bottom: 40px; }
+.faq-section .kicker {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-accent, #b86a47);
+  margin: 0 0 12px;
+}
+.faq-section h2 {
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: clamp(32px, 4.2vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 12px;
+  color: var(--text, #102b32);
+}
+.faq-section .muted-text { color: var(--text-muted, #5c6b70); font-size: 15px; margin: 8px auto 0; }
+.faq-section .faq-item-refined {
+  border-bottom: 1px solid var(--border, #dce5e3);
+  padding: 4px 0;
+}
+.faq-section .faq-question-refined {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text, #102b32);
+  cursor: pointer;
+  list-style: none;
+  gap: 16px;
+}
+.faq-section .faq-question-refined::-webkit-details-marker { display: none; }
+.faq-section .faq-question-refined svg { flex-shrink: 0; transition: transform 0.2s; color: var(--brand-accent, #b86a47); }
+.faq-section .faq-item-refined[open] .faq-question-refined svg { transform: rotate(45deg); }
+.faq-section .faq-answer-refined {
+  padding: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-muted, #5c6b70);
+}
+.faq-section .faq-answer-refined a { color: var(--brand-accent, #b86a47); text-decoration: underline; }
+</style>

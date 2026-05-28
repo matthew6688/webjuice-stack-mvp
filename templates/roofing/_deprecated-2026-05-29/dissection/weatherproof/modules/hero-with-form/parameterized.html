@@ -1,0 +1,67 @@
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge"><span class="dot"></span> {{city}} Roofing & Restoration Specialists</div>
+      <h1>Experience the {{business_name}} <em>Difference.</em> Quality You Can Trust</h1>
+      <p class="hero-desc">Is your roof tired, faded, or letting you down? Unpredictable weather events happen all year round — don't wait until it's too late. Don't wait for leaks or costly damage.</p>
+      <div class="hero-actions">
+        <a href="tel:{{phone_tel}}" class="btn btn--primary">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.2 2.7l-2 2a1 1 0 00-.2.9c.5 1.8 1.6 3.4 3 4.8s3 2.5 4.8 3a1 1 0 00.9-.2l2-2a.5.5 0 000-.7l-2.3-2.3a.5.5 0 00-.7 0l-1 1a.3.3 0 01-.4 0C9 8.3 7.7 7 6.5 5.8a.3.3 0 010-.4l1-1a.5.5 0 000-.7L5.3 1.4a.5.5 0 00-.7 0z"/></svg>
+          Call Us Today
+        </a>
+        <a href="#quote" class="btn btn--white">Get Your Free Quote</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>25+</strong>
+          <span>Years Experience</span>
+        </div>
+        <div class="hero-stat">
+          <strong>1.5K+</strong>
+          <span>Successful Projects</span>
+        </div>
+        <div class="hero-stat">
+          <strong>20yr</strong>
+          <span>Warranty</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-form-card" id="quote">
+      <h3>Get Your Free Quote Today</h3>
+      <p class="sub">No obligation — we'll get back to you within 24 hours.</p>
+      <form class="quote-form" onsubmit="event.preventDefault(); this.querySelector('.btn').textContent='Sent — Thank you!'; this.querySelector('.btn').style.background='var(--success)';">
+        <label class="form-field">
+          <span class="form-label">Full name <span class="required-mark" aria-label="required">*</span></span>
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <label class="form-field">
+          <span class="form-label">Email <span class="required-mark" aria-label="required">*</span></span>
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label class="form-field">
+          <span class="form-label">Suburb</span>
+          <input type="text" name="suburb" autocomplete="address-level2">
+        </label>
+        <label class="form-field">
+          <span class="form-label">Phone number</span>
+          <input type="tel" name="phone" autocomplete="tel">
+        </label>
+        <label class="form-field full-width">
+          <span class="form-label">Service</span>
+          <select name="service">
+            <option value="" selected>What service are you looking for?</option>
+            <option>Roof Cleaning</option>
+            <option>Roof Painting</option>
+            <option>Roof Repair</option>
+            <option>Roof Restoration</option>
+          </select>
+        </label>
+        <label class="form-field full-width">
+          <span class="form-label">Message</span>
+          <textarea name="message"></textarea>
+        </label>
+        <button type="submit" class="btn btn--primary full-width">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>

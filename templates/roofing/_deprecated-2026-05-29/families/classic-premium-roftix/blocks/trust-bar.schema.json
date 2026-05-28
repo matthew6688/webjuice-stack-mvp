@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "block_id": "trust-bar",
+  "block_name": "Trust Bar / Credentials Strip",
+  "purpose": "Surface 4-6 verifiable trust signals (licence, ABN, rating, warranty, insurance, years) immediately under the hero.",
+  "required_on": ["home"],
+  "recommended_on": ["service", "about", "contact"],
+  "data_od_id": "trust-bar",
+  "type": "object",
+  "required": ["items"],
+  "properties": {
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["label", "kind"],
+        "properties": {
+          "label": { "type": "string", "maxLength": 50, "description": "Concrete: 'VBA Licence DB-L 12345' not 'fully licensed'" },
+          "kind": { "enum": ["licence", "abn", "rating", "warranty", "insurance", "years", "association"] },
+          "value": { "type": "string", "description": "Verbatim from locked facts when available" },
+          "icon": { "type": "string", "description": "lucide icon name" }
+        }
+      }
+    },
+    "layout": { "enum": ["horizontal-strip", "logos-row", "icon-grid"], "default": "horizontal-strip" }
+  },
+  "validation_hooks": [
+    "no_fabricated_data",
+    "correct_state_authority",
+    "no_generic_copy"
+  ]
+}

@@ -1,0 +1,55 @@
+<section class="hero">
+  <div class="hero-bg" style="background-image: linear-gradient(90deg, rgba(15,17,21,0.85) 0%, rgba(15,17,21,0.55) 50%, rgba(15,17,21,0.25) 100%), url('{{hero.image}}');"></div>
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <p class="hero-eyebrow">{{city}} · {{state}}</p>
+      <h1 class="hero-h1">{{hero.headline}}</h1>
+      <p class="hero-sub">{{hero.subheadline}}</p>
+      <div class="hero-cta-row">
+        <a class="btn-primary hero-cta-primary" href="{{hero.primary_cta_href}}">{{hero.primary_cta_label}}</a>
+        <a class="hero-cta-secondary" href="{{hero.secondary_cta_href}}">{{hero.secondary_cta_label}} →</a>
+      </div>
+      {{?hero.proof_chips}}
+      <ul class="hero-proof">
+        {{#hero.proof_chips}}<li>✓ {{.}}</li>{{/hero.proof_chips}}
+      </ul>
+      {{/hero.proof_chips}}
+    </div>
+    <div class="hero-form-card" id="quote-form">
+      <div class="hero-form-label">Free quote · within 24 hours</div>
+      <form class="hero-form" action="mailto:{{email}}" method="post">
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="tel" name="phone" placeholder="Phone" required />
+        <input type="text" name="suburb" placeholder="Suburb" required />
+        <select name="service" required>
+          <option value="">What do you need?</option>
+          {{#services}}<option value="{{name}}">{{name}}</option>{{/services}}
+          <option value="other">Something else</option>
+        </select>
+        <button type="submit" class="btn-primary">Get my free quote</button>
+        <p class="hero-form-privacy">No spam · we reply within 24 hours · {{licensing_authority}} licensed</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+.hero { position: relative; padding: clamp(80px, 12vw, 144px) 0; color: #fff; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: -1; }
+.hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 64px; align-items: center; }
+.hero-eyebrow { font-family: 'Inter', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand-accent); margin: 0 0 16px; }
+.hero-h1 { font-family: var(--font-display); font-size: clamp(40px, 5.5vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 16px; font-weight: 700; }
+.hero-sub { font-size: 19px; line-height: 1.55; max-width: 540px; color: rgba(255,255,255,0.85); margin: 0 0 32px; }
+.hero-cta-row { display: flex; gap: 16px; align-items: center; margin-bottom: 32px; flex-wrap: wrap; }
+.hero-cta-primary { font-size: 16px; padding: 16px 28px; }
+.hero-cta-secondary { color: rgba(255,255,255,0.9); text-decoration: underline; font-weight: 600; font-size: 14px; }
+.hero-proof { display: flex; gap: 24px; padding: 0; margin: 0; list-style: none; font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 600; flex-wrap: wrap; }
+.hero-form-card { background: rgba(255,255,255,0.96); color: var(--text); padding: 32px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.hero-form-label { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: 16px; color: var(--brand-primary); }
+.hero-form { display: grid; gap: 12px; }
+.hero-form input, .hero-form select { padding: 12px 14px; border: 1px solid var(--border); border-radius: 2px; font: inherit; font-size: 15px; }
+.hero-form input:focus, .hero-form select:focus { outline: 2px solid var(--brand-accent); border-color: var(--brand-accent); }
+.hero-form button { padding: 14px 18px; font-size: 14px; }
+.hero-form-privacy { font-size: 12px; color: var(--text-muted); margin: 8px 0 0; line-height: 1.4; }
+@media (max-width: 820px) { .hero-grid { grid-template-columns: 1fr; gap: 32px; } .hero-form-card { padding: 24px; } }
+</style>

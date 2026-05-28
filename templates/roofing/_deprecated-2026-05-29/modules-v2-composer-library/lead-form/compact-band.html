@@ -1,0 +1,71 @@
+<section class="lead-form-band" id="lead-form">
+  <div class="container lead-form-inner">
+    <div class="lead-form-text">
+      <p class="eyebrow">Free quote · no obligation</p>
+      <h2 class="lead-form-h2">Tell us about your roof</h2>
+      <p class="lead-form-body">30 seconds. We call you back same business day with an inspection time. No hard-sell. No follow-up spam. If it's not a fit, we'll tell you.</p>
+      <ul class="lead-form-trust">
+        <li>✓ {{licensing_authority}} registered</li>
+        <li>✓ {{warranty_years}}-year workmanship warranty in writing</li>
+        <li>✓ Owner on site for every quote</li>
+      </ul>
+    </div>
+    <form class="lead-form" action="#" method="post" novalidate>
+      <div class="lead-form-row">
+        <label class="lead-form-field">
+          <span class="lead-form-label">Your name</span>
+          <input type="text" name="name" required autocomplete="name" />
+        </label>
+        <label class="lead-form-field">
+          <span class="lead-form-label">Phone</span>
+          <input type="tel" name="phone" required autocomplete="tel" />
+        </label>
+      </div>
+      <div class="lead-form-row">
+        <label class="lead-form-field">
+          <span class="lead-form-label">Suburb</span>
+          <input type="text" name="suburb" autocomplete="address-level2" placeholder="{{city}}" />
+        </label>
+        <label class="lead-form-field">
+          <span class="lead-form-label">What do you need?</span>
+          <select name="service_interest">
+            <option value="">Choose...</option>
+            {{#services}}
+            <option value="{{name}}">{{name}}</option>
+            {{/services}}
+            <option value="other">Something else</option>
+          </select>
+        </label>
+      </div>
+      <label class="lead-form-field lead-form-field-full">
+        <span class="lead-form-label">Tell us briefly (optional)</span>
+        <textarea name="message" rows="2" placeholder="Leaking valley · 30-yo tile roof · just want a price · etc."></textarea>
+      </label>
+      <button type="submit" class="lead-form-submit">Send · get a callback today</button>
+      <p class="lead-form-foot">Or call straight away · <a href="{{tel_link}}">{{phone}}</a> · {{hours}}</p>
+    </form>
+  </div>
+</section>
+<style>
+.lead-form-band { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface-muted); border-top: 1px solid var(--border); }
+.lead-form-inner { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start; }
+.lead-form-text .lead-form-h2 { font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 38px); font-weight: 800; line-height: 1.15; color: var(--brand-primary); margin: 0 0 16px; }
+.lead-form-body { font-size: 16px; line-height: 1.6; color: var(--text); margin: 0 0 24px; max-width: 48ch; }
+.lead-form-trust { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.lead-form-trust li { font-size: 14px; color: var(--text); padding-left: 4px; }
+.lead-form { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 28px; }
+.lead-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.lead-form-field { display: block; }
+.lead-form-field-full { display: block; margin-bottom: 20px; }
+.lead-form-label { display: block; font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 700; margin-bottom: 6px; }
+.lead-form input, .lead-form select, .lead-form textarea { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 2px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text); box-sizing: border-box; }
+.lead-form input:focus, .lead-form select:focus, .lead-form textarea:focus { outline: 2px solid var(--brand-accent); outline-offset: -1px; border-color: var(--brand-primary); }
+.lead-form-submit { width: 100%; padding: 16px 20px; background: var(--brand-primary); color: #fff; border: 0; border-radius: 2px; font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: 0.02em; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+.lead-form-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.lead-form-foot { font-size: 13px; color: var(--text-muted); text-align: center; margin: 14px 0 0; }
+.lead-form-foot a { color: var(--brand-primary); font-weight: 700; text-decoration: none; }
+@media (max-width: 900px) {
+  .lead-form-inner { grid-template-columns: 1fr; gap: 32px; }
+  .lead-form-row { grid-template-columns: 1fr; }
+}
+</style>

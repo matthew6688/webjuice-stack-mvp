@@ -1,0 +1,36 @@
+<section class="section apply-section fade-up" id="applynow">
+  <div class="container">
+    <div class="apply-form-wrap">
+      <p class="kicker">Apply Now</p>
+      <h2>Submit Your Application</h2>
+      <p>Fill out the form below and we'll be in touch.</p>
+      <form class="quote-form" onsubmit="event.preventDefault(); this.querySelector('.btn').textContent='Sent — Thank you!'; this.querySelector('.btn').style.background='var(--success)';">
+        <label class="form-field">
+          <span class="form-label">Full name <span class="required-mark" aria-label="required">*</span></span>
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <label class="form-field">
+          <span class="form-label">Email <span class="required-mark" aria-label="required">*</span></span>
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label class="form-field full-width">
+          <span class="form-label">Phone</span>
+          <input type="tel" name="phone" autocomplete="tel">
+        </label>
+        <label class="form-field full-width">
+          <span class="form-label">Position <span class="required-mark" aria-label="required">*</span></span>
+          <select name="position" required>
+            <option value="" disabled selected>Select position</option>
+            <option>Estimator/Sales Rep</option>
+            <option>Roof Tiler</option>
+          </select>
+        </label>
+        <label class="form-field full-width">
+          <span class="form-label">Message / cover letter</span>
+          <textarea name="message"></textarea>
+        </label>
+        <button type="submit" class="btn btn--primary full-width">Submit Application</button>
+      </form>
+    </div>
+  </div>
+</section>

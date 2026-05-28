@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roof Replacement · Roftrix Roofing</title>
+  <style>
+    :root {
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --fg: #212121;
+      --muted: #51606F;
+      --border: #E3DFD6;
+      --accent: #0E6B4F;
+      --primary: #0B2F57;
+      --warm: #FF6F3C;
+      --ink: #101417;
+      --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
+      --primary-soft: color-mix(in oklch, var(--primary) 12%, transparent);
+      --font-display: "Playfair Display", "Iowan Old Style", "Charter", Georgia, serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace;
+      --fs-h1: clamp(48px, 7vw, 92px);
+      --fs-h2: clamp(34px, 4vw, 58px);
+      --fs-h3: 24px;
+      --fs-lead: 19px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 64px;
+      --gap-2xl: 104px;
+      --container: 1180px;
+      --gutter: 28px;
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: var(--fs-body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; max-width: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    p { margin: 0; text-wrap: pretty; }
+    h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(56px, 8vw, var(--gap-2xl)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700; line-height: 0.95; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 700; line-height: 1.05; }
+    .h3, h3 { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.2; font-weight: 700; }
+    .lead { font-size: var(--fs-lead); line-height: 1.62; color: var(--muted); max-width: 58ch; }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 800; margin: 0 0 var(--gap-md); }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .topnav { position: sticky; top: 0; z-index: 20; background: color-mix(in oklch, var(--surface) 88%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .topnav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: var(--gap-lg); }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.02em; }
+    .brand-mark { width: 54px; height: 36px; color: var(--accent); }
+    .brand-mark .house { fill: var(--primary); }
+    .brand-word { font-size: 18px; color: var(--fg); }
+    .topnav nav { display: flex; gap: 28px; color: var(--muted); font-size: 14px; }
+    .topnav nav a:hover { color: var(--fg); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 12px 20px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease; }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-light { background: var(--surface); color: var(--primary); border-color: var(--surface); }
+    .btn-arrow::after { content: "→"; transition: transform 0.15s ease; }
+    .btn-arrow:hover::after { transform: translateX(2px); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .page-hero { background: var(--bg); padding-block: clamp(56px, 9vw, 120px) clamp(40px, 6vw, 80px); }
+    .page-hero .grid-1-1 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-xl); align-items: center; min-height: 520px; }
+    .page-hero-img { aspect-ratio: 4 / 3; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); box-shadow: inset 0 0 0 1px rgba(11,47,87,0.06), 0 18px 40px -22px rgba(11,47,87,0.35); }
+    .page-hero-img img { object-position: center; }
+    .page-hero h1 { font-size: clamp(38px, 5.4vw, 72px); line-height: 0.98; }
+    .page-hero .lead { margin-top: 22px; }
+    .dark-band { background: var(--primary); color: var(--surface); }
+    .dark-band .lead, .dark-band .meta { color: color-mix(in oklch, var(--surface) 72%, transparent); }
+    .check-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+    .check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 12px; color: var(--muted); }
+    .check-list li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border-radius: 999px; background: var(--accent); }
+    .process { counter-reset: step; }
+    .process-card { border-top: 1px solid var(--fg); padding-top: 22px; }
+    .process-card::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: block; font-family: var(--font-mono); color: var(--accent); margin-bottom: 18px; }
+    .process-card p { color: var(--muted); margin-top: 8px; }
+    .dark-band .process-card { border-top-color: color-mix(in oklch, var(--surface) 35%, transparent); }
+    .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--gap-xl); align-items: start; }
+    details { border-top: 1px solid var(--border); padding: 20px 0; }
+    details:last-child { border-bottom: 1px solid var(--border); }
+    summary { cursor: pointer; font-family: var(--font-display); font-size: 23px; font-weight: 700; }
+    details p { margin-top: 12px; color: var(--muted); max-width: 68ch; }
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .ba-cell { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4 / 3; position: relative; }
+    .ba-tag { position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 10px; background: color-mix(in oklch, var(--ink) 78%, transparent); color: var(--surface); border-radius: 4px; }
+    .compare-table { width: 100%; border-collapse: collapse; margin-top: 28px; }
+    .compare-table th, .compare-table td { padding: 18px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 15px; }
+    .compare-table th { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 800; }
+    .compare-table tr:last-child td { border-bottom: 0; }
+    .compare-table td:first-child { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--fg); }
+    .compare-table td:not(:first-child) { color: var(--muted); }
+    .material-card { padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
+    .material-card h3 { font-size: 20px; }
+    .material-card p { color: var(--muted); margin-top: 8px; font-size: 15px; }
+    .material-swatch { width: 100%; height: 8px; border-radius: 999px; margin-bottom: 18px; }
+    .full-image { aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); margin-top: 36px; }
+    .pagefoot { background: var(--ink); color: color-mix(in oklch, var(--surface) 68%, transparent); padding-block: 68px 36px; }
+    .pagefoot h2, .pagefoot h3 { color: var(--surface); }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: var(--gap-xl); margin-top: 42px; }
+    .footer-list { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 9px; font-size: 14px; }
+    .footer-bottom { border-top: 1px solid color-mix(in oklch, var(--surface) 16%, transparent); margin-top: 48px; padding-top: 22px; display: flex; justify-content: space-between; gap: var(--gap-md); flex-wrap: wrap; }
+    .credit { font-size: 12px; color: color-mix(in oklch, var(--surface) 42%, transparent); }
+
+    @media (max-width: 920px) {
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .page-hero .grid-1-1, .faq-grid, .ba-grid, .footer-grid { grid-template-columns: 1fr; }
+      .topnav nav, .nav-actions .btn-secondary { display: none; }
+      .compare-table th, .compare-table td { padding: 12px 8px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topnav">
+    <div class="container topnav-inner">
+      <a class="brand" href="index.html" aria-label="Roftrix Roofing home">
+        <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Roftrix Roofing mark"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">RR</text></svg>
+        <span class="brand-word">Roftrix Roofing</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="about.html">About</a>
+        <a href="roof-restoration.html">Restoration</a>
+        <a href="roof-replacement.html">Replacement</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="contact.html">Ask a Question</a>
+        <a class="btn btn-primary" href="contact.html">Book a Visit</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="page-hero">
+      <div class="container">
+        <div class="grid-1-1">
+          <div>
+            <p class="eyebrow">Service · Replacement</p>
+            <h1>Roof replacement.</h1>
+            <p class="lead">A new roof is a structural decision, not just a finish decision. We treat replacement as the moment to fix the things a restoration could only cover &mdash; underlay, ventilation, insulation interface, and the small details that determine how the next thirty years will go.</p>
+            <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <a class="btn btn-primary" href="contact.html">Book a Replacement Visit</a>
+              <a class="btn btn-secondary btn-arrow" href="roof-restoration.html">Compare with Restoration</a>
+            </div>
+          </div>
+          <div class="page-hero-img">
+            <img src="assets/charcoal-completed-roof.png" alt="Completed charcoal residential roof" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid-2-1">
+        <div>
+          <p class="eyebrow">When replacement is the right call</p>
+          <h2>The substrate, not just the surface, is at end of life.</h2>
+        </div>
+        <div class="stack">
+          <p class="lead">If the tiles are crazed and splitting, the metal sheets are perforating, the battens are soft, or the home has been re-roofed once already with no underlay, restoration is no longer the honest answer. Replacement is the right call when fixing the surface would leave the layer below to keep failing.</p>
+          <ul class="check-list">
+            <li>Multiple tile or sheet replacements per year, with the failure pattern spreading.</li>
+            <li>No sarking or underlay beneath the existing roof, in a climate that needs one.</li>
+            <li>Persistent condensation, ventilation issues, or warm-roof problems that the surface cannot fix.</li>
+            <li>An extension or renovation that requires the roofline to be re-worked anyway.</li>
+            <li>A heritage roof where the original material has reached the end of its serviceable life.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div style="max-width: 720px; margin-bottom: 36px;">
+          <p class="eyebrow">Restoration vs replacement</p>
+          <h2>The honest comparison.</h2>
+          <p class="lead" style="margin-top: 18px;">We have written this the way we explain it in person. It is the same conversation, just on the page.</p>
+        </div>
+        <table class="compare-table">
+          <thead>
+            <tr><th>Consideration</th><th>Restoration</th><th>Replacement</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>What is replaced</td><td>Surface coating, ridge bedding, pointing, and worn flashings.</td><td>Tiles or sheets, underlay, battens where needed, and all flashings.</td></tr>
+            <tr><td>What is kept</td><td>Tiles or sheets, battens, structural timbers.</td><td>Rafters and structural timbers (replaced only if found to be unsound).</td></tr>
+            <tr><td>Disruption inside</td><td>Effectively none.</td><td>Minor &mdash; one to several days with the roof open in stages.</td></tr>
+            <tr><td>Time on site</td><td>Three to five working days for a typical home.</td><td>One to three weeks depending on size and material.</td></tr>
+            <tr><td>Right when</td><td>The substrate is sound and the surface has aged.</td><td>The substrate has reached end of life or never had underlay.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div style="max-width: 680px; margin-bottom: 48px;">
+          <p class="eyebrow">Material options</p>
+          <h2>Three honest paths.</h2>
+          <p class="lead" style="margin-top: 18px;">There are more options than these. These are the three we recommend for the homes we typically work on. The visit narrows it down to one.</p>
+        </div>
+        <div class="grid-3">
+          <div class="material-card">
+            <div class="material-swatch" style="background: var(--ink);"></div>
+            <h3>Concrete tile</h3>
+            <p>Heavy, long-lived, and forgiving of imperfect substrate. The right answer for homes originally roofed in tile, where matching the profile matters.</p>
+          </div>
+          <div class="material-card">
+            <div class="material-swatch" style="background: #C9C2B7;"></div>
+            <h3>Metal &mdash; standing seam</h3>
+            <p>Light, modern, and excellent on lower pitches. Pairs well with contemporary architecture and renovations where the roofline is being redrawn.</p>
+          </div>
+          <div class="material-card">
+            <div class="material-swatch" style="background: #8A4A37;"></div>
+            <h3>Terracotta tile</h3>
+            <p>For heritage homes where the original character of the roof is part of the home&rsquo;s value. Slower to install, but irreplaceable when the architecture asks for it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark-band process">
+      <div class="container">
+        <div style="max-width: 680px; margin-bottom: 48px;">
+          <p class="eyebrow">Project process</p>
+          <h2>Four phases, named on the quote.</h2>
+          <p class="lead" style="margin-top: 18px;">Each phase has a defined scope, a defined finish point, and a sign-off before the next begins.</p>
+        </div>
+        <div class="grid-4">
+          <div class="process-card"><h3>Survey &amp; scope</h3><p>The roof is measured, the substrate is inspected from inside the roof space, and the structural condition is recorded.</p></div>
+          <div class="process-card"><h3>Strip &amp; prepare</h3><p>The existing roof is stripped in stages so the home is never fully exposed. Battens, underlay, and flashings are renewed.</p></div>
+          <div class="process-card"><h3>Install new roof</h3><p>Tiles or sheets are installed to the manufacturer specification and the home&rsquo;s actual conditions. Ventilation is built in, not retrofitted.</p></div>
+          <div class="process-card"><h3>Finish &amp; clean</h3><p>Gutters, fascias, downpipes, and the site are cleaned. The homeowner receives a complete close-out file with photographs.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div style="max-width: 680px; margin-bottom: 36px;">
+          <p class="eyebrow">Before &amp; after</p>
+          <h2>A recent replacement, in two photographs.</h2>
+          <p class="lead" style="margin-top: 18px;">Same home, before stripping and after final clean. Underlay, flashings, and ridge work were all renewed in between.</p>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-cell"><span class="ba-tag">Before</span><img src="assets/03-before.png" alt="Failing residential roof prior to replacement" /></div>
+          <div class="ba-cell"><span class="ba-tag">After</span><img src="assets/03-after.png" alt="The same residential home after full roof replacement" /></div>
+        </div>
+        <div class="full-image">
+          <img src="assets/repairs-diagnosis.png" alt="Detail of substrate diagnosis during the replacement survey" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container faq-grid">
+        <div>
+          <p class="eyebrow">FAQ &middot; replacement</p>
+          <h2>Questions homeowners ask before booking a replacement.</h2>
+          <p class="lead" style="margin-top: 18px;">If something is missing, the visit is the right place to ask.</p>
+        </div>
+        <div>
+          <details open><summary>How long does the home stay watertight during replacement?</summary><p>The entire time. The roof is stripped in sections, never as a whole, and weather covers are kept on site for any forecast change.</p></details>
+          <details><summary>How long will the new roof last?</summary><p>Material warranties typically run decades. Installation is what determines whether the warranty is ever needed. The visit is where we walk through both.</p></details>
+          <details><summary>Will the inside of the home be affected?</summary><p>Minimally. Most homes are surprised by how little dust enters. We use internal protection over ceiling cavities and brief the household about each phase.</p></details>
+          <details><summary>Can the existing roof structure carry a different material?</summary><p>Sometimes, but not always. The survey confirms whether the structure suits a heavier or lighter material. If it does not, the quote includes the structural work, not a workaround.</p></details>
+          <details><summary>What about gutters and downpipes?</summary><p>If they are at the end of their life, we include them in the quote. If they have years left, we leave them and tell you. We do not replace things that do not need replacing.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark-band">
+      <div class="container grid-2-1">
+        <div>
+          <p class="eyebrow">Next step</p>
+          <h2>A replacement is a long decision. The visit is the short one.</h2>
+        </div>
+        <div class="stack">
+          <p class="lead">If you are weighing replacement, the most useful thing is a careful walk of the roof with someone who has no incentive to push you in either direction. That is what the first visit is.</p>
+          <a class="btn btn-light btn-arrow" href="contact.html" style="align-self:flex-start;">Book a Roof Visit</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot">
+    <div class="container">
+      <div class="row-between">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 180 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 27 30 9l22 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path class="house" d="M20 27h24v14H20z"/><text x="66" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="currentColor">RR</text></svg>
+          <span class="brand-word" style="color:var(--surface);">Roftrix Roofing</span>
+        </div>
+        <a class="btn btn-light" href="contact.html">Book a Visit</a>
+      </div>
+      <div class="footer-grid">
+        <div>
+          <h2>Premium roofing for high-trust residential work.</h2>
+          <p style="margin-top: 16px;">Clear service paths, careful project imagery, and practical answers for homeowners comparing repair, restoration, and replacement options.</p>
+        </div>
+        <div><h3>Services</h3><ul class="footer-list"><li><a href="roof-restoration.html">Roof restoration</a></li><li><a href="roof-replacement.html">Roof replacement</a></li><li>Leak &amp; flashing repair</li><li>Storm concerns</li></ul></div>
+        <div><h3>Pages</h3><ul class="footer-list"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="index.html#projects">Projects</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div><h3>Service area</h3><ul class="footer-list"><li>Add confirmed towns</li><li>Add nearby neighborhoods</li><li>Add emergency notes if true</li><li>Add contact details after verification</li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>Roftrix Roofing. Replace sample details with verified company information before publishing.</span>
+        <span class="credit">Image sources: Wikimedia Commons public-domain and Creative Commons roofing/architecture imagery.</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

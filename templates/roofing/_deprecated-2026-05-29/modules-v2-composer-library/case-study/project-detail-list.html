@@ -1,0 +1,88 @@
+<section class="case-study-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Recent projects</p>
+      <h2 class="section-h2">Real {{city}} roofs · real numbers</h2>
+      <p class="section-lead">Every job documented · written quote · photo log · final walk-through. A snapshot of what we've finished.</p>
+    </div>
+    <div class="case-study-list">
+      {{#case_studies}}
+      <article class="case-study">
+        <div class="case-study-media"><img src="{{?after}}{{after}}{{/after}}{{^after}}{{template_assets}}/case-study/project-0{{@index}}.png{{/after}}" alt="{{title}}" /></div>
+        <div class="case-study-body">
+          <div class="case-study-suburb">{{suburb}}{{?material}} · {{material}}{{/material}}</div>
+          <h3 class="case-study-title">{{title}}</h3>
+          <p class="case-study-summary">{{summary}}</p>
+          <dl class="case-study-specs">
+            {{?scope}}<div><dt>Scope</dt><dd>{{scope}}</dd></div>{{/scope}}
+            {{?duration}}<div><dt>Duration</dt><dd>{{duration}}</dd></div>{{/duration}}
+            {{?material}}<div><dt>Material</dt><dd>{{material}}</dd></div>{{/material}}
+            {{?challenge}}<div><dt>Challenge</dt><dd>{{challenge}}</dd></div>{{/challenge}}
+          </dl>
+        </div>
+      </article>
+      {{/case_studies}}
+      {{^case_studies}}
+      <article class="case-study">
+        <div class="case-study-media"><img src="{{template_assets}}/case-study/weatherboard-reroof.png" alt="Weatherboard cottage Colorbond re-roof" /></div>
+        <div class="case-study-body">
+          <div class="case-study-suburb">{{city}} · Colorbond® roof replacement</div>
+          <h3 class="case-study-title">Full replacement · weather-tight in three days</h3>
+          <p class="case-study-summary">Cement-tile roof past its serviceable life · replaced with Trimdek Colorbond in Surfmist. Sarking, insulation, and new gutters in one mobilisation.</p>
+          <dl class="case-study-specs">
+            <div><dt>Scope</dt><dd>240m² strip + re-roof · gutters · downpipes</dd></div>
+            <div><dt>Duration</dt><dd>3 working days · weather-aware schedule</dd></div>
+            <div><dt>Material</dt><dd>Colorbond Trimdek 0.42mm · Surfmist</dd></div>
+            <div><dt>Warranty</dt><dd>{{warranty_years}}-year workmanship · 36-year coating</dd></div>
+          </dl>
+        </div>
+      </article>
+      <article class="case-study case-study-flipped">
+        <div class="case-study-media"><img src="{{template_assets}}/case-study/aerial-trimdek.png" alt="Aerial Colorbond Trimdek roof storm repair" /></div>
+        <div class="case-study-body">
+          <div class="case-study-suburb">{{city}} region · Insurance storm repair</div>
+          <h3 class="case-study-title">Hail damage · documented for insurer · repaired on approval</h3>
+          <p class="case-study-summary">Hailstorm dented ridge capping and punctured valleys. We documented every panel for the assessor and had the homeowner weather-tight within 48 hours of approval.</p>
+          <dl class="case-study-specs">
+            <div><dt>Scope</dt><dd>Ridge · valleys · 6 sheets replaced</dd></div>
+            <div><dt>Duration</dt><dd>48 hours from claim approval</dd></div>
+            <div><dt>Insurer</dt><dd>Liaised with assessor · provided photo log</dd></div>
+            <div><dt>Outcome</dt><dd>Approved at full quoted scope · no excess dispute</dd></div>
+          </dl>
+        </div>
+      </article>
+      <article class="case-study">
+        <div class="case-study-media"><img src="{{template_assets}}/case-study/worker-sunset.png" alt="Roofer installing Colorbond at sunset" /></div>
+        <div class="case-study-body">
+          <div class="case-study-suburb">{{city}} · New-build install</div>
+          <h3 class="case-study-title">Builder coordination · roof on before frame inspection</h3>
+          <p class="case-study-summary">Custom Orb on a knock-down-rebuild. Worked alongside the builder's program to land the roof in the slot they'd booked, no delay to internal trades.</p>
+          <dl class="case-study-specs">
+            <div><dt>Scope</dt><dd>320m² Custom Orb · skylights · vents</dd></div>
+            <div><dt>Duration</dt><dd>4 working days on site</dd></div>
+            <div><dt>Coordination</dt><dd>Daily updates to site supervisor</dd></div>
+            <div><dt>Result</dt><dd>Builder kept original program · no cascade delays</dd></div>
+          </dl>
+        </div>
+      </article>
+      {{/case_studies}}
+    </div>
+  </div>
+</section>
+<style>
+.case-study-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.case-study-list { display: grid; gap: 48px; margin: 48px auto 0; }
+.case-study { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.case-study-flipped { direction: rtl; }
+.case-study-flipped > * { direction: ltr; }
+.case-study-media { aspect-ratio: 4/3; overflow: hidden; background: var(--surface-muted); border-radius: 2px; }
+.case-study-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.case-study-suburb { font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 700; margin-bottom: 12px; }
+.case-study-title { font-family: var(--font-display); font-size: 26px; font-weight: 700; line-height: 1.25; margin: 0 0 16px; color: var(--brand-primary); }
+.case-study-summary { font-size: 16px; line-height: 1.6; color: var(--text); margin: 0 0 24px; }
+.case-study-specs { display: grid; gap: 12px; margin: 0; }
+.case-study-specs > div { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 10px 0; border-top: 1px solid var(--border); font-size: 14px; line-height: 1.55; }
+.case-study-specs dt { font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 700; margin: 0; }
+.case-study-specs dd { margin: 0; color: var(--text); }
+@media (max-width: 820px) { .case-study, .case-study-flipped { grid-template-columns: 1fr; gap: 24px; direction: ltr; } }
+</style>

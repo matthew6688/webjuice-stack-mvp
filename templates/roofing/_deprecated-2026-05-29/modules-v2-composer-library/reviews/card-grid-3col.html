@@ -1,0 +1,41 @@
+<section class="reviews-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">What customers say</p>
+      <h2 class="section-h2">{{rating}}★ · {{review_count}} reviews on Google</h2>
+      <p class="section-lead">Real reviews from {{city}} homeowners and builders. We don't write our own.</p>
+    </div>
+    <div class="reviews-grid">
+      <article class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <blockquote class="review-quote">Honest crew · quoted what they said they'd quote · finished on time. Roof looks brand new. Would call again.</blockquote>
+        <div class="review-author">A homeowner · {{city}} · via Google</div>
+      </article>
+      <article class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <blockquote class="review-quote">Did a full Colorbond replacement on our weatherboard. Tidy site, no surprises on the invoice. {{warranty_years}}-year warranty in writing.</blockquote>
+        <div class="review-author">A builder · {{city}} · via Google</div>
+      </article>
+      <article class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <blockquote class="review-quote">Got a quote in 24 hours like they said. Storm damage repair done within the week. Insurance paperwork made easy.</blockquote>
+        <div class="review-author">A homeowner · {{state}} · via Google</div>
+      </article>
+    </div>
+    <div class="reviews-cta">
+      <p class="reviews-disclaimer">Sample testimonials shown · see all {{review_count}} verified Google reviews →</p>
+    </div>
+  </div>
+</section>
+<style>
+.reviews-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 16px; }
+.review-card { background: var(--surface-muted); border: 1px solid var(--border); border-radius: 2px; padding: 28px; }
+.review-stars { color: var(--brand-accent); font-size: 18px; letter-spacing: 4px; margin-bottom: 12px; }
+.review-quote { font-family: var(--font-display); font-size: 17px; line-height: 1.5; margin: 0 0 20px; color: var(--text); quotes: '"' '"'; font-style: normal; }
+.review-quote::before { content: open-quote; }
+.review-quote::after { content: close-quote; }
+.review-author { font-family: 'Inter', monospace; font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; font-weight: 600; }
+.reviews-cta { text-align: center; margin-top: 48px; }
+.reviews-disclaimer { font-size: 13px; color: var(--text-muted); font-style: italic; margin: 0; }
+</style>

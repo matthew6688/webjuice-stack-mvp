@@ -1,0 +1,41 @@
+<section class="product-spotlight">
+  <div class="container product-spotlight-grid">
+    <div class="product-spotlight-text">
+      <p class="eyebrow">Materials matter</p>
+      <h2 class="section-h2">Colorbond® steel · only the right stuff goes on your roof</h2>
+      <p class="product-spotlight-body">We install Australian-made Colorbond® steel exclusively. It carries a manufacturer-backed coating warranty of up to 36 years. Pre-painted at the BlueScope steel mill in Port Kembla using the Activate® coating technology, with five layers of corrosion-resistant treatment.</p>
+      <ul class="product-spotlight-specs">
+        <li><strong>Warranty</strong> Up to 36 years coating · 25 years perforation</li>
+        <li><strong>Gauge</strong> 0.42mm-0.55mm (residential standard)</li>
+        <li><strong>Profile</strong> Trimdek · Klip-Lok · Custom Orb · standing seam</li>
+        <li><strong>Colour</strong> 22 colourbond shades · custom on request</li>
+        <li><strong>Compliance</strong> AS 1397 · AS 2728 Australian standards</li>
+      </ul>
+    </div>
+    <div class="product-spotlight-visual">
+      <div class="product-spotlight-card">
+        <div class="product-spotlight-card-title">Why Colorbond®</div>
+        <ul class="product-spotlight-card-list">
+          <li>✓ Won't rust, won't crack, won't fade</li>
+          <li>✓ Cyclone-rated to N5</li>
+          <li>✓ BAL-29 bushfire compliant</li>
+          <li>✓ Lighter than tile · less roof load</li>
+          <li>✓ 100% recyclable end-of-life</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+.product-spotlight { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface-muted); }
+.product-spotlight-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 64px; align-items: start; }
+.product-spotlight-body { font-size: 17px; line-height: 1.65; color: var(--text); margin: 24px 0; max-width: 60ch; }
+.product-spotlight-specs { list-style: none; padding: 0; margin: 32px 0 0; display: grid; gap: 12px; }
+.product-spotlight-specs li { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); font-size: 15px; line-height: 1.5; }
+.product-spotlight-specs strong { font-family: 'Inter', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 700; }
+.product-spotlight-card { background: var(--brand-primary); color: #fff; padding: 32px; border-radius: 2px; }
+.product-spotlight-card-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--brand-accent); }
+.product-spotlight-card-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.product-spotlight-card-list li { font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.9); }
+@media (max-width: 820px) { .product-spotlight-grid { grid-template-columns: 1fr; gap: 32px; } }
+</style>

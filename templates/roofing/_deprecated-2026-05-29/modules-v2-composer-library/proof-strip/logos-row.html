@@ -1,0 +1,35 @@
+<section class="proof-strip">
+  <div class="container">
+    <p class="proof-strip-label">Accredited · certified · insured</p>
+    <div class="proof-strip-logos">
+      <div class="proof-logo">
+        <div class="proof-logo-name">{{licensing_authority}}</div>
+        <div class="proof-logo-desc">State building authority</div>
+      </div>
+      <div class="proof-logo">
+        <div class="proof-logo-name">Colorbond®</div>
+        <div class="proof-logo-desc">Approved installer</div>
+      </div>
+      <div class="proof-logo">
+        <div class="proof-logo-name">BlueScope</div>
+        <div class="proof-logo-desc">Steel supplier</div>
+      </div>
+      <div class="proof-logo">
+        <div class="proof-logo-name">Master Builders</div>
+        <div class="proof-logo-desc">Industry association</div>
+      </div>
+      <div class="proof-logo">
+        <div class="proof-logo-name">$20M public liability</div>
+        <div class="proof-logo-desc">Insurance coverage</div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+.proof-strip { padding: clamp(48px, 7vw, 80px) 0; background: var(--surface-muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.proof-strip-label { text-align: center; font-family: 'Inter', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 32px; font-weight: 700; }
+.proof-strip-logos { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px; align-items: center; }
+.proof-logo { text-align: center; padding: 16px; }
+.proof-logo-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--brand-primary); margin-bottom: 4px; }
+.proof-logo-desc { font-size: 12px; color: var(--text-muted); }
+</style>

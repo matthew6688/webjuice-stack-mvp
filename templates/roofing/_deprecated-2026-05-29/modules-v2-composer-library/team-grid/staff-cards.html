@@ -1,0 +1,36 @@
+<section class="team-grid-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">The people on your roof</p>
+      <h2 class="section-h2">Meet the {{business_name}} crew</h2>
+      <p class="section-lead">{{?team.0.name}}{{team.0.intro}}{{/team.0.name}}{{^team.0.name}}Australian-licensed roofers · {{years_in_business}}+ years on {{city}} roofs · the same crew shows up every day.{{/team.0.name}}</p>
+    </div>
+    <div class="team-grid">
+      {{#team}}
+      <div class="team-card">
+        <div class="team-photo"><img src="{{?photo}}{{photo}}{{/photo}}{{^photo}}{{template_assets}}/team-grid/portrait-default.png{{/photo}}" alt="{{name}}" /></div>
+        <div class="team-name">{{name}}</div>
+        <div class="team-role">{{role}}</div>
+        {{?bio}}<p class="team-bio">{{bio}}</p>{{/bio}}
+        {{?credential}}<div class="team-credential">{{credential}}</div>{{/credential}}
+      </div>
+      {{/team}}
+      {{^team}}
+      <div class="team-card"><div class="team-photo"><img src="{{template_assets}}/team-grid/portrait-default.png" alt="Lead roofer" /></div><div class="team-name">Lead roofer</div><div class="team-role">{{years_in_business}}+ years on {{city}} roofs</div><p class="team-bio">{{?licensing_authority}}{{licensing_authority}}-registered{{/licensing_authority}}{{^licensing_authority}}Licensed{{/licensing_authority}} · Colorbond® accredited · on every job from quote to handover.</p></div>
+      <div class="team-card"><div class="team-photo"><img src="{{template_assets}}/team-grid/portrait-default.png" alt="Site supervisor" /></div><div class="team-name">Site supervisor</div><div class="team-role">Day-to-day on site</div><p class="team-bio">Coordinates the crew · daily updates to homeowners · final QA walk-through with you.</p></div>
+      <div class="team-card"><div class="team-photo"><img src="{{template_assets}}/team-grid/portrait-default.png" alt="Quote coordinator" /></div><div class="team-name">Quote coordinator</div><div class="team-role">First point of contact</div><p class="team-bio">Books inspections · returns calls same-day · written quote in your hand within 24 hours.</p></div>
+      {{/team}}
+    </div>
+  </div>
+</section>
+<style>
+.team-grid-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface-muted); }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; margin: 48px auto 0; }
+.team-card { background: var(--surface); padding: 0 0 28px; border-radius: 2px; border: 1px solid var(--border); overflow: hidden; }
+.team-photo { aspect-ratio: 4/5; overflow: hidden; background: var(--surface-muted); }
+.team-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.team-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin: 24px 28px 4px; color: var(--brand-primary); }
+.team-role { font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin: 0 28px 14px; }
+.team-bio { font-size: 14px; line-height: 1.6; color: var(--text-muted); margin: 0 28px; }
+.team-credential { font-size: 12px; color: var(--brand-primary); margin: 14px 28px 0; font-weight: 600; padding-top: 12px; border-top: 1px solid var(--border); }
+</style>

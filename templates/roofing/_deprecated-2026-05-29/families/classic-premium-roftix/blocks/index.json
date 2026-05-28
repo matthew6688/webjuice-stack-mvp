@@ -1,0 +1,24 @@
+{
+  "family": "classic-premium-roftix",
+  "niche": "roofing",
+  "version": "1.0.0",
+  "spec_source": "PRD §5 block specs · SOP-3 niche-spec.md §6",
+  "blocks": [
+    { "id": "hero", "schema": "hero.schema.json", "required_on": ["home", "service", "service_area"] },
+    { "id": "trust-bar", "schema": "trust-bar.schema.json", "required_on": ["home"] },
+    { "id": "services-grid", "schema": "services-grid.schema.json", "required_on": ["home", "service_index"] },
+    { "id": "why-us", "schema": "why-us.schema.json", "required_on": ["home"] },
+    { "id": "process", "schema": "process.schema.json", "required_on": ["home"] },
+    { "id": "service-areas", "schema": "service-areas.schema.json", "required_on": ["home"] },
+    { "id": "gallery", "schema": "gallery.schema.json", "required_on": [] },
+    { "id": "faq", "schema": "faq.schema.json", "required_on": ["home", "service", "contact"] },
+    { "id": "cta", "schema": "cta.schema.json", "required_on": ["home", "service", "service_area", "about"] }
+  ],
+  "page_compositions": {
+    "home": ["hero", "trust-bar", "services-grid", "why-us", "process", "gallery", "service-areas", "faq", "cta"],
+    "service": ["hero", "services-grid", "process", "gallery", "faq", "cta"],
+    "service_area": ["hero", "trust-bar", "services-grid", "gallery", "cta"],
+    "about": ["hero", "why-us", "gallery", "cta"],
+    "contact": ["hero", "faq", "cta"]
+  }
+}

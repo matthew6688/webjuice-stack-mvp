@@ -1,0 +1,39 @@
+<section class="hero-split">
+  <div class="container hero-split-grid">
+    <div class="hero-split-text">
+      <p class="hero-split-eyebrow">{{?hero.eyebrow}}{{hero.eyebrow}}{{/hero.eyebrow}}{{^hero.eyebrow}}{{city}} · {{state}}{{/hero.eyebrow}}</p>
+      <h1 class="hero-split-h1">{{hero.headline}}</h1>
+      {{?hero.subheadline}}<p class="hero-split-sub">{{hero.subheadline}}</p>{{/hero.subheadline}}
+      <ul class="hero-split-chips">
+        {{#hero.proof_chips}}<li>{{.}}</li>{{/hero.proof_chips}}
+        {{^hero.proof_chips}}
+        <li>{{licensing_authority}} registered</li>
+        <li>{{warranty_years}}-yr workmanship warranty</li>
+        <li>{{rating}}★ · {{review_count}} Google reviews</li>
+        {{/hero.proof_chips}}
+      </ul>
+      <div class="hero-split-cta">
+        <a class="hero-split-primary" href="{{hero.primary_cta_href}}">{{hero.primary_cta_label}}</a>
+        <a class="hero-split-secondary" href="#lead-form">Get a quote →</a>
+      </div>
+    </div>
+    <div class="hero-split-media">
+      <img src="{{?hero.image}}{{hero.image}}{{/hero.image}}{{^hero.image}}{{template_assets}}/hero/cinematic-default.png{{/hero.image}}" alt="{{business_name}} project" />
+    </div>
+  </div>
+</section>
+<style>
+.hero-split { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); border-bottom: 1px solid var(--border); }
+.hero-split-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
+.hero-split-eyebrow { font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--brand-accent); font-weight: 700; margin: 0 0 18px; }
+.hero-split-h1 { font-family: var(--font-display); font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 20px; color: var(--brand-primary); }
+.hero-split-sub { font-size: 18px; line-height: 1.55; color: var(--text); margin: 0 0 24px; max-width: 52ch; }
+.hero-split-chips { list-style: none; padding: 0; margin: 0 0 32px; display: flex; flex-wrap: wrap; gap: 10px; }
+.hero-split-chips li { font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 14px; border: 1px solid var(--border); border-radius: 2px; color: var(--text-muted); font-weight: 700; }
+.hero-split-cta { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.hero-split-primary { display: inline-block; background: var(--brand-primary); color: #fff; padding: 16px 30px; font-family: var(--font-display); font-weight: 700; text-decoration: none; border-radius: 2px; font-size: 17px; }
+.hero-split-secondary { color: var(--brand-primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; font-size: 15px; }
+.hero-split-media { aspect-ratio: 4/5; overflow: hidden; border-radius: 2px; }
+.hero-split-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 900px) { .hero-split-grid { grid-template-columns: 1fr; gap: 32px; } .hero-split-media { aspect-ratio: 16/10; } }
+</style>

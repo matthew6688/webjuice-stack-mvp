@@ -1,0 +1,26 @@
+<section class="emergency-callout">
+  <div class="container emergency-inner">
+    <div class="emergency-icon" aria-hidden="true">⚠</div>
+    <div class="emergency-text">
+      <p class="emergency-eyebrow">Storm · leak · emergency</p>
+      <h2 class="emergency-h2">Water coming through right now?</h2>
+      <p class="emergency-body">Call us before it gets worse. We tarp emergency leaks within 24 hours across {{city}} and surrounds, then document everything your insurer needs for the full repair.</p>
+    </div>
+    <div class="emergency-actions">
+      <a class="emergency-cta-primary" href="{{tel_link}}">Call {{phone}}</a>
+      <p class="emergency-hours">{{hours}}</p>
+    </div>
+  </div>
+</section>
+<style>
+.emergency-callout { background: #B8261B; color: #fff; padding: clamp(40px, 6vw, 64px) 0; border-top: 4px solid #7a1812; border-bottom: 4px solid #7a1812; }
+.emergency-inner { display: grid; grid-template-columns: 60px 1fr auto; gap: 32px; align-items: center; }
+.emergency-icon { font-size: 48px; line-height: 1; color: #FFD23F; }
+.emergency-eyebrow { font-family: 'Inter', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; margin: 0 0 6px; color: #FFD23F; font-weight: 700; }
+.emergency-h2 { font-family: var(--font-display); font-size: clamp(24px, 3.4vw, 34px); font-weight: 800; line-height: 1.15; margin: 0 0 8px; color: #fff; }
+.emergency-body { font-size: 16px; line-height: 1.55; color: rgba(255,255,255,0.95); margin: 0; max-width: 56ch; }
+.emergency-cta-primary { display: inline-block; background: #FFD23F; color: #1a0d0a; padding: 16px 28px; font-family: var(--font-display); font-weight: 800; text-decoration: none; border-radius: 2px; font-size: 17px; letter-spacing: 0.02em; box-shadow: 0 4px 0 #c89c1d; }
+.emergency-cta-primary:hover { transform: translateY(2px); box-shadow: 0 2px 0 #c89c1d; }
+.emergency-hours { font-size: 12px; color: rgba(255,255,255,0.85); margin: 10px 0 0; text-align: center; }
+@media (max-width: 760px) { .emergency-inner { grid-template-columns: 1fr; gap: 16px; text-align: center; } .emergency-icon { margin: 0 auto; } .emergency-body { max-width: 100%; } }
+</style>

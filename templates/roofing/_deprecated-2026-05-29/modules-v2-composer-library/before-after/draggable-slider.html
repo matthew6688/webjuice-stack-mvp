@@ -1,0 +1,53 @@
+<section class="before-after-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Before · after</p>
+      <h2 class="section-h2">See the transformation</h2>
+      <p class="section-lead">Real {{city}} roofs · drag the slider to reveal what {{warranty_years}}-year quality looks like.</p>
+    </div>
+    <div class="ba-slider" id="ba-slider-1">
+      <img class="ba-after" src="{{?gallery.0.src}}{{gallery.0.src}}{{/gallery.0.src}}{{^gallery.0.src}}{{template_assets}}/before-after/sample-after.png{{/gallery.0.src}}" alt="After" />
+      <div class="ba-before" style="background-image: url('{{?gallery.1.src}}{{gallery.1.src}}{{/gallery.1.src}}{{^gallery.1.src}}{{template_assets}}/before-after/sample-before.png{{/gallery.1.src}}');">
+        <img class="ba-before-img" src="{{?gallery.1.src}}{{gallery.1.src}}{{/gallery.1.src}}{{^gallery.1.src}}{{template_assets}}/before-after/sample-before.png{{/gallery.1.src}}" alt="Before" />
+      </div>
+      <div class="ba-divider"><div class="ba-handle">⇆</div></div>
+      <div class="ba-label ba-label-before">BEFORE</div>
+      <div class="ba-label ba-label-after">AFTER</div>
+    </div>
+    <p class="ba-caption">Drag the slider · {{business_name}} project · {{city}}</p>
+  </div>
+</section>
+<style>
+.before-after-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.ba-slider { position: relative; aspect-ratio: 16/10; margin: 0 auto; overflow: hidden; border-radius: 2px; cursor: ew-resize; user-select: none; }
+.ba-after, .ba-before-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.ba-before { position: absolute; inset: 0; width: 50%; overflow: hidden; }
+.ba-before-img { width: 200%; max-width: 200%; }
+.ba-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; box-shadow: 0 0 12px rgba(0,0,0,0.5); pointer-events: none; }
+.ba-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 48px; height: 48px; background: var(--brand-accent); color: var(--brand-primary); border-radius: 50%; display: grid; place-items: center; font-weight: 700; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.ba-label { position: absolute; top: 16px; padding: 6px 12px; background: rgba(15,17,21,0.85); color: #fff; font-family: 'Inter', monospace; font-size: 11px; letter-spacing: 0.12em; font-weight: 700; pointer-events: none; }
+.ba-label-before { left: 16px; }
+.ba-label-after { right: 16px; }
+.ba-caption { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 16px; font-style: italic; }
+</style>
+<script>
+(function(){
+  var slider = document.getElementById('ba-slider-1');
+  if (!slider) return;
+  var before = slider.querySelector('.ba-before');
+  var divider = slider.querySelector('.ba-divider');
+  var dragging = false;
+  function setPos(x) {
+    var rect = slider.getBoundingClientRect();
+    var pct = Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100));
+    before.style.width = pct + '%';
+    divider.style.left = pct + '%';
+  }
+  slider.addEventListener('mousedown', function(e){ dragging = true; setPos(e.clientX); });
+  document.addEventListener('mousemove', function(e){ if(dragging) setPos(e.clientX); });
+  document.addEventListener('mouseup', function(){ dragging = false; });
+  slider.addEventListener('touchstart', function(e){ dragging = true; setPos(e.touches[0].clientX); });
+  document.addEventListener('touchmove', function(e){ if(dragging) setPos(e.touches[0].clientX); });
+  document.addEventListener('touchend', function(){ dragging = false; });
+})();
+</script>

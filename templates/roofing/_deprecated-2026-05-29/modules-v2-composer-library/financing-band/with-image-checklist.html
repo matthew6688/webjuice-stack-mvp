@@ -1,0 +1,41 @@
+<section class="section financing-section">
+  <div class="container">
+    <div class="finance-grid">
+      <div class="finance-visual">
+        <img src="{{?financing.image}}{{financing.image}}{{/financing.image}}{{^financing.image}}assets/about-roof-assessment.png{{/financing.image}}" alt="Roof assessment for finance discussion" loading="lazy">
+      </div>
+      <div>
+        <p class="kicker">{{?financing.eyebrow}}{{financing.eyebrow}}{{/financing.eyebrow}}{{^financing.eyebrow}}Finance Your Roof{{/financing.eyebrow}}</p>
+        <h2 class="finance-h2">{{?financing.headline}}{{financing.headline}}{{/financing.headline}}{{^financing.headline}}Affordable Roofing Solutions With Easy Financing{{/financing.headline}}</h2>
+        <p class="finance-sub">{{?financing.sub}}{{financing.sub}}{{/financing.sub}}{{^financing.sub}}Get the Roof You Need — Without the Stress{{/financing.sub}}</p>
+        <p class="finance-body">{{?financing.body}}{{financing.body}}{{/financing.body}}{{^financing.body}}{{business_name}} believes everyone in {{city}} deserves a strong, reliable roof — without the burden of upfront costs. We offer flexible financing options designed to make your roof restoration or repairs simple and affordable.{{/financing.body}}</p>
+        <ul class="finance-features">
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 10l4 4 6-8"/></svg> No credit check required to apply</li>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 10l4 4 6-8"/></svg> Approvals are fast and easy</li>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 10l4 4 6-8"/></svg> Completely hassle-free process</li>
+        </ul>
+        <a href="{{tel_link}}" class="btn-primary finance-cta">Call {{phone}}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.financing-section { padding: clamp(64px, 9vw, 96px) 0; background: var(--surface-muted, #f4f6f5); }
+.financing-section .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.financing-section .kicker { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-accent, #b86a47); margin: 0 0 12px; }
+.financing-section .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.financing-section .finance-h2 { font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif); font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 12px; color: var(--text, #102b32); }
+.financing-section .finance-sub { color: var(--text-muted, #5c6b70); font-size: 17px; line-height: 1.6; margin: 0 0 8px; font-weight: 600; }
+.financing-section .finance-body { color: var(--text-muted, #5c6b70); font-size: 15px; line-height: 1.7; margin: 0 0 16px; }
+.financing-section .finance-features { list-style: none; margin: 16px 0 32px; padding: 0; }
+.financing-section .finance-features li { display: flex; align-items: flex-start; gap: 12px; padding: 6px 0; font-size: 15px; color: var(--text, #102b32); }
+.financing-section .finance-features svg { flex-shrink: 0; color: var(--brand-accent, #b86a47); margin-top: 2px; }
+.financing-section .finance-visual { aspect-ratio: 4/3; background: var(--surface, #fff); border-radius: 8px; overflow: hidden; }
+.financing-section .finance-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.financing-section .finance-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--brand-accent, #b86a47); color: #fff; padding: 14px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+@media (max-width: 900px) {
+  .financing-section .finance-grid { grid-template-columns: 1fr; gap: 32px; }
+  .financing-section .finance-grid > div:first-child { order: 2; }
+}
+</style>

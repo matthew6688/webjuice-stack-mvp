@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "block_id": "cta",
+  "block_name": "CTA Band (mid/bottom conversion strip)",
+  "purpose": "Standalone full-width CTA to capture mid-page intent. Primary = phone, secondary = quote form.",
+  "required_on": ["home", "service", "service_area", "about"],
+  "data_od_id": "cta",
+  "type": "object",
+  "required": ["heading", "primary_cta"],
+  "properties": {
+    "heading": { "type": "string", "minLength": 10, "maxLength": 80, "description": "Action-oriented. e.g. 'Need a roof inspection in Melton?'" },
+    "subheading": { "type": "string", "maxLength": 180 },
+    "primary_cta": {
+      "type": "object",
+      "required": ["label", "href", "kind"],
+      "properties": {
+        "label": { "type": "string", "maxLength": 32 },
+        "href": { "type": "string", "pattern": "^tel:" },
+        "kind": { "enum": ["tel"] }
+      }
+    },
+    "secondary_cta": {
+      "type": "object",
+      "properties": {
+        "label": { "type": "string", "maxLength": 32 },
+        "href": { "type": "string" },
+        "kind": { "enum": ["quote", "form", "email"] }
+      }
+    },
+    "background": {
+      "type": "object",
+      "properties": {
+        "kind": { "enum": ["brand-primary", "brand-accent", "image", "dark"] },
+        "image": { "type": "string" }
+      }
+    }
+  },
+  "validation_hooks": ["cta_word_count", "locked_facts_preserved", "no_generic_copy"]
+}

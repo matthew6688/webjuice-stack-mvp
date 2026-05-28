@@ -1,0 +1,36 @@
+<section class="about-timeline-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">How we got here</p>
+      <h2 class="section-h2">{{?years_in_business}}{{years_in_business}}+ years on {{city}} roofs{{/years_in_business}}{{^years_in_business}}How we got to where we are{{/years_in_business}}</h2>
+    </div>
+    <ol class="timeline">
+      {{#timeline}}
+      <li class="timeline-item">
+        <div class="timeline-year">{{year}}</div>
+        <div class="timeline-body">
+          <div class="timeline-title">{{title}}</div>
+          <p class="timeline-text">{{body}}</p>
+        </div>
+      </li>
+      {{/timeline}}
+      {{^timeline}}
+      <li class="timeline-item"><div class="timeline-year">Day one</div><div class="timeline-body"><div class="timeline-title">A licensed roofer with a single ute</div><p class="timeline-text">Started taking on residential re-roofs in {{city}} · word-of-mouth referrals filled the calendar within months.</p></div></li>
+      <li class="timeline-item"><div class="timeline-year">Early years</div><div class="timeline-body"><div class="timeline-title">First commercial contracts</div><p class="timeline-text">Local schools and warehouses asked us back · added a second crew · invested in proper safety equipment.</p></div></li>
+      <li class="timeline-item"><div class="timeline-year">Mid-growth</div><div class="timeline-body"><div class="timeline-title">Colorbond® accreditation</div><p class="timeline-text">Joined the BlueScope Steel selected installer program · only Australian-made Colorbond goes on customer roofs.</p></div></li>
+      <li class="timeline-item"><div class="timeline-year">Today</div><div class="timeline-body"><div class="timeline-title">{{rating}}★ across {{review_count}} reviews · same crew, same standard</div><p class="timeline-text">Still owner-on-site for every quote · {{warranty_years}}-year workmanship warranty in writing · servicing {{city}} and surrounding areas.</p></div></li>
+      {{/timeline}}
+    </ol>
+  </div>
+</section>
+<style>
+.about-timeline-section { padding: clamp(64px, 9vw, 120px) 0; background: var(--surface); }
+.timeline { list-style: none; padding: 0; margin: 48px auto 0; max-width: 760px; position: relative; }
+.timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 2px; background: var(--border); }
+.timeline-item { display: grid; grid-template-columns: 140px 1fr; gap: 32px; padding: 24px 0; position: relative; }
+.timeline-item::before { content: ''; position: absolute; top: 32px; left: 12px; width: 14px; height: 14px; background: var(--brand-accent); border: 2px solid var(--brand-primary); border-radius: 50%; }
+.timeline-year { font-family: 'Inter', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); padding-top: 4px; padding-left: 48px; font-weight: 700; }
+.timeline-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--brand-primary); }
+.timeline-text { font-size: 15px; line-height: 1.65; color: var(--text-muted); margin: 0; }
+@media (max-width: 640px) { .timeline-item { grid-template-columns: 1fr; gap: 8px; padding-left: 48px; } .timeline-year { padding-left: 0; } .timeline-item::before { top: 8px; } }
+</style>

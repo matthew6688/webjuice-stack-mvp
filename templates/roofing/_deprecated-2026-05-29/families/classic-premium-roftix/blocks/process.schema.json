@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "block_id": "process",
+  "block_name": "Process / How It Works",
+  "purpose": "3-5 step process from enquiry → completion. Reduces purchase anxiety.",
+  "required_on": ["home"],
+  "recommended_on": ["service"],
+  "data_od_id": "process",
+  "type": "object",
+  "required": ["heading", "steps"],
+  "properties": {
+    "heading": { "type": "string", "minLength": 8, "maxLength": 60 },
+    "steps": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["number", "title", "body"],
+        "properties": {
+          "number": { "type": "integer", "minimum": 1, "maximum": 6 },
+          "title": { "type": "string", "maxLength": 40 },
+          "body": { "type": "string", "minLength": 20, "maxLength": 180 },
+          "icon": { "type": "string" },
+          "duration": { "type": "string", "description": "Optional: '24 hrs', 'Same day'" }
+        }
+      }
+    }
+  },
+  "validation_hooks": ["no_generic_copy", "paragraph_length"]
+}

@@ -1,0 +1,135 @@
+<section class="section map-embed-section">
+  <div class="container">
+    <div class="map-embed-grid">
+      <div class="map-embed-visual">
+        <a class="map-stylized-wrap" href="{{google_maps_url}}" target="_blank" rel="noopener" aria-label="Open {{business_name}} location in Google Maps">
+          <svg class="map-stylized" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="600" height="450" fill="#e8eef0"/>
+            <g fill="#d4dde0">
+              <rect x="0" y="80" width="600" height="50"/>
+              <rect x="0" y="220" width="600" height="60"/>
+              <rect x="0" y="370" width="600" height="40"/>
+              <rect x="80" y="0" width="60" height="450"/>
+              <rect x="260" y="0" width="50" height="450"/>
+              <rect x="430" y="0" width="55" height="450"/>
+            </g>
+            <g fill="#c5d0d3">
+              <rect x="10" y="10" width="60" height="60" rx="2"/>
+              <rect x="150" y="10" width="100" height="60" rx="2"/>
+              <rect x="320" y="10" width="100" height="60" rx="2"/>
+              <rect x="495" y="10" width="95" height="60" rx="2"/>
+              <rect x="10" y="140" width="60" height="70" rx="2"/>
+              <rect x="150" y="140" width="100" height="70" rx="2"/>
+              <rect x="320" y="140" width="100" height="35" rx="2"/>
+              <rect x="495" y="140" width="95" height="70" rx="2"/>
+              <rect x="10" y="290" width="60" height="70" rx="2"/>
+              <rect x="150" y="290" width="100" height="70" rx="2"/>
+              <rect x="320" y="290" width="100" height="70" rx="2"/>
+              <rect x="495" y="290" width="95" height="70" rx="2"/>
+              <rect x="10" y="420" width="60" height="30" rx="2"/>
+              <rect x="150" y="420" width="100" height="30" rx="2"/>
+              <rect x="320" y="420" width="100" height="30" rx="2"/>
+              <rect x="495" y="420" width="95" height="30" rx="2"/>
+            </g>
+            <path d="M340 0 Q360 100 350 175 Q345 260 360 340 Q355 410 370 450" stroke="#a8d4dc" stroke-width="14" fill="none" opacity="0.7"/>
+            <path d="M0 200 Q150 195 300 205 T600 200" stroke="#fff" stroke-width="6" fill="none"/>
+            <path d="M280 0 L290 450" stroke="#fff" stroke-width="4" fill="none"/>
+            <g fill="#9aa8ad" font-family="system-ui" font-size="10" font-weight="600">
+              <text x="40" y="105">Main St</text>
+              <text x="40" y="245" >Park Rd</text>
+              <text x="295" y="105" transform="rotate(-90 295 105)">High St</text>
+            </g>
+          </svg>
+          <div class="map-marker-overlay">
+            <div class="map-marker-pulse"></div>
+            <div class="map-marker-pin">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/>
+                <circle cx="12" cy="9" r="3" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="map-marker-card">
+              <strong>{{business_name}}</strong>
+              <span>{{address}}</span>
+            </div>
+          </div>
+          <div class="map-attribution">View on Google Maps →</div>
+        </a>
+      </div>
+      <div class="map-embed-info">
+        <p class="kicker">Where to find us</p>
+        <h2 class="map-info-h2">Visit {{business_name}} in {{city}}</h2>
+        <p class="map-info-body">Drop in to discuss your roofing project, or call ahead to arrange a free on-site quote anywhere across the {{city}} region.</p>
+        <div class="map-info-blocks">
+          <div class="map-info-block">
+            <div class="map-info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            </div>
+            <div>
+              <div class="map-info-label">Address</div>
+              <p class="map-info-text">{{address}}</p>
+            </div>
+          </div>
+          <div class="map-info-block">
+            <div class="map-info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <div>
+              <div class="map-info-label">Hours</div>
+              <p class="map-info-text">{{hours}}</p>
+            </div>
+          </div>
+          <div class="map-info-block">
+            <div class="map-info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2l3 6-2 1c1 3 3 5 6 6l1-2 6 3v3a2 2 0 01-2 2C10 21 3 14 3 4a2 2 0 012-2z"/></svg>
+            </div>
+            <div>
+              <div class="map-info-label">Phone</div>
+              <p class="map-info-text"><a href="{{tel_link}}">{{phone}}</a></p>
+            </div>
+          </div>
+          {{?email}}
+          <div class="map-info-block">
+            <div class="map-info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 7 9-7"/></svg>
+            </div>
+            <div>
+              <div class="map-info-label">Email</div>
+              <p class="map-info-text"><a href="{{email_link}}">{{email}}</a></p>
+            </div>
+          </div>
+          {{/email}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.map-embed-section { padding: clamp(64px, 9vw, 96px) 0; background: var(--surface, #fff); }
+.map-embed-section .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.map-embed-section .kicker { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-accent, #b86a47); margin: 0 0 12px; }
+.map-embed-section .map-embed-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+.map-embed-section .map-embed-visual { position: relative; }
+.map-embed-section .map-stylized-wrap { position: relative; display: block; aspect-ratio: 4/3; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-decoration: none; }
+.map-embed-section .map-stylized { width: 100%; height: 100%; display: block; }
+.map-embed-section .map-marker-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; }
+.map-embed-section .map-marker-pulse { width: 60px; height: 60px; border-radius: 50%; background: var(--brand-accent, #b86a47); opacity: 0.25; position: absolute; top: 0; left: 50%; transform: translateX(-50%); animation: mapPulse 2s ease-out infinite; }
+@keyframes mapPulse { 0% { transform: translateX(-50%) scale(0.5); opacity: 0.5; } 100% { transform: translateX(-50%) scale(2); opacity: 0; } }
+.map-embed-section .map-marker-pin { color: var(--brand-accent, #b86a47); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); position: relative; z-index: 2; }
+.map-embed-section .map-marker-card { margin-top: 8px; background: #fff; padding: 8px 14px; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 2px; max-width: 220px; }
+.map-embed-section .map-marker-card strong { font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif); font-size: 13px; font-weight: 800; color: var(--text, #102b32); }
+.map-embed-section .map-marker-card span { font-size: 11px; color: var(--text-muted, #5c6b70); line-height: 1.3; }
+.map-embed-section .map-attribution { position: absolute; bottom: 12px; right: 12px; background: rgba(255,255,255,0.95); padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--brand-primary, #102b32); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.map-embed-section .map-info-h2 { font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif); font-size: clamp(24px, 3vw, 32px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 12px; color: var(--text, #102b32); }
+.map-embed-section .map-info-body { color: var(--text-muted, #5c6b70); font-size: 15px; line-height: 1.65; margin: 0 0 24px; }
+.map-embed-section .map-info-blocks { display: grid; gap: 14px; }
+.map-embed-section .map-info-block { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; background: var(--surface-muted, #f4f6f5); border-radius: 8px; }
+.map-embed-section .map-info-icon { width: 36px; height: 36px; border-radius: 8px; background: color-mix(in srgb, var(--brand-accent, #b86a47) 14%, transparent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--brand-accent, #b86a47); }
+.map-embed-section .map-info-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted, #5c6b70); margin-bottom: 2px; }
+.map-embed-section .map-info-text { font-size: 14px; line-height: 1.5; color: var(--text, #102b32); margin: 0; }
+.map-embed-section .map-info-text a { color: var(--text, #102b32); text-decoration: none; font-weight: 600; }
+@media (max-width: 900px) {
+  .map-embed-section .map-embed-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>

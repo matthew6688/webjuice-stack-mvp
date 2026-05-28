@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "block_id": "gallery",
+  "block_name": "Project Gallery / Before-After",
+  "purpose": "Show 4-12 real project photos from the customer's site/GBP. Visual proof.",
+  "required_on": [],
+  "recommended_on": ["home", "service", "about"],
+  "data_od_id": "gallery",
+  "type": "object",
+  "required": ["heading", "items"],
+  "properties": {
+    "heading": { "type": "string", "minLength": 6, "maxLength": 60 },
+    "intro": { "type": "string", "maxLength": 200 },
+    "items": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": ["src", "alt", "_source"],
+        "properties": {
+          "src": { "type": "string" },
+          "alt": { "type": "string", "minLength": 8, "maxLength": 140 },
+          "caption": { "type": "string", "maxLength": 140 },
+          "category": { "enum": ["before-after", "completed", "process", "team", "site-photo"] },
+          "_source": { "type": "string", "pattern": "^(verified:scraped|verified:gbp|verified:upload|ai-generated)" }
+        }
+      }
+    },
+    "layout": { "enum": ["grid-3", "grid-4", "masonry", "carousel"], "default": "grid-3" }
+  },
+  "validation_hooks": ["no_fabricated_data"]
+}

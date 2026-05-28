@@ -1,0 +1,106 @@
+<section class="section services-section section--surface" id="services">
+  <div class="container">
+    <p class="kicker">What We Do</p>
+    <h2 class="services-h2">{{?services_heading}}{{services_heading}}{{/services_heading}}{{^services_heading}}Comprehensive Roofing Services{{/services_heading}}</h2>
+    <div class="services-grid services-grid--4col">
+      {{#services}}
+      <a href="{{?page_slug}}{{page_slug}}{{/page_slug}}{{^page_slug}}#{{/page_slug}}" class="service-card">
+        <div class="service-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+            <path d="M3 12l9-9 9 9M5 10v9a1 1 0 001 1h12a1 1 0 001-1v-9"/>
+          </svg>
+        </div>
+        <h3>{{name}}</h3>
+        {{?short_desc}}<p class="sub-title">{{short_desc}}</p>{{/short_desc}}
+        <p class="service-desc">{{?long_desc}}{{long_desc}}{{/long_desc}}{{^long_desc}}{{short_desc}}{{/long_desc}}</p>
+        <span class="arrow">Learn more <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h8M9 5l3 3-3 3"/></svg></span>
+      </a>
+      {{/services}}
+    </div>
+  </div>
+</section>
+
+<style>
+.services-section { padding: clamp(64px, 9vw, 96px) 0; }
+.services-section.section--surface { background: var(--surface-muted, #f4f6f5); }
+.services-section .kicker {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-accent, #b86a47);
+  margin: 0 0 12px;
+}
+.services-section .services-h2 {
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: clamp(32px, 4.2vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 40px;
+  max-width: 720px;
+  color: var(--text, #102b32);
+}
+.services-section .services-grid--4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.services-section .service-card {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #dce5e3);
+  border-radius: 8px;
+  padding: 36px 28px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  display: block;
+  color: var(--text, #102b32);
+}
+.services-section .service-card:hover {
+  border-color: var(--brand-accent, #b86a47);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(15,31,36,0.08);
+}
+.services-section .service-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--brand-accent, #b86a47) 14%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.services-section .service-icon svg { color: var(--brand-accent, #b86a47); }
+.services-section .service-card h3 {
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--text, #102b32);
+}
+.services-section .service-card .sub-title {
+  font-size: 14px;
+  color: var(--brand-accent, #b86a47);
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+.services-section .service-card .service-desc {
+  font-size: 14px;
+  color: var(--text-muted, #5c6b70);
+  line-height: 1.6;
+  margin: 0;
+}
+.services-section .service-card .arrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-accent, #b86a47);
+}
+@media (max-width: 1100px) { .services-section .services-grid--4col { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .services-section .services-grid--4col { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "block_id": "services-grid",
+  "block_name": "Services Grid",
+  "purpose": "Show 3-7 real services (verified from customer's site) as scannable cards linking to detail pages.",
+  "required_on": ["home", "service_index"],
+  "data_od_id": "services-grid",
+  "type": "object",
+  "required": ["heading", "items"],
+  "properties": {
+    "heading": { "type": "string", "minLength": 8, "maxLength": 60 },
+    "intro": { "type": "string", "maxLength": 200 },
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "desc", "page_slug", "_source"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "name": { "type": "string", "maxLength": 50 },
+          "desc": { "type": "string", "minLength": 30, "maxLength": 220, "description": "1-2 sentences. Factual. No 'tailored solutions' fluff." },
+          "page_slug": { "type": "string", "pattern": "^/" },
+          "icon": { "type": "string" },
+          "image": {
+            "type": "object",
+            "properties": { "src": { "type": "string" }, "alt": { "type": "string" } }
+          },
+          "_source": { "type": "string", "pattern": "^(verified:scraped:|niche-optimized:|ai-completed:)" },
+          "evidence_quote": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "cta_footer": {
+      "type": "object",
+      "properties": {
+        "label": { "type": "string", "maxLength": 32 },
+        "href": { "type": "string" }
+      }
+    }
+  },
+  "validation_hooks": ["no_generic_copy", "no_fabricated_data", "paragraph_length"]
+}

@@ -1,0 +1,48 @@
+<section class="section value-prop-section fade-up">
+  <div class="container">
+    <div class="vp-grid">
+      <div class="vp-visual">
+        <img src="{{?value_prop.image}}{{value_prop.image}}{{/value_prop.image}}{{^value_prop.image}}assets/home-trust-restored-roof.png{{/value_prop.image}}" alt="{{business_name}} workmanship — {{city}}" loading="lazy">
+      </div>
+      <div>
+        <p class="kicker">{{?value_prop.eyebrow}}{{value_prop.eyebrow}}{{/value_prop.eyebrow}}{{^value_prop.eyebrow}}Trusted By Many{{/value_prop.eyebrow}}</p>
+        <h2 class="vp-h2">{{?value_prop.headline}}{{value_prop.headline}}{{/value_prop.headline}}{{^value_prop.headline}}Your Roof, Your Investment — Protect It{{/value_prop.headline}}</h2>
+        <p class="vp-body">{{?value_prop.body}}{{value_prop.body}}{{/value_prop.body}}{{^value_prop.body}}Small problems today can become big headaches tomorrow. Even minor roof damage can quickly spiral into major repairs if left unchecked. We offer free inspections and transparent advice — no pressure, no upselling.{{/value_prop.body}}</p>
+        <ul class="vp-checks">
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 10l4 4 6-8"/></svg>
+            We'll only recommend work you <strong>actually</strong> need.
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 10l4 4 6-8"/></svg>
+            We treat your home like it's our own.
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 10l4 4 6-8"/></svg>
+            Quality materials &amp; workmanship · written warranty.
+          </li>
+        </ul>
+        <a class="btn-primary vp-cta" href="{{?value_prop.cta_href}}{{value_prop.cta_href}}{{/value_prop.cta_href}}{{^value_prop.cta_href}}#quote-form{{/value_prop.cta_href}}">{{?value_prop.cta_label}}{{value_prop.cta_label}}{{/value_prop.cta_label}}{{^value_prop.cta_label}}Book My Free Inspection{{/value_prop.cta_label}}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.value-prop-section { padding: clamp(64px, 9vw, 96px) 0; background: var(--surface, #fff); }
+.value-prop-section .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.value-prop-section .kicker { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-accent, #b86a47); margin: 0 0 12px; }
+.value-prop-section .vp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.value-prop-section .vp-h2 { font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif); font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 16px; color: var(--text, #102b32); }
+.value-prop-section .vp-body { color: var(--text-muted, #5c6b70); font-size: 16px; line-height: 1.7; margin: 0 0 8px; }
+.value-prop-section .vp-checks { list-style: none; margin: 24px 0 32px; padding: 0; }
+.value-prop-section .vp-checks li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; font-size: 15px; line-height: 1.6; color: var(--text, #102b32); }
+.value-prop-section .vp-checks svg { flex-shrink: 0; color: var(--brand-accent, #b86a47); margin-top: 2px; }
+.value-prop-section .vp-visual { aspect-ratio: 4/3; background: var(--surface-muted, #f4f6f5); border-radius: 8px; overflow: hidden; }
+.value-prop-section .vp-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.value-prop-section .vp-cta { display: inline-block; background: var(--brand-accent, #b86a47); color: #fff; padding: 14px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+.value-prop-section .vp-cta:hover { filter: brightness(0.92); }
+@media (max-width: 900px) {
+  .value-prop-section .vp-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>

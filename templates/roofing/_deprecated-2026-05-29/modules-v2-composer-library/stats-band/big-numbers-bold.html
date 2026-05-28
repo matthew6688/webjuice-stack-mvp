@@ -1,0 +1,63 @@
+<section class="section stats-band-bold">
+  <div class="container">
+    <div class="stats-bold-grid">
+      {{?years_in_business}}
+      <div class="stat-bold">
+        <strong>{{years_in_business}}+</strong>
+        <span>Years Experience</span>
+      </div>
+      {{/years_in_business}}
+      {{?review_count}}
+      <div class="stat-bold">
+        <strong>{{rating}}★</strong>
+        <span>{{review_count}} Google Reviews</span>
+      </div>
+      {{/review_count}}
+      <div class="stat-bold">
+        <strong>{{?warranty_years}}{{warranty_years}}yr{{/warranty_years}}{{^warranty_years}}10yr{{/warranty_years}}</strong>
+        <span>Workmanship Warranty</span>
+      </div>
+      {{?licensing_authority}}
+      <div class="stat-bold">
+        <strong>{{licensing_authority}}</strong>
+        <span>Registered + Insured</span>
+      </div>
+      {{/licensing_authority}}
+    </div>
+  </div>
+</section>
+
+<style>
+.stats-band-bold {
+  padding: 56px 0;
+  background: var(--brand-primary, #102b32);
+  color: #fff;
+}
+.stats-band-bold .stats-bold-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+.stats-band-bold .stat-bold strong {
+  display: block;
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: clamp(36px, 4.8vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stats-band-bold .stat-bold span {
+  display: block;
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+@media (max-width: 820px) {
+  .stats-band-bold .stats-bold-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+}
+</style>

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "block_id": "why-us",
+  "block_name": "Why Us / Differentiators",
+  "purpose": "3-5 concrete differentiators grounded in verifiable facts (rating, warranty, materials, license).",
+  "required_on": ["home"],
+  "recommended_on": ["about", "service"],
+  "data_od_id": "why-us",
+  "type": "object",
+  "required": ["heading", "items"],
+  "properties": {
+    "heading": { "type": "string", "minLength": 8, "maxLength": 60 },
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["title", "body"],
+        "properties": {
+          "title": { "type": "string", "maxLength": 50, "description": "Concrete claim, not 'Quality service'" },
+          "body": { "type": "string", "minLength": 30, "maxLength": 220, "description": "1-2 sentences with a number, brand, or named credential." },
+          "icon": { "type": "string" },
+          "evidence_source": { "type": "string", "description": "facts.rating | scraped:about | locked:warranty" }
+        }
+      }
+    }
+  },
+  "validation_hooks": ["no_generic_copy", "no_fabricated_data"]
+}

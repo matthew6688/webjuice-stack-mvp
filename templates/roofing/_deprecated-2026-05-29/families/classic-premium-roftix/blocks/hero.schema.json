@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "block_id": "hero",
+  "block_name": "Hero (above-the-fold)",
+  "purpose": "Establish business + city in ≤5s, primary CTA (phone) visible without scroll, address PRD §5 above-fold CTA audit issue.",
+  "required_on": ["home", "service", "service_area"],
+  "data_od_id": "hero",
+  "type": "object",
+  "required": ["headline", "subheadline", "primary_cta", "background_image"],
+  "properties": {
+    "headline": {
+      "type": "string",
+      "minLength": 18,
+      "maxLength": 80,
+      "description": "8-12 words. MUST contain city OR niche keyword. Forbidden: 'Welcome to', 'Your trusted'."
+    },
+    "subheadline": {
+      "type": "string",
+      "minLength": 30,
+      "maxLength": 180,
+      "description": "15-25 words. Names 1-2 concrete services and proof point (license/rating/years)."
+    },
+    "primary_cta": {
+      "type": "object",
+      "required": ["label", "href", "kind"],
+      "properties": {
+        "label": { "type": "string", "maxLength": 32, "description": "≤5 words. e.g. 'Call (07) 1234 5678'" },
+        "href": { "type": "string", "pattern": "^tel:" },
+        "kind": { "enum": ["tel"] }
+      }
+    },
+    "secondary_cta": {
+      "type": "object",
+      "required": ["label", "href", "kind"],
+      "properties": {
+        "label": { "type": "string", "maxLength": 32 },
+        "href": { "type": "string" },
+        "kind": { "enum": ["quote", "form", "internal"] }
+      }
+    },
+    "background_image": {
+      "type": "object",
+      "required": ["src", "alt"],
+      "properties": {
+        "src": { "type": "string" },
+        "alt": { "type": "string", "minLength": 8 },
+        "category": { "enum": ["hero", "team", "site-photo"] }
+      }
+    },
+    "trust_chips": {
+      "type": "array",
+      "maxItems": 4,
+      "items": { "type": "string", "maxLength": 40 },
+      "description": "Optional concrete chips: 'VBA-licensed', '4.9★ · 87 reviews', '15+ years in Melton'"
+    }
+  },
+  "validation_hooks": [
+    "locked_facts_preserved",
+    "no_generic_copy",
+    "local_seo_present",
+    "cta_word_count"
+  ]
+}

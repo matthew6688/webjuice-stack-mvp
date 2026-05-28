@@ -1,0 +1,76 @@
+<section class="cta-banner-dense">
+  <div class="container">
+    <h2>{{?cta_band.heading}}{{cta_band.heading}}{{/cta_band.heading}}{{^cta_band.heading}}Ready to Restore Your Roof?{{/cta_band.heading}}</h2>
+    <p>{{?cta_band.sub}}{{cta_band.sub}}{{/cta_band.sub}}{{^cta_band.sub}}Get a free, no-obligation quote from {{city}}'s most trusted roofing team.{{/cta_band.sub}}</p>
+    <div class="cta-actions">
+      <a href="tel:{{tel_link}}" class="btn-white">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M6.2 2.7l-2 2a1 1 0 00-.2.9c.5 1.8 1.6 3.4 3 4.8s3 2.5 4.8 3a1 1 0 00.9-.2l2-2a.5.5 0 000-.7l-2.3-2.3a.5.5 0 00-.7 0l-1 1a.3.3 0 01-.4 0C9 8.3 7.7 7 6.5 5.8a.3.3 0 010-.4l1-1a.5.5 0 000-.7L5.3 1.4a.5.5 0 00-.7 0z"/>
+        </svg>
+        Call Us Today
+      </a>
+      <a href="contact.html" class="btn-outline-white">Send Enquiry</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.cta-banner-dense {
+  background: var(--brand-accent, #b86a47);
+  padding: 64px 0;
+  text-align: center;
+  color: #fff;
+}
+.cta-banner-dense h2 {
+  font-family: var(--font-display, 'Inter Tight', system-ui, sans-serif);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 auto 14px;
+  color: #fff;
+}
+.cta-banner-dense p {
+  color: rgba(255,255,255,0.78);
+  margin: 0 auto 28px;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 540px;
+}
+.cta-banner-dense .cta-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-banner-dense .btn-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: var(--brand-primary, #102b32);
+  padding: 14px 22px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.cta-banner-dense .btn-white:hover { background: rgba(255,255,255,0.92); }
+.cta-banner-dense .btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.55);
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.cta-banner-dense .btn-outline-white:hover { border-color: #fff; background: rgba(255,255,255,0.10); }
+</style>
