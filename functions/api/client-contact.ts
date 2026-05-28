@@ -43,6 +43,7 @@ interface ClientContactForm {
   email?: string;
   phone?: string;
   service?: string;
+  suburb?: string;  // R42-followup · editorial-newsletter has visible suburb field
   message?: string;
 }
 
@@ -63,20 +64,30 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-async function readForm(request: Request): Promise<ClientContactForm> {
+async function readForm(request: Request): Promise<ClientContactForm | { _parseError: true }> {
   const ct = request.headers.get('content-type') || '';
   if (ct.includes('application/json')) {
-    return (await request.json<ClientContactForm>()) ?? {};
+    try {
+      return (await request.json<ClientContactForm>()) ?? {};
+    } catch {
+      // R42-followup Q-AAA-5 · malformed JSON → 400 not 500
+      return { _parseError: true } as { _parseError: true };
+    }
   }
   // form-urlencoded or multipart/form-data
-  const fd = await request.formData();
-  return {
-    name: trim(fd.get('name')),
-    email: trim(fd.get('email')),
-    phone: trim(fd.get('phone')),
-    service: trim(fd.get('service')),
-    message: trim(fd.get('message')),
-  };
+  try {
+    const fd = await request.formData();
+    return {
+      name: trim(fd.get('name')),
+      email: trim(fd.get('email')),
+      phone: trim(fd.get('phone')),
+      service: trim(fd.get('service')),
+      suburb: trim(fd.get('suburb')),
+      message: trim(fd.get('message')),
+    };
+  } catch {
+    return { _parseError: true } as { _parseError: true };
+  }
 }
 
 function escapeHtml(s: string): string {
@@ -91,6 +102,7 @@ function plainText(body: ClientContactForm): string {
     `Email: ${body.email}`,
     `Phone: ${body.phone || 'N/A'}`,
     `Service: ${body.service || 'N/A'}`,
+    `Suburb: ${body.suburb || 'N/A'}`,
     '',
     'Message:',
     body.message || '(no message)',
@@ -106,6 +118,7 @@ function htmlBody(body: ClientContactForm, clientName?: string): string {
   <tr><td style="padding:8px 12px;background:#F4F4F5;font-weight:600;">Email</td><td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;"><a href="mailto:${escapeHtml(body.email || '')}">${escapeHtml(body.email || '')}</a></td></tr>
   <tr><td style="padding:8px 12px;background:#F4F4F5;font-weight:600;">Phone</td><td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;">${escapeHtml(body.phone || 'N/A')}</td></tr>
   <tr><td style="padding:8px 12px;background:#F4F4F5;font-weight:600;">Service</td><td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;">${escapeHtml(body.service || 'N/A')}</td></tr>
+  <tr><td style="padding:8px 12px;background:#F4F4F5;font-weight:600;">Suburb</td><td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;">${escapeHtml(body.suburb || 'N/A')}</td></tr>
 </table>
 ${body.message ? `<h3 style="margin:24px 0 8px;font-size:16px;">Message</h3><div style="background:#FAFAF7;padding:14px 18px;border-radius:6px;line-height:1.5;white-space:pre-wrap;">${escapeHtml(body.message)}</div>` : ''}
 <p style="margin-top:24px;font-size:13px;color:#5A5C61;">Reply to this email to respond directly to the customer.</p>
@@ -120,11 +133,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return json({ error: 'Form temporarily unavailable. Please call us or try again later.' }, 500);
     }
 
-    const body = await readForm(context.request);
+    const parsed = await readForm(context.request);
+    if ('_parseError' in parsed) {
+      return json({ error: 'Could not read submission. Please try again.' }, 400);
+    }
+    const body: ClientContactForm = parsed;
     body.name = trim(body.name);
     body.email = trim(body.email);
     body.phone = trim(body.phone);
     body.service = trim(body.service);
+    body.suburb = trim(body.suburb);
     body.message = trim(body.message);
 
     // Validation

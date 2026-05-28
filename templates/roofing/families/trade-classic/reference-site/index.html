@@ -3,31 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="{{brand.primary_hex}}">
-  <title>{{seo.title}}</title>
-  <meta name="description" content="{{seo.meta_description}}">
-  <link rel="canonical" href="{{seo.canonical_url}}">
+  <meta name="theme-color" content="#0F1115">
+  <title>Vicwest Roofing — Ballarat Roofers Since 2003 | VBA-Licensed Colorbond, Restoration &amp; Storm Repairs</title>
+  <meta name="description" content="Vicwest Roofing is a VBA-licensed Ballarat roofer (CDB-U 65938) — 23+ years of Colorbond replacements, terracotta restorations, storm repairs and gutter work ac">
+  <link rel="canonical" href="https://vicwestroofing.com.au/">
 
-  <meta property="og:title" content="{{seo.og_title}}">
-  <meta property="og:description" content="{{seo.og_description}}">
+  <meta property="og:title" content="Vicwest Roofing — Ballarat Roofers Since 2003 | VBA-Licensed Colorbond, Restoration &amp; Storm Repairs">
+  <meta property="og:description" content="Vicwest Roofing is a VBA-licensed Ballarat roofer (CDB-U 65938) — 23+ years of Colorbond replacements, terracotta restorations, storm repairs and gutter work ac">
   <meta property="og:image" content="assets/stock/hero/hero-golden-aerial-restored.png">
-  <meta property="og:url" content="{{seo.canonical_url}}">
+  <meta property="og:url" content="https://vicwestroofing.com.au/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="{{asset.favicon_path}}">
+  <link rel="icon" href="assets/brand/favicon.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
   <script type="application/ld+json">
-  {{{jsonld_localbusiness}}}
+  {
+  "@context": "https://schema.org",
+  "@type": "RoofingContractor",
+  "name": "Vicwest Roofing",
+  "image": "https://vicwestroofing.com.au/og.jpg",
+  "url": "https://vicwestroofing.com.au/",
+  "telephone": "+61403554592",
+  "email": "info@vicwestroofing.com.au",
+  "priceRange": "$$",
+  "foundingDate": "2003",
+  "description": "Vicwest Roofing is a VBA-licensed Ballarat roofer (CDB-U 65938) — 23+ years of Colorbond replacements, terracotta restorations, storm repairs and gutter work ac",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Shed 3/31 Icon Dr",
+    "addressLocality": "Delacombe",
+    "addressRegion": "VIC",
+    "postalCode": "3356",
+    "addressCountry": "AU"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "8:00 AM",
+      "closes": "5:00 PM"
+    }
+  ],
+  "hasMap": "https://maps.google.com/?cid=13188751736585097798",
+  "areaServed": [
+    "Ballarat Central",
+    "Sebastopol",
+    "Wendouree",
+    "Lake Wendouree",
+    "Delacombe",
+    "Buninyong",
+    "Mount Pleasant",
+    "Mount Helen",
+    "Black Hill",
+    "Alfredton",
+    "Soldiers Hill",
+    "Brown Hill",
+    "Redan",
+    "Canadian",
+    "Bonshaw",
+    "Miners Rest"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.1",
+    "reviewCount": "18"
+  },
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "VBA License",
+    "value": "CDB-U 65938"
+  }
+}
   </script>
 
   <style>
   /* === CLIENT BRAND TOKENS (composer-injected · D2.5 brand palette audit reads these hex values from inside <style>) === */
-  {{{brand_tokens_css_inline}}}
+  :root {
+  --brand-primary: #0F1115;
+  --brand-secondary: #6D6E71;
+  --brand-accent: #C5A572;
+  --surface: #FFFFFF;
+  --surface-muted: #F4F4F5;
+  --text: #1B1D22;
+  --text-muted: #5A5C61;
+  --border: #E4E4E7;
+  --source-primary: #000000;
+  --source-secondary: #6D6E71;
+  --source-wordmark: #3A3A3C;
+  --surface-dark: #111111;
+  --roof-shadow: rgba(15, 17, 21, 0.18);
+}
+
   </style>
 
   <style>
@@ -593,9 +670,9 @@
   <!-- ═══════════════ HEADER ═══════════════ -->
   <header class="site-header">
     <div class="container site-header__inner">
-      <a href="#" class="site-header__brand" aria-label="{{client.business_name}} home">
-        <span class="site-header__brand-mark">{{client.brand_mark}}</span>
-        <span>{{client.business_name}}</span>
+      <a href="#" class="site-header__brand" aria-label="Vicwest Roofing home">
+        <span class="site-header__brand-mark">VR</span>
+        <span>Vicwest Roofing</span>
       </a>
       <nav class="site-nav" aria-label="Primary">
         <a href="#services">Services</a>
@@ -606,9 +683,9 @@
         <a href="#contact">Contact</a>
       </nav>
       <div class="site-header__cta">
-        <a href="tel:{{client.phone_tel}}" class="site-header__phone">
+        <a href="tel:+61403554592" class="site-header__phone">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-          {{client.phone_display}}
+          0403 554 592
         </a>
         <a href="#contact" class="btn btn--primary">Free Quote</a>
       </div>
@@ -623,18 +700,18 @@
         <div class="hero__content">
           <span class="hero__eyebrow">
             <span style="width:6px;height:6px;border-radius:50%;background:#FFB627;display:inline-block;"></span>
-            {{hero.eyebrow_location}}
+            Ballarat · VIC · VBA-licensed
           </span>
-          <h1 class="hero__headline">{{{hero.headline_html}}}</h1>
-          <p class="hero__subhead">{{hero.subhead}}</p>
+          <h1 class="hero__headline">Metal & tile roofing across Ballarat & Western Victoria.</h1>
+          <p class="hero__subhead">Re-screw, re-coat, replace — written workmanship warranty. VBA-licensed (CDB-U 65938), fully insured and on Ballarat roofs since 2003.</p>
           <div class="hero__actions">
             <a href="#contact" class="btn btn--primary btn--large">
               Get Free On-Site Quote
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
-            <a href="tel:{{client.phone_tel}}" class="hero__phone-link">
+            <a href="tel:+61403554592" class="hero__phone-link">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-              Or call {{client.phone_display}}
+              Or call 0403 554 592
             </a>
           </div>
         </div>
@@ -668,12 +745,27 @@
   <section class="trust-bar" style="padding: 36px 0;">
     <div class="container">
       <div class="trust-bar__inner">
-        {{#trust_bar.chips}}
+        
         <div class="trust-chip">
-          <span class="trust-chip__value">{{value}}</span>
-          <span class="trust-chip__label">{{label}}</span>
+          <span class="trust-chip__value">23+</span>
+          <span class="trust-chip__label">Years in Ballarat</span>
         </div>
-        {{/trust_bar.chips}}
+        
+        <div class="trust-chip">
+          <span class="trust-chip__value">4.1★</span>
+          <span class="trust-chip__label">18 Google reviews</span>
+        </div>
+        
+        <div class="trust-chip">
+          <span class="trust-chip__value">16+</span>
+          <span class="trust-chip__label">Suburbs served</span>
+        </div>
+        
+        <div class="trust-chip">
+          <span class="trust-chip__value">0</span>
+          <span class="trust-chip__label">Subcontractors used</span>
+        </div>
+        
       </div>
     </div>
   </section>
@@ -681,22 +773,77 @@
   <!-- ═══════════════ SERVICES ═══════════════ -->
   <section id="services">
     <div class="container">
-      <span class="section-eyebrow">{{services.eyebrow}}</span>
-      <h2 class="section-heading">{{{services.headline}}}</h2>
-      <p class="section-lede">{{services.subhead}}</p>
+      <span class="section-eyebrow">What we do</span>
+      <h2 class="section-heading">6 things we do well across Ballarat roofs.</h2>
+      <p class="section-lede">From repairs through to full replacements — every job comes with a written quote, an ABN-backed invoice, and the warranty in writing. Fully insured.</p>
       <div class="services-grid">
-        {{#services.items}}
+        
         <article class="service-card">
           <div class="service-card__media">
-            <img src="{{image_src}}" alt="{{image_alt}}" loading="lazy">
+            <img src="assets/stock/service-replacement-in-progress.png" alt="Roof Replacements · Ballarat roofer" loading="lazy">
           </div>
           <div class="service-card__body">
-            <h3 class="service-card__title">{{title}}</h3>
-            <p class="service-card__desc">{{body}}</p>
-            <a href="{{cta_href}}" class="service-card__link">{{cta_label}} →</a>
+            <h3 class="service-card__title">Roof Replacements</h3>
+            <p class="service-card__desc">Remove ageing, damaged, tiled, corrugated, asbestos cement, or metal roofs and install new Colorbond or metal roofing with sarking, anticon, battens, flashings, clean handover, and a 10-year workmanship warranty.</p>
+            <a href="" class="service-card__link"> →</a>
           </div>
         </article>
-        {{/services.items}}
+        
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="assets/stock/service-colorbond-install.png" alt="New Roofs · Ballarat roofer" loading="lazy">
+          </div>
+          <div class="service-card__body">
+            <h3 class="service-card__title">New Roofs</h3>
+            <p class="service-card__desc">Design, estimate, schedule, and install Colorbond and metal roofs for new residential builds, extensions, unit developments, display homes, and builder-led projects.</p>
+            <a href="" class="service-card__link"> →</a>
+          </div>
+        </article>
+        
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="assets/stock/service-gutter-install.png" alt="Gutter &amp; Pipe Replacement · Ballarat roofer" loading="lazy">
+          </div>
+          <div class="service-card__body">
+            <h3 class="service-card__title">Gutter &amp; Pipe Replacement</h3>
+            <p class="service-card__desc">Supply and fit Colorbond gutters, fascia, downpipes, and leaf-guard options to improve drainage and reduce water damage risk.</p>
+            <a href="" class="service-card__link"> →</a>
+          </div>
+        </article>
+        
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="assets/stock/roof-restoration.png" alt="Metal Roofing Replacement/Re-roofing · Ballarat roofer" loading="lazy">
+          </div>
+          <div class="service-card__body">
+            <h3 class="service-card__title">Metal Roofing Replacement/Re-roofing</h3>
+            <p class="service-card__desc">Replace older roofing systems with modern metal roofing for homes and commercial sites, including tile-to-tin and tile-to-Colorbond conversions.</p>
+            <a href="" class="service-card__link"> →</a>
+          </div>
+        </article>
+        
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="assets/stock/service-heritage-ridge-pointing-detail.png" alt="Architectural Claddings · Ballarat roofer" loading="lazy">
+          </div>
+          <div class="service-card__body">
+            <h3 class="service-card__title">Architectural Claddings</h3>
+            <p class="service-card__desc">Provide associated metal cladding and architectural cladding services for residential and commercial projects.</p>
+            <a href="" class="service-card__link"> →</a>
+          </div>
+        </article>
+        
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="assets/stock/service-storm-damage-closeup.png" alt="Colorbond Claddings · Ballarat roofer" loading="lazy">
+          </div>
+          <div class="service-card__body">
+            <h3 class="service-card__title">Colorbond Claddings</h3>
+            <p class="service-card__desc">Install Colorbond cladding systems as part of metal roofing and external envelope projects.</p>
+            <a href="" class="service-card__link"> →</a>
+          </div>
+        </article>
+        
       </div>
     </div>
   </section>
@@ -706,18 +853,30 @@
     <div class="container">
       <div class="about__grid">
         <div class="about__media">
-          <img src="{{about.image_src}}" alt="{{about.image_alt}}" loading="lazy">
+          <img src="assets/stock/about-worker-surveying.png" alt="Vicwest Roofing roofer surveying a Ballarat home's ridge line" loading="lazy">
         </div>
         <div>
-          <span class="section-eyebrow">{{about.eyebrow}}</span>
-          <h2 class="section-heading">{{{about.headline_html}}}</h2>
-          {{#about.paragraphs}}
-          <p style="color: var(--slate); font-size: 1.05rem; line-height: 1.6;">{{.}}</p>
-          {{/about.paragraphs}}
+          <span class="section-eyebrow">Why Vicwest</span>
+          <h2 class="section-heading">23+ years of Ballarat roofs.</h2>
+          
+          <p style="color: var(--slate); font-size: 1.05rem; line-height: 1.6;">Vicwest Roofing is a Ballarat-based roofing company — 23+ years working Ballarat roofs. VBA-licensed (CDB-U 65938), fully insured.</p>
+          
+          <p style="color: var(--slate); font-size: 1.05rem; line-height: 1.6;">We cover Ballarat Central, Sebastopol, Wendouree, Lake Wendouree and Delacombe and surrounds, working across 6 core services.</p>
+          
+          <p style="color: var(--slate); font-size: 1.05rem; line-height: 1.6;">Written workmanship warranty included on every job. Free on-site quote. Same point of contact from first call to handover.</p>
+          
           <div class="about__chips">
-            {{#about.chips}}
-            <span class="about-chip"><span class="about-chip__dot"></span>{{.}}</span>
-            {{/about.chips}}
+            
+            <span class="about-chip"><span class="about-chip__dot"></span>VBA Licensed</span>
+            
+            <span class="about-chip"><span class="about-chip__dot"></span>Fully Insured</span>
+            
+            <span class="about-chip"><span class="about-chip__dot"></span>10-yr Warranty</span>
+            
+            <span class="about-chip"><span class="about-chip__dot"></span>ABN on every invoice</span>
+            
+            <span class="about-chip"><span class="about-chip__dot"></span>No subcontractors</span>
+            
           </div>
         </div>
       </div>
@@ -727,16 +886,46 @@
   <!-- ═══════════════ PROCESS ═══════════════ -->
   <section class="process">
     <div class="container">
-      <span class="section-eyebrow">{{process.eyebrow}}</span>
-      <h2 class="section-heading">{{{process.headline_html}}}</h2>
+      <span class="section-eyebrow">How it works</span>
+      <h2 class="section-heading">Six steps from &ldquo;I think we&rsquo;ve got a leak&rdquo;<br>to &ldquo;It&rsquo;s sorted, mate.&rdquo;</h2>
       <div class="process-list">
-        {{#process.steps}}
+        
         <div class="process-step">
-          <div class="process-step__num">{{num}}</div>
-          <h3 class="process-step__title">{{title}}</h3>
-          <p class="process-step__desc">{{desc}}</p>
+          <div class="process-step__num">01</div>
+          <h3 class="process-step__title">Call or form</h3>
+          <p class="process-step__desc">Same-day callback during business hours. We&amp;#39;ll ask what you&amp;#39;re seeing.</p>
         </div>
-        {{/process.steps}}
+        
+        <div class="process-step">
+          <div class="process-step__num">02</div>
+          <h3 class="process-step__title">On-site quote</h3>
+          <p class="process-step__desc">We climb up, photograph, measure. Free, no obligation.</p>
+        </div>
+        
+        <div class="process-step">
+          <div class="process-step__num">03</div>
+          <h3 class="process-step__title">Written quote</h3>
+          <p class="process-step__desc">Fixed price, itemised, with materials brand &amp;amp; warranty terms.</p>
+        </div>
+        
+        <div class="process-step">
+          <div class="process-step__num">04</div>
+          <h3 class="process-step__title">Schedule</h3>
+          <p class="process-step__desc">Slotted within 2-4 weeks (faster for emergency &amp;amp; insurance).</p>
+        </div>
+        
+        <div class="process-step">
+          <div class="process-step__num">05</div>
+          <h3 class="process-step__title">Job</h3>
+          <p class="process-step__desc">3-5 days for most replacements. Daily photo update from the site.</p>
+        </div>
+        
+        <div class="process-step">
+          <div class="process-step__num">06</div>
+          <h3 class="process-step__title">Handover</h3>
+          <p class="process-step__desc">Walk-around, warranty paperwork, and the same number for callbacks.</p>
+        </div>
+        
       </div>
     </div>
   </section>
@@ -744,48 +933,87 @@
   <!-- ═══════════════ REVIEWS ═══════════════ -->
   <section id="reviews" class="reviews">
     <div class="container">
-      <span class="section-eyebrow">{{reviews.eyebrow}}</span>
-      <h2 class="section-heading">{{reviews.headline}}</h2>
-      <p class="section-lede">{{reviews.subhead}}</p>
-      {{#reviews.is_placeholder}}<div class="reviews-disclaimer" role="note">Preview · reviews shown are representative · client to swap for verified Google reviews before launch.</div>{{/reviews.is_placeholder}}
+      <span class="section-eyebrow">What Ballarat says</span>
+      <h2 class="section-heading">4.1★ on Google over 18 reviews.</h2>
+      <p class="section-lede">These are real reviews pulled from our verified Google Business profile.</p>
+      
       <div class="reviews-grid">
-        {{#reviews.items}}
+        
         <article class="review-card">
-          <div class="review-card__stars">{{stars_unicode}}</div>
-          <p class="review-card__quote">{{quote}}</p>
-          <p class="review-card__author"><strong>{{author}}</strong> · {{location}}</p>
+          <div class="review-card__stars">★ ★ ★ ★ ★</div>
+          <p class="review-card__quote">Before I knew it 2 teams of trades were here and off with the old roof new battens and sisal new sheets on capped and flashed all in one day.</p>
+          <p class="review-card__author"><strong>Roland Peacock</strong> · Hamilton</p>
         </article>
-        {{/reviews.items}}
+        
+        <article class="review-card">
+          <div class="review-card__stars">★ ★ ★ ★ ★</div>
+          <p class="review-card__quote">Hayden was amazing from first phone call to being on time with appointments, quotes (which was well below what we were expecting 😊) and getting the job done so quickly!!</p>
+          <p class="review-card__author"><strong>Rebecca Schultz</strong> · Ballarat</p>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-card__stars">★ ★ ★ ★ ★</div>
+          <p class="review-card__quote">Going from tile to tin in Wendouree. Would recommend them 100%. Done in two days. Great effort.</p>
+          <p class="review-card__author"><strong>Donald Stewart</strong> · Wendouree</p>
+        </article>
+        
       </div>
-      {{#client.google_maps_url}}
-      <p style="text-align: center; margin-top: 32px;">
-        <a href="{{.}}" class="btn btn--ghost" target="_blank" rel="noopener">
-          Read all {{client.review_count}} reviews on Google →
-        </a>
-      </p>
-      {{/client.google_maps_url}}
+      
     </div>
   </section>
 
   <!-- ═══════════════ GALLERY ═══════════════ -->
   <section id="gallery" style="background: var(--paper);">
     <div class="container">
-      <span class="section-eyebrow">{{gallery.eyebrow}}</span>
-      <h2 class="section-heading">{{{gallery.headline_html}}}</h2>
-      <p class="section-lede">{{gallery.subhead}}</p>
+      <span class="section-eyebrow">Recent work</span>
+      <h2 class="section-heading">Before & After. Real Ballarat roofs.</h2>
+      <p class="section-lede">Real jobs from the last 12 months — same angle, same light, no staging.</p>
       <div class="gallery-grid">
-        {{#gallery.pairs}}
+        
         <article class="gallery-pair">
           <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
-            <img class="gallery-pair__img gallery-pair__img--before" src="{{before_src}}" alt="{{before_alt}}" loading="lazy">
-            <img class="gallery-pair__img gallery-pair__img--after" src="{{after_src}}" alt="{{after_alt}}" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-09-cracked-slate-before.jpg" alt="Cracked slate roof before restoration" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-09-restored-slate-after.jpg" alt="Same slate roof after restoration" loading="lazy">
             <span class="gallery-pair__label gallery-pair__label--before">Before</span>
             <span class="gallery-pair__label gallery-pair__label--after">After</span>
             <div class="gallery-pair__handle" aria-hidden="true"></div>
           </div>
-          <p class="gallery-pair__caption">{{caption}}</p>
+          <p class="gallery-pair__caption">Heritage slate restoration · Ballarat</p>
         </article>
-        {{/gallery.pairs}}
+        
+        <article class="gallery-pair">
+          <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-10-storm-tarped-before.jpg" alt="Storm-damaged roof tarped after emergency call-out" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-10-storm-repaired-after.jpg" alt="Same roof fully repaired after storm" loading="lazy">
+            <span class="gallery-pair__label gallery-pair__label--before">Before</span>
+            <span class="gallery-pair__label gallery-pair__label--after">After</span>
+            <div class="gallery-pair__handle" aria-hidden="true"></div>
+          </div>
+          <p class="gallery-pair__caption">Storm response &amp; full repair · Ballarat</p>
+        </article>
+        
+        <article class="gallery-pair">
+          <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-12-asbestos-before.jpg" alt="Old roof sheeting before replacement" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-12-modern-metal-after.jpg" alt="New Colorbond metal roof after replacement" loading="lazy">
+            <span class="gallery-pair__label gallery-pair__label--before">Before</span>
+            <span class="gallery-pair__label gallery-pair__label--after">After</span>
+            <div class="gallery-pair__handle" aria-hidden="true"></div>
+          </div>
+          <p class="gallery-pair__caption">Full Colorbond replacement · Ballarat</p>
+        </article>
+        
+        <article class="gallery-pair">
+          <div class="gallery-pair__slider" data-ba-slider role="region" aria-label="Drag handle to compare before and after" tabindex="0" style="--pos: 50%;">
+            <img class="gallery-pair__img gallery-pair__img--before" src="assets/stock/gallery-07-moss-before.jpg" alt="Moss-covered terracotta tile roof before pressure clean" loading="lazy">
+            <img class="gallery-pair__img gallery-pair__img--after" src="assets/stock/gallery-07-moss-after.jpg" alt="Same tile roof after pressure-clean and recoat" loading="lazy">
+            <span class="gallery-pair__label gallery-pair__label--before">Before</span>
+            <span class="gallery-pair__label gallery-pair__label--after">After</span>
+            <div class="gallery-pair__handle" aria-hidden="true"></div>
+          </div>
+          <p class="gallery-pair__caption">Pressure clean &amp; recoat · Ballarat</p>
+        </article>
+        
       </div>
     </div>
   </section>
@@ -793,20 +1021,18 @@
   <!-- ═══════════════ SERVICE AREA ═══════════════ -->
   <section id="area" class="service-area">
     <div class="container">
-      <span class="section-eyebrow">{{coverage.eyebrow}}</span>
-      <h2 class="section-heading">{{{coverage.headline_html}}}</h2>
-      <p class="section-lede">{{coverage.subhead}}</p>
+      <span class="section-eyebrow">Where we work</span>
+      <h2 class="section-heading">Ballarat & Western Victoria. We come to you.</h2>
+      <p class="section-lede">Based in Ballarat — most of our work is within 35km of central Ballarat. Travel beyond by arrangement.</p>
       <div class="service-area__grid">
         <div>
           <ul class="suburb-list">
-            {{#coverage.suburbs}}<li class="suburb-pill">{{.}}</li>{{/coverage.suburbs}}
+            <li class="suburb-pill">Ballarat Central</li><li class="suburb-pill">Sebastopol</li><li class="suburb-pill">Wendouree</li><li class="suburb-pill">Lake Wendouree</li><li class="suburb-pill">Delacombe</li><li class="suburb-pill">Buninyong</li><li class="suburb-pill">Mount Pleasant</li><li class="suburb-pill">Mount Helen</li><li class="suburb-pill">Black Hill</li><li class="suburb-pill">Alfredton</li><li class="suburb-pill">Soldiers Hill</li><li class="suburb-pill">Brown Hill</li><li class="suburb-pill">Redan</li><li class="suburb-pill">Canadian</li><li class="suburb-pill">Bonshaw</li><li class="suburb-pill">Miners Rest</li>
           </ul>
-          {{#coverage.by_arrangement_text}}
-          <p style="margin-top: 28px; color: rgba(250, 250, 247, 0.65); font-size: 0.88rem;">{{.}}</p>
-          {{/coverage.by_arrangement_text}}
+          
         </div>
         <div class="service-area__map">
-          <iframe src="{{client.maps_embed_url}}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{{client.business_name}} service area map"></iframe>
+          <iframe src="https://maps.google.com/maps?q=Shed%203%2F31%20Icon%20Dr%2C%20Delacombe%20VIC%203356%2C%20Australia&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Vicwest Roofing service area map"></iframe>
         </div>
       </div>
     </div>
@@ -815,9 +1041,9 @@
   <!-- ═══════════════ CONTACT ═══════════════ -->
   <section id="contact" class="contact">
     <div class="container">
-      <span class="section-eyebrow">{{contact.eyebrow}}</span>
-      <h2 class="section-heading">{{{contact.headline_html}}}</h2>
-      <p class="section-lede">{{contact.subhead}}</p>
+      <span class="section-eyebrow">Get in touch</span>
+      <h2 class="section-heading">Free on-site quote. Same-day email response.</h2>
+      <p class="section-lede">Pick up the phone for the fastest response. Otherwise drop your name and email below and we'll write back within two hours during business hours.</p>
       <div class="contact__grid">
         <div class="contact-info">
           <div class="contact-info__row">
@@ -826,29 +1052,18 @@
             </div>
             <div>
               <div class="contact-info__label">Phone</div>
-              <a href="tel:{{client.phone_tel}}" class="contact-info__value">{{client.phone_display}}</a>
+              <a href="tel:+61403554592" class="contact-info__value">0403 554 592</a>
               <div class="contact-info__sub">Same-day callback Mon-Fri 7am-5pm · Sat 9am-1pm</div>
             </div>
           </div>
-          {{#client.email}}
-          <div class="contact-info__row">
-            <div class="contact-info__icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <div>
-              <div class="contact-info__label">Email</div>
-              <a href="mailto:{{.}}" class="contact-info__value">{{.}}</a>
-              <div class="contact-info__sub">Reply within 24 hours</div>
-            </div>
-          </div>
-          {{/client.email}}
+          
           <div class="contact-info__row">
             <div class="contact-info__icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
             </div>
             <div>
               <div class="contact-info__label">Yard / Office</div>
-              <div class="contact-info__value">{{client.address_full}}</div>
+              <div class="contact-info__value">Shed 3/31 Icon Dr, Delacombe VIC 3356, Australia</div>
               <div class="contact-info__sub">Visits by appointment</div>
             </div>
           </div>
@@ -884,7 +1099,7 @@
             <button type="submit" class="btn btn--primary">Request Quote</button>
             <p class="pl-form-status" hidden aria-live="polite"></p>
           </form>
-          <p class="quote-card__trust">{{client.license_authority}}-licensed · Fully insured · ABN on every invoice</p>
+          <p class="quote-card__trust">VBA-licensed · Fully insured · ABN on every invoice</p>
         </aside>
       </div>
     </div>
@@ -897,13 +1112,12 @@
     <div class="container">
       <div class="site-footer__grid">
         <div>
-          <div class="site-footer__brand">{{client.business_name}}</div>
-          <p>{{client.city}}'s {{client.license_authority}}-licensed roof replacement, restoration &amp; gutter specialist since {{client.year_founded}}.
-          {{client.years_in_business}} years local. {{client.warranty_years}} written warranty. Free on-site quote.</p>
+          <div class="site-footer__brand">Vicwest Roofing</div>
+          <p>Ballarat's VBA-licensed roof replacement, restoration &amp; gutter specialist since 2003.
+          23+ years local. 10-year written warranty. Free on-site quote.</p>
           <p style="margin-top: 16px;">
-            <strong style="color: var(--paper);">{{client.address_full}}</strong><br>
-            <a href="tel:{{client.phone_tel}}" style="font-family: var(--font-mono);">{{client.phone_display}}</a>{{#client.email}}<br>
-            <a href="mailto:{{.}}">{{.}}</a>{{/client.email}}
+            <strong style="color: var(--paper);">Shed 3/31 Icon Dr, Delacombe VIC 3356, Australia</strong><br>
+            <a href="tel:+61403554592" style="font-family: var(--font-mono);">0403 554 592</a>
           </p>
         </div>
         <div>
@@ -920,21 +1134,21 @@
         <div>
           <h4>Service area</h4>
           <ul class="site-footer__list">
-            {{#coverage.suburbs}}<li>{{.}}</li>{{/coverage.suburbs}}
+            <li>Ballarat Central</li><li>Sebastopol</li><li>Wendouree</li><li>Lake Wendouree</li><li>Delacombe</li><li>Buninyong</li><li>Mount Pleasant</li><li>Mount Helen</li><li>Black Hill</li><li>Alfredton</li><li>Soldiers Hill</li><li>Brown Hill</li><li>Redan</li><li>Canadian</li><li>Bonshaw</li><li>Miners Rest</li>
           </ul>
         </div>
       </div>
       <div class="site-footer__legal">
-        © {{colophon.year}} {{client.business_name}} · {{colophon.tagline}}
+        © 2026 Vicwest Roofing · Ballarat roofers since 2003. VBA-licensed in Victoria · CDB-U 65938. Workshop on Shed 3/31 Icon Dr.
       </div>
     </div>
   </footer>
 
   <!-- ═══════════════ STICKY MOBILE PHONE CTA (M1.2 audit pattern · wrapper carries class, anchor child) ═══════════════ -->
   <div class="sticky-cta">
-    <a href="tel:{{client.phone_tel}}" class="sticky-cta__link">
+    <a href="tel:+61403554592" class="sticky-cta__link">
       <span class="sticky-cta__icon">📞</span>
-      <span>Call {{client.business_name}} · {{client.phone_display}}</span>
+      <span>Call Vicwest Roofing · 0403 554 592</span>
     </a>
   </div>
 

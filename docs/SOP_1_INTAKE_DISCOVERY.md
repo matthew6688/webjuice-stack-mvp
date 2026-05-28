@@ -189,7 +189,7 @@ function isThinContact(entity) {
 
 **实现** (C5-Phase-A · 2026-05-12)：
 
-`mergeLeadIntoEntity` 写入 `entity.enrichment_status`:
+`mergeLeadIntoEntity` 写入 `entity.enrichment_status`（详见 [SOP_HANDOFF_CONTRACT.md](SOP_HANDOFF_CONTRACT.md) §enrichment_status）:
 
 | 值 | 触发 |
 |---|---|
@@ -267,7 +267,7 @@ SOP-2 收到 entity 时**只 care** 这个 status，不重新跑 enrichment 判�
 | 失败模式 | 表现 | mitigation |
 |---|---|---|
 | `max_time < 180` | API 返回 422 `max time must be more than 3m` | `pl:scrape-docker` 内置 `Math.max(180, ...)` 强制下限 |
-| Docker 容器死 | 8080 端口连接拒绝 | `pl:preflight` 检测 + 提示 `docker restart gmaps-scraper-web`；同时 `ops:health-check` 会推 Discord |
+| Docker 容器死 | 8080 端口连接拒绝 | `pl:preflight` 检测 + 提示 `docker restart gmaps-scraper-web`；同时 `ops:health-check` 会推 Discord（详见 [SOP_X_TOOLING.md](SOP_X_TOOLING.md)）|
 | 同 lead 重复抓 | 多 query 命中同 place_id | `discoveryEntityKey` dedup + `mergeLeadIntoEntity` 合并 |
 | Discord forum tag 未建 | `applied_tags` API 422 | 一次性 bot setup |
 | image-lead 没 phone | OCR 提不到电话 | 用 `image_<slug>_nophone` 兜底 key + 标 phase: NEEDS_HUMAN |

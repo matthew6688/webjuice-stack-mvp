@@ -420,7 +420,7 @@ SOP-0 是 **task 系统**，**不是** lead 系统。task 在 `#website-tasks` �
 └────────────┬───────────────────────────────────────────────────┘
              │ 客户表示兴趣 (手动 graduate)
              ▼
-┌─ #website-projects (forum · SOP-3 owns, 待写) ─────────────────┐
+┌─ #website-projects (forum · SOP-3 owns → SOP_3_WEBSITE_BUILD.md) ──────────┐
 │ 1 demo = 1 thread · Open Design 网站预制                       │
 └────────────┬───────────────────────────────────────────────────┘
              │ 客户付费 (Stripe webhook 触发)

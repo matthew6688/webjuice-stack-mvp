@@ -7,7 +7,7 @@
  *
  * Contract: resolveReferenceSite must NEVER hard-throw for service-trade niches.
  * Registered trade niches map directly · unknown niches log warning + fallback to
- * TRADES_DEFAULT_FAMILY (currently classic-premium-roftix).
+ * TRADES_DEFAULT_FAMILY (currently trade-classic · V0 canonical 2026-05-29).
  */
 import assert from 'node:assert/strict';
 import { resolveReferenceSite } from '../../core/leads/reference-adapter-handoff.js';
@@ -20,49 +20,49 @@ function t(name, fn) {
 
 console.log('cycle-27 · niche → family fallback\n');
 
-t('roofing → classic-premium-roftix (existing)', () => {
+t('roofing → trade-classic (V0 canonical)', () => {
   const r = resolveReferenceSite({ niche: 'roofing' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
-t('electrician → classic-premium-roftix (Bug C fix)', () => {
+t('electrician → trade-classic (Bug C fix)', () => {
   const r = resolveReferenceSite({ niche: 'electrician' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
-t('plumber → classic-premium-roftix (Bug C fix)', () => {
+t('plumber → trade-classic (Bug C fix)', () => {
   const r = resolveReferenceSite({ niche: 'plumber' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
-t('concreter → classic-premium-roftix', () => {
+t('concreter → trade-classic', () => {
   const r = resolveReferenceSite({ niche: 'concreter' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
-t('Electrical Contractor → substring match → roftix', () => {
+t('Electrical Contractor → substring match → trade-classic', () => {
   const r = resolveReferenceSite({ niche: 'Electrical Contractor' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
-t('Roof Restoration Services → substring match → roftix', () => {
+t('Roof Restoration Services → substring match → trade-classic', () => {
   const r = resolveReferenceSite({ niche: 'Roof Restoration Services' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
 t('totally unknown niche · falls back · does NOT throw', () => {
   const r = resolveReferenceSite({ niche: 'astrologer-and-tarot' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
 t('empty niche · falls back · does NOT throw', () => {
   const r = resolveReferenceSite({ niche: '' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  assert.equal(r.family, 'trade-classic');
 });
 
 t('explicit family override always wins', () => {
-  const r = resolveReferenceSite({ niche: 'roofing', family: 'classic-premium-roftix' });
-  assert.equal(r.family, 'classic-premium-roftix');
+  const r = resolveReferenceSite({ niche: 'roofing', family: 'trade-classic' });
+  assert.equal(r.family, 'trade-classic');
 });
 
 console.log(`\n${passed}/${passed + failed} passed`);

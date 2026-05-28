@@ -5,8 +5,8 @@
  * customers (brisbane-roof-restoration-experts · gutter-and-roof-repairs ·
  * weatherproof-restorations) — same locked design system, different real
  * customer info + plausible sample content where data missing. See:
- *   - templates/roofing/families/classic-premium-roftix/reference-site/
- *   - templates/roofing/families/classic-premium-roftix/reference-site/HANDOFF-BOUNDARIES.md
+ *   - templates/roofing/families/trade-classic/reference-site/
+ *   - templates/roofing/families/trade-classic/reference-site/HANDOFF-BOUNDARIES.md
  *   - docs/v3/OD-HANDOFF-RESEARCH.md
  *
  * Replaces the freeform `renderOpenDesignPrompt` path that lived in
@@ -30,39 +30,35 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '../..');
 
 // Family registry · per-niche default family.
-// As we add families (M3+), extend this map. Family selection by entity-tag
-// (residential / commercial / emergency / restoration) is a separate concern;
-// for now `roofing` defaults to classic-premium-roftix.
+// V0 canonical: trade-classic (2026-05-29 · replaces retired classic-premium-roftix).
+// Reference site: templates/roofing/families/trade-classic/reference-site/
+// As we add families for other niches, extend this map.
 const FAMILY_REGISTRY = {
-  roofing: 'classic-premium-roftix',
-  roofer: 'classic-premium-roftix',
+  roofing: 'trade-classic',
+  roofer: 'trade-classic',
   // cycle-27 (Matthew 2026-05-16 · Bug C): trades fallback. electrician /
   // plumber / concreter / carpenter all share the "premium trade contractor"
-  // visual archetype the roftix template was built for (hero · services ·
-  // before-after · review wall · service-area · CTA). LLM retexture handles
-  // copy & color swap. Once a dedicated reference site lands for each niche
-  // we override here. Without this map · build hard-crashes at import time
-  // and the entity is stuck in ready-to-build forever.
-  electrician: 'classic-premium-roftix',
-  electrical: 'classic-premium-roftix',
-  plumber: 'classic-premium-roftix',
-  plumbing: 'classic-premium-roftix',
-  concreter: 'classic-premium-roftix',
-  concrete: 'classic-premium-roftix',
-  carpenter: 'classic-premium-roftix',
-  carpentry: 'classic-premium-roftix',
-  builder: 'classic-premium-roftix',
-  builders: 'classic-premium-roftix',
-  painter: 'classic-premium-roftix',
-  painting: 'classic-premium-roftix',
-  landscaper: 'classic-premium-roftix',
-  landscaping: 'classic-premium-roftix',
+  // visual archetype. LLM retexture handles copy & color swap.
+  // Once a dedicated reference site lands for each niche we override here.
+  electrician: 'trade-classic',
+  electrical: 'trade-classic',
+  plumber: 'trade-classic',
+  plumbing: 'trade-classic',
+  concreter: 'trade-classic',
+  concrete: 'trade-classic',
+  carpenter: 'trade-classic',
+  carpentry: 'trade-classic',
+  builder: 'trade-classic',
+  builders: 'trade-classic',
+  painter: 'trade-classic',
+  painting: 'trade-classic',
+  landscaper: 'trade-classic',
+  landscaping: 'trade-classic',
   // Add restaurant / dental / etc. once their reference sites land.
 };
 
-// cycle-27 trades default · used when niche is unrecognized but entity has
-// `categories` indicating a service-trade business. Better than hard-crashing.
-const TRADES_DEFAULT_FAMILY = 'classic-premium-roftix';
+// cycle-27 trades default · used when niche is unrecognized.
+const TRADES_DEFAULT_FAMILY = 'trade-classic';
 
 function defaultFamilyForNiche(niche) {
   const key = String(niche || '').toLowerCase().trim();

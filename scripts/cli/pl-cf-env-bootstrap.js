@@ -54,7 +54,16 @@ if (!CF_TOKEN || !CF_ACCOUNT) { console.error('CF_API_TOKEN + CF_ACCOUNT_ID requ
 if (!RESEND_API_KEY) { console.error('RESEND_API_KEY required in .env.local'); process.exit(1); }
 
 // Codex R42 Q-ZZ-3 · backward-compat alias `--notification` accepted but prefer `--recipient`
-const RECIPIENT_EMAIL = args.recipient || args.notification || 'matthewkiata@gmail.com';
+// Codex R42-followup Q-AAA-5 SHIP-BLOCKER: do NOT silently default to matthewkiata@gmail.com
+// for production. Default ONLY when --test flag is explicit (prevents real client leads going to wrong inbox).
+const RECIPIENT_FROM_ARG = args.recipient || args.notification || null;
+if (!RECIPIENT_FROM_ARG && !args.test) {
+  console.error('--recipient <email> is REQUIRED for production projects.');
+  console.error('  For local testing only · use --test to default to matthewkiata@gmail.com');
+  console.error('  Example: --project vicwest-roofing-test --recipient sales@vicwest-roofing.com.au');
+  process.exit(1);
+}
+const RECIPIENT_EMAIL = RECIPIENT_FROM_ARG || 'matthewkiata@gmail.com';
 const FROM_EMAIL = args.from || 'Profits Local <hello@fengtalk.ai>';
 const CLIENT_NAME = args['client-name'] || null;
 

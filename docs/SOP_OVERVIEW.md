@@ -16,9 +16,9 @@ ProfitsLocal 把"网站设计 + 销售"分成 4 段 Discord 生命周期，每�
   ↓ entity 入库
 筛选 + 审计 (SOP-2)
   ↓ A/B/C grade 触发"网站预制"分支
-Open Design 网站预制 (SOP-3, 待写)
+Open Design 网站预制 ([SOP-3](SOP_3_WEBSITE_BUILD.md))
   ↓ demo 完成
-销售对接 (SOP-4, 待写)
+销售对接 ([SOP-4](SOP_4_COLD_OUTREACH_OPS.md))
   ↓ 客户决定付费
 交付 + 维护 (SOP-5, 待写)
 ```
@@ -78,7 +78,7 @@ Open Design 网站预制 (SOP-3, 待写)
 |---|---|---|---|
 | SOP-1 | 客户发现 + Dedup + Enrichment | ✅ v1.0 | [`SOP_1_INTAKE_DISCOVERY.md`](SOP_1_INTAKE_DISCOVERY.md) |
 | SOP-2 | 筛选 + 审计 Screening & Audit | ✅ v1.0 | [`SOP_2_LEAD_DISCOVERY_PIPELINE.md`](SOP_2_LEAD_DISCOVERY_PIPELINE.md) |
-| SOP-3 | Open Design 网站预制 | ⚪ 待写 | **(TODO)** |
+| SOP-3 | Open Design 网站预制 | ✅ v1.0 | [`SOP_3_WEBSITE_BUILD.md`](SOP_3_WEBSITE_BUILD.md) |
 | SOP-4 | Cold Outreach Ops & Deliverability | ✅ v1.0 | [`SOP_4_COLD_OUTREACH_OPS.md`](SOP_4_COLD_OUTREACH_OPS.md) |
 | SOP-5 | 交付维护 Delivery & Maintenance | ⚪ 待写 | **(TODO)** |
 
