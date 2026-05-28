@@ -1,10 +1,10 @@
-# CANONICAL · ProfitsLocal Production Standard · v1.1 · 2026-05-29
+# CANONICAL · ProfitsLocal Production Standard · v1.2 · 2026-05-29
 
 > **PURPOSE**: single master index of "what is the current best · don't deviate without proof". Future agents read this FIRST · stop drifting into deprecated paths.
 >
 > **TRIGGER**: every new session · every "should I rebuild X?" question · every "what's the canonical Y?" question.
 >
-> **STATUS**: v1.1 · locked by 10 codex consensus rounds (R26-R37) + Matthew approvals.
+> **STATUS**: v1.2 · locked by 11 codex consensus rounds (R26-R38) + Matthew approvals.
 >
 > **RULE**: anything NOT in this doc as "locked" is provisional · explore freely. Anything LOCKED here cannot be replaced without (a) empirical evidence beating it by the re-test trigger threshold AND (b) codex sign-off in a new consensus round.
 
@@ -15,7 +15,7 @@
 | Decision | Locked Value | Source-of-truth doc | Re-test trigger |
 |---|---|---|---|
 | **Render path** | `pl:compose-editorial` (V1 · template + Mustache · deterministic · $0) | `CANONICAL-DECISION-RECORD-RENDER-PATH.md` | Need ≥5pt audit composite gain AND token-coverage parity (≥80) AND ≤3pt variance across 5 runs |
-| **Canonical template** | `templates/roofing/editorial-newsletter/` (1 family for now · single-page only) | `template.html` + `README.md` | Need 2nd client with brand that doesn't fit (e.g. owner-led slab-serif · commercial bold) AND audit ≥85 with new template family |
+| **Canonical templates** | 2 inventoried · `editorial-newsletter` (warm editorial · 91/89/93 avg 91) AND `trade-classic` (safe navy/amber AU-trade · 84/82/87 avg 84.3) · single-page only | `template.html` per family + `docs/v3/SOP-TEMPLATE-INVENTORY.md` for adds | New template add = SOP run · ≥80 composite on all 3 calibration clients |
 | **Audit standard** | SOP-AUDIT-STANDARD-V2 · 5 P0 capabilities + mobile veto + fast/premium tier | `SOP-AUDIT-STANDARD-V2.md` (618 lines) | Need codex round signoff on new weights/dims · v3 frozen as legacy_baseline |
 | **Brief schema** | `clients/<slug>/v2/single-page-brief.yaml` · validated by `pl:validate-single-page-brief` | `core/handoff/single-page-brief-schema.js` (12 cross-field constraints) | Schema change = codex round |
 | **Skills layer** | pl-au-trade-voice · pl-local-trade-page-spec · pl-audit-rubric (3 PL skills · build-artifact pattern) | `skills/*/SKILL.md` + `<skill>.json` build outputs | Add new skill = codex round + CLAUDE.md §7 existing-work check first |
@@ -28,6 +28,10 @@
 | **YELLOW back-fill merge** | `core/handoff/merge-inferred.js` (shared helper · provenance-tagged) consumed by `pl-compose-editorial` AND `pl-build-od-seed` | Codex R37 Q-RR-3 (b) · 2026-05-29 | Add new consumer = read this helper · don't fork |
 | **Deep core extract** | `buildCoreExtract` in `core/audit/redesign-brief-builder.js` (fuses GBP + crawl + reviews + tinyfish mentions + images + master.md into 1 core-extract.json) | Recovered from stash 2026-05-29 (R37) · was lost in phaseA-step0 stash | Schema change = codex round |
 | **Empty contact-field rendering** | Template MUST guard `{{#client.email}}…{{/client.email}}` etc · empty hrefs cause M1.3 tap-target vetos | Template lesson 2026-05-29 (R37 side-effect) | Add any new contact-row → wrap in conditional |
+| **Template inventory SOP** | New template family entry = follow `docs/v3/SOP-TEMPLATE-INVENTORY.md` 7-stage process · ≥80 composite on all 3 calibration clients (vicwest/a-j/mark-squire) before inventory | Codex R38 Q-SS-1..7 · SOP doc + trade-classic reference run | New stage / new gate = update SOP via codex round |
+| **Composer template dispatch** | `pl:compose-editorial --template <name>` flag · default `editorial-newsletter` · template path `templates/roofing/<name>/template.html` | Codex R38 Q-SS-2 (a) · 2026-05-29 | Promote to template-registry pattern only when ≥1 template needs pre-render hooks (R38 Q-SS-2 c) |
+| **Brand-tokens injection placement** | `{{{brand_tokens_css_inline}}}` MUST be inside `<style>...</style>` block · D2.5 brand palette audit reads hex via `<style>...</style>` regex | Trade-classic 2026-05-29 calibration · D2.5 found=[] when placed outside style | Move outside = audit immediately drops 11+pt |
+| **a-j brand-tokens canonical path** | Every client must have `clients/<slug>/v2/handoff/od-package/brand/brand-tokens.css` · NOT only at `v2/brand/` | a-j fix 2026-05-29 · editorial-newsletter score 83→89 (+6pt) | Composer fallback path = future enhancement |
 
 ---
 
@@ -39,6 +43,12 @@
 | **Path C · LLM whole-page render** (`pl:render-llm-page`) | Mean 85.5 vs V1 91 · 11pt variance · CSS token depth -71pt · premium leak-free 20 vs V1 100 · 50% mobile veto | New LLM model AND ≥10pt D2.10 gain AND ≥80 D2.BC6 token coverage AND ≤3pt variance across 5 runs | `experiments/3path-experiment-2026-05-28/RESULTS.md` |
 | **V2 module library** (`pl:compose-site`) | "OK but not great" baseline · D2.5 brand palette 33 vs V1 100 · uses generic house SVG not real brand logo · supplanted by editorial-newsletter | If a RED client must render without checkpoint passing · V2 = fallback (composer refuses RED) | Audit baselines in calibration doc |
 | **OD overnight greedy search** | 2-hour run · $14 · 13 variants · 0 ≥85 | Same as OD above | `experiments/od-master-2026-05-20T01-56-51-270/` |
+| **`templates/roofing/families/`** (classic-premium-roftix · editorial-bold-commercial · industrial-trade-credible · lead-capture-restoration · productized-modern-roofing) | 5 OD daemon output dirs · static dead HTML · not parameterized · ~200 files | OD revival OR specific family becomes desired aesthetic AND someone re-slot-fills via SOP-TEMPLATE-INVENTORY | `_deprecated-2026-05-29/families/` |
+| **`brand-grid-experiment/`** (Phase 3 MVP) | Intermediate 3-client brand-injection test outputs · superseded by editorial-newsletter canonical | None planned | `_deprecated-2026-05-29/brand-grid-experiment/` |
+| **`single-page-library/t1-tradeauthority/`** | 1108-line dead HTML · superseded by V0-V4 _compare set + trade-classic inventoried template | None planned | `_deprecated-2026-05-29/t1-tradeauthority/` |
+| **`templates/roofing/modules/`** (V2 composer module library) | Deprecated per CANONICAL §1 V2 module library row · pl-compose-site is deprecated · pl-compose-editorial is canonical | Same as V2 module library | `_deprecated-2026-05-29/modules-v2-composer-library/` |
+| **`dissection/`** (early weatherproof template wireframe extraction) | Early Phase A artifact · superseded by editorial-newsletter direct template | None planned | `_deprecated-2026-05-29/dissection/` |
+| **V5/V6/V7 OD variants in `_compare/`** | OD daemon outputs (editorial · bento · warm-editorial) · OD already deprecated | OD revival | `_deprecated-2026-05-29/v{5,6,7}-od-*/` |
 
 ---
 
@@ -140,9 +150,9 @@ No more 93/99 composite numbers on thin RED clients. Audit must be honest.
 
 | Client | Status | Composite | Last audit | Notes |
 |---|---|---|---|---|
-| vicwest-roofing | ✓ CANONICAL CLEAN | 91 / A / SHIP | 2026-05-29 | T4d 100 · 0 hallucinations · 0 banned · ABN-clean · M1 PASS |
-| a-j-roofing-solutions | ✓ Cross-client validated | 83 / B / SHIP | 2026-05-29 | YELLOW + PREVIEW banner · merge-inferred wired (17 Cairns suburbs · 3 ai-fabricated testimonials · tagged) · M1 PASS |
-| mark-squire-roof-restorations | ✓ Recovered from BLOCKED | 93 / A / SHIP | 2026-05-29 | YELLOW + banner · 1 ai-fabricated review (no GBP review text) · 18 suburbs · 6 services · M1 PASS · proves Tier-1 enrichment recovers RED |
+| vicwest-roofing | ✓ CANONICAL CLEAN | 91 / A / SHIP | 2026-05-29 | T4d 100 · 0 hallucinations · 0 banned · ABN-clean · M1 PASS · trade-classic alt 84 SHIP |
+| a-j-roofing-solutions | ✓ Cross-client + brand-tokens fix | 89 / A / SHIP | 2026-05-29 | YELLOW + PREVIEW banner · merge-inferred wired · brand-tokens canonical path fixed (83→89 +6pt) · trade-classic alt 82 SHIP |
+| mark-squire-roof-restorations | ✓ Recovered from BLOCKED | 93 / A / SHIP | 2026-05-29 | YELLOW + banner · 1 ai-fabricated review (no GBP review text) · 18 suburbs · 6 services · M1 PASS · trade-classic alt 87 SHIP |
 | abc-roof-restoration-brisbane | BLOCKED · genuine gap | N/A_BLOCKED | 2026-05-29 | GATE 1 RED · missing phone + address (cannot crawl · cannot enrich) · needs manual data input · do not force |
 
 ---
@@ -160,6 +170,7 @@ No more 93/99 composite numbers on thin RED clients. Audit must be honest.
 History:
 - v1.0 (2026-05-28): initial canonical. Locks Path B composer · 5 P0 audit · editorial-newsletter template · 4 personas · single-page roofing scope.
 - v1.1 (2026-05-29): R37 · 3 SHIP clients (was 2) · mark-squire recovered from BLOCKED. Locks `core/handoff/merge-inferred.js` shared helper · `buildCoreExtract` deep fusion · template empty-contact-row guard. No deprecation. Pure addition.
+- v1.2 (2026-05-29): R38 · 2 templates inventoried (was 1) · trade-classic added at avg 84.3. Old templates fully retired to `_deprecated-2026-05-29/`. Locks: SOP-TEMPLATE-INVENTORY · composer `--template` dispatch · brand-tokens placement rule · a-j brand-tokens path fix (83→89 side-effect). 4 huashu/taste-skill variants V1-V4 deferred to tasks #106-#109.
 
 ### When a new agent reads this
 
