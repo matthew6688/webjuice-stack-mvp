@@ -15,7 +15,8 @@
 | CLI | Purpose | Input | Output URL | Status |
 |---|---|---|---|---|
 | `pl:publish-demo` | Per-client demo publish | `--slug X` · reads `clients/X/v2/concept/reference-adapter/index.html` | `https://X-dev.pages.dev` | WIRED · brisbane-roof confirmed live 2026-05-13 |
-| `pl:publish-dir` | **Generic any-dir publish** | `--dir <html-dir> --project <name> [--audit-report path]` | `https://<project>.pages.dev` | WIRED · use this for editorial-output |
+| `pl:ship-customer` | **One-liner: compose→deploy→env→redeploy** | `--slug X --recipient email [--client-name "Name"]` | `https://<slug>-dev.pages.dev` | WIRED · use this for new client sites |
+| `pl:publish-dir` | Generic any-dir publish | `--dir <html-dir> --project <name> [--audit-report path] [--with-functions]` | `https://<project>.pages.dev` | WIRED · low-level primitive used by pl:ship-customer |
 | `pl:publish-pipeline` | Internal pipeline preview | All clients with `pipeline.html` · or `--slugs a,b,c` | `https://pipeline-preview-dev.pages.dev/` | WIRED · internal use |
 | `pl:publish-doctor` | Deploy-record health check | Reads all `cf-pages-deploy.json` | `data/heartbeats/publish-doctor.txt` + Discord alert | WIRED · daily cron |
 
@@ -107,17 +108,31 @@ Client websites (the products we sell) use a SEPARATE simpler endpoint:
 - Inline JS attached to `[data-pl-form]` · loading state · success/error messages · graceful no-JS POST fallback
 - Both templates (editorial-newsletter + trade-classic) point at this · NOT at official-site `contact.ts`
 
-### Deploy + env wire-up (per client · option A from R41)
-- `pl-publish-dir --with-functions` · whitelist-copies `functions/api/client-contact.ts` + `wrangler.toml` (NOT contact.ts NOT cloudinary NOT admin/)
-- `pl-cf-env-bootstrap --recipient <client@email> --client-name "Name"` · PATCHes CF Pages env (RESEND_API_KEY+RECIPIENT_EMAIL+FROM_EMAIL+CLIENT_NAME) on production + preview environments
-- Two-step deploy needed: (1) publish-dir creates project + uploads files (2) cf-env-bootstrap sets env (3) publish-dir again so functions see env
+### Deploy + env wire-up (per client) — ONE COMMAND
+
+```bash
+# Full pipeline: generate → deploy → configure → redeploy
+npm run pl:compose-editorial -- --slug <slug> --template trade-classic
+npm run pl:ship-customer -- --slug <slug> --recipient <client@email> --client-name "<Name>"
+```
+
+`pl:ship-customer` (`scripts/cli/pl-ship-customer.js`) wraps the 3-step deploy internally:
+1. `pl-publish-dir --with-functions` (first deploy · creates CF Pages project)
+2. `pl-cf-env-bootstrap` (sets RESEND_API_KEY + RECIPIENT_EMAIL + FROM_EMAIL + CLIENT_NAME)
+3. `pl-publish-dir --with-functions` (redeploy · functions now see env vars)
+
+Optional flags: `--project <name>` · `--from <email>` · `--dry-run`
+
+### Resend send domain
+- **`leads@profitslocal.com`** — DEFAULT · verified ✅ 2026-05-29
+- `hello@fengtalk.ai` — legacy fallback (still valid but not used by default)
+- Override per project via `FROM_EMAIL` env or `--from` flag on `pl:ship-customer`
 
 ### Future enhancements (NOT in MVP · deferred)
-- SMTP relay (paid-tier upgrade · client uses own domain for FROM · env names already documented in client-contact.ts)
+- SMTP relay (paid-tier upgrade · client uses own domain for FROM · env names already declared in client-contact.ts Env interface)
 - Honeypot / CAPTCHA (defer until spam observed)
 - Hidden tracking fields (UTM/click-id) · paid-tier upgrade
 - `data/registry/client-registry.json` (only needed if multi-client routing from single deploy · current model is per-client deploy)
-- profitslocal.com Resend domain verification (DNS records added 2026-05-29 · pending Resend verification · then switch FROM default from `hello@fengtalk.ai` → `leads@profitslocal.com`)
 
 ### `wrangler.toml`
 ```
@@ -126,10 +141,10 @@ compatibility_date = "2025-05-01"
 # Project name overridden per-client via GitHub Actions PAGES_PROJECT_NAME variable
 ```
 
-### Existing form code (templates)
-- Current `action="#"` · `onsubmit="event.preventDefault(); alert('Demo · form would submit');"`
-- Lines: editorial-newsletter ~487 · trade-classic 645 + 869
-- `run_scraper.py` has `outreach_status` DB table schema (email/email_sent_at/email_status/demo_url/proposal_url) · NEVER POPULATED · future inbound lead tracking
+### Form wiring in templates (R42 · DONE)
+- **trade-classic**: hero form (4 fields) + footer form (5 fields + textarea) · both `action="/api/client-contact"`
+- **editorial-newsletter**: single form · `action="/api/client-contact"` · name+email+phone required
+- Inline async JS on `[data-pl-form]` elements · loading state · success/error UX · no-JS POST fallback
 
 ---
 

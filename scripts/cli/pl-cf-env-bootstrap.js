@@ -64,7 +64,7 @@ if (!RECIPIENT_FROM_ARG && !args.test) {
   process.exit(1);
 }
 const RECIPIENT_EMAIL = RECIPIENT_FROM_ARG || 'matthewkiata@gmail.com';
-const FROM_EMAIL = args.from || 'Profits Local <hello@fengtalk.ai>';
+const FROM_EMAIL = args.from || 'Profits Local <leads@profitslocal.com>'; // profitslocal.com verified 2026-05-29
 const CLIENT_NAME = args['client-name'] || null;
 
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(RECIPIENT_EMAIL)) {

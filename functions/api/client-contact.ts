@@ -151,7 +151,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!body.phone) return json({ error: 'Phone number is required.' }, 400);
 
     // Send via Resend (SMTP path deferred · codex R42 Q-ZZ-2 d)
-    const fromEmail = context.env.FROM_EMAIL || 'Profits Local <hello@fengtalk.ai>';
+    const fromEmail = context.env.FROM_EMAIL || 'Profits Local <leads@profitslocal.com>'; // profitslocal.com verified 2026-05-29
     const subject = context.env.CLIENT_NAME
       ? `New enquiry · ${context.env.CLIENT_NAME} · ${body.name}`
       : `New enquiry · ${body.name}`;
