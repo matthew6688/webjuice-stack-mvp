@@ -38,6 +38,7 @@ import {
   hadInference,
   inferredFieldNames,
 } from '../../core/handoff/merge-inferred.js';
+import { buildCopy, normalizeFacts } from '../../core/handoff/copy-builders.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
@@ -203,6 +204,16 @@ async function main() {
   const clientDir = path.join(REPO, 'clients', slug, 'v2');
   if (!fs.existsSync(clientDir)) die(`client dir not found: clients/${slug}/v2/`);
 
+  // Template + voice profile (codex R39 Q-TT-2 c) · drives copy builders downstream
+  // editorial-newsletter = warm-editorial poetic voice · trade-classic = direct trade voice
+  // New templates declare profile in their contract.json (added later) · default editorial
+  const templateName = args.template || 'editorial-newsletter';
+  const TEMPLATE_PROFILES = {
+    'editorial-newsletter': 'editorial',
+    'trade-classic': 'direct',
+  };
+  const templateProfile = TEMPLATE_PROFILES[templateName] || 'editorial';
+
   // ─── Read SSOTs ────────────────────────────────────────────────────────
   const checkpoint = readJson(path.join(clientDir, 'checkpoint.json'));
   const coreExtract = readJson(path.join(clientDir, 'core-extract.json'));
@@ -257,9 +268,21 @@ async function main() {
   const state = realFacts.state || facts.state || '';
   const businessName = realFacts.business_name || facts.business_name || masterFm.business_name || '';
   const shortName = businessName.replace(/\s+Roofing|\s+Roof.*$/i, '').trim() || businessName;
+  // brandMark · 2-letter monogram for logo badges (codex R39 Q-TT-3)
+  // Tokenize · drop structural words · take first letters of first 2 significant tokens · uppercase
+  // Examples: "Vicwest Roofing" → VR · "A & J Roofing Solutions" → AJ · "Mark Squire Roof Restorations" → MS
+  const STOPWORDS = new Set(['&', 'and', 'of', 'the', 'by', 'in', 'for', 'a', 'an']);
+  const _markTokens = (businessName || '')
+    .split(/\s+/)
+    .map(t => t.trim())
+    .filter(t => t.length > 0 && !STOPWORDS.has(t.toLowerCase()));
+  const brandMark = _markTokens.length >= 2
+    ? (_markTokens[0][0] + _markTokens[1][0]).toUpperCase()
+    : (businessName.replace(/[^a-zA-Z0-9]/g, '').slice(0, 2) || 'XX').toUpperCase();
   // year_founded priority: brief.yaml (canonical · validated by pl:validate-single-page-brief)
   // > public_claims (years subtracted from now) > ABN effective (lossy · can be later than real start)
-  // > '2003' fallback.
+  // Codex R40 3rd-pass: removed '2003' hallucination fallback · let yearFounded be null when unverified
+  // Builders + downstream consumers handle null gracefully (no "23+ years" claim if unknown)
   let yearFounded = null;
   if (brief?.year_founded) yearFounded = String(brief.year_founded);
   if (!yearFounded) {
@@ -272,7 +295,7 @@ async function main() {
     }
   }
   if (!yearFounded && realFacts.founded_year?.abn_effective_from) yearFounded = realFacts.founded_year.abn_effective_from.slice(0, 4);
-  if (!yearFounded) yearFounded = '2003';
+  // No more '2003' fallback · yearFounded stays null when unverified
 
   // License (provenance-aware · only show when visible).
   // Priority: brief.yaml.license (canonical · codex R16) > facts.license_numbers (extracted) > narrative (fallback)
@@ -328,11 +351,45 @@ async function main() {
   // Hero
   // V5 hybrid · prefer wireframe-home.blocks[hero].content over narrative.hero_copy_options
   const wireframeHeroBlock = wireframe?.blocks?.find(b => b.type === 'hero')?.content || null;
-  const heroHeadline = wireframeHeroBlock?.headline || (narrative.hero_copy_options && (narrative.hero_copy_options[0]?.headline || narrative.hero_copy_options.headline))
+  // Hero copy bank · per template profile (codex R39 Q-TT-2 c)
+  // editorial: poetic warm voice ("A Ballarat roof, done properly · signed off in writing")
+  // direct: trade voice with concrete services + region ("Metal & tile roofing across Ballarat & Western Victoria")
+  const _serviceKeywords = (() => {
+    const all = (realFacts.service_list || facts.service_list || [])
+      .map(s => typeof s === 'string' ? s : (s.name || s.title || ''))
+      .map(s => s.toLowerCase());
+    const has = (re) => all.some(s => re.test(s));
+    const parts = [];
+    if (has(/metal|colorbond/i)) parts.push('Metal');
+    if (has(/tile|terracotta/i)) parts.push('tile');
+    if (parts.length === 0 && has(/restoration|repair/i)) parts.push('Roof restoration');
+    if (parts.length === 0) parts.push('Roofing');
+    return parts.length === 2 ? `${parts[0]} & ${parts[1]}` : parts[0];
+  })();
+  // Editorial path uses wireframe override · direct path IGNORES wireframe (voice mismatch)
+  // BUGFIX 2026-05-29 (codex R39-followup): direct profile must not inherit editorial wireframe headline
+  const heroHeadlineEditorial = wireframeHeroBlock?.headline
+    || (narrative.hero_copy_options && (narrative.hero_copy_options[0]?.headline || narrative.hero_copy_options.headline))
     || `A ${city} roof, done properly — and signed off in writing.`;
-  // Subhead: must be ≥40 words per parity REQ-HE3 · build from license + service variety + city + year + warranty
-  // V5 hybrid · prefer wireframe block subhead if ≥40 words
+  const heroHeadlineDirect = `${_serviceKeywords} roofing across ${city} & ${state === 'VIC' ? 'Western Victoria' : state === 'QLD' ? 'Far North Queensland' : 'surrounds'}.`;
+  const heroHeadline = templateProfile === 'direct' ? heroHeadlineDirect : heroHeadlineEditorial;
+  // Subhead per template profile (codex R39 Q-TT-2 c · R39-followup bugfix)
+  // editorial: warm prose · "Tidy site · daily updates · warranty in writing the day we leave"
+  // direct: concise trade pitch · "Re-screw, re-coat, replace — with a 10-year written warranty"
+  // BUGFIX 2026-05-29 (codex R39-followup): profile branch BEFORE wireframe override.
+  // Otherwise --use-wireframe with trade-classic would inherit 40+ word editorial wireframe subhead.
   function buildSubhead() {
+    const licClause = _licenseVisibleFinal ? `${licAuthority}-licensed (${licNumber})` : (licAuthority ? `${licAuthority}-licensed` : 'Licensed');
+    const serviceList = (realFacts.service_list || []).slice(0, 3).map(s => s.name.toLowerCase().replace(/^roof\s+/, '').replace(/^new\s+roofs?$/, 'new roofs').replace(/&/g, 'and'));
+    const serviceClause = serviceList.length >= 2 ? serviceList.slice(0, -1).join(', ') + ' and ' + serviceList[serviceList.length - 1] : (serviceList[0] || 'roofing work');
+
+    if (templateProfile === 'direct') {
+      // Trade voice · short · concrete · no poetics · IGNORE wireframe (editorial voice)
+      // Drop "since YYYY" when yearFounded unverified (codex R40 3rd-pass hallucination guard)
+      const sinceClause = yearFounded ? ` and on ${city} roofs since ${yearFounded}` : ` and working ${city} roofs`;
+      return `Re-screw, re-coat, replace — written workmanship warranty. ${licClause}, fully insured${sinceClause}.`;
+    }
+    // editorial (warm-editorial default) · wireframe override valid here
     if (wireframeHeroBlock?.subhead && String(wireframeHeroBlock.subhead).trim().split(/\s+/).length >= 40) {
       return String(wireframeHeroBlock.subhead).trim();
     }
@@ -345,11 +402,9 @@ async function main() {
         if (s) candidates.push(String(s).trim());
       }
     }
-    // Build from facts when narrative subhead < 40 words
-    const licClause = _licenseVisibleFinal ? `${licAuthority}-licensed (${licNumber})` : (licAuthority ? `${licAuthority}-licensed` : 'Licensed');
-    const serviceList = (realFacts.service_list || []).slice(0, 3).map(s => s.name.toLowerCase().replace(/^roof\s+/, '').replace(/^new\s+roofs?$/, 'new roofs').replace(/&/g, 'and'));
-    const serviceClause = serviceList.length >= 2 ? serviceList.slice(0, -1).join(', ') + ' and ' + serviceList[serviceList.length - 1] : (serviceList[0] || 'roofing work');
-    return `${licClause} roofers covering ${serviceClause} across ${city} since ${yearFounded}. Tidy site, daily updates, ten-year workmanship warranty in writing the day we leave. No surprise invoices, no subcontracted crews — we quote on site and stand behind the paperwork.`;
+    // Codex R40 3rd-pass: drop "since YYYY" if unverified; drop "ten-year warranty" hardcode
+    const sinceClause = yearFounded ? ` since ${yearFounded}` : '';
+    return `${licClause} roofers covering ${serviceClause} across ${city}${sinceClause}. Tidy site, daily updates, written workmanship warranty in the client's hands the day we leave. No surprise invoices, no subcontracted crews — we quote on site and stand behind the paperwork.`;
   }
   const heroSubhead = buildSubhead();
   const heroChips = [];
@@ -358,32 +413,71 @@ async function main() {
   heroChips.push('10-Year Warranty');
   if (facts.rating && facts.review_count) heroChips.push(`${facts.rating} · ${facts.review_count} Google reviews`);
 
-  // Services (4-6 items)
+  // Services (4-6 items) · image picker with no-repeat fallback (codex R39 Q-TT-4 b)
   const serviceList = (realFacts.service_list || []).slice(0, 6);
+  // Keyword map · CHECKED IN ORDER · most specific keywords FIRST (broad like
+  // 'replacement' / 'repair' last) · prevents "Gutter & Pipe Replacement" hitting
+  // 'replacement' before 'gutter'
   const stockServiceMap = {
-    'Roof Replacement': 'service-replacement-in-progress.png',
-    'New Roof': 'service-colorbond-install.png',
-    'Gutter': 'service-gutter-install.png',
-    'Storm': 'service-storm-damage-closeup.png',
-    'Repair': 'service-storm-damage-closeup.png',
-    'Colorbond': 'service-colorbond-install.png',
-    'Metal': 'service-colorbond-install.png',
-    'Restoration': 'roof-restoration.png',
-    'Pointing': 'service-heritage-ridge-pointing-detail.png',
-    'Commercial': 'service-colorbond-install.png',
+    'gutter':        'service-gutter-install.png',
+    'downpipe':      'service-gutter-install.png',
+    'fascia':        'service-gutter-install.png',
+    'pointing':      'service-heritage-ridge-pointing-detail.png',
+    're-bed':        'service-heritage-ridge-pointing-detail.png',
+    'ridge':         'service-heritage-ridge-pointing-detail.png',
+    'storm':         'service-storm-damage-closeup.png',
+    'emergency':     'service-storm-damage-closeup.png',
+    'leak':          'service-storm-damage-closeup.png',
+    'tile restoration': 'roof-restoration.png',
+    'restoration':   'roof-restoration.png',
+    'recoat':        'roof-restoration.png',
+    'paint':         'roof-restoration.png',
+    'new roof':      'service-colorbond-install.png',
+    'colorbond':     'service-colorbond-install.png',
+    'metal':         'service-colorbond-install.png',
+    'cladding':      'service-colorbond-install.png',
+    'tile':          'service-heritage-ridge-pointing-detail.png',
+    'repair':        'service-storm-damage-closeup.png',
+    'replacement':   'service-replacement-in-progress.png',
+    'commercial':    'service-replacement-in-progress.png',
+    'insulation':    'service-replacement-in-progress.png',
   };
-  function pickStockForService(name) {
+  // Fallback rotation pool · used when no keyword matches OR a matched image already chosen this render
+  const FALLBACK_POOL = [
+    'service-replacement-in-progress.png',
+    'service-colorbond-install.png',
+    'roof-restoration.png',
+    'service-gutter-install.png',
+    'service-heritage-ridge-pointing-detail.png',
+    'service-storm-damage-closeup.png',
+  ];
+  const usedStock = new Set();
+  const stockWarnings = [];  // codex R39-followup Q-UU-4 b · log fallback rotation for stock-coverage audit
+  function pickStockForService(name, idx) {
+    const lower = name.toLowerCase();
     for (const [key, file] of Object.entries(stockServiceMap)) {
-      if (name.toLowerCase().includes(key.toLowerCase())) return file;
+      if (lower.includes(key)) {
+        if (!usedStock.has(file)) { usedStock.add(file); return file; }
+        // matched but already used · fall through to rotation
+        stockWarnings.push(`service "${name}" matched stock "${file}" but already used · rotated to fallback`);
+        break;
+      }
     }
-    return 'service-colorbond-install.png';
+    // rotation · pick next pool entry not yet used; if all used, cycle by idx
+    let matchedKey = null;
+    for (const [key] of Object.entries(stockServiceMap)) if (lower.includes(key)) { matchedKey = key; break; }
+    if (!matchedKey) stockWarnings.push(`service "${name}" no stock keyword match · rotated to fallback`);
+    for (const f of FALLBACK_POOL) {
+      if (!usedStock.has(f)) { usedStock.add(f); return f; }
+    }
+    return FALLBACK_POOL[idx % FALLBACK_POOL.length];
   }
   const servicesItems = serviceList.map((s, i) => ({
     number: String(i + 1).padStart(2, '0'),
     category: (s.name.split(/\s+/)[0] || 'Service').slice(0, 16),
     title: s.name,
     body: s.brief || s.short_desc || '',
-    image_src: `assets/stock/${pickStockForService(s.name)}`,
+    image_src: `assets/stock/${pickStockForService(s.name, i)}`,
     image_alt: `${s.name} · ${city} roofer`,
   }));
 
@@ -395,9 +489,7 @@ async function main() {
   if (facts.rating && facts.review_count) strapCells.push({ value: `${facts.rating} / 5`, label: `Average across ${facts.review_count} Google reviews` });
   while (strapCells.length < 4) strapCells.push({ value: '—', label: '—' });
 
-  // About
-  const aboutPara = narrative.about_us_draft || narrative.company_background || `${businessName} has worked the ${city} region since ${yearFounded}. We run our own crew, scope quotes on site, and put a written warranty in your hands.`;
-  const aboutParagraphs = Array.isArray(aboutPara) ? aboutPara.slice(0, 3) : String(aboutPara).split(/\n\n+/).slice(0, 3);
+  // About paragraphs now built via copy-builders.js (codex R40 Q-VV-3) · removed old split-based code.
 
   // Reviews · merge real (verified) + inferred (ai-fabricated) per codex R37 Q-RR-3.
   // Real reviews from core-extract content_assets · inferred from pl:llm-infer-thin-data.
@@ -439,23 +531,57 @@ async function main() {
   if (suburbsList.length === 0 && city) suburbsList.push(city, `${city} Central`);
 
   // SEO
-  const seoTitle = `${businessName} — ${city} Roofers Since ${yearFounded} | ${licAuthority ? licAuthority + '-Licensed ' : ''}Colorbond, Restoration & Storm Repairs`.slice(0, 110);
-  const seoDesc = `${businessName} is a ${licAuthority ? `${licAuthority}-licensed ${city} roofer${_licenseVisibleFinal ? ' (' + licNumber + ')' : ''}` : `${city} roofer`} — ${new Date().getFullYear() - parseInt(yearFounded || 2003, 10)}+ years of Colorbond replacements, terracotta restorations, storm repairs and gutter work across ${city}. 10-year workmanship warranty.`.slice(0, 160);
+  // Codex R40 3rd-pass: SEO clauses drop "Since YYYY" / "23+ years" when year unverified
+  const seoSinceClause = yearFounded ? `Since ${yearFounded} ` : '';
+  const seoYearsClause = yearFounded ? `${new Date().getFullYear() - parseInt(yearFounded, 10)}+ years of ` : '';
+  const seoTitle = `${businessName} — ${city} Roofers ${seoSinceClause}| ${licAuthority ? licAuthority + '-Licensed ' : ''}Colorbond, Restoration & Storm Repairs`.replace(/\s+/g, ' ').slice(0, 110);
+  const seoDesc = `${businessName} is a ${licAuthority ? `${licAuthority}-licensed ${city} roofer${_licenseVisibleFinal ? ' (' + licNumber + ')' : ''}` : `${city} roofer`} — ${seoYearsClause}Colorbond replacements, terracotta restorations, storm repairs and gutter work across ${city}. Written workmanship warranty.`.slice(0, 160);
 
   // Brand hex extraction from brand-tokens.css
   const brandPrimaryHex = (brandTokensCss.match(/--brand-primary:\s*(#[0-9a-fA-F]{3,8})/) || [])[1] || '#0F1115';
   const brandAccentHex = (brandTokensCss.match(/--brand-accent:\s*(#[0-9a-fA-F]{3,8})/) || [])[1] || '#C5A572';
 
   // Issue (#NN) for editorial framing · derived from year founded for stability (not data hash)
-  const yearsTrading = Math.max(1, new Date().getFullYear() - parseInt(yearFounded || '2003', 10));
+  // Codex R40 3rd-pass: yearsTrading is null when yearFounded unverified · downstream consumers guard
+  const yearsTrading = yearFounded ? Math.max(1, new Date().getFullYear() - parseInt(yearFounded, 10)) : null;
   const issueNo = yearsTrading;  // e.g. 23 yrs = File No. XXIII
   const volNo = Math.max(1, Math.ceil(yearsTrading / 8));  // 1 volume per ~8 years
-  const heroEyebrow = `File No. ${toRoman(issueNo)} · ${city} Roofing Journal · Vol. ${toRoman(volNo).padStart(2, '0')}`;
+  // hero eyebrow per profile (editorial = magazine "File No." · direct = simple location chip)
+  const heroEyebrow = templateProfile === 'direct'
+    ? `${city} · ${state}${_licenseVisibleFinal ? ` · ${licAuthority}-licensed` : ''}`
+    : `File No. ${toRoman(issueNo)} · ${city} Roofing Journal · Vol. ${toRoman(volNo).padStart(2, '0')}`;
+
+  // Build section copy via profile dispatch (codex R40 Q-VV-1 B · Q-VV-5 b)
+  // Codex R40 3rd-pass hallucination guards (Q-XX-1, Q-XX-2):
+  // - warranty_years_verified · only pass if confirmed by source data · else null (builder uses generic clause)
+  // - suburbs_verified · ONLY real-source suburbs · NEVER inferred · used for "We cover X" coverage claim
+  const _warrantyYearsFromSource = realFacts.warranty_years || facts.warranty_years || brief?.warranty_years || null;
+  const _normalizedFacts = normalizeFacts({
+    business_name: businessName,
+    short_name: shortName,
+    city, state,
+    year_founded: yearFounded,
+    years_in_business: yearsTrading,
+    warranty_years_verified: _warrantyYearsFromSource,
+    license_authority: licAuthority,
+    license_number: licNumber,
+    license_visible: _licenseVisibleFinal,
+    services_count: servicesItems.length,
+    suburbs_count: suburbsList.length,
+    suburbs: suburbsList,
+    suburbs_verified: realSuburbs,  // verified only · pre-merge with inferred
+    rating: facts.rating,
+    review_count: facts.review_count,
+  });
+  const _copy = buildCopy(templateProfile, _normalizedFacts, {
+    narrativeAbout: narrative.about_us_draft || narrative.company_background || null,
+  });
 
   const ctx = {
     client: {
       business_name: businessName,
       short_name: shortName,
+      brand_mark: brandMark,
       city, state,
       phone_display: phoneDisplay,
       phone_tel: phoneTel,
@@ -513,48 +639,39 @@ async function main() {
       image: { src: 'assets/stock/detail-colorbond-metal.png', alt: `Detail of Colorbond metal roof sheeting installed on a ${city} home`, plate_label: 'Plate 01', caption: `Colorbond replacement · ${suburbsList[1] || city}` },
     },
     strap: { cells: strapCells.slice(0, 4) },
-    services: {
-      eyebrow: 'The Catalogue',
-      headline: `${servicesItems.length} trades, one ledger.`,
-      subhead: 'Every job is quoted in writing, scoped on site, and signed off when it is done. No surprises on the invoice — and the warranty is on the paperwork, not the handshake.',
-      items: servicesItems,
-    },
+    // ─── Section copy · dispatched via core/handoff/copy-builders.js (codex R40 Q-VV-1/5) ──
+    // Each profile's builder produces eyebrow/headline/subhead per section · pure fn · fixture-testable.
+    // About paragraphs · direct = fact-built 3 paragraphs · editorial = defensive sentence-grouped from narrative.
+    // Non-copy data (items/pairs/suburbs/images) spread in below.
+    services: { ...(_copy.services), items: servicesItems },
     about: {
-      eyebrow: 'The Workshop',
-      headline: yearFounded ? `${new Date().getFullYear() - parseInt(yearFounded, 10)} years on ${city} roofs.` : `Local ${city} roofers.`,
+      ...(_copy.about),
       image_src: 'assets/stock/about-worker-surveying.png',
       image_alt: `${businessName} roofer surveying a ${city} home's ridge line`,
-      image_caption: `Field survey · ${city} workshop · weekday call-outs`,
-      paragraphs: aboutParagraphs,
     },
     reviews: {
-      eyebrow: 'From the letters page',
-      headline: `What ${city} homeowners say.`,
-      subhead: reviewsIsPlaceholder ? `A representative selection. Verbatim Google reviews replace these once published.` : `A representative selection from our Google reviews. Verbatim — author, suburb, and star count unchanged.`,
+      ...(_copy.reviews),
+      // pick subhead variant based on placeholder vs real
+      subhead: reviewsIsPlaceholder ? _copy.reviews.subhead_placeholder : _copy.reviews.subhead_real,
       items: reviewsItems,
       is_placeholder: reviewsIsPlaceholder ? {} : null,
       real_count: facts.review_count || 0,
     },
     gallery: {
-      eyebrow: 'The Plates',
-      headline: `Before, after — ${city} roofs.`,
-      subhead: 'Three recent jobs across the catalogue. More on request when we quote.',
+      ...(_copy.gallery),
       pairs: galleryPairs,
     },
     coverage: {
-      eyebrow: 'The Beat',
-      headline: 'Where we work.',
-      subhead: `Based in ${city}, on ${city} roofs every working day. Most call-outs are local — we'll travel further by arrangement.`,
+      ...(_copy.coverage),
       suburbs: suburbsList,
       by_arrangement_text: suburbsList.length > 12 ? null : `By arrangement: surrounding ${state} regions.`,
     },
     contact: {
-      eyebrow: 'The Correspondence',
-      headline: 'Request a written quote.',
-      subhead: `Tell us the roof, the suburb, and the trouble. We'll come and look, then send a written quote — usually within two working days.`,
+      ..._copy.contact,
     },
     colophon: {
-      tagline: `${city} roofers since ${yearFounded}. ${_licenseVisibleFinal ? `${licAuthority}-licensed in ${state === 'VIC' ? 'Victoria' : state} · ${licNumber}. ` : ''}Workshop on ${addrParts[0] || city}.`,
+      // Codex R40 3rd-pass: drop "since YYYY" when unverified
+      tagline: `${city} roofers${yearFounded ? ` since ${yearFounded}` : ''}. ${_licenseVisibleFinal ? `${licAuthority}-licensed in ${state === 'VIC' ? 'Victoria' : state} · ${licNumber}. ` : ''}Workshop on ${addrParts[0] || city}.`,
       year: new Date().getFullYear(),
     },
     // ─── Trade-classic template extensions (R38) · additive · editorial-newsletter ignores these ──
@@ -572,9 +689,10 @@ async function main() {
       ],
     },
     // Trust-bar chips (the 4 stats above-fold)
+    // Codex R40 3rd-pass: drop years chip when yearsTrading unverified
     trust_bar: {
       chips: [
-        { value: `${yearsTrading}+`, label: `Years in ${city}` },
+        ...(yearsTrading ? [{ value: `${yearsTrading}+`, label: `Years in ${city}` }] : []),
         ...(facts.rating && facts.review_count
           ? [{ value: `${facts.rating}★`, label: `${facts.review_count} Google reviews` }]
           : []),
@@ -605,7 +723,7 @@ async function main() {
   // Additional client fields for trade-classic
   ctx.client.address_full = addrParts.length >= 2 ? addrParts.join(', ') : (facts.address || '');
   ctx.client.suburb = facts.suburb || (addrParts[1] || '').split(/\s+/)[0] || city;
-  ctx.client.years_in_business = `${yearsTrading}+`;
+  ctx.client.years_in_business = yearsTrading ? `${yearsTrading}+` : null;
   ctx.client.warranty_years = '10-year';
   ctx.client.maps_embed_url = facts.maps_embed_url || (facts.google_maps_url
     ? `https://maps.google.com/maps?q=${encodeURIComponent(ctx.client.address_full || city)}&output=embed`
@@ -613,8 +731,7 @@ async function main() {
   ctx.jsonld_localbusiness = buildJsonLd(ctx);
 
   // ─── Render ──────────────────────────────────────────────────────────
-  // Template dispatch (codex R38 Q-SS-2 a) · --template flag · default editorial-newsletter
-  const templateName = args.template || 'editorial-newsletter';
+  // templateName + templateProfile defined at top of main() (codex R39 Q-TT-2)
   const templatePath = path.join(REPO, 'templates/roofing', templateName, 'template.html');
   if (!fs.existsSync(templatePath)) {
     die(`template not found: templates/roofing/${templateName}/template.html · check spelling or use --template editorial-newsletter`);
@@ -671,6 +788,10 @@ async function main() {
   console.log(`  license: ${_licenseVisibleFinal ? `${licAuthority} ${licNumber}` : 'NOT-VISIBLE (needs-client-supplied)'}`);
   console.log(`  reviews: ${reviewsIsPlaceholder ? `PLACEHOLDER (${reviewsItems.length} sample · banner shown)` : `REAL (${reviewsItems.length})`}`);
   console.log(`  services: ${servicesItems.length} · suburbs: ${suburbsList.length} · gallery pairs: ${galleryPairs.length}`);
+  if (stockWarnings.length) {
+    console.log(`  ⚠ stock coverage gaps (${stockWarnings.length}):`);
+    stockWarnings.forEach(w => console.log(`    · ${w}`));
+  }
 
   if (args.json) {
     console.log(JSON.stringify({

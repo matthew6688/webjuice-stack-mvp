@@ -6,7 +6,7 @@
   "output_dir": "/Users/matthew/Developer/google-map-website-v3/clients/a-j-roofing-solutions/v2/editorial-output",
   "tier": "fast",
   "pages_audited": 1,
-  "generated_at": "2026-05-28T05:35:26.780Z",
+  "generated_at": "2026-05-28T06:31:47.374Z",
   "tier_1": {
     "pass": true,
     "checks": {
@@ -18,7 +18,7 @@
       "1.2_phone_present": {
         "pass": true,
         "per_page": [
-          17
+          12
         ]
       },
       "1.11_logo_refs_resolve": {
@@ -39,19 +39,19 @@
     "composite": 100
   },
   "tier_2": {
-    "score": 89,
+    "score": 82,
     "breakdown": {
       "D2.1_var_brand_coverage": {
         "score": 100,
         "weight": 0.3,
-        "coverage_pct": 371,
-        "var_hits": 356,
-        "color_decls": 96
+        "coverage_pct": 135,
+        "var_hits": 138,
+        "color_decls": 102
       },
       "D2.2_hardcoded_hex_count": {
-        "score": 64,
+        "score": 73,
         "weight": 0.25,
-        "unique_non_gray_hex": 16,
+        "unique_non_gray_hex": 14,
         "sample": [
           "#1b5e3f",
           "#2a8c8c",
@@ -62,7 +62,7 @@
           "#1a2421",
           "#5c645f",
           "#e1d9c7",
-          "#a88a5c"
+          "#091f36"
         ]
       },
       "D2.3_type_rule_compliance": {
@@ -71,11 +71,11 @@
         "note": "brand-spec has no primary_font · skipped"
       },
       "D2.4_logo_variant_per_surface": {
-        "score": 100,
+        "score": null,
         "weight": 0.15,
-        "logo_checks": 2,
+        "logo_checks": 0,
         "violations": [],
-        "note": null
+        "note": "no logo SVG references found in HTML"
       },
       "D2.5_brand_palette_honored": {
         "score": 100,
@@ -92,20 +92,20 @@
         ]
       },
       "D2.BC6_token_coverage_depth": {
-        "score": 90,
+        "score": 27,
         "weight": 0.1,
         "categories": {
           "color": {
-            "score": 100,
-            "coverage_pct": 179,
-            "var_hits": 172,
-            "prop_count": 96
+            "score": 19,
+            "coverage_pct": 19,
+            "var_hits": 19,
+            "prop_count": 102
           },
           "radius": {
-            "score": 95,
-            "coverage_pct": 95,
-            "var_hits": 18,
-            "prop_count": 19
+            "score": 61,
+            "coverage_pct": 61,
+            "var_hits": 11,
+            "prop_count": 18
           },
           "shadow": {
             "score": 56,
@@ -114,16 +114,16 @@
             "prop_count": 9
           },
           "space": {
-            "score": 100,
-            "coverage_pct": 111,
-            "var_hits": 94,
-            "prop_count": 85
+            "score": 1,
+            "coverage_pct": 1,
+            "var_hits": 1,
+            "prop_count": 101
           },
           "motion": {
-            "score": 100,
-            "coverage_pct": 700,
-            "var_hits": 14,
-            "prop_count": 2
+            "score": 0,
+            "coverage_pct": 0,
+            "var_hits": 0,
+            "prop_count": 6
           }
         },
         "note": "SOP-AUDIT-STANDARD-V2 §9 · split var() coverage by token category · 5-category depth",
@@ -136,7 +136,7 @@
         ]
       }
     },
-    "total_weight": 0.9500000000000001
+    "total_weight": 0.8
   },
   "tier_3": null,
   "tier_4": null,
@@ -173,24 +173,24 @@
   "content_richness_deterministic": {
     "dims": {
       "D2.14_proof_variety": {
-        "score": 100,
+        "score": 50,
         "types_present": {
           "reviews": true,
-          "stats": true,
-          "case_study": true,
+          "stats": false,
+          "case_study": false,
           "expert_quote": true,
           "certifications": true,
-          "photos": true
+          "photos": false
         },
-        "types_count": 6,
+        "types_count": 3,
         "per_page": {
           "index.html": {
-            "reviews": 17,
-            "stats": 4,
-            "case_study": 5,
-            "expert_quote": 2,
-            "certifications": 5,
-            "photos": 9
+            "reviews": 15,
+            "stats": 0,
+            "case_study": 0,
+            "expert_quote": 13,
+            "certifications": 13,
+            "photos": 0
           }
         },
         "threshold_pass": true,
@@ -200,7 +200,7 @@
         "score": 100,
         "services_rendered": 5,
         "suburbs_rendered": 17,
-        "review_blocks": 13,
+        "review_blocks": 14,
         "placeholder_banner_present": true,
         "threshold": "services ≥ 3 AND suburbs ≥ 5 AND (reviews ≥ 1 OR banner)",
         "pass": true,
@@ -234,8 +234,8 @@
   },
   "t2_copy_quality_llm": null,
   "tier_5": null,
-  "composite": 89,
-  "grade": "A",
+  "composite": 82,
+  "grade": "B",
   "ship_verdict": "SHIP",
   "block_reason": null,
   "issues": []
