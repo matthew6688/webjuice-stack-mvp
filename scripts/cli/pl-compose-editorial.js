@@ -198,6 +198,20 @@ async function main() {
   // ─── Read SSOTs ────────────────────────────────────────────────────────
   const checkpoint = readJson(path.join(clientDir, 'checkpoint.json'));
   const coreExtract = readJson(path.join(clientDir, 'core-extract.json'));
+  // V5 hybrid · codex R32 Q-MM-2 (c) · read wireframe-home-<llm>.json if --use-wireframe set
+  // Wireframe is LLM-generated persona-aware copy (Phase A.1 Step 5 output)
+  // Use as PRIMARY copy source for hero block · narrative as fallback
+  let wireframe = null;
+  if (args['use-wireframe']) {
+    const wfLlm = args['wireframe-llm'] || 'codex';
+    const wfPath = path.join(clientDir, `wireframes/wireframe-home-${wfLlm}.json`);
+    if (fs.existsSync(wfPath)) {
+      try { wireframe = readJson(wfPath); }
+      catch (e) { console.error(`warn: wireframe parse failed: ${e.message}`); }
+    } else {
+      console.error(`warn: --use-wireframe set but ${wfPath} not found · falling back to narrative`);
+    }
+  }
   // Brief.yaml is the canonical claim source (codex R16 hybrid · validated by pl:validate-single-page-brief).
   // Composer reads it for fields that core-extract / facts.json don't structure (e.g. license_number,
   // year_founded, suburbs_covered) · authoritative when present.
@@ -297,10 +311,16 @@ async function main() {
     : escapeHtml(addrFull);
 
   // Hero
-  const heroHeadline = (narrative.hero_copy_options && (narrative.hero_copy_options[0]?.headline || narrative.hero_copy_options.headline))
+  // V5 hybrid · prefer wireframe-home.blocks[hero].content over narrative.hero_copy_options
+  const wireframeHeroBlock = wireframe?.blocks?.find(b => b.type === 'hero')?.content || null;
+  const heroHeadline = wireframeHeroBlock?.headline || (narrative.hero_copy_options && (narrative.hero_copy_options[0]?.headline || narrative.hero_copy_options.headline))
     || `A ${city} roof, done properly — and signed off in writing.`;
   // Subhead: must be ≥40 words per parity REQ-HE3 · build from license + service variety + city + year + warranty
+  // V5 hybrid · prefer wireframe block subhead if ≥40 words
   function buildSubhead() {
+    if (wireframeHeroBlock?.subhead && String(wireframeHeroBlock.subhead).trim().split(/\s+/).length >= 40) {
+      return String(wireframeHeroBlock.subhead).trim();
+    }
     const candidates = [];
     if (narrative.hero_copy_options) {
       const opts = Array.isArray(narrative.hero_copy_options) ? narrative.hero_copy_options : [narrative.hero_copy_options];
