@@ -89,6 +89,14 @@ const DEFAULT_COMBOS = {
     fallback: { tier: 'T1b', tool: 'claude', model: 'claude-haiku-4-5', vision: true },
     backup: { tier: 'T0', tool: 'ollama', model: 'gemma3:27b', vision: true },
   },
+  // codex R70 · compose-loop field-scoped copy fix (text only · NO new facts · rewrite within constraints)
+  // backup = gemma3:27b in PLAIN mode (format:null) — reliable fenced JSON for copy
+  // rewrites; format=json 500s on long prompts and deepseek-r1 reasoning output is flaky.
+  'gen_copy_fix': {
+    primary: { tier: 'T1b', tool: 'claude', model: 'claude-sonnet-4-5' },
+    fallback: { tier: 'T1b', tool: 'claude', model: 'claude-haiku-4-5' },
+    backup: { tier: 'T0', tool: 'ollama', model: 'gemma3:27b', format: null },
+  },
 };
 
 function loadCombos() {
@@ -161,7 +169,10 @@ async function callClaude({ prompt, model = 'claude-sonnet-4-5', imagePath = nul
  */
 async function callOllama({ prompt, model, imagePath = null, format = 'json', timeoutMs = 180_000 }) {
   const start = Date.now();
-  const body = { model, prompt, stream: false, format, options: { num_predict: 2048 } };
+  // format omitted when falsy: gemma3:27b 500s on long text + format=json (line 26-27),
+  // but is reliable in plain mode (returns fenced JSON · extractJson handles the fence).
+  const body = { model, prompt, stream: false, options: { num_predict: 2048 } };
+  if (format) body.format = format;
   if (imagePath && fs.existsSync(imagePath)) {
     body.images = [fs.readFileSync(imagePath).toString('base64')];
   }
@@ -191,7 +202,7 @@ async function runTier(combo, { prompt, imagePath, timeoutMs }) {
   switch (combo.tool) {
     case 'codex':  return callCodex({ prompt, model: combo.model, timeoutMs });
     case 'claude': return callClaude({ prompt, model: combo.model, imagePath, timeoutMs });
-    case 'ollama': return callOllama({ prompt, model: combo.model, imagePath, timeoutMs });
+    case 'ollama': return callOllama({ prompt, model: combo.model, imagePath, timeoutMs, format: 'format' in combo ? combo.format : 'json' });
     default: return { ok: false, reason: `unknown tool ${combo.tool}` };
   }
 }
