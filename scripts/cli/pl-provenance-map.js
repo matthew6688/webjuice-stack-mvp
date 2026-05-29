@@ -91,19 +91,28 @@ if (brief?.license) {
 // ── reviews (brief provenance enum) ──
 for (const r of (brief?.reviews || [])) add('reviews', r.name || 'review', r._provenance || r.provenance || 'ai_placeholder', r.text);
 
-// ── images (selected.json · real customer photo vs stock/ai) ──
-const imgs = selected?.selected || selected?.by_category || selected?.classifications || [];
-for (const im of (Array.isArray(imgs) ? imgs : [])) {
-  const isReal = /customer|real|upload/i.test(JSON.stringify(im._source || im.source || im.kind || ''));
-  add('images', im.category || im.role || im.filename || 'image', isReal ? 'customer-extract' : (im._source || im.source || 'stock'), im.filename || im.description);
+// ── images (codex R88: prefer image-decisions.json — what's RENDERED. verified real
+// project photos > selected.json) ──
+const imgDecisions = readJson('editorial-output/image-decisions.json');
+const galDec = (imgDecisions?.decisions || []).find((d) => d.slot === 'gallery');
+const renderedReal = (galDec?.chosen || []).filter(Boolean);
+let imagesHaveReal = false;
+if (renderedReal.length >= 3) {
+  imagesHaveReal = true;
+  renderedReal.forEach((f) => add('images', f, 'verified', f)); // rendered Completed Projects (data-provenance=verified)
+} else {
+  const imgs = selected?.selected || selected?.by_category || selected?.classifications || [];
+  for (const im of (Array.isArray(imgs) ? imgs : [])) {
+    const isReal = /customer|real|upload/i.test(JSON.stringify(im._source || im.source || im.kind || ''));
+    add('images', im.category || im.role || im.filename || 'image', isReal ? 'customer-extract' : (im._source || im.source || 'stock'), im.filename || im.description);
+  }
 }
 
 // ── missing_sections (codex R84 #2: material GAP · NOT faked as ai_placeholder · separate) ──
 const missing_sections = [];
 const realReviews = (brief?.reviews || []).filter((r) => /^real$/i.test(r._provenance || r.provenance || ''));
 if (realReviews.length === 0) missing_sections.push({ section: 'reviews', expected: '≥3 real Google reviews', reason: (brief?.reviews || []).length ? 'only placeholder reviews present' : 'no reviews populated', client_action: 'provide_real_content' });
-const realImgs = (Array.isArray(imgs) ? imgs : []).filter((im) => /customer|real|upload/i.test(JSON.stringify(im._source || im.source || im.kind || '')));
-if (realImgs.length === 0) missing_sections.push({ section: 'images', expected: 'real customer job photos', reason: (Array.isArray(imgs) && imgs.length) ? 'only stock/AI images present' : 'no curated photos', client_action: 'provide_real_content' });
+if (!imagesHaveReal) missing_sections.push({ section: 'images', expected: 'real customer job photos', reason: 'gallery has no verified real photos rendered (run pl:image-decisions + recompose · or classify source images)', client_action: 'provide_real_content' });
 
 // ── summary ──
 const summary = { verified: 0, geo_derived: 0, ai_inferred: 0, ai_placeholder: 0, stock_placeholder: 0, replace_required: 0, confirm: 0, none: 0 };

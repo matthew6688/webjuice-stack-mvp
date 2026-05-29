@@ -685,6 +685,21 @@ async function main() {
     { idx: 4, before_src: 'assets/stock/gallery-07-moss-before.jpg', before_alt: 'Moss-covered terracotta tile roof before pressure clean', after_src: 'assets/stock/gallery-07-moss-after.jpg', after_alt: 'Same tile roof after pressure-clean and recoat', caption: `Pressure clean & recoat · ${city}` },
   ];
 
+  // codex R88: real "Completed Projects" from image-decisions.json (verified photos · single
+  // images · NO fake before/after · SOP §9). Files copied to assets/ after outDir is defined.
+  let completedProjects = [];
+  try {
+    const dec = readJson(path.join(clientDir, 'editorial-output/image-decisions.json'));
+    const galDec = (dec?.decisions || []).find((d) => d.slot === 'gallery');
+    const realFiles = (galDec?.chosen || []).filter(Boolean);
+    const srcDir = path.join(clientDir, 'handoff/photos/source');
+    completedProjects = realFiles
+      .filter((f) => fs.existsSync(path.join(srcDir, f)))
+      .slice(0, 6)
+      .map((f, i) => ({ idx: i + 1, file: f, src: `assets/${f}`, alt: `Completed roofing project in ${city}`, caption: `${city} project` }));
+  } catch { /* no decisions · stay on before/after fallback */ }
+  const hasRealProjects = completedProjects.length >= 3;
+
   // Coverage · priority: brief.yaml.suburbs_covered (canonical) > narrative > facts > real_facts
   // Coverage · priority chain (R46):
   //   1. prepared coverage.json (from pl:extract-site-ctx --write-content)
@@ -830,7 +845,12 @@ async function main() {
     },
     gallery: {
       ...(_copy.gallery),
-      pairs: galleryPairs,
+      // codex R88: real verified projects win → render single-photo grid, suppress stock before/after.
+      // (mutually exclusive arrays · avoids nested-section lookup in the simple Mustache engine)
+      projects: hasRealProjects ? completedProjects : [],
+      pairs: hasRealProjects ? [] : galleryPairs,
+      // projects mode shows single completed-work photos · the "Before, after" copy no longer fits
+      ...(hasRealProjects ? { eyebrow: 'Our work', headline: `Recent ${city} projects`, subhead: 'A selection of completed roofs. More available on request when we quote.' } : {}),
     },
     coverage: {
       ...(_copy.coverage),
@@ -923,6 +943,11 @@ async function main() {
   const outDir = path.join(clientDir, 'editorial-output');
   fs.mkdirSync(path.join(outDir, 'assets/brand'), { recursive: true });
   fs.mkdirSync(path.join(outDir, 'assets/stock'), { recursive: true });
+  // codex R88: copy verified real project photos → assets/ (Completed Projects grid)
+  for (const p of completedProjects) {
+    const src = path.join(clientDir, 'handoff/photos/source', p.file);
+    if (fs.existsSync(src)) fs.copyFileSync(src, path.join(outDir, 'assets', p.file));
+  }
   fs.writeFileSync(path.join(outDir, 'index.html'), html);
 
   // ─── Write ctx-snapshot.json (R44 provenance artifact) ─────────────────

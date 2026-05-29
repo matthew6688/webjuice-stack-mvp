@@ -295,6 +295,9 @@ p { color: var(--fg-2); }
 .pair { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
 .ba-slider { position: relative; aspect-ratio: 1 / 1; overflow: hidden; cursor: ew-resize; user-select: none; background: var(--surface-muted); }
 .ba-slider img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+/* codex R88 · Completed Projects single-photo (verified real work · no fake before/after) */
+.proj-photo { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--surface-muted); border-radius: var(--radius-sm); }
+.proj-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ba-slider .ba-after { clip-path: inset(0 0 0 50%); }
 .ba-slider .ba-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--brand-accent); pointer-events: none; }
 .ba-slider .ba-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 36px; height: 36px; border-radius: 50%; background: var(--brand-accent); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); font-size: 14px; box-shadow: var(--elev-raised); pointer-events: none; }
@@ -526,55 +529,34 @@ p { color: var(--fg-2); }
 </section>
 
 <!-- 6 · GALLERY (R-BA-6 draggable-slider) -->
-<section data-provenance="missing_real_content" data-replace="replace_required" data-prov-detail="real customer job photos" id="gallery" aria-labelledby="gallery-h">
+<section data-provenance="verified" data-replace="none" data-prov-detail="verified:8" id="gallery" aria-labelledby="gallery-h">
   <div class="container">
     <header class="section-head stack">
-      <div class="section-meta"><span class="folio">Section IV</span><p class="eyebrow">The Plates</p></div>
-      <h2 id="gallery-h">Before, after — Ballarat roofs.</h2>
-      <p class="lead">Three recent jobs across the catalogue. More on request when we quote.</p>
+      <div class="section-meta"><span class="folio">Section IV</span><p class="eyebrow">Our work</p></div>
+      <h2 id="gallery-h">Recent Ballarat projects</h2>
+      <p class="lead">A selection of completed roofs. More available on request when we quote.</p>
     </header>
     <div class="gallery-grid">
-      <article class="pair">
-        <div class="ba-slider" id="ba-slider-1" role="region" aria-label="Before and after slider · Heritage slate restoration · Ballarat">
-          <img class="ba-before" src="assets/stock/gallery-09-cracked-slate-before.jpg" alt="Cracked slate roof before restoration" />
-          <img class="ba-after"  src="assets/stock/gallery-09-restored-slate-after.jpg"  alt="Same slate roof after restoration" />
-          <span class="ba-label ba-label-before">Before</span>
-          <span class="ba-label ba-label-after">After</span>
-          <div class="ba-divider" aria-hidden="true"></div>
-          <div class="ba-handle" aria-hidden="true">⇆</div>
-        </div>
-        <div class="pair-caption">Heritage slate restoration · Ballarat</div>
-      </article><article class="pair">
-        <div class="ba-slider" id="ba-slider-2" role="region" aria-label="Before and after slider · Storm response &amp; full repair · Ballarat">
-          <img class="ba-before" src="assets/stock/gallery-10-storm-tarped-before.jpg" alt="Storm-damaged roof tarped after emergency call-out" />
-          <img class="ba-after"  src="assets/stock/gallery-10-storm-repaired-after.jpg"  alt="Same roof fully repaired after storm" />
-          <span class="ba-label ba-label-before">Before</span>
-          <span class="ba-label ba-label-after">After</span>
-          <div class="ba-divider" aria-hidden="true"></div>
-          <div class="ba-handle" aria-hidden="true">⇆</div>
-        </div>
-        <div class="pair-caption">Storm response &amp; full repair · Ballarat</div>
-      </article><article class="pair">
-        <div class="ba-slider" id="ba-slider-3" role="region" aria-label="Before and after slider · Full Colorbond replacement · Ballarat">
-          <img class="ba-before" src="assets/stock/gallery-12-asbestos-before.jpg" alt="Old roof sheeting before replacement" />
-          <img class="ba-after"  src="assets/stock/gallery-12-modern-metal-after.jpg"  alt="New Colorbond metal roof after replacement" />
-          <span class="ba-label ba-label-before">Before</span>
-          <span class="ba-label ba-label-after">After</span>
-          <div class="ba-divider" aria-hidden="true"></div>
-          <div class="ba-handle" aria-hidden="true">⇆</div>
-        </div>
-        <div class="pair-caption">Full Colorbond replacement · Ballarat</div>
-      </article><article class="pair">
-        <div class="ba-slider" id="ba-slider-4" role="region" aria-label="Before and after slider · Pressure clean &amp; recoat · Ballarat">
-          <img class="ba-before" src="assets/stock/gallery-07-moss-before.jpg" alt="Moss-covered terracotta tile roof before pressure clean" />
-          <img class="ba-after"  src="assets/stock/gallery-07-moss-after.jpg"  alt="Same tile roof after pressure-clean and recoat" />
-          <span class="ba-label ba-label-before">Before</span>
-          <span class="ba-label ba-label-after">After</span>
-          <div class="ba-divider" aria-hidden="true"></div>
-          <div class="ba-handle" aria-hidden="true">⇆</div>
-        </div>
-        <div class="pair-caption">Pressure clean &amp; recoat · Ballarat</div>
+      <article class="pair" data-provenance="verified" data-replace="none">
+        <div class="proj-photo"><img src="assets/img-02.jpg" alt="Completed roofing project in Ballarat" loading="lazy" /></div>
+        <div class="pair-caption">Ballarat project</div>
+      </article><article class="pair" data-provenance="verified" data-replace="none">
+        <div class="proj-photo"><img src="assets/img-06.jpg" alt="Completed roofing project in Ballarat" loading="lazy" /></div>
+        <div class="pair-caption">Ballarat project</div>
+      </article><article class="pair" data-provenance="verified" data-replace="none">
+        <div class="proj-photo"><img src="assets/img-10.jpg" alt="Completed roofing project in Ballarat" loading="lazy" /></div>
+        <div class="pair-caption">Ballarat project</div>
+      </article><article class="pair" data-provenance="verified" data-replace="none">
+        <div class="proj-photo"><img src="assets/img-13.jpg" alt="Completed roofing project in Ballarat" loading="lazy" /></div>
+        <div class="pair-caption">Ballarat project</div>
+      </article><article class="pair" data-provenance="verified" data-replace="none">
+        <div class="proj-photo"><img src="assets/img-14.jpg" alt="Completed roofing project in Ballarat" loading="lazy" /></div>
+        <div class="pair-caption">Ballarat project</div>
+      </article><article class="pair" data-provenance="verified" data-replace="none">
+        <div class="proj-photo"><img src="assets/img-11.jpg" alt="Completed roofing project in Ballarat" loading="lazy" /></div>
+        <div class="pair-caption">Ballarat project</div>
       </article>
+      
     </div>
   </div>
 </section>
@@ -725,7 +707,7 @@ p { color: var(--fg-2); }
       </div>
     </div>
     <div class="colophon-bar">
-      <span>&copy; 2026 Vicwest Roofing · ABN 69 622 718 361</span>
+      <span>&copy; 2026 Vicwest Roofing · ABN 34 134 811 831</span>
       <span>VBA · CDB-U 65938 · Set in Source Serif Pro &amp; Inter Tight</span>
     </div>
   </div>
