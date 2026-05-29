@@ -93,7 +93,9 @@ export const BRIEF_SCHEMA = {
     pricing_disclosure_mode: { type: 'string', enum: ['hidden', 'indicative_range', 'per_quote_only'] },
     suburbs_covered: {
       type: 'array',
-      minItems: 8,
+      // codex R82: hard min relaxed to 1 here; the publish gate (verified + geo_derived ≥ 8)
+      // is enforced cross-field below, so geo_derived candidates can make up the difference.
+      minItems: 1,
       items: { type: 'string', minLength: 2 },
     },
     services: {
@@ -394,6 +396,22 @@ export function validateCrossFields(brief) {
       errors.push({
         code: 'brand_tokens_path_format',
         message: `brand_tokens_path must be https URL OR repo-relative path · got "${p}"`,
+      });
+    }
+  }
+
+  // 10b. service-area publish gate (codex R82 #4): verified (suburbs_covered) + geo_derived
+  // (suburbs_candidates · provenance geo_derived) must total ≥ 8. geo_derived is real
+  // (centroid within radius) — stronger than ai-inferred — but copy may only say "nearby/
+  // within service radius", never "servicing X". ai-inferred candidates do NOT count.
+  {
+    const verified = Array.isArray(brief.suburbs_covered) ? brief.suburbs_covered.length : 0;
+    const geoDerived = Array.isArray(brief.suburbs_candidates)
+      ? brief.suburbs_candidates.filter((s) => /geo_derived/.test(s && s.provenance || '')).length : 0;
+    if (verified + geoDerived < 8) {
+      errors.push({
+        code: 'insufficient_service_area',
+        message: `service area too small: ${verified} verified + ${geoDerived} geo_derived < 8 · run pl:geo-suburbs (or enrich verified suburbs). ai-inferred do NOT count toward the gate.`,
       });
     }
   }
