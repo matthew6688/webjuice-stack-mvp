@@ -1,6 +1,12 @@
 # ADR · Audit v4 · Unified scoring for batch website delivery
 
-> **Owner**: Matthew · **Status**: DRAFT (proposed 2026-05-27) · **Replaces (eventually)**: ADR-AUDIT-V3 baked into `docs/v3/SOP-AUDIT-STANDARD.md`
+> ⚠️ **NOT THE STANDARD (codex R74 · 2026-05-29).** The canonical audit standard is
+> `docs/v3/SOP-AUDIT-STANDARD-V2.md` (5-P0 weighted + mobile veto). This ADR is kept as
+> **implementation history / appendix** — the T1..T5 tier model here is a runtime label
+> scheme, and its "T4 = designer review" / "T5 = creative director" naming is reconciled
+> in SOP-AUDIT-STANDARD-V2 §0.1. Do not treat tier numbers here as the standard.
+
+> **Owner**: Matthew · **Status**: HISTORY/APPENDIX (was DRAFT 2026-05-27) · **Superseded by**: `docs/v3/SOP-AUDIT-STANDARD-V2.md`
 > **Cross-ref**: SOP-AUDIT-STANDARD.md (v3 · still canonical until v4 lands) · SOP-DATA-CHECKPOINT.md (upstream gate) · SOP-LOCKED-BASELINE-V1.md (recipe)
 > **Status during transition**: v3 (pl-audit-tier) is the production gate · v4 (pl-audit-v4) is additive · wraps v3 + adds T4 designer review + optional T5 creative-director critique
 > **SSOT writer check** (per CLAUDE.md §6): v4 introduces NO new writer for tier scores; it wraps the v3 writer and APPENDS T4/T5 dims. v3 `_tier-audit.json` remains the single source of truth for T1–T3.

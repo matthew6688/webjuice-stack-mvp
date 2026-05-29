@@ -7,9 +7,21 @@ metadata:
 
 # ProfitsLocal · Audit Rubric (Pointer Index)
 
+> **CANONICAL STANDARD (codex R74 · 2026-05-29)**: `docs/v3/SOP-AUDIT-STANDARD-V2.md` (5-P0
+> weighted + mobile veto). This rubric is the **rule-ID dictionary** that *feeds* those P0
+> axes — it is NOT the standard. The `T1..T5` labels here are runtime tier labels; their
+> P0 mapping + the resolution of the historical "T4 three-meanings" collision live in
+> SOP-AUDIT-STANDARD-V2 §0.1. Each rule below feeds a P0 via that table:
+>   - T1 + facts detectors → `content_accuracy`
+>   - T2 brand contract → `brand_fidelity`
+>   - T3/T4/hero vision + AS-trade → `design_consistency` (+ `copy_quality`)
+>   - copy/voice (AV-*, D2.*) → `copy_quality` · richness (D2.13/14) → `content_richness`
+>   - the old "T4 = Tech/SEO/Performance" rows are DEPRECATED here → moved to the deferred
+>     `pl-audit-tech` contract (`docs/v3/SPEC-AUDIT-TECH.md`), NOT part of the Phase-1 gate.
+
 > **Rule of source**: page-spec defines structure · voice defines tone · personas define WHO · this rubric is the **lookup table**. Each row points to the canonical owner (CLI + module). We do NOT re-implement audit logic here.
 
-This is a readable contract and rule index. Audit execution lives in `scripts/cli/pl-audit-tier.js` (T1-T4 composite) and `scripts/cli/pl-audit-v4.js` (T1+T2 brand contract · T3-T5 stubs). Rule definitions live in upstream owners: `pl-local-trade-page-spec` (structure rules · ~80) · `pl-au-trade-voice` (voice rules AV-1..6) · `core/audit/personas/*.js` (per-segment deterministic checks) · `docs/v3/SOP-AUDIT-STANDARD.md` (T1-T4 framework) · `docs/v3/SOP-SINGLE-PAGE-LOCAL-TRADE-STANDARD.md` (T5 + LBP-1..14 + AS-trade-1..8).
+This is a readable contract and rule index. Audit execution lives in `scripts/cli/pl-audit-tier.js` (T1-T4 composite) and `scripts/cli/pl-audit-v4.js` (T1 + 7 deterministic detectors · T2 brand contract wired · T3 vision wired · T4 designer-review wired via `core/audit/designer-review.js` · T5 stub). Rule definitions live in upstream owners: `pl-local-trade-page-spec` (structure rules · ~80) · `pl-au-trade-voice` (voice rules AV-1..6) · `core/audit/personas/*.js` (per-segment deterministic checks) · `docs/v3/SOP-AUDIT-STANDARD-V2.md` (**canonical** 5-P0 standard) · `docs/v3/SOP-SINGLE-PAGE-LOCAL-TRADE-STANDARD.md` (T5 + LBP-1..14 + AS-trade-1..8).
 
 ---
 

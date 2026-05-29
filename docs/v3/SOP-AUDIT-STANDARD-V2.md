@@ -20,6 +20,43 @@ ProfitsLocal ships single-page roofing websites that convert AU homeowners into 
 5. **品牌保持度** (brand fidelity · real logo · brand-tokens honored · palette match)
 
 Out of scope (P1 · deferred): raw performance numbers · SEO ranking · AI-GEO crawler ranking.
+→ Deferred-tech contract: `docs/v3/SPEC-AUDIT-TECH.md` (independent `pl-audit-tech` CLI · advisory · NOT a Phase-1 ship-gate · codex R74).
+
+---
+
+## §0.1 · SSOT registry + tier disambiguation (codex R74 · 2026-05-29)
+
+**This file is the single source of truth for the audit standard.** The 5 P0 axes above
+are the standard. `T1..T5` are *runtime tier labels* inside `pl-audit-v4.js` — they are
+NOT the standard, and historically the label "T4" meant three different things across
+docs. Canonical resolution:
+
+| Runtime tier (pl-audit-v4) | What it actually checks | Feeds P0 | Enforced by |
+|---|---|---|---|
+| T1 + 7 deterministic detectors | hard facts · provenance · leak · service/trust/placeholder | content_accuracy | `pl-audit-v4` (deterministic · GATE-A) |
+| T2 | brand-tokens.css contract (var coverage · hardcoded hex · logo) | brand_fidelity | `pl-audit-v4` (deterministic) |
+| T3 | vision: layout/typography/color/readability/copy-depth | design_consistency + copy_quality | `pl-audit-v4` (LLM · vision_confidence-gated) |
+| T4 | designer-review craft (hierarchy/spacing/imagery/ai-slop) | design_consistency | `pl-audit-v4` (LLM · `core/audit/designer-review.js`) |
+| T5 | creative-director critique (premium opt-in) | design_consistency (ceiling) | stub |
+| HeroJudge / HeroRubric / VisualGeometry | hero best-practice + CTA-above-fold geometry | copy_quality + design_consistency | `pl-audit-v4` |
+| M1 mobile gate | viewport / sticky-CTA / tap-target | (veto · outside composite) | `pl-audit-v4` |
+| ContentRichness / T4d voice (AV) | proof variety · banned-genericism voice | content_richness + copy_quality | `pl-audit-v4` |
+
+**Deprecated tier meanings (do NOT reuse):** "T4 = Tech/SEO/Performance" (old
+`pl-audit-rubric`) → now the deferred `pl-audit-tech` contract. "T4 = cross-page
+consistency" (`profitslocal-quality-audit`) → folded into design_consistency.
+
+### Audit doc / skill registry — what each file IS
+
+| File | Role |
+|---|---|
+| **`docs/v3/SOP-AUDIT-STANDARD-V2.md`** (this) | **CANONICAL standard (SSOT)** |
+| `docs/v3/ADR-AUDIT-V4.md` | implementation history / appendix · NOT the standard |
+| `skills/pl-audit-rubric/SKILL.md` | rule-ID dictionary (mech-H-* / AS-trade-* / D*) · each rule tags `feeds_p0` |
+| `skills/website-ui-audit/SKILL.md` | visual/UI dimension prompts → feeds design_consistency + copy_quality |
+| `skills/website-copy-audit/SKILL.md` | copy dimension prompts → feeds copy_quality + content_accuracy |
+| `skills/profitslocal-quality-audit/SKILL.md` | post-build run wrapper → invokes this standard |
+| `skills/site-audit/SKILL.md` | PRE-redesign audit of EXISTING/competitor sites (different surface · not our output gate) |
 
 ---
 

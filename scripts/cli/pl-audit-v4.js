@@ -1,30 +1,28 @@
 #!/usr/bin/env node
 /**
- * pl:audit-v4 · EXPERIMENTAL BRAND-CONTRACT AUDIT
+ * pl:audit-v4 · MULTI-TIER QUALITY AUDIT
  *
- * ⚠️  NOT A SHIP GATE (per codex audit 2026-05-28).
- * Composite scores from this CLI are partial because T4/T5 are
- * still stubs and T1 is partial (4/13 ADR checks ported).
- * T3 vision audit is now WIRED (pl-audit-vision subprocess).
- * The composite renormalises around firing tiers.
+ * Canonical standard: docs/v3/SOP-AUDIT-STANDARD-V2.md (5-P0 weighted + mobile veto).
+ * T1..T5 below are RUNTIME tier labels, not the standard's P0 axes — see the SSOT doc
+ * for how each tier feeds a P0 capability. (ADR-AUDIT-V4.md is implementation history.)
  *
- * Use this for:
- *   - brand contract compliance (T2 · is brand-tokens.css actually driving design)
- *   - quick deterministic smoke test before LLM tiers come online
+ * ⚠️  Ship-gate caveats (codex R74 · 2026-05-29):
+ *   - Deterministic side (T1 facts detectors + T2 + hero rubric + geometry + mobile)
+ *     is the trustworthy gate today (GATE-A P0 recall 100%).
+ *   - Vision side (T3 / T4 designer-review / hero-judge) DEGRADES to a local model when
+ *     the claude CLI is unauthenticated → reported as vision_confidence:'low' and the
+ *     verdict is capped to SHIP_WITH_MANUAL_REVIEW_REQUIRED (cannot alone support SHIP).
  *
- * Do NOT use this for:
- *   - production ship/no-ship decisions (use docs/v3/SOP-AUDIT-STANDARD v3 + pl-audit-tier instead)
- *   - final composite quality scoring (T4/T5 still stubbed)
+ * Status (2026-05-29 · real):
+ *   T1 · Hard mechanical    (PASS/FAIL · deterministic)                 [PARTIAL 4/13 ADR ports]
+ *        + 7 deterministic detectors (facts/provenance/leak/service/trust/placeholder) [WIRED · GATE-A 100%]
+ *   T2 · Brand contract     (0-100 · deterministic)                     [WIRED · D2.3 type presence-only]
+ *   T3 · Vision audit       (0-100 · LLM)                               [WIRED · confidence depends on provider]
+ *   T4 · Designer review    (0-100 · LLM · core/audit/designer-review.js) [WIRED · degraded if local fallback]
+ *   T5 · Creative-director  (0-100 · LLM · premium-only)                [STUB]
+ *   + HeroJudge / VisualGeometry / M1 mobile gate / ContentRichness / T4d voice [WIRED]
  *
- * Status: experimental · 2026-05-29
- * Tiers actually firing:
- *   T1 · Hard mechanical    (PASS/FAIL · deterministic · 0 LLM)        [PARTIAL 4/13]
- *   T2 · Brand contract     (0-100 · deterministic · 0 LLM)            [WIRED]
- *   T3 · Vision audit       (0-100 · pl-audit-vision subprocess · ~$0.05/page) [WIRED]
- *   T4 · Designer review    (0-100 · LLM · ~$0.10/page)                [STUB]
- *   T5 · Creative-director  (0-100 · LLM · ~$0.15/page · premium-only) [STUB]
- *
- * Spec:  docs/v3/ADR-AUDIT-V4.md
+ * Spec:  docs/v3/SOP-AUDIT-STANDARD-V2.md (canonical) · docs/v3/ADR-AUDIT-V4.md (history)
  *
  * Usage:
  *   pl:audit-v4 --slug <slug>              # full T1-T4 (default tier=full)
@@ -68,11 +66,13 @@ function parseArgs(argv) {
 const args = parseArgs(process.argv);
 
 if (args.help) {
-  console.log(`pl:audit-v4 · EXPERIMENTAL brand-contract audit (ADR-AUDIT-V4.md)
+  console.log(`pl:audit-v4 · multi-tier quality audit (canonical: docs/v3/SOP-AUDIT-STANDARD-V2.md)
 
-⚠️  NOT A SHIP GATE · T4/T5 stubbed · T1 partial (4/13 checks).
-   T3 vision audit WIRED (2026-05-29). T2 brand contract WIRED.
-   For production ship/no-ship use pl:audit-tier (v3 · SOP-AUDIT-STANDARD).
+Status (2026-05-29 · real): T1 partial (4/13 ADR ports) + 7 deterministic detectors
+   [GATE-A P0 recall 100%] · T2 wired · T3/T4 vision wired · T5 stub.
+⚠️  Vision tiers (T3/T4/hero-judge) degrade to a LOCAL model when claude CLI is
+   unauthenticated → vision_confidence:'low' · verdict capped to
+   SHIP_WITH_MANUAL_REVIEW_REQUIRED (cannot alone support SHIP).
 
 
 Usage:
@@ -88,7 +88,8 @@ Tiers:
   full     T1 + T2 + T3 + T4           (~2min · ~$0.15/page) [default]
   premium  T1 + T2 + T3 + T4 + T5      (~3min · ~$0.30/page)
 
-Status: T1 partial · T2 wired · T3 vision wired (2026-05-29) · T4/T5 stubbed.
+Canonical standard: docs/v3/SOP-AUDIT-STANDARD-V2.md (5-P0 weighted + mobile veto).
+T1..T5 are runtime tier labels · ADR-AUDIT-V4.md is implementation history.
 `);
   process.exit(0);
 }
@@ -867,7 +868,10 @@ async function runT3VisionAudit(htmlFiles, ctx, geometryFacts = null) {
     false_positive_fact_conflicts: reconciled.conflicts,
     status: 'ok',
     cost_usd: vr.cost_usd || 0,
-    model: vr.model || 'claude-sonnet-4-5',
+    // codex R74: do NOT fake a claude provider — report the honest provider so the
+    // vision-confidence guard can detect local fallback. Unknown → null (excluded).
+    model: vr.model || null,
+    provider: vr.provider || (vr._source ? String(vr._source).replace(/^ai-completed:/, '') : null),
   };
 }
 
@@ -1453,7 +1457,19 @@ function composeFinalScore(tiers, opts = {}) {
   if (!anyStub && t3s != null && t3s < 60) verdict = verdict === 'SHIP' ? 'FIX_LOOP · T3<60' : verdict;
   if (T4?.ai_slop_score != null && T4.ai_slop_score < 60) verdict = 'FIX_LOOP · ai_slop<60';
 
-  return { composite, ship_verdict: verdict, grade, issues: collectIssues(tiers), tier_statuses: tierStatuses, experimental: anyStub };
+  // codex R74: vision-confidence guard. When EVERY vision tier that ran fell back to a
+  // LOCAL model (claude CLI unauthenticated), the visual scores are low-confidence and
+  // must NOT alone support a SHIP verdict.
+  const visionProviders = [T3?.provider, T3?.model, tiers.HeroJudge?.provider, tiers.HeroJudge?.model, T4?.provider, T4?.model]
+    .filter(Boolean).map(String);
+  const isLocalVision = (p) => /ollama|gemma|deepseek|qwen|:local|\blocal\b/i.test(p);
+  const allVisionLocal = visionProviders.length > 0 && visionProviders.every(isLocalVision);
+  const vision_confidence = visionProviders.length === 0 ? 'n/a' : (allVisionLocal ? 'low' : 'ok');
+  if (vision_confidence === 'low' && verdict === 'SHIP') {
+    verdict = 'SHIP_WITH_MANUAL_REVIEW_REQUIRED · LOW_CONFIDENCE_VISION';
+  }
+
+  return { composite, ship_verdict: verdict, grade, issues: collectIssues(tiers), tier_statuses: tierStatuses, experimental: anyStub, vision_confidence, vision_providers: [...new Set(visionProviders)] };
 }
 
 function collectIssues(tiers) {
@@ -1634,6 +1650,8 @@ async function main() {
     grade: final.grade,
     ship_verdict: final.ship_verdict,
     block_reason: final.block_reason || null,
+    vision_confidence: final.vision_confidence || 'n/a',
+    vision_providers: final.vision_providers || [],
     issues: final.issues,
   };
 
@@ -1649,6 +1667,7 @@ async function main() {
   fs.writeFileSync(path.join(outDir, 'audit-v4-summary.json'), JSON.stringify({
     slug: report.slug, tier: TIER, composite: report.composite, grade: report.grade,
     ship_verdict: report.ship_verdict, generated_at: report.generated_at,
+    vision_confidence: report.vision_confidence, vision_providers: report.vision_providers, // codex R74: surface degraded-vision state
     loop_actionable: fb.actionable, loop_blocked: fb.blocked, // codex R68: keep loop counts in standalone summary too
   }, null, 2));
   fs.writeFileSync(path.join(outDir, 'audit-v4-issues.json'), JSON.stringify({
