@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "name": "copy-audit-gold-set",
+  "purpose": "Objective calibration set for pl-copy-audit (codex R94 · Matthew constraint #1: auditor must PROVE it catches the problems the human eye sees BEFORE it is trusted to gate generation). Passages are real strings from the vicwest-roofing demo render (2026-05-29) plus synthetic canaries. The auditor must meet the pass criteria in `passCriteria` against this set.",
+  "passCriteria": {
+    "fake_claim_recall": 1.0,
+    "high_severity_recall": 0.85,
+    "known_bad_approved": 0,
+    "acceptable_pass_min": 1.0
+  },
+  "_structuralGuarantees": "Page-mode (--slug/--html) emits every finding with a `span` and an `owner` ∈ {rewrite_copy, layout_density} by construction (see auditPage). Not gated here because --validate is passage-level.",
+  "passages": [
+    {
+      "id": "vicwest-about-500-roofs",
+      "source": "vicwest editorial-output · about para 4",
+      "verdict": "bad",
+      "severity": "critical",
+      "labels": ["fake_verified_claim", "unsupported_claim", "missing_specificity"],
+      "owner": "rewrite_copy",
+      "must_trigger_hardfail": "fake_verified_claim",
+      "text": "Based on review volume and tenure, the business has likely completed over 500 roof replacements and new installations since inception."
+    },
+    {
+      "id": "vicwest-about-founder-story",
+      "source": "vicwest editorial-output · about para 1",
+      "verdict": "bad",
+      "severity": "high",
+      "labels": ["generic", "too_long", "unsupported_claim"],
+      "owner": "rewrite_copy",
+      "text": "Vicwest Roofing started serving Ballarat and the surrounding region over two decades ago, during a period when many local roofing firms were small-scale operators without the capacity to handle larger commercial projects or multi-site work. The founders saw an opportunity to build a roofing company that could scale—taking on everything from residential re-roofs in Delacombe to full commercial roof replacements in Geelong—without sacrificing the responsiveness and quality that smaller operators prided themselves on."
+    },
+    {
+      "id": "vicwest-about-crammed-para",
+      "source": "vicwest editorial-output · about para 3 (real copy · 126 words · 8 ideas)",
+      "verdict": "bad",
+      "severity": "high",
+      "labels": ["too_long", "cluttered"],
+      "owner": "layout_density",
+      "text": "Vicwest Roofing employs a crew of licensed metal roofing tradespeople based out of workshops in Delacombe (Ballarat) and Geelong. The team includes roof plumbers, metal roofing installers, and labourers who've been with the business for multiple years—some over a decade. All tradespeople hold the necessary VBA (Victorian Building Authority) registration for roofing work over $10,000, and the business maintains its own fleet of vehicles, scaffolding, and safety equipment rather than relying on subcontractors. New hires go through on-site mentorship under senior tradespeople before working solo, and the business has posted job ads in recent years looking for additional metal roofing tradesmen to meet demand. The owner-operators maintain direct oversight of scheduling, quoting, and quality checks across both locations, ensuring consistency regardless of which crew is dispatched."
+    },
+    {
+      "id": "canary-trusted-partner",
+      "source": "synthetic canary",
+      "verdict": "bad",
+      "severity": "high",
+      "labels": ["generic_any_industry_copy"],
+      "owner": "rewrite_copy",
+      "must_trigger_hardfail": "generic_any_industry_copy",
+      "text": "Your trusted local partner for all your roofing needs — quality workmanship you can rely on."
+    },
+    {
+      "id": "canary-quality-workmanship",
+      "source": "synthetic canary",
+      "verdict": "bad",
+      "severity": "high",
+      "labels": ["generic_any_industry_copy"],
+      "owner": "rewrite_copy",
+      "must_trigger_hardfail": "generic_any_industry_copy",
+      "text": "We pride ourselves on quality workmanship and exceptional customer service you can trust."
+    },
+    {
+      "id": "vicwest-hero-subhead",
+      "source": "vicwest editorial-output · hero subhead",
+      "verdict": "acceptable",
+      "severity": "none",
+      "labels": [],
+      "owner": null,
+      "text": "VBA licensed specialists (CDB-U 65938) installing Colorbond® and metal roofs with same-week quote turnaround."
+    },
+    {
+      "id": "vicwest-service-roof-replacement",
+      "source": "vicwest editorial-output · service body",
+      "verdict": "acceptable",
+      "severity": "none",
+      "labels": [],
+      "owner": null,
+      "text": "Remove old roof, install new Colorbond metal system with 10-year workmanship warranty."
+    },
+    {
+      "id": "synthetic-specific-good",
+      "source": "synthetic acceptable",
+      "verdict": "acceptable",
+      "severity": "none",
+      "labels": [],
+      "owner": null,
+      "text": "Tile-to-Colorbond replacements across Ballarat and Geelong. Site visit within 48 hours, written quote in 24, 10-year workmanship warranty on every re-roof."
+    }
+  ]
+}
