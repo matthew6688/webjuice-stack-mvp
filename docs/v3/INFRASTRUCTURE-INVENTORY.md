@@ -170,8 +170,12 @@ T4 designer ±14pt range → single-shot composite swings ±4pt). Fix (codex R89
   1 hero + 1 designer LLM call (default 3 → ~$0.45/page full · ~$0.90 premium).
 - **Averaged tiers**: T3 vision (`tier_3.score`), T4 designer (`tier_4.score`), hero-judge
   (`hero_judge.hero_visual_score`). The **MEAN** feeds the composite + thresholds + vision_confidence;
-  the per-run array, `min`/`max`/`range`/`stddev` (population) are recorded under each tier's
-  `score_stats`, with `single_run_score`/`single_run_cost_usd` preserved and `cost_usd` = summed total.
+  `score_stats` = `{n, mean, min, max, range, stddev (population), runs:[full per-run array · null=failed run]}`.
+  `single_run_score` preserved (raw rep score · set whenever ≥1 run scored numerically). At **N>1** only: `cost_usd` overwritten with the
+  run-sum + `single_run_cost_usd` + `runs_cost_usd` attached + `vision_report_note` set (sidecar = last raw run).
+  **Cost caveat (R91-followup #1)**: only T3 vision emits `cost_usd` today; hero-judge + designer-review
+  do NOT, so their `cost_usd` sums to 0 here — real spend for those is theoretical and logged via the
+  claude-cli ledger (`scripts/finance/vision-cost-projection.js`), not this JSON.
 - **Representative run** kept for findings/dims = run closest to mean (tie → lower score → earlier),
   so visible issues stay coherent with the averaged score.
 - **Deterministic tiers stay single-run** (T1/T2/T4d/geometry/mobile/facts-cross-check/etc · no LLM).
@@ -348,6 +352,8 @@ anti_patterns: [{ id, why }]
 | `SOP-AUDIT-STANDARD-V2.md` | Audit framework | After CANONICAL |
 | `SOP-TEMPLATE-INVENTORY.md` v1.0 | Template inventory SOP | When adding new templates |
 | `SOP-DATA-CHECKPOINT.md` | Data quality gate | When changing checkpoint logic |
+| `SOP-MASTER-MD-DATA-LINEAGE.md` | Layer 1: how master.md fields are produced (Stage 1-6) | Master.md field bug |
+| `SOP-MASTER-MD-TO-WEBSITE.md` | Layer 2: master.md → site-ctx → enrich → brief → compose (facts vs copy split) | Understanding the build flow |
 | `CANONICAL-DECISION-RECORD-RENDER-PATH.md` | V1 = canonical decision | Historical |
 | `PATH-A-OD-TESTED-NOT-ADOPTED.md` | OD daemon deprecation | Historical |
 | `SESSION-2026-05-28-SUMMARY.md` · `SESSION-2026-05-29-SUMMARY.md` | Daily logs | Recent context |
