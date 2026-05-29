@@ -1,0 +1,137 @@
+[
+  {
+    "slug": "vicwest-roofing",
+    "baseline": {
+      "composite": 77,
+      "grade": "B",
+      "verdict": "SHIP",
+      "vision_confidence": "ok",
+      "vision_providers": [
+        "claude:claude-sonnet-4-5",
+        "claude"
+      ],
+      "T3": 85.5,
+      "T4": 67,
+      "hero": 76,
+      "P0": 1,
+      "P1": 1
+    },
+    "final": {
+      "composite": 80,
+      "grade": "B",
+      "verdict": "SHIP",
+      "vision_confidence": "ok",
+      "vision_providers": [
+        "claude:claude-sonnet-4-5",
+        "claude"
+      ],
+      "T3": 84.5,
+      "T4": 74,
+      "hero": 71,
+      "P0": 0,
+      "P1": 0
+    },
+    "loop": {
+      "slug": "vicwest-roofing",
+      "schema_version": "compose-loop/1",
+      "rounds": 1,
+      "gate_b_resolution_rate": 0.67,
+      "total_applied": 3,
+      "total_resolved": 2,
+      "composite_start": 91,
+      "composite_end": 91,
+      "rolled_back_rounds": [],
+      "copy_provider_fallback": false
+    }
+  },
+  {
+    "slug": "a-j-roofing-solutions",
+    "baseline": {
+      "composite": 74,
+      "grade": "B",
+      "verdict": "SHIP",
+      "vision_confidence": "ok",
+      "vision_providers": [
+        "claude:claude-sonnet-4-5",
+        "claude"
+      ],
+      "T3": 76.5,
+      "T4": 68,
+      "hero": 70,
+      "P0": 2,
+      "P1": 4
+    },
+    "final": {
+      "composite": 72,
+      "grade": "C",
+      "verdict": "FIX_LOOP",
+      "vision_confidence": "ok",
+      "vision_providers": [
+        "claude:claude-sonnet-4-5",
+        "claude"
+      ],
+      "T3": 69,
+      "T4": 69,
+      "hero": 70,
+      "P0": 2,
+      "P1": 4
+    },
+    "loop": {
+      "slug": "a-j-roofing-solutions",
+      "schema_version": "compose-loop/1",
+      "rounds": 2,
+      "gate_b_resolution_rate": 0.5,
+      "total_applied": 2,
+      "total_resolved": 1,
+      "composite_start": 89,
+      "composite_end": 89,
+      "rolled_back_rounds": [],
+      "copy_provider_fallback": false
+    }
+  },
+  {
+    "slug": "mark-squire-roof-restorations",
+    "baseline": {
+      "composite": 73,
+      "grade": "B",
+      "verdict": "SHIP",
+      "vision_confidence": "ok",
+      "vision_providers": [
+        "claude:claude-sonnet-4-5",
+        "claude"
+      ],
+      "T3": 75.5,
+      "T4": 66,
+      "hero": 70,
+      "P0": 2,
+      "P1": 5
+    },
+    "final": {
+      "composite": 74,
+      "grade": "B",
+      "verdict": "SHIP",
+      "vision_confidence": "ok",
+      "vision_providers": [
+        "claude:claude-sonnet-4-5",
+        "claude"
+      ],
+      "T3": 73.5,
+      "T4": 69,
+      "hero": 75,
+      "P0": 2,
+      "P1": 5
+    },
+    "loop": {
+      "slug": "mark-squire-roof-restorations",
+      "schema_version": "compose-loop/1",
+      "rounds": 2,
+      "gate_b_resolution_rate": 0.5,
+      "total_applied": 2,
+      "total_resolved": 1,
+      "composite_start": 93,
+      "composite_end": 93,
+      "rolled_back_rounds": [],
+      "copy_provider_fallback": false
+    }
+  }
+]

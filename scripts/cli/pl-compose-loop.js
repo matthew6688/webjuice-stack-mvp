@@ -134,7 +134,7 @@ async function applyRewriteCopy(cf, evidence) {
   const basePrompt = (extra) => `You are tightening an existing roofing-website hero. Rewrite ONLY the headline and subheadline.
 HARD RULES: invent NO new facts. You may ONLY use facts that appear in the CURRENT copy, the proof chips, or the verified proof facts below — no new numbers, suburbs, regions, warranties, licences, brands or names. If unsure, keep the existing wording.
 - headline: ≤ 10 words, specific, no generic filler.
-- subheadline: 14-25 words, concrete.
+- subheadline: MUST be 14-25 words (hard limit · codex R76). Even when shortening to lift the CTA above the fold, NEVER drop below 14 words — trim filler, do not go terse.
 ISSUE TO FIX: ${evidence}
 CURRENT headline: ${cand.headline}
 CURRENT subheadline: ${cand.subheadline}
@@ -150,15 +150,18 @@ Return STRICT JSON only: {"headline":"...","subheadline":"..."}`;
     const res = await runTask('gen_copy_fix', { prompt: basePrompt(extra), validate });
     if (!res.ok || !res.parsed) { lastReason = `LLM failed (${(res.fallback_chain || []).map((c) => `${c.model}:${c.reason || (c.validation_failed ? 'invalid' : 'ok')}`).join(' › ') || 'none'})`; continue; }
     const sw = wc(res.parsed.subheadline), hw = wc(res.parsed.headline);
-    if (hw > 10 || sw < 12 || sw > 25) { lastReason = `out of bounds (headline ${hw}w, subhead ${sw}w)`; continue; }
+    // codex R76: hard 14-25w floor — D3.7 shortening must stay within mech-H-2's range,
+    // not break it (the two hero rules must not fight).
+    if (hw > 10 || sw < 14 || sw > 25) { lastReason = `out of bounds (headline ${hw}w, subhead ${sw}w · need 14-25)`; continue; }
     const violations = factGuard(res.parsed, corpus);
     if (violations.length) { lastReason = `unverified: ${violations.join(', ')}`; continue; }
     const before = { headline: cand.headline, subheadline: cand.subheadline };
     cand.headline = res.parsed.headline.trim();
     cand.subheadline = res.parsed.subheadline.trim();
-    cand._loop_rewrite = { round_evidence: evidence, before, by: res.model || res.tool, attempts: attempt };
+    const fellBack = res.tier_used !== 'primary' || !/claude/i.test(String(res.tool || res.model || '')); // codex R75: claude primary expected
+    cand._loop_rewrite = { round_evidence: evidence, before, by: res.model || res.tool, attempts: attempt, provider_fallback: fellBack };
     fs.writeFileSync(p, JSON.stringify(data, null, 2));
-    return { applied: true, detail: `hero candidates[${idx}] subhead ${wc(before.subheadline)}w → ${sw}w · fact-guard✓ (${res.model || res.tool}, try ${attempt})` };
+    return { applied: true, copy_provider_fallback: fellBack, detail: `hero candidates[${idx}] subhead ${wc(before.subheadline)}w → ${sw}w · fact-guard✓ (${res.model || res.tool}${fellBack ? ' · FALLBACK' : ''}, try ${attempt})` };
   }
   return { applied: false, reason: `rewrite rejected after 3 tries — ${lastReason}` };
 }
@@ -178,7 +181,7 @@ async function applyServiceShortDesc() {
   const empties = services.filter((s) => !String(s.short_desc || '').trim());
   if (!empties.length) return { applied: false, reason: 'no empty short_desc' };
 
-  let filled = 0, noVerified = 0;
+  let filled = 0, noVerified = 0, fellBack = false;
   for (const svc of empties) {
     const match = backbone.find((b) => norm(b.name) === norm(svc.name)) || backbone.find((b) => norm(b.name).includes(norm(svc.name)) || norm(svc.name).includes(norm(b.name)));
     if (!match || !String(match.brief || '').trim()) { noVerified++; continue; } // no verified support → leave blank (Phase-2 set fix)
@@ -195,13 +198,14 @@ Return STRICT JSON only: {"short_desc":"..."}`;
     if (sd.split(/\s+/).length > 16) continue;
     const viol = factGuard({ headline: '', subheadline: sd }, corpus + ' \n ' + buildCorpus({ proof_chips: [] }));
     if (viol.length) continue; // would introduce an unverified claim → skip
+    if (res.tier_used !== 'primary' || !/claude/i.test(String(res.tool || res.model || ''))) fellBack = true; // codex R75
     svc.short_desc = sd;
-    svc._loop_source = `verified:service_list:${match.name}`;
+    svc._loop_source = `verified:service_list:${match.name}${res.tier_used !== 'primary' ? ' · FALLBACK' : ''}`;
     filled++;
   }
   if (!filled) return { applied: false, reason: `0 filled (${noVerified} services lack a verified backbone match → Phase-2 set fix)` };
   fs.writeFileSync(p, JSON.stringify(data, null, 2));
-  return { applied: true, detail: `filled ${filled}/${empties.length} short_desc from verified service_list${noVerified ? ` (${noVerified} no verified match · left blank)` : ''}` };
+  return { applied: true, copy_provider_fallback: fellBack, detail: `filled ${filled}/${empties.length} short_desc from verified service_list${noVerified ? ` (${noVerified} no verified match · left blank)` : ''}${fellBack ? ' · FALLBACK' : ''}` };
 }
 
 // ---- loop ----
@@ -285,18 +289,20 @@ if (isMain) (async () => {
     fs.mkdirSync(outDir, { recursive: true });
     const totalApplied = history.reduce((s, h) => s + (h.applied || []).filter((a) => a.applied).length, 0);
     const totalResolved = history.reduce((s, h) => s + (h.resolved || []).length, 0);
+    const copyProviderFallback = history.some((h) => (h.applied || []).some((a) => a.applied && a.copy_provider_fallback)); // codex R75
     const summary = {
       slug, schema_version: 'compose-loop/1', rounds: history.length,
       gate_b_resolution_rate: totalApplied ? +(totalResolved / totalApplied).toFixed(2) : 0,
       total_applied: totalApplied, total_resolved: totalResolved,
       composite_start: scored[0].before.composite, composite_end: scored[scored.length - 1].after.composite,
       rolled_back_rounds: history.filter((h) => h.rolled_back).map((h) => h.round),
+      copy_provider_fallback: copyProviderFallback, // true → rewrites used non-claude fallback · excluded from formal GATE-C pass
     };
     fs.writeFileSync(path.join(outDir, 'loop-history.json'), JSON.stringify(history, null, 2));
     fs.writeFileSync(path.join(outDir, 'loop-summary.json'), JSON.stringify(summary, null, 2));
     log(`\n=== loop-summary ===`);
     log(`  rounds ${summary.rounds} · applied ${summary.total_applied} · resolved ${summary.total_resolved} · GATE-B resolution ${Math.round(summary.gate_b_resolution_rate * 100)}% (target ≥70%)`);
-    log(`  composite ${summary.composite_start} → ${summary.composite_end}${summary.rolled_back_rounds.length ? ` · rolled back: ${summary.rolled_back_rounds}` : ''}`);
+    log(`  composite ${summary.composite_start} → ${summary.composite_end}${summary.rolled_back_rounds.length ? ` · rolled back: ${summary.rolled_back_rounds}` : ''}${summary.copy_provider_fallback ? ' · ⚠️ copy_provider_fallback (non-claude · diagnostic only)' : ''}`);
     log(`  → ${path.relative(REPO, path.join(outDir, 'loop-summary.json'))}`);
   }
 })();

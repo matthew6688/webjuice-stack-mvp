@@ -28,6 +28,7 @@ const MAP = {
 
 // Patterns that are structural/aesthetic → blocked in Phase 1 (record only).
 const BLOCKED = [
+  { re: /^layout_lever_needed/, reason: 'layout_lever_needed — geometry marginally off (e.g. CTA ≤60px below fold) with copy already at its floor; needs a Phase-2 layout lever (headline size / hero spacing / form placement), not a copy edit (codex R77)' },
   { re: /^D2\.9b_instruction_leak/, reason: 'source_unlocated — rendered About leak is NOT in the render-read writer (about.md is clean); true source untraced. Needs a trace task before any safe edit (codex R73 · Phase-2)' },
   { re: /^D2\.11_service_accuracy/, reason: 'set_level_change — changing which services render (drop/surface/reorder) exceeds Phase-1 copy-only (≈ add/remove block). Phase-2 (codex R73)' },
   { re: /^D2\.9_provenance/, reason: 'Fabricated-proof fix needs review-block suppression (Phase 3) or real review data (upstream enrichment) — not a copy/token edit' },

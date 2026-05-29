@@ -1211,6 +1211,7 @@ function runHeroRubric(htmlFiles, ctx) {
 // pl-audit-vision injects so the LLM cannot false-fail a determinable fact
 // (e.g. the "missing footer" FP · VIS-CAL-001). codex R60 D3.
 const FOLD_DESKTOP = 900;
+const FOLD_TOLERANCE = 60; // codex R77: CTA ≤60px below the fold = marginal → P2 layout_lever (not a copy failure)
 async function runVisualGeometry(htmlFiles, ctx) {
   if (!htmlFiles.length) return { status: 'skipped', reason: 'no html files' };
   let playwright;
@@ -1276,7 +1277,16 @@ async function runVisualGeometry(htmlFiles, ctx) {
       }
 
       if (cta.exists && !cta.aboveFold) {
-        findings.push({ severity: 'P1', dim: 'D3.7_hero_cta_above_fold', page: base, where: 'hero / above-fold', what: `Hero CTA pushed below the fold (top Y=${cta.y}px > ${FOLD_DESKTOP}px) — no actionable CTA visible in first viewport`, why: 'No above-fold CTA harms conversion (P1)', fix: 'Shorten hero headline / restructure so the primary CTA sits within the first viewport' });
+        // codex R77: fold tolerance. 900px is a hard line; a CTA only marginally below
+        // (≤ FOLD_TOLERANCE) is not a real UX failure and — once the hero subhead is at
+        // its 14w copy floor — cannot be fixed by copy. Classify the marginal case as
+        // P2 / layout_lever_needed (non-blocking · Phase-2 layout lever), record geometry.
+        const delta = cta.y - FOLD_DESKTOP;
+        if (delta > FOLD_TOLERANCE) {
+          findings.push({ severity: 'P1', dim: 'D3.7_hero_cta_above_fold', page: base, where: 'hero / above-fold', what: `Hero CTA pushed below the fold (top Y=${cta.y}px > ${FOLD_DESKTOP}px, ${delta}px over) — no actionable CTA visible in first viewport`, why: 'No above-fold CTA harms conversion (P1)', fix: 'Shorten hero headline/subhead so the primary CTA sits within the first viewport' });
+        } else {
+          findings.push({ severity: 'P2', dim: 'D3.7_hero_cta_above_fold', rule: 'layout_lever_needed', page: base, where: 'hero / above-fold', what: `Hero CTA marginally below fold (top Y=${cta.y}px · ${delta}px over the ${FOLD_DESKTOP}px line) — needs a layout lever, not copy (subhead at/near 14w min)`, why: 'Marginal fold miss · copy-floored · layout-level fix (Phase-2) · non-blocking', fix: 'Phase-2 layout lever (headline size / hero spacing / form placement) — not a Phase-1 copy edit', geometry: { cta_y: cta.y, fold_threshold: FOLD_DESKTOP, delta, tolerance: FOLD_TOLERANCE } });
+        }
       } else if (!cta.exists) {
         findings.push({ severity: 'P1', dim: 'D3.7_hero_cta_above_fold', page: base, where: 'hero', what: 'No visible hero CTA button found', why: 'Hero lacks a primary CTA (P1)', fix: 'Add a primary CTA button to the hero' });
       }
