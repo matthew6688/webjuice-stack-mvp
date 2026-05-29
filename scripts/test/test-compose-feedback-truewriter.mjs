@@ -81,5 +81,17 @@ console.log('== T4 · fact-guard (codex R71 · Matthew P0 red line: no unverifie
   ok(v.some((x) => /25/.test(x)), 'unverified number "25" (year warranty) → flagged');
 }
 
+console.log('== T5 · C-H-7 admission: actionable only when a traceable proof number exists ==');
+for (const slug of CLIENTS) {
+  const cf = toComposeFeedback({ rule: 'C-H-7', severity: 'P1', what: 'hero lacks a concrete number' }, { slug });
+  // all 3 fixtures carry founded_year / rating / warranty → must stay actionable (not over-blocked)
+  ok(cf.loop_action === 'rewrite_copy', `${slug}: C-H-7 actionable (has traceable proof number)`);
+}
+// synthetic numberless slug → blocked no_traceable_number
+{
+  const cf = toComposeFeedback({ rule: 'C-H-7', severity: 'P1', what: 'hero lacks a concrete number' }, { slug: '__no_such_client_no_numbers__' });
+  ok(cf.loop_action === null && /no_traceable_number/.test(cf.blocking_reason || ''), 'numberless client: C-H-7 → BLOCKED no_traceable_number');
+}
+
 console.log(`\n${fail === 0 ? '✅ PASS' : '❌ FAIL'} · ${pass} passed · ${fail} failed`);
 process.exit(fail === 0 ? 0 : 1);

@@ -118,18 +118,28 @@ async function applyRewriteCopy(cf, evidence) {
 
   const wc = (s) => String(s || '').trim().split(/\s+/).filter(Boolean).length;
   const corpus = buildCorpus(cand);
+  // codex R72: surface the traceable proof numbers the model is ALLOWED to use (so
+  // C-H-7 "needs a number" is satisfiable without inventing — e.g. "since 1996").
+  const proofFacts = [];
+  try {
+    const rf = readJson(`${V2}/core-extract.json`).brief?.real_facts || {};
+    for (const f of ['founded_year', 'years_in_business', 'google_rating', 'rating', 'review_count', 'guarantee', 'warranty']) {
+      if (rf[f] !== undefined && /\d/.test(JSON.stringify(rf[f]))) proofFacts.push(`${f}: ${typeof rf[f] === 'object' ? JSON.stringify(rf[f]) : rf[f]}`);
+    }
+  } catch { /* optional */ }
   const validate = (raw) => {
     const j = extractJson(raw);
     return j && j.headline && j.subheadline ? { ok: true, parsed: j } : { ok: false, error: 'no JSON / missing fields' };
   };
   const basePrompt = (extra) => `You are tightening an existing roofing-website hero. Rewrite ONLY the headline and subheadline.
-HARD RULES: invent NO new facts. You may ONLY use facts that appear in the CURRENT copy or the proof chips below — no new numbers, suburbs, regions, warranties, licences, brands or names. If unsure, keep the existing wording.
+HARD RULES: invent NO new facts. You may ONLY use facts that appear in the CURRENT copy, the proof chips, or the verified proof facts below — no new numbers, suburbs, regions, warranties, licences, brands or names. If unsure, keep the existing wording.
 - headline: ≤ 10 words, specific, no generic filler.
 - subheadline: 14-25 words, concrete.
 ISSUE TO FIX: ${evidence}
 CURRENT headline: ${cand.headline}
 CURRENT subheadline: ${cand.subheadline}
-Allowed proof chips (the ONLY facts you may add): ${JSON.stringify(cand.proof_chips || [])}${extra || ''}
+Allowed proof chips: ${JSON.stringify(cand.proof_chips || [])}
+Verified proof facts you MAY surface (use the exact numbers, e.g. "since 1996"): ${proofFacts.length ? proofFacts.join(' · ') : '(none)'}${extra || ''}
 Return STRICT JSON only: {"headline":"...","subheadline":"..."}`;
 
   // codex R71: try up to 3 times, feeding any fact-guard violation back so the local

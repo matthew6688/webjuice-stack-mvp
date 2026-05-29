@@ -69,6 +69,25 @@ function renderedConflictValue(what) {
   return null;
 }
 
+// codex R72: does the hero have a traceable PROOF number to surface? A proof number is
+// a marketing fact (years-in-business / rating / reviews / warranty / suburb count) —
+// NOT an ABN/phone/licence digit. Checks proof_chips + a narrow real_facts allowlist.
+// No proof number anywhere → C-H-7 is unsatisfiable (fact-guard forbids inventing) → block.
+const PROOF_NUMBER_FIELDS = ['founded_year', 'years_in_business', 'google_rating', 'rating', 'review_count', 'reviews', 'domain_age_years', 'guarantee', 'warranty', 'warranty_years'];
+function heroHasTraceableNumber(slug) {
+  if (slug === '<slug>') return true; // synthetic context · don't block
+  const hay = [];
+  try {
+    const hc = JSON.parse(fs.readFileSync(path.resolve(`clients/${slug}/v2/handoff/od-package/content/hero-copy.json`), 'utf8'));
+    (hc.candidates || []).forEach((c) => { hay.push((c.proof_chips || []).join(' ')); });
+  } catch { /* no hero-copy */ }
+  try {
+    const rf = JSON.parse(fs.readFileSync(path.resolve(`clients/${slug}/v2/core-extract.json`), 'utf8')).brief?.real_facts || {};
+    for (const f of PROOF_NUMBER_FIELDS) if (rf[f] !== undefined) hay.push(JSON.stringify(rf[f]));
+  } catch { /* no core-extract */ }
+  return /\d/.test(hay.join(' '));
+}
+
 /**
  * @returns compose_feedback object for one issue.
  */
@@ -96,6 +115,13 @@ export function toComposeFeedback(issue, ctx = {}) {
       return { loop_action: 'adjust_token', target_artifact: 'core-extract', target_path: TARGET_PATHS['core-extract'](slug), target_field: 'serialized field', allowed_fix: 'Normalize the upstream value that serialized to [object Object] / TBD (upstream data only · no template edits)', evidence: w, source_dim: key, severity: issue.severity, confidence: 0.8 };
     }
     return { loop_action: null, blocking_reason: 'Empty Est./File No./dash-only need template conditional rendering (Phase 3), not an upstream copy/token edit', evidence: w, source_dim: key, severity: issue.severity };
+  }
+
+  // codex R72: C-H-7 (hero needs a concrete number) is only satisfiable if a traceable
+  // number EXISTS in the facts — fact-guard forbids inventing one. No number anywhere in
+  // the hero chips / real_facts → block upfront (don't waste an unsatisfiable rewrite).
+  if (key === 'C-H-7' && !heroHasTraceableNumber(slug)) {
+    return { loop_action: null, blocking_reason: 'no_traceable_number — hero needs a concrete number but none exists in proof_chips/real_facts; fact-guard forbids inventing one (needs upstream data, not a copy edit)', evidence: issue.what, source_dim: key, severity: issue.severity };
   }
 
   // image-relevance mismatch with an existing better candidate → replace_image
