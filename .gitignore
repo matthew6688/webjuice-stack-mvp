@@ -39,3 +39,34 @@ data/maps-scraper/runs/**/results.full.json
 data/licenses/*.csv
 data/licenses/*.sqlite
 data/licenses/*.sqlite-*
+
+# ─── Task 0 repo hygiene (codex R91 · 2026-05-29) ───────────────────────────
+# Generated/runtime artifacts · regenerable · keep working tree showing real source.
+# KEEP tracked (do NOT ignore): data/leads/entities, data/v2/fixtures,
+#   clients/*/v2/{single-page-brief.yaml, core-extract.json, customer-brief.md, master.md},
+#   clients/*/v2/handoff/od-package/{facts.json, content/**, brand/**, structure/**}.
+
+# Pipeline runtime + staging
+data/qa/
+data/tasks/
+data/heartbeats/
+data/maps-scraper/runs/
+public/audit-reports/
+
+# Per-client GENERATED outputs (composer renders · audits · screenshots · crawls)
+clients/*/v2/editorial-output/
+clients/*/v2/llm-render-output/
+clients/*/v2/od-output-c/
+clients/*/v2/composed-output/
+clients/*/v2/wireframes/
+clients/*/v2/video/
+clients/*/v2/screenshots/
+clients/*/v2/multi-page-crawl/
+clients/*/v2/evidence/
+clients/*/v2/**/_audit-screenshots/
+clients/*/v2/**/_hero-shots/
+clients/*/v2/**/_t4-shots/
+clients/*/v2/*.report.html
+clients/*/v2/*.article.html
+clients/*/v2/internal-audit-report.html
+clients/*/v2/customer-facing-audit.html
