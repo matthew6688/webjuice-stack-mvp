@@ -761,8 +761,34 @@ function runT2BrandContract(htmlFiles, brandSpec, ctx) {
   return { score: finalScore, breakdown: dims, total_weight: totalWeight };
 }
 
+// ─── Vision↔deterministic-fact reconciliation (codex R61 · pure · testable) ─
+// The LLM vision audit hallucinated "missing footer" (VIS-CAL-001) on pages
+// whose footer deterministically EXISTS. Any LLM problem that contradicts a
+// deterministic geometry fact is downgraded to a false_positive_fact_conflict
+// and removed from real problems — the LLM may NOT hard-fail a determinable fact.
+const FACT_CONFLICT_RULES = [
+  { fact: 'footer_exists', whenTrue: true, problemPattern: /missing footer|lack of(?: a)? footer|no footer|footer (?:is )?(?:missing|absent)|lack of footer/i, label: 'footer_exists=true' },
+  { fact: 'hero_cta_above_fold', whenTrue: true, problemPattern: /no (?:visible )?cta|missing cta|lack of(?: a)? (?:prominent )?cta|cta (?:is )?(?:missing|absent)/i, label: 'hero_cta_above_fold=true' },
+];
+function reconcileVisionWithFacts(problems, geometryFacts) {
+  if (!geometryFacts) return { problems: problems || [], conflicts: [] };
+  // geometryFacts is { '<page>': { footer_exists, hero_cta_above_fold } } — vision
+  // problems are page-agnostic (aggregated), so treat a fact as TRUE if it holds
+  // on ALL audited pages (conservative: only suppress when no page contradicts).
+  const pages = Object.values(geometryFacts);
+  const factHoldsEverywhere = (k) => pages.length > 0 && pages.every((p) => p[k] === true);
+  const kept = []; const conflicts = [];
+  for (const prob of (problems || [])) {
+    const text = typeof prob === 'string' ? prob : (prob.what || prob.problem || JSON.stringify(prob));
+    const hit = FACT_CONFLICT_RULES.find((r) => factHoldsEverywhere(r.fact) && r.problemPattern.test(text));
+    if (hit) conflicts.push({ problem: text, conflicts_with: hit.label, downgraded: 'false_positive_fact_conflict' });
+    else kept.push(prob);
+  }
+  return { problems: kept, conflicts };
+}
+
 // ─── T3 · Vision audit (WIRED · calls pl-audit-vision subprocess) ────────
-async function runT3VisionAudit(htmlFiles, ctx) {
+async function runT3VisionAudit(htmlFiles, ctx, geometryFacts = null) {
   const { outputDir, factsPath } = ctx;
 
   if (!factsPath) {
@@ -773,8 +799,20 @@ async function runT3VisionAudit(htmlFiles, ctx) {
   const visionOut = path.join(outputDir, '_vision-audit-v4.json');
   console.log(`[T3] Running pl:audit-vision (screenshots + LLM · ~3 min)...`);
 
+  // codex R61: inject deterministic render-geometry facts into vision input so the
+  // LLM sees footer_exists/hero_cta_above_fold and cannot false-fail a known fact.
+  let visionFactsPath = factsPath;
+  if (geometryFacts) {
+    try {
+      const baseFacts = JSON.parse(fs.readFileSync(factsPath, 'utf8'));
+      baseFacts._render_geometry = geometryFacts;
+      visionFactsPath = path.join(outputDir, '_facts-with-render-geometry.json');
+      fs.writeFileSync(visionFactsPath, JSON.stringify(baseFacts, null, 2));
+    } catch { visionFactsPath = factsPath; }
+  }
+
   await new Promise((resolve) => {
-    const p = spawn('npm', ['run', 'pl:audit-vision', '--', '--dir', outputDir, '--facts', factsPath, '--out', visionOut], {
+    const p = spawn('npm', ['run', 'pl:audit-vision', '--', '--dir', outputDir, '--facts', visionFactsPath, '--out', visionOut], {
       stdio: 'pipe',
       cwd: REPO,
     });
@@ -809,14 +847,21 @@ async function runT3VisionAudit(htmlFiles, ctx) {
     'D3.8_module_diversity':   scale10to100(dm.D7_section_modules),       // section diversity
   };
 
+  // codex R61: drop LLM problems that contradict deterministic geometry facts.
+  const reconciled = reconcileVisionWithFacts(vr.all_problems || [], geometryFacts);
+  if (reconciled.conflicts.length) {
+    console.log(`[T3] suppressed ${reconciled.conflicts.length} fact-conflicting vision FP(s): ${reconciled.conflicts.map(c => c.conflicts_with).join(', ')}`);
+  }
+
   console.log(`[T3] Vision composite: ${composite}/100`);
   return {
     score: composite,
     dims,
     vision_report_path: visionOut,
     pages_audited: (vr.vision_results || []).length,
-    top_problems: (vr.all_problems || []).slice(0, 5),
+    top_problems: reconciled.problems.slice(0, 5),
     fix_priorities: (vr.all_fix_priorities || []).slice(0, 3),
+    false_positive_fact_conflicts: reconciled.conflicts,
     status: 'ok',
     cost_usd: vr.cost_usd || 0,
     model: vr.model || 'claude-sonnet-4-5',
@@ -1108,6 +1153,74 @@ async function runT2CopyQualityLLM(htmlFiles, ctx) {
   };
 }
 
+// ─── Phase-1 visual geometry (deterministic · render-based · codex R59/R60) ─
+// Render-geometry checks the static-DOM audit can't do. Produces (a) defect
+// findings and (b) a `facts` map ({footer_exists, hero_cta_above_fold}) that
+// pl-audit-vision injects so the LLM cannot false-fail a determinable fact
+// (e.g. the "missing footer" FP · VIS-CAL-001). codex R60 D3.
+const FOLD_DESKTOP = 900;
+async function runVisualGeometry(htmlFiles, ctx) {
+  if (!htmlFiles.length) return { status: 'skipped', reason: 'no html files' };
+  let playwright;
+  try { playwright = await import('playwright'); }
+  catch { return { status: 'skipped', reason: 'playwright not available' }; }
+  const browser = await playwright.chromium.launch({ headless: true });
+  const findings = [];
+  const facts = {};
+  try {
+    const ctxb = await browser.newContext({ viewport: { width: 1280, height: FOLD_DESKTOP } });
+    const page = await ctxb.newPage();
+    for (const f of htmlFiles) {
+      const base = path.basename(f);
+      facts[base] = {};
+      try { await page.goto('file://' + path.resolve(f), { waitUntil: 'networkidle', timeout: 15000 }); }
+      catch (e) { findings.push({ severity: 'P2', dim: 'visual_geometry', page: base, where: 'render', what: `render failed: ${e.message.slice(0, 60)}`, why: 'page did not render', fix: 'check page loads' }); continue; }
+
+      // footer_exists_visible (codex R60 D2 layer 1) — corrects vision "missing footer" FP
+      const footer = await page.evaluate(() => {
+        const el = document.querySelector('footer, [role="contentinfo"]');
+        if (!el) return { exists: false };
+        const r = el.getBoundingClientRect(); const cs = getComputedStyle(el);
+        const txt = (el.innerText || '').replace(/\s+/g, ' ').trim();
+        return { exists: true, visible: cs.display !== 'none' && cs.visibility !== 'hidden' && r.height > 40, height: Math.round(r.height), len: txt.length, hasPhone: /\b0\d[\d ]{7,}/.test(txt), hasHours: /mon|hours|\bam\b|\bpm\b|closed/i.test(txt) };
+      });
+      facts[base].footer_exists = !!(footer.exists && footer.visible);
+      if (!footer.exists || !footer.visible) {
+        findings.push({ severity: 'P1', dim: 'D3.5_footer_presence', page: base, where: 'footer', what: 'No visible footer rendered', why: 'Footer absent — visitor loses NAP/trust at page end (P1)', fix: 'Add a complete footer block (NAP, hours, legal)' });
+      } else {
+        // footer_required_content (codex R60 D2 layer 2) — ABN handled by #6 trust-field
+        const miss = []; if (!footer.hasPhone) miss.push('phone'); if (!footer.hasHours) miss.push('hours');
+        if (miss.length) findings.push({ severity: 'P2', dim: 'D3.5_footer_content', page: base, where: 'footer', what: `Footer present but missing ${miss.join(', ')}`, why: 'Footer content incomplete (P2)', fix: `Add ${miss.join(' / ')} to footer` });
+      }
+
+      // hero_cta_above_fold (geometry · DOM-count is insufficient: CTA can be pushed below fold)
+      // codex R61: iterate selectors BY PRIORITY (not comma-list, which returns DOM-order first
+      // match and could measure a secondary btn); require the element be visible.
+      const cta = await page.evaluate((fold) => {
+        const selectors = ['section.hero .btn-primary', '.hero .btn-primary', '#top .btn-primary', 'section.hero a.btn', '.hero a.btn', 'section.hero .btn', '.hero .btn'];
+        const isVisible = (el) => { const cs = getComputedStyle(el); const r = el.getBoundingClientRect(); return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.opacity !== '0' && r.width > 0 && r.height > 0; };
+        for (const sel of selectors) {
+          for (const el of document.querySelectorAll(sel)) {
+            if (!isVisible(el)) continue;
+            const r = el.getBoundingClientRect(); const y = Math.round(r.top + window.scrollY);
+            return { exists: true, y, aboveFold: y < fold, selector: sel };
+          }
+        }
+        return { exists: false };
+      }, FOLD_DESKTOP);
+      facts[base].hero_cta_above_fold = !!(cta.exists && cta.aboveFold);
+      if (cta.exists && !cta.aboveFold) {
+        findings.push({ severity: 'P1', dim: 'D3.7_hero_cta_above_fold', page: base, where: 'hero / above-fold', what: `Hero CTA pushed below the fold (top Y=${cta.y}px > ${FOLD_DESKTOP}px) — no actionable CTA visible in first viewport`, why: 'No above-fold CTA harms conversion (P1)', fix: 'Shorten hero headline / restructure so the primary CTA sits within the first viewport' });
+      } else if (!cta.exists) {
+        findings.push({ severity: 'P1', dim: 'D3.7_hero_cta_above_fold', page: base, where: 'hero', what: 'No visible hero CTA button found', why: 'Hero lacks a primary CTA (P1)', fix: 'Add a primary CTA button to the hero' });
+      }
+    }
+  } finally {
+    await browser.close().catch(() => {});
+  }
+  return { status: 'wired', dim: 'visual_geometry', findings, facts };
+}
+
 // ─── M1 · Mobile gate (hybrid · SOP-AUDIT-STANDARD-V2 §4 + §9) ──────────
 // Mechanical vetos (this function): M1.1 overflow-x · M1.2 sticky CTA · M1.3 critical tap targets
 // Vision scored sub-dims (deferred to premium tier): M1.4 hero readability · M1.5 above-fold trust+CTA
@@ -1312,7 +1425,7 @@ function collectIssues(tiers) {
     }
   }
   // Phase-1 deterministic detector findings (codex R54) · D2.11 facts + D2.9 provenance
-  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy]) {
+  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.VisualGeometry]) {
     for (const find of (t?.findings || [])) {
       issues.push({
         id: nextId(), tier: t.dim, severity: find.severity, dim: find.dim,
@@ -1371,7 +1484,10 @@ async function main() {
 
   if (runT1) tiers.T1 = runT1Hard(ctx.htmlFiles, ctx.facts || {}, ctx);
   if (runT2) tiers.T2 = runT2BrandContract(ctx.htmlFiles, ctx.brandSpec, ctx);
-  if (runT3) tiers.T3 = await runT3VisionAudit(ctx.htmlFiles, ctx);
+  // Visual geometry (deterministic · render) runs BEFORE T3 so its facts can be
+  // injected into the vision audit to suppress fact-conflicting FPs (codex R61).
+  if (runT4d) tiers.VisualGeometry = await runVisualGeometry(ctx.htmlFiles, ctx);
+  if (runT3) tiers.T3 = await runT3VisionAudit(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null);
   if (runT4) tiers.T4 = await runT4DesignerReview(ctx.htmlFiles, ctx);
   if (runT4d) tiers.T4d = runT4VoiceDeterministic(ctx.htmlFiles, ctx);
   // Phase-1 deterministic detectors (codex R54) · D2.11 facts cross-check + D2.9 provenance
@@ -1439,6 +1555,7 @@ async function main() {
     unresolved_placeholder: tiers.UnresolvedPlaceholder || null,
     trust_field_presence: tiers.TrustFieldPresence || null,
     service_accuracy: tiers.ServiceAccuracy || null,
+    visual_geometry: tiers.VisualGeometry || null,
     content_richness_deterministic: tiers.ContentRichness || null,
     mobile_gate: tiers.M1Mobile || null,
     t2_copy_quality_llm: tiers.T2CopyLLM || null,

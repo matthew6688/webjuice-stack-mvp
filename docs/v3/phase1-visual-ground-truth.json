@@ -1,0 +1,69 @@
+{
+  "schema_version": "phase1-visual-ground-truth/1",
+  "note": "codex R59 D2 · visual defects from rendered screenshots (Claude independent vision annotation · awaiting codex review + Matthew/codex final). Screenshots: docs/v3/phase1-visual/<slug>/{desktop-fold,desktop-full,footer,mobile-fold,mobile-full}.png",
+  "annotator": "claude (vision)",
+  "status": "draft-for-codex-review",
+  "CRITICAL_CALIBRATION_FINDING": {
+    "id": "VIS-CAL-001",
+    "what": "T3 vision audit (pl-audit-vision) reported 'Missing footer' for ALL 3 clients (vicwest/a-j/mark) and scored them 51-56. But rendered footers EXIST and are well-designed (dark, logo, TRADES + FIND US + HOURS columns, ABN line). The vision audit scored a 3000px-capped 'desktop-overview' screenshot that TRUNCATED the footer → the LLM hallucinated 'missing footer'.",
+    "implication": "The existing visual/LLM audit is UNRELIABLE: it hard-penalizes a footer that exists. This is exactly the unproven-visual-accuracy gap. Fix: anchor visual audit with DETERMINISTIC existence/completeness checks (footer present? CTA present? hero present?) so LLM cannot false-negative on existence; reserve LLM for taste only (codex R59 D3 boundary).",
+    "evidence": "docs/v3/phase1-visual/*/footer.png vs _vision-audit-v4.json all_problems[0]='Missing footer'"
+  },
+  "visual_defects": [
+    {
+      "id": "VGT-vicwest-001", "slug": "vicwest-roofing", "P0_dimension": "design_consistency",
+      "surface": "hero / above-fold", "viewport": "desktop+mobile", "severity": "P1",
+      "what": "Hero has no prominent CTA button above the fold (only a small phone number top-right). Visitor lands on a large headline + small image with no 'Get a quote' action.",
+      "evidence_screenshot": "vicwest-roofing/desktop-fold.png",
+      "expected_detector": "deterministic: hero/above-fold contains ≥1 CTA button (a.btn / button) — vicwest fails, a-j passes"
+    },
+    {
+      "id": "VGT-vicwest-002", "slug": "vicwest-roofing", "P0_dimension": "content_richness",
+      "surface": "header brand strip", "viewport": "desktop+mobile", "severity": "P2",
+      "what": "Header shows 'BALLARAT · EST. 2003' — but EST year (2003) is unverified (anti-hallucination: yearFounded should be null). Borderline; a-j/mark show empty 'EST.' which is worse.",
+      "evidence_screenshot": "vicwest-roofing/desktop-fold.png",
+      "expected_detector": "deterministic unresolved-placeholder (#5) / unverified-claim (#8 backlog)"
+    },
+    {
+      "id": "VGT-a-j-001", "slug": "a-j-roofing-solutions", "P0_dimension": "content_richness",
+      "surface": "header brand strip", "viewport": "desktop+mobile", "severity": "P1",
+      "what": "Header renders 'CAIRNS · EST.' with an EMPTY year (no value after EST.). Visible placeholder leak in the first viewport.",
+      "evidence_screenshot": "a-j-roofing-solutions/desktop-fold.png",
+      "expected_detector": "deterministic unresolved-placeholder (#5 already catches 'empty Est.')"
+    },
+    {
+      "id": "VGT-a-j-002", "slug": "a-j-roofing-solutions", "P0_dimension": "copy_quality",
+      "surface": "hero headline + subhead", "viewport": "desktop+mobile", "severity": "P1",
+      "what": "Hero leads 'Roof Leaks? Storm Damage Ruining Your Day?' + subhead 'professional roof repair and restoration services' — but a-j's verified specialty is metal roofing + ceiling/wall cladding, NOT storm-repair/restoration. Hero mis-positions the business.",
+      "evidence_screenshot": "a-j-roofing-solutions/desktop-fold.png",
+      "expected_detector": "service-accuracy (#7) extended to hero copy / LLM copy-positioning"
+    },
+    {
+      "id": "VGT-mark-001", "slug": "mark-squire-roof-restorations", "P0_dimension": "design_consistency",
+      "surface": "hero / above-fold", "viewport": "desktop", "severity": "P1",
+      "what": "Hero has no prominent CTA button above the fold (like vicwest). Headline + small image only.",
+      "evidence_screenshot": "mark-squire-roof-restorations/desktop-fold.png",
+      "expected_detector": "deterministic: hero above-fold CTA presence"
+    },
+    {
+      "id": "VGT-mark-002", "slug": "mark-squire-roof-restorations", "P0_dimension": "content_richness",
+      "surface": "header brand strip", "viewport": "desktop", "severity": "P1",
+      "what": "Header 'BALLARAT · EST.' empty year (placeholder leak), same as a-j.",
+      "evidence_screenshot": "mark-squire-roof-restorations/desktop-fold.png",
+      "expected_detector": "deterministic unresolved-placeholder (#5)"
+    },
+    {
+      "id": "VGT-all-001", "slug": "ALL", "P0_dimension": "copy_quality",
+      "surface": "hero eyebrow", "viewport": "desktop+mobile", "severity": "P2",
+      "what": "All 3 use 'FILE NO. · <CITY> ROOFING JOURNAL · VOL. 0X' magazine conceit. Stylistically distinctive but may read as AI/editorial trope rather than local trade — needs Matthew/persona judgment.",
+      "evidence_screenshot": "*/desktop-fold.png",
+      "expected_detector": "LLM (taste / persona-fit) — not deterministic"
+    }
+  ],
+  "positives_audit_must_not_penalize": [
+    "Footers exist and are well-designed on all 3 (vision audit's 'missing footer' is WRONG).",
+    "a-j hero has strong CTAs (orange quote + call) and mobile sticky call bar.",
+    "Mobile renders cleanly (no overflow, readable, tap targets ok, sticky CTA present)."
+  ],
+  "severity_arbiter": "codex (representing Matthew · R53/R59)"
+}

@@ -193,8 +193,50 @@
       "source": "codex",
       "in_ground_truth": true,
       "rationale": "codex R57 arbitration: upstream has verified ABN but a-j footer shows none — real public-page trust omission. Added post-hoc; not a detector drift."
+    },
+    {
+      "id": "GT-vicwest-roofing-005",
+      "slug": "vicwest-roofing",
+      "severity": "P1",
+      "dim_hint": "design_consistency",
+      "where": "hero / above-fold",
+      "viewport": "desktop",
+      "what": "Hero primary CTA exists in DOM but is pushed BELOW the fold by an oversized headline (CTA top Y=1035px > 860px fold). No actionable CTA visible above the fold.",
+      "source": "claude+codex",
+      "in_ground_truth": true,
+      "expected_detector": "render-geometry: hero primary CTA boundingBox.y < fold height",
+      "rationale": "Measured via Playwright. DOM-only check insufficient (btn count=2 for all 3); requires render geometry."
+    },
+    {
+      "id": "GT-mark-squire-roof-restorations-007",
+      "slug": "mark-squire-roof-restorations",
+      "severity": "P1",
+      "dim_hint": "design_consistency",
+      "where": "hero / above-fold",
+      "viewport": "desktop",
+      "what": "Hero primary CTA pushed below the fold by oversized headline (CTA top Y=1003px > 860px fold). a-j passes (Y=788px) — confirms detector discriminates.",
+      "source": "claude+codex",
+      "in_ground_truth": true,
+      "expected_detector": "render-geometry: hero primary CTA boundingBox.y < fold height",
+      "rationale": "Measured via Playwright."
     }
   ],
   "severity_arbiter": "codex (representing Matthew · R53)",
-  "notes": "Codex first read the three frozen rendered index.html artifacts without reading existing audit-v4 outputs. Frozen upstream compose inputs were then used only to arbitrate objective factual conflicts. Playwright rendered inspection was attempted but blocked by the local macOS sandbox, so no screenshot-only visual findings are included."
+  "notes": "Codex first read the three frozen rendered index.html artifacts without reading existing audit-v4 outputs. Frozen upstream compose inputs were then used only to arbitrate objective factual conflicts. Playwright rendered inspection was attempted but blocked by the local macOS sandbox, so no screenshot-only visual findings are included.",
+  "known_audit_false_positives": [
+    {
+      "id": "VIS-CAL-001",
+      "dimension": "design_consistency",
+      "what": "T3 vision audit reports \"Missing footer\" / D5=0 for all 3 clients, but footers EXIST and are well-designed (see docs/v3/phase1-visual/*/footer.png). Root cause: vision scored a 3000px-capped overview screenshot that truncated the footer.",
+      "rule": "audit MUST NOT emit \"missing footer\" when deterministic footer_exists=true. Counts as a PRECISION failure if emitted.",
+      "arbiter": "codex R60"
+    }
+  ],
+  "taste_candidates": [
+    {
+      "id": "VGT-all-001",
+      "what": "FILE NO./JOURNAL/VOL magazine conceit — possible AI/editorial trope; persona-fit judgment, not a hard defect.",
+      "dimension": "copy_quality"
+    }
+  ]
 }
