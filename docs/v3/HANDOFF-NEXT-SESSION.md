@@ -31,18 +31,24 @@ LOW_CONFIDENCE guard. claude CLI re-authed → vision trustworthy (vicwest full-
 - `pl:image-decisions` (reader → image-decisions.json) — VERIFIED decision layer: vicwest
   hero→REAL img-06 (q9/fit10) · gallery→8 REAL · honest stock fallback. a-j → "missing · classify first".
 
-## ⚠️ IMAGE TOPIC — honest closure state (read before assuming "images done")
+## IMAGE TOPIC — closure state (updated R88)
 
-**CLOSED (this session):** the DECISION + POLICY layer only.
-- Strategy ratified + documented (`SOP-IMAGE-STRATEGY.md` · quality-gated mixed · cost two-pass).
-- `pl:image-decisions` verified on vicwest: correctly SELECTS real images per gate (hero img-06
-  q9/fit10 · gallery 8 real · honest stock fallback) → image-decisions.json.
+**CLOSED (this session):** decision + policy + RENDER (vicwest end-to-end).
+- Strategy: `SOP-IMAGE-STRATEGY.md` (quality-gated mixed · cost two-pass · usage_intent).
+- `pl:image-decisions` — selects real images per gate → image-decisions.json.
+- **RENDER WIRED (codex R88)**: composer reads image-decisions.json → copies verified real photos
+  to assets/ → renders "Completed Projects" single-photo grid (data-provenance=verified · NO fake
+  before/after · SOP §9). vicwest page now shows 6 REAL roof photos; provenance-map #gallery =
+  verified. Mutually-exclusive gallery.projects/gallery.pairs (real wins → pairs suppressed).
 
-**NOT done (do NOT claim images are done):**
-- **Real photos are NOT on the rendered page.** The composer does not consume image-decisions.json;
-  resolveImage is dead code; galleryPairs are hardcoded stock. Every rendered site (incl vicwest)
-  still shows STOCK images. "We decided which real photos to use" ≠ "real photos render."
-- Two-pass cost classifier not built; a-j has no manifest (never classified).
+**NOT done (next session):**
+- **a-j / mark have NO source photos** (handoff/photos/source empty · never classified) → still
+  stock/missing (honestly flagged · not mixed into vicwest). Need website-image download
+  (pl-extract-crawl-images · filter *.pages.dev/screenshots · zero Google quota) → classify →
+  image-decisions → recompose.
+- **Two-pass cost classifier (codex R87)** not built (pl-classify-images still per-image).
+- **hero image slot**: editorial hero is text-only this round (codex R88 #3 · left as text).
+- design/copy quality polish (see below · 91/A is FAST tier only · NOT a design cert).
 
 **Also honest (design/copy quality):** the 91/A/SHIP on vicwest is FAST tier = deterministic
 facts/mechanics ONLY (vision_confidence n/a). It does NOT certify design or copy quality. The
