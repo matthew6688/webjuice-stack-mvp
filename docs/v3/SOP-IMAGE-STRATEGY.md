@@ -126,6 +126,27 @@ Implementation sequence after this planning round:
 
 ---
 
+## §7b · R87 Decisions — cost-optimized two-pass classification (codex R87)
+
+Matthew's cost note: images can be many; per-image vision calls are expensive. Use a
+contact-sheet overview first, then detail only the promising few. Discovery found this is
+already half-built (two parallel classifiers):
+- **A** `core/handoff/classify-images.js` → `selected.json`: contact-sheet · ONE vision call ·
+  ~$0.05 · coarse (category/best_placement · no quality_score).
+- **B** `scripts/cli/pl-classify-images.js` → `image-manifest.json`: per-image · rich
+  (quality_score/brand_fit/suggested_uses) · N calls · expensive.
+
+| Q | Decision | Immediate instruction |
+|---|---|---|
+| Two-pass pipeline | **Yes** | `overview contact-sheet → shortlist → detail scoring → canonical manifest`. K ≤ 10 (hero top3 + gallery top4 + service top2 + about/team top1; reallocate to gallery/hero if a class is short). |
+| Canonical artifact | **`image-manifest.json`** | `pl:classify-images` = SOLE canonical writer. Merge A's category/best_placement/notes/contact_sheet in. `selected.json` → derived legacy-compat only (retire readers over time). |
+| local vs cloud | **overview local-first, detail claude** | overview: gemma3:27b primary, claude fallback (bucketing/shortlist only). detail: claude primary, gemma fallback → mark `_confidence: low` (never silent-equivalent). |
+| thumbnails | **overview 150px, detail 1600px** | contact-sheet cell ~180 / thumb 150; detail input = original, long-edge capped 1600px (small thumbs can't judge sharpness/crop/light). |
+| a-j backfill | **after two-pass ships** | order: two-pass classify → a-j/mark/vicwest backfill → image-decisions resolver reads canonical manifest → recompose/audit. |
+| first step | **doc record (this §7b) → rewrite pl:classify-images two-pass → mark core/handoff/classify-images.js legacy** | avoid two SSOT classifiers. |
+
+---
+
 ## §9 · Hard No
 
 - No fake stock/AI team headshots.
