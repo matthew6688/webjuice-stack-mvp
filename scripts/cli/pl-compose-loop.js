@@ -29,12 +29,13 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 process.chdir(REPO);
 
 // ---- args ----
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const argv = process.argv.slice(2);
 const getArg = (k, d = null) => { const i = argv.indexOf(`--${k}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 const slug = getArg('slug');
 const WRITE = argv.includes('--write');
 const MAX = parseInt(getArg('max', '3'), 10);
-if (!slug) { console.error('--slug required'); process.exit(1); }
+if (isMain && !slug) { console.error('--slug required'); process.exit(1); }
 
 const V2 = `clients/${slug}/v2`;
 const log = (...a) => console.log(...a);
@@ -83,6 +84,27 @@ function applyAdjustToken(cf, evidence) {
   return { applied: false, reason: 'adjust_token pattern not deterministically handled (only ABN swap defined)' };
 }
 
+// codex R71: deterministic fact-guard. Any protected claim (number / ®brand / geo /
+// licence / warranty / cert) in the NEW copy must resolve to the allowed corpus
+// (old copy + proof_chips + single-page-brief.yaml + core-extract + master.md).
+// This is Matthew's P0 red line — core info 100% correct. Unverified claim → reject.
+const CLAIM_LEXICON = /\b(regional|region|greater|metro|metropolitan|statewide|state-wide|nationwide|wide|victoria|vic|nsw|qld|tas|sa|wa|act|melbourne|sydney|brisbane|adelaide|perth|geelong|bendigo|ballarat|delacombe|warrant(?:y|ies)|guarantee[ds]?|licen[sc]ed?|certified|accredited|insured|award|vba|qbcc|abn)\b/gi;
+function buildCorpus(cand) {
+  const parts = [cand.headline || '', cand.subheadline || '', (cand.proof_chips || []).join(' ')];
+  for (const f of ['single-page-brief.yaml', 'core-extract.json', 'master.md']) {
+    try { parts.push(fs.readFileSync(path.resolve(`${V2}/${f}`), 'utf8')); } catch { /* optional */ }
+  }
+  return parts.join(' \n ').toLowerCase();
+}
+export function factGuard(neo, corpus) {
+  const text = `${neo.headline} ${neo.subheadline}`;
+  const v = [];
+  for (const num of text.match(/\d+/g) || []) if (!corpus.includes(num)) v.push(`number "${num}"`);
+  for (const b of text.match(/[A-Za-z][A-Za-z0-9-]*®/g) || []) if (!corpus.includes(b.replace('®', '').toLowerCase())) v.push(`brand "${b}"`);
+  for (const tok of new Set((text.match(CLAIM_LEXICON) || []).map((t) => t.toLowerCase()))) if (!corpus.includes(tok)) v.push(`claim "${tok}"`);
+  return v;
+}
+
 // rewrite_copy = LLM gen_copy_fix · field-scoped · NO new facts. Hero candidates[idx].
 async function applyRewriteCopy(cf, evidence) {
   const rel = (cf.target_path || '').split(`/v2/`)[1];
@@ -94,38 +116,45 @@ async function applyRewriteCopy(cf, evidence) {
   const cand = (data.candidates || [])[idx];
   if (!cand) return { applied: false, reason: `candidate ${idx} missing` };
 
-  const prompt = `You are tightening an existing roofing-website hero. Rewrite ONLY the headline and subheadline.
-HARD RULES: invent NO new facts (no new numbers, suburbs, warranties, names). Reuse only what's below.
-- headline: ≤ 10 words, specific, no generic filler.
-- subheadline: 14-25 words, concrete, ends without a period if it's a fragment.
-ISSUE TO FIX: ${evidence}
-CURRENT headline: ${cand.headline}
-CURRENT subheadline: ${cand.subheadline}
-Allowed proof chips (facts you may reference): ${JSON.stringify(cand.proof_chips || [])}
-Return STRICT JSON only: {"headline":"...","subheadline":"..."}`;
-
-  // runTask validate contract = {ok, parsed}. Require valid JSON with both fields;
-  // word-count constraints are enforced as a write-gate below (claude is the only
-  // tier that could retry on a soft constraint · local backup gets one shot).
   const wc = (s) => String(s || '').trim().split(/\s+/).filter(Boolean).length;
+  const corpus = buildCorpus(cand);
   const validate = (raw) => {
     const j = extractJson(raw);
     return j && j.headline && j.subheadline ? { ok: true, parsed: j } : { ok: false, error: 'no JSON / missing fields' };
   };
-  const res = await runTask('gen_copy_fix', { prompt, validate });
-  if (!res.ok || !res.parsed) return { applied: false, reason: `LLM gen_copy_fix failed (${(res.fallback_chain || []).map((c) => `${c.model}:${c.reason || (c.validation_failed ? 'invalid' : 'ok')}`).join(' › ') || 'none'})` };
-  const sw = wc(res.parsed.subheadline), hw = wc(res.parsed.headline);
-  if (hw > 10 || sw < 12 || sw > 25) return { applied: false, reason: `LLM copy out of bounds (headline ${hw}w, subhead ${sw}w) — not written` };
-  const before = { headline: cand.headline, subheadline: cand.subheadline };
-  cand.headline = res.parsed.headline.trim();
-  cand.subheadline = res.parsed.subheadline.trim();
-  cand._loop_rewrite = { round_evidence: evidence, before, by: res.model || res.tool };
-  fs.writeFileSync(p, JSON.stringify(data, null, 2));
-  return { applied: true, detail: `hero candidates[${idx}] subhead ${before.subheadline.split(/\s+/).length}w → ${cand.subheadline.split(/\s+/).length}w (${res.model || res.tool})` };
+  const basePrompt = (extra) => `You are tightening an existing roofing-website hero. Rewrite ONLY the headline and subheadline.
+HARD RULES: invent NO new facts. You may ONLY use facts that appear in the CURRENT copy or the proof chips below — no new numbers, suburbs, regions, warranties, licences, brands or names. If unsure, keep the existing wording.
+- headline: ≤ 10 words, specific, no generic filler.
+- subheadline: 14-25 words, concrete.
+ISSUE TO FIX: ${evidence}
+CURRENT headline: ${cand.headline}
+CURRENT subheadline: ${cand.subheadline}
+Allowed proof chips (the ONLY facts you may add): ${JSON.stringify(cand.proof_chips || [])}${extra || ''}
+Return STRICT JSON only: {"headline":"...","subheadline":"..."}`;
+
+  // codex R71: try up to 3 times, feeding any fact-guard violation back so the local
+  // model can self-correct. If it still can't produce fact-safe copy → reject (do not write).
+  let lastReason = 'no attempt';
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const extra = attempt > 1 && lastReason.startsWith('unverified') ? `\nPREVIOUS ATTEMPT REJECTED — these claims are NOT in the source facts and are FORBIDDEN: ${lastReason.replace('unverified: ', '')}. Use only Ballarat/VIC-level wording present in the current copy.` : '';
+    const res = await runTask('gen_copy_fix', { prompt: basePrompt(extra), validate });
+    if (!res.ok || !res.parsed) { lastReason = `LLM failed (${(res.fallback_chain || []).map((c) => `${c.model}:${c.reason || (c.validation_failed ? 'invalid' : 'ok')}`).join(' › ') || 'none'})`; continue; }
+    const sw = wc(res.parsed.subheadline), hw = wc(res.parsed.headline);
+    if (hw > 10 || sw < 12 || sw > 25) { lastReason = `out of bounds (headline ${hw}w, subhead ${sw}w)`; continue; }
+    const violations = factGuard(res.parsed, corpus);
+    if (violations.length) { lastReason = `unverified: ${violations.join(', ')}`; continue; }
+    const before = { headline: cand.headline, subheadline: cand.subheadline };
+    cand.headline = res.parsed.headline.trim();
+    cand.subheadline = res.parsed.subheadline.trim();
+    cand._loop_rewrite = { round_evidence: evidence, before, by: res.model || res.tool, attempts: attempt };
+    fs.writeFileSync(p, JSON.stringify(data, null, 2));
+    return { applied: true, detail: `hero candidates[${idx}] subhead ${wc(before.subheadline)}w → ${sw}w · fact-guard✓ (${res.model || res.tool}, try ${attempt})` };
+  }
+  return { applied: false, reason: `rewrite rejected after 3 tries — ${lastReason}` };
 }
 
 // ---- loop ----
-(async () => {
+if (isMain) (async () => {
   log(`\n=== pl:compose-loop · ${slug} · ${WRITE ? 'WRITE' : 'DRY-RUN'} · max ${MAX} ===`);
   const verdict = checkpointVerdict();
   log(`checkpoint verdict: ${verdict}`);

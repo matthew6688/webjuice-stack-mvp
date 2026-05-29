@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { _resolveTrueWriter as resolveTrueWriter, toComposeFeedback } from '../../core/audit/compose-feedback.js';
+import { factGuard } from '../cli/pl-compose-loop.js';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 process.chdir(REPO);
@@ -66,6 +67,18 @@ console.log('== T3 · synthetic: unknown site-ctx field → blocked (no silent w
   // force a site-ctx target with an unmappable field via toComposeFeedback then resolve
   const cf = resolveTrueWriter({ loop_action: 'rewrite_copy', target_artifact: 'site-ctx', target_field: 'mystery.section', evidence: 'x', source_dim: 'X', severity: 'P2' }, 'vicwest-roofing');
   ok(cf.loop_action === null && /derived/.test(cf.blocking_reason || ''), `unknown site-ctx field → blocked (derived-file guard)`);
+}
+
+console.log('== T4 · fact-guard (codex R71 · Matthew P0 red line: no unverified claims) ==');
+{
+  // vicwest-like corpus: Ballarat / VBA / Colorbond® / 10-yr — but NOT "regional Victoria".
+  const corpus = 'vicwest roofing vba licensed colorbond® specialist 10-yr warranty included ballarat and nearby vic towns delacombe'.toLowerCase();
+  const clean = { headline: 'Ballarat Colorbond® Roof Replacement', subheadline: 'VBA Licensed Colorbond® specialists installing metal roofs across Ballarat with a 10-yr warranty included' };
+  ok(factGuard(clean, corpus).length === 0, 'fact-safe copy (Ballarat/VBA/Colorbond/10-yr) → 0 violations');
+  const overBroad = { headline: 'Regional Victoria Roofing Experts', subheadline: 'VBA Licensed Colorbond® specialists serving Ballarat and regional Victoria with a 25-year warranty' };
+  const v = factGuard(overBroad, corpus);
+  ok(v.some((x) => /regional|victoria/.test(x)), 'over-broad geo "regional Victoria" → flagged');
+  ok(v.some((x) => /25/.test(x)), 'unverified number "25" (year warranty) → flagged');
 }
 
 console.log(`\n${fail === 0 ? '✅ PASS' : '❌ FAIL'} · ${pass} passed · ${fail} failed`);
