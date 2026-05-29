@@ -1457,19 +1457,25 @@ function composeFinalScore(tiers, opts = {}) {
   if (!anyStub && t3s != null && t3s < 60) verdict = verdict === 'SHIP' ? 'FIX_LOOP · T3<60' : verdict;
   if (T4?.ai_slop_score != null && T4.ai_slop_score < 60) verdict = 'FIX_LOOP · ai_slop<60';
 
-  // codex R74: vision-confidence guard. When EVERY vision tier that ran fell back to a
-  // LOCAL model (claude CLI unauthenticated), the visual scores are low-confidence and
-  // must NOT alone support a SHIP verdict.
-  const visionProviders = [T3?.provider, T3?.model, tiers.HeroJudge?.provider, tiers.HeroJudge?.model, T4?.provider, T4?.model]
-    .filter(Boolean).map(String);
-  const isLocalVision = (p) => /ollama|gemma|deepseek|qwen|:local|\blocal\b/i.test(p);
-  const allVisionLocal = visionProviders.length > 0 && visionProviders.every(isLocalVision);
-  const vision_confidence = visionProviders.length === 0 ? 'n/a' : (allVisionLocal ? 'low' : 'ok');
+  // codex R74: vision-confidence guard (conservative). A vision tier that RAN is only
+  // high-confidence if we can CONFIRM it used a cloud model. Local fallback OR unknown
+  // provenance → low. Verdict 'ok' requires ≥1 vision tier ran AND all ran tiers are
+  // confirmed cloud. (Unknown is treated as low, not silently excluded — codex R74 #1.)
+  const visionTiers = [
+    { ran: T3?.score != null, prov: T3?.provider || T3?.model || null },
+    { ran: !!(tiers.HeroJudge?.hero_visual_score != null || tiers.HeroJudge?.provider), prov: tiers.HeroJudge?.provider || tiers.HeroJudge?.model || null },
+    { ran: T4?.score != null, prov: T4?.provider || T4?.model || null },
+  ].filter(t => t.ran);
+  const isCloudVision = (p) => p != null && /claude|sonnet|haiku|opus|gpt|openai|gemini-(?!.*ollama)/i.test(String(p));
+  const visionRan = visionTiers.length > 0;
+  const allCloud = visionRan && visionTiers.every(t => isCloudVision(t.prov));
+  const vision_confidence = !visionRan ? 'n/a' : (allCloud ? 'ok' : 'low');
+  const vision_providers = [...new Set(visionTiers.map(t => t.prov).filter(Boolean).map(String))];
   if (vision_confidence === 'low' && verdict === 'SHIP') {
     verdict = 'SHIP_WITH_MANUAL_REVIEW_REQUIRED · LOW_CONFIDENCE_VISION';
   }
 
-  return { composite, ship_verdict: verdict, grade, issues: collectIssues(tiers), tier_statuses: tierStatuses, experimental: anyStub, vision_confidence, vision_providers: [...new Set(visionProviders)] };
+  return { composite, ship_verdict: verdict, grade, issues: collectIssues(tiers), tier_statuses: tierStatuses, experimental: anyStub, vision_confidence, vision_providers };
 }
 
 function collectIssues(tiers) {

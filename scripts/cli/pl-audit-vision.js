@@ -261,7 +261,10 @@ async function visionScore({ screenshotPath, facts, pageMeta }) {
   } catch (e) {
     return { ok: false, reason: 'invalid JSON', raw: res.output?.slice(0, 300) };
   }
-  return { ok: true, ...parsed };
+  // codex R74: surface the real provider/model so the parent (pl-audit-v4) vision-
+  // confidence guard can detect local fallback instead of assuming claude.
+  const provider = res._source ? String(res._source).replace(/^ai-completed:/, '') : (res.tool && res.model ? `${res.tool}:${res.model}` : (res.tool || null));
+  return { ok: true, ...parsed, _provider: provider, _model: res.model || null, _tool: res.tool || null };
 }
 
 async function main() {
@@ -377,6 +380,10 @@ async function main() {
     pages: htmlFiles.length,
     consistency,
     vision_results: visionResults,
+    // codex R74: top-level provenance (from the first scored page) for the parent guard.
+    provider: okResults.find((v) => v._provider)?._provider || null,
+    model: okResults.find((v) => v._model)?._model || null,
+    _source: okResults.find((v) => v._provider)?._provider || null,
     dim_means: dimMeans,
     vision_mean_raw: visionMean.toFixed(1),
     cross_page_penalty: crossPenalty,

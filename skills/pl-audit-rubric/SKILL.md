@@ -46,9 +46,20 @@ This skill is documentation-only. Zero new audit logic.
 
 ## §2 · Composite & ship gate formula
 
-Per SOP-AUDIT-STANDARD §5 + SOP-SINGLE-PAGE §13.2:
+> ⚠️ **LEGACY (v3 · pl-audit-tier) — NOT the current ship gate (codex R74 · 2026-05-29).**
+> The canonical ship gate is **`docs/v3/SOP-AUDIT-STANDARD-V2.md` §2** (5-P0 weighted:
+> content_accuracy.25 / copy_quality.25 / brand_fidelity.20 / content_richness.15 /
+> design_consistency.15 + mobile veto). The formula below is the OLD `pl-audit-tier` tier
+> scheme, kept only as lineage for the v3 rule rows in this dictionary.
+> **Tier-name caveat:** the **T4 = Tech / SEO / Performance** below is the v3 meaning —
+> it is now the DEFERRED `pl-audit-tech` contract (`docs/v3/SPEC-AUDIT-TECH.md`), advisory,
+> NOT in the Phase-1 gate. It is a *different thing* from `pl-audit-v4`'s T4 (= designer
+> review). See SOP-AUDIT-STANDARD-V2 §0.1 for the full tier→P0 disambiguation.
+
+Legacy v3 formula (SOP-AUDIT-STANDARD.md §5 + SOP-SINGLE-PAGE §13.2):
 
 ```
+# ⚠️ legacy · superseded by SOP-AUDIT-STANDARD-V2 §2
 ship_ok = (T1 == PASS)
        && (composite_T2T3T4 >= 73)
        && (T5_primary_segment >= 75)
@@ -60,7 +71,7 @@ composite_T2T3T4 = round( 0.35 * T2 + 0.35 * T3 + 0.30 * T4 )
 - **T1** · Factual / Brand consistency · PASS/FAIL (any single fail → page blocked regardless of T2-T5)
 - **T2** · Copy Depth & Brand Contract · 0-100 · target ≥70
 - **T3** · Visual Design · 0-100 · target ≥75
-- **T4** · Tech / SEO / Performance · 0-100 · target ≥70
+- **T4** · Tech / SEO / Performance · 0-100 · target ≥70 — **DEPRECATED tier name** → deferred `pl-audit-tech` (SPEC-AUDIT-TECH.md) · ≠ pl-audit-v4 T4 (designer review)
 - **T5** · Per-Segment Serviceability · NEW · primary_segment ≥75 + each secondary ≥50
 
 Fix loop (max 3 iterations per `feedback_audit_feedback_loop.md`) tunes ±5-10pt. Larger gaps = upstream fix (§10).
