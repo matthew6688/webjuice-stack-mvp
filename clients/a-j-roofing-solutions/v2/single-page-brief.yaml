@@ -1,0 +1,71 @@
+# A & J Roofing Solutions · Single-Page Brief · GENERATED (codex R78)
+# Source: core-extract.real_facts > master.md frontmatter · NO LLM · NO fabricated facts
+# ⚠️ 1 data gap(s) — see _data_gaps · validator is the hard gate
+business_name: A & J Roofing Solutions
+phone:
+  display: 0740 356 187
+  tel_link: '+61740356187'
+address:
+  street: 98 Buchan St
+  suburb: Portsmith
+  state: QLD
+  postcode: '4870'
+state: QLD
+abn: 34 134 811 831
+license:
+  authority: QBCC
+  number: null
+  status: omit
+niche: roofing
+primary_segment: planned-upgrade
+urgency_mix: scheduled-heavy
+pricing_disclosure_mode: per_quote_only
+year_founded: null
+service_area_primary_suburb: Cairns
+brand_tokens_path: clients/a-j-roofing-solutions/v2/brand/brand-tokens.css
+suburbs_covered:
+  - Cairns
+  - Portsmith
+  - Far North Queensland
+suburbs_candidates:
+  - name: Bungalow
+    provenance: ai-inferred
+  - name: Parramatta Park
+    provenance: ai-inferred
+  - name: Westcourt
+    provenance: ai-inferred
+  - name: Manunda
+    provenance: ai-inferred
+  - name: Earlville
+    provenance: ai-inferred
+  - name: Woree
+    provenance: ai-inferred
+  - name: Edmonton
+    provenance: ai-inferred
+  - name: Smithfield
+    provenance: ai-inferred
+  - name: Redlynch
+    provenance: ai-inferred
+  - name: Gordonvale
+    provenance: ai-inferred
+services:
+  - name: Metal roofing
+    short: Specialist metal roofing work for Cairns and Far North Queensland properties.
+  - name: Ceiling cladding
+    short: Ceiling cladding is named in the homepage headline as part of the company's specialist scope.
+  - name: Wall cladding
+    short: Wall cladding is named in the homepage headline alongside roofing and ceiling cladding.
+  - name: Commercial roofing
+    short: A dedicated commercial page exists for business, industrial, or builder-led roofing projects.
+  - name: Residential roofing
+    short: A dedicated residential page exists for homeowners needing local roofing services.
+_generated_by: pl-build-single-page-brief (deterministic · core-extract.real_facts > master.md frontmatter · codex R78)
+_data_gaps:
+  - >-
+    suburbs_covered: only 3 verified (<8) — needs_enrichment · 10 ai-inferred candidates available (NOT counted ·
+    provenance-gated · codex R79)
+_needs_review:
+  - 'license: status=''omit'' (no displayable licence number · claim="Licensed") — footer shows ABN only'
+  - 'primary_segment: defaulted to planned-upgrade — confirm vs urgency mix'
+  - 'urgency_mix: defaulted to scheduled-heavy (no emergency SLA fact)'
+  - 'pricing_disclosure_mode: defaulted to per_quote_only'

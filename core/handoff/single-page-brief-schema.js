@@ -73,11 +73,14 @@ export const BRIEF_SCHEMA = {
     abn: { type: 'string', pattern: '^\\d{2}\\s?\\d{3}\\s?\\d{3}\\s?\\d{3}$' },
     license: {
       type: 'object',
-      required: ['authority', 'number', 'status'],
+      // codex R79: `number` is conditionally required — only when status != 'omit'.
+      // status='omit' = "no displayable licence number" (ABN-only trade) → number may be
+      // null and the renderer shows ABN only (no licence). Enforced cross-field below.
+      required: ['authority', 'status'],
       additionalProperties: false,
       properties: {
         authority: { type: 'string', enum: ['VBA', 'QBCC', 'NSW-FT', 'BC-WA', 'CBS-SA', 'CBOS-TAS', 'AC-ACT', 'NT-WS'] },
-        number: { type: 'string', minLength: 4, maxLength: 20 },
+        number: { type: ['string', 'null'], minLength: 4, maxLength: 20 },
         status: { type: 'string', enum: ['active', 'grey-zone', 'omit'] },
       },
     },
@@ -358,9 +361,17 @@ export function validateCrossFields(brief) {
     });
   }
 
-  // 8. license.status = "omit" forbids customer-facing license display · brief must mark
-  if (brief.license?.status === 'omit') {
-    // No error · informational marker for renderer (suppresses license in trust-bar)
+  // 8. license.number is required UNLESS status='omit' (codex R79). When status='omit'
+  // the renderer must suppress the licence (ABN-only trade · footer shows ABN only).
+  if (brief.license) {
+    const st = brief.license.status;
+    const num = brief.license.number;
+    if (st !== 'omit') {
+      if (typeof num !== 'string' || num.length < 4) {
+        errors.push({ code: 'license_number_required_unless_omit', message: `license.number (string ≥4) is required when status='${st}' · set status='omit' for ABN-only trades with no displayable licence` });
+      }
+    }
+    // st === 'omit' → no error · render marker (suppress licence in trust-bar/footer)
   }
 
   // 9. emergency_phone (when present) cannot equal main phone (Codex Q-Y-5)
