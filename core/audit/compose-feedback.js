@@ -13,10 +13,10 @@ import path from 'node:path';
 // dim / rule  →  Phase-1 mapping. fieldHint guides the upstream edit target.
 const MAP = {
   // --- facts / content accuracy (P0/P1) --- (D2.11 handled by special resolver below)
-  'D2.9b_instruction_leak': { action: 'rewrite_copy', artifact: 'core-extract', field: 'about/body', fix: 'Strip editorial/meta draft instructions from upstream copy before render', confidence: 0.9 },
-  'D2.11_service_accuracy': { action: 'rewrite_copy', artifact: 'site-ctx', field: 'services.items', fix: 'Align rendered services with the upstream verified service backbone (drop unverified, surface verified specialty)', confidence: 0.7 },
   // --- content richness (P1) ---
-  'D2.13_service_card_empty_body': { action: 'rewrite_copy', artifact: 'core-extract', field: 'services.items[].body', fix: 'Populate each service item body from upstream facts', confidence: 0.85 },
+  // codex R73: composer reads services.json `short_desc` (readPreparedServices); empty
+  // short_desc → empty cards. Populate from verified service_list backbone (fact-guarded).
+  'D2.13_service_card_empty_body': { action: 'rewrite_copy', artifact: 'services.json', field: 'services[].short_desc', fix: 'Populate empty service short_desc from the verified service_list backbone (no fabrication · fact-guarded)', confidence: 0.8 },
   'D2.13_trust_field_presence': { action: 'adjust_token', artifact: 'site-ctx', field: 'footer.abn', fix: 'Surface the verified ABN (+ insured/guarantee) in the footer trust block', confidence: 0.85 },
   'AV-4': { action: 'rewrite_copy', artifact: 'core-extract', field: 'copy(banned phrase)', fix: 'Replace the banned generic phrase with specific concrete proof (pl-au-trade-voice §1.5)', confidence: 0.85 },
   // --- hero (deterministic) ---
@@ -28,6 +28,8 @@ const MAP = {
 
 // Patterns that are structural/aesthetic → blocked in Phase 1 (record only).
 const BLOCKED = [
+  { re: /^D2\.9b_instruction_leak/, reason: 'source_unlocated — rendered About leak is NOT in the render-read writer (about.md is clean); true source untraced. Needs a trace task before any safe edit (codex R73 · Phase-2)' },
+  { re: /^D2\.11_service_accuracy/, reason: 'set_level_change — changing which services render (drop/surface/reorder) exceeds Phase-1 copy-only (≈ add/remove block). Phase-2 (codex R73)' },
   { re: /^D2\.9_provenance/, reason: 'Fabricated-proof fix needs review-block suppression (Phase 3) or real review data (upstream enrichment) — not a copy/token edit' },
   { re: /^T4\./, reason: 'Site design-craft (spacing/hierarchy/consistency/imagery/ai_slop) needs template/structural change (Phase 3)' },
   { re: /^vis-hero\./, reason: 'Hero aesthetic judgment (image relevance/hierarchy/ai_slop/5s) needs template/asset change (Phase 2/3)' },
@@ -38,6 +40,7 @@ const BLOCKED = [
 const TARGET_PATHS = {
   'site-ctx': (slug) => `clients/${slug}/v2/site-ctx.json`,
   'core-extract': (slug) => `clients/${slug}/v2/core-extract.json`,
+  'services.json': (slug) => `clients/${slug}/v2/handoff/od-package/content/services.json`,
   'selected.json': (slug) => `clients/${slug}/v2/handoff/photos/selected.json`,
   'brand-tokens': (slug) => `clients/${slug}/v2/handoff/od-package/brand/brand-tokens.css`,
 };

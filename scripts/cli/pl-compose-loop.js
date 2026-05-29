@@ -163,6 +163,47 @@ Return STRICT JSON only: {"headline":"...","subheadline":"..."}`;
   return { applied: false, reason: `rewrite rejected after 3 tries — ${lastReason}` };
 }
 
+// codex R73 P1a-mini: populate EMPTY services.json short_desc from the verified
+// service_list backbone only (no fabrication · fact-guarded). Services with no verified
+// match are left blank (their set-level mismatch is Phase-2). Composer reads short_desc.
+function norm(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
+async function applyServiceShortDesc() {
+  const rel = 'handoff/od-package/content/services.json';
+  const p = path.resolve(`${V2}/${rel}`);
+  if (!fs.existsSync(p)) return { applied: false, reason: 'services.json missing' };
+  const data = readJson(`${V2}/${rel}`);
+  const services = data.services || [];
+  let backbone = [];
+  try { backbone = (readJson(`${V2}/core-extract.json`).brief?.real_facts?.service_list || []).map((s) => (typeof s === 'string' ? { name: s, brief: '' } : s)); } catch {}
+  const empties = services.filter((s) => !String(s.short_desc || '').trim());
+  if (!empties.length) return { applied: false, reason: 'no empty short_desc' };
+
+  let filled = 0, noVerified = 0;
+  for (const svc of empties) {
+    const match = backbone.find((b) => norm(b.name) === norm(svc.name)) || backbone.find((b) => norm(b.name).includes(norm(svc.name)) || norm(svc.name).includes(norm(b.name)));
+    if (!match || !String(match.brief || '').trim()) { noVerified++; continue; } // no verified support → leave blank (Phase-2 set fix)
+    const corpus = `${match.name} ${match.brief}`.toLowerCase();
+    const prompt = `Condense this VERIFIED roofing service description into a short service-card line.
+HARD RULES: use ONLY facts in the verified description below — invent NO new numbers, places, warranties, brands. ≤ 14 words. Plain, concrete.
+SERVICE: ${svc.name}
+VERIFIED DESCRIPTION: ${match.brief}
+Return STRICT JSON only: {"short_desc":"..."}`;
+    const validate = (raw) => { const j = extractJson(raw); return j && j.short_desc ? { ok: true, parsed: j } : { ok: false, error: 'no short_desc' }; };
+    const res = await runTask('gen_copy_fix', { prompt, validate });
+    if (!res.ok || !res.parsed) continue;
+    const sd = String(res.parsed.short_desc).trim();
+    if (sd.split(/\s+/).length > 16) continue;
+    const viol = factGuard({ headline: '', subheadline: sd }, corpus + ' \n ' + buildCorpus({ proof_chips: [] }));
+    if (viol.length) continue; // would introduce an unverified claim → skip
+    svc.short_desc = sd;
+    svc._loop_source = `verified:service_list:${match.name}`;
+    filled++;
+  }
+  if (!filled) return { applied: false, reason: `0 filled (${noVerified} services lack a verified backbone match → Phase-2 set fix)` };
+  fs.writeFileSync(p, JSON.stringify(data, null, 2));
+  return { applied: true, detail: `filled ${filled}/${empties.length} short_desc from verified service_list${noVerified ? ` (${noVerified} no verified match · left blank)` : ''}` };
+}
+
 // ---- loop ----
 if (isMain) (async () => {
   log(`\n=== pl:compose-loop · ${slug} · ${WRITE ? 'WRITE' : 'DRY-RUN'} · max ${MAX} ===`);
@@ -195,6 +236,7 @@ if (isMain) (async () => {
       const cf = iss.compose_feedback;
       let r;
       if (cf.loop_action === 'adjust_token') r = applyAdjustToken(cf, iss.what);
+      else if (cf.loop_action === 'rewrite_copy' && (cf.target_path || '').endsWith('services.json')) r = await applyServiceShortDesc();
       else if (cf.loop_action === 'rewrite_copy') r = await applyRewriteCopy(cf, iss.what);
       else r = { applied: false, reason: `${cf.loop_action} not implemented in thin loop` };
       log(`  ${r.applied ? '✓' : '·'} ${iss.rule || iss.dim}: ${r.detail || r.reason}`);
