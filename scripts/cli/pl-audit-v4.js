@@ -46,6 +46,7 @@ import { spawn } from 'node:child_process';
 import { load as cheerioLoad } from 'cheerio';
 import { runHeroJudge } from '../../core/audit/hero-judge.js';
 import { runDesignerReview } from '../../core/audit/designer-review.js';
+import { attachComposeFeedback } from '../../core/audit/compose-feedback.js';
 
 const REPO = process.cwd();
 const SCRIPT_VERSION = 'pl-audit-v4/0.1.0-skeleton';
@@ -1490,6 +1491,7 @@ function collectIssues(tiers) {
     for (const find of (t?.findings || [])) {
       issues.push({
         id: nextId(), tier: t.dim, severity: find.severity, dim: find.dim,
+        rule: find.rule || null, // codex R68: preserve rule so compose-feedback can map per-rule (mech-H-2 etc)
         page: find.page, where: find.where,
         what: find.what, why: find.why, fix: find.fix,
       });
@@ -1642,17 +1644,22 @@ async function main() {
 
   // Write file outputs (unless --site mode without --report)
   const outDir = ctx.outputDir;
+  // schema/2 (codex R50/R68): attach per-issue compose_feedback (upstream-targeted · Phase-1 actions only)
+  const fb = attachComposeFeedback(report.issues, { slug: report.slug });
   fs.writeFileSync(path.join(outDir, 'audit-v4-summary.json'), JSON.stringify({
     slug: report.slug, tier: TIER, composite: report.composite, grade: report.grade,
     ship_verdict: report.ship_verdict, generated_at: report.generated_at,
+    loop_actionable: fb.actionable, loop_blocked: fb.blocked, // codex R68: keep loop counts in standalone summary too
   }, null, 2));
   fs.writeFileSync(path.join(outDir, 'audit-v4-issues.json'), JSON.stringify({
-    schema_version: 'audit-v4-issues/1', slug: report.slug, issues: report.issues,
+    schema_version: 'audit-v4-issues/2', slug: report.slug, issues: fb.issues,
     summary: {
       P0: report.issues.filter(i => i.severity === 'P0').length,
       P1: report.issues.filter(i => i.severity === 'P1').length,
       P2: report.issues.filter(i => i.severity === 'P2').length,
       total: report.issues.length,
+      loop_actionable: fb.actionable,
+      loop_blocked: fb.blocked,
     },
   }, null, 2));
   fs.writeFileSync(path.join(outDir, 'audit-v4-trace.md'), buildTrace(tiers, ctx));
