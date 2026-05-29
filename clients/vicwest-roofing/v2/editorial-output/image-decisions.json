@@ -1,0 +1,91 @@
+{
+  "slug": "vicwest-roofing",
+  "schema_version": "image-decisions/1",
+  "standard": "docs/v3/SOP-IMAGE-STRATEGY.md",
+  "manifest": "clients/vicwest-roofing/v2/handoff/image-manifest.json",
+  "summary": {
+    "total_classified": 21,
+    "total_real_photos": 19,
+    "slots": 6,
+    "real_slots": 3,
+    "gallery_real": 8,
+    "stock_slots": 3,
+    "fallback_missing_real": 3
+  },
+  "decisions": [
+    {
+      "slot": "hero",
+      "chosen": "img-06.jpg",
+      "provenance": {
+        "tier": "verified",
+        "source_kind": "customer_photo"
+      },
+      "usage_intent": "real_content",
+      "quality_score": 9,
+      "brand_fit": 10,
+      "reason": "real hero passes gate (q9≥8, fit10≥7)"
+    },
+    {
+      "slot": "gallery",
+      "chosen": [
+        "img-02.jpg",
+        "img-06.jpg",
+        "img-10.jpg",
+        "img-13.jpg",
+        "img-14.jpg",
+        "img-11.jpg",
+        "img-16.jpg",
+        "img-18.jpg"
+      ],
+      "provenance": {
+        "tier": "verified",
+        "source_kind": "customer_photo"
+      },
+      "usage_intent": "real_content",
+      "count": 8,
+      "reason": "real-first · 8 photos q≥6"
+    },
+    {
+      "slot": "service_roof_replacement",
+      "chosen": "img-21.jpg",
+      "provenance": {
+        "tier": "verified",
+        "source_kind": "customer_photo"
+      },
+      "usage_intent": "real_content",
+      "quality_score": 8,
+      "brand_fit": 6,
+      "reason": "real service image q8≥6"
+    },
+    {
+      "slot": "service_new_roofs",
+      "chosen": null,
+      "provenance": {
+        "tier": "stock_placeholder",
+        "source_kind": "template_stock"
+      },
+      "usage_intent": "fallback_missing_real",
+      "reason": "no real service image"
+    },
+    {
+      "slot": "service_gutters",
+      "chosen": null,
+      "provenance": {
+        "tier": "stock_placeholder",
+        "source_kind": "template_stock"
+      },
+      "usage_intent": "fallback_missing_real",
+      "reason": "no real service image"
+    },
+    {
+      "slot": "service_storm_damage",
+      "chosen": null,
+      "provenance": {
+        "tier": "stock_placeholder",
+        "source_kind": "template_stock"
+      },
+      "usage_intent": "fallback_missing_real",
+      "reason": "no real service image"
+    }
+  ]
+}
