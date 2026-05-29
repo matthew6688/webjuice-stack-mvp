@@ -1,0 +1,52 @@
+{
+  "schema_version": "phase1-hero-ground-truth/1",
+  "note": "codex R62 D4 · expected hero-rubric pass/fail per client (Claude-measured, awaiting codex ratify). Deterministic rules only; vis-H-* (LLM) added when hero judge built.",
+  "fold_desktop_px": 900,
+  "clients": {
+    "vicwest-roofing": {
+      "mech-H-1_h1_le_10w": {"expect":"pass","actual":"9 words"},
+      "mech-H-2_subhead_14_25w": {"expect":"fail","actual":"27 words"},
+      "mech-H-3_hero_tel": {"expect":"pass"},
+      "mech-H-5_hero_phone": {"expect":"pass"},
+      "mech-H-6_img_alt": {"expect":"pass","actual":"descriptive alt"},
+      "mech-H-7_h1_font_ge_36": {"expect":"pass"},
+      "D-H-3_cta_tap_ge_44": {"expect":"pass"},
+      "D3.7_cta_above_fold": {"expect":"fail","actual":"CTA y=1035>900"},
+      "C-H-7_specific_number": {"expect":"pass","actual":"10-year"},
+      "AS-trade-8_cta_not_banned": {"expect":"pass"},
+      "AS-trade-1_not_name_only": {"expect":"pass"}
+    },
+    "a-j-roofing-solutions": {
+      "mech-H-1_h1_le_10w": {"expect":"pass","actual":"7 words"},
+      "mech-H-2_subhead_14_25w": {"expect":"pass","actual":"19 words"},
+      "mech-H-3_hero_tel": {"expect":"pass"},
+      "mech-H-5_hero_phone": {"expect":"pass"},
+      "mech-H-6_img_alt": {"expect":"pass"},
+      "mech-H-7_h1_font_ge_36": {"expect":"pass"},
+      "D-H-3_cta_tap_ge_44": {"expect":"pass"},
+      "D3.7_cta_above_fold": {"expect":"pass","actual":"CTA y=788<900"},
+      "C-H-7_specific_number": {"expect":"fail","actual":"no number in H1+lead"},
+      "AS-trade-8_cta_not_banned": {"expect":"pass"},
+      "AS-trade-1_not_name_only": {"expect":"pass"}
+    },
+    "mark-squire-roof-restorations": {
+      "mech-H-1_h1_le_10w": {"expect":"pass","actual":"8 words"},
+      "mech-H-2_subhead_14_25w": {"expect":"pass","actual":"21 words"},
+      "mech-H-3_hero_tel": {"expect":"pass"},
+      "mech-H-5_hero_phone": {"expect":"pass"},
+      "mech-H-6_img_alt": {"expect":"pass"},
+      "mech-H-7_h1_font_ge_36": {"expect":"pass"},
+      "D-H-3_cta_tap_ge_44": {"expect":"pass"},
+      "D3.7_cta_above_fold": {"expect":"fail","actual":"CTA y=1003>900"},
+      "C-H-7_specific_number": {"expect":"fail","actual":"no number in H1+lead"},
+      "AS-trade-8_cta_not_banned": {"expect":"pass"},
+      "AS-trade-1_not_name_only": {"expect":"pass"}
+    }
+  },
+  "expected_findings_summary": {
+    "vicwest-roofing": ["mech-H-2 subhead too long","D3.7 CTA below fold"],
+    "a-j-roofing-solutions": ["C-H-7 no specific number"],
+    "mark-squire-roof-restorations": ["C-H-7 no specific number","D3.7 CTA below fold"]
+  },
+  "arbiter": "codex (representing Matthew · R62)"
+}

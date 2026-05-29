@@ -1153,6 +1153,51 @@ async function runT2CopyQualityLLM(htmlFiles, ctx) {
   };
 }
 
+// ─── Phase-1 Hero rubric (deterministic · static · codex R62) ───────────
+// Hero = highest-conversion surface. Wires the pl-local-trade-page-spec hero
+// best-practice rules that are determinable from static DOM. Geometry rules
+// (mech-H-7 H1 font-size, D-H-3 CTA tap size) live in runVisualGeometry.
+// Issues are phrased as future-feedback (codex R62 D5): cause → effect → fix.
+const BANNED_CTA = /^(submit|sign\s?up|learn\s?more|get\s?started|contact\s?us|read\s?more|click\s?here|more\s?info)\.?$/i;
+function heroEl($) { return $('section.hero, .hero, #top').first(); }
+function runHeroRubric(htmlFiles, ctx) {
+  const findings = [];
+  const up = loadUpstreamTruth(ctx.slug);
+  const bizName = String((up.json['site-ctx'] || {}).business_name || (up.json['core-extract'] || {}).business_name || ctx.facts?.business_name || '').trim();
+  for (const f of htmlFiles) {
+    let $; try { $ = cheerioLoad(readHtml(f)); } catch { continue; }
+    const base = path.basename(f);
+    const hero = heroEl($);
+    if (!hero.length) { findings.push({ severity: 'P1', dim: 'D3.6_hero_rubric', page: base, where: 'hero', what: 'No hero section found', why: 'Hero is the primary conversion surface', fix: 'Add a hero section' }); continue; }
+    const h1 = hero.find('h1').first().text().replace(/\s+/g, ' ').trim();
+    const lead = hero.find('p.lead').first().text().replace(/\s+/g, ' ').trim();
+    const ctas = hero.find('a.btn, .btn').map((_, e) => $(e).text().replace(/\s+/g, ' ').trim()).get().filter(Boolean);
+    const push = (sev, rule, what, fix) => findings.push({ severity: sev, dim: 'D3.6_hero_rubric', page: base, where: 'hero', rule, what, why: 'pl-local-trade-page-spec hero best-practice', fix });
+
+    // mech-H-1 · H1 ≤10 words
+    const h1w = h1 ? h1.split(/\s+/).length : 0;
+    if (h1 && h1w > 10) push('P2', 'mech-H-1', `Hero H1 is ${h1w} words (>10) — oversized headlines push the CTA below the fold`, 'Tighten H1 to ≤10 words');
+    if (!h1) push('P1', 'mech-H-1', 'Hero has no H1', 'Add an H1 headline to the hero');
+    // mech-H-2 · subhead 14-25 words (codex R63: missing subhead also fails, not silent-pass)
+    if (lead) { const lw = lead.split(/\s+/).length; if (lw < 14 || lw > 25) push('P2', 'mech-H-2', `Hero subhead is ${lw} words (target 14-25) — ${lw > 25 ? 'too long, contributes to CTA sinking below fold' : 'too thin to set context'}`, `${lw > 25 ? 'Trim' : 'Expand'} subhead to 14-25 words`); }
+    else push('P2', 'mech-H-2', 'Hero has no subhead — visitor gets no context under the headline', 'Add a 14-25 word hero subhead');
+    // mech-H-3 · hero has a tel: link · mech-H-5 · phone digits in hero
+    if (hero.find('a[href^="tel:"]').length === 0) push('P1', 'mech-H-3', 'Hero has no tel: link — mobile callers cannot tap to call', 'Add a tel: link CTA in the hero');
+    if (!/\b0\d[\d ]{7,}/.test(hero.text())) push('P2', 'mech-H-5', 'No phone number visible in the hero', 'Show the phone number in the hero');
+    // mech-H-6 · hero img alt non-empty + descriptive
+    const heroImgs = hero.find('img');
+    if (heroImgs.length) { const bad = heroImgs.filter((_, im) => { const a = ($(im).attr('alt') || '').trim().toLowerCase(); return !a || a === 'hero image' || a === 'hero'; }).length; if (bad) push('P2', 'mech-H-6', `${bad} hero image(s) with empty/generic alt`, 'Write alt text describing the real image content'); }
+    // mech-H-4 / AS-trade-8 · primary CTA text not banned
+    if (ctas.length && BANNED_CTA.test(ctas[0])) push('P1', 'AS-trade-8', `Hero primary CTA uses banned generic text "${ctas[0]}"`, 'Use [Verb]+[What they get], e.g. "Request a written quote"');
+    if (ctas.length === 0) push('P1', 'mech-H-4', 'Hero has no CTA button', 'Add a primary CTA button to the hero');
+    // C-H-7 · ≥1 specific number in H1+subhead (exclude magazine eyebrow)
+    if (h1 && !/\b\d{1,4}\b/.test(h1 + ' ' + lead)) push('P2', 'C-H-7', 'Hero has no specific number (years/reviews/warranty/suburbs) — reads generic', 'Add one concrete number to the hero (e.g. "15-year guarantee", "200+ roofs")');
+    // AS-trade-1 · hero ≠ business name only
+    if (bizName && h1 && h1.toLowerCase().replace(/[^a-z0-9]/g, '') === bizName.toLowerCase().replace(/[^a-z0-9]/g, '')) push('P1', 'AS-trade-1', 'Hero H1 is just the business name — no value proposition', 'Lead with the customer value prop, not the company name');
+  }
+  return { status: 'wired', dim: 'D3.6_hero_rubric', findings };
+}
+
 // ─── Phase-1 visual geometry (deterministic · render-based · codex R59/R60) ─
 // Render-geometry checks the static-DOM audit can't do. Produces (a) defect
 // findings and (b) a `facts` map ({footer_exists, hero_cta_above_fold}) that
@@ -1203,12 +1248,26 @@ async function runVisualGeometry(htmlFiles, ctx) {
           for (const el of document.querySelectorAll(sel)) {
             if (!isVisible(el)) continue;
             const r = el.getBoundingClientRect(); const y = Math.round(r.top + window.scrollY);
-            return { exists: true, y, aboveFold: y < fold, selector: sel };
+            return { exists: true, y, aboveFold: y < fold, selector: sel, w: Math.round(r.width), h: Math.round(r.height) };
           }
         }
         return { exists: false };
       }, FOLD_DESKTOP);
       facts[base].hero_cta_above_fold = !!(cta.exists && cta.aboveFold);
+
+      // mech-H-7 · H1 computed font-size ≥36px desktop (codex R62)
+      const h1px = await page.evaluate(() => {
+        const h1 = document.querySelector('section.hero h1, .hero h1, #top h1');
+        return h1 ? Math.round(parseFloat(getComputedStyle(h1).fontSize)) : null;
+      });
+      if (h1px != null && h1px < 36) {
+        findings.push({ severity: 'P2', dim: 'D3.6_hero_rubric', page: base, where: 'hero', rule: 'mech-H-7', what: `Hero H1 font-size ${h1px}px (<36px desktop) — weak visual hierarchy`, why: 'pl-local-trade-page-spec D-H-1', fix: 'Increase hero H1 to ≥36px on desktop' });
+      }
+      // D-H-3 · CTA tap target ≥44×44px (codex R63: reuse prioritized+visible CTA · check w AND h)
+      if (cta.exists && (cta.w < 44 || cta.h < 44)) {
+        findings.push({ severity: 'P1', dim: 'D3.6_hero_rubric', page: base, where: 'hero', rule: 'D-H-3', what: `Hero CTA tap target ${cta.w}×${cta.h}px (<44×44 WCAG 2.5.5)`, why: 'WCAG 2.5.5 + pl-local-trade-page-spec D-H-3', fix: 'Increase CTA button to ≥44×44px' });
+      }
+
       if (cta.exists && !cta.aboveFold) {
         findings.push({ severity: 'P1', dim: 'D3.7_hero_cta_above_fold', page: base, where: 'hero / above-fold', what: `Hero CTA pushed below the fold (top Y=${cta.y}px > ${FOLD_DESKTOP}px) — no actionable CTA visible in first viewport`, why: 'No above-fold CTA harms conversion (P1)', fix: 'Shorten hero headline / restructure so the primary CTA sits within the first viewport' });
       } else if (!cta.exists) {
@@ -1425,7 +1484,7 @@ function collectIssues(tiers) {
     }
   }
   // Phase-1 deterministic detector findings (codex R54) · D2.11 facts + D2.9 provenance
-  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.VisualGeometry]) {
+  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.HeroRubric, tiers.VisualGeometry]) {
     for (const find of (t?.findings || [])) {
       issues.push({
         id: nextId(), tier: t.dim, severity: find.severity, dim: find.dim,
@@ -1498,6 +1557,7 @@ async function main() {
   if (runT1) tiers.UnresolvedPlaceholder = runUnresolvedPlaceholder(ctx.htmlFiles);
   if (runT1) tiers.TrustFieldPresence = runTrustFieldPresence(ctx.htmlFiles, ctx);
   if (runT1) tiers.ServiceAccuracy = runServiceAccuracy(ctx.htmlFiles, ctx);
+  if (runT1) tiers.HeroRubric = runHeroRubric(ctx.htmlFiles, ctx);
   // Content richness deterministic (D2.14 proof variety + D2.11 facts cross-check) · SOP-AUDIT-STANDARD-V2 §9
   if (runT4d) tiers.ContentRichness = runContentRichnessDeterministic(ctx.htmlFiles, ctx);
   // M1 mobile gate · mechanical vetos · SOP-AUDIT-STANDARD-V2 §4
@@ -1555,6 +1615,7 @@ async function main() {
     unresolved_placeholder: tiers.UnresolvedPlaceholder || null,
     trust_field_presence: tiers.TrustFieldPresence || null,
     service_accuracy: tiers.ServiceAccuracy || null,
+    hero_rubric: tiers.HeroRubric || null,
     visual_geometry: tiers.VisualGeometry || null,
     content_richness_deterministic: tiers.ContentRichness || null,
     mobile_gate: tiers.M1Mobile || null,
