@@ -161,12 +161,13 @@ if (isMain) (async () => {
   if (verdict === 'RED') { console.error('✗ checkpoint=RED → loop refused (same gate as ship). Fix data completeness first.'); process.exit(2); }
 
   const history = [];
+  const exhausted = new Set(); // dims applied in a prior round that did NOT resolve — stop re-trying (no churn)
   let before = auditSnapshot();
   log(`baseline · composite ${before.composite} · P0 ${before.p0.length} · P1 ${before.p1.length}`);
 
   for (let round = 1; round <= MAX; round++) {
-    const actionable = before.issues.filter((i) => i.compose_feedback?.loop_action);
-    if (!actionable.length) { log(`\nround ${round}: 0 actionable feedback → converged. Stop.`); break; }
+    const actionable = before.issues.filter((i) => i.compose_feedback?.loop_action && !exhausted.has(i.rule || i.dim));
+    if (!actionable.length) { log(`\nround ${round}: 0 fresh actionable feedback → converged. Stop.`); break; }
     log(`\n--- round ${round} · ${actionable.length} actionable ---`);
 
     if (!WRITE) {
@@ -202,6 +203,12 @@ if (isMain) (async () => {
     const stillThere = new Set(after.issues.map((i) => i.rule || i.dim));
     const resolved = appliedOk.filter((a) => !stillThere.has(a.source_dim));
     const resolutionRate = resolved.length / appliedOk.length;
+    // applied but NOT resolved → the edit can't satisfy this rule (e.g. C-H-7 wants a
+    // concrete number but fact-guard forbids inventing one). Mark exhausted: don't burn
+    // more LLM rounds re-rewriting the same field with no progress.
+    const unresolved = appliedOk.filter((a) => stillThere.has(a.source_dim)).map((a) => a.source_dim);
+    unresolved.forEach((d) => exhausted.add(d));
+    if (unresolved.length) log(`  ⓘ applied but unresolved (won't retry): ${unresolved.join(', ')}`);
     // regression: NEW P0 rule / P1 count up / composite drop
     const newP0 = after.p0.filter((r) => !before.p0.includes(r));
     const regression = newP0.length > 0 || after.p1.length > before.p1.length || after.composite < before.composite;
