@@ -380,4 +380,7 @@ anti_patterns: [{ id, why }]
 
 ---
 
+
+- **2026-05-29 (R83/R84 · P2-1 provenance)** · Unified real-vs-AI provenance. `docs/v3/SOP-PROVENANCE.md` (canonical tier ladder verified>geo_derived>ai_inferred>ai_placeholder>stock_placeholder · source_kind subtypes · replace_policy none/confirm/replace_required). `pl:provenance-map` (reader · normalizes all _source dialects → `clients/<slug>/v2/provenance-map.json` + missing_sections). `pl:provenance-annotate` (preview post-processor → `index.preview-annotated.html` with data-provenance/data-replace per section · LIVE HARD-OFF · never touches live index.html). Open: 1c client replace-list UI (after reviews/images fill) · field-level service provenance.
+
 **Sign-off**: this doc is the institutional memory of existing infrastructure. Read FIRST before grepping. Update when discovering new modules or building new ones.
