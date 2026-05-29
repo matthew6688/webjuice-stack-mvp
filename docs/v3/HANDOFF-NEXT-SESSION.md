@@ -1,83 +1,79 @@
-# HANDOFF · Next Session · ProfitsLocal · 2026-05-29 (after R70–R87)
+# HANDOFF · Next Session · ProfitsLocal · 2026-05-29 (after R70–R88)
 
-> Read FIRST: `docs/v3/INFRASTRUCTURE-INVENTORY.md` (look #0) · `docs/v3/CANONICAL.md` §0/§8.
-> Governance: every structural change → codex round + update INFRASTRUCTURE-INVENTORY (SOP).
-> (Prior handoff content superseded; this reflects state after the R70–R87 session.)
+## ▶ START HERE (first 5 minutes)
+1. Read this file fully.
+2. Read `docs/v3/INFRASTRUCTURE-INVENTORY.md` (look #0 · what exists · do NOT rebuild).
+3. Read `docs/v3/CANONICAL.md` §0 (locked decisions) + §8 (re-test triggers).
+4. **Governance (hard rule)**: every structural change → write a codex round first
+   (`/tmp/codex-round-NN-<topic>.md` | `codex exec -`), get consensus, implement, submit diff
+   for audit. After any structural change → update INFRASTRUCTURE-INVENTORY in the SAME commit.
+5. LLM: claude CLI is authed (vision trustworthy). Local fallback = ollama (gemma3 vision /
+   deepseek-r1 text). Cost rule for images: contact-sheet overview (local) → detail few (claude).
 
-## Where we are (this session: R70–R87 · ~22 commits)
+## STATE (one-liner per area)
+- **Phase-1 audit→feedback→fix loop**: SEALED (`PHASE-1-SEAL.md` · codex R77). pl-compose-loop +
+  compose-feedback + fact-guard (P0 red line). Audit SSOT = `SOP-AUDIT-STANDARD-V2.md`.
+- **P2-0 data**: DONE. `pl:build-single-page-brief` (deterministic) · license entity→brief flow +
+  confidence-gate (P0 false-match fixed) · `pl:geo-suburbs` (offline radius · geo_derived tier).
+- **P2-1 provenance**: SOP + `pl:provenance-map` + `pl:provenance-annotate` (preview · live-off).
+- **P2-1 images**: strategy `SOP-IMAGE-STRATEGY.md` (quality-gated mixed · usage_intent) ·
+  `pl:image-decisions` (gate selector) · **render WIRED for vicwest** (Completed Projects grid ·
+  real photos · no fake before/after · provenance verified). a-j/mark NOT done (no source photos).
 
-**Phase-1 audit→feedback→fix loop: SEALED** (`docs/v3/PHASE-1-SEAL.md` · codex R77 · connected
-copy-only PASS). pl-compose-loop (dry-run default · fact-guard P0 red line · rollback) +
-compose-feedback (resolveTrueWriter · never writes derived site-ctx). Audit standard
-consolidated → `docs/v3/SOP-AUDIT-STANDARD-V2.md` (SSOT · T4-three-meanings resolved). Vision
-LOW_CONFIDENCE guard. claude CLI re-authed → vision trustworthy (vicwest full-tier 79/B/SHIP).
+## ⚠️ GOTCHAS (read before touching)
+- **Repo has ~3131 uncommitted files** — pre-existing pipeline/data churn (mostly 05-28 · `data/`
+  + generated client artifacts), NOT this session's. Do NOT bulk-commit. A clean-up (gitignore
+  `data/` + generated artifacts, or commit a baseline) is **Task 0** below — do it deliberately.
+- **Two image classifiers exist** (don't make a 3rd): A `core/handoff/classify-images.js` →
+  selected.json (contact-sheet · $0.05 · coarse) · B `scripts/cli/pl-classify-images.js` →
+  image-manifest.json (per-image · rich quality_score). codex R87: unify to image-manifest.json.
+- **91/A on vicwest is FAST tier** (deterministic facts/mechanics only · vision n/a). It does NOT
+  certify design or copy quality. Last real vision audit: 79/B claude · 57/REJECT local gemma
+  ("generic copy, low-quality imagery"). Do NOT present current renders as good design.
+- **a-j `handoff/photos/source/` is EMPTY** — no real photos to classify yet (needs website download).
+- composer is Mustache; the simple engine **can't nest dotted sections** ({{#a.b}}{{#a.c}}) — use
+  mutually-exclusive arrays instead (see gallery.projects/pairs).
 
-**P2-0 (data completeness): DONE.**
-- `pl:build-single-page-brief` — deterministic render-contract builder (core-extract.real_facts
-  > master.md fm > null/data_gap · no LLM · no fabrication). mark/vicwest VALID.
-- license: `entity.license` now FLOWS to brief; `pl-license-lookup` confidence-gated (abn/
-  licence/name-exact = canonical; token/fts → _candidates · needs_manual_license_confirm · ABN
-  cross-check). Caught a false "Mark Squire"→"Mark Prain Builders" match (P0).
-- `pl:geo-suburbs` — offline suburb-within-radius (GeoNames CC BY 3.0 · data/geo/au-localities.json
-  · centroid haversine). a-j unblocked (3 verified + 40 geo_derived). gate: verified+geo_derived≥8.
+## ✅ NEXT TASKS (ordered · codex-ratified · with commands + acceptance)
 
-**P2-1 (real-vs-AI provenance): data + machine + image-decision layers DONE.**
-- `docs/v3/SOP-PROVENANCE.md` — canonical tiers verified>geo_derived>ai_inferred>ai_placeholder>
-  stock_placeholder · source_kind subtypes · replace_policy none/confirm/replace_required.
-- `pl:provenance-map` (reader → provenance-map.json + missing_sections) · `pl:provenance-annotate`
-  (preview data-provenance/data-replace · LIVE HARD-OFF · separate index.preview-annotated.html).
-- `docs/v3/SOP-IMAGE-STRATEGY.md` (codex R86/R87) — quality-gated mixed; section matrix;
-  usage_intent (fallback_missing_real vs intentional_design_asset); hard-no list; two-pass cost plan.
-- `pl:image-decisions` (reader → image-decisions.json) — VERIFIED decision layer: vicwest
-  hero→REAL img-06 (q9/fit10) · gallery→8 REAL · honest stock fallback. a-j → "missing · classify first".
+### Task 0 · Repo hygiene (independent · do first or defer deliberately)
+Decide gitignore vs baseline-commit for `data/` + generated client artifacts (audit-v4-*,
+editorial-output regen, _vision-audit, screenshots). Goal: `git status` shows only real source.
+→ codex round first (it's structural). Acceptance: clean working tree or a documented ignore list.
 
-## IMAGE TOPIC — closure state (updated R88)
+### Task 1 · Two-pass cost image classifier (codex R87)
+Rewrite `scripts/cli/pl-classify-images.js`: overview contact-sheet (gemma local · thumb 150px ·
+bucket + shortlist ≤10 = hero3+gallery4+service2+about/team1) → detail (claude · long-edge 1600px ·
+quality_score/brand_fit on shortlist only) → canonical `image-manifest.json`. Mark
+`core/handoff/classify-images.js` legacy (merge its category/best_placement/contact_sheet).
+Acceptance: one client classified with ≤1 overview call + ≤10 detail calls · manifest has rich fields.
 
-**CLOSED (this session):** decision + policy + RENDER (vicwest end-to-end).
-- Strategy: `SOP-IMAGE-STRATEGY.md` (quality-gated mixed · cost two-pass · usage_intent).
-- `pl:image-decisions` — selects real images per gate → image-decisions.json.
-- **RENDER WIRED (codex R88)**: composer reads image-decisions.json → copies verified real photos
-  to assets/ → renders "Completed Projects" single-photo grid (data-provenance=verified · NO fake
-  before/after · SOP §9). vicwest page now shows 6 REAL roof photos; provenance-map #gallery =
-  verified. Mutually-exclusive gallery.projects/gallery.pairs (real wins → pairs suppressed).
+### Task 2 · a-j / mark image backfill (zero Google quota)
+`pl-extract-crawl-images` from their REAL website (filter `*.pages.dev`, `/screenshots/`,
+`/evidence/` per codex R85) → Task-1 classify → `pl:image-decisions` → `pl:compose-editorial` →
+`pl:provenance-map`. Acceptance: a-j/mark gallery shows real website photos OR stays honest stock
+if no usable real images (no fakery). GBP photos (pl-places-enrich + pl-download-places-photos)
+only if Matthew OKs Google Places quota.
 
-**NOT done (next session):**
-- **a-j / mark have NO source photos** (handoff/photos/source empty · never classified) → still
-  stock/missing (honestly flagged · not mixed into vicwest). Need website-image download
-  (pl-extract-crawl-images · filter *.pages.dev/screenshots · zero Google quota) → classify →
-  image-decisions → recompose.
-- **Two-pass cost classifier (codex R87)** not built (pl-classify-images still per-image).
-- **hero image slot**: editorial hero is text-only this round (codex R88 #3 · left as text).
-- design/copy quality polish (see below · 91/A is FAST tier only · NOT a design cert).
+### Task 3 · P2-2 service set fix (was Phase-1-blocked · D2.11 set_level_change)
+a-j/mark services still have Chinese draft descs + unverified services (no backbone). Drop
+unverified, surface verified from core-extract real_facts.service_list. Keep fact-guard.
+Acceptance: provenance-map services → verified or honestly confirm; no Chinese drafts rendered.
 
-**Also honest (design/copy quality):** the 91/A/SHIP on vicwest is FAST tier = deterministic
-facts/mechanics ONLY (vision_confidence n/a). It does NOT certify design or copy quality. The
-last real vision audit was 79/B (claude · hero 71) and 57/REJECT (local gemma · cited "generic
-copy, low-quality imagery, inconsistent design"). Design polish + persuasive copy = Phase-2/3,
-NOT yet done. Do not present current renders as production-grade design.
+### Task 4 · Design + copy QUALITY polish (the real "make it good" work · Phase-2/3)
+This is what's actually missing for a sellable site. Run full-tier claude audit, read T3/hero/T4
+findings, fix the editorial template's weak spots (text-heavy walls, generic hero copy, layout).
+Wire copy skills into the loop. Acceptance: full-tier (claude) composite ≥80 with vision_confidence
+ok · hero/T4 ≥ bar · honest before/after of screenshots.
 
-## NEXT SESSION — open work (codex-sequenced)
+### Task 5 · P2-1c client replace-checklist UI (after reviews/images produce real replace_required)
+Human-facing preview overlay listing every replace_required + confirm item per section.
 
-1. **Two-pass image classifier (cost · codex R87)**: rewrite `scripts/cli/pl-classify-images.js`
-   → overview contact-sheet (gemma local · 150px · bucket+shortlist ≤10) → detail (claude · 1600px
-   · quality_score/brand_fit) → canonical `image-manifest.json`. Mark `core/handoff/classify-images.js`
-   legacy (cheap-but-coarse A · $0.05 contact-sheet · merge its category/best_placement).
-2. **Image render wiring**: composer consumes image-decisions.json → real photos into hero/gallery/
-   service slots (resolveImage is currently DEAD CODE; galleryPairs hardcoded stock). NUANCE: gallery
-   is before/after PAIRS but real photos are singles → SOP §9 forbids fake before/after → needs a
-   single-photo "our work" grid OR pair only real before/after. provenance-map must then show real.
-3. **a-j/mark image backfill**: after two-pass ships, run classify (website images · zero Google
-   quota · filter *.pages.dev/screenshots per codex R85) → image-decisions → recompose.
-4. **GBP photos (optional · needs Matthew's Google Places quota OK)**: pl-places-enrich +
-   pl-download-places-photos for a-j/mark (never enriched).
-5. **P2-2 service set fix**: a-j/mark services still have Chinese draft descs + unverified services
-   (no backbone). provenance-map flags them ai_inferred/confirm. Fix the service SET (drop unverified,
-   surface verified · D2.11 set_level_change · was Phase-1-blocked).
-6. **P2-1c client UI**: human-facing "replace checklist" (after reviews/images fill produce real
-   replace_required items).
-7. **provenance-map polish**: scan rendered HTML assets/stock/* → mark stock_placeholder (codex R84
-   #3 · not yet done) · field-level service provenance (short_desc = llm_from_verified_service_list).
+## TEST CLIENTS
+- **vicwest-roofing** — richest · hand brief · GREEN · real images RENDERED (reference).
+- **a-j-roofing-solutions** — QLD · geo suburbs · QBCC licence · NO source photos yet.
+- **mark-squire-roof-restorations** — VIC · licence omit (ABN-only) · 18 verified suburbs · no photos.
 
-## Test clients
-vicwest-roofing (richest · hand brief · GREEN · real images) · a-j-roofing-solutions (QLD · geo
-suburbs · no real images yet) · mark-squire-roof-restorations (VIC · license omit · 18 suburbs).
+## KEY CLIs THIS SESSION ADDED (all `npm run pl:<x>`)
+build-single-page-brief · geo-suburbs · provenance-map · provenance-annotate · image-decisions.
+Existing reused: license-lookup · license-csv-sync · classify-images · places-enrich · compose-editorial.
